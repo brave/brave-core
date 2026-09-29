@@ -16,8 +16,11 @@
 // requiring launchQueue again. The file tools are registered with Leo via
 // WebMCP (see tools.ts / file_ops.ts). The `view.` sibling origin can also
 // read files over postMessage (see message_handler.ts).
+//
+// When navigated to with a #file=<path> fragment, the workspace creates a
+// fullscreen iframe to the viewer origin which displays the file content.
 
-import { installMessageHandler } from './message_handler'
+import { installMessageHandler, viewOrigin } from './message_handler'
 import { registerTools } from './tools'
 import { restoreDirectoryHandle, storeDirectoryHandle } from './storage'
 
@@ -51,7 +54,7 @@ function onDirectoryHandle(
   root: FileSystemDirectoryHandle,
   fromStorage: boolean,
 ) {
-  console.log(
+  console.debug(
     '[leo-workspace] received directory handle:',
     root.name,
     fromStorage ? '(from IndexedDB)' : '(from launchQueue)',
@@ -79,9 +82,62 @@ function onLaunch(params: LaunchParams) {
   onDirectoryHandle(root, false)
 }
 
+// Parses the #file=<filename> fragment from the URL.
+function parseFileFragment(hash: string): string | null {
+  if (!hash || !hash.startsWith('#')) {
+    return null
+  }
+  const params = new URLSearchParams(hash.slice(1))
+  return params.get('file')
+}
+
+// The viewer iframe, created on demand when a #file= fragment is present.
+let viewerIframe: HTMLIFrameElement | null = null
+
+// Creates or updates the fullscreen viewer iframe.
+function showViewer(filename: string) {
+  const viewerOriginUrl = viewOrigin(window.location.origin)
+  if (!viewerOriginUrl) {
+    console.error('[leo-workspace] cannot determine viewer origin')
+    return
+  }
+
+  const viewerUrl = `${viewerOriginUrl}/#file=${encodeURIComponent(filename)}`
+
+  if (!viewerIframe) {
+    viewerIframe = document.createElement('iframe')
+    document.body.appendChild(viewerIframe)
+  }
+
+  viewerIframe.src = viewerUrl
+  console.debug('[leo-workspace] showing viewer for:', filename)
+}
+
+// Hides the viewer iframe.
+function hideViewer() {
+  if (viewerIframe) {
+    viewerIframe.remove()
+    viewerIframe = null
+  }
+}
+
+// Handles hash changes to show/hide the viewer.
+function handleHashChange() {
+  const filename = parseFileFragment(window.location.hash)
+  if (filename) {
+    showViewer(filename)
+  } else {
+    hideViewer()
+  }
+}
+
 async function initialize() {
-  console.log('[leo-workspace] bundle loaded at', window.location.origin)
+  console.debug('[leo-workspace] bundle loaded at', window.location.origin)
   installMessageHandler(rootHandle)
+
+  // Handle file viewing via hash fragment
+  handleHashChange()
+  window.addEventListener('hashchange', handleHashChange)
 
   // Try to restore directory handle from IndexedDB first
   const storedHandle = await restoreDirectoryHandle()
