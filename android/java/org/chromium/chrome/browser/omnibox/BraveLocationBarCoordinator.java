@@ -53,13 +53,6 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
      */
     private @Nullable LocationBarMediator mLocationBarMediator;
 
-    /**
-     * {@link LocationBarCoordinator#mUrlBar} is private so we add a private `mUrlBar` here so this
-     * code compiles and then remove it and make {@link LocationBarCoordinator#mUrlBar} protected
-     * via asm.
-     */
-    private @Nullable View mUrlBar;
-
     private @Nullable View mQRButton;
 
     public BraveLocationBarCoordinator(
@@ -146,10 +139,6 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 omniboxChipManager,
                 scrimHandler,
                 userEducationHelper);
-
-        if (mUrlBar != null) {
-            ((UrlBar) mUrlBar).setSelectAllOnFocus(true);
-        }
 
         assertNonNull(mLocationBarMediator);
         if (mLocationBarMediator instanceof BraveLocationBarMediator) {
