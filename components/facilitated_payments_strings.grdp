@@ -144,22 +144,22 @@
   <message name="IDS_PIX_ACCOUNT_LINKING_PROMPT_DECLINE_FIRST_TWO_TIMES" desc="Text for the decline button in the bottom sheet showing Pix account linking prompt. This string is used for the first two times the prompt is shown, where we show 'Not now' instead of 'No thanks'." formatter_data="android_java">
     Not now
   </message>
-  <message name="IDS_PIX_ACCOUNT_LINKING_PROMPT_TITLE" desc="Title for the bottom sheet showing Pix account linking prompt. It asks users to link their Pix accounts to Brave Wallet so they can directly pay on Brave." formatter_data="android_java">
+  <message name="IDS_PIX_ACCOUNT_LINKING_PROMPT_TITLE" desc="Title for the bottom sheet showing Pix account linking prompt. It asks users to link their Pix accounts to Google Wallet so they can directly pay on Brave." formatter_data="android_java">
     Pay with Pix directly in Brave next time
   </message>
-  <message name="IDS_PIX_ACCOUNT_LINKING_PROMPT_VALUE_PROP_MESSAGE_1" desc="A message in the bottom sheet showing Pix account linking prompt. The prompt asks users to link their Pix accounts to Brave Wallet so they can directly pay on Brave. The value prop messages communicate unique benefits of Pix account linking. This message informs users that they can enable Pix on Brave by linking their Pix account to Brave Wallet." formatter_data="android_java">
+  <message name="IDS_PIX_ACCOUNT_LINKING_PROMPT_VALUE_PROP_MESSAGE_1" desc="A message in the bottom sheet showing Pix account linking prompt. The prompt asks users to link their Pix accounts to Google Wallet so they can directly pay on Brave. The value prop messages communicate unique benefits of Pix account linking. This message informs users that they can enable Pix on Brave by linking their Pix account to Google Wallet." formatter_data="android_java">
     Enable Pix by linking your account quickly
   </message>
-  <message name="IDS_PIX_ACCOUNT_LINKING_PROMPT_VALUE_PROP_MESSAGE_2" desc="A message in the bottom sheet showing Pix account linking prompt. The prompt asks users to link their Pix accounts to Brave Wallet so they can directly pay on Brave. The value prop messages communicate unique benefits of Pix account linking. This message informs users that enabling Pix on Brave allows them to pay directly on Brave without having to use their bank app." formatter_data="android_java">
+  <message name="IDS_PIX_ACCOUNT_LINKING_PROMPT_VALUE_PROP_MESSAGE_2" desc="A message in the bottom sheet showing Pix account linking prompt. The prompt asks users to link their Pix accounts to Google Wallet so they can directly pay on Brave. The value prop messages communicate unique benefits of Pix account linking. This message informs users that enabling Pix on Brave allows them to pay directly on Brave without having to use their bank app." formatter_data="android_java">
     Pay in Brave without using your bank app
   </message>
-  <message name="IDS_PIX_ACCOUNT_LINKING_PROMPT_VALUE_PROP_MESSAGE_3" desc="A message in the bottom sheet showing Pix account linking prompt. The prompt asks users to link their Pix accounts to Brave Wallet so they can directly pay on Brave. The value prop messages communicate unique benefits of Pix account linking. This message informs users that their personal info is protected using encryption." formatter_data="android_java">
+  <message name="IDS_PIX_ACCOUNT_LINKING_PROMPT_VALUE_PROP_MESSAGE_3" desc="A message in the bottom sheet showing Pix account linking prompt. The prompt asks users to link their Pix accounts to Google Wallet so they can directly pay on Brave. The value prop messages communicate unique benefits of Pix account linking. This message informs users that their personal info is protected using encryption." formatter_data="android_java">
     Encryption protects your personal info
   </message>
-  <message name="IDS_PIX_ACCOUNT_LINKING_PROMPT_ACCEPT" desc="Text for the accept button in the bottom sheet showing Pix account linking prompt. It asks users to link their Pix accounts to Brave Wallet so they can directly pay on Brave." formatter_data="android_java">
+  <message name="IDS_PIX_ACCOUNT_LINKING_PROMPT_ACCEPT" desc="Text for the accept button in the bottom sheet showing Pix account linking prompt. It asks users to link their Pix accounts to Google Wallet so they can directly pay on Brave." formatter_data="android_java">
     Enable Pix in Wallet
   </message>
-  <message name="IDS_PIX_ACCOUNT_LINKING_PROMPT_DECLINE" desc="Text for the decline button in the bottom sheet showing Pix account linking prompt. It asks users to link their Pix accounts to Brave Wallet so they can directly pay on Brave." formatter_data="android_java">
+  <message name="IDS_PIX_ACCOUNT_LINKING_PROMPT_DECLINE" desc="Text for the decline button in the bottom sheet showing Pix account linking prompt. It asks users to link their Pix accounts to Google Wallet so they can directly pay on Brave." formatter_data="android_java">
     No thanks
   </message>
   <message name="IDS_PIX_ACCOUNT_LINKING_PROMPT_C_TITLE" desc="Title for the bottom sheet showing Pix account linking prompt (Variation C)." formatter_data="android_java">
@@ -186,10 +186,10 @@
     Got it
   </message>
   <!-- eWallet account linking prompt strings -->
-  <message name="IDS_EWALLET_ACCOUNT_LINKING_PROMPT_TITLE" desc="Title for the bottom sheet showing eWallet account linking prompt. It asks users to link their eWallet to Brave Wallet so they can directly pay on Brave. The placeholder is the eWallet provider name." formatter_data="android_java">
+  <message name="IDS_EWALLET_ACCOUNT_LINKING_PROMPT_TITLE" desc="Title for the bottom sheet showing eWallet account linking prompt. It asks users to link their eWallet to Google Wallet so they can directly pay on Brave. The placeholder is the eWallet provider name." formatter_data="android_java">
     Add <ph name="PROVIDER">%1$s<ex>ChiliPay</ex></ph> to pay without switching apps
   </message>
-  <message name="IDS_EWALLET_ACCOUNT_LINKING_PROMPT_ACTION_GET_STARTED" desc="Text for the accept button in the bottom sheet showing eWallet account linking prompt. It accepts to link their eWallet accounts to Brave Wallet." formatter_data="android_java">
+  <message name="IDS_EWALLET_ACCOUNT_LINKING_PROMPT_ACTION_GET_STARTED" desc="Text for the accept button in the bottom sheet showing eWallet account linking prompt. It accepts to link their eWallet accounts to Google Wallet." formatter_data="android_java">
     Get started
   </message>
   <message name="IDS_EWALLET_ACCOUNT_LINKING_PROMPT_ACTION_NO_THANKS" desc="Text for the decline button in the bottom sheet showing eWallet account linking prompt." formatter_data="android_java">
