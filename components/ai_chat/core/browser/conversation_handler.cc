@@ -283,7 +283,7 @@ ConversationHandler::ConversationHandler(
              << metadata_->uuid << " with "
              << conversation_data->entries.size();
     chat_history_ = std::move(conversation_data->entries);
-    if (features::IsAIChatThreadsEnabled()) {
+    if (base::FeatureList::IsEnabled(features::kAIChatThreads)) {
       for (auto& thread : conversation_data->threads) {
         threads_.try_emplace(thread->uuid, std::move(thread));
       }
@@ -475,13 +475,16 @@ void ConversationHandler::GetConversationHistory(
     mojom::UntrustedConversationHandler::GetConversationHistoryCallback
         callback) {
   if (thread_uuid) {
-    if (!features::IsAIChatThreadsEnabled()) {
+    if (!base::FeatureList::IsEnabled(features::kAIChatThreads)) {
       std::move(callback).Run({});
       return;
     }
 
     auto* container = base::FindOrNull(threads_, *thread_uuid);
-    CHECK(container);
+    if (!container) {
+      std::move(callback).Run({});
+      return;
+    }
     if (!container->entries.empty()) {
       std::move(callback).Run(BuildFullThreadHistoryForUI(*thread_uuid));
       return;
@@ -509,7 +512,7 @@ void ConversationHandler::GetConversationHistory(
 
 void ConversationHandler::GetConversationThreads(
     GetConversationThreadsCallback callback) {
-  if (!features::IsAIChatThreadsEnabled()) {
+  if (!base::FeatureList::IsEnabled(features::kAIChatThreads)) {
     std::move(callback).Run({});
     return;
   }
@@ -525,15 +528,16 @@ void ConversationHandler::OnConversationThreadHistoryReceived(
     std::string thread_uuid,
     GetConversationHistoryCallback callback,
     std::vector<mojom::ConversationTurnPtr> entries) {
-  CHECK(features::IsAIChatThreadsEnabled());
+  CHECK(base::FeatureList::IsEnabled(features::kAIChatThreads));
   CHECK(threads_.contains(thread_uuid));
   threads_.at(thread_uuid).entries = std::move(entries);
   std::move(callback).Run(BuildFullThreadHistoryForUI(thread_uuid));
 }
 
 std::vector<mojom::ConversationTurnPtr>
-ConversationHandler::BuildFullThreadHistoryForUI(const std::string& thread_uuid) {
-  CHECK(features::IsAIChatThreadsEnabled());
+ConversationHandler::BuildFullThreadHistoryForUI(
+    const std::string& thread_uuid) {
+  CHECK(base::FeatureList::IsEnabled(features::kAIChatThreads));
   auto* container = base::FindOrNull(threads_, thread_uuid);
   CHECK(container);
 
@@ -1409,10 +1413,11 @@ void ConversationHandler::AddToConversationHistory(
   OnConversationEntryAdded(chat_history_.back());
 }
 
-std::vector<mojom::ConversationTurnPtr>& ConversationHandler::GetChatHistory(
+std::vector<mojom::ConversationTurnPtr>&
+ConversationHandler::GetChatHistoryContainer(
     std::optional<std::string_view> thread_uuid) {
   if (thread_uuid.has_value()) {
-    CHECK(features::IsAIChatThreadsEnabled());
+    CHECK(base::FeatureList::IsEnabled(features::kAIChatThreads));
     CHECK(threads_.contains(thread_uuid.value()));
     return threads_.at(thread_uuid.value()).entries;
   }

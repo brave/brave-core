@@ -1083,10 +1083,10 @@ TEST_F(ConversationHandlerUnitTest, ThreadHistory) {
   // child thread.
   auto archive = mojom::ConversationArchive::New();
   auto root_entry_1 = mojom::ConversationTurn::New(
-      "root-turn-1", std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
-      mojom::ActionType::QUERY, "hello", std::nullopt, std::nullopt,
-      std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
-      nullptr /* skill */, false, std::nullopt, nullptr,
+      "root-turn-1", std::nullopt /* thread_uuid */,
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "hello",
+      std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
+      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr,
       std::vector<std::string>{} /* child_thread_uuids */);
   auto root_entry_2 = root_entry_1->Clone();
   root_entry_2->uuid = "root-turn-2";
@@ -1134,21 +1134,34 @@ TEST_F(ConversationHandlerUnitTest, ThreadHistory) {
   ASSERT_TRUE(container);
   EXPECT_TRUE(container->entries.empty());
 
-  // Populate the thread cache and verify GetConversationHistory with a
-  // thread_uuid returns the cached entries without delegating to the service.
-  container->entries.emplace_back(mojom::ConversationTurn::New(
+  // Deliver thread entries as if received from the service and verify the
+  // full thread history (origin entry + thread entries) is returned.
+  std::vector<mojom::ConversationTurnPtr> thread_entries;
+  thread_entries.emplace_back(mojom::ConversationTurn::New(
       "thread-entry-1", std::make_optional<std::string>("thread-1"),
       mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "thread query",
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
       std::nullopt, nullptr, false, std::nullopt, nullptr,
       std::vector<std::string>{}));
-  container->entries.emplace_back(mojom::ConversationTurn::New(
+  thread_entries.emplace_back(mojom::ConversationTurn::New(
       "thread-entry-2", std::make_optional<std::string>("thread-1"),
       mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "thread response", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr, false,
       std::nullopt, nullptr, std::vector<std::string>{}));
 
+  base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>>
+      received_future;
+  handler->OnConversationThreadHistoryReceived(
+      "thread-1", received_future.GetCallback(), std::move(thread_entries));
+  auto received_entries = received_future.Take();
+  ASSERT_EQ(received_entries.size(), 3u);
+  EXPECT_EQ(received_entries[0]->uuid, "root-turn-2");
+  EXPECT_EQ(received_entries[1]->uuid, "thread-entry-1");
+  EXPECT_EQ(received_entries[2]->uuid, "thread-entry-2");
+  EXPECT_EQ(container->entries.size(), 2u);
+
+  // Subsequent requests should be served from the cache.
   base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>> future;
   handler->GetConversationHistory("thread-1", future.GetCallback());
   auto entries = future.Take();
@@ -1158,6 +1171,13 @@ TEST_F(ConversationHandlerUnitTest, ThreadHistory) {
   EXPECT_EQ(entries[1]->text, "thread query");
   EXPECT_EQ(entries[2]->uuid, "thread-entry-2");
   EXPECT_EQ(entries[2]->text, "thread response");
+
+  // Unknown threads should return empty entries.
+  base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>>
+      unknown_future;
+  handler->GetConversationHistory("unknown-thread",
+                                  unknown_future.GetCallback());
+  EXPECT_TRUE(unknown_future.Take().empty());
 }
 
 TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {
