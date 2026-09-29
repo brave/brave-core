@@ -18,9 +18,8 @@ substitutions:
       replace: |-
         int selected_index = GetNavigationIndexToSelect(tab);
 
-        \1const bool scheduled_for_cleanup = IsScheduledForCleanup(
-        \1    tab.navigations[selected_index].virtual_url(), profile_);
-        \1if (scheduled_for_cleanup) {
+        \1if (IsScheduledForCleanup(tab.navigations[selected_index].virtual_url(),
+                                      profile_)) {
         \1  return;
         \1}
 
