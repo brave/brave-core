@@ -17,6 +17,7 @@
 #include "brave/components/new_tab_takeover/grit/new_tab_takeover_generated_map.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_dynamic_new_tab_takeover_ad_event_handler.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_dynamic_new_tab_takeover_source.h"
 #include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_content_data.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
@@ -29,6 +30,7 @@
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_provider_client.h"
 #include "components/search_engines/template_url_service.h"
+#include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -73,6 +75,15 @@ NewTabTakeoverUI::NewTabTakeoverUI(
       absl::StrFormat("frame-src %s;", kNTPDynamicNewTabTakeoverUrl));
   source->AddString("ntpNewTabTakeoverDynamicContentUrl",
                     kNTPDynamicNewTabTakeoverUrl);
+
+  // Sponsored content is only shown in regular profiles.
+  Profile* profile = Profile::FromWebUI(web_ui);
+  if (profile->IsRegularProfile()) {
+    content::URLDataSource::Add(
+        profile,
+        std::make_unique<ntp_background_images::NTPDynamicNewTabTakeoverSource>(
+            &ntp_background_images_service));
+  }
 }
 
 NewTabTakeoverUI::~NewTabTakeoverUI() {

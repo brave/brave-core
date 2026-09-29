@@ -165,6 +165,9 @@ BraveNewTabUI::BraveNewTabUI(
                                     ntp_custom_background_images_service));
   }
 
+  brave_new_tab_page_refresh::NewTabPageInitializer::
+      AddNTPBackgroundImagesDataSources(profile);
+
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       absl::StrFormat("frame-src %s;", kNTPDynamicNewTabTakeoverUrl));

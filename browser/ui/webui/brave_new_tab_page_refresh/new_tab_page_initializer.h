@@ -45,6 +45,10 @@ class NewTabPageInitializer {
   // Migrates profile prefs associated with the NTP.
   static void MigrateProfilePrefs(PrefService* prefs);
 
+  //Registers the data sources for NTP background, sponsored and new tab
+  // takeover content. Also used by the legacy NTP.
+  static void AddNTPBackgroundImagesDataSources(Profile* profile);
+
  private:
   Profile* GetProfile();
 
