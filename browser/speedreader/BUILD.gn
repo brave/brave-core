@@ -55,6 +55,7 @@ if (!is_android) {
       "//brave/components/brave_wallet/common/buildflags",
       "//chrome/browser",
       "//chrome/browser/ui",
+      "//chrome/browser/ui:browser_command_controller",
       "//chrome/browser/ui:ui_features",
       "//chrome/browser/ui/actions",
       "//chrome/browser/ui/browser_window",
