@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Pick the rewrapper binary by host OS
+
+      Cross-compiling for Windows from another host must still run that host's
+      rewrapper.
+    regex:
+      re_pattern:
+        '(rewrapper_path = "\$\{reclient_bin_dir\}/rewrapper"\n\s*)if \(is_win\)
+        \{'
+      replace: '\1if (host_os == "win") {'
