@@ -1,6 +1,8 @@
 import json
 import os
 import re
+import sys
+
 import requests
 
 from argparse import RawTextHelpFormatter
@@ -11,23 +13,23 @@ from functools import cmp_to_key
 def call_github_api(url, headers):
     try:
         r = requests.get(url, headers=headers)
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         print("Error: Received requests.exceptions.ConnectionError, Exiting...")
-        exit(1)
+        sys.exit(1)
     except Exception as e:
-        raise Exception(e)
+        raise Exception(e) from e
 
-    if r.status_code is 200:
+    if r.status_code == 200:
         return r
+    return None
 
 
 def loose_version_cmp(a, b):
-    if LooseVersion(a) == LooseVersion(b):
-        return 0
     if LooseVersion(a) > LooseVersion(b):
         return 1
     if LooseVersion(a) < LooseVersion(b):
         return -1
+    return 0
 
 
 def get_github_tags(branch):
@@ -41,7 +43,7 @@ def get_github_tags(branch):
         'Accept': 'application/vnd.github+json',
         'Authorization': 'token ' + os.environ.get('GITHUB_TOKEN')
     }
-    tag_url = GITHUB_URL + "/repos/brave/brave-core/tags" + '?page=1&per_page=100'
+    tag_url = f'{GITHUB_URL}/repos/brave/brave-core/tags?page=1&per_page=100'
 
     r = call_github_api(tag_url, headers=headers)
     next_request = ""
@@ -70,8 +72,8 @@ def main():
     if match:
         branch = match.group(0)
     else:
-        print("Error: Malformed branch \'{}\'".format(branch))
-        exit(1)
+        print(f"Error: Malformed branch '{branch}'")
+        sys.exit(1)
 
     items = get_github_tags(branch)
 
@@ -80,5 +82,4 @@ def main():
 
 
 if __name__ == '__main__':
-    import sys
     sys.exit(main())

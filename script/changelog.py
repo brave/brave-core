@@ -6,7 +6,7 @@ import sys
 
 from argparse import RawTextHelpFormatter
 
-from lib.changelog import *
+from lib.changelog import download_from_url, render_html, render_markdown
 
 
 def main():
@@ -35,9 +35,9 @@ def main():
     tag = args.tag
 
     if not re.match(r'^refs/tags/', tag) and not re.match(r'^v', tag):
-        logging.error(" Tag prefix must contain {} or {}".format(
-            "\"refs/tags/\"", "\"v\""))
-        exit(1)
+        logging.error(" Tag prefix must contain %s or %s", "\"refs/tags/\"",
+                      "\"v\"")
+        sys.exit(1)
 
     match = re.match(r'^refs/tags/(.*)$', tag)
     if match:
@@ -47,9 +47,9 @@ def main():
     if match:
         version = match.group(1)
 
-    logging.debug("CHANGELOG_URL: {}".format(changelog_url))
-    logging.debug("TAG: {}".format(tag))
-    logging.debug("VERSION: {}".format(version))
+    logging.debug("CHANGELOG_URL: %s", changelog_url)
+    logging.debug("TAG: %s", tag)
+    logging.debug("VERSION: %s", version)
 
     changelog_txt = download_from_url(args, logging, changelog_url)
 
