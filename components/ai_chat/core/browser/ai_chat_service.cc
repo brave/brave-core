@@ -1390,7 +1390,7 @@ void AIChatService::OnConversationTokenInfoChanged(
     if (ai_chat_db_ && !conversation_metadata->temporary) {
       ai_chat_db_
           .AsyncCall(base::IgnoreResult(&AIChatDatabase::UpdateThreadTokenInfo))
-          .WithArgs(thread_uuid.value(), total_tokens, trimmed_tokens);
+          .WithArgs(std::string(*thread_uuid), total_tokens, trimmed_tokens);
     }
     return;
   }

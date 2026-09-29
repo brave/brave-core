@@ -718,7 +718,9 @@ void ConversationHandler::SubmitHumanConversationEntry(
   VLOG(1) << __func__;
   DVLOG(4) << __func__ << ": " << turn->text;
 
-  if (!features::IsAIChatThreadsEnabled() && turn->thread_uuid) {
+  if (turn->thread_uuid &&
+      (!base::FeatureList::IsEnabled(features::kAIChatThreads) ||
+       !threads_.contains(*turn->thread_uuid))) {
     return;
   }
 
@@ -1284,7 +1286,8 @@ void ConversationHandler::RespondToToolUseRequest(
   tool_use->output = std::move(output);
   tool_use->artifacts = std::move(artifacts);
 
-  OnToolUseEventOutput(GetChatHistory(thread_uuid).back().get(), tool_use);
+  OnToolUseEventOutput(GetChatHistoryContainer(thread_uuid).back().get(),
+                       tool_use);
 
   // Run next tool, or perform generation with all the completed tools outputs.
   // Run as Task to catch any reentrant issues.
@@ -1322,7 +1325,8 @@ void ConversationHandler::ProcessPermissionChallenge(
 
     // Set output and notify UI
     tool_use->output = std::move(result);
-    OnToolUseEventOutput(GetChatHistory(thread_uuid).back().get(), tool_use);
+    OnToolUseEventOutput(GetChatHistoryContainer(thread_uuid).back().get(),
+                         tool_use);
 
     // Directly call generation, bypassing the normal tool loop continuation
     // This stops processing of any remaining tools in this turn
@@ -1344,7 +1348,8 @@ void ConversationHandler::ProcessPermissionChallenge(
   tool_use->permission_challenge = nullptr;
 
   // Notify UI of the state change
-  OnToolUseEventOutput(GetChatHistory(thread_uuid).back().get(), tool_use);
+  OnToolUseEventOutput(GetChatHistoryContainer(thread_uuid).back().get(),
+                       tool_use);
 
   // Find the tool and notify it
   base::WeakPtr<Tool> tool_ptr;
@@ -1372,7 +1377,7 @@ void ConversationHandler::ProcessPermissionChallenge(
 void ConversationHandler::CreateConversationThread(
     const std::string& origin_entry_uuid,
     CreateConversationThreadCallback callback) {
-  if (!features::IsAIChatThreadsEnabled()) {
+  if (!base::FeatureList::IsEnabled(features::kAIChatThreads)) {
     std::move(callback).Run(std::nullopt);
     return;
   }
@@ -1440,7 +1445,7 @@ void ConversationHandler::AddToConversationHistory(
     turn->uuid = base::Uuid::GenerateRandomV4().AsLowercaseString();
   }
 
-  auto& history = GetChatHistory(turn->thread_uuid);
+  auto& history = GetChatHistoryContainer(turn->thread_uuid);
 
   MaybeHandleNewThreadEntry(turn->thread_uuid);
 
@@ -1455,7 +1460,7 @@ ConversationHandler::BuildConversationHistoryViewForRequest(
     return EngineConsumer::ToHistoryView(chat_history_);
   }
 
-  CHECK(features::IsAIChatThreadsEnabled());
+  CHECK(base::FeatureList::IsEnabled(features::kAIChatThreads));
   auto* container = base::FindOrNull(threads_, *thread_uuid);
   CHECK(container);
 
@@ -1583,7 +1588,7 @@ void ConversationHandler::SetAPIError(EngineConsumer::Error error) {
 void ConversationHandler::UpdateOrCreateLastAssistantEntry(
     const std::optional<std::string>& thread_uuid,
     EngineConsumer::GenerationResultData result) {
-  auto& history = GetChatHistory(thread_uuid);
+  auto& history = GetChatHistoryContainer(thread_uuid);
   if (needs_new_entry_ || history.empty() ||
       history.back()->character_type != CharacterType::ASSISTANT) {
     needs_new_entry_ = false;
@@ -2056,7 +2061,7 @@ void ConversationHandler::OnEngineCompletionComplete(
     } else {
       DVLOG(2) << __func__ << ": With no error";
       // No error but check if no content was received
-      auto& last_entry = GetChatHistory(thread_uuid).back();
+      auto& last_entry = GetChatHistoryContainer(thread_uuid).back();
       if (last_entry->character_type != mojom::CharacterType::ASSISTANT) {
         SetAPIError(mojom::APIError::ConnectionIssue);
       } else {
@@ -2091,7 +2096,7 @@ void ConversationHandler::OnEngineCompletionComplete(
   // request it removes never reaches a client or storage.
   TakeFollowUpSuggestionsFromLastEntry();
 
-  OnConversationEntryAdded(GetChatHistory(thread_uuid).back());
+  OnConversationEntryAdded(GetChatHistoryContainer(thread_uuid).back());
 
   CompleteGeneration(thread_uuid, true);
 }
@@ -2351,7 +2356,7 @@ void ConversationHandler::MaybeHandleNewThreadEntry(
   if (!thread_uuid.has_value()) {
     return;
   }
-  CHECK(features::IsAIChatThreadsEnabled());
+  CHECK(base::FeatureList::IsEnabled(features::kAIChatThreads));
   auto* container = base::FindOrNull(threads_, thread_uuid.value());
   if (!container) {
     return;
@@ -2520,7 +2525,7 @@ void ConversationHandler::OnConversationTokenInfoChanged(
     uint64_t total_tokens,
     uint64_t trimmed_tokens) {
   if (thread_uuid.has_value()) {
-    CHECK(features::IsAIChatThreadsEnabled());
+    CHECK(base::FeatureList::IsEnabled(features::kAIChatThreads));
     if (auto* container = base::FindOrNull(threads_, thread_uuid.value())) {
       mojom::Thread* thread = container->thread.get();
       thread->total_tokens = total_tokens;
@@ -2652,7 +2657,7 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest(
   is_tool_use_in_progress_ = false;
   OnAPIRequestInProgressChanged();
 
-  auto& history = GetChatHistory(thread_uuid);
+  auto& history = GetChatHistoryContainer(thread_uuid);
   if (history.empty()) {
     return false;
   }
