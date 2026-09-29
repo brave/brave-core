@@ -94,3 +94,8 @@ substitutions:
     make_virtual:
       class_name: Tab
       method_name: MaybeUpdateHoverStatus
+
+  - description: 'Make IsHovering virtual'
+    make_virtual:
+      class_name: Tab
+      method_name: IsHovering

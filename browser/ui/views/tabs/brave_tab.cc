@@ -223,6 +223,12 @@ void BraveTab::RemovedFromWidget() {
   Tab::RemovedFromWidget();
 }
 
+bool BraveTab::IsHovering() const {
+  // Upstream gives true when the tab is in split tab and another tab is
+  // hovered. But, we only want to show hover effect for currently hovered tab.
+  return mouse_hovered_;
+}
+
 #if BUILDFLAG(ENABLE_CONTAINERS)
 void BraveTab::MaybeStartObservingFullscreenChanges() {
   if (!small_accent_icon_view_ || fullscreen_subscription_) {
