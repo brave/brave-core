@@ -114,7 +114,6 @@ def ensure_depot_tools(checkout: Path) -> Path | None:
             sys.stderr.write(
                 f'runner.py: removing the interrupted deploy at {dest}\n')
             _rmtree(dest)
-        sys.stderr.write(f'runner.py: deploying depot_tools to {dest}\n')
         _clone_depot_tools(dest)
     except (OSError, subprocess.CalledProcessError) as error:
         # The guard stays behind, marking `dest` for repair.
