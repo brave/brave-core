@@ -57,6 +57,7 @@ source_set("sidebar_impl") {
   deps = [
     ":sidebar",
     "//base",
+    "//brave/browser/misc_metrics",
     "//brave/browser/ui/views/frame/split_view",
     "//brave/components/brave_origin/buildflags",
     "//brave/components/brave_talk/buildflags",
@@ -82,6 +83,10 @@ source_set("sidebar_impl") {
     "//components/user_prefs",
     "//ui/base",
   ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/browser" ]
+  }
 
   if (enable_brave_wallet) {
     deps += [
