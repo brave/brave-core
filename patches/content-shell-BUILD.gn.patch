@@ -1,0 +1,12 @@
+diff --git a/content/shell/BUILD.gn b/content/shell/BUILD.gn
+index b469f348694065feb03ddc3ea389124b125acf7c..a1033718ae84889924aa031fbb9bc7653b49667b 100644
+--- a/content/shell/BUILD.gn
++++ b/content/shell/BUILD.gn
+@@ -862,6 +862,7 @@ if (is_apple) {
+       }
+       if (!use_v8_context_snapshot || include_both_v8_snapshots) {
+         sources += [ "$root_out_dir/snapshot_blob.bin" ]
++        import("//brave/build/config/v8_snapshot_deps.gni") public_deps += brave_v8_run_mksnapshot_default_deps
+       }
+     }
+ 

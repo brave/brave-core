@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index ce1f5a5711eeba1109bef0169a80cbe29373a843..71e9f0105edb30d649098325175f0f9928c298a3 100644
+index 39cbdeb5f067ba57b65bb903ff36b9f96c4d8631..0328e5be327cdc02d206bcdcc83165fa5b657f7e 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
 @@ -143,7 +143,7 @@ if (enable_uncompressed_archive) {
@@ -11,7 +11,15 @@ index ce1f5a5711eeba1109bef0169a80cbe29373a843..71e9f0105edb30d649098325175f0f99
    script = "//chrome/tools/build/win/create_installer_archive.py"
  
    release_file = "chrome.release"
-@@ -326,6 +326,7 @@ template("generate_mini_installer") {
+@@ -240,6 +240,7 @@ action("mini_installer_archive") {
+     if (!use_v8_context_snapshot || include_both_v8_snapshots) {
+       inputs += [ "$root_out_dir/snapshot_blob.bin" ]
+       args += [ "--include_snapshotblob=1" ]
++      import("//brave/build/config/v8_snapshot_deps.gni") deps += brave_v8_run_mksnapshot_default_deps
+     }
+   }
+ 
+@@ -326,6 +327,7 @@ template("generate_mini_installer") {
        no_default_deps = true
        ldflags += [ "/ENTRY:MainEntryPoint" ]
      }

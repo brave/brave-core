@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 6d1ac0bcb7a7f98839dda329ebf7de38e513c1e0..cb20a371d98080a26e5a69a7c8807637dd33e986 100644
+index d98c86e5dace91937c62c5428084686c666ab0d4..e173fc7d536bdce25da825b52d48848d7c5e572c 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -202,6 +202,7 @@ if (!is_android && !is_mac) {
@@ -68,7 +68,15 @@ index 6d1ac0bcb7a7f98839dda329ebf7de38e513c1e0..cb20a371d98080a26e5a69a7c8807637
        } else {
          sources += [ "$root_out_dir/${updater_product_full_name}.app" ]
  
-@@ -1425,6 +1433,7 @@ if (is_win) {
+@@ -1114,6 +1122,7 @@ if (is_win) {
+       }
+       if (!use_v8_context_snapshot || include_both_v8_snapshots) {
+         sources += [ "$root_out_dir/snapshot_blob.bin" ]
++        import("//brave/build/config/v8_snapshot_deps.gni") public_deps += brave_v8_run_mksnapshot_default_deps
+       }
+     }
+   }
+@@ -1424,6 +1433,7 @@ if (is_win) {
        "-current_version",
        chrome_dylib_version,
      ]
@@ -76,7 +84,7 @@ index 6d1ac0bcb7a7f98839dda329ebf7de38e513c1e0..cb20a371d98080a26e5a69a7c8807637
  
      if (!is_component_build) {
        # Specify a sensible install_name for static builds. The library is
-@@ -1637,6 +1646,7 @@ if (is_win) {
+@@ -1636,6 +1646,7 @@ if (is_win) {
  
  group("dependencies") {
    public_deps = [
@@ -84,7 +92,7 @@ index 6d1ac0bcb7a7f98839dda329ebf7de38e513c1e0..cb20a371d98080a26e5a69a7c8807637
      "//build:branding_buildflags",
      "//build:chromeos_buildflags",
      "//chrome/browser",
-@@ -1683,7 +1693,7 @@ group("dependencies") {
+@@ -1682,7 +1693,7 @@ group("dependencies") {
  
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
@@ -93,7 +101,7 @@ index 6d1ac0bcb7a7f98839dda329ebf7de38e513c1e0..cb20a371d98080a26e5a69a7c8807637
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
-@@ -1732,6 +1742,7 @@ group("resources") {
+@@ -1731,6 +1742,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",
@@ -101,7 +109,7 @@ index 6d1ac0bcb7a7f98839dda329ebf7de38e513c1e0..cb20a371d98080a26e5a69a7c8807637
    ]
  }
  
-@@ -1757,6 +1768,7 @@ if (!is_android) {
+@@ -1756,6 +1768,7 @@ if (!is_android) {
      if (enable_resource_allowlist_generation) {
        repack_allowlist = _chrome_resource_allowlist
        deps = [ ":resource_allowlist" ]

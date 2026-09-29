@@ -1,0 +1,11 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Upstream `//v8` demoted its dependency on `:v8_snapshot` (and therefore
+# `:run_mksnapshot_default`) from public_deps to deps, so targets that bundle
+# snapshot_blob.bin via `//v8` alone (i.e. not through
+# //tools/v8_context_snapshot) no longer see run_mksnapshot_default as a
+# dependency. Restore that edge explicitly.
+brave_v8_run_mksnapshot_default_deps = [ "//v8:run_mksnapshot_default" ]
