@@ -278,18 +278,26 @@ class DictionaryMojoTypemap(MojoTypemap):
         return "@{}"
     def ObjCToCpp(self, accessor):
         local_var_name = _LocalVarName(accessor)
-        args = (self.keyTypemap.ExpectedCppType(),
-                self.valueTypemap.ExpectedCppType(),
-                self.keyTypemap.ObjCWrappedType(), local_var_name, accessor,
-                self.keyTypemap.ObjCToCpp(local_var_name),
-                self.valueTypemap.ObjCToCpp("%s[%s]" % (accessor,
-                                                        local_var_name)))
+        dict_var_name = "dict_%s" % local_var_name
+        args = (self.ObjCWrappedType(), dict_var_name, accessor,
+                self.keyTypemap.ExpectedCppType(),
+                self.valueTypemap.ExpectedCppType(), dict_var_name,
+                self.keyTypemap.ObjCWrappedType(), local_var_name,
+                dict_var_name, self.keyTypemap.ObjCToCpp(local_var_name),
+                self.valueTypemap.ObjCToCpp("%s[%s]" %
+                                            (dict_var_name, local_var_name)),
+                self.keyTypemap.ExpectedCppType(),
+                self.valueTypemap.ExpectedCppType())
+        # Entries are collected first so the flat_map is sorted once, rather
+        # than inserting (and shifting) entries one by one.
         return """^{
-            base::flat_map<%s, %s> map;
+            %s %s = %s;
+            std::vector<std::pair<%s, %s>> entries;
+            entries.reserve(%s.count);
             for (%s %s in %s) {
-                map[%s] = %s;
+                entries.emplace_back(%s, %s);
             }
-            return map;
+            return base::flat_map<%s, %s>(std::move(entries));
         }()""" % args
     def CppToObjC(self, accessor):
         args = (accessor, self.keyTypemap.CppToObjC("item.first"),

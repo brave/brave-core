@@ -64,3 +64,8 @@ interface EmptyResponseInterfaceHost {
 interface ResponderInterfaceHost {
   SetResponder(pending_remote<ResponderInterface> remote);
 };
+
+struct MapStruct {
+  map<string, int32> numbers;
+  map<string, NullableEnumStruct> structs;
+};

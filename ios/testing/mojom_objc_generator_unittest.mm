@@ -676,3 +676,34 @@ TEST_F(MojomObjcGeneratorPendingRemoteWithRepliesTest,
   EXPECT_EQ(result->error(), "async failure");
   EXPECT_TRUE(replied_on_ui_thread);
 }
+
+using MojomObjcGeneratorMapTest = PlatformTest;
+
+TEST_F(MojomObjcGeneratorMapTest, ObjCToCppConvertsAllEntries) {
+  MojomObjcTestMapStruct* obj = [[MojomObjcTestMapStruct alloc] init];
+  NSMutableDictionary<NSString*, NSNumber*>* numbers =
+      [NSMutableDictionary dictionary];
+  for (int i = 0; i < 100; ++i) {
+    numbers[[NSString stringWithFormat:@"key%d", i]] = @(i);
+  }
+  obj.numbers = numbers;
+  MojomObjcTestNullableEnumStruct* value =
+      [[MojomObjcTestNullableEnumStruct alloc] init];
+  value.requiredEnumField = MojomObjcTestSomeEnumGamma;
+  obj.structs = @{@"b" : value, @"a" : value};
+
+  mojom_objc_test::mojom::MapStructPtr cpp_obj = obj.cppObjPtr;
+  ASSERT_EQ(cpp_obj->numbers.size(), 100u);
+  EXPECT_EQ(cpp_obj->numbers.at("key0"), 0);
+  EXPECT_EQ(cpp_obj->numbers.at("key99"), 99);
+  ASSERT_EQ(cpp_obj->structs.size(), 2u);
+  EXPECT_EQ(cpp_obj->structs.at("a")->required_enum_field,
+            mojom_objc_test::mojom::SomeEnum::kGamma);
+}
+
+TEST_F(MojomObjcGeneratorMapTest, EmptyMap) {
+  MojomObjcTestMapStruct* obj = [[MojomObjcTestMapStruct alloc] init];
+  mojom_objc_test::mojom::MapStructPtr cpp_obj = obj.cppObjPtr;
+  EXPECT_TRUE(cpp_obj->numbers.empty());
+  EXPECT_TRUE(cpp_obj->structs.empty());
+}
