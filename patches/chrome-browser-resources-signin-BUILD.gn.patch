@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/signin/BUILD.gn b/chrome/browser/resources/signin/BUILD.gn
-index 4144ea861f23361f7cd8661e6f120d38bd316260..5ee24a85b45744deb0d0796876ec570a0aa83c9a 100644
+index 90c87d8b5744a7565f13944631f57bf476068f93..10ab154a9dc30485cef30cd9dfee37925e86314a 100644
 --- a/chrome/browser/resources/signin/BUILD.gn
 +++ b/chrome/browser/resources/signin/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,11 +10,9 @@ index 4144ea861f23361f7cd8661e6f120d38bd316260..5ee24a85b45744deb0d0796876ec570a
  import("//chrome/common/features.gni")
  import("//components/signin/features.gni")
  import("//ui/webui/resources/tools/build_webui.gni")
-@@ -9,6 +10,7 @@ import("//ui/webui/resources/tools/build_webui.gni")
- assert(!is_android)
+@@ -179,4 +180,5 @@ build_webui("build") {
+   ]
  
- build_webui("build") {
+   webui_context_type = "trusted"
 +  preprocessor_defines = [ "enable_brave_custom_profile_image_webui=$enable_brave_custom_profile_image_webui" ]
-   grd_prefix = "signin"
- 
-   mojo_files_deps = [ "//chrome/browser/ui/webui/signin/cross_device_signin_qr_bubble:mojo_bindings_ts__generator" ]
+ }

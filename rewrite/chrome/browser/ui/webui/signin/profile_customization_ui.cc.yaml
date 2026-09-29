@@ -26,7 +26,7 @@ substitutions:
   - description: |-
       Supply custom profile image data after the profile page registers resources.
 
-      Keep the feature and string setup in the Chromium override.
+      The chromium_src override defines the helper before including this file.
     regex:
       re_pattern: '(ProfileCustomizationUI::ProfileCustomizationUI\([^)]*\).*?webui::SetupWebUIDataSource\([^;]+;)'
       re_flags: [DOTALL]

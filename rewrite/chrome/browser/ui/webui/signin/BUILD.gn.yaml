@@ -4,10 +4,14 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: Import custom profile image availability for the override.
+  - description: Import the custom profile image availability flag.
     add_import:
       import: //brave/ui/webui/custom_profile_image/buildflags/buildflags.gni
-  - description: Declare the custom profile image override dependencies.
+  - description: |-
+      Add custom image feature and string dependencies to profile_impl.
+
+      The chromium_src override always includes the buildflags header, but only
+      uses the custom image feature and strings when the feature is built.
     append_to_target:
       target: profile_impl
       code: |-
