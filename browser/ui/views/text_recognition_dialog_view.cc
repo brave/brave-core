@@ -22,6 +22,8 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "components/constrained_window/constrained_window_views.h"
+#include "content/public/browser/browser_context.h"
+#include "content/public/browser/web_contents.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -32,7 +34,9 @@
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/scroll_view.h"
 #include "ui/views/layout/flex_layout.h"
+#include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
+#include "ui/views/widget/widget_delegate.h"
 #include "ui/views/window/dialog_client_view.h"
 
 namespace {
@@ -79,15 +83,17 @@ void ShowTextRecognitionDialog(content::WebContents* web_contents,
       TextRecognitionDialogTracker::FromWebContents(web_contents);
 
   if (auto* active_dialog = dialog_tracker->active_dialog()) {
-    TextRecognitionDialogView* text_recognition_dialog =
-        static_cast<TextRecognitionDialogView*>(
-            active_dialog->widget_delegate());
+    auto* text_recognition_dialog =
+        views::AsViewClass<TextRecognitionDialogView>(
+            active_dialog->widget_delegate()->GetContentsView());
+    CHECK(text_recognition_dialog);
     text_recognition_dialog->set_image(image);
     text_recognition_dialog->StartExtractingText();
     return;
   }
 
-  auto* delegate = new TextRecognitionDialogView(image);
+  auto* delegate = new TextRecognitionDialogView(
+      image, web_contents->GetBrowserContext()->IsOffTheRecord());
   auto* new_dialog =
       constrained_window::ShowWebModalDialogViews(delegate, web_contents);
   dialog_tracker->SetActiveDialog(new_dialog);
@@ -96,8 +102,10 @@ void ShowTextRecognitionDialog(content::WebContents* web_contents,
 
 }  // namespace brave
 
-TextRecognitionDialogView::TextRecognitionDialogView(const SkBitmap& image)
+TextRecognitionDialogView::TextRecognitionDialogView(const SkBitmap& image,
+                                                     bool is_off_the_record)
     : image_(image),
+      is_off_the_record_(is_off_the_record),
       show_result_timer_(FROM_HERE,
                          kShowResultDelay,
                          base::BindRepeating(
@@ -240,8 +248,14 @@ void TextRecognitionDialogView::UpdateContents(
 
   // Treat each string in |text| as a separated line string.
   const auto unified_string = base::UTF8ToUTF16(base::JoinString(text, "\n"));
-  ui::ScopedClipboardWriter(ui::ClipboardBuffer::kCopyPaste)
-      .WriteText(unified_string);
+  {
+    ui::ScopedClipboardWriter writer(ui::ClipboardBuffer::kCopyPaste);
+    if (is_off_the_record_) {
+      // Keep it out of the OS clipboard history and cloud clipboard sync.
+      writer.MarkAsOffTheRecord();
+    }
+    writer.WriteText(unified_string);
+  }
 
   CHECK(!scroll_view_);
   scroll_view_ = AddChildView(std::make_unique<views::ScrollView>());
@@ -253,6 +267,17 @@ void TextRecognitionDialogView::UpdateContents(
   label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
   label->SetSelectable(true);
   label->SetMultiLine(true);
+}
+
+std::u16string_view TextRecognitionDialogView::GetDisplayedTextForTesting()
+    const {
+  if (!scroll_view_) {
+    return {};
+  }
+
+  auto* label = views::AsViewClass<views::Label>(scroll_view_->contents());
+  CHECK(label);
+  return label->GetText();
 }
 
 void TextRecognitionDialogView::AdjustWidgetSize() {
