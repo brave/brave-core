@@ -11,6 +11,7 @@
 #include "base/test/run_until.h"
 #import "brave/ios/testing/mojom_objc_generator_test.mojom.objc+private.h"
 #include "ios/web/public/test/web_task_environment.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
@@ -326,4 +327,158 @@ TEST_F(MojomObjcGeneratorPendingRemoteTest, ObserverOutlivesMojoImpl) {
   impl_.Notify("hello");
   ASSERT_TRUE(base::test::RunUntil([&] { return call_count_ == 1; }));
   EXPECT_EQ(impl_.observer_count(), 1u);
+}
+
+namespace {
+
+// Holds on to callbacks without ever running them until told to answer.
+class TestResponder : public mojom_objc_test::mojom::ResponderInterface {
+ public:
+  TestResponder() = default;
+  ~TestResponder() override = default;
+
+  mojo::PendingRemote<mojom_objc_test::mojom::ResponderInterface>
+  BindNewRemote() {
+    return receiver_.BindNewPipeAndPassRemote();
+  }
+
+  void Disconnect() {
+    // Close the pipe before dropping callbacks, mojo doesn't allow dropping a
+    // reply callback whose pipe is still open.
+    receiver_.reset();
+    ask_callbacks_.clear();
+    verify_callbacks_.clear();
+  }
+
+  size_t ask_count() const { return ask_callbacks_.size(); }
+  size_t verify_count() const { return verify_callbacks_.size(); }
+
+  void AnswerAll() {
+    for (auto& callback : ask_callbacks_) {
+      std::move(callback).Run(
+          "answer", 42, mojom_objc_test::mojom::SomeEnum::kGamma,
+          mojom_objc_test::mojom::NullableEnumStruct::New(), nullptr);
+    }
+    ask_callbacks_.clear();
+  }
+
+  // mojom::ResponderInterface:
+  void Ask(const std::string& question, AskCallback callback) override {
+    ask_callbacks_.push_back(std::move(callback));
+  }
+  void Verify(const std::string& token, VerifyCallback callback) override {
+    verify_callbacks_.push_back(std::move(callback));
+  }
+
+ private:
+  mojo::Receiver<mojom_objc_test::mojom::ResponderInterface> receiver_{this};
+  std::vector<AskCallback> ask_callbacks_;
+  std::vector<VerifyCallback> verify_callbacks_;
+};
+
+}  // namespace
+
+class MojomObjcGeneratorDroppedCallbackTest : public PlatformTest {
+ protected:
+  void SetUp() override {
+    PlatformTest::SetUp();
+    responder_ = [[MojomObjcTestResponderInterfaceMojoImpl alloc]
+        initWithResponderInterface:impl_.BindNewRemote()];
+  }
+
+  void TearDown() override {
+    responder_ = nil;
+    PlatformTest::TearDown();
+  }
+
+  web::WebTaskEnvironment task_environment_;
+  TestResponder impl_;
+  MojomObjcTestResponderInterfaceMojoImpl* responder_ = nil;
+  int call_count_ = 0;
+  bool dropped_ = false;
+};
+
+// A disconnect with a call in flight should still run the completion, with
+// default values, so callers awaiting it are not left hanging.
+TEST_F(MojomObjcGeneratorDroppedCallbackTest, DisconnectRunsCompletionOnce) {
+  __block NSString* answer = nil;
+  __block int32_t count = -1;
+  __block MojomObjcTestSomeEnum kind = MojomObjcTestSomeEnumGamma;
+  __block MojomObjcTestNullableEnumStruct* info = nil;
+  __block MojomObjcTestNullableEnumStruct* maybe_info = nil;
+
+  [responder_ ask:@"question"
+       completion:^(NSString* a, int32_t c, MojomObjcTestSomeEnum k,
+                    MojomObjcTestNullableEnumStruct* i,
+                    MojomObjcTestNullableEnumStruct* _Nullable m) {
+         ++call_count_;
+         answer = a;
+         count = c;
+         kind = k;
+         info = i;
+         maybe_info = m;
+       }];
+  ASSERT_TRUE(base::test::RunUntil([&] { return impl_.ask_count() == 1u; }));
+  EXPECT_EQ(call_count_, 0);
+
+  impl_.Disconnect();
+  ASSERT_TRUE(base::test::RunUntil([&] { return call_count_ > 0; }));
+
+  EXPECT_EQ(call_count_, 1);
+  EXPECT_NSEQ(answer, @"");
+  EXPECT_EQ(count, 0);
+  EXPECT_EQ(kind, MojomObjcTestSomeEnumAlpha);
+  EXPECT_NE(info, nil);
+  EXPECT_EQ(maybe_info, nil);
+}
+
+TEST_F(MojomObjcGeneratorDroppedCallbackTest, AnsweredCompletionRunsOnce) {
+  __block NSString* answer = nil;
+  [responder_ ask:@"question"
+       completion:^(NSString* a, int32_t c, MojomObjcTestSomeEnum k,
+                    MojomObjcTestNullableEnumStruct* i,
+                    MojomObjcTestNullableEnumStruct* _Nullable m) {
+         ++call_count_;
+         answer = a;
+       }];
+  ASSERT_TRUE(base::test::RunUntil([&] { return impl_.ask_count() == 1u; }));
+
+  impl_.AnswerAll();
+  ASSERT_TRUE(base::test::RunUntil([&] { return call_count_ > 0; }));
+  impl_.Disconnect();
+
+  // A call on the now disconnected remote is dropped, and completes with
+  // defaults, once the disconnect has been observed on the Obj-C side. The
+  // already answered completion mustn't run again by then.
+  [responder_ ask:@"another question"
+       completion:^(NSString* a, int32_t c, MojomObjcTestSomeEnum k,
+                    MojomObjcTestNullableEnumStruct* i,
+                    MojomObjcTestNullableEnumStruct* _Nullable m) {
+         dropped_ = true;
+       }];
+  ASSERT_TRUE(base::test::RunUntil([&] { return dropped_; }));
+
+  EXPECT_EQ(call_count_, 1);
+  EXPECT_NSEQ(answer, @"answer");
+}
+
+// A dropped `result<S, F>` callback reports a default failure.
+TEST_F(MojomObjcGeneratorDroppedCallbackTest, DisconnectReportsResultFailure) {
+  __block MojomObjcTestNullableEnumStruct* success = nil;
+  __block NSString* failure = nil;
+  [responder_ verify:@"token"
+          completion:^(MojomObjcTestNullableEnumStruct* _Nullable s,
+                       NSString* _Nullable f) {
+            ++call_count_;
+            success = s;
+            failure = f;
+          }];
+  ASSERT_TRUE(base::test::RunUntil([&] { return impl_.verify_count() == 1u; }));
+
+  impl_.Disconnect();
+  ASSERT_TRUE(base::test::RunUntil([&] { return call_count_ > 0; }));
+
+  EXPECT_EQ(call_count_, 1);
+  EXPECT_EQ(success, nil);
+  EXPECT_NSEQ(failure, @"");
 }

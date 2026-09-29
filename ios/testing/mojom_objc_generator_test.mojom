@@ -44,3 +44,13 @@ interface EventSource {
   AddObserver(pending_remote<EventObserver> observer);
   AddOptionalObserver(pending_remote<EventObserver>? observer);
 };
+
+interface ResponderInterface {
+  // Exercises the values passed to a completion when its callback is dropped.
+  Ask(string question) => (string answer,
+                           int32 count,
+                           SomeEnum kind,
+                           NullableEnumStruct info,
+                           NullableEnumStruct? maybe_info);
+  Verify(string token) => result<NullableEnumStruct, string>;
+};

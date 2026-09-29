@@ -24,6 +24,9 @@
       completion(nil, {{method.result_response.failure_kind|cpp_to_objc_assign_kind("result.error()")}});
     }
   };
+  auto dropped = ^{
+    completion(nil, {{method.result_response.failure_kind|objc_response_default}});
+  };
 {%- else %}
   auto callback = ^(
 {%- for param in method.response_parameters -%}
@@ -38,6 +41,14 @@
 {%- endfor -%}
     );
   };
+  auto dropped = ^{
+    completion(
+{%- for param in method.response_parameters -%}
+{{param.kind|objc_response_default}}
+{%- if not loop.last %}, {% endif -%}
+{%- endfor -%}
+    );
+  };
 {%- endif %}
 {%- endif %}
   web::GetUIThreadTaskRunner({})->PostTask(FROM_HERE, base::BindOnce(^{
@@ -48,7 +59,7 @@
 {%- endfor -%}
 {%- if method.response_parameters is not none -%}
 {%- if method.parameters %}, {% endif -%}
-base::BindOnce(callback)
+mojo::WrapCallbackWithDropHandler(base::BindOnce(callback), base::BindOnce(dropped))
 {%- endif -%}
     );
   }));
