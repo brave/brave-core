@@ -103,13 +103,15 @@ class ProfileCustomizationFileChooserBrowserTest : public InProcessBrowserTest {
 
   void ExpectFileChooserCanceled(
       content::RenderFrameHost* frame,
+      blink::mojom::FileChooserParams::Mode mode =
+          blink::mojom::FileChooserParams::Mode::kOpen,
       base::Location location = base::Location::Current()) {
     SCOPED_TRACE(location.ToString());
     auto* factory = ui::FakeSelectFileDialog::RegisterFactory();
     factory->SetOpenCallback(base::DoNothing());
     auto listener = base::MakeRefCounted<FileSelectListener>();
     blink::mojom::FileChooserParams params;
-    params.mode = blink::mojom::FileChooserParams::Mode::kOpen;
+    params.mode = mode;
     web_contents()->GetDelegate()->RunFileChooser(frame, listener, params);
     EXPECT_TRUE(listener->canceled()) << "Ineligible request was not canceled";
     EXPECT_EQ(nullptr, factory->GetLastDialog())
@@ -257,6 +259,16 @@ IN_PROC_BROWSER_TEST_F(ProfileCustomizationFileChooserEnabledBrowserTest,
   ASSERT_EQ(ProfileCustomizationStyle::kLocalProfileCreation,
             GetProfileCustomizationStyle(frame->GetLastCommittedURL()));
   ExpectFileChooserCanceled(frame);
+}
+
+IN_PROC_BROWSER_TEST_F(ProfileCustomizationFileChooserEnabledBrowserTest,
+                       CancelsUnsupportedFileChooserModes) {
+  ASSERT_NO_FATAL_FAILURE(CreateProfileCustomizationDialog(true));
+  for (auto mode : {blink::mojom::FileChooserParams::Mode::kOpenMultiple,
+                    blink::mojom::FileChooserParams::Mode::kUploadFolder}) {
+    SCOPED_TRACE(static_cast<int>(mode));
+    ExpectFileChooserCanceled(web_contents()->GetPrimaryMainFrame(), mode);
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(ProfileCustomizationFileChooserEnabledBrowserTest,

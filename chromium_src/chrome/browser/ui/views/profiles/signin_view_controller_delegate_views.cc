@@ -19,6 +19,7 @@
 #include "chrome/common/webui_url_constants.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "third_party/blink/public/mojom/choosers/file_chooser.mojom.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 #endif  // BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE) &&
@@ -35,6 +36,7 @@ void SigninViewControllerDelegateViews::RunFileChooser(
   if (base::FeatureList::IsEnabled(
           custom_profile_image::features::kBraveCustomProfileImage) &&
       web_contents && render_frame_host &&
+      params.mode == blink::mojom::FileChooserParams::Mode::kOpen &&
       render_frame_host == web_contents->GetPrimaryMainFrame() &&
       render_frame_host->GetLastCommittedOrigin() ==
           url::Origin::Create(GURL(chrome::kChromeUIProfileCustomizationURL)) &&
