@@ -59,6 +59,7 @@ import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.wireguard.android.backend.GoBackend;
 
+import org.chromium.chrome.browser.day_zero.DayZeroHelper;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
@@ -311,6 +312,11 @@ public abstract class BraveActivity extends ChromeActivity
     /** Settings for sending local notification reminders. */
     public static final String CHANNEL_ID = "com.brave.browser";
 
+    // Day Zero experiment variants, as set by native through DayZeroHelper.
+    private static final String DAY_ZERO_VARIANT_A = "A";
+    private static final String DAY_ZERO_VARIANT_B = "B";
+    private static final String DAY_ZERO_DEFAULT_VARIANT = "Default";
+
     // Explicitly declare this variable to avoid build errors.
     // It will be removed in asm and parent variable will be used instead.
     private SettableMonotonicObservableSupplier<BrowserControlsManager>
@@ -363,6 +369,9 @@ public abstract class BraveActivity extends ChromeActivity
     private boolean mIsColdStart;
     // One-shot guard so the app-close shred notification fires at most once per cold start.
     private boolean mAppCloseShredTriggered;
+
+    // Day Zero experiment variant, read in finishNativeInitialization().
+    private String mDayZeroVariant;
 
     /** Serves as a general exception for failed attempts to get BraveActivity. */
     public static class BraveActivityNotFoundException extends Exception {
@@ -1355,6 +1364,7 @@ public abstract class BraveActivity extends ChromeActivity
 
         initMiscAndroidMetrics();
         checkForNotificationData();
+        mDayZeroVariant = getDayZeroVariant();
 
         if (RateUtils.getInstance().isLastSessionShown()) {
             RateUtils.getInstance().setPrefNextRateDate();
@@ -1623,6 +1633,27 @@ public abstract class BraveActivity extends ChromeActivity
                     });
         }
     }
+
+    /**
+     * Returns the active Day Zero experiment variant, or {@link #DAY_ZERO_DEFAULT_VARIANT} when
+     * the stored one is unset or unknown to this build.
+     */
+    private String getDayZeroVariant() {
+        final String variant = DayZeroHelper.getDayZeroVariant();
+        // Filter out day zero variants different from A and B.
+        if (DAY_ZERO_VARIANT_A.equals(variant) || DAY_ZERO_VARIANT_B.equals(variant)) {
+            return variant;
+        }
+        return DAY_ZERO_DEFAULT_VARIANT;
+    }
+
+//    private boolean isVariantA() {
+//        return mDayZeroVariant.equals(DAY_ZERO_VARIANT_A);
+//    }
+//
+//    private boolean isVariantB() {
+//        return mDayZeroVariant.equals(DAY_ZERO_VARIANT_B);
+//    }
 
     private void applyChangesForYahooJp() {
         boolean isDefaultSearchEngineChanged =
