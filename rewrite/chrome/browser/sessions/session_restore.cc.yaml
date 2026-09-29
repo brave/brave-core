@@ -24,7 +24,7 @@ substitutions:
         \1}
 
         \1RecordAppLaunchForTab(browser, tab, selected_index);
-  - description: 'Add a fallback tab if a window ends up with no tabs after skipping ones scheduled for cleanup'
+  - description: 'Add a fallback tab if a window ends up with no tabs after skipping ones scheduled for cleanup, or show it anyway if the selected tab itself was skipped'
     regex:
       re_pattern: |-
         split_tabs::SplitTabVisualData\(\)\);\n      \}\n    \}
@@ -33,10 +33,9 @@ substitutions:
               }
             }
 
-            if (content::WebContents* fallback_contents =
-                    MaybeAddFallbackTabIfEmpty(browser)) {
-              ShowBrowser(browser, browser->GetTabStripModel()->GetIndexOfWebContents(
-                                       fallback_contents));
+            if (auto fallback_index = MaybeAddFallbackTabIfEmpty(browser);
+                fallback_index != TabStripModel::kNoTab && !did_show_browser) {
+              ShowBrowser(browser, fallback_index);
               did_show_browser = true;
             }
   - description: 'Skip appending a startup URL scheduled for ephemeral storage cleanup'

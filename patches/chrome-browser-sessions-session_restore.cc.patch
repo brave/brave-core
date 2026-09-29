@@ -1,22 +1,21 @@
 diff --git a/chrome/browser/sessions/session_restore.cc b/chrome/browser/sessions/session_restore.cc
-index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..c9361f4d723ce5dae685b4accbf060229f44a636 100644
+index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..3646651b2f39aca204ff4779a7adfcbcd1b55056 100644
 --- a/chrome/browser/sessions/session_restore.cc
 +++ b/chrome/browser/sessions/session_restore.cc
-@@ -1076,6 +1076,13 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1076,6 +1076,12 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
              split_id, tab_index_list, split_tabs::SplitTabVisualData());
        }
      }
 +
-+    if (content::WebContents* fallback_contents =
-+            MaybeAddFallbackTabIfEmpty(browser)) {
-+      ShowBrowser(browser, browser->GetTabStripModel()->GetIndexOfWebContents(
-+                               fallback_contents));
++    if (auto fallback_index = MaybeAddFallbackTabIfEmpty(browser);
++        fallback_index != TabStripModel::kNoTab && !did_show_browser) {
++      ShowBrowser(browser, fallback_index);
 +      did_show_browser = true;
 +    }
    }
  
    // |tab_index| is ignored for pinned tabs which will always be pushed behind
-@@ -1105,6 +1112,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1105,6 +1111,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
      SessionRestore::NotifySessionRestoreStartedLoadingTabs();
      int selected_index = GetNavigationIndexToSelect(tab);
  
@@ -28,7 +27,7 @@ index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..c9361f4d723ce5dae685b4accbf06022
      RecordAppLaunchForTab(browser, tab, selected_index);
  
      // Associate sessionStorage (if any) to the restored tab.
-@@ -1370,6 +1382,9 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1370,6 +1381,9 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
      bool is_first_tab = true;
      for (const auto& startup_tab : startup_tabs) {
        const GURL& url = startup_tab.url;
@@ -38,7 +37,7 @@ index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..c9361f4d723ce5dae685b4accbf06022
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
        if (url == whats_new::GetWebUIStartupURL()) {
          whats_new::StartWhatsNewFetch(browser);
-@@ -1386,8 +1401,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1386,8 +1400,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
                                 : WindowOpenDisposition::NEW_BACKGROUND_TAB;
        params.tabstrip_add_types = add_types;
        is_first_tab = false;
