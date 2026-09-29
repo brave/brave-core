@@ -41,7 +41,15 @@ async function readFilePayload(
     return { error: 'READ_FILE requires a non-empty string "path"' }
   }
   try {
-    return { file: await readFile(await root, path) }
+    // Add a timeout so we don't hang forever waiting for the directory handle
+    const timeoutPromise = new Promise<never>((_resolve, reject) => {
+      setTimeout(
+        () => reject(new Error('Workspace folder not available (timeout)')),
+        5000,
+      )
+    })
+    const handle = await Promise.race([root, timeoutPromise])
+    return { file: await readFile(handle, path) }
   } catch (e) {
     return { error: e instanceof Error ? e.message : String(e) }
   }
@@ -58,9 +66,22 @@ export function installMessageHandler(
     console.error('[leo-workspace] no viewer origin to accept messages from')
     return
   }
+  console.debug(
+    '[leo-workspace] message handler installed, accepting from',
+    targetOrigin,
+  )
 
   window.addEventListener('message', async (event: MessageEvent) => {
+    console.debug(
+      '[leo-workspace] received message from',
+      event.origin,
+      event.data,
+    )
     if (event.origin !== targetOrigin) {
+      console.debug(
+        '[leo-workspace] ignoring message from wrong origin, expected',
+        targetOrigin,
+      )
       return
     }
     const data = event.data as Record<string, unknown> | null
@@ -69,6 +90,7 @@ export function installMessageHandler(
       || data === null
       || data.type !== kReadFileRequest
     ) {
+      console.debug('[leo-workspace] ignoring non-READ_FILE message')
       return
     }
     // Reply to the sender with an explicit target origin, never '*'.
@@ -77,11 +99,16 @@ export function installMessageHandler(
       console.error('[leo-workspace] READ_FILE has no source to reply to')
       return
     }
+    console.debug('[leo-workspace] processing READ_FILE for path:', data.path)
     const response: ReadFileResponse = {
       type: kReadFileResponse,
       requestId: data.requestId,
       ...(await readFilePayload(root, data.path)),
     }
+    console.debug(
+      '[leo-workspace] sending response:',
+      response.error || 'file loaded',
+    )
     source.postMessage(response, targetOrigin)
   })
 }
