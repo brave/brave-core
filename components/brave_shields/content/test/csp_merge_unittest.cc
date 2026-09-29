@@ -12,23 +12,23 @@
 
 namespace brave_shields {
 
-const std::optional<std::string> NO_POLICY = std::nullopt;
+const std::optional<std::string> kNoPolicy = std::nullopt;
 
 constexpr char kPolicy1[] = "script-src 'self' 'unsafe-inline'";
 constexpr char kPolicy2[] = "media-src 'self' https://example.com";
 
 TEST(CspMergeTest, MergeTwoEmptyPolicies) {
-  const auto a = NO_POLICY;
-  auto b = NO_POLICY;
+  const auto a = kNoPolicy;
+  auto b = kNoPolicy;
 
   MergeCspDirectiveInto(a, &b);
 
-  ASSERT_EQ(b, NO_POLICY);
+  ASSERT_EQ(b, kNoPolicy);
 }
 
 TEST(CspMergeTest, MergeEmptyIntoNonEmpty) {
   const std::optional<std::string> a(kPolicy1);
-  auto b = NO_POLICY;
+  auto b = kNoPolicy;
 
   MergeCspDirectiveInto(a, &b);
 
@@ -36,7 +36,7 @@ TEST(CspMergeTest, MergeEmptyIntoNonEmpty) {
 }
 
 TEST(CspMergeTest, MergeNonEmptyIntoEmpty) {
-  const auto a = NO_POLICY;
+  const auto a = kNoPolicy;
   std::optional<std::string> b(kPolicy1);
 
   MergeCspDirectiveInto(a, &b);
