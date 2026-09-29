@@ -18,6 +18,16 @@
 #include "content/public/browser/web_contents.h"
 #include "third_party/re2/src/re2/re2.h"
 
+namespace {
+
+bool CheckSourceDocument(content::WebContents* web_contents,
+                         content::WeakDocumentPtr source_document) {
+  auto* rfh = source_document.AsRenderFrameHostIfValid();
+  return (web_contents && rfh && web_contents->GetPrimaryMainFrame() == rfh);
+}
+
+}  // namespace
+
 namespace speedreader {
 
 PageDistiller::PageDistiller(content::WebContents* web_contents)
@@ -96,16 +106,19 @@ void PageDistiller::StartDistill(DistillContentCallback callback) {
   static constexpr char16_t kGetBodySource[] =
       uR"js( document.body.outerHTML )js";
 
-  web_contents_->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+  auto* rfh = web_contents_->GetPrimaryMainFrame();
+  rfh->ExecuteJavaScriptInIsolatedWorld(
       (state_ != State::kDistilled) ? kGetDocumentSource : kGetBodySource,
       base::BindOnce(&PageDistiller::OnGetOuterHTML, weak_factory_.GetWeakPtr(),
-                     std::move(callback)),
+                     rfh->GetWeakDocumentPtr(), std::move(callback)),
       ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
-void PageDistiller::OnGetOuterHTML(DistillContentCallback callback,
+void PageDistiller::OnGetOuterHTML(content::WeakDocumentPtr source_document,
+                                   DistillContentCallback callback,
                                    base::Value result) {
-  if (!web_contents_ || !result.is_string()) {
+  if (!CheckSourceDocument(web_contents_, source_document) ||
+      !result.is_string()) {
     return std::move(callback).Run(false, {});
   }
   if (state_ == State::kDistilled) {
@@ -119,11 +132,12 @@ void PageDistiller::OnGetOuterHTML(DistillContentCallback callback,
       return std::move(callback).Run(false, {});
     }
 
-    DistillPage(
-        web_contents_->GetLastCommittedURL(), std::move(result).TakeString(),
-        speedreader_service, speedreader_service_rewriter,
-        base::BindOnce(&PageDistiller::OnPageDistilled,
-                       weak_factory_.GetWeakPtr(), std::move(callback)));
+    DistillPage(web_contents_->GetLastCommittedURL(),
+                std::move(result).TakeString(), speedreader_service,
+                speedreader_service_rewriter,
+                base::BindOnce(&PageDistiller::OnPageDistilled,
+                               weak_factory_.GetWeakPtr(), source_document,
+                               std::move(callback)));
   }
 }
 
@@ -135,18 +149,22 @@ void PageDistiller::OnGetTextToSpeak(TextToSpeechContentCallback callback,
   std::move(callback).Run(std::move(result));
 }
 
-void PageDistiller::OnPageDistilled(DistillContentCallback callback,
+void PageDistiller::OnPageDistilled(content::WeakDocumentPtr source_document,
+                                    DistillContentCallback callback,
                                     DistillationResult result,
                                     std::string original_data,
                                     std::string transformed) {
-  if (!web_contents_ || result != DistillationResult::kSuccess) {
+  if (!CheckSourceDocument(web_contents_, source_document) ||
+      result != DistillationResult::kSuccess) {
     return std::move(callback).Run(false, {});
   }
 
   if (delay_next_page_distillation_for_testing_) {
     CHECK_IS_TEST();
-    distillation_callback_for_testing_ =
-        base::BindOnce(std::move(callback), true, std::move(transformed));
+    distillation_callback_for_testing_ = base::BindOnce(
+        &PageDistiller::OnPageDistilled, weak_factory_.GetWeakPtr(),
+        source_document, std::move(callback), result, std::move(original_data),
+        std::move(transformed));
     return;
   }
 

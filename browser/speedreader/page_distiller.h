@@ -15,6 +15,7 @@
 #include "base/observer_list_types.h"
 #include "base/values.h"
 #include "brave/components/speedreader/speedreader_util.h"
+#include "content/public/browser/weak_document_ptr.h"
 
 namespace content {
 class WebContents;
@@ -64,10 +65,13 @@ class PageDistiller {
 
  private:
   void StartDistill(DistillContentCallback callback);
-  void OnGetOuterHTML(DistillContentCallback callback, base::Value result);
+  void OnGetOuterHTML(content::WeakDocumentPtr source_document,
+                      DistillContentCallback callback,
+                      base::Value result);
   void OnGetTextToSpeak(TextToSpeechContentCallback callback,
                         base::Value result);
-  void OnPageDistilled(DistillContentCallback callback,
+  void OnPageDistilled(content::WeakDocumentPtr source_document,
+                       DistillContentCallback callback,
                        DistillationResult result,
                        std::string original_data,
                        std::string transformed);
@@ -75,9 +79,6 @@ class PageDistiller {
   void AddStyleSheet(DistillContentCallback callback,
                      bool success,
                      std::string html_content);
-  void ExtractText(DistillContentCallback callback,
-                   bool success,
-                   std::string html_content);
 
   State state_ = State::kUnknown;
   raw_ptr<content::WebContents> web_contents_ = nullptr;
