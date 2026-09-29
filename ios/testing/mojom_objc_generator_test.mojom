@@ -42,4 +42,5 @@ interface EventObserver {
 
 interface EventSource {
   AddObserver(pending_remote<EventObserver> observer);
+  AddOptionalObserver(pending_remote<EventObserver>? observer);
 };
