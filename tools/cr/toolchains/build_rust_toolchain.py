@@ -4,14 +4,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 #
-# [VPYTHON:BEGIN]
-# python_version: "3.11"
-#
-# wheel: <
-#   name: "infra/python/wheels/pyyaml-py3"
-#   version: "version:6.0.1"
-# >
-# [VPYTHON:END]
+# /// script
+# requires-python = '>=3.11,<3.12'
+# dependencies = [
+#   'pyyaml==6.0.1'
+# ]
+# ///
 """Build and package a minimal Rust toolchain subset for Chromium.
 
 By default the builder produces a minimal overlay `.tar.xz` containing only two
