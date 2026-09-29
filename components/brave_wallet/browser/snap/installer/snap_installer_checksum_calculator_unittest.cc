@@ -7,12 +7,17 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
+#include "base/containers/extend.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/json/json_writer.h"
+#include "base/strings/strcat.h"
 #include "base/threading/thread_restrictions.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/snap/installer/snap_tar_utils.h"
 #include "brave/components/brave_wallet/browser/snap/installer/tar_test_helpers.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
@@ -25,42 +30,49 @@ namespace {
 
 // Builds a minimal snap.manifest.json with the given bundle path and optional
 // icon path / auxiliary file paths.
-std::string MakeManifestJson(const std::string& bundle_file_path,
-                             const std::string& shasum,
-                             const std::string& icon_path = "",
-                             const std::vector<std::string>& files = {}) {
-  std::string json = "{\"proposedName\":\"Test Snap\",";
-  json += "\"description\":\"A snap used in tests\",";
-  json += "\"source\":{\"shasum\":\"" + shasum + "\",";
-  json += "\"location\":{\"npm\":{\"filePath\":\"" + bundle_file_path + "\"";
+std::string MakeManifestJson(std::string_view bundle_file_path,
+                             std::string_view shasum,
+                             std::string_view icon_path = "",
+                             const std::vector<std::string>& files = {},
+                             std::string_view description =
+                                 "A snap used in tests") {
+  base::DictValue npm;
+  npm.Set("filePath", bundle_file_path);
   if (!icon_path.empty()) {
-    json += ",\"iconPath\":\"" + icon_path + "\"";
+    npm.Set("iconPath", icon_path);
   }
-  json += "}}";
+  base::DictValue location;
+  location.Set("npm", std::move(npm));
+
+  base::DictValue source;
+  source.Set("shasum", shasum);
+  source.Set("location", std::move(location));
   if (!files.empty()) {
-    json += ",\"files\":[";
-    for (size_t i = 0; i < files.size(); ++i) {
-      if (i > 0) {
-        json += ",";
-      }
-      json += "\"" + files[i] + "\"";
+    base::ListValue file_list;
+    for (const auto& file : files) {
+      file_list.Append(file);
     }
-    json += "]";
+    source.Set("files", std::move(file_list));
   }
-  json += "},\"initialPermissions\":{}}";
-  return json;
+
+  base::DictValue manifest;
+  manifest.Set("proposedName", "Test Snap");
+  manifest.Set("description", description);
+  manifest.Set("source", std::move(source));
+  manifest.Set("initialPermissions", base::DictValue());
+  return base::WriteJson(manifest).value();
 }
 
 std::string BuildSnapTarWithFiles(
-    const std::string& manifest_json,
-    const std::string& bundle_js,
-    const std::string& bundle_file_path,
+    std::string_view manifest_json,
+    std::string_view bundle_js,
+    std::string_view bundle_file_path,
     const std::vector<std::pair<std::string, std::string>>& extra_files = {}) {
   std::vector<std::pair<std::string, std::string>> entries = {
-      {"package/snap.manifest.json", manifest_json},
-      {"package/" + bundle_file_path, bundle_js},
+      {"package/snap.manifest.json", std::string(manifest_json)},
+      {base::StrCat({"package/", bundle_file_path}), std::string(bundle_js)},
   };
-  entries.insert(entries.end(), extra_files.begin(), extra_files.end());
+  base::Extend(entries, extra_files);
   return BuildUstarTar(entries);
 }
 
@@ -87,7 +99,9 @@ TEST(SnapInstallerChecksumCalculatorTest,
      ManifestKeyOrderDoesNotAffectChecksum) {
   const std::string bundle = "export const onRpcRequest = () => 42;";
   const std::string shasum = ComputeSnapBundleShasum(bundle);
-  // Same manifest, keys written in reverse order at two nesting levels.
+  // Deliberately a raw literal rather than base::WriteJson: this test asserts
+  // key order does not affect the checksum, and base::DictValue would sort the
+  // keys before serialization, erasing what is under test.
   const std::string reordered =
       "{\"source\":{\"location\":{\"npm\":{\"filePath\":\"dist/bundle.js\"}},"
       "\"shasum\":\"" +
@@ -177,6 +191,35 @@ TEST(SnapInstallerChecksumCalculatorTest, SnapWithAuxFiles) {
   // Expected value: auxiliary files are sorted by path before hashing.
   ASSERT_TRUE(checksum);
   EXPECT_EQ(*checksum, "R9fUsLqn6Vly3t3JnVqDLvH1MpUf8TJ+anABqPRAerY=");
+}
+
+// TODO(https://github.com/brave/brave-core/issues/39185): base::WriteJson is
+// not a drop-in for JS JSON.stringify, which MetaMask's getSnapChecksum() uses
+// via fast-json-stable-stringify. base::EscapeJSONString escapes '<' as a
+// \u sequence, and likewise U+2028/U+2029 (base/json/string_escape.cc);
+// JSON.stringify emits all three literally. A snap whose manifest contains them
+// therefore gets a checksum MetaMask disagrees with, and installation fails
+// closed. A JSON.stringify-compatible serializer is needed before snaps ship;
+// this test pins the current, divergent behavior so the fix is detectable.
+TEST(SnapInstallerChecksumCalculatorTest, AngleBracketDivergesFromMetaMask) {
+  const std::string bundle = "export const onRpcRequest = () => 42;";
+  const std::string manifest = MakeManifestJson(
+      "dist/bundle.js", ComputeSnapBundleShasum(bundle), "", {},
+      "A <3 snap used in tests");
+  ASSERT_NE(manifest.find("\\u003C"), std::string::npos)
+      << "base::WriteJson stopped escaping '<'; revisit this TODO";
+  std::string tar = BuildSnapTarWithFiles(manifest, bundle, "dist/bundle.js");
+
+  std::optional<std::string> checksum =
+      SnapInstallerChecksumCalculator::ComputeMetaMaskChecksum(
+          tar, bundle, "dist/bundle.js", manifest);
+
+  ASSERT_TRUE(checksum);
+  // What we currently compute, from a manifest whose description serializes as
+  // "A <3 snap used in tests". MetaMask, serializing the same snap with a
+  // literal '<', gets "bYh03590AfbX1G5p5+zP4VI9SBTMmv2o7h0aliUZ0Hc=". Once a
+  // JSON.stringify-compatible serializer lands, that becomes the expectation.
+  EXPECT_EQ(*checksum, "Iy/AVwMhxZ9umzheQU012mWwlDYpBSjgyMxFaLPJNl8=");
 }
 
 }  // namespace brave_wallet

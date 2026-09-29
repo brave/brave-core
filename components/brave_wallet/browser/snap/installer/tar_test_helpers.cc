@@ -14,6 +14,7 @@
 #include "base/check.h"
 #include "base/containers/span.h"
 #include "base/json/json_writer.h"
+#include "base/strings/strcat.h"
 #include "base/values.h"
 #include "crypto/hash.h"
 #include "third_party/zlib/google/compression_utils.h"
@@ -111,34 +112,34 @@ std::string BuildUstarTar(
   return out;
 }
 
-std::string BuildSnapTar(const std::string& manifest_json,
-                         const std::string& bundle_js,
-                         const std::string& bundle_file_path) {
+std::string BuildSnapTar(std::string_view manifest_json,
+                         std::string_view bundle_js,
+                         std::string_view bundle_file_path) {
   return BuildUstarTar({
-      {"package/snap.manifest.json", manifest_json},
-      {"package/" + bundle_file_path, bundle_js},
+      {"package/snap.manifest.json", std::string(manifest_json)},
+      {base::StrCat({"package/", bundle_file_path}), std::string(bundle_js)},
   });
 }
 
-std::string GzipCompressForTest(const std::string& data) {
+std::string GzipCompressForTest(std::string_view data) {
   std::string compressed;
   CHECK(compression::GzipCompress(base::as_byte_span(data), &compressed));
   return compressed;
 }
 
-std::string BuildSnapTarball(const std::string& manifest_json,
-                             const std::string& bundle_js,
-                             const std::string& bundle_file_path) {
+std::string BuildSnapTarball(std::string_view manifest_json,
+                             std::string_view bundle_js,
+                             std::string_view bundle_file_path) {
   return GzipCompressForTest(
       BuildSnapTar(manifest_json, bundle_js, bundle_file_path));
 }
 
-std::string ComputeSnapBundleShasum(const std::string& bundle_js) {
+std::string ComputeSnapBundleShasum(std::string_view bundle_js) {
   return base::Base64Encode(crypto::hash::Sha256(bundle_js));
 }
 
-std::string MakeMinimalSnapManifestJson(const std::string& bundle_file_path,
-                                        const std::string& shasum) {
+std::string MakeMinimalSnapManifestJson(std::string_view bundle_file_path,
+                                        std::string_view shasum) {
   base::DictValue npm;
   npm.Set("filePath", bundle_file_path);
   base::DictValue location;

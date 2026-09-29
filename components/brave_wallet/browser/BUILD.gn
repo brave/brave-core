@@ -961,7 +961,9 @@ source_set("unit_tests") {
   if (enable_snaps) {
     deps += [
       "//brave/components/brave_wallet/browser/snap/installer:tar_decompressor",
+      "//crypto",
       "//testing/gmock",
+      "//third_party/zlib/google:compression_utils",
     ]
   }
 

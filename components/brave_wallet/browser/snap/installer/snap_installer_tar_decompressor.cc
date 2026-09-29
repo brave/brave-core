@@ -67,14 +67,8 @@ SnapTarballExtractOutcome SnapInstallerTarDecompressor::ExtractTarballToDir(
   if (!manifest) {
     return base::unexpected("Failed to parse snap.manifest.json");
   }
-  const std::string* bundle_file_path = nullptr;
-  if (const auto* source = manifest->FindDict("source")) {
-    if (const auto* location = source->FindDict("location")) {
-      if (const auto* npm = location->FindDict("npm")) {
-        bundle_file_path = npm->FindString("filePath");
-      }
-    }
-  }
+  const std::string* bundle_file_path =
+      manifest->FindStringByDottedPath("source.location.npm.filePath");
   if (!bundle_file_path || bundle_file_path->empty()) {
     return base::unexpected("Manifest is missing source.location.npm.filePath");
   }

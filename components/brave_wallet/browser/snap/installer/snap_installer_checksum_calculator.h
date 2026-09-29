@@ -8,6 +8,7 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 
 namespace brave_wallet {
 
@@ -20,10 +21,10 @@ class SnapInstallerChecksumCalculator {
       const SnapInstallerChecksumCalculator&) = delete;
 
   static std::optional<std::string> ComputeMetaMaskChecksum(
-      const std::string& decompressed_tar,
-      const std::string& bundle_js,
-      const std::string& bundle_file_path,
-      const std::string& manifest_json);
+      std::string_view decompressed_tar,
+      std::string_view bundle_js,
+      std::string_view bundle_file_path,
+      std::string_view manifest_json);
 };
 
 }  // namespace brave_wallet

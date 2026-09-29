@@ -7,13 +7,15 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <cstdint>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
 #include "base/base64.h"
-#include "base/containers/span.h"
+#include "base/containers/extend.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
@@ -52,10 +54,10 @@ std::optional<std::string> GetChecksummableManifestJson(
 // Reference: @metamask/snaps-utils getSnapChecksum() / checksumFiles()
 std::optional<std::string>
 SnapInstallerChecksumCalculator::ComputeMetaMaskChecksum(
-    const std::string& decompressed_tar,
-    const std::string& bundle_js,
-    const std::string& bundle_file_path,
-    const std::string& manifest_json) {
+    std::string_view decompressed_tar,
+    std::string_view bundle_js,
+    std::string_view bundle_file_path,
+    std::string_view manifest_json) {
   std::optional<base::DictValue> manifest =
       base::JSONReader::ReadDict(manifest_json, base::JSON_PARSE_RFC);
   if (!manifest) {
@@ -65,14 +67,11 @@ SnapInstallerChecksumCalculator::ComputeMetaMaskChecksum(
   // Collect the auxiliary paths before the dict is consumed below.
   std::string icon_path;
   std::vector<std::string> other_paths;
+  if (const auto* ip =
+          manifest->FindStringByDottedPath("source.location.npm.iconPath")) {
+    icon_path = *ip;
+  }
   if (const auto* source = manifest->FindDict("source")) {
-    if (const auto* loc = source->FindDict("location")) {
-      if (const auto* npm = loc->FindDict("npm")) {
-        if (const auto* ip = npm->FindString("iconPath")) {
-          icon_path = *ip;
-        }
-      }
-    }
     for (const char* key : {"files", "locales"}) {
       if (const auto* list = source->FindList(key)) {
         for (const auto& item : *list) {
@@ -92,7 +91,8 @@ SnapInstallerChecksumCalculator::ComputeMetaMaskChecksum(
   }
 
   // Collect file paths and contents.
-  std::vector<std::pair<std::string, std::string>> files;
+  using PathAndContent = std::pair<std::string, std::string>;
+  std::vector<PathAndContent> files;
   files.emplace_back(bundle_file_path, bundle_js);
   files.emplace_back("snap.manifest.json", *checksummable_manifest);
 
@@ -113,22 +113,20 @@ SnapInstallerChecksumCalculator::ComputeMetaMaskChecksum(
   }
 
   // Sort by path. Bytewise order matches JS UTF-16 code-unit order for ASCII
-  // paths, which is what MetaMask sorts on.
-  std::sort(files.begin(), files.end(),
-            [](const auto& a, const auto& b) { return a.first < b.first; });
+  // paths, which is what MetaMask sorts on. Deliberately a sorted vector rather
+  // than a base::flat_map: MetaMask's checksumFiles() hashes every listed file,
+  // so a manifest naming the same path in both source.files and source.locales
+  // must contribute two digests. Deduplicating would change the checksum.
+  std::ranges::sort(files, {}, &PathAndContent::first);
 
   // Hash each file and concatenate the 32-byte digests.
   std::vector<uint8_t> concatenated_hashes;
   concatenated_hashes.reserve(files.size() * crypto::hash::kSha256Size);
-  for (const auto& [path, content] : files) {
-    auto hash = crypto::hash::Sha256(content);
-    concatenated_hashes.insert(concatenated_hashes.end(), hash.begin(),
-                               hash.end());
+  for (const auto& file : files) {
+    base::Extend(concatenated_hashes, crypto::hash::Sha256(file.second));
   }
 
-  auto final_hash =
-      crypto::hash::Sha256(base::as_byte_span(concatenated_hashes));
-  return base::Base64Encode(final_hash);
+  return base::Base64Encode(crypto::hash::Sha256(concatenated_hashes));
 }
 
 }  // namespace brave_wallet

@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/snap/installer/snap_tar_utils.h"
 
 #include <string>
+#include <string_view>
 
 #include "brave/components/brave_wallet/browser/snap/installer/tar_test_helpers.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -46,6 +47,32 @@ TEST(SnapTarUtilsTest, ExtractFileFromTarMalformedReturnsNullopt) {
   // makes ParseOctal fail and the whole archive parse abort.
   tar[124] = '9';
   EXPECT_FALSE(ExtractFileFromTar(tar, "snap.manifest.json"));
+}
+
+TEST(SnapTarUtilsTest, ExtractFileFromTarRejectsOverflowingSize) {
+  std::string tar = BuildUstarTar({{"package/snap.manifest.json", "HELLO"}});
+  // 2^33-1: representable as uint64_t, but wider than a 32-bit size_t, and
+  // large enough that a naive `offset + size` bounds check wraps.
+  constexpr std::string_view kSize("77777777777\0", 12);
+  tar.replace(124, kSize.size(), kSize);
+  EXPECT_FALSE(ExtractFileFromTar(tar, "snap.manifest.json"));
+}
+
+TEST(SnapTarUtilsTest, ExtractFileFromTarRejectsMaxOctalSize) {
+  std::string tar = BuildUstarTar({{"package/snap.manifest.json", "HELLO"}});
+  // All twelve digits set: 2^36-1, the largest value the ustar size field can
+  // express. The octal accumulate stays valid; the bounds check must reject.
+  tar.replace(124, 12, 12, '7');
+  EXPECT_FALSE(ExtractFileFromTar(tar, "snap.manifest.json"));
+}
+
+TEST(SnapTarUtilsTest, ExtractFileFromTarRejectsMissingPadding) {
+  std::string tar = BuildUstarTar({{"package/dist/bundle.js", "HELLO"}});
+  // Cut the archive right after the 5-byte content: the entry is fully present
+  // but its 507 bytes of block padding are not, so the next header can't be
+  // reached.
+  tar.resize(512 + 5);
+  EXPECT_FALSE(ExtractFileFromTar(tar, "dist/bundle.js"));
 }
 
 TEST(SnapTarUtilsTest, ExtractSnapFilesWithExplicitBundlePath) {
