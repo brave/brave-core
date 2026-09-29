@@ -125,6 +125,18 @@ extension SessionTab {
     return all(where: predicate, sortDescriptors: sortDescriptors) ?? []
   }
 
+  public static func all(olderThan timeInterval: TimeInterval) -> [SessionTab] {
+    let lastUpdatedKeyPath = #keyPath(SessionTab.lastUpdated)
+    let date = Date().advanced(by: -timeInterval) as NSDate
+
+    let sortDescriptors = [NSSortDescriptor(key: #keyPath(SessionTab.index), ascending: true)]
+    let predicate = NSPredicate(
+      format: "\(lastUpdatedKeyPath) != nil AND \(lastUpdatedKeyPath) < %@",
+      date
+    )
+    return all(where: predicate, sortDescriptors: sortDescriptors) ?? []
+  }
+
   public static func delete(tabId: UUID) {
     DataController.perform { context in
       guard let sessionTab = SessionTab.from(tabId: tabId, in: context) else {
