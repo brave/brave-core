@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index b58905ddb371f96377320c2948fe64bb17257663..f5fd9c4f920348caebd681e33503f5d0efd14eca 100644
+index b58905ddb371f96377320c2948fe64bb17257663..05056e38c258b987b063b9dc36f17161881dccf2 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -18,6 +18,15 @@ index b58905ddb371f96377320c2948fe64bb17257663..f5fd9c4f920348caebd681e33503f5d0
      "//chrome/browser/accessibility/accessibility_prefs",
      "//chrome/browser/browsing_data",
      "//chrome/browser/download",
+@@ -3254,7 +3256,7 @@ source_set("browser") {
+ 
+   # TODO(https://crbug.com/356905053): Add more dependencies here and merge this
+   # block with the `enable_extensions` block above.
+-  if (enable_desktop_android_extensions) {
++  if (is_android && enable_extensions_core) {
+     deps += [ "//chrome/browser/ui/android/extensions" ]
+   }
+ 
 @@ -3441,6 +3443,7 @@ group("browser_public_dependencies") {
      "//sql",
      "//ui/lottie",

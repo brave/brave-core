@@ -1,0 +1,22 @@
+diff --git a/extensions/browser/BUILD.gn b/extensions/browser/BUILD.gn
+index 1486919f4f9ad15ff8ed300f5185b98d534d76a7..f3d0702947f638ce6667c716a26260d7d3f22cf8 100644
+--- a/extensions/browser/BUILD.gn
++++ b/extensions/browser/BUILD.gn
+@@ -10,7 +10,7 @@ import("//rlz/buildflags/buildflags.gni")
+ import("//testing/libfuzzer/fuzzer_test.gni")
+ import("//third_party/protobuf/proto_library.gni")
+ 
+-if (enable_desktop_android_extensions) {
++if (is_android && enable_extensions_core) {
+   import("//build/config/android/rules.gni")
+ }
+ 
+@@ -1323,7 +1323,7 @@ source_set("unit_tests") {
+   configs += [ "//build/config/compiler:no_exit_time_destructors" ]
+ }
+ 
+-if (enable_desktop_android_extensions) {
++if (is_android && enable_extensions_core) {
+   java_cpp_enum("extension_action_enums") {
+     sources = [ "extension_action.h" ]
+   }
