@@ -103,69 +103,6 @@ def _make_zip_with_unix_modes(members: list[tuple[str, bytes, int]]):
     return buf.getvalue()
 
 
-@contextlib.contextmanager
-def _simulate_pre_pep706_python():
-    """Make the runtime look like a `tarfile` without the PEP 706 filters.
-
-    Drops the `data_filter` sentinel the installer probes for and makes
-    `extractall` reject the `filter` kwarg, mimicking Python 3.12 predecessors
-    (and pre-backport 3.8-3.11) so a regression to an unconditional `filter=`
-    call would fail here.
-    """
-    saved = {
-        name: getattr(tarfile, name)
-        for name in ('data_filter', ) if hasattr(tarfile, name)
-    }
-    real_extractall = tarfile.TarFile.extractall
-
-    def _reject_filter(tar_self, *args, **kwargs):
-        if 'filter' in kwargs:
-            raise TypeError(
-                "extractall() got an unexpected keyword argument 'filter'")
-        return real_extractall(tar_self, *args, **kwargs)
-
-    for name in saved:
-        delattr(tarfile, name)
-    with mock.patch.object(tarfile.TarFile, 'extractall', _reject_filter):
-        try:
-            yield
-        finally:
-            for name, value in saved.items():
-                setattr(tarfile, name, value)
-
-
-@contextlib.contextmanager
-def _simulate_pre_gh107845_data_filter():
-    """Make `filter='data'` behave the way Python 3.10.12's does.
-
-    That first PEP 706 backport resolves a symlink's target against the
-    destination root instead of against the directory holding the link, so an
-    ordinary `bin/corepack -> ../lib/node_modules/...` is rejected as escaping
-    the destination. Upstream fixed it in 3.10.13 (gh-107845), but the bare
-    `python3` our Linux builders run is older than that, so extraction must not
-    depend on the filter being correct.
-    """
-
-    # Both of these exist only on a runtime that has PEP 706 -- exactly what
-    # the tests using this helper skip on -- so they are reached by name: our
-    # linter runs against a `tarfile` that predates the filters and would
-    # otherwise report them as missing members.
-    link_error = getattr(tarfile, 'LinkOutsideDestinationError')
-    named_filters = getattr(tarfile, '_NAMED_FILTERS')
-
-    def _buggy_data_filter(member, dest_path):
-        if (member.issym()
-                or member.islnk()) and not os.path.isabs(member.linkname):
-            dest_path = os.path.realpath(dest_path)
-            target = os.path.realpath(os.path.join(dest_path, member.linkname))
-            if os.path.commonpath([target, dest_path]) != dest_path:
-                raise link_error(member, target)
-        return member
-
-    with mock.patch.dict(named_filters, {'data': _buggy_data_filter}):
-        yield
-
-
 class TarballInstallerTest(unittest.TestCase):
     """Tests for `TarballInstaller` fetch/extract/sidecar mechanics."""
 
@@ -207,17 +144,6 @@ class TarballInstallerTest(unittest.TestCase):
         self.assertEqual((self.dest / 'README.md').read_bytes(), b'hi')
         self.assertTrue(installer.is_installed())
 
-    def test_install_extracts_tarball_without_pep706_filter(self):
-        """Extraction still works on a Python that lacks the `filter='data'`
-        guard (this script runs under whatever bare `python3` is on $PATH)."""
-        data = _make_tar([('bin/node', b'node'), ('README.md', b'hi')])
-        installer = self._installer(data)
-        with _simulate_pre_pep706_python():
-            self.assertTrue(installer.install(self._download(data)))
-        self.assertEqual((self.dest / 'bin/node').read_bytes(), b'node')
-        self.assertEqual((self.dest / 'README.md').read_bytes(), b'hi')
-        self.assertTrue(installer.is_installed())
-
     # The shape every Node tarball has: `bin/corepack` is a symlink into the
     # sibling `lib/` tree, so its target climbs out of `bin/` while staying
     # inside the destination.
@@ -235,19 +161,6 @@ class TarballInstallerTest(unittest.TestCase):
         link = self.dest / 'bin' / 'corepack'
         self.assertTrue(link.is_symlink())
         self.assertEqual(link.read_bytes(), b'corepack')
-
-    @unittest.skipUnless(_CAN_SYMLINK, 'this machine cannot create symlinks')
-    @unittest.skipIf(not hasattr(tarfile, 'data_filter'),
-                     'runtime has no PEP 706 filters to mis-behave')
-    def test_install_does_not_depend_on_the_data_filter(self):
-        """Extraction works even where `filter='data'` wrongly rejects a
-        relative symlink -- the failure our Linux builders hit, since they run
-        `launcher.py` (and so this installer) under a bare Python 3.10.12."""
-        data = _make_tar(self._NODE_LIKE_MEMBERS)
-        installer = self._installer(data)
-        with _simulate_pre_gh107845_data_filter():
-            self.assertTrue(installer.install(self._download(data)))
-        self.assertTrue((self.dest / 'bin' / 'corepack').is_symlink())
 
     def test_install_rejects_member_outside_the_destination(self):
         data = _make_tar([('../escape', b'x')])
@@ -309,8 +222,7 @@ class TarballInstallerTest(unittest.TestCase):
             installer.install(self._download(data))
 
     def test_install_rejects_device_member(self):
-        # Extraction is fully-trusted, so a device or FIFO member would
-        # otherwise be created verbatim.
+        # Refused by the lexical vetting itself, not only the `data` filter.
         data = _make_tar([_tar_member('dev/null', tarfile.CHRTYPE)])
         installer = self._installer(data)
         with self.assertRaisesRegex(ValueError, 'device/FIFO'):

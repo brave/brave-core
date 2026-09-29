@@ -1280,6 +1280,8 @@ class MultiRepoSelfUpdaterTest(unittest.TestCase):
                                    return_value=0) as call:
                 launcher.SelfUpdater(checkout, 'src/dep').deploy()
             argv = call.call_args.args[0]
+            self.assertEqual(argv[0],
+                             str(launcher._resolve_vpython3(checkout)))
             self.assertEqual(
                 Path(argv[1]),
                 checkout / 'tools' / 'cr' / 'tarball_installer.py')
@@ -1367,7 +1369,7 @@ class BatShimLauncherResolutionTest(unittest.TestCase):
     the current directory, so a bare `python3 "%~dp0launcher.py"` pointed at the
     cwd and failed with `can't open file '...\\launcher.py'`. Each Windows shim
     must fall back to resolving its own name on `%PATH%` (`%~dp$PATH:0`) so
-    `launcher.py` is found beside the shim, not in the cwd. Covers both `.bat`
+    `runner.py` is found beside the shim, not in the cwd. Covers both `.bat`
     and `.cmd` variants (npm/pnpm ship `.cmd`, which callers spawn by name).
     """
 
@@ -1387,18 +1389,24 @@ class BatShimLauncherResolutionTest(unittest.TestCase):
     def test_win_shims_resolve_launcher_via_path_fallback(self):
         for name in self._WIN_SHIMS:
             text = self._read(name)
-            self.assertIn('launcher.py', text, name)
+            self.assertIn('runner.py', text, name)
             # Try `%~dp0` first, but fall back to a %PATH% search for our own
-            # name when launcher.py is not beside `%~dp0` (i.e. it was the cwd).
-            self.assertIn('if not exist "%_dir%launcher.py"', text, name)
+            # name when runner.py is not beside `%~dp0` (i.e. it was the
+            # cwd).
+            self.assertIn('if not exist "%_dir%runner.py"', text, name)
             self.assertIn('%~dp$PATH:0', text, name)
+            # launcher.py runs under the interpreter runner.py prints, and
+            # never at all when it prints none.
+            self.assertIn('"%_python%" "%_dir%launcher.py"', text, name)
+            self.assertIn('if not defined _python exit /b 1', text, name)
 
     def test_win_shims_do_not_run_launcher_straight_from_dp0(self):
-        # The fragile form this bug was about: python3 invoking `%~dp0launcher`
-        # directly, with no %PATH% fallback.
+        # The fragile form this bug was about: python3 invoking a script
+        # straight from `%~dp0`, with no %PATH% fallback.
         for name in self._WIN_SHIMS:
             text = self._read(name)
             self.assertNotIn('python3 "%~dp0launcher.py"', text, name)
+            self.assertNotIn('python3 "%~dp0runner.py"', text, name)
 
 
 if __name__ == '__main__':
