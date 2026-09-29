@@ -44,8 +44,11 @@ def main():
         tag = match.group(1)
 
     match = re.match(r'^v(.*)$', tag)
-    if match:
-        version = match.group(1)
+    if not match:
+        logging.error(" Tag must start with \"v\" after \"refs/tags/\": %s",
+                      args.tag)
+        sys.exit(1)
+    version = match.group(1)
 
     logging.debug("CHANGELOG_URL: %s", changelog_url)
     logging.debug("TAG: %s", tag)

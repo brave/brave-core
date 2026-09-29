@@ -12,16 +12,11 @@ import sys
 
 import requests
 from argparse import RawTextHelpFormatter
+from http.client import HTTPConnection
 
 from lib.changelog import download_from_url
 from lib.github import GitHub
 from lib.helpers import BRAVE_REPO, get_release, retry_func
-
-if os.environ.get('DEBUG_HTTP_HEADERS') == 'true':
-    try:
-        from http.client import HTTPConnection  # python3
-    except ImportError:
-        from httplib import HTTPConnection  # python2
 
 
 DEFAULT_SECTION_TITLE = 'Release Notes'
