@@ -1,0 +1,21 @@
+diff --git a/ui/webui/BUILD.gn b/ui/webui/BUILD.gn
+index 6c1c702efb84a5cc10ddd81ba916461d9c9536ee..ad792972f903f083ea3ab1a57e887dcbfc55fa0d 100644
+--- a/ui/webui/BUILD.gn
++++ b/ui/webui/BUILD.gn
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//extensions/buildflags/buildflags.gni")
+ import("//build/buildflag_header.gni")
+ import("//build/config/features.gni")
+ import("//components/signin/features.gni")
+@@ -38,7 +39,7 @@ if (use_blink) {
+       "//ui/webui/resources/js/metrics_reporter:mojo_bindings",
+     ]
+ 
+-    if ((!is_android && !is_ios) || is_desktop_android) {
++    if ((!is_android && !is_ios) || enable_extensions_core) {
+       public_deps +=
+           [ "//ui/webui/resources/cr_components/color_change_listener:mojom" ]
+       sources += [

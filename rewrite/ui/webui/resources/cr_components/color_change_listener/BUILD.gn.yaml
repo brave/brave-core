@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Allow building on Android with the extensions core.
+
+      chrome://extensions uses this component, and Brave compiles the
+      extensions core on mobile Android, not just on desktop Android.
+    regex:
+      pattern: 'assert((!is_android && !is_ios) || is_desktop_android)'
+      replace: 'assert((!is_android && !is_ios) || enable_extensions_core)'
