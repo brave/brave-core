@@ -154,7 +154,7 @@ class SpeedreaderTabHelper
 
   // SpeedreaderDelegate:
   bool IsPageDistillationAllowed() override;
-  bool IsPageContentPresent() override;
+  bool IsPageContentPresent(const GURL& url) override;
   std::string TakePageContent() override;
   void OnDistillComplete(DistillationResult result) override;
   void OnDistilledDocumentSent() override;
@@ -180,7 +180,13 @@ class SpeedreaderTabHelper
   void SetDocumentAttribute(const std::string& attribute,
                             const std::string& value);
 
-  void OnGetDocumentSource(bool success, std::string html);
+  void OnGetDocumentSource(bool success,
+                           const GURL& source_url,
+                           std::string html);
+
+  // Drops the distilled content which is waiting to be sent, if any, and leaves
+  // the distilling state, because nothing will complete the distillation.
+  void DropPageContent();
 
   void TransitStateTo(const DistillState& desired_state,
                       bool no_reload = false);
@@ -196,6 +202,9 @@ class SpeedreaderTabHelper
   bool is_visible_ = false;
 
   std::string single_show_content_;
+  // The url of the document |single_show_content_| was distilled from. The
+  // content may be sent as the body of this url only.
+  GURL single_show_content_url_;
 
   DistillState distill_state_{ViewOriginal()};
 

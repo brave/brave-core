@@ -15,10 +15,13 @@
 #include "base/observer_list_types.h"
 #include "base/values.h"
 #include "brave/components/speedreader/speedreader_util.h"
+#include "content/public/browser/weak_document_ptr.h"
+#include "url/gurl.h"
 
 namespace content {
+class RenderFrameHost;
 class WebContents;
-}
+}  // namespace content
 
 namespace speedreader {
 
@@ -39,8 +42,11 @@ class PageDistiller {
     ~Observer() override = default;
   };
 
-  using DistillContentCallback =
-      base::OnceCallback<void(bool success, std::string content)>;
+  // |source_url| is the url of the document |content| was distilled from. The
+  // content belongs to that document only and must never be shown as the
+  // content of another one.
+  using DistillContentCallback = base::OnceCallback<
+      void(bool success, const GURL& source_url, std::string content)>;
   using TextToSpeechContentCallback = base::OnceCallback<void(base::Value)>;
 
   State GetState() const;
@@ -60,20 +66,32 @@ class PageDistiller {
   void UpdateState(State state);
 
  private:
+  // Returns the document the distillation was started for, or nullptr if it is
+  // gone, i.e. a navigation has committed in the meantime. Distillation is
+  // asynchronous, its result must never be applied to another document.
+  content::RenderFrameHost* GetSourceDocument(
+      const content::WeakDocumentPtr& source_document) const;
+
   void StartDistill(DistillContentCallback callback);
-  void OnGetOuterHTML(DistillContentCallback callback, base::Value result);
+  void OnGetOuterHTML(content::WeakDocumentPtr source_document,
+                      DistillContentCallback callback,
+                      base::Value result);
   void OnGetTextToSpeak(TextToSpeechContentCallback callback,
                         base::Value result);
-  void OnPageDistilled(DistillContentCallback callback,
+  void OnPageDistilled(content::WeakDocumentPtr source_document,
+                       GURL source_url,
+                       DistillContentCallback callback,
                        DistillationResult result,
                        std::string original_data,
                        std::string transformed);
 
   void AddStyleSheet(DistillContentCallback callback,
                      bool success,
+                     const GURL& source_url,
                      std::string html_content);
   void ExtractText(DistillContentCallback callback,
                    bool success,
+                   const GURL& source_url,
                    std::string html_content);
 
   State state_ = State::kUnknown;

@@ -14,6 +14,7 @@
 #include "brave/components/speedreader/speedreader_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/re2/src/re2/re2.h"
 
@@ -72,9 +73,23 @@ void PageDistiller::SetWebContents(content::WebContents* web_contents) {
   web_contents_ = web_contents;
 }
 
+content::RenderFrameHost* PageDistiller::GetSourceDocument(
+    const content::WeakDocumentPtr& source_document) const {
+  if (!web_contents_) {
+    return nullptr;
+  }
+  // WeakDocumentPtr is reset when the document is gone, however the frame it
+  // was hosted in may still be alive and no longer be the frame the tab shows.
+  auto* rfh = source_document.AsRenderFrameHostIfValid();
+  if (!rfh || rfh != web_contents_->GetPrimaryMainFrame()) {
+    return nullptr;
+  }
+  return rfh;
+}
+
 void PageDistiller::StartDistill(DistillContentCallback callback) {
   if (!web_contents_) {
-    return std::move(callback).Run(false, {});
+    return std::move(callback).Run(false, GURL(), {});
   }
 
   static constexpr char16_t kGetDocumentSource[] =
@@ -83,34 +98,42 @@ void PageDistiller::StartDistill(DistillContentCallback callback) {
   static constexpr char16_t kGetBodySource[] =
       uR"js( document.body.outerHTML )js";
 
-  web_contents_->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+  auto* rfh = web_contents_->GetPrimaryMainFrame();
+  rfh->ExecuteJavaScriptInIsolatedWorld(
       (state_ != State::kDistilled) ? kGetDocumentSource : kGetBodySource,
       base::BindOnce(&PageDistiller::OnGetOuterHTML, weak_factory_.GetWeakPtr(),
-                     std::move(callback)),
+                     rfh->GetWeakDocumentPtr(), std::move(callback)),
       ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
-void PageDistiller::OnGetOuterHTML(DistillContentCallback callback,
+void PageDistiller::OnGetOuterHTML(content::WeakDocumentPtr source_document,
+                                   DistillContentCallback callback,
                                    base::Value result) {
-  if (!web_contents_ || !result.is_string()) {
-    return std::move(callback).Run(false, {});
+  auto* rfh = GetSourceDocument(source_document);
+  if (!rfh || !result.is_string()) {
+    return std::move(callback).Run(false, GURL(), {});
   }
+  // The url of the source document, not of the tab: the tab may navigate while
+  // the distillation is in flight.
+  const GURL source_url = rfh->GetLastCommittedURL();
   if (state_ == State::kDistilled) {
-    return std::move(callback).Run(true, std::move(result).TakeString());
+    return std::move(callback).Run(true, source_url,
+                                   std::move(result).TakeString());
   } else {
     auto* speedreader_service = SpeedreaderServiceFactory::GetForBrowserContext(
         web_contents_->GetBrowserContext());
     auto* speedreader_service_rewriter =
         g_brave_browser_process->speedreader_rewriter_service();
     if (!speedreader_service || !speedreader_service_rewriter) {
-      return std::move(callback).Run(false, {});
+      return std::move(callback).Run(false, GURL(), {});
     }
 
-    DistillPage(
-        web_contents_->GetLastCommittedURL(), std::move(result).TakeString(),
-        speedreader_service, speedreader_service_rewriter,
-        base::BindOnce(&PageDistiller::OnPageDistilled,
-                       weak_factory_.GetWeakPtr(), std::move(callback)));
+    DistillPage(source_url, std::move(result).TakeString(), speedreader_service,
+                speedreader_service_rewriter,
+                base::BindOnce(&PageDistiller::OnPageDistilled,
+                               weak_factory_.GetWeakPtr(),
+                               std::move(source_document), source_url,
+                               std::move(callback)));
   }
 }
 
@@ -122,41 +145,48 @@ void PageDistiller::OnGetTextToSpeak(TextToSpeechContentCallback callback,
   std::move(callback).Run(std::move(result));
 }
 
-void PageDistiller::OnPageDistilled(DistillContentCallback callback,
+void PageDistiller::OnPageDistilled(content::WeakDocumentPtr source_document,
+                                    GURL source_url,
+                                    DistillContentCallback callback,
                                     DistillationResult result,
                                     std::string original_data,
                                     std::string transformed) {
-  if (!web_contents_ || result != DistillationResult::kSuccess) {
-    return std::move(callback).Run(false, {});
+  // The distillation is done off the main thread, the source document may be
+  // gone by now. Its content must not be attributed to whatever the tab shows.
+  if (!GetSourceDocument(source_document) ||
+      result != DistillationResult::kSuccess) {
+    return std::move(callback).Run(false, GURL(), {});
   }
 
-  return std::move(callback).Run(true, std::move(transformed));
+  return std::move(callback).Run(true, source_url, std::move(transformed));
 }
 
 void PageDistiller::AddStyleSheet(DistillContentCallback callback,
                                   bool success,
+                                  const GURL& source_url,
                                   std::string html_content) {
   auto* speedreader_service_rewriter =
       g_brave_browser_process->speedreader_rewriter_service();
 
   if (!success || !speedreader_service_rewriter || html_content.empty()) {
-    return std::move(callback).Run(false, {});
+    return std::move(callback).Run(false, GURL(), {});
   }
 
-  std::move(callback).Run(true,
+  std::move(callback).Run(true, source_url,
                           speedreader_service_rewriter->GetContentStylesheet() +
                               std::move(html_content));
 }
 
 void PageDistiller::ExtractText(DistillContentCallback callback,
                                 bool success,
+                                const GURL& source_url,
                                 std::string html_content) {
   if (!success || html_content.empty()) {
-    return std::move(callback).Run(false, {});
+    return std::move(callback).Run(false, GURL(), {});
   }
 
   re2::RE2::GlobalReplace(&html_content, "<[^>]*>", " ");
-  std::move(callback).Run(true, html_content);
+  std::move(callback).Run(true, source_url, html_content);
 }
 
 }  // namespace speedreader

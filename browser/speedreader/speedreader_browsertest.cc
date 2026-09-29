@@ -1165,7 +1165,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarWithRoundedCorners) {
 // the TLS indicators and the response headers of an unrelated origin.
 // The reload which speedreader triggers to show the distilled content is
 // answered here in a way that leaves the content unsent, i.e. the reload is
-// redirected somewhere else or turned into a download.
+// redirected somewhere else, turned into a download or never answered at all.
 class SpeedReaderContentSpoofBrowserTest : public SpeedReaderBrowserTest {
  public:
   static constexpr char kVictimHost[] = "b.test";
@@ -1191,7 +1191,7 @@ class SpeedReaderContentSpoofBrowserTest : public SpeedReaderBrowserTest {
   }
 
   // Opens the readable page which answers the speedreader's reload according to
-  // |mode| ("redirect" or "attachment").
+  // |mode| ("redirect", "attachment" or "hang").
   void NavigateToReadablePage(std::string_view mode) {
     NavigateToPageSynchronously(base::StrCat({kTestPageReadable, "?", mode}),
                                 WindowOpenDisposition::CURRENT_TAB);
@@ -1233,6 +1233,11 @@ class SpeedReaderContentSpoofBrowserTest : public SpeedReaderBrowserTest {
         ++requests_count_ == 1) {
       // Let the readable page itself be served from the disk.
       return nullptr;
+    }
+
+    if (request.GetURL().query() == "hang") {
+      // The reload is never answered, so the distilled content stays armed.
+      return std::make_unique<net::test_server::HungResponse>();
     }
 
     auto response = std::make_unique<net::test_server::BasicHttpResponse>();
@@ -1281,6 +1286,34 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderContentSpoofBrowserTest,
   // Now the user navigates wherever they want. The content must be dropped
   // when this navigation starts, long before its response arrives.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), victim_url()));
+
+  ExpectVictimPageIsIntact();
+}
+
+// The page starts the reader mode and navigates the tab to another origin while
+// the distillation is still in flight. The distilled content belongs to the
+// document it was distilled from, so the page navigated to must never receive
+// it, not even when its url is the url the speedreader's reload was sent to.
+IN_PROC_BROWSER_TEST_F(SpeedReaderContentSpoofBrowserTest,
+                       DistilledContentIsNotSentToAnotherDocument) {
+  ASSERT_NO_FATAL_FAILURE(NavigateToReadablePage("hang"));
+
+  // The reload is never answered, so the content distilled from the readable
+  // page is still waiting to be sent.
+  TurnOnReaderMode();
+  ASSERT_TRUE(base::test::RunUntil([this]() {
+    return speedreader::IsDistilling(tab_helper()->PageDistillState());
+  }));
+
+  // The page navigates the tab away. This navigation must not be answered with
+  // the content distilled from the previous document.
+  content::TestNavigationObserver navigation_observer(victim_url());
+  navigation_observer.WatchExistingWebContents();
+  content::ExecuteScriptAsync(
+      ActiveWebContents(),
+      content::JsReplace("location.href = $1", victim_url()));
+  navigation_observer.Wait();
+  ASSERT_TRUE(content::WaitForLoadStop(ActiveWebContents()));
 
   ExpectVictimPageIsIntact();
 }

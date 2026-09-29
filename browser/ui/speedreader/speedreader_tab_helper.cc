@@ -291,6 +291,16 @@ void SpeedreaderTabHelper::ProcessNavigation(
     return;
   }
 
+  if (!single_show_content_.empty() &&
+      !IsSameUrlIgnoringRef(single_show_content_url_,
+                            navigation_handle->GetURL())) {
+    // Speedreader reloads the page to show the distilled content. This
+    // navigation goes elsewhere, so it's either the page itself navigating away
+    // or a redirect of the reload. In both cases the content is not the content
+    // of the document being loaded and must be dropped.
+    DropPageContent();
+  }
+
   if (IsDistilling(distill_state_)) {
     // State will be determined in OnDistillComplete.
     return;
@@ -438,11 +448,13 @@ bool SpeedreaderTabHelper::IsPageDistillationAllowed() {
   return IsDistilling(distill_state_) || IsDistilled(distill_state_);
 }
 
-bool SpeedreaderTabHelper::IsPageContentPresent() {
-  return !single_show_content_.empty();
+bool SpeedreaderTabHelper::IsPageContentPresent(const GURL& url) {
+  return !single_show_content_.empty() &&
+         IsSameUrlIgnoringRef(single_show_content_url_, url);
 }
 
 std::string SpeedreaderTabHelper::TakePageContent() {
+  single_show_content_url_ = GURL();
   return std::move(single_show_content_);
 }
 
@@ -583,7 +595,9 @@ void SpeedreaderTabHelper::SetDocumentAttribute(const std::string& attribute,
       script, base::DoNothing(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
-void SpeedreaderTabHelper::OnGetDocumentSource(bool success, std::string html) {
+void SpeedreaderTabHelper::OnGetDocumentSource(bool success,
+                                               const GURL& source_url,
+                                               std::string html) {
   if (!success || html.empty()) {
     TransitStateTo(DistillReverting(DistillReverting::Reason::kError, false));
     TransitStateTo(ViewOriginal());
@@ -591,7 +605,16 @@ void SpeedreaderTabHelper::OnGetDocumentSource(bool success, std::string html) {
   }
 
   single_show_content_ = std::move(html);
+  single_show_content_url_ = source_url;
   TransitStateTo(Distilling(Distilling::Reason::kManual));
+}
+
+void SpeedreaderTabHelper::DropPageContent() {
+  single_show_content_.clear();
+  single_show_content_url_ = GURL();
+  if (IsDistilling(distill_state_)) {
+    TransitStateTo(ViewOriginal(), true);
+  }
 }
 
 void SpeedreaderTabHelper::TransitStateTo(const DistillState& desired_state,

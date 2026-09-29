@@ -86,6 +86,11 @@ bool IsDistilledAutomatically(const DistillState& state);
 // requires page reload.
 bool Transit(DistillState& state, const DistillState& desired);
 
+// Tells if the distilled content of |a| may be shown as the content of |b|. The
+// reload which sends the distilled content doesn't include the fragment in the
+// network request, so the URLs are compared ignoring it.
+bool IsSameUrlIgnoringRef(const GURL& a, const GURL& b);
+
 using DistillationResultCallback =
     base::OnceCallback<void(DistillationResult result,
                             std::string original_data,

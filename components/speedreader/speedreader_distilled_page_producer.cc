@@ -15,16 +15,6 @@
 
 namespace speedreader {
 
-namespace {
-
-// The reload which sends the distilled content doesn't include the fragment in
-// the network request, so the URLs are compared ignoring it.
-bool IsSameUrlIgnoringRef(const GURL& a, const GURL& b) {
-  return a.is_valid() && b.is_valid() && a.GetWithoutRef() == b.GetWithoutRef();
-}
-
-}  // namespace
-
 SpeedreaderDistilledPageProducer::SpeedreaderDistilledPageProducer(
     const GURL& request_url,
     base::WeakPtr<SpeedreaderDelegate> speedreader_delegate)
@@ -44,7 +34,8 @@ std::unique_ptr<SpeedreaderDistilledPageProducer>
 SpeedreaderDistilledPageProducer::MaybeCreate(
     const GURL& request_url,
     base::WeakPtr<SpeedreaderDelegate> speedreader_delegate) {
-  if (!speedreader_delegate || !speedreader_delegate->IsPageContentPresent()) {
+  if (!speedreader_delegate ||
+      !speedreader_delegate->IsPageContentPresent(request_url)) {
     return nullptr;
   }
   return base::WrapUnique(new SpeedreaderDistilledPageProducer(
@@ -56,9 +47,11 @@ bool SpeedreaderDistilledPageProducer::ShouldProcess(
     network::mojom::URLResponseHead* response_head) {
   // The distilled content belongs to the page it was distilled from and must
   // never be sent as a body of any other URL, so re-check the URL of the
-  // response, it may differ from the URL the request was started with.
+  // response, it may differ from the URL the request was started with, and
+  // re-check that the content is still the content of this very URL.
   return speedreader_delegate_ &&
-         IsSameUrlIgnoringRef(request_url_, response_url);
+         IsSameUrlIgnoringRef(request_url_, response_url) &&
+         speedreader_delegate_->IsPageContentPresent(response_url);
 }
 
 void SpeedreaderDistilledPageProducer::UpdateResponseHead(

@@ -148,6 +148,10 @@ bool Transit(DistillState& state, const DistillState& desired) {
   NOTREACHED();
 }
 
+bool IsSameUrlIgnoringRef(const GURL& a, const GURL& b) {
+  return a.is_valid() && b.is_valid() && a.GetWithoutRef() == b.GetWithoutRef();
+}
+
 void DistillPage(const GURL& url,
                  std::string body,
                  SpeedreaderService* speedreader_service,
