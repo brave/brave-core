@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/sessions/session_restore.cc b/chrome/browser/sessions/session_restore.cc
-index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..1493287c517e526f8db63306edb9ba61f954ffdf 100644
+index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..08bc727ca6a57d69f7161ca1a34d384ddad5adf3 100644
 --- a/chrome/browser/sessions/session_restore.cc
 +++ b/chrome/browser/sessions/session_restore.cc
 @@ -1076,6 +1076,13 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
@@ -29,11 +29,25 @@ index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..1493287c517e526f8db63306edb9ba61
      RecordAppLaunchForTab(browser, tab, selected_index);
  
      // Associate sessionStorage (if any) to the restored tab.
-@@ -1386,6 +1399,7 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1370,6 +1383,9 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+     bool is_first_tab = true;
+     for (const auto& startup_tab : startup_tabs) {
+       const GURL& url = startup_tab.url;
++      if (IsScheduledForCleanup(url, profile_)) {
++        continue;
++      }
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+       if (url == whats_new::GetWebUIStartupURL()) {
+         whats_new::StartWhatsNewFetch(browser);
+@@ -1386,8 +1402,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
                                 : WindowOpenDisposition::NEW_BACKGROUND_TAB;
        params.tabstrip_add_types = add_types;
        is_first_tab = false;
 +      BraveModifyStartupTabNavigationParams(startup_tab, browser, params);
        Navigate(&params);
      }
++
++    MaybeAddFallbackTabIfEmpty(browser);
    }
+ 
+   // Normally opens |startup_tabs| in |last_normal_browser|, but if there are
