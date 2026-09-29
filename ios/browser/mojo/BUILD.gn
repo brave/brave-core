@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//mojo/public/tools/bindings/mojom.gni")
+
 # Lets Swift `import BraveMojoSystem`.
 config("module_config") {
   swiftflags = [ "-Xcc=-fmodule-map-file=" +
@@ -20,6 +22,36 @@ source_set("headers") {
 
 source_set("mojo") {
   sources = [ "brave_mojo_system.mm" ]
+
   public_deps = [ ":headers" ]
-  deps = [ "//mojo/public/c/system" ]
+
+  deps = [
+    "//base",
+    "//mojo/public/c/system",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/cpp/system",
+  ]
+}
+
+mojom("test_mojom") {
+  testonly = true
+  sources = [ "test/brave_mojo_system.test-mojom" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "test/brave_mojo_system_unittest.mm" ]
+
+  deps = [
+    ":mojo",
+    ":test_mojom",
+    "//base",
+    "//base/test:test_support",
+    "//ios/web/public",
+    "//ios/web/public/test",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/cpp/system",
+    "//testing/gtest",
+  ]
 }

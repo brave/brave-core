@@ -1,3 +1,5 @@
 include_rules = [
   "+mojo/public/c/system",
+  "+mojo/public/cpp/bindings",
+  "+mojo/public/cpp/system",
 ]
