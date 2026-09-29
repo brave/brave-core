@@ -1,0 +1,38 @@
+diff --git a/chrome/browser/sessions/session_restore_android.cc b/chrome/browser/sessions/session_restore_android.cc
+index cf951bb0609298d32dd98dacba3353d40ef3c1bc..8e2d77880c703c5996d57103a21aa85d3bba7f26 100644
+--- a/chrome/browser/sessions/session_restore_android.cc
++++ b/chrome/browser/sessions/session_restore_android.cc
+@@ -24,7 +24,7 @@
+ 
+ namespace {
+ 
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+ BrowserWindowInterface::Type BrowserTypeFromWindowType(
+     sessions::SessionWindow::WindowType type) {
+   switch (type) {
+@@ -41,7 +41,7 @@ BrowserWindowInterface::Type BrowserTypeFromWindowType(
+       return BrowserWindowInterface::TYPE_APP_POPUP;
+   }
+ }
+-#endif  // #if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#endif  // #if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+ 
+ }  // namespace
+ 
+@@ -114,7 +114,7 @@ void SessionRestore::RestoreForeignSessionWindows(
+     std::vector<const sessions::SessionWindow*>::const_iterator begin,
+     std::vector<const sessions::SessionWindow*>::const_iterator end,
+     base::OnceCallback<void(std::vector<BrowserWindowInterface*>)> callback) {
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+   // The extensions sessions API can restore foreign windows.
+   size_t window_count = std::distance(begin, end);
+   // Wait for `window_count` callbacks.
+@@ -136,5 +136,5 @@ void SessionRestore::RestoreForeignSessionWindows(
+   }
+ #else
+   NOTREACHED();
+-#endif  // BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#endif  // BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+ }

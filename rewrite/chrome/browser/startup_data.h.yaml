@@ -4,19 +4,8 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: |
-      Construct a stub `SodaInstaller` as the global one, because Brave ships
-      no SODA. Upstream's reports SODA's languages as downloadable and then
-      parks an install() reply on a download that never arrives.
-
-      `CreateBraveSodaInstaller` is defined in the chromium_src override of
-      this source.
-    regex:
-      pattern: 'std::make_unique<speech::SodaInstallerImpl>()'
-      replace: 'speech::CreateBraveSodaInstaller()'
-
   - description: Build the Android extensions code with the core.
-    count: 1
+    count: 3
     regex:
       pattern: 'BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)'
       replace: 'BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)'

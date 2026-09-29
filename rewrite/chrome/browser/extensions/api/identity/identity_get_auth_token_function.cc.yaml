@@ -1,0 +1,33 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Build the Android extensions code with the core.
+    count: 6
+    regex:
+      pattern: 'BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)'
+      replace: 'BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)'
+
+  - description: Hook Brave into Run() before fetching the auth token.
+    regex:
+      pattern: |-
+        StartAsyncRun();
+
+          base::OnceCallback next_step =
+      replace: |-
+        StartAsyncRun();
+
+          BRAVE_RUN
+          base::OnceCallback next_step =
+
+  - description: Wrap the mint token flow account checks for Brave.
+    regex:
+      re_pattern:
+        '(#if !BUILDFLAG\(IS_CHROMEOS\)\n)(  // ChromeOS in kiosk mode may start
+        the mint token flow without account\..*?<< "No Refresh
+        token!";\n)(#endif)'
+      re_flags: [DOTALL]
+      replace:
+        '\1  BRAVE_START_MINT_TOKEN_FLOW_IF\n\2  BRAVE_START_MINT_TOKEN_FLOW_ELSE\n\3'
