@@ -1,13 +1,13 @@
 diff --git a/components/component_updater/component_updater_service.cc b/components/component_updater/component_updater_service.cc
-index 446968669083c6fe199dab769cd0fa9955b93db3..ce29edc689f353b37338a76919bf88b211434fa0 100644
+index 9147acee55c9cb33d05fd4eb38802468a4493065..23879d422477756265ea1749d536a3c122d0d0e2 100644
 --- a/components/component_updater/component_updater_service.cc
 +++ b/components/component_updater/component_updater_service.cc
-@@ -575,7 +575,7 @@ std::unique_ptr<ComponentUpdateService> ComponentUpdateServiceFactory(
-     const std::string& brand) {
+@@ -594,7 +594,7 @@ std::unique_ptr<ComponentUpdateService> ComponentUpdateServiceFactory(
+     bool update_checks_disabled) {
    CHECK(config);
    CHECK(scheduler);
 -  auto update_client = update_client::UpdateClientFactory(config);
 +  auto update_client = update_client::SequentialUpdateClientFactory(config);
    return std::make_unique<CrxUpdateService>(config, std::move(scheduler),
-                                             std::move(update_client), brand);
- }
+                                             std::move(update_client), brand,
+                                             update_checks_disabled);
