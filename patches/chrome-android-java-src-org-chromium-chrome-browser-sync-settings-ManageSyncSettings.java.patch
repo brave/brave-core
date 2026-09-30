@@ -1,16 +1,21 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index a884928aef52a524b84951cc59520546deccb946..d420371e8930e2c7b44f9a5e2e73c4dd4a1fa808 100644
+index a884928aef52a524b84951cc59520546deccb946..7210eebfd922a4c8cd9dd0040592d654e51281a8 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-@@ -202,7 +202,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -202,10 +202,10 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
      private boolean mShouldUpdatePrefs;
  
      /** Maps {@link UserSelectableType} to the corresponding preference. */
 -    private Map<Integer, ChromeSwitchPreference> mSyncTypeSwitchPreferencesMap = new HashMap<>();
 +    protected Map<Integer, ChromeSwitchPreference> mSyncTypeSwitchPreferencesMap = new HashMap<>();
  
-     private Preference mGoogleActivityControls;
-     private Preference mSyncEncryption;
+-    private Preference mGoogleActivityControls;
+-    private Preference mSyncEncryption;
++    protected Preference mGoogleActivityControls;
++    protected Preference mSyncEncryption;
+     private @Nullable SignoutButtonPreference mSignOutPreference;
+ 
+     private final SettableMonotonicObservableSupplier<String> mPageTitle =
 @@ -314,6 +314,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
  
      @Override
