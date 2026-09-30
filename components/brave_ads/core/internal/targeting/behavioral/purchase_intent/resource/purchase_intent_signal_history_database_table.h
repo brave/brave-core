@@ -36,7 +36,7 @@ class PurchaseIntentSignalHistory final : public TableInterface {
 
   void DeleteAll(ResultCallback callback);
 
-  void GetAll(GetPurchaseIntentSignalHistoryCallback callback) const;
+  void Load(GetPurchaseIntentSignalHistoryCallback callback) const;
 
   // TableInterface:
   void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;

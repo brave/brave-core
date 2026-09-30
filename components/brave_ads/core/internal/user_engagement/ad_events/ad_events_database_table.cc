@@ -212,34 +212,6 @@ void AdEvents::IsFirstTime(const std::string& campaign_id,
                  std::move(result_callback));
 }
 
-void AdEvents::GetAll(GetAdEventsCallback callback) const {
-  mojom::DBTransactionInfoPtr mojom_db_transaction =
-      mojom::DBTransactionInfo::New();
-  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
-  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteQueryWithBindings;
-  mojom_db_action->sql = base::ReplaceStringPlaceholders(
-      R"(
-          SELECT
-            placement_id,
-            type,
-            confirmation_type,
-            campaign_id,
-            creative_set_id,
-            creative_instance_id,
-            advertiser_id,
-            segment,
-            target_url,
-            created_at
-          FROM
-            $1)",
-      {kTableName}, nullptr);
-  BindColumnTypes(mojom_db_action);
-  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
-
-  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                 base::BindOnce(&GetCallback, std::move(callback)));
-}
-
 void AdEvents::Get(mojom::AdType mojom_ad_type,
                    mojom::ConfirmationType mojom_confirmation_type,
                    base::TimeDelta time_window,
