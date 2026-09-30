@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarConfigUtils.java b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarConfigUtils.java
-index 0442b44b65746eee6a9242ee6bc4b9224c37e262..2211152be32b7e06cd756d9fcb737b790a2e9eb1 100644
+index dde56c29df8278ee99efceb054a7c1c38b8c7906..05abdb82762ac153d52c5b40a1a51a893aea16ce 100644
 --- a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarConfigUtils.java
 +++ b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarConfigUtils.java
-@@ -30,6 +30,7 @@ public class BottomBarConfigUtils {
-     // LINT.IfChange(isBottomBarEnabled)
-     /** Whether the bottom bar is enabled. */
+@@ -33,6 +33,7 @@ public class BottomBarConfigUtils {
+      * active should use this method.
+      */
      public static boolean isBottomBarEnabled(Context context) {
 +        if (!BraveBottomBarUserPrefs.isBottomBarEnabled()) return false;
-         return !DeviceFormFactor.isNonMultiDisplayContextOnTablet(context)
-                 && !DeviceInfo.isAutomotive()
-                 && ChromeFeatureList.sAndroidBottomBar.isEnabled();
+         return isBottomBarEligible(context) && isBottomBarUserEnabled();
+     }
+ 

@@ -1,8 +1,8 @@
 diff --git a/components/crash/core/app/crashpad_ios.mm b/components/crash/core/app/crashpad_ios.mm
-index 131d0d885eedd48dae532d9471255617cafb80fc..815bf0c9d0f473218a6aa96fe27dfd49a3a65d86 100644
+index e9af03bcf67e307f7f1c5b703feb20f82d07b90f..1bd407296814ae7944a0c4ef0106568539d5c681 100644
 --- a/components/crash/core/app/crashpad_ios.mm
 +++ b/components/crash/core/app/crashpad_ios.mm
-@@ -37,7 +37,7 @@ const std::map<std::string, std::string>& GetProcessSimpleAnnotations() {
+@@ -38,7 +38,7 @@ const std::map<std::string, std::string>& GetProcessSimpleAnnotations() {
      std::map<std::string, std::string> process_annotations;
      @autoreleasepool {
        NSBundle* outer_bundle = base::apple::OuterBundle();
@@ -11,7 +11,7 @@ index 131d0d885eedd48dae532d9471255617cafb80fc..815bf0c9d0f473218a6aa96fe27dfd49
        process_annotations["prod"] = "Chrome_iOS";
  #else
        NSString* product = base::apple::ObjCCast<NSString>(
-@@ -47,7 +47,7 @@ const std::map<std::string, std::string>& GetProcessSimpleAnnotations() {
+@@ -48,7 +48,7 @@ const std::map<std::string, std::string>& GetProcessSimpleAnnotations() {
            base::SysNSStringToUTF8(product).append("_").append(kPlatformName);
  #endif
  
@@ -20,12 +20,12 @@ index 131d0d885eedd48dae532d9471255617cafb80fc..815bf0c9d0f473218a6aa96fe27dfd49
        // Empty means stable.
        const bool allow_empty_channel = true;
  #else
-@@ -65,7 +65,7 @@ const std::map<std::string, std::string>& GetProcessSimpleAnnotations() {
+@@ -66,7 +66,7 @@ const std::map<std::string, std::string>& GetProcessSimpleAnnotations() {
        process_annotations["ver"] = base::SysNSStringToUTF8(version);
        process_annotations["plat"] = kPlatformName;
      }  // @autoreleasepool
 -    return process_annotations;
 +    return AddBraveProcessAnnotations(process_annotations);
-   }
-   ();
-   return annotations;
+   };
+   static const base::NoDestructor<std::map<std::string, std::string>>
+       annotations(build_annotations());
