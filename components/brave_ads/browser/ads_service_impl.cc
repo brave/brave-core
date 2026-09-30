@@ -14,7 +14,6 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/check_is_test.h"
-#include "base/containers/circular_deque.h"
 #include "base/feature_list.h"
 #include "base/files/file.h"
 #include "base/files/file_util.h"
@@ -812,6 +811,12 @@ void AdsServiceImpl::OnAdsPrefChanged(const std::string& path) {
                        weak_ptr_factory_.GetWeakPtr(), path));
   }
 
+  if (path == prefs::kNotificationsEnabled) {
+    // Runs before the eligibility check so notification ads opt-out cleanup
+    // completes even if the service also shuts down.
+    MaybeCloseAllNotificationAds();
+  }
+
   if (!CanStartBatAdsService()) {
     // The pref change made the service ineligible to run, so tear it down and
     // release resource components that are no longer needed.
@@ -987,10 +992,6 @@ void AdsServiceImpl::NotificationAdTimedOut(const std::string& placement_id) {
 }
 
 void AdsServiceImpl::CloseAllNotificationAds() {
-  if (!IsNotificationAdsEnabled()) {
-    return;
-  }
-
   const auto& list = prefs_->GetList(prefs::kNotificationAds);
   const base::circular_deque<NotificationAdInfo> ads =
       NotificationAdsFromList(list);
@@ -1000,6 +1001,12 @@ void AdsServiceImpl::CloseAllNotificationAds() {
   }
 
   prefs_->SetList(prefs::kNotificationAds, {});
+}
+
+void AdsServiceImpl::MaybeCloseAllNotificationAds() {
+  if (!IsNotificationAdsEnabled()) {
+    CloseAllNotificationAds();
+  }
 }
 
 void AdsServiceImpl::RegisterOrUnregisterLanguageResourceComponent() {
