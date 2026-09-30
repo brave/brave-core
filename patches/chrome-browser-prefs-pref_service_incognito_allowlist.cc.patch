@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/pref_service_incognito_allowlist.cc b/chrome/browser/prefs/pref_service_incognito_allowlist.cc
-index 916d5c4e13c994332fd72005f22dced5399e3ff8..fa6b5b03a01b123481111b6a9afc1ac71b1c5f2d 100644
+index db262016de186c9deb760feea11c7a8b1bf97163..40e72dcab6ce831be7c6035c85da216c79caeb99 100644
 --- a/chrome/browser/prefs/pref_service_incognito_allowlist.cc
 +++ b/chrome/browser/prefs/pref_service_incognito_allowlist.cc
-@@ -27,6 +27,7 @@ namespace {
+@@ -28,6 +28,7 @@ namespace {
  // List of keys that can be changed in the user prefs file by the incognito
  // profile.
  const char* const kPersistentPrefNames[] = {
@@ -10,7 +10,7 @@ index 916d5c4e13c994332fd72005f22dced5399e3ff8..fa6b5b03a01b123481111b6a9afc1ac7
  #if BUILDFLAG(IS_CHROMEOS)
      // Accessibility preferences should be persisted if they are changed in
      // incognito mode.
-@@ -226,10 +227,16 @@ const char* const kPersistentPrefNames[] = {
+@@ -227,10 +228,16 @@ const char* const kPersistentPrefNames[] = {
  namespace prefs {
  
  std::vector<const char*> GetIncognitoPersistentPrefsAllowlist() {

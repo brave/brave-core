@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/color/chrome_color_provider_utils.cc b/chrome/browser/ui/color/chrome_color_provider_utils.cc
-index 0841f6b13ce94443240d15cfb9f49046c6e49b15..7c3c9be62d7bde89bb39ac846f88a3586da0acdb 100644
+index 97e8c9f2663176910217d6de2678bc8dbb347c7a..eea6671da337fdaf22f52a6626661f074b2fa1c0 100644
 --- a/chrome/browser/ui/color/chrome_color_provider_utils.cc
 +++ b/chrome/browser/ui/color/chrome_color_provider_utils.cc
-@@ -123,6 +123,7 @@ bool ShouldApplyHighContrastColors(const ui::ColorProviderKey& key) {
+@@ -145,6 +145,7 @@ bool ShouldApplyHighContrastColors(const ui::ColorProviderKey& key) {
  }
  
  bool ShouldApplyChromeMaterialOverrides(const ui::ColorProviderKey& key) {

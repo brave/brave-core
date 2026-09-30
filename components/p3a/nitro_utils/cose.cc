@@ -12,13 +12,15 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/compiler_specific.h"
+#include "base/containers/span.h"
 #include "base/logging.h"
 #include "base/strings/string_view_util.h"
 #include "base/time/time.h"
 #include "components/cbor/reader.h"
 #include "components/cbor/writer.h"
+#include "crypto/keypair.h"
 #include "crypto/sha2.h"
-#include "crypto/signature_verifier.h"
+#include "crypto/sign.h"
 #include "net/cert/asn1_util.h"
 #include "net/cert/time_conversions.h"
 #include "third_party/boringssl/src/include/openssl/bn.h"
@@ -232,25 +234,21 @@ bool CoseSign1::Verify(const bssl::ParsedCertificateList& cert_chain) {
     return false;
   }
 
-  std::vector<uint8_t> low_cert_spki_vec(low_cert_spki.begin(),
-                                         low_cert_spki.end());
+  std::optional<crypto::keypair::PublicKey> low_cert_public_key =
+      crypto::keypair::PublicKey::FromSubjectPublicKeyInfo(
+          base::as_byte_span(low_cert_spki));
+  if (!low_cert_public_key.has_value()) {
+    LOG(ERROR) << "COSE verification: could not parse SPKI from cert";
+    return false;
+  }
 
   std::vector<uint8_t> sig_der;
   if (!ConvertCoseSignatureToDER(signature_, &sig_der)) {
     return false;
   }
 
-  crypto::SignatureVerifier sig_verifier;
-  if (!sig_verifier.VerifyInit(
-          crypto::SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384, sig_der,
-          low_cert_spki_vec)) {
-    LOG(ERROR) << "COSE verification: failed to init cert verifier";
-    return false;
-  }
-
-  sig_verifier.VerifyUpdate(*encoded_sig_data);
-
-  return sig_verifier.VerifyFinal();
+  return crypto::sign::Verify(crypto::sign::ECDSA_SHA384, *low_cert_public_key,
+                              *encoded_sig_data, sig_der);
 }
 
 const cbor::Value& CoseSign1::protected_headers() {

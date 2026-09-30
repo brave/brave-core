@@ -44,7 +44,6 @@
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/ui_features.h"
@@ -881,7 +880,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ASSERT_TRUE(Click(toolbar, "ai"));
-  auto* side_panel = browser()->GetFeatures().side_panel_ui();
+  auto* side_panel = SidePanelUI::From(browser());
   ASSERT_TRUE(base::test::RunUntil([side_panel]() {
     return side_panel->GetCurrentEntryId() == SidePanelEntryId::kChatUI;
   })) << "Timed out waiting for the AI chat side panel to open, a side panel "

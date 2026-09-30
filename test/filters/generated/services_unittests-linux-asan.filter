@@ -5,5 +5,5 @@
 ## Regenerate with:
 ##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 1.4% flake rate over 30 days per LUCI Analysis (15711 passed, 0 failed, 225 flaky).
+# 1.4% flake rate over 30 days per LUCI Analysis (15985 passed, 0 failed, 235 flaky).
 -All/SnooperNodeTest.ContinuousAudioFlowAdaptsToSkew/Surround5_1ToSurround5_1

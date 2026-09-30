@@ -1,0 +1,42 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Depend on the Brave UI.
+    insert_into_list:
+      target: ui
+      list_name: public_deps
+      values:
+        - //brave/browser/ui
+
+  - description: Add the Brave UI deps.
+    add_literal_to_list:
+      target: ui
+      list_name: deps
+      literal: brave_chrome_browser_ui_deps
+      import: //brave/browser/sources.gni
+
+  - description:
+      Depend on the targets the Brave UI allows circular includes from.
+    add_literal_to_list:
+      target: ui
+      list_name: deps
+      literal: brave_chrome_browser_ui_allow_circular_includes_from
+      import: //brave/browser/sources.gni
+
+  - description: Allow circular includes from the Brave UI targets.
+    add_literal_to_list:
+      target: ui
+      list_name: allow_circular_includes_from
+      literal: brave_chrome_browser_ui_allow_circular_includes_from
+      import: //brave/browser/sources.gni
+
+  - description: Add the Brave UI public dependencies.
+    insert_into_list:
+      target: ui_public_dependencies
+      list_name: public_deps
+      values:
+        - //brave/browser/ui:ui_public_dependencies
+        - //components/saved_tab_groups/public

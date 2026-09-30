@@ -219,12 +219,6 @@ export function getBuildArgs(config: Config) {
     }
   }
 
-  // Devtools: Now we patch devtools frontend, so it is useful to see
-  // if something goes wrong on CI builds.
-  if (config.targetOS !== 'android' && config.targetOS !== 'ios' && isCI) {
-    args.devtools_skip_typecheck = false
-  }
-
   if (config.targetOS) {
     args.target_os = config.targetOS
   }

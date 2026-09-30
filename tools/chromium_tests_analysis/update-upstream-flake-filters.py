@@ -126,12 +126,12 @@ GENERATED_FILTERS_DIR = BRAVE_CORE_ROOT / "test" / "filters" / "generated"
 
 # Platforms Brave runs upstream test suites on, mapped to the "os"
 # prefixes of the corresponding upstream bots. Bots for other platforms
-# (e.g. ChromeOS) are ignored. The platform names must match those used by
+# (e.g. ChromeOS, and Mac -- Brave doesn't run upstream tests on Mac) are
+# ignored. The platform names must match those used by
 # getApplicableFilters in build/commands/lib/testUtils.ts, which has no
 # Android filters yet.
 PLATFORM_OS_PREFIXES = {
     "linux": ("Ubuntu", "Linux"),
-    "macos": ("Mac", ),
     "windows": ("Windows", ),
 }
 
@@ -334,6 +334,18 @@ class Display:
 def log(message: str) -> None:
     """Log a line above the live display."""
     console.log(message)
+
+
+def display_path(path: Path) -> str:
+    """The path as written for a human, relative to the repo when it can be.
+
+    A filters dir outside the checkout -- a temporary one under a test,
+    say -- can sit on another Windows drive, which relpath refuses.
+    """
+    try:
+        return os.path.relpath(path, BRAVE_CORE_ROOT)
+    except ValueError:
+        return str(path)
 
 
 @contextmanager
@@ -733,7 +745,7 @@ class SuiteUpdater:
                             newline="")
             written.add(filename)
             self._log(f"wrote {len(entries)} entries to"
-                      f" {os.path.relpath(path, BRAVE_CORE_ROOT)}")
+                      f" {display_path(path)}")
         self._remove_stale_filters(written)
 
     def _remove_stale_filters(self, written: set[str]) -> None:

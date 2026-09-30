@@ -26,6 +26,7 @@
 #include "components/compose/core/browser/compose_features.h"
 #include "components/content_settings/core/common/features.h"
 #include "components/contextual_tasks/public/features.h"
+#include "components/critical_actions/core/browser/features.h"
 #include "components/feature_engagement/public/feature_constants.h"
 #include "components/heap_profiling/in_process/heap_profiler_parameters.h"
 #include "components/history/core/browser/features.h"
@@ -69,6 +70,7 @@
 #include "content/public/common/btm_utils.h"
 #include "content/public/common/buildflags.h"
 #include "content/public/common/content_features.h"
+#include "extensions/buildflags/buildflags.h"
 #include "gpu/config/gpu_finch_features.h"
 #include "media/base/media_switches.h"
 #include "net/base/features.h"
@@ -92,8 +94,11 @@
 #include "components/device_signals/core/common/signals_features.h"
 #include "components/enterprise/connectors/core/features.h"
 #include "components/translate/core/common/translate_util.h"
-#include "extensions/common/extension_features.h"
 #include "services/device/public/cpp/device_features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+#include "extensions/common/extension_features.h"
 #endif
 
 #if BUILDFLAG(IS_WIN)
@@ -158,7 +163,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &chrome_pdf::features::kPdfSaveToDriveSurvey,
 #endif
       &commerce::kCommerceAllowOnDemandBookmarkUpdates,
-      &commerce::kCommerceDeveloper,
       &commerce::kCommerceMerchantViewer,
       &commerce::kPriceAnnotations,
       &commerce::kShoppingList,
@@ -167,9 +171,13 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &compose::features::kEnableCompose,
       &contextual_tasks::kContextualTasks,
       &contextual_tasks::kContextualTasksCookiePrefetch,
+      &critical_actions::features::kCriticalActionHistory,
 #if !BUILDFLAG(IS_ANDROID)
       &enterprise_data_protection::kEnableForceDownloadToCloud,
       &extensions_features::kApiGlicPrivate,
+#endif
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+      &extensions_features::kApiDesktopAndroidNativeMessaging,
 #endif
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX)
       &feature_engagement::kIPHAutofillAccountNameEmailSuggestionFeature,
@@ -180,6 +188,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &feature_engagement::kIPHReadingListInSidePanelFeature,
       &feature_engagement::kIPHSideBySidePinnableFeature,
       &feature_engagement::kIPHSideBySideTabSwitchFeature,
+      &feature_engagement::kIPHSplitViewHorizontalIndirectAccessFeature,
       &feature_engagement::kIPHTabGroupsSaveV2IntroFeature,
       &feature_engagement::kIPHVerticalTabstripTutorialFeature,
 #endif

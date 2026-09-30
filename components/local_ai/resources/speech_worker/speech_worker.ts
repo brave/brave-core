@@ -47,7 +47,18 @@ class AsrStreamInputAdapter implements AsrStreamInputInterface {
     const onResult = (text: string, isFinal: boolean) => {
       // Empty transcript means nothing was recognized. Send an empty
       // vector rather than a bogus [FINAL] "" (still ends the session).
-      responder.onResponse(text ? [{ transcript: text, isFinal }] : [])
+      responder.onResponse(
+        text
+          ? [
+              {
+                transcript: text,
+                isFinal,
+                audioStartTime: undefined,
+                audioEndTime: undefined,
+              },
+            ]
+          : [],
+      )
     }
 
     // AsrStreamResponder carries results only, so a closed pipe is how the

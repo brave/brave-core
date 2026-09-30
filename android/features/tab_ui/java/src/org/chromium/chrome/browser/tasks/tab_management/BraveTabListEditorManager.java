@@ -17,10 +17,10 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
-import org.chromium.chrome.browser.tab_ui.TabListMode;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tasks.tab_management.TabListEditorCoordinator.TabListEditorController;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.ui.modaldialog.ModalDialogManager;
@@ -38,13 +38,12 @@ public class BraveTabListEditorManager extends TabListEditorManager {
             Activity activity,
             ModalDialogManager modalDialogManager,
             ViewGroup coordinatorView,
-            ViewGroup rootView,
+            SnackbarManager snackbarManager,
             BrowserControlsStateProvider browserControlsStateProvider,
             MonotonicObservableSupplier<TabModel> currentTabModelSupplier,
             TabContentManager tabContentManager,
             TabListCoordinator tabListCoordinator,
-            BottomSheetController bottomSheetController,
-            @TabListMode int mode,
+            @Nullable BottomSheetController bottomSheetController,
             @Nullable Runnable onTabGroupCreation,
             @Nullable DesktopWindowStateManager desktopWindowStateManager,
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier) {
@@ -52,13 +51,12 @@ public class BraveTabListEditorManager extends TabListEditorManager {
                 activity,
                 modalDialogManager,
                 coordinatorView,
-                rootView,
+                snackbarManager,
                 browserControlsStateProvider,
                 currentTabModelSupplier,
                 tabContentManager,
                 tabListCoordinator,
                 bottomSheetController,
-                mode,
                 onTabGroupCreation,
                 desktopWindowStateManager,
                 edgeToEdgeSupplier);

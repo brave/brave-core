@@ -1,8 +1,8 @@
 diff --git a/chrome/common/webui_url_constants.h b/chrome/common/webui_url_constants.h
-index 23b1c1220e2f30f15ffa4a819e6abd2cc4fc1342..89e3b7506e74892a71368f3dc0a8208bc3c0dbc3 100644
+index 47c543c844b3348c0360fb2a38c214aeab41944f..59c6c592e8d2eb2023561eebb6b3122029a65288 100644
 --- a/chrome/common/webui_url_constants.h
 +++ b/chrome/common/webui_url_constants.h
-@@ -573,7 +573,7 @@ inline constexpr char kIdentityDocsSubPage[] = "identityDocs";
+@@ -580,7 +580,7 @@ inline constexpr char kIdentityDocsSubPage[] = "identityDocs";
  inline constexpr char kTravelSubPage[] = "travel";
  inline constexpr char kShoppingSubPage[] = "shopping";
  inline constexpr char kPeopleSubPage[] = "people";

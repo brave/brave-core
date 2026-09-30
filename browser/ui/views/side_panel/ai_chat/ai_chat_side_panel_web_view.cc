@@ -17,7 +17,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_web_contents_delegate/browser_web_contents_delegate.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
@@ -163,7 +162,7 @@ content::WebContents* AIChatSidePanelWebView::AddNewContents(
   auto* browser = browser_view->browser();
 
   // If AI Chat is not open in the side panel, don't open the tab.
-  if (browser->GetFeatures().side_panel_ui()->GetCurrentEntryId() !=
+  if (SidePanelUI::From(browser)->GetCurrentEntryId() !=
       SidePanelEntryId::kChatUI) {
     return nullptr;
   }

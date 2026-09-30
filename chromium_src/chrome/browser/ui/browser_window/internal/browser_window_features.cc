@@ -14,7 +14,3 @@
 #include "brave/browser/ui/views/side_panel/brave_side_panel_coordinator.h"
 
 #include <chrome/browser/ui/browser_window/internal/browser_window_features.cc>
-
-const SidePanelUI* BrowserWindowFeatures_ChromiumImpl::side_panel_ui() const {
-  return const_cast<BrowserWindowFeatures_ChromiumImpl*>(this)->side_panel_ui();
-}

@@ -1,16 +1,16 @@
 diff --git a/third_party/blink/renderer/core/dom/events/event_target.cc b/third_party/blink/renderer/core/dom/events/event_target.cc
-index 2e4d8f59589c3a4d21712cc52a53fc19910761bf..48cc2357e80f735fbe8d1311ba2f35dc44bfadcf 100644
+index 6da24729a6c10a5ec4cce7ed6b6b686fe7e06d47..86078d64d92b2362c7480ac3b37392c9ce93842e 100644
 --- a/third_party/blink/renderer/core/dom/events/event_target.cc
 +++ b/third_party/blink/renderer/core/dom/events/event_target.cc
-@@ -648,6 +648,7 @@ bool EventTarget::AddEventListenerInternal(
+@@ -650,6 +650,7 @@ bool EventTarget::AddEventListenerInternal(
        event_type, listener, options, &registered_listener);
    if (added) {
      CHECK(registered_listener);
 +    BRAVE_EVENT_TARGET_ADD_EVENT_LISTENER_INTERNAL
-     if (options->hasSignal()) {
-       // Instead of passing the entire |options| here, which could create a
-       // circular reference due to |options| holding a Member<AbortSignal>, just
-@@ -788,6 +789,7 @@ bool EventTarget::RemoveEventListenerInternal(
+     if (options.HasSignal()) {
+       // Capture only the boolean that removeEventListener uses instead of the
+       // temporary options object.
+@@ -787,6 +788,7 @@ bool EventTarget::RemoveEventListenerInternal(
                                      &registered_listener)) {
      return false;
    }

@@ -30,16 +30,12 @@ well as audited as patch files.
 ## How does it work
 
 _Plaster_ files are placed under `rewrite/`, using a `.yaml` extension, and they
-are supposed to match the path for the file being plastered. A deprecated
-`.toml` form is also accepted while existing plasters are being migrated — see
-[Legacy TOML format (deprecated)](#legacy-toml-format-deprecated) at the end of
-this document.
+are supposed to match the path for the file being plastered.
 
-> [!WARNING]
+> [!NOTE]
 >
-> At the moment, Chromium's `src` repo can be patched with plaster. Support for
-> more repos may be considered in the future, but it is not a priority at the
-> moment.
+> Repositories other than Chromium's `src` are supported if they are listed in
+> `patches/.repositories.cfg`.
 
 Each plaster file will be used to apply changes into a given source, and then
 generate a patch for the effected changes.
@@ -139,6 +135,10 @@ introduce more rewriters. These are the ones we have supported for now.
 | Rewriter                                  | Namespace | Kind  | Description                                           |
 | ----------------------------------------- | --------- | ----- | ----------------------------------------------------- |
 | `regex`                                   | `all`     | text  | A Python `re.subn` substitution (the default).        |
+| `add_after_line`                          | `all`     | macro | Inserts code after a given line.                      |
+| `add_before_line`                         | `all`     | macro | Inserts code before a given line.                     |
+| `add_after_copyright_notice`              | `all`     | macro | Inserts code after the copyright notice.              |
+| `add_at_end_of_the_file`                  | `all`     | macro | Appends code at the end of a file.                    |
 | `make_virtual`                            | `cxx`     | AST   | Prepends `virtual ` to a C++ method declaration.      |
 | `add_friend`                              | `cxx`     | AST   | Adds a `friend` declaration to a private section.     |
 | `drop_final`                              | `cxx`     | AST   | Removes `final` from a C++ class declaration.         |
@@ -150,11 +150,15 @@ introduce more rewriters. These are the ones we have supported for now.
 | `add_enum_entries`                        | `cxx`     | AST   | Appends entries to the end of a C++ enum.             |
 | `set_feature_flag_default_state`          | `cxx`     | macro | Sets a `BASE_FEATURE`'s default state.                |
 | `insert_into_list`                        | `gn`      | gn    | Inserts value(s) into a target's list attribute.      |
+| `set_attribute`                           | `gn`      | gn    | Sets a target's attribute, creating it if absent.     |
+| `remove_attribute`                        | `gn`      | gn    | Removes an attribute from a target.                   |
 | `add_literal_to_list`                     | `gn`      | AST   | Adds a literal to a target's list attribute.          |
+| `append_to_target`                        | `gn`      | AST   | Appends code to the end of a target's body.           |
 | `add_import`                              | `gn`      | AST   | Adds an `import()` to the top of a gn file.           |
 | `add_literal_to_variable`                 | `gn`      | AST   | Appends a literal to a file-scope list variable.      |
 | `subtract_literal_from_variable`          | `gn`      | AST   | Subtracts a literal from a file-scope list variable.  |
 | `set_blink_runtime_enabled_feature_state` | `js`      | AST   | Sets a Blink runtime feature's `base_feature_status`. |
+| `drop_custom_element_registration`        | `ts`      | AST   | Removes a WebUI element's `customElements.define`.    |
 
 Use `plaster --help` to discover rewriters and read their full docs:
 

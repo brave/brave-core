@@ -9,7 +9,7 @@ from __future__ import annotations
 import abc
 import argparse
 import ast
-from collections.abc import KeysView, Mapping
+from collections.abc import Iterator, KeysView, Mapping
 from dataclasses import dataclass, field
 import hashlib
 import itertools
@@ -32,6 +32,7 @@ from rich.markdown import Markdown
 import yaml
 
 from terminal import IncendiaryErrorHandler, console, is_verbose, terminal
+from repository import Repository
 import repository
 
 # A round-about import for https://github.com/keleshev/schema, vendored under
@@ -53,6 +54,9 @@ PATCHES_PATH = repository.brave.root / 'patches'
 # The plaster file extension.
 PLASTER_EXTENSION = '.yaml'
 
+# The file listing every repository brave-core patches.
+REPOSITORIES_FILE = PATCHES_PATH / '.repositories.cfg'
+
 # A particular gitattributes file that is used to ensure we get deterministic
 # patch output across platforms and git versions.
 PLASTER_GITATTRIBUTES_PATH = Path(__file__).parent / 'plaster_gitattributes'
@@ -60,6 +64,266 @@ PLASTER_GITATTRIBUTES_PATH = Path(__file__).parent / 'plaster_gitattributes'
 # The declarative ast-grep rewriters spec, loaded and validated by
 # `RewritersEval`.
 REWRITERS_FILE = Path(__file__).parent / 'rewriters.pyl'
+
+
+class PlasterError(Exception):
+    """Base class for errors reported by the plaster tool."""
+
+
+class PlasterFileNeedsRegen(PlasterError):
+    pass
+
+
+class OrphanedPlasterError(PlasterError):
+    """Raised when a plaster's target source cannot be read from git.
+
+    Typically this means the upstream file was moved or deleted, so the plaster
+    now points at a path that no longer exists in HEAD.
+    """
+
+
+class PlasterApplyError(PlasterError):
+    """Raised when applying a plaster file produces substitution errors."""
+
+    def __init__(self, errors: list[str]):
+        self.errors = errors
+        super().__init__(
+            'There were errors attempting to apply the patches:\n' +
+            '\n'.join(errors))
+
+
+class RewritersSchemaError(PlasterError):
+    """Raised when `rewriters.pyl` does not conform to the expected schema."""
+
+
+class RepositoriesFileError(PlasterError):
+    """Raised when `patches/.repositories.cfg` is missing or malformed."""
+
+
+class Repositories:
+    """The repositories brave-core patches, from `patches/.repositories.cfg`.
+    """
+
+    # The gn source-root prefix every entry carries, `//` being chromium's
+    # `src/`, exactly as a gn label spells it.
+    SOURCE_ROOT_PREFIX: ClassVar[str] = '//'
+
+    # Process-wide instance, loaded once from REPOSITORIES_FILE by `load`.
+    _instance: ClassVar[Repositories | None] = None
+
+    def __init__(self, content: bytes):
+        """Parse and validate `content` (the bytes of a repositories file).
+
+        Raises RepositoriesFileError when an entry is malformed or duplicated,
+        or when chromium's own `src` is not listed.
+        """
+        # Every repository the file lists, longest path first, with chromium's
+        # own `src` last.
+        self._repositories: tuple[Repository, ...] = self._parse(content)
+
+    @classmethod
+    def load(cls) -> Repositories:
+        """Return the process-wide Repositories, reading the file once."""
+        if cls._instance is None:
+            try:
+                content = REPOSITORIES_FILE.read_bytes()
+            except OSError as e:
+                raise RepositoriesFileError(
+                    f'Failed to read {REPOSITORIES_FILE}: {e}') from e
+            cls._instance = cls(content)
+        return cls._instance
+
+    # -- access -------------------------------------------------------------
+
+    def __iter__(self) -> Iterator[Repository]:
+        """Every repository, longest path first."""
+        return iter(self._repositories)
+
+    def __len__(self) -> int:
+        return len(self._repositories)
+
+    @property
+    def chromium(self) -> Repository:
+        """Chromium's own `src`, which the file always lists."""
+        return repository.chromium
+
+    def find(self, path: PurePath) -> Repository | None:
+        """The repository rooted exactly at `path`, relative to `src/`.
+
+        None where no repository is rooted there, which is how a patch
+        directory plaster does not manage is told apart from one it does.
+        """
+        return next((repo for repo in self._repositories
+                     if repo.relative_to_chromium == path), None)
+
+    def split(self, source: PurePath) -> tuple[Repository, PurePath]:
+        """The repository holding `source`, and the path of it within.
+
+        `source` is relative to `src/`. The most specific repository claims
+        it, and anything carrying no repository's prefix falls to chromium's
+        own `src`.
+        """
+        for repo in self._repositories:
+            try:
+                return repo, PurePath(
+                    source.relative_to(repo.relative_to_chromium))
+            except ValueError:
+                continue  # A different repository's prefix, or none.
+        # `src` is relative to every path and the file is required to list it,
+        # so a validated instance never reaches this.
+        raise RepositoriesFileError(
+            f'{REPOSITORIES_FILE}: no repository holds {str(source)!r}')
+
+    # -- parsing ------------------------------------------------------------
+
+    def _parse(self, content: bytes) -> tuple[Repository, ...]:
+        """Parse and validate the repositories file's bytes.
+
+        One repository per line, `#` opening a comment, as the other `.cfg`
+        files in the tree are written. Each is a gn-style source-absolute
+        path, `//` being the source root, `src/`, so `//v8` is `src/v8` and
+        `//` on its own is `src` itself.
+        """
+        prefix = self.SOURCE_ROOT_PREFIX
+        paths: list[PurePath] = []
+        for line_number, raw_line in enumerate(
+                content.decode('utf-8').splitlines(), 1):
+            line = raw_line.split('#', 1)[0].strip()
+            if not line:
+                continue
+            # The prefix each RepositoriesFileError carries, naming the line it
+            # was read from, as the other `.cfg` readers in the tree do.
+            at_line = f'{REPOSITORIES_FILE}:{line_number}: repository path'
+            if not line.startswith(prefix):
+                raise RepositoriesFileError(
+                    f'{at_line} {line!r} must be source-absolute, i.e. start '
+                    f'with `{prefix}`, which is `src/`')
+            candidate = PurePath(line[len(prefix):].strip('/'))
+            # A path is a prefix of both a `rewrite/` and a `patches/` path,
+            # so anything that does not stay inside those trees cannot be
+            # resolved against them.
+            if candidate.is_absolute() or '..' in candidate.parts:
+                raise RepositoriesFileError(
+                    f'{at_line} {line!r} must stay under `{prefix}` and '
+                    f'cannot traverse upwards')
+            if candidate in paths:
+                raise RepositoriesFileError(
+                    f'{at_line} {line!r} is listed more than once')
+            paths.append(candidate)
+
+        # The empty path is `src` itself, which every patch outside another
+        # repository belongs to, so nothing resolves without it.
+        if PurePath() not in paths:
+            raise RepositoriesFileError(
+                f'{REPOSITORIES_FILE}: does not list chromium\'s own `src`; '
+                f'add a `{prefix}` line for it')
+
+        # Longest first, so the most specific repository claims a path,
+        # leaving `src` last as the fallback for everything unprefixed.
+        return tuple(
+            self._repository_at(path) for path in sorted(
+                paths, key=lambda p: len(p.parts), reverse=True))
+
+    @staticmethod
+    def _repository_at(path: PurePath) -> Repository:
+        """The `Repository` rooted at `path`, relative to `src/`."""
+        # `src` is named directly rather than joined as an empty path, so the
+        # instance compares equal to `repository.chromium` and keeps reporting
+        # `is_chromium`.
+        if not path.parts:
+            return repository.chromium
+        return Repository(repository.chromium.root / path)
+
+
+@dataclass(frozen=True)
+class PlasterTarget:
+    """What a plaster file targets: a source in a repository, and its patch.
+
+    A plaster lives at `rewrite/<path>.yaml`, where `<path>` is its target
+    source relative to chromium's `src/`. That path alone says which
+    repository holds the source, since a repository plaster supports occupies
+    its own prefix of the `rewrite/` tree (see `Repositories`).
+
+    Splitting it back out is what the rest of the tool needs: git commands run
+    in the owning repository and take a path relative to it, and a `.patchinfo`
+    records its `appliesTo` path the same way.
+    """
+
+    # The repository holding the source.
+    repository: Repository
+
+    # The source, relative to `repository`'s root. This is the path git
+    # commands take, and the one a `.patchinfo` records under `appliesTo`.
+    source: PurePath
+
+    # The patch file, relative to cwd like every other path in the tool.
+    patch: Path
+
+    @property
+    def patchinfo(self) -> Path:
+        """The patch's `.patchinfo` metadata file."""
+        return self.patch.with_suffix('.patchinfo')
+
+    @property
+    def source_path(self) -> Path:
+        """The source as a path from cwd, for reading it off disk."""
+        return Path(self.repository.from_brave(self.source))
+
+    @staticmethod
+    def resolve(plaster_file: Path) -> PlasterTarget:
+        """The target of the plaster file at `plaster_file`.
+
+        Raises:
+            PlasterError: if the path is not under `rewrite/`, or names a
+                repository prefix with no source after it.
+        """
+        try:
+            relative = PurePath(
+                Path(plaster_file).relative_to(PLASTER_FILES_PATH))
+        except ValueError:
+            raise PlasterError(
+                f'Plaster file is not under {PLASTER_FILES_PATH}: '
+                f'{plaster_file}') from None
+        # `rewrite/base/foo.cc.yaml` -> `base/foo.cc`, the source relative to
+        # `src/`, which is what carries the repository prefix.
+        repo, source = Repositories.load().split(relative.with_suffix(''))
+        if not source.parts:
+            raise PlasterError(
+                f'Plaster file names repository '
+                f'{str(repo.relative_to_chromium)!r} but no source within it: '
+                f'{plaster_file}')
+        return PlasterTarget(
+            repository=repo,
+            source=source,
+            # A patch sits in its repository's directory under `patches/`,
+            # named after the source with its separators flattened.
+            patch=(PATCHES_PATH / repo.relative_to_chromium /
+                   f'{source.as_posix().replace("/", "-")}.patch'))
+
+
+def plaster_for_patch(patch_path: PurePath) -> Path | None:
+    """The plaster file that would generate `patch_path`, or None.
+
+    `patch_path` is brave-relative, i.e. `patches/[<repository>/]<name>.patch`.
+    The result is the path a plaster file for it would occupy, which is not
+    necessarily a file that exists.
+
+    None means the patch is not one plaster could own: a repository plaster
+    does not support is left to be patched by hand, rather than reported as an
+    error, so passing a whole directory of changed patches stays harmless.
+    """
+    if patch_path.suffix != '.patch':
+        return None
+    parts = patch_path.parts
+    if len(parts) < 2 or parts[0] != 'patches':
+        return None
+    prefix = PurePath(*parts[1:-1])
+    if Repositories.load().find(prefix) is None:
+        return None
+    # Only the file name is flattened; the directories above it are the
+    # repository's own path and are already separated.
+    source = patch_path.name[:-len('.patch')].replace('-', '/')
+    return PLASTER_FILES_PATH / prefix / f'{source}{PLASTER_EXTENSION}'
 
 
 @dataclass
@@ -280,10 +544,14 @@ class PatchinfoBuilder:
     # SHA-256 checksum of the plaster file contents.
     plaster_checksum: str | None = field(init=False)
 
-    # The relative path to the source file that the plaster file applies to.
-    # This field is kept separate to allow the use in git commands to the
-    # repository.
-    source: Path = field(init=False)
+    # The repository the plaster patches, and the source and patch paths
+    # within it.
+    target: PlasterTarget = field(init=False)
+
+    # The path to the source file that the plaster file applies to, relative
+    # to the repository holding it. This field is kept separate to allow the
+    # use in git commands to the repository.
+    source: PurePath = field(init=False)
 
     # PathChecksumPair object representing the target source file.
     source_with_checksum: PathChecksumPair = field(init=False)
@@ -300,21 +568,13 @@ class PatchinfoBuilder:
         self.plaster_checksum = hashlib.sha256(
             self.plaster_contents.encode()).hexdigest()
 
-        # Setup source file (path derived from plaster file, no extension).
-        self.source = self.plaster_file.relative_to(
-            PLASTER_FILES_PATH).with_suffix('')
-        self.source_with_checksum = PathChecksumPair(
-            Path(repository.chromium.from_brave(self.source)))
-
-        # Setup patch file (named based on source path, with dashes).
-        self.patch = PathChecksumPair(
-            PATCHES_PATH /
-            f'{str(PurePath(self.source).as_posix()).replace("/", "-")}.patch')
-
-        # Setup patchinfo metadata file (same as the patch .patchinfo
-        # extension).
-        self.patchinfo = PathChecksumPair(
-            self.patch.path.with_suffix('.patchinfo'))
+        # The plaster path says which repository it patches and where its
+        # source and patch sit within it.
+        self.target = PlasterTarget.resolve(self.plaster_file)
+        self.source = self.target.source
+        self.source_with_checksum = PathChecksumPair(self.target.source_path)
+        self.patch = PathChecksumPair(self.target.patch)
+        self.patchinfo = PathChecksumPair(self.target.patchinfo)
 
         # This is set relative, so it gets validated to be under the
         # brave-core root.
@@ -363,7 +623,7 @@ class PatchinfoBuilder:
         # `GIT_CONFIG_GLOBAL` is repointed at an empty file instead of
         # `~/.gitconfig`, and `GIT_CONFIG_NOSYSTEM` drops `/etc/gitconfig`. This
         # is done to prevent certain user tools from mangling the diff.
-        content = repository.chromium.run_git(
+        content = self.target.repository.run_git(
             '-c',
             f'core.attributesFile={PLASTER_GITATTRIBUTES_PATH}',
             '-c',
@@ -559,6 +819,13 @@ _NAMESPACES: Final = (
     RewriterNamespace(name='js',
                       ast_grep_language='js',
                       suffixes=frozenset({'.js', '.json5'})),
+    # TypeScript gets its own namespace rather than riding on `js`: the JS
+    # grammar chokes on the type syntax WebUI sources are full of (`declare
+    # global`, type annotations, `as` casts), which would leave a matcher
+    # searching a partially-parsed tree.
+    RewriterNamespace(name='ts',
+                      ast_grep_language='ts',
+                      suffixes=frozenset({'.ts'})),
 )
 
 _NAMESPACE_BY_NAME: Final = MappingProxyType(
@@ -1494,14 +1761,16 @@ class CxxAfterFunctionImplRewriter(_AstGrepRewriter):
           bound to the wrapped body's return value (`T <result_var> = [&]() ->
           T { ... }();`) so the appended `code` can use it. When set, the
           appended `code` owns the function's final `return`.
+        - `lambda_return_type` — optional. Used to specify a particular return
+          type for the lambda.
 
         Each overload sharing the name is one match, so an overloaded method
         needs a matching `count`.
 
         The return type is taken from the definition as upstream spells it,
-        including a trailing `-> T`. A constructor or destructor has none, so
-        the lambda there returns `void`; pair one with `result_var` and the
-        generated code will not compile.
+        including a trailing `-> T`, while for constructors and destructors the
+        return type is `void`. `lambda_return_type` is provided to permit users
+        to specify a particular return type for the lambda if needed.
 
         This rewriter is not supported with macros (`NOINLINE bool Foo::Bar()`).
         See `blank_macros_for_ast_parsing` for more details.
@@ -1544,18 +1813,24 @@ class CxxAfterFunctionImplRewriter(_AstGrepRewriter):
         ```
     """
 
-    def __init__(self, *, function_name: str, result_var: str, epilogue: str):
+    def __init__(self, *, function_name: str, result_var: str, epilogue: str,
+                 lambda_return_type: str):
         super().__init__()
         self._function_name = function_name
         self._result_var = result_var
         self._epilogue = epilogue
+        self._lambda_return_type = lambda_return_type
 
     def operations(self, count: int) -> list[Operation]:
         # Escape backslashes last, since the text is spliced into a `re.sub`
         # replacement where a backslash is special. `result_var` is empty for a
         # void wrap, which the op's `when_set` renders as no declaration at
-        # all. The lambda's return type is not passed here: it is a capture the
-        # engine reads off each match.
+        # all. The lambda's return type goes in as `return_type`, the name of
+        # the capture the op lists in `capture_overrides`: empty leaves the
+        # engine to read the function's own type off each match, and the
+        # entry's `lambda_return_type` spelling keeps the two apart for the
+        # caller, who is stating what the lambda returns, not what the
+        # function does.
         epilogue = _indent_yaml(self._epilogue).replace('\\', '\\\\')
         return [
             Operation(
@@ -1563,6 +1838,7 @@ class CxxAfterFunctionImplRewriter(_AstGrepRewriter):
                     'function_name': self._function_name,
                     'result_var': self._result_var,
                     'epilogue': epilogue,
+                    'return_type': self._lambda_return_type,
                 }, MatchExpectation.from_count(count))
         ]
 
@@ -1573,11 +1849,13 @@ class CxxAfterFunctionImplRewriter(_AstGrepRewriter):
 
         Requires `function_name` and `code`. `result_var` is optional and, when
         given, binds the wrapped body's value to `auto <result_var>`.
+        `lambda_return_type` is optional and, when given, is what the lambda
+        returns instead of the type read off the definition.
         """
         if not isinstance(body, dict):
             raise ValueError(
                 f'"{cls.NAME}" must be a mapping (in "{description}")')
-        allowed = {'function_name', 'code', 'result_var'}
+        allowed = {'function_name', 'code', 'result_var', 'lambda_return_type'}
         unknown = sorted(set(body) - allowed)
         if unknown:
             raise ValueError(
@@ -1592,20 +1870,26 @@ class CxxAfterFunctionImplRewriter(_AstGrepRewriter):
             raise ValueError(f'{cls.NAME} `code` must be a non-empty string '
                              f'(in "{description}")')
         return cls(function_name=body['function_name'],
-                   result_var=cls._resolve_result_var(body, description),
-                   epilogue=code)
+                   result_var=cls._optional_arg(body, 'result_var',
+                                                description),
+                   epilogue=code,
+                   lambda_return_type=cls._optional_arg(
+                       body, 'lambda_return_type', description))
 
     @classmethod
-    def _resolve_result_var(cls, body: dict, description: str) -> str:
-        """The name to bind the wrapped body's value to, or '' for a void wrap.
+    def _optional_arg(cls, body: dict, key: str, description: str) -> str:
+        """An optional arg's value, or '' when the entry omits it.
+
+        Empty means "leave it to the engine": no result variable to declare,
+        or a return type read off each match instead of stated here.
         """
-        if 'result_var' not in body:
+        if key not in body:
             return ''
-        result_var = body['result_var']
-        if not isinstance(result_var, str) or not result_var:
-            raise ValueError(f'{cls.NAME} `result_var` must be a non-empty '
+        value = body[key]
+        if not isinstance(value, str) or not value:
+            raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
                              f'string (in "{description}")')
-        return result_var
+        return value
 
 
 class CxxRenameClassRewriter(_AstGrepRewriter):
@@ -2248,6 +2532,11 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
           e.g. `is_android`. It is appended inside the target's own
           `if (<condition>)`, or that conditional is added after the list's
           assignment when the target does not have it.
+        - `type` — optional call declaring the target, e.g. `source_set`,
+          narrowing `target` to that declaration.
+        - `template` — optional `template()` holding the target, e.g.
+          `generate_bindings`, for a target declared through `target_name`
+          in a file where more than one template does so.
         - `assume_defined` — optional flag indicating that the attribute has
           been defined elsewhere, always using `+=` for assignment.
 
@@ -2304,9 +2593,14 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
     _ANY_CONDITION: Final = '.'
 
     def __init__(self, *, target: str, list_name: str, literal: str,
-                 import_path: str, conditional: str, assume_defined: bool):
+                 import_path: str, conditional: str, assume_defined: bool,
+                 target_type: str, template: str):
         super().__init__()
         self._target = target
+        # Empty when the plaster entry gave no `type:`.
+        self._target_type = target_type
+        # Empty when the plaster entry gave no `template:`.
+        self._template = template
         self._list_name = list_name
         self._literal = literal
 
@@ -2354,7 +2648,12 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
         when the target has none, mirroring how a value would be added by
         hand. A target that is not declared exactly once is refused first.
         """
-        inputs = {'target': self._target, 'list_name': self._list_name}
+        inputs = {
+            'target': self._target,
+            'type': _gn_type_pattern(self._target_type),
+            **_gn_template_inputs(self._template),
+            'list_name': self._list_name,
+        }
         # This rewriter only supports count one, so if an attribute is declared
         # more than once, in different conditional branches, we error out.
         bodies = engine.matches(Operation(self._ASSIGN_NEW, inputs))
@@ -2364,8 +2663,9 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
         if len(bodies) > 1:
             return (f'{self.NAME} found {len(bodies)} declarations of target '
                     f'{self._target!r} and cannot tell which one the literal '
-                    f'belongs in; a target declared once per `if`/`else` '
-                    f'branch has to be patched by hand')
+                    f'belongs in; name what declares the one you mean with '
+                    f'`type:` or the template holding it with `template:`, or '
+                    f'patch it by hand')
 
         if self._conditional:
             return self._add_conditional_literal(engine, inputs)
@@ -2494,7 +2794,7 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
             raise ValueError(
                 f'"{cls.NAME}" must be a mapping (in "{description}")')
         required = {'target', 'list_name', 'literal'}
-        optional = {'import', 'conditional'}
+        optional = {'import', 'conditional', 'type', 'template'}
         flags = {'assume_defined'}
         unknown = sorted(set(body) - required - optional - flags)
         if unknown:
@@ -2527,7 +2827,34 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
                    literal=body['literal'],
                    import_path=body.get('import', ''),
                    conditional=body.get('conditional', ''),
-                   assume_defined=assume_defined)
+                   assume_defined=assume_defined,
+                   target_type=body.get('type', ''),
+                   template=body.get('template', ''))
+
+
+def _gn_type_pattern(target_type: str) -> str:
+    """The regex matching the call that declares a target.
+
+    A matcher always carries the constraint, so an entry naming no `type:`
+    passes a pattern matching whichever call it happens to be.
+    """
+    return f'^{re.escape(target_type)}$' if target_type else '.'
+
+
+# A pattern no text matches, for switching off a branch of a matcher's `any`.
+_GN_NEVER: Final = r'\b\B'
+
+
+def _gn_template_inputs(template: str) -> dict[str, str]:
+    """The inputs confining a target matcher to one `template()`, or not.
+
+    With no template named, `unscoped` matches anything, which satisfies the
+    matcher's scope on its own; with one, it matches nothing, leaving only
+    the branch that places the target inside that template.
+    """
+    if not template:
+        return {'template': '.', 'unscoped': '.'}
+    return {'template': f'^"{re.escape(template)}"$', 'unscoped': _GN_NEVER}
 
 
 def _add_gn_import(engine: AstRewriter, import_path: str,
@@ -2711,7 +3038,7 @@ class GnAddLiteralToVariableRewriter(_GnVariableRewriter):
           `.gni` the file does not already import. Added at the top of the
           file if not present.
 
-        - `assume_defined` — optional flag indicating that a variable is asusmed
+        - `assume_defined` — optional flag indicating that a variable is assumed
           to have been defined elsewhere, always using `+=` for assignment.
           Without it the variable has to be assigned by the file being patched.
 
@@ -2809,6 +3136,152 @@ class GnSubtractLiteralFromVariableRewriter(_GnVariableRewriter):
         return super()._apply_literal(engine)
 
 
+class GnAppendToTargetRewriter(_AstGrepRewriter):
+    """Appends free-form code to the end of a GN target's body."""
+
+    NAME: Final = 'append_to_target'
+    OP_ID: Final = 'gn.append_code_to_body'
+    SUMMARY: Final = "Append code to the end of a GN target's body."
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Appends `code` as the last statements of a GN target's body, for the
+        additions no single list append expresses.
+
+        Before resorting to this rewriter, attempt more specific ones, for
+        instance `add_literal_to_list`, only appending raw code to a target when
+        necessary.
+
+        Fields:
+
+        - `target` — the target to append to, e.g. `browser` for
+          `static_library("browser")`.
+        - `code` — the statements to append. Write it flush-left; the whole
+          block is indented to the target's body level for you.
+        - `type` — optional call declaring the target, e.g. `source_set`,
+          narrowing `target` to that declaration.
+        - `template` — optional `template()` holding the target, e.g.
+          `generate_bindings`, for a target declared through `target_name`
+          in a file where more than one template does so.
+
+        Example:
+
+        ```yaml
+        substitutions:
+          - description: Add the Brave color mixers.
+            append_to_target:
+              target: color
+              code: |-
+                sources += brave_color_sources
+                deps += brave_color_deps
+        ```
+
+        ```diff
+         component("color") {
+           sources = [ "color_mixers.cc" ]
+        +  sources += brave_color_sources
+        +  deps += brave_color_deps
+         }
+        ```
+    """
+
+    # Locates the target's body, one match per declaration of it.
+    _FIND_BODY: Final = 'gn.append_code_to_body'
+
+    # One level of GN body indentation. gn format fixes this at two spaces.
+    _BODY_INDENT: Final = '  '
+
+    def __init__(self, *, target: str, code: str, target_type: str,
+                 template: str):
+        super().__init__()
+        self._target = target
+        self._code = code
+        # Empty when the plaster entry gave no `type:`.
+        self._target_type = target_type
+        # Empty when the plaster entry gave no `template:`.
+        self._template = template
+
+    @classmethod
+    def validate_count(cls, count: int, description: str) -> None:
+        # The code is appended once, so no other count means anything here.
+        if count != 1:
+            raise ValueError(f'{cls.NAME} appends the code exactly once and '
+                             f'does not accept a count other than 1 '
+                             f'(in "{description}")')
+
+    def apply(
+        self,
+        contents: str,
+        *,
+        count: int,
+        description: str,
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+    ) -> tuple[str, list[str]]:
+        del count  # Rejected by `validate_count`; always applies once.
+        engine = AstRewriter(RewritersEval.load(),
+                             contents,
+                             blank_for_parse=blank_for_parse)
+        error = self._append_code(engine)
+        return engine.content, [f'{error} (in "{description}")'
+                                ] if error else []
+
+    def _append_code(self, engine: AstRewriter) -> str | None:
+        """Append the code to the target's body; a failure, or None."""
+        inputs = {
+            'target': self._target,
+            'type': _gn_type_pattern(self._target_type),
+            **_gn_template_inputs(self._template),
+        }
+        bodies = engine.matches(Operation(self._FIND_BODY, inputs))
+        if not bodies:
+            return f'{self.NAME} found no body for target {self._target!r}'
+        if len(bodies) > 1:
+            return (f'{self.NAME} found {len(bodies)} declarations of target '
+                    f'{self._target!r} and cannot tell which one the code '
+                    f'belongs in; name what declares the one you mean with '
+                    f'`type:` or the template holding it with `template:`, or '
+                    f'append to it by hand')
+        # The brace closing the body has a line of its own to read a column
+        # off, which the code then sits one level in from.
+        indent = _leading_indent(engine.content.encode('utf-8'),
+                                 bodies[0].end - 1)
+        op = Operation(
+            self._FIND_BODY, {
+                **inputs,
+                'code': _indent_code(self._code,
+                                     len(indent) + len(self._BODY_INDENT)),
+                'indent': indent,
+            }, MatchExpectation.exactly(1))
+        return op.expectation.error_for(engine.run(op))
+
+    @classmethod
+    def parse(cls, body: object, *,
+              description: str) -> GnAppendToTargetRewriter:
+        """Validate an `append_to_target:` body of string args."""
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")')
+        required = {'target', 'code'}
+        optional = {'type', 'template'}
+        unknown = sorted(set(body) - required - optional)
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+        missing = sorted(required - set(body))
+        if missing:
+            raise ValueError(f'{cls.NAME} requires arg(s): '
+                             f'{", ".join(missing)} (in "{description}")')
+        for key in sorted(required | optional):
+            value = body.get(key, '')
+            if not isinstance(value, str) or (key in body and not value):
+                raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
+                                 f'string (in "{description}")')
+        return cls(target=body['target'],
+                   code=body['code'],
+                   target_type=body.get('type', ''),
+                   template=body.get('template', ''))
+
+
 class GnAddImportRewriter(_AstGrepRewriter):
     """Adds an `import()` to the top of a gn file.
 
@@ -2898,21 +3371,61 @@ class GnAddImportRewriter(_AstGrepRewriter):
                              f'string (in "{description}")')
         return cls(import_path=import_path)
 
+
+class TsDropCustomElementRegistrationRewriter(_AstGrepRewriter):
+    """Remove a WebUI element's `customElements.define` call."""
+
+    NAME: Final = 'drop_custom_element_registration'
+    OP_ID: Final = 'ts.drop_custom_element_registration'
+    SUMMARY: Final = "Remove a class's `customElements.define` registration."
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Removes the `customElements.define(...)` call registering `class_name`,
+        so a Brave subclass in `chromium_src/` can register the tag instead.
+
+        Fields:
+
+        - `class_name` — the element class whose registration to remove.
+
+        Example:
+
+        ```yaml
+        substitutions:
+          - description: >-
+              Free `settings-search-page` so the Brave subclass can claim it.
+            drop_custom_element_registration:
+              class_name: SettingsSearchPageElement
+        ```
+
+        ```diff
+          }
+         }
+        -
+        -customElements.define(SettingsSearchPageElement.is, SettingsSearchPageElement);
+        ```
+    """
+
+    @classmethod
+    def validate_count(cls, count: int, description: str) -> None:
+        # A tag can only be registered once, so a class has exactly one
+        # registration to remove and no other count means anything.
+        if count != 1:
+            raise ValueError(f'{cls.NAME} removes a single registration and '
+                             f'does not accept a count other than 1 '
+                             f'(in "{description}")')
+
+
 # The hand-written rewriters. `_REWRITERS` is assembled from these plus the
 # ones generated from `rewriters.pyl` for `RegexMacro`.
-_DECLARED_REWRITERS: Final = (AllRegexRewriter, CxxMakeVirtualRewriter,
-                              CxxAddFriendRewriter, CxxDropFinalRewriter,
-                              CxxPreemptFunctionImplRewriter,
-                              CxxAfterFunctionImplRewriter,
-                              CxxRenameClassRewriter,
-                              CxxAddToProtectedRewriter,
-                              CxxAddToPublicRewriter,
-                              CxxAddEnumEntriesRewriter,
-                              JsSetBlinkRuntimeEnabledFeatureStateRewriter,
-                              GnAddLiteralToListRewriter,
-                              GnAddLiteralToVariableRewriter,
-                              GnSubtractLiteralFromVariableRewriter,
-                              GnAddImportRewriter)
+_DECLARED_REWRITERS: Final = (
+    AllRegexRewriter, CxxMakeVirtualRewriter, CxxAddFriendRewriter,
+    CxxDropFinalRewriter, CxxPreemptFunctionImplRewriter,
+    CxxAfterFunctionImplRewriter, CxxRenameClassRewriter,
+    CxxAddToProtectedRewriter, CxxAddToPublicRewriter,
+    CxxAddEnumEntriesRewriter, JsSetBlinkRuntimeEnabledFeatureStateRewriter,
+    GnAddLiteralToListRewriter, GnAddLiteralToVariableRewriter,
+    GnSubtractLiteralFromVariableRewriter, GnAddImportRewriter,
+    GnAppendToTargetRewriter, TsDropCustomElementRegistrationRewriter)
 
 
 class RewriterRegistry:
@@ -3016,12 +3529,10 @@ class PlasterFile:
         tooling, which warrent checksum checks for all of them, and at that
         point if any of the checksum values don't match, we do return True.
         """
-        source_relative = self.path.relative_to(
-            PLASTER_FILES_PATH).with_suffix('')
-        source_path = Path(repository.chromium.from_brave(source_relative))
-        patch_stem = source_relative.as_posix().replace('/', '-')
-        patch_path = PATCHES_PATH / f'{patch_stem}.patch'
-        patchinfo_path = PATCHES_PATH / f'{patch_stem}.patchinfo'
+        target = PlasterTarget.resolve(self.path)
+        source_path = target.source_path
+        patch_path = target.patch
+        patchinfo_path = target.patchinfo
 
         # Only the plaster file itself is guaranteed to exist here; any
         # of the other files may be missing and that is by itself a
@@ -3081,7 +3592,7 @@ class PlasterFile:
         else:
             raise ValueError(f'Unsupported plaster file extension: {suffix}')
         try:
-            contents = repository.chromium.read_file(info.source)
+            contents = info.target.repository.read_file(info.source)
         except subprocess.CalledProcessError as e:
             raise OrphanedPlasterError(
                 f'Failed to read the source targeted by {self.path} from '
@@ -3119,36 +3630,6 @@ class PlasterFile:
                     f"Plaster file needs to be reapplied: {self.path}")
         else:
             info.save_patchinfo_if_changed()
-
-
-class PlasterError(Exception):
-    """Base class for errors reported by the plaster tool."""
-
-
-class PlasterFileNeedsRegen(PlasterError):
-    pass
-
-
-class OrphanedPlasterError(PlasterError):
-    """Raised when a plaster's target source cannot be read from git.
-
-    Typically this means the upstream file was moved or deleted, so the plaster
-    now points at a path that no longer exists in HEAD.
-    """
-
-
-class PlasterApplyError(PlasterError):
-    """Raised when applying a plaster file produces substitution errors."""
-
-    def __init__(self, errors: list[str]):
-        self.errors = errors
-        super().__init__(
-            'There were errors attempting to apply the patches:\n' +
-            '\n'.join(errors))
-
-
-class RewritersSchemaError(PlasterError):
-    """Raised when `rewriters.pyl` does not conform to the expected schema."""
 
 
 def _is_regex(pattern: str) -> bool:
@@ -3270,10 +3751,15 @@ _MATCHER_SCHEMA = {
 # templates it feeds in `_check_cross_references`); `replace` may name adjacent
 # tokens to fold into each rewritten span, which are `{input}`-formatted like
 # `replace` itself. `first_match`, when true, rewrites only the first match (in
-# source order) and ignores any later ones.
+# source order) and ignores any later ones. `capture_overrides` names matcher
+# captures the caller may supply directly, as an input of the same name: a set
+# one wins and the match is not read for it, an unset one leaves the capture to
+# resolve as usual. An input may not otherwise share a capture's name, so
+# listing it here is what makes that precedence visible at the spec.
 _REWRITER_SCHEMA = {
     'matcher': _NON_EMPTY_STR,
     'inputs': [str],
+    schema.Optional('capture_overrides'): [_CAPTURE_NAME],
     schema.Optional('first_match'): bool,
     schema.Optional('when_set'): {
         _NON_EMPTY_STR: _NON_EMPTY_STR
@@ -3521,7 +4007,8 @@ class RewritersEval:
                     f'{", ".join("$" + m for m in unbound)}')
 
     def _check_rewriter_interface(self, op_id: str, spec: dict) -> None:
-        """A rewriter's matcher, result node and `inputs` must all line up."""
+        """A rewriter's matcher, result node, `inputs` and `capture_overrides`
+        must all line up."""
         ref = spec['matcher']
         if ref not in self._matchers:
             raise RewritersSchemaError(
@@ -3537,12 +4024,14 @@ class RewritersEval:
 
         declared = set(spec['inputs'])
         captures = set(matcher['result'].get('captures', {}))
+        overrides = set(spec.get('capture_overrides', []))
         shadowed = sorted(declared & captures)
         if shadowed:
             raise RewritersSchemaError(
                 f'{self._source}: rewriter {op_id!r} declares input(s) '
                 f'that shadow matcher {ref!r} capture(s): '
-                f'{", ".join(shadowed)}')
+                f'{", ".join(shadowed)}; list them in `capture_overrides` to '
+                f'let a caller-supplied value win instead')
 
         when_set = spec.get('when_set', {})
         undeclared_optional = sorted(set(when_set) - declared)
@@ -3569,6 +4058,21 @@ class RewritersEval:
             raise RewritersSchemaError(
                 f'{self._source}: rewriter {op_id!r} declares input(s) '
                 f'never used in its templates: {", ".join(unused)}')
+
+        # An override stands in for a capture the templates render, so one
+        # naming anything else is a value no caller could ever supply.
+        unknown_overrides = sorted(overrides - captures)
+        if unknown_overrides:
+            raise RewritersSchemaError(
+                f'{self._source}: rewriter {op_id!r} overrides capture(s) '
+                f'matcher {ref!r} does not produce: '
+                f'{", ".join(unknown_overrides)}')
+        unused_overrides = sorted(overrides - used)
+        if unused_overrides:
+            raise RewritersSchemaError(
+                f'{self._source}: rewriter {op_id!r} overrides capture(s) '
+                f'never used in its templates: '
+                f'{", ".join(unused_overrides)}')
 
     def _check_regex_macro_interface(self, op_id: str, spec: dict) -> None:
         """A regex macro's `pattern`/`replace` fields and declared `inputs`
@@ -4068,8 +4572,12 @@ class AstRewriter:
         """Which of the matcher's captures `op`'s templates actually read.
 
         An unset optional input's `when_set` template never renders, so nothing
-        it reads is needed. Inputs are fixed for the whole op, so which
-        templates render is settled once rather than per match.
+        it reads is needed. A capture the op lists in `capture_overrides` is
+        not needed either once the op supplies a value for it: the input fills
+        the placeholder, so there is nothing left to read off the match (and no
+        way for a match that cannot resolve it to fail). Inputs are fixed for
+        the whole op, so which templates render is settled once rather than per
+        match.
         """
         replace = rewriter['replace']
         when_set = rewriter.get('when_set', {})
@@ -4081,7 +4589,13 @@ class AstRewriter:
               for name, template in when_set.items() if op.inputs.get(name)),
         ]
         used = set().union(*map(_placeholders, rendered))
-        return used & matcher['result'].get('captures', {}).keys()
+        overridden = {
+            name
+            for name in rewriter.get('capture_overrides', [])
+            if op.inputs.get(name)
+        }
+        needed = used & matcher['result'].get('captures', {}).keys()
+        return needed - overridden
 
     def _values_for(self, rewriter: dict, matcher: dict, match: AstMatch,
                     op: Operation, needed: set[str]) -> dict[str, str]:
@@ -4090,6 +4604,10 @@ class AstRewriter:
         An optional input renders through its `when_set` template, or as
         nothing when unset. Every such template sees the same unexpanded
         values, so one optional input cannot depend on another's expansion.
+
+        A capture resolved off the match wins over a same-named input, which
+        is what makes `capture_overrides` work: `needed` already drops a
+        capture the op overrode, so the input's value is the one left standing.
         """
         values = op.inputs | self._resolve_captures(matcher, match, needed,
                                                     op.op_id)
@@ -4201,7 +4719,8 @@ class RegexMacroEngine:
         rendered with `inputs` via `str.format` before being handed to
         `re.subn`, so the macro's own backreferences (`\\1`) reach `re.subn`
         untouched. `re_pattern` gets each input escaped first though to avoid
-        confusion.
+        confusion, and `replace` gets each input's backslashes escaped, so an
+        input is inserted verbatim rather than read as a regex escape.
         """
         spec = self._rewriters.regex_macro(op_id)
         declared = frozenset(entry['name'] for entry in spec['inputs'])
@@ -4218,7 +4737,10 @@ class RegexMacroEngine:
             pattern = re_pattern.format(**escaped_inputs)
         else:
             pattern = re.escape(spec['pattern'].format(**inputs))
-        replace = spec['replace'].format(**inputs)
+        replace = spec['replace'].format(**{
+            key: value.replace('\\', '\\\\')
+            for key, value in inputs.items()
+        })
         flags = _parse_re_flags(spec.get('re_flags', []), op_id)
         self._source, matches = re.subn(pattern,
                                         replace,
@@ -4357,6 +4879,11 @@ class GnEditSandbox:
     # The name gn expects of a build file.
     _BUILD_FILE_NAME: Final = 'BUILD.gn'
 
+    # What gn writes into a build file instead of editing it, when the edit is
+    # ambiguous. It opens a comment carrying the command that could not be
+    # applied, e.g. `# TODO(gn edit: remove deps //win): ...`.
+    _AMBIGUITY_NOTE: Final = '# TODO(gn edit:'
+
     def __init__(self, contents: str):
         # The build file text as it arrived, kept to tell afterwards whether
         # gn actually changed anything.
@@ -4393,7 +4920,8 @@ class GnEditSandbox:
 
         Raises `GnEditError` when gn refuses the edit, which covers both a
         malformed command and a pattern matching no target, either way an error
-        in the plaster that named it.
+        in the plaster that named it, and when gn leaves a note in place of the
+        edit (see `_AMBIGUITY_NOTE`).
         """
         assert self._build_file is not None
         root = self._build_file.parent
@@ -4409,6 +4937,16 @@ class GnEditSandbox:
             raise GnEditError('the gn binary is missing') from e
 
         contents = self._build_file.read_text(encoding='utf-8')
+        # An edit gn considers ambiguous, as one against a conditional
+        # attribute is, leaves a note asking for the decision to be made by
+        # hand -- and still reports the file as changed, so the note would
+        # otherwise be committed to the patch as though it were the edit.
+        if (self._AMBIGUITY_NOTE in contents
+                and self._AMBIGUITY_NOTE not in self._contents):
+            raise GnEditError(
+                'gn edit left a note rather than editing, which it does where '
+                'the attribute is conditional; that edit has to be made by '
+                'hand')
         return GnEditOutcome(contents=contents,
                              changed=contents != self._contents)
 
@@ -4509,8 +5047,8 @@ class GnEditRewriter(Rewriter):
         # report: the values are all present already, so the substitution has
         # become redundant and should be removed from the plaster.
         errors = [] if outcome.changed else [
-            f'{self.NAME} changed nothing (in "{description}"); the target '
-            f'already carries every value it would add'
+            f'{self.NAME} changed nothing (in "{description}"); the target is '
+            f'already in the state the entry describes'
         ]
         return engine.content, errors
 
@@ -4628,21 +5166,36 @@ _REWRITERS: Final = RewriterRegistry(
 def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
     """Returns plaster files matching the provided file paths.
 
+    A path may be a plaster file under `rewrite/`, or the patch one generates
+    under `patches/`. Passing `.repositories.cfg`, which decides the repository
+    every plaster targets, returns all of them.
+
     If no file paths are provided, all plaster files are returned.
     """
     if not filepaths:
         return PlasterFile.find_all()
 
+    # The repositories file decides which repository every plaster targets, so
+    # a change to it puts every plaster file in question rather than any
+    # particular one.
+    repositories_path = REPOSITORIES_FILE.relative_to(
+        repository.brave.root).as_posix()
+
     expected_plaster_files = set()
     for filepath in filepaths:
         filepath = PurePath(filepath).as_posix()
+        if filepath == repositories_path:
+            return PlasterFile.find_all()
         if filepath.startswith('patches/') and filepath.endswith('.patch'):
-            base = filepath[len('patches/'):-len('.patch')]
-            stem = f'rewrite/{base.replace("-", "/")}'
-            expected_plaster_files.add(f'{stem}{PLASTER_EXTENSION}')
+            # A patch in a repository plaster does not support has no plaster
+            # file to check, and is skipped rather than refused.
+            plaster_file = plaster_for_patch(PurePath(filepath))
+            if plaster_file is not None:
+                expected_plaster_files.add(plaster_file)
         elif (filepath.startswith('rewrite/')
               and filepath.endswith(PLASTER_EXTENSION)):
-            expected_plaster_files.add(filepath)
+            expected_plaster_files.add(
+                Path(PLASTER_FILES_PATH.parent) / filepath)
         else:
             hint = ''
             # Control characters mean the shell interpreted unquoted
@@ -4654,11 +5207,8 @@ def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
                         'the shell. Quote the path or use forward slashes.')
             raise PlasterError(f'Unexpected file path: {filepath!r}{hint}')
 
-    plaster_parent = Path(PLASTER_FILES_PATH).parent
-
     # A set of candidate plaster files.
-    candidate_paths = sorted(plaster_parent / Path(path)
-                             for path in expected_plaster_files)
+    candidate_paths = sorted(expected_plaster_files)
 
     # TODO(https://github.com/brave/brave-browser/issues/46880): For now we
     # discard any plaster file passed in that does not exist. At some point
@@ -4962,10 +5512,14 @@ def main():
 
     # Add the 'check' subparser
     check_parser = add_command(
-        'check', 'Check that plaster files are applied to sources.')
-    check_parser.add_argument('filepaths',
-                              nargs='*',
-                              help='Filepaths to check')
+        'check',
+        'Check that plaster files are applied to sources.',
+        fromfile_prefix_chars='@')
+    check_parser.add_argument(
+        'filepaths',
+        nargs='*',
+        help='Filepaths to check. `@file` reads them from a file, one per '
+        'line.')
     check_parser.set_defaults(func=check)
 
     # Our custom `--help` renderer.

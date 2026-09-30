@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiInstanceOrchestratorImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiInstanceOrchestratorImpl.java
-index bb8d31da07c2ce063358e6e06a1f07267e3608c7..c3565b4b74b264bc7620e9dfd0a3590d919ca079 100644
+index fae1ca1624d5269e2f4424d2e18014d965dc81f2..199aae002b8f4bcc3e93aa9fbddc0a152357e602 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiInstanceOrchestratorImpl.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiInstanceOrchestratorImpl.java
 @@ -52,7 +52,7 @@ import java.util.Set;

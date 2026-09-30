@@ -18,7 +18,7 @@
 #include "brave/components/brave_wayback_machine/features.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_actions.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -197,7 +197,9 @@ void WaybackMachinePageActionController::MaybeAutoShowBubble() {
     return;
   }
 
-  auto* root_item = bwi->GetFeatures().GetRootActionItem();
+  auto* browser_actions = BrowserActions::From(bwi);
+  auto* root_item =
+      browser_actions ? browser_actions->root_action_item() : nullptr;
   if (!root_item) {
     return;
   }

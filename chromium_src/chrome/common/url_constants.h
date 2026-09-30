@@ -184,6 +184,11 @@ inline constexpr char16_t kDoNotTrackLearnMoreURL[] =
     u"https://support.brave.app/hc/en-us/articles/"
     u"360017905612-How-do-I-turn-Do-Not-Track-on-or-off-";
 
+// "Learn more" URL for Universal Opt-Out.
+inline constexpr char16_t kUniversalOptOutLearnMoreURL[] =
+    u"https://support.brave.app/hc/en-us/articles/"
+    u"360017905612-How-do-I-turn-Do-Not-Track-on-or-off";
+
 // The URL for the "Learn more" page for interrupted downloads.
 inline constexpr char kDownloadInterruptedLearnMoreURL[] =
     "https://support.brave.app/hc/en-us/articles/"

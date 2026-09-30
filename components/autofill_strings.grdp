@@ -409,10 +409,10 @@
     Addresses and more
   </message>
   <message name="IDS_AUTOFILL_SETTINGS_EMAIL_VERIFICATION_LABEL" desc="Label for a toggle that allows users to control whether email addresses should be automatically confirmed on supported sites." formatter_data="android_java">
-    Automatically confirm your emails
+    Automatically verify your email
   </message>
   <message name="IDS_AUTOFILL_SETTINGS_EMAIL_VERIFICATION_SECTION_TITLE" desc="Title for the email verification section in settings." formatter_data="android_java">
-    Verified Email
+    Verified email
   </message>
   <message name="IDS_AUTOFILL_SETTINGS_EMAIL_VERIFICATION_EMPTY_LABEL" desc="Label shown when no verified email addresses are stored." formatter_data="android_java">
     Verified email addresses will appear here
@@ -869,6 +869,9 @@
   <message name="IDS_AUTOFILL_AT_MEMORY_SEARCH_AFFORDANCE_SUBTITLE" desc="Descriptor under the query for enhanced autofill. 'Gemini' is a brand name and should match standard branding guidelines across languages.">
     Find and fill with Gemini
   </message>
+  <message name="IDS_AUTOFILL_AT_MEMORY_SEARCH_RESULTS_A11Y_ANNOUNCEMENT" is_accessibility_with_no_ui="true" desc="Screen reader announcement when AtMemory search results are presented to the user." translateable="false">
+    Search results available. Use up and down arrow keys to navigate.
+  </message>
   <message name="IDS_AUTOFILL_AT_MEMORY_FETCHING" desc="Descriptor for the loading state when enhanced autofill is fetching results. 'Gemini' is a brand name and should match standard branding guidelines across languages.">
     Find and fill with Gemini
   </message>
@@ -880,6 +883,9 @@
   </message>
   <message name="IDS_AUTOFILL_AT_MEMORY_FETCHING_PUTTING_IT_TOGETHER" desc="Loading message shown while putting information together during enhanced autofill search." translateable="false">
     Putting it all together...
+  </message>
+  <message name="IDS_AUTOFILL_AT_MEMORY_LOADING_A11Y_ANNOUNCEMENT" is_accessibility_with_no_ui="true" desc="Accessibility announcement read by screen readers when enhanced autofill is loading search results." translateable="false">
+    Loading
   </message>
   <message name="IDS_AUTOFILL_AT_MEMORY_UNSUPPORTED_QUERY_TITLE" desc="This error message is to help users understand that enhanced autofill wasn't able to find and fill relevant info. The technical reason is that the query is not supported by enhanced autofill. It appears on the query results empty state.">
     Couldn't find this info
@@ -922,8 +928,7 @@
   <message name="IDS_AUTOFILL_AI_SUGGESTED_BY_GEMINI" desc="Sublabel text indicating that a suggestion is sourced from Gemini.">
     Suggested by Gemini
   </message>
-  <!-- TODO(crbug.com/555703862): Make IDS_AUTOFILL_AI_SUGGESTED_BY_GEMINI_WITH_SOURCES translatable -->
-  <message name="IDS_AUTOFILL_AI_SUGGESTED_BY_GEMINI_WITH_SOURCES" desc="Header for Autofill AI personal context child menu attributing the information to source applications. $1 is the formatted list of sources with citation badges (e.g. Gmail [1] [2] · Photos [1])." translateable="false">
+  <message name="IDS_AUTOFILL_AI_SUGGESTED_BY_GEMINI_WITH_SOURCES" desc="Header for Autofill AI personal context child menu attributing the information to source applications. $1 is the formatted list of sources with citation badges (e.g. Gmail [1] [2] · Photos [1]).">
     Suggested by Gemini · <ph name="SOURCES">$1<ex>Gmail [1] [2] · Photos [1]</ex></ph>
   </message>
   <message name="IDS_AUTOFILL_AI_SOURCE_APP_PHOTOS" desc="App name for Google Photos.">
@@ -995,12 +1000,10 @@
   <message name="IDS_AUTOFILL_AI_FLIGHT_RESERVATION_ENTITY_NAME" desc="The label for something that a user can autofill when filling a form. For context, a user has been able to fill addresses within Brave for many users. Now a user can also fill a “Flight reservation”.">
     Flight
   </message>
-  <!-- TODO(crbug.com/485269384): Make Order entity translatable. -->
-  <message name="IDS_AUTOFILL_AI_ORDER_ENTITY_NAME" desc="The label for something that a user can autofill when filling a form. For context, a user has been able to fill addresses within Brave for many users. Now a user can also fill an “Order”." translateable="false">
+  <message name="IDS_AUTOFILL_AI_ORDER_ENTITY_NAME" desc="The label for something that a user can autofill when filling a form. For context, a user has been able to fill addresses within Brave for many users. Now a user can also fill an “Order”.">
     Order
   </message>
-  <!-- TODO(crbug.com/485363832): Make Shipment entity translatable. -->
-  <message name="IDS_AUTOFILL_AI_SHIPMENT_ENTITY_NAME" desc="The label for something that a user can autofill when filling a form. For context, a user has been able to fill addresses within Brave for many users. Now a user can also fill a “Shipment”." translateable="false">
+  <message name="IDS_AUTOFILL_AI_SHIPMENT_ENTITY_NAME" desc="The label for something that a user can autofill when filling a form. For context, a user has been able to fill addresses within Brave for many users. Now a user can also fill a “Shipment”.">
     Shipment
   </message>
 
@@ -1032,10 +1035,10 @@
   <message name="IDS_AUTOFILL_AI_FLIGHT_RESERVATIONS_TITLE" desc="The title of a chip referring to flights (IDS_AUTOFILL_AI_FLIGHT_RESERVATION_ENTITY_NAME) on Your saved info settings page.">
     Flight reservations
   </message>
-  <message name="IDS_AUTOFILL_AI_ORDERS_TITLE" desc="The title of a chip referring to orders (IDS_AUTOFILL_AI_ORDER_ENTITY_NAME) on Your saved info settings page." translateable="false">
+  <message name="IDS_AUTOFILL_AI_ORDERS_TITLE" desc="The title of a chip referring to orders (IDS_AUTOFILL_AI_ORDER_ENTITY_NAME) on Your saved info settings page.">
     Orders
   </message>
-  <message name="IDS_AUTOFILL_AI_SHIPMENTS_TITLE" desc="The title of a chip referring to shipments (IDS_AUTOFILL_AI_SHIPMENT_ENTITY_NAME) on Your saved info settings page." translateable="false">
+  <message name="IDS_AUTOFILL_AI_SHIPMENTS_TITLE" desc="The title of a chip referring to shipments (IDS_AUTOFILL_AI_SHIPMENT_ENTITY_NAME) on Your saved info settings page.">
     Shipments
   </message>
   <message name="IDS_AUTOFILL_AI_OTHER_ORDERS" desc="Main text for a suggestion that when hovered opens a subpopup displaying other orders.">
@@ -1167,7 +1170,7 @@
   </message>
 
   <!-- Attributes of the order entity -->
-  <!-- TODO(crbug.com/485269384): Make Order entity translatable. -->
+  <!-- TODO(crbug.com/485269384): Make Order entity attributes translatable. -->
   <message name="IDS_AUTOFILL_AI_ORDER_ID_ATTRIBUTE_NAME" desc="Used as a general label for the order id attribute." translateable="false">
     Id
   </message>
@@ -1188,7 +1191,7 @@
   </message>
 
   <!-- Attributes of the shipment entity -->
-  <!-- TODO(crbug.com/485363832): Make Shipment entity translatable. -->
+  <!-- TODO(crbug.com/485363832): Make Shipment entity attributes translatable. -->
   <message name="IDS_AUTOFILL_AI_SHIPMENT_TRACKING_NUMBER_ATTRIBUTE_NAME" desc="Used as a general label for the shipment tracking number attribute." translateable="false">
     Tracking number
   </message>
@@ -1395,6 +1398,9 @@
   <message name="IDS_AUTOFILL_AI_SAVE_ENTITY_TO_WALLET_DIALOG_SUBTITLE_NEW" desc="A description that appears beneath the Save title prompt asking users whether they want to save their data to Brave Wallet. This sentence essentially defines Autofill in Brave. We prompt the user to save their information with Brave Wallet with the promise that Brave can then help the user fill out forms across devices more quickly using their saved info.">
     Save your info in <ph name="GOOGLE_WALLET_TITLE_1">$1<ex>Brave Wallet</ex></ph> and get things done faster, like filling forms across Brave products. You can <ph name="MANAGE_INFO_LINK">$2<ex>manage your info</ex></ph> in <ph name="GOOGLE_WALLET_TITLE_2">$3<ex>Brave Wallet</ex></ph> for <ph name="ACCOUNT">$4<ex>alexpark@gmail.com</ex></ph>.
   </message>
+  <message name="IDS_AUTOFILL_AI_SAVE_ENTITY_TO_WALLET_DIALOG_SUBTITLE_BRANDED" desc="A description that appears beneath the Save title prompt asking users whether they want to save their data to Brave Wallet, used when Brave Wallet branding is already present in the title.">
+    Save your info and get things done faster, like filling forms across Brave products. You can <ph name="MANAGE_WALLET_SETTINGS_LINK">$1<ex>manage your Wallet settings</ex></ph> for <ph name="ACCOUNT">$2<ex>alexpark@gmail.com</ex></ph>.
+  </message>
   <!-- Prompt strings used on Desktop -->
   <if expr="not is_android">
     <message name="IDS_AUTOFILL_AI_SAVE_DRIVERS_LICENSE_ENTITY_DIALOG_TITLE" desc="The title of a dialog that prompts the user to save information they just filled in on a form. For example, the user is renting a car and just filled in info about their driver’s license. When they click Submit, we offer to save the data in Brave. Depending on the form and what Brave recognizes, there might be just one or several pieces of data saved at this moment. This is a similar moment to saving a password or credit card with Brave.">
@@ -1563,6 +1569,9 @@
     <message name="IDS_AUTOFILL_MANAGE_YOUR_INFO_LINK" desc="Link text prompting users to manage their autofill information.">
       manage your info
     </message>
+    <message name="IDS_AUTOFILL_MANAGE_YOUR_WALLET_SETTINGS_LINK" desc="Link text prompting users to manage their Brave Wallet settings.">
+      manage your Wallet settings
+    </message>
     <message name="IDS_AUTOFILL_AI_UPDATE_ENTITY_DIALOG_UPDATED_ATTRIBUTE_ACCESSIBLE_NAME" desc="Used in entity update dialogs, as the accessible names for rows with updated attributes">
       <ph name="ATTRIBUTE_NAME">$1<ex>Passport number</ex></ph> updated
     </message>
@@ -1605,6 +1614,11 @@
   </message>
   <message name="IDS_AUTOFILL_AI_PRE_FETCH_ERROR_MESSAGE_BUTTON_TEXT" desc="A button that is shown in the message that appears when prefetching Autofill AI entities fails.">
     Got it
+  </message>
+
+  <message name="IDS_AUTOFILL_AI_ENTITY_SUPPRESSION_UNDO_TOAST_TEXT" desc="Text displayed in a toast notification when an Autofill AI suggestion has been removed by the user, explaining that the suggestion is removed and the original source data is not deleted." translateable="false">
+    <!-- TODO(crbug.com/501036619): Make string translateable once finalized. -->
+    Suggestion removed. Your original source won't be deleted.
   </message>
 
   <message name="IDS_AUTOFILL_AI_PRIVATE_INFERENCE_NOTICE_TITLE" desc="A title of the notice that infroms the user that page content will be processed privately in the cloud.">
@@ -1817,6 +1831,18 @@
     <message name="IDS_AUTOFILL_AI_SUGGESTION_LONG_PRESS_DIALOG_NEGATIVE_BUTTON" desc="The negative button shown in the dialog after the user long presses a suggestion in the keyboard accessory." formatter_data="android_java">
       Back
     </message>
+
+    <!-- Autofill AI Suppression Dialog Strings (Android) -->
+    <message name="IDS_AUTOFILL_AI_SUPPRESSION_DIALOG_BODY" desc="Description for the modal confirmation dialog on Android.">
+      Suggested by Gemini · <ph name="SRC_LINK">&lt;src_link&gt;</ph>View sources<ph name="END_SRC_LINK">&lt;/src_link&gt;</ph>
+You can remove this suggestion from Brave. Your original source won't be deleted. <ph name="MANAGE_LINK">&lt;manage_link&gt;</ph>Manage enhanced autofill<ph name="END_MANAGE_LINK">&lt;/manage_link&gt;</ph>
+    </message>
+    <message name="IDS_AUTOFILL_AI_SUPPRESSION_DIALOG_PRIMARY_BUTTON" desc="Label for the primary acknowledgment button in the Autofill AI suppression dialog on Android.">
+      Got it
+    </message>
+    <message name="IDS_AUTOFILL_AI_SUPPRESSION_DIALOG_SECONDARY_BUTTON" desc="Label for the secondary suppression action button in the Autofill AI suppression dialog on Android.">
+      Remove from Brave
+    </message>
   </if>
 
   <!-- Entity editor strings used on Android -->
@@ -1867,9 +1893,16 @@
   <message name="IDS_SETTINGS_AUTOFILL_AI_AUTHENTICATION_TOGGLE_TITLE" desc="The title of the toggle shown in the settings page that allows managing the authentication requirement before seeings smarter form understanding settings sensitive fields, such as passport number and national id card number." formatter_data="android_java">
     Verify it’s you to autofill sensitive info
   </message>
-  <message name="IDS_AT_MEMORY_PROMO_TITLE" desc="Title of the at-memory promo bubble.">
-    Type @@ in any form to find and fill info without switching tabs
-  </message>
+  <if expr="is_macosx">
+    <message name="IDS_AT_MEMORY_PROMO_TITLE" desc="Title of the AtMemory promo bubble on macOS. '⌘ ⌘' represents pressing the Command key twice.">
+      Press ⌘ ⌘ in any form to find and fill info without switching tabs
+    </message>
+  </if>
+  <if expr="not is_macosx">
+    <message name="IDS_AT_MEMORY_PROMO_TITLE" desc="Title of the AtMemory promo bubble.">
+      Press Ctrl twice in any form to find and fill info without switching tabs
+    </message>
+  </if>
   <message name="IDS_AT_MEMORY_PROMO_DESCRIPTION" desc="Description of the at-memory promo bubble.">
     Enhanced autofill can now find and fill info — like flight numbers and appointment times — from apps like Gmail and Photos
   </message>
@@ -2004,4 +2037,29 @@
   <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_NOTICE_SETTINGS_LINK" desc="Standard navigation button label to open the Brave settings menu." formatter_data="android_java">
     Settings
   </message>
+
+  <!-- Desktop Autofill Settings Personal Context preferences strings. -->
+  <if expr="not is_android and not is_ios">
+    <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_SETTINGS_TITLE" desc="Section header or page title in Brave settings for the advanced, AI-powered form-filling features. 'Autofill' refers to the browser's ability to automatically populate form fields.">
+      Enhanced autofill
+    </message>
+    <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_SETTINGS_SUMMARY" desc="A subheader for a settings section for AI powered autofill. 'Personal Intelligence' and 'Gemini' are brand names and should match standard branding guidelines across languages.">
+      Powered by Personal Intelligence
+    </message>
+    <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_SETTINGS_SUBPAGE_SUMMARY" desc="Description appearing under the 'Enhanced autofill ' section in settings. It directs users to manage how the underlying AI model retrieves and fills data. 'Gemini' is a proper Brave product name and must remain unlocalized.">
+      Manage finding and filling info with Gemini
+    </message>
+    <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_SETTINGS_TOGGLE_TITLE" desc="Toggle label in Brave settings for enabling AI-driven autofill suggestions. 'Gemini' is a proper Brave product name and must remain unlocalized.">
+      Find and fill with Gemini
+    </message>
+    <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_SETTINGS_TOGGLE_SUMMARY" desc="Description text under the 'Find and fill with Gemini' setting explaining the functionality and data sources. 'Gmail', 'Photos', and 'Personal Intelligence' are proper Brave product and feature names that must adhere to standard branding guidelines.">
+      Autofill info from apps such as Gmail and Photos. Powered by Personal Intelligence.
+    </message>
+    <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_SETTINGS_MANAGE_CONNECTED_APPS_TITLE" desc="Linkout text in Brave settings. It navigates the user to a Gemini page where they can manage which third-party or Brave ecosystem applications are linked to the enhanced autofill feature.">
+      Manage Connected Apps
+    </message>
+    <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_SETTINGS_MANAGE_CONNECTED_APPS_SUMMARY" desc="Subtext or description beneath the 'Manage Connected Apps' entry point, explaining its purpose. 'Gemini' is a proper product name and must remain unlocalized.">
+      Choose which apps Gemini connects to
+    </message>
+  </if>
 </grit-part>

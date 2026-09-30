@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/browser/updater/buildflags.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
@@ -17,14 +16,6 @@ group("ui") {
       "//components/tabs:public",
       "//content/public/browser",
     ]
-  }
-
-  if (is_mac) {
-    deps += [ "//brave/browser/updater:buildflags" ]
-  }
-
-  if (enable_omaha4) {
-    deps += [ "//brave/browser/updater:features" ]
   }
 
   if (toolkit_views) {

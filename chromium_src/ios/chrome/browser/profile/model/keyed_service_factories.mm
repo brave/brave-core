@@ -10,6 +10,7 @@
 #include "ios/chrome/browser/affiliations/model/ios_chrome_affiliation_service_factory.h"
 #include "ios/chrome/browser/aim/model/ios_chrome_aim_eligibility_service_factory.h"
 #include "ios/chrome/browser/autocomplete/model/autocomplete_classifier_factory.h"
+#include "ios/chrome/browser/autocomplete/model/remote_suggestions_service_factory.h"
 #include "ios/chrome/browser/autocomplete/model/zero_suggest_cache_service_factory.h"
 #include "ios/chrome/browser/autofill/model/autocomplete_history_manager_factory.h"
 #include "ios/chrome/browser/autofill/model/autofill_image_fetcher_factory.h"
@@ -160,6 +161,7 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   TabGroupServiceFactory::GetInstance();
   UnifiedConsentServiceFactory::GetInstance();
   ReadingListModelFactory::GetInstance();
+  RemoteSuggestionsServiceFactory::GetInstance();
   SafeBrowsingClientFactory::GetInstance();
   SafeBrowsingMetricsCollectorFactory::GetInstance();
   SendTabToSelfSyncServiceFactory::GetInstance();

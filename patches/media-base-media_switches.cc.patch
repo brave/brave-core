@@ -1,5 +1,5 @@
 diff --git a/media/base/media_switches.cc b/media/base/media_switches.cc
-index 6576dae682f87af8e8d4d80df6abe56869c0439b..bacc3e901c881e6058d4f10e1bcc712d301841a7 100644
+index 3f75c218a35f4ab4ce2ae5ade0895eafb915f80b..2de113dc37f66a06b3a745cc33a25e2757f8603b 100644
 --- a/media/base/media_switches.cc
 +++ b/media/base/media_switches.cc
 @@ -389,7 +389,7 @@ BASE_FEATURE(kAutoPictureInPictureSurveys, base::FEATURE_DISABLED_BY_DEFAULT);
@@ -40,7 +40,7 @@ index 6576dae682f87af8e8d4d80df6abe56869c0439b..bacc3e901c881e6058d4f10e1bcc712d
  
  // Enable automatic downloading of speech recognition language packs.
  BASE_FEATURE(kLiveCaptionAutomaticLanguageDownload,
-@@ -1327,7 +1327,7 @@ BASE_FEATURE(kMediaCodecLowDelayMode, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -1314,7 +1314,7 @@ BASE_FEATURE(kMediaCodecLowDelayMode, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Enables MediaDrmBridge to call into MediaDrm API to query HDCP Status to
  // support the CDM API GetStatusForPolicy.

@@ -1,12 +1,20 @@
 diff --git a/components/signin/internal/identity_manager/BUILD.gn b/components/signin/internal/identity_manager/BUILD.gn
-index 1ca4b2cc3552f6fca1a6b2d125648d172b464c3c..203b0608a368a516c596836a4a001c41cd07f8ce 100644
+index 1ca4b2cc3552f6fca1a6b2d125648d172b464c3c..1bea3a0aa724db5091a4953a7606fcf764d15475 100644
 --- a/components/signin/internal/identity_manager/BUILD.gn
 +++ b/components/signin/internal/identity_manager/BUILD.gn
-@@ -146,6 +146,7 @@ source_set("identity_manager") {
-       "device_accounts_synchronizer_impl.h",
-     ]
-   }
-+  import("//brave/components/signin/internal/identity_manager/sources.gni") sources += brave_components_signin_internal_identity_manager_sources
- }
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
- source_set("capabilities") {
++import("//brave/components/signin/internal/identity_manager/sources.gni")
+ import("//components/signin/features.gni")
+ 
+ # This target forms the core of the IdentityManager implementation
+@@ -47,6 +48,7 @@ source_set("identity_manager") {
+     "profile_oauth2_token_service_delegate.h",
+     "profile_oauth2_token_service_observer.h",
+   ]
++  sources += brave_components_signin_internal_identity_manager_sources
+ 
+   configs += [ "//build/config/compiler:wexit_time_destructors" ]
+ 

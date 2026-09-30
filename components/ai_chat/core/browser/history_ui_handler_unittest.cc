@@ -40,11 +40,8 @@ class HistoryUIHandlerTest : public testing::Test {
 
     // Create HistoryService - runs synchronously in tests
     history_service_ = std::make_unique<history::HistoryService>();
-    if (!history_service_->Init(
-            history::TestHistoryDatabaseParamsForPath(history_dir_))) {
-      history_service_.reset();
-      ADD_FAILURE() << "Failed to initialize HistoryService";
-    }
+    history_service_->Init(
+        history::TestHistoryDatabaseParamsForPath(history_dir_));
 
     // Create HistoryUIHandler
     mojo::PendingReceiver<mojom::HistoryUIHandler> receiver;

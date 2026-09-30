@@ -1,12 +1,20 @@
 diff --git a/sandbox/win/BUILD.gn b/sandbox/win/BUILD.gn
-index 38f7ebea5a3352b7ae65cd4b9ccc1d4349b730b7..fef18a08a07b38313e1da79eaca0dc47f74b86ab 100644
+index 38f7ebea5a3352b7ae65cd4b9ccc1d4349b730b7..eb65cd12dbf5fe110aa19f796ff79846bfcfa99e 100644
 --- a/sandbox/win/BUILD.gn
 +++ b/sandbox/win/BUILD.gn
-@@ -179,6 +179,7 @@ static_library("sandbox") {
-     "ntdll.lib",
-     "userenv.lib",
-   ]
-+  import("//brave/sandbox/win/sources.gni") sources += brave_sandbox_win_sandbox_sources
- }
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
- test("sbox_integration_tests") {
++import("//brave/sandbox/win/sources.gni")
+ import("//testing/libfuzzer/fuzzer_test.gni")
+ import("//testing/test.gni")
+ 
+@@ -144,6 +145,7 @@ static_library("sandbox") {
+     "src/window.cc",
+     "src/window.h",
+   ]
++  sources += brave_sandbox_win_sandbox_sources
+ 
+   if (current_cpu == "x64" || current_cpu == "arm64") {
+     sources += [

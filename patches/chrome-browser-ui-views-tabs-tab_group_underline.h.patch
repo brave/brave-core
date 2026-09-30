@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_group_underline.h b/chrome/browser/ui/views/tabs/tab_group_underline.h
-index 05521c891062cfb582437ec99eb70fb561637ca5..0b657418e36195ffa85167bb8f46c0a0865e4869 100644
+index f7cdc30b4d0c4c8a87e7e6d95fd4360af40e525d..f5eeb7f6e4767e9a7aa9c1692c03accf6ea519b5 100644
 --- a/chrome/browser/ui/views/tabs/tab_group_underline.h
 +++ b/chrome/browser/ui/views/tabs/tab_group_underline.h
 @@ -37,7 +37,7 @@ class TabGroupUnderline : public views::View {

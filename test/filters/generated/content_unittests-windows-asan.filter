@@ -5,20 +5,17 @@
 ## Regenerate with:
 ##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 1.0% flake rate over 30 days per LUCI Analysis (283 passed, 0 failed, 3 flaky).
--AuthenticatorCableV2Test.PairingBasedWithConnectionSignal
-
-# 1.7% flake rate over 30 days per LUCI Analysis (281 passed, 0 failed, 5 flaky).
+# 1.1% flake rate over 30 days per LUCI Analysis (280 passed, 0 failed, 3 flaky).
 -NavigationURLLoaderImplTest.ForceAsyncInterceptor
 
-# 1.4% flake rate over 30 days per LUCI Analysis (282 passed, 0 failed, 4 flaky).
+# 1.1% flake rate over 30 days per LUCI Analysis (280 passed, 0 failed, 3 flaky).
 -NavigationURLLoaderImplTest.NavigationTimeoutRedirectTest
 
-# 1.7% flake rate over 30 days per LUCI Analysis (281 passed, 0 failed, 5 flaky).
+# 2.1% flake rate over 30 days per LUCI Analysis (277 passed, 0 failed, 6 flaky).
 -NavigationURLLoaderImplTest.RedirectDuringParseHeaders
 
-# 1.7% flake rate over 30 days per LUCI Analysis (281 passed, 0 failed, 5 flaky).
+# 1.8% flake rate over 30 days per LUCI Analysis (278 passed, 0 failed, 5 flaky).
 -VideoCaptureTest.StartAndCaptureAndError
 
-# 1.0% flake rate over 30 days per LUCI Analysis (283 passed, 0 failed, 3 flaky).
+# 1.1% flake rate over 30 days per LUCI Analysis (280 passed, 0 failed, 3 flaky).
 -VideoCaptureTest.StartAndCaptureAndStop

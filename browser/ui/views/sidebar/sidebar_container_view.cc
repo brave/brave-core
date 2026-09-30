@@ -266,13 +266,10 @@ gfx::Size SidebarContainerView::CalculatePreferredSize(
 }
 
 bool SidebarContainerView::IsFullscreenByTab() const {
-  DCHECK(browser_->GetFeatures().exclusive_access_manager() &&
-         browser_->GetFeatures()
-             .exclusive_access_manager()
-             ->fullscreen_controller());
-  return browser_->GetFeatures()
-      .exclusive_access_manager()
-      ->fullscreen_controller()
+  auto* exclusive_access_manager = ExclusiveAccessManager::From(browser_);
+  DCHECK(exclusive_access_manager &&
+         exclusive_access_manager->fullscreen_controller());
+  return exclusive_access_manager->fullscreen_controller()
       ->IsWindowFullscreenForTabOrPending();
 }
 

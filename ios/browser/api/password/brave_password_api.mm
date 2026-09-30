@@ -147,7 +147,9 @@ class PasswordStoreConsumerIOS
 
   void OnGetPasswordStoreResultsOrErrorFrom(
       password_manager::PasswordStoreInterface* store,
-      password_manager::LoginsResultOrError results_or_error) override;
+      base::expected<std::vector<password_manager::StoredCredential>,
+                     password_manager::PasswordStoreBackendError>
+          results_or_error) override;
 
   base::WeakPtrFactory<PasswordStoreConsumerIOS> weak_ptr_factory_{this};
 };
@@ -158,15 +160,16 @@ base::WeakPtr<PasswordStoreConsumerIOS> PasswordStoreConsumerIOS::GetWeakPtr() {
 
 void PasswordStoreConsumerIOS::OnGetPasswordStoreResultsOrErrorFrom(
     password_manager::PasswordStoreInterface* store,
-    password_manager::LoginsResultOrError results_or_error) {
-  if (std::holds_alternative<std::vector<password_manager::StoredCredential>>(
-          results_or_error)) {
-    std::move(consumer_callback)
-        .Run(password_manager::ToPasswordForms(
-            std::get<std::vector<password_manager::StoredCredential>>(
-                results_or_error)));
-  } else {
+    base::expected<std::vector<password_manager::StoredCredential>,
+                   password_manager::PasswordStoreBackendError>
+        results_or_error) {
+  if (!results_or_error) {
     std::move(consumer_callback).Run({});
+  } else {
+    std::vector<password_manager::StoredCredential> results =
+        std::move(*results_or_error);
+    std::move(consumer_callback)
+        .Run(password_manager::ToPasswordForms(results));
   }
   delete this;
 }

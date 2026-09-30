@@ -16,7 +16,8 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
-#include "chrome/browser/ui/views/tabs/tab_group_style.h"
+#include "chrome/browser/ui/views/tabs/common/tab_group_style.h"
+#include "chrome/browser/ui/views/tabs/tab_group_style_views.h"
 #include "chrome/browser/ui/views/tabs/tab_group_underline.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 #include "third_party/skia/include/core/SkPath.h"
@@ -70,7 +71,7 @@ void BraveTabGroupHeader::VisualsChanged() {
 
   if (auto chip_background_color = GetChipBackgroundColor()) {
     title_chip_->SetBackground(views::CreateRoundedRectBackground(
-        *chip_background_color, group_style_->GetChipCornerRadius()));
+        *chip_background_color, TabGroupStyle::GetChipCornerRadius()));
   } else {
     title_chip_->SetBackground(nullptr);
   }

@@ -1,10 +1,78 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index 041905516f82d72a7f3ee15077c49f122d025784..8275cb8f4568d13b5ec4077d07a8919f0f55eb0e 100644
+index 5b58a98f56da953749f3f1c42ee9410b4337e890..a2e60e27abbd3f7a835066ed4372a9aae67acaea 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
-@@ -627,4 +627,5 @@ build_webui("build") {
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/browser/resources/settings/sources.gni")
+ import("//chrome/common/features.gni")
+ import("//crypto/features.gni")
+ import("//ui/webui/resources/tools/build_webui.gni")
+@@ -9,6 +10,10 @@ import("//ui/webui/resources/tools/build_webui.gni")
+ assert(!is_android, "Android does not use these settings")
+ 
+ build_webui("build") {
++  preprocessor_defines = brave_settings_preprocessor_defines
++  preprocess_deps = brave_settings_preprocess_deps
++  exclude_ts_preprocess_files = brave_settings_local_ts_files
++  exclude_html_css_preprocess_files = brave_settings_local_html_files + brave_settings_local_css_files
+   grd_prefix = "settings"
+ 
+   static_files = [
+@@ -199,6 +204,7 @@ build_webui("build") {
+     "site_settings/window_management_page.ts",
+     "site_settings/zoom_levels.ts",
+   ]
++  web_component_files += brave_settings_web_component_files
+ 
+   if (is_chromeos) {
+     web_component_files += [ "site_settings/smart_card_readers_page.ts" ]
+@@ -420,6 +426,7 @@ build_webui("build") {
+     "tooltip_mixin.ts",
+     "tooltip_mixin_lit.ts",
+   ]
++  ts_files += brave_settings_ts_files
+ 
+   if (is_chromeos) {
+     ts_files += [
+@@ -593,9 +600,12 @@ build_webui("build") {
+     "site_settings/site_settings_shared.css",
+     "system_page/system_page.css",
+   ]
++  css_files += brave_settings_local_css_files
+ 
+   mojo_files_deps = [ "//components/autofill/core/browser/data_model/autofill_ai:mojo_bindings_ts__generator" ]
++  mojo_files_deps += brave_settings_mojo_files_deps
+   mojo_files = [ "$root_gen_dir/components/autofill/core/browser/data_model/autofill_ai/autofill_ai_enums.mojom-webui.ts" ]
++  mojo_files += brave_settings_mojo_files
+ 
+   ts_composite = true
+   ts_definitions = [
+@@ -609,6 +619,7 @@ build_webui("build") {
+     "//tools/typescript/definitions/pending.d.ts",
+     "//tools/typescript/definitions/settings_private.d.ts",
+   ]
++  ts_definitions += brave_settings_ts_definitions
+   if (is_chromeos) {
+     ts_definitions +=
+         [ "//tools/typescript/definitions/quick_unlock_private.d.ts" ]
+@@ -630,6 +641,7 @@ build_webui("build") {
+     "//ui/webui/resources/js:build_ts",
+     "//ui/webui/resources/mojo:build_ts",
+   ]
++  ts_deps += brave_settings_ts_deps
+ 
+   if (!is_chromeos) {
+     ts_deps +=
+@@ -666,4 +678,9 @@ build_webui("build") {
                "$root_gen_dir/chrome/browser/resources/settings_shared/tsc",
                root_build_dir) ]
    }
-+  import("//brave/browser/resources/settings/sources.gni") web_component_files += brave_settings_web_component_files ts_files += brave_settings_ts_files css_files += brave_settings_local_css_files exclude_html_css_preprocess_files = brave_settings_local_html_files + brave_settings_local_css_files exclude_ts_preprocess_files = brave_settings_local_ts_files preprocess_deps = brave_settings_preprocess_deps preprocessor_defines = brave_settings_preprocessor_defines ts_extra_deps = brave_settings_ts_extra_deps ts_definitions += brave_settings_ts_definitions if (optimize_webui) { extra_grdp_deps = [ "//brave/browser/resources/settings:resources" ] extra_grdp_files = [] } mojo_files += brave_settings_mojo_files mojo_files_deps += brave_settings_mojo_files_deps ts_deps += brave_settings_ts_deps
++  ts_extra_deps = brave_settings_ts_extra_deps
++  if (optimize_webui) {
++    extra_grdp_deps = [ "//brave/browser/resources/settings:resources" ]
++    extra_grdp_files = []
++  }
  }

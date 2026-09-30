@@ -17,6 +17,7 @@
 #include "brave/test/base/testing_brave_browser_process.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/themes/theme_service_factory.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/test/base/test_browser_window.h"
@@ -44,7 +45,7 @@ class BraveVpnButtonUnitTest : public testing::Test {
   BraveVpnButtonUnitTest(const BraveVpnButtonUnitTest&) = delete;
   BraveVpnButtonUnitTest& operator=(const BraveVpnButtonUnitTest&) = delete;
 
-  Browser* GetBrowser() {
+  BrowserWindowInterface* GetBrowser() {
     if (!browser_) {
       BrowserWindowCreateParams params(profile(), true);
       auto test_window = std::make_unique<TestBrowserWindow>();
@@ -130,7 +131,7 @@ class BraveVpnButtonUnitTest : public testing::Test {
   ChromeLayoutProvider layout_provider_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  std::unique_ptr<Browser> browser_;
+  std::unique_ptr<BrowserWindowInterface> browser_;
   std::unique_ptr<TestingProfile> profile_;
 };
 

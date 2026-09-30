@@ -89,6 +89,8 @@
 #                someone other than its author: { name, description }, where
 #                `name` is threaded into `pattern`/`re_pattern`/`replace` via
 #                `str.format` and `description` explains what to pass and why.
+#                Input values are inserted verbatim: they are escaped in
+#                `re_pattern` and their backslashes are escaped in `replace`.
 #       One of either `pattern` (escaped for you) or `re_pattern`, plus
 #       `replace` and optional `re_flags` -- exactly the fields a
 #       substitution's own `regex:` block takes, applied as one `re.subn`. A
@@ -443,6 +445,15 @@ has:
         # directly, hence matching a `primary_expression` node by regex instead
         # of `string`.
         #
+        # Every target matcher can also be confined to one `template()`, for a
+        # template that declares its target through `target_name` and so has
+        # no literal name to tell it from another template's. `unscoped` is `.`
+        # when no template is named, which satisfies the `any` on its own and
+        # leaves the scope moot; when one is, it is a pattern nothing matches,
+        # so only the branch placing the target inside that template can. The
+        # body is found at any depth, since a template may declare its target
+        # inside an `if`.
+        #
         # A metavariable (`$VALUE` below) only parses at all because the
         # generated `sgconfig.yml` sets `expandoChar: _`: a bare `$` is not
         # valid GN outside a string, so ast-grep swaps the sign for a character
@@ -455,7 +466,9 @@ has:
         "gn.find_target_list_assignment": {
             "template": """\
 kind: assignment_statement
-pattern: {list_name} = $VALUE
+any:
+  - pattern: {list_name} = $VALUE
+  - pattern: {list_name} += $VALUE
 inside:
   kind: block
   inside:
@@ -464,9 +477,33 @@ inside:
       kind: primary_expression
       has:
         kind: call_expression
-        has:
-          kind: primary_expression
-          regex: ^"{target}"$
+        all:
+          - has:
+              field: function
+              regex: {type}
+          - has:
+              kind: primary_expression
+              any:
+                - regex: ^"{target}"$
+                - regex: ^{target}$
+    any:
+      - regex: {unscoped}
+      - inside:
+          kind: block
+          stopBy: end
+          inside:
+            kind: primary_expression
+            follows:
+              kind: primary_expression
+              has:
+                kind: call_expression
+                all:
+                  - has:
+                      field: function
+                      regex: ^template$
+                  - has:
+                      kind: primary_expression
+                      regex: {template}
 """,
             "result": {
                 "node": "assignment_statement",
@@ -487,9 +524,33 @@ inside:
     kind: primary_expression
     has:
       kind: call_expression
-      has:
-        kind: primary_expression
-        regex: ^"{target}"$
+      all:
+        - has:
+            field: function
+            regex: {type}
+        - has:
+            kind: primary_expression
+            any:
+              - regex: ^"{target}"$
+              - regex: ^{target}$
+  any:
+    - regex: {unscoped}
+    - inside:
+        kind: block
+        stopBy: end
+        inside:
+          kind: primary_expression
+          follows:
+            kind: primary_expression
+            has:
+              kind: call_expression
+              all:
+                - has:
+                    field: function
+                    regex: ^template$
+                - has:
+                    kind: primary_expression
+                    regex: {template}
 """,
             "result": {
                 "node": "block",
@@ -521,9 +582,33 @@ inside:
         kind: primary_expression
         has:
           kind: call_expression
-          has:
-            kind: primary_expression
-            regex: ^"{target}"$
+          all:
+            - has:
+                field: function
+                regex: {type}
+            - has:
+                kind: primary_expression
+                any:
+                  - regex: ^"{target}"$
+                  - regex: ^{target}$
+      any:
+        - regex: {unscoped}
+        - inside:
+            kind: block
+            stopBy: end
+            inside:
+              kind: primary_expression
+              follows:
+                kind: primary_expression
+                has:
+                  kind: call_expression
+                  all:
+                    - has:
+                        field: function
+                        regex: ^template$
+                    - has:
+                        kind: primary_expression
+                        regex: {template}
 """,
             "result": {
                 "node": "block",
@@ -605,6 +690,38 @@ nthChild:
 """,
             "result": {
                 "node": "primary_expression",
+            },
+        },
+
+        # The statement registering `class_name` as a custom element, i.e. the
+        # `customElements.define(<tag>, {class_name})` call WebUI sources end
+        # with. The match is the whole expression_statement, so the trailing
+        # semicolon and a call broken over several lines are both covered.
+        #
+        # The class is matched as an identifier argument of the call rather than
+        # by the tag name, since the tag is spelled `{class_name}.is` about as
+        # often as it is a string literal, and the class is what a plaster
+        # knows. Both `customElements.define(Foo.is, Foo)` and
+        # `customElements.define('x-foo', Foo)` therefore match, while
+        # a registration of some *other* class does not, however its tag is
+        # spelled.
+        "ts.find_custom_element_registration": {
+            "template": """\
+kind: expression_statement
+has:
+  kind: call_expression
+  all:
+    - has:
+        field: function
+        regex: ^customElements\\.define$
+    - has:
+        field: arguments
+        has:
+          kind: identifier
+          regex: ^{class_name}$
+""",
+            "result": {
+                "node": "expression_statement",
             },
         },
     },
@@ -699,6 +816,7 @@ nthChild:
         "cxx.after_function_impl": {
             "matcher": "cxx.find_function_body",
             "inputs": ["function_name", "result_var", "epilogue"],
+            "capture_overrides": ["return_type"],
             "when_set": {
                 "result_var": "{return_type} {result_var} = ",
             },
@@ -903,7 +1021,8 @@ nthChild:
         # newline that `$` would otherwise match ahead of.
         "gn.append_literal_to_list": {
             "matcher": "gn.find_target_list_assignment",
-            "inputs": ["target", "list_name", "literal", "indent"],
+            "inputs": ["target", "type", "template", "unscoped", "list_name", "literal", "indent"],
+            "first_match": True,
             "replace": {
                 "re_pattern": "$",
                 "replace": "\\n{indent}{list_name} += {literal}",
@@ -923,7 +1042,7 @@ nthChild:
         "gn.append_literal_to_conditional": {
             "matcher": "gn.find_target_conditional_block",
             "inputs": [
-                "target", "condition", "list_name", "literal", "indent"
+                "target", "type", "template", "unscoped", "condition", "list_name", "literal", "indent"
             ],
             "replace": {
                 "re_pattern": "\\n[ \\t]*\\}$",
@@ -942,8 +1061,9 @@ nthChild:
         "gn.assign_conditional_literal_to_list": {
             "matcher": "gn.find_target_list_assignment",
             "inputs": [
-                "target", "condition", "list_name", "literal", "indent"
+                "target", "type", "template", "unscoped", "condition", "list_name", "literal", "indent"
             ],
+            "first_match": True,
             "replace": {
                 "re_pattern": "$",
                 "replace": "\\n{indent}if ({condition}) {{"
@@ -959,7 +1079,7 @@ nthChild:
         # body, for when it declares no `list_name` yet.
         "gn.assign_literal_to_list": {
             "matcher": "gn.find_target_block",
-            "inputs": ["target", "list_name", "literal", "indent"],
+            "inputs": ["target", "type", "template", "unscoped", "list_name", "literal", "indent"],
             "replace": {
                 "re_pattern": "^\\{",
                 "replace": "{{\\n{indent}{list_name} = {literal}",
@@ -1016,6 +1136,22 @@ nthChild:
             },
         },
 
+        # Free-form `code` closing `target`'s body, for a change no list
+        # append expresses. The caller indents `code` to the body level and
+        # `indent` re-emits the brace at its own column, the same division of
+        # labour `cxx.append_to_public_before_close` uses.
+        "gn.append_code_to_body": {
+            "matcher": "gn.find_target_block",
+            "inputs": ["target", "type", "template", "unscoped", "code", "indent"],
+            "replace": {
+                "re_pattern": "\\n[ \\t]*\\}$",
+                "replace": "\\n{code}\\n{indent}}}",
+            },
+            "result": {
+                "node": "block",
+            },
+        },
+
         # `+= {literal}` closing `target`'s body, for an attribute defined
         # somewhere other than this file -- `configs`, say, which
         # `set_defaults` populates, so a target carries it without assigning
@@ -1026,7 +1162,7 @@ nthChild:
         # that `gn format` fixes.
         "gn.append_literal_to_body": {
             "matcher": "gn.find_target_block",
-            "inputs": ["target", "list_name", "literal", "indent"],
+            "inputs": ["target", "type", "template", "unscoped", "list_name", "literal", "indent"],
             "replace": {
                 "re_pattern": "\\n[ \\t]*\\}$",
                 "replace": "\\n{indent}  {list_name} += {literal}"
@@ -1054,6 +1190,31 @@ nthChild:
             },
             "result": {
                 "node": "primary_expression",
+            },
+        },
+
+        # The custom element registration removed outright, so the tag name it
+        # claimed is left free for a Brave subclass in `chromium_src/` to
+        # register instead.
+        #
+        # `consume_after` folds in the newline ending the statement's line, so
+        # the line goes away whole rather than being left behind empty. The
+        # blank line above the statement is deliberately kept: it is context
+        # separating the code that remains, and a patch that removed an empty
+        # line at a hunk boundary would trip `patches/PRESUBMIT.py`. A
+        # registration that is the last line of a file with no trailing newline
+        # has no `\n` to consume and is reported as an unmatched count rather
+        # than rewritten -- Chromium sources always end in one.
+        "ts.drop_custom_element_registration": {
+            "matcher": "ts.find_custom_element_registration",
+            "inputs": ["class_name"],
+            "replace": {
+                "consume_after": "\n",
+                "re_pattern": "(?s)^.+$",
+                "replace": "",
+            },
+            "result": {
+                "node": "expression_statement",
             },
         },
     },
@@ -1094,8 +1255,231 @@ substitutions:
             "re_pattern": "([ \\t]*)BASE_FEATURE\\((\\s*{feature_name}\\s*,)([^;]*,)?(\\s*)[^;]*?(\\);)",
             "replace": "\\1BASE_OVERRIDDEN_FEATURE(\\2\\3\\4{value}\\5",
         },
+
+        # `line` must be the whole line, ignoring its leading and trailing
+        # whitespace, so a longer line that merely contains it never matches.
+        # The line's own `\n` is consumed and re-emitted before `code`, which
+        # also covers a last line with no trailing newline.
+        "all.add_after_line": {
+            "description": """\
+Insert code after a given line.
+
+`line` is matched against the whole line, ignoring its indentation and any
+trailing whitespace. `code` is inserted as is, so it carries its own
+indentation.
+
+```yaml
+substitutions:
+  - description: Declare the Brave hook at the top of the namespace.
+    add_after_line:
+      line: 'namespace content {'
+      code: |-
+
+        void BraveOnNavigationStarted();
+```
+
+```diff
+ namespace content {
++
++void BraveOnNavigationStarted();
+
+ class NavigationHandle;
+```
+""",
+            "inputs": [
+                {
+                    "name": "line",
+                    "description": "The line to insert after, without its indentation.",
+                },
+                {
+                    "name": "code",
+                    "description": "The line(s) to insert.",
+                },
+            ],
+            "re_pattern": "^([ \\t]*{line}[ \\t]*)(?:\\n|\\Z)",
+            "replace": "\\1\\n{code}\\n",
+            "re_flags": ["MULTILINE"],
+        },
+
+        "all.add_before_line": {
+            "description": """\
+Insert code before a given line.
+
+`line` is matched against the whole line, ignoring its indentation and any
+trailing whitespace. `code` is inserted as is, so it carries its own
+indentation.
+
+```yaml
+substitutions:
+  - description: Let Brave observe the tab first.
+    add_before_line:
+      line: 'tab_strip_model_->AddObserver(this);'
+      code: |-
+        brave::AttachTabObserver(tab_strip_model_);
+```
+
+```diff
++  brave::AttachTabObserver(tab_strip_model_);
+   tab_strip_model_->AddObserver(this);
+```
+""",
+            "inputs": [
+                {
+                    "name": "line",
+                    "description": "The line to insert before, without its indentation.",
+                },
+                {
+                    "name": "code",
+                    "description": "The line(s) to insert.",
+                },
+            ],
+            "re_pattern": "^([ \\t]*{line}[ \\t]*)$",
+            "replace": "{code}\\n\\1",
+            "re_flags": ["MULTILINE"],
+        },
+
+        # The notice is the file's first paragraph (its leading run of
+        # non-blank lines), which must contain `Copyright`. That spans a
+        # shebang or `<?xml ?>` line before it, and a block comment's closing
+        # line after it, whatever the comment syntax.
+        "all.add_after_copyright_notice": {
+            "description": """\
+Insert code after the copyright notice at the top of a file.
+
+The notice is the file's first paragraph, which must contain `Copyright`.
+`code` is separated from it by a blank line.
+
+```yaml
+substitutions:
+  - description: Only build these targets in the default toolchain.
+    add_after_copyright_notice:
+      code: |-
+        assert(current_toolchain == default_toolchain)
+```
+
+```diff
+ # Copyright 2014 The Chromium Authors
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+
++assert(current_toolchain == default_toolchain)
++
+ import("//base/allocator/allocator.gni")
+```
+""",
+            "inputs": [
+                {
+                    "name": "code",
+                    "description": "The line(s) to insert.",
+                },
+            ],
+            "re_pattern": "\\A((?=(?:[ \\t]*\\S.*\\n)*?.*Copyright)(?:[ \\t]*\\S.*\\n)+)",
+            "replace": "\\1\\n{code}\\n",
+        },
+
+        # Matches the file's final `\n`, or the end of a file lacking one, so
+        # `code` always starts on a line of its own and is inserted just
+        # once.
+        "all.add_at_end_of_the_file": {
+            "description": """\
+Append code at the end of a file.
+
+```yaml
+substitutions:
+  - description: Load the Brave chromium_src override.
+    add_at_end_of_the_file:
+      code: |-
+        from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+```
+
+```diff
+       raise Exception('Unknown build')
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+```
+""",
+            "inputs": [
+                {
+                    "name": "code",
+                    "description": "The line(s) to append.",
+                },
+            ],
+            "re_pattern": "(?:\\n|(?<!\\n))\\Z",
+            "replace": "\\n{code}\\n",
+        },
     },
     "gn_edit": {
+        "gn.set_attribute": {
+            "description": """\
+Sets a target's attribute, creating it if none exists.
+
+The value is written as given, so a `gn` boolean or number goes in bare and a
+string keeps the quotes a `gn` string needs.
+
+```yaml
+substitutions:
+  - description: Let Brave depend on the crate outside tests.
+    set_attribute:
+      target: lib
+      attribute: allow_unsafe
+      value: "true"
+```
+
+```diff
+ rust_static_library("lib") {
+-  allow_unsafe = false
++  allow_unsafe = true
+```
+""",
+            "inputs": [
+                {
+                    "name": "target",
+                    "description": "The target to edit, e.g. `lib` for `rust_static_library(\"lib\")`.",
+                },
+                {
+                    "name": "attribute",
+                    "description": "The attribute to set, e.g. `allow_unsafe` or `testonly`.",
+                },
+                {
+                    "name": "value",
+                    "description": "The value to set it to, e.g. `true`.",
+                },
+            ],
+            "pattern": "//:{target}",
+            "command": "set {attribute} {value}",
+        },
+
+        "gn.remove_attribute": {
+            "description": """\
+Removes an attribute from a target entirely.
+
+```yaml
+substitutions:
+  - description: Let Brave depend on the crate outside tests.
+    remove_attribute:
+      target: lib
+      attribute: testonly
+```
+
+```diff
+ rust_static_library("lib") {
+-  testonly = true
+   crate_name = "hashbrown"
+```
+""",
+            "inputs": [
+                {
+                    "name": "target",
+                    "description": "The target to edit, e.g. `lib` for `rust_static_library(\"lib\")`.",
+                },
+                {
+                    "name": "attribute",
+                    "description": "The attribute to remove, e.g. `testonly`.",
+                },
+            ],
+            "pattern": "//:{target}",
+            "command": "remove {attribute}",
+        },
+
         "gn.insert_into_list": {
             "description": """\
 Inserts value(s) into a list attribute on a GN target.

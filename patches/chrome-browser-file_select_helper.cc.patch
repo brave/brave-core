@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/file_select_helper.cc b/chrome/browser/file_select_helper.cc
-index 9b7c30c3b2f7c3489d32a0e82a3ce0288d249f98..528afa6178c09092a2d4bc155befb39c44d64df3 100644
+index 227ace408690fc9586b39692234902336a22cd1a..32bcb20179d3c63ebbeb321c01237bfc1c19030a 100644
 --- a/chrome/browser/file_select_helper.cc
 +++ b/chrome/browser/file_select_helper.cc
 @@ -73,6 +73,7 @@ DEFINE_LOCAL_ELEMENT_IDENTIFIER_VALUE(kCancelButtonId);
@@ -10,7 +10,7 @@ index 9b7c30c3b2f7c3489d32a0e82a3ce0288d249f98..528afa6178c09092a2d4bc155befb39c
    for (auto& file_path : paths)
      base::DeleteFile(file_path);
  }
-@@ -463,6 +464,11 @@ void FileSelectHelper::ContentAnalysisCompletionCallback(
+@@ -465,6 +466,11 @@ void FileSelectHelper::ContentAnalysisCompletionCallback(
  
  void FileSelectHelper::NotifyListenerAndEnd(
      std::vector<blink::mojom::FileChooserFileInfoPtr> list) {

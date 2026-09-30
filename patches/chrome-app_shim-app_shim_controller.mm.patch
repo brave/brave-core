@@ -1,8 +1,8 @@
 diff --git a/chrome/app_shim/app_shim_controller.mm b/chrome/app_shim/app_shim_controller.mm
-index b271c200b71e1399e0ac0dd70f3bf38da05e3900..5ee18e757c543b2640838dd4d3c2f0cee5cea756 100644
+index 32f975c8247b8cfdf2b9ed03f3b0b26805d47491..62d70c05539c18a6185061ef06b2dccc51ffc83d 100644
 --- a/chrome/app_shim/app_shim_controller.mm
 +++ b/chrome/app_shim/app_shim_controller.mm
-@@ -606,6 +606,7 @@ mojo::PlatformChannelEndpoint AppShimController::ConnectToBrowser(
+@@ -607,6 +607,7 @@ mojo::PlatformChannelEndpoint AppShimController::ConnectToBrowser(
  
  void AppShimController::SendBootstrapOnShimConnected(
      mojo::PlatformChannelEndpoint endpoint) {

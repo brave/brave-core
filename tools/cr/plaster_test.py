@@ -5,7 +5,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import unittest
-from pathlib import Path
+from pathlib import Path, PurePath
 from unittest import mock
 import argparse
 import contextlib
@@ -21,7 +21,18 @@ import plaster
 import repository
 import terminal
 
-from test.fake_chromium_repo import FakeChromiumRepo
+from test.fake_chromium_repo import BRAVE_ROOT_FROM_FILE, FakeChromiumRepo
+
+
+def _forget_loaded_repositories(test: unittest.TestCase) -> None:
+    """Clear the repositories `load` memoised, for the test and after it.
+
+    `Repositories.load` reads `.repositories.cfg` once, since a run only ever
+    has the one. Tests write a different file per case, so each has to start
+    and finish with nothing cached.
+    """
+    plaster.Repositories._instance = None
+    test.addCleanup(setattr, plaster.Repositories, '_instance', None)
 
 
 class PlasterTest(unittest.TestCase):
@@ -3157,6 +3168,59 @@ class RewriterFormsTest(unittest.TestCase):
             result, 'C::C() : x_(1) {\n  [&]() -> void {\n  Init();\n  }();\n'
             '  BraveInit();\n}\n')
 
+    def test_after_function_impl_lambda_return_type_overrides_capture(self):
+        # The body only ever returns the derived type, so naming it binds
+        # `result_var` to that instead of the declared base -- the appended
+        # code reaches the derived API without casting, and the final return
+        # still converts to what the function declares.
+        result = self._apply(
+            'append_override.cc', 'std::unique_ptr<Base> Build() {\n'
+            '  return std::make_unique<Derived>();\n}\n', 'substitutions:\n'
+            '  - description: initialise the Brave bits on the built object\n'
+            '    after_function_impl:\n'
+            '      function_name: Build\n'
+            '      result_var: built\n'
+            '      lambda_return_type: std::unique_ptr<Derived>\n'
+            '      code: |-\n'
+            '        built->InitBrave();\n'
+            '        return built;\n')
+        self.assertEqual(
+            result, 'std::unique_ptr<Base> Build() {\n'
+            '  std::unique_ptr<Derived> built = [&]()'
+            ' -> std::unique_ptr<Derived> {\n'
+            '  return std::make_unique<Derived>();\n  }();\n'
+            '  built->InitBrave();\n  return built;\n}\n')
+
+    def test_after_function_impl_lambda_return_type_without_result_var(self):
+        # The override types the lambda even with nothing bound to its value.
+        result = self._apply(
+            'append_override_void.cc',
+            'const Base& C::Get() const {\n  return derived_;\n}\n',
+            'substitutions:\n'
+            '  - description: narrow the wrapped return\n'
+            '    after_function_impl:\n'
+            '      function_name: C::Get\n'
+            '      lambda_return_type: const Derived&\n'
+            '      code: |-\n'
+            '        BraveNote();\n')
+        self.assertEqual(
+            result, 'const Base& C::Get() const {\n'
+            '  [&]() -> const Derived& {\n  return derived_;\n  }();\n'
+            '  BraveNote();\n}\n')
+
+    def test_after_function_impl_empty_lambda_return_type_rejected(self):
+        # An empty override states nothing; omit the field to deduce instead.
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: an empty override states nothing\n'
+            '    after_function_impl:\n'
+            '      function_name: C::Compute\n'
+            "      lambda_return_type: ''\n"
+            '      code: |-\n'
+            '        Brave();\n',
+            'after_function_impl `lambda_return_type` must be a non-empty '
+            'string')
+
     def test_after_function_impl_wraps_early_returns(self):
         # Every `return` in the upstream body only returns from the lambda, so
         # the appended code still runs. The body's own lines are untouched.
@@ -4031,6 +4095,39 @@ class RewriterFormsTest(unittest.TestCase):
             result, 'source_set("browser") {\n  deps = [\n    "//base",\n'
             '  ]\n  deps += brave_extra_deps\n}\n')
 
+    def test_add_literal_to_list_appends_after_an_augmented_assignment(self):
+        # Upstream often collects a list with `+=` alone, having seeded it
+        # elsewhere, which is as good an anchor as a plain assignment.
+        result = self._apply(
+            'append_pluseq.gn', 'source_set("b") {\n'
+            '  deps += [ "//x" ]\n}\n', 'substitutions:\n'
+            '  - description: append after the augmented assignment\n'
+            '    add_literal_to_list:\n'
+            '      target: b\n'
+            '      list_name: deps\n'
+            '      literal: brave_extra_deps\n')
+        self.assertEqual(
+            result, 'source_set("b") {\n  deps += [ "//x" ]\n'
+            '  deps += brave_extra_deps\n}\n')
+
+    def test_add_literal_to_list_appends_once_for_several_assignments(self):
+        # A target may assign the list more than once; an append after any of
+        # them lands the same value, so the first is taken and the literal is
+        # added once rather than after each.
+        result = self._apply(
+            'append_several.gn', 'source_set("b") {\n'
+            '  deps = [ "//x" ]\n  sources = [ "a.cc" ]\n'
+            '  deps += [ "//y" ]\n}\n', 'substitutions:\n'
+            '  - description: append once\n'
+            '    add_literal_to_list:\n'
+            '      target: b\n'
+            '      list_name: deps\n'
+            '      literal: brave_extra_deps\n')
+        self.assertEqual(
+            result, 'source_set("b") {\n  deps = [ "//x" ]\n'
+            '  deps += brave_extra_deps\n  sources = [ "a.cc" ]\n'
+            '  deps += [ "//y" ]\n}\n')
+
     def test_add_literal_to_list_creates_missing_list(self):
         # The target declares no `deps` yet, so it is assigned fresh as the
         # target's first statement.
@@ -4415,8 +4512,7 @@ class RewriterFormsTest(unittest.TestCase):
     def test_add_literal_to_variable_appends_after_the_assignment(self):
         result = self._apply(
             'var_add.gni', 'sync_protocol_sources = [\n'
-            '  "wifi_configuration_specifics.proto",\n]\n',
-            'substitutions:\n'
+            '  "wifi_configuration_specifics.proto",\n]\n', 'substitutions:\n'
             '  - description: add the brave sync sources\n'
             '    add_literal_to_variable:\n'
             '      variable: sync_protocol_sources\n'
@@ -4477,8 +4573,7 @@ class RewriterFormsTest(unittest.TestCase):
             'import("//build/config/android/config.gni")\n'
             'import("//chrome/android/chrome_java_sources.gni")\n\n'
             '# Only used for testing.\nif (enable_offline_pages_harness) {\n'
-            '  chrome_java_sources += [ "B.java" ]\n}\n',
-            'substitutions:\n'
+            '  chrome_java_sources += [ "B.java" ]\n}\n', 'substitutions:\n'
             '  - description: add the brave java sources\n'
             '    add_literal_to_variable:\n'
             '      variable: chrome_java_sources\n'
@@ -4517,7 +4612,8 @@ class RewriterFormsTest(unittest.TestCase):
                 '      variable: chrome_java_sources\n'
                 '      literal: brave_java_sources\n'
                 '      assume_defined: true\n')
-        self.assertIn('found no `import()` to append after', str(ctx.exception))
+        self.assertIn('found no `import()` to append after',
+                      str(ctx.exception))
 
     def test_add_literal_to_variable_assume_defined_must_be_a_boolean(self):
         self._expect_value_error(
@@ -4620,6 +4716,329 @@ class RewriterFormsTest(unittest.TestCase):
             "Unrecognised add_literal_to_variable arg(s): 'target'",
             name='validation.gni')
 
+    def test_add_literal_to_list_type_picks_a_declaration_apart(self):
+        # GN lets one name be declared once per `if`/`else` branch; naming
+        # what declares the wanted one resolves which to edit.
+        result = self._apply(
+            'type_branches.gn', 'if (is_win) {\n'
+            '  copy("default_extensions") {\n    sources = [ "w" ]\n  }\n'
+            '} else {\n  group("default_extensions") {\n  }\n}\n',
+            'substitutions:\n'
+            '  - description: add to the copy branch\n'
+            '    add_literal_to_list:\n'
+            '      target: default_extensions\n'
+            '      list_name: sources\n'
+            '      literal: brave_sources\n'
+            '      type: copy\n')
+        self.assertEqual(
+            result, 'if (is_win) {\n  copy("default_extensions") {\n'
+            '    sources = [ "w" ]\n    sources += brave_sources\n  }\n'
+            '} else {\n  group("default_extensions") {\n  }\n}\n')
+
+    def test_add_literal_to_list_type_reaches_a_template_declaration(self):
+        # A `template()` declares its target through `target_name`, so there
+        # is no string literal to match; `type` names the declaring call and
+        # `target` the variable it is given.
+        result = self._apply(
+            'type_template.gni', 'template("chrome_repack_locales") {\n'
+            '  repack_locales(target_name) {\n'
+            '    source_patterns = [ "a" ]\n  }\n}\n', 'substitutions:\n'
+            '  - description: add the brave locale source patterns\n'
+            '    add_literal_to_list:\n'
+            '      target: target_name\n'
+            '      list_name: source_patterns\n'
+            '      literal: brave_locale_source_patterns\n'
+            '      type: repack_locales\n')
+        self.assertEqual(
+            result, 'template("chrome_repack_locales") {\n'
+            '  repack_locales(target_name) {\n'
+            '    source_patterns = [ "a" ]\n'
+            '    source_patterns += brave_locale_source_patterns\n  }\n}\n')
+
+    def test_add_literal_to_list_type_that_does_not_declare_it_fails(self):
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'type_wrong.gn',
+                'source_set("browser") {\n  deps = [ "//b" ]\n}\n',
+                'substitutions:\n'
+                '  - description: wrong declaring call\n'
+                '    add_literal_to_list:\n'
+                '      target: browser\n'
+                '      list_name: deps\n'
+                '      literal: brave_deps\n'
+                '      type: action\n')
+        self.assertIn('found no body for target', str(ctx.exception))
+
+    # Two templates each declaring an `action(target_name)`, the second one
+    # inside an `if`, which `type:` alone cannot tell apart.
+    _TWO_TEMPLATES = ('template("collect") {\n'
+                      '  action(target_name) {\n    deps = []\n  }\n}\n\n'
+                      'template("generate") {\n  if (is_win) {\n'
+                      '    action(target_name) {\n      deps = []\n    }\n'
+                      '  }\n}\n')
+
+    def test_add_literal_to_list_template_picks_a_template_apart(self):
+        # The template is named, so the append lands in its action -- found
+        # inside the `if` -- and not in the other template's.
+        result = self._apply(
+            'template_scope.gni', self._TWO_TEMPLATES, 'substitutions:\n'
+            '  - description: add to the generate action only\n'
+            '    add_literal_to_list:\n'
+            '      target: target_name\n'
+            '      type: action\n'
+            '      template: generate\n'
+            '      list_name: deps\n'
+            '      literal: brave_deps\n')
+        self.assertEqual(
+            result, 'template("collect") {\n'
+            '  action(target_name) {\n    deps = []\n  }\n}\n\n'
+            'template("generate") {\n  if (is_win) {\n'
+            '    action(target_name) {\n      deps = []\n'
+            '      deps += brave_deps\n    }\n  }\n}\n')
+
+    def test_add_literal_to_list_two_templates_need_template(self):
+        # Without it the two declarations are ambiguous, and the refusal names
+        # the field that resolves them.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'template_ambiguous.gni', self._TWO_TEMPLATES,
+                'substitutions:\n'
+                '  - description: ambiguous across templates\n'
+                '    add_literal_to_list:\n'
+                '      target: target_name\n'
+                '      type: action\n'
+                '      list_name: deps\n'
+                '      literal: brave_deps\n')
+        message = str(ctx.exception)
+        self.assertIn('found 2 declarations of target', message)
+        self.assertIn('`template:`', message)
+
+    def test_add_literal_to_list_template_leaves_other_targets_out(self):
+        # A target outside the named template is not a candidate at all.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'template_outside.gn', 'source_set("b") {\n  deps = []\n}\n',
+                'substitutions:\n'
+                '  - description: target is not in that template\n'
+                '    add_literal_to_list:\n'
+                '      target: b\n'
+                '      template: generate\n'
+                '      list_name: deps\n'
+                '      literal: brave_deps\n')
+        self.assertIn('found no body for target', str(ctx.exception))
+
+    def test_add_literal_to_list_empty_template_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: blank template\n'
+            '    add_literal_to_list:\n'
+            '      target: target_name\n'
+            '      list_name: deps\n'
+            '      literal: brave_deps\n'
+            "      template: ''\n",
+            'add_literal_to_list `template` must be a non-empty string',
+            name='validation.gni')
+
+    def test_add_literal_to_list_ambiguous_target_names_type(self):
+        # The refusal points at the field that resolves it.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'type_ambiguous.gn', 'if (is_win) {\n  copy("b") {\n'
+                '    sources = [ "w" ]\n  }\n} else {\n  group("b") {\n'
+                '  }\n}\n', 'substitutions:\n'
+                '  - description: ambiguous\n'
+                '    add_literal_to_list:\n'
+                '      target: b\n'
+                '      list_name: sources\n'
+                '      literal: brave_sources\n')
+        self.assertIn('`type:`', str(ctx.exception))
+
+    def test_add_literal_to_list_empty_type_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: blank type\n'
+            '    add_literal_to_list:\n'
+            '      target: browser\n'
+            '      list_name: deps\n'
+            '      literal: brave_deps\n'
+            "      type: ''\n",
+            'add_literal_to_list `type` must be a non-empty string',
+            name='validation.gn')
+
+    # -- append_to_target (real ast-grep binary) --------------------------
+
+    def test_append_to_target_appends_code_at_the_end(self):
+        result = self._apply(
+            'append_target.gn', 'component("color") {\n'
+            '  sources = [ "m.cc" ]\n}\n', 'substitutions:\n'
+            '  - description: add the brave color mixers\n'
+            '    append_to_target:\n'
+            '      target: color\n'
+            '      code: |-\n'
+            '        sources += brave_color_sources\n'
+            '        deps += brave_color_deps\n')
+        self.assertEqual(
+            result, 'component("color") {\n  sources = [ "m.cc" ]\n'
+            '  sources += brave_color_sources\n'
+            '  deps += brave_color_deps\n}\n')
+
+    def test_append_to_target_appends_after_a_conditional(self):
+        # The body ends in an `if`, and the code closes the body rather than
+        # landing inside that conditional.
+        result = self._apply(
+            'append_after_if.gn', 'source_set("b") {\n  if (is_win) {\n'
+            '    sources += [ "w.cc" ]\n  }\n}\n', 'substitutions:\n'
+            '  - description: append past the conditional\n'
+            '    append_to_target:\n'
+            '      target: b\n'
+            '      code: deps += brave_deps\n')
+        self.assertEqual(
+            result, 'source_set("b") {\n  if (is_win) {\n'
+            '    sources += [ "w.cc" ]\n  }\n  deps += brave_deps\n}\n')
+
+    def test_append_to_target_indents_to_a_nested_target(self):
+        # A target inside a conditional sits one level in, so its body is two,
+        # which every line of the block is indented to.
+        result = self._apply(
+            'append_nested.gn', 'if (is_android) {\n  source_set("b") {\n'
+            '    sources = [ "a.cc" ]\n  }\n}\n', 'substitutions:\n'
+            '  - description: append to the nested target\n'
+            '    append_to_target:\n'
+            '      target: b\n'
+            '      code: |-\n'
+            '        deps += brave_deps\n'
+            '        configs += brave_configs\n')
+        self.assertEqual(
+            result, 'if (is_android) {\n  source_set("b") {\n'
+            '    sources = [ "a.cc" ]\n    deps += brave_deps\n'
+            '    configs += brave_configs\n  }\n}\n')
+
+    def test_append_to_target_keeps_a_block_in_the_code(self):
+        # `code` is free-form, so a conditional of its own is indented as a
+        # block rather than flattened.
+        result = self._apply(
+            'append_block.gn',
+            'source_set("b") {\n  sources = [ "a.cc" ]\n}\n',
+            'substitutions:\n'
+            '  - description: append a conditional\n'
+            '    append_to_target:\n'
+            '      target: b\n'
+            '      code: |-\n'
+            '        if (is_win) {\n'
+            '          deps += brave_win_deps\n'
+            '        }\n')
+        self.assertEqual(
+            result, 'source_set("b") {\n  sources = [ "a.cc" ]\n'
+            '  if (is_win) {\n    deps += brave_win_deps\n  }\n}\n')
+
+    def test_append_to_target_rejects_an_import_field(self):
+        # An import is a file-level change with its own rewriter, so this one
+        # does not carry a field for it; the two pair up as entries instead.
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: import is not a field here\n'
+            '    append_to_target:\n'
+            '      target: utility\n'
+            '      code: sources += brave_utility_sources\n'
+            '      import: //brave/utility/sources.gni\n',
+            "Unrecognised append_to_target arg(s): 'import'",
+            name='validation.gn')
+
+    def test_append_to_target_pairs_with_add_import(self):
+        # Two entries in one plaster: the import, then the append that reads
+        # what it supplies.
+        result = self._apply(
+            'append_paired.gn', self._GN_HEADER +
+            'source_set("utility") {\n  sources = [ "u.cc" ]\n}\n',
+            'substitutions:\n'
+            '  - description: import the brave utility sources\n'
+            '    add_import:\n'
+            '      import: //brave/utility/sources.gni\n'
+            '  - description: append them to the target\n'
+            '    append_to_target:\n'
+            '      target: utility\n'
+            '      code: sources += brave_utility_sources\n')
+        self.assertEqual(
+            result,
+            self._GN_HEADER + 'import("//brave/utility/sources.gni")\n\n'
+            'source_set("utility") {\n  sources = [ "u.cc" ]\n'
+            '  sources += brave_utility_sources\n}\n')
+
+    def test_append_to_target_template_picks_a_template_apart(self):
+        result = self._apply(
+            'append_template.gni', self._TWO_TEMPLATES, 'substitutions:\n'
+            '  - description: append to the collect action only\n'
+            '    append_to_target:\n'
+            '      target: target_name\n'
+            '      type: action\n'
+            '      template: collect\n'
+            '      code: deps += brave_deps\n')
+        self.assertEqual(
+            result, 'template("collect") {\n'
+            '  action(target_name) {\n    deps = []\n'
+            '    deps += brave_deps\n  }\n}\n\n'
+            'template("generate") {\n  if (is_win) {\n'
+            '    action(target_name) {\n      deps = []\n    }\n'
+            '  }\n}\n')
+
+    def test_append_to_target_type_picks_a_declaration_apart(self):
+        result = self._apply(
+            'append_type.gn', 'if (is_win) {\n  copy("b") {\n'
+            '    sources = [ "w" ]\n  }\n} else {\n  group("b") {\n'
+            '  }\n}\n', 'substitutions:\n'
+            '  - description: append to the copy branch\n'
+            '    append_to_target:\n'
+            '      target: b\n'
+            '      type: copy\n'
+            '      code: sources += brave_sources\n')
+        self.assertEqual(
+            result, 'if (is_win) {\n  copy("b") {\n    sources = [ "w" ]\n'
+            '    sources += brave_sources\n  }\n} else {\n'
+            '  group("b") {\n  }\n}\n')
+
+    def test_append_to_target_missing_target_fails(self):
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'append_missing.gn', 'source_set("other") {\n}\n',
+                'substitutions:\n'
+                '  - description: no such target\n'
+                '    append_to_target:\n'
+                '      target: b\n'
+                '      code: deps += brave_deps\n')
+        self.assertIn("found no body for target 'b'", str(ctx.exception))
+
+    def test_append_to_target_declared_twice_fails(self):
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'append_twice.gn', 'if (is_win) {\n  copy("b") {\n'
+                '    sources = [ "a" ]\n  }\n} else {\n  group("b") {\n'
+                '  }\n}\n', 'substitutions:\n'
+                '  - description: ambiguous target\n'
+                '    append_to_target:\n'
+                '      target: b\n'
+                '      code: deps += brave_deps\n')
+        self.assertIn('found 2 declarations of target', str(ctx.exception))
+
+    def test_append_to_target_missing_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: missing code\n'
+            '    append_to_target:\n'
+            '      target: b\n',
+            'append_to_target requires arg(s): code',
+            name='validation.gn')
+
+    def test_append_to_target_count_other_than_one_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: bogus count\n'
+            '    count: 2\n'
+            '    append_to_target:\n'
+            '      target: b\n'
+            '      code: deps += brave_deps\n',
+            'does not accept a count other than 1',
+            name='validation.gn')
+
     # -- add_import (real ast-grep binary) --------------------------------
 
     def test_add_import_adds_below_the_copyright(self):
@@ -4666,6 +5085,245 @@ class RewriterFormsTest(unittest.TestCase):
             '      import: //brave/build/config/brave_build.gni\n',
             'does not accept a count other than 1',
             name='validation.gni')
+
+    # -- set_attribute / remove_attribute (real gn binary) ----------------
+
+    _RUST_TARGET = ('rust_static_library("lib") {\n'
+                    '  crate_name = "hashbrown"\n'
+                    '  allow_unsafe = false\n'
+                    '  testonly = true\n}\n')
+
+    def test_set_attribute_overwrites_a_scalar(self):
+        result = self._apply(
+            'set_attr.gn', self._RUST_TARGET, 'substitutions:\n'
+            '  - description: let brave depend on the crate\n'
+            '    set_attribute:\n'
+            '      target: lib\n'
+            '      attribute: allow_unsafe\n'
+            "      value: 'true'\n")
+        self.assertIn('allow_unsafe = true', result)
+        self.assertNotIn('allow_unsafe = false', result)
+
+    def test_set_attribute_creates_one_the_target_lacks(self):
+        result = self._apply(
+            'set_new_attr.gn', 'mojom("bindings") {\n'
+            '  sources = [ "a.mojom" ]\n}\n', 'substitutions:\n'
+            '  - description: generate the legacy bindings\n'
+            '    set_attribute:\n'
+            '      target: bindings\n'
+            '      attribute: generate_legacy_js_bindings\n'
+            "      value: 'true'\n")
+        self.assertIn('generate_legacy_js_bindings = true', result)
+
+    def test_remove_attribute_drops_it(self):
+        result = self._apply(
+            'remove_attr.gn', self._RUST_TARGET, 'substitutions:\n'
+            '  - description: drop testonly\n'
+            '    remove_attribute:\n'
+            '      target: lib\n'
+            '      attribute: testonly\n')
+        self.assertNotIn('testonly', result)
+        self.assertIn('crate_name = "hashbrown"', result)
+
+    def test_remove_attribute_absent_fails(self):
+        # gn edits are idempotent, so nothing changing means the entry has
+        # gone stale rather than succeeded.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'remove_absent.gn',
+                'source_set("lib") {\n  sources = [ "a.cc" ]\n}\n',
+                'substitutions:\n'
+                '  - description: nothing to drop\n'
+                '    remove_attribute:\n'
+                '      target: lib\n'
+                '      attribute: testonly\n')
+        # gn renders the warning for the absent attribute from a build file it
+        # has already freed, so it sometimes dies instead of printing it,
+        # leaving plaster with gn's exit status rather than a diagnosis of the
+        # no-op. Both failures count until a gn carrying the fix is pinned.
+        message = str(ctx.exception)
+        self.assertTrue(
+            'changed nothing' in message or 'gn edit failed' in message,
+            message)
+
+    def test_set_attribute_on_a_conditional_is_refused(self):
+        # The note gn leaves in place of the edit must never reach the patch.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'set_conditional.gn', 'source_set("lib") {\n'
+                '  if (is_win) {\n    allow_unsafe = false\n  }\n}\n',
+                'substitutions:\n'
+                '  - description: conditional attribute\n'
+                '    set_attribute:\n'
+                '      target: lib\n'
+                '      attribute: allow_unsafe\n'
+                "      value: 'true'\n")
+        message = str(ctx.exception)
+        self.assertIn('left a note rather than editing', message)
+        self.assertNotIn(
+            'TODO(gn edit:',
+            message.replace('left a note rather than editing', ''))
+
+    def test_remove_attribute_missing_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: missing attribute\n'
+            '    remove_attribute:\n'
+            '      target: lib\n',
+            'remove_attribute requires arg(s): attribute',
+            name='validation.gn')
+
+    # -- ts.drop_custom_element_registration op (real ast-grep) --------------
+    #
+    # Targets WebUI `.ts` sources, parsed with ast-grep's `ts` grammar. The
+    # statement's own line goes with it; the blank line above stays, being
+    # context for the code that remains.
+
+    _REGISTRATION_YAML = (
+        'substitutions:\n'
+        '  - description: Free the tag for the Brave subclass.\n'
+        '    drop_custom_element_registration:\n'
+        '      class_name: FooElement\n')
+
+    def test_drop_custom_element_registration_removes_the_whole_line(self):
+        # The shape every upstream WebUI source has: the registration closes
+        # the file, separated from the code above by a blank line.
+        result = self._apply(
+            'element.ts', 'declare global {\n'
+            '  interface HTMLElementTagNameMap {\n'
+            "    'x-foo': FooElement;\n"
+            '  }\n'
+            '}\n'
+            '\n'
+            'customElements.define(FooElement.is, FooElement);\n',
+            self._REGISTRATION_YAML)
+        self.assertEqual(
+            result, 'declare global {\n'
+            '  interface HTMLElementTagNameMap {\n'
+            "    'x-foo': FooElement;\n"
+            '  }\n'
+            '}\n'
+            '\n')
+
+    def test_drop_custom_element_registration_keeps_the_blank_line_above(self):
+        # Removing it too would make the generated patch drop an empty line at
+        # a hunk boundary, which `patches/PRESUBMIT.py` warns about.
+        result = self._apply(
+            'blank.ts', '}\n'
+            '\n'
+            'customElements.define(FooElement.is, FooElement);\n',
+            self._REGISTRATION_YAML)
+        self.assertEqual(result, '}\n\n')
+
+    def test_drop_custom_element_registration_handles_a_wrapped_call(self):
+        # A long class name puts the arguments on their own line; the match is
+        # the whole statement, so both lines go.
+        result = self._apply(
+            'wrapped.ts', 'const x = 1;\n'
+            '\n'
+            'customElements.define(\n'
+            '    FooElement.is, FooElement);\n', self._REGISTRATION_YAML)
+        self.assertEqual(result, 'const x = 1;\n\n')
+
+    def test_drop_custom_element_registration_keeps_following_code(self):
+        # Not the last statement, so only the statement's own line goes and
+        # everything around it is left as it stands.
+        result = self._apply(
+            'midfile.ts', 'const x = 1;\n'
+            '\n'
+            'customElements.define(FooElement.is, FooElement);\n'
+            'export {};\n', self._REGISTRATION_YAML)
+        self.assertEqual(result, 'const x = 1;\n'
+                         '\n'
+                         'export {};\n')
+
+    def test_drop_custom_element_registration_accepts_a_string_tag(self):
+        # The class is what a plaster knows, so the tag may be a literal
+        # rather than the `.is` getter.
+        result = self._apply(
+            'literal_tag.ts', 'const x = 1;\n'
+            '\n'
+            "customElements.define('x-foo', FooElement);\n",
+            self._REGISTRATION_YAML)
+        self.assertEqual(result, 'const x = 1;\n\n')
+
+    def test_drop_custom_element_registration_parses_type_syntax(self):
+        # The `js` grammar cannot parse this, which is why `.ts` has a
+        # namespace of its own.
+        result = self._apply(
+            'typed.ts', 'export class FooElement extends CrLitElement {\n'
+            '  private value_: string = getValue() as string;\n'
+            '}\n'
+            '\n'
+            'customElements.define(FooElement.is, FooElement);\n',
+            self._REGISTRATION_YAML)
+        self.assertEqual(
+            result, 'export class FooElement extends CrLitElement {\n'
+            '  private value_: string = getValue() as string;\n'
+            '}\n'
+            '\n')
+
+    def test_drop_custom_element_registration_leaves_other_classes_alone(self):
+        result = self._apply(
+            'sibling.ts', 'customElements.define(BarElement.is, BarElement);\n'
+            'customElements.define(FooElement.is, FooElement);\n',
+            self._REGISTRATION_YAML)
+        self.assertEqual(
+            result, 'customElements.define(BarElement.is, BarElement);\n')
+
+    def test_drop_custom_element_registration_missing_call_fails(self):
+        # Upstream dropping the registration itself is a breakage worth
+        # reporting: the shadow file's own `customElements.define` may now be
+        # the second one, or redundant.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply('absent.ts', 'const x = 1;\n', self._REGISTRATION_YAML)
+
+    def test_drop_custom_element_registration_other_define_fails(self):
+        # A `define` on something that is not `customElements` is not a
+        # registration, however the class is named.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'other_define.ts', 'const x = 1;\n'
+                '\n'
+                'Object.define(FooElement.is, FooElement);\n',
+                self._REGISTRATION_YAML)
+
+    def test_drop_custom_element_registration_is_not_available_for_cxx(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: wrong kind of target\n'
+            '    drop_custom_element_registration:\n'
+            '      class_name: FooElement\n',
+            'is not available for this source')
+
+    def test_drop_custom_element_registration_missing_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: missing arg\n'
+            '    drop_custom_element_registration: {}\n',
+            'drop_custom_element_registration requires arg(s): class_name',
+            name='validation.ts')
+
+    def test_drop_custom_element_registration_unknown_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: stray arg\n'
+            '    drop_custom_element_registration:\n'
+            '      class_name: FooElement\n'
+            '      tag_name: x-foo\n',
+            'Unrecognised drop_custom_element_registration arg',
+            name='validation.ts')
+
+    def test_drop_custom_element_registration_count_other_than_one_rejected(
+            self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: bogus count\n'
+            '    count: 2\n'
+            '    drop_custom_element_registration:\n'
+            '      class_name: FooElement\n',
+            'does not accept a count other than 1',
+            name='validation.ts')
 
     # -- validation ---------------------------------------------------------
 
@@ -5019,6 +5677,14 @@ class RewriterNamespaceTest(unittest.TestCase):
             self.assertEqual(
                 plaster._namespace_of_source(Path('rewrite/dir') / name),
                 'cxx', name)
+
+    def test_ts_targets_resolve_to_the_ts_namespace(self):
+        # A generated `.html.ts` template is still TypeScript: only the suffix
+        # right before `.yaml` decides.
+        for name in ('foo.ts.yaml', 'foo.html.ts.yaml'):
+            self.assertEqual(
+                plaster._namespace_of_source(Path('rewrite/dir') / name), 'ts',
+                name)
 
     def test_unclaimed_suffix_resolves_to_no_namespace(self):
         self.assertIsNone(
@@ -5623,6 +6289,43 @@ class RewritersEvalTest(unittest.TestCase):
             rewriter['replace']['replace'] = 'virtual {return_type} '
 
         self._assert_invalid(mutate, 'shadow')
+
+    # -- capture overrides --------------------------------------------------
+
+    def test_rewriter_may_override_a_capture(self):
+        # An override is how a caller supplies a capture's value itself. The
+        # name stays out of `inputs`, which may not shadow a capture, so
+        # listing it here is the whole declaration.
+        spec = self._with_capture(self._valid_spec())
+        rewriter = spec['ast.rewriter']['cxx.make_virtual']
+        rewriter['capture_overrides'] = ['return_type']
+        rewriter['replace']['replace'] = 'virtual {return_type} '
+        rewriters = plaster.RewritersEval(repr(spec))
+        self.assertEqual(
+            rewriters.rewriter('cxx.make_virtual')['capture_overrides'],
+            ['return_type'])
+
+    def test_rewriter_capture_override_must_name_a_capture(self):
+        # Overriding anything the matcher does not produce is a value no
+        # caller could ever supply.
+        def mutate(spec):
+            self._with_capture(spec)
+            rewriter = spec['ast.rewriter']['cxx.make_virtual']
+            rewriter['capture_overrides'] = ['nope']
+            rewriter['replace']['replace'] = 'virtual {return_type} '
+
+        self._assert_invalid(mutate, 'does not produce')
+
+    def test_rewriter_capture_override_must_be_used(self):
+        # No template renders `{return_type}`, so an override for it could
+        # never reach the output.
+        def mutate(spec):
+            self._with_capture(spec)
+            spec['ast.rewriter']['cxx.make_virtual']['capture_overrides'] = [
+                'return_type'
+            ]
+
+        self._assert_invalid(mutate, 'never used')
 
     # -- optional inputs (`when_set`) ---------------------------------------
 
@@ -7378,6 +8081,19 @@ class RegexMacroEngineTest(unittest.TestCase):
         self.assertEqual(matches, 1)
         self.assertEqual(engine.content, '[foo] bar')
 
+    def test_backslashes_in_replace_inputs_are_inserted_verbatim(self):
+        # A C string escape in an input must not be read by `re.subn` as a
+        # newline or a backreference.
+        rewriters = self._rewriters({
+            'inputs': ['name', 'value'],
+            're_pattern': '{name}',
+            'replace': '{value}',
+        })
+        engine = plaster.RegexMacroEngine(rewriters, 'foo')
+        engine.run('cxx.rename_constant', {'name': 'foo', 'value': r'"a\n\1"'})
+        self.assertEqual(engine.content, r'"a\n\1"')
+
+
     def test_missing_input_raises(self):
         rewriters = self._rewriters({
             'inputs': ['old_name', 'new_name'],
@@ -7873,6 +8589,160 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
                 })
 
 
+class AllInsertionMacrosTest(unittest.TestCase):
+    """Exercises the shipped `all.` line insertion macros."""
+
+    def setUp(self):
+        self.rewriters = plaster.RewritersEval.load()
+
+    def _run(self, op_id: str, source: str, **inputs) -> tuple[int, str]:
+        engine = plaster.RegexMacroEngine(self.rewriters, source)
+        matches = engine.run(op_id, inputs)
+        return matches, engine.content
+
+    # -- add_after_line ------------------------------------------------------
+
+    def test_add_after_line(self):
+        matches, content = self._run('all.add_after_line',
+                                     '#include "a.h"\n#include "c.h"\n',
+                                     line='#include "a.h"',
+                                     code='#include "b.h"')
+        self.assertEqual(matches, 1)
+        self.assertEqual(content,
+                         '#include "a.h"\n#include "b.h"\n#include "c.h"\n')
+
+    def test_add_after_line_ignores_indentation(self):
+        matches, content = self._run('all.add_after_line',
+                                     '{\n  Foo();  \n}\n',
+                                     line='Foo();',
+                                     code='  Bar();')
+        self.assertEqual(matches, 1)
+        self.assertEqual(content, '{\n  Foo();  \n  Bar();\n}\n')
+
+    def test_add_after_line_on_last_line_without_newline(self):
+        matches, content = self._run('all.add_after_line',
+                                     'a\nb',
+                                     line='b',
+                                     code='c')
+        self.assertEqual(matches, 1)
+        self.assertEqual(content, 'a\nb\nc\n')
+
+    def test_add_after_line_requires_the_whole_line(self):
+        matches, content = self._run('all.add_after_line',
+                                     'Foo(); // x\nFoo2();\n',
+                                     line='Foo();',
+                                     code='Bar();')
+        self.assertEqual(matches, 0)
+        self.assertEqual(content, 'Foo(); // x\nFoo2();\n')
+
+    def test_add_after_line_matches_every_occurrence(self):
+        matches, content = self._run('all.add_after_line',
+                                     'a\nb\na\n',
+                                     line='a',
+                                     code='x')
+        self.assertEqual(matches, 2)
+        self.assertEqual(content, 'a\nx\nb\na\nx\n')
+
+    # -- add_before_line -----------------------------------------------------
+
+    def test_add_before_line(self):
+        matches, content = self._run('all.add_before_line',
+                                     '{\n  Foo();\n}\n',
+                                     line='Foo();',
+                                     code='  Bar();')
+        self.assertEqual(matches, 1)
+        self.assertEqual(content, '{\n  Bar();\n  Foo();\n}\n')
+
+    def test_add_before_first_line(self):
+        matches, content = self._run('all.add_before_line',
+                                     'a\nb\n',
+                                     line='a',
+                                     code='x')
+        self.assertEqual(matches, 1)
+        self.assertEqual(content, 'x\na\nb\n')
+
+    # -- add_after_copyright_notice ------------------------------------------
+
+    def test_add_after_copyright_notice(self):
+        matches, content = self._run(
+            'all.add_after_copyright_notice',
+            '# Copyright 2014 The Chromium Authors\n'
+            '# found in the LICENSE file.\n'
+            '\n'
+            'import("//base/allocator/allocator.gni")\n',
+            code='import("//brave/browser/sources.gni")')
+        self.assertEqual(matches, 1)
+        self.assertEqual(
+            content, '# Copyright 2014 The Chromium Authors\n'
+            '# found in the LICENSE file.\n'
+            '\n'
+            'import("//brave/browser/sources.gni")\n'
+            '\n'
+            'import("//base/allocator/allocator.gni")\n')
+
+    def test_add_after_copyright_notice_with_slash_comments(self):
+        matches, content = self._run('all.add_after_copyright_notice',
+                                     '// Copyright 2016 The Chromium Authors\n'
+                                     '// found in the LICENSE file.\n'
+                                     '\n'
+                                     '#include "a.h"\n',
+                                     code='#include "brave/b.h"')
+        self.assertEqual(matches, 1)
+        self.assertEqual(
+            content, '// Copyright 2016 The Chromium Authors\n'
+            '// found in the LICENSE file.\n'
+            '\n'
+            '#include "brave/b.h"\n'
+            '\n'
+            '#include "a.h"\n')
+
+    def test_add_after_copyright_notice_spans_a_shebang(self):
+        matches, content = self._run(
+            'all.add_after_copyright_notice',
+            '#!/usr/bin/env python3\n#\n# Copyright 2013\n\nimport os\n',
+            code='import brave')
+        self.assertEqual(matches, 1)
+        self.assertEqual(
+            content, '#!/usr/bin/env python3\n#\n# Copyright 2013\n\n'
+            'import brave\n\nimport os\n')
+
+    def test_add_after_copyright_notice_spans_a_block_comment(self):
+        matches, content = self._run(
+            'all.add_after_copyright_notice',
+            '/* Copyright 2014\n * found in the LICENSE file. */\n\na {}\n',
+            code='b {}')
+        self.assertEqual(matches, 1)
+        self.assertEqual(
+            content, '/* Copyright 2014\n * found in the LICENSE file. */\n\n'
+            'b {}\n\na {}\n')
+
+    def test_add_after_copyright_notice_requires_a_leading_notice(self):
+        source = 'int x;\n\n// Copyright 2014\n'
+        matches, content = self._run('all.add_after_copyright_notice',
+                                     source,
+                                     code='int y;')
+        self.assertEqual(matches, 0)
+        self.assertEqual(content, source)
+
+    # -- add_at_end_of_the_file ----------------------------------------------
+
+    def test_add_at_end_of_the_file(self):
+        for source in ('a\n', 'a'):
+            with self.subTest(source=source):
+                matches, content = self._run('all.add_at_end_of_the_file',
+                                             source,
+                                             code='b')
+                self.assertEqual(matches, 1)
+                self.assertEqual(content, 'a\nb\n')
+
+    def test_add_at_end_of_the_file_after_a_blank_line(self):
+        matches, content = self._run('all.add_at_end_of_the_file',
+                                     'a\n\n',
+                                     code='b')
+        self.assertEqual(matches, 1)
+        self.assertEqual(content, 'a\n\nb\n')
+
+
 class DeclaredInputsTest(unittest.TestCase):
     """`_check_declared_inputs` guards both declarative backends.
 
@@ -8020,6 +8890,27 @@ class GnEditSandboxTest(unittest.TestCase):
         # full setup does: one declaring no `buildconfig` segfaults it rather
         # than drawing an error, so this must never regress to an empty file.
         self.assertIn('buildconfig', plaster.GnEditSandbox._DOTFILE_CONTENTS)
+
+    def test_an_ambiguous_edit_is_refused_rather_than_noted(self):
+        # gn does not edit a conditional attribute: it writes a note asking
+        # for the decision to be made by hand, and still reports the file as
+        # changed, so without this the note would land in the patch.
+        conditional = ('source_set("foo") {\n  if (is_win) {\n'
+                       '    testonly = true\n  }\n}\n')
+        with plaster.GnEditSandbox(conditional) as sandbox:
+            with self.assertRaises(plaster.GnEditError) as ctx:
+                sandbox.run(command='remove testonly', pattern='//:foo')
+        self.assertIn('left a note rather than editing', str(ctx.exception))
+
+    def test_a_note_already_in_the_source_is_not_mistaken_for_one(self):
+        # The check is for a note gn added, not one upstream happens to carry.
+        noted = ('source_set("foo") {\n'
+                 '  # TODO(gn edit: something someone left here)\n'
+                 '  deps = [ "//b" ]\n}\n')
+        with plaster.GnEditSandbox(noted) as sandbox:
+            outcome = sandbox.run(command='add deps //brave/x',
+                                  pattern='//:foo')
+        self.assertIn('//brave/x', outcome.contents)
 
     def test_the_root_is_laid_out_for_gn(self):
         with plaster.GnEditSandbox(self._TARGET) as sandbox:
@@ -8370,8 +9261,9 @@ class GnEditSchemaTest(unittest.TestCase):
     def test_the_shipped_ops_validate(self):
         # `load()` validates on construction, so this fails loudly if a
         # shipped op ever drifts from its declared interface.
-        self.assertEqual(sorted(plaster.RewritersEval.load().gn_edits),
-                         ['gn.insert_into_list'])
+        self.assertEqual(
+            sorted(plaster.RewritersEval.load().gn_edits),
+            ['gn.insert_into_list', 'gn.remove_attribute', 'gn.set_attribute'])
 
 
 class GnEditRewriterTest(unittest.TestCase):
@@ -8731,6 +9623,7 @@ class GnEditDispatchTest(unittest.TestCase):
             'BUILD.gn', 'source_set("a") {\n'
             '  deps = []\n'
             '}\n'
+            '\n'
             'source_set("b") {\n'
             '  deps = []\n'
             '}\n', 'substitutions:\n'
@@ -8743,6 +9636,7 @@ class GnEditDispatchTest(unittest.TestCase):
             result, 'source_set("a") {\n'
             '  deps = [ "//brave/a" ]\n'
             '}\n'
+            '\n'
             'source_set("b") {\n'
             '  deps = []\n'
             '}\n')
@@ -8911,6 +9805,407 @@ class GnNamespaceTest(unittest.TestCase):
         self.assertFalse(plaster._is_cxx_source(Path('rewrite/BUILD.gn.yaml')))
         self.assertFalse(
             plaster._is_cxx_source(Path('rewrite/sources.gni.yaml')))
+
+
+class RepositoriesTest(unittest.TestCase):
+    """Tests for loading and validating `patches/.repositories.cfg`."""
+
+    def setUp(self):
+        self.fake_chromium_src = FakeChromiumRepo()
+        self.fake_chromium_src.setup()
+        self.addCleanup(self.fake_chromium_src.cleanup)
+        _forget_loaded_repositories(self)
+
+    def _write_repositories(self, content: str) -> None:
+        """Writes the repositories file, and drops what `load` has cached.
+
+        A run only ever reads one repositories file, so `load` never re-reads
+        it; a test writing a different one has to say so.
+        """
+        plaster.REPOSITORIES_FILE.write_text(content)
+        plaster.Repositories._instance = None
+
+    @staticmethod
+    def _paths() -> list[Path]:
+        """Every loaded repository's path, relative to `src/`, in order."""
+        return [
+            repo.relative_to_chromium for repo in plaster.Repositories.load()
+        ]
+
+    def test_the_fixture_lists_chromium_only(self):
+        """The fake repo mirrors a brave-core patching `src` alone."""
+        self.assertEqual(list(plaster.Repositories.load()),
+                         [repository.chromium])
+
+    def test_entries_are_ordered_longest_first(self):
+        """The most specific repository comes first, with `src` last."""
+        self._write_repositories('''
+            # Chromium's own src.
+            //
+
+            //v8
+            //third_party/devtools-frontend/src
+        ''')
+        self.assertEqual(self._paths(), [
+            PurePath('third_party/devtools-frontend/src'),
+            PurePath('v8'),
+            PurePath(),
+        ])
+
+    def test_comments_and_blank_lines_are_ignored(self):
+        """`#` opens a comment, as in the other `.cfg` files in the tree."""
+        self._write_repositories('# a leading comment\n'
+                                 '\n'
+                                 '//  # chromium\n'
+                                 '//v8\n'
+                                 '#//third_party/ffmpeg\n')
+        self.assertEqual(self._paths(), [PurePath('v8'), PurePath()])
+
+    def test_a_trailing_slash_is_tolerated(self):
+        """`//v8/` names the same repository as `//v8`, as a gn label would."""
+        self._write_repositories('//\n//v8/\n')
+        self.assertEqual(self._paths(), [PurePath('v8'), PurePath()])
+
+    def test_chromium_entry_is_the_chromium_repository(self):
+        """The `//` entry is chromium's own `Repository` instance."""
+        repositories = plaster.Repositories.load()
+        self.assertEqual(repositories.chromium, repository.chromium)
+        self.assertTrue(repositories.chromium.is_chromium)
+        # And it is the instance the file's `//` line parses to.
+        self.assertIs(list(repositories)[-1], repository.chromium)
+
+    def test_entry_resolves_to_a_repository_under_src(self):
+        """A listed path resolves to the repository at that path in `src`."""
+        self._write_repositories('//\n//v8\n')
+        entry = plaster.Repositories.load().find(PurePath('v8'))
+        self.assertIsNotNone(entry)
+        self.assertFalse(entry.is_chromium)
+        self.assertEqual(entry.relative_to_chromium, Path('v8'))
+        self.assertEqual(entry.from_brave().resolve(),
+                         self.fake_chromium_src.chromium / 'v8')
+
+    def test_find_returns_none_for_an_unlisted_path(self):
+        """A path no repository is rooted at is not one plaster manages."""
+        self._write_repositories('//\n//v8\n')
+        repositories = plaster.Repositories.load()
+        self.assertIsNone(repositories.find(PurePath('third_party/ffmpeg')))
+        self.assertIsNone(repositories.find(PurePath('v8/src')))
+
+    def test_split_finds_the_repository_holding_a_source(self):
+        """The most specific repository claims a source; `src` takes the rest.
+        """
+        self._write_repositories(
+            '//\n//v8\n//third_party/devtools-frontend/src\n')
+        repositories = plaster.Repositories.load()
+        cases: list[tuple[str, str, str]] = [
+            ('a chromium source', 'base/memory/foo.h', ''),
+            ('a source in a listed repository', 'v8/src/codegen/a.cc', 'v8'),
+            ('a source in a nested repository',
+             'third_party/devtools-frontend/src/front_end/Foo.ts',
+             'third_party/devtools-frontend/src'),
+            ('a source under an unlisted directory',
+             'third_party/blink/renderer/bar.cc', ''),
+            ('a path that merely starts like a repository', 'v8_extras/foo.cc',
+             ''),
+        ]
+        for name, source, expected in cases:
+            with self.subTest(name=name):
+                repo, within = repositories.split(PurePath(source))
+                self.assertEqual(repo.relative_to_chromium, PurePath(expected))
+                # The split round-trips back to the source it came from.
+                self.assertEqual(repo.relative_to_chromium / within,
+                                 PurePath(source))
+
+    def test_load_reads_the_file_once(self):
+        """The file is read on the first `load` and memoised after it."""
+        first = plaster.Repositories.load()
+        self.assertIs(plaster.Repositories.load(), first)
+
+        # A run only ever reads one repositories file, so rewriting it does
+        # not change what `load` returns until the memo is dropped.
+        plaster.REPOSITORIES_FILE.write_text('//\n//v8\n')
+        self.assertIs(plaster.Repositories.load(), first)
+        self.assertEqual(self._paths(), [PurePath()])
+
+        plaster.Repositories._instance = None
+        self.assertEqual(self._paths(), [PurePath('v8'), PurePath()])
+
+    def test_rejects_an_invalid_file(self):
+        """Every malformed repositories file is refused with an explanation."""
+        cases: list[tuple[str, str, str]] = [
+            ('no source-root prefix', '//\nv8\n', 'must be source-absolute'),
+            ('relative dot path', '//\n./v8\n', 'must be source-absolute'),
+            ('single slash', '//\n/v8\n', 'must be source-absolute'),
+            ('upward path', '//\n//../v8\n', 'cannot traverse upwards'),
+            ('duplicate path', '//\n//v8\n//v8\n', 'listed more than once'),
+            ('duplicate chromium', '//\n//v8\n//\n', 'listed more than once'),
+            ('chromium missing', '//v8\n', 'does not list chromium'),
+            ('empty file', '', 'does not list chromium'),
+            ('comments only', '# nothing here yet\n',
+             'does not list chromium'),
+        ]
+        for name, content, expected in cases:
+            with self.subTest(name=name):
+                self._write_repositories(content)
+                with self.assertRaises(
+                        plaster.RepositoriesFileError) as context:
+                    plaster.Repositories.load()
+                self.assertIn(expected, str(context.exception))
+
+    def test_reports_the_line_of_a_bad_entry(self):
+        """A failure names the line it was read from, as a `.cfg` reader does.
+        """
+        self._write_repositories('//\n//v8\n//../elsewhere\n')
+        with self.assertRaises(plaster.RepositoriesFileError) as context:
+            plaster.Repositories.load()
+        self.assertIn(':3:', str(context.exception))
+
+    def test_a_missing_file_is_refused(self):
+        """The file is the source of truth, so its absence is an error."""
+        plaster.REPOSITORIES_FILE.unlink()
+        with self.assertRaises(plaster.RepositoriesFileError) as context:
+            plaster.Repositories.load()
+        self.assertIn('Failed to read', str(context.exception))
+
+    def test_the_real_file_lists_chromium_and_parses(self):
+        """brave-core's own repositories file is valid and names `src`.
+
+        Read through `BRAVE_ROOT_FROM_FILE` rather than `repository.brave`,
+        which the fixture has pointed at the fake repo by this point.
+        """
+        real = BRAVE_ROOT_FROM_FILE / 'patches' / '.repositories.cfg'
+        entries = list(plaster.Repositories(real.read_bytes()))
+        self.assertIn(repository.chromium, entries)
+        # `src` is the fallback, so it has to sort last.
+        self.assertEqual(entries[-1], repository.chromium)
+
+
+class PlasterTargetTest(unittest.TestCase):
+    """Tests for resolving a plaster file to the repository it patches."""
+
+    def setUp(self):
+        self.fake_chromium_src = FakeChromiumRepo()
+        self.fake_chromium_src.setup()
+        self.addCleanup(self.fake_chromium_src.cleanup)
+        _forget_loaded_repositories(self)
+        self.fake_chromium_src.set_patched_repositories(
+            'v8', 'third_party/devtools-frontend/src')
+
+    def _target(self, plaster_relative: str) -> plaster.PlasterTarget:
+        return plaster.PlasterTarget.resolve(plaster.PLASTER_FILES_PATH /
+                                             plaster_relative)
+
+    def test_a_chromium_source_targets_src(self):
+        """An unprefixed plaster keeps targeting `src`, as it always has."""
+        target = self._target('base/memory/foo.h.yaml')
+        self.assertTrue(target.repository.is_chromium)
+        self.assertEqual(target.source, PurePath('base/memory/foo.h'))
+        self.assertEqual(target.patch,
+                         plaster.PATCHES_PATH / 'base-memory-foo.h.patch')
+        self.assertEqual(target.patchinfo,
+                         plaster.PATCHES_PATH / 'base-memory-foo.h.patchinfo')
+
+    def test_a_subrepository_source_targets_that_repository(self):
+        """A prefixed plaster targets the repository its prefix names."""
+        target = self._target('v8/src/codegen/compiler.cc.yaml')
+        self.assertFalse(target.repository.is_chromium)
+        self.assertEqual(target.repository.relative_to_chromium, Path('v8'))
+        # The source drops the prefix: it is what git, and the patchinfo's
+        # `appliesTo`, express relative to the repository.
+        self.assertEqual(target.source, PurePath('src/codegen/compiler.cc'))
+        self.assertEqual(
+            target.patch,
+            plaster.PATCHES_PATH / 'v8' / 'src-codegen-compiler.cc.patch')
+
+    def test_a_nested_repository_claims_its_own_sources(self):
+        """The longest matching prefix wins over a shorter one."""
+        target = self._target(
+            'third_party/devtools-frontend/src/front_end/core/Foo.ts.yaml')
+        self.assertEqual(target.repository.relative_to_chromium,
+                         Path('third_party/devtools-frontend/src'))
+        self.assertEqual(target.source, PurePath('front_end/core/Foo.ts'))
+        self.assertEqual(
+            target.patch, plaster.PATCHES_PATH / 'third_party' /
+            'devtools-frontend' / 'src' / 'front_end-core-Foo.ts.patch')
+
+    def test_a_path_under_an_undeclared_directory_targets_src(self):
+        """A prefix no repository claims is just part of a chromium path."""
+        target = self._target('third_party/blink/renderer/foo.cc.yaml')
+        self.assertTrue(target.repository.is_chromium)
+        self.assertEqual(target.source,
+                         PurePath('third_party/blink/renderer/foo.cc'))
+
+    def test_a_repository_prefix_with_no_source_is_refused(self):
+        """A plaster naming only a repository has no source to patch."""
+        with self.assertRaises(plaster.PlasterError) as context:
+            self._target('v8.yaml')
+        self.assertIn('no source within it', str(context.exception))
+
+    def test_a_plaster_outside_the_rewrite_tree_is_refused(self):
+        """A path that is not under `rewrite/` cannot name a source."""
+        with self.assertRaises(plaster.PlasterError) as context:
+            plaster.PlasterTarget.resolve(repository.brave.root / 'patches' /
+                                          'foo.yaml')
+        self.assertIn('is not under', str(context.exception))
+
+
+class PlasterForPatchTest(unittest.TestCase):
+    """Tests mapping a patch file back to the plaster file that owns it."""
+
+    def setUp(self):
+        self.fake_chromium_src = FakeChromiumRepo()
+        self.fake_chromium_src.setup()
+        self.addCleanup(self.fake_chromium_src.cleanup)
+        _forget_loaded_repositories(self)
+        self.fake_chromium_src.set_patched_repositories('v8')
+
+    def test_maps_a_chromium_patch(self):
+        self.assertEqual(
+            plaster.plaster_for_patch(
+                PurePath('patches/base-memory-foo.h.patch')),
+            plaster.PLASTER_FILES_PATH / 'base/memory/foo.h.yaml')
+
+    def test_maps_a_subrepository_patch(self):
+        """Only the file name is unflattened; the directories name the repo."""
+        self.assertEqual(
+            plaster.plaster_for_patch(
+                PurePath('patches/v8/src-codegen-compiler.cc.patch')),
+            plaster.PLASTER_FILES_PATH / 'v8/src/codegen/compiler.cc.yaml')
+
+    def test_ignores_a_patch_in_an_undeclared_repository(self):
+        """A repository plaster does not support is left to be patched by hand.
+        """
+        self.assertIsNone(
+            plaster.plaster_for_patch(
+                PurePath('patches/third_party/tflite/src/foo.cc.patch')))
+
+    def test_ignores_paths_that_are_not_patches(self):
+        for path in ('patches/foo.patchinfo', 'rewrite/foo.cc.yaml',
+                     'foo.patch', 'patches'):
+            with self.subTest(path=path):
+                self.assertIsNone(plaster.plaster_for_patch(PurePath(path)))
+
+
+class SubrepositoryPlasterTest(unittest.TestCase):
+    """End-to-end tests for a plaster targeting a source outside `src`."""
+
+    # The source patched in the fake v8 repository, relative to it.
+    SOURCE = Path('src/codegen/compiler.cc')
+
+    def setUp(self):
+        self.fake_chromium_src = FakeChromiumRepo()
+        self.fake_chromium_src.setup()
+        self.addCleanup(self.fake_chromium_src.cleanup)
+        _forget_loaded_repositories(self)
+        self.fake_chromium_src.add_repo('v8')
+        self.v8 = self.fake_chromium_src.chromium / 'v8'
+        self.fake_chromium_src.set_patched_repositories('v8')
+
+        self.fake_chromium_src.write_and_stage_file(self.SOURCE,
+                                                    'Compiled by Chromium.\n',
+                                                    self.v8)
+        self.fake_chromium_src.commit('Add compiler.cc', self.v8)
+
+        self.plaster_path = (plaster.PLASTER_FILES_PATH / 'v8' /
+                             f'{self.SOURCE}.yaml')
+        self.plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        self.plaster_path.write_text('''
+          substitutions:
+            - description: Replace Chromium with Brave
+              regex:
+                re_pattern: 'Chromium'
+                replace: 'Brave'
+        ''')
+
+    def test_apply_patches_the_source_in_the_subrepository(self):
+        """The source is rewritten in the repository that holds it."""
+        plaster.PlasterFile(self.plaster_path).apply()
+        self.assertEqual((self.v8 / self.SOURCE).read_text(),
+                         'Compiled by Brave.\n')
+
+    def test_apply_writes_the_patch_under_the_repository_directory(self):
+        """The patch lands where `apply_patches` looks for it."""
+        plaster.PlasterFile(self.plaster_path).apply()
+        patch = (self.fake_chromium_src.brave_patches / 'v8' /
+                 'src-codegen-compiler.cc.patch')
+        self.assertTrue(patch.exists())
+        # The diff is taken in the subrepository, so it names the source the
+        # way that repository does, with no `v8/` prefix.
+        self.assertIn('a/src/codegen/compiler.cc', patch.read_text())
+
+    def test_apply_records_a_repository_relative_patchinfo(self):
+        """`appliesTo` is relative to the repository, as apply_patches reads
+        it."""
+        plaster.PlasterFile(self.plaster_path).apply()
+        patchinfo_path = (self.fake_chromium_src.brave_patches / 'v8' /
+                          'src-codegen-compiler.cc.patchinfo')
+        info = plaster.Patchinfo.from_json(patchinfo_path.read_text())
+        self.assertIsNotNone(info)
+        self.assertEqual(info.applies_to.path, str(self.SOURCE))
+        self.assertEqual(
+            info.applies_to.checksum,
+            hashlib.sha256((self.v8 / self.SOURCE).read_bytes()).hexdigest())
+        self.assertEqual(info.plaster.path,
+                         str(Path('rewrite/v8') / f'{self.SOURCE}.yaml'))
+
+    def test_needs_apply_tracks_the_subrepository_source(self):
+        """The up-to-date check reads the source from the right repository."""
+        plaster_file = plaster.PlasterFile(self.plaster_path)
+        self.assertTrue(plaster_file.needs_apply())
+        plaster_file.apply()
+        self.assertFalse(plaster_file.needs_apply())
+
+        # `needs_apply` short-circuits on mtimes before it reaches the
+        # checksums, so the edit is dated past the patchinfo `apply` just
+        # wrote. Without that they can share a tick on a fast machine, and the
+        # source would read as up to date.
+        source_path = self.v8 / self.SOURCE
+        later = source_path.stat().st_mtime + 10
+        source_path.write_text('Compiled by someone else.\n')
+        os.utime(source_path, (later, later))
+        self.assertTrue(plaster_file.needs_apply())
+
+    def test_apply_is_idempotent(self):
+        """Re-applying rewrites nothing, so the patch keeps its checksum."""
+        plaster_file = plaster.PlasterFile(self.plaster_path)
+        plaster_file.apply()
+        patch = (self.fake_chromium_src.brave_patches / 'v8' /
+                 'src-codegen-compiler.cc.patch')
+        first = patch.read_bytes()
+        plaster_file.apply()
+        self.assertEqual(patch.read_bytes(), first)
+        self.assertFalse(plaster_file.needs_apply())
+
+    def test_an_orphaned_subrepository_source_is_reported(self):
+        """A source missing from the repository names the plaster that wants
+        it."""
+        self.fake_chromium_src.delete_file(self.SOURCE, self.v8)
+        self.fake_chromium_src.commit('Delete compiler.cc', self.v8)
+        with self.assertRaises(plaster.OrphanedPlasterError) as context:
+            plaster.PlasterFile(self.plaster_path).apply()
+        self.assertIn(str(self.SOURCE), str(context.exception))
+
+    def test_find_all_ignores_the_settings_file(self):
+        """The repositories file is not a plaster file."""
+        found = {file.path for file in plaster.PlasterFile.find_all()}
+        self.assertEqual(found, {self.plaster_path})
+
+    def test_get_plaster_files_resolves_a_subrepository_patch(self):
+        """Passing the patch finds the plaster file that generates it."""
+        found = plaster.get_plaster_files(
+            ['patches/v8/src-codegen-compiler.cc.patch'])
+        self.assertEqual([file.path for file in found], [self.plaster_path])
+
+    def test_get_plaster_files_skips_an_undeclared_repository(self):
+        """A patch plaster cannot own is not an error, just nothing to do."""
+        self.assertEqual(
+            plaster.get_plaster_files(
+                ['patches/third_party/tflite/src/foo.cc.patch']), [])
+
+    def test_get_plaster_files_returns_everything_for_the_settings_file(self):
+        """Changing which repository a prefix names affects every plaster."""
+        found = plaster.get_plaster_files(['patches/.repositories.cfg'])
+        self.assertEqual([file.path for file in found], [self.plaster_path])
 
 
 if __name__ == '__main__':

@@ -3,11 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { PrefsMixin } from '/shared/settings/prefs/prefs_mixin.js'
+import { PrefService } from '/shared/settings/prefs2/pref_service.js'
 import { BaseMixin } from '../base_mixin.js'
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import { loadTimeData } from '../i18n_setup.js'
-import { CrSettingsPrefs } from '/shared/settings/prefs/prefs_types.js';
 
 import '../settings_shared.css.js'
 import '../settings_vars.css.js'
@@ -35,7 +34,7 @@ export interface SettingsBraveClearBrowsingDataOnExitPageElement {
 }
 
 const SettingsBraveClearBrowsingDataOnExitPageElementBase =
-  PrefsMixin(BaseMixin(PolymerElement))
+  BaseMixin(PolymerElement)
 
 export class SettingsBraveClearBrowsingDataOnExitPageElement
   extends SettingsBraveClearBrowsingDataOnExitPageElementBase {
@@ -49,11 +48,6 @@ export class SettingsBraveClearBrowsingDataOnExitPageElement
 
   static get properties() {
     return {
-      prefs: {
-        type: Object,
-        notify: true,
-      },
-
       isModified_: {
         type: Boolean,
         value: false,
@@ -83,7 +77,6 @@ export class SettingsBraveClearBrowsingDataOnExitPageElement
     }
   }
 
-  declare prefs: Record<string, unknown>
   declare isModified_: boolean
   declare private browsingDataTypeOptionsList_: BrowsingDataTypeOption[]
 
@@ -95,7 +88,7 @@ export class SettingsBraveClearBrowsingDataOnExitPageElement
   override ready() {
     super.ready()
 
-    CrSettingsPrefs.initialized.then(() => {
+    PrefService.getInstance().whenInitialized().then(() => {
       this.setUpDataTypeOptionLists_();
     });
 
@@ -108,11 +101,15 @@ export class SettingsBraveClearBrowsingDataOnExitPageElement
     const checkboxContainer = this.$.checkboxContainer
     const boxes = checkboxContainer.querySelectorAll('settings-checkbox')
     boxes.forEach((checkbox) => {
-      if (checkbox.checked !== this.get(checkbox.pref!.key, this.prefs).value) {
-        changed.push({ key: checkbox.pref!.key, value: checkbox.checked })
+      if (checkbox.checked !== this.getPrefValue_(checkbox.prefKey)) {
+        changed.push({ key: checkbox.prefKey, value: checkbox.checked })
       }
     })
     return changed
+  }
+
+  private getPrefValue_(prefKey: string): boolean {
+    return PrefService.getInstance().getPref<boolean>(prefKey).value
   }
 
   /**
@@ -128,7 +125,7 @@ export class SettingsBraveClearBrowsingDataOnExitPageElement
 
       const datatypeOption: BrowsingDataTypeOption = {
         label: getDataTypeLabel(datatype),
-        pref: this.getPref(getDataTypePrefNameOnExit(datatype)),
+        prefKey: getDataTypePrefNameOnExit(datatype),
       };
 
       optionsList.push(datatypeOption);
@@ -162,7 +159,7 @@ export class SettingsBraveClearBrowsingDataOnExitPageElement
     const checkboxContainer = this.$.checkboxContainer
     const boxes = checkboxContainer.querySelectorAll('settings-checkbox')
     for (let checkbox of boxes) {
-      if (checkbox.checked !== this.get(checkbox.pref!.key, this.prefs).value) {
+      if (checkbox.checked !== this.getPrefValue_(checkbox.prefKey)) {
         modified = true
         break
       }
