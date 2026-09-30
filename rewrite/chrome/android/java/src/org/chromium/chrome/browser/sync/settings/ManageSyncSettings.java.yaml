@@ -14,6 +14,19 @@ substitutions:
       replace: 'protected \1'
 
   - description: |-
+      Expose mGoogleActivityControls and mSyncEncryption to the Brave subclass
+
+      BraveManageSyncSettings removes both preferences from the screen. Replaces
+      BraveManageSyncSettingsClassAdapter, which used to widen these fields and
+      delete the subclass copies that shadowed them.
+    count: 2
+    regex:
+      re_pattern: |-
+        private (Preference (?:mGoogleActivityControls|mSyncEncryption);)
+      replace: |-
+        protected \1
+
+  - description: |-
       Skip the isUsingExplicitPassphrase() block in onPreferenceChange()
 
       It suppresses the "addresses not encrypted" warning, which is not
