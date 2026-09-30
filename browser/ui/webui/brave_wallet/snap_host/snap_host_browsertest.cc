@@ -149,6 +149,17 @@ IN_PROC_BROWSER_TEST_F(SnapHostBrowserTest, ExecuteSnapEvaluatesBundle) {
   EXPECT_EQ("npm:test-snap", *dict.FindString("result"));
 }
 
+// The hidden snap host page can also embed the untrusted host.
+IN_PROC_BROWSER_TEST_F(SnapHostBrowserTest, EmbeddableFromWalletSnapHost) {
+  auto* host_rfh =
+      ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletSnapHostURL));
+  ASSERT_TRUE(host_rfh);
+
+  auto* snap_rfh = AppendSnapHostFrame(host_rfh);
+  ASSERT_TRUE(snap_rfh);
+  EXPECT_FALSE(snap_rfh->IsErrorDocument());
+}
+
 // An ordinary https page embedding the host must fail to load it.
 IN_PROC_BROWSER_TEST_F(SnapHostBrowserTest,
                        RejectsEmbeddingFromDisallowedAncestor) {

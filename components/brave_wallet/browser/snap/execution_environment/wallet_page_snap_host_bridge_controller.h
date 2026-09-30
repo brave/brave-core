@@ -45,6 +45,8 @@ class WalletPageSnapHostBridgeController : public SnapHostBridgeController {
   void BindNewBridge(
       mojo::PendingRemote<mojom::SnapHostBridge> bridge) override;
   bool IsBound() const override;
+  void EnsureBridgeReady(base::OnceClosure on_ready) override;
+  void Shutdown() override;
   void LoadSnap(const std::string& snap_id,
                 const std::string& source_code,
                 LoadSnapCallback cb) override;

@@ -1,0 +1,9 @@
+include_rules = [
+  "+brave/components/brave_wallet/browser",
+  "+brave/components/brave_wallet/common",
+  "+brave/components/restricted_web_contents_delegate",
+  "+content/public/browser",
+  "+content/public/test",
+  "+services/network/public",
+  "+ui/base",
+]

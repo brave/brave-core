@@ -8,14 +8,24 @@
 // evaluates it with new Function().
 
 import {
+  ALLOWED_PARENT_ORIGINS,
   ExecuteSnapPayload,
   isExecuteSnapCommand,
   SnapMessageType,
-  WALLET_PAGE_ORIGIN,
 } from '../common/snap/snap_messages'
 
+let parentOrigin: string | null = null
+
 function sendToParent(message: unknown) {
-  window.parent.postMessage(message, WALLET_PAGE_ORIGIN)
+  if (parentOrigin) {
+    window.parent.postMessage(message, parentOrigin)
+    return
+  }
+  // Pre-handshake: postMessage silently drops a mismatched targetOrigin, so
+  // exactly one of these is delivered.
+  for (const origin of ALLOWED_PARENT_ORIGINS) {
+    window.parent.postMessage(message, origin)
+  }
 }
 
 function handleExecuteSnap(requestId: number, payload: ExecuteSnapPayload) {
@@ -49,13 +59,18 @@ function handleExecuteSnap(requestId: number, payload: ExecuteSnapPayload) {
 }
 
 window.addEventListener('message', (event) => {
-  if (event.origin !== WALLET_PAGE_ORIGIN || event.source !== window.parent) {
+  // event.source must stay ANDed with the origin check, or a same-origin
+  // sibling frame could win the origin-pinning race below.
+  if (
+    event.source !== window.parent
+    || !ALLOWED_PARENT_ORIGINS.includes(event.origin)
+  ) {
     return
   }
   if (!isExecuteSnapCommand(event.data)) {
     return
   }
-
+  parentOrigin = event.origin
   handleExecuteSnap(event.data.requestId, event.data.payload)
 })
 
