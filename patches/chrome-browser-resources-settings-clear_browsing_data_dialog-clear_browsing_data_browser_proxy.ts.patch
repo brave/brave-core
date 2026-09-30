@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_browser_proxy.ts b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_browser_proxy.ts
-index 64671bf6d69254dc7f74c4000f4a3e3d77481b51..8c4f241c12a8614d0491b1efbe94d6a559f634b6 100644
+index dfc4a47f196c1eeee04e58d66907ce6633c868ae..ca5d1e1b82542362f8d2701441be78de8337bf2e 100644
 --- a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_browser_proxy.ts
 +++ b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_browser_proxy.ts
-@@ -43,6 +43,9 @@ export enum BrowsingDataType {
-   DOWNLOADS = 6,
+@@ -44,6 +44,9 @@ export enum BrowsingDataType {
    HOSTED_APPS_DATA = 7,
    // TABS = 8, Not used on Desktop.
+   SKILLS = 9,
 +// <if expr="enable_ai_chat">
-+  BRAVE_AI_CHAT = 9,
++  BRAVE_AI_CHAT = 10,
 +// </if>
  }
  // LINT.ThenChange(/components/browsing_data/core/browsing_data_utils.h:BrowsingDataType)

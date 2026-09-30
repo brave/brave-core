@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/BUILD.gn b/third_party/blink/renderer/core/BUILD.gn
-index 056bd22809479eac64251cfc67f37336c4438424..5d512b71799ea2f622ede451a4277bed7327dacf 100644
+index d9310883704495adbe4fb54042543dce27433757..595937d3d87b84a4d2528916132da0eac0719d25 100644
 --- a/third_party/blink/renderer/core/BUILD.gn
 +++ b/third_party/blink/renderer/core/BUILD.gn
 @@ -264,6 +264,7 @@ component("core") {
@@ -10,7 +10,7 @@ index 056bd22809479eac64251cfc67f37336c4438424..5d512b71799ea2f622ede451a4277bed
  
    sources += blink_core_sources_bindings
  
-@@ -394,6 +395,7 @@ component("core") {
+@@ -395,6 +396,7 @@ component("core") {
      "//url",
      "//v8",
    ]
@@ -18,7 +18,7 @@ index 056bd22809479eac64251cfc67f37336c4438424..5d512b71799ea2f622ede451a4277bed
  
    if (is_mac) {
      public_deps += [ "//ui/gfx" ]
-@@ -445,6 +447,7 @@ component("core") {
+@@ -447,6 +449,7 @@ component("core") {
      "//ui/gfx/geometry:geometry_skia",
      "//ui/strings",
    ]
@@ -26,11 +26,11 @@ index 056bd22809479eac64251cfc67f37336c4438424..5d512b71799ea2f622ede451a4277bed
  
    if (is_mac) {
      deps += [ "//ui/base/mojom" ]
-@@ -476,6 +479,7 @@ component("core") {
+@@ -478,6 +481,7 @@ component("core") {
        "Carbon.framework",
      ]
    }
 +  visibility += brave_blink_renderer_core_visibility
  }
  
- # Certain sources should be compiled with heavy optimization enabled.
+ # Isolate loader/resource/font_resource.{h,cc} from component("core") because

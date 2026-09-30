@@ -1,16 +1,16 @@
 diff --git a/build/android/gyp/dex.py b/build/android/gyp/dex.py
-index c150609abbdd48ac91549e8e85e1de71fb501c96..f810a32969e4102408e31b8d819cefb750b9e24e 100755
+index 2769c6fcdb2bae18fe5d61df02735bb13609f6e5..c7cf7334f5e699b57daa2dc694bef9069eb3e2c0 100755
 --- a/build/android/gyp/dex.py
 +++ b/build/android/gyp/dex.py
-@@ -24,6 +24,7 @@ import zip_helpers
- _DEX_XMX = '3G'  # Increase this when __final_dex OOMs.
+@@ -38,6 +38,7 @@ _GRAALVM_MAX_MERGE_INPUT_SIZE = 20 * 1024 * 1024
+ _GRAALVM_SHARD_TARGET_SIZE = int(1.5 * 1024 * 1024)
  
  DEFAULT_IGNORE_WARNINGS = (
 +    r'.Brave',
      # Warning: Running R8 version main (build engineering), which cannot be
      # represented as a semantic version. Using an artificial version newer than
      # any known version for selecting Proguard configurations embedded under
-@@ -655,6 +656,9 @@ def MergeDexForIncrementalInstall(
+@@ -728,6 +729,9 @@ def MergeDexForIncrementalInstall(
  def main(args):
      build_utils.InitLogging('DEX_DEBUG')
      options = _ParseArgs(args)
