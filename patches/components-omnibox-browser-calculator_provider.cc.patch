@@ -1,0 +1,25 @@
+diff --git a/components/omnibox/browser/calculator_provider.cc b/components/omnibox/browser/calculator_provider.cc
+index 7ed9d52c4549bb9fc24dbfcebaf9debf0ccb444a..67481c9d89a5c3d294e328faa044617a641023d1 100644
+--- a/components/omnibox/browser/calculator_provider.cc
++++ b/components/omnibox/browser/calculator_provider.cc
+@@ -36,6 +36,10 @@ CalculatorProvider::~CalculatorProvider() = default;
+ 
+ void CalculatorProvider::Start(const AutocompleteInput& input,
+                                bool minimal_changes) {
++  if (!client_->GetProviderStateService()) {
++    done_ = true;
++    return;
++  }
+   if (!omnibox_feature_configs::CalcProvider::Get().enabled)
+     return;
+ 
+@@ -65,6 +69,9 @@ void CalculatorProvider::Start(const AutocompleteInput& input,
+ }
+ 
+ void CalculatorProvider::DeleteMatch(const AutocompleteMatch& match) {
++  if (!client_->GetProviderStateService()) {
++    return;
++  }
+   auto it = std::ranges::find_if(Cache(), [&](const auto& cached) {
+     return cached.match.destination_url == match.destination_url;
+   });
