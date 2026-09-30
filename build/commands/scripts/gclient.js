@@ -3,6 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import util from '../lib/util.js'
+import util from '../lib/util.ts'
 
 util.runGclient(process.argv.slice(2))

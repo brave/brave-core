@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import config from './config.ts'
-import util from './util.js'
+import util from './util.ts'
 import * as Log from './log.ts'
 
 const genGradle = (
