@@ -287,4 +287,36 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_EQ(1, tab_strip->active_index());
 }
 
+// EphemeralStorageService::IsScheduledForCleanup() always returns false for
+// an OTR profile, regardless of what's queued for cleanup in the regular
+// profile. So an Incognito window's startup tab must never be skipped, even
+// for a domain that is in Forgetful Mode and queued for cleanup in the
+// regular profile it was spawned from.
+IN_PROC_BROWSER_TEST_F(EphemeralStorageStartupTabsBrowserTest,
+                       StartupURLsNotSkippedForOTRProfile) {
+  EnableForgetfulModeAndScheduleCleanup(a_site_ephemeral_storage_url_);
+
+  Profile* otr_profile =
+      browser()->GetProfile()->GetPrimaryOTRProfile(/*create_if_needed=*/true);
+
+  // SessionStartupPref::URLS is not honored in Incognito, so the startup URL
+  // is passed via the command line instead, which is honored regardless of
+  // profile type.
+  base::CommandLine command_line(base::CommandLine::NO_PROGRAM);
+  command_line.AppendArg(a_site_ephemeral_storage_url_.spec());
+  StartupBrowserCreatorImpl creator(base::FilePath(), command_line,
+                                    chrome::startup::IsFirstRun::kNo);
+  ui_test_utils::BrowserCreatedObserver browser_created_observer;
+  creator.Launch(otr_profile, chrome::startup::IsProcessStartup::kNo,
+                 /*restore_tabbed_browser=*/true);
+  BrowserWindowInterface* otr_browser = browser_created_observer.Wait();
+  ASSERT_TRUE(otr_browser);
+  ASSERT_TRUE(otr_browser->GetProfile()->IsOffTheRecord());
+
+  TabStripModel* tab_strip = otr_browser->GetTabStripModel();
+  ASSERT_EQ(1, tab_strip->count());
+  EXPECT_EQ(a_site_ephemeral_storage_url_,
+            tab_strip->GetWebContentsAt(0)->GetVisibleURL());
+}
+
 }  // namespace ephemeral_storage
