@@ -19,7 +19,6 @@
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -155,7 +154,7 @@ IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, ShowRewardsIconForPanel) {
   CheckBraveRewardsActionShown(false);
 
   // Send a request to open the Rewards panel.
-  auto* coordinator = browser()->GetFeatures().rewards_panel_coordinator();
+  auto* coordinator = brave_rewards::RewardsPanelCoordinator::From(browser());
   ASSERT_TRUE(coordinator);
   coordinator->OpenRewardsPanel();
   base::RunLoop().RunUntilIdle();

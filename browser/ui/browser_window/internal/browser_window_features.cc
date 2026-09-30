@@ -9,7 +9,6 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
-#include "base/notreached.h"
 #include "base/unguessable_token.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
@@ -52,12 +51,6 @@
 #include "chrome/browser/ui/webui/print_preview/print_preview_ui.h"
 #endif
 
-#if !BUILDFLAG(ENABLE_BRAVE_REWARDS)
-namespace brave_rewards {
-class RewardsPanelCoordinator {};
-}  // namespace brave_rewards
-#endif
-
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
@@ -77,15 +70,6 @@ class RewardsPanelCoordinator {};
 
 BrowserWindowFeatures::BrowserWindowFeatures() = default;
 BrowserWindowFeatures::~BrowserWindowFeatures() = default;
-
-brave_rewards::RewardsPanelCoordinator*
-BrowserWindowFeatures::rewards_panel_coordinator() {
-#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-  return rewards_panel_coordinator_.get();
-#else
-  NOTREACHED();
-#endif
-}
 
 void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
   auto* profile = browser->GetProfile();
@@ -110,7 +94,9 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   if (brave_rewards::RewardsServiceFactory::GetForProfile(profile)) {
     rewards_panel_coordinator_ =
-        std::make_unique<brave_rewards::RewardsPanelCoordinator>(browser);
+        GetUserDataFactory()
+            .CreateInstance<brave_rewards::RewardsPanelCoordinator>(*browser,
+                                                                    browser);
   }
 #endif
 
