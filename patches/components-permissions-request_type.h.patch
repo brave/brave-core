@@ -13,9 +13,10 @@ index 70ce0b07da74da50a292c88f7f360442f77cc0b4..b2b9f9eef7ebac80fb0f486c1e9f7ed9
 +  kBraveOpenAIChat,
 +  kBraveGoogleSignInPermission,
 +  kBraveCardano,
++  kBravePolkadot,
 +  kBraveMinValue = kWidevine,
-+  kBraveMaxValue = kBraveCardano,
-+  kMaxValue = kBraveCardano
++  kBraveMaxValue = kBravePolkadot,
++  kMaxValue = kBravePolkadot
  };
- 
+
  #if BUILDFLAG(IS_ANDROID)

@@ -16,13 +16,16 @@
   case PermissionName::BRAVE_SOLANA:    \
     return "brave_solana";              \
   case PermissionName::BRAVE_CARDANO:   \
-    return "brave_cardano";
+    return "brave_cardano";             \
+  case PermissionName::BRAVE_POLKADOT:  \
+    return "brave_polkadot";
 #else
 // CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_WEB_PRINTING_CASES \
   case PermissionName::BRAVE_ETHEREUM:  \
   case PermissionName::BRAVE_SOLANA:    \
   case PermissionName::BRAVE_CARDANO:   \
+  case PermissionName::BRAVE_POLKADOT:  \
     NOTREACHED();
 #endif
 

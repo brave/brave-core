@@ -19,10 +19,12 @@ index 5f970bd6209e402f077b0cfe6af20309c332173b..d5428f000f45837d0c15e2880f597a93
 +    {ContentSettingsType::BRAVE_ETHEREUM, "ethereum"},
 +    {ContentSettingsType::BRAVE_SOLANA, "solana"},
 +    {ContentSettingsType::BRAVE_CARDANO, "cardano"},
++    {ContentSettingsType::BRAVE_POLKADOT, "polkadot"},
 +#else
 +    {ContentSettingsType::BRAVE_ETHEREUM, nullptr},
 +    {ContentSettingsType::BRAVE_SOLANA, nullptr},
 +    {ContentSettingsType::BRAVE_CARDANO, nullptr},
++    {ContentSettingsType::BRAVE_POLKADOT, nullptr},
 +#endif
 +    {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, "googleSignIn"},
 +    {ContentSettingsType::BRAVE_HTTPS_UPGRADE, nullptr},
@@ -52,12 +54,12 @@ index 5f970bd6209e402f077b0cfe6af20309c332173b..d5428f000f45837d0c15e2880f597a93
 +    {ContentSettingsType::BRAVE_SHIELDS_METADATA, nullptr},
 +    {ContentSettingsType::BRAVE_PSST, nullptr},
  });
- 
+
  static_assert(
 @@ -525,7 +570,7 @@ constexpr UrlIdentity::TypeSet kUrlIdentityAllowedTypes = {
- 
+
  }  // namespace
- 
+
 -bool HasRegisteredGroupName(ContentSettingsType type) {
 +bool HasRegisteredGroupName_ChromiumImpl(ContentSettingsType type) {
    for (auto kContentSettingsTypeGroupName : kContentSettingsTypeGroupNames) {
@@ -65,7 +67,7 @@ index 5f970bd6209e402f077b0cfe6af20309c332173b..d5428f000f45837d0c15e2880f597a93
          kContentSettingsTypeGroupName.name) {
 @@ -536,6 +581,9 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
- 
+
  ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
 +  if (name == "autoplay") {
 +    return ContentSettingsType::AUTOPLAY;
@@ -75,7 +77,7 @@ index 5f970bd6209e402f077b0cfe6af20309c332173b..d5428f000f45837d0c15e2880f597a93
      // will have `nullptr` as their `name`. However, converting `nullptr`
 @@ -550,6 +598,9 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
  }
- 
+
  std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
 +  if (type == ContentSettingsType::AUTOPLAY) {
 +    return "autoplay";
@@ -86,7 +88,7 @@ index 5f970bd6209e402f077b0cfe6af20309c332173b..d5428f000f45837d0c15e2880f597a93
 @@ -569,7 +620,7 @@ std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
                 << " is not a recognized content settings type.";
  }
- 
+
 -std::vector<ContentSettingsType> GetVisiblePermissionCategories(
 +std::vector<ContentSettingsType> GetVisiblePermissionCategories_ChromiumImpl(
      const std::string& origin,
@@ -120,7 +122,7 @@ index 5f970bd6209e402f077b0cfe6af20309c332173b..d5428f000f45837d0c15e2880f597a93
        return "policy";
      case ProviderType::kSupervisedProvider:
 @@ -839,7 +896,7 @@ std::u16string GetExpirationDescription(const base::Time& expiration) {
- 
+
  // Create a base::DictValue that will act as a data source for a single row
  // in a HostContentSettingsMap-controlled exceptions table (e.g., cookies).
 -base::DictValue GetExceptionForPage(
