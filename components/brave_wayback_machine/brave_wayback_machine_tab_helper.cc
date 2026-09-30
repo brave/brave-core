@@ -9,10 +9,12 @@
 
 #include "base/check.h"
 #include "base/command_line.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
+#include "brave/components/brave_wayback_machine/features.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #include "brave/components/constants/brave_switches.h"
 #include "components/prefs/pref_service.h"
@@ -21,6 +23,7 @@
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/storage_partition.h"
+#include "content/public/browser/visibility.h"
 #include "content/public/browser/web_contents.h"
 #include "net/http/http_response_headers.h"
 
@@ -57,9 +60,12 @@ BraveWaybackMachineTabHelper::BraveWaybackMachineTabHelper(
 BraveWaybackMachineTabHelper::~BraveWaybackMachineTabHelper() = default;
 
 void BraveWaybackMachineTabHelper::FetchWaybackURL() {
-  CHECK(wayback_enabled_.GetValue());
-  SetWaybackState(WaybackState::kFetching);
-  wayback_machine_url_fetcher_.Fetch(web_contents()->GetVisibleURL());
+  StartFetch(/*is_auto_check=*/false);
+}
+
+void BraveWaybackMachineTabHelper::LoadWaybackURL() {
+  CHECK_EQ(wayback_state_, WaybackState::kFound);
+  NavigateToWaybackURL();
 }
 
 base::CallbackListSubscription
@@ -106,9 +112,16 @@ void BraveWaybackMachineTabHelper::DidFinishNavigation(
     return;
   }
 
-  if (ShouldCheckWaybackMachine(header->response_code())) {
-    SetWaybackState(WaybackState::kNeedToCheck);
+  if (!ShouldCheckWaybackMachine(header->response_code())) {
+    return;
   }
+
+  if (ShouldAutoCheck()) {
+    StartFetch(/*is_auto_check=*/true);
+    return;
+  }
+
+  SetWaybackState(WaybackState::kNeedToCheck);
 }
 
 void BraveWaybackMachineTabHelper::OnWaybackURLFetched(
@@ -119,19 +132,51 @@ void BraveWaybackMachineTabHelper::OnWaybackURLFetched(
     return;
   }
 
+  // Ignore stale results, e.g. if the user navigated away during the fetch.
+  if (wayback_state_ != WaybackState::kFetching) {
+    return;
+  }
+
   // wayback url is not available.
   if (latest_wayback_url.is_empty()) {
     SetWaybackState(WaybackState::kNotAvailable);
     return;
   }
 
+  wayback_url_ = latest_wayback_url;
+  snapshot_time_ = snapshot_time;
+
+  if (is_auto_check_) {
+    SetWaybackState(WaybackState::kFound);
+    return;
+  }
+
+  NavigateToWaybackURL();
+}
+
+void BraveWaybackMachineTabHelper::NavigateToWaybackURL() {
+  const GURL wayback_url = wayback_url_;
   SetWaybackState(WaybackState::kLoaded);
 
   if (auto navigation_handle = web_contents()->GetController().LoadURL(
-          latest_wayback_url, content::Referrer(), ui::PAGE_TRANSITION_LINK,
+          wayback_url, content::Referrer(), ui::PAGE_TRANSITION_LINK,
           std::string())) {
     wayback_url_navigation_id_ = navigation_handle->GetNavigationId();
   }
+}
+
+void BraveWaybackMachineTabHelper::StartFetch(bool is_auto_check) {
+  CHECK(wayback_enabled_.GetValue());
+  is_auto_check_ = is_auto_check;
+  SetWaybackState(WaybackState::kFetching);
+  wayback_machine_url_fetcher_.Fetch(web_contents()->GetVisibleURL());
+}
+
+bool BraveWaybackMachineTabHelper::ShouldAutoCheck() const {
+  return base::FeatureList::IsEnabled(
+             brave_wayback_machine::features::kWaybackMachineAutoCheck) &&
+         pref_service_->GetBoolean(kBraveWaybackMachineAutoCheckEnabled) &&
+         web_contents()->GetVisibility() == content::Visibility::VISIBLE;
 }
 
 void BraveWaybackMachineTabHelper::SetWaybackState(WaybackState state) {
@@ -153,6 +198,9 @@ void BraveWaybackMachineTabHelper::OnWaybackEnabledChanged(
 
 void BraveWaybackMachineTabHelper::ResetState() {
   wayback_url_navigation_id_ = std::nullopt;
+  wayback_url_ = GURL();
+  snapshot_time_ = base::Time();
+  is_auto_check_ = false;
   SetWaybackState(WaybackState::kInitial);
 }
 

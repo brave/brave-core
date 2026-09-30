@@ -1208,6 +1208,10 @@ source_set("ui") {
     ]
 
     if (toolkit_views) {
+      sources += [
+        "views/infobars/wayback_machine_infobar_view.cc",
+        "views/infobars/wayback_machine_infobar_view.h",
+      ]
       deps += [ "//brave/browser/ui/views/page_action" ]
     }
   }

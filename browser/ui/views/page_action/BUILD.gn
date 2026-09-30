@@ -101,10 +101,15 @@ source_set("page_action") {
     sources += [
       "wayback_machine_bubble_view.cc",
       "wayback_machine_bubble_view.h",
+      "wayback_machine_infobar_delegate.cc",
+      "wayback_machine_infobar_delegate.h",
       "wayback_machine_page_action_controller.h",
     ]
 
-    public_deps = [ "//chrome/browser/ui/views/location_bar" ]
+    public_deps = [
+      "//chrome/browser/ui/views/location_bar",
+      "//components/infobars/core",
+    ]
 
     deps += [
       "//brave/app:brave_generated_resources_grit_grit",
@@ -112,11 +117,15 @@ source_set("page_action") {
       "//brave/components/vector_icons",
       "//chrome/browser/ui/color:mixers",
       "//chrome/browser/ui/views:layout_provider",
+      "//components/infobars/content",
+      "//components/strings",
       "//components/tabs:public",
       "//components/user_prefs",
+      "//content/public/browser",
       "//ui/actions",
       "//ui/base",
       "//ui/views",
+      "//url",
     ]
   }
 }
