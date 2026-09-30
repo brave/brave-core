@@ -62,17 +62,35 @@ overrides:
   'react-dom': 'catalog:'
 
   # Security-related overrides.
-  'axios': '1.18.0'
+  #
+  # Scoped to Storybook's copy; webpack-dev-server already uses a patched 7.x.
+  '@storybook/builder-webpack5>webpack-dev-middleware': '7.4.5'
+  'axios': '1.20.0'
+  # Pinned per major line: consumers span all three and the fixes were backported.
+  'brace-expansion@1': '1.1.21'
+  'brace-expansion@2': '2.1.7'
+  'brace-expansion@5': '5.0.12'
+  'devalue': '5.9.4'
+  # GHSA-848j-6mx2-7j84 (low) is unfixed upstream; 6.6.2 is not published yet.
   'elliptic': '6.6.1'
   'esbuild': '0.28.1'
+  # Scoped: ethers pins ws exactly, but jayson needs ws 7.x.
+  'ethers>ws': '8.22.0'
   'fast-uri': '3.1.8'
   'http-proxy-middleware': '2.0.10'
   'ip-address': '10.7.2'
+  'js-yaml@3': '3.15.2'
+  'js-yaml@4': '4.3.2'
+  'nanoid@3': '3.3.19'
   'postcss': '8.5.23'
   'prismjs': '1.30.0'
   'protobufjs': '7.6.5'
+  'qs': '6.16.0'
+  # stream-json is deliberately not overridden: GHSA-528h-pc64-c93x is only fixed
+  # in 3.x, which moved every entry point under src/ and lowercased filenames, so
+  # jayson's require('stream-json/streamers/StreamValues') would fail at runtime.
   'tiny-secp256k1': '1.1.7'
-  'toml': '4.1.2'
+  'toml': '4.3.0'
   'uuid': '14.0.0'
 
 # Relax peer dependency version checks for listed packages.
