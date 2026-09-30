@@ -29,6 +29,10 @@ transpile_web_ui("ai_chat_ui") {
       "leo_workspace",
       rebase_path("leo_workspace/index.tsx"),
     ],
+    [
+      "leo_workspace_view_sw",
+      rebase_path("leo_workspace/leo_workspace_view_sw.ts"),
+    ],
   ]
 
   imports_from = [ "//brave/components/ai_chat/resources/" ]
