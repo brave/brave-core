@@ -16,7 +16,7 @@ import { BraveWallet, SignDataSteps } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import { unicodeEscape, hasUnicode } from '../../../utils/string-utils'
+import { formatSignMessageForDisplay } from '../../../utils/string-utils'
 import {
   useGetNetworkQuery,
   useProcessSignMessageRequestMutation,
@@ -32,6 +32,8 @@ import { SignCowSwapOrder } from './cow_swap_order'
 import {
   EthSignTypedData, //
 } from './common/eth_sign_typed_data'
+import { SignMessageBox } from './common/sign_message_box'
+import { SignMessageCharacterWarning } from './common/sign_message_character_warning'
 
 // Styled Components
 import {
@@ -40,7 +42,6 @@ import {
   AccountNameText,
   TopRow,
   PanelTitle,
-  MessageBox,
   MessageText,
   SignPanelButtonRow,
   WarningTitleRow,
@@ -105,7 +106,7 @@ export const SignPanel = (props: Props) => {
   )
   const [selectedQueueData, setSelectedQueueData] =
     React.useState<BraveWallet.SignMessageRequest>(signMessageData[0])
-  const [renderUnicode, setRenderUnicode] = React.useState<boolean>(true)
+  const [showFormatted, setShowFormatted] = React.useState(true)
 
   const { account } = useAccountQuery(selectedQueueData?.accountId)
   const ethStandardSignData = selectedQueueData.signData.ethStandardSignData
@@ -147,6 +148,8 @@ export const SignPanel = (props: Props) => {
   }
 
   const onQueueNextSignMessage = () => {
+    // Each queued message starts on the formatted view when one is needed.
+    setShowFormatted(true)
     if (signMessageQueueInfo.queueNumber === signMessageQueueInfo.queueLength) {
       setSelectedQueueData(signMessageData[0])
       return
@@ -175,6 +178,7 @@ export const SignPanel = (props: Props) => {
   // effects
   React.useEffect(() => {
     setSelectedQueueData(signMessageData[0])
+    setShowFormatted(true)
   }, [signMessageData])
 
   React.useEffect(() => {
@@ -279,6 +283,7 @@ export const SignPanel = (props: Props) => {
           <TabRow>
             <PanelTab
               isSelected={true}
+              width='100%'
               text={
                 ethSignTypedData
                   ? getLocale(S.BRAVE_WALLET_DETAILS)
@@ -287,68 +292,61 @@ export const SignPanel = (props: Props) => {
             />
           </TabRow>
 
-          {hasUnicode(
-            selectedQueueData.signData.ethStandardSignData?.message ?? '',
-          ) && (
-            <WarningBox warningType='warning'>
-              <WarningTitleRow>
-                <WarningIcon warningType='warning' />
-                <Text
-                  textColor='primary'
-                  variant='small.semibold'
-                >
-                  {getLocale(
-                    S.BRAVE_WALLET_NON_ASCII_CHARACTERS_IN_MESSAGE_WARNING,
-                  )}
-                </Text>
-              </WarningTitleRow>
-              <LearnMoreButton
-                onClick={() => setRenderUnicode((prev) => !prev)}
-              >
-                {renderUnicode
-                  ? getLocale(S.BRAVE_WALLET_VIEW_DECODED_MESSAGE)
-                  : getLocale(S.BRAVE_WALLET_VIEW_ENCODED_MESSAGE)}
-              </LearnMoreButton>
-            </WarningBox>
-          )}
+          <SignMessageCharacterWarning
+            messages={[
+              ethStandardSignData?.message,
+              solanaSignTypedData?.message,
+              cardanoSignTypedData?.message,
+            ]}
+            showFormatted={showFormatted}
+            onToggle={() => setShowFormatted((current) => !current)}
+          />
 
-          <EthSignTypedData data={ethSignTypedData} />
+          <EthSignTypedData
+            data={ethSignTypedData}
+            width='90%'
+          />
 
           {ethStandardSignData && (
-            <MessageBox>
+            <SignMessageBox width='90%'>
               <MessageText
                 textColor='secondary'
                 variant='small.regular'
               >
-                {!renderUnicode && hasUnicode(ethStandardSignData.message)
-                  ? unicodeEscape(ethStandardSignData.message)
-                  : ethStandardSignData.message}
+                {formatSignMessageForDisplay(
+                  ethStandardSignData.message,
+                  showFormatted,
+                )}
               </MessageText>
-            </MessageBox>
+            </SignMessageBox>
           )}
 
           {solanaSignTypedData && (
-            <MessageBox>
+            <SignMessageBox width='90%'>
               <MessageText
                 textColor='secondary'
                 variant='small.regular'
               >
-                {solanaSignTypedData.message}
+                {formatSignMessageForDisplay(
+                  solanaSignTypedData.message,
+                  showFormatted,
+                )}
               </MessageText>
-            </MessageBox>
+            </SignMessageBox>
           )}
 
           {cardanoSignTypedData && (
-            <MessageBox>
+            <SignMessageBox width='90%'>
               <MessageText
                 textColor='secondary'
                 variant='small.regular'
               >
-                {!renderUnicode && hasUnicode(cardanoSignTypedData.message)
-                  ? unicodeEscape(cardanoSignTypedData.message)
-                  : cardanoSignTypedData.message}
+                {formatSignMessageForDisplay(
+                  cardanoSignTypedData.message,
+                  showFormatted,
+                )}
               </MessageText>
-            </MessageBox>
+            </SignMessageBox>
           )}
         </>
       )}

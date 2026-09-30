@@ -64,10 +64,89 @@ export const MessageBox = styled.div<{ height?: string; width?: string }>`
   border-radius: 4px;
   width: ${(p) => (p.width ? p.width : '255px')};
   height: ${(p) => (p.height ? p.height : '140px')};
+  /* A flex item's default min-height is its content size, so newline runs
+     grew the box and the panel clipped them with no scrollbar. */
+  min-height: 0;
+  max-height: ${(p) => (p.height ? p.height : '140px')};
+  flex-shrink: 1;
   padding: 8px 14px;
   margin-bottom: 14px;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
+  position: relative;
+
+  /* Overlay scrollbars stay hidden until hover, so overflow looks clipped. */
+  &::-webkit-scrollbar {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 7px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 8px;
+  }
+`
+
+export const SignMessageBoxFrame = styled.div<{
+  height?: string
+  width?: string
+}>`
+  position: relative;
+  box-sizing: border-box;
+  width: ${(p) => p.width ?? '255px'};
+  height: ${(p) => p.height ?? '140px'};
+  max-width: 100%;
+  min-width: 0;
+  margin-bottom: 14px;
+  flex-shrink: 1;
+`
+
+export const FramedMessageBox = styled(MessageBox)`
+  &&& {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    margin-bottom: 0;
+  }
+`
+
+export const ScrollOverflowHint = styled.div`
+  position: absolute;
+  z-index: 1;
+  left: 1px;
+  right: 8px;
+  bottom: 1px;
+  height: 28px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+  border-radius: 0 0 3px 3px;
+  /* Blank newline runs have nothing to fade, so the marker has to read
+     on the empty page background. */
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    ${leo.color.page.background} 55%
+  );
+
+  &::after {
+    content: '';
+    width: 7px;
+    height: 7px;
+    margin-bottom: 6px;
+    border-right: 2px solid ${leo.color.icon.default};
+    border-bottom: 2px solid ${leo.color.icon.default};
+    transform: rotate(45deg);
+  }
 `
 
 export const MessageHeader = styled(Text)`

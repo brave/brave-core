@@ -1014,7 +1014,7 @@
   <message name="IDS_BRAVE_WALLET_ORDINAL_TWENTY_SECOND" desc="Twenty-second" formatter_data="webui=Wallet">Twenty-second</message>
   <message name="IDS_BRAVE_WALLET_ORDINAL_TWENTY_THIRD" desc="Twenty-third" formatter_data="webui=Wallet">Twenty-third</message>
   <message name="IDS_BRAVE_WALLET_ORDINAL_TWENTY_FOURTH" desc="Twenty-fourth" formatter_data="webui=Wallet">Twenty-fourth</message>
-  <message name="IDS_BRAVE_WALLET_NON_ASCII_CHARACTERS_IN_MESSAGE_WARNING" desc="Warning to alert user that a message contains non-ASCII characters " formatter_data="webui=Wallet">Non-ASCII characters detected!</message>
+  <message name="IDS_BRAVE_WALLET_SIGN_MESSAGE_UNEXPECTED_CHARACTERS_WARNING" desc="Warning title when a wallet sign message contains null bytes, newlines, other non-printable characters, or non-ASCII characters" formatter_data="webui=Wallet">Unexpected characters detected</message>
   <message name="IDS_BRAVE_WALLET_VIEW_ENCODED_MESSAGE" desc="Button text to toggle to encoded message view" formatter_data="webui=Wallet">View original message</message>
   <message name="IDS_BRAVE_WALLET_VIEW_DECODED_MESSAGE" desc="Button text to toggle to decoded message view" formatter_data="webui=Wallet">View message in ASCII encoding</message>
   <message name="IDS_BRAVE_WALLET_INFORMATION" desc="Information label shown in coin market detail view" formatter_data="webui=Wallet">Information</message>

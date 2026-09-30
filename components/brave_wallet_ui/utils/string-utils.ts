@@ -98,13 +98,133 @@ export const isHttpsUrl = (url: string) => {
   return url.startsWith('https://')
 }
 
-export function hasUnicode(str: string) {
-  for (let i = 0; i < str.length; i++) {
-    if (str.charCodeAt(i) > 127) {
-      return true
+export type HiddenSignMessageCharacter =
+  | 'nullByte'
+  | 'newline'
+  | 'nonAscii'
+  | 'controlCharacter'
+
+/** Line breaks, including CR, VT, and FF, which can pad a preview like LF. */
+function isNewlineCharacter(charCode: number) {
+  return (
+    charCode === 0x0a
+    || charCode === 0x0b
+    || charCode === 0x0c
+    || charCode === 0x0d
+  )
+}
+
+/**
+ * ASCII that cannot be rendered directly: the rest of the C0 controls, and DEL.
+ * Space (0x20) is excluded.
+ */
+function isControlCharacter(charCode: number) {
+  return (
+    (charCode < 0x20 && charCode !== 0 && !isNewlineCharacter(charCode))
+    || charCode === 0x7f
+  )
+}
+
+/**
+ * Characters that can make a sign-message preview disagree with the bytes
+ * being signed: null bytes, newlines, other non-printable ASCII, and non-ASCII.
+ */
+export function getHiddenSignMessageCharacters(
+  ...values: Array<string | undefined>
+): HiddenSignMessageCharacter[] {
+  let nullByte = false
+  let newline = false
+  let nonAscii = false
+  let controlCharacter = false
+  for (const value of values) {
+    if (!value) {
+      continue
+    }
+    for (let i = 0; i < value.length; i++) {
+      const charCode = value.charCodeAt(i)
+      if (charCode === 0) {
+        nullByte = true
+      } else if (isNewlineCharacter(charCode)) {
+        newline = true
+      } else if (charCode > 127) {
+        nonAscii = true
+      } else if (isControlCharacter(charCode)) {
+        controlCharacter = true
+      }
     }
   }
-  return false
+
+  const found: HiddenSignMessageCharacter[] = []
+  if (nullByte) {
+    found.push('nullByte')
+  }
+  if (newline) {
+    found.push('newline')
+  }
+  if (nonAscii) {
+    found.push('nonAscii')
+  }
+  if (controlCharacter) {
+    found.push('controlCharacter')
+  }
+  return found
+}
+
+export function hasUnicode(str: string) {
+  return hasUnexpectedSignMessageCharacters([str])
+}
+
+function collectJsonStrings(value: unknown, out: string[]) {
+  if (typeof value === 'string') {
+    out.push(value)
+    return
+  }
+  if (Array.isArray(value)) {
+    for (const item of value) {
+      collectJsonStrings(item, out)
+    }
+    return
+  }
+  if (value && typeof value === 'object') {
+    for (const [key, item] of Object.entries(value)) {
+      out.push(key)
+      collectJsonStrings(item, out)
+    }
+  }
+}
+
+/**
+ * EIP-712 domain and message are re-encoded as JSON before display. That
+ * encoding writes a null as \u0000 and a newline as \n, so a raw-byte scan
+ * of the JSON text misses them. Scan the decoded values as well.
+ */
+export function getTypedDataHiddenSignMessageCharacters(
+  ...jsonValues: Array<string | undefined>
+) {
+  const messages: string[] = []
+  for (const json of jsonValues) {
+    if (!json) {
+      continue
+    }
+    messages.push(json)
+    try {
+      collectJsonStrings(JSON.parse(json), messages)
+    } catch {
+      // Not JSON. The raw text was already included above.
+    }
+  }
+  return getHiddenSignMessageCharacters(...messages)
+}
+
+/** True when a sign message should show the unexpected-characters warning. */
+export function hasUnexpectedSignMessageCharacters(
+  messages: Array<string | undefined>,
+  decodeJson = false,
+) {
+  const characters = decodeJson
+    ? getTypedDataHiddenSignMessageCharacters(...messages)
+    : getHiddenSignMessageCharacters(...messages)
+  return characters.length > 0
 }
 
 export function padWithLeadingZeros(string: string) {
@@ -115,14 +235,77 @@ export function unicodeCharEscape(charCode: number) {
   return '\\u' + padWithLeadingZeros(charCode.toString(16))
 }
 
-export function unicodeEscape(string: string) {
-  return string
+export function unicodeEscape(value: string) {
+  return value
     .split('')
-    .map(function (char: string) {
+    .map((char: string) => {
       const charCode = char.charCodeAt(0)
-      return charCode > 127 ? unicodeCharEscape(charCode) : char
+      // A literal backslash must not look like an escape we insert below.
+      if (charCode === 0x5c) {
+        return '\\\\'
+      }
+      if (charCode === 0) {
+        return '\\0'
+      }
+      // Keep the line break, and prefix a visible marker so a newline byte
+      // is not mistaken for ordinary text wrapping. CR, VT, and FF get the
+      // same treatment.
+      if (charCode === 0x0a) {
+        return '\\n\n'
+      }
+      if (charCode === 0x0d) {
+        return '\\r\n'
+      }
+      if (charCode === 0x0b) {
+        return '\\v\n'
+      }
+      if (charCode === 0x0c) {
+        return '\\f\n'
+      }
+      if (charCode < 0x20 || charCode === 0x7f || charCode > 127) {
+        return unicodeCharEscape(charCode)
+      }
+      return char
     })
     .join('')
+}
+
+/** Display-only. Callers must still sign the original message bytes. */
+export function formatSignMessageForDisplay(
+  message: string,
+  showFormatted: boolean,
+) {
+  return showFormatted ? unicodeEscape(message) : message
+}
+
+/**
+ * Typed-data JSON already writes a null as \u0000 and a newline as \n. Decode
+ * each string, then apply the same ASCII markers used for other sign requests,
+ * so the formatted view is distinct from that JSON text.
+ */
+export function formatTypedDataForDisplay(
+  message: string,
+  showFormatted: boolean,
+) {
+  if (!showFormatted) {
+    return message
+  }
+  try {
+    JSON.parse(message)
+  } catch {
+    return unicodeEscape(message)
+  }
+  return message.replace(/"(?:\\.|[^"\\])*"/g, (literal) => {
+    try {
+      const decoded = JSON.parse(literal)
+      if (typeof decoded !== 'string') {
+        return literal
+      }
+      return '"' + unicodeEscape(decoded).replace(/"/g, '\\"') + '"'
+    } catch {
+      return literal
+    }
+  })
 }
 
 /** This prevents there from being more than one space between words. */
