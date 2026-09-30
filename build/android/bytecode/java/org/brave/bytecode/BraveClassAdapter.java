@@ -85,7 +85,6 @@ public class BraveClassAdapter {
         chain = new BraveLogoMediatorClassAdapter(chain);
         chain = new BraveMainPreferenceBaseClassAdapter(chain);
         chain = new BraveManageAccountDevicesLinkViewClassAdapter(chain);
-        chain = new BraveManageSyncSettingsClassAdapter(chain);
         chain = new BraveMediaNotificationControllerDelegateAdapter(chain);
         chain = new BraveMediaSessionHelperClassAdapter(chain);
         chain = new BraveMediaSessionTabHelperClassAdapter(chain);

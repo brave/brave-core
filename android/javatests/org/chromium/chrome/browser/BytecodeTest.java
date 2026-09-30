@@ -2489,15 +2489,6 @@ public class BytecodeTest {
                         "mTileGroup"));
         Assert.assertTrue(
                 fieldExists(
-                        "org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
-                        "mGoogleActivityControls"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
-                        "mSyncEncryption"));
-
-        Assert.assertTrue(
-                fieldExists(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator",
                         "mMediator"));
         Assert.assertTrue(
