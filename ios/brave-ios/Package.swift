@@ -386,7 +386,7 @@ var package = Package(
       sources: [
         "BraveWidgets.intentdefinition", "LockScreenFavoriteIntentHandler.swift",
         "FavoritesWidgetData.swift", "DisabledShortcutsWidgetData.swift",
-        "OpenControlWidgetShortcutIntent.swift",
+        "OpenControlWidgetShortcutIntent.swift", "WidgetShortcut+Appearance.swift",
       ],
       plugins: ["IntentBuilderPlugin", "LoggerPlugin"]
     ),
