@@ -11,7 +11,6 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -40,8 +39,8 @@ void BraveEducationPageDelegateDesktop::OpenURL(
 
 void BraveEducationPageDelegateDesktop::OpenRewardsPanel() {
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-  auto* panel_coordinator =
-      window_interface_->GetFeatures().rewards_panel_coordinator();
+  auto* panel_coordinator = brave_rewards::RewardsPanelCoordinator::From(
+      base::to_address(window_interface_));
   if (panel_coordinator) {
     panel_coordinator->OpenRewardsPanel();
   }

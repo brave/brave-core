@@ -11,7 +11,6 @@
 
 #include "base/check.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/test/base/browser_with_test_window_test.h"
 
 namespace brave_rewards {
@@ -42,7 +41,7 @@ class RewardsPanelCoordinatorTest : public BrowserWithTestWindowTest {
   void SetUp() override {
     BrowserWithTestWindowTest::SetUp();
 
-    coordinator_ = browser()->GetFeatures().rewards_panel_coordinator();
+    coordinator_ = RewardsPanelCoordinator::From(browser());
     DCHECK(coordinator_);
 
     observer_ = MakePanelObserver([this]() { called_ = true; });
