@@ -148,6 +148,7 @@
 #include "net/base/net_errors.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
+#include "services/network/public/mojom/web_transport.mojom.h"
 #include "services/network/public/mojom/websocket.mojom.h"
 #include "services/service_manager/public/cpp/binder_registry.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
@@ -540,6 +541,22 @@ bool IsJsBlockingEnforced(content::BrowserContext* browser_context,
   }
 
   return settings_service->IsJsBlockingEnforced(url);
+}
+
+bool ShouldBlockOnionRequest(content::BrowserContext* browser_context,
+                             const GURL& url) {
+#if BUILDFLAG(ENABLE_TOR)
+  if (!browser_context) {
+    return false;
+  }
+  if (!browser_context->IsTor() &&
+      user_prefs::UserPrefs::Get(browser_context)
+          ->GetBoolean(tor::prefs::kOnionOnlyInTorWindows) &&
+      net::IsOnion(url)) {
+    return true;
+  }
+#endif
+  return false;
 }
 
 }  // namespace
@@ -1294,6 +1311,30 @@ bool BraveContentBrowserClient::WillInterceptWebSocket(
       features::kBraveEnableShieldsForWebSocketsFromWorkers);
 }
 
+void BraveContentBrowserClient::WillCreateWebTransport(
+    int process_id,
+    int frame_routing_id,
+    const GURL& url,
+    const url::Origin& initiator_origin,
+    mojo::PendingRemote<network::mojom::WebTransportHandshakeClient>
+        handshake_client,
+    WillCreateWebTransportCallback callback) {
+  if (auto* render_process_host =
+          content::RenderProcessHost::FromID(process_id)) {
+    if (ShouldBlockOnionRequest(render_process_host->GetBrowserContext(),
+                                url)) {
+      auto error = network::mojom::WebTransportError::New();
+      error->net_error = net::ERR_NAME_NOT_RESOLVED;
+      std::move(callback).Run(std::move(handshake_client), std::move(error));
+      return;
+    }
+  }
+
+  ChromeContentBrowserClient::WillCreateWebTransport(
+      process_id, frame_routing_id, url, initiator_origin,
+      std::move(handshake_client), std::move(callback));
+}
+
 template <template <typename> class T>
 void BraveContentBrowserClient::CreateChromeWebSocket(
     content::RenderFrameHost* frame,
@@ -1346,17 +1387,12 @@ void BraveContentBrowserClient::CreateWebSocketWithFrameId(
     request_initiator = initiator_origin;
   }
 
-#if BUILDFLAG(ENABLE_TOR)
-  Profile* profile = Profile::FromBrowserContext(browser_context);
-  if (!profile->IsTor() &&
-      profile->GetPrefs()->GetBoolean(tor::prefs::kOnionOnlyInTorWindows) &&
-      net::IsOnion(url)) {
+  if (ShouldBlockOnionRequest(browser_context, url)) {
     mojo::Remote<network::mojom::WebSocketHandshakeClient> client(
         std::move(handshake_client));
     client->OnFailure(std::string(), net::ERR_NAME_NOT_RESOLVED, 0);
     return;
   }
-#endif
 
   if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUniquePtr)) {
     auto* proxy = BraveProxyingWebSocket<base::WeakPtr>::ProxyWebSocket(

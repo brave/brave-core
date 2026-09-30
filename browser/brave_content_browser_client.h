@@ -142,6 +142,16 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       bool is_for_network_service) override;
 
   bool WillInterceptWebSocket(content::RenderFrameHost* frame) override;
+
+  void WillCreateWebTransport(
+      int process_id,
+      int frame_routing_id,
+      const GURL& url,
+      const url::Origin& initiator_origin,
+      mojo::PendingRemote<network::mojom::WebTransportHandshakeClient>
+          handshake_client,
+      WillCreateWebTransportCallback callback) override;
+
   // Brave-only CreateWebSocket sibling injected via chromium_src. Unlike
   // upstream CreateWebSocket, it also receives the initiator renderer's
   // `process_id` and `initiator_origin` so frameless SharedWorker and
