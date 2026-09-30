@@ -129,6 +129,10 @@ std::string BraveConfigurator::GetOSLongName() const {
   return configurator_impl_.GetOSLongName();
 }
 
+std::string BraveConfigurator::GetDeviceFormFactor() const {
+  return configurator_impl_.GetDeviceFormFactor();
+}
+
 base::flat_map<std::string, std::string>
 BraveConfigurator::ExtraRequestParams() const {
   return configurator_impl_.ExtraRequestParams();
