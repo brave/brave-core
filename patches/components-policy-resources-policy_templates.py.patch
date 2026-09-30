@@ -1,11 +1,11 @@
 diff --git a/components/policy/resources/policy_templates.py b/components/policy/resources/policy_templates.py
-index 0a3ce76477eab200dfadbb50c13c3c78687522c8..d2b4d0c7954f246f9bf385705d686fc6aff5824e 100755
+index be466c40692890a8b34f17d2fd3f3b5e5f2e85ba..4b40a313610fb13ba742cd4d8698536a0218da37 100755
 --- a/components/policy/resources/policy_templates.py
 +++ b/components/policy/resources/policy_templates.py
-@@ -496,5 +496,6 @@ def main():
-   if args.deps_file:
-     _WriteDepFile(args.deps_file, args.dest, files)
+@@ -539,5 +539,6 @@ def main():
+         _WriteDepFile(args.deps_file, args.dest, files)
+ 
  
 +from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
  if '__main__' == __name__:
-   sys.exit(main())
+     sys.exit(main())
