@@ -26,9 +26,6 @@
 #include "components/autofill/core/browser/suggestions/suggestion.h"
 #include "components/autofill/core/browser/test_utils/autofill_test_util.h"
 #include "components/grit/brave_components_strings.h"
-#include "content/public/browser/render_frame_host.h"
-#include "content/public/browser/render_widget_host.h"
-#include "content/public/browser/render_widget_host_view.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -150,9 +147,6 @@ class EmailAliasesAutofillTest : public InProcessBrowserTest,
   void NavigateToTestPage(std::string_view path) {
     ASSERT_TRUE(ui_test_utils::NavigateToURL(
         browser(), embedded_test_server()->GetURL(path)));
-    content::MainThreadFrameObserver frame_observer(
-        GetWebContents()->GetRenderWidgetHostView()->GetRenderWidgetHost());
-    frame_observer.Wait();
   }
 
  protected:
