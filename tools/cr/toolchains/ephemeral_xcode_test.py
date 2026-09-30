@@ -261,9 +261,10 @@ class DownloadToFileTest(unittest.TestCase):
     """Tests for `_download_to_file`."""
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(self._tmp.cleanup)
-        self.dest = Path(self._tmp.name) / 'out.bin'
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self._tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        self.dest = Path(self._tmp) / 'out.bin'
 
     def test_streams_the_response_body_to_dest(self):
         with mock.patch('urllib.request.urlopen',
@@ -401,9 +402,10 @@ class InstallTest(unittest.TestCase):
     """Tests for `EphemeralXcode._install`."""
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(self._tmp.cleanup)
-        patcher = mock.patch.object(m, 'XCODE_APPS_DIR', Path(self._tmp.name))
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self._tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        patcher = mock.patch.object(m, 'XCODE_APPS_DIR', Path(self._tmp))
         patcher.start()
         self.addCleanup(patcher.stop)
 
@@ -418,7 +420,7 @@ class InstallTest(unittest.TestCase):
 
     def test_reuses_an_existing_install_without_downloading(self):
         xcode = self._xcode()
-        app_path = Path(self._tmp.name) / 'xcode_17f42.app'
+        app_path = Path(self._tmp) / 'xcode_17f42.app'
         app_path.mkdir()
         with mock.patch.object(xcode, '_download_and_expand') as download:
             result = xcode._install()
@@ -427,7 +429,7 @@ class InstallTest(unittest.TestCase):
 
     def test_downloads_and_expands_when_not_present(self):
         xcode = self._xcode()
-        app_path = Path(self._tmp.name) / 'xcode_17f42.app'
+        app_path = Path(self._tmp) / 'xcode_17f42.app'
         with mock.patch.object(xcode, '_download_and_expand') as download:
             result = xcode._install()
         self.assertEqual(result, app_path)
@@ -444,9 +446,10 @@ class DownloadAndExpandTest(unittest.TestCase):
     """Tests for `EphemeralXcode._download_and_expand`."""
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(self._tmp.cleanup)
-        self.app_path = Path(self._tmp.name) / 'xcode_17f42.app'
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self._tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        self.app_path = Path(self._tmp) / 'xcode_17f42.app'
         self.expand_dir = self.app_path.with_name(
             f'.{self.app_path.stem}.expand')
         self.xcode = m.EphemeralXcode()
@@ -510,9 +513,10 @@ class DownloadXipTest(unittest.TestCase):
     """Tests for `EphemeralXcode._download_xip`."""
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(self._tmp.cleanup)
-        self.dest = Path(self._tmp.name) / 'Xcode_26.5_Universal.xip'
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self._tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        self.dest = Path(self._tmp) / 'Xcode_26.5_Universal.xip'
         self.xcode = m.EphemeralXcode()
 
     def _set_release(self,
@@ -886,9 +890,10 @@ class MainTest(unittest.TestCase):
     """Tests for the `main` CLI entry point."""
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(self._tmp.cleanup)
-        self.json_path = Path(self._tmp.name) / 'result.json'
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self._tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        self.json_path = Path(self._tmp) / 'result.json'
 
     def _fake_xcode(self, app_path: Path) -> mock.Mock:
         fake = mock.Mock()

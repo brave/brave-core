@@ -11,6 +11,7 @@ operations are exercised end-to-end. The Gerrit instance is replaced by a
 pushes are real git operations against the filesystem rather than network calls.
 """
 
+import contextlib
 import shutil
 import subprocess
 import tempfile
@@ -168,11 +169,9 @@ class TestCacheDiscovery(unittest.TestCase):
     """Tests for finding bare cache repos and skipping non-repos."""
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.cache = Path(self._tmp.name)
-
-    def tearDown(self):
-        self._tmp.cleanup()
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.cache = Path(stack.enter_context(tempfile.TemporaryDirectory()))
 
     def test_finds_bare_repo(self):
         _make_cache_repo(self.cache / 'example.com-foo',
@@ -208,13 +207,11 @@ class TestEnsureGerritRemote(unittest.TestCase):
     """Tests for adding/updating the `gerrit` remote on a cache repo."""
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.tmp = Path(self._tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.tmp = Path(stack.enter_context(tempfile.TemporaryDirectory()))
         self.repo = Repo(self.tmp / 'repo')
         _make_cache_repo(self.repo.path, 'https://example.com/foo.git')
-
-    def tearDown(self):
-        self._tmp.cleanup()
 
     def test_adds_remote_when_absent(self):
         self.repo.ensure_gerrit_remote('ssh://host/foo')
@@ -234,17 +231,15 @@ class TestRefreshRepo(unittest.TestCase):
     """End-to-end tests for mirroring one cache repo into a (fake) Gerrit."""
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.tmp = Path(self._tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.tmp = Path(stack.enter_context(tempfile.TemporaryDirectory()))
         cache_repo_path = self.tmp / 'cache' / 'example.com-foo'
         cache_repo_path.parent.mkdir()
         self.branch, self.head = _make_cache_repo(
             cache_repo_path, 'https://example.com/group/foo.git')
         self.repo = Repo(cache_repo_path)
         self.gerrit = FakeGerrit(self.tmp / 'gerrit')
-
-    def tearDown(self):
-        self._tmp.cleanup()
 
     def _mirror_head(self, project: str) -> str:
         return _git('rev-parse',
@@ -382,8 +377,9 @@ class TestShallowCache(unittest.TestCase):
     """
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.tmp = Path(self._tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.tmp = Path(stack.enter_context(tempfile.TemporaryDirectory()))
         self.source = self.tmp / 'source'
         self.branch, self.head = _make_cache_repo(
             self.source, 'https://example.com/group/foo.git')
@@ -400,9 +396,6 @@ class TestShallowCache(unittest.TestCase):
                             'https://example.com/group/foo.git')
         self.repo = Repo(cache_repo_path)
         self.gerrit = FakeGerrit(self.tmp / 'gerrit')
-
-    def tearDown(self):
-        self._tmp.cleanup()
 
     def _mirror_head(self,
                      project: str = 'mirror/example.com/group/foo') -> str:
@@ -449,8 +442,9 @@ class TestLargeRepoSeeding(unittest.TestCase):
     CHUNK = 2
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.tmp = Path(self._tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.tmp = Path(stack.enter_context(tempfile.TemporaryDirectory()))
         cache_repo_path = self.tmp / 'cache' / 'example.com-foo'
         cache_repo_path.parent.mkdir()
         self.branch, _ = _make_cache_repo(cache_repo_path,
@@ -470,7 +464,6 @@ class TestLargeRepoSeeding(unittest.TestCase):
     def tearDown(self):
         for p in self._patches:
             p.stop()
-        self._tmp.cleanup()
 
     def _cache_head(self) -> str:
         return _git('rev-parse',
@@ -555,8 +548,9 @@ class TestPushNewTags(unittest.TestCase):
     """New and changed tags are pushed; tags already identical are skipped."""
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.tmp = Path(self._tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.tmp = Path(stack.enter_context(tempfile.TemporaryDirectory()))
         repo_path = self.tmp / 'repo'
         _, self.head = _make_cache_repo(repo_path, 'https://example.com/r.git')
         self.repo = Repo(repo_path)
@@ -585,9 +579,6 @@ class TestPushNewTags(unittest.TestCase):
              f'+{other_head}:refs/tags/changed',
              cwd=other)
         _git('remote', 'add', 'gerrit', str(self.server), cwd=repo_path)
-
-    def tearDown(self):
-        self._tmp.cleanup()
 
     def _pushed_refspecs(self, run) -> list[str]:
         return [a for c in run.call_args_list for a in c.args]

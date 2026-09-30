@@ -151,9 +151,10 @@ class WriteIndexFileTest(unittest.TestCase):
     """Tests for `write_index_file`."""
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(self._tmp.cleanup)
-        self.index_path = Path(self._tmp.name) / 'toolchain.yaml'
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self._tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        self.index_path = Path(self._tmp) / 'toolchain.yaml'
 
     def test_writes_license_header_then_the_yaml_mapping(self):
         with mock.patch.object(m.time,

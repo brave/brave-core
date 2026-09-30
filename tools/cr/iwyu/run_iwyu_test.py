@@ -6,6 +6,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import tempfile
 import unittest
 from pathlib import Path
@@ -16,9 +17,10 @@ from run_iwyu import is_path_enabled, parse_paths_file
 class ParsePathsFileTest(unittest.TestCase):
 
     def setUp(self):
-        self._tmp_dir = tempfile.TemporaryDirectory()
-        self.addCleanup(self._tmp_dir.cleanup)
-        self.cfg = Path(self._tmp_dir.name) / 'paths.cfg'
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self._tmp_dir = stack.enter_context(tempfile.TemporaryDirectory())
+        self.cfg = Path(self._tmp_dir) / 'paths.cfg'
 
     def _write(self, content: str) -> Path:
         self.cfg.write_text(content, encoding='utf-8', newline='')

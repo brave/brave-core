@@ -59,25 +59,23 @@ class ReadTest(unittest.TestCase):
             dotenv.read(Path(tempfile.mkdtemp()) / 'does-not-exist'), {})
 
     def test_reads_and_parses_existing_file(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        path = Path(tmp.name) / '.env'
-        path.write_text('fake_secret_key=abc123\n', encoding='utf-8')
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / '.env'
+            path.write_text('fake_secret_key=abc123\n', encoding='utf-8')
 
-        self.assertEqual(dotenv.read(path), {'fake_secret_key': 'abc123'})
+            self.assertEqual(dotenv.read(path), {'fake_secret_key': 'abc123'})
 
     def test_defaults_to_default_path(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        path = Path(tmp.name) / '.env'
-        path.write_text('fake_secret_key=abc123\n', encoding='utf-8')
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / '.env'
+            path.write_text('fake_secret_key=abc123\n', encoding='utf-8')
 
-        original = dotenv.DEFAULT_PATH
-        dotenv.DEFAULT_PATH = path
-        try:
-            self.assertEqual(dotenv.read(), {'fake_secret_key': 'abc123'})
-        finally:
-            dotenv.DEFAULT_PATH = original
+            original = dotenv.DEFAULT_PATH
+            dotenv.DEFAULT_PATH = path
+            try:
+                self.assertEqual(dotenv.read(), {'fake_secret_key': 'abc123'})
+            finally:
+                dotenv.DEFAULT_PATH = original
 
 
 if __name__ == '__main__':

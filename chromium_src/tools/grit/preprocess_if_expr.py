@@ -127,7 +127,8 @@ def main(original_function, argv):
 
         if args.out_manifest:
             manifest_path = os.path.join(cwd, args.out_manifest)
-            manifest_data = json.load(open(manifest_path))
+            with open(manifest_path, encoding='utf-8') as f:
+                manifest_data = json.load(f)
 
         for override_file in overrides:
             overridden_name = maybe_keep_upstream_version(

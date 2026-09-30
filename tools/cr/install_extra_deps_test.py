@@ -177,9 +177,10 @@ class InstallTest(unittest.TestCase):
         # Silence the script's own INFO line ("Installed ... into ...").
         logging.disable(logging.WARNING)
         self.addCleanup(logging.disable, logging.NOTSET)
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        self.root = Path(tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        self.root = Path(tmp)
         # `install` derives dest as `_SRC_DIR.parent / path`; with _SRC_DIR at
         # <root>/src, a 'src/...' path resolves under <root>/src/...
         patcher = mock.patch.object(m, '_SRC_DIR', self.root / 'src')
@@ -690,9 +691,10 @@ extra_deps = {
 '''
 
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        self._path = Path(tmp.name) / 'EXTRA_DEPS'
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        self._path = Path(tmp) / 'EXTRA_DEPS'
         self._path.write_text(self._SOURCE, encoding='utf-8')
 
     def test_updates_only_the_object_fields(self):

@@ -70,6 +70,8 @@ class _NamedPipeSocket:
 
     def __init__(self, path: str):
         """Opens the named pipe at path for binary read/write."""
+        # Owned by this socket wrapper and released in close().
+        # pylint: disable-next=consider-using-with
         self._pipe = open(path, 'r+b', buffering=0)
 
     def sendall(self, data: bytes) -> None:

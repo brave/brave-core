@@ -12,6 +12,7 @@ the bootstrap shims rely on.
 
 from __future__ import annotations
 
+import contextlib
 import sys
 import tempfile
 import unittest
@@ -63,10 +64,11 @@ class CheapInstallStateTest(unittest.TestCase):
     PATH = 'src/brave/third_party/node/node-linux-x64'
 
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        tmp = stack.enter_context(tempfile.TemporaryDirectory())
         # The workspace root (the parent of `src`).
-        self.root = Path(tmp.name)
+        self.root = Path(tmp)
 
     def _spec(self,
               *,

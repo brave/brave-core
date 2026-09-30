@@ -4,6 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import contextlib
 import io
 import json
 import os
@@ -23,9 +24,10 @@ class PosixVsCodeIpcConnectionTest(unittest.TestCase):
 
     def setUp(self):
         """Creates a temporary directory and derives a socket path from it."""
-        self._tmp_dir = tempfile.TemporaryDirectory()
-        self.sock_path = os.path.join(self._tmp_dir.name, 'vscode.sock')
-        self.addCleanup(self._tmp_dir.cleanup)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        tmp_dir = stack.enter_context(tempfile.TemporaryDirectory())
+        self.sock_path = os.path.join(tmp_dir, 'vscode.sock')
 
     def test_init_reads_socket_path_from_env(self):
         """_socket_path is set from VSCODE_IPC_HOOK_CLI."""

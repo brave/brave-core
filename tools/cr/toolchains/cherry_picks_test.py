@@ -30,6 +30,7 @@ Coverage:
 
 from __future__ import annotations
 
+import contextlib
 import os
 import subprocess
 import sys
@@ -82,9 +83,10 @@ class _RepoTestCase(unittest.TestCase):
     """Base fixture providing a temp dir and a helper to build repos."""
 
     def setUp(self) -> None:
-        self._tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(self._tmp.cleanup)
-        self.root = Path(self._tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self._tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        self.root = Path(self._tmp)
 
     def _new_repo(self, name: str) -> Path:
         repo = self.root / name

@@ -9,6 +9,7 @@ exercised in bots_test.py instead. _load_config()/cmd_snapshot() are
 exercised manually, not here, since they mutate real process-global state
 (sys.path, sys.modules, the shared lib.config registries)."""
 
+import contextlib
 import json
 import os
 import sys
@@ -90,47 +91,46 @@ class WriteSnapshotTest(unittest.TestCase):
     half's own behaviour."""
 
     def test_writes_resolved_builders_to_disk(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        builders_registry, gn_args_registry = _make_registries()
+        with tempfile.TemporaryDirectory() as tmp:
+            builders_registry, gn_args_registry = _make_registries()
 
-        result = snapshot.write_snapshot(builders_registry, gn_args_registry,
-                                         Path(tmp.name))
+            result = snapshot.write_snapshot(builders_registry,
+                                             gn_args_registry, Path(tmp))
 
-        self.assertEqual(sorted(result.changed), [
-            'test-builder/gn-args.json',
-            'test-builder/sync.json',
-            'test-builder/targets.json',
-        ])
-        self.assertEqual(
-            json.loads(
-                (Path(tmp.name) / 'test-builder/gn-args.json').read_text()),
-            gn_args_registry.resolve('test-builder'))
+            self.assertEqual(sorted(result.changed), [
+                'test-builder/gn-args.json',
+                'test-builder/sync.json',
+                'test-builder/targets.json',
+            ])
+            self.assertEqual(
+                json.loads(
+                    (Path(tmp) / 'test-builder/gn-args.json').read_text()),
+                gn_args_registry.resolve('test-builder'))
 
     def test_rerun_with_no_changes_touches_nothing(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        builders_registry, gn_args_registry = _make_registries()
+        with tempfile.TemporaryDirectory() as tmp:
+            builders_registry, gn_args_registry = _make_registries()
 
-        snapshot.write_snapshot(builders_registry, gn_args_registry,
-                                Path(tmp.name))
-        result = snapshot.write_snapshot(builders_registry, gn_args_registry,
-                                         Path(tmp.name))
+            snapshot.write_snapshot(builders_registry, gn_args_registry,
+                                    Path(tmp))
+            result = snapshot.write_snapshot(builders_registry,
+                                             gn_args_registry, Path(tmp))
 
-        self.assertEqual(result.changed, [])
-        self.assertEqual(sorted(result.unchanged), [
-            'test-builder/gn-args.json',
-            'test-builder/sync.json',
-            'test-builder/targets.json',
-        ])
+            self.assertEqual(result.changed, [])
+            self.assertEqual(sorted(result.unchanged), [
+                'test-builder/gn-args.json',
+                'test-builder/sync.json',
+                'test-builder/targets.json',
+            ])
 
 
 class WriteOutputTest(unittest.TestCase):
 
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        self.output_dir = Path(tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        self.output_dir = Path(tmp)
 
     def test_fresh_install_writes_everything(self):
         fresh = {'a/x.json': '{}\n', 'b/y.json': '{}\n'}

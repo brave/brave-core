@@ -23,15 +23,16 @@ def BraveAuthTokenGeneratorCallback():
                      'dashboard_auth.py')
     ]
 
-    p = subprocess.Popen(args,
-                         stdout=subprocess.PIPE,
-                         stderr=subprocess.PIPE,
-                         universal_newlines=True)
-    if p.wait() == 0:
-        return p.stdout.read().strip()
+    with subprocess.Popen(args,
+                          stdout=subprocess.PIPE,
+                          stderr=subprocess.PIPE,
+                          universal_newlines=True) as p:
+        stdout, stderr = p.communicate()
+    if p.returncode == 0:
+        return stdout.strip()
     raise RuntimeError(
         'Error generating authentication token.\nStdout: %s\nStder:%s' %
-        (p.stdout.read(), p.stderr.read()))
+        (stdout, stderr))
 
 
 @override_utils.override_function(globals())

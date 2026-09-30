@@ -61,148 +61,146 @@ class DescribeBuilderTest(unittest.TestCase):
             describe.describe_builder('no-such-builder')
 
     def test_merges_all_three_generated_files(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        _write_builder(tmp.name,
-                       'b',
-                       gn_args={
-                           'target_os': 'linux',
-                           'target_cpu': 'x64'
-                       },
-                       secrets={'brave_services_key': 'BRAVE_SERVICES_KEY'},
-                       sync={
-                           'target_os': 'linux',
-                           'target_cpu': 'x64',
-                           'gclient_overrides': {}
-                       },
-                       targets={
-                           'compile': ['brave:all'],
-                           'tests': ['brave_browser_tests']
-                       })
+        with tempfile.TemporaryDirectory() as tmp:
+            _write_builder(
+                tmp,
+                'b',
+                gn_args={
+                    'target_os': 'linux',
+                    'target_cpu': 'x64'
+                },
+                secrets={'brave_services_key': 'BRAVE_SERVICES_KEY'},
+                sync={
+                    'target_os': 'linux',
+                    'target_cpu': 'x64',
+                    'gclient_overrides': {}
+                },
+                targets={
+                    'compile': ['brave:all'],
+                    'tests': ['brave_browser_tests']
+                })
 
-        original = gen_paths.BUILDERS_OUTPUT_DIR
-        gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp.name)
-        try:
-            result = describe.describe_builder('b')
-        finally:
-            gen_paths.BUILDERS_OUTPUT_DIR = original
+            original = gen_paths.BUILDERS_OUTPUT_DIR
+            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
+            try:
+                result = describe.describe_builder('b')
+            finally:
+                gen_paths.BUILDERS_OUTPUT_DIR = original
 
-        self.assertEqual(result['gn_args']['gn_args']['target_os'], 'linux')
-        self.assertEqual(result['gn_args']['secrets'],
-                         {'brave_services_key': 'BRAVE_SERVICES_KEY'})
-        self.assertEqual(result['sync']['target_cpu'], 'x64')
-        self.assertEqual(result['targets']['tests'], ['brave_browser_tests'])
+            self.assertEqual(result['gn_args']['gn_args']['target_os'],
+                             'linux')
+            self.assertEqual(result['gn_args']['secrets'],
+                             {'brave_services_key': 'BRAVE_SERVICES_KEY'})
+            self.assertEqual(result['sync']['target_cpu'], 'x64')
+            self.assertEqual(result['targets']['tests'],
+                             ['brave_browser_tests'])
 
     def test_sync_and_targets_are_optional(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        _write_builder(tmp.name, 'b', gn_args={'target_os': 'linux'})
+        with tempfile.TemporaryDirectory() as tmp:
+            _write_builder(tmp, 'b', gn_args={'target_os': 'linux'})
 
-        original = gen_paths.BUILDERS_OUTPUT_DIR
-        gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp.name)
-        try:
-            result = describe.describe_builder('b')
-        finally:
-            gen_paths.BUILDERS_OUTPUT_DIR = original
+            original = gen_paths.BUILDERS_OUTPUT_DIR
+            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
+            try:
+                result = describe.describe_builder('b')
+            finally:
+                gen_paths.BUILDERS_OUTPUT_DIR = original
 
-        self.assertNotIn('sync', result)
-        self.assertNotIn('targets', result)
+            self.assertNotIn('sync', result)
+            self.assertNotIn('targets', result)
 
 
 class CmdDescribeTest(unittest.TestCase):
 
     def test_json_prints_json_for_one_builder(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        _write_builder(tmp.name, 'b', gn_args={'target_os': 'linux'})
+        with tempfile.TemporaryDirectory() as tmp:
+            _write_builder(tmp, 'b', gn_args={'target_os': 'linux'})
 
-        original = gen_paths.BUILDERS_OUTPUT_DIR
-        gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp.name)
-        try:
-            args = argparse.Namespace(builder='b', json=True)
-            buf = io.StringIO()
-            with contextlib.redirect_stdout(buf):
-                ret = describe.cmd_describe(args)
-        finally:
-            gen_paths.BUILDERS_OUTPUT_DIR = original
+            original = gen_paths.BUILDERS_OUTPUT_DIR
+            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
+            try:
+                args = argparse.Namespace(builder='b', json=True)
+                buf = io.StringIO()
+                with contextlib.redirect_stdout(buf):
+                    ret = describe.cmd_describe(args)
+            finally:
+                gen_paths.BUILDERS_OUTPUT_DIR = original
 
-        self.assertEqual(ret, 0)
-        parsed = json.loads(buf.getvalue())
-        self.assertEqual(
-            parsed, {'b': {
-                'gn_args': {
+            self.assertEqual(ret, 0)
+            parsed = json.loads(buf.getvalue())
+            self.assertEqual(
+                parsed,
+                {'b': {
                     'gn_args': {
-                        'target_os': 'linux'
+                        'gn_args': {
+                            'target_os': 'linux'
+                        }
                     }
-                }
-            }})
+                }})
 
     def test_no_builder_describes_every_builder_sorted(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        _write_builder(tmp.name, 'z-builder', gn_args={'target_os': 'linux'})
-        _write_builder(tmp.name, 'a-builder', gn_args={'target_os': 'linux'})
+        with tempfile.TemporaryDirectory() as tmp:
+            _write_builder(tmp, 'z-builder', gn_args={'target_os': 'linux'})
+            _write_builder(tmp, 'a-builder', gn_args={'target_os': 'linux'})
 
-        original = gen_paths.BUILDERS_OUTPUT_DIR
-        gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp.name)
-        try:
-            args = argparse.Namespace(builder=None, json=False)
-            buf = io.StringIO()
-            with contextlib.redirect_stdout(buf):
-                ret = describe.cmd_describe(args)
-        finally:
-            gen_paths.BUILDERS_OUTPUT_DIR = original
+            original = gen_paths.BUILDERS_OUTPUT_DIR
+            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
+            try:
+                args = argparse.Namespace(builder=None, json=False)
+                buf = io.StringIO()
+                with contextlib.redirect_stdout(buf):
+                    ret = describe.cmd_describe(args)
+            finally:
+                gen_paths.BUILDERS_OUTPUT_DIR = original
 
-        self.assertEqual(ret, 0)
-        output = buf.getvalue()
-        self.assertLess(output.index('a-builder:'), output.index('z-builder:'))
+            self.assertEqual(ret, 0)
+            output = buf.getvalue()
+            self.assertLess(output.index('a-builder:'),
+                            output.index('z-builder:'))
 
     def test_no_builders_generated_raises(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-
-        original = gen_paths.BUILDERS_OUTPUT_DIR
-        gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp.name)
-        try:
-            args = argparse.Namespace(builder=None, json=False)
-            with self.assertRaises(generated_output.BotsError):
-                describe.cmd_describe(args)
-        finally:
-            gen_paths.BUILDERS_OUTPUT_DIR = original
+        with tempfile.TemporaryDirectory() as tmp:
+            original = gen_paths.BUILDERS_OUTPUT_DIR
+            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
+            try:
+                args = argparse.Namespace(builder=None, json=False)
+                with self.assertRaises(generated_output.BotsError):
+                    describe.cmd_describe(args)
+            finally:
+                gen_paths.BUILDERS_OUTPUT_DIR = original
 
     def test_human_report_never_prints_secret_values(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        _write_builder(
-            tmp.name,
-            'b',
-            gn_args={
-                'target_os': 'linux',
-                'target_cpu': 'x64'
-            },
-            secrets={'brave_services_key': 'BRAVE_SERVICES_KEY'},
-            targets={
-                'compile': ['brave:all'],
-                'tests': []
-            },
-        )
+        with tempfile.TemporaryDirectory() as tmp:
+            _write_builder(
+                tmp,
+                'b',
+                gn_args={
+                    'target_os': 'linux',
+                    'target_cpu': 'x64'
+                },
+                secrets={'brave_services_key': 'BRAVE_SERVICES_KEY'},
+                targets={
+                    'compile': ['brave:all'],
+                    'tests': []
+                },
+            )
 
-        original = gen_paths.BUILDERS_OUTPUT_DIR
-        gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp.name)
-        os.environ['BRAVE_SERVICES_KEY'] = 'super-secret-value'
-        try:
-            args = argparse.Namespace(builder='b', json=False)
-            buf = io.StringIO()
-            with contextlib.redirect_stdout(buf):
-                ret = describe.cmd_describe(args)
-        finally:
-            gen_paths.BUILDERS_OUTPUT_DIR = original
-            del os.environ['BRAVE_SERVICES_KEY']
+            original = gen_paths.BUILDERS_OUTPUT_DIR
+            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
+            os.environ['BRAVE_SERVICES_KEY'] = 'super-secret-value'
+            try:
+                args = argparse.Namespace(builder='b', json=False)
+                buf = io.StringIO()
+                with contextlib.redirect_stdout(buf):
+                    ret = describe.cmd_describe(args)
+            finally:
+                gen_paths.BUILDERS_OUTPUT_DIR = original
+                del os.environ['BRAVE_SERVICES_KEY']
 
-        self.assertEqual(ret, 0)
-        output = buf.getvalue()
-        self.assertIn('brave_services_key', output)
-        self.assertNotIn('super-secret-value', output)
+            self.assertEqual(ret, 0)
+            output = buf.getvalue()
+            self.assertIn('brave_services_key', output)
+            self.assertNotIn('super-secret-value', output)
 
 
 if __name__ == '__main__':

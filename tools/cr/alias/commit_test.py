@@ -521,24 +521,24 @@ class TestGracefulExit(unittest.TestCase):
         """Sending SIGINT produces exit code 130 with no traceback."""
         import signal
 
-        proc = subprocess.Popen(
+        with subprocess.Popen(
             [sys.executable,
              str(CMD_SCRIPT), 'commit', '-m', 'test'],
-            cwd=self._sandbox.root,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            env={
-                **os.environ,
-                **_GIT_ENV_OVERRIDES
-            },
-        )
-        try:
-            proc.send_signal(signal.SIGINT)
-            _, stderr = proc.communicate(timeout=5)
-        except subprocess.TimeoutExpired:
-            proc.kill()
-            _, stderr = proc.communicate()
+                cwd=self._sandbox.root,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                env={
+                    **os.environ,
+                    **_GIT_ENV_OVERRIDES
+                },
+        ) as proc:
+            try:
+                proc.send_signal(signal.SIGINT)
+                _, stderr = proc.communicate(timeout=5)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                _, stderr = proc.communicate()
 
         self.assertNotIn('Traceback', stderr)
         # 130 = Python caught KeyboardInterrupt and called sys.exit(130).

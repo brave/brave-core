@@ -45,17 +45,16 @@ class ListGeneratedBuildersTest(unittest.TestCase):
             gen_paths.BUILDERS_OUTPUT_DIR = original
 
     def test_lists_builders_sorted_by_name(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        _make_generated_output_dir(tmp.name, ['z-builder', 'a-builder'])
+        with tempfile.TemporaryDirectory() as tmp:
+            _make_generated_output_dir(tmp, ['z-builder', 'a-builder'])
 
-        original = gen_paths.BUILDERS_OUTPUT_DIR
-        gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp.name)
-        try:
-            self.assertEqual(generated_output.list_generated_builders(),
-                             ['a-builder', 'z-builder'])
-        finally:
-            gen_paths.BUILDERS_OUTPUT_DIR = original
+            original = gen_paths.BUILDERS_OUTPUT_DIR
+            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
+            try:
+                self.assertEqual(generated_output.list_generated_builders(),
+                                 ['a-builder', 'z-builder'])
+            finally:
+                gen_paths.BUILDERS_OUTPUT_DIR = original
 
 
 class ReadGeneratedGnArgsTest(unittest.TestCase):
@@ -66,21 +65,20 @@ class ReadGeneratedGnArgsTest(unittest.TestCase):
                 'no-such-builder').read_generated_gn_args()
 
     def test_missing_builder_hint_lists_available_builders(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        _make_generated_output_dir(tmp.name, ['a-builder', 'b-builder'])
+        with tempfile.TemporaryDirectory() as tmp:
+            _make_generated_output_dir(tmp, ['a-builder', 'b-builder'])
 
-        original = gen_paths.BUILDERS_OUTPUT_DIR
-        gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp.name)
-        try:
-            with self.assertRaises(generated_output.BotsError) as ctx:
-                generated_output.OutputGenerator(
-                    'no-such-builder').read_generated_gn_args()
-        finally:
-            gen_paths.BUILDERS_OUTPUT_DIR = original
+            original = gen_paths.BUILDERS_OUTPUT_DIR
+            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
+            try:
+                with self.assertRaises(generated_output.BotsError) as ctx:
+                    generated_output.OutputGenerator(
+                        'no-such-builder').read_generated_gn_args()
+            finally:
+                gen_paths.BUILDERS_OUTPUT_DIR = original
 
-        self.assertIn('a-builder', str(ctx.exception))
-        self.assertIn('b-builder', str(ctx.exception))
+            self.assertIn('a-builder', str(ctx.exception))
+            self.assertIn('b-builder', str(ctx.exception))
 
 
 class RenderArgsGnTest(unittest.TestCase):

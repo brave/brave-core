@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 from dataclasses import dataclass, field
+import contextlib
 import logging
 import os
 from pathlib import Path
@@ -213,6 +214,12 @@ def _remove_chrome_desktop_files() -> None:
 # -- Running the test -------------------------------------------------------
 
 
+def _kill_if_running(proc: subprocess.Popen) -> None:
+    """Kills `proc` so that `Popen.__exit__` does not wait on it forever."""
+    if proc.poll() is None:
+        proc.kill()
+
+
 def run_command(command: list[str],
                 *,
                 env: dict[str, str],
@@ -239,41 +246,47 @@ def run_command(command: list[str],
     if not parser and not symbolizer:
         return subprocess.run(command, env=env, check=False).returncode
 
-    test_proc = subprocess.Popen(command,
+    with contextlib.ExitStack() as stack:
+        test_proc = stack.enter_context(
+            subprocess.Popen(command,
+                             stdout=subprocess.PIPE,
+                             stderr=subprocess.STDOUT,
+                             env=env,
+                             text=True,
+                             encoding='utf-8',
+                             errors='replace'))
+        stack.callback(_kill_if_running, test_proc)
+        symbolizer_proc = None
+        if symbolizer:
+            symbolizer_proc = stack.enter_context(
+                subprocess.Popen(symbolizer,
+                                 stdin=test_proc.stdout,
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.STDOUT,
                                  env=env,
                                  text=True,
                                  encoding='utf-8',
-                                 errors='replace')
-    symbolizer_proc = None
-    if symbolizer:
-        symbolizer_proc = subprocess.Popen(symbolizer,
-                                           stdin=test_proc.stdout,
-                                           stdout=subprocess.PIPE,
-                                           stderr=subprocess.STDOUT,
-                                           env=env,
-                                           text=True,
-                                           encoding='utf-8',
-                                           errors='replace')
-        # Allow the test process to receive SIGPIPE if the symbolizer exits.
-        assert test_proc.stdout is not None
-        test_proc.stdout.close()
+                                 errors='replace'))
+            stack.callback(_kill_if_running, symbolizer_proc)
+            # Allow the test process to receive SIGPIPE if the symbolizer
+            # exits.
+            assert test_proc.stdout is not None
+            test_proc.stdout.close()
 
-    reader = symbolizer_proc if symbolizer_proc else test_proc
-    assert reader.stdout is not None
-    for line in reader.stdout:
-        line = line.rstrip('\n').rstrip('\r')
-        print(line)
-        if parser:
-            parser.process_line(line)
+        reader = symbolizer_proc if symbolizer_proc else test_proc
+        assert reader.stdout is not None
+        for line in reader.stdout:
+            line = line.rstrip('\n').rstrip('\r')
+            print(line)
+            if parser:
+                parser.process_line(line)
 
-    test_code = test_proc.wait()
-    if symbolizer_proc:
-        symbolizer_code = symbolizer_proc.wait()
-        if test_code == 0 and symbolizer_code != 0:
-            return symbolizer_code
-    return test_code
+        test_code = test_proc.wait()
+        if symbolizer_proc:
+            symbolizer_code = symbolizer_proc.wait()
+            if test_code == 0 and symbolizer_code != 0:
+                return symbolizer_code
+        return test_code
 
 
 def build_test_binary_command(test_exe_path: Path,
@@ -584,6 +597,8 @@ def start_virtual_x(build_dir: Path) -> None:
             except OSError as error:
                 print(f'Removing xvfb lock file failed: {error}')
 
+    # Xvfb outlives this call; stop_virtual_x() stops it via the pid file.
+    # pylint: disable-next=consider-using-with
     proc = subprocess.Popen([
         'Xvfb', display, '-screen', '0', '1280x800x24', '-ac', '-dpi', '96',
         '-maxclients', '512'
@@ -614,6 +629,8 @@ def start_virtual_x(build_dir: Path) -> None:
         print(f'xdisplaycheck succeeded after {elapsed:.0f} seconds.')
 
     # Some ChromeOS tests need a window manager.
+    # Runs for as long as Xvfb does and exits along with it.
+    # pylint: disable-next=consider-using-with
     subprocess.Popen(['openbox'],
                      stdout=subprocess.PIPE,
                      stderr=subprocess.STDOUT)
