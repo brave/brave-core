@@ -50,6 +50,50 @@ std::unique_ptr<DeviceInfoSpecifics> MakeLocalDeviceSpecifics(
 
 }  // namespace
 
+void DeviceInfoSyncBridge::PreserveDeviceDisplayLabel(
+    DeviceInfoSpecifics* specifics) const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  auto it = all_data_.find(specifics->cache_guid());
+  if (it == all_data_.end()) {
+    return;
+  }
+  const sync_pb::BraveSpecificFields& stored_fields =
+      it->second.specifics().brave_fields();
+  if (stored_fields.has_device_display_label()) {
+    specifics->mutable_brave_fields()->set_device_display_label(
+        stored_fields.device_display_label());
+  }
+}
+
+void DeviceInfoSyncBridge::SetDeviceDisplayLabel(
+    const std::string& client_id,
+    const std::string& display_label) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  TRACE_EVENT0("sync", "DeviceInfoSyncBridge::SetDeviceDisplayLabel");
+  CHECK(store_);
+  if (!change_processor()->IsTrackingMetadata()) {
+    return;
+  }
+  auto it = all_data_.find(client_id);
+  if (it == all_data_.end()) {
+    return;
+  }
+
+  DeviceInfoSpecifics specifics = it->second.specifics();
+  if (display_label.empty()) {
+    specifics.mutable_brave_fields()->clear_device_display_label();
+  } else {
+    specifics.mutable_brave_fields()->set_device_display_label(display_label);
+  }
+
+  std::unique_ptr<WriteBatch> batch = store_->CreateWriteBatch();
+  change_processor()->Put(client_id, CopyToEntityData(specifics),
+                          batch->GetMetadataChangeList());
+  // Invalidates `it`.
+  StoreSpecifics(std::move(specifics), batch.get());
+  CommitAndNotify(std::move(batch), /*should_notify=*/true);
+}
+
 void DeviceInfoSyncBridge::DeleteDeviceInfo(const std::string& client_id,
                                             base::OnceClosure callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

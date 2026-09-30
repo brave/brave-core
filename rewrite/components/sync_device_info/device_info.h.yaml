@@ -5,21 +5,22 @@
 
 substitutions:
   - description: |
-      Add self_delete_support to the ctor arg list
+      Add the Brave-only fields to the ctor arg list
 
-      Adding `self_delete_support` so it can be used to initialise
-      `self_delete_support_`.
+      Adding `self_delete_support` and `device_display_label` so they can be
+      used to initialise `self_delete_support_` and `device_display_label_`.
 
       This regex matches with the constructor declaration, by checking that there is
-      a `std::string` somewhere in the list, and adds `self_delete_support` as the
-      last argument in the list.
+      a `std::string` somewhere in the list, and adds the Brave arguments as the
+      last ones in the list.
     regex:
       re_pattern: '(DeviceInfo\((?=[^)]*std::string).*?)(\);)'
       re_flags: [DOTALL]
       replace: |-
         \1,
                      SelfDeleteSupport self_delete_support =
-                         SelfDeleteSupport::kNotSupported\2
+                         SelfDeleteSupport::kNotSupported,
+                     std::string device_display_label = std::string()\2
 
   - description: |
       Add Brave-specific declarations to DeviceInfo's public interface
@@ -40,6 +41,12 @@ substitutions:
         void set_self_delete_support(SelfDeleteSupport self_delete_support) {
           self_delete_support_ = self_delete_support;
         }
+        // User-chosen label for this device, empty when never renamed. Unlike
+        // `client_name()` it is not derived from the OS, so it survives having
+        // several channels of Brave installed under one machine name.
+        const std::string& device_display_label() const {
+          return device_display_label_;
+        }
         // Gets the OS in string form.
         std::string GetOSString() const;
         // Gets the device type in string form.
@@ -49,13 +56,15 @@ substitutions:
         base::DictValue ToValue() const;
 
   - description: |
-      Add self_delete_support_ as last member of DeviceInfo
+      Add the Brave-only members as the last members of DeviceInfo
 
-      This replacement adds `self_delete_support_` as the last member of
-      `DeviceInfo`.
+      This replacement adds `self_delete_support_` and `device_display_label_`
+      as the last members of `DeviceInfo`. The declaration order has to match
+      the order they are initialised in by the ctor.
     regex:
       re_pattern: '(class DeviceInfo \{.*)(\n\};)'
       re_flags: [DOTALL]
       replace: |-
         \1
-          SelfDeleteSupport self_delete_support_;\2
+          SelfDeleteSupport self_delete_support_;
+          std::string device_display_label_;\2

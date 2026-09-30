@@ -110,6 +110,8 @@ public class BraveSyncDevices {
         public String mType;
         public Date mLastUpdatedTimestamp;
         public String mGuid;
+        // User-chosen label, empty when the device was never renamed.
+        public String mDisplayLabel;
     }
 
     public ArrayList<SyncDeviceInfo> getSyncDeviceList() {
@@ -132,6 +134,7 @@ public class BraveSyncDevices {
                 deviceInfo.mLastUpdatedTimestamp = new Date(lastUpdatedTimestamp);
                 deviceInfo.mGuid = device.getString("guid");
                 deviceInfo.mSupportsSelfDelete = device.getBoolean("supportsSelfDelete");
+                deviceInfo.mDisplayLabel = device.getString("displayLabel");
                 deviceList.add(deviceInfo);
             }
         } catch (JSONException e) {
@@ -146,12 +149,22 @@ public class BraveSyncDevices {
         BraveSyncDevicesJni.get().deleteDevice(mNativeBraveSyncDevicesAndroid, deviceGuid);
     }
 
+    /** Pass an empty {@code displayLabel} to drop the label and fall back to the device name. */
+    public void setDeviceDisplayLabel(String deviceGuid, String displayLabel) {
+        BraveSyncDevicesJni.get()
+                .setDeviceDisplayLabel(mNativeBraveSyncDevicesAndroid, deviceGuid, displayLabel);
+    }
+
     @NativeMethods
     interface Natives {
         void init(BraveSyncDevices caller);
         void destroy(long nativeBraveSyncDevicesAndroid);
 
         String getSyncDeviceListJson(long nativeBraveSyncDevicesAndroid);
+
         void deleteDevice(long nativeBraveSyncDevicesAndroid, String deviceGuid);
+
+        void setDeviceDisplayLabel(
+                long nativeBraveSyncDevicesAndroid, String deviceGuid, String displayLabel);
     }
 }

@@ -237,5 +237,45 @@ TEST_F(DeviceInfoSyncBridgeTest, BraveResetsProgressMarkerOnce) {
   }
 }
 
+TEST_F(DeviceInfoSyncBridgeTest, BraveSetDisplayLabelOfRemoteDevice) {
+  InitializeAndMergeInitialData(SyncMode::kFull);
+  const DeviceInfoSpecifics specifics = CreateSpecifics(1, base::Time::Now());
+  ASSERT_FALSE(bridge()->ApplyIncrementalSyncChanges(
+      bridge()->CreateMetadataChangeList(), EntityAddList({specifics})));
+
+  EXPECT_CALL(*processor(), Put(specifics.cache_guid(), _, _)).Times(1);
+  bridge()->SetDeviceDisplayLabel(specifics.cache_guid(), "Bob's phone");
+  EXPECT_EQ("Bob's phone", ReadAllFromStore()
+                               .at(specifics.cache_guid())
+                               .brave_fields()
+                               .device_display_label());
+
+  // An empty label clears the field rather than storing an empty one.
+  EXPECT_CALL(*processor(), Put(specifics.cache_guid(), _, _)).Times(1);
+  bridge()->SetDeviceDisplayLabel(specifics.cache_guid(), std::string());
+  EXPECT_FALSE(ReadAllFromStore()
+                   .at(specifics.cache_guid())
+                   .brave_fields()
+                   .has_device_display_label());
+}
+
+TEST_F(DeviceInfoSyncBridgeTest, BraveKeepsDisplayLabelOnLocalReupload) {
+  InitializeAndMergeInitialData(SyncMode::kFull);
+  const std::string kLocalGuid = CacheGuidForSuffix(kLocalSuffix);
+
+  bridge()->SetDeviceDisplayLabel(kLocalGuid, "My nightly");
+  ASSERT_EQ(
+      "My nightly",
+      ReadAllFromStore().at(kLocalGuid).brave_fields().device_display_label());
+
+  // The label lives only in the stored specifics, so the pulse which rebuilds
+  // them from the local `DeviceInfo` must not drop it.
+  ForcePulse();
+
+  EXPECT_EQ(
+      "My nightly",
+      ReadAllFromStore().at(kLocalGuid).brave_fields().device_display_label());
+}
+
 }  // namespace
 }  // namespace syncer

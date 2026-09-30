@@ -5,7 +5,7 @@
 
 substitutions:
   - description: |
-      Pass `SelfDeleteSupport` to the `DeviceInfo` ctor in `SpecificsToModel`.
+      Pass the Brave-only fields to the `DeviceInfo` ctor in `SpecificsToModel`.
 
       This plaster adds our own custom `DeviceInfo` values at the end of the
       arg list instantiating it.
@@ -16,7 +16,8 @@ substitutions:
       re_flags: [DOTALL]
       replace: |-
         \1,
-              SpecificsToSelfDeleteSupport(specifics)\2
+              SpecificsToSelfDeleteSupport(specifics),
+              specifics.brave_fields().device_display_label()\2
 
   - description: |
       Rename upstream `MakeLocalDeviceSpecifics` to `_ChromiumImpl`.
@@ -26,6 +27,21 @@ substitutions:
     regex:
       re_pattern: '(DeviceInfoSpecifics> )MakeLocalDeviceSpecifics(\()'
       replace: '\1MakeLocalDeviceSpecifics_ChromiumImpl\2'
+
+  - description: |
+      Carry the display label over when re-uploading the local device.
+
+      `MakeLocalDeviceSpecifics` builds the specifics from `DeviceInfo`, whose
+      `device_display_label` is empty for the locally provided device info. Any
+      device in the chain may have renamed us, so the label only exists in the
+      stored specifics and has to be copied back in, otherwise every pulse
+      would wipe the rename from the server.
+    regex:
+      re_pattern: '(specifics = MakeLocalDeviceSpecifics\(.*?\);)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          PreserveDeviceDisplayLabel(specifics.get());
 
   - description: |
       `RefreshLocalDeviceInfoIfNeeded` early-return on `all_data_`.
