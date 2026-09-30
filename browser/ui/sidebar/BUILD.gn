@@ -9,6 +9,7 @@ import("//brave/components/brave_origin/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 import("//extensions/buildflags/buildflags.gni")
 
@@ -153,6 +154,7 @@ source_set("browser_tests") {
     "//brave/components/playlist/core/common/buildflags",
     "//brave/components/sidebar/browser",
     "//brave/components/sidebar/common",
+    "//brave/components/tor/buildflags",
     "//chrome/browser",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/search_engines",
@@ -168,6 +170,7 @@ source_set("browser_tests") {
     "//chrome/test:test_support_ui",
     "//components/prefs",
     "//content/test:test_support",
+    "//net:test_support",
     "//ui/display:test_support",
     "//ui/events",
     "//ui/events:test_support",
@@ -176,6 +179,10 @@ source_set("browser_tests") {
 
   if (enable_ai_chat) {
     deps += [ "//brave/components/ai_chat/core/common" ]
+  }
+
+  if (enable_tor) {
+    deps += [ "//brave/browser/tor" ]
   }
 
   if (enable_brave_news) {
