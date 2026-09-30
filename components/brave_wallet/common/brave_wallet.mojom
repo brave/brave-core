@@ -263,6 +263,39 @@ interface CardanoProvider {
   IsEnabled() => (bool enabled);
 };
 
+struct PolkadotProviderErrorBundle {
+  PolkadotProviderError code;
+  string message;
+};
+
+// Our `InjectedAccount` impl.
+// https://github.com/polkadot-js/extension/blob/master/packages/extension-inject/src/types.ts
+struct PolkadotInjectedAccount {
+  // SS58-encoded with the prefix of the chain the account belongs to.
+  string address;
+  // Set when the account is restricted to a single chain, letting a dapp
+  // filter out accounts that can't be used with the chain it talks to.
+  // Currently not something we support, which means all accounts are available
+  // to any parachain, similar to how Talisman works today.
+  string? genesis_hash;
+  string name;
+  // `KeypairType`, e.g. "sr25519".
+  string type;
+};
+
+interface PolkadotApi {
+  // `accounts.get(anyType)`. `any_type` asks for accounts that can't be used
+  // for signing, which we have none of so we ignore the param.
+  GetAccounts(bool any_type) => (array<PolkadotInjectedAccount>? accounts,
+                                 PolkadotProviderErrorBundle? error);
+};
+
+// https://github.com/polkadot-js/extension#injection-information
+interface PolkadotProvider {
+  Enable() => (pending_remote<PolkadotApi>? api,
+               PolkadotProviderErrorBundle? error);
+};
+
 struct ChainId {
   CoinType coin;
   string chain_id;
@@ -1010,6 +1043,7 @@ struct AllAccountsInfo {
   AccountInfo? eth_dapp_selected_account;
   AccountInfo? sol_dapp_selected_account;
   AccountInfo? ada_dapp_selected_account;
+  AccountInfo? dot_dapp_selected_account;
 };
 
 struct WalletInfo {
@@ -1029,6 +1063,7 @@ struct WalletInfo {
   array<CoinType> enabled_coins;
   bool is_cardano_dapp_support_enabled;
   bool is_polkadot_enabled;
+  bool is_polkadot_dapp_support_enabled;
 };
 
 // Browser-side handler for common panel / page things

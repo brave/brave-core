@@ -18,6 +18,7 @@
   case PermissionType::BRAVE_ETHEREUM:                  \
   case PermissionType::BRAVE_SOLANA:                    \
   case PermissionType::BRAVE_CARDANO:                   \
+  case PermissionType::BRAVE_POLKADOT:                  \
   case PermissionType::BRAVE_GOOGLE_SIGN_IN:            \
   case PermissionType::BRAVE_OPEN_AI_CHAT:              \
   case PermissionType::NUM
