@@ -22,11 +22,12 @@ base::OnceCallback<void(std::string_view coin_name)>*
     g_account_creation_callback_for_testing = nullptr;
 
 // These are names of coins used by `create-account-options.ts`. We support only
-// Solana and Cardano account creation triggered by dApp.
+// Solana, Cardano and Polkadot account creation triggered by dApp.
 constexpr auto kAccountCreationCoinName =
     base::MakeFixedFlatMap<brave_wallet::mojom::CoinType, std::string_view>(
         {{brave_wallet::mojom::CoinType::SOL, "Solana"},
-         {brave_wallet::mojom::CoinType::ADA, "Cardano"}});
+         {brave_wallet::mojom::CoinType::ADA, "Cardano"},
+         {brave_wallet::mojom::CoinType::DOT, "Polkadot"}});
 }  // namespace
 
 namespace brave_wallet {
