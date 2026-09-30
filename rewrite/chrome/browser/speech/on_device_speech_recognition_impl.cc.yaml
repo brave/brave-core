@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# The function body opens with a BUILDFLAG(IS_ANDROID) conditional that
+# Both function bodies open with a BUILDFLAG(IS_ANDROID) conditional that
 # tree-sitter cannot parse, so blank parse-blocking macros before AST matching.
 blank_macros_for_ast_parsing: true
 
@@ -15,6 +15,17 @@ substitutions:
       the policy as `kCommand`.
     preempt_function_impl:
       function_name: OnDeviceSpeechRecognitionImpl::Available
+      code: |-
+        if (quality == media::mojom::SpeechRecognitionQuality::kDictation) {
+          quality = media::mojom::SpeechRecognitionQuality::kCommand;
+        }
+
+  - description: |
+      The same rewrite, so the quality reaches the SODA branch where
+      `BraveSodaInstaller` installs Brave's own model, rather than the
+      optimization guide branch that asks for a model Brave does not ship.
+    preempt_function_impl:
+      function_name: OnDeviceSpeechRecognitionImpl::Install
       code: |-
         if (quality == media::mojom::SpeechRecognitionQuality::kDictation) {
           quality = media::mojom::SpeechRecognitionQuality::kCommand;
