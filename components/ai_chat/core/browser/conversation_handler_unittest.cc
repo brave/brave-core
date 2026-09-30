@@ -1134,8 +1134,8 @@ TEST_F(ConversationHandlerUnitTest, ThreadHistory) {
   ASSERT_TRUE(container);
   EXPECT_TRUE(container->entries.empty());
 
-  // Deliver thread entries as if received from the service and verify the
-  // full thread history (origin entry + thread entries) is returned.
+  // Deliver thread entries as if received from the service and verify only
+  // the thread's own entries are returned.
   std::vector<mojom::ConversationTurnPtr> thread_entries;
   thread_entries.emplace_back(mojom::ConversationTurn::New(
       "thread-entry-1", std::make_optional<std::string>("thread-1"),
@@ -1155,22 +1155,20 @@ TEST_F(ConversationHandlerUnitTest, ThreadHistory) {
   handler->OnConversationThreadHistoryReceived(
       "thread-1", received_future.GetCallback(), std::move(thread_entries));
   auto received_entries = received_future.Take();
-  ASSERT_EQ(received_entries.size(), 3u);
-  EXPECT_EQ(received_entries[0]->uuid, "root-turn-2");
-  EXPECT_EQ(received_entries[1]->uuid, "thread-entry-1");
-  EXPECT_EQ(received_entries[2]->uuid, "thread-entry-2");
+  ASSERT_EQ(received_entries.size(), 2u);
+  EXPECT_EQ(received_entries[0]->uuid, "thread-entry-1");
+  EXPECT_EQ(received_entries[1]->uuid, "thread-entry-2");
   EXPECT_EQ(container->entries.size(), 2u);
 
   // Subsequent requests should be served from the cache.
   base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>> future;
   handler->GetConversationHistory("thread-1", future.GetCallback());
   auto entries = future.Take();
-  ASSERT_EQ(entries.size(), 3u);
-  EXPECT_EQ(entries[0]->uuid, "root-turn-2");
-  EXPECT_EQ(entries[1]->uuid, "thread-entry-1");
-  EXPECT_EQ(entries[1]->text, "thread query");
-  EXPECT_EQ(entries[2]->uuid, "thread-entry-2");
-  EXPECT_EQ(entries[2]->text, "thread response");
+  ASSERT_EQ(entries.size(), 2u);
+  EXPECT_EQ(entries[0]->uuid, "thread-entry-1");
+  EXPECT_EQ(entries[0]->text, "thread query");
+  EXPECT_EQ(entries[1]->uuid, "thread-entry-2");
+  EXPECT_EQ(entries[1]->text, "thread response");
 
   // Unknown threads should return empty entries.
   base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>>

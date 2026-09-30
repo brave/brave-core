@@ -150,7 +150,7 @@ class AIChatService : public KeyedService,
                        base::OnceCallback<void(ConversationHandler*)>);
 
   void GetConversationThreadEntries(
-      std::string thread_uuid,
+      const std::string& thread_uuid,
       base::OnceCallback<void(std::vector<mojom::ConversationTurnPtr>)>
           callback);
 

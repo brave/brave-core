@@ -411,6 +411,8 @@ class ConversationHandler : public mojom::ConversationHandler,
     ~ThreadContainer();
 
     mojom::ThreadPtr thread;
+    // Only contains entries belonging to this thread; entries from the
+    // main/parent conversation are not included.
     std::vector<mojom::ConversationTurnPtr> entries;
   };
 
@@ -467,10 +469,6 @@ class ConversationHandler : public mojom::ConversationHandler,
       std::string thread_uuid,
       GetConversationHistoryCallback callback,
       std::vector<mojom::ConversationTurnPtr> entries);
-  // Builds thread history by prepending the source entry the thread branched
-  // off from in the root conversation.
-  std::vector<mojom::ConversationTurnPtr> BuildFullThreadHistoryForUI(
-      const std::string& thread_uuid);
 
   void OnModelDataChanged();
   void OnConversationDeleted();

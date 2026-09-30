@@ -332,10 +332,10 @@ ConversationHandler* AIChatService::GetConversation(
 }
 
 void AIChatService::GetConversationThreadEntries(
-    std::string thread_uuid,
+    const std::string& thread_uuid,
     base::OnceCallback<void(std::vector<mojom::ConversationTurnPtr>)>
         callback) {
-  if (!ai_chat_db_) {
+  if (!base::FeatureList::IsEnabled(features::kAIChatThreads) || !ai_chat_db_) {
     std::move(callback).Run({});
     return;
   }

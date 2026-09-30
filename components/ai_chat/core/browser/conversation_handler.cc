@@ -57,6 +57,7 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "mojo/public/cpp/bindings/clone_traits.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -485,25 +486,21 @@ void ConversationHandler::GetConversationHistory(
       std::move(callback).Run({});
       return;
     }
-    if (!container->entries.empty()) {
-      std::move(callback).Run(BuildFullThreadHistoryForUI(*thread_uuid));
+    if (container->entries.empty()) {
+      ai_chat_service_->GetConversationThreadEntries(
+          *thread_uuid,
+          base::BindOnce(
+              &ConversationHandler::OnConversationThreadHistoryReceived,
+              weak_ptr_factory_.GetWeakPtr(), *thread_uuid,
+              std::move(callback)));
       return;
     }
-
-    ai_chat_service_->GetConversationThreadEntries(
-        *thread_uuid,
-        base::BindOnce(
-            &ConversationHandler::OnConversationThreadHistoryReceived,
-            weak_ptr_factory_.GetWeakPtr(), *thread_uuid, std::move(callback)));
-    return;
   }
 
-  std::vector<mojom::ConversationTurnPtr> history;
-  for (const auto& turn : chat_history_) {
-    history.emplace_back(turn->Clone());
-  }
-
-  if (pending_conversation_entry_) {
+  std::vector<mojom::ConversationTurnPtr> history =
+      mojo::Clone(GetChatHistoryContainer(thread_uuid));
+  if (pending_conversation_entry_ &&
+      pending_conversation_entry_->thread_uuid == thread_uuid) {
     history.push_back(pending_conversation_entry_->Clone());
   }
 
@@ -529,37 +526,10 @@ void ConversationHandler::OnConversationThreadHistoryReceived(
     GetConversationHistoryCallback callback,
     std::vector<mojom::ConversationTurnPtr> entries) {
   CHECK(base::FeatureList::IsEnabled(features::kAIChatThreads));
-  CHECK(threads_.contains(thread_uuid));
-  threads_.at(thread_uuid).entries = std::move(entries);
-  std::move(callback).Run(BuildFullThreadHistoryForUI(thread_uuid));
-}
-
-std::vector<mojom::ConversationTurnPtr>
-ConversationHandler::BuildFullThreadHistoryForUI(
-    const std::string& thread_uuid) {
-  CHECK(base::FeatureList::IsEnabled(features::kAIChatThreads));
   auto* container = base::FindOrNull(threads_, thread_uuid);
   CHECK(container);
-
-  std::vector<mojom::ConversationTurnPtr> history;
-  history.reserve(container->entries.size() + 1);
-
-  // Prepend the source (origin) entry from the root conversation so the
-  // thread's branching point is included in the result.
-  const std::string& origin_uuid =
-      container->thread->origin_conversation_entry_uuid;
-  const auto origin_iter = std::ranges::find_if(
-      chat_history_,
-      [&origin_uuid](const auto& entry) { return entry->uuid == origin_uuid; });
-  if (origin_iter != chat_history_.cend()) {
-    history.emplace_back((*origin_iter)->Clone());
-  }
-
-  // Then append the thread's own entries.
-  for (const auto& entry : container->entries) {
-    history.emplace_back(entry->Clone());
-  }
-  return history;
+  container->entries = std::move(entries);
+  std::move(callback).Run(mojo::Clone(container->entries));
 }
 
 void ConversationHandler::GetState(GetStateCallback callback) {
@@ -1418,8 +1388,9 @@ ConversationHandler::GetChatHistoryContainer(
     std::optional<std::string_view> thread_uuid) {
   if (thread_uuid.has_value()) {
     CHECK(base::FeatureList::IsEnabled(features::kAIChatThreads));
-    CHECK(threads_.contains(thread_uuid.value()));
-    return threads_.at(thread_uuid.value()).entries;
+    auto* container = base::FindOrNull(threads_, thread_uuid.value());
+    CHECK(container);
+    return container->entries;
   }
   return chat_history_;
 }
