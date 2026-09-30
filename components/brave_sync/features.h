@@ -13,6 +13,10 @@ namespace features {
 
 BASE_DECLARE_FEATURE(kBraveSync);
 BASE_DECLARE_FEATURE(kBraveSyncDefaultPasswords);
+// Allows the user to set a Brave-specific display label for any device in the
+// sync chain. The label travels through `BraveSpecificFields` and is always
+// synced; this flag only gates exposing the rename UI.
+BASE_DECLARE_FEATURE(kBraveSyncAllowRenameDeviceLabel);
 
 }  // namespace features
 }  // namespace brave_sync
