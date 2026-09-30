@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/file_select_helper.cc b/chrome/browser/file_select_helper.cc
-index 227ace408690fc9586b39692234902336a22cd1a..32bcb20179d3c63ebbeb321c01237bfc1c19030a 100644
+index 83c3ef797f3ecf74b8589cf40182e0cbf73710b2..8140d13a9a82ba7835eaddfd04cc58ad8c9c134b 100644
 --- a/chrome/browser/file_select_helper.cc
 +++ b/chrome/browser/file_select_helper.cc
-@@ -73,6 +73,7 @@ DEFINE_LOCAL_ELEMENT_IDENTIFIER_VALUE(kCancelButtonId);
- namespace {
+@@ -125,6 +125,7 @@ void LogFileChooserCancelledByWindowResize(content::WebContents* web_contents) {
+ #endif  // !BUILDFLAG(IS_ANDROID)
  
  void DeleteFiles(std::vector<base::FilePath> paths) {
 +  brave::MaybeDeleteImageMetadataStripperTemporaryDir(paths);
    for (auto& file_path : paths)
      base::DeleteFile(file_path);
  }
-@@ -465,6 +466,11 @@ void FileSelectHelper::ContentAnalysisCompletionCallback(
+@@ -516,6 +517,11 @@ void FileSelectHelper::ContentAnalysisCompletionCallback(
  
  void FileSelectHelper::NotifyListenerAndEnd(
      std::vector<blink::mojom::FileChooserFileInfoPtr> list) {

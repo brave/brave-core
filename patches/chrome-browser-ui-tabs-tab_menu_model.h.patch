@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/tabs/tab_menu_model.h b/chrome/browser/ui/tabs/tab_menu_model.h
-index 1748478c118a157d6e526aa15b44ee5506ec9680..9cbec1ebe03a998d516a672d0161bcd53243b7e4 100644
+index 6dcdc78cf4ca6b9b8e83f531c8271ae0f87c3ba6..9657dba59648ed93bba794e20d75dcc8cd4ce306 100644
 --- a/chrome/browser/ui/tabs/tab_menu_model.h
 +++ b/chrome/browser/ui/tabs/tab_menu_model.h
-@@ -80,6 +80,7 @@ class TabMenuModel : public ui::SimpleMenuModel {
+@@ -76,6 +76,7 @@ class TabMenuModel : public ui::SimpleMenuModel {
  #endif
  
   private:
 +  friend class BraveTabMenuModel;
    void Build(int index);
    void BuildForWebApp(int index);
-   void BuildSendTabToSelfSubmenu(int index, const std::vector<int>& indices);
+   void BuildSendTabToSelfItem(int index, const std::vector<int>& indices);
