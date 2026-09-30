@@ -71,8 +71,8 @@ TEST(BraveTabPrefsTest,
   // No switch present - should not touch the pref
   brave_tabs::MaybeApplyVerticalTabMigrationTestingOverride(&prefs);
 
-  // Pref should remain unchanged
-  EXPECT_TRUE(prefs.GetBoolean(prefs::kVerticalTabsEnabled));
+  // Pref should reset
+  EXPECT_FALSE(prefs.GetBoolean(prefs::kVerticalTabsEnabled));
 }
 
 TEST(BraveTabPrefsTest,

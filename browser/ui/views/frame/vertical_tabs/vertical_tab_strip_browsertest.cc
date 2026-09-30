@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <vector>
 
+#include "base/command_line.h"
 #include "base/i18n/rtl.h"
 #include "base/i18n/test/scoped_rtl_for_testing.h"
 #include "base/memory/scoped_refptr.h"
@@ -2415,7 +2416,17 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VerticalTabLayoutInRTL) {
 // TabStrip::Initialize() is never called so tab_container_ remains null.
 // BraveTabStrip::UpdateOrientation() was crashing by accessing the null
 // tab_container_ via SetAvailableWidthCallback() during startup.
-using UpstreamVerticalTabsCrashTest = InProcessBrowserTest;
+class UpstreamVerticalTabsCrashTest : public InProcessBrowserTest {
+ public:
+  // InProcessBrowserTest:
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+
+    base::CommandLine::ForCurrentProcess()->AppendSwitchASCII(
+        tabs::switches::kVerticalTabMigrationSwitch,
+        tabs::switches::kVerticalTabMigrationForceUpstreamValue);
+  }
+};
 
 IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsCrashTest, NoCrashOnStartup) {
   // Simulate the user choosing "Side" in Tab strip position settings,

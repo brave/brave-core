@@ -49,7 +49,7 @@ bool VerticalTabController::SupportsBraveVerticalTabs() const {
     return false;
   }
 
-  if (prefs_->GetBoolean(prefs::kVerticalTabsEnabled)) {
+  if (tabs::IsUpstreamVerticalTabsForceEnabled()) {
     // In case that Chromium's vertical tabs are enabled, we should not show
     // Brave's vertical tabs.
     return false;
