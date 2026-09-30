@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/ui_features.cc b/chrome/browser/ui/ui_features.cc
-index 0114f94b2dc36a4b8b702b829793b8dc51fb7aec..89c132aeb83016285386ba7675478a4540957f3d 100644
+index 24f6808a21b00c50a101a1a4c0100ff80561e227..caf3665d6acc15bc5dbb6722461de1a752bcb6b6 100644
 --- a/chrome/browser/ui/ui_features.cc
 +++ b/chrome/browser/ui/ui_features.cc
 @@ -129,7 +129,7 @@ bool ShouldUseActionsForBrowserCommands() {
