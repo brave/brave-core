@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index 07de580deb67c305fdbf25ddb9c168b3cc646a4f..8456143548f5d18992c248c6c35a34ae9d2134f8 100644
+index 99041fad5cbaa7224ce7862dc23c628459e8173f..2b97f15218e302402b8745f9e25ba9af1d5c46d0 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
 @@ -239,7 +239,7 @@ Browser* Browser::Create(BrowserWindowCreateParams params) {
@@ -31,7 +31,7 @@ index 07de580deb67c305fdbf25ddb9c168b3cc646a4f..8456143548f5d18992c248c6c35a34ae
            tab_strip_model_delegate_.get(),
            profile_,
            // Tab groups are disabled for app browsers.
-@@ -675,6 +675,7 @@ void Browser::OnTabInsertedAt(WebContents* contents, int index) {
+@@ -679,6 +679,7 @@ void Browser::OnTabInsertedAt(WebContents* contents, int index) {
  
  void Browser::OnTabClosing(tabs::TabInterface* tab,
                             bool* had_active_modal_dialog) {
@@ -39,7 +39,7 @@ index 07de580deb67c305fdbf25ddb9c168b3cc646a4f..8456143548f5d18992c248c6c35a34ae
    WebContents* contents = tab->GetContents();
    // When this function is called |contents| has been removed from the
    // TabStripModel. Some of the following code may trigger calling to the
-@@ -699,6 +700,8 @@ void Browser::OnTabClosing(tabs::TabInterface* tab,
+@@ -703,6 +704,8 @@ void Browser::OnTabClosing(tabs::TabInterface* tab,
    metrics_observer->WebContentsWillSoonBeDestroyed();
  
    ExclusiveAccessManager::From(this)->OnTabClosing(contents);
