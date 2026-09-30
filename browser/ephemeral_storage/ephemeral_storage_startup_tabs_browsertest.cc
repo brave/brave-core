@@ -20,13 +20,13 @@
 #include "chrome/browser/sessions/session_service_test_helper.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/keep_alive_registry/keep_alive_types.h"
 #include "components/keep_alive_registry/scoped_keep_alive.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
@@ -95,8 +95,8 @@ class EphemeralStorageStartupTabsBrowserTest
     chrome::NewEmptyWindow(profile);
 
     BrowserWindowInterface* new_browser =
-        GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(
-            tab_waiter.Wait());
+        tabs::TabInterface::GetFromContents(tab_waiter.Wait())
+            ->GetBrowserWindowInterface();
     restore_observer.Wait();
 
     keep_alive.reset();
