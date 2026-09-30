@@ -554,7 +554,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CanWebRTC) {
 
   BrowserWindowInterface* tor_browser =
       SwitchToTorProfile(browser()->GetProfile(), GetTorLauncherFactory(), 1,
-                         GURL("brave://newtab"));
+                         GURL("https://brave.com"));
   Profile* tor_profile = tor_browser->GetProfile();
 
   auto* tor_contents = tor_browser->tab_strip_model()->GetActiveWebContents();
@@ -709,7 +709,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerExtensionTest,
 IN_PROC_BROWSER_TEST_F(TorProfileManagerExtensionTest, CookiesEvents) {
   testing::Mock::AllowLeak(GetTorLauncherFactory());
   auto* tor_cookies_api =
-      extensions::CookiesAPI ::GetFactoryInstance()->Get(profile());
+      extensions::CookiesAPI::GetFactoryInstance()->Get(profile());
 
   extensions::EventListenerInfo details("chrome.cookies.onChanged", "id",
                                         GURL("https://a.com"),
