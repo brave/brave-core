@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Unsafe buffers paths exclusions for Brave.
+
+    add_at_end_of_the_file:
+      code: |-
+
+        -brave/chromium_src/../../third_party/ffmpeg
+        -brave/third_party/argon2/
+        -brave/third_party/bip39wally-core-native/
+        -brave/third_party/bitcoin-core/
+        -brave/third_party/bspatch/
+        -brave/third_party/ethash/
+        -brave/vendor/bat-native-tweetnacl/
