@@ -1302,8 +1302,8 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderContentSpoofBrowserTest,
     return tab_helper()->CanResumePageDistillationForTesting();
   }));
 
-  // The page navigates the tab away. This navigation must not be answered with
-  // the content distilled from the previous document.
+  // Hold the completed distillation before its result can be stored and trigger
+  // Speedreader's reload.
   content::TestNavigationObserver navigation_observer(victim_url());
   navigation_observer.WatchExistingWebContents();
   content::ExecuteScriptAsync(
