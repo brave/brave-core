@@ -1145,6 +1145,123 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   tab_strip_model().RemoveObserver(&mock_observer);
 }
 
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       OnTreeTabChanged_CalledWhenChildAddedToTreeNode) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+
+  // Get parent's TreeTabNode ID for verification.
+  const tree_tab::TreeTabNodeId parent_node_id =
+      GetTreeTabNodeIdForTab(parent_tab);
+  ASSERT_FALSE(parent_node_id.is_empty());
+
+  // Create and register mock observer to listen for OnTreeTabChanged.
+  MockTabStripModelObserver mock_observer;
+  tab_strip_model().AddObserver(&mock_observer);
+
+  // Create a child tab with parent_tab as opener.
+  auto tab_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_interface->set_opener(parent_tab);
+
+  // Use RunLoop to wait for async callbacks.
+  base::RunLoop run_loop;
+
+  // Expect OnTreeTabChanged to be called
+  EXPECT_CALL(mock_observer, OnTreeTabChanged(testing::_))
+      .Times(::testing::AnyNumber())
+      .WillRepeatedly([&run_loop, parent_node_id](const TreeTabChange& change) {
+        if (change.type != TreeTabChange::kNodeChildrenChanged) {
+          return;
+        }
+
+        // Verify the change ID matches the parent's node ID.
+        EXPECT_EQ(change.id, parent_node_id);
+        // Quit the run loop after receiving the notification.
+        run_loop.Quit();
+      });
+
+  // Add child tab - this should trigger OnTreeTabNodeChildrenChanged callback
+  // which is posted asynchronously via PostTask.
+  tab_strip_model().AddTab(std::move(tab_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  // Wait for the asynchronous notification to be delivered.
+  run_loop.Run();
+
+  // Verify the child tab was added.
+  auto* child_tab = tab_strip_model().GetTabAtIndex(1);
+  EXPECT_EQ(child_tab->GetParentCollection()->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+  EXPECT_EQ(child_tab->GetParentCollection()->GetParentCollection(),
+            parent_tab->GetParentCollection());
+
+  // Parent's TreeTabNode should now have 2 children (parent tab itself +
+  // child).
+  EXPECT_EQ(2u, parent_tab->GetParentCollection()->TabCountRecursive());
+
+  tab_strip_model().RemoveObserver(&mock_observer);
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       OnTreeTabChanged_CalledWhenChildIsRemoved) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+
+  // Get parent's TreeTabNode ID for verification.
+  const tree_tab::TreeTabNodeId parent_node_id =
+      GetTreeTabNodeIdForTab(parent_tab);
+  ASSERT_FALSE(parent_node_id.is_empty());
+
+  // Create a child tab with parent_tab as opener.
+  auto tab_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(tab_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  auto* child_tab = tab_strip_model().GetTabAtIndex(1);
+  ASSERT_EQ(child_tab->GetParentCollection()->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+  ASSERT_EQ(child_tab->GetParentCollection()->GetParentCollection(),
+            parent_tab->GetParentCollection());
+
+  // Create and register mock observer to listen for OnTreeTabChanged.
+  MockTabStripModelObserver mock_observer;
+  tab_strip_model().AddObserver(&mock_observer);
+
+  // Use RunLoop to wait for async callbacks.
+  base::RunLoop run_loop;
+
+  // Expect OnTreeTabChanged to be called
+  EXPECT_CALL(mock_observer, OnTreeTabChanged(testing::_))
+      .Times(::testing::AnyNumber())
+      .WillRepeatedly([&run_loop, parent_node_id](const TreeTabChange& change) {
+        if (change.type != TreeTabChange::kNodeChildrenChanged) {
+          return;
+        }
+
+        // Verify the change ID matches the parent's node ID.
+        EXPECT_EQ(change.id, parent_node_id);
+        // Quit the run loop after receiving the notification.
+        run_loop.Quit();
+      });
+
+  // Wait for the asynchronous notification to be delivered.
+  run_loop.Run();
+
+  // Close the child tab
+  tab_strip_model().CloseWebContents(tab_strip_model().GetWebContentsAt(1),
+                                     TabCloseTypes::CLOSE_USER_GESTURE);
+
+  // Parent's TreeTabNode should now have 2 children (parent tab itself +
+  // child).
+  EXPECT_EQ(1u, parent_tab->GetParentCollection()->TabCountRecursive());
+
+  tab_strip_model().RemoveObserver(&mock_observer);
+}
+
 IN_PROC_BROWSER_TEST_F(
     TreeTabsBrowserTest,
     RemoveTabAtIndexRecursive_WithChildren_MovesChildrenToParent) {
