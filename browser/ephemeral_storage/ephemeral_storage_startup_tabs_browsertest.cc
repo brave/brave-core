@@ -50,9 +50,8 @@ class EphemeralStorageStartupTabsBrowserTest
 
   void SetUpOnMainThread() override {
     EphemeralStorageBrowserTest::SetUpOnMainThread();
-    brave_shields_settings_ =
-        BraveShieldsSettingsServiceFactory::GetForProfile(
-            browser()->GetProfile());
+    brave_shields_settings_ = BraveShieldsSettingsServiceFactory::GetForProfile(
+        browser()->GetProfile());
   }
 
   void TearDownOnMainThread() override {
@@ -162,7 +161,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageStartupTabsBrowserTest,
   TabStripModel* tab_strip = new_browser->GetTabStripModel();
   ASSERT_EQ(1, tab_strip->count());
   EXPECT_EQ(chrome::ChromeUINewTabURLAsGURL(),
-           tab_strip->GetWebContentsAt(0)->GetVisibleURL());
+            tab_strip->GetWebContentsAt(0)->GetVisibleURL());
 }
 
 // Session restore must skip only the tab whose domain is in Forgetful
@@ -184,7 +183,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageStartupTabsBrowserTest,
   TabStripModel* tab_strip = new_browser->GetTabStripModel();
   ASSERT_EQ(1, tab_strip->count());
   EXPECT_EQ(b_site_ephemeral_storage_url_,
-           tab_strip->GetWebContentsAt(0)->GetVisibleURL());
+            tab_strip->GetWebContentsAt(0)->GetVisibleURL());
 }
 
 // The "Open a specific page or set of pages" startup URLs must not open
@@ -206,7 +205,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageStartupTabsBrowserTest,
   TabStripModel* tab_strip = new_browser->GetTabStripModel();
   ASSERT_EQ(1, tab_strip->count());
   EXPECT_EQ(chrome::ChromeUINewTabURLAsGURL(),
-           tab_strip->GetWebContentsAt(0)->GetVisibleURL());
+            tab_strip->GetWebContentsAt(0)->GetVisibleURL());
 }
 
 // The "Open a specific page or set of pages" startup URLs must skip
@@ -227,7 +226,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageStartupTabsBrowserTest,
   TabStripModel* tab_strip = new_browser->GetTabStripModel();
   ASSERT_EQ(1, tab_strip->count());
   EXPECT_EQ(b_site_ephemeral_storage_url_,
-           tab_strip->GetWebContentsAt(0)->GetVisibleURL());
+            tab_strip->GetWebContentsAt(0)->GetVisibleURL());
 }
 
 // When the active tab's domain is in Forgetful Mode, session restore must
@@ -253,9 +252,9 @@ IN_PROC_BROWSER_TEST_F(
   TabStripModel* tab_strip = new_browser->GetTabStripModel();
   ASSERT_EQ(2, tab_strip->count());
   EXPECT_EQ(a_site_ephemeral_storage_url_,
-           tab_strip->GetWebContentsAt(0)->GetVisibleURL());
+            tab_strip->GetWebContentsAt(0)->GetVisibleURL());
   EXPECT_EQ(b_site_ephemeral_storage_url_,
-           tab_strip->GetWebContentsAt(1)->GetVisibleURL());
+            tab_strip->GetWebContentsAt(1)->GetVisibleURL());
   EXPECT_EQ(0, tab_strip->active_index());
 }
 
@@ -282,9 +281,9 @@ IN_PROC_BROWSER_TEST_F(
   TabStripModel* tab_strip = new_browser->GetTabStripModel();
   ASSERT_EQ(2, tab_strip->count());
   EXPECT_EQ(a_site_ephemeral_storage_url_,
-           tab_strip->GetWebContentsAt(0)->GetVisibleURL());
+            tab_strip->GetWebContentsAt(0)->GetVisibleURL());
   EXPECT_EQ(b_site_ephemeral_storage_url_,
-           tab_strip->GetWebContentsAt(1)->GetVisibleURL());
+            tab_strip->GetWebContentsAt(1)->GetVisibleURL());
   EXPECT_EQ(1, tab_strip->active_index());
 }
 

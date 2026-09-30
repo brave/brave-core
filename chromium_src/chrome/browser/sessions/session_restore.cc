@@ -43,8 +43,7 @@ bool IsScheduledForCleanup(const GURL& url, Profile* profile) {
     return false;
   }
 
-  return service->IsScheduledForCleanup(
-      net::URLToEphemeralStorageDomain(url));
+  return service->IsScheduledForCleanup(net::URLToEphemeralStorageDomain(url));
 }
 
 int MaybeAddFallbackTabIfEmpty(BrowserWindowInterface* browser) {

@@ -11,7 +11,8 @@ substitutions:
       replace: |-
         \1BraveModifyStartupTabNavigationParams(startup_tab, browser, params);
         \1\2
-  - description: 'Skip restoring a tab whose URL is scheduled for ephemeral storage cleanup'
+  - description:
+      'Skip restoring a tab whose URL is scheduled for ephemeral storage cleanup'
     regex:
       re_pattern: |-
         int selected_index = GetNavigationIndexToSelect\(tab\);\n\n( *)RecordAppLaunchForTab\(browser, tab, selected_index\);
@@ -24,7 +25,10 @@ substitutions:
         \1}
 
         \1RecordAppLaunchForTab(browser, tab, selected_index);
-  - description: 'Add a fallback tab if a window ends up with no tabs after skipping ones scheduled for cleanup, or show it anyway if the selected tab itself was skipped'
+  - description:
+      'Add a fallback tab if a window ends up with no tabs after skipping ones
+      scheduled for cleanup, or show it anyway if the selected tab itself was
+      skipped'
     regex:
       re_pattern: |-
         split_tabs::SplitTabVisualData\(\)\);\n      \}\n    \}
@@ -38,7 +42,8 @@ substitutions:
               ShowBrowser(browser, fallback_index);
               did_show_browser = true;
             }
-  - description: 'Skip appending a startup URL scheduled for ephemeral storage cleanup'
+  - description:
+      'Skip appending a startup URL scheduled for ephemeral storage cleanup'
     regex:
       re_pattern: |-
         const GURL& url = startup_tab\.url;
