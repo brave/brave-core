@@ -5,6 +5,9 @@
 
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 
+#include <optional>
+
+#include "base/containers/span.h"
 #include "build/build_config.h"
 #include "components/search_engines/search_engine_type.h"
 #include "third_party/search_engines_data/resources/definitions/prepopulated_engines.h"
@@ -58,13 +61,16 @@ PrepopulatedEngine MakeBravePrepopulatedEngine(
           /*regulatory_extensions=*/{}};
 }
 
-PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
-                                      const char16_t* const name,
-                                      const char16_t* const keyword,
-                                      const char* const search_url,
-                                      const char* const suggest_url,
-                                      const char* const image_url,
-                                      int id) {
+PrepopulatedEngine ModifyEngineParams(
+    const PrepopulatedEngine& engine,
+    const char16_t* const name,
+    const char16_t* const keyword,
+    const char* const search_url,
+    const char* const suggest_url,
+    const char* const image_url,
+    int id,
+    std::optional<base::span<const RegulatoryExtension>> regulatory_extensions =
+        std::nullopt) {
   return {name ? name : engine.name,
           keyword ? keyword : engine.keyword,
           engine.favicon_url,
@@ -92,7 +98,7 @@ PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
           id > 0 ? id : engine.id,
           engine.migrate_to_id,
           engine.send_x_geo_header,
-          engine.regulatory_extensions};
+          regulatory_extensions.value_or(engine.regulatory_extensions)};
 }
 
 }  // namespace
@@ -294,7 +300,11 @@ const PrepopulatedEngine brave_yahoo_jp = ModifyEngineParams(
 #else
     "brave-desktop_ext",
 #endif
-    PREPOPULATED_ENGINE_ID_YAHOO_JP);
+    PREPOPULATED_ENGINE_ID_YAHOO_JP,
+    // Override the inherited regulatory extension with an empty one: the
+    // search, suggest, and image URLs passed here already set their own
+    // fr= param, so we don't want Chromium appending a conflicting one.
+    base::span<const RegulatoryExtension>());
 // LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
 
 // LINT.IfChange
