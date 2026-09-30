@@ -9,6 +9,8 @@ from builtins import str
 import json
 import base64
 import re
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 try:
@@ -18,6 +20,40 @@ except ImportError:
 
 GITHUB_URL = 'https://api.github.com'
 GITHUB_UPLOAD_ASSET_URL = 'https://uploads.github.com'
+# Validation failures are not retried. These are the responses GitHub uses for
+# rate limits and temporary outages.
+TRANSIENT_GITHUB_STATUS_CODES = (429, 500, 502, 503, 504)
+
+
+class GitHubError(Exception):
+    """GitHub HTTP or API error. str() is the response body when it is JSON."""
+
+    def __init__(self, status_code, body):
+        self.status_code = status_code
+        self.body = body
+        if isinstance(body, (dict, list)):
+            message = json.dumps(body, indent=2, separators=(',', ': '))
+        else:
+            message = 'HTTP Error %s: %s' % (status_code, body)
+        super(GitHubError, self).__init__(message)
+
+
+def _parse_github_body(raw):
+    if not raw:
+        return {}
+    text = raw.decode('utf-8', errors='replace')
+    try:
+        return json.loads(text)
+    except ValueError:
+        return text
+
+
+def _is_transient_github_error(err):
+    code = getattr(err, 'status_code', None)
+    if code in TRANSIENT_GITHUB_STATUS_CODES:
+        return True
+    text = str(err).lower()
+    return code == 403 and ('rate limit' in text or 'secondary rate' in text)
 
 
 class GitHub():
@@ -56,14 +92,22 @@ class GitHub():
                 url += '?' + urllib.parse.urlencode(params)
             request = urllib.request.Request(url, **kw)
             with urllib.request.urlopen(request) as response:
-                r = json.loads(response.read())
+                raw = response.read()
                 kw['headers']['ResponseHeaders'] = dict(
                     response.headers.items())
+                r = _parse_github_body(raw)
+                # A successful response that is not JSON is treated as empty.
+                if isinstance(r, str):
+                    r = {}
+        except urllib.error.HTTPError as e:
+            # urlopen raises before the body can be parsed. Keep the body so a
+            # 422 reports GitHub's field error instead of only the status line.
+            raise GitHubError(e.code, _parse_github_body(e.read())) from e
         except ValueError:
             # Returned response may be empty in some cases
             r = {}
-        if 'message' in r:
-            raise Exception(json.dumps(r, indent=2, separators=(',', ': ')))
+        if isinstance(r, dict) and 'message' in r:
+            raise GitHubError(None, r)
         return r
 
 
@@ -270,26 +314,55 @@ def set_issue_details(token,
                       labels=[],
                       verbose=False,
                       dryrun=False):
-    patch_data = {}
+    # One field per request. A combined PATCH hides which field GitHub
+    # rejected, and a 422 then leaves every field unset.
+    updates = []
     if milestone_number:
-        patch_data['milestone'] = milestone_number
+        updates.append(('milestone', {'milestone': milestone_number}))
     if len(assignees) > 0:
-        patch_data['assignees'] = assignees
+        updates.append(('assignees', {'assignees': assignees}))
     if len(labels) > 0:
-        patch_data['labels'] = labels
+        updates.append(('labels', {'labels': labels}))
     # TODO: error if no keys in patch_data
 
     # add milestone and assignee to issue / pull request
     # for more info see: https://developer.github.com/v3/issues/#edit-an-issue
     if dryrun:
-        print('[INFO] would call `repo.issues(' + str(issue_number) +
-              ').patch(' + str(patch_data) + ')`')
+        for _name, patch_data in updates:
+            print('[INFO] would call `repo.issues(' + str(issue_number) +
+                  ').patch(' + str(patch_data) + ')`')
         return
     repo = GitHub(token).repos(repo_name)
-    response = repo.issues(issue_number).patch(data=patch_data)
-    if verbose:
-        print('repo.issues(' + str(issue_number) + ').patch(data) response:\n' +
-              str(response))
+    errors = []
+    for name, patch_data in updates:
+        try:
+            response = _patch_issue(repo, issue_number, patch_data)
+            if verbose:
+                print('repo.issues(' + str(issue_number) + ').patch(' + name +
+                      ') response:\n' + str(response))
+        except Exception as e:
+            errors.append(name + ': ' + str(e))
+    if len(errors) > 0:
+        raise Exception('failed to update pull request #' + str(issue_number) +
+                        ':\n' + '\n'.join(errors))
+
+
+def _patch_issue(repo, issue_number, patch_data):
+    delay_seconds = 2
+    attempts = 3
+    for attempt in range(attempts):
+        try:
+            return repo.issues(issue_number).patch(data=patch_data)
+        except GitHubError as e:
+            # 422 is a rejected field and is raised immediately.
+            if (attempt + 1 == attempts or
+                    not _is_transient_github_error(e)):
+                raise
+            print('[WARNING] transient GitHub error updating ' +
+                  str(list(patch_data.keys())) + ', retrying in ' +
+                  str(delay_seconds) + 's')
+            time.sleep(delay_seconds)
+            delay_seconds *= 2
 
 
 def fetch_origin_check_staged(path):
