@@ -77,6 +77,12 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
 
         super.performPostInflationStartup();
 
+        // Match the footer's container background - required to ensure nav bar controls are
+        // visible.
+        getEdgeToEdgeManager()
+                .getEdgeToEdgeSystemBarColorHelper()
+                .setNavigationBarColor(ContextCompat.getColor(this, R.color.container_background));
+
         View toolbarContainer = findViewById(R.id.toolbar_container);
         if (toolbarContainer != null) {
             toolbarContainer.setVisibility(View.GONE);
