@@ -27,10 +27,11 @@ import { Column, Row, Text } from '$wallet/components/shared/style'
 interface Props {
   onClick?: () => void
   onHide?: () => void
+  locked?: boolean
 }
 
 export const Rewards = (props: Props) => {
-  const { onClick, onHide } = props
+  const { onClick, onHide, locked } = props
 
   // Local Storage
   const [hidePortfolioBalances] = useSyncedLocalStorage(
@@ -42,6 +43,7 @@ export const Rewards = (props: Props) => {
     <Card
       onClick={onClick}
       onHide={onHide}
+      locked={locked}
     >
       <RewardsBackground />
       <Column

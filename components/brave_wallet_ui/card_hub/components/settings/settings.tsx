@@ -25,16 +25,10 @@ import { useLockWalletMutation } from '$wallet/common/slices/api.slice'
 
 // Components
 import { SectionToggle } from './section_toggle/section_toggle'
+import { Header } from '../header/header'
 
 // Styles
-import {
-  BackButton,
-  BackIcon,
-  Header,
-  SectionLabel,
-  IconBubble,
-  SectionButton,
-} from './settings.style'
+import { SectionLabel, IconBubble, SectionButton } from './settings.style'
 import { Column, Text } from '$wallet/components/shared/style'
 
 interface Props {
@@ -77,26 +71,15 @@ export const Settings = (props: Props) => {
   )
 
   return (
-    <Column width='100%'>
+    <Column
+      width='100%'
+      height='100%'
+      justifyContent='flex-start'
+    >
       <Header
-        width='100%'
-        padding='16px 12px'
-        alignItems='center'
-      >
-        <BackButton
-          fab
-          kind='plain-faint'
-          onClick={onBack}
-        >
-          <BackIcon name='arrow-left' />
-        </BackButton>
-        <Text
-          variant='default.semibold'
-          textColor='primary'
-        >
-          {getLocale(S.BRAVE_WALLET_WALLET_POPUP_SETTINGS)}
-        </Text>
-      </Header>
+        title={getLocale(S.BRAVE_WALLET_WALLET_POPUP_SETTINGS)}
+        onBack={onBack}
+      />
       <Column
         width='100%'
         padding='16px'
