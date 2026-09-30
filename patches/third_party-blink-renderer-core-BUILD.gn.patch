@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/BUILD.gn b/third_party/blink/renderer/core/BUILD.gn
-index 056bd22809479eac64251cfc67f37336c4438424..5d512b71799ea2f622ede451a4277bed7327dacf 100644
+index d6c6a7b5a30f52ca17bf17a490bf8af6410b8c2c..28aafe738e80e2cc1a24c657cea4956f46f663db 100644
 --- a/third_party/blink/renderer/core/BUILD.gn
 +++ b/third_party/blink/renderer/core/BUILD.gn
 @@ -264,6 +264,7 @@ component("core") {
@@ -18,7 +18,7 @@ index 056bd22809479eac64251cfc67f37336c4438424..5d512b71799ea2f622ede451a4277bed
  
    if (is_mac) {
      public_deps += [ "//ui/gfx" ]
-@@ -445,6 +447,7 @@ component("core") {
+@@ -446,6 +448,7 @@ component("core") {
      "//ui/gfx/geometry:geometry_skia",
      "//ui/strings",
    ]
@@ -26,7 +26,7 @@ index 056bd22809479eac64251cfc67f37336c4438424..5d512b71799ea2f622ede451a4277bed
  
    if (is_mac) {
      deps += [ "//ui/base/mojom" ]
-@@ -476,6 +479,7 @@ component("core") {
+@@ -477,6 +480,7 @@ component("core") {
        "Carbon.framework",
      ]
    }

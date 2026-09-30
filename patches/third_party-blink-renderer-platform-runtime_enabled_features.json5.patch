@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 2468c12f8d9adf3574f0d1f77019c5b97679343c..ea9df730ea7e9b27c0bd2b2f3e07bad5d82496f1 100644
+index c895ccd73ae4111c1e16d1a95c67fd2ec0adb9b1..2e6d9b303a5167b508fbe345a77a825c64009241 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -319,6 +319,7 @@
@@ -78,7 +78,7 @@ index 2468c12f8d9adf3574f0d1f77019c5b97679343c..ea9df730ea7e9b27c0bd2b2f3e07bad5
        public: true,
        status: "stable",
      },
-@@ -2916,7 +2921,8 @@
+@@ -2919,7 +2924,8 @@
      },
      {
        name: "FencedFrames",
@@ -88,7 +88,7 @@ index 2468c12f8d9adf3574f0d1f77019c5b97679343c..ea9df730ea7e9b27c0bd2b2f3e07bad5
        // This helps enable and expose the <fencedframe> element, but note that
        // blink::features::kFencedFrames must be enabled as well, as we require
        // the support of the browser process to fully enable the feature.
-@@ -3005,6 +3011,7 @@
+@@ -3008,6 +3014,7 @@
      {
        // In-development features for the File System Access API.
        name: "FileSystemAccessAPIExperimental",
@@ -96,7 +96,7 @@ index 2468c12f8d9adf3574f0d1f77019c5b97679343c..ea9df730ea7e9b27c0bd2b2f3e07bad5
        status: "experimental",
      },
      {
-@@ -3019,6 +3026,7 @@
+@@ -3022,6 +3029,7 @@
      {
        // Non-OPFS File System Access API.
        name: "FileSystemAccessLocal",
@@ -104,7 +104,7 @@ index 2468c12f8d9adf3574f0d1f77019c5b97679343c..ea9df730ea7e9b27c0bd2b2f3e07bad5
        status: {"default": "stable"},
      },
      {
-@@ -3144,6 +3152,7 @@
+@@ -3147,6 +3155,7 @@
      },
      {
        name: "Fledge",
@@ -112,7 +112,7 @@ index 2468c12f8d9adf3574f0d1f77019c5b97679343c..ea9df730ea7e9b27c0bd2b2f3e07bad5
        status: "stable",
        public: true,
      },
-@@ -3903,7 +3912,7 @@
+@@ -3906,7 +3915,7 @@
          "Android": "test",
          "default": "",
        },
@@ -121,7 +121,7 @@ index 2468c12f8d9adf3574f0d1f77019c5b97679343c..ea9df730ea7e9b27c0bd2b2f3e07bad5
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -4271,6 +4280,7 @@
+@@ -4274,6 +4283,7 @@
      // "experimental" is the support on other platforms.
      {
        name: "MiddleClickAutoscroll",
@@ -129,7 +129,7 @@ index 2468c12f8d9adf3574f0d1f77019c5b97679343c..ea9df730ea7e9b27c0bd2b2f3e07bad5
        status: "test",
      },
      // Killswitch for crbug.com/40062462 fix.
-@@ -4770,6 +4780,7 @@
+@@ -4773,6 +4783,7 @@
      {
        // PARAKEET ad serving runtime flag/JS API.
        name: "Parakeet",
@@ -137,7 +137,7 @@ index 2468c12f8d9adf3574f0d1f77019c5b97679343c..ea9df730ea7e9b27c0bd2b2f3e07bad5
        origin_trial_feature_name: "Parakeet",
      },
      {
-@@ -4981,6 +4992,7 @@
+@@ -4984,6 +4995,7 @@
        //
        // It also has some feature params defined throughout the codebase.
        name: "Prerender2",
@@ -145,7 +145,7 @@ index 2468c12f8d9adf3574f0d1f77019c5b97679343c..ea9df730ea7e9b27c0bd2b2f3e07bad5
        status: "stable",
      },
      {
-@@ -5178,6 +5190,7 @@
+@@ -5181,6 +5193,7 @@
      // but we still keep this flag for future phase tests.
      {
        name: "ReduceUserAgentMinorVersion",
@@ -153,7 +153,7 @@ index 2468c12f8d9adf3574f0d1f77019c5b97679343c..ea9df730ea7e9b27c0bd2b2f3e07bad5
        status: "stable",
      },
      {
-@@ -6599,7 +6612,7 @@
+@@ -6617,7 +6630,7 @@
          "ChromeOS": "stable",
          "default": "",
        },
@@ -162,7 +162,7 @@ index 2468c12f8d9adf3574f0d1f77019c5b97679343c..ea9df730ea7e9b27c0bd2b2f3e07bad5
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -6771,6 +6784,7 @@
+@@ -6789,6 +6802,7 @@
      },
      {
        name: "UserMediaElement",
@@ -170,7 +170,7 @@ index 2468c12f8d9adf3574f0d1f77019c5b97679343c..ea9df730ea7e9b27c0bd2b2f3e07bad5
        status: "stable",
        public: true,
      },
-@@ -7619,5 +7633,10 @@
+@@ -7637,5 +7651,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",
      },

@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index 9997c91950e49228fd2da8758eec2762e342fce7..071693c980fd3e9221dff3c3555be322731bcf5b 100644
+index 393668ac67f565959328b12ee7a13888e3a74ee5..f20c30592484a1c482bd9f08c05f36fde9d09265 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
-@@ -1349,6 +1349,7 @@ const FeatureEntry::FeatureVariation kPageClassificationVariations[] = {
+@@ -1381,6 +1381,7 @@ const FeatureEntry::FeatureVariation kMagicStackTipsV2IosVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  constexpr auto kFeatureEntries = std::to_array<flags_ui::FeatureEntry>({

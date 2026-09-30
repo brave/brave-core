@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 238f8625e42d8703c72c266c36e32bbfb2113095..771c7a084bd79a97e1820c0b2b65758db09b170a 100644
+index 97e22fbd5c07ebfd93a95971be880fb5133f49d5..d8bfeae806197595052b1efb721beda65e37d7cc 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -44,7 +44,7 @@ index 238f8625e42d8703c72c266c36e32bbfb2113095..771c7a084bd79a97e1820c0b2b65758d
  
    # Desktop-Android-only dependencies.
    if (is_desktop_android) {
-@@ -4703,11 +4710,13 @@ static_library("ui") {
+@@ -4693,11 +4700,13 @@ static_library("ui") {
  group("ui_public_dependencies") {
    visibility = [ "//chrome/browser:browser_public_dependencies" ]
    public_deps = [

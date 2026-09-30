@@ -1,5 +1,5 @@
 diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
-index 3162721b67d5b744c2c1d7021656a862eea2c2c5..f57f0ad3aed3f3f6420c5311e15f112d18d3e808 100644
+index 5b7fc354e3396b2ba6c9efdce9541010af6a28f6..9836d6edb8f81c2551df04c79bf755e83977985e 100644
 --- a/content/browser/BUILD.gn
 +++ b/content/browser/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -18,7 +18,7 @@ index 3162721b67d5b744c2c1d7021656a862eea2c2c5..f57f0ad3aed3f3f6420c5311e15f112d
  
    public_deps = [
      "//base",
-@@ -2381,6 +2383,7 @@ source_set("browser") {
+@@ -2383,6 +2385,7 @@ source_set("browser") {
      "worker_host/worker_util.cc",
      "worker_host/worker_util.h",
    ]
@@ -26,7 +26,7 @@ index 3162721b67d5b744c2c1d7021656a862eea2c2c5..f57f0ad3aed3f3f6420c5311e15f112d
  
    if (is_android) {
      sources += [
-@@ -3653,6 +3656,7 @@ group("for_content_tests") {
+@@ -3655,6 +3658,7 @@ group("for_content_tests") {
      "//content/test/*",
      "//content/web_test:web_test_browser",
    ]
