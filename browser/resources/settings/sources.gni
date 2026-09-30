@@ -99,8 +99,6 @@ brave_settings_ts_files = [
   "br/privacy_page.ts",
   "br/privacy_page_index.ts",
   "br/reset_profile_dialog.ts",
-  "br/safety_check.ts",
-  "br/safety_check_passwords_child.ts",
   "br/safety_hub_page.ts",
   "br/security_page.ts",
   "br/settings_basic_page.ts",
