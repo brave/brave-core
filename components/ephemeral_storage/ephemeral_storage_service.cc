@@ -334,11 +334,8 @@ bool EphemeralStorageService::IsScheduledForCleanup(
     return false;
   }
 
-  base::ListValue first_party_storage_areas_to_cleanup_on_startup =
-      prefs_->GetList(kFirstPartyStorageOriginsToCleanup).Clone();
-
-  for (base::Value& area_to_cleanup :
-       first_party_storage_areas_to_cleanup_on_startup) {
+  for (const base::Value& area_to_cleanup :
+       prefs_->GetList(kFirstPartyStorageOriginsToCleanup)) {
     const auto url_and_storage_partition_config =
         GetFirstPartyStorageURLAndStoragePartitionConfig(area_to_cleanup,
                                                          context_);
