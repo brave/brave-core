@@ -32,13 +32,15 @@ export class LedgerBridge implements LedgerMojom.LedgerBridgeInterface {
   private filTransportWrapper?: TransportWrapper
   private filProvider?: LedgerProvider
 
-  // Verifies that a Ledger device is connected before creating a transport.
   private createTransport = async (): Promise<Transport> => {
-    const devices = await TransportWebHID.list()
-    if (devices.length === 0) {
+    try {
+      return await TransportWebHID.create()
+    } catch (error) {
+      if (error.message === 'The device is already open.') {
+        throw error
+      }
       throw new Error('No Ledger device found.')
     }
-    return TransportWebHID.create()
   }
 
   private fillDeviceName = async (): Promise<void> => {
