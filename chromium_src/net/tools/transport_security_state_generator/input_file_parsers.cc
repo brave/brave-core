@@ -546,9 +546,9 @@ constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
  ]})brave_hsts_json";
 
 constexpr std::string_view kBraveCerts = R"brave_certs(
-# Last updated: Thu Sep 24 11:46:46 2026
+# Last updated: Wed Sep 30 15:22:43 2026
 PinsListTimestamp
-1790246806
+1790796163
 
 # =====BEGIN BRAVE ROOTS ASC=====
 #From https://www.amazontrust.com/repository/
