@@ -78,6 +78,7 @@ source_set("browser_tests") {
     "//chrome/test:test_support_ui",
     "//components/bookmarks/browser",
     "//components/bookmarks/common",
+    "//components/network_session_configurator/common",
     "//content/public/browser",
     "//content/test:test_support",
     "//net:test_support",
