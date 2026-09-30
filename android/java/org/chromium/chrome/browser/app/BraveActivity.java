@@ -59,7 +59,6 @@ import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.wireguard.android.backend.GoBackend;
 
-import org.chromium.chrome.browser.day_zero.DayZeroHelper;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
@@ -145,6 +144,7 @@ import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
+import org.chromium.chrome.browser.day_zero.DayZeroHelper;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
@@ -1635,8 +1635,8 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     /**
-     * Returns the active Day Zero experiment variant, or {@link #DAY_ZERO_DEFAULT_VARIANT} when
-     * the stored one is unset or unknown to this build.
+     * Returns the active Day Zero experiment variant, or {@link #DAY_ZERO_DEFAULT_VARIANT} when the
+     * stored one is unset or unknown to this build.
      */
     private String getDayZeroVariant() {
         final String variant = DayZeroHelper.getDayZeroVariant();
@@ -1647,13 +1647,13 @@ public abstract class BraveActivity extends ChromeActivity
         return DAY_ZERO_DEFAULT_VARIANT;
     }
 
-//    private boolean isVariantA() {
-//        return mDayZeroVariant.equals(DAY_ZERO_VARIANT_A);
-//    }
-//
-//    private boolean isVariantB() {
-//        return mDayZeroVariant.equals(DAY_ZERO_VARIANT_B);
-//    }
+    //    private boolean isVariantA() {
+    //        return mDayZeroVariant.equals(DAY_ZERO_VARIANT_A);
+    //    }
+    //
+    //    private boolean isVariantB() {
+    //        return mDayZeroVariant.equals(DAY_ZERO_VARIANT_B);
+    //    }
 
     private void applyChangesForYahooJp() {
         boolean isDefaultSearchEngineChanged =
@@ -3228,7 +3228,8 @@ public abstract class BraveActivity extends ChromeActivity
             // Leaves any other engine's URL untouched.
             searchUrl =
                     BraveIntentHandler.maybeReplaceBraveSearchSource(
-                            searchUrl, BraveIntentHandler.ANDROID_QUICK_SEARCH + quickSearchVariation);
+                            searchUrl,
+                            BraveIntentHandler.ANDROID_QUICK_SEARCH + quickSearchVariation);
             getActivityTab().loadUrl(new LoadUrlParams(searchUrl));
         }
         getBraveToolbarLayout().clearOmniboxFocus();
