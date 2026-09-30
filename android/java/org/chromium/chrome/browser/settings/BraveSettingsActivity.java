@@ -21,11 +21,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableNonNullObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeUtils;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.components.browser_ui.styles.SemanticColorUtils;
 import org.chromium.ui.edge_to_edge.EdgeToEdgeSystemBarColorHelper;
 import org.chromium.ui.util.ColorUtils;
@@ -70,6 +73,9 @@ public class BraveSettingsActivity extends SettingsActivity {
                 }
             };
 
+    private final SettableNonNullObservableSupplier<Integer> mSnackbarBottomMarginSupplier =
+            ObservableSuppliers.createNonNull(0);
+
     @Override
     protected boolean shouldDrawEdgeToEdgeOnCreate() {
         // Settings applies its own navigation-bar inset, so it can always draw behind the bar.
@@ -93,6 +99,11 @@ public class BraveSettingsActivity extends SettingsActivity {
         View contentView = getContentView();
         mContentView = contentView;
         contentView.setBackgroundColor(SemanticColorUtils.getSettingsBackgroundColor(this));
+        getSnackbarManager()
+                .pushParentViewOverride(
+                        SnackbarManager.ParentOverrideSlot.ONE_OFF,
+                        getContentView(),
+                        mSnackbarBottomMarginSupplier);
         ViewCompat.setOnApplyWindowInsetsListener(contentView, this::updateSettingsContentInsets);
         ViewCompat.requestApplyInsets(contentView);
     }
@@ -187,6 +198,9 @@ public class BraveSettingsActivity extends SettingsActivity {
                 rootWindowInsets.getInsets(WindowInsetsCompat.Type.tappableElement());
         int navigationBarBottomInset =
                 Math.max(navigationBarInsets.bottom, tappableElementInsets.bottom);
+        // The snackbar's parent already applies the keyboard inset as bottom padding.
+        mSnackbarBottomMarginSupplier.set(
+                Math.max(0, navigationBarBottomInset - contentView.getPaddingBottom()));
         for (Map.Entry<View, Integer> entry : mOriginalContentBottomPaddings.entrySet()) {
             setBottomPadding(entry.getKey(), entry.getValue() + navigationBarBottomInset);
         }
