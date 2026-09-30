@@ -194,7 +194,8 @@ public class BraveSettingsActivity extends SettingsActivity {
         int navigationBarBottomInset =
                 Math.max(
                         rootWindowInsets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom,
-                        rootWindowInsets.getInsets(WindowInsetsCompat.Type.tappableElement()).bottom);
+                        rootWindowInsets.getInsets(WindowInsetsCompat.Type.tappableElement())
+                                .bottom);
         // The snackbar's parent already applies the keyboard inset as bottom padding.
         mSnackbarBottomMarginSupplier.set(
                 Math.max(0, navigationBarBottomInset - contentView.getPaddingBottom()));
