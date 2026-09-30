@@ -10,14 +10,6 @@
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
 
-// Add TabCustomTitleChanged() callback to TabStripModelObserver.
-// BraveBrowser will make sure that the custom title is stored in the session
-// service so that it can be restored even after browser restarts.
-#define OnTabPinnedStateChanged                                            \
-  TabCustomTitleChanged(content::WebContents* contents,                    \
-                        const std::optional<std::string>& custom_title) {} \
-  virtual void OnTabPinnedStateChanged
-
 // Add TreeTabChange type to represent changes in the tree tab structure.
 struct TreeTabChange {
   enum Type {
@@ -86,13 +78,7 @@ struct TreeTabChange {
 };
 
 // Add OnTreeTabChange() callback to TabStripModelObserver.
-#define OnTabGroupChanged(...)    \
-  OnTabGroupChanged(__VA_ARGS__); \
-  virtual void OnTreeTabChanged(const TreeTabChange& change)
 
 #include <chrome/browser/ui/tabs/tab_strip_model_observer.h>  // IWYU pragma: export
-
-#undef OnTabGroupChanged
-#undef OnTabPinnedStateChanged
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_STRIP_MODEL_OBSERVER_H_

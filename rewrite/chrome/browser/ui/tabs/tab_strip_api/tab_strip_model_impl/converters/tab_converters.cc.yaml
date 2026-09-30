@@ -1,0 +1,14 @@
+substitutions:
+  - description: |-
+      Handle TREE_NODE in BuildMojoTabCollectionData().
+
+      At the moment this API is not used for tree tabs, so just return the
+      unpinned tabs collection data, mirroring the UNPINNED case shape.
+    add_before_line:
+      line: 'case tabs::TabCollection::Type::SPLIT: {'
+      code: |-
+        case tabs::TabCollection::Type::TREE_NODE: {
+          auto mojo_container = tabs_api::mojom::UnpinnedTabs::New();
+          mojo_container->id = node_id;
+          return tabs_api::mojom::Data::NewUnpinnedTabs(std::move(mojo_container));
+        }
