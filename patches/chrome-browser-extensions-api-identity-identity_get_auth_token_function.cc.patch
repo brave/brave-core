@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
-index 358acdc3073e374dcc64da051b091e99d155f974..91be9a9d40605488ea53eeed28e70a0a1e97bc51 100644
+index 19c25b3cf271b6f805afb543bfd53581c5666d92..80812640cbec859d19751dd1aeb600e0de440526 100644
 --- a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 +++ b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 @@ -124,7 +124,7 @@ CoreAccountInfo GetSigninPrimaryAccount(Profile* profile) {
@@ -8,10 +8,10 @@ index 358acdc3073e374dcc64da051b091e99d155f974..91be9a9d40605488ea53eeed28e70a0a
  
 -#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
 +#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
- bool IsAccountInCookieJar(const signin::AccountsInCookieJarInfo& cookie_info,
-                           const CoreAccountInfo& account_info) {
-   if (!cookie_info.AreAccountsFresh()) {
-@@ -156,7 +156,7 @@ class IdentityGetAuthTokenFunction::RefreshTokensLoadedWaiter
+ // How long to wait for the Gaia cookies to be updated after sign-in before
+ // giving up on showing the remote consent dialog.
+ constexpr base::TimeDelta kCookieUpdatedWaiterTimeout = base::Seconds(10);
+@@ -164,7 +164,7 @@ class IdentityGetAuthTokenFunction::RefreshTokensLoadedWaiter
        identity_manager_observation_{this};
  };
  
@@ -20,7 +20,7 @@ index 358acdc3073e374dcc64da051b091e99d155f974..91be9a9d40605488ea53eeed28e70a0a
  class IdentityGetAuthTokenFunction::AccountsInCookieUpdatedWaiter
      : public signin::IdentityManager::Observer {
   public:
-@@ -328,6 +328,10 @@ ExtensionFunction::ResponseAction IdentityGetAuthTokenFunction::Run() {
+@@ -333,6 +333,10 @@ ExtensionFunction::ResponseAction IdentityGetAuthTokenFunction::Run() {
    // From here on out, results must be returned asynchronously.
    StartAsyncRun();
  
@@ -31,7 +31,7 @@ index 358acdc3073e374dcc64da051b091e99d155f974..91be9a9d40605488ea53eeed28e70a0a
    base::OnceCallback next_step =
        base::BindOnce(&IdentityGetAuthTokenFunction::GetAuthTokenForAccount,
                       weak_ptr_factory_.GetWeakPtr(), gaia_id);
-@@ -410,7 +414,7 @@ void IdentityGetAuthTokenFunction::GetAuthTokenForAccount(
+@@ -415,7 +419,7 @@ void IdentityGetAuthTokenFunction::GetAuthTokenForAccount(
    }
  }
  
@@ -69,13 +69,13 @@ index 358acdc3073e374dcc64da051b091e99d155f974..91be9a9d40605488ea53eeed28e70a0a
 @@ -1039,7 +1047,7 @@ void IdentityGetAuthTokenFunction::ShowExtensionLoginPrompt() {
  #endif
  
- void IdentityGetAuthTokenFunction::ShowRemoteConsentDialog() {
+ void IdentityGetAuthTokenFunction::StartRemoteConsentFlow() {
 -#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
 +#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
    // On Android, Gaia session cookies are reconciled asynchronously after
    // sign-in. Defer showing the remote consent dialog until cookies are
    // ready in the cookie jar to prevent loading a blank consent page.
-@@ -1196,7 +1204,7 @@ void IdentityGetAuthTokenFunction::RefreshTokensLoadedWaiter::
+@@ -1200,7 +1208,7 @@ void IdentityGetAuthTokenFunction::RefreshTokensLoadedWaiter::
    std::move(callback_).Run();
  }
  

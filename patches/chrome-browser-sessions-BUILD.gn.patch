@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/sessions/BUILD.gn b/chrome/browser/sessions/BUILD.gn
-index 92c6ac9b37578c560952fe592b1fb0fba0ac8e62..f1782913a68536398c14eb4918722e5f3e10ac61 100644
+index 2908f14e57f9784034c47b5448f9b5ddbc77e856..4c1c916eb9e7838699beda8dbc4def153b20ce91 100644
 --- a/chrome/browser/sessions/BUILD.gn
 +++ b/chrome/browser/sessions/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -7,12 +7,12 @@ index 92c6ac9b37578c560952fe592b1fb0fba0ac8e62..f1782913a68536398c14eb4918722e5f
  # found in the LICENSE file.
  
 +import("//brave/chromium_src/chrome/browser/sessions/sources.gni")
+ import("//build/config/features.gni")
  import("//build/config/ozone.gni")
  import("//chrome/common/features.gni")
- import("//extensions/buildflags/buildflags.gni")
-@@ -177,6 +178,7 @@ source_set("impl") {
-         "//chromeos/components/kiosk",
-       ]
+@@ -187,6 +188,7 @@ source_set("impl") {
+     } else {
+       sources += [ "profile_diff_after_restart_recorder.cc" ]
      }
 +    deps += brave_chromium_src_chrome_browser_sessions_deps
    }
