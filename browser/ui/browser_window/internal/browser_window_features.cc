@@ -58,11 +58,6 @@ class RewardsPanelCoordinator {};
 }  // namespace brave_rewards
 #endif
 
-#if !BUILDFLAG(ENABLE_BRAVE_VPN)
-// Use stub class to avoid incomplete type build error.
-class BraveVPNController {};
-#endif
-
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
@@ -87,14 +82,6 @@ brave_rewards::RewardsPanelCoordinator*
 BrowserWindowFeatures::rewards_panel_coordinator() {
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   return rewards_panel_coordinator_.get();
-#else
-  NOTREACHED();
-#endif
-}
-
-BraveVPNController* BrowserWindowFeatures::brave_vpn_controller() {
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  return brave_vpn_controller_.get();
 #else
   NOTREACHED();
 #endif
@@ -172,7 +159,9 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  brave_vpn_controller_ = std::make_unique<BraveVPNController>(browser_view);
+  brave_vpn_controller_ =
+      GetUserDataFactory().CreateInstance<BraveVPNController>(*browser_,
+                                                              browser_view);
 #endif
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
