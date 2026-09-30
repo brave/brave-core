@@ -662,15 +662,6 @@ function StoryContext(
               currentModelKey: currentModel.key,
               defaultModelKey: MODELS[0].key,
               allModels: MODELS,
-              suggestedQuestions: argsRef.current.hasSuggestedQuestions
-                ? SAMPLE_QUESTIONS
-                : argsRef.current.hasAssociatedContent
-                  ? [SAMPLE_QUESTIONS[0]]
-                  : [],
-              suggestionStatus:
-                Mojom.SuggestionGenerationStatus[
-                  argsRef.current.suggestionStatus
-                ],
               associatedContent: getAssociatedContent(),
               error: currentError,
               errorDetails: undefined,
@@ -751,11 +742,26 @@ function StoryContext(
               totalTokens: BigInt(args.totalTokens),
               trimmedTokens: BigInt(args.trimmedTokens),
               canSubmitUserEntries: currentError === Mojom.APIError.None,
+              suggestedQuestions: argsRef.current.hasSuggestedQuestions
+                ? SAMPLE_QUESTIONS
+                : argsRef.current.hasAssociatedContent
+                  ? [SAMPLE_QUESTIONS[0]]
+                  : [],
+              suggestionStatus:
+                Mojom.SuggestionGenerationStatus[
+                  argsRef.current.suggestionStatus
+                ],
               allModels: MODELS,
               currentModelKey: currentModel?.key ?? '',
               conversationCapabilities: args.capabilitiesEnabled.map(
                 (value) => Mojom.ConversationCapability[value],
               ),
+            },
+            serviceState: {
+              hasAcceptedAgreement: args.hasAcceptedAgreement,
+              isStoragePrefEnabled: args.isStoragePrefEnabled,
+              isStorageNoticeDismissed: args.isStorageNoticeDismissed,
+              canShowPremiumPrompt: args.canShowPremiumPrompt,
             },
           }}
           overrides={{
