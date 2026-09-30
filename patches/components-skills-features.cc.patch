@@ -1,5 +1,5 @@
 diff --git a/components/skills/features.cc b/components/skills/features.cc
-index 47e879eb8e8a99a54f372711a2dba5ea9b7c73a3..2ee81b1f9804cabd7dccf6ee91024ac4214a3727 100644
+index 8d73e79d2cef27d4e5b6faea12cc8527c95f415e..de1c4d33ad402815f847290f86b7de7730965f66 100644
 --- a/components/skills/features.cc
 +++ b/components/skills/features.cc
 @@ -7,13 +7,8 @@
@@ -15,6 +15,6 @@ index 47e879eb8e8a99a54f372711a2dba5ea9b7c73a3..2ee81b1f9804cabd7dccf6ee91024ac4
 -);
 +BASE_OVERRIDDEN_FEATURE(kSkillsEnabled,
 +base::FEATURE_DISABLED_BY_DEFAULT);
- BASE_FEATURE(kSkillsAppMenu, base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kSkillsAndExtensionsAppMenu, base::FEATURE_DISABLED_BY_DEFAULT);
  BASE_FEATURE(kSkillsMetricsProviderEnabled, base::FEATURE_ENABLED_BY_DEFAULT);
  BASE_FEATURE(kSkillsRefinementEnabled, base::FEATURE_ENABLED_BY_DEFAULT);

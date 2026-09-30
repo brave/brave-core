@@ -1,11 +1,11 @@
 diff --git a/content/browser/file_system_access/features.cc b/content/browser/file_system_access/features.cc
-index 22ca9246b13adba62cc3267b63fe18b3e6520122..1b36ac62024167fb00912004cf828b7c0de8156c 100644
+index e02e0ebda230d90243dafaaae92bd9fd75a503df..5547ce6d700c3f551da9a4c5b2636b6bd2cadd8b 100644
 --- a/content/browser/file_system_access/features.cc
 +++ b/content/browser/file_system_access/features.cc
 @@ -17,8 +17,8 @@ namespace content::features {
  //
- // When enabled, GetFile() and GetEntries() on a directory handle performs
- // the blocklist check on child file handles.
+ // When enabled, GetFile() and GetEntries() on a directory handle, as well as
+ // AsBlob() on a file handle, perform the blocklist check.
 -BASE_FEATURE(kFileSystemAccessDirectoryIterationBlocklistCheck,
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 +BASE_OVERRIDDEN_FEATURE(kFileSystemAccessDirectoryIterationBlocklistCheck,
