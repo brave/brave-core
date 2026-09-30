@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index a884928aef52a524b84951cc59520546deccb946..fe778934ebe0905cd0568b5c8141eff35a976c43 100644
+index a884928aef52a524b84951cc59520546deccb946..d420371e8930e2c7b44f9a5e2e73c4dd4a1fa808 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 @@ -202,7 +202,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
@@ -38,3 +38,11 @@ index a884928aef52a524b84951cc59520546deccb946..fe778934ebe0905cd0568b5c8141eff3
          // May happen if account is removed from the device while this screen is shown.
          if (primaryAccount == null) {
              finishCurrentSettings();
+@@ -1002,6 +1006,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+ 
+     /** Whether there is no primary account, leaving this page with nothing to describe. */
+     private boolean isSignedOut() {
++        if (true) return false;  // Brave Sync never has a Chromium primary account.
+         return !getIdentityManager().hasPrimaryAccount();
+     }
+ 
