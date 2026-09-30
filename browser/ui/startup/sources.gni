@@ -12,3 +12,5 @@ if (enable_containers) {
   brave_browser_ui_startup_public_deps +=
       [ "//brave/components/containers/core/browser" ]
 }
+
+brave_browser_ui_startup_impl_deps = [ "//brave/components/ephemeral_storage" ]
