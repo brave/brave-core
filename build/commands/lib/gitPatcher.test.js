@@ -6,7 +6,7 @@
 import path from 'node:path'
 import fs from 'fs-extra'
 import { GitPatcher, patchApplyReasons } from './gitPatcher.js'
-import util from './util.js'
+import util from './util.ts'
 import os from 'node:os'
 
 const dirPrefixTmp = 'brave-browser-test-git-apply-'

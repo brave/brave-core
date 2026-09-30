@@ -8,7 +8,7 @@ import '../lib/checkEnvironment.js'
 import { Command, Option } from 'commander'
 import { parseInteger } from '../lib/commandsUtils.ts'
 import config from '../lib/config.ts'
-import util from '../lib/util.js'
+import util from '../lib/util.ts'
 
 const program = new Command()
   .option('--base <base branch>', 'set the destination branch for the PR')

@@ -6,7 +6,7 @@
 import path from 'node:path'
 import fs from 'fs-extra'
 import os from 'node:os'
-import util from './util.js'
+import util from './util.ts'
 import calculateFileChecksum from './calculateFileChecksum.js'
 
 const extPatch = 'patch'

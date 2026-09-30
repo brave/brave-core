@@ -9,7 +9,7 @@
 
 import config from './config.ts'
 import * as Log from './log.ts'
-import util from './util.js'
+import util from './util.ts'
 
 // This is a lean fetch command as chromium/src is really large, and certain
 // types of fetch can easily traverse the whole history, resulting in a stall.
@@ -31,6 +31,9 @@ function chromiumRefExists(ref: string): boolean {
 
 // Path of the shared chromium/src mirror (only for git-cache).
 function gitCacheMirrorDir(url: string): string {
+  if (!config.gitCachePath) {
+    return ''
+  }
   const result = util.run(
     'git',
     ['cache', 'exists', '--quiet', '--cache-dir', config.gitCachePath, url],
