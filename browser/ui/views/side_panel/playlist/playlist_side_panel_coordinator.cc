@@ -46,15 +46,24 @@ PlaylistSidePanelCoordinator::Proxy::GetCoordinator() {
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistSidePanelCoordinator::Proxy);
 
+DEFINE_USER_DATA(PlaylistSidePanelCoordinator);
+
 PlaylistSidePanelCoordinator::PlaylistSidePanelCoordinator(
     BrowserWindowInterface* browser,
     sidebar::SidebarController* sidebar_controller,
     Profile* profile)
     : browser_(browser),
       sidebar_controller_(sidebar_controller),
-      profile_(profile) {}
+      profile_(profile),
+      scoped_unowned_user_data_(browser->GetUnownedUserDataHost(), *this) {}
 
 PlaylistSidePanelCoordinator::~PlaylistSidePanelCoordinator() = default;
+
+// static
+PlaylistSidePanelCoordinator* PlaylistSidePanelCoordinator::From(
+    BrowserWindowInterface* browser) {
+  return Get(browser->GetUnownedUserDataHost());
+}
 
 void PlaylistSidePanelCoordinator::CreateAndRegisterEntry(
     SidePanelRegistry* global_registry) {

@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
+
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/playlist/core/common/features.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/web_applications/app_browser_controller.h"
 #include "chrome/browser/ui/web_applications/web_app_browsertest_base.h"
@@ -77,7 +78,7 @@ class PlaylistCoordinatorBrowserTest : public web_app::WebAppBrowserTestBase {
 
 IN_PROC_BROWSER_TEST_F(PlaylistCoordinatorBrowserTest,
                        PlaylistSidePanelCoordinatorCreatedInNormalBrowser) {
-  EXPECT_TRUE(browser()->GetFeatures().playlist_side_panel_coordinator());
+  EXPECT_TRUE(PlaylistSidePanelCoordinator::From(browser()));
   EXPECT_TRUE(sidebar::CanUseSidebar(browser()));
 }
 
@@ -97,7 +98,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistCoordinatorBrowserTest,
   EXPECT_FALSE(popup_view->GetIsNormalType());
   EXPECT_EQ(popup->GetType(), BrowserWindowInterface::Type::TYPE_POPUP);
   EXPECT_FALSE(sidebar::CanUseSidebar(popup));
-  EXPECT_FALSE(popup->GetFeatures().playlist_side_panel_coordinator());
+  EXPECT_FALSE(PlaylistSidePanelCoordinator::From(popup));
 }
 
 IN_PROC_BROWSER_TEST_F(PlaylistCoordinatorBrowserTest,
@@ -120,5 +121,5 @@ IN_PROC_BROWSER_TEST_F(PlaylistCoordinatorBrowserTest,
   EXPECT_FALSE(app_view->GetIsNormalType());
   EXPECT_EQ(app_browser->GetType(), BrowserWindowInterface::Type::TYPE_APP);
   EXPECT_FALSE(sidebar::CanUseSidebar(app_browser));
-  EXPECT_FALSE(app_browser->GetFeatures().playlist_side_panel_coordinator());
+  EXPECT_FALSE(PlaylistSidePanelCoordinator::From(app_browser));
 }

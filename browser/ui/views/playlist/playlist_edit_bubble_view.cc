@@ -21,7 +21,6 @@
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/playlist/content/browser/playlist_tab_helper.h"
 #include "brave/components/vector_icons/vector_icons.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -188,8 +187,7 @@ void PlaylistEditBubbleView::OpenInPlaylist() {
   const std::string& playlist_id = saved_items.front()->parents.front();
   const std::string& item_id = saved_items.front()->id;
 
-  auto* side_panel_coordinator =
-      browser_->GetFeatures().playlist_side_panel_coordinator();
+  auto* side_panel_coordinator = PlaylistSidePanelCoordinator::From(browser_);
   CHECK(side_panel_coordinator);
   side_panel_coordinator->ActivatePanel();
 

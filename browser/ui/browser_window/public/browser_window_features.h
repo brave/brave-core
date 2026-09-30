@@ -60,12 +60,6 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return sidebar_controller_.get();
   }
 
-#if BUILDFLAG(ENABLE_PLAYLIST)
-  PlaylistSidePanelCoordinator* playlist_side_panel_coordinator() {
-    return playlist_side_panel_coordinator_.get();
-  }
-#endif
-
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   email_aliases::EmailAliasesController* email_aliases_controller() {
     return email_aliases_controller_.get();
