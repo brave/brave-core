@@ -1,5 +1,5 @@
 diff --git a/components/feature_engagement/public/feature_constants.cc b/components/feature_engagement/public/feature_constants.cc
-index c7dcb2b7d1a7dda1c0b61a551cc21ba9ac84fb51..7b69ad78638fb26b7004413baf626b79f69e4bd5 100644
+index c7dcb2b7d1a7dda1c0b61a551cc21ba9ac84fb51..92f98f97e01faed704d07b7bfd088ee4f09f4de2 100644
 --- a/components/feature_engagement/public/feature_constants.cc
 +++ b/components/feature_engagement/public/feature_constants.cc
 @@ -74,9 +74,9 @@ BASE_FEATURE(kIPHDesktopCustomizeChromeAutoOpenFeature,
@@ -72,10 +72,12 @@ index c7dcb2b7d1a7dda1c0b61a551cc21ba9ac84fb51..7b69ad78638fb26b7004413baf626b79
 +BASE_OVERRIDDEN_FEATURE(kIPHSideBySideTabSwitchFeature,
               "IPH_SideBySideTabSwitchFeature",
 -             base::FEATURE_ENABLED_BY_DEFAULT);
+-BASE_FEATURE(kIPHSplitViewHorizontalIndirectAccessFeature,
 +             base::FEATURE_DISABLED_BY_DEFAULT);
- BASE_FEATURE(kIPHSplitViewHorizontalIndirectAccessFeature,
++BASE_OVERRIDDEN_FEATURE(kIPHSplitViewHorizontalIndirectAccessFeature,
               "IPH_SplitViewHorizontalIndirectAccessFeature",
-              base::FEATURE_ENABLED_BY_DEFAULT);
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
  BASE_FEATURE(kIPHVerticalTabsExpandOnHoverFeature,
               "IPH_VerticalTabsExpandOnHoverFeature",
               base::FEATURE_ENABLED_BY_DEFAULT);

@@ -49,6 +49,11 @@ substitutions:
       feature_name: kIPHSideBySideTabSwitchFeature
       value: base::FEATURE_DISABLED_BY_DEFAULT
 
+  - description: 'Ship kIPHSplitViewHorizontalIndirectAccessFeature disabled.'
+    set_feature_flag_default_state:
+      feature_name: kIPHSplitViewHorizontalIndirectAccessFeature
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
   - description: 'Ship kIPHTabGroupsSaveV2IntroFeature disabled.'
     set_feature_flag_default_state:
       feature_name: kIPHTabGroupsSaveV2IntroFeature

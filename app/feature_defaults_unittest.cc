@@ -188,6 +188,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &feature_engagement::kIPHReadingListInSidePanelFeature,
       &feature_engagement::kIPHSideBySidePinnableFeature,
       &feature_engagement::kIPHSideBySideTabSwitchFeature,
+      &feature_engagement::kIPHSplitViewHorizontalIndirectAccessFeature,
       &feature_engagement::kIPHTabGroupsSaveV2IntroFeature,
       &feature_engagement::kIPHVerticalTabstripTutorialFeature,
 #endif
