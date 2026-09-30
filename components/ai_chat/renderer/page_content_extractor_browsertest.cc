@@ -12,6 +12,8 @@
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/test/render_view_test.h"
+#include "mojo/public/cpp/bindings/callback_helpers.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "services/service_manager/public/cpp/binder_registry.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -54,6 +56,15 @@ class PageContentExtractorRenderViewTest : public content::RenderViewTest {
     extractor_->ExtractPageContent(future.GetCallback());
 
     return future.Take();
+  }
+
+  // Connects to the extractor through the registry, as the browser does.
+  mojo::Remote<mojom::PageContentExtractor> BindExtractor() {
+    mojo::Remote<mojom::PageContentExtractor> remote;
+    auto pipe = remote.BindNewPipeAndPassReceiver().PassPipe();
+    EXPECT_TRUE(registry_->TryBindInterface(
+        mojom::PageContentExtractor::Name_, &pipe));
+    return remote;
   }
 
  private:
@@ -259,6 +270,33 @@ TEST_F(PageContentExtractorRenderViewTest,
   const auto& config = result->content->get_youtube_inner_tube_config();
   EXPECT_EQ(config->api_key, "valid_api_key_with_special_chars_!@#$%^&*()_+-=");
   EXPECT_EQ(config->video_id, "test_123-456");
+}
+
+// Opening another connection must not drop a reply still pending on an
+// existing one.
+TEST_F(PageContentExtractorRenderViewTest,
+       ExtractPageContentSurvivesAnotherConnection) {
+  constexpr char kScript[] = R"JS(
+    window.ytcfg = {
+      data_: {
+        INNERTUBE_API_KEY: "test_api_key_123"
+      }
+    };
+  )JS";
+
+  LoadPageWithUrl("https://www.youtube.com/watch?v=test123", kScript);
+
+  auto extractor = BindExtractor();
+  base::test::TestFuture<mojom::PageContentPtr> future;
+  extractor->ExtractPageContent(mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+      future.GetCallback(), mojom::PageContentPtr()));
+
+  auto other_extractor = BindExtractor();
+
+  auto result = future.Take();
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->type, mojom::PageContentType::VideoTranscriptYouTube);
+  EXPECT_TRUE(extractor.is_connected());
 }
 
 }  // namespace ai_chat
