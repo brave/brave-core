@@ -1323,17 +1323,15 @@ TEST_F(ConversationHandlerUnitTest, CreateConversationThread_SubmitEntry) {
   EXPECT_EQ(container->entries[1]->character_type,
             mojom::CharacterType::ASSISTANT);
 
-  // The full thread history for the UI should prepend the origin entry.
+  // The thread history for the UI should only contain the thread's entries.
   base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>>
       history_future;
   conversation_handler_->GetConversationHistory(*thread_uuid,
                                                 history_future.GetCallback());
   auto entries = history_future.Take();
-  ASSERT_EQ(entries.size(), 3u);
-  EXPECT_EQ(entries[0]->uuid, origin_entry_uuid);
-  EXPECT_EQ(entries[0]->text, "response");
-  EXPECT_EQ(entries[1]->text, "thread query");
-  EXPECT_EQ(entries[2]->text, "thread response");
+  ASSERT_EQ(entries.size(), 2u);
+  EXPECT_EQ(entries[0]->text, "thread query");
+  EXPECT_EQ(entries[1]->text, "thread response");
 
   conversation_handler_->GetConversationThreads(threads_future.GetCallback());
   threads = threads_future.Take();
