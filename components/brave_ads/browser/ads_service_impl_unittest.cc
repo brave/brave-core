@@ -11,7 +11,6 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/function_ref.h"
 #include "base/memory/raw_ptr.h"
-#include "base/numerics/safe_math.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
@@ -127,6 +126,14 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
 
   void ClearData(ResultCallback callback) {
     ads_service_->ClearData(std::move(callback));
+  }
+
+  void TriggerSearchResultAdEvent(
+      mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
+      mojom::SearchResultAdEventType mojom_ad_event_type,
+      ResultCallback callback) {
+    ads_service_->TriggerSearchResultAdEvent(
+        std::move(mojom_creative_ad), mojom_ad_event_type, std::move(callback));
   }
 
   void NotifyBrowserWillShutdown() {
@@ -926,6 +933,23 @@ TEST_F(BraveAdsAdsServiceImplTest,
   // Assert
   EXPECT_FALSE(prefs_.HasPrefPath(prefs::kSponsoredEnabled));
   EXPECT_TRUE(prefs_.GetBoolean(prefs::kSponsoredEnabled));
+}
+
+TEST_F(BraveAdsAdsServiceImplTest, DoNotTriggerInvalidSearchResultAdEvent) {
+  // Arrange
+  Startup();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->initialize_count() == 1U; }));
+
+  base::test::TestFuture<bool> test_future;
+
+  // Act
+  TriggerSearchResultAdEvent(/*mojom_creative_ad=*/nullptr,
+                             mojom::SearchResultAdEventType::kClicked,
+                             test_future.GetCallback());
+
+  // Assert
+  EXPECT_FALSE(test_future.Get());
 }
 
 }  // namespace brave_ads

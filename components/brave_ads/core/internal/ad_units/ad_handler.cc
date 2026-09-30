@@ -79,7 +79,12 @@ void AdHandler::TriggerSearchResultAdEvent(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     mojom::SearchResultAdEventType mojom_ad_event_type,
     ResultCallback callback) {
-  CHECK(mojom_creative_ad);
+  if (!mojom_creative_ad) {
+    BLOG(0, "Failed to trigger search result ad " << mojom_ad_event_type
+                                                  << " event due to missing "
+                                                     "or invalid creative ad");
+    return std::move(callback).Run(/*success=*/false);
+  }
 
   if (mojom_ad_event_type ==
       mojom::SearchResultAdEventType::kViewedImpression) {
