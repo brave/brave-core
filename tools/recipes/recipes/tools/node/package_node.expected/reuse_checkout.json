@@ -41,7 +41,7 @@
       "sparse-checkout",
       "add",
       "third_party/node",
-      "tools/cr/toolchains"
+      "tools/cr"
     ],
     "name": "sparse-checkout add"
   },

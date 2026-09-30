@@ -24,8 +24,7 @@ def GenTests(api):
     # requested paths are seeded so the post-checkout existence checks pass.
     yield api.test(
         'clone',
-        api.path.files('b/src/brave/third_party/node',
-                       'b/src/brave/tools/cr/bootstrap'),
+        api.path.files('b/src/brave/third_party/node', 'b/src/brave/tools/cr'),
         api.post_process(post_process.MustRun,
                          'clone brave-core (shallow, sparse)'),
         api.post_process(post_process.MustRun, 'sparse-checkout add'),
@@ -37,8 +36,7 @@ def GenTests(api):
     yield api.test(
         'reuse',
         api.path.dirs('b/src/brave/.git'),
-        api.path.files('b/src/brave/third_party/node',
-                       'b/src/brave/tools/cr/bootstrap'),
+        api.path.files('b/src/brave/third_party/node', 'b/src/brave/tools/cr'),
         api.post_process(post_process.MustRun, 'fetch brave-core ref'),
         api.post_process(post_process.MustRun, 'checkout brave-core ref'),
         api.post_process(post_process.DoesNotRun,
@@ -46,8 +44,7 @@ def GenTests(api):
         api.post_process(post_process.StatusSuccess),
     )
     # Already deployed: the live sparse set already covers both requested
-    # paths (`third_party/node` directly, `tools/cr/bootstrap` via its
-    # `tools/cr` ancestor), so nothing is re-added.
+    # paths (`third_party/node` and `tools/cr`), so nothing is re-added.
     #
     # `deploy` runs once directly and once more via `bootstrap_on_path`, so the
     # sparse set is listed twice and each listing is seeded separately -- the
@@ -55,8 +52,7 @@ def GenTests(api):
     # namespace as the first.
     yield api.test(
         'already deployed',
-        api.path.files('b/src/brave/third_party/node',
-                       'b/src/brave/tools/cr/bootstrap'),
+        api.path.files('b/src/brave/third_party/node', 'b/src/brave/tools/cr'),
         api.step_data(
             'sparse-checkout list',
             stdout=api.raw_io.output_text('third_party/node\ntools/cr\n')),

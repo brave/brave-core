@@ -27,7 +27,7 @@ def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
 
     brave_root = api.brave_core_checkout.deploy([
         'third_party/ast-grep',
-        'tools/cr/toolchains',
+        'tools/cr',
     ])
 
     vpython3 = api.depot_tools.vpython3()
@@ -51,8 +51,7 @@ def GenTests(api):
         api.platform.name('linux'),
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.git_cache_populated(),
-        api.brave_core_checkout.deployed('third_party/ast-grep',
-                                         'tools/cr/toolchains'),
+        api.brave_core_checkout.deployed('third_party/ast-grep', 'tools/cr'),
         api.properties(chromium_ref='151.0.7917.1'),
         api.post_process(post_process.MustRun, 'clone from git cache'),
         api.post_process(post_process.DoesNotRun, 'read mac_sdk.gni'),
@@ -70,8 +69,7 @@ def GenTests(api):
         api.platform.name('mac'),
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.git_cache_populated(),
-        api.brave_core_checkout.deployed('third_party/ast-grep',
-                                         'tools/cr/toolchains'),
+        api.brave_core_checkout.deployed('third_party/ast-grep', 'tools/cr'),
         api.osx_sdk.installed(),
         api.properties(chromium_ref='151.0.7917.1'),
         api.post_process(post_process.MustRun, 'install xcode'),

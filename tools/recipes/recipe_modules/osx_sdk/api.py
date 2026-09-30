@@ -56,8 +56,7 @@ class OSXSDKApi(RecipeApi):
         sdk_version = gni_result.json.output['sdk_version']
         sdk_build_version = gni_result.json.output['sdk_build_version']
 
-        brave_core_root = self.m.brave_core_checkout.deploy(
-            'tools/cr/toolchains')
+        brave_core_root = self.m.brave_core_checkout.deploy('tools/cr')
         script = brave_core_root / EPHEMERAL_XCODE_SCRIPT
 
         try:

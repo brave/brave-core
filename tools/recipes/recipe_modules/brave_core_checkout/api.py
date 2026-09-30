@@ -17,8 +17,11 @@ from recipe_api import RecipeApi
 # Default SSH remote for the brave-core repository.
 REPO_URL = 'git@github.com:brave/brave-core.git'
 
+# The brave-core tree deployed for recipes: scripts, vpython spec and all.
+CR_PATH = 'tools/cr'
+
 # The path in brave-core for the bootstrap scripts that may be added to PATH.
-BOOTSTRAP_PATH = 'tools/cr/bootstrap'
+BOOTSTRAP_PATH = f'{CR_PATH}/bootstrap'
 
 
 class BraveCoreCheckoutApi(RecipeApi):
@@ -62,7 +65,7 @@ class BraveCoreCheckoutApi(RecipeApi):
 
         Args:
             paths: A single repo-relative path, or an iterable of them, to
-                materialise (e.g. `'tools/cr/toolchains'`).
+                materialise (e.g. `'tools/cr'`).
             dest: Directory the repo lives in (created if missing). Defaults to
                 the `path` module's `brave_core`, the standard job layout.
             url: Git remote to clone from; defaults to brave-core over SSH.
@@ -175,7 +178,7 @@ class BraveCoreCheckoutApi(RecipeApi):
                           url: str = REPO_URL,
                           ref: str | None = None,
                           depth: int = 2):
-        """Deploy `tools/cr/bootstrap` and put it first on PATH for the block.
+        """Deploy `tools/cr`, putting its `bootstrap` dir first on PATH in the block.
 
         Args:
             dest, url, ref, depth: Forwarded to `deploy` (see its docs).
@@ -183,10 +186,6 @@ class BraveCoreCheckoutApi(RecipeApi):
         Yields:
             The absolute `Path` to the brave-core checkout root.
         """
-        root = self.deploy(BOOTSTRAP_PATH,
-                           dest=dest,
-                           url=url,
-                           ref=ref,
-                           depth=depth)
+        root = self.deploy(CR_PATH, dest=dest, url=url, ref=ref, depth=depth)
         with self.m.context(env_prefixes={'PATH': [root / BOOTSTRAP_PATH]}):
             yield root

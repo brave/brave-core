@@ -29,7 +29,7 @@ PROPERTIES = InputProperties
 
 
 def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
-    brave_core_root = api.brave_core_checkout.deploy('tools/cr/toolchains')
+    brave_core_root = api.brave_core_checkout.deploy('tools/cr')
 
     vpython3 = api.depot_tools.vpython3()
     # `--clear` wipes any prior output so every run starts from a clean out
@@ -54,7 +54,7 @@ def GenTests(api):
     yield api.test(
         'mac',
         api.platform.name('mac'),
-        api.brave_core_checkout.deployed('tools/cr/toolchains'),
+        api.brave_core_checkout.deployed('tools/cr'),
         api.properties(chromium_tag='150.0.7841.1'),
         api.post_process(post_process.MustRun, 'build xcode toolchain'),
         api.post_process(post_process.StepCommandContains,
