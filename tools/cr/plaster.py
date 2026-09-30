@@ -2894,6 +2894,40 @@ def _add_gn_import(engine: AstRewriter, import_path: str,
             f'{error}') if error else None
 
 
+def _add_ts_import(engine: AstRewriter, import_statement: str,
+                   rewriter_name: str) -> str | None:
+    """Add `import_statement` to the top of a .ts file; a failure, or None.
+    """
+    if not import_statement:
+        return None
+    if import_statement in engine.content:
+        return None
+    # The matcher reads no inputs of its own, so the separator this lookup
+    # carries is a placeholder for the one settled on below.
+    add_import = 'ts.add_import'
+    anchor = engine.first_match(
+        Operation(add_import, {
+            'import': import_statement,
+            'separator': '',
+        }))
+    if anchor is None:
+        return (f'{rewriter_name} found no statement to import '
+                f'{import_statement!r} above')
+    # An import joins the file's existing import/export block rather than
+    # being split off from it by a blank line, so the separator is only for
+    # the case where the statement below is code.
+    source = engine.content.encode('utf-8')
+    first_statement = source[anchor.start:anchor.end]
+    joins_imports = re.match(rb'(?:import|export)\b', first_statement)
+    op = Operation(add_import, {
+        'import': import_statement,
+        'separator': '' if joins_imports else '\n',
+    }, MatchExpectation.exactly(1))
+    error = op.expectation.error_for(engine.run(op))
+    return (f'{rewriter_name} could not import {import_statement!r}: '
+            f'{error}') if error else None
+
+
 class _GnVariableRewriter(_AstGrepRewriter):
     """Base for the rewriters editing a file-scope gn list variable.
 
@@ -3372,6 +3406,120 @@ class GnAddImportRewriter(_AstGrepRewriter):
         return cls(import_path=import_path)
 
 
+class TsAddImportRewriter(_AstGrepRewriter):
+    """Adds one or more `import` statements to the top of a TypeScript file."""
+
+    NAME: Final = 'add_import'
+    OP_ID: Final = 'ts.add_import'
+    SUMMARY: Final = 'Add import(s) to the top of a .ts file.'
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Adds one or more `import` statements at the top of a `.ts` file, below
+        its copyright header. They join the file's imports (or exports) when
+        the file opens with them, and are otherwise separated from the code
+        below by a blank line.
+
+        Fields:
+
+        - `entry` — the full import statement, e.g.
+          `import './br/index.js';`. May be a single string, or a list
+          of them.
+
+        Example:
+
+        ```yaml
+        substitutions:
+          - description: Load Brave's Polymer overrides first.
+            add_import:
+              entry: import 'chrome://resources/brave/polymer_overriding.js';
+
+          - description: Load Brave's modules.
+            add_import:
+              entry:
+                - import './brave_routes.js'
+                - import './brave_settings.js'
+        ```
+
+        ```diff
+          // found in the LICENSE file.
+
+         +import 'chrome://resources/brave/polymer_overriding.js';
+          import './settings_ui/settings_ui.js';
+        ```
+    """
+
+    def __init__(self, *, import_statements: list[str]):
+        super().__init__()
+        self._import_statements = import_statements
+
+    @classmethod
+    def validate_count(cls, count: int, description: str) -> None:
+        # Each import is added once, so no other count means anything here.
+        if count != 1:
+            raise ValueError(f'{cls.NAME} adds the import(s) exactly once and '
+                             f'does not accept a count other than 1 '
+                             f'(in "{description}")')
+
+    def apply(
+        self,
+        contents: str,
+        *,
+        count: int,
+        description: str,
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+    ) -> tuple[str, list[str]]:
+        del count  # Rejected by `validate_count`; always applies once.
+        engine = AstRewriter(RewritersEval.load(),
+                             contents,
+                             blank_for_parse=blank_for_parse)
+        errors: list[str] = []
+        # `_add_ts_import` inserts each import as the *first* statement, so a
+        # later insertion ends up above an earlier one. Iterate in reverse so
+        # the imports land in the order the user listed them.
+        for import_statement in reversed(self._import_statements):
+            # Adding the import is the whole substitution, so a file that has
+            # it means the entry has gone stale.
+            if import_statement in engine.content:
+                errors.append(
+                    f'{self.NAME} found {import_statement!r} already '
+                    f'imported (in "{description}")')
+                continue
+            error = _add_ts_import(engine, import_statement, self.NAME)
+            if error:
+                errors.append(f'{error} (in "{description}")')
+        return engine.content, errors
+
+    @classmethod
+    def parse(cls, body: object, *, description: str) -> TsAddImportRewriter:
+        """Validate an `add_import:` body, accepting a single entry or a list.
+
+        `entry` may be a string (one import) or a non-empty list of
+        strings (several).
+        """
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")')
+        unknown = sorted(set(body) - {'entry'})
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+        entry = body.get('entry')
+        return cls(import_statements=cls._parse_entries(entry, description))
+
+    @staticmethod
+    def _parse_entries(value: object, description: str) -> list[str]:
+        """Normalise `entry` to a non-empty list of strings."""
+        if isinstance(value, str) and value.strip():
+            return [value]
+        if (isinstance(value, list) and value and all(
+                isinstance(item, str) and item.strip() for item in value)):
+            return list(value)
+        raise ValueError(
+            f'{TsAddImportRewriter.NAME} `entry` must be a non-empty '
+            f'string or a non-empty list of strings (in "{description}")')
+
+
 class TsDropCustomElementRegistrationRewriter(_AstGrepRewriter):
     """Remove a WebUI element's `customElements.define` call."""
 
@@ -3425,7 +3573,8 @@ _DECLARED_REWRITERS: Final = (
     CxxAddEnumEntriesRewriter, JsSetBlinkRuntimeEnabledFeatureStateRewriter,
     GnAddLiteralToListRewriter, GnAddLiteralToVariableRewriter,
     GnSubtractLiteralFromVariableRewriter, GnAddImportRewriter,
-    GnAppendToTargetRewriter, TsDropCustomElementRegistrationRewriter)
+    GnAppendToTargetRewriter, TsAddImportRewriter,
+    TsDropCustomElementRegistrationRewriter)
 
 
 class RewriterRegistry:

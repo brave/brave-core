@@ -9,13 +9,6 @@ substitutions:
 
       polymer_overriding.js hooks Polymer's registration so Brave's branding
       overrides (e.g. for `cr-button`) are picked up as each component is
-      defined, which means it has to run before any of them. A chromium_src
-      shadow file cannot do this, since importing the upstream module is what
-      runs its imports.
+      defined, which means it has to run before any of them.
     add_import:
-      entry: import 'chrome://resources/brave/polymer_overriding.js';
-
-  - description: >-
-      Free `profile-customization-app` for the Brave subclass to register.
-    drop_custom_element_registration:
-      class_name: ProfileCustomizationAppElement
+      entry: import 'chrome://resources/brave/polymer_overriding.js'
