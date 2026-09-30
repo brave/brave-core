@@ -362,7 +362,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
-                       PRE_DontForgetFirstPartyIfSubDomainIsOpened) {
+                       PRE_ForgetFirstPartyIfSubDomainIsOpened) {
   const GURL a_site_set_cookie_url(
       "https://a.com/set-cookie?name=acom;path=/"
       ";SameSite=None;Secure;Max-Age=600");
@@ -388,7 +388,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
-                       DontForgetFirstPartyIfSubDomainIsOpened) {
+                       ForgetFirstPartyIfSubDomainIsOpened) {
   EXPECT_EQ(1u, WaitForCleanupAfterKeepAlive());
   EXPECT_EQ(0u, GetAllCookies().size());
 }
