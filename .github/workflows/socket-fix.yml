@@ -30,12 +30,14 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          token: ${{ secrets.SOCKET_FIX_PAT_BRAVE }}
 
       - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: '24'
 
-      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+      - uses: pnpm/action-setup@d9184bf108216479bc5a137cc391f4d7b14c870b # v6.1.0
         with:
           version: 11.25.0
 
@@ -58,21 +60,39 @@ jobs:
           grep -q "$LEO_REF" package.json || { echo "::error::Failed to update Leo hash in package.json"; exit 1; }
 
       - name: Install Socket CLI
-        run: pnpm add -g @socketsecurity/cli@1.1.156
+        run: |
+          echo "${PNPM_HOME}/bin" >> "$GITHUB_PATH"
+          export PATH="${PNPM_HOME}/bin:$PATH"
+          pnpm add -g @socketsecurity/cli@1.1.156
 
-      - name: Configure GPG
-        uses: crazy-max/ghaction-import-gpg@e89d40939c28e39f97cf32126055eeae86ba74ec # v6.3.0
-        with:
-          gpg_private_key: ${{ secrets.BRAVE_SUPPORT_ADMIN_GPG_KEY }}
-          passphrase: ${{ secrets.BRAVE_SUPPORT_ADMIN_COMMIT_SIGNING_KEY_PASSPHRASE }}
-          git_user_signingkey: true
-          git_commit_gpgsign: true
+      - name: Configure GPG signing
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.BRAVE_SUPPORT_ADMIN_GPG_KEY }}
+          GPG_PASSPHRASE: ${{ secrets.BRAVE_SUPPORT_ADMIN_COMMIT_SIGNING_KEY_PASSPHRASE }}
+        run: |
+          set -euo pipefail
+
+          # Import the signing key; later steps reference it by fingerprint.
+          echo "$GPG_PRIVATE_KEY" | gpg --import --batch --yes
+          FPR=$(gpg --with-colons --list-secret-keys | awk -F: '/^fpr/{print $10; exit}')
+
+          # Wrapper so gpg can sign non-interactively: --pinentry-mode loopback
+          # reads the passphrase from the env instead of prompting for a TTY.
+          printf '#!/bin/sh\nexec gpg --pinentry-mode loopback --passphrase "$GPG_PASSPHRASE" "$@"\n' \
+            > /usr/local/bin/gpg-sign
+          chmod +x /usr/local/bin/gpg-sign
+
+          git config user.signingkey "$FPR"
+          git config gpg.format openpgp
+          git config gpg.program /usr/local/bin/gpg-sign
+          git config commit.gpgsign true
 
       - name: Run Socket Fix
         env:
           GHSA_IDS: ${{ inputs.ghsa_ids }}
           SOCKET_SECURITY_API_KEY: ${{ secrets.SOCKET_SECURITY_API_KEY }}
         run: |
+          export PATH="${PNPM_HOME}/bin:${PNPM_HOME}:$PATH"
           if ! [[ "$GHSA_IDS" =~ ^GHSA-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}(,[[:space:]]?GHSA-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4})*$ ]]; then
             echo "::error::GHSA_IDS contains invalid entries. Expected format: GHSA-xxxx-xxxx-xxxx (comma or comma-space separated)"
             exit 1
@@ -92,7 +112,7 @@ jobs:
       - name: Compute PR body
         id: body
         env:
-          GH_TOKEN: ${{ secrets.SOCKET_FIX_PAT }}
+          GH_TOKEN: ${{ secrets.SOCKET_FIX_PAT_BRAVE }}
           GHSA_IDS: ${{ inputs.ghsa_ids }}
           ISSUE_LINK: ${{ inputs.issue_link }}
           WDP_REF: ${{ inputs.wdp_ref }}
@@ -118,15 +138,22 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@84ae59a2cdc2258d6fa0732dd66352dddae2a412 # v7.0.9
-        with:
-          commit-message: 'fix: address security advisories'
-          author: brave-support-admin <138038132+brave-support-admin@users.noreply.github.com>
-          committer: brave-support-admin <138038132+brave-support-admin@users.noreply.github.com>
-          branch: ${{ steps.branch.outputs.name }}
-          delete-branch: true
-          base: master
-          title: 'fix: address security advisories'
-          body: ${{ steps.body.outputs.body }}
-          labels: CI/skip,security
-          token: ${{ secrets.SOCKET_FIX_PAT }}
+        env:
+          GH_TOKEN: ${{ secrets.SOCKET_FIX_PAT_BRAVE }}
+          GPG_PASSPHRASE: ${{ secrets.BRAVE_SUPPORT_ADMIN_COMMIT_SIGNING_KEY_PASSPHRASE }}
+          PR_BRANCH: ${{ steps.branch.outputs.name }}
+          PR_BODY: ${{ steps.body.outputs.body }}
+        run: |
+          git config user.name "brave-support-admin"
+          git config user.email "138038132+brave-support-admin@users.noreply.github.com"
+          git checkout -b "$PR_BRANCH"
+          if git diff --quiet && git diff --cached --quiet && [ -z "$(git status --porcelain)" ]; then
+            echo "No changes to commit — skipping PR creation"
+            exit 0
+          fi
+          git add -A
+          git commit -m 'fix: address security advisories'
+          git push origin "HEAD:refs/heads/${PR_BRANCH}"
+          gh pr create --base master --head "$PR_BRANCH" \
+            --title 'fix: address security advisories' --body "$PR_BODY" \
+            --label "CI/skip" --label "security"
