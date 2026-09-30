@@ -3,21 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_COMMON_V2_IDENTITY_CHANNEL_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_COMMON_V2_IDENTITY_CHANNEL_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_COMMON_V2_IDENTITY_CHANNEL_MAC_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_COMMON_V2_IDENTITY_CHANNEL_MAC_H_
+
+#include <mach/message.h>
 
 #include <optional>
 
-#include "build/build_config.h"
 #include "mojo/public/cpp/platform/platform_handle.h"
 
-#if BUILDFLAG(IS_MAC)
-#include <mach/message.h>
-#endif  // BUILDFLAG(IS_MAC)
-
 namespace brave_vpn::v2 {
-
-#if BUILDFLAG(IS_MAC)
 
 // The two ends of one identity channel; both are Mach rights to the same port.
 struct IdentityChannel {
@@ -51,8 +46,6 @@ std::optional<audit_token_t> ReadIdentityMessage(
 // the message trailer, which cannot be forged by the sender. Does not block.
 void SendIdentityMessage(mojo::PlatformHandle send_handle);
 
-#endif  // BUILDFLAG(IS_MAC)
-
 }  // namespace brave_vpn::v2
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_COMMON_V2_IDENTITY_CHANNEL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_COMMON_V2_IDENTITY_CHANNEL_MAC_H_

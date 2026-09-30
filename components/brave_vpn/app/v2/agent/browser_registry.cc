@@ -25,7 +25,6 @@
 #include "base/timer/elapsed_timer.h"
 #include "brave/components/brave_vpn/app/v2/agent/browser_host_impl.h"
 #include "brave/components/brave_vpn/app/v2/agent/browser_identity.h"
-#include "brave/components/brave_vpn/common/v2/identity_channel.h"
 #include "build/build_config.h"
 #include "components/named_mojo_ipc_server/named_mojo_ipc_server.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
@@ -33,6 +32,10 @@
 #if BUILDFLAG(IS_WIN)
 #include "base/win/win_util.h"
 #endif  // BUILDFLAG(IS_WIN)
+
+#if BUILDFLAG(IS_MAC)
+#include "brave/components/brave_vpn/common/v2/identity_channel_mac.h"
+#endif  // BUILDFLAG(IS_MAC)
 
 namespace brave_vpn::v2 {
 namespace {

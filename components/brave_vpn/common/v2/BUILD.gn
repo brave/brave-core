@@ -32,11 +32,13 @@ source_set("common") {
     sources += [
       "agent_utils.cc",
       "agent_utils.h",
-      "identity_channel.h",
     ]
 
     if (is_mac) {
-      sources += [ "identity_channel_mac.cc" ]
+      sources += [
+        "identity_channel_mac.cc",
+        "identity_channel_mac.h",
+      ]
     }
 
     deps += [ ":branding_buildflags" ]

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/common/v2/identity_channel.h"
+#include "brave/components/brave_vpn/common/v2/identity_channel_mac.h"
 
 #include <mach/mach.h>
 
@@ -11,7 +11,6 @@
 
 #include "base/apple/mach_logging.h"
 #include "base/apple/scoped_mach_port.h"
-#include "base/check.h"
 #include "base/logging.h"
 #include "mojo/public/cpp/platform/platform_handle.h"
 
@@ -80,16 +79,26 @@ std::optional<audit_token_t> ReadIdentityMessage(
     return std::nullopt;
   }
 
-  // The sender controls the message, not the trailer, so both are checked: a
-  // body would move the trailer, and a short trailer means the kernel did not
-  // fill in the audit token.
-  if (message.header.msgh_size != sizeof(mach_msg_header_t) ||
-      message.trailer.msgh_trailer_size < sizeof(mach_msg_audit_trailer_t)) {
+  const mach_msg_size_t message_size = message.header.msgh_size;
+  const mach_msg_bits_t message_bits = message.header.msgh_bits;
+  const mach_msg_size_t trailer_size = message.trailer.msgh_trailer_size;
+  const audit_token_t audit_token = message.trailer.msgh_audit;
+
+  // A sender can attach port rights or out-of-line memory, and the reply port
+  // is a right too, so release anything that came with it. This is a no-op on
+  // the bare header the contract describes.
+  mach_msg_destroy(&message.header);
+
+  // The sender controls the whole message, so anything beyond a bare header is
+  // not the message the contract describes.
+  if (message_size != sizeof(mach_msg_header_t) ||
+      (message_bits & MACH_MSGH_BITS_COMPLEX) ||
+      trailer_size < sizeof(mach_msg_audit_trailer_t)) {
     VLOG(1) << "identity message is not the expected shape";
     return std::nullopt;
   }
 
-  return message.trailer.msgh_audit;
+  return audit_token;
 }
 
 void SendIdentityMessage(mojo::PlatformHandle send_handle) {

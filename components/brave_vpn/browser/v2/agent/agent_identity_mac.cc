@@ -12,7 +12,7 @@
 #include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
 #include "base/notimplemented.h"
-#include "brave/components/brave_vpn/common/v2/identity_channel.h"
+#include "brave/components/brave_vpn/common/v2/identity_channel_mac.h"
 #include "mojo/public/cpp/platform/platform_channel_endpoint.h"
 
 namespace brave_vpn::v2 {
