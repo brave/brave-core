@@ -1,5 +1,5 @@
 diff --git a/content/browser/web_contents/web_contents_impl.h b/content/browser/web_contents/web_contents_impl.h
-index 58d38d13ab2f9efc7587fd93d2ae87432d00886b..4e8b0cac98b97ffe118827a7c338bee67b1cee1f 100644
+index c2c99afba11dad48ba0731c22e052fc20544b41c..f6e0131dc823f5fa502295368761fe9408fd16c1 100644
 --- a/content/browser/web_contents/web_contents_impl.h
 +++ b/content/browser/web_contents/web_contents_impl.h
 @@ -1711,6 +1711,8 @@ class CONTENT_EXPORT WebContentsImpl
