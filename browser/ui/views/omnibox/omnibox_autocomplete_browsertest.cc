@@ -7,6 +7,7 @@
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/omnibox/omnibox_controller.h"
 #include "chrome/browser/ui/omnibox/omnibox_edit_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -74,4 +75,27 @@ IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, AutocompleteDisabledTest) {
                   ->result()
                   .empty());
   EXPECT_FALSE(controller()->IsPopupOpen());
+}
+
+// Regression test for https://github.com/brave/brave-browser/issues/59437
+// Typing a math expression in the omnibox in a private window should not crash.
+IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest,
+                       CalculatorProviderPrivateWindowNoCrash) {
+  // Create a private window.
+  BrowserWindowInterface* private_browser = CreateIncognitoBrowser();
+  ASSERT_TRUE(private_browser);
+
+  auto* private_browser_view =
+      BrowserView::GetBrowserViewForBrowser(private_browser);
+  auto* private_omnibox_view =
+      private_browser_view->toolbar()->location_bar_view()->omnibox_view();
+  auto* private_edit_model = private_browser_view->toolbar()
+                                 ->location_bar_view()
+                                 ->GetOmniboxController()
+                                 ->edit_model();
+
+  // Type a math expression that triggers the calculator provider.
+  // If we reach the end of this test without crashing, it passes.
+  private_omnibox_view->SetUserText(u"41625 / 300", /*update_popup=*/true);
+  private_edit_model->StartAutocomplete(false);
 }
