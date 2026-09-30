@@ -143,6 +143,12 @@ TEST_F(WaybackMachinePageActionControllerTest, VisibleWhenFetching) {
   EXPECT_TRUE(observer().visible());
 }
 
+TEST_F(WaybackMachinePageActionControllerTest, VisibleWhenFound) {
+  tab_helper()->SetWaybackStateForTesting(WaybackState::kFound);
+
+  EXPECT_TRUE(observer().visible());
+}
+
 TEST_F(WaybackMachinePageActionControllerTest, HiddenWhenLoaded) {
   tab_helper()->SetWaybackStateForTesting(WaybackState::kLoaded);
 

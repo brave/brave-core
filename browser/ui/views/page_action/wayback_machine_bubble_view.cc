@@ -133,6 +133,10 @@ WaybackMachineBubbleView::~WaybackMachineBubbleView() {
 
 bool WaybackMachineBubbleView::OnAccepted() {
   if (auto* tab_helper = GetTabHelper(web_contents())) {
+    if (tab_helper->wayback_state() == WaybackState::kFound) {
+      tab_helper->LoadWaybackURL();
+      return true;
+    }
     tab_helper->FetchWaybackURL();
     // Stay open while the lookup runs. UpdateFromState() closes the bubble if
     // a snapshot is found, or switches it to the "not available" message.
@@ -174,6 +178,22 @@ void WaybackMachineBubbleView::UpdateFromState(WaybackState state) {
                      l10n_util::GetStringUTF16(
                          IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_DISMISS_BUTTON_TEXT));
       dont_ask_again_->SetVisible(true);
+      break;
+    case WaybackState::kFound:
+      SetTitle(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_SORRY_HEADER_TEXT));
+      body_->SetText(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_FOUND_TEXT));
+      HideLoading();
+      SetButtons(static_cast<int>(ui::mojom::DialogButton::kOk) |
+                 static_cast<int>(ui::mojom::DialogButton::kCancel));
+      SetButtonLabel(ui::mojom::DialogButton::kOk,
+                     l10n_util::GetStringUTF16(
+                         IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_LOAD_BUTTON_TEXT));
+      SetButtonLabel(ui::mojom::DialogButton::kCancel,
+                     l10n_util::GetStringUTF16(
+                         IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_DISMISS_BUTTON_TEXT));
+      dont_ask_again_->SetVisible(false);
       break;
     case WaybackState::kNotAvailable:
       SetTitle(l10n_util::GetStringUTF16(

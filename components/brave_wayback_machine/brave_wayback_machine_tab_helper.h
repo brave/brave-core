@@ -12,11 +12,13 @@
 #include "base/callback_list.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
+#include "base/time/time.h"
 #include "brave/components/brave_wayback_machine/wayback_machine_url_fetcher.h"
 #include "brave/components/brave_wayback_machine/wayback_state.h"
 #include "components/prefs/pref_member.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "url/gurl.h"
 
 class PrefService;
 
@@ -50,8 +52,19 @@ class BraveWaybackMachineTabHelper
   // bypassing navigation and the real wayback-machine lookup.
   void SetWaybackStateForTesting(WaybackState state) { SetWaybackState(state); }
 
-  // Initiates fetching the latest snapshot URL for the current page.
+  // Initiates fetching the latest snapshot URL for the current page. The
+  // snapshot is loaded as soon as it is found.
   void FetchWaybackURL();
+
+  // Loads the snapshot found by an automatic check. Must only be called in the
+  // kFound state.
+  void LoadWaybackURL();
+
+  // Returns the snapshot URL found by the last fetch, if any.
+  const GURL& wayback_url() const { return wayback_url_; }
+
+  // Returns the time of the snapshot found by the last fetch. Null if unknown.
+  base::Time snapshot_time() const { return snapshot_time_; }
 
  private:
   explicit BraveWaybackMachineTabHelper(content::WebContents* contents);
@@ -64,6 +77,9 @@ class BraveWaybackMachineTabHelper
   void OnWaybackURLFetched(const GURL& latest_wayback_url,
                            base::Time snapshot_time) override;
 
+  void StartFetch(bool is_auto_check);
+  bool ShouldAutoCheck() const;
+  void NavigateToWaybackURL();
   void SetWaybackState(WaybackState state);
   void OnWaybackEnabledChanged(const std::string& pref_name);
   void ResetState();
@@ -73,6 +89,10 @@ class BraveWaybackMachineTabHelper
   // If it's wayback url loading from previous navigation,
   // we should not touch wayback state.
   std::optional<int64_t> wayback_url_navigation_id_;
+
+  GURL wayback_url_;
+  base::Time snapshot_time_;
+  bool is_auto_check_ = false;
 
   WaybackState wayback_state_ = WaybackState::kInitial;
   WaybackStateChangedCallbackList wayback_state_changed_callbacks_;

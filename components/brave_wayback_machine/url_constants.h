@@ -9,5 +9,7 @@
 inline constexpr char kWaybackQueryURL[] =
     "https://brave-api.archive.org/wayback/available?url=";
 inline constexpr char kWaybackHost[] = "web.archive.org";
+inline constexpr char kWaybackMachineLearnMoreURL[] =
+    "https://support.brave.app/";
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_URL_CONSTANTS_H_

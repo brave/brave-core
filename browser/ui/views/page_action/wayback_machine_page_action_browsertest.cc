@@ -3,12 +3,23 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "base/auto_reset.h"
+#include "base/containers/contains.h"
 #include "base/functional/bind.h"
+#include "base/strings/strcat.h"
+#include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/time/time.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"
+#include "brave/browser/ui/views/infobars/wayback_machine_infobar_view.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_bubble_view.h"
+#include "brave/browser/ui/views/page_action/wayback_machine_infobar_delegate.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_page_action_controller.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
 #include "brave/components/brave_wayback_machine/features.h"
@@ -26,13 +37,19 @@
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
 #include "chrome/browser/ui/views/page_action/test_support/page_action_test_support.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
+#include "components/infobars/content/content_infobar_manager.h"
+#include "components/infobars/core/infobar.h"
+#include "components/infobars/core/infobar_delegate.h"
 #include "components/prefs/pref_service.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/url_loader_interceptor.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
+#include "ui/base/window_open_disposition.h"
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event.h"
 #include "ui/events/event_constants.h"
@@ -48,11 +65,71 @@
 
 namespace page_actions {
 
+namespace {
+
+constexpr char kMissingPageURL[] = "https://example.com/missing";
+constexpr char kOtherPageURL[] = "https://example.com/other";
+constexpr char kSnapshotTimestamp[] = "20240226123456";
+constexpr char kSnapshotURL[] =
+    "https://web.archive.org/web/20240226123456/https://example.com/missing";
+
+bool InterceptRequests(bool snapshot_available,
+                       content::URLLoaderInterceptor::RequestParams* params) {
+  const GURL& url = params->url_request.url;
+  if (url.host() == GURL(kWaybackQueryURL).host()) {
+    const std::string body =
+        snapshot_available
+            ? base::StrCat({R"({"archived_snapshots":{"closest":{"url":")",
+                            kSnapshotURL, R"(","timestamp":")",
+                            kSnapshotTimestamp, R"("}}})"})
+            : "{}";
+    content::URLLoaderInterceptor::WriteResponse(
+        "HTTP/1.1 200 OK\nContent-Type: application/json\n\n", body,
+        params->client.get());
+    return true;
+  }
+  if (url == GURL(kMissingPageURL)) {
+    content::URLLoaderInterceptor::WriteResponse(
+        "HTTP/1.1 404 Not Found\nContent-Type: text/html\n\n",
+        "<html>Missing</html>", params->client.get());
+    return true;
+  }
+  if (url == GURL(kOtherPageURL) || url.host() == kWaybackHost) {
+    content::URLLoaderInterceptor::WriteResponse(
+        "HTTP/1.1 200 OK\nContent-Type: text/html\n\n", "<html>OK</html>",
+        params->client.get());
+    return true;
+  }
+  return false;
+}
+
+}  // namespace
+
 class WaybackMachinePageActionBrowserTest : public InProcessBrowserTest {
  protected:
+  content::WebContents* GetActiveWebContents() {
+    return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
   BraveWaybackMachineTabHelper* GetTabHelper() {
     return BraveWaybackMachineTabHelper::FromWebContents(
-        browser()->tab_strip_model()->GetActiveWebContents());
+        GetActiveWebContents());
+  }
+
+  WaybackMachineInfoBarView* GetInfoBarView() {
+    auto* infobar_manager = infobars::ContentInfoBarManager::FromWebContents(
+        GetActiveWebContents());
+    for (infobars::InfoBar* infobar : infobar_manager->infobars()) {
+      if (infobar->delegate()->GetIdentifier() ==
+          infobars::InfoBarDelegate::BRAVE_WAYBACK_MACHINE_INFOBAR_DELEGATE) {
+        return static_cast<WaybackMachineInfoBarView*>(infobar);
+      }
+    }
+    return nullptr;
+  }
+
+  void NavigateToMissingPage() {
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kMissingPageURL)));
   }
 
   WaybackMachinePageActionController* GetController() {
@@ -299,6 +376,197 @@ IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest,
     SCOPED_TRACE("kNotAvailable");
     ExpectNotAvailableUI(bubble);
   }
+}
+
+IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest,
+                       CheckLoadsSnapshotWithoutInfoBar) {
+  content::URLLoaderInterceptor interceptor(
+      base::BindRepeating(&InterceptRequests, /*snapshot_available=*/true));
+  NavigateToMissingPage();
+  ASSERT_EQ(GetTabHelper()->wayback_state(), WaybackState::kNeedToCheck);
+
+  std::vector<WaybackState> states;
+  auto subscription = GetTabHelper()->RegisterWaybackStateChangedCallback(
+      base::BindLambdaForTesting(
+          [&](WaybackState state) { states.push_back(state); }));
+
+  content::TestNavigationObserver observer(GURL(kSnapshotURL));
+  observer.WatchExistingWebContents();
+  GetTabHelper()->FetchWaybackURL();
+  observer.Wait();
+
+  EXPECT_EQ(GetTabHelper()->wayback_state(), WaybackState::kLoaded);
+  EXPECT_FALSE(base::Contains(states, WaybackState::kFound));
+  EXPECT_EQ(GetInfoBarView(), nullptr);
+}
+
+class WaybackMachineAutoCheckBrowserTest
+    : public WaybackMachinePageActionBrowserTest {
+ public:
+  WaybackMachineAutoCheckBrowserTest() {
+    feature_list_.InitWithFeatures(
+        {brave_wayback_machine::features::kWaybackMachineAutoCheck,
+         brave_wayback_machine::features::kWaybackMachineAutoShowBubble},
+        {});
+  }
+
+  void SetUpOnMainThread() override {
+    WaybackMachinePageActionBrowserTest::SetUpOnMainThread();
+    browser()->GetProfile()->GetPrefs()->SetBoolean(
+        kBraveWaybackMachineAutoCheckEnabled, true);
+    SetUpInterceptor(/*snapshot_available=*/true);
+  }
+
+  void TearDownOnMainThread() override {
+    interceptor_.reset();
+    WaybackMachinePageActionBrowserTest::TearDownOnMainThread();
+  }
+
+ protected:
+  void SetUpInterceptor(bool snapshot_available) {
+    interceptor_.reset();
+    interceptor_ = std::make_unique<content::URLLoaderInterceptor>(
+        base::BindRepeating(&InterceptRequests, snapshot_available));
+  }
+
+  WaybackMachineInfoBarView* NavigateAndWaitForInfoBar() {
+    NavigateToMissingPage();
+    EXPECT_TRUE(base::test::RunUntil([&] {
+      return GetTabHelper()->wayback_state() == WaybackState::kFound;
+    }));
+    return GetInfoBarView();
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+  std::unique_ptr<content::URLLoaderInterceptor> interceptor_;
+  base::AutoReset<base::TimeDelta> countdown_tick_interval_ =
+      WaybackMachineInfoBarDelegate::SetCountdownTickIntervalForTesting(
+          base::Hours(1));
+};
+
+IN_PROC_BROWSER_TEST_F(WaybackMachineAutoCheckBrowserTest,
+                       ShowsInfoBarInsteadOfBubble) {
+  WaybackMachineInfoBarView* infobar = NavigateAndWaitForInfoBar();
+  ASSERT_NE(infobar, nullptr);
+
+  EXPECT_EQ(GetBubbleView(), nullptr);
+  EXPECT_TRUE(GetIcon()->GetVisible());
+  EXPECT_EQ(GetTabHelper()->wayback_url(), GURL(kSnapshotURL));
+  EXPECT_FALSE(GetTabHelper()->snapshot_time().is_null());
+  EXPECT_EQ(infobar->redirect_button_for_testing()->GetText(),
+            l10n_util::GetPluralStringFUTF16(
+                IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_REDIRECT_BUTTON,
+                WaybackMachineInfoBarDelegate::kCountdownSeconds));
+}
+
+IN_PROC_BROWSER_TEST_F(WaybackMachineAutoCheckBrowserTest,
+                       RedirectButtonLoadsSnapshot) {
+  WaybackMachineInfoBarView* infobar = NavigateAndWaitForInfoBar();
+  ASSERT_NE(infobar, nullptr);
+
+  content::TestNavigationObserver observer(GURL(kSnapshotURL));
+  observer.WatchExistingWebContents();
+  ClickButton(infobar->redirect_button_for_testing());
+  observer.Wait();
+
+  EXPECT_EQ(GetTabHelper()->wayback_state(), WaybackState::kLoaded);
+  EXPECT_EQ(GetInfoBarView(), nullptr);
+  EXPECT_FALSE(GetIcon()->GetVisible());
+}
+
+IN_PROC_BROWSER_TEST_F(WaybackMachineAutoCheckBrowserTest,
+                       RedirectsWhenCountdownEnds) {
+  auto countdown_tick_interval =
+      WaybackMachineInfoBarDelegate::SetCountdownTickIntervalForTesting(
+          base::Milliseconds(1));
+
+  content::TestNavigationObserver observer(GURL(kSnapshotURL));
+  observer.WatchExistingWebContents();
+  NavigateToMissingPage();
+  observer.Wait();
+
+  EXPECT_EQ(GetTabHelper()->wayback_state(), WaybackState::kLoaded);
+  EXPECT_EQ(GetInfoBarView(), nullptr);
+}
+
+IN_PROC_BROWSER_TEST_F(WaybackMachineAutoCheckBrowserTest,
+                       CancelKeepsSnapshotAvailable) {
+  WaybackMachineInfoBarView* infobar = NavigateAndWaitForInfoBar();
+  ASSERT_NE(infobar, nullptr);
+
+  ClickButton(infobar->cancel_button_for_testing());
+  EXPECT_EQ(GetInfoBarView(), nullptr);
+  EXPECT_EQ(GetTabHelper()->wayback_state(), WaybackState::kFound);
+  EXPECT_EQ(GetActiveWebContents()->GetLastCommittedURL(),
+            GURL(kMissingPageURL));
+  EXPECT_TRUE(GetIcon()->GetVisible());
+
+  WaybackMachineBubbleView* bubble = ClickIconAndGetBubble();
+  ASSERT_NE(bubble, nullptr);
+  ASSERT_NE(bubble->GetOkButton(), nullptr);
+  EXPECT_EQ(bubble->GetOkButton()->GetText(),
+            l10n_util::GetStringUTF16(
+                IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_LOAD_BUTTON_TEXT));
+
+  content::TestNavigationObserver observer(GURL(kSnapshotURL));
+  observer.WatchExistingWebContents();
+  bubble->GetDialogClientView()->ResetViewShownTimeStampForTesting();
+  ClickButton(bubble->GetOkButton());
+  observer.Wait();
+
+  EXPECT_EQ(GetTabHelper()->wayback_state(), WaybackState::kLoaded);
+}
+
+IN_PROC_BROWSER_TEST_F(WaybackMachineAutoCheckBrowserTest,
+                       NavigatingAwayRemovesInfoBar) {
+  ASSERT_NE(NavigateAndWaitForInfoBar(), nullptr);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kOtherPageURL)));
+  EXPECT_EQ(GetInfoBarView(), nullptr);
+  EXPECT_EQ(GetTabHelper()->wayback_state(), WaybackState::kInitial);
+}
+
+IN_PROC_BROWSER_TEST_F(WaybackMachineAutoCheckBrowserTest,
+                       NoInfoBarWhenNotAvailable) {
+  SetUpInterceptor(/*snapshot_available=*/false);
+  NavigateToMissingPage();
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return GetTabHelper()->wayback_state() == WaybackState::kNotAvailable;
+  }));
+
+  EXPECT_EQ(GetInfoBarView(), nullptr);
+  EXPECT_EQ(GetBubbleView(), nullptr);
+  EXPECT_TRUE(GetIcon()->GetVisible());
+}
+
+IN_PROC_BROWSER_TEST_F(WaybackMachineAutoCheckBrowserTest,
+                       NoAutoCheckWhenPrefDisabled) {
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
+      kBraveWaybackMachineAutoCheckEnabled, false);
+  NavigateToMissingPage();
+
+  EXPECT_EQ(GetTabHelper()->wayback_state(), WaybackState::kNeedToCheck);
+  EXPECT_NE(GetBubbleView(), nullptr);
+  EXPECT_EQ(GetInfoBarView(), nullptr);
+}
+
+IN_PROC_BROWSER_TEST_F(WaybackMachineAutoCheckBrowserTest,
+                       NoAutoCheckInBackgroundTab) {
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL(kMissingPageURL),
+      WindowOpenDisposition::NEW_BACKGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  ASSERT_EQ(2, browser()->tab_strip_model()->count());
+  ASSERT_EQ(0, browser()->tab_strip_model()->active_index());
+
+  auto* background_tab_helper = BraveWaybackMachineTabHelper::FromWebContents(
+      browser()->tab_strip_model()->GetWebContentsAt(1));
+  EXPECT_EQ(background_tab_helper->wayback_state(), WaybackState::kNeedToCheck);
+
+  browser()->tab_strip_model()->ActivateTabAt(1);
+  EXPECT_EQ(GetTabHelper()->wayback_state(), WaybackState::kNeedToCheck);
+  EXPECT_EQ(GetInfoBarView(), nullptr);
 }
 
 class WaybackMachineAutoShowBubbleBrowserTest
