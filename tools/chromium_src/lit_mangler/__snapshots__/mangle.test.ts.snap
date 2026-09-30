@@ -1289,6 +1289,47 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/safety_hub/safety_hub_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/safety_hub/safety_hub_page.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/safety_hub/safety_hub_page.html.ts
+@@ -46,29 +46,20 @@
+     <settings-safety-hub-extensions-module class="module box">
+     </settings-safety-hub-extensions-module>
+   \` : ''}
+   \${this.shouldShowNoRecommendationsState_() ? html\`
+-    <settings-safety-hub-module id="emptyStateModule" class="module box"
+-        header="$i18n{safetyHubEmptyStateModuleHeader}"
+-        subheader="$i18n{safetyHubEmptyStateModuleSubheader}"
+-        header-icon="cr:check">
++    <settings-safety-hub-module id="emptyStateModule" class="module box" header="$i18n{safetyHubEmptyStateModuleHeader}" subheader="$i18n{safetyHubEmptyStateModuleSubheader}" header-icon="shield-done-filled">
+     </settings-safety-hub-module>
+-    <settings-safety-hub-module
+-        id="userEducationModule"
+-        @sh-module-item-link-click="\${this.onShModuleItemLinkClick_}"
+-        class="module box"
+-        header="$i18n{safetyHubUserEduModuleHeader}"
+-        header-icon="settings20:lightbulb-2"
+-        .sites="\${this.userEducationItemList_}">
++    <settings-safety-hub-module id="userEducationModule" @sh-module-item-link-click="\${this.onShModuleItemLinkClick_}" class="module box" header="$i18n{safetyHubUserEduModuleHeader}" header-icon="settings20:lightbulb-2" .sites="\${this.userEducationItemList_}">
+     </settings-safety-hub-module>
+   \` : ''}
+-<if expr="not is_chromeos">
++
+   \${this.shouldShowRelaunchDialog ? html\`
+     <relaunch-confirmation-dialog
+         .restartType="\${RestartType.RELAUNCH}"
+         @close="\${this.onRelaunchDialogClose}" is-version-update>
+     </relaunch-confirmation-dialog>
+   \` : ''}
+-</if>
++
+ </settings-subpage>
+ <!--_html_template_end_-->\`;
+ }
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/search_page/search_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/settings/search_page/search_page.html.ts
