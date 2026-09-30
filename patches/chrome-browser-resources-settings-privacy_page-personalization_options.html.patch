@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index f4968fb7c8f1463279e9284551b02d5c8eb03081..b88c9b63c35f466bdd5e69e14e5880972188e748 100644
+index 055d7369c4f14f9dd2e374af6f2f350811a3dae3..c6ade4eb14a60e2e598c6195dcadfeea2d0c812d 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
 @@ -5,6 +5,7 @@ import {RestartType} from '../relaunch_mixin_lit.js';
@@ -26,7 +26,7 @@ index f4968fb7c8f1463279e9284551b02d5c8eb03081..b88c9b63c35f466bdd5e69e14e588097
 +<if expr="_google_chrome">
  <if expr="not is_chromeos">
      ${!this.shouldUseMetricsConsentRestructure_ ? html`
-       <div class="cr-row hr">
+       <div class="cr-row hr toggle-button-wrapper">
 @@ -88,12 +92,14 @@ import {RestartType} from '../relaunch_mixin_lit.js';
      ` : ''}
  </if><!-- not chromeos -->

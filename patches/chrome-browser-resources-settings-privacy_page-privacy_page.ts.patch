@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.ts b/chrome/browser/resources/settings/privacy_page/privacy_page.ts
-index f4d9626309e1573bd06787b01c3e7efaaed6803c..7eacf63f9d2938ec7c6b324a14893cedbc593589 100644
+index b3ecabfb8fd6fb2f461004a4232a3f504148bd63..1b606e7bd1bb4fdd66a49dd175b0c316a7f52dd9 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.ts
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.ts
 @@ -7,6 +7,7 @@
@@ -9,4 +9,4 @@ index f4d9626309e1573bd06787b01c3e7efaaed6803c..7eacf63f9d2938ec7c6b324a14893ced
 +import './personalization_options.js';
  import 'chrome://resources/cr_elements/icons.html.js';
  import 'chrome://resources/cr_elements/cr_link_row/cr_link_row.js';
- import 'chrome://resources/cr_elements/cr_shared_style.css.js';
+ import 'chrome://resources/cr_elements/cr_toast/cr_toast.js';

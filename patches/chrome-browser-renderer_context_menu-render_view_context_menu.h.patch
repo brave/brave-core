@@ -57,16 +57,16 @@ index 08f5dd9888879d04afda2304c0f761d31c8fedcd..e7c61235d9f838923e46c1b00ff0a50f
    void AppendDevtoolsForUnpackedExtensions();
    void AppendLinkItems();
    void AppendCopyLinkLocationItem();
-@@ -360,7 +361,7 @@ class RenderViewContextMenu
-   void AppendPartialTranslateItem();
+@@ -359,7 +360,7 @@ class RenderViewContextMenu
    void AppendTranslateItem();
+   void AppendTranslateOrPartialTranslateItem();
    void AppendMediaRouterItem();
 -  void AppendReadAnythingItem();
 +  virtual void AppendReadAnythingItem();
    void AppendSaveToMemoryBanksItem();
    void AppendGlicItems();
    void AppendRotationItems();
-@@ -662,7 +663,7 @@ class RenderViewContextMenu
+@@ -659,7 +660,7 @@ class RenderViewContextMenu
    // out if the tab navigated while the menu was open.
    const content::WeakDocumentPtr source_document_at_menu_open_;
  

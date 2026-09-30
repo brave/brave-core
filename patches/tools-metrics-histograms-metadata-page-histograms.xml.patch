@@ -1,10 +1,10 @@
 diff --git a/tools/metrics/histograms/metadata/page/histograms.xml b/tools/metrics/histograms/metadata/page/histograms.xml
-index d1f9b77322647550824101b566fe7477392c35cc..86592aaa13e470b17efe4c9d0bc25e5dab2f86b0 100644
+index e6602a06e5e7548a2cc25acea87512fb365f2c9a..b2992e8a7f8f55c5b065079f6b0d62d49aee93d3 100644
 --- a/tools/metrics/histograms/metadata/page/histograms.xml
 +++ b/tools/metrics/histograms/metadata/page/histograms.xml
 @@ -1100,6 +1100,19 @@ chromium-metrics-reviews@google.com.
+   <variant name=".ShoppingInsightsSidePanel"/>
    <variant name=".TabSearch"/>
-   <variant name=".TabsFromOtherDevicesSidePanel"/>
    <variant name=".UserEducation"/>
 +<!-- Brave additions, as it is necessary for all types derived from
 +BubbleContentsWrapperT.
