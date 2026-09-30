@@ -24,6 +24,7 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/ui/base/clipboard/test/privacy_capturing_test_clipboard.h"
 #include "chrome/browser/notifications/notification_display_service_tester.h"
 #include "chrome/browser/notifications/notification_handler.h"
 #include "chrome/browser/profiles/profile.h"
@@ -40,6 +41,7 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "ui/base/clipboard/clipboard.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/message_center/public/cpp/notification.h"
 #include "url/origin.h"
@@ -229,6 +231,34 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, IsPrivateWindow) {
   wallet_service()->SetPrivateWindowsEnabled(true);
   TestIsPrivateWindow(incognito_wallet_service(), true);
   TestIsPrivateWindow(wallet_service(), false);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, WriteToClipboardPrivacyTypes) {
+  auto* fake_clipboard_ptr =
+      brave::PrivacyCapturingTestClipboard::InstallForCurrentThread();
+
+  // Sensitive text is concealed everywhere.
+  wallet_service()->WriteToClipboard("secret", /*is_sensitive=*/true);
+  EXPECT_EQ(static_cast<uint32_t>(ui::Clipboard::kNoDisplay |
+                                  ui::Clipboard::kNoLocalClipboardHistory |
+                                  ui::Clipboard::kNoCloudClipboard),
+            fake_clipboard_ptr->last_privacy_types());
+
+  // Non-sensitive text from a normal window stays eligible for OS clipboard
+  // history and cloud clipboard sync.
+  wallet_service()->WriteToClipboard("0xdeadbeef", /*is_sensitive=*/false);
+  EXPECT_EQ(static_cast<uint32_t>(ui::Clipboard::kNone),
+            fake_clipboard_ptr->last_privacy_types());
+
+  // Non-sensitive text from a private window does not.
+  wallet_service()->SetPrivateWindowsEnabled(true);
+  incognito_wallet_service()->WriteToClipboard("0xdeadbeef",
+                                               /*is_sensitive=*/false);
+  EXPECT_EQ(static_cast<uint32_t>(ui::Clipboard::kNoLocalClipboardHistory |
+                                  ui::Clipboard::kNoCloudClipboard),
+            fake_clipboard_ptr->last_privacy_types());
+
+  ui::Clipboard::DestroyClipboardForCurrentThread();
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, DisplayTxNotification) {

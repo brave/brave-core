@@ -181,8 +181,11 @@ void SkusInternalsUI::ResetSkusState() {
 }
 
 void SkusInternalsUI::CopySkusStateToClipboard() {
-  ui::ScopedClipboardWriter(ui::ClipboardBuffer::kCopyPaste)
-      .WriteText(base::UTF8ToUTF16(GetSkusStateAsString()));
+  ui::ScopedClipboardWriter scw(ui::ClipboardBuffer::kCopyPaste);
+  // Skus state embeds subscriber credentials, so never let it reach the OS
+  // clipboard history or cloud clipboard sync.
+  scw.MarkAsConfidential();
+  scw.WriteText(base::UTF8ToUTF16(GetSkusStateAsString()));
 }
 
 void SkusInternalsUI::DownloadSkusState() {

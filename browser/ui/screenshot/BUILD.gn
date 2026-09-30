@@ -53,6 +53,7 @@ source_set("unit_tests") {
     ":screenshot",
     "//base",
     "//base/test:test_support",
+    "//brave/ui/base/clipboard/test:test_support",
     "//chrome/browser/image_editor",
     "//chrome/test:test_support",
     "//content/test:test_support",

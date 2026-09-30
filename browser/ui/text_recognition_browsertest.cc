@@ -20,6 +20,7 @@
 #include "brave/browser/ui/views/text_recognition_dialog_tracker.h"
 #include "brave/browser/ui/views/text_recognition_dialog_view.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/ui/base/clipboard/test/privacy_capturing_test_clipboard.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -31,7 +32,6 @@
 #include "net/dns/mock_host_resolver.h"
 #include "third_party/blink/public/mojom/context_menu/context_menu.mojom.h"
 #include "ui/base/clipboard/clipboard.h"
-#include "ui/base/clipboard/test/test_clipboard.h"
 #include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
@@ -40,45 +40,13 @@ namespace {
 
 constexpr char kEmbeddedTestServerDirectory[] = "text_recognition";
 
-// Records the `privacy_types` bitmask that reaches the platform clipboard so
-// tests can verify TextRecognitionDialogView marks recognized text as
-// off-the-record.
-class PrivacyCapturingTestClipboard : public ui::TestClipboard {
- public:
-  PrivacyCapturingTestClipboard() = default;
-  ~PrivacyCapturingTestClipboard() override = default;
-
-  void WritePortableAndPlatformRepresentations(
-      ui::ClipboardBuffer buffer,
-      const ui::Clipboard::ObjectMap& objects,
-      const std::vector<ui::Clipboard::RawData>& raw_objects,
-      std::vector<ui::Clipboard::PlatformRepresentation>
-          platform_representations,
-      std::unique_ptr<ui::DataTransferEndpoint> data_src,
-      uint32_t privacy_types) override {
-    last_privacy_types_ = privacy_types;
-    ui::TestClipboard::WritePortableAndPlatformRepresentations(
-        buffer, objects, raw_objects, std::move(platform_representations),
-        std::move(data_src), privacy_types);
-  }
-
-  uint32_t last_privacy_types() const { return last_privacy_types_; }
-
- private:
-  uint32_t last_privacy_types_ = ui::Clipboard::kNone;
-};
-
 }  // namespace
 
 class TextRecognitionBrowserTest : public InProcessBrowserTest {
  public:
   void SetUpOnMainThread() override {
-    // Swap in a clipboard that records the privacy bitmask. Destroy first
-    // because the browser may already have created one for this thread.
-    ui::Clipboard::DestroyClipboardForCurrentThread();
-    auto clipboard = std::make_unique<PrivacyCapturingTestClipboard>();
-    clipboard_ = clipboard.get();
-    ui::Clipboard::SetClipboardForCurrentThread(std::move(clipboard));
+    clipboard_ =
+        brave::PrivacyCapturingTestClipboard::InstallForCurrentThread();
 
     host_resolver()->AddRule("*", "127.0.0.1");
     content::SetupCrossSiteRedirector(embedded_test_server());
@@ -173,7 +141,7 @@ class TextRecognitionBrowserTest : public InProcessBrowserTest {
 
   GURL image_html_url_;
   std::unique_ptr<base::RunLoop> run_loop_;
-  raw_ptr<PrivacyCapturingTestClipboard> clipboard_ = nullptr;
+  raw_ptr<brave::PrivacyCapturingTestClipboard> clipboard_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(TextRecognitionBrowserTest, TextRecognitionTest) {

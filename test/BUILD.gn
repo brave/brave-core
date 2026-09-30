@@ -1306,6 +1306,7 @@ test("brave_browser_tests") {
       "//brave/components/brave_wallet/common:test_support",
       "//brave/components/brave_wallet/renderer",
       "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
+      "//brave/ui/base/clipboard/test:test_support",
     ]
     sources += [
       "//brave/browser/brave_wallet/brave_wallet_ethereum_chain_browsertest.cc",
@@ -1465,6 +1466,7 @@ test("brave_browser_tests") {
       "//brave/components/containers/buildflags",
       "//brave/components/sidebar/browser",
       "//brave/test/views/snapshot",
+      "//brave/ui/base/clipboard/test:test_support",
       "//chrome/browser/ui/views/bubble",
       "//chrome/browser/ui/views/frame:custom_corners_background",
       "//chrome/browser/ui/views/profiles:avatar_toolbar_button",

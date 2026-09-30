@@ -2159,6 +2159,9 @@ void BraveWalletService::WriteToClipboard(const std::string& text,
   scw.WriteText(out);
   if (is_sensitive) {
     scw.MarkAsConfidential();
+  } else if (delegate_->IsPrivateWindow()) {
+    // Keep it out of the OS clipboard history and cloud clipboard sync.
+    scw.MarkAsOffTheRecord();
   }
 }
 

@@ -35,6 +35,7 @@ source_set("unit_tests") {
 
   deps = [
     "//base",
+    "//brave/ui/base/clipboard/test:test_support",
     "//chrome/browser",
     "//chrome/browser/download",
     "//chrome/browser/ui/download",
