@@ -329,7 +329,11 @@ void EphemeralStorageService::CleanupTLDFirstPartyStorage(
 
 bool EphemeralStorageService::IsScheduledForCleanup(
     const std::string& ephemeral_domain) {
-  DCHECK(!context_->IsOffTheRecord());
+  // Do nothing for OTR profile
+  if (context_->IsOffTheRecord()) {
+    return false;
+  }
+
   base::ListValue first_party_storage_areas_to_cleanup_on_startup =
       prefs_->GetList(kFirstPartyStorageOriginsToCleanup).Clone();
 
