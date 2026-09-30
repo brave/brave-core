@@ -14,7 +14,7 @@ instantiates each _recipe module_, and runs the recipe's `RunSteps`.
 
 ```sh
 vpython3 tools/recipes/engine.py toolchains/rust/package_rust \
-    --properties '{ "brave_subrevision": 2, "chromium_ref": "151.0.7917.1" }'
+    --properties '{ "brave_subrevision": 2, "chromium_ref": "refs/tags/151.0.7917.1" }'
 ```
 
 The recipe name is a `/`-separated path under `recipes/`. `--properties` is a
@@ -27,7 +27,7 @@ shallow-clones the engine from brave-core and forwards to `engine.py`:
 ```sh
 curl -sL https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/recipes/engine_bootstrap.py \
     | python3 - toolchains/rust/package_rust \
-        --properties '{ "brave_subrevision": 2, "chromium_ref": "151.0.7917.1" }'
+        --properties '{ "brave_subrevision": 2, "chromium_ref": "refs/tags/151.0.7917.1" }'
 ```
 
 ## Properties
@@ -99,14 +99,14 @@ Properties are set in tests via the same messages (see [Testing](#testing)):
 def GenTests(api):
     yield api.test(
         'example',
-        api.properties(InputProperties(chromium_ref='151.0.7917.1',
+        api.properties(InputProperties(chromium_ref='refs/tags/151.0.7917.1',
                                        brave_subrevision=1)),
         api.properties.environ(GIT_CACHE_PATH='/b/cache'),
     )
 ```
 
 `api.properties` also accepts top-level keyword arguments as a shorthand, e.g.
-`api.properties(chromium_ref='151.0.7917.1', brave_subrevision=1)`.
+`api.properties(chromium_ref='refs/tags/151.0.7917.1', brave_subrevision=1)`.
 
 ### Per-module properties
 
@@ -687,7 +687,7 @@ def GenTests(api):
         'linux',
         api.chromium_checkout.with_git_cache(),                 # seed preconditions
         api.brave_core_checkout.deployed('tools/cr'),
-        api.properties(brave_subrevision=1, chromium_ref='151.0.7917.1'),
+        api.properties(brave_subrevision=1, chromium_ref='refs/tags/151.0.7917.1'),
         api.post_process(post_process.MustRun, 'fetch chromium'),
         api.post_process(post_process.StatusSuccess),
     )

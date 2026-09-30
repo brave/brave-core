@@ -8,19 +8,72 @@
       "https://chromium.googlesource.com/chromium/tools/depot_tools",
       "[WORKSPACE]/b/src/third_party/depot_tools"
     ],
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
     "name": "clone depot_tools"
   },
   {
     "cmd": [
       "gclient"
     ],
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
     "name": "verify gclient"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://github.com/brave/brave-core.git"
+    ],
+    "name": "git cache populate exists (before)"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "populate",
+      "--cache-dir",
+      "/b/cache",
+      "https://github.com/brave/brave-core.git",
+      "--reset-fetch-config",
+      "--no-fetch-tags"
+    ],
+    "name": "git cache populate"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://github.com/brave/brave-core.git"
+    ],
+    "name": "git cache populate exists (after)"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://github.com/brave/brave-core.git"
+    ],
+    "name": "git cache exists"
+  },
+  {
+    "cmd": [
+      "git",
+      "--git-dir",
+      "/b/cache/brave-core",
+      "show",
+      "refs/heads/master:package.json"
+    ],
+    "name": "read chromium tag"
   },
   {
     "cmd": [
@@ -50,7 +103,7 @@
     "env": {
       "CHROME_HEADLESS": "1"
     },
-    "name": "git cache populate exists (before)"
+    "name": "git cache populate exists (before) (2)"
   },
   {
     "cmd": [
@@ -61,12 +114,14 @@
       "/b/cache",
       "https://chromium.googlesource.com/chromium/src.git",
       "--reset-fetch-config",
-      "--no-fetch-tags"
+      "--no-fetch-tags",
+      "--ref",
+      "refs/tags/155.0.8059.16"
     ],
     "env": {
       "CHROME_HEADLESS": "1"
     },
-    "name": "git cache populate"
+    "name": "git cache populate (2)"
   },
   {
     "cmd": [
@@ -81,7 +136,7 @@
     "env": {
       "CHROME_HEADLESS": "1"
     },
-    "name": "git cache populate exists (after)"
+    "name": "git cache populate exists (after) (2)"
   },
   {
     "cmd": [
@@ -96,7 +151,7 @@
     "env": {
       "CHROME_HEADLESS": "1"
     },
-    "name": "git cache exists"
+    "name": "git cache exists (2)"
   },
   {
     "cmd": [
@@ -105,7 +160,7 @@
       "--no-checkout",
       "--local",
       "--shared",
-      "/b/cache/chromium.googlesource.com-chromium-src",
+      "/b/cache/chromium",
       "[WORKSPACE]/b/src"
     ],
     "env": {
@@ -170,14 +225,14 @@
       "git",
       "checkout",
       "--force",
-      "origin/HEAD",
+      "refs/tags/155.0.8059.16",
       "--"
     ],
     "cwd": "[WORKSPACE]/b/src",
     "env": {
       "CHROME_HEADLESS": "1"
     },
-    "name": "checkout origin/HEAD"
+    "name": "checkout tag"
   },
   {
     "cmd": [
@@ -193,6 +248,98 @@
       "CHROME_HEADLESS": "1"
     },
     "name": "restore origin push url"
+  },
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--no-checkout",
+      "--local",
+      "--shared",
+      "/b/cache/brave-core",
+      "[WORKSPACE]/b/src/brave"
+    ],
+    "name": "brave-core clone from git cache"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.auto",
+      "0"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "disable auto-gc: gc.auto=0 (2)"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autodetach",
+      "0"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "disable auto-gc: gc.autodetach=0 (2)"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autopacklimit",
+      "0"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "disable auto-gc: gc.autopacklimit=0 (2)"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.gc.enabled",
+      "false"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "disable auto-gc: maintenance.gc.enabled=false (2)"
+  },
+  {
+    "cmd": [
+      "git",
+      "checkout",
+      "--force",
+      "origin/master",
+      "--"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "brave-core checkout ref"
+  },
+  {
+    "cmd": [
+      "git",
+      "remote",
+      "set-url",
+      "--push",
+      "origin",
+      "https://github.com/brave/brave-core.git"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "brave-core restore origin push url"
+  },
+  {
+    "cmd": [
+      "pnpm",
+      "run",
+      "sync"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "env_prefixes": {
+      "PATH": [
+        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
+      ]
+    },
+    "name": "pnpm run sync"
   },
   {
     "name": "$result"

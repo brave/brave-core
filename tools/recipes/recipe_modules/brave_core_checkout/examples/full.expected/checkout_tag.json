@@ -8,34 +8,13 @@
       "https://chromium.googlesource.com/chromium/tools/depot_tools",
       "[WORKSPACE]/b/src/third_party/depot_tools"
     ],
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
     "name": "clone depot_tools"
   },
   {
     "cmd": [
       "gclient"
     ],
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
     "name": "verify gclient"
-  },
-  {
-    "cmd": [
-      "gclient",
-      "config",
-      "--name",
-      "src",
-      "--unmanaged",
-      "https://chromium.googlesource.com/chromium/src.git"
-    ],
-    "cwd": "[WORKSPACE]/b",
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
-    "name": "gclient config"
   },
   {
     "cmd": [
@@ -45,11 +24,8 @@
       "--quiet",
       "--cache-dir",
       "/b/cache",
-      "https://chromium.googlesource.com/chromium/src.git"
+      "https://github.com/brave/brave-core.git"
     ],
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
     "name": "git cache populate exists (before)"
   },
   {
@@ -59,13 +35,12 @@
       "populate",
       "--cache-dir",
       "/b/cache",
-      "https://chromium.googlesource.com/chromium/src.git",
+      "https://github.com/brave/brave-core.git",
       "--reset-fetch-config",
-      "--no-fetch-tags"
+      "--no-fetch-tags",
+      "--ref",
+      "refs/tags/v1.80.100"
     ],
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
     "name": "git cache populate"
   },
   {
@@ -76,11 +51,8 @@
       "--quiet",
       "--cache-dir",
       "/b/cache",
-      "https://chromium.googlesource.com/chromium/src.git"
+      "https://github.com/brave/brave-core.git"
     ],
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
     "name": "git cache populate exists (after)"
   },
   {
@@ -91,11 +63,8 @@
       "--quiet",
       "--cache-dir",
       "/b/cache",
-      "https://chromium.googlesource.com/chromium/src.git"
+      "https://github.com/brave/brave-core.git"
     ],
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
     "name": "git cache exists"
   },
   {
@@ -105,13 +74,10 @@
       "--no-checkout",
       "--local",
       "--shared",
-      "/b/cache/chromium.googlesource.com-chromium-src",
-      "[WORKSPACE]/b/src"
+      "/b/cache/github.com-brave-brave-core",
+      "[WORKSPACE]/b/src/brave"
     ],
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
-    "name": "clone from git cache"
+    "name": "brave-core clone from git cache"
   },
   {
     "cmd": [
@@ -120,10 +86,7 @@
       "gc.auto",
       "0"
     ],
-    "cwd": "[WORKSPACE]/b/src",
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
+    "cwd": "[WORKSPACE]/b/src/brave",
     "name": "disable auto-gc: gc.auto=0"
   },
   {
@@ -133,10 +96,7 @@
       "gc.autodetach",
       "0"
     ],
-    "cwd": "[WORKSPACE]/b/src",
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
+    "cwd": "[WORKSPACE]/b/src/brave",
     "name": "disable auto-gc: gc.autodetach=0"
   },
   {
@@ -146,10 +106,7 @@
       "gc.autopacklimit",
       "0"
     ],
-    "cwd": "[WORKSPACE]/b/src",
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
+    "cwd": "[WORKSPACE]/b/src/brave",
     "name": "disable auto-gc: gc.autopacklimit=0"
   },
   {
@@ -159,10 +116,7 @@
       "maintenance.gc.enabled",
       "false"
     ],
-    "cwd": "[WORKSPACE]/b/src",
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
+    "cwd": "[WORKSPACE]/b/src/brave",
     "name": "disable auto-gc: maintenance.gc.enabled=false"
   },
   {
@@ -170,14 +124,11 @@
       "git",
       "checkout",
       "--force",
-      "origin/HEAD",
+      "refs/tags/v1.80.100",
       "--"
     ],
-    "cwd": "[WORKSPACE]/b/src",
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
-    "name": "checkout origin/HEAD"
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "brave-core checkout tag"
   },
   {
     "cmd": [
@@ -186,13 +137,10 @@
       "set-url",
       "--push",
       "origin",
-      "https://chromium.googlesource.com/chromium/src.git"
+      "https://github.com/brave/brave-core.git"
     ],
-    "cwd": "[WORKSPACE]/b/src",
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
-    "name": "restore origin push url"
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "brave-core restore origin push url"
   },
   {
     "name": "$result"

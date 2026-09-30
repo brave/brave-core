@@ -54,6 +54,7 @@ def GenTests(api):
     yield api.test(
         'mac',
         api.platform.name('mac'),
+        api.brave_core_checkout.with_git_cache(),
         api.brave_core_checkout.deployed('tools/cr'),
         api.properties(chromium_tag='150.0.7841.1'),
         api.post_process(post_process.MustRun, 'build xcode toolchain'),

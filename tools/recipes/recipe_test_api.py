@@ -13,7 +13,7 @@ injected as `api.<module>`, so a recipe writes, e.g.:
         yield api.test(
             'linux',
             api.platform.name('linux'),
-            api.properties(chromium_ref='151.0.7917.1'),
+            api.properties(chromium_ref='refs/tags/151.0.7917.1'),
             api.step_data('fetch chromium', retcode=0),
             api.post_process(post_process.MustRun, 'fetch chromium'),
             api.post_process(post_process.StatusSuccess),
@@ -217,6 +217,17 @@ class PostprocessHookContext(NamedTuple):
     lineno: int
 
 
+def _merge_properties(a: dict[str, Any], b: dict[str, Any]) -> dict[str, Any]:
+    """Merge two property dicts; a module's `$<name>` blocks merge by field, so
+    fragments can each set part of the same module's properties."""
+    merged = {**a, **b}
+    for key, value in b.items():
+        if key.startswith('$') and isinstance(value, dict) and isinstance(
+                a.get(key), dict):
+            merged[key] = {**a[key], **value}
+    return merged
+
+
 class TestData:
     """One simulated recipe run (or a fragment merged into one).
 
@@ -245,8 +256,6 @@ class TestData:
         # Expected overall status ('SUCCESS' | 'FAILURE' | 'EXCEPTION'); None
         # means "don't assert" (a mismatch during a run is still reported).
         self.expected_status: str | None = None
-        # brave-core ref the engine seeds (mirrors --brave-core-ref).
-        self.brave_core_ref: str = 'master'
         # Absolute path of the expectation JSON; filled in by the test runner.
         self.expect_file: str | None = None
 
@@ -257,7 +266,8 @@ class TestData:
         so fragment order in `api.test(...)` reads left-to-right.
         """
         merged = TestData(self.name or other.name)
-        merged.properties = {**self.properties, **other.properties}
+        merged.properties = _merge_properties(self.properties,
+                                              other.properties)
         merged.environ = {**self.environ, **other.environ}
         merged.mod_data = _merge_mod_data(self.mod_data, other.mod_data)
         merged.step_data.update(self.step_data)
@@ -270,8 +280,6 @@ class TestData:
         merged.expected_status = (other.expected_status
                                   if other.expected_status is not None else
                                   self.expected_status)
-        merged.brave_core_ref = (other.brave_core_ref if other.brave_core_ref
-                                 != 'master' else self.brave_core_ref)
         return merged
 
     def get_step_test_data(
@@ -540,13 +548,6 @@ class RecipeTestApi:
         fragment's data) instead of merging on top of it.
         """
         return RecipeTestApi.step_data(name, *data, override=True, **kwargs)
-
-    @staticmethod
-    def brave_core_ref(ref: str) -> TestData:
-        """A fragment overriding the engine-seeded brave-core ref."""
-        data = TestData()
-        data.brave_core_ref = ref
-        return data
 
     @staticmethod
     def post_process(func: Callable[..., Any], *args: Any,

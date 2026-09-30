@@ -261,20 +261,37 @@ class WorkspaceTest(unittest.TestCase):
             self.assertEqual(Path.cwd(), workspace)
             os.chdir(self._prev_cwd)
 
+    def test_missing_workspace_is_created(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp).resolve() / 'a' / 'b'
+            engine._Engine(workspace=workspace)
+            self.assertTrue(workspace.is_dir())
+            self.assertEqual(Path.cwd(), workspace)
+            os.chdir(self._prev_cwd)
+
     def test_workspace_defaults_to_cwd(self):
         path = engine._Engine()._instantiate_module('path', [])
         self.assertEqual(path.workspace, Path.cwd())
 
-    def test_brave_core_ref_seeded_with_override(self):
-        module = engine._Engine(
-            brave_core_ref='feature/x')._instantiate_module(
-                'brave_core_checkout', [])
-        self.assertEqual(getattr(module, '_brave_core_ref'), 'feature/x')
+    def test_brave_core_ref_from_module_properties(self):
+        eng = engine._Engine()
+        eng._properties = {  # pylint: disable=protected-access
+            '$brave_core_checkout': {
+                'brave_core_ref': 'refs/heads/feature/x'
+            }
+        }
+        inst = eng._instantiate_module  # pylint: disable=protected-access
+        with _real_git_cache():
+            module = inst('brave_core_checkout', [])
+        self.assertEqual(getattr(module, '_brave_core_ref'),
+                         'refs/heads/feature/x')
 
     def test_brave_core_ref_defaults_to_master(self):
-        module = engine._Engine()._instantiate_module('brave_core_checkout',
-                                                      [])
-        self.assertEqual(getattr(module, '_brave_core_ref'), 'master')
+        with _real_git_cache():
+            module = engine._Engine()._instantiate_module(
+                'brave_core_checkout', [])
+        self.assertEqual(getattr(module, '_brave_core_ref'),
+                         'refs/heads/master')
 
 
 class ModulePropertiesTest(unittest.TestCase):

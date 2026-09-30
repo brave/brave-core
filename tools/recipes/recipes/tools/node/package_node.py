@@ -46,6 +46,7 @@ def GenTests(api):
     # `deployed(...)` seeds the sparse path so the existence check passes.
     yield api.test(
         'basic',
+        api.brave_core_checkout.with_git_cache(),
         api.brave_core_checkout.deployed('third_party/node', 'tools/cr'),
         api.post_process(post_process.MustRun,
                          'clone brave-core (shallow, sparse)'),
@@ -57,6 +58,7 @@ def GenTests(api):
     yield api.test(
         'reuse checkout',
         api.brave_core_checkout.existing_checkout(),
+        api.brave_core_checkout.with_git_cache(),
         api.brave_core_checkout.deployed('third_party/node', 'tools/cr'),
         api.post_process(post_process.MustRun, 'fetch brave-core ref'),
         api.post_process(post_process.DoesNotRun,

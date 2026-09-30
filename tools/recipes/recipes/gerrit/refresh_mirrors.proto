@@ -11,8 +11,8 @@ message InputProperties {
   // Gerrit SSH user the script authenticates as.
   string gerrit_user = 1;
 
-  // Chromium ref (tag or branch) to sync before mirroring the git cache;
-  // defaults to "main" when empty.
+  // Chromium ref (e.g. `refs/heads/main`) to sync before mirroring the git
+  // cache; defaults to `refs/heads/main` when empty.
   string chromium_ref = 2;
 }
 

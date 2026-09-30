@@ -183,10 +183,6 @@ class RecipeApi:
         # ignore it. Defaults to `.` until the engine overrides it.
         self._workspace: Path = Path()
 
-        # brave-core ref the checkout modules clone, seeded by the engine.
-        # `brave_core_checkout` uses it; defaults to `master` until overridden.
-        self._brave_core_ref: str = 'master'
-
         # The run's stack of open steps, seeded by the engine. `step` pushes
         # each step onto it and `futures` registers spawned greenlets against
         # it; every other module ignores it. Defaults to a private stack so a

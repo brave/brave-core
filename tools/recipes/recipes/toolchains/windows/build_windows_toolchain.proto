@@ -8,7 +8,7 @@ syntax = "proto3";
 package recipes.brave.toolchains.windows.build_windows_toolchain;
 
 message InputProperties {
-  // Chromium release tag (e.g. `150.0.7841.1`) whose pinned Windows SDK /
-  // toolchain hash the toolchain is built for.
+  // Chromium release tag ref (e.g. `refs/tags/150.0.7841.1`) whose pinned
+  // Windows SDK / toolchain hash the toolchain is built for.
   string chromium_ref = 1;
 }

@@ -12,7 +12,7 @@ master/tools/recipes/engine_bootstrap.py \\
         | python3 - toolchains/rust/package_rust \\
             --properties '{"chromium_src": "~/dev/brave-next/src/",
                            "brave_subrevision": 1,
-                           "chromium_ref": "151.0.7917.1"}'
+                           "chromium_ref": "refs/tags/151.0.7917.1"}'
 
 That is the bootstrapping equivalent to running, from a checkout:
 

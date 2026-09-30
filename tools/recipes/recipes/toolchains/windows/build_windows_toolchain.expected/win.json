@@ -59,7 +59,7 @@
       "--out-dir",
       "[WORKSPACE]\\out",
       "--chromium-tag",
-      "150.0.7841.1",
+      "refs/tags/150.0.7841.1",
       "--clear",
       "--upload"
     ],

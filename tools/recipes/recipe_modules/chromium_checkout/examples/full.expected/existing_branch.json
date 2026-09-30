@@ -60,9 +60,7 @@
       "/b/cache",
       "https://chromium.googlesource.com/chromium/src.git",
       "--reset-fetch-config",
-      "--no-fetch-tags",
-      "--ref",
-      "main"
+      "--no-fetch-tags"
     ],
     "env": {
       "CHROME_HEADLESS": "1"
@@ -134,7 +132,7 @@
       "fetch",
       "--no-show-forced-updates",
       "origin",
-      "main"
+      "refs/heads/main"
     ],
     "cwd": "[WORKSPACE]/b/src",
     "env": {

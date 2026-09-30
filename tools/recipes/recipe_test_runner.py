@@ -180,7 +180,6 @@ def _simulate(
     # A fresh engine per case: module instances are cached per engine, so
     # reusing one would leak state (deployed depot_tools, set env vars, ...).
     eng = engine._Engine(  # pylint: disable=protected-access
-        brave_core_ref=test_data.brave_core_ref,
         test=ctx)
     # `failure` becomes the `$result` payload: None on success; a non-infra
     # failure carries an inner `{'failure': {}}`; an infra failure/exception
