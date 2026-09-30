@@ -61,7 +61,8 @@ class BraveWaybackMachineTabHelper
       content::NavigationHandle* navigation_handle) override;
 
   // WaybackMachineURLFetcher::Client overrides:
-  void OnWaybackURLFetched(const GURL& latest_wayback_url) override;
+  void OnWaybackURLFetched(const GURL& latest_wayback_url,
+                           base::Time snapshot_time) override;
 
   void SetWaybackState(WaybackState state);
   void OnWaybackEnabledChanged(const std::string& pref_name);
