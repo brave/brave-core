@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 238f8625e42d8703c72c266c36e32bbfb2113095..771c7a084bd79a97e1820c0b2b65758db09b170a 100644
+index 728e78c27f4a51eaa712698aadfef17aaff32e37..ea39cdb452d2be58c0761f118e4f081863e05025 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,15 +10,15 @@ index 238f8625e42d8703c72c266c36e32bbfb2113095..771c7a084bd79a97e1820c0b2b65758d
  import("//build/config/buildflags_paint_preview.gni")
  import("//build/config/chrome_build.gni")
  import("//build/config/compiler/compiler.gni")
-@@ -1512,6 +1513,7 @@ if (!is_android) {
-       ":ui",
+@@ -1491,6 +1492,7 @@ if (!is_android) {
+       ":core",
        "//chrome/browser/ui/browser_window/internal",
      ]
 +    visibility += brave_chrome_browser_ui_browser_header_visibility
      public_deps = [
        ":browser_window_deleter",
        "//base",
-@@ -1568,6 +1570,7 @@ static_library("ui") {
+@@ -1671,6 +1673,7 @@ static_library("ui") {
      ":simple_message_box_headers",
      ":tab_dialogs",
      ":tab_modal_confirm_dialog",
@@ -26,25 +26,25 @@ index 238f8625e42d8703c72c266c36e32bbfb2113095..771c7a084bd79a97e1820c0b2b65758d
      "//chrome/browser:browser_public_dependencies",
      "//chrome/browser/feedback",
      "//chrome/browser/headless",
-@@ -1845,6 +1848,8 @@ static_library("ui") {
-     "//ui/strings",
+@@ -1949,6 +1952,8 @@ static_library("ui") {
      "//ui/webui",
+     "//ui/webui:buildflags",
    ]
 +  deps += brave_chrome_browser_ui_allow_circular_includes_from
 +  deps += brave_chrome_browser_ui_deps
  
    allow_circular_includes_from = [
      # page_load_metrics's :impl includes headers from //chrome/browser/ui that
-@@ -1868,6 +1873,8 @@ static_library("ui") {
+@@ -1972,6 +1977,8 @@ static_library("ui") {
      # - c/b/ui/views/frame/browser_view.h
      "//chrome/browser/ui/views/file_system_access:impl",
    ]
 +  allow_circular_includes_from +=
 +      brave_chrome_browser_ui_allow_circular_includes_from
  
-   # Desktop-Android-only dependencies.
-   if (is_desktop_android) {
-@@ -4703,11 +4710,13 @@ static_library("ui") {
+   # The AI overlay dialog Java class is pulled into every Android APK by
+   # toolbar code, so its JNI must be registered in all Android builds. The
+@@ -4389,11 +4396,13 @@ static_library("ui") {
  group("ui_public_dependencies") {
    visibility = [ "//chrome/browser:browser_public_dependencies" ]
    public_deps = [
