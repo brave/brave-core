@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java b/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
-index f8ae4dd34279c5a390367ec579771b7a606f8b6c..83e89e47ccf035c2eb995d75d5223299ad82f128 100644
+index 5704075c2302e188fd9bbf721dc9399391bc75ec..501f2b1f00cf72f3041f59832b505ce33569d632 100644
 --- a/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
 +++ b/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
 @@ -2025,7 +2025,7 @@ public abstract class ChromeFeatureList {

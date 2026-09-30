@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc
-index f9cf732b9037f05aa952e4f2427158b101db5017..9d441b481644a2d4ac25fa8b8577b7e5e93d14e3 100644
+index 1b8b9c67d49ba5fcf9dd16413ddb9c677f8e5533..1152106d233328e98036b6002495623d2563bcd1 100644
 --- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc
 +++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc
 @@ -1608,6 +1608,8 @@ void ChromeBrowsingDataRemoverDelegate::OnTaskComplete(

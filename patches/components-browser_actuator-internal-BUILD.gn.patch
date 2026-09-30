@@ -1,5 +1,5 @@
 diff --git a/components/browser_actuator/internal/BUILD.gn b/components/browser_actuator/internal/BUILD.gn
-index 7c7b747c83a677b1035b477a1936221725ac8093..930988431ae6bda02f20740113ab56cdeb5c742e 100644
+index a36dcdd04d9f7b21dd8ebcc588ef93db86112dca..ba4aa619473e0f5781cf5a92116788b58739d7cd 100644
 --- a/components/browser_actuator/internal/BUILD.gn
 +++ b/components/browser_actuator/internal/BUILD.gn
 @@ -34,6 +34,7 @@ source_set("features") {

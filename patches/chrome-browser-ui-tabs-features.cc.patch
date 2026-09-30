@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tabs/features.cc b/chrome/browser/ui/tabs/features.cc
-index 6aac05299cda8288f2303da3de64d1f275662083..2b441d95d4652ec4ac4037724c6c00bf7bd1e6bb 100644
+index 0f394292384b5e519d7a897c6cdfcb43ffd8d26c..6efb9e6a04139806af1b66377dd17b9c819b7f78 100644
 --- a/chrome/browser/ui/tabs/features.cc
 +++ b/chrome/browser/ui/tabs/features.cc
 @@ -34,7 +34,7 @@ BASE_FEATURE(kTabSearchPerformanceImprovements,

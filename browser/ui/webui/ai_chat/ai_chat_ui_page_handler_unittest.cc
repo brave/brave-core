@@ -630,10 +630,11 @@ TEST_F(AIChatUIPageHandlerGlobalSidePanelTest,
   selection.new_contents = new_tab.get();
   ASSERT_TRUE(selection.active_tab_changed());
 
-  TabStripModelChange empty_change;
+  TabStripModelChange selection_only_change(
+      (TabStripModelChange::SelectionOnly()));
   static_cast<TabStripModelObserver*>(page_handler())
-      ->OnTabStripModelChanged(/*tab_strip_model=*/nullptr, empty_change,
-                               selection);
+      ->OnTabStripModelChanged(/*tab_strip_model=*/nullptr,
+                               selection_only_change, selection);
   FlushChatUI();
 
   // The tab switch itself notifies the frontend, but because the new tab's
