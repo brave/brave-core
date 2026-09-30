@@ -1,8 +1,8 @@
 diff --git a/ios/web/webui/mojo_facade.mm b/ios/web/webui/mojo_facade.mm
-index e9b8c0800ff6b43badc6acd832da7ae11ff3f82d..50803a77ab0fdd1445acff6196e55f4815123981 100644
+index 59beedc5db8e6c54d05dff8601675281bce66901..b2f65d7470b5ec55e7e1a775563f6d4f7235df60 100644
 --- a/ios/web/webui/mojo_facade.mm
 +++ b/ios/web/webui/mojo_facade.mm
-@@ -51,14 +51,22 @@ std::optional<int> FindIntOrDoubleAsInt(const base::DictValue& args,
+@@ -52,14 +52,22 @@ std::optional<int> FindIntOrDoubleAsInt(const base::DictValue& args,
    return std::nullopt;
  }
  
@@ -28,7 +28,7 @@ index e9b8c0800ff6b43badc6acd832da7ae11ff3f82d..50803a77ab0fdd1445acff6196e55f48
    if (main_frame) {
      main_frame_ = main_frame->AsWeakPtr();
      if (!web_state_->IsLoading() && web_state_->GetInterfaceBinderForMainFrame()
-@@ -124,13 +132,16 @@ void MojoFacade::OnAwaitNextMessageCompleted(const std::string& web_frame_id,
+@@ -125,13 +133,16 @@ void MojoFacade::OnAwaitNextMessageCompleted(const std::string& web_frame_id,
        !web_state_->IsBeingDestroyed() && GetMainFrameId() == web_frame_id;
  
    if (error || !is_same_frame || !value) {
@@ -49,7 +49,7 @@ index e9b8c0800ff6b43badc6acd832da7ae11ff3f82d..50803a77ab0fdd1445acff6196e55f48
  
    const base::DictValue* dict = value->GetIfDict();
    if (dict) {
-@@ -231,6 +242,9 @@ void MojoFacade::HandleMojoMessage(
+@@ -232,6 +243,9 @@ void MojoFacade::HandleMojoMessage(
  }
  
  base::Value MojoFacade::HandleMojoBindInterface(const base::DictValue& args) {
@@ -59,7 +59,7 @@ index e9b8c0800ff6b43badc6acd832da7ae11ff3f82d..50803a77ab0fdd1445acff6196e55f48
    const std::string* interface_name = args.FindString("interfaceName");
    std::optional<int> pipe_id = FindIntOrDoubleAsInt(args, "requestHandle");
  
-@@ -288,6 +302,9 @@ base::Value MojoFacade::HandleMojoHandleWriteMessage(
+@@ -289,6 +303,9 @@ base::Value MojoFacade::HandleMojoHandleWriteMessage(
    }
  
    mojo::MessagePipeHandle pipe = GetPipeFromId(*pipe_id);
@@ -69,7 +69,7 @@ index e9b8c0800ff6b43badc6acd832da7ae11ff3f82d..50803a77ab0fdd1445acff6196e55f48
    std::optional<std::vector<uint8_t>> bytes = base::Base64Decode(*buffer);
    if (!pipe.is_valid() || !bytes.has_value()) {
      return base::Value(static_cast<int>(MOJO_RESULT_INVALID_ARGUMENT));
-@@ -467,8 +484,9 @@ mojo::ScopedMessagePipeHandle MojoFacade::TakePipeFromId(int id) {
+@@ -468,8 +485,9 @@ mojo::ScopedMessagePipeHandle MojoFacade::TakePipeFromId(int id) {
  void MojoFacade::WebFrameBecameAvailable(WebFramesManager* web_frames_manager,
                                           WebFrame* web_frame) {
    DCHECK_CURRENTLY_ON(WebThread::UI);
@@ -80,15 +80,3 @@ index e9b8c0800ff6b43badc6acd832da7ae11ff3f82d..50803a77ab0fdd1445acff6196e55f48
    }
  }
  
-@@ -491,11 +509,6 @@ void MojoFacade::PageLoaded(WebState* web_state,
-   if (load_completion_status == PageLoadCompletionStatus::SUCCESS &&
-       GetMainWebFrame() &&
-       web_state_->GetInterfaceBinderForMainFrame()->HasRegisteredInterfaces()) {
--    pipes_.clear();
--    watchers_.clear();
--    last_watch_id_ = 0;
--    is_awaiting_message_ = false;
--    weak_ptr_factory_.InvalidateWeakPtrs();
-     AwaitNextMessage();
-   }
- }

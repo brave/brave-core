@@ -1,5 +1,5 @@
 diff --git a/chrome/services/printing/BUILD.gn b/chrome/services/printing/BUILD.gn
-index 82332e39b6df3e460e007ffcf54250c0315b4f4c..6944f8941a2a359bd3bf843ae3817cc56aea262b 100644
+index 5faeaee7bf536e2b10bc426490a577f2b1014538..688d40205a65732078bb6ff8d068f13111e26903 100644
 --- a/chrome/services/printing/BUILD.gn
 +++ b/chrome/services/printing/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -16,9 +16,9 @@ index 82332e39b6df3e460e007ffcf54250c0315b4f4c..6944f8941a2a359bd3bf843ae3817cc5
    ]
 +  sources += brave_services_printing_sources
  
-   configs += [ "//build/config/compiler:wexit_time_destructors" ]
- 
-@@ -21,6 +23,7 @@ source_set("lib") {
+   deps = [
+     "//components/discardable_memory/client",
+@@ -19,6 +21,7 @@ source_set("lib") {
      "//content/public/utility",
      "//printing",
    ]
