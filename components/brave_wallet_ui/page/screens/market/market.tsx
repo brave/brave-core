@@ -61,7 +61,9 @@ export const MarketView = () => {
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
 
-  const { data: buyAssets } = useGetMeldCryptoCurrenciesQuery()
+  const { data: buyAssets } = useGetMeldCryptoCurrenciesQuery({
+    country: 'US',
+  })
 
   const { data: allCoins = [], isLoading: isLoadingCoinMarketData } =
     useGetCoinMarketQuery({

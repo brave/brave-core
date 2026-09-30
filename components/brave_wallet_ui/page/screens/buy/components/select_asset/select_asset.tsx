@@ -94,7 +94,7 @@ export const AssetListItem = ({
   onSelect,
   network,
 }: AssetListItemProps) => {
-  const { symbolImageUrl, currencyCode, chainName } = asset
+  const { symbol: symbolImageUrl, currencyCode, chainName } = asset
 
   // Computed
   const assetSymbol = getAssetSymbol(asset)
@@ -194,7 +194,7 @@ export const SelectAsset = (props: SelectAssetProps) => {
       return (
         assetName.startsWith(searchText.toLowerCase())
         || assetSymbol.startsWith(searchText.toLowerCase())
-        || asset?.contractAddress
+        || asset?.contract
           ?.toLowerCase()
           .startsWith(searchText.toLowerCase())
         || assetName.includes(searchText.toLowerCase())

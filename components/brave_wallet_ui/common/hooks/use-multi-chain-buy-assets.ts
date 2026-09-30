@@ -19,7 +19,9 @@ export const useFindBuySupportedToken = (
   >,
 ) => {
   // queries
-  const { data: options } = useGetMeldCryptoCurrenciesQuery()
+  const { data: options } = useGetMeldCryptoCurrenciesQuery({
+    country: 'US',
+  })
 
   // computed
   const foundNativeToken =
@@ -36,8 +38,7 @@ export const useFindBuySupportedToken = (
     token
     && options?.find(
       (asset) =>
-        asset.contractAddress?.toLowerCase()
-          === token.contractAddress.toLowerCase()
+        asset.contract?.toLowerCase() === token.contractAddress.toLowerCase()
         && asset.chainId?.toLowerCase() === token.chainId.toLowerCase(),
     )
 

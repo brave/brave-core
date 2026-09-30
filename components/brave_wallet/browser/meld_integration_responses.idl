@@ -15,30 +15,44 @@ namespace meld_integration_responses {
     dictionary Country {
         DOMString countryCode;
         DOMString? name;
-        DOMString? flagImageUrl;
+        DOMString? flag;
+    };
+
+    dictionary CountriesResponse {
+        Country[]? countries;
     };
 
     dictionary CryptoCurrency {
         DOMString currencyCode;
         DOMString? name;
+        long? decimalPlaces;
         DOMString? chainCode;
         DOMString? chainName;
         DOMString? chainId;
-        DOMString? contractAddress;
-        DOMString? symbolImageUrl;
+        DOMString? contract;
+        DOMString? symbol;
+    };
+
+    dictionary CryptoCurrenciesResponse {
+        CryptoCurrency[]? currencies;
     };
 
     dictionary FiatCurrency {
         DOMString currencyCode;
         DOMString? name;
-        DOMString? symbolImageUrl;
+        long? decimalPlaces;
+        DOMString? symbol;
+    };
+
+    dictionary FiatCurrenciesResponse {
+        FiatCurrency[]? currencies;
     };
 
     dictionary PaymentMethod {
-        DOMString paymentMethod;
+        DOMString method;
         DOMString? name;
         DOMString? paymentType;
-        Logos? logos;
+        Logos? logo;
     };
 
     dictionary CryptoQuote {
