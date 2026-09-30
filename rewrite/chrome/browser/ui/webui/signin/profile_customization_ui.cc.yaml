@@ -24,12 +24,12 @@ substitutions:
                IDR_SIGNIN_PROFILE_CUSTOMIZATION_PROFILE_CUSTOMIZATION_APP_CHROMIUM_JS},
 
   - description: |-
-      Supply custom profile image data after the profile page registers resources.
+      Supply custom profile image data at the end of the constructor.
 
       The chromium_src override defines the helper before including this file.
     regex:
-      re_pattern: '(ProfileCustomizationUI::ProfileCustomizationUI\([^)]*\).*?webui::SetupWebUIDataSource\([^;]+;)'
-      re_flags: [DOTALL]
+      re_pattern: '(ProfileCustomizationUI::ProfileCustomizationUI\([^)]*\).*?)(^\})'
+      re_flags: [DOTALL, MULTILINE]
       replace: |-
-        \1
-          AddProfileCustomizationData(source);
+        \1  AddProfileCustomizationData(source);
+        \2
