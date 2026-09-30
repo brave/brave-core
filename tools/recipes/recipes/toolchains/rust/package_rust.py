@@ -25,7 +25,7 @@ def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
     chromium_src = api.chromium_checkout.ensure_checkout(
         ref=properties.chromium_ref)
 
-    brave_core_root = api.brave_core_checkout.deploy('tools/cr/toolchains')
+    brave_core_root = api.brave_core_checkout.deploy('tools/cr')
 
     vpython3 = api.depot_tools.vpython3()
     cmd = [
@@ -58,7 +58,7 @@ def GenTests(api):
         api.platform.name('linux'),
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.git_cache_populated(),
-        api.brave_core_checkout.deployed('tools/cr/toolchains'),
+        api.brave_core_checkout.deployed('tools/cr'),
         api.properties(brave_subrevision=1, chromium_ref='151.0.7917.1'),
         api.post_process(post_process.MustRun, 'clone from git cache'),
         api.post_process(post_process.MustRun, 'checkout tag'),
@@ -81,7 +81,7 @@ def GenTests(api):
         api.platform.name('linux'),
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.git_cache_populated(),
-        api.brave_core_checkout.deployed('tools/cr/toolchains'),
+        api.brave_core_checkout.deployed('tools/cr'),
         api.properties(brave_subrevision=1,
                        chromium_ref='151.0.7917.1',
                        build_rustc_from_scratch=True),
@@ -97,7 +97,7 @@ def GenTests(api):
         api.platform.name('mac'),
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.git_cache_populated(),
-        api.brave_core_checkout.deployed('tools/cr/toolchains'),
+        api.brave_core_checkout.deployed('tools/cr'),
         api.osx_sdk.installed(),
         api.properties(brave_subrevision=1, chromium_ref='151.0.7917.1'),
         api.post_process(post_process.MustRun, 'install xcode'),

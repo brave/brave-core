@@ -67,7 +67,7 @@
       "[WORKSPACE]/b/src/brave",
       "sparse-checkout",
       "add",
-      "tools/cr/bootstrap"
+      "tools/cr"
     ],
     "name": "sparse-checkout add (2)"
   },

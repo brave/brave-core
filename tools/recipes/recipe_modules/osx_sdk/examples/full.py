@@ -22,7 +22,7 @@ def GenTests(api):
     yield api.test(
         'mac',
         api.platform.name('mac'),
-        api.brave_core_checkout.deployed('tools/cr/toolchains'),
+        api.brave_core_checkout.deployed('tools/cr'),
         api.osx_sdk.installed(),
         api.post_process(post_process.StepCommandContains, 'read mac_sdk.gni',
                          ['/b/checkout/src/build/config/mac/mac_sdk.gni']),

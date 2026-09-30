@@ -25,7 +25,7 @@ def GenTests(api):
     yield api.test(
         'install fails',
         api.platform.name('mac'),
-        api.brave_core_checkout.deployed('tools/cr/toolchains'),
+        api.brave_core_checkout.deployed('tools/cr'),
         api.osx_sdk.mac_sdk_gni(),
         api.step_data('install xcode', retcode=1),
         api.post_process(post_process.StepFailure, 'install xcode'),
@@ -38,7 +38,7 @@ def GenTests(api):
     yield api.test(
         'install succeeds',
         api.platform.name('mac'),
-        api.brave_core_checkout.deployed('tools/cr/toolchains'),
+        api.brave_core_checkout.deployed('tools/cr'),
         api.osx_sdk.installed(),
         api.post_process(post_process.MustRun, 'reset xcode'),
         api.post_process(post_process.StatusSuccess),

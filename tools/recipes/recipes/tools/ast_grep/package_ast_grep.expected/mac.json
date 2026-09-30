@@ -242,7 +242,7 @@
       "sparse-checkout",
       "add",
       "third_party/ast-grep",
-      "tools/cr/toolchains"
+      "tools/cr"
     ],
     "name": "sparse-checkout add"
   },
@@ -289,7 +289,7 @@
       "[WORKSPACE]/b/src/brave",
       "sparse-checkout",
       "add",
-      "tools/cr/toolchains"
+      "tools/cr"
     ],
     "name": "sparse-checkout add (2)"
   },
