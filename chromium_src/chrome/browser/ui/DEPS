@@ -10,4 +10,5 @@ include_rules += [
   "+brave/components/containers/core/common",
   "+brave/components/omnibox/browser",
   "+brave/components/tor/buildflags",
+  "+brave/ui/webui/custom_profile_image/buildflags",
 ]

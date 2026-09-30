@@ -1679,5 +1679,9 @@ source_set("browser_tests") {
 
       deps += [ "//ui/base/clipboard:clipboard_test_support" ]
     }
+
+    if (enable_brave_custom_profile_image_webui) {
+      deps += [ "//brave/browser/ui/views/profiles:browser_tests" ]
+    }
   }
 }

@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Allow the local profile customization dialog to open a file chooser.
+
+      The implementation keeps the default cancellation behavior for other dialogs.
+    add_to_public:
+      class_name: SigninViewControllerDelegateViews
+      code: |-
+        void RunFileChooser(content::RenderFrameHost* render_frame_host,
+                            scoped_refptr<content::FileSelectListener> listener,
+                            const blink::mojom::FileChooserParams& params) override;
