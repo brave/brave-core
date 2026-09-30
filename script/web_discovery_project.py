@@ -1,32 +1,37 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import argparse
 import os
+import shutil
 import sys
 
-from lib.config import PLATFORM, SOURCE_ROOT, enable_verbose_mode
+from lib.config import SOURCE_ROOT, enable_verbose_mode
 from lib.util import execute_stdout, scoped_cwd
 
 WEB_DISCOVERY_DIR = os.path.join(
     SOURCE_ROOT, 'vendor', 'web-discovery-project')
 
-NPM = 'npm'
-if PLATFORM in ['win32', 'cygwin']:
-    NPM += '.cmd'
-
 
 def main():
     args = parse_args()
-    env = os.environ.copy()
+
+    pnpm = shutil.which('pnpm')
+    if not pnpm:
+        raise RuntimeError('Unable to find pnpm in PATH')
 
     with scoped_cwd(WEB_DISCOVERY_DIR):
         if args.verbose:
             enable_verbose_mode()
         if args.install:
-            execute_stdout([NPM, 'install', '--no-save', '--yes'], env=env)
+            execute_stdout([pnpm, 'install', '--frozen-lockfile', '--yes'])
         if args.build:
+            env = os.environ.copy()
             env["OUTPUT_PATH"] = args.output_path
-            execute_stdout([NPM, 'run', 'build-module'], env=env)
+            execute_stdout([pnpm, 'run', 'build-module'], env=env)
 
 
 def parse_args():
