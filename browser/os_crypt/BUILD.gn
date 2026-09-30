@@ -9,14 +9,19 @@ source_set("os_crypt") {
   sources = [
     "os_crypt_key_backup.cc",
     "os_crypt_key_backup.h",
+    "os_crypt_key_backup_com_bridge.cc",
+    "os_crypt_key_backup_com_bridge.h",
   ]
 
   deps = [
     "//base",
     "//chrome/browser/os_crypt",
     "//chrome/common:constants",
+    "//chrome/elevation_service:public_headers",
     "//components/prefs",
   ]
+
+  libs = [ "crypt32.lib" ]
 }
 
 source_set("unit_tests") {
@@ -29,7 +34,11 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//chrome/browser/os_crypt",
+    "//chrome/elevation_service:public_headers",
     "//components/prefs:test_support",
+    "//testing/gmock",
     "//testing/gtest",
   ]
+
+  libs = [ "crypt32.lib" ]
 }

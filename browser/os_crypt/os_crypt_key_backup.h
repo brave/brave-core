@@ -11,7 +11,6 @@
 #include "base/feature.h"
 #include "base/files/file_path.h"
 
-class PrefRegistrySimple;
 class PrefService;
 
 namespace brave {
@@ -26,68 +25,100 @@ namespace brave {
 //
 // Brave's key itself is "wrapped", meaning it's encrypted by the OS encryption.
 // In order to get the real key, the OS encryption would need to decrypt or
-// "unwrap" this value.
+// "unwrap" this value. DPAPI and app-bound encryption are both
+// non-deterministic - wrapping the same underlying key twice produces
+// different ciphertext bytes each time - so a history of distinct *unwrapped*
+// keys is kept (up to `kMaxHistoryEntries` each), rather than a single
+// snapshot, to survive the underlying key rotating between launches.
 inline constexpr base::FilePath::CharType kOSCryptKeyBackupFileName[] =
     FILE_PATH_LITERAL("OSCrypt Key Backup");
 
-// What the backup looks like relative to the key currently in `Local State`.
-// Recorded in local state for a later change to act on; nothing reads it yet.
-enum class OSCryptKeyBackupState {
+// Every time a restore is actually attempted (as opposed to the common case
+// where there's nothing to restore), its outcome is appended here - a
+// durable, timestamped, append-only log. Local State only ever holds the
+// live keys themselves, so a Local State pref would get silently overwritten
+// or cleared right along with the thing it's describing; a separate file is
+// the only way to keep a record of a restore having happened at all.
+inline constexpr base::FilePath::CharType kOSCryptKeyRestoreFileName[] =
+    FILE_PATH_LITERAL("OSCrypt Key Restore");
+
+// What happened when the live key(s) were considered for backup this launch.
+enum class OSCryptKeyBackupResult {
   kUnknown = 0,
-  // No backup existed, and one has now been written.
-  kCreated = 1,
-  // A backup exists and holds the key that is in use.
-  kMatchesLiveKey = 2,
-  // A backup exists and holds a different key. The backup is left untouched:
-  // if the key in `Local State` changed, the older one is the one worth
-  // keeping. Note this also fires the one time OSCrypt re-wraps the same key to
-  // enable auditing, because the comparison is on the wrapped bytes.
-  kDiffersFromLiveKey = 3,
+  // At least one of the two keys' history gained a new distinct entry.
+  kAppended = 1,
+  // Both keys (that have a live value) already matched their newest history
+  // entry; nothing was written.
+  kUpToDate = 2,
+  // Reading the backup file was fine (or it didn't exist), but writing the
+  // updated backup back out failed.
+  kWriteFailed = 3,
 };
 
-// Writes the backup at `path` unless one is already there. Blocking.
-// Exposed because it carries the rule worth testing: an existing backup is
-// never replaced.
-OSCryptKeyBackupState WriteOSCryptKeyBackupIfAbsent(const base::FilePath& path,
-                                                    std::string encrypted_key,
-                                                    std::string app_bound_key);
+// Appends to the backup at `path` when the live key(s) are new. Blocking:
+// unwraps `encrypted_key` (DPAPI, cheap and local) and, if `app_bound_key` is
+// non-empty, unwraps it too (a round trip to the elevation service). Neither
+// key's live value is compared to the backup's wrapped bytes - DPAPI and
+// app-bound wrapping are both non-deterministic, so comparison happens on
+// the unwrapped value. A key whose unwrapped value already matches the
+// newest history entry on file is left alone; a genuinely new value is
+// appended, evicting the oldest entry if the history would exceed
+// `kMaxHistoryEntries`.
+OSCryptKeyBackupResult AppendOSCryptKeyBackupIfNew(const base::FilePath& path,
+                                                   std::string encrypted_key,
+                                                   std::string app_bound_key);
 
-// What happened on the restore path. Recorded in `Local State` under
-// `brave.os_crypt.key_restore_result`; nothing is returned to the caller.
+// What happened on the restore path for one key. Appended to the restore
+// log at `kOSCryptKeyRestoreFileName` (one value per key type per attempt);
+// nothing is returned to the caller.
 enum class OSCryptKeyRestoreResult {
-  // `Local State` already had a key. Nothing was read from disk.
+  // `Local State` already had a key, or (for the app-bound-specific value)
+  // no app-bound restore was attempted at all. Nothing was read from disk.
   kNotAttempted = 0,
   // The key was missing and there is no backup to put back.
   kNoBackup = 1,
-  // The key was missing and the backup has been put back.
-  kRestored = 2,
-  // The key was missing and a backup exists but could not be used.
+  // The key was missing and a history entry was found and verified (it
+  // actually unwrapped) before being put back.
+  kRestoredVerified = 2,
+  // The key was missing and a backup exists but could not be used (the file
+  // is unreadable, or this key's history is empty).
   kBackupUnusable = 3,
+  // The key was missing and no history entry could be verified. The newest
+  // entry was put back anyway - OSCrypt's own new-key-minting fallback is
+  // the safety net if it turns out not to work either.
+  kRestoredUnverifiedFallback = 4,
 };
 
 // Guarding this feature so we can control w/ Griffin. Enabled by default.
 // It's worth noting that the variations seed is also stored in `Local State`.
 BASE_DECLARE_FEATURE(kBraveOSCryptKeyRestore);
 
-// Puts the backed-up key back when `Local State` has lost it. Must run before
+// Puts a backed-up key back when `Local State` has lost it. Must run before
 // OSCrypt initializes, since that is what reads the key and what mints a
 // replacement when it finds none.
 //
-// Action is only taken when the key is missing (value is missing or file is
-// missing). No action taken when there's a key but it's wrong (we don't have a
-// way to tell). That situation would go down existing code path where new key
-// is issued. Each key is checked on its own, since the DPAPI key and the
-// app-bound key belong to separate providers that replace them independently.
+// Action is only taken when the DPAPI key is missing (value is missing or
+// file is missing) - that is the outer gate for this whole function. The
+// app-bound key is checked and restored independently (and only) within
+// that same call, since the DPAPI key and the app-bound key belong to
+// separate providers that replace them independently; app-bound is simply
+// not attempted if the DPAPI key was present.
 //
-// Blocking, but only touches the disk on the failure path: when a key is
-// present this reads one in-memory pref and returns.
+// For each key, history entries are verified newest-to-oldest (actually
+// unwrapped) and the first one that verifies is restored; if none verify,
+// the newest is restored anyway. Verifying an app-bound entry blocks this
+// (UI) thread on a round trip to the elevation service, since this runs
+// before any message loop exists to bridge asynchronously - see
+// os_crypt_key_backup_com_bridge.h.
+//
+// Whenever either key is actually attempted, a record of both keys'
+// outcomes (one may be `kNotAttempted`) is appended to the restore log at
+// `kOSCryptKeyRestoreFileName`.
 void MaybeRestoreOSCryptKey(const base::FilePath& user_data_dir,
                             PrefService* local_state);
 
-void RegisterOSCryptKeyBackupLocalStatePrefs(PrefRegistrySimple* registry);
-
-// Writes the backup if there isn't one, on a blocking background task. Never
-// replaces an existing backup. Does nothing until a key exists to copy.
+// Appends to the backup if the live key(s) are new, on a blocking background
+// task. Does nothing until a key exists to copy.
 void BackUpOSCryptKey(const base::FilePath& user_data_dir,
                       PrefService* local_state);
 

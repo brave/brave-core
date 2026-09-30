@@ -116,7 +116,6 @@
 #endif
 
 #if BUILDFLAG(IS_WIN)
-#include "brave/browser/os_crypt/os_crypt_key_backup.h"
 #include "brave/components/windows_recall/windows_recall.h"
 #endif
 
@@ -300,7 +299,6 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
 #if BUILDFLAG(IS_WIN)
   windows_recall::RegisterLocalStatePrefs(registry);
-  brave::RegisterOSCryptKeyBackupLocalStatePrefs(registry);
 #endif
 
 #if BUILDFLAG(ENABLE_OMAHA4)

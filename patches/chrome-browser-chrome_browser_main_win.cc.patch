@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/chrome_browser_main_win.cc b/chrome/browser/chrome_browser_main_win.cc
-index 37b7ad5300599a4de008175c3c535d1ff63c5398..a65e195f7761c0ef0b2d5225978f4b1ee3d04b40 100644
+index 14bf87c503bb167c79f838b82fcf4810ddede740..d9380ecbf34fa4c2e794f65b64adc0e06a04bf52 100644
 --- a/chrome/browser/chrome_browser_main_win.cc
 +++ b/chrome/browser/chrome_browser_main_win.cc
-@@ -555,6 +555,9 @@ void ChromeBrowserMainPartsWin::ToolkitInitialized() {
+@@ -599,6 +599,9 @@ void ChromeBrowserMainPartsWin::ToolkitInitialized() {
  }
  
  void ChromeBrowserMainPartsWin::PreCreateMainMessageLoop() {
