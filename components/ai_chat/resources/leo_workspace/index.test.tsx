@@ -9,6 +9,12 @@ import { createFakeWorkspace } from './test_file_system'
 // already finished loading by then, so the tests dispatch the event by hand.
 import './index'
 
+// Mock the storage module before importing the entry point
+jest.mock('./storage', () => ({
+  restoreDirectoryHandle: jest.fn().mockResolvedValue(null),
+  storeDirectoryHandle: jest.fn().mockResolvedValue(undefined),
+}))
+
 interface LaunchParams {
   files: FileSystemHandle[]
 }
@@ -17,9 +23,10 @@ let consumer: ((params: LaunchParams) => void) | null
 let setConsumer: jest.Mock<void, [(params: LaunchParams) => void]>
 let registeredToolNames: string[]
 
-/** Runs the module's DOMContentLoaded handler. */
-function load() {
+/** Runs the module's DOMContentLoaded handler and waits for async init. */
+async function load() {
   document.dispatchEvent(new Event('DOMContentLoaded'))
+  await flush()
 }
 
 /** Lets the floating registerTools() promise settle. */
@@ -70,14 +77,14 @@ afterEach(() => {
 })
 
 describe('leo workspace entry point', () => {
-  it('consumes the launch queue once the document is ready', () => {
-    load()
+  it('consumes the launch queue once the document is ready', async () => {
+    await load()
     expect(setConsumer).toHaveBeenCalledTimes(1)
     expect(launchErrors()).toEqual([])
   })
 
   it('registers the file tools for the delivered directory handle', async () => {
-    load()
+    await load()
     consumer!({ files: [createFakeWorkspace({ 'a.txt': '' })] })
     await flush()
     expect(registeredToolNames).toEqual([
@@ -90,7 +97,7 @@ describe('leo workspace entry point', () => {
   })
 
   it('ignores a launch that delivers a file instead of a directory', async () => {
-    load()
+    await load()
     consumer!({ files: [{ kind: 'file', name: 'a.txt' } as FileSystemHandle] })
     await flush()
     expect(registeredToolNames).toEqual([])
@@ -101,7 +108,7 @@ describe('leo workspace entry point', () => {
   })
 
   it('ignores a launch with no files', async () => {
-    load()
+    await load()
     consumer!({ files: [] })
     await flush()
     expect(registeredToolNames).toEqual([])
@@ -111,9 +118,9 @@ describe('leo workspace entry point', () => {
     )
   })
 
-  it('logs when the launch queue is unavailable', () => {
+  it('logs when the launch queue is unavailable', async () => {
     delete window.launchQueue
-    load()
+    await load()
     expect(console.error).toHaveBeenCalledWith(
       expect.stringContaining('window.launchQueue is unavailable'),
     )

@@ -11,12 +11,15 @@
 // via window.launchQueue), implements the file tools against it, and registers
 // them with Leo via WebMCP (navigator.modelContext). There is no visible UI.
 //
-// The handle is delivered via launchQueue; once captured, the file tools are
-// registered with Leo via WebMCP (see tools.ts / file_ops.ts). The `view.`
-// sibling origin can also read files over postMessage (see message_handler.ts).
+// The handle is delivered via launchQueue; once captured, it's stored in
+// IndexedDB so the workspace can restore it on subsequent loads without
+// requiring launchQueue again. The file tools are registered with Leo via
+// WebMCP (see tools.ts / file_ops.ts). The `view.` sibling origin can also
+// read files over postMessage (see message_handler.ts).
 
 import { installMessageHandler } from './message_handler'
 import { registerTools } from './tools'
+import { restoreDirectoryHandle, storeDirectoryHandle } from './storage'
 
 // launchQueue is not in the default TS DOM lib; declare the minimal surface we
 // use. The delivered file entries are FileSystemDirectoryHandle objects.
@@ -43,6 +46,25 @@ const {
 // surface as an unhandled rejection. Awaiting consumers still see it.
 rootHandle.catch(() => {})
 
+// Called when we have a valid directory handle (from launchQueue or IndexedDB).
+function onDirectoryHandle(
+  root: FileSystemDirectoryHandle,
+  fromStorage: boolean,
+) {
+  console.log(
+    '[leo-workspace] received directory handle:',
+    root.name,
+    fromStorage ? '(from IndexedDB)' : '(from launchQueue)',
+  )
+  resolveRoot(root)
+  void registerTools(root)
+
+  // Store in IndexedDB for future loads (only if from launchQueue)
+  if (!fromStorage) {
+    void storeDirectoryHandle(root)
+  }
+}
+
 function onLaunch(params: LaunchParams) {
   const entry = params.files?.[0]
   if (!entry || entry.kind !== 'directory') {
@@ -50,18 +72,25 @@ function onLaunch(params: LaunchParams) {
       '[leo-workspace] launch params missing a directory handle',
       params,
     )
-    rejectRoot(new Error('workspace folder is unavailable'))
+    // Don't reject yet - we might have a stored handle
     return
   }
   const root = entry as FileSystemDirectoryHandle
-  console.log('[leo-workspace] received directory handle:', root.name)
-  resolveRoot(root)
-  void registerTools(root)
+  onDirectoryHandle(root, false)
 }
 
-function initialize() {
+async function initialize() {
   console.log('[leo-workspace] bundle loaded at', window.location.origin)
   installMessageHandler(rootHandle)
+
+  // Try to restore directory handle from IndexedDB first
+  const storedHandle = await restoreDirectoryHandle()
+  if (storedHandle) {
+    onDirectoryHandle(storedHandle, true)
+    return
+  }
+
+  // Fall back to launchQueue
   if (window.launchQueue) {
     window.launchQueue.setConsumer(onLaunch)
   } else {
