@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/permissions/chooser_bubble_ui.cc b/chrome/browser/ui/views/permissions/chooser_bubble_ui.cc
-index bbfbf51354797eac7afb24256d58e14fa198e412..a36d664f333d346698424a643682cef399f50ff3 100644
+index 6f672ac21a9f8ddeda625683c37fa6b23c3e41a1..beaf5ac2bf95745878056405ed45ce7eae4da0ea 100644
 --- a/chrome/browser/ui/views/permissions/chooser_bubble_ui.cc
 +++ b/chrome/browser/ui/views/permissions/chooser_bubble_ui.cc
-@@ -119,6 +119,7 @@ ChooserBubbleUiViewDelegate::ChooserBubbleUiViewDelegate(
+@@ -122,6 +122,7 @@ ChooserBubbleUiViewDelegate::ChooserBubbleUiViewDelegate(
            GetChooserAnchorConfiguration(browser).anchor,
            contents),
        fullscreen_blocker_(std::move(fullscreen_blocker)) {
@@ -10,7 +10,7 @@ index bbfbf51354797eac7afb24256d58e14fa198e412..a36d664f333d346698424a643682cef3
    // ------------------------------------
    // | Chooser bubble title             |
    // | -------------------------------- |
-@@ -155,6 +156,8 @@ ChooserBubbleUiViewDelegate::ChooserBubbleUiViewDelegate(
+@@ -158,6 +159,8 @@ ChooserBubbleUiViewDelegate::ChooserBubbleUiViewDelegate(
    SetCloseCallback(
        base::BindOnce(&DeviceChooserContentView::Close,
                       base::Unretained(device_chooser_content_view_)));

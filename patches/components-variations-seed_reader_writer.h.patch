@@ -1,8 +1,8 @@
 diff --git a/components/variations/seed_reader_writer.h b/components/variations/seed_reader_writer.h
-index 105f2369520ff1ac422d77bf91f1bef4fae7d100..2eb4158ff8f189786f6cbb30a3635a4a6b9d120e 100644
+index 35f405686ff38b2e11fdaa5a390dc3db6d46ad5d..81578cb8345050cf4da7d6969a5ae36c7a5e9fe6 100644
 --- a/components/variations/seed_reader_writer.h
 +++ b/components/variations/seed_reader_writer.h
-@@ -271,6 +271,8 @@ class COMPONENT_EXPORT(VARIATIONS) SeedReaderWriter
+@@ -268,6 +268,8 @@ class COMPONENT_EXPORT(VARIATIONS) SeedReaderWriter
    // Converts a time from StoredSeedInfo proto format (int64_t) to a base::Time.
    static base::Time ProtoTimeToTime(int64_t proto_time);
  

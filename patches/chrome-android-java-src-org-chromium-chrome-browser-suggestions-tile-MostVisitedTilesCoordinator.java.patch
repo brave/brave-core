@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesCoordinator.java
-index 2bc5486946e27da9065c3878131f3130433243c6..4b4a9cdbc2a6922ffc4063cb620d55d102b84944 100644
+index c01c0c9cdc25d67941b1ca1893e5c1966b7b1b82..9d2cf1e76ccddb0538109ae1f5e58e78700c40fd 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesCoordinator.java
-@@ -159,7 +159,7 @@ public class MostVisitedTilesCoordinator implements ConfigurationChangedObserver
+@@ -152,7 +152,7 @@ public class MostVisitedTilesCoordinator implements ConfigurationChangedObserver
          mUserEducationHelper = new UserEducationHelper(mActivity, profile, handler);
  
          mContextMenuManager =

@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/common/installer.py b/chrome/installer/linux/common/installer.py
-index 3970d8ebf641edc415d019a628f5e6fbc08f8fcf..df4260032874b86130a0a0c796b96ad5df55c370 100644
+index a665f75dc61afd4cd23ac9a11ddbfbb23c097ccf..60ac57e14327c64b28372ce0484826f274c4220a 100644
 --- a/chrome/installer/linux/common/installer.py
 +++ b/chrome/installer/linux/common/installer.py
 @@ -218,6 +218,8 @@ def gen_changelog(
@@ -19,7 +19,7 @@ index 3970d8ebf641edc415d019a628f5e6fbc08f8fcf..df4260032874b86130a0a0c796b96ad5
  
      @classmethod
      def from_args(
-@@ -832,6 +835,7 @@ class InstallerConfig:
+@@ -811,6 +814,7 @@ class InstallerConfig:
                  icon_suffix = "_dev"
              elif self.channel == "canary":
                  icon_suffix = "_canary"
@@ -27,7 +27,7 @@ index 3970d8ebf641edc415d019a628f5e6fbc08f8fcf..df4260032874b86130a0a0c796b96ad5
  
          icon_sizes = [16, 24, 32, 48, 64, 128, 256]
          logo_resources_png = []
-@@ -1430,3 +1434,4 @@ def compute_repo_package_hash_for_presubmit(
+@@ -1409,3 +1413,4 @@ def compute_repo_package_hash_for_presubmit(
              return hashlib.sha256(f.read()).hexdigest()
      finally:
          os.umask(old_umask)

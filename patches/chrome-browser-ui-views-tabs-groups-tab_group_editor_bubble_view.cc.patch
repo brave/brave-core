@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc b/chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc
-index 6dc7d506457fc76dcf395576180addcf05d78af6..8c9411dfb5ff6ee2c3eb2210e9a727037b48c3f0 100644
+index 244a1b4b9ce54320af21fbdd0cfc8434de735b18..84494c7ab3ee15bde9af595a3f34b4c0ee88f775 100644
 --- a/chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc
 +++ b/chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc
-@@ -268,6 +268,9 @@ std::unique_ptr<views::Widget> TabGroupEditorBubbleView::Show(
+@@ -273,6 +273,9 @@ std::unique_ptr<views::Widget> TabGroupEditorBubbleView::Show(
  
    std::unique_ptr<views::Widget> widget =
        BubbleDialogDelegate::CreateBubble(tab_group_editor_bubble_view);

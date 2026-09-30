@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/public/web/web_local_frame.h b/third_party/blink/public/web/web_local_frame.h
-index 5bf29ef3337282d8d019ff164194ffcf79901528..bc380f0501f47e180f4c133bde5e3c19329b206d 100644
+index 3c61feac0d90d089ef234fcef194ced833b98c6b..1887cc352a9658d01bac7ee2866ea7a006ced46a 100644
 --- a/third_party/blink/public/web/web_local_frame.h
 +++ b/third_party/blink/public/web/web_local_frame.h
-@@ -1003,6 +1003,8 @@ class BLINK_EXPORT WebLocalFrame : public WebFrame {
+@@ -1034,6 +1034,8 @@ class BLINK_EXPORT WebLocalFrame : public WebFrame {
    virtual bool AllowStorageAccessSyncAndNotify(
        WebContentSettingsClient::StorageType storage_type) = 0;
  
