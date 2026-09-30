@@ -771,6 +771,8 @@
 -OmniboxEditModelPopupTest.AimPopup*
 -OmniboxPopupHandlerTest.*
 -SmartTabSharingTest.QueryAutocomplete_*
+-WebuiOmniboxHandlerTabScopingTest.AddTabContext_ContextMenuDoesNotSetInvocationSource
+-WebuiOmniboxHandlerTabScopingTest.AddTabContext_CurrentTabChipSetsInvocationSource
 -WebuiOmniboxHandlerTabScopingTest.QueryAutocomplete_*
 -WebuiOmniboxHandlerTest.OnActiveTabChanged_SavesAndRestoresState
 -WebuiOmniboxHandlerTest.OpenLensSearch
