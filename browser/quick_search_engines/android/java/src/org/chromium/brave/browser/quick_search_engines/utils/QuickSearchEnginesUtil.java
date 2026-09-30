@@ -186,7 +186,7 @@ public class QuickSearchEnginesUtil {
     /** Gets existing search engines map from preferences or creates new one if none exists */
     private static Map<String, QuickSearchEnginesModel> getOrCreateSearchEnginesMap() {
         Map<String, QuickSearchEnginesModel> existing = getQuickSearchEnginesFromPref();
-        return existing != null ? existing : new LinkedHashMap<String, QuickSearchEnginesModel>();
+        return existing != null ? existing : new LinkedHashMap<>();
     }
 
     /** Sets the previous default search engine if not already initialized */
