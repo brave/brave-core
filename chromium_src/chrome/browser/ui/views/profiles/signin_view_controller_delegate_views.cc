@@ -11,7 +11,7 @@
 #include "content/public/browser/file_select_listener.h"
 #include "third_party/blink/public/mojom/choosers/file_chooser.mojom-forward.h"
 
-#if BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE) && BUILDFLAG(ENABLE_DICE_SUPPORT)
+#if BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
 #include "base/feature_list.h"
 #include "brave/browser/ui/webui/custom_profile_image/features.h"
 #include "chrome/browser/file_select_helper.h"
@@ -22,16 +22,19 @@
 #include "third_party/blink/public/mojom/choosers/file_chooser.mojom.h"
 #include "url/gurl.h"
 #include "url/origin.h"
-#endif  // BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE) &&
-        // BUILDFLAG(ENABLE_DICE_SUPPORT)
+#endif  // BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
 
 #include <chrome/browser/ui/views/profiles/signin_view_controller_delegate_views.cc>
+
+// Chromium gates the profile customization dialog on DICE support.
+static_assert(!BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE) ||
+              BUILDFLAG(ENABLE_DICE_SUPPORT));
 
 void SigninViewControllerDelegateViews::RunFileChooser(
     content::RenderFrameHost* render_frame_host,
     scoped_refptr<content::FileSelectListener> listener,
     const blink::mojom::FileChooserParams& params) {
-#if BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE) && BUILDFLAG(ENABLE_DICE_SUPPORT)
+#if BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
   auto* web_contents = GetWebContents();
   if (base::FeatureList::IsEnabled(
           custom_profile_image::features::kBraveCustomProfileImage) &&
@@ -46,8 +49,7 @@ void SigninViewControllerDelegateViews::RunFileChooser(
                                      params);
     return;
   }
-#endif  // BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE) &&
-        // BUILDFLAG(ENABLE_DICE_SUPPORT)
+#endif  // BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
   content::WebContentsDelegate::RunFileChooser(render_frame_host,
                                                std::move(listener), params);
 }

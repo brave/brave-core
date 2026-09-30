@@ -5,27 +5,27 @@
 
 import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
 
-if (enable_brave_custom_profile_image_webui) {
-  source_set("browser_tests") {
-    testonly = true
-    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-    sources = [ "profile_customization_file_chooser_browsertest.cc" ]
-    deps = [
-      "//base",
-      "//base/test:test_support",
-      "//brave/browser/ui/webui/custom_profile_image",
-      "//chrome/browser/ui",
-      "//chrome/browser/ui/signin",
-      "//chrome/browser/ui/webui/signin:signin_utils",
-      "//chrome/common",
-      "//chrome/test:test_support",
-      "//content/public/browser",
-      "//content/public/common",
-      "//content/test:test_support",
-      "//testing/gtest",
-      "//ui/events",
-      "//ui/shell_dialogs",
-      "//ui/shell_dialogs:test_support",
-    ]
-  }
+assert(enable_brave_custom_profile_image_webui)
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  sources = [ "profile_customization_file_chooser_browsertest.cc" ]
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/browser/ui/webui/custom_profile_image",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/signin",
+    "//chrome/browser/ui/webui/signin:signin_utils",
+    "//chrome/common",
+    "//chrome/test:test_support",
+    "//content/public/browser",
+    "//content/public/common",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//ui/events",
+    "//ui/shell_dialogs",
+    "//ui/shell_dialogs:test_support",
+  ]
 }

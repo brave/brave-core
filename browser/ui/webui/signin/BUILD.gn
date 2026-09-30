@@ -5,19 +5,19 @@
 
 import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
 
-if (enable_brave_custom_profile_image_webui) {
-  source_set("browser_tests") {
-    testonly = true
-    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-    sources = [ "brave_profile_customization_browsertest.cc" ]
-    deps = [
-      "//base",
-      "//base/test:test_support",
-      "//brave/browser/ui/webui/custom_profile_image",
-      "//chrome/common",
-      "//chrome/test:test_support",
-      "//content/test:test_support",
-    ]
-    data_deps = [ "//chrome:browser_tests_pak" ]
-  }
+assert(enable_brave_custom_profile_image_webui)
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  sources = [ "brave_profile_customization_browsertest.cc" ]
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/browser/ui/webui/custom_profile_image",
+    "//chrome/common",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+  ]
+  data_deps = [ "//chrome:browser_tests_pak" ]
 }
