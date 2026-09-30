@@ -3212,11 +3212,23 @@ public abstract class BraveActivity extends ChromeActivity
                     quickSearchEngineUrl
                             .replace("{searchTerms}", query)
                             .replace("{inputEncoding}", "UTF-8");
+
+            final String quickSearchVariation;
+            if (mDayZeroVariant.equals(DAY_ZERO_VARIANT_A)) {
+                // Control variant.
+                quickSearchVariation = "-c";
+            } else if (mDayZeroVariant.equals(DAY_ZERO_VARIANT_B)) {
+                // Test variant.
+                quickSearchVariation = "-t";
+                // Default.
+            } else {
+                quickSearchVariation = "";
+            }
             // Tells the Brave search backend the query started from the quick search bar.
             // Leaves any other engine's URL untouched.
             searchUrl =
                     BraveIntentHandler.maybeReplaceBraveSearchSource(
-                            searchUrl, BraveIntentHandler.ANDROID_QUICK_SEARCH);
+                            searchUrl, BraveIntentHandler.ANDROID_QUICK_SEARCH + quickSearchVariation);
             getActivityTab().loadUrl(new LoadUrlParams(searchUrl));
         }
         getBraveToolbarLayout().clearOmniboxFocus();
