@@ -120,7 +120,7 @@ void SidebarController::TearDownPreBrowserWindowDestruction() {
 void SidebarController::OnItemPressed(size_t index,
                                       WindowOpenDisposition disposition) {
   if (IsActiveIndex(index)) {
-    DeactivateCurrentPanel();
+    GetSidePanelUI()->Close();
     return;
   }
 
@@ -197,26 +197,23 @@ void SidebarController::ActivateItemAt(std::optional<size_t> index,
 
 void SidebarController::ActivatePanelItem(
     SidebarItem::BuiltInItemType panel_item) {
-  // For panel item activation, SidePanelUI is the single source of truth.
-  auto* side_panel_ui = side_panel_ui_for_testing_
-                            ? side_panel_ui_for_testing_.get()
-                            : SidePanelUI::From(browser_);
-  CHECK(side_panel_ui);
-  if (panel_item == SidebarItem::BuiltInItemType::kNone) {
-    side_panel_ui->Close();
-    return;
-  }
+  CHECK_NE(panel_item, SidebarItem::BuiltInItemType::kNone);
 
   // Suppress opening animation when we have active item.
   // When opening another panel while other panel is visible,
   // we don't need to open new panel with animation.
   const bool suppress_animations = sidebar_model_->active_index().has_value();
-  side_panel_ui->Show(sidebar::SidePanelIdFromSideBarItemType(panel_item),
-                      /*open_trigger*/ std::nullopt, suppress_animations);
+  GetSidePanelUI()->Show(sidebar::SidePanelIdFromSideBarItemType(panel_item),
+                         /*open_trigger*/ std::nullopt, suppress_animations);
 }
 
-void SidebarController::DeactivateCurrentPanel() {
-  ActivatePanelItem(SidebarItem::BuiltInItemType::kNone);
+SidePanelUI* SidebarController::GetSidePanelUI() {
+  // For panel item activation, SidePanelUI is the single source of truth.
+  auto* side_panel_ui = side_panel_ui_for_testing_
+                            ? side_panel_ui_for_testing_.get()
+                            : SidePanelUI::From(browser_);
+  CHECK(side_panel_ui);
+  return side_panel_ui;
 }
 
 void SidebarController::ToggleSidebarPinning() {

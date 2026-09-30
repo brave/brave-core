@@ -11,8 +11,6 @@
 #include "base/check_is_test.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
-#include "brave/browser/ui/sidebar/sidebar_controller.h"
-#include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
@@ -21,6 +19,7 @@
 #include "chrome/browser/ui/side_panel/side_panel_content_proxy.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/side_panel/side_panel_registry.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_helper.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
@@ -50,10 +49,8 @@ DEFINE_USER_DATA(PlaylistSidePanelCoordinator);
 
 PlaylistSidePanelCoordinator::PlaylistSidePanelCoordinator(
     BrowserWindowInterface* browser,
-    sidebar::SidebarController* sidebar_controller,
     Profile* profile)
     : browser_(browser),
-      sidebar_controller_(sidebar_controller),
       profile_(profile),
       scoped_unowned_user_data_(browser->GetUnownedUserDataHost(), *this) {}
 
@@ -75,8 +72,9 @@ void PlaylistSidePanelCoordinator::CreateAndRegisterEntry(
 }
 
 void PlaylistSidePanelCoordinator::ActivatePanel() {
-  sidebar_controller_->ActivatePanelItem(
-      sidebar::SidebarItem::BuiltInItemType::kPlaylist);
+  if (auto* side_panel_ui = SidePanelUI::From(browser_)) {
+    side_panel_ui->Show(SidePanelEntryId::kPlaylist);
+  }
 }
 
 void PlaylistSidePanelCoordinator::LoadPlaylist(const std::string& playlist_id,
