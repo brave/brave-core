@@ -11,6 +11,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
 #include "base/path_service.h"
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "brave/browser/ui/webui/custom_profile_image/features.h"
@@ -287,6 +288,46 @@ IN_PROC_BROWSER_TEST_F(ProfileCustomizationFileChooserEnabledBrowserTest,
                        CancelsFileChooserOutsideProfileCustomization) {
   ASSERT_NO_FATAL_FAILURE(CreateSyncConfirmationDialog());
   ExpectFileChooserCanceled(web_contents()->GetPrimaryMainFrame());
+}
+
+IN_PROC_BROWSER_TEST_F(ProfileCustomizationFileChooserEnabledBrowserTest,
+                       CancelsFileInputFromSyncConfirmation) {
+  ASSERT_NO_FATAL_FAILURE(CreateSyncConfirmationDialog());
+  content::SimulateEndOfPaintHoldingOnPrimaryMainFrame(web_contents());
+  auto* factory = ui::FakeSelectFileDialog::RegisterFactory();
+  factory->SetOpenCallback(base::BindLambdaForTesting([factory] {
+    ADD_FAILURE() << "Sync confirmation opened a native chooser";
+    scoped_refptr<ui::FakeSelectFileDialog> dialog = factory->GetLastDialog();
+    dialog->CallFileSelectionCanceled();
+  }));
+
+  // Exercise the renderer-to-browser path from another dialog's origin.
+  ASSERT_EQ(true, content::EvalJs(web_contents(), R"(
+    (() => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      window.fileInputCanceled = new Promise(resolve => {
+        input.addEventListener('cancel', () => {
+          input.remove();
+          resolve(true);
+        }, {once: true});
+      });
+      document.body.append(input);
+      input.focus();
+      return document.activeElement === input;
+    })()
+  )",
+                                  content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                  ISOLATED_WORLD_ID_BRAVE_INTERNAL));
+  content::SimulateKeyPress(web_contents(), ui::DomKey::ENTER,
+                            ui::DomCode::ENTER, ui::VKEY_RETURN,
+                            /*control=*/false, /*shift=*/false,
+                            /*alt=*/false, /*command=*/false);
+  EXPECT_EQ(true, content::EvalJs(web_contents(), "window.fileInputCanceled",
+                                  content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                  ISOLATED_WORLD_ID_BRAVE_INTERNAL));
+  EXPECT_EQ(nullptr, factory->GetLastDialog())
+      << "Sync confirmation opened a native chooser";
 }
 
 IN_PROC_BROWSER_TEST_F(ProfileCustomizationFileChooserEnabledBrowserTest,
