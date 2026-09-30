@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.toolbar.top;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 
@@ -219,6 +220,11 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 toolbarPhone.mToolbarBackgroundColorForNtp =
                         BottomBarUtils.getBottomBarBackgroundColor(
                                 toolbarContext, /* isIncognito= */ false);
+                // The default light location bar color is too close to the bottom bar's.
+                if (!BraveDynamicColors.isDynamicColorsEnabled()
+                        && !ColorUtils.inNightMode(toolbarContext)) {
+                    toolbarPhone.mLocationBarBackgroundColorForNtp = Color.WHITE;
+                }
             }
         }
     }
