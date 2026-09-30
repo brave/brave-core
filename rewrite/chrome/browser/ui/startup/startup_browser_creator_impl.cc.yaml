@@ -12,7 +12,9 @@ substitutions:
       replace: |-
         \1BraveModifyStartupTabNavigationParams(tab, browser, params);
         \1\2
-  - description: 'Skip opening a startup tab whose URL is scheduled for ephemeral storage cleanup'
+  - description:
+      'Skip opening a startup tab whose URL is scheduled for ephemeral storage
+      cleanup'
     regex:
       re_pattern: |-
         for \(auto& tab : tabs\) \{\n( *)// We skip URLs
