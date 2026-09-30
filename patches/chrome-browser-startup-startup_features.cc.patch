@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/startup/startup_features.cc b/chrome/browser/startup/startup_features.cc
-index 9164e5408a1fa4c3ef64539d4b40d3210d34d100..63bba69b185bc088f6866dee9d016fcc76c113b1 100644
+index 6d06d892d015bd1b6415eb8a2c34ce1f631b7f31..9ebb2a9b88285762add8f161ea20122ba4d47f37 100644
 --- a/chrome/browser/startup/startup_features.cc
 +++ b/chrome/browser/startup/startup_features.cc
 @@ -9,7 +9,7 @@
  
  namespace features {
  
--BASE_FEATURE(kLaunchOnStartup, base::FEATURE_ENABLED_BY_DEFAULT);
+-BASE_FEATURE(kLaunchOnStartup, base::FEATURE_DISABLED_BY_DEFAULT);
 +BASE_OVERRIDDEN_FEATURE(kLaunchOnStartup, base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE_ENUM_PARAM(LaunchOnStartupMode,
