@@ -543,7 +543,7 @@ export class MockedWalletApiProxy {
         ethDappSelectedAccount: selectedAccount,
         solDappSelectedAccount: mockSolanaAccount,
         adaDappSelectedAccount: mockCardanoAccount,
-        dotDappSelectedAccount: null,
+        dotDappSelectedAccount: undefined,
       }
       return { allAccounts }
     },
