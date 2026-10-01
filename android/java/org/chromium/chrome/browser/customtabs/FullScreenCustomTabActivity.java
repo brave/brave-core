@@ -80,6 +80,12 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
 
         super.performPostInflationStartup();
 
+        // Match the footer's container background - required to ensure nav bar controls are
+        // visible.
+        getEdgeToEdgeManager()
+                .getEdgeToEdgeSystemBarColorHelper()
+                .setNavigationBarColor(ContextCompat.getColor(this, R.color.container_background));
+
         View toolbarContainer = findViewById(R.id.toolbar_container);
         if (toolbarContainer != null) {
             toolbarContainer.setVisibility(View.GONE);
@@ -143,12 +149,13 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
         if (requestCode == BravePermissionUtils.NOTIFICATION_PERMISSION_CODE
                 && grantResults.length != 0
                 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            String notificationMessage =
+                    getResources()
+                            .getString(
+                                    R.string.enable_notifications_from_brave_to_earn_brave_rewards);
             Snackbar snackbar =
                     Snackbar.make(
-                                    getResources()
-                                            .getString(
-                                                    R.string
-                                                            .enable_notifications_from_brave_to_earn_brave_rewards),
+                                    notificationMessage,
                                     new SnackbarController() {
                                         @Override
                                         public void onDismissNoAction(Object actionData) {}
