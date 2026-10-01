@@ -36,6 +36,8 @@ substitutions:
         \1
 
           if (mojo::PendingRemote<network::mojom::URLLoaderFactory> webui =
-                  MaybeCreateWebUILoaderFactory(frame_tree_node, url)) {
+                  MaybeCreateWebUILoaderFactory(
+                      WebUIURLLoaderFactoryPasskey::GetPassKey(),
+                      frame_tree_node, url)) {
             return webui;
           }
