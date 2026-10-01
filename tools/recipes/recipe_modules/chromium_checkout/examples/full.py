@@ -6,12 +6,34 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
 from PB.recipe_modules.brave.chromium_checkout.examples.full import (
     InputProperties,
 )
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    chromium_checkout,
+    env,
+    platform,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['chromium_checkout', 'env', 'platform', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    chromium_checkout: chromium_checkout.API
+    env: env.API
+    step: step.API
+
+
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    chromium_checkout: chromium_checkout.TEST_API
+    platform: platform.TEST_API
+
 
 PROPERTIES = InputProperties
 
@@ -25,7 +47,7 @@ _TEST_TOOLCHAIN_HASH = 'deadbeef00'
 _TEST_COMMIT_HASH = 'ef35003457e93c278f911a334b06e4a5f8967e06'
 
 
-def RunSteps(api, properties):
+def RunSteps(api: DEPS, properties):
     api.chromium_checkout.ensure_checkout(
         ref=properties.chromium_ref, run_sync=not properties.skip_sync
     )
@@ -39,7 +61,7 @@ def RunSteps(api, properties):
         api.step('win toolchain hash env', ['echo', gyp_hash])
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     # No existing checkout -> clone via a shared git-cache mirror (populated
     # with the release tag up front) straight onto the tag, skipping a
     # separate `origin/HEAD` checkout and re-fetch.

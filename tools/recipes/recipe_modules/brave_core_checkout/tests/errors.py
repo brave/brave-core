@@ -6,12 +6,30 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    brave_core_checkout,
+    env,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['brave_core_checkout', 'env']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    brave_core_checkout: brave_core_checkout.API
+    env: env.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    brave_core_checkout: brave_core_checkout.TEST_API
+    env: env.TEST_API
+
+
+def RunSteps(api: DEPS):
     mode = api.env.get('MODE')
     if mode == 'dotenv':
         api.brave_core_checkout.set_config('brave')
@@ -23,7 +41,7 @@ def RunSteps(api):
         api.brave_core_checkout.deploy([])
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'empty paths',
         api.brave_core_checkout.with_git_cache(),

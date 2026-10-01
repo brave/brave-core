@@ -6,27 +6,39 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from dataclasses import dataclass
 
 import post_process
 from PB.recipes.brave.gerrit.refresh_mirrors import InputProperties
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    chromium_checkout,
+    depot_tools,
+    git_cache,
+    raw_io,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-if TYPE_CHECKING:
-    from engine import RecipeScriptApi
 
-DEPS = [
-    'path',
-    'step',
-    'chromium_checkout',
-    'depot_tools',
-    'git_cache',
-    'raw_io',
-]
+@dataclass
+class DEPS(RecipeScriptApi):
+    chromium_checkout: chromium_checkout.API
+    depot_tools: depot_tools.API
+    git_cache: git_cache.API
+    step: step.API
+
+
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    chromium_checkout: chromium_checkout.TEST_API
+    raw_io: raw_io.TEST_API
+
 
 PROPERTIES = InputProperties
 
 
-def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
+def RunSteps(api: DEPS, properties: InputProperties) -> None:
     api.chromium_checkout.ensure_checkout(
         ref=properties.chromium_ref or 'refs/heads/main',
         run_hooks=False,
@@ -57,7 +69,7 @@ def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
     )
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'fresh checkout',
         api.chromium_checkout.with_git_cache(),

@@ -6,16 +6,36 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 from PB.recipe_modules.brave.proto.examples.full import Config
 
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    path,
+    proto,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['path', 'proto', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    path: path.API
+    proto: proto.API
+    step: step.API
+
+
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    proto: proto.TEST_API
+
 
 CONFIG = Config(name='release', jobs=8)
 
 
-def RunSteps(api):
+def RunSteps(api: DEPS):
     # `input` renders to the path of a file holding the encoded message; each
     # codec picks its own file extension.
     api.step('cat json', ['cat', api.proto.input(CONFIG, api.proto.JSONPB)])
@@ -97,7 +117,7 @@ def RunSteps(api):
     assert api.proto.decode(encoded, Config, api.proto.TEXTPB) == CONFIG
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     # A test seeds the message itself; the placeholder knows its own codec, so
     # nothing here has to mention the encoding.
     reads = [

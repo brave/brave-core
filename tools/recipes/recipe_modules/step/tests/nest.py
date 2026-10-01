@@ -6,12 +6,29 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    futures,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['futures', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    futures: futures.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    pass
+
+
+def RunSteps(api: DEPS):
     # Steps inside the block are named under the nest.
     with api.step.nest('build'):
         api.step('configure', ['gn', 'gen'])
@@ -41,7 +58,7 @@ def RunSteps(api):
         api.step('reports', ['echo', parent.name])
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'nest',
         # The nest itself is recorded, with no command.

@@ -6,13 +6,33 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
 from recipe_modules.git_cache.api import RefKind
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    env,
+    git_cache,
+    path,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['env', 'git_cache', 'path', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    git_cache: git_cache.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    env: env.TEST_API
+    path: path.TEST_API
+
+
+def RunSteps(api: DEPS):
     parse = api.git_cache.parse_ref
     commit = 'ef35003457e93c278f911a334b06e4a5f8967e06'
     refs = {
@@ -48,7 +68,7 @@ def RunSteps(api):
         api.step('no short name', ['echo', 'none'])
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'refs',
         api.env.set('GIT_CACHE_PATH', '/b/cache'),

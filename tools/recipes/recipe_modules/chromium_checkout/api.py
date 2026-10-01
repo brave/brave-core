@@ -15,6 +15,7 @@ from typing import TYPE_CHECKING
 from recipe_api import RecipeApi
 
 if TYPE_CHECKING:
+    from recipe_modules import chromium_checkout
     from recipe_modules.git_cache.api import GitRef
 
 # `chrome/VERSION` is a reliable fingerprint for a Chromium repo.
@@ -33,6 +34,8 @@ CHROMIUM_URL = 'https://chromium.googlesource.com/chromium/src.git'
 
 class ChromiumCheckoutApi(RecipeApi):
     """Clones, syncs, and validates a Chromium `src/` checkout."""
+
+    m: chromium_checkout.DEPS
 
     @property
     def chromium_url(self) -> str:

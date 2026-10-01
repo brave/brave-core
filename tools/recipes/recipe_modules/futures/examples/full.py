@@ -6,22 +6,43 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    context,
+    futures,
+    path,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['context', 'futures', 'path', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    context: context.API
+    futures: futures.API
+    path: path.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    pass
+
+
+def RunSteps(api: DEPS):
     # Fan work out, then collect it in completion order. A simulated step never
     # blocks, so each greenlet runs to completion once it is switched to, and
     # the steps come out in spawn order.
-    futures = [
+    spawned = [
         api.futures.spawn(
             api.step, f'work {i}', ['echo', str(i)], __name=f'w{i}'
         )
         for i in range(3)
     ]
-    names = [future.name for future in api.futures.iwait(futures)]
+    names = [future.name for future in api.futures.iwait(spawned)]
     api.step('collected', ['echo', *names])
 
     # Consuming only part of an `iwait` leaks resources unless it is used as a
@@ -88,7 +109,7 @@ def RunSteps(api):
     api.step('after cancel', ['echo', str(cancelled.done)])
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'full',
         api.step_data('boom', retcode=1),

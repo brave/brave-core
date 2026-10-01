@@ -6,19 +6,32 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import git
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['git', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    git: git.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    pass
+
+
+def RunSteps(api: DEPS):
     api.git.disable_auto_gc('/b/checkout')
     api.git.disable_auto_gc(
         '/b/cache/some-mirror', step_name='disable mirror auto-gc'
     )
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'disables every auto-gc knob',
         api.post_process(

@@ -6,12 +6,29 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    env,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['env', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    env: env.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    env: env.TEST_API
+
+
+def RunSteps(api: DEPS):
     gclient = api.env.which('gclient')
     if gclient:
         api.step('resolved gclient', ['echo', gclient])
@@ -21,7 +38,7 @@ def RunSteps(api):
     api.env.prepend_path('/opt/tools')
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'basic',
         api.env.on_path('gclient', '/depot_tools/gclient'),

@@ -6,16 +6,34 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    chromium_checkout,
+    env,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['chromium_checkout', 'env']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    chromium_checkout: chromium_checkout.API
+    env: env.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    chromium_checkout: chromium_checkout.TEST_API
+    env: env.TEST_API
+
+
+def RunSteps(api: DEPS):
     api.chromium_checkout.ensure_checkout(ref=api.env.get('REF'))
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'fresh clone is not shallow',
         api.env.set('REF', 'refs/heads/main'),

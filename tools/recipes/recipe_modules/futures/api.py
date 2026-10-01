@@ -21,7 +21,7 @@ A recipe fans work out with `spawn`, bounds how much of it runs at once with
 from __future__ import annotations
 
 from collections.abc import Callable, Iterable, Iterator
-from typing import Any, Generic, TypeVar
+from typing import Any, Generic, TYPE_CHECKING, TypeVar
 
 import attr
 from attr.validators import instance_of
@@ -31,6 +31,9 @@ import gevent.queue
 
 from engine_types import PerGreenletStateRegistry
 from recipe_api import RecipeApi
+
+if TYPE_CHECKING:
+    from recipe_modules import futures as futures_mod
 
 T = TypeVar('T')
 
@@ -167,6 +170,8 @@ class _IWaitWrapper(Iterator[Future[Any]]):
 
 class FuturesApi(RecipeApi):
     """Provides access to the recipe concurrency primitives."""
+
+    m: futures_mod.DEPS
 
     Timeout: type[Timeout] = Timeout
     Future: type[Future[Any]] = Future

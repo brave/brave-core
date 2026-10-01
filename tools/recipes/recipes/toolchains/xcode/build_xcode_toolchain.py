@@ -14,22 +14,41 @@ checkout is required, only a shallow deploy of the build script itself.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from dataclasses import dataclass
 
 import post_process
 from PB.recipes.brave.toolchains.xcode.build_xcode_toolchain import (
     InputProperties,
 )
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    brave_core_checkout,
+    depot_tools,
+    path,
+    platform,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-if TYPE_CHECKING:
-    from engine import RecipeScriptApi
 
-DEPS = ['path', 'step', 'platform', 'depot_tools', 'brave_core_checkout']
+@dataclass
+class DEPS(RecipeScriptApi):
+    brave_core_checkout: brave_core_checkout.API
+    depot_tools: depot_tools.API
+    path: path.API
+    step: step.API
+
+
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    brave_core_checkout: brave_core_checkout.TEST_API
+    platform: platform.TEST_API
+
 
 PROPERTIES = InputProperties
 
 
-def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
+def RunSteps(api: DEPS, properties: InputProperties) -> None:
     brave_core_root = api.brave_core_checkout.deploy('tools/cr')
 
     vpython3 = api.depot_tools.vpython3()
@@ -49,7 +68,7 @@ def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
     api.step('build xcode toolchain', cmd)
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     # Happy path: deploy the build scripts on a mac host, then build.
     # `deployed` seeds brave_core_checkout's post-checkout path check.
     yield api.test(

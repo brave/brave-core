@@ -7,8 +7,12 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from recipe_api import RecipeApi
+
+if TYPE_CHECKING:
+    from recipe_modules import git
 
 # When disabling auto-gc, the keys we want to set.
 _DISABLE_AUTO_GC_CONFIG = (
@@ -23,6 +27,8 @@ _DISABLE_AUTO_GC_CONFIG = (
 
 class GitApi(RecipeApi):
     """Generic git repository operations shared by modules that own one."""
+
+    m: git.DEPS
 
     def disable_auto_gc(
         self, repo: str | Path, *, step_name: str = 'disable auto-gc'

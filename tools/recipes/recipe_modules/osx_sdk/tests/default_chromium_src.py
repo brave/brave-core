@@ -8,17 +8,36 @@ no explicit checkout is given.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    brave_core_checkout,
+    osx_sdk,
+    platform,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['brave_core_checkout', 'osx_sdk', 'platform', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    osx_sdk: osx_sdk.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    brave_core_checkout: brave_core_checkout.TEST_API
+    osx_sdk: osx_sdk.TEST_API
+    platform: platform.TEST_API
+
+
+def RunSteps(api: DEPS):
     with api.osx_sdk.ensure():
         pass
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'mac',
         api.platform.name('mac'),

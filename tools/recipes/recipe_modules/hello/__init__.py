@@ -10,8 +10,22 @@ property JSON is decoded into `InputProperties` and injected into
 default.
 """
 
-from PB.recipe_modules.brave.hello.properties import InputProperties
+from dataclasses import dataclass
 
-DEPS = ['path', 'step']
+from PB.recipe_modules.brave.hello.properties import InputProperties
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    path,
+    step,
+)
+
+from .api import HelloApi as API
+
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    path: path.API
+    step: step.API
+
 
 PROPERTIES = InputProperties

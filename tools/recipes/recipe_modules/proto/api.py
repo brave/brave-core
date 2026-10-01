@@ -16,7 +16,7 @@ step log), which needs step presentation.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 from google.protobuf.message import Message
 
@@ -24,6 +24,9 @@ from recipe_api import OutputPlaceholder, RecipeApi, returns_placeholder
 from recipe_test_api import PlaceholderTestData
 
 from . import codec as codecs
+
+if TYPE_CHECKING:
+    from recipe_modules import proto
 
 
 class ProtoOutputPlaceholder(OutputPlaceholder):
@@ -83,6 +86,8 @@ class ProtoOutputPlaceholder(OutputPlaceholder):
 
 class ProtoApi(RecipeApi):
     """Encode and decode protobuf messages, and carry them through steps."""
+
+    m: proto.DEPS
 
     BINARY = codecs.BINARY.name
     JSONPB = codecs.JSONPB.name

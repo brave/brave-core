@@ -6,12 +6,35 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    chromium_checkout,
+    env,
+    path,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['chromium_checkout', 'env', 'path', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    chromium_checkout: chromium_checkout.API
+    env: env.API
+    path: path.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    chromium_checkout: chromium_checkout.TEST_API
+    env: env.TEST_API
+    path: path.TEST_API
+    step: step.TEST_API
+
+
+def RunSteps(api: DEPS):
     mode = api.env.get('MODE')
     if mode == 'should_clone_false':
         api.chromium_checkout.checkout_ref(
@@ -21,7 +44,7 @@ def RunSteps(api):
         api.chromium_checkout.ensure_checkout(ref='refs/heads/main')
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     # The cache comes from the environment; nothing is passed to the checkout.
     yield api.test(
         'checkout uses the configured cache',

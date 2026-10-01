@@ -11,12 +11,29 @@ without yielding, so two of them never contend here.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    platform,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['platform', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    platform: platform.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    platform: platform.TEST_API
+
+
+def RunSteps(api: DEPS):
     # Capacity comes from the host, and sizes the pool costs are admitted
     # against.
     assert api.step.MAX_CPU == api.platform.cpu_count * api.step.CPU_CORE
@@ -50,7 +67,7 @@ def RunSteps(api):
     api.step('no command', None)
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'cost',
         api.post_process(

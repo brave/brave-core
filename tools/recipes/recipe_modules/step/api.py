@@ -11,6 +11,7 @@ import contextlib
 import logging
 from pathlib import Path
 import subprocess
+from typing import TYPE_CHECKING
 
 import config_types
 from engine_types import ResourceCost as _ResourceCost
@@ -23,6 +24,9 @@ from recipe_api import (
 from recipe_test_api import PlaceholderTestData, StepTestData
 from resource_semaphore import ResourceWaiter
 from step_data import StepData
+
+if TYPE_CHECKING:
+    from recipe_modules import step as step_mod
 
 # _UNSET_COST means "the caller said nothing about cost", and the default,
 # which is also different from an explicit `cost=None`, which opts the step out
@@ -52,6 +56,8 @@ class StepApi(RecipeApi):
     into real arguments before the step runs and collects their results into the
     `StepData` it returns afterwards.
     """
+
+    m: step_mod.DEPS
 
     def __init__(self) -> None:
         super().__init__()

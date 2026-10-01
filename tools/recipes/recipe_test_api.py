@@ -480,6 +480,10 @@ class RecipeTestApi:
     called directly. A module's `TEST_API` is constructed with its module
     name. The engine wires that module's DEPS onto `self.m`, matching how the
     production engine wires `RecipeApi.m`.
+
+    A recipe may also subclass it as a `@dataclass` named `TEST_DEPS`, whose
+    fields name the module test APIs its `GenTests` uses; the runner then
+    passes an instance of that subclass as the root api.
     """
 
     def __init__(self, module: str | None = None) -> None:
@@ -487,6 +491,12 @@ class RecipeTestApi:
         self.m: ModuleInjectionSite | RecipeTestApi = (
             self if module is None else ModuleInjectionSite()
         )
+
+    def __post_init__(self) -> None:
+        # A recipe's `@dataclass` TEST_DEPS subclass gets a generated __init__
+        # that never calls ours, but does call this hook; set it up as a root
+        # api, like `RecipeTestApi(module=None)`.
+        RecipeTestApi.__init__(self)
 
     def __getattr__(self, name: str):
         # DEPS module test APIs are injected by the runner (onto the root api,

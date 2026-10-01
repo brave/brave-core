@@ -6,12 +6,31 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    path,
+    raw_io,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['path', 'raw_io', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    path: path.API
+    raw_io: raw_io.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    raw_io: raw_io.TEST_API
+
+
+def RunSteps(api: DEPS):
     # Read a command's stdout and stderr.
     result = api.step(
         'echo',
@@ -134,7 +153,7 @@ def RunSteps(api):
     assert dict(result.raw_io.output_dir) == {'report': b'all good'}
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'basic',
         api.step_data(

@@ -29,7 +29,7 @@ from __future__ import annotations
 from collections.abc import Callable, Sequence
 from pathlib import Path
 import subprocess
-from typing import Any, TypeVar
+from typing import Any, TYPE_CHECKING, TypeVar
 
 from google.protobuf.message import Message
 
@@ -38,11 +38,16 @@ from recipe_api import OutputPlaceholder, Placeholder, RecipeApi
 from recipe_test_api import StepTestData
 from step_data import StepData
 
+if TYPE_CHECKING:
+    from recipe_modules import file
+
 ProtoMessage = TypeVar('ProtoMessage', bound=Message)
 
 
 class FileApi(RecipeApi):
     """Basic filesystem operations (read, write, copy, remove, ...) as steps."""
+
+    m: file.DEPS
 
     class Error(subprocess.CalledProcessError):
         """A `fileutil.py` operation reported a filesystem-level failure.

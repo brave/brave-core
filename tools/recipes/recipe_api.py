@@ -15,11 +15,15 @@ for a file that a step reads from or writes to: a module hands one to
 `api.step(...)`, the engine renders it into real command-line arguments just
 before the step runs, and (for outputs) reads the data back afterwards. See the
 "Getting data back from a step" section of README.md.
+
+`RecipeScriptApi`, the `api` passed to a recipe's `RunSteps`, lives here too;
+a recipe subclasses it to declare its `DEPS` as a dataclass.
 """
 
 from __future__ import annotations
 
 from collections.abc import Callable
+from dataclasses import dataclass
 import functools
 from pathlib import Path
 from typing import Any
@@ -32,7 +36,7 @@ class ModuleInjectionSite:
     """Namespace holding a module's resolved DEPS (and the module itself).
 
     The engine populates one per module instance: each entry in the module's
-    `DEPS` becomes an attribute named after that dependency module. Attributes
+    `DEPS` becomes an attribute named after its local name. Attributes
     are set dynamically by the engine, so the class declares no members itself.
     """
 
@@ -324,3 +328,47 @@ class RecipeApi:
         """Apply a named config item on top of an existing blob (`self.c`)."""
         itm = self._get_config_item(config_name)
         itm(config_object or self.c, optional=optional)
+
+
+@dataclass
+class RecipeScriptApi:
+    """The `api` object passed to a recipe's `RunSteps`.
+
+    Carries the recipe's top-level `DEPS`: each one is attached as an attribute
+    named after its local name (e.g. `api.chromium_checkout`). A recipe may
+    declare `DEPS` as a `@dataclass` subclass of this class, whose fields name
+    the modules it uses, and the engine instantiates that subclass as `api`:
+
+        @dataclass
+        class DEPS(RecipeScriptApi):
+            step: step.API
+
+        def RunSteps(api: DEPS): ...
+    """
+
+    # Simulation context, or None in production (see `RecipeApi._test`; the
+    # same `None`-means-production convention).
+    _test: Any
+
+    # This recipe's `/`-separated id (e.g. `gerrit/refresh_mirrors`). Used to
+    # namespace `resource()`'s test-mode token.
+    _recipe_name: str
+
+    # This recipe's own `<name>.resources` directory. `resource()` derives real
+    # paths from it.
+    _resources_dir: Path
+
+    def resource(self, *pieces: str) -> config_types.Path:
+        """Path to a file under this recipe's `<name>.resources/` directory."""
+        base = config_types.ResolvedBasePath.for_recipe_script_resources(
+            self._test is not None, self._recipe_name, str(self._resources_dir)
+        )
+        return config_types.Path(base, *pieces)
+
+    def __getattr__(self, name: str):
+        # DEPS are injected by the engine; a missing one means it was not
+        # declared in the recipe's DEPS. (Also tells static analysis that
+        # attributes are dynamic, so accessing a dep is not flagged no-member.)
+        raise AttributeError(
+            f'{name!r} is not a declared dependency (add it to DEPS?)'
+        )

@@ -11,6 +11,7 @@
 # pylint: disable=protected-access
 
 import contextlib
+from dataclasses import dataclass
 import os
 import sys
 import tempfile
@@ -23,8 +24,13 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # pylint: disable=wrong-import-position
 import engine
-from recipe_api import RecipeApi
+from recipe_api import RecipeApi, RecipeScriptApi
 from recipe_test_api import RecipeTestApi
+
+engine._ensure_on_sys_path()
+engine._ensure_protos()
+import recipe_modules.platform as platform_module
+import recipe_modules.step as step_module
 
 
 @contextlib.contextmanager
@@ -41,6 +47,14 @@ def _real_git_cache():
     with tempfile.TemporaryDirectory() as tmp:
         with mock.patch.dict(os.environ, {'GIT_CACHE_PATH': tmp}):
             yield
+
+
+def _fake_recipe(**attrs) -> types.ModuleType:
+    """A stand-in recipe module carrying *attrs* (e.g. `DEPS`)."""
+    recipe = types.ModuleType('fake_recipe')
+    recipe.__file__ = 'fake_recipe.py'
+    recipe.__dict__.update(attrs)
+    return recipe
 
 
 class DepsResolutionTest(unittest.TestCase):
@@ -94,13 +108,135 @@ class TestApiInjectionTest(unittest.TestCase):
         )
 
     def test_root_api_exposes_dep_helpers(self):
-        root = engine.build_root_test_api(['platform', 'step'])
+        root = engine.build_root_test_api(
+            _fake_recipe(DEPS=['platform', 'step'])
+        )
         # api.platform.name(...) and api.step.data(...) resolve to the module
         # test apis.
         self.assertEqual(
             root.platform.name('mac').mod_data['platform']['name'], 'mac'
         )
         self.assertIn('s', root.step.data('s', retcode=2).step_data)
+
+
+class ParseDepsSpecTest(unittest.TestCase):
+    """parse_deps_spec accepts a list of names or a dataclass."""
+
+    def test_list(self):
+        self.assertEqual(
+            engine.parse_deps_spec(['path', 'step'], source='x.py'),
+            {'path': 'path', 'step': 'step'},
+        )
+
+    def test_empty(self):
+        self.assertEqual(engine.parse_deps_spec((), source='x.py'), {})
+
+    def test_dataclass_maps_field_to_module(self):
+        @dataclass
+        class DEPS(RecipeScriptApi):
+            plat: platform_module.API
+            step: step_module.API
+
+        # Base class fields are not deps; a field may rename its module.
+        self.assertEqual(
+            engine.parse_deps_spec(DEPS, source='x.py'),
+            {'plat': 'platform', 'step': 'step'},
+        )
+
+    def test_dataclass_test_deps(self):
+        @dataclass
+        class TEST_DEPS(RecipeTestApi):
+            platform: platform_module.TEST_API
+
+        self.assertEqual(
+            engine.parse_deps_spec(TEST_DEPS, source='x.py'),
+            {'platform': 'platform'},
+        )
+
+    def test_custom_method_raises(self):
+        @dataclass
+        class DEPS(RecipeScriptApi):
+            def my_helper(self):
+                pass
+
+        with self.assertRaisesRegex(
+            ValueError, "Cannot define custom method 'my_helper' on DEPS"
+        ):
+            engine.parse_deps_spec(DEPS, source='x.py')
+
+    def test_non_module_annotation_raises(self):
+        @dataclass
+        class DEPS(RecipeScriptApi):
+            thing: int
+
+        with self.assertRaisesRegex(ValueError, "field 'thing'"):
+            engine.parse_deps_spec(DEPS, source='x.py')
+
+    def test_other_types_raise(self):
+        with self.assertRaises(TypeError):
+            engine.parse_deps_spec('step', source='x.py')
+
+
+class DataclassDepsTest(unittest.TestCase):
+    """A dataclass DEPS/TEST_DEPS is instantiated as the recipe's api."""
+
+    def test_run_steps_receives_deps_instance(self):
+        @dataclass
+        class DEPS(RecipeScriptApi):
+            plat: platform_module.API
+
+        captured = []
+        recipe = _fake_recipe(DEPS=DEPS, RunSteps=captured.append)
+        eng = engine._Engine()
+        eng.run_loaded_recipe(recipe, 'fake_recipe')
+        self.assertEqual(len(captured), 1)
+        api = captured[0]
+        self.assertIsInstance(api, DEPS)
+        self.assertIs(api.plat, eng._instantiate_module('platform', []))
+        self.assertEqual(api._recipe_name, 'fake_recipe')
+        with self.assertRaisesRegex(AttributeError, 'DEPS'):
+            _ = api.step
+
+    def test_root_test_api_is_test_deps_instance(self):
+        @dataclass
+        class TEST_DEPS(RecipeTestApi):
+            platform: platform_module.TEST_API
+
+        root = engine.build_root_test_api(
+            _fake_recipe(DEPS=['platform', 'step'], TEST_DEPS=TEST_DEPS)
+        )
+        self.assertIsInstance(root, TEST_DEPS)
+        self.assertEqual(
+            root.platform.name('mac').mod_data['platform']['name'], 'mac'
+        )
+        # Set up as a root api even though the dataclass __init__ skips ours.
+        self.assertIs(root.m, root)
+        # TEST_DEPS, not DEPS, decides what GenTests gets.
+        with self.assertRaises(AttributeError):
+            _ = root.step
+
+
+class ModuleApiExportTest(unittest.TestCase):
+    """A module's exported API/TEST_API is preferred, and must subclass."""
+
+    def test_exports_are_used(self):
+        self.assertIs(
+            engine._module_api_class(step_module, 'step'), step_module.API
+        )
+        self.assertIs(
+            engine._module_test_api_class(step_module, 'step'),
+            step_module.TEST_API,
+        )
+
+    def test_bad_api_export_raises(self):
+        with self.assertRaises(RuntimeError):
+            engine._module_api_class(types.SimpleNamespace(API=dict), 'x')
+
+    def test_bad_test_api_export_raises(self):
+        with self.assertRaises(RuntimeError):
+            engine._module_test_api_class(
+                types.SimpleNamespace(TEST_API=dict), 'x'
+            )
 
 
 class FindTestApiClassTest(unittest.TestCase):
