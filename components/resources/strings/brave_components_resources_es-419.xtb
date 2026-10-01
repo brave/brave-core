@@ -1732,6 +1732,9 @@
 <translation id="2077392865355605472">El símbolo del token es obligatorio</translation>
 <translation id="4636925020451566238">El valor de precisión de los decimales del token es obligatorio</translation>
 <translation id="3797613444743816037">Dirección de acuñación</translation>
+<translation id="6571966497164575098">ID de activo</translation>
+<translation id="2110442566771571217">ID de activo del token no válido o vacío</translation>
+<translation id="4170599358417498979">Los activos personalizados no son compatibles con esta red</translation>
 <translation id="7951915459354237451">El límite de tarifa fijado es inferior a la tarifa base. La transacción puede tardar mucho tiempo o fallar.</translation>
 <translation id="2227702748249086756">No se pueden obtener estimaciones de tasas</translation>
 <translation id="3225624966527491351">Importar NFT</translation>
@@ -2018,7 +2021,7 @@
 <translation id="418195046117003119">Captura de pantalla del Centro de intercambio</translation>
 <translation id="4712056949543885424">Mostrar gestor de contraseñas</translation>
 <translation id="8037472847879765671">Mostrar formas de pago</translation>
-<translation id="7269867954894010756">Mostrar direcciones</translation>
+<translation id="6262574309547773475">Mostrar información de contacto</translation>
 <translation id="6799213269525079335">Buscar siguiente</translation>
 <translation id="8666632926482119393">Buscar anterior</translation>
 <translation id="3567467864281922039">Cerrar búsqueda o detener</translation>
@@ -2147,6 +2150,7 @@
 <translation id="3142853026316054951">Activar/desactivar modo de enfoque</translation>
 <translation id="3468387898712904997">Nuevo alias de correo electrónico</translation>
 <translation id="4711475997833555304">Crea un correo electrónico aleatorio que se reenvía a tu bandeja de entrada.</translation>
+<translation id="5663901348199429994">Tus alias de correo electrónico</translation>
 <translation id="2796584247246518451">Nuevo contenedor temporal</translation>
 <translation id="8591883849678260674">Ver original</translation>
 <translation id="1969654232209826429">minutos de lectura</translation>
@@ -2211,6 +2215,7 @@
 <translation id="9215978379284690246">Código de estado: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Código de estado: <ph name="STATUS_CODE"/>, código de estado interno: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Has llegado al límite de la tarifa Premium. Vuelve a intentarlo dentro de unas horas.</translation>
+<translation id="6873128487002733717">Has alcanzado el límite premium para este modelo. Selecciona un modelo diferente o inténtalo de nuevo más tarde.</translation>
 <translation id="3683964919745779766">Has alcanzado el límite de tasa para este modelo o no tienes créditos. Por favor, inténtalo de nuevo más tarde.</translation>
 <translation id="7692501701960747469">La clave API configurada para este modelo no es válida. Por favor, verifica tu configuración e inténtalo de nuevo.</translation>
 <translation id="7905602379229309187">El punto final está sobrecargado. Inténtalo de nuevo más tarde.</translation>
@@ -2390,6 +2395,9 @@
 <translation id="5021823940147712387">Eliminar herramientas</translation>
 <translation id="8712279871321308580">Herramientas del sitio web disponibles</translation>
 <translation id="3690996226559605619">Herramientas disponibles (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Permitir en esta sesión</translation>
+<translation id="6240821072888636753">Preguntar siempre</translation>
+<translation id="4290920330097335010">Nunca permitir</translation>
 <translation id="318819763888864209">Todas las suscripciones se renuevan de forma automática, pero se pueden cancelar en cualquier momento antes de la renovación.</translation>
 <translation id="5091223967610958">Comparte el nombre del host de la página en la que estás (<ph name="HOST_NAME"/>) para ayudarnos a mejorar Leo.</translation>
 <translation id="8732450785281947197">Herramientas de Leo AI</translation>
@@ -2464,7 +2472,7 @@
 <translation id="6077070599873946984">Brave IA necesita tu autorización para: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI desea ejecutar **<ph name="TOOL_NAME"/>** en **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Se ha detectado que la operación podría no estar alineada con tu solicitud:</translation>
-<translation id="5137568953923142260">Permitir</translation>
+<translation id="5137568953923142260">Permitir una vez</translation>
 <translation id="3927932062596804919">Denegar</translation>
 <translation id="4191349941249805855">Mostrar argumentos de la herramienta</translation>
 <translation id="7237059533128264835">Ocultar argumentos de la herramienta</translation>
@@ -2511,7 +2519,6 @@
 <translation id="6002159997868894136">Haz clic para copiar el alias</translation>
 <translation id="8105770564756958406">Usado por <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Crea hasta 5 alias de correo electrónico gratuitos para proteger tu dirección de correo real.</translation>
-<translation id="5663901348199429994">Tus alias de correo electrónico</translation>
 <translation id="9046133327037621173">Nuevo alias de correo electrónico</translation>
 <translation id="3768606658230902536">Crea una dirección de correo electrónico aleatoria que se reenvíe a tu bandeja de entrada mientras mantienes tu correo personal privado.</translation>
 <translation id="4452721050684632493">Se alcanzó el límite de alias</translation>
@@ -2942,7 +2949,9 @@ Puede revertir los cambios y volver a usar WireGuard en cualquier momento en bra
 <translation id="4227581348172626540">Cancelar el cambio de contraseña</translation>
 <translation id="808894953321890993">Cambiar contraseña</translation>
 <translation id="7967687455715421528">No se ha podido cambiar la contraseña</translation>
+<translation id="7413006094063730650">Eliminar cuenta</translation>
 <translation id="4869737930995549965">Cerrar sesión</translation>
+<translation id="2902312830803030883">Más acciones</translation>
 <translation id="5538654494923870167">Comienza con tu cuenta de Brave</translation>
 <translation id="1544145635547515689">Crear una cuenta de Brave</translation>
 <translation id="3828644479849256404">¿Ya tienes una cuenta? Inicia sesión</translation>
@@ -2967,6 +2976,11 @@ Puede revertir los cambios y volver a usar WireGuard en cualquier momento en bra
 <translation id="7228810962389847249">Introduce el código aquí</translation>
 <translation id="4683390091376980486">Confirmar código</translation>
 <translation id="3970028678400797622">Reenviar código por correo electrónico</translation>
+<translation id="3653907916071208187">¿Eliminar tu cuenta de Brave?</translation>
+<translation id="8216839865292766307">Eliminar una cuenta de Brave también eliminará sus alias de correo electrónico. Es posible que pierdas el acceso a servicios en línea donde usaste un alias para registrarte. Esta acción no se puede deshacer.</translation>
+<translation id="3672274694560812974">ELIMINAR</translation>
+<translation id="1886662169666501462">Escribe <ph name="KEYWORD"/> para habilitar la eliminación de la cuenta</translation>
+<translation id="536306385881145656">Eliminar cuenta de Brave</translation>
 <translation id="2475982808118771221">Ocurrió un error</translation>
 <translation id="5430795854491041407">error</translation>
 <translation id="2232323423357029857">El navegador encontró un error inesperado<ph name="ERROR_CODE"/>. Reinicia el navegador e inténtalo de nuevo.</translation>
@@ -2999,4 +3013,10 @@ Puede revertir los cambios y volver a usar WireGuard en cualquier momento en bra
 <translation id="1063227610401477317">Aplicar cambios</translation>
 <translation id="5539769255716491933">Reportar pasos fallidos</translation>
 <translation id="7562163394445060270">No se pudo completar la tarea</translation>
+<translation id="691082536326552372">Reportar pasos fallidos</translation>
+<translation id="2731141092023803480">Envía un informe de los pasos fallidos al equipo de Brave. Este informe contendrá la información que necesitamos para solucionar el problema. <ph name="LINK_BEFORE"/>Más información.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">URL actual</translation>
+<translation id="4739707522207259415">Paso(s) fallido(s)</translation>
+<translation id="1767991048059195456">Enviar informe</translation>
+<translation id="2168036794078614559">Informe enviado</translation>
 </translationbundle>

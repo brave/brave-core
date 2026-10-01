@@ -1726,6 +1726,9 @@
 <translation id="2077392865355605472">టోకెన్ సింబల్ తప్పనిసరి</translation>
 <translation id="4636925020451566238">టోకన్ డెసిమల్స్ ఆఫ్ ప్రిసిషన్ విలువ తప్పనిసరి</translation>
 <translation id="3797613444743816037">మింట్ చిరునామా</translation>
+<translation id="6571966497164575098">ఆస్తి ID</translation>
+<translation id="2110442566771571217">చెల్లని లేదా ఖాళీ టోకెన్ ఆస్తి ID</translation>
+<translation id="4170599358417498979">ఈ నెట్‌వర్క్‌లో అనుకూల ఆస్తులకు మద్దతు ఇవ్వబడదు</translation>
 <translation id="7951915459354237451">ఫీజు పరిమితి బేస్ ఫీజు కంటే తక్కువగా సెట్ చేయబడింది. మీ లావాదేవీ ఎక్కువ సమయం పడుతుంది లేదా విఫలం కావచ్చు.</translation>
 <translation id="2227702748249086756">ఫీజు అంచనాలను పొందడంలో విఫలం</translation>
 <translation id="3225624966527491351">NFT ని దిగుమతి చేయండి</translation>
@@ -2012,7 +2015,7 @@
 <translation id="418195046117003119">షేరింగ్ హబ్ స్క్రీన్షాట్</translation>
 <translation id="4712056949543885424">పాస్‌వర్డ్ మేనేజర్ చూపించు</translation>
 <translation id="8037472847879765671">చెల్లింపుల పద్ధతులను చూపించు</translation>
-<translation id="7269867954894010756">చిరునామాలు చూపించు</translation>
+<translation id="6262574309547773475">సంప్రదింపు సమాచారాన్ని చూపు</translation>
 <translation id="6799213269525079335">తదుపరి వెతుకు</translation>
 <translation id="8666632926482119393">మునుపటి వెతుకు</translation>
 <translation id="3567467864281922039">వెతుకు లేదా నిలుపుము మూసివేయి</translation>
@@ -2141,6 +2144,7 @@
 <translation id="3142853026316054951">ఫోకస్ మోడ్‌ను టోగుల్ చేయండి</translation>
 <translation id="3468387898712904997">కొత్త ఇమెయిల్ అలియాస్</translation>
 <translation id="4711475997833555304">మీ ఇన్‌బాక్స్‌కు ఫార్వర్డ్ చేసే యాదృచ్ఛిక ఇమెయిల్‌ను సృష్టించండి.</translation>
+<translation id="5663901348199429994">మీ ఇమెయిల్ అలియాసెస్</translation>
 <translation id="2796584247246518451">కొత్త తాత్కాలిక కంటెనర్</translation>
 <translation id="8591883849678260674">అసలు పేజీని వీక్షించండి</translation>
 <translation id="1969654232209826429">నిమిషం. చదవండి</translation>
@@ -2205,6 +2209,7 @@
 <translation id="9215978379284690246">స్థితి కోడ్: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">స్థితి కోడ్: <ph name="STATUS_CODE"/>, అంతర్గత స్థితి కోడ్: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">మీరు ప్రీమియం రేట్ లిమిట్‌ని చేరారు. దయచేసి కొన్ని గంటల తర్వాత మళ్ళీ ప్రయత్నించండి.</translation>
+<translation id="6873128487002733717">మీరు ఈ మోడల్ కోసం ప్రీమియం పరిమితిని చేరుకున్నారు. వేరే మోడల్‌ను ఎంచుకోండి లేదా తర్వాత మళ్ళీ ప్రయత్నించండి.</translation>
 <translation id="3683964919745779766">మీరు ఈ మోడల్ కోసం రేట్ పరిమితిని చేరుకున్నారు లేదా క్రీడ లేవు. దయచేసి తర్వాత మళ్ళీ ప్రయత్నించండి.</translation>
 <translation id="7692501701960747469">ఈ మోడల్ కోసం కాన్ఫిగర్ చేయబడిన API కీ చెల్లదు. దయచేసి మీ కాన్ఫిగరేషన్ ను తనిఖీ చేసి మళ్ళీ ప్రయత్నించండి.</translation>
 <translation id="7905602379229309187">ప్రస్తుతం చివరకు లోడ్ అయినది. దయచేసి మరర్కొద్ది సమయం తర్వాత ప్రయత్నించండి.</translation>
@@ -2384,6 +2389,9 @@
 <translation id="5021823940147712387">టూల్స్ తొలగించండి</translation>
 <translation id="8712279871321308580">అందుబాటులో ఉన్న వెబ్‌సైట్ టూల్స్</translation>
 <translation id="3690996226559605619">అందుబాటులో ఉన్న టూల్స్ (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">ఈ సెషన్ కోసం అనుమతించు</translation>
+<translation id="6240821072888636753">ప్రతిసారి అడుగు</translation>
+<translation id="4290920330097335010">ఎప్పటికీ అనుమతించవద్దు</translation>
 <translation id="318819763888864209">ప్రతి సబ్ మరియు ప్రతి ముందే అభ్యంతరాలతో సమర్పణ తీయగలదు.</translation>
 <translation id="5091223967610958">మీరు ఉన్న పేజీ యొక్క హోస్ట్‌నేమ్‌ను (<ph name="HOST_NAME"/>) పంచుకోవడం ద్వారా మీ విభిన్న ప్రశ్నలకు సమాధానాలను మెరుగుపరచడానికి సహాయపడండి.</translation>
 <translation id="8732450785281947197">Leo AI టూల్స్</translation>
@@ -2458,7 +2466,7 @@
 <translation id="6077070599873946984">Brave AI మీకు అవసరమైన అనుమతికి అవసరం ఉంది: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI **<ph name="SITE_ORIGIN"/>**పై **<ph name="TOOL_NAME"/>**ని అమలు చేయాలనుకుంటోంది</translation>
 <translation id="4163837693685963037">క్రియను మీ అభ్యర్థనతో సరిపోలմని కనుగొన్నారు:</translation>
-<translation id="5137568953923142260">అనుమతించు</translation>
+<translation id="5137568953923142260">ఒక్కసారి అనుమతించు</translation>
 <translation id="3927932062596804919">నిరాకరించు</translation>
 <translation id="4191349941249805855">టూల్ ఆర్గ్యుమెంట్‌లను చూపించు</translation>
 <translation id="7237059533128264835">టూల్ ఆర్గ్యుమెంట్‌లను దాచు</translation>
@@ -2505,7 +2513,6 @@
 <translation id="6002159997868894136">అలియాస్ కాపీ చేయడానికి క్లిక్ చేయండి</translation>
 <translation id="8105770564756958406">ద్వారా ఉపయోగించబడింది <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">మీ నిజమైన ఇమెయిల్ చిరునామాను రక్షించడానికి 5 ఉచిత ఇమెయిల్ అలియాసెస్‌ను సృష్టించండి.</translation>
-<translation id="5663901348199429994">మీ ఇమెయిల్ అలియాసెస్</translation>
 <translation id="9046133327037621173">కొత్త ఇమెయిల్ అలియాస్</translation>
 <translation id="3768606658230902536">మీ వ్యక్తిగత ఇమెయిల్‌ను నిబంధన చేయునప్పుడు మీ ఇన్బాక్స్కు ఫార్వార్డ్ చేస్తున్న యాదృచ్ఛిక ఇమెయిల్ చిరునామాను సృష్టించండి.</translation>
 <translation id="4452721050684632493">మారుపేరు పరిమితి చేరుకుంది</translation>
@@ -2936,7 +2943,9 @@ Brave ఒక హెల్పర్ సేవను కలిగి ఉంది 
 <translation id="4227581348172626540">పాస్‌వర్డ్ మార్పును రద్దు చేయండి</translation>
 <translation id="808894953321890993">పాస్‌వర్డ్ మార్చండి</translation>
 <translation id="7967687455715421528">పాస్‌వర్డ్ మార్చలేకపోయాము</translation>
+<translation id="7413006094063730650">ఖాతాను తొలగించు</translation>
 <translation id="4869737930995549965">లాగ్ అవుట్</translation>
+<translation id="2902312830803030883">మరిన్ని క్రియలు</translation>
 <translation id="5538654494923870167">మీ Brave ఖాతాతో ప్రారంభించండి</translation>
 <translation id="1544145635547515689">Brave ఖాతా సృష్టించండి</translation>
 <translation id="3828644479849256404">ఇప్పటికే ఖాతా ఉందా? లాగిన్ చేయండి</translation>
@@ -2961,6 +2970,11 @@ Brave ఒక హెల్పర్ సేవను కలిగి ఉంది 
 <translation id="7228810962389847249">కోడ్‌ను ఇక్కడ నమోదు చేయండి</translation>
 <translation id="4683390091376980486">కోడ్‌ను నిర్ధారించండి</translation>
 <translation id="3970028678400797622">ఇమెయిల్ కోడ్‌ను తిరిగి పంపండి</translation>
+<translation id="3653907916071208187">మీ Brave ఖాతాను తొలగించాలా?</translation>
+<translation id="8216839865292766307">Brave ఖాతాను తొలగించడం దాని ఇమెయిల్ మారుపేర్లను కూడా తొలగిస్తుంది. మీరు మారుపేరును ఉపయోగించి సైన్ అప్ చేసిన ఆన్‌లైన్ సేవలకు మీ ప్రవేశాన్ని కోల్పోవచ్చు. ఈ చర్యను రద్దు చేయలేరు.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">ఖాతా తొలగింపును ప్రారంభించడానికి <ph name="KEYWORD"/> ను టైప్ చేయండి</translation>
+<translation id="536306385881145656">Brave ఖాతాను తొలగించు</translation>
 <translation id="2475982808118771221">ఒక లోపం సంభవించింది</translation>
 <translation id="5430795854491041407">ఎర్రర్</translation>
 <translation id="2232323423357029857">బ్రౌజర్ ఊహించని లోపాన్ని ఎదుర్కొంది<ph name="ERROR_CODE"/>. దయచేసి బ్రౌజర్‌ను పునఃప్రారంభించి మళ్ళీ ప్రయత్నించండి.</translation>
@@ -2993,4 +3007,10 @@ Brave ఒక హెల్పర్ సేవను కలిగి ఉంది 
 <translation id="1063227610401477317">మార్పులను అన్వయించండి</translation>
 <translation id="5539769255716491933">విఫలమైన దశలను నివేదించండి</translation>
 <translation id="7562163394445060270">పని పూర్తి చేయడంలో విఫలమైంది</translation>
+<translation id="691082536326552372">విఫలమైన దశలను నివేదించండి</translation>
+<translation id="2731141092023803480">విఫలమైన దశల నివేదికను Brave బృందానికి పంపండి. ఈ నివేదికలో సమస్యను పరిష్కరించడానికి మాకు అవసరమైన సమాచారం ఉంటుంది. <ph name="LINK_BEFORE"/>మరింత తెలుసుకోండి.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">ప్రస్తుత URL</translation>
+<translation id="4739707522207259415">విఫలమైన దశ(లు)</translation>
+<translation id="1767991048059195456">నివేదికను పంపు</translation>
+<translation id="2168036794078614559">నివేదిక పంపబడింది</translation>
 </translationbundle>

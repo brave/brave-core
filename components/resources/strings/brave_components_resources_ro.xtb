@@ -1734,6 +1734,9 @@
 <translation id="2077392865355605472">Simbolul tokenului este necesar</translation>
 <translation id="4636925020451566238">Este necesară o valoare de precizie în zecimale de token</translation>
 <translation id="3797613444743816037">Adresa emiterii</translation>
+<translation id="6571966497164575098">ID activ</translation>
+<translation id="2110442566771571217">ID activ token nevalid sau necompletat</translation>
+<translation id="4170599358417498979">Activele personalizate nu sunt acceptate în această rețea</translation>
 <translation id="7951915459354237451">Limita taxei este stabilită la un nivel mai mic decât taxa de bază. Este posibil ca tranzacția dvs. să dureze mult timp sau să eșueze.</translation>
 <translation id="2227702748249086756">Nu se poate obține estimarea taxelor</translation>
 <translation id="3225624966527491351">Importați NFT</translation>
@@ -2020,7 +2023,7 @@ other {# surse}
 <translation id="418195046117003119">Captură de ecran hub de distribuire</translation>
 <translation id="4712056949543885424">Afișați managerul de parole</translation>
 <translation id="8037472847879765671">Afișați metodele de plată</translation>
-<translation id="7269867954894010756">Afișați adresele</translation>
+<translation id="6262574309547773475">Afișează informațiile de contact</translation>
 <translation id="6799213269525079335">Găsiți următorul</translation>
 <translation id="8666632926482119393">Găsiți precedentul</translation>
 <translation id="3567467864281922039">Închidere căutare sau oprire</translation>
@@ -2149,6 +2152,7 @@ other {# surse}
 <translation id="3142853026316054951">Comută modul focalizare</translation>
 <translation id="3468387898712904997">Nume alternativ nou pentru email</translation>
 <translation id="4711475997833555304">Creează un email aleatoriu care este redirecționat către inbox-ul tău.</translation>
+<translation id="5663901348199429994">Nume alternative pentru Email</translation>
 <translation id="2796584247246518451">Container temporar nou</translation>
 <translation id="8591883849678260674">Vedeți originalul</translation>
 <translation id="1969654232209826429">min. de citire</translation>
@@ -2213,6 +2217,7 @@ other {# surse}
 <translation id="9215978379284690246">Cod de stare: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Cod de stare: <ph name="STATUS_CODE"/>, cod de stare intern: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Ai ajuns la limita maximă a nivelului premium. Încearcă din nou peste câteva ore.</translation>
+<translation id="6873128487002733717">Ai atins limita premium pentru acest model. Selectează un alt model sau încearcă din nou mai târziu.</translation>
 <translation id="3683964919745779766">Ai atins limita pentru acest model sau nu mai ai credite. Te rugăm să încerci din nou mai târziu.</translation>
 <translation id="7692501701960747469">Cheia API configurată pentru acest model nu este valabilă. Te rugăm să verifici configurația și să încerci din nou.</translation>
 <translation id="7905602379229309187">Punctul final este în prezent supraîncărcat. Te rugăm să încerci din nou mai târziu.</translation>
@@ -2392,6 +2397,9 @@ other {# surse}
 <translation id="5021823940147712387">Elimină instrumentele</translation>
 <translation id="8712279871321308580">Instrumente disponibile pentru site web</translation>
 <translation id="3690996226559605619">Instrumente disponibile (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Permite pentru această sesiune</translation>
+<translation id="6240821072888636753">Întreabă de fiecare dată</translation>
+<translation id="4290920330097335010">Nu permite niciodată</translation>
 <translation id="318819763888864209">Toate abonamentele se reînnoiesc automat, dar pot fi anulate în orice moment înainte de data scadentă a reînnoirii.</translation>
 <translation id="5091223967610958">Trimiteți numele de gazdă al paginii pe care vă aflați (<ph name="HOST_NAME"/>) pentru a ne ajuta să îmbunătățim Leo.</translation>
 <translation id="8732450785281947197">Instrumente Leo IA</translation>
@@ -2466,7 +2474,7 @@ other {# surse}
 <translation id="6077070599873946984">Brave IA are nevoie de permisiunea ta pentru: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI dorește să execute **<ph name="TOOL_NAME"/>** pe **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Operațiunea a fost detectată ca fiind potențial aliniată greșit cu cererea ta:</translation>
-<translation id="5137568953923142260">Permite</translation>
+<translation id="5137568953923142260">Permite o dată</translation>
 <translation id="3927932062596804919">Refuză</translation>
 <translation id="4191349941249805855">Afișează argumentele instrumentului</translation>
 <translation id="7237059533128264835">Ascunde argumentele instrumentului</translation>
@@ -2513,7 +2521,6 @@ other {# surse}
 <translation id="6002159997868894136">Fă clic pentru a copia numele alternativ</translation>
 <translation id="8105770564756958406">Utilizat de <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Creează până la 5 nume alternative pentru email gratuite pentru a-ți proteja adresa de email reală.</translation>
-<translation id="5663901348199429994">Nume alternative pentru Email</translation>
 <translation id="9046133327037621173">Nume alternativ nou pentru email</translation>
 <translation id="3768606658230902536">Creează o adresă de email aleatorie care redirecționează către inbox-ul tău, menținând adresa ta de email personală privată.</translation>
 <translation id="4452721050684632493">Limita de aliasuri atinsă</translation>
@@ -2944,7 +2951,9 @@ Permiteți-ne să vă conectăm!</translation>
 <translation id="4227581348172626540">Anulează schimbarea parolei</translation>
 <translation id="808894953321890993">Schimbă parola</translation>
 <translation id="7967687455715421528">Nu se poate schimba parola</translation>
+<translation id="7413006094063730650">Șterge contul</translation>
 <translation id="4869737930995549965">Deconectare</translation>
+<translation id="2902312830803030883">Mai multe acțiuni</translation>
 <translation id="5538654494923870167">Începe cu contul tău Brave</translation>
 <translation id="1544145635547515689">Creează un cont Brave</translation>
 <translation id="3828644479849256404">Ai deja un cont? Conectează-te</translation>
@@ -2969,6 +2978,11 @@ Permiteți-ne să vă conectăm!</translation>
 <translation id="7228810962389847249">Introdu codul aici</translation>
 <translation id="4683390091376980486">Confirmă codul</translation>
 <translation id="3970028678400797622">Retrimite codul prin email</translation>
+<translation id="3653907916071208187">Ștergi contul Brave?</translation>
+<translation id="8216839865292766307">Ștergerea unui cont Brave va șterge și aliasurile sale de e-mail. Este posibil să pierzi accesul la serviciile online unde ai folosit un alias pentru a te înregistra. Această acțiune nu poate fi anulată.</translation>
+<translation id="3672274694560812974">ȘTERGE</translation>
+<translation id="1886662169666501462">Tastează <ph name="KEYWORD"/> pentru a activa ștergerea contului</translation>
+<translation id="536306385881145656">Șterge contul Brave</translation>
 <translation id="2475982808118771221">A apărut o eroare</translation>
 <translation id="5430795854491041407">eroare</translation>
 <translation id="2232323423357029857">Browserul a întâmpinat o eroare neașteptată<ph name="ERROR_CODE"/>. Reporneşte browserul și încearcă din nou.</translation>
@@ -3001,4 +3015,10 @@ Permiteți-ne să vă conectăm!</translation>
 <translation id="1063227610401477317">Aplicare modificări</translation>
 <translation id="5539769255716491933">Raportare pași eșuați</translation>
 <translation id="7562163394445060270">Finalizarea sarcinii a eșuat</translation>
+<translation id="691082536326552372">Raportare pași eșuați</translation>
+<translation id="2731141092023803480">Trimite echipei Brave un raport al pașilor eșuați. Acest raport va conține informațiile necesare pentru a remedia problema. <ph name="LINK_BEFORE"/>Află mai multe.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">URL curent</translation>
+<translation id="4739707522207259415">Pas(pași) eșuat(eșuați)</translation>
+<translation id="1767991048059195456">Trimite raportul</translation>
+<translation id="2168036794078614559">Raport trimis</translation>
 </translationbundle>

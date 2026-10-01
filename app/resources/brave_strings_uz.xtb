@@ -35,7 +35,6 @@
 <translation id="1330562121671411446">Tilni aniqlash</translation>
 <translation id="108284536240904209">Brave maʼlumotlari ham oʻchirilsin (<ph name="URL"/>)</translation>
 <translation id="1345251407431278948">Mahkamlandi! Endi Rasmlar orqali qidiruvni asboblar panelidagi yangi tugma orqali ochish mumkin</translation>
-<translation id="1356661055722410047">Yangi! Ekrandagi matn va rasmlarni tarjima qilish mumkin</translation>
 <translation id="1383876407941801731">Qidiruv</translation>
 <translation id="3535301204632475895">Brave ilovasi bilan internetda kezishni istalgan joyda davom ettiring</translation>
 <translation id="141901961143729572">Fikr-mulohaza qoldiring</translation>
@@ -64,6 +63,7 @@
 <translation id="5994491947936308173">Tezkor kirish uchun Braveni vazifalar paneliga mahkamlash uchun Windows bildirishnomasida <ph name="BEGIN_BOLD"/>Ha<ph name="END_BOLD"/> tugmasini bosing</translation>
 <translation id="5875673934455379806">Brave brauzerini qayta o‘rnatish</translation>
 <translation id="4529028207655448215">Brave buni bajarmoqchi: <ph name="AUTHENTICATION_PURPOSE"/></translation>
+<translation id="6387107728249269341"><ph name="EXISTING_USER"/> hisobiga allaqachon kirilgan. Internetni alohida kezish uchun Bravega shaxsiy profilingiz (<ph name="USER_EMAIL_ADDRESS"/>) orqali kiring. Shuningdek, <ph name="DEVICE"/> qurilmasidagi kengaytmalar va boshqa maʼlumotlardan foydalana olasiz.</translation>
 <translation id="7362761326208547489">Keyingi safar <ph name="DEVICE_TYPE"/> qurilmangizda Brave ilovasini ochganingizda Brave Parollar menejeridan foydalanish taklifi chiqadi.</translation>
 <translation id="1838374766361614909">Qidiruv shartlarini tozalash</translation>
 <translation id="3541642064306182066">Brauzer maʼlumotlarini faqat shu qurilmadan oʻchirish va Brave hisobingizda saqlash uchun <ph name="BEGIN_LINK"/>Brave hisobingizdan chiqing<ph name="END_LINK"/>.</translation>
@@ -142,6 +142,7 @@
 <translation id="2575822587468774919">Rasm orqali qidirish uchun istalgan obyektni tanlang</translation>
 <translation id="3830890663494219270">Barcha qurilmalarda parollaringiz va boshqalarni olish uchun Bravega kiring</translation>
 <translation id="6908148552215338695">Brave ilovasini yuklab olish va Brave hisobingizga kirish uchun telefoningiz bilan QR-kodni skanerlang.</translation>
+<translation id="7985444384142764643">va Brave orqali qidiring.</translation>
 <translation id="6252796827759111076">Brave yopilmasin</translation>
 <translation id="259935314519650377">Yuklab olingan oʻrnatish vositasi keshlanmadi. Xato: <ph name="UNPACK_CACHING_ERROR_CODE"/>.</translation>
 <translation id="2620436844016719705">Tizim</translation>
@@ -185,6 +186,7 @@
 <translation id="3038232873781883849">Oʻrnatish kutilmoqda…</translation>
 <translation id="3045032126857188731">Tarjima qilingan tili: <ph name="LANGUAGE"/></translation>
 <translation id="3047590466164881923">Fikr-mulohaza yuborish oynasini yopish</translation>
+<translation id="72283640173840794"><ph name="EXISTING_USER"/> hisobiga allaqachon kirilgan. Internetni alohida kezish uchun Bravega shaxsiy profilingiz (<ph name="USER_EMAIL_ADDRESS"/>) orqali kiring. Shuningdek, <ph name="DEVICE"/> qurilmasidagi saqlangan sahifalar va boshqa maʼlumotlardan foydalana olasiz.</translation>
 <translation id="4503085212612536713">Boshqa Brave profillari</translation>
 <translation id="2041039306630146369">Kengaytmalar – bu Brave brauzerini moslash imkonini beruvchi plaginlardir. Tartiblashdan tortib, kundalik vazifalarni oson qilishgacha, kengaytmalar Braveni oʻzingizga moslashga yordam beradi.</translation>
 <translation id="7918740962659365265">Brave‘ga ishdan chiqishlar hisoboti va <ph name="UMA_LINK"/>‘ni jo‘natib Brave yaxshilanishiga yordam berish.</translation>
@@ -279,6 +281,7 @@
 <translation id="6596295505984504022">C&amp;hromiumni oʻzingizga moslang</translation>
 <translation id="4148957013307229264">O‘rnatilmoqda..</translation>
 <translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - Tarmoqqa kirish - Brave</translation>
+<translation id="305023898453185745"><ph name="EXISTING_USER"/> hisobiga allaqachon kirilgan. Internetni alohida kezish uchun Bravega shaxsiy profilingiz (<ph name="USER_EMAIL_ADDRESS"/>) orqali kiring. Shuningdek, saqlangan sahifalar va boshqa maʼlumotlardan barcha qurilmalarda foydalana olasiz.</translation>
 <translation id="2871190378186459992">Brave uchun zo‘r ilovalar, o‘yinlar va kengaytmalar bilan tanishing.</translation>
 <translation id="462105622535258178">Bu va boshqa kengaytmalardan barcha kompyuterlarda foydalanish uchun Bravega kiring</translation>
 <translation id="6670140629169983459">Ota-onangiz belgilagan sozlamalar asosida internetni xavfsiz kezishingiz uchun <ph name="USER_EMAIL_ADDRESS"/> hisobiga kirilgan Brave profilingizga almashing</translation>
@@ -293,7 +296,6 @@
 <translation id="6368144843345980623">Bravedan parollarini eksport qilish</translation>
 <translation id="4304713468139749426">Parollar menejeri</translation>
 <translation id="4334241893986177674">Bu skrinshotni qidirish</translation>
-<translation id="3985621805803699376">Brave yigʻilgan boʻlsa ham, istalgan joydan qidiruv soʻrovini kiriting va savollaringizga javob oling</translation>
 <translation id="242356249838681145">Windows ishga tushirilganda Braveni ishga tushirish</translation>
 <translation id="4400772909124543403">Hech qanday yangilanish mavjud emas</translation>
 <translation id="9183662282810237335">Brave baribir yopilsinmi?</translation>
@@ -324,6 +326,7 @@
 <translation id="2182657378556811785">Yangilashni yakunlash uchun Brave brauzerini qayta ishga tushiring.</translation>
 <translation id="6311668361877328515">Brave V8 tizimi bilan saytlar ishlashini tezlashtiradi, ammo Brave brauzerining hujumlardan himoyasini biroz pasaytiradi</translation>
 <translation id="7960968658810899127">Brave orqali qidiruvni ochish</translation>
+<translation id="4600669659668950128">Brave profili</translation>
 <translation id="7402642357351265733">Shuningdek, Brave foydalanish statistikasini ham ulashsangiz, bu hisobotlarga siz tashrif qilgan URL manzillar ham kiradi</translation>
 <translation id="4673710618874938871"><ph name="USER_NAME"/> hisobidan kirilgan, obunasi bor. Hisob menyusini ochish</translation>
 <translation id="8142245354207161805">Profil boshqa kompyuterdagi (<ph name="HOST_NAME"/>) boshqa Brave jarayonida (<ph name="PROCESS_ID"/>) foydalanilayotgan ko‘rinadi. Ishdan chiqishlarni oldini olish maqsadida profil qulflandi. Agar aniq o‘zingiz foydalanayotgan bo‘lsangiz, qulfdan yeching va Brave‘ni qaytadan ishga tushiring.</translation>
@@ -376,6 +379,7 @@
 <translation id="3311284381627742014">Brave orqali qidiruvni ochish</translation>
 <translation id="5154625106151193600">Brave ayrim fayllarni nega bloklashi haqida</translation>
 <translation id="1786715389543715322">Brave yangilanmoqda (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="3267146219387305979"><ph name="EXISTING_USER"/> hisobiga allaqachon kirilgan. Internetni alohida kezish uchun Bravega shaxsiy profilingiz (<ph name="USER_EMAIL_ADDRESS"/>) orqali kiring. Shuningdek, kengaytmalar va boshqa maʼlumotlardan barcha qurilmalarda foydalana olasiz.</translation>
 <translation id="7021823858304886493">Brave hisobiga kirishga ruxsat berish</translation>
 <translation id="5267531627648004734">Bravedan oʻchirish</translation>
 <translation id="4620757336635063467">Unumdorlik pasayadi, ammo Chrimium hujumlarga yaxshiroq qarshilik qiladi</translation>
@@ -452,6 +456,7 @@ Bu sahifa kutilganidek ishlamasa, optimallashga ruxsat bering.</translation>
 <translation id="6685697979743742605">Bu fayl xavfli boʻlishi mumkin<ph name="LINE_BREAK"/>Parol bilan tasdiqlasangiz, Brave bu yuklanmani tekshirishi mumkin. Fayl Brave Saytlarni xavfsiz kezish serveriga yuborilishi, ammo faylning kontenti va parol qurilmada saqlanishi haqidagi axborot.</translation>
 <translation id="6182736845697986886">Yangilanish serveridagi ichki xato sababli oʻrnatilmadi.</translation>
 <translation id="4368341489795135329"><ph name="TARGET_DEVICE_NAME"/> qurilmangizda Brave hisobingizga kiring va keyin qaytadan yuborishga urining.</translation>
+<translation id="3044046743226566469">Brave yigʻilgan boʻlsa ham, istalgan joydan qidiruv soʻrovini kiriting va savollaringizga javob oling. Bravega fonda ishlash ruxsatini beradi.</translation>
 <translation id="8320964054148936490">Bu kompyuterda allaqachon Brave‘ning so‘nggi versiyasi o‘rnatilgan. Agar dastur ishlamayotgan bo‘lsa, uni o‘chirib qaytadan o‘rnatib ko‘ring.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave hozir qayta ishga tushadi}=1{Brave 1 soniyadan keyin qayta ishga tushadi}other{Brave # soniyadan keyin qayta ishga tushadi}}</translation>
 <translation id="5980269616827212166">Brave bu fayllarni yuklab olishi uchun xotiraga saqlash ruxsati kerak</translation>
@@ -577,6 +582,7 @@ Ayrim bukmarklar hisobingizdan oʻchirilmaguncha yangilari saqlanmaydi. Hozir hi
 <translation id="7288567540154601580">Varaqlar va kengaytmalar</translation>
 <translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Brave uni olib tashlashni tavsiya qiladi}other{Brave ularni olib tashlashni tavsiya qiladi}}</translation>
 <translation id="4600669988724328687">Tizim audiosini ulashish uchun Tizim sozlamalarini ochib, Brave uchun “Faqat tizim audiosini yozib olish” ruxsatini bering. Keyin Brave qayta ishga tushirilishi kerak.</translation>
+<translation id="7299899569525778554">Ish stolidan qidirish</translation>
 <translation id="1864557848095568223">Brave yangilanmoqda</translation>
 <translation id="3403365884036456766">Sozlamalaringiz saqlanadigan fayl noto‘g‘ri yoki yaroqsiz holatda.
 
@@ -631,6 +637,7 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="2684504034454188774">Internetingizni kuzatuvchi tomonlarga ochadigan saytlaringizni koʻrishni qiyinlashtiring. Brave DNS (Domen nomlari tizimi) qaydlaridan saytning IP manzilini shifrlangan aloqa yordamida tekshiradi.</translation>
 <translation id="7810005234485217901">Tezkor ochish uchun Rasm orqali qidiruvni mahkamlash mumkin</translation>
+<translation id="3219490697448569661">Boshqa ilova yoki ochilgan fayl kabi Bravedan tashqaridagi kontent haqida savol bering</translation>
 <translation id="4191642852677143100">Brave bilan qaysi maʼlumotlarni ulashishni tanlang</translation>
 <translation id="1652855885539187849">Bu hisobli Brave profili ushbu qurilmada allaqachon mavjud</translation>
 <translation id="7845233973568007926">Oʻrnatganingiz uchun tashakkur! <ph name="BUNDLE_NAME"/>ni ishlatishdan oldin kompyuterni qayta ishga tushirishingiz lozim.</translation>
@@ -715,10 +722,10 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="856656450041460113">Tillar roʻyxatidan qidirish</translation>
 <translation id="839677568225616901">Brave bir nechta tashkilot boshqaruvida</translation>
 <translation id="8121009781989288430">© Brave Software Inc, <ph name="YEAR"/>. Barcha huquqlar himoyalangan.</translation>
-<translation id="8601359445272098721">Yangi! “Ekrandan tarjima qilish” tugmasini bosib, ekrandagi matn va rasmlarni tarjima qilish mumkin</translation>
 <translation id="3052349005266761501">Brave ishga tushmoqda...</translation>
 <translation id="8624541899164515475">Sozlamalar yangi varaqda ochiladi.</translation>
 <translation id="5128665650717824082">Brave for Testing asosiy brauzer boʻla olmaydi.</translation>
+<translation id="3053208669360972929">Istalgan joydan Brave orqali qidiring</translation>
 <translation id="2433912322225810055">Bundan tashqari kengaytma Brave boshlash sahifasini va omniboksdagi so‘rovlar uchun foydalaniladigan birlamchi qidiruv tizimini o‘zgartirdi.</translation>
 <translation id="4100716194836114130">Bu sizning shaxsiy Brave brauzeringiz</translation>
 <translation id="8712637175834984815">Tushunarli</translation>
@@ -752,6 +759,7 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="7731184591599776500">Brave Enterprise logotipi</translation>
 <translation id="2001474182910589370"><ph name="DEVICE_TYPE"/> qurilmangizda Brave ilovasi bilan Brave xavfsizligi har doim yoningizda</translation>
 <translation id="6500340165622970282">Profilingizni ochishda nimadir xato ketgani uchun Brave ishga tushmadi. Braveni qayta ishga tushirish.</translation>
+<translation id="8079450595783684960">va Brave orqali qidiring yoki <ph name="BEGIN_LINK"/>Sozlamalar<ph name="END_LINK"/> orqali moslang.</translation>
 <translation id="3424657754843264466">Brave profillarini boshqaring</translation>
 <translation id="1454821212628854849">Brave ichidagi Gemini va ochiq varaq oynalarini almashtirish uchun klaviaturadan foydalaning.</translation>
 <translation id="9018218886431812662">O‘rnatildi.</translation>

@@ -1732,6 +1732,9 @@
 <translation id="2077392865355605472">代币符号为必填项</translation>
 <translation id="4636925020451566238">代币小数点的精度值为必填项</translation>
 <translation id="3797613444743816037">Mint 地址</translation>
+<translation id="6571966497164575098">资产 ID</translation>
+<translation id="2110442566771571217">无效或空白的代币资产 ID</translation>
+<translation id="4170599358417498979">该网络不支持自定义资产</translation>
 <translation id="7951915459354237451">费用限额低于基本费用。您的交易可能需要花费很长时间或失败。</translation>
 <translation id="2227702748249086756">无法获取费用估算</translation>
 <translation id="3225624966527491351">导入 NFT</translation>
@@ -2018,7 +2021,7 @@ other {# 个来源}
 <translation id="418195046117003119">共享中心屏幕截图</translation>
 <translation id="4712056949543885424">显示密码管理器</translation>
 <translation id="8037472847879765671">显示付款方式</translation>
-<translation id="7269867954894010756">显示地址</translation>
+<translation id="6262574309547773475">显示联系信息</translation>
 <translation id="6799213269525079335">查找下一个</translation>
 <translation id="8666632926482119393">查找上一个</translation>
 <translation id="3567467864281922039">关闭查找或停止</translation>
@@ -2147,6 +2150,7 @@ other {# 个来源}
 <translation id="3142853026316054951">切换聚合模式</translation>
 <translation id="3468387898712904997">新电子邮件别名</translation>
 <translation id="4711475997833555304">创建一个转发到您收件箱的随机电子邮件。</translation>
+<translation id="5663901348199429994">您的电子邮件别名</translation>
 <translation id="2796584247246518451">新建临时容器</translation>
 <translation id="8591883849678260674">查看原文</translation>
 <translation id="1969654232209826429">分钟读取</translation>
@@ -2211,6 +2215,7 @@ other {# 个来源}
 <translation id="9215978379284690246">状态码:<ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">状态码:<ph name="STATUS_CODE"/>,内部状态码:<ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">您已达到  premium 速率上限。请几小时后重试。</translation>
+<translation id="6873128487002733717">您已达到此模型的高级版费用上限。请选择其他模型或稍后再试。</translation>
 <translation id="3683964919745779766">您已达到此模型的费用上限或积分不足。请稍后再试。</translation>
 <translation id="7692501701960747469">为该模型配置的 API 密钥无效。请检查您的配置并重试。</translation>
 <translation id="7905602379229309187">端点当前过载。请稍后再试。</translation>
@@ -2390,6 +2395,9 @@ other {# 个来源}
 <translation id="5021823940147712387">移除工具</translation>
 <translation id="8712279871321308580">可用的网站工具</translation>
 <translation id="3690996226559605619">可用工具 (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">在此会话中允许</translation>
+<translation id="6240821072888636753">每次都询问</translation>
+<translation id="4290920330097335010">永不允许</translation>
 <translation id="318819763888864209">所有订阅都会自动续订，但可在续订之前随时取消。</translation>
 <translation id="5091223967610958">分享你所在页面的主机名 (<ph name="HOST_NAME"/>) 以帮助我们改进 Leo。</translation>
 <translation id="8732450785281947197">Leo AI 工具</translation>
@@ -2464,7 +2472,7 @@ other {# 个来源}
 <translation id="6077070599873946984">Brave AI 需要您的权限执行操作：<ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI 希望在 **<ph name="SITE_ORIGIN"/>** 上执行 **<ph name="TOOL_NAME"/>**</translation>
 <translation id="4163837693685963037">该操作被检测为可能与您的请求不一致：</translation>
-<translation id="5137568953923142260">允许</translation>
+<translation id="5137568953923142260">允许一次</translation>
 <translation id="3927932062596804919">拒绝</translation>
 <translation id="4191349941249805855">显示工具参数</translation>
 <translation id="7237059533128264835">隐藏工具参数</translation>
@@ -2511,7 +2519,6 @@ other {# 个来源}
 <translation id="6002159997868894136">点击复制别名</translation>
 <translation id="8105770564756958406">使用于 <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">创建最多 5 个免费电子邮件别名以保护您的真实电子邮件地址。</translation>
-<translation id="5663901348199429994">您的电子邮件别名</translation>
 <translation id="9046133327037621173">新电子邮件别名</translation>
 <translation id="3768606658230902536">创建一个随机电子邮件地址，该地址会转发到您的收件箱，同时将您的个人电子邮件地址保密。</translation>
 <translation id="4452721050684632493">已达到别名上限</translation>
@@ -2941,7 +2948,9 @@ Brave 有一个帮助服务，通过过滤在 VPN 连接上进行 DNS 查询的�
 <translation id="4227581348172626540">取消密码更改</translation>
 <translation id="808894953321890993">更改密码</translation>
 <translation id="7967687455715421528">无法更改密码</translation>
+<translation id="7413006094063730650">删除账户</translation>
 <translation id="4869737930995549965">退出登录</translation>
+<translation id="2902312830803030883">更多操作</translation>
 <translation id="5538654494923870167">开始使用您的 Brave 账户</translation>
 <translation id="1544145635547515689">创建 Brave 账户</translation>
 <translation id="3828644479849256404">已有账户？登录</translation>
@@ -2966,6 +2975,11 @@ Brave 有一个帮助服务，通过过滤在 VPN 连接上进行 DNS 查询的�
 <translation id="7228810962389847249">在此输入验证码</translation>
 <translation id="4683390091376980486">确认验证码</translation>
 <translation id="3970028678400797622">重新发送电子邮件验证码</translation>
+<translation id="3653907916071208187">删除您的 Brave 账户?</translation>
+<translation id="8216839865292766307">删除 Brave 账户也会删除其电子邮件别名。您可能会失去对使用别名注册的在线服务的访问权限。此操作无法撤消。</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">输入 <ph name="KEYWORD"/> 以启用账户删除</translation>
+<translation id="536306385881145656">删除 Brave 账户</translation>
 <translation id="2475982808118771221">发生错误</translation>
 <translation id="5430795854491041407">错误</translation>
 <translation id="2232323423357029857">浏览器遇到意外错误<ph name="ERROR_CODE"/>。请重新启动浏览器并重试。</translation>
@@ -2998,4 +3012,10 @@ Brave 有一个帮助服务，通过过滤在 VPN 连接上进行 DNS 查询的�
 <translation id="1063227610401477317">应用更改</translation>
 <translation id="5539769255716491933">报告失败的步骤</translation>
 <translation id="7562163394445060270">任务完成失败</translation>
+<translation id="691082536326552372">报告失败的步骤</translation>
+<translation id="2731141092023803480">向 Brave 团队发送失败步骤的报告。此报告将包含我们修复问题所需的信息。<ph name="LINK_BEFORE"/>了解详情。<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">当前 URL</translation>
+<translation id="4739707522207259415">失败的步骤</translation>
+<translation id="1767991048059195456">发送报告</translation>
+<translation id="2168036794078614559">报告已发送</translation>
 </translationbundle>
