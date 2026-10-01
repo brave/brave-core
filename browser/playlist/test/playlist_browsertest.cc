@@ -68,10 +68,9 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  views::View* GetPlaylistIcon() {
+  page_actions::PageActionTestAccessor GetPlaylistIcon() {
     return page_actions::PageActionTestAccessor(browser(),
-                                                kActionShowPlaylistPageAction)
-        .view();
+                                                kActionShowPlaylistPageAction);
   }
 
   PlaylistBubbleView* GetBubble() {
@@ -227,11 +226,10 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
       browser_view->GetLocationBarView());
-  auto* playlist_icon = GetPlaylistIcon();
-  ASSERT_TRUE(playlist_icon);
+  auto playlist_icon = GetPlaylistIcon();
   // Checks if the page action icon shows up on a site with videos.
-  WaitUntil(base::BindLambdaForTesting(
-      [&]() { return playlist_icon->GetVisible(); }));
+  WaitUntil(
+      base::BindLambdaForTesting([&]() { return playlist_icon.GetVisible(); }));
 
   // The test page is simple video url. So we expect it to be found without
   // necessity of extracting media from background web contents.
@@ -395,9 +393,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, UIHiddenWhenDisabled) {
   timer.Start(FROM_HERE, base::Milliseconds(500), run_loop.QuitClosure());
   run_loop.Run();
 
-  auto* playlist_icon = GetPlaylistIcon();
-  ASSERT_TRUE(playlist_icon);
-  EXPECT_FALSE(playlist_icon->GetVisible());
+  auto playlist_icon = GetPlaylistIcon();
+  EXPECT_FALSE(playlist_icon.GetVisible());
 
   EXPECT_EQ(playlist_iter, visible_items.end())
       << "Playlist item should not be visible when disabled";
@@ -499,15 +496,15 @@ IN_PROC_BROWSER_TEST_F(
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
       browser_view->GetLocationBarView());
-  auto* playlist_icon = GetPlaylistIcon();
+  auto playlist_icon = GetPlaylistIcon();
   auto* playlist_tab_helper =
       playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
 
-  EXPECT_FALSE(playlist_icon->GetVisible());
+  EXPECT_FALSE(playlist_icon.GetVisible());
   const GURL url = https_server()->GetURL("www.youtube.com", "/watch?v=12345");
   ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(), url));
   WaitUntil(
-      base::BindLambdaForTesting([&] { return playlist_icon->GetVisible(); }));
+      base::BindLambdaForTesting([&] { return playlist_icon.GetVisible(); }));
 
   EXPECT_EQ(playlist_tab_helper->found_items().size(), 1u);
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
@@ -547,15 +544,15 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
       browser_view->GetLocationBarView());
-  auto* playlist_icon = GetPlaylistIcon();
+  auto playlist_icon = GetPlaylistIcon();
   auto* playlist_tab_helper =
       playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
 
-  EXPECT_FALSE(playlist_icon->GetVisible());
+  EXPECT_FALSE(playlist_icon.GetVisible());
   const GURL url = https_server()->GetURL("www.youtube.com", "/watch?v=12345");
   ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(), url));
   WaitUntil(
-      base::BindLambdaForTesting([&] { return playlist_icon->GetVisible(); }));
+      base::BindLambdaForTesting([&] { return playlist_icon.GetVisible(); }));
 
   EXPECT_EQ(playlist_tab_helper->found_items().size(), 1u);
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
@@ -600,15 +597,15 @@ IN_PROC_BROWSER_TEST_F(
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
       browser_view->GetLocationBarView());
-  auto* playlist_icon = GetPlaylistIcon();
+  auto playlist_icon = GetPlaylistIcon();
   auto* playlist_tab_helper =
       playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
 
-  EXPECT_FALSE(playlist_icon->GetVisible());
+  EXPECT_FALSE(playlist_icon.GetVisible());
   const GURL url = https_server()->GetURL("www.ted.com", "/v12345");
   ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(), url));
   WaitUntil(
-      base::BindLambdaForTesting([&] { return playlist_icon->GetVisible(); }));
+      base::BindLambdaForTesting([&] { return playlist_icon.GetVisible(); }));
 
   EXPECT_EQ(playlist_tab_helper->found_items().size(), 1u);
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
