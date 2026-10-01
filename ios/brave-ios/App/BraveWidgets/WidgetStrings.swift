@@ -245,5 +245,18 @@ extension Strings {
       comment:
         "Description for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated"
     )
+    public static let shortcutControlWidgetTitle = NSLocalizedString(
+      "widgets.shortcutControlWidgetTitle",
+      bundle: widgetBundle,
+      value: "More Shortcuts",
+      comment: "Title for the configurable shortcut control on the add custom control screen."
+    )
+    public static let shortcutControlWidgetDescription = NSLocalizedString(
+      "widgets.shortcutControlWidgetDescription",
+      bundle: widgetBundle,
+      value: "Quick access to a Brave shortcut.",
+      comment:
+        "Description for the configurable shortcut control on the add custom control screen."
+    )
   }
 }

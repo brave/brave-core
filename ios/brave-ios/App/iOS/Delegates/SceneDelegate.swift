@@ -478,7 +478,8 @@ extension SceneDelegate {
     if #available(iOS 26.0, *) {
       handleControlWidgetIntentIfNeeded(
         sceneState.connectionOptions.appIntent,
-        browserViewController: browserViewController
+        browserViewController: browserViewController,
+        source: "connectionOptions"
       )
     }
 
@@ -505,10 +506,23 @@ extension SceneDelegate {
   @available(iOS 26.0, *)
   private func handleControlWidgetIntentIfNeeded(
     _ appIntent: (any UISceneAppIntent)?,
-    browserViewController: BrowserViewController
+    browserViewController: BrowserViewController,
+    source: String
   ) {
-    guard let intent = appIntent as? OpenControlWidgetShortcutIntent else { return }
-    browserViewController.handleNavigationPath(path: .widgetShortcutURL(intent.shortcut))
+    guard let appIntent else {
+      let message = "\(source) appIntent=nil"
+      ShortcutControlTrace.log.info("\(message, privacy: .public)")
+      return
+    }
+    guard let intent = appIntent as? OpenControlWidgetShortcutIntent else {
+      let message = "\(source) unexpected \(String(describing: type(of: appIntent)))"
+      ShortcutControlTrace.log.info("\(message, privacy: .public)")
+      return
+    }
+    let message =
+      "\(source) stored=\(ShortcutControlTrace.describe(intent.shortcut)) param=\(intent.shortcutRawValue) resolved=\(ShortcutControlTrace.describe(intent.resolvedShortcut))"
+    ShortcutControlTrace.log.info("\(message, privacy: .public)")
+    browserViewController.handleNavigationPath(path: .widgetShortcutURL(intent.resolvedShortcut))
   }
 
   private func sendDAUPingIfNeeded() {
@@ -932,8 +946,15 @@ extension SceneDelegate: AppIntentSceneDelegate {
   func scene(_ scene: UIScene, willPerformAppIntent appIntent: any UISceneAppIntent) {
     guard let windowScene = scene as? UIWindowScene,
       let browserViewController = windowScene.browserViewController
-    else { return }
-    handleControlWidgetIntentIfNeeded(appIntent, browserViewController: browserViewController)
+    else {
+      ShortcutControlTrace.log.info("willPerformAppIntent missing browser")
+      return
+    }
+    handleControlWidgetIntentIfNeeded(
+      appIntent,
+      browserViewController: browserViewController,
+      source: "willPerformAppIntent"
+    )
   }
 }
 
