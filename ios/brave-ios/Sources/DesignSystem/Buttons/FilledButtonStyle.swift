@@ -53,6 +53,7 @@ public struct GlassFilledButtonStyle: ButtonStyle {
           .interactive(isEnabled),
         in: .capsule
       )
+      .contentShape(.capsule)
   }
 }
 
