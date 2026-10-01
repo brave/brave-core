@@ -854,6 +854,23 @@ extension QuickViewController: TabObserver {
     toolbarVisibilityViewModel.toolbarState = .expanded
   }
 
+  func tab(_ tab: some TabState, didFailNavigationWithError error: any Error) {
+    let error = error as NSError
+    // Only a real network-level failure qualifies. A navigation that one of our policy
+    // deciders cancelled in order to load an interstitial (blocked domain, strict-mode
+    // HTTPS upgrade) also lands here, reported as a cancellation/interrupted load.
+    guard error.domain == NSURLErrorDomain, error.code != NSURLErrorCancelled,
+      let failedURL = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL
+    else { return }
+    Task { @MainActor [weak self, weak tab] in
+      guard let self, let tab else { return }
+      guard tab.httpsUpgradeHelper?.pendingUpgrade == nil, !tab.isLoading,
+        InternalURL(tab.visibleURL ?? failedURL) == nil
+      else { return }
+      self.handleUnsupportedRequest(URLRequest(url: failedURL), tab.isPrivate)
+    }
+  }
+
   func tabDidUpdateURL(_ tab: some TabState) {
     refreshShieldStatus(url: tab.visibleURL ?? url)
     if tab.visibleURL?.isInternalURL(for: .readermode) != true {
