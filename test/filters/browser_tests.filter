@@ -75,6 +75,7 @@
 # makes the page classification return the result the tests don't expect. Also,
 # kZeroSuggestPrefetchingOnWeb feature is currently disabled by default which
 # causes prefetch not to start.
+-ZeroSuggestPrefetchBrowserTest.PrefetchTriggeredOnNtpLoad
 -ZeroSuggestPrefetchTabHelperBrowserTestOnNTP.StartPrefetch
 -ZeroSuggestPrefetchTabHelperBrowserTestOnSRP.StartPrefetch
 -ZeroSuggestPrefetchTabHelperBrowserTestOnWeb.StartPrefetch
@@ -143,6 +144,7 @@
 -ContextualTasksContextService*Test.*
 -DependencyParserModelLoaderBrowserTest.*
 -ExecutionEngine*BrowserTest.*
+-ExplainSuggestionBrowserTest.GetExplanation
 -HistoryEmbeddingsKillSwitchBrowserTest.NoCrashAfterKillSwitch
 -HistoryEmbeddingsRestrictedSigninBrowserTest.SearchDoesNotReceiveAnswerForRestrictedSignin
 -LoadingPredictorExtensionBrowserTest.PrefetchBlockedByExtension
@@ -262,6 +264,7 @@
 # Google translate is disabled
 -TranslateAgentBrowserTest.*
 -TranslateManagerBrowserTest.*
+-TranslateManagerReadingModeBrowserTest.*
 -TranslateManagerRenderViewHostNoOverrideTest.*
 -TranslateScriptBrowserTest.*
 
@@ -736,6 +739,8 @@
 -AppMenuModelBookmarkLimitExceededSyncingTest.ProfileSyncBookmarkLimitExceededErrorHiddenTest_Syncing
 -AppMenuModelSigninPromoTest.SignedIn
 -AppMenuModelSigninPromoTest.SignedOut
+-AppMenuModelSigninPromoTest.WebSignedIn
+-AppMenuModelSigninPromoTest.WebSignedIn_ActionShowSignin
 -AppMenuModelTest.ProfileSyncOnTest
 -AuthenticatorDialogTest.InvokeUi*
 -AvatarToolbarButtonAsyncPromoRaceRegressionTest.PRE_PromoShowingAsyncPromoResultResolvesToNoPromoRegressionTest
@@ -766,7 +771,7 @@
 -ContextMenuForSupervisedUsersBrowserTest.SaveLinkAsEntryIsDisabledForUrlsBlockedByAsyncCheckerForChild
 -ContextMenuForSupervisedUsersBrowserTest.SaveLinkAsEntryIsDisabledForUrlsNotAccessibleForChild
 -ContextMenuForSupervisedUsersBrowserTest.SaveLinkAsEntryIsEnabledForUrlsAllowedByAsyncCheckerForChild
--ContextualSearchboxHandlerDriveSigninPromoBrowserTest.OnDriveUploadClicked_*
+-ContextualSearchboxHandlerDriveSigninPromoBrowserTest.*
 -DogfoodOptimizationGuideKeyedServiceBrowserTest.LoggingDisabledByEnterprisePolicy_Dogfood_*
 -EnclaveAuthenticatorBrowserTest.*
 -EnclaveAuthenticatorImmediateMediationBrowserTest.*
@@ -774,6 +779,7 @@
 -ExtensionPostInstallDialogViewUtilsSignInBrowserTest.BubbleExplicitSigninWithAccount
 -GPMPasskeysAuthenticatorDialogTest.InvokeUi*
 -GlicExperimentalOptInTest.NoAccountCookieSyncFails
+-GlicNoWebviewContentsManagerBrowserTest.RecordsOverlayUserActions
 -GlicNoWebviewOverlayBrowserTest.SignInRequiredShowsSignInPanelAndRecoversOnReauth
 -GlicUserStatusBrowserTest.ClientDataHeaderExists
 -HistorySyncOptinManagedType/AvatarToolbarButtonHistorySyncOptinManagedTypeTest.HistorySyncOptinNotShownWhenSyncManaged/*
@@ -782,6 +788,8 @@
 -IndigoHighDsfBrowserTest.ToolbarPositioning
 -IndigoOnboardingBrowserTest.OnboardingFlow
 -ManagedProfileCreationBrowserTest.Test/*PrimaryAccount_*
+-NoSoftwareKeysFallbackEnclaveAuthenticatorBrowserTest.CancelRacesTPMCheck
+-NoSoftwareKeysFallbackEnclaveAuthenticatorBrowserTest.IsUVPAA_NoUnexportableKeys
 -NTPTilesForSupervisedUsersTest.DoNotLoadBlockedURL
 -NTPTilesForSupervisedUsersTest.LoadURL
 -OpportunisticKeyRetrievalEnclaveAuthenticatorBrowserTest.*
@@ -807,7 +815,12 @@
 -SigninPromoTabHelperTest.CallPasswordMoveCallbackAfterSignInFromTab
 -SigninViewControllerBrowserCookieParamTest.SignOut/NoCookie
 -SigninViewControllerBrowserTest.SignoutOrReauth*
+-SigninViewControllerBrowserTest.ShowChromeSigninBubble_Accepted
+-SigninViewControllerBrowserTest.ShowChromeSigninBubble_ConflictWithInterceptionBubble
+-SigninViewControllerBrowserTest.ShowChromeSigninBubble_Declined
 -SigninViewControllerBrowserTest.ShowChromeSigninDialogForExtensionsPromptKeyjackingProtection
+-SigninViewControllerBrowserTest.ShowSigninInterceptionBubble
+-SigninViewControllerBrowserTest.ShowSigninInterceptionBubble_ReplacedBySecondBubble
 -SigninViewControllerBrowserTest.UpdateAccessPointOfSignInTab
 -SigninViewControllerInteractiveBrowserTest.*
 -SupervisedProfilePickerHideGuestModeTest.DeleteLastSupervisedProfile
@@ -1002,6 +1015,7 @@
 -LCPPTimingPredictorBrowserTest.Base
 -SearchEnginePreconnectorDeviceBoundSessionBrowserTest.DoesNotPrewarmWhenDseIsHttp
 -SearchEnginePreconnectorDeviceBoundSessionBrowserTest.DoesNotPrewarmWhenSearchSuggestDisabled
+-SearchEnginePreconnectorDeviceBoundSessionModeBrowserTest.*
 -SuppressesLoadingPredictorOnSlowNetworkBrowserTest.SuppressesOnSlowNetwork
 
 # The tests below are being disabled due to current incompatibilities between
@@ -1177,12 +1191,14 @@
 -BubbleSignInPromoDelegateTest.*
 -ContextualSearchboxHandlerDriveSigninPromoBrowserTest.OnDriveUploadClicked_SignedOut_ShowsComposeboxDriveSigninPromo
 -ContextualSearchboxHandlerDriveSigninPromoBrowserTest.OnDriveUploadClicked_SigninPending_ShowsComposeboxDriveSigninPromo
+-DiceBrowserSigninInterceptionWithAccountPreviewTest.*
 -DiceBrowserTest.*
 -DiceBrowserTestWithAutoAcceptFlag.AutoSignin
 -DiceBrowserTestWithBoundSessionCredentialsEnabled.*
 -DiceBrowserTestWithChromeSigninIPH.SigninRememberedIPH
 -DiceBrowserTestWithExplicitSigninReplaceSyncPromosWithSignInPromos.*
 -DiceBrowserTestWithSyncOptinScreen.EnableHistorySyncOptin
+-DiceBrowserTestWithSyncOptinScreen.NoHistorySyncOptinForNonPrimaryAccount
 -DiceBrowserTestWithSyncOptinScreen.SkipsHistorySyncScreenOnUnexpectedEntryPoint
 -DiceBrowserTestWithoutReplaceSyncPromosWithSignInPromos.*
 -DiceBrowsingDataRemoverBrowserTest.*
@@ -1290,6 +1306,7 @@
 -GlicProfileManagerDidSelectProfileTest.DidSelectProfile_NoConsent
 -GlicSidePanelCoordinator*Test.*
 -GraduatedComposeEnablingBrowserTest.GraduatedCompose
+-IdentityManagerFactoryIsolatedModeBrowserTest.IsolatedModeIdentityManagerInitialization
 -IOSPromosUtilsTest.InvokeUi_addresses
 -IOSPromosUtilsTest.InvokeUi_passwords
 -IOSPromosUtilsTest.InvokeUi_payments
@@ -1382,6 +1399,18 @@
 -IndigoImageReplacementManagerCacheDisabledBrowserTest.*
 -TabViewTest.IconDataChanged
 -UiaClient/LeakedNodeDetectionBrowsertest.DetectGhostNodeLeaks/0
+
+# Flaky upstream (via LUCI). Flaky on our CI and fails consistently locally.
+# This appears to be a race condition:
+# On the UI thread, NativeMessagePort creates its dispatcher on the IO thread.
+# On the IO thread, NativeMessageProcessHost::Start() posts LaunchHostProcess()
+# (native_message_process_host.cc:229). LaunchContext::Start() posts
+# LaunchInBackground to the thread pool (launch_context.cc:121), which reads
+# the manifest and then logs. The test only passes if all of that finishes
+# before the UI thread returns and calls StopCapturingLogs(). The output fits
+# this: the host launched and the extension reported [SUCCESS] stopHost, but
+# the log line arrives after capture had stopped.
+-NativeMessagingLaunchLoggingApiTest.SuccessLogsRedactedCommandLine
 
 # Known upstream flake: 10.5% flake rate over 30 days per LUCI Analysis.
 # Null pointer dereference in AutoPipSettingView::OnButtonPressed — widget
@@ -1698,6 +1727,7 @@
 -BreadcrumbManagerTabHelperSecurityStateBrowserTest.BrokenAuthentication
 
 # These fail because we disable history_clusters::internal::kJourneys.
+-CopySearchJourneyTabFeatureBrowserTest.*
 -ExtensionOpenSidePanelBrowserTest.PinExtensionViaSidePanelJourneyCompletion
 -HistoryClustersPolicyTest.HistoryClustersVisible
 -HistoryClustersSidePanelCoordinatorBrowserTest.*
@@ -1864,6 +1894,7 @@
 -UnframedIsolatedWebAppBrowserTest*.*
 -UnframedTest.*
 -WebAppInternalsIwaInstallationBrowserTest.*
+-WebAppManagedConfigurationPolicyUITest.IwaManagedConfigurationTable*
 -WebAppMenuBrowserTest.InvokeUi_main_isolated
 -WebAppTagIsolatedWebApp*.*
 -WebAppUninstallDialogViewIwaBrowserTest.*
@@ -2209,6 +2240,7 @@
 -IncognitoStaticStorageQuotaDisabledTest.IncognitoSession
 -IncognitoStaticStorageQuotaEnabledTest.IncognitoSession
 -StaticStorageQuotaFeatureDisabledTest.RegularSession
+-StaticStorageQuotaFeatureEnabledTest.IncognitoSession
 -StaticStorageQuotaFeatureEnabledTest.RegularSession
 
 # These tests fail because we disable kPrivateMetricsFeature.
@@ -2320,8 +2352,8 @@
 
 # This test fails because the expected width of the chip doesn't match (24px
 # vs 28px)
--PaymentHandlerWebFlowViewCameraUxTest.BlockedCameraIndicator_DismissalLifecycleAndRepeatDismissal
--PaymentHandlerWebFlowViewCameraUxTest.CameraInUseIndicator_*
+-PaymentHandlerWebFlowViewCameraTest.BlockedCameraIndicator_DismissalLifecycleAndRepeatDismissal
+-PaymentHandlerWebFlowViewCameraTest.CameraInUseIndicator_*
 
 # This test fails because the expected margins of the toolbar don't match.
 -All/ToolbarViewContextualTasksInteriorMarginBrowserTest.BackButtonLeadingMarginInMaximizedWindow/0
@@ -2356,6 +2388,7 @@
 -WebUILocationBarBrowserTest.*
 -WebUIPinnedToolbarActionsBrowserTest.*
 -WebUIReadOnlyOmniboxDragDropBrowserTest.Drop*
+-WebUIToolbarDropBrowserTest.*
 -WebUIToolbarFullyEnabledBrowserTest.*
 -WebUIToolbarLifecyclePrewarmedBrowserTest.*
 -WebUIToolbarLifecyclePrewarmedDeferredBrowserTest.DeferredLoad
@@ -2759,11 +2792,23 @@
 # ChromeContentBrowserClient::WillCreateURLLoaderFactory() runs. Upstream,
 # extensions::WebRequestAPI::MaybeProxyURLLoaderFactory() (called first inside
 # that method) only touches the header client when a loaded extension has the
-# webRequest/declarativeWebRequest permission, which is never true in upstream's
-# own browser_tests. The Brave extension always has that permission, so the
-# WebRequestAPI code unconditionally rebinds the already-bound PendingRemote via
-# InitWithNewPipeAndPassReceiver(), which DCHECKs !is_valid() and crashes.
--SiteTokenBrowserTest.PreservesExistingHeaderClient
+# webRequest/declarativeWebRequest permission; upstream's fixture disables
+# kForceWebRequestProxyForTest to ensure that. The Brave extension always has
+# that permission, so the WebRequestAPI code unconditionally rebinds the
+# already-bound PendingRemote via InitWithNewPipeAndPassReceiver(), which
+# DCHECKs !is_valid() and crashes.
+-SiteTokenChainingBrowserTest.PreservesExistingHeaderClient
+
+# These tests fail because we disable kContextualTasks.
+-ContextualTasksContextMenuAskGoogleBrowserTest.AskGoogleItemShownWhenFeatureEnabled
+-ContextualTasksContextMenuAskGoogleBrowserTest.HistogramRecordedOnAskGoogleClick
+-ContextualTasksContextMenuSubmenuBrowserTest.SubmenuShownWhenSubmenuFeatureEnabled
+
+# These tests fail because prefs::kCookieControlsMode is kBlockThirdParty.
+-DeviceBoundSessionBrowserTest.CrossSiteFetchRefreshesSameSiteNoneCookieOnly
+-DeviceBoundSessionBrowserTest.CrossSiteFetchWithSameSiteNoneTriggersRefresh
+-DeviceBoundSessionBrowserTest.CrossSiteIframeFetchTriggersRefresh
+-DeviceBoundSessionBrowserTest.CrossSiteIframeNavigationWithSameSiteNoneTriggersRefresh
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -All/DeclarativeNetRequestBrowserTest.RendererCacheCleared/*
