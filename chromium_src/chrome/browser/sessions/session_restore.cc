@@ -47,10 +47,6 @@ bool IsScheduledForCleanup(const GURL& url, Profile* profile) {
 }
 
 int MaybeAddFallbackTabIfEmpty(BrowserWindowInterface* browser) {
-  if (!browser) {
-    return TabStripModel::kNoTab;
-  }
-
   if (!browser->GetTabStripModel()->empty()) {
     auto index = browser->GetTabStripModel()->active_index();
     return index == TabStripModel::kNoTab ? 0 : index;
