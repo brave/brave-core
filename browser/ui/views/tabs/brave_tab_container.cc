@@ -112,8 +112,7 @@ BraveTabContainer::BraveTabContainer(
             base::Unretained(this)));
   }
 
-  if (!VerticalTabController::FromBrowser(browser)
-           ->SupportsBraveVerticalTabs()) {
+  if (!VerticalTabController::From(browser)->SupportsBraveVerticalTabs()) {
     return;
   }
 
@@ -175,7 +174,7 @@ base::OnceClosure BraveTabContainer::LockLayout() {
 }
 
 bool BraveTabContainer::ShouldShowVerticalTabs() const {
-  auto* vtc = VerticalTabController::FromBrowser(
+  auto* vtc = VerticalTabController::From(
       tab_slot_controller_->GetBrowserWindowInterface());
   return vtc && vtc->ShouldShowBraveVerticalTabs();
 }
@@ -198,7 +197,7 @@ views::ScrollView::ScrollBarMode BraveTabContainer::GetScrollBarMode() const {
   // tab strip is collapsed to a floating mode. It's because when a user tries
   // to grab the scrollbar, vertical tab will be expanded so showing scroll bar
   // has no point.
-  auto* vtc = VerticalTabController::FromBrowser(
+  auto* vtc = VerticalTabController::From(
       tab_slot_controller_->GetBrowserWindowInterface());
   if (vtc && vtc->IsFloatingVerticalTabsEnabled() &&
       vertical_tab_strip_region_view_ &&

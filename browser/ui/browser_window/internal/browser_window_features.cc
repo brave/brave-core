@@ -86,8 +86,10 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
   // VerticalTabController should be constructed in Init() instead of
   // InitPostBrowserViewConstruction() because it would be referenced by many
   // views.
-  vertical_tab_controller_ = std::make_unique<VerticalTabController>(
-      browser->GetType(), profile->GetPrefs(), focus_mode_controller_.get());
+  vertical_tab_controller_ =
+      GetUserDataFactory().CreateInstance<VerticalTabController>(
+          *browser, browser->GetUnownedUserDataHost(), browser->GetType(),
+          profile->GetPrefs(), focus_mode_controller_.get());
 
   BrowserWindowFeatures_ChromiumImpl::Init(browser);
 
@@ -225,9 +227,4 @@ void BrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
     playlist_side_panel_coordinator_.reset();
 #endif
   }
-}
-
-void BrowserWindowFeatures::SetVerticalTabControllerForTesting(
-    std::unique_ptr<VerticalTabController> vertical_tab_controller) {
-  vertical_tab_controller_ = std::move(vertical_tab_controller);
 }

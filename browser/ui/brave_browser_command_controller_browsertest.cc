@@ -815,7 +815,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsToggleVerticalTabs) {
   auto* command_controller = chrome::BrowserCommandController::From(browser());
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_VERTICAL_TABS));
-  auto* vtc = VerticalTabController::FromBrowser(browser());
+  auto* vtc = VerticalTabController::From(browser());
   ASSERT_FALSE(vtc->ShouldShowBraveVerticalTabs());
 
   // Enable Vertical tabs

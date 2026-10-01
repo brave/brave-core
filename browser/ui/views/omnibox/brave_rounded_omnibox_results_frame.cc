@@ -47,7 +47,7 @@ void BraveRoundedOmniboxResultsFrame::UpdateShadowBorder() {
   border->set_rounded_corners(gfx::RoundedCornersF(corner_radius));
   border->set_md_shadow_elevation(
       RoundedOmniboxResultsFrame::kDefaultElevation);
-  if (auto* vtc = VerticalTabController::FromBrowser(browser_);
+  if (auto* vtc = VerticalTabController::From(browser_);
       vtc && vtc->ShouldShowBraveVerticalTabs() &&
       !vtc->ShouldShowWindowTitleForVerticalTabs()) {
     // Remove top shadow inset so that omnibox popup stays inside browser

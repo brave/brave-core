@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_prefs.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/unowned_user_data/unowned_user_data_host.h"
 
 class VerticalTabControllerUnitTest : public testing::Test {
  public:
@@ -27,11 +28,13 @@ class VerticalTabControllerUnitTest : public testing::Test {
   std::unique_ptr<VerticalTabController> MakeController(
       BrowserWindowInterface::Type type = BrowserWindowInterface::TYPE_NORMAL,
       FocusModeController* focus_mode_controller = nullptr) {
-    return std::make_unique<VerticalTabController>(type, &pref_service_,
-                                                   focus_mode_controller);
+    return std::make_unique<VerticalTabController>(
+        user_data_host_, type, &pref_service_, focus_mode_controller);
   }
 
   sync_preferences::TestingPrefServiceSyncable pref_service_;
+  // Each test creates at most one controller, which registers itself here.
+  ui::UnownedUserDataHost user_data_host_;
 };
 
 TEST_F(VerticalTabControllerUnitTest, SupportsBraveVerticalTabsNormalWindow) {

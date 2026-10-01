@@ -27,7 +27,7 @@ void BraveSystemMenuModelBuilder::InsertBraveSystemMenuForBrowserWindow(
     return insert_after;
   };
 
-  if (auto* vtc = VerticalTabController::FromBrowser(browser());
+  if (auto* vtc = VerticalTabController::From(browser());
       vtc && vtc->SupportsBraveVerticalTabs()) {
     // Upstream unconditionally adds its own vertical-tabs toggle plus a "Send
     // feedback about the tab strip" item (preceded by a separator) to the menu

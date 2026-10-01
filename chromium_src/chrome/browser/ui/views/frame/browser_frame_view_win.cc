@@ -19,9 +19,8 @@
 #define SupportsWindowFeature(feature)                                        \
   SupportsWindowFeature(feature) ||                                           \
       (feature == WindowFeatureController::WindowFeature::kFeatureTitleBar && \
-       VerticalTabController::FromBrowser(browser) &&                         \
-       VerticalTabController::FromBrowser(browser)                            \
-           ->SupportsBraveVerticalTabs())
+       VerticalTabController::From(browser) &&                                \
+       VerticalTabController::From(browser)->SupportsBraveVerticalTabs())
 
 #include <chrome/browser/ui/views/frame/browser_frame_view_win.cc>
 

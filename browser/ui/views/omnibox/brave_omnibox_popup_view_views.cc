@@ -15,8 +15,7 @@ BraveOmniboxPopupViewViews::~BraveOmniboxPopupViewViews() = default;
 
 gfx::Rect BraveOmniboxPopupViewViews::GetTargetBounds() const {
   auto bounds = OmniboxPopupViewViews::GetTargetBounds();
-  if (auto* vtc =
-          VerticalTabController::FromBrowser(location_bar_view_->browser());
+  if (auto* vtc = VerticalTabController::From(location_bar_view_->browser());
       vtc && vtc->ShouldShowBraveVerticalTabs() &&
       !vtc->ShouldShowWindowTitleForVerticalTabs()) {
     // Remove top shadow inset so that omnibox popup stays inside browser

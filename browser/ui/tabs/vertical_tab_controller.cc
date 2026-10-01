@@ -10,36 +10,39 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/switches.h"
 #include "build/build_config.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
+DEFINE_USER_DATA(VerticalTabController);
+
 // static
-VerticalTabController* VerticalTabController::FromBrowser(
+VerticalTabController* VerticalTabController::From(
     BrowserWindowInterface* browser) {
   if (!browser) {
     return nullptr;
   }
-  return browser->GetFeatures().vertical_tab_controller();
+  return Get(browser->GetUnownedUserDataHost());
 }
 
 // static
-const VerticalTabController* VerticalTabController::FromBrowser(
+const VerticalTabController* VerticalTabController::From(
     const BrowserWindowInterface* browser) {
   if (!browser) {
     return nullptr;
   }
-  return browser->GetFeatures().vertical_tab_controller();
+  return Get(browser->GetUnownedUserDataHost());
 }
 
 VerticalTabController::VerticalTabController(
+    ui::UnownedUserDataHost& host,
     BrowserWindowInterface::Type type,
     PrefService* prefs,
     FocusModeController* focus_mode_controller)
     : type_(type),
       prefs_(prefs),
-      focus_mode_controller_(focus_mode_controller) {}
+      focus_mode_controller_(focus_mode_controller),
+      scoped_unowned_user_data_(host, *this) {}
 
 VerticalTabController::~VerticalTabController() = default;
 
