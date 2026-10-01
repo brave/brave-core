@@ -17,6 +17,7 @@
 #include "base/json/json_writer.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
@@ -592,6 +593,7 @@ void MeldIntegrationService::GetCryptoCurrencies(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   auto conversion_callback = base::BindOnce(&SanitizeJson);
+  LOG(ERROR) << GetCryptoCurrenciesURL().spec();
   api_request_helper_->Request(
       "GET", GetCryptoCurrenciesURL(), "", "", std::move(internal_callback),
       MakeMeldApiHeaders(), {.auto_retry_on_network_change = true},
@@ -633,6 +635,15 @@ void MeldIntegrationService::OnParseCryptoCurrencies(
                           l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
     return;
   }
+
+  auto* blockchain_registry = BlockchainRegistry::GetInstance();
+  for (auto& crypto_currency : *crypto_currencies) {
+    if (crypto_currency->chain_id && crypto_currency->contract_address) {
+      crypto_currency->coingecko_id = blockchain_registry->GetCoingeckoId(
+          *crypto_currency->chain_id, *crypto_currency->contract_address);
+    }
+  }
+
   std::move(callback).Run(std::move(crypto_currencies), std::nullopt);
 }
 

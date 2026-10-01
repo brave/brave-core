@@ -11,7 +11,6 @@ import {
   ExternalWallet,
   ExternalWalletProvider,
 } from '../../brave_rewards/resources/shared/lib/external_wallet'
-import * as MeldTypes from 'gen/brave/components/brave_wallet/common/meld_integration.mojom.m.js'
 
 import Amount from '../utils/amount'
 
@@ -22,6 +21,7 @@ export { Url } from 'gen/url/mojom/url.mojom.m.js'
 export {
   MeldFiatCurrency,
   MeldCountry,
+  MeldCryptoCurrency,
   MeldCryptoQuote,
   MeldServiceProvider,
   MeldPaymentMethod,
@@ -1075,10 +1075,6 @@ export type zcashAddressTypes = 'unified' | 'shielded' | 'transparent'
 export type zcashAddressOptionType = {
   addressType: zcashAddressTypes
   label: string
-}
-
-export type MeldCryptoCurrency = MeldTypes.MeldCryptoCurrency & {
-  coingeckoId?: string
 }
 
 export type MaxPriorityFeeTypes = 'slow' | 'average' | 'fast'

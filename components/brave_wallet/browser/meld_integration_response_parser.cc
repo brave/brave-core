@@ -31,6 +31,36 @@ brave_wallet::mojom::MeldLogoImagesPtr ParseMeldLogos(
       logos->dark, logos->dark_short, logos->light, logos->light_short);
 }
 
+// Meld reports these chains with a chain id that doesn't match the one
+// Brave wallet uses to identify them, so it's overridden here based on the
+// chain code instead.
+std::optional<std::string> ResolveMeldCryptoCurrencyChainId(
+    const std::optional<std::string>& chain_code,
+    std::optional<std::string> chain_id) {
+  if (!chain_code) {
+    return chain_id;
+  }
+  if (*chain_code == "BTC") {
+    return brave_wallet::mojom::kBitcoinMainnet;
+  }
+  if (*chain_code == "FIL") {
+    return brave_wallet::mojom::kFilecoinMainnet;
+  }
+  if (*chain_code == "ZEC") {
+    return brave_wallet::mojom::kZCashMainnet;
+  }
+  if (*chain_code == "ADA") {
+    return brave_wallet::mojom::kCardanoMainnet;
+  }
+  if (*chain_code == "ASSETHUB") {
+    // Only the Polkadot Asset Hub chain is supported for buying DOT, so we
+    // always resolve to the Asset Hub chain id rather than Meld's raw
+    // chain id.
+    return brave_wallet::mojom::kPolkadotMainnetAssetHub;
+  }
+  return chain_id;
+}
+
 base::flat_map<std::string, std::string> ParseOptionalMapOfStrings(
     const base::Value& val) {
   base::flat_map<std::string, std::string> result;
@@ -309,12 +339,15 @@ std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> ParseCryptoCurrencies(
         base::StringToInt(*crypto_currency_value->chain_id, &chain_id_as_num)) {
       chain_id_hex = Uint256ValueToHex(chain_id_as_num);
     }
+    chain_id_hex = ResolveMeldCryptoCurrencyChainId(
+        crypto_currency_value->chain_code, std::move(chain_id_hex));
 
     auto cc = mojom::MeldCryptoCurrency::New(
         crypto_currency_value->currency_code, crypto_currency_value->name,
         crypto_currency_value->chain_code, crypto_currency_value->chain_name,
         chain_id_hex, crypto_currency_value->contract_address,
-        crypto_currency_value->symbol_image_url);
+        crypto_currency_value->symbol_image_url,
+        /*coingecko_id=*/std::nullopt);
 
     crypto_currencies.emplace_back(std::move(cc));
   }

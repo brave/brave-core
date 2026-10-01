@@ -64,6 +64,7 @@ struct MeldCryptoCurrency {
   string? chain_id;
   string? contract_address;
   string? symbol_image_url;
+  string? coingecko_id;
 };
 
 struct MeldCountry {

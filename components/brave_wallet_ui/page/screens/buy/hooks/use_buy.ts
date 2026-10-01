@@ -50,7 +50,6 @@ import { querySubscriptionOptions60s } from '../../../../common/slices/constants
 import Amount from '../../../../utils/amount'
 import {
   getAssetSymbol,
-  getMeldTokensChainId,
   getMeldTokensCoinType,
 } from '../../../../utils/meld_utils'
 import { makeBuyRoute } from '../../../../utils/routes-utils'
@@ -188,7 +187,7 @@ export const useBuy = () => {
   > = useMemo(
     () => ({
       coin: getMeldTokensCoinType(selectedMeldAsset),
-      chainId: getMeldTokensChainId(selectedMeldAsset) ?? '',
+      chainId: selectedMeldAsset.chainId ?? '',
       contractAddress: selectedMeldAsset.contractAddress || '',
     }),
     [selectedMeldAsset],

@@ -48,25 +48,3 @@ export const getMeldTokensCoinType = (
       return BraveWallet.CoinType.ETH
   }
 }
-
-export const getMeldTokensChainId = (
-  asset: Pick<MeldCryptoCurrency, 'chainId' | 'chainCode'>,
-) => {
-  switch (asset.chainCode) {
-    case 'BTC':
-      return BraveWallet.BITCOIN_MAINNET
-    case 'FIL':
-      return BraveWallet.FILECOIN_MAINNET
-    case 'ZEC':
-      return BraveWallet.Z_CASH_MAINNET
-    case 'ADA':
-      return BraveWallet.CARDANO_MAINNET
-    case 'ASSETHUB':
-      // Only the Polkadot Asset Hub chain is supported for buying DOT, so we
-      // always resolve to the Asset Hub chain id rather than Meld's raw
-      // chainId.
-      return BraveWallet.POLKADOT_MAINNET_ASSET_HUB
-    default:
-      return asset.chainId
-  }
-}

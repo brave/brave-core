@@ -20,6 +20,8 @@
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/meld_integration.mojom.h"
@@ -1200,6 +1202,19 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
                           Pair("includeServiceProviderDetails", "false"),
                           Pair("statuses", "LIVE,RECENTLY_ADDED")));
 
+  // Only the "00" token's chain id & contract address are registered, so
+  // only that token should end up with a resolved coingecko id.
+  std::string coingecko_ids_json = R"({
+    "0x1": {
+      "0x111111111117dc0aa78b770fa6a738034120c302": "1inch"
+    }
+  })";
+  std::optional<CoingeckoIdsMap> coingecko_ids_map =
+      ParseCoingeckoIdsMap(coingecko_ids_json);
+  ASSERT_TRUE(coingecko_ids_map);
+  BlockchainRegistry::GetInstance()->UpdateCoingeckoIdsMap(
+      std::move(*coingecko_ids_map));
+
   TestGetCryptoCurrencies(
       R"([
   {
@@ -1219,6 +1234,15 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
     "chainId": "1",
     "contractAddress": "0x111111111117dc0aa78b770fa6a738034120c302",
     "symbolImageUrl": "https://images-currency.meld.io/crypto/00/symbol.png"
+  },
+  {
+    "currencyCode": "BTC",
+    "name": "Bitcoin",
+    "chainCode": "BTC",
+    "chainName": "Bitcoin",
+    "chainId": null,
+    "contractAddress": null,
+    "symbolImageUrl": "https://images-currency.meld.io/crypto/BTC/symbol.png"
   }])",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
@@ -1237,7 +1261,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
                                  "0xe41d2489571d322189246dafa5ebde1f4699f498" &&
                              item->symbol_image_url ==
                                  "https://images-currency.meld.io/crypto/"
-                                 "USDT_KCC/symbol.png";
+                                 "USDT_KCC/symbol.png" &&
+                             !item->coingecko_id;
                     }),
                 1);
             EXPECT_EQ(
@@ -1253,7 +1278,18 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
                                  "0x111111111117dc0aa78b770fa6a738034120c302" &&
                              item->symbol_image_url ==
                                  "https://images-currency.meld.io/crypto/00/"
-                                 "symbol.png";
+                                 "symbol.png" &&
+                             item->coingecko_id == "1inch";
+                    }),
+                1);
+            EXPECT_EQ(
+                std::ranges::count_if(
+                    *crypto_currencies,
+                    [](const auto& item) {
+                      return item->currency_code == "BTC" &&
+                             item->chain_code == "BTC" &&
+                             item->chain_id == mojom::kBitcoinMainnet &&
+                             !item->contract_address && !item->coingecko_id;
                     }),
                 1);
           }));

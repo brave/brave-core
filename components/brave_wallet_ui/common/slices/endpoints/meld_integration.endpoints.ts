@@ -2,7 +2,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import { mapLimit } from 'async'
 
 // Types
 import {
@@ -19,7 +18,6 @@ import {
 
 // Utils
 import { handleEndpointError } from '../../../utils/api-utils'
-import { getMeldTokensChainId } from '../../../utils/meld_utils'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 type GetCryptoQuotesArgs = {
@@ -76,47 +74,12 @@ export const meldIntegrationEndpoints = ({
       providesTags: ['MeldFiatCurrencies'],
     }),
     getMeldCryptoCurrencies: query<MeldCryptoCurrency[], void>({
-      queryFn: async (
-        _arg,
-        { endpoint, getState },
-        _extraOptions,
-        baseQuery,
-      ) => {
+      queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
         try {
-          const { meldIntegrationService, blockchainRegistry } =
-            baseQuery(undefined).data
+          const { meldIntegrationService } = baseQuery(undefined).data
 
           const { fiatCurrencies: cryptoCurrencies, error } =
             await meldIntegrationService.getCryptoCurrencies()
-
-          const tokenList = await mapLimit(
-            cryptoCurrencies || [],
-            1,
-            async function (token: MeldCryptoCurrency) {
-              const chainId = getMeldTokensChainId(token)
-              if (chainId && token.contractAddress) {
-                const { coingeckoId } = await blockchainRegistry.getCoingeckoId(
-                  chainId,
-                  token.contractAddress,
-                )
-                if (coingeckoId) {
-                  return {
-                    ...token,
-                    chainId: chainId,
-                    coingeckoId: coingeckoId,
-                  }
-                }
-                return {
-                  ...token,
-                  chainId: chainId,
-                }
-              }
-              return {
-                ...token,
-                chainId: chainId,
-              }
-            },
-          )
 
           if (error) {
             return handleEndpointError(
@@ -127,7 +90,7 @@ export const meldIntegrationEndpoints = ({
           }
 
           return {
-            data: tokenList || [],
+            data: cryptoCurrencies || [],
           }
         } catch (error) {
           return handleEndpointError(
