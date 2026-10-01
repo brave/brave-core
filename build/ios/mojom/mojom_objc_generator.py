@@ -460,6 +460,7 @@ class Generator(generator.Generator):
         objc_filters = {
             "objc_property_modifiers": self._GetObjCPropertyModifiers,
             "objc_property_default": self._GetObjCPropertyDefaultValue,
+            "objc_response_default": self._GetObjCResponseDefaultValue,
             "objc_union_null_return_value": self._GetObjCUnionNullReturnValue,
             "objc_property_needs_default_assignment": \
                 self._ObjcPropertyNeedsDefaultValueAssignment,
@@ -533,6 +534,22 @@ class Generator(generator.Generator):
             return "%s%s" % (typemap.ObjCWrappedType(),
                              self._ObjCEnumFormatter(kind.fields[0].name))
         return default
+
+    def _GetObjCResponseDefaultValue(self, kind):
+        """ Value passed to a completion block when its callback is dropped
+        (e.g. the remote disconnected) so callers are never left waiting """
+        if mojom.IsNullableKind(kind):
+            return 'nil'
+        typemap = MojoTypemapForKind(kind)
+        if isinstance(typemap, NumberMojoTypemap):
+            return '0'
+        if isinstance(typemap, EnumMojoTypemap):
+            if len(kind.fields) > 0:
+                return "%s%s" % (typemap.ObjCWrappedType(),
+                                 self._ObjCEnumFormatter(kind.fields[0].name))
+            return 'static_cast<%s>(0)' % typemap.ObjCWrappedType()
+        default = typemap.DefaultObjCValue(None)
+        return default if default is not None else 'nil'
 
     def _GetObjCUnionNullReturnValue(self, kind):
         typemap = MojoTypemapForKind(kind)
