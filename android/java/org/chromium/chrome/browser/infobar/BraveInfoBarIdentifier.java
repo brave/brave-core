@@ -18,8 +18,7 @@ import java.lang.annotation.RetentionPolicy;
     BraveInfoBarIdentifier.SYNC_CANNOT_RUN_INFOBAR,
     BraveInfoBarIdentifier.WEB_DISCOVERY_INFOBAR_DELEGATE,
     BraveInfoBarIdentifier.BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR,
-    BraveInfoBarIdentifier.SEARCH_RESULT_AD_CLICKED_INFOBAR_DELEGATE,
-    BraveInfoBarIdentifier.NEW_TAB_TAKEOVER_INFOBAR_DELEGATE
+    BraveInfoBarIdentifier.SEARCH_RESULT_AD_CLICKED_INFOBAR_DELEGATE
 })
 @Retention(RetentionPolicy.SOURCE)
 public @interface BraveInfoBarIdentifier {
@@ -32,5 +31,5 @@ public @interface BraveInfoBarIdentifier {
     int WEB_DISCOVERY_INFOBAR_DELEGATE = 506;
     int BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR = 507;
     int SEARCH_RESULT_AD_CLICKED_INFOBAR_DELEGATE = 510;
-    int NEW_TAB_TAKEOVER_INFOBAR_DELEGATE = 511;
+    // int NEW_TAB_TAKEOVER_INFOBAR_DELEGATE = 511; - deprecated
 }

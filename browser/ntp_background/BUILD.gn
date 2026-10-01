@@ -9,21 +9,17 @@ import("//testing/test.gni")
 
 source_set("ntp_background") {
   sources = [
-    "new_tab_takeover_infobar_delegate.cc",
-    "new_tab_takeover_infobar_delegate.h",
     "view_counter_service_factory.cc",
     "view_counter_service_factory.h",
   ]
 
   deps = [
     "//base",
-    "//brave/app:brave_generated_resources_grit_grit",
     "//brave/browser:browser_process",
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_ads/core/browser/service",
     "//brave/components/brave_rewards/core",
     "//brave/components/constants",
-    "//brave/components/infobars/core",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_background_images/buildflags",
     "//brave/components/ntp_background_images/common",
@@ -31,17 +27,11 @@ source_set("ntp_background") {
     "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/content_settings:content_settings_factory",
-    "//chrome/browser/infobars",
     "//chrome/browser/profiles:profile",
-    "//components/infobars/content",
-    "//components/infobars/core",
     "//components/keyed_service/content",
     "//components/pref_registry",
     "//components/prefs",
-    "//components/strings:components_strings_grit",
-    "//components/vector_icons",
     "//content/public/browser",
-    "//ui/base",
     "//url",
   ]
 
@@ -77,7 +67,7 @@ source_set("ntp_background") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "new_tab_takeover_infobar_delegate_unittest.cc" ]
+  sources = []
 
   deps = [
     ":ntp_background",
@@ -89,16 +79,11 @@ source_set("unit_tests") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a",
     "//chrome/test:test_support",
-    "//components/infobars/content",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",
     "//content/test:test_support",
     "//testing/gtest",
   ]
-
-  if (toolkit_views) {
-    deps += [ "//chrome/browser/ui/views:layout_provider" ]
-  }
 
   if (enable_custom_background) {
     sources += [
