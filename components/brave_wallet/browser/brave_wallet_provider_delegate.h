@@ -12,6 +12,7 @@
 
 #include "base/functional/callback.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
+#include "brave/components/brave_wallet/common/mojom/brave_wallet_common.mojom-forward.h"
 #include "url/origin.h"
 
 namespace brave_wallet {
