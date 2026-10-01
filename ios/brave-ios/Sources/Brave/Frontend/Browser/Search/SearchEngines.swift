@@ -291,7 +291,10 @@ public class SearchEngines {
       return
     }
 
-    customEngines.remove(at: customEngines.firstIndex(of: engine)!)
+    guard let index = customEngines.firstIndex(of: engine) else {
+      return
+    }
+    customEngines.remove(at: index)
     do {
       try await saveCustomEngines()
     } catch {
