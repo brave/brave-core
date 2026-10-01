@@ -13,7 +13,6 @@
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/autofill/autofill_suggestion_controller_utils.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/page_info/page_info_dialog.h"
 #include "components/autofill/content/browser/renderer_forms_from_browser_form.h"
@@ -64,7 +63,7 @@ email_aliases::EmailAliasesController* GetEmailAliasesControllerFromWebContents(
   if (!window_interface) {
     return nullptr;
   }
-  return window_interface->GetFeatures().email_aliases_controller();
+  return email_aliases::EmailAliasesController::From(window_interface);
 }
 #endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)
 

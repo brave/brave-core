@@ -48,7 +48,6 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_change_type.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -883,9 +882,10 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
     case IDC_SHOW_EMAIL_ALIASES:
-      browser_->GetFeatures().email_aliases_controller()->OpenSettingsPage(
-          email_aliases::SettingsPageMethod::kAppMenu,
-          browser_->tab_strip_model()->GetActiveWebContents());
+      email_aliases::EmailAliasesController::From(&*browser_)
+          ->OpenSettingsPage(
+              email_aliases::SettingsPageMethod::kAppMenu,
+              browser_->tab_strip_model()->GetActiveWebContents());
       break;
 #endif
 #if BUILDFLAG(ENABLE_CONTAINERS)
