@@ -21,6 +21,7 @@
 -InputFileParsersTest.ParsePkpJson
 -InputFileParsersTest.ParsePkpJsonInvalid
 -InputFileParsersTest.ParsePkpJsonInvalidPinset
+-TransportSecurityStateTest.PinValidationWithCompiledInPins
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -CanPoolTest.CanNotPoolWithBadPins
