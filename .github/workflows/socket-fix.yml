@@ -165,7 +165,7 @@ jobs:
             git push origin "HEAD:refs/heads/${PR_BRANCH}"
           fi
           if [ "$(gh pr view "$PR_BRANCH" --json state --jq .state 2>/dev/null)" = "OPEN" ]; then
-            echo "Updated existing PR for ${PR_BRANCH}"
+            gh pr edit "$PR_BRANCH" --body "$PR_BODY"
           else
             gh pr create --base master --head "$PR_BRANCH" \
               --title 'fix: address security advisories' --body "$PR_BODY" \
