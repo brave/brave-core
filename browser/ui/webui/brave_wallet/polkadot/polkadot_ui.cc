@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/components/polkadot_bridge/resources/grit/polkadot_bridge_generated_map.h"
@@ -64,6 +65,23 @@ UntrustedPolkadotUIConfig::CreateWebUIController(content::WebUI* web_ui,
 
 UntrustedPolkadotUIConfig::UntrustedPolkadotUIConfig()
     : WebUIConfig(content::kChromeUIUntrustedScheme, kUntrustedPolkadotHost) {}
+
+void UntrustedPolkadotUI::BindPolkadotBridge(
+    mojo::PendingRemote<brave_wallet::mojom::PolkadotBridge> bridge) {
+  content::RenderFrameHost* rfh =
+      web_ui()->GetWebContents()->GetPrimaryMainFrame();
+  if (!rfh) {
+    return;
+  }
+
+  CHECK(rfh->GetWebUI());
+  content::WebUIController* controller = rfh->GetWebUI()->GetController();
+
+  if (auto* panel = controller->GetAs<WalletPanelUI>()) {
+    panel->BindPolkadotBridge(std::move(bridge));
+    return;
+  }
+}
 
 WEB_UI_CONTROLLER_TYPE_IMPL(UntrustedPolkadotUI)
 

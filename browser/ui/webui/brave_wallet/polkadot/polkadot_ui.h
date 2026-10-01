@@ -35,6 +35,10 @@ class UntrustedPolkadotUI
   bool IsBoundForTesting() const { return receiver_.is_bound(); }
 
  private:
+  // mojom::PolkadotBridgeUIHandler:
+  void BindPolkadotBridge(
+      mojo::PendingRemote<brave_wallet::mojom::PolkadotBridge> bridge) override;
+
   mojo::Receiver<brave_wallet::mojom::PolkadotBridgeUIHandler> receiver_{this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();
