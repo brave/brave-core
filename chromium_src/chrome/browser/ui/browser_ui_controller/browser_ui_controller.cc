@@ -6,7 +6,6 @@
 #include "base/check_is_test.h"
 #include "brave/browser/ui/sidebar/sidebar.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "content/public/browser/invalidate_type.h"
@@ -24,8 +23,8 @@ void MaybeUpdateSidebarForUrlChange(BrowserWindowInterface& browser,
     return;
   }
 
-  // sidebar_controller() can return a nullptr in unit tests.
-  auto* sidebar_controller = browser.GetFeatures().sidebar_controller();
+  // SidebarController::From() can return a nullptr in unit tests.
+  auto* sidebar_controller = sidebar::SidebarController::From(&browser);
   if (!sidebar_controller) {
     return;
   }

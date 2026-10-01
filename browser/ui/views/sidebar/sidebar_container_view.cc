@@ -210,7 +210,7 @@ void SidebarContainerView::UpdateSidebarVisibility() {
   // Pinning is an explicit user gesture, not a hover — snap to visible
   // without animation, mirroring kShowAlways above. Otherwise, fall through
   // and follow the current show option.
-  if (browser_->GetFeatures().sidebar_controller()->sidebar_pinned()) {
+  if (sidebar::SidebarController::From(browser_)->sidebar_pinned()) {
     ShowSidebar(AnimationStyle::kImmediate);
   } else {
     // Refresh sidebar visibility with current show option.
@@ -275,7 +275,7 @@ bool SidebarContainerView::IsFullscreenByTab() const {
 
 bool SidebarContainerView::ShouldForceShowSidebar() const {
   // Don't hide sidebar when it's pinned.
-  return browser_->GetFeatures().sidebar_controller()->sidebar_pinned() ||
+  return sidebar::SidebarController::From(browser_)->sidebar_pinned() ||
          sidebar_control_view_->IsItemReorderingInProgress() ||
          sidebar_control_view_->IsBubbleWidgetVisible();
 }

@@ -23,7 +23,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -170,7 +169,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
 
 #if defined(TOOLKIT_VIEWS)
   // Collet our default builtin panel ids.
-  auto* sidebar_model = browser()->GetFeatures().sidebar_controller()->model();
+  auto* sidebar_model = sidebar::SidebarController::From(browser())->model();
   std::vector<SidePanelEntryId> panel_ids;
   for (const auto& item : sidebar_model->GetAllSidebarItems()) {
     if (item.is_built_in_type() && item.open_in_panel) {
