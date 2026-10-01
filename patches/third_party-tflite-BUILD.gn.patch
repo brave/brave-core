@@ -1,5 +1,5 @@
 diff --git a/third_party/tflite/BUILD.gn b/third_party/tflite/BUILD.gn
-index 3200cb360d12997fd1c792d22772ffae5a44c632..af07a50b4691ab7d061ab7036f74fa80e88800bf 100644
+index 6ae30e5975d91505ed84e491e7304d8da46134e1..b0a15fac2586241e0c8379502962c3f67c3d184a 100644
 --- a/third_party/tflite/BUILD.gn
 +++ b/third_party/tflite/BUILD.gn
 @@ -402,6 +402,7 @@ if (!use_litert_tflite) {

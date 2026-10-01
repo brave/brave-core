@@ -2556,6 +2556,12 @@
 -All/SessionRestoreAcrossStagesTest.Restore/*
 -All/SessionRestoreWithEncryptionTest.WindowBoundsAreRestored/*
 
+# This test assumes an invisible window's contents shrink by exactly the resize
+# delta. Our sidebar can become visible while the window is still invisible, but
+# `kDeferLayoutDuringBrowserStartup` defers that layout; the resize then
+# triggers a real layout that applies both changes at once.
+-BrowserViewDeferLayoutTest.NoDeferLayoutOnSizeChangeWhileInvisible
+
 # These tests fail because bookmarks bar visibility is controlled by Brave's
 # pref and not upstream's pref. These tests should start working once we migrate
 # to using upstream's pref.
