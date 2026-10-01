@@ -133,6 +133,13 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ChildSrc,
       absl::StrFormat("child-src %s;", kAIChatUntrustedConversationUIURL));
+  // Allow framing workspace pages in the lightbox for viewing workspace files.
+  // Workspaces live at chrome-untrusted://<uuid>.leo-workspace origins.
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FrameSrc,
+      absl::StrFormat("frame-src %s chrome-untrusted://*.%s;",
+                      kAIChatUntrustedConversationUIURL,
+                      ai_chat::kAIChatLeoWorkspaceUIHost));
 
   content::URLDataSource::Add(
       profile_, std::make_unique<FaviconSource>(

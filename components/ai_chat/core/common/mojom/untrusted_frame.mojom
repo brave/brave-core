@@ -43,6 +43,11 @@ interface ParentUIFrame {
   // backdrop is not clipped by the untrusted iframe.
   ShowImageLightbox(UploadedFile file);
 
+  // Show workspace file lightbox in the parent trusted UI. The lightbox
+  // displays the file in an iframe pointed at the workspace origin.
+  // |file_path| is the relative path to the file within the workspace.
+  ShowWorkspaceFileLightbox(string file_path);
+
   // Request the parent frame to create a new conversation
   RequestNewConversation();
 

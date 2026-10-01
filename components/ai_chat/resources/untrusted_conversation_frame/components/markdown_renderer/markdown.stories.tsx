@@ -5,8 +5,14 @@
 
 import * as React from 'react'
 import '@brave/leo/tokens/css/variables.css'
+import { InferControlsFromArgs } from '$storybook/utils'
+import * as Mojom from '../../../common/mojom'
+import WorkspaceFileLightbox, {
+  WorkspaceFileInfo,
+} from '../../../page/components/workspace_file_lightbox'
 import MarkdownRenderer from './index'
 import AssistantResponseContextProvider from '../assistant_response/assistant_response_context'
+import WorkspaceFileButton from '../assistant_response/workspace_file_button'
 import MockContext from '../../mock_untrusted_conversation_context'
 import * as searchResults from '../search_widget/storybook-data/searchResults.json'
 import { getEventTemplate } from '../../../common/test_data_utils'
@@ -256,4 +262,86 @@ Nor are shell variables: set $HOME and $PATH first.
       />
     </MockContext>
   )
+}
+
+const WORKSPACE_URL = 'workspace://8b5a2f4e-1c3d-4e5f-9a7b-2c4d6e8f0a1b'
+
+const workspaceContent: Mojom.AssociatedContent = {
+  uuid: 'workspace-1',
+  contentType: Mojom.ContentType.Workspace,
+  contentId: 1,
+  title: 'my-project',
+  url: { url: WORKSPACE_URL },
+  contentUsedPercentage: 100,
+  conversationTurnUuid: undefined,
+  toolsAttached: true,
+}
+
+// Stands in for the chrome-untrusted:// workspace viewer, which can't load in
+// storybook.
+function PlaceholderViewer(props: { file: WorkspaceFileInfo }) {
+  return (
+    <div
+      style={{
+        height: '100%',
+        boxSizing: 'border-box',
+        padding: 'var(--leo-spacing-xl)',
+        overflow: 'auto',
+        font: 'var(--leo-font-default-regular)',
+        color: 'var(--leo-color-text-secondary)',
+      }}
+    >
+      <p>
+        Placeholder for <code>{props.file.filePath}</code> from{' '}
+        <code>{props.file.workspaceUrl}</code>.
+      </p>
+      <pre
+        style={{
+          padding: 'var(--leo-spacing-l)',
+          borderRadius: 'var(--leo-radius-m)',
+          background: 'var(--leo-color-container-highlight)',
+        }}
+      >
+        {`export default function App() {\n  return <h1>Hello, workspace!</h1>\n}`}
+      </pre>
+    </div>
+  )
+}
+
+type WorkspaceFileButtonArgs = {
+  hasWorkspace: boolean
+}
+
+const workspaceFileButtonArgs: WorkspaceFileButtonArgs = {
+  hasWorkspace: true,
+}
+
+// Renders the `::workspace[path]` directive's button. Clicking it wires the
+// untrusted frame's showWorkspaceFileLightbox call to the trusted page's
+// lightbox, as conversation_context.tsx does in the real UI.
+export const _WorkspaceFileButton = {
+  args: workspaceFileButtonArgs,
+  argTypes: InferControlsFromArgs(workspaceFileButtonArgs),
+  render: function Render(args: WorkspaceFileButtonArgs) {
+    const [file, setFile] = React.useState<WorkspaceFileInfo | null>(null)
+
+    return (
+      <MockContext
+        parentUIFrame={{
+          showWorkspaceFileLightbox: (filePath: string) =>
+            setFile({ workspaceUrl: WORKSPACE_URL, filePath }),
+        }}
+        overrides={{
+          associatedContent: args.hasWorkspace ? [workspaceContent] : [],
+        }}
+      >
+        <WorkspaceFileButton path='src/components/app.tsx' />
+        <WorkspaceFileLightbox
+          file={file}
+          onClose={() => setFile(null)}
+          renderViewer={(file) => <PlaceholderViewer file={file} />}
+        />
+      </MockContext>
+    )
+  },
 }

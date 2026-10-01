@@ -9,9 +9,11 @@ import generateReactContext from '$web-common/api/react_api'
 import { getLocale } from '$web-common/locale'
 import {
   isFullPageScreenshot,
+  isWorkspaceContent,
   attachUploadedFilesWithLimits,
 } from '../../common/conversation_history_utils'
 import * as Mojom from '../../common/mojom'
+import type { WorkspaceFileInfo } from '../components/workspace_file_lightbox'
 import { useIsDragging } from '../hooks/useIsDragging'
 import { isLeoModel } from '../model_utils'
 import { SelectedChatDetails } from './active_chat_context'
@@ -586,6 +588,9 @@ export function useProvideConversationContext(props: ConversationContextProps) {
   const [previewUploadedFile, setPreviewUploadedFile] =
     React.useState<Mojom.UploadedFile | null>(null)
 
+  const [previewWorkspaceFile, setPreviewWorkspaceFile] =
+    React.useState<WorkspaceFileInfo | null>(null)
+
   // Listen for showSkillDialog requests from the child frame
   aiChat.api.useShowSkillDialog((prompt) => {
     aiChat.setSkillDialog({
@@ -601,6 +606,19 @@ export function useProvideConversationContext(props: ConversationContextProps) {
   // Listen for showImageLightbox requests from the child frame
   aiChat.api.useShowImageLightbox((file) => {
     setPreviewUploadedFile(file)
+  })
+
+  // Listen for showWorkspaceFileLightbox requests from the child frame
+  aiChat.api.useShowWorkspaceFileLightbox((filePath) => {
+    // Find the workspace URL from the associated content
+    const workspaceContent =
+      conversationState.associatedContent?.find(isWorkspaceContent)
+    if (workspaceContent?.url?.url) {
+      setPreviewWorkspaceFile({
+        workspaceUrl: workspaceContent.url.url,
+        filePath,
+      })
+    }
   })
 
   // Listen for handleResetError requests from the child frame
@@ -674,6 +692,8 @@ export function useProvideConversationContext(props: ConversationContextProps) {
 
     previewUploadedFile,
     setPreviewUploadedFile,
+    previewWorkspaceFile,
+    setPreviewWorkspaceFile,
     disassociateContent,
     setToolsAttached,
     associateDefaultContent,

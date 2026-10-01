@@ -5,11 +5,12 @@
 import { CONTINUE, SKIP, visit } from 'unist-util-visit'
 import type { Node } from 'unist'
 import InlineTabSearch from '../assistant_response/inline_tab_search'
+import WorkspaceFileButton from '../assistant_response/workspace_file_button'
 import SearchWidget from '../search_widget/search_widget'
 import * as React from 'react'
 import { useAssistantEvents } from '../assistant_response/assistant_response_context'
 
-export const ALLOWED_DIRECTIVES = ['search', 'tabSearch'] as const
+export const ALLOWED_DIRECTIVES = ['search', 'tabSearch', 'workspace'] as const
 type NodeType = Node & {
   name: string
   attributes: Record<string, string>
@@ -86,5 +87,12 @@ export const directiveComponents: Record<
       return null
     }
     return <InlineTabSearch query={query} />
+  },
+  workspace: function (props: any) {
+    const path = typeof props.children === 'string' ? props.children.trim() : ''
+    if (!path) {
+      return null
+    }
+    return <WorkspaceFileButton path={path} />
   },
 }

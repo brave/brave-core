@@ -18,6 +18,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/leo_workspace_util.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
@@ -96,7 +97,7 @@ void CreateAndAddViewerDataSource(content::BrowserContext* browser_context,
 
   // Viewer-specific CSP overrides: allow 'unsafe-inline' styles for dynamic
   // content, allow framing itself for file display, allow being framed by
-  // workspace, and allow service worker.
+  // workspace and AI Chat page, and allow service worker.
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       "style-src 'self' 'unsafe-inline' chrome-untrusted://resources;");
@@ -104,7 +105,8 @@ void CreateAndAddViewerDataSource(content::BrowserContext* browser_context,
       network::mojom::CSPDirectiveName::FrameSrc, "frame-src 'self';");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameAncestors,
-      absl::StrFormat("frame-ancestors %s;", UntrustedOrigin(workspace_host)));
+      absl::StrFormat("frame-ancestors %s %s;", UntrustedOrigin(workspace_host),
+                      kAIChatUIURL));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::WorkerSrc, "worker-src 'self';");
   source->OverrideContentSecurityPolicy(
@@ -128,6 +130,11 @@ void CreateAndAddWorkspaceDataSource(content::BrowserContext* browser_context,
       absl::StrFormat("frame-src %s;",
                       UntrustedOrigin(base::StrCat(
                           {kAIChatLeoWorkspaceViewUIHostPrefix, url.host()}))));
+
+  // Allow being framed by the AI Chat page for the workspace file lightbox.
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FrameAncestors,
+      absl::StrFormat("frame-ancestors %s;", kAIChatUIURL));
 }
 
 // Registers the service worker from the browser since chrome-untrusted://
