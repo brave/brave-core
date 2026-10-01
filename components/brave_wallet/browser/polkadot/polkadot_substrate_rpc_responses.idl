@@ -139,6 +139,27 @@ namespace polkadot_substrate_rpc_responses {
     Error? error;
   };
 
+  // system_properties' RPC structure is described here:
+  // https://github.com/w3f/PSPs/blob/b6d570173146e7a012cf43d270177e02ed886e2e/PSPs/drafts/psp-6.md#1152-system_properties
+  //
+  // The result is the chain spec's properties map verbatim, so every field is
+  // chain-defined and may be absent, and chains may carry arbitrary extra keys.
+  // The token fields are a bare scalar on single-token chains and an array on
+  // the rest, so they're taken as `any` and normalized by hand.
+  dictionary SystemProperties {
+    long? ss58Format;
+    any? tokenDecimals;
+    any? tokenSymbol;
+  };
+
+  dictionary PolkadotSystemProperties {
+    DOMString jsonrpc;
+    long id;
+
+    SystemProperties? result;
+    Error? error;
+  };
+
   // author_submitExtrinsic's RPC structure is described here:
   // https://github.com/w3f/PSPs/blob/b6d570173146e7a012cf43d270177e02ed886e2e/PSPs/drafts/psp-6.md#182-author_submitextrinsic
 

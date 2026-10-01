@@ -283,11 +283,25 @@ struct PolkadotInjectedAccount {
   string type;
 };
 
+// Our `SignerResult` impl.
+// https://github.com/polkadot-js/api/blob/master/packages/types/src/types/extrinsic.ts
+struct PolkadotSignerResult {
+  // The id of the request the user approved.
+  int32 id;
+  // Hex-encoded sr25519 signature over the SCALE-encoded signer payload.
+  string signature;
+};
+
 interface PolkadotApi {
   // `accounts.get(anyType)`. `any_type` asks for accounts that can't be used
   // for signing, which we have none of so we ignore the param.
   GetAccounts(bool any_type) => (array<PolkadotInjectedAccount>? accounts,
                                  PolkadotProviderErrorBundle? error);
+
+  // `signer.signPayload(payload)`. `payload_json` is the dApp's
+  // `SignerPayloadJSON`, serialized by the renderer.
+  SignPayload(string payload_json) => (PolkadotSignerResult? result,
+                                       PolkadotProviderErrorBundle? error);
 };
 
 // https://github.com/polkadot-js/extension#injection-information
@@ -487,6 +501,15 @@ interface PanelHandler {
   // and we need to call ConnectToSite or CancelConnectToSite based on user
   // decision.
   RequestPermission(AccountId account_id) => (bool success);
+
+  // Describes and prices the pending Polkadot sign request `request_id`. The
+  // browser reads the payload from its own request queue, so the panel cannot
+  // ask about anything other than what will be signed. Null when the request is
+  // unknown or could not be decoded; the Sign control must stay gated in that
+  // case, since an interactive panel with no description means signing
+  // something the user was never shown.
+  GetPolkadotSignRequestDetails(int32 request_id)
+      => (PolkadotSignRequestDetails? details);
 };
 
 // Browser-side handler for requests from WebUI page.
@@ -2327,6 +2350,27 @@ struct PolkadotAssetAccountInfo {
   uint128 balance;
 };
 
+struct PolkadotFeeEstimate {
+  // Partial fee in the chain's smallest unit, from
+  // TransactionPaymentApi_query_info run against a dummy-signed copy of the
+  // extrinsic. An estimate: the runtime's fee multiplier moves with congestion
+  // between this query and inclusion.
+  uint128 partial_fee;
+};
+
+// What the sign panel needs in order to describe a pending dApp signing
+// request to the user.
+struct PolkadotSignRequestDetails {
+  // The request's call data as polkadot-js `Call.toHuman()`, JSON-serialized.
+  // Display only, and untrusted: it is produced in the bridge frame.
+  string as_human;
+
+  // Null when the fee query failed. Describing and pricing fail independently,
+  // and an undescribed request is useless to the user while an unpriced
+  // description still tells them what they are agreeing to.
+  PolkadotFeeEstimate? fee;
+};
+
 enum PolkadotValidationStatus {
   kNoError = 0,
   kInvalidPrefix = 1,
@@ -3013,6 +3057,46 @@ struct SignCardanoTransactionRequest {
   string details_json;
 };
 
+// How a chain spells addresses and denominates its native token, from
+// `system_properties`. These live in the chain spec rather than the runtime, so
+// none of them can be read back out of the runtime metadata and each one may be
+// absent. Single-token chains report the token fields as scalars and the rest
+// report arrays; both are normalized to the arrays polkadot-js's
+// `ChainProperties` takes.
+struct PolkadotChainProperties {
+  uint16? ss58_format;
+  array<uint32> token_decimals;
+  array<string> token_symbol;
+};
+
+// A dApp's `signer.signPayload()` call awaiting the user's approval.
+struct SignPolkadotTransactionRequest {
+  int32 id;
+
+  AccountId account_id;
+  OriginInfo origin_info;
+  ChainId chain_id;
+
+  // The `SignerPayloadJSON` the dApp handed us, serialized by the renderer.
+  // https://github.com/polkadot-js/api/blob/master/packages/types/src/types/extrinsic.ts
+  string raw_payload_json;
+
+  // SCALE-encoded runtime metadata for `chain_id`, so the UI can decode the
+  // payload's call data without fetching metadata itself.
+  array<uint8> metadata_bytes;
+
+  // Carried alongside `metadata_bytes` because the metadata does not describe
+  // them: without them the UI denominates the call's balances in the type
+  // registry's generic defaults rather than the chain's own units.
+  PolkadotChainProperties chain_properties;
+
+  // The bytes `raw_payload_json` encodes to, un-hashed, filled in by the
+  // browser once the bridge frame has described the request. Null until then,
+  // which is what keeps a request from being signed before the user has been
+  // shown what signing it means.
+  array<uint8>? signature_payload;
+};
+
 enum ExternalWalletType {
   MetaMask = 1,
 };
@@ -3163,6 +3247,9 @@ interface BraveWalletService {
   GetPendingSignCardanoTransactionRequests()
       => (array<SignCardanoTransactionRequest> requests);
 
+  GetPendingSignPolkadotTransactionRequests()
+      => (array<SignPolkadotTransactionRequest> requests);
+
   // Used for UI notifying native when the user approve/reject sign all
   // transactions request.
   NotifySignSolTransactionsRequestProcessed(
@@ -3172,6 +3259,9 @@ interface BraveWalletService {
       string? error);
 
   NotifySignCardanoTransactionRequestProcessed(
+      bool approved, int32 id, string? error);
+
+  NotifySignPolkadotTransactionRequestProcessed(
       bool approved, int32 id, string? error);
 
   // Used for UI notifying native when the user approve/reject add suggest

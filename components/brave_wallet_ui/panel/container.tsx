@@ -53,6 +53,7 @@ import {
   useGetPendingSwitchChainRequestQuery,
   useGetPendingSignSolTransactionsRequestsQuery,
   useGetPendingSignCardanoTransactionRequestsQuery,
+  useGetPendingSignPolkadotTransactionRequestsQuery,
   useGetPendingTokenSuggestionRequestsQuery,
 } from '../common/slices/api.slice'
 import { useAccountsQuery } from '../common/slices/api.slice.extra'
@@ -75,6 +76,9 @@ import {
 import {
   PendingSignCardanoTransactionRequestsPanel, //
 } from '../components/extension/pending_sign_cardano_tx_requests_panel/pending_sign_cardano_tx_requests_panel'
+import {
+  PendingSignPolkadotTransactionRequestsPanel, //
+} from '../components/extension/pending_sign_polkadot_tx_requests_panel/pending_sign_polkadot_tx_requests_panel'
 
 // Allow BigInts to be stringified
 ;(BigInt.prototype as any).toJSON = function () {
@@ -127,6 +131,10 @@ function Container() {
     data: signCardanoTransactionRequests,
     isLoading: isLoadingSignCardanoTransactionRequests,
   } = useGetPendingSignCardanoTransactionRequestsQuery()
+  const {
+    data: signPolkadotTransactionRequests,
+    isLoading: isLoadingSignPolkadotTransactionRequests,
+  } = useGetPendingSignPolkadotTransactionRequestsQuery()
   const { data: signMessageData, isLoading: isLoadingSignMessageData } =
     useGetPendingSignMessageRequestsQuery()
   const {
@@ -146,6 +154,7 @@ function Container() {
     || isLoadingPendingPublicKeyRequest
     || isLoadingSignSolTransactionsRequests
     || isLoadingSignCardanoTransactionRequests
+    || isLoadingSignPolkadotTransactionRequests
     || isLoadingSignMessageData
     || isLoadingSignMessageErrorData
     || isLoadingAddTokenRequests
@@ -319,6 +328,14 @@ function Container() {
       return (
         <PanelWrapper>
           <PendingSignCardanoTransactionRequestsPanel />
+        </PanelWrapper>
+      )
+    }
+
+    if (signPolkadotTransactionRequests?.length) {
+      return (
+        <PanelWrapper>
+          <PendingSignPolkadotTransactionRequestsPanel />
         </PanelWrapper>
       )
     }

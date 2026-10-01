@@ -17,6 +17,7 @@
 #include "base/numerics/checked_math.h"
 #include "base/strings/strcat.h"  // IWYU pragma: export
 #include "base/strings/string_number_conversions.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/internal/polkadot_extrinsic_rs.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
@@ -352,6 +353,105 @@ std::optional<PolkadotBlockHeader> ParseChainHeaderFromHex(
   }
 
   return header;
+}
+
+// A chain with one native token reports `tokenDecimals` as a bare number and a
+// chain with several reports an array. polkadot-js's `ChainProperties` holds
+// both as a vector, so flatten the scalar spelling into one.
+std::optional<std::vector<uint32_t>> ParseTokenDecimals(
+    const base::Value& value) {
+  std::vector<uint32_t> decimals;
+
+  auto append = [&decimals](const base::Value& entry) {
+    auto num = entry.GetIfInt();
+    if (!num) {
+      return false;
+    }
+
+    // polkadot-js holds these as a u32, so a negative value is bad data rather
+    // than something to narrow.
+    uint32_t decimal = 0;
+    if (!base::CheckedNumeric<uint32_t>(*num).AssignIfValid(&decimal)) {
+      return false;
+    }
+
+    decimals.push_back(decimal);
+    return true;
+  };
+
+  if (const auto* list = value.GetIfList()) {
+    for (const auto& entry : *list) {
+      if (!append(entry)) {
+        return std::nullopt;
+      }
+    }
+    return decimals;
+  }
+
+  if (!append(value)) {
+    return std::nullopt;
+  }
+
+  return decimals;
+}
+
+// Scalar-or-array for the same reason as ParseTokenDecimals.
+std::optional<std::vector<std::string>> ParseTokenSymbol(
+    const base::Value& value) {
+  std::vector<std::string> symbols;
+
+  if (const auto* list = value.GetIfList()) {
+    for (const auto& entry : *list) {
+      const auto* symbol = entry.GetIfString();
+      if (!symbol) {
+        return std::nullopt;
+      }
+      symbols.push_back(*symbol);
+    }
+    return symbols;
+  }
+
+  const auto* symbol = value.GetIfString();
+  if (!symbol) {
+    return std::nullopt;
+  }
+  symbols.push_back(*symbol);
+
+  return symbols;
+}
+
+mojom::PolkadotChainPropertiesPtr ParseChainProperties(
+    const polkadot_substrate_rpc_responses::SystemProperties& res) {
+  auto properties = mojom::PolkadotChainProperties::New();
+
+  if (res.ss58_format) {
+    // Our IDL only permits signed integers, and the ss58 prefix is a u16 on the
+    // wire, so narrow through checked numerics.
+    uint16_t ss58_format = 0;
+    if (!base::CheckedNumeric<uint16_t>(*res.ss58_format)
+             .AssignIfValid(&ss58_format)) {
+      return nullptr;
+    }
+    properties->ss58_format = ss58_format;
+  }
+
+  if (res.token_decimals) {
+    auto decimals = ParseTokenDecimals(*res.token_decimals);
+    if (!decimals) {
+      return nullptr;
+    }
+    properties->token_decimals = std::move(*decimals);
+  }
+
+  if (res.token_symbol) {
+    auto symbols = ParseTokenSymbol(*res.token_symbol);
+    if (!symbols) {
+      return nullptr;
+    }
+    properties->token_symbol = std::move(*symbols);
+  }
+
+  return properties;
 }
 
 std::optional<std::vector<std::string>> ParseExtrinsics(
@@ -839,6 +939,49 @@ void PolkadotSubstrateRpc::OnGetMetadata(GetMetadataCallback callback,
   }
 
   return std::move(callback).Run(base::ok(std::move(metadata_bytes)));
+}
+
+void PolkadotSubstrateRpc::GetSystemProperties(
+    std::string_view chain_id,
+    GetSystemPropertiesCallback callback) {
+  auto url = GetNetworkURL(chain_id);
+
+  auto payload = base::WriteJson(
+      MakeRpcRequestJson("system_properties", base::ListValue()));
+  CHECK(payload);
+
+  MakePostRequestInternal(
+      url, *payload,
+      base::BindOnce(&PolkadotSubstrateRpc::OnGetSystemProperties,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void PolkadotSubstrateRpc::OnGetSystemProperties(
+    GetSystemPropertiesCallback callback,
+    APIRequestResult api_result) {
+  auto res = HandleRpcCall<
+      polkadot_substrate_rpc_responses::PolkadotSystemProperties>(api_result);
+
+  if (!res.has_value()) {
+    // We received either a network error, an actual RPC error or JSON that
+    // didn't match our schema.
+    return std::move(callback).Run(base::unexpected(res.error()));
+  }
+
+  if (!res->result) {
+    // We received { "result": null } from the RPC, treat as an error for this
+    // RPC call.
+    return std::move(callback).Run(
+        base::unexpected(WalletParsingErrorMessage()));
+  }
+
+  auto properties = ParseChainProperties(*res->result);
+  if (!properties) {
+    return std::move(callback).Run(
+        base::unexpected(WalletParsingErrorMessage()));
+  }
+
+  return std::move(callback).Run(base::ok(std::move(properties)));
 }
 
 void PolkadotSubstrateRpc::SubmitExtrinsic(std::string_view chain_id,

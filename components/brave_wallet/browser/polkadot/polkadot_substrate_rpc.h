@@ -68,6 +68,9 @@ class PolkadotSubstrateRpc {
   using GetMetadataCallback = base::OnceCallback<void(
       base::expected<std::vector<uint8_t>, std::string>)>;
 
+  using GetSystemPropertiesCallback = base::OnceCallback<void(
+      base::expected<mojom::PolkadotChainPropertiesPtr, std::string>)>;
+
   using SubmitExtrinsicCallback =
       base::OnceCallback<void(std::optional<std::string>,
                               std::optional<std::string>)>;
@@ -156,6 +159,18 @@ class PolkadotSubstrateRpc {
   virtual void GetMetadata(std::string_view chain_id,
                            GetMetadataCallback callback);
 
+  // Fetches the chain spec's properties for |chain_id|: its ss58 prefix and the
+  // decimals and symbol of its native token. These are not part of the runtime
+  // metadata, so a type registry built from metadata alone falls back to
+  // polkadot-js's generic defaults when formatting addresses and balances.
+  //
+  // Fields the chain omits come back absent, which leaves those defaults in
+  // place. A field the chain reports but we can't parse fails the call instead:
+  // substituting a default for a value the chain did state would denominate the
+  // UI's balances in a unit the chain never named.
+  void GetSystemProperties(std::string_view chain_id,
+                           GetSystemPropertiesCallback callback);
+
   void SubmitExtrinsic(std::string_view chain_id,
                        std::string_view signed_extrinsic,
                        SubmitExtrinsicCallback callback);
@@ -213,6 +228,8 @@ class PolkadotSubstrateRpc {
   void OnGetRuntimeVersion(GetRuntimeVersionCallback callback,
                            APIRequestResult res);
   void OnGetMetadata(GetMetadataCallback callback, APIRequestResult res);
+  void OnGetSystemProperties(GetSystemPropertiesCallback callback,
+                             APIRequestResult res);
   void OnSubmitExtrinsic(SubmitExtrinsicCallback callback,
                          APIRequestResult res);
   void OnGetPaymentInfo(GetPaymentInfoCallback callback, APIRequestResult res);

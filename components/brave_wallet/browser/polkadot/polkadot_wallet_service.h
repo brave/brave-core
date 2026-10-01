@@ -7,8 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_WALLET_SERVICE_H_
 
 #include <array>
+#include <optional>
+#include <string>
+#include <string_view>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata.h"
@@ -41,6 +45,9 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
 
   using GenerateSignedTransferExtrinsicCallback = base::OnceCallback<void(
       base::expected<PolkadotExtrinsicMetadata, std::string>)>;
+
+  using ResolveChainIdByGenesisHashCallback =
+      base::OnceCallback<void(std::optional<std::string>)>;
 
   using SignAndSendTransactionCallback = base::OnceCallback<void(
       base::expected<std::pair<std::string, PolkadotExtrinsicMetadata>,
@@ -91,6 +98,14 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   void GetChainMetadata(std::string_view chain_id,
                         GetChainMetadataCallback callback);
 
+  // Finds the chain, among those `account_id`'s keyring supports, whose block 0
+  // hashes to `genesis_hash`. Runs the callback with std::nullopt when nothing
+  // matches, which is how a dApp naming a chain we don't support fails closed.
+  void ResolveChainIdByGenesisHash(
+      const mojom::AccountIdPtr& account_id,
+      base::span<const uint8_t, kPolkadotBlockHashSize> genesis_hash,
+      ResolveChainIdByGenesisHashCallback callback);
+
   // Generates an encoded byte array representing either a transfer_keep_alive
   // or transfer_all call, suitable for sending over the network as hex, signed
   // using the account's private key. The signed extrinsic can be submitted
@@ -134,6 +149,13 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
       GetFeeEstimateCallback callback);
 
+  // Signs the bytes an extrinsic's signature payload encodes to. Over-long
+  // payloads are hashed down first, which is what keeps a signature's message
+  // bounded; the caller hands us the payload un-hashed either way.
+  std::optional<std::array<uint8_t, kSr25519SignatureSize>>
+  SignSignaturePayload(const mojom::AccountIdPtr& account_id,
+                       base::span<const uint8_t> signature_payload);
+
  private:
   // KeyringServiceObserverBase:
   void Unlocked() override;
@@ -175,6 +197,19 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
       GetAddressCallback callback,
       base::expected<PolkadotChainMetadata, std::string> metadata);
 
+  void ResolveNextChainIdByGenesisHash(
+      std::vector<std::string> remaining_chain_ids,
+      std::array<uint8_t, kPolkadotBlockHashSize> genesis_hash,
+      ResolveChainIdByGenesisHashCallback callback);
+
+  void OnGetGenesisHashForChainId(
+      std::vector<std::string> remaining_chain_ids,
+      std::string chain_id,
+      std::array<uint8_t, kPolkadotBlockHashSize> genesis_hash,
+      ResolveChainIdByGenesisHashCallback callback,
+      std::optional<std::array<uint8_t, kPolkadotBlockHashSize>> block_hash,
+      std::optional<std::string> error);
+
   void OnGetChainMetadataForValidateAddress(
       const std::string& address,
       ValidateAddressForTransactionCallback callback,
@@ -185,6 +220,11 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   mojo::ReceiverSet<mojom::PolkadotWalletService> receivers_;
 
   PolkadotSubstrateRpc polkadot_substrate_rpc_;
+
+  // A chain's genesis hash never changes, so this only goes stale if a chain_id
+  // is repointed at a different network.
+  base::flat_map<std::string, std::array<uint8_t, kPolkadotBlockHashSize>>
+      genesis_hash_cache_;
   PolkadotChainMetadataPrefs chain_metadata_prefs_;
   PolkadotMetadataProvider metadata_provider_;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>

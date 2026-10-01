@@ -374,8 +374,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_wallet/wallet_page/wallet_page_ui.h"
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_wallet/ledger/ledger_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/polkadot/polkadot_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
 #include "brave/components/brave_wallet/common/ledger_bridge.mojom.h"
+#include "brave/components/brave_wallet/common/polkadot_bridge.mojom.h"
 #endif
 #if BUILDFLAG(ENABLE_SNAP)
 #include "brave/browser/ui/webui/brave_wallet/snaps_container/snaps_container_ui.h"
@@ -908,6 +910,8 @@ void BraveContentBrowserClient::RegisterUntrustedWebUIInterfaceBrokers(
     registry.ForWebUI<ledger::UntrustedLedgerUI>()
         .Add<brave_wallet::mojom::LedgerBridgeUIHandler>();
   }
+  registry.ForWebUI<polkadot::UntrustedPolkadotUI>()
+      .Add<brave_wallet::mojom::PolkadotBridgeUIHandler>();
 #endif
 }
 

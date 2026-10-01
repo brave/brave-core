@@ -9,8 +9,10 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/time/time.h"
 #include "brave/browser/brave_wallet/blockchain_images_source.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -52,6 +54,14 @@
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
+namespace {
+
+// Generous enough to cover evaluating the bridge frame's bundle on a cold,
+// loaded machine. Overshooting only delays an error the user would see anyway.
+constexpr base::TimeDelta kPolkadotBridgeBindTimeout = base::Seconds(15);
+
+}  // namespace
+
 WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
     : TopChromeWebUIController(web_ui,
                                true /* Needed for webui browser tests */) {
@@ -76,10 +86,11 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      base::JoinString({"frame-src", kUntrustedTrezorURL, kUntrustedLedgerURL,
-                        kUntrustedLineChartURL, kUntrustedNftURL,
-                        base::StrCat({kUntrustedMarketURL, ";"})},
-                       " "));
+      base::JoinString(
+          {"frame-src", kUntrustedTrezorURL, kUntrustedLedgerURL,
+           kUntrustedPolkadotURL, kUntrustedLineChartURL, kUntrustedNftURL,
+           base::StrCat({kUntrustedMarketURL, ";"})},
+          " "));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       "style-src 'self' 'unsafe-inline' chrome://resources chrome://theme;");
@@ -244,6 +255,49 @@ void WalletPanelUI::BindLedgerBridge(
     mojo::PendingRemote<brave_wallet::mojom::LedgerBridge> bridge) {
   ledger_bridge_remote_ = std::move(bridge);
   MaybeFuseLedgerBridge();
+}
+
+void WalletPanelUI::BindPolkadotBridge(
+    mojo::PendingRemote<brave_wallet::mojom::PolkadotBridge> bridge) {
+  polkadot_bridge_remote_.reset();
+  polkadot_bridge_remote_.Bind(std::move(bridge));
+  polkadot_bridge_bind_timer_.Stop();
+  FlushPolkadotBridgeWaiters(true);
+  LOG(INFO) << "Finished binding the Polkadot bridge";
+}
+
+void WalletPanelUI::WaitForPolkadotBridge(
+    base::OnceCallback<void(bool)> callback) {
+  if (GetPolkadotBridge()) {
+    std::move(callback).Run(true);
+    return;
+  }
+
+  polkadot_bridge_waiters_.push_back(std::move(callback));
+  if (!polkadot_bridge_bind_timer_.IsRunning()) {
+    polkadot_bridge_bind_timer_.Start(
+        FROM_HERE, kPolkadotBridgeBindTimeout,
+        base::BindOnce(&WalletPanelUI::FlushPolkadotBridgeWaiters,
+                       base::Unretained(this), false));
+  }
+}
+
+void WalletPanelUI::FlushPolkadotBridgeWaiters(bool ready) {
+  // A waiter may enqueue another, so detach the list before running any.
+  auto waiters = std::move(polkadot_bridge_waiters_);
+  polkadot_bridge_waiters_.clear();
+  for (auto& waiter : waiters) {
+    std::move(waiter).Run(ready);
+  }
+}
+
+brave_wallet::mojom::PolkadotBridge* WalletPanelUI::GetPolkadotBridge() {
+  if (!polkadot_bridge_remote_.is_bound() ||
+      !polkadot_bridge_remote_.is_connected()) {
+    return nullptr;
+  }
+
+  return polkadot_bridge_remote_.get();
 }
 
 void WalletPanelUI::BindLedgerBridge(

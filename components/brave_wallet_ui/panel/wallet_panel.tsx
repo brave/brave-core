@@ -25,6 +25,18 @@ import {
 } from '../common/constants/local-storage-keys'
 setIconBasePath('chrome://resources/brave-icons')
 
+// The frame's bundle is large, so start it before React mounts. Readiness is
+// handshaked on the browser side; nothing here waits on it.
+function createPolkadotBridgeFrame() {
+  const element = document.createElement('iframe')
+  element.style.display = 'none'
+  element.src = 'chrome-untrusted://polkadot-bridge/'
+  element.onerror = () => {
+    console.error('failed to load the Polkadot bridge frame')
+  }
+  document.body.appendChild(element)
+}
+
 function App() {
   React.useEffect(() => {
     runLocalStorageMigrations()
@@ -46,6 +58,7 @@ function App() {
 
 function initialize() {
   initLocale(loadTimeData.data_)
+  createPolkadotBridgeFrame()
   const root = createRoot(document.getElementById('mountPoint')!)
   root.render(
     <StyledComponentsProvider>

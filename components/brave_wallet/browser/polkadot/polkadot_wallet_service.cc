@@ -8,6 +8,8 @@
 #include <algorithm>
 
 #include "base/check.h"
+#include "base/containers/map_util.h"
+#include "base/containers/span.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
@@ -16,6 +18,7 @@
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
+#include "brave/components/brave_wallet/common/hash_utils.h"
 
 namespace brave_wallet {
 
@@ -48,6 +51,84 @@ void PolkadotWalletService::GetChainMetadata(
     return;
   }
   metadata_provider_.GetChainMetadata(chain_id, std::move(callback));
+}
+
+void PolkadotWalletService::ResolveChainIdByGenesisHash(
+    const mojom::AccountIdPtr& account_id,
+    base::span<const uint8_t, kPolkadotBlockHashSize> genesis_hash,
+    ResolveChainIdByGenesisHashCallback callback) {
+  if (!account_id || account_id->coin != mojom::CoinType::DOT ||
+      !IsPolkadotKeyring(account_id->keyring_id)) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  std::vector<std::string> chain_ids;
+  for (const auto& network_info : network_manager_->GetAllChains()) {
+    if (network_info->coin == mojom::CoinType::DOT &&
+        std::ranges::contains(network_info->supported_keyrings,
+                              account_id->keyring_id)) {
+      chain_ids.push_back(network_info->chain_id);
+    }
+  }
+
+  std::array<uint8_t, kPolkadotBlockHashSize> genesis_hash_copy = {};
+  base::span(genesis_hash_copy).copy_from(genesis_hash);
+
+  ResolveNextChainIdByGenesisHash(std::move(chain_ids), genesis_hash_copy,
+                                  std::move(callback));
+}
+
+void PolkadotWalletService::ResolveNextChainIdByGenesisHash(
+    std::vector<std::string> remaining_chain_ids,
+    std::array<uint8_t, kPolkadotBlockHashSize> genesis_hash,
+    ResolveChainIdByGenesisHashCallback callback) {
+  if (remaining_chain_ids.empty()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  std::string chain_id = std::move(remaining_chain_ids.back());
+  remaining_chain_ids.pop_back();
+
+  if (const auto* cached = base::FindOrNull(genesis_hash_cache_, chain_id)) {
+    if (*cached == genesis_hash) {
+      std::move(callback).Run(std::move(chain_id));
+      return;
+    }
+    ResolveNextChainIdByGenesisHash(std::move(remaining_chain_ids),
+                                    genesis_hash, std::move(callback));
+    return;
+  }
+
+  polkadot_substrate_rpc_.GetBlockHash(
+      chain_id, /*block_number=*/0,
+      base::BindOnce(&PolkadotWalletService::OnGetGenesisHashForChainId,
+                     weak_ptr_factory_.GetWeakPtr(),
+                     std::move(remaining_chain_ids), chain_id, genesis_hash,
+                     std::move(callback)));
+}
+
+void PolkadotWalletService::OnGetGenesisHashForChainId(
+    std::vector<std::string> remaining_chain_ids,
+    std::string chain_id,
+    std::array<uint8_t, kPolkadotBlockHashSize> genesis_hash,
+    ResolveChainIdByGenesisHashCallback callback,
+    std::optional<std::array<uint8_t, kPolkadotBlockHashSize>> block_hash,
+    std::optional<std::string> error) {
+  // One unreachable endpoint shouldn't decide the whole resolution, so keep
+  // walking the remaining candidates.
+  if (!error && block_hash) {
+    genesis_hash_cache_.insert_or_assign(chain_id, *block_hash);
+
+    if (*block_hash == genesis_hash) {
+      std::move(callback).Run(std::move(chain_id));
+      return;
+    }
+  }
+
+  ResolveNextChainIdByGenesisHash(std::move(remaining_chain_ids), genesis_hash,
+                                  std::move(callback));
 }
 
 void PolkadotWalletService::Bind(
@@ -293,6 +374,20 @@ void PolkadotWalletService::GetFeeEstimate(
       base::BindOnce(&PolkadotWalletService::OnGenerateTransferForFee,
                      weak_ptr_factory_.GetWeakPtr(), chain_id,
                      std::move(callback)));
+}
+
+std::optional<std::array<uint8_t, kSr25519SignatureSize>>
+PolkadotWalletService::SignSignaturePayload(
+    const mojom::AccountIdPtr& account_id,
+    base::span<const uint8_t> signature_payload) {
+  // https://github.com/polkadot-js/api/blob/master/packages/types/src/extrinsic/util.ts
+  if (signature_payload.size() > kPolkadotMaxUnhashedSignaturePayloadSize) {
+    return keyring_service_->SignMessageByPolkadotKeyring(
+        account_id, Blake2bHash<32>({signature_payload}));
+  }
+
+  return keyring_service_->SignMessageByPolkadotKeyring(account_id,
+                                                        signature_payload);
 }
 
 void PolkadotWalletService::OnGenerateTransferForFee(

@@ -7,10 +7,13 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_DAPP_UTILS_H_
 
 #include <string>
+#include <string_view>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "base/types/optional_ref.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 
 namespace brave_wallet {
 
@@ -35,6 +38,22 @@ mojom::AccountIdPtr GetPolkadotPreferredDappAccount(
 // Converts an account into the `InjectedAccount` shape dapps expect.
 mojom::PolkadotInjectedAccountPtr MakePolkadotInjectedAccount(
     const mojom::AccountInfo& account);
+
+// Whether `signature_payload` signs over the call the dapp declared in its
+// `SignerPayloadJSON`. An `ExtrinsicPayload` encodes `method` first and bare,
+// so the declared call is the payload's own prefix. The payload is built
+// outside the browser, where a different call could be substituted for the one
+// the user was shown, and this is what rules that out.
+bool PolkadotSignaturePayloadMatchesCall(
+    base::span<const uint8_t> signature_payload,
+    std::string_view payload_json);
+
+// A `SignerResult.signature`: the signature behind its `MultiSignature` variant
+// index, hex-encoded. polkadot-js hands what a signer returns straight to
+// `MultiSignature`, so a bare 64-byte signature would be read as the wrong
+// variant.
+std::string MakePolkadotSignerSignatureHex(
+    base::span<const uint8_t, kSr25519SignatureSize> signature);
 
 }  // namespace brave_wallet
 

@@ -84,6 +84,13 @@ class BraveWalletService : public KeyedService,
                               const std::optional<std::string>&)>;
   using SignCardanoTransactionRequestCallback =
       base::OnceCallback<void(bool, const std::optional<std::string>&)>;
+  // The signature payload is the one recorded on the request, so approval can
+  // only ever sign the bytes the user was shown. Null when the request was
+  // rejected, or approved before anything described it.
+  using SignPolkadotTransactionRequestCallback =
+      base::OnceCallback<void(bool,
+                              std::optional<std::vector<uint8_t>>,
+                              const std::optional<std::string>&)>;
 
   using AddSuggestTokenCallback =
       base::OnceCallback<void(bool, mojom::ProviderError, const std::string&)>;
@@ -220,6 +227,10 @@ class BraveWalletService : public KeyedService,
       GetPendingSignCardanoTransactionRequestsCallback callback) override;
   std::vector<mojom::SignCardanoTransactionRequestPtr>
   GetPendingSignCardanoTransactionRequestsSync() const;
+  void GetPendingSignPolkadotTransactionRequests(
+      GetPendingSignPolkadotTransactionRequestsCallback callback) override;
+  std::vector<mojom::SignPolkadotTransactionRequestPtr>
+  GetPendingSignPolkadotTransactionRequestsSync() const;
 
   void NotifySignSolTransactionsRequestProcessed(
       bool approved,
@@ -227,6 +238,10 @@ class BraveWalletService : public KeyedService,
       std::vector<mojom::SolanaSignaturePtr> hw_signatures,
       const std::optional<std::string>& error) override;
   void NotifySignCardanoTransactionRequestProcessed(
+      bool approved,
+      int id,
+      const std::optional<std::string>& error) override;
+  void NotifySignPolkadotTransactionRequestProcessed(
       bool approved,
       int id,
       const std::optional<std::string>& error) override;
@@ -343,11 +358,22 @@ class BraveWalletService : public KeyedService,
   void AddSignCardanoTransactionRequest(
       mojom::SignCardanoTransactionRequestPtr request,
       SignCardanoTransactionRequestCallback callback);
+  void AddSignPolkadotTransactionRequest(
+      mojom::SignPolkadotTransactionRequestPtr request,
+      SignPolkadotTransactionRequestCallback callback);
 
   mojom::SignSolTransactionsRequestPtr GetPendingSignSolTransactionsRequest(
       int32_t id);
   mojom::SignCardanoTransactionRequestPtr
   GetPendingSingCardanoTransactionRequest(int32_t id);
+  mojom::SignPolkadotTransactionRequestPtr
+  GetPendingSignPolkadotTransactionRequest(int32_t id);
+
+  // Records the bytes request `id` signs over, if `id` is still pending. Only
+  // meaningful to callers that have just read the request they are describing.
+  void SetSignPolkadotTransactionRequestSignaturePayload(
+      int32_t id,
+      std::vector<uint8_t> signature_payload);
 
   void RemovePrefListenersForTests();
 
@@ -425,6 +451,7 @@ class BraveWalletService : public KeyedService,
   void DrainSignMessageRequestsWithoutPermission();
   void DrainSignSolTransactionsRequestsWithoutPermission();
   void DrainSignCardanoTransactionRequestsWithoutPermission();
+  void DrainSignPolkadotTransactionRequestsWithoutPermission();
 
   // Moves pending requests whose origin no longer has wallet permission out
   // of |pending_requests| before running their callbacks, so that re-entrant
@@ -498,6 +525,7 @@ class BraveWalletService : public KeyedService,
   int sign_message_id_ = 0;
   int sign_sol_transactions_id_ = 0;
   int sign_cardano_transactions_id_ = 0;
+  int sign_polkadot_transactions_id_ = 0;
 
   using PendingSignMessageRequest =
       PendingRequest<mojom::SignMessageRequestPtr, SignMessageRequestCallback>;
@@ -507,6 +535,9 @@ class BraveWalletService : public KeyedService,
   using PendingSignCardanoTransactionRequest =
       PendingRequest<mojom::SignCardanoTransactionRequestPtr,
                      SignCardanoTransactionRequestCallback>;
+  using PendingSignPolkadotTransactionRequest =
+      PendingRequest<mojom::SignPolkadotTransactionRequestPtr,
+                     SignPolkadotTransactionRequestCallback>;
 
   base::circular_deque<PendingSignMessageRequest> sign_message_requests_;
   base::circular_deque<mojom::SignMessageErrorPtr> sign_message_errors_;
@@ -514,6 +545,8 @@ class BraveWalletService : public KeyedService,
       sign_sol_transactions_requests_;
   base::circular_deque<PendingSignCardanoTransactionRequest>
       sign_cardano_transaction_requests_;
+  base::circular_deque<PendingSignPolkadotTransactionRequest>
+      sign_polkadot_transaction_requests_;
 
   base::flat_map<std::string, mojom::EthereumProvider::RequestCallback>
       add_suggest_token_callbacks_;
