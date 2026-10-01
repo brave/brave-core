@@ -3203,14 +3203,16 @@ public abstract class BraveActivity extends ChromeActivity
                             .replace("{inputEncoding}", "UTF-8");
 
             final String quickSearchVariation;
-            if (mDayZeroVariant.equals(DayZeroHelper.DAY_ZERO_VARIANT_A)) {
+            if (mDayZeroVariant != null
+                    && mDayZeroVariant.equals(DayZeroHelper.DAY_ZERO_VARIANT_A)) {
                 // Control variant.
                 quickSearchVariation = "-c";
-            } else if (mDayZeroVariant.equals(DayZeroHelper.DAY_ZERO_VARIANT_B)) {
+            } else if (mDayZeroVariant != null
+                    && mDayZeroVariant.equals(DayZeroHelper.DAY_ZERO_VARIANT_B)) {
                 // Test variant.
                 quickSearchVariation = "-t";
-                // Default.
             } else {
+                // Default.
                 quickSearchVariation = "";
             }
             // Tells the Brave search backend the query started from the quick search bar.
