@@ -6,7 +6,7 @@
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
-source_set("model") {
+source_set("keyed_service_factories") {
   sources = [
     "brave_keyed_service_factories.h",
     "brave_keyed_service_factories.mm",
