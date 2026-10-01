@@ -1,0 +1,12 @@
+diff --git a/components/soda/constants.cc b/components/soda/constants.cc
+index 8dae7b7c639bbd53c7b38fae34a5bba5e08d3e41..15b0a3ea6246702ad5de23768a8e1f3e5759fcd6 100644
+--- a/components/soda/constants.cc
++++ b/components/soda/constants.cc
+@@ -215,6 +215,7 @@ std::optional<SodaLanguagePackComponentConfig> GetLanguageComponentConfig(
+ std::optional<SodaLanguagePackComponentConfig>
+ GetLanguageComponentConfigMatchingLanguageSubtag(
+     std::string_view language_name) {
++  if (!IsBraveOnDeviceSpeechLanguageSupported(language_name)) return std::nullopt;
+   // Use full locale to get Chinese variant config.
+   auto locale = MaybeMapToChineseLocale(language_name);
+   if (locale.substr(0, 3) == kChineseLocaleNoCountry) {

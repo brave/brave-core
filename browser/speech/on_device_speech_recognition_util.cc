@@ -7,14 +7,12 @@
 // `chrome/browser/speech/on_device_speech_recognition_util.cc` forward
 // declares.
 
-#include <optional>
 #include <string_view>
 
-#include "base/i18n/language_tag.h"
-#include "base/i18n/tag_converters.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/utils.h"
 #include "chrome/browser/browser_process.h"
+#include "components/soda/constants.h"
 #include "media/mojo/mojom/speech_recognizer.mojom.h"
 
 namespace speech {
@@ -36,11 +34,7 @@ media::mojom::AvailabilityStatus GetBraveOnDeviceSpeechAvailability(
     return media::mojom::AvailabilityStatus::kUnavailable;
   }
 
-  // English only for now. Parsing the tag normalizes case, so a plain compare
-  // covers "EN-GB" too.
-  std::optional<base::i18n::LanguageTag> tag =
-      base::i18n::GetLanguageTagFromString(language);
-  if (!tag || tag->language_subtag() != "en") {
+  if (!IsBraveOnDeviceSpeechLanguageSupported(language)) {
     return media::mojom::AvailabilityStatus::kUnavailable;
   }
 

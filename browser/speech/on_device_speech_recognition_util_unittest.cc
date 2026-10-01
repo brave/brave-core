@@ -77,17 +77,29 @@ TEST_F(BraveOnDeviceSpeechAvailabilityUnitTest, ServesCommandAndDictation) {
       GetBraveOnDeviceSpeechAvailability("en-US", Quality::kConversation));
 }
 
-TEST_F(BraveOnDeviceSpeechAvailabilityUnitTest, EnglishLocalesOnly) {
-  EXPECT_EQ(AvailabilityStatus::kDownloadable,
-            GetBraveOnDeviceSpeechAvailability("en-US", Quality::kCommand));
-  EXPECT_EQ(AvailabilityStatus::kDownloadable,
-            GetBraveOnDeviceSpeechAvailability("EN-GB", Quality::kCommand));
-  EXPECT_EQ(AvailabilityStatus::kDownloadable,
-            GetBraveOnDeviceSpeechAvailability("en", Quality::kCommand));
-  EXPECT_EQ(AvailabilityStatus::kUnavailable,
-            GetBraveOnDeviceSpeechAvailability("fr-FR", Quality::kCommand));
-  EXPECT_EQ(AvailabilityStatus::kUnavailable,
-            GetBraveOnDeviceSpeechAvailability("", Quality::kCommand));
+// `start()` asks with the page's own tag, which SODA has not touched.
+TEST_F(BraveOnDeviceSpeechAvailabilityUnitTest, SupportedLanguagesOnly) {
+  for (std::string_view language : {"en-AU", "en", "es-US", "PT-pt", "hi-IN"}) {
+    EXPECT_EQ(AvailabilityStatus::kDownloadable,
+              GetBraveOnDeviceSpeechAvailability(language, Quality::kCommand))
+        << language;
+  }
+  for (std::string_view language : {"es-MX", "es", "fr-FR", ""}) {
+    EXPECT_EQ(AvailabilityStatus::kUnavailable,
+              GetBraveOnDeviceSpeechAvailability(language, Quality::kCommand))
+        << language;
+  }
+}
+
+TEST_F(BraveOnDeviceSpeechAvailabilityUnitTest, AvailableForEveryLanguage) {
+  auto* state = local_ai::OnDeviceSpeechModelsState::GetInstance();
+  state->SetInstallDir(
+      base::FilePath(FILE_PATH_LITERAL("/brave/speech/models")));
+  EXPECT_EQ(AvailabilityStatus::kAvailable,
+            GetBraveOnDeviceSpeechAvailability("hi-IN", Quality::kCommand));
+  EXPECT_EQ(AvailabilityStatus::kAvailable,
+            GetBraveOnDeviceSpeechAvailability("pt-PT", Quality::kCommand));
+  state->SetInstallDir(base::FilePath());
 }
 
 }  // namespace speech

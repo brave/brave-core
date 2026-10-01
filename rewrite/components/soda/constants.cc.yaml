@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Resolve a language to a SODA pack only when Brave's models support it.
+
+      Brave's own models serve on-device speech, not SODA. `available()` and
+      `install()` refuse a language that resolves to no pack before asking
+      Brave, so this keeps them from offering one Brave cannot transcribe. A
+      supported language still resolves to SODA's own pack, whose name is what
+      their install state is keyed on.
+
+      `IsBraveOnDeviceSpeechLanguageSupported` is defined in the chromium_src
+      override of this source.
+    preempt_function_impl:
+      function_name: GetLanguageComponentConfigMatchingLanguageSubtag
+      return_if: '!IsBraveOnDeviceSpeechLanguageSupported(language_name)'
+      return_value: std::nullopt

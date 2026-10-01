@@ -66,9 +66,9 @@ class BraveSodaInstaller final
   // local_ai::OnDeviceSpeechModelsState::Observer:
   void OnSpeechModelDirChanged(const base::FilePath& model_dir) override;
 
-  // Called when the install `InstallLanguage` asked for finishes. `success` is
-  // whether a model ended up installed.
-  void OnSpeechModelInstallFinished(bool success);
+  // Called when the install `InstallLanguage` asked for `language_code`
+  // finishes. `success` is whether a model ended up installed.
+  void OnSpeechModelInstallFinished(LanguageCode language_code, bool success);
 
   base::WeakPtrFactory<BraveSodaInstaller> weak_factory_{this};
 };

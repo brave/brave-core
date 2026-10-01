@@ -49,6 +49,12 @@ class MockSodaObserver : public SodaInstaller::Observer {
               (override));
 };
 
+// The SODA language packs standing in for Brave's supported languages.
+constexpr LanguageCode kServedLanguages[] = {
+    LanguageCode::kEnUs, LanguageCode::kEsEs, LanguageCode::kItIt,
+    LanguageCode::kPtBr, LanguageCode::kHiIn,
+};
+
 }  // namespace
 
 class BraveSodaInstallerUnitTest : public testing::Test {
@@ -144,10 +150,11 @@ class BraveSodaInstallerUnitTest : public testing::Test {
 
 // The list `IsLanguageInstallable` gates `install()` on, and that
 // `InstallLanguage` refuses anything outside.
-TEST_F(BraveSodaInstallerUnitTest, OffersEnglishOnly) {
+TEST_F(BraveSodaInstallerUnitTest, OffersSupportedLanguages) {
   CreateInstaller();
-  EXPECT_THAT(installer_->GetLiveCaptionEnabledLanguages(),
-              testing::ElementsAre(GetLanguageName(LanguageCode::kEnUs)));
+  EXPECT_THAT(
+      installer_->GetLiveCaptionEnabledLanguages(),
+      testing::ElementsAre("en-US", "es-ES", "it-IT", "pt-BR", "hi-IN"));
   EXPECT_EQ(installer_->GetLiveCaptionEnabledLanguages(),
             installer_->GetAvailableLanguages());
 }
@@ -169,24 +176,33 @@ TEST_F(BraveSodaInstallerUnitTest, PublishesNoSodaPaths) {
                   .empty());
 }
 
-TEST_F(BraveSodaInstallerUnitTest, ModelArrivingReportsInstalled) {
+TEST_F(BraveSodaInstallerUnitTest, ModelArrivingReportsEveryLanguageInstalled) {
   CreateInstaller();
-  ASSERT_FALSE(installer_->IsSodaInstalled(LanguageCode::kEnUs));
+  for (LanguageCode language_code : kServedLanguages) {
+    ASSERT_FALSE(installer_->IsSodaInstalled(language_code));
+    EXPECT_CALL(observer_, OnSodaInstalled(language_code));
+  }
 
-  EXPECT_CALL(observer_, OnSodaInstalled(LanguageCode::kEnUs));
   InstallModel();
 
-  EXPECT_TRUE(installer_->IsSodaInstalled(LanguageCode::kEnUs));
+  for (LanguageCode language_code : kServedLanguages) {
+    EXPECT_TRUE(installer_->IsSodaInstalled(language_code));
+  }
+  EXPECT_FALSE(installer_->IsSodaInstalled(LanguageCode::kFrFr));
 }
 
 TEST_F(BraveSodaInstallerUnitTest, ModelRemovalClearsInstalled) {
   InstallModel();
   CreateInstaller();
-  ASSERT_TRUE(installer_->IsSodaInstalled(LanguageCode::kEnUs));
+  for (LanguageCode language_code : kServedLanguages) {
+    ASSERT_TRUE(installer_->IsSodaInstalled(language_code));
+  }
 
   RemoveModel();
 
-  EXPECT_FALSE(installer_->IsSodaInstalled(LanguageCode::kEnUs));
+  for (LanguageCode language_code : kServedLanguages) {
+    EXPECT_FALSE(installer_->IsSodaInstalled(language_code));
+  }
 }
 
 // `InstallLanguage` must not start a registration for a language Brave does
@@ -244,15 +260,34 @@ TEST_F(BraveSodaInstallerUnitTest, InstallLanguageWithoutAModelReportsAnError) {
   EXPECT_TRUE(reported.Wait());
 }
 
+// The error names the language that was asked for, since that is the one
+// `install()` is parked on.
+TEST_F(BraveSodaInstallerUnitTest, InstallErrorNamesTheRequestedLanguage) {
+  CreateInstaller();
+  AnswerDownloadWith(update_client::Error::UPDATE_CHECK_ERROR);
+  base::test::TestFuture<void> reported;
+  EXPECT_CALL(observer_,
+              OnSodaInstallError(LanguageCode::kHiIn,
+                                 SodaInstaller::ErrorCode::kUnspecifiedError))
+      .WillOnce([&] { reported.SetValue(); });
+
+  installer_->InstallLanguage("hi-IN", local_state());
+
+  EXPECT_TRUE(reported.Wait());
+}
+
 // Both `OnSpeechModelDirChanged` and `OnSpeechModelInstallFinished` run for one
 // successful install. Only the first calls `NotifyOnSodaInstalled`, and only
-// once, so `install()` is not told twice that the same model installed.
+// once per language, so `install()` is not told twice that the same model
+// installed.
 TEST_F(BraveSodaInstallerUnitTest, InstallLanguageReportsInstalledOnce) {
   CreateInstaller();
-  EXPECT_CALL(observer_, OnSodaInstalled(LanguageCode::kEnUs));
+  for (LanguageCode language_code : kServedLanguages) {
+    EXPECT_CALL(observer_, OnSodaInstalled(language_code));
+  }
   AnswerDownloadWith(update_client::Error::NONE);
 
-  installer_->InstallLanguage("en-US", local_state());
+  installer_->InstallLanguage("es-ES", local_state());
 
   // A request of the test's own joins the one `InstallLanguage` started, and
   // the registrar answers them in order, so once this one is answered

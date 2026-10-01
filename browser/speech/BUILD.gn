@@ -41,10 +41,10 @@ if (enable_local_ai) {
 
     deps = [
       ":speech",
-      "//base/i18n:language_tag",
       "//brave/components/local_ai/core",
       "//chrome/browser:browser_process",
       "//components/soda",
+      "//components/soda:constants",
       "//media/mojo/mojom:web_speech_recognition",
     ]
   }
@@ -113,6 +113,7 @@ if (enable_local_ai) {
     testonly = true
 
     sources = [
+      "brave_soda_constants_unittest.cc",
       "brave_soda_installer_unittest.cc",
       "on_device_speech_recognition_controller_unittest.cc",
       "on_device_speech_recognition_util_unittest.cc",

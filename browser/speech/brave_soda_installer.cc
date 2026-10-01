@@ -37,19 +37,18 @@ void BraveSodaInstaller::InstallLanguage(std::string_view language,
 
   local_ai::MaybeRegisterOnDeviceSpeechModelsComponent(
       base::BindOnce(&BraveSodaInstaller::OnSpeechModelInstallFinished,
-                     weak_factory_.GetWeakPtr()));
+                     weak_factory_.GetWeakPtr(), GetLanguageCode(language)));
 }
 
 std::vector<std::string> BraveSodaInstaller::GetLiveCaptionEnabledLanguages()
     const {
-  // Brave's model serves English only, and only while Brave may install it.
-  // `SpeechRecognition.install()` rejects anything outside this list before it
-  // reaches `InstallLanguage`.
+  // Only while Brave may install its model. `SpeechRecognition.install()`
+  // rejects anything outside this list before it reaches `InstallLanguage`.
   if (!local_ai::IsOnDeviceSpeechRecognitionAllowed(
           g_browser_process->local_state())) {
     return {};
   }
-  return {GetLanguageName(LanguageCode::kEnUs)};
+  return GetBraveOnDeviceSpeechSodaLanguageNames();
 }
 
 std::vector<std::string> BraveSodaInstaller::GetAvailableLanguages() const {
@@ -65,25 +64,31 @@ base::FilePath BraveSodaInstaller::GetLanguagePath(
   return base::FilePath();
 }
 
-void BraveSodaInstaller::OnSpeechModelInstallFinished(bool success) {
+void BraveSodaInstaller::OnSpeechModelInstallFinished(
+    LanguageCode language_code,
+    bool success) {
   // A model arriving is reported from `OnSpeechModelDirChanged`, whether or
   // not a request of ours brought it.
   if (!success) {
-    NotifyOnSodaInstallError(LanguageCode::kEnUs, ErrorCode::kUnspecifiedError);
+    NotifyOnSodaInstallError(language_code, ErrorCode::kUnspecifiedError);
   }
 }
 
 void BraveSodaInstaller::OnSpeechModelDirChanged(
     const base::FilePath& model_dir) {
-  if (model_dir.empty()) {
-    soda_binary_installed_ = false;
-    installed_languages_.erase(LanguageCode::kEnUs);
-    return;
-  }
+  soda_binary_installed_ = !model_dir.empty();
 
-  soda_binary_installed_ = true;
-  installed_languages_.insert(LanguageCode::kEnUs);
-  NotifyOnSodaInstalled(LanguageCode::kEnUs);
+  // One model serves every language, so they install and uninstall together.
+  for (const std::string& language :
+       GetBraveOnDeviceSpeechSodaLanguageNames()) {
+    const LanguageCode language_code = GetLanguageCode(language);
+    if (model_dir.empty()) {
+      installed_languages_.erase(language_code);
+      continue;
+    }
+    installed_languages_.insert(language_code);
+    NotifyOnSodaInstalled(language_code);
+  }
 }
 
 }  // namespace speech
