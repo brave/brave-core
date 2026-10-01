@@ -413,7 +413,7 @@ TEST_F(BraveVpnServiceImplTest, LaunchFailureAfterShutdownDoesNotCrash) {
   std::move(failure).Run(AgentLauncher::LaunchError::kLaunchFailed);
 }
 
-// A launch failure that arrives after the agent got connected anywas says
+// A launch failure that arrives after the agent got connected anyways says
 // nothing about the session that is now live, and resetting the client on it is
 // what left the VPN unrecoverable until the person acted again.
 TEST_F(BraveVpnServiceImplTest, StaleLaunchFailureKeepsLiveSession) {

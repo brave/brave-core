@@ -33,6 +33,10 @@
 #include "base/win/win_util.h"
 #endif  // BUILDFLAG(IS_WIN)
 
+#if BUILDFLAG(IS_MAC)
+#include "brave/components/brave_vpn/common/v2/identity_channel_mac.h"
+#endif  // BUILDFLAG(IS_MAC)
+
 namespace brave_vpn::v2 {
 namespace {
 // Oldest contract the agent still speaks; mojom::kProtocolVersion is the
@@ -331,13 +335,14 @@ void BrowserRegistry::OnPeerVerified(
       return;
   }
 
-  // TODO(https://github.com/brave/brave-browser/issues/54608)
-  // Send agent identity message on |pending.identity_channel| on platforms
-  // that require it (Mac). This is deliberately after the auth verdict: the
-  // agent self-identifies only to a browser it has accepted, so a peer that
-  // fails verification learns nothing about who is serving it. It must also
-  // stay ahead of the reply, so the message is queued before the browser
-  // starts looking for it.
+#if BUILDFLAG(IS_MAC)
+  // Deliberately after the verdict: the agent self-identifies only to a browser
+  // it has accepted, so a peer that fails verification learns nothing about who
+  // is serving it. Also before the reply, so the browser usually finds the
+  // message already queued rather than depending on this process still being
+  // scheduled.
+  SendIdentityMessage(std::move(pending.identity_channel));
+#endif  // BUILDFLAG(IS_MAC)
 
   connection->state = ConnectionState::kVerified;
 

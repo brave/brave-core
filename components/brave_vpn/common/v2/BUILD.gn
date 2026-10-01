@@ -34,6 +34,13 @@ source_set("common") {
       "agent_utils.h",
     ]
 
+    if (is_mac) {
+      sources += [
+        "identity_channel_mac.cc",
+        "identity_channel_mac.h",
+      ]
+    }
+
     deps += [ ":branding_buildflags" ]
 
     public_deps += [
@@ -53,9 +60,15 @@ source_set("unit_tests") {
   if (enable_brave_vpn_v2_apps) {
     sources += [ "agent_utils_unittest.cc" ]
 
+    if (is_mac) {
+      sources += [ "identity_channel_mac_unittest.cc" ]
+      libs = [ "bsm" ]
+    }
+
     deps += [
       ":common",
       "//base",
+      "//base/test:test_config",
       "//mojo/public/cpp/platform",
       "//testing/gtest",
     ]
