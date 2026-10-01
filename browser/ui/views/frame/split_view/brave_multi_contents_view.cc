@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "base/i18n/rtl.h"
+#include "brave/browser/ui/views/brave_layout_provider.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "chrome/browser/devtools/devtools_ui_controller.h"
 #include "chrome/browser/profiles/profile.h"
@@ -43,7 +44,7 @@ gfx::RoundedCornersF GetSplitContentsCornerRadii(
 
   const float adjacent_edge_radius =
       views::LayoutProvider::Get()->GetCornerRadiusMetric(
-          views::ShapeContextTokensOverride::kRoundedCornersBorderRadius);
+          ExtendedShapeContextTokens::kRoundedCornersBorderRadius);
 
   gfx::RoundedCornersF split_radii = corner_radii;
   if (!is_first) {

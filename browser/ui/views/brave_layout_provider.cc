@@ -5,6 +5,12 @@
 
 #include "brave/browser/ui/views/brave_layout_provider.h"
 
+#include "build/build_config.h"
+
+#if BUILDFLAG(IS_MAC)
+#include "base/mac/mac_util.h"
+#endif
+
 // static
 std::unique_ptr<views::LayoutProvider>
 ChromeLayoutProvider::CreateLayoutProvider() {
@@ -26,9 +32,27 @@ int BraveLayoutProvider::GetCornerRadiusMetric(views::Emphasis emphasis,
   }
 }
 
-int BraveLayoutProvider::GetCornerRadiusMetric(
-    views::ShapeContextTokensOverride token) const {
-  return LayoutProvider::GetCornerRadiusMetric(token);
+int BraveLayoutProvider::GetCornerRadiusMetric(views::ShapeContextToken token,
+                                               const gfx::Size& size) const {
+  switch (token) {
+    case kBraveOmniboxExpandedRadius:
+      return 4;
+    case kRoundedCornersBorderRadius:
+      // Matches Brave Mac window / content inner rounding.
+      return 6;
+    case kRoundedCornersBorderRadiusAtWindowCorner:
+#if BUILDFLAG(IS_MAC)
+      if (base::mac::MacOSMajorVersion() >= 27) {
+        return 12;
+      }
+      if (base::mac::MacOSMajorVersion() >= 26) {
+        return 16;
+      }
+#endif
+      return 6;
+    default:
+      return ChromeLayoutProvider::GetCornerRadiusMetric(token, size);
+  }
 }
 
 int BraveLayoutProvider::GetDistanceMetric(int metric) const {
@@ -37,8 +61,7 @@ int BraveLayoutProvider::GetDistanceMetric(int metric) const {
   }
 
   if (metric == DISTANCE_SIDE_PANEL_CONTENT_RADIUS) {
-    return LayoutProvider::GetCornerRadiusMetric(
-        views::ShapeContextTokensOverride::kRoundedCornersBorderRadius);
+    return GetCornerRadiusMetric(kRoundedCornersBorderRadius);
   }
 
   return ChromeLayoutProvider::GetDistanceMetric(metric);

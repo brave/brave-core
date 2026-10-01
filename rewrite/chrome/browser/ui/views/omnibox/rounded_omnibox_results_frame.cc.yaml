@@ -9,4 +9,4 @@ substitutions:
     count: 2
     regex:
       pattern: 'ChromeShapeContextTokens::kOmniboxExpandedRadius'
-      replace: 'views::ShapeContextTokensOverride::kOmniboxExpandedRadius'
+      replace: 'ExtendedShapeContextTokens::kBraveOmniboxExpandedRadius'
