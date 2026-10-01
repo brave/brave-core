@@ -10,6 +10,7 @@
 #include "brave/components/ntp_background_images/common/new_tab_takeover_disclosure_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_names.h"
+#include "build/build_config.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -112,6 +113,19 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 09/2026.
   prefs->ClearPref(kObsoleteNewTabPageSponsoredImagesSurveyPanelist);
+
+  // Added 10/2026.
+  // Desktop replaced the New Tab Takeover infobar with the New Tab Takeover
+  // disclosure tooltip, but Android and iOS still display the infobar and own
+  // this pref, so only migrate it on Desktop for now.
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+  if (prefs->HasPrefPath(prefs::kNewTabTakeoverInfobarRemainingDisplayCount)) {
+    prefs->SetInteger(
+        prefs::kNewTabTakeoverDisclosureTooltipRemainingDisplayCount,
+        prefs->GetInteger(prefs::kNewTabTakeoverInfobarRemainingDisplayCount));
+  }
+  prefs->ClearPref(prefs::kNewTabTakeoverInfobarRemainingDisplayCount);
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 }
 
 }  // namespace ntp_background_images
