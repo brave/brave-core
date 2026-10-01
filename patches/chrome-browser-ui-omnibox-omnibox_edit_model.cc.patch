@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/omnibox/omnibox_edit_model.cc b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
-index c5ab90438bc5d29c247436ce1fb07cc059b857f9..22461e6380a895f83c24c16ab23274fe7e9ca57f 100644
+index 7956bfeda0b44dfb4d11e1e85f0cfe274c9ebc51..cca1e7f221eada31fa1bf9026f4c22d4f8fae964 100644
 --- a/chrome/browser/ui/omnibox/omnibox_edit_model.cc
 +++ b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
 @@ -544,6 +544,10 @@ bool OmniboxEditModel::ShouldShowCurrentPageIcon() const {
