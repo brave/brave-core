@@ -28,4 +28,8 @@ source_set("browser_tests") {
     "//ui/shell_dialogs",
     "//ui/shell_dialogs:test_support",
   ]
+
+  if (!is_android) {
+    deps += [ "//chrome/browser/ui:browser_header" ]
+  }
 }
