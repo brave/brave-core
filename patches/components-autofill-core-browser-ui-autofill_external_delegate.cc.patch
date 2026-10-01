@@ -1,8 +1,8 @@
 diff --git a/components/autofill/core/browser/ui/autofill_external_delegate.cc b/components/autofill/core/browser/ui/autofill_external_delegate.cc
-index cba943041ec50d2c2c3fbf22fb54ede40cd31828..8bde7a99b340866a3dbd51546f96e7f40e6a5f2c 100644
+index 69011982a5831aa7e32b2f2404f17a327dcbc48f..671f9f004deae6ccb09416bfc29b04afd2035234 100644
 --- a/components/autofill/core/browser/ui/autofill_external_delegate.cc
 +++ b/components/autofill/core/browser/ui/autofill_external_delegate.cc
-@@ -521,6 +521,13 @@ void AutofillExternalDelegate::AttemptToDisplayAutofillSuggestions(
+@@ -525,6 +525,13 @@ void AutofillExternalDelegate::AttemptToDisplayAutofillSuggestions(
    // updated to match.
    InsertDataListValues(last_query_.field_datalist_options, suggestions);
  
@@ -16,7 +16,7 @@ index cba943041ec50d2c2c3fbf22fb54ede40cd31828..8bde7a99b340866a3dbd51546f96e7f4
    // TODO(crbug.com/362630793): Try to eliminate this state. The controller
    // should be the one that knows about what suggestions were shown and passes
    // it on, not AED.
-@@ -918,6 +925,10 @@ void AutofillExternalDelegate::DidAcceptSuggestion(
+@@ -924,6 +931,10 @@ void AutofillExternalDelegate::DidAcceptSuggestion(
      const SuggestionMetadata& metadata,
      const FormGlobalId& form_id,
      const FieldGlobalId& field_id) {

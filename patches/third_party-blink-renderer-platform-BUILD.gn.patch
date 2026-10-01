@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/BUILD.gn b/third_party/blink/renderer/platform/BUILD.gn
-index 16f50eb0c5ec2e4b8691ebbdb39120e07ef1c4da..611810723fa236365ec1ee04d6b9aeb99963bfc2 100644
+index a39631a3610dfef0b60d76715d51dc7d93b56416..e77aea7dde3f85e20cdd49a3acc3a5c48e566bd3 100644
 --- a/third_party/blink/renderer/platform/BUILD.gn
 +++ b/third_party/blink/renderer/platform/BUILD.gn
 @@ -1759,6 +1759,7 @@ component("platform") {
@@ -10,7 +10,7 @@ index 16f50eb0c5ec2e4b8691ebbdb39120e07ef1c4da..611810723fa236365ec1ee04d6b9aeb9
  
    sources -= blink_platform_avx_files
  
-@@ -1885,6 +1886,7 @@ component("platform") {
+@@ -1886,6 +1887,7 @@ component("platform") {
      "//ui/gfx",
      "//ui/native_theme/features",
    ]

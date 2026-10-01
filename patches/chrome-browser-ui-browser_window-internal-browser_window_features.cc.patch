@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_window/internal/browser_window_features.cc b/chrome/browser/ui/browser_window/internal/browser_window_features.cc
-index f51b0713750fb9775d39c252edc3f3caf4be7c52..52e8da229f99ad8685341ad6ceaed5e766436a25 100644
+index 2aab563066c9d1eeb21a075279933c86d8f418f8..6ef48c730dc394c384063743e4d25583b9018dc9 100644
 --- a/chrome/browser/ui/browser_window/internal/browser_window_features.cc
 +++ b/chrome/browser/ui/browser_window/internal/browser_window_features.cc
-@@ -243,10 +243,10 @@
+@@ -242,10 +242,10 @@
  #include "chrome/browser/ui/overscroll_pref_manager.h"
  #endif  // defined(USE_AURA)
  
@@ -16,7 +16,7 @@ index f51b0713750fb9775d39c252edc3f3caf4be7c52..52e8da229f99ad8685341ad6ceaed5e7
    // This is used only for the controllers which will be created on demand
    // later.
    browser_ = browser;
-@@ -323,7 +323,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
+@@ -322,7 +322,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
            BrowserInitState::From(browser)
                ->browser_window_create_params()
                .is_trusted_source,
@@ -25,7 +25,7 @@ index f51b0713750fb9775d39c252edc3f3caf4be7c52..52e8da229f99ad8685341ad6ceaed5e7
  
    side_panel_registry_ =
        GetUserDataFactory().CreateInstance<SidePanelRegistry>(*browser, browser);
-@@ -333,11 +333,11 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
+@@ -332,11 +332,11 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
    // initializes the default enabled states for UI commands
    // (InitCommandState). If BrowserActions is not built first, those initial
    // enabled updates will be completely dropped.
@@ -39,7 +39,7 @@ index f51b0713750fb9775d39c252edc3f3caf4be7c52..52e8da229f99ad8685341ad6ceaed5e7
  
    browser_animation_controller_ =
        GetUserDataFactory().CreateInstance<BrowserAnimationController>(*browser,
-@@ -383,7 +383,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
+@@ -382,7 +382,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
  
    content_setting_bubble_model_delegate_ =
        GetUserDataFactory()
@@ -48,7 +48,7 @@ index f51b0713750fb9775d39c252edc3f3caf4be7c52..52e8da229f99ad8685341ad6ceaed5e7
                                                                      browser);
  
    context_highlight_window_feature_ =
-@@ -683,7 +683,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
+@@ -675,7 +675,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
    embedder_browser_window_features_->Init(browser);
  }
  
@@ -57,7 +57,7 @@ index f51b0713750fb9775d39c252edc3f3caf4be7c52..52e8da229f99ad8685341ad6ceaed5e7
      BrowserWindowInterface* browser) {
    // Foundational state used throughout this function. Computed/assigned early
    // so the alphabetical sections below can rely on them.
-@@ -812,7 +812,7 @@ void BrowserWindowFeatures::InitPostWindowConstruction(
+@@ -804,7 +804,7 @@ void BrowserWindowFeatures::InitPostWindowConstruction(
  
    // Must be after exclusive_access_manager_,
    // desktop_browser_window_capabilities_, and browser_ui_controller_.
@@ -66,7 +66,7 @@ index f51b0713750fb9775d39c252edc3f3caf4be7c52..52e8da229f99ad8685341ad6ceaed5e7
        browser, *exclusive_access_manager_, *browser_command_controller_,
        *unload_controller_, app_browser_controller_.get(),
        *BrowserWindow::FromBrowser(browser),
-@@ -908,7 +908,7 @@ void BrowserWindowFeatures::InitPostWindowConstruction(
+@@ -900,7 +900,7 @@ void BrowserWindowFeatures::InitPostWindowConstruction(
    // this for most browser.h types, we should also stop making the side_panel_.
    if (browser_view) {
      side_panel_coordinator_ =
@@ -75,7 +75,7 @@ index f51b0713750fb9775d39c252edc3f3caf4be7c52..52e8da229f99ad8685341ad6ceaed5e7
                                                                    browser);
    } else if (webui_browser_window) {
      webui_browser_side_panel_ui_ =
-@@ -1124,7 +1124,7 @@ void BrowserWindowFeatures::InitPostWindowConstruction(
+@@ -1116,7 +1116,7 @@ void BrowserWindowFeatures::InitPostWindowConstruction(
    embedder_browser_window_features_->InitPostWindowConstruction(browser);
  }
  
@@ -84,7 +84,7 @@ index f51b0713750fb9775d39c252edc3f3caf4be7c52..52e8da229f99ad8685341ad6ceaed5e7
      BrowserView* browser_view) {
    // WARNING: DO NOT ADD ANY MORE CODE HERE. Please perform setup in
    // InitPostWindowConstruction() instead.
-@@ -1134,7 +1134,7 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
+@@ -1126,7 +1126,7 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
        browser_view);
  }
  
@@ -93,7 +93,7 @@ index f51b0713750fb9775d39c252edc3f3caf4be7c52..52e8da229f99ad8685341ad6ceaed5e7
    // Tear down in reverse order of construction: embedder first, then
    // InitPostWindowConstruction, then Init. Within each section, members are
    // torn down in reverse of the corresponding Init* ordering. Dependency
-@@ -1267,13 +1267,13 @@ void BrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
+@@ -1259,13 +1259,13 @@ void BrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
  
  // static
  ui::UserDataFactoryWithOwner<BrowserWindowInterface>&

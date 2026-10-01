@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/theme_source.cc b/chrome/browser/ui/webui/theme_source.cc
-index 1583e59381290c78c4f6e97296c8335ba6515ba4..9dd392f643dfdaaec66eb277575246f0c58f3dee 100644
+index 886bfda8789bd417892a5bc5a100d14407dfdb2d..f2e5e136f4da99243858f37c5a92babeebf51ea1 100644
 --- a/chrome/browser/ui/webui/theme_source.cc
 +++ b/chrome/browser/ui/webui/theme_source.cc
 @@ -500,6 +500,7 @@ void ThemeSource::SendColorsCss(

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java b/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
-index f8ae4dd34279c5a390367ec579771b7a606f8b6c..83e89e47ccf035c2eb995d75d5223299ad82f128 100644
+index 2b0ef0a008dc50e62ec7c59702ab460f0c0daf73..0f47b2703039e1e17091880d5226e874fd9c1d65 100644
 --- a/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
 +++ b/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
-@@ -2025,7 +2025,7 @@ public abstract class ChromeFeatureList {
+@@ -1999,7 +1999,7 @@ public abstract class ChromeFeatureList {
      public static final BooleanCachedFeatureParam sAndroidBottomBarBypassGlicGeofencing =
              newBooleanCachedFeatureParam(ANDROID_BOTTOM_BAR, "bypass_glic_geofencing", false);
      public static final BooleanCachedFeatureParam sAndroidBottomBarDisableOnNtp =

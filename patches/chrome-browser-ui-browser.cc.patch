@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index 07de580deb67c305fdbf25ddb9c168b3cc646a4f..f7385bd308e4f638e17cec026cdd879939a43cdd 100644
+index e6c13255c626599ed72ec205c4a2781a758ffb9b..d99e7d1850854a64664e7d08f47825a8f4aa23bb 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -239,7 +239,7 @@ Browser* Browser::Create(BrowserWindowCreateParams params) {
+@@ -238,7 +238,7 @@ Browser* Browser::Create(BrowserWindowCreateParams params) {
  
    Profile* const profile_ptr = &*params.profile;
    std::unique_ptr<Browser> browser =
@@ -11,7 +11,7 @@ index 07de580deb67c305fdbf25ddb9c168b3cc646a4f..f7385bd308e4f638e17cec026cdd8799
    Browser* const browser_ptr = browser.get();
    BrowserManagerServiceFactory::GetForProfile(profile_ptr)
        ->AddBrowser(std::move(browser));
-@@ -258,7 +258,7 @@ std::unique_ptr<Browser> Browser::DeprecatedCreateOwnedForTesting(
+@@ -257,7 +257,7 @@ std::unique_ptr<Browser> Browser::DeprecatedCreateOwnedForTesting(
  
    Profile* const profile_ptr = &*params.profile;
    std::unique_ptr<Browser> browser =
@@ -20,7 +20,7 @@ index 07de580deb67c305fdbf25ddb9c168b3cc646a4f..f7385bd308e4f638e17cec026cdd8799
    BrowserManagerServiceFactory::GetForProfile(profile_ptr)
        ->AddBrowserForTesting(browser.get());
    return browser;
-@@ -269,8 +269,8 @@ Browser::Browser(BrowserWindowCreateParams params)
+@@ -268,8 +268,8 @@ Browser::Browser(BrowserWindowCreateParams params)
        profile_(&*params.profile),
        window_(nullptr),
        tab_strip_model_delegate_(

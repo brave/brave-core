@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_window/public/browser_window_features.h b/chrome/browser/ui/browser_window/public/browser_window_features.h
-index 91af7d2ac72f0f5a33de41cc0f26c427a8459128..c12037d6b56d1da9e6a80949838e23d97ccf9674 100644
+index 4fbb1fec9ebf5d1a819118dd2b30c83510826d7a..005fa490c2d510dead7cf1ea253ea600998df40f 100644
 --- a/chrome/browser/ui/browser_window/public/browser_window_features.h
 +++ b/chrome/browser/ui/browser_window/public/browser_window_features.h
-@@ -277,34 +277,35 @@ class AppBrowserController;
+@@ -276,34 +276,35 @@ class AppBrowserController;
  // Do not add more public accessors. Instead use the UnownedUserData design
  // pattern, see ui/base/unowned_user_data/README.md.
  // TODO(crbug.com/481268779a): Remove existing public accessors.

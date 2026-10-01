@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/settings/manage_sync/coordinator/manage_sync_settings_mediator.mm b/ios/chrome/browser/settings/manage_sync/coordinator/manage_sync_settings_mediator.mm
-index acbf6b9b3a8ba915e8418f8bc152987df134665a..25eff7992c0e1c2b49ef70e0aaf970ffa43262f4 100644
+index dde823f3a7b9cd4656374307088d23bc08556ee5..9081cbe233ee413613be1192b6ab72ceac0672fd 100644
 --- a/ios/chrome/browser/settings/manage_sync/coordinator/manage_sync_settings_mediator.mm
 +++ b/ios/chrome/browser/settings/manage_sync/coordinator/manage_sync_settings_mediator.mm
-@@ -814,6 +814,7 @@ constexpr CGFloat kBatchUploadSymbolPointSize = 22.;
+@@ -808,6 +808,7 @@ constexpr CGFloat kBatchUploadSymbolPointSize = 22.;
      case syncer::UserSelectableType::kSavedTabGroups:
      case syncer::UserSelectableType::kProductComparison:
      case syncer::UserSelectableType::kCookies:

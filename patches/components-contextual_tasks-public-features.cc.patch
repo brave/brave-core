@@ -1,5 +1,5 @@
 diff --git a/components/contextual_tasks/public/features.cc b/components/contextual_tasks/public/features.cc
-index d8573ee9f147195e8bb6b41e28dcf3e34fa6f010..619e52c2da7191985b7374eaade4f3a936c6fde3 100644
+index 58cee69f38130b1780c5e87cbf74139cd6ef2584..6b8f18445fdbaefa75e67ed71255e74c1b03458e 100644
 --- a/components/contextual_tasks/public/features.cc
 +++ b/components/contextual_tasks/public/features.cc
 @@ -35,7 +35,7 @@ std::optional<bool> g_sticky_conversation_enabled_override;

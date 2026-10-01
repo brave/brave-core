@@ -1,8 +1,8 @@
 diff --git a/tools/binary_size/libsupersize/archive.py b/tools/binary_size/libsupersize/archive.py
-index e1566a553e593486b36853b8fe948c091c009fe7..5d407d3875037bdf48439aafd8918241a09d2a7a 100644
+index 354989f6d7dcdac3c8a640dee449066de130e906..edc3a9627a363f53b61871bed175f337311273de 100644
 --- a/tools/binary_size/libsupersize/archive.py
 +++ b/tools/binary_size/libsupersize/archive.py
-@@ -1239,6 +1239,7 @@ def _FilterContainerSpecs(container_specs, container_re=None):
+@@ -1235,6 +1235,7 @@ def _FilterContainerSpecs(container_specs, container_re=None):
    ret = []
    seen_container_names = set()
    for container_spec in container_specs:

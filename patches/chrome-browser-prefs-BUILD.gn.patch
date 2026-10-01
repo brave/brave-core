@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/prefs/BUILD.gn b/chrome/browser/prefs/BUILD.gn
-index 831aaa964eab5ee4d7fb40c60a101dcb4083478d..4aa54ac1cd476a6b57b9b2ae0dc5cf09df018461 100644
+index 92182484b154f9949a0380148ed4d029b486aa2d..72d7cc44db4552bca7a74eaba6d18e13bbb2bc83 100644
 --- a/chrome/browser/prefs/BUILD.gn
 +++ b/chrome/browser/prefs/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 831aaa964eab5ee4d7fb40c60a101dcb4083478d..4aa54ac1cd476a6b57b9b2ae0dc5cf09
  import("//chrome/common/features.gni")
  import("//components/enterprise/buildflags/buildflags.gni")
  import("//components/on_device_translation/buildflags/features.gni")
-@@ -207,6 +208,7 @@ source_set("impl") {
+@@ -208,6 +209,7 @@ source_set("impl") {
      "//services/preferences/tracked:features",
      "//ui/webui:buildflags",
    ]

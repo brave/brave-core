@@ -1,5 +1,5 @@
 diff --git a/net/base/features.cc b/net/base/features.cc
-index 2876df4285aa69236208e784991f3240cec3ded9..2140c4f279efdc6ab8aa9423a45608e9db215eec 100644
+index 0b135f2187db49049c50623d39078714b333c7dd..718413a63037d68a584c6683b824b6e0f6b693f4 100644
 --- a/net/base/features.cc
 +++ b/net/base/features.cc
 @@ -216,8 +216,8 @@ BASE_FEATURE(kSplitCacheByNetworkIsolationKey,

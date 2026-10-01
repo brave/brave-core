@@ -1,5 +1,5 @@
 diff --git a/BUILD.gn b/BUILD.gn
-index 67466c6d56690c7deecb2d32235943a3a3ca7a0f..c6ebae988904793d965239ef31f4a457254d3c86 100644
+index ae5267b50261aef80435927c56418808a493c02c..9ccdc2518e1c1fe669118370b47cfe62866ff4cb 100644
 --- a/BUILD.gn
 +++ b/BUILD.gn
 @@ -4,6 +4,7 @@
@@ -10,7 +10,7 @@ index 67466c6d56690c7deecb2d32235943a3a3ca7a0f..c6ebae988904793d965239ef31f4a457
  import("//build/config/android/config.gni")
  import("//build/config/arm.gni")
  import("//build/config/c++/c++.gni")
-@@ -978,6 +979,9 @@ config("internal_config_base") {
+@@ -987,6 +988,9 @@ config("internal_config_base") {
      "$target_gen_dir",
      "$target_gen_dir/include",
    ]

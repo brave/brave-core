@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index 39cbdeb5f067ba57b65bb903ff36b9f96c4d8631..0328e5be327cdc02d206bcdcc83165fa5b657f7e 100644
+index df9408bb1666cce96dd4fa716205b446164641de..01165c7d296a1d0f86e1c28820c3dba6542d0442 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
 @@ -143,7 +143,7 @@ if (enable_uncompressed_archive) {
@@ -11,7 +11,7 @@ index 39cbdeb5f067ba57b65bb903ff36b9f96c4d8631..0328e5be327cdc02d206bcdcc83165fa
    script = "//chrome/tools/build/win/create_installer_archive.py"
  
    release_file = "chrome.release"
-@@ -240,6 +240,7 @@ action("mini_installer_archive") {
+@@ -243,6 +243,7 @@ action("mini_installer_archive") {
      if (!use_v8_context_snapshot || include_both_v8_snapshots) {
        inputs += [ "$root_out_dir/snapshot_blob.bin" ]
        args += [ "--include_snapshotblob=1" ]
@@ -19,7 +19,7 @@ index 39cbdeb5f067ba57b65bb903ff36b9f96c4d8631..0328e5be327cdc02d206bcdcc83165fa
      }
    }
  
-@@ -326,6 +327,7 @@ template("generate_mini_installer") {
+@@ -329,6 +330,7 @@ template("generate_mini_installer") {
        no_default_deps = true
        ldflags += [ "/ENTRY:MainEntryPoint" ]
      }

@@ -1,8 +1,8 @@
 diff --git a/components/autofill/core/browser/payments/offer_notification_handler.cc b/components/autofill/core/browser/payments/offer_notification_handler.cc
-index d159d4f3eac5049583994e79ab424d831b366dfc..0ecb29a1180fe37e1375d0e794e737c8d01807a2 100644
+index 8c0045c35d03d40a0af9e5c61fedca49e37e0e42..1c566676d8f22bd54f01feb2ad3b178fad35c407 100644
 --- a/components/autofill/core/browser/payments/offer_notification_handler.cc
 +++ b/components/autofill/core/browser/payments/offer_notification_handler.cc
-@@ -95,8 +95,12 @@ void OfferNotificationHandler::AddShownNotificationIdForTesting(
+@@ -102,8 +102,12 @@ void OfferNotificationHandler::AddShownNotificationIdForTesting(
  }
  
  bool OfferNotificationHandler::ValidOfferExistsForUrl(const GURL& url) {

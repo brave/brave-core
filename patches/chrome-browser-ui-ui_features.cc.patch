@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/ui_features.cc b/chrome/browser/ui/ui_features.cc
-index a57cf7468d6fceeeba4db1c89c012976169822fc..d6edeb6ac895777a5004b51fedcdcc81c2b7dde9 100644
+index 0301caf91e9ad2121ceaef5516eb45e90af872d8..4c9b17c6e335ae0b5fe46d62a4b3c07769957bf5 100644
 --- a/chrome/browser/ui/ui_features.cc
 +++ b/chrome/browser/ui/ui_features.cc
 @@ -130,7 +130,7 @@ BASE_FEATURE(kFeedbackDisabledDialog, base::FEATURE_DISABLED_BY_DEFAULT);
@@ -11,7 +11,7 @@ index a57cf7468d6fceeeba4db1c89c012976169822fc..d6edeb6ac895777a5004b51fedcdcc81
  
  BASE_FEATURE(kLegacySearchIntegrityCheck, base::FEATURE_DISABLED_BY_DEFAULT);
  #endif
-@@ -148,7 +148,7 @@ BASE_FEATURE(kExtensionsPinnedByDefault, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -148,7 +148,7 @@ BASE_FEATURE(kExtensionsPinnedByDefault, base::FEATURE_ENABLED_BY_DEFAULT);
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
  // Shows an infobar on PDFs offering to become the default PDF viewer if Chrome
  // isn't the default already.

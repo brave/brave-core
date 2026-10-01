@@ -1,5 +1,5 @@
 diff --git a/extensions/common/api/schema.gni b/extensions/common/api/schema.gni
-index e9a514263a5bec4a42c1f68202c0c566414239e7..5ddc88cd2dcbabbb66ca3583e0bc05536764094c 100644
+index 631ee5923119d8f261917298f8166678c4485f56..c866c97d2a992b582b1d391600d6c42632ef6d12 100644
 --- a/extensions/common/api/schema.gni
 +++ b/extensions/common/api/schema.gni
 @@ -126,7 +126,7 @@ if (enable_extensions) {
