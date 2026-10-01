@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/sessions/session_restore.cc b/chrome/browser/sessions/session_restore.cc
-index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..41c8613fa1340c7610ba695e86b9f1c5f41a1cb5 100644
+index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..c0de41f7635208fae61194250273c75c56485b07 100644
 --- a/chrome/browser/sessions/session_restore.cc
 +++ b/chrome/browser/sessions/session_restore.cc
 @@ -1017,6 +1017,7 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
@@ -28,7 +28,7 @@ index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..41c8613fa1340c7610ba695e86b9f1c5
      SessionRestore::NotifySessionRestoreStartedLoadingTabs();
      int selected_index = GetNavigationIndexToSelect(tab);
  
-+    if (IsScheduledForCleanup(tab.navigations[selected_index].virtual_url(),
++    if (BraveIsScheduledForCleanup(tab.navigations[selected_index].virtual_url(),
 +                              profile_)) {
 +      return;
 +    }
@@ -44,7 +44,7 @@ index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..41c8613fa1340c7610ba695e86b9f1c5
      bool is_first_tab = true;
      for (const auto& startup_tab : startup_tabs) {
        const GURL& url = startup_tab.url;
-+      if (IsScheduledForCleanup(url, profile_)) {
++      if (BraveIsScheduledForCleanup(url, profile_)) {
 +        continue;
 +      }
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
