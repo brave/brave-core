@@ -48,6 +48,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
+#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
 #include "chrome/browser/ui/views/page_action/page_action_view.h"
 #include "chrome/browser/ui/views/page_action/test_support/page_action_test_accessor.h"
@@ -1824,11 +1825,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   auto* tab_strip_model = browser()->tab_strip_model();
   ASSERT_EQ(1, tab_strip_model->count());
 
-  IconLabelBubbleView* partitioned_storage_view =
-      page_actions::PageActionTestAccessor(browser(),
-                                           kActionShowPartitionedStorage)
-          .view();
-  ASSERT_NE(nullptr, partitioned_storage_view);
+  page_actions::PageActionTestAccessor partitioned_storage_view(
+      browser(), kActionShowPartitionedStorage);
 
   const GURL url("https://a.test/simple.html");
 
@@ -1846,18 +1844,18 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   EXPECT_EQ(2, tab_strip_model->count());
   EXPECT_TRUE(content::WaitForLoadStop(tab_strip_model->GetWebContentsAt(1)));
 
-  EXPECT_TRUE(partitioned_storage_view->GetVisible())
+  EXPECT_TRUE(partitioned_storage_view.GetVisible())
       << "PartitionedStorage icon should be visible on container tab.";
 
   // Switch to tab 0 (default) -> icon should be hidden.
   tab_strip_model->ActivateTabAt(0);
   RunScheduledLayouts();
-  EXPECT_FALSE(partitioned_storage_view->GetVisible());
+  EXPECT_FALSE(partitioned_storage_view.GetVisible());
 
   // Switch back to tab 1 (container) -> icon should be visible.
   tab_strip_model->ActivateTabAt(1);
   RunScheduledLayouts();
-  EXPECT_TRUE(partitioned_storage_view->GetVisible());
+  EXPECT_TRUE(partitioned_storage_view.GetVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -1867,10 +1865,11 @@ IN_PROC_BROWSER_TEST_F(
       actions::ActionManager::Get().FindAction(kActionShowPartitionedStorage);
   ASSERT_NE(nullptr, partitioned_storage_action);
 
-  IconLabelBubbleView* const partitioned_storage_view =
-      page_actions::PageActionTestAccessor(browser(),
-                                           kActionShowPartitionedStorage)
-          .view();
+  auto* const partitioned_storage_view =
+      static_cast<page_actions::PageActionView*>(
+          BrowserView::GetBrowserViewForBrowser(browser())
+              ->toolbar_button_provider()
+              ->GetPageActionViewInterface(kActionShowPartitionedStorage));
   ASSERT_NE(nullptr, partitioned_storage_view);
 
   const GURL url("https://a.test/simple.html");
