@@ -34,3 +34,12 @@ interface EmptyResponseInterface {
   WithParam(string value) => ();
   WithoutParams() => ();
 };
+
+// Implemented in Obj-C and passed to C++ as a `pending_remote`.
+interface EventObserver {
+  OnEvent(string value);
+};
+
+interface EventSource {
+  AddObserver(pending_remote<EventObserver> observer);
+};
