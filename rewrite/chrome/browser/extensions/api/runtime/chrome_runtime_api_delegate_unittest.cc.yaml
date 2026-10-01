@@ -1,0 +1,45 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Add scoped_feature_list.h for disabling BraveAutoUpdateExtensions.'
+    regex:
+      pattern: '#include "base/test/run_until.h"'
+      replace: |-
+        #include "base/test/run_until.h"
+        #include "base/test/scoped_feature_list.h"
+
+  - description: 'Add features.h for kBraveAutoUpdateExtensions.'
+    regex:
+      pattern: '#include "base/threading/thread_restrictions.h"'
+      replace: |-
+        #include "base/threading/thread_restrictions.h"
+        #include "brave/browser/extensions/updater/features.h"
+
+  - description: |-
+      Add a ScopedFeatureList to disable BraveAutoUpdateExtensions.
+    add_to_protected:
+      class_name: ChromeRuntimeAPIDelegateTest
+      code: |-
+        // Disables the background extension-update schedule so it does not
+        // race the test's own choreographed update checks.
+        base::test::ScopedFeatureList scoped_feature_list_;
+
+  - description: |-
+      ExtensionUpdater::Start() schedules a background update check when
+      BraveAutoUpdateExtensions is enabled (the default). These tests
+      choreograph their own sequence of update checks via a test-only
+      ExtensionDownloaderTestDelegate that fails on any unexpected check, so
+      the scheduled check races with it and can flakily fail with
+      "Unexpected extension id". Disable the feature before
+      ExtensionServiceTestWithInstall::SetUp() spins up the ExtensionService
+      (and its updater).
+    regex:
+      pattern: 'ExtensionServiceTestWithInstall::SetUp();'
+      replace: |-
+        scoped_feature_list_.InitAndDisableFeature(
+                features::kBraveAutoUpdateExtensions);
+            ExtensionServiceTestWithInstall::SetUp();
