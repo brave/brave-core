@@ -236,7 +236,7 @@ void BatAdsImpl::EvaluateConditionMatcher(
       pref_path, condition, test_value,
       base::BindOnce(
           [](EvaluateConditionMatcherCallback callback,
-             std::string current_value, std::string matches) {
+             const std::string& current_value, const std::string& matches) {
             std::move(callback).Run(current_value, matches);
           },
           mojo::WrapCallbackWithDefaultInvokeIfNotRun(
