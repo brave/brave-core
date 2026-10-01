@@ -15,7 +15,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "brave/browser/ui/webui/custom_profile_image/features.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/signin/signin_view_controller_delegate.h"
 #include "chrome/browser/ui/webui/signin/signin_url_utils.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
