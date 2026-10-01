@@ -5,8 +5,10 @@
 
 substitutions:
   - description: |
-      Use Brave's own corner-radius token set for the omnibox results frame.
+      Use the same corner radius as `BraveRoundedOmniboxResultsFrame`'s
+      shadow border, instead of `kOmniboxExpandedRadius`, which other upstream
+      views share.
     count: 2
     regex:
       pattern: 'ChromeShapeContextTokens::kOmniboxExpandedRadius'
-      replace: 'views::ShapeContextTokensOverride::kOmniboxExpandedRadius'
+      replace: 'views::Emphasis::kHigh'
