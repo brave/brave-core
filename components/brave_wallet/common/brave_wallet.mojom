@@ -502,6 +502,15 @@ interface PanelHandler {
   // and we need to call ConnectToSite or CancelConnectToSite based on user
   // decision.
   RequestPermission(AccountId account_id) => (bool success);
+
+  // Describes and prices the pending Polkadot sign request `request_id`. The
+  // browser reads the payload from its own request queue, so the panel cannot
+  // ask about anything other than what will be signed. Null when the request is
+  // unknown or could not be decoded; the Sign control must stay gated in that
+  // case, since an interactive panel with no description means signing
+  // something the user was never shown.
+  GetPolkadotSignRequestDetails(int32 request_id)
+      => (PolkadotSignRequestDetails? details);
 };
 
 // Browser-side handler for requests from WebUI page.
@@ -2264,6 +2273,27 @@ struct PolkadotAccountInfo {
 
 struct PolkadotAssetAccountInfo {
   uint128 balance;
+};
+
+struct PolkadotFeeEstimate {
+  // Partial fee in the chain's smallest unit, from
+  // TransactionPaymentApi_query_info run against a dummy-signed copy of the
+  // extrinsic. An estimate: the runtime's fee multiplier moves with congestion
+  // between this query and inclusion.
+  uint128 partial_fee;
+};
+
+// What the sign panel needs in order to describe a pending dApp signing
+// request to the user.
+struct PolkadotSignRequestDetails {
+  // The request's call data as polkadot-js `Call.toHuman()`, JSON-serialized.
+  // Display only, and untrusted: it is produced in the bridge frame.
+  string as_human;
+
+  // Null when the fee query failed. Describing and pricing fail independently,
+  // and an undescribed request is useless to the user while an unpriced
+  // description still tells them what they are agreeing to.
+  PolkadotFeeEstimate? fee;
 };
 
 enum PolkadotValidationStatus {

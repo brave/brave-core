@@ -257,6 +257,11 @@ void PolkadotApiImpl::OnSignPayloadRequestProcessed(
     return;
   }
 
+  LOG(INFO) << "signature payload as hex is: "
+            << base::HexEncodeLower(signature_payload.value());
+  LOG(INFO) << "produced signature is: "
+            << base::HexEncodeLower(signature.value());
+
   std::move(callback).Run(
       mojom::PolkadotSignerResult::New(
           request_id, MakePolkadotSignerSignatureHex(*signature)),
