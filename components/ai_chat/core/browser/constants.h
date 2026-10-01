@@ -30,7 +30,8 @@ inline constexpr auto kCapabilityStringMap =
     base::MakeFixedFlatMap<mojom::ConversationCapability, std::string_view>(
         {{mojom::ConversationCapability::CONTENT_AGENT, "content_agent"},
          {mojom::ConversationCapability::DEEP_RESEARCH, "deep_research"},
-         {mojom::ConversationCapability::MATH_ML, "math_ml"}});
+         {mojom::ConversationCapability::MATH_ML, "math_ml"},
+         {mojom::ConversationCapability::WORKSPACES, "workspaces"}});
 
 // Hints about how the server should handle a request - these are intended to
 // let the server know what the client can do. For example, when we send the

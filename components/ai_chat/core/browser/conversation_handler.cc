@@ -196,6 +196,9 @@ void ConversationHandler::BuildCapabilitiesSet() {
   if (base::FeatureList::IsEnabled(features::kAIChatMathRendering)) {
     conversation_capabilities_.insert(mojom::ConversationCapability::MATH_ML);
   }
+  if (base::FeatureList::IsEnabled(features::kAIChatWorkspaceTools)) {
+    conversation_capabilities_.insert(mojom::ConversationCapability::WORKSPACES);
+  }
 }
 
 ConversationHandler::ConversationHandler(

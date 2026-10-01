@@ -79,7 +79,10 @@ enum ConversationCapability {
 
   // Client can render MathML. A hint to the server, not a model capability -
   // see kServerHintCapabilities in browser/constants.h.
-  MATH_ML
+  MATH_ML,
+
+  // A conversation should include the workspace tools for local file operations.
+  WORKSPACES
 };
 
 // Which action the user was taking for the entry. This can be used
