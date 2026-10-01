@@ -1,12 +1,12 @@
 diff --git a/build/rust/cargo_crate.gni b/build/rust/cargo_crate.gni
-index f55cfef4c087b2fedce2af21991603b4bcdfafab..914c5ed52f7fe215faba2ded7650708eda033de3 100644
+index f55cfef4c087b2fedce2af21991603b4bcdfafab..6cb7fb61ade495c1d27cbe633f6cada2ab26741f 100644
 --- a/build/rust/cargo_crate.gni
 +++ b/build/rust/cargo_crate.gni
 @@ -281,6 +281,7 @@ template("cargo_crate") {
        testonly = _testonly
        if (defined(invoker.visibility)) {
          visibility = invoker.visibility
-+      visibility += [ "//brave/third_party/*", "//brave/components/*",  ]
++        visibility += [ "//brave/components/*", "//brave/third_party/*" ]
        }
        crate_name = _crate_name
  

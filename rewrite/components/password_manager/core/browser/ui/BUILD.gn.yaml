@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Build the password reuse and weak check utilities on Android too
+
+      Brave uses them on every platform, so their `!is_android` guard goes.
+    regex:
+      re_pattern:
+        'if \(!is_android\) \{(\n\s+sources \+=
+        \[\n\s+"reuse_check_utility\.cc",)'
+      replace: 'if (true) {\1'
