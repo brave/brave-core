@@ -60,6 +60,18 @@ def _is_transient_github_error(err):
     return code == 403 and ('rate limit' in text or 'secondary rate' in text)
 
 
+def _is_transient_issue_patch_error(err):
+    if _is_transient_github_error(err):
+        return True
+    if getattr(err, 'status_code', None) != 422:
+        return False
+    body = getattr(err, 'body', None)
+    # GitHub also uses 422 when an endpoint has been spammed. A field-specific
+    # error is permanent; an ambiguous 422 is safe to retry for this idempotent
+    # PATCH and still fails after the bounded attempts.
+    return not isinstance(body, dict) or not body.get('errors')
+
+
 def _is_rate_limited(err):
     code = getattr(err, 'status_code', None)
     # 429 is always a rate limit. 403 is one only when the body says so.
@@ -416,11 +428,10 @@ def _patch_issue(repo, issue_number, patch_data):
         try:
             return repo.issues(issue_number).patch(data=patch_data)
         except (GitHubError, urllib.error.URLError) as e:
-            # 422 is a rejected field and is raised immediately. A connection
-            # failure is URLError and is safe to repeat.
+            # A connection failure and an ambiguous 422 are safe to repeat.
             if (attempt + 1 == attempts
                     or (isinstance(e, GitHubError)
-                        and not _is_transient_github_error(e))):
+                        and not _is_transient_issue_patch_error(e))):
                 raise
             wait = _retry_wait_seconds(e)
             if wait is None:
