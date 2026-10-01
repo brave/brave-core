@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Compile the Brave inset base class with AllSiteSettings.
+
+      The base class uses upstream site-settings types, so compiling it in
+      this target avoids a dependency cycle with Brave's site-settings target.
+    add_literal_to_list:
+      target: java
+      list_name: sources
+      literal: brave_components_browser_ui_site_settings_java_sources
+
+  - description: |
+      Make the bottom inset provider available to site settings.
+
+    add_literal_to_list:
+      target: java
+      list_name: deps
+      literal: brave_components_browser_ui_site_settings_java_deps
