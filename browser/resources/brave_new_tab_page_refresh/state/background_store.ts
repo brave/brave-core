@@ -119,6 +119,8 @@ export function defaultBackgroundStore(): BackgroundStore {
       notifyNewTabTakeoverLoadError() {},
       notifyNewTabTakeoverLogoClicked() {},
       notifyNewTabTakeoverRichMediaEvent(type) {},
+      notifyNewTabTakeoverDisclosureLearnMoreClicked() {},
+      notifyNewTabTakeoverDisclosureAutoDisplayed() {},
     },
   })
 }
@@ -132,6 +134,8 @@ export interface BackgroundActions {
   notifyNewTabTakeoverLoadError: () => void
   notifyNewTabTakeoverLogoClicked: () => void
   notifyNewTabTakeoverRichMediaEvent: (type: NewTabPageAdEventType) => void
+  notifyNewTabTakeoverDisclosureLearnMoreClicked: () => void
+  notifyNewTabTakeoverDisclosureAutoDisplayed: () => void
 }
 
 function chooseRandom<T>(list: T[], randomValue: number): T | null {

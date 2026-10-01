@@ -121,6 +121,14 @@ export function createBackgroundStore() {
     notifyNewTabTakeoverRichMediaEvent(type) {
       console.log('richMediaEvent', type)
     },
+
+    notifyNewTabTakeoverDisclosureLearnMoreClicked() {
+      console.log('newTabTakeoverDisclosureLearnMoreClicked')
+    },
+
+    notifyNewTabTakeoverDisclosureAutoDisplayed() {
+      console.log('newTabTakeoverDisclosureTooltipAutoDisplayed')
+    },
   }
 
   store.update({ actions })

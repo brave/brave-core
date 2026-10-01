@@ -13,7 +13,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/to_address.h"
 #include "brave/browser/brave_stats/first_run_util.h"
-#include "brave/browser/ntp_background/new_tab_takeover_infobar_delegate.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/background_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/custom_image_chooser.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/sponsored_sites_facade.h"
@@ -195,9 +194,10 @@ void NewTabPageHandler::OnGetNewTabTakeoverBackground(
     GetNewTabTakeoverBackgroundCallback callback,
     mojom::NewTabTakeoverBackgroundPtr new_tab_takeover_background) {
   if (new_tab_takeover_background) {
-    ntp_background_images::NewTabTakeoverInfoBarDelegate::
-        MaybeDisplayAndIncrementCounter(base::to_address(web_contents_),
-                                        &pref_service_.get());
+    new_tab_takeover_background
+        ->should_auto_display_new_tab_takeover_disclosure =
+        ntp_background_images::ShouldAutoDisplayNewTabTakeoverDisclosureTooltip(
+            *pref_service_);
   }
   std::move(callback).Run(std::move(new_tab_takeover_background));
 }

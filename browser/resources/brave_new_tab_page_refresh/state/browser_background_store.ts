@@ -63,6 +63,18 @@ export function createBackgroundStore() {
     store.update({ newTabTakeoverBackground: background ?? null })
   }
 
+  function disableNewTabTakeoverDisclosureAutoDisplay() {
+    const { newTabTakeoverBackground } = store.getState()
+    if (newTabTakeoverBackground) {
+      store.update({
+        newTabTakeoverBackground: {
+          ...newTabTakeoverBackground,
+          shouldAutoDisplayNewTabTakeoverDisclosure: false,
+        },
+      })
+    }
+  }
+
   newTabProxy.addListeners({
     onBackgroundsUpdated: debounce(async () => {
       await Promise.all([
@@ -144,6 +156,16 @@ export function createBackgroundStore() {
         newTabTakeoverBackground.metricType,
         type,
       )
+    },
+
+    notifyNewTabTakeoverDisclosureLearnMoreClicked() {
+      handler.notifyNewTabTakeoverDisclosureLearnMoreClicked()
+      disableNewTabTakeoverDisclosureAutoDisplay()
+    },
+
+    notifyNewTabTakeoverDisclosureAutoDisplayed() {
+      handler.notifyNewTabTakeoverDisclosureTooltipAutoDisplayed()
+      disableNewTabTakeoverDisclosureAutoDisplay()
     },
   }
 
