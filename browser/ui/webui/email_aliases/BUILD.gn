@@ -26,8 +26,11 @@ source_set("email_aliases") {
     "//brave/components/resources:static_resources_grit",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/webui",
-    "//chrome/browser/ui/webui:theme_source",
     "//ui/webui",
     "//url",
   ]
+
+  if (!is_android) {
+    deps += [ "//chrome/browser/ui/webui:theme_source" ]
+  }
 }
