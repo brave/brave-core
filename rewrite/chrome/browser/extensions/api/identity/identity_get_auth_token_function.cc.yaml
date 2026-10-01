@@ -1,0 +1,41 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Build the Android extensions code with the core.
+    count: 6
+    regex:
+      pattern: 'BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)'
+      replace: 'BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)'
+
+  - description:
+      Use the web OAuth flow unless the Google Chrome API key is used.
+    regex:
+      pattern: |-
+        StartAsyncRun();
+
+          base::OnceCallback next_step =
+      replace: |-
+        StartAsyncRun();
+
+          if (!google_apis::IsGoogleChromeAPIKeyUsed()) {
+            StartMintTokenFlow(IdentityMintRequestQueue::MINT_TYPE_NONINTERACTIVE);
+            return RespondLater();
+          }
+          base::OnceCallback next_step =
+
+  - description: The web OAuth flow runs without an account.
+    regex:
+      re_pattern:
+        '(#if !BUILDFLAG\(IS_CHROMEOS\)\n)(  // ChromeOS in kiosk mode may start
+        the mint token flow without account\..*?<< "No Refresh
+        token!";\n)(#endif)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1  if (google_apis::IsGoogleChromeAPIKeyUsed()) {
+        \2  } else {
+            DCHECK(token_key_.account_info.IsEmpty());
+          }
+        \3

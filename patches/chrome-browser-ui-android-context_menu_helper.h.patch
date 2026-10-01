@@ -1,0 +1,30 @@
+diff --git a/chrome/browser/ui/android/context_menu_helper.h b/chrome/browser/ui/android/context_menu_helper.h
+index 6f1bb57cf61abf2cf9a9451fd5669af745834056..421eaa4d5775a505aec9f21697c4c4ebfb058914 100644
+--- a/chrome/browser/ui/android/context_menu_helper.h
++++ b/chrome/browser/ui/android/context_menu_helper.h
+@@ -15,11 +15,11 @@
+ #include "extensions/buildflags/buildflags.h"
+ #include "mojo/public/cpp/bindings/associated_remote.h"
+ 
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+ namespace extensions {
+ class ExtensionMenuModel;
+ }
+-#endif  // BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#endif  // BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+ 
+ namespace content {
+ class WebContents;
+@@ -54,9 +54,9 @@ class ContextMenuHelper
+ 
+   content::ContextMenuParams context_menu_params_;
+ 
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+   std::unique_ptr<extensions::ExtensionMenuModel> extension_menu_model_;
+-#endif  // BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#endif  // BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+ 
+   WEB_CONTENTS_USER_DATA_KEY_DECL();
+ };
