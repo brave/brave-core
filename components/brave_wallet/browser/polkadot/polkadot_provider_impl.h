@@ -14,8 +14,8 @@
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/unique_receiver_set.h"
@@ -34,6 +34,7 @@ class PolkadotProviderImpl final : public mojom::PolkadotProvider,
       base::RepeatingCallback<std::unique_ptr<BraveWalletProviderDelegate>()>;
 
   PolkadotProviderImpl(KeyringService& keyring_service,
+                       PolkadotWalletService& polkadot_wallet_service,
                        BraveWalletProviderDelegateFactory delegate_factory,
                        const url::Origin& origin);
   ~PolkadotProviderImpl() override;
@@ -70,8 +71,10 @@ class PolkadotProviderImpl final : public mojom::PolkadotProvider,
   void Unlocked() override;
 
   KeyringService* keyring_service();
+  PolkadotWalletService* polkadot_wallet_service();
 
   raw_ref<KeyringService> keyring_service_;
+  raw_ref<PolkadotWalletService> polkadot_wallet_service_;
   BraveWalletProviderDelegateFactory delegate_factory_;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   const url::Origin origin_;

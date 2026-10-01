@@ -196,6 +196,7 @@ void BraveWalletTabHelper::BindPolkadotProvider(
   tab_helper->polkadot_provider_receivers_.Add(
       std::make_unique<PolkadotProviderImpl>(
           *brave_wallet_service->keyring_service(),
+          *brave_wallet_service->GetPolkadotWalletService(),
           base::BindRepeating(&CreateDelegate, web_contents,
                               frame_host->GetGlobalId()),
           origin),

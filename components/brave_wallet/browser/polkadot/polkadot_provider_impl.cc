@@ -39,9 +39,11 @@ mojom::PolkadotProviderErrorBundlePtr InternalError() {
 
 PolkadotProviderImpl::PolkadotProviderImpl(
     KeyringService& keyring_service,
+    PolkadotWalletService& polkadot_wallet_service,
     BraveWalletProviderDelegateFactory delegate_factory,
     const url::Origin& origin)
     : keyring_service_(keyring_service),
+      polkadot_wallet_service_(polkadot_wallet_service),
       delegate_factory_(std::move(delegate_factory)),
       origin_(origin) {
   keyring_service_->AddObserver(
@@ -189,7 +191,8 @@ void PolkadotProviderImpl::OnRequestPolkadotPermissions(
   mojo::PendingRemote<mojom::PolkadotApi> polkadot_api_remote;
   polkadot_api_receivers_.Add(
       std::make_unique<PolkadotApiImpl>(
-          *keyring_service(), delegate_factory_.Run(), std::move(account_id)),
+          *keyring_service(), *polkadot_wallet_service(),
+          delegate_factory_.Run(), std::move(account_id), origin_),
       polkadot_api_remote.InitWithNewPipeAndPassReceiver());
 
   std::move(callback).Run(std::move(polkadot_api_remote), nullptr);
@@ -201,8 +204,13 @@ void PolkadotProviderImpl::Unlocked() {
                                std::move(pending_request_permissions_origin_));
   }
 }
+
 KeyringService* PolkadotProviderImpl::keyring_service() {
   return &keyring_service_.get();
+}
+
+PolkadotWalletService* PolkadotProviderImpl::polkadot_wallet_service() {
+  return &polkadot_wallet_service_.get();
 }
 
 }  // namespace brave_wallet

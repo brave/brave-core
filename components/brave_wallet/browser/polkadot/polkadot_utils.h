@@ -28,6 +28,11 @@ inline constexpr const size_t kPolkadotSubstrateAccountIdSize = 32;
 
 inline constexpr const size_t kPolkadotBlockHashSize = 32;
 
+// Signature payloads longer than this are signed as their blake2b-256 hash
+// instead, so what a signer has to handle stays bounded.
+// https://github.com/polkadot-js/api/blob/master/packages/types/src/extrinsic/util.ts
+inline constexpr const size_t kPolkadotMaxUnhashedSignaturePayloadSize = 256;
+
 // SS58 address prefixes by network.
 // https://wiki.polkadot.com/learn/learn-account-advanced/
 inline constexpr uint16_t kPolkadotPrefix = 0u;  // Polkadot mainnet.

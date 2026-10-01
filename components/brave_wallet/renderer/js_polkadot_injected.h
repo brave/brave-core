@@ -74,10 +74,17 @@ class JSPolkadotInjected final : public gin::Wrappable<JSPolkadotInjected>,
       std::optional<std::vector<mojom::PolkadotInjectedAccountPtr>> accounts,
       mojom::PolkadotProviderErrorBundlePtr error);
 
-  // `signer.signPayload(payload)` and `signer.signRaw(payload)`. Not
-  // implemented yet; both reject.
+  // `signer.signPayload(payload)`. The dApp's `SignerPayloadJSON` is forwarded
+  // as JSON so the browser signs exactly what the user was shown.
   v8::Local<v8::Promise> SignPayload(v8::Isolate* isolate,
                                      v8::Local<v8::Value> payload);
+  void OnSignPayloadResponse(v8::Global<v8::Context> global_context,
+                             v8::Global<v8::Promise::Resolver> promise_resolver,
+                             v8::Isolate* isolate,
+                             mojom::PolkadotSignerResultPtr result,
+                             mojom::PolkadotProviderErrorBundlePtr error);
+
+  // `signer.signRaw(payload)`. Not implemented yet; always rejects.
   v8::Local<v8::Promise> SignRaw(v8::Isolate* isolate,
                                  v8::Local<v8::Value> payload);
 

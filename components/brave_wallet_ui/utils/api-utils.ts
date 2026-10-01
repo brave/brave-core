@@ -41,7 +41,13 @@ export function navigateToConnectHardwareWallet(
 }
 
 export const getHasPendingRequests = async () => {
-  const { braveWalletService, jsonRpcService, txService } = getAPIProxy()
+  const {
+    braveWalletService,
+    jsonRpcService,
+    polkadotWalletService,
+    txService,
+    walletHandler,
+  } = getAPIProxy()
 
   const { count: pendingTxsCount } =
     await txService.getPendingTransactionsCount()
@@ -59,6 +65,17 @@ export const getHasPendingRequests = async () => {
     await braveWalletService.getPendingSignCardanoTransactionRequests()
   if (signCardanoTxRequests.length) {
     return true
+  }
+
+  // PolkadotWalletService is only bound when the feature is on, so asking it
+  // anything otherwise rejects on a closed pipe.
+  const { walletInfo } = await walletHandler.getWalletInfo()
+  if (walletInfo.isPolkadotEnabled) {
+    const { requests: signPolkadotTxRequests } =
+      await polkadotWalletService.getPendingSignPolkadotTransactionRequests()
+    if (signPolkadotTxRequests.length) {
+      return true
+    }
   }
 
   const { requests: signMessageRequests } =

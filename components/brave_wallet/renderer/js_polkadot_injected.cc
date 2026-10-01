@@ -19,6 +19,7 @@
 #include "v8/include/v8-context.h"
 #include "v8/include/v8-exception.h"
 #include "v8/include/v8-function.h"
+#include "v8/include/v8-json.h"
 #include "v8/include/v8-local-handle.h"
 #include "v8/include/v8-microtask-queue.h"
 #include "v8/include/v8-object.h"
@@ -32,6 +33,7 @@ namespace {
 constexpr char kNotImplementedError[] =
     "Signing is not implemented by this extension yet";
 constexpr char kRequestFailedError[] = "Request failed.";
+constexpr char kInvalidPayloadError[] = "Invalid payload.";
 
 v8::Local<v8::Value> ToV8Error(v8::Isolate* isolate, std::string_view message) {
   return v8::Exception::Error(gin::StringToV8(isolate, message));
@@ -286,7 +288,71 @@ void JSPolkadotInjected::OnGetAccountsResponse(
 v8::Local<v8::Promise> JSPolkadotInjected::SignPayload(
     v8::Isolate* isolate,
     v8::Local<v8::Value> payload) {
-  return RejectedPromise(isolate, kNotImplementedError);
+  if (!polkadot_api_.is_bound()) {
+    return RejectedPromise(isolate, kRequestFailedError);
+  }
+
+  if (!payload->IsObject()) {
+    return RejectedPromise(isolate, kInvalidPayloadError);
+  }
+
+  v8::Local<v8::Context> context = isolate->GetCurrentContext();
+  v8::Local<v8::String> payload_json;
+  {
+    v8::TryCatch try_catch(isolate);
+    if (!v8::JSON::Stringify(context, payload.As<v8::Object>())
+             .ToLocal(&payload_json)) {
+      return RejectedPromise(isolate, kInvalidPayloadError);
+    }
+  }
+
+  v8::Local<v8::Promise::Resolver> resolver_local;
+  if (!v8::Promise::Resolver::New(context).ToLocal(&resolver_local)) {
+    return v8::Local<v8::Promise>();
+  }
+
+  auto global_context(v8::Global<v8::Context>(isolate, context));
+  auto promise_resolver(
+      v8::Global<v8::Promise::Resolver>(isolate, resolver_local));
+
+  polkadot_api_->SignPayload(
+      gin::V8ToString(isolate, payload_json),
+      base::BindOnce(&JSPolkadotInjected::OnSignPayloadResponse,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
+                     std::move(promise_resolver), isolate));
+
+  return resolver_local->GetPromise();
+}
+
+void JSPolkadotInjected::OnSignPayloadResponse(
+    v8::Global<v8::Context> global_context,
+    v8::Global<v8::Promise::Resolver> promise_resolver,
+    v8::Isolate* isolate,
+    mojom::PolkadotSignerResultPtr result,
+    mojom::PolkadotProviderErrorBundlePtr error) {
+  if (!render_frame()) {
+    return;
+  }
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context = global_context.Get(isolate);
+  v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+
+  v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
+
+  if (error || !result) {
+    std::ignore = resolver->Reject(
+        context,
+        ToV8Error(isolate, error ? error->message : kRequestFailedError));
+    return;
+  }
+
+  v8::Local<v8::Value> signer_result = gin::DataObjectBuilder(isolate)
+                                           .Set("id", result->id)
+                                           .Set("signature", result->signature)
+                                           .Build();
+  std::ignore = resolver->Resolve(context, signer_result);
 }
 
 v8::Local<v8::Promise> JSPolkadotInjected::SignRaw(
