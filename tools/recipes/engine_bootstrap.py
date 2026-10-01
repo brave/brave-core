@@ -99,8 +99,18 @@ def _deploy_recipes(dest: str | Path) -> Path:
         _rmtree(dest)
 
     dest.parent.mkdir(parents=True, exist_ok=True)
-    _run('git', 'clone', '--depth', '2', '--filter=blob:none', '--sparse',
-         '--branch', BRAVE_CORE_REF, REPO_URL, dest)
+    _run(
+        'git',
+        'clone',
+        '--depth',
+        '2',
+        '--filter=blob:none',
+        '--sparse',
+        '--branch',
+        BRAVE_CORE_REF,
+        REPO_URL,
+        dest,
+    )
     _run('git', '-C', dest, 'sparse-checkout', 'add', RECIPES_PATH)
 
     engine = dest / RECIPES_PATH / 'engine.py'
@@ -150,7 +160,8 @@ def _deploy_depot_tools(dest: str | Path) -> Path:
         _run('git', 'clone', '--depth', '1', DEPOT_TOOLS_URL, dest)
     if not vpython3.is_file():
         raise RuntimeError(
-            f'vpython3 not found after depot_tools clone: {vpython3}')
+            f'vpython3 not found after depot_tools clone: {vpython3}'
+        )
     return dest
 
 
@@ -166,7 +177,8 @@ def _ensure_vpython3(depot_tools_dest: str | Path) -> str:
     logging.info('%s not on PATH; deploying depot_tools', VPYTHON3)
     depot_tools = _deploy_depot_tools(depot_tools_dest)
     os.environ['PATH'] = os.pathsep.join(
-        [str(depot_tools), os.environ.get('PATH', '')])
+        [str(depot_tools), os.environ.get('PATH', '')]
+    )
     return str(depot_tools / VPYTHON3)
 
 
@@ -175,31 +187,31 @@ def main(argv: list[str] | None = None) -> int:
 
     parser = argparse.ArgumentParser(
         description='Bootstrap and run a Brave recipe from a shallow '
-        'brave-core checkout.')
-    parser.add_argument('recipe',
-                        help='Recipe name (e.g. toolchains/rust/package_rust)')
+        'brave-core checkout.'
+    )
+    parser.add_argument(
+        'recipe', help='Recipe name (e.g. toolchains/rust/package_rust)'
+    )
     parser.add_argument(
         '--workspace',
         default=None,
         help='Root directory the job runs in (forwarded to '
-        'engine.py); the bootstrap checkouts are deployed here')
+        'engine.py); the bootstrap checkouts are deployed here',
+    )
     parser.add_argument('--verbose', action='store_true')
     args, _ = parser.parse_known_args(argv)
 
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
 
     # All boostrap checkouts are placed under workspace.
-    workspace = (Path(args.workspace).expanduser()
-                 if args.workspace else Path.cwd())
+    workspace = (
+        Path(args.workspace).expanduser() if args.workspace else Path.cwd()
+    )
     vpython3 = _ensure_vpython3(workspace / DEPOT_TOOLS_DEST)
     engine = _deploy_recipes(workspace / RECIPES_ENGINE_DEST)
 
     spec = engine.parent / VPYTHON_SPEC
-    forwarded = [
-        vpython3, '-vpython-spec',
-        str(spec), '-u',
-        str(engine), *argv
-    ]
+    forwarded = [vpython3, '-vpython-spec', str(spec), '-u', str(engine), *argv]
     logging.info('Launching engine: %s', ' '.join(forwarded))
     return subprocess.run(forwarded, check=False).returncode
 

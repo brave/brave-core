@@ -28,11 +28,17 @@ def CheckUnitTests(input_api, output_api):
         dirs[:] = [d for d in dirs if d != '__pycache__']
         for f in files:
             if not f.endswith('_test.py') or input_api.re.match(
-                    _RECIPE_SIM_TEST_RE, f):
+                _RECIPE_SIM_TEST_RE, f
+            ):
                 continue
             tests.append(
-                _MakeTestCommand(input_api, output_api, script_dir,
-                                 input_api.os_path.join(root, f)))
+                _MakeTestCommand(
+                    input_api,
+                    output_api,
+                    script_dir,
+                    input_api.os_path.join(root, f),
+                )
+            )
     return input_api.RunTests(tests)
 
 
@@ -43,8 +49,10 @@ def CheckRecipeSimulationTests(input_api, output_api):
     tests = []
     for f in input_api.os_listdir(unittests_dir):
         test_path = input_api.os_path.join(unittests_dir, f)
-        if input_api.re.match(_RECIPE_SIM_TEST_RE,
-                              f) and input_api.os_path.isfile(test_path):
+        if input_api.re.match(
+            _RECIPE_SIM_TEST_RE, f
+        ) and input_api.os_path.isfile(test_path):
             tests.append(
-                _MakeTestCommand(input_api, output_api, script_dir, test_path))
+                _MakeTestCommand(input_api, output_api, script_dir, test_path)
+            )
     return input_api.RunTests(tests, parallel=False)

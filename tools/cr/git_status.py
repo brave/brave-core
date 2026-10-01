@@ -35,14 +35,15 @@ class GitStatus:
             deleted:  Paths that were removed relative to the previous state
                       (X='D' or Y='D').
         '''
+
         added: list[str] = field(default_factory=list)
         modified: list[str] = field(default_factory=list)
         deleted: list[str] = field(default_factory=list)
 
     def __init__(self):
-        porcelain = repository.brave.run_git('status',
-                                             '--porcelain',
-                                             no_trim=True)
+        porcelain = repository.brave.run_git(
+            'status', '--porcelain', no_trim=True
+        )
 
         self.staged: GitStatus.Area = GitStatus.Area()
         self.unstaged: GitStatus.Area = GitStatus.Area()
@@ -79,14 +80,21 @@ class GitStatus:
 
         For renames, the new (current) path is included.
         '''
-        return (self.staged.added + self.staged.modified +
-                self.staged.deleted +
-                [new_path for _, new_path in self.renamed])
+        return (
+            self.staged.added
+            + self.staged.modified
+            + self.staged.deleted
+            + [new_path for _, new_path in self.renamed]
+        )
 
     def has_staged_files(self) -> bool:
         '''Returns True if any staged changes exist.'''
-        return bool(self.staged.added or self.staged.modified
-                    or self.staged.deleted or self.renamed)
+        return bool(
+            self.staged.added
+            or self.staged.modified
+            or self.staged.deleted
+            or self.renamed
+        )
 
     def has_deleted_patch_files(self) -> bool:
         '''Returns True if any patch files under patches/ are deleted.
@@ -97,10 +105,12 @@ class GitStatus:
         all_deleted = self.staged.deleted + self.unstaged.deleted
         return any(
             path.startswith('patches/') and path.endswith('.patch')
-            for path in all_deleted)
+            for path in all_deleted
+        )
 
     def has_untracked_patch_files(self) -> bool:
         '''Returns True if any patch files under patches/ are untracked.'''
         return any(
             path.startswith('patches/') and path.endswith('.patch')
-            for path in self.unstaged.added)
+            for path in self.unstaged.added
+        )

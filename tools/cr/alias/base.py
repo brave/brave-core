@@ -30,8 +30,9 @@ HOOK_DEST: Path = repository.brave.root / '.git' / 'hooks' / 'commit-msg'
 
 # On Windows a bash shim is written instead of a symlink.  cmd_install_hook
 # writes this exact content so the hook always delegates to the live source.
-WINDOWS_SHIM: bytes = (
-    f'#!/bin/sh\nexec python3 "{HOOK_SOURCE}" "$@"\n'.encode('utf-8'))
+WINDOWS_SHIM: bytes = f'#!/bin/sh\nexec python3 "{HOOK_SOURCE}" "$@"\n'.encode(
+    'utf-8'
+)
 
 
 def check_hooks_path() -> None:
@@ -48,11 +49,15 @@ def check_hooks_path() -> None:
         return
     if not configured:
         return
-    resolved = (Path(configured) if Path(configured).is_absolute() else
-                repository.brave.root / configured).resolve()
+    resolved = (
+        Path(configured)
+        if Path(configured).is_absolute()
+        else repository.brave.root / configured
+    ).resolve()
     if resolved == HOOK_DEST.parent.resolve():
         return  # Points at .git/hooks/ — our hook will still run.
     raise UserValidationError(
         f'git_cr: core.hooksPath is set to "{configured}".\n'
         'git ignores .git/hooks/ while this is set.\n'
-        'Unset core.hooksPath or point it to .git/hooks/.')
+        'Unset core.hooksPath or point it to .git/hooks/.'
+    )

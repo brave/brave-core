@@ -67,11 +67,10 @@ class RecipeScriptApi:
         self._resources_dir: Path = Path()
 
     def resource(self, *pieces: str) -> config_types.Path:
-        """Path to a file under this recipe's `<name>.resources/` directory.
-        """
+        """Path to a file under this recipe's `<name>.resources/` directory."""
         base = config_types.ResolvedBasePath.for_recipe_script_resources(
-            self._test is not None, self._recipe_name,
-            str(self._resources_dir))
+            self._test is not None, self._recipe_name, str(self._resources_dir)
+        )
         return config_types.Path(base, *pieces)
 
     def __getattr__(self, name: str):
@@ -79,7 +78,8 @@ class RecipeScriptApi:
         # declared in the recipe's DEPS. (Also tells static analysis that
         # attributes are dynamic, so accessing a dep is not flagged no-member.)
         raise AttributeError(
-            f'{name!r} is not a declared dependency (add it to DEPS?)')
+            f'{name!r} is not a declared dependency (add it to DEPS?)'
+        )
 
 
 def _ensure_on_sys_path() -> None:
@@ -108,38 +108,49 @@ def _ensure_protos() -> None:
     _protos_ready = True
 
 
-def _find_api_class(api_module: types.ModuleType,
-                    module_name: str) -> type[RecipeApi]:
+def _find_api_class(
+    api_module: types.ModuleType, module_name: str
+) -> type[RecipeApi]:
     """Return the single `RecipeApi` subclass defined in *api_module*."""
     classes = [
-        value for value in vars(api_module).values()
-        if isinstance(value, type) and issubclass(value, RecipeApi)
-        and value is not RecipeApi and value.__module__ == api_module.__name__
+        value
+        for value in vars(api_module).values()
+        if isinstance(value, type)
+        and issubclass(value, RecipeApi)
+        and value is not RecipeApi
+        and value.__module__ == api_module.__name__
     ]
     if len(classes) != 1:
         raise RuntimeError(
             f"recipe module '{module_name}' must define exactly one RecipeApi "
-            f'subclass in api.py; found {len(classes)}')
+            f'subclass in api.py; found {len(classes)}'
+        )
     return classes[0]
 
 
-def _find_test_api_class(test_module: types.ModuleType,
-                         module_name: str) -> type[RecipeTestApi]:
+def _find_test_api_class(
+    test_module: types.ModuleType, module_name: str
+) -> type[RecipeTestApi]:
     """Return the single `RecipeTestApi` subclass in *test_module*, if any."""
     classes = [
-        value for value in vars(test_module).values()
-        if isinstance(value, type) and issubclass(value, RecipeTestApi) and
-        value is not RecipeTestApi and value.__module__ == test_module.__name__
+        value
+        for value in vars(test_module).values()
+        if isinstance(value, type)
+        and issubclass(value, RecipeTestApi)
+        and value is not RecipeTestApi
+        and value.__module__ == test_module.__name__
     ]
     if len(classes) > 1:
         raise RuntimeError(
             f"recipe module '{module_name}' defines {len(classes)} "
-            'RecipeTestApi subclasses in test_api.py; expected at most one')
+            'RecipeTestApi subclasses in test_api.py; expected at most one'
+        )
     return classes[0] if classes else RecipeTestApi
 
 
-def instantiate_test_module(name: str, chain: list[str],
-                            cache: dict[str, RecipeTestApi]) -> RecipeTestApi:
+def instantiate_test_module(
+    name: str, chain: list[str], cache: dict[str, RecipeTestApi]
+) -> RecipeTestApi:
     """Instantiate a module's TEST_API, wiring its DEPS onto `.m` (cached).
 
     Every run builds these, not just simulated ones: a module reaches its own
@@ -166,8 +177,11 @@ def instantiate_test_module(name: str, chain: list[str],
 
     inst = api_class(module=name)
     for dep_name in deps:
-        setattr(inst.m, dep_name,
-                instantiate_test_module(dep_name, chain + [name], cache))
+        setattr(
+            inst.m,
+            dep_name,
+            instantiate_test_module(dep_name, chain + [name], cache),
+        )
     setattr(inst.m, name, inst)
     cache[name] = inst
     return inst
@@ -195,26 +209,30 @@ def _load_config_ctx(module_name: str):
         return None
     _ensure_protos()
     from config import ConfigContext
-    config_module = importlib.import_module(f'{MODULES_PKG}.{module_name}'
-                                            '.config')
+
+    config_module = importlib.import_module(
+        f'{MODULES_PKG}.{module_name}.config'
+    )
     contexts = [
-        value for value in vars(config_module).values()
+        value
+        for value in vars(config_module).values()
         if isinstance(value, ConfigContext)
     ]
     if len(contexts) != 1:
         raise RuntimeError(
             f"recipe module '{module_name}' has a config.py but defines "
             f'{len(contexts)} config contexts; expected exactly one '
-            '(from config_item_context(...))')
+            '(from config_item_context(...))'
+        )
     return contexts[0]
 
 
 class _Engine:
     """Resolves DEPS and instantiates module APIs, caching by module name."""
 
-    def __init__(self,
-                 workspace: str | Path | None = None,
-                 test: object | None = None) -> None:
+    def __init__(
+        self, workspace: str | Path | None = None, test: object | None = None
+    ) -> None:
         _ensure_on_sys_path()
         # Simulation context, or None in production. When set, the engine runs
         # in test mode: it seeds this onto every module (so the seam modules
@@ -253,8 +271,9 @@ class _Engine:
         # its `test_api` (see `instantiate_test_module`).
         self._test_api_cache: dict[str, RecipeTestApi] = {}
 
-    def _module_property_args(self, name: str,
-                              package: types.ModuleType) -> list[object]:
+    def _module_property_args(
+        self, name: str, package: types.ModuleType
+    ) -> list[object]:
         """Bind a module's declared `PROPERTIES`/`ENV_PROPERTIES` messages.
 
         Mirrors the recipe-level binding in `_run_steps`, but for a recipe
@@ -283,21 +302,22 @@ class _Engine:
             if not proto_support.is_message_class(properties_def):
                 raise TypeError(
                     f"module '{name}' PROPERTIES must be a protobuf message "
-                    f'class; got {properties_def!r}')
+                    f'class; got {properties_def!r}'
+                )
             block = self._properties.get(f'${name}', {})
             args.append(
-                jsonpb.ParseDict(block,
-                                 properties_def(),
-                                 ignore_unknown_fields=True))
+                jsonpb.ParseDict(
+                    block, properties_def(), ignore_unknown_fields=True
+                )
+            )
         if env_properties_def is not None:
             args.append(
                 jsonpb.ParseDict(
-                    {
-                        k.upper(): v
-                        for k, v in self._environ.items()
-                    },
+                    {k.upper(): v for k, v in self._environ.items()},
                     env_properties_def(),
-                    ignore_unknown_fields=True))
+                    ignore_unknown_fields=True,
+                )
+            )
         return args
 
     def _instantiate_module(self, name: str, chain: list[str]) -> RecipeApi:
@@ -322,13 +342,15 @@ class _Engine:
         setattr(inst, '_workspace', self._workspace)
         setattr(inst, '_step_stack', self._step_stack)
         setattr(inst, '_module_name', name)
-        setattr(inst, '_module_dir',
-                Path(api_module.__file__).resolve().parent)
+        setattr(inst, '_module_dir', Path(api_module.__file__).resolve().parent)
         setattr(inst, '_config_ctx', _load_config_ctx(name))
         inst.test_api = instantiate_test_module(name, [], self._test_api_cache)
         for dep_name in deps:
-            setattr(inst.m, dep_name,
-                    self._instantiate_module(dep_name, chain + [name]))
+            setattr(
+                inst.m,
+                dep_name,
+                self._instantiate_module(dep_name, chain + [name]),
+            )
         # A module can reach itself via `self.m.<own_name>`.
         setattr(inst.m, name, inst)
 
@@ -342,17 +364,19 @@ class _Engine:
         self._cache[name] = inst
         return inst
 
-    def run_recipe(self,
-                   recipe_name: str,
-                   properties: dict[str, object] | None = None) -> object:
-        return self.run_loaded_recipe(_import_recipe(recipe_name), recipe_name,
-                                      properties)
+    def run_recipe(
+        self, recipe_name: str, properties: dict[str, object] | None = None
+    ) -> object:
+        return self.run_loaded_recipe(
+            _import_recipe(recipe_name), recipe_name, properties
+        )
 
     def run_loaded_recipe(
-            self,
-            recipe: types.ModuleType,
-            recipe_name: str,
-            properties: dict[str, object] | None = None) -> object:
+        self,
+        recipe: types.ModuleType,
+        recipe_name: str,
+        properties: dict[str, object] | None = None,
+    ) -> object:
         """Run an already-imported *recipe* module's `RunSteps`.
 
         Splits the import from the run so the test runner can import a recipe
@@ -373,15 +397,23 @@ class _Engine:
         setattr(api, '_test', self._test)
         setattr(api, '_recipe_name', recipe_name)
         recipe_file = Path(recipe.__file__).resolve()
-        setattr(api, '_resources_dir',
-                recipe_file.parent / f'{recipe_file.stem}.resources')
+        setattr(
+            api,
+            '_resources_dir',
+            recipe_file.parent / f'{recipe_file.stem}.resources',
+        )
         for dep_name in getattr(recipe, 'DEPS', []):
             setattr(api, dep_name, self._instantiate_module(dep_name, []))
 
         try:
-            return _run_steps(run_steps, api, self._properties, self._environ,
-                              getattr(recipe, 'PROPERTIES', None),
-                              getattr(recipe, 'ENV_PROPERTIES', None))
+            return _run_steps(
+                run_steps,
+                api,
+                self._properties,
+                self._environ,
+                getattr(recipe, 'PROPERTIES', None),
+                getattr(recipe, 'ENV_PROPERTIES', None),
+            )
         finally:
             # Closes the last step, then the root, which waits for any work the
             # recipe spawned and never collected. A recipe that fails partway
@@ -416,9 +448,14 @@ def _import_recipe(recipe_name: str) -> types.ModuleType:
     return importlib.import_module(f'{pkg}.{module_path}')
 
 
-def _run_steps(run_steps: object, api: object, properties: dict[str, object],
-               environ: Mapping[str, str], properties_def: type | None,
-               env_properties_def: type | None) -> object:
+def _run_steps(
+    run_steps: object,
+    api: object,
+    properties: dict[str, object],
+    environ: Mapping[str, str],
+    properties_def: type | None,
+    env_properties_def: type | None,
+) -> object:
     """Bind input into typed messages and invoke a recipe's `RunSteps`.
 
     `PROPERTIES` and `ENV_PROPERTIES` are protobuf message classes, and the
@@ -435,34 +472,41 @@ def _run_steps(run_steps: object, api: object, properties: dict[str, object],
     ignored, so extra input (e.g. every unrelated env var) is dropped.
     """
     if properties_def is not None and not proto_support.is_message_class(
-            properties_def):
-        raise TypeError('PROPERTIES must be a protobuf message class; got '
-                        f'{properties_def!r}')
+        properties_def
+    ):
+        raise TypeError(
+            'PROPERTIES must be a protobuf message class; got '
+            f'{properties_def!r}'
+        )
 
     args = [api]
     if proto_support.is_message_class(properties_def):
         properties_without_reserved = {
-            k: v
-            for k, v in properties.items() if not k.startswith('$')
+            k: v for k, v in properties.items() if not k.startswith('$')
         }
         args.append(
-            jsonpb.ParseDict(properties_without_reserved,
-                             properties_def(),
-                             ignore_unknown_fields=True))
+            jsonpb.ParseDict(
+                properties_without_reserved,
+                properties_def(),
+                ignore_unknown_fields=True,
+            )
+        )
     if env_properties_def is not None:
         args.append(
-            jsonpb.ParseDict({
-                k.upper(): v
-                for k, v in environ.items()
-            },
-                             env_properties_def(),
-                             ignore_unknown_fields=True))
+            jsonpb.ParseDict(
+                {k.upper(): v for k, v in environ.items()},
+                env_properties_def(),
+                ignore_unknown_fields=True,
+            )
+        )
     return run_steps(*args)
 
 
-def run_recipe(recipe_name: str,
-               properties: dict[str, object] | None = None,
-               workspace: str | Path | None = None) -> object:
+def run_recipe(
+    recipe_name: str,
+    properties: dict[str, object] | None = None,
+    workspace: str | Path | None = None,
+) -> object:
     """Resolve DEPS for *recipe_name* and run its `RunSteps`."""
     return _Engine(workspace).run_recipe(recipe_name, properties)
 
@@ -481,18 +525,21 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description='Run a Brave recipe.')
     parser.add_argument(
         'recipe',
-        help='Recipe name under recipes/ (e.g. toolchains/rust/package_rust)')
-    parser.add_argument('--properties',
-                        default='{}',
-                        help='JSON object of recipe properties')
-    parser.add_argument('--workspace',
-                        default=None,
-                        help='Root directory the job runs in; recipe paths '
-                        '(b/src, out, ...) are relative to it; '
-                        'created if missing (default: current directory)')
-    parser.add_argument('--verbose',
-                        action='store_true',
-                        help='Enable verbose (debug) logging')
+        help='Recipe name under recipes/ (e.g. toolchains/rust/package_rust)',
+    )
+    parser.add_argument(
+        '--properties', default='{}', help='JSON object of recipe properties'
+    )
+    parser.add_argument(
+        '--workspace',
+        default=None,
+        help='Root directory the job runs in; recipe paths '
+        '(b/src, out, ...) are relative to it; '
+        'created if missing (default: current directory)',
+    )
+    parser.add_argument(
+        '--verbose', action='store_true', help='Enable verbose (debug) logging'
+    )
     args = parser.parse_args(argv)
 
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)

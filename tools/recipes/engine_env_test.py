@@ -18,7 +18,6 @@ import engine_env as m
 
 
 class MergeEnvsTest(unittest.TestCase):
-
     def test_no_modifications_returns_copy(self):
         original = {'A': '1'}
         result = m.merge_envs(original, {}, {}, {}, ':')
@@ -26,8 +25,7 @@ class MergeEnvsTest(unittest.TestCase):
         self.assertIsNot(result, original)
 
     def test_prefix_prepends_to_existing_value(self):
-        result = m.merge_envs({'PATH': '/bin'}, {}, {'PATH': ['/opt']}, {},
-                              ':')
+        result = m.merge_envs({'PATH': '/bin'}, {}, {'PATH': ['/opt']}, {}, ':')
         self.assertEqual(result['PATH'], '/opt:/bin')
 
     def test_prefix_when_variable_absent(self):
@@ -40,20 +38,23 @@ class MergeEnvsTest(unittest.TestCase):
         self.assertEqual(result['PATH'], '/bin:/z')
 
     def test_prefix_and_suffix_bracket_the_value(self):
-        result = m.merge_envs({'PATH': '/bin'}, {}, {'PATH': ['/a']},
-                              {'PATH': ['/z']}, ':')
+        result = m.merge_envs(
+            {'PATH': '/bin'}, {}, {'PATH': ['/a']}, {'PATH': ['/z']}, ':'
+        )
         self.assertEqual(result['PATH'], '/a:/bin:/z')
 
     def test_override_folds_into_prefix(self):
         # When a key has both an override and a prefix, the override value is
         # folded in as the last prefix component (replacing the original value).
-        result = m.merge_envs({'PATH': '/bin'}, {'PATH': '/custom'},
-                              {'PATH': ['/a']}, {}, ':')
+        result = m.merge_envs(
+            {'PATH': '/bin'}, {'PATH': '/custom'}, {'PATH': ['/a']}, {}, ':'
+        )
         self.assertEqual(result['PATH'], '/a:/custom')
 
     def test_override_substitution_amends_existing(self):
-        result = m.merge_envs({'PATH': '/bin'}, {'PATH': '%(PATH)s:/x'}, {},
-                              {}, ':')
+        result = m.merge_envs(
+            {'PATH': '/bin'}, {'PATH': '%(PATH)s:/x'}, {}, {}, ':'
+        )
         self.assertEqual(result['PATH'], '/bin:/x')
 
     def test_unknown_substitution_is_empty(self):
@@ -66,8 +67,9 @@ class MergeEnvsTest(unittest.TestCase):
         self.assertEqual(result['B'], '2')
 
     def test_pathsep_is_honoured(self):
-        result = m.merge_envs({'PATH': 'C:\\bin'}, {}, {'PATH': ['C:\\opt']},
-                              {}, ';')
+        result = m.merge_envs(
+            {'PATH': 'C:\\bin'}, {}, {'PATH': ['C:\\opt']}, {}, ';'
+        )
         self.assertEqual(result['PATH'], 'C:\\opt;C:\\bin')
 
 

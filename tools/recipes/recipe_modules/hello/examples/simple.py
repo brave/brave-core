@@ -23,18 +23,22 @@ def RunSteps(api):
 def GenTests(api):
     yield api.test(
         'bob',
-        api.post_process(StepCommandRE, 'Greet Admired Individual',
-                         [r'.*\becho', 'Hello Bob']),
+        api.post_process(
+            StepCommandRE,
+            'Greet Admired Individual',
+            [r'.*\becho', 'Hello Bob'],
+        ),
         api.post_process(DropExpectation),
     )
 
     # The `$hello` block is this module's namespaced PROPERTIES input.
     yield api.test(
         'anya',
-        api.properties(**{'$hello': {
-            'target': 'anya'
-        }}),
-        api.post_process(StepCommandRE, 'Greet Admired Individual',
-                         [r'.*\becho', 'Hello anya']),
+        api.properties(**{'$hello': {'target': 'anya'}}),
+        api.post_process(
+            StepCommandRE,
+            'Greet Admired Individual',
+            [r'.*\becho', 'Hello anya'],
+        ),
         api.post_process(DropExpectation),
     )

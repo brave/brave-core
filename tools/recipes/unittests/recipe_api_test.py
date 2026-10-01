@@ -12,8 +12,13 @@ import unittest
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # pylint: disable=wrong-import-position
-from recipe_api import (InputPlaceholder, OutputPlaceholder, Placeholder,
-                        RecipeApi, returns_placeholder)
+from recipe_api import (
+    InputPlaceholder,
+    OutputPlaceholder,
+    Placeholder,
+    RecipeApi,
+    returns_placeholder,
+)
 
 
 class FakeApi(RecipeApi):
@@ -42,7 +47,6 @@ def _api(module_name='fake'):
 
 
 class ReturnsPlaceholderTest(unittest.TestCase):
-
     def test_namespaces_are_the_module_and_method(self):
         self.assertEqual(_api().output().namespaces, ('fake', 'output'))
 
@@ -68,7 +72,6 @@ class ReturnsPlaceholderTest(unittest.TestCase):
 
 
 class PlaceholderTest(unittest.TestCase):
-
     def test_a_non_string_name_is_rejected(self):
         # The name is what tells several placeholders apart on one step.
         with self.assertRaises(ValueError):
@@ -95,7 +98,6 @@ class PlaceholderTest(unittest.TestCase):
 
 
 class ModuleInjectionTest(unittest.TestCase):
-
     def test_an_undeclared_dependency_says_so(self):
         with self.assertRaisesRegex(AttributeError, 'DEPS'):
             _ = RecipeApi().m.nope

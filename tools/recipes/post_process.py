@@ -57,11 +57,13 @@ def DoesNotRun(check: Checker, step_odict: Steps, *steps: str) -> None:
         check(step_name not in ban_set)
 
 
-def MustRunRE(check: Checker,
-              step_odict: Steps,
-              step_regex: str | re.Pattern,
-              at_least: int = 1,
-              at_most: int | None = None) -> None:
+def MustRunRE(
+    check: Checker,
+    step_odict: Steps,
+    step_regex: str | re.Pattern,
+    at_least: int = 1,
+    at_most: int | None = None,
+) -> None:
     """Assert that steps matching the given regex are in the expectations."""
     compiled_regex = re.compile(step_regex)
     matches = 0
@@ -73,8 +75,7 @@ def MustRunRE(check: Checker,
         check(matches <= at_most)
 
 
-def DoesNotRunRE(check: Checker, step_odict: Steps, *step_regexes:
-                 str) -> None:
+def DoesNotRunRE(check: Checker, step_odict: Steps, *step_regexes: str) -> None:
     """Assert that no steps matching any of the regexes have run."""
     compiled_regexes = [re.compile(r) for r in step_regexes]
     for step_name in step_odict:
@@ -96,27 +97,44 @@ def _is_subsequence(sub: list, seq: list) -> bool:
     return all(item in it for item in sub)
 
 
-def StepCommandContains(check: Checker, step_odict: Steps, step: str,
-                        argument_sequence: Sequence[str]) -> None:
+def StepCommandContains(
+    check: Checker,
+    step_odict: Steps,
+    step: str,
+    argument_sequence: Sequence[str],
+) -> None:
     """Assert that a step's command contained the given argument sequence."""
     check(
         'command line for step %s contained %s' % (step, argument_sequence),
-        _is_subsequence([str(a) for a in argument_sequence],
-                        step_odict[step]['cmd']))
+        _is_subsequence(
+            [str(a) for a in argument_sequence], step_odict[step]['cmd']
+        ),
+    )
 
 
-def StepCommandDoesNotContain(check: Checker, step_odict: Steps, step: str,
-                              argument_sequence: Sequence[str]) -> None:
+def StepCommandDoesNotContain(
+    check: Checker,
+    step_odict: Steps,
+    step: str,
+    argument_sequence: Sequence[str],
+) -> None:
     """Assert that a step's command did not contain the given argument
     sequence."""
     check(
-        'command line for step %s did not contain %s' %
-        (step, argument_sequence), not _is_subsequence(
-            [str(a) for a in argument_sequence], step_odict[step]['cmd']))
+        'command line for step %s did not contain %s'
+        % (step, argument_sequence),
+        not _is_subsequence(
+            [str(a) for a in argument_sequence], step_odict[step]['cmd']
+        ),
+    )
 
 
-def StepCommandRE(check: Checker, step_odict: Steps, step: str,
-                  expected_patterns: Sequence[str | re.Pattern]) -> None:
+def StepCommandRE(
+    check: Checker,
+    step_odict: Steps,
+    step: str,
+    expected_patterns: Sequence[str | re.Pattern],
+) -> None:
     """Assert that a step's command matches the given list of regexes.
 
     The i-th command argument is matched against the i-th pattern. A pattern
@@ -126,9 +144,9 @@ def StepCommandRE(check: Checker, step_odict: Steps, step: str,
     cmd = step_odict[step]['cmd']
     for expected, actual in zip(expected_patterns, cmd):
         check(_fullmatch(expected, actual))
-    unmatched = cmd[len(expected_patterns):]
+    unmatched = cmd[len(expected_patterns) :]
     check('all arguments matched', not unmatched)
-    unused = expected_patterns[len(cmd):]
+    unused = expected_patterns[len(cmd) :]
     check('all patterns used', not unused)
 
 
@@ -156,8 +174,10 @@ def StatusSuccess(check: Checker, step_odict: Steps) -> None:
 
 def StatusAnyFailure(check: Checker, step_odict: Steps) -> None:
     """Assert that the recipe failed (infra or non-infra)."""
-    check('recipe failed (found success instead)', 'failure'
-          in step_odict[RESULT_STEP])
+    check(
+        'recipe failed (found success instead)',
+        'failure' in step_odict[RESULT_STEP],
+    )
 
 
 def StatusFailure(check: Checker, step_odict: Steps) -> None:
@@ -165,18 +185,23 @@ def StatusFailure(check: Checker, step_odict: Steps) -> None:
     result = step_odict[RESULT_STEP]
     if not check('recipe failed (found success instead)', 'failure' in result):
         return
-    check('expected failure but recipe had infra failure', 'failure'
-          in result['failure'])
+    check(
+        'expected failure but recipe had infra failure',
+        'failure' in result['failure'],
+    )
 
 
 def StatusException(check: Checker, step_odict: Steps) -> None:
     """Assert that the recipe had an infra failure."""
     result = step_odict[RESULT_STEP]
-    if not check('recipe had infra failure (found success instead)', 'failure'
-                 in result):
+    if not check(
+        'recipe had infra failure (found success instead)', 'failure' in result
+    ):
         return
-    check('recipe had infra failure (found non-infra failure instead)',
-          'failure' not in result['failure'])
+    check(
+        'recipe had infra failure (found non-infra failure instead)',
+        'failure' not in result['failure'],
+    )
 
 
 # -- Expectation control ------------------------------------------------------

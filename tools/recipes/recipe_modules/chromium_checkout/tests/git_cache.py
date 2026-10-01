@@ -2,8 +2,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Tests for how `chromium_checkout` relies on the git cache.
-"""
+"""Tests for how `chromium_checkout` relies on the git cache."""
 
 from __future__ import annotations
 
@@ -15,9 +14,9 @@ DEPS = ['chromium_checkout', 'env', 'path', 'step']
 def RunSteps(api):
     mode = api.env.get('MODE')
     if mode == 'should_clone_false':
-        api.chromium_checkout.checkout_ref(api.path.chromium_src,
-                                           ref='refs/heads/main',
-                                           should_clone=False)
+        api.chromium_checkout.checkout_ref(
+            api.path.chromium_src, ref='refs/heads/main', should_clone=False
+        )
     else:
         api.chromium_checkout.ensure_checkout(ref='refs/heads/main')
 

@@ -47,8 +47,7 @@ class Future(Generic[T]):
     expanded carefully as it is needed.
     """
 
-    _greenlet: gevent.Greenlet = attr.ib(
-        validator=instance_of(gevent.Greenlet))
+    _greenlet: gevent.Greenlet = attr.ib(validator=instance_of(gevent.Greenlet))
     # `_greenlet.name` is not used for this: its automatically generated names
     # are not unique within a recipe run, so the module keeps its own counter
     # and assigns a UID when the caller did not pass `__name`.
@@ -140,12 +139,17 @@ class _IWaitWrapper(Iterator[Future[Any]]):
 
     __slots__ = ('_waiter', '_greenlets_to_futures')
 
-    def __init__(self, futures: Iterable[Future[Any]], timeout: float | None,
-                 count: int | None) -> None:
+    def __init__(
+        self,
+        futures: Iterable[Future[Any]],
+        timeout: float | None,
+        count: int | None,
+    ) -> None:
         # pylint: disable=protected-access
         self._greenlets_to_futures = {fut._greenlet: fut for fut in futures}
-        self._waiter = gevent.iwait(list(self._greenlets_to_futures.keys()),
-                                    timeout, count)
+        self._waiter = gevent.iwait(
+            list(self._greenlets_to_futures.keys()), timeout, count
+        )
 
     def __enter__(self) -> Iterator[Future[Any]]:
         self._waiter.__enter__()
@@ -171,8 +175,9 @@ class FuturesApi(RecipeApi):
         super().__init__()
         self._future_id = 0
 
-    def make_bounded_semaphore(self,
-                               value: int = 1) -> gevent.lock.BoundedSemaphore:
+    def make_bounded_semaphore(
+        self, value: int = 1
+    ) -> gevent.lock.BoundedSemaphore:
         """Return a `gevent.BoundedSemaphore` with depth *value*.
 
         Use it as a context manager to create concurrency-limited sections:
@@ -199,8 +204,9 @@ class FuturesApi(RecipeApi):
         """
         return gevent.queue.Channel()
 
-    def spawn(self, func: Callable[..., T], *args: Any,
-              **kwargs: Any) -> Future[T]:
+    def spawn(
+        self, func: Callable[..., T], *args: Any, **kwargs: Any
+    ) -> Future[T]:
         """Prepare a Future to run `func(*args, **kwargs)` concurrently.
 
         Because this spawns a greenlet on the same OS thread -- rather than a
@@ -244,9 +250,12 @@ class FuturesApi(RecipeApi):
         # defaults. A state which does not implement the hook returns None and
         # is simply left at its defaults, as its docstring promises.
         setters = [
-            setter for setter in (
+            setter
+            for setter in (
                 pgs._get_setter_on_spawn()  # pylint: disable=protected-access
-                for pgs in PerGreenletStateRegistry) if setter is not None
+                for pgs in PerGreenletStateRegistry
+            )
+            if setter is not None
         ]
 
         def _runner():
@@ -265,8 +274,9 @@ class FuturesApi(RecipeApi):
         self._step_stack.register_greenlet(greenlet)
         return Future(greenlet, name, meta)
 
-    def spawn_immediate(self, func: Callable[..., T], *args: Any,
-                        **kwargs: Any) -> Future[T]:
+    def spawn_immediate(
+        self, func: Callable[..., T], *args: Any, **kwargs: Any
+    ) -> Future[T]:
         """Like `spawn`, except it IMMEDIATELY switches to the new greenlet.
 
         Useful to e.g. launch a background step and then another step which
@@ -293,9 +303,11 @@ class FuturesApi(RecipeApi):
         return ret
 
     @staticmethod
-    def wait(futures: Iterable[Future[Any]],
-             timeout: float | None = None,
-             count: int | None = None) -> list[Future[Any]]:
+    def wait(
+        futures: Iterable[Future[Any]],
+        timeout: float | None = None,
+        count: int | None = None,
+    ) -> list[Future[Any]]:
         """Block until *count* *futures* are done, then return them.
 
         This is analogous to `gevent.wait`.
@@ -312,9 +324,11 @@ class FuturesApi(RecipeApi):
         return list(_IWaitWrapper(futures, timeout, count))
 
     @staticmethod
-    def iwait(futures: Iterable[Future[Any]],
-              timeout: float | None = None,
-              count: int | None = None) -> Iterator[Future[Any]]:
+    def iwait(
+        futures: Iterable[Future[Any]],
+        timeout: float | None = None,
+        count: int | None = None,
+    ) -> Iterator[Future[Any]]:
         """Iteratively yield up to *count* Futures as they become done.
 
         This is analogous to `gevent.iwait`.

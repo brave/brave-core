@@ -46,12 +46,22 @@ import plaster
 import terminal
 import toolchain
 
-from test.fake_chromium_repo import (DEFAULT_BRANCH, FakeChromiumRepo,
-                                     GNRT_VERSION_STAMP, L10N_VERSION_STAMP)
+from test.fake_chromium_repo import (
+    DEFAULT_BRANCH,
+    FakeChromiumRepo,
+    GNRT_VERSION_STAMP,
+    L10N_VERSION_STAMP,
+)
 from test.fake_gh import FakeGh, ISSUE_URL
-from test.fake_terminal import (CHROMIUM_REBASE_L10N, ConsoleCapture,
-                                FakeTerminal, GNRT, INIT, PLASTER,
-                                UPDATE_PATCHES)
+from test.fake_terminal import (
+    CHROMIUM_REBASE_L10N,
+    ConsoleCapture,
+    FakeTerminal,
+    GNRT,
+    INIT,
+    PLASTER,
+    UPDATE_PATCHES,
+)
 
 # The Chromium version brave sits at before every lift in this file.
 BASE_VERSION = '134.0.7035.0'
@@ -90,6 +100,7 @@ def _native(path: str) -> str:
     """
     return str(Path(path))
 
+
 # The line each source carries the symbol brave rewrites on, and the upstream
 # and brave spellings of that symbol. A patch generated from a change on line 2
 # has a hunk covering lines 1 to 5, which is what makes the upstream edits below
@@ -114,8 +125,11 @@ SOURCE_LINES = 20
 # and the pinslist timestamp that rides along with the version bump.
 # One of each extension: `_save_rebased_l10n` stages all three at once, and git
 # fails the whole command when any of the pathspecs matches nothing.
-L10N_FILES = ('app/brave_strings.grd', 'app/brave_strings_part.grdp',
-              'app/resources/brave_strings_fr.xtb')
+L10N_FILES = (
+    'app/brave_strings.grd',
+    'app/brave_strings_part.grdp',
+    'app/resources/brave_strings_fr.xtb',
+)
 GNRT_FILE = 'third_party/rust/chromium_crates_io/BUILD.gn'
 
 # The name of the continuation file a paused lift leaves in the brave root.
@@ -146,8 +160,10 @@ def _source_body(name: str) -> str:
 
 def log_link(from_version: str, to_version: str) -> str:
     """The Googlesource log link brockit prints for a version range."""
-    return ('https://chromium.googlesource.com/chromium/src/+log/'
-            f'{from_version}..{to_version}?pretty=fuller&n=10000')
+    return (
+        'https://chromium.googlesource.com/chromium/src/+log/'
+        f'{from_version}..{to_version}?pretty=fuller&n=10000'
+    )
 
 
 def _with_line(body: str, line: int, text: str) -> str:
@@ -207,17 +223,13 @@ class _Upstream:
     def _repo_path(self, repo: str) -> Path:
         return self._repo.chromium / repo
 
-    def edit(self,
-             source: str,
-             *,
-             line: int,
-             text: str,
-             repo: str = '') -> str:
+    def edit(self, source: str, *, line: int, text: str, repo: str = '') -> str:
         """Rewrites one line of an existing source and commits it."""
         repo_path = self._repo_path(repo)
         body = (repo_path / source).read_bytes().decode('utf-8')
-        self._repo.write_and_stage_file(source, _with_line(body, line, text),
-                                        repo_path)
+        self._repo.write_and_stage_file(
+            source, _with_line(body, line, text), repo_path
+        )
         return self._repo.commit(f'Upstream change to {source}', repo_path)
 
     def write(self, source: str, content: str, repo: str = '') -> str:
@@ -256,10 +268,12 @@ class LiftEnvironment:
     `upstream_release`, and runs the command with `run_lift`.
     """
 
-    def __init__(self,
-                 *,
-                 branch: str = MAJOR_BRANCH,
-                 upstream_files: dict[str, str] | None = None) -> None:
+    def __init__(
+        self,
+        *,
+        branch: str = MAJOR_BRANCH,
+        upstream_files: dict[str, str] | None = None,
+    ) -> None:
         # Declared up front so `cleanup` can run after a half-built fixture:
         # `FakeChromiumRepo.setup` changes the current directory, so a fixture
         # that fails half way through has to be torn down or every test after
@@ -303,16 +317,18 @@ class LiftEnvironment:
 
         # Successive lifts in one test would otherwise stamp the pinslist file
         # with the same second.
-        self._clock_patcher = patch.object(brockit, 'datetime',
-                                           _AdvancingClock())
+        self._clock_patcher = patch.object(
+            brockit, 'datetime', _AdvancingClock()
+        )
         self._clock_patcher.start()
 
         # The continuation file is resolved against the brave root, which in the
         # fake checkout is the fake brave repo. It is reset here rather than
         # relied upon so this fixture is unaffected by any other test module
         # having overwritten the module global.
-        brockit.VERSION_UPGRADE_FILE = (brockit.repository.brave.root /
-                                        VERSION_UPGRADE_NAME)
+        brockit.VERSION_UPGRADE_FILE = (
+            brockit.repository.brave.root / VERSION_UPGRADE_NAME
+        )
 
     def cleanup(self) -> None:
         """Uninstalls every double and removes the fake checkout."""
@@ -342,13 +358,15 @@ class LiftEnvironment:
                 something specific -- e.g. a toolchain pin.
         """
         for source in (FOO, BAR):
-            self.repo.write_and_stage_file(source, _source_body(source),
-                                           self.repo.chromium)
+            self.repo.write_and_stage_file(
+                source, _source_body(source), self.repo.chromium
+            )
         for path, contents in upstream_files.items():
             self.repo.write_and_stage_file(path, contents, self.repo.chromium)
         self.repo.commit('Add sources', self.repo.chromium)
-        self.repo.write_and_stage_file(BAZ, _source_body(BAZ),
-                                       self.repo.chromium / V8)
+        self.repo.write_and_stage_file(
+            BAZ, _source_body(BAZ), self.repo.chromium / V8
+        )
         self.repo.commit('Add v8 sources', self.repo.chromium / V8)
         self.repo.add_tag(BASE_VERSION)
 
@@ -362,13 +380,15 @@ class LiftEnvironment:
         pinslist = Path(brockit.PINSLIST_TIMESTAMP_FILE)
         (brave / pinslist).parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(
-            Path(__file__).resolve().parents[2] / pinslist, brave / pinslist)
+            Path(__file__).resolve().parents[2] / pinslist, brave / pinslist
+        )
         # `.patchinfo` files are generated by the patching machinery and never
         # committed, as in brave-core itself.
         self.repo.write_file('.gitignore', 'patches/**/*.patchinfo\n', brave)
         for relative_path in L10N_FILES:
-            self.repo.write_file(relative_path, f'<!-- {relative_path} -->\n',
-                                 brave)
+            self.repo.write_file(
+                relative_path, f'<!-- {relative_path} -->\n', brave
+            )
         self.repo.write_file(GNRT_FILE, '# generated by gnrt\n', brave)
         self.git('add', '--all')
         self.repo.commit('Add brave files', brave)
@@ -376,10 +396,12 @@ class LiftEnvironment:
         self.repo.create_brave_remote()
         # The remote is a normal checkout with `master` checked out, so it has
         # to be told to accept pushes to it.
-        self.git('config',
-                 'receive.denyCurrentBranch',
-                 'ignore',
-                 repo=self.repo.remote / 'brave')
+        self.git(
+            'config',
+            'receive.denyCurrentBranch',
+            'ignore',
+            repo=self.repo.remote / 'brave',
+        )
         # The freshly-initialised remote carries an unrelated initial commit, so
         # the push is forced to make `origin/master` this repo's history.
         self.git('push', '--force', 'origin', f'HEAD:{DEFAULT_BRANCH}')
@@ -398,9 +420,9 @@ class LiftEnvironment:
         for source, repo in ((FOO, ''), (BAR, ''), (BAZ, V8)):
             repo_path = self.repo.chromium / repo
             body = (repo_path / source).read_bytes().decode('utf-8')
-            self.repo.write_file(source,
-                                 body.replace(UPSTREAM_SYMBOL, BRAVE_SYMBOL),
-                                 repo_path)
+            self.repo.write_file(
+                source, body.replace(UPSTREAM_SYMBOL, BRAVE_SYMBOL), repo_path
+            )
 
     @contextmanager
     def upstream_release(self, version: str):
@@ -433,9 +455,11 @@ class LiftEnvironment:
                     exit_code = brockit.main()
                 except SystemExit as e:
                     exit_code = e.code
-        return LiftRun(exit_code=exit_code,
-                       output=self.console.since(mark),
-                       stderr=stderr.getvalue())
+        return LiftRun(
+            exit_code=exit_code,
+            output=self.console.since(mark),
+            stderr=stderr.getvalue(),
+        )
 
     # -- inspection ---------------------------------------------------------
 
@@ -453,8 +477,12 @@ class LiftEnvironment:
 
         Defaults to every commit the fixture did not create.
         """
-        log = self.git('log', '--reverse', '--pretty=%s',
-                       f'{since or self.baseline_commit}..HEAD')
+        log = self.git(
+            'log',
+            '--reverse',
+            '--pretty=%s',
+            f'{since or self.baseline_commit}..HEAD',
+        )
         return log.splitlines()
 
     def commit_for(self, subject: str) -> str:
@@ -462,13 +490,15 @@ class LiftEnvironment:
 
         Empty when the branch has no such commit.
         """
-        return self.git('log', '-1', '--format=%H', '--fixed-strings',
-                        f'--grep={subject}')
+        return self.git(
+            'log', '-1', '--format=%H', '--fixed-strings', f'--grep={subject}'
+        )
 
     def files_in(self, commit: str = 'HEAD') -> list[str]:
         """The paths a brave commit touches."""
-        return self.git('show', '--name-only', '--pretty=format:',
-                        commit).split()
+        return self.git(
+            'show', '--name-only', '--pretty=format:', commit
+        ).split()
 
     def source_path(self, source: str, repo: str = '') -> str:
         """The path brockit prints for a Chromium source.
@@ -485,19 +515,17 @@ class LiftEnvironment:
 
     def read_source(self, source: str, repo: str = '') -> str:
         """The working-tree contents of a Chromium source."""
-        return (self.repo.chromium / repo /
-                source).read_bytes().decode('utf-8')
+        return (self.repo.chromium / repo / source).read_bytes().decode('utf-8')
 
     def upstream_source(self, source: str, repo: str = '') -> str:
         """The contents of a Chromium source at the synced commit."""
-        return self.git('show',
-                        f'HEAD:{source}',
-                        repo=self.repo.chromium / repo)
+        return self.git(
+            'show', f'HEAD:{source}', repo=self.repo.chromium / repo
+        )
 
-    def resolve_conflict(self,
-                         source: str,
-                         repo: str = '',
-                         symbol: str = BRAVE_SYMBOL) -> None:
+    def resolve_conflict(
+        self, source: str, repo: str = '', symbol: str = BRAVE_SYMBOL
+    ) -> None:
         """Resolves a conflicted source the way the user is expected to.
 
         Rewrites the file as the upstream version of it carrying brave's change,
@@ -509,14 +537,16 @@ class LiftEnvironment:
             symbol: The spelling brave's change gives the upstream symbol. Pass
                 it when a dev-cycle commit in the branch has moved it on.
         """
-        body = self.upstream_source(source,
-                                    repo).replace(UPSTREAM_SYMBOL, symbol)
+        body = self.upstream_source(source, repo).replace(
+            UPSTREAM_SYMBOL, symbol
+        )
         self.repo.write_file(source, body, self.repo.chromium / repo)
 
     def continuation(self, target: str) -> brockit.ContinuationFile:
         """The continuation file left in the tree for the `target` lift."""
         return brockit.ContinuationFile.load(
-            target_version=brockit.Version(target))
+            target_version=brockit.Version(target)
+        )
 
     def has_continuation(self) -> bool:
         """Whether a continuation file is left in the tree."""
@@ -563,12 +593,14 @@ class LiftEnvironment:
         """
         path = self.repo.brave / patch_path
         body = path.read_bytes().decode('utf-8')
-        body = re.sub(r'index [0-9a-f]+\.\.[0-9a-f]+',
-                      f'index {"1" * 40}..{"2" * 40}', body)
-        body = re.sub(r'(?m)^ .*$',
-                      ' // a line that is not in the source',
-                      body,
-                      count=1)
+        body = re.sub(
+            r'index [0-9a-f]+\.\.[0-9a-f]+',
+            f'index {"1" * 40}..{"2" * 40}',
+            body,
+        )
+        body = re.sub(
+            r'(?m)^ .*$', ' // a line that is not in the source', body, count=1
+        )
         path.write_text(body, encoding='utf-8', newline='')
         self.git('add', patch_path)
         self.repo.commit(f'Break {patch_path}', self.repo.brave)
@@ -598,8 +630,9 @@ class LiftTestCase(unittest.TestCase):
     UPSTREAM_FILES: dict[str, str] = {}
 
     def setUp(self) -> None:
-        self.env = LiftEnvironment(branch=self.BRANCH,
-                                   upstream_files=self.UPSTREAM_FILES)
+        self.env = LiftEnvironment(
+            branch=self.BRANCH, upstream_files=self.UPSTREAM_FILES
+        )
         self.addCleanup(self.env.cleanup)
 
     # -- assertions ---------------------------------------------------------
@@ -612,14 +645,16 @@ class LiftTestCase(unittest.TestCase):
     def assert_output_has(self, run: LiftRun, *lines: str) -> None:
         """Asserts each of `lines` appears in the run's output."""
         for line in lines:
-            self.assertIn(line, run.output,
-                          f'missing from the output:\n{run.output}')
+            self.assertIn(
+                line, run.output, f'missing from the output:\n{run.output}'
+            )
 
     def assert_output_lacks(self, run: LiftRun, *lines: str) -> None:
         """Asserts none of `lines` appears in the run's output."""
         for line in lines:
-            self.assertNotIn(line, run.output,
-                             f'unexpectedly in the output:\n{run.output}')
+            self.assertNotIn(
+                line, run.output, f'unexpectedly in the output:\n{run.output}'
+            )
 
     def assert_succeeded(self, run: LiftRun) -> None:
         """Asserts the run reported success and was framed by the banners."""
@@ -650,13 +685,15 @@ class LiftCleanRunTest(LiftTestCase):
         run = self.env.run_lift(f'--to={MINOR_TARGET}')
 
         self.assert_succeeded(run)
-        self.assert_commit_subjects([
-            f'Update from Chromium {BASE_VERSION} to Chromium {MINOR_TARGET}.',
-            f'Update patches from Chromium {BASE_VERSION} to Chromium '
-            f'{MINOR_TARGET}.',
-            f'Updated strings for Chromium {MINOR_TARGET}.',
-            f'`gnrt` run for Chromium {MINOR_TARGET}.',
-        ])
+        self.assert_commit_subjects(
+            [
+                f'Update from Chromium {BASE_VERSION} to Chromium {MINOR_TARGET}.',
+                f'Update patches from Chromium {BASE_VERSION} to Chromium '
+                f'{MINOR_TARGET}.',
+                f'Updated strings for Chromium {MINOR_TARGET}.',
+                f'`gnrt` run for Chromium {MINOR_TARGET}.',
+            ]
+        )
 
     def test_version_commit_carries_package_and_pinslist(self):
         with self.env.upstream_release(MINOR_TARGET):
@@ -665,11 +702,13 @@ class LiftCleanRunTest(LiftTestCase):
         self.env.run_lift(f'--to={MINOR_TARGET}')
 
         version_commit = self.env.commit_for(
-            f'Update from Chromium {BASE_VERSION} to Chromium {MINOR_TARGET}.')
+            f'Update from Chromium {BASE_VERSION} to Chromium {MINOR_TARGET}.'
+        )
         self.assertTrue(version_commit)
         self.assertEqual(
             sorted(self.env.files_in(version_commit)),
-            sorted(['package.json', brockit.PINSLIST_TIMESTAMP_FILE]))
+            sorted(['package.json', brockit.PINSLIST_TIMESTAMP_FILE]),
+        )
         # The tag brave is pinned to is the one that was lifted to, both in the
         # commit and in the working tree.
         self.assertEqual(self.env.repo.package_version(), MINOR_TARGET)
@@ -678,7 +717,9 @@ class LiftCleanRunTest(LiftTestCase):
         self.assertIn(
             '# Last updated:',
             self.env.git(
-                'show', f'{version_commit}:{brockit.PINSLIST_TIMESTAMP_FILE}'))
+                'show', f'{version_commit}:{brockit.PINSLIST_TIMESTAMP_FILE}'
+            ),
+        )
 
     def test_patches_untouched_upstream_produce_no_update_commit(self):
         """With no upstream change to a patched source, every patch file comes
@@ -689,11 +730,13 @@ class LiftCleanRunTest(LiftTestCase):
         run = self.env.run_lift(f'--to={MINOR_TARGET}')
 
         self.assert_succeeded(run)
-        self.assert_commit_subjects([
-            f'Update from Chromium {BASE_VERSION} to Chromium {MINOR_TARGET}.',
-            f'Updated strings for Chromium {MINOR_TARGET}.',
-            f'`gnrt` run for Chromium {MINOR_TARGET}.',
-        ])
+        self.assert_commit_subjects(
+            [
+                f'Update from Chromium {BASE_VERSION} to Chromium {MINOR_TARGET}.',
+                f'Updated strings for Chromium {MINOR_TARGET}.',
+                f'`gnrt` run for Chromium {MINOR_TARGET}.',
+            ]
+        )
 
     def test_continuation_file_lands_in_the_brave_root(self):
         """The continuation file belongs at the brave root: `--continue` and
@@ -704,9 +747,10 @@ class LiftCleanRunTest(LiftTestCase):
 
         self.env.run_lift(f'--to={MINOR_TARGET}')
 
-        self.assertEqual(brockit.VERSION_UPGRADE_FILE.resolve(),
-                         (self.env.repo.brave /
-                          VERSION_UPGRADE_NAME).resolve())
+        self.assertEqual(
+            brockit.VERSION_UPGRADE_FILE.resolve(),
+            (self.env.repo.brave / VERSION_UPGRADE_NAME).resolve(),
+        )
         self.assertTrue((self.env.repo.brave / VERSION_UPGRADE_NAME).exists())
 
     def test_regenerated_files_land_in_their_own_commits(self):
@@ -716,14 +760,19 @@ class LiftCleanRunTest(LiftTestCase):
         self.env.run_lift(f'--to={MINOR_TARGET}')
 
         self.assertEqual(self.env.files_in('HEAD~2'), [FOO_PATCH])
-        self.assertEqual(sorted(self.env.files_in('HEAD~1')),
-                         sorted(L10N_FILES))
+        self.assertEqual(
+            sorted(self.env.files_in('HEAD~1')), sorted(L10N_FILES)
+        )
         self.assertEqual(self.env.files_in('HEAD'), [GNRT_FILE])
         # The regenerated content is the one the emulated commands produced.
-        self.assertIn(L10N_VERSION_STAMP.format(version=MINOR_TARGET),
-                      self.env.git('show', f'HEAD:{L10N_FILES[0]}'))
-        self.assertIn(GNRT_VERSION_STAMP.format(version=MINOR_TARGET),
-                      self.env.git('show', f'HEAD:{GNRT_FILE}'))
+        self.assertIn(
+            L10N_VERSION_STAMP.format(version=MINOR_TARGET),
+            self.env.git('show', f'HEAD:{L10N_FILES[0]}'),
+        )
+        self.assertIn(
+            GNRT_VERSION_STAMP.format(version=MINOR_TARGET),
+            self.env.git('show', f'HEAD:{GNRT_FILE}'),
+        )
 
     def test_lift_leaves_the_checkout_synced_and_patched(self):
         with self.env.upstream_release(MINOR_TARGET) as upstream:
@@ -750,8 +799,10 @@ class LiftCleanRunTest(LiftTestCase):
 
         self.assert_succeeded(run)
         self.assert_output_has(
-            run, 'seems to be synced to a version entirely unrelated. '
-            f'Brave {BASE_VERSION} ➜ Chromium {MINOR_TARGET}')
+            run,
+            'seems to be synced to a version entirely unrelated. '
+            f'Brave {BASE_VERSION} ➜ Chromium {MINOR_TARGET}',
+        )
 
     def test_major_lift_commits_every_stage(self):
         with self.env.upstream_release(MAJOR_TARGET) as upstream:
@@ -760,13 +811,15 @@ class LiftCleanRunTest(LiftTestCase):
         run = self.env.run_lift(f'--to={MAJOR_TARGET}')
 
         self.assert_succeeded(run)
-        self.assert_commit_subjects([
-            f'Update from Chromium {BASE_VERSION} to Chromium {MAJOR_TARGET}.',
-            f'Update patches from Chromium {BASE_VERSION} to Chromium '
-            f'{MAJOR_TARGET}.',
-            f'Updated strings for Chromium {MAJOR_TARGET}.',
-            f'`gnrt` run for Chromium {MAJOR_TARGET}.',
-        ])
+        self.assert_commit_subjects(
+            [
+                f'Update from Chromium {BASE_VERSION} to Chromium {MAJOR_TARGET}.',
+                f'Update patches from Chromium {BASE_VERSION} to Chromium '
+                f'{MAJOR_TARGET}.',
+                f'Updated strings for Chromium {MAJOR_TARGET}.',
+                f'`gnrt` run for Chromium {MAJOR_TARGET}.',
+            ]
+        )
 
     def test_commands_are_driven_in_order(self):
         with self.env.upstream_release(MINOR_TARGET):
@@ -774,14 +827,22 @@ class LiftCleanRunTest(LiftTestCase):
 
         self.env.run_lift(f'--to={MINOR_TARGET}')
 
-        self.assertEqual(self.env.terminal.pnpm_runs(),
-                         [INIT, UPDATE_PATCHES, CHROMIUM_REBASE_L10N])
+        self.assertEqual(
+            self.env.terminal.pnpm_runs(),
+            [INIT, UPDATE_PATCHES, CHROMIUM_REBASE_L10N],
+        )
         self.assertTrue(
-            self.env.terminal.ran(str(brockit.VPYTHON3_PATH), plaster.__file__,
-                                  'check'))
+            self.env.terminal.ran(
+                str(brockit.VPYTHON3_PATH), plaster.__file__, 'check'
+            )
+        )
         self.assertTrue(
-            self.env.terminal.ran(str(brockit.VPYTHON3_PATH),
-                                  './tools/crates/run_gnrt.py', 'vendor'))
+            self.env.terminal.ran(
+                str(brockit.VPYTHON3_PATH),
+                './tools/crates/run_gnrt.py',
+                'vendor',
+            )
+        )
 
     def test_nothing_is_left_dirty_in_brave(self):
         with self.env.upstream_release(MINOR_TARGET) as upstream:
@@ -808,19 +869,23 @@ class LiftOutputRenderingTest(LiftTestCase):
         run = self.env.run_lift(f'--to={MINOR_TARGET}')
 
         self.assertEqual(
-            self.normalized(run), '\n'.join([
-                '🚀 Brockit!',
-                '* Changes since base version: '
-                'https://chromium.googlesource.com/chromium/src/+log/'
-                f'{BASE_VERSION}..{MINOR_TARGET}?pretty=fuller&n=10000',
-                f'* ✔️  <hash> Update from Chromium {BASE_VERSION} to Chromium '
-                f'{MINOR_TARGET}.',
-                f'* ✔️  <hash> Update patches from Chromium {BASE_VERSION} to '
-                f'Chromium {MINOR_TARGET}.',
-                f'* ✔️  <hash> Updated strings for Chromium {MINOR_TARGET}.',
-                f'* ✔️  <hash> `gnrt` run for Chromium {MINOR_TARGET}.',
-                '💥 Done!',
-            ]))
+            self.normalized(run),
+            '\n'.join(
+                [
+                    '🚀 Brockit!',
+                    '* Changes since base version: '
+                    'https://chromium.googlesource.com/chromium/src/+log/'
+                    f'{BASE_VERSION}..{MINOR_TARGET}?pretty=fuller&n=10000',
+                    f'* ✔️  <hash> Update from Chromium {BASE_VERSION} to Chromium '
+                    f'{MINOR_TARGET}.',
+                    f'* ✔️  <hash> Update patches from Chromium {BASE_VERSION} to '
+                    f'Chromium {MINOR_TARGET}.',
+                    f'* ✔️  <hash> Updated strings for Chromium {MINOR_TARGET}.',
+                    f'* ✔️  <hash> `gnrt` run for Chromium {MINOR_TARGET}.',
+                    '💥 Done!',
+                ]
+            ),
+        )
 
     def test_minor_bump_reports_both_diff_links(self):
         """A branch already ahead of its base reports the changes for the bump
@@ -838,7 +903,8 @@ class LiftOutputRenderingTest(LiftTestCase):
             run,
             f'* Changes for this bump: {log_link(MINOR_TARGET, MAJOR_TARGET)}',
             '* Changes since base version: '
-            f'{log_link(BASE_VERSION, MAJOR_TARGET)}')
+            f'{log_link(BASE_VERSION, MAJOR_TARGET)}',
+        )
 
     def test_first_bump_reports_only_the_base_diff_link(self):
         with self.env.upstream_release(MINOR_TARGET):
@@ -856,8 +922,9 @@ class LiftOutputRenderingTest(LiftTestCase):
         run = self.env.run_lift(f'--to={MINOR_TARGET}')
 
         self.assert_succeeded(run)
-        self.assert_output_has(run,
-                               '* ❌ Plaster check. Please investigate it.')
+        self.assert_output_has(
+            run, '* ❌ Plaster check. Please investigate it.'
+        )
 
     def test_gnrt_failure_is_reported_without_failing_the_lift(self):
         with self.env.upstream_release(MINOR_TARGET):
@@ -877,12 +944,13 @@ class LiftOutputRenderingTest(LiftTestCase):
 
         run = self.env.run_lift(f'--to={MINOR_TARGET}')
 
-        self.assert_failed(run, 'Failures found when running pnpm run init',
-                           'gclient blew up')
+        self.assert_failed(
+            run, 'Failures found when running pnpm run init', 'gclient blew up'
+        )
         # The version commit is already in, so a restart is what recovers.
-        self.assert_commit_subjects([
-            f'Update from Chromium {BASE_VERSION} to Chromium {MINOR_TARGET}.'
-        ])
+        self.assert_commit_subjects(
+            [f'Update from Chromium {BASE_VERSION} to Chromium {MINOR_TARGET}.']
+        )
 
 
 class LiftArgumentTest(LiftTestCase):
@@ -894,26 +962,32 @@ class LiftArgumentTest(LiftTestCase):
         self.assert_commit_subjects([])
 
     def test_from_ref_is_rejected_with_continue(self):
-        run = self.env.run_lift(f'--to={MINOR_TARGET}', '--continue',
-                                '--from-ref=origin/master')
+        run = self.env.run_lift(
+            f'--to={MINOR_TARGET}', '--continue', '--from-ref=origin/master'
+        )
         self._assert_usage_error(
-            run, 'Switch --from-ref not supported with --continue.')
+            run, 'Switch --from-ref not supported with --continue.'
+        )
 
     def test_restart_is_rejected_with_continue(self):
-        run = self.env.run_lift(f'--to={MINOR_TARGET}', '--restart',
-                                '--continue')
+        run = self.env.run_lift(
+            f'--to={MINOR_TARGET}', '--restart', '--continue'
+        )
         self._assert_usage_error(run, '--restart does not support --continue')
 
     def test_ack_advisory_is_rejected_with_continue(self):
-        run = self.env.run_lift(f'--to={MINOR_TARGET}', '--ack-advisory',
-                                '--continue')
-        self._assert_usage_error(run,
-                                 '--ack-advisory does not support --continue')
+        run = self.env.run_lift(
+            f'--to={MINOR_TARGET}', '--ack-advisory', '--continue'
+        )
+        self._assert_usage_error(
+            run, '--ack-advisory does not support --continue'
+        )
 
     def test_to_is_required(self):
         run = self.env.run_lift()
-        self._assert_usage_error(run,
-                                 'the following arguments are required: --to')
+        self._assert_usage_error(
+            run, 'the following arguments are required: --to'
+        )
 
 
 class LiftVersionValidationTest(LiftTestCase):
@@ -923,17 +997,22 @@ class LiftVersionValidationTest(LiftTestCase):
         run = self.env.run_lift(f'--to={BASE_VERSION}')
 
         self.assert_failed(
-            run, f'Target version {BASE_VERSION} is not higher than base '
-            f'version {BASE_VERSION}.')
+            run,
+            f'Target version {BASE_VERSION} is not higher than base '
+            f'version {BASE_VERSION}.',
+        )
         self.assert_commit_subjects([])
 
     def test_invalid_from_ref_is_rejected(self):
-        run = self.env.run_lift(f'--to={MINOR_TARGET}',
-                                '--from-ref=not-a-real-ref')
+        run = self.env.run_lift(
+            f'--to={MINOR_TARGET}', '--from-ref=not-a-real-ref'
+        )
 
         self.assert_failed(
-            run, 'Value provided to --from-ref is not a valid git ref: '
-            'not-a-real-ref')
+            run,
+            'Value provided to --from-ref is not a valid git ref: '
+            'not-a-real-ref',
+        )
 
     def test_missing_upstream_is_rejected(self):
         self.env.git('branch', '--unset-upstream')
@@ -950,8 +1029,10 @@ class LiftVersionValidationTest(LiftTestCase):
         run = self.env.run_lift(f'--to={MINOR_TARGET}')
 
         self.assert_failed(
-            run, f'This branch is already in {MINOR_TARGET}. (Maybe you meant '
-            'to pass --continue?)')
+            run,
+            f'This branch is already in {MINOR_TARGET}. (Maybe you meant '
+            'to pass --continue?)',
+        )
 
     def test_lifting_to_an_older_version_is_rejected(self):
         with self.env.upstream_release(MINOR_TARGET):
@@ -964,16 +1045,17 @@ class LiftVersionValidationTest(LiftTestCase):
 
         # The wording reads backwards, but the pair of versions is the point.
         self.assert_failed(
-            run, f'Cannot upgrade version from {MINOR_TARGET} to '
-            f'{MAJOR_TARGET}')
+            run, f'Cannot upgrade version from {MINOR_TARGET} to {MAJOR_TARGET}'
+        )
 
     def test_from_ref_takes_a_hash(self):
         """An explicit base ref is used in place of the upstream branch."""
         with self.env.upstream_release(MINOR_TARGET):
             pass
 
-        run = self.env.run_lift(f'--to={MINOR_TARGET}',
-                                f'--from-ref={self.env.baseline_commit}')
+        run = self.env.run_lift(
+            f'--to={MINOR_TARGET}', f'--from-ref={self.env.baseline_commit}'
+        )
 
         self.assert_succeeded(run)
         self.assert_output_has(run, log_link(BASE_VERSION, MINOR_TARGET))
@@ -992,8 +1074,10 @@ class LiftVersionValidationTest(LiftTestCase):
         self.assert_succeeded(run)
         # The base is the version the previous bump started from.
         self.assert_output_has(
-            run, '* Changes since base version: '
-            f'{log_link(BASE_VERSION, MAJOR_TARGET)}')
+            run,
+            '* Changes since base version: '
+            f'{log_link(BASE_VERSION, MAJOR_TARGET)}',
+        )
 
     def test_previous_major_label_resolves_across_the_major_bump(self):
         with self.env.upstream_release(MAJOR_TARGET):
@@ -1002,13 +1086,16 @@ class LiftVersionValidationTest(LiftTestCase):
         with self.env.upstream_release(MAJOR_FOLLOW_UP):
             pass
 
-        run = self.env.run_lift(f'--to={MAJOR_FOLLOW_UP}',
-                                '--from-ref=@previous-major')
+        run = self.env.run_lift(
+            f'--to={MAJOR_FOLLOW_UP}', '--from-ref=@previous-major'
+        )
 
         self.assert_succeeded(run)
         self.assert_output_has(
-            run, f'* Changes since base version: '
-            f'{log_link(BASE_VERSION, MAJOR_FOLLOW_UP)}')
+            run,
+            f'* Changes since base version: '
+            f'{log_link(BASE_VERSION, MAJOR_FOLLOW_UP)}',
+        )
 
 
 class LiftBranchNameTest(LiftTestCase):
@@ -1023,8 +1110,10 @@ class LiftBranchNameTest(LiftTestCase):
         run = self.env.run_lift(f'--to={MAJOR_TARGET}')
 
         self.assert_failed(
-            run, 'Major version upgrades must be done on a branch named '
-            f'"{MAJOR_BRANCH}", but the current branch is "{self.BRANCH}".')
+            run,
+            'Major version upgrades must be done on a branch named '
+            f'"{MAJOR_BRANCH}", but the current branch is "{self.BRANCH}".',
+        )
         self.assert_commit_subjects([])
 
     def test_minor_lift_runs_on_any_branch(self):
@@ -1050,7 +1139,8 @@ class LiftConflictResolutionTest(LiftTestCase):
             upstream.edit(
                 FOO,
                 line=PATCHED_LINE,
-                text=f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak')
+                text=f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak',
+            )
             upstream.edit(BAR, line=CONTEXT_LINE, text='// upstream context')
 
     def test_conflict_stops_the_lift_with_a_report(self):
@@ -1060,24 +1150,28 @@ class LiftConflictResolutionTest(LiftTestCase):
 
         self.assertEqual(run.exit_code, 1)
         self.assertEqual(
-            self.normalized(run), '\n'.join([
-                '🚀 Brockit!',
-                f'* Changes since base version: '
-                f'{log_link(BASE_VERSION, MAJOR_TARGET)}',
-                f'* ✔️  <hash> Update from Chromium {BASE_VERSION} to Chromium '
-                f'{MAJOR_TARGET}.',
-                '* Reapplying patch files with --3way:',
-                f'    * {_native(FOO_PATCH)}',
-                f'    * {_native(BAR_PATCH)}',
-                '* Manually resolve conflicts for (action needed):',
-                f'    ✘ {self.env.source_path(FOO)}',
-                '👋 (Address all sections with (action needed) above, and then '
-                'rerun 🚀Brockit! with --continue)',
-            ]))
+            self.normalized(run),
+            '\n'.join(
+                [
+                    '🚀 Brockit!',
+                    f'* Changes since base version: '
+                    f'{log_link(BASE_VERSION, MAJOR_TARGET)}',
+                    f'* ✔️  <hash> Update from Chromium {BASE_VERSION} to Chromium '
+                    f'{MAJOR_TARGET}.',
+                    '* Reapplying patch files with --3way:',
+                    f'    * {_native(FOO_PATCH)}',
+                    f'    * {_native(BAR_PATCH)}',
+                    '* Manually resolve conflicts for (action needed):',
+                    f'    ✘ {self.env.source_path(FOO)}',
+                    '👋 (Address all sections with (action needed) above, and then '
+                    'rerun 🚀Brockit! with --continue)',
+                ]
+            ),
+        )
         # Only the version commit was made: the rest waits for the user.
-        self.assert_commit_subjects([
-            f'Update from Chromium {BASE_VERSION} to Chromium {MAJOR_TARGET}.'
-        ])
+        self.assert_commit_subjects(
+            [f'Update from Chromium {BASE_VERSION} to Chromium {MAJOR_TARGET}.']
+        )
 
     def test_conflict_markers_are_left_in_the_source(self):
         self._release_with_conflict()
@@ -1101,12 +1195,17 @@ class LiftConflictResolutionTest(LiftTestCase):
         self.assertEqual(str(continuation.working_version), BASE_VERSION)
         self.assertEqual(str(continuation.base_version), BASE_VERSION)
         record = continuation.apply_record
-        self.assertEqual([str(path) for path in record.files_with_conflicts],
-                         [self.env.source_path(FOO)])
         self.assertEqual(
-            sorted(patch.path.as_posix()
-                   for patch in record.all_conflict_resolved_patches()),
-            sorted([FOO_PATCH, BAR_PATCH]))
+            [str(path) for path in record.files_with_conflicts],
+            [self.env.source_path(FOO)],
+        )
+        self.assertEqual(
+            sorted(
+                patch.path.as_posix()
+                for patch in record.all_conflict_resolved_patches()
+            ),
+            sorted([FOO_PATCH, BAR_PATCH]),
+        )
         self.assertEqual(record.broken_patches, [])
         self.assertEqual(record.patches_to_deleted_files, [])
         self.assertTrue(record.requires_conflict_resolution())
@@ -1116,8 +1215,10 @@ class LiftConflictResolutionTest(LiftTestCase):
 
         self.env.run_lift(f'--to={MAJOR_TARGET}')
 
-        self.assertEqual(self.env.vscode_files(),
-                         [Path(self.env.source_path(FOO)).as_posix()])
+        self.assertEqual(
+            self.env.vscode_files(),
+            [Path(self.env.source_path(FOO)).as_posix()],
+        )
 
     def test_continue_commits_the_resolved_patches(self):
         self._release_with_conflict()
@@ -1127,19 +1228,24 @@ class LiftConflictResolutionTest(LiftTestCase):
         run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
         self.assert_succeeded(run)
-        self.assert_commit_subjects([
-            f'Update from Chromium {BASE_VERSION} to Chromium {MAJOR_TARGET}.',
-            f'Conflict-resolved patches from Chromium {BASE_VERSION} to '
-            f'Chromium {MAJOR_TARGET}.',
-            f'Updated strings for Chromium {MAJOR_TARGET}.',
-            f'`gnrt` run for Chromium {MAJOR_TARGET}.',
-        ])
+        self.assert_commit_subjects(
+            [
+                f'Update from Chromium {BASE_VERSION} to Chromium {MAJOR_TARGET}.',
+                f'Conflict-resolved patches from Chromium {BASE_VERSION} to '
+                f'Chromium {MAJOR_TARGET}.',
+                f'Updated strings for Chromium {MAJOR_TARGET}.',
+                f'`gnrt` run for Chromium {MAJOR_TARGET}.',
+            ]
+        )
         # Both patches that went through `--3way` are in that commit.
         self.assertEqual(
             sorted(
                 self.env.files_in(
-                    self.env.commit_for('Conflict-resolved patches'))),
-            sorted([FOO_PATCH, BAR_PATCH]))
+                    self.env.commit_for('Conflict-resolved patches')
+                )
+            ),
+            sorted([FOO_PATCH, BAR_PATCH]),
+        )
         # And the continuation file is gone once the lift is through.
         self.assertFalse(self.env.has_continuation())
 
@@ -1153,8 +1259,10 @@ class LiftConflictResolutionTest(LiftTestCase):
 
         self.env.repo.sync_chromium()
         self.assertEqual(self.env.repo.run_apply_patches(), [])
-        self.assertIn(f'  {BRAVE_SYMBOL} thing;  // upstream tweak',
-                      self.env.read_source(FOO))
+        self.assertIn(
+            f'  {BRAVE_SYMBOL} thing;  // upstream tweak',
+            self.env.read_source(FOO),
+        )
 
     def test_continue_without_a_continuation_file_is_rejected(self):
         with self.env.upstream_release(MAJOR_TARGET):
@@ -1167,15 +1275,18 @@ class LiftConflictResolutionTest(LiftTestCase):
         self.assert_failed(
             run,
             'continuation file does not exist. (Are you sure you meant to '
-            'pass --continue?)')
+            'pass --continue?)',
+        )
 
     def test_continue_on_a_branch_at_another_version_is_rejected(self):
         run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
         self.assert_failed(
-            run, 'Running with `--continue` on a branch with a different '
+            run,
+            'Running with `--continue` on a branch with a different '
             f'version what the target should be. {MAJOR_TARGET} vs '
-            f'{BASE_VERSION}')
+            f'{BASE_VERSION}',
+        )
 
     def test_continue_with_chromium_out_of_sync_is_rejected(self):
         self._release_with_conflict()
@@ -1187,8 +1298,10 @@ class LiftConflictResolutionTest(LiftTestCase):
         run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
         self.assert_failed(
-            run, 'To run with --continue the Chromium version has to be in '
-            f'Sync with Brave. Brave {MAJOR_TARGET} ➜ Chromium {BASE_VERSION}')
+            run,
+            'To run with --continue the Chromium version has to be in '
+            f'Sync with Brave. Brave {MAJOR_TARGET} ➜ Chromium {BASE_VERSION}',
+        )
 
     def test_continue_with_nothing_left_to_resolve_finishes(self):
         """No conflict-resolved commit is made when there is nothing for it."""
@@ -1202,12 +1315,14 @@ class LiftConflictResolutionTest(LiftTestCase):
         run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
         self.assert_succeeded(run)
-        self.assert_commit_subjects([
-            f'Update from Chromium {BASE_VERSION} to Chromium {MAJOR_TARGET}.',
-            'Update patches by hand',
-            f'Updated strings for Chromium {MAJOR_TARGET}.',
-            f'`gnrt` run for Chromium {MAJOR_TARGET}.',
-        ])
+        self.assert_commit_subjects(
+            [
+                f'Update from Chromium {BASE_VERSION} to Chromium {MAJOR_TARGET}.',
+                'Update patches by hand',
+                f'Updated strings for Chromium {MAJOR_TARGET}.',
+                f'`gnrt` run for Chromium {MAJOR_TARGET}.',
+            ]
+        )
 
     def test_continue_with_staged_files_is_rejected(self):
         self._release_with_conflict()
@@ -1218,8 +1333,10 @@ class LiftConflictResolutionTest(LiftTestCase):
         run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
         self.assert_failed(
-            run, 'Staged files detected after running update_patches.',
-            'some_file.txt')
+            run,
+            'Staged files detected after running update_patches.',
+            'some_file.txt',
+        )
 
     def test_continue_with_a_bigger_patch_is_rejected(self):
         """A resolution that adds hunks is a change of its own, and has to be
@@ -1231,8 +1348,13 @@ class LiftConflictResolutionTest(LiftTestCase):
         # patched line to produce a hunk of its own.
         self.env.repo.write_file(
             FOO,
-            _with_line(self.env.read_source(FOO), UNRELATED_LINE,
-                       '// an extra brave change'), self.env.repo.chromium)
+            _with_line(
+                self.env.read_source(FOO),
+                UNRELATED_LINE,
+                '// an extra brave change',
+            ),
+            self.env.repo.chromium,
+        )
 
         run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
@@ -1240,28 +1362,35 @@ class LiftConflictResolutionTest(LiftTestCase):
             run,
             'The following modified patches have changes in the number of '
             'hunks, and are expected to be submitted separately as fixes with '
-            'Chromium culprits:', f'* {FOO_PATCH}: 1 hunks before, 2 hunks '
-            'after')
+            'Chromium culprits:',
+            f'* {FOO_PATCH}: 1 hunks before, 2 hunks after',
+        )
 
     def test_conflict_in_a_dependency_is_reported_and_resolved(self):
         with self.env.upstream_release(MAJOR_TARGET) as upstream:
-            upstream.edit(BAZ,
-                          line=PATCHED_LINE,
-                          text=f'  {UPSTREAM_SYMBOL} thing;  // v8 tweak',
-                          repo=V8)
+            upstream.edit(
+                BAZ,
+                line=PATCHED_LINE,
+                text=f'  {UPSTREAM_SYMBOL} thing;  // v8 tweak',
+                repo=V8,
+            )
 
         run = self.env.run_lift(f'--to={MAJOR_TARGET}')
 
-        self.assert_output_has(run, f'    * {_native(BAZ_PATCH)}',
-                               f'    ✘ {self.env.source_path(BAZ, V8)}')
+        self.assert_output_has(
+            run,
+            f'    * {_native(BAZ_PATCH)}',
+            f'    ✘ {self.env.source_path(BAZ, V8)}',
+        )
 
         self.env.resolve_conflict(BAZ, V8)
         run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
         self.assert_succeeded(run)
         self.assertEqual(
-            self.env.files_in(
-                self.env.commit_for('Conflict-resolved patches')), [BAZ_PATCH])
+            self.env.files_in(self.env.commit_for('Conflict-resolved patches')),
+            [BAZ_PATCH],
+        )
 
     def test_init_reset_warning_is_surfaced(self):
         """`init` mixes a warning about failed resets into its own failure
@@ -1270,13 +1399,16 @@ class LiftConflictResolutionTest(LiftTestCase):
         self._release_with_conflict()
         self.env.terminal.init_extra_stderr = (
             'There were some failures during git reset of specific repo paths: '
-            f'{FOO}\n')
+            f'{FOO}\n'
+        )
 
         run = self.env.run_lift(f'--to={MAJOR_TARGET}')
 
         self.assert_output_has(
-            run, 'pnpm run init is failing to reset some paths.',
-            '* Reapplying patch files with --3way:')
+            run,
+            'pnpm run init is failing to reset some paths.',
+            '* Reapplying patch files with --3way:',
+        )
 
     def test_the_index_is_left_clean_after_the_3way_applies(self):
         """A `--3way` apply stages what it manages to merge, and the lift has to
@@ -1286,10 +1418,11 @@ class LiftConflictResolutionTest(LiftTestCase):
         self.env.run_lift(f'--to={MAJOR_TARGET}')
 
         self.assertEqual(
-            self.env.git('diff',
-                         '--cached',
-                         '--name-only',
-                         repo=self.env.repo.chromium), '')
+            self.env.git(
+                'diff', '--cached', '--name-only', repo=self.env.repo.chromium
+            ),
+            '',
+        )
 
 
 class LiftDeletedSourceTest(LiftTestCase):
@@ -1306,10 +1439,13 @@ class LiftDeletedSourceTest(LiftTestCase):
 
         self.assertEqual(run.exit_code, 1)
         self.assert_output_has(
-            run, '* Files that cannot be patched anymore (action needed):',
-            f'    ✘ {_native(BAR)} (deleted)', f'        Remove {BAR}',
+            run,
+            '* Files that cannot be patched anymore (action needed):',
+            f'    ✘ {_native(BAR)} (deleted)',
+            f'        Remove {BAR}',
             '👋 (Address all sections with (action needed) above, and then '
-            'rerun 🚀Brockit! with --continue)')
+            'rerun 🚀Brockit! with --continue)',
+        )
         # Nothing is decided for the user: the patch is still there.
         self.assertTrue((self.env.repo.brave / BAR_PATCH).exists())
 
@@ -1319,9 +1455,13 @@ class LiftDeletedSourceTest(LiftTestCase):
         self.env.run_lift(f'--to={MAJOR_TARGET}')
 
         record = self.env.continuation(MAJOR_TARGET).apply_record
-        self.assertEqual([
-            patch.path.as_posix() for patch in record.patches_to_deleted_files
-        ], [BAR_PATCH])
+        self.assertEqual(
+            [
+                patch.path.as_posix()
+                for patch in record.patches_to_deleted_files
+            ],
+            [BAR_PATCH],
+        )
 
     def test_continue_before_committing_the_deletion_is_rejected(self):
         self._release_deleting_bar()
@@ -1332,7 +1472,8 @@ class LiftDeletedSourceTest(LiftTestCase):
         self.assert_failed(
             run,
             'Deleted patches detected. These should be committed as their '
-            f'own changes:\n{BAR_PATCH}')
+            f'own changes:\n{BAR_PATCH}',
+        )
 
     def test_continue_after_committing_the_deletion_finishes(self):
         self._release_deleting_bar()
@@ -1344,12 +1485,14 @@ class LiftDeletedSourceTest(LiftTestCase):
         run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
         self.assert_succeeded(run)
-        self.assert_commit_subjects([
-            f'Update from Chromium {BASE_VERSION} to Chromium {MAJOR_TARGET}.',
-            f'Remove patch for deleted {BAR}',
-            f'Updated strings for Chromium {MAJOR_TARGET}.',
-            f'`gnrt` run for Chromium {MAJOR_TARGET}.',
-        ])
+        self.assert_commit_subjects(
+            [
+                f'Update from Chromium {BASE_VERSION} to Chromium {MAJOR_TARGET}.',
+                f'Remove patch for deleted {BAR}',
+                f'Updated strings for Chromium {MAJOR_TARGET}.',
+                f'`gnrt` run for Chromium {MAJOR_TARGET}.',
+            ]
+        )
         self.assertFalse((self.env.repo.brave / BAR_PATCH).exists())
 
 
@@ -1370,20 +1513,25 @@ class LiftRenamedSourceTest(LiftTestCase):
 
         self.assertEqual(run.exit_code, 1)
         self.assert_output_has(
-            run, '* Files that cannot be patched anymore (action needed):',
+            run,
+            '* Files that cannot be patched anymore (action needed):',
             f'    ✘ {self.env.source_path(BAR)}',
             f'        (renamed to {self.env.source_path(self.RENAMED)})',
-            f'        Rename {BAR} to {self.RENAMED}')
+            f'        Rename {BAR} to {self.RENAMED}',
+        )
 
     def test_both_ends_of_the_rename_are_opened_in_the_editor(self):
         self._release_renaming_bar()
 
         self.env.run_lift(f'--to={MAJOR_TARGET}')
 
-        self.assertEqual(self.env.vscode_files(), [
-            BAR_PATCH,
-            Path(self.env.source_path(self.RENAMED)).as_posix(),
-        ])
+        self.assertEqual(
+            self.env.vscode_files(),
+            [
+                BAR_PATCH,
+                Path(self.env.source_path(self.RENAMED)).as_posix(),
+            ],
+        )
 
     def test_a_new_patch_left_untracked_is_rejected(self):
         self._release_renaming_bar()
@@ -1394,7 +1542,10 @@ class LiftRenamedSourceTest(LiftTestCase):
         self.env.repo.write_file(
             self.RENAMED,
             self.env.upstream_source(self.RENAMED).replace(
-                UPSTREAM_SYMBOL, BRAVE_SYMBOL), self.env.repo.chromium)
+                UPSTREAM_SYMBOL, BRAVE_SYMBOL
+            ),
+            self.env.repo.chromium,
+        )
 
         run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
@@ -1403,7 +1554,9 @@ class LiftRenamedSourceTest(LiftTestCase):
         self.assert_failed(
             run,
             'Untracked patch files detected. These should be committed as '
-            'their own changes:', self.RENAMED_PATCH)
+            'their own changes:',
+            self.RENAMED_PATCH,
+        )
 
     def test_continue_after_carrying_the_patch_over_finishes(self):
         self._release_renaming_bar()
@@ -1411,7 +1564,10 @@ class LiftRenamedSourceTest(LiftTestCase):
         self.env.repo.write_file(
             self.RENAMED,
             self.env.upstream_source(self.RENAMED).replace(
-                UPSTREAM_SYMBOL, BRAVE_SYMBOL), self.env.repo.chromium)
+                UPSTREAM_SYMBOL, BRAVE_SYMBOL
+            ),
+            self.env.repo.chromium,
+        )
         self.env.commit_patch_changes(f'Follow the rename of {BAR}')
 
         run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
@@ -1433,13 +1589,15 @@ class LiftBrokenPatchTest(LiftTestCase):
 
         self.assertEqual(run.exit_code, 1)
         self.assert_output_has(
-            run, '* Broken patches that fail to apply entirely '
-            '(action needed):',
-            f'    ✘ {_native(FOO_PATCH)} ➜ {self.env.source_path(FOO)}')
+            run,
+            '* Broken patches that fail to apply entirely (action needed):',
+            f'    ✘ {_native(FOO_PATCH)} ➜ {self.env.source_path(FOO)}',
+        )
         record = self.env.continuation(MAJOR_TARGET).apply_record
         self.assertEqual(
             [patch.path.as_posix() for patch in record.broken_patches],
-            [FOO_PATCH])
+            [FOO_PATCH],
+        )
 
     def test_broken_patch_opens_the_patch_and_its_source(self):
         self.env.break_patch(FOO_PATCH)
@@ -1448,10 +1606,13 @@ class LiftBrokenPatchTest(LiftTestCase):
 
         self.env.run_lift(f'--to={MAJOR_TARGET}')
 
-        self.assertEqual(self.env.vscode_files(), [
-            FOO_PATCH,
-            Path(self.env.source_path(FOO)).as_posix(),
-        ])
+        self.assertEqual(
+            self.env.vscode_files(),
+            [
+                FOO_PATCH,
+                Path(self.env.source_path(FOO)).as_posix(),
+            ],
+        )
 
 
 class LiftFixupRoutingTest(LiftTestCase):
@@ -1476,7 +1637,8 @@ class LiftFixupRoutingTest(LiftTestCase):
         self.env.repo.write_file(
             FOO,
             self.env.read_source(FOO).replace(BRAVE_SYMBOL, self.DEV_SYMBOL),
-            self.env.repo.chromium)
+            self.env.repo.chromium,
+        )
         self.env.commit_patch_changes('Dev-cycle change to foo.cc')
 
     def test_dev_cycle_patch_is_committed_as_a_fixup(self):
@@ -1486,22 +1648,27 @@ class LiftFixupRoutingTest(LiftTestCase):
             upstream.edit(
                 FOO,
                 line=PATCHED_LINE,
-                text=f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak')
+                text=f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak',
+            )
 
         self.env.run_lift(f'--to={MAJOR_FOLLOW_UP}')
         self.env.resolve_conflict(FOO, symbol=self.DEV_SYMBOL)
         run = self.env.run_lift(f'--to={MAJOR_FOLLOW_UP}', '--continue')
 
         self.assert_succeeded(run)
-        self.assertEqual(self.env.subjects(marker), [
-            f'Update from Chromium {BASE_VERSION} to Chromium '
-            f'{MAJOR_FOLLOW_UP}.',
-            'fixup! Dev-cycle change to foo.cc',
-            f'Updated strings for Chromium {MAJOR_FOLLOW_UP}.',
-            f'`gnrt` run for Chromium {MAJOR_FOLLOW_UP}.',
-        ])
-        self.assertEqual(self.env.files_in(self.env.commit_for('fixup!')),
-                         [FOO_PATCH])
+        self.assertEqual(
+            self.env.subjects(marker),
+            [
+                f'Update from Chromium {BASE_VERSION} to Chromium '
+                f'{MAJOR_FOLLOW_UP}.',
+                'fixup! Dev-cycle change to foo.cc',
+                f'Updated strings for Chromium {MAJOR_FOLLOW_UP}.',
+                f'`gnrt` run for Chromium {MAJOR_FOLLOW_UP}.',
+            ],
+        )
+        self.assertEqual(
+            self.env.files_in(self.env.commit_for('fixup!')), [FOO_PATCH]
+        )
 
     def test_patches_owned_by_the_lift_are_not_fixups(self):
         """A patch whose most recent branch commit is one of the lift's own is
@@ -1512,21 +1679,25 @@ class LiftFixupRoutingTest(LiftTestCase):
             upstream.edit(
                 BAR,
                 line=PATCHED_LINE,
-                text=f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak')
+                text=f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak',
+            )
 
         self.env.run_lift(f'--to={MAJOR_FOLLOW_UP}')
         self.env.resolve_conflict(BAR)
         run = self.env.run_lift(f'--to={MAJOR_FOLLOW_UP}', '--continue')
 
         self.assert_succeeded(run)
-        self.assertEqual(self.env.subjects(marker), [
-            f'Update from Chromium {BASE_VERSION} to Chromium '
-            f'{MAJOR_FOLLOW_UP}.',
-            f'Conflict-resolved patches from Chromium {BASE_VERSION} to '
-            f'Chromium {MAJOR_FOLLOW_UP}.',
-            f'Updated strings for Chromium {MAJOR_FOLLOW_UP}.',
-            f'`gnrt` run for Chromium {MAJOR_FOLLOW_UP}.',
-        ])
+        self.assertEqual(
+            self.env.subjects(marker),
+            [
+                f'Update from Chromium {BASE_VERSION} to Chromium '
+                f'{MAJOR_FOLLOW_UP}.',
+                f'Conflict-resolved patches from Chromium {BASE_VERSION} to '
+                f'Chromium {MAJOR_FOLLOW_UP}.',
+                f'Updated strings for Chromium {MAJOR_FOLLOW_UP}.',
+                f'`gnrt` run for Chromium {MAJOR_FOLLOW_UP}.',
+            ],
+        )
         self.assertEqual(self.env.commit_for('fixup!'), '')
 
 
@@ -1536,8 +1707,9 @@ class LiftPlasterTest(LiftTestCase):
     # A plaster that no longer matches its source, once upstream renames the
     # symbol it was written for.
     RENAMED_SYMBOL = 'RenamedThing'
-    FIXED_PLASTER_BODY = FOO_PLASTER_BODY.replace(UPSTREAM_SYMBOL,
-                                                  RENAMED_SYMBOL)
+    FIXED_PLASTER_BODY = FOO_PLASTER_BODY.replace(
+        UPSTREAM_SYMBOL, RENAMED_SYMBOL
+    )
 
     def _release_reworking_the_patched_line(self, text: str) -> None:
         with self.env.upstream_release(MAJOR_TARGET) as upstream:
@@ -1546,40 +1718,49 @@ class LiftPlasterTest(LiftTestCase):
     def test_plaster_fixed_patch_is_committed_on_its_own(self):
         self.env.add_plaster_for_foo()
         self._release_reworking_the_patched_line(
-            f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak')
+            f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak'
+        )
 
         run = self.env.run_lift(f'--to={MAJOR_TARGET}')
 
         # The patch is marked as plaster-managed in the reapply list, and the
         # fix it produced is committed under its own subject.
         self.assert_output_has(
-            run, f'    * {_native(FOO_PATCH)} 🩹',
+            run,
+            f'    * {_native(FOO_PATCH)} 🩹',
             'Apply-fixed 🩹 patches from Chromium '
-            f'{BASE_VERSION} to Chromium {MAJOR_TARGET}.')
-        self.assertEqual(self.env.files_in(self.env.commit_for('Apply-fixed')),
-                         [FOO_PATCH])
+            f'{BASE_VERSION} to Chromium {MAJOR_TARGET}.',
+        )
+        self.assertEqual(
+            self.env.files_in(self.env.commit_for('Apply-fixed')), [FOO_PATCH]
+        )
         # The source carries brave's change on top of the upstream rework.
-        self.assertIn(f'  {BRAVE_SYMBOL} thing;  // upstream tweak',
-                      self.env.read_source(FOO))
+        self.assertIn(
+            f'  {BRAVE_SYMBOL} thing;  // upstream tweak',
+            self.env.read_source(FOO),
+        )
 
     def test_plaster_only_failures_finish_the_lift(self):
         """A lift whose only apply failures were fixed by plaster runs to the
         end without stopping."""
         self.env.add_plaster_for_foo()
         self._release_reworking_the_patched_line(
-            f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak')
+            f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak'
+        )
 
         run = self.env.run_lift(f'--to={MAJOR_TARGET}')
 
         self.assert_succeeded(run)
-        self.assert_commit_subjects([
-            'Add plaster for foo.cc',
-            f'Update from Chromium {BASE_VERSION} to Chromium {MAJOR_TARGET}.',
-            f'Apply-fixed 🩹 patches from Chromium {BASE_VERSION} to Chromium '
-            f'{MAJOR_TARGET}.',
-            f'Updated strings for Chromium {MAJOR_TARGET}.',
-            f'`gnrt` run for Chromium {MAJOR_TARGET}.',
-        ])
+        self.assert_commit_subjects(
+            [
+                'Add plaster for foo.cc',
+                f'Update from Chromium {BASE_VERSION} to Chromium {MAJOR_TARGET}.',
+                f'Apply-fixed 🩹 patches from Chromium {BASE_VERSION} to Chromium '
+                f'{MAJOR_TARGET}.',
+                f'Updated strings for Chromium {MAJOR_TARGET}.',
+                f'`gnrt` run for Chromium {MAJOR_TARGET}.',
+            ]
+        )
 
     def test_plaster_fix_alongside_a_conflict_to_resolve(self):
         """The plaster fix is committed, and the lift still stops for the
@@ -1589,44 +1770,53 @@ class LiftPlasterTest(LiftTestCase):
             upstream.edit(
                 FOO,
                 line=PATCHED_LINE,
-                text=f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak')
+                text=f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak',
+            )
             upstream.edit(
                 BAR,
                 line=PATCHED_LINE,
-                text=f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak')
+                text=f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak',
+            )
 
         run = self.env.run_lift(f'--to={MAJOR_TARGET}')
 
         self.assert_output_has(
-            run, f'Apply-fixed 🩹 patches from Chromium {BASE_VERSION} to '
+            run,
+            f'Apply-fixed 🩹 patches from Chromium {BASE_VERSION} to '
             f'Chromium {MAJOR_TARGET}.',
             '* Manually resolve conflicts for (action needed):',
-            f'    ✘ {self.env.source_path(BAR)}')
+            f'    ✘ {self.env.source_path(BAR)}',
+        )
 
         self.env.resolve_conflict(BAR)
         run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
         self.assert_succeeded(run)
         self.assertEqual(
-            self.env.files_in(
-                self.env.commit_for('Conflict-resolved patches')), [BAR_PATCH])
+            self.env.files_in(self.env.commit_for('Conflict-resolved patches')),
+            [BAR_PATCH],
+        )
 
     def test_plaster_that_no_longer_matches_is_reported(self):
         self.env.add_plaster_for_foo()
         self._release_reworking_the_patched_line(
-            f'  {self.RENAMED_SYMBOL} thing;  // upstream rework')
+            f'  {self.RENAMED_SYMBOL} thing;  // upstream rework'
+        )
 
         run = self.env.run_lift(f'--to={MAJOR_TARGET}')
 
         self.assertEqual(run.exit_code, 1)
         self.assert_output_has(
-            run, '* Plaster failed to fix patches (action needed):',
+            run,
+            '* Plaster failed to fix patches (action needed):',
             f'    ✘ {self.env.brave_path(FOO_PLASTER)} ➜ '
-            f'{self.env.source_path(FOO)}')
+            f'{self.env.source_path(FOO)}',
+        )
         record = self.env.continuation(MAJOR_TARGET).apply_record
         self.assertEqual(
             [patch.path.as_posix() for patch in record.plaster_broken_patches],
-            [FOO_PATCH])
+            [FOO_PATCH],
+        )
         self.assertEqual(record.plaster_fixed_patches, [])
 
     def test_continue_with_an_unfixed_plaster_is_reported(self):
@@ -1635,35 +1825,42 @@ class LiftPlasterTest(LiftTestCase):
         lift."""
         self.env.add_plaster_for_foo()
         self._release_reworking_the_patched_line(
-            f'  {self.RENAMED_SYMBOL} thing;  // upstream rework')
+            f'  {self.RENAMED_SYMBOL} thing;  // upstream rework'
+        )
         self.env.run_lift(f'--to={MAJOR_TARGET}')
 
         run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
         self.assert_failed(
-            run, 'Plaster file has not been fixed and re-applied: '
+            run,
+            'Plaster file has not been fixed and re-applied: '
             f'{self.env.brave_path(FOO_PLASTER)}',
-            'Unexpected number of matches (0 vs 1)')
+            'Unexpected number of matches (0 vs 1)',
+        )
 
     def test_continue_with_the_plaster_deleted_but_the_patch_kept(self):
         """Dropping the plaster file means dropping the patch it owns; keeping
         one without the other is refused."""
         self.env.add_plaster_for_foo()
         self._release_reworking_the_patched_line(
-            f'  {self.RENAMED_SYMBOL} thing;  // upstream rework')
+            f'  {self.RENAMED_SYMBOL} thing;  // upstream rework'
+        )
         self.env.run_lift(f'--to={MAJOR_TARGET}')
 
         (self.env.repo.brave / FOO_PLASTER).unlink()
         run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
         self.assert_failed(
-            run, 'Plaster file was deleted but patch still exists: '
-            f'{_native(FOO_PATCH)}')
+            run,
+            'Plaster file was deleted but patch still exists: '
+            f'{_native(FOO_PATCH)}',
+        )
 
     def test_continue_after_fixing_the_plaster_finishes(self):
         self.env.add_plaster_for_foo()
         self._release_reworking_the_patched_line(
-            f'  {self.RENAMED_SYMBOL} thing;  // upstream rework')
+            f'  {self.RENAMED_SYMBOL} thing;  // upstream rework'
+        )
         self.env.run_lift(f'--to={MAJOR_TARGET}')
 
         # The user points the plaster at the renamed symbol and reapplies it.
@@ -1671,8 +1868,10 @@ class LiftPlasterTest(LiftTestCase):
         run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
         self.assert_succeeded(run)
-        self.assertIn(f'  {BRAVE_SYMBOL} thing;  // upstream rework',
-                      self.env.read_source(FOO))
+        self.assertIn(
+            f'  {BRAVE_SYMBOL} thing;  // upstream rework',
+            self.env.read_source(FOO),
+        )
 
     # The literal text of `FOO`'s last filler line, i.e. `_source_body`'s
     # boilerplate for line `SOURCE_LINES`. Far enough from `PATCHED_LINE` to
@@ -1693,7 +1892,9 @@ class LiftPlasterTest(LiftTestCase):
 
     # The same fix as `FIXED_PLASTER_BODY` (pointed at the renamed symbol),
     # plus the second, far-away substitution above.
-    FIXED_TWO_HUNK_PLASTER_BODY = FIXED_PLASTER_BODY + _TRAILING_LINE_SUBSTITUTION
+    FIXED_TWO_HUNK_PLASTER_BODY = (
+        FIXED_PLASTER_BODY + _TRAILING_LINE_SUBSTITUTION
+    )
 
     def test_plaster_managed_hunk_change_is_not_rejected(self):
         """A plaster-managed patch is always whatever the plaster reproduces
@@ -1710,8 +1911,9 @@ class LiftPlasterTest(LiftTestCase):
         # substitutions that used to sit far apart (and in separate hunks)
         # will land close enough to merge into one once the plaster is fixed.
         lines = self.env.upstream_source(FOO).splitlines(keepends=True)
-        lines[PATCHED_LINE -
-              1] = (f'  {self.RENAMED_SYMBOL} thing;  // upstream rework\n')
+        lines[PATCHED_LINE - 1] = (
+            f'  {self.RENAMED_SYMBOL} thing;  // upstream rework\n'
+        )
         squeezed = ''.join(lines[:5] + [lines[-1]])
         with self.env.upstream_release(MAJOR_TARGET) as upstream:
             upstream.write(FOO, squeezed)
@@ -1746,10 +1948,12 @@ class LiftOrphanedPlasterTest(LiftTestCase):
 
         self.assertEqual(run.exit_code, 1)
         self.assert_output_has(
-            run, '* Files that cannot be patched anymore (action needed):',
+            run,
+            '* Files that cannot be patched anymore (action needed):',
             f'    ✘ {_native(FOO)} (deleted)',
             '* Plaster failed to fix patches (action needed):',
-            f'    ✘ {self.env.brave_path(FOO_PLASTER)} (orphaned)')
+            f'    ✘ {self.env.brave_path(FOO_PLASTER)} (orphaned)',
+        )
 
     def test_orphaned_plaster_opens_only_the_plaster_in_the_editor(self):
         """There is no source left to open alongside it, unlike a plaster
@@ -1759,10 +1963,13 @@ class LiftOrphanedPlasterTest(LiftTestCase):
 
         self.env.run_lift(f'--to={MAJOR_TARGET}')
 
-        self.assertEqual(self.env.vscode_files(), [
-            FOO_PATCH,
-            Path(self.env.brave_path(FOO_PLASTER)).as_posix(),
-        ])
+        self.assertEqual(
+            self.env.vscode_files(),
+            [
+                FOO_PATCH,
+                Path(self.env.brave_path(FOO_PLASTER)).as_posix(),
+            ],
+        )
 
     def test_orphaned_plaster_is_recorded_in_the_continuation_file(self):
         self.env.add_plaster_for_foo()
@@ -1773,10 +1980,15 @@ class LiftOrphanedPlasterTest(LiftTestCase):
         record = self.env.continuation(MAJOR_TARGET).apply_record
         self.assertEqual(
             [patch.path.as_posix() for patch in record.plaster_broken_patches],
-            [FOO_PATCH])
-        self.assertEqual([
-            patch.path.as_posix() for patch in record.patches_to_deleted_files
-        ], [FOO_PATCH])
+            [FOO_PATCH],
+        )
+        self.assertEqual(
+            [
+                patch.path.as_posix()
+                for patch in record.patches_to_deleted_files
+            ],
+            [FOO_PATCH],
+        )
 
     def test_continue_without_removing_the_orphaned_plaster_is_rejected(self):
         self.env.add_plaster_for_foo()
@@ -1786,14 +1998,17 @@ class LiftOrphanedPlasterTest(LiftTestCase):
         run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
         self.assert_failed(
-            run, 'Plaster file has not been fixed and re-applied: '
+            run,
+            'Plaster file has not been fixed and re-applied: '
             f'{self.env.brave_path(FOO_PLASTER)}',
             'Failed to read the source targeted by '
             f'{self.env.brave_path(FOO_PLASTER)} from git: {_native(FOO)}. '
-            'The upstream file may have been moved or deleted')
+            'The upstream file may have been moved or deleted',
+        )
 
     def test_continue_after_removing_the_orphaned_plaster_and_patch_finishes(
-            self):
+        self,
+    ):
         """Resolving an orphaned plaster means dropping both the plaster and
         the patch it owns, the same way a plain deleted patch is dropped."""
         self.env.add_plaster_for_foo()
@@ -1803,7 +2018,8 @@ class LiftOrphanedPlasterTest(LiftTestCase):
         (self.env.repo.brave / FOO_PLASTER).unlink()
         self.env.git('add', '--all', 'rewrite')
         self.env.commit_patch_changes(
-            f'Remove patch and plaster for deleted {FOO}')
+            f'Remove patch and plaster for deleted {FOO}'
+        )
 
         run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
@@ -1820,7 +2036,8 @@ class LiftRestartTest(LiftTestCase):
             upstream.edit(
                 FOO,
                 line=PATCHED_LINE,
-                text=f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak')
+                text=f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak',
+            )
         run = self.env.run_lift(f'--to={MAJOR_TARGET}')
         self.assertEqual(run.exit_code, 1)
 
@@ -1837,15 +2054,17 @@ class LiftRestartTest(LiftTestCase):
             # The checkout is left at the target version by the discarded run,
             # which the restarted one points out.
             'Chromium is checked out with the target version. '
-            f'Brave {BASE_VERSION} ➜ Chromium {MAJOR_TARGET}')
+            f'Brave {BASE_VERSION} ➜ Chromium {MAJOR_TARGET}',
+        )
         # The version commit was redone rather than duplicated, and the run
         # stopped on the same conflict as before.
-        self.assert_commit_subjects([
-            f'Update from Chromium {BASE_VERSION} to Chromium {MAJOR_TARGET}.'
-        ])
+        self.assert_commit_subjects(
+            [f'Update from Chromium {BASE_VERSION} to Chromium {MAJOR_TARGET}.']
+        )
         self.assertNotEqual(self.env.head(), first_attempt)
         self.assert_output_has(
-            run, '* Manually resolve conflicts for (action needed):')
+            run, '* Manually resolve conflicts for (action needed):'
+        )
 
     def test_restart_with_another_target_is_rejected(self):
         self._stop_on_a_conflict()
@@ -1855,22 +2074,27 @@ class LiftRestartTest(LiftTestCase):
         run = self.env.run_lift(f'--to={MAJOR_FOLLOW_UP}', '--restart')
 
         self.assert_failed(
-            run, 'Running with `--restart` but the target version does not '
-            f'match the current version. {MAJOR_FOLLOW_UP} vs {MAJOR_TARGET}')
+            run,
+            'Running with `--restart` but the target version does not '
+            f'match the current version. {MAJOR_FOLLOW_UP} vs {MAJOR_TARGET}',
+        )
 
     def test_restart_without_a_version_commit_to_discard_is_rejected(self):
         self._stop_on_a_conflict()
         # Anything committed on top of the pinslist file hides the version
         # commit `--restart` keys off.
-        self.env.stage_file(brockit.PINSLIST_TIMESTAMP_FILE,
-                            'unrelated rewrite\n')
+        self.env.stage_file(
+            brockit.PINSLIST_TIMESTAMP_FILE, 'unrelated rewrite\n'
+        )
         self.env.repo.commit('Rewrite the pinslist file', self.env.repo.brave)
 
         run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--restart')
 
         self.assert_failed(
-            run, 'Running with `--restart` but the last change does not match '
-            'the arguments provided.')
+            run,
+            'Running with `--restart` but the last change does not match '
+            'the arguments provided.',
+        )
 
 
 class LiftGitHubTest(LiftTestCase):
@@ -1886,7 +2110,8 @@ class LiftGitHubTest(LiftTestCase):
 
         self.assert_succeeded(run)
         self.assert_output_has(
-            run, f'GitHub Issue created for this bump: {ISSUE_URL}')
+            run, f'GitHub Issue created for this bump: {ISSUE_URL}'
+        )
         create = self.env.gh.issue_create_cmd()
         self.assertIn(self.ISSUE_TITLE, create)
         self.assertIn(log_link(BASE_VERSION, MAJOR_TARGET), ' '.join(create))
@@ -1895,12 +2120,14 @@ class LiftGitHubTest(LiftTestCase):
         self.assertIsNone(self.env.gh.pr_create_cmd())
 
     def test_with_github_refreshes_a_stale_issue(self):
-        self.env.gh.issue_list = [{
-            'number': 42,
-            'title': self.ISSUE_TITLE,
-            'url': ISSUE_URL,
-            'body': f'Some text\n{log_link("111.0.0.0", "112.0.0.0")}\nmore',
-        }]
+        self.env.gh.issue_list = [
+            {
+                'number': 42,
+                'title': self.ISSUE_TITLE,
+                'url': ISSUE_URL,
+                'body': f'Some text\n{log_link("111.0.0.0", "112.0.0.0")}\nmore',
+            }
+        ]
         with self.env.upstream_release(MAJOR_TARGET):
             pass
 
@@ -1913,12 +2140,14 @@ class LiftGitHubTest(LiftTestCase):
         self.assertIsNone(self.env.gh.issue_create_cmd())
 
     def test_with_github_leaves_an_up_to_date_issue_alone(self):
-        self.env.gh.issue_list = [{
-            'number': 42,
-            'title': self.ISSUE_TITLE,
-            'url': ISSUE_URL,
-            'body': log_link(BASE_VERSION, MAJOR_TARGET),
-        }]
+        self.env.gh.issue_list = [
+            {
+                'number': 42,
+                'title': self.ISSUE_TITLE,
+                'url': ISSUE_URL,
+                'body': log_link(BASE_VERSION, MAJOR_TARGET),
+            }
+        ]
         with self.env.upstream_release(MAJOR_TARGET):
             pass
 
@@ -1926,8 +2155,10 @@ class LiftGitHubTest(LiftTestCase):
 
         self.assert_succeeded(run)
         self.assert_output_has(
-            run, f'A Github issue with the title "{self.ISSUE_TITLE}" is '
-            f'already created and up-to-date. {ISSUE_URL}')
+            run,
+            f'A Github issue with the title "{self.ISSUE_TITLE}" is '
+            f'already created and up-to-date. {ISSUE_URL}',
+        )
         self.assertIsNone(self.env.gh.issue_edit_cmd())
 
     def test_with_github_without_a_login_stops_before_any_work(self):
@@ -1958,8 +2189,9 @@ class LiftToolchainAdvisoryTest(LiftTestCase):
     NEW_PIN = ('10.0.26100.0', 'newtoolchainhash')
 
     UPSTREAM_FILES = {
-        VS_TOOLCHAIN: (f"SDK_VERSION = '{OLD_PIN[0]}'\n"
-                       f"TOOLCHAIN_HASH = '{OLD_PIN[1]}'\n")
+        VS_TOOLCHAIN: (
+            f"SDK_VERSION = '{OLD_PIN[0]}'\nTOOLCHAIN_HASH = '{OLD_PIN[1]}'\n"
+        )
     }
 
     def setUp(self) -> None:
@@ -1980,8 +2212,10 @@ class LiftToolchainAdvisoryTest(LiftTestCase):
         """
         with self.env.upstream_release(MAJOR_TARGET) as upstream:
             return upstream.write(
-                self.VS_TOOLCHAIN, f"SDK_VERSION = '{self.NEW_PIN[0]}'\n"
-                f"TOOLCHAIN_HASH = '{self.NEW_PIN[1]}'\n")
+                self.VS_TOOLCHAIN,
+                f"SDK_VERSION = '{self.NEW_PIN[0]}'\n"
+                f"TOOLCHAIN_HASH = '{self.NEW_PIN[1]}'\n",
+            )
 
     def test_advisory_stops_the_lift_before_anything_is_committed(self):
         culprit = self._release_repinning_the_toolchain()
@@ -1990,17 +2224,20 @@ class LiftToolchainAdvisoryTest(LiftTestCase):
 
         self.assertEqual(run.exit_code, 1)
         self.assert_output_has(
-            run, '* Pre-run advisory (attention needed)',
+            run,
+            '* Pre-run advisory (attention needed)',
             '               * Windows SDK has been updated. '
             f'{"-".join(self.OLD_PIN)} ➜ {"-".join(self.NEW_PIN)}',
             f'                   CL: Upstream change to {self.VS_TOOLCHAIN}',
             '                   Generate the new toolchain in '
             'https://ci.brave.com/view/toolchains/',
-            '👋 (Address advisories and then rerun with --ack-advisory)')
+            '👋 (Address advisories and then rerun with --ack-advisory)',
+        )
         self.assert_commit_subjects([])
         # The culprit commit is linked, so it can be read on Googlesource.
         self.assert_output_has(
-            run, brockit.GOOGLESOURCE_COMMIT_LINK.format(commit=culprit))
+            run, brockit.GOOGLESOURCE_COMMIT_LINK.format(commit=culprit)
+        )
         # And the advisory is recorded, which is what makes `--ack-advisory`
         # acceptable on the next run.
         self.assertTrue(self.env.continuation(MAJOR_TARGET).has_shown_advisory)
@@ -2013,11 +2250,13 @@ class LiftToolchainAdvisoryTest(LiftTestCase):
 
         self.assert_succeeded(run)
         self.assert_output_lacks(run, 'Pre-run advisory')
-        self.assert_commit_subjects([
-            f'Update from Chromium {BASE_VERSION} to Chromium {MAJOR_TARGET}.',
-            f'Updated strings for Chromium {MAJOR_TARGET}.',
-            f'`gnrt` run for Chromium {MAJOR_TARGET}.',
-        ])
+        self.assert_commit_subjects(
+            [
+                f'Update from Chromium {BASE_VERSION} to Chromium {MAJOR_TARGET}.',
+                f'Updated strings for Chromium {MAJOR_TARGET}.',
+                f'`gnrt` run for Chromium {MAJOR_TARGET}.',
+            ]
+        )
 
     def test_a_recovered_toolchain_raises_no_advisory(self):
         """When the toolchain could be built and repinned on the spot there is
@@ -2039,12 +2278,14 @@ class LiftToolchainAdvisoryTest(LiftTestCase):
         brockit.ContinuationFile(
             target_version=brockit.Version(MAJOR_TARGET),
             working_version=brockit.Version(BASE_VERSION),
-            base_version=brockit.Version(BASE_VERSION)).save()
+            base_version=brockit.Version(BASE_VERSION),
+        ).save()
 
         run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--ack-advisory')
 
         self.assert_failed(
-            run, 'Use --ack-advisory just after being shown advisories.')
+            run, 'Use --ack-advisory just after being shown advisories.'
+        )
         self.assert_commit_subjects([])
 
     def test_no_toolchain_change_raises_no_advisory(self):
@@ -2074,9 +2315,10 @@ class LiftTargetLabelTest(LiftTestCase):
 
     def test_latest_tag_label(self):
         with patch.object(
-                brockit.Version,
-                'get_latest_googlesource_tag_version',
-                return_value=brockit.Version(MINOR_TARGET)) as latest:
+            brockit.Version,
+            'get_latest_googlesource_tag_version',
+            return_value=brockit.Version(MINOR_TARGET),
+        ) as latest:
             run = self.env.run_lift('--to=@latest-tag')
 
         self.assert_succeeded(run)
@@ -2085,9 +2327,10 @@ class LiftTargetLabelTest(LiftTestCase):
 
     def test_latest_major_label(self):
         with patch.object(
-                brockit.Version,
-                'get_latest_googlesource_tag_version',
-                return_value=brockit.Version(MINOR_TARGET)) as latest:
+            brockit.Version,
+            'get_latest_googlesource_tag_version',
+            return_value=brockit.Version(MINOR_TARGET),
+        ) as latest:
             run = self.env.run_lift('--to=@latest-m134')
 
         self.assert_succeeded(run)
@@ -2096,9 +2339,10 @@ class LiftTargetLabelTest(LiftTestCase):
     def test_latest_for_branch_label_uses_the_branch_name(self):
         """`@latest-for-branch` reads the major off the `cr{MAJOR}` branch."""
         with patch.object(
-                brockit.Version,
-                'get_latest_googlesource_tag_version',
-                return_value=brockit.Version(MINOR_TARGET)) as latest:
+            brockit.Version,
+            'get_latest_googlesource_tag_version',
+            return_value=brockit.Version(MINOR_TARGET),
+        ) as latest:
             self.env.run_lift('--to=@latest-for-branch')
 
         latest.assert_called_once_with(major=135)
@@ -2106,8 +2350,9 @@ class LiftTargetLabelTest(LiftTestCase):
     def test_channel_label_queries_chromium_dash(self):
         response = MagicMock()
         response.json.return_value = [{'version': MINOR_TARGET}]
-        with patch.object(brockit.requests, 'get',
-                          return_value=response) as get:
+        with patch.object(
+            brockit.requests, 'get', return_value=response
+        ) as get:
             run = self.env.run_lift('--to=@latest-canary')
 
         self.assert_succeeded(run)
@@ -2144,9 +2389,11 @@ class LiftForBranchLabelTest(LiftTestCase):
         run = self.env.run_lift('--to=@latest-for-branch')
 
         self.assert_failed(
-            run, '@latest-for-branch requires the current branch to be named '
+            run,
+            '@latest-for-branch requires the current branch to be named '
             f'cr{{MAJOR}} (e.g. cr135), but the current branch is '
-            f'"{self.BRANCH}".')
+            f'"{self.BRANCH}".',
+        )
 
 
 class LiftInfraModeTest(LiftTestCase):
@@ -2169,8 +2416,9 @@ class LiftInfraModeTest(LiftTestCase):
         run = self.env.run_lift(f'--to={MINOR_TARGET}')
 
         self.assert_succeeded(run)
-        init = next(cmd for cmd in self.env.terminal.calls
-                    if cmd[1:3] == ['run', INIT])
+        init = next(
+            cmd for cmd in self.env.terminal.calls if cmd[1:3] == ['run', INIT]
+        )
         self.assertIn('--lean_sync', init)
 
 
@@ -2189,7 +2437,8 @@ class LiftRoughEdgesTest(LiftTestCase):
             upstream.edit(
                 FOO,
                 line=PATCHED_LINE,
-                text=f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak')
+                text=f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak',
+            )
         self.env.run_lift(f'--to={MAJOR_TARGET}')
 
         run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
@@ -2198,8 +2447,10 @@ class LiftRoughEdgesTest(LiftTestCase):
         self.assertIn(
             '<<<<<<< ours',
             self.env.git(
-                'show', f'{self.env.commit_for("Conflict-resolved")}:'
-                f'{FOO_PATCH}'))
+                'show',
+                f'{self.env.commit_for("Conflict-resolved")}:{FOO_PATCH}',
+            ),
+        )
 
     def test_init_failing_during_a_continuation_is_not_handled(self):
         """The `init` run that closes a continuation is not guarded, so a
@@ -2208,7 +2459,8 @@ class LiftRoughEdgesTest(LiftTestCase):
             upstream.edit(
                 FOO,
                 line=PATCHED_LINE,
-                text=f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak')
+                text=f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak',
+            )
         self.env.run_lift(f'--to={MAJOR_TARGET}')
         self.env.resolve_conflict(FOO)
         self.env.terminal.fail(INIT, stderr='gclient blew up')
@@ -2217,8 +2469,9 @@ class LiftRoughEdgesTest(LiftTestCase):
             self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
         # The conflict-resolved commit did land before the failure.
-        self.assertNotEqual(self.env.commit_for('Conflict-resolved patches'),
-                            '')
+        self.assertNotEqual(
+            self.env.commit_for('Conflict-resolved patches'), ''
+        )
 
     def test_update_patches_failing_is_reported_as_an_init_failure(self):
         """A failure in `update_patches` is reported under `init`'s name,
@@ -2229,8 +2482,11 @@ class LiftRoughEdgesTest(LiftTestCase):
 
         run = self.env.run_lift(f'--to={MINOR_TARGET}')
 
-        self.assert_failed(run, 'Failures found when running pnpm run init',
-                           'update_patches blew up')
+        self.assert_failed(
+            run,
+            'Failures found when running pnpm run init',
+            'update_patches blew up',
+        )
 
 
 if __name__ == '__main__':

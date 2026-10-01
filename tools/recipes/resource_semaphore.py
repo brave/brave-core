@@ -90,9 +90,12 @@ class ResourceWaiter:
 
     def _fits(self, resources: ResourceCost) -> bool:
         assert isinstance(resources, ResourceCost)
-        return resources.fits(self._millicores_available,
-                              self._memory_available, self._disk_available,
-                              self._net_available)
+        return resources.fits(
+            self._millicores_available,
+            self._memory_available,
+            self._disk_available,
+            self._net_available,
+        )
 
     def _decr(self, resources: ResourceCost) -> None:
         assert isinstance(resources, ResourceCost)

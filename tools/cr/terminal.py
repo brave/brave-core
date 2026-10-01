@@ -21,7 +21,14 @@ from rich.console import Console
 KEEP_ALIVE_PING_INTERVAL = 20
 
 KEEP_ALIVE_PING_ART = [
-    '(-_-)', '(⊙_⊙)', '(¬_¬)', '(－‸ლ)', '(◎_◎;)', '(⌐■_■)', '(•‿•)', '(≖_≖)'
+    '(-_-)',
+    '(⊙_⊙)',
+    '(¬_¬)',
+    '(－‸ლ)',
+    '(◎_◎;)',
+    '(⌐■_■)',
+    '(•‿•)',
+    '(≖_≖)',
 ]
 
 # The rich console used for all terminal output. Defined here (rather than
@@ -85,13 +92,14 @@ class IncendiaryErrorHandler(_PresetLoggingHandler):
 # only call `logging.basicConfig` *after* their imports finish. Entry
 # points can still override this with `logging.basicConfig(..., force=True)`
 # to install custom handlers/formatting.
-logging.basicConfig(level=logging.DEBUG if is_verbose() else logging.INFO,
-                    handlers=[_PresetLoggingHandler()])
+logging.basicConfig(
+    level=logging.DEBUG if is_verbose() else logging.INFO,
+    handlers=[_PresetLoggingHandler()],
+)
 
 
 class Terminal:
-    """A class that holds the application data and methods.
-    """
+    """A class that holds the application data and methods."""
 
     def __init__(self):
         # The status object to update with the terminal.
@@ -110,7 +118,8 @@ class Terminal:
 
         # The keep-alive thread for terminal pings on infra mode.
         self.keep_alive_thread = threading.Thread(
-            target=self.keep_alive_ci_feedback, daemon=True)
+            target=self.keep_alive_ci_feedback, daemon=True
+        )
 
         # The command that is currently running on infra mode.
         self.running_command = None
@@ -118,29 +127,30 @@ class Terminal:
     def keep_alive_ci_feedback(self):
         """Main routine for the keep-alive ping on infra mode.
 
-    This routine runs on a separate thread for the entirety of the  run when on
-    infra mode, sleeping for a set ping interval.
+        This routine runs on a separate thread for the entirety of the  run when on
+        infra mode, sleeping for a set ping interval.
 
-    The routine effects are only visible when `current_command_start_time` is
-    set, at which point there's a chance a ping will be printed to the console
-    in the set time for the ping interval.
+        The routine effects are only visible when `current_command_start_time` is
+        set, at which point there's a chance a ping will be printed to the console
+        in the set time for the ping interval.
 
-    Leaving the back thread running is the best way to ensure we can avoid
-    joining the thread, and all sorts of complexities relating to sleeping and
-    joining, which could result in a minimum time every command has to take.
+        Leaving the back thread running is the best way to ensure we can avoid
+        joining the thread, and all sorts of complexities relating to sleeping and
+        joining, which could result in a minimum time every command has to take.
         """
         while True:
             if self.current_command_start_time:
                 elapsed_time = time.time() - self.current_command_start_time
                 if elapsed_time > KEEP_ALIVE_PING_INTERVAL:
-                    logging.info('%s\n        [dim]>>>> %s[/]',
-                                 secrets.choice(KEEP_ALIVE_PING_ART),
-                                 self.running_command)
+                    logging.info(
+                        '%s\n        [dim]>>>> %s[/]',
+                        secrets.choice(KEEP_ALIVE_PING_ART),
+                        self.running_command,
+                    )
             time.sleep(KEEP_ALIVE_PING_INTERVAL)
 
     def set_infra_mode(self):
-        """Sets the terminal to run on infra.
-        """
+        """Sets the terminal to run on infra."""
         self.infra_mode = True
         self.keep_alive_thread.start()
 
@@ -150,9 +160,9 @@ class Terminal:
     def _set_status_object(self, status):
         """Preserves the status object for updates.
 
-    This function is used to preserve the status object for updates, so that
-    the status can be updated with the initial status message.
-    """
+        This function is used to preserve the status object for updates, so that
+        the status can be updated with the initial status message.
+        """
         self.status = status
         self.starting_status_message = status.status
 
@@ -160,8 +170,9 @@ class Terminal:
         if self.infra_mode or not self.status:
             return
 
-        self.status.update(f'{self.starting_status_message} '
-                           f'[bold cyan]({status_message})[/]')
+        self.status.update(
+            f'{self.starting_status_message} [bold cyan]({status_message})[/]'
+        )
 
     @contextmanager
     def with_status(self, status_message: str):
@@ -185,13 +196,15 @@ class Terminal:
             status.stop()
             self.status = None
 
-    def run(self,
-            cmd,
-            *,
-            env: dict[str, str] | None = None,
-            cwd=None,
-            interactive: bool = False,
-            stdin: str | bytes | None = None):
+    def run(
+        self,
+        cmd,
+        *,
+        env: dict[str, str] | None = None,
+        cwd=None,
+        interactive: bool = False,
+        stdin: str | bytes | None = None,
+    ):
         """Runs a command on the terminal.
 
         When `interactive=True`, the subprocess inherits the parent's
@@ -221,10 +234,11 @@ class Terminal:
             if '\n' in message:
                 message = message.split('\n')[0] + '...'
             # Truncate at max_length if the message is still too long
-            max_length = console.size.width - len(
-                self.starting_status_message) - 10
+            max_length = (
+                console.size.width - len(self.starting_status_message) - 10
+            )
             if len(message) > max_length:
-                message = message[:max_length - 3] + '...'
+                message = message[: max_length - 3] + '...'
             return message
 
         if not self.infra_mode:
@@ -252,7 +266,8 @@ class Terminal:
         if interactive and stdin is not None:
             raise ValueError(
                 'terminal.run(): `stdin=` is not supported with '
-                '`interactive=True` (the subprocess owns the tty).')
+                '`interactive=True` (the subprocess owns the tty).'
+            )
 
         # Captured mode records stdout/stderr on the result. We normally let
         # subprocess decode them as UTF-8 text, which also folds CRLF into LF
@@ -264,8 +279,9 @@ class Terminal:
         feed_stdin = stdin is not None
         stdin_bytes = None
         if feed_stdin:
-            stdin_bytes = (stdin.encode('utf-8')
-                           if isinstance(stdin, str) else stdin)
+            stdin_bytes = (
+                stdin.encode('utf-8') if isinstance(stdin, str) else stdin
+            )
 
         capture_kwargs: dict[str, object] = {}
         if not interactive:
@@ -286,12 +302,14 @@ class Terminal:
             paused_status.stop()
 
         try:
-            result = subprocess.run(cmd,
-                                    check=True,
-                                    env=env,
-                                    cwd=cwd,
-                                    input=stdin_bytes,
-                                    **capture_kwargs)
+            result = subprocess.run(
+                cmd,
+                check=True,
+                env=env,
+                cwd=cwd,
+                input=stdin_bytes,
+                **capture_kwargs,
+            )
         except subprocess.CalledProcessError as e:
             if feed_stdin:
                 # Streams were captured as bytes; decode for logging and for
@@ -314,31 +332,29 @@ class Terminal:
             result.stderr = decode_stream(result.stderr)
         return result
 
-    def run_git(self,
-                *cmd,
-                no_trim=False,
-                env: dict[str, str] | None = None) -> str:
+    def run_git(
+        self, *cmd, no_trim=False, env: dict[str, str] | None = None
+    ) -> str:
         """Runs a git command with the arguments provided.
 
-    This function returns a proper utf8 string in success, otherwise it allows
-    the exception thrown by subprocess through.
+        This function returns a proper utf8 string in success, otherwise it allows
+        the exception thrown by subprocess through.
 
-    Args:
-        *cmd: The command to run, with any arguments.
-        no_trim: If True, the output will not be trimmed. This is usually rare
-        but preferred when producing the contents of a file.
-        env: Optional environment variables to be forwarded to `terminal.run`.
-    e.g:
-        self.run_git('add', '-u', '*.patch')
-    """
+        Args:
+            *cmd: The command to run, with any arguments.
+            no_trim: If True, the output will not be trimmed. This is usually rare
+            but preferred when producing the contents of a file.
+            env: Optional environment variables to be forwarded to `terminal.run`.
+        e.g:
+            self.run_git('add', '-u', '*.patch')
+        """
         cmd = ['git'] + list(cmd)
         if no_trim:
             return self.run(cmd, env=env).stdout
         return self.run(cmd, env=env).stdout.strip()
 
     def log_task(self, message):
-        """Logs a task to the console using common decorators
-        """
+        """Logs a task to the console using common decorators"""
         console.log(f'[bold red]*[/] {message}')
 
     def run_pnpm_command(self, *cmd):

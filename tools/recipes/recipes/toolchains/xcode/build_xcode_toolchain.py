@@ -18,7 +18,8 @@ from typing import TYPE_CHECKING
 
 import post_process
 from PB.recipes.brave.toolchains.xcode.build_xcode_toolchain import (
-    InputProperties)
+    InputProperties,
+)
 
 if TYPE_CHECKING:
     from engine import RecipeScriptApi
@@ -58,12 +59,20 @@ def GenTests(api):
         api.brave_core_checkout.deployed('tools/cr'),
         api.properties(chromium_tag='150.0.7841.1'),
         api.post_process(post_process.MustRun, 'build xcode toolchain'),
-        api.post_process(post_process.StepCommandContains,
-                         'build xcode toolchain',
-                         ['--chromium-tag', '150.0.7841.1']),
-        api.post_process(post_process.StepCommandContains,
-                         'build xcode toolchain', ['--clear']),
-        api.post_process(post_process.StepCommandContains,
-                         'build xcode toolchain', ['--upload']),
+        api.post_process(
+            post_process.StepCommandContains,
+            'build xcode toolchain',
+            ['--chromium-tag', '150.0.7841.1'],
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'build xcode toolchain',
+            ['--clear'],
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'build xcode toolchain',
+            ['--upload'],
+        ),
         api.post_process(post_process.StatusSuccess),
     )

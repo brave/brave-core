@@ -57,10 +57,12 @@ class _FakeAws:
     accidentally pass against an unexercised code path.
     """
 
-    def __init__(self,
-                 signature: str = 'ZmFrZS1zaWc=',
-                 version_id: str | None = 'v-1',
-                 etag: str | None = '"deadbeef"'):
+    def __init__(
+        self,
+        signature: str = 'ZmFrZS1zaWc=',
+        version_id: str | None = 'v-1',
+        etag: str | None = '"deadbeef"',
+    ):
         self.commands: list[list[str]] = []
         self.envs: list[dict[str, str] | None] = []
         self._signature = signature
@@ -71,26 +73,30 @@ class _FakeAws:
         command = list(command)
         self.commands.append(command)
         self.envs.append(kwargs.get('env'))
-        return subprocess.CompletedProcess(command,
-                                           0,
-                                           stdout=self._stdout(command))
+        return subprocess.CompletedProcess(
+            command, 0, stdout=self._stdout(command)
+        )
 
     def _stdout(self, command: list[str]) -> str:
         if 'sts' in command and 'assume-role' in command:
-            return json.dumps({
-                'Credentials': {
-                    'AccessKeyId': 'AKIA_TEMP',
-                    'SecretAccessKey': 'temp-secret',
-                    'SessionToken': 'temp-token',
+            return json.dumps(
+                {
+                    'Credentials': {
+                        'AccessKeyId': 'AKIA_TEMP',
+                        'SecretAccessKey': 'temp-secret',
+                        'SessionToken': 'temp-token',
+                    }
                 }
-            })
+            )
         if 'kms' in command and 'sign' in command:
             algorithm = command[command.index('--signing-algorithm') + 1]
-            return json.dumps({
-                'KeyId': 'arn:aws:kms:...:key/abc',
-                'Signature': self._signature,
-                'SigningAlgorithm': algorithm,
-            })
+            return json.dumps(
+                {
+                    'KeyId': 'arn:aws:kms:...:key/abc',
+                    'Signature': self._signature,
+                    'SigningAlgorithm': algorithm,
+                }
+            )
         if 'kms' in command and 'verify' in command:
             return json.dumps({'SignatureValid': True})
         if 'put-object' in command:
@@ -105,8 +111,7 @@ class _FakeAws:
     def command_with(self, needle: str) -> list[str]:
         """Return the single recorded command containing *needle*."""
         matches = [c for c in self.commands if needle in c]
-        assert len(
-            matches) == 1, f'{needle}: expected 1 command, got {matches}'
+        assert len(matches) == 1, f'{needle}: expected 1 command, got {matches}'
         return matches[0]
 
     def env_for(self, needle: str) -> dict[str, str] | None:
@@ -130,24 +135,26 @@ def _tempfile(data: bytes = b'toolchain-bytes'):
 
 
 class Sha256FileTest(unittest.TestCase):
-
     def test_matches_hashlib(self):
         data = b'the quick brown fox' * 1000
         with _tempfile(data) as path:
-            self.assertEqual(m.sha256_file(path),
-                             hashlib.sha256(data).hexdigest())
+            self.assertEqual(
+                m.sha256_file(path), hashlib.sha256(data).hexdigest()
+            )
 
     def test_empty_file(self):
         with _tempfile(b'') as path:
-            self.assertEqual(m.sha256_file(path),
-                             hashlib.sha256(b'').hexdigest())
+            self.assertEqual(
+                m.sha256_file(path), hashlib.sha256(b'').hexdigest()
+            )
 
     def test_large_file(self):
         # A multi-MiB file exercises the memory-mapped path beyond a page.
         data = b'x' * (4 * 1024 * 1024 + 7)
         with _tempfile(data) as path:
-            self.assertEqual(m.sha256_file(path),
-                             hashlib.sha256(data).hexdigest())
+            self.assertEqual(
+                m.sha256_file(path), hashlib.sha256(data).hexdigest()
+            )
 
 
 class SummariseTest(unittest.TestCase):
@@ -166,7 +173,8 @@ class SummariseTest(unittest.TestCase):
             'etag': '"e-tag"',
             'signature': m.ArtifactSignature(
                 key_id='arn:aws:kms:us-west-2:123456789012:key/abcd',
-                signature='c2lnbmF0dXJlLWJ5dGVz')
+                signature='c2lnbmF0dXJlLWJ5dGVz',
+            ),
         }
         base.update(overrides)
         return m.UploadResult(**base)
@@ -174,9 +182,15 @@ class SummariseTest(unittest.TestCase):
     def test_includes_public_fields(self):
         summary = self._result()
         rendered = m.summarise(summary)
-        for expected in (summary.bucket, summary.key, summary.url,
-                         summary.sha256, str(summary.size_bytes),
-                         summary.version_id, summary.etag):
+        for expected in (
+            summary.bucket,
+            summary.key,
+            summary.url,
+            summary.sha256,
+            str(summary.size_bytes),
+            summary.version_id,
+            summary.etag,
+        ):
             self.assertIn(expected, rendered)
 
     def test_omits_signature_envelope(self):
@@ -195,7 +209,6 @@ class SummariseTest(unittest.TestCase):
 
 
 class SignTest(unittest.TestCase):
-
     def test_signs_digest_as_base64_message(self):
         fake = _FakeAws(signature='c2lnMQ==')
         sha256_hex = hashlib.sha256(b'abc').hexdigest()
@@ -208,8 +221,7 @@ class SignTest(unittest.TestCase):
         self.assertEqual(_flag(command, '--message'), expected_message)
         self.assertEqual(_flag(command, '--message-type'), 'DIGEST')
         self.assertEqual(_flag(command, '--key-id'), m.DEFAULT_KMS_KEY)
-        self.assertEqual(_flag(command, '--signing-algorithm'),
-                         m.KMS_ALGORITHM)
+        self.assertEqual(_flag(command, '--signing-algorithm'), m.KMS_ALGORITHM)
         self.assertEqual(_flag(command, '--region'), m.DEFAULT_REGION)
 
         self.assertEqual(sig.signature, 'c2lnMQ==')
@@ -223,15 +235,16 @@ class SignTest(unittest.TestCase):
         with mock.patch.object(m.subprocess, 'run', fake):
             m.S3Uploader('bucket').sign(sha256_hex)
         command = fake.command_with('sign')
-        self.assertEqual(_flag(command, '--signing-algorithm'),
-                         'RSASSA_PSS_SHA_256')
+        self.assertEqual(
+            _flag(command, '--signing-algorithm'), 'RSASSA_PSS_SHA_256'
+        )
 
     def test_honours_uploader_config(self):
         fake = _FakeAws()
         sha256_hex = hashlib.sha256(b'abc').hexdigest()
-        uploader = m.S3Uploader('bucket',
-                                region='eu-west-1',
-                                kms_key='alias/gpg/other')
+        uploader = m.S3Uploader(
+            'bucket', region='eu-west-1', kms_key='alias/gpg/other'
+        )
         with mock.patch.object(m.subprocess, 'run', fake):
             sig = uploader.sign(sha256_hex)
         command = fake.command_with('sign')
@@ -257,8 +270,9 @@ class SignTest(unittest.TestCase):
         arn = 'arn:aws:iam::123456789012:role/signing-role-x-production'
         with mock.patch.object(m.subprocess, 'run', fake):
             m.S3Uploader('bucket', sign_role_arn=arn).sign(sha256_hex)
-        self.assertEqual(_flag(fake.command_with('assume-role'), '--role-arn'),
-                         arn)
+        self.assertEqual(
+            _flag(fake.command_with('assume-role'), '--role-arn'), arn
+        )
         env = fake.env_for('sign')
         self.assertEqual(env['AWS_ACCESS_KEY_ID'], 'AKIA_TEMP')
         self.assertEqual(env['AWS_SECRET_ACCESS_KEY'], 'temp-secret')
@@ -280,7 +294,6 @@ class SignTest(unittest.TestCase):
 
 
 class KmsVerifyTest(unittest.TestCase):
-
     def test_builds_verify_command(self):
         fake = _FakeAws()
         sha256_hex = hashlib.sha256(b'abc').hexdigest()
@@ -292,8 +305,9 @@ class KmsVerifyTest(unittest.TestCase):
         self.assertEqual(_flag(command, '--message'), expected_message)
         self.assertEqual(_flag(command, '--signature'), 'c2ln')
         self.assertEqual(_flag(command, '--key-id'), 'alias/gpg/k')
-        self.assertEqual(_flag(command, '--signing-algorithm'),
-                         'RSASSA_PSS_SHA_256')
+        self.assertEqual(
+            _flag(command, '--signing-algorithm'), 'RSASSA_PSS_SHA_256'
+        )
 
     def test_raises_on_bad_signature(self):
         sig = m.ArtifactSignature('k', 'c2ln')
@@ -304,13 +318,12 @@ class KmsVerifyTest(unittest.TestCase):
 
 
 class PutObjectTest(unittest.TestCase):
-
     def _put(self, fake, immutable):
         with _tempfile() as path:
             with mock.patch.object(m.subprocess, 'run', fake):
-                return m.S3Uploader('bucket')._put_object(path,
-                                                          'prefix/obj',
-                                                          immutable=immutable)
+                return m.S3Uploader('bucket')._put_object(
+                    path, 'prefix/obj', immutable=immutable
+                )
 
     def test_immutable_adds_if_none_match(self):
         fake = _FakeAws()
@@ -337,7 +350,6 @@ class PutObjectTest(unittest.TestCase):
 
 
 class UploadTest(unittest.TestCase):
-
     def test_end_to_end(self):
         data = b'archive-payload'
         fake = _FakeAws(signature='c2lnQVo=', version_id='v-9', etag='"e"')
@@ -347,18 +359,21 @@ class UploadTest(unittest.TestCase):
 
         self.assertEqual(result.bucket, 'my-bucket')
         self.assertEqual(result.key, path.name)
-        self.assertEqual(result.url,
-                         f'https://my-bucket.s3.brave.com/{path.name}')
+        self.assertEqual(
+            result.url, f'https://my-bucket.s3.brave.com/{path.name}'
+        )
         self.assertEqual(result.sha256, hashlib.sha256(data).hexdigest())
         self.assertEqual(result.size_bytes, len(data))
         self.assertEqual(result.version_id, 'v-9')
         self.assertEqual(result.etag, '"e"')
         self.assertEqual(result.signature.signature, 'c2lnQVo=')
-        self.assertEqual(_flag(fake.command_with('put-object'), '--bucket'),
-                         'my-bucket')
+        self.assertEqual(
+            _flag(fake.command_with('put-object'), '--bucket'), 'my-bucket'
+        )
         # Default is a write-once upload.
         self.assertEqual(
-            _flag(fake.command_with('put-object'), '--if-none-match'), '*')
+            _flag(fake.command_with('put-object'), '--if-none-match'), '*'
+        )
 
     def test_signs_the_uploaded_bytes_digest(self):
         data = b'payload-to-sign'
@@ -384,27 +399,31 @@ class UploadTest(unittest.TestCase):
                 # Trailing slash on the prefix must not double up.
                 result = m.S3Uploader('b').upload(path, prefix='some/dir/')
         self.assertEqual(result.key, f'some/dir/{path.name}')
-        self.assertEqual(_flag(fake.command_with('put-object'), '--key'),
-                         f'some/dir/{path.name}')
+        self.assertEqual(
+            _flag(fake.command_with('put-object'), '--key'),
+            f'some/dir/{path.name}',
+        )
 
     def test_explicit_key_overrides_prefix(self):
         fake = _FakeAws()
         with _tempfile() as path:
             with mock.patch.object(m.subprocess, 'run', fake):
-                result = m.S3Uploader('b').upload(path,
-                                                  key='custom/name.bin',
-                                                  prefix='ignored')
+                result = m.S3Uploader('b').upload(
+                    path, key='custom/name.bin', prefix='ignored'
+                )
         self.assertEqual(result.key, 'custom/name.bin')
-        self.assertEqual(_flag(fake.command_with('put-object'), '--key'),
-                         'custom/name.bin')
+        self.assertEqual(
+            _flag(fake.command_with('put-object'), '--key'), 'custom/name.bin'
+        )
 
     def test_url_derived_from_bucket(self):
         fake = _FakeAws()
         with _tempfile() as path:
             with mock.patch.object(m.subprocess, 'run', fake):
                 result = m.S3Uploader('some-bucket').upload(path, prefix='p')
-        self.assertEqual(result.url,
-                         f'https://some-bucket.s3.brave.com/p/{path.name}')
+        self.assertEqual(
+            result.url, f'https://some-bucket.s3.brave.com/p/{path.name}'
+        )
 
     def test_mutable_upload(self):
         fake = _FakeAws()
@@ -444,8 +463,7 @@ class UploadTest(unittest.TestCase):
             command = list(command)
             if 'sign' in command:
                 raise subprocess.CalledProcessError(255, 'aws')
-            raise AssertionError(
-                'put-object must not run after a sign failure')
+            raise AssertionError('put-object must not run after a sign failure')
 
         with _tempfile() as path:
             with mock.patch.object(m.subprocess, 'run', side_effect=run):
@@ -457,15 +475,16 @@ class UploadTest(unittest.TestCase):
         def run(command, **_kwargs):
             command = list(command)
             if 'sign' in command:
-                return subprocess.CompletedProcess(command,
-                                                   0,
-                                                   stdout=json.dumps({
-                                                       'Signature': 's',
-                                                       'SigningAlgorithm': 'a'
-                                                   }))
-            raise subprocess.CalledProcessError(1,
-                                                'aws',
-                                                stderr='PreconditionFailed')
+                return subprocess.CompletedProcess(
+                    command,
+                    0,
+                    stdout=json.dumps(
+                        {'Signature': 's', 'SigningAlgorithm': 'a'}
+                    ),
+                )
+            raise subprocess.CalledProcessError(
+                1, 'aws', stderr='PreconditionFailed'
+            )
 
         with _tempfile() as path:
             with mock.patch.object(m.subprocess, 'run', side_effect=run):
@@ -474,7 +493,6 @@ class UploadTest(unittest.TestCase):
 
 
 class MainTest(unittest.TestCase):
-
     def _run(self, argv):
         out = io.StringIO()
         with mock.patch.object(sys, 'argv', ['upload.py', *argv]):
@@ -487,7 +505,8 @@ class MainTest(unittest.TestCase):
                     size_bytes=1,
                     version_id='v',
                     etag='"e"',
-                    signature=None)
+                    signature=None,
+                )
                 with contextlib.redirect_stdout(out):
                     code = m.main()
         return code, cls, out.getvalue()
@@ -515,29 +534,43 @@ class MainTest(unittest.TestCase):
 
     def test_mutable_and_no_sign_flags(self):
         _, cls, _ = self._run(
-            ['/tmp/a.bin', '--bucket', 'b', '--mutable', '--no-sign'])
+            ['/tmp/a.bin', '--bucket', 'b', '--mutable', '--no-sign']
+        )
         _, kwargs = cls.return_value.upload.call_args
         self.assertFalse(kwargs['immutable'])
         self.assertFalse(kwargs['sign'])
 
     def test_sign_role_arn_from_flag(self):
         _, cls, _ = self._run(
-            ['/tmp/a.bin', '--bucket', 'b', '--sign-role-arn', 'arn:flag'])
+            ['/tmp/a.bin', '--bucket', 'b', '--sign-role-arn', 'arn:flag']
+        )
         _, ctor = cls.call_args
         self.assertEqual(ctor['sign_role_arn'], 'arn:flag')
 
     def test_sign_role_arn_defaults_from_env(self):
-        with mock.patch.dict(m.os.environ,
-                             {m.SIGN_ROLE_ARN_ENV: 'arn:from-env'}):
+        with mock.patch.dict(
+            m.os.environ, {m.SIGN_ROLE_ARN_ENV: 'arn:from-env'}
+        ):
             _, cls, _ = self._run(['/tmp/a.bin', '--bucket', 'b'])
         _, ctor = cls.call_args
         self.assertEqual(ctor['sign_role_arn'], 'arn:from-env')
 
     def test_key_prefix_and_kms_overrides(self):
-        _, cls, _ = self._run([
-            '/tmp/a.bin', '--bucket', 'b', '--key', 'k/o', '--prefix', 'p',
-            '--kms-key', 'alias/gpg/x', '--region', 'eu-west-1'
-        ])
+        _, cls, _ = self._run(
+            [
+                '/tmp/a.bin',
+                '--bucket',
+                'b',
+                '--key',
+                'k/o',
+                '--prefix',
+                'p',
+                '--kms-key',
+                'alias/gpg/x',
+                '--region',
+                'eu-west-1',
+            ]
+        )
         # KMS/region overrides land on the constructor...
         _, ctor = cls.call_args
         self.assertEqual(ctor['kms_key'], 'alias/gpg/x')

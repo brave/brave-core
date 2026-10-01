@@ -24,22 +24,27 @@ def _feed(parser: m.GTestLogParser, lines: list[str]) -> None:
 
 
 class GTestLogParserTest(unittest.TestCase):
-
     def test_run_then_ok_passes(self):
         parser = m.GTestLogParser()
-        _feed(parser, [
-            '[ RUN      ] Foo.Bar',
-            '[       OK ] Foo.Bar (1 ms)',
-        ])
+        _feed(
+            parser,
+            [
+                '[ RUN      ] Foo.Bar',
+                '[       OK ] Foo.Bar (1 ms)',
+            ],
+        )
         self.assertEqual(parser.passed_tests(), ['Foo.Bar'])
         self.assertEqual(parser.failed_tests(), [])
 
     def test_run_then_failed_is_failure(self):
         parser = m.GTestLogParser()
-        _feed(parser, [
-            '[ RUN      ] Foo.Bar',
-            '[  FAILED  ] Foo.Bar (1 ms)',
-        ])
+        _feed(
+            parser,
+            [
+                '[ RUN      ] Foo.Bar',
+                '[  FAILED  ] Foo.Bar (1 ms)',
+            ],
+        )
         self.assertEqual(parser.failed_tests(), ['Foo.Bar'])
         self.assertEqual(parser.passed_tests(), [])
 
@@ -47,51 +52,66 @@ class GTestLogParserTest(unittest.TestCase):
         # A second RUN with no result for the first marks it as timed out, so it
         # counts as failed.
         parser = m.GTestLogParser()
-        _feed(parser, [
-            '[ RUN      ] Foo.One',
-            '[ RUN      ] Foo.Two',
-            '[       OK ] Foo.Two (1 ms)',
-        ])
+        _feed(
+            parser,
+            [
+                '[ RUN      ] Foo.One',
+                '[ RUN      ] Foo.Two',
+                '[       OK ] Foo.Two (1 ms)',
+            ],
+        )
         self.assertIn('Foo.One', parser.failed_tests())
         self.assertEqual(parser.passed_tests(), ['Foo.Two'])
 
     def test_skipped(self):
         parser = m.GTestLogParser()
-        _feed(parser, [
-            '[ RUN      ] Foo.Bar',
-            '[  SKIPPED ] Foo.Bar (0 ms)',
-        ])
+        _feed(
+            parser,
+            [
+                '[ RUN      ] Foo.Bar',
+                '[  SKIPPED ] Foo.Bar (0 ms)',
+            ],
+        )
         self.assertEqual(parser.skipped_tests(), ['Foo.Bar'])
         self.assertEqual(parser.failed_tests(), [])
 
     def test_disabled_and_flaky_counts(self):
         parser = m.GTestLogParser()
-        _feed(parser, [
-            '  YOU HAVE 3 DISABLED TESTS',
-            '  YOU HAVE 2 FLAKY TESTS',
-        ])
+        _feed(
+            parser,
+            [
+                '  YOU HAVE 3 DISABLED TESTS',
+                '  YOU HAVE 2 FLAKY TESTS',
+            ],
+        )
         self.assertEqual(parser.disabled_tests(), 3)
         self.assertEqual(parser.flaky_tests(), 2)
 
     def test_memory_tool_report_hashes(self):
         parser = m.GTestLogParser()
-        _feed(parser, [
-            '### BEGIN MEMORY TOOL REPORT (error hash=#ABCDEF#)',
-            'some leak detail',
-            '### END MEMORY TOOL REPORT (error hash=#ABCDEF#)',
-        ])
+        _feed(
+            parser,
+            [
+                '### BEGIN MEMORY TOOL REPORT (error hash=#ABCDEF#)',
+                'some leak detail',
+                '### END MEMORY TOOL REPORT (error hash=#ABCDEF#)',
+            ],
+        )
         self.assertEqual(parser.memory_tool_report_hashes(), ['ABCDEF'])
 
     def test_failing_tests_block_catches_crash_after_ok(self):
         # A test that reports OK but then appears in the trailing failure list
         # (e.g. it crashed afterwards) is reclassified as failed.
         parser = m.GTestLogParser()
-        _feed(parser, [
-            '[ RUN      ] Foo.Bar',
-            '[       OK ] Foo.Bar (1 ms)',
-            'Failing tests:',
-            'Foo.Bar',
-        ])
+        _feed(
+            parser,
+            [
+                '[ RUN      ] Foo.Bar',
+                '[       OK ] Foo.Bar (1 ms)',
+                'Failing tests:',
+                'Foo.Bar',
+            ],
+        )
         self.assertEqual(parser.failed_tests(), ['Foo.Bar'])
 
     def test_mixed_line_is_split(self):
@@ -110,30 +130,19 @@ class GTestLogParserTest(unittest.TestCase):
 
 
 class GTestJSONParserTest(unittest.TestCase):
-
     def _make_data(self):
         return {
             'disabled_tests': ['Foo.Disabled'],
-            'per_iteration_data': [{
-                'Foo.Pass': [{
-                    'status': 'SUCCESS',
-                    'output_snippet': ''
-                }],
-                'Foo.Fail': [{
-                    'status': 'FAILURE',
-                    'output_snippet': ''
-                }],
-                'Foo.Flaky': [
-                    {
-                        'status': 'FAILURE',
-                        'output_snippet': ''
-                    },
-                    {
-                        'status': 'SUCCESS',
-                        'output_snippet': ''
-                    },
-                ],
-            }],
+            'per_iteration_data': [
+                {
+                    'Foo.Pass': [{'status': 'SUCCESS', 'output_snippet': ''}],
+                    'Foo.Fail': [{'status': 'FAILURE', 'output_snippet': ''}],
+                    'Foo.Flaky': [
+                        {'status': 'FAILURE', 'output_snippet': ''},
+                        {'status': 'SUCCESS', 'output_snippet': ''},
+                    ],
+                }
+            ],
         }
 
     def test_process_json_data(self):

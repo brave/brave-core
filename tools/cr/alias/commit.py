@@ -37,8 +37,12 @@ from dataclasses import dataclass
 from typing import ClassVar, NoReturn
 
 import _boot  # noqa: F401
-from alias.base import (HOOK_DEST, WINDOWS_SHIM, UserValidationError,
-                        check_hooks_path)
+from alias.base import (
+    HOOK_DEST,
+    WINDOWS_SHIM,
+    UserValidationError,
+    check_hooks_path,
+)
 
 
 def _check_hook_ready() -> None:
@@ -60,7 +64,8 @@ def _check_hook_ready() -> None:
     if not ready:
         raise UserValidationError(
             'git_cr: commit-msg hook is not installed or not executable.\n'
-            'Run:    git cr install-hook')
+            'Run:    git cr install-hook'
+        )
 
 
 def _run_commit(
@@ -78,8 +83,9 @@ def _run_commit(
         env['issue'] = issue
     if culprit:
         env['culprit'] = culprit
-    return subprocess.run(['git', 'commit'] + git_args, check=False,
-                          env=env).returncode
+    return subprocess.run(
+        ['git', 'commit'] + git_args, check=False, env=env
+    ).returncode
 
 
 class _LenientArgumentParser(argparse.ArgumentParser):
@@ -153,11 +159,13 @@ class _MarkChangeShortcut:
         if other_args:
             raise UserValidationError(
                 f'git_cr: --fixup={verb}:<ref> cannot be combined with '
-                f'other arguments; remove: {" ".join(other_args)}')
+                f'other arguments; remove: {" ".join(other_args)}'
+            )
         if not target:
             raise UserValidationError(
                 f'git_cr: --fixup={verb}: requires a commit reference, '
-                f'e.g. --fixup={verb}:HEAD~2')
+                f'e.g. --fixup={verb}:HEAD~2'
+            )
         return _MarkChangeShortcut(verb, target)
 
     def run(self) -> int:
@@ -169,11 +177,15 @@ class _MarkChangeShortcut:
         # Imported lazily: brockit is a heavy module, so we only import it when
         # needed.
         import brockit
+
         task = getattr(brockit, _MarkChangeShortcut._TASKS[self.verb])
         try:
             task().run(change=self.target)
-        except (brockit.InvalidInputException, brockit.BadOutcomeException,
-                brockit.ActionNeededException):
+        except (
+            brockit.InvalidInputException,
+            brockit.BadOutcomeException,
+            brockit.ActionNeededException,
+        ):
             # Handling brockit exceptions as failures to create the marker
             # commit.
             return 1

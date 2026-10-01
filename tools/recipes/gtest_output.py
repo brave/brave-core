@@ -56,26 +56,19 @@ class GTestParser(Protocol):
     Both `GTestLogParser` and `GTestJSONParser` structurally satisfy this.
     """
 
-    def process_line(self, line: str) -> None:
-        ...
+    def process_line(self, line: str) -> None: ...
 
-    def parsing_errors(self) -> list[str]:
-        ...
+    def parsing_errors(self) -> list[str]: ...
 
-    def failed_tests(self) -> list[str]:
-        ...
+    def failed_tests(self) -> list[str]: ...
 
-    def disabled_tests(self) -> int | str:
-        ...
+    def disabled_tests(self) -> int | str: ...
 
-    def flaky_tests(self) -> int | str:
-        ...
+    def flaky_tests(self) -> int | str: ...
 
-    def memory_tool_report_hashes(self) -> list[str]:
-        ...
+    def memory_tool_report_hashes(self) -> list[str]: ...
 
-    def running_tests(self) -> list[str]:
-        ...
+    def running_tests(self) -> list[str]: ...
 
 
 class GTestLogParser:
@@ -113,19 +106,24 @@ class GTestLogParser:
         self._test_ok = re.compile(r'\[\s+OK\s+\] ' + self._TEST_NAME_RE)
         self._test_fail = re.compile(r'\[\s+FAILED\s+\] ' + self._TEST_NAME_RE)
         self._test_passed = re.compile(r'\[\s+PASSED\s+\] \d+ tests?.')
-        self._test_skipped = re.compile(r'\[\s+SKIPPED\s+\] ' +
-                                        self._TEST_NAME_RE)
+        self._test_skipped = re.compile(
+            r'\[\s+SKIPPED\s+\] ' + self._TEST_NAME_RE
+        )
         self._test_name = re.compile(self._TEST_NAME_RE)
         self._run_test_cases_line = re.compile(
-            r'\[\s*\d+\/\d+\]\s+[0-9\.]+s ' + self._TEST_NAME_RE + ' .+')
+            r'\[\s*\d+\/\d+\]\s+[0-9\.]+s ' + self._TEST_NAME_RE + ' .+'
+        )
         self._test_timeout = re.compile(
-            r'Test timeout \([0-9]+ ms\) exceeded for ' + self._TEST_NAME_RE)
+            r'Test timeout \([0-9]+ ms\) exceeded for ' + self._TEST_NAME_RE
+        )
         self._disabled = re.compile(r'\s*YOU HAVE (\d+) DISABLED TEST')
         self._flaky = re.compile(r'\s*YOU HAVE (\d+) FLAKY TEST')
         self._report_start = re.compile(
-            r'### BEGIN MEMORY TOOL REPORT \(error hash=#([0-9A-F]+)#\)')
+            r'### BEGIN MEMORY TOOL REPORT \(error hash=#([0-9A-F]+)#\)'
+        )
         self._report_end = re.compile(
-            r'### END MEMORY TOOL REPORT \(error hash=#([0-9A-F]+)#\)')
+            r'### END MEMORY TOOL REPORT \(error hash=#([0-9A-F]+)#\)'
+        )
         self._retry_message = re.compile('RETRYING FAILED TESTS:')
 
     # -- GTestParser protocol ------------------------------------------------
@@ -154,26 +152,31 @@ class GTestLogParser:
         if not match or match.start() == 0:
             self._process_line(line)
         else:
-            self._process_line(line[:match.start()])
-            self._process_line(line[match.start():])
+            self._process_line(line[: match.start()])
+            self._process_line(line[match.start() :])
 
     def parsing_errors(self) -> list[str]:
         """Returns lines that caused parsing errors."""
         return self._internal_error_lines
 
-    def failed_tests(self,
-                     include_fails: bool = False,
-                     include_flaky: bool = False) -> list[str]:
+    def failed_tests(
+        self, include_fails: bool = False, include_flaky: bool = False
+    ) -> list[str]:
         """Returns tests that failed, timed out, or never finished (crashed).
 
         This is only accurate once the complete log has been processed, since
         currently-running tests are reported as failed.
         """
-        return (self._tests_by_status(TestStatus.FAILED, include_fails,
-                                      include_flaky) +
-                self._tests_by_status(TestStatus.TIMEOUT, True, True) +
-                self._tests_by_status(TestStatus.WARNING, include_fails,
-                                      include_flaky) + self.running_tests())
+        return (
+            self._tests_by_status(
+                TestStatus.FAILED, include_fails, include_flaky
+            )
+            + self._tests_by_status(TestStatus.TIMEOUT, True, True)
+            + self._tests_by_status(
+                TestStatus.WARNING, include_fails, include_flaky
+            )
+            + self.running_tests()
+        )
 
     def disabled_tests(self) -> int | str:
         """Returns the number of disabled tests (or 'some' if unparseable)."""
@@ -193,19 +196,21 @@ class GTestLogParser:
 
     # -- Additional accessors ------------------------------------------------
 
-    def passed_tests(self,
-                     include_fails: bool = False,
-                     include_flaky: bool = False) -> list[str]:
+    def passed_tests(
+        self, include_fails: bool = False, include_flaky: bool = False
+    ) -> list[str]:
         """Returns tests that passed."""
-        return self._tests_by_status(TestStatus.OK, include_fails,
-                                     include_flaky)
+        return self._tests_by_status(
+            TestStatus.OK, include_fails, include_flaky
+        )
 
-    def skipped_tests(self,
-                      include_fails: bool = False,
-                      include_flaky: bool = False) -> list[str]:
+    def skipped_tests(
+        self, include_fails: bool = False, include_flaky: bool = False
+    ) -> list[str]:
         """Returns tests that were skipped."""
-        return self._tests_by_status(TestStatus.SKIPPED, include_fails,
-                                     include_flaky)
+        return self._tests_by_status(
+            TestStatus.SKIPPED, include_fails, include_flaky
+        )
 
     def completed_without_failure(self) -> bool:
         """Returns True if all tests completed and none failed unexpectedly."""
@@ -217,10 +222,12 @@ class GTestLogParser:
         entry = self._test_status.get(test)
         return entry[0] if entry else None
 
-    def _tests_by_status(self, status: TestStatus, include_fails: bool,
-                         include_flaky: bool) -> list[str]:
+    def _tests_by_status(
+        self, status: TestStatus, include_fails: bool, include_flaky: bool
+    ) -> list[str]:
         tests = [
-            name for name in self._test_status
+            name
+            for name in self._test_status
             if self._status_of_test(name) == status
         ]
         if not include_fails:
@@ -231,7 +238,8 @@ class GTestLogParser:
 
     def _record_error(self, line: str, reason: str) -> None:
         self._internal_error_lines.append(
-            f'{self._line_number}: {line.strip()} [{reason}]')
+            f'{self._line_number}: {line.strip()} [{reason}]'
+        )
 
     def _process_line(self, line: str) -> None:
         """Parses a single (already de-mixed) line, updating test state."""
@@ -241,10 +249,15 @@ class GTestLogParser:
         if self._run_test_cases_line.match(line):
             # A run_test_cases.py progress line. If the current test never
             # reported a result, treat it as timed out.
-            if self._current_test and self._status_of_test(
-                    self._current_test) == TestStatus.STARTED:
+            if (
+                self._current_test
+                and self._status_of_test(self._current_test)
+                == TestStatus.STARTED
+            ):
                 self._test_status[self._current_test] = (
-                    TestStatus.TIMEOUT, self._failure_description)
+                    TestStatus.TIMEOUT,
+                    self._failure_description,
+                )
             self._current_test = ''
             self._failure_description = []
             return
@@ -256,25 +269,34 @@ class GTestLogParser:
 
         results = self._disabled.match(line)
         if results:
-            self._disabled_tests = self._parse_count(results.group(1),
-                                                     self._disabled_tests)
+            self._disabled_tests = self._parse_count(
+                results.group(1), self._disabled_tests
+            )
             return
 
         results = self._flaky.match(line)
         if results:
-            self._flaky_tests = self._parse_count(results.group(1),
-                                                  self._flaky_tests)
+            self._flaky_tests = self._parse_count(
+                results.group(1), self._flaky_tests
+            )
             return
 
         results = self._test_start.match(line)
         if results:
-            if self._current_test and self._status_of_test(
-                    self._current_test) == TestStatus.STARTED:
+            if (
+                self._current_test
+                and self._status_of_test(self._current_test)
+                == TestStatus.STARTED
+            ):
                 self._test_status[self._current_test] = (
-                    TestStatus.TIMEOUT, self._failure_description)
+                    TestStatus.TIMEOUT,
+                    self._failure_description,
+                )
             test_name = results.group(1)
-            self._test_status[test_name] = (TestStatus.STARTED,
-                                            ['Did not complete.'])
+            self._test_status[test_name] = (
+                TestStatus.STARTED,
+                ['Did not complete.'],
+            )
             self._current_test = test_name
             if self.retrying_failed:
                 self._failure_description = self._test_status[test_name][1]
@@ -290,8 +312,10 @@ class GTestLogParser:
             if status != TestStatus.STARTED:
                 self._record_error(line, f'success while in status {status}')
             if self.retrying_failed:
-                self._test_status[test_name] = (TestStatus.WARNING,
-                                                self._failure_description)
+                self._test_status[test_name] = (
+                    TestStatus.WARNING,
+                    self._failure_description,
+                )
             else:
                 self._test_status[test_name] = (TestStatus.OK, [])
             self._failure_description = []
@@ -314,14 +338,19 @@ class GTestLogParser:
         if results:
             test_name = results.group(1)
             status = self._status_of_test(test_name)
-            if status not in (TestStatus.STARTED, TestStatus.FAILED,
-                              TestStatus.TIMEOUT):
+            if status not in (
+                TestStatus.STARTED,
+                TestStatus.FAILED,
+                TestStatus.TIMEOUT,
+            ):
                 self._record_error(line, f'failure while in status {status}')
             # Don't overwrite the description when a failing test is listed a
             # second time in the summary, or if it already timed out.
             if status not in (TestStatus.FAILED, TestStatus.TIMEOUT):
-                self._test_status[test_name] = (TestStatus.FAILED,
-                                                self._failure_description)
+                self._test_status[test_name] = (
+                    TestStatus.FAILED,
+                    self._failure_description,
+                )
             self._failure_description = []
             self._current_test = ''
             return
@@ -332,9 +361,10 @@ class GTestLogParser:
             status = self._status_of_test(test_name)
             if status not in (TestStatus.STARTED, TestStatus.FAILED):
                 self._record_error(line, f'timeout while in status {status}')
-            self._test_status[test_name] = (TestStatus.TIMEOUT,
-                                            self._failure_description +
-                                            ['Killed (timed out).'])
+            self._test_status[test_name] = (
+                TestStatus.TIMEOUT,
+                self._failure_description + ['Killed (timed out).'],
+            )
             self._failure_description = []
             self._current_test = ''
             return
@@ -356,11 +386,12 @@ class GTestLogParser:
                 self._record_error(line, 'no BEGIN matches this END')
             elif report_hash != self._current_report_hash:
                 self._record_error(
-                    line,
-                    f'expected (error hash=#{self._current_report_hash}#)')
+                    line, f'expected (error hash=#{self._current_report_hash}#)'
+                )
             else:
                 self._memory_tool_reports[self._current_report_hash] = (
-                    self._current_report)
+                    self._current_report
+                )
             self._current_report_hash = ''
             self._current_report = []
             return
@@ -388,9 +419,10 @@ class GTestLogParser:
                 test_name = results.group(1)
                 status = self._status_of_test(test_name)
                 if status in (None, TestStatus.OK):
-                    self._test_status[test_name] = (TestStatus.FAILED, [
-                        'Unknown error, see stdio log.'
-                    ])
+                    self._test_status[test_name] = (
+                        TestStatus.FAILED,
+                        ['Unknown error, see stdio log.'],
+                    )
             else:
                 self._parsing_failures = False
         elif line.startswith('Failing tests:'):
@@ -466,8 +498,9 @@ class GTestJSONParser:
             self._json_file_path = cmdline_path
             self._delete_json_file = False
         else:
-            with tempfile.NamedTemporaryFile(delete=False,
-                                             suffix='.json') as temp_file:
+            with tempfile.NamedTemporaryFile(
+                delete=False, suffix='.json'
+            ) as temp_file:
                 self._json_file_path = Path(temp_file.name)
             self._delete_json_file = True
         return self._json_file_path

@@ -72,16 +72,18 @@ def _completed(stdout: str = '') -> subprocess.CompletedProcess:
     return subprocess.CompletedProcess([], 0, stdout=stdout)
 
 
-def _xcode_entry(number: str,
-                 build: str,
-                 *,
-                 sdk_build: str | None = None,
-                 release: str = 'final',
-                 filename: str | None = None,
-                 sha1: str = 'deadbeef',
-                 universal: bool = True,
-                 has_url: bool = True,
-                 name: str = 'Xcode') -> dict:
+def _xcode_entry(
+    number: str,
+    build: str,
+    *,
+    sdk_build: str | None = None,
+    release: str = 'final',
+    filename: str | None = None,
+    sha1: str = 'deadbeef',
+    universal: bool = True,
+    has_url: bool = True,
+    name: str = 'Xcode',
+) -> dict:
     """Build a minimal xcodereleases.com-shaped catalog entry.
 
     Args:
@@ -107,9 +109,7 @@ def _xcode_entry(number: str,
         filename = f'Xcode_{number}_{arch}.xip'
     if has_url:
         entry['links'] = {
-            'download': {
-                'url': f'https://example.invalid/{filename}'
-            }
+            'download': {'url': f'https://example.invalid/{filename}'}
         }
     entry['checksums'] = {'sha1': sha1}
     return entry
@@ -131,7 +131,7 @@ class VersionSortKeyTest(unittest.TestCase):
     def test_ignores_non_numeric_trailing_components(self):
         # `'0-beta'.isdigit()` is False, so that whole component is dropped
         # rather than partially parsed.
-        self.assertEqual(m._version_sort_key('6.0-beta'), (6, ))
+        self.assertEqual(m._version_sort_key('6.0-beta'), (6,))
 
 
 class Sha1OfFileTest(unittest.TestCase):
@@ -142,16 +142,19 @@ class Sha1OfFileTest(unittest.TestCase):
             path = Path(tmp_dir) / 'data.bin'
             content = b'some xcode archive bytes' * 100
             path.write_bytes(content)
-            self.assertEqual(m._sha1_of_file(path),
-                             hashlib.sha1(content).hexdigest())
+            self.assertEqual(
+                m._sha1_of_file(path), hashlib.sha1(content).hexdigest()
+            )
 
 
 class MacSdkInfoFromGniTest(unittest.TestCase):
     """Tests for `MacSdkInfo.from_gni`."""
 
     def test_parses_both_assignments(self):
-        text = ('mac_sdk_official_version = "26.5"\n'
-                'mac_sdk_official_build_version = "25F70"\n')
+        text = (
+            'mac_sdk_official_version = "26.5"\n'
+            'mac_sdk_official_build_version = "25F70"\n'
+        )
         info = m.MacSdkInfo.from_gni(text)
         self.assertEqual(info, m.MacSdkInfo('26.5', '25F70'))
 
@@ -170,37 +173,49 @@ class CheckDeveloperModeTest(unittest.TestCase):
     """Tests for `_check_developer_mode`."""
 
     def test_passes_silently_when_enabled(self):
-        with mock.patch.object(m,
-                               '_check_call',
-                               return_value=_completed(
-                                   'Developer mode is currently enabled.\n')):
+        with mock.patch.object(
+            m,
+            '_check_call',
+            return_value=_completed('Developer mode is currently enabled.\n'),
+        ):
             m._check_developer_mode()  # does not raise
 
     def test_raises_an_actionable_error_when_disabled(self):
-        with mock.patch.object(m,
-                               '_check_call',
-                               return_value=_completed(
-                                   'Developer mode is currently disabled.\n')):
+        with mock.patch.object(
+            m,
+            '_check_call',
+            return_value=_completed('Developer mode is currently disabled.\n'),
+        ):
             with self.assertRaises(RuntimeError) as ctx:
                 m._check_developer_mode()
         self.assertIn('DevToolsSecurity -enable', str(ctx.exception))
 
     def test_warns_instead_of_raising_when_disabled_and_warn_only(self):
-        with mock.patch.object(
-                m, '_check_call',
+        with (
+            mock.patch.object(
+                m,
+                '_check_call',
                 return_value=_completed(
-                    'Developer mode is currently disabled.\n')), \
-             mock.patch.object(m.logging, 'warning') as warning:
+                    'Developer mode is currently disabled.\n'
+                ),
+            ),
+            mock.patch.object(m.logging, 'warning') as warning,
+        ):
             m._check_developer_mode(warn_only=True)  # does not raise
         warning.assert_called_once()
         self.assertIn('DevToolsSecurity -enable', warning.call_args.args[0])
 
     def test_does_not_warn_when_enabled_and_warn_only(self):
-        with mock.patch.object(
-                m, '_check_call',
+        with (
+            mock.patch.object(
+                m,
+                '_check_call',
                 return_value=_completed(
-                    'Developer mode is currently enabled.\n')), \
-             mock.patch.object(m.logging, 'warning') as warning:
+                    'Developer mode is currently enabled.\n'
+                ),
+            ),
+            mock.patch.object(m.logging, 'warning') as warning,
+        ):
             m._check_developer_mode(warn_only=True)  # does not raise
         warning.assert_not_called()
 
@@ -209,15 +224,15 @@ class MacosMajorVersionTest(unittest.TestCase):
     """Tests for `_macos_major_version`."""
 
     def test_parses_the_major_component_of_a_dotted_version(self):
-        with mock.patch.object(m,
-                               '_check_call',
-                               return_value=_completed('14.6.1\n')):
+        with mock.patch.object(
+            m, '_check_call', return_value=_completed('14.6.1\n')
+        ):
             self.assertEqual(m._macos_major_version(), 14)
 
     def test_parses_a_bare_major_version(self):
-        with mock.patch.object(m,
-                               '_check_call',
-                               return_value=_completed('15\n')):
+        with mock.patch.object(
+            m, '_check_call', return_value=_completed('15\n')
+        ):
             self.assertEqual(m._macos_major_version(), 15)
 
 
@@ -226,12 +241,14 @@ class FetchXcodeReleasesTest(unittest.TestCase):
 
     def test_fetches_and_parses_the_catalog(self):
         body = json.dumps([{'name': 'Xcode'}]).encode('utf-8')
-        with mock.patch('urllib.request.urlopen',
-                        return_value=io.BytesIO(body)) as urlopen:
+        with mock.patch(
+            'urllib.request.urlopen', return_value=io.BytesIO(body)
+        ) as urlopen:
             result = m._fetch_xcode_releases()
         self.assertEqual(result, [{'name': 'Xcode'}])
-        urlopen.assert_called_once_with(m.XCODE_RELEASES_API_URL,
-                                        timeout=m.HTTP_FETCH_TIMEOUT_SECS)
+        urlopen.assert_called_once_with(
+            m.XCODE_RELEASES_API_URL, timeout=m.HTTP_FETCH_TIMEOUT_SECS
+        )
 
 
 class _FakeDownloadResponse:
@@ -240,9 +257,9 @@ class _FakeDownloadResponse:
     def __init__(self, body: bytes, content_length: str | None = None):
         self._body = body
         self._served = False
-        self.headers = {} if content_length is None else {
-            'Content-Length': content_length
-        }
+        self.headers = (
+            {} if content_length is None else {'Content-Length': content_length}
+        )
 
     def read(self, _n: int) -> bytes:
         if self._served:
@@ -267,15 +284,20 @@ class DownloadToFileTest(unittest.TestCase):
         self.dest = Path(self._tmp) / 'out.bin'
 
     def test_streams_the_response_body_to_dest(self):
-        with mock.patch('urllib.request.urlopen',
-                        return_value=_FakeDownloadResponse(
-                            b'xcode-bytes', content_length='11')):
+        with mock.patch(
+            'urllib.request.urlopen',
+            return_value=_FakeDownloadResponse(
+                b'xcode-bytes', content_length='11'
+            ),
+        ):
             m._download_to_file('https://example.invalid/x.xip', self.dest)
         self.assertEqual(self.dest.read_bytes(), b'xcode-bytes')
 
     def test_works_without_a_content_length_header(self):
-        with mock.patch('urllib.request.urlopen',
-                        return_value=_FakeDownloadResponse(b'data')):
+        with mock.patch(
+            'urllib.request.urlopen',
+            return_value=_FakeDownloadResponse(b'data'),
+        ):
             m._download_to_file('https://example.invalid/x.xip', self.dest)
         self.assertEqual(self.dest.read_bytes(), b'data')
 
@@ -289,10 +311,12 @@ class ResolveReleaseTest(unittest.TestCase):
     build.
     """
 
-    def _resolve(self,
-                 data: list[dict],
-                 sdk_version: str = '26.5',
-                 sdk_build: str = '25F70') -> m.XcodeRelease:
+    def _resolve(
+        self,
+        data: list[dict],
+        sdk_version: str = '26.5',
+        sdk_build: str = '25F70',
+    ) -> m.XcodeRelease:
         xcode = m.EphemeralXcode()
         with mock.patch.object(m, '_fetch_xcode_releases', return_value=data):
             xcode._resolve_release(m.MacSdkInfo(sdk_version, sdk_build))
@@ -300,10 +324,9 @@ class ResolveReleaseTest(unittest.TestCase):
 
     def test_ignores_non_xcode_named_entries(self):
         data = [
-            _xcode_entry('26.5',
-                         '17F42',
-                         sdk_build='25F70',
-                         name='Swift Playgrounds')
+            _xcode_entry(
+                '26.5', '17F42', sdk_build='25F70', name='Swift Playgrounds'
+            )
         ]
         with self.assertRaises(RuntimeError):
             self._resolve(data)
@@ -392,8 +415,10 @@ class ResolveReleaseTest(unittest.TestCase):
         release = self._resolve(data)
         self.assertEqual(release.version, '26.5')
         self.assertEqual(release.build, '17F42')
-        self.assertEqual(release.download_url,
-                         'https://example.invalid/Xcode_26.5_Universal.xip')
+        self.assertEqual(
+            release.download_url,
+            'https://example.invalid/Xcode_26.5_Universal.xip',
+        )
         self.assertEqual(release.xip_filename, 'Xcode_26.5_Universal.xip')
         self.assertEqual(release.sha1, 'cafef00d')
 
@@ -411,11 +436,13 @@ class InstallTest(unittest.TestCase):
 
     def _xcode(self, build: str = '17F42') -> m.EphemeralXcode:
         xcode = m.EphemeralXcode()
-        xcode._release = m.XcodeRelease(version='26.5',
-                                        build=build,
-                                        download_url='u',
-                                        xip_filename='f',
-                                        sha1='s')
+        xcode._release = m.XcodeRelease(
+            version='26.5',
+            build=build,
+            download_url='u',
+            xip_filename='f',
+            sha1='s',
+        )
         return xcode
 
     def test_reuses_an_existing_install_without_downloading(self):
@@ -451,46 +478,55 @@ class DownloadAndExpandTest(unittest.TestCase):
         self._tmp = stack.enter_context(tempfile.TemporaryDirectory())
         self.app_path = Path(self._tmp) / 'xcode_17f42.app'
         self.expand_dir = self.app_path.with_name(
-            f'.{self.app_path.stem}.expand')
+            f'.{self.app_path.stem}.expand'
+        )
         self.xcode = m.EphemeralXcode()
         self.xcode._release = m.XcodeRelease(
             version='26.5',
             build='17F42',
             download_url='u',
             xip_filename='Xcode_26.5_Universal.xip',
-            sha1='s')
+            sha1='s',
+        )
 
     @staticmethod
-    def _check_call_creates_app(*_args,
-                                **kwargs) -> subprocess.CompletedProcess:
+    def _check_call_creates_app(
+        *_args, **kwargs
+    ) -> subprocess.CompletedProcess:
         """A `_check_call` stand-in mimicking `unxip`/`xip`'s real effect."""
         (Path(kwargs['cwd']) / 'Xcode.app').mkdir(parents=True)
         return _completed()
 
     def test_uses_unxip_when_available_on_path(self):
-        with mock.patch.object(self.xcode, '_download_xip'), \
-             mock.patch('shutil.which', return_value='/usr/local/bin/unxip'), \
-             mock.patch.object(
-                 m, '_check_call',
-                 side_effect=self._check_call_creates_app) as check_call:
+        with (
+            mock.patch.object(self.xcode, '_download_xip'),
+            mock.patch('shutil.which', return_value='/usr/local/bin/unxip'),
+            mock.patch.object(
+                m, '_check_call', side_effect=self._check_call_creates_app
+            ) as check_call,
+        ):
             self.xcode._download_and_expand(self.app_path)
         self.assertTrue(self.app_path.is_dir())
         self.assertEqual(check_call.call_args.args[0], 'unxip')
 
     def test_falls_back_to_xip_expand_when_unxip_is_missing(self):
-        with mock.patch.object(self.xcode, '_download_xip'), \
-             mock.patch('shutil.which', return_value=None), \
-             mock.patch.object(
-                 m, '_check_call',
-                 side_effect=self._check_call_creates_app) as check_call:
+        with (
+            mock.patch.object(self.xcode, '_download_xip'),
+            mock.patch('shutil.which', return_value=None),
+            mock.patch.object(
+                m, '_check_call', side_effect=self._check_call_creates_app
+            ) as check_call,
+        ):
             self.xcode._download_and_expand(self.app_path)
         self.assertTrue(self.app_path.is_dir())
         self.assertEqual(check_call.call_args.args[:2], ('xip', '--expand'))
 
     def test_raises_when_expansion_does_not_produce_an_app_bundle(self):
-        with mock.patch.object(self.xcode, '_download_xip'), \
-             mock.patch('shutil.which', return_value=None), \
-             mock.patch.object(m, '_check_call', return_value=_completed()):
+        with (
+            mock.patch.object(self.xcode, '_download_xip'),
+            mock.patch('shutil.which', return_value=None),
+            mock.patch.object(m, '_check_call', return_value=_completed()),
+        ):
             with self.assertRaises(RuntimeError):
                 self.xcode._download_and_expand(self.app_path)
         # The transient expand dir is cleaned up even on failure.
@@ -500,10 +536,13 @@ class DownloadAndExpandTest(unittest.TestCase):
     def test_removes_a_stale_leftover_expand_dir_before_expanding(self):
         self.expand_dir.mkdir(parents=True)
         (self.expand_dir / 'stale.txt').write_text('leftover')
-        with mock.patch.object(self.xcode, '_download_xip'), \
-             mock.patch('shutil.which', return_value=None), \
-             mock.patch.object(
-                 m, '_check_call', side_effect=self._check_call_creates_app):
+        with (
+            mock.patch.object(self.xcode, '_download_xip'),
+            mock.patch('shutil.which', return_value=None),
+            mock.patch.object(
+                m, '_check_call', side_effect=self._check_call_creates_app
+            ),
+        ):
             self.xcode._download_and_expand(self.app_path)
         self.assertTrue(self.app_path.is_dir())
         self.assertFalse(self.expand_dir.exists())
@@ -519,15 +558,18 @@ class DownloadXipTest(unittest.TestCase):
         self.dest = Path(self._tmp) / 'Xcode_26.5_Universal.xip'
         self.xcode = m.EphemeralXcode()
 
-    def _set_release(self,
-                     filename: str = 'Xcode_26.5_Universal.xip',
-                     content: bytes = b'good-bytes') -> bytes:
+    def _set_release(
+        self,
+        filename: str = 'Xcode_26.5_Universal.xip',
+        content: bytes = b'good-bytes',
+    ) -> bytes:
         self.xcode._release = m.XcodeRelease(
             version='26.5',
             build='17F42',
             download_url='https://apple.example/x',
             xip_filename=filename,
-            sha1=hashlib.sha1(content).hexdigest())
+            sha1=hashlib.sha1(content).hexdigest(),
+        )
         return content
 
     def test_downloads_and_verifies_on_the_first_url(self):
@@ -536,13 +578,14 @@ class DownloadXipTest(unittest.TestCase):
         def fake_download(_url, dest):
             dest.write_bytes(content)
 
-        with mock.patch.object(m,
-                               '_download_to_file',
-                               side_effect=fake_download) as download:
+        with mock.patch.object(
+            m, '_download_to_file', side_effect=fake_download
+        ) as download:
             self.xcode._download_xip(self.dest)
         self.assertEqual(self.dest.read_bytes(), content)
         download.assert_called_once_with(
-            m.XCODE_ARCHIVE_BUCKET_URL + 'Xcode_26.5_Universal.xip', self.dest)
+            m.XCODE_ARCHIVE_BUCKET_URL + 'Xcode_26.5_Universal.xip', self.dest
+        )
 
     def test_falls_back_to_the_stripped_universal_variant_on_failure(self):
         content = self._set_release()
@@ -554,9 +597,9 @@ class DownloadXipTest(unittest.TestCase):
                 raise urllib.error.URLError('boom')
             dest.write_bytes(content)
 
-        with mock.patch.object(m,
-                               '_download_to_file',
-                               side_effect=fake_download):
+        with mock.patch.object(
+            m, '_download_to_file', side_effect=fake_download
+        ):
             self.xcode._download_xip(self.dest)
         self.assertEqual(len(attempted), 2)
         self.assertTrue(attempted[1].endswith('Xcode_26.5.xip'))
@@ -565,8 +608,8 @@ class DownloadXipTest(unittest.TestCase):
     def test_no_stripped_variant_for_a_non_universal_filename(self):
         self._set_release(filename='Xcode_26.5_Apple_silicon.xip')
         with mock.patch.object(
-                m, '_download_to_file',
-                side_effect=urllib.error.URLError('boom')) as download:
+            m, '_download_to_file', side_effect=urllib.error.URLError('boom')
+        ) as download:
             with self.assertRaises(RuntimeError):
                 self.xcode._download_xip(self.dest)
         download.assert_called_once()
@@ -577,9 +620,9 @@ class DownloadXipTest(unittest.TestCase):
         def fake_download(_url, dest):
             dest.write_bytes(b'wrong-bytes')
 
-        with mock.patch.object(m,
-                               '_download_to_file',
-                               side_effect=fake_download):
+        with mock.patch.object(
+            m, '_download_to_file', side_effect=fake_download
+        ):
             with self.assertRaises(RuntimeError) as ctx:
                 self.xcode._download_xip(self.dest)
         self.assertIsInstance(ctx.exception.__cause__, RuntimeError)
@@ -588,9 +631,9 @@ class DownloadXipTest(unittest.TestCase):
 
     def test_raises_after_exhausting_every_url(self):
         self._set_release()
-        with mock.patch.object(m,
-                               '_download_to_file',
-                               side_effect=urllib.error.URLError('boom')):
+        with mock.patch.object(
+            m, '_download_to_file', side_effect=urllib.error.URLError('boom')
+        ):
             with self.assertRaises(RuntimeError) as ctx:
                 self.xcode._download_xip(self.dest)
         self.assertIsInstance(ctx.exception.__cause__, urllib.error.URLError)
@@ -608,11 +651,15 @@ class SwitchTest(unittest.TestCase):
 
     def _run(self, macos_major: int) -> tuple[mock.Mock, mock.Mock]:
         xcode = m.EphemeralXcode()
-        with mock.patch.object(m, '_check_developer_mode') as dev_mode, \
-             mock.patch.object(m, '_macos_major_version',
-                               return_value=macos_major), \
-             mock.patch.object(m, '_check_call',
-                               return_value=_completed()) as check_call:
+        with (
+            mock.patch.object(m, '_check_developer_mode') as dev_mode,
+            mock.patch.object(
+                m, '_macos_major_version', return_value=macos_major
+            ),
+            mock.patch.object(
+                m, '_check_call', return_value=_completed()
+            ) as check_call,
+        ):
             xcode._switch(self.APP_PATH)
         return dev_mode, check_call
 
@@ -621,33 +668,41 @@ class SwitchTest(unittest.TestCase):
         dev_mode.assert_called_once_with(warn_only=False)
         self.assertEqual(
             check_call.call_args_list[0],
-            mock.call('sudo', '/usr/bin/xcode-select', '-s',
-                      str(self.APP_PATH)))
+            mock.call(
+                'sudo', '/usr/bin/xcode-select', '-s', str(self.APP_PATH)
+            ),
+        )
 
     def test_skip_developer_mode_check_makes_the_preflight_warn_only(self):
         xcode = m.EphemeralXcode()
-        with mock.patch.object(m, '_check_developer_mode') as dev_mode, \
-             mock.patch.object(m, '_macos_major_version', return_value=14), \
-             mock.patch.object(m, '_check_call', return_value=_completed()):
+        with (
+            mock.patch.object(m, '_check_developer_mode') as dev_mode,
+            mock.patch.object(m, '_macos_major_version', return_value=14),
+            mock.patch.object(m, '_check_call', return_value=_completed()),
+        ):
             xcode._switch(self.APP_PATH, skip_developer_mode_check=True)
         dev_mode.assert_called_once_with(warn_only=True)
 
     def test_stops_before_any_check_call_when_developer_mode_check_fails(self):
         xcode = m.EphemeralXcode()
-        with mock.patch.object(m,
-                               '_check_developer_mode',
-                               side_effect=RuntimeError('nope')), \
-             mock.patch.object(m, '_check_call') as check_call:
+        with (
+            mock.patch.object(
+                m, '_check_developer_mode', side_effect=RuntimeError('nope')
+            ),
+            mock.patch.object(m, '_check_call') as check_call,
+        ):
             with self.assertRaises(RuntimeError):
                 xcode._switch(self.APP_PATH)
         check_call.assert_not_called()
 
     def test_runs_a_gatekeeper_scan_on_macos_14_and_later(self):
         _, check_call = self._run(macos_major=14)
-        check_call.assert_any_call('/usr/bin/gktool',
-                                   'scan',
-                                   str(self.APP_PATH),
-                                   timeout=m.GATEKEEPER_SCAN_TIMEOUT_SECS)
+        check_call.assert_any_call(
+            '/usr/bin/gktool',
+            'scan',
+            str(self.APP_PATH),
+            timeout=m.GATEKEEPER_SCAN_TIMEOUT_SECS,
+        )
 
     def test_skips_the_gatekeeper_scan_before_macos_14(self):
         _, check_call = self._run(macos_major=13)
@@ -656,15 +711,19 @@ class SwitchTest(unittest.TestCase):
 
     def test_accepts_the_license_and_runs_first_launch_with_timeouts(self):
         _, check_call = self._run(macos_major=14)
-        check_call.assert_any_call('sudo',
-                                   '/usr/bin/xcodebuild',
-                                   '-license',
-                                   'accept',
-                                   timeout=m.LICENSE_ACCEPT_TIMEOUT_SECS)
-        check_call.assert_any_call('sudo',
-                                   '/usr/bin/xcodebuild',
-                                   '-runFirstLaunch',
-                                   timeout=m.RUN_FIRST_LAUNCH_TIMEOUT_SECS)
+        check_call.assert_any_call(
+            'sudo',
+            '/usr/bin/xcodebuild',
+            '-license',
+            'accept',
+            timeout=m.LICENSE_ACCEPT_TIMEOUT_SECS,
+        )
+        check_call.assert_any_call(
+            'sudo',
+            '/usr/bin/xcodebuild',
+            '-runFirstLaunch',
+            timeout=m.RUN_FIRST_LAUNCH_TIMEOUT_SECS,
+        )
 
     def test_kills_stale_ibtoold_tolerating_a_missing_process(self):
         _, check_call = self._run(macos_major=14)
@@ -672,8 +731,9 @@ class SwitchTest(unittest.TestCase):
 
     def test_reloads_simctl_last(self):
         _, check_call = self._run(macos_major=14)
-        self.assertEqual(check_call.call_args_list[-1],
-                         mock.call('xcrun', 'simctl', 'list'))
+        self.assertEqual(
+            check_call.call_args_list[-1], mock.call('xcrun', 'simctl', 'list')
+        )
 
 
 class SelectContextManagerTest(unittest.TestCase):
@@ -682,19 +742,26 @@ class SelectContextManagerTest(unittest.TestCase):
     def test_switches_then_resets_on_normal_exit(self):
         xcode = m.EphemeralXcode()
         calls = []
-        with mock.patch.object(
-                xcode, '_switch',
-                side_effect=lambda _p, **_kwargs: calls.append('switch')), \
-             mock.patch.object(
-                 xcode, 'reset', side_effect=lambda: calls.append('reset')):
+        with (
+            mock.patch.object(
+                xcode,
+                '_switch',
+                side_effect=lambda _p, **_kwargs: calls.append('switch'),
+            ),
+            mock.patch.object(
+                xcode, 'reset', side_effect=lambda: calls.append('reset')
+            ),
+        ):
             with xcode._select(Path('/Applications/xcode.app')):
                 calls.append('body')
         self.assertEqual(calls, ['switch', 'body', 'reset'])
 
     def test_resets_even_when_the_body_raises(self):
         xcode = m.EphemeralXcode()
-        with mock.patch.object(xcode, '_switch'), \
-             mock.patch.object(xcode, 'reset') as reset:
+        with (
+            mock.patch.object(xcode, '_switch'),
+            mock.patch.object(xcode, 'reset') as reset,
+        ):
             with self.assertRaises(ValueError):
                 with xcode._select(Path('/Applications/xcode.app')):
                     raise ValueError('boom')
@@ -707,19 +774,22 @@ class LocateAppTest(unittest.TestCase):
     def test_derives_the_app_bundle_from_the_developer_dir(self):
         xcode = m.EphemeralXcode()
         with mock.patch.object(
-                m,
-                '_check_call',
-                return_value=_completed(
-                    '/Applications/Xcode.app/Contents/Developer\n')):
+            m,
+            '_check_call',
+            return_value=_completed(
+                '/Applications/Xcode.app/Contents/Developer\n'
+            ),
+        ):
             xcode._locate_app()
         self.assertEqual(xcode.app, Path('/Applications/Xcode.app'))
 
     def test_raises_when_the_developer_dir_is_not_inside_an_app_bundle(self):
         xcode = m.EphemeralXcode()
-        with mock.patch.object(m,
-                               '_check_call',
-                               return_value=_completed(
-                                   '/Library/Developer/CommandLineTools\n')):
+        with mock.patch.object(
+            m,
+            '_check_call',
+            return_value=_completed('/Library/Developer/CommandLineTools\n'),
+        ):
             with self.assertRaises(RuntimeError):
                 xcode._locate_app()
 
@@ -739,41 +809,43 @@ class VerifyVersionsTest(unittest.TestCase):
 
     def _xcode_with_release(self, build: str = '17F42') -> m.EphemeralXcode:
         xcode = m.EphemeralXcode()
-        xcode._release = m.XcodeRelease(version='26.5',
-                                        build=build,
-                                        download_url='u',
-                                        xip_filename='f',
-                                        sha1='s')
+        xcode._release = m.XcodeRelease(
+            version='26.5',
+            build=build,
+            download_url='u',
+            xip_filename='f',
+            sha1='s',
+        )
         return xcode
 
     def test_passes_when_the_active_xcode_and_sdk_match(self):
         xcode = self._xcode_with_release()
-        with mock.patch.object(m,
-                               '_check_call',
-                               side_effect=_fake_verify_check_call):
+        with mock.patch.object(
+            m, '_check_call', side_effect=_fake_verify_check_call
+        ):
             xcode._verify_versions(m.MacSdkInfo('26.5', '25F70'))  # no raise
 
     def test_raises_when_the_active_xcode_build_does_not_match_resolved(self):
         xcode = self._xcode_with_release(build='DIFFERENTBUILD')
-        with mock.patch.object(m,
-                               '_check_call',
-                               side_effect=_fake_verify_check_call):
+        with mock.patch.object(
+            m, '_check_call', side_effect=_fake_verify_check_call
+        ):
             with self.assertRaises(RuntimeError):
                 xcode._verify_versions(m.MacSdkInfo('26.5', '25F70'))
 
     def test_raises_when_the_active_sdk_does_not_match_the_pin(self):
         xcode = self._xcode_with_release()
-        with mock.patch.object(m,
-                               '_check_call',
-                               side_effect=_fake_verify_check_call):
+        with mock.patch.object(
+            m, '_check_call', side_effect=_fake_verify_check_call
+        ):
             with self.assertRaises(RuntimeError):
                 xcode._verify_versions(m.MacSdkInfo('26.5', 'WRONGBUILD'))
 
     def test_raises_when_xcodebuild_output_is_missing_expected_fields(self):
         xcode = self._xcode_with_release()
-        with mock.patch.object(m,
-                               '_check_call',
-                               return_value=_completed('garbage')):
+        with mock.patch.object(
+            m, '_check_call', return_value=_completed('garbage')
+        ):
             with self.assertRaises(RuntimeError):
                 xcode._verify_versions(m.MacSdkInfo('26.5', '25F70'))
 
@@ -785,24 +857,35 @@ class InstallAndSelectTest(unittest.TestCase):
         xcode = m.EphemeralXcode()
         app_path = Path('/Applications/xcode_17f42.app')
         calls = []
-        with mock.patch.object(
-                xcode, '_resolve_release',
-                side_effect=lambda _info: calls.append('resolve')), \
-             mock.patch.object(
-                 xcode, '_install',
-                 side_effect=lambda: calls.append('install') or app_path), \
-             mock.patch.object(
-                 xcode, '_switch',
-                 side_effect=lambda _p, **_kwargs: calls.append('switch')), \
-             mock.patch.object(
-                 xcode, '_locate_app',
-                 side_effect=lambda: calls.append('locate')), \
-             mock.patch.object(
-                 xcode, '_verify_versions',
-                 side_effect=lambda _info: calls.append('verify')):
+        with (
+            mock.patch.object(
+                xcode,
+                '_resolve_release',
+                side_effect=lambda _info: calls.append('resolve'),
+            ),
+            mock.patch.object(
+                xcode,
+                '_install',
+                side_effect=lambda: calls.append('install') or app_path,
+            ),
+            mock.patch.object(
+                xcode,
+                '_switch',
+                side_effect=lambda _p, **_kwargs: calls.append('switch'),
+            ),
+            mock.patch.object(
+                xcode, '_locate_app', side_effect=lambda: calls.append('locate')
+            ),
+            mock.patch.object(
+                xcode,
+                '_verify_versions',
+                side_effect=lambda _info: calls.append('verify'),
+            ),
+        ):
             result = xcode.install_and_select(m.MacSdkInfo('26.5', '25F70'))
-        self.assertEqual(calls,
-                         ['resolve', 'install', 'switch', 'locate', 'verify'])
+        self.assertEqual(
+            calls, ['resolve', 'install', 'switch', 'locate', 'verify']
+        )
         self.assertEqual(result, app_path)
 
 
@@ -818,24 +901,31 @@ class DeployTest(unittest.TestCase):
             mock.patch.object(
                 m.EphemeralXcode,
                 '_resolve_release',
-                side_effect=lambda _info: calls.append('resolve')),
-            mock.patch.object(m.EphemeralXcode,
-                              '_install',
-                              return_value=app_path),
+                side_effect=lambda _info: calls.append('resolve'),
+            ),
+            mock.patch.object(
+                m.EphemeralXcode, '_install', return_value=app_path
+            ),
             mock.patch.object(
                 m.EphemeralXcode,
                 '_switch',
-                side_effect=lambda _p, **_kwargs: calls.append('switch')),
-            mock.patch.object(m.EphemeralXcode,
-                              'reset',
-                              side_effect=lambda: calls.append('reset')),
-            mock.patch.object(m.EphemeralXcode,
-                              '_locate_app',
-                              side_effect=lambda: calls.append('locate')),
+                side_effect=lambda _p, **_kwargs: calls.append('switch'),
+            ),
+            mock.patch.object(
+                m.EphemeralXcode,
+                'reset',
+                side_effect=lambda: calls.append('reset'),
+            ),
+            mock.patch.object(
+                m.EphemeralXcode,
+                '_locate_app',
+                side_effect=lambda: calls.append('locate'),
+            ),
             mock.patch.object(
                 m.EphemeralXcode,
                 '_verify_versions',
-                side_effect=lambda _info: calls.append('verify')),
+                side_effect=lambda _info: calls.append('verify'),
+            ),
         )
 
     def test_yields_self_populated_and_resets_on_exit(self):
@@ -849,7 +939,8 @@ class DeployTest(unittest.TestCase):
                 calls.append('body')
                 self.assertIs(yielded, xcode)
         self.assertEqual(
-            calls, ['resolve', 'switch', 'locate', 'verify', 'body', 'reset'])
+            calls, ['resolve', 'switch', 'locate', 'verify', 'body', 'reset']
+        )
 
     def test_resets_when_the_body_raises(self):
         xcode = m.EphemeralXcode()
@@ -870,8 +961,9 @@ class ResetTest(unittest.TestCase):
     def test_reverts_xcode_select(self):
         with mock.patch.object(m, '_check_call') as check_call:
             m.EphemeralXcode().reset()
-        check_call.assert_called_once_with('sudo', '/usr/bin/xcode-select',
-                                           '--reset')
+        check_call.assert_called_once_with(
+            'sudo', '/usr/bin/xcode-select', '--reset'
+        )
 
 
 class PropertiesTest(unittest.TestCase):
@@ -898,45 +990,62 @@ class MainTest(unittest.TestCase):
     def _fake_xcode(self, app_path: Path) -> mock.Mock:
         fake = mock.Mock()
         fake.install_and_select.return_value = app_path
-        fake.release = m.XcodeRelease(version='26.5',
-                                      build='17F42',
-                                      download_url='u',
-                                      xip_filename='f',
-                                      sha1='s')
+        fake.release = m.XcodeRelease(
+            version='26.5',
+            build='17F42',
+            download_url='u',
+            xip_filename='f',
+            sha1='s',
+        )
         return fake
 
     def test_writes_the_resolved_xcode_info_as_json(self):
         app_path = Path('/Applications/xcode_17f42.app')
         fake_xcode = self._fake_xcode(app_path)
         with mock.patch.object(m, 'EphemeralXcode', return_value=fake_xcode):
-            returncode = m.main([
-                '--sdk-version', '26.5', '--sdk-build', '25F70',
-                '--json-output',
-                str(self.json_path)
-            ])
+            returncode = m.main(
+                [
+                    '--sdk-version',
+                    '26.5',
+                    '--sdk-build',
+                    '25F70',
+                    '--json-output',
+                    str(self.json_path),
+                ]
+            )
         self.assertEqual(returncode, 0)
         fake_xcode.install_and_select.assert_called_once_with(
-            m.MacSdkInfo('26.5', '25F70'), skip_developer_mode_check=False)
+            m.MacSdkInfo('26.5', '25F70'), skip_developer_mode_check=False
+        )
         self.assertEqual(
-            json.loads(self.json_path.read_text()), {
+            json.loads(self.json_path.read_text()),
+            {
                 'app': str(app_path),
                 'xcode_version': '26.5',
                 'xcode_build': '17F42',
                 'sdk_version': '26.5',
                 'sdk_build_version': '25F70',
-            })
+            },
+        )
 
     def test_no_developer_mode_check_flag_is_threaded_through(self):
         app_path = Path('/Applications/xcode_17f42.app')
         fake_xcode = self._fake_xcode(app_path)
         with mock.patch.object(m, 'EphemeralXcode', return_value=fake_xcode):
-            m.main([
-                '--sdk-version', '26.5', '--sdk-build', '25F70',
-                '--json-output',
-                str(self.json_path), '--no-developer-mode-check'
-            ])
+            m.main(
+                [
+                    '--sdk-version',
+                    '26.5',
+                    '--sdk-build',
+                    '25F70',
+                    '--json-output',
+                    str(self.json_path),
+                    '--no-developer-mode-check',
+                ]
+            )
         fake_xcode.install_and_select.assert_called_once_with(
-            m.MacSdkInfo('26.5', '25F70'), skip_developer_mode_check=True)
+            m.MacSdkInfo('26.5', '25F70'), skip_developer_mode_check=True
+        )
 
     def test_missing_required_arguments_exits_nonzero(self):
         with contextlib.redirect_stderr(io.StringIO()):
@@ -945,15 +1054,24 @@ class MainTest(unittest.TestCase):
 
     def test_verbose_flag_enables_debug_logging(self):
         fake_xcode = self._fake_xcode(Path('/Applications/xcode.app'))
-        with mock.patch.object(m, 'EphemeralXcode', return_value=fake_xcode), \
-             mock.patch.object(m.logging, 'basicConfig') as basic_config:
-            m.main([
-                '--sdk-version', '26.5', '--sdk-build', '25F70',
-                '--json-output',
-                str(self.json_path), '--verbose'
-            ])
-        basic_config.assert_called_once_with(level=m.logging.DEBUG,
-                                             format='%(message)s')
+        with (
+            mock.patch.object(m, 'EphemeralXcode', return_value=fake_xcode),
+            mock.patch.object(m.logging, 'basicConfig') as basic_config,
+        ):
+            m.main(
+                [
+                    '--sdk-version',
+                    '26.5',
+                    '--sdk-build',
+                    '25F70',
+                    '--json-output',
+                    str(self.json_path),
+                    '--verbose',
+                ]
+            )
+        basic_config.assert_called_once_with(
+            level=m.logging.DEBUG, format='%(message)s'
+        )
 
 
 if __name__ == '__main__':

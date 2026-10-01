@@ -2,8 +2,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""The engine's stack of open steps.
-"""
+"""The engine's stack of open steps."""
 
 from __future__ import annotations
 
@@ -112,12 +111,14 @@ class StepStack:
         used = self._step_names.setdefault(namespace, {})
         count = used.setdefault(name, 0)
         used[name] += 1
-        return namespace + (name if not count else f'{name} ({count + 1})', )
+        return namespace + (name if not count else f'{name} ({count + 1})',)
 
-    def push(self,
-             step_data: StepData,
-             name_tokens: tuple[str, ...],
-             is_parent: bool = False) -> None:
+    def push(
+        self,
+        step_data: StepData,
+        name_tokens: tuple[str, ...],
+        is_parent: bool = False,
+    ) -> None:
         """Make *step_data* the tip of this greenlet's stack."""
         self._stack.append(_ActiveStep(step_data, name_tokens, is_parent))
 

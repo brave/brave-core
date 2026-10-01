@@ -41,7 +41,8 @@ class ModuleInjectionSite:
         # not declared in DEPS. (Also tells static analysis that attributes are
         # dynamic, so accessing an injected dep is not flagged as no-member.)
         raise AttributeError(
-            f'{name!r} is not a declared dependency (add it to DEPS?)')
+            f'{name!r} is not a declared dependency (add it to DEPS?)'
+        )
 
 
 class Placeholder:
@@ -74,8 +75,9 @@ class Placeholder:
 
     def __init__(self, name: str | None = None) -> None:
         if name is not None and not isinstance(name, str):
-            raise ValueError('Expected a string name for a placeholder, but '
-                             f'got {name!r}')
+            raise ValueError(
+                f'Expected a string name for a placeholder, but got {name!r}'
+            )
         self.name = name
         # (module name, method name); filled in by `returns_placeholder`.
         self.namespaces: tuple[str, str] | None = None
@@ -107,8 +109,7 @@ class Placeholder:
         return f'{module}.{method}[{self.name}]'
 
     def __repr__(self) -> str:
-        namespaced = ('<unnamespaced>'
-                      if self.namespaces is None else self.label)
+        namespaced = '<unnamespaced>' if self.namespaces is None else self.label
         return f'{type(self).__name__}({namespaced})'
 
 
@@ -137,17 +138,21 @@ class OutputPlaceholder(Placeholder):
         """
 
 
-def _returns_placeholder(func: Callable[..., Placeholder],
-                         alternate_name: str | None = None):
+def _returns_placeholder(
+    func: Callable[..., Placeholder], alternate_name: str | None = None
+):
 
     @functools.wraps(func)
     def inner(self, *args, **kwargs):
         placeholder = func(self, *args, **kwargs)
         assert isinstance(placeholder, Placeholder), (
             f'{func.__name__} is decorated with returns_placeholder but '
-            f'returned {placeholder!r}')
-        placeholder.namespaces = (self._module_name, alternate_name
-                                  or func.__name__)
+            f'returned {placeholder!r}'
+        )
+        placeholder.namespaces = (
+            self._module_name,
+            alternate_name or func.__name__,
+        )
         return placeholder
 
     return inner
@@ -166,8 +171,9 @@ def returns_placeholder(func_or_name):
             raise ValueError('returns_placeholder needs a non-empty name')
         return lambda func: _returns_placeholder(func, func_or_name)
     if not callable(func_or_name):
-        raise ValueError('Expected either a function or a string; got '
-                         f'{func_or_name!r}')
+        raise ValueError(
+            f'Expected either a function or a string; got {func_or_name!r}'
+        )
     return _returns_placeholder(func_or_name)
 
 
@@ -224,10 +230,10 @@ class RecipeApi:
         """Hook run once after DEPS are injected. Override for setup."""
 
     def resource(self, *pieces: str) -> config_types.Path:
-        """Path to a file under this module's `resources/` directory.
-        """
+        """Path to a file under this module's `resources/` directory."""
         base = config_types.ResolvedBasePath.for_recipe_module(
-            self._test is not None, self._module_name, str(self._module_dir))
+            self._test is not None, self._module_name, str(self._module_dir)
+        )
         return config_types.Path(base, 'resources', *pieces)
 
     # -- Configs (see the "Configs" section of README.md) ---------------------
@@ -241,10 +247,12 @@ class RecipeApi:
         """
         return {}
 
-    def make_config(self,
-                    config_name: str | None = None,
-                    optional: bool = False,
-                    **CONFIG_VARS):
+    def make_config(
+        self,
+        config_name: str | None = None,
+        optional: bool = False,
+        **CONFIG_VARS,
+    ):
         """Return a fresh config blob for this module (without storing it)."""
         return self.make_config_params(config_name, optional, **CONFIG_VARS)[0]
 
@@ -261,14 +269,13 @@ class RecipeApi:
             if optional:
                 return None
             raise KeyError(
-                '%s is not the name of a configuration for module %s: %s' %
-                (config_name, self._module_name, sorted(
-                    ctx.CONFIG_ITEMS))) from None
+                '%s is not the name of a configuration for module %s: %s'
+                % (config_name, self._module_name, sorted(ctx.CONFIG_ITEMS))
+            ) from None
 
-    def make_config_params(self,
-                           config_name: str | None,
-                           optional: bool = False,
-                           **CONFIG_VARS):
+    def make_config_params(
+        self, config_name: str | None, optional: bool = False, **CONFIG_VARS
+    ):
         """Return `(config_blob, params)` for this module.
 
         `params` are merged from, in increasing precedence:
@@ -298,20 +305,22 @@ class RecipeApi:
             return base, params
         return itm(base), params
 
-    def set_config(self,
-                   config_name: str | None = None,
-                   optional: bool = False,
-                   **CONFIG_VARS) -> None:
+    def set_config(
+        self,
+        config_name: str | None = None,
+        optional: bool = False,
+        **CONFIG_VARS,
+    ) -> None:
         """Set `self.c` to the named configuration for this module."""
-        config, _ = self.make_config_params(config_name, optional,
-                                            **CONFIG_VARS)
+        config, _ = self.make_config_params(
+            config_name, optional, **CONFIG_VARS
+        )
         if config:
             self.c = config
 
-    def apply_config(self,
-                     config_name: str,
-                     config_object=None,
-                     optional: bool = False) -> None:
+    def apply_config(
+        self, config_name: str, config_object=None, optional: bool = False
+    ) -> None:
         """Apply a named config item on top of an existing blob (`self.c`)."""
         itm = self._get_config_item(config_name)
         itm(config_object or self.c, optional=optional)

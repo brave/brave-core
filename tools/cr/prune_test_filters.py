@@ -29,32 +29,44 @@ FILTER_DIR = BRAVE_ROOT / "test" / "filters"
 
 # Filters listed here (with or without *) are never removed
 PROTECTED_FILTERS = [
-    ("All/ProfilePickerCreationFlowEphemeralProfileBrowserTest."
-     "ExitDuringSignin/*"),
+    (
+        "All/ProfilePickerCreationFlowEphemeralProfileBrowserTest."
+        "ExitDuringSignin/*"
+    ),
     "All/ProfilePickerCreationFlowEphemeralProfileBrowserTest.Signin/*",
     "BorderlessIsolatedWebAppBrowserTest.*",
-    ("BorderlessIsolatedWebAppBrowserTestDisabledFlag."
-     "AppCannotUseFeatureWhenBorderlessFlagIsDisabled"),
+    (
+        "BorderlessIsolatedWebAppBrowserTestDisabledFlag."
+        "AppCannotUseFeatureWhenBorderlessFlagIsDisabled"
+    ),
     "BrowserInstantControllerTest.DefaultSearchProviderChanged",
     "FedCmAccountSelectionViewBrowserTest.*",
     "FirstPartySetsBrowserTestWithSiteLeavingSet.CookieDeleted",
     "GlicUserStatusBrowserTest.ClientDataHeaderExists",
     "GPMPasskeysAuthenticatorDialogTest.InvokeUi*",
     "HintsFetcherSearchPageLimitedURLsBrowserTest.HintsFetcherLimitedResults",
-    ("HistorySyncOptinManagedType/"
-     "AvatarToolbarButtonHistorySyncOptinManagedTypeTest."
-     "HistorySyncOptinNotShownWhenSyncManaged/*"),
-    ("Incognito/EnclaveAuthenticatorIncognitoBrowserTest."
-     "MultipleDeclinedBootstrappings/*"),
+    (
+        "HistorySyncOptinManagedType/"
+        "AvatarToolbarButtonHistorySyncOptinManagedTypeTest."
+        "HistorySyncOptinNotShownWhenSyncManaged/*"
+    ),
+    (
+        "Incognito/EnclaveAuthenticatorIncognitoBrowserTest."
+        "MultipleDeclinedBootstrappings/*"
+    ),
     "ManagedProfileCreationBrowserTest.Test/*PrimaryAccount_*",
     "ModelExecutionValidationBrowserTest.ModelExecutionFailsServerFailure",
     "ModelExecutionValidationBrowserTest.ModelExecutionSuccess",
     "NTPTilesForSupervisedUsersTest.DoNotLoadBlockedURL",
     "OmniboxContextMenuControllerBrowserTest.ExecuteCommand",
-    ("PageLoadMetricsBrowserTestWithFencedFrames."
-     "PageLoadPrivacySandboxAdsFencedFramesMetrics"),
-    ("ProfileMenuViewBookmarksLimitExceededTest."
-     "ResolveBookmarksLimitExceededError/kSyncTheFeature"),
+    (
+        "PageLoadMetricsBrowserTestWithFencedFrames."
+        "PageLoadPrivacySandboxAdsFencedFramesMetrics"
+    ),
+    (
+        "ProfileMenuViewBookmarksLimitExceededTest."
+        "ResolveBookmarksLimitExceededError/kSyncTheFeature"
+    ),
     "ProfilePickerGlicFlowControllerBrowserTest.PickProfileWithCurrentProfile",
     "RustLogIntegrationTest.CheckAllSeverity",
     "SidePanelCoordinatorTest.ClosingMidShowFromAnimationReparentsContentView",
@@ -86,7 +98,7 @@ def is_filter_applicable(filename, current_platform):
     if not name.endswith(".filter"):
         return False
 
-    base = name[:-len(".filter")]
+    base = name[: -len(".filter")]
 
     if "-" not in base:
         return True
@@ -100,12 +112,16 @@ def is_filter_applicable(filename, current_platform):
         if platform_info.startswith(platform):
             if platform == current_platform:
                 return True
-            print(f"Skipping {filename} (platform '{platform}' does not "
-                  f"match '{current_platform}')")
+            print(
+                f"Skipping {filename} (platform '{platform}' does not "
+                f"match '{current_platform}')"
+            )
             return False
 
-    print(f"Warning: skipping {filename}, unknown platform pattern "
-          f"'{platform_info}'")
+    print(
+        f"Warning: skipping {filename}, unknown platform pattern "
+        f"'{platform_info}'"
+    )
     return False
 
 
@@ -114,7 +130,7 @@ def get_binary_name_from_filter(filename):
     name = filename.name
     if not name.endswith(".filter"):
         return None
-    base = name[:-len(".filter")]
+    base = name[: -len(".filter")]
     if "-" in base:
         base = base.split("-")[0]
     return base
@@ -164,8 +180,9 @@ def list_tests_from_binary(binary_path):
         if not main_part:
             continue
 
-        full_name = (f"{current_suite}.{main_part}"
-                     if current_suite else main_part)
+        full_name = (
+            f"{current_suite}.{main_part}" if current_suite else main_part
+        )
         tests.add(full_name)
 
     return tests
@@ -204,7 +221,8 @@ def collect_tests_per_binary(build_dir, current_platform):
         if not binary_path:
             sys.stderr.write(
                 f"Error: binary '{binary_name}' referenced by {path} was not "
-                "found in build directory\n")
+                "found in build directory\n"
+            )
             sys.exit(1)
 
         tests = list_tests_from_binary(binary_path)
@@ -213,10 +231,9 @@ def collect_tests_per_binary(build_dir, current_platform):
     return tests_by_binary
 
 
-def scan_filter_files(tests_by_binary,
-                      current_platform,
-                      apply=False,
-                      sort=False):
+def scan_filter_files(
+    tests_by_binary, current_platform, apply=False, sort=False
+):
     """Find (and optionally remove) obsolete filters.
 
     Args:
@@ -264,8 +281,9 @@ def scan_filter_files(tests_by_binary,
                 new_lines.extend(section_header)
                 filters_to_write = section_filters
                 if sort and apply and section_has_kept_filter:
-                    filters_to_write = sorted(section_filters,
-                                              key=lambda l: l.strip())
+                    filters_to_write = sorted(
+                        section_filters, key=lambda l: l.strip()
+                    )
                 new_lines.extend(filters_to_write)
                 new_lines.append("")
 
@@ -312,10 +330,12 @@ def scan_filter_files(tests_by_binary,
             protected = any(
                 fnmatch.fnmatch(filter_pattern, p)
                 or fnmatch.fnmatch(p, filter_pattern)
-                for p in PROTECTED_FILTERS)
+                for p in PROTECTED_FILTERS
+            )
 
             matched = any(
-                fnmatch.fnmatch(test, filter_pattern) for test in valid_tests)
+                fnmatch.fnmatch(test, filter_pattern) for test in valid_tests
+            )
 
             if matched or protected:
                 section_filters.append(line)
@@ -329,16 +349,18 @@ def scan_filter_files(tests_by_binary,
         flush_section()
 
         while new_lines and new_lines[-1] == "":
-            if header_blank_line_preserved and len(
-                    new_lines) == len(file_header) + 1:
+            if (
+                header_blank_line_preserved
+                and len(new_lines) == len(file_header) + 1
+            ):
                 break
             new_lines.pop()
 
         # Always write with LF line endings for consistency (BS-029)
         if apply and changed:
-            path.write_text("\n".join(new_lines) + "\n",
-                            encoding='utf-8',
-                            newline='')
+            path.write_text(
+                "\n".join(new_lines) + "\n", encoding='utf-8', newline=''
+            )
 
     return obsolete_by_file
 
@@ -346,10 +368,11 @@ def scan_filter_files(tests_by_binary,
 def main():
     """Parse args, collect tests, scan filters, and report results."""
     parser = argparse.ArgumentParser(
-        description="List or prune obsolete test filters.")
-    parser.add_argument("--build-dir",
-                        required=True,
-                        help="Directory with test binaries")
+        description="List or prune obsolete test filters."
+    )
+    parser.add_argument(
+        "--build-dir", required=True, help="Directory with test binaries"
+    )
     parser.add_argument(
         "--apply",
         action="store_true",
@@ -371,26 +394,28 @@ def main():
 
     if not build_dir.exists():
         sys.stderr.write(
-            f"Error: build directory does not exist: {build_dir}\n")
+            f"Error: build directory does not exist: {build_dir}\n"
+        )
         sys.exit(1)
 
     if not FILTER_DIR.exists():
         sys.stderr.write(
-            f"Error: filter directory does not exist: {FILTER_DIR}\n")
+            f"Error: filter directory does not exist: {FILTER_DIR}\n"
+        )
         sys.exit(1)
 
     current_platform = get_current_platform_tag()
     if current_platform == "unknown":
         sys.stderr.write(
-            "Error: unknown platform, cannot determine current platform tag\n")
+            "Error: unknown platform, cannot determine current platform tag\n"
+        )
         sys.exit(1)
 
     tests_by_binary = collect_tests_per_binary(build_dir, current_platform)
 
-    obsolete_by_file = scan_filter_files(tests_by_binary,
-                                         current_platform,
-                                         apply=args.apply,
-                                         sort=args.sort)
+    obsolete_by_file = scan_filter_files(
+        tests_by_binary, current_platform, apply=args.apply, sort=args.sort
+    )
 
     if obsolete_by_file:
         print("\nObsolete test filters:")

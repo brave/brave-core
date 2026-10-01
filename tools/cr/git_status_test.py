@@ -13,7 +13,6 @@ from git_status import GitStatus
 
 
 class GitStatusTest(unittest.TestCase):
-
     def setUp(self):
         """Set up a fake Chromium repository for testing."""
         self.fake_chromium_src = FakeChromiumRepo()
@@ -26,13 +25,15 @@ class GitStatusTest(unittest.TestCase):
         return self.fake_chromium_src.brave
 
     def _commit_file(self, path, content='content'):
-        self.fake_chromium_src.write_and_stage_file(path, content,
-                                                    self._brave())
+        self.fake_chromium_src.write_and_stage_file(
+            path, content, self._brave()
+        )
         self.fake_chromium_src.commit(f'Add {path}', self._brave())
 
     def _stage_file(self, path, content='content'):
-        self.fake_chromium_src.write_and_stage_file(path, content,
-                                                    self._brave())
+        self.fake_chromium_src.write_and_stage_file(
+            path, content, self._brave()
+        )
 
     def _stage_delete(self, path):
         self.fake_chromium_src.delete_file(path, self._brave())
@@ -46,9 +47,11 @@ class GitStatusTest(unittest.TestCase):
         Path(self._brave() / path).unlink()
 
     def _git_mv(self, old_path, new_path):
-        subprocess.check_call(['git', 'mv', old_path, new_path],
-                              cwd=self._brave(),
-                              stderr=subprocess.DEVNULL)
+        subprocess.check_call(
+            ['git', 'mv', old_path, new_path],
+            cwd=self._brave(),
+            stderr=subprocess.DEVNULL,
+        )
 
     def _assert_empty(self, status):
         self.assertEqual(status.staged.added, [])
@@ -218,8 +221,10 @@ class GitStatusTest(unittest.TestCase):
         self.assertEqual(status.staged.added, [])
         self.assertEqual(status.staged.modified, [])
         self.assertEqual(status.staged.deleted, [])
-        self.assertEqual(status.renamed, [('a_old.txt', 'a_new.txt'),
-                                          ('b_old.txt', 'b_new.txt')])
+        self.assertEqual(
+            status.renamed,
+            [('a_old.txt', 'a_new.txt'), ('b_old.txt', 'b_new.txt')],
+        )
         self.assertEqual(status.unstaged.added, [])
         self.assertEqual(status.unstaged.modified, [])
         self.assertEqual(status.unstaged.deleted, [])
@@ -236,8 +241,10 @@ class GitStatusTest(unittest.TestCase):
         self.assertEqual(status.staged.added, [])
         self.assertEqual(status.staged.modified, [])
         self.assertEqual(status.staged.deleted, [])
-        self.assertEqual(status.renamed, [('a_old.txt', 'a_new.txt'),
-                                          ('b_old.txt', 'b_new.txt')])
+        self.assertEqual(
+            status.renamed,
+            [('a_old.txt', 'a_new.txt'), ('b_old.txt', 'b_new.txt')],
+        )
         self.assertEqual(status.unstaged.added, [])
         self.assertEqual(status.unstaged.modified, ['a_new.txt', 'b_new.txt'])
         self.assertEqual(status.unstaged.deleted, [])
@@ -290,8 +297,9 @@ class GitStatusTest(unittest.TestCase):
         self._stage_delete('patches/b.patch')
         status = GitStatus()
         self.assertTrue(status.has_deleted_patch_files())
-        self.assertEqual(status.staged.deleted,
-                         ['patches/a.patch', 'patches/b.patch'])
+        self.assertEqual(
+            status.staged.deleted, ['patches/a.patch', 'patches/b.patch']
+        )
         self.assertEqual(status.unstaged.deleted, [])
 
         # After committing the deletions, the slate is clean again.
@@ -306,8 +314,9 @@ class GitStatusTest(unittest.TestCase):
         status = GitStatus()
         self.assertTrue(status.has_deleted_patch_files())
         self.assertEqual(status.staged.deleted, [])
-        self.assertEqual(status.unstaged.deleted,
-                         ['patches/a.patch', 'patches/b.patch'])
+        self.assertEqual(
+            status.unstaged.deleted, ['patches/a.patch', 'patches/b.patch']
+        )
 
     def test_has_untracked_patch_files(self):
         """has_untracked_patch_files() only fires for untracked patches."""
@@ -328,7 +337,8 @@ class GitStatusTest(unittest.TestCase):
         self.assertTrue(status.has_untracked_patch_files())
         self.assertEqual(
             status.unstaged.added,
-            ['patches/untracked_a.patch', 'patches/untracked_b.patch'])
+            ['patches/untracked_a.patch', 'patches/untracked_b.patch'],
+        )
 
 
 if __name__ == "__main__":

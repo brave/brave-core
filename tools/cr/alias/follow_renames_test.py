@@ -53,13 +53,15 @@ class _Base(unittest.TestCase):
         new_path = self._chromium / new_rel
         new_path.parent.mkdir(parents=True, exist_ok=True)
         self._repo._run_git_command(['mv', old_rel, new_rel], self._chromium)
-        return self._repo.commit(f'Rename {old_rel} -> {new_rel}',
-                                 self._chromium)
+        return self._repo.commit(
+            f'Rename {old_rel} -> {new_rel}', self._chromium
+        )
 
     def _chromium_head(self) -> str:
         """Returns HEAD hash of the chromium repo."""
-        return self._repo._run_git_command(['rev-parse', 'HEAD'],
-                                           self._chromium)
+        return self._repo._run_git_command(
+            ['rev-parse', 'HEAD'], self._chromium
+        )
 
     def _brave_commit(self, rel: str, content: str) -> Path:
         """Write, stage, and commit a file in brave. Returns absolute Path."""
@@ -156,14 +158,12 @@ class CollapseRenamesTest(unittest.TestCase):
 
     def test_single_rename_unchanged(self) -> None:
         inp = [(self._p('a'), self._p('b'))]
-        self.assertEqual(_collapse_renames(inp),
-                         [(self._p('a'), self._p('b'))])
+        self.assertEqual(_collapse_renames(inp), [(self._p('a'), self._p('b'))])
 
     def test_chain_collapsed(self) -> None:
         """Newest-first input a→b, b→c collapses to a→c."""
         inp = [(self._p('b'), self._p('c')), (self._p('a'), self._p('b'))]
-        self.assertEqual(_collapse_renames(inp),
-                         [(self._p('a'), self._p('c'))])
+        self.assertEqual(_collapse_renames(inp), [(self._p('a'), self._p('c'))])
 
     def test_round_trip_dropped(self) -> None:
         """a→b→a collapses to nothing."""
@@ -191,10 +191,14 @@ class ShadowFileTest(_Base):
         """chromium_src/.h file moves and its include guard is rewritten."""
         before = self._chromium_head()
         self._chromium_commit('A/foo.h', '// src\n')
-        self._brave_commit('chromium_src/A/foo.h',
-                           ('#ifndef BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
-                            '#define BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
-                            '#endif  // BRAVE_CHROMIUM_SRC_A_FOO_H_\n'))
+        self._brave_commit(
+            'chromium_src/A/foo.h',
+            (
+                '#ifndef BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
+                '#define BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
+                '#endif  // BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
+            ),
+        )
         self._chromium_rename('A/foo.h', 'B/foo.h')
 
         cmd_follow_renames([f'{before}..HEAD'])
@@ -202,7 +206,8 @@ class ShadowFileTest(_Base):
         new_path = self._brave / 'chromium_src' / 'B' / 'foo.h'
         self.assertTrue(new_path.exists())
         self.assertFalse(
-            (self._brave / 'chromium_src' / 'A' / 'foo.h').exists())
+            (self._brave / 'chromium_src' / 'A' / 'foo.h').exists()
+        )
         content = new_path.read_text(encoding='utf-8')
         self.assertIn('BRAVE_CHROMIUM_SRC_B_FOO_H_', content)
         self.assertNotIn('BRAVE_CHROMIUM_SRC_A_FOO_H_', content)
@@ -211,17 +216,22 @@ class ShadowFileTest(_Base):
         """#include <A/foo.h> in the shadow file becomes #include <B/foo.h>."""
         before = self._chromium_head()
         self._chromium_commit('A/foo.h', '// src\n')
-        self._brave_commit('chromium_src/A/foo.h',
-                           ('#ifndef BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
-                            '#define BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
-                            '#include <A/foo.h>\n'
-                            '#endif  // BRAVE_CHROMIUM_SRC_A_FOO_H_\n'))
+        self._brave_commit(
+            'chromium_src/A/foo.h',
+            (
+                '#ifndef BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
+                '#define BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
+                '#include <A/foo.h>\n'
+                '#endif  // BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
+            ),
+        )
         self._chromium_rename('A/foo.h', 'B/foo.h')
 
         cmd_follow_renames([f'{before}..HEAD'])
 
-        content = (self._brave / 'chromium_src' / 'B' /
-                   'foo.h').read_text(encoding='utf-8')
+        content = (self._brave / 'chromium_src' / 'B' / 'foo.h').read_text(
+            encoding='utf-8'
+        )
         self.assertIn('#include <B/foo.h>', content)
         self.assertNotIn('#include <A/foo.h>', content)
 
@@ -250,7 +260,8 @@ class ShadowFileTest(_Base):
         cmd_follow_renames([f'{before}..HEAD'])  # Must not raise.
 
         self.assertFalse(
-            (self._brave / 'chromium_src' / 'B' / 'foo.h').exists())
+            (self._brave / 'chromium_src' / 'B' / 'foo.h').exists()
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -271,10 +282,10 @@ class YamlTest(_Base):
 
         cmd_follow_renames([f'{before}..HEAD'])
 
-        self.assertTrue(
-            (self._brave / 'rewrite' / 'B' / 'foo.h.yaml').exists())
+        self.assertTrue((self._brave / 'rewrite' / 'B' / 'foo.h.yaml').exists())
         self.assertFalse(
-            (self._brave / 'rewrite' / 'A' / 'foo.h.yaml').exists())
+            (self._brave / 'rewrite' / 'A' / 'foo.h.yaml').exists()
+        )
         self.assertFalse((self._brave / 'patches' / 'A-foo.h.patch').exists())
 
     def test_patchinfo_deleted_with_patch(self) -> None:
@@ -303,8 +314,7 @@ class YamlTest(_Base):
         with self.assertLogs(level=logging.WARNING):
             cmd_follow_renames([f'{before}..HEAD'])
 
-        self.assertTrue(
-            (self._brave / 'rewrite' / 'B' / 'foo.h.yaml').exists())
+        self.assertTrue((self._brave / 'rewrite' / 'B' / 'foo.h.yaml').exists())
 
     def test_no_yaml_is_noop(self) -> None:
         """A Chromium rename with no YAML plaster in rewrite/ does not raise."""
@@ -332,8 +342,9 @@ class ReferencesTest(_Base):
 
         cmd_follow_renames([f'{before}..HEAD'])
 
-        content = (self._brave / 'other' /
-                   'user.cc').read_text(encoding='utf-8')
+        content = (self._brave / 'other' / 'user.cc').read_text(
+            encoding='utf-8'
+        )
         self.assertIn('#include "B/foo.h"', content)
         self.assertNotIn('#include "A/foo.h"', content)
 
@@ -341,14 +352,16 @@ class ReferencesTest(_Base):
         """An upstream .gni rename rewrites `"//path"` refs in BUILD.gn."""
         before = self._chromium_head()
         self._chromium_commit('tools/grit/repack.gni', '# repack template\n')
-        self._brave_commit('browser/BUILD.gn',
-                           'import("//tools/grit/repack.gni")\n')
+        self._brave_commit(
+            'browser/BUILD.gn', 'import("//tools/grit/repack.gni")\n'
+        )
         self._chromium_rename('tools/grit/repack.gni', 'build/grit/repack.gni')
 
         cmd_follow_renames([f'{before}..HEAD'])
 
-        content = (self._brave / 'browser' /
-                   'BUILD.gn').read_text(encoding='utf-8')
+        content = (self._brave / 'browser' / 'BUILD.gn').read_text(
+            encoding='utf-8'
+        )
         self.assertIn('"//build/grit/repack.gni"', content)
         self.assertNotIn('"//tools/grit/repack.gni"', content)
 
@@ -356,14 +369,14 @@ class ReferencesTest(_Base):
         """An upstream C++ rename rewrites `"//path.h"` refs in BUILD.gn."""
         before = self._chromium_head()
         self._chromium_commit('base/foo.h', '// header\n')
-        self._brave_commit('browser/BUILD.gn',
-                           'sources = [ "//base/foo.h" ]\n')
+        self._brave_commit('browser/BUILD.gn', 'sources = [ "//base/foo.h" ]\n')
         self._chromium_rename('base/foo.h', 'base/sub/foo.h')
 
         cmd_follow_renames([f'{before}..HEAD'])
 
-        content = (self._brave / 'browser' /
-                   'BUILD.gn').read_text(encoding='utf-8')
+        content = (self._brave / 'browser' / 'BUILD.gn').read_text(
+            encoding='utf-8'
+        )
         self.assertIn('"//base/sub/foo.h"', content)
         self.assertNotIn('"//base/foo.h"', content)
 
@@ -382,10 +395,14 @@ class MultipleRenamesTest(_Base):
 
         # First rename: A/foo.h → B/foo.h
         self._chromium_commit('A/foo.h', '// foo\n')
-        self._brave_commit('chromium_src/A/foo.h',
-                           ('#ifndef BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
-                            '#define BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
-                            '#endif  // BRAVE_CHROMIUM_SRC_A_FOO_H_\n'))
+        self._brave_commit(
+            'chromium_src/A/foo.h',
+            (
+                '#ifndef BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
+                '#define BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
+                '#endif  // BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
+            ),
+        )
         self._chromium_rename('A/foo.h', 'B/foo.h')
 
         # Second rename: C/bar.h → D/bar.h
@@ -397,14 +414,13 @@ class MultipleRenamesTest(_Base):
         cmd_follow_renames([f'{before}..HEAD'])
 
         # First rename: shadow file moved.
-        self.assertTrue(
-            (self._brave / 'chromium_src' / 'B' / 'foo.h').exists())
+        self.assertTrue((self._brave / 'chromium_src' / 'B' / 'foo.h').exists())
         self.assertFalse(
-            (self._brave / 'chromium_src' / 'A' / 'foo.h').exists())
+            (self._brave / 'chromium_src' / 'A' / 'foo.h').exists()
+        )
 
         # Second rename: YAML moved, patch deleted.
-        self.assertTrue(
-            (self._brave / 'rewrite' / 'D' / 'bar.h.yaml').exists())
+        self.assertTrue((self._brave / 'rewrite' / 'D' / 'bar.h.yaml').exists())
         self.assertFalse((self._brave / 'patches' / 'C-bar.h.patch').exists())
 
 
@@ -425,10 +441,10 @@ class NoGitTest(_Base):
 
         cmd_follow_renames(['--no-git', f'{before}..HEAD'])
 
-        self.assertTrue(
-            (self._brave / 'chromium_src' / 'B' / 'foo.h').exists())
+        self.assertTrue((self._brave / 'chromium_src' / 'B' / 'foo.h').exists())
         self.assertFalse(
-            (self._brave / 'chromium_src' / 'A' / 'foo.h').exists())
+            (self._brave / 'chromium_src' / 'A' / 'foo.h').exists()
+        )
         # Nothing should be staged.
         staged = repository.brave.run_git('diff', '--cached', '--name-only')
         self.assertEqual(staged, '')
@@ -458,11 +474,13 @@ class NoGitTest(_Base):
 class PlasterApplyTest(_Base):
     """plaster.apply() is called after each YAML move by default."""
 
-    _SUBST_YAML = ('substitutions:\n'
-                   '  - description: Replace old_func\n'
-                   '    regex:\n'
-                   '      pattern: old_func\n'
-                   '      replace: new_func\n')
+    _SUBST_YAML = (
+        'substitutions:\n'
+        '  - description: Replace old_func\n'
+        '    regex:\n'
+        '      pattern: old_func\n'
+        '      replace: new_func\n'
+    )
 
     def test_patch_created_at_new_location(self) -> None:
         """Plaster writes patches/B-foo.cc.patch after an upstream rename."""
@@ -509,13 +527,15 @@ class PatchFileRepairTest(_Base):
     _NEW_REL = 'B/foo.cc'
     _FILE_CONTENT = 'int x = 1;\n'
     # Real brave patch format with diff --git header and index line.
-    _PATCH_TEMPLATE = ('diff --git a/{path} b/{path}\n'
-                       'index abc1234..def5678 100644\n'
-                       '--- a/{path}\n'
-                       '+++ b/{path}\n'
-                       '@@ -1 +1 @@\n'
-                       '-int x = 1;\n'
-                       '+int x = 2;\n')
+    _PATCH_TEMPLATE = (
+        'diff --git a/{path} b/{path}\n'
+        'index abc1234..def5678 100644\n'
+        '--- a/{path}\n'
+        '+++ b/{path}\n'
+        '@@ -1 +1 @@\n'
+        '-int x = 1;\n'
+        '+int x = 2;\n'
+    )
 
     def _setup_rename(self) -> str:
         """Commits file + patch in their repos, renames in chromium."""
@@ -541,8 +561,9 @@ class PatchFileRepairTest(_Base):
 
         cmd_follow_renames([f'{before}..HEAD'])
 
-        content = (self._brave / 'patches' /
-                   'B-foo.cc.patch').read_text(encoding='utf-8')
+        content = (self._brave / 'patches' / 'B-foo.cc.patch').read_text(
+            encoding='utf-8'
+        )
         self.assertIn('diff --git a/B/foo.cc b/B/foo.cc', content)
         self.assertIn('--- a/B/foo.cc', content)
         self.assertIn('+++ b/B/foo.cc', content)
@@ -598,11 +619,13 @@ class PatchFileRepairTest(_Base):
 
     def test_plaster_patch_not_double_processed(self) -> None:
         """Patch deleted by _repair_plaster_files is not re-renamed here."""
-        _SUBST_YAML = ('substitutions:\n'
-                       '  - description: test\n'
-                       '    regex:\n'
-                       '      pattern: old_func\n'
-                       '      replace: new_func\n')
+        _SUBST_YAML = (
+            'substitutions:\n'
+            '  - description: test\n'
+            '    regex:\n'
+            '      pattern: old_func\n'
+            '      replace: new_func\n'
+        )
         before = self._chromium_head()
         self._chromium_commit(self._OLD_REL, 'void old_func() {}\n')
         self._brave_commit('rewrite/A/foo.cc.yaml', _SUBST_YAML)
@@ -625,9 +648,9 @@ class PatchFileRepairTest(_Base):
         self._brave_commit('patches/A-foo.cc.patch', patch_content)
         self._chromium_rename(self._OLD_REL, self._NEW_REL)
 
-        _repair_patch_files(Path(self._OLD_REL),
-                            Path(self._NEW_REL),
-                            no_git=False)
+        _repair_patch_files(
+            Path(self._OLD_REL), Path(self._NEW_REL), no_git=False
+        )
 
         self.assertFalse((self._brave / 'patches' / 'A-foo.cc.patch').exists())
         self.assertTrue((self._brave / 'patches' / 'B-foo.cc.patch').exists())

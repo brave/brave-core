@@ -31,8 +31,9 @@ import os
 import sys
 import subprocess
 
-TESTING_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                           os.pardir))
+TESTING_DIR = os.path.abspath(
+  os.path.join(os.path.dirname(__file__), os.pardir)
+)
 
 
 def main() -> int:

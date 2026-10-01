@@ -6,8 +6,7 @@
 # Copyright 2013 The LUCI Authors
 # Use of this source code is governed under the Apache License, Version 2.0
 # that can be found in the LICENSE file.
-"""A platform-independent `Path`, ported from recipes-py's `config_types.py`.
-"""
+"""A platform-independent `Path`, ported from recipes-py's `config_types.py`."""
 
 from __future__ import annotations
 
@@ -46,22 +45,23 @@ class ResolvedBasePath:
     nothing to rewrite into a token later. Outside of test mode it holds a
     real absolute filesystem path string.
     """
+
     resolved: str
 
     @classmethod
-    def for_recipe_module(cls, test_enabled: bool, module_name: str,
-                          module_dir: str) -> ResolvedBasePath:
-        """The base for a recipe module's `resources/` directory.
-        """
+    def for_recipe_module(
+        cls, test_enabled: bool, module_name: str, module_dir: str
+    ) -> ResolvedBasePath:
+        """The base for a recipe module's `resources/` directory."""
         if not test_enabled:
             return cls(module_dir)
         return cls(f'RECIPE_MODULE[{module_name}]')
 
     @classmethod
-    def for_recipe_script_resources(cls, test_enabled: bool, recipe_name: str,
-                                    resources_dir: str) -> ResolvedBasePath:
-        """The base for a recipe script's `<recipe>.resources/` directory.
-        """
+    def for_recipe_script_resources(
+        cls, test_enabled: bool, recipe_name: str, resources_dir: str
+    ) -> ResolvedBasePath:
+        """The base for a recipe script's `<recipe>.resources/` directory."""
         if not test_enabled:
             return cls(resources_dir)
         return cls(f'RECIPE[{recipe_name}].resources')
@@ -77,6 +77,7 @@ class Path:
     Made aware of the currently simulated path separator via the `path`
     recipe module's `initialise()`, which assigns to this class's `_OS_SEP`.
     """
+
     base: ResolvedBasePath
     pieces: tuple[str, ...]
 
@@ -90,10 +91,9 @@ class Path:
     # captures whatever _OS_SEP was at call time, even though _OS_SEP can
     # change between test cases -- the plain instance field self-invalidates
     # by construction (a fresh Path is built every time a base path changes).
-    _str: str | None = field(default=None,
-                             repr=False,
-                             hash=False,
-                             compare=False)
+    _str: str | None = field(
+        default=None, repr=False, hash=False, compare=False
+    )
 
     def __init__(self, base: ResolvedBasePath, *pieces: str):
         """Creates a Path.
@@ -115,14 +115,16 @@ class Path:
         if not isinstance(base, ResolvedBasePath):
             raise ValueError(
                 'First argument to Path must be a ResolvedBasePath, got '
-                f'{base!r} ({type(base)!r})')
+                f'{base!r} ({type(base)!r})'
+            )
 
         has_backslashes = False
         for i, piece in enumerate(pieces):
             if not isinstance(piece, str):
                 raise ValueError(
                     'Variadic arguments to Path must only be `str`, '
-                    f'argument {i} was {piece!r} ({type(piece)!r})')
+                    f'argument {i} was {piece!r} ({type(piece)!r})'
+                )
             has_backslashes = has_backslashes or '\\' in piece
 
         # We always separate on '/', regardless of _OS_SEP, since callers
@@ -134,7 +136,8 @@ class Path:
                 f'Cannot instantiate Path({base!r}, {pieces!r}) - pieces '
                 'contain a backslash and the path module has not been '
                 'initialised yet. Use "/" (even for windows) or pass the '
-                'pieces to join separately.')
+                'pieces to join separately.'
+            )
         need_backslash_split = has_backslashes and self._OS_SEP == '\\'
 
         normalized_pieces = []
@@ -154,7 +157,7 @@ class Path:
         while 0 < i < len(normalized_pieces):
             piece = normalized_pieces[i]
             if piece == '..':
-                normalized_pieces[i - 1:i + 1] = []
+                normalized_pieces[i - 1 : i + 1] = []
                 i -= 1
             else:
                 i += 1
@@ -162,7 +165,8 @@ class Path:
         if normalized_pieces and normalized_pieces[0] == '..':
             raise ValueError(
                 f'Unable to compute {base!r} / {pieces!r} without going '
-                'above the base.')
+                'above the base.'
+            )
 
         # Frozen dataclass: assign via object.__setattr__ (documented escape
         # hatch for frozen-instance __init__).
@@ -214,7 +218,7 @@ class Path:
         aren't at the mercy of whichever separator the current test case
         happens to simulate.
         """
-        return '/'.join(itertools.chain((str(self.base), ), self.pieces))
+        return '/'.join(itertools.chain((str(self.base),), self.pieces))
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, str):
@@ -252,30 +256,34 @@ class Path:
             return self
         for i, p in enumerate(pieces):
             if isinstance(p, Path):
-                return p.joinpath(*pieces[i + 1:])
+                return p.joinpath(*pieces[i + 1 :])
         return Path(
             self.base,
             # Propagate None so an accidental join with None raises in
             # Path.__init__'s type check, rather than being silently dropped.
             *[
-                p for p in itertools.chain(self.pieces, pieces)
+                p
+                for p in itertools.chain(self.pieces, pieces)
                 if p or p is None
-            ])
+            ],
+        )
 
     def __str__(self) -> str:
         if self._str is None:
             if not self._OS_SEP:
                 raise ValueError(
                     'Unable to render Path to string - the path module has '
-                    'not been initialised yet.')
+                    'not been initialised yet.'
+                )
             str_val = self._OS_SEP.join(
-                itertools.chain((str(self.base), ), self.pieces))
+                itertools.chain((str(self.base),), self.pieces)
+            )
             object.__setattr__(self, '_str', str_val)
             return str_val
         return self._str
 
     def __repr__(self) -> str:
-        s = 'Path(%r' % (self.base, )
+        s = 'Path(%r' % (self.base,)
         if self.pieces:
             s += ', %s' % ', '.join(repr(x) for x in self.pieces)
         return s + ')'
@@ -303,11 +311,13 @@ class Path:
         """
         if self.base != other.base:
             raise RelativeToDifferentBases(
-                f'{self!r} and {other!r} have different bases')
+                f'{self!r} and {other!r} have different bases'
+            )
 
         if not walk_up and other not in self.parents:
             raise RelativeToNotParent(
-                f'{other!r} not in parents of {self!r} and walk_up=False')
+                f'{other!r} not in parents of {self!r} and walk_up=False'
+            )
 
         result = []
 

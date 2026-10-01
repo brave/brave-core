@@ -50,21 +50,25 @@ def TerminateProcess(p):
   p.terminate()
 
 
-def GetProcessOutput(args: List[str],
-                     cwd: Optional[str] = None,
-                     check=False,
-                     output_to_debug=True,
-                     timeout: Optional[int] = None,
-                     env=None) -> Tuple[bool, str]:
+def GetProcessOutput(
+  args: List[str],
+  cwd: Optional[str] = None,
+  check=False,
+  output_to_debug=True,
+  timeout: Optional[int] = None,
+  env=None,
+) -> Tuple[bool, str]:
   if logging.root.isEnabledFor(logging.DEBUG):
     logging.debug('Run binary: %s, cwd = %s  output:', ' '.join(args), cwd)
-    with subprocess.Popen(args,
-                          stdout=subprocess.PIPE,
-                          stderr=subprocess.STDOUT,
-                          env=env,
-                          cwd=cwd,
-                          bufsize=0,
-                          universal_newlines=True) as process:
+    with subprocess.Popen(
+      args,
+      stdout=subprocess.PIPE,
+      stderr=subprocess.STDOUT,
+      env=env,
+      cwd=cwd,
+      bufsize=0,
+      universal_newlines=True,
+    ) as process:
       timer = None
       if timeout:
         timer = Timer(timeout, lambda: TerminateProcess(process))
@@ -93,12 +97,14 @@ def GetProcessOutput(args: List[str],
     return rc == 0, output
 
   try:
-    output = subprocess.check_output(args,
-                                     stderr=subprocess.STDOUT,
-                                     cwd=cwd,
-                                     env=env,
-                                     timeout=timeout,
-                                     universal_newlines=True)
+    output = subprocess.check_output(
+      args,
+      stderr=subprocess.STDOUT,
+      cwd=cwd,
+      env=env,
+      timeout=timeout,
+      universal_newlines=True,
+    )
     return True, output
   except subprocess.CalledProcessError as e:
     if output_to_debug:

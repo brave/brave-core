@@ -36,19 +36,27 @@ def _compute_brave_core_path() -> Path:
     except (subprocess.CalledProcessError, FileNotFoundError) as e:
         raise RuntimeError(
             'tools/cr must be invoked from within a brave-core git work tree '
-            '(git rev-parse --show-cdup failed).') from e
+            '(git rev-parse --show-cdup failed).'
+        ) from e
     brave_core = Path(cdup) if cdup else Path('.')
     if brave_core.resolve().name != BRAVE_DIR_NAME:
         raise RuntimeError(
             f'tools/cr expected to be inside a "{BRAVE_DIR_NAME}" git work '
-            f'tree; resolved root is {brave_core.resolve()}.')
+            f'tree; resolved root is {brave_core.resolve()}.'
+        )
     if brave_core != Path('.'):
         logging.debug(
             'Running %s from relative path: brave/%s, brave-core root set as:'
-            ' %s (resolves to %s)', (Path(sys.argv[0]).name if sys.argv
-                                     and sys.argv[0] else '<unknown>'),
-            Path.cwd().relative_to(brave_core.resolve()), brave_core,
-            brave_core.resolve())
+            ' %s (resolves to %s)',
+            (
+                Path(sys.argv[0]).name
+                if sys.argv and sys.argv[0]
+                else '<unknown>'
+            ),
+            Path.cwd().relative_to(brave_core.resolve()),
+            brave_core,
+            brave_core.resolve(),
+        )
     return brave_core
 
 
@@ -73,20 +81,17 @@ class Repository:
 
     @property
     def is_chromium(self) -> bool:
-        """If this repo is chromium/src.
-        """
+        """If this repo is chromium/src."""
         return self.root == _CHROMIUM_SRC_PATH
 
     @property
     def is_brave(self) -> bool:
-        """If this repo is brave/.
-        """
+        """If this repo is brave/."""
         return self.root == _BRAVE_CORE_PATH
 
     @property
     def relative_to_chromium(self) -> Path:
-        """ Returns the path relative to src/.
-        """
+        """Returns the path relative to src/."""
         if self.is_chromium:
             return Path('')
         # The brave repo's root is `Path('.')` and chromium's is `Path('..')`,
@@ -96,19 +101,22 @@ class Repository:
         return self.root.relative_to(_CHROMIUM_SRC_PATH)
 
     def to_brave(self) -> Path:
-        """ Returns the path from the repository to brave/.
-        """
+        """Returns the path from the repository to brave/."""
         if self.is_chromium:
             return Path(BRAVE_DIR_NAME)
-        return Path(
-            len(self.relative_to_chromium.parts) * '../') / BRAVE_DIR_NAME
+        return (
+            Path(len(self.relative_to_chromium.parts) * '../') / BRAVE_DIR_NAME
+        )
 
     def from_brave(self, source: Path | None = None) -> Path:
-        """ Returns the path from brave/ to the repository.
-        """
+        """Returns the path from brave/ to the repository."""
         if source:
-            return _BRAVE_CORE_PATH / Path(
-                '..') / self.relative_to_chromium / source
+            return (
+                _BRAVE_CORE_PATH
+                / Path('..')
+                / self.relative_to_chromium
+                / source
+            )
 
         return _BRAVE_CORE_PATH / Path('..') / self.relative_to_chromium
 
@@ -120,10 +128,9 @@ class Repository:
         """
         return Path(p).resolve().relative_to(self.root.resolve())
 
-    def run_git(self,
-                *cmd,
-                no_trim=False,
-                env: dict[str, str] | None = None) -> str:
+    def run_git(
+        self, *cmd, no_trim=False, env: dict[str, str] | None = None
+    ) -> str:
         """Runs a git command on this repository.
 
         Strongly preferred over calling `terminal.run_git` directly because
@@ -142,15 +149,12 @@ class Repository:
         if self.root == Path('.'):
             return terminal.run_git(*cmd, no_trim=no_trim, env=env)
 
-        return terminal.run_git('-C',
-                                self.from_brave(),
-                                *cmd,
-                                no_trim=no_trim,
-                                env=env)
+        return terminal.run_git(
+            '-C', self.from_brave(), *cmd, no_trim=no_trim, env=env
+        )
 
     def unstage_all_changes(self):
-        """Unstages all changes in the repository.
-        """
+        """Unstages all changes in the repository."""
         self.run_git('reset', 'HEAD')
 
     def has_staged_changes(self) -> bool:
@@ -163,12 +167,14 @@ class Repository:
         """
         return self.run_git('log', '-1', '--pretty=%s', commit)
 
-    def _git_commit_internal(self,
-                             args: list[str],
-                             *,
-                             allows_empty: bool,
-                             no_verify: bool = False,
-                             env: dict[str, str] | None = None):
+    def _git_commit_internal(
+        self,
+        args: list[str],
+        *,
+        allows_empty: bool,
+        no_verify: bool = False,
+        env: dict[str, str] | None = None,
+    ):
         """Shared implementation for git commit operations.
 
         Args:
@@ -190,7 +196,8 @@ class Repository:
             # Throwing an error if anything is staged as that could result in
             # unintentionally committing changes.
             raise ValueError(
-                'Cannot allow empty commits if there are staged changes.')
+                'Cannot allow empty commits if there are staged changes.'
+            )
 
         if allows_empty:
             args.append('--allow-empty')
@@ -198,56 +205,61 @@ class Repository:
             args.append('--no-verify')
         self.run_git('commit', *args, env=env)
 
-        commit = self.run_git('log', '-1', '--pretty=oneline',
-                              '--abbrev-commit')
+        commit = self.run_git(
+            'log', '-1', '--pretty=oneline', '--abbrev-commit'
+        )
         terminal.log_task(f'[bold]✔️ [/] [italic]{escape(commit)}')
 
-    def git_commit(self,
-                   message: str,
-                   *,
-                   allows_empty: bool = False,
-                   no_verify: bool = False,
-                   env: dict[str, str] | None = None):
+    def git_commit(
+        self,
+        message: str,
+        *,
+        allows_empty: bool = False,
+        no_verify: bool = False,
+        env: dict[str, str] | None = None,
+    ):
         """Commits the current staged changes.
 
-    This function calls `git commit` and prints a user friendly message as a
-    result. No commit will be greated if nothing is staged, unless allows_empty
-    is set to True.
+        This function calls `git commit` and prints a user friendly message as a
+        result. No commit will be greated if nothing is staged, unless allows_empty
+        is set to True.
 
-        Args:
-        message:
-            The message to be used for the commit.
-        allows_empty:
-            Whether to allow empty commits.
-        no_verify:
-            Whether to skip pre-commit and commit-msg hooks.
-        env:
-            Optional environment variables to be forwarded to `terminal.run`.
+            Args:
+            message:
+                The message to be used for the commit.
+            allows_empty:
+                Whether to allow empty commits.
+            no_verify:
+                Whether to skip pre-commit and commit-msg hooks.
+            env:
+                Optional environment variables to be forwarded to `terminal.run`.
         """
-        self._git_commit_internal(['-m', message],
-                                  allows_empty=allows_empty,
-                                  no_verify=no_verify,
-                                  env=env)
+        self._git_commit_internal(
+            ['-m', message],
+            allows_empty=allows_empty,
+            no_verify=no_verify,
+            env=env,
+        )
 
     def git_commit_fixup(self, commit: str, *, allows_empty: bool = False):
         """Commits the current staged changes as a fixup for a given commit.
 
-    This function calls `git commit --fixup` and prints a user friendly message
-    as a result. No commit will be created if nothing is staged, unless
-    allows_empty is set to True.
+        This function calls `git commit --fixup` and prints a user friendly message
+        as a result. No commit will be created if nothing is staged, unless
+        allows_empty is set to True.
 
-        Args:
-        commit:
-            The commit hash to create a fixup for.
-        allows_empty:
-            Whether to allow empty commits.
+            Args:
+            commit:
+                The commit hash to create a fixup for.
+            allows_empty:
+                Whether to allow empty commits.
         """
-        self._git_commit_internal(['--fixup', commit],
-                                  allows_empty=allows_empty)
+        self._git_commit_internal(
+            ['--fixup', commit], allows_empty=allows_empty
+        )
 
     def is_valid_git_reference(self, reference: str) -> bool:
-        """Checks if a name is a valid git branch name or hash.
-        """
+        """Checks if a name is a valid git branch name or hash."""
         try:
             self.run_git('rev-parse', '--verify', reference)
             return True
@@ -263,12 +275,12 @@ class Repository:
         a linked worktree.
         """
         git_dir = Path(self.run_git('rev-parse', '--absolute-git-dir'))
-        return ((git_dir / 'rebase-merge').exists()
-                or (git_dir / 'rebase-apply').exists())
+        return (git_dir / 'rebase-merge').exists() or (
+            git_dir / 'rebase-apply'
+        ).exists()
 
     def last_changed(self, file: str, from_commit: str | None = None) -> str:
-        """Gets the last commit for a file.
-        """
+        """Gets the last commit for a file."""
         args = ['log', '--pretty=%h', '-1']
         if from_commit:
             args.append(from_commit)
@@ -278,21 +290,22 @@ class Repository:
     def read_file(self, *files, commit: str = 'HEAD') -> str:
         """Reads the content of a file in the repository.
 
-    Args:
-        files:
-            The file paths to read.
-        commit:
-            The commit to read the file from. This can be a branch or a tag to,
-            but the name commit is being used to be more self-explanatory.
+        Args:
+            files:
+                The file paths to read.
+            commit:
+                The commit to read the file from. This can be a branch or a tag to,
+                but the name commit is being used to be more self-explanatory.
 
-    Return:
-        The contents of the file read. If more than one file is provided, the
-        contents of all files are appended to the same string.
+        Return:
+            The contents of the file read. If more than one file is provided, the
+            contents of all files are appended to the same string.
         """
         return self.run_git(
             'show',
             *[f'{commit}:{Path(file).as_posix()}' for file in files],
-            no_trim=True)
+            no_trim=True,
+        )
 
     def get_patch_stats(self, patch: Path) -> list[Path]:
         """Returns the files affected by the given patch.
@@ -300,14 +313,15 @@ class Repository:
         Uses --numstat for unabbreviated paths.
         """
         return [
-            Path(line.split('\t')[2]) for line in self.run_git(
-                'apply', '--numstat', patch.as_posix()).splitlines()
+            Path(line.split('\t')[2])
+            for line in self.run_git(
+                'apply', '--numstat', patch.as_posix()
+            ).splitlines()
             if '\t' in line
         ]
 
     def current_branch(self) -> str:
-        """Gets the current branch name, or HEAD if not in any branch.
-        """
+        """Gets the current branch name, or HEAD if not in any branch."""
         return self.run_git('rev-parse', '--abbrev-ref', 'HEAD')
 
 

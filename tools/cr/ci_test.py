@@ -59,9 +59,9 @@ class FromConfigTest(unittest.TestCase):
         self.addCleanup(patcher.stop)
 
     def _write(self, data) -> None:
-        self.config_path.write_text(json.dumps(data),
-                                    encoding='utf-8',
-                                    newline='')
+        self.config_path.write_text(
+            json.dumps(data), encoding='utf-8', newline=''
+        )
 
     def test_reads_credentials(self):
         self._write({'username': 'bob', 'token': 'tok'})
@@ -86,9 +86,9 @@ class FromConfigTest(unittest.TestCase):
             ci.JenkinsCi.from_config()
 
     def test_invalid_json_raises(self):
-        self.config_path.write_text('{not valid json',
-                                    encoding='utf-8',
-                                    newline='')
+        self.config_path.write_text(
+            '{not valid json', encoding='utf-8', newline=''
+        )
         with self.assertRaises(ci.InvalidInputException):
             ci.JenkinsCi.from_config()
 
@@ -98,8 +98,9 @@ class ServerRootTest(unittest.TestCase):
 
     def test_scheme_and_host_only(self):
         # pylint: disable=protected-access
-        self.assertEqual(ci.JenkinsCi._server_root(JOB_URLS),
-                         'https://ci.brave.com')
+        self.assertEqual(
+            ci.JenkinsCi._server_root(JOB_URLS), 'https://ci.brave.com'
+        )
 
 
 class TriggerTest(unittest.TestCase):
@@ -129,7 +130,8 @@ class TriggerTest(unittest.TestCase):
     def _trigger(self, session, **kwargs):
         with patch('ci.requests.Session', return_value=session):
             ci.JenkinsCi('alice', 'secret-token').trigger(
-                JOB_URLS, params={'CHROMIUM_TAG': '150.0.7850.1'}, **kwargs)
+                JOB_URLS, params={'CHROMIUM_TAG': '150.0.7850.1'}, **kwargs
+            )
 
     def test_triggers_all_jobs(self):
         session = self._make_session()
@@ -141,22 +143,26 @@ class TriggerTest(unittest.TestCase):
         # One POST per job URL, each at the right buildWithParameters URL.
         self.assertEqual(session.post.call_count, len(JOB_URLS))
         posted_urls = {call.args[0] for call in session.post.call_args_list}
-        self.assertEqual(posted_urls,
-                         {f'{url}buildWithParameters'
-                          for url in JOB_URLS})
+        self.assertEqual(
+            posted_urls, {f'{url}buildWithParameters' for url in JOB_URLS}
+        )
 
         # Every call carries the CHROMIUM_TAG param and the crumb header.
         for call in session.post.call_args_list:
-            self.assertEqual(call.kwargs['params'],
-                             {'CHROMIUM_TAG': '150.0.7850.1'})
-            self.assertEqual(call.kwargs['headers'],
-                             {'Jenkins-Crumb': 'deadbeef'})
+            self.assertEqual(
+                call.kwargs['params'], {'CHROMIUM_TAG': '150.0.7850.1'}
+            )
+            self.assertEqual(
+                call.kwargs['headers'], {'Jenkins-Crumb': 'deadbeef'}
+            )
 
     def test_crumb_fetched_from_derived_root(self):
         session = self._make_session()
         self._trigger(session)
-        self.assertEqual(session.get.call_args.args[0],
-                         'https://ci.brave.com/crumbIssuer/api/json')
+        self.assertEqual(
+            session.get.call_args.args[0],
+            'https://ci.brave.com/crumbIssuer/api/json',
+        )
 
     def test_missing_crumb_issuer_proceeds_without_header(self):
         """When the crumb issuer is unavailable, the builds are still triggered
@@ -175,7 +181,8 @@ class TriggerTest(unittest.TestCase):
         session = self._make_session()
         failing = MagicMock()
         failing.raise_for_status.side_effect = ci.requests.HTTPError(
-            '403 Forbidden')
+            '403 Forbidden'
+        )
         session.post.return_value = failing
 
         with self.assertRaises(ci.BadOutcomeException):
@@ -186,7 +193,8 @@ class TriggerTest(unittest.TestCase):
         session = self._make_session()
         with patch('ci.requests.Session', return_value=session):
             ci.JenkinsCi('alice', 'secret-token').trigger(
-                (JOB_URLS[0], ), params={'CHROMIUM_TAG': '150.0.7850.1'})
+                (JOB_URLS[0],), params={'CHROMIUM_TAG': '150.0.7850.1'}
+            )
         self.assertEqual(session.post.call_count, 1)
 
     def test_no_properties_omits_the_param(self):
@@ -200,34 +208,44 @@ class TriggerTest(unittest.TestCase):
         self._trigger(session, properties={'a': 1, 'b': 'x'})
         # Neither URL in JOB_URLS is a Windows job, so the JSON is verbatim.
         for call in session.post.call_args_list:
-            self.assertEqual(call.kwargs['params']['PROPERTIES'],
-                             '{"a": 1, "b": "x"}')
+            self.assertEqual(
+                call.kwargs['params']['PROPERTIES'], '{"a": 1, "b": "x"}'
+            )
 
     def test_properties_escaped_only_for_windows_jobs(self):
         """Windows jobs escape every quote; other jobs keep the JSON as-is."""
-        win_infix = ('https://ci.brave.com/view/toolchains/job/'
-                     'brave-browser-rust-toolchain-aux-build-windows-x64/')
+        win_infix = (
+            'https://ci.brave.com/view/toolchains/job/'
+            'brave-browser-rust-toolchain-aux-build-windows-x64/'
+        )
         # The hermetic Windows toolchain job's own naming: `windows` leads the
         # job name rather than appearing as an infix.
-        win_leading = ('https://ci.brave.com/view/toolchains/job/'
-                       'windows-hermetic-toolchain-build/')
-        linux = ('https://ci.brave.com/view/toolchains/job/'
-                 'brave-browser-rust-toolchain-aux-build-linux-x64/')
+        win_leading = (
+            'https://ci.brave.com/view/toolchains/job/'
+            'windows-hermetic-toolchain-build/'
+        )
+        linux = (
+            'https://ci.brave.com/view/toolchains/job/'
+            'brave-browser-rust-toolchain-aux-build-linux-x64/'
+        )
         session = self._make_session()
         with patch('ci.requests.Session', return_value=session):
             ci.JenkinsCi('alice', 'secret-token').trigger(
                 (win_infix, win_leading, linux),
                 params={'CHROMIUM_TAG': '150.0.7850.1'},
-                properties={'k': 'v'})
+                properties={'k': 'v'},
+            )
 
         by_url = {
             call.args[0]: call.kwargs['params']['PROPERTIES']
             for call in session.post.call_args_list
         }
-        self.assertEqual(by_url[f'{win_infix}buildWithParameters'],
-                         '{\\"k\\": \\"v\\"}')
-        self.assertEqual(by_url[f'{win_leading}buildWithParameters'],
-                         '{\\"k\\": \\"v\\"}')
+        self.assertEqual(
+            by_url[f'{win_infix}buildWithParameters'], '{\\"k\\": \\"v\\"}'
+        )
+        self.assertEqual(
+            by_url[f'{win_leading}buildWithParameters'], '{\\"k\\": \\"v\\"}'
+        )
         self.assertEqual(by_url[f'{linux}buildWithParameters'], '{"k": "v"}')
 
 
@@ -355,12 +373,14 @@ class RenderTableDimTest(unittest.TestCase):
     DIM = '\x1b[2m'  # SGR code Rich emits for the `dim` style.
 
     def _render(self, state):
-        job = ci._WatchedJob(url=JOB_URLS[0],
-                             queue_url='',
-                             build_url='https://ci.brave.com/job/x/5/',
-                             state=state,
-                             stage='(done)',
-                             elapsed='5m00s')
+        job = ci._WatchedJob(
+            url=JOB_URLS[0],
+            queue_url='',
+            build_url='https://ci.brave.com/job/x/5/',
+            state=state,
+            stage='(done)',
+            elapsed='5m00s',
+        )
         table = ci.JenkinsCi('u', 't')._render_table('Rust toolchain', [job])
         console = Console(force_terminal=True, width=200)
         with console.capture() as capture:
@@ -407,24 +427,28 @@ class ElapsedCellTest(unittest.TestCase):
         return ci._WatchedJob(**defaults)
 
     def test_running_with_anchor_is_clock(self):
-        job = self._job(state='RUNNING',
-                        duration_millis=1000,
-                        elapsed_anchor=10.0,
-                        elapsed='1s')
-        self.assertIsInstance(ci.JenkinsCi._elapsed_cell(job),
-                              ci._ElapsedClock)
+        job = self._job(
+            state='RUNNING',
+            duration_millis=1000,
+            elapsed_anchor=10.0,
+            elapsed='1s',
+        )
+        self.assertIsInstance(ci.JenkinsCi._elapsed_cell(job), ci._ElapsedClock)
 
     def test_running_without_duration_is_static(self):
         """A RUNNING build whose duration hasn't resolved yet shows a dash, not
         a clock anchored to nothing."""
         self.assertEqual(
-            ci.JenkinsCi._elapsed_cell(self._job(state='RUNNING')), '—')
+            ci.JenkinsCi._elapsed_cell(self._job(state='RUNNING')), '—'
+        )
 
     def test_terminal_shows_static_server_value(self):
-        job = self._job(state='SUCCESS',
-                        duration_millis=100000,
-                        elapsed_anchor=10.0,
-                        elapsed='1m40s')
+        job = self._job(
+            state='SUCCESS',
+            duration_millis=100000,
+            elapsed_anchor=10.0,
+            elapsed='1m40s',
+        )
         self.assertEqual(ci.JenkinsCi._elapsed_cell(job), '1m40s')
 
 
@@ -436,10 +460,17 @@ class ResolveDisplayNameTest(unittest.TestCase):
 
     def test_sets_display_name_when_distinct_from_job_name(self):
         job = self._job()
-        session = _dispatching_session([('/job/job-linux/api/json', {
-            'name': 'job-linux',
-            'displayName': 'Linux x64',
-        })])
+        session = _dispatching_session(
+            [
+                (
+                    '/job/job-linux/api/json',
+                    {
+                        'name': 'job-linux',
+                        'displayName': 'Linux x64',
+                    },
+                )
+            ]
+        )
 
         ci.JenkinsCi('u', 't')._resolve_display_name(session, job)
 
@@ -450,10 +481,17 @@ class ResolveDisplayNameTest(unittest.TestCase):
         """Jenkins echoes the job name as `displayName` when none is set; that
         must not be treated as a real display name."""
         job = self._job()
-        session = _dispatching_session([('api/json', {
-            'name': 'job-linux',
-            'displayName': 'job-linux',
-        })])
+        session = _dispatching_session(
+            [
+                (
+                    'api/json',
+                    {
+                        'name': 'job-linux',
+                        'displayName': 'job-linux',
+                    },
+                )
+            ]
+        )
 
         ci.JenkinsCi('u', 't')._resolve_display_name(session, job)
 
@@ -462,9 +500,9 @@ class ResolveDisplayNameTest(unittest.TestCase):
 
     def test_leaves_none_on_request_failure(self):
         job = self._job()
-        session = _dispatching_session([
-            ('api/json', ci.requests.RequestException('boom'))
-        ])
+        session = _dispatching_session(
+            [('api/json', ci.requests.RequestException('boom'))]
+        )
 
         ci.JenkinsCi('u', 't')._resolve_display_name(session, job)
 
@@ -484,11 +522,18 @@ class PollJobTest(unittest.TestCase):
 
     def test_still_queued_records_reason(self):
         job = self._job()
-        session = _dispatching_session([('queue/item', {
-            'cancelled': False,
-            'executable': None,
-            'why': 'Waiting for next available executor',
-        })])
+        session = _dispatching_session(
+            [
+                (
+                    'queue/item',
+                    {
+                        'cancelled': False,
+                        'executable': None,
+                        'why': 'Waiting for next available executor',
+                    },
+                )
+            ]
+        )
 
         ci.JenkinsCi('u', 't')._poll_job(session, job)
 
@@ -508,27 +553,22 @@ class PollJobTest(unittest.TestCase):
         """Once an executor picks the job up, the build is resolved and the
         running stage is read from wfapi in the same poll."""
         job = self._job()
-        session = _dispatching_session([
-            ('queue/item', {
-                'executable': {
-                    'url': self.BUILD_URL
-                }
-            }),
-            ('wfapi/describe', {
-                'status': 'IN_PROGRESS',
-                'durationMillis': 62000,
-                'stages': [
+        session = _dispatching_session(
+            [
+                ('queue/item', {'executable': {'url': self.BUILD_URL}}),
+                (
+                    'wfapi/describe',
                     {
-                        'name': 'env',
-                        'status': 'SUCCESS'
+                        'status': 'IN_PROGRESS',
+                        'durationMillis': 62000,
+                        'stages': [
+                            {'name': 'env', 'status': 'SUCCESS'},
+                            {'name': 'build', 'status': 'IN_PROGRESS'},
+                        ],
                     },
-                    {
-                        'name': 'build',
-                        'status': 'IN_PROGRESS'
-                    },
-                ],
-            }),
-        ])
+                ),
+            ]
+        )
 
         ci.JenkinsCi('u', 't')._poll_job(session, job)
 
@@ -541,14 +581,18 @@ class PollJobTest(unittest.TestCase):
 
     def test_running_to_success(self):
         job = self._job(build_url=self.BUILD_URL, state='RUNNING')
-        session = _dispatching_session([('wfapi/describe', {
-            'status': 'SUCCESS',
-            'durationMillis': 100000,
-            'stages': [{
-                'name': 's3-upload',
-                'status': 'SUCCESS'
-            }],
-        })])
+        session = _dispatching_session(
+            [
+                (
+                    'wfapi/describe',
+                    {
+                        'status': 'SUCCESS',
+                        'durationMillis': 100000,
+                        'stages': [{'name': 's3-upload', 'status': 'SUCCESS'}],
+                    },
+                )
+            ]
+        )
 
         ci.JenkinsCi('u', 't')._poll_job(session, job)
 
@@ -560,14 +604,15 @@ class PollJobTest(unittest.TestCase):
         """When wfapi is unavailable, state/result come from the plain build
         API instead."""
         job = self._job(build_url=self.BUILD_URL, state='RUNNING')
-        session = _dispatching_session([
-            ('wfapi/describe', ci.requests.HTTPError('404 no stage view')),
-            ('api/json', {
-                'building': False,
-                'result': 'FAILURE',
-                'duration': 50000
-            }),
-        ])
+        session = _dispatching_session(
+            [
+                ('wfapi/describe', ci.requests.HTTPError('404 no stage view')),
+                (
+                    'api/json',
+                    {'building': False, 'result': 'FAILURE', 'duration': 50000},
+                ),
+            ]
+        )
 
         ci.JenkinsCi('u', 't')._poll_job(session, job)
 
@@ -600,30 +645,26 @@ class WatchLoopTest(unittest.TestCase):
     @patch('ci.time.sleep')
     @patch('ci.Live')
     @patch('ci.requests.Session')
-    def test_watch_polls_until_all_terminal(self, session_cls, live_cls,
-                                            sleep):
+    def test_watch_polls_until_all_terminal(self, session_cls, live_cls, sleep):
         # Every build is already SUCCESS on the first poll, so the loop should
         # break before ever sleeping.
         def _get(url, timeout=None):  # pylint: disable=unused-argument
             if 'crumbIssuer' in url:
-                return _json_response({
-                    'crumbRequestField': 'Jenkins-Crumb',
-                    'crumb': 'x'
-                })
+                return _json_response(
+                    {'crumbRequestField': 'Jenkins-Crumb', 'crumb': 'x'}
+                )
             if 'queue/item' in url:
                 return _json_response(
-                    {'executable': {
-                        'url': 'https://ci.brave.com/job/x/5/'
-                    }})
+                    {'executable': {'url': 'https://ci.brave.com/job/x/5/'}}
+                )
             if 'wfapi/describe' in url:
-                return _json_response({
-                    'status': 'SUCCESS',
-                    'durationMillis': 1000,
-                    'stages': [{
-                        'name': 'build',
-                        'status': 'SUCCESS'
-                    }],
-                })
+                return _json_response(
+                    {
+                        'status': 'SUCCESS',
+                        'durationMillis': 1000,
+                        'stages': [{'name': 'build', 'status': 'SUCCESS'}],
+                    }
+                )
             raise ci.requests.RequestException(url)
 
         post_resp = MagicMock()
@@ -638,7 +679,8 @@ class WatchLoopTest(unittest.TestCase):
             JOB_URLS,
             params={'CHROMIUM_TAG': '150.0.7850.1'},
             watch=True,
-            title='Rust toolchain')
+            title='Rust toolchain',
+        )
 
         self.assertEqual(session.post.call_count, len(JOB_URLS))
         live_cls.assert_called()
@@ -649,30 +691,28 @@ class WatchLoopTest(unittest.TestCase):
     @patch('ci.time.sleep')
     @patch('ci.Live')
     @patch('ci.requests.Session')
-    def test_watch_returns_false_when_a_pipeline_fails(self, session_cls,
-                                                       live_cls, sleep):
+    def test_watch_returns_false_when_a_pipeline_fails(
+        self, session_cls, live_cls, sleep
+    ):
         del live_cls, sleep
 
         def _get(url, timeout=None):  # pylint: disable=unused-argument
             if 'crumbIssuer' in url:
-                return _json_response({
-                    'crumbRequestField': 'Jenkins-Crumb',
-                    'crumb': 'x'
-                })
+                return _json_response(
+                    {'crumbRequestField': 'Jenkins-Crumb', 'crumb': 'x'}
+                )
             if 'queue/item' in url:
                 return _json_response(
-                    {'executable': {
-                        'url': 'https://ci.brave.com/job/x/5/'
-                    }})
+                    {'executable': {'url': 'https://ci.brave.com/job/x/5/'}}
+                )
             if 'wfapi/describe' in url:
-                return _json_response({
-                    'status': 'FAILED',
-                    'durationMillis': 1000,
-                    'stages': [{
-                        'name': 'build',
-                        'status': 'FAILED'
-                    }],
-                })
+                return _json_response(
+                    {
+                        'status': 'FAILED',
+                        'durationMillis': 1000,
+                        'stages': [{'name': 'build', 'status': 'FAILED'}],
+                    }
+                )
             raise ci.requests.RequestException(url)
 
         post_resp = MagicMock()
@@ -684,14 +724,16 @@ class WatchLoopTest(unittest.TestCase):
         session_cls.return_value = session
 
         succeeded = ci.JenkinsCi('alice', 'secret-token').trigger(
-            JOB_URLS, params={'CHROMIUM_TAG': '150.0.7850.1'}, watch=True)
+            JOB_URLS, params={'CHROMIUM_TAG': '150.0.7850.1'}, watch=True
+        )
         self.assertFalse(succeeded)
 
     def test_non_watch_trigger_reports_success(self):
         session = TriggerTest._make_session()
         with patch('ci.requests.Session', return_value=session):
             succeeded = ci.JenkinsCi('alice', 'secret-token').trigger(
-                JOB_URLS, params={'CHROMIUM_TAG': '150.0.7850.1'})
+                JOB_URLS, params={'CHROMIUM_TAG': '150.0.7850.1'}
+            )
         self.assertTrue(succeeded)
 
 

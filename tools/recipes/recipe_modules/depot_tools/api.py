@@ -32,12 +32,12 @@ class DepotToolsApi(RecipeApi):
     def initialise(self) -> None:
         # `.bat` on Windows; resolved via the platform seam so a test can
         # simulate either host (and so this isn't fixed at import time).
-        self._vpython3 = ('vpython3.bat'
-                          if self.m.platform.is_win else 'vpython3')
+        self._vpython3 = (
+            'vpython3.bat' if self.m.platform.is_win else 'vpython3'
+        )
 
     def ensure_on_path(self) -> None:
-        """Deploy depot_tools and put it on PATH. Successive calls are no-ops.
-        """
+        """Deploy depot_tools and put it on PATH. Successive calls are no-ops."""
         if self._depot_tools_path is not None:
             return  # Already deployed this run.
 
@@ -50,20 +50,30 @@ class DepotToolsApi(RecipeApi):
 
         # Checking for a standalone depot_tools inside what would be a supposed
         # Chromium checkout (Chromium vendors it at `src/third_party/depot_tools`).
-        depot_tools_path = self.m.path.abs(self.m.path.chromium_src /
-                                           DEPOT_TOOLS_PATH)
+        depot_tools_path = self.m.path.abs(
+            self.m.path.chromium_src / DEPOT_TOOLS_PATH
+        )
         if self.m.path.is_file(depot_tools_path / 'gclient'):
             # If Chromium has already been deployed, we just use whatever
             # is in place.
-            logging.info('depot_tools already present at %s, adding to PATH.',
-                         depot_tools_path)
+            logging.info(
+                'depot_tools already present at %s, adding to PATH.',
+                depot_tools_path,
+            )
         else:
             logging.info('Installing depot_tools under %s', depot_tools_path)
             self.m.path.mkdir(depot_tools_path.parent)
-            self.m.step('clone depot_tools', [
-                'git', 'clone', '--depth', '1', DEPOT_TOOLS_URL,
-                str(depot_tools_path)
-            ])
+            self.m.step(
+                'clone depot_tools',
+                [
+                    'git',
+                    'clone',
+                    '--depth',
+                    '1',
+                    DEPOT_TOOLS_URL,
+                    str(depot_tools_path),
+                ],
+            )
 
         self.m.env.prepend_path(depot_tools_path)
         # Run once so depot_tools bootstraps itself (downloads its own deps).

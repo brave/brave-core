@@ -34,13 +34,21 @@ class ProtoOutputPlaceholder(OutputPlaceholder):
     or wrote something unparseable to, results in `None`.
     """
 
-    def __init__(self, api, msg_class: type[Message], codec: codecs.Codec,
-                 name: str | None, leak_to: str | Path | None,
-                 decoding_kwargs: dict) -> None:
+    def __init__(
+        self,
+        api,
+        msg_class: type[Message],
+        codec: codecs.Codec,
+        name: str | None,
+        leak_to: str | Path | None,
+        decoding_kwargs: dict,
+    ) -> None:
         suffix = f'.{codec.ext}'
-        self.raw = (api.m.raw_io.output(suffix, leak_to=leak_to)
-                    if codec.is_binary else api.m.raw_io.output_text(
-                        suffix, leak_to=leak_to))
+        self.raw = (
+            api.m.raw_io.output(suffix, leak_to=leak_to)
+            if codec.is_binary
+            else api.m.raw_io.output_text(suffix, leak_to=leak_to)
+        )
         self._msg_class = msg_class
         self._codec = codec
         self._decoding_kwargs = decoding_kwargs
@@ -57,15 +65,16 @@ class ProtoOutputPlaceholder(OutputPlaceholder):
         if test.enabled and isinstance(test.data, Message):
             # A test seeds a message, not bytes: the codec is known only here,
             # so encode it now rather than making every test spell it out.
-            test = PlaceholderTestData(data=codecs.do_encode(
-                test.data, self._codec),
-                                       name=self.name)
+            test = PlaceholderTestData(
+                data=codecs.do_encode(test.data, self._codec), name=self.name
+            )
         raw_data = self.raw.result(test)
         if raw_data is None:
             return None
         try:
-            return codecs.do_decode(raw_data, self._msg_class, self._codec,
-                                    **self._decoding_kwargs)
+            return codecs.do_decode(
+                raw_data, self._msg_class, self._codec, **self._decoding_kwargs
+            )
         except Exception:  # pylint: disable=broad-except
             # Any of the three parsers may reject the data in its own way; to a
             # recipe they all mean the same thing.
@@ -99,12 +108,14 @@ class ProtoApi(RecipeApi):
         return self.m.raw_io.input_text(encoded, suffix=suffix)
 
     @returns_placeholder
-    def output(self,
-               msg_class: type[Message],
-               codec: codecs.Codec | str,
-               name: str | None = None,
-               leak_to: str | Path | None = None,
-               **kwargs) -> ProtoOutputPlaceholder:
+    def output(
+        self,
+        msg_class: type[Message],
+        codec: codecs.Codec | str,
+        name: str | None = None,
+        leak_to: str | Path | None = None,
+        **kwargs,
+    ) -> ProtoOutputPlaceholder:
         """A placeholder expanding to a path the step writes a message to.
 
         Once the step is done, the engine parses that file and files the message
@@ -124,23 +135,26 @@ class ProtoApi(RecipeApi):
                 `json_format.Parse`'s, and `TEXTPB` `text_format.Parse`'s.
         """
         codec = codecs.resolve(codec)
-        if not (isinstance(msg_class, type)
-                and issubclass(msg_class, Message)):
-            raise ValueError('msg_class must be a protobuf message class; got '
-                             f'{msg_class!r}')
-        return ProtoOutputPlaceholder(self, msg_class, codec, name, leak_to,
-                                      kwargs)
+        if not (isinstance(msg_class, type) and issubclass(msg_class, Message)):
+            raise ValueError(
+                f'msg_class must be a protobuf message class; got {msg_class!r}'
+            )
+        return ProtoOutputPlaceholder(
+            self, msg_class, codec, name, leak_to, kwargs
+        )
 
     @staticmethod
     def encode(proto_msg: Message, codec: codecs.Codec | str, **kwargs) -> Any:
         """Encode *proto_msg* with *codec*, returning text or (BINARY) bytes."""
         if not isinstance(proto_msg, Message):
-            raise ValueError('proto_msg must be a protobuf message; got '
-                             f'{type(proto_msg)}')
+            raise ValueError(
+                f'proto_msg must be a protobuf message; got {type(proto_msg)}'
+            )
         return codecs.do_encode(proto_msg, codec, **kwargs)
 
     @staticmethod
-    def decode(data: Any, msg_class: type[Message], codec: codecs.Codec | str,
-               **kwargs) -> Message:
+    def decode(
+        data: Any, msg_class: type[Message], codec: codecs.Codec | str, **kwargs
+    ) -> Message:
         """Decode *data* into a fresh *msg_class* with *codec*."""
         return codecs.do_decode(data, msg_class, codec, **kwargs)

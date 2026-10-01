@@ -26,16 +26,10 @@ def _steps(failure=None):
         'compile': {
             'name': 'compile',
             'cmd': ['ninja', '-C', 'out'],
-            'retcode': 0
+            'retcode': 0,
         },
-        'test': {
-            'name': 'test',
-            'cmd': ['run_tests'],
-            'retcode': 1
-        },
-        '$result': {
-            'name': '$result'
-        },
+        'test': {'name': 'test', 'cmd': ['run_tests'], 'retcode': 1},
+        '$result': {'name': '$result'},
     }
     if failure is not None:
         steps['$result']['failure'] = failure
@@ -52,7 +46,6 @@ def _run(func, steps, *args):
 
 
 class PresenceTest(unittest.TestCase):
-
     def test_must_run(self):
         self.assertEqual(_run(pp.MustRun, _steps(), 'compile')[0], 0)
         self.assertEqual(_run(pp.MustRun, _steps(), 'missing')[0], 1)
@@ -78,36 +71,58 @@ class PresenceTest(unittest.TestCase):
 
 
 class CommandTest(unittest.TestCase):
-
     def test_command_contains_subsequence(self):
         self.assertEqual(
-            _run(pp.StepCommandContains, _steps(), 'compile',
-                 ['ninja', 'out'])[0], 0)
+            _run(pp.StepCommandContains, _steps(), 'compile', ['ninja', 'out'])[
+                0
+            ],
+            0,
+        )
         self.assertEqual(
-            _run(pp.StepCommandContains, _steps(), 'compile',
-                 ['out', 'ninja'])[0], 1)  # wrong order
+            _run(pp.StepCommandContains, _steps(), 'compile', ['out', 'ninja'])[
+                0
+            ],
+            1,
+        )  # wrong order
 
     def test_command_does_not_contain_subsequence(self):
         self.assertEqual(
-            _run(pp.StepCommandDoesNotContain, _steps(), 'compile',
-                 ['-C', 'missing'])[0], 0)
+            _run(
+                pp.StepCommandDoesNotContain,
+                _steps(),
+                'compile',
+                ['-C', 'missing'],
+            )[0],
+            0,
+        )
         self.assertEqual(
-            _run(pp.StepCommandDoesNotContain, _steps(), 'compile',
-                 ['ninja', 'out'])[0], 1)
+            _run(
+                pp.StepCommandDoesNotContain,
+                _steps(),
+                'compile',
+                ['ninja', 'out'],
+            )[0],
+            1,
+        )
 
     def test_command_re(self):
         self.assertEqual(
-            _run(pp.StepCommandRE, _steps(), 'compile',
-                 [r'ninja', r'-C', r'out'])[0], 0)
+            _run(
+                pp.StepCommandRE, _steps(), 'compile', [r'ninja', r'-C', r'out']
+            )[0],
+            0,
+        )
         # A pattern that doesn't fully match its argument fails (full-match
         # semantics: 'ninj' does not match all of 'ninja').
         self.assertEqual(
-            _run(pp.StepCommandRE, _steps(), 'compile',
-                 [r'ninj', r'-C', r'out'])[0], 1)
+            _run(
+                pp.StepCommandRE, _steps(), 'compile', [r'ninj', r'-C', r'out']
+            )[0],
+            1,
+        )
 
 
 class StatusTest(unittest.TestCase):
-
     def test_step_success_and_failure(self):
         self.assertEqual(_run(pp.StepSuccess, _steps(), 'compile')[0], 0)
         self.assertEqual(_run(pp.StepFailure, _steps(), 'test')[0], 0)
@@ -129,7 +144,6 @@ class StatusTest(unittest.TestCase):
 
 
 class DropExpectationTest(unittest.TestCase):
-
     def test_returns_empty_mapping(self):
         _, result = _run(pp.DropExpectation, _steps())
         self.assertEqual(result, {})

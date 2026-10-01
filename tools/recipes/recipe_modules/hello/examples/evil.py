@@ -19,7 +19,10 @@ def RunSteps(api):
 def GenTests(api):
     yield api.test(
         'darth',
-        api.post_process(StepCommandRE, 'Greet Admired Individual',
-                         [r'.*\becho', 'Die in a fire DarthVader!']),
+        api.post_process(
+            StepCommandRE,
+            'Greet Admired Individual',
+            [r'.*\becho', 'Die in a fire DarthVader!'],
+        ),
         api.post_process(DropExpectation),
     )

@@ -60,28 +60,32 @@ _SHARED_CACHE_FLAGS = {
 # `--header-path` are redirected into the cache directory (see
 # `_extract_swiftc_command`), so nothing swiftc.py writes can reach the real
 # build directory regardless of which of these survive.
-_DROPPED_FLAGS = frozenset([
-    '-c',
-    '-emit-const-values',
-    '-emit-dependencies',
-    '-emit-module',
-    '-emit-objc-header',
-    '-incremental',
-    '-save-temps',
-    '-serialize-diagnostics',
-    '-whole-module-optimization',
-    '-no-emit-module-separately-wmo',
-    '-experimental-emit-module-separately',
-    '-enable-batch-mode',
-])
+_DROPPED_FLAGS = frozenset(
+    [
+        '-c',
+        '-emit-const-values',
+        '-emit-dependencies',
+        '-emit-module',
+        '-emit-objc-header',
+        '-incremental',
+        '-save-temps',
+        '-serialize-diagnostics',
+        '-whole-module-optimization',
+        '-no-emit-module-separately-wmo',
+        '-experimental-emit-module-separately',
+        '-enable-batch-mode',
+    ]
+)
 
 # Same, but the flag takes a value that must be dropped along with it.
-_DROPPED_FLAGS_WITH_VALUE = frozenset([
-    '-emit-module-path',
-    '-emit-objc-header-path',
-    '-output-file-map',
-    '-file-prefix-map',
-])
+_DROPPED_FLAGS_WITH_VALUE = frozenset(
+    [
+        '-emit-module-path',
+        '-emit-objc-header-path',
+        '-output-file-map',
+        '-file-prefix-map',
+    ]
+)
 
 _NINJA_VAR_RE = re.compile(r'\$\{(\w+)\}|\$(\w+)')
 _ENV_ASSIGNMENT_RE = re.compile(r'^\w+=')
@@ -132,7 +136,7 @@ def _parse_rule_command(toolchain_ninja_path, rule_name):
             if in_rule:
                 stripped = line.strip()
                 if stripped.startswith('command = '):
-                    return stripped[len('command = '):]
+                    return stripped[len('command = ') :]
     raise LookupError(f'no `{wanted}` in {toolchain_ninja_path}')
 
 
@@ -149,16 +153,17 @@ def _parse_target_ninja(path, out_dir):
             line = line.rstrip('\n')
             if line.startswith('build '):
                 # `build <outputs>: swift <inputs> | <implicit> || <order-only>`
-                edge = line[len('build '):]
+                edge = line[len('build ') :]
                 outputs, _, rest = edge.partition(': ')
                 if not rest.startswith('swift '):
                     continue
                 del outputs
-                inputs = rest[len('swift '):]
+                inputs = rest[len('swift ') :]
                 for separator in (' | ', ' || '):
                     inputs = inputs.split(separator)[0]
                 sources = [
-                    _unescape_ninja(source) for source in inputs.split(' ')
+                    _unescape_ninja(source)
+                    for source in inputs.split(' ')
                     if source.endswith('.swift')
                 ]
                 continue
@@ -267,12 +272,12 @@ def _write_capture_toolchain(out_dir):
 
 def _swiftc_py_path(source_root):
     """Returns the path to swiftc.py, checking the interception still holds."""
-    path = os.path.join(source_root, 'build', 'toolchain', 'apple',
-                        'swiftc.py')
+    path = os.path.join(source_root, 'build', 'toolchain', 'apple', 'swiftc.py')
     if not os.path.exists(path):
         raise RuntimeError(
             f'{path} does not exist. The Swift toolchain wrapper moved '
-            f'upstream; brave/tools/swift/gn_swift_args.py needs updating.')
+            f'upstream; brave/tools/swift/gn_swift_args.py needs updating.'
+        )
     with open(path, encoding='utf8') as stream:
         contents = stream.read()
     for expected in ('--swift-toolchain-path', 'usr/bin/swiftc'):
@@ -280,7 +285,8 @@ def _swiftc_py_path(source_root):
             raise RuntimeError(
                 f'{path} no longer references `{expected}`, so the swiftc '
                 f'invocation can no longer be intercepted. '
-                f'brave/tools/swift/gn_swift_args.py needs updating.')
+                f'brave/tools/swift/gn_swift_args.py needs updating.'
+            )
     return path
 
 
@@ -290,8 +296,9 @@ def _extract_swiftc_command(target, source_root):
     # Keep each module's derived data separate: swiftc.py prunes stale entries
     # from this directory, so sharing it between modules would make them delete
     # each other's module caches.
-    derived_data_dir = os.path.join(cache_root(out_dir), 'modules',
-                                    target.module_name)
+    derived_data_dir = os.path.join(
+        cache_root(out_dir), 'modules', target.module_name
+    )
     # swiftc.py writes a handful of bookkeeping files (OutputFileMap.json, the
     # SwiftFileList response file) and creates directories under
     # `--target-out-dir`/`--header-path` before it ever runs the compiler, i.e.
@@ -301,30 +308,36 @@ def _extract_swiftc_command(target, source_root):
     # them into the cache directory (appended after the ninja arguments) keeps
     # every write swiftc.py makes inside `swift_lsp_cache/`. This is separate
     # from `derived_data_dir`, which swiftc.py prunes.
-    scratch_dir = os.path.join(cache_root(out_dir), 'scratch',
-                               target.module_name)
+    scratch_dir = os.path.join(
+        cache_root(out_dir), 'scratch', target.module_name
+    )
     os.makedirs(scratch_dir, exist_ok=True)
     # Deliberately outside `derived_data_dir`: swiftc.py deletes everything in
     # there that it does not recognise.
-    output_path = os.path.join(cache_root(out_dir),
-                               f'{target.module_name}.swiftc_argv.json')
+    output_path = os.path.join(
+        cache_root(out_dir), f'{target.module_name}.swiftc_argv.json'
+    )
     os.makedirs(derived_data_dir, exist_ok=True)
     if os.path.exists(output_path):
         os.unlink(output_path)
 
-    command = [
-        sys.executable,
-        _swiftc_py_path(source_root),
-        '--swift-toolchain-path',
-        _write_capture_toolchain(out_dir),
-        '--derived-data-dir',
-        derived_data_dir,
-    ] + _swiftc_py_argv(target) + [
-        '--target-out-dir',
-        os.path.join(scratch_dir, 'target_out'),
-        '--header-path',
-        os.path.join(scratch_dir, f'{target.module_name}.h'),
-    ]
+    command = (
+        [
+            sys.executable,
+            _swiftc_py_path(source_root),
+            '--swift-toolchain-path',
+            _write_capture_toolchain(out_dir),
+            '--derived-data-dir',
+            derived_data_dir,
+        ]
+        + _swiftc_py_argv(target)
+        + [
+            '--target-out-dir',
+            os.path.join(scratch_dir, 'target_out'),
+            '--header-path',
+            os.path.join(scratch_dir, f'{target.module_name}.h'),
+        ]
+    )
 
     # Everything in the ninja files is relative to the build directory, and
     # swiftc.py bakes its working directory into `-working-directory`. Running
@@ -333,17 +346,17 @@ def _extract_swiftc_command(target, source_root):
     process = subprocess.run(
         command,
         cwd=out_dir,
-        env={
-            **os.environ, 'GN_SWIFT_ARGS_OUTPUT': output_path
-        },
+        env={**os.environ, 'GN_SWIFT_ARGS_OUTPUT': output_path},
         capture_output=True,
         text=True,
-        check=False)
+        check=False,
+    )
 
     if not os.path.exists(output_path):
         raise RuntimeError(
             f'could not extract swiftc arguments for {target.label}:\n'
-            f'{process.stdout}\n{process.stderr}')
+            f'{process.stdout}\n{process.stderr}'
+        )
 
     with open(output_path, encoding='utf8') as stream:
         return json.load(stream)
@@ -373,8 +386,8 @@ def _rewrite_for_indexing(command, out_dir):
         if argument in _SHARED_CACHE_FLAGS:
             arguments.append(argument)
             arguments.append(
-                os.path.join(cache_root(out_dir),
-                             _SHARED_CACHE_FLAGS[argument]))
+                os.path.join(cache_root(out_dir), _SHARED_CACHE_FLAGS[argument])
+            )
             index += 1  # Discard the per-target path swiftc.py chose.
             continue
         if re.fullmatch(r'-j\d*', argument):
@@ -382,8 +395,11 @@ def _rewrite_for_indexing(command, out_dir):
         if argument == '-num-threads':
             index += 1
             continue
-        if argument == '-Xfrontend' and index + 2 < len(
-                command) and command[index] == '-const-gather-protocols-file':
+        if (
+            argument == '-Xfrontend'
+            and index + 2 < len(command)
+            and command[index] == '-const-gather-protocols-file'
+        ):
             index += 3
             continue
         if argument.startswith('@') and argument.endswith('.SwiftFileList'):
@@ -399,11 +415,13 @@ def _rewrite_for_indexing(command, out_dir):
 # module cache by `_rewrite_for_indexing`, while `-index-store-path` and
 # `-pch-output-dir` keep the per-target locations swiftc.py chose under
 # `--derived-data-dir` (also inside the cache directory).
-_CACHE_DIR_FLAGS = frozenset([
-    '-index-store-path',
-    '-module-cache-path',
-    '-pch-output-dir',
-])
+_CACHE_DIR_FLAGS = frozenset(
+    [
+        '-index-store-path',
+        '-module-cache-path',
+        '-pch-output-dir',
+    ]
+)
 
 
 def ensure_cache_dirs(arguments):
@@ -430,21 +448,27 @@ def compiler_arguments(target, source_root):
 
 def main(argv):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--source-root',
-                        default=os.path.abspath(
-                            os.path.join(os.path.dirname(__file__), '..', '..',
-                                         '..', '..')),
-                        help='path to the Chromium src directory')
-    parser.add_argument('--out-dir',
-                        required=True,
-                        help='GN output directory, e.g. out/ios_sim')
-    parser.add_argument('--json',
-                        action='store_true',
-                        help='print the arguments as a JSON array')
-    parser.add_argument('file',
-                        nargs='?',
-                        help='.swift file to print arguments for; if omitted, '
-                        'lists all Swift targets')
+    parser.add_argument(
+        '--source-root',
+        default=os.path.abspath(
+            os.path.join(os.path.dirname(__file__), '..', '..', '..', '..')
+        ),
+        help='path to the Chromium src directory',
+    )
+    parser.add_argument(
+        '--out-dir', required=True, help='GN output directory, e.g. out/ios_sim'
+    )
+    parser.add_argument(
+        '--json',
+        action='store_true',
+        help='print the arguments as a JSON array',
+    )
+    parser.add_argument(
+        'file',
+        nargs='?',
+        help='.swift file to print arguments for; if omitted, '
+        'lists all Swift targets',
+    )
     args = parser.parse_args(argv)
 
     source_root = os.path.abspath(args.source_root)
@@ -453,8 +477,10 @@ def main(argv):
 
     if not args.file:
         for target in sorted(targets, key=lambda target: target.label):
-            print(f'{target.label}  module={target.module_name}  '
-                  f'{len(target.sources)} source(s)')
+            print(
+                f'{target.label}  module={target.module_name}  '
+                f'{len(target.sources)} source(s)'
+            )
         return 0
 
     wanted = os.path.abspath(args.file)
@@ -470,8 +496,10 @@ def main(argv):
                     print(shlex.join(arguments))
                 return 0
 
-    print(f'{wanted} does not belong to any Swift target in {out_dir}',
-          file=sys.stderr)
+    print(
+        f'{wanted} does not belong to any Swift target in {out_dir}',
+        file=sys.stderr,
+    )
     return 1
 
 

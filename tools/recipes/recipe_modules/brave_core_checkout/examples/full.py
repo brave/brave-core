@@ -9,7 +9,12 @@ from __future__ import annotations
 import post_process
 
 DEPS = [
-    'brave_core_checkout', 'chromium_checkout', 'env', 'path', 'raw_io', 'step'
+    'brave_core_checkout',
+    'chromium_checkout',
+    'env',
+    'path',
+    'raw_io',
+    'step',
 ]
 
 
@@ -46,8 +51,9 @@ def GenTests(api):
         'clone',
         api.brave_core_checkout.with_git_cache(),
         api.path.files('b/src/brave/third_party/node', 'b/src/brave/tools/cr'),
-        api.post_process(post_process.MustRun,
-                         'clone brave-core (shallow, sparse)'),
+        api.post_process(
+            post_process.MustRun, 'clone brave-core (shallow, sparse)'
+        ),
         api.post_process(post_process.MustRun, 'sparse-checkout add'),
         api.post_process(post_process.MustRun, 'npm version'),
         api.post_process(post_process.StatusSuccess),
@@ -61,8 +67,9 @@ def GenTests(api):
         api.path.files('b/src/brave/third_party/node', 'b/src/brave/tools/cr'),
         api.post_process(post_process.MustRun, 'fetch brave-core ref'),
         api.post_process(post_process.MustRun, 'checkout brave-core ref'),
-        api.post_process(post_process.DoesNotRun,
-                         'clone brave-core (shallow, sparse)'),
+        api.post_process(
+            post_process.DoesNotRun, 'clone brave-core (shallow, sparse)'
+        ),
         api.post_process(post_process.StatusSuccess),
     )
     # Already deployed: the live sparse set already covers both requested
@@ -78,10 +85,12 @@ def GenTests(api):
         api.path.files('b/src/brave/third_party/node', 'b/src/brave/tools/cr'),
         api.step_data(
             'sparse-checkout list',
-            stdout=api.raw_io.output_text('third_party/node\ntools/cr\n')),
+            stdout=api.raw_io.output_text('third_party/node\ntools/cr\n'),
+        ),
         api.step_data(
             'sparse-checkout list (2)',
-            stdout=api.raw_io.output_text('third_party/node\ntools/cr\n')),
+            stdout=api.raw_io.output_text('third_party/node\ntools/cr\n'),
+        ),
         api.post_process(post_process.DoesNotRun, 'sparse-checkout add'),
         api.post_process(post_process.DoesNotRun, 'sparse-checkout add (2)'),
         api.post_process(post_process.MustRun, 'npm version'),
@@ -104,12 +113,17 @@ def GenTests(api):
         api.brave_core_checkout.git_cache_populated(),
         # A branch is mirrored anyway: no `--ref` for it.
         api.post_process(post_process.DoesNotRun, 'git cache populate (2)'),
-        api.post_process(post_process.MustRun,
-                         'brave-core clone from git cache'),
-        api.post_process(post_process.StepCommandContains,
-                         'brave-core checkout ref', ['origin/1.80.x']),
-        api.post_process(post_process.MustRun,
-                         'brave-core restore origin push url'),
+        api.post_process(
+            post_process.MustRun, 'brave-core clone from git cache'
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'brave-core checkout ref',
+            ['origin/1.80.x'],
+        ),
+        api.post_process(
+            post_process.MustRun, 'brave-core restore origin push url'
+        ),
         api.post_process(post_process.StatusSuccess),
     )
     # A release tag is mirrored and checked out by its fully-qualified name.
@@ -119,11 +133,16 @@ def GenTests(api):
         api.brave_core_checkout.brave_core_ref('refs/tags/v1.80.100'),
         api.brave_core_checkout.with_git_cache(),
         api.brave_core_checkout.git_cache_populated(),
-        api.post_process(post_process.StepCommandContains,
-                         'git cache populate',
-                         ['--ref', 'refs/tags/v1.80.100']),
-        api.post_process(post_process.StepCommandContains,
-                         'brave-core checkout tag', ['refs/tags/v1.80.100']),
+        api.post_process(
+            post_process.StepCommandContains,
+            'git cache populate',
+            ['--ref', 'refs/tags/v1.80.100'],
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'brave-core checkout tag',
+            ['refs/tags/v1.80.100'],
+        ),
         api.post_process(post_process.StatusSuccess),
     )
     # No `brave_core_ref` property: defaults to `master`.
@@ -132,8 +151,11 @@ def GenTests(api):
         api.env.set('MODE', 'checkout'),
         api.brave_core_checkout.with_git_cache(),
         api.brave_core_checkout.git_cache_populated(),
-        api.post_process(post_process.StepCommandContains,
-                         'brave-core checkout ref', ['origin/master']),
+        api.post_process(
+            post_process.StepCommandContains,
+            'brave-core checkout ref',
+            ['origin/master'],
+        ),
         api.post_process(post_process.StatusSuccess),
     )
     # Existing checkout: re-pointed at the mirror, then fetched to the tag.
@@ -144,13 +166,17 @@ def GenTests(api):
         api.brave_core_checkout.with_git_cache(),
         api.brave_core_checkout.git_cache_populated(),
         api.brave_core_checkout.existing_checkout(),
-        api.post_process(post_process.MustRun,
-                         'brave-core point origin at git cache'),
-        api.post_process(post_process.StepCommandContains,
-                         'brave-core fetch tag',
-                         ['refs/tags/v1.80.100:refs/tags/v1.80.100']),
-        api.post_process(post_process.DoesNotRun,
-                         'brave-core clone from git cache'),
+        api.post_process(
+            post_process.MustRun, 'brave-core point origin at git cache'
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'brave-core fetch tag',
+            ['refs/tags/v1.80.100:refs/tags/v1.80.100'],
+        ),
+        api.post_process(
+            post_process.DoesNotRun, 'brave-core clone from git cache'
+        ),
         api.post_process(post_process.StatusSuccess),
     )
     # Chromium missing: deployed through `chromium_checkout`, then
@@ -160,17 +186,26 @@ def GenTests(api):
         'ensure_checkout deploys chromium',
         api.env.set('MODE', 'ensure_checkout'),
         api.brave_core_checkout.with_git_cache(),
-        api.step_data('git cache exists',
-                      stdout=api.raw_io.output_text('/b/cache/brave-core')),
-        api.step_data('git cache exists (2)',
-                      stdout=api.raw_io.output_text('/b/cache/chromium')),
+        api.step_data(
+            'git cache exists',
+            stdout=api.raw_io.output_text('/b/cache/brave-core'),
+        ),
+        api.step_data(
+            'git cache exists (2)',
+            stdout=api.raw_io.output_text('/b/cache/chromium'),
+        ),
         api.brave_core_checkout.chromium_tag('155.0.8059.16'),
         api.post_process(post_process.MustRun, 'clone from git cache'),
-        api.post_process(post_process.StepCommandContains,
-                         'git cache populate (2)',
-                         ['--ref', 'refs/tags/155.0.8059.16']),
-        api.post_process(post_process.StepCommandContains, 'read chromium tag',
-                         ['show', 'refs/heads/master:package.json']),
+        api.post_process(
+            post_process.StepCommandContains,
+            'git cache populate (2)',
+            ['--ref', 'refs/tags/155.0.8059.16'],
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'read chromium tag',
+            ['show', 'refs/heads/master:package.json'],
+        ),
         api.post_process(post_process.MustRun, 'pnpm run sync'),
         api.post_process(post_process.StatusSuccess),
     )
@@ -205,7 +240,9 @@ def GenTests(api):
         api.brave_core_checkout.git_cache_populated(),
         api.brave_core_checkout.chromium_mirror_populated(),
         api.post_process(
-            post_process.StepCommandContains, 'write .env',
-            ['rbe_service=rbe.ba.brave.com:443\nuse_remoteexec=true\n']),
+            post_process.StepCommandContains,
+            'write .env',
+            ['rbe_service=rbe.ba.brave.com:443\nuse_remoteexec=true\n'],
+        ),
         api.post_process(post_process.StatusSuccess),
     )

@@ -2,8 +2,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Tests that the working checkout is never made shallow.
-"""
+"""Tests that the working checkout is never made shallow."""
 
 from __future__ import annotations
 
@@ -22,13 +21,27 @@ def GenTests(api):
         api.env.set('REF', 'refs/heads/main'),
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.git_cache_populated(),
-        api.post_process(post_process.StepCommandRE, 'clone from git cache', [
-            'git', 'clone', '--no-checkout', '--local', '--shared', '.*', '.*'
-        ]),
-        api.post_process(post_process.StepCommandDoesNotContain,
-                         'git cache populate', ['--depth']),
-        api.post_process(post_process.StepCommandContains, 'checkout ref',
-                         ['origin/main']),
+        api.post_process(
+            post_process.StepCommandRE,
+            'clone from git cache',
+            [
+                'git',
+                'clone',
+                '--no-checkout',
+                '--local',
+                '--shared',
+                '.*',
+                '.*',
+            ],
+        ),
+        api.post_process(
+            post_process.StepCommandDoesNotContain,
+            'git cache populate',
+            ['--depth'],
+        ),
+        api.post_process(
+            post_process.StepCommandContains, 'checkout ref', ['origin/main']
+        ),
         api.post_process(post_process.DoesNotRun, 'fetch ref'),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
@@ -40,10 +53,14 @@ def GenTests(api):
         api.env.set('REF', 'refs/branch-heads/7917'),
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.git_cache_populated(),
-        api.post_process(post_process.StepCommandDoesNotContain, 'fetch ref',
-                         ['--depth']),
-        api.post_process(post_process.StepCommandContains, 'fetch ref',
-                         ['--no-show-forced-updates']),
+        api.post_process(
+            post_process.StepCommandDoesNotContain, 'fetch ref', ['--depth']
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'fetch ref',
+            ['--no-show-forced-updates'],
+        ),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
     )
@@ -53,12 +70,19 @@ def GenTests(api):
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.existing_checkout(),
         api.chromium_checkout.git_cache_populated(),
-        api.post_process(post_process.StepCommandDoesNotContain,
-                         'git cache populate for ref', ['--depth']),
-        api.post_process(post_process.StepCommandDoesNotContain, 'fetch ref',
-                         ['--depth']),
-        api.post_process(post_process.StepCommandContains, 'fetch ref',
-                         ['--no-show-forced-updates']),
+        api.post_process(
+            post_process.StepCommandDoesNotContain,
+            'git cache populate for ref',
+            ['--depth'],
+        ),
+        api.post_process(
+            post_process.StepCommandDoesNotContain, 'fetch ref', ['--depth']
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'fetch ref',
+            ['--no-show-forced-updates'],
+        ),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
     )
@@ -68,10 +92,14 @@ def GenTests(api):
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.existing_checkout(),
         api.chromium_checkout.git_cache_populated(),
-        api.post_process(post_process.StepCommandDoesNotContain, 'fetch tag',
-                         ['--depth']),
-        api.post_process(post_process.StepCommandContains, 'fetch tag',
-                         ['--no-show-forced-updates']),
+        api.post_process(
+            post_process.StepCommandDoesNotContain, 'fetch tag', ['--depth']
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'fetch tag',
+            ['--no-show-forced-updates'],
+        ),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
     )

@@ -3,8 +3,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Removes stale files and directories that are no longer needed.
-"""
+"""Removes stale files and directories that are no longer needed."""
 
 import argparse
 import os
@@ -25,10 +24,12 @@ def RemoveAllStaleFiles(paths):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('paths',
-                        nargs='*',
-                        metavar='PATH',
-                        help='File or directory to remove, if present.')
+    parser.add_argument(
+        'paths',
+        nargs='*',
+        metavar='PATH',
+        help='File or directory to remove, if present.',
+    )
     args = parser.parse_args()
     RemoveAllStaleFiles(args.paths)
 

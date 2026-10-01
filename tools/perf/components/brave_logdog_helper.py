@@ -5,7 +5,6 @@
 
 
 class FakeStream:
-
   def close(self):
     return
 

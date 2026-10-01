@@ -14,8 +14,13 @@ if TYPE_CHECKING:
     from engine import RecipeScriptApi
 
 DEPS = [
-    'path', 'step', 'depot_tools', 'chromium_checkout', 'brave_core_checkout',
-    'osx_sdk', 'platform'
+    'path',
+    'step',
+    'depot_tools',
+    'chromium_checkout',
+    'brave_core_checkout',
+    'osx_sdk',
+    'platform',
 ]
 
 PROPERTIES = InputProperties
@@ -23,7 +28,8 @@ PROPERTIES = InputProperties
 
 def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
     chromium_src = api.chromium_checkout.ensure_checkout(
-        ref=properties.chromium_ref)
+        ref=properties.chromium_ref
+    )
 
     brave_core_root = api.brave_core_checkout.deploy('tools/cr')
 
@@ -41,8 +47,11 @@ def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
         '--no-full-toolchain',
         '--upload',
     ]
-    cmd.append('--no-use-prebuilt-rustc' if properties.
-               build_rustc_from_scratch else '--use-prebuilt-rustc')
+    cmd.append(
+        '--no-use-prebuilt-rustc'
+        if properties.build_rustc_from_scratch
+        else '--use-prebuilt-rustc'
+    )
 
     with api.osx_sdk.ensure(chromium_src):
         api.step('build rust toolchain', cmd)
@@ -59,20 +68,30 @@ def GenTests(api):
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.git_cache_populated(),
         api.brave_core_checkout.deployed('tools/cr'),
-        api.properties(brave_subrevision=1,
-                       chromium_ref='refs/tags/151.0.7917.1'),
+        api.properties(
+            brave_subrevision=1, chromium_ref='refs/tags/151.0.7917.1'
+        ),
         api.post_process(post_process.MustRun, 'clone from git cache'),
         api.post_process(post_process.MustRun, 'checkout tag'),
         api.post_process(post_process.DoesNotRun, 'read mac_sdk.gni'),
         api.post_process(post_process.DoesNotRun, 'install xcode'),
         api.post_process(post_process.MustRun, 'build rust toolchain'),
         api.post_process(post_process.DoesNotRun, 'reset xcode'),
-        api.post_process(post_process.StepCommandContains,
-                         'build rust toolchain', ['--brave-subrevision', '1']),
-        api.post_process(post_process.StepCommandContains,
-                         'build rust toolchain', ['--upload']),
-        api.post_process(post_process.StepCommandContains,
-                         'build rust toolchain', ['--use-prebuilt-rustc']),
+        api.post_process(
+            post_process.StepCommandContains,
+            'build rust toolchain',
+            ['--brave-subrevision', '1'],
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'build rust toolchain',
+            ['--upload'],
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'build rust toolchain',
+            ['--use-prebuilt-rustc'],
+        ),
         api.post_process(post_process.StatusSuccess),
     )
     # `build_rustc_from_scratch` flips the build script's compiler flag; unset
@@ -83,11 +102,16 @@ def GenTests(api):
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.git_cache_populated(),
         api.brave_core_checkout.deployed('tools/cr'),
-        api.properties(brave_subrevision=1,
-                       chromium_ref='refs/tags/151.0.7917.1',
-                       build_rustc_from_scratch=True),
-        api.post_process(post_process.StepCommandContains,
-                         'build rust toolchain', ['--no-use-prebuilt-rustc']),
+        api.properties(
+            brave_subrevision=1,
+            chromium_ref='refs/tags/151.0.7917.1',
+            build_rustc_from_scratch=True,
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'build rust toolchain',
+            ['--no-use-prebuilt-rustc'],
+        ),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
     )
@@ -100,8 +124,9 @@ def GenTests(api):
         api.chromium_checkout.git_cache_populated(),
         api.brave_core_checkout.deployed('tools/cr'),
         api.osx_sdk.installed(),
-        api.properties(brave_subrevision=1,
-                       chromium_ref='refs/tags/151.0.7917.1'),
+        api.properties(
+            brave_subrevision=1, chromium_ref='refs/tags/151.0.7917.1'
+        ),
         api.post_process(post_process.MustRun, 'install xcode'),
         api.post_process(post_process.MustRun, 'build rust toolchain'),
         api.post_process(post_process.MustRun, 'reset xcode'),
@@ -110,8 +135,9 @@ def GenTests(api):
     # Without a git cache, the checkout refuses to run.
     yield api.test(
         'no git cache',
-        api.properties(brave_subrevision=1,
-                       chromium_ref='refs/tags/151.0.7917.1'),
+        api.properties(
+            brave_subrevision=1, chromium_ref='refs/tags/151.0.7917.1'
+        ),
         api.post_process(post_process.StatusException),
         api.post_process(post_process.DropExpectation),
         status='EXCEPTION',

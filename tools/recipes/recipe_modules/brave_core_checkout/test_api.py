@@ -32,30 +32,27 @@ _BRAVE_CORE = 'b/src/brave'
 class BraveCoreCheckoutTestApi(RecipeTestApi):
     """Seed the simulated state `brave_core_checkout.deploy` inspects."""
 
-    def chromium_mirror_populated(self,
-                                  mirror_dir: str = _CHROMIUM_MIRROR_DIR
-                                  ) -> TestData:
+    def chromium_mirror_populated(
+        self, mirror_dir: str = _CHROMIUM_MIRROR_DIR
+    ) -> TestData:
         """Seed the Chromium mirror lookup `ensure_checkout` makes, the second
         `git cache exists`, after the brave-core one."""
-        return self.step_data('git cache exists (2)',
-                              stdout=self.m.raw_io.output_text(mirror_dir))
+        return self.step_data(
+            'git cache exists (2)', stdout=self.m.raw_io.output_text(mirror_dir)
+        )
 
     def package_json(self, chromium_tag: str = _CHROMIUM_TAG) -> str:
         """A minimal brave-core `package.json` pinning *chromium_tag*."""
         return json.dumps(
-            {'config': {
-                'projects': {
-                    'chrome': {
-                        'tag': chromium_tag
-                    }
-                }
-            }})
+            {'config': {'projects': {'chrome': {'tag': chromium_tag}}}}
+        )
 
     def chromium_tag(self, tag: str) -> TestData:
         """Seed the Chromium tag `read chromium tag` finds in `package.json`."""
-        return self.step_data('read chromium tag',
-                              stdout=self.m.raw_io.output_text(
-                                  self.package_json(tag)))
+        return self.step_data(
+            'read chromium tag',
+            stdout=self.m.raw_io.output_text(self.package_json(tag)),
+        )
 
     def rbe(self, siso_cache_dir: str = '') -> TestData:
         """Enable remote execution through the module's properties."""
@@ -65,15 +62,15 @@ class BraveCoreCheckoutTestApi(RecipeTestApi):
                     'use_remoteexec': True,
                     'siso_cache_dir': siso_cache_dir,
                 }
-            })
+            }
+        )
 
     def brave_core_ref(self, ref: str) -> TestData:
         """Set the module's default brave-core ref (its `brave_core_ref`
         property)."""
         return self.properties(
-            **{'$brave_core_checkout': {
-                'brave_core_ref': ref
-            }})
+            **{'$brave_core_checkout': {'brave_core_ref': ref}}
+        )
 
     def deployed(self, *paths: str) -> TestData:
         """Mark repo-relative *paths* present after the sparse checkout.
@@ -95,5 +92,6 @@ class BraveCoreCheckoutTestApi(RecipeTestApi):
 
     def git_cache_populated(self, mirror_dir: str = _MIRROR_DIR) -> TestData:
         """Seed `checkout`'s `git cache exists` lookup of the mirror dir."""
-        return self.step_data('git cache exists',
-                              stdout=self.m.raw_io.output_text(mirror_dir))
+        return self.step_data(
+            'git cache exists', stdout=self.m.raw_io.output_text(mirror_dir)
+        )

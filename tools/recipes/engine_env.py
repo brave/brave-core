@@ -60,7 +60,7 @@ def merge_envs(
             # Not overridden: append the original value iff it is non-empty.
             val = original.get(key, '')
         if val:
-            pfxs += (val, )
+            pfxs += (val,)
         result[key] = pathsep.join(str(v) for v in chain(pfxs, sfxs))
 
     for key, val in overrides.items():

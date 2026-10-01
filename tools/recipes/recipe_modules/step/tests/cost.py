@@ -27,17 +27,18 @@ def RunSteps(api):
 
     # A step that knows it is expensive says so. This one wants two cores and
     # most of the disk, so nothing else heavy runs beside it.
-    api.step('heavy', ['git', 'fetch'],
-             cost=api.step.ResourceCost(cpu=2 * api.step.CPU_CORE,
-                                        memory=4096,
-                                        disk=80,
-                                        net=50))
+    api.step(
+        'heavy',
+        ['git', 'fetch'],
+        cost=api.step.ResourceCost(
+            cpu=2 * api.step.CPU_CORE, memory=4096, disk=80, net=50
+        ),
+    )
 
     # Asking for more than the machine has is clamped to the machine, so the
     # step still runs -- on its own -- rather than waiting for capacity that
     # will never exist.
-    huge = api.step.ResourceCost(cpu=99 * api.step.CPU_CORE,
-                                 memory=1024 * 1024)
+    huge = api.step.ResourceCost(cpu=99 * api.step.CPU_CORE, memory=1024 * 1024)
     assert huge.cpu == api.step.MAX_CPU, huge.cpu
     assert huge.memory == api.step.MAX_MEMORY, huge.memory
     api.step('clamped', ['echo', 'still runs'], cost=huge)
@@ -52,8 +53,14 @@ def RunSteps(api):
 def GenTests(api):
     yield api.test(
         'cost',
-        api.post_process(post_process.MustRun, 'default cost', 'heavy',
-                         'clamped', 'free', 'no command'),
+        api.post_process(
+            post_process.MustRun,
+            'default cost',
+            'heavy',
+            'clamped',
+            'free',
+            'no command',
+        ),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
     )

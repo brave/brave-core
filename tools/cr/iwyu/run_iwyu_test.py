@@ -15,7 +15,6 @@ from run_iwyu import is_path_enabled, parse_paths_file
 
 
 class ParsePathsFileTest(unittest.TestCase):
-
     def setUp(self):
         stack = contextlib.ExitStack()
         self.addCleanup(stack.close)
@@ -35,55 +34,74 @@ class ParsePathsFileTest(unittest.TestCase):
 
     def test_enable_and_disable_rules(self):
         self._write('+brave/browser/\n-brave/browser/internal/\n')
-        self.assertEqual(parse_paths_file(self.cfg), [
-            ('+', 'brave/browser/'),
-            ('-', 'brave/browser/internal/'),
-        ])
+        self.assertEqual(
+            parse_paths_file(self.cfg),
+            [
+                ('+', 'brave/browser/'),
+                ('-', 'brave/browser/internal/'),
+            ],
+        )
 
     def test_trailing_slash_is_added_when_missing(self):
         self._write('+brave/browser\n-brave/browser/internal\n')
-        self.assertEqual(parse_paths_file(self.cfg), [
-            ('+', 'brave/browser/'),
-            ('-', 'brave/browser/internal/'),
-        ])
+        self.assertEqual(
+            parse_paths_file(self.cfg),
+            [
+                ('+', 'brave/browser/'),
+                ('-', 'brave/browser/internal/'),
+            ],
+        )
 
     def test_trailing_comment_is_stripped(self):
-        self._write('+brave/browser/   # enable browser\n'
-                    '-brave/browser/internal/# nested disable\n')
-        self.assertEqual(parse_paths_file(self.cfg), [
-            ('+', 'brave/browser/'),
-            ('-', 'brave/browser/internal/'),
-        ])
+        self._write(
+            '+brave/browser/   # enable browser\n'
+            '-brave/browser/internal/# nested disable\n'
+        )
+        self.assertEqual(
+            parse_paths_file(self.cfg),
+            [
+                ('+', 'brave/browser/'),
+                ('-', 'brave/browser/internal/'),
+            ],
+        )
 
     def test_line_that_is_only_a_comment_is_skipped(self):
-        self._write('+brave/browser/\n'
-                    '# -brave/browser/internal/\n'
-                    '-brave/components/\n')
-        self.assertEqual(parse_paths_file(self.cfg), [
-            ('+', 'brave/browser/'),
-            ('-', 'brave/components/'),
-        ])
+        self._write(
+            '+brave/browser/\n# -brave/browser/internal/\n-brave/components/\n'
+        )
+        self.assertEqual(
+            parse_paths_file(self.cfg),
+            [
+                ('+', 'brave/browser/'),
+                ('-', 'brave/components/'),
+            ],
+        )
 
     def test_surrounding_whitespace_is_tolerated(self):
         self._write('   +brave/browser/   \n\t-brave/components/\t\n')
-        self.assertEqual(parse_paths_file(self.cfg), [
-            ('+', 'brave/browser/'),
-            ('-', 'brave/components/'),
-        ])
+        self.assertEqual(
+            parse_paths_file(self.cfg),
+            [
+                ('+', 'brave/browser/'),
+                ('-', 'brave/components/'),
+            ],
+        )
 
     def test_rules_preserve_file_order(self):
         self._write('+a/\n-b/\n+c/\n-d/\n')
-        self.assertEqual(parse_paths_file(self.cfg), [
-            ('+', 'a/'),
-            ('-', 'b/'),
-            ('+', 'c/'),
-            ('-', 'd/'),
-        ])
+        self.assertEqual(
+            parse_paths_file(self.cfg),
+            [
+                ('+', 'a/'),
+                ('-', 'b/'),
+                ('+', 'c/'),
+                ('-', 'd/'),
+            ],
+        )
 
     def test_invalid_prefix_raises(self):
         self._write('brave/browser/\n')
-        with self.assertRaisesRegex(ValueError,
-                                    'must start with `\\+` or `-`'):
+        with self.assertRaisesRegex(ValueError, 'must start with `\\+` or `-`'):
             parse_paths_file(self.cfg)
 
     def test_empty_path_after_sign_raises(self):
@@ -92,16 +110,12 @@ class ParsePathsFileTest(unittest.TestCase):
             parse_paths_file(self.cfg)
 
     def test_error_line_number_matches_offending_line(self):
-        self._write('+brave/browser/\n'
-                    '\n'
-                    '# a comment\n'
-                    'oops\n')
+        self._write('+brave/browser/\n\n# a comment\noops\n')
         with self.assertRaisesRegex(ValueError, ':4:'):
             parse_paths_file(self.cfg)
 
 
 class IsPathEnabledTest(unittest.TestCase):
-
     def test_no_rules_means_disabled(self):
         self.assertFalse(is_path_enabled('brave/browser/foo.cc', []))
 
@@ -124,7 +138,8 @@ class IsPathEnabledTest(unittest.TestCase):
         ]
         self.assertTrue(is_path_enabled('brave/browser/foo.cc', rules))
         self.assertFalse(
-            is_path_enabled('brave/browser/internal/foo.cc', rules))
+            is_path_enabled('brave/browser/internal/foo.cc', rules)
+        )
 
     def test_longest_prefix_wins_enable_overrides_disable(self):
         rules = [
@@ -141,8 +156,9 @@ class IsPathEnabledTest(unittest.TestCase):
         ]
         reverse = list(reversed(forward))
         path = 'brave/browser/internal/foo.cc'
-        self.assertEqual(is_path_enabled(path, forward),
-                         is_path_enabled(path, reverse))
+        self.assertEqual(
+            is_path_enabled(path, forward), is_path_enabled(path, reverse)
+        )
 
     def test_prefix_must_align_to_directory_boundary(self):
         # The trailing `/` is what prevents `brave/browser/` matching

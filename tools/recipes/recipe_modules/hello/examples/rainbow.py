@@ -19,7 +19,10 @@ def RunSteps(api):
 def GenTests(api):
     yield api.test(
         'charlie',
-        api.post_process(StepCommandRE, 'Greet Admired Individual',
-                         [r'.*\bunicorn.py', 'Hello Charlie']),
+        api.post_process(
+            StepCommandRE,
+            'Greet Admired Individual',
+            [r'.*\bunicorn.py', 'Hello Charlie'],
+        ),
         api.post_process(DropExpectation),
     )

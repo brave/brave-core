@@ -46,19 +46,23 @@ def GenTests(api):
         'nest',
         # The nest itself is recorded, with no command.
         api.post_process(post_process.MustRun, 'build'),
-        api.post_process(post_process.MustRun, 'build.configure',
-                         'build.compile'),
+        api.post_process(
+            post_process.MustRun, 'build.configure', 'build.compile'
+        ),
         # Same leaf name under two different namespaces, plus a deeper nest.
-        api.post_process(post_process.MustRun, 'package.compile',
-                         'package.sign.compile'),
+        api.post_process(
+            post_process.MustRun, 'package.compile', 'package.sign.compile'
+        ),
         # Repeated name in one namespace gets suffixed.
         api.post_process(post_process.MustRun, 'twice', 'twice (2)'),
         # Spawned work is namespaced under the nest that spawned it, and is
         # joined before the nest exits.
-        api.post_process(post_process.MustRun, 'fan out.fetch 0',
-                         'fan out.fetch 1', 'after'),
+        api.post_process(
+            post_process.MustRun, 'fan out.fetch 0', 'fan out.fetch 1', 'after'
+        ),
         # The parent's own name is the namespaced one.
-        api.post_process(post_process.StepCommandContains, 'outer.reports',
-                         ['outer']),
+        api.post_process(
+            post_process.StepCommandContains, 'outer.reports', ['outer']
+        ),
         api.post_process(post_process.StatusSuccess),
     )

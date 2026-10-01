@@ -19,8 +19,19 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # pylint: disable=wrong-import-position
 import config
 import engine
-from config import (BadConf, ConfigContext, ConfigGroup, ConfigList, Dict,
-                    Enum, List, Set, Single, Static, config_item_context)
+from config import (
+    BadConf,
+    ConfigContext,
+    ConfigGroup,
+    ConfigList,
+    Dict,
+    Enum,
+    List,
+    Set,
+    Single,
+    Static,
+    config_item_context,
+)
 from recipe_api import RecipeApi
 
 
@@ -33,7 +44,6 @@ def _schema(TARGET='Bob'):
 
 
 class SingleTest(unittest.TestCase):
-
     def test_typecheck_and_complete(self):
         s = Single(int)
         self.assertFalse(s.complete())  # required, still empty_val
@@ -59,7 +69,6 @@ class SingleTest(unittest.TestCase):
 
 
 class StaticTest(unittest.TestCase):
-
     def test_immutable_and_always_complete(self):
         st = Static('x')
         self.assertEqual(st.get_val(), 'x')
@@ -111,7 +120,6 @@ class EnumTest(unittest.TestCase):
 
 
 class ContainerTest(unittest.TestCase):
-
     def test_dict_value_type_and_jsonish_sorted(self):
         d = Dict(value_type=int)
         d['b'] = 2
@@ -175,7 +183,6 @@ class ContainerTest(unittest.TestCase):
 
 
 class ConfigListTest(unittest.TestCase):
-
     def _factory(self):
         return lambda: ConfigGroup(herp=Single(int), derp=Single(str))
 
@@ -213,7 +220,6 @@ class ConfigListTest(unittest.TestCase):
 
 
 class ConfigGroupTest(unittest.TestCase):
-
     def test_attr_proxy_and_closed_schema(self):
         c = _schema()
         self.assertEqual(c.TARGET, 'Bob')  # Static unwrapped
@@ -251,8 +257,9 @@ class ConfigGroupTest(unittest.TestCase):
         )
         # Defaults: shown always present, auto hidden (default), always hidden.
         self.assertEqual(set(c.as_jsonish()), {'shown'})
-        self.assertEqual(set(c.as_jsonish(include_hidden=True)),
-                         {'shown', 'auto', 'always'})
+        self.assertEqual(
+            set(c.as_jsonish(include_hidden=True)), {'shown', 'auto', 'always'}
+        )
         c.auto = 'now-set'
         self.assertEqual(set(c.as_jsonish()), {'shown', 'auto'})
 
@@ -285,7 +292,6 @@ class ConfigGroupTest(unittest.TestCase):
 
 
 class ConfigContextTest(unittest.TestCase):
-
     def test_config_item_context_returns_context(self):
         self.assertIsInstance(config_item_context(_schema), ConfigContext)
 
@@ -300,7 +306,7 @@ class ConfigContextTest(unittest.TestCase):
         def use_echo(c):  # pylint: disable=unused-variable
             c.tool = 'echo'
 
-        @ctx(includes=('use_echo', ))
+        @ctx(includes=('use_echo',))
         def combo(c):  # pylint: disable=unused-variable
             c.verb = 'Yo %s'
 
@@ -343,7 +349,7 @@ class ConfigContextTest(unittest.TestCase):
         def provider(c):  # pylint: disable=unused-variable
             c.tool = 'echo'
 
-        @ctx(deps=('g', ))
+        @ctx(deps=('g',))
         def consumer(c):  # pylint: disable=unused-variable
             c.verb = 'Hi %s'
 
@@ -371,7 +377,7 @@ class ConfigContextTest(unittest.TestCase):
         def boom(c):  # pylint: disable=unused-variable
             raise BadConf('kaboom')
 
-        @ctx(includes=('boom', ))
+        @ctx(includes=('boom',))
         def outer(c):  # pylint: disable=unused-variable,unused-argument
             pass
 
@@ -469,12 +475,12 @@ class RecipeApiConfigTest(unittest.TestCase):
 
 
 class EngineConfigDiscoveryTest(unittest.TestCase):
-
     def test_loads_hello_context(self):
         ctx = engine._load_config_ctx('hello')
         self.assertIsInstance(ctx, ConfigContext)
-        self.assertEqual(set(ctx.CONFIG_ITEMS),
-                         {'BASE', 'super_tool', 'default_tool'})
+        self.assertEqual(
+            set(ctx.CONFIG_ITEMS), {'BASE', 'super_tool', 'default_tool'}
+        )
 
     def test_no_config_py_returns_none(self):
         self.assertIsNone(engine._load_config_ctx('step'))
