@@ -1,0 +1,20 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+package recipe_modules.brave.brave_core_checkout;
+
+message InputProperties {
+  // A brave-core git ref fully qualified (e.g `refs/heads/1.80.x`
+  // Defaults to `refs/heads/master`
+  string brave_core_ref = 1;
+
+  // Build with remote execution. Feeds the `USE_REMOTEEXEC` config variable.
+  bool use_remoteexec = 2;
+
+  // Siso's cache directory; empty leaves it to the build's own default.
+  string siso_cache_dir = 3;
+}

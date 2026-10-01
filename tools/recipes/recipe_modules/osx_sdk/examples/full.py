@@ -22,6 +22,7 @@ def GenTests(api):
     yield api.test(
         'mac',
         api.platform.name('mac'),
+        api.brave_core_checkout.with_git_cache(),
         api.brave_core_checkout.deployed('tools/cr'),
         api.osx_sdk.installed(),
         api.post_process(post_process.StepCommandContains, 'read mac_sdk.gni',
@@ -36,6 +37,7 @@ def GenTests(api):
     yield api.test(
         'linux',
         api.platform.name('linux'),
+        api.brave_core_checkout.with_git_cache(),
         api.post_process(post_process.DoesNotRun, 'read mac_sdk.gni'),
         api.post_process(post_process.DoesNotRun, 'install xcode'),
         api.post_process(post_process.DoesNotRun, 'reset xcode'),

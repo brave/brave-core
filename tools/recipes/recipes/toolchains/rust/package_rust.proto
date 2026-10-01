@@ -11,7 +11,8 @@ message InputProperties {
   // Brave's monotonic sub-revision within a given Chromium ref, used to
   // distinguish repackages of the same Chromium tag.
   int32 brave_subrevision = 1;
-  // Chromium ref (tag or branch) whose Rust toolchain is packaged.
+  // Chromium ref (e.g. `refs/tags/151.0.7917.1`) whose Rust toolchain is
+  // packaged.
   string chromium_ref = 2;
   // Build a stage-1 rustc from scratch, rather than compiling the wasm32 std
   // against the prebuilt rustc gclient syncs (the default).

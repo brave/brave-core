@@ -16,10 +16,10 @@ def RunSteps(api):
     mode = api.env.get('MODE')
     if mode == 'should_clone_false':
         api.chromium_checkout.checkout_ref(api.path.chromium_src,
-                                           ref='main',
+                                           ref='refs/heads/main',
                                            should_clone=False)
     else:
-        api.chromium_checkout.ensure_checkout(ref='main')
+        api.chromium_checkout.ensure_checkout(ref='refs/heads/main')
 
 
 def GenTests(api):

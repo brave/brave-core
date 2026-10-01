@@ -24,7 +24,7 @@ PROPERTIES = InputProperties
 
 def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
     api.chromium_checkout.ensure_checkout(ref=properties.chromium_ref
-                                          or 'main',
+                                          or 'refs/heads/main',
                                           run_hooks=False,
                                           git_deps_only=True)
 
@@ -75,7 +75,7 @@ def GenTests(api):
                          'refresh gerrit mirrors',
                          ['--git-cache-path', '/b/cache']),
         api.post_process(post_process.StepCommandContains, 'checkout ref',
-                         ['main']),
+                         ['origin/main']),
         api.post_process(post_process.StatusSuccess),
     )
 
@@ -85,7 +85,7 @@ def GenTests(api):
         api.chromium_checkout.existing_checkout(),
         api.chromium_checkout.git_cache_populated(),
         api.properties(gerrit_user='chromium-mirror-bot',
-                       chromium_ref='151.0.7917.1'),
+                       chromium_ref='refs/tags/151.0.7917.1'),
         api.post_process(post_process.DoesNotRun, 'clone from git cache'),
         api.post_process(post_process.MustRun, 'fetch tag'),
         api.post_process(post_process.MustRun, 'fetch tags'),

@@ -9,10 +9,13 @@ from __future__ import annotations
 import contextlib
 import functools
 import logging
-import re
 import subprocess
+from typing import TYPE_CHECKING
 
 from recipe_api import RecipeApi
+
+if TYPE_CHECKING:
+    from recipe_modules.git_cache.api import GitRef
 
 # `chrome/VERSION` is a reliable fingerprint for a Chromium repo.
 CHROME_VERSION_FILE = 'chrome/VERSION'
@@ -25,27 +28,6 @@ WIN_HERMETIC_TOOLCHAIN_BASE_URL = (
 
 # The URL for Chromium's googlesource.
 CHROMIUM_URL = 'https://chromium.googlesource.com/chromium/src.git'
-
-# Flags we wanted passed in in every fetch.
-FETCH_ARGS = ('--no-show-forced-updates', )
-
-
-def _is_tag_ref(ref: str) -> bool:
-    """Whether *ref* looks like a Chromium release tag (e.g. `150.0.7850.1`),
-    as opposed to a branch name or a commit hash."""
-    return bool(re.fullmatch(r'\d+\.\d+\.\d+\.\d+', ref))
-
-
-def _is_commit_hash_ref(ref: str) -> bool:
-    """Whether *ref* looks like a full git commit hash, as opposed to a
-    branch name."""
-    return bool(re.fullmatch(r'[0-9a-fA-F]{40}', ref))
-
-
-def _is_fully_qualified_ref(ref: str) -> bool:
-    """Whether *ref* is already a fully-qualified ref path.
-    """
-    return ref.startswith('refs/')
 
 
 class ChromiumCheckoutApi(RecipeApi):
@@ -92,6 +74,7 @@ class ChromiumCheckoutApi(RecipeApi):
                         *,
                         chromium_src: str | Path | None = None,
                         ref: str | None = None,
+                        run_sync: bool = True,
                         run_hooks: bool = True,
                         git_deps_only: bool = False) -> Path:
         """Guarantee a Chromium checkout at *chromium_src*, optionally on *ref*.
@@ -106,6 +89,8 @@ class ChromiumCheckoutApi(RecipeApi):
             chromium_src: Path to the Chromium `src/` directory. Defaults to the
                 `path` module's `chromium_src`, the standard job layout.
             ref: Optional git ref (branch, tag, or commit) to check out.
+            run_sync: Whether `gclient sync` runs after the checkout (the
+                default). See `checkout_ref`.
             run_hooks: Whether the sync runs the DEPS hooks (the default). See
                 `checkout_ref`.
             git_deps_only: Sync only the git dependencies. See `checkout_ref`.
@@ -123,6 +108,7 @@ class ChromiumCheckoutApi(RecipeApi):
 
         self.checkout_ref(chromium_src,
                           ref,
+                          run_sync=run_sync,
                           run_hooks=run_hooks,
                           git_deps_only=git_deps_only)
         return chromium_src
@@ -150,6 +136,7 @@ class ChromiumCheckoutApi(RecipeApi):
                      ref: str | None = None,
                      *,
                      should_clone: bool = True,
+                     run_sync: bool = True,
                      run_hooks: bool = True,
                      git_deps_only: bool = False) -> None:
         """Ensure *chromium_src* is checked out at *ref*.
@@ -163,6 +150,10 @@ class ChromiumCheckoutApi(RecipeApi):
                 doesn't already hold a valid checkout (the default). Set to
                 False to require an existing checkout, raising instead of
                 cloning one.
+            run_sync: Whether `gclient sync` runs after *chromium_src* is
+                checked out (the default). Set to False to leave syncing
+                (DEPS dependencies and hooks) to the caller; *run_hooks* and
+                *git_deps_only* are then ignored.
             run_hooks: Whether the sync runs the DEPS hooks (the default).
             git_deps_only: Sync only the git dependencies, skipping the CIPD
                 packages and GCS objects DEPS.
@@ -177,12 +168,7 @@ class ChromiumCheckoutApi(RecipeApi):
         the mirror and *ref* is fetched and checked out explicitly.
         """
         chromium_src = self.m.path.abs(chromium_src)
-        is_tag = bool(ref and _is_tag_ref(ref))
-        is_commit = bool(ref and not is_tag and _is_commit_hash_ref(ref))
-        is_qualified_ref = bool(ref and not is_tag and not is_commit
-                                and _is_fully_qualified_ref(ref))
-        populate_ref = f'refs/tags/{ref}' if is_tag else (
-            None if is_commit else ref)
+        git_ref = self.m.git_cache.parse_ref(ref) if ref else None
 
         if not self.has_valid_checkout(chromium_src):
             if not should_clone:
@@ -202,92 +188,29 @@ class ChromiumCheckoutApi(RecipeApi):
                         cwd=chromium_src.parent)
 
             mirror_dir = self._populate_git_cache(
-                CHROMIUM_URL,
-                ref=populate_ref,
-                commit=ref if is_commit else None,
+                git_ref,
                 populate_step='git cache populate',
                 exists_step='git cache exists')
-
-            self.m.step('clone from git cache', [
-                'git', 'clone', '--no-checkout', '--local', '--shared',
-                mirror_dir, chromium_src
-            ])
-            self.m.git.disable_auto_gc(chromium_src)
-
-            if is_qualified_ref:
-                # `ref` is a fully-qualified ref outside `refs/heads/*` and
-                # `refs/tags/*` (e.g. a Chromium release branch under
-                # `refs/branch-heads/*`).
-                self.m.step('fetch ref',
-                            ['git', 'fetch', *FETCH_ARGS, 'origin', ref],
-                            cwd=chromium_src)
-                self.m.step('checkout ref',
-                            ['git', 'checkout', '--force', 'FETCH_HEAD'],
-                            cwd=chromium_src)
-            else:
-                checkout_target = populate_ref or ref or 'origin/HEAD'
-                step_name = ('checkout tag'
-                             if is_tag else 'checkout commit' if is_commit else
-                             'checkout ref' if ref else 'checkout origin/HEAD')
-                self.m.step(
-                    step_name,
-                    ['git', 'checkout', '--force', checkout_target, '--'],
-                    cwd=chromium_src)
+            self.m.git_cache.clone_checkout(CHROMIUM_URL, chromium_src,
+                                            mirror_dir, git_ref)
             if not ref:
                 return
-            # `origin`'s push url should still point at the real remote, not
-            # the local mirror `git clone` just set it to.
-            self.m.step(
-                'restore origin push url',
-                ['git', 'remote', 'set-url', '--push', 'origin', CHROMIUM_URL],
-                cwd=chromium_src)
         elif ref:
             # Already a valid checkout: its current state (branch/tag/commit)
             # is unknown ahead of time, so re-pointing it at `ref` needs an
             # explicit fetch+checkout.
             logging.info('Checking out Chromium ref %s', ref)
             mirror_dir = self._populate_git_cache(
-                CHROMIUM_URL,
-                ref=populate_ref,
-                commit=ref if is_commit else None,
+                git_ref,
                 populate_step='git cache populate for ref',
                 exists_step='git cache exists for ref')
-
-            # `chromium_src` may already exist from before this checkout
-            # started using a git cache mirror at all, so point `origin` at
-            # the mirror unconditionally. Everything below then runs as
-            # local disk I/O instead of talking to the real remote.
-            self.m.step('point origin at git cache',
-                        ['git', 'remote', 'set-url', 'origin', mirror_dir],
-                        cwd=chromium_src)
-            self.m.step(
-                'restore origin push url',
-                ['git', 'remote', 'set-url', '--push', 'origin', CHROMIUM_URL],
-                cwd=chromium_src)
-
-            if is_tag:
-                # Chromium release tag (e.g. `150.0.7850.1`): fetch it as a
-                # tag so it lands at `refs/tags/<ref>` in the local repo.
-                self.m.step('fetch tag', [
-                    'git', 'fetch', *FETCH_ARGS, '--no-tags', 'origin',
-                    f'refs/tags/{ref}:refs/tags/{ref}'
-                ],
-                            cwd=chromium_src)
-            else:
-                # A branch name or a bare commit hash both resolve directly
-                # against `origin` -- no destination refspec needed.
-                self.m.step('fetch commit' if is_commit else 'fetch ref',
-                            ['git', 'fetch', *FETCH_ARGS, 'origin', ref],
-                            cwd=chromium_src)
-
-            # A manual `git checkout --force` rather than `gclient sync -r
-            # <ref>` sidesteps a gclient bug; see
-            # https://github.com/brave/brave-browser/issues/44921.
-            self.m.step('checkout FETCH_HEAD',
-                        ['git', 'checkout', '--force', 'FETCH_HEAD'],
-                        cwd=chromium_src)
+            self.m.git_cache.update_checkout(CHROMIUM_URL, chromium_src,
+                                             mirror_dir, git_ref)
         else:
             # Already a valid checkout and no `ref` requested: nothing to do.
+            return
+
+        if not run_sync:
             return
 
         using_hermetic_win_toolchain = (run_hooks and self.m.platform.is_win
@@ -334,14 +257,9 @@ class ChromiumCheckoutApi(RecipeApi):
             self.m.env.set(f"GYP_MSVS_HASH_{info['toolchain_hash']}",
                            info['published_hash'])
 
-    def _populate_git_cache(self,
-                            url: str,
-                            *,
-                            ref: str | None = None,
-                            commit: str | None = None,
-                            populate_step: str,
+    def _populate_git_cache(self, ref: GitRef | None, *, populate_step: str,
                             exists_step: str) -> str:
-        """Populate (or refresh) the shared bare mirror for *url*.
+        """Populate (or refresh) the shared bare mirror of Chromium.
 
         `git cache populate` fetches into a persistent bare mirror under
         `GIT_CACHE_PATH`, which is reused across every checkout and build on
@@ -349,19 +267,16 @@ class ChromiumCheckoutApi(RecipeApi):
         directly.
 
         Args:
-            url: The repo to mirror.
-            ref: An additional ref (a plain branch name, or a fully-qualified
-                ref such as `refs/tags/<tag>` or `refs/branch-heads/<n>`) to
-                fetch into the mirror, beyond its default `refs/heads/*`.
-            commit: An additional bare commit hash to fetch into the mirror.
+            ref: The ref to fetch into the mirror beyond its default
+                `refs/heads/*`, if any.
             populate_step: Step name for the `git cache populate` call.
             exists_step: Step name for the `git cache exists` call.
 
         Returns:
             The absolute path to the mirror directory.
         """
-        self.m.git_cache.populate(url,
-                                  ref=ref,
-                                  commit=commit,
+        self.m.git_cache.populate(CHROMIUM_URL,
+                                  ref=ref.populate_ref if ref else None,
+                                  commit=ref.commit if ref else None,
                                   step_name=populate_step)
-        return self.m.git_cache.mirror_dir(url, step_name=exists_step)
+        return self.m.git_cache.mirror_dir(CHROMIUM_URL, step_name=exists_step)

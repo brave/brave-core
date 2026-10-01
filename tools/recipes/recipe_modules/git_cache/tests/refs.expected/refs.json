@@ -1,0 +1,26 @@
+[
+  {
+    "cmd": [
+      "echo",
+      "refused"
+    ],
+    "name": "refused main"
+  },
+  {
+    "cmd": [
+      "echo",
+      "refused"
+    ],
+    "name": "refused --upload-pack=evil"
+  },
+  {
+    "cmd": [
+      "echo",
+      "none"
+    ],
+    "name": "no short name"
+  },
+  {
+    "name": "$result"
+  }
+]

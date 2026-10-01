@@ -61,7 +61,9 @@
       "/b/cache",
       "https://chromium.googlesource.com/chromium/src.git",
       "--reset-fetch-config",
-      "--no-fetch-tags"
+      "--no-fetch-tags",
+      "--ref",
+      "refs/tags/151.0.7917.1"
     ],
     "env": {
       "CHROME_HEADLESS": "1"
@@ -170,14 +172,14 @@
       "git",
       "checkout",
       "--force",
-      "origin/HEAD",
+      "refs/tags/151.0.7917.1",
       "--"
     ],
     "cwd": "[WORKSPACE]/b/src",
     "env": {
       "CHROME_HEADLESS": "1"
     },
-    "name": "checkout origin/HEAD"
+    "name": "checkout tag"
   },
   {
     "cmd": [

@@ -19,7 +19,7 @@ def RunSteps(api):
 def GenTests(api):
     yield api.test(
         'fresh clone is not shallow',
-        api.env.set('REF', 'main'),
+        api.env.set('REF', 'refs/heads/main'),
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.git_cache_populated(),
         api.post_process(post_process.StepCommandRE, 'clone from git cache', [
@@ -28,7 +28,7 @@ def GenTests(api):
         api.post_process(post_process.StepCommandDoesNotContain,
                          'git cache populate', ['--depth']),
         api.post_process(post_process.StepCommandContains, 'checkout ref',
-                         ['main']),
+                         ['origin/main']),
         api.post_process(post_process.DoesNotRun, 'fetch ref'),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
@@ -49,7 +49,7 @@ def GenTests(api):
     )
     yield api.test(
         'existing checkout branch fetch is not shallow',
-        api.env.set('REF', 'main'),
+        api.env.set('REF', 'refs/heads/main'),
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.existing_checkout(),
         api.chromium_checkout.git_cache_populated(),
@@ -64,7 +64,7 @@ def GenTests(api):
     )
     yield api.test(
         'existing checkout tag fetch is not shallow',
-        api.env.set('REF', '151.0.7917.1'),
+        api.env.set('REF', 'refs/tags/151.0.7917.1'),
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.existing_checkout(),
         api.chromium_checkout.git_cache_populated(),

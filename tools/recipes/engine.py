@@ -14,7 +14,8 @@ Run a recipe directly (recipe names are `/`-separated paths under recipes/).
 `--workspace` sets the root the job runs in; recipe paths are derived from it:
 
     python3 engine.py toolchains/rust/package_rust \\
-        --properties '{"chromium_ref": "151.0.7917.1", "brave_subrevision": 1}'
+        --properties '{"chromium_ref": "refs/tags/151.0.7917.1",
+                       "brave_subrevision": 1}'
 """
 
 from __future__ import annotations
@@ -213,7 +214,6 @@ class _Engine:
 
     def __init__(self,
                  workspace: str | Path | None = None,
-                 brave_core_ref: str = 'master',
                  test: object | None = None) -> None:
         _ensure_on_sys_path()
         # Simulation context, or None in production. When set, the engine runs
@@ -230,14 +230,12 @@ class _Engine:
             self._workspace = Path.cwd()
         elif workspace:
             self._workspace = Path(workspace).expanduser().resolve()
+            self._workspace.mkdir(parents=True, exist_ok=True)
             # Run from the workspace so every subprocess the recipes launch
             # inherits it as their cwd.
             os.chdir(self._workspace)
         else:
             self._workspace = Path.cwd()
-        # brave-core ref the checkout modules clone. Defaults to `master`;
-        # overridable (mainly for testing against a non-master ref).
-        self._brave_core_ref: str = brave_core_ref
         # The run's input property JSON and environment, seeded by
         # `run_loaded_recipe` before any module is instantiated. A module's
         # `PROPERTIES`/`ENV_PROPERTIES` are bound from these (see
@@ -318,11 +316,10 @@ class _Engine:
         api_class = _find_api_class(api_module, name)
 
         inst = api_class(*self._module_property_args(name, package))
-        # Seed engine-provided values (workspace, brave-core ref, and the
+        # Seed engine-provided values (workspace, and the
         # module's name and config context) so modules can use them. setattr
         # keeps the engine out of the instance's protected members directly.
         setattr(inst, '_workspace', self._workspace)
-        setattr(inst, '_brave_core_ref', self._brave_core_ref)
         setattr(inst, '_step_stack', self._step_stack)
         setattr(inst, '_module_name', name)
         setattr(inst, '_module_dir',
@@ -465,11 +462,9 @@ def _run_steps(run_steps: object, api: object, properties: dict[str, object],
 
 def run_recipe(recipe_name: str,
                properties: dict[str, object] | None = None,
-               workspace: str | Path | None = None,
-               brave_core_ref: str = 'master') -> object:
+               workspace: str | Path | None = None) -> object:
     """Resolve DEPS for *recipe_name* and run its `RunSteps`."""
-    return _Engine(workspace,
-                   brave_core_ref).run_recipe(recipe_name, properties)
+    return _Engine(workspace).run_recipe(recipe_name, properties)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -493,20 +488,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument('--workspace',
                         default=None,
                         help='Root directory the job runs in; recipe paths '
-                        '(b/src, out, ...) are relative to it '
-                        '(default: current directory)')
-    parser.add_argument('--brave-core-ref',
-                        default='master',
-                        help='brave-core ref the recipe checks out '
-                        '(default: master; override for testing)')
+                        '(b/src, out, ...) are relative to it; '
+                        'created if missing (default: current directory)')
     parser.add_argument('--verbose',
                         action='store_true',
                         help='Enable verbose (debug) logging')
     args = parser.parse_args(argv)
 
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
-    run_recipe(args.recipe, json.loads(args.properties), args.workspace,
-               args.brave_core_ref)
+    run_recipe(args.recipe, json.loads(args.properties), args.workspace)
     return 0
 
 
