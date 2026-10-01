@@ -1021,7 +1021,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithEmailAliasesTest,
   ASSERT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_EMAIL_ALIASES));
   command_controller->ExecuteCommand(IDC_SHOW_EMAIL_ALIASES);
 
-  auto* controller = browser()->GetFeatures().email_aliases_controller();
+  auto* controller = email_aliases::EmailAliasesController::From(browser());
   ASSERT_NE(nullptr, controller->GetBubbleForTesting());
 
   // Closing navigates to settings.

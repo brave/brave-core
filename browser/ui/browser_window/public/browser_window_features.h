@@ -60,12 +60,6 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return sidebar_controller_.get();
   }
 
-#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
-  email_aliases::EmailAliasesController* email_aliases_controller() {
-    return email_aliases_controller_.get();
-  }
-#endif
-
   FocusModeController* focus_mode_controller() {
     return focus_mode_controller_.get();
   }

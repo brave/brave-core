@@ -138,8 +138,9 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
             email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
                 browser_view->GetProfile())) {
       email_aliases_controller_ =
-          std::make_unique<email_aliases::EmailAliasesController>(
-              browser_view, email_aliases_service);
+          GetUserDataFactory()
+              .CreateInstance<email_aliases::EmailAliasesController>(
+                  *browser_, browser_view, email_aliases_service);
     }
   }
 #endif
