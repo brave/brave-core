@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// postMessage protocol between the trusted wallet page (SnapHostBridge) and
+// postMessage protocol between the trusted snap host page (SnapHostBridge) and
 // chrome-untrusted://snap-host iframes.
 
 export const SNAP_HOST_ORIGIN = 'chrome-untrusted://snap-host'
-export const WALLET_PAGE_ORIGIN = 'chrome://wallet'
+export const WALLET_SNAP_HOST_ORIGIN = 'chrome://wallet-snap-host'
 
 export const enum SnapCommand {
   ExecuteSnap = 'executeSnap',

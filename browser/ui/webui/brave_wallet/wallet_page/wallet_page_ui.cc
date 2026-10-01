@@ -36,10 +36,6 @@
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/webui/webui_util.h"
 
-#if BUILDFLAG(ENABLE_SNAP)
-#include "brave/components/brave_wallet/browser/snap_service.h"
-#endif
-
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/browser/ui/webui/theme_source.h"
@@ -114,7 +110,9 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
                           kUntrustedMarketURL;
 #if BUILDFLAG(ENABLE_SNAP)
   if (IsSnapFeatureEnabled()) {
-    frame_src += std::string(" ") + kUntrustedSnapURL;
+    // Snaps run in the nested chrome://wallet-snap-host/ page, which parents
+    // the chrome-untrusted://snap-host frames itself.
+    frame_src += std::string(" ") + kBraveUIWalletSnapHostURL;
   }
 #endif
   frame_src += ";";
@@ -131,6 +129,7 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->AddBoolean("isLedgerMojoBridgeEnabled", IsMojoForLedgerEnabled());
   source->AddBoolean("walletDebug", IsWalletDebugEnabled());
   source->AddBoolean("isSnapEnabled", IsSnapFeatureEnabled());
+  source->AddString("braveWalletSnapHostUrl", kBraveUIWalletSnapHostURL);
 
 #if !BUILDFLAG(IS_ANDROID)
   content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
@@ -171,22 +170,6 @@ void WalletPageUI::BindInterface(
       nullptr, profile->GetPrefs());
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
-
-#if BUILDFLAG(ENABLE_SNAP)
-void WalletPageUI::BindInterface(
-    mojo::PendingReceiver<mojom::SnapService> receiver) {
-  if (!IsSnapFeatureEnabled()) {
-    return;
-  }
-  auto* profile = Profile::FromWebUI(web_ui());
-  if (auto* wallet_service =
-          BraveWalletServiceFactory::GetServiceForContext(profile)) {
-    if (auto* snap_service = wallet_service->snap_service()) {
-      snap_service->Bind(std::move(receiver));
-    }
-  }
-}
-#endif  // BUILDFLAG(ENABLE_SNAP)
 
 void WalletPageUI::CreatePageHandler(
     mojo::PendingReceiver<mojom::PageHandler> page_receiver,

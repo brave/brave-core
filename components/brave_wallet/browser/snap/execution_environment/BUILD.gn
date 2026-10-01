@@ -21,3 +21,17 @@ source_set("execution_environment") {
     "//mojo/public/cpp/bindings",
   ]
 }
+
+source_set("test_support") {
+  testonly = true
+  sources = [
+    "snap_host_bridge_test_utils.cc",
+    "snap_host_bridge_test_utils.h",
+  ]
+  deps = [
+    ":execution_environment",
+    "//base",
+    "//brave/components/brave_wallet/common:mojom",
+    "//mojo/public/cpp/bindings",
+  ]
+}

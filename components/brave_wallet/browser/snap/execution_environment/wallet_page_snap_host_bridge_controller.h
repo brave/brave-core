@@ -16,18 +16,20 @@
 
 namespace brave_wallet {
 
-// SnapHostBridgeController implementation that uses snap-host frames in an
-// already-open wallet page. Does not open a page; IsBound() is true while a
+// SnapHostBridgeController implementation backed by an already-open
+// chrome://wallet-snap-host/ page — either the wallet page's hidden iframe or a
+// manually-opened tab. Does not open a page; IsBound() is true while a
 // SnapHostBridge remote is bound (the page creates the pipe and passes the
 // remote end).
 //
-// BindNewBridge is last-wins across the profile: a second wallet tab replaces
-// the first tab's bridge remote, disconnecting its receiver; in-flight loads
-// resolve as failures. Two further consequences, acceptable while snaps are
-// behind a disabled-by-default flag:
-//   - Closing the newer tab leaves IsBound() false even though the older tab
-//     is still open, so loads fail until that tab is reloaded.
-//   - The older tab keeps any snap iframes it already created; its orphaned
+// BindNewBridge is last-wins across the profile: a second host page replaces
+// the first one's bridge remote, disconnecting its receiver; in-flight loads
+// resolve as failures. One host page per wallet tab plus any standalone tab
+// makes a second binder likely. Two further consequences, acceptable while
+// snaps are behind a disabled-by-default flag:
+//   - Closing the newer page leaves IsBound() false even though the older one
+//     is still open, so loads fail until that page is reloaded.
+//   - The older page keeps any snap iframes it already created; its orphaned
 //     receiver never gets UnloadSnap.
 // TODO(https://github.com/brave/brave-browser/issues/58686): track bridges
 // per WebContents instead of one profile-wide remote.
