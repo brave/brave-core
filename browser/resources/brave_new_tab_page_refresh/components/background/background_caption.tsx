@@ -18,18 +18,45 @@ import {
   useBackgroundActions,
 } from '../../context/background_context'
 import { useNewTabState } from '../../context/new_tab_context'
+import { NewTabTakeoverDisclosure } from './new_tab_takeover_disclosure'
 
 import { style } from './background_caption.style'
 
 export function BackgroundCaption() {
   const currentBackground = useCurrentBackground()
+  const centerNttCtaButtonFeatureEnabled = useNewTabState(
+    (s) => s.centerNttCtaButtonFeatureEnabled,
+  )
 
   function renderCaption() {
     switch (currentBackground?.type) {
       case 'brave':
         return <BraveBackgroundCredits background={currentBackground} />
-      case 'sponsored-image':
-        return <SponsoredBackgroundLogo background={currentBackground} />
+      case 'sponsored-image': {
+        // The centered-CTA layout only takes effect when the logo actually
+        // renders (see `SponsoredBackgroundLogo` below); otherwise the
+        // caption stays anchored at the bottom of the viewport, so opening
+        // the tooltip downward would push it off-screen.
+        const isCenteredCtaButton =
+          centerNttCtaButtonFeatureEnabled &&
+          !!currentBackground.logo?.imageUrl
+        return (
+          <>
+            <SponsoredBackgroundLogo background={currentBackground} />
+            <NewTabTakeoverDisclosure
+              background={currentBackground}
+              placement={isCenteredCtaButton ? 'bottom' : 'top'}
+            />
+          </>
+        )
+      }
+      case 'sponsored-rich-media':
+        return (
+          <NewTabTakeoverDisclosure
+            background={currentBackground}
+            placement='top'
+          />
+        )
       default:
         return null
     }

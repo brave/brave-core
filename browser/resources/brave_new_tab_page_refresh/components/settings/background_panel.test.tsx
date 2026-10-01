@@ -59,6 +59,7 @@ function createBackgroundStore(
       notifySponsoredImageLoadError() {},
       notifySponsoredImageLogoClicked() {},
       notifySponsoredRichMediaEvent() {},
+      notifyNewTabTakeoverDisclosureLearnMoreClicked() {},
       ...actions,
     },
     ...state,
