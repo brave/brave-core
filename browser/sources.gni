@@ -339,6 +339,7 @@ brave_chrome_browser_deps = [
   "//third_party/blink/public/mojom:mojom_platform_headers",
   "//third_party/widevine/cdm:buildflags",
   "//ui/base",
+  "//ui/webui/resources/cr_components/color_change_listener:mojom",
   "//url",
 ]
 
