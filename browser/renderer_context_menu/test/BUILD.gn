@@ -16,6 +16,7 @@ source_set("unit_tests") {
     "//chrome/browser/custom_handlers",
     "//chrome/browser/search_engines",
     "//chrome/test:test_support",
+    "//chrome/test/base:testing_browser_process",
     "//components/custom_handlers",
     "//components/custom_handlers:test_support",
     "//components/search_engines",

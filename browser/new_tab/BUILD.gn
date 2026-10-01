@@ -34,6 +34,7 @@ source_set("unittest") {
       "//brave/components/constants",
       "//chrome/common",
       "//chrome/test:test_support",
+      "//chrome/test/base:testing_browser_process",
       "//components/prefs",
       "//content/test:test_support",
       "//testing/gtest",
