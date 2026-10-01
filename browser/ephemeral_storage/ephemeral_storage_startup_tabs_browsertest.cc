@@ -48,8 +48,9 @@ class EphemeralStorageStartupTabsBrowserTest
 
   void SetUpOnMainThread() override {
     EphemeralStorageBrowserTest::SetUpOnMainThread();
-    brave_shields_settings_service_ = BraveShieldsSettingsServiceFactory::GetForProfile(
-        browser()->GetProfile());
+    brave_shields_settings_service_ =
+        BraveShieldsSettingsServiceFactory::GetForProfile(
+            browser()->GetProfile());
   }
 
   void TearDownOnMainThread() override {
@@ -60,7 +61,8 @@ class EphemeralStorageStartupTabsBrowserTest
   // Enables Forgetful Mode for `url`'s domain and queues it for the ephemeral
   // storage cleanup without waiting for the keep-alive timer.
   void EnableForgetfulModeAndScheduleCleanup(const GURL& url) {
-    brave_shields_settings_service_->SetForgetFirstPartyStorageEnabled(true, url);
+    brave_shields_settings_service_->SetForgetFirstPartyStorageEnabled(true,
+                                                                       url);
     CloseWebContents(LoadURLInNewTab(url));
   }
 
@@ -126,8 +128,8 @@ class EphemeralStorageStartupTabsBrowserTest
   }
 
  protected:
-  raw_ptr<brave_shields::BraveShieldsSettingsService> brave_shields_settings_service_ =
-      nullptr;
+  raw_ptr<brave_shields::BraveShieldsSettingsService>
+      brave_shields_settings_service_ = nullptr;
 
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
