@@ -13,9 +13,7 @@
 
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
-#include "base/run_loop.h"
 #include "base/test/bind.h"
-#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -29,6 +27,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -36,6 +35,7 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -634,19 +634,18 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_WalletLocked_ResolvesAfterUnlock) {
   SetAllowedAccounts({PermissionIdentifier(account)});
   keyring_service()->Lock();
 
-  base::RunLoop run_loop;
-  base::MockCallback<PolkadotProviderImpl::EnableCallback> callback;
-  EXPECT_CALL(callback,
-              Run(_, EqualsMojo(mojom::PolkadotProviderErrorBundlePtr())))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<::mojo::PendingRemote<mojom::PolkadotApi>,
+                         mojom::PolkadotProviderErrorBundlePtr>
+      future;
 
-  provider()->Enable(callback.Get());
+  provider()->Enable(future.GetCallback());
   ASSERT_TRUE(HasParkedRequest());
 
   UnlockWallet();
-  run_loop.Run();
+  auto [polkadot_api, error] = future.Take();
 
   EXPECT_FALSE(HasParkedRequest());
+  EXPECT_FALSE(error);
 }
 
 TEST_F(PolkadotProviderImplUnitTest,
@@ -661,16 +660,21 @@ TEST_F(PolkadotProviderImplUnitTest,
       .WillByDefault(testing::Return(std::nullopt));
   keyring_service()->Lock();
 
-  base::RunLoop run_loop;
-  base::MockCallback<PolkadotProviderImpl::EnableCallback> callback;
-  EXPECT_CALL(callback, Run(_, _))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<::mojo::PendingRemote<mojom::PolkadotApi>,
+                         mojom::PolkadotProviderErrorBundlePtr>
+      future;
 
-  provider()->Enable(callback.Get());
+  provider()->Enable(future.GetCallback());
   ASSERT_TRUE(HasParkedRequest());
 
   UnlockWallet();
-  run_loop.Run();
+
+  auto [polkadot_api, error] = future.Take();
+
+  EXPECT_FALSE(HasParkedRequest());
+  EXPECT_THAT(error, EqualsMojo(mojom::PolkadotProviderErrorBundle::New(
+                         mojom::PolkadotProviderError::kInternalError,
+                         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR))));
 }
 
 }  // namespace brave_wallet
