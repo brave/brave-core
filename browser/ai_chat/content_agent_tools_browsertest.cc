@@ -58,7 +58,10 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
   ContentAgentToolsTest() {
     scoped_feature_list_.InitWithFeatures(
         /*enabled_features=*/{features::kAIChatAgentProfile},
-        /*disabled_features=*/{actor::kGlicCrossOriginNavigationGating});
+        // kGlicConfirmTabClose: typed test navigations on the task tab would
+        // otherwise block on the "Leave site and end task?" dialog.
+        /*disabled_features=*/{actor::kGlicCrossOriginNavigationGating,
+                               ::features::kGlicConfirmTabClose});
   }
 
   ~ContentAgentToolsTest() override = default;
