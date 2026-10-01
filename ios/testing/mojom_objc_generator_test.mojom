@@ -54,3 +54,13 @@ interface ResponderInterface {
                            NullableEnumStruct? maybe_info);
   Verify(string token) => result<NullableEnumStruct, string>;
 };
+
+// Interfaces passed as `pending_remote` with methods that have replies are
+// bridged to Obj-C implementations.
+interface EmptyResponseInterfaceHost {
+  SetInterface(pending_remote<EmptyResponseInterface> remote);
+};
+
+interface ResponderInterfaceHost {
+  SetResponder(pending_remote<ResponderInterface> remote);
+};

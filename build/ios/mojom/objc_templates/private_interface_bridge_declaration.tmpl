@@ -24,6 +24,6 @@ private:
   __weak id<{{objc_name}}> bridge_;
   mojo::Receiver<{{cpp_namespace}}::{{interface.name}}> receiver_{this};
 {% for method in interface.methods %}
-  void {{method.name}}({{interface_macros.cpp_declare_request_params(method, cpp_namespace)}}) override;
+  void {{method.name}}({{interface_macros.cpp_declare_request_params(method, cpp_namespace ~ "::" ~ interface.name)}}) override;
 {%- endfor %}
 };

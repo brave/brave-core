@@ -7,13 +7,20 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/bind.h"
 #include "base/strings/sys_string_conversions.h"
+#include "base/task/thread_pool.h"
+#include "base/test/bind.h"
 #include "base/test/run_until.h"
+#include "base/types/expected.h"
 #import "brave/ios/testing/mojom_objc_generator_test.mojom.objc+private.h"
 #include "ios/web/public/test/web_task_environment.h"
+#include "ios/web/public/thread/web_task_traits.h"
+#include "ios/web/public/thread/web_thread.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 #import "testing/gtest/include/gtest/gtest.h"
 #import "testing/gtest_mac.h"
@@ -481,4 +488,191 @@ TEST_F(MojomObjcGeneratorDroppedCallbackTest, DisconnectReportsResultFailure) {
   EXPECT_EQ(call_count_, 1);
   EXPECT_EQ(success, nil);
   EXPECT_NSEQ(failure, @"");
+}
+
+namespace {
+
+class TestEmptyResponseHost
+    : public mojom_objc_test::mojom::EmptyResponseInterfaceHost {
+ public:
+  mojo::PendingRemote<mojom_objc_test::mojom::EmptyResponseInterfaceHost>
+  BindNewRemote() {
+    return receiver_.BindNewPipeAndPassRemote();
+  }
+
+  // mojom::EmptyResponseInterfaceHost:
+  void SetInterface(
+      mojo::PendingRemote<mojom_objc_test::mojom::EmptyResponseInterface>
+          remote) override {
+    remote_.Bind(std::move(remote));
+  }
+
+  mojo::Remote<mojom_objc_test::mojom::EmptyResponseInterface> remote_;
+
+ private:
+  mojo::Receiver<mojom_objc_test::mojom::EmptyResponseInterfaceHost> receiver_{
+      this};
+};
+
+class TestResponderHost
+    : public mojom_objc_test::mojom::ResponderInterfaceHost {
+ public:
+  mojo::PendingRemote<mojom_objc_test::mojom::ResponderInterfaceHost>
+  BindNewRemote() {
+    return receiver_.BindNewPipeAndPassRemote();
+  }
+
+  // mojom::ResponderInterfaceHost:
+  void SetResponder(
+      mojo::PendingRemote<mojom_objc_test::mojom::ResponderInterface> remote)
+      override {
+    remote_.Bind(std::move(remote));
+  }
+
+  mojo::Remote<mojom_objc_test::mojom::ResponderInterface> remote_;
+
+ private:
+  mojo::Receiver<mojom_objc_test::mojom::ResponderInterfaceHost> receiver_{
+      this};
+};
+
+}  // namespace
+
+class MojomObjcGeneratorPendingRemoteWithRepliesTest : public PlatformTest {
+ protected:
+  web::WebTaskEnvironment task_environment_;
+};
+
+TEST_F(MojomObjcGeneratorPendingRemoteWithRepliesTest, EmptyResponse) {
+  TestEmptyResponseHost host;
+  auto* host_wrapper = [[MojomObjcTestEmptyResponseInterfaceHostMojoImpl alloc]
+      initWithEmptyResponseInterfaceHost:host.BindNewRemote()];
+
+  __block std::vector<std::string> received;
+  MojomObjcTestTestEmptyResponseInterface* impl =
+      [[MojomObjcTestTestEmptyResponseInterface alloc] init];
+  impl._withParam = ^(NSString* value, void (^completion)(void)) {
+    received.push_back(base::SysNSStringToUTF8(value));
+    completion();
+  };
+  impl._withoutParams = ^(void (^completion)(void)) {
+    received.push_back("no params");
+    completion();
+  };
+  [host_wrapper setInterface:impl];
+
+  ASSERT_TRUE(base::test::RunUntil([&] { return host.remote_.is_bound(); }));
+
+  int replies = 0;
+  host.remote_->WithParam("value",
+                          base::BindLambdaForTesting([&] { replies++; }));
+  host.remote_->WithoutParams(base::BindLambdaForTesting([&] { replies++; }));
+  ASSERT_TRUE(base::test::RunUntil([&] { return replies == 2; }));
+  EXPECT_EQ(received, (std::vector<std::string>{"value", "no params"}));
+}
+
+TEST_F(MojomObjcGeneratorPendingRemoteWithRepliesTest, ResponseValues) {
+  TestResponderHost host;
+  auto* host_wrapper = [[MojomObjcTestResponderInterfaceHostMojoImpl alloc]
+      initWithResponderInterfaceHost:host.BindNewRemote()];
+
+  MojomObjcTestTestResponderInterface* impl =
+      [[MojomObjcTestTestResponderInterface alloc] init];
+  impl._ask =
+      ^(NSString* question,
+        void (^completion)(NSString*, int32_t, MojomObjcTestSomeEnum,
+                           MojomObjcTestNullableEnumStruct*,
+                           MojomObjcTestNullableEnumStruct* _Nullable)) {
+        completion([question stringByAppendingString:@"!"], 7,
+                   MojomObjcTestSomeEnumGamma,
+                   [[MojomObjcTestNullableEnumStruct alloc] init], nil);
+      };
+  impl._verify =
+      ^(NSString* token,
+        void (^completion)(MojomObjcTestNullableEnumStruct* _Nullable,
+                           NSString* _Nullable)) {
+        if ([token isEqualToString:@"good"]) {
+          completion([[MojomObjcTestNullableEnumStruct alloc] init], nil);
+        } else {
+          completion(nil, @"bad token");
+        }
+      };
+  [host_wrapper setResponder:impl];
+  ASSERT_TRUE(base::test::RunUntil([&] { return host.remote_.is_bound(); }));
+
+  std::optional<std::string> answer;
+  int32_t count = 0;
+  mojom_objc_test::mojom::SomeEnum kind =
+      mojom_objc_test::mojom::SomeEnum::kAlpha;
+  bool has_info = false;
+  bool has_maybe_info = true;
+  host.remote_->Ask(
+      "why", base::BindLambdaForTesting(
+                 [&](const std::string& a, int32_t c,
+                     mojom_objc_test::mojom::SomeEnum k,
+                     mojom_objc_test::mojom::NullableEnumStructPtr info,
+                     mojom_objc_test::mojom::NullableEnumStructPtr maybe_info) {
+                   answer = a;
+                   count = c;
+                   kind = k;
+                   has_info = !!info;
+                   has_maybe_info = !!maybe_info;
+                 }));
+  ASSERT_TRUE(base::test::RunUntil([&] { return answer.has_value(); }));
+  EXPECT_EQ(*answer, "why!");
+  EXPECT_EQ(count, 7);
+  EXPECT_EQ(kind, mojom_objc_test::mojom::SomeEnum::kGamma);
+  EXPECT_TRUE(has_info);
+  EXPECT_FALSE(has_maybe_info);
+
+  using Result = base::expected<mojom_objc_test::mojom::NullableEnumStructPtr,
+                                std::string>;
+  std::optional<bool> good;
+  host.remote_->Verify("good", base::BindLambdaForTesting([&](Result result) {
+                         good = result.has_value();
+                       }));
+  ASSERT_TRUE(base::test::RunUntil([&] { return good.has_value(); }));
+  EXPECT_TRUE(*good);
+
+  std::optional<Result> bad;
+  host.remote_->Verify(
+      "bad", base::BindLambdaForTesting([&](Result r) { bad = std::move(r); }));
+  ASSERT_TRUE(base::test::RunUntil([&] { return bad.has_value(); }));
+  ASSERT_FALSE(bad->has_value());
+  EXPECT_EQ(bad->error(), "bad token");
+}
+
+TEST_F(MojomObjcGeneratorPendingRemoteWithRepliesTest,
+       CompletionFromBackgroundThreadRepliesOnUIThread) {
+  TestResponderHost host;
+  auto* host_wrapper = [[MojomObjcTestResponderInterfaceHostMojoImpl alloc]
+      initWithResponderInterfaceHost:host.BindNewRemote()];
+
+  MojomObjcTestTestResponderInterface* impl =
+      [[MojomObjcTestTestResponderInterface alloc] init];
+  impl._verify =
+      ^(NSString* token,
+        void (^completion)(MojomObjcTestNullableEnumStruct* _Nullable,
+                           NSString* _Nullable)) {
+        base::ThreadPool::PostTask(FROM_HERE, base::BindOnce(^{
+                                     completion(nil, @"async failure");
+                                   }));
+      };
+  [host_wrapper setResponder:impl];
+  ASSERT_TRUE(base::test::RunUntil([&] { return host.remote_.is_bound(); }));
+
+  using Result = base::expected<mojom_objc_test::mojom::NullableEnumStructPtr,
+                                std::string>;
+  std::optional<Result> result;
+  bool replied_on_ui_thread = false;
+  host.remote_->Verify(
+      "token", base::BindLambdaForTesting([&](Result r) {
+        replied_on_ui_thread =
+            web::GetUIThreadTaskRunner({})->RunsTasksInCurrentSequence();
+        result = std::move(r);
+      }));
+  ASSERT_TRUE(base::test::RunUntil([&] { return result.has_value(); }));
+  ASSERT_FALSE(result->has_value());
+  EXPECT_EQ(result->error(), "async failure");
+  EXPECT_TRUE(replied_on_ui_thread);
 }
