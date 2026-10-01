@@ -118,7 +118,11 @@ void CreateAndAddWorkspaceDataSource(content::BrowserContext* browser_context,
   content::WebUIDataSource* source = CreateAndAddDataSource(
       browser_context, url.host(), IDR_AI_CHAT_LEO_WORKSPACE_HTML);
 
-  // Workspace-specific CSP override: allow framing the viewer origin.
+  // Workspace-specific CSP overrides: allow inline styles and framing the
+  // viewer origin.
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::StyleSrc,
+      "style-src 'self' 'unsafe-inline' chrome-untrusted://resources;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       absl::StrFormat("frame-src %s;",
