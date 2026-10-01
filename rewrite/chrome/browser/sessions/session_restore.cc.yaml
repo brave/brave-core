@@ -48,11 +48,7 @@ substitutions:
                 continue;
               }
   - description: 'Add a fallback tab if all startup URLs were skipped'
-    regex:
-      re_pattern: |-
-        Navigate\(&params\);\n    \}
-      replace: |-
-        Navigate(&params);
-            }
-
-            MaybeAddFallbackTabIfEmpty(browser);
+    after_function_impl:
+      function_name: AppendURLsToBrowser
+      code: |-
+        MaybeAddFallbackTabIfEmpty(browser);
