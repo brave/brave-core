@@ -19,7 +19,7 @@ substitutions:
       replace: |-
         int selected_index = GetNavigationIndexToSelect(tab);
 
-        \1if (IsScheduledForCleanup(tab.navigations[selected_index].virtual_url(),
+        \1if (BraveIsScheduledForCleanup(tab.navigations[selected_index].virtual_url(),
                                       profile_)) {
         \1  return;
         \1}
@@ -44,7 +44,7 @@ substitutions:
         const GURL& url = startup_tab\.url;
       replace: |-
         const GURL& url = startup_tab.url;
-              if (IsScheduledForCleanup(url, profile_)) {
+              if (BraveIsScheduledForCleanup(url, profile_)) {
                 continue;
               }
   - description: 'Add a fallback tab if all startup URLs were skipped'

@@ -16,6 +16,7 @@ brave_browser_ephemeral_storage_sources = [
   "//brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h",
   "//brave/browser/ephemeral_storage/tld_ephemeral_lifetime.cc",
   "//brave/browser/ephemeral_storage/tld_ephemeral_lifetime.h",
+  "//brave/browser/ephemeral_storage/ephemeral_storage_session_restore_helpers.cc",
 ]
 
 brave_browser_ephemeral_storage_deps = [

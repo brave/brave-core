@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/startup/BUILD.gn b/chrome/browser/ui/startup/BUILD.gn
-index 8b593031e4160c7c8a26943abe46b7f442b6d263..c317f1ee8fda6675539d2c2002b682bfec4f5065 100644
+index 8b593031e4160c7c8a26943abe46b7f442b6d263..ab0c05e854ea18edf3138a7c3e7d2b0eff0d2d0c 100644
 --- a/chrome/browser/ui/startup/BUILD.gn
 +++ b/chrome/browser/ui/startup/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -18,11 +18,3 @@ index 8b593031e4160c7c8a26943abe46b7f442b6d263..c317f1ee8fda6675539d2c2002b682bf
  }
  
  source_set("startup") {
-@@ -187,6 +189,7 @@ source_set("impl") {
-     "//ui/gfx:native_ui_types",
-     "//url",
-   ]
-+  deps += brave_browser_ui_startup_impl_deps
-   public_deps = [
-     "//chrome/browser:browser_public_dependencies",
-     "//ui/base/unowned_user_data",
