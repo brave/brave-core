@@ -88,3 +88,9 @@ export const NEMO_DECODER_LSTM_DIM: number = 640
 // word(s) can be dropped to right-context / emission lag. The silence frames
 // decode to RNN-T blanks, so the transcript is unaffected.
 export const SILENCE_FLUSH_CHUNKS: number = 3
+
+// Silence fed before the first real sample. The fixed-shape first encoder
+// step pads its pre-encode cache and drops 2 outputs, which shifts the output
+// grid off the start of the audio. A short word that begins within the first
+// ~100 ms of the stream can then be lost, whatever the audio source.
+export const LEADING_SILENCE_MS: number = 100
