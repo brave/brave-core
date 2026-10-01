@@ -75,6 +75,7 @@ export function createWalletApiBase() {
       'PendingEncryptRequest',
       'PendingSignSolTransactionsRequests',
       'PendingSignCardanoTransactionRequests',
+      'PendingSignPolkadotTransactionRequests',
       'PinnableNftIds',
       'PendingSignMessageRequests',
       'PendingSignMessageErrors',

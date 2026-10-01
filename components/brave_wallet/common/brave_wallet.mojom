@@ -283,11 +283,25 @@ struct PolkadotInjectedAccount {
   string type;
 };
 
+// Our `SignerResult` impl.
+// https://github.com/polkadot-js/api/blob/master/packages/types/src/types/extrinsic.ts
+struct PolkadotSignerResult {
+  // The id of the request the user approved.
+  int32 id;
+  // Hex-encoded sr25519 signature over the SCALE-encoded signer payload.
+  string signature;
+};
+
 interface PolkadotApi {
   // `accounts.get(anyType)`. `any_type` asks for accounts that can't be used
   // for signing, which we have none of so we ignore the param.
   GetAccounts(bool any_type) => (array<PolkadotInjectedAccount>? accounts,
                                  PolkadotProviderErrorBundle? error);
+
+  // `signer.signPayload(payload)`. `payload_json` is the dApp's
+  // `SignerPayloadJSON`, serialized by the renderer.
+  SignPayload(string payload_json) => (PolkadotSignerResult? result,
+                                       PolkadotProviderErrorBundle? error);
 };
 
 // https://github.com/polkadot-js/extension#injection-information
@@ -3013,6 +3027,23 @@ struct SignCardanoTransactionRequest {
   string details_json;
 };
 
+// A dApp's `signer.signPayload()` call awaiting the user's approval.
+struct SignPolkadotTransactionRequest {
+  int32 id;
+
+  AccountId account_id;
+  OriginInfo origin_info;
+  ChainId chain_id;
+
+  // The `SignerPayloadJSON` the dApp handed us, serialized by the renderer.
+  // https://github.com/polkadot-js/api/blob/master/packages/types/src/types/extrinsic.ts
+  string raw_payload_json;
+
+  // SCALE-encoded runtime metadata for `chain_id`, so the UI can decode the
+  // payload's call data without fetching metadata itself.
+  array<uint8> metadata_bytes;
+};
+
 enum ExternalWalletType {
   MetaMask = 1,
 };
@@ -3163,6 +3194,9 @@ interface BraveWalletService {
   GetPendingSignCardanoTransactionRequests()
       => (array<SignCardanoTransactionRequest> requests);
 
+  GetPendingSignPolkadotTransactionRequests()
+      => (array<SignPolkadotTransactionRequest> requests);
+
   // Used for UI notifying native when the user approve/reject sign all
   // transactions request.
   NotifySignSolTransactionsRequestProcessed(
@@ -3172,6 +3206,9 @@ interface BraveWalletService {
       string? error);
 
   NotifySignCardanoTransactionRequestProcessed(
+      bool approved, int32 id, string? error);
+
+  NotifySignPolkadotTransactionRequestProcessed(
       bool approved, int32 id, string? error);
 
   // Used for UI notifying native when the user approve/reject add suggest

@@ -31,6 +31,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/gurl.h"
 #include "url/origin.h"
 
 using base::test::TestFuture;
@@ -109,7 +110,8 @@ class PolkadotApiImplUnitTest : public testing::Test {
         .WillByDefault(testing::Return(true));
 
     api_ = std::make_unique<PolkadotApiImpl>(
-        *brave_wallet_service_, std::move(delegate), granted_account.Clone());
+        *brave_wallet_service_, std::move(delegate), granted_account.Clone(),
+        url::Origin::Create(GURL("https://brave.com")));
   }
 
   void CreateWallet() {

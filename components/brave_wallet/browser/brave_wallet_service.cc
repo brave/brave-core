@@ -1297,6 +1297,20 @@ BraveWalletService::GetPendingSignCardanoTransactionRequestsSync() const {
   return requests;
 }
 
+void BraveWalletService::GetPendingSignPolkadotTransactionRequests(
+    GetPendingSignPolkadotTransactionRequestsCallback callback) {
+  std::move(callback).Run(GetPendingSignPolkadotTransactionRequestsSync());
+}
+
+std::vector<mojom::SignPolkadotTransactionRequestPtr>
+BraveWalletService::GetPendingSignPolkadotTransactionRequestsSync() const {
+  std::vector<mojom::SignPolkadotTransactionRequestPtr> requests;
+  for (const auto& pending : sign_polkadot_transaction_requests_) {
+    requests.push_back(pending.request.Clone());
+  }
+  return requests;
+}
+
 void BraveWalletService::NotifySignSolTransactionsRequestProcessed(
     bool approved,
     int id,
@@ -1322,6 +1336,20 @@ void BraveWalletService::NotifySignCardanoTransactionRequestProcessed(
   }
   auto pending = std::move(sign_cardano_transaction_requests_.front());
   sign_cardano_transaction_requests_.pop_front();
+
+  std::move(pending.callback).Run(approved, error);
+}
+
+void BraveWalletService::NotifySignPolkadotTransactionRequestProcessed(
+    bool approved,
+    int id,
+    const std::optional<std::string>& error) {
+  if (sign_polkadot_transaction_requests_.empty() ||
+      sign_polkadot_transaction_requests_.front().request->id != id) {
+    return;
+  }
+  auto pending = std::move(sign_polkadot_transaction_requests_.front());
+  sign_polkadot_transaction_requests_.pop_front();
 
   std::move(pending.callback).Run(approved, error);
 }
@@ -1357,6 +1385,7 @@ void BraveWalletService::OnContentSettingChanged(
   DrainSignMessageRequestsWithoutPermission();
   DrainSignSolTransactionsRequestsWithoutPermission();
   DrainSignCardanoTransactionRequestsWithoutPermission();
+  DrainSignPolkadotTransactionRequestsWithoutPermission();
 }
 
 template <typename PendingDeque, typename GetAccountId, typename DrainCallback>
@@ -1416,6 +1445,18 @@ void BraveWalletService::
         return pending.request->account_id;
       },
       [](SignCardanoTransactionRequestCallback callback) {
+        std::move(callback).Run(false, std::nullopt);
+      });
+}
+
+void BraveWalletService::
+    DrainSignPolkadotTransactionRequestsWithoutPermission() {
+  DrainPendingRequestsWithoutPermission(
+      sign_polkadot_transaction_requests_,
+      [](const auto& pending) -> const mojom::AccountIdPtr& {
+        return pending.request->account_id;
+      },
+      [](SignPolkadotTransactionRequestCallback callback) {
         std::move(callback).Run(false, std::nullopt);
       });
 }
@@ -1548,6 +1589,18 @@ void BraveWalletService::AddSignCardanoTransactionRequest(
   }
   sign_cardano_transaction_requests_.emplace_back(std::move(request),
                                                   std::move(callback));
+
+  sign_transaction_added_callback_list_for_testing_.Notify();
+}
+
+void BraveWalletService::AddSignPolkadotTransactionRequest(
+    mojom::SignPolkadotTransactionRequestPtr request,
+    SignPolkadotTransactionRequestCallback callback) {
+  if (request->id < 0) {
+    request->id = sign_polkadot_transactions_id_++;
+  }
+  sign_polkadot_transaction_requests_.emplace_back(std::move(request),
+                                                   std::move(callback));
 
   sign_transaction_added_callback_list_for_testing_.Notify();
 }
