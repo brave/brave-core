@@ -17,3 +17,8 @@ substitutions:
       list_name: public_deps
       literal: brave_chrome_browser_public_deps
       import: //brave/browser/sources.gni
+
+  - description: Depend on the Android extensions UI with the core.
+    regex:
+      pattern: 'if (enable_desktop_android_extensions) {'
+      replace: 'if (is_android && enable_extensions_core) {'

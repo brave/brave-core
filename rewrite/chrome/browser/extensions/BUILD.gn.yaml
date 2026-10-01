@@ -13,3 +13,10 @@ substitutions:
       list_name: deps
       literal: brave_extensions_resources
       import: //brave/browser/extensions/resources.gni
+
+  - description: Build extension_menu_model_android with the core.
+    regex:
+      re_pattern:
+        'if \(enable_desktop_android_extensions\)(\s*\{\s*sources \+= \[\s*#
+        These files are temporary)'
+      replace: 'if (enable_extensions_core)\1'

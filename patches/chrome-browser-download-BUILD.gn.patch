@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/download/BUILD.gn b/chrome/browser/download/BUILD.gn
+index b87596ee9b91b17f16ed524ea9260001bc72a570..43c4dd557d34f6204703d0e955250256bed1bfac 100644
+--- a/chrome/browser/download/BUILD.gn
++++ b/chrome/browser/download/BUILD.gn
+@@ -371,7 +371,7 @@ source_set("impl") {
+     sources += [ "drag_download_item_aura.cc" ]
+   }
+ 
+-  if (is_android && !enable_desktop_android_extensions) {
++  if (is_android && !enable_extensions_core) {
+     sources += [ "download_crx_util_android.cc" ]
+   }
+ 
