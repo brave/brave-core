@@ -4,10 +4,11 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as leo from '@brave/nala/tokens/css/variables'
 import styled from 'styled-components'
+import Collapse from '@brave/nala/react/collapse'
 import { WarningBoxTitleRow } from '../shared-panel-styles'
 
 // Shared Styles
-import { Text } from '../../shared/style'
+import { Column, Text, styledScrollbarMixin } from '../../shared/style'
 
 interface StyleProps {
   orb: string
@@ -178,6 +179,80 @@ export const SignPanelButtonRow = styled.div`
 
 export const WarningTitleRow = styled(WarningBoxTitleRow)`
   margin-bottom: 8px;
+`
+
+/**
+ * The decoded call name and the fee are the two things the user has to read
+ * before signing, so they get a card of their own rather than being buried in
+ * the payload dump.
+ */
+export const CallSummaryBox = styled(Column).attrs({
+  fullWidth: true,
+  gap: '4px',
+  padding: '12px 16px',
+})`
+  border: 1px solid ${leo.color.divider.subtle};
+  border-radius: ${leo.radius.m};
+  background-color: ${leo.color.container.highlight};
+  margin-bottom: 8px;
+`
+
+export const CallLabel = styled.span`
+  font: ${leo.font.xSmall.semibold};
+  letter-spacing: ${leo.typography.letterSpacing.default};
+  color: ${leo.color.text.tertiary};
+  text-transform: uppercase;
+`
+
+/**
+ * Monospaced because the content is a code identifier the user is being asked
+ * to vet, not prose: a lookalike substitution in a call name should not blend
+ * into a proportional font.
+ */
+export const CallText = styled.span`
+  font: ${leo.font.monospace.default};
+  color: ${leo.color.text.primary};
+  text-align: center;
+  word-break: break-all;
+`
+
+export const DetailsCollapse = styled(Collapse)`
+  width: 100%;
+  margin-bottom: 8px;
+
+  --leo-collapse-summary-padding: 8px 12px;
+  --leo-collapse-content-padding: 0px;
+  --leo-collapse-radius: ${leo.radius.m};
+  --leo-collapse-shadow: none;
+  --leo-collapse-border-color: ${leo.color.divider.subtle};
+  --leo-collapse-background-color: ${leo.color.container.background};
+`
+
+export const DetailsCollapseTitle = styled.span`
+  font: ${leo.font.small.semibold};
+  color: ${leo.color.text.secondary};
+  text-align: start;
+  vertical-align: middle;
+`
+
+/**
+ * Bounded rather than free-growing: a nested call's `toHuman()` can run to
+ * hundreds of lines, and the panel's Cancel/Sign row must stay on screen.
+ */
+export const PayloadJson = styled.pre`
+  margin: 0;
+  padding: 8px 12px;
+  width: 100%;
+  box-sizing: border-box;
+  max-height: 180px;
+  overflow: auto;
+  font: ${leo.font.monospace.small};
+  color: ${leo.color.text.secondary};
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+
+  ${styledScrollbarMixin}
 `
 
 export const HeaderTitle = styled.div`
