@@ -11,7 +11,6 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/wallet_handler.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/ledger_bridge.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_message_handler.h"
@@ -48,10 +47,6 @@ class WalletPageUI : public ui::MojoWebUIController,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   void BindInterface(
       mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver);
-#endif
-
-#if BUILDFLAG(ENABLE_SNAP)
-  void BindInterface(mojo::PendingReceiver<mojom::SnapService> receiver);
 #endif
 
   // Called with `LedgerBridge` coming from untrusted subframe.

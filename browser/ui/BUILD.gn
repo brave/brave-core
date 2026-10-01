@@ -217,7 +217,10 @@ source_set("ui") {
       ]
 
       if (enable_snap) {
-        deps += [ "//brave/browser/ui/webui/brave_wallet/snap_host" ]
+        deps += [
+          "//brave/browser/ui/webui/brave_wallet/snap_host",
+          "//brave/browser/ui/webui/brave_wallet/snaps_container",
+        ]
       }
     }
   }
