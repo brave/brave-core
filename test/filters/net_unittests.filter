@@ -21,6 +21,8 @@
 -InputFileParsersTest.ParsePkpJson
 -InputFileParsersTest.ParsePkpJsonInvalid
 -InputFileParsersTest.ParsePkpJsonInvalidPinset
+-TransportSecurityStateTest.PinValidationWithCompiledInPins
+-TransportSecurityStateStaticTest.PreloadedProductionStaticPins
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -CanPoolTest.CanNotPoolWithBadPins
@@ -53,15 +55,9 @@
 -TLSVersion/SSLClientSocketVersionTest.PKPEnforced/1
 -TLSVersion/SSLClientSocketVersionTest.PKPMoreImportantThanCT/0
 -TLSVersion/SSLClientSocketVersionTest.PKPMoreImportantThanCT/1
--TransportSecurityStateStaticTest.BuiltinCertPins
--TransportSecurityStateStaticTest.EnableStaticPins
--TransportSecurityStateStaticTest.OptionalHSTSCertPins
 -TransportSecurityStateStaticTest.OverrideBuiltins
 -TransportSecurityStateStaticTest.Preloaded
 -TransportSecurityStateStaticTest.PreloadedDomainSet
--TransportSecurityStateStaticTest.PreloadedPins
--TransportSecurityStateTest.DecodePreloadedSingle
--TransportSecurityStateTest.PinValidationWithoutRejectedCerts
 -TransportSecurityStateTest.StaticOrDynamicSource
 -TransportSecurityStateTest.UpdateKeyPinsEmptyList
 -TransportSecurityStateTest.UpdateKeyPinsListTimestamp
@@ -75,8 +71,6 @@
 -VersionIncludeStreamDependencySequence/QuicChromiumClientSessionTest.ConnectionNotPooledWithDifferentPin/RFCv1
 -VersionIncludeStreamDependencySequence/QuicChromiumClientSessionTest.ConnectionNotPooledWithDifferentPin/RFCv2
 -ProxyChainTest.FromSchemeHostAndPort
--TransportSecurityStateTest.DecodePreloadedMultipleMix
--TransportSecurityStateTest.DecodePreloadedMultiplePrefix
 -URLRequestMaybeAsyncFirstPartySetsTest.SimpleRequest/0
 -URLRequestMaybeAsyncFirstPartySetsTest.SimpleRequest/1
 -URLRequestMaybeAsyncFirstPartySetsTest.SingleRedirect/0
