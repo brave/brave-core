@@ -55,6 +55,7 @@ source_set("unit_tests") {
     "//components/prefs",
     "//components/tabs:test_support",
     "//content/test:test_support",
+    "//chrome/test/base:testing_browser_process",
     "//testing/gmock",
     "//testing/gtest",
   ]

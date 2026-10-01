@@ -93,6 +93,7 @@ source_set("unit_tests") {
     "//brave/components/playlist/core/common",
     "//chrome/browser/prefs",
     "//chrome/test:test_support",
+    "//chrome/test/base:testing_browser_process",
     "//components/pref_registry",
     "//content/test:test_support",
   ]
