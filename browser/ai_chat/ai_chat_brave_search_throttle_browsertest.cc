@@ -16,6 +16,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/test/mock_permission_prompt_factory.h"
@@ -112,9 +113,7 @@ class AIChatBraveSearchThrottleBrowserTest : public InProcessBrowserTest {
 
   void CloseLeoPanel(const base::Location& location) {
     SCOPED_TRACE(testing::Message() << location.ToString());
-    sidebar::SidebarController* controller =
-        browser()->GetFeatures().sidebar_controller();
-    controller->DeactivateCurrentPanel();
+    SidePanelUI::From(browser())->Close();
     ASSERT_FALSE(IsLeoOpened());
   }
 

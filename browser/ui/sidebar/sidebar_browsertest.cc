@@ -189,12 +189,13 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   }
   EXPECT_THAT(model()->active_index(), Optional(active_item_index));
 
-  controller()->DeactivateCurrentPanel();
+  SidePanelUI::From(browser())->Close();
   WaitUntil(
       base::BindLambdaForTesting([&]() { return !model()->active_index(); }));
   EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
 
-  controller()->ActivatePanelItem(first_panel_item.built_in_item_type);
+  SidePanelUI::From(browser())->Show(sidebar::SidePanelIdFromSideBarItemType(
+      first_panel_item.built_in_item_type));
   WaitUntil(
       base::BindLambdaForTesting([&]() { return !!model()->active_index(); }));
   EXPECT_THAT(model()->active_index(), Optional(active_item_index));
@@ -302,10 +303,10 @@ class SidebarBrowserTestWalletSidePanel : public SidebarBrowserTest {
     auto index = model()->GetIndexOf(SidebarItem::BuiltInItemType::kWallet);
     EXPECT_TRUE(index.has_value());
 
-    controller()->ActivatePanelItem(SidebarItem::BuiltInItemType::kWallet);
-
     auto* panel_ui = SidePanelUI::From(browser());
     EXPECT_TRUE(panel_ui);
+    panel_ui->Show(SidePanelEntryId::kWallet);
+
     EXPECT_TRUE(base::test::RunUntil([&]() {
       return panel_ui &&
              panel_ui->GetCurrentEntryId() == SidePanelEntryId::kWallet;
@@ -2061,17 +2062,24 @@ class MockSidePanelUI : public SidePanelUI {
 
 // Verify suppress_animations is false when opening from a closed state and
 // true when switching panels while one is already active.
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ActivatePanelItemSuppressAnimation) {
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelItemSuppressAnimation) {
   MockSidePanelUI mock_ui;
   ScopedSidePanelUIForTesting scoped_ui(controller(), &mock_ui);
 
+  const auto bookmarks_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
+  const auto reading_list_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kReadingList);
+  ASSERT_TRUE(bookmarks_index.has_value());
+  ASSERT_TRUE(reading_list_index.has_value());
+
   // No active panel: opening should animate (suppress_animations=false).
   ASSERT_FALSE(model()->active_index().has_value())
-      << "Expected no active panel before first ActivatePanelItem call";
+      << "Expected no active panel before pressing the first panel item";
   EXPECT_CALL(mock_ui,
               Show(testing::An<SidePanelEntryId>(), testing::Eq(std::nullopt),
                    /*suppress_animations=*/false));
-  controller()->ActivatePanelItem(SidebarItem::BuiltInItemType::kBookmarks);
+  controller()->OnItemPressed(*bookmarks_index);
   testing::Mock::VerifyAndClearExpectations(&mock_ui);
   controller()->UpdateActiveItemState(SidebarItem::BuiltInItemType::kBookmarks);
 
@@ -2081,7 +2089,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ActivatePanelItemSuppressAnimation) {
   EXPECT_CALL(mock_ui,
               Show(testing::An<SidePanelEntryId>(), testing::Eq(std::nullopt),
                    /*suppress_animations=*/true));
-  controller()->ActivatePanelItem(SidebarItem::BuiltInItemType::kReadingList);
+  controller()->OnItemPressed(*reading_list_index);
 }
 
 // The toolbar SidePanelButton acts as a "temporal pin" for the sidebar

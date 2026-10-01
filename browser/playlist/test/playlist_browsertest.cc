@@ -15,7 +15,6 @@
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/playlist/playlist_add_bubble_view.h"
@@ -30,6 +29,7 @@
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "brave/components/playlist/core/common/pref_names.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
@@ -111,10 +111,9 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
   }
 
   void ActivatePlaylistSidePanel() {
-    auto* sidebar_controller = browser()->GetFeatures().sidebar_controller();
-    ASSERT_TRUE(sidebar_controller);
-    sidebar_controller->ActivatePanelItem(
-        sidebar::SidebarItem::BuiltInItemType::kPlaylist);
+    auto* side_panel_ui = SidePanelUI::From(browser());
+    ASSERT_TRUE(side_panel_ui);
+    side_panel_ui->Show(SidePanelEntryId::kPlaylist);
   }
 
   content::WebContents* GetPlaylistWebContents() {

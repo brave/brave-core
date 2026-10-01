@@ -27,10 +27,6 @@ class SidePanelRegistry;
 class SidePanelEntryScope;
 class SidePanelWebUIView;
 
-namespace sidebar {
-class SidebarController;
-}  // namespace sidebar
-
 class PlaylistSidePanelCoordinator : public views::ViewObserver {
  public:
   class Proxy : public content::WebContentsUserData<Proxy> {
@@ -53,7 +49,6 @@ class PlaylistSidePanelCoordinator : public views::ViewObserver {
   DECLARE_USER_DATA(PlaylistSidePanelCoordinator);
 
   PlaylistSidePanelCoordinator(BrowserWindowInterface* browser,
-                               sidebar::SidebarController* sidebar_controller,
                                Profile* profile);
   PlaylistSidePanelCoordinator(const PlaylistSidePanelCoordinator&) = delete;
   PlaylistSidePanelCoordinator& operator=(const PlaylistSidePanelCoordinator&) =
@@ -88,7 +83,6 @@ class PlaylistSidePanelCoordinator : public views::ViewObserver {
   std::unique_ptr<views::View> CreateWebView(SidePanelEntryScope& scope);
 
   const raw_ptr<BrowserWindowInterface> browser_;
-  const raw_ptr<sidebar::SidebarController> sidebar_controller_;
   const raw_ptr<Profile> profile_;
 
   bool is_audible_for_testing_ = false;
