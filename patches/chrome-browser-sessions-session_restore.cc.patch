@@ -1,21 +1,30 @@
 diff --git a/chrome/browser/sessions/session_restore.cc b/chrome/browser/sessions/session_restore.cc
-index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..3646651b2f39aca204ff4779a7adfcbcd1b55056 100644
+index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..b3516627fa3adfe3582e14ddaa9a4747707f764b 100644
 --- a/chrome/browser/sessions/session_restore.cc
 +++ b/chrome/browser/sessions/session_restore.cc
-@@ -1076,6 +1076,12 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1017,6 +1017,7 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+       base::flat_map<tab_groups::TabGroupId, tab_groups::TabGroupId>*
+           new_group_ids,
+       bool& did_show_browser) {
++  [&]() -> void {
+     DVLOG(1) << "RestoreTabsToBrowser " << window.tabs.size();
+     // TODO(crbug.com/40662817): Change to DCHECK once we understand
+     // why some browsers don't have an active tab on startup.
+@@ -1076,7 +1077,13 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
              split_id, tab_index_list, split_tabs::SplitTabVisualData());
        }
      }
-+
-+    if (auto fallback_index = MaybeAddFallbackTabIfEmpty(browser);
-+        fallback_index != TabStripModel::kNoTab && !did_show_browser) {
-+      ShowBrowser(browser, fallback_index);
-+      did_show_browser = true;
-+    }
++    }();
++  if (auto fallback_index = MaybeAddFallbackTabIfEmpty(browser);
++      fallback_index != TabStripModel::kNoTab && !did_show_browser) {
++    ShowBrowser(browser, fallback_index);
++    did_show_browser = true;
    }
++}
  
    // |tab_index| is ignored for pinned tabs which will always be pushed behind
-@@ -1105,6 +1111,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+   // the last existing pinned tab. If |is_selected_tab| is true the tab will be
+@@ -1105,6 +1112,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
      SessionRestore::NotifySessionRestoreStartedLoadingTabs();
      int selected_index = GetNavigationIndexToSelect(tab);
  
@@ -27,7 +36,7 @@ index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..3646651b2f39aca204ff4779a7adfcbc
      RecordAppLaunchForTab(browser, tab, selected_index);
  
      // Associate sessionStorage (if any) to the restored tab.
-@@ -1370,6 +1381,9 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1370,6 +1382,9 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
      bool is_first_tab = true;
      for (const auto& startup_tab : startup_tabs) {
        const GURL& url = startup_tab.url;
@@ -37,7 +46,7 @@ index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..3646651b2f39aca204ff4779a7adfcbc
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
        if (url == whats_new::GetWebUIStartupURL()) {
          whats_new::StartWhatsNewFetch(browser);
-@@ -1386,8 +1400,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1386,8 +1401,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
                                 : WindowOpenDisposition::NEW_BACKGROUND_TAB;
        params.tabstrip_add_types = add_types;
        is_first_tab = false;

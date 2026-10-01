@@ -35,10 +35,8 @@
 
 namespace ephemeral_storage {
 
-// Covers https://github.com/brave/brave-browser/issues/58345: a tab whose
-// domain is already queued for ephemeral storage cleanup (Forgetful Mode)
-// must not be reopened at startup, whether via session restore or via the
-// "Open a specific page or set of pages" startup URLs.
+// Verifies that a tab whose domain is already queued for ephemeral storage
+// cleanup (Forgetful Mode) is not reopened at startup.
 class EphemeralStorageStartupTabsBrowserTest
     : public EphemeralStorageBrowserTest {
  public:
@@ -50,27 +48,24 @@ class EphemeralStorageStartupTabsBrowserTest
 
   void SetUpOnMainThread() override {
     EphemeralStorageBrowserTest::SetUpOnMainThread();
-    brave_shields_settings_ = BraveShieldsSettingsServiceFactory::GetForProfile(
+    brave_shields_settings_service_ = BraveShieldsSettingsServiceFactory::GetForProfile(
         browser()->GetProfile());
   }
 
   void TearDownOnMainThread() override {
-    brave_shields_settings_ = nullptr;
+    brave_shields_settings_service_ = nullptr;
     EphemeralStorageBrowserTest::TearDownOnMainThread();
   }
 
-  // Enables Forgetful Mode for `url`'s domain and immediately closes its only
-  // tab, so the domain is queued in the ephemeral storage cleanup pref
-  // without waiting for the keep-alive timer.
+  // Enables Forgetful Mode for `url`'s domain and queues it for the ephemeral
+  // storage cleanup without waiting for the keep-alive timer.
   void EnableForgetfulModeAndScheduleCleanup(const GURL& url) {
-    brave_shields_settings_->SetForgetFirstPartyStorageEnabled(true, url);
+    brave_shields_settings_service_->SetForgetFirstPartyStorageEnabled(true, url);
     CloseWebContents(LoadURLInNewTab(url));
   }
 
   // Closes `browser` and opens a new window in the same profile, which
-  // triggers session restore. Mirrors
-  // chrome/browser/sessions/session_restore_browsertest.cc's
-  // QuitBrowserAndRestore helper.
+  // triggers session restore.
   BrowserWindowInterface* QuitBrowserAndRestore(
       BrowserWindowInterface* browser) {
     Profile* profile = browser->GetProfile();
@@ -104,10 +99,8 @@ class EphemeralStorageStartupTabsBrowserTest
     return new_browser;
   }
 
-  // Closes `browser` and opens a new window in the same profile via
-  // StartupBrowserCreatorImpl, which honors SessionStartupPref::URLS (i.e.
-  // "Open a specific page or set of pages"). Only honored when no tabbed
-  // browser window remains, hence the close.
+  // Closes `browser` and opens a new window in the same profile which triggers
+  // the predefined URLs opening
   BrowserWindowInterface* CloseBrowserAndOpenWithStartupURLs(
       BrowserWindowInterface* browser) {
     Profile* profile = browser->GetProfile();
@@ -118,10 +111,7 @@ class EphemeralStorageStartupTabsBrowserTest
         profile, ProfileKeepAliveOrigin::kBrowserWindow);
     CloseBrowserSynchronously(browser);
 
-    // IsFirstRun::kNo, so this exercises a normal subsequent launch rather
-    // than triggering Chrome's first-run import/promo flows (which can pull
-    // in a homepage/URL from another browser installed on the machine and
-    // override the startup URLs pref this test is trying to exercise).
+    // IsFirstRun::kNo: normal launch, avoids first-run URL override.
     base::CommandLine dummy(base::CommandLine::NO_PROGRAM);
     StartupBrowserCreatorImpl creator(base::FilePath(), dummy,
                                       chrome::startup::IsFirstRun::kNo);
@@ -136,19 +126,19 @@ class EphemeralStorageStartupTabsBrowserTest
   }
 
  protected:
-  raw_ptr<brave_shields::BraveShieldsSettingsService> brave_shields_settings_ =
+  raw_ptr<brave_shields::BraveShieldsSettingsService> brave_shields_settings_service_ =
       nullptr;
 
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-// Session restore must not reopen the sole tab of a window when that
-// tab's domain is in Forgetful Mode; a fallback blank tab is shown instead.
+// Test that, after session restore, a fallback blank tab is shown instead of
+// reopening the tab whose domain was cleared by Forgetful Mode.
 IN_PROC_BROWSER_TEST_F(EphemeralStorageStartupTabsBrowserTest,
                        SessionRestoreSkipsSoleForgetfulTab) {
   Profile* profile = browser()->GetProfile();
-  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
+  brave_shields_settings_service_->SetForgetFirstPartyStorageEnabled(
       true, a_site_ephemeral_storage_url_);
   SessionStartupPref::SetStartupPref(
       profile, SessionStartupPref(SessionStartupPref::LAST));
@@ -164,31 +154,36 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageStartupTabsBrowserTest,
             tab_strip->GetWebContentsAt(0)->GetVisibleURL());
 }
 
-// Session restore must skip only the tab whose domain is in Forgetful
-// Mode, while restoring the other tabs normally.
+// Test that, after session restore, was skipped only the tab, whose domain is
+// in Forgetful Mode
 IN_PROC_BROWSER_TEST_F(EphemeralStorageStartupTabsBrowserTest,
                        SessionRestoreSkipsForgetfulTabAmongSeveral) {
   Profile* profile = browser()->GetProfile();
-  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
+  brave_shields_settings_service_->SetForgetFirstPartyStorageEnabled(
       true, a_site_ephemeral_storage_url_);
   SessionStartupPref::SetStartupPref(
       profile, SessionStartupPref(SessionStartupPref::LAST));
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
   ASSERT_TRUE(LoadURLInNewTab(b_site_ephemeral_storage_url_));
+  TabStripModel* tab_strip = browser()->GetTabStripModel();
+  EXPECT_EQ(a_site_ephemeral_storage_url_,
+            tab_strip->GetWebContentsAt(0)->GetVisibleURL());
+  EXPECT_EQ(b_site_ephemeral_storage_url_,
+            tab_strip->GetWebContentsAt(1)->GetVisibleURL());
 
   BrowserWindowInterface* new_browser = QuitBrowserAndRestore(browser());
   ASSERT_TRUE(new_browser);
 
-  TabStripModel* tab_strip = new_browser->GetTabStripModel();
+  tab_strip = new_browser->GetTabStripModel();
   ASSERT_EQ(1, tab_strip->count());
   EXPECT_EQ(b_site_ephemeral_storage_url_,
             tab_strip->GetWebContentsAt(0)->GetVisibleURL());
 }
 
-// The "Open a specific page or set of pages" startup URLs must not open
-// a tab for a URL whose domain is in Forgetful Mode. When that URL is the
-// only startup URL, a single fallback NTP tab is opened instead.
+// Test that startup URLs from "Open a specific page or set of pages" whose
+// domains are in Forgetful Mode are not opened, and that a single fallback NTP
+// tab opens when no other startup URLs are set.
 IN_PROC_BROWSER_TEST_F(EphemeralStorageStartupTabsBrowserTest,
                        StartupURLsSkipsSoleForgetfulURL) {
   Profile* profile = browser()->GetProfile();
@@ -208,8 +203,9 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageStartupTabsBrowserTest,
             tab_strip->GetWebContentsAt(0)->GetVisibleURL());
 }
 
-// The "Open a specific page or set of pages" startup URLs must skip
-// only the URL whose domain is in Forgetful Mode, opening the rest normally.
+// Test that, when startup is set to "Open a specific page or set of pages"
+// only the URL whose domain is in Forgetful Mode is skipped, and all the other
+// pages open normally.
 IN_PROC_BROWSER_TEST_F(EphemeralStorageStartupTabsBrowserTest,
                        StartupURLsSkipsForgetfulURLAmongSeveral) {
   Profile* profile = browser()->GetProfile();
@@ -229,14 +225,14 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageStartupTabsBrowserTest,
             tab_strip->GetWebContentsAt(0)->GetVisibleURL());
 }
 
-// When the active tab's domain is in Forgetful Mode, session restore must
-// skip it while restoring the rest, and since none of the restored tabs were
-// marked active in the session data, the first remaining tab becomes active.
+// Test that when the active tab's domain is in Forgetful Mode, session restore
+// skips that tab but restores the others, and the first remaining tab becomes
+// active.
 IN_PROC_BROWSER_TEST_F(
     EphemeralStorageStartupTabsBrowserTest,
     SessionRestoreActivatesFirstTabWhenActiveForgetfulTabSkipped) {
   Profile* profile = browser()->GetProfile();
-  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
+  brave_shields_settings_service_->SetForgetFirstPartyStorageEnabled(
       true, c_site_ephemeral_storage_url_);
   SessionStartupPref::SetStartupPref(
       profile, SessionStartupPref(SessionStartupPref::LAST));
@@ -258,13 +254,14 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_EQ(0, tab_strip->active_index());
 }
 
-// When an inactive tab's domain is in Forgetful Mode, session restore must
-// skip only that tab and keep the originally active tab active.
+// Test that, during session restore, an inactive tab whose domain is in
+// Forgetful Mode is skipped, and the tab that was originally active stays
+// active.
 IN_PROC_BROWSER_TEST_F(
     EphemeralStorageStartupTabsBrowserTest,
     SessionRestoreKeepsActiveTabWhenInactiveForgetfulTabSkipped) {
   Profile* profile = browser()->GetProfile();
-  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
+  brave_shields_settings_service_->SetForgetFirstPartyStorageEnabled(
       true, c_site_ephemeral_storage_url_);
   SessionStartupPref::SetStartupPref(
       profile, SessionStartupPref(SessionStartupPref::LAST));
@@ -287,11 +284,9 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_EQ(1, tab_strip->active_index());
 }
 
-// EphemeralStorageService::IsScheduledForCleanup() always returns false for
-// an OTR profile, regardless of what's queued for cleanup in the regular
-// profile. So an Incognito window's startup tab must never be skipped, even
-// for a domain that is in Forgetful Mode and queued for cleanup in the
-// regular profile it was spawned from.
+// Verify that startup tabs in an Incognito window are always restored, even
+// when their domain uses Forgetful Mode and is queued for cleanup in the
+// regular profile.
 IN_PROC_BROWSER_TEST_F(EphemeralStorageStartupTabsBrowserTest,
                        StartupURLsNotSkippedForOTRProfile) {
   EnableForgetfulModeAndScheduleCleanup(a_site_ephemeral_storage_url_);
