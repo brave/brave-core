@@ -55,8 +55,6 @@ class PolkadotProviderImpl final : public mojom::PolkadotProvider,
     kNeedsPermissionRequest
   };
 
-  friend class PolkadotProviderImplUnitTest;
-
   PermissionCheckResult EvaluatePermissionsState(
       std::vector<std::string>& allowed_accounts);
 
