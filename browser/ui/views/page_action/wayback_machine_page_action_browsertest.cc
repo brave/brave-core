@@ -24,7 +24,6 @@
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
 #include "chrome/browser/ui/views/page_action/page_action_view.h"
 #include "chrome/browser/ui/views/page_action/test_support/page_action_test_accessor.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -81,8 +80,8 @@ class WaybackMachinePageActionBrowserTest : public InProcessBrowserTest {
     return controller ? controller->GetBubbleViewForTesting() : nullptr;
   }
 
-  IconLabelBubbleView* GetIcon() {
-    return PageActionTestAccessor(browser(), kActionShowWaybackMachine).view();
+  PageActionTestAccessor GetIcon() {
+    return PageActionTestAccessor(browser(), kActionShowWaybackMachine);
   }
 
   void ClickButton(views::Button* button) {
@@ -97,7 +96,7 @@ class WaybackMachinePageActionBrowserTest : public InProcessBrowserTest {
   }
 
   WaybackMachineBubbleView* ClickIconAndGetBubble() {
-    ClickButton(GetIcon());
+    GetIcon().Click();
     return GetBubbleView();
   }
 
@@ -155,15 +154,15 @@ class WaybackMachinePageActionBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest, BubbleLaunchTest) {
-  auto* icon = GetIcon();
-  EXPECT_FALSE(icon->GetVisible());
+  auto icon = GetIcon();
+  EXPECT_FALSE(icon.GetVisible());
 
   SetWaybackState(WaybackState::kNeedToCheck);
-  EXPECT_TRUE(icon->GetVisible());
+  EXPECT_TRUE(icon.GetVisible());
   EXPECT_EQ(GetBubbleView(), nullptr);
 
   // Check bubble is launched.
-  ClickButton(icon);
+  icon.Click();
   EXPECT_NE(GetBubbleView(), nullptr);
 }
 
@@ -172,13 +171,13 @@ IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest,
   auto* prefs = browser()->GetProfile()->GetPrefs();
   EXPECT_TRUE(prefs->GetBoolean(kBraveWaybackMachineEnabled));
 
-  auto* icon = GetIcon();
-  EXPECT_FALSE(icon->GetVisible());
+  auto icon = GetIcon();
+  EXPECT_FALSE(icon.GetVisible());
 
   SetWaybackState(WaybackState::kNeedToCheck);
-  EXPECT_TRUE(icon->GetVisible());
+  EXPECT_TRUE(icon.GetVisible());
 
-  ClickButton(icon);
+  icon.Click();
 
   WaybackMachineBubbleView* bubble = GetBubbleView();
   ASSERT_NE(bubble, nullptr);
@@ -248,7 +247,7 @@ IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest, ClosesWhenLoaded) {
   SetWaybackState(WaybackState::kLoaded);
   waiter.Wait();
   EXPECT_EQ(GetBubbleView(), nullptr);
-  EXPECT_FALSE(GetIcon()->GetVisible());
+  EXPECT_FALSE(GetIcon().GetVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest,
