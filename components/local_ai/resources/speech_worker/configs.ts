@@ -114,11 +114,12 @@ export const MULTILINGUAL_NEMOTRON_CONFIG = {
 
 // supported languages
 
-export const ENGLISH_SUPPORTED_LANGUAGES = [
-  'en-US',
-  'en-GB',
-] as const
+// The English model takes any English tag, such as en-AU.
+export const ENGLISH_LANGUAGE_SUBTAG = 'en'
 
+// Tags the multilingual model has a prompt for, mapped to that prompt's ID.
+// Keep in sync with `kMultilingualLanguages` in
+// brave/chromium_src/components/soda/constants.cc.
 export const MULTILINGUAL_SUPPORTED_LANGUAGES = {
   'es-ES': 2,
   'es-US': 3,
@@ -126,5 +127,4 @@ export const MULTILINGUAL_SUPPORTED_LANGUAGES = {
   'pt-BR': 12,
   'pt-PT': 13,
   'hi-IN': 6,
- } as const
- 
+} as const

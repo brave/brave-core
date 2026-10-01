@@ -6,7 +6,7 @@
 import { BigBuffer } from 'gen/mojo/public/mojom/base/big_buffer.mojom-webui.js'
 
 import {
-  ENGLISH_SUPPORTED_LANGUAGES,
+  ENGLISH_LANGUAGE_SUBTAG,
   MULTILINGUAL_SUPPORTED_LANGUAGES,
 } from './configs'
 
@@ -69,32 +69,26 @@ export function argmax(a: Float32Array): number {
   return best
 }
 
-export function getNemotronModelType(
-  lang: string,
-): {
-  modelType: NemotronModelType,
-  promptId: number | null, 
+// Picks the model and prompt for a BCP 47 tag, ignoring case. Accepts the same
+// tags as `IsBraveOnDeviceSpeechLanguageSupported` in
+// brave/chromium_src/components/soda/constants.cc.
+export function getNemotronModelType(lang: string): {
+  modelType: NemotronModelType
+  promptId: number | null
 } {
+  const tag = lang.toLowerCase()
   if (
-    ENGLISH_SUPPORTED_LANGUAGES.includes(
-      lang as typeof ENGLISH_SUPPORTED_LANGUAGES[number],
-    )
+    tag === ENGLISH_LANGUAGE_SUBTAG
+    || tag.startsWith(`${ENGLISH_LANGUAGE_SUBTAG}-`)
   ) {
-    return {
-      modelType: 'english',
-      promptId: null,
-    }
+    return { modelType: 'english', promptId: null }
   }
 
-  if (lang in MULTILINGUAL_SUPPORTED_LANGUAGES)
-  {
-    const promptId =
-      MULTILINGUAL_SUPPORTED_LANGUAGES[
-        lang as keyof typeof MULTILINGUAL_SUPPORTED_LANGUAGES
-      ]
-    return {
-      modelType: 'multilingual',
-      promptId,
+  for (const [supported, promptId] of Object.entries(
+    MULTILINGUAL_SUPPORTED_LANGUAGES,
+  )) {
+    if (supported.toLowerCase() === tag) {
+      return { modelType: 'multilingual', promptId }
     }
   }
 
