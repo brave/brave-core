@@ -634,6 +634,7 @@ void SolanaProviderJavaScriptFeature::ScriptMessageReceivedWithReply(
       base::ListValue* transactions =
           parsed_args ? parsed_args->GetIfList() : nullptr;
       std::vector<mojom::SolanaSignTransactionParamPtr> params;
+      bool all_valid = transactions != nullptr;
       if (transactions) {
         for (const base::Value& transaction : *transactions) {
           const base::DictValue* dict = transaction.GetIfDict();
@@ -642,12 +643,14 @@ void SolanaProviderJavaScriptFeature::ScriptMessageReceivedWithReply(
                          dict->Find(kSerializedMessageKey),
                          dict->Find(kSignaturesKey))
                    : nullptr;
-          if (param) {
-            params.push_back(std::move(param));
+          if (!param) {
+            all_valid = false;
+            break;
           }
+          params.push_back(std::move(param));
         }
       }
-      if (params.empty()) {
+      if (!all_valid || params.empty()) {
         std::move(callback).Run(nullptr, @"Invalid args");
         return;
       }
