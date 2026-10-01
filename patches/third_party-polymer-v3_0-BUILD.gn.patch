@@ -1,34 +1,41 @@
 diff --git a/third_party/polymer/v3_0/BUILD.gn b/third_party/polymer/v3_0/BUILD.gn
-index 60b5036186d7fa7010a5b3c754aaa8535427b756..35555e5dd7dac520a8ee8854841432d1071f6fa5 100644
+index 60b5036186d7fa7010a5b3c754aaa8535427b756..57c335aa409d288d3604fcc50588c2c9d43d3425 100644
 --- a/third_party/polymer/v3_0/BUILD.gn
 +++ b/third_party/polymer/v3_0/BUILD.gn
-@@ -19,6 +19,7 @@ js_files = [
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/third_party/polymer/v3_0/sources.gni")
+ import("//chrome/common/features.gni")
+ import("//tools/typescript/ts_library.gni")
+ import("//ui/webui/resources/tools/generate_code_cache.gni")
+@@ -18,7 +19,7 @@ js_files = [
+   "iron-scroll-target-behavior/iron-scroll-target-behavior.js",
  ]
  
- if (is_chromeos) {
-+} if (!is_android) {
+-if (is_chromeos) {
++if (!is_android) {
    js_files += [
      "iron-a11y-announcer/iron-a11y-announcer.js",
      "iron-a11y-keys/iron-a11y-keys.js",
-@@ -135,6 +136,7 @@ ts_library("library") {
+@@ -133,8 +134,9 @@ ts_library("library") {
+     "//ui/webui/resources/cr_components/help_bubble:build_ts",
+     "//ui/webui/resources/cr_elements:build_ts",
    ]
++  visibility += brave_polymer_library_visibility
  
-   if (is_chromeos) {
-+  } if (!is_android) {
+-  if (is_chromeos) {
++  if (!is_android) {
      visibility += [
        "//ash/webui/*",
        "//chrome/browser/resources/ash/*",
-@@ -206,6 +208,7 @@ ts_library("library") {
+@@ -205,7 +207,7 @@ ts_library("library") {
+     "components-chromium/polymer/polymer-legacy.d.ts",
    ]
  
-   if (is_chromeos) {
-+  } if (!is_android) {
+-  if (is_chromeos) {
++  if (!is_android) {
      definitions += [
        "components-chromium/iron-a11y-announcer/iron-a11y-announcer.d.ts",
        "components-chromium/iron-a11y-keys/iron-a11y-keys.d.ts",
-@@ -249,4 +252,5 @@ ts_library("library") {
-       "components-chromium/paper-tooltip/paper-tooltip.d.ts",
-     ]
-   }
-+  import("//brave/third_party/polymer/v3_0/sources.gni") visibility += brave_polymer_library_visibility
- }
