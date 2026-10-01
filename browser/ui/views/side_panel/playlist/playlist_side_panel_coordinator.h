@@ -13,6 +13,7 @@
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_contents_wrapper.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 #include "ui/views/view.h"
 #include "ui/views/view_observer.h"
 
@@ -49,6 +50,8 @@ class PlaylistSidePanelCoordinator : public views::ViewObserver {
     WEB_CONTENTS_USER_DATA_KEY_DECL();
   };
 
+  DECLARE_USER_DATA(PlaylistSidePanelCoordinator);
+
   PlaylistSidePanelCoordinator(BrowserWindowInterface* browser,
                                sidebar::SidebarController* sidebar_controller,
                                Profile* profile);
@@ -56,6 +59,11 @@ class PlaylistSidePanelCoordinator : public views::ViewObserver {
   PlaylistSidePanelCoordinator& operator=(const PlaylistSidePanelCoordinator&) =
       delete;
   ~PlaylistSidePanelCoordinator() override;
+
+  // Returns the instance owned by `browser`, or nullptr. Null for windows that
+  // cannot use the sidebar, such as popups and desktop PWAs, or when Playlist
+  // is not allowed for the profile.
+  static PlaylistSidePanelCoordinator* From(BrowserWindowInterface* browser);
 
   void CreateAndRegisterEntry(SidePanelRegistry* global_registry);
 
@@ -90,6 +98,9 @@ class PlaylistSidePanelCoordinator : public views::ViewObserver {
 
   base::ScopedObservation<views::View, views::ViewObserver> view_observation_{
       this};
+
+  ui::ScopedUnownedUserData<PlaylistSidePanelCoordinator>
+      scoped_unowned_user_data_;
 
   base::WeakPtrFactory<PlaylistSidePanelCoordinator> weak_ptr_factory_{this};
 };

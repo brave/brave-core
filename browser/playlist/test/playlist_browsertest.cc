@@ -122,8 +122,7 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
 
     // Wrap routine with lambda as ASSERT_FOO has return type internally.
     ([&]() {
-      auto* coordinator =
-          browser()->GetFeatures().playlist_side_panel_coordinator();
+      auto* coordinator = PlaylistSidePanelCoordinator::From(browser());
       ASSERT_TRUE(coordinator);
 
       auto* contents_wrapper = coordinator->contents_wrapper();
@@ -197,8 +196,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PanelToggleTestWhilePlaying) {
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
 
-  auto* coordinator =
-      browser()->GetFeatures().playlist_side_panel_coordinator();
+  auto* coordinator = PlaylistSidePanelCoordinator::From(browser());
   ASSERT_TRUE(coordinator);
   coordinator->is_audible_for_testing_ = true;
 
