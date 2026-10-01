@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/BUILD.gn b/chrome/browser/ui/webui/BUILD.gn
-index 7341632b43d34d3862b87965d1ac315c274b5743..bcbd1f82a1c190ddd7e2765b21b36b3537265900 100644
+index fa6926479d8ebc75218de41cca0f1733649682a1..dc85723b601863ae5ab742a9fa5f0e68cb754be5 100644
 --- a/chrome/browser/ui/webui/BUILD.gn
 +++ b/chrome/browser/ui/webui/BUILD.gn
 @@ -281,6 +281,8 @@ source_set("configs") {
