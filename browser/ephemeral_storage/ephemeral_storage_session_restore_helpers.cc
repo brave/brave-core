@@ -9,7 +9,10 @@
 #include "net/base/url_util.h"
 #include "url/gurl.h"
 
-// Declared in chromium_src/chrome/browser/sessions/session_restore.cc.
+// Forward-declared in the following chromium_src overrides, so that upstream
+// targets do not depend on Brave ephemeral storage:
+//   chromium_src/chrome/browser/sessions/session_restore.cc
+//   chromium_src/chrome/browser/ui/startup/startup_browser_creator_impl.cc
 bool BraveIsScheduledForCleanup(const GURL& url, Profile* profile) {
   auto* service = EphemeralStorageServiceFactory::GetForContext(profile);
   if (!service) {

@@ -5,14 +5,12 @@
 
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/startup/startup_tab.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/sessions/core/session_types.h"
-#include "components/sessions/core/tab_restore_service.h"
 #include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
 
@@ -41,6 +39,10 @@ void BraveModifyStartupTabNavigationParams(const StartupTab& tab,
 #endif
 }
 
+// Returns the index of the first tab to be made an active if the active tab is
+// deleted, or simply the index of the existing active tab. The index of the
+// newly added fallback tab if the tab strip was empty, or kNoTab as a fail
+// state.
 int MaybeAddFallbackTabIfEmpty(BrowserWindowInterface* browser) {
   if (!browser->GetTabStripModel()->empty()) {
     auto index = browser->GetTabStripModel()->active_index();
