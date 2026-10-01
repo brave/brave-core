@@ -1,21 +1,43 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index ce1f5a5711eeba1109bef0169a80cbe29373a843..71e9f0105edb30d649098325175f0f9928c298a3 100644
+index ce1f5a5711eeba1109bef0169a80cbe29373a843..e3e2f86172975576bbb089cbc0ad167647ba91fd 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
-@@ -143,7 +143,7 @@ if (enable_uncompressed_archive) {
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/chromium_src/chrome/installer/mini_installer/build.gni")
+ import("//build/config/compiler/compiler.gni")
+ import("//build/config/python.gni")
+ import("//build/config/ui.gni")
+@@ -143,7 +144,7 @@ if (enable_uncompressed_archive) {
        "$target_gen_dir/mini_installer/packed_files_uncompressed.rc"
  }
  
 -action("mini_installer_archive") {
-+import("//brave/chromium_src/chrome/installer/mini_installer/build.gni") brave_mini_installer_archive_action("mini_installer_archive") {
++brave_mini_installer_archive_action("mini_installer_archive") {
    script = "//chrome/tools/build/win/create_installer_archive.py"
  
    release_file = "chrome.release"
-@@ -326,6 +326,7 @@ template("generate_mini_installer") {
-       no_default_deps = true
-       ldflags += [ "/ENTRY:MainEntryPoint" ]
-     }
-+if (defined(invoker.extra_deps)) { deps += invoker.extra_deps } }} generate_mini_installer("delta_installer_unsigned") { rc_file = "$target_gen_dir/packed_delta_files.rc" extra_deps = [ "//brave:delta_installer_archive" ] if (false) {
+@@ -307,6 +308,9 @@ template("generate_mini_installer") {
+       ":version",
+       "//build/win:default_exe_manifest",
+     ]
++    if (defined(invoker.extra_deps)) {
++      deps += invoker.extra_deps
++    }
+ 
+     # In general, mini_installer tries to avoid depending on the C++ standard
+     # library for size reasons. This is achieved by:
+@@ -329,6 +333,11 @@ template("generate_mini_installer") {
    }
  }
  
++generate_mini_installer("delta_installer_unsigned") {
++  rc_file = "$target_gen_dir/packed_delta_files.rc"
++  extra_deps = [ "//brave:delta_installer_archive" ]
++}
++
+ generate_mini_installer("mini_installer") {
+   rc_file = packed_files_rc_file
+ }
