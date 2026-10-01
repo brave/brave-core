@@ -143,6 +143,7 @@ export function createMockParentUIFrame(
     regenerateAnswerMenuIsOpen: () => {},
     showSkillDialog: () => {},
     showImageLightbox: () => {},
+    showWorkspaceFileLightbox: () => {},
     showPremiumSuggestionForRegenerate: () => {},
     requestNewConversation: () => {},
     handleResetError: () => {},

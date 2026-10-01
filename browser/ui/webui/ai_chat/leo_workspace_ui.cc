@@ -18,6 +18,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/leo_workspace_util.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
@@ -128,6 +129,11 @@ void CreateAndAddWorkspaceDataSource(content::BrowserContext* browser_context,
       absl::StrFormat("frame-src %s;",
                       UntrustedOrigin(base::StrCat(
                           {kAIChatLeoWorkspaceViewUIHostPrefix, url.host()}))));
+
+  // Allow being framed by the AI Chat page for the workspace file lightbox.
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FrameAncestors,
+      absl::StrFormat("frame-ancestors %s;", kAIChatUIURL));
 }
 
 // Registers the service worker from the browser since chrome-untrusted://

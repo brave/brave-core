@@ -1,0 +1,35 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Fallback styles for when no workspace is attached (non-clickable version)
+.workspaceFileButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--leo-spacing-s);
+  padding: var(--leo-spacing-xs) var(--leo-spacing-s);
+  border-radius: var(--leo-radius-s);
+  background: var(--leo-color-container-highlight);
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-primary);
+  vertical-align: middle;
+
+  --leo-icon-size: 16px;
+  --leo-icon-color: var(--leo-color-icon-default);
+}
+
+.filename {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Styles for the AttachmentItem wrapper when workspace is attached
+.attachmentItem {
+  --leo-icon-size: 20px;
+
+  display: flex;
+  width: 100%;
+}
