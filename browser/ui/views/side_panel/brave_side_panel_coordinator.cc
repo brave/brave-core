@@ -62,8 +62,7 @@ void BraveSidePanelCoordinator::Show(
   auto* controller =
       sidebar::SidebarController::From(base::to_address(browser_));
   CHECK(controller);
-  controller->UpdateActiveItemState(
-      sidebar::BuiltInItemTypeFromSidePanelId(entry.key.id()));
+  controller->HandleSidePanelOpened(entry.key.id());
 }
 
 void BraveSidePanelCoordinator::Close(SidePanelEntryHideReason hide_reason,
@@ -75,7 +74,7 @@ void BraveSidePanelCoordinator::Close(SidePanelEntryHideReason hide_reason,
   // browser, there is no SidebarController.
   if (auto* controller =
           sidebar::SidebarController::From(base::to_address(browser_))) {
-    controller->UpdateActiveItemState();
+    controller->HandleSidePanelClosed();
   }
 
   SidePanelCoordinator::Close(hide_reason, suppress_animations);
