@@ -61,8 +61,7 @@ void BraveSidePanelCoordinator::Show(
   // coordinator must update the active item state directly here.
   auto* controller = browser_->GetFeatures().sidebar_controller();
   CHECK(controller);
-  controller->UpdateActiveItemState(
-      sidebar::BuiltInItemTypeFromSidePanelId(entry.key.id()));
+  controller->HandleSidePanelOpened(entry.key.id());
 }
 
 void BraveSidePanelCoordinator::Close(SidePanelEntryHideReason hide_reason,
@@ -73,7 +72,7 @@ void BraveSidePanelCoordinator::Close(SidePanelEntryHideReason hide_reason,
   // Close() is called when Browser shutdown. When it calls from non-normal
   // browser, sidebar_controller() is null.
   if (auto* controller = browser_->GetFeatures().sidebar_controller()) {
-    controller->UpdateActiveItemState();
+    controller->HandleSidePanelClosed();
   }
 
   SidePanelCoordinator::Close(hide_reason, suppress_animations);

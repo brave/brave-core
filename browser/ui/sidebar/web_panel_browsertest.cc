@@ -67,7 +67,7 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
 
   // Open the web panel. This creates a pinned tab for it at index 0, without
   // making it the active/foreground tab.
-  controller()->ActivateItemAt(web_panel_item_index);
+  controller()->OnItemPressed(web_panel_item_index);
   ASSERT_TRUE(GetBraveMultiContentsView()->IsWebPanelVisible());
   ASSERT_EQ(3, tab_strip_model->count());
   ASSERT_EQ(tab_strip_model->GetTabAtIndex(0)->GetContents(),

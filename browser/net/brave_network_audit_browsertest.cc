@@ -167,7 +167,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
     auto item = all_items[i];
     // Load all builtin panel items.
     if (item.is_built_in_type() && item.open_in_panel) {
-      sidebar_controller->ActivateItemAt(i);
+      sidebar_controller->OnItemPressed(i);
       WaitForTimeout(kMaxTimeoutPerLoadedURL);
     }
   }
