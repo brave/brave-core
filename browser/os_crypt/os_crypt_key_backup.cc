@@ -349,17 +349,14 @@ UnwrapCallback AppBoundUnwrapCallback(std::string_view step_description) {
 OSCryptKeyBackupResult AppendOSCryptKeyBackupIfNew(const base::FilePath& path,
                                                    std::string encrypted_key,
                                                    std::string app_bound_key) {
-  // An absent or unreadable file yields an empty-history `Backup` from
-  // `ReadBackup`, which is exactly "start fresh" - no separate handling
-  // needed here.
   Backup backup = ReadBackup(path);
-
   bool changed = false;
 
   if (!encrypted_key.empty()) {
     changed |= AppendIfNewDistinctKey(backup.encrypted_key_history,
                                       encrypted_key, DPAPIUnwrapCallback());
   }
+
   if (!app_bound_key.empty()) {
     changed |= AppendIfNewDistinctKey(
         backup.app_bound_key_history, app_bound_key,
@@ -370,13 +367,23 @@ OSCryptKeyBackupResult AppendOSCryptKeyBackupIfNew(const base::FilePath& path,
     return OSCryptKeyBackupResult::kUpToDate;
   }
 
+  // Reaching here is uncommon. The key only changes when DPAPI or app-bound
+  // re-wraps it (e.g. after a Windows credential change), which is rare. Worth
+  // recording in case there is a problem to help the customer narrow down when
+  // it happened.
+
   if (!WriteBackup(path, backup)) {
+    LOG(ERROR) << "OSCrypt key backup: failed to write " << path;
     return OSCryptKeyBackupResult::kWriteFailed;
   }
 
+  LOG(WARNING) << "OSCrypt key backup: appended a new history entry for "
+               << path;
   return OSCryptKeyBackupResult::kAppended;
 }
 
+// Guarding this feature so we can control w/ Griffin. Enabled by default.
+// It's worth noting that the variations seed is also stored in `Local State`.
 BASE_FEATURE(kBraveOSCryptKeyRestore, base::FEATURE_ENABLED_BY_DEFAULT);
 
 void MaybeRestoreOSCryptKey(const base::FilePath& user_data_dir,
@@ -394,14 +401,12 @@ void MaybeRestoreOSCryptKey(const base::FilePath& user_data_dir,
     return;
   }
 
-  // Past this point the DPAPI key is confirmed missing, so a restore log
-  // record is always appended below - either here (kAbsent/kUnreadable) or
-  // at the end of the function. The healthy-launch common case (key
-  // present) already returned above and never reaches here, so this
-  // function never writes a record for "nothing happened."
+  // If we get here, the DPAPI key is missing and we're going to attempt a
+  // a restore. This includes appending a record for the restore log.
   //
-  // The two per-key outcomes for this attempt. Both start at `kNotAttempted`;
-  // only the branches below that actually run change them.
+  // The result for the restore is stored for both the DPAPI key and (if
+  // applicable) the app-bound key. The app-bound key is only used for
+  // system level installs.
   OSCryptKeyRestoreResult dpapi_outcome =
       OSCryptKeyRestoreResult::kNotAttempted;
   OSCryptKeyRestoreResult app_bound_outcome =
@@ -424,11 +429,7 @@ void MaybeRestoreOSCryptKey(const base::FilePath& user_data_dir,
       break;
   }
 
-  // The DPAPI key gates whether this function does anything at all (see the
-  // early-out above), but an empty history for it doesn't gate the
-  // independent app-bound restore below - a corrupted or hand-edited backup
-  // file could plausibly have a usable app-bound history without a usable
-  // DPAPI one.
+  // Attempt to restore the DPAPI key.
   if (!backup.encrypted_key_history.empty()) {
     // Restore the DPAPI key. Whether the restored key still unwraps has
     // already been checked by `RestoreFromHistory` on a best-effort basis;

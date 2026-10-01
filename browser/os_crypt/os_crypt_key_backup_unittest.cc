@@ -434,6 +434,12 @@ class OSCryptKeyRestoreTest : public OSCryptKeyBackupTest {
   }
 
   TestingPrefServiceSimple local_state_;
+
+ private:
+  // Pin the feature on so these tests exercise restore regardless of the
+  // feature's production default. `DoesNothingWhenTheFeatureIsOff` installs
+  // its own local override on top of this to test the kill switch.
+  base::test::ScopedFeatureList feature_list_{kBraveOSCryptKeyRestore};
 };
 
 TEST_F(OSCryptKeyRestoreTest, PutsTheKeyBackWhenItIsMissing) {

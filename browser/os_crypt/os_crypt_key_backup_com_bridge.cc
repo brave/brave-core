@@ -157,8 +157,8 @@ std::optional<std::vector<uint8_t>> BlockingUnwrapAppBoundKeyOnCOMSTA(
       wrapped_key.subspan(sizeof(os_crypt_async::kCryptAppBoundKeyPrefix));
   std::string ciphertext(ciphertext_bytes.begin(), ciphertext_bytes.end());
 
-  LOG(INFO) << "OSCrypt key backup: " << step_description
-            << " (blocking on elevation service)";
+  VLOG(1) << "OSCrypt key backup: " << step_description
+          << " (blocking on elevation service)";
 
   auto result = base::MakeRefCounted<DecryptAppBoundResult>();
   base::ThreadPool::CreateCOMSTATaskRunner({base::MayBlock()})
@@ -167,8 +167,8 @@ std::optional<std::vector<uint8_t>> BlockingUnwrapAppBoundKeyOnCOMSTA(
 
   const bool completed =
       result->completion_event.TimedWait(kAppBoundUnwrapTimeout);
-  LOG(INFO) << "OSCrypt key backup: " << step_description
-            << (completed ? " finished" : " timed out");
+  VLOG(1) << "OSCrypt key backup: " << step_description
+          << (completed ? " finished" : " timed out");
   if (!completed) {
     return std::nullopt;
   }
