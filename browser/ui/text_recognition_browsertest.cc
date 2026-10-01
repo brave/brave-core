@@ -4,13 +4,13 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
-#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
@@ -45,8 +45,7 @@ constexpr char kEmbeddedTestServerDirectory[] = "text_recognition";
 class TextRecognitionBrowserTest : public InProcessBrowserTest {
  public:
   void SetUpOnMainThread() override {
-    clipboard_ =
-        brave::PrivacyCapturingTestClipboard::InstallForCurrentThread();
+    clipboard_.emplace();
 
     host_resolver()->AddRule("*", "127.0.0.1");
     content::SetupCrossSiteRedirector(embedded_test_server());
@@ -61,8 +60,7 @@ class TextRecognitionBrowserTest : public InProcessBrowserTest {
   }
 
   void TearDownOnMainThread() override {
-    clipboard_ = nullptr;
-    ui::Clipboard::DestroyClipboardForCurrentThread();
+    clipboard_.reset();
     InProcessBrowserTest::TearDownOnMainThread();
   }
 
@@ -141,7 +139,7 @@ class TextRecognitionBrowserTest : public InProcessBrowserTest {
 
   GURL image_html_url_;
   std::unique_ptr<base::RunLoop> run_loop_;
-  raw_ptr<brave::PrivacyCapturingTestClipboard> clipboard_ = nullptr;
+  std::optional<brave::ScopedPrivacyCapturingTestClipboard> clipboard_;
 };
 
 IN_PROC_BROWSER_TEST_F(TextRecognitionBrowserTest, TextRecognitionTest) {

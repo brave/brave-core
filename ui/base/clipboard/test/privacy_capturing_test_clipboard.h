@@ -10,6 +10,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/base/clipboard/test/test_clipboard.h"
 
@@ -19,11 +20,6 @@ namespace brave {
 // tests can assert how a write was marked (off-the-record, confidential, ...).
 class PrivacyCapturingTestClipboard : public ui::TestClipboard {
  public:
-  // Replaces the current thread's clipboard with a recording one. The returned
-  // instance stays owned by the thread's clipboard registry; release it with
-  // ui::Clipboard::DestroyClipboardForCurrentThread().
-  static PrivacyCapturingTestClipboard* InstallForCurrentThread();
-
   PrivacyCapturingTestClipboard();
   ~PrivacyCapturingTestClipboard() override;
 
@@ -41,6 +37,29 @@ class PrivacyCapturingTestClipboard : public ui::TestClipboard {
 
  private:
   uint32_t last_privacy_types_ = ui::Clipboard::kNone;
+};
+
+// Installs a PrivacyCapturingTestClipboard on the current thread and restores
+// the thread's previous clipboard on destruction. Scoping this matters because
+// a failed ASSERT_* returns early from the test body, so any manual teardown at
+// the end of the body is skipped and the fake would leak into later tests
+// sharing the process.
+class ScopedPrivacyCapturingTestClipboard {
+ public:
+  ScopedPrivacyCapturingTestClipboard();
+  ScopedPrivacyCapturingTestClipboard(
+      const ScopedPrivacyCapturingTestClipboard&) = delete;
+  ScopedPrivacyCapturingTestClipboard& operator=(
+      const ScopedPrivacyCapturingTestClipboard&) = delete;
+  ~ScopedPrivacyCapturingTestClipboard();
+
+  uint32_t last_privacy_types() const {
+    return clipboard_->last_privacy_types();
+  }
+
+ private:
+  std::unique_ptr<ui::Clipboard> previous_clipboard_;
+  raw_ptr<PrivacyCapturingTestClipboard> clipboard_ = nullptr;
 };
 
 }  // namespace brave

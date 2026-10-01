@@ -330,11 +330,8 @@ TEST_F(ScreenshotControllerTest,
 TEST_F(ScreenshotControllerTest,
        CopyToClipboard_OffTheRecordProfile_MarksPrivacyBits) {
   // Swap the fixture-installed TestClipboard for our capturing fake, for the
-  // duration of this test only. TearDown() will destroy whichever clipboard
-  // is registered for this thread, regardless of concrete type, so no
-  // restoration is needed here.
-  auto* fake_clipboard_ptr =
-      brave::PrivacyCapturingTestClipboard::InstallForCurrentThread();
+  // duration of this test only.
+  brave::ScopedPrivacyCapturingTestClipboard fake_clipboard;
 
   Profile* otr_profile =
       profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true);
@@ -371,7 +368,7 @@ TEST_F(ScreenshotControllerTest,
   Result result = future.Get();
   ASSERT_TRUE(result.has_value());
 
-  EXPECT_EQ(fake_clipboard_ptr->last_privacy_types(),
+  EXPECT_EQ(fake_clipboard.last_privacy_types(),
             static_cast<uint32_t>(ui::Clipboard::kNoCloudClipboard |
                                   ui::Clipboard::kNoLocalClipboardHistory));
 }
@@ -387,8 +384,7 @@ TEST_F(ScreenshotControllerTest,
 // TorProfileServiceFactory/TorLauncherFactory, to keep this test fast and
 // hermetic.
 TEST_F(ScreenshotControllerTest, CopyToClipboard_TorProfile_MarksPrivacyBits) {
-  auto* fake_clipboard_ptr =
-      brave::PrivacyCapturingTestClipboard::InstallForCurrentThread();
+  brave::ScopedPrivacyCapturingTestClipboard fake_clipboard;
 
   Profile* tor_profile = profile()->GetOffTheRecordProfile(
       Profile::OTRProfileID::TorID(), /*create_if_needed=*/true);
@@ -426,7 +422,7 @@ TEST_F(ScreenshotControllerTest, CopyToClipboard_TorProfile_MarksPrivacyBits) {
   Result result = future.Get();
   ASSERT_TRUE(result.has_value());
 
-  EXPECT_EQ(fake_clipboard_ptr->last_privacy_types(),
+  EXPECT_EQ(fake_clipboard.last_privacy_types(),
             static_cast<uint32_t>(ui::Clipboard::kNoCloudClipboard |
                                   ui::Clipboard::kNoLocalClipboardHistory));
 }
@@ -435,8 +431,7 @@ TEST_F(ScreenshotControllerTest, CopyToClipboard_TorProfile_MarksPrivacyBits) {
 // is a regular (non-off-the-record) profile.
 TEST_F(ScreenshotControllerTest,
        CopyToClipboard_RegularProfile_DoesNotMarkPrivacyBits) {
-  auto* fake_clipboard_ptr =
-      brave::PrivacyCapturingTestClipboard::InstallForCurrentThread();
+  brave::ScopedPrivacyCapturingTestClipboard fake_clipboard;
 
   ASSERT_FALSE(profile()->IsOffTheRecord());
 
@@ -471,7 +466,7 @@ TEST_F(ScreenshotControllerTest,
   Result result = future.Get();
   ASSERT_TRUE(result.has_value());
 
-  EXPECT_EQ(fake_clipboard_ptr->last_privacy_types(),
+  EXPECT_EQ(fake_clipboard.last_privacy_types(),
             static_cast<uint32_t>(ui::Clipboard::kNone));
 }
 

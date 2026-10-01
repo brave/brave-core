@@ -232,8 +232,7 @@ TEST_F(DownloadBubbleTest,
 }
 
 TEST_F(DownloadBubbleTest, DownloadCommands_CopyDownloadLink) {
-  auto* fake_clipboard_ptr =
-      brave::PrivacyCapturingTestClipboard::InstallForCurrentThread();
+  brave::ScopedPrivacyCapturingTestClipboard fake_clipboard;
 
   AttachProfileToDownloadItem(profile_);
   SetupDownloadItemDefaults();
@@ -255,16 +254,13 @@ TEST_F(DownloadBubbleTest, DownloadCommands_CopyDownloadLink) {
   // A normal profile copy stays eligible for OS clipboard history and cloud
   // clipboard sync.
   EXPECT_EQ(static_cast<uint32_t>(ui::Clipboard::kNone),
-            fake_clipboard_ptr->last_privacy_types());
-
-  ui::Clipboard::DestroyClipboardForCurrentThread();
+            fake_clipboard.last_privacy_types());
 }
 
 // A download link copied from a private/Tor window must not leak into the OS
 // clipboard history or cloud clipboard sync.
 TEST_F(DownloadBubbleTest, DownloadCommands_CopyDownloadLinkOffTheRecord) {
-  auto* fake_clipboard_ptr =
-      brave::PrivacyCapturingTestClipboard::InstallForCurrentThread();
+  brave::ScopedPrivacyCapturingTestClipboard fake_clipboard;
 
   Profile* otr_profile =
       profile_->GetPrimaryOTRProfile(/*create_if_needed=*/true);
@@ -279,7 +275,5 @@ TEST_F(DownloadBubbleTest, DownloadCommands_CopyDownloadLinkOffTheRecord) {
 
   EXPECT_EQ(static_cast<uint32_t>(ui::Clipboard::kNoLocalClipboardHistory |
                                   ui::Clipboard::kNoCloudClipboard),
-            fake_clipboard_ptr->last_privacy_types());
-
-  ui::Clipboard::DestroyClipboardForCurrentThread();
+            fake_clipboard.last_privacy_types());
 }

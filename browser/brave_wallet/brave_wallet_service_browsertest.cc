@@ -234,21 +234,20 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, IsPrivateWindow) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, WriteToClipboardPrivacyTypes) {
-  auto* fake_clipboard_ptr =
-      brave::PrivacyCapturingTestClipboard::InstallForCurrentThread();
+  brave::ScopedPrivacyCapturingTestClipboard fake_clipboard;
 
   // Sensitive text is concealed everywhere.
   wallet_service()->WriteToClipboard("secret", /*is_sensitive=*/true);
   EXPECT_EQ(static_cast<uint32_t>(ui::Clipboard::kNoDisplay |
                                   ui::Clipboard::kNoLocalClipboardHistory |
                                   ui::Clipboard::kNoCloudClipboard),
-            fake_clipboard_ptr->last_privacy_types());
+            fake_clipboard.last_privacy_types());
 
   // Non-sensitive text from a normal window stays eligible for OS clipboard
   // history and cloud clipboard sync.
   wallet_service()->WriteToClipboard("0xdeadbeef", /*is_sensitive=*/false);
   EXPECT_EQ(static_cast<uint32_t>(ui::Clipboard::kNone),
-            fake_clipboard_ptr->last_privacy_types());
+            fake_clipboard.last_privacy_types());
 
   // Non-sensitive text from a private window does not.
   wallet_service()->SetPrivateWindowsEnabled(true);
@@ -256,9 +255,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, WriteToClipboardPrivacyTypes) {
                                                /*is_sensitive=*/false);
   EXPECT_EQ(static_cast<uint32_t>(ui::Clipboard::kNoLocalClipboardHistory |
                                   ui::Clipboard::kNoCloudClipboard),
-            fake_clipboard_ptr->last_privacy_types());
-
-  ui::Clipboard::DestroyClipboardForCurrentThread();
+            fake_clipboard.last_privacy_types());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, DisplayTxNotification) {

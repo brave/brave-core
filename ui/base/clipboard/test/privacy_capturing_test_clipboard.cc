@@ -11,18 +11,6 @@
 
 namespace brave {
 
-// static
-PrivacyCapturingTestClipboard*
-PrivacyCapturingTestClipboard::InstallForCurrentThread() {
-  // Destroy first because SetClipboardForCurrentThread() DCHECKs when this
-  // thread already has a clipboard, which the browser creates during startup.
-  ui::Clipboard::DestroyClipboardForCurrentThread();
-  auto clipboard = std::make_unique<PrivacyCapturingTestClipboard>();
-  auto* clipboard_ptr = clipboard.get();
-  ui::Clipboard::SetClipboardForCurrentThread(std::move(clipboard));
-  return clipboard_ptr;
-}
-
 PrivacyCapturingTestClipboard::PrivacyCapturingTestClipboard() = default;
 
 PrivacyCapturingTestClipboard::~PrivacyCapturingTestClipboard() = default;
@@ -38,6 +26,24 @@ void PrivacyCapturingTestClipboard::WritePortableAndPlatformRepresentations(
   ui::TestClipboard::WritePortableAndPlatformRepresentations(
       buffer, objects, raw_objects, std::move(platform_representations),
       std::move(data_src), privacy_types);
+}
+
+ScopedPrivacyCapturingTestClipboard::ScopedPrivacyCapturingTestClipboard()
+    : previous_clipboard_(ui::Clipboard::TakeForCurrentThread()) {
+  // TakeForCurrentThread() left the thread's slot empty, satisfying the DCHECK
+  // in SetClipboardForCurrentThread().
+  auto clipboard = std::make_unique<PrivacyCapturingTestClipboard>();
+  clipboard_ = clipboard.get();
+  ui::Clipboard::SetClipboardForCurrentThread(std::move(clipboard));
+}
+
+ScopedPrivacyCapturingTestClipboard::~ScopedPrivacyCapturingTestClipboard() {
+  // Clear before destroying so the raw_ptr never dangles.
+  clipboard_ = nullptr;
+  ui::Clipboard::DestroyClipboardForCurrentThread();
+  if (previous_clipboard_) {
+    ui::Clipboard::SetClipboardForCurrentThread(std::move(previous_clipboard_));
+  }
 }
 
 }  // namespace brave

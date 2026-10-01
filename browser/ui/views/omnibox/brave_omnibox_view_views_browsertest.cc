@@ -237,8 +237,7 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CopyCleanURLToClipboardTest) {
 // history or cloud clipboard sync.
 IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest,
                        CopyCleanURLToClipboardOffTheRecordTest) {
-  auto* fake_clipboard_ptr =
-      brave::PrivacyCapturingTestClipboard::InstallForCurrentThread();
+  brave::ScopedPrivacyCapturingTestClipboard fake_clipboard;
 
   // The sanitizer service is shared with the original profile, so setting the
   // rules on the normal profile also covers the private window.
@@ -267,9 +266,7 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest,
           /*data_dst=*/nullptr));
   EXPECT_EQ(static_cast<uint32_t>(ui::Clipboard::kNoLocalClipboardHistory |
                                   ui::Clipboard::kNoCloudClipboard),
-            fake_clipboard_ptr->last_privacy_types());
-
-  ui::Clipboard::DestroyClipboardForCurrentThread();
+            fake_clipboard.last_privacy_types());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CopyURLToClipboardTest) {
