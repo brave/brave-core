@@ -2388,6 +2388,12 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SYNC_ADDRESSES_CANCEL" desc="Button in a dialog to enable saving addresses to the Brave sync chain. This is shown to users who have chosen to encrypt their data with a custom passphrase. The dialog informs users that newly saved addresses will not be encrypted with their passphrase.">
         Cancel
       </message>
+      <message name="IDS_ACCOUNT_SEARCH_AI_MODE_CONNECTED_APPS_TITLE" desc="Title for the preference in Account settings that opens a web page where the user can manage the connection between Brave Search AI Mode and Brave Workspace connected apps. 'Brave Search' and 'AI Mode' are product names.">
+        Brave Search AI Mode and connected apps
+      </message>
+      <message name="IDS_ACCOUNT_SEARCH_AI_MODE_CONNECTED_APPS_SUMMARY" desc="Summary for the preference in Account settings that opens a web page where the user can manage the connection between Brave Search services and their Brave Workspace apps (like Google Drive). 'Brave Workspace' and 'Google Drive' are product names.">
+        Manage the connection between search services and Brave Workspace apps, like Google Drive
+      </message>
       <message name="IDS_ACCOUNT_DATA_DASHBOARD_TITLE" desc="Title for the cell to open 'Brave and ChromeOS data in your account' web page where the user can control all their data data from sync.">
         Brave data in your account
       </message>
@@ -4209,6 +4215,19 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_UPDATE_UNSUPPORTED_SUMMARY_DEFAULT" desc="Summary string for update menu item explaining that the Android version on the device is unsupported. [CHAR_LIMIT=30]">
         Android version is unsupported
       </message>
+      <!-- In-app update flow snackbars -->
+      <message name="IDS_IN_APP_UPDATE_DISCOVERY_TITLE" desc="Snackbar text informing the user that an update is available.">
+        A new version of Brave is available
+      </message>
+      <message name="IDS_IN_APP_UPDATE_DISCOVERY_ACTION" desc="Action button text on snackbar to start updating. [CHAR_LIMIT=15]">
+        Update
+      </message>
+      <message name="IDS_IN_APP_UPDATE_RESTART_TITLE" desc="Snackbar text informing the user that an update has been downloaded and is ready to install.">
+        An update has been downloaded
+      </message>
+      <message name="IDS_IN_APP_UPDATE_RESTART_ACTION" desc="Action button text on snackbar to restart Brave and apply the update. [CHAR_LIMIT=15]">
+        Restart
+      </message>
       <message name="IDS_MENU_NEW_WINDOW" desc="Menu item for opening a new window. [CHAR_LIMIT=27]">
         New window
       </message>
@@ -5126,9 +5145,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_HOME" desc="Content description for the home button.">
         Open the home page
-      </message>
-      <message name="IDS_ACCESSIBILITY_BOTTOM_BAR_AI_MODE_BUTTON" desc="Content description for the AI search button in the bottom bar.">
-        Ask AI Mode
       </message>
       <message name="IDS_ACCESSIBILITY_BTN_REFRESH" desc="Content description for the refresh page button.">
         Reload this page
@@ -6250,20 +6266,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_IPH_ANDROID_BOTTOM_BAR_NEW_TAB" desc="The in-product-help message for the New Tab button in the bottom bar.">
         Open a new tab
       </message>
-      <message name="IDS_IPH_ANDROID_BOTTOM_BAR_AIM" desc="The in-product-help message for the AI Mode button in the bottom bar.">
-        Search with AI Mode
-      </message>
       <message name="IDS_IPH_ANDROID_BOTTOM_BAR_DIALOG_TITLE" desc="Title for the in-product help dialog introducing Gemini in the bottom bar.">
         Introducing Gemini in Brave
       </message>
-      <message name="IDS_IPH_ANDROID_BOTTOM_BAR_AIM_DIALOG_TITLE" desc="Title for the in-product help dialog introducing AI Mode in the bottom bar.">
-        Introducing AI Mode in Brave
-      </message>
       <message name="IDS_IPH_ANDROID_BOTTOM_BAR_DIALOG_DESCRIPTION" desc="Description for the bottom bar Gemini introduction dialog.">
         Some tools have moved to give you easy access to Gemini while you browse
-      </message>
-      <message name="IDS_IPH_ANDROID_BOTTOM_BAR_AIM_DIALOG_DESCRIPTION" desc="Description for the bottom bar AI Mode introduction dialog.">
-        Some tools have moved to help you search with AI Mode
       </message>
       <message name="IDS_IPH_ANDROID_BOTTOM_BAR_TRIGGER_IPH" desc="Text on the button that triggers the in-product-help sequence.">
         Show me

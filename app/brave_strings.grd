@@ -3421,6 +3421,19 @@ If this page isn’t working as expected, try allowing optimization.
       <message name="IDS_SEND_TAB_TO_SELF_SIGN_IN_PROMO_BUTTON_LABEL" desc="Label of the sign-in button in the send-tab-to-self sign-in promo bubble.">
         Sign in to Brave
       </message>
+      <if expr="not use_titlecase">
+        <message name="IDS_CONTEXT_MENU_SEND_TAB_TO_SELF_SIGN_IN" desc="The label for a menu item to sign in to Brave in the Send Tab to Self context menu when signed out.">
+          Sign in to Brave
+        </message>
+      </if>
+      <if expr="use_titlecase">
+        <message name="IDS_CONTEXT_MENU_SEND_TAB_TO_SELF_SIGN_IN" desc="In Title Case: The label for a menu item to sign in to Brave in the Send Tab to Self context menu when signed out.">
+          Sign In to Brave
+        </message>
+      </if>
+      <message name="IDS_SEND_TAB_TO_SELF_NO_TARGET_DEVICE_BODY_QR" desc="Body text shown when a user with no available target devices attempts to use send-tab-to-self, prompting to sign in on other devices or scan the QR code for a faster sign-in.">
+        To send links, make sure your other devices are signed into Brave as <ph name="EMAIL">$1<ex>elisa@gmail.com</ex></ph>. Scan the QR code for a faster sign-in.
+      </message>
 
       <!-- Contextual Tasks -->
       <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_BUTTON_CONTEXT_MENU_REMOVE" desc="The label of the context menu item for removing the contextual tasks ephemeral toolbar button and hiding the side panel.">
