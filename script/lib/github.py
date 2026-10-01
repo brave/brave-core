@@ -163,8 +163,8 @@ class GitHub():
                     key.lower(): value
                     for key, value in e.headers.items()
                 }
-            raise GitHubError(
-                e.code, _parse_github_body(e.read()), error_headers) from e
+            raise GitHubError(e.code, _parse_github_body(e.read()),
+                              error_headers) from e
         except ValueError:
             # Returned response may be empty in some cases
             r = {}
@@ -418,17 +418,17 @@ def _patch_issue(repo, issue_number, patch_data):
         except (GitHubError, urllib.error.URLError) as e:
             # 422 is a rejected field and is raised immediately. A connection
             # failure is URLError and is safe to repeat.
-            if (attempt + 1 == attempts or
-                    (isinstance(e, GitHubError) and
-                     not _is_transient_github_error(e))):
+            if (attempt + 1 == attempts
+                    or (isinstance(e, GitHubError)
+                        and not _is_transient_github_error(e))):
                 raise
             wait = _retry_wait_seconds(e)
             if wait is None:
                 wait = delay_seconds
                 delay_seconds *= 2
             print('[WARNING] transient GitHub error updating ' +
-                  str(list(patch_data.keys())) + ', retrying in ' +
-                  str(wait) + 's')
+                  str(list(patch_data.keys())) + ', retrying in ' + str(wait) +
+                  's')
             time.sleep(wait)
 
 
