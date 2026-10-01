@@ -4,7 +4,8 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Add scoped_feature_list.h for disabling BraveAutoUpdateExtensions.'
+  - description:
+      'Add scoped_feature_list.h for disabling BraveAutoUpdateExtensions.'
     regex:
       pattern: '#include "base/test/run_until.h"'
       replace: |-
