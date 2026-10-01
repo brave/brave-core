@@ -155,17 +155,19 @@ class SummariseTest(unittest.TestCase):
 
     @staticmethod
     def _result(**overrides):
-        base = dict(bucket='brave-build-deps-public',
-                    key='nodejs/node_modules.tar.gz',
-                    url='https://brave-build-deps-public.s3.brave.com/'
-                    'nodejs/node_modules.tar.gz',
-                    sha256='abc123',
-                    size_bytes=4574694,
-                    version_id='v-1',
-                    etag='"e-tag"',
-                    signature=m.ArtifactSignature(
-                        key_id='arn:aws:kms:us-west-2:123456789012:key/abcd',
-                        signature='c2lnbmF0dXJlLWJ5dGVz'))
+        base = {
+            'bucket': 'brave-build-deps-public',
+            'key': 'nodejs/node_modules.tar.gz',
+            'url': 'https://brave-build-deps-public.s3.brave.com/'
+            'nodejs/node_modules.tar.gz',
+            'sha256': 'abc123',
+            'size_bytes': 4574694,
+            'version_id': 'v-1',
+            'etag': '"e-tag"',
+            'signature': m.ArtifactSignature(
+                key_id='arn:aws:kms:us-west-2:123456789012:key/abcd',
+                signature='c2lnbmF0dXJlLWJ5dGVz')
+        }
         base.update(overrides)
         return m.UploadResult(**base)
 

@@ -74,10 +74,12 @@ def CheckTypeScriptSuppressionsHaveReasons(input_api, output_api):
         r'.+\.ts$',
         r'.+\.tsx$',
     )
-    file_filter = lambda f: input_api.FilterSourceFile(
-        f,
-        files_to_check=files_to_check,
-        files_to_skip=input_api.DEFAULT_FILES_TO_SKIP)
+
+    def file_filter(f):
+        return input_api.FilterSourceFile(
+            f,
+            files_to_check=files_to_check,
+            files_to_skip=input_api.DEFAULT_FILES_TO_SKIP)
 
     # Match suppression annotations not followed by any non-whitespace reason.
     missing_reason_pattern = input_api.re.compile(
@@ -188,8 +190,10 @@ def CheckESLint(input_api, output_api):
     )
     files_to_skip = input_api.DEFAULT_FILES_TO_SKIP
 
-    file_filter = lambda f: input_api.FilterSourceFile(
-        f, files_to_check=files_to_check, files_to_skip=files_to_skip)
+    def file_filter(f):
+        return input_api.FilterSourceFile(f,
+                                          files_to_check=files_to_check,
+                                          files_to_skip=files_to_skip)
     files_to_check = input_api.AffectedFiles(file_filter=file_filter,
                                              include_deletes=False)
 
@@ -238,21 +242,6 @@ def CheckPylint(input_api, output_api):
         'trailing-whitespace',
         'undefined-variable',
         'unused-import',
-        # New or broadened since pylint 2.7; to be fixed and re-enabled.
-        'comparison-of-constants',
-        'consider-using-dict-items',
-        'consider-using-from-import',
-        'consider-using-in',
-        'consider-using-max-builtin',
-        'global-variable-not-assigned',
-        'unnecessary-dunder-call',
-        'unnecessary-lambda-assignment',
-        'unnecessary-list-index-lookup',
-        'use-dict-literal',
-        'use-implicit-booleaness-not-comparison',
-        'use-implicit-booleaness-not-len',
-        'use-maxsplit-arg',
-        'useless-option-value',
     ]
     return input_api.canned_checks.RunPylint(
         input_api,
@@ -316,10 +305,11 @@ def CheckLicense(input_api, output_api):
 
     bad_new_files = []
     bad_files = []
-    sources = lambda affected_file: input_api.FilterSourceFile(
-        affected_file,
-        files_to_check=files_to_check,
-        files_to_skip=files_to_skip)
+
+    def sources(affected_file):
+        return input_api.FilterSourceFile(affected_file,
+                                          files_to_check=files_to_check,
+                                          files_to_skip=files_to_skip)
     for f in input_api.AffectedSourceFiles(sources):
         contents = input_api.ReadFile(f, 'r')[:1000].replace('\r\n', '\n')
         if not contents:
@@ -390,10 +380,11 @@ def CheckNewThemeFilesForUpstreamOverride(input_api, output_api):
                 input_api.os_path.basename(path))[0].split('_'))
         return any(part in CHANNEL_DIRS for part in parts)
 
-    source_file_filter = lambda f: input_api.FilterSourceFile(
-        f,
-        files_to_check=[r"^app/theme/.*", r"^build/chromium/resources/.*"],
-        files_to_skip=input_api.DEFAULT_FILES_TO_SKIP)
+    def source_file_filter(f):
+        return input_api.FilterSourceFile(
+            f,
+            files_to_check=[r"^app/theme/.*", r"^build/chromium/resources/.*"],
+            files_to_skip=input_api.DEFAULT_FILES_TO_SKIP)
 
     new_sources = []
     for f in input_api.AffectedSourceFiles(source_file_filter):
@@ -615,10 +606,11 @@ def CheckNewSourceFileWithoutGnChangeOnUpload(input_api, output_api):
     """Checks newly added source files have corresponding GN changes."""
     files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (r"chromium_src/.*", )
 
-    source_file_filter = lambda f: input_api.FilterSourceFile(
-        f,
-        files_to_check=(r'.+\.cc$', r'.+\.c$', r'.+\.mm$', r'.+\.m$'),
-        files_to_skip=files_to_skip)
+    def source_file_filter(f):
+        return input_api.FilterSourceFile(
+            f,
+            files_to_check=(r'.+\.cc$', r'.+\.c$', r'.+\.mm$', r'.+\.m$'),
+            files_to_skip=files_to_skip)
 
     new_sources = []
     for f in input_api.AffectedSourceFiles(source_file_filter):
@@ -626,8 +618,10 @@ def CheckNewSourceFileWithoutGnChangeOnUpload(input_api, output_api):
             continue
         new_sources.append(f.LocalPath())
 
-    gn_file_filter = lambda f: input_api.FilterSourceFile(
-        f, files_to_check=(r'.+\.gn$', r'.+\.gni$'))
+    def gn_file_filter(f):
+        return input_api.FilterSourceFile(f,
+                                          files_to_check=(r'.+\.gn$',
+                                                          r'.+\.gni$'))
 
     all_gn_changed_contents = ''
     for f in input_api.AffectedSourceFiles(gn_file_filter):

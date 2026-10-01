@@ -15,7 +15,7 @@ import tempfile
 import platform
 from typing import List, Optional
 
-import components.path_util as path_util
+from components import path_util
 
 # pylint: disable=import-error
 # pytype: disable=import-error

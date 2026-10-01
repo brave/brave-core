@@ -99,12 +99,12 @@ def main():
         f'<?xml version="1.0" encoding="UTF-8"?>\n<testsuites name="tests" '
         f'tests="{test_count}" errors="0" failures="{failure_count}" skip="0">',
         end='')
-    for test_suite in output.keys():
+    for test_suite, suite in output.items():
         print(
             f'<testsuite name="{test_suite}" '
-            f'tests="{output[test_suite]["test_count"]}" errors="0" failures='
-            f'"{output[test_suite]["failure_count"]}" '
-            f'skip="0">{output[test_suite]["xml"]}</testsuite>',
+            f'tests="{suite["test_count"]}" errors="0" failures='
+            f'"{suite["failure_count"]}" '
+            f'skip="0">{suite["xml"]}</testsuite>',
             end='')
     print('</testsuites>', end='')
 

@@ -193,7 +193,8 @@ def write_manifest(path, manifest):
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    parser = argparse.ArgumentParser(
+        description=__doc__.split("\n", maxsplit=1)[0])
     parser.add_argument("--work-dir", required=True)
     args = parser.parse_args()
 

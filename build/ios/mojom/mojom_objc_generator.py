@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# pylint: disable=import-error,too-many-return-statements,no-self-use
+# pylint: disable=import-error,too-many-return-statements
 # pylint: disable=too-many-branches,no-member
 
 import os
@@ -11,7 +11,7 @@ import os
 import secrets
 import string
 import mojom.generate.module as mojom
-import mojom.generate.generator as generator
+from mojom.generate import generator
 from mojom.generate.generator import WriteFile
 from mojom.generate.template_expander import UseJinja
 

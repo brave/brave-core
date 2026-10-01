@@ -241,14 +241,11 @@ class TestCoreHooksPathGuard(unittest.TestCase):
     hooks."""
 
     def setUp(self) -> None:
-        self._sandbox = _Sandbox()
-        self._sandbox.__enter__()
+        self._sandbox = self.enterContext(_Sandbox())
         self._fake_hooks = self._sandbox.root.parent / 'fake_hooks'
         self._fake_hooks.mkdir()
         self._env = _fake_global_env(self._fake_hooks)
 
-    def tearDown(self) -> None:
-        self._sandbox.__exit__(None, None, None)
 
     def test_install_hook_blocked(self) -> None:
         """install-hook exits non-zero and mentions core.hooksPath."""
@@ -281,11 +278,8 @@ class TestInstallHook(unittest.TestCase):
     """git cr install-hook creates the correct symlink (or shim on Windows)."""
 
     def setUp(self) -> None:
-        self._sandbox = _Sandbox()
-        self._sandbox.__enter__()
+        self._sandbox = self.enterContext(_Sandbox())
 
-    def tearDown(self) -> None:
-        self._sandbox.__exit__(None, None, None)
 
     def _run(self) -> subprocess.CompletedProcess:
         return self._sandbox.run_gc(['install-hook'])
@@ -340,12 +334,9 @@ class TestSetupAlias(unittest.TestCase):
     """git cr setup-alias must register a working git alias in .git/config."""
 
     def setUp(self) -> None:
-        self._sandbox = _Sandbox()
-        self._sandbox.__enter__()
+        self._sandbox = self.enterContext(_Sandbox())
         self._sandbox.install_hook()
 
-    def tearDown(self) -> None:
-        self._sandbox.__exit__(None, None, None)
 
     def _run(self) -> subprocess.CompletedProcess:
         return self._sandbox.run_gc(['setup-alias'])

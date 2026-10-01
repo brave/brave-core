@@ -31,12 +31,9 @@ class TestFlagPassthrough(unittest.TestCase):
     """gc must strip its own flags and forward everything else to git."""
 
     def setUp(self) -> None:
-        self._sandbox = _Sandbox()
-        self._sandbox.__enter__()
+        self._sandbox = self.enterContext(_Sandbox())
         self._sandbox.install_hook()
 
-    def tearDown(self) -> None:
-        self._sandbox.__exit__(None, None, None)
 
     def test_custom_flags_stripped_before_git(self) -> None:
         """--tagged, --issue, --culprit are stripped; git never receives them.
@@ -103,12 +100,9 @@ class TestCommitIntegration(unittest.TestCase):
     """gc must inject env vars that the commit-msg hook reads correctly."""
 
     def setUp(self) -> None:
-        self._sandbox = _Sandbox()
-        self._sandbox.__enter__()
+        self._sandbox = self.enterContext(_Sandbox())
         self._sandbox.install_hook()
 
-    def tearDown(self) -> None:
-        self._sandbox.__exit__(None, None, None)
 
     def test_commit_without_flags_succeeds(self) -> None:
         """A plain commit via gc works end-to-end."""
@@ -206,12 +200,9 @@ class TestCulpritLinks(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        self._sandbox = _Sandbox()
-        self._sandbox.__enter__()
+        self._sandbox = self.enterContext(_Sandbox())
         self._sandbox.install_hook()
 
-    def tearDown(self) -> None:
-        self._sandbox.__exit__(None, None, None)
 
     def _commit_in(self, subject: str, repo_path: Path) -> str:
         """Create an empty commit in repo_path and return its hash."""
@@ -306,11 +297,8 @@ class TestCommitSanityCheck(unittest.TestCase):
     """cmd_commit must refuse early when the hook is absent or misconfigured."""
 
     def setUp(self) -> None:
-        self._sandbox = _Sandbox()
-        self._sandbox.__enter__()
+        self._sandbox = self.enterContext(_Sandbox())
 
-    def tearDown(self) -> None:
-        self._sandbox.__exit__(None, None, None)
 
     def test_missing_hook_is_rejected(self) -> None:
         """cmd_commit exits non-zero and mentions install-hook when absent."""
@@ -346,11 +334,8 @@ class TestReassignFixup(unittest.TestCase):
     """git cr commit --fixup=reassign:<ref> delegates to brockit reassign."""
 
     def setUp(self) -> None:
-        self._sandbox = _Sandbox()
-        self._sandbox.__enter__()
+        self._sandbox = self.enterContext(_Sandbox())
 
-    def tearDown(self) -> None:
-        self._sandbox.__exit__(None, None, None)
 
     def _commit_count(self) -> int:
         return int(
@@ -500,12 +485,9 @@ class TestGracefulExit(unittest.TestCase):
     """gc must not emit Python tracebacks on Ctrl-C."""
 
     def setUp(self) -> None:
-        self._sandbox = _Sandbox()
-        self._sandbox.__enter__()
+        self._sandbox = self.enterContext(_Sandbox())
         self._sandbox.install_hook()
 
-    def tearDown(self) -> None:
-        self._sandbox.__exit__(None, None, None)
 
     @unittest.skipIf(
         platform.system() == 'Windows',

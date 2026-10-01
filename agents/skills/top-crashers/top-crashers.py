@@ -486,7 +486,7 @@ def backtrace_query(project, query_body, api_key, verbose=False):
             except Exception:
                 pass
 
-            if e.code == 401 or e.code == 403:
+            if e.code in (401, 403):
                 print(
                     f"Error: HTTP {e.code} from Backtrace API. "
                     "Check that BACKTRACE_API_KEY has query:post capability.",

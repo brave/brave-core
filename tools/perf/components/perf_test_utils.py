@@ -14,7 +14,7 @@ from threading import Timer
 from typing import Dict, List, Optional, Tuple
 from urllib.request import urlopen
 
-import components.path_util as path_util
+from components import path_util
 
 
 def IsSha1Hash(s: str) -> bool:

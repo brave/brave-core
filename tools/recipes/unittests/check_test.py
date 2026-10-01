@@ -48,6 +48,8 @@ class CheckerTest(unittest.TestCase):
 
         def body(check):
             check(True)
+            # The literal comparison is the fixture under test.
+            # pylint: disable-next=comparison-of-constants
             check('hint', 1 < 2)
 
         body(checker)
@@ -57,6 +59,8 @@ class CheckerTest(unittest.TestCase):
         checker = Checker(HOOK)
 
         def body(check):
+            # The literal comparison is the fixture under test.
+            # pylint: disable-next=comparison-of-constants
             check(1 == 2)
 
         body(checker)

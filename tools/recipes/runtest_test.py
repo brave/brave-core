@@ -20,20 +20,20 @@ import runtest as m
 
 
 def _options(**overrides) -> m.Options:
-    defaults = dict(
-        build_dir=Path('out/Component'),
-        test_type='brave_unit_tests',
-        builder_name=None,
-        run_python_script=False,
-        xvfb=True,
-        parse_gtest_output=False,
-        enable_asan=False,
-        enable_lsan=False,
-        enable_msan=False,
-        enable_tsan=False,
-        strip_path_prefix='build/src/out/Release/../../',
-        test_launcher_summary_output=None,
-    )
+    defaults = {
+        'build_dir': Path('out/Component'),
+        'test_type': 'brave_unit_tests',
+        'builder_name': None,
+        'run_python_script': False,
+        'xvfb': True,
+        'parse_gtest_output': False,
+        'enable_asan': False,
+        'enable_lsan': False,
+        'enable_msan': False,
+        'enable_tsan': False,
+        'strip_path_prefix': 'build/src/out/Release/../../',
+        'test_launcher_summary_output': None
+    }
     defaults.update(overrides)
     return m.Options(**defaults)
 

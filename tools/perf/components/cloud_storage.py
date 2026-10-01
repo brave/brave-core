@@ -6,8 +6,8 @@ import os
 
 from enum import Enum
 
-import components.perf_test_utils as perf_test_utils
-import components.path_util as path_util
+from components import perf_test_utils
+from components import path_util
 
 with path_util.SysPath(path_util.GetDepotToolsDir()):
   # pytype: disable=import-error

@@ -1524,8 +1524,8 @@ class Upgrade(Versioned):
     Return:
         Returns True if the process was successful, and False otherwise.
         """
-        if (self.working_version != self.chromium_src_version
-                and self.target_version != self.chromium_src_version):
+        if self.chromium_src_version not in (self.working_version,
+                                             self.target_version):
             logging.warning(
                 'Chrommium seems to be synced to a version entirely '
                 'unrelated. Brave %s ➜ Chromium %s', self.working_version,

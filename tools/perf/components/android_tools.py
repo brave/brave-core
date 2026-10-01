@@ -11,7 +11,7 @@ import time
 from typing import List, Optional
 
 from components.perf_test_utils import GetProcessOutput
-import components.path_util as path_util
+from components import path_util
 
 
 def RunAsRoot(cmd: str) -> bool:

@@ -16,7 +16,7 @@ from typing import Optional
 
 from components.perf_test_utils import GetProcessOutput
 from components.version import BraveVersion
-import components.git_tools as git_tools
+from components import git_tools
 
 
 class FieldTrialsMode(Enum):

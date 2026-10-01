@@ -172,13 +172,13 @@ def main():
                                                changelog_section, logging)
     logging.debug("release body is now: \n'%s'", new_body)
 
-    data = dict(tag_name=tag, name=release['name'], body=new_body)
+    data = {'tag_name': tag, 'name': release['name'], 'body': new_body}
     release_id = release['id']
     logging.debug("Updating release with id: %s", release_id)
-    release = retry_func(lambda _attempt: repo.releases.__call__(
-        f'{release_id}').patch(data=data),
-                         catch=requests.exceptions.ConnectionError,
-                         retries=3)
+    release = retry_func(
+        lambda _attempt: repo.releases(f'{release_id}').patch(data=data),
+        catch=requests.exceptions.ConnectionError,
+        retries=3)
     logging.debug("Release body after update: \n'%s'", release['body'])
 
 

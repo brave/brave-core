@@ -30,8 +30,10 @@ def CheckPatchFileSource(input_api, output_api):
     files_to_check = (r'.+\.patch$', )
     files_to_skip = ()
 
-    file_filter = lambda f: input_api.FilterSourceFile(
-        f, files_to_check=files_to_check, files_to_skip=files_to_skip)
+    def file_filter(f):
+        return input_api.FilterSourceFile(f,
+                                          files_to_check=files_to_check,
+                                          files_to_skip=files_to_skip)
 
     items = []
     for f in input_api.AffectedSourceFiles(file_filter):
@@ -91,8 +93,10 @@ def CheckPatchFileIndexHeader(input_api, output_api):
     files_to_check = (r'.+\.patch$', )
     files_to_skip = ()
 
-    file_filter = lambda f: input_api.FilterSourceFile(
-        f, files_to_check=files_to_check, files_to_skip=files_to_skip)
+    def file_filter(f):
+        return input_api.FilterSourceFile(f,
+                                          files_to_check=files_to_check,
+                                          files_to_skip=files_to_skip)
 
     items = []
     for f in input_api.AffectedSourceFiles(file_filter):
@@ -138,8 +142,10 @@ def CheckPatchFileSingleSource(input_api, output_api):
     files_to_check = (r'.+\.patch$', )
     files_to_skip = ()
 
-    file_filter = lambda f: input_api.FilterSourceFile(
-        f, files_to_check=files_to_check, files_to_skip=files_to_skip)
+    def file_filter(f):
+        return input_api.FilterSourceFile(f,
+                                          files_to_check=files_to_check,
+                                          files_to_skip=files_to_skip)
 
     items = []
     for f in input_api.AffectedSourceFiles(file_filter):

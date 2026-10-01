@@ -279,8 +279,9 @@ def _check_package(modulebody: str, relpath_base: str) -> str | None:
 
     relpath_toks = relpath_base.split(os.path.sep)
 
-    is_module_test = lambda toks: (toks[0] == 'recipe_modules' and len(toks) >
-                                   3 and toks[3] in ('examples', 'tests'))
+    def is_module_test(toks):
+        return (toks[0] == 'recipe_modules' and len(toks) > 3
+                and toks[3] in ('examples', 'tests'))
 
     err = None
     toplevel_namespace = relpath_toks[0]

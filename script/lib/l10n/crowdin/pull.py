@@ -235,7 +235,7 @@ def check_plural_string_clauses(all_text, clauses_text):
         last_end = end
     unmatched_parts.append(clauses_text[last_end:])
     unmatched_text = (' '.join(unmatched_parts).strip()).strip()
-    if len(unmatched_text):
+    if unmatched_text:
         error = (f"Plural string has invalid format:\n{'-' * 10}\n"
                  f"{all_text}\n{'-' * 10}\nUnmatched parts:\n"
                  f"{unmatched_text}\n{'-' * 10}")

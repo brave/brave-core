@@ -11,11 +11,11 @@ import sys
 
 from typing import List
 
-import components.perf_config as perf_config
-import components.perf_test_runner as perf_test_runner
-import components.perf_test_utils as perf_test_utils
-import components.path_util as path_util
-import components.cloud_storage as cloud_storage
+from components import perf_config
+from components import perf_test_runner
+from components import perf_test_utils
+from components import path_util
+from components import cloud_storage
 
 from components.common_options import CommonOptions
 

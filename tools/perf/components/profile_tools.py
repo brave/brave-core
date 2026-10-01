@@ -15,10 +15,10 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass, asdict
 
-import components.cloud_storage as cloud_storage
-import components.git_tools as git_tools
-import components.perf_test_runner as perf_test_runner
-import components.perf_config as perf_config
+from components import cloud_storage
+from components import git_tools
+from components import perf_test_runner
+from components import perf_config
 
 from components.path_util import GetBravePerfProfileDir
 from components.perf_profile import GetProfilePath
@@ -172,7 +172,7 @@ def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions,
   if options.upload:
     new_profile_sha1_path = cloud_storage.UploadFileToCloudStorage(
         cloud_storage.CloudFolder.TEST_PROFILES, profile_zip)
-    files: Dict[str, str] = dict()
+    files: Dict[str, str] = {}
     files[new_profile_sha1_path] = os.path.join(GetBravePerfProfileDir(),
                                                 zip_filename + '.sha1')
     files[profile_zip_sizes] = os.path.join(GetBravePerfProfileDir(),

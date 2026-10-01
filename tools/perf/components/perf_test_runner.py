@@ -12,8 +12,8 @@ from copy import deepcopy
 from typing import List, Optional, Tuple, Set
 from lib.util import scoped_cwd
 
-import components.path_util as path_util
-import components.perf_test_utils as perf_test_utils
+from components import path_util
+from components import perf_test_utils
 from components.browser_binary_fetcher import BrowserBinary, PrepareBinary
 from components.browser_type import BraveVersion
 from components.common_options import CommonOptions
@@ -401,7 +401,7 @@ def RunConfigurations(configurations: List[RunnerConfig],
                   os.path.join(common_options.working_directory, 'artifacts',
                                benchmark.name, 'results.html'))
 
-  if logs != []:
+  if logs:
     logging.info('Logs:')
     for item in logs:
       logging.info(item)

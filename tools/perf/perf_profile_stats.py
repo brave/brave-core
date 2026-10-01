@@ -14,7 +14,7 @@ import argparse
 import tempfile
 import json
 
-import components.profile_tools as profile_tools
+from components import profile_tools
 from components.version import BraveVersion
 
 parser = argparse.ArgumentParser()
