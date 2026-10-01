@@ -204,6 +204,21 @@ TEST_F(PolkadotDappUtilsUnitTest, PreferredAccount_UnknownAllowedAccount) {
       keyring_service(), std::vector<std::string>{"not-an-account"}));
 }
 
+TEST_F(PolkadotDappUtilsUnitTest, PreferredAccount_TestnetAllowedAccount) {
+  // Assume we somehow have slipped a testnet account in accidentally.
+
+  CreateWallet();
+  auto testnet = AddAccount(mojom::KeyringId::kPolkadotTestnet);
+  auto imported_testnet = AddAccount(mojom::KeyringId::kPolkadotImportTestnet);
+  ASSERT_TRUE(testnet);
+  ASSERT_TRUE(imported_testnet);
+
+  EXPECT_FALSE(GetPolkadotPreferredDappAccount(
+      keyring_service(),
+      std::vector<std::string>{PermissionIdentifier(testnet),
+                               PermissionIdentifier(imported_testnet)}));
+}
+
 TEST_F(PolkadotDappUtilsUnitTest, MakeInjectedAccount) {
   CreateWallet();
   auto account = AddAccount();
