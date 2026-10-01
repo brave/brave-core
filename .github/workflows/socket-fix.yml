@@ -153,7 +153,21 @@ jobs:
           fi
           git add -A
           git commit -m 'fix: address security advisories'
-          git push origin "HEAD:refs/heads/${PR_BRANCH}"
-          gh pr create --base master --head "$PR_BRANCH" \
-            --title 'fix: address security advisories' --body "$PR_BODY" \
-            --label "CI/skip" --label "security"
+          # Idempotent: replace any stale branch from a previous run (e.g. one
+          # left behind by a merged PR) and reuse its open PR if one exists.
+          # The lease must be explicit because a fresh runner has no refetch
+          # history for the remote branch.
+          REMOTE_SHA=$(git ls-remote origin "refs/heads/${PR_BRANCH}" | cut -f1)
+          if [ -n "$REMOTE_SHA" ]; then
+            git push --force-with-lease="refs/heads/${PR_BRANCH}:${REMOTE_SHA}" \
+              origin "HEAD:refs/heads/${PR_BRANCH}"
+          else
+            git push origin "HEAD:refs/heads/${PR_BRANCH}"
+          fi
+          if [ "$(gh pr view "$PR_BRANCH" --json state --jq .state 2>/dev/null)" = "OPEN" ]; then
+            echo "Updated existing PR for ${PR_BRANCH}"
+          else
+            gh pr create --base master --head "$PR_BRANCH" \
+              --title 'fix: address security advisories' --body "$PR_BODY" \
+              --label "CI/skip" --label "security"
+          fi
