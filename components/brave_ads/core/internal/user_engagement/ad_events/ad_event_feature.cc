@@ -7,6 +7,6 @@
 
 namespace brave_ads {
 
-BASE_FEATURE(kAdEventFeature, "AdEvent", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kAdEventFeature, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace brave_ads

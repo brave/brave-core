@@ -7,6 +7,6 @@
 
 namespace brave_ads {
 
-BASE_FEATURE(kRemindersFeature, "Reminders", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kRemindersFeature, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace brave_ads

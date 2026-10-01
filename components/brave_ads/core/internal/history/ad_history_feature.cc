@@ -7,6 +7,6 @@
 
 namespace brave_ads {
 
-BASE_FEATURE(kAdHistoryFeature, "AdHistory", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kAdHistoryFeature, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace brave_ads
