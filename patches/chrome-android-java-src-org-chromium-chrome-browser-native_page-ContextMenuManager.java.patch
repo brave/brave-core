@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/native_page/ContextMenuManager.java b/chrome/android/java/src/org/chromium/chrome/browser/native_page/ContextMenuManager.java
-index 90cf2beffedcbc0d6981f0098226fb2bf4cddb2d..46beb4d693cba58df12c609bcb108cb02c5d561c 100644
+index 6f74ff389d98bf29887257ddacceadb216d6969c..20a27a95dbfb6c0f9baf1c83bc0d2484a65d54c2 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/native_page/ContextMenuManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/native_page/ContextMenuManager.java
-@@ -46,6 +46,7 @@ import java.lang.annotation.RetentionPolicy;
+@@ -47,6 +47,7 @@ import java.lang.annotation.RetentionPolicy;
   */
  @NullMarked
  public class ContextMenuManager {
@@ -10,7 +10,7 @@ index 90cf2beffedcbc0d6981f0098226fb2bf4cddb2d..46beb4d693cba58df12c609bcb108cb0
      @IntDef({
          ContextMenuItemId.SEARCH,
          ContextMenuItemId.OPEN_IN_NEW_TAB,
-@@ -269,6 +270,7 @@ public class ContextMenuManager {
+@@ -272,6 +273,7 @@ public class ContextMenuManager {
              menuModel.add(builder.build());
          }
  

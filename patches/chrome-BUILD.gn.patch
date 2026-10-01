@@ -10,7 +10,7 @@ index d98c86e5dace91937c62c5428084686c666ab0d4..e173fc7d536bdce25da825b52d48848d
  
        deps += [
          ":chrome_dll",
-@@ -535,11 +536,12 @@ if (is_win) {
+@@ -534,11 +535,12 @@ if (is_win) {
        args += [ "--keystone=0" ]
      }
    }
@@ -24,7 +24,7 @@ index d98c86e5dace91937c62c5428084686c666ab0d4..e173fc7d536bdce25da825b52d48848d
      extra_substitutions = [
        "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
        "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
-@@ -562,6 +564,7 @@ if (is_win) {
+@@ -561,6 +563,7 @@ if (is_win) {
        "//chrome/common:buildflags",
        "//chrome/common:version_header",
      ]
@@ -32,7 +32,7 @@ index d98c86e5dace91937c62c5428084686c666ab0d4..e173fc7d536bdce25da825b52d48848d
  
      bundle_deps = [
        ":chrome_app_strings_bundle_data",
-@@ -714,6 +717,7 @@ if (is_win) {
+@@ -713,6 +716,7 @@ if (is_win) {
        # this dependency directly copies the file into the framework's
        # resources directory.
        public_deps += [ ":chrome_framework_widevine_signature" ]
@@ -40,7 +40,7 @@ index d98c86e5dace91937c62c5428084686c666ab0d4..e173fc7d536bdce25da825b52d48848d
      }
    }
  
-@@ -757,9 +761,11 @@ if (is_win) {
+@@ -756,9 +760,11 @@ if (is_win) {
        "--scm=0",
      ]
    }
@@ -52,7 +52,7 @@ index d98c86e5dace91937c62c5428084686c666ab0d4..e173fc7d536bdce25da825b52d48848d
      if (is_chrome_branded && include_branded_entitlements) {
        # These entitlements are bound to the official Google Chrome signing
        # certificate and will not necessarily work in any other build.
-@@ -784,6 +790,7 @@ if (is_win) {
+@@ -783,6 +789,7 @@ if (is_win) {
          info_plist_target = invoker.info_plist_target
        } else {
          info_plist_target = ":chrome_helper_plist"
@@ -60,7 +60,7 @@ index d98c86e5dace91937c62c5428084686c666ab0d4..e173fc7d536bdce25da825b52d48848d
        }
  
        extra_substitutions = [
-@@ -1067,6 +1074,7 @@ if (is_win) {
+@@ -1066,6 +1073,7 @@ if (is_win) {
      if (enable_updater) {
        if (is_chrome_branded) {
          sources += [ "//third_party/updater/chrome_mac_universal_prod/cipd/${updater_product_full_name}.app" ]
