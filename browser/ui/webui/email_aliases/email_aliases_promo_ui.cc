@@ -31,12 +31,13 @@ EmailAliasesPromoUI::EmailAliasesPromoUI(content::WebUI* web_ui)
   auto* profile = Profile::FromWebUI(web_ui);
   auto* source =
       content::WebUIDataSource::CreateAndAdd(profile, kEmailAliasesPromoHost);
-  settings::BraveAddLocalizedStrings(source, profile);
   // Allow styled-components and theming in the Top Chrome panel.
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       "style-src 'self' 'unsafe-inline' chrome://resources chrome://theme;");
+#if !BUILDFLAG(IS_ANDROID)
   content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
+#endif
   webui::SetupWebUIDataSource(source, kEmailAliasesPromoResources,
                               IDR_EMAIL_ALIASES_PROMO_HTML);
 }

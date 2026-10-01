@@ -83,8 +83,11 @@ source_set("internal") {
   if (enable_email_aliases) {
     deps += [
       "//brave/browser/email_aliases",
-      "//brave/browser/ui/email_aliases",
       "//brave/components/email_aliases:features",
     ]
+
+    if (!is_android) {
+      deps += [ "//brave/browser/ui/email_aliases" ]
+    }
   }
 }
