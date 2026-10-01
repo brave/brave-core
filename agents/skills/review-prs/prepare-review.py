@@ -268,12 +268,12 @@ def load_org_members():
         log(f"ERROR: org members file not found at {org_members_path}")
         log("Set BRAVE_ORG_MEMBERS_PATH to the correct location.")
         sys.exit(1)
-    with open(org_members_path) as f:
+    with open(org_members_path, encoding='utf-8') as f:
         members = set(line.strip() for line in f if line.strip())
     trusted_reviewers_path = os.path.join(_SCRIPT_DIR, "scripts",
                                           "trusted-reviewers.txt")
     try:
-        with open(trusted_reviewers_path) as f:
+        with open(trusted_reviewers_path, encoding='utf-8') as f:
             members |= set(line.strip() for line in f if line.strip())
     except FileNotFoundError:
         pass
@@ -1383,7 +1383,7 @@ def process_pr(pr,
     pr_work_dir = os.path.join(work_dir, f"pr_{pr_number}")
     os.makedirs(pr_work_dir, exist_ok=True)
     hashes_file = os.path.join(pr_work_dir, "file_hashes.json")
-    with open(hashes_file, "w") as f:
+    with open(hashes_file, "w", encoding='utf-8') as f:
         json.dump(hashes, f, indent=2, sort_keys=True)
 
     if prior_hashes:
@@ -1470,10 +1470,10 @@ def process_pr(pr,
             f"falling back to {TARGET_REPO_PATH}")
 
     diff_file = os.path.join(pr_work_dir, "diff.patch")
-    with open(diff_file, "w") as f:
+    with open(diff_file, "w", encoding='utf-8') as f:
         f.write(join_sections(sections[p] for p in changed))
     prior_comments_file = os.path.join(pr_work_dir, "prior_comments.md")
-    with open(prior_comments_file, "w") as f:
+    with open(prior_comments_file, "w", encoding='utf-8') as f:
         f.write(prior_comments or "")
 
     ctx = {
@@ -1492,7 +1492,7 @@ def process_pr(pr,
         prompt_file = os.path.join(pr_work_dir, f"{chunk_id}_prompt.txt")
         results_file = os.path.join(pr_work_dir, f"{chunk_id}_candidates.json")
         prompt = build(results_file)
-        with open(prompt_file, "w") as f:
+        with open(prompt_file, "w", encoding='utf-8') as f:
             f.write(prompt)
         return prompt_file, results_file, prompt
 
@@ -1851,7 +1851,7 @@ def main():
     }
 
     manifest_path = os.path.join(work_dir, "manifest.json")
-    with open(manifest_path, "w") as f:
+    with open(manifest_path, "w", encoding='utf-8') as f:
         json.dump(output, f, indent=2)
 
     total_prompts = sum(

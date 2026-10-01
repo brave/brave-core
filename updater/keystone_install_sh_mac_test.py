@@ -212,7 +212,7 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
         return dmg_dir
 
     def _prepare_install_sh(self):
-        with open(KEYSTONE_INSTALL_SH, "r") as f:
+        with open(KEYSTONE_INSTALL_SH, "r", encoding='utf-8') as f:
             source = f.read()
         bin_dir = join(self.temp_dir, "bin")
         mkdir(bin_dir)
@@ -224,7 +224,7 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
                                  flags=re.MULTILINE)
         self.assertEqual(1, count)
         install_sh_path = join(self.temp_dir, "keystone_install.sh")
-        with open(install_sh_path, "w") as f:
+        with open(install_sh_path, "w", encoding='utf-8') as f:
             f.write(patched)
         chmod(install_sh_path, stat(install_sh_path).st_mode | S_IXUSR)
         return install_sh_path, bin_dir
@@ -276,7 +276,7 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
         env = env.copy() if env is not None else {}
         for name in commands:
             wrapper_path = join(self.bin_dir, name)
-            with open(wrapper_path, "w") as f:
+            with open(wrapper_path, "w", encoding='utf-8') as f:
                 f.write(COMMAND_WRAPPER)
             chmod(wrapper_path, stat(wrapper_path).st_mode | S_IXUSR)
         prompt_r, prompt_w = pipe()

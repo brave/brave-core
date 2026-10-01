@@ -60,8 +60,8 @@ def _GetComponentInfo(path: str) -> Optional[Tuple[str, str]]:
   if not os.path.isdir(path):
     return None
 
-  for f in Path(path).glob('**/manifest.json'):
-    with open(f, 'r') as f:
+  for manifest_path in Path(path).glob('**/manifest.json'):
+    with open(manifest_path, 'r', encoding='utf-8') as f:
       manifest_json = json.load(f)
       if 'name' in manifest_json and 'version' in manifest_json:
         return manifest_json['name'], manifest_json['version']

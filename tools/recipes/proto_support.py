@@ -557,7 +557,8 @@ def _build_lock(deps_dir: str):
     except ImportError:
         yield
         return
-    with open(os.path.join(deps_dir, '.build.lock'), 'w') as lock_file:
+    with open(os.path.join(deps_dir, '.build.lock'), 'w',
+              encoding='utf-8') as lock_file:
         fcntl.flock(lock_file, fcntl.LOCK_EX)
         try:
             yield

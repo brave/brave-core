@@ -17,7 +17,7 @@ import stat
 def main():
     args = parse_args()
 
-    with open(args.install_template_path) as f:
+    with open(args.install_template_path, encoding='utf-8') as f:
         script = f.read()
 
     replacements = {
@@ -45,7 +45,7 @@ def main():
 
     makedirs(dirname(args.out_file), exist_ok=True)
 
-    with open(args.out_file, 'w') as f:
+    with open(args.out_file, 'w', encoding='utf-8') as f:
         f.write(script)
 
     make_executable(args.out_file)

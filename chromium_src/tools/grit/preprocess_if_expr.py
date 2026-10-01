@@ -36,7 +36,7 @@ def maybe_keep_upstream_version(override_in_folder, out_folder, override_file):
     # The path to the upstream file
     upstream_file_path = os.path.join(out_folder, override_file)
 
-    with open(override_in_path) as f:
+    with open(override_in_path, encoding='utf-8') as f:
         text = f.read()
 
         # If we reference the upstream file in our overridden file, make sure

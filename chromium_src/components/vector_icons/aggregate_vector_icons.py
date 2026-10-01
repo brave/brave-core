@@ -20,7 +20,7 @@ def LoadLeoOverrides():
         '//brave/components/vector_icons/leo_overrides.json')
     leo_override_format = '//brave/node_modules/@brave/leo/icons-skia/{}.icon'
 
-    with open(leo_overrides_config_path, 'r') as f:
+    with open(leo_overrides_config_path, 'r', encoding='utf-8') as f:
         leo_overrides_config = json.load(f)
 
     leo_overrides = {}
@@ -38,7 +38,7 @@ def LoadLeoOverrides():
 
 # Rewrites the file list with overridden icons.
 def RewriteFileListWithOverrides(file_list):
-    with open(file_list, "r") as f:
+    with open(file_list, "r", encoding='utf-8') as f:
         file_list_contents = f.read()
     icon_list = shlex.split(file_list_contents)
 
@@ -82,7 +82,7 @@ def RewriteFileListWithOverrides(file_list):
         rewritten_icon_list.append(icon_path)
 
     # Write the rewritten file list to the original file list.
-    with open(file_list, "w") as f:
+    with open(file_list, "w", encoding='utf-8') as f:
         f.write(shlex.join(rewritten_icon_list))
 
 

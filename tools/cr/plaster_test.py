@@ -1116,7 +1116,7 @@ class PlasterTest(unittest.TestCase):
             test_file, 'Initial Chromium content.')
         patch_path = plaster.PatchinfoBuilder(plaster_file.path).patch.path
         later = patch_path.stat().st_mtime + 10
-        patch_path.write_text('tampered patch contents\n')
+        patch_path.write_text('tampered patch contents\n', encoding='utf-8')
         os.utime(patch_path, (later, later))
         self.assertTrue(plaster_file.needs_apply())
 
@@ -1218,7 +1218,8 @@ class PlasterTest(unittest.TestCase):
 
         plaster.PlasterFile(plaster_path).apply()
 
-        patch = plaster.PatchinfoBuilder(plaster_path).patch.path.read_text()
+        patch = plaster.PatchinfoBuilder(plaster_path).patch.path.read_text(
+            encoding='utf-8')
         hunk_header = next(line for line in patch.splitlines()
                            if line.startswith('@@'))
 

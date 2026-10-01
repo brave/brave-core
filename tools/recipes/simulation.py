@@ -216,6 +216,8 @@ class SubprocessStepRunner:
                 path = handles.get(handle)
                 if path is None:
                     return None
+                # Std handles are always opened in binary mode.
+                # pylint: disable-next=unspecified-encoding
                 return stack.enter_context(open(path, mode))
 
             return subprocess.run(cmd,

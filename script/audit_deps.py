@@ -77,7 +77,7 @@ def main():
         errors += cargo_audit_deps(os.path.join(args.source_root, p), args)
 
     if args.output:
-        with open(args.output, 'w') as f:
+        with open(args.output, 'w', encoding='utf-8') as f:
             json.dump(errors, f)
 
     return errors > 0

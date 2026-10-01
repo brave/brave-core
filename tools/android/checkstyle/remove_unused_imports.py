@@ -17,7 +17,7 @@ def main():
     chromium_style_path = os.path.join(chromium_checkstyle_dir,
                                        "unused-imports.xml")
 
-    with open(chromium_script, "r") as f:
+    with open(chromium_script, "r", encoding='utf-8') as f:
         contents = f.read()
         contents = contents.replace("main()", "chromium_main()")
         contents = contents.replace("if __name__ == '__main__':",

@@ -44,7 +44,9 @@ def main():
 
     # Create the xcassets folder and standard Contents.json
     os.makedirs(output_directory, exist_ok=True)
-    with open(os.path.join(output_directory, "Contents.json"), "w") as f:
+    with open(os.path.join(output_directory, "Contents.json"),
+              "w",
+              encoding='utf-8') as f:
         json.dump({"info": {"author": "xcode", "version": 1}}, f)
 
     for icon in icons:
@@ -62,7 +64,9 @@ def main():
         shutil.copyfile(svg_path, os.path.join(symbolset, icon))
 
         # Create Contents.json for the symbolset
-        with open(os.path.join(symbolset, "Contents.json"), "w") as f:
+        with open(os.path.join(symbolset, "Contents.json"),
+                  "w",
+                  encoding='utf-8') as f:
             json.dump(
                 {
                     "info": {

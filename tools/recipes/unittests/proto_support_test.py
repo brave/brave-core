@@ -155,11 +155,11 @@ class CompileErrorTest(unittest.TestCase):
             dest_relpath = 'recipes/brave/norp.proto'
             src = os.path.join(proto_tree, dest_relpath)
             os.makedirs(os.path.dirname(src))
-            with open(src, 'w') as proto:
+            with open(src, 'w', encoding='utf-8') as proto:
                 proto.write('syntax = "proto3"; norp')
 
             argfile = os.path.join(tmp, 'argfile')
-            with open(argfile, 'w') as f:
+            with open(argfile, 'w', encoding='utf-8') as f:
                 f.write(dest_relpath + '\n')
 
             out = os.path.join(tmp, 'out')

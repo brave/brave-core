@@ -40,7 +40,7 @@ class GitStatusTest(unittest.TestCase):
     def _write_file(self, path, content='content'):
         full = Path(self._brave() / path)
         full.parent.mkdir(parents=True, exist_ok=True)
-        full.write_text(content)
+        full.write_text(content, encoding='utf-8')
 
     def _delete_file(self, path):
         Path(self._brave() / path).unlink()

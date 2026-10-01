@@ -101,7 +101,7 @@ def generate_lldbinit(force=False):
     """)
     lldbinit_file = wspath("//brave/ios/brave-ios/App/Configuration/LLDBInit")
     if force or not os.path.exists(lldbinit_file):
-        with open(lldbinit_file, 'w') as f:
+        with open(lldbinit_file, 'w', encoding='utf-8') as f:
             f.write(contents)
 
 

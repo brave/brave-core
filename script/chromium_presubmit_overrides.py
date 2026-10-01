@@ -25,9 +25,9 @@ def load_presubmit_config():
     with brave_chromium_utils.sys_path('//third_party/pyjson5/src'):
         import json5
         return json5.load(
-            open(
-                brave_chromium_utils.wspath(
-                    '//brave/chromium_presubmit_config.json5')))
+            open(brave_chromium_utils.wspath(
+                '//brave/chromium_presubmit_config.json5'),
+                 encoding='utf-8'))
 
 
 config = load_presubmit_config()

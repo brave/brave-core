@@ -307,7 +307,7 @@ def extract_relevant_lines(filename):
           and any(line.startswith(prefix) for prefix in PREFIXES_TO_KEEP) \
           and not any(command in line for command in EXCLUDE_COMMANDS)
 
-    with open(filename) as f:
+    with open(filename, encoding='utf-8') as f:
         return [line.strip() for line in f if is_relevant(line)]
 
 
@@ -319,7 +319,7 @@ def generate_command_info(command_definition_files, template_file):
         lines += extract_relevant_lines(command_definition_file)
 
     result = ''
-    with open(template_file) as f:
+    with open(template_file, encoding='utf-8') as f:
         result = f.read()
 
     def get_command(line):
@@ -373,7 +373,7 @@ def main():
     cc_contents = generate_command_info(args.definitions, args.template_cc)
 
     if args.output_cc:
-        with open(args.output_cc, 'w') as f:
+        with open(args.output_cc, 'w', encoding='utf-8') as f:
             f.write(cc_contents)
     else:
         print(cc_contents)

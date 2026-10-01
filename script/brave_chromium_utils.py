@@ -92,7 +92,7 @@ def inline_file(path: str, _globals: Dict[str, Any],
     """Inline file from `path` by executing it using `_globals` and `_locals`
     scopes."""
     path = wspath(path)
-    with open(path, "r") as f:
+    with open(path, "r", encoding='utf-8') as f:
         # Compile first to set the location explicitly. This makes stacktrace to
         # show the actual filename instead of '<string>'.
         code = compile(f.read(), path, 'exec')
@@ -155,7 +155,7 @@ def sys_path(path: str, position: Optional[int] = None):
 @functools.lru_cache(maxsize=None)
 def parse_json_file_cached(file_path: str) -> Dict[str, Any]:
     """Return parsed `file_path`."""
-    with open(file_path, "r") as f:
+    with open(file_path, "r", encoding='utf-8') as f:
         return json.load(f)
 
 
