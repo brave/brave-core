@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
-index c4af70fe195ee349c192c79fa8985ab29b9c5f94..a63e00d5ec31b2c6ba73ce3ee0042d582a637234 100644
+index c4af70fe195ee349c192c79fa8985ab29b9c5f94..eae4864ea01fcb7e5e4f7405ad9d6f1618144f5f 100644
 --- a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 +++ b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 @@ -124,7 +124,7 @@ CoreAccountInfo GetSigninPrimaryAccount(Profile* profile) {
@@ -20,15 +20,18 @@ index c4af70fe195ee349c192c79fa8985ab29b9c5f94..a63e00d5ec31b2c6ba73ce3ee0042d58
  class IdentityGetAuthTokenFunction::AccountsInCookieUpdatedWaiter
      : public signin::IdentityManager::Observer {
   public:
-@@ -328,6 +328,7 @@ ExtensionFunction::ResponseAction IdentityGetAuthTokenFunction::Run() {
+@@ -328,6 +328,10 @@ ExtensionFunction::ResponseAction IdentityGetAuthTokenFunction::Run() {
    // From here on out, results must be returned asynchronously.
    StartAsyncRun();
  
-+  BRAVE_RUN
++  if (!google_apis::IsGoogleChromeAPIKeyUsed()) {
++    StartMintTokenFlow(IdentityMintRequestQueue::MINT_TYPE_NONINTERACTIVE);
++    return RespondLater();
++  }
    base::OnceCallback next_step =
        base::BindOnce(&IdentityGetAuthTokenFunction::GetAuthTokenForAccount,
                       weak_ptr_factory_.GetWeakPtr(), gaia_id);
-@@ -410,7 +411,7 @@ void IdentityGetAuthTokenFunction::GetAuthTokenForAccount(
+@@ -410,7 +414,7 @@ void IdentityGetAuthTokenFunction::GetAuthTokenForAccount(
    }
  }
  
@@ -37,22 +40,24 @@ index c4af70fe195ee349c192c79fa8985ab29b9c5f94..a63e00d5ec31b2c6ba73ce3ee0042d58
  bool IdentityGetAuthTokenFunction::ShouldDelayRemoteConsent() {
    signin::IdentityManager* identity_manager =
        IdentityManagerFactory::GetForProfile(GetProfile());
-@@ -549,12 +550,14 @@ void IdentityGetAuthTokenFunction::StartSigninFlow() {
+@@ -549,12 +553,16 @@ void IdentityGetAuthTokenFunction::StartSigninFlow() {
  void IdentityGetAuthTokenFunction::StartMintTokenFlow(
      IdentityMintRequestQueue::MintType type) {
  #if !BUILDFLAG(IS_CHROMEOS)
-+  BRAVE_START_MINT_TOKEN_FLOW_IF
++  if (google_apis::IsGoogleChromeAPIKeyUsed()) {
    // ChromeOS in kiosk mode may start the mint token flow without account.
    DCHECK(!token_key_.account_info.IsEmpty())
        << "token_key_.account_info is empty!";
    DCHECK(IdentityManagerFactory::GetForProfile(GetProfile())
               ->HasAccountWithRefreshToken(token_key_.account_info.account_id))
        << "No Refresh token!";
-+  BRAVE_START_MINT_TOKEN_FLOW_ELSE
++  } else {
++    DCHECK(token_key_.account_info.IsEmpty());
++  }
  #endif
    TRACE_EVENT_BEGIN("identity", "MintTokenFlow",
                      IdentityMintRequestQueue::GetRequestTrack(this), "type",
-@@ -959,7 +962,7 @@ void IdentityGetAuthTokenFunction::OnIdentityAPIShutdown() {
+@@ -959,7 +967,7 @@ void IdentityGetAuthTokenFunction::OnIdentityAPIShutdown() {
    token_key_account_access_token_fetcher_.reset();
    refresh_tokens_loaded_waiter_.reset();
    scoped_identity_manager_observation_.Reset();
@@ -61,7 +66,7 @@ index c4af70fe195ee349c192c79fa8985ab29b9c5f94..a63e00d5ec31b2c6ba73ce3ee0042d58
    accounts_in_cookie_updated_waiter_.reset();
  #endif
    extensions::IdentityAPI::GetFactoryInstance()
-@@ -1034,7 +1037,7 @@ void IdentityGetAuthTokenFunction::ShowExtensionLoginPrompt() {
+@@ -1034,7 +1042,7 @@ void IdentityGetAuthTokenFunction::ShowExtensionLoginPrompt() {
  #endif
  
  void IdentityGetAuthTokenFunction::ShowRemoteConsentDialog() {
@@ -70,7 +75,7 @@ index c4af70fe195ee349c192c79fa8985ab29b9c5f94..a63e00d5ec31b2c6ba73ce3ee0042d58
    // On Android, Gaia session cookies are reconciled asynchronously after
    // sign-in. Defer showing the remote consent dialog until cookies are
    // ready in the cookie jar to prevent loading a blank consent page.
-@@ -1191,7 +1194,7 @@ void IdentityGetAuthTokenFunction::RefreshTokensLoadedWaiter::
+@@ -1191,7 +1199,7 @@ void IdentityGetAuthTokenFunction::RefreshTokensLoadedWaiter::
    std::move(callback_).Run();
  }
  

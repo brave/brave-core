@@ -10,7 +10,8 @@ substitutions:
       pattern: 'BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)'
       replace: 'BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)'
 
-  - description: Hook Brave into Run() before fetching the auth token.
+  - description:
+      Use the web OAuth flow unless the Google Chrome API key is used.
     regex:
       pattern: |-
         StartAsyncRun();
@@ -19,15 +20,22 @@ substitutions:
       replace: |-
         StartAsyncRun();
 
-          BRAVE_RUN
+          if (!google_apis::IsGoogleChromeAPIKeyUsed()) {
+            StartMintTokenFlow(IdentityMintRequestQueue::MINT_TYPE_NONINTERACTIVE);
+            return RespondLater();
+          }
           base::OnceCallback next_step =
 
-  - description: Wrap the mint token flow account checks for Brave.
+  - description: The web OAuth flow runs without an account.
     regex:
       re_pattern:
         '(#if !BUILDFLAG\(IS_CHROMEOS\)\n)(  // ChromeOS in kiosk mode may start
         the mint token flow without account\..*?<< "No Refresh
         token!";\n)(#endif)'
       re_flags: [DOTALL]
-      replace:
-        '\1  BRAVE_START_MINT_TOKEN_FLOW_IF\n\2  BRAVE_START_MINT_TOKEN_FLOW_ELSE\n\3'
+      replace: |-
+        \1  if (google_apis::IsGoogleChromeAPIKeyUsed()) {
+        \2  } else {
+            DCHECK(token_key_.account_info.IsEmpty());
+          }
+        \3
