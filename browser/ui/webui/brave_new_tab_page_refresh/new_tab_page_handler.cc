@@ -13,7 +13,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/to_address.h"
 #include "brave/browser/brave_stats/first_run_util.h"
-#include "brave/browser/ntp_background/new_tab_takeover_infobar_delegate.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/background_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/custom_image_chooser.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/sponsored_sites_facade.h"
@@ -30,6 +29,7 @@
 #include "brave/components/misc_metrics/navigation_source_metrics.h"
 #include "brave/components/misc_metrics/new_tab_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/new_tab_takeover_disclosure_tooltip_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
@@ -193,9 +193,14 @@ void NewTabPageHandler::OnGetSponsoredImageBackground(
     GetSponsoredImageBackgroundCallback callback,
     mojom::SponsoredImageBackgroundPtr sponsored_background) {
   if (sponsored_background) {
-    ntp_background_images::NewTabTakeoverInfoBarDelegate::
-        MaybeDisplayAndIncrementCounter(base::to_address(web_contents_),
-                                        &pref_service_.get());
+    sponsored_background->should_auto_show_new_tab_takeover_disclosure =
+        ntp_background_images::ShouldAutoShowNewTabTakeoverDisclosureTooltip(
+            base::to_address(pref_service_));
+    if (sponsored_background->should_auto_show_new_tab_takeover_disclosure) {
+      ntp_background_images::
+          RecordNewTabTakeoverDisclosureTooltipWasDisplayed(
+              base::to_address(pref_service_));
+    }
   }
   std::move(callback).Run(std::move(sponsored_background));
 }
@@ -230,6 +235,13 @@ void NewTabPageHandler::NotifySponsoredImageLogoClicked(
   background_facade_->NotifySponsoredImageLogoClicked(
       wallpaper_id, creative_instance_id, destination_url,
       mojom_ad_metric_type);
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::NotifyNewTabTakeoverDisclosureLearnMoreClicked(
+    NotifyNewTabTakeoverDisclosureLearnMoreClickedCallback callback) {
+  ntp_background_images::SuppressNewTabTakeoverDisclosureTooltip(
+      base::to_address(pref_service_));
   std::move(callback).Run();
 }
 

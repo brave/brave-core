@@ -309,6 +309,14 @@
     STATS
   </message>
 
+  <message name="IDS_NEW_TAB_TAKEOVER_DISCLOSURE_LABEL" desc="Label shown on the new tab page when a sponsored background is displayed" formatter_data="webui=BraveNewTabPage">
+    Sponsored
+  </message>
+
+  <message name="IDS_NEW_TAB_TAKEOVER_DISCLOSURE_TOOLTIP_TEXT" desc="Tooltip text shown when hovering the New Tab Takeover disclosure label. $1 is the learn-more link." formatter_data="webui=BraveNewTabPage">
+    Help support Brave's mission to build an independent, user-first Web with Sponsored Ads. We measure ad performance privately, without identifying you. <ph name="LINK_BEGIN">$1</ph>Learn more/Opt-out choices<ph name="LINK_END">/$1</ph>.
+  </message>
+
   <message name="IDS_NEW_TAB_TALK_ABOUT_DATA_LINK" desc="Text for link to page describing Brave Talk data policies" formatter_data="webui=BraveNewTabPage">
     About your data
   </message>

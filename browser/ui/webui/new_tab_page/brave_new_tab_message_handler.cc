@@ -46,7 +46,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/browser/ntp_background/new_tab_takeover_infobar_delegate.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
@@ -624,10 +623,6 @@ void BraveNewTabMessageHandler::HandleGetWallpaperDataCallback(
   service->RecordViewedAdEvent(
       placement_id ? *placement_id : "",
       creative_instance_id ? *creative_instance_id : "", metric_type);
-
-  ntp_background_images::NewTabTakeoverInfoBarDelegate::
-      MaybeDisplayAndIncrementCounter(web_ui()->GetWebContents(),
-                                      profile_->GetPrefs());
 
   constexpr char kNewTabTakeoverWallpaperKey[] = "brandedWallpaper";
   wallpaper.Set(kNewTabTakeoverWallpaperKey, std::move(*data));
