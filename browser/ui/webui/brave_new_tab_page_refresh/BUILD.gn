@@ -205,8 +205,12 @@ source_set("browser_tests") {
       "//brave/components/brave_ads/core/browser/service:test_support",
       "//brave/components/ntp_background_images/browser",
       "//brave/components/ntp_background_images/browser:test_support",
+      "//brave/components/ntp_background_images/common",
+      "//chrome/browser",
       "//chrome/browser/profiles/keep_alive",
       "//chrome/browser/sessions",
+      "//components/infobars/content",
+      "//components/infobars/core",
       "//components/keyed_service/content",
       "//components/keyed_service/core",
     ]

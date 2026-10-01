@@ -63,6 +63,18 @@ export function createBackgroundStore() {
     store.update({ sponsoredImageBackground: background ?? null })
   }
 
+  function disableNewTabTakeoverDisclosureAutoDisplay() {
+    const { sponsoredImageBackground } = store.getState()
+    if (sponsoredImageBackground) {
+      store.update({
+        sponsoredImageBackground: {
+          ...sponsoredImageBackground,
+          shouldAutoDisplayNewTabTakeoverDisclosure: false,
+        },
+      })
+    }
+  }
+
   newTabProxy.addListeners({
     onBackgroundsUpdated: debounce(async () => {
       await Promise.all([
@@ -144,6 +156,16 @@ export function createBackgroundStore() {
         sponsoredImageBackground.metricType,
         type,
       )
+    },
+
+    notifyNewTabTakeoverDisclosureLearnMoreClicked() {
+      handler.notifyNewTabTakeoverDisclosureLearnMoreClicked()
+      disableNewTabTakeoverDisclosureAutoDisplay()
+    },
+
+    notifyNewTabTakeoverDisclosureTooltipAutoDisplayed() {
+      handler.notifyNewTabTakeoverDisclosureTooltipAutoDisplayed()
+      disableNewTabTakeoverDisclosureAutoDisplay()
     },
   }
 

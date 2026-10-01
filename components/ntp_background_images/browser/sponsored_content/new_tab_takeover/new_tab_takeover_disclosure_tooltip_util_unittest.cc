@@ -7,9 +7,10 @@
 
 #include <cstddef>
 
+#include "base/test/gtest_util.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_registry.h"
-#include "brave/components/ntp_background_images/common/new_tab_takeover_disclosure_constants.h"
+#include "brave/components/ntp_background_images/common/infobar_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -40,8 +41,7 @@ TEST_F(NewTabTakeoverDisclosureTooltipUtilTest,
        AutoDisplaysTheTooltipUntilTheDisplayCountIsExhausted) {
   SetRewardsEnabled(/*enabled=*/false);
 
-  for (size_t i = 0;
-       i < kNewTabTakeoverDisclosureTooltipRemainingDisplayCountThreshold;
+  for (size_t i = 0; i < kNewTabTakeoverInfobarRemainingDisplayCountThreshold;
        ++i) {
     EXPECT_TRUE(
         ShouldAutoDisplayNewTabTakeoverDisclosureTooltip(*pref_service()));
@@ -64,8 +64,8 @@ TEST_F(NewTabTakeoverDisclosureTooltipUtilTest,
        DoesNotAutoDisplayTheTooltipWhenTheRemainingCountIsNegative) {
   SetRewardsEnabled(/*enabled=*/false);
 
-  pref_service()->SetInteger(
-      prefs::kNewTabTakeoverDisclosureTooltipRemainingDisplayCount, -1);
+  pref_service()->SetInteger(prefs::kNewTabTakeoverInfobarRemainingDisplayCount,
+                             -1);
 
   EXPECT_FALSE(
       ShouldAutoDisplayNewTabTakeoverDisclosureTooltip(*pref_service()));
@@ -79,9 +79,9 @@ TEST_F(NewTabTakeoverDisclosureTooltipUtilTest,
 
   EXPECT_TRUE(
       ShouldAutoDisplayNewTabTakeoverDisclosureTooltip(*pref_service()));
-  EXPECT_EQ(kNewTabTakeoverDisclosureTooltipRemainingDisplayCountThreshold - 1,
+  EXPECT_EQ(kNewTabTakeoverInfobarRemainingDisplayCountThreshold - 1,
             pref_service()->GetInteger(
-                prefs::kNewTabTakeoverDisclosureTooltipRemainingDisplayCount));
+                prefs::kNewTabTakeoverInfobarRemainingDisplayCount));
 }
 
 TEST_F(NewTabTakeoverDisclosureTooltipUtilTest,
@@ -105,41 +105,35 @@ TEST_F(NewTabTakeoverDisclosureTooltipUtilTest,
 
   EXPECT_FALSE(
       ShouldAutoDisplayNewTabTakeoverDisclosureTooltip(*pref_service()));
-  EXPECT_EQ(kNewTabTakeoverDisclosureTooltipRemainingDisplayCountThreshold - 2,
+  EXPECT_EQ(kNewTabTakeoverInfobarRemainingDisplayCountThreshold - 2,
             pref_service()->GetInteger(
-                prefs::kNewTabTakeoverDisclosureTooltipRemainingDisplayCount));
+                prefs::kNewTabTakeoverInfobarRemainingDisplayCount));
 }
 
 TEST_F(NewTabTakeoverDisclosureTooltipUtilTest,
        RecordingTheLastDisplayDecrementsTheCountToZero) {
   SetRewardsEnabled(/*enabled=*/false);
 
-  pref_service()->SetInteger(
-      prefs::kNewTabTakeoverDisclosureTooltipRemainingDisplayCount, 1);
+  pref_service()->SetInteger(prefs::kNewTabTakeoverInfobarRemainingDisplayCount,
+                             1);
 
   RecordNewTabTakeoverDisclosureTooltipWasDisplayed(*pref_service());
 
   EXPECT_FALSE(
       ShouldAutoDisplayNewTabTakeoverDisclosureTooltip(*pref_service()));
-  EXPECT_EQ(0,
-            pref_service()->GetInteger(
-                prefs::kNewTabTakeoverDisclosureTooltipRemainingDisplayCount));
+  EXPECT_EQ(0, pref_service()->GetInteger(
+                   prefs::kNewTabTakeoverInfobarRemainingDisplayCount));
 }
 
 TEST_F(NewTabTakeoverDisclosureTooltipUtilTest,
-       RecordingADisplayWhenCountIsZeroGoesNegativeButStillDoesNotAutoDisplay) {
+       RecordingADisplayWhenCountIsZeroCrashes) {
   SetRewardsEnabled(/*enabled=*/false);
 
-  pref_service()->SetInteger(
-      prefs::kNewTabTakeoverDisclosureTooltipRemainingDisplayCount, 0);
+  pref_service()->SetInteger(prefs::kNewTabTakeoverInfobarRemainingDisplayCount,
+                             0);
 
-  RecordNewTabTakeoverDisclosureTooltipWasDisplayed(*pref_service());
-
-  EXPECT_EQ(-1,
-            pref_service()->GetInteger(
-                prefs::kNewTabTakeoverDisclosureTooltipRemainingDisplayCount));
-  EXPECT_FALSE(
-      ShouldAutoDisplayNewTabTakeoverDisclosureTooltip(*pref_service()));
+  EXPECT_CHECK_DEATH(
+      RecordNewTabTakeoverDisclosureTooltipWasDisplayed(*pref_service()));
 }
 
 }  // namespace ntp_background_images

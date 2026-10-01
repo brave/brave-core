@@ -18,6 +18,7 @@ import {
   useBackgroundActions,
 } from '../../context/background_context'
 import { useNewTabState } from '../../context/new_tab_context'
+import { NewTabTakeoverDisclosure } from './new_tab_takeover_disclosure'
 
 import { style } from './background_caption.style'
 
@@ -29,7 +30,14 @@ export function BackgroundCaption() {
       case 'brave':
         return <BraveBackgroundCredits background={currentBackground} />
       case 'sponsored-image':
-        return <SponsoredBackgroundLogo background={currentBackground} />
+        return (
+          <>
+            <SponsoredBackgroundLogo background={currentBackground} />
+            <NewTabTakeoverDisclosure background={currentBackground} />
+          </>
+        )
+      case 'sponsored-rich-media':
+        return <NewTabTakeoverDisclosure background={currentBackground} />
       default:
         return null
     }
