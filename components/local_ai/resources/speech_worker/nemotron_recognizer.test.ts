@@ -81,9 +81,17 @@ function samplesForStableFrames(frameCount: number): number {
   return config.STREAMING_RIGHT_CONTEXT + (frameCount - 1) * config.HOP_LENGTH
 }
 
-// Raw samples needed before exactly `chunkCount` complete encoder chunks can be available.
+// The session starts its frontend with this much silence before addAudio().
+const LEADING_SILENCE_SAMPLES =
+  (config.TARGET_SAMPLE_RATE * config.LEADING_SILENCE_MS) / 1000
+
+// Samples addAudio() must receive before exactly `chunkCount` complete encoder
+// chunks can be available, net of the leading silence.
 function samplesForChunks(chunkCount: number): number {
-  return samplesForStableFrames(chunkCount * config.NEMO_CHUNK)
+  return (
+    samplesForStableFrames(chunkCount * config.NEMO_CHUNK)
+    - LEADING_SILENCE_SAMPLES
+  )
 }
 
 // Once the first chunk is available, each additional encoder chunk advances by exactly 56 * 160 samples.
