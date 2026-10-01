@@ -11,7 +11,7 @@
 #include "net/http/http_status_code.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 

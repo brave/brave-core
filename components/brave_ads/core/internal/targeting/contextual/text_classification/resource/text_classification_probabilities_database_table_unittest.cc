@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_probabilities_database_table_test_util.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::database::table {
 

@@ -50,7 +50,7 @@
 #include "brave/components/brave_ads/browser/test/fake_rewards_service.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
