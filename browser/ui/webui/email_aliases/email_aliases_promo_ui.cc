@@ -42,6 +42,7 @@ EmailAliasesPromoUI::EmailAliasesPromoUI(content::WebUI* web_ui)
 #if !BUILDFLAG(IS_ANDROID)
   email_aliases::AddWebUIThemeSource(profile);
 #endif
+#endif
   webui::SetupWebUIDataSource(source, kEmailAliasesPromoResources,
                               IDR_EMAIL_ALIASES_PROMO_HTML);
 }

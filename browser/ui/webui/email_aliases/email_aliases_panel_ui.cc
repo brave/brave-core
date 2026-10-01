@@ -50,6 +50,7 @@ EmailAliasesPanelUI::EmailAliasesPanelUI(content::WebUI* web_ui)
 #if !BUILDFLAG(IS_ANDROID)
   email_aliases::AddWebUIThemeSource(profile);
 #endif
+#endif
   webui::SetupWebUIDataSource(source, kEmailAliasesPanelResources,
                               IDR_EMAIL_ALIASES_PANEL_HTML);
 }
