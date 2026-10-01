@@ -34,27 +34,35 @@ class DelayedSharedDesktopPageState(shared_page_state.SharedDesktopPageState):
 
 
 class BraveLoadingDesktopStorySet(story.StorySet):
-  """ Brave version of LoadingDesktopStorySet.
+  """Brave version of LoadingDesktopStorySet.
 
   See loading_desktop.py for details.
   """
 
   def __init__(self, startup_delay=False):
     archive_data_file = GetPageSetsDataPath('brave_loading_desktop.json')
-    super().__init__(archive_data_file=archive_data_file,
-                         cloud_storage_bucket=story.PARTNER_BUCKET)
+    super().__init__(
+      archive_data_file=archive_data_file,
+      cloud_storage_bucket=story.PARTNER_BUCKET,
+    )
 
     # Passed as (story, name) tuple.
-    self.AddStories(['typical'],
-                    [('https://example.com/', 'example.com'),
-                     ('https://search.brave.com/', 'BraveSearch'),
-                     ('https://en.wikipedia.org/wiki/HCard', 'wikipedia.com'),
-                     ('https://www.economist.com/', 'Economist'),
-                     ('https://www.ign.com/', 'IGN')], startup_delay)
+    self.AddStories(
+      ['typical'],
+      [
+        ('https://example.com/', 'example.com'),
+        ('https://search.brave.com/', 'BraveSearch'),
+        ('https://en.wikipedia.org/wiki/HCard', 'wikipedia.com'),
+        ('https://www.economist.com/', 'Economist'),
+        ('https://www.ign.com/', 'IGN'),
+      ],
+      startup_delay,
+    )
 
   def AddStories(self, tags, urls, startup_delay=False):
     cache_temperatures = [
-        cache_temperature_module.COLD, cache_temperature_module.WARM
+      cache_temperature_module.COLD,
+      cache_temperature_module.WARM,
     ]
     for url, name in urls:
       for temp in cache_temperatures:
@@ -75,10 +83,13 @@ class BraveLoadingDesktopStorySet(story.StorySet):
           shared_page_state_class = shared_page_state.SharedDesktopPageState
 
         self.AddStory(
-            page_cycler_story.PageCyclerStory(url,
-                                              self,
-                                              shared_page_state_class,
-                                              cache_temperature=temp,
-                                              tags=page_tags,
-                                              name=page_name,
-                                              perform_final_navigation=True))
+          page_cycler_story.PageCyclerStory(
+            url,
+            self,
+            shared_page_state_class,
+            cache_temperature=temp,
+            tags=page_tags,
+            name=page_name,
+            perform_final_navigation=True,
+          )
+        )

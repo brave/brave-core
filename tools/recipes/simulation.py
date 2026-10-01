@@ -49,8 +49,12 @@ import config_types
 from check import Check, Checker, PostProcessError, VerifySubset
 from engine_env import merge_envs
 import post_process as pp
-from recipe_test_api import (DisabledTestData, PostprocessHookContext,
-                             StepTestData, TestData)
+from recipe_test_api import (
+    DisabledTestData,
+    PostprocessHookContext,
+    StepTestData,
+    TestData,
+)
 
 # The literal tokens `recipe_modules/path/api.py` builds its simulated
 # `workspace`/`home` config_types.Path values from directly -- there is no
@@ -105,9 +109,7 @@ class SimFS:
     """
 
     def __init__(
-        self,
-        files: Iterable[str | Path] = (),
-        dirs: Iterable[str | Path] = ()
+        self, files: Iterable[str | Path] = (), dirs: Iterable[str | Path] = ()
     ) -> None:
         self._files: set[str] = {_norm(f) for f in files}
         self._dirs: set[str] = {_norm(d) for d in dirs}
@@ -141,14 +143,15 @@ class SimFS:
         prefix = source.rstrip('/') + '/'
         for collection in (self._files, self._dirs):
             for path in [
-                    p for p in collection
-                    if p == source or p.startswith(prefix)
+                p for p in collection if p == source or p.startswith(prefix)
             ]:
-                collection.add(dest + path[len(source):])
+                collection.add(dest + path[len(source) :])
 
-    def remove(self,
-               path: str | Path,
-               should_remove: Callable[[str], bool] = lambda p: True) -> None:
+    def remove(
+        self,
+        path: str | Path,
+        should_remove: Callable[[str], bool] = lambda p: True,
+    ) -> None:
         """Removes `path`, and everything nested under it matching
         `should_remove`, from the simulated filesystem."""
         path = _norm(path)
@@ -204,8 +207,13 @@ class SubprocessStepRunner:
         suffixes = step.get('env_suffixes')
         env = None
         if overrides or prefixes or suffixes:
-            env = merge_envs(os.environ, overrides or {}, prefixes or {},
-                             suffixes or {}, os.pathsep)
+            env = merge_envs(
+                os.environ,
+                overrides or {},
+                prefixes or {},
+                suffixes or {},
+                os.pathsep,
+            )
 
         # Point the child's std handles at the files the step's placeholders
         # rendered to. A handle with no placeholder is left inherited, so a
@@ -220,13 +228,15 @@ class SubprocessStepRunner:
                 # pylint: disable-next=unspecified-encoding
                 return stack.enter_context(open(path, mode))
 
-            return subprocess.run(cmd,
-                                  cwd=step.get('cwd'),
-                                  env=env,
-                                  check=False,
-                                  stdin=_open('stdin', 'rb'),
-                                  stdout=_open('stdout', 'wb'),
-                                  stderr=_open('stderr', 'wb')).returncode
+            return subprocess.run(
+                cmd,
+                cwd=step.get('cwd'),
+                env=env,
+                check=False,
+                stdin=_open('stdin', 'rb'),
+                stdout=_open('stdout', 'wb'),
+                stderr=_open('stderr', 'wb'),
+            ).returncode
 
 
 class SimulationStepRunner:
@@ -247,11 +257,12 @@ class SimulationStepRunner:
         self.recorded_steps: list[dict] = []
 
     def step_test_data(
-            self, name: str, step_test_data_fn: Callable[[], StepTestData]
-        | None) -> StepTestData:
+        self, name: str, step_test_data_fn: Callable[[], StepTestData] | None
+    ) -> StepTestData:
         """The simulated data for the step named *name*."""
         data = self._test_data.get_step_test_data(
-            name, step_test_data_fn or StepTestData)
+            name, step_test_data_fn or StepTestData
+        )
         self._used_steps[name] = data
         return data
 
@@ -291,19 +302,21 @@ class SimulationStepRunner:
 class TestContext:
     """Run-global simulated state, seeded onto every module in test mode."""
 
-    def __init__(self,
-                 *,
-                 platform: str = 'linux',
-                 bits: int = SIM_BITS,
-                 arch: str = SIM_ARCH,
-                 cpu_count: int = SIM_CPU_COUNT,
-                 total_memory: int = SIM_TOTAL_MEMORY,
-                 env: dict[str, str] | None = None,
-                 files: Iterable[str | Path] = (),
-                 dirs: Iterable[str | Path] = (),
-                 which_map: dict[str, str] | None = None,
-                 home: str = HOME_TOKEN,
-                 test_data: TestData | None = None) -> None:
+    def __init__(
+        self,
+        *,
+        platform: str = 'linux',
+        bits: int = SIM_BITS,
+        arch: str = SIM_ARCH,
+        cpu_count: int = SIM_CPU_COUNT,
+        total_memory: int = SIM_TOTAL_MEMORY,
+        env: dict[str, str] | None = None,
+        files: Iterable[str | Path] = (),
+        dirs: Iterable[str | Path] = (),
+        which_map: dict[str, str] | None = None,
+        home: str = HOME_TOKEN,
+        test_data: TestData | None = None,
+    ) -> None:
         self.platform = platform
         self.bits = bits
         self.arch = arch
@@ -336,10 +349,7 @@ class TestContext:
             total_memory=platform_seed.get('total_memory', SIM_TOTAL_MEMORY),
             # `api.env.set(...)` vars plus any `api.properties.environ(...)`
             # values; the latter is what the engine decodes into ENV_PROPERTIES.
-            env={
-                **env_seed.get('vars', {}),
-                **test_data.environ
-            },
+            env={**env_seed.get('vars', {}), **test_data.environ},
             which_map=dict(env_seed.get('which', {})),
             files=[_resolve_seed(p) for p in path_seed.get('files', [])],
             dirs=[_resolve_seed(p) for p in path_seed.get('dirs', [])],
@@ -366,8 +376,9 @@ def stabilize(value: str) -> str:
     return value.replace(str(RECIPES_ROOT), RECIPES_ROOT_TOKEN)
 
 
-def build_steps(runner: SimulationStepRunner,
-                failure: dict | None) -> dict[str, dict]:
+def build_steps(
+    runner: SimulationStepRunner, failure: dict | None
+) -> dict[str, dict]:
     """Assemble the ordered `{name: step}` map (+ `$result`) for post-process.
 
     Paths are stabilized here so post-process checks and the written expectation
@@ -414,8 +425,8 @@ def build_steps(runner: SimulationStepRunner,
 
 
 def apply_post_process(
-        hooks: list[PostprocessHookContext],
-        steps: dict[str, dict]) -> tuple[dict[str, dict] | None, list[Check]]:
+    hooks: list[PostprocessHookContext], steps: dict[str, dict]
+) -> tuple[dict[str, dict] | None, list[Check]]:
     """Run post-process hooks.
 
     Each hook gets its own `Checker` and a deep copy of the current steps (the
@@ -446,10 +457,11 @@ def apply_post_process(
                         False,
                         check._ignore_set,  # pylint: disable=protected-access
                         {
-                            'raised exception': '%s: %s' %
-                            (exc_type.__name__, exc_value)
+                            'raised exception': '%s: %s'
+                            % (exc_type.__name__, exc_value)
                         },
-                    ))
+                    )
+                )
             finally:
                 # avoid reference cycle as suggested by inspect docs.
                 del exc_traceback

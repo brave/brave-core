@@ -22,8 +22,11 @@ def GenTests(api):
         api.platform.name('linux'),
         api.post_process(post_process.MustRun, 'clone depot_tools'),
         api.post_process(post_process.MustRun, 'verify gclient'),
-        api.post_process(post_process.StepCommandRE, 'use vpython3',
-                         [r'.*vpython3', r'--version']),
+        api.post_process(
+            post_process.StepCommandRE,
+            'use vpython3',
+            [r'.*vpython3', r'--version'],
+        ),
         api.post_process(post_process.StatusSuccess),
     )
     yield api.test(
@@ -44,7 +47,10 @@ def GenTests(api):
     yield api.test(
         'windows',
         api.platform.name('win'),
-        api.post_process(post_process.StepCommandRE, 'use vpython3',
-                         [r'.*vpython3\.bat', r'--version']),
+        api.post_process(
+            post_process.StepCommandRE,
+            'use vpython3',
+            [r'.*vpython3\.bat', r'--version'],
+        ),
         api.post_process(post_process.StatusSuccess),
     )

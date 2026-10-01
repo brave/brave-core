@@ -8,12 +8,14 @@ import json
 from pathlib import Path
 import unittest
 
-from test.fake_chromium_repo import (FakeChromiumRepo, GNRT_VERSION_STAMP,
-                                     L10N_VERSION_STAMP)
+from test.fake_chromium_repo import (
+    FakeChromiumRepo,
+    GNRT_VERSION_STAMP,
+    L10N_VERSION_STAMP,
+)
 
 
 class FakeChromiumRepoTest(unittest.TestCase):
-
     def setUp(self):
         """Set up a FakeChromiumRepo instance for each test."""
         self.repo = FakeChromiumRepo()
@@ -33,8 +35,9 @@ class FakeChromiumRepoTest(unittest.TestCase):
         self.assertTrue((new_repo_full_path / '.git').exists())
 
         # Verify the initial commit exists
-        log = self.repo._run_git_command(['log', '--oneline'],
-                                         new_repo_full_path)
+        log = self.repo._run_git_command(
+            ['log', '--oneline'], new_repo_full_path
+        )
         self.assertIn('Initial commit', log)
 
     def test_add_dep(self):
@@ -48,15 +51,22 @@ class FakeChromiumRepoTest(unittest.TestCase):
         self.assertTrue((dep_full_path / '.git').exists())
 
         # Verify the submodule is added to the main repository
-        submodule_config = self.repo._run_git_command([
-            'config', '--file', '.gitmodules', '--get',
-            f'submodule.{dep_path}.path'
-        ], self.repo.chromium)
+        submodule_config = self.repo._run_git_command(
+            [
+                'config',
+                '--file',
+                '.gitmodules',
+                '--get',
+                f'submodule.{dep_path}.path',
+            ],
+            self.repo.chromium,
+        )
         self.assertEqual(submodule_config, dep_path)
 
         # Verify the submodule commit exists in the main repository
-        log = self.repo._run_git_command(['log', '--oneline'],
-                                         self.repo.chromium)
+        log = self.repo._run_git_command(
+            ['log', '--oneline'], self.repo.chromium
+        )
         self.assertIn(f'Add submodule {dep_path}', log)
 
     def test_add_tag(self):
@@ -79,8 +89,9 @@ class FakeChromiumRepoTest(unittest.TestCase):
         self.assertIn(version, tags)
 
         # Verify the commit message for the tag
-        log = self.repo._run_git_command(['log', '-1', '--oneline'],
-                                         self.repo.chromium)
+        log = self.repo._run_git_command(
+            ['log', '-1', '--oneline'], self.repo.chromium
+        )
         self.assertIn(f'VERSION {version}', log)
 
     def test_commit(self):
@@ -95,21 +106,22 @@ class FakeChromiumRepoTest(unittest.TestCase):
 
         # Verify the commit exists in the repository
         short_hash = commit_hash[:7]
-        log = self.repo._run_git_command(['log', '--oneline'],
-                                         self.repo.chromium)
+        log = self.repo._run_git_command(
+            ['log', '--oneline'], self.repo.chromium
+        )
         self.assertIn(commit_message, log)
         self.assertIn(short_hash, log)
 
     def test_commit_empty(self):
         """Tests the commit_empty method of FakeChromiumRepo."""
         commit_message = 'Empty commit for testing'
-        commit_hash = self.repo.commit_empty(commit_message,
-                                             self.repo.chromium)
+        commit_hash = self.repo.commit_empty(commit_message, self.repo.chromium)
 
         # Verify the empty commit exists in the repository
         short_hash = commit_hash[:7]
-        log = self.repo._run_git_command(['log', '--oneline'],
-                                         self.repo.chromium)
+        log = self.repo._run_git_command(
+            ['log', '--oneline'], self.repo.chromium
+        )
         self.assertIn(commit_message, log)
         self.assertIn(short_hash, log)
 
@@ -127,7 +139,8 @@ class FakeChromiumRepoTest(unittest.TestCase):
 
         # Verify the file is staged
         staged_files = self.repo._run_git_command(
-            ['diff', '--name-only', '--cached'], self.repo.chromium)
+            ['diff', '--name-only', '--cached'], self.repo.chromium
+        )
         self.assertIn(file_path, staged_files)
 
     def test_update_brave_version(self):
@@ -142,14 +155,16 @@ class FakeChromiumRepoTest(unittest.TestCase):
         # Verify the version in package.json is updated
         with package_json_path.open('r') as f:
             package_data = json.load(f)
-        self.assertEqual(package_data['config']['projects']['chrome']['tag'],
-                         new_version)
+        self.assertEqual(
+            package_data['config']['projects']['chrome']['tag'], new_version
+        )
 
         # Verify the commit exists in the repository
         short_hash = commit_hash[:7]
         log = self.repo._run_git_command(['log', '--oneline'], self.repo.brave)
-        self.assertIn(f'Update from Chromium N/A to Chromium {new_version}',
-                      log)
+        self.assertIn(
+            f'Update from Chromium N/A to Chromium {new_version}', log
+        )
         self.assertIn(short_hash, log)
 
     def test_update_patches(self):
@@ -157,8 +172,9 @@ class FakeChromiumRepoTest(unittest.TestCase):
         # Add a file to the Chromium repo and commit it
         file_path_chromium = 'modified_file_chromium.txt'
         content_chromium = 'This is a modified file in the Chromium repo.'
-        self.repo.write_and_stage_file(file_path_chromium, content_chromium,
-                                       self.repo.chromium)
+        self.repo.write_and_stage_file(
+            file_path_chromium, content_chromium, self.repo.chromium
+        )
         self.repo.commit('Add file to Chromium repo', self.repo.chromium)
 
         # Add a file to another repo and commit it
@@ -166,15 +182,19 @@ class FakeChromiumRepoTest(unittest.TestCase):
         self.repo.add_repo(repo_path)
         file_path_repo = 'modified_file_repo.txt'
         content_repo = 'This is a modified file in the test_repo.'
-        self.repo.write_and_stage_file(file_path_repo, content_repo,
-                                       self.repo.chromium / repo_path)
-        self.repo.commit('Add file to test_repo',
-                         self.repo.chromium / repo_path)
+        self.repo.write_and_stage_file(
+            file_path_repo, content_repo, self.repo.chromium / repo_path
+        )
+        self.repo.commit(
+            'Add file to test_repo', self.repo.chromium / repo_path
+        )
 
         # Run update_patches on a clean tree (no patches should be produced)
         self.repo.run_update_patches()
-        self.assertFalse(any(self.repo.brave_patches.iterdir()),
-                         'No patches should be produced for a clean tree.')
+        self.assertFalse(
+            any(self.repo.brave_patches.iterdir()),
+            'No patches should be produced for a clean tree.',
+        )
 
         # Modify the files without staging (leave the tree dirty)
         new_content_chromium = 'Modified content in Chromium repo.'
@@ -190,15 +210,18 @@ class FakeChromiumRepoTest(unittest.TestCase):
 
         # Check that the patchfile for test_repo is created
         patch_file_name_repo = f'{file_path_repo.replace("/", "-")}.patch'
-        patch_file_path_repo = (self.repo.brave_patches / repo_path /
-                                patch_file_name_repo)
+        patch_file_path_repo = (
+            self.repo.brave_patches / repo_path / patch_file_name_repo
+        )
         self.assertTrue(patch_file_path_repo.exists())
 
         # Check the patchfile for Chromium is created
         patch_file_name_chromium = (
-            f'{file_path_chromium.replace("/", "-")}.patch')
-        patch_file_path_chromium = (self.repo.brave_patches /
-                                    patch_file_name_chromium)
+            f'{file_path_chromium.replace("/", "-")}.patch'
+        )
+        patch_file_path_chromium = (
+            self.repo.brave_patches / patch_file_name_chromium
+        )
         self.assertTrue(patch_file_path_chromium.exists())
 
         # Verify the patch file for the test_repo contains the correct diff
@@ -219,34 +242,43 @@ class FakeChromiumRepoTest(unittest.TestCase):
         """Tests the run_apply_patches method of FakeChromiumRepo."""
         # Add a file to the Chromium repo and commit it
         file_path_chromium = 'modified_file_chromium.txt'
-        content_chromium = ('This is the original chromium content\n'
-                            'Second line waiting change\n'
-                            'Final line.')
-        self.repo.write_and_stage_file(file_path_chromium, content_chromium,
-                                       self.repo.chromium)
+        content_chromium = (
+            'This is the original chromium content\n'
+            'Second line waiting change\n'
+            'Final line.'
+        )
+        self.repo.write_and_stage_file(
+            file_path_chromium, content_chromium, self.repo.chromium
+        )
         self.repo.commit('Add file to Chromium repo', self.repo.chromium)
 
         # Add a file to another repo and commit it
         repo_path = 'test_repo'
         self.repo.add_repo(repo_path)
         file_path_repo = 'modified_file_repo.txt'
-        content_repo = ('This is the original test_repo content\n'
-                        'Second line waiting change\n'
-                        'Final line.')
-        self.repo.write_and_stage_file(file_path_repo, content_repo,
-                                       self.repo.chromium / repo_path)
-        self.repo.commit('Add file to test_repo',
-                         self.repo.chromium / repo_path)
+        content_repo = (
+            'This is the original test_repo content\n'
+            'Second line waiting change\n'
+            'Final line.'
+        )
+        self.repo.write_and_stage_file(
+            file_path_repo, content_repo, self.repo.chromium / repo_path
+        )
+        self.repo.commit(
+            'Add file to test_repo', self.repo.chromium / repo_path
+        )
 
         # Modify the files without staging (leave the tree dirty)
         full_file_path_chromium = self.repo.chromium / file_path_chromium
         self.assertEqual(full_file_path_chromium.read_text(), content_chromium)
         new_content_chromium = content_chromium.replace(
-            'Second line waiting change', 'Modified second line')
+            'Second line waiting change', 'Modified second line'
+        )
         full_file_path_chromium.write_text(new_content_chromium)
 
-        new_content_repo = content_repo.replace('Second line waiting change',
-                                                'Modified second line')
+        new_content_repo = content_repo.replace(
+            'Second line waiting change', 'Modified second line'
+        )
         full_file_path_repo = self.repo.chromium / repo_path / file_path_repo
         full_file_path_repo.write_text(new_content_repo)
 
@@ -255,8 +287,9 @@ class FakeChromiumRepoTest(unittest.TestCase):
 
         # Reset the changes to simulate a clean state
         self.repo._run_git_command(['checkout', '.'], self.repo.chromium)
-        self.repo._run_git_command(['checkout', '.'],
-                                   self.repo.chromium / repo_path)
+        self.repo._run_git_command(
+            ['checkout', '.'], self.repo.chromium / repo_path
+        )
 
         # Run apply_patches to apply the patches
         self.assertEqual(full_file_path_chromium.read_text(), content_chromium)
@@ -264,26 +297,32 @@ class FakeChromiumRepoTest(unittest.TestCase):
         self.assertEqual([], self.repo.run_apply_patches())
 
         # Verify the changes from the patches are applied
-        self.assertEqual(full_file_path_chromium.read_text(),
-                         new_content_chromium)
+        self.assertEqual(
+            full_file_path_chromium.read_text(), new_content_chromium
+        )
         self.assertEqual(full_file_path_repo.read_text(), new_content_repo)
 
     def test_run_apply_patches_with_failures(self):
         """Tests run_apply_patches with conflict/corrupted patch failures."""
         # Add a file to the Chromium repo and commit it
 
-        self.repo.write_and_stage_file('a.txt', 'contents of a.txt',
-                                       self.repo.chromium)
-        self.repo.write_and_stage_file('b.txt', 'contents of b.txt',
-                                       self.repo.chromium)
-        self.repo.write_and_stage_file('c.txt', 'contents of c.txt',
-                                       self.repo.chromium)
+        self.repo.write_and_stage_file(
+            'a.txt', 'contents of a.txt', self.repo.chromium
+        )
+        self.repo.write_and_stage_file(
+            'b.txt', 'contents of b.txt', self.repo.chromium
+        )
+        self.repo.write_and_stage_file(
+            'c.txt', 'contents of c.txt', self.repo.chromium
+        )
         self.repo.commit('Adding files to chrome repo', self.repo.chromium)
 
         self.repo.chromium.joinpath('a.txt').write_text(
-            'patched contents of a.txt')
+            'patched contents of a.txt'
+        )
         self.repo.chromium.joinpath('b.txt').write_text(
-            'also patched contents of b.txt')
+            'also patched contents of b.txt'
+        )
 
         # Run update_patches to generate patches
         self.repo.run_update_patches()
@@ -298,10 +337,12 @@ class FakeChromiumRepoTest(unittest.TestCase):
         self.repo._run_git_command(['checkout', '.'], self.repo.chromium)
 
         # let's update these files to cause conflicts
-        self.repo.write_and_stage_file('a.txt', 'second contents of a.txt',
-                                       self.repo.chromium)
-        self.repo.write_and_stage_file('b.txt', 'second contents of b.txt',
-                                       self.repo.chromium)
+        self.repo.write_and_stage_file(
+            'a.txt', 'second contents of a.txt', self.repo.chromium
+        )
+        self.repo.write_and_stage_file(
+            'b.txt', 'second contents of b.txt', self.repo.chromium
+        )
         self.repo.commit('Updating files to chrome repo', self.repo.chromium)
 
         # Run apply_patches to apply the patches
@@ -309,18 +350,26 @@ class FakeChromiumRepoTest(unittest.TestCase):
         self.assertEqual(len(apply_failures), 2)
 
         # Check the values in apply_failures
-        failure = (next(
-            (f for f in apply_failures
-             if Path(f['patchPath']).as_posix() == 'patches/b.txt.patch'),
-            None))
+        failure = next(
+            (
+                f
+                for f in apply_failures
+                if Path(f['patchPath']).as_posix() == 'patches/b.txt.patch'
+            ),
+            None,
+        )
         self.assertIsNotNone(failure)
         self.assertEqual(failure['path'], 'b.txt')
         self.assertEqual(failure['reason'], 'PATCH_CHANGED')
 
-        failure = (next(
-            (f for f in apply_failures
-             if Path(f['patchPath']).as_posix() == 'patches/a.txt.patch'),
-            None))
+        failure = next(
+            (
+                f
+                for f in apply_failures
+                if Path(f['patchPath']).as_posix() == 'patches/a.txt.patch'
+            ),
+            None,
+        )
         self.assertIsNotNone(failure)
         self.assertEqual(failure['path'], 'a.txt')
         self.assertEqual(failure['reason'], 'PATCH_CHANGED')
@@ -337,18 +386,26 @@ class FakeChromiumRepoTest(unittest.TestCase):
         self.assertEqual(len(apply_failures), 2)
 
         # Check the values in apply_failures
-        failure = (next(
-            (f for f in apply_failures
-             if Path(f['patchPath']).as_posix() == 'patches/b.txt.patch'),
-            None))
+        failure = next(
+            (
+                f
+                for f in apply_failures
+                if Path(f['patchPath']).as_posix() == 'patches/b.txt.patch'
+            ),
+            None,
+        )
         self.assertIsNotNone(failure)
         self.assertEqual(failure['path'], 'b.txt')
         self.assertEqual(failure['reason'], 'SRC_REMOVED')
 
-        failure = (next(
-            (f for f in apply_failures
-             if Path(f['patchPath']).as_posix() == 'patches/a.txt.patch'),
-            None))
+        failure = next(
+            (
+                f
+                for f in apply_failures
+                if Path(f['patchPath']).as_posix() == 'patches/a.txt.patch'
+            ),
+            None,
+        )
         self.assertIsNotNone(failure)
         self.assertEqual(failure['path'], 'a.txt')
         self.assertEqual(failure['reason'], 'PATCH_CHANGED')
@@ -365,18 +422,26 @@ class FakeChromiumRepoTest(unittest.TestCase):
         self.assertEqual(len(apply_failures), 2)
 
         # Check the values in apply_failures
-        failure = (next(
-            (f for f in apply_failures
-             if Path(f['patchPath']).as_posix() == 'patches/b.txt.patch'),
-            None))
+        failure = next(
+            (
+                f
+                for f in apply_failures
+                if Path(f['patchPath']).as_posix() == 'patches/b.txt.patch'
+            ),
+            None,
+        )
         self.assertIsNotNone(failure)
         self.assertEqual(failure['path'], 'b.txt')
         self.assertEqual(failure['reason'], 'SRC_REMOVED')
 
-        failure = (next(
-            (f for f in apply_failures
-             if Path(f['patchPath']).as_posix() == 'patches/a.txt.patch'),
-            None))
+        failure = next(
+            (
+                f
+                for f in apply_failures
+                if Path(f['patchPath']).as_posix() == 'patches/a.txt.patch'
+            ),
+            None,
+        )
         self.assertIsNotNone(failure)
         self.assertEqual(failure['path'], None)
         self.assertEqual(failure['reason'], 'PATCH_CHANGED')
@@ -402,7 +467,8 @@ class FakeChromiumRepoTest(unittest.TestCase):
 
         # Verify the deletion is staged
         staged_files = self.repo._run_git_command(
-            ['diff', '--name-only', '--cached'], self.repo.chromium)
+            ['diff', '--name-only', '--cached'], self.repo.chromium
+        )
         self.assertIn(file_path, staged_files)
 
         # Commit the deletion
@@ -411,8 +477,10 @@ class FakeChromiumRepoTest(unittest.TestCase):
         # Verify the deletion is committed
         self.assertIn(
             'Delete test_file.txt',
-            self.repo._run_git_command(['log', '--oneline'],
-                                       self.repo.chromium))
+            self.repo._run_git_command(
+                ['log', '--oneline'], self.repo.chromium
+            ),
+        )
 
 
 class FakeChromiumRepoLiftEmulationTest(unittest.TestCase):
@@ -429,8 +497,9 @@ class FakeChromiumRepoLiftEmulationTest(unittest.TestCase):
     def setUp(self):
         self.repo = FakeChromiumRepo()
         self.addCleanup(self.repo.cleanup)
-        self.repo.write_and_stage_file(self.SOURCE, 'upstream\nsecond\n',
-                                       self.repo.chromium)
+        self.repo.write_and_stage_file(
+            self.SOURCE, 'upstream\nsecond\n', self.repo.chromium
+        )
         self.repo.commit('Add a source', self.repo.chromium)
         self.repo.add_tag('134.0.7035.0')
         self.repo.update_brave_version('134.0.7035.0')
@@ -439,54 +508,69 @@ class FakeChromiumRepoLiftEmulationTest(unittest.TestCase):
         self.repo.add_dep('v8')
         self.repo.create_brave_remote()
 
-        self.assertEqual(self.repo.chromium_repos,
-                         [self.repo.chromium, self.repo.chromium / 'v8'])
+        self.assertEqual(
+            self.repo.chromium_repos,
+            [self.repo.chromium, self.repo.chromium / 'v8'],
+        )
 
     def test_write_file_leaves_the_change_unstaged(self):
-        self.repo.write_file(self.SOURCE, 'patched\nsecond\n',
-                             self.repo.chromium)
+        self.repo.write_file(
+            self.SOURCE, 'patched\nsecond\n', self.repo.chromium
+        )
 
         self.assertIn(
             f'M {self.SOURCE}',
-            self.repo._run_git_command(['status', '--porcelain'],
-                                       self.repo.chromium).splitlines())
+            self.repo._run_git_command(
+                ['status', '--porcelain'], self.repo.chromium
+            ).splitlines(),
+        )
 
     def test_commit_patches_commits_the_generated_patch(self):
-        self.repo.write_file(self.SOURCE, 'patched\nsecond\n',
-                             self.repo.chromium)
+        self.repo.write_file(
+            self.SOURCE, 'patched\nsecond\n', self.repo.chromium
+        )
 
         self.repo.commit_patches('Add patches')
 
         self.assertEqual(
-            self.repo._run_git_command(['status', '--porcelain'],
-                                       self.repo.brave), '')
+            self.repo._run_git_command(
+                ['status', '--porcelain'], self.repo.brave
+            ),
+            '',
+        )
         self.assertIn(
             'patched',
-            self.repo._run_git_command(['show', f'HEAD:{self.PATCH}'],
-                                       self.repo.brave))
+            self.repo._run_git_command(
+                ['show', f'HEAD:{self.PATCH}'], self.repo.brave
+            ),
+        )
 
     def test_commit_patches_with_nothing_to_commit_keeps_head(self):
-        head = self.repo._run_git_command(['rev-parse', 'HEAD'],
-                                          self.repo.brave)
+        head = self.repo._run_git_command(
+            ['rev-parse', 'HEAD'], self.repo.brave
+        )
 
         self.assertEqual(self.repo.commit_patches('Nothing here'), head)
 
     def test_update_patches_removes_stale_patches(self):
-        self.repo.write_file(self.SOURCE, 'patched\nsecond\n',
-                             self.repo.chromium)
+        self.repo.write_file(
+            self.SOURCE, 'patched\nsecond\n', self.repo.chromium
+        )
         self.repo.commit_patches('Add patches')
 
         # With the source no longer modified, its patch is stale.
-        self.repo._run_git_command(['checkout', '--', self.SOURCE],
-                                   self.repo.chromium)
+        self.repo._run_git_command(
+            ['checkout', '--', self.SOURCE], self.repo.chromium
+        )
         self.repo.run_update_patches()
 
         self.assertFalse((self.repo.brave / self.PATCH).exists())
 
     def test_update_patches_ignores_added_and_deleted_files(self):
         """Only modified files get patches, as in the real command."""
-        self.repo.write_file('chrome/browser/added.cc', 'new\n',
-                             self.repo.chromium)
+        self.repo.write_file(
+            'chrome/browser/added.cc', 'new\n', self.repo.chromium
+        )
         (self.repo.chromium / self.SOURCE).unlink()
 
         self.repo.run_update_patches()
@@ -494,8 +578,9 @@ class FakeChromiumRepoLiftEmulationTest(unittest.TestCase):
         self.assertEqual(list(self.repo.brave_patches.glob('*.patch')), [])
 
     def test_sync_chromium_resets_and_checks_the_tag_out(self):
-        self.repo.write_file(self.SOURCE, 'patched\nsecond\n',
-                             self.repo.chromium)
+        self.repo.write_file(
+            self.SOURCE, 'patched\nsecond\n', self.repo.chromium
+        )
         self.repo.commit_patches('Add patches')
         self.repo.add_tag('135.0.7037.1')
         self.repo.update_brave_version('135.0.7037.1')
@@ -504,8 +589,9 @@ class FakeChromiumRepoLiftEmulationTest(unittest.TestCase):
 
         self.assertEqual(self.repo.chromium_version(), '135.0.7037.1')
         # The patched source was reset by the sync.
-        self.assertEqual((self.repo.chromium / self.SOURCE).read_text(),
-                         'upstream\nsecond\n')
+        self.assertEqual(
+            (self.repo.chromium / self.SOURCE).read_text(), 'upstream\nsecond\n'
+        )
 
     def test_sync_chromium_takes_an_explicit_version(self):
         self.repo.add_tag('135.0.7037.1')
@@ -516,30 +602,36 @@ class FakeChromiumRepoLiftEmulationTest(unittest.TestCase):
 
     def test_apply_patches_resets_before_applying(self):
         """Applying twice in a row is the same as applying once."""
-        self.repo.write_file(self.SOURCE, 'patched\nsecond\n',
-                             self.repo.chromium)
+        self.repo.write_file(
+            self.SOURCE, 'patched\nsecond\n', self.repo.chromium
+        )
         self.repo.commit_patches('Add patches')
 
         self.assertEqual(self.repo.run_apply_patches(), [])
         self.assertEqual(self.repo.run_apply_patches(), [])
-        self.assertEqual((self.repo.chromium / self.SOURCE).read_text(),
-                         'patched\nsecond\n')
+        self.assertEqual(
+            (self.repo.chromium / self.SOURCE).read_text(), 'patched\nsecond\n'
+        )
 
     def test_chromium_rebase_l10n_stamps_the_tracked_files(self):
-        self.repo.write_and_stage_file('app/strings.grd', '<grd/>\n',
-                                       self.repo.brave)
+        self.repo.write_and_stage_file(
+            'app/strings.grd', '<grd/>\n', self.repo.brave
+        )
         self.repo.commit('Add strings', self.repo.brave)
 
-        self.assertEqual(self.repo.run_chromium_rebase_l10n(),
-                         ['app/strings.grd'])
+        self.assertEqual(
+            self.repo.run_chromium_rebase_l10n(), ['app/strings.grd']
+        )
 
         self.assertEqual(
             (self.repo.brave / 'app/strings.grd').read_text(),
-            L10N_VERSION_STAMP.format(version='134.0.7035.0') + '\n<grd/>\n')
+            L10N_VERSION_STAMP.format(version='134.0.7035.0') + '\n<grd/>\n',
+        )
 
     def test_chromium_rebase_l10n_restamps_rather_than_piling_up(self):
-        self.repo.write_and_stage_file('app/strings.grd', '<grd/>\n',
-                                       self.repo.brave)
+        self.repo.write_and_stage_file(
+            'app/strings.grd', '<grd/>\n', self.repo.brave
+        )
         self.repo.commit('Add strings', self.repo.brave)
         self.repo.run_chromium_rebase_l10n()
         self.repo.add_tag('135.0.7037.1')
@@ -549,20 +641,24 @@ class FakeChromiumRepoLiftEmulationTest(unittest.TestCase):
 
         self.assertEqual(
             (self.repo.brave / 'app/strings.grd').read_text(),
-            L10N_VERSION_STAMP.format(version='135.0.7037.1') + '\n<grd/>\n')
+            L10N_VERSION_STAMP.format(version='135.0.7037.1') + '\n<grd/>\n',
+        )
 
     def test_gnrt_gen_stamps_the_build_files(self):
         build_gn = 'third_party/rust/crate/BUILD.gn'
-        self.repo.write_and_stage_file(build_gn, '# generated\n',
-                                       self.repo.brave)
+        self.repo.write_and_stage_file(
+            build_gn, '# generated\n', self.repo.brave
+        )
         self.repo.commit('Add gnrt output', self.repo.brave)
 
         self.assertEqual(self.repo.run_gnrt('vendor'), [])
         self.assertEqual(self.repo.run_gnrt('gen'), [build_gn])
 
-        self.assertEqual((self.repo.brave / build_gn).read_text(),
-                         GNRT_VERSION_STAMP.format(version='134.0.7035.0') +
-                         '\n# generated\n')
+        self.assertEqual(
+            (self.repo.brave / build_gn).read_text(),
+            GNRT_VERSION_STAMP.format(version='134.0.7035.0')
+            + '\n# generated\n',
+        )
 
     def test_gnrt_rejects_an_unknown_subcommand(self):
         with self.assertRaises(ValueError):

@@ -121,3 +121,5 @@ agents/testing/.last_run/
 agents/**/__pycache__/
 
 /.ignore/
+
+.ruff_cache/

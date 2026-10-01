@@ -36,8 +36,9 @@ class _RealEnv:  # pragma: no cover - production env backend, not simulated.
 
     def prepend_path(self, entry: str, pathsep: str) -> None:
         current = os.environ.get('PATH', '')
-        os.environ['PATH'] = (pathsep.join([entry, current])
-                              if current else entry)
+        os.environ['PATH'] = (
+            pathsep.join([entry, current]) if current else entry
+        )
 
 
 class _SimEnv:
@@ -60,8 +61,9 @@ class _SimEnv:
 
     def prepend_path(self, entry: str, pathsep: str) -> None:
         current = self._test.env.get('PATH', '')
-        self._test.env['PATH'] = (pathsep.join([entry, current])
-                                  if current else entry)
+        self._test.env['PATH'] = (
+            pathsep.join([entry, current]) if current else entry
+        )
 
 
 class EnvApi(RecipeApi):

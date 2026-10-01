@@ -39,8 +39,13 @@ def load_script(file_name: str) -> ModuleType:
 
 
 from luci_analysis import (  # pylint: disable=wrong-import-position
-    ClusterFailure, ClusterSummary, Flakiness, LuciAnalysis, StatsGroup,
-    TestVariant, VerdictCounts,
+    ClusterFailure,
+    ClusterSummary,
+    Flakiness,
+    LuciAnalysis,
+    StatsGroup,
+    TestVariant,
+    VerdictCounts,
 )
 
 ufm = load_script("update-upstream-flake-filters.py")
@@ -50,20 +55,18 @@ ufm = load_script("update-upstream-flake-filters.py")
 UNIT_TESTS_TARGET = "://chrome/test\\:unit_tests!gtest::"
 
 
-def stats_group(variant_hash: str,
-                date: str = "2026-02-07",
-                **counts: int) -> StatsGroup:
+def stats_group(
+    variant_hash: str, date: str = "2026-02-07", **counts: int
+) -> StatsGroup:
     """A day of one variant's verdicts."""
-    return StatsGroup(date=date,
-                      variant_hash=variant_hash,
-                      counts=VerdictCounts(**counts))
+    return StatsGroup(
+        date=date, variant_hash=variant_hash, counts=VerdictCounts(**counts)
+    )
 
 
 def variant(variant_hash: str, os_name: str, *builders: str) -> TestVariant:
     """A bot configuration a test ran on."""
-    return TestVariant(variant_hash=variant_hash,
-                       os=os_name,
-                       builders=builders)
+    return TestVariant(variant_hash=variant_hash, os=os_name, builders=builders)
 
 
 class QuietConsoleTestCase(unittest.TestCase):
@@ -110,27 +113,31 @@ class SuiteUpdaterTestCase(QuietConsoleTestCase):
         stack = contextlib.ExitStack()
         self.addCleanup(stack.close)
         self.filters_dir = Path(
-            stack.enter_context(tempfile.TemporaryDirectory()))
+            stack.enter_context(tempfile.TemporaryDirectory())
+        )
         self.client = mock.Mock()
         self.client.cluster_summaries.return_value = []
         self.client.cluster_failures.return_value = []
         self.client.history.return_value = []
         self.client.variants.return_value = []
 
-    def updater(self,
-                suite: str = "unit_tests",
-                days: int = 30,
-                min_flake_rate: float = 0.01) -> Any:
-        return ufm.SuiteUpdater(suite,
-                                client=self.client,
-                                display=self.display,
-                                days=days,
-                                min_flake_rate=min_flake_rate,
-                                filters_dir=self.filters_dir)
+    def updater(
+        self,
+        suite: str = "unit_tests",
+        days: int = 30,
+        min_flake_rate: float = 0.01,
+    ) -> Any:
+        return ufm.SuiteUpdater(
+            suite,
+            client=self.client,
+            display=self.display,
+            days=days,
+            min_flake_rate=min_flake_rate,
+            filters_dir=self.filters_dir,
+        )
 
 
 class GetCandidateWindowsTest(unittest.TestCase):
-
     def test_full_window_comes_first(self) -> None:
         windows = ufm.get_candidate_windows(30)
 
@@ -166,26 +173,29 @@ class GetCandidateWindowsTest(unittest.TestCase):
 
 
 class GetDiscoveryFiltersTest(unittest.TestCase):
-
     def test_scopes_the_fleet_wide_filter_by_sanitizer_and_os(self) -> None:
         filters = list(ufm.get_discovery_filters("unit_tests"))
 
-        self.assertEqual(filters, [
-            'test_id:":unit_tests!gtest"',
-            'test_id:":unit_tests!gtest" variant.builder:"asan"',
-            'test_id:":unit_tests!gtest" variant.builder:"msan"',
-            'test_id:":unit_tests!gtest" variant.builder:"ubsan"',
-            'test_id:":unit_tests!gtest" variant.os:"Ubuntu"',
-            'test_id:":unit_tests!gtest" variant.os:"Linux"',
-            'test_id:":unit_tests!gtest" variant.os:"Windows"',
-        ])
+        self.assertEqual(
+            filters,
+            [
+                'test_id:":unit_tests!gtest"',
+                'test_id:":unit_tests!gtest" variant.builder:"asan"',
+                'test_id:":unit_tests!gtest" variant.builder:"msan"',
+                'test_id:":unit_tests!gtest" variant.builder:"ubsan"',
+                'test_id:":unit_tests!gtest" variant.os:"Ubuntu"',
+                'test_id:":unit_tests!gtest" variant.os:"Linux"',
+                'test_id:":unit_tests!gtest" variant.os:"Windows"',
+            ],
+        )
 
 
 class NormalizeTestIdTest(unittest.TestCase):
-
     def test_an_id_without_a_case_is_unchanged(self) -> None:
-        self.assertEqual(ufm.normalize_test_id("://target!gtest::Suite"),
-                         "://target!gtest::Suite")
+        self.assertEqual(
+            ufm.normalize_test_id("://target!gtest::Suite"),
+            "://target!gtest::Suite",
+        )
 
     def test_a_plain_case_is_unchanged(self) -> None:
         test_id = UNIT_TESTS_TARGET + "Suite#Case"
@@ -195,13 +205,16 @@ class NormalizeTestIdTest(unittest.TestCase):
     def test_a_webui_sub_result_maps_to_its_parent_case(self) -> None:
         self.assertEqual(
             ufm.normalize_test_id(UNIT_TESTS_TARGET + "Suite#Case__SubTest"),
-            UNIT_TESTS_TARGET + "Suite#Case")
+            UNIT_TESTS_TARGET + "Suite#Case",
+        )
 
     def test_a_parameter_survives_normalisation(self) -> None:
         self.assertEqual(
-            ufm.normalize_test_id(UNIT_TESTS_TARGET +
-                                  "Suite#Case__SubTest/All.0"),
-            UNIT_TESTS_TARGET + "Suite#Case/All.0")
+            ufm.normalize_test_id(
+                UNIT_TESTS_TARGET + "Suite#Case__SubTest/All.0"
+            ),
+            UNIT_TESTS_TARGET + "Suite#Case/All.0",
+        )
 
     def test_a_parameterised_case_is_unchanged(self) -> None:
         test_id = UNIT_TESTS_TARGET + "Suite#Case/All.0"
@@ -210,64 +223,77 @@ class NormalizeTestIdTest(unittest.TestCase):
 
 
 class StructuredIdToGtestNameTest(unittest.TestCase):
-
     def test_a_plain_case(self) -> None:
         self.assertEqual(
             ufm.structured_id_to_gtest_name(UNIT_TESTS_TARGET + "Suite#Case"),
-            "Suite.Case")
+            "Suite.Case",
+        )
 
     def test_an_instantiated_parameterised_case(self) -> None:
         self.assertEqual(
-            ufm.structured_id_to_gtest_name(UNIT_TESTS_TARGET +
-                                            "Suite#Case/All.0"),
-            "All/Suite.Case/0")
+            ufm.structured_id_to_gtest_name(
+                UNIT_TESTS_TARGET + "Suite#Case/All.0"
+            ),
+            "All/Suite.Case/0",
+        )
 
     def test_a_parameterised_case_without_an_instantiation(self) -> None:
         self.assertEqual(
-            ufm.structured_id_to_gtest_name(UNIT_TESTS_TARGET +
-                                            "Suite#Case/3"), "Suite.Case/3")
+            ufm.structured_id_to_gtest_name(UNIT_TESTS_TARGET + "Suite#Case/3"),
+            "Suite.Case/3",
+        )
 
     def test_a_non_gtest_scheme_is_rejected(self) -> None:
         self.assertIsNone(
             ufm.structured_id_to_gtest_name(
-                "://chrome/test\\:junit!junit::org.Foo#bar"))
+                "://chrome/test\\:junit!junit::org.Foo#bar"
+            )
+        )
 
     def test_an_id_without_a_case_is_rejected(self) -> None:
         self.assertIsNone(
-            ufm.structured_id_to_gtest_name(UNIT_TESTS_TARGET + "Suite"))
+            ufm.structured_id_to_gtest_name(UNIT_TESTS_TARGET + "Suite")
+        )
 
 
 class GetAllConfigsTest(unittest.TestCase):
-
     def test_every_platform_gets_a_plain_and_a_sanitizer_config(self) -> None:
-        self.assertEqual(list(ufm.get_all_configs()), [
-            "linux",
-            "linux-asan",
-            "linux-msan",
-            "linux-ubsan",
-            "win",
-            "win-asan",
-            "win-msan",
-            "win-ubsan",
-        ])
+        self.assertEqual(
+            list(ufm.get_all_configs()),
+            [
+                "linux",
+                "linux-asan",
+                "linux-msan",
+                "linux-ubsan",
+                "win",
+                "win-asan",
+                "win-msan",
+                "win-ubsan",
+            ],
+        )
 
 
 class GetConfigForVariantTest(unittest.TestCase):
-
     def test_maps_the_bot_os_to_a_platform(self) -> None:
         self.assertEqual(
             ufm.get_config_for_variant(
-                variant("h", "Ubuntu-22.04", "linux-rel")), "linux")
+                variant("h", "Ubuntu-22.04", "linux-rel")
+            ),
+            "linux",
+        )
         self.assertEqual(
             ufm.get_config_for_variant(variant("h", "Linux", "linux-rel")),
-            "linux")
+            "linux",
+        )
         self.assertEqual(
-            ufm.get_config_for_variant(variant("h", "Windows-10",
-                                               "win10-rel")), "win")
+            ufm.get_config_for_variant(variant("h", "Windows-10", "win10-rel")),
+            "win",
+        )
 
     def test_an_unknown_os_has_no_config(self) -> None:
         self.assertIsNone(
-            ufm.get_config_for_variant(variant("h", "ChromeOS", "cros-rel")))
+            ufm.get_config_for_variant(variant("h", "ChromeOS", "cros-rel"))
+        )
 
     def test_a_variant_without_an_os_has_no_config(self) -> None:
         self.assertIsNone(ufm.get_config_for_variant(variant("h", "")))
@@ -277,49 +303,70 @@ class GetConfigForVariantTest(unittest.TestCase):
             with self.subTest(sanitizer=sanitizer):
                 self.assertEqual(
                     ufm.get_config_for_variant(
-                        variant("h", "Ubuntu-22.04",
-                                f"linux_chromium_{sanitizer}_rel_ng")),
-                    f"linux-{sanitizer}")
+                        variant(
+                            "h",
+                            "Ubuntu-22.04",
+                            f"linux_chromium_{sanitizer}_rel_ng",
+                        )
+                    ),
+                    f"linux-{sanitizer}",
+                )
 
     def test_lsan_bots_count_as_asan(self) -> None:
         self.assertEqual(
             ufm.get_config_for_variant(
-                variant("h", "Ubuntu-22.04", "linux-lsan-rel")), "linux-asan")
+                variant("h", "Ubuntu-22.04", "linux-lsan-rel")
+            ),
+            "linux-asan",
+        )
 
     def test_builder_names_are_matched_case_insensitively(self) -> None:
         self.assertEqual(
             ufm.get_config_for_variant(
-                variant("h", "Windows-10", "Windows ASan 64 Tests")),
-            "win-asan")
+                variant("h", "Windows-10", "Windows ASan 64 Tests")
+            ),
+            "win-asan",
+        )
 
     def test_platforms_brave_does_not_build_are_dropped(self) -> None:
-        for builder in ("android-x86-rel", "chromeos-amd64-generic-rel",
-                        "Linux Chromium OS ASan LSan Tests", "fuchsia-x64-rel",
-                        "linux-tsan-rel"):
+        for builder in (
+            "android-x86-rel",
+            "chromeos-amd64-generic-rel",
+            "Linux Chromium OS ASan LSan Tests",
+            "fuchsia-x64-rel",
+            "linux-tsan-rel",
+        ):
             with self.subTest(builder=builder):
                 self.assertIsNone(
                     ufm.get_config_for_variant(
-                        variant("h", "Ubuntu-22.04", builder)))
+                        variant("h", "Ubuntu-22.04", builder)
+                    )
+                )
 
     def test_ios_bots_are_dropped_despite_their_mac_os(self) -> None:
         self.assertIsNone(
-            ufm.get_config_for_variant(variant("h", "Mac-15",
-                                               "ios-simulator")))
+            ufm.get_config_for_variant(variant("h", "Mac-15", "ios-simulator"))
+        )
 
     def test_a_reviver_run_inherits_the_builder_it_retries(self) -> None:
         self.assertEqual(
             ufm.get_config_for_variant(
-                variant("h", "Ubuntu-22.04", "runner",
-                        "linux_chromium_asan_rel_ng")), "linux-asan")
+                variant(
+                    "h", "Ubuntu-22.04", "runner", "linux_chromium_asan_rel_ng"
+                )
+            ),
+            "linux-asan",
+        )
 
     def test_a_reviver_run_of_an_excluded_builder_is_dropped(self) -> None:
         self.assertIsNone(
             ufm.get_config_for_variant(
-                variant("h", "Ubuntu-22.04", "runner", "android-x86-rel")))
+                variant("h", "Ubuntu-22.04", "runner", "android-x86-rel")
+            )
+        )
 
 
 class AnalyzePerConfigTest(unittest.TestCase):
-
     def test_splits_the_verdict_counts_by_config(self) -> None:
         groups = [
             stats_group("h-linux", passed=90, failed=10),
@@ -349,31 +396,41 @@ class AnalyzePerConfigTest(unittest.TestCase):
 
 
 class FilterContentTest(SuiteUpdaterTestCase):
-
     def test_header_states_the_threshold_and_how_to_regenerate(self) -> None:
         content = self.updater().filter_content("linux-asan", [])
 
         self.assertTrue(
-            content.startswith("## AUTO-GENERATED FILE -- DO NOT EDIT.\n"))
+            content.startswith("## AUTO-GENERATED FILE -- DO NOT EDIT.\n")
+        )
         self.assertIn(
-            "## Upstream unit_tests tests with a flake rate >= 1.0% on",
-            content)
+            "## Upstream unit_tests tests with a flake rate >= 1.0% on", content
+        )
         self.assertIn(
             "## linux-asan bots over the past 30 days per Chromium LUCI"
-            " Analysis.", content)
+            " Analysis.",
+            content,
+        )
         self.assertIn(
             "##   vpython3 tools/chromium_tests_analysis/"
-            "update-upstream-flake-filters.py", content)
+            "update-upstream-flake-filters.py",
+            content,
+        )
 
     def test_documents_the_rate_behind_each_exclusion(self) -> None:
-        entries = [("Suite.Case",
-                    Flakiness(VerdictCounts(passed=95, failed=3, flaky=2)))]
+        entries = [
+            (
+                "Suite.Case",
+                Flakiness(VerdictCounts(passed=95, failed=3, flaky=2)),
+            )
+        ]
 
         content = self.updater().filter_content("linux", entries)
 
         self.assertIn(
             "# 5.0% flake rate over 30 days per LUCI Analysis"
-            " (95 passed, 3 failed, 2 flaky).\n-Suite.Case\n", content)
+            " (95 passed, 3 failed, 2 flaky).\n-Suite.Case\n",
+            content,
+        )
 
     def test_entries_are_sorted_by_test_name(self) -> None:
         flakiness = Flakiness(VerdictCounts(passed=9, failed=1))
@@ -381,8 +438,9 @@ class FilterContentTest(SuiteUpdaterTestCase):
 
         content = self.updater().filter_content("linux", entries)
 
-        self.assertLess(content.index("-Suite.Alpha"),
-                        content.index("-Suite.Zeta"))
+        self.assertLess(
+            content.index("-Suite.Alpha"), content.index("-Suite.Zeta")
+        )
 
     def test_the_file_ends_with_a_newline(self) -> None:
         content = self.updater().filter_content("linux", [])
@@ -391,7 +449,6 @@ class FilterContentTest(SuiteUpdaterTestCase):
 
 
 class CountColumnTest(QuietConsoleTestCase):
-
     def render(self, completed: int, total: int | None) -> str:
         with self.display.phase("a suite", "a phase", total) as task:
             task.advance(completed)
@@ -412,7 +469,6 @@ class CountColumnTest(QuietConsoleTestCase):
 
 
 class DisplayTest(QuietConsoleTestCase):
-
     def test_a_phase_adds_a_row_and_takes_it_away_again(self) -> None:
         with self.display.phase("unit_tests", "doing things", 7) as task:
             self.assertEqual(len(self.display.tasks), 1)
@@ -474,8 +530,7 @@ class DisplayTest(QuietConsoleTestCase):
         self.assertIn("inflight:6", painted)
         self.assertIn("retries:5", painted)
 
-    def test_the_summary_only_mentions_errors_when_there_are_some(
-            self) -> None:
+    def test_the_summary_only_mentions_errors_when_there_are_some(self) -> None:
         self.assertNotIn("errors:", self.rendered())
 
         self.client.stats.failures = 2
@@ -484,7 +539,6 @@ class DisplayTest(QuietConsoleTestCase):
 
 
 class WorkerPoolTest(unittest.TestCase):
-
     def test_runs_the_work_concurrently(self) -> None:
         with ufm.worker_pool(4) as pool:
             self.assertEqual(list(pool.imap(str, [1, 2, 3])), ["1", "2", "3"])
@@ -521,7 +575,6 @@ class WorkerPoolTest(unittest.TestCase):
 
 
 class RunInParallelTest(unittest.TestCase):
-
     def test_abandoning_the_results_stops_the_fan_out(self) -> None:
         # The caller giving up has to stop the work being queued behind
         # it, not just the items already running.
@@ -548,8 +601,9 @@ class RunInParallelTest(unittest.TestCase):
             gevent.sleep((10 - item) / 1000)
             return item
 
-        self.assertEqual(list(ufm.run_in_parallel(work, range(10))),
-                         list(range(10)))
+        self.assertEqual(
+            list(ufm.run_in_parallel(work, range(10))), list(range(10))
+        )
 
     def test_runs_the_items_at_the_same_time(self) -> None:
         running = []
@@ -567,12 +621,12 @@ class RunInParallelTest(unittest.TestCase):
 
 
 class HandleInterruptTest(QuietConsoleTestCase):
-
     def setUp(self) -> None:
         super().setUp()
         self.client = mock.Mock()
         self.kill = self.enter_patch(
-            mock.patch.object(ufm.requests_pool, "kill"))
+            mock.patch.object(ufm.requests_pool, "kill")
+        )
 
     def test_leaves_with_the_interrupt_exit_code(self) -> None:
         with self.assertRaises(SystemExit) as caught:
@@ -600,17 +654,18 @@ class HandleInterruptTest(QuietConsoleTestCase):
 
 
 class DiscoverCandidatesTest(SuiteUpdaterTestCase):
-
     def setUp(self) -> None:
         super().setUp()
         self.summaries: list[ClusterSummary] = []
-        self.failures_by_cluster: dict[tuple[str, str],
-                                       list[ClusterFailure]] = {}
+        self.failures_by_cluster: dict[
+            tuple[str, str], list[ClusterFailure]
+        ] = {}
         self.client.cluster_summaries.side_effect = self.fake_summaries
         self.client.cluster_failures.side_effect = self.fake_failures
 
-    def fake_summaries(self, _failure_filter: str,
-                       _window: Any) -> list[ClusterSummary]:
+    def fake_summaries(
+        self, _failure_filter: str, _window: Any
+    ) -> list[ClusterSummary]:
         return self.summaries
 
     def fake_failures(self, cluster: ClusterSummary) -> list[ClusterFailure]:
@@ -621,9 +676,9 @@ class DiscoverCandidatesTest(SuiteUpdaterTestCase):
 
     @staticmethod
     def summary(algorithm: str, cluster_id: str, title: str) -> ClusterSummary:
-        return ClusterSummary(algorithm=algorithm,
-                              cluster_id=cluster_id,
-                              title=title)
+        return ClusterSummary(
+            algorithm=algorithm, cluster_id=cluster_id, title=title
+        )
 
     def test_a_single_test_cluster_yields_its_title(self) -> None:
         self.summaries = [
@@ -641,36 +696,45 @@ class DiscoverCandidatesTest(SuiteUpdaterTestCase):
 
     def test_tests_from_other_suites_are_ignored(self) -> None:
         self.summaries = [
-            self.summary("testname-v4", "c1",
-                         "://chrome/test\\:browser_tests!gtest::S#Case")
+            self.summary(
+                "testname-v4",
+                "c1",
+                "://chrome/test\\:browser_tests!gtest::S#Case",
+            )
         ]
 
         self.assertEqual(self.discover(), [])
 
     def test_webui_sub_results_collapse_into_one_candidate(self) -> None:
         self.summaries = [
-            self.summary("testname-v4", "c1",
-                         UNIT_TESTS_TARGET + "S#Case__StepOne"),
-            self.summary("testname-v4", "c2",
-                         UNIT_TESTS_TARGET + "S#Case__StepTwo"),
+            self.summary(
+                "testname-v4", "c1", UNIT_TESTS_TARGET + "S#Case__StepOne"
+            ),
+            self.summary(
+                "testname-v4", "c2", UNIT_TESTS_TARGET + "S#Case__StepTwo"
+            ),
         ]
 
         self.assertEqual(self.discover(), [UNIT_TESTS_TARGET + "S#Case"])
 
     def test_a_pattern_cluster_is_expanded_into_its_failures(self) -> None:
         self.summaries = [
-            self.summary("testname-v4", "c1",
-                         UNIT_TESTS_TARGET + "S#Case/All.%")
+            self.summary(
+                "testname-v4", "c1", UNIT_TESTS_TARGET + "S#Case/All.%"
+            )
         ]
         self.failures_by_cluster[("testname-v4", "c1")] = [
             ClusterFailure(UNIT_TESTS_TARGET + "S#Case/All.0", 3),
             ClusterFailure(UNIT_TESTS_TARGET + "S#Case/All.1", 1),
         ]
 
-        self.assertEqual(self.discover(), [
-            UNIT_TESTS_TARGET + "S#Case/All.0",
-            UNIT_TESTS_TARGET + "S#Case/All.1",
-        ])
+        self.assertEqual(
+            self.discover(),
+            [
+                UNIT_TESTS_TARGET + "S#Case/All.0",
+                UNIT_TESTS_TARGET + "S#Case/All.1",
+            ],
+        )
 
     def test_a_rule_cluster_is_expanded_into_its_failures(self) -> None:
         # Failures claimed by a filed bug only surface through their rule.
@@ -692,7 +756,8 @@ class DiscoverCandidatesTest(SuiteUpdaterTestCase):
 
         self.assertEqual(
             self.discover(),
-            [UNIT_TESTS_TARGET + f"S#Case/All.{index}" for index in range(4)])
+            [UNIT_TESTS_TARGET + f"S#Case/All.{index}" for index in range(4)],
+        )
         self.assertNotIn("limit", self.logged())
 
     def test_a_cluster_at_the_server_limit_is_reported(self) -> None:
@@ -705,8 +770,9 @@ class DiscoverCandidatesTest(SuiteUpdaterTestCase):
 
         self.discover()
 
-        self.assertIn("1 clusters hit the server's 3-failure limit",
-                      self.logged())
+        self.assertIn(
+            "1 clusters hit the server's 3-failure limit", self.logged()
+        )
 
     def test_truncated_clusters_are_reported_once_for_the_suite(self) -> None:
         # One line per cluster would bury everything else the run says.
@@ -718,7 +784,8 @@ class DiscoverCandidatesTest(SuiteUpdaterTestCase):
         for cluster in range(5):
             self.failures_by_cluster[("rules", f"r{cluster}")] = [
                 ClusterFailure(
-                    UNIT_TESTS_TARGET + f"S#Case{cluster}/All.{index}", 1)
+                    UNIT_TESTS_TARGET + f"S#Case{cluster}/All.{index}", 1
+                )
                 for index in range(2)
             ]
 
@@ -740,7 +807,8 @@ class DiscoverCandidatesTest(SuiteUpdaterTestCase):
         self.assertNotIn("limit", self.logged())
 
     def test_the_same_cluster_seen_in_several_windows_is_queried_once(
-            self) -> None:
+        self,
+    ) -> None:
         self.summaries = [self.summary("rules", "r1", "crbug.com/1234567")]
 
         self.discover(30)
@@ -752,11 +820,11 @@ class DiscoverCandidatesTest(SuiteUpdaterTestCase):
 
 
 class ReadHistoryTest(SuiteUpdaterTestCase):
-
     def test_collects_the_history_of_every_candidate(self) -> None:
         history = {"t1": [stats_group("h", passed=1)], "t2": []}
         self.client.history = mock.Mock(
-            side_effect=lambda test_id, _window: history[test_id])
+            side_effect=lambda test_id, _window: history[test_id]
+        )
 
         self.assertEqual(self.updater().read_history(["t1", "t2"]), history)
 
@@ -777,40 +845,47 @@ class ReadHistoryTest(SuiteUpdaterTestCase):
 
 
 class ResolveConfigsTest(SuiteUpdaterTestCase):
-
     def test_maps_each_variant_hash_to_a_config(self) -> None:
-        self.client.variants = mock.Mock(return_value=[
-            variant("h-linux", "Ubuntu-22.04", "linux-rel"),
-            variant("h-asan", "Ubuntu-22.04", "linux-asan-rel"),
-        ])
+        self.client.variants = mock.Mock(
+            return_value=[
+                variant("h-linux", "Ubuntu-22.04", "linux-rel"),
+                variant("h-asan", "Ubuntu-22.04", "linux-asan-rel"),
+            ]
+        )
 
         config_by_hash = self.updater().resolve_configs(
-            {"t1": [stats_group("h-linux", passed=1)]})
+            {"t1": [stats_group("h-linux", passed=1)]}
+        )
 
-        self.assertEqual(config_by_hash, {
-            "h-linux": "linux",
-            "h-asan": "linux-asan"
-        })
+        self.assertEqual(
+            config_by_hash, {"h-linux": "linux", "h-asan": "linux-asan"}
+        )
 
     def test_a_hash_is_only_looked_up_once(self) -> None:
         self.client.variants = mock.Mock(
-            return_value=[variant("h-linux", "Ubuntu-22.04", "linux-rel")])
+            return_value=[variant("h-linux", "Ubuntu-22.04", "linux-rel")]
+        )
 
-        self.updater().resolve_configs({
-            "t1": [stats_group("h-linux", passed=1)],
-            "t2": [stats_group("h-linux", passed=1)],
-        })
+        self.updater().resolve_configs(
+            {
+                "t1": [stats_group("h-linux", passed=1)],
+                "t2": [stats_group("h-linux", passed=1)],
+            }
+        )
 
         self.client.variants.assert_called_once_with("t1")
 
     def test_a_hash_the_api_does_not_return_is_not_looked_up_again(
-            self) -> None:
+        self,
+    ) -> None:
         self.client.variants = mock.Mock(return_value=[])
 
-        config_by_hash = self.updater().resolve_configs({
-            "t1": [stats_group("h-gone", passed=1)],
-            "t2": [stats_group("h-gone", passed=1)],
-        })
+        config_by_hash = self.updater().resolve_configs(
+            {
+                "t1": [stats_group("h-gone", passed=1)],
+                "t2": [stats_group("h-gone", passed=1)],
+            }
+        )
 
         self.assertEqual(config_by_hash, {"h-gone": None})
         self.client.variants.assert_called_once_with("t1")
@@ -829,20 +904,26 @@ class RunTest(SuiteUpdaterTestCase):
         super().setUp()
         self.stats_by_test_id: dict[str, list[StatsGroup]] = {}
 
-    def update(self,
-               suite: str = "unit_tests",
-               days: int = 30,
-               min_flake_rate: float = 0.01) -> None:
+    def update(
+        self,
+        suite: str = "unit_tests",
+        days: int = 30,
+        min_flake_rate: float = 0.01,
+    ) -> None:
         """Run the suite, short-circuiting the phases that fetch."""
         updater = self.updater(suite, days, min_flake_rate)
         with mock.patch.multiple(
-                updater,
-                discover_candidates=mock.Mock(
-                    side_effect=lambda: list(self.stats_by_test_id)),
-                read_history=mock.Mock(
-                    side_effect=lambda _ids: self.stats_by_test_id),
-                resolve_configs=mock.Mock(
-                    side_effect=lambda _history: self.CONFIG_BY_HASH)):
+            updater,
+            discover_candidates=mock.Mock(
+                side_effect=lambda: list(self.stats_by_test_id)
+            ),
+            read_history=mock.Mock(
+                side_effect=lambda _ids: self.stats_by_test_id
+            ),
+            resolve_configs=mock.Mock(
+                side_effect=lambda _history: self.CONFIG_BY_HASH
+            ),
+        ):
             updater.run()
 
     def written_files(self) -> list[str]:
@@ -854,17 +935,21 @@ class RunTest(SuiteUpdaterTestCase):
 
     def excluded_tests(self, name: str) -> list[str]:
         return [
-            line[1:] for line in self.read_filter(name).splitlines()
+            line[1:]
+            for line in self.read_filter(name).splitlines()
             if line.startswith("-")
         ]
 
     def test_platform_files_are_always_written(self) -> None:
         self.update()
 
-        self.assertEqual(self.written_files(), [
-            "unit_tests-linux.filter",
-            "unit_tests-win.filter",
-        ])
+        self.assertEqual(
+            self.written_files(),
+            [
+                "unit_tests-linux.filter",
+                "unit_tests-win.filter",
+            ],
+        )
 
     def test_a_flaky_test_is_excluded_on_the_config_it_flakes_on(self) -> None:
         self.stats_by_test_id = {
@@ -876,8 +961,9 @@ class RunTest(SuiteUpdaterTestCase):
 
         self.update()
 
-        self.assertEqual(self.excluded_tests("unit_tests-linux.filter"),
-                         ["S.Flaky"])
+        self.assertEqual(
+            self.excluded_tests("unit_tests-linux.filter"), ["S.Flaky"]
+        )
         self.assertEqual(self.excluded_tests("unit_tests-win.filter"), [])
 
     def test_a_test_below_the_threshold_stays_enabled(self) -> None:
@@ -903,7 +989,8 @@ class RunTest(SuiteUpdaterTestCase):
         self.assertEqual(self.excluded_tests("unit_tests-linux.filter"), [])
 
     def test_a_sanitizer_file_only_lists_what_the_platform_file_misses(
-            self) -> None:
+        self,
+    ) -> None:
         self.stats_by_test_id = {
             UNIT_TESTS_TARGET + "S#Everywhere": [
                 stats_group("h-linux", passed=90, failed=10),
@@ -917,10 +1004,12 @@ class RunTest(SuiteUpdaterTestCase):
 
         self.update()
 
-        self.assertEqual(self.excluded_tests("unit_tests-linux.filter"),
-                         ["S.Everywhere"])
-        self.assertEqual(self.excluded_tests("unit_tests-linux-asan.filter"),
-                         ["S.AsanOnly"])
+        self.assertEqual(
+            self.excluded_tests("unit_tests-linux.filter"), ["S.Everywhere"]
+        )
+        self.assertEqual(
+            self.excluded_tests("unit_tests-linux-asan.filter"), ["S.AsanOnly"]
+        )
 
     def test_an_empty_sanitizer_file_is_not_written(self) -> None:
         self.stats_by_test_id = {
@@ -946,24 +1035,27 @@ class RunTest(SuiteUpdaterTestCase):
 
     def test_stale_files_of_the_same_suite_are_removed(self) -> None:
         (self.filters_dir / "unit_tests-linux-msan.filter").write_text(
-            "old", encoding="utf-8", newline="")
-        (self.filters_dir / "unit_tests.filter").write_text("older",
-                                                            encoding="utf-8",
-                                                            newline="")
+            "old", encoding="utf-8", newline=""
+        )
+        (self.filters_dir / "unit_tests.filter").write_text(
+            "older", encoding="utf-8", newline=""
+        )
 
         self.update()
 
         self.assertNotIn("unit_tests-linux-msan.filter", self.written_files())
         self.assertNotIn("unit_tests.filter", self.written_files())
-        self.assertIn("removed stale unit_tests-linux-msan.filter",
-                      self.logged())
+        self.assertIn(
+            "removed stale unit_tests-linux-msan.filter", self.logged()
+        )
 
     def test_files_of_other_suites_are_left_alone(self) -> None:
         (self.filters_dir / "browser_tests-linux.filter").write_text(
-            "keep", encoding="utf-8", newline="")
-        (self.filters_dir / "notes.txt").write_text("keep",
-                                                    encoding="utf-8",
-                                                    newline="")
+            "keep", encoding="utf-8", newline=""
+        )
+        (self.filters_dir / "notes.txt").write_text(
+            "keep", encoding="utf-8", newline=""
+        )
 
         self.update()
 
@@ -1010,11 +1102,13 @@ class MainTest(QuietConsoleTestCase):
         # What running a suite costs; replaced by tests that care.
         self.on_run: Any = lambda: None
         self.updater = self.enter_patch(
-            mock.patch.object(ufm, "SuiteUpdater", side_effect=self.record))
+            mock.patch.object(ufm, "SuiteUpdater", side_effect=self.record)
+        )
         # main() builds its own display; hand it the one this fixture
         # can read back.
         self.enter_patch(
-            mock.patch.object(ufm, "Display", return_value=self.display))
+            mock.patch.object(ufm, "Display", return_value=self.display)
+        )
 
     def record(self, suite: str, **kwargs: Any) -> Any:
         """Stand in for a SuiteUpdater, remembering how it was built."""
@@ -1022,8 +1116,9 @@ class MainTest(QuietConsoleTestCase):
         return mock.Mock(run=mock.Mock(side_effect=self.on_run))
 
     def run_main(self, *argv: str) -> None:
-        with mock.patch.object(sys, "argv",
-                               ["update-upstream-flake-filters.py", *argv]):
+        with mock.patch.object(
+            sys, "argv", ["update-upstream-flake-filters.py", *argv]
+        ):
             return ufm.main()
 
     def updated_suites(self) -> list[str]:
@@ -1038,8 +1133,9 @@ class MainTest(QuietConsoleTestCase):
     def test_updates_only_the_requested_suites(self) -> None:
         self.run_main("unit_tests", "net_unittests")
 
-        self.assertCountEqual(self.updated_suites(),
-                              ["unit_tests", "net_unittests"])
+        self.assertCountEqual(
+            self.updated_suites(), ["unit_tests", "net_unittests"]
+        )
 
     def test_converts_the_threshold_from_percent_to_a_fraction(self) -> None:
         self.run_main("unit_tests", "--days", "45", "--min-flake-rate", "2.5")
@@ -1056,7 +1152,8 @@ class MainTest(QuietConsoleTestCase):
         self.assertEqual(len({id(run["display"]) for run in self.runs}), 1)
 
     def test_rejects_a_lookback_window_outside_the_supported_range(
-            self) -> None:
+        self,
+    ) -> None:
         for days in ("0", "91"):
             with self.subTest(days=days):
                 with self.assertRaises(SystemExit) as caught:

@@ -80,7 +80,8 @@ def _iter_recipe_ids() -> list[str]:
                 if path.name == '__init__.py' or _is_resource(path):
                     continue
                 ids.append(
-                    path.relative_to(modules_root).with_suffix('').as_posix())
+                    path.relative_to(modules_root).with_suffix('').as_posix()
+                )
     return ids
 
 
@@ -165,8 +166,8 @@ class _Results:
 
 
 def _simulate(
-        recipe, recipe_id: str,
-        test_data: TestData) -> tuple[dict[str, dict], simulation.TestContext]:
+    recipe, recipe_id: str, test_data: TestData
+) -> tuple[dict[str, dict], simulation.TestContext]:
     """Run one recipe case in a fresh test-mode engine; return (steps, ctx)."""
     ctx = simulation.TestContext.from_test_data(test_data)
     # The registry holds every `PerGreenletState` ever constructed, and module
@@ -180,7 +181,8 @@ def _simulate(
     # A fresh engine per case: module instances are cached per engine, so
     # reusing one would leak state (deployed depot_tools, set env vars, ...).
     eng = engine._Engine(  # pylint: disable=protected-access
-        test=ctx)
+        test=ctx
+    )
     # `failure` becomes the `$result` payload: None on success; a non-infra
     # failure carries an inner `{'failure': {}}`; an infra failure/exception
     # carries only `humanReason`.
@@ -208,8 +210,14 @@ def _result_status(result: dict) -> str:
     return 'FAILURE' if 'failure' in failure else 'EXCEPTION'
 
 
-def _run_case(recipe, recipe_id: str, test_data: TestData, train: bool,
-              results: _Results, seen: set[Path]) -> None:
+def _run_case(
+    recipe,
+    recipe_id: str,
+    test_data: TestData,
+    train: bool,
+    results: _Results,
+    seen: set[Path],
+) -> None:
     case_id = f'{recipe_id}.{test_data.name}'
     steps, _ = _simulate(recipe, recipe_id, test_data)
     expect_file = _expect_file(recipe, test_data.name)
@@ -218,7 +226,8 @@ def _run_case(recipe, recipe_id: str, test_data: TestData, train: bool,
     blocks: list[Block] = []
     try:
         filtered, failed_checks = simulation.apply_post_process(
-            test_data.post_process_hooks, steps)
+            test_data.post_process_hooks, steps
+        )
     except simulation.PostProcessError as exc:
         # A hook returned a non-subset expectation: the test itself is broken.
         results.record(case_id, [('bad_test', [str(exc)])])
@@ -227,13 +236,20 @@ def _run_case(recipe, recipe_id: str, test_data: TestData, train: bool,
 
     result = steps[simulation.pp.RESULT_STEP]
     status = _result_status(result)
-    if (test_data.expected_status is not None
-            and test_data.expected_status != status):
+    if (
+        test_data.expected_status is not None
+        and test_data.expected_status != status
+    ):
         reason = (result.get('failure') or {}).get('humanReason')
-        blocks.append(('bad_test', [
-            f'expected overall status {test_data.expected_status!r}, '
-            f'got {status!r}' + (f' ({reason})' if reason else '')
-        ]))
+        blocks.append(
+            (
+                'bad_test',
+                [
+                    f'expected overall status {test_data.expected_status!r}, '
+                    f'got {status!r}' + (f' ({reason})' if reason else '')
+                ],
+            )
+        )
 
     if filtered is None:  # DropExpectation.
         if expect_file.exists():
@@ -241,23 +257,35 @@ def _run_case(recipe, recipe_id: str, test_data: TestData, train: bool,
                 expect_file.unlink()
                 results.removed += 1
             else:
-                blocks.append(('bad_test', [
-                    f'{_rel(expect_file)} exists but the test drops its '
-                    f'expectation; delete it or run `test train`'
-                ]))
+                blocks.append(
+                    (
+                        'bad_test',
+                        [
+                            f'{_rel(expect_file)} exists but the test drops its '
+                            f'expectation; delete it or run `test train`'
+                        ],
+                    )
+                )
     else:
         payload = _dump(filtered)
         if train:
             expect_file.parent.mkdir(parents=True, exist_ok=True)
-            if (not expect_file.exists()
-                    or _read_expectation(expect_file) != payload):
+            if (
+                not expect_file.exists()
+                or _read_expectation(expect_file) != payload
+            ):
                 _write_expectation(expect_file, payload)
                 results.written += 1
         elif not expect_file.exists():
-            blocks.append(('bad_test', [
-                f'missing expectation {_rel(expect_file)} '
-                f'(run `engine.py test train`)'
-            ]))
+            blocks.append(
+                (
+                    'bad_test',
+                    [
+                        f'missing expectation {_rel(expect_file)} '
+                        f'(run `engine.py test train`)'
+                    ],
+                )
+            )
         else:
             current = _read_expectation(expect_file)
             if current != payload:
@@ -266,7 +294,8 @@ def _run_case(recipe, recipe_id: str, test_data: TestData, train: bool,
                     payload.splitlines(),
                     fromfile=f'{_rel(expect_file)} (expected)',
                     tofile='actual',
-                    lineterm='')
+                    lineterm='',
+                )
                 blocks.append(('diff', list(diff)))
 
     results.record(case_id, blocks)
@@ -282,6 +311,7 @@ def _start_coverage() -> coverage.Coverage:
     definitions count as covered. Returns the started `Coverage` object.
     """
     import coverage  # Local import: only the full-run path needs the wheel.
+
     root = engine.RECIPES_ROOT
     cov = coverage.Coverage(
         config_file=False,
@@ -295,7 +325,8 @@ def _start_coverage() -> coverage.Coverage:
         include=[
             str(root / engine.RECIPES_PKG / '*'),
             str(root / engine.MODULES_PKG / '*'),
-        ])
+        ],
+    )
     # `if TYPE_CHECKING:` blocks never execute at runtime; the default
     # `# pragma: no cover` still applies for the production I/O seams that
     # simulation intentionally never exercises.
@@ -307,6 +338,7 @@ def _start_coverage() -> coverage.Coverage:
 def _report_coverage(cov: coverage.Coverage) -> bool:
     """Report total coverage; return True if it is below 100% (a failure)."""
     import coverage  # Local import: mirrors `_start_coverage`.
+
     if not cov.get_data().measured_files():
         return False
     buf = io.StringIO()
@@ -329,9 +361,13 @@ def _uncovered_modules() -> list[str]:
     uncovered: list[str] = []
     for module in sorted(engine._module_names()):  # pylint: disable=protected-access
         mod_dir = modules_root / module
-        has_tests = any((mod_dir / sub).is_dir() and any(
-            p.name != '__init__.py' for p in (mod_dir / sub).rglob('*.py'))
-                        for sub in ('examples', 'tests'))
+        has_tests = any(
+            (mod_dir / sub).is_dir()
+            and any(
+                p.name != '__init__.py' for p in (mod_dir / sub).rglob('*.py')
+            )
+            for sub in ('examples', 'tests')
+        )
         if has_tests:
             continue
         package = importlib.import_module(f'{engine.MODULES_PKG}.{module}')
@@ -354,12 +390,13 @@ def _all_expectation_files() -> list[Path]:
 # -- Running ------------------------------------------------------------------
 
 
-def run_tests(train: bool = False,
-              filter_: str | None = None,
-              list_only: bool = False,
-              verbose: bool = False) -> int:
-    """Run (or train, or list) all recipe simulation tests; return an exit code.
-    """
+def run_tests(
+    train: bool = False,
+    filter_: str | None = None,
+    list_only: bool = False,
+    verbose: bool = False,
+) -> int:
+    """Run (or train, or list) all recipe simulation tests; return an exit code."""
     engine._ensure_on_sys_path()  # pylint: disable=protected-access
     results = _Results(verbose=verbose)
 
@@ -372,8 +409,7 @@ def run_tests(train: bool = False,
     start = time.monotonic()
     seen_all: set[Path] = set()
     for recipe_id, recipe in _testable_recipes():
-        root_api = engine.build_root_test_api(list(getattr(recipe, 'DEPS',
-                                                           [])))
+        root_api = engine.build_root_test_api(list(getattr(recipe, 'DEPS', [])))
         seen: set[Path] = set()
         for test_data in recipe.GenTests(root_api):
             case_id = f'{recipe_id}.{test_data.name}'
@@ -403,8 +439,17 @@ def run_tests(train: bool = False,
         cov.stop()
 
     # `run` reports orphaned goldens; `train` already deleted them above.
-    unused = ([] if train else sorted(p for p in _all_expectation_files()
-                                      if p not in seen_all)) if gated else []
+    unused = (
+        (
+            []
+            if train
+            else sorted(
+                p for p in _all_expectation_files() if p not in seen_all
+            )
+        )
+        if gated
+        else []
+    )
     uncovered = _uncovered_modules() if gated else []
     return _report(results, train, duration, cov, uncovered, unused)
 
@@ -427,9 +472,14 @@ def _print_case_failure(case_id: str, blocks: list[Block]) -> None:
             print()
 
 
-def _report(results: _Results, train: bool, duration: float,
-            cov: coverage.Coverage | None, uncovered: list[str],
-            unused: list[Path]) -> int:
+def _report(
+    results: _Results,
+    train: bool,
+    duration: float,
+    cov: coverage.Coverage | None,
+    uncovered: list[str],
+    unused: list[Path],
+) -> int:
     if not results.verbose:
         print()  # Terminate the progress-dots line.
     for case_id, blocks in results.failures:
@@ -456,7 +506,8 @@ def _report(results: _Results, train: bool, duration: float,
         fail = True
         print('------')
         print(
-            'ERROR: The below expectation files have no associated test case:')
+            'ERROR: The below expectation files have no associated test case:'
+        )
         for path in unused:
             print('  ', _rel(path))
         print()
@@ -471,19 +522,24 @@ def _report(results: _Results, train: bool, duration: float,
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        prog='engine.py test',
-        description='Run Brave recipe simulation tests.')
-    parser.add_argument('subcommand',
-                        choices=['run', 'train', 'list'],
-                        help='run: compare against expectations; train: write '
-                        'expectations; list: print test case ids')
-    parser.add_argument('--filter',
-                        default=None,
-                        help='only cases whose "<recipe>.<test>" id contains '
-                        'this substring')
-    parser.add_argument('--verbose',
-                        action='store_true',
-                        help='enable step/debug logging (noisy)')
+        prog='engine.py test', description='Run Brave recipe simulation tests.'
+    )
+    parser.add_argument(
+        'subcommand',
+        choices=['run', 'train', 'list'],
+        help='run: compare against expectations; train: write '
+        'expectations; list: print test case ids',
+    )
+    parser.add_argument(
+        '--filter',
+        default=None,
+        help='only cases whose "<recipe>.<test>" id contains this substring',
+    )
+    parser.add_argument(
+        '--verbose',
+        action='store_true',
+        help='enable step/debug logging (noisy)',
+    )
     args = parser.parse_args(argv)
 
     # We disable gevent's exception stream because it prints tracebacks for
@@ -493,11 +549,14 @@ def main(argv: list[str] | None = None) -> int:
 
     # Keep step logging quiet by default so test output is just the report.
     logging.basicConfig(
-        level=logging.DEBUG if args.verbose else logging.WARNING)
-    return run_tests(train=args.subcommand == 'train',
-                     filter_=args.filter,
-                     list_only=args.subcommand == 'list',
-                     verbose=args.verbose)
+        level=logging.DEBUG if args.verbose else logging.WARNING
+    )
+    return run_tests(
+        train=args.subcommand == 'train',
+        filter_=args.filter,
+        list_only=args.subcommand == 'list',
+        verbose=args.verbose,
+    )
 
 
 if __name__ == '__main__':

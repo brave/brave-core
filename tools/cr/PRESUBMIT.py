@@ -14,8 +14,7 @@ PRESUBMIT_VERSION = '2.0.0'
 
 
 def CheckTests(input_api, output_api):
-    """Run every *_test.py file found under this directory.
-    """
+    """Run every *_test.py file found under this directory."""
     script_dir = input_api.PresubmitLocalPath()
     tests = []
     for root, dirs, files in os.walk(script_dir):
@@ -30,5 +29,6 @@ def CheckTests(input_api, output_api):
                     cmd=[test_path],
                     kwargs={'cwd': script_dir},
                     message=output_api.PresubmitError,
-                ))
+                )
+            )
     return input_api.RunTests(tests)

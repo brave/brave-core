@@ -8,9 +8,12 @@
 import os
 from typing import List, Optional
 
-from components.field_trials import (FieldTrialConfig, FieldTrialsMode,
-                                     MaybeInjectSeedToLocalState,
-                                     MakeFieldTrials)
+from components.field_trials import (
+  FieldTrialConfig,
+  FieldTrialsMode,
+  MaybeInjectSeedToLocalState,
+  MakeFieldTrials,
+)
 from components import path_util
 from components import field_trials
 from components.android_tools import InstallApk
@@ -20,8 +23,7 @@ from components.perf_config import RunnerConfig
 from components.perf_profile import GetProfilePath
 
 with path_util.SysPath(path_util.GetTelemetryDir()):
-  from telemetry.internal.backends import \
-      android_browser_backend_settings  # pylint: disable=import-error
+  from telemetry.internal.backends import android_browser_backend_settings  # pylint: disable=import-error
 
 
 class BrowserBinary:
@@ -32,9 +34,14 @@ class BrowserBinary:
   field_trial_config: FieldTrialConfig
   _browser_type: BrowserType
 
-  def __init__(self, browser_type: BrowserType, binary_path: Optional[str],
-               android_package: Optional[str], profile_dir: Optional[str],
-               field_trial_config: FieldTrialConfig):
+  def __init__(
+    self,
+    browser_type: BrowserType,
+    binary_path: Optional[str],
+    android_package: Optional[str],
+    profile_dir: Optional[str],
+    field_trial_config: FieldTrialConfig,
+  ):
     self._browser_type = browser_type
     self.binary_path = binary_path
     self.android_package = android_package
@@ -58,8 +65,9 @@ class BrowserBinary:
     assert self.binary_path is not None
     self.android_package = InstallApk(self.binary_path, expected_version)
     if self.telemetry_browser_type() is None:
-      raise RuntimeError('No matching browser-type found ' +
-                         self.android_package)
+      raise RuntimeError(
+        'No matching browser-type found ' + self.android_package
+      )
 
   def get_run_benchmark_args(self) -> List[str]:
     args: List[str] = []
@@ -92,8 +100,9 @@ class BrowserBinary:
       args.append('--accept-empty-variations-seed-signature')
       args.append('--variations-override-country=us')
       if self.field_trial_config.fake_channel:
-        args.append('--fake-variations-channel=' +
-                    self.field_trial_config.fake_channel)
+        args.append(
+          '--fake-variations-channel=' + self.field_trial_config.fake_channel
+        )
     if self.field_trial_config.mode == FieldTrialsMode.GRIFFIN:
       # Profiles often carry a high variations_crash_streak (esp. Android),
       # which forces kNullSeed and ignores the injected Griffin seed.
@@ -109,23 +118,32 @@ class BrowserBinary:
     return '<empty>'
 
 
-def PrepareBinary(binary_dir: str, artifacts_dir: str, config: RunnerConfig,
-                  common_options: CommonOptions) -> BrowserBinary:
+def PrepareBinary(
+  binary_dir: str,
+  artifacts_dir: str,
+  config: RunnerConfig,
+  common_options: CommonOptions,
+) -> BrowserBinary:
 
   profile_dir = None
   if config.profile != 'clean':
     if config.version is None:
       raise RuntimeError(
-          f'Using non-empty profile {config.profile} requires a version')
-    profile_dir = GetProfilePath(config.profile,
-                                 common_options.working_directory,
-                                 config.version)
+        f'Using non-empty profile {config.profile} requires a version'
+      )
+    profile_dir = GetProfilePath(
+      config.profile, common_options.working_directory, config.version
+    )
 
   trials = config.field_trials or config.browser_type.GetDefaultFieldTrials()
   variations_channel = config.browser_type.GetVariationsChannel()
-  field_trial_config = MakeFieldTrials(trials, variations_channel,
-                                       artifacts_dir, config.version,
-                                       common_options.variations_repo_dir)
+  field_trial_config = MakeFieldTrials(
+    trials,
+    variations_channel,
+    artifacts_dir,
+    config.version,
+    common_options.variations_repo_dir,
+  )
   MaybeInjectSeedToLocalState(field_trial_config, profile_dir)
 
   binary_location = None
@@ -137,23 +155,34 @@ def PrepareBinary(binary_dir: str, artifacts_dir: str, config: RunnerConfig,
     elif config.location.startswith('https:'):
       url = config.location
     elif config.location.startswith('package:') and common_options.is_android:
-      package = config.location[len('package:'):]
+      package = config.location[len('package:') :]
     else:
       raise RuntimeError(f'Bad explicit location {config.location}')
 
   if binary_location is None and package is None:
     assert config.version is not None
     binary_location = config.browser_type.DownloadBrowserBinary(
-        url, config.version, binary_dir, common_options)
+      url, config.version, binary_dir, common_options
+    )
 
   if not common_options.is_android:
     assert binary_location
-    return BrowserBinary(config.browser_type, binary_location, None,
-                         profile_dir, field_trial_config)
+    return BrowserBinary(
+      config.browser_type,
+      binary_location,
+      None,
+      profile_dir,
+      field_trial_config,
+    )
 
   if package is None:
     assert binary_location is not None
     assert binary_location.endswith('.apk')
 
-  return BrowserBinary(config.browser_type, binary_location, package,
-                       profile_dir, field_trial_config)
+  return BrowserBinary(
+    config.browser_type,
+    binary_location,
+    package,
+    profile_dir,
+    field_trial_config,
+  )

@@ -20,6 +20,7 @@ import zipfile
 
 CONCURRENT_TASKS = multiprocessing.cpu_count()
 
+
 def GetDumpSymsBinary(build_dir=None):
     """Returns the path to the dump_syms binary."""
     DUMP_SYMS = 'dump_syms'
@@ -30,16 +31,18 @@ def GetDumpSymsBinary(build_dir=None):
 
     return dump_syms_bin
 
+
 def GetRequiredLibsPaths(args, extension):
     """For the given args.package_name returns the list of path of libs,
     which are required to generate the symbols"""
 
-    libs_in_package = [] #libs
+    libs_in_package = []  # libs
     with zipfile.ZipFile(args.package_path, 'r') as zf:
         if extension == '.aab':
             AAB_BASE_LIB_RE = re.compile('base/lib/[^/]*/\\S*[.]so')
-            libs_in_package = \
-                [s for s in zf.namelist() if AAB_BASE_LIB_RE.match(s)]
+            libs_in_package = [
+                s for s in zf.namelist() if AAB_BASE_LIB_RE.match(s)
+            ]
         elif extension == '.apk':
             APK_LIB_RE = re.compile('lib/[^/]*/\\S*[.]so')
             libs_in_package = [s for s in zf.namelist() if APK_LIB_RE.match(s)]
@@ -51,12 +54,13 @@ def GetRequiredLibsPaths(args, extension):
         'libandroidx.xr.runtime.openxr.so',  # AndroidX XR ARCore prebuilt (arcore-openxr.aar)
         'libandroidx.xr.arcore.openxr.so',  # AndroidX XR ARCore prebuilt (arcore-openxr.aar)
         'libimpress_api_jni.so',  # Google AR Impress prebuilt (com_google_ar_impress_java)
-        'libwg-go.so'  # Wireguard lib for Brave VPN
+        'libwg-go.so',  # Wireguard lib for Brave VPN
     }
 
     # Additional ABIs
-    additional_abi_dirs = glob.glob(os.path.join(args.build_dir,
-                                                 'android_clang_*'))
+    additional_abi_dirs = glob.glob(
+        os.path.join(args.build_dir, 'android_clang_*')
+    )
 
     # Since cr128 there are two additional dirs:
     #   1) 'android_clang_arm64_with_system_allocator'
@@ -66,7 +70,7 @@ def GetRequiredLibsPaths(args, extension):
     # So it looks like additional_abi_dirs can be skipped.
     # TODO(alexeybarabash): https://github.com/brave/brave-browser/issues/40305
 
-    libs_only_names = set() #lib_names
+    libs_only_names = set()  # lib_names
     for lib in libs_in_package:
         # Cut out 'crazy.' if exists
         # see //chrome/android/chrome_public_apk_tmpl.gni
@@ -91,8 +95,9 @@ def GetRequiredLibsPaths(args, extension):
                 return []
 
         if additional_abi_dirs:
-            lib_path = os.path.join(additional_abi_dirs[0], 'lib.unstripped',
-                                    lib_name)
+            lib_path = os.path.join(
+                additional_abi_dirs[0], 'lib.unstripped', lib_name
+            )
             if os.path.exists(lib_path):
                 libs_result.append(lib_path)
 
@@ -113,9 +118,10 @@ def InvokeChromiumGenerateSymbols(args, lib_paths):
 
     at_least_one_failed = multiprocessing.Value('b', False)
 
-    chromium_script = os.path.join(args.src_root,
-                                   'components/crash/content/tools'
-                                   '/generate_breakpad_symbols.py')
+    chromium_script = os.path.join(
+        args.src_root,
+        'components/crash/content/tools/generate_breakpad_symbols.py',
+    )
 
     def _Worker():
         while True:
@@ -123,14 +129,15 @@ def InvokeChromiumGenerateSymbols(args, lib_paths):
 
             try:
                 # Invoke the original Chromium script
-                args_to_pass = ['vpython3',
-                                chromium_script,
-                                '--build-dir=' + args.build_dir,
-                                '--symbols-dir=' + args.symbols_dir,
-                                '--binary=' + lib_path,
-                                '--platform=android',
-                                '--verbose'
-                               ]
+                args_to_pass = [
+                    'vpython3',
+                    chromium_script,
+                    '--build-dir=' + args.build_dir,
+                    '--symbols-dir=' + args.symbols_dir,
+                    '--binary=' + lib_path,
+                    '--platform=android',
+                    '--verbose',
+                ]
 
                 ret = subprocess.call(args_to_pass)
 
@@ -161,26 +168,57 @@ def InvokeChromiumGenerateSymbols(args, lib_paths):
 
     return 0
 
+
 def main():
-    parser = argparse.ArgumentParser(description='Generates symbols for '
-                                     'Android package')
-    parser.add_argument('--build-dir', type=str, required=True,
-                        help='The build output directory.')
-    parser.add_argument('--symbols-dir', type=str, required=True,
-                        help='The directory where to write the symbols file.')
-    parser.add_argument('--package-path', type=str, required=True,
-                        help='The path of the apk or aab package to generate '
-                        'symbols for libs from it.')
-    parser.add_argument('--src-root', type=str, required=True,
-                        help='The path of the root src Chromium\'s folder.')
-    parser.add_argument('--clear', action='store_true', required=False,
-                        help='Clear the symbols directory before writing new '
-                        'symbols.')
-    parser.add_argument('--jobs', '--j', default=CONCURRENT_TASKS,
-                        required=False, type=int,
-                        help='Number of parallel tasks to run.')
-    parser.add_argument('--verbose', '--v', required=False, action='store_true',
-                        help='Print verbose status output.')
+    parser = argparse.ArgumentParser(
+        description='Generates symbols for Android package'
+    )
+    parser.add_argument(
+        '--build-dir',
+        type=str,
+        required=True,
+        help='The build output directory.',
+    )
+    parser.add_argument(
+        '--symbols-dir',
+        type=str,
+        required=True,
+        help='The directory where to write the symbols file.',
+    )
+    parser.add_argument(
+        '--package-path',
+        type=str,
+        required=True,
+        help='The path of the apk or aab package to generate '
+        'symbols for libs from it.',
+    )
+    parser.add_argument(
+        '--src-root',
+        type=str,
+        required=True,
+        help='The path of the root src Chromium\'s folder.',
+    )
+    parser.add_argument(
+        '--clear',
+        action='store_true',
+        required=False,
+        help='Clear the symbols directory before writing new symbols.',
+    )
+    parser.add_argument(
+        '--jobs',
+        '--j',
+        default=CONCURRENT_TASKS,
+        required=False,
+        type=int,
+        help='Number of parallel tasks to run.',
+    )
+    parser.add_argument(
+        '--verbose',
+        '--v',
+        required=False,
+        action='store_true',
+        help='Print verbose status output.',
+    )
 
     args = parser.parse_args()
 
@@ -201,7 +239,7 @@ def main():
     if args.clear:
         try:
             shutil.rmtree(args.symbols_dir)
-        except: # pylint: disable=bare-except
+        except:  # pylint: disable=bare-except
             pass
 
     InvokeChromiumGenerateSymbols(args, libs_result)

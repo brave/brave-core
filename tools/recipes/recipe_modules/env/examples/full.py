@@ -26,8 +26,11 @@ def GenTests(api):
         'basic',
         api.env.on_path('gclient', '/depot_tools/gclient'),
         api.post_process(post_process.MustRun, 'resolved gclient'),
-        api.post_process(post_process.StepCommandContains, 'resolved gclient',
-                         ['/depot_tools/gclient']),
+        api.post_process(
+            post_process.StepCommandContains,
+            'resolved gclient',
+            ['/depot_tools/gclient'],
+        ),
         api.post_process(post_process.MustRun, 'flag set'),
         api.post_process(post_process.StepCommandContains, 'flag set', ['on']),
         api.post_process(post_process.StatusSuccess),

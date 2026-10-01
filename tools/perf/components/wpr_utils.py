@@ -22,12 +22,12 @@ from components.common_options import CommonOptions
 # Brave and Chromium update related-hosts.
 # Normally we don't need this in any WPR.
 _UPDATE_HOSTS = [
-    'brave-core-ext.s3.brave.com',
-    'go-updater.brave.com',
-    'componentupdater.brave.com',
-    'optimizationguide-pa.googleapis.com',
-    'safebrowsingohttpgateway.googleapis.com',
-    'edgedl.me.gvt1.com',
+  'brave-core-ext.s3.brave.com',
+  'go-updater.brave.com',
+  'componentupdater.brave.com',
+  'optimizationguide-pa.googleapis.com',
+  'safebrowsingohttpgateway.googleapis.com',
+  'edgedl.me.gvt1.com',
 ]
 
 # Hosts are related to some browser features (like Rewards).
@@ -35,29 +35,30 @@ _UPDATE_HOSTS = [
 # representative. It makes sense to remove them some tests (i.e. jetstream)
 # and leave in others (i.e. system_health).
 _SERVICE_HOSTS = [
-    'redirector.brave.com',
-    'geo.ads.brave.com',
-    'static.ads.brave.com',
-    'mywallet.ads.brave.com',
-    'rewards.brave.com',
-    'api.rewards.brave.com',
-    'grant.rewards.brave.com',
-    'collector.bsg.brave.com',
-    'star-randsrv.bsg.brave.com',
-    'p3a-json.brave.com',
-    'brave-today-cdn.brave.com',
-    'update.googleapis.com',
-    'content-autofill.googleapis.com',
-    'usage-ping.brave.com',
-    'clients2.google.com',
+  'redirector.brave.com',
+  'geo.ads.brave.com',
+  'static.ads.brave.com',
+  'mywallet.ads.brave.com',
+  'rewards.brave.com',
+  'api.rewards.brave.com',
+  'grant.rewards.brave.com',
+  'collector.bsg.brave.com',
+  'star-randsrv.bsg.brave.com',
+  'p3a-json.brave.com',
+  'brave-today-cdn.brave.com',
+  'update.googleapis.com',
+  'content-autofill.googleapis.com',
+  'usage-ping.brave.com',
+  'clients2.google.com',
 ]
 
 
 def run_httparchive(args: List[str]) -> str:
   _, output = perf_test_utils.GetProcessOutput(
-      ['go', 'run', os.path.join('src', 'httparchive.go'), *args],
-      cwd=path_util.GetWprGoDir(),
-      check=True)
+    ['go', 'run', os.path.join('src', 'httparchive.go'), *args],
+    cwd=path_util.GetWprGoDir(),
+    check=True,
+  )
   return output
 
 
@@ -113,10 +114,17 @@ def cleanup_archive(file: str, include_service_hosts: bool) -> None:
     run_httparchive(['trim', '--host', host, file, file])
 
   # Remove Chromium https://accounts.google.com/ListAccounts requests:
-  run_httparchive([
-      'trim', '--full_path', '/ListAccounts', '--host', 'accounts.google.com',
-      file, file
-  ])
+  run_httparchive(
+    [
+      'trim',
+      '--full_path',
+      '/ListAccounts',
+      '--host',
+      'accounts.google.com',
+      file,
+      file,
+    ]
+  )
 
   # Recalculate .sha1 file.
   cloud_storage.UpdateSha1(file)
@@ -124,11 +132,14 @@ def cleanup_archive(file: str, include_service_hosts: bool) -> None:
 
 def record_wpr(config: perf_config.PerfConfig, options: CommonOptions) -> bool:
   if len(config.runners) != 2:
-    logging.warn('Normally you need specify two runners to record wpr: ' +
-                 'for Brave and Chromium')
+    logging.warn(
+      'Normally you need specify two runners to record wpr: '
+      + 'for Brave and Chromium'
+    )
   options.do_report = False
   runable_configurations = perf_test_runner.PrepareBinariesAndDirectories(
-      config.runners, config.benchmarks, options)
+    config.runners, config.benchmarks, options
+  )
 
   _clean_all_wpr_files()
 
@@ -140,10 +151,9 @@ def record_wpr(config: perf_config.PerfConfig, options: CommonOptions) -> bool:
       args = [sys.executable]
       args.append(os.path.join(path_util.GetChromiumPerfDir(), 'record_wpr'))
       args.extend(c.MakeRunBenchmarkArgs(benchmark))
-      perf_test_utils.GetProcessOutput(args,
-                                       cwd=path_util.GetChromiumPerfDir(),
-                                       timeout=30 * 60,
-                                       check=True)
+      perf_test_utils.GetProcessOutput(
+        args, cwd=path_util.GetChromiumPerfDir(), timeout=30 * 60, check=True
+      )
   files = _get_all_wpr_files()
   output_file = max(files, key=os.path.getctime)
   _merge_wpr_files(files, output_file)

@@ -5,11 +5,21 @@
 """`brave_core_checkout` module: check out brave-core, in full or sparsely."""
 
 from PB.recipe_modules.brave.brave_core_checkout.properties import (
-    InputProperties)
+    InputProperties,
+)
 
 DEPS = [
-    'chromium_checkout', 'context', 'depot_tools', 'env', 'file', 'git',
-    'git_cache', 'path', 'platform', 'raw_io', 'step'
+    'chromium_checkout',
+    'context',
+    'depot_tools',
+    'env',
+    'file',
+    'git',
+    'git_cache',
+    'path',
+    'platform',
+    'raw_io',
+    'step',
 ]
 
 PROPERTIES = InputProperties

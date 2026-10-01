@@ -86,8 +86,16 @@ from gevent.pool import Pool
 from rich.console import Console, Group
 from rich.live import Live
 from rich.markup import escape
-from rich.progress import (BarColumn, Progress, ProgressColumn, SpinnerColumn,
-                           Task, TaskID, TextColumn, TimeElapsedColumn)
+from rich.progress import (
+    BarColumn,
+    Progress,
+    ProgressColumn,
+    SpinnerColumn,
+    Task,
+    TaskID,
+    TextColumn,
+    TimeElapsedColumn,
+)
 from rich.table import Column
 from rich.text import Text
 
@@ -129,7 +137,7 @@ GENERATED_FILTERS_DIR = BRAVE_CORE_ROOT / "test" / "filters" / "generated"
 # out: Brave doesn't run upstream tests on Mac.
 PLATFORM_OS_PREFIXES = {
     "linux": ("Ubuntu", "Linux"),
-    "win": ("Windows", ),
+    "win": ("Windows",),
 }
 
 # Sanitizers Brave runs upstream test suites with, identified by
@@ -142,8 +150,14 @@ SANITIZERS = ("asan", "msan", "ubsan")
 # tests under TSan, and Android/iOS have no filter files. These bots can't
 # be excluded via PLATFORM_OS_PREFIXES because Android emulator bots report
 # the Linux host "os" and iOS bots a Mac "os".
-EXCLUDED_BUILDER_KEYWORDS = ("android", "chromeos", "chromium os", "fuchsia",
-                             "ios", "tsan")
+EXCLUDED_BUILDER_KEYWORDS = (
+    "android",
+    "chromeos",
+    "chromium os",
+    "fuchsia",
+    "ios",
+    "tsan",
+)
 
 # Requests in flight across the whole run. Every batch of work shares one
 # pool.
@@ -181,8 +195,7 @@ class CountColumn(ProgressColumn):
 
     def render(self, task: Task) -> Text:
         total = int(task.total) if task.total is not None else "?"
-        return Text(f"{int(task.completed)}/{total}",
-                    style="progress.download")
+        return Text(f"{int(task.completed)}/{total}", style="progress.download")
 
 
 @dataclass(frozen=True)
@@ -213,13 +226,18 @@ class Display:
 
         self._progress = Progress(
             SpinnerColumn(),
-            TextColumn("[progress.description]{task.description}",
-                       table_column=Column(width=DESCRIPTION_WIDTH,
-                                           no_wrap=True,
-                                           overflow="ellipsis")),
+            TextColumn(
+                "[progress.description]{task.description}",
+                table_column=Column(
+                    width=DESCRIPTION_WIDTH, no_wrap=True, overflow="ellipsis"
+                ),
+            ),
             BarColumn(),
-            CountColumn(table_column=Column(
-                min_width=COUNT_WIDTH, justify="right", no_wrap=True)),
+            CountColumn(
+                table_column=Column(
+                    min_width=COUNT_WIDTH, justify="right", no_wrap=True
+                )
+            ),
             TimeElapsedColumn(),
             # The enclosing `Live` drives the repaints; a `Progress` that
             # refreshed itself would start a second live region.
@@ -250,9 +268,11 @@ class Display:
     def _units(self) -> tuple[int, int]:
         """Items done and known, over every phase of the run."""
         done = self._retired_done + sum(
-            int(task.completed) for task in self.tasks)
+            int(task.completed) for task in self.tasks
+        )
         total = self._retired_total + sum(
-            int(task.total or 0) for task in self.tasks)
+            int(task.total or 0) for task in self.tasks
+        )
         return done, total
 
     def _summary(self) -> Text:
@@ -278,10 +298,12 @@ class Display:
         """Show the display until the run finishes."""
         self._started = time.monotonic()
         self._suites_total = suites_total
-        with Live(self,
-                  console=console,
-                  refresh_per_second=REFRESH_RATE,
-                  transient=False):
+        with Live(
+            self,
+            console=console,
+            refresh_per_second=REFRESH_RATE,
+            transient=False,
+        ):
             yield self
 
     def suite_finished(self) -> None:
@@ -289,8 +311,9 @@ class Display:
         self._suites_done += 1
 
     @contextmanager
-    def phase(self, suite: str, description: str,
-              total: int) -> Iterator[Phase]:
+    def phase(
+        self, suite: str, description: str, total: int
+    ) -> Iterator[Phase]:
         """Show a row for one phase of work on `suite`.
 
         The row goes away once the phase ends, but its counts stay in the
@@ -302,8 +325,9 @@ class Display:
                 history".
             total: How many items the phase has to get through.
         """
-        task_id = self._progress.add_task(f"[bold]{suite}[/] {description}",
-                                          total=total)
+        task_id = self._progress.add_task(
+            f"[bold]{suite}[/] {description}", total=total
+        )
         try:
             yield Phase(self._progress, task_id)
         finally:
@@ -351,8 +375,9 @@ def worker_pool(size: int = REQUEST_CONCURRENCY) -> Iterator[Pool]:
 requests_pool = Pool(REQUEST_CONCURRENCY)
 
 
-def run_in_parallel(function: Callable[[T], R],
-                    items: Iterable[T]) -> Iterator[R]:
+def run_in_parallel(
+    function: Callable[[T], R], items: Iterable[T]
+) -> Iterator[R]:
     """Apply `function` across `items` concurrently, yielding in order.
 
     The greenlet that feeds the pool sits outside it, so killing the pool alone
@@ -472,8 +497,8 @@ def get_config_for_variant(variant: TestVariant) -> str | None:
 
 
 def analyze_per_config(
-        groups: list[StatsGroup],
-        config_by_hash: dict[str, str | None]) -> dict[str, Flakiness]:
+    groups: list[StatsGroup], config_by_hash: dict[str, str | None]
+) -> dict[str, Flakiness]:
     """Read a test's history separately for each config it ran on.
 
     Args:
@@ -483,7 +508,8 @@ def analyze_per_config(
     """
     return {
         config: Flakiness.of_groups(
-            g for g in groups if config_by_hash.get(g.variant_hash) == config)
+            g for g in groups if config_by_hash.get(g.variant_hash) == config
+        )
         for config in get_all_configs()
     }
 
@@ -497,8 +523,16 @@ class SuiteUpdater:
     suite and thresholds being worked to.
     """
 
-    def __init__(self, suite: str, *, client: LuciAnalysis, display: Display,
-                 days: int, min_flake_rate: float, filters_dir: Path) -> None:
+    def __init__(
+        self,
+        suite: str,
+        *,
+        client: LuciAnalysis,
+        display: Display,
+        days: int,
+        min_flake_rate: float,
+        filters_dir: Path,
+    ) -> None:
 
         # The upstream test suite being brought up to date.
         self._suite = suite
@@ -533,8 +567,9 @@ class SuiteUpdater:
 
     # -- reporting
 
-    def _phase(self, description: str,
-               total: int) -> AbstractContextManager[Phase]:
+    def _phase(
+        self, description: str, total: int
+    ) -> AbstractContextManager[Phase]:
         """A progress row for this suite, over `total` items."""
         return self._display.phase(self._suite, description, total)
 
@@ -564,15 +599,17 @@ class SuiteUpdater:
         """The failure clusters this suite shows up in."""
         # One query per (window, filter) pair. Run as a batch: they are
         # independent, and serially they dominate a suite's wall time.
-        queries = [(failure_filter, window)
-                   for window in get_candidate_windows(self._days)
-                   for failure_filter in get_discovery_filters(self._suite)]
+        queries = [
+            (failure_filter, window)
+            for window in get_candidate_windows(self._days)
+            for failure_filter in get_discovery_filters(self._suite)
+        ]
 
         clusters: dict[tuple[str, str], ClusterSummary] = {}
         with self._phase("querying failure clusters", len(queries)) as task:
             for summaries in run_in_parallel(
-                    lambda query: self._client.cluster_summaries(*query),
-                    queries):
+                lambda query: self._client.cluster_summaries(*query), queries
+            ):
                 for summary in summaries:
                     # Failures in a "reason" cluster also count towards
                     # a test name cluster, so following both up would
@@ -599,20 +636,24 @@ class SuiteUpdater:
 
         with self._phase("enumerating clusters", len(clusters)) as task:
             for failure_counts, truncated in run_in_parallel(
-                    self._failures_by_test, clusters):
+                self._failures_by_test, clusters
+            ):
                 truncated_clusters += truncated
                 test_ids.update(failure_counts)
                 task.advance()
 
         if truncated_clusters:
-            self._log(f"{truncated_clusters} clusters hit the server's"
-                      f" {MAX_CLUSTER_FAILURES}-failure limit, which does not"
-                      " paginate: whatever else they hold cannot be reached"
-                      " through this API.")
+            self._log(
+                f"{truncated_clusters} clusters hit the server's"
+                f" {MAX_CLUSTER_FAILURES}-failure limit, which does not"
+                " paginate: whatever else they hold cannot be reached"
+                " through this API."
+            )
         return test_ids
 
     def _failures_by_test(
-            self, cluster: ClusterSummary) -> tuple[Counter[str], bool]:
+        self, cluster: ClusterSummary
+    ) -> tuple[Counter[str], bool]:
         """How often each of this suite's tests failed inside a cluster.
 
         Returns:
@@ -624,8 +665,9 @@ class SuiteUpdater:
         failure_counts: Counter[str] = Counter()
         for failure in failures:
             if self._suite_marker in failure.test_id:
-                failure_counts[normalize_test_id(
-                    failure.test_id)] += failure.count
+                failure_counts[normalize_test_id(failure.test_id)] += (
+                    failure.count
+                )
         return failure_counts, len(failures) >= MAX_CLUSTER_FAILURES
 
     def read_history(self, test_ids: list[str]) -> dict[str, list[StatsGroup]]:
@@ -643,8 +685,8 @@ class SuiteUpdater:
         return history
 
     def resolve_configs(
-            self, history: dict[str,
-                                list[StatsGroup]]) -> dict[str, str | None]:
+        self, history: dict[str, list[StatsGroup]]
+    ) -> dict[str, str | None]:
         """Map each variant hash in the history to a Brave test config.
 
         Variant hashes are shared between tests that run on the same bot
@@ -657,8 +699,9 @@ class SuiteUpdater:
             for test_id, groups in history.items():
                 if not all(g.variant_hash in config_by_hash for g in groups):
                     for variant in self._client.variants(test_id):
-                        config_by_hash[variant.variant_hash] = \
+                        config_by_hash[variant.variant_hash] = (
                             get_config_for_variant(variant)
+                        )
                     # Don't re-query hashes QueryVariants didn't return.
                     for group in groups:
                         config_by_hash.setdefault(group.variant_hash, None)
@@ -666,9 +709,9 @@ class SuiteUpdater:
         return config_by_hash
 
     def entries_by_config(
-        self, history: dict[str,
-                            list[StatsGroup]], config_by_hash: dict[str,
-                                                                    str | None]
+        self,
+        history: dict[str, list[StatsGroup]],
+        config_by_hash: dict[str, str | None],
     ) -> dict[str, list[tuple[str, Flakiness]]]:
         """Pick out which tests to exclude, on which config.
 
@@ -678,15 +721,15 @@ class SuiteUpdater:
                 to, or None for bots Brave does not test.
         """
         entries: dict[str, list[tuple[str, Flakiness]]] = {
-            config: []
-            for config in get_all_configs()
+            config: [] for config in get_all_configs()
         }
         for test_id, groups in history.items():
             gtest_name = structured_id_to_gtest_name(test_id)
             if not gtest_name:
                 continue
             for config, flakiness in analyze_per_config(
-                    groups, config_by_hash).items():
+                groups, config_by_hash
+            ).items():
                 if flakiness.counts.meaningful < MIN_MEANINGFUL_VERDICTS:
                     continue
                 if flakiness.flake_rate < self._min_flake_rate:
@@ -701,7 +744,8 @@ class SuiteUpdater:
             for sanitizer in SANITIZERS:
                 config = f"{platform}-{sanitizer}"
                 entries[config] = [
-                    entry for entry in entries[config]
+                    entry
+                    for entry in entries[config]
                     if entry[0] not in platform_names
                 ]
         return entries
@@ -709,8 +753,8 @@ class SuiteUpdater:
     # -- writing the files
 
     def write_filters(
-            self,
-            entries_by_config: dict[str, list[tuple[str, Flakiness]]]) -> None:
+        self, entries_by_config: dict[str, list[tuple[str, Flakiness]]]
+    ) -> None:
         """Write this suite's filter files, and retire the stale ones."""
         self._filters_dir.mkdir(parents=True, exist_ok=True)
         written: set[str] = set()
@@ -724,12 +768,13 @@ class SuiteUpdater:
             # These files are committed, so they have to come out byte
             # for byte the same wherever the script is run: `newline=""`
             # keeps Windows from turning every "\n" into "\r\n".
-            path.write_text(self.filter_content(config, entries),
-                            encoding="utf-8",
-                            newline="")
+            path.write_text(
+                self.filter_content(config, entries),
+                encoding="utf-8",
+                newline="",
+            )
             written.add(filename)
-            self._log(f"wrote {len(entries)} entries to"
-                      f" {display_path(path)}")
+            self._log(f"wrote {len(entries)} entries to {display_path(path)}")
         self._remove_stale_filters(written)
 
     def _remove_stale_filters(self, written: set[str]) -> None:
@@ -740,15 +785,21 @@ class SuiteUpdater:
         excluding them for ever.
         """
         for path in self._filters_dir.iterdir():
-            is_stale = (path.name.startswith(f"{self._suite}-")
-                        or path.name == f"{self._suite}.filter")
-            if is_stale and path.suffix == ".filter" \
-                    and path.name not in written:
+            is_stale = (
+                path.name.startswith(f"{self._suite}-")
+                or path.name == f"{self._suite}.filter"
+            )
+            if (
+                is_stale
+                and path.suffix == ".filter"
+                and path.name not in written
+            ):
                 path.unlink()
                 self._log(f"removed stale {path.name}")
 
-    def filter_content(self, config: str,
-                       entries: list[tuple[str, Flakiness]]) -> str:
+    def filter_content(
+        self, config: str, entries: list[tuple[str, Flakiness]]
+    ) -> str:
         """The text of one generated filter file.
 
         Args:
@@ -769,11 +820,13 @@ class SuiteUpdater:
         for gtest_name, flakiness in sorted(entries, key=lambda e: e[0]):
             counts = flakiness.counts
             lines.append("")
-            lines.append(f"# {flakiness.flake_rate:.1%} flake rate over"
-                         f" {self._days} days per LUCI Analysis"
-                         f" ({counts.passed} passed,"
-                         f" {counts.failed} failed,"
-                         f" {counts.flaky} flaky).")
+            lines.append(
+                f"# {flakiness.flake_rate:.1%} flake rate over"
+                f" {self._days} days per LUCI Analysis"
+                f" ({counts.passed} passed,"
+                f" {counts.failed} failed,"
+                f" {counts.flaky} flaky)."
+            )
             lines.append(f"-{gtest_name}")
         return "\n".join(lines) + "\n"
 
@@ -791,15 +844,20 @@ def handle_interrupt(client: LuciAnalysis) -> NoReturn:
     """
     client.request_shutdown()
     requests_pool.kill(block=False)
-    console.print("[yellow]Interrupted.[/] Filter files already written are"
-                  " left in place.")
+    console.print(
+        "[yellow]Interrupted.[/] Filter files already written are"
+        " left in place."
+    )
     sys.exit(130)
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description=("Update test/filters/generated/*.filter with upstream"
-                     " tests that are flaky per Chromium LUCI Analysis."))
+        description=(
+            "Update test/filters/generated/*.filter with upstream"
+            " tests that are flaky per Chromium LUCI Analysis."
+        )
+    )
     parser.add_argument(
         "suites",
         nargs="*",
@@ -810,9 +868,11 @@ def main() -> None:
         "--days",
         type=int,
         default=30,
-        help=("Number of days to look back (default: 30, max: 90). Note"
-              " that discovery through multi-test clusters is fixed at 7"
-              " days upstream and does not widen with this."),
+        help=(
+            "Number of days to look back (default: 30, max: 90). Note"
+            " that discovery through multi-test clusters is fixed at 7"
+            " days upstream and does not widen with this."
+        ),
     )
     parser.add_argument(
         "--min-flake-rate",
@@ -836,12 +896,14 @@ def main() -> None:
     display = Display(client.stats)
 
     def update_one(suite: str) -> None:
-        SuiteUpdater(suite,
-                     client=client,
-                     display=display,
-                     days=args.days,
-                     min_flake_rate=min_flake_rate,
-                     filters_dir=GENERATED_FILTERS_DIR).run()
+        SuiteUpdater(
+            suite,
+            client=client,
+            display=display,
+            days=args.days,
+            min_flake_rate=min_flake_rate,
+            filters_dir=GENERATED_FILTERS_DIR,
+        ).run()
 
     try:
         with display.live(len(suites)):

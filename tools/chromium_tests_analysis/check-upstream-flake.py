@@ -56,13 +56,14 @@ def matches_table(test_results: list[Match], days: int) -> Table:
         test_results: The (test_id, flakiness) pairs to tabulate.
         days: Lookback window in days, named in the title.
     """
-    table = Table(title=f"Upstream flakiness over the past {days} days",
-                  caption=f"Source: Chromium LUCI Analysis "
-                  f"({LUCI_ANALYSIS_HOST})",
-                  box=box.SIMPLE_HEAD,
-                  row_styles=["none", "dim"],
-                  title_style="bold",
-                  caption_justify="right")
+    table = Table(
+        title=f"Upstream flakiness over the past {days} days",
+        caption=f"Source: Chromium LUCI Analysis ({LUCI_ANALYSIS_HOST})",
+        box=box.SIMPLE_HEAD,
+        row_styles=["none", "dim"],
+        title_style="bold",
+        caption_justify="right",
+    )
     # Test IDs are long; let the column fold rather than push the
     # numbers out of alignment.
     table.add_column("Test", overflow="fold", ratio=1)
@@ -114,8 +115,7 @@ def daily_table(flakiness: Flakiness) -> Table:
     return table
 
 
-def render_report(test_name: str, test_results: list[Match],
-                  days: int) -> None:
+def render_report(test_name: str, test_results: list[Match], days: int) -> None:
     """Print the human-readable report.
 
     Args:
@@ -127,7 +127,8 @@ def render_report(test_name: str, test_results: list[Match],
         console.print(
             f"No test matching [bold]{test_name}[/] was found in Chromium"
             " LUCI Analysis. It may be Brave-specific, or use a different"
-            " ID format.")
+            " ID format."
+        )
         return
 
     console.print()
@@ -136,13 +137,14 @@ def render_report(test_name: str, test_results: list[Match],
     # One line per verdict present, rather than repeating the same
     # advice under every test that shares it.
     console.print()
-    for verdict in sorted({f.verdict
-                           for _, f in test_results},
-                          key=lambda v: v.severity):
+    for verdict in sorted(
+        {f.verdict for _, f in test_results}, key=lambda v: v.severity
+    ):
         console.print(
-            Text(verdict.headline,
-                 style=verdict.style).append(f": {verdict.recommendation}",
-                                             style="none"))
+            Text(verdict.headline, style=verdict.style).append(
+                f": {verdict.recommendation}", style="none"
+            )
+        )
 
     for test_id, flakiness in test_results:
         if flakiness.daily:
@@ -151,8 +153,9 @@ def render_report(test_name: str, test_results: list[Match],
             console.print(daily_table(flakiness))
 
 
-def format_report_json(test_name: str, test_results: list[Match],
-                       days: int) -> str:
+def format_report_json(
+    test_name: str, test_results: list[Match], days: int
+) -> str:
     """Format the analysis results as machine-readable JSON.
 
     Args:
@@ -166,10 +169,13 @@ def format_report_json(test_name: str, test_results: list[Match],
     output = {
         "test_name": test_name,
         "lookback_days": days,
-        "matched_tests": [{
-            "test_id": test_id,
-            **flakiness.as_json(),
-        } for test_id, flakiness in test_results],
+        "matched_tests": [
+            {
+                "test_id": test_id,
+                **flakiness.as_json(),
+            }
+            for test_id, flakiness in test_results
+        ],
     }
 
     if test_results:
@@ -180,25 +186,29 @@ def format_report_json(test_name: str, test_results: list[Match],
         output["overall_verdict"] = "not_found"
         output["overall_recommendation"] = (
             "Cannot determine -- test not found"
-            " in Chromium LUCI Analysis database.")
+            " in Chromium LUCI Analysis database."
+        )
 
     return json.dumps(output, indent=2)
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description=("Check if a test is a known upstream"
-                     " flake in Chromium's LUCI Analysis"
-                     " database."),
-        epilog=("Example: vpython3"
-                " tools/chromium_tests_analysis/check-upstream-flake.py"
-                " 'WebUIURLLoaderFactoryTest"
-                ".RangeRequest'"),
+        description=(
+            "Check if a test is a known upstream"
+            " flake in Chromium's LUCI Analysis"
+            " database."
+        ),
+        epilog=(
+            "Example: vpython3"
+            " tools/chromium_tests_analysis/check-upstream-flake.py"
+            " 'WebUIURLLoaderFactoryTest"
+            ".RangeRequest'"
+        ),
     )
     parser.add_argument(
         "test_name",
-        help=
-        "Test name or substring to search for (e.g., 'TestSuite.TestMethod')",
+        help="Test name or substring to search for (e.g., 'TestSuite.TestMethod')",
     )
     parser.add_argument(
         "--days",
@@ -222,8 +232,10 @@ def main() -> None:
     days = args.days
 
     # Step 1: Search for matching test IDs
-    print(f"Searching for '{test_name}' in Chromium LUCI Analysis...",
-          file=sys.stderr)
+    print(
+        f"Searching for '{test_name}' in Chromium LUCI Analysis...",
+        file=sys.stderr,
+    )
     test_ids = client.tests_matching(test_name)
 
     if not test_ids:

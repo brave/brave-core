@@ -36,9 +36,9 @@ class PlatformTestApi(RecipeTestApi):
         assert arch in ('intel', 'arm'), f'unknown arch {arch!r}'
         return self._mod_data(arch=arch)
 
-    def capacity(self,
-                 cpu_count: int | None = None,
-                 total_memory: int | None = None) -> TestData:
+    def capacity(
+        self, cpu_count: int | None = None, total_memory: int | None = None
+    ) -> TestData:
         """Set the host's capacity, as the step scheduler sees it.
 
         This has no upstream counterpart: upstream fixes a simulated host at 8

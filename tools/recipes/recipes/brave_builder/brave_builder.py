@@ -29,27 +29,38 @@ def GenTests(api):
     yield api.test(
         'fresh',
         api.brave_core_checkout.with_git_cache(),
-        api.step_data('git cache exists',
-                      stdout=api.raw_io.output_text('/b/cache/brave-core')),
-        api.step_data('git cache exists (2)',
-                      stdout=api.raw_io.output_text('/b/cache/chromium')),
+        api.step_data(
+            'git cache exists',
+            stdout=api.raw_io.output_text('/b/cache/brave-core'),
+        ),
+        api.step_data(
+            'git cache exists (2)',
+            stdout=api.raw_io.output_text('/b/cache/chromium'),
+        ),
         api.brave_core_checkout.brave_core_ref('refs/heads/1.80.x'),
         api.brave_core_checkout.rbe(siso_cache_dir='/b/siso'),
-        api.post_process(post_process.StepCommandContains,
-                         'brave-core checkout ref', ['origin/1.80.x']),
+        api.post_process(
+            post_process.StepCommandContains,
+            'brave-core checkout ref',
+            ['origin/1.80.x'],
+        ),
         api.post_process(post_process.MustRun, 'write .env'),
         api.post_process(post_process.MustRun, 'pnpm run sync'),
-        api.post_process(post_process.StepCommandContains, 'build',
-                         ['--target=brave:all']),
+        api.post_process(
+            post_process.StepCommandContains, 'build', ['--target=brave:all']
+        ),
         api.platform.name('linux'),
         api.post_process(post_process.MustRun, 'test brave_all_unit_tests'),
         api.post_process(post_process.MustRun, 'test brave_browser_tests'),
-        api.post_process(post_process.MustRun,
-                         'test brave_interactive_ui_tests'),
+        api.post_process(
+            post_process.MustRun, 'test brave_interactive_ui_tests'
+        ),
         api.post_process(post_process.MustRun, 'test brave_network_tests'),
-        api.post_process(post_process.StepCommandContains,
-                         'test brave_all_unit_tests',
-                         ['pnpm', 'run', 'test', 'brave_all_unit_tests']),
+        api.post_process(
+            post_process.StepCommandContains,
+            'test brave_all_unit_tests',
+            ['pnpm', 'run', 'test', 'brave_all_unit_tests'],
+        ),
         api.post_process(post_process.StatusSuccess),
     )
     # Chromium already deployed: no sync, straight to build and test.
@@ -61,9 +72,11 @@ def GenTests(api):
         api.post_process(post_process.DoesNotRun, 'pnpm run sync'),
         api.platform.name('mac'),
         api.post_process(post_process.MustRun, 'build'),
-        api.post_process(post_process.StepCommandContains,
-                         'test brave_network_tests',
-                         ['pnpm', 'run', 'test', 'brave_network_tests']),
+        api.post_process(
+            post_process.StepCommandContains,
+            'test brave_network_tests',
+            ['pnpm', 'run', 'test', 'brave_network_tests'],
+        ),
         api.post_process(post_process.StatusSuccess),
     )
     # A failing suite does not stop the others; the run still fails.
@@ -73,8 +86,9 @@ def GenTests(api):
         api.brave_core_checkout.git_cache_populated(),
         api.chromium_checkout.existing_checkout(),
         api.step_data('test brave_browser_tests', retcode=1),
-        api.post_process(post_process.MustRun,
-                         'test brave_interactive_ui_tests'),
+        api.post_process(
+            post_process.MustRun, 'test brave_interactive_ui_tests'
+        ),
         api.post_process(post_process.StatusException),
         api.post_process(post_process.DropExpectation),
         status='EXCEPTION',

@@ -83,8 +83,10 @@ def resolve(codec: Codec | str) -> Codec:
     if isinstance(codec, str):
         codec = _BY_NAME.get(codec, codec)
     if codec not in ALL_CODECS:
-        raise ValueError(f'Must specify a valid codec, got {codec!r}; '
-                         f'expected one of {sorted(_BY_NAME)}')
+        raise ValueError(
+            f'Must specify a valid codec, got {codec!r}; '
+            f'expected one of {sorted(_BY_NAME)}'
+        )
     return codec
 
 
@@ -94,8 +96,9 @@ def do_encode(proto_msg: Message, codec: Codec | str, **extra) -> Any:
     return codec.encode(proto_msg, **{**codec.encode_defaults, **extra})
 
 
-def do_decode(data: Any, msg_class: type[Message], codec: Codec | str,
-              **extra) -> Message:
+def do_decode(
+    data: Any, msg_class: type[Message], codec: Codec | str, **extra
+) -> Message:
     """Decode *data* into a fresh *msg_class* with *codec*."""
     codec = resolve(codec)
     msg = msg_class()

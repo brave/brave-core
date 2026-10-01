@@ -32,15 +32,16 @@ def _run(waiter, cost, log, label, hold=0.01):
 
 
 class ResourceWaiterTest(unittest.TestCase):
-
     def test_fitting_costs_run_concurrently(self):
         # Two 40% disk steps fit inside the 100% pool at once, so they overlap.
         waiter = ResourceWaiter(8000, 16384)
         log = []
-        gevent.joinall([
-            gevent.spawn(_run, waiter, ResourceCost(0, 0, 40, 0), log, 'a'),
-            gevent.spawn(_run, waiter, ResourceCost(0, 0, 40, 0), log, 'b'),
-        ])
+        gevent.joinall(
+            [
+                gevent.spawn(_run, waiter, ResourceCost(0, 0, 40, 0), log, 'a'),
+                gevent.spawn(_run, waiter, ResourceCost(0, 0, 40, 0), log, 'b'),
+            ]
+        )
         self.assertEqual(log, ['+a', '+b', '-a', '-b'])
 
     def test_oversubscribed_costs_serialise(self):
@@ -54,10 +55,14 @@ class ResourceWaiterTest(unittest.TestCase):
         # of several equally sized steps goes next.
         waiter = ResourceWaiter(8000, 16384)
         log = []
-        gevent.joinall([
-            gevent.spawn(_run, waiter, ResourceCost(0, 0, 60, 0), log, label)
-            for label in 'abc'
-        ])
+        gevent.joinall(
+            [
+                gevent.spawn(
+                    _run, waiter, ResourceCost(0, 0, 60, 0), log, label
+                )
+                for label in 'abc'
+            ]
+        )
         self.assertEqual(log, ['+a', '-a', '+c', '-c', '+b', '-b'])
 
     def test_blocking_callback_reports_what_is_waited_for(self):
@@ -69,11 +74,14 @@ class ResourceWaiterTest(unittest.TestCase):
             with waiter.wait_for(ResourceCost(0, 0, 60, 0), blocked.append):
                 log.append('second')
 
-        gevent.joinall([
-            gevent.spawn(_run, waiter, ResourceCost(0, 0, 60, 0), log,
-                         'first'),
-            gevent.spawn(waits),
-        ])
+        gevent.joinall(
+            [
+                gevent.spawn(
+                    _run, waiter, ResourceCost(0, 0, 60, 0), log, 'first'
+                ),
+                gevent.spawn(waits),
+            ]
+        )
         self.assertEqual([str(cost) for cost in blocked], ['disk=[60%]'])
 
     def test_cost_above_capacity_is_clamped_and_still_runs(self):
@@ -81,29 +89,44 @@ class ResourceWaiterTest(unittest.TestCase):
         # than deadlocking.
         waiter = ResourceWaiter(1000, 100)
         log = []
-        gevent.joinall([
-            gevent.spawn(_run, waiter, ResourceCost(cpu=99000, memory=99000),
-                         log, 'huge'),
-            gevent.spawn(_run, waiter, ResourceCost(cpu=1000, memory=100), log,
-                         'also huge'),
-        ])
+        gevent.joinall(
+            [
+                gevent.spawn(
+                    _run,
+                    waiter,
+                    ResourceCost(cpu=99000, memory=99000),
+                    log,
+                    'huge',
+                ),
+                gevent.spawn(
+                    _run,
+                    waiter,
+                    ResourceCost(cpu=1000, memory=100),
+                    log,
+                    'also huge',
+                ),
+            ]
+        )
         self.assertEqual(log, ['+huge', '-huge', '+also huge', '-also huge'])
 
     def test_zero_cost_never_blocks(self):
         # A pool with nothing left still admits a zero cost.
         waiter = ResourceWaiter(0, 0)
         log = []
-        gevent.joinall([
-            gevent.spawn(_run, waiter, ResourceCost.zero(), log, label)
-            for label in 'ab'
-        ])
+        gevent.joinall(
+            [
+                gevent.spawn(_run, waiter, ResourceCost.zero(), log, label)
+                for label in 'ab'
+            ]
+        )
         self.assertEqual(log, ['+a', '+b', '-a', '-b'])
 
     def test_none_cost_opts_out(self):
         waiter = ResourceWaiter(0, 0)
         log = []
         gevent.joinall(
-            [gevent.spawn(_run, waiter, None, log, label) for label in 'ab'])
+            [gevent.spawn(_run, waiter, None, log, label) for label in 'ab']
+        )
         self.assertEqual(log, ['+a', '+b', '-a', '-b'])
 
     def test_larger_waiter_is_preferred_when_room_frees_up(self):
@@ -112,11 +135,13 @@ class ResourceWaiterTest(unittest.TestCase):
         # `small` queued earlier and both fit.
         waiter = ResourceWaiter(8000, 16384)
         log = []
-        holder = gevent.spawn(_run, waiter, ResourceCost(0, 0, 100, 0), log,
-                              'hold', 0.05)
+        holder = gevent.spawn(
+            _run, waiter, ResourceCost(0, 0, 100, 0), log, 'hold', 0.05
+        )
         gevent.sleep(0)  # Let the holder take the whole pool first.
-        small = gevent.spawn(_run, waiter, ResourceCost(0, 0, 10, 0), log,
-                             'small')
+        small = gevent.spawn(
+            _run, waiter, ResourceCost(0, 0, 10, 0), log, 'small'
+        )
         gevent.sleep(0)  # ...and let `small` queue ahead of `big`.
         big = gevent.spawn(_run, waiter, ResourceCost(0, 0, 70, 0), log, 'big')
         gevent.joinall([holder, small, big])

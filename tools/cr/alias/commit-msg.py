@@ -109,9 +109,11 @@ def parse_culprit(culprit: str) -> tuple[str, str]:
 
 
 def main():
-    if (os.path.exists('.git/rebase-merge')
-            or os.path.exists('.git/rebase-apply')
-            or os.path.exists('.git/CHERRY_PICK_HEAD')):
+    if (
+        os.path.exists('.git/rebase-merge')
+        or os.path.exists('.git/rebase-apply')
+        or os.path.exists('.git/CHERRY_PICK_HEAD')
+    ):
         # There should be no changes to commit messages during a rebase or
         # cherry-pick.
         return 0
@@ -129,23 +131,28 @@ def main():
 
     # Skip fixup! changes.
     if commit_message.startswith('fixup!') or commit_message.startswith(
-            'amend!'):
+        'amend!'
+    ):
         return 0
 
     first_line = commit_message.split('\n', 1)[0]
 
     # Getting the branch name to see if there's any tags that can be deduced
     # from it.
-    branch_name = subprocess.check_output(
-        ['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip().decode()
+    branch_name = (
+        subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])
+        .strip()
+        .decode()
+    )
 
     tags = set()
     # Checking for chromium upgrade branches
     cr_branch_pattern = r"^cr\d+$"
     if re.fullmatch(cr_branch_pattern, branch_name):
         # The branch tag is excluded from the upgrade commit messages.
-        if not any(suffix in first_line
-                   for suffix in PREFIXES_FOR_UPGRADE_COMMITS):
+        if not any(
+            suffix in first_line for suffix in PREFIXES_FOR_UPGRADE_COMMITS
+        ):
             tags.add(branch_name)
     elif '+' in branch_name:
         # This is the simple case where `canary+fix-failure` produces a
@@ -170,8 +177,11 @@ def main():
             for culprit in os.getenv("culprit").split(',')
         ]
     # Skip culprits whose hash is already present in the commit message.
-    culprits = [(repo, commit_hash) for repo, commit_hash in culprits
-                if commit_hash not in commit_message]
+    culprits = [
+        (repo, commit_hash)
+        for repo, commit_hash in culprits
+        if commit_hash not in commit_message
+    ]
 
     culprit_output = []
     culprit_links = []
@@ -180,13 +190,17 @@ def main():
             known = ', '.join(sorted(r for r in GOOGLESOURCE_URLS if r))
             print(
                 f"Unknown culprit subrepo '{repo}'. Known subrepos: {known}.",
-                file=sys.stderr)
+                file=sys.stderr,
+            )
             return 1
         git_dir = os.path.join('..', repo)
         culprit_output.append(
             subprocess.check_output(
-                ['git', '-C', git_dir, 'log', '-1',
-                 commit_hash]).decode().strip())
+                ['git', '-C', git_dir, 'log', '-1', commit_hash]
+            )
+            .decode()
+            .strip()
+        )
         culprit_links.append(f"{GOOGLESOURCE_URLS[repo]}/+/{commit_hash}")
 
     if tags:
@@ -212,17 +226,21 @@ def main():
     issues = list(set(issues))
 
     if issues:
-        commit_message += '\n\n' + '\n'.join([
-            f"Resolves https://github.com/brave/brave-browser/issues/{issue}"
-            for issue in issues
-            if f'brave-browser/issues/{issue}' not in commit_message
-        ])
+        commit_message += '\n\n' + '\n'.join(
+            [
+                f"Resolves https://github.com/brave/brave-browser/issues/{issue}"
+                for issue in issues
+                if f'brave-browser/issues/{issue}' not in commit_message
+            ]
+        )
 
     if culprit_output:
-        commit_message += ('\n\nChromium changes:'
-                           '\n{chromium_links}\n\n{culprits}'.format(
-                               chromium_links="\n".join(culprit_links),
-                               culprits="\n\n".join(culprit_output)))
+        commit_message += (
+            '\n\nChromium changes:\n{chromium_links}\n\n{culprits}'.format(
+                chromium_links="\n".join(culprit_links),
+                culprits="\n\n".join(culprit_output),
+            )
+        )
 
     with commit_msg_file.open('w', encoding='utf-8', newline='') as f:
         f.write(commit_message)

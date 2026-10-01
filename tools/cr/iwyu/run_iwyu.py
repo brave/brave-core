@@ -55,31 +55,42 @@ from terminal import terminal  # type: ignore  # noqa: E402
 
 # IWYU artefacts produced by `build_iwyu.py`.  Keeping the paths in sync with
 # that script is intentional -- run_iwyu.py is a no-op without it.
-_IWYU_OUT_DIR: Path = (repository.chromium.root / 'out' / 'iwyu' / 'tools' /
-                       'clang' / 'third_party')
-IWYU_BINARY: Path = (_IWYU_OUT_DIR / 'llvm' / 'build' / 'bin' /
-                     'include-what-you-use')
+_IWYU_OUT_DIR: Path = (
+    repository.chromium.root
+    / 'out'
+    / 'iwyu'
+    / 'tools'
+    / 'clang'
+    / 'third_party'
+)
+IWYU_BINARY: Path = (
+    _IWYU_OUT_DIR / 'llvm' / 'build' / 'bin' / 'include-what-you-use'
+)
 IWYU_TOOL: Path = _IWYU_OUT_DIR / 'iwyu' / 'iwyu_tool.py'
 # Applies the textual suggestions produced by iwyu_tool to source files in
 # place.  Lives alongside iwyu_tool.py in the same IWYU clone.
 FIX_INCLUDES: Path = _IWYU_OUT_DIR / 'iwyu' / 'fix_includes.py'
 
 # Brave-managed path filter file.  See module docstring.
-PATHS_FILE: Path = (repository.brave.root / 'build' /
-                    'include_what_you_use_paths.cfg')
+PATHS_FILE: Path = (
+    repository.brave.root / 'build' / 'include_what_you_use_paths.cfg'
+)
 
 # IWYU mapping file: remaps libc++ private detail headers (e.g.
 # `__algorithm/ranges_sort.h`) to their public facades (`<algorithm>`).
 # Passed to IWYU via `-Xiwyu --mapping_file=<absolute path>` so the lookup
 # is independent of each compile DB entry's cwd. A comment-stripped copy
 # is written under `--out` at run time and fed to iwyu_tool (see main).
-MAPPINGS_FILE: Path = (repository.brave.root / 'build' /
-                       'include_what_you_use_mappings.json5')
+MAPPINGS_FILE: Path = (
+    repository.brave.root / 'build' / 'include_what_you_use_mappings.json5'
+)
 
 # Headers we never want to see in Brave's source after IWYU.
-BLACKHOLE_INCLUDES: frozenset[str] = frozenset([
-    '<new>',
-])
+BLACKHOLE_INCLUDES: frozenset[str] = frozenset(
+    [
+        '<new>',
+    ]
+)
 
 # Matches `#include <hdr>` or `#include "hdr"`, capturing the delimited
 # token (with its brackets/quotes intact) for comparison against
@@ -108,7 +119,8 @@ def parse_paths_file(path: Path) -> list[tuple[str, str]]:
         if line[0] not in ('+', '-'):
             raise ValueError(
                 f'{path}:{line_no}: rule lines must start with `+` or `-`, '
-                f'got: {line!r}')
+                f'got: {line!r}'
+            )
         sign = line[0]
         rule_path = line[1:].strip()
         if not rule_path:
@@ -144,8 +156,9 @@ def blackhole_unwanted_includes() -> None:
     Lines containing `IWYU pragma:` are preserved verbatim so callers can
     defend a specific include with `// IWYU pragma: keep`.
     """
-    diff = terminal.run_git('-C', str(repository.brave.root), 'diff',
-                            '--name-only')
+    diff = terminal.run_git(
+        '-C', str(repository.brave.root), 'diff', '--name-only'
+    )
     files = diff.splitlines() if diff else []
     for rel in files:
         target = repository.brave.root / rel
@@ -171,32 +184,40 @@ def blackhole_unwanted_includes() -> None:
 def main():
     parser = argparse.ArgumentParser(
         description='Run IWYU on enabled Brave paths against an existing '
-        'Brave build directory.')
+        'Brave build directory.'
+    )
     parser.add_argument(
         '--out',
         required=True,
         help='Brave build directory, relative to Chromium\'s src/ '
-        '(e.g. `out/Component`).')
-    parser.add_argument('--verbose',
-                        action='store_true',
-                        help='Enable verbose (debug) logging.')
+        '(e.g. `out/Component`).',
+    )
+    parser.add_argument(
+        '--verbose', action='store_true', help='Enable verbose (debug) logging.'
+    )
     args = parser.parse_args()
 
     out_dir = repository.chromium.root / args.out
     if not (out_dir / 'build.ninja').exists():
         raise RuntimeError(
-            f'--out does not look like a build dir (no build.ninja): '
-            f'{out_dir}')
+            f'--out does not look like a build dir (no build.ninja): {out_dir}'
+        )
 
     if not IWYU_BINARY.exists():
-        raise RuntimeError(f'IWYU binary not found at {IWYU_BINARY}. '
-                           f'Run brave/tools/cr/iwyu/build_iwyu.py first.')
+        raise RuntimeError(
+            f'IWYU binary not found at {IWYU_BINARY}. '
+            f'Run brave/tools/cr/iwyu/build_iwyu.py first.'
+        )
     if not IWYU_TOOL.exists():
-        raise RuntimeError(f'iwyu_tool.py not found at {IWYU_TOOL}. '
-                           f'Run brave/tools/cr/iwyu/build_iwyu.py first.')
+        raise RuntimeError(
+            f'iwyu_tool.py not found at {IWYU_TOOL}. '
+            f'Run brave/tools/cr/iwyu/build_iwyu.py first.'
+        )
     if not FIX_INCLUDES.exists():
-        raise RuntimeError(f'fix_includes.py not found at {FIX_INCLUDES}. '
-                           f'Run brave/tools/cr/iwyu/build_iwyu.py first.')
+        raise RuntimeError(
+            f'fix_includes.py not found at {FIX_INCLUDES}. '
+            f'Run brave/tools/cr/iwyu/build_iwyu.py first.'
+        )
     if not MAPPINGS_FILE.exists():
         raise RuntimeError(f'IWYU mapping file not found at {MAPPINGS_FILE}.')
 
@@ -223,16 +244,17 @@ def main():
 
     logging.info('Running IWYU on %d source file(s)', len(filtered_db))
     if not filtered_db:
-        logging.warning('No source files enabled. Edit %s to enable paths.',
-                        PATHS_FILE)
+        logging.warning(
+            'No source files enabled. Edit %s to enable paths.', PATHS_FILE
+        )
         return 0
 
     # Write the filtered DB next to the build outputs, distinct from the
     # build's own compile_commands.json (if any).
     filtered_db_path = out_dir / 'iwyu_compile_commands.json'
-    filtered_db_path.write_text(json.dumps(filtered_db, indent=2),
-                                encoding='utf-8',
-                                newline='')
+    filtered_db_path.write_text(
+        json.dumps(filtered_db, indent=2), encoding='utf-8', newline=''
+    )
     logging.info('Wrote filtered compile DB to %s', filtered_db_path)
 
     env = os.environ.copy()
@@ -244,12 +266,14 @@ def main():
     # Living under `--out` keeps this artefact out of the source tree
     # without needing a .gitignore entry.
     normalised_mappings_path = out_dir / 'iwyu_normalised_mappings.json5'
-    normalised_mappings_path.write_text(json_comment_eater.Nom(
-        MAPPINGS_FILE.read_bytes().decode('utf-8')),
-                                        encoding='utf-8',
-                                        newline='')
-    logging.info('Wrote normalised mapping file to %s',
-                 normalised_mappings_path)
+    normalised_mappings_path.write_text(
+        json_comment_eater.Nom(MAPPINGS_FILE.read_bytes().decode('utf-8')),
+        encoding='utf-8',
+        newline='',
+    )
+    logging.info(
+        'Wrote normalised mapping file to %s', normalised_mappings_path
+    )
 
     cpu_count = os.cpu_count() or 1
     # Step 1: run iwyu_tool to produce textual fix suggestions on stdout.
@@ -261,18 +285,27 @@ def main():
     # file; the path must be absolute since IWYU runs each unit cd'd to
     # the compile DB entry's `directory`.
     logging.info('Running iwyu_tool.py')
-    iwyu_result = terminal.run([
-        sys.executable, IWYU_TOOL, '-p', filtered_db_path, '-j', cpu_count,
-        '--', '-Xiwyu', f'--mapping_file={normalised_mappings_path.resolve()}'
-    ],
-                               env=env)
+    iwyu_result = terminal.run(
+        [
+            sys.executable,
+            IWYU_TOOL,
+            '-p',
+            filtered_db_path,
+            '-j',
+            cpu_count,
+            '--',
+            '-Xiwyu',
+            f'--mapping_file={normalised_mappings_path.resolve()}',
+        ],
+        env=env,
+    )
 
     # Persist the raw suggestions next to the filtered DB for inspection /
     # post-mortem diffing if a fix goes wrong.
     suggestions_path = out_dir / 'iwyu_suggestions.txt'
-    suggestions_path.write_text(iwyu_result.stdout,
-                                encoding='utf-8',
-                                newline='')
+    suggestions_path.write_text(
+        iwyu_result.stdout, encoding='utf-8', newline=''
+    )
     logging.info('Wrote IWYU suggestions to %s', suggestions_path)
 
     # Step 2: apply the suggestions in place.  fix_includes.py reads the
@@ -285,9 +318,11 @@ def main():
     logging.info('Applying suggestions via fix_includes.py')
     # FIX_INCLUDES is cwd-relative (via repository.chromium.root); absolutise
     # it before changing cwd or the lookup will fail.
-    terminal.run([sys.executable, FIX_INCLUDES.resolve()],
-                 stdin=iwyu_result.stdout,
-                 cwd=out_dir)
+    terminal.run(
+        [sys.executable, FIX_INCLUDES.resolve()],
+        stdin=iwyu_result.stdout,
+        cwd=out_dir,
+    )
 
     # Step 3: strip BLACKHOLE_INCLUDES from any file the pipeline modified.
     logging.info('Stripping blackholed includes')

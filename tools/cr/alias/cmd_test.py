@@ -58,8 +58,12 @@ def _path_without_git_cr_shim() -> str:
     """
     entries = os.environ.get('PATH', '').split(os.pathsep)
     kept = [
-        entry for entry in entries if entry and not any(
-            (Path(entry) / name).exists() for name in ('git-cr', 'git-cr.bat'))
+        entry
+        for entry in entries
+        if entry
+        and not any(
+            (Path(entry) / name).exists() for name in ('git-cr', 'git-cr.bat')
+        )
     ]
     return os.pathsep.join(kept)
 
@@ -72,10 +76,7 @@ def _git(cwd: Path, *args: str) -> subprocess.CompletedProcess:
         check=True,
         capture_output=True,
         text=True,
-        env={
-            **os.environ,
-            **_GIT_ENV_OVERRIDES
-        },
+        env={**os.environ, **_GIT_ENV_OVERRIDES},
     )
 
 
@@ -156,10 +157,15 @@ class _Sandbox:
         else:
             dest.symlink_to(HOOK_SOURCE)
         # Ensure the hook (and source) are executable.
-        HOOK_SOURCE.chmod(HOOK_SOURCE.stat().st_mode | stat.S_IXUSR
-                          | stat.S_IXGRP | stat.S_IXOTH)
-        dest.chmod(dest.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP
-                   | stat.S_IXOTH)
+        HOOK_SOURCE.chmod(
+            HOOK_SOURCE.stat().st_mode
+            | stat.S_IXUSR
+            | stat.S_IXGRP
+            | stat.S_IXOTH
+        )
+        dest.chmod(
+            dest.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH
+        )
 
     def stage_change(self, content: str = 'change\n') -> None:
         """Modify file.txt and stage it so there is something to commit."""
@@ -173,10 +179,7 @@ class _Sandbox:
             ['git', 'log', '-1', '--format=%B'],
             cwd=self.root,
             text=True,
-            env={
-                **os.environ,
-                **_GIT_ENV_OVERRIDES
-            },
+            env={**os.environ, **_GIT_ENV_OVERRIDES},
         ).strip()
 
     def run_gc(
@@ -227,7 +230,8 @@ def _fake_global_env(hooks_dir: Path) -> dict[str, str]:
     cfg.write_text(
         f'[core]\n\thooksPath = {hooks_dir.as_posix()}\n'
         '[safe]\n\tdirectory = *\n',
-        encoding='utf-8')
+        encoding='utf-8',
+    )
     return {'GIT_CONFIG_GLOBAL': str(cfg)}
 
 
@@ -245,7 +249,6 @@ class TestCoreHooksPathGuard(unittest.TestCase):
         self._fake_hooks = self._sandbox.root.parent / 'fake_hooks'
         self._fake_hooks.mkdir()
         self._env = _fake_global_env(self._fake_hooks)
-
 
     def test_install_hook_blocked(self) -> None:
         """install-hook exits non-zero and mentions core.hooksPath."""
@@ -279,7 +282,6 @@ class TestInstallHook(unittest.TestCase):
 
     def setUp(self) -> None:
         self._sandbox = self.enterContext(_Sandbox())
-
 
     def _run(self) -> subprocess.CompletedProcess:
         return self._sandbox.run_gc(['install-hook'])
@@ -337,7 +339,6 @@ class TestSetupAlias(unittest.TestCase):
         self._sandbox = self.enterContext(_Sandbox())
         self._sandbox.install_hook()
 
-
     def _run(self) -> subprocess.CompletedProcess:
         return self._sandbox.run_gc(['setup-alias'])
 
@@ -360,8 +361,7 @@ class TestSetupAlias(unittest.TestCase):
         self.assertTrue(self._sandbox.read_alias_cr().startswith('!'))
 
     def test_git_cr_commit_works_end_to_end(self) -> None:
-        """After setup-alias, 'git cr -m msg' creates a commit in the sandbox.
-        """
+        """After setup-alias, 'git cr -m msg' creates a commit in the sandbox."""
         self._run()
         self._sandbox.stage_change()
         result = subprocess.run(

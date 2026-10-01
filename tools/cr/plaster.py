@@ -41,8 +41,12 @@ import repository
 sys.path.insert(
     0,
     str(
-        Path(__file__).resolve().parents[3] / 'third_party' / 'depot_tools' /
-        'third_party'))
+        Path(__file__).resolve().parents[3]
+        / 'third_party'
+        / 'depot_tools'
+        / 'third_party'
+    ),
+)
 import schema  # pylint: disable=wrong-import-position,import-error
 
 # The path to the directory containing plaster files in brave-core.
@@ -88,8 +92,9 @@ class PlasterApplyError(PlasterError):
     def __init__(self, errors: list[str]):
         self.errors = errors
         super().__init__(
-            'There were errors attempting to apply the patches:\n' +
-            '\n'.join(errors))
+            'There were errors attempting to apply the patches:\n'
+            + '\n'.join(errors)
+        )
 
 
 class RewritersSchemaError(PlasterError):
@@ -101,8 +106,7 @@ class RepositoriesFileError(PlasterError):
 
 
 class Repositories:
-    """The repositories brave-core patches, from `patches/.repositories.cfg`.
-    """
+    """The repositories brave-core patches, from `patches/.repositories.cfg`."""
 
     # The gn source-root prefix every entry carries, `//` being chromium's
     # `src/`, exactly as a gn label spells it.
@@ -129,7 +133,8 @@ class Repositories:
                 content = REPOSITORIES_FILE.read_bytes()
             except OSError as e:
                 raise RepositoriesFileError(
-                    f'Failed to read {REPOSITORIES_FILE}: {e}') from e
+                    f'Failed to read {REPOSITORIES_FILE}: {e}'
+                ) from e
             cls._instance = cls(content)
         return cls._instance
 
@@ -153,8 +158,14 @@ class Repositories:
         None where no repository is rooted there, which is how a patch
         directory plaster does not manage is told apart from one it does.
         """
-        return next((repo for repo in self._repositories
-                     if repo.relative_to_chromium == path), None)
+        return next(
+            (
+                repo
+                for repo in self._repositories
+                if repo.relative_to_chromium == path
+            ),
+            None,
+        )
 
     def split(self, source: PurePath) -> tuple[Repository, PurePath]:
         """The repository holding `source`, and the path of it within.
@@ -166,13 +177,15 @@ class Repositories:
         for repo in self._repositories:
             try:
                 return repo, PurePath(
-                    source.relative_to(repo.relative_to_chromium))
+                    source.relative_to(repo.relative_to_chromium)
+                )
             except ValueError:
                 continue  # A different repository's prefix, or none.
         # `src` is relative to every path and the file is required to list it,
         # so a validated instance never reaches this.
         raise RepositoriesFileError(
-            f'{REPOSITORIES_FILE}: no repository holds {str(source)!r}')
+            f'{REPOSITORIES_FILE}: no repository holds {str(source)!r}'
+        )
 
     # -- parsing ------------------------------------------------------------
 
@@ -187,7 +200,8 @@ class Repositories:
         prefix = self.SOURCE_ROOT_PREFIX
         paths: list[PurePath] = []
         for line_number, raw_line in enumerate(
-                content.decode('utf-8').splitlines(), 1):
+            content.decode('utf-8').splitlines(), 1
+        ):
             line = raw_line.split('#', 1)[0].strip()
             if not line:
                 continue
@@ -197,18 +211,21 @@ class Repositories:
             if not line.startswith(prefix):
                 raise RepositoriesFileError(
                     f'{at_line} {line!r} must be source-absolute, i.e. start '
-                    f'with `{prefix}`, which is `src/`')
-            candidate = PurePath(line[len(prefix):].strip('/'))
+                    f'with `{prefix}`, which is `src/`'
+                )
+            candidate = PurePath(line[len(prefix) :].strip('/'))
             # A path is a prefix of both a `rewrite/` and a `patches/` path,
             # so anything that does not stay inside those trees cannot be
             # resolved against them.
             if candidate.is_absolute() or '..' in candidate.parts:
                 raise RepositoriesFileError(
                     f'{at_line} {line!r} must stay under `{prefix}` and '
-                    f'cannot traverse upwards')
+                    f'cannot traverse upwards'
+                )
             if candidate in paths:
                 raise RepositoriesFileError(
-                    f'{at_line} {line!r} is listed more than once')
+                    f'{at_line} {line!r} is listed more than once'
+                )
             paths.append(candidate)
 
         # The empty path is `src` itself, which every patch outside another
@@ -216,13 +233,15 @@ class Repositories:
         if PurePath() not in paths:
             raise RepositoriesFileError(
                 f'{REPOSITORIES_FILE}: does not list chromium\'s own `src`; '
-                f'add a `{prefix}` line for it')
+                f'add a `{prefix}` line for it'
+            )
 
         # Longest first, so the most specific repository claims a path,
         # leaving `src` last as the fallback for everything unprefixed.
         return tuple(
-            self._repository_at(path) for path in sorted(
-                paths, key=lambda p: len(p.parts), reverse=True))
+            self._repository_at(path)
+            for path in sorted(paths, key=lambda p: len(p.parts), reverse=True)
+        )
 
     @staticmethod
     def _repository_at(path: PurePath) -> Repository:
@@ -279,11 +298,13 @@ class PlasterTarget:
         """
         try:
             relative = PurePath(
-                Path(plaster_file).relative_to(PLASTER_FILES_PATH))
+                Path(plaster_file).relative_to(PLASTER_FILES_PATH)
+            )
         except ValueError:
             raise PlasterError(
                 f'Plaster file is not under {PLASTER_FILES_PATH}: '
-                f'{plaster_file}') from None
+                f'{plaster_file}'
+            ) from None
         # `rewrite/base/foo.cc.yaml` -> `base/foo.cc`, the source relative to
         # `src/`, which is what carries the repository prefix.
         repo, source = Repositories.load().split(relative.with_suffix(''))
@@ -291,14 +312,19 @@ class PlasterTarget:
             raise PlasterError(
                 f'Plaster file names repository '
                 f'{str(repo.relative_to_chromium)!r} but no source within it: '
-                f'{plaster_file}')
+                f'{plaster_file}'
+            )
         return PlasterTarget(
             repository=repo,
             source=source,
             # A patch sits in its repository's directory under `patches/`,
             # named after the source with its separators flattened.
-            patch=(PATCHES_PATH / repo.relative_to_chromium /
-                   f'{source.as_posix().replace("/", "-")}.patch'))
+            patch=(
+                PATCHES_PATH
+                / repo.relative_to_chromium
+                / f'{source.as_posix().replace("/", "-")}.patch'
+            ),
+        )
 
 
 def plaster_for_patch(patch_path: PurePath) -> Path | None:
@@ -322,13 +348,13 @@ def plaster_for_patch(patch_path: PurePath) -> Path | None:
         return None
     # Only the file name is flattened; the directories above it are the
     # repository's own path and are already separated.
-    source = patch_path.name[:-len('.patch')].replace('-', '/')
+    source = patch_path.name[: -len('.patch')].replace('-', '/')
     return PLASTER_FILES_PATH / prefix / f'{source}{PLASTER_EXTENSION}'
 
 
 @dataclass
 class PathChecksumPair:
-    """ A path/checksum pair to check for changes in a file.
+    """A path/checksum pair to check for changes in a file.
 
     This class is used to store the path to a file and its checksum, which
     provides a way to track changes in the file content.
@@ -346,16 +372,14 @@ class PathChecksumPair:
         self.checksum = self.calculate_file_checksum()
 
     def calculate_file_checksum(self) -> str | None:
-        """Calculate the SHA-256 checksum of the file's raw bytes.
-        """
+        """Calculate the SHA-256 checksum of the file's raw bytes."""
         if not self.path.exists():
             return None
         checksum_generator = hashlib.sha256()
         with self.path.open('rb') as file:
             if os.fstat(file.fileno()).st_size == 0:
                 return checksum_generator.hexdigest()
-            with mmap.mmap(file.fileno(), 0,
-                           access=mmap.ACCESS_READ) as mapped:
+            with mmap.mmap(file.fileno(), 0, access=mmap.ACCESS_READ) as mapped:
                 checksum_generator.update(mapped)
         return checksum_generator.hexdigest()
 
@@ -383,15 +407,14 @@ class PathChecksumPair:
             # On Windows we checkout files in Linux mode, so we should make
             # sure not to use Windows newlines here.
             self.path.write_text(new_content, encoding='utf-8', newline='\n')
-            assert (new_checksum == self.calculate_file_checksum())
+            assert new_checksum == self.calculate_file_checksum()
         self.checksum = new_checksum
         return True
 
 
 @dataclass(frozen=True)
 class Patchinfo:
-    """In-memory representation of a parsed .patchinfo file.
-    """
+    """In-memory representation of a parsed .patchinfo file."""
 
     @dataclass(frozen=True)
     class Entry:
@@ -448,8 +471,9 @@ class Patchinfo:
             return None
         applies_path = entry.get('path')
         applies_checksum = entry.get('checksum')
-        if (not isinstance(applies_path, str)
-                or not isinstance(applies_checksum, str)):
+        if not isinstance(applies_path, str) or not isinstance(
+            applies_checksum, str
+        ):
             return None
 
         plaster_raw = data.get('plaster')
@@ -457,38 +481,45 @@ class Patchinfo:
             return None
         plaster_path = plaster_raw.get('path')
         plaster_checksum = plaster_raw.get('checksum')
-        if (not isinstance(plaster_path, str)
-                or not isinstance(plaster_checksum, str)):
+        if not isinstance(plaster_path, str) or not isinstance(
+            plaster_checksum, str
+        ):
             return None
 
         return Patchinfo(
             schema_version=schema_version,
             patch_checksum=patch_checksum,
-            applies_to=Patchinfo.Entry(path=applies_path,
-                                       checksum=applies_checksum),
-            plaster=Patchinfo.Entry(path=plaster_path,
-                                    checksum=plaster_checksum),
+            applies_to=Patchinfo.Entry(
+                path=applies_path, checksum=applies_checksum
+            ),
+            plaster=Patchinfo.Entry(
+                path=plaster_path, checksum=plaster_checksum
+            ),
         )
 
     def to_json(self) -> str:
         """Serialize this Patchinfo to the .patchinfo JSON representation."""
-        return json.dumps({
-            'schemaVersion': self.schema_version,
-            'patchChecksum': self.patch_checksum,
-            'appliesTo': [{
-                'path': self.applies_to.path,
-                'checksum': self.applies_to.checksum,
-            }],
-            'plaster': {
-                'path': self.plaster.path,
-                'checksum': self.plaster.checksum,
-            },
-        })
+        return json.dumps(
+            {
+                'schemaVersion': self.schema_version,
+                'patchChecksum': self.patch_checksum,
+                'appliesTo': [
+                    {
+                        'path': self.applies_to.path,
+                        'checksum': self.applies_to.checksum,
+                    }
+                ],
+                'plaster': {
+                    'path': self.plaster.path,
+                    'checksum': self.plaster.checksum,
+                },
+            }
+        )
 
 
 @dataclass
 class PatchinfoBuilder:
-    """ Builds a .patchinfo file's contents for a given plaster.
+    """Builds a .patchinfo file's contents for a given plaster.
 
     A builder for the patchfile metadata, known as .patchinfo, which is used
     by our machinery when applying patches to determine if a file needs to be
@@ -566,7 +597,8 @@ class PatchinfoBuilder:
         """Initializes the PatchinfoBuilder data with checksums and paths."""
         self.plaster_contents = self.plaster_file.read_bytes().decode('utf-8')
         self.plaster_checksum = hashlib.sha256(
-            self.plaster_contents.encode()).hexdigest()
+            self.plaster_contents.encode()
+        ).hexdigest()
 
         # The plaster path says which repository it patches and where its
         # source and patch sit within it.
@@ -578,12 +610,11 @@ class PatchinfoBuilder:
 
         # This is set relative, so it gets validated to be under the
         # brave-core root.
-        self.plaster_file = self.plaster_file.relative_to(
-            repository.brave.root)
+        self.plaster_file = self.plaster_file.relative_to(repository.brave.root)
 
-    def save_source_if_changed(self,
-                               content: str,
-                               dry_run: bool = False) -> bool:
+    def save_source_if_changed(
+        self, content: str, dry_run: bool = False
+    ) -> bool:
         """Save new content to the source file only if its checksum has changed.
 
         Args:
@@ -592,8 +623,9 @@ class PatchinfoBuilder:
             dry_run:
               Indicates whether the actual write should not be performed.
         """
-        return self.source_with_checksum.save_if_changed(new_content=content,
-                                                         dry_run=dry_run)
+        return self.source_with_checksum.save_if_changed(
+            new_content=content, dry_run=dry_run
+        )
 
     def save_patch_if_changed(self, dry_run: bool = False) -> bool:
         """Save the generated git diff to the patch file only if it has changed.
@@ -642,7 +674,8 @@ class PatchinfoBuilder:
                 'GIT_ATTR_NOSYSTEM': '1',
                 'GIT_CONFIG_GLOBAL': '/dev/null',
                 'GIT_CONFIG_NOSYSTEM': '1',
-            })
+            },
+        )
         return self.patch.save_if_changed(new_content=content, dry_run=dry_run)
 
     def save_patchinfo_if_changed(self):
@@ -664,7 +697,7 @@ class PatchinfoBuilder:
 
 @dataclass(frozen=True)
 class BlankForParseOptions:
-    """ File level blank-related flags used by ast parsers.
+    """File level blank-related flags used by ast parsers.
 
     This type merely bundles these values together.
     """
@@ -680,8 +713,11 @@ class BlankForParseOptions:
 
     def __bool__(self) -> bool:
         """True if any pass is enabled, i.e. parsing needs preparation at all."""
-        return (self.macros or self.string_adjacent_macros
-                or self.metadata_header_macros)
+        return (
+            self.macros
+            or self.string_adjacent_macros
+            or self.metadata_header_macros
+        )
 
 
 class Rewriter(abc.ABC):
@@ -715,7 +751,7 @@ class Rewriter(abc.ABC):
         *,
         count: int,
         description: str,
-        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions(),
     ) -> tuple[str, list[str]]:
         """Transform `contents`, returning (new_contents, validation_errors).
 
@@ -736,8 +772,7 @@ class Rewriter(abc.ABC):
 
     @classmethod
     def validate_count(cls, count: int, description: str) -> None:
-        """Reject an unsupported `count:` for this rewriter.
-        """
+        """Reject an unsupported `count:` for this rewriter."""
 
     @classmethod
     def help_text(cls) -> str:
@@ -757,12 +792,14 @@ class Rewriter(abc.ABC):
 
 
 # The file-wide plaster keys allowed at the top level of a YAML plaster.
-_TOP_LEVEL_KEYS: Final = frozenset({
-    'substitutions',
-    'blank_macros_for_ast_parsing',
-    'blank_string_adjacent_macros_for_ast_parsing',
-    'blank_metadata_header_macros',
-})
+_TOP_LEVEL_KEYS: Final = frozenset(
+    {
+        'substitutions',
+        'blank_macros_for_ast_parsing',
+        'blank_string_adjacent_macros_for_ast_parsing',
+        'blank_metadata_header_macros',
+    }
+)
 
 
 @dataclass(frozen=True)
@@ -802,41 +839,46 @@ _GN_NAMESPACE: Final = 'gn'
 
 # Every namespace plaster knows. The single place to register a language.
 _NAMESPACES: Final = (
-    RewriterNamespace(name=_GLOBAL_NAMESPACE,
-                      ast_grep_language=None,
-                      suffixes=frozenset()),
-    RewriterNamespace(name=_GN_NAMESPACE,
-                      ast_grep_language='gn',
-                      suffixes=frozenset({'.gn', '.gni'})),
-    RewriterNamespace(name='cxx',
-                      ast_grep_language='cpp',
-                      suffixes=frozenset({
-                          '.h', '.hpp', '.hxx', '.h++', '.cc', '.cpp', '.cxx',
-                          '.c++', '.mm'
-                      })),
+    RewriterNamespace(
+        name=_GLOBAL_NAMESPACE, ast_grep_language=None, suffixes=frozenset()
+    ),
+    RewriterNamespace(
+        name=_GN_NAMESPACE,
+        ast_grep_language='gn',
+        suffixes=frozenset({'.gn', '.gni'}),
+    ),
+    RewriterNamespace(
+        name='cxx',
+        ast_grep_language='cpp',
+        suffixes=frozenset(
+            {'.h', '.hpp', '.hxx', '.h++', '.cc', '.cpp', '.cxx', '.c++', '.mm'}
+        ),
+    ),
     # We include JSON5 with js because `ast-grep` has no tree-sitter for it, but
     # the JS one works just fine.
-    RewriterNamespace(name='js',
-                      ast_grep_language='js',
-                      suffixes=frozenset({'.js', '.json5'})),
+    RewriterNamespace(
+        name='js', ast_grep_language='js', suffixes=frozenset({'.js', '.json5'})
+    ),
     # TypeScript gets its own namespace rather than riding on `js`: the JS
     # grammar chokes on the type syntax WebUI sources are full of (`declare
     # global`, type annotations, `as` casts), which would leave a matcher
     # searching a partially-parsed tree.
-    RewriterNamespace(name='ts',
-                      ast_grep_language='ts',
-                      suffixes=frozenset({'.ts'})),
+    RewriterNamespace(
+        name='ts', ast_grep_language='ts', suffixes=frozenset({'.ts'})
+    ),
 )
 
 _NAMESPACE_BY_NAME: Final = MappingProxyType(
-    {namespace.name: namespace
-     for namespace in _NAMESPACES})
+    {namespace.name: namespace for namespace in _NAMESPACES}
+)
 
-_NAMESPACE_BY_SUFFIX: Final = MappingProxyType({
-    suffix: namespace
-    for namespace in _NAMESPACES
-    for suffix in namespace.suffixes
-})
+_NAMESPACE_BY_SUFFIX: Final = MappingProxyType(
+    {
+        suffix: namespace
+        for namespace in _NAMESPACES
+        for suffix in namespace.suffixes
+    }
+)
 
 
 def _namespace_of_source(plaster_path: Path) -> str | None:
@@ -849,8 +891,7 @@ def _namespace_of_source(plaster_path: Path) -> str | None:
 
 
 def _is_cxx_source(plaster_path: Path) -> bool:
-    """Indicates if a plaster file extension corresponds to a C++ source.
-    """
+    """Indicates if a plaster file extension corresponds to a C++ source."""
     return _namespace_of_source(plaster_path) == 'cxx'
 
 
@@ -896,14 +937,15 @@ class Substitution:
         self,
         contents: str,
         *,
-        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions(),
     ) -> tuple[str, list[str]]:
-        """Apply the composed rewriter, returning (new_contents, errors).
-        """
-        return self.rewriter.apply(contents,
-                                   count=self.expected_count,
-                                   description=self.description,
-                                   blank_for_parse=blank_for_parse)
+        """Apply the composed rewriter, returning (new_contents, errors)."""
+        return self.rewriter.apply(
+            contents,
+            count=self.expected_count,
+            description=self.description,
+            blank_for_parse=blank_for_parse,
+        )
 
     class _NoDupSafeLoader(yaml.SafeLoader):
         """`yaml.SafeLoader` that rejects duplicate mapping keys.
@@ -915,8 +957,9 @@ class Substitution:
         """
 
         @staticmethod
-        def _construct_mapping_strict(loader: yaml.SafeLoader,
-                                      node: yaml.MappingNode) -> dict:
+        def _construct_mapping_strict(
+            loader: yaml.SafeLoader, node: yaml.MappingNode
+        ) -> dict:
             """Construct a dict from `node`, raising on duplicate keys."""
             loader.flatten_mapping(node)
             seen: set = set()
@@ -928,8 +971,10 @@ class Substitution:
                 else:
                     seen.add(key)
             if duplicates:
-                raise ValueError('Duplicate key(s) in YAML mapping: ' +
-                                 ', '.join(repr(k) for k in duplicates))
+                raise ValueError(
+                    'Duplicate key(s) in YAML mapping: '
+                    + ', '.join(repr(k) for k in duplicates)
+                )
             return loader.construct_mapping(node, deep=True)
 
         # Install the strict constructor.
@@ -956,29 +1001,33 @@ class Substitution:
             raise ValueError('Plaster YAML must be a mapping at the top level')
         unknown = sorted(set(data) - _TOP_LEVEL_KEYS)
         if unknown:
-            raise ValueError('Unrecognised top-level plaster key(s): ' +
-                             ', '.join(repr(k)
-                                       for k in unknown) + '; allowed: ' +
-                             ', '.join(sorted(_TOP_LEVEL_KEYS)))
+            raise ValueError(
+                'Unrecognised top-level plaster key(s): '
+                + ', '.join(repr(k) for k in unknown)
+                + '; allowed: '
+                + ', '.join(sorted(_TOP_LEVEL_KEYS))
+            )
         blank_macros = data.get('blank_macros_for_ast_parsing', False)
         if not isinstance(blank_macros, bool):
-            raise ValueError(
-                '`blank_macros_for_ast_parsing` must be a boolean')
+            raise ValueError('`blank_macros_for_ast_parsing` must be a boolean')
         blank_string_adjacent_macros = data.get(
-            'blank_string_adjacent_macros_for_ast_parsing', False)
+            'blank_string_adjacent_macros_for_ast_parsing', False
+        )
         if not isinstance(blank_string_adjacent_macros, bool):
             raise ValueError(
                 '`blank_string_adjacent_macros_for_ast_parsing` must be a '
-                'boolean')
-        blank_metadata_header_macros = data.get('blank_metadata_header_macros',
-                                                False)
+                'boolean'
+            )
+        blank_metadata_header_macros = data.get(
+            'blank_metadata_header_macros', False
+        )
         if not isinstance(blank_metadata_header_macros, bool):
-            raise ValueError(
-                '`blank_metadata_header_macros` must be a boolean')
+            raise ValueError('`blank_metadata_header_macros` must be a boolean')
         raw = data.get('substitutions')
         if raw is None:
             raise ValueError(
-                'Plaster YAML is missing required `substitutions:` key')
+                'Plaster YAML is missing required `substitutions:` key'
+            )
         if not isinstance(raw, list):
             raise ValueError('YAML `substitutions` must be a list')
         if not raw:
@@ -992,8 +1041,10 @@ class Substitution:
             ],
             blank_macros_for_ast_parsing=blank_macros,
             blank_string_adjacent_macros_for_ast_parsing=(
-                blank_string_adjacent_macros),
-            blank_metadata_header_macros=blank_metadata_header_macros)
+                blank_string_adjacent_macros
+            ),
+            blank_metadata_header_macros=blank_metadata_header_macros,
+        )
 
     @staticmethod
     def _from_item(data: object, *, namespace: str | None) -> Substitution:
@@ -1009,8 +1060,10 @@ class Substitution:
                 rewriter-specific fields).
         """
         if not isinstance(data, dict):
-            raise ValueError(f'substitution entry must be a mapping, got '
-                             f'{type(data).__name__}')
+            raise ValueError(
+                f'substitution entry must be a mapping, got '
+                f'{type(data).__name__}'
+            )
         keys = set(data)
 
         description = data.get('description')
@@ -1021,32 +1074,39 @@ class Substitution:
         if len(rewriter_keys) > 1:
             raise ValueError(
                 f'Only one rewriter allowed per entry, got '
-                f'{", ".join(rewriter_keys)} (in "{description}")')
+                f'{", ".join(rewriter_keys)} (in "{description}")'
+            )
 
         if rewriter_keys:
             name = rewriter_keys[0]
             unknown = sorted(keys - {'description', 'count', name})
             if unknown:
-                raise ValueError(f'Unrecognised key(s) for the "{name}" '
-                                 f'rewriter: '
-                                 f'{", ".join(repr(k) for k in unknown)} '
-                                 f'(in "{description}")')
+                raise ValueError(
+                    f'Unrecognised key(s) for the "{name}" '
+                    f'rewriter: '
+                    f'{", ".join(repr(k) for k in unknown)} '
+                    f'(in "{description}")'
+                )
             cls = _REWRITERS.resolve(name, namespace)
             if cls is None:
                 available = ', '.join(sorted(_REWRITERS.candidates(name)))
                 raise ValueError(
                     f'the `{name}` rewriter is not available for this '
                     f'source, which is not in any namespace it serves '
-                    f'({available}) (in "{description}")')
+                    f'({available}) (in "{description}")'
+                )
             # The chosen rewriter decides what an omitted `count:` means, and
             # may reject a count it does not support.
-            expected_count = Substitution._parse_count(data, description,
-                                                       cls.DEFAULT_COUNT)
+            expected_count = Substitution._parse_count(
+                data, description, cls.DEFAULT_COUNT
+            )
             cls.validate_count(expected_count, description)
             rewriter = cls.parse(data[name], description=description)
-            return Substitution(description=description,
-                                expected_count=expected_count,
-                                rewriter=rewriter)
+            return Substitution(
+                description=description,
+                expected_count=expected_count,
+                rewriter=rewriter,
+            )
 
         # Every entry must name a rewriter. Surface the most helpful error we
         # can: a mapping-valued stray key is almost certainly an attempt to use
@@ -1059,22 +1119,27 @@ class Substitution:
             raise ValueError(
                 f'Unknown rewriter(s): '
                 f'{", ".join(repr(k) for k in bad_rewriters)}; available '
-                f'rewriters: {available} (in "{description}")')
+                f'rewriters: {available} (in "{description}")'
+            )
         if unknown:
-            raise ValueError('Unrecognised substitution key(s): '
-                             f'{", ".join(repr(k) for k in unknown)}')
+            raise ValueError(
+                'Unrecognised substitution key(s): '
+                f'{", ".join(repr(k) for k in unknown)}'
+            )
         raise ValueError(
             f'No rewriter specified (in "{description}"); expected one of: '
-            f'{", ".join(sorted(_REWRITERS.names)) or "(none)"}')
+            f'{", ".join(sorted(_REWRITERS.names)) or "(none)"}'
+        )
 
     @staticmethod
-    def _parse_count(data: dict[str, object],
-                     description: str,
-                     default: int | None = None) -> int:
+    def _parse_count(
+        data: dict[str, object], description: str, default: int | None = None
+    ) -> int:
         expected_count = data.get('count', 1 if default is None else default)
         # bool is a subclass of int; reject it explicitly.
-        if (not isinstance(expected_count, int)
-                or isinstance(expected_count, bool)):
+        if not isinstance(expected_count, int) or isinstance(
+            expected_count, bool
+        ):
             raise ValueError(f'count must be an integer (in "{description}")')
         return expected_count
 
@@ -1116,8 +1181,9 @@ class MatchExpectation:
 
     def accepts(self, matches: int) -> bool:
         """True if `matches` satisfies this expectation."""
-        return matches >= self.minimum and (self.maximum is None
-                                            or matches <= self.maximum)
+        return matches >= self.minimum and (
+            self.maximum is None or matches <= self.maximum
+        )
 
     def error_for(self, matches: int) -> str | None:
         """A failure message if `matches` is unacceptable, else None.
@@ -1130,11 +1196,12 @@ class MatchExpectation:
         if self.minimum == 1 and self.maximum is None:
             return 'Expected at least one match but found none'
         if self.minimum == self.maximum:
-            return (f'Unexpected number of matches ({matches} vs '
-                    f'{self.minimum})')
+            return f'Unexpected number of matches ({matches} vs {self.minimum})'
         upper = 'any' if self.maximum is None else self.maximum
-        return (f'Unexpected number of matches ({matches} vs '
-                f'{self.minimum}..{upper})')
+        return (
+            f'Unexpected number of matches ({matches} vs '
+            f'{self.minimum}..{upper})'
+        )
 
 
 def _is_valid_re_flag_name(flag: str) -> bool:
@@ -1143,16 +1210,17 @@ def _is_valid_re_flag_name(flag: str) -> bool:
 
 
 def _parse_re_flags(flags_raw: object, description: str) -> int:
-    """Combine `re_flags` flag names (e.g. `['DOTALL']`) into one `re` mask.
-    """
+    """Combine `re_flags` flag names (e.g. `['DOTALL']`) into one `re` mask."""
     if not isinstance(flags_raw, list):
         raise ValueError(
-            f're_flags must be a list of strings (in "{description}")')
+            f're_flags must be a list of strings (in "{description}")'
+        )
     re_flags = 0
     for flag in flags_raw:
         if not isinstance(flag, str):
             raise ValueError(
-                f're_flags entries must be strings (in "{description}")')
+                f're_flags entries must be strings (in "{description}")'
+            )
         if not _is_valid_re_flag_name(flag):
             raise ValueError(f'Invalid re flag specified: {flag}')
         re_flags |= getattr(re, flag)
@@ -1160,8 +1228,7 @@ def _parse_re_flags(flags_raw: object, description: str) -> int:
 
 
 class AllRegexRewriter(Rewriter):
-    """A regex substitution applied with `re.subn` (the native rewriter).
-    """
+    """A regex substitution applied with `re.subn` (the native rewriter)."""
 
     NAME: Final = 'regex'
     SUMMARY: Final = 'A Python `re.subn` substitution (the default rewriter).'
@@ -1208,17 +1275,19 @@ class AllRegexRewriter(Rewriter):
         *,
         count: int,
         description: str,
-        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions(),
     ) -> tuple[str, list[str]]:
         del description  # Only the count matters for the regex diagnostic.
         del blank_for_parse  # Text substitution never parses; nothing to relax.
         # `count=0` here means "replace every match"; how many were expected is
         # validated afterwards against the entry's `count:`.
-        content, matches = re.subn(self._re_pattern,
-                                   self._replace,
-                                   contents,
-                                   flags=self._re_flags,
-                                   count=0)
+        content, matches = re.subn(
+            self._re_pattern,
+            self._replace,
+            contents,
+            flags=self._re_flags,
+            count=0,
+        )
         error = MatchExpectation.from_count(count).error_for(matches)
         return content, [error] if error else []
 
@@ -1231,34 +1300,38 @@ class AllRegexRewriter(Rewriter):
         if unknown:
             raise ValueError(
                 f'Unrecognised regex field(s): '
-                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")'
+            )
 
         pattern = body.get('pattern')
         re_pattern = body.get('re_pattern')
         if pattern is not None and re_pattern is not None:
             raise ValueError(
                 f'Please specify either pattern or re_pattern, not both '
-                f'(in "{description}")')
+                f'(in "{description}")'
+            )
         if pattern is None and re_pattern is None:
             raise ValueError(f'No pattern specified (in "{description}")')
         if pattern is not None:
             if not isinstance(pattern, str):
                 raise ValueError(
-                    f'pattern must be a string (in "{description}")')
+                    f'pattern must be a string (in "{description}")'
+                )
             re_pattern = re.escape(pattern)
         elif not isinstance(re_pattern, str):
             raise ValueError(
-                f're_pattern must be a string (in "{description}")')
+                f're_pattern must be a string (in "{description}")'
+            )
 
         replace = body.get('replace')
         if not isinstance(replace, str):
-            raise ValueError(
-                f'No replace value specified (in "{description}")')
+            raise ValueError(f'No replace value specified (in "{description}")')
 
-        return cls(re_pattern=re_pattern,
-                   replace=replace,
-                   re_flags=_parse_re_flags(body.get('re_flags', []),
-                                            description))
+        return cls(
+            re_pattern=re_pattern,
+            replace=replace,
+            re_flags=_parse_re_flags(body.get('re_flags', []), description),
+        )
 
 
 @dataclass(frozen=True)
@@ -1333,8 +1406,9 @@ class _AstGrepRewriter(Rewriter):
         per-operation expectation.
         """
         return [
-            Operation(self.OP_ID, self._inputs,
-                      MatchExpectation.from_count(count))
+            Operation(
+                self.OP_ID, self._inputs, MatchExpectation.from_count(count)
+            )
         ]
 
     def apply(
@@ -1343,16 +1417,17 @@ class _AstGrepRewriter(Rewriter):
         *,
         count: int,
         description: str,
-        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions(),
     ) -> tuple[str, list[str]]:
-        engine = AstRewriter(RewritersEval.load(),
-                             contents,
-                             blank_for_parse=blank_for_parse)
+        engine = AstRewriter(
+            RewritersEval.load(), contents, blank_for_parse=blank_for_parse
+        )
         outcomes = [(op, engine.run(op)) for op in self.operations(count)]
         return engine.content, self.validate_outcomes(outcomes, description)
 
-    def validate_outcomes(self, outcomes: list[tuple[Operation, int]],
-                          description: str) -> list[str]:
+    def validate_outcomes(
+        self, outcomes: list[tuple[Operation, int]], description: str
+    ) -> list[str]:
         """Errors for `(operation, matches)` outcomes; empty when all applied.
 
         The default checks each operation against its own `expectation`.
@@ -1378,20 +1453,25 @@ class _AstGrepRewriter(Rewriter):
         keys = cls.declared_inputs()
         if not isinstance(body, dict):
             raise ValueError(
-                f'"{cls.NAME}" must be a mapping (in "{description}")')
+                f'"{cls.NAME}" must be a mapping (in "{description}")'
+            )
         unknown = sorted(set(body) - keys)
         if unknown:
             raise ValueError(
                 f'Unrecognised {cls.NAME} arg(s): '
-                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")'
+            )
         missing = sorted(keys - set(body))
         if missing:
-            raise ValueError(f'{cls.NAME} requires arg(s): '
-                             f'{", ".join(missing)} (in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} requires arg(s): '
+                f'{", ".join(missing)} (in "{description}")'
+            )
         for key in sorted(keys):
             if not isinstance(body[key], str):
-                raise ValueError(f'{cls.NAME} `{key}` must be a string '
-                                 f'(in "{description}")')
+                raise ValueError(
+                    f'{cls.NAME} `{key}` must be a string (in "{description}")'
+                )
         return cls({key: body[key] for key in keys})
 
 
@@ -1482,10 +1562,14 @@ class CxxAddFriendRewriter(_AstGrepRewriter):
         # friends land in the order the user listed them.
         del count
         return [
-            Operation(self.OP_ID, {
-                'class_name': self._class_name,
-                'friend_type': friend_type,
-            }, MatchExpectation.exactly(1))
+            Operation(
+                self.OP_ID,
+                {
+                    'class_name': self._class_name,
+                    'friend_type': friend_type,
+                },
+                MatchExpectation.exactly(1),
+            )
             for friend_type in reversed(self._friend_types)
         ]
 
@@ -1498,35 +1582,47 @@ class CxxAddFriendRewriter(_AstGrepRewriter):
         """
         if not isinstance(body, dict):
             raise ValueError(
-                f'"{cls.NAME}" must be a mapping (in "{description}")')
+                f'"{cls.NAME}" must be a mapping (in "{description}")'
+            )
         required = {'class_name', 'friend_type'}
         unknown = sorted(set(body) - required)
         if unknown:
             raise ValueError(
                 f'Unrecognised {cls.NAME} arg(s): '
-                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")'
+            )
         missing = sorted(required - set(body))
         if missing:
-            raise ValueError(f'{cls.NAME} requires arg(s): '
-                             f'{", ".join(missing)} (in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} requires arg(s): '
+                f'{", ".join(missing)} (in "{description}")'
+            )
         if not isinstance(body['class_name'], str):
-            raise ValueError(f'{cls.NAME} `class_name` must be a string '
-                             f'(in "{description}")')
-        return cls(class_name=body['class_name'],
-                   friend_types=cls._parse_friend_types(
-                       body['friend_type'], description))
+            raise ValueError(
+                f'{cls.NAME} `class_name` must be a string (in "{description}")'
+            )
+        return cls(
+            class_name=body['class_name'],
+            friend_types=cls._parse_friend_types(
+                body['friend_type'], description
+            ),
+        )
 
     @staticmethod
     def _parse_friend_types(value: object, description: str) -> list[str]:
         """Normalise `friend_type` to a non-empty list of strings."""
         if isinstance(value, str):
             return [value]
-        if (isinstance(value, list) and value
-                and all(isinstance(item, str) for item in value)):
+        if (
+            isinstance(value, list)
+            and value
+            and all(isinstance(item, str) for item in value)
+        ):
             return list(value)
         raise ValueError(
             f'{CxxAddFriendRewriter.NAME} `friend_type` must be a string or a non-empty '
-            f'list of strings (in "{description}")')
+            f'list of strings (in "{description}")'
+        )
 
 
 class CxxDropFinalRewriter(_AstGrepRewriter):
@@ -1659,15 +1755,20 @@ class CxxPreemptFunctionImplRewriter(_AstGrepRewriter):
         # `re.sub` replacement where a backslash is special.
         prologue = _indent_yaml(self._prologue).replace('\\', '\\\\')
         return [
-            Operation(self.OP_ID, {
-                'function_name': self._function_name,
-                'prologue': prologue,
-            }, MatchExpectation.from_count(count))
+            Operation(
+                self.OP_ID,
+                {
+                    'function_name': self._function_name,
+                    'prologue': prologue,
+                },
+                MatchExpectation.from_count(count),
+            )
         ]
 
     @classmethod
-    def parse(cls, body: object, *,
-              description: str) -> CxxPreemptFunctionImplRewriter:
+    def parse(
+        cls, body: object, *, description: str
+    ) -> CxxPreemptFunctionImplRewriter:
         """Validate a `preempt_function_impl:` body and resolve what to insert.
 
         Requires `function_name`, plus exactly one of `code` or `return_if`;
@@ -1675,17 +1776,23 @@ class CxxPreemptFunctionImplRewriter(_AstGrepRewriter):
         """
         if not isinstance(body, dict):
             raise ValueError(
-                f'"{cls.NAME}" must be a mapping (in "{description}")')
+                f'"{cls.NAME}" must be a mapping (in "{description}")'
+            )
         allowed = {'function_name', 'return_value'} | cls._MODE_KEYS
         unknown = sorted(set(body) - allowed)
         if unknown:
             raise ValueError(
                 f'Unrecognised {cls.NAME} arg(s): '
-                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
-        if not isinstance(body.get('function_name'),
-                          str) or not body['function_name']:
-            raise ValueError(f'{cls.NAME} `function_name` must be a non-empty '
-                             f'string (in "{description}")')
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")'
+            )
+        if (
+            not isinstance(body.get('function_name'), str)
+            or not body['function_name']
+        ):
+            raise ValueError(
+                f'{cls.NAME} `function_name` must be a non-empty '
+                f'string (in "{description}")'
+            )
         prologue = cls._resolve_prologue(body, description)
         return cls(function_name=body['function_name'], prologue=prologue)
 
@@ -1696,27 +1803,34 @@ class CxxPreemptFunctionImplRewriter(_AstGrepRewriter):
         if len(modes) != 1:
             raise ValueError(
                 f'{cls.NAME} requires exactly one of `code` or `return_if` '
-                f'(in "{description}")')
+                f'(in "{description}")'
+            )
         mode = modes[0]
         if mode == 'code':
             if 'return_value' in body:
                 raise ValueError(
                     f'{cls.NAME} `return_value` is only valid with `return_if` '
-                    f'(in "{description}")')
+                    f'(in "{description}")'
+                )
             code = body['code']
             if not isinstance(code, str) or not code:
                 raise ValueError(
                     f'{cls.NAME} `code` must be a non-empty string '
-                    f'(in "{description}")')
+                    f'(in "{description}")'
+                )
             return code
         condition = body['return_if']
         if not isinstance(condition, str) or not condition:
-            raise ValueError(f'{cls.NAME} `return_if` must be a non-empty '
-                             f'string (in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} `return_if` must be a non-empty '
+                f'string (in "{description}")'
+            )
         return_value = body.get('return_value', '')
         if not isinstance(return_value, str):
-            raise ValueError(f'{cls.NAME} `return_value` must be a string '
-                             f'(in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} `return_value` must be a string '
+                f'(in "{description}")'
+            )
         value = f' {return_value}' if return_value else ''
         return f'if ({condition}) return{value};'
 
@@ -1735,8 +1849,10 @@ class CxxAfterFunctionImplRewriter(_AstGrepRewriter):
 
     NAME: Final = 'after_function_impl'
     OP_ID: Final = 'cxx.after_function_impl'
-    SUMMARY: Final = 'Run a statement block after a function body, wrapped so '\
-                     'it always runs.'
+    SUMMARY: Final = (
+        'Run a statement block after a function body, wrapped so '
+        'it always runs.'
+    )
     # Authored in Markdown; `Help` renders it with rich.
     HELP: Final = r"""
         Wraps a C++ function's whole body in an immediately-invoked `[&]` lambda
@@ -1813,8 +1929,14 @@ class CxxAfterFunctionImplRewriter(_AstGrepRewriter):
         ```
     """
 
-    def __init__(self, *, function_name: str, result_var: str, epilogue: str,
-                 lambda_return_type: str):
+    def __init__(
+        self,
+        *,
+        function_name: str,
+        result_var: str,
+        epilogue: str,
+        lambda_return_type: str,
+    ):
         super().__init__()
         self._function_name = function_name
         self._result_var = result_var
@@ -1834,17 +1956,21 @@ class CxxAfterFunctionImplRewriter(_AstGrepRewriter):
         epilogue = _indent_yaml(self._epilogue).replace('\\', '\\\\')
         return [
             Operation(
-                self.OP_ID, {
+                self.OP_ID,
+                {
                     'function_name': self._function_name,
                     'result_var': self._result_var,
                     'epilogue': epilogue,
                     'return_type': self._lambda_return_type,
-                }, MatchExpectation.from_count(count))
+                },
+                MatchExpectation.from_count(count),
+            )
         ]
 
     @classmethod
-    def parse(cls, body: object, *,
-              description: str) -> CxxAfterFunctionImplRewriter:
+    def parse(
+        cls, body: object, *, description: str
+    ) -> CxxAfterFunctionImplRewriter:
         """Validate an `after_function_impl:` body and resolve what to append.
 
         Requires `function_name` and `code`. `result_var` is optional and, when
@@ -1854,27 +1980,37 @@ class CxxAfterFunctionImplRewriter(_AstGrepRewriter):
         """
         if not isinstance(body, dict):
             raise ValueError(
-                f'"{cls.NAME}" must be a mapping (in "{description}")')
+                f'"{cls.NAME}" must be a mapping (in "{description}")'
+            )
         allowed = {'function_name', 'code', 'result_var', 'lambda_return_type'}
         unknown = sorted(set(body) - allowed)
         if unknown:
             raise ValueError(
                 f'Unrecognised {cls.NAME} arg(s): '
-                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
-        if not isinstance(body.get('function_name'),
-                          str) or not body['function_name']:
-            raise ValueError(f'{cls.NAME} `function_name` must be a non-empty '
-                             f'string (in "{description}")')
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")'
+            )
+        if (
+            not isinstance(body.get('function_name'), str)
+            or not body['function_name']
+        ):
+            raise ValueError(
+                f'{cls.NAME} `function_name` must be a non-empty '
+                f'string (in "{description}")'
+            )
         code = body.get('code')
         if not isinstance(code, str) or not code:
-            raise ValueError(f'{cls.NAME} `code` must be a non-empty string '
-                             f'(in "{description}")')
-        return cls(function_name=body['function_name'],
-                   result_var=cls._optional_arg(body, 'result_var',
-                                                description),
-                   epilogue=code,
-                   lambda_return_type=cls._optional_arg(
-                       body, 'lambda_return_type', description))
+            raise ValueError(
+                f'{cls.NAME} `code` must be a non-empty string '
+                f'(in "{description}")'
+            )
+        return cls(
+            function_name=body['function_name'],
+            result_var=cls._optional_arg(body, 'result_var', description),
+            epilogue=code,
+            lambda_return_type=cls._optional_arg(
+                body, 'lambda_return_type', description
+            ),
+        )
 
     @classmethod
     def _optional_arg(cls, body: dict, key: str, description: str) -> str:
@@ -1887,8 +2023,10 @@ class CxxAfterFunctionImplRewriter(_AstGrepRewriter):
             return ''
         value = body[key]
         if not isinstance(value, str) or not value:
-            raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
-                             f'string (in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} `{key}` must be a non-empty '
+                f'string (in "{description}")'
+            )
         return value
 
 
@@ -1930,8 +2068,9 @@ class CxxAddToProtectedRewriter(_AstGrepRewriter):
     # Two ops share the work (see `operations`); this names the language and a
     # representative op for the base's helpers.
     OP_ID: Final = 'cxx.add_to_protected'
-    SUMMARY: Final = 'Add code to a class protected section (creating one if '\
-                     'needed).'
+    SUMMARY: Final = (
+        'Add code to a class protected section (creating one if needed).'
+    )
     # Authored in Markdown; `Help` renders it with rich.
     HELP: Final = r"""
         Adds code to a C++ class's `protected:` section. It will either use an
@@ -1964,9 +2103,11 @@ class CxxAddToProtectedRewriter(_AstGrepRewriter):
         # The code is inserted once, into whichever placement applies, so a
         # `count:` other than 1 is meaningless here.
         if count != 1:
-            raise ValueError(f'{cls.NAME} adds the code exactly once and does '
-                             f'not accept a count other than 1 '
-                             f'(in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} adds the code exactly once and does '
+                f'not accept a count other than 1 '
+                f'(in "{description}")'
+            )
 
     def __init__(self, *, class_name: str, code: str):
         super().__init__()
@@ -1979,7 +2120,7 @@ class CxxAddToProtectedRewriter(_AstGrepRewriter):
         *,
         count: int,
         description: str,
-        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions(),
     ) -> tuple[str, list[str]]:
         # The code is inserted exactly once either in an existing protected
         # section or in a new one created just before a private section. Each
@@ -1987,64 +2128,77 @@ class CxxAddToProtectedRewriter(_AstGrepRewriter):
         # sit one space in from their access specifier), so a nested class is
         # indented correctly rather than at the top-level column.
         del count, description
-        engine = AstRewriter(RewritersEval.load(),
-                             contents,
-                             blank_for_parse=blank_for_parse)
+        engine = AstRewriter(
+            RewritersEval.load(), contents, blank_for_parse=blank_for_parse
+        )
         source = contents.encode('utf-8')
         class_inputs = {'class_name': self._class_name}
 
         anchor = engine.first_match(
-            Operation(self._ADD_TO_EXISTING, class_inputs))
+            Operation(self._ADD_TO_EXISTING, class_inputs)
+        )
         if anchor is not None:
             member = len(_leading_indent(source, anchor.start)) + 1
             op = Operation(
-                self._ADD_TO_EXISTING, {
+                self._ADD_TO_EXISTING,
+                {
                     'class_name': self._class_name,
                     'code': _indent_code(self._code, member),
-                }, MatchExpectation.exactly(1))
+                },
+                MatchExpectation.exactly(1),
+            )
         else:
             anchor = engine.first_match(
-                Operation(self._CREATE_BEFORE_PRIVATE, class_inputs))
+                Operation(self._CREATE_BEFORE_PRIVATE, class_inputs)
+            )
             # A missing anchor leaves the run to report the count shortfall.
             indent = _leading_indent(source, anchor.start) if anchor else ''
             op = Operation(
-                self._CREATE_BEFORE_PRIVATE, {
+                self._CREATE_BEFORE_PRIVATE,
+                {
                     'class_name': self._class_name,
-                    'code': _indent_code(self._code,
-                                         len(indent) + 1),
+                    'code': _indent_code(self._code, len(indent) + 1),
                     'indent': indent,
-                }, MatchExpectation.exactly(1))
+                },
+                MatchExpectation.exactly(1),
+            )
         changes = engine.run(op)
         error = op.expectation.error_for(changes)
         return engine.content, [error] if error else []
 
     @classmethod
-    def parse(cls, body: object, *,
-              description: str) -> CxxAddToProtectedRewriter:
+    def parse(
+        cls, body: object, *, description: str
+    ) -> CxxAddToProtectedRewriter:
         """Validate an `add_to_protected:` body of string args."""
         if not isinstance(body, dict):
             raise ValueError(
-                f'"{cls.NAME}" must be a mapping (in "{description}")')
+                f'"{cls.NAME}" must be a mapping (in "{description}")'
+            )
         required = {'class_name', 'code'}
         unknown = sorted(set(body) - required)
         if unknown:
             raise ValueError(
                 f'Unrecognised {cls.NAME} arg(s): '
-                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")'
+            )
         missing = sorted(required - set(body))
         if missing:
-            raise ValueError(f'{cls.NAME} requires arg(s): '
-                             f'{", ".join(missing)} (in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} requires arg(s): '
+                f'{", ".join(missing)} (in "{description}")'
+            )
         for key in sorted(required):
             if not isinstance(body[key], str) or not body[key]:
-                raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
-                                 f'string (in "{description}")')
+                raise ValueError(
+                    f'{cls.NAME} `{key}` must be a non-empty '
+                    f'string (in "{description}")'
+                )
         return cls(class_name=body['class_name'], code=body['code'])
 
 
 class CxxAddToPublicRewriter(_AstGrepRewriter):
-    """Append a member declaration to the end of a C++ class's `public:` section
-    """
+    """Append a member declaration to the end of a C++ class's `public:` section"""
 
     NAME: Final = 'add_to_public'
     # Two ops share the work (see `apply`); this names the language and a
@@ -2083,9 +2237,11 @@ class CxxAddToPublicRewriter(_AstGrepRewriter):
         # The code is inserted once, into whichever placement applies, so a
         # `count:` other than 1 is meaningless here.
         if count != 1:
-            raise ValueError(f'{cls.NAME} adds the code exactly once and does '
-                             f'not accept a count other than 1 '
-                             f'(in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} adds the code exactly once and does '
+                f'not accept a count other than 1 '
+                f'(in "{description}")'
+            )
 
     def __init__(self, *, class_name: str, code: str):
         super().__init__()
@@ -2098,69 +2254,79 @@ class CxxAddToPublicRewriter(_AstGrepRewriter):
         *,
         count: int,
         description: str,
-        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions(),
     ) -> tuple[str, list[str]]:
         # The code is appended exactly once, either just before the section
         # that follows public or, when public is last, before the closing brace.
         # Each placement is indented to the anchor's real column so a nested
         # class is indented correctly rather than at the top-level column.
         del count, description
-        engine = AstRewriter(RewritersEval.load(),
-                             contents,
-                             blank_for_parse=blank_for_parse)
+        engine = AstRewriter(
+            RewritersEval.load(), contents, blank_for_parse=blank_for_parse
+        )
         source = contents.encode('utf-8')
         class_inputs = {'class_name': self._class_name}
 
         anchor = engine.first_match(
-            Operation(self._APPEND_BEFORE_SECTION, class_inputs))
+            Operation(self._APPEND_BEFORE_SECTION, class_inputs)
+        )
         if anchor is not None:
             indent = _leading_indent(source, anchor.start)
             op = Operation(
-                self._APPEND_BEFORE_SECTION, {
+                self._APPEND_BEFORE_SECTION,
+                {
                     'class_name': self._class_name,
-                    'code': _indent_code(self._code,
-                                         len(indent) + 1),
+                    'code': _indent_code(self._code, len(indent) + 1),
                     'indent': indent,
-                }, MatchExpectation.exactly(1))
+                },
+                MatchExpectation.exactly(1),
+            )
         else:
             anchor = engine.first_match(
-                Operation(self._APPEND_BEFORE_CLOSE, class_inputs))
+                Operation(self._APPEND_BEFORE_CLOSE, class_inputs)
+            )
             # The closing brace is the last byte of the matched body; a missing
             # anchor leaves the run to report the count shortfall.
-            indent = (_leading_indent(source, anchor.end -
-                                      1) if anchor else '')
+            indent = _leading_indent(source, anchor.end - 1) if anchor else ''
             op = Operation(
-                self._APPEND_BEFORE_CLOSE, {
+                self._APPEND_BEFORE_CLOSE,
+                {
                     'class_name': self._class_name,
-                    'code': _indent_code(self._code,
-                                         len(indent) + 2),
+                    'code': _indent_code(self._code, len(indent) + 2),
                     'indent': indent,
-                }, MatchExpectation.exactly(1))
+                },
+                MatchExpectation.exactly(1),
+            )
         changes = engine.run(op)
         error = op.expectation.error_for(changes)
         return engine.content, [error] if error else []
 
     @classmethod
-    def parse(cls, body: object, *,
-              description: str) -> CxxAddToPublicRewriter:
+    def parse(cls, body: object, *, description: str) -> CxxAddToPublicRewriter:
         """Validate an `add_to_public:` body of string args."""
         if not isinstance(body, dict):
             raise ValueError(
-                f'"{cls.NAME}" must be a mapping (in "{description}")')
+                f'"{cls.NAME}" must be a mapping (in "{description}")'
+            )
         required = {'class_name', 'code'}
         unknown = sorted(set(body) - required)
         if unknown:
             raise ValueError(
                 f'Unrecognised {cls.NAME} arg(s): '
-                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")'
+            )
         missing = sorted(required - set(body))
         if missing:
-            raise ValueError(f'{cls.NAME} requires arg(s): '
-                             f'{", ".join(missing)} (in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} requires arg(s): '
+                f'{", ".join(missing)} (in "{description}")'
+            )
         for key in sorted(required):
             if not isinstance(body[key], str) or not body[key]:
-                raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
-                                 f'string (in "{description}")')
+                raise ValueError(
+                    f'{cls.NAME} `{key}` must be a non-empty '
+                    f'string (in "{description}")'
+                )
         return cls(class_name=body['class_name'], code=body['code'])
 
 
@@ -2257,12 +2423,15 @@ class CxxAddEnumEntriesRewriter(_AstGrepRewriter):
         # The insertion happens once, in whichever placement applies, so a
         # `count:` other than 1 is meaningless here.
         if count != 1:
-            raise ValueError(f'{cls.NAME} inserts exactly once and does not '
-                             f'accept a count other than 1 '
-                             f'(in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} inserts exactly once and does not '
+                f'accept a count other than 1 '
+                f'(in "{description}")'
+            )
 
-    def __init__(self, *, enum_name: str, entries: list[str],
-                 max_value: str | None):
+    def __init__(
+        self, *, enum_name: str, entries: list[str], max_value: str | None
+    ):
         super().__init__()
         self._enum_name = enum_name
         self._entries = entries
@@ -2274,23 +2443,26 @@ class CxxAddEnumEntriesRewriter(_AstGrepRewriter):
         *,
         count: int,
         description: str,
-        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions(),
     ) -> tuple[str, list[str]]:
         # The insertion happens exactly once, either above the declared
         # max-value entry or after the enum's current last entry. Both
         # placements anchor on that last entry, so the new entries take its
         # column, and a trailing comment in the body never displaces them.
         del count
-        engine = AstRewriter(RewritersEval.load(),
-                             contents,
-                             blank_for_parse=blank_for_parse)
+        engine = AstRewriter(
+            RewritersEval.load(), contents, blank_for_parse=blank_for_parse
+        )
         source = contents.encode('utf-8')
         enum_inputs = {'enum_name': self._enum_name}
 
         last = engine.first_match(
-            Operation(self._INSERT_BEFORE_MAX_VALUE, enum_inputs))
+            Operation(self._INSERT_BEFORE_MAX_VALUE, enum_inputs)
+        )
         # A missing anchor leaves the run to report the count shortfall.
-        last_text = source[last.start:last.end].decode('utf-8') if last else ''
+        last_text = (
+            source[last.start : last.end].decode('utf-8') if last else ''
+        )
         indent = _leading_indent(source, last.start) if last else ''
 
         if self._max_value is not None:
@@ -2302,19 +2474,25 @@ class CxxAddEnumEntriesRewriter(_AstGrepRewriter):
                     f'(in "{description}")'
                 ]
             op = Operation(
-                self._INSERT_BEFORE_MAX_VALUE, {
+                self._INSERT_BEFORE_MAX_VALUE,
+                {
                     'enum_name': self._enum_name,
                     'entries': self._entry_block(indent, indent_first=False),
                     'indent': indent,
                     'value': self._repointed_entry(last_text),
-                }, MatchExpectation.exactly(1))
+                },
+                MatchExpectation.exactly(1),
+            )
         else:
             op = Operation(
-                self._APPEND_AFTER_LAST, {
+                self._APPEND_AFTER_LAST,
+                {
                     'enum_name': self._enum_name,
                     'entries': self._entry_block(indent, indent_first=True),
                     'comma': self._separator(source, last.end) if last else '',
-                }, MatchExpectation.exactly(1))
+                },
+                MatchExpectation.exactly(1),
+            )
         changes = engine.run(op)
         error = op.expectation.error_for(changes)
         return engine.content, [error] if error else []
@@ -2327,8 +2505,11 @@ class CxxAddEnumEntriesRewriter(_AstGrepRewriter):
         backslashes, since the text is spliced into a `re.sub` replacement where
         a backslash is special.
         """
-        block = (indent if indent_first else '') + f',\n{indent}'.join(
-            self._entries) + ','
+        block = (
+            (indent if indent_first else '')
+            + f',\n{indent}'.join(self._entries)
+            + ','
+        )
         return block.replace('\\', '\\\\')
 
     def _repointed_entry(self, last_text: str) -> str:
@@ -2367,48 +2548,64 @@ class CxxAddEnumEntriesRewriter(_AstGrepRewriter):
         return match.group().decode('utf-8') if match else ''
 
     @classmethod
-    def parse(cls, body: object, *,
-              description: str) -> CxxAddEnumEntriesRewriter:
+    def parse(
+        cls, body: object, *, description: str
+    ) -> CxxAddEnumEntriesRewriter:
         """Validate the body, accepting one entry or a list of them."""
         if not isinstance(body, dict):
             raise ValueError(
-                f'"{cls.NAME}" must be a mapping (in "{description}")')
+                f'"{cls.NAME}" must be a mapping (in "{description}")'
+            )
         allowed = {'enum_name', 'entries', 'max_value'}
         unknown = sorted(set(body) - allowed)
         if unknown:
             raise ValueError(
                 f'Unrecognised {cls.NAME} arg(s): '
-                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")'
+            )
         missing = sorted({'enum_name', 'entries'} - set(body))
         if missing:
-            raise ValueError(f'{cls.NAME} requires arg(s): '
-                             f'{", ".join(missing)} (in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} requires arg(s): '
+                f'{", ".join(missing)} (in "{description}")'
+            )
         if not isinstance(body['enum_name'], str) or not body['enum_name']:
-            raise ValueError(f'{cls.NAME} `enum_name` must be a non-empty '
-                             f'string (in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} `enum_name` must be a non-empty '
+                f'string (in "{description}")'
+            )
         max_value = body.get('max_value')
         if max_value is not None and not cls._is_entry_name(max_value):
-            raise ValueError(f'{cls.NAME} `max_value` must be an entry name '
-                             f'(in "{description}")')
-        return cls(enum_name=body['enum_name'],
-                   entries=cls._parse_entries(body['entries'], description),
-                   max_value=max_value)
+            raise ValueError(
+                f'{cls.NAME} `max_value` must be an entry name '
+                f'(in "{description}")'
+            )
+        return cls(
+            enum_name=body['enum_name'],
+            entries=cls._parse_entries(body['entries'], description),
+            max_value=max_value,
+        )
 
     @classmethod
     def _parse_entries(cls, value: object, description: str) -> list[str]:
         """Normalise `entries` to a non-empty list of entries, as authored."""
         entries = [value] if isinstance(value, str) else value
-        if not (isinstance(entries, list) and entries
-                and all(isinstance(entry, str) for entry in entries)):
+        if not (
+            isinstance(entries, list)
+            and entries
+            and all(isinstance(entry, str) for entry in entries)
+        ):
             raise ValueError(
                 f'{cls.NAME} `entries` must be a string or a non-empty list of '
-                f'strings (in "{description}")')
+                f'strings (in "{description}")'
+            )
         for entry in entries:
             if not cls._ENTRY_RE.fullmatch(entry):
                 raise ValueError(
                     f'{cls.NAME} `entries` items must be an entry name, '
                     f'optionally with an `= value`, and carry no trailing '
-                    f'comma: {entry!r} (in "{description}")')
+                    f'comma: {entry!r} (in "{description}")'
+                )
         return list(entries)
 
 
@@ -2469,9 +2666,11 @@ class JsSetBlinkRuntimeEnabledFeatureStateRewriter(_AstGrepRewriter):
     def validate_count(cls, count: int, description: str) -> None:
         # One entry, one field, set once, so no other count means anything.
         if count != 1:
-            raise ValueError(f'{cls.NAME} sets the field exactly once and '
-                             f'does not accept a count other than 1 '
-                             f'(in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} sets the field exactly once and '
+                f'does not accept a count other than 1 '
+                f'(in "{description}")'
+            )
 
     def apply(
         self,
@@ -2479,23 +2678,28 @@ class JsSetBlinkRuntimeEnabledFeatureStateRewriter(_AstGrepRewriter):
         *,
         count: int,
         description: str,
-        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions(),
     ) -> tuple[str, list[str]]:
         # Which op applies turns on whether the entry already declares the
         # field, so `count` -- already validated as 1 -- says nothing here.
         del count, description
-        engine = AstRewriter(RewritersEval.load(),
-                             contents,
-                             blank_for_parse=blank_for_parse)
+        engine = AstRewriter(
+            RewritersEval.load(), contents, blank_for_parse=blank_for_parse
+        )
         # Locating the entry first is what tells the two apart. A missing
         # entry leaves `has_field` False, and the add op then reports the
         # shortfall through the usual count check.
         entry = engine.first_match(Operation(self.OP_ID, self._inputs))
         source = contents.encode('utf-8')
-        has_field = (entry is not None and b'base_feature_status:'
-                     in source[entry.start:entry.end])
-        op = Operation(self._SET_EXISTING if has_field else self._ADD_NEW,
-                       self._inputs, MatchExpectation.exactly(1))
+        has_field = (
+            entry is not None
+            and b'base_feature_status:' in source[entry.start : entry.end]
+        )
+        op = Operation(
+            self._SET_EXISTING if has_field else self._ADD_NEW,
+            self._inputs,
+            MatchExpectation.exactly(1),
+        )
         changes = engine.run(op)
         error = op.expectation.error_for(changes)
         return engine.content, [error] if error else []
@@ -2592,9 +2796,18 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
     # asking whether it conditions the list at all rather than matching one.
     _ANY_CONDITION: Final = '.'
 
-    def __init__(self, *, target: str, list_name: str, literal: str,
-                 import_path: str, conditional: str, assume_defined: bool,
-                 target_type: str, template: str):
+    def __init__(
+        self,
+        *,
+        target: str,
+        list_name: str,
+        literal: str,
+        import_path: str,
+        conditional: str,
+        assume_defined: bool,
+        target_type: str,
+        template: str,
+    ):
         super().__init__()
         self._target = target
         # Empty when the plaster entry gave no `type:`.
@@ -2618,9 +2831,11 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
         # The literal is added exactly once, into whichever placement
         # applies, so a `count:` other than 1 is meaningless here.
         if count != 1:
-            raise ValueError(f'{cls.NAME} adds the literal exactly once and '
-                             f'does not accept a count other than 1 '
-                             f'(in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} adds the literal exactly once and '
+                f'does not accept a count other than 1 '
+                f'(in "{description}")'
+            )
 
     def apply(
         self,
@@ -2628,18 +2843,19 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
         *,
         count: int,
         description: str,
-        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions(),
     ) -> tuple[str, list[str]]:
         del count  # Rejected by `validate_count`; always applies once.
-        engine = AstRewriter(RewritersEval.load(),
-                             contents,
-                             blank_for_parse=blank_for_parse)
+        engine = AstRewriter(
+            RewritersEval.load(), contents, blank_for_parse=blank_for_parse
+        )
         # The literal goes in first: it is the edit the entry is really for,
         # and failing it (no such target) makes the import moot, so stopping
         # there reports the one root cause rather than it twice over.
         error = self._add_literal(engine) or self._add_import(engine)
-        return engine.content, [f'{error} (in "{description}")'
-                                ] if error else []
+        return engine.content, [
+            f'{error} (in "{description}")'
+        ] if error else []
 
     def _add_literal(self, engine: AstRewriter) -> str | None:
         """Add the literal to `list_name`; returns a failure, or None.
@@ -2658,31 +2874,39 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
         # more than once, in different conditional branches, we error out.
         bodies = engine.matches(Operation(self._ASSIGN_NEW, inputs))
         if not bodies:
-            return (f'{self.NAME} found no body for target '
-                    f'{self._target!r} to add {self._list_name!r} to')
+            return (
+                f'{self.NAME} found no body for target '
+                f'{self._target!r} to add {self._list_name!r} to'
+            )
         if len(bodies) > 1:
-            return (f'{self.NAME} found {len(bodies)} declarations of target '
-                    f'{self._target!r} and cannot tell which one the literal '
-                    f'belongs in; name what declares the one you mean with '
-                    f'`type:` or the template holding it with `template:`, or '
-                    f'patch it by hand')
+            return (
+                f'{self.NAME} found {len(bodies)} declarations of target '
+                f'{self._target!r} and cannot tell which one the literal '
+                f'belongs in; name what declares the one you mean with '
+                f'`type:` or the template holding it with `template:`, or '
+                f'patch it by hand'
+            )
 
         if self._conditional:
             return self._add_conditional_literal(engine, inputs)
         return self._add_direct_literal(engine, inputs, bodies[0])
 
-    def _add_direct_literal(self, engine: AstRewriter, inputs: dict[str, str],
-                            body: AstMatch) -> str | None:
+    def _add_direct_literal(
+        self, engine: AstRewriter, inputs: dict[str, str], body: AstMatch
+    ) -> str | None:
         """Add the literal to the target's body itself; a failure, or None."""
         if self._assume_defined:
             # Vouched for as existing, so nothing is created and the append
             # closes the body, adding to whatever the attribute already holds.
             op = Operation(
-                self._APPEND_TO_BODY, {
+                self._APPEND_TO_BODY,
+                {
                     **inputs,
                     'literal': self._literal,
                     'indent': self._indent_at(engine, body.end - 1),
-                }, MatchExpectation.exactly(1))
+                },
+                MatchExpectation.exactly(1),
+            )
             return op.expectation.error_for(engine.run(op))
 
         anchor = engine.first_match(Operation(self._APPEND_EXISTING, inputs))
@@ -2692,25 +2916,32 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
             indent = self._indent_at(engine, anchor.start)
         else:
             if self._assigns_conditionally(engine, inputs):
-                return (f'{self.NAME} found {self._list_name!r} assigned only '
-                        f'inside a conditional in target {self._target!r}; '
-                        f'creating it unconditionally would apply '
-                        f'{self._literal!r} in every configuration, so name '
-                        f'that condition with `conditional:` instead')
+                return (
+                    f'{self.NAME} found {self._list_name!r} assigned only '
+                    f'inside a conditional in target {self._target!r}; '
+                    f'creating it unconditionally would apply '
+                    f'{self._literal!r} in every configuration, so name '
+                    f'that condition with `conditional:` instead'
+                )
             # The assignment opens the body, one level in from the brace that
             # closes it, which unlike the opening brace, has a line of its
             # own to read an indentation off.
             op_id = self._ASSIGN_NEW
             indent = self._indent_at(engine, body.end - 1) + self._BODY_INDENT
-        op = Operation(op_id, {
-            **inputs,
-            'literal': self._literal,
-            'indent': indent,
-        }, MatchExpectation.exactly(1))
+        op = Operation(
+            op_id,
+            {
+                **inputs,
+                'literal': self._literal,
+                'indent': indent,
+            },
+            MatchExpectation.exactly(1),
+        )
         return op.expectation.error_for(engine.run(op))
 
-    def _add_conditional_literal(self, engine: AstRewriter,
-                                 inputs: dict[str, str]) -> str | None:
+    def _add_conditional_literal(
+        self, engine: AstRewriter, inputs: dict[str, str]
+    ) -> str | None:
         """Add the literal under `conditional:`; a failure, or None.
 
         Appends inside the conditional when the target already has it, and
@@ -2721,18 +2952,23 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
         # The ops name that input `condition`, since a condition is what
         # they interpolate, where the entry's field names the conditional.
         conditional_inputs = dict(
-            inputs, condition=f'^{re.escape(self._conditional)}$')
+            inputs, condition=f'^{re.escape(self._conditional)}$'
+        )
         block = engine.first_match(
-            Operation(self._APPEND_CONDITIONAL, conditional_inputs))
+            Operation(self._APPEND_CONDITIONAL, conditional_inputs)
+        )
         if block is not None:
             # The append is the conditional body's last statement, indented
             # one level in from the brace closing that body.
             op = Operation(
-                self._APPEND_CONDITIONAL, {
+                self._APPEND_CONDITIONAL,
+                {
                     **conditional_inputs,
                     'literal': self._literal,
                     'indent': self._indent_at(engine, block.end - 1),
-                }, MatchExpectation.exactly(1))
+                },
+                MatchExpectation.exactly(1),
+            )
             return op.expectation.error_for(engine.run(op))
 
         # With no such conditional, one is added after the list's own
@@ -2741,20 +2977,26 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
         # guess at an assignment the target never makes, it is refused.
         anchor = engine.first_match(Operation(self._APPEND_EXISTING, inputs))
         if anchor is None:
-            return (f'{self.NAME} found no `if ({self._conditional})` in target '
-                    f'{self._target!r}, nor a {self._list_name!r} assignment '
-                    f'to add one after')
+            return (
+                f'{self.NAME} found no `if ({self._conditional})` in target '
+                f'{self._target!r}, nor a {self._list_name!r} assignment '
+                f'to add one after'
+            )
         op = Operation(
-            self._ASSIGN_CONDITIONAL, {
+            self._ASSIGN_CONDITIONAL,
+            {
                 **inputs,
                 'condition': self._conditional,
                 'literal': self._literal,
                 'indent': self._indent_at(engine, anchor.start),
-            }, MatchExpectation.exactly(1))
+            },
+            MatchExpectation.exactly(1),
+        )
         return op.expectation.error_for(engine.run(op))
 
-    def _assigns_conditionally(self, engine: AstRewriter,
-                               inputs: dict[str, str]) -> bool:
+    def _assigns_conditionally(
+        self, engine: AstRewriter, inputs: dict[str, str]
+    ) -> bool:
         """Whether the target assigns `list_name` only inside a conditional.
 
         Only ever asked once the target makes no direct assignment, so a hit
@@ -2764,14 +3006,21 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
         counts and the matchers pin one.
         """
         assigns = re.compile(
-            rb'^\s*' + re.escape(self._list_name.encode('utf-8')) +
-            rb'\s*[-+]?=', re.MULTILINE)
+            rb'^\s*'
+            + re.escape(self._list_name.encode('utf-8'))
+            + rb'\s*[-+]?=',
+            re.MULTILINE,
+        )
         source = engine.content.encode('utf-8')
         blocks = engine.matches(
-            Operation(self._APPEND_CONDITIONAL,
-                      dict(inputs, condition=self._ANY_CONDITION)))
+            Operation(
+                self._APPEND_CONDITIONAL,
+                dict(inputs, condition=self._ANY_CONDITION),
+            )
+        )
         return any(
-            assigns.search(source[block.start:block.end]) for block in blocks)
+            assigns.search(source[block.start : block.end]) for block in blocks
+        )
 
     def _add_import(self, engine: AstRewriter) -> str | None:
         """Add the entry's optional `import()`; a failure, or None."""
@@ -2787,12 +3036,14 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
         return _leading_indent(engine.content.encode('utf-8'), position)
 
     @classmethod
-    def parse(cls, body: object, *,
-              description: str) -> GnAddLiteralToListRewriter:
+    def parse(
+        cls, body: object, *, description: str
+    ) -> GnAddLiteralToListRewriter:
         """Validate an `add_literal_to_list:` body of string args."""
         if not isinstance(body, dict):
             raise ValueError(
-                f'"{cls.NAME}" must be a mapping (in "{description}")')
+                f'"{cls.NAME}" must be a mapping (in "{description}")'
+            )
         required = {'target', 'list_name', 'literal'}
         optional = {'import', 'conditional', 'type', 'template'}
         flags = {'assume_defined'}
@@ -2800,36 +3051,47 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
         if unknown:
             raise ValueError(
                 f'Unrecognised {cls.NAME} arg(s): '
-                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")'
+            )
         missing = sorted(required - set(body))
         if missing:
-            raise ValueError(f'{cls.NAME} requires arg(s): '
-                             f'{", ".join(missing)} (in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} requires arg(s): '
+                f'{", ".join(missing)} (in "{description}")'
+            )
         for key in sorted(required):
             if not isinstance(body[key], str) or not body[key]:
-                raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
-                                 f'string (in "{description}")')
+                raise ValueError(
+                    f'{cls.NAME} `{key}` must be a non-empty '
+                    f'string (in "{description}")'
+                )
         # Both optional keys reject an empty value: leaving the key out is how
         # the rewriter is asked to do without, so a blank one is a mistake.
         for key in sorted(optional):
             value = body.get(key, '')
             if not isinstance(value, str) or (key in body and not value):
-                raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
-                                 f'string (in "{description}")')
+                raise ValueError(
+                    f'{cls.NAME} `{key}` must be a non-empty '
+                    f'string (in "{description}")'
+                )
         assume_defined = body.get('assume_defined', False)
         # A flag is a flag: a truthy string would read as one in YAML while
         # meaning nothing here, so only a real boolean is taken.
         if not isinstance(assume_defined, bool):
-            raise ValueError(f'{cls.NAME} `assume_defined` must be a boolean '
-                             f'(in "{description}")')
-        return cls(target=body['target'],
-                   list_name=body['list_name'],
-                   literal=body['literal'],
-                   import_path=body.get('import', ''),
-                   conditional=body.get('conditional', ''),
-                   assume_defined=assume_defined,
-                   target_type=body.get('type', ''),
-                   template=body.get('template', ''))
+            raise ValueError(
+                f'{cls.NAME} `assume_defined` must be a boolean '
+                f'(in "{description}")'
+            )
+        return cls(
+            target=body['target'],
+            list_name=body['list_name'],
+            literal=body['literal'],
+            import_path=body.get('import', ''),
+            conditional=body.get('conditional', ''),
+            assume_defined=assume_defined,
+            target_type=body.get('type', ''),
+            template=body.get('template', ''),
+        )
 
 
 def _gn_type_pattern(target_type: str) -> str:
@@ -2857,8 +3119,9 @@ def _gn_template_inputs(template: str) -> dict[str, str]:
     return {'template': f'^"{re.escape(template)}"$', 'unscoped': _GN_NEVER}
 
 
-def _add_gn_import(engine: AstRewriter, import_path: str,
-                   rewriter_name: str) -> str | None:
+def _add_gn_import(
+    engine: AstRewriter, import_path: str, rewriter_name: str
+) -> str | None:
     """Add `import_path` to the top of a gn file; a failure, or None.
 
     No-op when the import already exists.
@@ -2871,33 +3134,45 @@ def _add_gn_import(engine: AstRewriter, import_path: str,
     # carries is a placeholder for the one settled on below.
     add_import = 'gn.add_import'
     anchor = engine.first_match(
-        Operation(add_import, {
-            'import': import_path,
-            'separator': '',
-        }))
+        Operation(
+            add_import,
+            {
+                'import': import_path,
+                'separator': '',
+            },
+        )
+    )
     if anchor is None:
-        return (f'{rewriter_name} found no statement to import '
-                f'{import_path!r} above')
+        return (
+            f'{rewriter_name} found no statement to import '
+            f'{import_path!r} above'
+        )
     # An import joins the file's existing import block rather than being split
     # off from it by a blank line, so the separator is only for the case where
     # the statement below is code.
     source = engine.content.encode('utf-8')
-    first_statement = source[anchor.start:anchor.end]
+    first_statement = source[anchor.start : anchor.end]
     joins_imports = re.match(rb'import\s*\(', first_statement)
     op = Operation(
-        add_import, {
+        add_import,
+        {
             'import': import_path,
             'separator': '' if joins_imports else '\n',
-        }, MatchExpectation.exactly(1))
+        },
+        MatchExpectation.exactly(1),
+    )
     error = op.expectation.error_for(engine.run(op))
-    return (f'{rewriter_name} could not import {import_path!r}: '
-            f'{error}') if error else None
+    return (
+        (f'{rewriter_name} could not import {import_path!r}: {error}')
+        if error
+        else None
+    )
 
 
-def _add_ts_import(engine: AstRewriter, import_statement: str,
-                   rewriter_name: str) -> str | None:
-    """Add `import_statement` to the top of a .ts file; a failure, or None.
-    """
+def _add_ts_import(
+    engine: AstRewriter, import_statement: str, rewriter_name: str
+) -> str | None:
+    """Add `import_statement` to the top of a .ts file; a failure, or None."""
     if not import_statement:
         return None
     if import_statement in engine.content:
@@ -2906,26 +3181,39 @@ def _add_ts_import(engine: AstRewriter, import_statement: str,
     # carries is a placeholder for the one settled on below.
     add_import = 'ts.add_import'
     anchor = engine.first_match(
-        Operation(add_import, {
-            'import': import_statement,
-            'separator': '',
-        }))
+        Operation(
+            add_import,
+            {
+                'import': import_statement,
+                'separator': '',
+            },
+        )
+    )
     if anchor is None:
-        return (f'{rewriter_name} found no statement to import '
-                f'{import_statement!r} above')
+        return (
+            f'{rewriter_name} found no statement to import '
+            f'{import_statement!r} above'
+        )
     # An import joins the file's existing import/export block rather than
     # being split off from it by a blank line, so the separator is only for
     # the case where the statement below is code.
     source = engine.content.encode('utf-8')
-    first_statement = source[anchor.start:anchor.end]
+    first_statement = source[anchor.start : anchor.end]
     joins_imports = re.match(rb'(?:import|export)\b', first_statement)
-    op = Operation(add_import, {
-        'import': import_statement,
-        'separator': '' if joins_imports else '\n',
-    }, MatchExpectation.exactly(1))
+    op = Operation(
+        add_import,
+        {
+            'import': import_statement,
+            'separator': '' if joins_imports else '\n',
+        },
+        MatchExpectation.exactly(1),
+    )
     error = op.expectation.error_for(engine.run(op))
-    return (f'{rewriter_name} could not import {import_statement!r}: '
-            f'{error}') if error else None
+    return (
+        (f'{rewriter_name} could not import {import_statement!r}: {error}')
+        if error
+        else None
+    )
 
 
 class _GnVariableRewriter(_AstGrepRewriter):
@@ -2954,9 +3242,11 @@ class _GnVariableRewriter(_AstGrepRewriter):
         # The literal is applied exactly once, so no other count means
         # anything here.
         if count != 1:
-            raise ValueError(f'{cls.NAME} applies the literal exactly once '
-                             f'and does not accept a count other than 1 '
-                             f'(in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} applies the literal exactly once '
+                f'and does not accept a count other than 1 '
+                f'(in "{description}")'
+            )
 
     def apply(
         self,
@@ -2964,16 +3254,18 @@ class _GnVariableRewriter(_AstGrepRewriter):
         *,
         count: int,
         description: str,
-        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions(),
     ) -> tuple[str, list[str]]:
         del count  # Rejected by `validate_count`. Always applies once.
-        engine = AstRewriter(RewritersEval.load(),
-                             contents,
-                             blank_for_parse=blank_for_parse)
-        error = (self._apply_literal(engine)
-                 or _add_gn_import(engine, self._import_path, self.NAME))
-        return engine.content, [f'{error} (in "{description}")'
-                                ] if error else []
+        engine = AstRewriter(
+            RewritersEval.load(), contents, blank_for_parse=blank_for_parse
+        )
+        error = self._apply_literal(engine) or _add_gn_import(
+            engine, self._import_path, self.NAME
+        )
+        return engine.content, [
+            f'{error} (in "{description}")'
+        ] if error else []
 
     def _apply_literal(self, engine: AstRewriter) -> str | None:
         """Add or subtract the literal."""
@@ -2983,15 +3275,21 @@ class _GnVariableRewriter(_AstGrepRewriter):
         if not assignments:
             return self._no_anchor_error()
         if len(assignments) > 1:
-            return (f'{self.NAME} found {len(assignments)} file-scope '
-                    f'assignments of {self._variable!r} and cannot tell '
-                    f'which one the literal belongs after')
+            return (
+                f'{self.NAME} found {len(assignments)} file-scope '
+                f'assignments of {self._variable!r} and cannot tell '
+                f'which one the literal belongs after'
+            )
         # A file-scope assignment opens its own line, so the statement added
         # after it needs no indentation to match.
-        op = Operation(op_id, {
-            **inputs,
-            'literal': self._literal,
-        }, MatchExpectation.exactly(1))
+        op = Operation(
+            op_id,
+            {
+                **inputs,
+                'literal': self._literal,
+            },
+            MatchExpectation.exactly(1),
+        )
         return op.expectation.error_for(engine.run(op))
 
     def _anchor_op(self) -> str:
@@ -3000,57 +3298,71 @@ class _GnVariableRewriter(_AstGrepRewriter):
 
     def _no_anchor_error(self) -> str:
         """The failure for a file offering nothing to anchor on."""
-        return (f'{self.NAME} found no file-scope assignment of '
-                f'{self._variable!r} to follow')
+        return (
+            f'{self.NAME} found no file-scope assignment of '
+            f'{self._variable!r} to follow'
+        )
 
-    def _modified_after(self, engine: AstRewriter,
-                        assignment: AstMatch) -> bool:
+    def _modified_after(
+        self, engine: AstRewriter, assignment: AstMatch
+    ) -> bool:
         """Whether anything later in the file assigns the variable again.
 
         Read as text rather than matched, since a later modification counts
         wherever it sits, commonly inside one of the conditionals a `.gni`
         collects a list through, which is not a file-scope statement at all.
         """
-        later = re.compile(r'(?<![A-Za-z0-9_])' + re.escape(self._variable) +
-                           r'(?![A-Za-z0-9_])\s*[-+]?=')
-        return bool(later.search(engine.content[assignment.end:]))
+        later = re.compile(
+            r'(?<![A-Za-z0-9_])'
+            + re.escape(self._variable)
+            + r'(?![A-Za-z0-9_])\s*[-+]?='
+        )
+        return bool(later.search(engine.content[assignment.end :]))
 
     @classmethod
     def parse(cls, body: object, *, description: str) -> _GnVariableRewriter:
         """Validate the rewriter's body of string args."""
         if not isinstance(body, dict):
             raise ValueError(
-                f'"{cls.NAME}" must be a mapping (in "{description}")')
+                f'"{cls.NAME}" must be a mapping (in "{description}")'
+            )
         required = {'variable', 'literal'}
         optional = cls._OPTIONAL_STRINGS
-        unknown = sorted(set(body) - required - optional -
-                         cls._OPTIONAL_FLAGS)
+        unknown = sorted(set(body) - required - optional - cls._OPTIONAL_FLAGS)
         if unknown:
             raise ValueError(
                 f'Unrecognised {cls.NAME} arg(s): '
-                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")'
+            )
         missing = sorted(required - set(body))
         if missing:
-            raise ValueError(f'{cls.NAME} requires arg(s): '
-                             f'{", ".join(missing)} (in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} requires arg(s): '
+                f'{", ".join(missing)} (in "{description}")'
+            )
         for key in sorted(required | optional):
             value = body.get(key, '')
             if not isinstance(value, str) or (key in body and not value):
-                raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
-                                 f'string (in "{description}")')
+                raise ValueError(
+                    f'{cls.NAME} `{key}` must be a non-empty '
+                    f'string (in "{description}")'
+                )
         flags = {}
         for key in sorted(cls._OPTIONAL_FLAGS):
             value = body.get(key, False)
             # A flag is a flag: a truthy string would read as one in YAML
             # while meaning nothing here, so only a real boolean is taken.
             if not isinstance(value, bool):
-                raise ValueError(f'{cls.NAME} `{key}` must be a boolean '
-                                 f'(in "{description}")')
+                raise ValueError(
+                    f'{cls.NAME} `{key}` must be a boolean (in "{description}")'
+                )
             flags[key] = value
-        return cls(variable=body['variable'],
-                   literal=body['literal'],
-                   import_path=body.get('import', ''),
-                   **flags)
+        return cls(
+            variable=body['variable'],
+            literal=body['literal'],
+            import_path=body.get('import', ''),
+            **flags,
+        )
 
 
 class GnAddLiteralToVariableRewriter(_GnVariableRewriter):
@@ -3110,9 +3422,11 @@ class GnAddLiteralToVariableRewriter(_GnVariableRewriter):
     def _no_anchor_error(self) -> str:
         if self._assume_defined:
             return f'{self.NAME} found no `import()` to append after'
-        return (f'{self.NAME} found no file-scope assignment of '
-                f'{self._variable!r} to follow; a variable defined elsewhere, '
-                f'as by an `import()`, needs `assume_defined: true`')
+        return (
+            f'{self.NAME} found no file-scope assignment of '
+            f'{self._variable!r} to follow; a variable defined elsewhere, '
+            f'as by an `import()`, needs `assume_defined: true`'
+        )
 
 
 class GnSubtractLiteralFromVariableRewriter(_GnVariableRewriter):
@@ -3161,12 +3475,15 @@ class GnSubtractLiteralFromVariableRewriter(_GnVariableRewriter):
     def _apply_literal(self, engine: AstRewriter) -> str | None:
         """Subtract the literal, unless something adds it back afterwards."""
         assignment = engine.first_match(
-            Operation(self.OP_ID, {'variable': self._variable}))
+            Operation(self.OP_ID, {'variable': self._variable})
+        )
         if assignment is not None and self._modified_after(engine, assignment):
-            return (f'{self.NAME} found {self._variable!r} modified again '
-                    f'below its assignment, so subtracting there could be '
-                    f'undone by whatever adds to it after; that placement '
-                    f'has to be chosen by hand')
+            return (
+                f'{self.NAME} found {self._variable!r} modified again '
+                f'below its assignment, so subtracting there could be '
+                f'undone by whatever adds to it after; that placement '
+                f'has to be chosen by hand'
+            )
         return super()._apply_literal(engine)
 
 
@@ -3224,8 +3541,9 @@ class GnAppendToTargetRewriter(_AstGrepRewriter):
     # One level of GN body indentation. gn format fixes this at two spaces.
     _BODY_INDENT: Final = '  '
 
-    def __init__(self, *, target: str, code: str, target_type: str,
-                 template: str):
+    def __init__(
+        self, *, target: str, code: str, target_type: str, template: str
+    ):
         super().__init__()
         self._target = target
         self._code = code
@@ -3238,9 +3556,11 @@ class GnAppendToTargetRewriter(_AstGrepRewriter):
     def validate_count(cls, count: int, description: str) -> None:
         # The code is appended once, so no other count means anything here.
         if count != 1:
-            raise ValueError(f'{cls.NAME} appends the code exactly once and '
-                             f'does not accept a count other than 1 '
-                             f'(in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} appends the code exactly once and '
+                f'does not accept a count other than 1 '
+                f'(in "{description}")'
+            )
 
     def apply(
         self,
@@ -3248,15 +3568,16 @@ class GnAppendToTargetRewriter(_AstGrepRewriter):
         *,
         count: int,
         description: str,
-        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions(),
     ) -> tuple[str, list[str]]:
         del count  # Rejected by `validate_count`; always applies once.
-        engine = AstRewriter(RewritersEval.load(),
-                             contents,
-                             blank_for_parse=blank_for_parse)
+        engine = AstRewriter(
+            RewritersEval.load(), contents, blank_for_parse=blank_for_parse
+        )
         error = self._append_code(engine)
-        return engine.content, [f'{error} (in "{description}")'
-                                ] if error else []
+        return engine.content, [
+            f'{error} (in "{description}")'
+        ] if error else []
 
     def _append_code(self, engine: AstRewriter) -> str | None:
         """Append the code to the target's body; a failure, or None."""
@@ -3269,51 +3590,67 @@ class GnAppendToTargetRewriter(_AstGrepRewriter):
         if not bodies:
             return f'{self.NAME} found no body for target {self._target!r}'
         if len(bodies) > 1:
-            return (f'{self.NAME} found {len(bodies)} declarations of target '
-                    f'{self._target!r} and cannot tell which one the code '
-                    f'belongs in; name what declares the one you mean with '
-                    f'`type:` or the template holding it with `template:`, or '
-                    f'append to it by hand')
+            return (
+                f'{self.NAME} found {len(bodies)} declarations of target '
+                f'{self._target!r} and cannot tell which one the code '
+                f'belongs in; name what declares the one you mean with '
+                f'`type:` or the template holding it with `template:`, or '
+                f'append to it by hand'
+            )
         # The brace closing the body has a line of its own to read a column
         # off, which the code then sits one level in from.
-        indent = _leading_indent(engine.content.encode('utf-8'),
-                                 bodies[0].end - 1)
+        indent = _leading_indent(
+            engine.content.encode('utf-8'), bodies[0].end - 1
+        )
         op = Operation(
-            self._FIND_BODY, {
+            self._FIND_BODY,
+            {
                 **inputs,
-                'code': _indent_code(self._code,
-                                     len(indent) + len(self._BODY_INDENT)),
+                'code': _indent_code(
+                    self._code, len(indent) + len(self._BODY_INDENT)
+                ),
                 'indent': indent,
-            }, MatchExpectation.exactly(1))
+            },
+            MatchExpectation.exactly(1),
+        )
         return op.expectation.error_for(engine.run(op))
 
     @classmethod
-    def parse(cls, body: object, *,
-              description: str) -> GnAppendToTargetRewriter:
+    def parse(
+        cls, body: object, *, description: str
+    ) -> GnAppendToTargetRewriter:
         """Validate an `append_to_target:` body of string args."""
         if not isinstance(body, dict):
             raise ValueError(
-                f'"{cls.NAME}" must be a mapping (in "{description}")')
+                f'"{cls.NAME}" must be a mapping (in "{description}")'
+            )
         required = {'target', 'code'}
         optional = {'type', 'template'}
         unknown = sorted(set(body) - required - optional)
         if unknown:
             raise ValueError(
                 f'Unrecognised {cls.NAME} arg(s): '
-                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")'
+            )
         missing = sorted(required - set(body))
         if missing:
-            raise ValueError(f'{cls.NAME} requires arg(s): '
-                             f'{", ".join(missing)} (in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} requires arg(s): '
+                f'{", ".join(missing)} (in "{description}")'
+            )
         for key in sorted(required | optional):
             value = body.get(key, '')
             if not isinstance(value, str) or (key in body and not value):
-                raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
-                                 f'string (in "{description}")')
-        return cls(target=body['target'],
-                   code=body['code'],
-                   target_type=body.get('type', ''),
-                   template=body.get('template', ''))
+                raise ValueError(
+                    f'{cls.NAME} `{key}` must be a non-empty '
+                    f'string (in "{description}")'
+                )
+        return cls(
+            target=body['target'],
+            code=body['code'],
+            target_type=body.get('type', ''),
+            template=body.get('template', ''),
+        )
 
 
 class GnAddImportRewriter(_AstGrepRewriter):
@@ -3360,9 +3697,11 @@ class GnAddImportRewriter(_AstGrepRewriter):
     def validate_count(cls, count: int, description: str) -> None:
         # The import is added once, so no other count means anything here.
         if count != 1:
-            raise ValueError(f'{cls.NAME} adds the import exactly once and '
-                             f'does not accept a count other than 1 '
-                             f'(in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} adds the import exactly once and '
+                f'does not accept a count other than 1 '
+                f'(in "{description}")'
+            )
 
     def apply(
         self,
@@ -3370,12 +3709,12 @@ class GnAddImportRewriter(_AstGrepRewriter):
         *,
         count: int,
         description: str,
-        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions(),
     ) -> tuple[str, list[str]]:
         del count  # Rejected by `validate_count`; always applies once.
-        engine = AstRewriter(RewritersEval.load(),
-                             contents,
-                             blank_for_parse=blank_for_parse)
+        engine = AstRewriter(
+            RewritersEval.load(), contents, blank_for_parse=blank_for_parse
+        )
         # Where the other gn rewriters treat an import already present as
         # nothing to do, here it is the substitution's only job, so a file
         # that has it means the entry has gone stale.
@@ -3385,24 +3724,29 @@ class GnAddImportRewriter(_AstGrepRewriter):
                 f'(in "{description}")'
             ]
         error = _add_gn_import(engine, self._import_path, self.NAME)
-        return engine.content, [f'{error} (in "{description}")'
-                                ] if error else []
+        return engine.content, [
+            f'{error} (in "{description}")'
+        ] if error else []
 
     @classmethod
     def parse(cls, body: object, *, description: str) -> GnAddImportRewriter:
         """Validate an `add_import:` body."""
         if not isinstance(body, dict):
             raise ValueError(
-                f'"{cls.NAME}" must be a mapping (in "{description}")')
+                f'"{cls.NAME}" must be a mapping (in "{description}")'
+            )
         unknown = sorted(set(body) - {'import'})
         if unknown:
             raise ValueError(
                 f'Unrecognised {cls.NAME} arg(s): '
-                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")'
+            )
         import_path = body.get('import')
         if not isinstance(import_path, str) or not import_path:
-            raise ValueError(f'{cls.NAME} `import` must be a non-empty '
-                             f'string (in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} `import` must be a non-empty '
+                f'string (in "{description}")'
+            )
         return cls(import_path=import_path)
 
 
@@ -3456,9 +3800,11 @@ class TsAddImportRewriter(_AstGrepRewriter):
     def validate_count(cls, count: int, description: str) -> None:
         # Each import is added once, so no other count means anything here.
         if count != 1:
-            raise ValueError(f'{cls.NAME} adds the import(s) exactly once and '
-                             f'does not accept a count other than 1 '
-                             f'(in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} adds the import(s) exactly once and '
+                f'does not accept a count other than 1 '
+                f'(in "{description}")'
+            )
 
     def apply(
         self,
@@ -3466,12 +3812,12 @@ class TsAddImportRewriter(_AstGrepRewriter):
         *,
         count: int,
         description: str,
-        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions(),
     ) -> tuple[str, list[str]]:
         del count  # Rejected by `validate_count`; always applies once.
-        engine = AstRewriter(RewritersEval.load(),
-                             contents,
-                             blank_for_parse=blank_for_parse)
+        engine = AstRewriter(
+            RewritersEval.load(), contents, blank_for_parse=blank_for_parse
+        )
         errors: list[str] = []
         # `_add_ts_import` inserts each import as the *first* statement, so a
         # later insertion ends up above an earlier one. Iterate in reverse so
@@ -3482,7 +3828,8 @@ class TsAddImportRewriter(_AstGrepRewriter):
             if import_statement in engine.content:
                 errors.append(
                     f'{self.NAME} found {import_statement!r} already '
-                    f'imported (in "{description}")')
+                    f'imported (in "{description}")'
+                )
                 continue
             error = _add_ts_import(engine, import_statement, self.NAME)
             if error:
@@ -3498,12 +3845,14 @@ class TsAddImportRewriter(_AstGrepRewriter):
         """
         if not isinstance(body, dict):
             raise ValueError(
-                f'"{cls.NAME}" must be a mapping (in "{description}")')
+                f'"{cls.NAME}" must be a mapping (in "{description}")'
+            )
         unknown = sorted(set(body) - {'entry'})
         if unknown:
             raise ValueError(
                 f'Unrecognised {cls.NAME} arg(s): '
-                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")'
+            )
         entry = body.get('entry')
         return cls(import_statements=cls._parse_entries(entry, description))
 
@@ -3512,12 +3861,16 @@ class TsAddImportRewriter(_AstGrepRewriter):
         """Normalise `entry` to a non-empty list of strings."""
         if isinstance(value, str) and value.strip():
             return [value]
-        if (isinstance(value, list) and value and all(
-                isinstance(item, str) and item.strip() for item in value)):
+        if (
+            isinstance(value, list)
+            and value
+            and all(isinstance(item, str) and item.strip() for item in value)
+        ):
             return list(value)
         raise ValueError(
             f'{TsAddImportRewriter.NAME} `entry` must be a non-empty '
-            f'string or a non-empty list of strings (in "{description}")')
+            f'string or a non-empty list of strings (in "{description}")'
+        )
 
 
 class TsDropCustomElementRegistrationRewriter(_AstGrepRewriter):
@@ -3558,23 +3911,35 @@ class TsDropCustomElementRegistrationRewriter(_AstGrepRewriter):
         # A tag can only be registered once, so a class has exactly one
         # registration to remove and no other count means anything.
         if count != 1:
-            raise ValueError(f'{cls.NAME} removes a single registration and '
-                             f'does not accept a count other than 1 '
-                             f'(in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} removes a single registration and '
+                f'does not accept a count other than 1 '
+                f'(in "{description}")'
+            )
 
 
 # The hand-written rewriters. `_REWRITERS` is assembled from these plus the
 # ones generated from `rewriters.pyl` for `RegexMacro`.
 _DECLARED_REWRITERS: Final = (
-    AllRegexRewriter, CxxMakeVirtualRewriter, CxxAddFriendRewriter,
-    CxxDropFinalRewriter, CxxPreemptFunctionImplRewriter,
-    CxxAfterFunctionImplRewriter, CxxRenameClassRewriter,
-    CxxAddToProtectedRewriter, CxxAddToPublicRewriter,
-    CxxAddEnumEntriesRewriter, JsSetBlinkRuntimeEnabledFeatureStateRewriter,
-    GnAddLiteralToListRewriter, GnAddLiteralToVariableRewriter,
-    GnSubtractLiteralFromVariableRewriter, GnAddImportRewriter,
-    GnAppendToTargetRewriter, TsAddImportRewriter,
-    TsDropCustomElementRegistrationRewriter)
+    AllRegexRewriter,
+    CxxMakeVirtualRewriter,
+    CxxAddFriendRewriter,
+    CxxDropFinalRewriter,
+    CxxPreemptFunctionImplRewriter,
+    CxxAfterFunctionImplRewriter,
+    CxxRenameClassRewriter,
+    CxxAddToProtectedRewriter,
+    CxxAddToPublicRewriter,
+    CxxAddEnumEntriesRewriter,
+    JsSetBlinkRuntimeEnabledFeatureStateRewriter,
+    GnAddLiteralToListRewriter,
+    GnAddLiteralToVariableRewriter,
+    GnSubtractLiteralFromVariableRewriter,
+    GnAddImportRewriter,
+    GnAppendToTargetRewriter,
+    TsAddImportRewriter,
+    TsDropCustomElementRegistrationRewriter,
+)
 
 
 class RewriterRegistry:
@@ -3597,13 +3962,17 @@ class RewriterRegistry:
                     f'rewriter {rewriter.NAME!r} is registered twice for '
                     f'namespace {namespace!r}: '
                     f'{candidates[namespace].__name__} and '
-                    f'{rewriter.__name__}')
+                    f'{rewriter.__name__}'
+                )
             candidates[namespace] = rewriter
         self._by_name: Mapping[str, Mapping[str, type[Rewriter]]] = (
-            MappingProxyType({
-                name: MappingProxyType(candidates)
-                for name, candidates in by_name.items()
-            }))
+            MappingProxyType(
+                {
+                    name: MappingProxyType(candidates)
+                    for name, candidates in by_name.items()
+                }
+            )
+        )
 
     def __contains__(self, name: object) -> bool:
         return name in self._by_name
@@ -3617,8 +3986,9 @@ class RewriterRegistry:
         """The rewriters registered under `name`, keyed by namespace."""
         return self._by_name[name]
 
-    def resolve(self, name: str,
-                namespace: str | None) -> type[Rewriter] | None:
+    def resolve(
+        self, name: str, namespace: str | None
+    ) -> type[Rewriter] | None:
         """Retrieves the rewriter under `name` for `namespace`.
 
         This function resolves a rewriter lookup for a given `namespace`, and if
@@ -3638,14 +4008,17 @@ class RewriterRegistry:
         for candidates in self._by_name.values():
             for namespace, rewriter in candidates.items():
                 grouped.setdefault(namespace, []).append(rewriter)
-        return [(namespace, sorted(grouped[namespace],
-                                   key=lambda cls: cls.NAME)) for namespace in
-                sorted(grouped, key=lambda ns: (ns == _GLOBAL_NAMESPACE, ns))]
+        return [
+            (namespace, sorted(grouped[namespace], key=lambda cls: cls.NAME))
+            for namespace in sorted(
+                grouped, key=lambda ns: (ns == _GLOBAL_NAMESPACE, ns)
+            )
+        ]
 
 
 @dataclass
 class PlasterFile:
-    """ Class representing an plaster file.
+    """Class representing an plaster file.
     This class is used to apply plaster files to sources in other repositories.
     """
 
@@ -3655,7 +4028,7 @@ class PlasterFile:
 
     @classmethod
     def find_all(cls) -> list[PlasterFile]:
-        """ Finds all plaster files in the rewrite directory.
+        """Finds all plaster files in the rewrite directory.
         Returns:
             A list of PlasterFile objects.
         """
@@ -3686,8 +4059,11 @@ class PlasterFile:
         # Only the plaster file itself is guaranteed to exist here; any
         # of the other files may be missing and that is by itself a
         # reason to re-apply.
-        if (not patchinfo_path.exists() or not patch_path.exists()
-                or not source_path.exists()):
+        if (
+            not patchinfo_path.exists()
+            or not patch_path.exists()
+            or not source_path.exists()
+        ):
             return True
 
         patchinfo_mtime = patchinfo_path.stat().st_mtime
@@ -3695,9 +4071,11 @@ class PlasterFile:
         patch_mtime = patch_path.stat().st_mtime
         source_mtime = source_path.stat().st_mtime
 
-        if (patchinfo_mtime >= plaster_mtime
-                and patchinfo_mtime >= source_mtime
-                and patchinfo_mtime >= patch_mtime):
+        if (
+            patchinfo_mtime >= plaster_mtime
+            and patchinfo_mtime >= source_mtime
+            and patchinfo_mtime >= patch_mtime
+        ):
             return False
 
         try:
@@ -3712,7 +4090,8 @@ class PlasterFile:
         return (
             PathChecksumPair(source_path).checksum != info.applies_to.checksum
             or PathChecksumPair(self.path).checksum != info.plaster.checksum
-            or PathChecksumPair(patch_path).checksum != info.patch_checksum)
+            or PathChecksumPair(patch_path).checksum != info.patch_checksum
+        )
 
     def apply(self, dry_run=False):
         suffix = self.path.suffix.lower()
@@ -3722,22 +4101,25 @@ class PlasterFile:
             # Each `substitutions:` key resolves against the target's own
             # namespace, so a rewriter that does not serve this kind of source
             # is already rejected by the time this returns.
-            doc = Substitution.from_yaml(info.plaster_contents,
-                                         namespace=_namespace_of_source(
-                                             self.path))
+            doc = Substitution.from_yaml(
+                info.plaster_contents, namespace=_namespace_of_source(self.path)
+            )
             if not _is_cxx_source(self.path):
                 if doc.blank_macros_for_ast_parsing:
                     raise ValueError(
                         '`blank_macros_for_ast_parsing` is only supported for '
-                        f'C++ sources (in {self.path})')
+                        f'C++ sources (in {self.path})'
+                    )
                 if doc.blank_string_adjacent_macros_for_ast_parsing:
                     raise ValueError(
                         '`blank_string_adjacent_macros_for_ast_parsing` is '
-                        f'only supported for C++ sources (in {self.path})')
+                        f'only supported for C++ sources (in {self.path})'
+                    )
                 if doc.blank_metadata_header_macros:
                     raise ValueError(
                         '`blank_metadata_header_macros` is only supported '
-                        f'for C++ sources (in {self.path})')
+                        f'for C++ sources (in {self.path})'
+                    )
         else:
             raise ValueError(f'Unsupported plaster file extension: {suffix}')
         try:
@@ -3746,13 +4128,16 @@ class PlasterFile:
             raise OrphanedPlasterError(
                 f'Failed to read the source targeted by {self.path} from '
                 f'git: {info.source}. The upstream file may have been moved '
-                'or deleted') from e
+                'or deleted'
+            ) from e
         errors = []
         blank_for_parse = BlankForParseOptions(
             macros=doc.blank_macros_for_ast_parsing,
             string_adjacent_macros=(
-                doc.blank_string_adjacent_macros_for_ast_parsing),
-            metadata_header_macros=doc.blank_metadata_header_macros)
+                doc.blank_string_adjacent_macros_for_ast_parsing
+            ),
+            metadata_header_macros=doc.blank_metadata_header_macros,
+        )
 
         try:
             for substitution in doc.substitutions:
@@ -3760,9 +4145,9 @@ class PlasterFile:
                 # composed rewriters) and reports any failures; we just attach
                 # the file being patched.
                 contents, sub_errors = substitution.apply(
-                    contents, blank_for_parse=blank_for_parse)
-                errors.extend(f'{error} in {self.path}'
-                              for error in sub_errors)
+                    contents, blank_for_parse=blank_for_parse
+                )
+                errors.extend(f'{error} in {self.path}' for error in sub_errors)
 
         except re.error as e:
             errors.append(f'Invalid regex: {e} in {self.path}')
@@ -3771,12 +4156,12 @@ class PlasterFile:
             raise PlasterApplyError(errors)
 
         has_changed = info.save_source_if_changed(contents, dry_run=dry_run)
-        has_changed = info.save_patch_if_changed(
-            dry_run=dry_run) or has_changed
+        has_changed = info.save_patch_if_changed(dry_run=dry_run) or has_changed
         if dry_run:
             if has_changed:
                 raise PlasterFileNeedsRegen(
-                    f"Plaster file needs to be reapplied: {self.path}")
+                    f"Plaster file needs to be reapplied: {self.path}"
+                )
         else:
             info.save_patchinfo_if_changed()
 
@@ -3799,8 +4184,7 @@ def _is_op_id(op_id: str) -> bool:
 def _placeholders(template: str) -> set[str]:
     """The set of named `{placeholder}` fields referenced in `template`."""
     return {
-        name
-        for _, name, _, _ in string.Formatter().parse(template) if name
+        name for _, name, _, _ in string.Formatter().parse(template) if name
     }
 
 
@@ -3838,54 +4222,58 @@ def _candidate_metavariables(candidate: dict) -> list[str]:
 
 # Reusable leaf schemas.
 _NON_EMPTY_STR = schema.And(str, len, error='must be a non-empty string')
-_REGEX_STR = schema.And(str,
-                        _is_regex,
-                        error='must be a valid regular expression')
-_OP_ID = schema.And(str,
-                    _is_op_id,
-                    error='op id must be "<lang>.<name>" with a known '
-                    'language prefix')
+_REGEX_STR = schema.And(
+    str, _is_regex, error='must be a valid regular expression'
+)
+_OP_ID = schema.And(
+    str,
+    _is_op_id,
+    error='op id must be "<lang>.<name>" with a known language prefix',
+)
 
 # The "result" block of a rewriter op: the node kind it replaces.
 _RESULT_SCHEMA = {
     'node': _NON_EMPTY_STR,
 }
 
-_METAVARIABLE = schema.And(str,
-                           _is_metavariable,
-                           error='metavariable must be an upper-case name '
-                           'without its leading "$"')
+_METAVARIABLE = schema.And(
+    str,
+    _is_metavariable,
+    error='metavariable must be an upper-case name without its leading "$"',
+)
 
 # One way to derive a capture from a match: the text a single metavariable
 # matched, the source spanning from the start of the first metavariable to the
 # start of the second (for a value no single node covers), or a fixed string
 # for code that binds nothing (only useful last in a candidate list).
-_SPAN_PAIR = schema.And([_METAVARIABLE],
-                        lambda pair: len(pair) == 2,
-                        error='`span` must name exactly two metavariables')
+_SPAN_PAIR = schema.And(
+    [_METAVARIABLE],
+    lambda pair: len(pair) == 2,
+    error='`span` must name exactly two metavariables',
+)
 
 _CAPTURE_CANDIDATE = schema.Or(
     {'text': _METAVARIABLE},
     {'span': _SPAN_PAIR},
     {'literal': _NON_EMPTY_STR},
     # No braces in this message: the schema library `.format()`s it.
-    error='a capture candidate must have a `text`, `span` or `literal` key')
+    error='a capture candidate must have a `text`, `span` or `literal` key',
+)
 
-_CAPTURE_NAME = schema.And(str,
-                           _is_capture_name,
-                           error='capture name must be a valid identifier')
+_CAPTURE_NAME = schema.And(
+    str, _is_capture_name, error='capture name must be a valid identifier'
+)
 
 _CAPTURE_CANDIDATES = schema.And(
-    [_CAPTURE_CANDIDATE], len, error='a capture needs at least one candidate')
+    [_CAPTURE_CANDIDATE], len, error='a capture needs at least one candidate'
+)
 
 # The "result" block of a matcher op: the node kind each match is, plus the
 # values it can hand a rewriter. A capture is an ordered candidate list; the
 # first candidate whose metavariables are all bound resolves it.
 _MATCHER_RESULT_SCHEMA = {
     'node': _NON_EMPTY_STR,
-    schema.Optional('captures'): {
-        _CAPTURE_NAME: _CAPTURE_CANDIDATES
-    },
+    schema.Optional('captures'): {_CAPTURE_NAME: _CAPTURE_CANDIDATES},
 }
 
 # A matcher op: a templated ast-grep query plus its result shape. Its inputs
@@ -3910,9 +4298,7 @@ _REWRITER_SCHEMA = {
     'inputs': [str],
     schema.Optional('capture_overrides'): [_CAPTURE_NAME],
     schema.Optional('first_match'): bool,
-    schema.Optional('when_set'): {
-        _NON_EMPTY_STR: _NON_EMPTY_STR
-    },
+    schema.Optional('when_set'): {_NON_EMPTY_STR: _NON_EMPTY_STR},
     'replace': {
         schema.Optional('consume_before'): str,
         schema.Optional('consume_after'): str,
@@ -3959,20 +4345,20 @@ _GN_EDIT_SCHEMA = {
 }
 
 # Top-level schema for rewriters.pyl.
-_REWRITERS_SCHEMA = schema.Schema({
-    schema.Optional('ast.matcher'): {
-        schema.Optional(_OP_ID): _MATCHER_SCHEMA
-    },
-    schema.Optional('ast.rewriter'): {
-        schema.Optional(_OP_ID): _REWRITER_SCHEMA
-    },
-    schema.Optional('regex_macro'): {
-        schema.Optional(_OP_ID): _REGEX_MACRO_SCHEMA
-    },
-    schema.Optional('gn_edit'): {
-        schema.Optional(_OP_ID): _GN_EDIT_SCHEMA
-    },
-})
+_REWRITERS_SCHEMA = schema.Schema(
+    {
+        schema.Optional('ast.matcher'): {
+            schema.Optional(_OP_ID): _MATCHER_SCHEMA
+        },
+        schema.Optional('ast.rewriter'): {
+            schema.Optional(_OP_ID): _REWRITER_SCHEMA
+        },
+        schema.Optional('regex_macro'): {
+            schema.Optional(_OP_ID): _REGEX_MACRO_SCHEMA
+        },
+        schema.Optional('gn_edit'): {schema.Optional(_OP_ID): _GN_EDIT_SCHEMA},
+    }
+)
 
 
 class RewritersEval:
@@ -4010,8 +4396,10 @@ class RewritersEval:
     def load(cls) -> RewritersEval:
         """Return the process-wide RewritersEval, reading rewriters.pyl once."""
         if cls._instance is None:
-            cls._instance = cls(REWRITERS_FILE.read_bytes().decode('utf-8'),
-                                source=str(REWRITERS_FILE))
+            cls._instance = cls(
+                REWRITERS_FILE.read_bytes().decode('utf-8'),
+                source=str(REWRITERS_FILE),
+            )
         return cls._instance
 
     # -- access -------------------------------------------------------------
@@ -4032,7 +4420,8 @@ class RewritersEval:
             return self._matchers[op_id]
         except KeyError:
             raise RewritersSchemaError(
-                f'unknown matcher op: {op_id!r}') from None
+                f'unknown matcher op: {op_id!r}'
+            ) from None
 
     def rewriter(self, op_id: str) -> dict:
         """Return the rewriter spec for `op_id`, or raise if it is unknown."""
@@ -4040,7 +4429,8 @@ class RewritersEval:
             return self._rewriters[op_id]
         except KeyError:
             raise RewritersSchemaError(
-                f'unknown rewriter op: {op_id!r}') from None
+                f'unknown rewriter op: {op_id!r}'
+            ) from None
 
     @property
     def regex_macros(self) -> MappingProxyType[str, dict]:
@@ -4053,7 +4443,8 @@ class RewritersEval:
             return self._regex_macros[op_id]
         except KeyError:
             raise RewritersSchemaError(
-                f'unknown regex macro op: {op_id!r}') from None
+                f'unknown regex macro op: {op_id!r}'
+            ) from None
 
     @property
     def gn_edits(self) -> MappingProxyType[str, dict]:
@@ -4066,7 +4457,8 @@ class RewritersEval:
             return self._gn_edits[op_id]
         except KeyError:
             raise RewritersSchemaError(
-                f'unknown gn edit op: {op_id!r}') from None
+                f'unknown gn edit op: {op_id!r}'
+            ) from None
 
     @classmethod
     def language_of(cls, op_id: str) -> str:
@@ -4083,11 +4475,13 @@ class RewritersEval:
         except KeyError:
             raise RewritersSchemaError(
                 f'op {op_id!r} has unknown namespace prefix {prefix!r}; '
-                f'known namespaces: {sorted(_NAMESPACE_BY_NAME)}') from None
+                f'known namespaces: {sorted(_NAMESPACE_BY_NAME)}'
+            ) from None
         if language is None:
             raise RewritersSchemaError(
                 f'op {op_id!r} is in the {prefix!r} namespace, which names no '
-                f'grammar to parse with')
+                f'grammar to parse with'
+            )
         return language
 
     # -- validation ---------------------------------------------------------
@@ -4099,7 +4493,8 @@ class RewritersEval:
             return ast.literal_eval(content)
         except (ValueError, SyntaxError, TypeError) as e:
             raise RewritersSchemaError(
-                f'{source}: not a valid Python literal: {e}') from e
+                f'{source}: not a valid Python literal: {e}'
+            ) from e
 
     def _check_cross_references(self) -> None:
         """Validate rules that span records, which schema cannot express."""
@@ -4108,8 +4503,10 @@ class RewritersEval:
         # only checks the namespace is *known*, however it is necessary to also
         # check that a particular ast-based entries are using a known namespace
         # with a known supported grammar by ast-grep.
-        for category, ops in (('matcher', self._matchers), ('rewriter',
-                                                            self._rewriters)):
+        for category, ops in (
+            ('matcher', self._matchers),
+            ('rewriter', self._rewriters),
+        ):
             for op_id in ops:
                 namespace = op_id.split('.', 1)[0]
                 if _NAMESPACE_BY_NAME[namespace].ast_grep_language is None:
@@ -4117,7 +4514,8 @@ class RewritersEval:
                         f'{self._source}: ast {category} {op_id!r} is in the '
                         f'{namespace!r} namespace, which names no grammar to '
                         f'parse with; only text ops (regex_macro) can live '
-                        f'there')
+                        f'there'
+                    )
 
         # A gn edit op drives the `gn` binary to edit an upstream `gn` file.
         for op_id in self._gn_edits:
@@ -4126,7 +4524,8 @@ class RewritersEval:
                 raise RewritersSchemaError(
                     f'{self._source}: gn edit op {op_id!r} cannot be used in '
                     f'the {namespace!r} namespace. They can only be used in '
-                    f'the {_GN_NAMESPACE!r} namespace.')
+                    f'the {_GN_NAMESPACE!r} namespace.'
+                )
 
         # Every other rule is per-op, and each checker below documents the
         # one it enforces.
@@ -4153,7 +4552,8 @@ class RewritersEval:
                 raise RewritersSchemaError(
                     f'{self._source}: matcher {op_id!r} capture {name!r} '
                     f'reads metavariable(s) its template never binds: '
-                    f'{", ".join("$" + m for m in unbound)}')
+                    f'{", ".join("$" + m for m in unbound)}'
+                )
 
     def _check_rewriter_interface(self, op_id: str, spec: dict) -> None:
         """A rewriter's matcher, result node, `inputs` and `capture_overrides`
@@ -4162,14 +4562,16 @@ class RewritersEval:
         if ref not in self._matchers:
             raise RewritersSchemaError(
                 f'{self._source}: rewriter {op_id!r} references unknown '
-                f'matcher {ref!r}')
+                f'matcher {ref!r}'
+            )
         matcher = self._matchers[ref]
         matcher_node = matcher['result']['node']
         if spec['result']['node'] != matcher_node:
             raise RewritersSchemaError(
                 f'{self._source}: rewriter {op_id!r} result node '
                 f'{spec["result"]["node"]!r} does not match matcher '
-                f'{ref!r} node {matcher_node!r}')
+                f'{ref!r} node {matcher_node!r}'
+            )
 
         declared = set(spec['inputs'])
         captures = set(matcher['result'].get('captures', {}))
@@ -4180,7 +4582,8 @@ class RewritersEval:
                 f'{self._source}: rewriter {op_id!r} declares input(s) '
                 f'that shadow matcher {ref!r} capture(s): '
                 f'{", ".join(shadowed)}; list them in `capture_overrides` to '
-                f'let a caller-supplied value win instead')
+                f'let a caller-supplied value win instead'
+            )
 
         when_set = spec.get('when_set', {})
         undeclared_optional = sorted(set(when_set) - declared)
@@ -4188,25 +4591,30 @@ class RewritersEval:
             raise RewritersSchemaError(
                 f'{self._source}: rewriter {op_id!r} marks undeclared '
                 f'input(s) optional in `when_set`: '
-                f'{", ".join(undeclared_optional)}')
+                f'{", ".join(undeclared_optional)}'
+            )
 
         replace = spec['replace']
         templates = [
-            matcher['template'], replace['replace'],
+            matcher['template'],
+            replace['replace'],
             replace.get('consume_before', ''),
-            replace.get('consume_after', ''), *when_set.values()
+            replace.get('consume_after', ''),
+            *when_set.values(),
         ]
         used = set().union(*map(_placeholders, templates))
         undeclared = sorted(used - declared - captures)
         if undeclared:
             raise RewritersSchemaError(
                 f'{self._source}: rewriter {op_id!r} templates use '
-                f'undeclared input(s): {", ".join(undeclared)}')
+                f'undeclared input(s): {", ".join(undeclared)}'
+            )
         unused = sorted(declared - used)
         if unused:
             raise RewritersSchemaError(
                 f'{self._source}: rewriter {op_id!r} declares input(s) '
-                f'never used in its templates: {", ".join(unused)}')
+                f'never used in its templates: {", ".join(unused)}'
+            )
 
         # An override stands in for a capture the templates render, so one
         # naming anything else is a value no caller could ever supply.
@@ -4215,13 +4623,15 @@ class RewritersEval:
             raise RewritersSchemaError(
                 f'{self._source}: rewriter {op_id!r} overrides capture(s) '
                 f'matcher {ref!r} does not produce: '
-                f'{", ".join(unknown_overrides)}')
+                f'{", ".join(unknown_overrides)}'
+            )
         unused_overrides = sorted(overrides - used)
         if unused_overrides:
             raise RewritersSchemaError(
                 f'{self._source}: rewriter {op_id!r} overrides capture(s) '
                 f'never used in its templates: '
-                f'{", ".join(unused_overrides)}')
+                f'{", ".join(unused_overrides)}'
+            )
 
     def _check_regex_macro_interface(self, op_id: str, spec: dict) -> None:
         """A regex macro's `pattern`/`replace` fields and declared `inputs`
@@ -4240,19 +4650,22 @@ class RewritersEval:
         if has_pattern == has_re_pattern:
             raise RewritersSchemaError(
                 f'{self._source}: regex macro {op_id!r} must specify exactly '
-                f'one of `pattern` or `re_pattern`')
+                f'one of `pattern` or `re_pattern`'
+            )
         for flag in spec.get('re_flags', []):
             if not _is_valid_re_flag_name(flag):
                 raise RewritersSchemaError(
                     f'{self._source}: regex macro {op_id!r} has an invalid '
-                    f're_flags entry: {flag!r}')
+                    f're_flags entry: {flag!r}'
+                )
 
         names = [entry['name'] for entry in spec['inputs']]
         duplicates = sorted({name for name in names if names.count(name) > 1})
         if duplicates:
             raise RewritersSchemaError(
                 f'{self._source}: regex macro {op_id!r} declares duplicate '
-                f'input name(s): {", ".join(duplicates)}')
+                f'input name(s): {", ".join(duplicates)}'
+            )
 
         declared = set(names)
         used = _placeholders(spec.get('pattern', spec.get('re_pattern')))
@@ -4262,12 +4675,14 @@ class RewritersEval:
         if undeclared:
             raise RewritersSchemaError(
                 f'{self._source}: regex macro {op_id!r} templates use '
-                f'undeclared input(s): {", ".join(undeclared)}')
+                f'undeclared input(s): {", ".join(undeclared)}'
+            )
         unused = sorted(declared - used)
         if unused:
             raise RewritersSchemaError(
                 f'{self._source}: regex macro {op_id!r} declares input(s) '
-                f'never used in its templates: {", ".join(unused)}')
+                f'never used in its templates: {", ".join(unused)}'
+            )
 
     def _check_gn_edit_interface(self, op_id: str, spec: dict) -> None:
         """Checks a gn edit op's `pattern`/`command` and declared `inputs`.
@@ -4281,7 +4696,8 @@ class RewritersEval:
         if duplicates:
             raise RewritersSchemaError(
                 f'{self._source}: gn edit op {op_id!r} declares duplicate '
-                f'input name(s): {", ".join(duplicates)}')
+                f'input name(s): {", ".join(duplicates)}'
+            )
 
         declared = set(names)
         used = _placeholders(spec['pattern']) | _placeholders(spec['command'])
@@ -4290,12 +4706,14 @@ class RewritersEval:
         if undeclared:
             raise RewritersSchemaError(
                 f'{self._source}: gn edit op {op_id!r} templates use '
-                f'undeclared input(s): {", ".join(undeclared)}')
+                f'undeclared input(s): {", ".join(undeclared)}'
+            )
         unused = sorted(declared - used)
         if unused:
             raise RewritersSchemaError(
                 f'{self._source}: gn edit op {op_id!r} declares input(s) '
-                f'never used in its templates: {", ".join(unused)}')
+                f'never used in its templates: {", ".join(unused)}'
+            )
 
 
 def _ast_grep_platform_dir() -> str:
@@ -4312,8 +4730,12 @@ def _ast_grep_platform_dir() -> str:
 
 # Path to the ast-grep binary provisioned under brave/third_party/ast-grep.
 _AST_GREP_EXE = '.exe' if sys.platform == 'win32' else ''
-_AST_GREP_PLATFORM_DIR = (Path(__file__).resolve().parents[2] / 'third_party' /
-                          'ast-grep' / f'ast-grep-{_ast_grep_platform_dir()}')
+_AST_GREP_PLATFORM_DIR = (
+    Path(__file__).resolve().parents[2]
+    / 'third_party'
+    / 'ast-grep'
+    / f'ast-grep-{_ast_grep_platform_dir()}'
+)
 AST_GREP_BIN = _AST_GREP_PLATFORM_DIR / 'bin' / f'ast-grep{_AST_GREP_EXE}'
 
 # The `sgconfig.yml` registering the `gn` custom-language grammar.
@@ -4361,8 +4783,9 @@ class AstMatch:
 def _indent_yaml(text: str, spaces: int = 2) -> str:
     """Indent every non-blank line of `text` by `spaces`, for nesting YAML."""
     pad = ' ' * spaces
-    return '\n'.join(pad + line if line.strip() else line
-                     for line in text.splitlines())
+    return '\n'.join(
+        pad + line if line.strip() else line for line in text.splitlines()
+    )
 
 
 def _indent_code(text: str, spaces: int) -> str:
@@ -4394,11 +4817,12 @@ def _leading_indent(source: bytes, pos: int) -> str:
     """
     line_start = source.rfind(b'\n', 0, pos) + 1
     line = source[line_start:pos]
-    return line[:len(line) - len(line.lstrip(b' \t'))].decode('utf-8')
+    return line[: len(line) - len(line.lstrip(b' \t'))].decode('utf-8')
 
 
-def run_ast_grep(*, language: str, rule_body: str,
-                 source: str) -> list[AstMatch]:
+def run_ast_grep(
+    *, language: str, rule_body: str, source: str
+) -> list[AstMatch]:
     """Run an ast-grep rule against in-memory source and return its matches.
 
     This function is the main entrypoint for the ast-grep binary invocation.
@@ -4407,20 +4831,30 @@ def run_ast_grep(*, language: str, rule_body: str,
     is fed over stdin with an explicit `--lang`. The reported offsets are into
     `source`'s UTF-8 bytes, regardless of how stdin is encoded.
     """
-    doc = (f'id: plaster\nlanguage: {language}\nrule:\n' +
-           _indent_yaml(rule_body))
+    doc = f'id: plaster\nlanguage: {language}\nrule:\n' + _indent_yaml(
+        rule_body
+    )
     # Route through terminal.run for consistent logging / infra keep-alive,
     # like the rest of plaster's subprocess use. It runs with check=True, so a
     # non-zero exit (e.g. a bad rule) raises CalledProcessError.
     try:
-        result = terminal.run([
-            AST_GREP_BIN, 'scan', '--stdin', '--inline-rules', doc, '--config',
-            AST_GREP_SGCONFIG, '--json=stream'
-        ],
-                              stdin=source)
+        result = terminal.run(
+            [
+                AST_GREP_BIN,
+                'scan',
+                '--stdin',
+                '--inline-rules',
+                doc,
+                '--config',
+                AST_GREP_SGCONFIG,
+                '--json=stream',
+            ],
+            stdin=source,
+        )
     except subprocess.CalledProcessError as e:
-        raise AstGrepError(f'ast-grep failed ({e.returncode}): '
-                           f'{(e.stderr or "").strip()}') from e
+        raise AstGrepError(
+            f'ast-grep failed ({e.returncode}): {(e.stderr or "").strip()}'
+        ) from e
 
     matches = []
     for line in result.stdout.splitlines():
@@ -4432,15 +4866,21 @@ def run_ast_grep(*, language: str, rule_body: str,
         # with no single range, and `transformed` is an ast-grep-side rewrite
         # feature plaster does not use.
         metavars = {
-            name: (var['range']['byteOffset']['start'],
-                   var['range']['byteOffset']['end'])
-            for name, var in obj.get('metaVariables', {}).get('single',
-                                                              {}).items()
+            name: (
+                var['range']['byteOffset']['start'],
+                var['range']['byteOffset']['end'],
+            )
+            for name, var in obj.get('metaVariables', {})
+            .get('single', {})
+            .items()
         }
         matches.append(
-            AstMatch(start=span['start'],
-                     length=span['end'] - span['start'],
-                     metavars=metavars))
+            AstMatch(
+                start=span['start'],
+                length=span['end'] - span['start'],
+                metavars=metavars,
+            )
+        )
     return matches
 
 
@@ -4467,14 +4907,17 @@ class CxxMacrosEraser:
         text: str
 
     # `class MODULES_EXPORT Foo`: tree-sitter reads the macro as the name.
-    _EXPORT_MACRO_RE = re.compile(r'(\b(?:class|struct)\s+)'
-                                  r'([A-Z][A-Z0-9_]*_EXPORT(?:\s*\([^()]*\))?)'
-                                  r'(\s+[A-Za-z_])')
+    _EXPORT_MACRO_RE = re.compile(
+        r'(\b(?:class|struct)\s+)'
+        r'([A-Z][A-Z0-9_]*_EXPORT(?:\s*\([^()]*\))?)'
+        r'(\s+[A-Za-z_])'
+    )
 
     # `#if`/`#ifdef`/.../`#endif`: no grammar node in e.g. a base-specifier
     # list.
     _CXX_CONDITIONAL_RE = re.compile(
-        r'(?m)^[ \t]*#[ \t]*(?:if|ifdef|ifndef|elif|else|endif)\b.*$')
+        r'(?m)^[ \t]*#[ \t]*(?:if|ifdef|ifndef|elif|else|endif)\b.*$'
+    )
 
     # Any directive line. `#define FOO "bar"` has the same shape as the
     # macro-adjacent-string regexes below but isn't one so we skip them in
@@ -4485,7 +4928,8 @@ class CxxMacrosEraser:
     # embedded `"` isn't mistaken for it. These are also skipped in
     # `_blank_outside_opaque_spans`.
     _CXX_RAW_STRING_RE = re.compile(
-        r'(?:u8|u|U|L)?R"([^"\\()\s]{0,16})\(.*?\)\1"', re.DOTALL)
+        r'(?:u8|u|U|L)?R"([^"\\()\s]{0,16})\(.*?\)\1"', re.DOTALL
+    )
 
     # Plain string literal. This regex excludes encoding-prefixed forms
     # (`u8"..."`), which this idiom doesn't use and raw strings already need
@@ -4498,14 +4942,17 @@ class CxxMacrosEraser:
     # `"Skia/" STRINGIZE(SK_MILESTONE)`: only valid once macros that expand to
     # (or stringize into) a string literal have run.
     _CXX_MACRO_AFTER_STRING_RE = re.compile(
-        f'({_CXX_STRING_LIT})([ \\t]+)({_CXX_MACRO_TOKEN})')
+        f'({_CXX_STRING_LIT})([ \\t]+)({_CXX_MACRO_TOKEN})'
+    )
     _CXX_MACRO_BEFORE_STRING_RE = re.compile(
-        f'({_CXX_MACRO_TOKEN})([ \\t]+)({_CXX_STRING_LIT})')
+        f'({_CXX_MACRO_TOKEN})([ \\t]+)({_CXX_STRING_LIT})'
+    )
 
     # `METADATA_HEADER(Foo, views::View)`: a bare macro call with no trailing
     # `;`, sitting directly in a class body where only a declaration is valid.
     _METADATA_HEADER_RE = re.compile(
-        r'METADATA_HEADER\(\s*([\w:]+)\s*(?:,\s*([\w:]+)\s*)?\)')
+        r'METADATA_HEADER\(\s*([\w:]+)\s*(?:,\s*([\w:]+)\s*)?\)'
+    )
 
     # `BEGIN_METADATA(Foo, views::View)` ... `END_METADATA`: the same problem
     # at namespace scope, usually with property-registration macro calls
@@ -4514,7 +4961,9 @@ class CxxMacrosEraser:
     # needs to match them.
     _BEGIN_METADATA_RE = re.compile(
         r'BEGIN_METADATA\(\s*([\w:]+)\s*(?:,\s*([\w:]+)\s*)?\)(.*?)'
-        r'END_METADATA', re.DOTALL)
+        r'END_METADATA',
+        re.DOTALL,
+    )
 
     def __init__(self, blank_for_parse: BlankForParseOptions):
         self._blank_for_parse = blank_for_parse
@@ -4524,21 +4973,29 @@ class CxxMacrosEraser:
         if self._blank_for_parse.macros:
             source = self._EXPORT_MACRO_RE.sub(
                 lambda m: m.group(1) + ' ' * len(m.group(2)) + m.group(3),
-                source)
+                source,
+            )
             source = self._CXX_CONDITIONAL_RE.sub(
-                lambda line: ' ' * len(line.group(0)), source)
+                lambda line: ' ' * len(line.group(0)), source
+            )
         if self._blank_for_parse.string_adjacent_macros:
             source = self._blank_outside_opaque_spans(
-                source, self._CXX_MACRO_AFTER_STRING_RE,
-                lambda m: m.group(1) + m.group(2) + ' ' * len(m.group(3)))
+                source,
+                self._CXX_MACRO_AFTER_STRING_RE,
+                lambda m: m.group(1) + m.group(2) + ' ' * len(m.group(3)),
+            )
             source = self._blank_outside_opaque_spans(
-                source, self._CXX_MACRO_BEFORE_STRING_RE,
-                lambda m: ' ' * len(m.group(1)) + m.group(2) + m.group(3))
+                source,
+                self._CXX_MACRO_BEFORE_STRING_RE,
+                lambda m: ' ' * len(m.group(1)) + m.group(2) + m.group(3),
+            )
         if self._blank_for_parse.metadata_header_macros:
-            source = self._METADATA_HEADER_RE.sub(self._blank_metadata_header,
-                                                  source)
-            source = self._BEGIN_METADATA_RE.sub(self._blank_begin_metadata,
-                                                 source)
+            source = self._METADATA_HEADER_RE.sub(
+                self._blank_metadata_header, source
+            )
+            source = self._BEGIN_METADATA_RE.sub(
+                self._blank_begin_metadata, source
+            )
         return source
 
     @staticmethod
@@ -4570,20 +5027,26 @@ class CxxMacrosEraser:
         blanked_middle = re.sub(r'[^\n]', ' ', match.group(3))
         return header + blanked_middle + ' ' * len('END_METADATA')
 
-    def _blank_outside_opaque_spans(self, source: str, pattern: re.Pattern,
-                                    repl: Callable[[re.Match], str]) -> str:
+    def _blank_outside_opaque_spans(
+        self, source: str, pattern: re.Pattern, repl: Callable[[re.Match], str]
+    ) -> str:
         """Apply `pattern.sub(repl, ...)`, skipping directive lines and raw strings."""
-        spans = sorted((self._OpaqueSpan(m.start(), m.end(), m.group(0))
-                        for m in itertools.chain(
-                            self._CXX_DIRECTIVE_LINE_RE.finditer(source),
-                            self._CXX_RAW_STRING_RE.finditer(source))),
-                       key=lambda span: span.start)
+        spans = sorted(
+            (
+                self._OpaqueSpan(m.start(), m.end(), m.group(0))
+                for m in itertools.chain(
+                    self._CXX_DIRECTIVE_LINE_RE.finditer(source),
+                    self._CXX_RAW_STRING_RE.finditer(source),
+                )
+            ),
+            key=lambda span: span.start,
+        )
         pieces = []
         pos = 0
         for span in spans:
             if span.start < pos:
                 continue  # Overlaps a span already copied.
-            pieces.append(pattern.sub(repl, source[pos:span.start]))
+            pieces.append(pattern.sub(repl, source[pos : span.start]))
             pieces.append(span.text)
             pos = span.end
         pieces.append(pattern.sub(repl, source[pos:]))
@@ -4607,12 +5070,14 @@ class AstRewriter:
         rewriters: RewritersEval,
         content: str,
         *,
-        blank_for_parse: BlankForParseOptions = BlankForParseOptions()):
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions(),
+    ):
         self._rewriters = rewriters
         self._source = content
         # None when no pass is enabled, so `_locate` has nothing to run.
-        self._macros_eraser = (CxxMacrosEraser(blank_for_parse)
-                               if blank_for_parse else None)
+        self._macros_eraser = (
+            CxxMacrosEraser(blank_for_parse) if blank_for_parse else None
+        )
 
     @property
     def content(self) -> str:
@@ -4620,8 +5085,7 @@ class AstRewriter:
         return self._source
 
     def _locate(self, op: Operation) -> list[AstMatch]:
-        """Every match for `op`'s matcher, in source order.
-        """
+        """Every match for `op`'s matcher, in source order."""
         rewriter = self._rewriters.rewriter(op.op_id)
         matcher = self._rewriters.matcher(rewriter['matcher'])
         language = self._rewriters.language_of(op.op_id)
@@ -4630,9 +5094,9 @@ class AstRewriter:
         source_for_parse = self._source
         if self._macros_eraser is not None:
             source_for_parse = self._macros_eraser.erase(self._source)
-        return run_ast_grep(language=language,
-                            rule_body=rule_body,
-                            source=source_for_parse)
+        return run_ast_grep(
+            language=language, rule_body=rule_body, source=source_for_parse
+        )
 
     def matches(self, op: Operation) -> list[AstMatch]:
         """Every match for `op`'s matcher, in source order. Does not mutate.
@@ -4652,8 +5116,9 @@ class AstRewriter:
         matches = self.matches(op)
         return matches[0] if matches else None
 
-    def _resolve_captures(self, matcher: dict, match: AstMatch,
-                          needed: set[str], op_id: str) -> dict[str, str]:
+    def _resolve_captures(
+        self, matcher: dict, match: AstMatch, needed: set[str], op_id: str
+    ) -> dict[str, str]:
         """The matcher captures in `needed`, resolved against one match.
 
         Each capture is an ordered candidate list. The first whose
@@ -4686,8 +5151,10 @@ class AstRewriter:
                     start, end = span
                 else:
                     head, tail = candidate['span']
-                    first, last = (match.metavars.get(head),
-                                   match.metavars.get(tail))
+                    first, last = (
+                        match.metavars.get(head),
+                        match.metavars.get(tail),
+                    )
                     if first is None or last is None:
                         continue
                     if first[0] > last[0]:
@@ -4698,7 +5165,8 @@ class AstRewriter:
                         raise AstCaptureError(
                             f'{op_id}: capture `{name}` spans ${head} to '
                             f'${tail}, but ${tail} comes first in the source; '
-                            f'the candidate lists them in the wrong order')
+                            f'the candidate lists them in the wrong order'
+                        )
                     start, end = first[0], last[0]
                 value = _spliced_capture(source[start:end])
                 if not value:
@@ -4706,18 +5174,22 @@ class AstRewriter:
                 values[name] = value
                 break
             else:
-                line = source[:match.start].count(b'\n') + 1
-                bound = ', '.join('$' + metavariable
-                                  for metavariable in sorted(match.metavars))
+                line = source[: match.start].count(b'\n') + 1
+                bound = ', '.join(
+                    '$' + metavariable
+                    for metavariable in sorted(match.metavars)
+                )
                 raise AstCaptureError(
                     f'{op_id}: cannot resolve `{name}` for the match at line '
                     f'{line}; no candidate applies to this code (bound '
-                    f'metavariables: {bound or "none"})')
+                    f'metavariables: {bound or "none"})'
+                )
         return values
 
     @staticmethod
-    def _captures_needed(rewriter: dict, matcher: dict,
-                         op: Operation) -> set[str]:
+    def _captures_needed(
+        rewriter: dict, matcher: dict, op: Operation
+    ) -> set[str]:
         """Which of the matcher's captures `op`'s templates actually read.
 
         An unset optional input's `when_set` template never renders, so nothing
@@ -4734,8 +5206,11 @@ class AstRewriter:
             replace['replace'],
             replace.get('consume_before', ''),
             replace.get('consume_after', ''),
-            *(template
-              for name, template in when_set.items() if op.inputs.get(name)),
+            *(
+                template
+                for name, template in when_set.items()
+                if op.inputs.get(name)
+            ),
         ]
         used = set().union(*map(_placeholders, rendered))
         overridden = {
@@ -4746,8 +5221,14 @@ class AstRewriter:
         needed = used & matcher['result'].get('captures', {}).keys()
         return needed - overridden
 
-    def _values_for(self, rewriter: dict, matcher: dict, match: AstMatch,
-                    op: Operation, needed: set[str]) -> dict[str, str]:
+    def _values_for(
+        self,
+        rewriter: dict,
+        matcher: dict,
+        match: AstMatch,
+        op: Operation,
+        needed: set[str],
+    ) -> dict[str, str]:
         """Everything one match's templates render with: inputs and captures.
 
         An optional input renders through its `when_set` template, or as
@@ -4758,8 +5239,9 @@ class AstRewriter:
         is what makes `capture_overrides` work: `needed` already drops a
         capture the op overrode, so the input's value is the one left standing.
         """
-        values = op.inputs | self._resolve_captures(matcher, match, needed,
-                                                    op.op_id)
+        values = op.inputs | self._resolve_captures(
+            matcher, match, needed, op.op_id
+        )
         return values | {
             name: (template.format(**values) if values.get(name) else '')
             for name, template in rewriter.get('when_set', {}).items()
@@ -4799,18 +5281,25 @@ class AstRewriter:
         for match in matches:
             values = self._values_for(rewriter, matcher, match, op, needed)
             replacement = replace['replace'].format(**values)
-            before = replace.get('consume_before',
-                                 '').format(**values).encode('utf-8')
-            after = replace.get('consume_after',
-                                '').format(**values).encode('utf-8')
+            before = (
+                replace.get('consume_before', '')
+                .format(**values)
+                .encode('utf-8')
+            )
+            after = (
+                replace.get('consume_after', '')
+                .format(**values)
+                .encode('utf-8')
+            )
             start = match.start - len(before)
             end = match.end + len(after)
-            if (before and source[start:match.start]
-                    != before) or (after and source[match.end:end] != after):
+            if (before and source[start : match.start] != before) or (
+                after and source[match.end : end] != after
+            ):
                 # An assumed adjacent token isn't there; skip rather than
                 # corrupt. The caller's count check will flag the shortfall.
                 continue
-            text = source[match.start:match.end].decode('utf-8')
+            text = source[match.start : match.end].decode('utf-8')
             new_text, changes = re.subn(pattern, replacement, text)
             if changes:
                 edits.append((start, end, new_text))
@@ -4824,8 +5313,9 @@ class AstRewriter:
         return total
 
 
-def _check_declared_inputs(op_id: str, *, declared: frozenset[str],
-                           provided: frozenset[str]) -> None:
+def _check_declared_inputs(
+    op_id: str, *, declared: frozenset[str], provided: frozenset[str]
+) -> None:
     """Raise unless `provided` is exactly the inputs `op_id` declares.
 
     Shared by the declarative backends, whose ops render templates over a
@@ -4873,28 +5363,28 @@ class RegexMacroEngine:
         """
         spec = self._rewriters.regex_macro(op_id)
         declared = frozenset(entry['name'] for entry in spec['inputs'])
-        _check_declared_inputs(op_id,
-                               declared=declared,
-                               provided=frozenset(inputs))
+        _check_declared_inputs(
+            op_id, declared=declared, provided=frozenset(inputs)
+        )
 
         re_pattern = spec.get('re_pattern')
         if re_pattern is not None:
             escaped_inputs = {
-                key: re.escape(value)
-                for key, value in inputs.items()
+                key: re.escape(value) for key, value in inputs.items()
             }
             pattern = re_pattern.format(**escaped_inputs)
         else:
             pattern = re.escape(spec['pattern'].format(**inputs))
-        replace = spec['replace'].format(**{
-            key: value.replace('\\', '\\\\')
-            for key, value in inputs.items()
-        })
+        replace = spec['replace'].format(
+            **{
+                key: value.replace('\\', '\\\\')
+                for key, value in inputs.items()
+            }
+        )
         flags = _parse_re_flags(spec.get('re_flags', []), op_id)
-        self._source, matches = re.subn(pattern,
-                                        replace,
-                                        self._source,
-                                        flags=flags)
+        self._source, matches = re.subn(
+            pattern, replace, self._source, flags=flags
+        )
         return matches
 
 
@@ -4930,10 +5420,12 @@ class RegexMacro(Rewriter):
         *,
         count: int,
         description: str,
-        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions(),
     ) -> tuple[str, list[str]]:
         del description  # Only the count matters for the regex diagnostic.
-        del blank_for_parse  # Regex macros run over plain text; nothing to relax.
+        del (
+            blank_for_parse
+        )  # Regex macros run over plain text; nothing to relax.
         engine = RegexMacroEngine(RewritersEval.load(), contents)
         matches = engine.run(self.OP_ID, self._inputs)
         error = MatchExpectation.from_count(count).error_for(matches)
@@ -4941,27 +5433,32 @@ class RegexMacro(Rewriter):
 
     @classmethod
     def parse(cls, body: object, *, description: str) -> RegexMacro:
-        """Validate a `<macro-name>:` body against the op's declared `inputs`.
-        """
+        """Validate a `<macro-name>:` body against the op's declared `inputs`."""
         if not isinstance(body, dict):
             raise ValueError(
-                f'"{cls.NAME}" must be a mapping (in "{description}")')
+                f'"{cls.NAME}" must be a mapping (in "{description}")'
+            )
         keys = frozenset(
             entry['name']
-            for entry in RewritersEval.load().regex_macro(cls.OP_ID)['inputs'])
+            for entry in RewritersEval.load().regex_macro(cls.OP_ID)['inputs']
+        )
         unknown = sorted(set(body) - keys)
         if unknown:
             raise ValueError(
                 f'Unrecognised {cls.NAME} arg(s): '
-                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")'
+            )
         missing = sorted(keys - set(body))
         if missing:
-            raise ValueError(f'{cls.NAME} requires arg(s): '
-                             f'{", ".join(missing)} (in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} requires arg(s): '
+                f'{", ".join(missing)} (in "{description}")'
+            )
         for key in sorted(keys):
             if not isinstance(body[key], str):
-                raise ValueError(f'{cls.NAME} `{key}` must be a string '
-                                 f'(in "{description}")')
+                raise ValueError(
+                    f'{cls.NAME} `{key}` must be a string (in "{description}")'
+                )
         return cls({key: body[key] for key in keys})
 
 
@@ -5049,13 +5546,13 @@ class GnEditSandbox:
     def __enter__(self) -> GnEditSandbox:
         self._tempdir = tempfile.TemporaryDirectory(prefix='plaster-gn-')
         root = Path(self._tempdir.name)
-        (root / '.gn').write_text(self._DOTFILE_CONTENTS,
-                                  encoding='utf-8',
-                                  newline='\n')
+        (root / '.gn').write_text(
+            self._DOTFILE_CONTENTS, encoding='utf-8', newline='\n'
+        )
         self._build_file = root / self._BUILD_FILE_NAME
-        self._build_file.write_text(self._contents,
-                                    encoding='utf-8',
-                                    newline='\n')
+        self._build_file.write_text(
+            self._contents, encoding='utf-8', newline='\n'
+        )
         return self
 
     def __exit__(self, *exc_info) -> None:
@@ -5075,13 +5572,16 @@ class GnEditSandbox:
         assert self._build_file is not None
         root = self._build_file.parent
         try:
-            terminal.run([GN_BIN, 'edit', command, pattern, f'--root={root}'],
-                         cwd=_BRAVE_CORE_DIR)
+            terminal.run(
+                [GN_BIN, 'edit', command, pattern, f'--root={root}'],
+                cwd=_BRAVE_CORE_DIR,
+            )
         except subprocess.CalledProcessError as e:
             # gn reports the problem on stdout rather than stderr.
             detail = ((e.stdout or '') + (e.stderr or '')).strip()
             raise GnEditError(
-                f'gn edit failed ({e.returncode}): {detail}') from e
+                f'gn edit failed ({e.returncode}): {detail}'
+            ) from e
         except (FileNotFoundError, RuntimeError) as e:
             raise GnEditError('the gn binary is missing') from e
 
@@ -5090,19 +5590,22 @@ class GnEditSandbox:
         # attribute is, leaves a note asking for the decision to be made by
         # hand -- and still reports the file as changed, so the note would
         # otherwise be committed to the patch as though it were the edit.
-        if (self._AMBIGUITY_NOTE in contents
-                and self._AMBIGUITY_NOTE not in self._contents):
+        if (
+            self._AMBIGUITY_NOTE in contents
+            and self._AMBIGUITY_NOTE not in self._contents
+        ):
             raise GnEditError(
                 'gn edit left a note rather than editing, which it does where '
                 'the attribute is conditional; that edit has to be made by '
-                'hand')
-        return GnEditOutcome(contents=contents,
-                             changed=contents != self._contents)
+                'hand'
+            )
+        return GnEditOutcome(
+            contents=contents, changed=contents != self._contents
+        )
 
 
 class GnEditEngine:
-    """Applies named `gn_edit` ops (from `rewriters.pyl`) to file contents.
-    """
+    """Applies named `gn_edit` ops (from `rewriters.pyl`) to file contents."""
 
     def __init__(self, rewriters: RewritersEval, content: str):
         # The loaded `rewriters.pyl`, which `run` reads an op's `pattern` and
@@ -5127,12 +5630,14 @@ class GnEditEngine:
         """
         spec = self._rewriters.gn_edit(op_id)
         declared = frozenset(entry['name'] for entry in spec['inputs'])
-        _check_declared_inputs(op_id,
-                               declared=declared,
-                               provided=frozenset(inputs))
+        _check_declared_inputs(
+            op_id, declared=declared, provided=frozenset(inputs)
+        )
         with GnEditSandbox(self._source) as sandbox:
-            outcome = sandbox.run(command=spec['command'].format(**inputs),
-                                  pattern=spec['pattern'].format(**inputs))
+            outcome = sandbox.run(
+                command=spec['command'].format(**inputs),
+                pattern=spec['pattern'].format(**inputs),
+            )
         self._source = outcome.contents
         return outcome
 
@@ -5171,7 +5676,8 @@ class GnEditRewriter(Rewriter):
             raise ValueError(
                 f'{cls.NAME} does not accept a count other than 1 '
                 f'(in "{description}"); gn reports whether the build file '
-                f'changed, not a number of matches')
+                f'changed, not a number of matches'
+            )
 
     def apply(
         self,
@@ -5179,7 +5685,7 @@ class GnEditRewriter(Rewriter):
         *,
         count: int,
         description: str,
-        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions(),
     ) -> tuple[str, list[str]]:
         del count  # Rejected by `validate_count`; gn reports no match count.
         del blank_for_parse  # gn parses build files itself; nothing to relax.
@@ -5195,10 +5701,14 @@ class GnEditRewriter(Rewriter):
         # An edit that changed nothing is the one failure gn itself does not
         # report: the values are all present already, so the substitution has
         # become redundant and should be removed from the plaster.
-        errors = [] if outcome.changed else [
-            f'{self.NAME} changed nothing (in "{description}"); the target is '
-            f'already in the state the entry describes'
-        ]
+        errors = (
+            []
+            if outcome.changed
+            else [
+                f'{self.NAME} changed nothing (in "{description}"); the target is '
+                f'already in the state the entry describes'
+            ]
+        )
         return engine.content, errors
 
     @classmethod
@@ -5211,20 +5721,25 @@ class GnEditRewriter(Rewriter):
         """
         if not isinstance(body, dict):
             raise ValueError(
-                f'"{cls.NAME}" must be a mapping (in "{description}")')
+                f'"{cls.NAME}" must be a mapping (in "{description}")'
+            )
         spec = RewritersEval.load().gn_edit(cls.OP_ID)
         keys = frozenset(entry['name'] for entry in spec['inputs'])
-        variadic = frozenset(entry['name'] for entry in spec['inputs']
-                             if entry.get('variadic'))
+        variadic = frozenset(
+            entry['name'] for entry in spec['inputs'] if entry.get('variadic')
+        )
         unknown = sorted(set(body) - keys)
         if unknown:
             raise ValueError(
                 f'Unrecognised {cls.NAME} arg(s): '
-                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")'
+            )
         missing = sorted(keys - set(body))
         if missing:
-            raise ValueError(f'{cls.NAME} requires arg(s): '
-                             f'{", ".join(missing)} (in "{description}")')
+            raise ValueError(
+                f'{cls.NAME} requires arg(s): '
+                f'{", ".join(missing)} (in "{description}")'
+            )
 
         inputs = {}
         for key in sorted(keys):
@@ -5232,25 +5747,34 @@ class GnEditRewriter(Rewriter):
             if key in variadic:
                 inputs[key] = ' '.join(
                     _quote_for_gn_command(item)
-                    for item in cls._parse_values(key, value, description))
+                    for item in cls._parse_values(key, value, description)
+                )
             elif isinstance(value, str) and value:
                 inputs[key] = value
             else:
-                raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
-                                 f'string (in "{description}")')
+                raise ValueError(
+                    f'{cls.NAME} `{key}` must be a non-empty '
+                    f'string (in "{description}")'
+                )
         return cls(inputs)
 
     @classmethod
-    def _parse_values(cls, key: str, value: object,
-                      description: str) -> list[str]:
+    def _parse_values(
+        cls, key: str, value: object, description: str
+    ) -> list[str]:
         """Normalise a variadic input to a non-empty list of strings."""
         if isinstance(value, str) and value:
             return [value]
-        if (isinstance(value, list) and value
-                and all(isinstance(item, str) and item for item in value)):
+        if (
+            isinstance(value, list)
+            and value
+            and all(isinstance(item, str) and item for item in value)
+        ):
             return list(value)
-        raise ValueError(f'{cls.NAME} `{key}` must be a non-empty string or a '
-                         f'non-empty list of them (in "{description}")')
+        raise ValueError(
+            f'{cls.NAME} `{key}` must be a non-empty string or a '
+            f'non-empty list of them (in "{description}")'
+        )
 
 
 def _declared_op_help(spec: dict) -> str:
@@ -5261,9 +5785,13 @@ def _declared_op_help(spec: dict) -> str:
     """
     lines = spec['description'].rstrip('\n').splitlines()
     fields = ['Fields:', ''] + [
-        f"- `{entry['name']}` — {entry['description']}" +
-        (' May be a single value or a list of them.'
-         if entry.get('variadic') else '') for entry in spec['inputs']
+        f"- `{entry['name']}` — {entry['description']}"
+        + (
+            ' May be a single value or a list of them.'
+            if entry.get('variadic')
+            else ''
+        )
+        for entry in spec['inputs']
     ]
     for index, line in enumerate(lines):
         if line.startswith('```'):
@@ -5271,8 +5799,9 @@ def _declared_op_help(spec: dict) -> str:
     return '\n'.join(lines + [''] + fields)
 
 
-def _generated_rewriters(base: type[Rewriter],
-                         specs: Mapping[str, dict]) -> list[type[Rewriter]]:
+def _generated_rewriters(
+    base: type[Rewriter], specs: Mapping[str, dict]
+) -> list[type[Rewriter]]:
     """One generated `base` subclass per declarative op in `specs`.
 
     The two declarative backends expose their ops as `substitutions:` keys the
@@ -5288,17 +5817,23 @@ def _generated_rewriters(base: type[Rewriter],
         # `[Namespace][Name]Rewriter`, matching how the hand-written rewriters
         # are named, so two rewriters sharing a `NAME` across namespaces never
         # share a class name too.
-        class_name = (namespace.capitalize() +
-                      ''.join(word.capitalize()
-                              for word in name.split('_')) + 'Rewriter')
+        class_name = (
+            namespace.capitalize()
+            + ''.join(word.capitalize() for word in name.split('_'))
+            + 'Rewriter'
+        )
         rewriters.append(
             type(
-                class_name, (base, ), {
+                class_name,
+                (base,),
+                {
                     'NAME': name,
                     'OP_ID': op_id,
                     'SUMMARY': ' '.join(first_paragraph.split()),
                     'HELP': _declared_op_help(spec),
-                }))
+                },
+            )
+        )
     return rewriters
 
 
@@ -5306,10 +5841,9 @@ def _generated_rewriters(base: type[Rewriter],
 # ones, plus the generated ones for each declarative backend.
 _REWRITERS: Final = RewriterRegistry(
     *_DECLARED_REWRITERS,
-    *_generated_rewriters(RegexMacro,
-                          RewritersEval.load().regex_macros),
-    *_generated_rewriters(GnEditRewriter,
-                          RewritersEval.load().gn_edits))
+    *_generated_rewriters(RegexMacro, RewritersEval.load().regex_macros),
+    *_generated_rewriters(GnEditRewriter, RewritersEval.load().gn_edits),
+)
 
 
 def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
@@ -5328,7 +5862,8 @@ def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
     # a change to it puts every plaster file in question rather than any
     # particular one.
     repositories_path = REPOSITORIES_FILE.relative_to(
-        repository.brave.root).as_posix()
+        repository.brave.root
+    ).as_posix()
 
     expected_plaster_files = set()
     for filepath in filepaths:
@@ -5341,19 +5876,23 @@ def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
             plaster_file = plaster_for_patch(PurePath(filepath))
             if plaster_file is not None:
                 expected_plaster_files.add(plaster_file)
-        elif (filepath.startswith('rewrite/')
-              and filepath.endswith(PLASTER_EXTENSION)):
+        elif filepath.startswith('rewrite/') and filepath.endswith(
+            PLASTER_EXTENSION
+        ):
             expected_plaster_files.add(
-                Path(PLASTER_FILES_PATH.parent) / filepath)
+                Path(PLASTER_FILES_PATH.parent) / filepath
+            )
         else:
             hint = ''
             # Control characters mean the shell interpreted unquoted
             # backslash escapes (e.g. '\a' -> bell) before we saw the path,
             # mangling it beyond recovery. Guide the user to quote it.
             if any(ord(c) < 0x20 for c in filepath):
-                hint = ('\nThe path contains control characters, likely '
-                        'because an unquoted backslash path was escaped by '
-                        'the shell. Quote the path or use forward slashes.')
+                hint = (
+                    '\nThe path contains control characters, likely '
+                    'because an unquoted backslash path was escaped by '
+                    'the shell. Quote the path or use forward slashes.'
+                )
             raise PlasterError(f'Unexpected file path: {filepath!r}{hint}')
 
     # A set of candidate plaster files.
@@ -5394,8 +5933,7 @@ def apply(args):
 
 
 def check(args):
-    """Checks whether plaster files need to be reapplied.
-    """
+    """Checks whether plaster files need to be reapplied."""
     plaster_files = get_plaster_files(getattr(args, 'filepaths', None))
     for plaster_file in plaster_files:
         logging.debug('Checking plaster file: %s', plaster_file.path)
@@ -5406,39 +5944,47 @@ def check(args):
 # The tool's one-line description, shared by the argparse parser and the
 # `plaster --help` overview.
 _TOOL_DESCRIPTION = (
-    '🩹 A tool to generate patches into Chromium using plaster files.')
+    '🩹 A tool to generate patches into Chromium using plaster files.'
+)
 
 # A command registry: command name -> (its argparse parser, one-line summary).
 _CommandRegistry = dict[str, tuple[argparse.ArgumentParser, str]]
 
 
 class Help(argparse.Action):
-    """`plaster --help [topic]`, implemented as the `--help` action.
-    """
+    """`plaster --help [topic]`, implemented as the `--help` action."""
 
     # The colour to be used to highlight each command/rewriter.
     _TOPIC_STYLE = 'bold yellow'
 
-    def __init__(self, option_strings: list[str], dest: str,
-                 commands: _CommandRegistry, **kwargs):
-        super().__init__(option_strings,
-                         dest,
-                         nargs='?',
-                         default=argparse.SUPPRESS,
-                         metavar='TOPIC',
-                         help='Print help, optionally for a command or '
-                         'rewriter topic.',
-                         **kwargs)
+    def __init__(
+        self,
+        option_strings: list[str],
+        dest: str,
+        commands: _CommandRegistry,
+        **kwargs,
+    ):
+        super().__init__(
+            option_strings,
+            dest,
+            nargs='?',
+            default=argparse.SUPPRESS,
+            metavar='TOPIC',
+            help='Print help, optionally for a command or rewriter topic.',
+            **kwargs,
+        )
         self._commands = commands
 
         # Set from the parser argparse hands to `__call__`.
         self._parser: argparse.ArgumentParser | None = None
 
-    def __call__(self,
-                 parser: argparse.ArgumentParser,
-                 namespace: argparse.Namespace,
-                 values: str | None,
-                 option_string: str | None = None) -> None:
+    def __call__(
+        self,
+        parser: argparse.ArgumentParser,
+        namespace: argparse.Namespace,
+        values: str | None,
+        option_string: str | None = None,
+    ) -> None:
         del namespace, option_string
         self._parser = parser
         parser.exit(self.render(values))
@@ -5477,8 +6023,7 @@ class Help(argparse.Action):
         return 1
 
     def _print_qualified_rewriter_help(self, namespace: str, name: str) -> int:
-        """Print the docs for `name` in `namespace`, or explain it is not one.
-        """
+        """Print the docs for `name` in `namespace`, or explain it is not one."""
         candidates = _REWRITERS.candidates(name)
         if namespace in candidates:
             self._print_rewriter_help(name, namespace=namespace)
@@ -5486,9 +6031,12 @@ class Help(argparse.Action):
         console.print(
             f'[red]No[/] [{self._TOPIC_STYLE}]{name}[/] [red]rewriter in the '
             f'[/][{self._TOPIC_STYLE}]{namespace}[/][red] namespace.[/]',
-            highlight=False)
-        console.print(f'It is available in: {", ".join(sorted(candidates))}.',
-                      highlight=False)
+            highlight=False,
+        )
+        console.print(
+            f'It is available in: {", ".join(sorted(candidates))}.',
+            highlight=False,
+        )
         return 1
 
     def _print_overview(self) -> None:
@@ -5507,38 +6055,45 @@ class Help(argparse.Action):
 
     def _print_commands(self) -> None:
         """Print the `Commands` category from the command registry."""
-        entries = [(name, summary)
-                   for name, (_, summary) in self._commands.items()]
+        entries = [
+            (name, summary) for name, (_, summary) in self._commands.items()
+        ]
         self._print_topic_index('Commands', 'command', entries)
 
     def _print_rewriters(self) -> None:
-        """Print the `Rewriters` category, subdivided by namespace.
-        """
+        """Print the `Rewriters` category, subdivided by namespace."""
         groups = _REWRITERS.by_namespace()
         self._print_index_header('Rewriters', 'rewriter')
-        width = max((len(rewriter.NAME) for _, rewriters in groups
-                     for rewriter in rewriters),
-                    default=0)
+        width = max(
+            (
+                len(rewriter.NAME)
+                for _, rewriters in groups
+                for rewriter in rewriters
+            ),
+            default=0,
+        )
         for index, (namespace, rewriters) in enumerate(groups):
             if index:
                 console.print()
             console.print(f'  {namespace}:', highlight=False)
-            self._print_index_rows([(rewriter.NAME, rewriter.SUMMARY)
-                                    for rewriter in rewriters],
-                                   width=width,
-                                   indent=4)
+            self._print_index_rows(
+                [(rewriter.NAME, rewriter.SUMMARY) for rewriter in rewriters],
+                width=width,
+                indent=4,
+            )
 
-    def _print_topic_index(self, title: str, kind: str,
-                           entries: list[tuple[str, str]]) -> None:
+    def _print_topic_index(
+        self, title: str, kind: str, entries: list[tuple[str, str]]
+    ) -> None:
         """Print one flat help category: a header plus `name summary` rows.
 
         `kind` is the noun used in the "type ... for more details" hint (e.g.
         "command"). `entries` are `(name, summary)` pairs listed in order.
         """
         self._print_index_header(title, kind)
-        self._print_index_rows(entries,
-                               width=max((len(name) for name, _ in entries),
-                                         default=0))
+        self._print_index_rows(
+            entries, width=max((len(name) for name, _ in entries), default=0)
+        )
 
     @staticmethod
     def _print_index_header(title: str, kind: str) -> None:
@@ -5546,33 +6101,31 @@ class Help(argparse.Action):
         console.print(
             f'{title} [dim](type "plaster --help <{kind}>" for more '
             f'details)[/]:',
-            highlight=False)
+            highlight=False,
+        )
 
-    def _print_index_rows(self,
-                          entries: list[tuple[str, str]],
-                          *,
-                          width: int,
-                          indent: int = 2) -> None:
+    def _print_index_rows(
+        self, entries: list[tuple[str, str]], *, width: int, indent: int = 2
+    ) -> None:
         """Print colourised `name summary` rows, names padded to `width`."""
         for name, summary in entries:
             console.print(
                 f'{"":<{indent}}[{self._TOPIC_STYLE}]{name:<{width}}[/]  '
                 f'{summary}',
-                highlight=False)
+                highlight=False,
+            )
 
     @staticmethod
     def _print_option_index(entries: list[tuple[str, str]]) -> None:
-        """Print the global `Options` block: `flags summary` rows.
-        """
+        """Print the global `Options` block: `flags summary` rows."""
         console.print('Options:', highlight=False)
         width = max((len(flags) for flags, _ in entries), default=0)
         for flags, summary in entries:
             console.print(f'  {flags:<{width}}  {summary}', highlight=False)
 
-    def _print_rewriter_help(self,
-                             name: str,
-                             *,
-                             namespace: str | None = None) -> None:
+    def _print_rewriter_help(
+        self, name: str, *, namespace: str | None = None
+    ) -> None:
         """Print the full docs for the rewriter(s) registered under `name`.
 
         A name shared across namespaces has a rewriter per namespace, each
@@ -5586,18 +6139,22 @@ class Help(argparse.Action):
         else:
             selected = sorted(
                 candidates.values(),
-                key=lambda cls:
-                (cls.namespace() == _GLOBAL_NAMESPACE, cls.namespace()))
+                key=lambda cls: (
+                    cls.namespace() == _GLOBAL_NAMESPACE,
+                    cls.namespace(),
+                ),
+            )
         # A lone rewriter needs no namespace label: there is nothing to tell
         # it apart from, and the label would just be noise.
         labelled = len(selected) > 1
         for index, rewriter in enumerate(selected):
             if index:
                 console.print()
-            label = (f' [dim]({rewriter.namespace()})[/]' if labelled else '')
+            label = f' [dim]({rewriter.namespace()})[/]' if labelled else ''
             console.print(
                 f'[{self._TOPIC_STYLE}]{name}[/]{label} — {rewriter.SUMMARY}',
-                highlight=False)
+                highlight=False,
+            )
             console.print()
             # Rewriter help is authored in Markdown; render it with rich so
             # inline code and the YAML example code block display nicely.
@@ -5606,7 +6163,8 @@ class Help(argparse.Action):
             console.print(
                 f'[dim](type "plaster --help <namespace>.{name}" for just '
                 f'one of these)[/]',
-                highlight=False)
+                highlight=False,
+            )
 
     def _option_entries(self) -> list[tuple[str, str]]:
         """`(flags, help)` rows for the active parser's global optionals.
@@ -5628,47 +6186,51 @@ class Help(argparse.Action):
 def main():
     # `add_help=False`: we install our own `--help` below so it can take an
     # optional topic (`plaster --help regex`).
-    parser = argparse.ArgumentParser(description=_TOOL_DESCRIPTION,
-                                     add_help=False)
-    parser.add_argument('--verbose',
-                        action='store_true',
-                        help='Enable verbose logging')
-    parser.add_argument('--infra-mode',
-                        action='store_true',
-                        help='Enable infra mode')
+    parser = argparse.ArgumentParser(
+        description=_TOOL_DESCRIPTION, add_help=False
+    )
+    parser.add_argument(
+        '--verbose', action='store_true', help='Enable verbose logging'
+    )
+    parser.add_argument(
+        '--infra-mode', action='store_true', help='Enable infra mode'
+    )
     subparsers = parser.add_subparsers(dest='command', required=True)
 
     commands: dict[str, tuple[argparse.ArgumentParser, str]] = {}
 
-    def add_command(name: str, summary: str,
-                    **kwargs) -> argparse.ArgumentParser:
+    def add_command(
+        name: str, summary: str, **kwargs
+    ) -> argparse.ArgumentParser:
         command_parser = subparsers.add_parser(name, help=summary, **kwargs)
         commands[name] = (command_parser, summary)
         return command_parser
 
     # Add the 'apply' subparser
     apply_parser = add_command(
-        'apply', 'Apply all plaster files to the sources in brave-core.')
+        'apply', 'Apply all plaster files to the sources in brave-core.'
+    )
     apply_parser.add_argument(
         '--all',
         action='store_true',
         help='Re-apply every plaster file unconditionally, even if the '
-        'patchinfo indicates it is already up-to-date.')
-    apply_parser.add_argument('filepaths',
-                              nargs='*',
-                              help='Filepaths to apply')
+        'patchinfo indicates it is already up-to-date.',
+    )
+    apply_parser.add_argument('filepaths', nargs='*', help='Filepaths to apply')
     apply_parser.set_defaults(func=apply)
 
     # Add the 'check' subparser
     check_parser = add_command(
         'check',
         'Check that plaster files are applied to sources.',
-        fromfile_prefix_chars='@')
+        fromfile_prefix_chars='@',
+    )
     check_parser.add_argument(
         'filepaths',
         nargs='*',
         help='Filepaths to check. `@file` reads them from a file, one per '
-        'line.')
+        'line.',
+    )
     check_parser.set_defaults(func=check)
 
     # Our custom `--help` renderer.
@@ -5679,10 +6241,12 @@ def main():
     if hasattr(args, 'infra_mode') and args.infra_mode:
         terminal.set_infra_mode()
 
-    logging.basicConfig(level=logging.DEBUG if is_verbose() else logging.INFO,
-                        format='%(message)s',
-                        handlers=[IncendiaryErrorHandler()],
-                        force=True)
+    logging.basicConfig(
+        level=logging.DEBUG if is_verbose() else logging.INFO,
+        format='%(message)s',
+        handlers=[IncendiaryErrorHandler()],
+        force=True,
+    )
 
     try:
         return args.func(args)

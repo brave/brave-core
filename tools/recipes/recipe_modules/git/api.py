@@ -22,13 +22,11 @@ _DISABLE_AUTO_GC_CONFIG = (
 
 
 class GitApi(RecipeApi):
-    """Generic git repository operations shared by modules that own one.
-    """
+    """Generic git repository operations shared by modules that own one."""
 
-    def disable_auto_gc(self,
-                        repo: str | Path,
-                        *,
-                        step_name: str = 'disable auto-gc') -> None:
+    def disable_auto_gc(
+        self, repo: str | Path, *, step_name: str = 'disable auto-gc'
+    ) -> None:
         """Stop git's own automatic gc/maintenance from running in *repo*.
 
         Disabling auto-gc/maintenance is useful in our infra, as a lot of
@@ -44,6 +42,8 @@ class GitApi(RecipeApi):
                 another step) can tell them apart in the step list.
         """
         for key, value in _DISABLE_AUTO_GC_CONFIG:
-            self.m.step(f'{step_name}: {key}={value}',
-                        ['git', 'config', key, value],
-                        cwd=repo)
+            self.m.step(
+                f'{step_name}: {key}={value}',
+                ['git', 'config', key, value],
+                cwd=repo,
+            )

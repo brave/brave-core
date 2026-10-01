@@ -29,8 +29,7 @@ class _RealFs:  # pragma: no cover - production filesystem backend.
     def is_file(self, path: str | Path) -> bool:
         return Path(path).is_file()
 
-    def mkdir(self, path: str | Path, *, parents: bool,
-              exist_ok: bool) -> None:
+    def mkdir(self, path: str | Path, *, parents: bool, exist_ok: bool) -> None:
         Path(path).mkdir(parents=parents, exist_ok=exist_ok)
 
     def mkdtemp(self, parent: Path, prefix: str) -> Path:
@@ -90,7 +89,6 @@ class _RealFs:  # pragma: no cover - production filesystem backend.
         return os.pathsep
 
 
-
 class _SimFs:
     """Test backend: the simulated filesystem on the run's TestContext.
 
@@ -115,15 +113,21 @@ class _SimFs:
     def is_file(self, path: str | Path | config_types.Path) -> bool:
         return self._test.fs.is_file(path)
 
-    def mkdir(self, path: str | Path | config_types.Path, *, parents: bool,
-              exist_ok: bool) -> None:
+    def mkdir(
+        self,
+        path: str | Path | config_types.Path,
+        *,
+        parents: bool,
+        exist_ok: bool,
+    ) -> None:
         # The simulated fs has no real directory tree: `add_dir` is idempotent
         # and implies parents, so these flags don't apply here.
         del parents, exist_ok
         self._test.fs.add_dir(path)
 
-    def mkdtemp(self, parent: config_types.Path,
-                prefix: str) -> config_types.Path:
+    def mkdtemp(
+        self, parent: config_types.Path, prefix: str
+    ) -> config_types.Path:
         # Numbered per prefix rather than randomized, so a run that makes
         # temporary directories still has reproducible expectations.
         self._test.temp_counter[prefix] += 1
@@ -131,8 +135,9 @@ class _SimFs:
         self._test.fs.add_dir(path)
         return path
 
-    def mkstemp(self, parent: config_types.Path,
-                prefix: str) -> config_types.Path:
+    def mkstemp(
+        self, parent: config_types.Path, prefix: str
+    ) -> config_types.Path:
         # Shares `mkdtemp`'s counter (keyed by prefix, not by file-vs-dir), so
         # a temp file and a temp dir with the same prefix never collide.
         self._test.temp_counter[prefix] += 1
@@ -159,13 +164,16 @@ class _SimFs:
         return config_types.Path(config_types.ResolvedBasePath(''), *pieces)
 
     def home(self) -> config_types.Path:
-        return config_types.Path(config_types.ResolvedBasePath(
-            self._test.home))
+        return config_types.Path(config_types.ResolvedBasePath(self._test.home))
 
-    def relpath(self, path: str | Path | config_types.Path,
-                start: str | Path | config_types.Path) -> str:
+    def relpath(
+        self,
+        path: str | Path | config_types.Path,
+        start: str | Path | config_types.Path,
+    ) -> str:
         if isinstance(path, config_types.Path) and isinstance(
-                start, config_types.Path):
+            start, config_types.Path
+        ):
             return path.relative_to(start, walk_up=True)
         return posixpath.relpath(str(path), str(start))
 
@@ -186,8 +194,11 @@ class _SimFs:
             return path.parent.joinpath(path.stem), path.suffix
         return self._path_mod.splitext(str(path))
 
-    def join(self, path: str | Path | config_types.Path, *paths:
-             str | Path | config_types.Path) -> str:
+    def join(
+        self,
+        path: str | Path | config_types.Path,
+        *paths: str | Path | config_types.Path,
+    ) -> str:
         return self._path_mod.join(str(path), *[str(p) for p in paths])
 
     def normpath(self, path: str | Path | config_types.Path) -> str:
@@ -242,7 +253,8 @@ class PathApi(RecipeApi):
         a `[WORKSPACE]`-rooted `config_types.Path` token in test mode)."""
         if self._test is not None:
             return config_types.Path(
-                config_types.ResolvedBasePath(self._workspace_token))
+                config_types.ResolvedBasePath(self._workspace_token)
+            )
         return self._workspace  # pragma: no cover - production only
 
     @property
@@ -295,17 +307,21 @@ class PathApi(RecipeApi):
             # test-only, so keep it off the production import path (matches
             # `step/api.py`'s `_prod_runner_lazy` convention).
             import simulation
+
             self._workspace_token = simulation.WORKSPACE_TOKEN
             self._fs = _SimFs(self._test)
             # Simulated separator, driven by the platform under test -- never
             # the real host's `sys.platform`/`os.sep`.
-            config_types.Path._OS_SEP = ('\\' if self._test.platform == 'win'
-                                         else '/')
+            config_types.Path._OS_SEP = (
+                '\\' if self._test.platform == 'win' else '/'
+            )
         else:
             # Every other named path here bypasses `config_types.Path`
             # entirely in production (see `workspace` below), but
             # `RecipeApi.resource()` doesn't, so this still needs to be set.
-            config_types.Path._OS_SEP = os.sep  # pragma: no cover - production only
+            config_types.Path._OS_SEP = (
+                os.sep
+            )  # pragma: no cover - production only
 
     def exists(self, path: str | Path | config_types.Path) -> bool:
         """Whether *path* exists (a file or a directory)."""
@@ -319,11 +335,13 @@ class PathApi(RecipeApi):
         """Whether *path* exists and is a regular file."""
         return self._fs.is_file(path)
 
-    def mkdir(self,
-              path: str | Path | config_types.Path,
-              *,
-              parents: bool = True,
-              exist_ok: bool = True) -> None:
+    def mkdir(
+        self,
+        path: str | Path | config_types.Path,
+        *,
+        parents: bool = True,
+        exist_ok: bool = True,
+    ) -> None:
         """Create directory *path* (creating parents by default)."""
         self._fs.mkdir(path, parents=parents, exist_ok=exist_ok)
 
@@ -368,8 +386,11 @@ class PathApi(RecipeApi):
         """The user's home directory (simulated in test mode)."""
         return self._fs.home()
 
-    def relpath(self, path: str | Path | config_types.Path,
-                start: str | Path | config_types.Path) -> str:
+    def relpath(
+        self,
+        path: str | Path | config_types.Path,
+        start: str | Path | config_types.Path,
+    ) -> str:
         """*path* relative to *start*. Roughly equivalent to `os.path.relpath`,
         except *start* is required (there is no implicit real cwd here)."""
         return self._fs.relpath(path, start)
@@ -400,8 +421,11 @@ class PathApi(RecipeApi):
         `os.path.splitext`; the first item matches the type of *path*."""
         return self._fs.splitext(path)
 
-    def join(self, path: str | Path | config_types.Path, *paths:
-             str | Path | config_types.Path) -> str:
+    def join(
+        self,
+        path: str | Path | config_types.Path,
+        *paths: str | Path | config_types.Path,
+    ) -> str:
         """Equivalent to `os.path.join`. Always returns a `str` -- a `Path`
         already has `joinpath`/`/` for joining and returning a `Path`."""
         return self._fs.join(path, *paths)
@@ -461,17 +485,21 @@ class PathApi(RecipeApi):
         if self._test is not None:
             self._test.fs.add_dir(path)
 
-    def mock_copy_paths(self, source: str | Path | config_types.Path,
-                        dest: str | Path | config_types.Path) -> None:
+    def mock_copy_paths(
+        self,
+        source: str | Path | config_types.Path,
+        dest: str | Path | config_types.Path,
+    ) -> None:
         """For testing purposes, copy *source* (and everything nested under
         it) to *dest*. No-op in production."""
         if self._test is not None:
             self._test.fs.copy(source, dest)
 
     def mock_remove_paths(
-            self,
-            path: str | Path | config_types.Path,
-            should_remove: Callable[[str], bool] = lambda p: True) -> None:
+        self,
+        path: str | Path | config_types.Path,
+        should_remove: Callable[[str], bool] = lambda p: True,
+    ) -> None:
         """For testing purposes, mark that *path* (and everything nested
         under it for which *should_remove* returns True) no longer exists.
         No-op in production.

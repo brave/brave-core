@@ -2,8 +2,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Mockable system platform identity functions.
-"""
+"""Mockable system platform identity functions."""
 
 from __future__ import annotations
 
@@ -53,7 +52,8 @@ class PlatformApi(RecipeApi):
         if self._test is not None:
             # Default to linux/64, unless the test case says otherwise.
             self._name = PlatformApi.normalize_platform_name(
-                self._test.platform)
+                self._test.platform
+            )
             self._bits = norm_bits(self._test.bits)
             self._arch = self._test.arch
 
@@ -64,14 +64,20 @@ class PlatformApi(RecipeApi):
             # to use a 64-bit kernel with a 32-bit userland, e.g. to give the
             # linker slightly more memory. Distinguish between different
             # userland bitness by querying the python binary.
-            if (self._name == 'linux' and self._bits == 64
-                    and platform.architecture()[0] == '32bit'):
+            if (
+                self._name == 'linux'
+                and self._bits == 64
+                and platform.architecture()[0] == '32bit'
+            ):
                 self._bits = 32
             # On Mac the inverse of the linux 64-bit-kernel case is true: the
             # kernel is 32-bit but the CPU and userspace are both capable of
             # running 64-bit programs.
-            elif (self._name == 'mac' and self._bits == 32
-                  and platform.architecture()[0] == '64bit'):
+            elif (
+                self._name == 'mac'
+                and self._bits == 32
+                and platform.architecture()[0] == '64bit'
+            ):
                 self._bits = 64
 
             self._num_logical_cores = psutil.cpu_count(True)
@@ -95,9 +101,9 @@ class PlatformApi(RecipeApi):
     @property
     def name(self) -> str:
         """The current platform name, which will be one of:
-            * win
-            * mac
-            * linux
+        * win
+        * mac
+        * linux
         """
         return self._name
 
@@ -141,4 +147,5 @@ class PlatformApi(RecipeApi):
         # Unreachable from a `GenTests` case, since the test API only accepts
         # the three known names; this guards an unrecognised real host.
         raise ValueError(  # pragma: no cover
-            f"Don't understand platform {plat!r}")
+            f"Don't understand platform {plat!r}"
+        )

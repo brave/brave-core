@@ -2,8 +2,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""The `git_cache` module`.
-"""
+"""The `git_cache` module`."""
 
 from __future__ import annotations
 
@@ -17,7 +16,7 @@ from PB.recipe_modules.brave.git_cache.properties import EnvProperties
 from recipe_api import RecipeApi
 
 # Flags we want passed in every fetch.
-FETCH_ARGS = ('--no-show-forced-updates', )
+FETCH_ARGS = ('--no-show-forced-updates',)
 
 # What a branch, tag or ref name may look like. It must not start with `-`, so
 # that git never reads it as an option.
@@ -58,8 +57,9 @@ class GitRef:
     def populate_ref(self) -> str | None:
         """The ref to mirror with `git cache populate --ref`. Branches are
         mirrored anyway, and a commit goes through `--commit`."""
-        return None if self.kind in (RefKind.HEAD,
-                                     RefKind.COMMIT) else self.name
+        return (
+            None if self.kind in (RefKind.HEAD, RefKind.COMMIT) else self.name
+        )
 
     @property
     def commit(self) -> str | None:
@@ -71,7 +71,7 @@ class GitRef:
         """The branch or tag name, as `git clone --branch` takes it."""
         for prefix in (_HEADS, _TAGS):
             if self.name.startswith(prefix):
-                return self.name[len(prefix):]
+                return self.name[len(prefix) :]
         raise ValueError(f'{self.name!r} is not a branch or a tag')
 
 
@@ -101,17 +101,20 @@ class GitCacheApi(RecipeApi):
             raise RuntimeError('GIT_CACHE_PATH is not set.')
         if not self.m.path.is_dir(git_cache_path):
             raise RuntimeError(
-                f'GIT_CACHE_PATH is not a valid directory: {git_cache_path}')
+                f'GIT_CACHE_PATH is not a valid directory: {git_cache_path}'
+            )
         logging.info('Using GIT_CACHE_PATH=%s', git_cache_path)
         return git_cache_path
 
-    def populate(self,
-                 url: str,
-                 *,
-                 ref: str | None = None,
-                 commit: str | None = None,
-                 no_fetch_tags: bool = True,
-                 step_name: str = 'git cache populate') -> None:
+    def populate(
+        self,
+        url: str,
+        *,
+        ref: str | None = None,
+        commit: str | None = None,
+        no_fetch_tags: bool = True,
+        step_name: str = 'git cache populate',
+    ) -> None:
         """Populate (or refresh) the shared bare mirror for *url*.
 
         Args:
@@ -127,8 +130,13 @@ class GitCacheApi(RecipeApi):
         git_config_updated = self._disable_auto_gc(url, step_name, 'before')
 
         cmd = [
-            'git', 'cache', 'populate', '--cache-dir', self._path, url,
-            '--reset-fetch-config'
+            'git',
+            'cache',
+            'populate',
+            '--cache-dir',
+            self._path,
+            url,
+            '--reset-fetch-config',
         ]
         if no_fetch_tags:
             cmd.append('--no-fetch-tags')
@@ -160,23 +168,32 @@ class GitCacheApi(RecipeApi):
             when: Distinguishes the pre- and post-populate call sites in step
                 names (`populate()` runs this twice per call).
         """
-        result = self.m.step(f'{step_name} exists ({when})', [
-            'git', 'cache', 'exists', '--quiet', '--cache-dir', self._path, url
-        ],
-                             stdout=self.m.raw_io.output_text(),
-                             check=False)
+        result = self.m.step(
+            f'{step_name} exists ({when})',
+            [
+                'git',
+                'cache',
+                'exists',
+                '--quiet',
+                '--cache-dir',
+                self._path,
+                url,
+            ],
+            stdout=self.m.raw_io.output_text(),
+            check=False,
+        )
         mirror_dir = result.stdout.strip()
         if not mirror_dir:
             return False
 
-        self.m.git.disable_auto_gc(mirror_dir,
-                                   step_name=f'{step_name} disable ({when})')
+        self.m.git.disable_auto_gc(
+            mirror_dir, step_name=f'{step_name} disable ({when})'
+        )
         return True
 
-    def mirror_dir(self,
-                   url: str,
-                   *,
-                   step_name: str = 'git cache exists') -> str:
+    def mirror_dir(
+        self, url: str, *, step_name: str = 'git cache exists'
+    ) -> str:
         """The absolute path of the mirror directory for *url*.
 
         Args:
@@ -186,10 +203,19 @@ class GitCacheApi(RecipeApi):
         Returns:
             The mirror's path.
         """
-        return self.m.step(step_name, [
-            'git', 'cache', 'exists', '--quiet', '--cache-dir', self._path, url
-        ],
-                           stdout=self.m.raw_io.output_text()).stdout.strip()
+        return self.m.step(
+            step_name,
+            [
+                'git',
+                'cache',
+                'exists',
+                '--quiet',
+                '--cache-dir',
+                self._path,
+                url,
+            ],
+            stdout=self.m.raw_io.output_text(),
+        ).stdout.strip()
 
     def parse_ref(self, ref: str) -> GitRef:
         """Classify *ref*, which is what decides how it is mirrored and fetched.
@@ -214,15 +240,18 @@ class GitCacheApi(RecipeApi):
             return GitRef(ref, RefKind.OTHER)
         raise ValueError(
             f'ref must be fully qualified (refs/heads/..., refs/tags/...) or a '
-            f'commit hash: {ref!r}')
+            f'commit hash: {ref!r}'
+        )
 
-    def clone_checkout(self,
-                       url: str,
-                       dest: Path,
-                       mirror_dir: str,
-                       ref: GitRef | None = None,
-                       *,
-                       step_prefix: str = '') -> None:
+    def clone_checkout(
+        self,
+        url: str,
+        dest: Path,
+        mirror_dir: str,
+        ref: GitRef | None = None,
+        *,
+        step_prefix: str = '',
+    ) -> None:
         """Clone *dest* from the populated *mirror_dir* and check out *ref*.
 
         The checkout shares the mirror's objects, and `origin`'s push URL is
@@ -236,44 +265,69 @@ class GitCacheApi(RecipeApi):
             step_prefix: Put before every step name, to tell repos apart.
         """
         name = _step_namer(step_prefix)
-        self.m.step(name('clone from git cache'), [
-            'git', 'clone', '--no-checkout', '--local', '--shared', mirror_dir,
-            dest
-        ])
+        self.m.step(
+            name('clone from git cache'),
+            [
+                'git',
+                'clone',
+                '--no-checkout',
+                '--local',
+                '--shared',
+                mirror_dir,
+                dest,
+            ],
+        )
         self.m.git.disable_auto_gc(dest)
 
         if ref is None:
-            self.m.step(name('checkout origin/HEAD'),
-                        ['git', 'checkout', '--force', 'origin/HEAD', '--'],
-                        cwd=dest)
+            self.m.step(
+                name('checkout origin/HEAD'),
+                ['git', 'checkout', '--force', 'origin/HEAD', '--'],
+                cwd=dest,
+            )
         elif ref.kind == RefKind.OTHER:
             # Neither a branch nor a tag, so the clone has no such ref to check
             # out.
-            self.m.step(name('fetch ref'),
-                        ['git', 'fetch', *FETCH_ARGS, 'origin', ref.name],
-                        cwd=dest)
-            self.m.step(name('checkout ref'),
-                        ['git', 'checkout', '--force', 'FETCH_HEAD'],
-                        cwd=dest)
+            self.m.step(
+                name('fetch ref'),
+                ['git', 'fetch', *FETCH_ARGS, 'origin', ref.name],
+                cwd=dest,
+            )
+            self.m.step(
+                name('checkout ref'),
+                ['git', 'checkout', '--force', 'FETCH_HEAD'],
+                cwd=dest,
+            )
         else:
             # The clone brought the mirror's branches (as `origin/*`) and tags;
             # a commit is reachable through the shared objects.
-            target = (f'origin/{ref.name[len(_HEADS):]}'
-                      if ref.kind == RefKind.HEAD else ref.name)
-            self.m.step(name('checkout tag' if ref.kind ==
-                             RefKind.TAG else 'checkout commit' if ref.kind ==
-                             RefKind.COMMIT else 'checkout ref'),
-                        ['git', 'checkout', '--force', target, '--'],
-                        cwd=dest)
+            target = (
+                f'origin/{ref.name[len(_HEADS) :]}'
+                if ref.kind == RefKind.HEAD
+                else ref.name
+            )
+            self.m.step(
+                name(
+                    'checkout tag'
+                    if ref.kind == RefKind.TAG
+                    else 'checkout commit'
+                    if ref.kind == RefKind.COMMIT
+                    else 'checkout ref'
+                ),
+                ['git', 'checkout', '--force', target, '--'],
+                cwd=dest,
+            )
         self._restore_push_url(url, dest, name)
 
-    def update_checkout(self,
-                        url: str,
-                        dest: Path,
-                        mirror_dir: str,
-                        ref: GitRef,
-                        *,
-                        step_prefix: str = '') -> None:
+    def update_checkout(
+        self,
+        url: str,
+        dest: Path,
+        mirror_dir: str,
+        ref: GitRef,
+        *,
+        step_prefix: str = '',
+    ) -> None:
         """Bring the existing checkout at *dest* to *ref*, through the mirror.
 
         The checkout's state is unknown, so it is re-pointed at the populated
@@ -289,37 +343,55 @@ class GitCacheApi(RecipeApi):
         name = _step_namer(step_prefix)
         # The checkout may predate the git cache, so point `origin` at the
         # mirror unconditionally. Everything below is then local disk I/O.
-        self.m.step(name('point origin at git cache'),
-                    ['git', 'remote', 'set-url', 'origin', mirror_dir],
-                    cwd=dest)
+        self.m.step(
+            name('point origin at git cache'),
+            ['git', 'remote', 'set-url', 'origin', mirror_dir],
+            cwd=dest,
+        )
         self._restore_push_url(url, dest, name)
 
         if ref.kind == RefKind.TAG:
             # Fetched as a tag, so it lands at `refs/tags/<ref>`.
-            self.m.step(name('fetch tag'), [
-                'git', 'fetch', *FETCH_ARGS, '--no-tags', 'origin',
-                f'{ref.name}:{ref.name}'
-            ],
-                        cwd=dest)
+            self.m.step(
+                name('fetch tag'),
+                [
+                    'git',
+                    'fetch',
+                    *FETCH_ARGS,
+                    '--no-tags',
+                    'origin',
+                    f'{ref.name}:{ref.name}',
+                ],
+                cwd=dest,
+            )
         else:
             # A branch, qualified ref or bare commit all resolve directly
             # against `origin`.
-            self.m.step(name('fetch commit' if ref.kind ==
-                             RefKind.COMMIT else 'fetch ref'),
-                        ['git', 'fetch', *FETCH_ARGS, 'origin', ref.name],
-                        cwd=dest)
+            self.m.step(
+                name(
+                    'fetch commit'
+                    if ref.kind == RefKind.COMMIT
+                    else 'fetch ref'
+                ),
+                ['git', 'fetch', *FETCH_ARGS, 'origin', ref.name],
+                cwd=dest,
+            )
         # A manual `git checkout --force` rather than `gclient sync -r <ref>`
         # sidesteps a gclient bug; see
         # https://github.com/brave/brave-browser/issues/44921.
-        self.m.step(name('checkout FETCH_HEAD'),
-                    ['git', 'checkout', '--force', 'FETCH_HEAD'],
-                    cwd=dest)
+        self.m.step(
+            name('checkout FETCH_HEAD'),
+            ['git', 'checkout', '--force', 'FETCH_HEAD'],
+            cwd=dest,
+        )
 
     def _restore_push_url(self, url: str, dest: Path, name) -> None:
         # `origin` points at the local mirror; pushes still go to the remote.
-        self.m.step(name('restore origin push url'),
-                    ['git', 'remote', 'set-url', '--push', 'origin', url],
-                    cwd=dest)
+        self.m.step(
+            name('restore origin push url'),
+            ['git', 'remote', 'set-url', '--push', 'origin', url],
+            cwd=dest,
+        )
 
 
 def _step_namer(prefix: str):

@@ -17,11 +17,15 @@ DEPS = ['raw_io', 'step']
 
 
 def RunSteps(api):
-    result = api.step('failing command', ['do-thing'],
-                      check=False,
-                      stdout=api.raw_io.output(),
-                      step_test_data=lambda: api.raw_io.test_api.stream_output(
-                          'nope\n', retcode=3))
+    result = api.step(
+        'failing command',
+        ['do-thing'],
+        check=False,
+        stdout=api.raw_io.output(),
+        step_test_data=lambda: api.raw_io.test_api.stream_output(
+            'nope\n', retcode=3
+        ),
+    )
     assert result.retcode == 3, result.retcode
     assert result.stdout == b'nope\n', result.stdout
 

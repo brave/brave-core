@@ -32,8 +32,9 @@ class _RetryPopen:
     """Wraps subprocess.Popen with timeout and retry for hung tsc
     invocations."""
 
-    def __init__(self, original_popen, popen_args, popen_kwargs, timeout_sec,
-                 max_retries):
+    def __init__(
+        self, original_popen, popen_args, popen_kwargs, timeout_sec, max_retries
+    ):
         self._original_popen = original_popen
         self._popen_args = popen_args
         self._popen_kwargs = popen_kwargs
@@ -43,8 +44,9 @@ class _RetryPopen:
         self._process = original_popen(*popen_args, **popen_kwargs)
 
     def _recreate_process(self):
-        self._process = self._original_popen(*self._popen_args,
-                                             **self._popen_kwargs)
+        self._process = self._original_popen(
+            *self._popen_args, **self._popen_kwargs
+        )
 
     def _retry_until_done(self, attempt):
         effective_timeout = self._timeout_sec
@@ -65,8 +67,11 @@ class _RetryPopen:
                     ) from exc
                 logging.warning(
                     'tsc timed out after %ss (attempt %d/%d), retrying: %s',
-                    effective_timeout, attempt_number, max_attempts,
-                    self._cmd_repr)
+                    effective_timeout,
+                    attempt_number,
+                    max_attempts,
+                    self._cmd_repr,
+                )
                 effective_timeout *= 2
                 self._recreate_process()
 
@@ -78,7 +83,9 @@ class _RetryPopen:
 
         return self._retry_until_done(
             lambda timeout: self._process.communicate(
-                *args, **dict(kwargs, timeout=timeout)))
+                *args, **dict(kwargs, timeout=timeout)
+            )
+        )
 
     # subprocess.call(), which devtools-frontend's run_with_restat.py uses,
     # waits on the process rather than communicating with it.
@@ -87,7 +94,8 @@ class _RetryPopen:
             return self._process.wait(*args, **kwargs)
 
         return self._retry_until_done(
-            lambda timeout: self._process.wait(timeout=timeout))
+            lambda timeout: self._process.wait(timeout=timeout)
+        )
 
     def __getattr__(self, name):
         return getattr(self._process, name)
@@ -131,9 +139,13 @@ def _make_popen(original_popen):
 
     def popen(*args, **kwargs):
         if _RetryPopen._is_tsc_command(args, kwargs):
-            return _RetryPopen(original_popen, args, kwargs,
-                               DEFAULT_TSC_TIMEOUT_SEC,
-                               DEFAULT_TSC_MAX_RETRIES)
+            return _RetryPopen(
+                original_popen,
+                args,
+                kwargs,
+                DEFAULT_TSC_TIMEOUT_SEC,
+                DEFAULT_TSC_MAX_RETRIES,
+            )
         return original_popen(*args, **kwargs)
 
     return popen

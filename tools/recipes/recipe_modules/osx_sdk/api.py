@@ -20,13 +20,11 @@ MAC_SDK_GNI_PATH = 'build/config/mac/mac_sdk.gni'
 
 
 class OSXSDKApi(RecipeApi):
-    """Installs and selects the exact Xcode that Chromium is using.
-    """
+    """Installs and selects the exact Xcode that Chromium is using."""
 
     @contextlib.contextmanager
     def ensure(
-        self,
-        chromium_src: str | Path | None = None
+        self, chromium_src: str | Path | None = None
     ) -> Iterator[dict[str, Any] | None]:
         """Install + select the Xcode in `mac_sdk.gni` pins.
 
@@ -48,11 +46,17 @@ class OSXSDKApi(RecipeApi):
         mac_sdk_gni = self.m.path.abs(chromium_src) / MAC_SDK_GNI_PATH
 
         vpython3 = self.m.depot_tools.vpython3()
-        gni_result = self.m.step('read mac_sdk.gni', [
-            vpython3, '-u',
-            self.resource('read_mac_sdk_gni.py'), mac_sdk_gni, '--json-output',
-            self.m.json.output()
-        ])
+        gni_result = self.m.step(
+            'read mac_sdk.gni',
+            [
+                vpython3,
+                '-u',
+                self.resource('read_mac_sdk_gni.py'),
+                mac_sdk_gni,
+                '--json-output',
+                self.m.json.output(),
+            ],
+        )
         sdk_version = gni_result.json.output['sdk_version']
         sdk_build_version = gni_result.json.output['sdk_build_version']
 
@@ -60,12 +64,22 @@ class OSXSDKApi(RecipeApi):
         script = brave_core_root / EPHEMERAL_XCODE_SCRIPT
 
         try:
-            result = self.m.step('install xcode', [
-                vpython3, script, '--sdk-version', sdk_version, '--sdk-build',
-                sdk_build_version, '--json-output',
-                self.m.json.output(), '--no-developer-mode-check'
-            ])
+            result = self.m.step(
+                'install xcode',
+                [
+                    vpython3,
+                    script,
+                    '--sdk-version',
+                    sdk_version,
+                    '--sdk-build',
+                    sdk_build_version,
+                    '--json-output',
+                    self.m.json.output(),
+                    '--no-developer-mode-check',
+                ],
+            )
             yield result.json.output
         finally:
-            self.m.step('reset xcode',
-                        ['sudo', '/usr/bin/xcode-select', '--reset'])
+            self.m.step(
+                'reset xcode', ['sudo', '/usr/bin/xcode-select', '--reset']
+            )

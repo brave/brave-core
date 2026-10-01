@@ -30,14 +30,18 @@ import versions
 
 with brave_chromium_utils.sys_path('//tools/rust'):
     import update_rust
-    CARGO = os.path.join(update_rust.RUST_TOOLCHAIN_OUT_DIR, 'bin',
-                         'cargo' + ('.exe' if sys.platform == 'win32' else ''))
+
+    CARGO = os.path.join(
+        update_rust.RUST_TOOLCHAIN_OUT_DIR,
+        'bin',
+        'cargo' + ('.exe' if sys.platform == 'win32' else ''),
+    )
 REMOVE_CRATES = ['winapi-*gnu*', 'windows_*gnu*']
 FILTER_CHECKSUM_PATTERNS = ['.git', '**/.git']
 
 _CRATE_NAME_RE = re.compile(r'^[a-zA-Z0-9_-]+$')
 _VERSION_RE = re.compile(r'^\d+\.\d+\.\d+')
-_ALLOWED_SCHEMES = ('https://', )
+_ALLOWED_SCHEMES = ('https://',)
 
 
 def _safe_urlopen(req, **kwargs):
@@ -82,7 +86,7 @@ def setup_workspace():
         'package': {
             'name': 'brave-tools-crates',
             'version': '0.1.0',
-            'edition': '2021'
+            'edition': '2021',
         }
     }
 
@@ -126,10 +130,12 @@ def update_crate(crate_name, precise_version):
     crate_dir = vendor_path / crate_name
 
     # 1. Fetch the package checksum from the crates.io API.
-    index_url = ('https://crates.io/api/v1/crates/' + '/'.join(
-        urllib.parse.quote(p, safe='') for p in (crate_name, precise_version)))
-    req = urllib.request.Request(index_url,
-                                 headers={'User-Agent': 'brave-tools-crates'})
+    index_url = 'https://crates.io/api/v1/crates/' + '/'.join(
+        urllib.parse.quote(p, safe='') for p in (crate_name, precise_version)
+    )
+    req = urllib.request.Request(
+        index_url, headers={'User-Agent': 'brave-tools-crates'}
+    )
     with _safe_urlopen(req) as resp:
         index_data = json.loads(resp.read())
     package_checksum = index_data['version']['checksum']
@@ -154,7 +160,8 @@ def update_crate(crate_name, precise_version):
         extracted = vendor_path / f'{crate_name}-{precise_version}'
         if not extracted.exists():
             raise RuntimeError(
-                f'Expected {extracted} after extraction, not found')
+                f'Expected {extracted} after extraction, not found'
+            )
         extracted.rename(crate_dir)
     finally:
         os.unlink(tmp_path)
@@ -186,8 +193,9 @@ def update_crate(crate_name, precise_version):
             package['version'] = precise_version
             package['checksum'] = package_checksum
             updated = True
-            print(f'Cargo.lock: {crate_name} {old_version} -> '
-                  f'{precise_version}')
+            print(
+                f'Cargo.lock: {crate_name} {old_version} -> {precise_version}'
+            )
             break
 
     if not updated:
@@ -244,10 +252,7 @@ def create_dependency_placeholders():
 
                     # Create minimal Cargo.toml
                     minimal_toml = {
-                        'package': {
-                            'name': name,
-                            'version': version
-                        }
+                        'package': {'name': name, 'version': version}
                     }
 
                     with open(dir_path / 'Cargo.toml', 'w') as f:
@@ -271,7 +276,8 @@ def filter_dependencies():
         """Check if a file path matches any of the filter patterns."""
         return any(
             fnmatch.fnmatch(file_path, pattern)
-            for pattern in FILTER_CHECKSUM_PATTERNS)
+            for pattern in FILTER_CHECKSUM_PATTERNS
+        )
 
     # Count total packages for progress reporting
     all_packages = [d for d in vendor_path.iterdir() if d.is_dir()]
@@ -279,9 +285,11 @@ def filter_dependencies():
 
     # Iterate through all vendored packages
     for idx, package_dir in enumerate(all_packages, 1):
-        print(f"\rFiltering dependencies: {idx}/{total_packages}",
-              end='',
-              flush=True)
+        print(
+            f"\rFiltering dependencies: {idx}/{total_packages}",
+            end='',
+            flush=True,
+        )
 
         # Remove matching files from filesystem by walking the directory
         removed_files = []
@@ -343,19 +351,10 @@ def create_cargo_config():
     # Create .cargo directory and write config.toml
     cargo_config = {
         'source': {
-            'crates-io': {
-                'replace-with': 'vendored-sources'
-            },
-            'vendored-sources': {
-                'directory': 'vendor'
-            }
+            'crates-io': {'replace-with': 'vendored-sources'},
+            'vendored-sources': {'directory': 'vendor'},
         },
-        'profile': {
-            'release': {
-                'opt-level': 1,
-                'lto': 'off'
-            }
-        }
+        'profile': {'release': {'opt-level': 1, 'lto': 'off'}},
     }
 
     Path('.cargo').mkdir(exist_ok=True)
@@ -365,17 +364,21 @@ def create_cargo_config():
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--update-crate',
-                        help='Update a single crate to an exact version '
-                        '(e.g. --update-crate=rustls-webpki@0.103.10)')
+    parser.add_argument(
+        '--update-crate',
+        help='Update a single crate to an exact version '
+        '(e.g. --update-crate=rustls-webpki@0.103.10)',
+    )
     args = parser.parse_args()
 
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
     if args.update_crate:
         if '@' not in args.update_crate:
-            parser.error('--update-crate requires name@version format '
-                         '(e.g. rustls-webpki@0.103.10)')
+            parser.error(
+                '--update-crate requires name@version format '
+                '(e.g. rustls-webpki@0.103.10)'
+            )
         crate_name, version = args.update_crate.rsplit('@', 1)
         update_crate(crate_name, version)
     else:

@@ -24,7 +24,7 @@ with SysPath(os.path.join(GetChromiumSrcDir(), 'brave', 'tools', 'perf')):
 class BraveUtilsBenchmark(perf_benchmark.PerfBenchmark):
   """A special benchmark for utility purposes.
 
-    Doesn't measure anything.
+  Doesn't measure anything.
   """
 
   def CreateStorySet(self, options):
@@ -37,8 +37,9 @@ class BraveUtilsBenchmark(perf_benchmark.PerfBenchmark):
 
 class BraveUtilsOnlineBenchmark(BraveUtilsBenchmark):
   """A version of BraveUtilsBenchmark with an internet connection."""
+
   options = {
-      'use_live_sites': True,
+    'use_live_sites': True,
   }
   # A default delay.
   # SB database update is started <=5 minutes after browser start

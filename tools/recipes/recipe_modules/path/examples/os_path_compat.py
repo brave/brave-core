@@ -23,26 +23,32 @@ def RunSteps(api):
     # is always a str regardless of the argument's type.
     assert api.path.dirname(sample) == api.path.chromium_src / 'chrome'
     assert api.path.basename(sample) == 'VERSION'
-    assert api.path.split(sample) == (api.path.chromium_src / 'chrome',
-                                      'VERSION')
+    assert api.path.split(sample) == (
+        api.path.chromium_src / 'chrome',
+        'VERSION',
+    )
 
     # Same, but for a plain string argument -- dirname then returns a str.
     sample_str = api.path.join(str(api.path.chromium_src), 'chrome', 'VERSION')
     assert api.path.dirname(sample_str) == api.path.join(
-        str(api.path.chromium_src), 'chrome')
+        str(api.path.chromium_src), 'chrome'
+    )
     assert api.path.basename(sample_str) == 'VERSION'
 
     # splitext strips only the last extension, on both a Path and a str.
     archive = api.path.out / 'archive.tar.gz'
     assert api.path.splitext(archive) == (api.path.out / 'archive.tar', '.gz')
     archive_str = api.path.join(str(api.path.out), 'archive.tar.gz')
-    assert api.path.splitext(archive_str) == (api.path.join(
-        str(api.path.out), 'archive.tar'), '.gz')
+    assert api.path.splitext(archive_str) == (
+        api.path.join(str(api.path.out), 'archive.tar'),
+        '.gz',
+    )
 
     # normpath collapses '..'/'.' lexically.
     messy = api.path.join(str(api.path.workspace), 'a', '..', 'b')
-    assert api.path.normpath(messy) == api.path.join(str(api.path.workspace),
-                                                     'b')
+    assert api.path.normpath(messy) == api.path.join(
+        str(api.path.workspace), 'b'
+    )
 
     # abspath/realpath expand '~' and fully resolve, exactly like abs().
     assert api.path.abspath('~/x') == str(api.path.home() / 'x')
@@ -87,8 +93,9 @@ def RunSteps(api):
 
     api.path.mock_remove_paths(scratch)
     api.step('scratch removed', ['echo', str(api.path.is_file(scratch))])
-    api.step('copy survives removal',
-             ['echo', str(api.path.is_file(copy_dest))])
+    api.step(
+        'copy survives removal', ['echo', str(api.path.is_file(copy_dest))]
+    )
 
 
 def GenTests(api):
@@ -101,17 +108,27 @@ def GenTests(api):
         yield api.test(
             plat,
             api.platform.name(plat),
-            api.post_process(post_process.StepCommandContains, 'mkstemp',
-                             [f'[WORKSPACE]{sep}rc{sep}scratch_tmp_1']),
-            api.post_process(post_process.StepCommandContains,
-                             'scratch is file', ['True']),
-            api.post_process(post_process.StepCommandContains,
-                             'scratch dir is dir', ['True']),
-            api.post_process(post_process.StepCommandContains, 'copy is file',
-                             ['True']),
-            api.post_process(post_process.StepCommandContains,
-                             'scratch removed', ['False']),
-            api.post_process(post_process.StepCommandContains,
-                             'copy survives removal', ['True']),
+            api.post_process(
+                post_process.StepCommandContains,
+                'mkstemp',
+                [f'[WORKSPACE]{sep}rc{sep}scratch_tmp_1'],
+            ),
+            api.post_process(
+                post_process.StepCommandContains, 'scratch is file', ['True']
+            ),
+            api.post_process(
+                post_process.StepCommandContains, 'scratch dir is dir', ['True']
+            ),
+            api.post_process(
+                post_process.StepCommandContains, 'copy is file', ['True']
+            ),
+            api.post_process(
+                post_process.StepCommandContains, 'scratch removed', ['False']
+            ),
+            api.post_process(
+                post_process.StepCommandContains,
+                'copy survives removal',
+                ['True'],
+            ),
             api.post_process(post_process.StatusSuccess),
         )

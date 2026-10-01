@@ -35,7 +35,8 @@ import sys
 import launcher
 
 DEPOT_TOOLS_URL = (
-    'https://chromium.googlesource.com/chromium/tools/depot_tools.git')
+    'https://chromium.googlesource.com/chromium/tools/depot_tools.git'
+)
 
 # The hardcoded name for the depot_tools mirror directory within the git cache.
 _DEPOT_TOOLS_MIRROR_DIR = 'chromium.googlesource.com-chromium-tools-depot_tools'
@@ -52,8 +53,7 @@ _OWN_CHECKOUT = Path(__file__).resolve().parents[3]
 
 
 def _rmtree(path: Path) -> None:
-    """Removes `path`, clearing the read-only bit git sets on packs (Windows).
-    """
+    """Removes `path`, clearing the read-only bit git sets on packs (Windows)."""
 
     def _make_writable_and_retry(func, target, _exc_info):
         os.chmod(target, stat.S_IWRITE)
@@ -112,7 +112,8 @@ def ensure_depot_tools(checkout: Path) -> Path | None:
     try:
         if interrupted and dest.exists():
             sys.stderr.write(
-                f'runner.py: removing the interrupted deploy at {dest}\n')
+                f'runner.py: removing the interrupted deploy at {dest}\n'
+            )
             _rmtree(dest)
         _clone_depot_tools(dest)
     except (OSError, subprocess.CalledProcessError) as error:

@@ -56,38 +56,48 @@ def cmd_follow_renames(args: list[str]) -> int:
     """Parse follow-renames arguments and process all upstream renames."""
     parser = argparse.ArgumentParser(
         prog='git cr follow-renames',
-        description=('Repair brave-core artefacts after upstream Chromium '
-                     'file renames.'),
+        description=(
+            'Repair brave-core artefacts after upstream Chromium file renames.'
+        ),
     )
-    parser.add_argument('--no-git',
-                        action='store_true',
-                        dest='no_git',
-                        help='Use filesystem ops instead of git mv/rm')
-    parser.add_argument('--no-run-plaster',
-                        action='store_true',
-                        dest='no_run_plaster',
-                        help='Skip running plaster after moving plaster files')
+    parser.add_argument(
+        '--no-git',
+        action='store_true',
+        dest='no_git',
+        help='Use filesystem ops instead of git mv/rm',
+    )
+    parser.add_argument(
+        '--no-run-plaster',
+        action='store_true',
+        dest='no_run_plaster',
+        help='Skip running plaster after moving plaster files',
+    )
     parser.add_argument(
         '--no-format',
         action='store_true',
         dest='no_format',
-        help='Skip running `pnpm run format` after processing renames')
-    parser.add_argument('--verbose',
-                        action='store_true',
-                        help='Enable verbose logging')
+        help='Skip running `pnpm run format` after processing renames',
+    )
+    parser.add_argument(
+        '--verbose', action='store_true', help='Enable verbose logging'
+    )
     parser.add_argument(
         'ref_or_range',
-        help=('Git revision range or single ref in the Chromium repo. '
-              'A bare ref (e.g. HEAD or a tag) is treated as a single '
-              'commit; a range (e.g. old_tag..new_tag) is used as-is.'))
+        help=(
+            'Git revision range or single ref in the Chromium repo. '
+            'A bare ref (e.g. HEAD or a tag) is treated as a single '
+            'commit; a range (e.g. old_tag..new_tag) is used as-is.'
+        ),
+    )
     parsed = parser.parse_args(args)
 
     renames = _get_chromium_renames(parsed.ref_or_range)
 
     for old_chromium, new_chromium in renames:
         _repair_chromium_src(old_chromium, new_chromium, parsed.no_git)
-        _repair_plaster_files(old_chromium, new_chromium, parsed.no_git,
-                              not parsed.no_run_plaster)
+        _repair_plaster_files(
+            old_chromium, new_chromium, parsed.no_git, not parsed.no_run_plaster
+        )
         update_references(old_chromium, new_chromium)
         _repair_patch_files(old_chromium, new_chromium, parsed.no_git)
 
@@ -120,9 +130,9 @@ def _get_chromium_renames(ref_or_range: str) -> list[_RenamePair]:
     For ranges, multi-step renames are collapsed: a→b→c becomes a→c, and
     round-trips (a→b→a) are dropped entirely.
     """
-    raw = repository.chromium.run_git('show', '--diff-filter=R',
-                                      '--name-status', '--format=',
-                                      ref_or_range)
+    raw = repository.chromium.run_git(
+        'show', '--diff-filter=R', '--name-status', '--format=', ref_or_range
+    )
     renames: list[_RenamePair] = []
     for line in raw.splitlines():
         parts = line.split('\t')
@@ -152,8 +162,9 @@ def _collapse_renames(renames: list[_RenamePair]) -> list[_RenamePair]:
     return list(net.items())
 
 
-def _repair_chromium_src(old_chromium: Path, new_chromium: Path,
-                         no_git: bool) -> None:
+def _repair_chromium_src(
+    old_chromium: Path, new_chromium: Path, no_git: bool
+) -> None:
     """Moves and repairs the chromium_src/ shadow file for one rename.
 
     If no shadow file exists at chromium_src/old_chromium, this is a no-op.
@@ -177,7 +188,8 @@ def _repair_chromium_src(old_chromium: Path, new_chromium: Path,
 
     if new_shadow.suffix == '.h':
         new_guard = compute_guard(
-            repository.chromium.to_repo_relative(new_shadow))
+            repository.chromium.to_repo_relative(new_shadow)
+        )
         content = new_shadow.read_bytes().decode('utf-8')
         old_guard = find_guard(content)
         if old_guard:
@@ -186,10 +198,12 @@ def _repair_chromium_src(old_chromium: Path, new_chromium: Path,
             insert_guard(new_shadow, new_guard)
 
 
-def _repair_plaster_files(old_chromium: Path,
-                          new_chromium: Path,
-                          no_git: bool,
-                          run_plaster: bool = True) -> None:
+def _repair_plaster_files(
+    old_chromium: Path,
+    new_chromium: Path,
+    no_git: bool,
+    run_plaster: bool = True,
+) -> None:
     """Moves the plaster file and deletes the corresponding patch file.
 
     Plaster file convention: chromium path A/foo.h lives at
@@ -215,8 +229,8 @@ def _repair_plaster_files(old_chromium: Path,
     patch_file = plaster.PlasterTarget.resolve(old_plaster).patch
     if not patch_file.exists():
         logging.warning(
-            'Expected patch file not found: %s; skipping deletion.',
-            patch_file)
+            'Expected patch file not found: %s; skipping deletion.', patch_file
+        )
     else:
         if no_git:
             patch_file.unlink()
@@ -239,8 +253,9 @@ def _repair_plaster_files(old_chromium: Path,
             logging.warning('plaster failed to apply %s: %s', new_plaster, e)
 
 
-def _repair_patch_files(old_chromium: Path, new_chromium: Path,
-                        no_git: bool) -> None:
+def _repair_patch_files(
+    old_chromium: Path, new_chromium: Path, no_git: bool
+) -> None:
     """Renames and re-applies the .patch file for one upstream rename.
 
     If no patch file exists at patches/patch_name_for(old_chromium), this is
@@ -262,10 +277,14 @@ def _repair_patch_files(old_chromium: Path, new_chromium: Path,
     old_path_str = old_chromium.as_posix()
     new_path_str = new_chromium.as_posix()
     updated_lines = []
-    for line in old_patch.read_bytes().decode('utf-8').splitlines(
-            keepends=True):
-        if (line.startswith('diff --git ') or line.startswith('--- ')
-                or line.startswith('+++ ')):
+    for line in (
+        old_patch.read_bytes().decode('utf-8').splitlines(keepends=True)
+    ):
+        if (
+            line.startswith('diff --git ')
+            or line.startswith('--- ')
+            or line.startswith('+++ ')
+        ):
             line = line.replace(old_path_str, new_path_str)
         updated_lines.append(line)
     updated_content = ''.join(updated_lines)
@@ -282,12 +301,20 @@ def _repair_patch_files(old_chromium: Path, new_chromium: Path,
         # `git apply` runs with chromium as its cwd (via run_git's `-C`), so
         # pass the patch path resolved to absolute; a brave-relative path
         # would not be found from chromium's cwd.
-        repository.chromium.run_git('apply', '--3way', '--ignore-space-change',
-                                    '--ignore-whitespace',
-                                    str(new_patch.resolve()))
+        repository.chromium.run_git(
+            'apply',
+            '--3way',
+            '--ignore-space-change',
+            '--ignore-whitespace',
+            str(new_patch.resolve()),
+        )
     except subprocess.CalledProcessError as e:
-        logging.warning('Failed to apply %s after rename: %s', new_patch,
-                        e.stderr.strip() if e.stderr else str(e))
+        logging.warning(
+            'Failed to apply %s after rename: %s',
+            new_patch,
+            e.stderr.strip() if e.stderr else str(e),
+        )
     finally:
-        repository.chromium.run_git('reset', 'HEAD', '--',
-                                    new_chromium.as_posix())
+        repository.chromium.run_git(
+            'reset', 'HEAD', '--', new_chromium.as_posix()
+        )

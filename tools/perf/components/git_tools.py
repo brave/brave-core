@@ -28,11 +28,26 @@ def DoesPrOpen(branch: str, target: Optional[str] = None):
   return len(pr_list) > 0
 
 
-def MakeGithubPR(branch: str, target: str, title: str, body: str,
-                 extra_args: List[str], reviewers: List[str]):
+def MakeGithubPR(
+  branch: str,
+  target: str,
+  title: str,
+  body: str,
+  extra_args: List[str],
+  reviewers: List[str],
+):
   args = [
-      'gh', 'pr', 'create', '--base', target, '--head', branch, '--title',
-      title, '--body', body
+    'gh',
+    'pr',
+    'create',
+    '--base',
+    target,
+    '--head',
+    branch,
+    '--title',
+    title,
+    '--body',
+    body,
   ]
   for reviewer in reviewers:
     args.extend(['--reviewer', reviewer])
@@ -41,15 +56,18 @@ def MakeGithubPR(branch: str, target: str, title: str, body: str,
   return GetProcessOutput(args, cwd=path_util.GetBraveDir())
 
 
-def PushChangesToBranch(files: Dict[str, str],
-                        branch: str,
-                        commit_message: str,
-                        cwd=path_util.GetBraveDir()):
+def PushChangesToBranch(
+  files: Dict[str, str],
+  branch: str,
+  commit_message: str,
+  cwd=path_util.GetBraveDir(),
+):
   # Make a few attempts to rebase if non fast-forward
   for attempt in range(3):
     logging.info('Pushing changes to branch %s #%d', branch, attempt)
     branch_exists, _ = GetProcessOutput(
-        ['git', 'fetch', GH_BRAVE_CORE_GIT_URL, branch], cwd)
+      ['git', 'fetch', GH_BRAVE_CORE_GIT_URL, branch], cwd
+    )
     if branch_exists:
       GetProcessOutput(['git', 'checkout', '-f', 'FETCH_HEAD'], cwd, check=True)
 
@@ -59,9 +77,9 @@ def PushChangesToBranch(files: Dict[str, str],
       shutil.copy(local_file, stage_path)
       GetProcessOutput(['git', 'add', stage_path], cwd, check=True)
 
-    GetProcessOutput(['git', 'commit', '-m', f'{commit_message}'],
-                     cwd,
-                     check=True)
+    GetProcessOutput(
+      ['git', 'commit', '-m', f'{commit_message}'], cwd, check=True
+    )
 
     # Use environment variables for GitHub username and auth token
     github_username = os.environ.get('GITHUB_USERNAME')
@@ -69,27 +87,30 @@ def PushChangesToBranch(files: Dict[str, str],
 
     if not github_username or not github_token:
       raise ValueError(
-          "GitHub username or token not set in environment variables")
+        "GitHub username or token not set in environment variables"
+      )
 
     # Construct the URL with authentication
     auth_url = f'https://{github_username}:{github_token}@github.com/brave/brave-core.git'
 
     success, _ = GetProcessOutput(
-        ['git', 'push', auth_url, f'{branch}:{branch}'], cwd)
+      ['git', 'push', auth_url, f'{branch}:{branch}'], cwd
+    )
     if success:
       return
 
   raise RuntimeError(f'Can\'t push changes to branch {branch}')
 
+
 def GetFileAtRevision(
-    filepath: str, revision: str, cwd=path_util.GetBraveDir()) -> Optional[str]:
+  filepath: str, revision: str, cwd=path_util.GetBraveDir()
+) -> Optional[str]:
   if os.path.isabs(filepath):
     filepath = os.path.relpath(filepath, cwd)
   normalized_path = filepath.replace('\\', '/')
   success, content = GetProcessOutput(
-      ['git', 'show', f'{revision}:{normalized_path}'],
-      cwd,
-      output_to_debug=False)
+    ['git', 'show', f'{revision}:{normalized_path}'], cwd, output_to_debug=False
+  )
   return content if success else None
 
 
@@ -115,14 +136,16 @@ def EnsureRevision(revision: str, cwd=path_util.GetBraveDir()) -> None:
   if ok:
     return
   logging.debug('Try to fetch %s', revision)
-  ok, _ = GetProcessOutput(['git', 'fetch', 'origin', f'{revision}:{revision}'],
-                           cwd)
+  ok, _ = GetProcessOutput(
+    ['git', 'fetch', 'origin', f'{revision}:{revision}'], cwd
+  )
   if ok:
     return
 
   if cwd == path_util.GetBraveDir():
     ok, _ = GetProcessOutput(
-        ['git', 'fetch', GH_BRAVE_CORE_GIT_URL, f'{revision}:{revision}'], cwd)
+      ['git', 'fetch', GH_BRAVE_CORE_GIT_URL, f'{revision}:{revision}'], cwd
+    )
     if ok:
       return
 
@@ -130,15 +153,16 @@ def EnsureRevision(revision: str, cwd=path_util.GetBraveDir()) -> None:
 
 
 def GetCommitDate(revision: str, cwd=path_util.GetBraveDir()) -> str:
-  _, output = GetProcessOutput(['git', 'show', '-s', '--format=%ci', revision],
-                               cwd,
-                               check=True)
+  _, output = GetProcessOutput(
+    ['git', 'show', '-s', '--format=%ci', revision], cwd, check=True
+  )
   commit_date = output.rstrip().split('\n')[-1]
   return commit_date
 
 
-def GetRevisionFromDate(date: str, branch: str,
-                        cwd=path_util.GetBraveDir()) -> str:
+def GetRevisionFromDate(
+  date: str, branch: str, cwd=path_util.GetBraveDir()
+) -> str:
   # fetch the branch:
   GetProcessOutput(['git', 'fetch', 'origin', branch], cwd, check=True)
 
@@ -151,7 +175,8 @@ def GetRevisionFromDate(date: str, branch: str,
 
 def GetGitHash(revision: str, cwd=path_util.GetBraveDir()) -> str:
   _, git_hash_output = GetProcessOutput(
-      ['git', 'rev-list', '-n', '1', revision], cwd, check=True)
+    ['git', 'rev-list', '-n', '1', revision], cwd, check=True
+  )
   return git_hash_output.rstrip()
 
 
@@ -163,7 +188,12 @@ def GetRevisionNumber(revision: str, cwd=path_util.GetBraveDir()) -> str:
   """
 
   rev_number_args = [
-      'git', 'rev-list', '--topo-order', '--first-parent', '--count', revision
+    'git',
+    'rev-list',
+    '--topo-order',
+    '--first-parent',
+    '--count',
+    revision,
   ]
 
   _, rev_number_output = GetProcessOutput(rev_number_args, cwd, check=True)

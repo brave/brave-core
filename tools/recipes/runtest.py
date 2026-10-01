@@ -116,13 +116,18 @@ def launch_dbus() -> bool:
 
     Returns True if it actually spawned DBus.
     """
-    if (platform.uname()[0].lower() == 'linux'
-            and 'DBUS_SESSION_BUS_ADDRESS' not in os.environ):
+    if (
+        platform.uname()[0].lower() == 'linux'
+        and 'DBUS_SESSION_BUS_ADDRESS' not in os.environ
+    ):
         try:
-            print('DBUS_SESSION_BUS_ADDRESS env var not found, starting '
-                  'dbus-launch')
+            print(
+                'DBUS_SESSION_BUS_ADDRESS env var not found, starting '
+                'dbus-launch'
+            )
             dbus_output = subprocess.check_output(
-                ['dbus-launch'], universal_newlines=True).split('\n')
+                ['dbus-launch'], universal_newlines=True
+            ).split('\n')
             for line in dbus_output:
                 match = re.match(r'([^=]+)\=(.+)', line)
                 if match:
@@ -196,13 +201,18 @@ def remove_chrome_temporary_files() -> None:
     elif sys.platform.startswith('darwin'):
         home = os.environ['HOME']
         for name in ('Chromium', 'Google Chrome'):
-            crash_path = Path(
-                home
-            ) / 'Library' / 'Application Support' / name / 'Crash Reports'
+            crash_path = (
+                Path(home)
+                / 'Library'
+                / 'Application Support'
+                / name
+                / 'Crash Reports'
+            )
             _log_and_remove_files(crash_path, r'^.+\.dmp$')
     else:
         raise NotImplementedError(
-            f'Platform "{sys.platform}" is not currently supported.')
+            f'Platform "{sys.platform}" is not currently supported.'
+        )
 
 
 def _remove_chrome_desktop_files() -> None:
@@ -220,11 +230,13 @@ def _kill_if_running(proc: subprocess.Popen) -> None:
         proc.kill()
 
 
-def run_command(command: list[str],
-                *,
-                env: dict[str, str],
-                parser: gtest_output.GTestParser | None = None,
-                symbolizer: list[str] | None = None) -> int:
+def run_command(
+    command: list[str],
+    *,
+    env: dict[str, str],
+    parser: gtest_output.GTestParser | None = None,
+    symbolizer: list[str] | None = None,
+) -> int:
     """Runs `command`, streaming its output and returning its exit code.
 
     When neither `parser` nor `symbolizer` is given the child inherits stdout
@@ -248,25 +260,31 @@ def run_command(command: list[str],
 
     with contextlib.ExitStack() as stack:
         test_proc = stack.enter_context(
-            subprocess.Popen(command,
-                             stdout=subprocess.PIPE,
-                             stderr=subprocess.STDOUT,
-                             env=env,
-                             text=True,
-                             encoding='utf-8',
-                             errors='replace'))
+            subprocess.Popen(
+                command,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                env=env,
+                text=True,
+                encoding='utf-8',
+                errors='replace',
+            )
+        )
         stack.callback(_kill_if_running, test_proc)
         symbolizer_proc = None
         if symbolizer:
             symbolizer_proc = stack.enter_context(
-                subprocess.Popen(symbolizer,
-                                 stdin=test_proc.stdout,
-                                 stdout=subprocess.PIPE,
-                                 stderr=subprocess.STDOUT,
-                                 env=env,
-                                 text=True,
-                                 encoding='utf-8',
-                                 errors='replace'))
+                subprocess.Popen(
+                    symbolizer,
+                    stdin=test_proc.stdout,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    env=env,
+                    text=True,
+                    encoding='utf-8',
+                    errors='replace',
+                )
+            )
             stack.callback(_kill_if_running, symbolizer_proc)
             # Allow the test process to receive SIGPIPE if the symbolizer
             # exits.
@@ -289,8 +307,9 @@ def run_command(command: list[str],
         return test_code
 
 
-def build_test_binary_command(test_exe_path: Path,
-                              options: Options) -> list[str]:
+def build_test_binary_command(
+    test_exe_path: Path, options: Options
+) -> list[str]:
     """Builds the base command for running a test binary."""
     command = [str(test_exe_path)]
     if options.parse_gtest_output:
@@ -314,8 +333,9 @@ def create_log_processor(options: Options) -> gtest_output.GTestParser | None:
 
 def get_sanitizer_symbolize_command(strip_path_prefix: str = '') -> list[str]:
     """Returns the command that symbolizes sanitizer reports offline."""
-    script_path = Path('src', 'tools', 'valgrind', 'asan',
-                       'asan_symbolize.py').resolve()
+    script_path = Path(
+        'src', 'tools', 'valgrind', 'asan', 'asan_symbolize.py'
+    ).resolve()
     command = [sys.executable, str(script_path)]
     if strip_path_prefix:
         command.append(strip_path_prefix)
@@ -332,8 +352,12 @@ def configure_sanitizer_tools(options: Options) -> SanitizerSetup:
     extra_args: list[str] = []
     use_symbolization_script = False
 
-    any_sanitizer = (options.enable_asan or options.enable_tsan
-                     or options.enable_msan or options.enable_lsan)
+    any_sanitizer = (
+        options.enable_asan
+        or options.enable_tsan
+        or options.enable_msan
+        or options.enable_lsan
+    )
     if any_sanitizer:
         # Instruct GTK to use malloc while running under a sanitizer.
         env['G_SLICE'] = 'always-malloc'
@@ -341,8 +365,15 @@ def configure_sanitizer_tools(options: Options) -> SanitizerSetup:
         env['NSS_DISABLE_UNLOAD'] = '1'
 
     symbolizer_path = str(
-        Path('src', 'third_party', 'llvm-build', 'Release+Asserts', 'bin',
-             'llvm-symbolizer').resolve())
+        Path(
+            'src',
+            'third_party',
+            'llvm-build',
+            'Release+Asserts',
+            'bin',
+            'llvm-symbolizer',
+        ).resolve()
+    )
 
     # Symbolization of sanitizer reports.
     symbolization_options: list[str] = []
@@ -391,13 +422,16 @@ def configure_sanitizer_tools(options: Options) -> SanitizerSetup:
             msan_options.append('detect_leaks=1')
         append_env('MSAN_OPTIONS', msan_options)
 
-    return SanitizerSetup(env=env,
-                          extra_args=extra_args,
-                          use_symbolization_script=use_symbolization_script)
+    return SanitizerSetup(
+        env=env,
+        extra_args=extra_args,
+        use_symbolization_script=use_symbolization_script,
+    )
 
 
-def report_outcome(test_name: str, exit_code: int,
-                   parser: gtest_output.GTestParser) -> None:
+def report_outcome(
+    test_name: str, exit_code: int, parser: gtest_output.GTestParser
+) -> None:
     """Prints a human-readable summary of the test outcome."""
     # Always print the raw exit code; it's helpful for debugging, especially on
     # Windows where a "crashed or hung" message may have no other output.
@@ -423,8 +457,11 @@ def report_outcome(test_name: str, exit_code: int,
     success, warnings, failure = range(3)
     status = success
     if exit_code == 0:
-        if (parser.parsing_errors() or parser.failed_tests()
-                or parser.memory_tool_report_hashes()):
+        if (
+            parser.parsing_errors()
+            or parser.failed_tests()
+            or parser.memory_tool_report_hashes()
+        ):
             status = warnings
     elif exit_code == WARNING_EXIT_CODE:
         status = warnings
@@ -448,8 +485,9 @@ def report_outcome(test_name: str, exit_code: int,
         print('crashed or hung')
 
 
-def _prepare_linux_env(build_dir: Path, options: Options,
-                       extra_env: dict[str, str]) -> None:
+def _prepare_linux_env(
+    build_dir: Path, options: Options, extra_env: dict[str, str]
+) -> None:
     """Applies the Linux-specific environment tweaks before running a test."""
     # Unset proxy variables; when set they cause some tests to hang.
     # crbug.com/139638.
@@ -468,8 +506,12 @@ def _prepare_linux_env(build_dir: Path, options: Options,
     extra_env['LD_LIBRARY_PATH'] = ld_library_path
 
 
-def run_test(options: Options, args: list[str], extra_env: dict[str, str],
-             sanitizer: SanitizerSetup) -> int:
+def run_test(
+    options: Options,
+    args: list[str],
+    extra_env: dict[str, str],
+    sanitizer: SanitizerSetup,
+) -> int:
     """Runs the test on the current desktop platform and returns its code."""
     build_dir = options.build_dir
     test_exe = args[0]
@@ -494,33 +536,37 @@ def run_test(options: Options, args: list[str], extra_env: dict[str, str],
     command.extend(args[1:])
 
     parser = create_log_processor(options)
-    json_parser = (parser if isinstance(parser, gtest_output.GTestJSONParser)
-                   else None)
+    json_parser = (
+        parser if isinstance(parser, gtest_output.GTestJSONParser) else None
+    )
 
     start_xvfb = False
     try:
-        start_xvfb = (sys.platform.startswith('linux') and options.xvfb)
+        start_xvfb = sys.platform.startswith('linux') and options.xvfb
         if start_xvfb:
             start_virtual_x(build_dir)
 
         if json_parser:
             json_file = json_parser.prepare_json_file(
-                options.test_launcher_summary_output)
+                options.test_launcher_summary_output
+            )
             command.append(f'--test-launcher-summary-output={json_file}')
         elif options.test_launcher_summary_output:
-            command.append('--test-launcher-summary-output='
-                           f'{options.test_launcher_summary_output}')
+            command.append(
+                '--test-launcher-summary-output='
+                f'{options.test_launcher_summary_output}'
+            )
 
         symbolizer = None
         if sanitizer.use_symbolization_script:
             symbolizer = get_sanitizer_symbolize_command(
-                options.strip_path_prefix)
+                options.strip_path_prefix
+            )
 
         env = _build_env(extra_env)
-        result = run_command(command,
-                             env=env,
-                             parser=parser,
-                             symbolizer=symbolizer)
+        result = run_command(
+            command, env=env, parser=parser, symbolizer=symbolizer
+        )
     finally:
         if start_xvfb:
             stop_virtual_x()
@@ -581,11 +627,13 @@ def start_virtual_x(build_dir: Path) -> None:
 
     if xdisplaycheck_path and xdisplaycheck_path.exists():
         print('Verifying Xvfb is not running ...')
-        check = subprocess.run([str(xdisplaycheck_path), '--noserver'],
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.STDOUT,
-                               env=env,
-                               check=False)
+        check = subprocess.run(
+            [str(xdisplaycheck_path), '--noserver'],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            env=env,
+            check=False,
+        )
         if check.returncode == 0:
             raise RuntimeError('Display already present.')
 
@@ -599,23 +647,35 @@ def start_virtual_x(build_dir: Path) -> None:
 
     # Xvfb outlives this call; stop_virtual_x() stops it via the pid file.
     # pylint: disable-next=consider-using-with
-    proc = subprocess.Popen([
-        'Xvfb', display, '-screen', '0', '1280x800x24', '-ac', '-dpi', '96',
-        '-maxclients', '512'
-    ],
-                            stdout=subprocess.PIPE,
-                            stderr=subprocess.STDOUT,
-                            env=env)
+    proc = subprocess.Popen(
+        [
+            'Xvfb',
+            display,
+            '-screen',
+            '0',
+            '1280x800x24',
+            '-ac',
+            '-dpi',
+            '96',
+            '-maxclients',
+            '512',
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        env=env,
+    )
     _xvfb_pid_file().write_text(str(proc.pid), encoding='utf-8', newline='')
 
     if xdisplaycheck_path and xdisplaycheck_path.exists():
         print('Verifying Xvfb has started...')
         start = time.time()
-        check = subprocess.run([str(xdisplaycheck_path)],
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.STDOUT,
-                               text=True,
-                               check=False)
+        check = subprocess.run(
+            [str(xdisplaycheck_path)],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            check=False,
+        )
         elapsed = time.time() - start
         if check.returncode != 0:
             print(f'xdisplaycheck failed after {elapsed:.0f} seconds.')
@@ -631,9 +691,9 @@ def start_virtual_x(build_dir: Path) -> None:
     # Some ChromeOS tests need a window manager.
     # Runs for as long as Xvfb does and exits along with it.
     # pylint: disable-next=consider-using-with
-    subprocess.Popen(['openbox'],
-                     stdout=subprocess.PIPE,
-                     stderr=subprocess.STDOUT)
+    subprocess.Popen(
+        ['openbox'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+    )
     print('Window manager (openbox) started.')
 
 
@@ -662,60 +722,79 @@ def stop_virtual_x() -> None:
 def main() -> int:
     """Entry point: parses args, sets up the environment and runs the test."""
     parser = argparse.ArgumentParser(
-        description='Runs a test executable and processes its output.')
-    parser.add_argument('--build-dir',
-                        required=True,
-                        type=Path,
-                        help='Path to the build dir.')
-    parser.add_argument('--run-python-script',
-                        action='store_true',
-                        help='Treat the first argument as a python script.')
-    parser.add_argument('--xvfb',
-                        dest='xvfb',
-                        action='store_true',
-                        default=True,
-                        help='Start a virtual X server on Linux.')
-    parser.add_argument('--no-xvfb',
-                        dest='xvfb',
-                        action='store_false',
-                        help='Do not start a virtual X server on Linux.')
-    parser.add_argument('--builder-group',
-                        default=None,
-                        help='The group of the builder (accepted for '
-                        'compatibility; currently unused).')
-    parser.add_argument('--builder-name',
-                        default=None,
-                        help='The name of the builder running this script.')
-    parser.add_argument('--test-type',
-                        default='',
-                        help="The test name, e.g. 'brave_unit_tests'.")
-    parser.add_argument('--parse-gtest-output',
-                        action='store_true',
-                        help='Parse the gtest output and report the outcome.')
-    parser.add_argument('--enable-asan',
-                        action='store_true',
-                        help='Enable AddressSanitizer.')
-    parser.add_argument('--enable-lsan',
-                        action='store_true',
-                        help='Enable LeakSanitizer.')
-    parser.add_argument('--enable-msan',
-                        action='store_true',
-                        help='Enable MemorySanitizer.')
-    parser.add_argument('--enable-tsan',
-                        action='store_true',
-                        help='Enable ThreadSanitizer.')
-    parser.add_argument('--strip-path-prefix',
-                        default='build/src/out/Release/../../',
-                        help='Source paths in stack traces are stripped of '
-                        'prefixes ending with this substring (sanitizers).')
-    parser.add_argument('--test-launcher-summary-output',
-                        type=Path,
-                        default=None,
-                        help='Path to the test launcher summary JSON file.')
-    parser.add_argument('test_command',
-                        nargs=argparse.REMAINDER,
-                        help='The test executable (or python script) and its '
-                        'arguments.')
+        description='Runs a test executable and processes its output.'
+    )
+    parser.add_argument(
+        '--build-dir', required=True, type=Path, help='Path to the build dir.'
+    )
+    parser.add_argument(
+        '--run-python-script',
+        action='store_true',
+        help='Treat the first argument as a python script.',
+    )
+    parser.add_argument(
+        '--xvfb',
+        dest='xvfb',
+        action='store_true',
+        default=True,
+        help='Start a virtual X server on Linux.',
+    )
+    parser.add_argument(
+        '--no-xvfb',
+        dest='xvfb',
+        action='store_false',
+        help='Do not start a virtual X server on Linux.',
+    )
+    parser.add_argument(
+        '--builder-group',
+        default=None,
+        help='The group of the builder (accepted for '
+        'compatibility; currently unused).',
+    )
+    parser.add_argument(
+        '--builder-name',
+        default=None,
+        help='The name of the builder running this script.',
+    )
+    parser.add_argument(
+        '--test-type',
+        default='',
+        help="The test name, e.g. 'brave_unit_tests'.",
+    )
+    parser.add_argument(
+        '--parse-gtest-output',
+        action='store_true',
+        help='Parse the gtest output and report the outcome.',
+    )
+    parser.add_argument(
+        '--enable-asan', action='store_true', help='Enable AddressSanitizer.'
+    )
+    parser.add_argument(
+        '--enable-lsan', action='store_true', help='Enable LeakSanitizer.'
+    )
+    parser.add_argument(
+        '--enable-msan', action='store_true', help='Enable MemorySanitizer.'
+    )
+    parser.add_argument(
+        '--enable-tsan', action='store_true', help='Enable ThreadSanitizer.'
+    )
+    parser.add_argument(
+        '--strip-path-prefix',
+        default='build/src/out/Release/../../',
+        help='Source paths in stack traces are stripped of '
+        'prefixes ending with this substring (sanitizers).',
+    )
+    parser.add_argument(
+        '--test-launcher-summary-output',
+        type=Path,
+        default=None,
+        help='Path to the test launcher summary JSON file.',
+    )
+    parser.add_argument(
+        'test_command',
+        nargs=argparse.REMAINDER,
+        help='The test executable (or python script) and its arguments.',
+    )
 
     parsed = parser.parse_args()
     if not parsed.test_command:
@@ -739,14 +818,15 @@ def main() -> int:
 
     logging.basicConfig(
         level=logging.INFO,
-        format=
-        '%(asctime)s %(filename)s:%(lineno)-3d %(levelname)s %(message)s',
-        datefmt='%y%m%d %H:%M:%S')
+        format='%(asctime)s %(filename)s:%(lineno)-3d %(levelname)s %(message)s',
+        datefmt='%y%m%d %H:%M:%S',
+    )
 
     print(f'[Running on builder: "{options.builder_name}"]')
 
     if sys.platform not in ('win32', 'cygwin') and not sys.platform.startswith(
-        ('linux', 'darwin')):
+        ('linux', 'darwin')
+    ):
         print(f'Unknown sys.platform value {sys.platform!r}', file=sys.stderr)
         return 1
 
@@ -764,13 +844,15 @@ def main() -> int:
             print(
                 f'Confused: {temp_files - new_temp_files} files were deleted '
                 f'from {tempfile.gettempdir()} during the test run',
-                file=sys.stderr)
+                file=sys.stderr,
+            )
         elif temp_files < new_temp_files:
             print(
                 f'{new_temp_files - temp_files} new files were left in '
                 f'{tempfile.gettempdir()}: fix the tests to clean up after '
                 'themselves.',
-                file=sys.stderr)
+                file=sys.stderr,
+            )
         return result
     finally:
         if did_launch_dbus:

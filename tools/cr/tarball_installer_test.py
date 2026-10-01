@@ -51,9 +51,9 @@ def _make_tar(members: list, compression: str = 'gz'):
     return buf.getvalue()
 
 
-def _tar_member(name: str,
-                member_type: bytes,
-                linkname: str = '') -> tarfile.TarInfo:
+def _tar_member(
+    name: str, member_type: bytes, linkname: str = ''
+) -> tarfile.TarInfo:
     """A non-regular member (symlink, hardlink, device) for `_make_tar`."""
     info = tarfile.TarInfo(name)
     info.type = member_type
@@ -113,13 +113,15 @@ class TarballInstallerTest(unittest.TestCase):
         self.root = Path(tmp).resolve()
         self.dest = self.root / 'dest'
 
-    def _installer(self,
-                   data: bytes,
-                   *,
-                   object_name: str = 'pkg.tar.gz',
-                   sha256sum: str | None = None,
-                   size_bytes: int | None = None,
-                   owns_dest: bool = True) -> m.TarballInstaller:
+    def _installer(
+        self,
+        data: bytes,
+        *,
+        object_name: str = 'pkg.tar.gz',
+        sha256sum: str | None = None,
+        size_bytes: int | None = None,
+        owns_dest: bool = True,
+    ) -> m.TarballInstaller:
         """A `TarballInstaller` for `data`, defaulting to its true size/sha256."""
         return m.TarballInstaller(
             dest_dir=self.dest,
@@ -127,7 +129,8 @@ class TarballInstallerTest(unittest.TestCase):
             object_name=object_name,
             sha256sum=_sha256(data) if sha256sum is None else sha256sum,
             size_bytes=len(data) if size_bytes is None else size_bytes,
-            owns_dest=owns_dest)
+            owns_dest=owns_dest,
+        )
 
     def _download(self, data: bytes):
         """An injected fetch that writes `data` into the output file."""
@@ -150,8 +153,11 @@ class TarballInstallerTest(unittest.TestCase):
     # inside the destination.
     _NODE_LIKE_MEMBERS = [
         ('lib/node_modules/corepack/dist/corepack.js', b'corepack'),
-        _tar_member('bin/corepack', tarfile.SYMTYPE,
-                    '../lib/node_modules/corepack/dist/corepack.js'),
+        _tar_member(
+            'bin/corepack',
+            tarfile.SYMTYPE,
+            '../lib/node_modules/corepack/dist/corepack.js',
+        ),
     ]
 
     @unittest.skipUnless(_CAN_SYMLINK, 'this machine cannot create symlinks')
@@ -196,28 +202,32 @@ class TarballInstallerTest(unittest.TestCase):
 
     def test_install_rejects_symlink_target_with_a_windows_separator(self):
         data = _make_tar(
-            [_tar_member('bin/evil', tarfile.SYMTYPE, '..\\..\\evil')])
+            [_tar_member('bin/evil', tarfile.SYMTYPE, '..\\..\\evil')]
+        )
         installer = self._installer(data)
         with self.assertRaisesRegex(ValueError, 'backslash'):
             installer.install(self._download(data))
 
     def test_install_rejects_symlink_pointing_outside(self):
         data = _make_tar(
-            [_tar_member('bin/evil', tarfile.SYMTYPE, '../../../etc/passwd')])
+            [_tar_member('bin/evil', tarfile.SYMTYPE, '../../../etc/passwd')]
+        )
         installer = self._installer(data)
         with self.assertRaisesRegex(ValueError, 'outside'):
             installer.install(self._download(data))
 
     def test_install_rejects_absolute_symlink_target(self):
         data = _make_tar(
-            [_tar_member('bin/evil', tarfile.SYMTYPE, '/etc/passwd')])
+            [_tar_member('bin/evil', tarfile.SYMTYPE, '/etc/passwd')]
+        )
         installer = self._installer(data)
         with self.assertRaisesRegex(ValueError, 'absolute path'):
             installer.install(self._download(data))
 
     def test_install_rejects_hardlink_pointing_outside(self):
         data = _make_tar(
-            [_tar_member('bin/evil', tarfile.LNKTYPE, '../../etc/passwd')])
+            [_tar_member('bin/evil', tarfile.LNKTYPE, '../../etc/passwd')]
+        )
         installer = self._installer(data)
         with self.assertRaisesRegex(ValueError, 'outside'):
             installer.install(self._download(data))
@@ -250,10 +260,12 @@ class TarballInstallerTest(unittest.TestCase):
         # link target as text -- exactly what BraveUpdater-*.zip needs kept
         # (mode-0755 executables plus a `ksadmin` symlink) for the updater
         # bundle to still run after extraction.
-        data = _make_zip_with_unix_modes([
-            ('bin/tool', b'#!/bin/sh\n', 0o100755),
-            ('bin/link', b'tool', 0o120777),
-        ])
+        data = _make_zip_with_unix_modes(
+            [
+                ('bin/tool', b'#!/bin/sh\n', 0o100755),
+                ('bin/link', b'tool', 0o120777),
+            ]
+        )
         installer = self._installer(data, object_name='pkg.zip')
         self.assertTrue(installer.install(self._download(data)))
         tool = self.dest / 'bin/tool'
@@ -287,7 +299,8 @@ class TarballInstallerTest(unittest.TestCase):
 
     def test_is_installed_is_false_without_sidecar(self):
         self.assertFalse(
-            self._installer(_make_tar([('f', b'x')])).is_installed())
+            self._installer(_make_tar([('f', b'x')])).is_installed()
+        )
 
     def test_owned_dest_is_wiped_before_extract(self):
         self.dest.mkdir()
@@ -366,7 +379,6 @@ class ProgressTest(unittest.TestCase):
         final `Done` line -- guards the built-in path the fakes bypass."""
 
         class _FakeResponse:
-
             def __init__(self, data):
                 self._buf = io.BytesIO(data)
                 self.headers = {'Content-Length': str(len(data))}
@@ -382,12 +394,14 @@ class ProgressTest(unittest.TestCase):
 
         data = b'payload' * 5000
         out = io.BytesIO()
-        inst = m.TarballInstaller(dest_dir=Path('/x'),
-                                  url='https://example.com/pkg',
-                                  object_name='pkg.tar.gz',
-                                  sha256sum='a',
-                                  size_bytes=len(data),
-                                  owns_dest=True)
+        inst = m.TarballInstaller(
+            dest_dir=Path('/x'),
+            url='https://example.com/pkg',
+            object_name='pkg.tar.gz',
+            sha256sum='a',
+            size_bytes=len(data),
+            owns_dest=True,
+        )
         err = io.StringIO()
         with mock.patch.object(m, 'urlopen', return_value=_FakeResponse(data)):
             with contextlib.redirect_stderr(err):
@@ -396,18 +410,21 @@ class ProgressTest(unittest.TestCase):
         self.assertTrue(err.getvalue().endswith('Done\n'))
 
     def test_emit_progress_renders_live_line(self):
-        inst = m.TarballInstaller(dest_dir=Path('/x'),
-                                  url='u',
-                                  object_name='node.tar.gz',
-                                  sha256sum='a',
-                                  size_bytes=0,
-                                  owns_dest=True)
+        inst = m.TarballInstaller(
+            dest_dir=Path('/x'),
+            url='u',
+            object_name='node.tar.gz',
+            sha256sum='a',
+            size_bytes=0,
+            owns_dest=True,
+        )
         err = io.StringIO()
         with contextlib.redirect_stderr(err):
             inst._emit_progress(26_700_000, 26_700_000, done_flag=True)
         # Carriage-return prefixed, `[done/total] pct% Done`, matching gsutil.
-        self.assertEqual(err.getvalue(),
-                         '\rnode.tar.gz [25.5 MiB/25.5 MiB] 100% Done\n')
+        self.assertEqual(
+            err.getvalue(), '\rnode.tar.gz [25.5 MiB/25.5 MiB] 100% Done\n'
+        )
 
 
 class ForDepTest(unittest.TestCase):
@@ -418,12 +435,18 @@ class ForDepTest(unittest.TestCase):
 
     def test_builds_single_object_installer(self):
         inst = m.TarballInstaller.for_dep(
-            Path('/ws'), 'src/p',
-            self._spec([{
-                'object_name': 'x.tar.gz',
-                'sha256sum': 'abc',
-                'size_bytes': 123
-            }]))
+            Path('/ws'),
+            'src/p',
+            self._spec(
+                [
+                    {
+                        'object_name': 'x.tar.gz',
+                        'sha256sum': 'abc',
+                        'size_bytes': 123,
+                    }
+                ]
+            ),
+        )
         self.assertEqual(inst.dest_dir, Path('/ws/src/p'))
         self.assertEqual(inst.url, 'https://example.com/x.tar.gz')
         self.assertEqual(inst.object_name, 'x.tar.gz')
@@ -433,28 +456,28 @@ class ForDepTest(unittest.TestCase):
 
     def test_overlay_object_does_not_own_dest(self):
         inst = m.TarballInstaller.for_dep(
-            Path('/ws'), 'src/p',
-            self._spec([{
-                'object_name': 'x.tar.gz',
-                'sha256sum': 'abc',
-                'size_bytes': 123,
-                'overlayed_on': 'base.tar.xz'
-            }]))
+            Path('/ws'),
+            'src/p',
+            self._spec(
+                [
+                    {
+                        'object_name': 'x.tar.gz',
+                        'sha256sum': 'abc',
+                        'size_bytes': 123,
+                        'overlayed_on': 'base.tar.xz',
+                    }
+                ]
+            ),
+        )
         self.assertFalse(inst.owns_dest)
 
     def test_multi_object_entry_raises(self):
-        spec = self._spec([
-            {
-                'object_name': 'a.tar.gz',
-                'sha256sum': '1',
-                'size_bytes': 1
-            },
-            {
-                'object_name': 'b.tar.gz',
-                'sha256sum': '2',
-                'size_bytes': 2
-            },
-        ])
+        spec = self._spec(
+            [
+                {'object_name': 'a.tar.gz', 'sha256sum': '1', 'size_bytes': 1},
+                {'object_name': 'b.tar.gz', 'sha256sum': '2', 'size_bytes': 2},
+            ]
+        )
         with self.assertRaisesRegex(ValueError, 'single-object'):
             m.TarballInstaller.for_dep(Path('/ws'), 'src/p', spec)
 
@@ -463,12 +486,15 @@ class ForObjectTest(unittest.TestCase):
     """Tests for the `TarballInstaller.for_object` caller-supplied factory."""
 
     def test_builds_installer_from_a_caller_object(self):
-        inst = m.TarballInstaller.for_object(Path('/dest'),
-                                             'https://example.com/', {
-                                                 'object_name': 'x.tar.gz',
-                                                 'sha256sum': 'abc',
-                                                 'size_bytes': 123,
-                                             })
+        inst = m.TarballInstaller.for_object(
+            Path('/dest'),
+            'https://example.com/',
+            {
+                'object_name': 'x.tar.gz',
+                'sha256sum': 'abc',
+                'size_bytes': 123,
+            },
+        )
         self.assertEqual(inst.dest_dir, Path('/dest'))
         self.assertEqual(inst.url, 'https://example.com/x.tar.gz')
         self.assertEqual(inst.object_name, 'x.tar.gz')
@@ -478,12 +504,15 @@ class ForObjectTest(unittest.TestCase):
 
     def test_overlay_object_does_not_own_dest(self):
         inst = m.TarballInstaller.for_object(
-            Path('/dest'), 'https://example.com/', {
+            Path('/dest'),
+            'https://example.com/',
+            {
                 'object_name': 'x.tar.gz',
                 'sha256sum': 'abc',
                 'size_bytes': 123,
                 'overlayed_on': 'base.tar.xz',
-            })
+            },
+        )
         self.assertFalse(inst.owns_dest)
 
 
@@ -492,17 +521,18 @@ class MainTest(unittest.TestCase):
 
     def test_installs_the_requested_single_object_dep(self):
         dep = 'src/brave/third_party/node/node-linux-x64'
-        with mock.patch.object(m.TarballInstaller,
-                               'install',
-                               autospec=True,
-                               return_value=True) as install:
+        with mock.patch.object(
+            m.TarballInstaller, 'install', autospec=True, return_value=True
+        ) as install:
             self.assertEqual(m.main([dep]), 0)
         install.assert_called_once()
         installer = install.call_args.args[0]
         self.assertEqual(installer.dest_dir, m._WORKSPACE_ROOT / dep)
         # Read from the table, so bumping the pinned node does not fail here.
-        self.assertEqual(installer.object_name,
-                         m.EXTRA_DEPS[dep]['objects'][0]['object_name'])
+        self.assertEqual(
+            installer.object_name,
+            m.EXTRA_DEPS[dep]['objects'][0]['object_name'],
+        )
 
     def test_rejects_unknown_dep(self):
         with contextlib.redirect_stderr(io.StringIO()):

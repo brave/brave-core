@@ -16,7 +16,8 @@ from typing import TYPE_CHECKING
 
 import config_types
 from PB.recipe_modules.brave.brave_core_checkout.properties import (
-    InputProperties)
+    InputProperties,
+)
 from recipe_api import RecipeApi
 
 if TYPE_CHECKING:
@@ -43,8 +44,12 @@ STEP_PREFIX = 'brave-core'
 
 # The suites the asan CI jobs run for brave-core: unit, browser and interactive
 # UI tests, plus the network audit.
-TEST_SUITES = ('brave_all_unit_tests', 'brave_browser_tests',
-               'brave_interactive_ui_tests', 'brave_network_tests')
+TEST_SUITES = (
+    'brave_all_unit_tests',
+    'brave_browser_tests',
+    'brave_interactive_ui_tests',
+    'brave_network_tests',
+)
 
 # Fingerprint of a deployed Chromium `src/`.
 CHROME_VERSION_FILE = 'chrome/VERSION'
@@ -69,17 +74,18 @@ class BraveCoreCheckoutApi(RecipeApi):
 
     @contextlib.contextmanager
     def _bootstrap_layout(self):
-        """Put brave-core's `bootstrap` dir first on `PATH` within the block.
-        """
+        """Put brave-core's `bootstrap` dir first on `PATH` within the block."""
         with self.m.context(
-                env_prefixes={'PATH': [self._root / BOOTSTRAP_PATH]}):
+            env_prefixes={'PATH': [self._root / BOOTSTRAP_PATH]}
+        ):
             yield
 
     def __init__(self, properties: InputProperties) -> None:
         super().__init__()
         # The brave-core ref to check out, `master` when none was provided.
-        self._brave_core_ref: str = (properties.brave_core_ref
-                                     or DEFAULT_BRAVE_CORE_REF)
+        self._brave_core_ref: str = (
+            properties.brave_core_ref or DEFAULT_BRAVE_CORE_REF
+        )
         self._properties = properties
         self._root: Path | None = None
 
@@ -104,8 +110,7 @@ class BraveCoreCheckoutApi(RecipeApi):
         if self.c is None:
             return
         entries = {
-            k: v
-            for k, v in sorted(self.c.dotenv.items()) if v is not None
+            k: v for k, v in sorted(self.c.dotenv.items()) if v is not None
         }
         # A line break would start another entry.
         for k, v in entries.items():
@@ -123,8 +128,10 @@ class BraveCoreCheckoutApi(RecipeApi):
 
         @functools.wraps(fn)
         def inner(self, *args, **kwargs):
-            with self._bootstrap_layout(
-            ), self.m.chromium_checkout.chromium_layout():
+            with (
+                self._bootstrap_layout(),
+                self.m.chromium_checkout.chromium_layout(),
+            ):
                 return fn(self, *args, **kwargs)
 
         return inner
@@ -153,31 +160,27 @@ class BraveCoreCheckoutApi(RecipeApi):
         """
         # `git cache` comes from depot_tools.
         self.m.depot_tools.ensure_on_path()
-        self.m.git_cache.populate(CACHE_REPO_URL,
-                                  ref=ref.populate_ref,
-                                  commit=ref.commit)
+        self.m.git_cache.populate(
+            CACHE_REPO_URL, ref=ref.populate_ref, commit=ref.commit
+        )
         return self.m.git_cache.mirror_dir(CACHE_REPO_URL)
 
     def _checkout_from_mirror(self, ref: GitRef, mirror_dir: str) -> None:
         """Clone or update the brave-core checkout from the populated mirror."""
         dest = self._root
         if self.m.path.is_dir(dest / '.git'):
-            self.m.git_cache.update_checkout(CACHE_REPO_URL,
-                                             dest,
-                                             mirror_dir,
-                                             ref,
-                                             step_prefix=STEP_PREFIX)
+            self.m.git_cache.update_checkout(
+                CACHE_REPO_URL, dest, mirror_dir, ref, step_prefix=STEP_PREFIX
+            )
         else:
             self.m.path.mkdir(dest.parent)
-            self.m.git_cache.clone_checkout(CACHE_REPO_URL,
-                                            dest,
-                                            mirror_dir,
-                                            ref,
-                                            step_prefix=STEP_PREFIX)
+            self.m.git_cache.clone_checkout(
+                CACHE_REPO_URL, dest, mirror_dir, ref, step_prefix=STEP_PREFIX
+            )
 
-    def ensure_checkout(self,
-                        *,
-                        chromium_src: str | Path | None = None) -> Path:
+    def ensure_checkout(
+        self, *, chromium_src: str | Path | None = None
+    ) -> Path:
         """Check out brave-core on `brave_core_ref` and Chromium, then sync if
         needed.
 
@@ -205,8 +208,9 @@ class BraveCoreCheckoutApi(RecipeApi):
             self._pnpm_sync()
         return self._root
 
-    def _deploy_chromium(self, chromium_src: str | Path | None,
-                         mirror_dir: str, rev: str) -> bool:
+    def _deploy_chromium(
+        self, chromium_src: str | Path | None, mirror_dir: str, rev: str
+    ) -> bool:
         """Deploy Chromium through `chromium_checkout`, unless present.
 
         Cloned from git cache at the tag brave-core pins, without `gclient
@@ -221,31 +225,34 @@ class BraveCoreCheckoutApi(RecipeApi):
         Returns:
             Whether Chromium was deployed (`chrome/VERSION` was absent).
         """
-        chromium_src = self.m.path.abs(chromium_src if chromium_src is not None
-                                       else self.m.path.chromium_src)
+        chromium_src = self.m.path.abs(
+            chromium_src
+            if chromium_src is not None
+            else self.m.path.chromium_src
+        )
         if self.m.path.exists(chromium_src / CHROME_VERSION_FILE):
             return False
         tag = self._chromium_tag(mirror_dir, rev)
-        self.m.chromium_checkout.ensure_checkout(chromium_src=chromium_src,
-                                                 ref=f'refs/tags/{tag}',
-                                                 run_sync=False)
+        self.m.chromium_checkout.ensure_checkout(
+            chromium_src=chromium_src, ref=f'refs/tags/{tag}', run_sync=False
+        )
         return True
 
     def _chromium_tag(self, mirror_dir: str, rev: str) -> str:
-        """The Chromium tag `package.json` pins at *rev*, read with `git show`.
-        """
+        """The Chromium tag `package.json` pins at *rev*, read with `git show`."""
         result = self.m.step(
             'read chromium tag',
             ['git', '--git-dir', mirror_dir, 'show', f'{rev}:package.json'],
             stdout=self.m.raw_io.output_text(),
             step_test_data=lambda: self.m.raw_io.test_api.stream_output_text(
-                self.test_api.package_json()))
+                self.test_api.package_json()
+            ),
+        )
         return json.loads(result.stdout)['config']['projects']['chrome']['tag']
 
     @_with_brave_core_layout
     def _pnpm_sync(self) -> None:
-        """Bring Chromium to the version brave-core pins, with `pnpm run sync`.
-        """
+        """Bring Chromium to the version brave-core pins, with `pnpm run sync`."""
         self.m.step('pnpm run sync', ['pnpm', 'run', 'sync'], cwd=self._root)
 
     @_with_brave_core_layout
@@ -255,8 +262,11 @@ class BraveCoreCheckoutApi(RecipeApi):
         Args:
             target: The build target; `brave:all` by default.
         """
-        self.m.step('build', ['pnpm', 'run', 'build', f'--target={target}'],
-                    cwd=self._root)
+        self.m.step(
+            'build',
+            ['pnpm', 'run', 'build', f'--target={target}'],
+            cwd=self._root,
+        )
 
     @_with_brave_core_layout
     def run_tests(self, suites: Iterable[str] = TEST_SUITES) -> None:
@@ -276,29 +286,35 @@ class BraveCoreCheckoutApi(RecipeApi):
         if self.m.platform.is_linux:
             xvfb = [
                 self.m.depot_tools.vpython3(),
-                self.m.path.chromium_src / 'testing' / 'xvfb.py'
+                self.m.path.chromium_src / 'testing' / 'xvfb.py',
             ]
         failed = []
         for suite in suites:
             cmd = [
-                *xvfb, 'pnpm', 'run', 'test', suite, '--output_xml',
+                *xvfb,
+                'pnpm',
+                'run',
+                'test',
+                suite,
+                '--output_xml',
                 '--test-launcher-bot-mode',
-                f'--test-launcher-jobs={self.m.platform.cpu_count}'
+                f'--test-launcher-jobs={self.m.platform.cpu_count}',
             ]
-            result = self.m.step(f'test {suite}',
-                                 cmd,
-                                 cwd=self._root,
-                                 check=False)
+            result = self.m.step(
+                f'test {suite}', cmd, cwd=self._root, check=False
+            )
             if result.retcode != 0:
                 failed.append(suite)
         if failed:
             raise RuntimeError(f'test suites failed: {", ".join(failed)}')
 
-    def deploy(self,
-               paths: str | Path | Iterable[str | Path],
-               *,
-               url: str = REPO_URL,
-               depth: int = 2) -> Path:
+    def deploy(
+        self,
+        paths: str | Path | Iterable[str | Path],
+        *,
+        url: str = REPO_URL,
+        depth: int = 2,
+    ) -> Path:
         """Ensure *paths* from brave-core are checked out, sparsely.
 
         Clones brave-core (shallow + sparse) if needed, fetches the
@@ -334,24 +350,39 @@ class BraveCoreCheckoutApi(RecipeApi):
             # been cloned (here or by a prior run) at a different ref that lacks
             # the requested paths, so fetch and hard-checkout rather than trust
             # its current state.
-            logging.info('brave-core checkout present at %s; updating to %s',
-                         dest, ref)
-            self.m.step('fetch brave-core ref', [
-                'git', '-C',
-                str(dest), 'fetch', '--depth',
-                str(depth), 'origin', ref
-            ])
+            logging.info(
+                'brave-core checkout present at %s; updating to %s', dest, ref
+            )
+            self.m.step(
+                'fetch brave-core ref',
+                [
+                    'git',
+                    '-C',
+                    str(dest),
+                    'fetch',
+                    '--depth',
+                    str(depth),
+                    'origin',
+                    ref,
+                ],
+            )
             self.m.step(
                 'checkout brave-core ref',
-                ['git', '-C',
-                 str(dest), 'checkout', '--force', 'FETCH_HEAD'])
+                ['git', '-C', str(dest), 'checkout', '--force', 'FETCH_HEAD'],
+            )
         else:
             self.m.path.mkdir(dest.parent)
             clone_cmd = [
-                'git', 'clone', '--depth',
-                str(depth), '--filter=blob:none', '--sparse', '--branch',
-                git_ref.short_name, url,
-                str(dest)
+                'git',
+                'clone',
+                '--depth',
+                str(depth),
+                '--filter=blob:none',
+                '--sparse',
+                '--branch',
+                git_ref.short_name,
+                url,
+                str(dest),
             ]
             self.m.step('clone brave-core (shallow, sparse)', clone_cmd)
 
@@ -373,14 +404,15 @@ class BraveCoreCheckoutApi(RecipeApi):
             # a prior call or an external bootstrap into this checkout survive.
             self.m.step(
                 'sparse-checkout add',
-                ['git', '-C',
-                 str(dest), 'sparse-checkout', 'add', *new_paths])
+                ['git', '-C', str(dest), 'sparse-checkout', 'add', *new_paths],
+            )
 
         for rel in rel_paths:
             if not self.m.path.exists(dest / rel):
                 raise RuntimeError(
                     f'brave-core path not found after sparse checkout: {rel!r} '
-                    f'(looked under {dest})')
+                    f'(looked under {dest})'
+                )
 
         return dest
 
@@ -395,19 +427,16 @@ class BraveCoreCheckoutApi(RecipeApi):
             'sparse-checkout list',
             ['git', '-C', str(dest), 'sparse-checkout', 'list'],
             check=False,
-            stdout=self.m.raw_io.output_text())
+            stdout=self.m.raw_io.output_text(),
+        )
         if result.retcode != 0 or not result.stdout:
             return set()
         return {
-            line.strip()
-            for line in result.stdout.splitlines() if line.strip()
+            line.strip() for line in result.stdout.splitlines() if line.strip()
         }
 
     @contextlib.contextmanager
-    def bootstrap_on_path(self,
-                          *,
-                          url: str = REPO_URL,
-                          depth: int = 2):
+    def bootstrap_on_path(self, *, url: str = REPO_URL, depth: int = 2):
         """Deploy `tools/cr`, putting its `bootstrap` dir first on PATH in the block.
 
         Args:

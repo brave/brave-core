@@ -31,19 +31,26 @@ class _VsCodeIpcConnectionBase(http.client.HTTPConnection):
         if not self._socket_path or not files:
             return
         file_uris = [f.resolve().as_uri() for f in files]
-        body = json.dumps({
-            'type': 'open',
-            'fileURIs': file_uris,
-            'forceReuseWindow': True,
-        }).encode()
-        logging.debug('VS Code IPC request: socket=%s,  body=%s',
-                      self._socket_path, body.decode())
+        body = json.dumps(
+            {
+                'type': 'open',
+                'fileURIs': file_uris,
+                'forceReuseWindow': True,
+            }
+        ).encode()
+        logging.debug(
+            'VS Code IPC request: socket=%s,  body=%s',
+            self._socket_path,
+            body.decode(),
+        )
         try:
-            self.request('POST', '/', body,
-                         {'Content-Type': 'application/json'})
+            self.request(
+                'POST', '/', body, {'Content-Type': 'application/json'}
+            )
             resp = self.getresponse()
-            logging.debug('VS Code IPC response: %d %s\n', resp.status,
-                          resp.reason)
+            logging.debug(
+                'VS Code IPC response: %d %s\n', resp.status, resp.reason
+            )
         except Exception as e:
             logging.warning('Could not open files in VS Code window: %s', e)
 
@@ -106,5 +113,8 @@ class _WinVsCodeIpcConnection(_VsCodeIpcConnectionBase):
         self.sock = _NamedPipeSocket(self._socket_path)
 
 
-VsCodeIpcConnection = (_WinVsCodeIpcConnection if platform.system()
-                       == 'Windows' else _PosixVsCodeIpcConnection)
+VsCodeIpcConnection = (
+    _WinVsCodeIpcConnection
+    if platform.system() == 'Windows'
+    else _PosixVsCodeIpcConnection
+)

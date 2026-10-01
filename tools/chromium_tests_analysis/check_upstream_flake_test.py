@@ -70,15 +70,19 @@ class RenderReportTest(unittest.TestCase):
     def setUp(self) -> None:
         self.output = io.StringIO()
         patcher = mock.patch.object(
-            check_upstream_flake, "console",
-            Console(file=self.output, width=200, no_color=True))
+            check_upstream_flake,
+            "console",
+            Console(file=self.output, width=200, no_color=True),
+        )
         patcher.start()
         self.addCleanup(patcher.stop)
 
-    def render(self,
-               test_results: list[Any],
-               days: int = 30,
-               test_name: str = "Suite.Test") -> str:
+    def render(
+        self,
+        test_results: list[Any],
+        days: int = 30,
+        test_name: str = "Suite.Test",
+    ) -> str:
         check_upstream_flake.render_report(test_name, test_results, days)
         return self.output.getvalue()
 
@@ -111,22 +115,28 @@ class RenderReportTest(unittest.TestCase):
         self.assertIn(Verdict.KNOWN_FLAKE.recommendation, report)
 
     def test_advice_is_given_once_per_verdict_not_per_test(self) -> None:
-        report = self.render([
-            ("a", reading(Verdict.KNOWN_FLAKE)),
-            ("b", reading(Verdict.KNOWN_FLAKE)),
-            ("c", reading(Verdict.KNOWN_FLAKE)),
-        ])
+        report = self.render(
+            [
+                ("a", reading(Verdict.KNOWN_FLAKE)),
+                ("b", reading(Verdict.KNOWN_FLAKE)),
+                ("c", reading(Verdict.KNOWN_FLAKE)),
+            ]
+        )
 
         self.assertEqual(report.count(Verdict.KNOWN_FLAKE.recommendation), 1)
 
     def test_advice_is_ordered_worst_first(self) -> None:
-        report = self.render([
-            ("stable", reading(Verdict.STABLE)),
-            ("flaky", reading(Verdict.KNOWN_FLAKE)),
-        ])
+        report = self.render(
+            [
+                ("stable", reading(Verdict.STABLE)),
+                ("flaky", reading(Verdict.KNOWN_FLAKE)),
+            ]
+        )
 
-        self.assertLess(report.index(Verdict.KNOWN_FLAKE.recommendation),
-                        report.index(Verdict.STABLE.recommendation))
+        self.assertLess(
+            report.index(Verdict.KNOWN_FLAKE.recommendation),
+            report.index(Verdict.STABLE.recommendation),
+        )
 
     def test_tabulates_the_counts(self) -> None:
         report = self.render([("id", reading(passed=9000, failed=5, flaky=5))])
@@ -136,10 +146,15 @@ class RenderReportTest(unittest.TestCase):
         self.assertIn("0.1%", report)
 
     def test_renders_the_daily_breakdown(self) -> None:
-        flakiness = Flakiness.of_groups([
-            StatsGroup("2026-02-07", "h",
-                       VerdictCounts(passed=8, failed=1, flaky=1))
-        ])
+        flakiness = Flakiness.of_groups(
+            [
+                StatsGroup(
+                    "2026-02-07",
+                    "h",
+                    VerdictCounts(passed=8, failed=1, flaky=1),
+                )
+            ]
+        )
 
         report = self.render([("id", flakiness)])
 
@@ -148,9 +163,10 @@ class RenderReportTest(unittest.TestCase):
         self.assertIn("20%", report)
 
     def test_a_day_without_meaningful_verdicts_has_no_rate(self) -> None:
-        flakiness = Flakiness(counts=VerdictCounts(skipped=5),
-                              daily=(DailyCounts("2026-02-07",
-                                                 VerdictCounts(skipped=5)), ))
+        flakiness = Flakiness(
+            counts=VerdictCounts(skipped=5),
+            daily=(DailyCounts("2026-02-07", VerdictCounts(skipped=5)),),
+        )
 
         report = self.render([("id", flakiness)])
 
@@ -166,7 +182,8 @@ class RenderReportTest(unittest.TestCase):
 
     def test_the_daily_table_is_labelled_with_its_test(self) -> None:
         flakiness = Flakiness.of_groups(
-            [StatsGroup("2026-02-07", "h", VerdictCounts(passed=10))])
+            [StatsGroup("2026-02-07", "h", VerdictCounts(passed=10))]
+        )
 
         report = self.render([("a-very-distinctive-test-id", flakiness)])
 
@@ -175,54 +192,73 @@ class RenderReportTest(unittest.TestCase):
 
 
 class FormatReportJsonTest(unittest.TestCase):
-
     def test_includes_the_query_and_every_match(self) -> None:
         report = json.loads(
-            check_upstream_flake.format_report_json("Suite.Test",
-                                                    [("id-one", reading()),
-                                                     ("id-two", reading())],
-                                                    60))
+            check_upstream_flake.format_report_json(
+                "Suite.Test", [("id-one", reading()), ("id-two", reading())], 60
+            )
+        )
 
         self.assertEqual(report["test_name"], "Suite.Test")
         self.assertEqual(report["lookback_days"], 60)
-        self.assertEqual([test["test_id"] for test in report["matched_tests"]],
-                         ["id-one", "id-two"])
+        self.assertEqual(
+            [test["test_id"] for test in report["matched_tests"]],
+            ["id-one", "id-two"],
+        )
         self.assertEqual(report["matched_tests"][0]["flake_rate"], 0.0)
 
     def test_overall_verdict_is_the_worst_of_the_matches(self) -> None:
         report = json.loads(
-            check_upstream_flake.format_report_json("Suite.Test", [
-                ("stable", reading(Verdict.STABLE)),
-                ("flaky", reading(Verdict.KNOWN_FLAKE)),
-                ("thin", reading(Verdict.INSUFFICIENT_DATA)),
-            ], 30))
+            check_upstream_flake.format_report_json(
+                "Suite.Test",
+                [
+                    ("stable", reading(Verdict.STABLE)),
+                    ("flaky", reading(Verdict.KNOWN_FLAKE)),
+                    ("thin", reading(Verdict.INSUFFICIENT_DATA)),
+                ],
+                30,
+            )
+        )
 
         self.assertEqual(report["overall_verdict"], "known_upstream_flake")
-        self.assertEqual(report["overall_recommendation"],
-                         Verdict.KNOWN_FLAKE.recommendation)
+        self.assertEqual(
+            report["overall_recommendation"], Verdict.KNOWN_FLAKE.recommendation
+        )
 
     def test_occasional_failures_outrank_insufficient_data(self) -> None:
         report = json.loads(
-            check_upstream_flake.format_report_json("Suite.Test", [
-                ("thin", reading(Verdict.INSUFFICIENT_DATA)),
-                ("some", reading(Verdict.OCCASIONAL)),
-            ], 30))
+            check_upstream_flake.format_report_json(
+                "Suite.Test",
+                [
+                    ("thin", reading(Verdict.INSUFFICIENT_DATA)),
+                    ("some", reading(Verdict.OCCASIONAL)),
+                ],
+                30,
+            )
+        )
 
-        self.assertEqual(report["overall_verdict"],
-                         "occasional_upstream_failures")
+        self.assertEqual(
+            report["overall_verdict"], "occasional_upstream_failures"
+        )
 
     def test_insufficient_data_outranks_stable(self) -> None:
         report = json.loads(
-            check_upstream_flake.format_report_json("Suite.Test", [
-                ("stable", reading(Verdict.STABLE)),
-                ("thin", reading(Verdict.INSUFFICIENT_DATA)),
-            ], 30))
+            check_upstream_flake.format_report_json(
+                "Suite.Test",
+                [
+                    ("stable", reading(Verdict.STABLE)),
+                    ("thin", reading(Verdict.INSUFFICIENT_DATA)),
+                ],
+                30,
+            )
+        )
 
         self.assertEqual(report["overall_verdict"], "insufficient_data")
 
     def test_reports_not_found_without_matches(self) -> None:
         report = json.loads(
-            check_upstream_flake.format_report_json("Suite.Test", [], 30))
+            check_upstream_flake.format_report_json("Suite.Test", [], 30)
+        )
 
         self.assertEqual(report["matched_tests"], [])
         self.assertEqual(report["overall_verdict"], "not_found")
@@ -238,7 +274,8 @@ class MainTest(unittest.TestCase):
         self.client.history.return_value = []
         self.client.verdicts.return_value = []
         self.enter_patch(
-            mock.patch.object(check_upstream_flake, "client", self.client))
+            mock.patch.object(check_upstream_flake, "client", self.client)
+        )
 
     def enter_patch(self, patcher: Any) -> Any:
         value = patcher.start()
@@ -248,8 +285,7 @@ class MainTest(unittest.TestCase):
     def run_main(self, *argv: str) -> tuple[int, str]:
         """Run main(), returning (exit code, stdout)."""
         stdout = io.StringIO()
-        with mock.patch.object(sys, "argv",
-                               ["check-upstream-flake.py", *argv]):
+        with mock.patch.object(sys, "argv", ["check-upstream-flake.py", *argv]):
             with contextlib.redirect_stdout(stdout):
                 with contextlib.redirect_stderr(io.StringIO()):
                     with self.assertRaises(SystemExit) as caught:
@@ -315,7 +351,8 @@ class MainTest(unittest.TestCase):
         self.assertEqual(report["overall_verdict"], "known_upstream_flake")
 
     def test_reports_insufficient_data_when_both_queries_are_empty(
-            self) -> None:
+        self,
+    ) -> None:
         self.client.tests_matching.return_value = ["id"]
 
         _, stdout = self.run_main("Suite.Test", "--json")
@@ -325,9 +362,7 @@ class MainTest(unittest.TestCase):
         self.assertEqual(report["matched_tests"][0]["total_verdicts"], 0)
 
     def test_checks_at_most_five_matches(self) -> None:
-        self.client.tests_matching.return_value = [
-            f"id-{i}" for i in range(12)
-        ]
+        self.client.tests_matching.return_value = [f"id-{i}" for i in range(12)]
 
         _, stdout = self.run_main("Suite.Test", "--json")
         report = json.loads(stdout)
@@ -345,8 +380,10 @@ class MainTest(unittest.TestCase):
         _, stdout = self.run_main("Bar", "--json")
         report = json.loads(stdout)
 
-        self.assertEqual([test["test_id"] for test in report["matched_tests"]],
-                         ["some/Bar", "prefixBar", "zzz_unrelated"])
+        self.assertEqual(
+            [test["test_id"] for test in report["matched_tests"]],
+            ["some/Bar", "prefixBar", "zzz_unrelated"],
+        )
 
     def test_writes_tables_by_default(self) -> None:
         self.client.tests_matching.return_value = ["id"]

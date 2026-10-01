@@ -19,21 +19,26 @@ def RunSteps(api):
         api.step('mac only', ['echo', 'mac'])
     if api.platform.is_linux:
         api.step('linux only', ['echo', 'linux'])
-    api.step('report capacity', [
-        'echo',
-        str(api.platform.cpu_count),
-        str(api.platform.total_memory),
-    ])
-    api.step('report machine',
-             ['echo', str(api.platform.bits), api.platform.arch])
+    api.step(
+        'report capacity',
+        [
+            'echo',
+            str(api.platform.cpu_count),
+            str(api.platform.total_memory),
+        ],
+    )
+    api.step(
+        'report machine', ['echo', str(api.platform.bits), api.platform.arch]
+    )
 
 
 def GenTests(api):
     yield api.test(
         'linux',
         api.platform.name('linux'),
-        api.post_process(post_process.StepCommandContains, 'report platform',
-                         ['linux']),
+        api.post_process(
+            post_process.StepCommandContains, 'report platform', ['linux']
+        ),
         api.post_process(post_process.DoesNotRun, 'windows only'),
         api.post_process(post_process.MustRun, 'linux only'),
         api.post_process(post_process.StatusSuccess),
@@ -41,8 +46,9 @@ def GenTests(api):
     yield api.test(
         'win',
         api.platform.name('win'),
-        api.post_process(post_process.StepCommandContains, 'report platform',
-                         ['win']),
+        api.post_process(
+            post_process.StepCommandContains, 'report platform', ['win']
+        ),
         api.post_process(post_process.MustRun, 'windows only'),
         api.post_process(post_process.DoesNotRun, 'mac only'),
         api.post_process(post_process.StatusSuccess),
@@ -59,8 +65,9 @@ def GenTests(api):
     yield api.test(
         'default capacity',
         api.platform.name('linux'),
-        api.post_process(post_process.StepCommandContains, 'report capacity',
-                         ['8', '16384']),
+        api.post_process(
+            post_process.StepCommandContains, 'report capacity', ['8', '16384']
+        ),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
     )
@@ -69,8 +76,9 @@ def GenTests(api):
         'overridden capacity',
         api.platform.name('linux'),
         api.platform.capacity(cpu_count=2, total_memory=1024),
-        api.post_process(post_process.StepCommandContains, 'report capacity',
-                         ['2', '1024']),
+        api.post_process(
+            post_process.StepCommandContains, 'report capacity', ['2', '1024']
+        ),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
     )
@@ -78,8 +86,9 @@ def GenTests(api):
     yield api.test(
         'default machine',
         api.platform.name('linux'),
-        api.post_process(post_process.StepCommandContains, 'report machine',
-                         ['64', 'intel']),
+        api.post_process(
+            post_process.StepCommandContains, 'report machine', ['64', 'intel']
+        ),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
     )
@@ -87,8 +96,9 @@ def GenTests(api):
     yield api.test(
         'arm mac',
         api.platform('mac', 64, 'arm'),
-        api.post_process(post_process.StepCommandContains, 'report machine',
-                         ['64', 'arm']),
+        api.post_process(
+            post_process.StepCommandContains, 'report machine', ['64', 'arm']
+        ),
         api.post_process(post_process.MustRun, 'mac only'),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
@@ -96,8 +106,9 @@ def GenTests(api):
     yield api.test(
         '32 bit windows',
         api.platform('win', 32),
-        api.post_process(post_process.StepCommandContains, 'report machine',
-                         ['32', 'intel']),
+        api.post_process(
+            post_process.StepCommandContains, 'report machine', ['32', 'intel']
+        ),
         api.post_process(post_process.MustRun, 'windows only'),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),

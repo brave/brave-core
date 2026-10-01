@@ -52,15 +52,14 @@ from luci_analysis import (
 
 
 class WindowTest(unittest.TestCase):
-
     def test_last_days_ends_now(self) -> None:
         window = Window.last_days(30)
 
         self.assertAlmostEqual(window.days, 30, places=3)
         now = datetime.now(timezone.utc)
-        self.assertAlmostEqual((now - window.latest).total_seconds(),
-                               0,
-                               delta=5)
+        self.assertAlmostEqual(
+            (now - window.latest).total_seconds(), 0, delta=5
+        )
 
     def test_weekly_slices_are_contiguous_and_cover_the_window(self) -> None:
         window = Window.last_days(30)
@@ -83,38 +82,49 @@ class WindowTest(unittest.TestCase):
         self.assertEqual(window.split_weekly(), [window])
 
     def test_renders_the_clusters_time_range(self) -> None:
-        window = Window(datetime(2026, 1, 1, tzinfo=timezone.utc),
-                        datetime(2026, 1, 8, tzinfo=timezone.utc))
-
-        self.assertEqual(window.as_time_range(), {
-            "earliest": "2026-01-01T00:00:00Z",
-            "latest": "2026-01-08T00:00:00Z",
-        })
-
-    def test_renders_the_test_history_predicate(self) -> None:
-        window = Window(datetime(2026, 1, 1, tzinfo=timezone.utc),
-                        datetime(2026, 1, 8, tzinfo=timezone.utc))
+        window = Window(
+            datetime(2026, 1, 1, tzinfo=timezone.utc),
+            datetime(2026, 1, 8, tzinfo=timezone.utc),
+        )
 
         self.assertEqual(
-            window.as_predicate(), {
+            window.as_time_range(),
+            {
+                "earliest": "2026-01-01T00:00:00Z",
+                "latest": "2026-01-08T00:00:00Z",
+            },
+        )
+
+    def test_renders_the_test_history_predicate(self) -> None:
+        window = Window(
+            datetime(2026, 1, 1, tzinfo=timezone.utc),
+            datetime(2026, 1, 8, tzinfo=timezone.utc),
+        )
+
+        self.assertEqual(
+            window.as_predicate(),
+            {
                 "partitionTimeRange": {
                     "earliest": "2026-01-01T00:00:00Z",
                     "latest": "2026-01-08T00:00:00Z",
                 }
-            })
+            },
+        )
 
 
 class VerdictTest(unittest.TestCase):
-
     def test_severity_ranks_worst_first(self) -> None:
         by_severity = sorted(Verdict, key=lambda v: v.severity)
 
-        self.assertEqual(by_severity, [
-            Verdict.KNOWN_FLAKE,
-            Verdict.OCCASIONAL,
-            Verdict.INSUFFICIENT_DATA,
-            Verdict.STABLE,
-        ])
+        self.assertEqual(
+            by_severity,
+            [
+                Verdict.KNOWN_FLAKE,
+                Verdict.OCCASIONAL,
+                Verdict.INSUFFICIENT_DATA,
+                Verdict.STABLE,
+            ],
+        )
 
     def test_every_verdict_has_a_headline_and_advice(self) -> None:
         for verdict in Verdict:
@@ -135,16 +145,17 @@ class VerdictTest(unittest.TestCase):
 
 
 class VerdictCountsTest(unittest.TestCase):
-
     def test_reads_the_string_counts_the_api_sends(self) -> None:
-        counts = VerdictCounts.from_api({
-            "passed": "90",
-            "failed": "5",
-            "flaky": "5",
-            "skipped": "3",
-            "executionErrored": "2",
-            "precluded": "1",
-        })
+        counts = VerdictCounts.from_api(
+            {
+                "passed": "90",
+                "failed": "5",
+                "flaky": "5",
+                "skipped": "3",
+                "executionErrored": "2",
+                "precluded": "1",
+            }
+        )
 
         self.assertEqual(counts.passed, 90)
         self.assertEqual(counts.execution_errored, 2)
@@ -154,29 +165,29 @@ class VerdictCountsTest(unittest.TestCase):
         self.assertEqual(VerdictCounts.from_api({}), VerdictCounts())
 
     def test_counts_add(self) -> None:
-        total = (VerdictCounts(passed=1, failed=2) +
-                 VerdictCounts(passed=10, flaky=3))
+        total = VerdictCounts(passed=1, failed=2) + VerdictCounts(
+            passed=10, flaky=3
+        )
 
         self.assertEqual(total, VerdictCounts(passed=11, failed=2, flaky=3))
 
     def test_total_includes_everything(self) -> None:
-        counts = VerdictCounts(passed=1,
-                               failed=2,
-                               flaky=3,
-                               skipped=4,
-                               execution_errored=5,
-                               precluded=6,
-                               other=7)
+        counts = VerdictCounts(
+            passed=1,
+            failed=2,
+            flaky=3,
+            skipped=4,
+            execution_errored=5,
+            precluded=6,
+            other=7,
+        )
 
         self.assertEqual(counts.total, 28)
 
     def test_only_pass_fail_flaky_are_meaningful(self) -> None:
-        counts = VerdictCounts(passed=1,
-                               failed=2,
-                               flaky=3,
-                               skipped=40,
-                               precluded=50,
-                               other=60)
+        counts = VerdictCounts(
+            passed=1, failed=2, flaky=3, skipped=40, precluded=50, other=60
+        )
 
         self.assertEqual(counts.meaningful, 6)
 
@@ -191,18 +202,19 @@ class VerdictCountsTest(unittest.TestCase):
 
 def group(date: str, variant_hash: str = "h", **counts: int) -> StatsGroup:
     """A StatsGroup, spelled the way these tests care about."""
-    return StatsGroup(date=date,
-                      variant_hash=variant_hash,
-                      counts=VerdictCounts(**counts))
+    return StatsGroup(
+        date=date, variant_hash=variant_hash, counts=VerdictCounts(**counts)
+    )
 
 
 class FlakinessTest(unittest.TestCase):
-
     def test_aggregates_variants_of_the_same_day(self) -> None:
-        flakiness = Flakiness.of_groups([
-            group("2026-02-07", "h1", passed=8, flaky=2),
-            group("2026-02-07", "h2", passed=10),
-        ])
+        flakiness = Flakiness.of_groups(
+            [
+                group("2026-02-07", "h1", passed=8, flaky=2),
+                group("2026-02-07", "h2", passed=10),
+            ]
+        )
 
         self.assertEqual(flakiness.counts.passed, 18)
         self.assertEqual(flakiness.counts.flaky, 2)
@@ -212,27 +224,33 @@ class FlakinessTest(unittest.TestCase):
         self.assertEqual(flakiness.daily[0].counts.total, 20)
 
     def test_daily_breakdown_is_sorted_by_date(self) -> None:
-        flakiness = Flakiness.of_groups([
-            group("2026-02-09", passed=1),
-            group("2026-02-07", passed=1),
-            group("2026-02-08", passed=1),
-        ])
+        flakiness = Flakiness.of_groups(
+            [
+                group("2026-02-09", passed=1),
+                group("2026-02-07", passed=1),
+                group("2026-02-08", passed=1),
+            ]
+        )
 
-        self.assertEqual([day.date for day in flakiness.daily],
-                         ["2026-02-07", "2026-02-08", "2026-02-09"])
+        self.assertEqual(
+            [day.date for day in flakiness.daily],
+            ["2026-02-07", "2026-02-08", "2026-02-09"],
+        )
 
     def test_days_without_verdicts_are_dropped(self) -> None:
         flakiness = Flakiness.of_groups(
-            [group("2026-02-07", passed=1),
-             group("2026-02-08")])
+            [group("2026-02-07", passed=1), group("2026-02-08")]
+        )
 
         self.assertEqual([day.date for day in flakiness.daily], ["2026-02-07"])
 
     def test_tallies_individual_verdicts(self) -> None:
-        flakiness = Flakiness.of_verdicts([TestVerdict("PASSED")] * 90 +
-                                          [TestVerdict("FAILED")] * 5 +
-                                          [TestVerdict("FLAKY")] * 5 +
-                                          [TestVerdict("SKIPPED")] * 3)
+        flakiness = Flakiness.of_verdicts(
+            [TestVerdict("PASSED")] * 90
+            + [TestVerdict("FAILED")] * 5
+            + [TestVerdict("FLAKY")] * 5
+            + [TestVerdict("SKIPPED")] * 3
+        )
 
         self.assertEqual(flakiness.counts.passed, 90)
         self.assertEqual(flakiness.counts.skipped, 3)
@@ -240,8 +258,9 @@ class FlakinessTest(unittest.TestCase):
         self.assertEqual(flakiness.daily, ())
 
     def test_unknown_statuses_are_counted_but_not_meaningful(self) -> None:
-        flakiness = Flakiness.of_verdicts([TestVerdict("PASSED")] * 10 +
-                                          [TestVerdict("PRECLUDED")])
+        flakiness = Flakiness.of_verdicts(
+            [TestVerdict("PASSED")] * 10 + [TestVerdict("PRECLUDED")]
+        )
 
         self.assertEqual(flakiness.counts.meaningful, 10)
         self.assertEqual(flakiness.counts.total, 11)
@@ -268,8 +287,7 @@ class FlakinessTest(unittest.TestCase):
         self.assertIs(flakiness.verdict, Verdict.STABLE)
 
     def test_too_little_history_is_inconclusive(self) -> None:
-        flakiness = Flakiness(VerdictCounts(failed=MIN_MEANINGFUL_VERDICTS -
-                                            1))
+        flakiness = Flakiness(VerdictCounts(failed=MIN_MEANINGFUL_VERDICTS - 1))
 
         self.assertIs(flakiness.verdict, Verdict.INSUFFICIENT_DATA)
 
@@ -289,21 +307,43 @@ class FlakinessTest(unittest.TestCase):
         # Other tooling reads these keys; see
         # agents/skills/make-ci-green/retrigger-ci.py.
         flakiness = Flakiness.of_groups(
-            [group("2026-02-07", passed=90, failed=10)])
+            [group("2026-02-07", passed=90, failed=10)]
+        )
 
         published = flakiness.as_json()
 
-        self.assertEqual(sorted(published), [
-            "daily_breakdown", "execution_errored", "failed", "flake_rate",
-            "flaky", "meaningful_verdicts", "passed", "precluded",
-            "recommendation", "skipped", "total_verdicts", "verdict"
-        ])
+        self.assertEqual(
+            sorted(published),
+            [
+                "daily_breakdown",
+                "execution_errored",
+                "failed",
+                "flake_rate",
+                "flaky",
+                "meaningful_verdicts",
+                "passed",
+                "precluded",
+                "recommendation",
+                "skipped",
+                "total_verdicts",
+                "verdict",
+            ],
+        )
         self.assertEqual(published["verdict"], "known_upstream_flake")
         self.assertEqual(published["passed"], 90)
-        self.assertEqual(sorted(published["daily_breakdown"][0]), [
-            "date", "execution_errored", "failed", "flaky", "passed",
-            "precluded", "skipped", "total"
-        ])
+        self.assertEqual(
+            sorted(published["daily_breakdown"][0]),
+            [
+                "date",
+                "execution_errored",
+                "failed",
+                "flaky",
+                "passed",
+                "precluded",
+                "skipped",
+                "total",
+            ],
+        )
 
     def test_the_published_verdict_is_the_wire_string(self) -> None:
         self.assertEqual(Flakiness().as_json()["verdict"], "insufficient_data")
@@ -313,15 +353,14 @@ class FlakinessTest(unittest.TestCase):
 
 
 class FromApiTest(unittest.TestCase):
-
     def test_stats_group(self) -> None:
-        parsed = StatsGroup.from_api({
-            "partitionTime": "2026-02-07T00:00:00Z",
-            "variantHash": "abc",
-            "verdictCounts": {
-                "passed": "5"
-            },
-        })
+        parsed = StatsGroup.from_api(
+            {
+                "partitionTime": "2026-02-07T00:00:00Z",
+                "variantHash": "abc",
+                "verdictCounts": {"passed": "5"},
+            }
+        )
 
         self.assertEqual(parsed.date, "2026-02-07")
         self.assertEqual(parsed.variant_hash, "abc")
@@ -332,39 +371,40 @@ class FromApiTest(unittest.TestCase):
 
     def test_test_verdict_is_upper_cased(self) -> None:
         self.assertEqual(
-            TestVerdict.from_api({
-                "status": "passed"
-            }).status, "PASSED")
+            TestVerdict.from_api({"status": "passed"}).status, "PASSED"
+        )
 
     def test_test_variant(self) -> None:
-        parsed = TestVariant.from_api({
-            "variantHash": "h1",
-            "variant": {
-                "def": {
-                    "os": "Ubuntu-22.04",
-                    "builder": "linux-rel"
-                }
-            },
-        })
+        parsed = TestVariant.from_api(
+            {
+                "variantHash": "h1",
+                "variant": {
+                    "def": {"os": "Ubuntu-22.04", "builder": "linux-rel"}
+                },
+            }
+        )
 
         self.assertEqual(parsed.variant_hash, "h1")
         self.assertEqual(parsed.os, "Ubuntu-22.04")
-        self.assertEqual(parsed.builders, ("linux-rel", ))
+        self.assertEqual(parsed.builders, ("linux-rel",))
 
     def test_a_reviver_variant_keeps_both_builder_names(self) -> None:
-        parsed = TestVariant.from_api({
-            "variantHash": "h1",
-            "variant": {
-                "def": {
-                    "os": "Ubuntu-22.04",
-                    "builder": "runner",
-                    "reviver_builder": "linux_chromium_asan_rel_ng",
-                }
-            },
-        })
+        parsed = TestVariant.from_api(
+            {
+                "variantHash": "h1",
+                "variant": {
+                    "def": {
+                        "os": "Ubuntu-22.04",
+                        "builder": "runner",
+                        "reviver_builder": "linux_chromium_asan_rel_ng",
+                    }
+                },
+            }
+        )
 
-        self.assertEqual(parsed.builder_description,
-                         "runner linux_chromium_asan_rel_ng")
+        self.assertEqual(
+            parsed.builder_description, "runner linux_chromium_asan_rel_ng"
+        )
 
     def test_a_variant_with_nothing_in_it(self) -> None:
         parsed = TestVariant.from_api({})
@@ -374,13 +414,12 @@ class FromApiTest(unittest.TestCase):
         self.assertEqual(parsed.builder_description, "")
 
     def test_cluster_summary(self) -> None:
-        parsed = ClusterSummary.from_api({
-            "clusterId": {
-                "algorithm": "testname-v4",
-                "id": "c1"
-            },
-            "title": "a title",
-        })
+        parsed = ClusterSummary.from_api(
+            {
+                "clusterId": {"algorithm": "testname-v4", "id": "c1"},
+                "title": "a title",
+            }
+        )
 
         self.assertEqual(parsed.algorithm, "testname-v4")
         self.assertEqual(parsed.cluster_id, "c1")
@@ -396,13 +435,10 @@ class FromApiTest(unittest.TestCase):
 
 
 class ClusterSummaryShapeTest(unittest.TestCase):
-
     TARGET = "://chrome/test\\:unit_tests!gtest::"
 
     def summary(self, algorithm: str, title: str) -> ClusterSummary:
-        return ClusterSummary(algorithm=algorithm,
-                              cluster_id="c1",
-                              title=title)
+        return ClusterSummary(algorithm=algorithm, cluster_id="c1", title=title)
 
     def test_a_reason_cluster_is_recognised(self) -> None:
         cluster = self.summary("reason-v3", "Assertion failed: %s")
@@ -423,11 +459,13 @@ class ClusterSummaryShapeTest(unittest.TestCase):
 
     def test_an_escaped_backslash_covers_several_tests(self) -> None:
         self.assertFalse(
-            self.summary("testname-v4", "prefix\\\\suffix").names_one_test)
+            self.summary("testname-v4", "prefix\\\\suffix").names_one_test
+        )
 
     def test_an_escaped_underscore_covers_several_tests(self) -> None:
         self.assertFalse(
-            self.summary("testname-v4", "prefix\\_suffix").names_one_test)
+            self.summary("testname-v4", "prefix\\_suffix").names_one_test
+        )
 
     def test_a_rule_cluster_never_names_one_test(self) -> None:
         cluster = self.summary("rules", "crbug.com/1234567")
@@ -476,11 +514,13 @@ class FakeTransport:
         self.timeout: float | None = None
         self.context: ssl.SSLContext | None = None
 
-    def add_reply(self,
-                  payload: JsonDict | None = None,
-                  status: int = 200,
-                  raw: bytes | None = None,
-                  reason: str = "OK") -> None:
+    def add_reply(
+        self,
+        payload: JsonDict | None = None,
+        status: int = 200,
+        raw: bytes | None = None,
+        reason: str = "OK",
+    ) -> None:
         """Queue a response. `raw` overrides the encoded `payload`."""
         body = raw if raw is not None else encode_response(payload or {})
         self.replies.append(FakeResponse(status, body, reason))
@@ -489,27 +529,33 @@ class FakeTransport:
         """Queue an exception to raise instead of responding."""
         self.replies.append(error)
 
-    def __call__(self,
-                 host: str,
-                 timeout: float | None = None,
-                 context: ssl.SSLContext | None = None) -> FakeTransport:
+    def __call__(
+        self,
+        host: str,
+        timeout: float | None = None,
+        context: ssl.SSLContext | None = None,
+    ) -> FakeTransport:
         self.connects += 1
         self.host = host
         self.timeout = timeout
         self.context = context
         return self
 
-    def request(self,
-                method: str,
-                path: str,
-                body: bytes | None = None,
-                headers: dict[str, str] | None = None) -> None:
-        self.requests.append({
-            "method": method,
-            "path": path,
-            "body": json.loads(body) if body else None,
-            "headers": headers,
-        })
+    def request(
+        self,
+        method: str,
+        path: str,
+        body: bytes | None = None,
+        headers: dict[str, str] | None = None,
+    ) -> None:
+        self.requests.append(
+            {
+                "method": method,
+                "path": path,
+                "body": json.loads(body) if body else None,
+                "headers": headers,
+            }
+        )
 
     def getresponse(self) -> FakeResponse:
         reply = self.replies.popleft()
@@ -531,13 +577,15 @@ class ClientTestCase(unittest.TestCase):
     def setUp(self) -> None:
         self.transport = FakeTransport()
         self.enter_patch(
-            mock.patch.object(http.client, "HTTPSConnection", self.transport))
+            mock.patch.object(http.client, "HTTPSConnection", self.transport)
+        )
         self.client = LuciAnalysis()
         # `wait` returning False means "the backoff elapsed, carry on".
         self.shutdown = mock.Mock()
         self.shutdown.wait.return_value = False
         self.enter_patch(
-            mock.patch.object(self.client, "_shutdown", self.shutdown))
+            mock.patch.object(self.client, "_shutdown", self.shutdown)
+        )
 
     def enter_patch(self, patcher: Any) -> Any:
         value = patcher.start()
@@ -552,11 +600,11 @@ class ClientTestCase(unittest.TestCase):
 
 
 class ConnectionPoolTest(unittest.TestCase):
-
     def setUp(self) -> None:
         self.transport = FakeTransport()
-        patcher = mock.patch.object(http.client, "HTTPSConnection",
-                                    self.transport)
+        patcher = mock.patch.object(
+            http.client, "HTTPSConnection", self.transport
+        )
         patcher.start()
         self.addCleanup(patcher.stop)
         self.pool = ConnectionPool("example.test", 30)
@@ -608,7 +656,6 @@ class ConnectionPoolTest(unittest.TestCase):
 
 
 class TlsContextTest(unittest.TestCase):
-
     def test_certificates_are_verified(self) -> None:
         self.assertEqual(TLS_CONTEXT.verify_mode, ssl.CERT_REQUIRED)
 
@@ -625,7 +672,6 @@ class TlsContextTest(unittest.TestCase):
 
 
 class RequestTest(ClientTestCase):
-
     def request(self) -> Request:
         return self.client.request("svc", "M", field="value")
 
@@ -646,10 +692,9 @@ class RequestTest(ClientTestCase):
 
         self.request().send()
 
-        self.assertEqual(self.last_body(), {
-            "project": "chromium",
-            "field": "value"
-        })
+        self.assertEqual(
+            self.last_body(), {"project": "chromium", "field": "value"}
+        )
 
     def test_strips_the_xssi_prefix(self) -> None:
         self.transport.add_reply(raw=b")]}'\n{\"testIds\": [\"a\"]}")
@@ -683,11 +728,13 @@ class RequestTest(ClientTestCase):
         with self.assertRaises(LuciAnalysisError) as caught:
             self.request().send()
 
-        self.assertIn("Could not reach LUCI Analysis API",
-                      str(caught.exception))
+        self.assertIn(
+            "Could not reach LUCI Analysis API", str(caught.exception)
+        )
         self.assertEqual(len(self.transport.requests), 3)
-        self.assertEqual(self.shutdown.wait.call_args_list,
-                         [mock.call(2), mock.call(4)])
+        self.assertEqual(
+            self.shutdown.wait.call_args_list, [mock.call(2), mock.call(4)]
+        )
 
     def test_retries_server_errors(self) -> None:
         self.transport.add_reply(status=503, reason="Service Unavailable")
@@ -725,8 +772,9 @@ class RequestTest(ClientTestCase):
         with self.assertRaises(LuciAnalysisError) as caught:
             self.client.request("svc", "QueryTests").send()
 
-        self.assertIn("404 Not Found for method QueryTests",
-                      str(caught.exception))
+        self.assertIn(
+            "404 Not Found for method QueryTests", str(caught.exception)
+        )
         self.assertEqual(len(self.transport.requests), 1)
 
     def test_raises_on_client_error_without_retrying(self) -> None:
@@ -744,8 +792,9 @@ class RequestTest(ClientTestCase):
         with self.assertRaises(LuciAnalysisError) as caught:
             self.request().send()
 
-        self.assertIn("Could not parse API response as JSON",
-                      str(caught.exception))
+        self.assertIn(
+            "Could not parse API response as JSON", str(caught.exception)
+        )
 
     def test_a_shutdown_during_the_backoff_stops_the_retries(self) -> None:
         # Ctrl+C must not be held up by a worker waiting out its backoff.
@@ -768,7 +817,6 @@ class RequestTest(ClientTestCase):
 
 
 class PagedRequestTest(ClientTestCase):
-
     def test_asks_for_the_largest_page(self) -> None:
         self.transport.add_reply({})
 
@@ -784,8 +832,10 @@ class PagedRequestTest(ClientTestCase):
         gathered = self.client.paged_request("svc", "M").gather("items")
 
         self.assertEqual(gathered, ["a", "b", "c"])
-        self.assertEqual([body.get("pageToken") for body in self.bodies()],
-                         [None, "t1", "t2"])
+        self.assertEqual(
+            [body.get("pageToken") for body in self.bodies()],
+            [None, "t1", "t2"],
+        )
 
     def test_the_rest_of_the_body_is_carried_across_pages(self) -> None:
         self.transport.add_reply({"items": [], "nextPageToken": "t1"})
@@ -811,7 +861,6 @@ class PagedRequestTest(ClientTestCase):
 
 
 class RequestStatsTest(ClientTestCase):
-
     def test_counts_a_completed_request(self) -> None:
         self.transport.add_reply({"n": 1})
 
@@ -872,9 +921,10 @@ class RequestStatsTest(ClientTestCase):
 
 
 class QueriesTest(ClientTestCase):
-
-    WINDOW = Window(datetime(2026, 1, 1, tzinfo=timezone.utc),
-                    datetime(2026, 1, 8, tzinfo=timezone.utc))
+    WINDOW = Window(
+        datetime(2026, 1, 1, tzinfo=timezone.utc),
+        datetime(2026, 1, 8, tzinfo=timezone.utc),
+    )
 
     def test_tests_matching(self) -> None:
         self.transport.add_reply({"testIds": ["a"], "nextPageToken": "t"})
@@ -882,19 +932,23 @@ class QueriesTest(ClientTestCase):
 
         self.assertEqual(self.client.tests_matching("Frob"), ["a", "b"])
         self.assertEqual(self.bodies()[0]["testIdSubstring"], "Frob")
-        self.assertEqual(self.transport.requests[0]["path"],
-                         "/prpc/luci.analysis.v1.TestHistory/QueryTests")
+        self.assertEqual(
+            self.transport.requests[0]["path"],
+            "/prpc/luci.analysis.v1.TestHistory/QueryTests",
+        )
 
     def test_history_returns_stats_groups(self) -> None:
-        self.transport.add_reply({
-            "groups": [{
-                "partitionTime": "2026-01-02T00:00:00Z",
-                "variantHash": "h",
-                "verdictCounts": {
-                    "passed": "3"
-                },
-            }]
-        })
+        self.transport.add_reply(
+            {
+                "groups": [
+                    {
+                        "partitionTime": "2026-01-02T00:00:00Z",
+                        "variantHash": "h",
+                        "verdictCounts": {"passed": "3"},
+                    }
+                ]
+            }
+        )
 
         groups = self.client.history("test-id", self.WINDOW)
 
@@ -915,62 +969,65 @@ class QueriesTest(ClientTestCase):
 
     def test_verdicts_returns_test_verdicts(self) -> None:
         self.transport.add_reply(
-            {"verdicts": [{
-                "status": "PASSED"
-            }, {
-                "status": "FAILED"
-            }]})
+            {"verdicts": [{"status": "PASSED"}, {"status": "FAILED"}]}
+        )
 
         verdicts = self.client.verdicts("test-id", self.WINDOW)
 
-        self.assertEqual(verdicts,
-                         [TestVerdict("PASSED"),
-                          TestVerdict("FAILED")])
-        self.assertEqual(self.transport.requests[0]["path"],
-                         "/prpc/luci.analysis.v1.TestHistory/Query")
+        self.assertEqual(
+            verdicts, [TestVerdict("PASSED"), TestVerdict("FAILED")]
+        )
+        self.assertEqual(
+            self.transport.requests[0]["path"],
+            "/prpc/luci.analysis.v1.TestHistory/Query",
+        )
 
     def test_variants_returns_test_variants(self) -> None:
-        self.transport.add_reply({
-            "variants": [{
-                "variantHash": "h1",
-                "variant": {
-                    "def": {
-                        "os": "Mac-15",
-                        "builder": "mac-rel"
+        self.transport.add_reply(
+            {
+                "variants": [
+                    {
+                        "variantHash": "h1",
+                        "variant": {
+                            "def": {"os": "Mac-15", "builder": "mac-rel"}
+                        },
                     }
-                },
-            }]
-        })
+                ]
+            }
+        )
 
         variants = self.client.variants("test-id")
 
-        self.assertEqual(variants,
-                         [TestVariant("h1", "Mac-15", ("mac-rel", ))])
+        self.assertEqual(variants, [TestVariant("h1", "Mac-15", ("mac-rel",))])
 
     def test_cluster_summaries(self) -> None:
-        self.transport.add_reply({
-            "clusterSummaries": [{
-                "clusterId": {
-                    "algorithm": "testname-v4",
-                    "id": "c1"
-                },
-                "title": "t",
-            }]
-        })
+        self.transport.add_reply(
+            {
+                "clusterSummaries": [
+                    {
+                        "clusterId": {"algorithm": "testname-v4", "id": "c1"},
+                        "title": "t",
+                    }
+                ]
+            }
+        )
 
-        summaries = self.client.cluster_summaries('test_id:":unit_tests"',
-                                                  self.WINDOW)
+        summaries = self.client.cluster_summaries(
+            'test_id:":unit_tests"', self.WINDOW
+        )
 
         self.assertEqual(summaries, [ClusterSummary("testname-v4", "c1", "t")])
         body = self.last_body()
         self.assertEqual(body["failureFilter"], 'test_id:":unit_tests"')
         self.assertEqual(body["orderBy"], "metrics.`failures`.value desc")
-        self.assertEqual(body["metrics"],
-                         ["projects/chromium/metrics/failures"])
+        self.assertEqual(
+            body["metrics"], ["projects/chromium/metrics/failures"]
+        )
         self.assertEqual(body["timeRange"], self.WINDOW.as_time_range())
         self.assertEqual(
             self.transport.requests[-1]["path"],
-            "/prpc/luci.analysis.v1.Clusters/QueryClusterSummaries")
+            "/prpc/luci.analysis.v1.Clusters/QueryClusterSummaries",
+        )
 
     def test_cluster_summaries_is_not_paged(self) -> None:
         # Upstream caps the answer at 200 and offers no page token.
@@ -985,12 +1042,14 @@ class QueriesTest(ClientTestCase):
         self.transport.add_reply({"failures": [{"testId": "a", "count": "3"}]})
 
         failures = self.client.cluster_failures(
-            ClusterSummary("testname-v4", "abc12", "t"))
+            ClusterSummary("testname-v4", "abc12", "t")
+        )
 
         self.assertEqual(failures, [ClusterFailure("a", 3)])
         self.assertEqual(
             self.last_body()["parent"],
-            "projects/chromium/clusters/testname-v4/abc12/failures")
+            "projects/chromium/clusters/testname-v4/abc12/failures",
+        )
 
     def test_an_empty_answer_is_an_empty_list(self) -> None:
         for _ in range(5):
@@ -1004,7 +1063,6 @@ class QueriesTest(ClientTestCase):
 
 
 class ClientLifecycleTest(ClientTestCase):
-
     def test_close_releases_the_pool(self) -> None:
         self.transport.add_reply({})
         self.client.request("svc", "M").send()

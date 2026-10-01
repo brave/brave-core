@@ -7,5 +7,10 @@ macOS SDK.
 """
 
 DEPS = [
-    'brave_core_checkout', 'depot_tools', 'json', 'path', 'platform', 'step'
+    'brave_core_checkout',
+    'depot_tools',
+    'json',
+    'path',
+    'platform',
+    'step',
 ]

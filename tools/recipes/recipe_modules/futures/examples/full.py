@@ -16,9 +16,10 @@ def RunSteps(api):
     # blocks, so each greenlet runs to completion once it is switched to, and
     # the steps come out in spawn order.
     futures = [
-        api.futures.spawn(api.step,
-                          f'work {i}', ['echo', str(i)],
-                          __name=f'w{i}') for i in range(3)
+        api.futures.spawn(
+            api.step, f'work {i}', ['echo', str(i)], __name=f'w{i}'
+        )
+        for i in range(3)
     ]
     names = [future.name for future in api.futures.iwait(futures)]
     api.step('collected', ['echo', *names])
@@ -49,12 +50,14 @@ def RunSteps(api):
         return i
 
     api.futures.wait(
-        [api.futures.spawn(limited, i, __meta={'i': i}) for i in range(3)])
+        [api.futures.spawn(limited, i, __meta={'i': i}) for i in range(3)]
+    )
 
     # `spawn_immediate` switches to the new greenlet straight away, so its step
     # runs before the one after the spawn.
-    immediate = api.futures.spawn_immediate(api.step, 'immediate',
-                                            ['echo', 'now'])
+    immediate = api.futures.spawn_immediate(
+        api.step, 'immediate', ['echo', 'now']
+    )
     api.step('after immediate', ['echo', 'later'])
     immediate.result()
 
@@ -72,9 +75,9 @@ def RunSteps(api):
 
     # A failing greenlet surfaces its exception through the Future rather than
     # at the spawn site, and `__meta` rides along with it.
-    failing = api.futures.spawn(api.step,
-                                'boom', ['false'],
-                                __meta='meta-value')
+    failing = api.futures.spawn(
+        api.step, 'boom', ['false'], __meta='meta-value'
+    )
     exc = failing.exception()
     api.step('caught', ['echo', type(exc).__name__, failing.meta])
 
@@ -91,25 +94,33 @@ def GenTests(api):
         api.step_data('boom', retcode=1),
         # Fanned-out work completes in spawn order and is collected by name.
         api.post_process(post_process.MustRun, 'work 0', 'work 1', 'work 2'),
-        api.post_process(post_process.StepCommandContains, 'collected',
-                         ['w0', 'w1', 'w2']),
-        api.post_process(post_process.StepCommandContains, 'waited',
-                         ['inner', 'True']),
-        api.post_process(post_process.MustRun, 'limited 0', 'limited 1',
-                         'limited 2'),
+        api.post_process(
+            post_process.StepCommandContains, 'collected', ['w0', 'w1', 'w2']
+        ),
+        api.post_process(
+            post_process.StepCommandContains, 'waited', ['inner', 'True']
+        ),
+        api.post_process(
+            post_process.MustRun, 'limited 0', 'limited 1', 'limited 2'
+        ),
         # `spawn_immediate` runs its step before the following one.
         api.post_process(post_process.MustRun, 'immediate', 'after immediate'),
         # The expectation records each step's cwd, so the golden is what
         # asserts that the spawned greenlet inherits its parent's cwd, that a
         # scope entered inside it applies only there, and that the parent's
         # scope is undisturbed afterwards.
-        api.post_process(post_process.MustRun, 'inherits cwd', 'own cwd',
-                         'parent cwd intact'),
+        api.post_process(
+            post_process.MustRun, 'inherits cwd', 'own cwd', 'parent cwd intact'
+        ),
         # A failure is delivered through the Future, so the recipe carries on.
-        api.post_process(post_process.StepCommandContains, 'caught',
-                         ['CalledProcessError', 'meta-value']),
+        api.post_process(
+            post_process.StepCommandContains,
+            'caught',
+            ['CalledProcessError', 'meta-value'],
+        ),
         api.post_process(post_process.DoesNotRun, 'never runs'),
-        api.post_process(post_process.StepCommandContains, 'after cancel',
-                         ['True']),
+        api.post_process(
+            post_process.StepCommandContains, 'after cancel', ['True']
+        ),
         api.post_process(post_process.StatusSuccess),
     )

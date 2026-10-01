@@ -95,10 +95,9 @@ class JsonOutputPlaceholder(OutputPlaceholder):
     than an exception, so a recipe can decide for itself how much it cares.
     """
 
-    def __init__(self,
-                 api,
-                 name: str | None = None,
-                 leak_to: str | Path | None = None) -> None:
+    def __init__(
+        self, api, name: str | None = None, leak_to: str | Path | None = None
+    ) -> None:
         self.raw = api.m.raw_io.output_text('.json', leak_to=leak_to)
         super().__init__(name=name)
 
@@ -147,12 +146,13 @@ class JsonApi(RecipeApi):
                 step cares about the original order.
         """
         return self.m.raw_io.input_text(
-            self.dumps(data, indent=_INDENT, sort_keys=sort_keys), '.json')
+            self.dumps(data, indent=_INDENT, sort_keys=sort_keys), '.json'
+        )
 
     @returns_placeholder
-    def output(self,
-               name: str | None = None,
-               leak_to: str | Path | None = None) -> JsonOutputPlaceholder:
+    def output(
+        self, name: str | None = None, leak_to: str | Path | None = None
+    ) -> JsonOutputPlaceholder:
         """A placeholder expanding to a path the step writes JSON to.
 
         Once the step is done, the engine parses that file and files the result

@@ -14,8 +14,12 @@ import subprocess
 
 import config_types
 from engine_types import ResourceCost as _ResourceCost
-from recipe_api import (InputPlaceholder, OutputPlaceholder, Placeholder,
-                        RecipeApi)
+from recipe_api import (
+    InputPlaceholder,
+    OutputPlaceholder,
+    Placeholder,
+    RecipeApi,
+)
 from recipe_test_api import PlaceholderTestData, StepTestData
 from resource_semaphore import ResourceWaiter
 from step_data import StepData
@@ -61,13 +65,12 @@ class StepApi(RecipeApi):
     def initialise(self) -> None:
         self._resource = ResourceWaiter(
             self.m.platform.cpu_count * self.CPU_CORE,
-            self.m.platform.total_memory)
+            self.m.platform.total_memory,
+        )
 
-    def ResourceCost(self,
-                     cpu: int = 500,
-                     memory: int = 50,
-                     disk: int = 0,
-                     net: int = 0) -> _ResourceCost:
+    def ResourceCost(
+        self, cpu: int = 500, memory: int = 50, disk: int = 0, net: int = 0
+    ) -> _ResourceCost:
         """A structure defining the resources that a given step may need.
 
         The four resources are:
@@ -100,8 +103,9 @@ class StepApi(RecipeApi):
             Passing `None` as the cost is equivalent to
             `ResourceCost(0, 0, 0, 0)`.
         """
-        return _ResourceCost(min(cpu, self.MAX_CPU),
-                             min(memory, self.MAX_MEMORY), disk, net)
+        return _ResourceCost(
+            min(cpu, self.MAX_CPU), min(memory, self.MAX_MEMORY), disk, net
+        )
 
     # The number of millicores in a single CPU core.
     CPU_CORE = 1000
@@ -189,6 +193,7 @@ class StepApi(RecipeApi):
             # Imported lazily so `step` stays dependency-free at import time and
             # simulation code isn't loaded on the production path until needed.
             from simulation import SubprocessStepRunner
+
             self._prod_runner = SubprocessStepRunner()
         return self._prod_runner
 
@@ -262,8 +267,9 @@ class StepApi(RecipeApi):
 
         # A placeholder's simulated data is looked up once and reused, so
         # rendering and reading a result back agree on what was seeded.
-        placeholder_tests: dict[tuple[str, str, str | None],
-                                PlaceholderTestData] = {}
+        placeholder_tests: dict[
+            tuple[str, str, str | None], PlaceholderTestData
+        ] = {}
 
         def _test_for(placeholder: Placeholder) -> PlaceholderTestData:
             key = (*placeholder.namespaces, placeholder.name)
@@ -306,7 +312,8 @@ class StepApi(RecipeApi):
             # covered by `unittests/resource_semaphore_test.py`, which runs
             # greenlets that really do block.
             logging.info(  # pragma: no cover
-                '[step] %s waiting for resources: %s', name, needed)
+                '[step] %s waiting for resources: %s', name, needed
+            )
 
         # A command-less step runs nothing, so it consumes nothing and must
         # never queue; anything else takes the default cost unless the caller
@@ -325,8 +332,9 @@ class StepApi(RecipeApi):
             if isinstance(placeholder, InputPlaceholder):
                 placeholder.cleanup(placeholder_test.enabled)
             else:
-                result.assign_placeholder(placeholder,
-                                          placeholder.result(placeholder_test))
+                result.assign_placeholder(
+                    placeholder, placeholder.result(placeholder_test)
+                )
         if stdin is not None:
             stdin.cleanup(test_data.stdin.enabled)
         if stdout is not None:
@@ -339,39 +347,45 @@ class StepApi(RecipeApi):
         self._step_stack.push(result, name_tokens)
 
         if check and retcode != 0:
-            raise subprocess.CalledProcessError(retcode,
-                                                rendered_cmd,
-                                                output=result.stdout,
-                                                stderr=result.stderr)
+            raise subprocess.CalledProcessError(
+                retcode,
+                rendered_cmd,
+                output=result.stdout,
+                stderr=result.stderr,
+            )
         return result
 
 
-def _render_handles(stdin: InputPlaceholder | None,
-                    stdout: OutputPlaceholder | None,
-                    stderr: OutputPlaceholder | None,
-                    test_data) -> dict[str, str | None]:
+def _render_handles(
+    stdin: InputPlaceholder | None,
+    stdout: OutputPlaceholder | None,
+    stderr: OutputPlaceholder | None,
+    test_data,
+) -> dict[str, str | None]:
     """Render the step's std handle placeholders to their backing files.
 
     A handle with no placeholder maps to `None`, meaning "inherit this
     process's".
     """
     handles: dict[str, str | None] = {}
-    for handle, placeholder, expected in (('stdin', stdin, InputPlaceholder),
-                                          ('stdout', stdout,
-                                           OutputPlaceholder),
-                                          ('stderr', stderr,
-                                           OutputPlaceholder)):
+    for handle, placeholder, expected in (
+        ('stdin', stdin, InputPlaceholder),
+        ('stdout', stdout, OutputPlaceholder),
+        ('stderr', stderr, OutputPlaceholder),
+    ):
         if placeholder is None:
             handles[handle] = None
             continue
         if not isinstance(placeholder, expected):
             raise ValueError(
                 f"a step's {handle} must be an {expected.__name__}; got "
-                f'{placeholder!r}')
+                f'{placeholder!r}'
+            )
         if not placeholder.is_file_backed:
             raise ValueError(
                 f"a step's {handle} must be backed by a single file; "
-                f'{placeholder!r} is not')
+                f'{placeholder!r} is not'
+            )
         placeholder.render(getattr(test_data, handle))
         handles[handle] = placeholder.backing_file
     return handles

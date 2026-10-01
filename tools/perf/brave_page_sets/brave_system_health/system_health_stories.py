@@ -19,6 +19,7 @@ from telemetry.util import wpr_modes
 
 class _BraveLoadingStory(system_health_story.SystemHealthStory):
   """Abstract base class for single-page System Health user stories."""
+
   ABSTRACT_STORY = True
   EXTRA_FINISH_DELAY = 0
 
@@ -42,14 +43,13 @@ class _BraveLoadingStory(system_health_story.SystemHealthStory):
 
     action_runner.Wait(self.EXTRA_FINISH_DELAY)
 
-
   @classmethod
   def GenerateStoryDescription(cls):
     return 'Load %s' % cls.URL
 
 
 class _BraveMultiTabLoadingStory(_BraveLoadingStory):
-  """ Abstract base class for multi-tab System Health user stories.
+  """Abstract base class for multi-tab System Health user stories.
 
   We should only use this for `system_health.memory*` benchmarks.
   """
@@ -173,12 +173,9 @@ class LoadBraveNewsStory2024(_BraveLoadingStory):
     # Resize window to 1400px to see the Brave News block.
     tab_id = browser.tabs[0].id
     window_id = browser.GetWindowForTarget(tab_id)['result']['windowId']
-    browser.SetWindowBounds(window_id, {
-        'left': 0,
-        'top': 0,
-        'width': 1400,
-        'height': 1000
-    })
+    browser.SetWindowBounds(
+      window_id, {'left': 0, 'top': 0, 'width': 1400, 'height': 1000}
+    )
 
     action_runner.Wait(1)
     inner_width = action_runner.EvaluateJavaScript('window.innerWidth')

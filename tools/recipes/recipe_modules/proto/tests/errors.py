@@ -16,8 +16,12 @@ import post_process
 
 DEPS = ['env', 'proto', 'step']
 
-MODES = ('bad_codec', 'output_not_a_message_class', 'input_not_a_message',
-         'output_test_data_not_a_message')
+MODES = (
+    'bad_codec',
+    'output_not_a_message_class',
+    'input_not_a_message',
+    'output_test_data_not_a_message',
+)
 
 
 def RunSteps(api):
@@ -32,9 +36,11 @@ def RunSteps(api):
         # ... and `input` encodes a message instance.
         api.step('cat', ['cat', api.proto.input({'a': 1}, api.proto.JSONPB)])
     else:
-        api.step('read',
-                 ['read', api.proto.output(Config, api.proto.JSONPB)],
-                 step_test_data=lambda: api.proto.test_api.output('not a msg'))
+        api.step(
+            'read',
+            ['read', api.proto.output(Config, api.proto.JSONPB)],
+            step_test_data=lambda: api.proto.test_api.output('not a msg'),
+        )
 
 
 def GenTests(api):

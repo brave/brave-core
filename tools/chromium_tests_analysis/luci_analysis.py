@@ -2,8 +2,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Client and domain model for the Chromium LUCI Analysis API.
-"""
+"""Client and domain model for the Chromium LUCI Analysis API."""
 
 from __future__ import annotations
 
@@ -160,16 +159,24 @@ _VERDICT_STYLE = {
 }
 
 _VERDICT_RECOMMENDATION = {
-    Verdict.KNOWN_FLAKE: ("Safe to filter -- this test has a confirmed"
-                          " flakiness pattern in Chromium upstream."),
-    Verdict.OCCASIONAL: ("Consider filtering -- test shows some upstream"
-                         " instability. Document findings in filter"
-                         " comment."),
-    Verdict.INSUFFICIENT_DATA: ("Cannot determine -- insufficient upstream"
-                                " data for this test in the lookback"
-                                " period."),
-    Verdict.STABLE: ("Investigate Brave-specific causes -- test appears"
-                     " stable in Chromium upstream."),
+    Verdict.KNOWN_FLAKE: (
+        "Safe to filter -- this test has a confirmed"
+        " flakiness pattern in Chromium upstream."
+    ),
+    Verdict.OCCASIONAL: (
+        "Consider filtering -- test shows some upstream"
+        " instability. Document findings in filter"
+        " comment."
+    ),
+    Verdict.INSUFFICIENT_DATA: (
+        "Cannot determine -- insufficient upstream"
+        " data for this test in the lookback"
+        " period."
+    ),
+    Verdict.STABLE: (
+        "Investigate Brave-specific causes -- test appears"
+        " stable in Chromium upstream."
+    ),
 }
 
 
@@ -224,8 +231,9 @@ class VerdictCounts:
             failed=self.failed + other.failed,
             flaky=self.flaky + other.flaky,
             skipped=self.skipped + other.skipped,
-            execution_errored=(self.execution_errored +
-                               other.execution_errored),
+            execution_errored=(
+                self.execution_errored + other.execution_errored
+            ),
             precluded=self.precluded + other.precluded,
             other=self.other + other.other,
         )
@@ -233,8 +241,15 @@ class VerdictCounts:
     @property
     def total(self) -> int:
         """Every verdict, whatever it was."""
-        return (self.passed + self.failed + self.flaky + self.skipped +
-                self.execution_errored + self.precluded + self.other)
+        return (
+            self.passed
+            + self.failed
+            + self.flaky
+            + self.skipped
+            + self.execution_errored
+            + self.precluded
+            + self.other
+        )
 
     @property
     def meaningful(self) -> int:
@@ -283,11 +298,14 @@ class Flakiness:
         """Aggregate per-day, per-variant stats into one reading."""
         by_date: dict[str, VerdictCounts] = {}
         for group in groups:
-            by_date[group.date] = (by_date.get(group.date, VerdictCounts()) +
-                                   group.counts)
+            by_date[group.date] = (
+                by_date.get(group.date, VerdictCounts()) + group.counts
+            )
         daily = tuple(
             DailyCounts(date, counts)
-            for date, counts in sorted(by_date.items()) if counts.total)
+            for date, counts in sorted(by_date.items())
+            if counts.total
+        )
         total = VerdictCounts()
         for day in daily:
             total += day.counts
@@ -335,16 +353,19 @@ class Flakiness:
             "flake_rate": self.flake_rate,
             "verdict": self.verdict.value,
             "recommendation": self.verdict.recommendation,
-            "daily_breakdown": [{
-                "date": day.date,
-                "passed": day.counts.passed,
-                "failed": day.counts.failed,
-                "flaky": day.counts.flaky,
-                "skipped": day.counts.skipped,
-                "execution_errored": day.counts.execution_errored,
-                "precluded": day.counts.precluded,
-                "total": day.counts.total,
-            } for day in self.daily],
+            "daily_breakdown": [
+                {
+                    "date": day.date,
+                    "passed": day.counts.passed,
+                    "failed": day.counts.failed,
+                    "flaky": day.counts.flaky,
+                    "skipped": day.counts.skipped,
+                    "execution_errored": day.counts.execution_errored,
+                    "precluded": day.counts.precluded,
+                    "total": day.counts.total,
+                }
+                for day in self.daily
+            ],
         }
 
 
@@ -418,8 +439,10 @@ class TestVariant:
     def from_api(cls, entry: JsonDict) -> TestVariant:
         """Read a QueryVariants entry."""
         definition = entry.get("variant", {}).get("def", {})
-        names = (definition.get("builder",
-                                ""), definition.get("reviver_builder", ""))
+        names = (
+            definition.get("builder", ""),
+            definition.get("reviver_builder", ""),
+        )
         return cls(
             variant_hash=entry.get("variantHash", ""),
             os=definition.get("os", ""),
@@ -482,8 +505,9 @@ class ClusterSummary:
         """
         if not self.algorithm.startswith("testname"):
             return False
-        return not ("%" in self.title or "\\\\" in self.title
-                    or "\\_" in self.title)
+        return not (
+            "%" in self.title or "\\\\" in self.title or "\\_" in self.title
+        )
 
 
 @dataclass(frozen=True)
@@ -499,8 +523,10 @@ class ClusterFailure:
     @classmethod
     def from_api(cls, failure: JsonDict) -> ClusterFailure:
         """Read a QueryClusterFailures entry."""
-        return cls(test_id=failure.get("testId", ""),
-                   count=int(failure.get("count", 1)))
+        return cls(
+            test_id=failure.get("testId", ""),
+            count=int(failure.get("count", 1)),
+        )
 
 
 # -- Talking to the service ----------------------------------------------
@@ -570,9 +596,9 @@ class ConnectionPool:
         try:
             connection = self._idle.popleft()
         except IndexError:
-            connection = http.client.HTTPSConnection(self._host,
-                                                     timeout=self._timeout,
-                                                     context=TLS_CONTEXT)
+            connection = http.client.HTTPSConnection(
+                self._host, timeout=self._timeout, context=TLS_CONTEXT
+            )
         reusable = False
         try:
             yield connection
@@ -600,8 +626,9 @@ class Request:
     policy and the decoding, so callers never see an HTTP status.
     """
 
-    def __init__(self, client: LuciAnalysis, service: str, method: str,
-                 body: JsonDict) -> None:
+    def __init__(
+        self, client: LuciAnalysis, service: str, method: str, body: JsonDict
+    ) -> None:
 
         # Whose pool, counters and shutdown flag this call works
         # against.
@@ -655,10 +682,9 @@ class Request:
         for attempt in range(1, MAX_ATTEMPTS + 1):
             try:
                 with client.pool.borrow() as connection:
-                    connection.request("POST",
-                                       self.path,
-                                       body=data,
-                                       headers=headers)
+                    connection.request(
+                        "POST", self.path, body=data, headers=headers
+                    )
                     response = connection.getresponse()
                     status = response.status
                     reason = response.reason
@@ -672,24 +698,31 @@ class Request:
                     client.stats.retries += 1
                     continue
                 raise LuciAnalysisError(
-                    f"Could not reach LUCI Analysis API: {e}") from e
+                    f"Could not reach LUCI Analysis API: {e}"
+                ) from e
 
             if status == 200:
                 return raw
             if status == 403:
                 raise LuciAnalysisError(
                     "403 Forbidden from LUCI Analysis API. The API may"
-                    " require authentication for this query.")
+                    " require authentication for this query."
+                )
             if status == 404:
                 raise LuciAnalysisError(
-                    f"404 Not Found for method {self._method}.")
+                    f"404 Not Found for method {self._method}."
+                )
             # Retry transient server errors and rate limiting.
-            if ((status >= 500 or status == 429) and attempt < MAX_ATTEMPTS
-                    and not client.backoff(attempt)):
+            if (
+                (status >= 500 or status == 429)
+                and attempt < MAX_ATTEMPTS
+                and not client.backoff(attempt)
+            ):
                 client.stats.retries += 1
                 continue
             raise LuciAnalysisError(
-                f"HTTP {status} from LUCI Analysis API: {reason}")
+                f"HTTP {status} from LUCI Analysis API: {reason}"
+            )
         raise AssertionError("the retry loop always returns or raises")
 
     @staticmethod
@@ -701,13 +734,14 @@ class Request:
         """
         newline = raw.find(b"\n")
         if newline >= 0:
-            raw = raw[newline + 1:]
+            raw = raw[newline + 1 :]
         try:
             return json.loads(raw)
         except json.JSONDecodeError as e:
             raise LuciAnalysisError(
                 "Could not parse API response as JSON. Raw response (first"
-                f" 500 bytes): {raw[:500]}") from e
+                f" 500 bytes): {raw[:500]}"
+            ) from e
 
 
 class PagedRequest(Request):
@@ -738,10 +772,12 @@ class LuciAnalysis:
     `paged_request` are there for calls this class does not wrap yet.
     """
 
-    def __init__(self,
-                 project: str = CHROMIUM_PROJECT,
-                 host: str = LUCI_ANALYSIS_HOST,
-                 timeout: float = REQUEST_TIMEOUT_SECS) -> None:
+    def __init__(
+        self,
+        project: str = CHROMIUM_PROJECT,
+        host: str = LUCI_ANALYSIS_HOST,
+        timeout: float = REQUEST_TIMEOUT_SECS,
+    ) -> None:
 
         # LUCI project every query is scoped to.
         self.project = project
@@ -781,38 +817,40 @@ class LuciAnalysis:
 
     def request(self, service: str, method: str, **body: Any) -> Request:
         """A one-shot call, with `project` filled in."""
-        return Request(self, service, method, {
-            "project": self.project,
-            **body
-        })
+        return Request(self, service, method, {"project": self.project, **body})
 
-    def paged_request(self, service: str, method: str,
-                      **body: Any) -> PagedRequest:
+    def paged_request(
+        self, service: str, method: str, **body: Any
+    ) -> PagedRequest:
         """A paged call, with `project` and the largest page size."""
-        return PagedRequest(self, service, method, {
-            "project": self.project,
-            "pageSize": MAX_PAGE_SIZE,
-            **body
-        })
+        return PagedRequest(
+            self,
+            service,
+            method,
+            {"project": self.project, "pageSize": MAX_PAGE_SIZE, **body},
+        )
 
     # -- the queries this tool makes
 
     def tests_matching(self, substring: str) -> list[str]:
         """Every test ID containing `substring`."""
-        request = self.paged_request(TEST_HISTORY_SERVICE,
-                                     "QueryTests",
-                                     testIdSubstring=substring)
+        request = self.paged_request(
+            TEST_HISTORY_SERVICE, "QueryTests", testIdSubstring=substring
+        )
         return [
-            test_id for page in request.pages()
+            test_id
+            for page in request.pages()
             for test_id in page.get("testIds", [])
         ]
 
     def history(self, test_id: str, window: Window) -> list[StatsGroup]:
         """A test's verdict counts, by day and variant."""
-        request = self.paged_request(TEST_HISTORY_SERVICE,
-                                     "QueryStats",
-                                     testId=test_id,
-                                     predicate=window.as_predicate())
+        request = self.paged_request(
+            TEST_HISTORY_SERVICE,
+            "QueryStats",
+            testId=test_id,
+            predicate=window.as_predicate(),
+        )
         return [StatsGroup.from_api(g) for g in request.gather("groups")]
 
     def verdicts(self, test_id: str, window: Window) -> list[TestVerdict]:
@@ -820,21 +858,24 @@ class LuciAnalysis:
 
         The fallback for when `history` comes back empty.
         """
-        request = self.paged_request(TEST_HISTORY_SERVICE,
-                                     "Query",
-                                     testId=test_id,
-                                     predicate=window.as_predicate())
+        request = self.paged_request(
+            TEST_HISTORY_SERVICE,
+            "Query",
+            testId=test_id,
+            predicate=window.as_predicate(),
+        )
         return [TestVerdict.from_api(v) for v in request.gather("verdicts")]
 
     def variants(self, test_id: str) -> list[TestVariant]:
         """The bot configurations a test has run on."""
-        request = self.paged_request(TEST_HISTORY_SERVICE,
-                                     "QueryVariants",
-                                     testId=test_id)
+        request = self.paged_request(
+            TEST_HISTORY_SERVICE, "QueryVariants", testId=test_id
+        )
         return [TestVariant.from_api(v) for v in request.gather("variants")]
 
-    def cluster_summaries(self, failure_filter: str,
-                          window: Window) -> list[ClusterSummary]:
+    def cluster_summaries(
+        self, failure_filter: str, window: Window
+    ) -> list[ClusterSummary]:
         """The clusters with the most failures matching a filter.
 
         Upstream caps this at 200 clusters and does not paginate: a bare
@@ -852,12 +893,12 @@ class LuciAnalysis:
             failureFilter=failure_filter,
             orderBy="metrics.`failures`.value desc",
             metrics=[f"projects/{self.project}/metrics/failures"],
-            timeRange=window.as_time_range())
+            timeRange=window.as_time_range(),
+        )
         summaries = request.send().get("clusterSummaries", [])
         return [ClusterSummary.from_api(s) for s in summaries]
 
-    def cluster_failures(self,
-                         cluster: ClusterSummary) -> list[ClusterFailure]:
+    def cluster_failures(self, cluster: ClusterSummary) -> list[ClusterFailure]:
         """Example failures from inside a cluster.
 
         Upstream serves at most 2000 groups, and only ever looks at the
@@ -865,9 +906,12 @@ class LuciAnalysis:
         ReadClusterFailures in
         analysis/internal/analysis/cluster_failures.go.
         """
-        parent = (f"projects/{self.project}/clusters/{cluster.algorithm}/"
-                  f"{cluster.cluster_id}/failures")
-        request = Request(self, CLUSTERS_SERVICE, "QueryClusterFailures",
-                          {"parent": parent})
+        parent = (
+            f"projects/{self.project}/clusters/{cluster.algorithm}/"
+            f"{cluster.cluster_id}/failures"
+        )
+        request = Request(
+            self, CLUSTERS_SERVICE, "QueryClusterFailures", {"parent": parent}
+        )
         failures = request.send().get("failures", [])
         return [ClusterFailure.from_api(f) for f in failures]

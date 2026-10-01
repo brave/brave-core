@@ -150,16 +150,20 @@ class ConfigContext:
 
                 # Auto-apply the root item first, unless we are the root or it
                 # has already run on this blob.
-                if (self.ROOT_CONFIG_ITEM and not inner.IS_ROOT
-                        and self.ROOT_CONFIG_ITEM.__name__ not in inclusions):
+                if (
+                    self.ROOT_CONFIG_ITEM
+                    and not inner.IS_ROOT
+                    and self.ROOT_CONFIG_ITEM.__name__ not in inclusions
+                ):
                     self.ROOT_CONFIG_ITEM(config)
 
                 if name in inclusions:
                     if optional:
                         return config
                     raise BadConf(
-                        'config_ctx "%s" is already in this config "%s"' %
-                        (name, config.as_jsonish(include_hidden=True)))
+                        'config_ctx "%s" is already in this config "%s"'
+                        % (name, config.as_jsonish(include_hidden=True))
+                    )
                 if final:
                     inclusions.add(name)
 
@@ -169,15 +173,18 @@ class ConfigContext:
                     try:
                         self.CONFIG_ITEMS[include](config)
                     except BadConf as e:
-                        raise BadConf('config "%s" includes "%s", but [%s]' %
-                                      (name, include, e)) from e
+                        raise BadConf(
+                            'config "%s" includes "%s", but [%s]'
+                            % (name, include, e)
+                        ) from e
 
                 # deps are group names; every group must already be represented.
                 for dep_group in deps or []:
                     if not inclusions & self.MUTEX_GROUPS[dep_group]:
                         raise BadConf(
-                            'dep group "%s" is unfulfilled for "%s"' %
-                            (dep_group, name))
+                            'dep group "%s" is unfulfilled for "%s"'
+                            % (dep_group, name)
+                        )
 
                 if group:
                     overlap = inclusions & self.MUTEX_GROUPS[group]
@@ -185,11 +192,14 @@ class ConfigContext:
                     if overlap:
                         raise BadConf(
                             '"%s" is a member of group "%s", but %s already ran'
-                            % (name, group, tuple(overlap)))
+                            % (name, group, tuple(overlap))
+                        )
 
                 ret = f(config, **kwargs)
-                assert ret is None, 'Got return value (%s) from "%s"?' % (ret,
-                                                                          name)
+                assert ret is None, 'Got return value (%s) from "%s"?' % (
+                    ret,
+                    name,
+                )
 
                 return config
 
@@ -197,14 +207,16 @@ class ConfigContext:
             inner.INCLUDES = includes or []
 
             assert name not in self.CONFIG_ITEMS, (
-                '%s is already in CONFIG_ITEMS' % name)
+                '%s is already in CONFIG_ITEMS' % name
+            )
             self.CONFIG_ITEMS[name] = inner
             if group:
                 self.MUTEX_GROUPS.setdefault(group, set()).add(name)
             inner.IS_ROOT = is_root
             if is_root:
                 assert not self.ROOT_CONFIG_ITEM, (
-                    'may only have one root config_ctx!')
+                    'may only have one root config_ctx!'
+                )
                 self.ROOT_CONFIG_ITEM = inner
             return inner
 
@@ -340,8 +352,9 @@ class ConfigGroup(ConfigBase):
                     raise type(e)('While assigning key %r: %s' % (name, e))
 
         if val:
-            raise TypeError('Got extra keys while setting ConfigGroup: %s' %
-                            val)
+            raise TypeError(
+                'Got extra keys while setting ConfigGroup: %s' % val
+            )
 
     def as_jsonish(self, include_hidden=False):
         return {
@@ -430,7 +443,8 @@ class ConfigList(ConfigBase, collections.abc.MutableSequence):
 
     def as_jsonish(self, include_hidden=False):
         return [
-            i.as_jsonish(include_hidden) for i in self.data
+            i.as_jsonish(include_hidden)
+            for i in self.data
             if include_hidden or not i._hidden  # pylint: disable=protected-access
         ]
 
@@ -442,11 +456,13 @@ class ConfigList(ConfigBase, collections.abc.MutableSequence):
 class Dict(ConfigBase, collections.abc.MutableMapping):
     """Provides a semi-homogeneous dict()-like configuration object."""
 
-    def __init__(self,
-                 item_fn=lambda i: i,
-                 jsonish_fn=dict,
-                 value_type=None,
-                 hidden=AutoHide):
+    def __init__(
+        self,
+        item_fn=lambda i: i,
+        jsonish_fn=dict,
+        value_type=None,
+        hidden=AutoHide,
+    ):
         """
         Args:
             item_fn: Renders (k, v) pairs to input items for `jsonish_fn`.
@@ -496,10 +512,12 @@ class Dict(ConfigBase, collections.abc.MutableMapping):
         self.data = val
 
     def as_jsonish(self, _include_hidden=None):
-        return self.jsonish_fn([
-            self.item_fn(item)
-            for item in sorted(self.data.items(), key=lambda x: x[0])
-        ])
+        return self.jsonish_fn(
+            [
+                self.item_fn(item)
+                for item in sorted(self.data.items(), key=lambda x: x[0])
+            ]
+        )
 
     def reset(self):
         self.data.clear()
@@ -627,12 +645,14 @@ class Set(ConfigBase, collections.abc.MutableSet):
 class Single(ConfigBase):
     """Provides a configuration object which holds a single 'simple' type."""
 
-    def __init__(self,
-                 inner_type,
-                 jsonish_fn=lambda x: x,
-                 empty_val=None,
-                 required=True,
-                 hidden=AutoHide):
+    def __init__(
+        self,
+        inner_type,
+        jsonish_fn=lambda x: x,
+        empty_val=None,
+        required=True,
+        hidden=AutoHide,
+    ):
         """
         Args:
             inner_type: The type of data held (e.g. str, int, ...). May be a
@@ -707,8 +727,7 @@ class Static(ConfigBase):
 
 
 class Enum(ConfigBase):
-    """Provides a configuration object which holds one of a fixed set of values.
-    """
+    """Provides a configuration object which holds one of a fixed set of values."""
 
     def __init__(self, *values, **kwargs):
         """
@@ -739,8 +758,9 @@ class Enum(ConfigBase):
             val = val.data
         typeAssert(val, self.inner_type)
         if val not in self.values:
-            raise ValueError('Expected %r to be one of %r' %
-                             (val, ', '.join(self.values)))
+            raise ValueError(
+                'Expected %r to be one of %r' % (val, ', '.join(self.values))
+            )
         self.data = val
 
     def as_jsonish(self, _include_hidden=None):

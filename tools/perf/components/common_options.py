@@ -32,6 +32,7 @@ class PerfMode(Enum):
   UPDATE_PROFILE = 3
   RECORD_WPR = 4
 
+
 class CommonOptions:
   mode: PerfMode = PerfMode.RUN
   verbose: bool = False
@@ -59,88 +60,114 @@ class CommonOptions:
   @classmethod
   def add_parser_args(cls, parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
-        'config',
-        type=str,
-        help='The path/URL to a config. See configs/**/.json for examples.'
-        'Also could be set to "auto" to select the config by '
-        'machine-id + chromium or "smoke" to run the smoke tests.')
+      'config',
+      type=str,
+      help='The path/URL to a config. See configs/**/.json for examples.'
+      'Also could be set to "auto" to select the config by '
+      'machine-id + chromium or "smoke" to run the smoke tests.',
+    )
     parser.add_argument(
-        'targets',
-        type=str,
-        nargs='?',
-        help='Format: version1[:<path_or_url1>],..,versionN[:<path_or_urlN>].'
-        'Empty value enables the compare mode (see --compare).')
+      'targets',
+      type=str,
+      nargs='?',
+      help='Format: version1[:<path_or_url1>],..,versionN[:<path_or_urlN>].'
+      'Empty value enables the compare mode (see --compare).',
+    )
     parser.add_argument(
-        '--mode',
-        type=str,
-        choices=['run', 'compare', 'update-profile', 'record-wpr'],
-        help='The operating mode.' +
-        '"run" is run the tests and report to the backend (the default).' +
-        '"compare" is evaluate a few configurations with a local HTML output.' +
-        '"update-profile" is a tool to update and upload profile archives.')
+      '--mode',
+      type=str,
+      choices=['run', 'compare', 'update-profile', 'record-wpr'],
+      help='The operating mode.'
+      + '"run" is run the tests and report to the backend (the default).'
+      + '"compare" is evaluate a few configurations with a local HTML output.'
+      + '"update-profile" is a tool to update and upload profile archives.',
+    )
     parser.add_argument(
-        '--working-directory',
-        type=str,
-        help='A main directory to store binaries, artifacts and results.'
-        'Is equal to a temp directory by default.')
-    parser.add_argument('--verbose',
-                        action='store_true',
-                        help='Enable verbose logging.')
+      '--working-directory',
+      type=str,
+      help='A main directory to store binaries, artifacts and results.'
+      'Is equal to a temp directory by default.',
+    )
     parser.add_argument(
-        '--variations-repo-dir',
-        type=str,
-        help='A path to brave-variation repository to use Griffin in tests')
-    parser.add_argument('--target-os',
-                        '--target_os',
-                        type=str,
-                        choices=['windows', 'mac', 'linux', 'android'])
-    parser.add_argument('--target-arch',
-                        '--target_arch',
-                        type=str,
-                        choices=['x64', 'arm64', 'x86'])
+      '--verbose', action='store_true', help='Enable verbose logging.'
+    )
     parser.add_argument(
-        '--reboot-android',
-        action='store_true',
-        help='Reboot the Android device before running the tests')
+      '--variations-repo-dir',
+      type=str,
+      help='A path to brave-variation repository to use Griffin in tests',
+    )
     parser.add_argument(
-        '--local-run',
-        action='store_true',
-        help='Store results locally as html, don\'t report to the dashboard')
+      '--target-os',
+      '--target_os',
+      type=str,
+      choices=['windows', 'mac', 'linux', 'android'],
+    )
+    parser.add_argument(
+      '--target-arch',
+      '--target_arch',
+      type=str,
+      choices=['x64', 'arm64', 'x86'],
+    )
+    parser.add_argument(
+      '--reboot-android',
+      action='store_true',
+      help='Reboot the Android device before running the tests',
+    )
+    parser.add_argument(
+      '--local-run',
+      action='store_true',
+      help='Store results locally as html, don\'t report to the dashboard',
+    )
 
-    parser.add_argument('--ci-mode',
-                        action='store_true',
-                        help='Used for CI (brave-browser-test-perf-* builds).')
-    parser.add_argument('--chromium',
-                        action='store_true',
-                        help='(with config=auto) Run chromium (reference) build'
-                        'Used select the config by machine-id + chromium')
-    parser.add_argument('--machine-id',
-                        type=str,
-                        help='(with config=auto) The name of machine on CI.'
-                        'Used select the config by machine-id + chromium')
-    parser.add_argument('--retry-count',
-                        type=int,
-                        default=2,
-                        help='Number of retries for a failed benchmark')
-    parser.add_argument('--no-report',
-                        action='store_true',
-                        help='[ci-mode] Don\'t to the dashboard')
     parser.add_argument(
-        '--upload',
-        type=lambda x: x.lower() == 'true',
-        default=True,
-        help=(
-            '[For profile updating] Upload the updated profile to cloud storage'
-            + 'and push the changes to brave-core'))
+      '--ci-mode',
+      action='store_true',
+      help='Used for CI (brave-browser-test-perf-* builds).',
+    )
     parser.add_argument(
-        '--upload-branch',
-        type=str,
-        help=('[For profile updating] A target brave-core branch to push the ' +
-              'changes. update-profiles-<version> is used by default'))
+      '--chromium',
+      action='store_true',
+      help='(with config=auto) Run chromium (reference) build'
+      'Used select the config by machine-id + chromium',
+    )
+    parser.add_argument(
+      '--machine-id',
+      type=str,
+      help='(with config=auto) The name of machine on CI.'
+      'Used select the config by machine-id + chromium',
+    )
+    parser.add_argument(
+      '--retry-count',
+      type=int,
+      default=2,
+      help='Number of retries for a failed benchmark',
+    )
+    parser.add_argument(
+      '--no-report',
+      action='store_true',
+      help='[ci-mode] Don\'t to the dashboard',
+    )
+    parser.add_argument(
+      '--upload',
+      type=lambda x: x.lower() == 'true',
+      default=True,
+      help=(
+        '[For profile updating] Upload the updated profile to cloud storage'
+        + 'and push the changes to brave-core'
+      ),
+    )
+    parser.add_argument(
+      '--upload-branch',
+      type=str,
+      help=(
+        '[For profile updating] A target brave-core branch to push the '
+        + 'changes. update-profiles-<version> is used by default'
+      ),
+    )
 
-    parser.add_argument('--more-help',
-                        action='help',
-                        help='Show this help message and exit.')
+    parser.add_argument(
+      '--more-help', action='help', help='Show this help message and exit.'
+    )
 
   @classmethod
   def from_args(cls, args) -> 'CommonOptions':
@@ -170,18 +197,23 @@ class CommonOptions:
         raise RuntimeError('Set --machine-id to use config=auto')
 
       prefix = 'chromium' if options.chromium else 'brave'
-      config = (f'{prefix}-{options.target_os}-' +
-                f'{options.target_arch}-{options.machine_id}.json5')
+      config = (
+        f'{prefix}-{options.target_os}-'
+        + f'{options.target_arch}-{options.machine_id}.json5'
+      )
       logging.info('Using %s as config=auto', config)
-      options.config = os.path.join(path_util.GetBravePerfConfigDir(), 'ci',
-                                    config)
+      options.config = os.path.join(
+        path_util.GetBravePerfConfigDir(), 'ci', config
+      )
     elif options.config == 'smoke':
       args.no_report = True
       options.verbose = True
-      options.config = os.path.join(path_util.GetBravePerfConfigDir(),
-                                    'smoke.json5')
-      args.working_directory = os.path.join(path_util.GetSrcDir(),
-                                            'perf-test-smoke')
+      options.config = os.path.join(
+        path_util.GetBravePerfConfigDir(), 'smoke.json5'
+      )
+      args.working_directory = os.path.join(
+        path_util.GetSrcDir(), 'perf-test-smoke'
+      )
 
     if args.working_directory is None:
       if options.ci_mode:
@@ -209,8 +241,9 @@ class CommonOptions:
     if args.retry_count is not None:
       options.retry_count = args.retry_count
 
-    options.do_report = (not args.no_report and not args.local_run
-                         and options.mode == PerfMode.RUN)
+    options.do_report = (
+      not args.no_report and not args.local_run and options.mode == PerfMode.RUN
+    )
     options.upload = args.upload
     options.upload_branch = args.upload_branch
 

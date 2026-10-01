@@ -2,8 +2,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Hermetic toolchains handled during a Chromium upgrade.
-"""
+"""Hermetic toolchains handled during a Chromium upgrade."""
 
 from __future__ import annotations
 
@@ -20,8 +19,11 @@ from git_status import GitStatus
 import install_extra_deps
 import repository
 from terminal import terminal
-from toolchains import (build_rust_toolchain, build_windows_toolchain,
-                        build_xcode_toolchain)
+from toolchains import (
+    build_rust_toolchain,
+    build_windows_toolchain,
+    build_xcode_toolchain,
+)
 from versioning import Version
 
 # ---------------------------------------------------------------------------
@@ -54,50 +56,62 @@ TOOLCHAINS = {
     'windows': {
         'label': 'Windows SDK',
         'source': {
-            'files': ('build/vs_toolchain.py', ),
+            'files': ('build/vs_toolchain.py',),
             'keys': ('SDK_VERSION', 'TOOLCHAIN_HASH'),
         },
         'ci': {
-            'jobs': ('https://ci.brave.com/view/toolchains/job/'
-                     'windows-hermetic-toolchain-build/', ),
-            'properties': ('chromium_ref', ),
+            'jobs': (
+                'https://ci.brave.com/view/toolchains/job/'
+                'windows-hermetic-toolchain-build/',
+            ),
+            'properties': ('chromium_ref',),
         },
         'repin': {
             'script': 'build/commands/lib/config.ts',
         },
-        'advice': ('Generate the new toolchain in '
-                   'https://ci.brave.com/view/toolchains/ (or via '
-                   '`brockit.py gen-windows-toolchain`), then call '
-                   '`brockit.py update-windows-toolchain --to=<chromium-ref>` '
-                   'to repin it.'),
+        'advice': (
+            'Generate the new toolchain in '
+            'https://ci.brave.com/view/toolchains/ (or via '
+            '`brockit.py gen-windows-toolchain`), then call '
+            '`brockit.py update-windows-toolchain --to=<chromium-ref>` '
+            'to repin it.'
+        ),
     },
     'xcode': {
         'label': 'macOS SDK',
         'source': {
-            'files': ('build/config/mac/mac_sdk.gni', ),
-            'keys': ('mac_sdk_official_version',
-                     'mac_sdk_official_build_version'),
+            'files': ('build/config/mac/mac_sdk.gni',),
+            'keys': (
+                'mac_sdk_official_version',
+                'mac_sdk_official_build_version',
+            ),
         },
         'ci': {
-            'jobs': ('https://ci.brave.com/view/toolchains/job/'
-                     'xcode-hermetic-toolchain-build/', ),
-            'properties': ('chromium_tag', ),
+            'jobs': (
+                'https://ci.brave.com/view/toolchains/job/'
+                'xcode-hermetic-toolchain-build/',
+            ),
+            'properties': ('chromium_tag',),
         },
         'repin': {
             'script': 'build/mac/download_hermetic_xcode.py',
             'upstream_min_os_file': 'build/mac_toolchain.py',
         },
-        'advice': ('Generate the new toolchain in '
-                   'https://ci.brave.com/view/toolchains/ (or via '
-                   '`brockit.py gen-xcode-toolchain`), then call '
-                   '`brockit.py update-xcode-toolchain --to=<chromium-ref>` '
-                   'to repin it.'),
+        'advice': (
+            'Generate the new toolchain in '
+            'https://ci.brave.com/view/toolchains/ (or via '
+            '`brockit.py gen-xcode-toolchain`), then call '
+            '`brockit.py update-xcode-toolchain --to=<chromium-ref>` '
+            'to repin it.'
+        ),
     },
     'rust': {
         'label': 'Rust toolchain',
         'source': {
-            'files': ('tools/rust/update_rust.py',
-                      'tools/clang/scripts/update.py'),
+            'files': (
+                'tools/rust/update_rust.py',
+                'tools/clang/scripts/update.py',
+            ),
             'keys': ('RUST_REVISION', 'RUST_SUB_REVISION', 'CLANG_REVISION'),
         },
         'ci': {
@@ -114,16 +128,20 @@ TOOLCHAINS = {
             'properties': ('brave_subrevision', 'chromium_ref'),
         },
         'publish': {
-            'url': ('https://brave-build-deps-public.s3.brave.com/'
-                    'rust-toolchain-aux/'
-                    'linux-x64-rust-toolchain-{revision}-1.tar.xz'),
+            'url': (
+                'https://brave-build-deps-public.s3.brave.com/'
+                'rust-toolchain-aux/'
+                'linux-x64-rust-toolchain-{revision}-1.tar.xz'
+            ),
         },
         'repin': {
             'installer': 'EXTRA_DEPS',
         },
-        'advice': ('Run the jobs in https://ci.brave.com/view/toolchains/ to '
-                   'generate a new Rust toolchain (or use '
-                   '`brockit.py gen-rust-toolchain`).'),
+        'advice': (
+            'Run the jobs in https://ci.brave.com/view/toolchains/ to '
+            'generate a new Rust toolchain (or use '
+            '`brockit.py gen-rust-toolchain`).'
+        ),
     },
 }
 
@@ -182,24 +200,25 @@ class ToolchainSpec:
         job = entry['ci']
         publish = entry.get('publish') or {}
         repin = entry.get('repin') or {}
-        return cls(key=key,
-                   label=entry['label'],
-                   files=source['files'],
-                   keys=source['keys'],
-                   job_urls=job['jobs'],
-                   advice=entry['advice'],
-                   build_param=job.get('build_param'),
-                   properties=job.get('properties'),
-                   published_url=publish.get('url'),
-                   installer=repin.get('installer'),
-                   script=repin.get('script'),
-                   upstream_min_os_file=repin.get('upstream_min_os_file'))
+        return cls(
+            key=key,
+            label=entry['label'],
+            files=source['files'],
+            keys=source['keys'],
+            job_urls=job['jobs'],
+            advice=entry['advice'],
+            build_param=job.get('build_param'),
+            properties=job.get('properties'),
+            published_url=publish.get('url'),
+            installer=repin.get('installer'),
+            script=repin.get('script'),
+            upstream_min_os_file=repin.get('upstream_min_os_file'),
+        )
 
 
-def get_assigned_value(contents: str,
-                       lookup: str,
-                       added: bool = False,
-                       removed: bool = False) -> str | None:
+def get_assigned_value(
+    contents: str, lookup: str, added: bool = False, removed: bool = False
+) -> str | None:
     """Uses a basic regex to extract the value being assigned to a key.
 
     This helper extracts the value of a key from file contents that is being
@@ -255,19 +274,25 @@ class Toolchain:
         # `--no-ext-diff` because a `diff.external` driver would render the
         # change its own way, without the +/- prefixes `get_assigned_value`
         # looks for, silently reporting every toolchain as unchanged.
-        return repository.chromium.run_git('diff',
-                                           '--no-ext-diff', str(working),
-                                           str(target), '--', *self.spec.files)
+        return repository.chromium.run_git(
+            'diff',
+            '--no-ext-diff',
+            str(working),
+            str(target),
+            '--',
+            *self.spec.files,
+        )
 
-    def was_updated(self, working: Version | str,
-                    target: Version | str) -> bool:
-        """Whether any detection constant changed across the range.
-        """
+    def was_updated(
+        self, working: Version | str, target: Version | str
+    ) -> bool:
+        """Whether any detection constant changed across the range."""
         diff = self._diff(working, target)
         return any(
             get_assigned_value(diff, key, added=True) is not None
             or get_assigned_value(diff, key, removed=True) is not None
-            for key in self.spec.keys)
+            for key in self.spec.keys
+        )
 
     def is_published(self, target: Version | str) -> bool:
         """Whether a built toolchain is already available for `target`.
@@ -286,7 +311,8 @@ class Toolchain:
         """
         text = repository.chromium.read_file(*self.spec.files, commit=str(ref))
         return '-'.join(
-            get_assigned_value(text, key) or '?' for key in self.spec.keys)
+            get_assigned_value(text, key) or '?' for key in self.spec.keys
+        )
 
     # -- culprit attribution (shared by all toolchain types) ----------------
 
@@ -318,9 +344,9 @@ class Toolchain:
                 parts.append(f'{key} = {re.escape(value)}')
         return '|'.join(parts) if parts else None
 
-    def _pickaxe(self,
-                 ref: Version | str,
-                 since: Version | str | None = None) -> tuple[str, str]:
+    def _pickaxe(
+        self, ref: Version | str, since: Version | str | None = None
+    ) -> tuple[str, str]:
         """Returns the `(hash, subject)` of the culprit commit, best-effort.
 
         Pickaxes the culprit files for the commit that set their current values
@@ -331,15 +357,23 @@ class Toolchain:
         if not regex:
             return '', ''
         range_arg = f'{since}..{ref}' if since is not None else str(ref)
-        out = repository.chromium.run_git('log', '--extended-regexp', '-G',
-                                          regex, '--pretty=%H%x00%s', '-1',
-                                          range_arg, '--', *self.spec.files)
+        out = repository.chromium.run_git(
+            'log',
+            '--extended-regexp',
+            '-G',
+            regex,
+            '--pretty=%H%x00%s',
+            '-1',
+            range_arg,
+            '--',
+            *self.spec.files,
+        )
         commit_hash, _, subject = out.partition('\x00')
         return commit_hash, subject
 
-    def find_culprit(self,
-                     ref: Version | str,
-                     culprit: str | None = None) -> str:
+    def find_culprit(
+        self, ref: Version | str, culprit: str | None = None
+    ) -> str:
         """The single culprit-resolution method used by every toolchain.
 
         Returns `culprit` verbatim when provided; otherwise pickaxes the
@@ -353,13 +387,15 @@ class Toolchain:
             raise InvalidInputException(
                 f'Could not find the Chromium commit pinning the '
                 f'{self.spec.label} toolchain at {ref}. Pass '
-                '[bold cyan]--culprit[/] to point at it explicitly.')
+                '[bold cyan]--culprit[/] to point at it explicitly.'
+            )
         return commit_hash
 
     # -- advisory (consumed by brockit's pre-run checks) --------------------
 
-    def check(self, working: Version | str,
-              target: Version | str) -> ToolchainAdvisory | None:
+    def check(
+        self, working: Version | str, target: Version | str
+    ) -> ToolchainAdvisory | None:
         """Returns an advisory when a new toolchain is needed, else None.
 
         The advisory is only produced if a change is detected for the current
@@ -370,20 +406,21 @@ class Toolchain:
 
         commit_hash, subject = self._pickaxe(target, since=working)
         return ToolchainAdvisory(
-            description=(f'{self.spec.label} has been updated. '
-                         f'{self._revision(working)} ➜ '
-                         f'{self._revision(target)}'),
+            description=(
+                f'{self.spec.label} has been updated. '
+                f'{self._revision(working)} ➜ '
+                f'{self._revision(target)}'
+            ),
             advice=self.spec.advice,
             commit_hash=commit_hash,
-            commit_message=subject)
+            commit_message=subject,
+        )
 
     # -- CI launch (shared by all toolchain types) --------------------------
 
-    def trigger(self,
-                version: Version | str,
-                *,
-                watch: bool = False,
-                **properties) -> bool:
+    def trigger(
+        self, version: Version | str, *, watch: bool = False, **properties
+    ) -> bool:
         """Triggers this toolchain's CI job(s) for `version`.
 
         Toolchains with a `build_param` carry the tag there and take no
@@ -397,24 +434,28 @@ class Toolchain:
         """
         # Toolchains with a build parameter carry the tag there; the ones that
         # take a PROPERTIES payload (see `spec.properties`) send no build param.
-        params = {
-            self.spec.build_param: str(version)
-        } if self.spec.build_param else {}
+        params = (
+            {self.spec.build_param: str(version)}
+            if self.spec.build_param
+            else {}
+        )
         return JenkinsCi.from_config().trigger(
             self.spec.job_urls,
             params=params,
             properties=self._properties_payload(version, properties),
             watch=watch,
-            title=f'{self.spec.label} · Chromium {version}')
+            title=f'{self.spec.label} · Chromium {version}',
+        )
 
-    def _properties_payload(self, version: Version | str,
-                            provided: dict) -> dict | None:
-        """Builds the `PROPERTIES` payload, checking every field is provided.
-        """
+    def _properties_payload(
+        self, version: Version | str, provided: dict
+    ) -> dict | None:
+        """Builds the `PROPERTIES` payload, checking every field is provided."""
         if self.spec.properties is None:
             if provided:
                 raise InvalidInputException(
-                    f'The {self.spec.label} toolchain takes no properties.')
+                    f'The {self.spec.label} toolchain takes no properties.'
+                )
             return None
 
         payload = dict(provided)
@@ -427,7 +468,8 @@ class Toolchain:
         if set(payload) != set(self.spec.properties):
             raise InvalidInputException(
                 f'The {self.spec.label} toolchain requires the properties '
-                f'{sorted(self.spec.properties)}; got {sorted(payload)}.')
+                f'{sorted(self.spec.properties)}; got {sorted(payload)}.'
+            )
         return payload
 
     # -- recovery (auto-resolve a needed toolchain during a lift) -----------
@@ -443,8 +485,9 @@ class Toolchain:
         caller can drop the advisory.
         """
         try:
-            if not self.is_published(target) and not self.trigger(target,
-                                                                  watch=True):
+            if not self.is_published(target) and not self.trigger(
+                target, watch=True
+            ):
                 return False
             self.repin(target, culprit)
         except (InvalidInputException, BadOutcomeException):
@@ -453,10 +496,9 @@ class Toolchain:
 
     # -- repin (in-tree pin + commit), overridden where applicable ----------
 
-    def repin(self,
-              version: Version,
-              culprit: str | None = None,
-              **kwargs) -> None:
+    def repin(
+        self, version: Version, culprit: str | None = None, **kwargs
+    ) -> None:
         """Repins the in-tree pin to the published toolchain and commits it.
 
         `**kwargs` absorbs toolchain-specific repin arguments (e.g. Rust's
@@ -466,7 +508,8 @@ class Toolchain:
         """
         del version, culprit, kwargs
         raise InvalidInputException(
-            f'The {self.spec.label} toolchain has no automated repin.')
+            f'The {self.spec.label} toolchain has no automated repin.'
+        )
 
     @staticmethod
     def _require_no_staged_files() -> None:
@@ -475,8 +518,9 @@ class Toolchain:
         if status.has_staged_files():
             raise InvalidInputException(
                 'Staged files detected. Please commit or unstage changes '
-                'before generating a toolchain update:\n%s' %
-                '\n'.join(status.get_all_staged_entries()))
+                'before generating a toolchain update:\n%s'
+                % '\n'.join(status.get_all_staged_entries())
+            )
 
 
 @dataclass(frozen=True)
@@ -532,14 +576,17 @@ class RustToolchain(Toolchain):
             match = re.search(rf'{key} = {value}', text)
             if not match:
                 raise InvalidInputException(
-                    f'{key} not found in the Rust revision scripts.')
+                    f'{key} not found in the Rust revision scripts.'
+                )
             return match.group(1)
 
         quoted, integer = r"'([0-9a-z-]+)'", r'([0-9]+)'
-        return ('rust-toolchain-'
-                f'{read("RUST_REVISION", quoted)}-'
-                f'{read("RUST_SUB_REVISION", integer)}-'
-                f'{read("CLANG_REVISION", quoted)}')
+        return (
+            'rust-toolchain-'
+            f'{read("RUST_REVISION", quoted)}-'
+            f'{read("RUST_SUB_REVISION", integer)}-'
+            f'{read("CLANG_REVISION", quoted)}'
+        )
 
     @staticmethod
     def _commit_title(objects: list[dict]) -> str:
@@ -559,39 +606,48 @@ class RustToolchain(Toolchain):
         name = objects[0]['object_name'].removesuffix('.tar.xz')
         match = re.search(
             r'rust-toolchain-(?P<rust>[0-9a-f]+)-(?P<sub>\d+)-'
-            r'(?P<clang>llvmorg-.+)-(?P<brave>\d+)$', name)
+            r'(?P<clang>llvmorg-.+)-(?P<brave>\d+)$',
+            name,
+        )
         if not match:
             return f'Rust/WASM toolchain {name}'
-        return (f'Rust/WASM toolchain ({match["rust"][:12]}-{match["sub"]}, '
-                f'{match["clang"]}, sub {match["sub"]})')
+        return (
+            f'Rust/WASM toolchain ({match["rust"][:12]}-{match["sub"]}, '
+            f'{match["clang"]}, sub {match["sub"]})'
+        )
 
     # pylint: disable=arguments-differ
-    def repin(self,
-              version: Version,
-              culprit: str | None = None,
-              *,
-              brave_subrevision: int = FIRST_BRAVE_SUBREVISION) -> None:
-        """Repins the Rust/WASM `EXTRA_DEPS` entry and commits it.
-        """
+    def repin(
+        self,
+        version: Version,
+        culprit: str | None = None,
+        *,
+        brave_subrevision: int = FIRST_BRAVE_SUBREVISION,
+    ) -> None:
+        """Repins the Rust/WASM `EXTRA_DEPS` entry and commits it."""
         self._require_no_staged_files()
 
         ref = str(version)
-        revision_text = repository.chromium.read_file(*self.spec.files,
-                                                      commit=ref)
+        revision_text = repository.chromium.read_file(
+            *self.spec.files, commit=ref
+        )
         upstream_stem = self._upstream_stem(revision_text)
 
         try:
             extra_dep = build_rust_toolchain.rust_toolchain_extra_dep(
-                upstream_stem, brave_subrevision)
+                upstream_stem, brave_subrevision
+            )
         except RuntimeError as e:
             raise BadOutcomeException(str(e)) from e
-        objects = extra_dep[
-            build_rust_toolchain.RUST_TOOLCHAIN_DEP_PATH]['objects']
+        objects = extra_dep[build_rust_toolchain.RUST_TOOLCHAIN_DEP_PATH][
+            'objects'
+        ]
 
         installer = self.spec.installer
         path = repository.brave.root / installer
         revision = install_extra_deps.format_setdep_revision(
-            build_rust_toolchain.RUST_TOOLCHAIN_DEP_PATH, objects)
+            build_rust_toolchain.RUST_TOOLCHAIN_DEP_PATH, objects
+        )
 
         before = path.read_bytes()
         try:
@@ -601,17 +657,20 @@ class RustToolchain(Toolchain):
 
         if path.read_bytes() == before:
             terminal.log_task(
-                f'{installer} is already up to date; nothing to commit.')
+                f'{installer} is already up to date; nothing to commit.'
+            )
             return
 
         commit_hash = self.find_culprit(ref, culprit)
         repository.brave.run_git('add', installer)
-        repository.brave.git_commit(self._commit_title(objects),
-                                    env={
-                                        **os.environ,
-                                        'tags': 'toolchain',
-                                        'culprit': commit_hash,
-                                    })
+        repository.brave.git_commit(
+            self._commit_title(objects),
+            env={
+                **os.environ,
+                'tags': 'toolchain',
+                'culprit': commit_hash,
+            },
+        )
 
 
 class XcodeToolchain(Toolchain):
@@ -622,7 +681,8 @@ class XcodeToolchain(Toolchain):
     # Spans the opening line and any contiguous comment lines that follow,
     # stopping at the first non-comment line (the constants).
     _PROVENANCE_COMMENT_RE = re.compile(
-        r'^# This contains binaries from Xcode\b.*\n(?:#.*\n)*', re.MULTILINE)
+        r'^# This contains binaries from Xcode\b.*\n(?:#.*\n)*', re.MULTILINE
+    )
 
     # Matches the `MAC_MINIMUM_OS_VERSION` block, with its leading comment lines
     # plus the assignment, in both Chromium's `build/mac_toolchain.py` and the
@@ -630,18 +690,18 @@ class XcodeToolchain(Toolchain):
     # drops it into the downloader verbatim. Each block is preceded by a blank
     # line, so the contiguous comment run never reaches further up.
     _MIN_OS_VERSION_BLOCK_RE = re.compile(
-        r'(?:^#.*\n)*^MAC_MINIMUM_OS_VERSION = \[[^\]]*\]\n', re.MULTILINE)
+        r'(?:^#.*\n)*^MAC_MINIMUM_OS_VERSION = \[[^\]]*\]\n', re.MULTILINE
+    )
 
     def __init__(self) -> None:
-        super().__init__(ToolchainSpec.from_entry('xcode',
-                                                  TOOLCHAINS['xcode']))
+        super().__init__(ToolchainSpec.from_entry('xcode', TOOLCHAINS['xcode']))
 
     def is_published(self, target: Version | str) -> bool:
-        """Whether a published Xcode toolchain index exists for `target`.
-        """
+        """Whether a published Xcode toolchain index exists for `target`."""
         try:
-            mac_sdk_gni = repository.chromium.read_file(self.spec.files[0],
-                                                        commit=str(target))
+            mac_sdk_gni = repository.chromium.read_file(
+                self.spec.files[0], commit=str(target)
+            )
             sdk_info = build_xcode_toolchain.MacSdkInfo.from_gni(mac_sdk_gni)
             build_xcode_toolchain.fetch_published_index(sdk_info)
         except (RuntimeError, OSError):
@@ -649,8 +709,9 @@ class XcodeToolchain(Toolchain):
         return True
 
     @staticmethod
-    def _provenance_comment(sdk_info: build_xcode_toolchain.MacSdkInfo,
-                            index: dict) -> str:
+    def _provenance_comment(
+        sdk_info: build_xcode_toolchain.MacSdkInfo, index: dict
+    ) -> str:
         """Render the wrapped provenance comment for the resolved toolchain.
 
         Records, the Xcode version/build and Metal build the index reports
@@ -663,14 +724,21 @@ class XcodeToolchain(Toolchain):
             f"This contains binaries from Xcode {index['xcode_version']} "
             f"({index['xcode_build']}) along with the macOS "
             f"{sdk_info.sdk_version} SDK ({sdk_info.product_build_version}) "
-            f"and the Metal toolchain ({metal_build}).")
-        return textwrap.fill(
-            sentence, width=79, initial_indent='# ',
-            subsequent_indent='# ') + '\n'
+            f"and the Metal toolchain ({metal_build})."
+        )
+        return (
+            textwrap.fill(
+                sentence, width=79, initial_indent='# ', subsequent_indent='# '
+            )
+            + '\n'
+        )
 
     def _rewrite_hermetic_xcode_script(
-            self, sdk_info: build_xcode_toolchain.MacSdkInfo, index: dict,
-            mac_toolchain_py: str) -> bool:
+        self,
+        sdk_info: build_xcode_toolchain.MacSdkInfo,
+        index: dict,
+        mac_toolchain_py: str,
+    ) -> bool:
         """Pins the archive hash, size, and SDK constants, refreshes the
         provenance comment, and mirrors Chromium's `MAC_MINIMUM_OS_VERSION`
         block.
@@ -687,36 +755,46 @@ class XcodeToolchain(Toolchain):
         sdk_version = sdk_info.sdk_version
         build_version = sdk_info.product_build_version
 
-        content = re.sub(r"MAC_BINARIES_HASH = '[^']*'",
-                         f"MAC_BINARIES_HASH = '{index['sha256sum']}'",
-                         original,
-                         count=1)
-        content = re.sub(r'MAC_BINARIES_SIZE = \d+',
-                         f"MAC_BINARIES_SIZE = {index['size_bytes']}",
-                         content,
-                         count=1)
-        content = re.sub(r"MAC_SDK_OFFICIAL_VERSION = '[^']*'",
-                         f"MAC_SDK_OFFICIAL_VERSION = '{sdk_version}'",
-                         content,
-                         count=1)
-        content = re.sub(r"MAC_SDK_OFFICIAL_BUILD_VERSION = '[^']*'",
-                         f"MAC_SDK_OFFICIAL_BUILD_VERSION = '{build_version}'",
-                         content,
-                         count=1)
+        content = re.sub(
+            r"MAC_BINARIES_HASH = '[^']*'",
+            f"MAC_BINARIES_HASH = '{index['sha256sum']}'",
+            original,
+            count=1,
+        )
+        content = re.sub(
+            r'MAC_BINARIES_SIZE = \d+',
+            f"MAC_BINARIES_SIZE = {index['size_bytes']}",
+            content,
+            count=1,
+        )
+        content = re.sub(
+            r"MAC_SDK_OFFICIAL_VERSION = '[^']*'",
+            f"MAC_SDK_OFFICIAL_VERSION = '{sdk_version}'",
+            content,
+            count=1,
+        )
+        content = re.sub(
+            r"MAC_SDK_OFFICIAL_BUILD_VERSION = '[^']*'",
+            f"MAC_SDK_OFFICIAL_BUILD_VERSION = '{build_version}'",
+            content,
+            count=1,
+        )
         content = self._PROVENANCE_COMMENT_RE.sub(
             lambda _: self._provenance_comment(sdk_info, index),
             content,
-            count=1)
+            count=1,
+        )
 
         # Lift the minimum-OS gate (and its comment) verbatim from upstream.
-        upstream_min_os = self._MIN_OS_VERSION_BLOCK_RE.search(
-            mac_toolchain_py)
+        upstream_min_os = self._MIN_OS_VERSION_BLOCK_RE.search(mac_toolchain_py)
         if upstream_min_os is None:
             raise InvalidInputException(
                 'Could not find the MAC_MINIMUM_OS_VERSION block in '
-                f'{self.spec.upstream_min_os_file}.')
+                f'{self.spec.upstream_min_os_file}.'
+            )
         content = self._MIN_OS_VERSION_BLOCK_RE.sub(
-            lambda _: upstream_min_os.group(0), content, count=1)
+            lambda _: upstream_min_os.group(0), content, count=1
+        )
 
         if content == original:
             return False
@@ -732,10 +810,12 @@ class XcodeToolchain(Toolchain):
         self._require_no_staged_files()
 
         ref = str(version)
-        mac_sdk_gni = repository.chromium.read_file(self.spec.files[0],
-                                                    commit=ref)
+        mac_sdk_gni = repository.chromium.read_file(
+            self.spec.files[0], commit=ref
+        )
         mac_toolchain_py = repository.chromium.read_file(
-            self.spec.upstream_min_os_file, commit=ref)
+            self.spec.upstream_min_os_file, commit=ref
+        )
         try:
             sdk_info = build_xcode_toolchain.MacSdkInfo.from_gni(mac_sdk_gni)
         except RuntimeError as e:
@@ -746,22 +826,28 @@ class XcodeToolchain(Toolchain):
         except RuntimeError as e:
             raise BadOutcomeException(str(e)) from e
 
-        if not self._rewrite_hermetic_xcode_script(sdk_info, index,
-                                                   mac_toolchain_py):
-            terminal.log_task(f'{self.spec.script} is already pinned to these '
-                              'values; nothing to commit.')
+        if not self._rewrite_hermetic_xcode_script(
+            sdk_info, index, mac_toolchain_py
+        ):
+            terminal.log_task(
+                f'{self.spec.script} is already pinned to these '
+                'values; nothing to commit.'
+            )
             return
 
         commit_hash = self.find_culprit(ref, culprit)
-        title = (f'Switch to Xcode {index["xcode_version"]} '
-                 f'{index["xcode_build"]}')
+        title = (
+            f'Switch to Xcode {index["xcode_version"]} {index["xcode_build"]}'
+        )
         repository.brave.run_git('add', self.spec.script)
-        repository.brave.git_commit(title,
-                                    env={
-                                        **os.environ,
-                                        'tags': 'toolchain',
-                                        'culprit': commit_hash,
-                                    })
+        repository.brave.git_commit(
+            title,
+            env={
+                **os.environ,
+                'tags': 'toolchain',
+                'culprit': commit_hash,
+            },
+        )
 
 
 class WindowsToolchain(Toolchain):
@@ -776,23 +862,26 @@ class WindowsToolchain(Toolchain):
 
     def __init__(self) -> None:
         super().__init__(
-            ToolchainSpec.from_entry('windows', TOOLCHAINS['windows']))
+            ToolchainSpec.from_entry('windows', TOOLCHAINS['windows'])
+        )
 
     def is_published(self, target: Version | str) -> bool:
-        """Whether a published Windows toolchain index exists for `target`.
-        """
+        """Whether a published Windows toolchain index exists for `target`."""
         try:
-            vs_toolchain_py = repository.chromium.read_file(self.spec.files[0],
-                                                            commit=str(target))
-            sdk_info = (build_windows_toolchain.WinSdkInfo.
-                        from_vs_toolchain_py(vs_toolchain_py))
+            vs_toolchain_py = repository.chromium.read_file(
+                self.spec.files[0], commit=str(target)
+            )
+            sdk_info = build_windows_toolchain.WinSdkInfo.from_vs_toolchain_py(
+                vs_toolchain_py
+            )
             build_windows_toolchain.fetch_published_index(sdk_info)
         except (RuntimeError, OSError):
             return False
         return True
 
-    def _rewrite_config_ts(self, sdk_info: build_windows_toolchain.WinSdkInfo,
-                           index: dict) -> bool:
+    def _rewrite_config_ts(
+        self, sdk_info: build_windows_toolchain.WinSdkInfo, index: dict
+    ) -> bool:
         """Pins the `GYP_MSVS_HASH_<hash>` override in `config.ts`.
 
         Returns True if the on-disk file actually changed, False when it was
@@ -801,15 +890,17 @@ class WindowsToolchain(Toolchain):
         """
         script_path = repository.brave.root / self.spec.script
         original = script_path.read_bytes().decode('utf-8')
-        replacement = (f"env.GYP_MSVS_HASH_{sdk_info.toolchain_hash} = "
-                       f"'{index['hash']}'")
-        content, count = self._GYP_MSVS_HASH_RE.subn(replacement,
-                                                     original,
-                                                     count=1)
+        replacement = (
+            f"env.GYP_MSVS_HASH_{sdk_info.toolchain_hash} = '{index['hash']}'"
+        )
+        content, count = self._GYP_MSVS_HASH_RE.subn(
+            replacement, original, count=1
+        )
         if count == 0:
             raise InvalidInputException(
                 'Could not find a `env.GYP_MSVS_HASH_<hash> = \'<hash>\'` '
-                f'override to rewrite in {self.spec.script}.')
+                f'override to rewrite in {self.spec.script}.'
+            )
         if content == original:
             return False
 
@@ -830,11 +921,13 @@ class WindowsToolchain(Toolchain):
         self._require_no_staged_files()
 
         ref = str(version)
-        vs_toolchain_py = repository.chromium.read_file(self.spec.files[0],
-                                                        commit=ref)
+        vs_toolchain_py = repository.chromium.read_file(
+            self.spec.files[0], commit=ref
+        )
         try:
-            sdk_info = (build_windows_toolchain.WinSdkInfo.
-                        from_vs_toolchain_py(vs_toolchain_py))
+            sdk_info = build_windows_toolchain.WinSdkInfo.from_vs_toolchain_py(
+                vs_toolchain_py
+            )
         except RuntimeError as e:
             raise BadOutcomeException(str(e)) from e
 
@@ -844,16 +937,20 @@ class WindowsToolchain(Toolchain):
             raise BadOutcomeException(str(e)) from e
 
         if not self._rewrite_config_ts(sdk_info, index):
-            terminal.log_task(f'{self.spec.script} is already pinned to these '
-                              'values; nothing to commit.')
+            terminal.log_task(
+                f'{self.spec.script} is already pinned to these '
+                'values; nothing to commit.'
+            )
             return
 
         commit_hash = self.find_culprit(ref, culprit)
         title = f'Switch to Windows SDK {sdk_info.sdk_version_in_comment}'
         repository.brave.run_git('add', self.spec.script)
-        repository.brave.git_commit(title,
-                                    env={
-                                        **os.environ,
-                                        'tags': 'toolchain',
-                                        'culprit': commit_hash,
-                                    })
+        repository.brave.git_commit(
+            title,
+            env={
+                **os.environ,
+                'tags': 'toolchain',
+                'culprit': commit_hash,
+            },
+        )

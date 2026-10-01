@@ -20,8 +20,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from recipe_test_api import (RecipeTestApi, StepTestData,
-                             placeholder_step_data)
+from recipe_test_api import RecipeTestApi, StepTestData, placeholder_step_data
 
 from .api import dumps, loads
 
@@ -40,10 +39,9 @@ class JsonTestApi(RecipeTestApi):
         return loads(data, **kwargs)
 
     @placeholder_step_data
-    def output(self,
-               data: Any,
-               retcode: int | None = None,
-               name: str | None = None):
+    def output(
+        self, data: Any, retcode: int | None = None, name: str | None = None
+    ):
         """Seed an `api.json.output()` placeholder to return *data*.
 
         *data* is an ordinary Python value (dict, list, str, int, ...); the step
@@ -52,10 +50,9 @@ class JsonTestApi(RecipeTestApi):
         return json.dumps(data, indent=2, sort_keys=True), retcode, name
 
     @placeholder_step_data('output')
-    def invalid(self,
-                raw_data: str,
-                retcode: int | None = None,
-                name: str | None = None):
+    def invalid(
+        self, raw_data: str, retcode: int | None = None, name: str | None = None
+    ):
         """Seed an `api.json.output()` placeholder with text that isn't JSON.
 
         For exercising what a recipe does when a step writes garbage: the
@@ -64,9 +61,9 @@ class JsonTestApi(RecipeTestApi):
         return raw_data, retcode, name
 
     @placeholder_step_data('output')
-    def backing_file_missing(self,
-                             retcode: int | None = None,
-                             name: str | None = None):
+    def backing_file_missing(
+        self, retcode: int | None = None, name: str | None = None
+    ):
         """Seed an output placeholder as if the step never wrote its file.
 
         Only meaningful for a placeholder created with `leak_to`; without it the
@@ -74,11 +71,13 @@ class JsonTestApi(RecipeTestApi):
         """
         return None, retcode, name
 
-    def output_stream(self,
-                      data: Any,
-                      stream: str = 'stdout',
-                      retcode: int | None = None,
-                      name: str | None = None) -> StepTestData:
+    def output_stream(
+        self,
+        data: Any,
+        stream: str = 'stdout',
+        retcode: int | None = None,
+        name: str | None = None,
+    ) -> StepTestData:
         """Seed *data* as the JSON on the step's `stdout` (or `stderr`)."""
         assert stream in ('stdout', 'stderr')
         fragment = StepTestData()

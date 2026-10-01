@@ -54,7 +54,8 @@ def _read_toolchain_hash(vs_toolchain_py: str) -> str:
     match = _TOOLCHAIN_HASH_RE.search(text)
     if not match:
         raise RuntimeError(
-            f'Could not find TOOLCHAIN_HASH in {vs_toolchain_py}.')
+            f'Could not find TOOLCHAIN_HASH in {vs_toolchain_py}.'
+        )
     return match.group(1)
 
 
@@ -66,8 +67,9 @@ def _fetch_published_hash(index_url: str) -> str | None:
             than not existing yet) or its content is malformed.
     """
     try:
-        with urllib.request.urlopen(index_url,
-                                    timeout=_FETCH_TIMEOUT_SECS) as response:
+        with urllib.request.urlopen(
+            index_url, timeout=_FETCH_TIMEOUT_SECS
+        ) as response:
             index = yaml.safe_load(response)
     except urllib.error.HTTPError as e:
         # Mirrors `build_windows_toolchain._remote_url_exists`: the download
@@ -82,21 +84,22 @@ def _fetch_published_hash(index_url: str) -> str | None:
     try:
         return index['hash']
     except (TypeError, KeyError) as e:
-        raise RuntimeError(
-            f'{index_url} has no "hash" entry: {index!r}') from e
+        raise RuntimeError(f'{index_url} has no "hash" entry: {index!r}') from e
 
 
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument('vs_toolchain_py',
-                        help='Path to the checked-out build/vs_toolchain.py.')
+    parser.add_argument(
+        'vs_toolchain_py', help='Path to the checked-out build/vs_toolchain.py.'
+    )
     parser.add_argument(
         'index_base_url',
         help='Base URL the sibling toolchain index is published under '
-        '(the upstream toolchain hash + ".yaml" is appended to it).')
-    parser.add_argument('--json-output',
-                        required=True,
-                        type=argparse.FileType('w'))
+        '(the upstream toolchain hash + ".yaml" is appended to it).',
+    )
+    parser.add_argument(
+        '--json-output', required=True, type=argparse.FileType('w')
+    )
     opts = parser.parse_args(argv)
 
     toolchain_hash = _read_toolchain_hash(opts.vs_toolchain_py)
@@ -108,7 +111,9 @@ def main(argv: list[str]) -> int:
             {
                 'toolchain_hash': toolchain_hash,
                 'published_hash': published_hash,
-            }, f)
+            },
+            f,
+        )
     return 0
 
 

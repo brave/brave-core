@@ -40,8 +40,7 @@ from versioning import Version
 
 # Source of the commit-msg hook, copied into the fake brave repo so the
 # `tags` / `culprit` env wiring is exercised exactly as in production.
-HOOK_SOURCE: Path = (Path(__file__).resolve().parent / 'alias' /
-                     'commit-msg.py')
+HOOK_SOURCE: Path = Path(__file__).resolve().parent / 'alias' / 'commit-msg.py'
 
 # The Chromium tag the repin/detection tests resolve against.
 CHROMIUM_TAG = '150.0.7850.1'
@@ -109,22 +108,30 @@ class GetAssignedValueTest(unittest.TestCase):
 
     def test_reads_quoted_value(self):
         self.assertEqual(
-            toolchain.get_assigned_value("RUST_REVISION = 'abc'",
-                                         'RUST_REVISION'), 'abc')
+            toolchain.get_assigned_value(
+                "RUST_REVISION = 'abc'", 'RUST_REVISION'
+            ),
+            'abc',
+        )
 
     def test_reads_indented_gn_value(self):
         # mac_sdk.gni nests its assignments; the reader tolerates indentation.
         self.assertEqual(
-            toolchain.get_assigned_value('  mac_sdk_official_version = "26.5"',
-                                         'mac_sdk_official_version'), '26.5')
+            toolchain.get_assigned_value(
+                '  mac_sdk_official_version = "26.5"',
+                'mac_sdk_official_version',
+            ),
+            '26.5',
+        )
 
     def test_added_and_removed_filters(self):
         diff = "-SDK_VERSION = '1'\n+SDK_VERSION = '2'\n"
         self.assertEqual(
-            toolchain.get_assigned_value(diff, 'SDK_VERSION', added=True), '2')
+            toolchain.get_assigned_value(diff, 'SDK_VERSION', added=True), '2'
+        )
         self.assertEqual(
-            toolchain.get_assigned_value(diff, 'SDK_VERSION', removed=True),
-            '1')
+            toolchain.get_assigned_value(diff, 'SDK_VERSION', removed=True), '1'
+        )
 
 
 class CommitTitleTest(unittest.TestCase):
@@ -135,25 +142,33 @@ class CommitTitleTest(unittest.TestCase):
         return [{'object_name': object_name}]
 
     def test_title_uses_upstream_rust_sub_revision(self):
-        name = ('linux-x64-rust-toolchain-'
-                '4c4205163abcbd08948b3efab796c543ba1ea687-2-'
-                'llvmorg-23-init-10931-g20b6ec66-1.tar.xz')
+        name = (
+            'linux-x64-rust-toolchain-'
+            '4c4205163abcbd08948b3efab796c543ba1ea687-2-'
+            'llvmorg-23-init-10931-g20b6ec66-1.tar.xz'
+        )
         title = toolchain.RustToolchain._commit_title(self._objects(name))
         self.assertEqual(
-            title, 'Rust/WASM toolchain (4c4205163abc-2, '
-            'llvmorg-23-init-10931-g20b6ec66, sub 2)')
+            title,
+            'Rust/WASM toolchain (4c4205163abc-2, '
+            'llvmorg-23-init-10931-g20b6ec66, sub 2)',
+        )
 
     def test_unparseable_name_falls_back_to_stem(self):
         title = toolchain.RustToolchain._commit_title(
-            self._objects('linux-x64-rust-toolchain-2.tar.xz'))
-        self.assertEqual(title,
-                         'Rust/WASM toolchain linux-x64-rust-toolchain-2')
+            self._objects('linux-x64-rust-toolchain-2.tar.xz')
+        )
+        self.assertEqual(
+            title, 'Rust/WASM toolchain linux-x64-rust-toolchain-2'
+        )
 
 
 # Provenance-comment fixtures (shared with the xcode repin test).
 FAKE_INDEX = {
-    'url': ('https://example.invalid/xcode-hermetic-toolchain/'
-            'xcode-hermetic-toolchain-26.5-25F70.tar.gz'),
+    'url': (
+        'https://example.invalid/xcode-hermetic-toolchain/'
+        'xcode-hermetic-toolchain-26.5-25F70.tar.gz'
+    ),
     'sha256sum': 'b' * 64,
     'size_bytes': 883762569,
     'xcode_version': '26.5',
@@ -167,26 +182,28 @@ class ProvenanceCommentTest(unittest.TestCase):
     """Tests for `XcodeToolchain._provenance_comment`."""
 
     SDK_INFO = toolchain.build_xcode_toolchain.MacSdkInfo(
-        sdk_version='26.5', product_build_version='25F70')
+        sdk_version='26.5', product_build_version='25F70'
+    )
 
     def test_records_xcode_sdk_and_metal(self):
         comment = toolchain.XcodeToolchain._provenance_comment(
-            self.SDK_INFO, FAKE_INDEX)
+            self.SDK_INFO, FAKE_INDEX
+        )
         lines = comment.splitlines()
         self.assertTrue(all(line.startswith('# ') for line in lines))
         self.assertTrue(all(len(line) <= 79 for line in lines))
         prose = ' '.join(line[2:] for line in lines)
         self.assertEqual(
-            prose, 'This contains binaries from Xcode 26.5 (17F42) along with '
-            'the macOS 26.5 SDK (25F70) and the Metal toolchain (17E188).')
+            prose,
+            'This contains binaries from Xcode 26.5 (17F42) along with '
+            'the macOS 26.5 SDK (25F70) and the Metal toolchain (17E188).',
+        )
 
     def test_missing_metal_build_falls_back_to_unknown(self):
         comment = toolchain.XcodeToolchain._provenance_comment(
-            self.SDK_INFO, {
-                **FAKE_INDEX, 'metal_build': None
-            })
-        self.assertIn('Metal toolchain (unknown)',
-                      comment.replace('\n# ', ' '))
+            self.SDK_INFO, {**FAKE_INDEX, 'metal_build': None}
+        )
+        self.assertIn('Metal toolchain (unknown)', comment.replace('\n# ', ' '))
 
 
 # ---------------------------------------------------------------------------
@@ -206,8 +223,7 @@ class TriggerTest(unittest.TestCase):
     def test_rust_codifies_properties_and_no_build_param(self):
         spec = toolchain.RustToolchain().spec
         self.assertIsNone(spec.build_param)
-        self.assertEqual(spec.properties,
-                         ('brave_subrevision', 'chromium_ref'))
+        self.assertEqual(spec.properties, ('brave_subrevision', 'chromium_ref'))
 
     def test_rust_triggers_four_jobs_with_properties_payload(self):
         rust = toolchain.RustToolchain()
@@ -219,10 +235,13 @@ class TriggerTest(unittest.TestCase):
         # Rust has no build parameter; the tag rides in the PROPERTIES payload,
         # with `chromium_ref` filled from the triggered version.
         self.assertEqual(kwargs['params'], {})
-        self.assertEqual(kwargs['properties'], {
-            'brave_subrevision': 7,
-            'chromium_ref': CHROMIUM_TAG,
-        })
+        self.assertEqual(
+            kwargs['properties'],
+            {
+                'brave_subrevision': 7,
+                'chromium_ref': CHROMIUM_TAG,
+            },
+        )
 
     def test_rust_defaults_its_brave_subrevision(self):
         # `brave_subrevision` is not derivable from the version, but a build
@@ -232,23 +251,26 @@ class TriggerTest(unittest.TestCase):
         launcher = self._trigger(rust)
         _, kwargs = launcher.trigger.call_args
         self.assertEqual(
-            kwargs['properties'], {
+            kwargs['properties'],
+            {
                 'brave_subrevision': toolchain.FIRST_BRAVE_SUBREVISION,
                 'chromium_ref': CHROMIUM_TAG,
-            })
+            },
+        )
 
     def test_rust_rejects_undeclared_properties(self):
         launcher = MagicMock()
         with patch('toolchain.JenkinsCi.from_config', return_value=launcher):
             with self.assertRaises(toolchain.InvalidInputException):
-                toolchain.RustToolchain().trigger(Version(CHROMIUM_TAG),
-                                                  not_a_field=1)
+                toolchain.RustToolchain().trigger(
+                    Version(CHROMIUM_TAG), not_a_field=1
+                )
         launcher.trigger.assert_not_called()
 
     def test_xcode_codifies_properties_and_no_build_param(self):
         spec = toolchain.XcodeToolchain().spec
         self.assertIsNone(spec.build_param)
-        self.assertEqual(spec.properties, ('chromium_tag', ))
+        self.assertEqual(spec.properties, ('chromium_tag',))
 
     def test_xcode_triggers_single_job_with_properties_payload(self):
         xcode = toolchain.XcodeToolchain()
@@ -266,14 +288,15 @@ class TriggerTest(unittest.TestCase):
         launcher = MagicMock()
         with patch('toolchain.JenkinsCi.from_config', return_value=launcher):
             with self.assertRaises(toolchain.InvalidInputException):
-                toolchain.XcodeToolchain().trigger(Version(CHROMIUM_TAG),
-                                                   brave_subrevision=1)
+                toolchain.XcodeToolchain().trigger(
+                    Version(CHROMIUM_TAG), brave_subrevision=1
+                )
         launcher.trigger.assert_not_called()
 
     def test_windows_codifies_properties_and_no_build_param(self):
         spec = toolchain.WindowsToolchain().spec
         self.assertIsNone(spec.build_param)
-        self.assertEqual(spec.properties, ('chromium_ref', ))
+        self.assertEqual(spec.properties, ('chromium_ref',))
 
     def test_windows_triggers_single_job_with_properties_payload(self):
         windows = toolchain.WindowsToolchain()
@@ -300,8 +323,7 @@ class _FakeRepoTest(unittest.TestCase):
         self.repo = FakeChromiumRepo()
         self.repo.setup()
         self.addCleanup(self.repo.cleanup)
-        self.repo._run_git_command(['checkout', '-b', 'cr150'],
-                                   self.repo.brave)
+        self.repo._run_git_command(['checkout', '-b', 'cr150'], self.repo.brave)
         self._install_commit_msg_hook()
 
     def _install_commit_msg_hook(self) -> None:
@@ -311,16 +333,19 @@ class _FakeRepoTest(unittest.TestCase):
         if dest.exists() or dest.is_symlink():
             dest.unlink()
         shutil.copy2(HOOK_SOURCE, dest)
-        dest.chmod(dest.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP
-                   | stat.S_IXOTH)
+        dest.chmod(
+            dest.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH
+        )
 
     def _brave_head(self) -> str:
-        return self.repo._run_git_command(['rev-parse', 'HEAD'],
-                                          self.repo.brave)
+        return self.repo._run_git_command(
+            ['rev-parse', 'HEAD'], self.repo.brave
+        )
 
     def _last_brave_message(self) -> str:
-        return self.repo._run_git_command(['log', '-1', '--format=%B'],
-                                          self.repo.brave)
+        return self.repo._run_git_command(
+            ['log', '-1', '--format=%B'], self.repo.brave
+        )
 
 
 class RustRepinTest(_FakeRepoTest):
@@ -341,19 +366,25 @@ class RustRepinTest(_FakeRepoTest):
         platform's values are distinguishable without any network access."""
         build_rust_toolchain = toolchain.build_rust_toolchain
         objects = []
-        for platform_prefix, condition in (
-                build_rust_toolchain.SUPPORTED_PLATFORM_CONDITIONS.items()):
-            object_name = (f'{platform_prefix}-{upstream_stem}-'
-                           f'{brave_subrevision}.tar.xz')
+        for (
+            platform_prefix,
+            condition,
+        ) in build_rust_toolchain.SUPPORTED_PLATFORM_CONDITIONS.items():
+            object_name = (
+                f'{platform_prefix}-{upstream_stem}-{brave_subrevision}.tar.xz'
+            )
             host_os = build_rust_toolchain.PLATFORM_PREFIX_TO_CHROMIUM_HOST_OS[
-                platform_prefix]
-            objects.append({
-                'object_name': object_name,
-                'sha256sum': f'sha-{object_name}',
-                'size_bytes': len(object_name),
-                'overlayed_on': f'{host_os}/{upstream_stem}.tar.xz',
-                'condition': condition,
-            })
+                platform_prefix
+            ]
+            objects.append(
+                {
+                    'object_name': object_name,
+                    'sha256sum': f'sha-{object_name}',
+                    'size_bytes': len(object_name),
+                    'overlayed_on': f'{host_os}/{upstream_stem}.tar.xz',
+                    'condition': condition,
+                }
+            )
         return {
             build_rust_toolchain.RUST_TOOLCHAIN_DEP_PATH: {
                 'bucket': f'{build_rust_toolchain.TOOLCHAIN_BUCKET_URL}/',
@@ -366,9 +397,11 @@ class RustRepinTest(_FakeRepoTest):
         super().setUp()
         self.rust = toolchain.RustToolchain()
         self._seed_installer()
-        patcher = patch.object(toolchain.build_rust_toolchain,
-                               'rust_toolchain_extra_dep',
-                               side_effect=self._fake_extra_dep)
+        patcher = patch.object(
+            toolchain.build_rust_toolchain,
+            'rust_toolchain_extra_dep',
+            side_effect=self._fake_extra_dep,
+        )
         self.fetch = patcher.start()
         self.addCleanup(patcher.stop)
 
@@ -378,7 +411,8 @@ class RustRepinTest(_FakeRepoTest):
         path.write_text(content, encoding='utf-8', newline='')
         self.repo._run_git_command(['add', str(path)], self.repo.brave)
         self.repo._run_git_command(
-            ['commit', '--no-verify', '-m', 'Seed installer'], self.repo.brave)
+            ['commit', '--no-verify', '-m', 'Seed installer'], self.repo.brave
+        )
 
     def _seed_rust_revision_bump(self) -> str:
         """Seed a Chromium commit introducing the Rust/Clang revision constants
@@ -387,13 +421,16 @@ class RustRepinTest(_FakeRepoTest):
         self.repo.write_and_stage_file(
             'tools/rust/update_rust.py',
             "RUST_REVISION = 'abc123def'\nRUST_SUB_REVISION = 2\n",
-            self.repo.chromium)
+            self.repo.chromium,
+        )
         self.repo.write_and_stage_file(
             'tools/clang/scripts/update.py',
             "CLANG_REVISION = 'llvmorg-23-init-10931-g20b6ec66'\n",
-            self.repo.chromium)
-        culprit = self.repo.commit('Roll clang+rust revision',
-                                   self.repo.chromium)
+            self.repo.chromium,
+        )
+        culprit = self.repo.commit(
+            'Roll clang+rust revision', self.repo.chromium
+        )
         self.repo._run_git_command(['tag', CHROMIUM_TAG], self.repo.chromium)
         return culprit
 
@@ -401,9 +438,11 @@ class RustRepinTest(_FakeRepoTest):
         return (self.repo.brave / self.INSTALLER).read_bytes().decode('utf-8')
 
     def _repin(self, culprit: str | None) -> None:
-        self.rust.repin(Version(CHROMIUM_TAG),
-                        culprit=culprit,
-                        brave_subrevision=self.BRAVE_SUBREVISION)
+        self.rust.repin(
+            Version(CHROMIUM_TAG),
+            culprit=culprit,
+            brave_subrevision=self.BRAVE_SUBREVISION,
+        )
 
     def test_updates_and_commits_with_auto_culprit(self):
         culprit = self._seed_rust_revision_bump()
@@ -423,8 +462,9 @@ class RustRepinTest(_FakeRepoTest):
         self.assertIn(f'Win/{self.UPSTREAM_STEM}.tar.xz', text)
         self.assertNotIn('old-upstream.tar.xz', text)
         # Every platform's object is read from its sibling index in one call.
-        self.fetch.assert_called_once_with(self.UPSTREAM_STEM,
-                                           self.BRAVE_SUBREVISION)
+        self.fetch.assert_called_once_with(
+            self.UPSTREAM_STEM, self.BRAVE_SUBREVISION
+        )
         # Everything setdep does not touch survives byte for byte.
         self.assertIn("'src/other-dep'", text)
         self.assertIn('OTHER_CONSTANT = 1', text)
@@ -436,22 +476,26 @@ class RustRepinTest(_FakeRepoTest):
         self.assertIn('Rust/WASM toolchain', subject)
         self.assertIn(
             f'https://chromium.googlesource.com/chromium/src/+/{culprit}',
-            message)
+            message,
+        )
         self.assertIn('Roll clang+rust revision', message)
 
     def test_explicit_culprit_overrides_autodetect(self):
         autodetect = self._seed_rust_revision_bump()
-        self.repo.write_and_stage_file('docs/unrelated.txt', 'noise\n',
-                                       self.repo.chromium)
-        culprit = self.repo.commit('Unrelated chromium change',
-                                   self.repo.chromium)
+        self.repo.write_and_stage_file(
+            'docs/unrelated.txt', 'noise\n', self.repo.chromium
+        )
+        culprit = self.repo.commit(
+            'Unrelated chromium change', self.repo.chromium
+        )
 
         self._repin(culprit=culprit)
 
         message = self._last_brave_message()
         self.assertIn(
             f'https://chromium.googlesource.com/chromium/src/+/{culprit}',
-            message)
+            message,
+        )
         self.assertIn('Unrelated chromium change', message)
         self.assertNotIn(autodetect, message)
 
@@ -531,44 +575,53 @@ class XcodeRepinTest(_FakeRepoTest):
         super().setUp()
         self.xcode = toolchain.XcodeToolchain()
         self._seed_hermetic_xcode_script()
-        patcher = patch.object(toolchain.build_xcode_toolchain,
-                               'fetch_published_index',
-                               return_value=FAKE_INDEX)
+        patcher = patch.object(
+            toolchain.build_xcode_toolchain,
+            'fetch_published_index',
+            return_value=FAKE_INDEX,
+        )
         self.fetch_index = patcher.start()
         self.addCleanup(patcher.stop)
 
     def _seed_hermetic_xcode_script(
-            self, content: str = HERMETIC_XCODE_SCRIPT_INITIAL) -> None:
+        self, content: str = HERMETIC_XCODE_SCRIPT_INITIAL
+    ) -> None:
         script_path = self.repo.brave / self.xcode.spec.script
         script_path.parent.mkdir(parents=True, exist_ok=True)
         script_path.write_text(content, encoding='utf-8', newline='')
         self.repo._run_git_command(['add', str(script_path)], self.repo.brave)
         self.repo._run_git_command(
             ['commit', '--no-verify', '-m', 'Seed hermetic xcode script'],
-            self.repo.brave)
+            self.repo.brave,
+        )
 
-    def _seed_mac_sdk_bump(self,
-                           mac_toolchain_py: str = MAC_TOOLCHAIN_PY) -> str:
+    def _seed_mac_sdk_bump(
+        self, mac_toolchain_py: str = MAC_TOOLCHAIN_PY
+    ) -> str:
         gni = self.repo.chromium / 'build' / 'config' / 'mac' / 'mac_sdk.gni'
         gni.parent.mkdir(parents=True, exist_ok=True)
         gni.write_text(MAC_SDK_GNI_INITIAL, encoding='utf-8', newline='')
         self.repo._run_git_command(['add', str(gni)], self.repo.chromium)
-        self.repo._run_git_command(['commit', '-m', 'mac: initial SDK pin'],
-                                   self.repo.chromium)
+        self.repo._run_git_command(
+            ['commit', '-m', 'mac: initial SDK pin'], self.repo.chromium
+        )
 
         gni.write_text(MAC_SDK_GNI_BUMPED, encoding='utf-8', newline='')
         tc = self.repo.chromium / 'build' / 'mac_toolchain.py'
         tc.write_text(mac_toolchain_py, encoding='utf-8', newline='')
-        self.repo._run_git_command(['add', str(gni), str(tc)],
-                                   self.repo.chromium)
-        culprit = self.repo.commit('mac: Switch to SDK 26.5',
-                                   self.repo.chromium)
+        self.repo._run_git_command(
+            ['add', str(gni), str(tc)], self.repo.chromium
+        )
+        culprit = self.repo.commit(
+            'mac: Switch to SDK 26.5', self.repo.chromium
+        )
         self.repo._run_git_command(['tag', CHROMIUM_TAG], self.repo.chromium)
         return culprit
 
     def _read_hermetic_xcode_script(self) -> str:
-        return (self.repo.brave /
-                self.xcode.spec.script).read_text(encoding='utf-8')
+        return (self.repo.brave / self.xcode.spec.script).read_text(
+            encoding='utf-8'
+        )
 
     def test_constants_rewritten_and_committed(self):
         culprit = self._seed_mac_sdk_bump()
@@ -576,19 +629,21 @@ class XcodeRepinTest(_FakeRepoTest):
         self.xcode.repin(Version(CHROMIUM_TAG), culprit=None)
 
         script = self._read_hermetic_xcode_script()
-        self.assertIn(f"MAC_BINARIES_HASH = '{FAKE_INDEX['sha256sum']}'",
-                      script)
-        self.assertIn(f"MAC_BINARIES_SIZE = {FAKE_INDEX['size_bytes']}",
-                      script)
+        self.assertIn(
+            f"MAC_BINARIES_HASH = '{FAKE_INDEX['sha256sum']}'", script
+        )
+        self.assertIn(f"MAC_BINARIES_SIZE = {FAKE_INDEX['size_bytes']}", script)
         self.assertIn("MAC_SDK_OFFICIAL_VERSION = '26.5'", script)
         self.assertIn("MAC_SDK_OFFICIAL_BUILD_VERSION = '25F70'", script)
         self.assertNotIn("'oldhash'", script)
         self.assertNotIn('MAC_BINARIES_SIZE = 999', script)
         sdk_info = toolchain.build_xcode_toolchain.MacSdkInfo(
-            sdk_version='26.5', product_build_version='25F70')
+            sdk_version='26.5', product_build_version='25F70'
+        )
         self.assertIn(
             toolchain.XcodeToolchain._provenance_comment(sdk_info, FAKE_INDEX),
-            script)
+            script,
+        )
         self.assertIn('MAC_MINIMUM_OS_VERSION = [20, 0]', script)
         self.assertIn('runs on macOS 26.3 and newer', script)
         self.assertNotIn('MAC_MINIMUM_OS_VERSION = [19, 4]', script)
@@ -604,22 +659,26 @@ class XcodeRepinTest(_FakeRepoTest):
         self.assertIn('Switch to Xcode 26.5 17F42', subject)
         self.assertIn(
             f'https://chromium.googlesource.com/chromium/src/+/{culprit}',
-            message)
+            message,
+        )
         self.assertIn('mac: Switch to SDK 26.5', message)
 
     def test_culprit_override_skips_auto_detection(self):
         autodetect = self._seed_mac_sdk_bump()
-        self.repo.write_and_stage_file('docs/unrelated.txt', 'noise\n',
-                                       self.repo.chromium)
-        override = self.repo.commit('Unrelated chromium change',
-                                    self.repo.chromium)
+        self.repo.write_and_stage_file(
+            'docs/unrelated.txt', 'noise\n', self.repo.chromium
+        )
+        override = self.repo.commit(
+            'Unrelated chromium change', self.repo.chromium
+        )
 
         self.xcode.repin(Version(CHROMIUM_TAG), culprit=override)
 
         message = self._last_brave_message()
         self.assertIn(
             f'https://chromium.googlesource.com/chromium/src/+/{override}',
-            message)
+            message,
+        )
         self.assertIn('Unrelated chromium change', message)
         self.assertNotIn(autodetect, message)
 
@@ -662,7 +721,8 @@ class XcodeRepinTest(_FakeRepoTest):
 
     def test_missing_upstream_min_os_block_raises(self):
         self._seed_mac_sdk_bump(
-            mac_toolchain_py='# upstream with no min-os block\nFOO = 1\n')
+            mac_toolchain_py='# upstream with no min-os block\nFOO = 1\n'
+        )
         head_before = self._brave_head()
 
         with self.assertRaises(toolchain.InvalidInputException):
@@ -715,8 +775,9 @@ MSVS_VERSIONS = collections.OrderedDict([
 # actual published hash can differ from what upstream produced for the same
 # pin.
 FAKE_WINDOWS_INDEX = {
-    'url': ('https://example.invalid/windows-hermetic-toolchain/'
-            'aaaa111122.zip'),
+    'url': (
+        'https://example.invalid/windows-hermetic-toolchain/aaaa111122.zip'
+    ),
     'sha256sum': 'c' * 64,
     'size_bytes': 123456789,
     'hash': 'aaaa111122',
@@ -738,9 +799,11 @@ class WindowsRepinTest(_FakeRepoTest):
         super().setUp()
         self.windows = toolchain.WindowsToolchain()
         self._seed_config_ts()
-        patcher = patch.object(toolchain.build_windows_toolchain,
-                               'fetch_published_index',
-                               return_value=FAKE_WINDOWS_INDEX)
+        patcher = patch.object(
+            toolchain.build_windows_toolchain,
+            'fetch_published_index',
+            return_value=FAKE_WINDOWS_INDEX,
+        )
         self.fetch_index = patcher.start()
         self.addCleanup(patcher.stop)
 
@@ -750,32 +813,38 @@ class WindowsRepinTest(_FakeRepoTest):
         script_path.write_text(content, encoding='utf-8', newline='')
         self.repo._run_git_command(['add', str(script_path)], self.repo.brave)
         self.repo._run_git_command(
-            ['commit', '--no-verify', '-m', 'Seed config.ts'], self.repo.brave)
+            ['commit', '--no-verify', '-m', 'Seed config.ts'], self.repo.brave
+        )
 
     def _seed_vs_toolchain_bump(self) -> str:
         vs_toolchain = self.repo.chromium / 'build' / 'vs_toolchain.py'
         vs_toolchain.parent.mkdir(parents=True, exist_ok=True)
-        vs_toolchain.write_text(VS_TOOLCHAIN_PY_INITIAL,
-                                encoding='utf-8',
-                                newline='')
-        self.repo._run_git_command(['add', str(vs_toolchain)],
-                                   self.repo.chromium)
-        self.repo._run_git_command(['commit', '-m', 'win: initial SDK pin'],
-                                   self.repo.chromium)
+        vs_toolchain.write_text(
+            VS_TOOLCHAIN_PY_INITIAL, encoding='utf-8', newline=''
+        )
+        self.repo._run_git_command(
+            ['add', str(vs_toolchain)], self.repo.chromium
+        )
+        self.repo._run_git_command(
+            ['commit', '-m', 'win: initial SDK pin'], self.repo.chromium
+        )
 
-        vs_toolchain.write_text(VS_TOOLCHAIN_PY_BUMPED,
-                                encoding='utf-8',
-                                newline='')
-        self.repo._run_git_command(['add', str(vs_toolchain)],
-                                   self.repo.chromium)
-        culprit = self.repo.commit('win: Switch to SDK 10.0.28000.2270',
-                                   self.repo.chromium)
+        vs_toolchain.write_text(
+            VS_TOOLCHAIN_PY_BUMPED, encoding='utf-8', newline=''
+        )
+        self.repo._run_git_command(
+            ['add', str(vs_toolchain)], self.repo.chromium
+        )
+        culprit = self.repo.commit(
+            'win: Switch to SDK 10.0.28000.2270', self.repo.chromium
+        )
         self.repo._run_git_command(['tag', CHROMIUM_TAG], self.repo.chromium)
         return culprit
 
     def _read_config_ts(self) -> str:
-        return (self.repo.brave /
-                self.windows.spec.script).read_text(encoding='utf-8')
+        return (self.repo.brave / self.windows.spec.script).read_text(
+            encoding='utf-8'
+        )
 
     def test_gyp_msvs_hash_rewritten_and_committed(self):
         culprit = self._seed_vs_toolchain_bump()
@@ -794,7 +863,8 @@ class WindowsRepinTest(_FakeRepoTest):
             toolchain_hash='3bfcb536c8',
             sdk_version_in_comment='10.0.28000.2270',
             vs_year='2026',
-            vs_version='18.0')
+            vs_version='18.0',
+        )
         self.assertEqual(self.fetch_index.call_args.args[0], expected_sdk_info)
 
         message = self._last_brave_message()
@@ -804,22 +874,26 @@ class WindowsRepinTest(_FakeRepoTest):
         self.assertIn('Switch to Windows SDK 10.0.28000.2270', subject)
         self.assertIn(
             f'https://chromium.googlesource.com/chromium/src/+/{culprit}',
-            message)
+            message,
+        )
         self.assertIn('win: Switch to SDK 10.0.28000.2270', message)
 
     def test_culprit_override_skips_auto_detection(self):
         autodetect = self._seed_vs_toolchain_bump()
-        self.repo.write_and_stage_file('docs/unrelated.txt', 'noise\n',
-                                       self.repo.chromium)
-        override = self.repo.commit('Unrelated chromium change',
-                                    self.repo.chromium)
+        self.repo.write_and_stage_file(
+            'docs/unrelated.txt', 'noise\n', self.repo.chromium
+        )
+        override = self.repo.commit(
+            'Unrelated chromium change', self.repo.chromium
+        )
 
         self.windows.repin(Version(CHROMIUM_TAG), culprit=override)
 
         message = self._last_brave_message()
         self.assertIn(
             f'https://chromium.googlesource.com/chromium/src/+/{override}',
-            message)
+            message,
+        )
         self.assertIn('Unrelated chromium change', message)
         self.assertNotIn(autodetect, message)
 
@@ -860,11 +934,12 @@ class WindowsRepinTest(_FakeRepoTest):
     def test_malformed_vs_toolchain_py_raises(self):
         vs_toolchain = self.repo.chromium / 'build' / 'vs_toolchain.py'
         vs_toolchain.parent.mkdir(parents=True, exist_ok=True)
-        vs_toolchain.write_text('# nothing useful here\n',
-                                encoding='utf-8',
-                                newline='')
-        self.repo._run_git_command(['add', str(vs_toolchain)],
-                                   self.repo.chromium)
+        vs_toolchain.write_text(
+            '# nothing useful here\n', encoding='utf-8', newline=''
+        )
+        self.repo._run_git_command(
+            ['add', str(vs_toolchain)], self.repo.chromium
+        )
         self.repo.commit('win: malformed', self.repo.chromium)
         self.repo._run_git_command(['tag', CHROMIUM_TAG], self.repo.chromium)
         head_before = self._brave_head()
@@ -901,19 +976,25 @@ class DetectionTest(_FakeRepoTest):
         self.repo.write_and_stage_file(
             'tools/rust/update_rust.py',
             "RUST_REVISION = 'old'\nRUST_SUB_REVISION = 1\n",
-            self.repo.chromium)
-        self.repo.write_and_stage_file('tools/clang/scripts/update.py',
-                                       "CLANG_REVISION = 'clang-old'\n",
-                                       self.repo.chromium)
+            self.repo.chromium,
+        )
+        self.repo.write_and_stage_file(
+            'tools/clang/scripts/update.py',
+            "CLANG_REVISION = 'clang-old'\n",
+            self.repo.chromium,
+        )
         base = self.repo.commit('Base rust pin', self.repo.chromium)
 
         self.repo.write_and_stage_file(
             'tools/rust/update_rust.py',
             "RUST_REVISION = 'new'\nRUST_SUB_REVISION = 2\n",
-            self.repo.chromium)
-        self.repo.write_and_stage_file('tools/clang/scripts/update.py',
-                                       "CLANG_REVISION = 'clang-new'\n",
-                                       self.repo.chromium)
+            self.repo.chromium,
+        )
+        self.repo.write_and_stage_file(
+            'tools/clang/scripts/update.py',
+            "CLANG_REVISION = 'clang-new'\n",
+            self.repo.chromium,
+        )
         culprit = self.repo.commit('Roll rust revision', self.repo.chromium)
         self.repo._run_git_command(['tag', CHROMIUM_TAG], self.repo.chromium)
         return base, culprit
@@ -933,8 +1014,7 @@ class DetectionTest(_FakeRepoTest):
 
     def test_find_culprit_returns_explicit_value(self):
         self._seed_rust_range()
-        self.assertEqual(self.rust.find_culprit(CHROMIUM_TAG, 'given'),
-                         'given')
+        self.assertEqual(self.rust.find_culprit(CHROMIUM_TAG, 'given'), 'given')
 
     def test_find_culprit_raises_when_unresolvable(self):
         self._seed_rust_range()
@@ -993,7 +1073,8 @@ class IsPublishedTest(unittest.TestCase):
 
     def test_not_published_on_request_error(self):
         published, _ = self._head(
-            exc=toolchain.requests.RequestException('boom'))
+            exc=toolchain.requests.RequestException('boom')
+        )
         self.assertFalse(published)
 
 
@@ -1008,16 +1089,20 @@ class RecoverTest(unittest.TestCase):
 
     def setUp(self):
         self.version = Version(CHROMIUM_TAG)
-        self.toolchains = (toolchain.RustToolchain(),
-                           toolchain.XcodeToolchain(),
-                           toolchain.WindowsToolchain())
+        self.toolchains = (
+            toolchain.RustToolchain(),
+            toolchain.XcodeToolchain(),
+            toolchain.WindowsToolchain(),
+        )
 
     def test_success_triggers_watches_and_repins(self):
         for tc in self.toolchains:
-            with self.subTest(toolchain=tc.spec.key), \
-                    patch.object(tc, 'is_published', return_value=False), \
-                    patch.object(tc, 'trigger', return_value=True) as trigger, \
-                    patch.object(tc, 'repin') as repin:
+            with (
+                self.subTest(toolchain=tc.spec.key),
+                patch.object(tc, 'is_published', return_value=False),
+                patch.object(tc, 'trigger', return_value=True) as trigger,
+                patch.object(tc, 'repin') as repin,
+            ):
                 self.assertTrue(tc.recover(self.version, 'culprithash'))
                 # No toolchain-specific arguments: `brave_subrevision` reaches
                 # the Rust job through the PROPERTIES payload, and its pin
@@ -1027,51 +1112,63 @@ class RecoverTest(unittest.TestCase):
 
     def test_published_repins_without_building(self):
         for tc in self.toolchains:
-            with self.subTest(toolchain=tc.spec.key), \
-                    patch.object(tc, 'is_published', return_value=True), \
-                    patch.object(tc, 'trigger') as trigger, \
-                    patch.object(tc, 'repin') as repin:
+            with (
+                self.subTest(toolchain=tc.spec.key),
+                patch.object(tc, 'is_published', return_value=True),
+                patch.object(tc, 'trigger') as trigger,
+                patch.object(tc, 'repin') as repin,
+            ):
                 self.assertTrue(tc.recover(self.version, 'culprithash'))
                 trigger.assert_not_called()
                 repin.assert_called_once_with(self.version, 'culprithash')
 
     def test_failed_build_keeps_advisory(self):
         for tc in self.toolchains:
-            with self.subTest(toolchain=tc.spec.key), \
-                    patch.object(tc, 'is_published', return_value=False), \
-                    patch.object(tc, 'trigger', return_value=False), \
-                    patch.object(tc, 'repin') as repin:
+            with (
+                self.subTest(toolchain=tc.spec.key),
+                patch.object(tc, 'is_published', return_value=False),
+                patch.object(tc, 'trigger', return_value=False),
+                patch.object(tc, 'repin') as repin,
+            ):
                 self.assertFalse(tc.recover(self.version, 'h'))
                 repin.assert_not_called()
 
     def test_missing_credentials_keeps_advisory(self):
         for tc in self.toolchains:
-            with self.subTest(toolchain=tc.spec.key), \
-                    patch.object(tc, 'is_published', return_value=False), \
-                    patch.object(
-                        tc,
-                        'trigger',
-                        side_effect=toolchain.InvalidInputException('creds')), \
-                    patch.object(tc, 'repin') as repin:
+            with (
+                self.subTest(toolchain=tc.spec.key),
+                patch.object(tc, 'is_published', return_value=False),
+                patch.object(
+                    tc,
+                    'trigger',
+                    side_effect=toolchain.InvalidInputException('creds'),
+                ),
+                patch.object(tc, 'repin') as repin,
+            ):
                 self.assertFalse(tc.recover(self.version, 'h'))
                 repin.assert_not_called()
 
     def test_repin_failure_keeps_advisory(self):
         for tc in self.toolchains:
-            with self.subTest(toolchain=tc.spec.key), \
-                    patch.object(tc, 'is_published', return_value=True), \
-                    patch.object(
-                        tc,
-                        'repin',
-                        side_effect=toolchain.BadOutcomeException('boom')):
+            with (
+                self.subTest(toolchain=tc.spec.key),
+                patch.object(tc, 'is_published', return_value=True),
+                patch.object(
+                    tc,
+                    'repin',
+                    side_effect=toolchain.BadOutcomeException('boom'),
+                ),
+            ):
                 self.assertFalse(tc.recover(self.version, 'h'))
 
     def test_toolchain_without_automated_repin_keeps_advisory(self):
         # The base `repin` raises, so a spec with no automated repin still
         # leaves the advisory for the user even once CI has published.
         base = toolchain.Toolchain(
-            toolchain.ToolchainSpec.from_entry('rust',
-                                               toolchain.TOOLCHAINS['rust']))
+            toolchain.ToolchainSpec.from_entry(
+                'rust', toolchain.TOOLCHAINS['rust']
+            )
+        )
         with patch.object(base, 'is_published', return_value=True):
             self.assertFalse(base.recover(self.version, 'h'))
 

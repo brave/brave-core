@@ -50,21 +50,29 @@ class CheckFrame(namedtuple('CheckFrame', 'fname line function code varmap')):
 
     def format(self, indent):
         lines = [
-            '%s%s:%s - %s()' %
-            ((' ' * indent), self.fname, self.line, self.function)
+            '%s%s:%s - %s()'
+            % ((' ' * indent), self.fname, self.line, self.function)
         ]
         indent += 2
         lines.append('%s`%s`' % ((' ' * indent), self.code))
         indent += 2
         if self.varmap:
-            lines.extend('%s%s: %s' % ((' ' * indent), k, v)
-                         for k, v in self.varmap.items())
+            lines.extend(
+                '%s%s: %s' % ((' ' * indent), k, v)
+                for k, v in self.varmap.items()
+            )
         return lines
 
 
 class Check(
-        namedtuple('Check', ('name ctx_filename ctx_lineno ctx_func ctx_args '
-                             'ctx_kwargs frames passed'))):
+    namedtuple(
+        'Check',
+        (
+            'name ctx_filename ctx_lineno ctx_func ctx_args '
+            'ctx_kwargs frames passed'
+        ),
+    )
+):
     """A recorded check outcome plus the frames/values needed to explain it."""
 
     # filename -> {lineno -> [statements]}
@@ -72,23 +80,28 @@ class Check(
     _LAMBDA_CACHE = defaultdict(lambda: defaultdict(list))
 
     @classmethod
-    def create(cls,
-               name,
-               hook_context,
-               frames,
-               passed,
-               ignore_set,
-               additional_varmap=None):
+    def create(
+        cls,
+        name,
+        hook_context,
+        frames,
+        passed,
+        ignore_set,
+        additional_varmap=None,
+    ):
         try:
             keep_frames = [
                 cls._process_frame(f, ignore_set, with_vars=False)
                 for f in frames[:-1]
             ]
             keep_frames.append(
-                cls._process_frame(frames[-1],
-                                   ignore_set,
-                                   with_vars=True,
-                                   additional_varmap=additional_varmap))
+                cls._process_frame(
+                    frames[-1],
+                    ignore_set,
+                    with_vars=True,
+                    additional_varmap=additional_varmap,
+                )
+            )
         finally:
             # avoid reference cycle as suggested by inspect docs.
             del frames
@@ -99,10 +112,7 @@ class Check(
             hook_context.lineno,
             cls._get_name_of_callable(hook_context.func),
             [repr(arg) for arg in hook_context.args],
-            {
-                k: repr(v)
-                for k, v in hook_context.kwargs.items()
-            },
+            {k: repr(v) for k, v in hook_context.kwargs.items()},
             keep_frames,
             passed,
         )
@@ -116,7 +126,8 @@ class Check(
                 filename = c.__code__.co_filename
                 cls._ensure_file_in_cache(filename, c)
                 definitions = cls._LAMBDA_CACHE[filename][
-                    c.__code__.co_firstlineno]
+                    c.__code__.co_firstlineno
+                ]
                 assert definitions
                 # If there's multiple definitions at the same line, there's not
                 # enough information to distinguish which lambda c refers to, so
@@ -178,14 +189,13 @@ class Check(
                     lambda_max_line = n.lineno
                     if lambda_max_line != real_line:
                         cls._PARSED_FILE_CACHE[filename][
-                            lambda_max_line].append(n)
+                            lambda_max_line
+                        ].append(n)
 
     @classmethod
-    def _process_frame(cls,
-                       frame,
-                       ignore_set,
-                       with_vars,
-                       additional_varmap=None):
+    def _process_frame(
+        cls, frame, ignore_set, with_vars, additional_varmap=None
+    ):
         """Turn a stack frame into a `CheckFrame`.
 
         When `with_vars` is set (only the innermost frame), the parsed statement
@@ -215,8 +225,13 @@ class Check(
                     if n.representation not in varmap:
                         varmap[n.representation] = render_user_value(val)
 
-        return CheckFrame(filename, lineno, func_name,
-                          '; '.join(_unparse(n) for n in nodes), varmap)
+        return CheckFrame(
+            filename,
+            lineno,
+            func_name,
+            '; '.join(_unparse(n) for n in nodes),
+            varmap,
+        )
 
     def format(self):
         """Return the lines that make up this check failure.
@@ -230,7 +245,8 @@ class Check(
             MustRun('fakiestep')
         """
         ret = [
-            'CHECK%(name)s(%(passed)s):' % {
+            'CHECK%(name)s(%(passed)s):'
+            % {
                 'name': ' %r ' % self.name if self.name else '',
                 'passed': 'PASS' if self.passed else 'FAIL',
             }
@@ -301,11 +317,17 @@ class _checkTransformer(ast.NodeTransformer):
             cmps = node.comparators
             if len(cmps) == 1 and (rslvd := self._is_valid_resolved(cmps[0])):
                 if isinstance(rslvd.value, (dict, OrderedDict)):
-                    node = ast.Compare(node.left, node.ops, [
-                        _resolved(rslvd.representation + '.keys()',
-                                  sorted(rslvd.value.keys()),
-                                  valid=False)
-                    ])
+                    node = ast.Compare(
+                        node.left,
+                        node.ops,
+                        [
+                            _resolved(
+                                rslvd.representation + '.keys()',
+                                sorted(rslvd.value.keys()),
+                                valid=False,
+                            )
+                        ],
+                    )
 
         return node
 
@@ -313,9 +335,11 @@ class _checkTransformer(ast.NodeTransformer):
         """Follow attribute access so the resulting value can be printed."""
         node = cast(ast.Attribute, self.generic_visit(node))
 
-        if (rslvd := self._is_valid_resolved(node.value)):
-            return _resolved('%s.%s' % (rslvd.representation, node.attr),
-                             getattr(rslvd.value, node.attr))
+        if rslvd := self._is_valid_resolved(node.value):
+            return _resolved(
+                '%s.%s' % (rslvd.representation, node.attr),
+                getattr(rslvd.value, node.attr),
+            )
 
         return node
 
@@ -330,7 +354,7 @@ class _checkTransformer(ast.NodeTransformer):
         sliceVal = MISSING
         sliceRepr = ''
 
-        if (rslvd := self._is_valid_resolved(node.slice)):
+        if rslvd := self._is_valid_resolved(node.slice):
             # (a[b])[c] -- include `a[b]` in the extras.
             self.extras.append(rslvd)
             sliceVal = rslvd.value
@@ -343,15 +367,18 @@ class _checkTransformer(ast.NodeTransformer):
             try:
                 return _resolved(
                     '%s[%s]' % (node_value_resolved.representation, sliceRepr),
-                    node_value_resolved.value[sliceVal])
+                    node_value_resolved.value[sliceVal],
+                )
             except KeyError:
-                if not isinstance(node_value_resolved.value,
-                                  (dict, OrderedDict)):
+                if not isinstance(
+                    node_value_resolved.value, (dict, OrderedDict)
+                ):
                     raise
-                return _resolved(node_value_resolved.representation +
-                                 '.keys()',
-                                 sorted(node_value_resolved.value.keys()),
-                                 valid=False)
+                return _resolved(
+                    node_value_resolved.representation + '.keys()',
+                    sorted(node_value_resolved.value.keys()),
+                    valid=False,
+                )
 
         return node
 
@@ -359,7 +386,8 @@ class _checkTransformer(ast.NodeTransformer):
         """Resolve a bare identifier from constants, then locals, then globals."""
         consts = {'True': True, 'False': False, 'None': None}
         val = consts.get(
-            node.id, self.lvars.get(node.id, self.gvars.get(node.id, MISSING)))
+            node.id, self.lvars.get(node.id, self.gvars.get(node.id, MISSING))
+        )
         if val is not MISSING:
             return _resolved(node.id, val)
         return node
@@ -407,7 +435,7 @@ class Checker:
 
         # Objects we never print as sub-expression values. Seed it with the
         # checker itself (printing that has no value).
-        self._ignore_set = {id(x) for x in ignores + (self, )}
+        self._ignore_set = {id(x) for x in ignores + (self,)}
 
         self._hook_context = hook_context
 
@@ -429,7 +457,7 @@ class Checker:
                     # checker was created. Use `is` to avoid invoking __eq__.
                     if any(self is obj for obj in f[0].f_locals.values()):
                         break
-                frames = frames[i + 1:]
+                frames = frames[i + 1 :]
             finally:
                 del f
 
@@ -440,7 +468,8 @@ class Checker:
                     frames,
                     False,
                     self._ignore_set,
-                ))
+                )
+            )
         finally:
             # avoid reference cycle as suggested by inspect docs.
             del frames
@@ -479,8 +508,7 @@ def VerifySubset(a, b):
             a = OrderedDict(a)
 
     if type(a) is not type(b):
-        return ': type mismatch: %r v %r' % (type(a).__name__,
-                                             type(b).__name__)
+        return ': type mismatch: %r v %r' % (type(a).__name__, type(b).__name__)
 
     if isinstance(a, OrderedDict):
         last_idx = 0

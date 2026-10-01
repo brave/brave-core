@@ -12,6 +12,7 @@ from components import git_tools
 CHROME_VERSION_RE_PATTERN = r'\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}'
 BRAVE_VERSION_RE_PATTERN = r'v\d{1,4}\.\d{1,4}\.\d{1,4}'
 
+
 class ChromiumVersion:
   _version: List[int]
 
@@ -60,7 +61,8 @@ class BraveVersion:
     self._revision_number = git_tools.GetRevisionNumber(git_hash)
     self._commit_date = git_tools.GetCommitDate(git_hash)
     self._chromium_version = ChromiumVersion(
-        package_json['config']['projects']['chrome']['tag'])
+      package_json['config']['projects']['chrome']['tag']
+    )
 
   @property
   def last_tag(self) -> str:

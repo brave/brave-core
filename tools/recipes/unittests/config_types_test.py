@@ -13,8 +13,13 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # pylint: disable=wrong-import-position
 import config_types
-from config_types import (Path, RelativeToDifferentBases, RelativeToNotParent,
-                          ResolvedBasePath, reset_global_variable_assignments)
+from config_types import (
+    Path,
+    RelativeToDifferentBases,
+    RelativeToNotParent,
+    ResolvedBasePath,
+    reset_global_variable_assignments,
+)
 
 
 def _base(token='[CACHE]'):
@@ -22,7 +27,6 @@ def _base(token='[CACHE]'):
 
 
 class PathConstructionTest(unittest.TestCase):
-
     def setUp(self):
         config_types.Path._OS_SEP = '/'
 
@@ -35,7 +39,7 @@ class PathConstructionTest(unittest.TestCase):
 
     def test_dotdot_collapses_against_preceding_piece(self):
         p = Path(_base(), 'a', 'b', '..')
-        self.assertEqual(p.pieces, ('a', ))
+        self.assertEqual(p.pieces, ('a',))
 
     def test_dotdot_above_base_raises(self):
         with self.assertRaises(ValueError):
@@ -61,11 +65,10 @@ class PathConstructionTest(unittest.TestCase):
 
         config_types.Path._OS_SEP = '/'
         p = Path(_base(), 'a\\b')
-        self.assertEqual(p.pieces, ('a\\b', ))
+        self.assertEqual(p.pieces, ('a\\b',))
 
 
 class PathJoinTest(unittest.TestCase):
-
     def setUp(self):
         config_types.Path._OS_SEP = '/'
 
@@ -92,7 +95,6 @@ class PathJoinTest(unittest.TestCase):
 
 
 class PathPartsTest(unittest.TestCase):
-
     def setUp(self):
         config_types.Path._OS_SEP = '/'
 
@@ -102,8 +104,9 @@ class PathPartsTest(unittest.TestCase):
     def test_parent_and_parents(self):
         p = Path(_base(), 'foo', 'bar', 'baz')
         self.assertEqual(p.parent.pieces, ('foo', 'bar'))
-        self.assertEqual([x.pieces for x in p.parents], [('foo', 'bar'),
-                                                         ('foo', ), ()])
+        self.assertEqual(
+            [x.pieces for x in p.parents], [('foo', 'bar'), ('foo',), ()]
+        )
 
     def test_name(self):
         self.assertEqual(Path(_base(), 'foo', 'bar').name, 'bar')
@@ -120,7 +123,6 @@ class PathPartsTest(unittest.TestCase):
 
 
 class PathStrTest(unittest.TestCase):
-
     def tearDown(self):
         reset_global_variable_assignments()
 
@@ -140,11 +142,11 @@ class PathStrTest(unittest.TestCase):
     def test_as_posix_ignores_os_sep(self):
         config_types.Path._OS_SEP = '\\'
         self.assertEqual(
-            Path(_base(), 'foo', 'bar').as_posix(), '[CACHE]/foo/bar')
+            Path(_base(), 'foo', 'bar').as_posix(), '[CACHE]/foo/bar'
+        )
 
 
 class PathRelativeToTest(unittest.TestCase):
-
     def setUp(self):
         config_types.Path._OS_SEP = '/'
 
@@ -153,8 +155,8 @@ class PathRelativeToTest(unittest.TestCase):
 
     def test_simple_child(self):
         self.assertEqual(
-            Path(_base(), 'foo', 'bar').relative_to(Path(_base(), 'foo')),
-            'bar')
+            Path(_base(), 'foo', 'bar').relative_to(Path(_base(), 'foo')), 'bar'
+        )
 
     def test_not_a_parent_raises_without_walk_up(self):
         with self.assertRaises(RelativeToNotParent):
@@ -162,8 +164,11 @@ class PathRelativeToTest(unittest.TestCase):
 
     def test_not_a_parent_walks_up_when_allowed(self):
         self.assertEqual(
-            Path(_base(), 'foo').relative_to(Path(_base(), 'bar'),
-                                             walk_up=True), '../foo')
+            Path(_base(), 'foo').relative_to(
+                Path(_base(), 'bar'), walk_up=True
+            ),
+            '../foo',
+        )
 
     def test_different_bases_raises(self):
         with self.assertRaises(RelativeToDifferentBases):
@@ -171,7 +176,6 @@ class PathRelativeToTest(unittest.TestCase):
 
 
 class PathEqualityAndHashTest(unittest.TestCase):
-
     def setUp(self):
         config_types.Path._OS_SEP = '/'
 

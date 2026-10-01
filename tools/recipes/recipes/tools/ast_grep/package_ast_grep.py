@@ -14,8 +14,13 @@ if TYPE_CHECKING:
     from engine import RecipeScriptApi
 
 DEPS = [
-    'path', 'step', 'depot_tools', 'chromium_checkout', 'brave_core_checkout',
-    'osx_sdk', 'platform'
+    'path',
+    'step',
+    'depot_tools',
+    'chromium_checkout',
+    'brave_core_checkout',
+    'osx_sdk',
+    'platform',
 ]
 
 PROPERTIES = InputProperties
@@ -23,23 +28,29 @@ PROPERTIES = InputProperties
 
 def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
     chromium_src = api.chromium_checkout.ensure_checkout(
-        ref=properties.chromium_ref)
+        ref=properties.chromium_ref
+    )
 
-    brave_root = api.brave_core_checkout.deploy([
-        'third_party/ast-grep',
-        'tools/cr',
-    ])
+    brave_root = api.brave_core_checkout.deploy(
+        [
+            'third_party/ast-grep',
+            'tools/cr',
+        ]
+    )
 
     vpython3 = api.depot_tools.vpython3()
     with api.osx_sdk.ensure(chromium_src):
-        api.step('package ast-grep', [
-            vpython3,
-            brave_root / 'third_party/ast-grep/package_ast_grep.py',
-            '--clean',
-            '--out-dir',
-            api.path.out,
-            '--upload',
-        ])
+        api.step(
+            'package ast-grep',
+            [
+                vpython3,
+                brave_root / 'third_party/ast-grep/package_ast_grep.py',
+                '--clean',
+                '--out-dir',
+                api.path.out,
+                '--upload',
+            ],
+        )
 
 
 def GenTests(api):

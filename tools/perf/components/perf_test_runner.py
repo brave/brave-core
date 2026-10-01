@@ -18,17 +18,24 @@ from components.browser_binary_fetcher import BrowserBinary, PrepareBinary
 from components.browser_type import BraveVersion
 from components.common_options import CommonOptions
 from components.field_trials import MaybeInjectSeedToLocalState
-from components.perf_config import (BenchmarkConfig, ParseTarget,
-                                    ProfileRebaseType, RunnerConfig)
+from components.perf_config import (
+  BenchmarkConfig,
+  ParseTarget,
+  ProfileRebaseType,
+  RunnerConfig,
+)
 
 
 def ReportToDashboardImpl(
-    dashboard_bot_name: str, version: BraveVersion, griffin_rev: Optional[str],
-    output_dir: str) -> Tuple[bool, List[str], Optional[str]]:
+  dashboard_bot_name: str,
+  version: BraveVersion,
+  griffin_rev: Optional[str],
+  output_dir: str,
+) -> Tuple[bool, List[str], Optional[str]]:
 
   args = [
-      sys.executable,
-      os.path.join(path_util.GetChromiumPerfDir(), 'process_perf_results.py')
+    sys.executable,
+    os.path.join(path_util.GetChromiumPerfDir(), 'process_perf_results.py'),
   ]
   args.append(f'--configuration-name={dashboard_bot_name}')
   args.append(f'--task-output-dir={output_dir}')
@@ -61,8 +68,9 @@ def ReportToDashboardImpl(
   if griffin_rev is not None:
     env['DASHBOARD_EXTRA_DIAG_brave_variations_revisions'] = griffin_rev
 
-  build_properties[
-      'got_revision_cp'] = 'refs/heads/main@{#%s}' % version.revision_number
+  build_properties['got_revision_cp'] = (
+    'refs/heads/main@{#%s}' % version.revision_number
+  )
   build_properties['got_revision'] = version.git_revision
 
   # It's necessary for process_perf_results.py, will be removed in patched
@@ -91,9 +99,14 @@ class RunableConfiguration:
   status_line: str = ''
   logs: List[str] = []
 
-  def __init__(self, config: RunnerConfig, benchmarks: List[BenchmarkConfig],
-               binary: BrowserBinary, out_dir: str,
-               common_options: CommonOptions):
+  def __init__(
+    self,
+    config: RunnerConfig,
+    benchmarks: List[BenchmarkConfig],
+    binary: BrowserBinary,
+    out_dir: str,
+    common_options: CommonOptions,
+  ):
     self.config = config
     self.benchmarks = benchmarks
     self.binary = binary
@@ -112,18 +125,22 @@ class RunableConfiguration:
         self.binary.install_apk(expected_version)
 
   def RebaseProfile(self) -> bool:
-    if (self.binary.profile_dir is None
-        or self.config.profile_rebase == ProfileRebaseType.NONE):
+    if (
+      self.binary.profile_dir is None
+      or self.config.profile_rebase == ProfileRebaseType.NONE
+    ):
       return True
     start_time = time.time()
-    logging.info('Rebasing dir %s using binary %s', self.binary.profile_dir,
-                 self.binary)
+    logging.info(
+      'Rebasing dir %s using binary %s', self.binary.profile_dir, self.binary
+    )
     rebase_runner_config = deepcopy(self.config)
 
     online_rebase = self.config.profile_rebase == ProfileRebaseType.ONLINE
     rebase_benchmark = BenchmarkConfig()
-    rebase_benchmark.name = ('brave_utils.online'
-                             if online_rebase else 'brave_utils.offline')
+    rebase_benchmark.name = (
+      'brave_utils.online' if online_rebase else 'brave_utils.offline'
+    )
     rebase_benchmark.stories = ['UpdateProfile']
     rebase_benchmark.stories_exclude = []
 
@@ -132,14 +149,19 @@ class RunableConfiguration:
     REBASE_TIMEOUT = 10 * 60 * rebase_benchmark.pageset_repeat
 
     rebase_out_dir = os.path.join(self.out_dir, 'rebase_artifacts')
-    result = self.RunSingleTest(rebase_runner_config, rebase_benchmark,
-                                rebase_out_dir, True, REBASE_TIMEOUT)
+    result = self.RunSingleTest(
+      rebase_runner_config,
+      rebase_benchmark,
+      rebase_out_dir,
+      True,
+      REBASE_TIMEOUT,
+    )
     self.status_line += f'Rebase {(time.time() - start_time):.2f}s '
 
-
     # Re-inject seed, because it could be updated during the rebase.
-    MaybeInjectSeedToLocalState(self.binary.field_trial_config,
-                                self.binary.profile_dir)
+    MaybeInjectSeedToLocalState(
+      self.binary.field_trial_config, self.binary.profile_dir
+    )
     return result
 
   def RunApkSize(self, out_dir: str):
@@ -147,10 +169,14 @@ class RunableConfiguration:
     assert out_dir is not None
     os.makedirs(out_dir, exist_ok=True)
     args = [
-        sys.executable,
-        os.path.join(path_util.GetSrcDir(), 'build', 'android',
-                     'resource_sizes.py'), '--output-format=histograms',
-        '--output-dir', out_dir, self.binary.binary_path
+      sys.executable,
+      os.path.join(
+        path_util.GetSrcDir(), 'build', 'android', 'resource_sizes.py'
+      ),
+      '--output-format=histograms',
+      '--output-dir',
+      out_dir,
+      self.binary.binary_path,
     ]
     success, _ = perf_test_utils.GetProcessOutput(args, timeout=120)
     if success:
@@ -159,8 +185,9 @@ class RunableConfiguration:
 
     return success
 
-  def MakeRunBenchmarkArgs(self,
-                           benchmark_config: BenchmarkConfig) -> List[str]:
+  def MakeRunBenchmarkArgs(
+    self, benchmark_config: BenchmarkConfig
+  ) -> List[str]:
     browser_args = []
     binary = self.binary
 
@@ -193,12 +220,14 @@ class RunableConfiguration:
 
     return args
 
-  def RunSingleTest(self,
-                    config: RunnerConfig,
-                    benchmark_config: BenchmarkConfig,
-                    out_dir: str,
-                    local_run: bool,
-                    timeout: Optional[int] = None) -> bool:
+  def RunSingleTest(
+    self,
+    config: RunnerConfig,
+    benchmark_config: BenchmarkConfig,
+    out_dir: str,
+    local_run: bool,
+    timeout: Optional[int] = None,
+  ) -> bool:
     args = [sys.executable]
     args.append(os.path.join(path_util.GetChromiumPerfDir(), 'run_benchmark'))
 
@@ -215,15 +244,19 @@ class RunableConfiguration:
       # .reference suffix for benchmark folder is used in
       # process_perf_results.py to report the data as reference.
       suffix = '.reference' if config.browser_type.report_as_reference else ''
-      bench_out_dir = os.path.join(out_dir, benchmark_name,
-                                   benchmark_name + suffix)
+      bench_out_dir = os.path.join(
+        out_dir, benchmark_name, benchmark_name + suffix
+      )
       if os.path.exists(bench_out_dir):
         shutil.rmtree(bench_out_dir)
 
-      args.extend([
-          f'--output-dir={bench_out_dir}', '--output-format=json-test-results',
-          '--output-format=histograms'
-      ])
+      args.extend(
+        [
+          f'--output-dir={bench_out_dir}',
+          '--output-format=json-test-results',
+          '--output-format=histograms',
+        ]
+      )
 
     custom_handler = self.custom_perf_handlers.get(benchmark_name)
     if custom_handler is not None and not local_run:
@@ -237,10 +270,11 @@ class RunableConfiguration:
     env['CHROME_SHUTDOWN_TIMEOUT'] = '20'
     args.append('--browser-logging-verbosity=non-verbose')
     success, _ = perf_test_utils.GetProcessOutput(
-        args, cwd=path_util.GetChromiumPerfDir(), timeout=timeout, env=env)
+      args, cwd=path_util.GetChromiumPerfDir(), timeout=timeout, env=env
+    )
     if success and not local_run:
-      assert (out_dir is not None)
-      assert (bench_out_dir is not None)
+      assert out_dir is not None
+      assert bench_out_dir is not None
 
       # Make the same directory/file structure as used by Chromium
       # run_performance_tests.py.
@@ -274,11 +308,14 @@ class RunableConfiguration:
       attempt: int = 0
       while test_success != True and attempt <= self.common_options.retry_count:
         attempt += 1
-        test_success = self.RunSingleTest(self.config, benchmark, test_out_dir,
-                                          self.common_options.local_run)
+        test_success = self.RunSingleTest(
+          self.config, benchmark, test_out_dir, self.common_options.local_run
+        )
         if not test_success:
-          error = (f'[attempt {attempt}] Test {benchmark.name}' +
-                   f' failed on binary {self.binary}')
+          error = (
+            f'[attempt {attempt}] Test {benchmark.name}'
+            + f' failed on binary {self.binary}'
+          )
           self.logs.append(error)
       if not test_success:
         has_failure = True
@@ -298,8 +335,11 @@ class RunableConfiguration:
       griffin_rev = self.binary.field_trial_config.revision
 
     report_success, report_failed_logs, revision_number = ReportToDashboardImpl(
-        self.config.dashboard_bot_name, self.config.version, griffin_rev,
-        os.path.join(self.out_dir, 'results'))
+      self.config.dashboard_bot_name,
+      self.config.version,
+      griffin_rev,
+      os.path.join(self.out_dir, 'results'),
+    )
     spent_time = time.time() - start_time
     self.status_line += f'Report {spent_time:.2f}s '
     self.status_line += 'OK, ' if report_success else 'FAILURE, '
@@ -311,8 +351,9 @@ class RunableConfiguration:
   def ClearTelemetryArtifacts(self):
     if self.common_options.local_run:
       for benchmark in self.benchmarks:
-        artifacts_dir = os.path.join(self.out_dir, os.pardir, benchmark.name,
-                                     'artifacts')
+        artifacts_dir = os.path.join(
+          self.out_dir, os.pardir, benchmark.name, 'artifacts'
+        )
         shutil.rmtree(artifacts_dir)
 
   def Run(self) -> Tuple[bool, List[str]]:
@@ -334,10 +375,11 @@ class RunableConfiguration:
     return run_tests_ok and report_ok, self.logs
 
 
-def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
-                                  benchmarks: List[BenchmarkConfig],
-                                  common_options: CommonOptions
-                                  ) -> List[RunableConfiguration]:
+def PrepareBinariesAndDirectories(
+  configurations: List[RunnerConfig],
+  benchmarks: List[BenchmarkConfig],
+  common_options: CommonOptions,
+) -> List[RunableConfiguration]:
   runable_configurations: List[RunableConfiguration] = []
   all_labels: Set[str] = set()
   for config in configurations:
@@ -346,27 +388,32 @@ def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
       raise RuntimeError(f'Duplicated label {config.label}')
     all_labels.add(config.label)
 
-    binary_dir = os.path.join(common_options.working_directory, 'binaries',
-                              config.label)
-    artifacts_dir = os.path.join(common_options.working_directory, 'artifacts',
-                                 config.label)
+    binary_dir = os.path.join(
+      common_options.working_directory, 'binaries', config.label
+    )
+    artifacts_dir = os.path.join(
+      common_options.working_directory, 'artifacts', config.label
+    )
 
     shutil.rmtree(binary_dir, True)
     shutil.rmtree(artifacts_dir, True)
     os.makedirs(binary_dir)
     os.makedirs(artifacts_dir)
     binary = PrepareBinary(binary_dir, artifacts_dir, config, common_options)
-    logging.info('%s binary: %s artifacts: %s', config.label, binary,
-                 artifacts_dir)
+    logging.info(
+      '%s binary: %s artifacts: %s', config.label, binary, artifacts_dir
+    )
     runable_configurations.append(
-        RunableConfiguration(config, benchmarks, binary, artifacts_dir,
-                             common_options))
+      RunableConfiguration(
+        config, benchmarks, binary, artifacts_dir, common_options
+      )
+    )
   return runable_configurations
 
 
-def SpawnConfigurationsFromTargetList(target_list: List[str],
-                                      base_configuration: RunnerConfig
-                                      ) -> List[RunnerConfig]:
+def SpawnConfigurationsFromTargetList(
+  target_list: List[str], base_configuration: RunnerConfig
+) -> List[RunnerConfig]:
   configurations: List[RunnerConfig] = []
   for target_string in target_list:
     config = deepcopy(base_configuration)
@@ -381,11 +428,14 @@ def SpawnConfigurationsFromTargetList(target_list: List[str],
   return configurations
 
 
-def RunConfigurations(configurations: List[RunnerConfig],
-                      benchmarks: List[BenchmarkConfig],
-                      common_options: CommonOptions) -> bool:
+def RunConfigurations(
+  configurations: List[RunnerConfig],
+  benchmarks: List[BenchmarkConfig],
+  common_options: CommonOptions,
+) -> bool:
   runable_configurations = PrepareBinariesAndDirectories(
-      configurations, benchmarks, common_options)
+    configurations, benchmarks, common_options
+  )
 
   has_failure = False
   logs: List[str] = []
@@ -397,9 +447,16 @@ def RunConfigurations(configurations: List[RunnerConfig],
 
   if common_options.local_run:
     for benchmark in benchmarks:
-      logs.append(benchmark.name + ' : file://' +
-                  os.path.join(common_options.working_directory, 'artifacts',
-                               benchmark.name, 'results.html'))
+      logs.append(
+        benchmark.name
+        + ' : file://'
+        + os.path.join(
+          common_options.working_directory,
+          'artifacts',
+          benchmark.name,
+          'results.html',
+        )
+      )
 
   if logs:
     logging.info('Logs:')

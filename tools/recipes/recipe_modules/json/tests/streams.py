@@ -17,11 +17,15 @@ DEPS = ['json', 'step']
 
 
 def RunSteps(api):
-    result = api.step('run tests', ['run_tests'],
-                      check=False,
-                      stdout=api.json.output(),
-                      step_test_data=lambda: api.json.test_api.output_stream(
-                          {'failed': ['a', 'b']}, retcode=1))
+    result = api.step(
+        'run tests',
+        ['run_tests'],
+        check=False,
+        stdout=api.json.output(),
+        step_test_data=lambda: api.json.test_api.output_stream(
+            {'failed': ['a', 'b']}, retcode=1
+        ),
+    )
     assert result.retcode == 1, result.retcode
     assert result.stdout == {'failed': ['a', 'b']}, result.stdout
 

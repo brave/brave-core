@@ -24,7 +24,8 @@ CHROME_VERSION_FILE = 'chrome/VERSION'
 # Visual Studio install. Set only when not already configured by the caller.
 WIN_HERMETIC_TOOLCHAIN_BASE_URL = (
     'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-'
-    '2.on.aws/windows-hermetic-toolchain/')
+    '2.on.aws/windows-hermetic-toolchain/'
+)
 
 # The URL for Chromium's googlesource.
 CHROMIUM_URL = 'https://chromium.googlesource.com/chromium/src.git'
@@ -45,13 +46,13 @@ class ChromiumCheckoutApi(RecipeApi):
         Responsible for basic environment initialization.
         """
         with self.m.context(
-                env=
-            {
+            env={
                 # CHROME_HEADLESS makes sure that running `gclient
                 # runhooks` and other tools don't require user
                 # interaction.
                 'CHROME_HEADLESS': '1',
-            }):
+            }
+        ):
             yield
 
     def _with_chromium_layout(fn):
@@ -70,13 +71,15 @@ class ChromiumCheckoutApi(RecipeApi):
         return inner
 
     @_with_chromium_layout
-    def ensure_checkout(self,
-                        *,
-                        chromium_src: str | Path | None = None,
-                        ref: str | None = None,
-                        run_sync: bool = True,
-                        run_hooks: bool = True,
-                        git_deps_only: bool = False) -> Path:
+    def ensure_checkout(
+        self,
+        *,
+        chromium_src: str | Path | None = None,
+        ref: str | None = None,
+        run_sync: bool = True,
+        run_hooks: bool = True,
+        git_deps_only: bool = False,
+    ) -> Path:
         """Guarantee a Chromium checkout at *chromium_src*, optionally on *ref*.
 
         Clones a fresh checkout if *chromium_src* is not already a valid
@@ -106,11 +109,13 @@ class ChromiumCheckoutApi(RecipeApi):
         # clone or operate on an existing checkout.
         self.m.depot_tools.ensure_on_path()
 
-        self.checkout_ref(chromium_src,
-                          ref,
-                          run_sync=run_sync,
-                          run_hooks=run_hooks,
-                          git_deps_only=git_deps_only)
+        self.checkout_ref(
+            chromium_src,
+            ref,
+            run_sync=run_sync,
+            run_hooks=run_hooks,
+            git_deps_only=git_deps_only,
+        )
         return chromium_src
 
     def has_valid_checkout(self, chromium_src: str | Path) -> bool:
@@ -124,21 +129,23 @@ class ChromiumCheckoutApi(RecipeApi):
         try:
             self.m.step(
                 'check chrome/VERSION',
-                ['git', 'log', '-1', '--oneline',
-                 str(CHROME_VERSION_FILE)],
-                cwd=chromium_src)
+                ['git', 'log', '-1', '--oneline', str(CHROME_VERSION_FILE)],
+                cwd=chromium_src,
+            )
         except (subprocess.CalledProcessError, OSError):
             return False
         return True
 
-    def checkout_ref(self,
-                     chromium_src: str | Path,
-                     ref: str | None = None,
-                     *,
-                     should_clone: bool = True,
-                     run_sync: bool = True,
-                     run_hooks: bool = True,
-                     git_deps_only: bool = False) -> None:
+    def checkout_ref(
+        self,
+        chromium_src: str | Path,
+        ref: str | None = None,
+        *,
+        should_clone: bool = True,
+        run_sync: bool = True,
+        run_hooks: bool = True,
+        git_deps_only: bool = False,
+    ) -> None:
         """Ensure *chromium_src* is checked out at *ref*.
 
         Args:
@@ -174,25 +181,36 @@ class ChromiumCheckoutApi(RecipeApi):
             if not should_clone:
                 raise RuntimeError(
                     f'No valid Chromium checkout at {chromium_src}, and '
-                    'should_clone is False.')
-            logging.info('Chromium src not found at %s, cloning...',
-                         chromium_src)
+                    'should_clone is False.'
+                )
+            logging.info(
+                'Chromium src not found at %s, cloning...', chromium_src
+            )
 
             self.m.path.mkdir(chromium_src.parent)
             # Writes the `.gclient` solution file so `gclient sync` (once
             # checked out below) knows about the `src` solution.
-            self.m.step('gclient config', [
-                'gclient', 'config', '--name', 'src', '--unmanaged',
-                CHROMIUM_URL
-            ],
-                        cwd=chromium_src.parent)
+            self.m.step(
+                'gclient config',
+                [
+                    'gclient',
+                    'config',
+                    '--name',
+                    'src',
+                    '--unmanaged',
+                    CHROMIUM_URL,
+                ],
+                cwd=chromium_src.parent,
+            )
 
             mirror_dir = self._populate_git_cache(
                 git_ref,
                 populate_step='git cache populate',
-                exists_step='git cache exists')
-            self.m.git_cache.clone_checkout(CHROMIUM_URL, chromium_src,
-                                            mirror_dir, git_ref)
+                exists_step='git cache exists',
+            )
+            self.m.git_cache.clone_checkout(
+                CHROMIUM_URL, chromium_src, mirror_dir, git_ref
+            )
             if not ref:
                 return
         elif ref:
@@ -203,9 +221,11 @@ class ChromiumCheckoutApi(RecipeApi):
             mirror_dir = self._populate_git_cache(
                 git_ref,
                 populate_step='git cache populate for ref',
-                exists_step='git cache exists for ref')
-            self.m.git_cache.update_checkout(CHROMIUM_URL, chromium_src,
-                                             mirror_dir, git_ref)
+                exists_step='git cache exists for ref',
+            )
+            self.m.git_cache.update_checkout(
+                CHROMIUM_URL, chromium_src, mirror_dir, git_ref
+            )
         else:
             # Already a valid checkout and no `ref` requested: nothing to do.
             return
@@ -213,12 +233,16 @@ class ChromiumCheckoutApi(RecipeApi):
         if not run_sync:
             return
 
-        using_hermetic_win_toolchain = (run_hooks and self.m.platform.is_win
-                                        and 'DEPOT_TOOLS_WIN_TOOLCHAIN'
-                                        not in self.m.env)
+        using_hermetic_win_toolchain = (
+            run_hooks
+            and self.m.platform.is_win
+            and 'DEPOT_TOOLS_WIN_TOOLCHAIN' not in self.m.env
+        )
         if using_hermetic_win_toolchain:
-            self.m.env.set('DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL',
-                           WIN_HERMETIC_TOOLCHAIN_BASE_URL)
+            self.m.env.set(
+                'DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL',
+                WIN_HERMETIC_TOOLCHAIN_BASE_URL,
+            )
             # This is used by `gclient runhooks`.
             self._pin_win_toolchain_hash(chromium_src)
 
@@ -244,21 +268,29 @@ class ChromiumCheckoutApi(RecipeApi):
         Nothing is set if an index with cannot be found with a redirect.
         """
         vpython3 = self.m.depot_tools.vpython3()
-        result = self.m.step('resolve win toolchain hash', [
-            vpython3, '-u',
-            self.resource('win_toolchain_hash.py'),
-            chromium_src / 'build' / 'vs_toolchain.py',
-            WIN_HERMETIC_TOOLCHAIN_BASE_URL, '--json-output',
-            self.m.json.output()
-        ],
-                             step_test_data=self.test_api.win_toolchain_hash)
+        result = self.m.step(
+            'resolve win toolchain hash',
+            [
+                vpython3,
+                '-u',
+                self.resource('win_toolchain_hash.py'),
+                chromium_src / 'build' / 'vs_toolchain.py',
+                WIN_HERMETIC_TOOLCHAIN_BASE_URL,
+                '--json-output',
+                self.m.json.output(),
+            ],
+            step_test_data=self.test_api.win_toolchain_hash,
+        )
         info = result.json.output
         if info['published_hash']:
-            self.m.env.set(f"GYP_MSVS_HASH_{info['toolchain_hash']}",
-                           info['published_hash'])
+            self.m.env.set(
+                f"GYP_MSVS_HASH_{info['toolchain_hash']}",
+                info['published_hash'],
+            )
 
-    def _populate_git_cache(self, ref: GitRef | None, *, populate_step: str,
-                            exists_step: str) -> str:
+    def _populate_git_cache(
+        self, ref: GitRef | None, *, populate_step: str, exists_step: str
+    ) -> str:
         """Populate (or refresh) the shared bare mirror of Chromium.
 
         `git cache populate` fetches into a persistent bare mirror under
@@ -275,8 +307,10 @@ class ChromiumCheckoutApi(RecipeApi):
         Returns:
             The absolute path to the mirror directory.
         """
-        self.m.git_cache.populate(CHROMIUM_URL,
-                                  ref=ref.populate_ref if ref else None,
-                                  commit=ref.commit if ref else None,
-                                  step_name=populate_step)
+        self.m.git_cache.populate(
+            CHROMIUM_URL,
+            ref=ref.populate_ref if ref else None,
+            commit=ref.commit if ref else None,
+            step_name=populate_step,
+        )
         return self.m.git_cache.mirror_dir(CHROMIUM_URL, step_name=exists_step)

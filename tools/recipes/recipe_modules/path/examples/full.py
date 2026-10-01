@@ -55,19 +55,29 @@ def GenTests(api):
             api.path.files('b/src/chrome/VERSION'),
             api.post_process(post_process.MustRun, 'found version'),
             api.post_process(post_process.MustRun, 'out ready'),
-            api.post_process(post_process.StepCommandContains, 'out ready',
-                             [f'[WORKSPACE]{sep}out']),
-            api.post_process(post_process.StepCommandContains, 'home',
-                             ['[HOME]']),
-            api.post_process(post_process.StepCommandContains, 'home again',
-                             ['[HOME]']),
-            api.post_process(post_process.StepCommandContains, 'cache',
-                             [f'[HOME]{sep}cache']),
-            api.post_process(post_process.StepCommandContains, 'temp dirs', [
-                f'[WORKSPACE]{sep}rc{sep}tmp_tmp_1',
-                f'[WORKSPACE]{sep}rc{sep}tmp_tmp_2',
-                f'[WORKSPACE]{sep}rc{sep}unpacked_tmp_1'
-            ]),
+            api.post_process(
+                post_process.StepCommandContains,
+                'out ready',
+                [f'[WORKSPACE]{sep}out'],
+            ),
+            api.post_process(
+                post_process.StepCommandContains, 'home', ['[HOME]']
+            ),
+            api.post_process(
+                post_process.StepCommandContains, 'home again', ['[HOME]']
+            ),
+            api.post_process(
+                post_process.StepCommandContains, 'cache', [f'[HOME]{sep}cache']
+            ),
+            api.post_process(
+                post_process.StepCommandContains,
+                'temp dirs',
+                [
+                    f'[WORKSPACE]{sep}rc{sep}tmp_tmp_1',
+                    f'[WORKSPACE]{sep}rc{sep}tmp_tmp_2',
+                    f'[WORKSPACE]{sep}rc{sep}unpacked_tmp_1',
+                ],
+            ),
             api.post_process(post_process.StatusSuccess),
         )
     yield api.test(

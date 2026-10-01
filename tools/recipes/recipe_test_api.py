@@ -87,8 +87,9 @@ class StepTestData(BaseTestData):
         super().__init__()
         # (module, method, placeholder name) -> PlaceholderTestData, for the
         # output placeholders in the step's command.
-        self.placeholder_data: dict[tuple[str, str, str | None],
-                                    PlaceholderTestData] = {}
+        self.placeholder_data: dict[
+            tuple[str, str, str | None], PlaceholderTestData
+        ] = {}
         # When True this fragment replaces (rather than merges into) whatever
         # came before it -- see `api.override_step_data`.
         self.override = False
@@ -111,16 +112,20 @@ class StepTestData(BaseTestData):
         merged.override = other.override
         merged.placeholder_data = {
             **base.placeholder_data,
-            **other.placeholder_data
+            **other.placeholder_data,
         }
         merged._stdout = other._stdout or base._stdout
         merged._stderr = other._stderr or base._stderr
         merged._retcode = base._retcode
         if other._retcode is not None:
-            if (merged._retcode is not None
-                    and merged._retcode != other._retcode):
-                raise ValueError('Conflicting retcode values: '
-                                 f'{merged._retcode} and {other._retcode}')
+            if (
+                merged._retcode is not None
+                and merged._retcode != other._retcode
+            ):
+                raise ValueError(
+                    'Conflicting retcode values: '
+                    f'{merged._retcode} and {other._retcode}'
+                )
             merged._retcode = other._retcode
         return merged
 
@@ -131,15 +136,19 @@ class StepTestData(BaseTestData):
         or `stderr`, e.g. `api.raw_io.stream_output_text('hi')`.
         """
         if len(self.placeholder_data) != 1:
-            raise ValueError('Cannot unwrap step test data holding '
-                             f'{len(self.placeholder_data)} placeholders')
+            raise ValueError(
+                'Cannot unwrap step test data holding '
+                f'{len(self.placeholder_data)} placeholders'
+            )
         return next(iter(self.placeholder_data.values()))
 
-    def pop_placeholder(self, module: str, method: str,
-                        name: str | None) -> PlaceholderTestData:
+    def pop_placeholder(
+        self, module: str, method: str, name: str | None
+    ) -> PlaceholderTestData:
         """Take the datum seeded for one placeholder (empty if none was)."""
-        return self.placeholder_data.pop((module, method, name),
-                                         PlaceholderTestData())
+        return self.placeholder_data.pop(
+            (module, method, name), PlaceholderTestData()
+        )
 
     @property
     def retcode(self) -> int:
@@ -175,13 +184,13 @@ class StepTestData(BaseTestData):
         return PlaceholderTestData()
 
     def __repr__(self) -> str:
-        return ('StepTestData(%r)' % {
+        return 'StepTestData(%r)' % {
             'placeholder_data': self.placeholder_data,
             'stdout': self._stdout,
             'stderr': self._stderr,
             'retcode': self._retcode,
             'override': self.override,
-        })
+        }
 
 
 class DisabledTestData(BaseTestData):
@@ -198,8 +207,9 @@ class DisabledTestData(BaseTestData):
     def __getattr__(self, name: str) -> DisabledTestData:
         return self
 
-    def pop_placeholder(self, module: str, method: str,
-                        name: str | None) -> DisabledTestData:
+    def pop_placeholder(
+        self, module: str, method: str, name: str | None
+    ) -> DisabledTestData:
         del module, method, name
         return self
 
@@ -210,6 +220,7 @@ class PostprocessHookContext(NamedTuple):
     `filename`/`lineno` locate the `api.post_process(...)` call site, so a failed
     check can render the `added <file>:<lineno>` footer and the call repr.
     """
+
     func: Callable[..., Any]
     args: tuple
     kwargs: dict
@@ -222,8 +233,11 @@ def _merge_properties(a: dict[str, Any], b: dict[str, Any]) -> dict[str, Any]:
     fragments can each set part of the same module's properties."""
     merged = {**a, **b}
     for key, value in b.items():
-        if key.startswith('$') and isinstance(value, dict) and isinstance(
-                a.get(key), dict):
+        if (
+            key.startswith('$')
+            and isinstance(value, dict)
+            and isinstance(a.get(key), dict)
+        ):
             merged[key] = {**a[key], **value}
     return merged
 
@@ -266,25 +280,26 @@ class TestData:
         so fragment order in `api.test(...)` reads left-to-right.
         """
         merged = TestData(self.name or other.name)
-        merged.properties = _merge_properties(self.properties,
-                                              other.properties)
+        merged.properties = _merge_properties(self.properties, other.properties)
         merged.environ = {**self.environ, **other.environ}
         merged.mod_data = _merge_mod_data(self.mod_data, other.mod_data)
         merged.step_data.update(self.step_data)
         for step_name, data in other.step_data.items():
             existing = merged.step_data.get(step_name)
-            merged.step_data[step_name] = (existing +
-                                           data if existing else data)
-        merged.post_process_hooks = (self.post_process_hooks +
-                                     other.post_process_hooks)
-        merged.expected_status = (other.expected_status
-                                  if other.expected_status is not None else
-                                  self.expected_status)
+            merged.step_data[step_name] = existing + data if existing else data
+        merged.post_process_hooks = (
+            self.post_process_hooks + other.post_process_hooks
+        )
+        merged.expected_status = (
+            other.expected_status
+            if other.expected_status is not None
+            else self.expected_status
+        )
         return merged
 
     def get_step_test_data(
-            self, step_name: str,
-            step_test_data_fn: Callable[[], StepTestData]) -> StepTestData:
+        self, step_name: str, step_test_data_fn: Callable[[], StepTestData]
+    ) -> StepTestData:
         """The simulated data for the step named *step_name*.
 
         `step_test_data_fn` builds the step's own default data (its
@@ -349,13 +364,16 @@ class _PropertiesTestApi:
             if not isinstance(msg, PBMessage):
                 raise ValueError(
                     'Positional arguments for api.properties must be protobuf '
-                    f'messages. Got: {msg!r} (type {type(msg)!r})')
+                    f'messages. Got: {msg!r} (type {type(msg)!r})'
+                )
             data.properties.update(
-                jsonpb.MessageToDict(msg, preserving_proto_field_name=True))
+                jsonpb.MessageToDict(msg, preserving_proto_field_name=True)
+            )
         for key, value in kwargs.items():
             if isinstance(value, PBMessage):
-                value = jsonpb.MessageToDict(value,
-                                             preserving_proto_field_name=True)
+                value = jsonpb.MessageToDict(
+                    value, preserving_proto_field_name=True
+                )
             data.properties[key] = value
         return data
 
@@ -371,9 +389,11 @@ class _PropertiesTestApi:
             if not isinstance(msg, PBMessage):
                 raise ValueError(
                     'Positional arguments for api.properties.environ must be '
-                    f'protobuf messages. Got: {msg!r} (type {type(msg)!r})')
+                    f'protobuf messages. Got: {msg!r} (type {type(msg)!r})'
+                )
             to_apply.append(
-                jsonpb.MessageToDict(msg, preserving_proto_field_name=True))
+                jsonpb.MessageToDict(msg, preserving_proto_field_name=True)
+            )
         to_apply.append(kwargs)
 
         for dictionary in to_apply:
@@ -381,7 +401,8 @@ class _PropertiesTestApi:
                 if not isinstance(value, (int, float, str)):
                     raise ValueError(
                         'Environment values must be int, float or string. '
-                        f'Got: {key!r}={value!r} (type {type(value)!r})')
+                        f'Got: {key!r}={value!r} (type {type(value)!r})'
+                    )
                 data.environ[key] = str(value)
         return data
 
@@ -402,10 +423,13 @@ def _placeholder_step_data(func, placeholder_name: str | None = None):
 
         fragment = StepTestData()
         method = placeholder_name or func.__name__
-        fragment.placeholder_data[(
-            self._module,
-            method,  # pylint: disable=protected-access
-            placeholder_data.name)] = placeholder_data
+        fragment.placeholder_data[
+            (
+                self._module,
+                method,  # pylint: disable=protected-access
+                placeholder_data.name,
+            )
+        ] = placeholder_data
         fragment.retcode = retcode
         return fragment
 
@@ -442,8 +466,9 @@ def placeholder_step_data(func_or_name):
             raise ValueError('placeholder_step_data needs a non-empty name')
         return lambda func: _placeholder_step_data(func, func_or_name)
     if not callable(func_or_name):
-        raise ValueError('Expected either a function or a string; got '
-                         f'{func_or_name!r}')
+        raise ValueError(
+            f'Expected either a function or a string; got {func_or_name!r}'
+        )
     return _placeholder_step_data(func_or_name)
 
 
@@ -460,7 +485,8 @@ class RecipeTestApi:
     def __init__(self, module: str | None = None) -> None:
         self._module = module
         self.m: ModuleInjectionSite | RecipeTestApi = (
-            self if module is None else ModuleInjectionSite())
+            self if module is None else ModuleInjectionSite()
+        )
 
     def __getattr__(self, name: str):
         # DEPS module test APIs are injected by the runner (onto the root api,
@@ -468,7 +494,8 @@ class RecipeTestApi:
         # (Also tells static analysis that these attributes are dynamic, so
         # accessing an injected dep is not flagged as no-member.)
         raise AttributeError(
-            f'{name!r} is not an injected module test API (add it to DEPS?)')
+            f'{name!r} is not an injected module test API (add it to DEPS?)'
+        )
 
     # -- Fragment builders available on the root api (and inherited by modules).
 
@@ -477,9 +504,9 @@ class RecipeTestApi:
     properties = _PropertiesTestApi()
 
     @staticmethod
-    def test(name: str,
-             *test_data: TestData,
-             status: str | None = None) -> TestData:
+    def test(
+        name: str, *test_data: TestData, status: str | None = None
+    ) -> TestData:
         """Fold *test_data* fragments into a single named test case."""
         base = TestData(name)
         if status is not None:
@@ -489,12 +516,14 @@ class RecipeTestApi:
         return base
 
     @staticmethod
-    def step_data(name: str,
-                  *data: StepTestData,
-                  retcode: int | None = None,
-                  stdout: StepTestData | None = None,
-                  stderr: StepTestData | None = None,
-                  override: bool = False) -> TestData:
+    def step_data(
+        name: str,
+        *data: StepTestData,
+        retcode: int | None = None,
+        stdout: StepTestData | None = None,
+        stderr: StepTestData | None = None,
+        override: bool = False,
+    ) -> TestData:
         """A fragment seeding the simulated result of the step named *name*.
 
         Args:
@@ -527,7 +556,8 @@ class RecipeTestApi:
             if not isinstance(datum, StepTestData):
                 raise ValueError(
                     f'api.step_data({name!r}, ...) takes step test data '
-                    f'fragments. Got: {datum!r} (type {type(datum)!r})')
+                    f'fragments. Got: {datum!r} (type {type(datum)!r})'
+                )
             step += datum
         if retcode is not None:
             step.retcode = retcode
@@ -540,8 +570,9 @@ class RecipeTestApi:
         return fragment
 
     @staticmethod
-    def override_step_data(name: str, *data: StepTestData,
-                           **kwargs: Any) -> TestData:
+    def override_step_data(
+        name: str, *data: StepTestData, **kwargs: Any
+    ) -> TestData:
         """Like `step_data`, but replaces this step's data rather than adding.
 
         Use this to drop a step's own `step_test_data=` default (or an earlier
@@ -550,17 +581,20 @@ class RecipeTestApi:
         return RecipeTestApi.step_data(name, *data, override=True, **kwargs)
 
     @staticmethod
-    def post_process(func: Callable[..., Any], *args: Any,
-                     **kwargs: Any) -> TestData:
+    def post_process(
+        func: Callable[..., Any], *args: Any, **kwargs: Any
+    ) -> TestData:
         """A fragment registering a post-process check (see `post_process`)."""
         frame = inspect.currentframe()
         caller = frame.f_back if frame is not None else None
-        filename = (caller.f_code.co_filename
-                    if caller is not None else '<unknown>')
+        filename = (
+            caller.f_code.co_filename if caller is not None else '<unknown>'
+        )
         lineno = caller.f_lineno if caller is not None else 0
         data = TestData()
         data.post_process_hooks.append(
-            PostprocessHookContext(func, args, kwargs, filename, lineno))
+            PostprocessHookContext(func, args, kwargs, filename, lineno)
+        )
         return data
 
     @staticmethod
@@ -577,7 +611,8 @@ class RecipeTestApi:
         root api has no module of its own.
         """
         assert self._module is not None, (
-            '_mod_data is only available on a module TEST_API')
+            '_mod_data is only available on a module TEST_API'
+        )
         data = TestData()
         data.mod_data[self._module] = dict(values)
         return data

@@ -63,10 +63,9 @@ class FakeTerminal:
     the command under test ran.
     """
 
-    def __init__(self,
-                 repo: FakeChromiumRepo,
-                 *,
-                 gh: FakeGh | None = None) -> None:
+    def __init__(
+        self, repo: FakeChromiumRepo, *, gh: FakeGh | None = None
+    ) -> None:
         self._repo = repo
 
         # The `gh` CLI double every `gh` invocation is answered by.
@@ -124,23 +123,23 @@ class FakeTerminal:
         """Raises the injected failure for `command`, when there is one."""
         stderr = self._failures.get(command)
         if stderr is not None:
-            raise subprocess.CalledProcessError(1,
-                                                cmd,
-                                                output='',
-                                                stderr=stderr)
+            raise subprocess.CalledProcessError(
+                1, cmd, output='', stderr=stderr
+            )
 
     # -- inspection ---------------------------------------------------------
 
     def pnpm_runs(self) -> list[str]:
         """The name of every `pnpm run <name>` routed, in order."""
         return [
-            cmd[2] for cmd in self.calls
+            cmd[2]
+            for cmd in self.calls
             if len(cmd) > 2 and Path(cmd[0]).stem == 'pnpm' and cmd[1] == 'run'
         ]
 
     def ran(self, *prefix: str) -> bool:
         """Whether any routed command starts with `prefix`."""
-        return any(cmd[:len(prefix)] == list(prefix) for cmd in self.calls)
+        return any(cmd[: len(prefix)] == list(prefix) for cmd in self.calls)
 
     # -- routing ------------------------------------------------------------
 
@@ -158,16 +157,17 @@ class FakeTerminal:
         if program.startswith('vpython3'):
             return self._run_vpython(cmd, **kwargs)
         raise AssertionError(
-            f'FakeTerminal has no route for this command: {cmd}')
+            f'FakeTerminal has no route for this command: {cmd}'
+        )
 
     @staticmethod
-    def _completed(cmd: list[str],
-                   stdout: str = '') -> subprocess.CompletedProcess:
+    def _completed(
+        cmd: list[str], stdout: str = ''
+    ) -> subprocess.CompletedProcess:
         """A successful result shaped like the one `terminal.run` returns."""
         return subprocess.CompletedProcess(cmd, 0, stdout=stdout, stderr='')
 
-    def _run_git(self, cmd: list[str],
-                 **kwargs) -> subprocess.CompletedProcess:
+    def _run_git(self, cmd: list[str], **kwargs) -> subprocess.CompletedProcess:
         """Passes a git command through to the real implementation.
 
         Anything addressing a remote over the network is rejected instead: a
@@ -178,11 +178,13 @@ class FakeTerminal:
         if remote is not None:
             raise AssertionError(
                 f'A test tried to reach {remote} with: {" ".join(cmd)}. Set '
-                'the fake repository up so the command resolves locally.')
+                'the fake repository up so the command resolves locally.'
+            )
         return self._real_run(cmd, **kwargs)
 
-    def _run_pnpm(self, cmd: list[str],
-                  **kwargs) -> subprocess.CompletedProcess:
+    def _run_pnpm(
+        self, cmd: list[str], **kwargs
+    ) -> subprocess.CompletedProcess:
         """Emulates the `pnpm run <name>` build commands over the fake repo."""
         del kwargs  # The build commands are always run from the brave root.
         if cmd[1] != 'run':
@@ -219,10 +221,10 @@ class FakeTerminal:
             1,
             cmd,
             output=f'{len(failures)} patches failed to apply.\n',
-            stderr=f'{self.init_extra_stderr}{PATCH_FAILURE_STDERR_LINE}')
+            stderr=f'{self.init_extra_stderr}{PATCH_FAILURE_STDERR_LINE}',
+        )
 
-    def _run_apply_patches(self,
-                           cmd: list[str]) -> subprocess.CompletedProcess:
+    def _run_apply_patches(self, cmd: list[str]) -> subprocess.CompletedProcess:
         """Emulates `pnpm run apply_patches`.
 
         With `--print-patch-failures-in-json` the failures are printed to
@@ -235,15 +237,17 @@ class FakeTerminal:
 
         stdout = ''
         if '--print-patch-failures-in-json' in cmd:
-            stdout = '%s\n%s\n' % (PATCH_FAILURE_JSON_HEADER.format(
-                count=len(failures)), json.dumps(failures))
-        raise subprocess.CalledProcessError(1,
-                                            cmd,
-                                            output=stdout,
-                                            stderr=PATCH_FAILURE_STDERR_LINE)
+            stdout = '%s\n%s\n' % (
+                PATCH_FAILURE_JSON_HEADER.format(count=len(failures)),
+                json.dumps(failures),
+            )
+        raise subprocess.CalledProcessError(
+            1, cmd, output=stdout, stderr=PATCH_FAILURE_STDERR_LINE
+        )
 
-    def _run_vpython(self, cmd: list[str],
-                     **kwargs) -> subprocess.CompletedProcess:
+    def _run_vpython(
+        self, cmd: list[str], **kwargs
+    ) -> subprocess.CompletedProcess:
         """Emulates the `vpython3` helper scripts a command shells out to."""
         del kwargs  # The scripts below are unaffected by cwd or env.
         script = Path(cmd[1]).name
@@ -277,13 +281,15 @@ class ConsoleCapture:
         # with no file of its own writes to whatever `sys.stdout` is at print
         # time, and unittest's own output would end up in the capture.
         self._buffer = io.StringIO()
-        self._console = Console(file=self._buffer,
-                                width=width,
-                                log_time=False,
-                                log_path=False,
-                                force_terminal=False,
-                                no_color=True,
-                                highlight=False)
+        self._console = Console(
+            file=self._buffer,
+            width=width,
+            log_time=False,
+            log_path=False,
+            force_terminal=False,
+            no_color=True,
+            highlight=False,
+        )
         self._patchers: list = []
 
     def install(self) -> ConsoleCapture:
@@ -319,7 +325,8 @@ class ConsoleCapture:
         """
         return '\n'.join(
             line.rstrip()
-            for line in self._buffer.getvalue()[mark:].splitlines())
+            for line in self._buffer.getvalue()[mark:].splitlines()
+        )
 
     @property
     def text(self) -> str:
