@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_signal_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 

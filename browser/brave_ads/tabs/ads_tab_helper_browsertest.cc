@@ -70,7 +70,7 @@
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_browser_tests --filter=BraveAds*
+// pnpm test brave_browser_tests --filter=BraveAds*
 
 namespace brave_ads {
 

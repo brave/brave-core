@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/test/conversions_test_constants.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/test/conversions_test_util.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 

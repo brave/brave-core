@@ -23,7 +23,7 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 

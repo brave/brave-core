@@ -10,7 +10,7 @@
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_all_unit_tests --filter=BraveAds*
+// pnpm test brave_all_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 

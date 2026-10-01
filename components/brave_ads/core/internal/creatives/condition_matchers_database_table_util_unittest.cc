@@ -9,7 +9,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_all_unit_tests --filter=BraveAds*
+// pnpm test brave_all_unit_tests --filter=BraveAds*
 
 namespace brave_ads::database::table {
 

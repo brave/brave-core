@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds.*
+// pnpm test brave_unit_tests --filter=BraveAds.*
 
 namespace brave_ads {
 

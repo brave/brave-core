@@ -7,7 +7,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 
-// npm run test -- brave_all_unit_tests --filter=BraveAds*
+// pnpm test brave_all_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 

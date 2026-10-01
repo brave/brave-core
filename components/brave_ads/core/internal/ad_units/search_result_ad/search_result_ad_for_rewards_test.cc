@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/test/permission_rules_test_util.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 

@@ -42,7 +42,7 @@
 #include "brave/components/brave_ads/core/public/user_attention/user_idle_detection/user_idle_detection_feature.h"
 #include "components/variations/variations_switches.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
