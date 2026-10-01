@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/script_tools/model_context.cc b/third_party/blink/renderer/core/script_tools/model_context.cc
-index 0ed6a007777b5d285e6cb5f38082c4ebe5024472..16ac847d034efa127247610ff40fad150e127782 100644
+index ee5fd7eecba5c5b1a8123f39007d7b81fcb3e6da..c925ded6d3f348beeca4517cb6d9c640f45be60a 100644
 --- a/third_party/blink/renderer/core/script_tools/model_context.cc
 +++ b/third_party/blink/renderer/core/script_tools/model_context.cc
-@@ -897,6 +897,9 @@ void ModelContext::PauseExecution() {
+@@ -877,6 +877,9 @@ void ModelContext::PauseExecution() {
  }
  
  void ModelContext::NotifyToolChange() {
@@ -12,13 +12,3 @@ index 0ed6a007777b5d285e6cb5f38082c4ebe5024472..16ac847d034efa127247610ff40fad15
    DispatchEvent(*Event::Create(event_type_names::kToolchange));
  }
  
-@@ -964,7 +967,8 @@ bool ModelContext::IsModelContextAllowed() const {
-               url::kFileScheme &&
-           key.IsUniversalFileAgent()) ||
-          (document_->GetSettings() &&
--          !document_->GetSettings()->GetWebSecurityEnabled());
-+          !document_->GetSettings()->GetWebSecurityEnabled()) ||
-+         IsAIChatLeoWorkspaceDocument(*document_);
- }
- 
- ScriptPromise<IDLSequence<RegisteredTool>> ModelContext::getTools(
