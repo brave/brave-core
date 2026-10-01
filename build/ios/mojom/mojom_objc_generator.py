@@ -8,8 +8,7 @@
 
 import os
 
-import secrets
-import string
+import hashlib
 import mojom.generate.module as mojom
 from mojom.generate import generator
 from mojom.generate.generator import WriteFile
@@ -178,7 +177,7 @@ class ArrayMojoTypemap(MojoTypemap):
     def DefaultObjCValue(self, default):
         return "@[]"
     def ObjCToCpp(self, accessor):
-        local_var_name = _RandomLocalVarName()
+        local_var_name = _LocalVarName(accessor)
         args = (self.wrappedTypemap.ExpectedCppType(), local_var_name,
                 self.wrappedTypemap.ObjCWrappedType(), local_var_name,
                 accessor, local_var_name, self.wrappedTypemap.ObjCToCpp(
@@ -278,7 +277,7 @@ class DictionaryMojoTypemap(MojoTypemap):
     def DefaultObjCValue(self, default):
         return "@{}"
     def ObjCToCpp(self, accessor):
-        local_var_name = _RandomLocalVarName()
+        local_var_name = _LocalVarName(accessor)
         args = (self.keyTypemap.ExpectedCppType(),
                 self.valueTypemap.ExpectedCppType(),
                 self.keyTypemap.ObjCWrappedType(), local_var_name, accessor,
@@ -419,8 +418,13 @@ _mojo_typemaps = [
     UnionMojoTypemap,
 ]
 
-def _RandomLocalVarName():
-    return ''.join(secrets.choice(string.ascii_letters) for i in range(16))
+
+def _LocalVarName(accessor):
+    # Derived from the accessor so generated output is deterministic. Nested
+    # containers use the outer local variable as their accessor, so names stay
+    # unique per nesting level.
+    digest = hashlib.sha1(accessor.encode('utf-8')).hexdigest()
+    return 'v%s' % digest[:12]
 
 def MojoTypemapForKind(kind, is_inside_container=False):
     typemap = next((x for x in _mojo_typemaps if x.IsMojoType(kind)), None)
