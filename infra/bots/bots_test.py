@@ -21,8 +21,10 @@ from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(
     0,
-    os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                 'config'))
+    os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'config'
+    ),
+)
 
 import bots
 import describe
@@ -37,11 +39,9 @@ def _make_generated_output_dir(tmp_dir, builder_names):
     for name in builder_names:
         builder_dir = Path(tmp_dir) / name
         builder_dir.mkdir()
-        (builder_dir / 'gn-args.json').write_text(json.dumps(
-            {'gn_args': {
-                'is_asan': True
-            }}),
-                                                  encoding='utf-8')
+        (builder_dir / 'gn-args.json').write_text(
+            json.dumps({'gn_args': {'is_asan': True}}), encoding='utf-8'
+        )
 
 
 class LookupDispatchTest(unittest.TestCase):
@@ -92,7 +92,6 @@ class LookupDispatchTest(unittest.TestCase):
 
 
 class SnapshotDispatchTest(unittest.TestCase):
-
     def test_usage_error_does_not_list_builders(self):
         # `snapshot` has nothing to do with a builder name, so its usage
         # errors should not carry `lookup`'s builder-listing behaviour.
@@ -141,8 +140,10 @@ class GenDispatchTest(unittest.TestCase):
                 gen.BuildDirGenerator.run_gn_gen = original_run_gn_gen
 
             self.assertEqual(ret, 0)
-            self.assertEqual((out_dir / 'args.gn').read_text(encoding='utf-8'),
-                             'is_asan = true\n')
+            self.assertEqual(
+                (out_dir / 'args.gn').read_text(encoding='utf-8'),
+                'is_asan = true\n',
+            )
 
     def test_unknown_builder_returns_1(self):
         buf = io.StringIO()
@@ -176,23 +177,36 @@ def _make_valid_builder_dir(tmp_dir, name):
     fixture: `validate` reports the other two files as missing otherwise."""
     builder_dir = Path(tmp_dir) / name
     builder_dir.mkdir()
-    (builder_dir / 'gn-args.json').write_text(json.dumps(
-        {'gn_args': {
-            'target_os': 'linux',
-            'target_cpu': 'x64',
-        }}),
-                                              encoding='utf-8')
-    (builder_dir / 'sync.json').write_text(json.dumps({
-        'target_os': 'linux',
-        'target_cpu': 'x64',
-        'gclient_overrides': {},
-    }),
-                                           encoding='utf-8')
-    (builder_dir / 'targets.json').write_text(json.dumps({
-        'compile': ['brave:all'],
-        'tests': [],
-    }),
-                                              encoding='utf-8')
+    (builder_dir / 'gn-args.json').write_text(
+        json.dumps(
+            {
+                'gn_args': {
+                    'target_os': 'linux',
+                    'target_cpu': 'x64',
+                }
+            }
+        ),
+        encoding='utf-8',
+    )
+    (builder_dir / 'sync.json').write_text(
+        json.dumps(
+            {
+                'target_os': 'linux',
+                'target_cpu': 'x64',
+                'gclient_overrides': {},
+            }
+        ),
+        encoding='utf-8',
+    )
+    (builder_dir / 'targets.json').write_text(
+        json.dumps(
+            {
+                'compile': ['brave:all'],
+                'tests': [],
+            }
+        ),
+        encoding='utf-8',
+    )
 
 
 class ValidateDispatchTest(unittest.TestCase):
@@ -254,13 +268,8 @@ class DescribeDispatchTest(unittest.TestCase):
             self.assertEqual(ret, 0)
             self.assertEqual(
                 json.loads(buf.getvalue()),
-                {'b': {
-                    'gn_args': {
-                        'gn_args': {
-                            'is_asan': True
-                        }
-                    }
-                }})
+                {'b': {'gn_args': {'gn_args': {'is_asan': True}}}},
+            )
 
     def test_omitting_builder_describes_everything(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -276,8 +285,9 @@ class DescribeDispatchTest(unittest.TestCase):
                 gen_paths.BUILDERS_OUTPUT_DIR = original
 
             self.assertEqual(ret, 0)
-            self.assertEqual(set(json.loads(buf.getvalue())),
-                             {'a-builder', 'b-builder'})
+            self.assertEqual(
+                set(json.loads(buf.getvalue())), {'a-builder', 'b-builder'}
+            )
 
     def test_unknown_builder_returns_1(self):
         buf = io.StringIO()

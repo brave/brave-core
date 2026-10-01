@@ -24,7 +24,8 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def _load(name, filename):
     spec = importlib.util.spec_from_file_location(
-        name, os.path.join(SCRIPT_DIR, filename))
+        name, os.path.join(SCRIPT_DIR, filename)
+    )
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod
@@ -64,8 +65,10 @@ def load_candidates(pr):
                 data = json.load(f)
         except (OSError, json.JSONDecodeError) as e:
             missing += 1
-            log(f"WARNING: no detect results for PR #{pr['number']} "
-                f"{entry.get('chunk_id', '?')}: {e}")
+            log(
+                f"WARNING: no detect results for PR #{pr['number']} "
+                f"{entry.get('chunk_id', '?')}: {e}"
+            )
             continue
         for v in data.get("violations", []) or []:
             if isinstance(v, dict) and v.get("file"):
@@ -86,8 +89,7 @@ def rule_text(rule_link, bp_dir):
     if key not in _RULES_BY_DOC:
         try:
             with open(os.path.join(bp_dir, doc), encoding='utf-8') as f:
-                _RULES_BY_DOC[key] = _prep._cb_mod.split_into_rules(
-                    f.read())[1]
+                _RULES_BY_DOC[key] = _prep._cb_mod.split_into_rules(f.read())[1]
         except OSError:
             _RULES_BY_DOC[key] = []
     marker = re.compile(rf'<a id="{re.escape(anchor)}"')
@@ -107,15 +109,17 @@ def select(pr, violations, existing_comments, bp_dir):
     known = []
     for v in violations:
         if v.get("rule_link") and rule_text(v["rule_link"], bp_dir) is None:
-            log(f"DROPPED: {v.get('file')}:{v.get('line')} cites "
-                f"{v['rule_link']}, which names no rule")
+            log(
+                f"DROPPED: {v.get('file')}:{v.get('line')} cites "
+                f"{v['rule_link']}, which names no rule"
+            )
             continue
         known.append(v)
     violations = _post.deduplicate_batch_violations(known)
     violations = _post.deduplicate_violations(violations, existing_comments)
-    kept, _ = _post.prioritize_violations(violations,
-                                          pr.get("hasApproval", False),
-                                          limit=CANDIDATE_LIMIT)
+    kept, _ = _post.prioritize_violations(
+        violations, pr.get("hasApproval", False), limit=CANDIDATE_LIMIT
+    )
     return kept
 
 
@@ -127,7 +131,8 @@ def validator_diff(diff_file, files):
     except OSError:
         return "", {}
     shown = [
-        s for path, s in sections.items()
+        s
+        for path, s in sections.items()
         if path in files and not _prep.omitted_reason(path, s)
     ]
     text = _prep.join_sections(shown)
@@ -142,12 +147,13 @@ def write_validator(pr, candidates, bot_username, bp_dir):
         entry.update({k: v[k] for k in _CANDIDATE_FIELDS if k in v})
         numbered.append(entry)
     cited = []
-    for link in dict.fromkeys(v["rule_link"] for v in candidates
-                              if v.get("rule_link")):
+    for link in dict.fromkeys(
+        v["rule_link"] for v in candidates if v.get("rule_link")
+    ):
         cited.append((link, rule_text(link, bp_dir)))
-    diff_text, ranges = validator_diff(pr.get("diff_file", ""),
-                                       {v["file"]
-                                        for v in candidates})
+    diff_text, ranges = validator_diff(
+        pr.get("diff_file", ""), {v["file"] for v in candidates}
+    )
     prior = ""
     try:
         with open(pr.get("prior_comments_file", ""), encoding='utf-8') as f:
@@ -171,7 +177,8 @@ def write_validator(pr, candidates, bot_username, bp_dir):
         diff_text,
         ranges,
         pr.get("images", []),
-        pr.get("source_path") or pr.get("worktree_path")
+        pr.get("source_path")
+        or pr.get("worktree_path")
         or _prep.TARGET_REPO_PATH,
         results_file,
     )
@@ -194,7 +201,8 @@ def write_manifest(path, manifest):
 
 def main():
     parser = argparse.ArgumentParser(
-        description=__doc__.split("\n", maxsplit=1)[0])
+        description=__doc__.split("\n", maxsplit=1)[0]
+    )
     parser.add_argument("--work-dir", required=True)
     args = parser.parse_args()
 
@@ -215,25 +223,32 @@ def main():
             pr["validation"] = None
             incomplete.append(number)
             continue
-        existing = _post.fetch_existing_comments(repo,
-                                                 number) if violations else []
+        existing = (
+            _post.fetch_existing_comments(repo, number) if violations else []
+        )
         candidates = select(pr, violations, existing, _prep.BP_DIR)
-        log(f"PR #{number}: {len(violations)} detected, "
-            f"{len(candidates)} to validate")
+        log(
+            f"PR #{number}: {len(violations)} detected, "
+            f"{len(candidates)} to validate"
+        )
         if not candidates:
             pr["validation"] = None
             continue
-        pr["validation"] = write_validator(pr, candidates, bot_username,
-                                           _prep.BP_DIR)
+        pr["validation"] = write_validator(
+            pr, candidates, bot_username, _prep.BP_DIR
+        )
         validators.append({"pr": number, **pr["validation"]})
 
     write_manifest(manifest_path, manifest)
     print(
-        json.dumps({
-            "work_dir": args.work_dir,
-            "validators": validators,
-            "incomplete": incomplete,
-        }))
+        json.dumps(
+            {
+                "work_dir": args.work_dir,
+                "validators": validators,
+                "incomplete": incomplete,
+            }
+        )
+    )
 
 
 if __name__ == "__main__":

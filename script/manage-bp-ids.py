@@ -91,13 +91,15 @@ def cmd_validate():
         for line_idx, heading, eid in parse_doc(md):
             if not eid:
                 errors.append(
-                    f"  MISSING ID: {md.name}:{line_idx + 1}  {heading}")
+                    f"  MISSING ID: {md.name}:{line_idx + 1}  {heading}"
+                )
             else:
                 if eid in all_ids:
                     prev_file, prev_heading = all_ids[eid]
                     errors.append(
                         f"  DUPLICATE ID '{eid}': {md.name} ({heading}) "
-                        f"vs {prev_file} ({prev_heading})")
+                        f"vs {prev_file} ({prev_heading})"
+                    )
                 all_ids[eid] = (md.name, heading)
 
     if errors:
@@ -125,7 +127,7 @@ def cmd_assign():
         for eid in existing_ids:
             if eid.startswith(prefix + "-"):
                 try:
-                    seq = int(eid[len(prefix) + 1:])
+                    seq = int(eid[len(prefix) + 1 :])
                     max_seq = max(max_seq, seq)
                 except ValueError:
                     pass
@@ -163,8 +165,10 @@ def cmd_assign():
 
         if added > 0:
             md.write_text("\n".join(new_lines) + "\n")
-            print(f"  {md.name}: added {added} IDs"
-                  f" ({prefix}-001..{prefix}-{max_seq:03d})")
+            print(
+                f"  {md.name}: added {added} IDs"
+                f" ({prefix}-001..{prefix}-{max_seq:03d})"
+            )
             total_added += added
 
     print(f"\nTotal: {total_added} IDs added.")
@@ -198,17 +202,18 @@ def cmd_check_link(fragment, doc=None):
 def main():
     parser = argparse.ArgumentParser(description="Manage best-practice IDs")
     group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument("--assign",
-                       action="store_true",
-                       help="Add IDs to headings missing them")
-    group.add_argument("--validate",
-                       action="store_true",
-                       help="Check all IDs are unique")
-    group.add_argument("--check-link",
-                       metavar="ID",
-                       help="Check if an ID exists")
-    parser.add_argument("--doc",
-                        help="Limit --check-link to a specific doc file")
+    group.add_argument(
+        "--assign", action="store_true", help="Add IDs to headings missing them"
+    )
+    group.add_argument(
+        "--validate", action="store_true", help="Check all IDs are unique"
+    )
+    group.add_argument(
+        "--check-link", metavar="ID", help="Check if an ID exists"
+    )
+    parser.add_argument(
+        "--doc", help="Limit --check-link to a specific doc file"
+    )
     args = parser.parse_args()
 
     if args.assign:

@@ -17,7 +17,7 @@ def CheckToModifyInputApi(input_api, _output_api):
 
 
 def CheckCIFeatures(input_api, output_api):
-    files_to_check = (r'build/\.ci_features$', )
+    files_to_check = (r'build/\.ci_features$',)
 
     def file_filter(f):
         return input_api.FilterSourceFile(f, files_to_check=files_to_check)
@@ -44,6 +44,6 @@ def CheckCIFeatures(input_api, output_api):
 
     return [
         output_api.PresubmitError(
-            f'build/.ci_features lines don\'t match regex {expected_re}',
-            items)
+            f'build/.ci_features lines don\'t match regex {expected_re}', items
+        )
     ]

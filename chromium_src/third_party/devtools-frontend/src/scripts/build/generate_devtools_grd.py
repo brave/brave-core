@@ -20,8 +20,9 @@ def parse_args(original_func, *args, **kwargs):
         source_files.append(filename)
 
         patch_name = re.sub(r'\.js$', '.patch.js', filename)
-        patch = os.path.join(os.path.dirname(parsed_args.output_filename),
-                             patch_name)
+        patch = os.path.join(
+            os.path.dirname(parsed_args.output_filename), patch_name
+        )
         if filename != patch_name and os.path.exists(patch):
             source_files.append(patch_name)
 

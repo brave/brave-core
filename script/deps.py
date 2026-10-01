@@ -20,8 +20,8 @@ from lib.util import extract_zip
 try:
     from urllib2 import HTTPError, URLError, urlopen
 except ImportError:  # For Py3 compatibility
-    from urllib.error import HTTPError, URLError # pylint: disable=no-name-in-module,import-error
-    from urllib.request import urlopen # pylint: disable=no-name-in-module,import-error
+    from urllib.error import HTTPError, URLError  # pylint: disable=no-name-in-module,import-error
+    from urllib.request import urlopen  # pylint: disable=no-name-in-module,import-error
 
 
 def DownloadUrl(url, output_file):
@@ -50,15 +50,19 @@ def DownloadUrl(url, output_file):
                 sys.stdout.flush()
                 dots_printed = num_dots
             if bytes_done != total_size:
-                raise URLError("only got {} of {} bytes".format(
-                    bytes_done, total_size))
+                raise URLError(
+                    "only got {} of {} bytes".format(bytes_done, total_size)
+                )
             print(" Done.")
             return
         except URLError as e:
             sys.stdout.write('\n')
             print(e)
-            if num_retries == 0 or isinstance(
-                    e, HTTPError) and e.code in [403, 404]:  # pylint: disable=line-too-long,no-member
+            if (
+                num_retries == 0
+                or isinstance(e, HTTPError)
+                and e.code in [403, 404]
+            ):  # pylint: disable=line-too-long,no-member
                 raise e
             num_retries -= 1
             print("Retrying in {} s ...".format(retry_wait_s))
@@ -75,15 +79,17 @@ def VerifySHA256(path, expected, url):
     with open(path, 'rb') as f:
         actual = hashlib.file_digest(f, 'sha256').hexdigest()
     if actual.lower() != expected.lower():
-        raise ValueError(f'SHA-256 mismatch for {url}\n'
-                         f'  expected: {expected.lower()}\n'
-                         f'  actual:   {actual}')
+        raise ValueError(
+            f'SHA-256 mismatch for {url}\n'
+            f'  expected: {expected.lower()}\n'
+            f'  actual:   {actual}'
+        )
 
 
 def DownloadAndUnpack(url, output_dir, path_prefix=None, sha256=None):
     """Download an archive from url and extract into output_dir. If path_prefix
-       is not None, only extract files whose paths within the archive start
-       with path_prefix."""
+    is not None, only extract files whose paths within the archive start
+    with path_prefix."""
     with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
         try:
             DownloadUrl(url, tmp_file)
@@ -103,7 +109,8 @@ def DownloadAndUnpack(url, output_dir, path_prefix=None, sha256=None):
                     members = None
                     if path_prefix is not None:
                         members = [
-                            m for m in t.getmembers()
+                            m
+                            for m in t.getmembers()
                             if m.name.startswith(path_prefix)
                         ]
                     t.extractall(path=output_dir, members=members)
@@ -111,11 +118,9 @@ def DownloadAndUnpack(url, output_dir, path_prefix=None, sha256=None):
             os.unlink(tmp_file.name)
 
 
-def DownloadIfChanged(url,
-                      dest_dir,
-                      *args,
-                      download_fn=DownloadAndUnpack,
-                      **kwargs):
+def DownloadIfChanged(
+    url, dest_dir, *args, download_fn=DownloadAndUnpack, **kwargs
+):
     """Run download_fn() only if dest_dir isn't already recorded as
     containing a download from url. On success, records url in a
     '.url' file inside dest_dir so subsequent calls can skip."""

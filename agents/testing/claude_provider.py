@@ -77,10 +77,10 @@ def _resolve_claude_bin():
     """
     raw = os.environ.get('CLAUDE_BIN', 'claude')
     if not _BIN_RE.match(raw):
-        raise ValueError(
-            f'invalid CLAUDE_BIN (unexpected characters): {raw!r}')
-    resolved = shutil.which(raw) or (raw if os.path.isfile(raw)
-                                     and os.access(raw, os.X_OK) else None)
+        raise ValueError(f'invalid CLAUDE_BIN (unexpected characters): {raw!r}')
+    resolved = shutil.which(raw) or (
+        raw if os.path.isfile(raw) and os.access(raw, os.X_OK) else None
+    )
     if not resolved:
         raise ValueError(f'CLAUDE_BIN not found or not executable: {raw!r}')
     return os.path.abspath(resolved)
@@ -92,11 +92,13 @@ def _ensure_skills_linked(skills):
         subprocess.run(
             [sys.executable, str(_SETUP_PY), 'link', '-q'],
             cwd=str(_BRAVE_SRC),
-            check=False)
+            check=False,
+        )
     missing = [s for s in (skills or []) if not (_SKILLS_SRC / s).is_dir()]
     if missing:
         raise FileNotFoundError(
-            f'Requested skill(s) not found under {_SKILLS_SRC}: {missing}')
+            f'Requested skill(s) not found under {_SKILLS_SRC}: {missing}'
+        )
 
 
 def _apply_changes(changes, cwd):
@@ -154,7 +156,8 @@ def _write_fake_gh(fake_gh_cfg, run_dir):
         f'exec {shlex.quote(sys.executable)} '
         f'{shlex.quote(str(fake_gh_py))} "$@"\n',
         encoding='utf-8',
-        newline='\n')
+        newline='\n',
+    )
     shim.chmod(0o755)
     return bin_dir, mut_file
 
@@ -163,8 +166,10 @@ def _harvest_results(run_dir):
     """Merge every validator's validated.json under run_dir into .last_run/."""
     _LAST_RUN_DIR.mkdir(parents=True, exist_ok=True)
     result_files = sorted(
-        glob.glob(str(run_dir / '**' / 'pr_*' / 'validated.json'),
-                  recursive=True))
+        glob.glob(
+            str(run_dir / '**' / 'pr_*' / 'validated.json'), recursive=True
+        )
+    )
     merged = {'result_files': [], 'violations': []}
     for rf in result_files:
         try:
@@ -212,9 +217,13 @@ def call_api(prompt, options, context):  # pylint: disable=unused-argument
     # Strip the parent Claude Code session markers so the nested headless run
     # starts clean (also correct when this provider itself runs under CI/an
     # outer agent). Harmless when unset.
-    for k in ('CLAUDECODE', 'CLAUDE_CODE_CHILD_SESSION',
-              'CLAUDE_CODE_SESSION_ID', 'CLAUDE_CODE_ENTRYPOINT',
-              'CLAUDE_CODE_SSE_PORT'):
+    for k in (
+        'CLAUDECODE',
+        'CLAUDE_CODE_CHILD_SESSION',
+        'CLAUDE_CODE_SESSION_ID',
+        'CLAUDE_CODE_ENTRYPOINT',
+        'CLAUDE_CODE_SSE_PORT',
+    ):
         env.pop(k, None)
 
     mut_file = None
@@ -245,27 +254,29 @@ def call_api(prompt, options, context):  # pylint: disable=unused-argument
     metrics = {
         'user_prompt': prompt,
         'run_dir': str(run_dir),
-        'command': ' '.join(shlex.quote(c) for c in cmd)
+        'command': ' '.join(shlex.quote(c) for c in cmd),
     }
     start = time.time()
     try:
         # nosemgrep: python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args
-        proc = subprocess.run(cmd,
-                              cwd=str(_BRAVE_SRC),
-                              env=env,
-                              text=True,
-                              capture_output=True,
-                              timeout=timeout,
-                              check=False)
+        proc = subprocess.run(
+            cmd,
+            cwd=str(_BRAVE_SRC),
+            env=env,
+            text=True,
+            capture_output=True,
+            timeout=timeout,
+            check=False,
+        )
     except subprocess.TimeoutExpired:
         return {
             'error': f'Claude Code timed out after {timeout}s',
-            'metrics': metrics
+            'metrics': metrics,
         }
     except FileNotFoundError:
         return {
             'error': f"Claude Code binary '{claude_bin}' not found.",
-            'metrics': metrics
+            'metrics': metrics,
         }
     metrics['duration'] = time.time() - start
 
@@ -280,7 +291,7 @@ def call_api(prompt, options, context):  # pylint: disable=unused-argument
     if proc.returncode != 0:
         return {
             'error': f'Claude Code exited {proc.returncode}.\n{output}',
-            'metrics': metrics
+            'metrics': metrics,
         }
     return {'output': output.strip(), 'metrics': metrics}
 

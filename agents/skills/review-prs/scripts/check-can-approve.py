@@ -63,11 +63,9 @@ def gh_graphql(query, variables):
             cmd += ["-F", f"{key}={value}"]
         else:
             cmd += ["-f", f"{key}={value}"]
-    result = subprocess.run(cmd,
-                            capture_output=True,
-                            text=True,
-                            timeout=30,
-                            check=False)
+    result = subprocess.run(
+        cmd, capture_output=True, text=True, timeout=30, check=False
+    )
     if result.returncode != 0:
         return None
     try:
@@ -76,10 +74,9 @@ def gh_graphql(query, variables):
         return None
 
 
-def fetch_pr_data(pr_number,
-                  bot_username,
-                  repo_owner="brave",
-                  repo_name="brave-core"):
+def fetch_pr_data(
+    pr_number, bot_username, repo_owner="brave", repo_name="brave-core"
+):
     """Fetch all bot review data: inline threads + reviews.
 
     Returns (head_sha, threads_info, body_comments, already_approved)
@@ -146,7 +143,8 @@ def fetch_pr_data(pr_number,
 
     # 2. Reviews via REST (for body-level comments and approval check)
     reviews = gh_api(
-        f"repos/{repo_owner}/{repo_name}/pulls/{pr_number}/reviews")
+        f"repos/{repo_owner}/{repo_name}/pulls/{pr_number}/reviews"
+    )
     if not reviews:
         reviews = []
 
@@ -167,10 +165,12 @@ def fetch_pr_data(pr_number,
         if state == "COMMENTED" and review.get("body", "").strip():
             body_text = review["body"].strip()
             if body_text.lower() not in HARMLESS_BODY_PATTERNS:
-                body_comments.append({
-                    "review_id": review.get("id"),
-                    "body_preview": body_text[:120],
-                })
+                body_comments.append(
+                    {
+                        "review_id": review.get("id"),
+                        "body_preview": body_text[:120],
+                    }
+                )
         # Already approved at current SHA
         if state == "APPROVED" and review.get("commit_id") == head_sha:
             already_approved = True
@@ -187,7 +187,8 @@ def fail(reason, **extra):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Gate check: can the bot approve this PR?")
+        description="Gate check: can the bot approve this PR?"
+    )
     parser.add_argument("pr_number", type=int, help="PR number")
     parser.add_argument("bot_username", help="Bot's GitHub username")
     parser.add_argument("--repo", default=PR_REPO, help="owner/repo for PRs")
@@ -198,7 +199,8 @@ def main():
     repo_owner, repo_name = args.repo.split("/", 1)
 
     head_sha, threads_info, body_comments, already_approved = fetch_pr_data(
-        args.pr_number, args.bot_username, repo_owner, repo_name)
+        args.pr_number, args.bot_username, repo_owner, repo_name
+    )
     if head_sha is None:
         fail("Failed to fetch PR data from GitHub API")
 

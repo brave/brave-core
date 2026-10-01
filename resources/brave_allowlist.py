@@ -13,18 +13,24 @@ import os
 # a new file that contains both resources. Filters duplicated resources ids.
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--repack_allowlist',
-                        help='Path to the repack allowist.',
-                        required=True,
-                        metavar='FILE')
-    parser.add_argument('--brave_allowlist',
-                        help='Path to the brave repack allowist.',
-                        required=True,
-                        metavar='FILE')
-    parser.add_argument('--output',
-                        help='Path to the brave output allowist.',
-                        required=True,
-                        metavar='FILE')
+    parser.add_argument(
+        '--repack_allowlist',
+        help='Path to the repack allowist.',
+        required=True,
+        metavar='FILE',
+    )
+    parser.add_argument(
+        '--brave_allowlist',
+        help='Path to the brave repack allowist.',
+        required=True,
+        metavar='FILE',
+    )
+    parser.add_argument(
+        '--output',
+        help='Path to the brave output allowist.',
+        required=True,
+        metavar='FILE',
+    )
 
     args = parser.parse_args()
 

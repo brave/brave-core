@@ -27,7 +27,7 @@ from urllib.parse import urlparse
 
 JENKINS_BASE_URL = os.environ.get("JENKINS_BASE_URL", "").rstrip("/")
 JENKINS_USER = os.environ.get("JENKINS_USER", "")
-_ALLOWED_SCHEMES = ("https://", )
+_ALLOWED_SCHEMES = ("https://",)
 
 
 def _safe_urlopen(req, **kwargs):
@@ -143,8 +143,9 @@ def get_failing_checks(pr_number):
         check=False,
     )
     if result.returncode != 0:
-        print(f"Error: Failed to get PR checks: {result.stderr}",
-              file=sys.stderr)
+        print(
+            f"Error: Failed to get PR checks: {result.stderr}", file=sys.stderr
+        )
         sys.exit(2)
 
     data = json.loads(result.stdout)
@@ -182,7 +183,8 @@ def get_failing_checks(pr_number):
             state = state_map.get(conclusion.upper(), conclusion.upper())
         else:
             state = state_map.get(
-                raw_state, state_map.get(raw_state.upper(), raw_state.upper()))
+                raw_state, state_map.get(raw_state.upper(), raw_state.upper())
+            )
 
         if state is None:
             state = "PENDING"
@@ -200,12 +202,14 @@ def get_failing_checks(pr_number):
 
         seen.add(name)
         is_jenkins = bool(jenkins_host and jenkins_host in link)
-        results.append({
-            "name": name,
-            "state": state,
-            "link": link,
-            "is_jenkins": is_jenkins,
-        })
+        results.append(
+            {
+                "name": name,
+                "state": state,
+                "link": link,
+                "is_jenkins": is_jenkins,
+            }
+        )
 
     return results
 
@@ -253,7 +257,7 @@ def get_failed_stage(job, branch, build, auth_header):
     Returns:
         The name of the first failed stage, or None if not determinable.
     """
-    url = (f"{JENKINS_BASE_URL}/job/{job}/job/{branch}/{build}/wfapi/describe")
+    url = f"{JENKINS_BASE_URL}/job/{job}/job/{branch}/{build}/wfapi/describe"
     req = urllib.request.Request(
         url,
         headers={"Authorization": auth_header},
@@ -291,19 +295,25 @@ def decide_action(stage_name):
         tuple of (wipe: bool, reason: str)
     """
     if stage_name is None:
-        return (False, "Could not determine failed stage;"
-                " defaulting to normal re-run")
+        return (
+            False,
+            "Could not determine failed stage; defaulting to normal re-run",
+        )
 
     stage_lower = stage_name.lower()
 
     # Check if the stage name contains any WIPE_WORKSPACE keywords
     for keyword in WIPE_WORKSPACE_KEYWORDS:
         if keyword in stage_lower:
-            return (True, f"Pre-test stage failure: \"{stage_name}\""
-                    " -> WIPE_WORKSPACE")
+            return (
+                True,
+                f"Pre-test stage failure: \"{stage_name}\" -> WIPE_WORKSPACE",
+            )
 
-    return (False, f"Test/post-build stage failure: \"{stage_name}\""
-            " -> normal re-run")
+    return (
+        False,
+        f"Test/post-build stage failure: \"{stage_name}\" -> normal re-run",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -335,7 +345,7 @@ def extract_platform_from_job(job_name):
     # Strip common prefixes to get the platform suffix
     for prefix in ("brave-core-build-pr-", "brave-core-build-"):
         if job_name.startswith(prefix):
-            return job_name[len(prefix):]
+            return job_name[len(prefix) :]
     return job_name
 
 
@@ -362,7 +372,8 @@ def fetch_console_tail(job, branch, build, auth_header, tail_bytes=500_000):
             # tail_bytes, fetch all
             try:
                 req2 = urllib.request.Request(
-                    url, headers={"Authorization": auth_header})
+                    url, headers={"Authorization": auth_header}
+                )
                 with _safe_urlopen(req2, timeout=60) as resp:
                     return resp.read().decode("utf-8", errors="replace")
             except (urllib.error.HTTPError, urllib.error.URLError):
@@ -430,10 +441,12 @@ def extract_test_failures(console_text):
 
         # Limit stack trace length
         stack_trace = "\n".join(trace_lines[-50:]) if trace_lines else ""
-        results.append({
-            "test_name": test_name,
-            "stack_trace": stack_trace,
-        })
+        results.append(
+            {
+                "test_name": test_name,
+                "stack_trace": stack_trace,
+            }
+        )
 
     return results
 
@@ -513,7 +526,8 @@ def get_test_source_files(test_class_name):
         )
         if result.returncode == 0 and result.stdout.strip():
             files = [
-                f.strip() for f in result.stdout.strip().split("\n")
+                f.strip()
+                for f in result.stdout.strip().split("\n")
                 if f.strip()
             ]
     except (subprocess.TimeoutExpired, FileNotFoundError):
@@ -530,8 +544,16 @@ def check_upstream_flake(test_name):
     """
     script_dir = os.path.dirname(os.path.abspath(__file__))
     flake_script = os.path.normpath(
-        os.path.join(script_dir, "..", "..", "..", "tools",
-                     "chromium_tests_analysis", "check-upstream-flake.py"))
+        os.path.join(
+            script_dir,
+            "..",
+            "..",
+            "..",
+            "tools",
+            "chromium_tests_analysis",
+            "check-upstream-flake.py",
+        )
+    )
 
     if not os.path.exists(flake_script):
         print(
@@ -556,8 +578,11 @@ def check_upstream_flake(test_name):
                 "recommendation": data.get("overall_recommendation", ""),
                 "matched_tests": len(data.get("matched_tests", [])),
             }
-    except (subprocess.TimeoutExpired, json.JSONDecodeError,
-            FileNotFoundError) as e:
+    except (
+        subprocess.TimeoutExpired,
+        json.JSONDecodeError,
+        FileNotFoundError,
+    ) as e:
         print(f"  Warning: Upstream flake check failed: {e}", file=sys.stderr)
 
     return None
@@ -641,45 +666,56 @@ def assess_pr_correlation(pr_files, test_source_files, test_location):
         if test_file.startswith("brave/"):
             # Brave test: PR files map to paths under brave/.
             # Strip "brave/" prefix to compare with PR file paths.
-            test_in_repo = test_file[len("brave/"):]
+            test_in_repo = test_file[len("brave/") :]
 
             # Direct match: PR modifies the test file
             if test_in_repo in pr_file_set:
-                return ("likely_from_pr",
-                        f"PR modifies test file: {test_in_repo}")
+                return (
+                    "likely_from_pr",
+                    f"PR modifies test file: {test_in_repo}",
+                )
 
             # Same directory
-            test_dir = test_in_repo.rsplit("/",
-                                           1)[0] if "/" in test_in_repo else ""
+            test_dir = (
+                test_in_repo.rsplit("/", 1)[0] if "/" in test_in_repo else ""
+            )
             if test_dir and test_dir in pr_dirs:
-                return "likely_from_pr", ("PR modifies files in same"
-                                          f" directory as test: {test_dir}/")
+                return "likely_from_pr", (
+                    f"PR modifies files in same directory as test: {test_dir}/"
+                )
         else:
             # Chromium test: check if PR has chromium_src
             # overrides in related paths.
             # e.g., test in chrome/browser/ui/ -> PR might have
             # chromium_src/chrome/browser/ui/ overrides.
-            test_dir = (test_file.rsplit("/", 1)[0]
-                        if "/" in test_file else "")
+            test_dir = test_file.rsplit("/", 1)[0] if "/" in test_file else ""
             for pr_file in pr_files:
-                if (pr_file.startswith("chromium_src/") and test_dir):
-                    override_path = pr_file[len("chromium_src/"):]
-                    override_dir = override_path.rsplit(
-                        "/", 1)[0] if "/" in override_path else ""
+                if pr_file.startswith("chromium_src/") and test_dir:
+                    override_path = pr_file[len("chromium_src/") :]
+                    override_dir = (
+                        override_path.rsplit("/", 1)[0]
+                        if "/" in override_path
+                        else ""
+                    )
                     if override_dir and (
-                            override_dir == test_dir
-                            or override_dir.startswith(test_dir + "/")
-                            or test_dir.startswith(override_dir + "/")):
+                        override_dir == test_dir
+                        or override_dir.startswith(test_dir + "/")
+                        or test_dir.startswith(override_dir + "/")
+                    ):
                         return "likely_from_pr", (
                             "PR has chromium_src override"
-                            f" in related path: {pr_file}")
+                            f" in related path: {pr_file}"
+                        )
 
     if test_location == "chromium":
-        return "likely_unrelated", ("Chromium test with no related"
-                                    " chromium_src overrides in PR")
+        return "likely_unrelated", (
+            "Chromium test with no related chromium_src overrides in PR"
+        )
 
-    return ("likely_unrelated", "PR changes do not overlap with"
-            " test source location")
+    return (
+        "likely_unrelated",
+        "PR changes do not overlap with test source location",
+    )
 
 
 def search_existing_issues(test_name):
@@ -760,7 +796,8 @@ def build_issue_suggestion(test_name, stack_trace, platform, upstream_flake):
     body_lines.append("```")
     # Truncate stack trace for the issue body
     body_lines.append(
-        stack_trace[:3000] if stack_trace else "(no stack trace captured)")
+        stack_trace[:3000] if stack_trace else "(no stack trace captured)"
+    )
     body_lines.append("```")
 
     return {
@@ -824,33 +861,38 @@ def analyze_test_failures(check, job, branch, build, auth_header, pr_number):
 
         # Assess PR correlation
         correlation, correlation_reason = assess_pr_correlation(
-            pr_files, source_files, location)
+            pr_files, source_files, location
+        )
 
         # Search for existing issues
         existing_issue = search_existing_issues(test_name)
 
         # Determine if we should suggest filing an issue:
         # Only if the failure seems unrelated to the PR AND no issue exists
-        suggest_filing = (correlation == "likely_unrelated"
-                          and existing_issue is None)
+        suggest_filing = (
+            correlation == "likely_unrelated" and existing_issue is None
+        )
 
         issue_suggestion = None
         if suggest_filing:
-            issue_suggestion = build_issue_suggestion(test_name, stack_trace,
-                                                      platform, upstream)
+            issue_suggestion = build_issue_suggestion(
+                test_name, stack_trace, platform, upstream
+            )
 
-        test_failures.append({
-            "test_name": test_name,
-            "stack_trace": stack_trace,
-            "test_location": location,
-            "test_source_files": source_files,
-            "upstream_flake": upstream,
-            "pr_correlation": correlation,
-            "pr_correlation_reason": correlation_reason,
-            "existing_issue": existing_issue,
-            "suggest_filing_issue": suggest_filing,
-            "issue_suggestion": issue_suggestion,
-        })
+        test_failures.append(
+            {
+                "test_name": test_name,
+                "stack_trace": stack_trace,
+                "test_location": location,
+                "test_source_files": source_files,
+                "upstream_flake": upstream,
+                "pr_correlation": correlation,
+                "pr_correlation_reason": correlation_reason,
+                "existing_issue": existing_issue,
+                "suggest_filing_issue": suggest_filing,
+                "issue_suggestion": issue_suggestion,
+            }
+        )
 
     return test_failures
 
@@ -862,11 +904,12 @@ def trigger_build(job, branch, wipe, auth_header, crumb):
         True on success, False on failure.
     """
     if wipe:
-        url = (f"{JENKINS_BASE_URL}/job/{job}/job/{branch}"
-               f"/buildWithParameters?WIPE_WORKSPACE=true")
-    else:
         url = (
-            f"{JENKINS_BASE_URL}/job/{job}/job/{branch}/buildWithParameters")
+            f"{JENKINS_BASE_URL}/job/{job}/job/{branch}"
+            f"/buildWithParameters?WIPE_WORKSPACE=true"
+        )
+    else:
+        url = f"{JENKINS_BASE_URL}/job/{job}/job/{branch}/buildWithParameters"
 
     headers = {
         "Authorization": auth_header,
@@ -925,8 +968,9 @@ def format_markdown(results, pr_number, dry_run):
     lines.append(f"PR {pr_number}: {len(failing)} failing Jenkins check(s)\n")
 
     for r in failing:
-        status_icon = "OK" if r.get("triggered") else (
-            "DRY-RUN" if dry_run else "FAILED")
+        status_icon = (
+            "OK" if r.get("triggered") else ("DRY-RUN" if dry_run else "FAILED")
+        )
         action = "WIPE_WORKSPACE" if r.get("wipe") else "normal"
         lines.append(f"  [{status_icon}] {r['name']}")
         lines.append(f"       Stage: {r.get('failed_stage', 'unknown')}")
@@ -949,19 +993,25 @@ def format_markdown(results, pr_number, dry_run):
 
                 lines.append(
                     f"           PR correlation: {tf['pr_correlation']}"
-                    f" ({tf['pr_correlation_reason']})")
+                    f" ({tf['pr_correlation_reason']})"
+                )
 
                 if tf.get("existing_issue"):
                     ei = tf["existing_issue"]
-                    lines.append("           Existing issue:"
-                                 f" #{ei['number']} - {ei['title']}")
+                    lines.append(
+                        "           Existing issue:"
+                        f" #{ei['number']} - {ei['title']}"
+                    )
                     lines.append(f"             {ei['url']}")
 
                 if tf.get("suggest_filing_issue") and tf.get(
-                        "issue_suggestion"):
+                    "issue_suggestion"
+                ):
                     sug = tf["issue_suggestion"]
-                    lines.append("           >> SUGGEST FILING"
-                                 f" ISSUE: \"{sug['title']}\"")
+                    lines.append(
+                        "           >> SUGGEST FILING"
+                        f" ISSUE: \"{sug['title']}\""
+                    )
 
                 # Truncated stack trace
                 trace = tf.get("stack_trace", "")
@@ -1002,27 +1052,35 @@ def format_json(results, pr_number, dry_run):
     output = {
         "pr_number": pr_number,
         "dry_run": dry_run,
-        "failing_jenkins_checks": [{
-            "name": r["name"],
-            "link": r.get("link", ""),
-            "failed_stage": r.get("failed_stage"),
-            "wipe_workspace": r.get("wipe", False),
-            "reason": r.get("reason", ""),
-            "triggered": r.get("triggered", False),
-            "platform": r.get("platform", "unknown"),
-            "test_failures": [{
-                "test_name": tf["test_name"],
-                "stack_trace": tf["stack_trace"],
-                "test_location": tf["test_location"],
-                "test_source_files": tf.get("test_source_files", []),
-                "upstream_flake": tf.get("upstream_flake"),
-                "pr_correlation": tf["pr_correlation"],
-                "pr_correlation_reason": tf["pr_correlation_reason"],
-                "existing_issue": tf.get("existing_issue"),
-                "suggest_filing_issue": tf.get("suggest_filing_issue", False),
-                "issue_suggestion": tf.get("issue_suggestion"),
-            } for tf in r.get("test_failures", [])],
-        } for r in failing],
+        "failing_jenkins_checks": [
+            {
+                "name": r["name"],
+                "link": r.get("link", ""),
+                "failed_stage": r.get("failed_stage"),
+                "wipe_workspace": r.get("wipe", False),
+                "reason": r.get("reason", ""),
+                "triggered": r.get("triggered", False),
+                "platform": r.get("platform", "unknown"),
+                "test_failures": [
+                    {
+                        "test_name": tf["test_name"],
+                        "stack_trace": tf["stack_trace"],
+                        "test_location": tf["test_location"],
+                        "test_source_files": tf.get("test_source_files", []),
+                        "upstream_flake": tf.get("upstream_flake"),
+                        "pr_correlation": tf["pr_correlation"],
+                        "pr_correlation_reason": tf["pr_correlation_reason"],
+                        "existing_issue": tf.get("existing_issue"),
+                        "suggest_filing_issue": tf.get(
+                            "suggest_filing_issue", False
+                        ),
+                        "issue_suggestion": tf.get("issue_suggestion"),
+                    }
+                    for tf in r.get("test_failures", [])
+                ],
+            }
+            for r in failing
+        ],
         "non_jenkins_failures": [r["name"] for r in non_jenkins_failing],
         "pending": [r["name"] for r in pending],
     }
@@ -1031,10 +1089,11 @@ def format_json(results, pr_number, dry_run):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Re-run failed CI jobs for a brave/brave-core PR.")
-    parser.add_argument("pr_number",
-                        type=int,
-                        help="PR number in brave/brave-core")
+        description="Re-run failed CI jobs for a brave/brave-core PR."
+    )
+    parser.add_argument(
+        "pr_number", type=int, help="PR number in brave/brave-core"
+    )
     parser.add_argument(
         "--dry-run",
         action="store_true",
@@ -1063,9 +1122,11 @@ def main():
 
     if not failing_jenkins:
         # Format and output even for no-failures case
-        output = (format_json(checks, args.pr_number, args.dry_run)
-                  if args.format == "json" else format_markdown(
-                      checks, args.pr_number, args.dry_run))
+        output = (
+            format_json(checks, args.pr_number, args.dry_run)
+            if args.format == "json"
+            else format_markdown(checks, args.pr_number, args.dry_run)
+        )
         print(output)
         sys.exit(3)
 
@@ -1095,10 +1156,10 @@ def main():
 
         # Analyze test failures when the failed stage is a test stage
         if is_test_stage(failed_stage):
-            print("Test stage detected, analyzing failures...",
-                  file=sys.stderr)
+            print("Test stage detected, analyzing failures...", file=sys.stderr)
             check["test_failures"] = analyze_test_failures(
-                check, job, branch, build, auth_header, args.pr_number)
+                check, job, branch, build, auth_header, args.pr_number
+            )
         else:
             check["test_failures"] = []
 
@@ -1110,13 +1171,16 @@ def main():
                 f"{check['name']}...",
                 file=sys.stderr,
             )
-            check["triggered"] = trigger_build(job, branch, wipe, auth_header,
-                                               crumb)
+            check["triggered"] = trigger_build(
+                job, branch, wipe, auth_header, crumb
+            )
 
     # Output results
-    output = (format_json(checks, args.pr_number, args.dry_run)
-              if args.format == "json" else format_markdown(
-                  checks, args.pr_number, args.dry_run))
+    output = (
+        format_json(checks, args.pr_number, args.dry_run)
+        if args.format == "json"
+        else format_markdown(checks, args.pr_number, args.dry_run)
+    )
     print(output)
 
 

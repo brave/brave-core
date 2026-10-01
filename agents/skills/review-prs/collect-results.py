@@ -65,19 +65,23 @@ def build_post_review_input(manifest):
     for pr in manifest.get("prs", []):
         violations, validation_log, skip_reason = collect_violations(pr)
         if skip_reason:
-            log(f"NOT REVIEWED: PR #{pr['number']} — {skip_reason}; nothing "
-                "posted and not cached, so the next run reviews it again")
+            log(
+                f"NOT REVIEWED: PR #{pr['number']} — {skip_reason}; nothing "
+                "posted and not cached, so the next run reviews it again"
+            )
             continue
 
-        pr_results.append({
-            "number": pr["number"],
-            "title": pr.get("title", ""),
-            "headRefOid": pr.get("headRefOid", ""),
-            "hasApproval": pr.get("hasApproval", False),
-            "fileHashesFile": pr.get("file_hashes_file"),
-            "violations": violations,
-            "validation_log": validation_log,
-        })
+        pr_results.append(
+            {
+                "number": pr["number"],
+                "title": pr.get("title", ""),
+                "headRefOid": pr.get("headRefOid", ""),
+                "hasApproval": pr.get("hasApproval", False),
+                "fileHashesFile": pr.get("file_hashes_file"),
+                "violations": violations,
+                "validation_log": validation_log,
+            }
+        )
 
     return {"pr_results": pr_results}
 
@@ -109,8 +113,10 @@ def cleanup_worktrees(manifest):
             check=False,
         )
         if result.returncode != 0:
-            log(f"WARNING: failed to remove worktree {worktree_path}: "
-                f"{result.stderr.strip()}")
+            log(
+                f"WARNING: failed to remove worktree {worktree_path}: "
+                f"{result.stderr.strip()}"
+            )
         else:
             log(f"Removed worktree: {worktree_path}")
 
@@ -129,15 +135,16 @@ def print_cached_and_progress(manifest):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Collect subagent results and run post-review.py")
+        description="Collect subagent results and run post-review.py"
+    )
     parser.add_argument(
         "--work-dir",
         required=True,
         help="Temp directory with manifest.json and results",
     )
-    parser.add_argument("--auto",
-                        action="store_true",
-                        help="Pass --auto to post-review.py")
+    parser.add_argument(
+        "--auto", action="store_true", help="Pass --auto to post-review.py"
+    )
     args = parser.parse_args()
 
     # Load manifest
@@ -157,8 +164,8 @@ def main():
 
     # Validate manifest values to prevent command injection
     if not re.match(
-            r"^[a-zA-Z0-9_][a-zA-Z0-9_.-]*/[a-zA-Z0-9_][a-zA-Z0-9_.-]*$",
-            pr_repo,
+        r"^[a-zA-Z0-9_][a-zA-Z0-9_.-]*/[a-zA-Z0-9_][a-zA-Z0-9_.-]*$",
+        pr_repo,
     ):
         log(f"ERROR: invalid pr_repo format: {pr_repo}")
         sys.exit(1)
@@ -175,18 +182,23 @@ def main():
     # Collection stats
     prs = manifest.get("prs", [])
     total_chunks = sum(len(pr.get("subagent_prompts", [])) for pr in prs)
-    results_found = sum(1 for pr in prs
-                        for sp in pr.get("subagent_prompts", [])
-                        if os.path.isfile(sp.get("results_file", "")))
+    results_found = sum(
+        1
+        for pr in prs
+        for sp in pr.get("subagent_prompts", [])
+        if os.path.isfile(sp.get("results_file", ""))
+    )
     validations = [pr["validation"] for pr in prs if pr.get("validation")]
     candidates = sum(v.get("candidates", 0) for v in validations)
 
     total_violations = sum(
         len(pr_r.get("violations", []))
-        for pr_r in post_review_data.get("pr_results", []))
+        for pr_r in post_review_data.get("pr_results", [])
+    )
     total_validated = sum(
         len(pr_r.get("validation_log", []))
-        for pr_r in post_review_data.get("pr_results", []))
+        for pr_r in post_review_data.get("pr_results", [])
+    )
 
     log(f"\n{'=' * 60}")
     log("COLLECTION SUMMARY")
@@ -194,8 +206,10 @@ def main():
     log(f"Detect prompts: {total_chunks}")
     log(f"Detect results found: {results_found}")
     log(f"Detect results missing: {total_chunks - results_found}")
-    log(f"Candidates validated: {candidates} across "
-        f"{len(validations)} validators")
+    log(
+        f"Candidates validated: {candidates} across "
+        f"{len(validations)} validators"
+    )
     left = len(prs) - len(post_review_data["pr_results"])
     log(f"PRs left for the next run: {left}")
     log(f"Total violations collected: {total_violations}")
@@ -228,11 +242,9 @@ def main():
     if auto_mode:
         cmd.append("--auto")
 
-    result = subprocess.run(cmd,
-                            capture_output=True,
-                            text=True,
-                            cwd=REPO_DIR,
-                            check=False)
+    result = subprocess.run(
+        cmd, capture_output=True, text=True, cwd=REPO_DIR, check=False
+    )
 
     # Pass through stderr (summary log)
     if result.stderr:

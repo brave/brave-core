@@ -34,24 +34,31 @@ def _get_archive_data_file(original_archive_path: str) -> Optional[str]:
 
 
 @override_utils.override_method(StorySet)
-def __init__(self,
-             original_method,
-             archive_data_file='',
-             cloud_storage_bucket=None,
-             base_dir=None,
-             *args,
-             **kwargs):
-    original_method(self, archive_data_file, cloud_storage_bucket, base_dir,
-                    args, kwargs)
+def __init__(
+    self,
+    original_method,
+    archive_data_file='',
+    cloud_storage_bucket=None,
+    base_dir=None,
+    *args,
+    **kwargs,
+):
+    original_method(
+        self, archive_data_file, cloud_storage_bucket, base_dir, args, kwargs
+    )
     if archive_data_file == '':
         return
     archive_path = os.path.join(self._base_dir, archive_data_file)
     new_archive_path = _get_archive_data_file(archive_path)
     if new_archive_path:
-        self._archive_data_file = os.path.relpath(new_archive_path,
-                                                  self._base_dir)
+        self._archive_data_file = os.path.relpath(
+            new_archive_path, self._base_dir
+        )
     else:
-        if cloud_storage_bucket != cloud_storage.PUBLIC_BUCKET and not archive_path.startswith(
-                GetBraveDir()):
+        if (
+            cloud_storage_bucket != cloud_storage.PUBLIC_BUCKET
+            and not archive_path.startswith(GetBraveDir())
+        ):
             raise RuntimeError(
-                f'No brave replacement for private WPR {archive_path}')
+                f'No brave replacement for private WPR {archive_path}'
+            )

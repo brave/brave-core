@@ -50,7 +50,8 @@ def file_lock(path, timeout=DEFAULT_TIMEOUT_S, what=None):
                     raise FileLockTimeout(
                         f"Timed out after {timeout}s waiting for the lock on "
                         f"{what or path}. Another review-prs run may be "
-                        "wedged.") from exc
+                        "wedged."
+                    ) from exc
                 time.sleep(0.2)
         try:
             yield path

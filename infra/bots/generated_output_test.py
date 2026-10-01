@@ -26,19 +26,17 @@ def _make_generated_output_dir(tmp_dir, builder_names):
     for name in builder_names:
         builder_dir = Path(tmp_dir) / name
         builder_dir.mkdir()
-        (builder_dir / 'gn-args.json').write_text(json.dumps(
-            {'gn_args': {
-                'is_asan': True
-            }}),
-                                                  encoding='utf-8')
+        (builder_dir / 'gn-args.json').write_text(
+            json.dumps({'gn_args': {'is_asan': True}}), encoding='utf-8'
+        )
 
 
 class ListGeneratedBuildersTest(unittest.TestCase):
-
     def test_no_output_dir_means_no_builders(self):
         original = gen_paths.BUILDERS_OUTPUT_DIR
-        gen_paths.BUILDERS_OUTPUT_DIR = Path(
-            tempfile.mkdtemp()) / 'does-not-exist'
+        gen_paths.BUILDERS_OUTPUT_DIR = (
+            Path(tempfile.mkdtemp()) / 'does-not-exist'
+        )
         try:
             self.assertEqual(generated_output.list_generated_builders(), [])
         finally:
@@ -51,18 +49,20 @@ class ListGeneratedBuildersTest(unittest.TestCase):
             original = gen_paths.BUILDERS_OUTPUT_DIR
             gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
             try:
-                self.assertEqual(generated_output.list_generated_builders(),
-                                 ['a-builder', 'z-builder'])
+                self.assertEqual(
+                    generated_output.list_generated_builders(),
+                    ['a-builder', 'z-builder'],
+                )
             finally:
                 gen_paths.BUILDERS_OUTPUT_DIR = original
 
 
 class ReadGeneratedGnArgsTest(unittest.TestCase):
-
     def test_missing_builder_raises_bots_error(self):
         with self.assertRaises(generated_output.BotsError):
             generated_output.OutputGenerator(
-                'no-such-builder').read_generated_gn_args()
+                'no-such-builder'
+            ).read_generated_gn_args()
 
     def test_missing_builder_hint_lists_available_builders(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -73,7 +73,8 @@ class ReadGeneratedGnArgsTest(unittest.TestCase):
             try:
                 with self.assertRaises(generated_output.BotsError) as ctx:
                     generated_output.OutputGenerator(
-                        'no-such-builder').read_generated_gn_args()
+                        'no-such-builder'
+                    ).read_generated_gn_args()
             finally:
                 gen_paths.BUILDERS_OUTPUT_DIR = original
 
@@ -82,47 +83,44 @@ class ReadGeneratedGnArgsTest(unittest.TestCase):
 
 
 class RenderArgsGnTest(unittest.TestCase):
-
     def test_plain_args_no_secrets(self):
         rendered = generated_output.OutputGenerator('b').render_args_gn(
-            {'gn_args': {
-                'is_asan': True
-            }})
+            {'gn_args': {'is_asan': True}}
+        )
         self.assertEqual(rendered, 'is_asan = true\n')
 
     def test_secrets_add_import_line_only_not_values(self):
         rendered = generated_output.OutputGenerator(
-            'linux-x64-asan-brave').render_args_gn({
-                'gn_args': {
-                    'target_os': 'linux'
-                },
-                'secrets': {
-                    'brave_services_key': 'BRAVE_SERVICES_KEY'
-                },
-            })
+            'linux-x64-asan-brave'
+        ).render_args_gn(
+            {
+                'gn_args': {'target_os': 'linux'},
+                'secrets': {'brave_services_key': 'BRAVE_SERVICES_KEY'},
+            }
+        )
         lines = rendered.split('\n')
-        self.assertEqual(lines[0],
-                         'import("//out/linux-x64-asan-brave/secrets.gni")')
+        self.assertEqual(
+            lines[0], 'import("//out/linux-x64-asan-brave/secrets.gni")'
+        )
         self.assertNotIn('BRAVE_SERVICES_KEY', rendered)
         self.assertNotIn('brave_services_key', rendered)
 
     def test_args_file_import_line(self):
-        rendered = generated_output.OutputGenerator('b').render_args_gn({
-            'gn_args': {
-                'target_os': 'linux'
-            },
-            'args_file': '//build/args/chromeos.gni',
-        })
+        rendered = generated_output.OutputGenerator('b').render_args_gn(
+            {
+                'gn_args': {'target_os': 'linux'},
+                'args_file': '//build/args/chromeos.gni',
+            }
+        )
         self.assertEqual(
-            rendered, 'import("//build/args/chromeos.gni")\n'
-            'target_os = "linux"\n')
+            rendered,
+            'import("//build/args/chromeos.gni")\ntarget_os = "linux"\n',
+        )
 
     def test_keys_are_sorted(self):
         rendered = generated_output.OutputGenerator('b').render_args_gn(
-            {'gn_args': {
-                'z': True,
-                'a': True
-            }})
+            {'gn_args': {'z': True, 'a': True}}
+        )
         self.assertEqual(rendered, 'a = true\nz = true\n')
 
 

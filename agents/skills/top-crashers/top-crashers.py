@@ -47,7 +47,7 @@ MAX_RETRIES = 2
 RETRY_BACKOFF = [1, 3]  # seconds
 REQUEST_TIMEOUT = 20  # seconds
 MAX_FRAME_LENGTH = 200
-_ALLOWED_SCHEMES = ("https://", )
+_ALLOWED_SCHEMES = ("https://",)
 
 
 def _safe_urlopen(req, **kwargs):
@@ -94,8 +94,10 @@ DEFAULT_CHANNEL_VERSIONS = {
     "release": "1.87",
 }
 
-WIKI_URL = ("https://raw.githubusercontent.com/wiki"
-            "/brave/brave-browser/Brave-Release-Schedule.md")
+WIKI_URL = (
+    "https://raw.githubusercontent.com/wiki"
+    "/brave/brave-browser/Brave-Release-Schedule.md"
+)
 
 # Patterns to strip from stack frames for PII safety
 PII_PATH_PATTERNS = [
@@ -194,8 +196,16 @@ def symbol_in_brave_src(symbol, brave_src_path):
         if rg_path:
             result = subprocess.run(
                 [
-                    rg_path, "-l", "--type", "cpp", "--type-add", "cpp:*.mm",
-                    "-m", "1", search_name, brave_src_path
+                    rg_path,
+                    "-l",
+                    "--type",
+                    "cpp",
+                    "--type-add",
+                    "cpp:*.mm",
+                    "-m",
+                    "1",
+                    search_name,
+                    brave_src_path,
                 ],
                 capture_output=True,
                 text=True,
@@ -205,9 +215,15 @@ def symbol_in_brave_src(symbol, brave_src_path):
         else:
             result = subprocess.run(
                 [
-                    "grep", "-rl", "-m", "1", "--include=*.cc",
-                    "--include=*.h", "--include=*.mm", search_name,
-                    brave_src_path
+                    "grep",
+                    "-rl",
+                    "-m",
+                    "1",
+                    "--include=*.cc",
+                    "--include=*.h",
+                    "--include=*.mm",
+                    search_name,
+                    brave_src_path,
                 ],
                 capture_output=True,
                 text=True,
@@ -297,7 +313,8 @@ def fetch_channel_versions(verbose=False):
 
         for line in lines:
             cells = [
-                c.strip().strip("*").strip() for c in line.split("|")
+                c.strip().strip("*").strip()
+                for c in line.split("|")
                 if c.strip()
             ]
             if not cells:
@@ -306,8 +323,8 @@ def fetch_channel_versions(verbose=False):
             # Find the header row with channel names
             cells_lower = [c.lower() for c in cells]
             if "channel" in cells_lower[0].lower() and any(
-                    ch in cells_lower
-                    for ch in ["release", "beta", "nightly"]):
+                ch in cells_lower for ch in ["release", "beta", "nightly"]
+            ):
                 channel_cols = cells_lower[1:]  # skip the label column
                 continue
 
@@ -323,17 +340,21 @@ def fetch_channel_versions(verbose=False):
 
         if len(versions) >= 3:
             if verbose:
-                print(f"  Channel versions from wiki: {versions}",
-                      file=sys.stderr)
+                print(
+                    f"  Channel versions from wiki: {versions}", file=sys.stderr
+                )
             return versions
     except Exception as e:
         if verbose:
-            print(f"  Could not fetch wiki channel versions: {e}",
-                  file=sys.stderr)
+            print(
+                f"  Could not fetch wiki channel versions: {e}", file=sys.stderr
+            )
 
     if verbose:
-        print(f"  Using fallback channel versions: {DEFAULT_CHANNEL_VERSIONS}",
-              file=sys.stderr)
+        print(
+            f"  Using fallback channel versions: {DEFAULT_CHANNEL_VERSIONS}",
+            file=sys.stderr,
+        )
     return dict(DEFAULT_CHANNEL_VERSIONS)
 
 
@@ -446,11 +467,13 @@ def backtrace_query(project, query_body, api_key, verbose=False):
     Raises:
         SystemExit on fatal errors.
     """
-    params = urllib.parse.urlencode({
-        "universe": BACKTRACE_UNIVERSE,
-        "project": project,
-        "token": api_key,
-    })
+    params = urllib.parse.urlencode(
+        {
+            "universe": BACKTRACE_UNIVERSE,
+            "project": project,
+            "token": api_key,
+        }
+    )
     url = f"{BACKTRACE_ENDPOINT}/api/query?{params}"
     data = json.dumps(query_body).encode("utf-8")
 
@@ -465,8 +488,10 @@ def backtrace_query(project, query_body, api_key, verbose=False):
     for attempt in range(1 + MAX_RETRIES):
         if attempt > 0:
             wait = RETRY_BACKOFF[min(attempt - 1, len(RETRY_BACKOFF) - 1)]
-            print(f"  Retrying in {wait}s (attempt {attempt + 1})...",
-                  file=sys.stderr)
+            print(
+                f"  Retrying in {wait}s (attempt {attempt + 1})...",
+                file=sys.stderr,
+            )
             time.sleep(wait)
 
         t0 = time.monotonic()
@@ -475,8 +500,10 @@ def backtrace_query(project, query_body, api_key, verbose=False):
                 raw = resp.read()
             elapsed = time.monotonic() - t0
             if verbose:
-                print(f"  API response: {len(raw)} bytes in {elapsed:.1f}s",
-                      file=sys.stderr)
+                print(
+                    f"  API response: {len(raw)} bytes in {elapsed:.1f}s",
+                    file=sys.stderr,
+                )
             break
         except urllib.error.HTTPError as e:
             elapsed = time.monotonic() - t0
@@ -512,27 +539,35 @@ def backtrace_query(project, query_body, api_key, verbose=False):
         except urllib.error.URLError as e:
             last_err = e
             elapsed = time.monotonic() - t0
-            print(f"  Network error after {elapsed:.1f}s: {e.reason}",
-                  file=sys.stderr)
+            print(
+                f"  Network error after {elapsed:.1f}s: {e.reason}",
+                file=sys.stderr,
+            )
             if attempt < MAX_RETRIES:
                 continue
-            print(f"Error: Could not connect to Backtrace API: {e.reason}",
-                  file=sys.stderr)
+            print(
+                f"Error: Could not connect to Backtrace API: {e.reason}",
+                file=sys.stderr,
+            )
             sys.exit(2)
         except TimeoutError:
             last_err = TimeoutError("Request timed out")
-            print(f"  Request timed out after {REQUEST_TIMEOUT}s",
-                  file=sys.stderr)
+            print(
+                f"  Request timed out after {REQUEST_TIMEOUT}s", file=sys.stderr
+            )
             if attempt < MAX_RETRIES:
                 continue
             print(
                 f"Error: Backtrace API request timed out after "
                 f"{MAX_RETRIES + 1} attempts.",
-                file=sys.stderr)
+                file=sys.stderr,
+            )
             sys.exit(2)
     else:
-        print(f"Error: All {MAX_RETRIES + 1} attempts failed: {last_err}",
-              file=sys.stderr)
+        print(
+            f"Error: All {MAX_RETRIES + 1} attempts failed: {last_err}",
+            file=sys.stderr,
+        )
         sys.exit(2)
 
     try:
@@ -543,12 +578,9 @@ def backtrace_query(project, query_body, api_key, verbose=False):
         sys.exit(2)
 
 
-def build_query(days_start,
-                days_end_ts,
-                limit,
-                platform=None,
-                version=None,
-                channel=None):
+def build_query(
+    days_start, days_end_ts, limit, platform=None, version=None, channel=None
+):
     """Build the coronerd query body for top crashers.
 
     Args:
@@ -563,8 +595,10 @@ def build_query(days_start,
         Dict suitable for JSON POST to /api/query.
     """
     filters = {
-        "timestamp": [["at-least", int(days_start)],
-                      ["at-most", int(days_end_ts)]],
+        "timestamp": [
+            ["at-least", int(days_start)],
+            ["at-most", int(days_end_ts)],
+        ],
     }
 
     if platform:
@@ -585,10 +619,7 @@ def build_query(days_start,
             "uname.sysname": [["histogram"]],
         },
         "filter": [filters],
-        "order": [{
-            "name": ";count",
-            "ordering": "descending"
-        }],
+        "order": [{"name": ";count", "ordering": "descending"}],
         "limit": limit,
     }
 
@@ -656,8 +687,9 @@ def format_timestamp(ts):
     """Format a unix timestamp as ISO date string."""
     if not ts:
         return "unknown"
-    return datetime.fromtimestamp(
-        ts, tz=timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    return datetime.fromtimestamp(ts, tz=timezone.utc).strftime(
+        "%Y-%m-%d %H:%M UTC"
+    )
 
 
 def parse_callstack_json(raw_str):
@@ -711,14 +743,16 @@ def histogram_from_pairs(pairs):
     return result
 
 
-def parse_response(response,
-                   days,
-                   max_frames,
-                   min_count,
-                   lookback_start_ts,
-                   project,
-                   channel_versions=None,
-                   brave_src_path=None):
+def parse_response(
+    response,
+    days,
+    max_frames,
+    min_count,
+    lookback_start_ts,
+    project,
+    channel_versions=None,
+    brave_src_path=None,
+):
     """Parse the Backtrace query response into a list of crash group dicts.
 
     Handles the RLE-encoded response format (v1.2.0) where results are in
@@ -784,9 +818,11 @@ def parse_response(response,
 
         # Extract count
         count_data = folds[FOLD_COUNT]
-        count = count_data[0] if isinstance(
-            count_data, list) and count_data else (
-                count_data if isinstance(count_data, (int, float)) else 0)
+        count = (
+            count_data[0]
+            if isinstance(count_data, list) and count_data
+            else (count_data if isinstance(count_data, (int, float)) else 0)
+        )
         count = int(count)
 
         if count < min_count:
@@ -834,42 +870,48 @@ def parse_response(response,
         top_platform, platform_pct = extract_top_bucket(platform_hist)
         top_version, version_pct = extract_top_bucket(version_hist)
 
-        is_new = (first_seen_ts is not None
-                  and first_seen_ts >= lookback_start_ts)
+        is_new = (
+            first_seen_ts is not None and first_seen_ts >= lookback_start_ts
+        )
 
         # Crash type: "dump" (DumpWithoutCrashing) vs "crash" (real)
         crash_type = classify_crash_type(classifier)
 
         # Code origin: "brave", "chromium", or "mixed"
-        code_origin = classify_code_origin(frames,
-                                           brave_src_path=brave_src_path)
+        code_origin = classify_code_origin(
+            frames, brave_src_path=brave_src_path
+        )
 
         # Channel breakdown
         channel_breakdown = {"nightly": 0, "beta": 0, "release": 0, "older": 0}
         affects_nightly = False
         if channel_versions:
             channel_breakdown, affects_nightly = build_channel_breakdown(
-                version_hist, channel_versions)
+                version_hist, channel_versions
+            )
 
         # Top channel
-        top_channel = max(channel_breakdown, key=channel_breakdown.get) if any(
-            channel_breakdown.values()) else "unknown"
+        top_channel = (
+            max(channel_breakdown, key=channel_breakdown.get)
+            if any(channel_breakdown.values())
+            else "unknown"
+        )
 
         # Build signature for issue titles
         platform_label = top_platform or "unknown"
-        version_label = (format_brave_version(top_version)
-                         if top_version else "unknown")
+        version_label = (
+            format_brave_version(top_version) if top_version else "unknown"
+        )
         sig = f"{top_frame} ({classifier}) on {platform_label} {version_label}"
 
         # Suggested title
-        crash_prefix = ("Crash"
-                        if crash_type == "crash" else "DumpWithoutCrashing")
+        crash_prefix = (
+            "Crash" if crash_type == "crash" else "DumpWithoutCrashing"
+        )
         suggested_title = f"{crash_prefix}: {top_frame} on {platform_label}"
 
         # Labels
-        labels = [
-            "crash" if crash_type == "crash" else "dump-without-crashing"
-        ]
+        labels = ["crash" if crash_type == "crash" else "dump-without-crashing"]
         if top_platform:
             labels.append(top_platform.lower().replace(" ", "-"))
         if is_new:
@@ -880,37 +922,40 @@ def parse_response(response,
         # Triage URL
         triage_url = (
             f"{BACKTRACE_ENDPOINT}/p/{urllib.parse.quote(project)}"
-            f"/triage?fingerprints={urllib.parse.quote(fingerprint)}")
+            f"/triage?fingerprints={urllib.parse.quote(fingerprint)}"
+        )
 
-        crashers.append({
-            "fingerprint": fingerprint,
-            "count": count,
-            "crashes_per_day": crashes_per_day,
-            "classifier": classifier,
-            "crash_type": crash_type,
-            "code_origin": code_origin,
-            "top_frame": top_frame,
-            "signature": sig,
-            "callstack": frames,
-            "platforms": platform_hist,
-            "top_platform": top_platform,
-            "platform_pct": round(platform_pct * 100, 1),
-            "versions": version_hist,
-            "top_version": top_version,
-            "version_pct": round(version_pct * 100, 1),
-            "channel_breakdown": channel_breakdown,
-            "top_channel": top_channel,
-            "affects_nightly": affects_nightly,
-            "first_seen": format_timestamp(first_seen_ts),
-            "first_seen_ts": first_seen_ts,
-            "last_seen": format_timestamp(last_seen_ts),
-            "last_seen_ts": last_seen_ts,
-            "recency": format_recency(last_seen_ts),
-            "is_new": is_new,
-            "triage_url": triage_url,
-            "suggested_title": suggested_title,
-            "labels": labels,
-        })
+        crashers.append(
+            {
+                "fingerprint": fingerprint,
+                "count": count,
+                "crashes_per_day": crashes_per_day,
+                "classifier": classifier,
+                "crash_type": crash_type,
+                "code_origin": code_origin,
+                "top_frame": top_frame,
+                "signature": sig,
+                "callstack": frames,
+                "platforms": platform_hist,
+                "top_platform": top_platform,
+                "platform_pct": round(platform_pct * 100, 1),
+                "versions": version_hist,
+                "top_version": top_version,
+                "version_pct": round(version_pct * 100, 1),
+                "channel_breakdown": channel_breakdown,
+                "top_channel": top_channel,
+                "affects_nightly": affects_nightly,
+                "first_seen": format_timestamp(first_seen_ts),
+                "first_seen_ts": first_seen_ts,
+                "last_seen": format_timestamp(last_seen_ts),
+                "last_seen_ts": last_seen_ts,
+                "recency": format_recency(last_seen_ts),
+                "is_new": is_new,
+                "triage_url": triage_url,
+                "suggested_title": suggested_title,
+                "labels": labels,
+            }
+        )
 
     return crashers
 
@@ -980,10 +1025,12 @@ def compare_windows(recent, baseline):
 
     # Sort: NEW first, then RISING by factor, then rest
     badge_priority = {"NEW": 0, "RISING": 1, "STABLE": 2, "FALLING": 3}
-    annotated.sort(key=lambda c: (
-        badge_priority.get(c.get("regression_badge", "STABLE"), 99),
-        -c["count"],
-    ))
+    annotated.sort(
+        key=lambda c: (
+            badge_priority.get(c.get("regression_badge", "STABLE"), 99),
+            -c["count"],
+        )
+    )
 
     for i, c in enumerate(annotated, 1):
         c["rank"] = i
@@ -1001,14 +1048,18 @@ def format_markdown(crashers, days, compare_mode=False):
     lines = []
     lines.append("# Top Crashers Report")
     lines.append("")
-    lines.append("> PII-safe aggregate summary. For full crash details, "
-                 "use the triage URLs below.")
+    lines.append(
+        "> PII-safe aggregate summary. For full crash details, "
+        "use the triage URLs below."
+    )
     lines.append("")
-    lines.append(f"**Lookback:** {days} days | "
-                 f"**Generated:** "
-                 f"{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}"
-                 " | "
-                 f"**Crashers:** {len(crashers)}")
+    lines.append(
+        f"**Lookback:** {days} days | "
+        f"**Generated:** "
+        f"{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}"
+        " | "
+        f"**Crashers:** {len(crashers)}"
+    )
     lines.append("")
 
     if not crashers:
@@ -1040,22 +1091,23 @@ def format_markdown(crashers, days, compare_mode=False):
         lines.append("| Field | Value |")
         lines.append("|-------|-------|")
         lines.append(f"| Fingerprint | `{c['fingerprint']}` |")
-        lines.append(
-            f"| Count | {c['count']:,} ({c['crashes_per_day']}/day) |")
-        type_label = ("DumpWithoutCrashing"
-                      if crash_type == "dump" else "Actual crash")
-        lines.append(f"| Type | {crash_type.upper()}"
-                     f" ({type_label}) |")
+        lines.append(f"| Count | {c['count']:,} ({c['crashes_per_day']}/day) |")
+        type_label = (
+            "DumpWithoutCrashing" if crash_type == "dump" else "Actual crash"
+        )
+        lines.append(f"| Type | {crash_type.upper()} ({type_label}) |")
         lines.append(f"| Code origin | {code_origin} |")
         lines.append(f"| Classifier | {c['classifier']} |")
 
         if c.get("top_platform"):
-            lines.append(f"| Top platform | {c['top_platform']} "
-                         f"({c['platform_pct']}%) |")
+            lines.append(
+                f"| Top platform | {c['top_platform']} ({c['platform_pct']}%) |"
+            )
         if c.get("top_version"):
             lines.append(
                 f"| Top version | {format_brave_version(c['top_version'])} "
-                f"({c['version_pct']}%) |")
+                f"({c['version_pct']}%) |"
+            )
 
         # Channel breakdown
         ch = c.get("channel_breakdown", {})
@@ -1068,8 +1120,10 @@ def format_markdown(crashers, days, compare_mode=False):
                     pct = round(n / ch_total * 100)
                     ch_parts.append(f"{chan.capitalize()} {pct}%")
             lines.append(f"| Channels | {', '.join(ch_parts)} |")
-            lines.append(f"| Affects Nightly | "
-                         f"{'Yes' if c.get('affects_nightly') else 'No'} |")
+            lines.append(
+                f"| Affects Nightly | "
+                f"{'Yes' if c.get('affects_nightly') else 'No'} |"
+            )
 
         lines.append(f"| First seen | {c['first_seen']} |")
         lines.append(f"| Last seen | {c['last_seen']} ({c['recency']}) |")
@@ -1091,9 +1145,9 @@ def format_markdown(crashers, days, compare_mode=False):
         # Platform breakdown if multiple
         if c.get("platforms") and len(c["platforms"]) > 1:
             total = sum(c["platforms"].values())
-            sorted_plats = sorted(c["platforms"].items(),
-                                  key=lambda x: x[1],
-                                  reverse=True)
+            sorted_plats = sorted(
+                c["platforms"].items(), key=lambda x: x[1], reverse=True
+            )
             plat_parts = [
                 f"{p} ({round(n / total * 100)}%)" for p, n in sorted_plats[:5]
             ]
@@ -1103,9 +1157,9 @@ def format_markdown(crashers, days, compare_mode=False):
         # Version breakdown if multiple
         if c.get("versions") and len(c["versions"]) > 1:
             total = sum(c["versions"].values())
-            sorted_vers = sorted(c["versions"].items(),
-                                 key=lambda x: x[1],
-                                 reverse=True)
+            sorted_vers = sorted(
+                c["versions"].items(), key=lambda x: x[1], reverse=True
+            )
             ver_parts = [
                 f"{format_brave_version(v)} ({round(n / total * 100)}%)"
                 for v, n in sorted_vers[:5]
@@ -1257,16 +1311,17 @@ def format_csv_output(crashers, compare_mode=False):
 def main():
     parser = argparse.ArgumentParser(
         description="Query Brave's Backtrace instance for top crashers.",
-        epilog=
-        ("Examples:\n"
-         "  python3 scripts/top-crashers.py --project brave-browser --days 7\n"
-         "  python3 scripts/top-crashers.py"
-         " --project brave-browser"
-         " --format json --limit 10\n"
-         "  python3 scripts/top-crashers.py"
-         " --project brave-browser --compare 2\n"
-         "  python3 scripts/top-crashers.py"
-         " --project brave-browser --new-only\n"),
+        epilog=(
+            "Examples:\n"
+            "  python3 scripts/top-crashers.py --project brave-browser --days 7\n"
+            "  python3 scripts/top-crashers.py"
+            " --project brave-browser"
+            " --format json --limit 10\n"
+            "  python3 scripts/top-crashers.py"
+            " --project brave-browser --compare 2\n"
+            "  python3 scripts/top-crashers.py"
+            " --project brave-browser --new-only\n"
+        ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
@@ -1376,19 +1431,22 @@ def main():
     # Validate
     api_key = os.environ.get("BACKTRACE_API_KEY")
     if not api_key and not args.dry_run:
-        print("Error: BACKTRACE_API_KEY environment variable is required.",
-              file=sys.stderr)
+        print(
+            "Error: BACKTRACE_API_KEY environment variable is required.",
+            file=sys.stderr,
+        )
         print(
             "Create a token with query:post capability in Backtrace "
             "project settings.",
-            file=sys.stderr)
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     if not args.project:
         print(
-            "Error: --project is required (or set BACKTRACE_PROJECT "
-            "env var).",
-            file=sys.stderr)
+            "Error: --project is required (or set BACKTRACE_PROJECT env var).",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     if args.limit < 1 or args.limit > 500:
@@ -1409,11 +1467,13 @@ def main():
 
     if args.since:
         try:
-            since_dt = datetime.strptime(
-                args.since, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+            since_dt = datetime.strptime(args.since, "%Y-%m-%d").replace(
+                tzinfo=timezone.utc
+            )
         except ValueError:
-            print("Error: --since must be in YYYY-MM-DD format.",
-                  file=sys.stderr)
+            print(
+                "Error: --since must be in YYYY-MM-DD format.", file=sys.stderr
+            )
             sys.exit(1)
         start_ts = since_dt.timestamp()
         days = max(1, (now - since_dt).days)
@@ -1438,11 +1498,13 @@ def main():
     )
 
     if args.dry_run:
-        params_display = urllib.parse.urlencode({
-            "universe": BACKTRACE_UNIVERSE,
-            "project": args.project,
-            "token": "<BACKTRACE_API_KEY>",
-        })
+        params_display = urllib.parse.urlencode(
+            {
+                "universe": BACKTRACE_UNIVERSE,
+                "project": args.project,
+                "token": "<BACKTRACE_API_KEY>",
+            }
+        )
         url_display = f"{BACKTRACE_ENDPOINT}/api/query?{params_display}"
         print(f"URL: POST {url_display}")
         print("\nQuery body:")
@@ -1470,14 +1532,17 @@ def main():
         if brave_src_path:
             print(f"  Brave source: {brave_src_path}", file=sys.stderr)
         else:
-            print("  Brave source not found, using namespace heuristics only",
-                  file=sys.stderr)
+            print(
+                "  Brave source not found, using namespace heuristics only",
+                file=sys.stderr,
+            )
     if args.brave_only and not brave_src_path:
         print(
             "Warning: --brave-only used but src/brave not found. "
             "Code origin detection will use namespace heuristics only. "
             "Use --brave-src to specify the path.",
-            file=sys.stderr)
+            file=sys.stderr,
+        )
 
     # Fetch channel versions for version-to-channel mapping
     channel_versions = fetch_channel_versions(verbose=args.verbose)
@@ -1488,11 +1553,11 @@ def main():
     print(
         f"Querying Backtrace for top crashers in '{args.project}' "
         f"(last {days} days)...",
-        file=sys.stderr)
-    response = backtrace_query(args.project,
-                               query,
-                               api_key,
-                               verbose=args.verbose)
+        file=sys.stderr,
+    )
+    response = backtrace_query(
+        args.project, query, api_key, verbose=args.verbose
+    )
     crashers = parse_response(
         response,
         days,
@@ -1505,8 +1570,10 @@ def main():
     )
 
     if args.verbose:
-        print(f"  Parsed {len(crashers)} crash groups from response",
-              file=sys.stderr)
+        print(
+            f"  Parsed {len(crashers)} crash groups from response",
+            file=sys.stderr,
+        )
 
     if args.compare:
         # Query baseline window
@@ -1514,8 +1581,10 @@ def main():
         baseline_end = start_ts
         baseline_days = days
 
-        print(f"Querying baseline window ({days}-{days * 2} days ago)...",
-              file=sys.stderr)
+        print(
+            f"Querying baseline window ({days}-{days * 2} days ago)...",
+            file=sys.stderr,
+        )
         baseline_query = build_query(
             baseline_start,
             baseline_end,
@@ -1542,12 +1611,14 @@ def main():
         )
 
         if args.verbose:
-            print(f"  Parsed {len(baseline_crashers)} baseline crash groups",
-                  file=sys.stderr)
+            print(
+                f"  Parsed {len(baseline_crashers)} baseline crash groups",
+                file=sys.stderr,
+            )
 
         crashers = compare_windows(crashers, baseline_crashers)
         # Trim to requested limit after comparison
-        crashers = crashers[:args.limit]
+        crashers = crashers[: args.limit]
     else:
         # Apply --new-only filter
         if args.new_only:
@@ -1564,9 +1635,12 @@ def main():
             ch.strip().lower() for ch in args.channels.split(",")
         ]
         crashers = [
-            c for c in crashers if any(
+            c
+            for c in crashers
+            if any(
                 c.get("channel_breakdown", {}).get(ch, 0) > 0
-                for ch in selected_channels)
+                for ch in selected_channels
+            )
         ]
     if args.brave_only:
         crashers = [

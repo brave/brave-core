@@ -34,7 +34,8 @@ def _list_builder_dirs() -> list[Path]:
         return []
     return sorted(
         (p for p in gen_paths.BUILDERS_OUTPUT_DIR.iterdir() if p.is_dir()),
-        key=lambda p: p.name)
+        key=lambda p: p.name,
+    )
 
 
 class _Validator:
@@ -61,7 +62,8 @@ class _Validator:
         if not builder_dirs:
             self._errs.append(
                 'no generated builders found under %s; run `bots.py '
-                'snapshot` first.' % gen_paths.BUILDERS_OUTPUT_DIR)
+                'snapshot` first.' % gen_paths.BUILDERS_OUTPUT_DIR
+            )
             return self._errs
 
         for builder_dir in builder_dirs:
@@ -74,22 +76,31 @@ class _Validator:
         self._raw_by_dir[builder_dir] = raw
 
         gn_args_path = builder_dir / 'gn-args.json'
-        gn_args_json = (self._parse_json(gn_args_path, raw['gn-args.json'])
-                        if 'gn-args.json' in raw else None)
+        gn_args_json = (
+            self._parse_json(gn_args_path, raw['gn-args.json'])
+            if 'gn-args.json' in raw
+            else None
+        )
         if gn_args_json is not None:
             self._check_gn_args_schema(gn_args_path, gn_args_json)
             self._check_args_file_exists(gn_args_path, gn_args_json)
             self._check_secrets_not_leaked(gn_args_path, gn_args_json)
 
         sync_path = builder_dir / 'sync.json'
-        sync_json = (self._parse_json(sync_path, raw['sync.json'])
-                     if 'sync.json' in raw else None)
+        sync_json = (
+            self._parse_json(sync_path, raw['sync.json'])
+            if 'sync.json' in raw
+            else None
+        )
         if sync_json is not None:
             self._check_sync_schema(sync_path, sync_json)
 
         targets_path = builder_dir / 'targets.json'
-        targets_json = (self._parse_json(targets_path, raw['targets.json'])
-                        if 'targets.json' in raw else None)
+        targets_json = (
+            self._parse_json(targets_path, raw['targets.json'])
+            if 'targets.json' in raw
+            else None
+        )
         if targets_json is not None:
             self._check_targets_schema(targets_path, targets_json)
 
@@ -116,27 +127,33 @@ class _Validator:
             self._errs.append('%s: invalid JSON (%s)' % (path, e))
             return None
         if not isinstance(parsed, dict):
-            self._errs.append('%s: expected a JSON object, got %s' %
-                              (path, type(parsed).__name__))
+            self._errs.append(
+                '%s: expected a JSON object, got %s'
+                % (path, type(parsed).__name__)
+            )
             return None
         return parsed
 
-    def _check_gn_args_schema(self, gn_args_path: Path,
-                              gn_args_json: dict) -> None:
+    def _check_gn_args_schema(
+        self, gn_args_path: Path, gn_args_json: dict
+    ) -> None:
         """Checks `gn-args.json`'s `gn_args` carries what `gn gen`
         requires."""
         gn_args = gn_args_json.get('gn_args')
         if not isinstance(gn_args, dict):
-            self._errs.append('%s: "gn_args" is missing or not an object' %
-                              gn_args_path)
+            self._errs.append(
+                '%s: "gn_args" is missing or not an object' % gn_args_path
+            )
             return
         for required in ('target_os', 'target_cpu'):
             if required not in gn_args:
-                self._errs.append('%s: "gn_args" is missing %r' %
-                                  (gn_args_path, required))
+                self._errs.append(
+                    '%s: "gn_args" is missing %r' % (gn_args_path, required)
+                )
 
-    def _check_args_file_exists(self, gn_args_path: Path,
-                                gn_args_json: dict) -> None:
+    def _check_args_file_exists(
+        self, gn_args_path: Path, gn_args_json: dict
+    ) -> None:
         """Checks a declared `args_file` is a source-absolute path that
         exists.
         """
@@ -145,15 +162,18 @@ class _Validator:
             return
         if not args_file.startswith('//'):
             self._errs.append(
-                '%s: args_file %r is not a source-absolute ("//...") path' %
-                (gn_args_path, args_file))
+                '%s: args_file %r is not a source-absolute ("//...") path'
+                % (gn_args_path, args_file)
+            )
             return
         if not (_CHROMIUM_SRC_DIR / args_file[2:]).is_file():
-            self._errs.append('%s: args_file %r does not exist' %
-                              (gn_args_path, args_file))
+            self._errs.append(
+                '%s: args_file %r does not exist' % (gn_args_path, args_file)
+            )
 
-    def _check_secrets_not_leaked(self, gn_args_path: Path,
-                                  gn_args_json: dict) -> None:
+    def _check_secrets_not_leaked(
+        self, gn_args_path: Path, gn_args_json: dict
+    ) -> None:
         """Checks a declared secret's real value never made it into
         `gn_args`.
 
@@ -173,23 +193,31 @@ class _Validator:
                     self._errs.append(
                         '%s: gn_args[%r] appears to contain the value of '
                         'secret %r (from %s). Secret values MUST NEVER be '
-                        'checked in' % (gn_args_path, other_name, gn_arg_name,
-                                        dotenv.DEFAULT_PATH))
+                        'checked in'
+                        % (
+                            gn_args_path,
+                            other_name,
+                            gn_arg_name,
+                            dotenv.DEFAULT_PATH,
+                        )
+                    )
 
     def _check_sync_schema(self, sync_path: Path, sync_json: dict) -> None:
         for required in ('target_os', 'target_cpu', 'gclient_overrides'):
             if required not in sync_json:
                 self._errs.append('%s: missing %r' % (sync_path, required))
 
-    def _check_targets_schema(self, targets_path: Path,
-                              targets_json: dict) -> None:
+    def _check_targets_schema(
+        self, targets_path: Path, targets_json: dict
+    ) -> None:
         for required in ('compile', 'tests'):
             value = targets_json.get(required)
             if required not in targets_json:
                 self._errs.append('%s: missing %r' % (targets_path, required))
             elif not isinstance(value, list):
-                self._errs.append('%s: %r is not a list' %
-                                  (targets_path, required))
+                self._errs.append(
+                    '%s: %r is not a list' % (targets_path, required)
+                )
 
     def _check_no_duplicate_builders(self, builder_dirs: list[Path]) -> None:
         """Flags duplicate builders that are identical."""
@@ -206,29 +234,35 @@ class _Validator:
                 self._errs.append(
                     'builders %r and %r are exact duplicates (identical '
                     'gn-args.json, sync.json and targets.json); consolidate '
-                    'them into one' % (first_seen_as, builder_dir.name))
+                    'them into one' % (first_seen_as, builder_dir.name)
+                )
 
 
 def cmd_validate(args: argparse.Namespace) -> int:
     errs = _Validator().run()
     if errs:
         raise generated_output.BotsError(
-            'infra/config/generated/builders/ has problems:\n  ' +
-            '\n  '.join(errs))
+            'infra/config/generated/builders/ has problems:\n  '
+            + '\n  '.join(errs)
+        )
     if not args.quiet:
-        print('infra/config/generated/builders/ looks ok (%d builder(s)).' %
-              len(_list_builder_dirs()))
+        print(
+            'infra/config/generated/builders/ looks ok (%d builder(s)).'
+            % len(_list_builder_dirs())
+        )
     return 0
 
 
 def add_subparser(subparsers) -> argparse.ArgumentParser:
     """Registers the `validate` subcommand onto `bots.py`'s subparsers."""
     validate_parser = subparsers.add_parser(
-        'validate',
-        description='Sanity-check infra/config/generated/builders/.')
-    validate_parser.add_argument('-q',
-                                 '--quiet',
-                                 action='store_true',
-                                 help="Don't print anything on success.")
+        'validate', description='Sanity-check infra/config/generated/builders/.'
+    )
+    validate_parser.add_argument(
+        '-q',
+        '--quiet',
+        action='store_true',
+        help="Don't print anything on success.",
+    )
     validate_parser.set_defaults(func=cmd_validate)
     return validate_parser

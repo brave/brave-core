@@ -175,13 +175,10 @@ PREFIXES_TO_KEEP = [COMMAND_PREFIX, "IDC_", "#if", "#elif", "#else", "#endif"]
 EXCLUDE_COMMANDS = [
     # These content context commands only work from a context menu
     "_CONTEXT_",
-
     # These commands are in a submenu, which we can't trigger
     "_SUBMENU",
-
     # Crashes if speedreader doesn't work on page.
     "IDC_SPEEDREADER_ICON_ONCLICK",
-
     # Not useful menu commands - mostly these are submenu commands, which do
     # nothing unless the parent menu is open.
     "IDC_SIDEBAR_SHOW_OPTION_MENU",
@@ -189,7 +186,6 @@ EXCLUDE_COMMANDS = [
     "IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER",
     "IDC_SIDEBAR_SHOW_OPTION_NEVER",
     "IDC_BRAVE_VPN_MENU",
-
     # Brave Containers: This command needs additional user input to decide
     # which container to use, so not useful. We might want to try opening the
     # current tab in the default container, but that would be undesirable as
@@ -198,7 +194,6 @@ EXCLUDE_COMMANDS = [
     "IDC_OPEN_IN_CONTAINER_START",
     "IDC_OPEN_IN_CONTAINER_END",
     "IDC_OPEN_CONTAINERS_SETTING",
-
     # Not actually commands
     "IDC_BRAVE_COMMANDS_START",
     "IDC_BRAVE_COMMANDS_LAST",
@@ -233,8 +228,7 @@ EXISTING_TRANSLATIONS = {
     "IDC_ABOUT": "IDS_SETTINGS_ABOUT_PROGRAM",
     "IDC_MANAGE_EXTENSIONS": "IDS_MANAGE_EXTENSIONS",
     "IDC_CHROME_WHATS_NEW": "IDS_CHROME_WHATS_NEW",
-    "IDC_STATUS_TRAY_KEEP_CHROME_RUNNING_IN_BACKGROUND": \
-        "IDS_STATUS_TRAY_KEEP_CHROME_RUNNING_IN_BACKGROUND",
+    "IDC_STATUS_TRAY_KEEP_CHROME_RUNNING_IN_BACKGROUND": "IDS_STATUS_TRAY_KEEP_CHROME_RUNNING_IN_BACKGROUND",
     "IDC_SHOW_BRAVE_REWARDS": "IDS_SHOW_BRAVE_REWARDS",
     "IDC_NEW_TOR_CONNECTION_FOR_SITE": "IDS_NEW_TOR_CONNECTION_FOR_SITE",
     "IDC_NEW_OFFTHERECORD_WINDOW_TOR": "IDS_NEW_OFFTHERECORD_WINDOW_TOR",
@@ -243,50 +237,44 @@ EXISTING_TRANSLATIONS = {
     "IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER": "IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER",
     "IDC_SHOW_EMAIL_ALIASES": "IDS_SHOW_EMAIL_ALIASES",
     "IDC_WINDOW_CLOSE_TABS_TO_LEFT": "IDS_TAB_CXMENU_CLOSETABSTOLEFT",
-    "IDC_DEV_TOOLS_DEVICES": "IDS_DEV_TOOLS_DEVICES", # &amp;Inspect devices
-    "IDC_DEV_TOOLS": "IDS_DEV_TOOLS", # &amp;Developer tools
-    "IDC_EXIT": "IDS_EXIT", # E&amp;xit
-    "IDC_FIND": "IDS_FIND", # &amp;Find...
-    "IDC_COPY_CLEAN_LINK": "IDS_COPY_CLEAN_LINK", # Copy Clean Link
-    "IDC_FULLSCREEN": "IDS_FULLSCREEN", # &amp;Full screen
-    "IDC_NAME_WINDOW": "IDS_NAME_WINDOW", # Name &amp;window...
-    "IDC_NEW_INCOGNITO_WINDOW": \
-        "IDS_NEW_INCOGNITO_WINDOW", # New &amp;Private window
+    "IDC_DEV_TOOLS_DEVICES": "IDS_DEV_TOOLS_DEVICES",  # &amp;Inspect devices
+    "IDC_DEV_TOOLS": "IDS_DEV_TOOLS",  # &amp;Developer tools
+    "IDC_EXIT": "IDS_EXIT",  # E&amp;xit
+    "IDC_FIND": "IDS_FIND",  # &amp;Find...
+    "IDC_COPY_CLEAN_LINK": "IDS_COPY_CLEAN_LINK",  # Copy Clean Link
+    "IDC_FULLSCREEN": "IDS_FULLSCREEN",  # &amp;Full screen
+    "IDC_NAME_WINDOW": "IDS_NAME_WINDOW",  # Name &amp;window...
+    "IDC_NEW_INCOGNITO_WINDOW": "IDS_NEW_INCOGNITO_WINDOW",  # New &amp;Private window
     "IDC_NEW_SPLIT_TAB": "IDS_TAB_CXMENU_NEW_SPLIT_WITH_CURRENT",
-    "IDC_OPEN_GUEST_PROFILE": \
-        "IDS_OPEN_GUEST_PROFILE", # &amp;Open Guest profile
-    "IDC_OPEN_IN_CHROME": "IDS_OPEN_IN_CHROME", # &amp;Open in Brave
-    "IDC_OPTIONS": "IDS_OPTIONS", # &amp;Options
+    "IDC_OPEN_GUEST_PROFILE": "IDS_OPEN_GUEST_PROFILE",  # &amp;Open Guest profile
+    "IDC_OPEN_IN_CHROME": "IDS_OPEN_IN_CHROME",  # &amp;Open in Brave
+    "IDC_OPTIONS": "IDS_OPTIONS",  # &amp;Options
     # Pa&amp;ste and go to
     # <ph name="URL">$1<ex>http://www.google.com/</ex></ph>
     "IDC_PASTE_AND_GO": "IDS_PASTE_AND_GO",
-    "IDC_PASTE": "IDS_PASTE", # &amp;Paste
-    "IDC_RESTORE_TAB": "IDS_RESTORE_TAB", # R&amp;eopen closed tab
-    "IDC_SAVE_PAGE": "IDS_SAVE_PAGE", # Save page &amp;as...
-    "IDC_SHOW_AS_TAB": "IDS_SHOW_AS_TAB", # &amp;Show as tab
-    "IDC_SHOW_BOOKMARK_BAR": "IDS_SHOW_BOOKMARK_BAR", # &amp;Show bookmarks
-    "IDC_TASK_MANAGER_SHORTCUT": "IDS_TASK_MANAGER", # &amp;Task manager
-    "IDC_SHOW_TRANSLATE": "IDS_SHOW_TRANSLATE", # T&amp;ranslate...
-    "IDC_VIEW_SOURCE": "IDS_VIEW_SOURCE", # View s&amp;ource
-    "IDC_TAKE_SCREENSHOT": "IDS_TAKE_SCREENSHOT", # T&amp;ake screenshot
-    "IDC_NEW_TAB": "IDS_NEW_TAB", # New &amp;tab
-    "IDC_DEV_TOOLS_CONSOLE": "IDS_DEV_TOOLS_CONSOLE", # &amp;JavaScript console
-    "IDC_CUT": "IDS_CUT", # Cu&amp;t
-    "IDC_COPY": "IDS_COPY", # &amp;Copy
-    "IDC_BOOKMARK_THIS_TAB": "IDS_BOOKMARK_THIS_TAB", # Bookmark this tab...
-    "IDC_BOOKMARK_MANAGER": "IDS_BOOKMARK_MANAGER", # &amp;Bookmark manager
-    "IDC_COPY_URL": "IDS_COPY_URL", # Copy &amp;URL
-    "IDC_BOOKMARK_BAR_SHOW_APPS_SHORTCUT": \
-        "IDS_BOOKMARK_BAR_SHOW_APPS_SHORTCUT", # Show apps shortcut
-    "IDC_BOOKMARK_BAR_OPEN_INCOGNITO": \
-        "IDS_BOOKMARK_BAR_OPEN_INCOGNITO", # Open in &amp;Private window
-    "IDC_BOOKMARK_ALL_TABS": "IDS_BOOKMARK_ALL_TABS", # Bookmark all tabs...
-    "IDC_ADD_NEW_PROFILE": "IDS_ADD_NEW_PROFILE", # &amp;Add new profile
-    "IDC_CLOSE_DUPLICATE_TABS": \
-        "IDS_TAB_CXMENU_CLOSE_DUPLICATE_TABS", # Close duplicate tabs
+    "IDC_PASTE": "IDS_PASTE",  # &amp;Paste
+    "IDC_RESTORE_TAB": "IDS_RESTORE_TAB",  # R&amp;eopen closed tab
+    "IDC_SAVE_PAGE": "IDS_SAVE_PAGE",  # Save page &amp;as...
+    "IDC_SHOW_AS_TAB": "IDS_SHOW_AS_TAB",  # &amp;Show as tab
+    "IDC_SHOW_BOOKMARK_BAR": "IDS_SHOW_BOOKMARK_BAR",  # &amp;Show bookmarks
+    "IDC_TASK_MANAGER_SHORTCUT": "IDS_TASK_MANAGER",  # &amp;Task manager
+    "IDC_SHOW_TRANSLATE": "IDS_SHOW_TRANSLATE",  # T&amp;ranslate...
+    "IDC_VIEW_SOURCE": "IDS_VIEW_SOURCE",  # View s&amp;ource
+    "IDC_TAKE_SCREENSHOT": "IDS_TAKE_SCREENSHOT",  # T&amp;ake screenshot
+    "IDC_NEW_TAB": "IDS_NEW_TAB",  # New &amp;tab
+    "IDC_DEV_TOOLS_CONSOLE": "IDS_DEV_TOOLS_CONSOLE",  # &amp;JavaScript console
+    "IDC_CUT": "IDS_CUT",  # Cu&amp;t
+    "IDC_COPY": "IDS_COPY",  # &amp;Copy
+    "IDC_BOOKMARK_THIS_TAB": "IDS_BOOKMARK_THIS_TAB",  # Bookmark this tab...
+    "IDC_BOOKMARK_MANAGER": "IDS_BOOKMARK_MANAGER",  # &amp;Bookmark manager
+    "IDC_COPY_URL": "IDS_COPY_URL",  # Copy &amp;URL
+    "IDC_BOOKMARK_BAR_SHOW_APPS_SHORTCUT": "IDS_BOOKMARK_BAR_SHOW_APPS_SHORTCUT",  # Show apps shortcut
+    "IDC_BOOKMARK_BAR_OPEN_INCOGNITO": "IDS_BOOKMARK_BAR_OPEN_INCOGNITO",  # Open in &amp;Private window
+    "IDC_BOOKMARK_ALL_TABS": "IDS_BOOKMARK_ALL_TABS",  # Bookmark all tabs...
+    "IDC_ADD_NEW_PROFILE": "IDS_ADD_NEW_PROFILE",  # &amp;Add new profile
+    "IDC_CLOSE_DUPLICATE_TABS": "IDS_TAB_CXMENU_CLOSE_DUPLICATE_TABS",  # Close duplicate tabs
     "IDC_WINDOW_CLOSE_GROUP": "IDS_TAB_GROUP_HEADER_CXMENU_CLOSE_GROUP",
-    "IDC_WINDOW_NEW_TAB_IN_GROUP": \
-        "IDS_TAB_GROUP_HEADER_CXMENU_NEW_TAB_IN_GROUP",
+    "IDC_WINDOW_NEW_TAB_IN_GROUP": "IDS_TAB_GROUP_HEADER_CXMENU_NEW_TAB_IN_GROUP",
     "IDC_WINDOW_BRING_ALL_TABS": "IDS_TAB_CXMENU_BRING_ALL_TABS_TO_THIS_WINDOW",
     "IDC_WINDOW_NAME_GROUP": "IDS_TAB_GROUP_HEADER_BUBBLE_TITLE_PLACEHOLDER",
     "IDC_FORCE_PASTE": "IDS_FORCE_PASTE",
@@ -297,15 +285,17 @@ EXISTING_TRANSLATIONS = {
 
 def extract_relevant_lines(filename):
     """Returns all lines in a file which affect what commands are available"""
-    guard_name_includes = path.basename(filename) \
-      .upper() \
-      .replace('/', '_') \
-      .replace('.', '_') + '_'
+    guard_name_includes = (
+        path.basename(filename).upper().replace('/', '_').replace('.', '_')
+        + '_'
+    )
 
     def is_relevant(line):
-        return guard_name_includes not in line \
-          and any(line.startswith(prefix) for prefix in PREFIXES_TO_KEEP) \
-          and not any(command in line for command in EXCLUDE_COMMANDS)
+        return (
+            guard_name_includes not in line
+            and any(line.startswith(prefix) for prefix in PREFIXES_TO_KEEP)
+            and not any(command in line for command in EXCLUDE_COMMANDS)
+        )
 
     with open(filename, encoding='utf-8') as f:
         return [line.strip() for line in f if is_relevant(line)]
@@ -313,7 +303,7 @@ def extract_relevant_lines(filename):
 
 def generate_command_info(command_definition_files, template_file):
     """Generates command_utils.cc with definitions for GetCommands and
-       GetCommandName"""
+    GetCommandName"""
     lines = SUPPORTED_CHROMIUM_COMMANDS
     for command_definition_file in command_definition_files:
         lines += extract_relevant_lines(command_definition_file)
@@ -324,8 +314,8 @@ def generate_command_info(command_definition_files, template_file):
 
     def get_command(line):
         """There are two cases where this line could be a command:
-           1. The command is a hardcoded Chromium command (i.e. IDC_BACK)
-           2. The command is read from a command ids file: #define IDC_BACK 1
+        1. The command is a hardcoded Chromium command (i.e. IDC_BACK)
+        2. The command is read from a command ids file: #define IDC_BACK 1
         """
         if line.startswith('IDC_'):
             return line
@@ -351,9 +341,9 @@ def generate_command_info(command_definition_files, template_file):
 
     command_definitions = map(get_line, lines)
     command_ids = map(get_id_line, lines)
-    return result.replace('COMMAND_NAMES',
-                          '\n'.join(command_definitions)) \
-                 .replace('COMMAND_IDS', '\n'.join(command_ids))
+    return result.replace(
+        'COMMAND_NAMES', '\n'.join(command_definitions)
+    ).replace('COMMAND_IDS', '\n'.join(command_ids))
 
 
 def main():
@@ -361,12 +351,13 @@ def main():
     parser.add_argument("definitions", nargs='+')
     parser.add_argument(
         '--output_cc',
-        help=
-        "The path to output the CC file to. Note: The header is not generated.")
+        help="The path to output the CC file to. Note: The header is not generated.",
+    )
     parser.add_argument(
         '--template_cc',
         help="""The path of the CC file template. TEMPLATE_PLACEHOLDER will be
-            replaced by the command definitions""")
+            replaced by the command definitions""",
+    )
 
     args = parser.parse_args()
 

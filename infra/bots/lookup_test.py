@@ -28,7 +28,6 @@ from generated_output_test import _make_generated_output_dir
 
 
 class CmdLookupTest(unittest.TestCase):
-
     def test_quiet_prints_only_args_gn(self):
         with tempfile.TemporaryDirectory() as tmp:
             _make_generated_output_dir(tmp, ['b'])

@@ -34,21 +34,25 @@ def copy_other_arch(src_path, dest_path):
     # any two independent builds (even of the same architecture).
     # TODO(https://github.com/brave/brave-browser/issues/57254): Make .pak file
     # builds reproducible and remove the *.pak ignore pattern below.
-    shutil.copytree(src_path,
-                    dest_path,
-                    symlinks=True,
-                    ignore=shutil.ignore_patterns('Sparkle.framework',
-                                                  '*.pak'))
+    shutil.copytree(
+        src_path,
+        dest_path,
+        symlinks=True,
+        ignore=shutil.ignore_patterns('Sparkle.framework', '*.pak'),
+    )
 
 
 def main(args):
     parser = argparse.ArgumentParser(
         description='Copy the other arch macos binary into root_out_dir for '
-        'universalize')
-    parser.add_argument('src_path',
-                        help='The other architecture build output app path.')
+        'universalize'
+    )
     parser.add_argument(
-        'dest_path', help='The location to copy the app to in root_out_dir.')
+        'src_path', help='The other architecture build output app path.'
+    )
+    parser.add_argument(
+        'dest_path', help='The location to copy the app to in root_out_dir.'
+    )
     parsed = parser.parse_args(args)
 
     copy_other_arch(parsed.src_path, parsed.dest_path)

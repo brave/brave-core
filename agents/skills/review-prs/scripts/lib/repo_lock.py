@@ -15,8 +15,9 @@ from .file_lock import DEFAULT_TIMEOUT_S, file_lock
 
 
 def lock_path(repo_dir):
-    return os.path.join(os.path.abspath(repo_dir), ".ignore",
-                        ".review-prs-git.lock")
+    return os.path.join(
+        os.path.abspath(repo_dir), ".ignore", ".review-prs-git.lock"
+    )
 
 
 def repo_lock(repo_dir, timeout=DEFAULT_TIMEOUT_S):

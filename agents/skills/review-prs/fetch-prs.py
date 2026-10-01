@@ -115,12 +115,15 @@ def save_cache(updates, approved_removals=()):
         stored.update(updates)
         if approved_removals:
             stored["_approved"] = sorted(
-                set(stored.get("_approved", [])) - set(approved_removals))
+                set(stored.get("_approved", [])) - set(approved_removals)
+            )
 
 
 def fetch_single_pr(pr_number):
-    fields = ("number,title,updatedAt,author,isDraft,headRefOid,baseRefName,"
-              "reviewDecision,latestReviews,reviewRequests")
+    fields = (
+        "number,title,updatedAt,author,isDraft,headRefOid,baseRefName,"
+        "reviewDecision,latestReviews,reviewRequests"
+    )
     result = subprocess.run(
         [
             "gh",
@@ -156,8 +159,10 @@ def fetch_prs(mode, page, pr_number, state):
     if mode == "single":
         return fetch_single_pr(pr_number)
 
-    fields = ("number,title,updatedAt,author,isDraft,headRefOid,baseRefName,"
-              "reviewDecision,latestReviews,reviewRequests")
+    fields = (
+        "number,title,updatedAt,author,isDraft,headRefOid,baseRefName,"
+        "reviewDecision,latestReviews,reviewRequests"
+    )
     base_cmd = [
         "gh",
         "pr",
@@ -181,7 +186,7 @@ def fetch_prs(mode, page, pr_number, state):
         prs = json.loads(result.stdout)
         prs.sort(key=lambda p: p.get("updatedAt", ""), reverse=True)
         start = (page - 1) * 20
-        return prs[start:start + 20]
+        return prs[start : start + 20]
 
     result = subprocess.run(
         base_cmd + ["--limit", "500"],
@@ -282,19 +287,23 @@ def filter_prs(prs, mode, days, cache, org_members, reviewer_priority=None):
         author = pr.get("author", {}).get("login", "")
         if org_members and author not in org_members:
             if reviewer_priority and is_requested_reviewer(
-                    pr, reviewer_priority):
+                pr, reviewer_priority
+            ):
                 pass  # Bot was asked to review this contributor PR
             else:
                 skipped_external += 1
                 continue
 
         if cutoff and mode == "days":
-            updated = datetime.fromisoformat(pr["updatedAt"].replace(
-                "Z", "+00:00"))
+            updated = datetime.fromisoformat(
+                pr["updatedAt"].replace("Z", "+00:00")
+            )
             if updated < cutoff:
                 # Don't filter out PRs where the bot is explicitly requested
-                if not (reviewer_priority
-                        and is_requested_reviewer(pr, reviewer_priority)):
+                if not (
+                    reviewer_priority
+                    and is_requested_reviewer(pr, reviewer_priority)
+                ):
                     skipped_filtered += 1
                     continue
 
@@ -303,10 +312,11 @@ def filter_prs(prs, mode, days, cache, org_members, reviewer_priority=None):
         # landed since the prior review. In that case the prior approval is
         # stale and must be cleared so the bot can re-approve if appropriate.
         if pr_num in approved:
-            is_rerequest_on_new_sha = (reviewer_priority
-                                       and is_requested_reviewer(
-                                           pr, reviewer_priority)
-                                       and cache.get(pr_num) != head_sha)
+            is_rerequest_on_new_sha = (
+                reviewer_priority
+                and is_requested_reviewer(pr, reviewer_priority)
+                and cache.get(pr_num) != head_sha
+            )
             if is_rerequest_on_new_sha:
                 approved.discard(pr_num)
                 cache["_approved"] = sorted(approved)
@@ -319,7 +329,8 @@ def filter_prs(prs, mode, days, cache, org_members, reviewer_priority=None):
             # If the bot is a requested reviewer, force a full re-review
             # even if the SHA hasn't changed (explicit re-request)
             if reviewer_priority and is_requested_reviewer(
-                    pr, reviewer_priority):
+                pr, reviewer_priority
+            ):
                 pass  # Fall through to to_review
             else:
                 skipped_cached += 1
@@ -342,7 +353,8 @@ def filter_prs(prs, mode, days, cache, org_members, reviewer_priority=None):
 
 
 def main():
-    mode, days, page, pr_number, state, reviewer_priority, max_prs = parse_args(
+    mode, days, page, pr_number, state, reviewer_priority, max_prs = (
+        parse_args()
     )
     prs = fetch_prs(mode, page, pr_number, state)
 
@@ -369,10 +381,16 @@ def main():
 
     # Sort PRs so those requesting review from the priority user come first
     if reviewer_priority:
-        to_review.sort(key=lambda pr: 0
-                       if is_requested_reviewer(pr, reviewer_priority) else 1)
-        cached_prs.sort(key=lambda pr: 0
-                        if is_requested_reviewer(pr, reviewer_priority) else 1)
+        to_review.sort(
+            key=lambda pr: (
+                0 if is_requested_reviewer(pr, reviewer_priority) else 1
+            )
+        )
+        cached_prs.sort(
+            key=lambda pr: (
+                0 if is_requested_reviewer(pr, reviewer_priority) else 1
+            )
+        )
 
     # Apply max-prs limit after sorting (so priority PRs are kept first)
     skipped_max_prs = 0
@@ -391,7 +409,8 @@ def main():
         }
         if reviewer_priority:
             entry["isRequestedReviewer"] = is_requested_reviewer(
-                pr, reviewer_priority)
+                pr, reviewer_priority
+            )
         if org_members and author not in org_members:
             entry["isExternalContributor"] = True
         return entry

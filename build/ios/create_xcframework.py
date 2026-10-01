@@ -16,21 +16,28 @@ def main():
     description = 'Create an xcframework from a framework & debug symbols'
     parser = argparse.ArgumentParser(description=description)
 
-    parser.add_argument('--framework_dir',
-                        type=Path,
-                        required=True,
-                        help='The framework bundle to prepare an xcframework')
-    parser.add_argument('--remove_asset_catalogs',
-                        action='store_true',
-                        help='Remove any asset catalogs in the framework')
+    parser.add_argument(
+        '--framework_dir',
+        type=Path,
+        required=True,
+        help='The framework bundle to prepare an xcframework',
+    )
+    parser.add_argument(
+        '--remove_asset_catalogs',
+        action='store_true',
+        help='Remove any asset catalogs in the framework',
+    )
     parser.add_argument(
         '--fix_info_plist_versions',
         action='store_true',
-        help='Ensures that the framework contains both version keys')
-    parser.add_argument('--xcframework_dir',
-                        type=Path,
-                        required=True,
-                        help='The output xcframework directory')
+        help='Ensures that the framework contains both version keys',
+    )
+    parser.add_argument(
+        '--xcframework_dir',
+        type=Path,
+        required=True,
+        help='The output xcframework directory',
+    )
 
     args = parser.parse_args()
 
@@ -73,9 +80,10 @@ def RemoveAssetCatalogs(xcframework_dir):
 def FixInfoPlistVersions(xcframework_dir):
     for framework_dir in xcframework_dir.glob('*/*.framework'):
         cmd_args = [
-            '/usr/libexec/PlistBuddy', '-c',
+            '/usr/libexec/PlistBuddy',
+            '-c',
             'Add :CFBundleShortVersionString string 1.0',
-            os.path.join(framework_dir, 'Info.plist')
+            os.path.join(framework_dir, 'Info.plist'),
         ]
         subprocess.check_call(cmd_args)
 

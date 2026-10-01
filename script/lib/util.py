@@ -14,6 +14,7 @@ import subprocess
 import sys
 import tarfile
 import tempfile
+
 try:
     from urllib.request import urlopen
 except ImportError:
@@ -59,13 +60,23 @@ def extract_tarball(tarball_path, member, destination):
 
 def get_lzma_exec():
     root_src_dir = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), *[os.pardir] * 3))
+        os.path.join(os.path.dirname(__file__), *[os.pardir] * 3)
+    )
     if sys.platform == 'win32':
-        lzma_exec = os.path.join(root_src_dir, "third_party", "lzma_sdk",
-                                 "bin", "win64", "7za.exe")
+        lzma_exec = os.path.join(
+            root_src_dir, "third_party", "lzma_sdk", "bin", "win64", "7za.exe"
+        )
     elif sys.platform == 'darwin':
-        lzma_exec = os.path.join(root_src_dir, "..", "..", "third_party",
-                                 "lzma_sdk", "bin", "mac64", "7zz")
+        lzma_exec = os.path.join(
+            root_src_dir,
+            "..",
+            "..",
+            "third_party",
+            "lzma_sdk",
+            "bin",
+            "mac64",
+            "7zz",
+        )
     else:
         lzma_exec = '7zr'  # Use system 7zr.
     return lzma_exec
@@ -83,9 +94,7 @@ def extract_zip(zip_path, destination, path_prefix=None):
         with zipfile.ZipFile(zip_path) as z:
             members = None
             if path_prefix is not None:
-                members = [
-                    m for m in z.namelist() if m.startswith(path_prefix)
-                ]
+                members = [m for m in z.namelist() if m.startswith(path_prefix)]
             z.extractall(destination, members=members)
 
 
@@ -100,10 +109,9 @@ def make_zip(zip_file_path, files, dirs):
         files += dirs
         execute(['zip', '-r', '-y', zip_file_path] + files)
     else:
-        with zipfile.ZipFile(zip_file_path,
-                             "w",
-                             zipfile.ZIP_DEFLATED,
-                             allowZip64=True) as zip_file:
+        with zipfile.ZipFile(
+            zip_file_path, "w", zipfile.ZIP_DEFLATED, allowZip64=True
+        ) as zip_file:
             for filename in files:
                 zip_file.write(filename, filename)
             for dirname in dirs:
@@ -146,25 +154,28 @@ def execute(argv, env=os.environ):  # pylint: disable=dangerous-default-value
         print(' '.join(argv))
     argv_string = argv if isinstance(argv, str) else ' '.join(argv)
     try:
-        with subprocess.Popen(argv,
-                              env=env,
-                              stdout=subprocess.PIPE,
-                              stderr=subprocess.PIPE,
-                              encoding='utf-8',
-                              universal_newlines=True) as process:
+        with subprocess.Popen(
+            argv,
+            env=env,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            encoding='utf-8',
+            universal_newlines=True,
+        ) as process:
             stdout, stderr = process.communicate()
         if is_verbose_mode() or process.returncode != 0:
             # Fix any unsupported characters in print encoder.
-            printable_stdout = stdout.encode(sys.stdout.encoding,
-                                             'backslashreplace').decode(
-                                                 sys.stdout.encoding)
+            printable_stdout = stdout.encode(
+                sys.stdout.encoding, 'backslashreplace'
+            ).decode(sys.stdout.encoding)
             # Print the output instead of raising it, so that we get pretty
             # output. Most useful erroroutput from typescript / webpack is in
             # stdout and not stderr.
             print(printable_stdout)
             if process.returncode != 0:
-                raise RuntimeError('Command \'%s\' failed' % (argv_string),
-                                   stderr)
+                raise RuntimeError(
+                    'Command \'%s\' failed' % (argv_string), stderr
+                )
         return stdout
     except subprocess.CalledProcessError as e:
         print('Error in subprocess:')

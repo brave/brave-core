@@ -20,13 +20,13 @@ def CheckToModifyInputApi(input_api, _output_api):
 # Ensure we add // IWYU pragma: export into overridden chromium headers to make
 # IWYU aware that these headers actually export other headers.
 def CheckOverriddenHeadersDeclareIWYUExport(input_api, output_api):
-    files_to_check = (r'.+\.h$', )
+    files_to_check = (r'.+\.h$',)
     files_to_skip = ()
 
     def file_filter(f):
-        return input_api.FilterSourceFile(f,
-                                          files_to_check=files_to_check,
-                                          files_to_skip=files_to_skip)
+        return input_api.FilterSourceFile(
+            f, files_to_check=files_to_check, files_to_skip=files_to_skip
+        )
 
     include_prefixes = ('#include <', '#include "../gen/')
     nolint = 'NOLINT'
@@ -36,10 +36,13 @@ def CheckOverriddenHeadersDeclareIWYUExport(input_api, output_api):
     for f in input_api.AffectedSourceFiles(file_filter):
         overridden_file_include_prefixes = tuple(
             f'{prefix}{f.UnixLocalPath().replace("chromium_src/", "")}'
-            for prefix in include_prefixes)
+            for prefix in include_prefixes
+        )
         for lineno, line in enumerate(f.NewContents(), 1):
-            if not line.startswith(
-                    overridden_file_include_prefixes) or nolint in line:
+            if (
+                not line.startswith(overridden_file_include_prefixes)
+                or nolint in line
+            ):
                 continue
             if line.endswith(expected_suffix):
                 continue
@@ -50,21 +53,22 @@ def CheckOverriddenHeadersDeclareIWYUExport(input_api, output_api):
 
     return [
         output_api.PresubmitError(
-            f'Overridden file include should end with {expected_suffix}',
-            items)
+            f'Overridden file include should end with {expected_suffix}', items
+        )
     ]
 
 
 # Ensure overridden sources include original headers only via "" syntax.
 def CheckOverriddenSourceIncludeOriginalHeaderOnlyViaQuotes(
-        input_api, output_api):
-    files_to_check = (r'.+\.(c|cc|cpp|m|mm)$', )
+    input_api, output_api
+):
+    files_to_check = (r'.+\.(c|cc|cpp|m|mm)$',)
     files_to_skip = ()
 
     def file_filter(f):
-        return input_api.FilterSourceFile(f,
-                                          files_to_check=files_to_check,
-                                          files_to_skip=files_to_skip)
+        return input_api.FilterSourceFile(
+            f, files_to_check=files_to_check, files_to_skip=files_to_skip
+        )
 
     include_template = '#include <{}>'
     nolint = 'NOLINT'
@@ -73,7 +77,8 @@ def CheckOverriddenSourceIncludeOriginalHeaderOnlyViaQuotes(
     for f in input_api.AffectedSourceFiles(file_filter):
         include_with_path = include_template.format(
             os.path.splitext(f.UnixLocalPath().replace("chromium_src/", ""))[0]
-            + '.h')
+            + '.h'
+        )
         for lineno, line in enumerate(f.NewContents(), 1):
             if not line.startswith(include_with_path) or nolint in line:
                 continue
@@ -85,7 +90,9 @@ def CheckOverriddenSourceIncludeOriginalHeaderOnlyViaQuotes(
     return [
         output_api.PresubmitError(
             'In source files, headers for the overridden files should be '
-            'included via "" syntax, not <>', items)
+            'included via "" syntax, not <>',
+            items,
+        )
     ]
 
 
@@ -93,18 +100,21 @@ def CheckOverrides(input_api, output_api):
     items = []
     with brave_chromium_utils.sys_path('//brave/tools/chromium_src'):
         import check_chromium_src
+
     # None will make filter pick Chromium's DEFAULT_FILES_TO_CHECK.
     def file_filter(f):
-        return input_api.FilterSourceFile(f,
-                                          files_to_check=None,
-                                          files_to_skip=())
+        return input_api.FilterSourceFile(
+            f, files_to_check=None, files_to_skip=()
+        )
+
     overrides = [
         f.AbsoluteLocalPath()
         for f in input_api.AffectedSourceFiles(file_filter)
     ]
     # We can't provide the gen directory path from presubmit.
     messages = check_chromium_src.ChromiumSrcOverridesChecker(
-        gen_buildir=None).check_overrides(overrides)
+        gen_buildir=None
+    ).check_overrides(overrides)
     for message in messages['infos']:
         items.append(output_api.PresubmitNotifyResult(message))
     for message in messages['warnings']:

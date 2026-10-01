@@ -5,8 +5,11 @@
 
 from brave_chromium_utils import inline_file
 
-inline_file("//brave/installer/util/prebuild/create_installer_string_rc.py",
-            globals(), locals())
+inline_file(
+    "//brave/installer/util/prebuild/create_installer_string_rc.py",
+    globals(),
+    locals(),
+)
 
 MODE_SPECIFIC_STRINGS = {
     'IDS_APP_SHORTCUTS_SUBDIR_NAME': {

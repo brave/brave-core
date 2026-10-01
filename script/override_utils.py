@@ -22,8 +22,10 @@ def override_function(scope, name=None, condition=True):
             original_function = getattr(scope, function_name, None)
 
         if not callable(original_function):
-            raise NameError(f'Failed to override function: '
-                            f'{function_name} not found or not callable')
+            raise NameError(
+                f'Failed to override function: '
+                f'{function_name} not found or not callable'
+            )
 
         def wrapped_function(*args, **kwargs):
             return new_function(original_function, *args, **kwargs)
@@ -57,8 +59,9 @@ def override_method(scope, name=None, condition=True):
                 return new_method(self, original_method, *args, **kwargs)
 
             if inspect.ismethod(original_method):
-                setattr(scope, method_name,
-                        types.MethodType(wrapped_method, scope))
+                setattr(
+                    scope, method_name, types.MethodType(wrapped_method, scope)
+                )
             else:
                 assert inspect.isfunction(original_method)
                 setattr(scope, method_name, wrapped_method)
@@ -80,16 +83,19 @@ def override_scope_function(scope, new_function, name=None, condition=True):
     original_function = getattr(scope, function_name, None)
     try:
         if not callable(original_function):
-            raise NameError(f'Failed to override scope function: '
-                            f'{function_name} not found or not callable')
+            raise NameError(
+                f'Failed to override scope function: '
+                f'{function_name} not found or not callable'
+            )
 
         if inspect.ismethod(original_function):
 
             def wrapped_method(self, *args, **kwargs):
                 return new_function(self, original_function, *args, **kwargs)
 
-            setattr(scope, function_name,
-                    types.MethodType(wrapped_method, scope))
+            setattr(
+                scope, function_name, types.MethodType(wrapped_method, scope)
+            )
         else:
 
             def wrapped_function(*args, **kwargs):
@@ -104,11 +110,9 @@ def override_scope_function(scope, new_function, name=None, condition=True):
 
 
 @contextlib.contextmanager
-def override_scope_variable(scope,
-                            name,
-                            value,
-                            fail_if_not_found=True,
-                            condition=True):
+def override_scope_variable(
+    scope, name, value, fail_if_not_found=True, condition=True
+):
     """Scoped variable override helper."""
     if not condition:
         yield

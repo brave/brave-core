@@ -2,8 +2,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Reads the secrets `.env` file.
-"""
+"""Reads the secrets `.env` file."""
 
 from __future__ import annotations
 
@@ -27,8 +26,7 @@ def parse(text: str) -> dict[str, str]:
             continue
         key = key.strip()
         value = value.strip()
-        if len(value) >= 2 and value[0] == value[-1] and value[0] in ('"',
-                                                                      "'"):
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in ('"', "'"):
             value = value[1:-1]
         result[key] = value
     return result

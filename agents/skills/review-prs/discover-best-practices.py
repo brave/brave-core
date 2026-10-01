@@ -77,8 +77,9 @@ def extract_applicability(filepath):
             for i, line in enumerate(f):
                 if i >= 10:
                     break
-                m = re.search(r"<!--\s*applicability:\s*(\S+)\s*-->", line,
-                              re.IGNORECASE)
+                m = re.search(
+                    r"<!--\s*applicability:\s*(\S+)\s*-->", line, re.IGNORECASE
+                )
                 if m:
                     return m.group(1).lower()
     except OSError:
@@ -107,17 +108,20 @@ def discover(bp_dir):
             continue
 
         condition = extract_applicability(fpath) or infer_condition(fname)
-        results.append({
-            "doc": fname,
-            "path": os.path.abspath(fpath),
-            "condition": condition,
-        })
+        results.append(
+            {
+                "doc": fname,
+                "path": os.path.abspath(fpath),
+                "condition": condition,
+            }
+        )
     return results
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Discover best-practice documents and their applicability")
+        description="Discover best-practice documents and their applicability"
+    )
     parser.add_argument("bp_dir", help="Path to best-practices directory")
     parser.add_argument("--has-cpp", action="store_true")
     parser.add_argument("--has-test", action="store_true")
@@ -143,8 +147,9 @@ def main():
 
     if any_flag_set:
         filtered = [
-            d for d in all_docs if d["condition"] == "always"
-            or d["condition"] in active_conditions
+            d
+            for d in all_docs
+            if d["condition"] == "always" or d["condition"] in active_conditions
         ]
     else:
         filtered = all_docs

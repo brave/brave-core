@@ -35,8 +35,9 @@ def main():
     tag = args.tag
 
     if not re.match(r'^refs/tags/', tag) and not re.match(r'^v', tag):
-        logging.error(" Tag prefix must contain %s or %s", "\"refs/tags/\"",
-                      "\"v\"")
+        logging.error(
+            " Tag prefix must contain %s or %s", "\"refs/tags/\"", "\"v\""
+        )
         sys.exit(1)
 
     match = re.match(r'^refs/tags/(.*)$', tag)
@@ -45,8 +46,9 @@ def main():
 
     match = re.match(r'^v(.*)$', tag)
     if not match:
-        logging.error(" Tag must start with \"v\" after \"refs/tags/\": %s",
-                      args.tag)
+        logging.error(
+            " Tag must start with \"v\" after \"refs/tags/\": %s", args.tag
+        )
         sys.exit(1)
     version = match.group(1)
 
@@ -66,16 +68,29 @@ def parse_args():
     desc = "Parse Brave Browser changelog and return changes for a tag"
 
     parser = argparse.ArgumentParser(
-        description=desc, formatter_class=RawTextHelpFormatter)
-    parser.add_argument('-d', '--debug', action='store_true',
-                        help='Print debug statements')
+        description=desc, formatter_class=RawTextHelpFormatter
+    )
     parser.add_argument(
-        '-o', '--output', help='Output format: markdown or html (required)', required=True)
-    parser.add_argument('-t', '--tag',
-                        help='Brave version tag (allowed format: "v1.5.45" or "refs/tags/v1.5.45") (required)',
-                        required=True)
+        '-d', '--debug', action='store_true', help='Print debug statements'
+    )
     parser.add_argument(
-        '-u', '--url', help='URL for Brave Browser raw markdown file (required)', required=True)
+        '-o',
+        '--output',
+        help='Output format: markdown or html (required)',
+        required=True,
+    )
+    parser.add_argument(
+        '-t',
+        '--tag',
+        help='Brave version tag (allowed format: "v1.5.45" or "refs/tags/v1.5.45") (required)',
+        required=True,
+    )
+    parser.add_argument(
+        '-u',
+        '--url',
+        help='URL for Brave Browser raw markdown file (required)',
+        required=True,
+    )
     return parser.parse_args()
 
 
