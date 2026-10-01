@@ -478,8 +478,7 @@ extension SceneDelegate {
     if #available(iOS 26.0, *) {
       handleControlWidgetIntentIfNeeded(
         sceneState.connectionOptions.appIntent,
-        browserViewController: browserViewController,
-        source: "connectionOptions"
+        browserViewController: browserViewController
       )
     }
 
@@ -506,27 +505,16 @@ extension SceneDelegate {
   @available(iOS 26.0, *)
   private func handleControlWidgetIntentIfNeeded(
     _ appIntent: (any UISceneAppIntent)?,
-    browserViewController: BrowserViewController,
-    source: String
+    browserViewController: BrowserViewController
   ) {
-    guard let appIntent else {
-      let message = "\(source) appIntent=nil"
-      ShortcutControlTrace.log.info("\(message, privacy: .public)")
-      return
-    }
     let shortcut: WidgetShortcut?
     if appIntent is OpenAskBraveControlIntent {
       shortcut = .askBrave
     } else if appIntent is OpenBraveSearchControlIntent {
       shortcut = .search
     } else if let intent = appIntent as? OpenControlWidgetShortcutIntent {
-      let message =
-        "\(source) stored=\(ShortcutControlTrace.describe(intent.shortcut)) param=\(intent.shortcutRawValue) resolved=\(ShortcutControlTrace.describe(intent.resolvedShortcut))"
-      ShortcutControlTrace.log.info("\(message, privacy: .public)")
       shortcut = intent.resolvedShortcut
     } else {
-      let message = "\(source) unexpected \(String(describing: type(of: appIntent)))"
-      ShortcutControlTrace.log.info("\(message, privacy: .public)")
       shortcut = nil
     }
     guard let shortcut else { return }
@@ -954,15 +942,8 @@ extension SceneDelegate: AppIntentSceneDelegate {
   func scene(_ scene: UIScene, willPerformAppIntent appIntent: any UISceneAppIntent) {
     guard let windowScene = scene as? UIWindowScene,
       let browserViewController = windowScene.browserViewController
-    else {
-      ShortcutControlTrace.log.info("willPerformAppIntent missing browser")
-      return
-    }
-    handleControlWidgetIntentIfNeeded(
-      appIntent,
-      browserViewController: browserViewController,
-      source: "willPerformAppIntent"
-    )
+    else { return }
+    handleControlWidgetIntentIfNeeded(appIntent, browserViewController: browserViewController)
   }
 }
 
