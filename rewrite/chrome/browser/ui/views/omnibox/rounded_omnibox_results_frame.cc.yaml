@@ -8,5 +8,5 @@ substitutions:
       Use Brave's own corner-radius token set for the omnibox results frame.
     count: 2
     regex:
-      pattern: 'views::ShapeContextTokens::kOmniboxExpandedRadius'
+      pattern: 'ChromeShapeContextTokens::kOmniboxExpandedRadius'
       replace: 'views::ShapeContextTokensOverride::kOmniboxExpandedRadius'
