@@ -28,6 +28,7 @@ source_set("unit_tests") {
     "//chrome/browser/devtools",
     "//chrome/common",
     "//chrome/test:test_support",
+    "//chrome/test/base:testing_browser_process",
     "//components/keyed_service/content",
     "//components/safe_browsing/core/common:safe_browsing_prefs",
     "//components/translate/core/browser",

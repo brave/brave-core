@@ -70,6 +70,7 @@ source_set("unit_tests") {
     "//base",
     "//brave/components/brave_search/browser",
     "//chrome/test:test_support",
+    "//chrome/test/base:testing_browser_process",
     "//content/test:test_support",
     "//testing/gtest",
   ]

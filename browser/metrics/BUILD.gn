@@ -37,6 +37,7 @@ source_set("brave_metrics_unit_tests") {
     "//brave/browser/metrics/buildflags",
     "//chrome/browser",
     "//chrome/test:test_support",
+    "//chrome/test/base:testing_browser_process",
     "//content/test:test_support",
   ]
 

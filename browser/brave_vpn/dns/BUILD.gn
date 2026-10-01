@@ -16,6 +16,7 @@ source_set("unit_tests") {
     "//chrome/browser/prefs",
     "//chrome/common:constants",
     "//chrome/test:test_support",
+    "//chrome/test/base:testing_browser_process",
     "//net",
     "//testing/gtest",
   ]

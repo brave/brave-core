@@ -77,6 +77,7 @@ source_set("unit_tests") {
     "//brave/components/local_ai/core",
     "//chrome/browser/prefs",
     "//chrome/test:test_support",
+    "//chrome/test/base:testing_browser_process",
     "//components/history_embeddings/core",
     "//components/optimization_guide/core",
     "//components/optimization_guide/proto:optimization_guide_proto",
