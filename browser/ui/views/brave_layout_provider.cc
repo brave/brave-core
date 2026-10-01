@@ -36,6 +36,7 @@ int BraveLayoutProvider::GetCornerRadiusMetric(views::ShapeContextToken token,
                                                const gfx::Size& size) const {
   switch (token) {
     case kRoundedCornersBorderRadius:
+    case kSidePanelContentRadius:
       // Matches Brave Mac window / content inner rounding.
       return 6;
     case kRoundedCornersBorderRadiusAtWindowCorner:
@@ -56,10 +57,6 @@ int BraveLayoutProvider::GetCornerRadiusMetric(views::ShapeContextToken token,
 int BraveLayoutProvider::GetDistanceMetric(int metric) const {
   if (metric == views::DISTANCE_CONTROL_VERTICAL_TEXT_PADDING) {
     return 8;
-  }
-
-  if (metric == DISTANCE_SIDE_PANEL_CONTENT_RADIUS) {
-    return GetCornerRadiusMetric(kRoundedCornersBorderRadius);
   }
 
   return ChromeLayoutProvider::GetDistanceMetric(metric);
