@@ -594,6 +594,10 @@ class Generator(generator.Generator):
         if typemap is None:
             raise Exception("No typemap found for the given kind: %s" % kind)
         cpp_assign = typemap.ObjCToCpp(accessor)
+        if (mojom.IsNullableKind(kind)
+                and isinstance(typemap, PendingRemoteMojoTypemap)):
+            # `CreateRemote` returns a disconnected remote for a nil observer
+            return cpp_assign
         if mojom.IsNullableKind(kind):
             if ((self._IsTypemappedKind(kind)
                  and not self.typemap[self._GetFullMojomNameForKind(

@@ -180,6 +180,13 @@ class TestEventSource : public mojom_objc_test::mojom::EventSource {
                        observer) override {
     observers_.Add(std::move(observer));
   }
+  void AddOptionalObserver(
+      mojo::PendingRemote<mojom_objc_test::mojom::EventObserver> observer)
+      override {
+    if (observer.is_valid()) {
+      observers_.Add(std::move(observer));
+    }
+  }
 
  private:
   mojo::Receiver<mojom_objc_test::mojom::EventSource> receiver_{this};
@@ -227,6 +234,20 @@ TEST_F(MojomObjcGeneratorPendingRemoteTest, ForwardsMessagesToObserver) {
   impl_.Notify("hello");
   ASSERT_TRUE(base::test::RunUntil([&] { return received_.size() == 1u; }));
   EXPECT_EQ(received_, std::vector<std::string>{"hello"});
+}
+
+TEST_F(MojomObjcGeneratorPendingRemoteTest, NullableObserver) {
+  [event_source_ addOptionalObserver:nil];
+
+  MojomObjcTestTestEventObserver* observer =
+      [[MojomObjcTestTestEventObserver alloc] init];
+  [event_source_ addOptionalObserver:observer];
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return impl_.observer_count() >= 1u; }));
+
+  // Messages on a pipe are handled in order, so the nil registration has been
+  // handled by now and shouldn't have added an observer.
+  EXPECT_EQ(impl_.observer_count(), 1u);
 }
 
 // The C++ side should see the remote disconnect once the Obj-C observer is
