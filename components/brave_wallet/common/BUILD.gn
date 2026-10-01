@@ -129,6 +129,7 @@ mojom("mojom") {
     "ledger_bridge.mojom",
     "meld_integration.mojom",
     "mojom/brave_wallet_common.mojom",
+    "polkadot_bridge.mojom",
   ]
   public_deps = [
     "//mojo/public/mojom/base",

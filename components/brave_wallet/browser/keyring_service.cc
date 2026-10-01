@@ -3413,6 +3413,8 @@ KeyringService::SignMessageByPolkadotKeyring(
     base::span<const uint8_t> message) {
   CHECK(account_id);
 
+  LOG(INFO) << "true signature payload is: " << base::HexEncodeLower(message);
+
   if (auto* keyring = GetKeyring<PolkadotKeyring>(account_id->keyring_id)) {
     return keyring->SignMessage(message, account_id->account_index);
   }

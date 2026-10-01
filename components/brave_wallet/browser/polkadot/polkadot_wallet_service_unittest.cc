@@ -5,8 +5,13 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 
+#include <optional>
+#include <string_view>
+
 #include "base/functional/callback_forward.h"
 #include "base/functional/function_ref.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -1508,6 +1513,77 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate_NullPaymentInfo) {
           }));
 
   run_loop.Run();
+}
+
+TEST_F(PolkadotWalletServiceUnitTest, ChainIdFromGenesisHash_KnownChains) {
+  // A dApp names the chain it wants signed for by genesis hash, so this lookup
+  // is what decides whether we have metadata to decode its call with at all.
+
+  static constexpr struct {
+    std::string_view genesis_hash;
+    std::string_view chain_id;
+  } kCases[] = {
+      {"0x68d56f15f85d3136970ec16946040bc1752654e906147f7e43e9d539d7c3de2f",
+       mojom::kPolkadotMainnetAssetHub},
+      {"0xfc41b9bd8ef8fe53d58c7ea67c794c7ec9a73daf05e6d54b14ff6342c99ba64c",
+       mojom::kPolkadotAcala},
+      {"0x262e1b2ad728475fd6fe88e62d34c200abe6fd693931ddad144059b1eb884e5b",
+       mojom::kPolkadotBifrost},
+      {"0xafdc188f45c71dacbaa0b62e16a91f726c7b8699a9748cdf715459de6b7f366d",
+       mojom::kPolkadotHydration},
+      {"0xe7e0962324a3b86c83404dbea483f25fb5dab4c224791c81b756cfc948006174",
+       mojom::kPolkadotNeuroWeb},
+      {"0xbb9233e202ec014707f82ddb90e84ee9efece8fefee287ad4ad646d869a6c24a",
+       mojom::kPolkadotJamton},
+  };
+
+  for (const auto& test_case : kCases) {
+    EXPECT_EQ(PolkadotWalletService::GetChainIdFromGenesisHash(
+                  test_case.genesis_hash),
+              test_case.chain_id)
+        << test_case.genesis_hash;
+  }
+}
+
+TEST_F(PolkadotWalletServiceUnitTest, ChainIdFromGenesisHash_UnmappedChain) {
+  // The relay chain is a chain we otherwise support, but it isn't in the map,
+  // so dApp signing against it is refused rather than silently resolved to a
+  // parachain.
+  static constexpr std::string_view kPolkadotRelay =
+      "0x91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3";
+  EXPECT_EQ(PolkadotWalletService::GetChainIdFromGenesisHash(kPolkadotRelay),
+            std::nullopt);
+}
+
+TEST_F(PolkadotWalletServiceUnitTest, ChainIdFromGenesisHash_ExactMatchOnly) {
+  // The genesis hash arrives verbatim from dApp-supplied JSON and is matched as
+  // a string, so anything but polkadot-js's lowercase 0x-prefixed spelling
+  // fails closed.
+  static constexpr std::string_view kAssetHub =
+      "0x68d56f15f85d3136970ec16946040bc1752654e906147f7e43e9d539d7c3de2f";
+  ASSERT_EQ(PolkadotWalletService::GetChainIdFromGenesisHash(kAssetHub),
+            mojom::kPolkadotMainnetAssetHub);
+
+  const std::string upper_hex =
+      base::StrCat({"0x", base::ToUpperASCII(kAssetHub.substr(2))});
+  const std::string trailing_bytes = base::StrCat({kAssetHub, "00"});
+  const std::string trailing_space = base::StrCat({kAssetHub, " "});
+
+  const std::string_view misspellings[] = {
+      "",
+      "0x",
+      upper_hex,
+      kAssetHub.substr(2),                        // No 0x prefix.
+      kAssetHub.substr(0, kAssetHub.size() - 1),  // No prefix matching.
+      trailing_bytes,
+      trailing_space,
+  };
+
+  for (std::string_view genesis_hash : misspellings) {
+    EXPECT_EQ(PolkadotWalletService::GetChainIdFromGenesisHash(genesis_hash),
+              std::nullopt)
+        << genesis_hash;
+  }
 }
 
 }  // namespace brave_wallet

@@ -15,11 +15,12 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_dapp_utils.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -32,6 +33,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/gurl.h"
 #include "url/origin.h"
 
 using base::test::TestFuture;
@@ -99,6 +101,10 @@ class PolkadotApiImplUnitTest : public testing::Test {
 
     service_delegate_ = TestBraveWalletServiceDelegate::Create();
     keyring_service_->SetDelegate(service_delegate_.get());
+
+    polkadot_wallet_service_ = std::make_unique<PolkadotWalletService>(
+        *keyring_service_, *network_manager_, prefs_,
+        url_loader_factory_.GetSafeWeakWrapper());
   }
 
   void TearDown() override {
@@ -118,7 +124,9 @@ class PolkadotApiImplUnitTest : public testing::Test {
         .WillByDefault(testing::Return(true));
 
     api_ = std::make_unique<PolkadotApiImpl>(
-        *keyring_service_, std::move(delegate), granted_account.Clone());
+        *keyring_service_, *polkadot_wallet_service_, std::move(delegate),
+        granted_account.Clone(),
+        url::Origin::Create(GURL("https://brave.com")));
   }
 
   void CreateWallet() {
@@ -165,6 +173,7 @@ class PolkadotApiImplUnitTest : public testing::Test {
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
+  std::unique_ptr<PolkadotWalletService> polkadot_wallet_service_;
 
   raw_ptr<MockBraveWalletProviderDelegate> delegate_ = nullptr;
   std::unique_ptr<PolkadotApiImpl> api_;

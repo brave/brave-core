@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_dapp_utils.h"
 
+#include <array>
 #include <memory>
 #include <optional>
 #include <string>
@@ -230,6 +231,54 @@ TEST_F(PolkadotDappUtilsUnitTest, MakeInjectedAccount) {
   EXPECT_EQ(injected->name, kPolkadotObfuscatedAccountName);
   EXPECT_EQ(injected->type, kPolkadotSr25519KeypairType);
   EXPECT_FALSE(injected->genesis_hash);
+}
+
+TEST_F(PolkadotDappUtilsUnitTest, SignaturePayloadMatchesCall) {
+  // A `balances.transferKeepAlive` call, followed by the bytes the signed
+  // extensions contribute.
+  constexpr char kPayloadJson[] = R"({"method":"0x0503001234"})";
+  const std::vector<uint8_t> call = {0x05, 0x03, 0x00, 0x12, 0x34};
+
+  auto payload = call;
+  payload.insert(payload.end(), {0xaa, 0xbb});
+  EXPECT_TRUE(PolkadotSignaturePayloadMatchesCall(payload, kPayloadJson));
+
+  // The call the dapp declared has to be the payload's prefix, not merely
+  // present somewhere in it.
+  std::vector<uint8_t> shifted = {0xaa};
+  shifted.insert(shifted.end(), call.begin(), call.end());
+  EXPECT_FALSE(PolkadotSignaturePayloadMatchesCall(shifted, kPayloadJson));
+
+  // A different call entirely.
+  EXPECT_FALSE(PolkadotSignaturePayloadMatchesCall(
+      payload, R"({"method":"0x0503009999"})"));
+
+  // Signed extensions always follow the call, so a payload that is only the
+  // call is not a payload.
+  EXPECT_FALSE(PolkadotSignaturePayloadMatchesCall(call, kPayloadJson));
+  EXPECT_FALSE(PolkadotSignaturePayloadMatchesCall({}, kPayloadJson));
+
+  // Nothing to pin the payload to.
+  EXPECT_FALSE(PolkadotSignaturePayloadMatchesCall(payload, "not json"));
+  EXPECT_FALSE(PolkadotSignaturePayloadMatchesCall(payload, "{}"));
+  EXPECT_FALSE(
+      PolkadotSignaturePayloadMatchesCall(payload, R"({"method":"0x"})"));
+  EXPECT_FALSE(
+      PolkadotSignaturePayloadMatchesCall(payload, R"({"method":"zzzz"})"));
+}
+
+TEST_F(PolkadotDappUtilsUnitTest, MakeSignerSignatureHex) {
+  std::array<uint8_t, kSr25519SignatureSize> signature = {};
+  signature.fill(uint8_t{0xab});
+
+  std::string expected = "0x01";
+  for (size_t i = 0; i < kSr25519SignatureSize; ++i) {
+    expected += "ab";
+  }
+
+  // The leading `01` is `MultiSignature::Sr25519`'s variant index, without
+  // which polkadot-js reads the signature as the wrong variant.
+  EXPECT_EQ(MakePolkadotSignerSignatureHex(signature), expected);
 }
 
 }  // namespace brave_wallet

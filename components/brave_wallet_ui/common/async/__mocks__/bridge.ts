@@ -216,6 +216,9 @@ export class MockedWalletApiProxy {
   private signCardanoTransactionRequests =
     [] as BraveWallet.SignCardanoTransactionRequest[]
 
+  private signPolkadotTransactionRequests =
+    [] as BraveWallet.SignPolkadotTransactionRequest[]
+
   constructor(overrides?: WalletApiDataOverrides | undefined) {
     this.applyOverrides(overrides)
   }
@@ -245,6 +248,9 @@ export class MockedWalletApiProxy {
       overrides.signCardanoTransactionRequests
       ?? this.signCardanoTransactionRequests
     this.isWalletCreated = overrides.isWalletCreated ?? this.isWalletCreated
+    this.signPolkadotTransactionRequests =
+      overrides.signPolkadotTransactionRequests
+      ?? this.signPolkadotTransactionRequests
   }
 
   blockchainRegistry: Partial<
@@ -1397,6 +1403,11 @@ export class MockedWalletApiProxy {
   polkadotWalletService: Partial<
     InstanceType<typeof BraveWallet.PolkadotWalletServiceInterface>
   > = {
+    getPendingSignPolkadotTransactionRequests: async () => {
+      return {
+        requests: this.signPolkadotTransactionRequests,
+      }
+    },
     getCompatibleNetworks: async (accountId) => {
       const account = this.accountInfos.find(
         (item) => item.accountId.uniqueKey === accountId.uniqueKey,

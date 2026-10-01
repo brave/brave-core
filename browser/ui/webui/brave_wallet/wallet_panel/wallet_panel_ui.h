@@ -8,19 +8,24 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
+#include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
+#include "base/timer/timer.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_handler.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/wallet_handler.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/ledger_bridge.mojom.h"
+#include "brave/components/brave_wallet/common/polkadot_bridge.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/remote.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/components/brave_rewards/core/mojom/rewards_page.mojom.h"
@@ -52,6 +57,24 @@ class WalletPanelUI : public TopChromeWebUIController,
   // Called with `LedgerBridge` coming from untrusted subframe.
   void BindLedgerBridge(
       mojo::PendingRemote<brave_wallet::mojom::LedgerBridge> bridge);
+
+  // Called with `PolkadotBridge` coming from the untrusted subframe. Unlike
+  // the ledger bridge this is not fused through to the panel: the browser keeps
+  // the remote, so the frame stays an implementation detail of the browser
+  // rather than a peer of the panel.
+  void BindPolkadotBridge(
+      mojo::PendingRemote<brave_wallet::mojom::PolkadotBridge> bridge);
+
+  // Null until the bridge frame binds, and again once it goes away.
+  brave_wallet::mojom::PolkadotBridge* GetPolkadotBridge();
+
+  // Runs `callback` with true once the bridge frame has bound, or immediately
+  // if it already has. The frame's bundle is large enough that a sign request
+  // routinely arrives before it finishes evaluating, so callers must wait
+  // rather than treat an unbound bridge as absent. Runs with false if the
+  // frame has not bound within `kPolkadotBridgeBindTimeout`, which fails the
+  // signing flow closed instead of leaving the panel waiting forever.
+  void WaitForPolkadotBridge(base::OnceCallback<void(bool)> callback);
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   void BindInterface(
@@ -112,6 +135,8 @@ class WalletPanelUI : public TopChromeWebUIController,
 
   void MaybeFuseLedgerBridge();
 
+  void FlushPolkadotBridgeWaiters(bool ready);
+
   std::unique_ptr<WalletPanelHandler> panel_handler_;
   std::unique_ptr<brave_wallet::WalletHandler> wallet_handler_;
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -122,6 +147,10 @@ class WalletPanelUI : public TopChromeWebUIController,
   mojo::PendingRemote<brave_wallet::mojom::LedgerBridge> ledger_bridge_remote_;
   mojo::PendingReceiver<brave_wallet::mojom::LedgerBridge>
       ledger_bridge_receiver_;
+
+  mojo::Remote<brave_wallet::mojom::PolkadotBridge> polkadot_bridge_remote_;
+  std::vector<base::OnceCallback<void(bool)>> polkadot_bridge_waiters_;
+  base::OneShotTimer polkadot_bridge_bind_timer_;
 
   mojo::Receiver<brave_wallet::mojom::LedgerBridgeService> service_receiver_{
       this};

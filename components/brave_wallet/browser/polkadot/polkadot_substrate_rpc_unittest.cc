@@ -2373,6 +2373,264 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
   }
 }
 
+TEST_F(PolkadotSubstrateRpcUnitTest, DappParachainRpcUrls) {
+  url_loader_factory_.ClearResponses();
+
+  // These parachains are only reachable through the dApp provider, so they have
+  // no NetworkManager entry and resolve via the hardcoded chain id mapping.
+  const struct {
+    std::string_view chain_id;
+    std::string_view rpc_url;
+  } test_cases[] = {
+      {mojom::kPolkadotAcala, "https://acala-rpc-0.aca-api.network/"},
+      {mojom::kPolkadotBifrost, "https://hk.p.bifrost-rpc.liebi.com/"},
+      {mojom::kPolkadotHydration, "https://hydration-rpc.n.dwellir.com/"},
+      {mojom::kPolkadotNeuroWeb, "https://parachain-rpc.origin-trail.network/"},
+      {mojom::kPolkadotJamton, "https://rpc.jamton.network/"},
+  };
+
+  base::MockCallback<PolkadotSubstrateRpc::GetMetadataCallback> callback;
+  auto* reqs = url_loader_factory_.pending_requests();
+
+  for (const auto& test_case : test_cases) {
+    SCOPED_TRACE(test_case.chain_id);
+
+    ASSERT_TRUE(network_manager_
+                    ->GetNetworkURL(test_case.chain_id, mojom::CoinType::DOT)
+                    .is_empty());
+
+    polkadot_substrate_rpc_->GetMetadata(test_case.chain_id, callback.Get());
+
+    ASSERT_EQ(reqs->size(), 1u);
+    EXPECT_EQ(reqs->front().request.url, test_case.rpc_url);
+
+    reqs->clear();
+  }
+
+  // A chain NetworkManager knows about keeps its configured endpoint rather
+  // than falling back to the mapping.
+  polkadot_substrate_rpc_->GetMetadata(mojom::kPolkadotMainnetAssetHub,
+                                       callback.Get());
+  ASSERT_EQ(reqs->size(), 1u);
+  EXPECT_EQ(reqs->front().request.url,
+            "https://polkadot-asset-hub.wallet.brave.com/");
+  reqs->clear();
+
+  // So does a user-configured endpoint for such a chain.
+  network_manager_->SetNetworkURLForTesting(
+      mojom::kPolkadotMainnetAssetHub,
+      GURL("https://asset-hub.example.com/rpc"));
+  polkadot_substrate_rpc_->GetMetadata(mojom::kPolkadotMainnetAssetHub,
+                                       callback.Get());
+  ASSERT_EQ(reqs->size(), 1u);
+  EXPECT_EQ(reqs->front().request.url, "https://asset-hub.example.com/rpc");
+  reqs->clear();
+}
+
+TEST_F(PolkadotSubstrateRpcUnitTest, GetSystemProperties) {
+  url_loader_factory_.ClearResponses();
+
+  const auto* chain_id = mojom::kPolkadotTestnet;
+  std::string testnet_url =
+      network_manager_
+          ->GetKnownChain(mojom::kPolkadotTestnet, mojom::CoinType::DOT)
+          ->rpc_endpoints.front()
+          .spec();
+
+  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
+
+  base::test::TestFuture<
+      base::expected<mojom::PolkadotChainPropertiesPtr, std::string>>
+      future;
+
+  {
+    // Successful RPC call (nullary). Most chains spell the token fields as
+    // scalars.
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+
+    auto* reqs = url_loader_factory_.pending_requests();
+    EXPECT_TRUE(reqs);
+    EXPECT_EQ(reqs->size(), 1u);
+
+    auto const& req = reqs->at(0);
+    EXPECT_TRUE(req.request.request_body->elements());
+    auto const& element = req.request.request_body->elements()->at(0);
+
+    std::string expected_body = R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "system_properties",
+        "params": []
+      })";
+
+    EXPECT_EQ(base::test::ParseJsonDict(
+                  element.As<network::DataElementBytes>().AsStringPiece()),
+              base::test::ParseJsonDict(expected_body));
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"({"jsonrpc":"2.0","id":1,"result":{
+          "ss58Format":42,"tokenDecimals":12,"tokenSymbol":"WND"}})");
+
+    auto properties = future.Take();
+    ASSERT_TRUE(properties.has_value());
+    EXPECT_EQ((*properties)->ss58_format, 42);
+    EXPECT_EQ((*properties)->token_decimals, std::vector<uint32_t>{12});
+    EXPECT_EQ((*properties)->token_symbol, std::vector<std::string>{"WND"});
+  }
+
+  {
+    // Chains with more than one native token spell them as arrays.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"({"jsonrpc":"2.0","id":1,"result":{
+          "ss58Format":0,"tokenDecimals":[10,12],"tokenSymbol":["DOT","KSM"]}})");
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+    auto properties = future.Take();
+    ASSERT_TRUE(properties.has_value());
+    EXPECT_EQ((*properties)->ss58_format, 0);
+    EXPECT_EQ((*properties)->token_decimals, (std::vector<uint32_t>{10, 12}));
+    EXPECT_EQ((*properties)->token_symbol,
+              (std::vector<std::string>{"DOT", "KSM"}));
+  }
+
+  {
+    // A chain spec need not declare any of these, and unrelated keys are
+    // common. Absent fields leave the type registry on its own defaults.
+    url_loader_factory_.AddResponse(
+        testnet_url,
+        R"({"jsonrpc":"2.0","id":1,"result":{"isEthereum":false}})");
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+    auto properties = future.Take();
+    ASSERT_TRUE(properties.has_value());
+    EXPECT_EQ((*properties)->ss58_format, std::nullopt);
+    EXPECT_TRUE((*properties)->token_decimals.empty());
+    EXPECT_TRUE((*properties)->token_symbol.empty());
+  }
+
+  {
+    // A field the chain did declare but we can't read fails the call rather
+    // than silently falling back to a default denomination.
+    url_loader_factory_.AddResponse(
+        testnet_url,
+        R"({"jsonrpc":"2.0","id":1,"result":{"tokenDecimals":"12"}})");
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+    auto properties = future.Take();
+    ASSERT_FALSE(properties.has_value());
+    EXPECT_EQ(properties.error(), WalletParsingErrorMessage());
+  }
+
+  {
+    // Same for a symbol that isn't a string.
+    url_loader_factory_.AddResponse(
+        testnet_url,
+        R"({"jsonrpc":"2.0","id":1,"result":{"tokenSymbol":[1234]}})");
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+    auto properties = future.Take();
+    ASSERT_FALSE(properties.has_value());
+    EXPECT_EQ(properties.error(), WalletParsingErrorMessage());
+  }
+
+  {
+    // The ss58 prefix is a u16, so a value outside that range is bad data.
+    url_loader_factory_.AddResponse(
+        testnet_url, R"({"jsonrpc":"2.0","id":1,"result":{"ss58Format":-1}})");
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+    auto properties = future.Take();
+    ASSERT_FALSE(properties.has_value());
+    EXPECT_EQ(properties.error(), WalletParsingErrorMessage());
+  }
+
+  {
+    // RPC error includes a message.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "error":{"code":-32601,"message":"Method not found"}
+      })");
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+    auto properties = future.Take();
+    ASSERT_FALSE(properties.has_value());
+    EXPECT_EQ(properties.error(), "Method not found");
+  }
+
+  {
+    // RPC error has no message.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "error":{"code":-32601}
+      })");
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+    auto properties = future.Take();
+    ASSERT_FALSE(properties.has_value());
+    EXPECT_EQ(properties.error(), WalletInternalErrorMessage());
+  }
+
+  {
+    // Error because result is missing.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1
+      })");
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+    auto properties = future.Take();
+    ASSERT_FALSE(properties.has_value());
+    EXPECT_EQ(properties.error(), WalletParsingErrorMessage());
+  }
+
+  {
+    // Error because result has an invalid type.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "result":1234
+      })");
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+    auto properties = future.Take();
+    ASSERT_FALSE(properties.has_value());
+    EXPECT_EQ(properties.error(), WalletParsingErrorMessage());
+  }
+
+  {
+    // Error due to non-2XX response.
+    url_loader_factory_.AddResponse(testnet_url, "",
+                                    net::HTTP_INTERNAL_SERVER_ERROR);
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+    auto properties = future.Take();
+    ASSERT_FALSE(properties.has_value());
+    EXPECT_EQ(properties.error(), WalletInternalErrorMessage());
+  }
+}
+
 TEST_F(PolkadotSubstrateRpcUnitTest, SubmitExtrinsic) {
   url_loader_factory_.ClearResponses();
 
