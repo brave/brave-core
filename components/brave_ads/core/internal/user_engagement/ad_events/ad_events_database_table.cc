@@ -175,14 +175,14 @@ void AdEvents::IsFirstTime(const std::string& campaign_id,
                 FROM
                   $1
                 WHERE
-                  campaign_id = '$3'
+                  campaign_id = ?
                   AND confirmation_type = '$2'
                 LIMIT 2) = 1
               THEN 1
               ELSE 0
             END AS is_first_time;)",
-      {kTableName, std::string(ToString(confirmation_type)), campaign_id},
-      nullptr);
+      {kTableName, std::string(ToString(confirmation_type))}, nullptr);
+  BindColumnString(mojom_db_action, 0, campaign_id);
   mojom_db_action->bind_column_types = {
       mojom::DBBindColumnType::kBool  // is_first_time
   };
