@@ -1677,7 +1677,7 @@ source_set("browser_tests") {
     if (enable_text_recognition) {
       sources += [ "text_recognition_browsertest.cc" ]
 
-      deps += [ "//ui/base/clipboard:clipboard_test_support" ]
+      deps += [ "//brave/ui/base/clipboard/test:test_support" ]
     }
 
     if (enable_brave_custom_profile_image_webui) {
