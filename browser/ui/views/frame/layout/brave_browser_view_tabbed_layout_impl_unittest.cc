@@ -8,6 +8,7 @@
 #include <memory>
 #include <optional>
 
+#include "brave/browser/ui/views/brave_layout_provider.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h"
@@ -117,8 +118,7 @@ class MockBrowserViewLayoutDelegate : public FakeBrowserViewLayoutDelegate {
 
 int GetWindowCornerRadius() {
   return views::LayoutProvider::Get()->GetCornerRadiusMetric(
-      views::ShapeContextTokensOverride::
-          kRoundedCornersBorderRadiusAtWindowCorner);
+      ExtendedShapeContextTokens::kRoundedCornersBorderRadiusAtWindowCorner);
 }
 
 }  // namespace

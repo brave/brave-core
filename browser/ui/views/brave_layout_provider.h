@@ -8,6 +8,16 @@
 
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 
+// Brave-specific corner radius tokens, appended after Chrome's so they can be
+// resolved by `BraveLayoutProvider`.
+enum ExtendedShapeContextTokens : views::ShapeContextToken {
+  kExtendedShapeContextTokenStart = kChromeShapeContextTokenEnd,
+  kBraveOmniboxExpandedRadius,
+  kRoundedCornersBorderRadius,
+  kRoundedCornersBorderRadiusAtWindowCorner,
+  kExtendedShapeContextTokenEnd
+};
+
 class BraveLayoutProvider : public ChromeLayoutProvider {
  public:
   BraveLayoutProvider() = default;
@@ -15,10 +25,11 @@ class BraveLayoutProvider : public ChromeLayoutProvider {
   BraveLayoutProvider& operator=(const BraveLayoutProvider&) = delete;
   ~BraveLayoutProvider() override = default;
 
+  using ChromeLayoutProvider::GetCornerRadiusMetric;
   int GetCornerRadiusMetric(views::Emphasis emphasis,
                             const gfx::Size& size = gfx::Size()) const override;
-  int GetCornerRadiusMetric(
-      views::ShapeContextTokensOverride token) const override;
+  int GetCornerRadiusMetric(views::ShapeContextToken token,
+                            const gfx::Size& size = gfx::Size()) const override;
   int GetDistanceMetric(int metric) const override;
 };
 
