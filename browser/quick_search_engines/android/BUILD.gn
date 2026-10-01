@@ -28,6 +28,7 @@ android_library("java") {
     "//base:base_shared_preferences_java",
     "//base:supplier_java",
     "//base:tasks_java",
+    "//brave/android/java/org/chromium/chrome/browser/day_zero:java",
     "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
     "//brave/browser/custom_search_engines/android:java",
     "//build/android:build_java",

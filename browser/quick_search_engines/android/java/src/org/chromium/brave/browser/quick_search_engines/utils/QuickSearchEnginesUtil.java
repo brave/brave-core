@@ -14,6 +14,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.brave.browser.custom_search_engines.CustomSearchEnginesManager;
 import org.chromium.brave.browser.quick_search_engines.R;
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesModel;
+import org.chromium.chrome.browser.day_zero.DayZeroHelper;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.regional_capabilities.RegionalCapabilitiesServiceFactory;
@@ -142,8 +143,12 @@ public class QuickSearchEnginesUtil {
                 getSortedTemplateUrls(
                         templateUrlService, defaultSearchEngine, regionalCapabilities);
 
-        // Get existing or create new search engines map
-        Map<String, QuickSearchEnginesModel> searchEnginesMap = getOrCreateSearchEnginesMap();
+        // Get existing or create new search engines map. A null value means the preference has
+        // never been written, which is the first run for this profile.
+        Map<String, QuickSearchEnginesModel> existingMap = getQuickSearchEnginesFromPref();
+        final boolean isFirstRun = existingMap == null;
+        Map<String, QuickSearchEnginesModel> searchEnginesMap =
+                isFirstRun ? new LinkedHashMap<>() : existingMap;
 
         // Initialize previous default search engine if not already set
         initializePreviousDSEIfNeeded(defaultSearchEngine);
@@ -157,8 +162,15 @@ public class QuickSearchEnginesUtil {
 
         // Handle YouTube search engine and save preferences
         handleYtSearchEngine(searchEnginesMap);
+        if (isFirstRun && isVariantB()) {
+            applyFirstRunVariantBSelection(searchEnginesMap);
+        }
         saveSearchEnginesIntoPref(searchEnginesMap);
         return searchEnginesMap;
+    }
+
+    private static boolean isVariantB() {
+        return DayZeroHelper.DAY_ZERO_VARIANT_B.equals(DayZeroHelper.getDayZeroVariant());
     }
 
     /** Gets sorted and filtered list of template URLs */
@@ -183,10 +195,20 @@ public class QuickSearchEnginesUtil {
         return templateUrls;
     }
 
-    /** Gets existing search engines map from preferences or creates new one if none exists */
-    private static Map<String, QuickSearchEnginesModel> getOrCreateSearchEnginesMap() {
-        Map<String, QuickSearchEnginesModel> existing = getQuickSearchEnginesFromPref();
-        return existing != null ? existing : new LinkedHashMap<>();
+    /**
+     * Enables only Brave Search and YouTube, leaving every other engine off until the user turns it
+     * on in settings. Leo is not part of this map: the bar adds it, and the default search engine,
+     * separately.
+     */
+    private static void applyFirstRunVariantBSelection(
+            Map<String, QuickSearchEnginesModel> searchEnginesMap) {
+        for (Map.Entry<String, QuickSearchEnginesModel> entry : searchEnginesMap.entrySet()) {
+            String keyword = entry.getKey();
+            entry.getValue()
+                    .setEnabled(
+                            BRAVE_SEARCH_ENGINE_KEYWORD.equals(keyword)
+                                    || YOUTUBE_SEARCH_ENGINE_KEYWORD.equals(keyword));
+        }
     }
 
     /** Sets the previous default search engine if not already initialized */
