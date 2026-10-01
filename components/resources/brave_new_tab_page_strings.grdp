@@ -258,11 +258,11 @@
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL" desc="Text for setting to opt-in to Branded Wallpapers on New Tab Page" formatter_data="webui=BraveNewTabPage">
-    Show new tab page ads
+    Show Sponsored Ads
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_SPONSORED_SITES_LABEL" desc="Label for control that toggles sponsored site visibility in top sites" formatter_data="webui=BraveNewTabPage">
-    Show new tab page ads
+    Show Sponsored Ads
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_STATS_LABEL" desc="Label for showing or hiding Brave Stats on the NTP" formatter_data="webui=BraveNewTabPage">
