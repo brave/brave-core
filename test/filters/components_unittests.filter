@@ -14,6 +14,15 @@
 -All/SharedStorageManagerErrorParamTest.OtherOperationResults_NoErrorsAdded/FileBacked
 -All/SharedStorageManagerErrorParamTest.OtherOperationResults_NoErrorsAdded/InMemoryOnly
 
+# Upstream flake: 0.3% flake rate over 30 days per LUCI Analysis. The test
+# gives its two tabs, and the "tab outside a tab group" it selects last, local
+# IDs from tab_groups::test::GenerateRandomTabID(), which returns
+# RandIntInclusive(0, 1000). When two of those IDs collide, the selection
+# resolves to a tab in the group and fires an extra
+# HidePersistentMessage(DIRTY_TAB), over-saturating a Times(1) expectation.
+# Platform-independent, so it is filtered on all platforms.
+-MessagingBackendServiceImplTest.TestTabSelectionClearsAfterUnselectBasedOnConfiguration
+
 # These tests fail because we override Prefetch methods to do nothing.
 -AffiliationServiceImplTest.*
 
