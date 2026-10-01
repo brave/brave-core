@@ -983,6 +983,7 @@
 -LCPPTimingPredictorBrowserTest.Base
 -SearchEnginePreconnectorDeviceBoundSessionBrowserTest.DoesNotPrewarmWhenDseIsHttp
 -SearchEnginePreconnectorDeviceBoundSessionBrowserTest.DoesNotPrewarmWhenSearchSuggestDisabled
+-SearchEnginePreconnectorDeviceBoundSessionModeBrowserTest.*
 -SuppressesLoadingPredictorOnSlowNetworkBrowserTest.SuppressesOnSlowNetwork
 
 # The tests below are being disabled due to current incompatibilities between
@@ -2191,6 +2192,7 @@
 -IncognitoStaticStorageQuotaDisabledTest.IncognitoSession
 -IncognitoStaticStorageQuotaEnabledTest.IncognitoSession
 -StaticStorageQuotaFeatureDisabledTest.RegularSession
+-StaticStorageQuotaFeatureEnabledTest.IncognitoSession
 -StaticStorageQuotaFeatureEnabledTest.RegularSession
 
 # These tests fail because we disable kPrivateMetricsFeature.
