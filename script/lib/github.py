@@ -13,6 +13,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from email.utils import parsedate_to_datetime
 try:
     from .util import execute, scoped_cwd
 except ImportError:
@@ -23,14 +24,17 @@ GITHUB_UPLOAD_ASSET_URL = 'https://uploads.github.com'
 # Validation failures are not retried. These are the responses GitHub uses for
 # rate limits and temporary outages.
 TRANSIENT_GITHUB_STATUS_CODES = (429, 500, 502, 503, 504)
+# Primary rate-limit windows are one hour. Longer values are a bad header.
+_MAX_RETRY_WAIT_SECONDS = 3600
 
 
 class GitHubError(Exception):
     """GitHub HTTP or API error. str() is the response body when it is JSON."""
 
-    def __init__(self, status_code, body):
+    def __init__(self, status_code, body, headers=None):
         self.status_code = status_code
         self.body = body
+        self.headers = headers or {}
         if isinstance(body, (dict, list)):
             message = json.dumps(body, indent=2, separators=(',', ': '))
         else:
@@ -54,6 +58,56 @@ def _is_transient_github_error(err):
         return True
     text = str(err).lower()
     return code == 403 and ('rate limit' in text or 'secondary rate' in text)
+
+
+def _is_rate_limited(err):
+    code = getattr(err, 'status_code', None)
+    # 429 is always a rate limit. 403 is one only when the body says so.
+    return code in (403, 429) and _is_transient_github_error(err)
+
+
+def _parse_retry_after(value):
+    text = str(value).strip()
+    if not text:
+        return None
+    try:
+        return max(0, int(text))
+    except ValueError:
+        pass
+    # Retry-After may be an HTTP date instead of a number of seconds.
+    try:
+        when = parsedate_to_datetime(text)
+    except (TypeError, ValueError, IndexError):
+        return None
+    if when.tzinfo is None:
+        return None
+    return max(0, int(when.timestamp() - time.time()))
+
+
+def _retry_wait_seconds(err):
+    """Seconds GitHub asked us to wait, or None when the caller should back off.
+
+    X-RateLimit-Reset is present on every response, so it applies only to a
+    rate-limit error that did not include Retry-After.
+    """
+    headers = getattr(err, 'headers', None) or {}
+    retry_after = headers.get('retry-after')
+    if retry_after is not None:
+        delay = _parse_retry_after(retry_after)
+        if delay is not None:
+            return min(delay, _MAX_RETRY_WAIT_SECONDS)
+    if not _is_rate_limited(err):
+        return None
+    reset = headers.get('x-ratelimit-reset')
+    if reset is None:
+        return None
+    try:
+        reset_at = int(str(reset).strip())
+    except ValueError:
+        return None
+    # +1s so a retry does not land in the same window the header just closed.
+    delay = max(0, reset_at - int(time.time()) + 1)
+    return min(delay, _MAX_RETRY_WAIT_SECONDS)
 
 
 class GitHub():
@@ -102,7 +156,15 @@ class GitHub():
         except urllib.error.HTTPError as e:
             # urlopen raises before the body can be parsed. Keep the body so a
             # 422 reports GitHub's field error instead of only the status line.
-            raise GitHubError(e.code, _parse_github_body(e.read())) from e
+            # Headers are kept so a rate-limit retry can honor Retry-After.
+            error_headers = {}
+            if e.headers is not None:
+                error_headers = {
+                    key.lower(): value
+                    for key, value in e.headers.items()
+                }
+            raise GitHubError(
+                e.code, _parse_github_body(e.read()), error_headers) from e
         except ValueError:
             # Returned response may be empty in some cases
             r = {}
@@ -353,16 +415,21 @@ def _patch_issue(repo, issue_number, patch_data):
     for attempt in range(attempts):
         try:
             return repo.issues(issue_number).patch(data=patch_data)
-        except GitHubError as e:
-            # 422 is a rejected field and is raised immediately.
+        except (GitHubError, urllib.error.URLError) as e:
+            # 422 is a rejected field and is raised immediately. A connection
+            # failure is URLError and is safe to repeat.
             if (attempt + 1 == attempts or
-                    not _is_transient_github_error(e)):
+                    (isinstance(e, GitHubError) and
+                     not _is_transient_github_error(e))):
                 raise
+            wait = _retry_wait_seconds(e)
+            if wait is None:
+                wait = delay_seconds
+                delay_seconds *= 2
             print('[WARNING] transient GitHub error updating ' +
                   str(list(patch_data.keys())) + ', retrying in ' +
-                  str(delay_seconds) + 's')
-            time.sleep(delay_seconds)
-            delay_seconds *= 2
+                  str(wait) + 's')
+            time.sleep(wait)
 
 
 def fetch_origin_check_staged(path):
