@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/sessions/session_restore.cc b/chrome/browser/sessions/session_restore.cc
-index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..b3516627fa3adfe3582e14ddaa9a4747707f764b 100644
+index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..41c8613fa1340c7610ba695e86b9f1c5f41a1cb5 100644
 --- a/chrome/browser/sessions/session_restore.cc
 +++ b/chrome/browser/sessions/session_restore.cc
 @@ -1017,6 +1017,7 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
@@ -36,7 +36,11 @@ index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..b3516627fa3adfe3582e14ddaa9a4747
      RecordAppLaunchForTab(browser, tab, selected_index);
  
      // Associate sessionStorage (if any) to the restored tab.
-@@ -1370,6 +1382,9 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1367,9 +1379,13 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+   // Appends the urls in |startup_tabs| to |browser|.
+   void AppendURLsToBrowser(BrowserWindowInterface* browser,
+                            const StartupTabs& startup_tabs) {
++  [&]() -> void {
      bool is_first_tab = true;
      for (const auto& startup_tab : startup_tabs) {
        const GURL& url = startup_tab.url;
@@ -46,15 +50,17 @@ index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..b3516627fa3adfe3582e14ddaa9a4747
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
        if (url == whats_new::GetWebUIStartupURL()) {
          whats_new::StartWhatsNewFetch(browser);
-@@ -1386,8 +1401,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1386,9 +1402,12 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
                                 : WindowOpenDisposition::NEW_BACKGROUND_TAB;
        params.tabstrip_add_types = add_types;
        is_first_tab = false;
 +      BraveModifyStartupTabNavigationParams(startup_tab, browser, params);
        Navigate(&params);
      }
-+
-+    MaybeAddFallbackTabIfEmpty(browser);
-   }
+-  }
++    }();
++  MaybeAddFallbackTabIfEmpty(browser);
++}
  
    // Normally opens |startup_tabs| in |last_normal_browser|, but if there are
+   // urls set from LAST_AND_URLS startup pref, those are opened in a new
