@@ -20,3 +20,13 @@ substitutions:
         'if \(enable_desktop_android_extensions\)(\s*\{\s*sources \+= \[\s*#
         These files are temporary)'
       replace: 'if (enable_extensions_core)\1'
+
+  - description: |-
+      Depend on `//brave/browser/extensions:extensions` for
+      updater/features.h, used to disable BraveAutoUpdateExtensions in
+      ChromeRuntimeAPIDelegateTest.
+    insert_into_list:
+      target: unit_tests
+      list_name: deps
+      values:
+        - //brave/browser/extensions:extensions
