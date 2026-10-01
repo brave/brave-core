@@ -5,6 +5,7 @@
 
 module brave_wallet.mojom;
 
+import "brave/components/brave_wallet/common/mojom/common.mojom";
 import "brave/components/brave_wallet/common/meld_integration.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
@@ -1685,17 +1686,6 @@ const string kScrollChainId = "0x82750";
 
 const string kBatTokenContractAddress =
     "0x0D8775F648430679A709E98d2b0Cb6250d2887EF";
-
-// https://github.com/satoshilabs/slips/blob/master/slip-0044.md
-enum CoinType {
-  BTC = 0,
-  ZEC = 133,
-  ETH = 60,
-  FIL = 461,
-  SOL = 501,
-  ADA = 1815,
-  DOT = 354,
-};
 
 struct NetworkInfo {
   string chain_id;
