@@ -37,7 +37,6 @@
 <translation id="1330562121671411446">언어 감지</translation>
 <translation id="108284536240904209">Brave(<ph name="URL"/>)에서도 데이터 삭제</translation>
 <translation id="1345251407431278948">고정되었습니다. 툴바의 새 버튼에서 이미지 검색을 다시 이용할 수 있습니다</translation>
-<translation id="1356661055722410047">New! 화면의 텍스트와 이미지를 모두 번역할 수 있습니다.</translation>
 <translation id="1383876407941801731">검색</translation>
 <translation id="3535301204632475895">Brave 앱을 사용하여 이동 중에도 탐색하세요.</translation>
 <translation id="141901961143729572">의견 공유</translation>
@@ -66,6 +65,7 @@
 <translation id="5994491947936308173">빠른 액세스를 위해 Windows 알림에서 <ph name="BEGIN_BOLD"/>예<ph name="END_BOLD"/> 버튼을 클릭하여 Brave을 태스크 바에 고정합니다.</translation>
 <translation id="5875673934455379806">Brave 재설치</translation>
 <translation id="4529028207655448215">Brave에서 <ph name="AUTHENTICATION_PURPOSE"/>을(를) 시도하는 중입니다.</translation>
+<translation id="6387107728249269341"><ph name="EXISTING_USER"/> 계정은 이미 로그인되어 있습니다. 방문 기록을 별도로 보관하려면 내 프로필에서 <ph name="USER_EMAIL_ADDRESS"/> 주소로 Brave에 로그인하세요. 이렇게 하면 <ph name="DEVICE"/>에서 내 확장 프로그램 등을 사용할 수 있습니다.</translation>
 <translation id="7362761326208547489">다음번에 <ph name="DEVICE_TYPE"/>에서 Brave을 열면 Brave 비밀번호 관리자를 사용하라는 메시지가 표시됩니다.</translation>
 <translation id="1838374766361614909">검색어 지우기</translation>
 <translation id="3541642064306182066">인터넷 사용 기록을 이 기기에서만 삭제하고 Brave 계정에서는 유지하려면 <ph name="BEGIN_LINK"/>Brave에서 로그아웃<ph name="END_LINK"/>하세요.</translation>
@@ -144,6 +144,7 @@
 <translation id="2575822587468774919">이미지 검색으로 검색할 항목을 선택하세요</translation>
 <translation id="3830890663494219270">모든 기기에서 비밀번호 등을 사용하려면 Brave에 로그인하세요</translation>
 <translation id="6908148552215338695">휴대전화로 QR 코드를 스캔하여 Brave을 다운로드하고 Brave 계정에 로그인하세요.</translation>
+<translation id="7985444384142764643">Brave으로 검색합니다.</translation>
 <translation id="6252796827759111076">Brave 계속 사용</translation>
 <translation id="259935314519650377">다운로드한 설치 프로그램을 캐시할 수 없습니다. 오류(<ph name="UNPACK_CACHING_ERROR_CODE"/>)가 발생했습니다.</translation>
 <translation id="2620436844016719705">시스템</translation>
@@ -187,6 +188,7 @@
 <translation id="3038232873781883849">설치 대기 중...</translation>
 <translation id="3045032126857188731">번역된 언어, <ph name="LANGUAGE"/></translation>
 <translation id="3047590466164881923">의견 닫기 대화상자</translation>
+<translation id="72283640173840794"><ph name="EXISTING_USER"/> 계정은 이미 로그인되어 있습니다. 방문 기록을 별도로 보관하려면 내 프로필에서 <ph name="USER_EMAIL_ADDRESS"/> 주소로 Brave에 로그인하세요. 이렇게 하면 <ph name="DEVICE"/>에서 내 읽기 목록 등을 사용할 수 있습니다.</translation>
 <translation id="4503085212612536713">기타 Brave 프로필</translation>
 <translation id="2041039306630146369">확장 프로그램은 Brave을 맞춤설정할 수 있는 부가기능입니다. 정리부터 일상적인 할 일을 간소화하는 것까지, 확장 프로그램을 통해 Brave을 나만의 브라우저로 만들 수 있습니다.</translation>
 <translation id="7918740962659365265">비정상 종료 보고서와 <ph name="UMA_LINK"/>을(를) Brave로 전송하여 Brave 개선에 참여합니다.</translation>
@@ -253,7 +255,7 @@
 
           **질문 추천:** 사용자가 스크린샷을 더 잘 파악하기 위해 물어볼 법하면서 생각할 거리를 주는 질문 3~5개를 글머리기호 목록 형식으로 생성해 줘. 질문에는 시각적 객체, 디자인 또는 배치에 관한 질문이 하나 이상 포함되어야 해.</translation>
 <translation id="6899774208752247219"><ph name="PAGE_TITLE"/> - Brave Origin</translation>
-<translation id="1118754729376002185">Brave에 사이트에 대한 로컬 네트워크 권한이 필요합니다.</translation>
+<translation id="387514319934708384">Brave에 사이트에 대한 로컬 네트워크 권한이 필요합니다.</translation>
 <translation id="3885770153807205175">언어 선택 도구</translation>
 <translation id="6315734375101223238">Brave을 맞춤설정 및 제어합니다. 확인이 필요한 항목이 있습니다. 클릭하여 세부정보를 보세요.</translation>
 <translation id="7130675370997202556">Brave을 열고 탐색을 시작하려면 내 이름을 클릭하세요.</translation>
@@ -283,6 +285,7 @@
 <translation id="6596295505984504022">Brave 맞춤설정(&amp;U)</translation>
 <translation id="4148957013307229264">설치 중...</translation>
 <translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - 네트워크 로그인 - Brave Origin</translation>
+<translation id="305023898453185745"><ph name="EXISTING_USER"/> 계정은 이미 로그인되어 있습니다. 방문 기록을 별도로 보관하려면 내 프로필에서 <ph name="USER_EMAIL_ADDRESS"/> 주소로 Brave에 로그인하세요. 이렇게 하면 모든 기기에서 내 읽기 목록 등을 사용할 수 있습니다.</translation>
 <translation id="2871190378186459992">Brave에 유용한 앱, 게임, 확장 프로그램, 테마를 찾아보세요.</translation>
 <translation id="462105622535258178">모든 컴퓨터에서 이 확장 프로그램 등을 사용하려면 Brave에 로그인하세요.</translation>
 <translation id="6670140629169983459">부모님의 선택을 통해 온라인에서 더 안전하게 보호하려면 이미 <ph name="USER_EMAIL_ADDRESS"/>님으로 로그인되어 있는 Brave 프로필로 전환하세요.</translation>
@@ -297,7 +300,6 @@
 <translation id="6368144843345980623">Brave에서 비밀번호 내보내기</translation>
 <translation id="4304713468139749426">비밀번호 관리자</translation>
 <translation id="4334241893986177674">이 스크린샷을 검색합니다.</translation>
-<translation id="3985621805803699376">Brave이 최소화된 상태에서도 어디서나 검색하고 질문</translation>
 <translation id="242356249838681145">Windows 시작 시 Brave 실행</translation>
 <translation id="4400772909124543403">사용 가능한 업데이트가 없습니다</translation>
 <translation id="9183662282810237335">Brave을 종료하시겠습니까?</translation>
@@ -328,6 +330,7 @@
 <translation id="2182657378556811785">업데이트가 거의 완료되었습니다. 업데이트를 완료하려면 Brave을 다시 시작하세요.</translation>
 <translation id="6311668361877328515">Brave의 V8 엔진으로 사이트 속도를 높이지만 Brave이 공격에 약간 더 취약해집니다.</translation>
 <translation id="7960968658810899127">Brave으로 검색 열기</translation>
+<translation id="4600669659668950128">Brave 프로필</translation>
 <translation id="7402642357351265733">Brave 사용 보고서도 공유하면 내가 방문한 URL이 해당 보고서에 포함됩니다.</translation>
 <translation id="4673710618874938871"><ph name="USER_NAME"/>, 멤버십으로 로그인되었습니다. 계정 메뉴 열기</translation>
 <translation id="8142245354207161805">다른 컴퓨터(<ph name="HOST_NAME"/>)의 다른 Brave 프로세스(<ph name="PROCESS_ID"/>)에서 프로필을 사용 중인 것 같습니다. 프로필이 손상되지 않도록 Brave에서 잠금 설정했습니다. 다른 프로세스에서 프로필을 사용 중이지 않은 것이 확실한 경우 프로필을 잠금 해제하고 Brave을 다시 시작하세요.</translation>
@@ -380,6 +383,7 @@
 <translation id="3311284381627742014">Brave으로 검색 열기</translation>
 <translation id="5154625106151193600">Brave에서 일부 파일을 차단하는 이유 알아보기</translation>
 <translation id="1786715389543715322">Brave 업데이트 중(<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="3267146219387305979"><ph name="EXISTING_USER"/> 계정은 이미 로그인되어 있습니다. 방문 기록을 별도로 보관하려면 내 프로필에서 <ph name="USER_EMAIL_ADDRESS"/> 주소로 Brave에 로그인하세요. 이렇게 하면 모든 기기에서 내 확장 프로그램 등을 사용할 수 있습니다.</translation>
 <translation id="7021823858304886493">Brave 로그인 허용</translation>
 <translation id="5267531627648004734">Brave에서 제거</translation>
 <translation id="4620757336635063467">성능은 감소하지만 Brave의 공격에 대한 저항력이 강화됨</translation>
@@ -456,6 +460,7 @@
 <translation id="6685697979743742605">위험한 파일일 수도 있습니다.<ph name="LINE_BREAK"/>비밀번호를 제공하면 Brave에서 이 다운로드 항목을 확인할 수 있습니다. 파일에 관한 정보는 Brave 세이프 브라우징으로 전송되지만 파일 콘텐츠와 비밀번호는 기기에 보관됩니다.</translation>
 <translation id="6182736845697986886">업데이트 서버 내부 오류로 인해 설치할 수 없습니다.</translation>
 <translation id="4368341489795135329"><ph name="TARGET_DEVICE_NAME"/>에서 Brave에 로그인되어 있는지 확인한 다음 다시 전송해 보세요.</translation>
+<translation id="3044046743226566469">Brave이 최소화된 상태에서도 어디서나 검색하고 질문하세요. Brave이 백그라운드에서 실행되도록 허용합니다</translation>
 <translation id="8320964054148936490">컴퓨터에 이미 최신 버전의 Brave이 있습니다. 소프트웨어가 작동하지 않으면 Brave의 설치를 제거한 뒤 다시 시도하세요.</translation>
 <translation id="3574823187131579180">{0,plural, =0{곧 Brave이 다시 시작됩니다}=1{1초 후 Brave이 다시 시작됩니다}other{#초 후 Brave이 다시 시작됩니다}}</translation>
 <translation id="5980269616827212166">파일을 다운로드하려면 Brave에 저장소 액세스 권한이 필요합니다.</translation>
@@ -581,6 +586,7 @@
 <translation id="7288567540154601580">탭 및 확장 프로그램</translation>
 <translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Brave에서 삭제할 것을 권장합니다.}other{Brave에서 삭제할 것을 권장합니다.}}</translation>
 <translation id="4600669988724328687">시스템 오디오를 공유하려면 시스템 설정을 열고 Brave에 대해 '시스템 오디오 녹음만'을 허용하세요. 그런 다음 Brave을 다시 시작해야 합니다.</translation>
+<translation id="7299899569525778554">데스크톱에서 검색하세요</translation>
 <translation id="1864557848095568223">Brave 업데이트 중</translation>
 <translation id="3403365884036456766">환경설정 파일이 손상되었거나 잘못되었습니다.
 
@@ -635,6 +641,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="8607348724092473027"><ph name="PAGE_TITLE"/> - Brave Origin Canary</translation>
 <translation id="2684504034454188774">내 인터넷 트래픽에 액세스할 수 있는 사용자가 내가 방문하는 사이트를 확인하기가 더 어려워집니다. Brave은 DNS(도메인 이름 시스템)에서 사이트의 IP 주소를 조회하는 데 보안 연결을 사용합니다.</translation>
 <translation id="7810005234485217901">이미지 검색을 고정하면 쉽게 액세스할 수 있습니다</translation>
+<translation id="3219490697448569661">다른 앱이나 열려 있는 파일과 같이 Brave 외부의 콘텐츠에 관해 질문하세요.</translation>
 <translation id="4191642852677143100">Brave과 공유할 항목 선택</translation>
 <translation id="1652855885539187849">이 계정을 사용하는 Brave 프로필이 기기에 이미 존재합니다</translation>
 <translation id="7845233973568007926">설치해 주셔서 감사합니다. <ph name="BUNDLE_NAME"/>을(를) 사용하려면 컴퓨터를 다시 시작해야 합니다.</translation>
@@ -719,10 +726,10 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="856656450041460113">언어 목록 검색</translation>
 <translation id="839677568225616901">여러 조직에서 Brave을 관리합니다.</translation>
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> The Brave Authors. All rights reserved.</translation>
-<translation id="8601359445272098721">New! '화면 번역' 버튼을 선택하여 화면의 텍스트와 이미지를 모두 번역할 수 있습니다.</translation>
 <translation id="3052349005266761501">Brave 실행 중...</translation>
 <translation id="8624541899164515475">설정, 새 탭에서 열립니다.</translation>
 <translation id="5128665650717824082">Brave for Testing을 기본 브라우저로 설정할 수 없습니다.</translation>
+<translation id="3053208669360972929">어디서나 Brave으로 검색하세요</translation>
 <translation id="2433912322225810055">또한 Brave을 시작하거나 검색주소창에서 검색할 때 표시되는 페이지를 설정합니다.</translation>
 <translation id="4100716194836114130">나만의 Brave</translation>
 <translation id="8712637175834984815">확인</translation>
@@ -756,6 +763,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="7731184591599776500">Brave Enterprise 로고</translation>
 <translation id="2001474182910589370"><ph name="DEVICE_TYPE"/>에서 Brave 앱을 사용하여 이동 중에도 Brave의 안전 기능을 활용하세요</translation>
 <translation id="6500340165622970282">프로필을 여는 중에 문제가 발생하여 Brave을 시작할 수 없습니다. Brave을 다시 시작해 보세요.</translation>
+<translation id="8079450595783684960">Brave으로 검색하거나 <ph name="BEGIN_LINK"/>설정<ph name="END_LINK"/>에서 맞춤설정합니다.</translation>
 <translation id="3424657754843264466">Brave 프로필 관리</translation>
 <translation id="1454821212628854849">키보드를 사용하여 Brave의 Gemini와 열려 있는 탭 사이를 이동할 수 있습니다.</translation>
 <translation id="9018218886431812662">설치 완료</translation>
