@@ -550,9 +550,8 @@ class WorkspaceAssociatedContentWebMcpBrowserTest
   base::test::ScopedFeatureList web_mcp_feature_list_;
 };
 
-// The workspace page registers its file tools via WebMCP, which blink only
-// permits for workspace documents. That check is on the host, so it has to
-// accept the per-workspace subdomain the page is actually served from.
+// The workspace page registers its file tools via WebMCP from the
+// per-workspace subdomain it is served from.
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
                        PageCanRegisterToolsFromItsOwnSubdomain) {
   auto* content = CreateContent(CreateWorkspaceFolder());
@@ -560,8 +559,8 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
   ASSERT_TRUE(content::WaitForLoadStop(web_contents));
   ASSERT_EQ(content->page_url(), web_contents->GetLastCommittedURL());
 
-  // registerTool() rejects with a SecurityError when WebMCP isn't allowed for
-  // the document's origin, so the promise resolving is the assertion here.
+  // registerTool() rejects when WebMCP isn't allowed for the document, so the
+  // promise resolving is the assertion here.
   EXPECT_EQ("registered", content::EvalJs(web_contents, R"JS(
       (async () => {
         await document.modelContext.registerTool({
@@ -574,8 +573,8 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
   )JS"));
 }
 
-// The viewer has no tools of its own, so blink's WebMCP gate must not extend to
-// it just because its host ends with the workspace host.
+// The viewer has no tools of its own. It is a cross-origin iframe without
+// allow="tools", so the "tools" permissions policy must block it.
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
                        ViewerCannotRegisterTools) {
   auto* content = CreateContent(CreateWorkspaceFolder());
@@ -586,7 +585,7 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
   content::RenderFrameHost* viewer =
       content::ChildFrameAt(web_contents->GetPrimaryMainFrame(), 0);
   ASSERT_TRUE(viewer);
-  EXPECT_EQ("SecurityError", content::EvalJs(viewer, R"JS(
+  EXPECT_EQ("NotAllowedError", content::EvalJs(viewer, R"JS(
       (async () => {
         try {
           await document.modelContext.registerTool({

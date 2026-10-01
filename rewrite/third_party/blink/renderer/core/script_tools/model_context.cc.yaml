@@ -15,15 +15,3 @@ substitutions:
         if (auto* web_frame = WebLocalFrameImpl::FromFrame(document_->GetFrame())) {
           web_frame->NotifyScriptToolsChanged();
         }
-
-  - description: |
-      Allow chrome-untrusted:// WebUI documents to use the Model Context (WebMCP)
-      API.
-
-      Only Leo's "workspace" documents qualify; see
-      `IsAIChatLeoWorkspaceDocument()` in chromium_src for what that means.
-    regex:
-      re_pattern: '(!document_->GetSettings\(\)->GetWebSecurityEnabled\(\)\));'
-      replace: |-
-        \1 ||
-                 IsAIChatLeoWorkspaceDocument(*document_);
