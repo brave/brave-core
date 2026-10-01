@@ -311,6 +311,10 @@ void PolkadotApiImpl::OnSignPayloadRequestProcessed(
     return;
   }
 
+  LOG(INFO) << "signature payload as hex is: "
+            << base::HexEncodeLower(signature_payload.value());
+  LOG(INFO) << "produced signature is: "
+            << base::HexEncodeLower(signature.value());
   // The Signer interface requires us to include the request id, which we count
   // using a per-Injected basis.
   // https://github.com/polkadot-js/api/blob/81aabcce128f7f8ca5cf83e4a4d5705855950ca9/packages/types/src/types/extrinsic.ts#L144-L166

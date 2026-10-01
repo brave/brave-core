@@ -20,6 +20,7 @@
 #include "brave/browser/ui/webui/brave_wallet/line_chart/line_chart_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/market/market_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/nft/nft_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/polkadot/polkadot_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/trezor/trezor_ui.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #if BUILDFLAG(ENABLE_SNAP)
@@ -84,6 +85,8 @@ void RegisterChromeUntrustedWebUIConfigs() {
         std::make_unique<snap_host::UntrustedSnapHostUIConfig>());
   }
 #endif  // BUILDFLAG(ENABLE_SNAP)
+  content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+      std::make_unique<polkadot::UntrustedPolkadotUIConfig>());
 #endif  // !BUILDFLAG(IS_ANDROID)
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 #if BUILDFLAG(ENABLE_LOCAL_AI)
