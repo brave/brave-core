@@ -60,8 +60,7 @@ PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
 std::vector<uint8_t> PasswordEncryptor::Encrypt(
     base::span<const uint8_t> plaintext,
     base::span<const uint8_t> nonce) {
-  crypto::Aead aead(crypto::Aead::AES_256_GCM_SIV);
-  aead.Init(key_);
+  crypto::Aead aead(crypto::Aead::AES_256_GCM_SIV, key_);
   return aead.Seal(plaintext, nonce, std::vector<uint8_t>());
 }
 
@@ -77,8 +76,7 @@ base::DictValue PasswordEncryptor::EncryptToDict(
 std::optional<std::vector<uint8_t>> PasswordEncryptor::Decrypt(
     base::span<const uint8_t> ciphertext,
     base::span<const uint8_t> nonce) {
-  crypto::Aead aead(crypto::Aead::AES_256_GCM_SIV);
-  aead.Init(key_);
+  crypto::Aead aead(crypto::Aead::AES_256_GCM_SIV, key_);
   return aead.Open(ciphertext, nonce, std::vector<uint8_t>());
 }
 
@@ -108,8 +106,7 @@ std::optional<std::vector<uint8_t>> PasswordEncryptor::DecryptFromDict(
 std::optional<std::vector<uint8_t>> PasswordEncryptor::DecryptForImporter(
     base::span<const uint8_t> ciphertext,
     base::span<const uint8_t> nonce) {
-  crypto::Aead aead(crypto::Aead::AES_256_GCM);
-  aead.Init(key_);
+  crypto::Aead aead(crypto::Aead::AES_256_GCM, key_);
   // MM uses 16 bytes nonce while boringSSL expect it to be 12
   // https://github.com/MetaMask/browser-passworder/blob/2c8195a4bfe3778571eb35117159f448fef07865/src/index.ts#L42-L51
   //
