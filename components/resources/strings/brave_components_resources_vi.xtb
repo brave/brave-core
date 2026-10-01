@@ -1732,6 +1732,9 @@
 <translation id="2077392865355605472">Bắt buộc nhập biểu tượng token</translation>
 <translation id="4636925020451566238">Bắt buộc điền số chữ số thập phân token của giá trị chính xác</translation>
 <translation id="3797613444743816037">Địa chỉ đào</translation>
+<translation id="6571966497164575098">Mã tài sản</translation>
+<translation id="2110442566771571217">Mã tài sản token không hợp lệ hoặc trống</translation>
+<translation id="4170599358417498979">Mạng này không hỗ trợ tài sản tùy chỉnh</translation>
 <translation id="7951915459354237451">Giới hạn phí được đặt thấp hơn mức phí cơ sở. Giao dịch của bạn có thể mất nhiều thời gian hoặc không thành công.</translation>
 <translation id="2227702748249086756">Không thể tìm nạp ước tính phí</translation>
 <translation id="3225624966527491351">Nhập khẩu NFT</translation>
@@ -2018,7 +2021,7 @@
 <translation id="418195046117003119">Ảnh chụp màn hình trung tâm chia sẻ</translation>
 <translation id="4712056949543885424">Hiển thị trình quản lý mật khẩu</translation>
 <translation id="8037472847879765671">Hiển thị phương thức thanh toán</translation>
-<translation id="7269867954894010756">Hiển thị địa chỉ</translation>
+<translation id="6262574309547773475">Hiển thị thông tin liên hệ</translation>
 <translation id="6799213269525079335">Tìm tiếp theo</translation>
 <translation id="8666632926482119393">Tìm trước đó</translation>
 <translation id="3567467864281922039">Đóng cửa sổ tìm hoặc dừng</translation>
@@ -2147,6 +2150,7 @@
 <translation id="3142853026316054951">Bật/tắt chế độ tập trung</translation>
 <translation id="3468387898712904997">Bí danh email mới</translation>
 <translation id="4711475997833555304">Tạo một email ngẫu nhiên chuyển tiếp đến hộp thư của bạn.</translation>
+<translation id="5663901348199429994">Bí danh email của bạn</translation>
 <translation id="2796584247246518451">Vùng chứa tạm thời mới</translation>
 <translation id="8591883849678260674">Xem bản gốc</translation>
 <translation id="1969654232209826429">phút đọc</translation>
@@ -2211,6 +2215,7 @@
 <translation id="9215978379284690246">Mã trạng thái: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Mã trạng thái: <ph name="STATUS_CODE"/>, mã trạng thái nội bộ: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Bạn đã đạt đến giới hạn premium. Vui lòng thử lại sau vài giờ nữa.</translation>
+<translation id="6873128487002733717">Bạn đã đạt giới hạn Premium cho mô hình này. Hãy chọn mô hình khác hoặc thử lại sau.</translation>
 <translation id="3683964919745779766">Bạn đã đạt giới hạn tần suất của mô hình này hoặc đã hết tín dụng. Vui lòng thử lại sau.</translation>
 <translation id="7692501701960747469">Khóa API được cấu hình cho mô hình này không hợp lệ. Vui lòng kiểm tra cấu hình của bạn và thử lại.</translation>
 <translation id="7905602379229309187">Điểm cuối hiện đang quá tải. Vui lòng thử lại sau.</translation>
@@ -2390,6 +2395,9 @@
 <translation id="5021823940147712387">Xóa công cụ</translation>
 <translation id="8712279871321308580">Công cụ trang web có sẵn</translation>
 <translation id="3690996226559605619">Công cụ có sẵn (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Cho phép trong phiên này</translation>
+<translation id="6240821072888636753">Hỏi mỗi lần</translation>
+<translation id="4290920330097335010">Không bao giờ cho phép</translation>
 <translation id="318819763888864209">Tất cả các đăng ký đều được tự động gia hạn nhưng có thể bị hủy bất kỳ lúc nào trước khi gia hạn.</translation>
 <translation id="5091223967610958">Chia sẻ tên máy chủ của trang bạn đang truy cập (<ph name="HOST_NAME"/>) để giúp chúng tôi cải thiện Leo.</translation>
 <translation id="8732450785281947197">Công cụ Leo AI</translation>
@@ -2464,7 +2472,7 @@
 <translation id="6077070599873946984">Brave AI cần quyền của bạn cho: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI muốn thực thi **<ph name="TOOL_NAME"/>** trên **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Hoạt động này được phát hiện là có khả năng không phù hợp với yêu cầu của bạn:</translation>
-<translation id="5137568953923142260">Cho phép</translation>
+<translation id="5137568953923142260">Được cho phép một lần</translation>
 <translation id="3927932062596804919">Từ chối</translation>
 <translation id="4191349941249805855">Hiển thị đối số công cụ</translation>
 <translation id="7237059533128264835">Ẩn đối số công cụ</translation>
@@ -2511,7 +2519,6 @@
 <translation id="6002159997868894136">Bấm để sao chép bí danh</translation>
 <translation id="8105770564756958406">Được sử dụng bởi <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Tạo tối đa 5 bí danh email miễn phí để bảo vệ địa chỉ email thực của bạn.</translation>
-<translation id="5663901348199429994">Bí danh email của bạn</translation>
 <translation id="9046133327037621173">Bí danh email mới</translation>
 <translation id="3768606658230902536">Tạo địa chỉ email ngẫu nhiên chuyển tiếp đến hộp thư đến của bạn và giữ bí mật email cá nhân của bạn.</translation>
 <translation id="4452721050684632493">Đã đạt đến giới hạn bí danh</translation>
@@ -2942,7 +2949,9 @@ Chúng tôi sẽ giúp bạn kết nối!</translation>
 <translation id="4227581348172626540">Hủy thay đổi mật khẩu</translation>
 <translation id="808894953321890993">Thay đổi mật khẩu</translation>
 <translation id="7967687455715421528">Không thể thay đổi mật khẩu</translation>
+<translation id="7413006094063730650">Xóa tài khoản</translation>
 <translation id="4869737930995549965">Đăng xuất</translation>
+<translation id="2902312830803030883">Thêm hành động</translation>
 <translation id="5538654494923870167">Bắt đầu với tài khoản Brave của bạn</translation>
 <translation id="1544145635547515689">Tạo tài khoản Brave</translation>
 <translation id="3828644479849256404">Đã có tài khoản? Đăng nhập</translation>
@@ -2967,6 +2976,11 @@ Chúng tôi sẽ giúp bạn kết nối!</translation>
 <translation id="7228810962389847249">Nhập mã tại đây</translation>
 <translation id="4683390091376980486">Xác nhận mã</translation>
 <translation id="3970028678400797622">Gửi lại mã qua email</translation>
+<translation id="3653907916071208187">Xóa tài khoản Brave của bạn?</translation>
+<translation id="8216839865292766307">Xóa tài khoản Brave cũng sẽ xóa các bí danh email của tài khoản đó. Bạn có thể mất quyền truy cập vào các dịch vụ trực tuyến mà bạn đã dùng bí danh để đăng ký. Hành động này không thể hoàn tác.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">Nhập <ph name="KEYWORD"/> để bật tính năng xóa tài khoản</translation>
+<translation id="536306385881145656">Xóa tài khoản Brave</translation>
 <translation id="2475982808118771221">Đã xảy ra lỗi</translation>
 <translation id="5430795854491041407">lỗi</translation>
 <translation id="2232323423357029857">Trình duyệt gặp phải một lỗi không mong muốn<ph name="ERROR_CODE"/>. Vui lòng khởi động lại trình duyệt và thử lại.</translation>
@@ -2999,4 +3013,10 @@ Chúng tôi sẽ giúp bạn kết nối!</translation>
 <translation id="1063227610401477317">Áp dụng thay đổi</translation>
 <translation id="5539769255716491933">Báo cáo các bước thất bại</translation>
 <translation id="7562163394445060270">Không hoàn thành tác vụ</translation>
+<translation id="691082536326552372">Báo cáo các bước thất bại</translation>
+<translation id="2731141092023803480">Gửi báo cáo về các bước thất bại đến nhóm Brave. Báo cáo này sẽ chứa thông tin cần thiết để chúng tôi khắc phục sự cố. <ph name="LINK_BEFORE"/>Tìm hiểu thêm.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">URL hiện tại</translation>
+<translation id="4739707522207259415">(Các) bước thất bại</translation>
+<translation id="1767991048059195456">Gửi báo cáo</translation>
+<translation id="2168036794078614559">Đã gửi báo cáo</translation>
 </translationbundle>

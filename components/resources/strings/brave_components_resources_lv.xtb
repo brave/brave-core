@@ -1732,6 +1732,9 @@
 <translation id="2077392865355605472">Nepieciešams marķiera simbols</translation>
 <translation id="4636925020451566238">Nepieciešama marķiera vērtība līdz decimālskaitlim</translation>
 <translation id="3797613444743816037">Mint adrese</translation>
+<translation id="6571966497164575098">Aktīva ID</translation>
+<translation id="2110442566771571217">Nederīgs vai tukšs marķiera aktīva ID</translation>
+<translation id="4170599358417498979">Šajā tīklā netiek atbalstīti pielāgotie aktīvi</translation>
 <translation id="7951915459354237451">Maksas limits ir iestatīts zemāks par pamata maksu. Jūsu darījums var aizņemt ilgu laiku vai neizdoties.</translation>
 <translation id="2227702748249086756">Nevarēja ienest prognozēto maksu</translation>
 <translation id="3225624966527491351">Importēt NFT</translation>
@@ -2018,7 +2021,7 @@
 <translation id="418195046117003119">Kopīgošanas centrmezgla ekrānuzņēmums</translation>
 <translation id="4712056949543885424">Rādīt paroļu pārvaldnieku</translation>
 <translation id="8037472847879765671">Rādīt maksājuma veidus</translation>
-<translation id="7269867954894010756">Rādīt adreses</translation>
+<translation id="6262574309547773475">Rādīt kontaktinformāciju</translation>
 <translation id="6799213269525079335">Atrast nākamo</translation>
 <translation id="8666632926482119393">Atrast iepriekšējo</translation>
 <translation id="3567467864281922039">Aizvērt meklēšanu vai pārtraukt</translation>
@@ -2147,6 +2150,7 @@
 <translation id="3142853026316054951">Pārslēgt fokusa režīmu</translation>
 <translation id="3468387898712904997">Jauns e-pasta pseidonīms</translation>
 <translation id="4711475997833555304">Izveidojiet nejaušu e-pastu, kas tiek pārsūtīts uz jūsu iesūtni.</translation>
+<translation id="5663901348199429994">Jūsu e-pasta pseidonīmi</translation>
 <translation id="2796584247246518451">Jauns pagaidu konteiners</translation>
 <translation id="8591883849678260674">Skatīt oriģinālu</translation>
 <translation id="1969654232209826429">min. lasīšanas laiks</translation>
@@ -2211,6 +2215,7 @@
 <translation id="9215978379284690246">Statusa kods: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Statusa kods: <ph name="STATUS_CODE"/>, iekšējais statusa kods: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Esat sasniedzis augstākās likmes ierobežojumu. Lūdzu, mēģiniet vēlreiz pēc dažām stundām.</translation>
+<translation id="6873128487002733717">Jūs esat sasnieguši šī modeļa premium ierobežojumu. Atlasiet citu modeli vai mēģiniet vēlreiz vēlāk.</translation>
 <translation id="3683964919745779766">Jūs esat sasnieguši pieprasījumu ierobežojumu vai jums ir beigušies kredīti. Lūdzu, mēģiniet vēlreiz vēlāk.</translation>
 <translation id="7692501701960747469">Šim modelim konfigurētā API atslēga nav derīga. Lūdzu, pārbaudiet konfigurāciju un mēģiniet vēlreiz.</translation>
 <translation id="7905602379229309187">Galapunkts pašlaik ir pārslogots. Lūdzu, vēlāk mēģiniet vēlreiz.</translation>
@@ -2390,6 +2395,9 @@
 <translation id="5021823940147712387">Noņemt rīkus</translation>
 <translation id="8712279871321308580">Pieejamie vietnes rīki</translation>
 <translation id="3690996226559605619">Pieejamie rīki (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Atļaut šai sesijai</translation>
+<translation id="6240821072888636753">Vaicāt katru reizi</translation>
+<translation id="4290920330097335010">Nekad neatļaut</translation>
 <translation id="318819763888864209">Visi abonementi tiek automātiski atjaunināti, bet tos jebkurā laikā var atcelt pirms atjaunošanas.</translation>
 <translation id="5091223967610958">Atklājiet jūsu apmeklētās lapas (<ph name="HOST_NAME"/>) resursdatora nosaukumu, lai mēs varētu uzlabot Leo.</translation>
 <translation id="8732450785281947197">Leo MI rīki</translation>
@@ -2464,7 +2472,7 @@
 <translation id="6077070599873946984">Brave AI nepieciešama jūsu atļauja darbībai: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI vēlas izpildīt **<ph name="TOOL_NAME"/>** vietnē **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Šī darbība tika atzīta kā iespējami neatbilstoša jūsu pieprasījumam:</translation>
-<translation id="5137568953923142260">Atļaut</translation>
+<translation id="5137568953923142260">Atļaut vienreiz</translation>
 <translation id="3927932062596804919">Noraidīt</translation>
 <translation id="4191349941249805855">Rādīt rīka argumentus</translation>
 <translation id="7237059533128264835">Slēpt rīka argumentus</translation>
@@ -2511,7 +2519,6 @@
 <translation id="6002159997868894136">Klikšķiniet, lai kopētu pseidonīmu</translation>
 <translation id="8105770564756958406">Izmanto <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Izveidojiet līdz 5 bezmaksas e-pasta pseidonīmiem, lai saglabātu savu īsto e-pasta adresi konfidenciālu.</translation>
-<translation id="5663901348199429994">Jūsu e-pasta pseidonīmi</translation>
 <translation id="9046133327037621173">Jauns e-pasta pseidonīms</translation>
 <translation id="3768606658230902536">Izveidojiet uzģenerētu e-pasta adresi, kas pārsūta ziņojumus uz jūsu īsto pastkasti, saglabājot jūsu personīgo e-pastu konfidenciālu.</translation>
 <translation id="4452721050684632493">Sasniegts aizstājvārdu ierobežojums</translation>
@@ -2942,7 +2949,9 @@ esošo cilni.</translation>
 <translation id="4227581348172626540">Atcelt paroles maiņu</translation>
 <translation id="808894953321890993">Mainīt paroli</translation>
 <translation id="7967687455715421528">Nav iespējams mainīt paroli</translation>
+<translation id="7413006094063730650">Dzēst kontu</translation>
 <translation id="4869737930995549965">Izrakstīties</translation>
+<translation id="2902312830803030883">Vairāk darbību</translation>
 <translation id="5538654494923870167">Sāciet darbu ar savu Brave kontu</translation>
 <translation id="1544145635547515689">Izveidot Brave kontu</translation>
 <translation id="3828644479849256404">Vai jums jau ir konts? Pieteikties</translation>
@@ -2967,6 +2976,11 @@ esošo cilni.</translation>
 <translation id="7228810962389847249">Ievadiet kodu šeit</translation>
 <translation id="4683390091376980486">Apstiprināt kodu</translation>
 <translation id="3970028678400797622">Atkārtoti nosūtīt e-pasta kodu</translation>
+<translation id="3653907916071208187">Dzēst savu Brave kontu?</translation>
+<translation id="8216839865292766307">Brave konta dzēšana dzēsīs arī tā e-pasta aizstājējus. Jūs varat zaudēt piekļuvi tiešsaistes pakalpojumiem, kuros reģistrēšanās laikā izmantojāt aizstājēju. Šo darbību nevar atsaukt.</translation>
+<translation id="3672274694560812974">DZĒST</translation>
+<translation id="1886662169666501462">Ierakstiet <ph name="KEYWORD"/>, lai iespējotu konta dzēšanu</translation>
+<translation id="536306385881145656">Dzēst Brave kontu</translation>
 <translation id="2475982808118771221">Radusies kļūda</translation>
 <translation id="5430795854491041407">kļūda</translation>
 <translation id="2232323423357029857">Pārlūkprogrammā radās neparedzēta kļūda<ph name="ERROR_CODE"/>. Lūdzu, restartējiet pārlūkprogrammu un mēģiniet vēlreiz.</translation>
@@ -2999,4 +3013,10 @@ esošo cilni.</translation>
 <translation id="1063227610401477317">Lietot izmaiņas</translation>
 <translation id="5539769255716491933">Ziņot par neizdevušamies soļiem</translation>
 <translation id="7562163394445060270">Uzdevuma izpilde neizdevās</translation>
+<translation id="691082536326552372">Ziņot par neizdevušajiem soļiem</translation>
+<translation id="2731141092023803480">Nosūtiet Brave komandai atskaiti par neizdevušajiem soļiem. Šī atskaite saturēs informāciju, kas mums nepieciešama problēmas novēršanai. <ph name="LINK_BEFORE"/>Uzzināt vairāk.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">Pašreizējais URL</translation>
+<translation id="4739707522207259415">Neizdevušais(-ie) solis(-ļi)</translation>
+<translation id="1767991048059195456">Nosūtīt atskaiti</translation>
+<translation id="2168036794078614559">Atskaite nosūtīta</translation>
 </translationbundle>

@@ -1732,6 +1732,9 @@
 <translation id="2077392865355605472">Kinakailangan ng token symbol</translation>
 <translation id="4636925020451566238">Kinakailangan ang mga token decimal na may precision value.</translation>
 <translation id="3797613444743816037">Address ng mint</translation>
+<translation id="6571966497164575098">Asset ID</translation>
+<translation id="2110442566771571217">Invalid o blankong token asset ID</translation>
+<translation id="4170599358417498979">Hindi suportado ang mga custom na asset sa network na ito</translation>
 <translation id="7951915459354237451">Nakatakda nang mas mababa ang limitasyon ng fee kaysa base fee. Maaaring matagalan o hindi magawa ang iyong transaksyon.</translation>
 <translation id="2227702748249086756">Hindi nakuha ang mga tinatantyang bayad</translation>
 <translation id="3225624966527491351">Mag-import ng NFT</translation>
@@ -2018,7 +2021,7 @@
 <translation id="418195046117003119">Screenshot ng sharing hub</translation>
 <translation id="4712056949543885424">Ipakita ang password manager</translation>
 <translation id="8037472847879765671">Ipakita ang mga paraan ng pagbabayad</translation>
-<translation id="7269867954894010756">Ipakita ang mga address</translation>
+<translation id="6262574309547773475">Ipakita ang impormasyon sa pakikipag-ugnayan</translation>
 <translation id="6799213269525079335">Hanapin ang susunod</translation>
 <translation id="8666632926482119393">Hanapin pabalik</translation>
 <translation id="3567467864281922039">Isara, maghanap, o huminto</translation>
@@ -2147,6 +2150,7 @@
 <translation id="3142853026316054951">I-toggle ang focus mode</translation>
 <translation id="3468387898712904997">Bagong email alias</translation>
 <translation id="4711475997833555304">Gumawa ng random na email na ipinapasa sa iyong inbox.</translation>
+<translation id="5663901348199429994">Iyong mga Email alias</translation>
 <translation id="2796584247246518451">Bagong pansamantalang container</translation>
 <translation id="8591883849678260674">Tingnan ang orihinal</translation>
 <translation id="1969654232209826429">min. pagbabasa</translation>
@@ -2211,6 +2215,7 @@
 <translation id="9215978379284690246">Status code: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Status code: <ph name="STATUS_CODE"/>, inner status code: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Naabot na ninyo ang limitasyon sa rate ng premium. Pakisubukan ulit pagkalipas ng ilang oras.</translation>
+<translation id="6873128487002733717">Naabot mo ang premium na limit para sa model na ito. Pumili ng ibang model o subukan ulit sa ibang pagkakataon.</translation>
 <translation id="3683964919745779766">Naabot mo ang limit ng rate para sa model na ito o naubusan ka ng mga credit. Pakisubukan ulit sa ibang pagkakataon.</translation>
 <translation id="7692501701960747469">Hindi valid ang naka-configure na API key para sa model na ito. Pakitingnan ang iyong configuration at subukan ulit.</translation>
 <translation id="7905602379229309187">Kasalukuyang overloaded ang endpoint. Pakisubukan ulit sa ibang pagkakataon.</translation>
@@ -2390,6 +2395,9 @@
 <translation id="5021823940147712387">Alisin ang mga tool</translation>
 <translation id="8712279871321308580">Mga available na tool ng website</translation>
 <translation id="3690996226559605619">Mga available na tool (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Payagan para sa session na ito</translation>
+<translation id="6240821072888636753">Magtanong sa tuwing kailangan</translation>
+<translation id="4290920330097335010">Huwag kailanman payagan</translation>
 <translation id="318819763888864209">Awtomatikong nire-renew ang lahat ng subscription pero puwedeng kanselahin anumang oras bago ang pag-renew.</translation>
 <translation id="5091223967610958">Ibahagi ang hostname ong pahina kung nasaan ka (<ph name="HOST_NAME"/>) para matulungan kaming mapabuti si Leo.</translation>
 <translation id="8732450785281947197">Mga AI tool ni Leo</translation>
@@ -2464,7 +2472,7 @@
 <translation id="6077070599873946984">Kailangan ng pahintulot ng Brave AI para sa: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Nais ng Brave AI na isagawa ang **<ph name="TOOL_NAME"/>** sa **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Ang operasyon ay nakita bilang posibleng hindi tumutugma sa iyong hinihiling:</translation>
-<translation id="5137568953923142260">Payagan</translation>
+<translation id="5137568953923142260">Pinayagan nang isang beses</translation>
 <translation id="3927932062596804919">Tanggihan</translation>
 <translation id="4191349941249805855">Ipakita ang mga argumento ng tool</translation>
 <translation id="7237059533128264835">Itago ang mga argumento ng tool</translation>
@@ -2511,7 +2519,6 @@
 <translation id="6002159997868894136">I-click para kopyahin ang alias</translation>
 <translation id="8105770564756958406">Ginagamit ng <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Gumwa ng hanggang 5 libreng email alias para protektahan ang iyong totoong email address.</translation>
-<translation id="5663901348199429994">Iyong mga Email alias</translation>
 <translation id="9046133327037621173">Bagong email alias</translation>
 <translation id="3768606658230902536">Gumawa ng random na email address na nagpapasa sa iyong inbox habang pinapanatiling pribado ang iyong personal na email.</translation>
 <translation id="4452721050684632493">Naabot na ang limitasyon ng alias</translation>
@@ -2942,7 +2949,9 @@ Ikonekta ka natin!</translation>
 <translation id="4227581348172626540">Kanselahin ang pagbabago ng password</translation>
 <translation id="808894953321890993">Baguhin ang password</translation>
 <translation id="7967687455715421528">Hindi mabago ang password</translation>
+<translation id="7413006094063730650">I-delete ang account</translation>
 <translation id="4869737930995549965">Mag-log out</translation>
+<translation id="2902312830803030883">Higit pang mga pagkilos</translation>
 <translation id="5538654494923870167">Magsimula sa iyong Brave account</translation>
 <translation id="1544145635547515689">Gumawa ng Brave account</translation>
 <translation id="3828644479849256404">Mayroon nang account? Mag-log in</translation>
@@ -2967,6 +2976,11 @@ Ikonekta ka natin!</translation>
 <translation id="7228810962389847249">Ilagay ang code dito</translation>
 <translation id="4683390091376980486">Kumpirmahin ang code</translation>
 <translation id="3970028678400797622">Ipadala muli ang email code</translation>
+<translation id="3653907916071208187">I-delete ang iyong Brave account?</translation>
+<translation id="8216839865292766307">Ang pag-delete ng Brave account ay magde-delete din ng mga email alias nito. Maaari kang mawalan ng access sa mga online na serbisyo kung saan gumamit ka ng alias para mag-sign up. Hindi na maaaring bawiin ang pagkilos na ito.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">I-type ang <ph name="KEYWORD"/> para paganahin ang pag-delete ng account</translation>
+<translation id="536306385881145656">I-delete ang Brave account</translation>
 <translation id="2475982808118771221">May naganap na error</translation>
 <translation id="5430795854491041407">nagka-error</translation>
 <translation id="2232323423357029857">Nakaranas ang browser ng hindi inaasahang error<ph name="ERROR_CODE"/>. Paki-restart ang browser at subukan ulit.</translation>
@@ -2999,4 +3013,10 @@ Ikonekta ka natin!</translation>
 <translation id="1063227610401477317">Ilapat ang mga Pagbabago</translation>
 <translation id="5539769255716491933">I-report ang mga Nabigong Hakbang</translation>
 <translation id="7562163394445060270">Nabigo ang pagkumpleto ng task</translation>
+<translation id="691082536326552372">I-report ang mga nabigong hakbang</translation>
+<translation id="2731141092023803480">Magpadala ng report ng mga nabigong hakbang sa Brave team. Maglalaman ang report na ito ng impormasyong kailangan namin para ayusin ang isyu. <ph name="LINK_BEFORE"/>Matuto pa.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">Kasalukuyang URL</translation>
+<translation id="4739707522207259415">Nabigong (mga) hakbang</translation>
+<translation id="1767991048059195456">Magpadala ng report</translation>
+<translation id="2168036794078614559">Naipadala ang report</translation>
 </translationbundle>

@@ -1732,6 +1732,9 @@
 <translation id="2077392865355605472">Token sembolü gereklidir</translation>
 <translation id="4636925020451566238">Token ondalık duyarlık değeri gereklidir</translation>
 <translation id="3797613444743816037">Mint adresi</translation>
+<translation id="6571966497164575098">Varlık Kimliği</translation>
+<translation id="2110442566771571217">Geçersiz veya boş token varlık kimliği</translation>
+<translation id="4170599358417498979">Bu ağda özel varlıklar desteklenmemektedir</translation>
 <translation id="7951915459354237451">Ücret limiti, taban ücretten daha düşük olarak ayarlandı. İşleminiz uzun sürebilir veya başarısız olabilir.</translation>
 <translation id="2227702748249086756">Tahmini ücretler getirilemedi</translation>
 <translation id="3225624966527491351">NFT'yi içe aktar</translation>
@@ -2018,7 +2021,7 @@
 <translation id="418195046117003119">Paylaşım merkezi ekran görüntüsü</translation>
 <translation id="4712056949543885424">Parola yöneticisini göster</translation>
 <translation id="8037472847879765671">Ödeme yöntemlerini göster</translation>
-<translation id="7269867954894010756">Adresleri göster</translation>
+<translation id="6262574309547773475">İletişim bilgilerini göster</translation>
 <translation id="6799213269525079335">Sonrakini bul</translation>
 <translation id="8666632926482119393">Öncekini bul</translation>
 <translation id="3567467864281922039">Bulmayı kapat veya durdur</translation>
@@ -2147,6 +2150,7 @@
 <translation id="3142853026316054951">Odak modunu aç/kapat</translation>
 <translation id="3468387898712904997">Yeni e-posta takma adı</translation>
 <translation id="4711475997833555304">Gelen kutunuza yönlendiren rastgele bir e-posta oluşturun.</translation>
+<translation id="5663901348199429994">E-posta takma adlarınız</translation>
 <translation id="2796584247246518451">Yeni geçici konteyner</translation>
 <translation id="8591883849678260674">Orijinal sayfayı görüntüleyin</translation>
 <translation id="1969654232209826429">dk. okundu</translation>
@@ -2211,6 +2215,7 @@
 <translation id="9215978379284690246">Durum kodu: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Durum kodu: <ph name="STATUS_CODE"/>, iç durum kodu: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Premium hızı limitine ulaştınız. Lütfen birkaç saat içinde tekrar deneyin.</translation>
+<translation id="6873128487002733717">Bu model için premium limitine ulaştınız. Farklı bir model seçin veya daha sonra tekrar deneyin.</translation>
 <translation id="3683964919745779766">Bu model için limite ulaştınız veya krediniz bitti. Lütfen daha sonra tekrar deneyin.</translation>
 <translation id="7692501701960747469">Bu model için yapılandırılan API anahtarı geçersiz. Lütfen yapılandırmanızı kontrol edin ve tekrar deneyin.</translation>
 <translation id="7905602379229309187">Uç nokta şu anda aşırı yüklenmiş durumda. Lütfen daha sonra tekrar deneyin.</translation>
@@ -2390,6 +2395,9 @@
 <translation id="5021823940147712387">Araçları kaldır</translation>
 <translation id="8712279871321308580">Kullanılabilir web sitesi araçları</translation>
 <translation id="3690996226559605619">Kullanılabilir araçlar (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Bu oturum için izin ver</translation>
+<translation id="6240821072888636753">Her seferinde sor</translation>
+<translation id="4290920330097335010">Asla izin verme</translation>
 <translation id="318819763888864209">Tüm abonelikler otomatik olarak yenilenir, ancak yenilemeden önce istendiği zaman iptal edilebilir.</translation>
 <translation id="5091223967610958">Leo'yu daha iyi hale getirmemize yardımcı olmak için bulunduğunuz sayfanın (<ph name="HOST_NAME"/>) ana bilgisayar adını paylaşın.</translation>
 <translation id="8732450785281947197">Leo YZ araçları</translation>
@@ -2464,7 +2472,7 @@
 <translation id="6077070599873946984">Brave AI aşağıdakiler için izninize ihtiyaç duyuyor: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI, **<ph name="SITE_ORIGIN"/>** üzerinde **<ph name="TOOL_NAME"/>** çalıştırmak istiyor</translation>
 <translation id="4163837693685963037">İşlem, talebinizle potansiyel olarak uyumsuz olarak algılandı:</translation>
-<translation id="5137568953923142260">İzin ver</translation>
+<translation id="5137568953923142260">Bir kez izin ver</translation>
 <translation id="3927932062596804919">Reddet</translation>
 <translation id="4191349941249805855">Araç bağımsız değişkenlerini göster</translation>
 <translation id="7237059533128264835">Araç bağımsız değişkenlerini gizle</translation>
@@ -2511,7 +2519,6 @@
 <translation id="6002159997868894136">Takma adı kopyalamak için tıklayın</translation>
 <translation id="8105770564756958406"><ph name="DOMAINS"/> tarafından kullanıldı</translation>
 <translation id="5006956315579221642">Gerçek e-posta adresinizi korumak için 5 adede kadar ücretsiz e-posta takma adı oluşturun.</translation>
-<translation id="5663901348199429994">E-posta takma adlarınız</translation>
 <translation id="9046133327037621173">Yeni e-posta takma adı</translation>
 <translation id="3768606658230902536">Gelen kutunuza yönlendiren ve kişisel e-postanızı gizli tutan rastgele bir e-posta adresi oluşturun.</translation>
 <translation id="4452721050684632493">Takma ad limitine ulaşıldı</translation>
@@ -2942,7 +2949,9 @@ Hadi sizi bağlayalım!</translation>
 <translation id="4227581348172626540">Parola değişikliğini iptal et</translation>
 <translation id="808894953321890993">Parolayı değiştir</translation>
 <translation id="7967687455715421528">Parola değiştirilemiyor</translation>
+<translation id="7413006094063730650">Hesabı sil</translation>
 <translation id="4869737930995549965">Oturumu kapat</translation>
+<translation id="2902312830803030883">Diğer eylemler</translation>
 <translation id="5538654494923870167">Brave hesabınızla başlayın</translation>
 <translation id="1544145635547515689">Brave hesabı oluştur</translation>
 <translation id="3828644479849256404">Zaten bir hesabınız var mı? Giriş yapın</translation>
@@ -2967,6 +2976,11 @@ Hadi sizi bağlayalım!</translation>
 <translation id="7228810962389847249">Kodu buraya girin</translation>
 <translation id="4683390091376980486">Kodu doğrula</translation>
 <translation id="3970028678400797622">E-posta kodunu yeniden gönder</translation>
+<translation id="3653907916071208187">Brave hesabınızı sil?</translation>
+<translation id="8216839865292766307">Bir Brave hesabını silmek, bu hesaba ait e-posta takma adlarını da siler. Kaydolmak için takma ad kullandığınız çevrimiçi hizmetlere erişiminizi kaybedebilirsiniz. Bu işlem geri alınamaz.</translation>
+<translation id="3672274694560812974">SİL</translation>
+<translation id="1886662169666501462">Hesap silmeyi etkinleştirmek için <ph name="KEYWORD"/> yazın</translation>
+<translation id="536306385881145656">Brave hesabını sil</translation>
 <translation id="2475982808118771221">Bir hata oluştu</translation>
 <translation id="5430795854491041407">hata</translation>
 <translation id="2232323423357029857">Tarayıcı beklenmeyen bir hatayla karşılaştı<ph name="ERROR_CODE"/>. Lütfen tarayıcıyı yeniden başlatın ve tekrar deneyin.</translation>
@@ -2999,4 +3013,10 @@ Hadi sizi bağlayalım!</translation>
 <translation id="1063227610401477317">Değişiklikleri Uygula</translation>
 <translation id="5539769255716491933">Başarısız Adımları Bildir</translation>
 <translation id="7562163394445060270">Görev tamamlanamadı</translation>
+<translation id="691082536326552372">Başarısız adımları bildir</translation>
+<translation id="2731141092023803480">Başarısız adımların bir raporunu Brave ekibine gönderin. Bu rapor, sorunu düzeltmemiz için gereken bilgileri içerecektir. <ph name="LINK_BEFORE"/>Daha fazla bilgi edinin.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">Mevcut URL</translation>
+<translation id="4739707522207259415">Başarısız adım(lar)</translation>
+<translation id="1767991048059195456">Rapor gönder</translation>
+<translation id="2168036794078614559">Rapor gönderildi</translation>
 </translationbundle>

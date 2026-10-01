@@ -828,6 +828,8 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="2384307209577226199">Default perusahaan</translation>
 <translation id="5244533701344680487">Update Brave dari setelan Brave</translation>
 <translation id="2386255080630008482">Sertifikat server telah dicabut.</translation>
+<translation id="1999573251664171397">Disarankan oleh Gemini · <ph name="SRC_LINK"/>Lihat sumber<ph name="END_SRC_LINK"/>
+Anda dapat menghapus saran ini dari Brave. Sumber asli Anda tidak akan dihapus. <ph name="MANAGE_LINK"/>Kelola isi otomatis yang ditingkatkan<ph name="END_MANAGE_LINK"/></translation>
 <translation id="239203817277685015">Jelaskan</translation>
 <translation id="2392959068659972793">Tampilkan kebijakan yang nilainya tidak ditetapkan</translation>
 <translation id="239429038616798445">Metode pengiriman tidak tersedia. Coba metode lain.</translation>
@@ -866,6 +868,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="2467272921457885625">Spesifikasi dan statistik hardware perangkat seperti histori penggunaan CPU/RAM</translation>
 <translation id="2467421459221956357">Gunakan sensor?</translation>
 <translation id="2467694685043708798"><ph name="BEGIN_LINK"/>Jalankan Diagnostik Jaringan<ph name="END_LINK"/></translation>
+<translation id="2468247643665097563">Urutan</translation>
 <translation id="2469153820345007638">Urutan 1-ke-N</translation>
 <translation id="24699311393038040">Kertas (Berlapis)</translation>
 <translation id="2471632709106952369">Tabel perbandingan</translation>
@@ -916,6 +919,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="2544644783021658368">Dokumen tunggal</translation>
 <translation id="5342827302598046226">Setel Brave sebagai Browser Default</translation>
 <translation id="2546283357679194313">Cookie dan data situs</translation>
+<translation id="254672217349157196">Verifikasi otomatis email Anda</translation>
 <translation id="254947805923345898">Nilai kebijakan tidak valid.</translation>
 <translation id="255002559098805027"><ph name="HOST_NAME"/> mengirimkan tanggapan yang tidak valid.</translation>
 <translation id="2551608178605132291">Alamat: <ph name="ADDRESS"/></translation>
@@ -1073,6 +1077,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="2859806420264540918">Situs ini menampilkan iklan yang mengganggu atau menyesatkan.</translation>
 <translation id="2873317327342476681">Game Dino, ketuk dino atau tekan spasi untuk bermain</translation>
 <translation id="287387905105155974">Balon bantuan</translation>
+<translation id="2111353921621866764">Saat peristiwa keamanan ditandai oleh Brave, data yang relevan dengan peristiwa tersebut akan dikirimkan kepada administrator Anda. Data ini dapat mencakup URL dan judul halaman yang Anda kunjungi di Brave, URL halaman tempat Anda menyalin data, nama file atau metadata, alamat IP, error browser atau tab yang tidak bekerja, serta nama pengguna yang Anda gunakan untuk login ke aplikasi berbasis web, perangkat Anda, dan Brave.</translation>
 <translation id="1117301625415017890"><ph name="MANAGE_SECURITY_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tekan Tab lalu Enter untuk mengelola Safe Browsing dan lainnya di setelan Brave</translation>
 <translation id="2878197950673342043">Lipatan poster</translation>
 <translation id="2878424575911748999">A1</translation>
@@ -1110,7 +1115,6 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="2931453528659195355">Kelola info belanja</translation>
 <translation id="2933624813161016821">Foil Emboss</translation>
 <translation id="2935726091208500473">membagikan tab Anda</translation>
-<translation id="503249467791680577">Pilih kolom kode promo untuk mengisi otomatis penawaran dari Brave Wallet</translation>
 <translation id="293796669683825859">Komentar</translation>
 <translation id="2938225289965773019">Membuka link <ph name="PROTOCOL"/></translation>
 <translation id="2938370569652058706"><ph name="ORIGIN"/> – Untuk menampilkan kursor, beralih aplikasi, memuat ulang halaman, atau kembali</translation>
@@ -1153,6 +1157,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="3008410317623852235">Anda kini dapat menemukan dan mengisi info dari Gmail dan lainnya.</translation>
 <translation id="3009036448238594149"><ph name="ACTION_IN_SUGGEST_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tekan Tab untuk menjelajahi tindakan yang tersedia, lalu tekan Enter untuk menjalankan tindakan yang dipilih.</translation>
 <translation id="3010991137650052245">Untuk menggunakan <ph name="PERMISSION"/> Anda di situs ini, berikan akses ke <ph name="SHORT_PRODUCT_NAME"/></translation>
+<translation id="3013536714390403689">Email terverifikasi</translation>
 <translation id="3014726756341138577">Fitur printer lanjutan</translation>
 <translation id="301521992641321250">Diblokir secara otomatis</translation>
 <translation id="3016780570757425217">Mengetahui lokasi Anda</translation>
@@ -1394,6 +1399,7 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="3432601291244612633">Tutup halaman</translation>
 <translation id="3044702330949941099">Pengelola Sandi Brave memerlukan lebih banyak akses</translation>
 <translation id="343474037147570563">File yang Anda upload atau lampirkan akan dikirimkan ke Google Cloud atau pihak ketiga untuk dianalisis. Misalnya, file mungkin dipindai untuk mendeteksi data sensitif atau malware dan mungkin disimpan berdasarkan kebijakan perusahaan serta dapat dilihat oleh administrator Anda.</translation>
+<translation id="3435267628744367511">Tekan Ctrl dua kali di formulir mana pun untuk menemukan dan mengisi info tanpa beralih tab</translation>
 <translation id="3435557549311968410">Berkelanjutan (Singkat)</translation>
 <translation id="3435738964857648380">Keamanan</translation>
 <translation id="3436125638121079308">Otomatis bagikan tab yang relevan untuk mendapatkan respons yang lebih baik di rangkaian pesan ini?</translation>
@@ -1479,6 +1485,8 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="3577473026931028326">Terjadi error. Coba lagi.</translation>
 <translation id="3580550219062570293"><ph name="TOS_TITLE"/> <ph name="LOGO_DESCRIPTION"/></translation>
 <translation id="230476913390177517">Brave akan memberi tahu Anda saat halaman ini sudah siap. &lt;a&gt;Batal&lt;/a&gt;</translation>
+<translation id="3581499772329034229">Otomatis tambahkan tab</translation>
+<translation id="3582670569275100909">Pengiriman</translation>
 <translation id="3582930987043644930">Tambahkan nama</translation>
 <translation id="3583757800736429874">&amp;Ulangi Pemindahan</translation>
 <translation id="3584299510153766161">Dua lubang di bawah</translation>
@@ -1512,6 +1520,7 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="3632892046558972264">Berbagi layar dijeda</translation>
 <translation id="3634530185120165534">Baki 5</translation>
 <translation id="3638102297696182302">Lanjutkan Bantu tulis. Tab dan tekan enter untuk membuka</translation>
+<translation id="5522999398661802511">IBAN ini disimpan di Brave Wallet agar dapat digunakan di berbagai produk Brave.</translation>
 <translation id="3642196846309122856">Coba download file lagi</translation>
 <translation id="3642638418806704195">Aplikasi:</translation>
 <translation id="3647286794400715637">Setiap entri string URL harus berisi antara 1 hingga 2 URL.</translation>
@@ -1524,7 +1533,6 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="3655670868607891010">Jika Anda sering melihatnya, coba <ph name="HELP_LINK"/>.</translation>
 <translation id="3658742229777143148">Revisi</translation>
 <translation id="3659521826520353662">Situs buatan administrator yang dikunjungi dan kapan kunjungan tersebut dilakukan: <ph name="ALLOWLISTED_WEBSITES"/></translation>
-<translation id="4298771595289948957">IBAN ini disimpan di Brave Wallet agar dapat digunakan di berbagai layanan Brave.</translation>
 <translation id="3664479564786885722">Telusuri opsi pembelian lainnya dari toko lain yang menjual produk ini.</translation>
 <translation id="3664782872746246217">Kata kunci:</translation>
 <translation id="3670030362669914947">Nomor</translation>
@@ -1552,11 +1560,13 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="3705189812819839667"><ph name="RESULT_OWNER"/> - <ph name="RESULT_PRODUCT_SOURCE"/></translation>
 <translation id="370665806235115550">Memuat...</translation>
 <translation id="3709599264800900598">Teks yang Anda Salin</translation>
+<translation id="3711223220609269738">Tab Terisolasi Baru</translation>
 <translation id="450379565246785127">Browser Brave mencoba menampilkan sandi</translation>
 <translation id="3711895659073496551">Tangguhkan</translation>
 <translation id="3712004750972384495">Menyimpan perekaman layar</translation>
 <translation id="3712006010833051684">Envelope #10</translation>
 <translation id="3712624925041724820">Lisensi habis</translation>
+<translation id="371302509916403935">Garis bawah</translation>
 <translation id="3713277100229669269">Kini Anda dapat melihat manfaat kartu sebelum membayar</translation>
 <translation id="3714633008798122362">kalender web</translation>
 <translation id="3714780639079136834">Aktifkan data seluler atau Wi-Fi</translation>
@@ -1569,6 +1579,7 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="3727309136762649052">Namespace</translation>
 <translation id="8077319455765501118">Untuk menggunakan Pengelola Sandi Brave dengan Rantai Kunci macOS, luncurkan kembali Brave dan izinkan akses Rantai Kunci. Tab Anda akan dibuka lagi setelah peluncuran kembali.</translation>
 <translation id="2967969024210491578">Browser Brave tidak lagi memerlukan sidik jari Anda untuk mengisi otomatis sandi</translation>
+<translation id="3729811201279509483">Tambahkan tab secara manual</translation>
 <translation id="8656776619448807468">Browser Brave mencoba mengisikan info sensitif Anda di <ph name="APP_NAME"/>.</translation>
 <translation id="3738166223076830879">Browser dikelola oleh administrator Anda.</translation>
 <translation id="3739842843727261045">Memberi tanda Suka akan mengirim masukan bahwa Anda menyukai hasil ini</translation>
@@ -1885,6 +1896,7 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="4265635050210404830">Kartu loyalitas Anda</translation>
 <translation id="4265872034478892965">Diizinkan oleh administrator</translation>
 <translation id="7044970527849636581">Untuk mengakses histori Anda dari perangkat lain, login dan sinkronkan histori. Anda juga akan mendapatkan sandi dan info Anda yang lain di semua perangkat Anda. Anda dapat berhenti menyinkronkan kapan saja di setelan. Brave dapat mempersonalisasi Penelusuran dan layanan lainnya berdasarkan histori Anda.</translation>
+<translation id="4267837382000002014">URL dan judul halaman yang Anda kunjungi akan dikirim ke Google Cloud atau pihak ketiga untuk dianalisis, dan dapat dilihat oleh administrator Anda. Misalnya, URL mungkin dipindai untuk mendeteksi situs yang tidak aman atau memfilter situs berdasarkan aturan yang ditetapkan oleh administrator.</translation>
 <translation id="4268025649754414643">Penyandian Kunci</translation>
 <translation id="4269599248168651462">Sertifikat server diterbitkan untuk nama yang tidak unik.</translation>
 <translation id="4270541775497538019">Tempat kertas 6</translation>
@@ -1958,7 +1970,6 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="4377869186417956230">Ubah ke semua kartu loyalitas pada item menu ini.</translation>
 <translation id="4378154925671717803">Ponsel</translation>
 <translation id="4378221908737133050">Buatkan checklist pembersihan menyeluruh untuk rumah saya</translation>
-<translation id="4379357028567121852">Dari <ph name="APP_NAME"/></translation>
 <translation id="4381997246130185847">Anda dapat melanjutkan tab yang terakhir dibuka atau membuat grup tab baru kapan saja di mana saja</translation>
 <translation id="4382484599443659549">PDF</translation>
 <translation id="4382833368532556056">Mulai sekarang, simpan file Anda ke penyimpanan cloud</translation>
@@ -2153,6 +2164,7 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="4750917950439032686">Informasi Anda (misalnya, sandi atau nomor kartu kredit) bersifat pribadi saat dikirimkan ke situs ini.</translation>
 <translation id="4754461935447132332">Tidak diizinkan untuk situs yang tidak aman</translation>
 <translation id="4756501505996488486">PRC 16K</translation>
+<translation id="4757119894147311267">Pilih kolom kode promo untuk melihat dan mengisi penawaran tersimpan Anda</translation>
 <translation id="4757740693289347881">Kode tidak valid</translation>
 <translation id="1015173303159845845">Anda baru saja memasukkan sandi ke situs tidak jujur. Untuk mengamankan akun Anda, Brave merekomendasikan pemeriksaan sandi tersimpan Anda.</translation>
 <translation id="4758311279753947758">Tambahkan info kontak</translation>
@@ -2338,7 +2350,6 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="5052488928733955073">Terjadi masalah saat mengisi info Anda. Periksa koneksi Anda.</translation>
 <translation id="4845759156174221500">Nomor kartu virtual akan diisi saat Anda melakukan check out dengan kartu ini untuk melindungi detail kartu Anda yang sebenarnya. Kelola di Brave Wallet. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="5056425809654826431">{NUM_FILES,plural, =1{Untuk mengirim file ini menggunakan Berbagi Langsung, kosongkan ruang penyimpanan (<ph name="DISK_SPACE_SIZE"/>) di perangkat Anda}other{Untuk mengirim file ini menggunakan Berbagi Langsung, kosongkan ruang penyimpanan (<ph name="DISK_SPACE_SIZE"/>) di perangkat Anda}}</translation>
-<translation id="5056587122125565772">Buat gambar</translation>
 <translation id="505757197798929356">Berikan alasan membuka (wajib)</translation>
 <translation id="5058282932481719070">pelajari lebih lanjut isi otomatis yang ditingkatkan di setelan</translation>
 <translation id="5061227663725596739">Mungkin maksud Anda <ph name="LOOKALIKE_DOMAIN"/>?</translation>
@@ -2548,7 +2559,6 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="5414306071315087019">Beli sekarang, bayar nanti tersedia dengan Google Pay</translation>
 <translation id="5414446060143308245">Peninjauan diperlukan sebelum mentransfer</translation>
 <translation id="5414511064953050917">Tetap pindahkan</translation>
-<translation id="5418700249417444482">URL halaman yang Anda kunjungi akan dikirim ke Google Cloud atau pihak ketiga untuk dianalisis, dan dapat dilihat oleh administrator Anda. Misalnya, URL mungkin dipindai untuk mendeteksi situs yang tidak aman atau memfilter situs berdasarkan aturan yang ditetapkan oleh administrator.</translation>
 <translation id="5419311651396341287">Administrator Anda mungkin dapat melihat:</translation>
 <translation id="5423269318075950257">Pantau Harga</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> ingin mengirimkan notifikasi kepada Anda</translation>
@@ -2569,7 +2579,6 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="4784093498984929780">Simpan paspor di Brave Wallet</translation>
 <translation id="5447235695608032700">Izinkan <ph name="SITE"/> untuk menggunakan info tentang Anda yang telah disimpan situs</translation>
 <translation id="5447973833955560753">Sandi pemulihan</translation>
-<translation id="6108397422772394696">Saat peristiwa keamanan ditandai oleh Brave, data yang relevan dengan peristiwa tersebut akan dikirimkan kepada administrator Anda. Data ini dapat mencakup URL halaman yang Anda buka di Brave, URL halaman tempat Anda menyalin data, nama file atau metadata, alamat IP, error browser atau tab, serta nama pengguna yang Anda gunakan untuk login ke aplikasi berbasis web, perangkat, dan Brave.</translation>
 <translation id="5452270690849572955">Halaman <ph name="HOST_NAME"/> ini tidak dapat ditemukan</translation>
 <translation id="5452923259299906094">Bayar dengan eWallet dan Pix</translation>
 <translation id="5455374756549232013">Stempel waktu kebijakan salah</translation>
@@ -2701,6 +2710,7 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="5649053991847567735">Download otomatis</translation>
 <translation id="5651323159439184939">Tractor Feed</translation>
 <translation id="5987316528511737389">Perbarui kartu identitas dengan aman di Brave Wallet</translation>
+<translation id="7288726880908739179">Simpan info Anda dan selesaikan berbagai hal lebih cepat, seperti mengisi formulir di seluruh produk Brave. Anda dapat <ph name="MANAGE_WALLET_SETTINGS_LINK"/> untuk <ph name="ACCOUNT"/>.</translation>
 <translation id="5654927323611874862">ID Laporan Kerusakan yang Diupload:</translation>
 <translation id="5654965123204121933">URL tidak menyertakan string pengganti yang diperlukan <ph name="SEARCH_TERMS_REPLACEMENT"/>: <ph name="SEARCH_URL"/></translation>
 <translation id="5659593005791499971">Email</translation>
@@ -2824,6 +2834,7 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="5884465125445718607">Envelope Chinese #6</translation>
 <translation id="5887400589839399685">Kartu disimpan</translation>
 <translation id="5887687176710214216">Terakhir dibuka kemarin</translation>
+<translation id="5887791684215121787">Tekan ⌘ ⌘ di formulir mana pun untuk menemukan dan mengisi info tanpa beralih tab</translation>
 <translation id="4104845878245066653">Untuk mengakses histori Anda dari perangkat lain, verifikasi diri Anda dan sinkronkan histori serta tab Anda. Anda dapat berhenti menyinkronkan kapan saja di setelan. Brave dapat mempersonalisasi Penelusuran dan layanan lainnya berdasarkan histori Anda.</translation>
 <translation id="5895138241574237353">Mulai Ulang</translation>
 <translation id="5895187275912066135">Diterbitkan Pada</translation>
@@ -3082,6 +3093,7 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="7867333304076398451">Situs ini akan tetap diblokir karena Anda termasuk dalam Program Perlindungan Lanjutan Brave. <ph name="BEGIN_LEARN_MORE_LINK"/>Pelajari lebih lanjut peringatan ini<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="6321917430147971392">Periksa setelan DNS Anda</translation>
 <translation id="6322182122604171028">Tidak dapat menggunakan Windows Hello</translation>
+<translation id="5267531627648004734">Hapus dari Brave</translation>
 <translation id="7962450223988560278">Setel Brave sebagai browser default sistem di setelan iOS</translation>
 <translation id="6328639280570009161">Coba nonaktifkan prediksi jaringan</translation>
 <translation id="2992154309947281535">Untuk mengisi otomatis info Anda, aktifkan "Gunakan kartu di layanan Brave" di setelan Wallet</translation>
@@ -3111,7 +3123,6 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="6361757823711327522">B7</translation>
 <translation id="6363786367719063276">Lihat log</translation>
 <translation id="6364095313648930329"><ph name="BEGIN_LINK"/>Memeriksa proxy, firewall, dan konfigurasi DNS Aman<ph name="END_LINK"/></translation>
-<translation id="6365513578140103119">Konfirmasi email Anda secara otomatis</translation>
 <translation id="6366710531182496394">Dua jepretan di kiri</translation>
 <translation id="6367196786591004737">Hapus entri</translation>
 <translation id="6370022303958842211">Tindakan akses perangkat seperti login (termasuk alasan login yang gagal), logout, kunci, dan buka kunci</translation>
@@ -3144,6 +3155,7 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="6410264514553301377">Masukkan tanggal kedaluwarsa dan CVC <ph name="CREDIT_CARD"/></translation>
 <translation id="6411107829285739505">A4x8</translation>
 <translation id="6412543105195503444">Dialog persetujuan orang tua</translation>
+<translation id="6413532517183895572">kelola setelan Wallet Anda</translation>
 <translation id="6416877227920300343">EDP</translation>
 <translation id="6418199314628742460">Pastikan data pribadi atau bisnis penting disimpan secara eksternal.</translation>
 <translation id="4561848316196784217">Perbarui kendaraan dengan aman di Brave Wallet</translation>
@@ -3235,6 +3247,7 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="6578434528542148658">ID ekstensi tidak valid.</translation>
 <translation id="3157702622633401823">Penyerang di situs yang Anda coba kunjungi dapat menginstal software berbahaya yang mencuri atau menghapus hal-hal seperti sandi, foto, pesan, atau nomor kartu kredit Anda. Brave sangat merekomendasikan untuk kembali agar aman. <ph name="BEGIN_LEARN_MORE_LINK"/>Pelajari lebih lanjut peringatan ini<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2571911185264872034">Disimpan di Brave Wallet</translation>
+<translation id="4503563163243322840">Kartu ini disimpan di Brave Wallet agar dapat digunakan di berbagai produk Brave</translation>
 <translation id="6587893660316489419">Envelope B5</translation>
 <translation id="6587923378399804057">Link yang Anda salin</translation>
 <translation id="6591833882275308647"><ph name="DEVICE_TYPE"/> Anda tidak dikelola</translation>
@@ -3759,6 +3772,7 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="7514365320538308">Download</translation>
 <translation id="7515998400212163428">Android</translation>
 <translation id="7516123895971374904">VR diizinkan kali ini</translation>
+<translation id="7517198908921983825">Disarankan oleh Gemini · <ph name="SOURCES"/></translation>
 <translation id="7517414872996418597">Envelope C10</translation>
 <translation id="7518003948725431193">Tidak ada halaman web yang ditemukan untuk alamat web:<ph name="URL"/></translation>
 <translation id="7521387064766892559">JavaScript</translation>
@@ -3823,7 +3837,6 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="7615932826417658001">Tambahkan kartu identitas</translation>
 <translation id="7616390733770379387">Mesin telusur ditampilkan dalam urutan acak.</translation>
 <translation id="8565825862287624454">Administrator Anda telah mengaktifkan Brave Enterprise Connectors di browser Anda. Konektor ini memiliki akses ke beberapa data Anda.</translation>
-<translation id="6114261010694947707">Kartu ini disimpan di Brave Wallet agar dapat digunakan di berbagai layanan Brave</translation>
 <translation id="7617825962482469577">Envelope C7/C6</translation>
 <translation id="7619838219691048931">Lembar akhir</translation>
 <translation id="7621546470643449009">Buatkan panduan pemula untuk mengamati bintang agar saya bisa mengenali hal-hal yang ada di langit malam, termasuk 3 rasi bintang yang mudah ditemukan</translation>
@@ -3914,6 +3927,7 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="7758069387465995638">Software antivirus atau firewall mungkin memblokir sambungan.</translation>
 <translation id="7759147511335618829">Program ulang &amp; kontrol perangkat MIDI</translation>
 <translation id="7759809451544302770">Opsional</translation>
+<translation id="7760566304700414795">Pengiriman</translation>
 <translation id="776110834126722255">Tidak digunakan lagi</translation>
 <translation id="7761159795823346334">Izinkan kamera?</translation>
 <translation id="7761701407923456692">Sertifikat server tidak cocok dengan URL.</translation>
@@ -4127,7 +4141,6 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="208389643640023363">Info dari Akun Brave Anda <ph name="ACCOUNT"/> dapat membantu Anda mengisi formulir lebih cepat di Brave</translation>
 <translation id="8150722005171944719">File pada <ph name="URL"/> tidak dapat dibaca.  File mungkin telah dihapus, dipindahkan, atau izin file mungkin mencegah akses.</translation>
 <translation id="8151185429379586178">Developer Tools</translation>
-<translation id="8152194419479742504">Ketik @@ di formulir mana pun untuk menemukan dan mengisi info tanpa beralih tab</translation>
 <translation id="8153865548451212769">{0,plural, =1{Kebijakan administrator tidak merekomendasikan untuk mendownload file ini ke <ph name="DESTINATION_NAME"/>}other{Kebijakan administrator tidak merekomendasikan untuk mendownload file ini ke <ph name="DESTINATION_NAME"/>}}</translation>
 <translation id="8155253549374198915">Tab terakhir yang dibuka</translation>
 <translation id="7904243652775639741">Brave memiliki fitur keamanan bawaan untuk melindungi Anda saat menjelajah — seperti Google Safe Browsing, yang <ph name="BEGIN_LINK"/>baru-baru ini menemukan malware<ph name="END_LINK"/> di situs yang Anda coba kunjungi.</translation>
@@ -4190,6 +4203,7 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="8269242089528251720">Dokumen terpisah/Salinan tersusun</translation>
 <translation id="8269703227894255363">{0,plural, =1{File diblokir agar tidak dapat dibuka}other{<ph name="FILE_COUNT"/> file diblokir agar tidak dapat dibuka}}</translation>
 <translation id="8270242299912238708">Dokumen PDF</translation>
+<translation id="8270320981823560179">Drive</translation>
 <translation id="8277900682056760511">Lembar handler pembayaran terbuka</translation>
 <translation id="827820107214076967">Muat Ulang Log</translation>
 <translation id="2164614088382669062">Notifikasi Brave harus aktif. Anda dapat mengaktifkannya di <ph name="BEGIN_LINK"/><ph name="NOTIFICATION_SETTINGS"/><ph name="END_LINK"/>.</translation>
@@ -4258,6 +4272,7 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="8371841335382565017">Tampilkan daftar perangkat untuk transmisi</translation>
 <translation id="8371889962595521444">Root certificate kustom</translation>
 <translation id="8374636051559112948">Bervariasi</translation>
+<translation id="8377507422902936905">Pesanan</translation>
 <translation id="837840316697671463">Jika Anda tidak dapat menemukan file di perangkat Anda, cari di <ph name="CLOUD_PROVIDER"/>.</translation>
 <translation id="8378714024927312812">Dikelola oleh organisasi</translation>
 <translation id="8380941800586852976">Berbahaya</translation>
@@ -4565,7 +4580,6 @@ Untuk menyembunyikan opsi bayar nanti, buka <ph name="BEGIN_LINK"/>setelan pemba
 <translation id="8963117664422609631">Buka setelan situs</translation>
 <translation id="8963213021028234748"><ph name="MARKUP_1"/>Saran:<ph name="MARKUP_2"/>Pastikan Anda memiliki sambungan data<ph name="MARKUP_3"/>Coba muat ulang halaman web ini nanti<ph name="MARKUP_4"/>Periksa alamat yang Anda masukkan<ph name="MARKUP_5"/></translation>
 <translation id="8963969435440878110">File lokal Anda akan dihapus dalam <ph name="HOURS"/> jam</translation>
-<translation id="8964904785315870349">Email Terverifikasi</translation>
 <translation id="8968766641738584599">Simpan kartu</translation>
 <translation id="8970887620466824814">Terjadi error.</translation>
 <translation id="8971063699422889582">Sertifikat server telah kedaluwarsa.</translation>

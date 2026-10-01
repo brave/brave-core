@@ -1740,6 +1740,9 @@
 <translation id="2077392865355605472">Symbol tokenu je nezbytný údaj</translation>
 <translation id="4636925020451566238">Přesnost na desetinná místa hodnoty tokenu je nezbytný údaj</translation>
 <translation id="3797613444743816037">Adresa mincovny (Mint)</translation>
+<translation id="6571966497164575098">ID aktiva</translation>
+<translation id="2110442566771571217">Neplatné nebo prázdné ID aktiva tokenu</translation>
+<translation id="4170599358417498979">Vlastní aktiva nejsou na této síti podporována</translation>
 <translation id="7951915459354237451">Stanovený limit poplatku je nižší než základní hodnota poplatku. Vaše transakce může trvat dlouho nebo může selhat.</translation>
 <translation id="2227702748249086756">Nelze vypočítat odhad poplatků</translation>
 <translation id="3225624966527491351">Importovat NFT</translation>
@@ -2027,7 +2030,7 @@ other {# zdrojů}
 <translation id="418195046117003119">Snímek obrazovky centra sdílení</translation>
 <translation id="4712056949543885424">Zobrazit správce hesel</translation>
 <translation id="8037472847879765671">Zobrazit platební metody</translation>
-<translation id="7269867954894010756">Zobrazit adresu</translation>
+<translation id="6262574309547773475">Zobrazit kontaktní údaje</translation>
 <translation id="6799213269525079335">Najít další</translation>
 <translation id="8666632926482119393">Najít předchozí</translation>
 <translation id="3567467864281922039">Zavřít, najít nebo zastavit</translation>
@@ -2156,6 +2159,7 @@ other {# zdrojů}
 <translation id="3142853026316054951">Přepnout režim zaměření</translation>
 <translation id="3468387898712904997">Nový e-mailový alias</translation>
 <translation id="4711475997833555304">Vytvoří náhodný e-mail, který přeposílá poštu do vaší schránky.</translation>
+<translation id="5663901348199429994">Vaše e-mailové aliasy</translation>
 <translation id="2796584247246518451">Nový dočasný kontejner</translation>
 <translation id="8591883849678260674">Zobrazit originál</translation>
 <translation id="1969654232209826429">min. čtení</translation>
@@ -2224,6 +2228,7 @@ other {# zdrojů}
 <translation id="9215978379284690246">Stavový kód: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Stavový kód: <ph name="STATUS_CODE"/>, vnitřní stavový kód: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Dosáhli jste limitu prémiové sazby. Zkuste to znovu za několik hodin.</translation>
+<translation id="6873128487002733717">Dosáhli jste limitu služby Premium pro tento model. Vyberte jiný model nebo to zkuste znovu později.</translation>
 <translation id="3683964919745779766">Dosáhli jste limitu služby pro tento model nebo vám došly kredity. Zkuste to prosím později.</translation>
 <translation id="7692501701960747469">Klíč API nakonfigurovaný pro tento model je neplatný. Zkontrolujte prosím konfiguraci a zkuste to znovu.</translation>
 <translation id="7905602379229309187">Koncový bod je aktuálně přetížen. Zkuste to prosím znovu později.</translation>
@@ -2403,6 +2408,9 @@ other {# zdrojů}
 <translation id="5021823940147712387">Odstranit nástroje</translation>
 <translation id="8712279871321308580">Dostupné nástroje webu</translation>
 <translation id="3690996226559605619">Dostupné nástroje (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Povolit pro tuto relaci</translation>
+<translation id="6240821072888636753">Zeptat se pokaždé</translation>
+<translation id="4290920330097335010">Nikdy nepovolovat</translation>
 <translation id="318819763888864209">Všechna předplatná se automaticky obnovují, ale lze je kdykoli před obnovením zrušit.</translation>
 <translation id="5091223967610958">Sdílejte název hostitele stránky, na které se nacházíte (<ph name="HOST_NAME"/>), abyste nám pomohli vylepšit Leo.</translation>
 <translation id="8732450785281947197">Nástroje UI Leo</translation>
@@ -2477,7 +2485,7 @@ other {# zdrojů}
 <translation id="6077070599873946984">Brave AI potřebuje vaše oprávnění k: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI by chtěla spustit **<ph name="TOOL_NAME"/>** na **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Operace byla vyhodnocena jako potenciálně neodpovídající vašemu požadavku:</translation>
-<translation id="5137568953923142260">Povolit</translation>
+<translation id="5137568953923142260">Povolit jednou</translation>
 <translation id="3927932062596804919">Odmítnout</translation>
 <translation id="4191349941249805855">Zobrazit argumenty nástroje</translation>
 <translation id="7237059533128264835">Skrýt argumenty nástroje</translation>
@@ -2524,7 +2532,6 @@ other {# zdrojů}
 <translation id="6002159997868894136">Kliknutím zkopírujete alias</translation>
 <translation id="8105770564756958406">Používáno <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Vytvořte až 5 bezplatných e-mailových aliasů, abyste ochránili svou skutečnou e-mailovou adresu.</translation>
-<translation id="5663901348199429994">Vaše e-mailové aliasy</translation>
 <translation id="9046133327037621173">Nový e-mailový alias</translation>
 <translation id="3768606658230902536">Vytvořte si náhodnou e-mailovou adresu, která bude přeposílat zprávy do vaší schránky a zároveň zachová vaši osobní e-mailovou adresu v soukromí.</translation>
 <translation id="4452721050684632493">Dosažen limit aliasů</translation>
@@ -2956,7 +2963,9 @@ Pojďme vás připojit!</translation>
 <translation id="4227581348172626540">Zrušit změnu hesla</translation>
 <translation id="808894953321890993">Změnit heslo</translation>
 <translation id="7967687455715421528">Nelze změnit heslo</translation>
+<translation id="7413006094063730650">Odstranit účet</translation>
 <translation id="4869737930995549965">Odhlásit se</translation>
+<translation id="2902312830803030883">Další akce</translation>
 <translation id="5538654494923870167">Začněte používat svůj účet Brave</translation>
 <translation id="1544145635547515689">Vytvořit účet Brave</translation>
 <translation id="3828644479849256404">Máte již účet? Přihlaste se</translation>
@@ -2981,6 +2990,11 @@ Pojďme vás připojit!</translation>
 <translation id="7228810962389847249">Zadejte kód zde</translation>
 <translation id="4683390091376980486">Potvrdit kód</translation>
 <translation id="3970028678400797622">Odeslat e-mailový kód znovu</translation>
+<translation id="3653907916071208187">Odstranit váš účet Brave?</translation>
+<translation id="8216839865292766307">Odstraněním účtu Brave se odstraní i jeho e-mailové aliasy. Můžete ztratit přístup k online službám, kde jste se pomocí aliasu zaregistrovali. Tuto akci nelze vrátit zpět.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">Zadejte <ph name="KEYWORD"/> pro povolení odstranění účtu</translation>
+<translation id="536306385881145656">Odstranit účet Brave</translation>
 <translation id="2475982808118771221">Došlo k chybě</translation>
 <translation id="5430795854491041407">chyba</translation>
 <translation id="2232323423357029857">Prohlížeč narazil na neočekávanou chybu<ph name="ERROR_CODE"/>. Restartujte prosím prohlížeč a zkuste to znovu.</translation>
@@ -3013,4 +3027,10 @@ Pojďme vás připojit!</translation>
 <translation id="1063227610401477317">Použít změny</translation>
 <translation id="5539769255716491933">Nahlásit neúspěšné kroky</translation>
 <translation id="7562163394445060270">Dokončení úkolu se nezdařilo</translation>
+<translation id="691082536326552372">Nahlásit neúspěšné kroky</translation>
+<translation id="2731141092023803480">Odešlete týmu Brave zprávu o neúspěšných krocích. Tato zpráva bude obsahovat informace, které potřebujeme k vyřešení problému. <ph name="LINK_BEFORE"/>Zjistit více.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">Aktuální URL</translation>
+<translation id="4739707522207259415">Neúspěšné kroky</translation>
+<translation id="1767991048059195456">Odeslat zprávu</translation>
+<translation id="2168036794078614559">Zpráva odeslána</translation>
 </translationbundle>
