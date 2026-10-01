@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.customtabs;
 
 import static androidx.browser.customtabs.CustomTabsIntent.COLOR_SCHEME_DARK;
 import static androidx.browser.customtabs.CustomTabsIntent.COLOR_SCHEME_LIGHT;
+import static androidx.browser.customtabs.CustomTabsIntent.COLOR_SCHEME_SYSTEM;
 
 import static org.chromium.chrome.browser.customtabs.CustomTabIntentDataProvider.EXTRA_UI_TYPE;
 
@@ -35,6 +36,8 @@ import org.chromium.chrome.browser.customtabs.content.CustomTabActivityTabContro
 import org.chromium.chrome.browser.customtabs.features.minimizedcustomtab.CustomTabMinimizationManagerHolder;
 import org.chromium.chrome.browser.customtabs.features.toolbar.BrowserServicesThemeColorProvider;
 import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbarCoordinator;
+import org.chromium.chrome.browser.night_mode.NightModeUtils;
+import org.chromium.chrome.browser.night_mode.ThemeType;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.ui.RootUiCoordinator;
@@ -179,7 +182,11 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
         intent.putExtra(CustomTabsIntent.EXTRA_ENABLE_URLBAR_HIDING, false);
         intent.putExtra(
                 CustomTabsIntent.EXTRA_COLOR_SCHEME,
-                ColorUtils.inNightMode(context) ? COLOR_SCHEME_DARK : COLOR_SCHEME_LIGHT);
+                NightModeUtils.getThemeSetting() == ThemeType.SYSTEM_DEFAULT
+                        ? COLOR_SCHEME_SYSTEM
+                        : (ColorUtils.inNightMode(context)
+                                ? COLOR_SCHEME_DARK
+                                : COLOR_SCHEME_LIGHT));
         intent.setData(Uri.parse(url));
         intent.setPackage(context.getPackageName());
         intent.putExtra(
