@@ -12,6 +12,12 @@ export const style = scoped.css`
     color: inherit;
   }
 
+  &:has(.sponsored-logo) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .photo-credits {
     color: ${color.white};
     font: ${font.xSmall.regular};

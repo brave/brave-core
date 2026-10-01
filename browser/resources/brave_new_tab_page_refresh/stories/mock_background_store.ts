@@ -33,6 +33,7 @@ const sponsoredBackgrounds = {
       imageUrl: sampleBackground,
     },
     metricType: NewTabPageAdMetricType.kConfirmation,
+    shouldAutoShowNewTabTakeoverDisclosure: true,
   },
 
   richMedia: {
@@ -47,6 +48,7 @@ const sponsoredBackgrounds = {
       imageUrl: '',
     },
     metricType: NewTabPageAdMetricType.kConfirmation,
+    shouldAutoShowNewTabTakeoverDisclosure: true,
   },
 
   none: null,
@@ -118,6 +120,10 @@ export function createBackgroundStore() {
 
     notifySponsoredRichMediaEvent(type) {
       console.log('richMediaEvent', type)
+    },
+
+    notifyNewTabTakeoverDisclosureLearnMoreClicked() {
+      console.log('newTabTakeoverDisclosureLearnMoreClicked')
     },
   }
 

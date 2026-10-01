@@ -90,6 +90,9 @@ export const gradientBackgrounds = [
 
 export const gradientPreviewBackground = gradientBackgrounds[0]
 
+export const newTabTakeoverDisclosureLearnMoreURL =
+  'https://support.brave.app/hc/en-us/articles/35182999599501'
+
 export type BackgroundStore = StateStore<BackgroundState>
 
 export function defaultBackgroundStore(): BackgroundStore {
@@ -119,6 +122,7 @@ export function defaultBackgroundStore(): BackgroundStore {
       notifySponsoredImageLoadError() {},
       notifySponsoredImageLogoClicked() {},
       notifySponsoredRichMediaEvent(type) {},
+      notifyNewTabTakeoverDisclosureLearnMoreClicked() {},
     },
   })
 }
@@ -132,6 +136,7 @@ export interface BackgroundActions {
   notifySponsoredImageLoadError: () => void
   notifySponsoredImageLogoClicked: () => void
   notifySponsoredRichMediaEvent: (type: NewTabPageAdEventType) => void
+  notifyNewTabTakeoverDisclosureLearnMoreClicked: () => void
 }
 
 function chooseRandom<T>(list: T[], randomValue: number): T | null {

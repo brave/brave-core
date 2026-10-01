@@ -145,6 +145,10 @@ export function createBackgroundStore() {
         type,
       )
     },
+
+    notifyNewTabTakeoverDisclosureLearnMoreClicked() {
+      handler.notifyNewTabTakeoverDisclosureLearnMoreClicked()
+    },
   }
 
   store.update({ actions })
