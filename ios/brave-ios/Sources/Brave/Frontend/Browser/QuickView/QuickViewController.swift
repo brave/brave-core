@@ -862,7 +862,7 @@ extension QuickViewController: TabObserver {
     guard error.domain == NSURLErrorDomain, error.code != NSURLErrorCancelled,
       let failedURL = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL
     else { return }
-    Task { @MainActor [weak self, weak tab] in
+    Task { [weak self, weak tab] in
       guard let self, let tab else { return }
       guard tab.httpsUpgradeHelper?.pendingUpgrade == nil, !tab.isLoading,
         InternalURL(tab.visibleURL ?? failedURL) == nil
