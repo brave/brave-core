@@ -157,7 +157,7 @@ PolkadotProviderImpl::EvaluatePermissionsState(
     return PermissionCheckResult::kNeedsPermissionRequest;
   }
 
-  allowed_accounts = *allowed_accounts_value;
+  allowed_accounts = std::move(*allowed_accounts_value);
 
   return PermissionCheckResult::kHasAllowedAccounts;
 }

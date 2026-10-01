@@ -35,7 +35,7 @@ std::vector<std::string> GetPolkadotAccountPermissionIdentifiers(
 
 mojom::AccountIdPtr GetPolkadotPreferredDappAccount(
     KeyringService* keyring_service,
-    const std::optional<std::vector<std::string>>& allowed_accounts) {
+    base::optional_ref<const std::vector<std::string>> allowed_accounts) {
   if (!allowed_accounts || allowed_accounts->empty()) {
     return nullptr;
   }

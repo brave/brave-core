@@ -34,7 +34,7 @@ class PolkadotApiImpl final : public mojom::PolkadotApi {
   // permission can be revoked, or expire, while the dapp holds this object.
   bool IsGrantedAccountAllowed();
 
-  raw_ref<BraveWalletService> brave_wallet_service_;
+  const raw_ref<BraveWalletService> brave_wallet_service_;
   // Owns its own delegate, which knows the frame the dapp is in.
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   const mojom::AccountIdPtr granted_account_;

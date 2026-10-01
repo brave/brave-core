@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_DAPP_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_DAPP_UTILS_H_
 
-#include <optional>
 #include <string>
 #include <vector>
 
+#include "base/types/optional_ref.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
@@ -29,7 +29,7 @@ std::vector<std::string> GetPolkadotAccountPermissionIdentifiers(
 // iOS front-end database has necessarily finished writing it.
 mojom::AccountIdPtr GetPolkadotPreferredDappAccount(
     KeyringService* keyring_service,
-    const std::optional<std::vector<std::string>>& allowed_accounts);
+    base::optional_ref<const std::vector<std::string>> allowed_accounts);
 
 // Converts an account into the `InjectedAccount` shape dapps expect.
 mojom::PolkadotInjectedAccountPtr MakePolkadotInjectedAccount(
