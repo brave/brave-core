@@ -62,8 +62,4 @@ void LayoutBookmarkBarInstructionsView(views::View* bookmark_bar_view,
 
 }  // namespace
 
-#define BRAVE_LAYOUT                                                           \
-  LayoutBookmarkBarInstructionsView(this, bookmark_service_->bookmark_model(), \
-                                    browser(), button_height, x, max_x, y);
 #include <chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc>
-#undef BRAVE_LAYOUT
