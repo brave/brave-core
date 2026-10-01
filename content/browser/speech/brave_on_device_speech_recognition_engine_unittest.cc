@@ -6,6 +6,7 @@
 #include "brave/content/browser/speech/brave_on_device_speech_recognition_engine.h"
 
 #include <array>
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <utility>
