@@ -52,10 +52,10 @@ enum ShortcutControlOption: String, AppEnum {
   case askBrave
   case braveLeoVoiceInput
 
-  static var typeDisplayRepresentation: TypeDisplayRepresentation = "Shortcut"
+  static let typeDisplayRepresentation: TypeDisplayRepresentation = "Shortcut"
 
   // AppEnum requires a dictionary literal. The control button still uses `displayString`.
-  static var caseDisplayRepresentations: [ShortcutControlOption: DisplayRepresentation] = [
+  static let caseDisplayRepresentations: [ShortcutControlOption: DisplayRepresentation] = [
     .newTab: "New Tab",
     .newPrivateTab: "Private Tab",
     .bookmarks: "Bookmarks",
@@ -92,8 +92,8 @@ enum ShortcutControlOption: String, AppEnum {
 
 @available(iOS 26.0, *)
 struct ShortcutControlConfigurationIntent: ControlConfigurationIntent {
-  static var title: LocalizedStringResource = "Shortcut"
-  static var isDiscoverable: Bool = false
+  static let title: LocalizedStringResource = "Shortcut"
+  static let isDiscoverable: Bool = false
 
   @Parameter(title: "Shortcut", optionsProvider: WidgetShortcutControlOptionsProvider())
   var shortcut: ShortcutControlOption?
@@ -130,43 +130,14 @@ struct ShortcutControlState {
 @available(iOS 26.0, *)
 struct ShortcutControlValueProvider: AppIntentControlValueProvider {
   func previewValue(configuration: ShortcutControlConfigurationIntent) -> ShortcutControlState {
-    let state = state(for: configuration.shortcut?.widgetShortcut, disabledShortcuts: [])
-    log(configuration: configuration, state: state, disabledShortcuts: [], source: "previewValue")
-    return state
+    state(for: configuration.shortcut?.widgetShortcut, disabledShortcuts: [])
   }
 
   func currentValue(
     configuration: ShortcutControlConfigurationIntent
   ) async throws -> ShortcutControlState {
     let disabledShortcuts = await DisabledShortcutsWidgetData.loadDisabledShortcuts()
-    let state = state(
-      for: configuration.shortcut?.widgetShortcut,
-      disabledShortcuts: disabledShortcuts
-    )
-    log(
-      configuration: configuration,
-      state: state,
-      disabledShortcuts: disabledShortcuts,
-      source: "currentValue"
-    )
-    return state
-  }
-
-  private func log(
-    configuration: ShortcutControlConfigurationIntent,
-    state: ShortcutControlState,
-    disabledShortcuts: Set<WidgetShortcut>,
-    source: String
-  ) {
-    let option = configuration.shortcut?.rawValue ?? "nil"
-    let mapped =
-      configuration.shortcut.map { ShortcutControlTrace.describe($0.widgetShortcut) } ?? "nil"
-    let disabled = disabledShortcuts.map(\.rawValue).sorted().map(String.init).joined(
-      separator: ","
-    )
-    let message =
-      "\(source) option=\(option) mapped=\(mapped) action=\(ShortcutControlTrace.describe(state.actionShortcut)) title=\(state.title) disabled=[\(disabled)]"
-    ShortcutControlTrace.log.info("\(message, privacy: .public)")
+    return state(for: configuration.shortcut?.widgetShortcut, disabledShortcuts: disabledShortcuts)
   }
 
   private func state(
