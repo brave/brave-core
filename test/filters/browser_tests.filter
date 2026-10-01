@@ -55,6 +55,7 @@
 # makes the page classification return the result the tests don't expect. Also,
 # kZeroSuggestPrefetchingOnWeb feature is currently disabled by default which
 # causes prefetch not to start.
+-ZeroSuggestPrefetchBrowserTest.PrefetchTriggeredOnNtpLoad
 -ZeroSuggestPrefetchTabHelperBrowserTestOnNTP.StartPrefetch
 -ZeroSuggestPrefetchTabHelperBrowserTestOnSRP.StartPrefetch
 -ZeroSuggestPrefetchTabHelperBrowserTestOnWeb.StartPrefetch
@@ -1163,6 +1164,7 @@
 -DiceBrowserTestWithChromeSigninIPH.SigninRememberedIPH
 -DiceBrowserTestWithExplicitSigninReplaceSyncPromosWithSignInPromos.*
 -DiceBrowserTestWithSyncOptinScreen.EnableHistorySyncOptin
+-DiceBrowserTestWithSyncOptinScreen.NoHistorySyncOptinForNonPrimaryAccount
 -DiceBrowserTestWithSyncOptinScreen.SkipsHistorySyncScreenOnUnexpectedEntryPoint
 -DiceBrowserTestWithoutReplaceSyncPromosWithSignInPromos.*
 -DiceBrowsingDataRemoverBrowserTest.*
@@ -2735,11 +2737,12 @@
 # ChromeContentBrowserClient::WillCreateURLLoaderFactory() runs. Upstream,
 # extensions::WebRequestAPI::MaybeProxyURLLoaderFactory() (called first inside
 # that method) only touches the header client when a loaded extension has the
-# webRequest/declarativeWebRequest permission, which is never true in upstream's
-# own browser_tests. The Brave extension always has that permission, so the
-# WebRequestAPI code unconditionally rebinds the already-bound PendingRemote via
-# InitWithNewPipeAndPassReceiver(), which DCHECKs !is_valid() and crashes.
--SiteTokenBrowserTest.PreservesExistingHeaderClient
+# webRequest/declarativeWebRequest permission; upstream's fixture disables
+# kForceWebRequestProxyForTest to ensure that. The Brave extension always has
+# that permission, so the WebRequestAPI code unconditionally rebinds the
+# already-bound PendingRemote via InitWithNewPipeAndPassReceiver(), which
+# DCHECKs !is_valid() and crashes.
+-SiteTokenChainingBrowserTest.PreservesExistingHeaderClient
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -All/DeclarativeNetRequestBrowserTest.RendererCacheCleared/*
