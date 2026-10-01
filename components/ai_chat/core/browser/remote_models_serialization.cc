@@ -30,6 +30,7 @@ constexpr char kBasicAndPremiumAccess[] = "basic_and_premium";
 constexpr char kContentAgentCapability[] = "content_agent";
 constexpr char kDeepResearchCapability[] = "deep_research";
 constexpr char kMathMlCapability[] = "math_ml";
+constexpr char kWorkspacesCapability[] = "workspaces";
 
 // The server expresses the model's category as a capability.
 constexpr char kChatCapability[] = "chat";
@@ -59,6 +60,7 @@ constexpr auto kStringToCapabilityMap =
         {kContentAgentCapability, mojom::ConversationCapability::CONTENT_AGENT},
         {kDeepResearchCapability, mojom::ConversationCapability::DEEP_RESEARCH},
         {kMathMlCapability, mojom::ConversationCapability::MATH_ML},
+        {kWorkspacesCapability, mojom::ConversationCapability::WORKSPACES},
     });
 
 constexpr auto kCapabilityToStringMap =
@@ -66,6 +68,7 @@ constexpr auto kCapabilityToStringMap =
         {mojom::ConversationCapability::CONTENT_AGENT, kContentAgentCapability},
         {mojom::ConversationCapability::DEEP_RESEARCH, kDeepResearchCapability},
         {mojom::ConversationCapability::MATH_ML, kMathMlCapability},
+        {mojom::ConversationCapability::WORKSPACES, kWorkspacesCapability},
     });
 
 // ParseCapabilities matches these before kStringToCapabilityMap and skips the
