@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 
+#include "base/feature_list.h"
 #include "base/time/time.h"
 #include "build/build_config.h"
 #include "testing/gtest/include/gtest/gtest.h"

@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/feature_list.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/model/text_classification_model.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
 
