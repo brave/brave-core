@@ -21,7 +21,6 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
 #include "chrome/browser/ui/omnibox/omnibox_controller.h"
 #include "chrome/browser/ui/omnibox/omnibox_view.h"
@@ -81,7 +80,7 @@ class AIChatPolicyTest : public InProcessBrowserTest,
   PrefService* prefs() { return profile()->GetPrefs(); }
 
   sidebar::SidebarModel* sidebar_model() const {
-    return browser()->GetFeatures().sidebar_controller()->model();
+    return sidebar::SidebarController::From(browser())->model();
   }
 
   AutocompleteController* GetAutocompleteController() {

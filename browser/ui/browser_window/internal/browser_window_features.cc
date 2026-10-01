@@ -122,8 +122,9 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
 void BrowserWindowFeatures::InitPostBrowserViewConstruction(
     BrowserView* browser_view) {
   if (sidebar::CanUseSidebar(browser_view->browser())) {
-    sidebar_controller_ = std::make_unique<sidebar::SidebarController>(
-        browser_view->browser(), browser_view->GetProfile());
+    sidebar_controller_ =
+        GetUserDataFactory().CreateInstance<sidebar::SidebarController>(
+            *browser_, browser_view->browser(), browser_view->GetProfile());
 #if BUILDFLAG(ENABLE_PLAYLIST)
     if (playlist::IsPlaylistAllowed(browser_view->GetProfile()->GetPrefs())) {
       playlist_side_panel_coordinator_ =

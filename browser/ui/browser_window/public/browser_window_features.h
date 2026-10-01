@@ -56,10 +56,6 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   void InitPostBrowserViewConstruction(BrowserView* browser_view) override;
   void TearDownPreBrowserWindowDestruction() override;
 
-  sidebar::SidebarController* sidebar_controller() {
-    return sidebar_controller_.get();
-  }
-
   FocusModeController* focus_mode_controller() {
     return focus_mode_controller_.get();
   }

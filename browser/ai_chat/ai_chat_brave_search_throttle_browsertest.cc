@@ -15,7 +15,6 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/permissions/permission_request_manager.h"
@@ -105,7 +104,7 @@ class AIChatBraveSearchThrottleBrowserTest : public InProcessBrowserTest {
 
   bool IsLeoOpened() {
     sidebar::SidebarController* controller =
-        browser()->GetFeatures().sidebar_controller();
+        sidebar::SidebarController::From(browser());
     auto index = controller->model()->GetIndexOf(
         sidebar::SidebarItem::BuiltInItemType::kChatUI);
     return index.has_value() && controller->IsActiveIndex(index);

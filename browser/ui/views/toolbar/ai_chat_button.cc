@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/functional/bind.h"
+#include "base/types/to_address.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
@@ -22,7 +23,6 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "components/prefs/pref_service.h"
@@ -51,7 +51,8 @@ AIChatButton::AIChatButton(BrowserWindowInterface* browser)
       views::ButtonController::NotifyAction::kOnPress);
   GetViewAccessibility().SetHasPopup(ax::mojom::HasPopup::kMenu);
 
-  if (auto* sidebar_controller = browser_->GetFeatures().sidebar_controller()) {
+  if (auto* sidebar_controller =
+          sidebar::SidebarController::From(base::to_address(browser_))) {
     sidebar_model_observation_.Observe(sidebar_controller->model());
   }
 }
@@ -147,7 +148,8 @@ bool AIChatButton::IsCommandIdChecked(int command_id) const {
 }
 
 bool AIChatButton::ShouldHighlight() const {
-  auto* sidebar_controller = browser_->GetFeatures().sidebar_controller();
+  auto* sidebar_controller =
+      sidebar::SidebarController::From(base::to_address(browser_));
   if (!sidebar_controller) {
     return false;
   }

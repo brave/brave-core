@@ -14,6 +14,7 @@
 #include "base/scoped_observation.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 #include "ui/base/window_open_disposition.h"
 
 class BrowserWindowInterface;
@@ -40,8 +41,14 @@ class SidebarWebPanelController;
 // Browser dependency. We should pass what we need like TabStripModel.
 class SidebarController : public SidebarService::Observer {
  public:
+  DECLARE_USER_DATA(SidebarController);
+
   SidebarController(BrowserWindowInterface* browser, Profile* profile);
   ~SidebarController() override;
+
+  // Returns the instance owned by `browser`, or nullptr. Null for windows that
+  // cannot use the sidebar, such as popups and desktop PWAs.
+  static SidebarController* From(BrowserWindowInterface* browser);
 
   SidebarController(const SidebarController&) = delete;
   SidebarController& operator=(const SidebarController&) = delete;
@@ -130,6 +137,7 @@ class SidebarController : public SidebarService::Observer {
   std::unique_ptr<SidebarWebPanelController> web_panel_controller_;
   base::ScopedObservation<SidebarService, SidebarService::Observer>
       sidebar_service_observed_{this};
+  ui::ScopedUnownedUserData<SidebarController> scoped_unowned_user_data_;
 };
 
 }  // namespace sidebar

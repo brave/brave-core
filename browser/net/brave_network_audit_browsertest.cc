@@ -23,7 +23,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -159,7 +158,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
   WaitForTimeout(kMaxTimeoutPerLoadedURL);
 
 #if defined(TOOLKIT_VIEWS)
-  auto* sidebar_controller = browser()->GetFeatures().sidebar_controller();
+  auto* sidebar_controller = sidebar::SidebarController::From(browser());
   auto* sidebar_model = sidebar_controller->model();
   const auto& all_items = sidebar_model->GetAllSidebarItems();
   const int item_num = all_items.size();

@@ -957,7 +957,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PrefsMigrationTest) {
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {
   auto* guest_browser = CreateGuestBrowser();
-  auto* controller = guest_browser->GetFeatures().sidebar_controller();
+  auto* controller = sidebar::SidebarController::From(guest_browser);
   auto* model = controller->model();
   for (const auto& item : model->GetAllSidebarItems()) {
     // Check disabled builtin items are not included in guest browser's items
@@ -968,7 +968,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {
   }
 
   auto* private_browser = CreateIncognitoBrowser(browser()->GetProfile());
-  controller = private_browser->GetFeatures().sidebar_controller();
+  controller = sidebar::SidebarController::From(private_browser);
   model = controller->model();
   for (const auto& item : model->GetAllSidebarItems()) {
     // Check disabled builtin items are not included in private browser's items
@@ -1293,7 +1293,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithTabSpecificAIChat,
   EXPECT_EQ(model()->active_index(), tab_specific_item_index);
 
   auto* browser2 = CreateBrowser(browser()->GetProfile());
-  auto* browser2_model = browser2->GetFeatures().sidebar_controller()->model();
+  auto* browser2_model = sidebar::SidebarController::From(browser2)->model();
   auto* browser2_tab_model = browser2->tab_strip_model();
 
   auto detached_tab = tab_model()->DetachTabAtForInsertion(1);
@@ -2530,7 +2530,7 @@ IN_PROC_BROWSER_TEST_F(SidebarTorBrowserTest,
   ASSERT_TRUE(tor_browser);
   Profile* tor_profile = tor_browser->GetProfile();
   ASSERT_TRUE(tor_profile->IsTor());
-  ASSERT_TRUE(tor_browser->GetFeatures().sidebar_controller());
+  ASSERT_TRUE(sidebar::SidebarController::From(tor_browser));
 
   // Add a web item in the Tor window. Its favicon is not in the regular
   // profile's favicon database, which is the normal case for a page that was
