@@ -29,19 +29,14 @@ substitutions:
       'Add a fallback tab if a window ends up with no tabs after skipping ones
       scheduled for cleanup, or show it anyway if the selected tab itself was
       skipped'
-    regex:
-      re_pattern: |-
-        split_tabs::SplitTabVisualData\(\)\);\n      \}\n    \}
-      replace: |-
-        split_tabs::SplitTabVisualData());
-              }
-            }
-
-            if (auto fallback_index = MaybeAddFallbackTabIfEmpty(browser);
-                fallback_index != TabStripModel::kNoTab && !did_show_browser) {
-              ShowBrowser(browser, fallback_index);
-              did_show_browser = true;
-            }
+    after_function_impl:
+      function_name: RestoreTabsToBrowser
+      code: |-
+        if (auto fallback_index = MaybeAddFallbackTabIfEmpty(browser);
+            fallback_index != TabStripModel::kNoTab && !did_show_browser) {
+          ShowBrowser(browser, fallback_index);
+          did_show_browser = true;
+        }
   - description:
       'Skip appending a startup URL scheduled for ephemeral storage cleanup'
     regex:
