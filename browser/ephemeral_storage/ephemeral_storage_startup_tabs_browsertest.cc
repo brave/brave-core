@@ -9,6 +9,7 @@
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/time/time.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
