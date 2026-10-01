@@ -151,6 +151,8 @@ public enum NavigationPath: Equatable {
 
   @MainActor
   static func handleWidgetShortcut(_ path: WidgetShortcut, with bvc: BrowserViewController) {
+    let message = "handleWidgetShortcut \(ShortcutControlTrace.describe(path))"
+    ShortcutControlTrace.log.info("\(message, privacy: .public)")
     switch path {
     case .unknown, .search:
       // Search
