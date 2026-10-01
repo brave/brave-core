@@ -216,12 +216,14 @@ Brave turns upstream things off in many places, and upstream keeps moving them:
 - **Creation moved to a new owner.** Brave's disabling stub stays where the
   object used to be created (TabHelpers → TabFeatures re-enabled
   `FontPrewarmerTabHelper` and `NetErrorTabHelper`; desktop and Android differ).
-  List "Migrate X to TabFeatures / UnownedUserData / BrowserWindowFeatures"
-  subjects, and match the class names against Brave's stubs. Also grep Brave for
-  `X::FromWebContents` on each moved class: `TabModel` runs `AttachTabHelpers`,
-  and so Brave's tab helper constructors, before `TabFeatures::Init`, so they
-  now get null (M157, 8103.1: `BraveShieldsTabHelper` observes the
-  `ContentFaviconDriver`, found by two sweeps).
+  Stubbing the class itself in `chromium_src` survives such moves, as it does
+  for those two now. List "Migrate X to TabFeatures / UnownedUserData /
+  BrowserWindowFeatures" subjects, and match the class names against Brave's
+  stubs. Also grep Brave for `X::FromWebContents` on each moved class:
+  `TabModel` runs `AttachTabHelpers`, and so Brave's tab helper constructors,
+  before `TabFeatures::Init`, so they now get null (M157, 8103.1:
+  `BraveShieldsTabHelper` observes the `ContentFaviconDriver`, found by two
+  sweeps).
 - **Feature defaults.** Brave's overrides are the
   `set_feature_flag_default_state` plasters,
   `base/compile_overridden_features.inc`, the json5 plaster for Blink runtime

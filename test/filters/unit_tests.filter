@@ -770,6 +770,11 @@
 -PageActionControllerTest.NotifyActionClickedLogsHistogram
 -PageActionMetricsRecorderTest.*
 
+# Brave stubs out NetErrorTabHelper (see
+# chromium_src/chrome/browser/net/net_error_tab_helper.cc), so these tests of
+# its DNS probe, diagnostics and easter egg behavior fail.
+-NetErrorTabHelperTest.*
+
 # This test fails because we disable installing the Captcha Provider component
 -CaptchaProviderComponentInstallerPolicyTest.ComponentRegistered
 

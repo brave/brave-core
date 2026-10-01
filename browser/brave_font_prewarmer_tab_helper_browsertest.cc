@@ -76,9 +76,9 @@ class BraveFontPrewarmerTabHelperBrowserTest : public InProcessBrowserTest {
   net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
 };
 
-// Brave does not create FontPrewarmerTabHelper (see
-// rewrite/chrome/browser/ui/tabs/tab_features.cc.yaml), so visiting a search
-// results page does not cache its fonts.
+// Brave's FontPrewarmerTabHelper is a no-op (see
+// chromium_src/chrome/browser/font_prewarmer_tab_helper.cc), so visiting a
+// search results page does not cache its fonts.
 IN_PROC_BROWSER_TEST_F(BraveFontPrewarmerTabHelperBrowserTest,
                        SearchResultsPageFontsAreNotCached) {
   content::WebContents* web_contents =
