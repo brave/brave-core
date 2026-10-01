@@ -1,5 +1,4 @@
 include_rules = [
   "+brave/components/containers/buildflags",
-  "+brave/components/ephemeral_storage",
   "+brave/components/tabs/public",
 ]
