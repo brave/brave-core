@@ -3,9 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <string>
+
 #include "base/callback_list.h"
 #include "base/path_service.h"
 #include "base/test/gmock_callback_support.h"
+#include "base/test/run_until.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
@@ -86,7 +89,7 @@ class NewTabTakeoverBrowserTest : public InProcessBrowserTest {
         test_data_file_path.AppendASCII("components")
             .AppendASCII("ntp_sponsored_images")
             .AppendASCII("new_tab_takeover")
-            .AppendASCII("static");
+            .AppendASCII(GetComponentDataDirectoryName());
     base::CommandLine::ForCurrentProcess()->AppendSwitchPath(
         ntp_background_images::switches::kOverrideSponsoredImagesComponentPath,
         component_file_path);
@@ -157,6 +160,23 @@ class NewTabTakeoverBrowserTest : public InProcessBrowserTest {
                     .ExtractBool());
   }
 
+  // Waits for the New Tab Takeover disclosure label, since `WaitForLoadStop`
+  // returns before the sponsored-background mojo callback has painted it.
+  void WaitForNewTabTakeoverDisclosureLabel() {
+    ASSERT_TRUE(base::test::RunUntil([&] {
+      return content::EvalJs(GetActiveWebContents(),
+                             "!!document.querySelector('.new-tab-takeover-"
+                             "disclosure')")
+          .ExtractBool();
+    }));
+  }
+
+ protected:
+  // The `test/data/components/ntp_sponsored_images/new_tab_takeover`
+  // subdirectory to serve component data from. Overridden by subclasses that
+  // exercise a rich-media (dynamic) takeover instead of a static one.
+  virtual std::string GetComponentDataDirectoryName() { return "static"; }
+
  private:
   base::test::ScopedFeatureList feature_list_;
   base::CallbackListSubscription callback_list_subscription_;
@@ -174,6 +194,21 @@ IN_PROC_BROWSER_TEST_F(NewTabTakeoverBrowserTest,
 
   OpenNewTabAndWaitForLoad();
   VerifyNewTabPageLoadedExpectation();
+}
+
+IN_PROC_BROWSER_TEST_F(NewTabTakeoverBrowserTest,
+                       DisplayNewTabTakeoverDisclosureLabelForStaticTakeover) {
+  ON_CALL(GetAdsServiceMock(), GetStatementOfAccounts(::testing::_))
+      .WillByDefault([](brave_ads::GetStatementOfAccountsCallback callback) {
+        std::move(callback).Run(/*mojom_statement=*/nullptr);
+      });
+
+  EXPECT_CALL(GetAdsServiceMock(), MaybeServeNewTabPageAd)
+      .WillOnce(base::test::RunOnceCallback<0>(/*ad=*/nullptr));
+
+  OpenNewTabAndWaitForLoad();
+  VerifyNewTabPageLoadedExpectation();
+  WaitForNewTabTakeoverDisclosureLabel();
 }
 
 IN_PROC_BROWSER_TEST_F(NewTabTakeoverBrowserTest,
@@ -201,4 +236,28 @@ IN_PROC_BROWSER_TEST_F(NewTabTakeoverBrowserTest,
   chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
   WaitForLoadStop();
   VerifyNewTabPageLoadedExpectation();
+}
+
+// The sponsored disclosure label lives on the NTP document, outside the
+// `chrome-untrusted://new-tab-takeover` creative iframe, so it must be
+// exercised here rather than in a fixture that navigates directly into that
+// frame (e.g. `ntp_dynamic_new_tab_takeover_browsertest.cc`).
+class NewTabTakeoverRichMediaBrowserTest : public NewTabTakeoverBrowserTest {
+ protected:
+  std::string GetComponentDataDirectoryName() override { return "dynamic"; }
+};
+
+IN_PROC_BROWSER_TEST_F(NewTabTakeoverRichMediaBrowserTest,
+                       DisplayNewTabTakeoverDisclosureLabelForRichMediaTakeover) {
+  ON_CALL(GetAdsServiceMock(), GetStatementOfAccounts(::testing::_))
+      .WillByDefault([](brave_ads::GetStatementOfAccountsCallback callback) {
+        std::move(callback).Run(/*mojom_statement=*/nullptr);
+      });
+
+  EXPECT_CALL(GetAdsServiceMock(), MaybeServeNewTabPageAd)
+      .WillOnce(base::test::RunOnceCallback<0>(/*ad=*/nullptr));
+
+  OpenNewTabAndWaitForLoad();
+  VerifyNewTabPageLoadedExpectation();
+  WaitForNewTabTakeoverDisclosureLabel();
 }
