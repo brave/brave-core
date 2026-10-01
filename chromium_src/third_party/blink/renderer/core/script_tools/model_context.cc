@@ -9,7 +9,6 @@
 #include "base/metrics/histogram_functions.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/time/time.h"
-#include "brave/components/ai_chat/core/common/leo_workspace_util.h"
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/web/web_script_tool_types.h"
 #include "third_party/blink/renderer/bindings/core/v8/capture_source_location.h"
@@ -47,27 +46,5 @@
 #include "third_party/blink/renderer/platform/wtf/text/ascii_ctype.h"
 #include "third_party/blink/renderer/platform/wtf/text/strcat.h"
 #include "url/url_constants.h"
-
-namespace blink {
-namespace {
-
-// Whether `document` is a Leo "workspace": a hidden
-// chrome-untrusted://<uuid>.leo-workspace page whose tools register themselves
-// via navigator.modelContext. Each workspace has its own subdomain, so this
-// tests the shape of the host rather than a fixed host, and excludes the
-// workspace's viewer document at chrome-untrusted://view.<uuid>.leo-workspace,
-// which has no tools of its own.
-//
-// This document can only exist when the kAIChatWorkspaceTools feature is
-// enabled, as checked by LeoWorkspaceUIConfig::IsWebUIEnabled().
-bool IsAIChatLeoWorkspaceDocument(const Document& document) {
-  const SecurityOrigin* origin =
-      document.GetExecutionContext()->GetSecurityOrigin();
-  return origin->Protocol() == "chrome-untrusted" &&
-         ai_chat::IsAIChatLeoWorkspaceHost(origin->Host().Utf8());
-}
-
-}  // namespace
-}  // namespace blink
 
 #include <third_party/blink/renderer/core/script_tools/model_context.cc>
