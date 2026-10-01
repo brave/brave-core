@@ -131,8 +131,7 @@ TEST(PasswordEncryptorUnitTest, DecryptForImporter) {
   const std::vector<uint8_t> nonce_12(12, 0xAB);
   const std::vector<uint8_t> nonce_16(16, 0xAB);
 
-  crypto::Aead aead(crypto::Aead::AES_256_GCM);
-  aead.Init(encryptor->key_);
+  crypto::Aead aead(crypto::Aead::AES_256_GCM, encryptor->key_);
   std::vector<uint8_t> ciphertext;
   ciphertext = aead.Seal(base::byte_span_from_cstring("importer12"), nonce_12,
                          std::vector<uint8_t>());
