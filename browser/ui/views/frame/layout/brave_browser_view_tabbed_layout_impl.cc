@@ -12,6 +12,7 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/i18n/rtl.h"
+#include "brave/browser/ui/views/brave_layout_provider.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "build/build_config.h"
@@ -693,10 +694,9 @@ BraveBrowserViewTabbedLayoutImpl::CalculateContentsCornerRadii() const {
 
   auto* layout_provider = views::LayoutProvider::Get();
   const float window_corner_radius = layout_provider->GetCornerRadiusMetric(
-      views::ShapeContextTokensOverride::
-          kRoundedCornersBorderRadiusAtWindowCorner);
+      ExtendedShapeContextTokens::kRoundedCornersBorderRadiusAtWindowCorner);
   const float border_corner_radius = layout_provider->GetCornerRadiusMetric(
-      views::ShapeContextTokensOverride::kRoundedCornersBorderRadius);
+      ExtendedShapeContextTokens::kRoundedCornersBorderRadius);
 
   bool has_left_ui = false;
   bool has_right_ui = false;

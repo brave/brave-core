@@ -11,6 +11,7 @@
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/test/mock_callback.h"
+#include "brave/browser/ui/views/brave_layout_provider.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/test/mock_browser_window_interface.h"
@@ -76,7 +77,7 @@ TEST_F(BraveSidePanelHeaderControllerTest,
        GetTopRadiusMatchesLayoutMetricWhenPrefEnabled) {
   prefs()->SetBoolean(kWebViewRoundedCorners, true);
   const int expected = views::LayoutProvider::Get()->GetCornerRadiusMetric(
-      views::ShapeContextTokensOverride::kRoundedCornersBorderRadius);
+      ExtendedShapeContextTokens::kRoundedCornersBorderRadius);
   EXPECT_EQ(expected, controller_->GetTopRadius());
 }
 
