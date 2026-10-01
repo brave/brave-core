@@ -59,6 +59,11 @@ cd /tmp
 node --version                    # falls back to the system node
 ```
 
+## Vendored depot_tools
+
+This process will take care of cloning `depot_tools` for `brave-core` if one is
+not present already, so all scripts run under `vpython3`.
+
 ## The chicken-and-egg `node` problem
 
 The shims for `node`/`npm` run cheap checks for the tarball installations, to
