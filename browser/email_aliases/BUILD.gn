@@ -47,6 +47,7 @@ source_set("unit_tests") {
     "//brave/components/email_aliases:service",
     "//chrome/browser/profiles",
     "//chrome/test:test_support",
+    "//chrome/test/base:testing_browser_process",
     "//components/keyed_service/core",
     "//components/os_crypt/async/browser:test_support",
     "//mojo/public/cpp/bindings",

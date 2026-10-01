@@ -129,6 +129,7 @@ if (enable_local_ai) {
       "//brave/components/local_ai/core:speech_recognition_mojom",
       "//chrome/browser/profiles:profile",
       "//chrome/test:test_support",
+      "//chrome/test/base:testing_browser_process",
       "//components/component_updater",
       "//components/component_updater:test_support",
       "//components/prefs",
