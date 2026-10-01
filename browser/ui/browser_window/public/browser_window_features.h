@@ -68,17 +68,6 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return focus_mode_controller_.get();
   }
 
-  VerticalTabController* vertical_tab_controller() {
-    return vertical_tab_controller_.get();
-  }
-
-  const VerticalTabController* vertical_tab_controller() const {
-    return vertical_tab_controller_.get();
-  }
-
-  void SetVerticalTabControllerForTesting(
-      std::unique_ptr<VerticalTabController> vertical_tab_controller);
-
  private:
   std::unique_ptr<sidebar::SidebarController> sidebar_controller_;
 #if BUILDFLAG(ENABLE_BRAVE_VPN)

@@ -581,7 +581,7 @@ void BraveVerticalTabStyle::PaintTabAccentIcon(gfx::Canvas* canvas) const {
 }
 
 bool BraveVerticalTabStyle::ShouldShowVerticalTabs() const {
-  auto* vtc = VerticalTabController::FromBrowser(
+  auto* vtc = VerticalTabController::From(
       tab()->controller()->GetBrowserWindowInterface());
   return vtc && vtc->ShouldShowBraveVerticalTabs();
 }

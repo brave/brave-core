@@ -49,8 +49,8 @@ void Tab::ResetTabStyle(std::unique_ptr<TabStyleViews> new_style) {
 }
 
 int Tab::GetTabHeight() const {
-  auto* vertical_tab_controller = VerticalTabController::FromBrowser(
-      controller()->GetBrowserWindowInterface());
+  auto* vertical_tab_controller =
+      VerticalTabController::From(controller()->GetBrowserWindowInterface());
   if (vertical_tab_controller &&
       vertical_tab_controller->ShouldShowBraveVerticalTabs()) {
     return tabs::kVerticalTabHeight;

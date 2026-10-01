@@ -431,8 +431,7 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
   UpdateScrollButtonsVisibility();
   UpdateTabStripMargin();
 
-  if (!VerticalTabController::FromBrowser(
-           tab_strip_->GetBrowserWindowInterface())
+  if (!VerticalTabController::From(tab_strip_->GetBrowserWindowInterface())
            ->ShouldShowBraveVerticalTabs()) {
     if (workspaces_button_) {
       workspaces_button_->SetVisible(true);
@@ -504,9 +503,8 @@ void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
 
   BrowserWindowInterface* browser_window_interface =
       tab_strip_->GetBrowserWindowInterface();
-  bool vertical_tabs =
-      VerticalTabController::FromBrowser(browser_window_interface)
-          ->ShouldShowBraveVerticalTabs();
+  bool vertical_tabs = VerticalTabController::From(browser_window_interface)
+                           ->ShouldShowBraveVerticalTabs();
 
   gfx::Insets margins;
 
@@ -606,8 +604,7 @@ void BraveHorizontalTabStripRegionView::UpdateTrailingScrollButtonMargin(
 void BraveHorizontalTabStripRegionView::OnDragEntered(
     const ui::DropTargetEvent& event) {
 #if BUILDFLAG(IS_LINUX)
-  if (!VerticalTabController::FromBrowser(
-           tab_strip_->GetBrowserWindowInterface())
+  if (!VerticalTabController::From(tab_strip_->GetBrowserWindowInterface())
            ->ShouldShowBraveVerticalTabs()) {
     return HorizontalTabStripRegionView::OnDragEntered(event);
   }
@@ -625,8 +622,7 @@ void BraveHorizontalTabStripRegionView::OnDragEntered(
 int BraveHorizontalTabStripRegionView::OnDragUpdated(
     const ui::DropTargetEvent& event) {
 #if BUILDFLAG(IS_LINUX)
-  if (!VerticalTabController::FromBrowser(
-           tab_strip_->GetBrowserWindowInterface())
+  if (!VerticalTabController::From(tab_strip_->GetBrowserWindowInterface())
            ->ShouldShowBraveVerticalTabs()) {
     return HorizontalTabStripRegionView::OnDragUpdated(event);
   }

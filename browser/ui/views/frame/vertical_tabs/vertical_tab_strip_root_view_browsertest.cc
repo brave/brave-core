@@ -98,8 +98,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
                        MAYBE_DragAfterCurrentTab) {
   ToggleVerticalTabStrip();
 
-  ASSERT_TRUE(VerticalTabController::FromBrowser(browser())
-                  ->ShouldShowBraveVerticalTabs());
+  ASSERT_TRUE(
+      VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
 
   auto* tab_strip_model = browser()->tab_strip_model();
   EXPECT_EQ(tab_strip_model->count(), 1);
@@ -134,8 +134,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
                        MAYBE_DragOnCurrentTab) {
   ToggleVerticalTabStrip();
 
-  ASSERT_TRUE(VerticalTabController::FromBrowser(browser())
-                  ->ShouldShowBraveVerticalTabs());
+  ASSERT_TRUE(
+      VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
 
   auto* tab_strip_model = browser()->tab_strip_model();
   EXPECT_EQ(tab_strip_model->count(), 1);
@@ -179,8 +179,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
                        MAYBE_ContextMenuInUnobscuredRegion) {
   ToggleVerticalTabStrip();
 
-  ASSERT_TRUE(VerticalTabController::FromBrowser(browser())
-                  ->ShouldShowBraveVerticalTabs());
+  ASSERT_TRUE(
+      VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
 
   auto* region_view =
       vertical_tab_strip_container_view()->vertical_tab_strip_region_view();
@@ -209,8 +209,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
                        MAYBE_CloseBrowserWithContextMenuOpen) {
   ToggleVerticalTabStrip();
 
-  ASSERT_TRUE(VerticalTabController::FromBrowser(browser())
-                  ->ShouldShowBraveVerticalTabs());
+  ASSERT_TRUE(
+      VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
 
   auto* region_view =
       vertical_tab_strip_container_view()->vertical_tab_strip_region_view();

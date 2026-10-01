@@ -22,20 +22,20 @@
 
 bool BrowserViewLayoutDelegateImpl::ShouldShowVerticalTabs() const {
   return browser_view().browser() &&
-         VerticalTabController::FromBrowser(browser_view().browser())
+         VerticalTabController::From(browser_view().browser())
              ->ShouldShowBraveVerticalTabs();
 }
 
 bool BrowserViewLayoutDelegateImpl::ShouldShowWindowTitleForVerticalTabs()
     const {
   return browser_view().browser() &&
-         VerticalTabController::FromBrowser(browser_view().browser())
+         VerticalTabController::From(browser_view().browser())
              ->ShouldShowWindowTitleForVerticalTabs();
 }
 
 bool BrowserViewLayoutDelegateImpl::IsVerticalTabOnRight() const {
   return browser_view().browser() &&
-         VerticalTabController::FromBrowser(browser_view().browser())
+         VerticalTabController::From(browser_view().browser())
              ->IsVerticalTabOnRight();
 }
 

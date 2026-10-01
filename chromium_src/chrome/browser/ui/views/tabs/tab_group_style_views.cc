@@ -64,7 +64,7 @@ SkPath TabGroupStyleViews::GetUnderlinePath(gfx::Rect local_bounds) const {
 }
 
 bool TabGroupStyleViews::ShouldShowBraveVerticalTabs() const {
-  auto* vertical_tab_controller = VerticalTabController::FromBrowser(
+  auto* vertical_tab_controller = VerticalTabController::From(
       tab_group_views_->GetBrowserWindowInterface());
   return vertical_tab_controller &&
          vertical_tab_controller->ShouldShowBraveVerticalTabs();

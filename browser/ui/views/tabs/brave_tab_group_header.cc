@@ -108,7 +108,7 @@ void BraveTabGroupHeader::Layout(PassKey) {
 }
 
 bool BraveTabGroupHeader::ShouldShowVerticalTabs() const {
-  auto* vtc = VerticalTabController::FromBrowser(
+  auto* vtc = VerticalTabController::From(
       tab_slot_controller_->GetBrowserWindowInterface());
   return vtc && vtc->ShouldShowBraveVerticalTabs();
 }

@@ -80,7 +80,7 @@ int BraveOpaqueBrowserFrameView::NonClientHitTest(const gfx::Point& point) {
     captions_fully_revealed = overlay->is_fully_revealed();
   }
 
-  if (auto* vtc = VerticalTabController::FromBrowser(browser_view->browser());
+  if (auto* vtc = VerticalTabController::From(browser_view->browser());
       vtc && vtc->ShouldShowBraveVerticalTabs() && captions_fully_revealed) {
     auto hit_test_caption_button = [](views::Button* button,
                                       const gfx::Point& point) {
@@ -180,7 +180,7 @@ bool BraveOpaqueBrowserFrameView::ShouldShowVerticalTabs() const {
   DCHECK(GetBrowserView());
   auto* browser = GetBrowserView()->browser();
   DCHECK(browser);
-  auto* vtc = VerticalTabController::FromBrowser(browser);
+  auto* vtc = VerticalTabController::From(browser);
   CHECK(vtc);
   return vtc->ShouldShowBraveVerticalTabs();
 }
@@ -194,7 +194,7 @@ bool BraveOpaqueBrowserFrameView::ShouldCaptionButtonsPaintToLayer() const {
     return true;
   }
 
-  auto* vtc = VerticalTabController::FromBrowser(browser);
+  auto* vtc = VerticalTabController::From(browser);
   CHECK(vtc);
 
   return vtc->ShouldShowBraveVerticalTabs() &&

@@ -60,7 +60,7 @@ void TabStripPlacementCoordinator::UpdatePlacement() {
   };
 
   auto get_placement = [&]() -> const Placement& {
-    if (auto* vtc = VerticalTabController::FromBrowser(browser);
+    if (auto* vtc = VerticalTabController::From(browser);
         vtc && vtc->ShouldShowBraveVerticalTabs()) {
       auto& placement = placements_[PlacementKind::kVerticalTabStrip];
       if (can_apply_placement(placement)) {

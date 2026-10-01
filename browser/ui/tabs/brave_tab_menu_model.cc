@@ -50,7 +50,7 @@ BraveTabMenuModel::BraveTabMenuModel(
   restore_service_ =
       TabRestoreServiceFactory::GetForProfile(browser_window->GetProfile());
 
-  vertical_tab_controller_ = VerticalTabController::FromBrowser(browser_window);
+  vertical_tab_controller_ = VerticalTabController::From(browser_window);
 
   auto* model = static_cast<BraveTabStripModel*>(tab_strip_model);
   auto indices = model->GetTabIndicesForCommandAt(index);

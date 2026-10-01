@@ -67,8 +67,8 @@ BraveTabDragController::Liveness BraveTabDragController::Init(
     }
   }
 
-  is_showing_vertical_tabs_ = VerticalTabController::FromBrowser(browser)
-                                  ->ShouldShowBraveVerticalTabs();
+  is_showing_vertical_tabs_ =
+      VerticalTabController::From(browser)->ShouldShowBraveVerticalTabs();
 
   return BraveTabDragController::BraveTabDragController::Liveness::kAlive;
 }

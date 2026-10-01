@@ -18,7 +18,7 @@
 
 // TabGroupViews destructor is not virtual, so we can't override the method.
 #define BRAVE_TAB_GROUP_VIEWS_GET_LEADING_TRAILING_GROUP_VIEWS                 \
-  if (auto* vertical_tab_controller = VerticalTabController::FromBrowser(      \
+  if (auto* vertical_tab_controller = VerticalTabController::From(             \
           tab_slot_controller_->GetBrowserWindowInterface());                  \
       vertical_tab_controller &&                                               \
       vertical_tab_controller->ShouldShowBraveVerticalTabs()) {                \

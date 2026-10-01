@@ -1348,8 +1348,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarRightSideTest) {
   EXPECT_FALSE(IsSidebarUIOnLeft());
 
   brave::ToggleVerticalTabStrip(browser());
-  ASSERT_TRUE(VerticalTabController::FromBrowser(browser())
-                  ->ShouldShowBraveVerticalTabs());
+  ASSERT_TRUE(
+      VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
 
   auto* prefs = browser()->GetProfile()->GetPrefs();
   auto* vertical_tabs_container = GetVerticalTabsContainer();
@@ -1503,11 +1503,10 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelPositionTest) {
   // between the panel and the contents container.
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
   brave::ToggleVerticalTabStrip(browser());
-  ASSERT_TRUE(VerticalTabController::FromBrowser(browser())
-                  ->ShouldShowBraveVerticalTabs());
+  ASSERT_TRUE(
+      VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
   // VT defaults to left (kVerticalTabsOnRight = false).
-  ASSERT_FALSE(
-      VerticalTabController::FromBrowser(browser())->IsVerticalTabOnRight());
+  ASSERT_FALSE(VerticalTabController::From(browser())->IsVerticalTabOnRight());
   RunScheduledLayouts();
 
   ASSERT_TRUE(sidebar->sidebar_on_left());
@@ -1524,8 +1523,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelPositionTest) {
   // --- VT and sidebar on the same right side (VT right, sidebar right).
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
   prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, true);
-  ASSERT_TRUE(
-      VerticalTabController::FromBrowser(browser())->IsVerticalTabOnRight());
+  ASSERT_TRUE(VerticalTabController::From(browser())->IsVerticalTabOnRight());
   RunScheduledLayouts();
 
   ASSERT_FALSE(sidebar->sidebar_on_left());

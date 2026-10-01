@@ -96,9 +96,8 @@ void BraveVerticalTabStripContainerView::UpdateVerticalTabBounds() {
     return;
   }
 
-  const bool on_right =
-      VerticalTabController::FromBrowser(browser_view_->browser())
-          ->IsVerticalTabOnRight();
+  const bool on_right = VerticalTabController::From(browser_view_->browser())
+                            ->IsVerticalTabOnRight();
   if (on_right) {
     strip_bounds.set_x(host_bounds.right() - strip_bounds.width());
   }

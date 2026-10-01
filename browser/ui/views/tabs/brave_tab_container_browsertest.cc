@@ -841,7 +841,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabsScrollBarModeBrowserTest,
   auto* prefs = browser()->GetProfile()->GetPrefs();
   prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, true);
 
-  auto* vtc = VerticalTabController::FromBrowser(browser());
+  auto* vtc = VerticalTabController::From(browser());
   ASSERT_TRUE(vtc);
   ASSERT_TRUE(vtc->IsFloatingVerticalTabsEnabled())
       << "Floating mode is enabled by default";
@@ -882,7 +882,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabsScrollBarModeBrowserTest,
   prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, true);
   prefs->SetBoolean(brave_tabs::kVerticalTabsFloatingEnabled, false);
 
-  auto* vtc = VerticalTabController::FromBrowser(browser());
+  auto* vtc = VerticalTabController::From(browser());
   ASSERT_TRUE(vtc);
   ASSERT_FALSE(vtc->IsFloatingVerticalTabsEnabled());
 
