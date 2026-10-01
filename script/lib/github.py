@@ -34,7 +34,7 @@ class GitHub():
 
     def send(self, method, path, **kw):
         if 'headers' not in kw:
-            kw['headers'] = dict()
+            kw['headers'] = {}
         headers = kw['headers']
         headers['Authorization'] = self._authorization
         headers['Accept'] = 'application/vnd.github+json'

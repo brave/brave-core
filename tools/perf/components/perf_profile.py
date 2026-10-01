@@ -8,7 +8,7 @@ import os
 import uuid
 import shutil
 
-import components.path_util as path_util
+from components import path_util
 
 from components.cloud_storage import CloudFolder, DownloadFileFromCloudStorage
 from components.version import BraveVersion

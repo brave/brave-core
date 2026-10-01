@@ -4,7 +4,6 @@
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-# pylint: disable=no-self-use
 class FakeStream:
 
   def close(self):

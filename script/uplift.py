@@ -75,7 +75,6 @@ config = PrConfig()
 
 
 def is_nightly(channel):
-    global config
     return config.channel_names[0] == channel
 
 
@@ -101,7 +100,6 @@ def get_previous_version_branch(version):
 
 
 def get_remote_channel_branches(raw_nightly_version):
-    global config
     nightly_version = get_current_version_branch(raw_nightly_version)
     beta_version = get_previous_version_branch(nightly_version)
     release_version = get_previous_version_branch(beta_version)
@@ -113,7 +111,6 @@ def get_remote_channel_branches(raw_nightly_version):
 
 
 def validate_channel(channel):
-    global config
     try:
         config.channel_names.index(channel)
     except Exception as e:
@@ -172,7 +169,6 @@ def parse_args():
 
 
 def get_remote_version(branch_to_compare):
-    global config
     decoded_file = get_file_contents(config.github_token, BRAVE_CORE_REPO,
                                      'package.json', branch_to_compare)
     json_file = json.loads(decoded_file)
@@ -199,7 +195,6 @@ def main():
     if args.verbose:
         print('[INFO] args: ' + str(args))
 
-    global config
     result = config.initialize(args)
     if result != 0:
         return result
@@ -336,7 +331,6 @@ def main():
 
 
 def is_sha(ref):
-    global config
     repo = GitHub(config.github_token).repos(BRAVE_CORE_REPO)
     try:
         repo.git.commits(str(ref)).get()
@@ -356,7 +350,6 @@ def is_sha(ref):
 
 
 def create_branch(channel, top_level_base, remote_base, local_branch, args):
-    global config
 
     if is_nightly(channel):
         return local_branch
@@ -452,7 +445,6 @@ def create_branch(channel, top_level_base, remote_base, local_branch, args):
 
 
 def get_milestone_for_branch(channel_branch):
-    global config
     if not config.milestones:
         config.milestones = get_milestones(config.github_token, BRAVE_CORE_REPO)
     for milestone in config.milestones:
@@ -464,7 +456,6 @@ def get_milestone_for_branch(channel_branch):
 
 
 def submit_pr(channel, top_level_base, remote_base, local_branch, issues_fixed):
-    global config
 
     milestone_number = get_milestone_for_branch(remote_base)
     if milestone_number is None:

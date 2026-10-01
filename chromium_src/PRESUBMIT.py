@@ -23,8 +23,10 @@ def CheckOverriddenHeadersDeclareIWYUExport(input_api, output_api):
     files_to_check = (r'.+\.h$', )
     files_to_skip = ()
 
-    file_filter = lambda f: input_api.FilterSourceFile(
-        f, files_to_check=files_to_check, files_to_skip=files_to_skip)
+    def file_filter(f):
+        return input_api.FilterSourceFile(f,
+                                          files_to_check=files_to_check,
+                                          files_to_skip=files_to_skip)
 
     include_prefixes = ('#include <', '#include "../gen/')
     nolint = 'NOLINT'
@@ -59,8 +61,10 @@ def CheckOverriddenSourceIncludeOriginalHeaderOnlyViaQuotes(
     files_to_check = (r'.+\.(c|cc|cpp|m|mm)$', )
     files_to_skip = ()
 
-    file_filter = lambda f: input_api.FilterSourceFile(
-        f, files_to_check=files_to_check, files_to_skip=files_to_skip)
+    def file_filter(f):
+        return input_api.FilterSourceFile(f,
+                                          files_to_check=files_to_check,
+                                          files_to_skip=files_to_skip)
 
     include_template = '#include <{}>'
     nolint = 'NOLINT'
@@ -90,8 +94,10 @@ def CheckOverrides(input_api, output_api):
     with brave_chromium_utils.sys_path('//brave/tools/chromium_src'):
         import check_chromium_src
     # None will make filter pick Chromium's DEFAULT_FILES_TO_CHECK.
-    file_filter = lambda f: input_api.FilterSourceFile(
-        f, files_to_check=None, files_to_skip=())
+    def file_filter(f):
+        return input_api.FilterSourceFile(f,
+                                          files_to_check=None,
+                                          files_to_skip=())
     overrides = [
         f.AbsoluteLocalPath()
         for f in input_api.AffectedSourceFiles(file_filter)

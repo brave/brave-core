@@ -24,13 +24,13 @@ import os
 import tempfile
 from typing import List, Optional
 
-import components.android_tools as android_tools
-import components.perf_config as perf_config
-import components.perf_test_runner as perf_test_runner
-import components.perf_test_utils as perf_test_utils
-import components.path_util as path_util
-import components.profile_tools as profile_tools
-import components.wpr_utils as wpr_utils
+from components import android_tools
+from components import perf_config
+from components import perf_test_runner
+from components import perf_test_utils
+from components import path_util
+from components import profile_tools
+from components import wpr_utils
 
 from components.common_options import CommonOptions, PerfMode
 

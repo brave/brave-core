@@ -213,7 +213,7 @@ class CrowdinClientWrapper():
             url = self.__get_resource_translation_download_url(
                 file_id, lang_code)
             r = requests.get(url, timeout=10)
-            assert r.status_code == 200 or r.status_code == 204, \
+            assert r.status_code in (200, 204), \
                 f'Aborting. Status code {r.status_code}: {r.content}'
             if r.status_code == 200:
                 r.encoding = 'utf-8'

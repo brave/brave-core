@@ -214,7 +214,7 @@ def get_stale_issues(page=1):
     }
     repo = GitHub(config.github_token).repos(BRAVE_REPO)
 
-    get_headers = dict()
+    get_headers = {}
     response = repo.issues().get(params=get_data, headers=get_headers)
 
     link_header = get_headers['ResponseHeaders']['Link']
@@ -380,7 +380,6 @@ def main():
     if args.verbose:
         print('[INFO] args: ' + str(args))
 
-    global config
     result = config.initialize(args)
     if result != 0:
         return result

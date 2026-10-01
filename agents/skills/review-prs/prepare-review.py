@@ -702,22 +702,19 @@ def fetch_prior_comments(pr_number, org_members, include_author=None):
         user = (review.get("user") or {}).get("login", "")
         if _is_org(user):
             ts = review.get("submitted_at", "")
-            if ts > latest_reviewer_ts:
-                latest_reviewer_ts = ts
+            latest_reviewer_ts = max(latest_reviewer_ts, ts)
 
     for comment in review_comments:
         user = (comment.get("user") or {}).get("login", "")
         if _is_org(user):
             ts = comment.get("created_at", "")
-            if ts > latest_reviewer_ts:
-                latest_reviewer_ts = ts
+            latest_reviewer_ts = max(latest_reviewer_ts, ts)
 
     for comment in issue_comments:
         user = (comment.get("user") or {}).get("login", "")
         if _is_org(user):
             ts = comment.get("created_at", "")
-            if ts > latest_reviewer_ts:
-                latest_reviewer_ts = ts
+            latest_reviewer_ts = max(latest_reviewer_ts, ts)
 
     # Determine who went last
     if not latest_reviewer_ts:

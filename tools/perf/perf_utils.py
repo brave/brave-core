@@ -8,8 +8,8 @@ import argparse
 import logging
 import os
 
-import components.wpr_utils as wpr_utils
-import components.cloud_storage as cloud_storage
+from components import wpr_utils
+from components import cloud_storage
 
 
 def main():

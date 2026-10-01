@@ -7,7 +7,7 @@
 #
 # Used as part of chromium src/tools/perf/page_sets/
 # Uses the the same code conventions (including pylint).
-# pylint: disable=import-error, no-self-use
+# pylint: disable=import-error
 # pylint: disable=no-name-in-module, too-few-public-methods
 # pytype: disable=import-error
 

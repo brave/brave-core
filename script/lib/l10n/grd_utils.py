@@ -200,13 +200,15 @@ def update_xtbs_locally(grd_file_path, brave_source_root, only_for_lang):
         f'not match: {len(grd_strings)} vs {len(chromium_grd_strings)}.')
 
     # Verify that string names match
-    for idx, grd_string in enumerate(grd_strings):
-        assert chromium_grd_strings[idx][0] == grd_string[0]
+    for chromium_grd_string, grd_string in zip(chromium_grd_strings,
+                                               grd_strings):
+        assert chromium_grd_string[0] == grd_string[0]
 
     # [2] is the string fingerprint
     fp_map = {
-        chromium_grd_strings[idx][2]: grd_strings[idx][2]
-        for (idx, _) in enumerate(grd_strings)
+        chromium_grd_string[2]: grd_string[2]
+        for chromium_grd_string, grd_string in zip(chromium_grd_strings,
+                                                   grd_strings)
     }
 
     xtb_file_paths = [os.path.join(
@@ -258,11 +260,11 @@ def combine_override_xtb_into_original(source_string_path, only_for_lang):
     override_xtb_files = get_xtb_files(override_path)
     assert len(xtb_files) == len(override_xtb_files)
 
-    for (idx, _) in enumerate(xtb_files):
-        (lang, xtb_path) = xtb_files[idx]
+    for xtb_file, override_xtb_file in zip(xtb_files, override_xtb_files):
+        (lang, xtb_path) = xtb_file
         if only_for_lang and lang != only_for_lang:
             continue
-        (override_lang, override_xtb_path) = override_xtb_files[idx]
+        (override_lang, override_xtb_path) = override_xtb_file
         assert lang == override_lang
 
         xtb_tree = lxml.etree.parse(os.path.join(source_base_path, xtb_path))

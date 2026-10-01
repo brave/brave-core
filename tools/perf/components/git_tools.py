@@ -9,7 +9,7 @@ import json
 
 from typing import Dict, List, Optional
 
-import components.path_util as path_util
+from components import path_util
 
 from components.perf_test_utils import GetProcessOutput
 

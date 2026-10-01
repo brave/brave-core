@@ -81,8 +81,12 @@ def override_canned_checks(canned_checks):
     def GetPylint(original_check, input_api, output_api, **kwargs):
 
         def _FetchAllFiles(_, input_api, files_to_check, files_to_skip):
-            src_filter = lambda f: input_api.FilterSourceFile(
-                f, files_to_check=files_to_check, files_to_skip=files_to_skip)
+
+            def src_filter(f):
+                return input_api.FilterSourceFile(
+                    f,
+                    files_to_check=files_to_check,
+                    files_to_skip=files_to_skip)
             return [
                 f.AbsoluteLocalPath()
                 for f in input_api.AffectedSourceFiles(src_filter)

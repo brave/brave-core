@@ -7,7 +7,7 @@ import re
 import json
 
 from typing import List
-import components.git_tools as git_tools
+from components import git_tools
 
 CHROME_VERSION_RE_PATTERN = r'\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}'
 BRAVE_VERSION_RE_PATTERN = r'v\d{1,4}\.\d{1,4}\.\d{1,4}'

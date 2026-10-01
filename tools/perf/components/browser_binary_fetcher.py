@@ -11,8 +11,8 @@ from typing import List, Optional
 from components.field_trials import (FieldTrialConfig, FieldTrialsMode,
                                      MaybeInjectSeedToLocalState,
                                      MakeFieldTrials)
-import components.path_util as path_util
-import components.field_trials as field_trials
+from components import path_util
+from components import field_trials
 from components.android_tools import InstallApk
 from components.common_options import CommonOptions
 from components.browser_type import BrowserType
