@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 4449bb1a737c9595c1c938c671de91693595df94..b3cc382a499977aaeb895241310d120f93e7d8ec 100644
+index 4449bb1a737c9595c1c938c671de91693595df94..255970fff108bb3c519b629f3d473bc400a54bc1 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -62,7 +62,9 @@ by a child template that "extends" this file.
@@ -102,15 +102,16 @@ index 4449bb1a737c9595c1c938c671de91693595df94..b3cc382a499977aaeb895241310d120f
          <receiver
              android:name="org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch"
              android:label="@string/quick_action_search_widget_title"
-@@ -1042,6 +1061,7 @@ by a child template that "extends" this file.
+@@ -1042,6 +1061,8 @@ by a child template that "extends" this file.
                  android:resource="@xml/quick_action_search_widget_dino_info" />
          </receiver>
  
 +        -->
++        {% include "//brave/android/java/AndroidManifest_widgets.xml" %}
          <!-- Bookmarks widget -->
          <receiver android:name="com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider"
              android:label="@string/bookmark_widget_title"
-@@ -1260,7 +1280,7 @@ by a child template that "extends" this file.
+@@ -1260,7 +1281,7 @@ by a child template that "extends" this file.
  
          <service android:name="org.chromium.chrome.browser.media.MediaCaptureNotificationService"
              {% if enable_screen_capture == "true" %}
@@ -119,7 +120,7 @@ index 4449bb1a737c9595c1c938c671de91693595df94..b3cc382a499977aaeb895241310d120f
              {% else %}
              android:foregroundServiceType="camera|microphone"
              {% endif %}
-@@ -1353,6 +1373,7 @@ by a child template that "extends" this file.
+@@ -1353,6 +1374,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  

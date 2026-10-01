@@ -131,23 +131,6 @@
     </intent-filter>
 </receiver>
 
-<receiver
-    android:name="org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetProvider"
-    android:exported="false">
-    <intent-filter>
-        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-    </intent-filter>
-
-    <meta-data
-        android:name="android.appwidget.provider"
-        android:resource="@xml/quick_action_search_and_bookmark_widget_info" />
-</receiver>
-
-<service
-    android:name="org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetService"
-    android:permission="android.permission.BIND_REMOTEVIEWS"
-    android:exported="false" />
-
 <service
     android:name="org.chromium.chrome.browser.autofill.BraveAutofillService"
     android:label="@string/app_name"

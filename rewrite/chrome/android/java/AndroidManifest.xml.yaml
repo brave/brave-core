@@ -152,6 +152,18 @@ substitutions:
         \4-->\3
 
   - description: |
+      Include Brave's widgets ahead of the Bookmarks widget.
+
+      Play Store suggests the first app widget declared in the manifest on
+      install, so list Brave's Quick Action Search widget first.
+    regex:
+      re_pattern: '^([ \t]*)(<!-- Bookmarks widget -->)$'
+      re_flags: [MULTILINE]
+      replace: |-
+        \1{% include "//brave/android/java/AndroidManifest_widgets.xml" %}
+        \1\2
+
+  - description: |
       Include Brave's own AndroidManifest.xml.
 
       Lets Brave declare additional application-level manifest entries
