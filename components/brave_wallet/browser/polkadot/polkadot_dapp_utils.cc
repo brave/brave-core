@@ -49,6 +49,10 @@ mojom::AccountIdPtr GetPolkadotPreferredDappAccount(
   }
 
   for (const auto& account : keyring_service->GetAllAccountInfos()) {
+    if (!IsPolkadotDappAccount(account->account_id)) {
+      continue;
+    }
+
     if (std::ranges::contains(*allowed_accounts, GetAccountPermissionIdentifier(
                                                      account->account_id))) {
       return account->account_id.Clone();
