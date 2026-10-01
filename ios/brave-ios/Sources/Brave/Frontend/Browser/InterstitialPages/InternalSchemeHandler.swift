@@ -45,8 +45,9 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
   private var activeTasks = NSMapTable<WKURLSchemeTask, TaskHolder>.weakToStrongObjects()
 
   // Unprivileged internal:// urls might be internal resources in the app bundle ( i.e. <link href="errorpage-resource/NetError.css"> )
-  @concurrent nonisolated func downloadResource(urlSchemeTask: WKURLSchemeTask) async -> Bool {
-    guard let url = urlSchemeTask.request.url else { return false }
+  // This only loads the resource. Callbacks on the `WKURLSchemeTask` must be made from the main
+  // actor since WebKit can stop the task at any time via `stop`.
+  @concurrent nonisolated func loadResource(for url: URL) async -> (URLResponse, Data)? {
 
     let allowedInternalResources = [
       // interstitial
@@ -83,27 +84,19 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
       if let res = Bundle.module.url(forResource: path, withExtension: nil),
         let data = try? Data(contentsOf: res)
       {
-        // WebKit may have stopped the task while the resource was being read
-        // from disk. Sending it further callbacks throws an exception.
-        if Task.isCancelled {
-          return false
-        }
-
-        urlSchemeTask.didReceive(
+        return (
           URLResponse(
             url: url,
             mimeType: mimeType,
             expectedContentLength: -1,
             textEncodingName: nil
-          )
+          ),
+          data
         )
-        urlSchemeTask.didReceive(data)
-        urlSchemeTask.didFinish()
-        return true
       }
     }
 
-    return false
+    return nil
   }
 
   public func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
@@ -121,16 +114,24 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
 
     let task = Task {
       // For non-main doc URL, try load it as a resource
+      var resource: (URLResponse, Data)?
       if !urlSchemeTask.request.isPrivileged,
-        urlSchemeTask.request.mainDocumentURL != urlSchemeTask.request.url,
-        await downloadResource(urlSchemeTask: urlSchemeTask)
+        urlSchemeTask.request.mainDocumentURL != urlSchemeTask.request.url
       {
-        return
+        resource = await loadResource(for: url)
       }
 
       // WebKit may have stopped the task during the await above. Sending it
       // any further callbacks, including failures, throws an exception.
-      if Task.isCancelled {
+      if activeTasks.object(forKey: urlSchemeTask) == nil || Task.isCancelled {
+        return
+      }
+
+      if let (urlResponse, data) = resource {
+        urlSchemeTask.didReceive(urlResponse)
+        urlSchemeTask.didReceive(data)
+        urlSchemeTask.didFinish()
+        activeTasks.removeObject(forKey: urlSchemeTask)
         return
       }
 
