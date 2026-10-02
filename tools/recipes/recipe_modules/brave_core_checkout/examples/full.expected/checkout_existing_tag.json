@@ -110,6 +110,16 @@
   {
     "cmd": [
       "git",
+      "config",
+      "maintenance.auto",
+      "false"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "brave-core disable auto-gc: maintenance.auto=false"
+  },
+  {
+    "cmd": [
+      "git",
       "remote",
       "set-url",
       "origin",

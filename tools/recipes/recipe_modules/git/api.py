@@ -32,6 +32,11 @@ _DISABLE_AUTO_GC_CONFIG = (
     # New versions of git requrire this to be set too on what used to be under
     # gc functionality.
     ('maintenance.gc.enabled', 'false'),
+    # Stops commands such as `fetch` from running `git maintenance run --auto`
+    # afterwards at all. Without it, `gc.autodetach=0` makes that run in the
+    # foreground (`--no-detach`), blocking the command on whatever tasks the
+    # maintenance strategy picks.
+    ('maintenance.auto', 'false'),
 )
 
 # What a branch, tag or ref name may look like. It must not start with `-`, so

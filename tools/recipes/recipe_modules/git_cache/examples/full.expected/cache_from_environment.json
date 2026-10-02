@@ -61,6 +61,16 @@
   {
     "cmd": [
       "git",
+      "config",
+      "maintenance.auto",
+      "false"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "name": "git cache populate disable (before): maintenance.auto=false"
+  },
+  {
+    "cmd": [
+      "git",
       "cache",
       "populate",
       "--cache-dir",
@@ -150,6 +160,16 @@
     ],
     "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
     "name": "populate with tags disable (after): maintenance.gc.enabled=false"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.auto",
+      "false"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "name": "populate with tags disable (after): maintenance.auto=false"
   },
   {
     "cmd": [
