@@ -171,10 +171,11 @@ TEST_F(PolkadotApiImplUnitTest, GetAccounts_ReturnsTheGrantedAccount) {
   ASSERT_FALSE(error);
   ASSERT_TRUE(accounts);
   ASSERT_EQ(accounts->size(), 1u);
-  EXPECT_THAT(accounts->at(0),
-              EqualsMojo(mojom::PolkadotInjectedAccount::New(
-                  account->address, /*genesis_hash=*/std::nullopt,
-                  account->name, kPolkadotSr25519KeypairType)));
+  EXPECT_THAT(
+      accounts->at(0),
+      EqualsMojo(mojom::PolkadotInjectedAccount::New(
+          account->address, /*genesis_hash=*/std::nullopt,
+          kPolkadotObfuscatedAccountName, kPolkadotSr25519KeypairType)));
 }
 
 TEST_F(PolkadotApiImplUnitTest, GetAccounts_OnlyEverServesTheGrantedAccount) {
@@ -193,10 +194,11 @@ TEST_F(PolkadotApiImplUnitTest, GetAccounts_OnlyEverServesTheGrantedAccount) {
   ASSERT_FALSE(error);
   ASSERT_TRUE(accounts);
   ASSERT_EQ(accounts->size(), 1u);
-  EXPECT_THAT(accounts->at(0),
-              EqualsMojo(mojom::PolkadotInjectedAccount::New(
-                  granted->address, /*genesis_hash=*/std::nullopt,
-                  granted->name, kPolkadotSr25519KeypairType)));
+  EXPECT_THAT(
+      accounts->at(0),
+      EqualsMojo(mojom::PolkadotInjectedAccount::New(
+          granted->address, /*genesis_hash=*/std::nullopt,
+          kPolkadotObfuscatedAccountName, kPolkadotSr25519KeypairType)));
 }
 
 TEST_F(PolkadotApiImplUnitTest, GetAccounts_AnyTypeIsIgnored) {
@@ -233,10 +235,11 @@ TEST_F(PolkadotApiImplUnitTest, GetAccounts_ImportedAccount) {
   ASSERT_FALSE(error);
   ASSERT_TRUE(accounts);
   ASSERT_EQ(accounts->size(), 1u);
-  EXPECT_THAT(accounts->at(0),
-              EqualsMojo(mojom::PolkadotInjectedAccount::New(
-                  imported->address, /*genesis_hash=*/std::nullopt,
-                  imported->name, kPolkadotSr25519KeypairType)));
+  EXPECT_THAT(
+      accounts->at(0),
+      EqualsMojo(mojom::PolkadotInjectedAccount::New(
+          imported->address, /*genesis_hash=*/std::nullopt,
+          kPolkadotObfuscatedAccountName, kPolkadotSr25519KeypairType)));
 }
 
 TEST_F(PolkadotApiImplUnitTest, GetAccounts_RechecksPermissionOnEveryCall) {
