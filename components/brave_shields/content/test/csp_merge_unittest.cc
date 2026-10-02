@@ -18,40 +18,36 @@ constexpr char kPolicy1[] = "script-src 'self' 'unsafe-inline'";
 constexpr char kPolicy2[] = "media-src 'self' https://example.com";
 
 TEST(CspMergeTest, MergeTwoEmptyPolicies) {
-  const auto a = kNoPolicy;
   auto b = kNoPolicy;
 
-  MergeCspDirectiveInto(a, &b);
+  MergeCspDirectiveInto(kNoPolicy, &b);
 
   ASSERT_EQ(b, kNoPolicy);
 }
 
 TEST(CspMergeTest, MergeEmptyIntoNonEmpty) {
-  const std::optional<std::string> a(kPolicy1);
   auto b = kNoPolicy;
 
-  MergeCspDirectiveInto(a, &b);
+  MergeCspDirectiveInto(kPolicy1, &b);
 
   ASSERT_EQ(b, kPolicy1);
 }
 
 TEST(CspMergeTest, MergeNonEmptyIntoEmpty) {
-  const auto a = kNoPolicy;
   std::optional<std::string> b(kPolicy1);
 
-  MergeCspDirectiveInto(a, &b);
+  MergeCspDirectiveInto(kNoPolicy, &b);
 
   ASSERT_EQ(b, kPolicy1);
 }
 
 TEST(CspMergeTest, MergeNonEmptyIntoNonEmpty) {
-  const std::optional<std::string> a(kPolicy1);
   std::optional<std::string> b(kPolicy2);
 
   const std::string expected =
       "script-src 'self' 'unsafe-inline', media-src 'self' https://example.com";
 
-  MergeCspDirectiveInto(a, &b);
+  MergeCspDirectiveInto(kPolicy1, &b);
 
   ASSERT_TRUE(b);
   ASSERT_EQ(*b, expected);
