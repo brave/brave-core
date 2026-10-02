@@ -13,6 +13,7 @@ import { useUntrustedConversationContext } from '../../untrusted_conversation_co
 import PremiumSuggestion from '../premium_suggestion'
 import styles from './alerts.module.scss'
 
+const MS_PER_MINUTE = 60 * 1000
 const MS_PER_HOUR = 60 * 60 * 1000
 
 interface Props {
@@ -54,6 +55,21 @@ function ErrorRateLimit(props: Props) {
   const context = useUntrustedConversationContext()
   const state = context.api.useState().data
   const { isPremiumUser } = context.api.useGetPremiumStatusData()
+  const expiresAt = props.errorDetails?.rateLimitExpiresAt
+
+  // Re-render every minute while the rate limit has an expiry so the duration
+  // in the message stays current and retry button visibility is re-evaluated.
+  const [, setTick] = React.useState(0)
+  React.useEffect(() => {
+    if (!expiresAt) {
+      return
+    }
+    const intervalId = window.setInterval(
+      () => setTick((tick) => tick + 1),
+      MS_PER_MINUTE,
+    )
+    return () => window.clearInterval(intervalId)
+  }, [expiresAt])
 
   // Respond to BYOM scenarios
   if (!state.isLeoModel || props._testIsCurrentModelLeo === false) {
@@ -95,7 +111,6 @@ function ErrorRateLimit(props: Props) {
   // hour, since retrying before then will fail.
   const isModelRateLimit =
     props.apiError === Mojom.APIError.ModelRateLimitReached
-  const expiresAt = props.errorDetails?.rateLimitExpiresAt
   const showRetry =
     !isModelRateLimit
     || !expiresAt

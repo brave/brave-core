@@ -17,6 +17,7 @@ type RequestIdleCallbackDeadline = {
 declare global {
   // Typescript doesn't include Temporal or Intl.DurationFormat yet, but both
   // are supported in Chromium. Only the parts we use are declared here.
+  // TODO: Remove this once upgrade to TS >= 6.0 is complete
   namespace Temporal {
     interface Duration {}
 
