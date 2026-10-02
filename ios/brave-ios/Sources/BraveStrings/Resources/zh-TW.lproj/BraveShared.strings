@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "關於";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "關於 Brave Shields";
-
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "網站通常會透過 Cookie 和指令碼嘗試識別您和您使用的裝置，藉此掌握您的身分及瞭解您使用網路的情形，進而追蹤您在每個網站上的行為。\n\nBrave 會封鎖這些項目，讓您能在不受追蹤的情況下自在瀏覽。";
-
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "這可讓您將影像儲存至您的相機膠卷。";
 
@@ -36,9 +30,6 @@
 
 /* Text for the toggle switch to clear 'Brave Ads' data in settings */
 "ads.braveAdsDataToggleOption" = "Brave 廣告資料";
-
-/* individual blocking statistic title */
-"AdsAndTrackers" = "廣告和追蹤器";
 
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "一律請求桌面網站";
@@ -130,18 +121,6 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "自動填入";
 
-/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
-"AutoRedirectAMPPages" = "自動重新導向 AMP 頁面";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
-"AutoRedirectAMPPagesDescription" = "一律造訪原始 (非 AMP) 頁面 URL，而不開啟 Google 的 Accelerated Mobile Page 版本";
-
-/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
-"AutoRedirectTrackingURLs" = "自動重新導向追蹤 URL";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "啟用對繞過頂層重新導向追蹤 URL 的支援";
-
 /* cookie settings option */
 "Block3rdPartyCookies" = "拦截第三方 cookies";
 
@@ -160,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "無法設定偏好設定，請稍後再試。";
 
-/* A title for a setting that enables cookie consent notices */
-"BlockCookieConsentNotices" = "封鎖 Cookie 同意通知";
-
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "封鎖監控";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "封鎖彈出式視窗";
-
-/* No comment provided by engineer. */
-"BlockScripts" = "封鎖指令碼";
-
-/* No comment provided by engineer. */
-"BlockScriptsDescription" = "封鎖 JavaScript (可能會影響網站運作)。";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "為 %lld 個分頁新增書籤";
@@ -239,46 +209,10 @@
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "關閉";
 
 /* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "進階控制項";
-
-/* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave 防護 & 安全性";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Shields & 隱私權";
-
-/* The number of ads and trackers blocked will be next to this */
-"BraveShieldsBlockedCountLabel" = "封鎖廣告和其他討人厭的追蹤程式";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "了解更多";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "變更 Shields 全域預設值";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalControls" = "全域控制項";
-
-/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "儲存聯絡資訊，以備日後的網站損毀報告使用";
-
-/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "如果您提供聯絡資訊，該資訊將被儲存，以備日後的報告使用";
-
-/* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "如果這個網站貌似無法正常運作，請嘗試關閉 Shields";
-
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave Shields";
-
-/* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "關閉";
-
-/* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "開啟";
-
-/* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "點兩下即可切換 Brave Shields";
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
@@ -844,15 +778,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findPreviousTitle" = "尋找上一個";
 
-/* individual blocking statistic title */
-"FingerprintingMethods" = "指紋識別法";
-
-/* No comment provided by engineer. */
-"FingerprintingProtection" = "封鎖指紋識別";
-
-/* No comment provided by engineer. */
-"FingerprintingProtectionDescription" = "使網站不易識別裝置的特徵。 ";
-
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "允許所有連結在外部應用程式中開啟";
 
@@ -919,15 +844,6 @@
 /* No comment provided by engineer. */
 "Home" = "主畫面";
 
-/* No comment provided by engineer. */
-"HTTPSEverywhere" = "將連線升級為 HTTPS";
-
-/* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "盡量使用安全的 HTTPS 開啟網站，而不要使用 HTTP。";
-
-/* individual blocking statistic title */
-"HTTPSUpgrades" = "HTTPS 更新";
-
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "匯入瀏覽資料";
 
@@ -948,6 +864,9 @@
 
 /* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
+
+/* Title for Brave Leo voice input menu item. Brave Leo is the name of a product and should not be translated */
+"LeoVoiceInputMenuItem" = "Leo 語音輸入";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "已儲存的登入資訊將永久移除。";
@@ -1666,9 +1585,6 @@
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "未命名的播放清單";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
-"PopoverShieldsMenuClose" = "關閉 Shields 選單";
-
 /* Settings privacy section title */
 "Privacy" = "隐私";
 
@@ -2017,41 +1933,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "移除我的最愛";
 
-/* No comment provided by engineer. */
-"ReportABrokenSite" = "回報壞掉的網站";
-
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "回報 Bug";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"ReportBrokenAdditionalDetails" = "其他詳細資訊 (選填)";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"reportBrokenAdditionalDetailsRequired" = "其他詳細資訊";
-
-/* A label for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "您看到的主要問題是什麼？";
-
-/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
-"ReportBrokenContactMe" = "聯絡方式：(選填)";
-
-/* Contact info storing description */
-"ReportBrokenContactMeDescription" = "如果您提供聯絡資訊，該資訊將被儲存，以便日後回報網站故障時使用。";
-
-/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
-"ReportBrokenContactMeSuggestions" = "電子郵件、Twitter 等";
-
-/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"ReportBrokenPlaceholder" = "選擇一個選項";
-
-/* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "讓 Brave 的開發人員知道此網站無法如預期運作：";
-
-/* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "注意：傳送至 Brave 伺服器的報告會包括網址、Brave 版本號碼、Shields 設定、VPN 狀態和語言設定。";
-
-/* No comment provided by engineer. */
-"ReportBrokenSubmitButtonTitle" = "提交";
 
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraAndMicrophonePermissionPrompt" = "「%@」想要存取攝影機和麥克風";
@@ -2329,9 +2212,6 @@
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "儲存登入資訊";
 
-/* individual blocking statistic title */
-"ScriptsBlocked" = "已封鎖指令碼";
-
 /* The placeholder text for bookmark search */
 "searchBookmarksTitle" = "搜尋書籤";
 
@@ -2500,6 +2380,12 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "自動傳送每日使用 ping 到 Brave";
 
+/* Description under the settings toggle that enables Sponsored Ads */
+"settings.sponsoredAdsEnabledDescription" = "以贊助廣告支持 Brave 打造獨立、以使用者為先的網路使命。我們以隱私方式衡量廣告成效，不會識別您的身分。";
+
+/* Title of the settings toggle that enables Sponsored Ads */
+"settings.sponsoredAdsEnabledTitle" = "啟用贊助廣告";
+
 /* Description to explain the survey panelist toggle */
 "settings.surveyPanelistDescription" = "允許 Brave 在新分頁中顯示私人調查的連結。調查有助於我們建立更好的功能，並衡量基於瀏覽器的廣告活動其有效性。 [進一步了解](%@)";
 
@@ -2577,21 +2463,6 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "當您在此網站上觀看影片時，為您封鎖廣告。";
-
-/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Brave Shields 全域預設";
-
-/* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "這些是 Shields 對新網站的預設設定。變更這些設定不會影響現有的個別網站設定。";
-
-/* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "您目前是在沒有 Brave 隱私防護的情況下瀏覽此網站。開啟 Shields 時無法正常瀏覽嗎？";
-
-/* shields overview message */
-"ShieldsOverview" = "「網站防護」可控制您在造訪每個網站時，是否直接封鎖網站上的廣告與追踪器。若您希望在特定網站上顯示廣告，可以在這裡啟用廣告。";
-
-/* shields overview footer message */
-"ShieldsOverviewFooter" = "請注意：部分網站可能需要指令碼才能順利運作，所以此防護機制預設為關閉。";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "新增隱私分頁";
@@ -2778,15 +2649,6 @@
 
 /* Settings item for clearing site-specific settings and shields settings. */
 "SiteAndShieldsSettings" = "網站與 Shields 設定";
-
-/* No comment provided by engineer. */
-"SiteReportedBody" = "感謝您讓 Brave 的開發人員知悉此網站發生錯誤。我們將盡力予以修正！";
-
-/* No comment provided by engineer. */
-"SiteReportedTitle" = "謝謝";
-
-/* Brave panel topmost title */
-"SiteShieldSettings" = "防護";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "我每天使用 Brave 瀏覽網頁來節省數據用量。";
@@ -3564,9 +3426,6 @@
 
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "用戶已取消";
-
-/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
-"UseRegionalAdblock" = "使用區域性廣告封鎖程式";
 
 /* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "關閉";

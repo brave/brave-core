@@ -71,6 +71,9 @@
 "e13lS3-VBH4G6" = "確認ですが、'履歴' を探していましたか？";
 
 /* (No Comment) */
+"e13lS3-vQ8mZ1" = "確認ですが、「Leo AI 音声入力」をお探しですか？";
+
+/* (No Comment) */
 "e13lS3-vs094F" = "確認ですが、'新しいプライベートタブ' を探していましたか？";
 
 /* (No Comment) */
@@ -108,6 +111,9 @@
 
 /* (No Comment) */
 "EvESs0-VBH4G6" = "確認ですが、'履歴' を探していましたか？";
+
+/* (No Comment) */
+"EvESs0-vQ8mZ1" = "確認ですが、「Leo AI 音声入力」をお探しですか？";
 
 /* (No Comment) */
 "EvESs0-vs094F" = "確認ですが、'新しいプライベートタブ' を探していましたか？";
@@ -164,6 +170,9 @@
 "L1fziM-VBH4G6" = "‘履歴’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
+"L1fziM-vQ8mZ1" = "「Leo AI 音声入力」に一致する ${count} 件の選択肢があります。";
+
+/* (No Comment) */
 "L1fziM-vs094F" = "‘新しいプライベートタブ’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
@@ -212,6 +221,9 @@
 "r2EI05-VBH4G6" = "確認ですが、'履歴' を探していましたか？";
 
 /* (No Comment) */
+"r2EI05-vQ8mZ1" = "確認ですが、「Leo AI 音声入力」をお探しですか？";
+
+/* (No Comment) */
 "r2EI05-vs094F" = "確認ですが、'新しいプライベートタブ' を探していましたか？";
 
 /* (No Comment) */
@@ -257,6 +269,9 @@
 "tNCrcE-VBH4G6" = "‘履歴’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
+"tNCrcE-vQ8mZ1" = "「Leo AI 音声入力」に一致する ${count} 件の選択肢があります。";
+
+/* (No Comment) */
 "tNCrcE-vs094F" = "‘新しいプライベートタブ’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
@@ -296,6 +311,9 @@
 "TxuMja-VBH4G6" = "‘履歴’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
+"TxuMja-vQ8mZ1" = "「Leo AI 音声入力」に一致する ${count} 件の選択肢があります。";
+
+/* (No Comment) */
 "TxuMja-vs094F" = "‘新しいプライベートタブ’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
@@ -315,6 +333,9 @@
 
 /* (No Comment) */
 "vjA5pZ" = "節約されたデータ通信量（推定）";
+
+/* (No Comment) */
+"vQ8mZ1" = "Leo AI 音声入力";
 
 /* (No Comment) */
 "vs094F" = "新しいプライベートタブ";
@@ -359,6 +380,9 @@
 "YQiQuz-VBH4G6" = "確認ですが、'履歴' を探していましたか？";
 
 /* (No Comment) */
+"YQiQuz-vQ8mZ1" = "確認ですが、「Leo AI 音声入力」をお探しですか？";
+
+/* (No Comment) */
 "YQiQuz-vs094F" = "確認ですが、'新しいプライベートタブ' を探していましたか？";
 
 /* (No Comment) */
@@ -393,6 +417,9 @@
 
 /* (No Comment) */
 "z517nu-VBH4G6" = "‘履歴’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"z517nu-vQ8mZ1" = "「Leo AI 音声入力」に一致する ${count} 件の選択肢があります。";
 
 /* (No Comment) */
 "z517nu-vs094F" = "‘新しいプライベートタブ’ に一致する ${count} 件の選択肢があります";

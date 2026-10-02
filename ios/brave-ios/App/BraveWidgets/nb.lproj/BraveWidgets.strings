@@ -71,6 +71,9 @@
 "e13lS3-VBH4G6" = "Bare som en bekreftelse – du ville ha 'Logg'?";
 
 /* (No Comment) */
+"e13lS3-vQ8mZ1" = "Bare for å være sikker, ser du etter «Leo KI-taleinndata»?";
+
+/* (No Comment) */
 "e13lS3-vs094F" = "Bare som en bekreftelse – du ville ha 'Ny privat fane'?";
 
 /* (No Comment) */
@@ -108,6 +111,9 @@
 
 /* (No Comment) */
 "EvESs0-VBH4G6" = "Bare som en bekreftelse – du ville ha 'Logg'?";
+
+/* (No Comment) */
+"EvESs0-vQ8mZ1" = "Bare for å være sikker, ser du etter «Leo KI-taleinndata»?";
 
 /* (No Comment) */
 "EvESs0-vs094F" = "Bare som en bekreftelse – du ville ha 'Ny privat fane'?";
@@ -164,6 +170,9 @@
 "L1fziM-VBH4G6" = "${count} alternativer matcher med 'Logg'.";
 
 /* (No Comment) */
+"L1fziM-vQ8mZ1" = "${count} alternativer matcher med «Leo KI-taleinndata».";
+
+/* (No Comment) */
 "L1fziM-vs094F" = "${count} alternativer matcher med 'Ny privat fane'.";
 
 /* (No Comment) */
@@ -212,6 +221,9 @@
 "r2EI05-VBH4G6" = "Bare som en bekreftelse – du ville ha 'Logg'?";
 
 /* (No Comment) */
+"r2EI05-vQ8mZ1" = "Bare for å være sikker, ser du etter «Leo KI-taleinndata»?";
+
+/* (No Comment) */
 "r2EI05-vs094F" = "Bare som en bekreftelse – du ville ha 'Ny privat fane'?";
 
 /* (No Comment) */
@@ -257,6 +269,9 @@
 "tNCrcE-VBH4G6" = "${count} alternativer matcher med 'Logg'.";
 
 /* (No Comment) */
+"tNCrcE-vQ8mZ1" = "${count} alternativer matcher med «Leo KI-taleinndata».";
+
+/* (No Comment) */
 "tNCrcE-vs094F" = "${count} alternativer matcher med 'Ny privat fane'.";
 
 /* (No Comment) */
@@ -296,6 +311,9 @@
 "TxuMja-VBH4G6" = "${count} alternativer matcher med 'Logg'.";
 
 /* (No Comment) */
+"TxuMja-vQ8mZ1" = "${count} alternativer matcher med «Leo KI-taleinndata».";
+
+/* (No Comment) */
 "TxuMja-vs094F" = "${count} alternativer matcher med 'Ny privat fane'.";
 
 /* (No Comment) */
@@ -315,6 +333,9 @@
 
 /* (No Comment) */
 "vjA5pZ" = "Ansl. data spart";
+
+/* (No Comment) */
+"vQ8mZ1" = "Leo KI-taleinndata";
 
 /* (No Comment) */
 "vs094F" = "Ny privat fane";
@@ -359,6 +380,9 @@
 "YQiQuz-VBH4G6" = "Bare som en bekreftelse – du ville ha 'Logg'?";
 
 /* (No Comment) */
+"YQiQuz-vQ8mZ1" = "Bare for å være sikker, ser du etter «Leo KI-taleinndata»?";
+
+/* (No Comment) */
 "YQiQuz-vs094F" = "Bare som en bekreftelse – du ville ha 'Ny privat fane'?";
 
 /* (No Comment) */
@@ -393,6 +417,9 @@
 
 /* (No Comment) */
 "z517nu-VBH4G6" = "${count} alternativer matcher med 'Logg'.";
+
+/* (No Comment) */
+"z517nu-vQ8mZ1" = "${count} alternativer matcher med «Leo KI-taleinndata».";
 
 /* (No Comment) */
 "z517nu-vs094F" = "${count} alternativer matcher med 'Ny privat fane'.";
