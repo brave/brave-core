@@ -80,6 +80,11 @@ def GenTests(api: TEST_DEPS):
             'disable auto-gc: maintenance.gc.enabled=false',
             ['config', 'maintenance.gc.enabled', 'false'],
         ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'disable auto-gc: maintenance.auto=false',
+            ['config', 'maintenance.auto', 'false'],
+        ),
         # Every step runs with `cwd` set to the repo, not `--git-dir`, so the
         # same call works against a working tree or a bare mirror alike.
         api.post_process(
