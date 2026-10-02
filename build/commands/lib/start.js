@@ -7,7 +7,7 @@ import assert from 'node:assert'
 import path from 'node:path'
 import fs from 'fs-extra'
 import config from './config.ts'
-import util from './util.js'
+import util from './util.ts'
 
 const start = (
   passthroughArgs,
@@ -115,6 +115,7 @@ const start = (
     braveArgs.push('--user-data-dir=' + userDataDir)
   }
 
+  /** @type {import('./util.ts').RunOptions} */
   let cmdOptions = {
     stdio: 'inherit',
     timeout: undefined,

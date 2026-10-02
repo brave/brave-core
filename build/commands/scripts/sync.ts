@@ -10,12 +10,12 @@ import fs from 'node:fs'
 import { program } from 'commander'
 import path from 'node:path'
 import config from '../lib/config.ts'
-import util from '../lib/util.js'
+import util from '../lib/util.ts'
 import * as Log from '../lib/log.ts'
 import depotTools from '../lib/depotTools.js'
 import { isCI } from '../lib/ciDetect.ts'
-import syncUtil from '../lib/syncUtils.js'
-import sisoUtils from '../lib/sisoUtils.js'
+import * as syncUtil from '../lib/syncUtils.ts'
+import { writeSisoRc } from '../lib/sisoUtils.ts'
 
 program
   .version(process.env.npm_package_version || 'unknown')
@@ -147,7 +147,7 @@ async function sync(options) {
     })
   }
 
-  sisoUtils.writeSisoRc()
+  writeSisoRc()
 }
 
 function commaSeparatedToList(value, defaultValue) {

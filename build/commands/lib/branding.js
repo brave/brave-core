@@ -8,7 +8,7 @@ import path from 'node:path'
 import config from './config.ts'
 import l10nUtil from './l10nUtil.js'
 import * as Log from './log.ts'
-import util from './util.js'
+import util from './util.ts'
 
 const update = () => {
   Log.progressStart('update branding')

@@ -3,14 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-'use strict'
-
 import * as Log from './log.ts'
 import config from './config.ts'
 import { isCI } from './ciDetect.ts'
 import fs from 'node:fs'
 import path from 'node:path'
-import util from './util.js'
+import util from './util.ts'
 
 /**
  * Writes `.sisorc` configuration file. The `.sisorc` format is:
@@ -24,8 +22,8 @@ import util from './util.js'
  * that subcommand. This allows for automatic configuration without manual flag
  * passing.
  */
-function writeSisoRc() {
-  const ninjaFlags = []
+export function writeSisoRc() {
+  const ninjaFlags: string[] = []
 
   if (config.rbeService) {
     // Keep exec stream alive during remote execution. Otherwise siso terminates
@@ -82,8 +80,4 @@ function writeSisoRc() {
     ? `ninja ${ninjaFlags.join(' ')}\n`
     : ''
   util.writeFileIfModified(sisoRcPath, sisoRcContent)
-}
-
-export default {
-  writeSisoRc,
 }

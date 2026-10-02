@@ -6,7 +6,7 @@
 import path from 'node:path'
 import fs from 'fs-extra'
 import rootDir from './rootDir.cjs'
-import util from './util.js'
+import util from './util.ts'
 
 const desiredReplacementSeparator = '-'
 const patchExtension = '.patch'
@@ -50,7 +50,8 @@ async function getModifiedPaths(gitRepoPath, filter, onlyFiles) {
     .split('\n')
     .filter((s) => s)
     .map((line) => {
-      const [added, removed, filePath] = line.split('\t')
+      const [added, removed, filePath] =
+        /** @type {[string, string, string]} */ (line.split('\t'))
       if (added === '-' && removed === '-') {
         binaryPaths.add(filePath)
       }

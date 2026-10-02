@@ -10,20 +10,21 @@ import { isCI } from './ciDetect.ts'
 import fs from 'node:fs'
 import path from 'node:path'
 import * as Log from './log.ts'
-import util from './util.js'
+import util from './util.ts'
 
-function toGClientConfigItem(name, value, pretty = true) {
+function toGClientConfigItem(name: string, value: unknown, pretty = true) {
   if (value === undefined) {
     return ''
   }
 
-  const valueMap = {
+  const valueMap: Record<string, string> = {
     true: '%True%',
     false: '%False%',
     null: '%None%',
   }
 
-  const replacer = (_, value) => valueMap[value] || value
+  const replacer = (_: string, value: unknown) =>
+    valueMap[String(value)] || value
 
   const pythonLikeValue = JSON.stringify(
     value,
@@ -33,13 +34,12 @@ function toGClientConfigItem(name, value, pretty = true) {
   return `${name} = ${pythonLikeValue}\n`
 }
 
-function writeGclientConfig(
-  targetOSList,
-  targetArchList,
+export function writeGclientConfig(
+  targetOSList: string[],
+  targetArchList: string[],
   onlyChromium = false,
 ) {
-  /** @type {Record<string, any>} */
-  const gclientConfig = {
+  const gclientConfig: Record<string, any> = {
     solutions: [
       {
         managed: false,
@@ -116,7 +116,11 @@ function writeGclientConfig(
   )
 }
 
-function writeGclientConfigFile(gclientConfig, filePath, header) {
+function writeGclientConfigFile(
+  gclientConfig: Record<string, any>,
+  filePath: string,
+  header: string,
+) {
   let out = header
   for (const [key, value] of Object.entries(gclientConfig)) {
     const singleLineValue = toGClientConfigItem(key, value, false)
@@ -132,7 +136,7 @@ function writeGclientConfigFile(gclientConfig, filePath, header) {
   }
 }
 
-function readGclientConfig() {
+export function readGclientConfig() {
   if (!fs.existsSync(config.gclientFile)) {
     return {}
   }
@@ -166,7 +170,15 @@ print(json.dumps(out))
   }
 }
 
-function shouldUpdateChromium(latestSyncInfo, expectedSyncInfo) {
+interface SyncInfo {
+  chromiumRef: string
+  gclientTimestamp: string
+}
+
+function shouldUpdateChromium(
+  latestSyncInfo: Partial<SyncInfo>,
+  expectedSyncInfo: SyncInfo,
+) {
   const chromiumRef = expectedSyncInfo.chromiumRef
   const headSHA = util.runGit(config.srcDir, ['rev-parse', 'HEAD'], true)
   const targetSHA = util.runGit(config.srcDir, ['rev-parse', chromiumRef], true)
@@ -208,8 +220,7 @@ function shouldUpdateChromium(latestSyncInfo, expectedSyncInfo) {
 // Fetches authenticate as BRAVE_USE_GERRIT_MIRRORS_USER. An existing file is
 // only regenerated when `update` is set. No-op unless that user is set. The
 // file is inert without GIT_CONFIG_GLOBAL being set.
-/** @param {boolean} update */
-function configureGerritMirrors(update) {
+function configureGerritMirrors(update: boolean) {
   if (!config.gerritMirrorsUser) {
     return
   }
@@ -235,14 +246,24 @@ function configureGerritMirrors(update) {
   config.applyGerritMirrorsGitConfig()
 }
 
-function syncChromium(program) {
-  const syncWithForce = program.init || program.force
+type SyncOptions = {
+  init?: boolean
+  force?: boolean
+  sync_chromium?: boolean
+  delete_unused_deps?: boolean
+  fetch_all?: boolean
+  bootstrap?: boolean
+  history?: boolean
+}
+
+export function syncChromium(program: SyncOptions) {
+  const syncWithForce = Boolean(program.init || program.force)
   const syncChromiumValue = program.sync_chromium
   const deleteUnusedDeps = program.delete_unused_deps
   let tryLeanCheckout = config.leanSync
 
   const requiredChromiumRef = config.getProjectRef('chrome')
-  let args = ['sync', '--nohooks', '--reset', '--upstream']
+  const args = ['sync', '--nohooks', '--reset', '--upstream']
 
   if (program.fetch_all) {
     args.push('--with_tags')
@@ -269,7 +290,6 @@ function syncChromium(program) {
     config.rootDir,
     '.brave_latest_successful_sync.json',
   )
-  // @ts-ignore
   const latestSyncInfo = util.readJSON(latestSyncInfoFilePath, {})
   const expectedSyncInfo = {
     chromiumRef: requiredChromiumRef,
@@ -338,9 +358,7 @@ function syncChromium(program) {
 
   util.runGclient(args)
   util.modifyGitExclusions(config.srcDir, {
-    // @ts-ignore
     remove: ['brave/', 'brave_origin/'],
-    // @ts-ignore
     add: ['/brave/'],
   })
   util.writeJSON(latestSyncInfoFilePath, expectedSyncInfo)
@@ -350,7 +368,7 @@ function syncChromium(program) {
   return true
 }
 
-async function checkInternalDepsEndpoint() {
+export async function checkInternalDepsEndpoint() {
   if (!config.useBraveHermeticToolchain) {
     return true
   }
@@ -361,14 +379,7 @@ async function checkInternalDepsEndpoint() {
       { method: 'HEAD', signal: AbortSignal.timeout(5000), redirect: 'manual' },
     )
     return response.status === 302
-  } catch (error) {
+  } catch {
     return false
   }
-}
-
-export default {
-  writeGclientConfig,
-  readGclientConfig,
-  syncChromium,
-  checkInternalDepsEndpoint,
 }
