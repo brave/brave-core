@@ -55,9 +55,9 @@ class PlaylistSidePanelCoordinator : public views::ViewObserver {
       delete;
   ~PlaylistSidePanelCoordinator() override;
 
-  // Returns the instance owned by `browser`, or nullptr. Null for windows that
-  // cannot use the sidebar, such as popups and desktop PWAs, or when Playlist
-  // is not allowed for the profile.
+  // Returns the instance attached to `browser`, or nullptr. Null for windows
+  // that cannot use the sidebar, such as popups and desktop PWAs, or when
+  // Playlist is not allowed for the profile.
   static PlaylistSidePanelCoordinator* From(BrowserWindowInterface* browser);
 
   void CreateAndRegisterEntry(SidePanelRegistry* global_registry);
