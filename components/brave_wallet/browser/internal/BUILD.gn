@@ -117,7 +117,11 @@ rust_static_library("polkadot_extrinsic_rs") {
     "polkadot_chain_metadata.rs",
     "polkadot_extrinsic.rs",
   ]
-  cxx_bindings = [ "polkadot_extrinsic.rs" ]
+  cpp_api_from_rust = {
+    target_name = "polkadot_extrinsic_bindings"
+    cpp_namespace = "brave_wallet"
+    h_out = "${target_gen_dir}/polkadot_extrinsic_rs.h"
+  }
 
   deps = [
     "//brave/third_party/rust/blake2b_simd/v1:lib",
