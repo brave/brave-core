@@ -243,10 +243,11 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_AlreadyPermitted) {
   ASSERT_FALSE(accounts_error);
   ASSERT_TRUE(accounts);
   ASSERT_EQ(accounts->size(), 1u);
-  EXPECT_THAT(accounts->at(0),
-              EqualsMojo(mojom::PolkadotInjectedAccount::New(
-                  account->address, /*genesis_hash=*/std::nullopt,
-                  account->name, kPolkadotSr25519KeypairType)));
+  EXPECT_THAT(
+      accounts->at(0),
+      EqualsMojo(mojom::PolkadotInjectedAccount::New(
+          account->address, /*genesis_hash=*/std::nullopt,
+          kPolkadotObfuscatedAccountName, kPolkadotSr25519KeypairType)));
 }
 
 TEST_F(PolkadotProviderImplUnitTest, Enable_PermissionRequestGranted) {
@@ -282,10 +283,11 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_PermissionRequestGranted) {
   ASSERT_FALSE(accounts_error);
   ASSERT_TRUE(accounts);
   ASSERT_EQ(accounts->size(), 1u);
-  EXPECT_THAT(accounts->at(0),
-              EqualsMojo(mojom::PolkadotInjectedAccount::New(
-                  account->address, /*genesis_hash=*/std::nullopt,
-                  account->name, kPolkadotSr25519KeypairType)));
+  EXPECT_THAT(
+      accounts->at(0),
+      EqualsMojo(mojom::PolkadotInjectedAccount::New(
+          account->address, /*genesis_hash=*/std::nullopt,
+          kPolkadotObfuscatedAccountName, kPolkadotSr25519KeypairType)));
 }
 
 TEST_F(PolkadotProviderImplUnitTest, Enable_ImportedAccountIsADappAccount) {
@@ -319,10 +321,11 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_ImportedAccountIsADappAccount) {
   ASSERT_FALSE(accounts_error);
   ASSERT_TRUE(accounts);
   ASSERT_EQ(accounts->size(), 1u);
-  EXPECT_THAT(accounts->at(0),
-              EqualsMojo(mojom::PolkadotInjectedAccount::New(
-                  imported->address, /*genesis_hash=*/std::nullopt,
-                  imported->name, kPolkadotSr25519KeypairType)));
+  EXPECT_THAT(
+      accounts->at(0),
+      EqualsMojo(mojom::PolkadotInjectedAccount::New(
+          imported->address, /*genesis_hash=*/std::nullopt,
+          kPolkadotObfuscatedAccountName, kPolkadotSr25519KeypairType)));
 }
 
 TEST_F(PolkadotProviderImplUnitTest, Enable_TabInactive) {
