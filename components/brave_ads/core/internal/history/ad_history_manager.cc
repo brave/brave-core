@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
@@ -59,13 +60,10 @@ mojom::AdHistoryItemInfoPtr AdHistoryItemToMojom(
 std::vector<mojom::AdHistoryItemInfoPtr> AdHistoryToMojom(
     const AdHistoryList& ad_history,
     const Reactions& reactions) {
-  std::vector<mojom::AdHistoryItemInfoPtr> mojom_ad_history;
-  mojom_ad_history.reserve(ad_history.size());
-  for (const AdHistoryItemInfo& ad_history_item : ad_history) {
-    mojom_ad_history.push_back(
-        AdHistoryItemToMojom(ad_history_item, reactions));
-  }
-  return mojom_ad_history;
+  return base::ToVector(
+      ad_history, [&reactions](const AdHistoryItemInfo& ad_history_item) {
+        return AdHistoryItemToMojom(ad_history_item, reactions);
+      });
 }
 
 }  // namespace
