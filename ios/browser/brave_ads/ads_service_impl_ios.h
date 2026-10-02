@@ -61,7 +61,8 @@ class AdsServiceImplIOS : public AdsService {
       mojom::NotificationAdEventType mojom_ad_event_type,
       ResultCallback callback);
 
-  void NotifyDidInitializeAdsService() const;
+  void NotifyAdsServiceIneligibleToStart();
+  void NotifyDidInitializeAdsService();
   void NotifyDidShutdownAdsService() const;
   void NotifyDidClearAdsServiceData() const;
 
@@ -161,6 +162,8 @@ class AdsServiceImplIOS : public AdsService {
 
   bool CanStartBatAdsService() const;
   bool UserHasJoinedBraveRewards() const;
+  bool IsSponsoredAdsEnabled() const;
+
   void InitializeBatAds(ResultCallback callback);
   void InitializeBatAdsCallback(ResultCallback callback, bool success);
 
@@ -194,6 +197,8 @@ class AdsServiceImplIOS : public AdsService {
   mojom::WalletInfoPtr mojom_wallet_;
 
   std::unique_ptr<Ads> ads_;
+
+  bool is_ineligible_to_start_ = false;
 
   base::WeakPtrFactory<AdsServiceImplIOS> weak_ptr_factory_{this};
 };
