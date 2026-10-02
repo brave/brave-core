@@ -33,7 +33,7 @@ crowdin_handled_files = [
 
 
 def should_use_crowdin_for_file(source_string_path, filename):
-    """ Determines if the given file should be handled by Crowdin locally"""
+    """Determines if the given file should be handled by Crowdin locally"""
     name = crowdin_name_from_filename(source_string_path, filename)
     return name in crowdin_handled_files
 
@@ -47,8 +47,10 @@ def crowdin_name_from_filename(source_file_path, filename):
     # JSON files are uploaded as "Chrome JSON" format.
     if 'brave_extension' in source_file_path:
         return 'brave_extension.json'
-    assert False, ('JSON files should be mapped explicitly, this '
-                   f'one is not: {source_file_path}')
+    assert False, (
+        'JSON files should be mapped explicitly, this '
+        f'one is not: {source_file_path}'
+    )
 
 
 # pylint: enable=inconsistent-return-statements
@@ -84,18 +86,20 @@ def get_strings_dict_from_xml_content(xml_content):
 
 def fixup_string_from_crowdin(val):
     """Returns the text of a node from Crowdin which also fixes up common
-       problems that localizers do"""
+    problems that localizers do"""
     if val is None:
         return val
-    val = (val.replace('&amp;lt;',
-                       '&lt;').replace('&amp;gt;',
-                                       '&gt;').replace('&amp;amp;', '&amp;'))
+    val = (
+        val.replace('&amp;lt;', '&lt;')
+        .replace('&amp;gt;', '&gt;')
+        .replace('&amp;amp;', '&amp;')
+    )
     return val
 
 
 def textify_from_crowdin(tag):
     """Returns the text content of a tag received from Crowdin while fixing
-       up common problems that localizers cause"""
+    up common problems that localizers cause"""
     return fixup_string_from_crowdin(textify(tag))
 
 
@@ -118,8 +122,9 @@ def get_json_strings(json_file_path):
     for key in data:
         string_name = key
         string_value = data[key]["message"]
-        string_desc = data[key]["description"] if "description" \
-            in data[key] else ""
+        string_desc = (
+            data[key]["description"] if "description" in data[key] else ""
+        )
         string_tuple = (string_name, string_value, string_desc)
         strings.append(string_tuple)
     return strings
@@ -129,7 +134,8 @@ def get_json_strings(json_file_path):
 def get_crowdin_client_wrapper():
     if get_crowdin_client_wrapper.wrapper is None:
         get_crowdin_client_wrapper.wrapper = CrowdinClientWrapper(
-            project_id=brave_project_id)
+            project_id=brave_project_id
+        )
     return get_crowdin_client_wrapper.wrapper
 
 

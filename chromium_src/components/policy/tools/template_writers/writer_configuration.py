@@ -5,6 +5,7 @@
 
 import override_utils
 
+
 @override_utils.override_function(globals())
 def GetConfigurationForBuild(original_function, defines):
     base = original_function(defines)
@@ -31,7 +32,7 @@ _BRAVE_VALUES = {
             'category_path_strings': {
                 'Cat_Brave': 'Brave Software',
                 'brave': 'Brave',
-                'brave_recommended': 'Brave - {doc_recommended}'
+                'brave_recommended': 'Brave - {doc_recommended}',
             },
             'namespace': 'BraveSoftware.Policies.Brave',
         },
@@ -41,9 +42,11 @@ _BRAVE_VALUES = {
     'bundle_id': 'com.brave.ios.core',
 }
 
+
 def _merge_dicts(src, dst):
     result = dict(dst)
     for k, v in src.items():
-        result[k] = _merge_dicts(v, dst.get(k, {})) if isinstance(v,
-                                                                  dict) else v
+        result[k] = (
+            _merge_dicts(v, dst.get(k, {})) if isinstance(v, dict) else v
+        )
     return result

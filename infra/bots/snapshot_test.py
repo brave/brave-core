@@ -20,8 +20,10 @@ from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(
     0,
-    os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                 'config'))
+    os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'config'
+    ),
+)
 
 import snapshot
 from lib.config import BuildersRegistry, GnArgsRegistry
@@ -34,55 +36,71 @@ def _make_registries():
     builders_registry = BuildersRegistry(gn_args_registry)
     builders_registry.builder(
         name='test-builder',
-        sync_config=builders_registry.sync_config(target_os='linux',
-                                                  target_cpu='x64'),
-        gn_args=gn_args_registry.config(configs=['linux', 'x64'],
-                                        args={'is_asan': True}),
-        targets=builders_registry.targets(compile=['brave:all'],
-                                          tests=['a_test']),
+        sync_config=builders_registry.sync_config(
+            target_os='linux', target_cpu='x64'
+        ),
+        gn_args=gn_args_registry.config(
+            configs=['linux', 'x64'], args={'is_asan': True}
+        ),
+        targets=builders_registry.targets(
+            compile=['brave:all'], tests=['a_test']
+        ),
     )
     return builders_registry, gn_args_registry
 
 
 class ComputeFreshOutputTest(unittest.TestCase):
-
     def test_produces_three_files_per_builder(self):
         builders_registry, gn_args_registry = _make_registries()
-        fresh = snapshot.compute_fresh_output(builders_registry,
-                                              gn_args_registry)
+        fresh = snapshot.compute_fresh_output(
+            builders_registry, gn_args_registry
+        )
         self.assertEqual(
-            set(fresh), {
+            set(fresh),
+            {
                 'test-builder/gn-args.json',
                 'test-builder/sync.json',
                 'test-builder/targets.json',
-            })
+            },
+        )
 
     def test_gn_args_json_matches_resolve(self):
         builders_registry, gn_args_registry = _make_registries()
-        fresh = snapshot.compute_fresh_output(builders_registry,
-                                              gn_args_registry)
-        self.assertEqual(json.loads(fresh['test-builder/gn-args.json']),
-                         gn_args_registry.resolve('test-builder'))
+        fresh = snapshot.compute_fresh_output(
+            builders_registry, gn_args_registry
+        )
+        self.assertEqual(
+            json.loads(fresh['test-builder/gn-args.json']),
+            gn_args_registry.resolve('test-builder'),
+        )
 
     def test_sync_and_targets_json(self):
         builders_registry, gn_args_registry = _make_registries()
-        fresh = snapshot.compute_fresh_output(builders_registry,
-                                              gn_args_registry)
-        self.assertEqual(json.loads(fresh['test-builder/sync.json']), {
-            'target_os': 'linux',
-            'target_cpu': 'x64',
-            'gclient_overrides': {},
-        })
-        self.assertEqual(json.loads(fresh['test-builder/targets.json']), {
-            'compile': ['brave:all'],
-            'tests': ['a_test'],
-        })
+        fresh = snapshot.compute_fresh_output(
+            builders_registry, gn_args_registry
+        )
+        self.assertEqual(
+            json.loads(fresh['test-builder/sync.json']),
+            {
+                'target_os': 'linux',
+                'target_cpu': 'x64',
+                'gclient_overrides': {},
+            },
+        )
+        self.assertEqual(
+            json.loads(fresh['test-builder/targets.json']),
+            {
+                'compile': ['brave:all'],
+                'tests': ['a_test'],
+            },
+        )
 
     def test_no_builders_means_no_output(self):
         builders_registry = BuildersRegistry(GnArgsRegistry())
         self.assertEqual(
             snapshot.compute_fresh_output(builders_registry, GnArgsRegistry()),
-            {})
+            {},
+        )
 
 
 class WriteSnapshotTest(unittest.TestCase):
@@ -94,38 +112,48 @@ class WriteSnapshotTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             builders_registry, gn_args_registry = _make_registries()
 
-            result = snapshot.write_snapshot(builders_registry,
-                                             gn_args_registry, Path(tmp))
+            result = snapshot.write_snapshot(
+                builders_registry, gn_args_registry, Path(tmp)
+            )
 
-            self.assertEqual(sorted(result.changed), [
-                'test-builder/gn-args.json',
-                'test-builder/sync.json',
-                'test-builder/targets.json',
-            ])
+            self.assertEqual(
+                sorted(result.changed),
+                [
+                    'test-builder/gn-args.json',
+                    'test-builder/sync.json',
+                    'test-builder/targets.json',
+                ],
+            )
             self.assertEqual(
                 json.loads(
-                    (Path(tmp) / 'test-builder/gn-args.json').read_text()),
-                gn_args_registry.resolve('test-builder'))
+                    (Path(tmp) / 'test-builder/gn-args.json').read_text()
+                ),
+                gn_args_registry.resolve('test-builder'),
+            )
 
     def test_rerun_with_no_changes_touches_nothing(self):
         with tempfile.TemporaryDirectory() as tmp:
             builders_registry, gn_args_registry = _make_registries()
 
-            snapshot.write_snapshot(builders_registry, gn_args_registry,
-                                    Path(tmp))
-            result = snapshot.write_snapshot(builders_registry,
-                                             gn_args_registry, Path(tmp))
+            snapshot.write_snapshot(
+                builders_registry, gn_args_registry, Path(tmp)
+            )
+            result = snapshot.write_snapshot(
+                builders_registry, gn_args_registry, Path(tmp)
+            )
 
             self.assertEqual(result.changed, [])
-            self.assertEqual(sorted(result.unchanged), [
-                'test-builder/gn-args.json',
-                'test-builder/sync.json',
-                'test-builder/targets.json',
-            ])
+            self.assertEqual(
+                sorted(result.unchanged),
+                [
+                    'test-builder/gn-args.json',
+                    'test-builder/sync.json',
+                    'test-builder/targets.json',
+                ],
+            )
 
 
 class WriteOutputTest(unittest.TestCase):
-
     def setUp(self):
         stack = contextlib.ExitStack()
         self.addCleanup(stack.close)
@@ -150,17 +178,22 @@ class WriteOutputTest(unittest.TestCase):
 
     def test_changed_content_is_rewritten(self):
         snapshot.write_output(self.output_dir, {'a/x.json': '{"v": 1}\n'})
-        result = snapshot.write_output(self.output_dir,
-                                       {'a/x.json': '{"v": 2}\n'})
+        result = snapshot.write_output(
+            self.output_dir, {'a/x.json': '{"v": 2}\n'}
+        )
         self.assertEqual(result.changed, ['a/x.json'])
-        self.assertEqual((self.output_dir / 'a/x.json').read_text(),
-                         '{"v": 2}\n')
+        self.assertEqual(
+            (self.output_dir / 'a/x.json').read_text(), '{"v": 2}\n'
+        )
 
     def test_stale_file_is_deleted(self):
-        snapshot.write_output(self.output_dir, {
-            'a/x.json': '{}\n',
-            'b/y.json': '{}\n',
-        })
+        snapshot.write_output(
+            self.output_dir,
+            {
+                'a/x.json': '{}\n',
+                'b/y.json': '{}\n',
+            },
+        )
         result = snapshot.write_output(self.output_dir, {'a/x.json': '{}\n'})
         self.assertEqual(result.deleted, ['b/y.json'])
         self.assertFalse((self.output_dir / 'b/y.json').exists())
@@ -171,28 +204,37 @@ class WriteOutputTest(unittest.TestCase):
         # faithful to lucicfg's own `generate`: it only ever removes files,
         # never prunes directories, so we don't either.
         snapshot.write_output(
-            self.output_dir, {
+            self.output_dir,
+            {
                 'old-builder/gn-args.json': '{}\n',
                 'old-builder/sync.json': '{}\n',
                 'old-builder/targets.json': '{}\n',
-            })
-        result = snapshot.write_output(self.output_dir,
-                                       {'new-builder/gn-args.json': '{}\n'})
-        self.assertEqual(sorted(result.deleted), [
-            'old-builder/gn-args.json',
-            'old-builder/sync.json',
-            'old-builder/targets.json',
-        ])
+            },
+        )
+        result = snapshot.write_output(
+            self.output_dir, {'new-builder/gn-args.json': '{}\n'}
+        )
+        self.assertEqual(
+            sorted(result.deleted),
+            [
+                'old-builder/gn-args.json',
+                'old-builder/sync.json',
+                'old-builder/targets.json',
+            ],
+        )
         self.assertEqual(list((self.output_dir / 'old-builder').iterdir()), [])
 
     def test_dry_run_reports_without_touching_disk(self):
-        snapshot.write_output(self.output_dir, {
-            'a/x.json': '{}\n',
-            'b/y.json': '{}\n',
-        })
-        result = snapshot.write_output(self.output_dir,
-                                       {'a/x.json': '{"v": 2}\n'},
-                                       dry_run=True)
+        snapshot.write_output(
+            self.output_dir,
+            {
+                'a/x.json': '{}\n',
+                'b/y.json': '{}\n',
+            },
+        )
+        result = snapshot.write_output(
+            self.output_dir, {'a/x.json': '{"v": 2}\n'}, dry_run=True
+        )
         self.assertEqual(result.changed, ['a/x.json'])
         self.assertEqual(result.deleted, ['b/y.json'])
         # Nothing was actually touched.

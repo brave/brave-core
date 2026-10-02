@@ -29,8 +29,8 @@ def get_src_dir() -> str:
         current_dir = os.getcwd()
     while True:
         if os.path.exists(
-                os.path.join(current_dir,
-                             'brave/script/brave_chromium_utils.py')):
+            os.path.join(current_dir, 'brave/script/brave_chromium_utils.py')
+        ):
             return current_dir
         parent_dir = os.path.dirname(current_dir)
         if parent_dir == current_dir:
@@ -87,8 +87,9 @@ def to_wspath(path: str) -> str:
     return '//' + os.path.relpath(path, src_dir).replace(os.path.sep, '/')
 
 
-def inline_file(path: str, _globals: Dict[str, Any],
-                _locals: Dict[str, Any]) -> None:
+def inline_file(
+    path: str, _globals: Dict[str, Any], _locals: Dict[str, Any]
+) -> None:
     """Inline file from `path` by executing it using `_globals` and `_locals`
     scopes."""
     path = wspath(path)
@@ -100,24 +101,26 @@ def inline_file(path: str, _globals: Dict[str, Any],
         exec(code, _globals, _locals)
 
 
-def inline_chromium_src_override(_globals: Dict[str, Any],
-                                 _locals: Dict[str, Any]) -> None:
+def inline_chromium_src_override(
+    _globals: Dict[str, Any], _locals: Dict[str, Any]
+) -> None:
     """Inline `__file__` override from `//brave/chromium_src`."""
     orig_file = _globals.get('__file__')
     if not orig_file:
         raise RuntimeError(
             '__file__ is not set to inline from //brave/chromium_src. '
-            'Use inline_file() with full path instead.')
+            'Use inline_file() with full path instead.'
+        )
     chromium_src_override = get_chromium_src_override(orig_file)
     inline_file(chromium_src_override, _globals, _locals)
 
 
 def get_webui_overriden_file_name(file_name):
     """Gets the name of an upstream file which is being overridden (but still
-       referenced)
-       for example `foo.ts` ==> `foo-chromium.ts`
-                   `bar.css` ==> `bar-chromium.css`
-                   `bar.css.js` ==> `bar-chromium.css.js`
+    referenced)
+    for example `foo.ts` ==> `foo-chromium.ts`
+                `bar.css` ==> `bar-chromium.css`
+                `bar.css.js` ==> `bar-chromium.css.js`
     """
     name_bits = file_name.split('.')
     return "".join([name_bits[0], "-chromium.", '.'.join(name_bits[1:])])
@@ -166,6 +169,7 @@ def get_json_value(file_path: str, key: str) -> Any:
     if value is None:
         raise RuntimeError(
             "Python-checked value should be explicitly set during gn gen: "
-            f"{key} value not found in {file_path}")
+            f"{key} value not found in {file_path}"
+        )
 
     return value

@@ -24,8 +24,9 @@ import sys
 import unittest
 
 SRC_ROOT = dirname(dirname(dirname(realpath(__file__))))
-KEYSTONE_INSTALL_SH = join(SRC_ROOT, "chrome", "installer", "mac",
-                           "keystone_install.sh")
+KEYSTONE_INSTALL_SH = join(
+    SRC_ROOT, "chrome", "installer", "mac", "keystone_install.sh"
+)
 
 # We make it possible for the Python test to mock system executables. For
 # example:
@@ -63,7 +64,6 @@ UPDATE_VERSION = "2.0.0.0"
 
 @unittest.skipUnless(sys.platform == "darwin", "requires macOS")
 class KeystoneInstallShPatchTest(unittest.TestCase):
-
     def setUp(self):
         stack = contextlib.ExitStack()
         self.addCleanup(stack.close)
@@ -88,8 +88,13 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
             return system_rsync(args)
 
         self._run_install_sh(app_dir, commands={'rsync': rsync})
-        for arg in ('--ignore-times', '--links', '--no-perms',
-                    '--executability', '--chmod=u=rwX,go=rX'):
+        for arg in (
+            '--ignore-times',
+            '--links',
+            '--no-perms',
+            '--executability',
+            '--chmod=u=rwX,go=rX',
+        ):
             self.assertIn(arg, rsync_args)
         for arg in ('--perms', '--times'):
             self.assertNotIn(arg, rsync_args)
@@ -121,9 +126,9 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
                 return 1, ""
             return system_rsync(args)
 
-        self._run_install_sh(app_dir,
-                             commands={'rsync': rsync},
-                             expected_exit_code=76)
+        self._run_install_sh(
+            app_dir, commands={'rsync': rsync}, expected_exit_code=76
+        )
         self.assertEqual(2, len(calls))
 
     def test_versioned_rsync_into_parent_succeeds(self):
@@ -138,9 +143,9 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
                 return 1, ""
             return system_rsync(args)
 
-        self._run_install_sh(app_dir,
-                             commands={'rsync': rsync},
-                             expected_exit_code=77)
+        self._run_install_sh(
+            app_dir, commands={'rsync': rsync}, expected_exit_code=77
+        )
         self.assertEqual(3, len(calls))
         # The third invocation rsyncs into installed_versions_dir, with no
         # trailing slash on the source path.
@@ -158,17 +163,19 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
                 return 1, ""
             return system_rsync(args)
 
-        self._run_install_sh(app_dir,
-                             commands={'rsync': rsync},
-                             expected_exit_code=78)
+        self._run_install_sh(
+            app_dir, commands={'rsync': rsync}, expected_exit_code=78
+        )
         self.assertEqual(4, len(calls))
 
     def test_versioned_rsync_all_attempts_fail(self):
         app_dir = join(self.temp_dir, f"{PRODUCT_NAME}.app")
         self._make_app(app_dir, CURRENT_VERSION)
-        self._run_install_sh(app_dir,
-                             commands={'rsync': lambda args: (1, '')},
-                             expected_exit_code=79)
+        self._run_install_sh(
+            app_dir,
+            commands={'rsync': lambda args: (1, '')},
+            expected_exit_code=79,
+        )
 
     def test_mkdir_failure_classified_by_stderr(self):
         """
@@ -198,12 +205,14 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
                         return 1, f"mkdir: {args[-1]}: {msg}"
                     return 0, ""
 
-                self._run_install_sh(app_dir,
-                                     commands={
-                                         'rsync': lambda args: (1, ""),
-                                         'mkdir': mock_mkdir
-                                     },
-                                     expected_exit_code=expected_exit_code)
+                self._run_install_sh(
+                    app_dir,
+                    commands={
+                        'rsync': lambda args: (1, ""),
+                        'mkdir': mock_mkdir,
+                    },
+                    expected_exit_code=expected_exit_code,
+                )
 
     def _prepare_dmg_dir(self):
         dmg_dir = join(self.temp_dir, "dmg")
@@ -217,11 +226,13 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
         bin_dir = join(self.temp_dir, "bin")
         mkdir(bin_dir)
         # Prepend bin/ to PATH so tests can override commands like rsync.
-        patched, count = re.subn(r'^export PATH="',
-                                 f'export PATH="{bin_dir}:',
-                                 source,
-                                 count=1,
-                                 flags=re.MULTILINE)
+        patched, count = re.subn(
+            r'^export PATH="',
+            f'export PATH="{bin_dir}:',
+            source,
+            count=1,
+            flags=re.MULTILINE,
+        )
         self.assertEqual(1, count)
         install_sh_path = join(self.temp_dir, "keystone_install.sh")
         with open(install_sh_path, "w", encoding='utf-8') as f:
@@ -232,8 +243,9 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
     def _make_app(self, bundle_path, version):
         """Create the minimum .app bundle that the script's checks accept."""
         contents = join(bundle_path, "Contents")
-        framework_dir = join(contents, "Frameworks",
-                             f"{PRODUCT_NAME} Framework.framework")
+        framework_dir = join(
+            contents, "Frameworks", f"{PRODUCT_NAME} Framework.framework"
+        )
         makedirs(join(framework_dir, "Versions", version, "Resources"))
         with open(join(contents, "Info.plist"), "wb") as f:
             plistlib.dump(
@@ -266,12 +278,14 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
         )
         self.assertTrue(exists(versioned_dir), msg=versioned_dir)
 
-    def _run_install_sh(self,
-                        installed_app_dir,
-                        is_root=False,
-                        commands=None,
-                        expected_exit_code=0,
-                        env=None):
+    def _run_install_sh(
+        self,
+        installed_app_dir,
+        is_root=False,
+        commands=None,
+        expected_exit_code=0,
+        env=None,
+    ):
         commands = commands or {}
         env = env.copy() if env is not None else {}
         for name in commands:
@@ -290,14 +304,16 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
         env["KS_TICKET_XC_PATH"] = installed_app_dir
         if is_root:
             env["EUID"] = "0"
-        with Popen([self.install_sh, self.dmg_dir],
-                   stdin=DEVNULL,
-                   stdout=PIPE,
-                   stderr=STDOUT,
-                   text=True,
-                   bufsize=1,
-                   env=env,
-                   pass_fds=(prompt_w, response_r)) as proc:
+        with Popen(
+            [self.install_sh, self.dmg_dir],
+            stdin=DEVNULL,
+            stdout=PIPE,
+            stderr=STDOUT,
+            text=True,
+            bufsize=1,
+            env=env,
+            pass_fds=(prompt_w, response_r),
+        ) as proc:
             # The subprocess inherited its own copies of prompt_w and
             # response_r via pass_fds. A pipe only reaches EOF once *every*
             # writer has closed its end, so we must drop our copy of prompt_w
@@ -341,17 +357,21 @@ class KeystoneInstallShPatchTest(unittest.TestCase):
                 drain_thread.join(timeout=5)
         output = "".join(output_lines)
         self.assertEqual(
-            expected_exit_code, proc.returncode,
+            expected_exit_code,
+            proc.returncode,
             f"Command {self.install_sh} exited with code {proc.returncode} "
-            f"instead of {expected_exit_code}.\n\nOutput:\n{output}")
+            f"instead of {expected_exit_code}.\n\nOutput:\n{output}",
+        )
 
 
 def system_rsync(args):
-    cp = run(["/usr/bin/rsync"] + args,
-             stdout=DEVNULL,
-             stderr=PIPE,
-             text=True,
-             check=False)
+    cp = run(
+        ["/usr/bin/rsync"] + args,
+        stdout=DEVNULL,
+        stderr=PIPE,
+        text=True,
+        check=False,
+    )
     return cp.returncode, cp.stderr
 
 

@@ -11,6 +11,7 @@ import base64
 import re
 import urllib.parse
 import urllib.request
+
 try:
     from .util import execute, scoped_cwd
 except ImportError:
@@ -20,13 +21,13 @@ GITHUB_URL = 'https://api.github.com'
 GITHUB_UPLOAD_ASSET_URL = 'https://uploads.github.com'
 
 
-class GitHub():
-
+class GitHub:
     def __init__(self, access_token):
         self._authorization = 'token %s' % access_token
 
         pattern = '^/repos/{0}/{0}/releases/{1}/assets$'.format(
-            '[^/]+', '[0-9]+')
+            '[^/]+', '[0-9]+'
+        )
         self._releases_upload_api_pattern = re.compile(pattern)
 
     def __getattr__(self, attr):
@@ -58,7 +59,8 @@ class GitHub():
             with urllib.request.urlopen(request) as response:
                 r = json.loads(response.read())
                 kw['headers']['ResponseHeaders'] = dict(
-                    response.headers.items())
+                    response.headers.items()
+                )
         except ValueError:
             # Returned response may be empty in some cases
             r = {}
@@ -67,8 +69,7 @@ class GitHub():
         return r
 
 
-class _Executable():
-
+class _Executable:
     def __init__(self, gh, method, path):
         self._gh = gh
         self._method = method
@@ -78,8 +79,7 @@ class _Executable():
         return self._gh.send(self._method, self._path, **kw)
 
 
-class _Callable():
-
+class _Callable:
     def __init__(self, gh, name):
         self._gh = gh
         self._name = name
@@ -102,7 +102,7 @@ class _Callable():
 # pylint: disable=inconsistent-return-statements
 def get_authenticated_user_login(token):
     """given a valid GitHub access token, return the associated GitHub user
-       login"""
+    login"""
     # for more info see:
     # https://developer.github.com/v3/users/#get-the-authenticated-user
     user = GitHub(token).user()
@@ -115,7 +115,7 @@ def get_authenticated_user_login(token):
 
 def parse_user_logins(token, login_csv, verbose=False):
     """given a list of logins in csv format, parse into a list and validate
-       logins"""
+    logins"""
     if login_csv is None:
         return []
     login_csv = login_csv.replace(" ", "")
@@ -135,13 +135,19 @@ def parse_user_logins(token, login_csv, verbose=False):
                 print('[INFO] Login "' + login + '" found: ' + str(response))
         except Exception as e:
             if verbose:
-                print('[INFO] Login "' + login +
-                      '" does not appear to be valid. ' + str(e))
+                print(
+                    '[INFO] Login "'
+                    + login
+                    + '" does not appear to be valid. '
+                    + str(e)
+                )
             invalid_logins.append(login)
 
     if len(invalid_logins) > 0:
-        raise Exception('Invalid logins found. Are they misspelled? ' +
-                        ','.join(invalid_logins))
+        raise Exception(
+            'Invalid logins found. Are they misspelled? '
+            + ','.join(invalid_logins)
+        )
 
     return parsed_logins
 
@@ -165,13 +171,19 @@ def parse_labels(token, repo_name, label_csv, verbose=False):
                 print('[INFO] Label "' + label + '" found: ' + str(response))
         except Exception as e:
             if verbose:
-                print('[INFO] Label "' + label +
-                      '" does not appear to be valid. ' + str(e))
+                print(
+                    '[INFO] Label "'
+                    + label
+                    + '" does not appear to be valid. '
+                    + str(e)
+                )
             invalid_labels.append(label)
 
     if len(invalid_labels) > 0:
-        raise Exception('Invalid labels found. Are they misspelled? ' +
-                        ','.join(invalid_labels))
+        raise Exception(
+            'Invalid labels found. Are they misspelled? '
+            + ','.join(invalid_labels)
+        )
 
     return parsed_labels
 
@@ -191,13 +203,15 @@ def get_file_contents(token, repo_name, filename, branch=None):
 
 # pylint: disable=dangerous-default-value
 # pylint: disable=inconsistent-return-statements
-def add_reviewers_to_pull_request(token,
-                                  repo_name,
-                                  pr_number,
-                                  reviewers=[],
-                                  team_reviewers=[],
-                                  verbose=False,
-                                  dryrun=False):
+def add_reviewers_to_pull_request(
+    token,
+    repo_name,
+    pr_number,
+    reviewers=[],
+    team_reviewers=[],
+    verbose=False,
+    dryrun=False,
+):
     # add reviewers to pull request
     # for more info see: https://developer.github.com/v3/pulls/review_requests/
     repo = GitHub(token).repos(repo_name)
@@ -207,13 +221,22 @@ def add_reviewers_to_pull_request(token,
     if len(team_reviewers) > 0:
         patch_data['team_reviewers'] = team_reviewers
     if dryrun:
-        print('[INFO] would call `repo.pulls(' + str(pr_number) +
-              ').requested_reviewers.post(' + str(patch_data) + ')`')
+        print(
+            '[INFO] would call `repo.pulls('
+            + str(pr_number)
+            + ').requested_reviewers.post('
+            + str(patch_data)
+            + ')`'
+        )
         return
     response = repo.pulls(pr_number).requested_reviewers.post(data=patch_data)
     if verbose:
-        print('repo.pulls(' + str(pr_number) +
-              ').requested_reviewers.post(data) response:\n' + str(response))
+        print(
+            'repo.pulls('
+            + str(pr_number)
+            + ').requested_reviewers.post(data) response:\n'
+            + str(response)
+        )
     return response
 
 
@@ -227,21 +250,23 @@ def get_milestones(token, repo_name, verbose=False):
     return response
 
 
-def create_pull_request(token,
-                        repo_name,
-                        title,
-                        body,
-                        branch_src,
-                        branch_dst,
-                        open_in_browser=False,
-                        verbose=False,
-                        dryrun=False):
+def create_pull_request(
+    token,
+    repo_name,
+    title,
+    body,
+    branch_src,
+    branch_dst,
+    open_in_browser=False,
+    verbose=False,
+    dryrun=False,
+):
     post_data = {
         'title': title,
         'head': branch_src,
         'base': branch_dst,
         'body': body,
-        'maintainer_can_modify': True
+        'maintainer_can_modify': True,
     }
     # create the pull request
     # for more info see: http://developer.github.com/v3/pulls
@@ -257,19 +282,22 @@ def create_pull_request(token,
     if open_in_browser:
         # pylint: disable=import-outside-toplevel
         import webbrowser
+
         webbrowser.open(response['html_url'])
     return int(response['number'])
 
 
 # pylint: disable=dangerous-default-value
-def set_issue_details(token,
-                      repo_name,
-                      issue_number,
-                      milestone_number=None,
-                      assignees=[],
-                      labels=[],
-                      verbose=False,
-                      dryrun=False):
+def set_issue_details(
+    token,
+    repo_name,
+    issue_number,
+    milestone_number=None,
+    assignees=[],
+    labels=[],
+    verbose=False,
+    dryrun=False,
+):
     patch_data = {}
     if milestone_number:
         patch_data['milestone'] = milestone_number
@@ -282,25 +310,36 @@ def set_issue_details(token,
     # add milestone and assignee to issue / pull request
     # for more info see: https://developer.github.com/v3/issues/#edit-an-issue
     if dryrun:
-        print('[INFO] would call `repo.issues(' + str(issue_number) +
-              ').patch(' + str(patch_data) + ')`')
+        print(
+            '[INFO] would call `repo.issues('
+            + str(issue_number)
+            + ').patch('
+            + str(patch_data)
+            + ')`'
+        )
         return
     repo = GitHub(token).repos(repo_name)
     response = repo.issues(issue_number).patch(data=patch_data)
     if verbose:
-        print('repo.issues(' + str(issue_number) + ').patch(data) response:\n' +
-              str(response))
+        print(
+            'repo.issues('
+            + str(issue_number)
+            + ').patch(data) response:\n'
+            + str(response)
+        )
 
 
 def fetch_origin_check_staged(path):
     """given a path on disk (to a git repo), fetch origin and ensure there
-       aren't unstaged files"""
+    aren't unstaged files"""
     with scoped_cwd(path):
         execute(['git', 'fetch', 'origin'])
         status = execute(['git', 'status', '-s']).strip()
         if len(status) > 0:
-            print('[ERROR] There appear to be unstaged changes.\n' +
-                  'Please resolve these before running (ex: `git status`).')
+            print(
+                '[ERROR] There appear to be unstaged changes.\n'
+                + 'Please resolve these before running (ex: `git status`).'
+            )
             return 1
     return 0
 
@@ -313,33 +352,45 @@ def get_local_branch_name(path):
 def get_title_from_first_commit(path, branch_to_compare):
     """get the first commit subject (useful for the title of a pull request)"""
     with scoped_cwd(path):
-        title_list = execute([
-            'git', 'log', 'origin/' + branch_to_compare + '..HEAD',
-            '--pretty=format:%s', '--reverse'
-        ])
+        title_list = execute(
+            [
+                'git',
+                'log',
+                'origin/' + branch_to_compare + '..HEAD',
+                '--pretty=format:%s',
+                '--reverse',
+            ]
+        )
         title_list = title_list.split('\n')
         if len(title_list) == 0:
-            raise Exception('No commits found! Local branch matches "' +
-                            branch_to_compare + '"')
+            raise Exception(
+                'No commits found! Local branch matches "'
+                + branch_to_compare
+                + '"'
+            )
         return title_list[0]
 
 
 def push_branches_to_remote(path, branches_to_push, dryrun=False, token=None):
     if dryrun:
-        print('[INFO] would push the following local branches to remote: ' +
-              str(branches_to_push))
+        print(
+            '[INFO] would push the following local branches to remote: '
+            + str(branches_to_push)
+        )
     else:
         with scoped_cwd(path):
             for branch_to_push in branches_to_push:
                 print('- pushing ' + branch_to_push + '...')
                 # TODO: if they already exist, force push?? or error??
                 response = execute(
-                    ['git', 'remote', 'get-url', '--push', 'origin']).strip()
+                    ['git', 'remote', 'get-url', '--push', 'origin']
+                ).strip()
                 if response.startswith('https://'):
                     if len(str(token)) == 0:
                         raise Exception('GitHub token cannot be null or empty!')
                     remote = response.replace(
-                        'https://', 'https://' + token + ':x-oauth-basic@')
+                        'https://', 'https://' + token + ':x-oauth-basic@'
+                    )
                     execute(['git', 'push', '-u', remote, branch_to_push])
                 else:
                     execute(['git', 'push', '-u', 'origin', branch_to_push])

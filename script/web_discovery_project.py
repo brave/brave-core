@@ -12,8 +12,7 @@ import sys
 from lib.config import SOURCE_ROOT, enable_verbose_mode
 from lib.util import execute_stdout, scoped_cwd
 
-WEB_DISCOVERY_DIR = os.path.join(
-    SOURCE_ROOT, 'vendor', 'web-discovery-project')
+WEB_DISCOVERY_DIR = os.path.join(SOURCE_ROOT, 'vendor', 'web-discovery-project')
 
 
 def main():
@@ -36,15 +35,22 @@ def main():
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Web Discovery Project setup')
-    parser.add_argument('-v', '--verbose', action='store_true',
-                        help='Prints the output of the subprocesses')
-    parser.add_argument('-i', '--install',
-                        action='store_true',
-                        help='Install Web Discovery Project dependencies')
+    parser.add_argument(
+        '-v',
+        '--verbose',
+        action='store_true',
+        help='Prints the output of the subprocesses',
+    )
+    parser.add_argument(
+        '-i',
+        '--install',
+        action='store_true',
+        help='Install Web Discovery Project dependencies',
+    )
     parser.add_argument('--output_path')
-    parser.add_argument('-b', '--build',
-                        action='store_true',
-                        help='Build Web Discovery Project')
+    parser.add_argument(
+        '-b', '--build', action='store_true', help='Build Web Discovery Project'
+    )
 
     return parser.parse_args()
 

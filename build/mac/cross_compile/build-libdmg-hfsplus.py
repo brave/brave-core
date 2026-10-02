@@ -15,5 +15,6 @@ libdmg_hfsplus_dir = sys.argv[1]
 def _run(*args):
     return run(args, cwd=libdmg_hfsplus_dir, check=True)
 
+
 _run('cmake', '.', '-B', 'build')
 _run('make', '-C', 'build/dmg')

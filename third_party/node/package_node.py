@@ -28,8 +28,8 @@ from pathlib import Path
 # the Node version lives in exactly one place.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(
-    0,
-    str(Path(__file__).resolve().parents[2] / 'tools' / 'cr' / 'toolchains'))
+    0, str(Path(__file__).resolve().parents[2] / 'tools' / 'cr' / 'toolchains')
+)
 
 # pylint: disable=wrong-import-position
 from download_node import NODE_VERSION, PLATFORMS
@@ -44,17 +44,19 @@ EXTRA_DEPS_PREFIX = 'src/brave/third_party/node'
 
 
 def print_setdep_command(revisions: list[str]) -> None:
-    """Print the `install_extra_deps.py setdep` command repinning `revisions`.
-    """
-    command = ' \\\n'.join([
-        'vpython3 tools/cr/install_extra_deps.py setdep',
-        *(f'  -r {revision}' for revision in revisions),
-    ])
+    """Print the `install_extra_deps.py setdep` command repinning `revisions`."""
+    command = ' \\\n'.join(
+        [
+            'vpython3 tools/cr/install_extra_deps.py setdep',
+            *(f'  -r {revision}' for revision in revisions),
+        ]
+    )
     print(f'\nRepin EXTRA_DEPS with (from src/brave):\n\n{command}')
 
 
-def package(tarball_name: str, deployed_dir: str,
-            output_dir: Path) -> Path | None:
+def package(
+    tarball_name: str, deployed_dir: str, output_dir: Path
+) -> Path | None:
     """Pack the *contents* of `deployed_dir` into `tarball_name`.
 
     Returns the tarball path, or None when the platform has not been deployed
@@ -62,8 +64,10 @@ def package(tarball_name: str, deployed_dir: str,
     """
     dest_dir = _NODE_DIR / deployed_dir
     if not dest_dir.is_dir():
-        print(f'Skipping {tarball_name}: {dest_dir} does not exist '
-              f'(run download_node.py first).')
+        print(
+            f'Skipping {tarball_name}: {dest_dir} does not exist '
+            f'(run download_node.py first).'
+        )
         return None
 
     tarball = output_dir / tarball_name
@@ -91,17 +95,20 @@ def sha256_and_size(path: Path) -> tuple[str, int]:
 def main() -> int:
     parser = argparse.ArgumentParser(
         description=f'Package Node {NODE_VERSION} directories into '
-        'version-free tarballs for upload.')
+        'version-free tarballs for upload.'
+    )
     parser.add_argument(
         '--output-dir',
         type=Path,
         default=_NODE_DIR,
         help='Directory to write the tarballs into (defaults to this '
-        'directory).')
+        'directory).',
+    )
     parser.add_argument(
         '--upload',
         action='store_true',
-        help='Upload the packaged tarballs to our public bucket.')
+        help='Upload the packaged tarballs to our public bucket.',
+    )
     args = parser.parse_args()
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -125,8 +132,9 @@ def main() -> int:
             sha256, size = result.sha256, result.size_bytes
         else:
             sha256, size = sha256_and_size(tarball)
-        revisions.append(f'{EXTRA_DEPS_PREFIX}/{deployed_dir}@'
-                         f'{tarball.name},{sha256},{size}')
+        revisions.append(
+            f'{EXTRA_DEPS_PREFIX}/{deployed_dir}@{tarball.name},{sha256},{size}'
+        )
 
     if revisions:
         print_setdep_command(revisions)

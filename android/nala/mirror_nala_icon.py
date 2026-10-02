@@ -34,13 +34,22 @@ def mirror(source: str) -> str:
 
     # Mirroring about the vertical axis moves the drawing off-canvas, so shift
     # it back by the viewport width.
-    group_open = ('    <group\n'
-                  '        android:scaleX="-1"\n'
-                  f'        android:translateX="{viewport_width.group(1)}">\n')
+    group_open = (
+        '    <group\n'
+        '        android:scaleX="-1"\n'
+        f'        android:translateX="{viewport_width.group(1)}">\n'
+    )
 
-    body = source[open_tag.end():close_index].strip('\n')
-    return (source[:open_tag.end()] + '\n' + group_open + body + '\n' +
-            '    </group>\n' + source[close_index:])
+    body = source[open_tag.end() : close_index].strip('\n')
+    return (
+        source[: open_tag.end()]
+        + '\n'
+        + group_open
+        + body
+        + '\n'
+        + '    </group>\n'
+        + source[close_index:]
+    )
 
 
 def main():

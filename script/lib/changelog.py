@@ -26,7 +26,7 @@ def render_markdown(changelog_txt, version, logging):
         if item['type'] == 'Heading' and item['level'] == 2:
             if item['children'][0]['children'][0]['content'] == version:
                 version_heading = output['children'][pos]
-                version_changes = output['children'][pos+1]
+                version_changes = output['children'][pos + 1]
         pos = pos + 1
     if version_heading and version_changes:
         heading = '# Release Notes'
@@ -35,8 +35,9 @@ def render_markdown(changelog_txt, version, logging):
         for i in changes:
             s += f'{i}\n'
     else:
-        logging.error("Cannot Locate the changelog AST for version: '%s'",
-                      version)
+        logging.error(
+            "Cannot Locate the changelog AST for version: '%s'", version
+        )
         sys.exit(1)
 
     return s
@@ -48,7 +49,8 @@ def render_html(changelog_txt, version, logging):
     """
 
     rendered = mistletoe.markdown(
-        render_markdown(changelog_txt, version, logging))
+        render_markdown(changelog_txt, version, logging)
+    )
     return rendered
 
 
@@ -69,8 +71,9 @@ def reconstruct_brave_changelog_list(li):
             if 'RawText' in item2['type']:
                 appended_entry += f"{item2['content']}"
             elif 'Link' in item2['type']:
-                appended_entry += (f"[{item2['children'][0]['content']}]"
-                                   f"({item2['target']})")
+                appended_entry += (
+                    f"[{item2['children'][0]['content']}]({item2['target']})"
+                )
             elif 'InlineCode' in item2['type']:
                 appended_entry += f"{item2['children'][0]['content']}"
             else:
@@ -95,7 +98,8 @@ def download_from_url(args, logging, changelog_url):
         r = requests.get(changelog_url, headers=headers)
     except requests.exceptions.ConnectionError:
         logging.error(
-            "Error: Received requests.exceptions.ConnectionError, Exiting...")
+            "Error: Received requests.exceptions.ConnectionError, Exiting..."
+        )
         sys.exit(1)
     except Exception as e:
         logging.error("Error: Received exception %s,  Exiting...", type(e))

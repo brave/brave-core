@@ -75,4 +75,5 @@ with locked_json_update(cache_path) as cache:
 status = "approved + cached" if approve else "cached"
 pr_url = f"https://github.com/{PR_REPO}/pull/{pr_number}"
 print(
-    f"Cache updated ({status}): [PR #{pr_number}]({pr_url}) -> {head_ref_oid}")
+    f"Cache updated ({status}): [PR #{pr_number}]({pr_url}) -> {head_ref_oid}"
+)

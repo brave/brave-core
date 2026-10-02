@@ -12,11 +12,14 @@ PLATFORM = {
 }[sys.platform]
 
 SOURCE_ROOT = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), '..', '..'))
+    os.path.join(os.path.dirname(__file__), '..', '..')
+)
 CHROMIUM_ROOT = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), '..', '..', '..'))
+    os.path.join(os.path.dirname(__file__), '..', '..', '..')
+)
 BRAVE_CORE_ROOT = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), '..', '..'))
+    os.path.join(os.path.dirname(__file__), '..', '..')
+)
 
 verbose_mode = False
 
@@ -34,7 +37,9 @@ def output_dir(target_os, target_arch):
     if target_arch != 'x64':
         target_arch_suffix = '_' + target_arch
 
-    return os.path.join(CHROMIUM_ROOT, 'out', target_os_prefix + 'Release' + target_arch_suffix)
+    return os.path.join(
+        CHROMIUM_ROOT, 'out', target_os_prefix + 'Release' + target_arch_suffix
+    )
 
 
 def brave_core_package():
@@ -45,13 +50,17 @@ def brave_core_package():
 
 
 def product_name():
-    return (os.environ.get('npm_config_brave_product_name') or
-            brave_core_package()['name'].split('-')[0])
+    return (
+        os.environ.get('npm_config_brave_product_name')
+        or brave_core_package()['name'].split('-')[0]
+    )
 
 
 def get_chrome_version():
-    version = (os.environ.get('npm_config_brave_version') or
-               brave_core_package()['config']['projects']['chrome']['tag'])
+    version = (
+        os.environ.get('npm_config_brave_version')
+        or brave_core_package()['config']['projects']['chrome']['tag']
+    )
     return version
 
 
@@ -60,8 +69,10 @@ def get_brave_version():
 
 
 def get_raw_version():
-    return (os.environ.get('npm_config_brave_version') or
-            brave_core_package()['version'])
+    return (
+        os.environ.get('npm_config_brave_version')
+        or brave_core_package()['version']
+    )
 
 
 def get_platform_key():
@@ -72,8 +83,9 @@ def get_platform_key():
 
 
 def get_env_var(name):
-    return (os.environ.get('BRAVE_' + name, '') or
-            os.environ.get('npm_config_BRAVE_' + name, ''))
+    return os.environ.get('BRAVE_' + name, '') or os.environ.get(
+        'npm_config_BRAVE_' + name, ''
+    )
 
 
 def enable_verbose_mode():

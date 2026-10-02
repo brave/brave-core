@@ -14,7 +14,6 @@ from signing import standard_invoker, commands, pipeline
 
 
 class Invoker(standard_invoker.Invoker):
-
     @staticmethod
     def register_arguments(parser):
         standard_invoker.Invoker.register_arguments(parser)
@@ -43,7 +42,8 @@ def add_preinstall_to_dmg():
                 args = args.copy()
                 packaging_dir = paths.packaging_dir(config)
                 args += [
-                    '--copy', f'{packaging_dir}/dmg_preinstall.sh:/.preinstall'
+                    '--copy',
+                    f'{packaging_dir}/dmg_preinstall.sh:/.preinstall',
                 ]
                 run_command.caught_pkg_dmg = True
             return run_command_orig(args, **kwargs)
@@ -74,7 +74,7 @@ def stub_out_signing_in_upstream():
             try:
                 sign_index = args.index('--sign')
                 # Remove '--sign' and the following argument
-                del args[sign_index:sign_index + 2]
+                del args[sign_index : sign_index + 2]
             except ValueError:
                 pass
         return args

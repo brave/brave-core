@@ -26,8 +26,11 @@ def list_generated_builders() -> list[str]:
     """Every builder with a generated `gn-args.json`, sorted by name."""
     if not gen_paths.BUILDERS_OUTPUT_DIR.is_dir():
         return []
-    return sorted(p.name for p in gen_paths.BUILDERS_OUTPUT_DIR.iterdir()
-                  if (p / 'gn-args.json').is_file())
+    return sorted(
+        p.name
+        for p in gen_paths.BUILDERS_OUTPUT_DIR.iterdir()
+        if (p / 'gn-args.json').is_file()
+    )
 
 
 class OutputGenerator:
@@ -46,21 +49,25 @@ class OutputGenerator:
         Raises:
             BotsError: this builder has no generated `gn-args.json`.
         """
-        path = (gen_paths.BUILDERS_OUTPUT_DIR / self.builder_name /
-                'gn-args.json')
+        path = (
+            gen_paths.BUILDERS_OUTPUT_DIR / self.builder_name / 'gn-args.json'
+        )
         if not path.is_file():
             available = list_generated_builders()
-            hint = (' available builders: %s.' %
-                    ', '.join(available) if available else '')
+            hint = (
+                ' available builders: %s.' % ', '.join(available)
+                if available
+                else ''
+            )
             raise BotsError(
                 'builder %r not found under %s; run `bots.py snapshot` '
-                'first, or check the name.%s' %
-                (self.builder_name, gen_paths.BUILDERS_OUTPUT_DIR, hint))
+                'first, or check the name.%s'
+                % (self.builder_name, gen_paths.BUILDERS_OUTPUT_DIR, hint)
+            )
         return json.loads(path.read_bytes().decode('utf-8'))
 
     def secrets_import_path(self) -> str:
-        """The `//`-prefixed GN label `render_args_gn()` imports secrets from.
-        """
+        """The `//`-prefixed GN label `render_args_gn()` imports secrets from."""
         return '//out/%s/secrets.gni' % self.builder_name
 
     def render_args_gn(self, resolved: dict) -> str:
@@ -74,8 +81,9 @@ class OutputGenerator:
         return '\n'.join(lines)
 
 
-def _error_with_available_builders(parser: argparse.ArgumentParser,
-                                   message: str) -> None:
+def _error_with_available_builders(
+    parser: argparse.ArgumentParser, message: str
+) -> None:
     """A `parser.error()` replacement that also lists generated builders.
 
     This is similar to what you would get with argparser errors, with the only
@@ -91,12 +99,14 @@ def _error_with_available_builders(parser: argparse.ArgumentParser,
     parser.exit(2)
 
 
-def add_builder_argument(subparser: argparse.ArgumentParser, *,
-                         help_text: str) -> None:
+def add_builder_argument(
+    subparser: argparse.ArgumentParser, *, help_text: str
+) -> None:
     """Adds the `builder` positional shared by every subcommand that reads
     one builder's generated output, wiring its usage errors to list the
     builders actually available under `generated/builders/`.
     """
     subparser.add_argument('builder', help=help_text)
-    subparser.error = functools.partial(_error_with_available_builders,
-                                        subparser)
+    subparser.error = functools.partial(
+        _error_with_available_builders, subparser
+    )

@@ -25,8 +25,9 @@ def main():
         '@APP_PRODUCT@': '',
         '@BRAND_CODE@': '',
         '@BUNDLE_ID@': args.bundle_identifier,
-        '@FRAMEWORK_DIR@': args.app_dir_name + '/' +
-        args.framework_dir_in_app_dir,
+        '@FRAMEWORK_DIR@': args.app_dir_name
+        + '/'
+        + args.framework_dir_in_app_dir,
         '@SHEBANG_GUARD@': '',
         'GoogleUpdater': 'BraveUpdater',
         'KSProductID': 'CFBundleIdentifier',
@@ -35,7 +36,7 @@ def main():
         'Contents/MacOS/ksadmin': '/Library/Application Support/BraveSoftware'
         '/BraveUpdater/Current/BraveUpdater.app/'
         'Contents/Helpers/BraveSoftwareUpdate.bundle/'
-        'Contents/Helpers/ksadmin'
+        'Contents/Helpers/ksadmin',
     }
     for key, value in replacements.items():
         script = script.replace(key, value)

@@ -7,7 +7,10 @@ import brave_chromium_utils
 import override_utils
 
 with brave_chromium_utils.sys_path('//brave/tools/perf'):
-    from components.cloud_storage import CloudFolder, DownloadFileFromCloudStorage
+    from components.cloud_storage import (
+        CloudFolder,
+        DownloadFileFromCloudStorage,
+    )
 
 
 @override_utils.override_function(globals())
@@ -22,8 +25,9 @@ def _RunCommand(original_func, args):
         hash = url.split('/')[3]
         if bucket == PARTNER_BUCKET or bucket == INTERNAL_BUCKET:
             assert hash is not None
-            return DownloadFileFromCloudStorage(CloudFolder.CATAPULT_PERF_DATA,
-                                                hash, local_filepath)
+            return DownloadFileFromCloudStorage(
+                CloudFolder.CATAPULT_PERF_DATA, hash, local_filepath
+            )
         else:
             return original_func(args)
 

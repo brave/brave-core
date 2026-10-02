@@ -93,8 +93,13 @@ def run_one(test):
         # package is currently linux-only, so we pin a version through npx here.
         proc = subprocess.run(
             [
-                'npx', '--yes', f'promptfoo@{PROMPTFOO_VERSION}', 'eval', '-c',
-                str(cfg), '--no-cache'
+                'npx',
+                '--yes',
+                f'promptfoo@{PROMPTFOO_VERSION}',
+                'eval',
+                '-c',
+                str(cfg),
+                '--no-cache',
             ],
             cwd=str(cfg.parent),
             env=env,
@@ -106,8 +111,9 @@ def run_one(test):
         # (>= threshold) or too many have failed to still reach it — stop early
         # to avoid burning tokens on runs that can't change the result.
         remaining = test.runs_per_test - (i + 1)
-        if passes >= test.pass_k_threshold or (passes + remaining
-                                               < test.pass_k_threshold):
+        if passes >= test.pass_k_threshold or (
+            passes + remaining < test.pass_k_threshold
+        ):
             break
     return passes
 
@@ -115,13 +121,16 @@ def run_one(test):
 def main():
     ap = argparse.ArgumentParser(
         description=__doc__,
-        formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument('--tag-filter',
-                    default='',
-                    help='Comma-separated tags; run only tests carrying one.')
-    ap.add_argument('--list',
-                    action='store_true',
-                    help='List discovered tests and exit.')
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    ap.add_argument(
+        '--tag-filter',
+        default='',
+        help='Comma-separated tags; run only tests carrying one.',
+    )
+    ap.add_argument(
+        '--list', action='store_true', help='List discovered tests and exit.'
+    )
     args = ap.parse_args()
 
     wanted = [t.strip() for t in args.tag_filter.split(',') if t.strip()]
@@ -135,9 +144,11 @@ def main():
 
     if args.list:
         for t in tests:
-            print(f'{t.src_relative_test_file}  '
-                  f'(runs={t.runs_per_test} pass_k={t.pass_k_threshold} '
-                  f'tags={t.tags})')
+            print(
+                f'{t.src_relative_test_file}  '
+                f'(runs={t.runs_per_test} pass_k={t.pass_k_threshold} '
+                f'tags={t.tags})'
+            )
         return 0
 
     # Make sure skills are discoverable before any provider run.
@@ -145,25 +156,32 @@ def main():
         subprocess.run(
             [sys.executable, str(_SETUP_PY), 'link', '-q'],
             cwd=str(_BRAVE_SRC),
-            check=False)
+            check=False,
+        )
 
     results = []
     for t in tests:
-        print(f'\n=== {t.src_relative_test_file} '
-              f'(pass {t.pass_k_threshold}/{t.runs_per_test}) ===')
+        print(
+            f'\n=== {t.src_relative_test_file} '
+            f'(pass {t.pass_k_threshold}/{t.runs_per_test}) ==='
+        )
         passes = run_one(t)
         ok = passes >= t.pass_k_threshold
         results.append((t, passes, ok))
-        print(f'  -> {passes}/{t.runs_per_test} passed '
-              f'({"PASS" if ok else "FAIL"})')
+        print(
+            f'  -> {passes}/{t.runs_per_test} passed '
+            f'({"PASS" if ok else "FAIL"})'
+        )
 
     print('\n' + '=' * 60)
     print('Eval summary')
     all_ok = True
     for t, passes, ok in results:
         all_ok = all_ok and ok
-        print(f'  [{"PASS" if ok else "FAIL"}] {t.src_relative_test_file} '
-              f'({passes}/{t.runs_per_test})')
+        print(
+            f'  [{"PASS" if ok else "FAIL"}] {t.src_relative_test_file} '
+            f'({passes}/{t.runs_per_test})'
+        )
     print('=' * 60)
     return 0 if all_ok else 1
 

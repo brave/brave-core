@@ -35,58 +35,74 @@ def mount_dmg(dmg_path, mount_point):
 
 def Main(argv):
     parser = optparse.OptionParser('%prog [options]')
-    parser.add_option('--binary-delta',
-                      dest='binary_delta_path',
-                      action='store',
-                      type='string',
-                      default=None,
-                      help='The path of BinaryDelta binary.')
-    parser.add_option('--root-out-dir',
-                      dest='root_out_dir_path',
-                      action='store',
-                      type='string',
-                      default=None,
-                      help='The path of root output dir.')
-    parser.add_option('--old-dmg',
-                      dest='old_dmg_path',
-                      action='store',
-                      type='string',
-                      default=None,
-                      help='The path of old dmg.')
-    parser.add_option('--new-dmg',
-                      dest='new_dmg_path',
-                      action='store',
-                      type='string',
-                      default=None,
-                      help='The path of new dmg.')
-    parser.add_option('--delta-output',
-                      dest='delta_output_path',
-                      action='store',
-                      type='string',
-                      default=None,
-                      help='The path of generated delta file.')
+    parser.add_option(
+        '--binary-delta',
+        dest='binary_delta_path',
+        action='store',
+        type='string',
+        default=None,
+        help='The path of BinaryDelta binary.',
+    )
+    parser.add_option(
+        '--root-out-dir',
+        dest='root_out_dir_path',
+        action='store',
+        type='string',
+        default=None,
+        help='The path of root output dir.',
+    )
+    parser.add_option(
+        '--old-dmg',
+        dest='old_dmg_path',
+        action='store',
+        type='string',
+        default=None,
+        help='The path of old dmg.',
+    )
+    parser.add_option(
+        '--new-dmg',
+        dest='new_dmg_path',
+        action='store',
+        type='string',
+        default=None,
+        help='The path of new dmg.',
+    )
+    parser.add_option(
+        '--delta-output',
+        dest='delta_output_path',
+        action='store',
+        type='string',
+        default=None,
+        help='The path of generated delta file.',
+    )
     (options, args) = parser.parse_args(argv)
 
     if len(args) > 0:
         print(parser.get_usage())
         return 1
 
-    old_dmg_mount_point = os.path.join(options.root_out_dir_path,
-                                       'old_dmg_mount_for_delta')
+    old_dmg_mount_point = os.path.join(
+        options.root_out_dir_path, 'old_dmg_mount_for_delta'
+    )
     mount_dmg(options.old_dmg_path, old_dmg_mount_point)
-    old_app_path, = glob.glob(os.path.join(old_dmg_mount_point, '*.app'))
+    (old_app_path,) = glob.glob(os.path.join(old_dmg_mount_point, '*.app'))
 
-    new_dmg_mount_point = os.path.join(options.root_out_dir_path,
-                                       'new_dmg_mount_for_delta')
+    new_dmg_mount_point = os.path.join(
+        options.root_out_dir_path, 'new_dmg_mount_for_delta'
+    )
     mount_dmg(options.new_dmg_path, new_dmg_mount_point)
-    new_app_path, = glob.glob(os.path.join(new_dmg_mount_point, '*.app'))
+    (new_app_path,) = glob.glob(os.path.join(new_dmg_mount_point, '*.app'))
 
     # generate delta file
-    print('-> generate delta file from ' + old_app_path + ' and ' +
-          new_app_path)
+    print(
+        '-> generate delta file from ' + old_app_path + ' and ' + new_app_path
+    )
     command = [
-        options.binary_delta_path, 'create', old_app_path, new_app_path,
-        options.delta_output_path
+        options.binary_delta_path,
+        'create',
+        old_app_path,
+        new_app_path,
+        options.delta_output_path,
     ]
     try:
         subprocess.check_call(command)

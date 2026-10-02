@@ -60,20 +60,20 @@ def make_config_toml(member):
     vendor_rel = vendor_rel.replace(os.sep, '/')
     return {
         'source': {
-            'crates-io': {
-                'replace-with': 'vendored-sources'
-            },
-            'vendored-sources': {
-                'directory': vendor_rel
-            }
+            'crates-io': {'replace-with': 'vendored-sources'},
+            'vendored-sources': {'directory': vendor_rel},
         }
     }
 
 
 with brave_chromium_utils.sys_path('//tools/rust'):
     import update_rust
-    CARGO = os.path.join(update_rust.RUST_TOOLCHAIN_OUT_DIR, 'bin',
-                         'cargo' + ('.exe' if sys.platform == 'win32' else ''))
+
+    CARGO = os.path.join(
+        update_rust.RUST_TOOLCHAIN_OUT_DIR,
+        'bin',
+        'cargo' + ('.exe' if sys.platform == 'win32' else ''),
+    )
 
 
 def main():
@@ -81,8 +81,7 @@ def main():
 
     members = toml.load('Cargo.toml')['workspace']['members']
 
-    preserve = ([f'{m}/.cargo/config.toml'
-                 for m in members] + PRESERVE_PATTERNS)
+    preserve = [f'{m}/.cargo/config.toml' for m in members] + PRESERVE_PATTERNS
     backed_up_files = back_up_files(preserve)
 
     shutil.rmtree('vendor', ignore_errors=True)

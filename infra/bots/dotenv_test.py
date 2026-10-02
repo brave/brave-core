@@ -17,33 +17,42 @@ import dotenv
 
 
 class ParseTest(unittest.TestCase):
-
     def test_plain_key_value_lines(self):
         self.assertEqual(
-            dotenv.parse('fake_secret_key=abc123\n'
-                         'other_fake_secret_key=def456\n'), {
-                             'fake_secret_key': 'abc123',
-                             'other_fake_secret_key': 'def456',
-                         })
+            dotenv.parse(
+                'fake_secret_key=abc123\nother_fake_secret_key=def456\n'
+            ),
+            {
+                'fake_secret_key': 'abc123',
+                'other_fake_secret_key': 'def456',
+            },
+        )
 
     def test_blank_lines_and_comments_are_skipped(self):
         self.assertEqual(
-            dotenv.parse('\n# a comment\nfake_secret_key=abc123\n'
-                         '\n'), {'fake_secret_key': 'abc123'})
+            dotenv.parse('\n# a comment\nfake_secret_key=abc123\n\n'),
+            {'fake_secret_key': 'abc123'},
+        )
 
     def test_surrounding_whitespace_is_stripped(self):
-        self.assertEqual(dotenv.parse('  fake_secret_key = abc123 \n'),
-                         {'fake_secret_key': 'abc123'})
+        self.assertEqual(
+            dotenv.parse('  fake_secret_key = abc123 \n'),
+            {'fake_secret_key': 'abc123'},
+        )
 
     def test_matching_quotes_are_stripped(self):
-        self.assertEqual(dotenv.parse('a="double"\nb=\'single\'\n'), {
-            'a': 'double',
-            'b': 'single',
-        })
+        self.assertEqual(
+            dotenv.parse('a="double"\nb=\'single\'\n'),
+            {
+                'a': 'double',
+                'b': 'single',
+            },
+        )
 
     def test_mismatched_quote_is_left_alone(self):
-        self.assertEqual(dotenv.parse('a="mismatched\'\n'),
-                         {'a': '"mismatched\''})
+        self.assertEqual(
+            dotenv.parse('a="mismatched\'\n'), {'a': '"mismatched\''}
+        )
 
     def test_line_without_equals_is_ignored(self):
         self.assertEqual(dotenv.parse('not-a-valid-line\na=b\n'), {'a': 'b'})
@@ -53,10 +62,10 @@ class ParseTest(unittest.TestCase):
 
 
 class ReadTest(unittest.TestCase):
-
     def test_missing_file_returns_empty(self):
         self.assertEqual(
-            dotenv.read(Path(tempfile.mkdtemp()) / 'does-not-exist'), {})
+            dotenv.read(Path(tempfile.mkdtemp()) / 'does-not-exist'), {}
+        )
 
     def test_reads_and_parses_existing_file(self):
         with tempfile.TemporaryDirectory() as tmp:

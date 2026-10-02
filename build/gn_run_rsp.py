@@ -31,6 +31,7 @@ def maybe_abspath(value):
 
     return os.pathsep.join(entries)
 
+
 def main():
     if len(sys.argv) < 2:
         print('Usage: python3 gn_run_rsp.py <file.rsp>', file=sys.stderr)
@@ -41,8 +42,9 @@ def main():
         with open(response_file, 'r', encoding='utf-8') as f:
             content = f.read()
     except IOError as e:
-        print(f'Error reading response file {response_file}: {e}',
-              file=sys.stderr)
+        print(
+            f'Error reading response file {response_file}: {e}', file=sys.stderr
+        )
         sys.exit(1)
 
     args = shlex.split(content)
@@ -60,7 +62,6 @@ def main():
         else:
             break
 
-
     # Ensure the command contains a path (absolute or relative)
     cmd = args[len(env_vars)]
     if os.path.basename(cmd) == cmd:
@@ -68,7 +69,7 @@ def main():
         sys.exit(1)
 
     # The rest of the arguments are passed directly to the executable.
-    args = args[len(env_vars):]
+    args = args[len(env_vars) :]
 
     # Always prepend PATH if set
     if env_vars.get('PATH') is not None:
@@ -83,8 +84,10 @@ def main():
             # Windows error codes such as 0xC0000005 and 0xC0000409 are much
             # easier to recognize and differentiate in hex. In order to print
             # them as unsigned hex we need to add 4 Gig to them.
-            print('%s failed with exit code 0x%08X' % (response_file, ret +
-                                                       (1 << 32)))
+            print(
+                '%s failed with exit code 0x%08X'
+                % (response_file, ret + (1 << 32))
+            )
         else:
             print('%s failed with exit code %d' % (response_file, ret))
     sys.exit(ret)

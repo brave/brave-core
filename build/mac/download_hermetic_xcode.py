@@ -30,10 +30,13 @@ from packaging.version import parse as parse_version
 
 sys.path.append(str(Path(__file__).resolve().parents[2] / 'tools' / 'cr'))
 from tarball_installer import (  # pylint: disable=wrong-import-position
-    TarballInstaller)
+    TarballInstaller,
+)
 
 # The hash sum for the archive expected to be downloaded.
-MAC_BINARIES_HASH = '0e1a4db4cb6fc9ca78cc71872ff57f837226f1004a7fbf6ce73a5cd89345c289'
+MAC_BINARIES_HASH = (
+    '0e1a4db4cb6fc9ca78cc71872ff57f837226f1004a7fbf6ce73a5cd89345c289'
+)
 
 # The exact size of the archive in bytes, checked on download.
 MAC_BINARIES_SIZE = 883762569
@@ -46,13 +49,15 @@ MAC_SDK_OFFICIAL_BUILD_VERSION = '25F70'
 # The bucket prefix the archive object name is appended to.
 XCODE_TOOLCHAIN_BUCKET = (
     'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws'
-    '/xcode-hermetic-toolchain/')
+    '/xcode-hermetic-toolchain/'
+)
 
 # The archive object name; also drives the sidecar file names TarballInstaller
 # writes into MAC_BINARIES_ROOT to record what is deployed.
 XCODE_TOOLCHAIN_OBJECT = (
     'xcode-hermetic-toolchain-'
-    f'{MAC_SDK_OFFICIAL_VERSION}-{MAC_SDK_OFFICIAL_BUILD_VERSION}.tar.gz')
+    f'{MAC_SDK_OFFICIAL_VERSION}-{MAC_SDK_OFFICIAL_BUILD_VERSION}.tar.gz'
+)
 
 XCODE_TOOLCHAIN_DOWNLOAD_URL = XCODE_TOOLCHAIN_BUCKET + XCODE_TOOLCHAIN_OBJECT
 
@@ -64,8 +69,12 @@ XCODE_TOOLCHAIN_DOWNLOAD_URL = XCODE_TOOLCHAIN_BUCKET + XCODE_TOOLCHAIN_OBJECT
 MAC_MINIMUM_OS_VERSION = [19, 4]
 
 # Destination for the hermetic Xcode binaries to be extracted at.
-MAC_BINARIES_ROOT = Path(
-    __file__).resolve().parents[3] / 'build' / 'mac_files' / 'xcode_binaries'
+MAC_BINARIES_ROOT = (
+    Path(__file__).resolve().parents[3]
+    / 'build'
+    / 'mac_files'
+    / 'xcode_binaries'
+)
 
 
 def _load_plist(path: Path) -> dict:
@@ -77,7 +86,7 @@ def _platform_meets_hermetic_xcode_requirements() -> bool:
     if sys.platform == 'darwin':
         needed = MAC_MINIMUM_OS_VERSION
         major_version = [
-            int(v) for v in platform.release().split('.')[:len(needed)]
+            int(v) for v in platform.release().split('.')[: len(needed)]
         ]
         return major_version >= needed
     return sys.platform.startswith('linux')
@@ -98,16 +107,20 @@ def _install_xcode_binaries() -> int:
     """Installs the Xcode binaries needed to build Brave and accepts the
     license."""
     installer = TarballInstaller.for_object(
-        MAC_BINARIES_ROOT, XCODE_TOOLCHAIN_BUCKET, {
+        MAC_BINARIES_ROOT,
+        XCODE_TOOLCHAIN_BUCKET,
+        {
             'object_name': XCODE_TOOLCHAIN_OBJECT,
             'sha256sum': MAC_BINARIES_HASH,
             'size_bytes': MAC_BINARIES_SIZE,
-        })
+        },
+    )
     try:
         installer.install()
     except URLError:
-        print('Failed to download hermetic Xcode: '
-              f'{XCODE_TOOLCHAIN_DOWNLOAD_URL}')
+        print(
+            f'Failed to download hermetic Xcode: {XCODE_TOOLCHAIN_DOWNLOAD_URL}'
+        )
         raise
 
     if sys.platform != 'darwin':
@@ -115,27 +128,32 @@ def _install_xcode_binaries() -> int:
 
     # Accept the license for this version of Xcode if it's newer than the
     # currently accepted version.
-    hermetic_xcode_version_plist_path = (MAC_BINARIES_ROOT /
-                                         'Contents/version.plist')
+    hermetic_xcode_version_plist_path = (
+        MAC_BINARIES_ROOT / 'Contents/version.plist'
+    )
     hermetic_xcode_version_plist = _load_plist(
-        hermetic_xcode_version_plist_path)
-    hermetic_xcode_version = (
-        hermetic_xcode_version_plist['CFBundleShortVersionString'])
+        hermetic_xcode_version_plist_path
+    )
+    hermetic_xcode_version = hermetic_xcode_version_plist[
+        'CFBundleShortVersionString'
+    ]
 
-    hermetic_xcode_license_path = (MAC_BINARIES_ROOT /
-                                   'Contents/Resources/LicenseInfo.plist')
+    hermetic_xcode_license_path = (
+        MAC_BINARIES_ROOT / 'Contents/Resources/LicenseInfo.plist'
+    )
     hermetic_xcode_license_plist = _load_plist(hermetic_xcode_license_path)
     hermetic_xcode_license_version = hermetic_xcode_license_plist['licenseID']
 
     should_overwrite_license = True
-    current_license_path = Path(
-        '/Library/Preferences/com.apple.dt.Xcode.plist')
+    current_license_path = Path('/Library/Preferences/com.apple.dt.Xcode.plist')
     if current_license_path.exists():
         current_license_plist = _load_plist(current_license_path)
         xcode_version = current_license_plist.get(
-            'IDEXcodeVersionForAgreedToGMLicense')
-        if (xcode_version is not None and parse_version(xcode_version)
-                >= parse_version(hermetic_xcode_version)):
+            'IDEXcodeVersionForAgreedToGMLicense'
+        )
+        if xcode_version is not None and parse_version(
+            xcode_version
+        ) >= parse_version(hermetic_xcode_version):
             should_overwrite_license = False
 
     if not should_overwrite_license:
@@ -145,8 +163,10 @@ def _install_xcode_binaries() -> int:
     license_accept_script = Path('/usr/local/bin/xcode_accept_license.py')
     if license_accept_script.exists():
         args = [
-            'sudo', license_accept_script, hermetic_xcode_version,
-            hermetic_xcode_license_version
+            'sudo',
+            license_accept_script,
+            hermetic_xcode_version,
+            hermetic_xcode_license_version,
         ]
         subprocess.check_call(args)
         return 0
@@ -155,13 +175,21 @@ def _install_xcode_binaries() -> int:
     print('Accepting new Xcode license. Requires sudo.')
     sys.stdout.flush()
     args = [
-        'sudo', 'defaults', 'write', current_license_path,
-        'IDEXcodeVersionForAgreedToGMLicense', hermetic_xcode_version
+        'sudo',
+        'defaults',
+        'write',
+        current_license_path,
+        'IDEXcodeVersionForAgreedToGMLicense',
+        hermetic_xcode_version,
     ]
     subprocess.check_call(args)
     args = [
-        'sudo', 'defaults', 'write', current_license_path,
-        'IDELastGMLicenseAgreedTo', hermetic_xcode_license_version
+        'sudo',
+        'defaults',
+        'write',
+        current_license_path,
+        'IDELastGMLicenseAgreedTo',
+        hermetic_xcode_license_version,
     ]
     subprocess.check_call(args)
     args = ['sudo', 'plutil', '-convert', 'xml1', current_license_path]

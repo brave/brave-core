@@ -3,5 +3,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# Exclude this directory from Python formatting.
-extend-exclude = ["**"]
+line-length = 80
+indent-width = 4
+extend-exclude = [
+  # Vendored third-party code.
+  "third_party/boringtun/vendor",
+  "third_party/rust",
+  "third_party/wasm/vendor",
+]
+
+[format]
+quote-style = "preserve"

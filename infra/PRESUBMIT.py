@@ -2,8 +2,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Presubmit script for changes affecting infra/
-"""
+"""Presubmit script for changes affecting infra/"""
 
 import os
 
@@ -11,8 +10,7 @@ PRESUBMIT_VERSION = '2.0.0'
 
 
 def CheckTests(input_api, output_api):
-    """Run every *_test.py file found under this directory.
-    """
+    """Run every *_test.py file found under this directory."""
     script_dir = input_api.PresubmitLocalPath()
     tests = []
     for root, dirs, files in os.walk(script_dir):
@@ -27,7 +25,8 @@ def CheckTests(input_api, output_api):
                     cmd=[test_path],
                     kwargs={'cwd': script_dir},
                     message=output_api.PresubmitError,
-                ))
+                )
+            )
     return input_api.RunTests(tests)
 
 
@@ -40,14 +39,21 @@ def CheckBotsSnapshotOutput(input_api, output_api):
     is no longer produced by anything - into a presubmit error.
     """
     bots_py = os.path.join(input_api.PresubmitLocalPath(), 'bots', 'bots.py')
-    return input_api.RunTests([
-        input_api.Command(
-            name='bots.py snapshot --check',
-            cmd=[input_api.python3_executable, bots_py, 'snapshot', '--check'],
-            kwargs={},
-            message=output_api.PresubmitError,
-        ),
-    ])
+    return input_api.RunTests(
+        [
+            input_api.Command(
+                name='bots.py snapshot --check',
+                cmd=[
+                    input_api.python3_executable,
+                    bots_py,
+                    'snapshot',
+                    '--check',
+                ],
+                kwargs={},
+                message=output_api.PresubmitError,
+            ),
+        ]
+    )
 
 
 def CheckBotsValidateOutput(input_api, output_api):
@@ -57,11 +63,13 @@ def CheckBotsValidateOutput(input_api, output_api):
     `bots.py validate` and turns a non-zero exit into a presubmit error.
     """
     bots_py = os.path.join(input_api.PresubmitLocalPath(), 'bots', 'bots.py')
-    return input_api.RunTests([
-        input_api.Command(
-            name='bots.py validate',
-            cmd=[input_api.python3_executable, bots_py, 'validate'],
-            kwargs={},
-            message=output_api.PresubmitError,
-        ),
-    ])
+    return input_api.RunTests(
+        [
+            input_api.Command(
+                name='bots.py validate',
+                cmd=[input_api.python3_executable, bots_py, 'validate'],
+                kwargs={},
+                message=output_api.PresubmitError,
+            ),
+        ]
+    )

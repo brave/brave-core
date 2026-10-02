@@ -30,8 +30,9 @@ def _AstDefinitionNamePred(brave_definition, ast_definition):
 
 # Predicate for definition name and type.
 def _AstDefinitionPred(brave_definition, ast_definition):
-    return _AstDefinitionNamePred(brave_definition, ast_definition) and \
-              isinstance(brave_definition, type(ast_definition))
+    return _AstDefinitionNamePred(
+        brave_definition, ast_definition
+    ) and isinstance(brave_definition, type(ast_definition))
 
 
 # Returns required action from a definition attributes list.
@@ -48,17 +49,19 @@ def _GetBraveDefinitionAction(brave_definition):
                 return _DEFINITION_EXTEND
 
     raise ValueError(
-        "Definition should have [BraveAdd] or [BraveExtend] attribute: %s" %
-        brave_definition.mojom_name)
+        "Definition should have [BraveAdd] or [BraveExtend] attribute: %s"
+        % brave_definition.mojom_name
+    )
 
 
 # Validates that a definition with same name doesn't exist in the list.
 def _CheckDefinitionDoesntExist(brave_definition, ast_items):
     if any(
-            _AstDefinitionNamePred(brave_definition, item)
-            for item in ast_items):
-        raise ValueError("Definition already exists: %s" %
-                         brave_definition.mojom_name)
+        _AstDefinitionNamePred(brave_definition, item) for item in ast_items
+    ):
+        raise ValueError(
+            "Definition already exists: %s" % brave_definition.mojom_name
+        )
 
 
 # Finds a definition by name and type.
@@ -89,8 +92,9 @@ def _ExtendAstDefinition(brave_definition, ast_definition):
         for item in reversed(items_to_append):
             ast_definition.body.Append(item)
     else:
-        raise ValueError("Unhandled definition: %s" %
-                         brave_definition.mojom_name)
+        raise ValueError(
+            "Unhandled definition: %s" % brave_definition.mojom_name
+        )
 
 
 # Adds or extends mojom ast definition.
@@ -104,14 +108,19 @@ def _ApplyBraveDefinition(brave_definition, ast_definitions):
             ast_definitions.insert(0, brave_definition)
     elif definition_action == _DEFINITION_EXTEND:
         ast_definition_to_extend = _FindMatchingDefinition(
-            brave_definition, ast_definitions)
+            brave_definition, ast_definitions
+        )
         if not ast_definition_to_extend:
-            raise ValueError("Trying to extend non-existent definition: %s" %
-                             brave_definition.mojom_name)
+            raise ValueError(
+                "Trying to extend non-existent definition: %s"
+                % brave_definition.mojom_name
+            )
         _ExtendAstDefinition(brave_definition, ast_definition_to_extend)
     else:
-        raise ValueError("Unknown definition action requested: %s" %
-                         brave_definition.mojom_name)
+        raise ValueError(
+            "Unknown definition action requested: %s"
+            % brave_definition.mojom_name
+        )
 
 
 # Applies changes to original mojom ast using brave ast.
@@ -122,13 +131,14 @@ def _ApplyBraveAstChanges(brave_ast, parsed_ast):
             f"Mojo module ids are not equal while trying to patch: "
             f"{brave_ast.module.mojom_namespace} vs "
             f"{parsed_ast.module.mojom_namespace}. "
-            "(Maybe missing an attribute?)")
+            "(Maybe missing an attribute?)"
+        )
 
     # Add new imports.
     for brave_import in brave_ast.import_list:
         if not any(
-                _AstImportPred(brave_import, imp)
-                for imp in parsed_ast.import_list):
+            _AstImportPred(brave_import, imp) for imp in parsed_ast.import_list
+        ):
             parsed_ast.import_list.Append(brave_import)
 
     # Add/extend mojo definitions and keep the type dependency order valid.
@@ -157,21 +167,24 @@ def _PatchInBraveMojomAst(mojom_abspath, parsed_ast, enabled_features):
 
     # Get the original chromium dir location.
     chromium_original_dir = os.path.abspath(
-        os.path.join(this_py_path, *[os.pardir] * 5))
+        os.path.join(this_py_path, *[os.pardir] * 5)
+    )
 
     if len(chromium_original_dir) >= len(mojom_abspath) + 1:
         raise RuntimeError("Could not get original chromium src dir")
 
     # Build brave/chromium_src path.
-    chromium_src_abspath = os.path.join(chromium_original_dir, 'brave',
-                                        'chromium_src')
+    chromium_src_abspath = os.path.join(
+        chromium_original_dir, 'brave', 'chromium_src'
+    )
     if not os.path.isdir(chromium_src_abspath):
         raise RuntimeError(
-            "Could not find brave/chromium_src. %s is not a dir" %
-            chromium_src_abspath)
+            "Could not find brave/chromium_src. %s is not a dir"
+            % chromium_src_abspath
+        )
 
     # Relative path.
-    mojom_relpath = mojom_abspath[len(chromium_original_dir) + 1:]
+    mojom_relpath = mojom_abspath[len(chromium_original_dir) + 1 :]
 
     # Build possible brave/chromium_src/**/*.mojom path.
     brave_mojom_abspath = os.path.join(chromium_src_abspath, mojom_relpath)
@@ -182,8 +195,9 @@ def _PatchInBraveMojomAst(mojom_abspath, parsed_ast, enabled_features):
     # Open and parse brave/chromium_src/**/*.mojom file.
     with codecs.open(brave_mojom_abspath, encoding='utf-8') as f:
         brave_ast = parser.Parse(f.read(), brave_mojom_abspath)
-        conditional_features.RemoveDisabledDefinitions(brave_ast,
-                                                       enabled_features)
+        conditional_features.RemoveDisabledDefinitions(
+            brave_ast, enabled_features
+        )
 
         _ApplyBraveAstChanges(brave_ast, parsed_ast)
 
@@ -196,8 +210,8 @@ orig_parse_ast_helper = _ParseAstHelper
 
 
 def _ParseAstHelper(mojom_abspath, mojom_path, enabled_features):
-    mojom_abspath, parsed_ast = orig_parse_ast_helper(mojom_abspath,
-                                                      mojom_path,
-                                                      enabled_features)
+    mojom_abspath, parsed_ast = orig_parse_ast_helper(
+        mojom_abspath, mojom_path, enabled_features
+    )
     _PatchInBraveMojomAst(mojom_abspath, parsed_ast, enabled_features)
     return mojom_abspath, parsed_ast

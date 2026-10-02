@@ -27,7 +27,8 @@ def hardlink_brave_sources(sources):
     src_dir = brave_chromium_utils.get_src_dir()
     for source in sources:
         brave_source = brave_chromium_utils.wspath(
-            f'//brave/{os.path.relpath(source, src_dir)}')
+            f'//brave/{os.path.relpath(source, src_dir)}'
+        )
         if os.path.exists(brave_source):
             # Unconditionally, so that a leftover copy from a previous
             # mechanism doesn't shadow the real file.
@@ -66,7 +67,8 @@ def sources_to_compile(command_args):
         return tsconfig_sources(command_args[command_args.index('-p') + 1])
 
     return [
-        os.path.abspath(arg) for arg in command_args
+        os.path.abspath(arg)
+        for arg in command_args
         if arg.endswith('.ts') and not arg.endswith('.d.ts')
     ]
 
@@ -75,7 +77,7 @@ def sources_to_compile(command_args):
 def main(original_function):
     args = expand_response_files(sys.argv[1:])
     if '--' in args:
-        sources = sources_to_compile(args[args.index('--') + 1:])
+        sources = sources_to_compile(args[args.index('--') + 1 :])
         # Brave sources first: the chromium_src lookup needs them in place.
         hardlink_brave_sources(sources)
         hardlink_chromium_src_overrides(sources)

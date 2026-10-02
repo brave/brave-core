@@ -18,11 +18,13 @@ def ReplaceGitHubSshWithHttps(value):
 
 
 def IsGitIgnored(local_file_dir, local_filename):
-    ignore_info = RunCommand(GIT_BAT,
-                             'check-ignore',
-                             local_filename,
-                             cwd=local_file_dir,
-                             raise_on_failure=False)
+    ignore_info = RunCommand(
+        GIT_BAT,
+        'check-ignore',
+        local_filename,
+        cwd=local_file_dir,
+        raise_on_failure=False,
+    )
     return bool(ignore_info)
 
 
@@ -62,15 +64,17 @@ def DirectoryIsPartOfPublicGitRepository(orig_func, local_dir):
 
 
 @override_utils.override_function(globals())
-def IndexFilesFromRepo(orig_func, local_filename, file_list, output_lines,
-                       follow_junctions):
+def IndexFilesFromRepo(
+    orig_func, local_filename, file_list, output_lines, follow_junctions
+):
     # Replace 'python3' executalbe with 'py -3', because it's installed with the
     # official Python3 installer. 'python3' is not used on Windows.
     python3_line_idx = 8
     python3_replacement = ('python3 -c', 'py -3 -c')
     if python3_replacement[0] in output_lines[python3_line_idx]:
         output_lines[python3_line_idx] = output_lines[python3_line_idx].replace(
-            *python3_replacement)
+            *python3_replacement
+        )
     else:
         # This function is called multiple times with the same `output_lines`
         # list, so on subsequent calls the replacement should already be in

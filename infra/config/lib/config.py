@@ -87,9 +87,9 @@ class FrozenDict(collections.abc.Mapping[K, V]):
         self._d = dict(*args, **kwargs)
         # Computed eagerly so that constructing a FrozenDict of unhashable
         # values fails immediately, at the point of freezing, not on first use.
-        self._hash = functools.reduce(operator.xor,
-                                      (hash(i)
-                                       for i in enumerate(self._d.items())), 0)
+        self._hash = functools.reduce(
+            operator.xor, (hash(i) for i in enumerate(self._d.items())), 0
+        )
 
     def __iter__(self) -> Iterator[K]:
         return iter(self._d)
@@ -104,7 +104,7 @@ class FrozenDict(collections.abc.Mapping[K, V]):
         return self._hash
 
     def __repr__(self) -> str:
-        return 'FrozenDict(%r)' % (list(self._d.items()), )
+        return 'FrozenDict(%r)' % (list(self._d.items()),)
 
 
 class ConfigError(Exception):
@@ -119,8 +119,14 @@ class AnonymousGnConfig:
     for reuse.
     """
 
-    def __init__(self, *, args: Mapping[str, Any], configs: Sequence[str],
-                 args_file: str, secrets: Mapping[str, str]) -> None:
+    def __init__(
+        self,
+        *,
+        args: Mapping[str, Any],
+        configs: Sequence[str],
+        args_file: str,
+        secrets: Mapping[str, str],
+    ) -> None:
         # GN arg key-value pairs this config contributes directly.
         self.gn_args = freeze(args)
 
@@ -135,17 +141,25 @@ class AnonymousGnConfig:
         self.secrets = freeze(secrets)
 
     def __repr__(self) -> str:
-        return ('AnonymousGnConfig(gn_args=%r, configs=%r, args_file=%r, '
-                'secrets=%r)' %
-                (self.gn_args, self.configs, self.args_file, self.secrets))
+        return (
+            'AnonymousGnConfig(gn_args=%r, configs=%r, args_file=%r, '
+            'secrets=%r)'
+            % (self.gn_args, self.configs, self.args_file, self.secrets)
+        )
 
 
 class _GnConfigNode:
     """One registered, named node in the GN-args include graph."""
 
-    def __init__(self, name: str, *, args: Mapping[str, Any],
-                 configs: Sequence[str], args_file: str,
-                 secrets: Mapping[str, str]) -> None:
+    def __init__(
+        self,
+        name: str,
+        *,
+        args: Mapping[str, Any],
+        configs: Sequence[str],
+        args_file: str,
+        secrets: Mapping[str, str],
+    ) -> None:
         # The name it was registered under.
         self.name = name
 
@@ -163,8 +177,14 @@ class _GnConfigNode:
         self.secrets = freeze(secrets)
 
 
-def _merge_into(dst: dict, *, args_file: str, args: Mapping[str, Any],
-                secrets: Mapping[str, str], config_name: str) -> None:
+def _merge_into(
+    dst: dict,
+    *,
+    args_file: str,
+    args: Mapping[str, Any],
+    secrets: Mapping[str, str],
+    config_name: str,
+) -> None:
     """Merges one node's contribution into a resolution-in-progress `dst`.
 
     `dst`'s existing entries lose to `args`/`secrets` on key conflicts, which
@@ -176,8 +196,9 @@ def _merge_into(dst: dict, *, args_file: str, args: Mapping[str, Any],
         if dst['args_file']:
             raise ConfigError(
                 'gn_args config %r: each GN config can only contain a '
-                'single args_file (already have %r, got %r)' %
-                (config_name, dst['args_file'], args_file))
+                'single args_file (already have %r, got %r)'
+                % (config_name, dst['args_file'], args_file)
+            )
         dst['args_file'] = args_file
     dst['gn_args'].update(args)
     dst['secrets'].update(secrets)
@@ -199,13 +220,13 @@ class GnArgsRegistry:
         self._resolved: dict[str, dict] = {}
 
     def config(
-            self,
-            *,
-            name: str | None = None,
-            args: Mapping[str, Any] | None = None,
-            configs: Sequence[str] | None = None,
-            args_file: str = '',
-            secrets: Mapping[str, str] | None = None
+        self,
+        *,
+        name: str | None = None,
+        args: Mapping[str, Any] | None = None,
+        configs: Sequence[str] | None = None,
+        args_file: str = '',
+        secrets: Mapping[str, str] | None = None,
     ) -> None | AnonymousGnConfig:
         """Defines a GN config, or returns one inline.
 
@@ -232,19 +253,19 @@ class GnArgsRegistry:
 
         if name:
             if name in self._nodes:
-                raise ConfigError('gn_args config %r is already defined' %
-                                  name)
-            self._nodes[name] = _GnConfigNode(name,
-                                              args=args,
-                                              configs=configs,
-                                              args_file=args_file,
-                                              secrets=secrets)
+                raise ConfigError('gn_args config %r is already defined' % name)
+            self._nodes[name] = _GnConfigNode(
+                name,
+                args=args,
+                configs=configs,
+                args_file=args_file,
+                secrets=secrets,
+            )
             return None
 
-        return AnonymousGnConfig(args=args,
-                                 configs=configs,
-                                 args_file=args_file,
-                                 secrets=secrets)
+        return AnonymousGnConfig(
+            args=args, configs=configs, args_file=args_file, secrets=secrets
+        )
 
     def resolve(self, name: str) -> dict:
         """Resolves the named config's GN args, secrets and args_file.
@@ -280,14 +301,17 @@ class GnArgsRegistry:
             result['secrets'] = dict(resolved['secrets'])
         return result
 
-    def _resolve_node(self, node: _GnConfigNode, stack: tuple[str,
-                                                              ...]) -> dict:
+    def _resolve_node(
+        self, node: _GnConfigNode, stack: tuple[str, ...]
+    ) -> dict:
         if node.name in self._resolved:
             return self._resolved[node.name]
         if node.name in stack:
-            raise ConfigError('gn_args config cycle: %s -> %s' %
-                              (' -> '.join(stack), node.name))
-        stack = stack + (node.name, )
+            raise ConfigError(
+                'gn_args config cycle: %s -> %s'
+                % (' -> '.join(stack), node.name)
+            )
+        stack = stack + (node.name,)
 
         merged = {'args_file': '', 'gn_args': {}, 'secrets': {}}
 
@@ -299,21 +323,26 @@ class GnArgsRegistry:
                 child = self._nodes[child_name]
             except KeyError as e:
                 raise ConfigError(
-                    'gn_args config %r includes undefined config %r' %
-                    (node.name, child_name)) from e
+                    'gn_args config %r includes undefined config %r'
+                    % (node.name, child_name)
+                ) from e
             child_resolved = self._resolve_node(child, stack)
-            _merge_into(merged,
-                        args_file=child_resolved['args_file'],
-                        args=child_resolved['gn_args'],
-                        secrets=child_resolved['secrets'],
-                        config_name=node.name)
+            _merge_into(
+                merged,
+                args_file=child_resolved['args_file'],
+                args=child_resolved['gn_args'],
+                secrets=child_resolved['secrets'],
+                config_name=node.name,
+            )
 
         # Merge the node's own values last, so they win over anything included.
-        _merge_into(merged,
-                    args_file=node.args_file,
-                    args=node.gn_args,
-                    secrets=node.secrets,
-                    config_name=node.name)
+        _merge_into(
+            merged,
+            args_file=node.args_file,
+            args=node.gn_args,
+            secrets=node.secrets,
+            config_name=node.name,
+        )
 
         self._resolved[node.name] = merged
         return merged
@@ -328,8 +357,7 @@ _UNSET = object()
 
 
 class Defaults:
-    """A settable group of module-level defaults for `builder()`.
-    """
+    """A settable group of module-level defaults for `builder()`."""
 
     def __init__(self, **defaults: Any) -> None:
         self._values = dict(defaults)
@@ -352,8 +380,9 @@ class SyncConfig:
     """What a builder needs to reach a synced tree: target platform plus
     whatever gclient overrides `init`/`sync` should apply."""
 
-    def __init__(self, *, target_os: str, target_cpu: str,
-                 **gclient_overrides: Any) -> None:
+    def __init__(
+        self, *, target_os: str, target_cpu: str, **gclient_overrides: Any
+    ) -> None:
         # GN's target_os, and what `init`/`sync` sync a checkout for.
         self.target_os = target_os
 
@@ -369,10 +398,11 @@ class Targets:
     """What a builder compiles and runs."""
 
     def __init__(
-            self,
-            *,
-            compile: Sequence[str],  # pylint: disable=redefined-builtin
-            tests: Sequence[str]) -> None:
+        self,
+        *,
+        compile: Sequence[str],  # pylint: disable=redefined-builtin
+        tests: Sequence[str],
+    ) -> None:
         # GN target labels to compile, e.g. "brave:all".
         self.compile = tuple(compile)
 
@@ -388,10 +418,17 @@ class Builder:
     the one way to read them back, same as for any other config.
     """
 
-    def __init__(self, *, name: str, builder_group: str | None,
-                 execution_timeout_mins: int | None, channel: str | None,
-                 notifies: Sequence[str], sync_config: SyncConfig,
-                 targets: Targets) -> None:
+    def __init__(
+        self,
+        *,
+        name: str,
+        builder_group: str | None,
+        execution_timeout_mins: int | None,
+        channel: str | None,
+        notifies: Sequence[str],
+        sync_config: SyncConfig,
+        targets: Targets,
+    ) -> None:
         # The name it was registered under; also its `gn_args` node name.
         self.name = name
 
@@ -451,40 +488,46 @@ class BuildersRegistry:
         if isinstance(value, str):
             self._gn_args.config(name=builder_name, configs=[value])
         elif isinstance(value, AnonymousGnConfig):
-            self._gn_args.config(name=builder_name,
-                                 configs=list(value.configs),
-                                 args=dict(value.gn_args),
-                                 args_file=value.args_file,
-                                 secrets=dict(value.secrets))
+            self._gn_args.config(
+                name=builder_name,
+                configs=list(value.configs),
+                args=dict(value.gn_args),
+                args_file=value.args_file,
+                secrets=dict(value.secrets),
+            )
         else:
             raise ConfigError(
                 'builder %r: gn_args must be a config name or an anonymous '
-                'gn_args.config(), got %r' % (builder_name, value))
+                'gn_args.config(), got %r' % (builder_name, value)
+            )
 
-    def sync_config(self, *, target_os: str, target_cpu: str,
-                    **gclient_overrides: Any) -> SyncConfig:
-        return SyncConfig(target_os=target_os,
-                          target_cpu=target_cpu,
-                          **gclient_overrides)
+    def sync_config(
+        self, *, target_os: str, target_cpu: str, **gclient_overrides: Any
+    ) -> SyncConfig:
+        return SyncConfig(
+            target_os=target_os, target_cpu=target_cpu, **gclient_overrides
+        )
 
     def targets(
-            self,
-            *,
-            compile: Sequence[str],  # pylint: disable=redefined-builtin
-            tests: Sequence[str]) -> Targets:
+        self,
+        *,
+        compile: Sequence[str],  # pylint: disable=redefined-builtin
+        tests: Sequence[str],
+    ) -> Targets:
         return Targets(compile=compile, tests=tests)
 
     def builder(
-            self,
-            *,
-            name: str,
-            sync_config: SyncConfig,
-            gn_args: Any,  # pylint: disable=redefined-outer-name
-            targets: Targets,
-            builder_group: str | None = _UNSET,
-            execution_timeout_mins: int | None = _UNSET,
-            channel: str | None = _UNSET,
-            notifies: Sequence[str] = _UNSET) -> Builder:
+        self,
+        *,
+        name: str,
+        sync_config: SyncConfig,
+        gn_args: Any,  # pylint: disable=redefined-outer-name
+        targets: Targets,
+        builder_group: str | None = _UNSET,
+        execution_timeout_mins: int | None = _UNSET,
+        channel: str | None = _UNSET,
+        notifies: Sequence[str] = _UNSET,
+    ) -> Builder:
         """Defines a builder.
 
         Args:
@@ -508,8 +551,9 @@ class BuildersRegistry:
         builder = Builder(
             name=name,
             builder_group=self.defaults.get('builder_group', builder_group),
-            execution_timeout_mins=self.defaults.get('execution_timeout_mins',
-                                                     execution_timeout_mins),
+            execution_timeout_mins=self.defaults.get(
+                'execution_timeout_mins', execution_timeout_mins
+            ),
             channel=self.defaults.get('channel', channel),
             notifies=self.defaults.get('notifies', notifies),
             sync_config=sync_config,
