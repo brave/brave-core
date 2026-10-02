@@ -121,8 +121,6 @@ TOOLCHAINS = {
                 'https://ci.brave.com/view/toolchains/job/'
                 'brave-browser-rust-toolchain-aux-build-macos-arm64/',
                 'https://ci.brave.com/view/toolchains/job/'
-                'brave-browser-rust-toolchain-aux-build-macos-x64/',
-                'https://ci.brave.com/view/toolchains/job/'
                 'brave-browser-rust-toolchain-aux-build-windows-x64/',
             ),
             'properties': ('brave_subrevision', 'chromium_ref'),
