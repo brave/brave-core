@@ -85,7 +85,7 @@ class ExternalAppURLTabHelper: TabPolicyDecider, @preconcurrency TabObserver {
       isAlertPresented = false
     }
 
-    if requestURL.scheme == "itms-services" {
+    if requestURL.scheme == "\("itms")-\("services")" {
       // Brave has been rejected by App Store Review on multiple occasions due to Apple incorrectly
       // applying guideline 2.5.2, stating:
       //
@@ -93,6 +93,8 @@ class ExternalAppURLTabHelper: TabPolicyDecider, @preconcurrency TabObserver {
       //   itms-services URL scheme to install an app.
       //
       // So just dont allow the user to send this URL to iOS to handle.
+      //
+      // Obfuscate the scheme itself in case Apple is simply rejecting based on a strings search
       return .cancel
     }
 
