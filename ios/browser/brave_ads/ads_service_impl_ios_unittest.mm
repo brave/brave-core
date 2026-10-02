@@ -382,7 +382,7 @@ TEST_F(BraveAdsServiceImplIOSTest, GetDiagnosticsForwardsToAdsWhenInitialized) {
 TEST_F(BraveAdsServiceImplIOSTest,
        EvaluateConditionMatcherReturnsUnknownWhenNotInitialized) {
   // Arrange
-  base::test::TestFuture<std::string, std::string> test_future;
+  base::test::TestFuture<const std::string&, const std::string&> test_future;
 
   // Act
   ads_service_->EvaluateConditionMatcher("pref_path", "condition",
@@ -399,7 +399,7 @@ TEST_F(BraveAdsServiceImplIOSTest,
        EvaluateConditionMatcherForwardsToAdsWhenInitialized) {
   // Arrange
   ASSERT_TRUE(InitializeAdsSuccessfully());
-  base::test::TestFuture<std::string, std::string> test_future;
+  base::test::TestFuture<const std::string&, const std::string&> test_future;
 
   // Act & Assert
   EXPECT_CALL(GetAds(),
