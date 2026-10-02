@@ -9,3 +9,9 @@
 # fork, see chromium_src/chrome/updater/branding.gni. Brave's equivalent is
 # BraveLegacyCOMClassesTest.CheckLegacyInterfaceIDs in brave_updater_unittests.
 -LegacyCOMClassesTest.CheckLegacyInterfaceIDs
+
+# These tests install a previously released updater, which we don't have yet.
+# See GetRealUpdaterLowerVersions() in
+# chromium_src/chrome/updater/test/integration_tests_win.cc.
+-IntegrationTestDeviceManagement.QualifyUpdaterWhenNextCheckDelayIsZero
+-IntegrationTestDeviceManagement.QualifyUpdaterWhenUpdateDisabled
