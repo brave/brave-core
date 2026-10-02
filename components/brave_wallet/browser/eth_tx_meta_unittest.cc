@@ -63,12 +63,9 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
   EXPECT_EQ(ti->tx_data_union->get_eth_tx_data_1559()->max_priority_fee_per_gas,
             "");
   EXPECT_EQ(ti->tx_data_union->get_eth_tx_data_1559()->max_fee_per_gas, "");
-  EXPECT_EQ(meta.created_time().InMillisecondsSinceUnixEpoch(),
-            ti->created_time.InMilliseconds());
-  EXPECT_EQ(meta.submitted_time().InMillisecondsSinceUnixEpoch(),
-            ti->submitted_time.InMilliseconds());
-  EXPECT_EQ(meta.confirmed_time().InMillisecondsSinceUnixEpoch(),
-            ti->confirmed_time.InMilliseconds());
+  EXPECT_EQ(meta.created_time(), ti->created_time);
+  EXPECT_EQ(meta.submitted_time(), ti->submitted_time);
+  EXPECT_EQ(meta.confirmed_time(), ti->confirmed_time);
 
   // type 1
   std::unique_ptr<Eip2930Transaction> tx1 =

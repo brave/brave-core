@@ -11,13 +11,6 @@ import { AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts'
 // Types
 import type { TokenPriceHistory } from '../../constants/types'
 
-// Utils
-import { mojoTimeDeltaToJSDate } from '../../../common/mojomUtils'
-import {
-  deserializeTimeDelta,
-  makeSerializableTimeDelta,
-} from '../../utils/model-serialization-utils'
-
 // Components
 import { CustomTooltip } from './custom_tooltip'
 import { CustomReferenceDot } from './custom_reference_dot'
@@ -40,23 +33,17 @@ interface Props {
   hidePortfolioBalances: boolean
 }
 
-const EmptyChartData = [
+const EmptyChartData: TokenPriceHistory[] = [
   {
-    date: makeSerializableTimeDelta({
-      microseconds: 1,
-    }),
+    date: 1,
     close: 1,
   },
   {
-    date: makeSerializableTimeDelta({
-      microseconds: 2,
-    }),
+    date: 2,
     close: 1,
   },
   {
-    date: makeSerializableTimeDelta({
-      microseconds: 3,
-    }),
+    date: 3,
     close: 1,
   },
 ]
@@ -105,7 +92,7 @@ export function LineChart({
         : priceData
 
     return priceHistory.map((price) => ({
-      date: mojoTimeDeltaToJSDate(deserializeTimeDelta(price.date)),
+      date: new Date(price.date),
       close: price.close,
     }))
   }, [priceData, isDisabled])

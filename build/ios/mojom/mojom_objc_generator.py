@@ -63,6 +63,22 @@ class TimeMojoTypemap(MojoTypemap):
     def CppToObjC(self, accessor):
         return "%s.ToNSDate()" % accessor
 
+class JSTimeMojoTypemap(MojoTypemap):
+    @staticmethod
+    def IsMojoType(kind):
+        return (mojom.IsStructKind(kind) and
+                kind.qualified_name == 'mojo_base.mojom.JSTime')
+    def ObjCWrappedType(self):
+        return "NSDate*"
+    def ExpectedCppType(self):
+        return "base::Time"
+    def DefaultObjCValue(self, default):
+        return "[[NSDate alloc] init]"
+    def ObjCToCpp(self, accessor):
+        return "base::Time::FromNSDate(%s)" % accessor
+    def CppToObjC(self, accessor):
+        return "%s.ToNSDate()" % accessor
+
 class TimeDeltaMojoTypemap(MojoTypemap):
     @staticmethod
     def IsMojoType(kind):
@@ -411,6 +427,7 @@ class UnionMojoTypemap(MojoTypemap):
 _mojo_typemaps = [
     StringMojoTypemap,
     TimeMojoTypemap,
+    JSTimeMojoTypemap,
     TimeDeltaMojoTypemap,
     URLMojoTypemap,
     OriginMojoTypemap,
