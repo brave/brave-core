@@ -7,6 +7,9 @@
 /* The name of the feature */
 "widgets.braveLeo" = "IA Leo";
 
+/* Title for the Leo AI voice input shortcut. Leo is the name of a product and should not be translated */
+"widgets.braveLeoVoiceInput" = "Entrada de veu de Leo";
+
 /* The name of the feature */
 "widgets.braveNews" = "Notícies de Brave";
 
@@ -15,9 +18,6 @@
 
 /* Description for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetDescription" = "Accedeix ràpidament als teus llocs web preferits.";
-
-/* Title for favorites widget on 'add widget' screen. */
-"widgets.favoritesWidgetTitle" = "Preferits";
 
 /* Title for history menu item */
 "widgets.HistoryMenuItem" = "Historial";

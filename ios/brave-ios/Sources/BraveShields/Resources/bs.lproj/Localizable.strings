@@ -1,14 +1,326 @@
+/* The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "O značajci Brave Shields";
+
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "Na mrežnim se mjestima obično nalaze kolačići i skripte kojima se pokušavate identificirati vi i vaš uređaj. Njima se želi doznati tko ste i pratiti što radite na svakom mrežnom mjestu.\n\nU pregledniku Brave blokiraju se navedene stavke kako biste mogli pregledavati mrežu bez praćenja.";
+
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Dodaj dodatne popise koje stvara i održava pouzdana zajednica.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Pretplatite se samo na pouzdane popise subjekata**. Vašim preglednikom povremeno se provjeravaju ažuriranja popisa s upisanog URL-a.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "Dodavanje filtra URL-om";
+
 /* Shields Ads Stat */
 "AdsAndTrackersrBlocked" = "Blokirani elementi za praćenje i oglasi";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "Oglasi \nBlokirani";
 
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "**Reproduktor Brave** vaša je ulaznica za iskustvo prikazivanja videozapisa bez oglasa i prekida.";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "Namjesti štitove za mene";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "Ovim su se mrežnim mjestom počeli blokirati neki programi za blokiranje oglasa, a to znači da mrežno mjesto možda neće raditi prema očekivanome.";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "Kako bi se riješio problem, preglednikom Brave mogu se namjestiti postavke štitova umjesto vas. Nakon namještanja možete pokušati gledati sadržaj u Reproduktoru Brave.";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "Zadrži trenutačne postavke";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "Namještanje postavki blokiranja oglasa za ovo mrežno mjesto";
+
+/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
+"AutoRedirectAMPPages" = "Automatsko preusmjeravanje stranica AMP";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
+"AutoRedirectAMPPagesDescription" = "Uvijek posjetite izvorne URL-ove stranice (ne AMP-ove) umjesto Googleovih inačica ubrzanih stranica za mobilne uređaje";
+
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "Automatsko preusmjeravanje URL-ova za praćenje";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "Omogućite podršku za zaobilaženje preusmjeravanja URL-ova za praćenje najviše razine";
+
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Automatsko uništavanje";
+
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "Automatski uništi podatke pregledanja";
+
+/* Text for a button in a blocked page or a page not secure info screen that takes you back where you came from or back to home screen */
+"BackToSafetyButtonTitle" = "Natrag u sigurnost";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "Agresivno";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "Sprječava se učitavanje oglasa, skočnih prozora i elemenata za praćenje.";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "Onemogućeno";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "Standardno";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Blokiraj obavijesti „Prebaci se na aplikaciju”";
+
+/* No comment provided by engineer. */
+"BlockScripts" = "Blokiraj skripte";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "Blokira jezik JavaScript (mogu se rušiti mrežna mjesta).";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Reproduktor Brave";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "Uvijek otvarajte videozapise s ovog mrežnog mjesta Reproduktorom Brave";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "Isprobaj";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "Ne sada";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Uz Reproduktor Brave možete gledati videozapise bez prekida.";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "Umjesto toga gledajte u Reproduktoru Brave";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "Napredne kontrole";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "Blokirani oglasi i druge čudne stavke";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Saznaj više";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "Promijeni globalne zadane postavke Štitova";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "Globalni upravljački elementi";
+
+/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfo" = "Spremi kontaktne podatke za buduće izvještaje o neispravnim stranicama";
+
+/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfoDescription" = "Ostavite li kontaktne podatke oni će se spremiti za buduće prijave";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "Ako se čini da je mrežno mjesto neispravno, pokušajte isključiti štitove";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Štitnici Brave";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "Dolje";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "Podignuti";
+
+/* The accessibility hint spoken when focused on the main shields toggle */
+"BraveShieldsToggleHint" = "Dvaput dodirnite za uključivanje/isključivanje Štitova Brave";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Filtriranje sadržaja";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Omogućite prilagođene filtre kojima se blokiraju sustavi za praćenje prema regiji i jeziku, kao i smetnje.";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Popis prilagođenih filtara";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "URL popisa prilagođenog filtra";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "Prilagođeni filtri";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "Ovdje dodajte prilagođene filtre. Upotrijebite sintaksu filtra Adblock.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "Nevaljano pravilo „%1$@” u %2$i. retku";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "Dodaj prilagođene filtre";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "Prilagođeni filtri ne podržavaju više od %i r.";
+
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Procij. smanj. br. \npod.";
 
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Zadani popisi filtara";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "Budući da ste zahtijevali strogo blokiranje sustava za praćenje i oglasa, preglednik Brave blokira to mrežno mjesto prije prvog povezivanja na mrežu.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Preglednikom Brave spriječilo se učitavanje sljedećeg mrežnog mjesta:";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "Ovo mrežno mjesto može vas pratiti na drugim mrežnim mjestima";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "Nastavi";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "Blokirana domena";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "Uredi prilagođene filtre";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "Zatražite da internetske stranice ne prodaju ili dijele vaše podatke. [Doznajte više](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "Omogući globalnu kontrolu privatnosti";
+
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Proc. ušt. \nvremena";
+
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "Popisi vanjskih filtara";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "Upisani URL nevaljan je";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Samo sigurni (https) URL-ovi dopušteni su za popise prilagođenog filtra";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Dodaj";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Dodatni popisi popularnih zajednica. Imajte na umu da omogućavanje previše filtra smanjuje brzine pregledavanja.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Preuzimanje nije uspjelo";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Preuzimanje na čekanju";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Uredi";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Dodaj URL popisa filtra";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Posljednje ažuriranje: %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Ovdje upišite URL popisa filtra";
+
+/* No comment provided by engineer. */
+"FingerprintingProtection" = "Blokiraj izrade digitalnog otiska";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "Otežava mrežnim mjestima prepoznavanje karakterističnih obilježja vašeg uređaja. ";
+
+/* No comment provided by engineer. */
+"httpsEverywhereDescription" = "Otvaraju se mrežna mjesta upotrebom sigurnog HTTPS-a umjesto HTTP-a kada je to moguće.";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "Strogo";
+
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "Popisi su ažurirani";
+
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "Prijavi neispravno mrežno mjesto";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"ReportBrokenAdditionalDetails" = "Dodatne pojedinosti (mogućnosti)";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"reportBrokenAdditionalDetailsRequired" = "Dodatni podaci";
+
+/* A label for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "Koji je glavni problem koji vidite?";
+
+/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
+"ReportBrokenContactMe" = "Kontakt: (dodatno)";
+
+/* Contact info storing description */
+"ReportBrokenContactMeDescription" = "Pružite li kontaktne podatke oni će se spremiti za prijavu neispravnih stranica u budućnosti.";
+
+/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
+"ReportBrokenContactMeSuggestions" = "E-pošta, Twitter itd.";
+
+/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"ReportBrokenPlaceholder" = "Odaberite jednu opciju";
+
+/* First part of the report a broken site copy. After the colon is a new line and then a website address */
+"ReportBrokenSiteBody1" = "Obavijestite Braveove razvojne programer da ova stranica ne radi prema očekivanjima:";
+
+/* This is the info text that is presented when a user is submitting a web-compatibility report. */
+"ReportBrokenSiteBody2" = "Napomena: izvješćem koje se šalje poslužiteljima Brave uključuje se: adresa mrežnog mjesta, broj inačice preglednika Brave, postavke štitova, status mreže VPN i postavke jezika.";
+
+/* No comment provided by engineer. */
+"ReportBrokenSubmitButtonTitle" = "Pošalji";
+
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "Agresivno";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "Blokira:";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "Blokira:";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "Blokiranje sadržaja";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "Zatražite blokiranje";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "Zatražite URL";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "Tip resursa";
+
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "Ako Shred treba ukloniti stavke historije.";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred uklanja historiju";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "Ažurirajte automatski Shred i prilagodite koje podatke Shred uklanja.";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "Uništi";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "Uništi";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "Izvorni URL";
+
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"ShieldsDefaults" = "Globalne zadane postavke Štitova Brave";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "Ovo su zadane postavke značajke Brave Shields za nova mreža mjesta. Mijenjanjem ovih postavki ne mijenjaju se postojeće postavke prethodno postavljene za određeno mrežno mjesto.";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "Pregledavate ovo mrežno mjesto bez sigurnosne zaštite i zaštite privatnosti preglednika Brave. Radi li ispravno s uključenom značajkom Štitnika?";
 
 /* Time Saved Days */
 "ShieldsTimeStatsDays" = "d";
@@ -22,6 +334,72 @@
 /* Time Saved Seconds */
 "ShieldsTimeStatsSeconds" = "s";
 
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Uništavanje podataka";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Nikad";
+
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "Podaci o pregledanju se nikada automatski ne uništavaju";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "Zatvaranje aplikacije";
+
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "Podaci o pregledanju se automatski uništavaju kada se Brave aplikacija zatvori / ponovo pokrene";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Kartice mrežne stranice zatvorene";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "Podaci o pregledanju se automatski uništavaju kada se zatvore sve otvorene kartice sajta";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "Uništavanje će zatvoriti sve kartice i izbrisati sve podatke s mrežne stranice. Ovo se ne može poništiti.";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Uništavanje podataka s mrežne stranice";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "Uništavanje će zatvoriti sve kartice otvorene na ovoj mrežnoj stranici i izbrisati sve podatke s mrežne stranice. Ovo se ne može poništiti.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Uništiti podatke s mrežne stranice?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Odmah uništiti podatke s mrežne stranice";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "Uništavanje će zatvoriti odabrane kartice i izbrisati sve podatke s mrežne stranice. Ovo se ne može poništiti.";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "Mrežno mjesto nije sigurno";
+
+/* No comment provided by engineer. */
+"SiteReportedBody" = "Hvala vam što se javili razvojnim inženjerima preglednika Brave da nešto nije u redu s ovim mjestom. Činimo sve da uklonimo navedeni problem!";
+
+/* No comment provided by engineer. */
+"SiteReportedTitle" = "Hvala vam";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "Veza s mjestom %@ nije sigurna";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "Blokiranje elementa za praćenje i oglasa";
+
 /* Shields Trackers Stat */
 "TrackersrBlocked" = "Elementi za praćenje \nblokirani";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "Ažuriraj popise";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "Popisi se ažuriraju";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "Nadogradi veze na HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "Prikazuje vam se ovo upozorenje jer se mrežnim mjestom ne podržava HTTPS.";
 

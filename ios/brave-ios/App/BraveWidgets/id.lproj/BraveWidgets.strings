@@ -71,6 +71,9 @@
 "e13lS3-VBH4G6" = "Hanya untuk mengonfirmasi, Anda ingin 'Riwayat'?";
 
 /* (No Comment) */
+"e13lS3-vQ8mZ1" = "Sekadar mengonfirmasi, Anda menginginkan 'Leo AI Voice Input'?";
+
+/* (No Comment) */
 "e13lS3-vs094F" = "Hanya untuk mengonfirmasi, Anda ingin 'Tab Privat baru'?";
 
 /* (No Comment) */
@@ -108,6 +111,9 @@
 
 /* (No Comment) */
 "EvESs0-VBH4G6" = "Hanya untuk mengonfirmasi, Anda ingin 'Riwayat'?";
+
+/* (No Comment) */
+"EvESs0-vQ8mZ1" = "Sekadar mengonfirmasi, Anda menginginkan 'Leo AI Voice Input'?";
 
 /* (No Comment) */
 "EvESs0-vs094F" = "Hanya untuk mengonfirmasi, Anda ingin 'Tab Privat baru'?";
@@ -164,6 +170,9 @@
 "L1fziM-VBH4G6" = "Terdapat ${count} pilihan yang sesuai dengan 'Riwayat'.";
 
 /* (No Comment) */
+"L1fziM-vQ8mZ1" = "Terdapat opsi ${count} yang sesuai dengan 'Leo AI Voice Input'.";
+
+/* (No Comment) */
 "L1fziM-vs094F" = "Terdapat ${count} pilihan yang sesuai dengan 'Tab Privat Baru'.";
 
 /* (No Comment) */
@@ -212,6 +221,9 @@
 "r2EI05-VBH4G6" = "Hanya untuk mengonfirmasi, Anda ingin 'Riwayat'?";
 
 /* (No Comment) */
+"r2EI05-vQ8mZ1" = "Sekadar mengonfirmasi, Anda menginginkan 'Leo AI Voice Input'?";
+
+/* (No Comment) */
 "r2EI05-vs094F" = "Hanya untuk mengonfirmasi, Anda ingin 'Tab Privat baru'?";
 
 /* (No Comment) */
@@ -257,6 +269,9 @@
 "tNCrcE-VBH4G6" = "Terdapat ${count} pilihan yang sesuai dengan 'Riwayat'.";
 
 /* (No Comment) */
+"tNCrcE-vQ8mZ1" = "Terdapat opsi ${count} yang sesuai dengan 'Leo AI Voice Input'.";
+
+/* (No Comment) */
 "tNCrcE-vs094F" = "Terdapat ${count} pilihan yang sesuai dengan 'Tab Privat Baru'.";
 
 /* (No Comment) */
@@ -296,6 +311,9 @@
 "TxuMja-VBH4G6" = "Terdapat ${count} pilihan yang sesuai dengan 'Riwayat'.";
 
 /* (No Comment) */
+"TxuMja-vQ8mZ1" = "Terdapat opsi ${count} yang sesuai dengan 'Leo AI Voice Input'.";
+
+/* (No Comment) */
 "TxuMja-vs094F" = "Terdapat ${count} pilihan yang sesuai dengan 'Tab Privat Baru'.";
 
 /* (No Comment) */
@@ -315,6 +333,9 @@
 
 /* (No Comment) */
 "vjA5pZ" = "Perkiraan Penghematan Data";
+
+/* (No Comment) */
+"vQ8mZ1" = "Input Suara Leo AI";
 
 /* (No Comment) */
 "vs094F" = "Tab Privat Baru";
@@ -359,6 +380,9 @@
 "YQiQuz-VBH4G6" = "Hanya untuk mengonfirmasi, Anda ingin 'Riwayat'?";
 
 /* (No Comment) */
+"YQiQuz-vQ8mZ1" = "Sekadar mengonfirmasi, Anda menginginkan 'Leo AI Voice Input'?";
+
+/* (No Comment) */
 "YQiQuz-vs094F" = "Hanya untuk mengonfirmasi, Anda ingin 'Tab Privat baru'?";
 
 /* (No Comment) */
@@ -393,6 +417,9 @@
 
 /* (No Comment) */
 "z517nu-VBH4G6" = "Terdapat ${count} pilihan yang sesuai dengan 'Riwayat'.";
+
+/* (No Comment) */
+"z517nu-vQ8mZ1" = "Terdapat opsi ${count} yang sesuai dengan 'Leo AI Voice Input'.";
 
 /* (No Comment) */
 "z517nu-vs094F" = "Terdapat ${count} pilihan yang sesuai dengan 'Tab Privat Baru'.";

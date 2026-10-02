@@ -71,6 +71,9 @@
 "e13lS3-VBH4G6" = "Nur, um sicherzugehen, du hast nach „Verlauf“ gesucht?";
 
 /* (No Comment) */
+"e13lS3-vQ8mZ1" = "Nur um sicherzugehen, Sie suchten nach «Leo-KI-Spracheingabe»?";
+
+/* (No Comment) */
 "e13lS3-vs094F" = "Nur, um sicherzugehen, du hast nach „Neuer privater Tab“ gesucht?";
 
 /* (No Comment) */
@@ -108,6 +111,9 @@
 
 /* (No Comment) */
 "EvESs0-VBH4G6" = "Nur, um sicherzugehen, du hast nach „Verlauf“ gesucht?";
+
+/* (No Comment) */
+"EvESs0-vQ8mZ1" = "Nur um sicherzugehen, Sie suchten nach «Leo-KI-Spracheingabe»?";
 
 /* (No Comment) */
 "EvESs0-vs094F" = "Nur, um sicherzugehen, du hast nach „Neuer privater Tab“ gesucht?";
@@ -164,6 +170,9 @@
 "L1fziM-VBH4G6" = "Es gibt ${count} Optionen, die mit „Verlauf“ übereinstimmen.";
 
 /* (No Comment) */
+"L1fziM-vQ8mZ1" = "Es gibt ${count} Optionen, die mit «Leo-KI-Spracheingabe» übereinstimmen.";
+
+/* (No Comment) */
 "L1fziM-vs094F" = "Es gibt ${count} Optionen, die mit „Neuer privater Tab“ übereinstimmen.";
 
 /* (No Comment) */
@@ -212,6 +221,9 @@
 "r2EI05-VBH4G6" = "Nur, um sicherzugehen, du hast nach „Verlauf“ gesucht?";
 
 /* (No Comment) */
+"r2EI05-vQ8mZ1" = "Nur um sicherzugehen, Sie suchten nach «Leo-KI-Spracheingabe»?";
+
+/* (No Comment) */
 "r2EI05-vs094F" = "Nur, um sicherzugehen, du hast nach „Neuer privater Tab“ gesucht?";
 
 /* (No Comment) */
@@ -257,6 +269,9 @@
 "tNCrcE-VBH4G6" = "Es gibt ${count} Optionen, die mit „Verlauf“ übereinstimmen.";
 
 /* (No Comment) */
+"tNCrcE-vQ8mZ1" = "Es gibt ${count} Optionen, die mit «Leo-KI-Spracheingabe» übereinstimmen.";
+
+/* (No Comment) */
 "tNCrcE-vs094F" = "Es gibt ${count} Optionen, die mit „Neuer privater Tab“ übereinstimmen.";
 
 /* (No Comment) */
@@ -296,6 +311,9 @@
 "TxuMja-VBH4G6" = "Es gibt ${count} Optionen, die mit „Verlauf“ übereinstimmen.";
 
 /* (No Comment) */
+"TxuMja-vQ8mZ1" = "Es gibt ${count} Optionen, die mit «Leo-KI-Spracheingabe» übereinstimmen.";
+
+/* (No Comment) */
 "TxuMja-vs094F" = "Es gibt ${count} Optionen, die mit „Neuer privater Tab“ übereinstimmen.";
 
 /* (No Comment) */
@@ -315,6 +333,9 @@
 
 /* (No Comment) */
 "vjA5pZ" = "Geschätzte Datenersparnis";
+
+/* (No Comment) */
+"vQ8mZ1" = "Leo-KI-Spracheingabe";
 
 /* (No Comment) */
 "vs094F" = "Neuer privater Tab";
@@ -359,6 +380,9 @@
 "YQiQuz-VBH4G6" = "Nur, um sicherzugehen, du hast nach „Verlauf“ gesucht?";
 
 /* (No Comment) */
+"YQiQuz-vQ8mZ1" = "Nur um sicherzugehen, Sie suchten nach «Leo-KI-Spracheingabe»?";
+
+/* (No Comment) */
 "YQiQuz-vs094F" = "Nur, um sicherzugehen, du hast nach „Neuer privater Tab“ gesucht?";
 
 /* (No Comment) */
@@ -393,6 +417,9 @@
 
 /* (No Comment) */
 "z517nu-VBH4G6" = "Es gibt ${count} Optionen, die mit „Verlauf“ übereinstimmen.";
+
+/* (No Comment) */
+"z517nu-vQ8mZ1" = "Es gibt ${count} Optionen, die mit «Leo-KI-Spracheingabe» übereinstimmen.";
 
 /* (No Comment) */
 "z517nu-vs094F" = "Es gibt ${count} Optionen, die mit „Neuer privater Tab“ übereinstimmen.";
