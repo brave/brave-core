@@ -5,10 +5,10 @@
 
 substitutions:
   - description: |-
-      Override the updater branding with Brave's
+      Override the enterprise companion branding with Brave's
 
       Appended at the end of the file, so it overrides every upstream value.
     add_at_end_of_the_file:
       code: |-
-        import("//brave/chromium_src/chrome/updater/branding.gni")
-        forward_variables_from(brave_updater_branding, "*")
+        import("//brave/chromium_src/chrome/enterprise_companion/branding.gni")
+        forward_variables_from(brave_enterprise_companion_branding, "*")
