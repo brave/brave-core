@@ -9,6 +9,7 @@
 #include <cstddef>
 
 #include "base/check_op.h"
+#include "base/feature_list.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/reminders/reminders_feature.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"

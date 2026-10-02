@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_feature.h"
 
+#include "base/feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // pnpm test brave_unit_tests --filter=BraveAds*

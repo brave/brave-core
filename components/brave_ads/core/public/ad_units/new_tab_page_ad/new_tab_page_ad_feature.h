@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_AD_UNITS_NEW_TAB_PAGE_AD_NEW_TAB_PAGE_AD_FEATURE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_AD_UNITS_NEW_TAB_PAGE_AD_NEW_TAB_PAGE_AD_FEATURE_H_
 
-#include "base/feature_list.h"
+#include "base/feature.h"
 #include "base/metrics/field_trial_params.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 

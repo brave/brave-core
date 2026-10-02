@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_HISTORY_AD_HISTORY_FEATURE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_HISTORY_AD_HISTORY_FEATURE_H_
 
-#include "base/feature_list.h"
+#include "base/feature.h"
 #include "base/metrics/field_trial_params.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"

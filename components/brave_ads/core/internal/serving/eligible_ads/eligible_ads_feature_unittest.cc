@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
 
+#include "base/feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // pnpm test brave_unit_tests --filter=BraveAds*

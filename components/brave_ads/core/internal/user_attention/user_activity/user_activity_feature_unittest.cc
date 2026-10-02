@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_feature.h"
 
+#include "base/feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // pnpm test brave_unit_tests --filter=BraveAds*

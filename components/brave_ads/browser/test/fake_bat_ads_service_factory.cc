@@ -6,11 +6,8 @@
 #include "brave/components/brave_ads/browser/test/fake_bat_ads_service_factory.h"
 
 #include <memory>
-#include <ostream>
 
 #include "base/functional/bind.h"
-#include "base/memory/raw_ptr.h"
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/browser/test/fake_bat_ads_client_notifier.h"
 #include "brave/components/brave_ads/browser/test/fake_bat_ads_service.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
