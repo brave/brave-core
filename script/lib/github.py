@@ -9,8 +9,11 @@ from builtins import str
 import json
 import base64
 import re
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
+from email.utils import parsedate_to_datetime
 try:
     from .util import execute, scoped_cwd
 except ImportError:
@@ -18,6 +21,105 @@ except ImportError:
 
 GITHUB_URL = 'https://api.github.com'
 GITHUB_UPLOAD_ASSET_URL = 'https://uploads.github.com'
+# Validation failures are not retried. These are the responses GitHub uses for
+# rate limits and temporary outages.
+TRANSIENT_GITHUB_STATUS_CODES = (429, 500, 502, 503, 504)
+# Primary rate-limit windows are one hour. Longer values are a bad header.
+_MAX_RETRY_WAIT_SECONDS = 3600
+
+
+class GitHubError(Exception):
+    """GitHub HTTP or API error. str() is the response body when it is JSON."""
+
+    def __init__(self, status_code, body, headers=None):
+        self.status_code = status_code
+        self.body = body
+        self.headers = headers or {}
+        if isinstance(body, (dict, list)):
+            message = json.dumps(body, indent=2, separators=(',', ': '))
+        else:
+            message = 'HTTP Error %s: %s' % (status_code, body)
+        super(GitHubError, self).__init__(message)
+
+
+def _parse_github_body(raw):
+    if not raw:
+        return {}
+    text = raw.decode('utf-8', errors='replace')
+    try:
+        return json.loads(text)
+    except ValueError:
+        return text
+
+
+def _is_transient_github_error(err):
+    code = getattr(err, 'status_code', None)
+    if code in TRANSIENT_GITHUB_STATUS_CODES:
+        return True
+    text = str(err).lower()
+    return code == 403 and ('rate limit' in text or 'secondary rate' in text)
+
+
+def _is_transient_issue_patch_error(err):
+    if _is_transient_github_error(err):
+        return True
+    if getattr(err, 'status_code', None) != 422:
+        return False
+    body = getattr(err, 'body', None)
+    # GitHub also uses 422 when an endpoint has been spammed. A field-specific
+    # error is permanent; an ambiguous 422 is safe to retry for this idempotent
+    # PATCH and still fails after the bounded attempts.
+    return not isinstance(body, dict) or not body.get('errors')
+
+
+def _is_rate_limited(err):
+    code = getattr(err, 'status_code', None)
+    # 429 is always a rate limit. 403 is one only when the body says so.
+    return code in (403, 429) and _is_transient_github_error(err)
+
+
+def _parse_retry_after(value):
+    text = str(value).strip()
+    if not text:
+        return None
+    try:
+        return max(0, int(text))
+    except ValueError:
+        pass
+    # Retry-After may be an HTTP date instead of a number of seconds.
+    try:
+        when = parsedate_to_datetime(text)
+    except (TypeError, ValueError, IndexError):
+        return None
+    if when.tzinfo is None:
+        return None
+    return max(0, int(when.timestamp() - time.time()))
+
+
+def _retry_wait_seconds(err):
+    """Seconds GitHub asked us to wait, or None when the caller should back off.
+
+    X-RateLimit-Reset is present on every response, so it applies only to a
+    rate-limit error that did not include Retry-After.
+    """
+    headers = getattr(err, 'headers', None) or {}
+    retry_after = headers.get('retry-after')
+    if retry_after is not None:
+        delay = _parse_retry_after(retry_after)
+        if delay is not None:
+            return min(delay, _MAX_RETRY_WAIT_SECONDS)
+    if not _is_rate_limited(err):
+        return None
+    reset = headers.get('x-ratelimit-reset')
+    if reset is None:
+        return None
+    try:
+        reset_at = int(str(reset).strip())
+    except ValueError:
+        return None
+    # +1s so a retry does not land in the same window the header just closed.
+    delay = max(0, reset_at - int(time.time()) + 1)
+    return min(delay, _MAX_RETRY_WAIT_SECONDS)
 
 
 class GitHub():
@@ -56,14 +158,30 @@ class GitHub():
                 url += '?' + urllib.parse.urlencode(params)
             request = urllib.request.Request(url, **kw)
             with urllib.request.urlopen(request) as response:
-                r = json.loads(response.read())
+                raw = response.read()
                 kw['headers']['ResponseHeaders'] = dict(
                     response.headers.items())
+                r = _parse_github_body(raw)
+                # A successful response that is not JSON is treated as empty.
+                if isinstance(r, str):
+                    r = {}
+        except urllib.error.HTTPError as e:
+            # urlopen raises before the body can be parsed. Keep the body so a
+            # 422 reports GitHub's field error instead of only the status line.
+            # Headers are kept so a rate-limit retry can honor Retry-After.
+            error_headers = {}
+            if e.headers is not None:
+                error_headers = {
+                    key.lower(): value
+                    for key, value in e.headers.items()
+                }
+            raise GitHubError(e.code, _parse_github_body(e.read()),
+                              error_headers) from e
         except ValueError:
             # Returned response may be empty in some cases
             r = {}
-        if 'message' in r:
-            raise Exception(json.dumps(r, indent=2, separators=(',', ': ')))
+        if isinstance(r, dict) and 'message' in r:
+            raise GitHubError(None, r)
         return r
 
 
@@ -270,26 +388,59 @@ def set_issue_details(token,
                       labels=[],
                       verbose=False,
                       dryrun=False):
-    patch_data = {}
+    # One field per request. A combined PATCH hides which field GitHub
+    # rejected, and a 422 then leaves every field unset.
+    updates = []
     if milestone_number:
-        patch_data['milestone'] = milestone_number
+        updates.append(('milestone', {'milestone': milestone_number}))
     if len(assignees) > 0:
-        patch_data['assignees'] = assignees
+        updates.append(('assignees', {'assignees': assignees}))
     if len(labels) > 0:
-        patch_data['labels'] = labels
+        updates.append(('labels', {'labels': labels}))
     # TODO: error if no keys in patch_data
 
     # add milestone and assignee to issue / pull request
     # for more info see: https://developer.github.com/v3/issues/#edit-an-issue
     if dryrun:
-        print('[INFO] would call `repo.issues(' + str(issue_number) +
-              ').patch(' + str(patch_data) + ')`')
+        for _name, patch_data in updates:
+            print('[INFO] would call `repo.issues(' + str(issue_number) +
+                  ').patch(' + str(patch_data) + ')`')
         return
     repo = GitHub(token).repos(repo_name)
-    response = repo.issues(issue_number).patch(data=patch_data)
-    if verbose:
-        print('repo.issues(' + str(issue_number) + ').patch(data) response:\n' +
-              str(response))
+    errors = []
+    for name, patch_data in updates:
+        try:
+            response = _patch_issue(repo, issue_number, patch_data)
+            if verbose:
+                print('repo.issues(' + str(issue_number) + ').patch(' + name +
+                      ') response:\n' + str(response))
+        except Exception as e:
+            errors.append(name + ': ' + str(e))
+    if len(errors) > 0:
+        raise Exception('failed to update pull request #' + str(issue_number) +
+                        ':\n' + '\n'.join(errors))
+
+
+def _patch_issue(repo, issue_number, patch_data):
+    delay_seconds = 2
+    attempts = 3
+    for attempt in range(attempts):
+        try:
+            return repo.issues(issue_number).patch(data=patch_data)
+        except (GitHubError, urllib.error.URLError) as e:
+            # A connection failure and an ambiguous 422 are safe to repeat.
+            if (attempt + 1 == attempts
+                    or (isinstance(e, GitHubError)
+                        and not _is_transient_issue_patch_error(e))):
+                raise
+            wait = _retry_wait_seconds(e)
+            if wait is None:
+                wait = delay_seconds
+                delay_seconds *= 2
+            print('[WARNING] transient GitHub error updating ' +
+                  str(list(patch_data.keys())) + ', retrying in ' + str(wait) +
+                  's')
+            time.sleep(wait)
 
 
 def fetch_origin_check_staged(path):

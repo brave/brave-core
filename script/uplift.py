@@ -323,8 +323,8 @@ def main():
                       local_branches[channel], issues_fixed)
         print('\nDone!')
     except Exception as e:
-        print('\n[ERROR] Unhandled error while creating pull request; ' +
-              str(e))
+        print('\n[ERROR] Unhandled error while creating or updating ' +
+              'pull request; ' + str(e))
         return 1
 
     return 0
