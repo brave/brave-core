@@ -1429,6 +1429,17 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
           cellClass: MultilineValue1Cell.self
         ),
         Row(
+          text: "Auto Close Tabs Override",
+          selection: { [unowned self] in
+            self.navigationController?.pushViewController(
+              UIHostingController(rootView: AutoCloseTabsDebugView()),
+              animated: true
+            )
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
+        Row(
           text: "Secure Content State Debug",
           selection: { [unowned self] in
             self.navigationController?.pushViewController(
