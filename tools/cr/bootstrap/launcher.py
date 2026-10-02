@@ -12,8 +12,10 @@ passed through verbatim:
 
     python3 launcher.py brockit lift --to=1.2.3.4
 
-This runs under plain `python3` (not `vpython3`), so it must stay stdlib-only,
-and it should be kept self-contained from other python code.
+The shims reach this script through `runner.py`, which runs it under the
+checkout's vendored `vpython3`, or plain `python3` outside a checkout. It must
+therefore stay stdlib-only, and it should be kept self-contained from other
+python code.
 """
 
 from __future__ import annotations
@@ -254,8 +256,8 @@ class SelfUpdater:
     def deploy(self) -> None:
         """Deploy the single-object `EXTRA_DEPS` `entry` into the checkout.
 
-        Runs `tarball_installer.py` with the same runtime the launcher is
-        using, assuming a bare, stdlib-only environment.
+        Runs `tarball_installer.py` under `vpython3`, so it gets the Python
+        pinned by `tools/cr/.vpython3`.
 
         A failed install propagates: the pinned target is missing or stale,
         so running some other version of the tool (or none at all) would
@@ -266,7 +268,10 @@ class SelfUpdater:
         installer = self.checkout / 'tools' / 'cr' / 'tarball_installer.py'
         if not installer.is_file():
             return
-        subprocess.check_call([sys.executable, str(installer), self.entry])
+        subprocess.check_call([
+            str(_resolve_vpython3(self.checkout)),
+            str(installer), self.entry
+        ])
 
     def _load_extra_deps(self):
         """Import the checkout's stdlib-only `extra_deps` module, or None.

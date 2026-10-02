@@ -144,14 +144,8 @@ class TarballInstaller:
             raise ValueError(f'size mismatch for {self.url}\n'
                              f'  expected: {self.size_bytes} bytes\n'
                              f'  actual:   {actual_size} bytes')
-        digest = hashlib.sha256()
-        # Not using mmap to make this script more tolerable to a larger range
-        # of Python versions, as this script is called by `launcher.py` without
-        # a guarantee of vpython being available.
         with archive_path.open('rb') as archive_file:
-            for block in iter(lambda: archive_file.read(1 << 20), b''):
-                digest.update(block)
-        actual = digest.hexdigest()
+            actual = hashlib.file_digest(archive_file, 'sha256').hexdigest()
         if actual.lower() != self.sha256sum.lower():
             raise ValueError(f'SHA-256 mismatch for {self.url}\n'
                              f'  expected: {self.sha256sum.lower()}\n'
@@ -232,14 +226,11 @@ class TarballInstaller:
     def _extract_tar(self, archive_path: Path) -> list[str]:
         """Extract a tar archive into `dest_dir`, vetting its members first.
 
-        The archive is checked against `_check_members` and then extracted with
-        the fully-trusted filter.
-
-        `filter='data'` is deliberately not used. Its first backport (Python
-        3.10.12) resolves a symlink's target against the destination root rather
-        than against the directory holding the link. Vetting the members
-        ourselves gives the same containment guarantee on every runtime, rather
-        than one that varies with whichever interpreter happens to invoke us.
+        Two layers guard the destination. `_check_members` lexically vets the
+        archive's own metadata, the same way on every platform. The `data`
+        filter then checks against the destination as it is on disk (refusing
+        to write through an existing symlink that leaves it, which matters for
+        overlays), and strips setuid/setgid and group/other write bits.
         """
         with tarfile.open(archive_path, mode='r:*') as tar:
             members = tar.getmembers()
@@ -248,10 +239,7 @@ class TarballInstaller:
                 for member in members:
                     if member.issym():
                         member.linkname = member.linkname.replace('/', '\\')
-            if hasattr(tarfile, 'data_filter'):
-                tar.extractall(path=self.dest_dir, filter='fully_trusted')
-            else:
-                tar.extractall(path=self.dest_dir)
+            tar.extractall(path=self.dest_dir, filter='data')
             return [member.name for member in members]
 
     def _check_members(self, members: list[tarfile.TarInfo]) -> None:
@@ -273,8 +261,8 @@ class TarballInstaller:
                 # A hardlink names another member, from the archive root.
                 self._check_contained(member, member.linkname)
             elif member.isdev():
-                # Extracting fully-trusted means device and FIFO members would
-                # be created verbatim; no archive we pin carries any.
+                # No archive we pin carries device or FIFO members, so any is
+                # refused outright, ahead of the `data` filter.
                 raise ValueError(f'{self.object_name}: refusing to extract '
                                  f'the device/FIFO member {member.name!r}')
 
@@ -338,11 +326,11 @@ class TarballInstaller:
             '_content_names': json.dumps(member_names),
         }
         for suffix, content in contents.items():
-            # `write_bytes` (not `write_text(newline=...)`, whose `newline`
-            # kwarg is Python 3.10+) so the exact `\n`-terminated UTF-8 lands on
-            # disk without platform newline translation, on any `python3`.
+            # `newline=''` keeps `\n` untranslated on every platform.
             sidecar_path(self.dest_dir, self.object_name,
-                         suffix).write_bytes(f'{content}\n'.encode('utf-8'))
+                         suffix).write_text(f'{content}\n',
+                                            encoding='utf-8',
+                                            newline='')
 
 
 def main(argv: list[str] | None = None) -> int:
