@@ -10,15 +10,17 @@ import { StyledButton, ButtonText, TabLine } from './style'
 export interface Props {
   isSelected: boolean
   text: string
+  width?: string
   onSubmit?: () => void
 }
 
 export const PanelTab = (props: Props) => {
-  const { onSubmit, text, isSelected } = props
+  const { onSubmit, text, isSelected, width } = props
   return (
     <StyledButton
       isSelected={isSelected}
       onClick={onSubmit}
+      width={width}
     >
       <ButtonText
         isSelected={isSelected}

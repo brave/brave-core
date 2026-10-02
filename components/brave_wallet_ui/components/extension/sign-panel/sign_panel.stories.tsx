@@ -10,7 +10,11 @@ import { SignPanel } from './index'
 
 import { BraveWallet, Url } from '../../../constants/types'
 import { mockOriginInfo } from '../../../stories/mock-data/mock-origin-info'
-import { mockEthAccount } from '../../../stories/mock-data/mock-wallet-accounts'
+import {
+  mockCardanoAccount,
+  mockEthAccount,
+} from '../../../stories/mock-data/mock-wallet-accounts'
+import { mockSolanaAccount } from '../../../common/constants/mocks'
 import { PanelWrapper } from '../../../panel/panel_wrapper/panel_wrapper'
 import { LongWrapper } from '../../../stories/style'
 import WalletPanelStory from '../../../stories/wrappers/wallet-panel-story-wrapper'
@@ -130,6 +134,124 @@ export const _SignData = {
         </PanelWrapper>
       </WalletPanelStory>
     )
+  },
+}
+
+const hiddenSignMessage = 'Hello\0\n' + '\n'.repeat(12) + 'Hidden \u202Epayload'
+
+const renderSignRequest = (request: BraveWallet.SignMessageRequest) => {
+  return (
+    <WalletPanelStory>
+      <SignPanel
+        showWarning={false}
+        signMessageData={[request]}
+      />
+    </WalletPanelStory>
+  )
+}
+
+export const _EthStandardSignRequest = {
+  render: () => {
+    return renderSignRequest({
+      id: 0,
+      accountId: mockEthAccount.accountId,
+      originInfo: mockOriginInfo,
+      coin: BraveWallet.CoinType.ETH,
+      chainId: BraveWallet.MAINNET_CHAIN_ID,
+      signData: {
+        ethStandardSignData: { message: hiddenSignMessage },
+        ethSignTypedData: undefined,
+        ethSiweData: undefined,
+        solanaSignData: undefined,
+        cardanoSignData: undefined,
+      },
+    })
+  },
+  name: 'Eth standard sign request: Unexpected characters detected',
+  parameters: {
+    layout: 'centered',
+  },
+}
+
+export const _EthTypedDataSignRequest = {
+  render: () => {
+    return renderSignRequest({
+      id: 0,
+      accountId: mockEthAccount.accountId,
+      originInfo: mockOriginInfo,
+      coin: BraveWallet.CoinType.ETH,
+      chainId: BraveWallet.MAINNET_CHAIN_ID,
+      signData: {
+        ethStandardSignData: undefined,
+        ethSignTypedData: {
+          addressParam: '',
+          domainJson: '{"name":"Example\\u0000 domain"}',
+          messageJson: '{"contents":"Sign into \u202E EVIL"}',
+          typesJson: '',
+          primaryType: 'Mail',
+          chainId: '',
+          domainHash: [],
+          primaryHash: [],
+          meta: undefined,
+        },
+        ethSiweData: undefined,
+        solanaSignData: undefined,
+        cardanoSignData: undefined,
+      },
+    })
+  },
+  name: 'Eth typed data sign request: Unexpected characters detected',
+  parameters: {
+    layout: 'centered',
+  },
+}
+
+export const _SolanaSignRequest = {
+  render: () => {
+    return renderSignRequest({
+      id: 0,
+      accountId: mockSolanaAccount.accountId,
+      originInfo: mockOriginInfo,
+      coin: BraveWallet.CoinType.SOL,
+      chainId: BraveWallet.SOLANA_MAINNET,
+      signData: {
+        ethStandardSignData: undefined,
+        ethSignTypedData: undefined,
+        ethSiweData: undefined,
+        solanaSignData: {
+          message: hiddenSignMessage,
+          messageBytes: [1],
+        },
+        cardanoSignData: undefined,
+      },
+    })
+  },
+  name: 'Solana sign request: Unexpected characters detected',
+  parameters: {
+    layout: 'centered',
+  },
+}
+
+export const _CardanoSignRequest = {
+  render: () => {
+    return renderSignRequest({
+      id: 0,
+      accountId: mockCardanoAccount.accountId,
+      originInfo: mockOriginInfo,
+      coin: BraveWallet.CoinType.ADA,
+      chainId: BraveWallet.CARDANO_MAINNET,
+      signData: {
+        ethStandardSignData: undefined,
+        ethSignTypedData: undefined,
+        ethSiweData: undefined,
+        solanaSignData: undefined,
+        cardanoSignData: { message: hiddenSignMessage },
+      },
+    })
+  },
+  name: 'Cardano sign request: Unexpected characters detected',
+  parameters: {
+    layout: 'centered',
   },
 }
 

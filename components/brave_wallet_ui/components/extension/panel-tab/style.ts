@@ -10,11 +10,12 @@ import { Text, WalletButton } from '../../shared/style'
 
 interface StyleProps {
   isSelected: boolean
+  width?: string
 }
 
 export const StyledButton = styled(WalletButton)<Partial<StyleProps>>`
   display: flex;
-  width: 240px;
+  width: ${(p) => (p.width ? p.width : '240px')};
   align-items: center;
   justify-content: center;
   flex-direction: column;

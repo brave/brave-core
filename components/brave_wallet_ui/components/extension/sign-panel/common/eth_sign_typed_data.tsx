@@ -6,25 +6,15 @@ import * as React from 'react'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
-import { unicodeEscape, hasUnicode } from '../../../../utils/string-utils'
+import { formatTypedDataForDisplay } from '../../../../utils/string-utils'
 
 // Types
 import { BraveWallet } from '../../../../constants/types'
 
 // Styled Components
-import {
-  MessageBox,
-  MessageHeader,
-  MessageText,
-  WarningTitleRow,
-} from '../style'
-
-import {
-  WarningBox,
-  LearnMoreButton,
-  WarningIcon,
-} from '../../shared-panel-styles'
-import { Text } from '../../../shared/style'
+import { MessageHeader, MessageText } from '../style'
+import { SignMessageBox } from './sign_message_box'
+import { SignMessageCharacterWarning } from './sign_message_character_warning'
 
 interface Props {
   data?: BraveWallet.EthSignTypedData
@@ -35,34 +25,19 @@ interface Props {
 export function EthSignTypedData(props: Props) {
   const { data, height, width } = props
 
-  const [renderUnicode, setRenderUnicode] = React.useState<boolean>(true)
+  const [showFormatted, setShowFormatted] = React.useState(true)
 
   return (
     <>
-      {(hasUnicode(data?.messageJson ?? '')
-        || hasUnicode(data?.domainJson ?? '')) && (
-        <WarningBox warningType='warning'>
-          <WarningTitleRow>
-            <WarningIcon warningType='warning' />
-            <Text
-              textColor='error'
-              variant='small.semibold'
-            >
-              {getLocale(
-                S.BRAVE_WALLET_NON_ASCII_CHARACTERS_IN_MESSAGE_WARNING,
-              )}
-            </Text>
-          </WarningTitleRow>
-          <LearnMoreButton onClick={() => setRenderUnicode((prev) => !prev)}>
-            {renderUnicode
-              ? getLocale(S.BRAVE_WALLET_VIEW_DECODED_MESSAGE)
-              : getLocale(S.BRAVE_WALLET_VIEW_ENCODED_MESSAGE)}
-          </LearnMoreButton>
-        </WarningBox>
-      )}
+      <SignMessageCharacterWarning
+        messages={[data?.domainJson, data?.messageJson]}
+        showFormatted={showFormatted}
+        onToggle={() => setShowFormatted((current) => !current)}
+        decodeJson={true}
+      />
 
       {data && (
-        <MessageBox
+        <SignMessageBox
           height={height ?? '180px'}
           width={width}
         >
@@ -76,9 +51,7 @@ export function EthSignTypedData(props: Props) {
             textColor='secondary'
             variant='small.regular'
           >
-            {!renderUnicode && hasUnicode(data.domainJson)
-              ? unicodeEscape(data.domainJson)
-              : data.domainJson}
+            {formatTypedDataForDisplay(data.domainJson, showFormatted)}
           </MessageText>
 
           <MessageHeader
@@ -91,11 +64,9 @@ export function EthSignTypedData(props: Props) {
             textColor='secondary'
             variant='small.regular'
           >
-            {!renderUnicode && hasUnicode(data.messageJson)
-              ? unicodeEscape(data.messageJson)
-              : data.messageJson}
+            {formatTypedDataForDisplay(data.messageJson, showFormatted)}
           </MessageText>
-        </MessageBox>
+        </SignMessageBox>
       )}
     </>
   )
