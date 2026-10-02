@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc b/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc
-index 066ffe66dba7aad133bf1de8f37592074dcbec84..58753f83cd5aaf59f82cb5027fbc6ccf05372ebb 100644
+index 27ba0920f1bf2cb51f0fa6123a60e18a5aa8f8ac..b13fa18ff4aa11b7fbcf7cea10dc2177160364ce 100644
 --- a/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc
 +++ b/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc
-@@ -91,6 +91,7 @@ content::RenderProcessHost* WebrtcLoggingPrivateFunction::RphFromRequest(
+@@ -92,6 +92,7 @@ content::RenderProcessHost* WebrtcLoggingPrivateFunction::RphFromRequest(
      const api::webrtc_logging_private::RequestInfo& request,
      const std::string& security_origin,
      std::string* error) {

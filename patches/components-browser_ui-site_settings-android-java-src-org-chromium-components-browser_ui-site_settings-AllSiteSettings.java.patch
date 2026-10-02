@@ -1,8 +1,8 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/AllSiteSettings.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/AllSiteSettings.java
-index 8e2b9d445848babe5be0183f40c3f3688dc7209d..6c58da83b1f9bff6ee8ac9b10d75148023dab497 100644
+index b08c968e69e92b1e648c48d275ed861ca6624c98..104253bb44395ab7ba1d0f771d796a2e7ac460be 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/AllSiteSettings.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/AllSiteSettings.java
-@@ -73,7 +73,7 @@ import java.util.Set;
+@@ -72,7 +72,7 @@ import java.util.Set;
   */
  @UsedByReflection("all_site_preferences.xml")
  @NullMarked

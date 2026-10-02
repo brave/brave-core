@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/html_capability_element_base.cc b/third_party/blink/renderer/core/html/html_capability_element_base.cc
-index 53c0832cd8c1d766364dd82d9e0009e0a0c3aecc..63e6c4f0b498f0e9a766dc6473199b1df2d0f323 100644
+index b3ed3fddce79fccd700a194de08dfa7052a21ef6..3e18e45bcc2dc408086006f98d67180e9a8201c2 100644
 --- a/third_party/blink/renderer/core/html/html_capability_element_base.cc
 +++ b/third_party/blink/renderer/core/html/html_capability_element_base.cc
-@@ -662,9 +662,15 @@ bool HTMLCapabilityElementBase::MaybeRegisterPageEmbeddedPermissionControl() {
+@@ -672,9 +672,15 @@ bool HTMLCapabilityElementBase::MaybeRegisterPageEmbeddedPermissionControl() {
    embedded_permission_control_receiver_.Bind(
        client.InitWithNewPipeAndPassReceiver(), GetTaskRunner());
    CHECK(embedded_permission_control_receiver_.is_bound());

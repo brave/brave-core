@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc b/chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc
-index f594d3b3abceae50b957730efce76a3855cbd059..8e7e4482cc279eeb7ec6792fc06048e361aa30ab 100644
+index 352402767d777ae294ff428f8b43b7dc0c86d268..9b4fb55dda974fbd071eb8687a7674282cc830e1 100644
 --- a/chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc
 +++ b/chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc
 @@ -706,7 +706,7 @@ void ChromeBrowserMainExtraPartsProfiles::

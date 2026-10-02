@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/theme_source.cc b/chrome/browser/ui/webui/theme_source.cc
-index f79e732fde3320d443d748020878e10c4aa85e0a..3c9c113088055be7526668995ec23c011be87e76 100644
+index 1583e59381290c78c4f6e97296c8335ba6515ba4..9dd392f643dfdaaec66eb277575246f0c58f3dee 100644
 --- a/chrome/browser/ui/webui/theme_source.cc
 +++ b/chrome/browser/ui/webui/theme_source.cc
-@@ -477,6 +477,7 @@ void ThemeSource::SendColorsCss(
+@@ -500,6 +500,7 @@ void ThemeSource::SendColorsCss(
  #else
    const auto* theme_service =
        ThemeServiceFactory::GetForProfile(profile_->GetOriginalProfile());
