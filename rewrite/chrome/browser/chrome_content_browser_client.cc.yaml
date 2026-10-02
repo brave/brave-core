@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Let Brave opt specific origins into first-party storage keys. Leo
+      workspace origins use this so they are not partitioned when embedded as
+      iframes. BraveShouldUseFirstPartyStorageKey is defined in the
+      chromium_src override.
+    preempt_function_impl:
+      function_name: ChromeContentBrowserClient::ShouldUseFirstPartyStorageKey
+      return_if: 'BraveShouldUseFirstPartyStorageKey(origin)'
+      return_value: 'true'
