@@ -1014,10 +1014,10 @@ TEST_F(BraveAdsServiceImplIOSTest,
   prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
 
   // Act
-  ads_service_->InitializeAds(
-      storage_path(), /*ads_client=*/nullptr, mojom::SysInfo::New(),
-      mojom::BuildChannelInfo::New(), /*mojom_wallet=*/nullptr,
-      base::DoNothing());
+  ads_service_->InitializeAds(storage_path(), /*ads_client=*/nullptr,
+                              mojom::SysInfo::New(),
+                              mojom::BuildChannelInfo::New(),
+                              /*mojom_wallet=*/nullptr, base::DoNothing());
 
   // Assert
   EXPECT_FALSE(ads_service_->IsIneligibleToStart());
@@ -1031,17 +1031,16 @@ TEST_F(BraveAdsServiceImplIOSTest,
   prefs_.SetBoolean(prefs::kNotificationsEnabled, true);
 
   // Act
-  ads_service_->InitializeAds(
-      storage_path(), /*ads_client=*/nullptr, mojom::SysInfo::New(),
-      mojom::BuildChannelInfo::New(), /*mojom_wallet=*/nullptr,
-      base::DoNothing());
+  ads_service_->InitializeAds(storage_path(), /*ads_client=*/nullptr,
+                              mojom::SysInfo::New(),
+                              mojom::BuildChannelInfo::New(),
+                              /*mojom_wallet=*/nullptr, base::DoNothing());
 
   // Assert
   EXPECT_FALSE(ads_service_->IsIneligibleToStart());
 }
 
-TEST_F(BraveAdsServiceImplIOSTest,
-       IneligibleToStartWhenAllAdTypesAreDisabled) {
+TEST_F(BraveAdsServiceImplIOSTest, IneligibleToStartWhenAllAdTypesAreDisabled) {
   // Arrange
   prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
   test::AdsServiceWaiter waiter(*ads_service_);
@@ -1113,6 +1112,96 @@ TEST_F(BraveAdsServiceImplIOSTest,
   waiter.WaitForOnAdsServiceIneligibleToStart();
   EXPECT_FALSE(success);
   EXPECT_TRUE(ads_service_->IsIneligibleToStart());
+}
+
+TEST_F(BraveAdsServiceImplIOSTest,
+       OnAdsPrefChangedBecomesEligibleAgainReinitializesService) {
+  // Arrange
+  ASSERT_TRUE(InitializeAdsSuccessfully());
+  test::AdsServiceWaiter ineligible_waiter(*ads_service_);
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
+  ineligible_waiter.WaitForOnAdsServiceIneligibleToStart();
+  ASSERT_FALSE(ads_service_->IsInitialized());
+  test::AdsServiceWaiter reinitialize_waiter(*ads_service_);
+
+  // Act
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
+  reinitialize_waiter.WaitForOnDidInitializeAdsService();
+
+  // Assert
+  EXPECT_FALSE(ads_service_->IsIneligibleToStart());
+  EXPECT_TRUE(ads_service_->IsInitialized());
+}
+
+TEST_F(BraveAdsServiceImplIOSTest,
+       OnAdsPrefChangedShutsDownRunningServiceWhenBecomingIneligible) {
+  // Arrange
+  ASSERT_TRUE(InitializeAdsSuccessfully());
+  test::AdsServiceWaiter waiter(*ads_service_);
+
+  // Act
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
+
+  // Assert
+  waiter.WaitForOnDidShutdownAdsService();
+  EXPECT_FALSE(ads_service_->IsInitialized());
+}
+
+TEST_F(BraveAdsServiceImplIOSTest,
+       DoesNotInitializeServiceWhenNotificationsEnabledPrefChangesAlone) {
+  // Arrange
+  ::testing::NiceMock<test::AdsServiceObserverMock> observer;
+  base::ScopedObservation<AdsService, AdsServiceObserver> observation(
+      &observer);
+  observation.Observe(ads_service_.get());
+
+  // Act & Assert
+  EXPECT_CALL(observer, OnAdsServiceIneligibleToStart).Times(0);
+  prefs_.SetBoolean(prefs::kNotificationsEnabled, true);
+  EXPECT_FALSE(ads_service_->IsInitialized());
+}
+
+TEST_F(BraveAdsServiceImplIOSTest,
+       NotifyAdsServiceIneligibleToStartOnlyNotifiesObserversOnce) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
+  ::testing::NiceMock<test::AdsServiceObserverMock> observer;
+  base::ScopedObservation<AdsService, AdsServiceObserver> observation(
+      &observer);
+  observation.Observe(ads_service_.get());
+  test::AdsServiceWaiter waiter(*ads_service_);
+  ads_service_->InitializeAds(storage_path(), /*ads_client=*/nullptr,
+                              mojom::SysInfo::New(),
+                              mojom::BuildChannelInfo::New(),
+                              /*mojom_wallet=*/nullptr, base::DoNothing());
+  waiter.WaitForOnAdsServiceIneligibleToStart();
+  ASSERT_TRUE(ads_service_->IsIneligibleToStart());
+
+  // Act & Assert
+  EXPECT_CALL(observer, OnAdsServiceIneligibleToStart).Times(0);
+  prefs_.SetBoolean(prefs::kNotificationsEnabled, true);
+  prefs_.SetBoolean(prefs::kNotificationsEnabled, false);
+}
+
+TEST_F(BraveAdsServiceImplIOSTest,
+       NotifyDidInitializeAdsServiceResetsIneligibleFlag) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
+  test::AdsServiceWaiter ineligible_waiter(*ads_service_);
+  ads_service_->InitializeAds(storage_path(), /*ads_client=*/nullptr,
+                              mojom::SysInfo::New(),
+                              mojom::BuildChannelInfo::New(),
+                              /*mojom_wallet=*/nullptr, base::DoNothing());
+  ineligible_waiter.WaitForOnAdsServiceIneligibleToStart();
+  ASSERT_TRUE(ads_service_->IsIneligibleToStart());
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
+  ASSERT_TRUE(ads_service_->IsIneligibleToStart());
+
+  // Act
+  ASSERT_TRUE(InitializeAdsSuccessfully());
+
+  // Assert
+  EXPECT_FALSE(ads_service_->IsIneligibleToStart());
 }
 
 }  // namespace brave_ads

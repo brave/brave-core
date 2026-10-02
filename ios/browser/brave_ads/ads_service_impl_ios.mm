@@ -653,9 +653,8 @@ void AdsServiceImplIOS::OnAdsPrefChanged(const std::string& path) {
     // `ClearAdsPrefs`, which mutates `pref_change_registrar_` and must not do
     // so re-entrantly from within this pref's own change notification.
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE,
-        base::BindOnce(&AdsServiceImplIOS::MaybeClearAdsData,
-                       weak_ptr_factory_.GetWeakPtr(), path));
+        FROM_HERE, base::BindOnce(&AdsServiceImplIOS::MaybeClearAdsData,
+                                  weak_ptr_factory_.GetWeakPtr(), path));
   }
 
   if (path == prefs::kNotificationsEnabled &&

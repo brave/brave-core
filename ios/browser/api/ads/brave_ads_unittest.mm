@@ -11,23 +11,30 @@
 #include <string>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/files/file.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/test_future.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_ads/core/public/history/site_history.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_ads/core/public/test/ads_mock.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/new_tab_takeover_infobar_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #import "brave/ios/browser/api/ads/ads_client_bridge.h"
+#include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
+#include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
+#include "brave/ios/browser/brave_ads/test/fake_ads_factory.h"
+#include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
@@ -82,8 +89,12 @@ class BraveAdsTest : public PlatformTest {
  public:
   BraveAdsTest() {
     CHECK(temp_dir_.CreateUniqueTempDir());
-    profile_ =
-        profile_manager_.AddProfileWithBuilder(TestProfileIOS::Builder());
+    TestProfileIOS::Builder builder;
+    builder.AddTestingFactory(
+        brave_ads::AdsServiceFactoryIOS::GetInstance(),
+        base::BindRepeating(&BraveAdsTest::CreateFakeAdsService,
+                            base::Unretained(this)));
+    profile_ = profile_manager_.AddProfileWithBuilder(std::move(builder));
     ads_ = [[BraveAds alloc]
         initWithStateStoragePath:base::SysUTF8ToNSString(
                                      temp_dir_.GetPath().value())];
@@ -99,6 +110,24 @@ class BraveAdsTest : public PlatformTest {
     return static_cast<id<AdsClientBridge>>(ads_);
   }
 
+  brave_ads::test::AdsMock& GetAds() {
+    brave_ads::test::AdsMock* ads = ads_factory_->GetAds();
+    CHECK(ads);
+    return *ads;
+  }
+
+  bool InitializeServiceSuccessfully() {
+    base::test::TestFuture<bool> test_future;
+    auto* test_future_ptr = &test_future;
+    [ads_ initServiceWithSysInfo:nil
+                buildChannelInfo:nil
+                      walletInfo:nil
+                      completion:^(bool success) {
+                        test_future_ptr->SetValue(success);
+                      }];
+    return test_future.Get();
+  }
+
  protected:
   web::WebTaskEnvironment task_environment_;
   IOSChromeScopedTestingLocalState scoped_testing_local_state_;
@@ -106,6 +135,17 @@ class BraveAdsTest : public PlatformTest {
   raw_ptr<ProfileIOS> profile_ = nullptr;
   base::ScopedTempDir temp_dir_;
   BraveAds* ads_;
+
+ private:
+  std::unique_ptr<KeyedService> CreateFakeAdsService(ProfileIOS* profile) {
+    auto ads_factory = std::make_unique<brave_ads::test::FakeAdsFactory>();
+    ads_factory_ = ads_factory.get();
+    return std::make_unique<brave_ads::AdsServiceImplIOS>(
+        CHECK_DEREF(profile->GetPrefs()), std::move(ads_factory));
+  }
+
+  // Not owned.
+  raw_ptr<brave_ads::test::FakeAdsFactory> ads_factory_ = nullptr;
 };
 
 TEST_F(BraveAdsTest, IsServiceRunningReturnsFalseBeforeInitialization) {
@@ -395,6 +435,55 @@ TEST_F(BraveAdsTest, ShutdownServiceHandlesNilCompletionWhenServiceNotRunning) {
   [ads_ shutdownService:nil];
 }
 
+TEST_F(BraveAdsTest, InitServiceWithSysInfoStartsServiceSuccessfully) {
+  // Act
+  bool success = InitializeServiceSuccessfully();
+
+  // Assert
+  EXPECT_TRUE(success);
+  EXPECT_TRUE([ads_ isServiceRunning]);
+}
+
+TEST_F(BraveAdsTest, ShutdownServiceShutsDownRunningService) {
+  // Arrange
+  ASSERT_TRUE(InitializeServiceSuccessfully());
+  base::test::TestFuture<bool> test_future;
+  auto* test_future_ptr = &test_future;
+
+  // Act
+  [ads_ shutdownService:^{
+    test_future_ptr->SetValue(true);
+  }];
+
+  // Assert
+  EXPECT_TRUE(test_future.Get());
+  EXPECT_FALSE([ads_ isServiceRunning]);
+}
+
+TEST_F(BraveAdsTest, GetStatementOfAccountsForwardsToAdsServiceWhenRunning) {
+  // Arrange
+  ASSERT_TRUE(InitializeServiceSuccessfully());
+  auto mojom_statement = brave_ads::mojom::StatementInfo::New();
+  mojom_statement->ads_received_this_month = 7;
+  mojom_statement->max_earnings_this_month = 1.5;
+  base::test::TestFuture<NSInteger, double, NSDate*> test_future;
+  auto* test_future_ptr = &test_future;
+
+  // Act & Assert
+  EXPECT_CALL(GetAds(), GetStatementOfAccounts)
+      .WillOnce(base::test::RunOnceCallback<0>(std::move(mojom_statement)));
+  [ads_ getStatementOfAccounts:^(NSInteger ads_received,
+                                 double estimated_earnings,
+                                 NSDate* next_payment_date) {
+    test_future_ptr->SetValue(ads_received, estimated_earnings,
+                              next_payment_date);
+  }];
+  const auto& [ads_received, estimated_earnings, next_payment_date] =
+      test_future.Get();
+  EXPECT_EQ(7, ads_received);
+  EXPECT_DOUBLE_EQ(1.5, estimated_earnings);
+}
+
 TEST_F(BraveAdsTest, CanShowNotificationAdsForwardsToNotificationsHandler) {
   // Arrange
   FakeBraveAdsNotificationHandler* notification_handler =
@@ -430,6 +519,21 @@ TEST_F(BraveAdsTest, CloseNotificationAdForwardsToNotificationsHandler) {
 
   // Assert
   EXPECT_NSEQ(@"placement-id", notification_handler.lastClosedPlacementId);
+}
+
+TEST_F(BraveAdsTest, CanShowNotificationAdsReturnsFalseWhenNoHandlerIsSet) {
+  // Act & Assert
+  EXPECT_FALSE([bridge() canShowNotificationAds]);
+}
+
+TEST_F(BraveAdsTest, ShowNotificationAdIsNoOpWhenNoHandlerIsSet) {
+  // Act & Assert
+  [bridge() showNotificationAd:brave_ads::mojom::NotificationAdInfo::New()];
+}
+
+TEST_F(BraveAdsTest, CloseNotificationAdIsNoOpWhenNoHandlerIsSet) {
+  // Act & Assert
+  [bridge() closeNotificationAd:std::string("placement-id")];
 }
 
 TEST_F(BraveAdsTest, ShowScheduledCaptchaForwardsToCaptchaHandler) {
@@ -715,4 +819,23 @@ TEST_F(BraveAdsTest,
        RegisterAdsResourcesForCountryCodeReturnsFalseForUnknownCode) {
   // Act & Assert
   EXPECT_FALSE([ads_ registerAdsResourcesForCountryCode:@"zz"]);
+}
+
+TEST_F(BraveAdsTest,
+       RegisterAdsResourcesForLanguageCodeReturnsTrueForKnownCode) {
+  // Act & Assert
+  EXPECT_TRUE([ads_ registerAdsResourcesForLanguageCode:@"en"]);
+}
+
+TEST_F(BraveAdsTest,
+       RegisterAdsResourcesForCountryCodeReturnsTrueForKnownCode) {
+  // Act & Assert
+  EXPECT_TRUE([ads_ registerAdsResourcesForCountryCode:@"US"]);
+}
+
+TEST_F(BraveAdsTest, IsBrowserActiveMatchesUIApplicationState) {
+  // Act & Assert
+  EXPECT_EQ(UIApplication.sharedApplication.applicationState ==
+                UIApplicationStateActive,
+            [bridge() isBrowserActive]);
 }
