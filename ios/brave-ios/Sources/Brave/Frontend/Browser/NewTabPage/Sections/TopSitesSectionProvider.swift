@@ -5,50 +5,60 @@
 
 import BraveCore
 import BraveUI
-import CoreData
 import Data
 import Foundation
-import Preferences
+import Observation
 import Shared
 import UIKit
-import os.log
 
-enum BookmarksAction {
-  case opened(inNewTab: Bool = false, switchingToPrivateMode: Bool = false)
-  case edited
+enum TopSiteAction {
+  case opened(
+    url: URL?,
+    isFavorite: Bool = false,
+    inNewTab: Bool = false,
+    switchingToPrivateMode: Bool = false
+  )
+  case edited(favorite: Favorite)
+  case excluded(tile: TopSiteTile)
 }
 
-class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
+class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
   var sectionDidChange: (() -> Void)?
-  var action: (Favorite, BookmarksAction) -> Void
-  var legacyLongPressAction: (UIAlertController) -> Void
+  var action: (TopSiteAction) -> Void
 
   private let isPrivateBrowsing: Bool
+  private let tileSource: TopSitesTileSource
+  /// The tiles the collection view is currently showing. Kept separate from the source so that the
+  /// item count and the items themselves can't disagree while a reload is pending (drag to order)
+  private var tiles: [TopSiteTile] = []
 
-  var hasMoreThanOneFavouriteItems: Bool {
-    frc.fetchedObjects?.count ?? 0 > 0
+  var isReorderingEnabled: Bool {
+    tileSource.isReorderingEnabled
   }
 
-  private var frc: NSFetchedResultsController<Favorite>
-
   init(
-    action: @escaping (Favorite, BookmarksAction) -> Void,
-    legacyLongPressAction: @escaping (UIAlertController) -> Void,
-    isPrivateBrowsing: Bool
+    action: @escaping (TopSiteAction) -> Void,
+    isPrivateBrowsing: Bool,
+    tileSource: TopSitesTileSource
   ) {
     self.action = action
-    self.legacyLongPressAction = legacyLongPressAction
     self.isPrivateBrowsing = isPrivateBrowsing
+    self.tileSource = tileSource
 
-    frc = Favorite.frc()
     super.init()
-    frc.fetchRequest.fetchLimit = 20
-    frc.delegate = self
 
-    do {
-      try frc.performFetch()
-    } catch {
-      Logger.module.error("Favorites fetch error")
+    updateTiles()
+  }
+
+  /// Snapshots the source's tiles and re-arms tracking for the next change.
+  private func updateTiles() {
+    tiles = withObservationTracking {
+      tileSource.tiles
+    } onChange: { [weak self] in
+      DispatchQueue.main.async {
+        self?.updateTiles()
+        self?.sectionDidChange?()
+      }
     }
   }
 
@@ -70,17 +80,12 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     )
   }
 
-  var numberOfFavorites: Int {
-    frc.fetchedObjects?.count ?? 0
-  }
-
   /// The actual number of favorites that will be displayed in a single row
   /// given the available width, which is the lesser of the number of fetched
   /// favorites and the maximum number of items that fit in the row.
   func displayedItemCount(in collectionView: UICollectionView, section: Int) -> Int {
-    guard Preferences.NewTabPage.topsitesMode.value != TopsitesMode.none else { return 0 }
     return min(
-      numberOfFavorites,
+      tiles.count,
       Self.numberOfItems(
         in: collectionView,
         availableWidth: fittingSizeForCollectionView(collectionView, section: section).width
@@ -89,10 +94,8 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
   }
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    guard let bookmark = frc.fetchedObjects?[safe: indexPath.item] else {
-      return
-    }
-    action(bookmark, .opened())
+    guard let item = tiles[safe: indexPath.item] else { return }
+    action(.opened(url: item.url, isFavorite: item.isFavorite))
   }
 
   func collectionView(
@@ -118,18 +121,20 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     forItemAt indexPath: IndexPath
   ) {
 
-    guard let cell = cell as? FavoritesCell else {
+    guard let cell = cell as? FavoritesCell,
+      let item = tiles[safe: indexPath.item]
+    else {
       return
     }
-
-    let fav = frc.object(at: IndexPath(item: indexPath.item, section: 0))
-    cell.title = fav.displayTitle ?? fav.url
-
-    // Reset Fav-icon loading and image-view to default
-    cell.imageView.cancelLoading()
-
-    if let url = fav.url?.asURL {
-      cell.imageView.loadFavicon(siteURL: url, isPrivateBrowsing: isPrivateBrowsing)
+    cell.title = item.title
+    // Any change to the tiles reloads the whole collection view, so most cells come back showing
+    // the favicon they already had. Reloading those would blank the icon until the load finishes,
+    // which reads as every tile flashing away when only one of them changed.
+    if cell.loadedSiteURL != item.url {
+      // Reset Fav-icon loading and image-view to default
+      cell.imageView.cancelLoading()
+      cell.imageView.loadFavicon(siteURL: item.url, isPrivateBrowsing: isPrivateBrowsing)
+      cell.loadedSiteURL = item.url
     }
     cell.accessibilityLabel = cell.title
   }
@@ -190,47 +195,80 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     point: CGPoint
   ) -> UIContextMenuConfiguration? {
     guard let indexPath = indexPaths.first,
-      let favourite = frc.fetchedObjects?[indexPath.item]
+      let item = tiles[safe: indexPath.item]
     else { return nil }
+
     return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) {
       _ -> UIMenu? in
       let openInNewTab = UIAction(
         title: Strings.openNewTabButtonTitle,
         handler: UIAction.deferredActionHandler { _ in
-          self.action(favourite, .opened(inNewTab: true, switchingToPrivateMode: false))
+          self.action(
+            .opened(
+              url: item.url,
+              isFavorite: item.isFavorite,
+              inNewTab: true,
+              switchingToPrivateMode: false
+            )
+          )
         }
       )
-      let edit = UIAction(
-        title: Strings.editFavorite,
-        handler: UIAction.deferredActionHandler { _ in
-          self.action(favourite, .edited)
-        }
-      )
-      let delete = UIAction(
-        title: Strings.removeFavorite,
-        attributes: .destructive,
-        handler: UIAction.deferredActionHandler { _ in
-          favourite.delete()
-        }
-      )
-
-      var urlChildren: [UIAction] = [openInNewTab]
+      var urlChildren = [openInNewTab]
       if !self.isPrivateBrowsing {
-        let openInNewPrivateTab = UIAction(
-          title: Strings.openNewPrivateTabButtonTitle,
-          handler: UIAction.deferredActionHandler { _ in
-            self.action(favourite, .opened(inNewTab: true, switchingToPrivateMode: true))
-          }
+        urlChildren.append(
+          UIAction(
+            title: Strings.openNewPrivateTabButtonTitle,
+            handler: UIAction.deferredActionHandler { _ in
+              self.action(
+                .opened(
+                  url: item.url,
+                  isFavorite: item.isFavorite,
+                  inNewTab: true,
+                  switchingToPrivateMode: true
+                )
+              )
+            }
+          )
         )
-        urlChildren.append(openInNewPrivateTab)
       }
 
-      let urlMenu = UIMenu(title: "", options: .displayInline, children: urlChildren)
-      let favMenu = UIMenu(title: "", options: .displayInline, children: [edit, delete])
+      let modeChildren: [UIAction]
+      switch item.id {
+      case .favorite(let objectID):
+        modeChildren = [
+          UIAction(
+            title: Strings.editFavorite,
+            handler: UIAction.deferredActionHandler { _ in
+              guard let favorite = Favorite.get(with: objectID) else { return }
+              self.action(.edited(favorite: favorite))
+            }
+          ),
+          UIAction(
+            title: Strings.removeFavorite,
+            attributes: .destructive,
+            handler: UIAction.deferredActionHandler { _ in
+              Favorite.get(with: objectID)?.delete()
+            }
+          ),
+        ]
+      case .mostVisited:
+        modeChildren = [
+          UIAction(
+            title: Strings.excludeMostVisitedSite,
+            attributes: .destructive,
+            handler: UIAction.deferredActionHandler { _ in
+              self.action(.excluded(tile: item))
+            }
+          )
+        ]
+      }
+
       return UIMenu(
-        title: favourite.title ?? favourite.url ?? "",
-        identifier: nil,
-        children: [urlMenu, favMenu]
+        title: item.title ?? "",
+        children: [
+          UIMenu(title: "", options: .displayInline, children: urlChildren),
+          UIMenu(title: "", options: .displayInline, children: modeChildren),
+        ]
       )
     }
   }
@@ -269,14 +307,5 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
       cornerRadius: 16
     )
     return preview
-  }
-}
-
-extension FavoritesSectionProvider: NSFetchedResultsControllerDelegate {
-  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    try? frc.performFetch()
-    DispatchQueue.main.async {
-      self.sectionDidChange?()
-    }
   }
 }
