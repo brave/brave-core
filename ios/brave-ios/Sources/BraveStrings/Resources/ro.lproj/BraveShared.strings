@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "Despre";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "Despre Brave Shields";
-
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "Site-urile adesea includ cookie-uri și script-uri care încearcă să te identifice pe tine și dispozitivul tău. Vor să afle cine ești și te urmăresc pe internet, monitorizându-ți activitatea pe fiecare site.\n\nBrave le blochează astfel încât să poți naviga pe internet fără să fii urmărit.";
-
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "Asta îți va permite să salvezi imaginea în Galerie.";
 
@@ -36,9 +30,6 @@
 
 /* Text for the toggle switch to clear 'Brave Ads' data in settings */
 "ads.braveAdsDataToggleOption" = "Date Brave Ads";
-
-/* individual blocking statistic title */
-"AdsAndTrackers" = "Reclame și urmăritori";
 
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "Cere mereu versiunea de site Desktop";
@@ -130,18 +121,6 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "Completare automată";
 
-/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
-"AutoRedirectAMPPages" = "Redirecționează automat paginile AMP";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
-"AutoRedirectAMPPagesDescription" = "Accesează mereu adresele URL originale ale paginilor (non-AMP), în loc de versiunile Google Accelerated Mobile Page";
-
-/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
-"AutoRedirectTrackingURLs" = "Redirecționează automat URL-urile de urmărire";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "Activează suportul pentru bypass-area URL-urilor top-level de urmărire prin redirecționare";
-
 /* cookie settings option */
 "Block3rdPartyCookies" = "Blochează cookie-uri de la terți";
 
@@ -160,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Setarea preferinței a eșuat. Te rog să încerci din nou.";
 
-/* A title for a setting that enables cookie consent notices */
-"BlockCookieConsentNotices" = "Blochează notificările privind consimțământul pentru cookie-uri";
-
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Monitor de blocare";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blochează popup-uri";
-
-/* No comment provided by engineer. */
-"BlockScripts" = "Blochează script-uri";
-
-/* No comment provided by engineer. */
-"BlockScriptsDescription" = "Blochează Javascript (poate afecta funcționarea site-urilor).";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "Adaugă marcaje pentru %lld file";
@@ -239,46 +209,10 @@
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Închide";
 
 /* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "Controale avansate";
-
-/* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave Shields și Confidențialitate";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Shields și Confidențialitate";
-
-/* The number of ads and trackers blocked will be next to this */
-"BraveShieldsBlockedCountLabel" = "Reclame și alte lucruri dubioase blocate";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Află mai multe";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "Schimbă setările globale implicite Shields";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalControls" = "Controale Globale";
-
-/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "Stochează informațiile de contact pentru viitoarele rapoarte privind site-urile defecte";
-
-/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "Dacă furnizezi informații de contact, acestea vor fi stocate pentru rapoarte viitoare";
-
-/* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "Dacă site-ul pare nefuncțional, încearcă să dezactivezi Shields";
-
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave Shields";
-
-/* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "Jos";
-
-/* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "Sus";
-
-/* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "Apasă de două ori pentru a activa sau dezactiva Brave Shields";
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
@@ -844,15 +778,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findPreviousTitle" = "Găsește precedentul";
 
-/* individual blocking statistic title */
-"FingerprintingMethods" = "Metode de amprentare";
-
-/* No comment provided by engineer. */
-"FingerprintingProtection" = "Blochează amprentarea";
-
-/* No comment provided by engineer. */
-"FingerprintingProtectionDescription" = "Face ca site-urile să recunoască mai greu caracteristicile distinctive ale dispozitivului tău. ";
-
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Permite link-urilor universale să se deschidă în aplicații externe";
 
@@ -919,15 +844,6 @@
 /* No comment provided by engineer. */
 "Home" = "Pagină de pornire";
 
-/* No comment provided by engineer. */
-"HTTPSEverywhere" = "Actualizează conexiunile la HTTPS";
-
-/* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Deschide site-urile utilizând HTTPS securizat în loc de HTTP, atunci când este posibil.";
-
-/* individual blocking statistic title */
-"HTTPSUpgrades" = "Actualizări la HTTPS";
-
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Importare date de navigare";
 
@@ -948,6 +864,9 @@
 
 /* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
+
+/* Title for Brave Leo voice input menu item. Brave Leo is the name of a product and should not be translated */
+"LeoVoiceInputMenuItem" = "Input vocal Leo";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "Credențialele salvate vor fi eliminate definitiv.";
@@ -1666,9 +1585,6 @@
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Playlist fără titlu";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
-"PopoverShieldsMenuClose" = "Închide meniul Shields";
-
 /* Settings privacy section title */
 "Privacy" = "Confidențialitate";
 
@@ -2017,41 +1933,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "Șterge favorit";
 
-/* No comment provided by engineer. */
-"ReportABrokenSite" = "Raportează un site nefuncțional";
-
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "Raportează un bug";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"ReportBrokenAdditionalDetails" = "Detalii suplimentare (opțional)";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"reportBrokenAdditionalDetailsRequired" = "Detalii adiționale";
-
-/* A label for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "Care este problema principală pe care o întâmpini?";
-
-/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
-"ReportBrokenContactMe" = "Contactează-mă la: (opțional)";
-
-/* Contact info storing description */
-"ReportBrokenContactMeDescription" = "Dacă furnizezi informații de contact, acestea vor fi stocate pentru raportarea site-urilor defecte în viitor.";
-
-/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
-"ReportBrokenContactMeSuggestions" = "Email, Twitter etc.";
-
-/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"ReportBrokenPlaceholder" = "Selectează o opțiune";
-
-/* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Anunță-i pe dezvoltatorii Brave că acest site nu funcționează corect:";
-
-/* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Notă: Raportul transmis serverelor Brave va include adresa site-ului, numărul versiunii Brave, setările Shields, starea VPN și setările de limbă.";
-
-/* No comment provided by engineer. */
-"ReportBrokenSubmitButtonTitle" = "Trimite";
 
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraAndMicrophonePermissionPrompt" = "\"%@\" dorește să acceseze camera și microfonul";
@@ -2329,9 +2212,6 @@
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Salvează credențiale";
 
-/* individual blocking statistic title */
-"ScriptsBlocked" = "Script-uri blocate";
-
 /* The placeholder text for bookmark search */
 "searchBookmarksTitle" = "Caută în marcaje";
 
@@ -2572,21 +2452,6 @@
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Reclamele sunt blocate în timp ce vizionezi videoclipuri pe acest website.";
 
-/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Setări globale implicite Brave Shields";
-
-/* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "Acestea sunt setările implicite pentru Shields. Modificarea lor nu va afecta setările existente per site.";
-
-/* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Navighezi pe acest site fără protecția de confidențialitate oferită de Brave. Nu este în regulă cu scuturile activate?";
-
-/* shields overview message */
-"ShieldsOverview" = "Site Shields îți permit să controlezi momentul în care reclamele și urmăritorii sunt blocate pentru fiecare site pe care îl vizitezi. Dacă preferi să vezi reclame pe un anumit site, le poți activa aici.";
-
-/* shields overview footer message */
-"ShieldsOverviewFooter" = "Notă: Este posibil ca unele site-uri să necesite scripturi pentru a funcționa corect, așa că acest scut este dezactivat în mod implicit.";
-
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Filă privată nouă";
 
@@ -2772,15 +2637,6 @@
 
 /* Settings item for clearing site-specific settings and shields settings. */
 "SiteAndShieldsSettings" = "Setări Site și Shields";
-
-/* No comment provided by engineer. */
-"SiteReportedBody" = "Îți mulțumim că i-ai anunțat pe dezvoltatorii Brave de problema cu acest site. Vom face tot ce ne stă în putință ca să rezolvăm!";
-
-/* No comment provided by engineer. */
-"SiteReportedTitle" = "Îți mulțumim";
-
-/* Brave panel topmost title */
-"SiteShieldSettings" = "Shields";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "În fiecare zi economisesc date folosind browserul Brave.";
@@ -3558,9 +3414,6 @@
 
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "Anulat de către utilizator";
-
-/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
-"UseRegionalAdblock" = "Utilizează adblock regional";
 
 /* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "Închide";

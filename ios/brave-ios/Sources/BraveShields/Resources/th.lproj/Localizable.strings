@@ -1,14 +1,326 @@
+/* The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "เกี่ยวกับ Brave Shields";
+
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "เว็บไซต์ต่างๆ มักมีคุกกี้และสคริปต์ที่พยายามระบุตัวตนและอุปกรณ์ของคุณ โดยต้องการค้นหาว่าคุณเป็นใครและติดตามคุณไปทั่วทุกเว็บไซต์ด้วยการติดตามสิ่งที่คุณทำบนทุกเว็บไซต์\n\nซึ่ง Brave จะบล็อกสิ่งเหล่านี้เพื่อให้คุณท่องเว็บได้โดยไม่ถูกติดตาม";
+
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "เพิ่มรายการเพิ่มเติมที่สร้างและดูแลโดยชุมชนที่เชื่อถือได้ของคุณ";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "สมัครเฉพาะรายการจากหน่วยงานที่คุณไว้วางใจเท่านั้น** เบราว์เซอร์ของคุณจะตรวจสอบรายการอัปเดตจาก URL ที่คุณป้อนเป็นระยะ";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "เพิ่มตัวกรองตาม URL";
+
 /* Shields Ads Stat */
 "AdsAndTrackersrBlocked" = "บล็อก Tracker & โฆษณาแล้ว";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "บล็อก\nโฆษณาแล้ว";
 
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "**Brave Player** คือวิธีการในการสัมผัสกับการรับชมวิดีโอแบบไม่มีโฆษณาคั่นและไม่มีสะดุด";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "ปรับ Shields สำหรับฉัน";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "เว็บไซต์นี้ได้เริ่มปิดกั้นตัวบล็อกโฆษณาบางตัวแล้ว ซึ่งหมายความว่าเว็บไซต์ดังกล่าวอาจทำงานได้ไม่ตรงตามความคาดหวัง";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "เพื่อแก้ไขปัญหานี้ Brave จึงทำการปรับการตั้งค่า Shields ให้กับคุณ เมื่อปรับการตั้งค่าแล้ว คุณสามารถรับชมเนื้อหานี้ได้ใน Brave Player แทน";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "เก็บการตั้งค่าปัจจุบันเอาไว้";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "ปรับการตั้งค่าการปิดกั้นโฆษณาสำหรับเว็บไซต์นี้";
+
+/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
+"AutoRedirectAMPPages" = "เปลี่ยนเส้นทางหน้า AMP อัตโนมัติ";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
+"AutoRedirectAMPPagesDescription" = "ไปที่ URL หน้าเดิม (ที่ไม่ใช่ AMP) เสมอแทนเวอร์ชัน Accelerated Mobile Page ของ Google";
+
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "เปลี่ยนเส้นทาง URL แบบติดตามอัตโนมัติ";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "เปิดใช้การรองรับในการเลี่ยงเปลี่ยนเส้นทาง URL ติดตามระดับสูง";
+
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "ย่อยแบบอัตโนมัติ";
+
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "ทำลายข้อมูลการเรียกดูโดยอัตโนมัติ";
+
+/* Text for a button in a blocked page or a page not secure info screen that takes you back where you came from or back to home screen */
+"BackToSafetyButtonTitle" = "กลับไปยังการท่องเว็บแบบปลอดภัย";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "รุนแรง";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "ป้องกันโฆษณา ป๊อปอัป และตัวติดตามไม่ให้โหลดขึ้นมา";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "ปิดการใช้งานแล้ว";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "มาตรฐาน";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "บล็อกการแจ้งเตือน 'การเปลี่ยนเป็นแอป'";
+
+/* No comment provided by engineer. */
+"BlockScripts" = "บล็อกสคริปต์";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "บล็อก JavaScript (อาจทำให้เว็บไซต์เสียหาย)";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Brave Player";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "เปิดวิดีโอจากเว็บไซต์นี้ด้วย Brave Player เสมอ";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "ลองเลย";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "ไม่ใช่ตอนนี้";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Brave Player จะทำให้คุณดูวิดีโอได้อย่างไม่มีสะดุด";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "ดูใน Brave Player แทน";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "การควบคุมขั้นสูง";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "บล็อกโฆษณาและสิ่งที่น่ากลัวต่างๆ แล้ว";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "ดูข้อมูลเพิ่มเติม";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "ค่าเริ่มต้นทั่วไปของ Brave Shields";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "การควบคุมทั่วไป";
+
+/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfo" = "บันทึกข้อมูลการติดต่อสำหรับการรายงานเว็บไซต์ที่เสียในอนาคต";
+
+/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfoDescription" = "หากคุณให้ข้อมูลการติดต่อ ข้อมูลจะถูกบันทึกเพื่อใช้ในรายงานในอนาคต";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "หากเว็บไซต์นี้ดูเหมือนมีปัญหา ให้ลองปิด Shields";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Brave Shields";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "ล่าง";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "บน";
+
+/* The accessibility hint spoken when focused on the main shields toggle */
+"BraveShieldsToggleHint" = "แตะสองครั้งเพื่อเปิดใช้ Brave Shields";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "การกรองเนื้อหา";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "เปิดใช้งานตัวกรองแบบกำหนดเองที่บล็อกตัวติดตามและสิ่งรบกวนที่เจาะจงภูมิภาคและภาษา";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "รายการตัวกรองแบบกำหนดเอง";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "URL รายการตัวกรองแบบกำหนดเอง";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "ตัวกรองแบบกำหนดเอง";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "เพิ่มตัวกรองแบบกำหนดเองที่นี่ โปรดใช้รูปแบบตัวกรอง Adblock";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "กฎ `%1$@` ไม่ถูกต้องบนบรรทัด %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "เพิ่มตัวกรองแบบกำหนดเอง";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "ตัวกรองแบบกำหนดเองไม่รองรับ URL ที่มากกว่า %i บรรทัด";
+
 /* Data Saved Shield Stat */
 "DataSavedStat" = "บันทึก\nข้อมูลโดยประมาณแล้ว";
 
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "รายการตัวกรองเริ่มต้น";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "เนื่องจากคุณขอให้บล็อกตัวติดตามและโฆษณาอย่างจริงจัง Brave จึงบล็อกไซต์นี้ก่อนการเชื่อมต่อเครือข่ายครั้งแรก";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Brave ได้ยับยั้งการโหลดเว็บไซต์ต่อไปนี้:";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "เว็บไซต์นี้อาจพยายามติดตามคุณไปที่เว็บไซต์อื่น";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "ดำเนินการต่อ";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "โดเมนถูกบล็อค";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "แก้ไขตัวกรองแบบกำหนดเอง";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "ขอให้เว็บไซต์ต่าง ๆ ห้ามขายหรือแชร์ข้อมูลของคุณ [เรียนรู้เพิ่มเติม] (https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "เปิดใช้งานการควบคุมความเป็นส่วนตัวทั่วไป";
+
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "บันทึก\nเวลาโดยประมาณแล้ว";
+
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "รายการตัวกรองภายนอก";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "URL ที่ป้อนไม่ถูกต้อง";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "อนุญาตให้ป้อนเฉพาะ URL แบบปลอดภัย (https) ในรายการตัวกรองแบบกำหนดเองเท่านั้น";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "เพิ่ม";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "รายการชุมชนยอดนิยมเพิ่มเติม โปรดทราบว่าการเปิดใช้งานตัวกรองหลายตัวจนเกินไปจะทำให้การท่องเว็บช้าลง";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "การดาวน์โหลดล้มเหลว";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "กำลังรอดำเนินการการดาวน์โหลด";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "แก้ไข";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "ระบุ URL ของรายการตัวกรอง";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "อัปเดตล่าสุดเมื่อ %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "ป้อน URL รายการตัวกรองที่นี่";
+
+/* No comment provided by engineer. */
+"FingerprintingProtection" = "บล็อกการเก็บร่องรอย";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "ทำให้เว็บไซต์จดจำคุณลักษณะเฉพาะของอุปกรณ์ของคุณได้ยากขึ้น";
+
+/* No comment provided by engineer. */
+"httpsEverywhereDescription" = "เปิดเว็บไซต์โดยใช้ HTTPS ที่ปลอดภัยแทน HTTP เมื่อสามารถทำได้";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "เข้มงวด";
+
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "อัปเดตรายการแล้ว";
+
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "รายงานเว็บไซต์เสียหาย";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"ReportBrokenAdditionalDetails" = "รายละเอียดเพิ่มเติม (ไม่บังคับ)";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"reportBrokenAdditionalDetailsRequired" = "รายละเอียดเพิ่มเติม";
+
+/* A label for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "ปัญหาหลักที่คุณกำลังเห็นคืออะไร";
+
+/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
+"ReportBrokenContactMe" = "ติดต่อฉันที่: (ไม่บังคับ)";
+
+/* Contact info storing description */
+"ReportBrokenContactMeDescription" = "หากคุณให้ข้อมูลติดต่อไว้ ข้อมูลนั้นจะถูกเก็บเพื่อรายงานปัญหาเว็บไซต์ที่เสียในอนาคต";
+
+/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
+"ReportBrokenContactMeSuggestions" = "อีเมล, Twitter, ฯลฯ";
+
+/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"ReportBrokenPlaceholder" = "เลือกหนึ่งตัวเลือก";
+
+/* First part of the report a broken site copy. After the colon is a new line and then a website address */
+"ReportBrokenSiteBody1" = "แจ้งให้ผู้พัฒนา Brave ทราบว่าเว็บไซต์นี้ทำงานไม่ถูกต้องตามที่คิดไว้:";
+
+/* This is the info text that is presented when a user is submitting a web-compatibility report. */
+"ReportBrokenSiteBody2" = "หมายเหตุ: รายงานที่ส่งไปยังเซิร์ฟเวอร์ของ Brave จะรวมแอดเดรสของเว็บไซต์ หมายเลขเวอร์ชันของ Brave การตั้งค่า Shields สถานะ VPN และการตั้งค่าภาษา";
+
+/* No comment provided by engineer. */
+"ReportBrokenSubmitButtonTitle" = "ส่ง";
+
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "รุนแรง";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "ถูกบล็อกโดย";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "คำขอที่ถูกบล็อก";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "ตัวบล็อกเนื้อหา";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "การบล็อกคำขอ";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "URL ของคำขอ";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "ประเภทแหล่งข้อมูล";
+
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "หากต้องการให้ Shred ลบรายการประวัติ";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred ลบประวัติ";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "อัปเดต Auto Shred และปรับสิ่งที่จะลบ";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "ย่อยข้อมูล";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "ย่อยข้อมูล";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "URL แหล่งที่มา";
+
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"ShieldsDefaults" = "ค่าเริ่มต้นทั่วไปของ Brave Shields";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "นี่คือการตั้งค่า Shields เริ่มต้นสำหรับเว็บไซต์ใหม่ โดยการเปลี่ยนแปลงเหล่านี้จะไม่ส่งผลต่อการตั้งค่าที่มีอยู่ของแต่ละเว็บไซต์";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "คุณกำลังค้นเว็บนี้โดยไม่มีการป้องกันความเป็นส่วนตัวของ Brave เว็บนี้ทำงานไม่ถูกต้องเมื่อเปิด Shields หรือ?";
 
 /* Time Saved Days */
 "ShieldsTimeStatsDays" = "วัน";
@@ -22,6 +334,72 @@
 /* Time Saved Seconds */
 "ShieldsTimeStatsSeconds" = "วิ.";
 
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "ย่อยข้อมูล";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "ไม่ต้องเลย";
+
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "ข้อมูลการเรียกดูจะไม่ถูกทำลายโดยอัตโนมัติ";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "ปิดแอป";
+
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "ข้อมูลการเรียกดูจะถูกทำลายโดยอัตโนมัติเมื่อปิด / รีสตาร์ทแอป Brave";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "ปิดแท็บของเว็บไซต์แล้ว";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "ข้อมูลการเรียกดูจะถูกทำลายโดยอัตโนมัติเมื่อปิดแท็บทั้งหมดที่เปิดไซต์นั้น";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "การย่อยข้อมูลจะปิดแท็บทั้งหมด และลบข้อมูลทั้งหมดของเว็บไซต์ การกระทำนี้ไม่สามารถยกเลิกได้";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "ย่อยข้อมูลของเว็บไซต์";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "การย่อยข้อมูลจะปิดแท็บทั้งหมดที่เปิดเว็บไซต์นี้ และลบข้อมูลทั้งหมดของเว็บไซต์ การกระทำนี้ไม่สามารถยกเลิกได้";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "ต้องการย่อยข้อมูลของเว็บไซต์นี้หรือไม่";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "ย่อยข้อมูลของเว็บไซต์เดี๋ยวนี้";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "การย่อยข้อมูลจะปิดแท็บที่เลือก และลบข้อมูลทั้งหมดของเว็บไซต์ การกระทำนี้ไม่สามารถยกเลิกได้";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "เว็บไซต์ไม่ปลอดภัย";
+
+/* No comment provided by engineer. */
+"SiteReportedBody" = "ขอบคุณที่แจ้งให้ผู้พัฒนา Brave ทราบว่ามีข้อผิดพลาดในเว็บไซต์นี้ เราจะพยายามแก้ไขปัญหานี้อย่างเต็มที่";
+
+/* No comment provided by engineer. */
+"SiteReportedTitle" = "ขอบคุณ";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "การเชื่อมต่อกับ %@ ไม่ปลอดภัย";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "การบล็อกตัวติดตาม&โฆษณา";
+
 /* Shields Trackers Stat */
 "TrackersrBlocked" = "บล็อก\nตัวติดตามแล้ว";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "อัปเดตรายการ";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "กำลังอัปเดตรายการ";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "อัปเกรดการเชื่อมต่อเป็น HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "คุณกำลังเห็นคำเตือนนี้เนื่องจากเว็บไซต์นี้ไม่รองรับ HTTPS";
 

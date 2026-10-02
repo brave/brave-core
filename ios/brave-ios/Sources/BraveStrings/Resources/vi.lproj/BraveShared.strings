@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "Thông tin";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "Thông tin về Lá chắn của Brave";
-
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "Các trang web thường bao gồm cookie và tập lệnh cố gắng xác định bạn và thiết bị của bạn. Các trang đó muốn tìm ra bạn là ai và theo dõi bạn trên khắp môi trường mạng, theo dõi những gì bạn làm trên mọi trang web.\n\nBrave chặn những thứ này để bạn có thể duyệt web mà không bị theo dõi.";
-
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "Điều này cho phép bạn lưu ảnh vào Cuộn camera.";
 
@@ -36,9 +30,6 @@
 
 /* Text for the toggle switch to clear 'Brave Ads' data in settings */
 "ads.braveAdsDataToggleOption" = "Dữ liệu Quảng cáo Brave";
-
-/* individual blocking statistic title */
-"AdsAndTrackers" = "Quảng cáo và trình theo dõi";
 
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "Luôn yêu cầu trang web cho máy tính";
@@ -130,18 +121,6 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "Tự động điền";
 
-/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
-"AutoRedirectAMPPages" = "Tự động chuyển hướng trang AMP";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
-"AutoRedirectAMPPagesDescription" = "Luôn truy cập các URL trang gốc (không phải AMP), thay vì các phiên bản Trang được tăng tốc dành cho thiết bị di động của Google";
-
-/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
-"AutoRedirectTrackingURLs" = "Tự động chuyển hướng URL theo dõi";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "Bật hỗ trợ vượt qua các URL theo dõi chuyển hướng cấp cao nhất";
-
 /* cookie settings option */
 "Block3rdPartyCookies" = "Chặn cookie của bên thứ 3";
 
@@ -160,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Không áp dụng được lựa chọn. Vui lòng thử lại.";
 
-/* A title for a setting that enables cookie consent notices */
-"BlockCookieConsentNotices" = "Chặn thông báo chấp thuận cookie";
-
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Màn hình chặn";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Chặn cửa sổ bật lên";
-
-/* No comment provided by engineer. */
-"BlockScripts" = "Chặn mã script";
-
-/* No comment provided by engineer. */
-"BlockScriptsDescription" = "Chặn JavaScript (có thể làm hỏng một số trang web).";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "Thêm dấu trang cho %lld thẻ";
@@ -239,46 +209,10 @@
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Bỏ qua";
 
 /* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "Nút điều khiển nâng cao";
-
-/* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Lá chắn Brave & Quyền riêng tư";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Lá chắn & Quyền riêng tư";
-
-/* The number of ads and trackers blocked will be next to this */
-"BraveShieldsBlockedCountLabel" = "Quảng cáo và những thứ đáng sợ khác bị chặn";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Tìm hiểu thêm";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "Chỉnh mặc định toàn cầu của Lá chắn";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalControls" = "Kiểm soát toàn cục";
-
-/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "Lưu thông tin liên hệ cho mục đích báo cáo trang web hỏng trong tương lai";
-
-/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "Nếu bạn cung cấp thông tin liên hệ, thông tin đó sẽ được lưu trữ cho các báo cáo trong tương lai";
-
-/* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "Nếu trang web hiển thị lỗi, hãy thử tắt Lá chắn";
-
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Lá chắn Brave";
-
-/* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "Tắt";
-
-/* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "Bật";
-
-/* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "Nhấn đúp để hiển thị Lá chắn Brave";
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Trò chuyện Brave";
@@ -844,15 +778,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findPreviousTitle" = "Tìm trước";
 
-/* individual blocking statistic title */
-"FingerprintingMethods" = "Phương pháp dấu vân tay";
-
-/* No comment provided by engineer. */
-"FingerprintingProtection" = "Chặn Vân tay";
-
-/* No comment provided by engineer. */
-"FingerprintingProtectionDescription" = "Để các trang web khó nhận dạng được các đặc điểm riêng biệt của thiết bị của bạn.";
-
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Cho phép các universal link mở trong ứng dụng bên ngoài";
 
@@ -919,15 +844,6 @@
 /* No comment provided by engineer. */
 "Home" = "Trang chủ";
 
-/* No comment provided by engineer. */
-"HTTPSEverywhere" = "Nâng cấp các kết nối thành HTTPS";
-
-/* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Mở các trang web bằng HTTPS thay vì HTTP khi có thể.";
-
-/* individual blocking statistic title */
-"HTTPSUpgrades" = "Nâng cấp lên HTTPS";
-
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Nhập dữ liệu duyệt web";
 
@@ -948,6 +864,9 @@
 
 /* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
+
+/* Title for Brave Leo voice input menu item. Brave Leo is the name of a product and should not be translated */
+"LeoVoiceInputMenuItem" = "Nhập giọng nói Leo";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "Thông tin đăng nhập đã lưu sẽ được xóa vĩnh viễn.";
@@ -1666,9 +1585,6 @@
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Danh sách phát không có tiêu đề";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
-"PopoverShieldsMenuClose" = "Đóng menu Lá chắn";
-
 /* Settings privacy section title */
 "Privacy" = "Quyền riêng tư";
 
@@ -2017,41 +1933,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "Xóa trang yêu thích";
 
-/* No comment provided by engineer. */
-"ReportABrokenSite" = "Báo cáo trang web bị hỏng";
-
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "Báo cáo lỗi";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"ReportBrokenAdditionalDetails" = "Chi tiết bổ sung (tùy chọn)";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"reportBrokenAdditionalDetailsRequired" = "Thông tin khác";
-
-/* A label for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "Vấn đề chính bạn gặp phải là gì?";
-
-/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
-"ReportBrokenContactMe" = "Liên hệ với tôi tại: (tùy chọn)";
-
-/* Contact info storing description */
-"ReportBrokenContactMeDescription" = "Nếu bạn cung cấp thông tin liên hệ, thông tin đó sẽ được lưu trữ cho mục đích báo cáo trang web hỏng trong tương lai.";
-
-/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
-"ReportBrokenContactMeSuggestions" = "Email, Twitter, v.v.";
-
-/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"ReportBrokenPlaceholder" = "Chọn một tùy chọn";
-
-/* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Hãy cho các nhà phát triển của Brave biết trang web này không hoạt động như mong đợi:";
-
-/* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Lưu ý: Báo cáo được gửi đến máy chủ Brave sẽ bao gồm địa chỉ trang web, số phiên bản Brave, cài đặt Lá chắn, trạng thái VPN và cài đặt ngôn ngữ.";
-
-/* No comment provided by engineer. */
-"ReportBrokenSubmitButtonTitle" = "Gửi";
 
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraAndMicrophonePermissionPrompt" = "\"%@\" muốn truy cập camera và micrô";
@@ -2329,9 +2212,6 @@
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Lưu thông tin đăng nhập";
 
-/* individual blocking statistic title */
-"ScriptsBlocked" = "Các lệnh scripts đã chặn";
-
 /* The placeholder text for bookmark search */
 "searchBookmarksTitle" = "Tìm dấu trang";
 
@@ -2572,21 +2452,6 @@
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Các quảng cáo đã bị chặn trong khi bạn xem video trên trang web này.";
 
-/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Mặc định toàn cầu của Lá chắn Brave";
-
-/* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "Đây là những cài đặt Lá chắn mặc định cho các trang web mới. Thay đổi chúng sẽ không ảnh hưởng đến các cài đặt cho từng trang web hiện tại của bạn.";
-
-/* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Bạn đang duyệt trang web này mà không được Brave bảo vệ quyền riêng tư. Mọi thứ không hoạt động đúng khi bật Lá chắn sao?";
-
-/* shields overview message */
-"ShieldsOverview" = "Lá chắn trang web giúp bạn kiểm soát khi nào quảng cáo và trình theo dõi được chặn ở trang web bạn truy cập. Nếu bạn muốn thấy quảng cáo ở một trang nhất định, bạn có thể bật ở đây.";
-
-/* shields overview footer message */
-"ShieldsOverviewFooter" = "Lưu ý: Một số trang web có thể yêu cầu tập lệnh để hoạt động bình thường nên chức năng bảo vệ này sẽ ở trạng thái tắt theo mặc định.";
-
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Thẻ riêng tư mới";
 
@@ -2772,15 +2637,6 @@
 
 /* Settings item for clearing site-specific settings and shields settings. */
 "SiteAndShieldsSettings" = "Cài đặt Trang và Khiên";
-
-/* No comment provided by engineer. */
-"SiteReportedBody" = "Cảm ơn bạn đã thông báo cho các nhà phát triển của Brave biết rằng đã xảy ra sự cố với trang web này. Chúng tôi sẽ cố gắng hết sức để khắc phục sự cố này!";
-
-/* No comment provided by engineer. */
-"SiteReportedTitle" = "Cảm ơn bạn";
-
-/* Brave panel topmost title */
-"SiteShieldSettings" = "Lá chắn";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Tôi tiết kiệm được dữ liệu mỗi ngày bằng cách duyệt web với Brave";
@@ -3558,9 +3414,6 @@
 
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "Người dùng đã hủy";
-
-/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
-"UseRegionalAdblock" = "Sử dụng chặn quảng cáo theo vùng";
 
 /* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "Đóng";
