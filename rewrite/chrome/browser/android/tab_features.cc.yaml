@@ -9,5 +9,7 @@ substitutions:
 
       Brave disables DNS probes on network errors, so the helper isn't needed.
     regex:
-      re_pattern: '\n\s*net_error_tab_helper_ =\s*GetUserDataFactory\(\)\s*\.CreateInstance<chrome_browser_net::NetErrorTabHelper>\([^;]*\);'
+      re_pattern:
+        '\n\s*net_error_tab_helper_
+        =\s*GetUserDataFactory\(\)\s*\.CreateInstance<chrome_browser_net::NetErrorTabHelper>\([^;]*\);'
       replace: ''

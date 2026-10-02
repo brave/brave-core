@@ -12,7 +12,9 @@ substitutions:
       TabFeatures::WillDiscardContents().
     count: 2
     regex:
-      re_pattern: '\n\s*(?:net_error_tab_helper_\.reset\(\);\s*)?net_error_tab_helper_ =\s*GetUserDataFactory\(\)\s*\.CreateInstance<chrome_browser_net::NetErrorTabHelper>\([^;]*\);'
+      re_pattern:
+        '\n\s*(?:net_error_tab_helper_\.reset\(\);\s*)?net_error_tab_helper_
+        =\s*GetUserDataFactory\(\)\s*\.CreateInstance<chrome_browser_net::NetErrorTabHelper>\([^;]*\);'
       replace: ''
 
   - description: |
@@ -20,7 +22,9 @@ substitutions:
 
       Brave doesn't prewarm fonts for search results pages.
     regex:
-      re_pattern: '(TabFeatures::Init\(.*?)\n\s*font_prewarmer_tab_helper_ =\s*std::make_unique<FontPrewarmerTabHelper>\([^;]*\);'
+      re_pattern:
+        '(TabFeatures::Init\(.*?)\n\s*font_prewarmer_tab_helper_
+        =\s*std::make_unique<FontPrewarmerTabHelper>\([^;]*\);'
       re_flags: [DOTALL]
       replace: '\1'
 
@@ -28,5 +32,7 @@ substitutions:
       Don't re-create FontPrewarmerTabHelper in
       TabFeatures::WillDiscardContents().
     regex:
-      re_pattern: '\n#if BUILDFLAG\(IS_WIN\)\s*font_prewarmer_tab_helper_ =\s*std::make_unique<FontPrewarmerTabHelper>\(new_contents\);\s*#endif\n'
+      re_pattern:
+        '\n#if BUILDFLAG\(IS_WIN\)\s*font_prewarmer_tab_helper_
+        =\s*std::make_unique<FontPrewarmerTabHelper>\(new_contents\);\s*#endif\n'
       replace: ''
