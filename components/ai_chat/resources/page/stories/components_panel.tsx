@@ -9,7 +9,7 @@ import * as React from 'react'
 import { useArgs } from '@storybook/preview-api'
 import { Meta, StoryObj } from '@storybook/react'
 import '@brave/leo/tokens/css/variables.css'
-import { getKeysForMojomEnum } from '$web-common/mojomUtils'
+import { getKeysForMojomEnum, jsDateToMojoTime } from '$web-common/mojomUtils'
 import { InferControlsFromArgs } from '$storybook/utils'
 import {
   ConversationDataJson,
@@ -261,17 +261,6 @@ const SAMPLE_SKILLS: Mojom.Skill[] = [
     lastUsed: { internalValue: BigInt((Date.now() - 3600000) * 1000) },
   },
 ]
-
-// base::Time counts microseconds from the Windows epoch, so shift the JS epoch
-// by the same offset used by mojoTimeToJSDate().
-function jsDateToMojoTime(date: Date) {
-  const epochDeltaInMs = Date.UTC(1970, 0, 1) - Date.UTC(1601, 0, 1)
-  // Convert to BigInt before scaling to microseconds: the result exceeds
-  // Number.MAX_SAFE_INTEGER.
-  return {
-    internalValue: BigInt(date.getTime() + epochDeltaInMs) * BigInt(1000),
-  }
-}
 
 const SAMPLE_CONVERSATION_SHARES: Mojom.ConversationShare[] = [
   {
