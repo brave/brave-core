@@ -1732,6 +1732,9 @@
 <translation id="2077392865355605472">टोकन चिन्ह आवश्यक आहे</translation>
 <translation id="4636925020451566238">टोकन डेसिमल मूल्य आवश्यक आहे</translation>
 <translation id="3797613444743816037">मिंट पत्ता</translation>
+<translation id="6571966497164575098">मालमत्ता आयडी</translation>
+<translation id="2110442566771571217">अवैध किंवा रिक्त टोकन मालमत्ता आयडी</translation>
+<translation id="4170599358417498979">या नेटवर्कवर कस्टम मालमत्ता समर्थित नाहीत</translation>
 <translation id="7951915459354237451">फी मर्यादा बेस फी पेक्षा कमी सेट केली आहे. तुमच्या व्यवहारास वेळ लागू शकतो किंवा तो अयशस्वी होऊ शकतो.</translation>
 <translation id="2227702748249086756">फी अंदाज आणण्यात अपयश</translation>
 <translation id="3225624966527491351">NFT आयात करा</translation>
@@ -2015,7 +2018,7 @@
 <translation id="418195046117003119">शेअरिंग हब स्क्रीनशॉट</translation>
 <translation id="4712056949543885424">पासवर्ड मॅनेजर दाखवा</translation>
 <translation id="8037472847879765671">पेमेंट पद्धती दाखवा</translation>
-<translation id="7269867954894010756">पत्ते दाखवा</translation>
+<translation id="6262574309547773475">संपर्क माहिती दाखवा</translation>
 <translation id="6799213269525079335">पुढील शोधा</translation>
 <translation id="8666632926482119393">मागील शोधा</translation>
 <translation id="3567467864281922039">शोध बंद करा किंवा थांबवा</translation>
@@ -2144,6 +2147,7 @@
 <translation id="3142853026316054951">फोकस मोड टॉगल करा</translation>
 <translation id="3468387898712904997">नवीन बनावट ईमेल</translation>
 <translation id="4711475997833555304">तुमच्या इनबॉक्समध्ये फॉरवर्ड होणारा एक रँडम ईमेल तयार करा.</translation>
+<translation id="5663901348199429994">तुमचे बनावट ईमेल</translation>
 <translation id="2796584247246518451">नवीन तात्पुरता कंटेनर</translation>
 <translation id="8591883849678260674">मूळ पहा</translation>
 <translation id="1969654232209826429">मिन. वाचा</translation>
@@ -2208,6 +2212,7 @@
 <translation id="9215978379284690246">स्थिती कोड: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">स्थिती कोड: <ph name="STATUS_CODE"/>, आतील स्थिती कोड: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">तुम्ही प्रीमियम दर मर्यादेपर्यंत पोहोचला आहात. कृपया काही तासांनी पुन्हा प्रयत्न करा.</translation>
+<translation id="6873128487002733717">तुम्ही या मॉडेलसाठी प्रीमियम मर्यादा गाठली आहे. वेगळे मॉडेल निवडा किंवा नंतर पुन्हा प्रयत्न करा.</translation>
 <translation id="3683964919745779766">तुम्ही या मॉडेलसाठी दररोजची मर्यादा गाठली आहे किंवा क्रेडिट्स संपले आहेत. कृपया नंतर पुन्हा प्रयत्न करा.</translation>
 <translation id="7692501701960747469">या मॉडेलसाठी कॉन्फिगर केलेला API की अवैध आहे. कृपया तुमची सेटिंग तपासा आणि पुन्हा प्रयत्न करा.</translation>
 <translation id="7905602379229309187">एंडपॉइंट सध्या वर्धित आहे. कृपया नंतर पुन्हा प्रयत्न करा.</translation>
@@ -2387,6 +2392,9 @@
 <translation id="5021823940147712387">टूल्स काढा</translation>
 <translation id="8712279871321308580">उपलब्ध वेबसाईट टूल्स</translation>
 <translation id="3690996226559605619">उपलब्ध टूल्स (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">या सत्रासाठी परवानगी द्या</translation>
+<translation id="6240821072888636753">प्रत्येक वेळी विचारा</translation>
+<translation id="4290920330097335010">कधीही परवानगी देऊ नका</translation>
 <translation id="318819763888864209">सर्व सदस्यत्वे आपोआप नूतनीकृत होतात पणनूतनीकरणापूर्वी कोणत्याही वेळी रद्द करता येतात.</translation>
 <translation id="5091223967610958">लिओ अधिक चांगला बनविण्यासाठी आपण ज्या पृष्ठावर आहात त्या पृष्ठाचे होस्टनाव (<ph name="HOST_NAME"/>) शेअर करा.</translation>
 <translation id="8732450785281947197">लीओ एआय साधने</translation>
@@ -2461,7 +2469,7 @@
 <translation id="6077070599873946984">Brave AI ला तुमची परवानगी आवश्यक आहे: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI ला **<ph name="SITE_ORIGIN"/>** वर **<ph name="TOOL_NAME"/>** कार्यान्वित करायचे आहे</translation>
 <translation id="4163837693685963037">ही क्रिया तुमच्या विनंतीशी संभाव्यपणे विसंगत असल्याचे आढळले:</translation>
-<translation id="5137568953923142260">परवानगी द्या</translation>
+<translation id="5137568953923142260">एकदाच परवानगी द्या</translation>
 <translation id="3927932062596804919">नकार द्या</translation>
 <translation id="4191349941249805855">टूल आर्ग्युमेंट्स दाखवा</translation>
 <translation id="7237059533128264835">टूल आर्ग्युमेंट्स लपवा</translation>
@@ -2508,7 +2516,6 @@
 <translation id="6002159997868894136">बनावट ईमेल कॉपी करण्यासाठी क्लिक करा</translation>
 <translation id="8105770564756958406">याचा वापर <ph name="DOMAINS"/> ने केला</translation>
 <translation id="5006956315579221642">तुमचा खरा ईमेल पत्ता संरक्षित करण्यासाठी 5 विनामूल्य बनावट ईमेल तयार करा.</translation>
-<translation id="5663901348199429994">तुमचे बनावट ईमेल</translation>
 <translation id="9046133327037621173">नवीन बनावट ईमेल</translation>
 <translation id="3768606658230902536">तुमचा वैयक्तिक ईमेल खासगी ठेवताना तुमच्या इनबॉक्समध्ये अग्रेषित होणारा एक यादृच्छिक ईमेल पत्ता तयार करा.</translation>
 <translation id="4452721050684632493">उपनाव मर्यादा गाठली</translation>
@@ -2938,7 +2945,9 @@ Brave कडे एक सहायक सेवा आहे जी DNS क्�
 <translation id="4227581348172626540">पासवर्ड बदल रद्द करा</translation>
 <translation id="808894953321890993">पासवर्ड बदला</translation>
 <translation id="7967687455715421528">पासवर्ड बदलण्यात अक्षम</translation>
+<translation id="7413006094063730650">खाते हटवा</translation>
 <translation id="4869737930995549965">लॉग आऊट करा</translation>
+<translation id="2902312830803030883">आणखी क्रिया</translation>
 <translation id="5538654494923870167">तुमच्या Brave खात्यासह प्रारंभ करा</translation>
 <translation id="1544145635547515689">Brave खाते तयार करा</translation>
 <translation id="3828644479849256404">आधीच खाते आहे? लॉग इन करा</translation>
@@ -2963,6 +2972,11 @@ Brave कडे एक सहायक सेवा आहे जी DNS क्�
 <translation id="7228810962389847249">येथे कोड प्रविष्ट करा</translation>
 <translation id="4683390091376980486">कोडची पुष्टी करा</translation>
 <translation id="3970028678400797622">ईमेल कोड पुन्हा पाठवा</translation>
+<translation id="3653907916071208187">तुमचे Brave Software खाते हटवायचे?</translation>
+<translation id="8216839865292766307">Brave Software खाते हटवल्याने त्याचे ईमेल उपनावेही हटवली जातील. जेथे तुम्ही साइन अप करण्यासाठी उपनाव वापरले होते अशा ऑनलाइन सेवांचा प्रवेश तुम्ही गमावू शकता. ही क्रिया पूर्ववत केली जाऊ शकत नाही.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">खाते हटवणे सक्षम करण्यासाठी <ph name="KEYWORD"/> टाइप करा</translation>
+<translation id="536306385881145656">Brave Software खाते हटवा</translation>
 <translation id="2475982808118771221">एक एरर आली आहे</translation>
 <translation id="5430795854491041407">एरर</translation>
 <translation id="2232323423357029857">ब्राउझरला अनपेक्षित एरर आली<ph name="ERROR_CODE"/>. कृपया ब्राउझर रिस्टार्ट करा आणि पुन्हा प्रयत्न करा.</translation>
@@ -2995,4 +3009,10 @@ Brave कडे एक सहायक सेवा आहे जी DNS क्�
 <translation id="1063227610401477317">बदल लागू करा</translation>
 <translation id="5539769255716491933">अयशस्वी पायऱ्यांचा अहवाल द्या</translation>
 <translation id="7562163394445060270">कार्य पूर्ण होण्यात अयशस्वी</translation>
+<translation id="691082536326552372">अयशस्वी पायऱ्यांचा अहवाल द्या</translation>
+<translation id="2731141092023803480">अयशस्वी पायऱ्यांचा अहवाल Brave Software टीमला पाठवा. या अहवालात या समस्येचे निराकरण करण्यासाठी आम्हाला आवश्यक असलेली माहिती असेल. <ph name="LINK_BEFORE"/>अधिक जाणून घ्या.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">चालू URL</translation>
+<translation id="4739707522207259415">अयशस्वी पायरी(यां)</translation>
+<translation id="1767991048059195456">अहवाल पाठवा</translation>
+<translation id="2168036794078614559">अहवाल पाठवला</translation>
 </translationbundle>

@@ -1723,6 +1723,9 @@
 <translation id="2077392865355605472">Token အမှတ်လိုက်အတိုကောက်လိုအပ်သည်</translation>
 <translation id="4636925020451566238">ဖြစ်ရပ်မှန်တိကျမှုတန်ဖိုးအတွက် Token ဒဿမာန် ကို လိုအပ်သည်</translation>
 <translation id="3797613444743816037">Mint လိပ်စာ</translation>
+<translation id="6571966497164575098">ပစ္စည်း ID</translation>
+<translation id="2110442566771571217">မမှန်ကန်သော သို့မဟုတ် ဗလာသော token ပစ္စည်း ID</translation>
+<translation id="4170599358417498979">ဤကွန်ရက်တွင် စိတ်ကြိုက်ပိုင်ဆိုင်မှုများကို မပံ့ပိုးပါ</translation>
 <translation id="7951915459354237451">သင်၏လုပ်ငန်းဆောင်ရွက်မှုသည် အချိန်ယူပြီး မအောင်မြင်နိုင်ပါဟု သတ်မှတ်ထားသော Fee ကန့်သတ်ချက်သည် အခြေခံ fee ထက် နိမ့်သည်။</translation>
 <translation id="2227702748249086756">Fee ခန့်မှန်းချက်များကို ရယူ၍ မရနိုင်ပါ</translation>
 <translation id="3225624966527491351">NFT တင်သွင်းရန်</translation>
@@ -2009,7 +2012,7 @@
 <translation id="418195046117003119">မျက်နှာဖုံးများ screenshot</translation>
 <translation id="4712056949543885424">စကားဝှက်ကို ထိန်းချုပ်ရန်</translation>
 <translation id="8037472847879765671">ငွေပေးချေမှု သတ်မှတ်ချက်များကိုဖော်ပြရန်</translation>
-<translation id="7269867954894010756">လိပ်စာများကိုဖော်ပြပါ</translation>
+<translation id="6262574309547773475">ဆက်သွယ်ရန် အချက်အလက်ကို ပြပါ</translation>
 <translation id="6799213269525079335">ရှာဖွေပါ</translation>
 <translation id="8666632926482119393">ယခင်ရှာဖွယ်ရာကို ရှာဖွေပါ</translation>
 <translation id="3567467864281922039">ရှာဖွေမှုကိုပိတ်ပါ သို့မဟုတ် ရပ်ကြံပါ</translation>
@@ -2138,6 +2141,7 @@
 <translation id="3142853026316054951">focus mode အသုံးပြုခလုတ်</translation>
 <translation id="3468387898712904997">အီးမေးလ် လိပ်စာ အသစ်</translation>
 <translation id="4711475997833555304">သင့်စာတိုက်ပုံးသို့ လွှဲပြောင်းပေးမည့် ကျပန်းအီးမေးလ်တစ်ခု ဖန်တီးပါ။</translation>
+<translation id="5663901348199429994">သင့် အီးမေးလ်ထောက်ခံမဲ့များ</translation>
 <translation id="2796584247246518451">ယာယီ container အသစ်</translation>
 <translation id="8591883849678260674">မူရင်းကို ကြည့်ရန်</translation>
 <translation id="1969654232209826429">မိနစ်. အောက်ပိုင်း ဖတ်ရည်နှုန်း</translation>
@@ -2196,6 +2200,7 @@
 <translation id="9215978379284690246">Status code: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Status code: <ph name="STATUS_CODE"/>, inner status code: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">သင်သည် ပရီးမံစနစ်၏ အမြင့်ဆုံးကန့်သတ်ချက်ကို ရောက်ရှိပြီးဖြစ်သည်။ နာရီအနည်းငယ်အတွင်း ထပ်မံကြိုးစားပါ။</translation>
+<translation id="6873128487002733717">ဤမော်ဒယ်အတွက် premium ကန့်သတ်ချက်သို့ ရောက်ရှိသွားပါပြီ။ အခြားမော်ဒယ်တစ်ခုကို ရွေးချယ်ပါ သို့မဟုတ် နောက်မှ ထပ်မံကြိုးစားပါ။</translation>
 <translation id="3683964919745779766">ရောက်ရှိမှုခွင့်အလိုအလျောက်ဆက်လက်ပြုလုပ်ရန်ခဲ့သည်။ ခဏစောင့်မှတ်ပြီးထပ်မံကြိုးစားပါ။</translation>
 <translation id="7692501701960747469">ကြူမြတ်အတွက်ဖော်ပြသည့် API key မှားယွင်းနေသည်။ သင်၏စနစ်ကိုစစ်ဆေးပေးကာလက်ခံပါနေ့။</translation>
 <translation id="7905602379229309187">API endpoint ပေါ်တွင်ဖွန့်ဖော်မှုများကြီးမားလုံးတွင် ထပ်မံကြိုးစားပါ။</translation>
@@ -2375,6 +2380,9 @@
 <translation id="5021823940147712387">ကိရိယာများကို ဖယ်ရှားပါ</translation>
 <translation id="8712279871321308580">ရရှိနိုင်သော website tool များ</translation>
 <translation id="3690996226559605619">ရရှိနိုင်သော tool များ (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">ဤ session အတွက် ခွင့်ပြုသည်</translation>
+<translation id="6240821072888636753">အကြိမ်တိုင်း မေးပါ</translation>
+<translation id="4290920330097335010">ဘယ်တော့မှ မခွင့်ပြုပါ</translation>
 <translation id="318819763888864209">ဝန်ဆောင်မှု ပုံမှန်ရယူမှုများကို အော်တိုသက်တမ်းတိုးပေးသွားမည်ဖြစ်သော်လည်း ပြန်လည်သက်တမ်းတိုးချိန်မတိုင်မီ ကြိုက်သည့်အချိန်တွင် ပယ်ဖျက်နိုင်ပါသည်။</translation>
 <translation id="5091223967610958">Leo ကို ပိုမိုကောင်းမြင်ကူညီပေးပါရန် ရှင် IM မှာ သင့်ဖြင့်ရှိနေသောစာမျက်နှာ၏နှာကပ်နာမည် (<ph name="HOST_NAME"/>) ကို မျှဝေပေးပါ။</translation>
 <translation id="8732450785281947197">Leo AI tools</translation>
@@ -2449,7 +2457,7 @@
 <translation id="6077070599873946984">Brave AI သည် သင်၏ ခွင့်ပြုချက်လိုအပ်သည် - <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI သည် **<ph name="SITE_ORIGIN"/>** တွင် **<ph name="TOOL_NAME"/>** ကို လုပ်ဆောင်လိုပါသည်</translation>
 <translation id="4163837693685963037">လုပ်ဆောင်ချက်သည် သင်၏တောင်းဆိုချက်နှင့် မကိုက်ညီနိုင်ခြင်းရှိနိုင်သည်။</translation>
-<translation id="5137568953923142260">ခွင့်ပြုရန်</translation>
+<translation id="5137568953923142260">တစ်ကြိမ်ခွင့်ပြုသည်</translation>
 <translation id="3927932062596804919">ငြင်းလိုက်သည်</translation>
 <translation id="4191349941249805855">tool arguments များ ပြပါ</translation>
 <translation id="7237059533128264835">tool arguments များ ဖွက်ပါ</translation>
@@ -2496,7 +2504,6 @@
 <translation id="6002159997868894136">alias ကိုကူးဖို့နှိပ်ပါ</translation>
 <translation id="8105770564756958406"><ph name="DOMAINS"/> မှအသုံးပြုထားသည်</translation>
 <translation id="5006956315579221642">သင့် အထင်အမှတ် ထောက်ခံမဲ့ အီးမေးလ် လိပ်စာအရိပ်များကို ၅ မျိုးကြောင့် ဖန်တီးပြီး သင့် အထင်အမှတ်ကို ကာကွယ်ပါ။</translation>
-<translation id="5663901348199429994">သင့် အီးမေးလ်ထောက်ခံမဲ့များ</translation>
 <translation id="9046133327037621173">အီးမေးလ် လိပ်စာ အသစ်</translation>
 <translation id="3768606658230902536">သင့် inbox သို့ ယိုလာမည့် အသေးစိထုတ်ဖြင့် တစ်ကိုယ်ရေး အီးမေးလ် လိပ်စာကို ကာကွယ်ပြီး မှီခိုဖို့ random အီးမေးလ်လိပ်စာ ဖန်တီးပါ။</translation>
 <translation id="4452721050684632493">Alias အကန့်အသတ်သို့ ရောက်ရှိနေသည်</translation>
@@ -2925,7 +2932,9 @@ brave://setting/systemတွင် WireGuard ပြန်ပြောင်း�
 <translation id="4227581348172626540">စကားဝှက်ပြောင်းလဲခြင်းကို ပယ်ဖျက်ပါ</translation>
 <translation id="808894953321890993">စကားဝှက် ပြောင်းလဲပါ</translation>
 <translation id="7967687455715421528">စကားဝှက်ပြောင်းလဲ၍ မရနိုင်ပါ</translation>
+<translation id="7413006094063730650">အကောင့်ဖျက်ပါ</translation>
 <translation id="4869737930995549965">Logout လုပ်ပါ</translation>
+<translation id="2902312830803030883">နောက်ထပ်လုပ်ဆောင်မှုများ</translation>
 <translation id="5538654494923870167">သင်၏ Brave အကောင့်ဖြင့် စတင်လိုက်ပါ</translation>
 <translation id="1544145635547515689">Brave အကောင့်တစ်ခု ပြုလုပ်ပါ</translation>
 <translation id="3828644479849256404">အကောင့်ရှိပြီးပြီလား။ Log in လုပ်ပါ</translation>
@@ -2950,6 +2959,11 @@ brave://setting/systemတွင် WireGuard ပြန်ပြောင်း�
 <translation id="7228810962389847249">ကုဒ်ကို ဤနေရာတွင် ထည့်ပါ</translation>
 <translation id="4683390091376980486">ကုဒ်ကို အတည်ပြုပါ</translation>
 <translation id="3970028678400797622">အီးမေးလ်ကုဒ်ကို ပြန်ပို့ပါ</translation>
+<translation id="3653907916071208187">သင့် Brave အကောင့်ကို ဖျက်မလား။</translation>
+<translation id="8216839865292766307">Brave အကောင့်တစ်ခုကို ဖျက်လိုက်ခြင်းသည် ၎င်း၏ အီးမေးလ်နာမည်ခွဲများကိုပါ ဖျက်ပစ်လိမ့်မည်။ နာမည်ခွဲကို အသုံးပြု၍ စာရင်းသွင်းခဲ့သည့် အွန်လိုင်းဝန်ဆောင်မှုများသို့ ဝင်ရောက်ခွင့် ဆုံးရှုံးနိုင်သည်။ ဤလုပ်ဆောင်ချက်ကို ပြန်ဖျက်၍မရပါ။</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">အကောင့်ဖျက်ခြင်းကို ဖွင့်ရန် <ph name="KEYWORD"/> ဟု ရိုက်ထည့်ပါ</translation>
+<translation id="536306385881145656">Brave အကောင့်ကို ဖျက်ပါ</translation>
 <translation id="2475982808118771221">အမှားတစ်ခု ဖြစ်ပေါ်ခဲ့သည်</translation>
 <translation id="5430795854491041407">အမှားပေါ်ပေါက်</translation>
 <translation id="2232323423357029857">browser တွင် မမျှော်လင့်ထားသော အမှားတစ်ခု <ph name="ERROR_CODE"/> တွေ့ရှိခဲ့သည်။ browser ကို ပြန်စပြီး ထပ်စမ်းကြည့်ပါ။</translation>
@@ -2982,4 +2996,10 @@ brave://setting/systemတွင် WireGuard ပြန်ပြောင်း�
 <translation id="1063227610401477317">ပြောင်းလဲမှုများကို လျှောက်ထားပါ</translation>
 <translation id="5539769255716491933">မအောင်မြင်သော အဆင့်များကို သတင်းပို့ပါ</translation>
 <translation id="7562163394445060270">အလုပ်ပြီးမြောက်မှု မအောင်မြင်ပါ</translation>
+<translation id="691082536326552372">မအောင်မြင်သော အဆင့်များကို သတင်းပို့ပါ</translation>
+<translation id="2731141092023803480">မအောင်မြင်သော အဆင့်များ၏ အစီရင်ခံစာကို Brave အဖွဲ့ထံ ပို့ပါ။ ဤအစီရင်ခံစာတွင် ကျွန်ုပ်တို့ ပြဿနာကို ဖြေရှင်းရန် လိုအပ်သော အချက်အလက်များ ပါဝင်ပါမည်။ <ph name="LINK_BEFORE"/>ပိုမိုလေ့လာရန်။<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">လက်ရှိ URL</translation>
+<translation id="4739707522207259415">မအောင်မြင်သော အဆင့်(များ)</translation>
+<translation id="1767991048059195456">အစီရင်ခံစာ ပို့ပါ</translation>
+<translation id="2168036794078614559">အစီရင်ခံစာ ပို့ပြီးပါပြီ</translation>
 </translationbundle>

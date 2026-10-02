@@ -216,11 +216,11 @@
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 డోమైన్లు</translation>
 <translation id="1458638489455808030">Wayback మెషిన్</translation>
-<translation id="8039999492770627305">క్షమించాలి, ఈ పేజీ లేద.</translation>
-<translation id="208311458690012764">శేషమైన వెర్షన్ను లోడ్ చేయడంలో విఫలమైంది</translation>
-<translation id="4515057635283480525">వర్తిస్తున్న వెర్షన్ Wayback యంత్రం ఉనికిలో ఉందోలేదో చెక్ చేయాలా?</translation>
-<translation id="8252977752585110703">Wayback యంత్రం ఈ సైట్ యొక్క సజీవ వెర్షన్ను కనుగొనలేదు.</translation>
-<translation id="8748778103033196270">శేష ఉన్న వెర్షన్ను చెక్ చేయండి</translation>
+<translation id="8039999492770627305">పేజీ లేదు</translation>
+<translation id="208311458690012764">ఆర్కైవ్ చేసిన వెర్షన్ ఏదీ అందుబాటులో లేదు</translation>
+<translation id="4515057635283480525">ఇంటర్నెట్ ఆర్కైవ్ చాలా వెబ్ పేజీల గత వెర్షన్‌లను సేవ్ చేస్తుంది. ఈ పేజీ కోసం ఆర్కైవ్‌లో వెతకాలనుకుంటున్నారా?</translation>
+<translation id="8252977752585110703">క్షమించండి, మేము ఇంటర్నెట్ ఆర్కైవ్‌ను తనిఖీ చేసాము మరియు దానికి ఈ పేజీ ఆర్కైవ్ చేసిన వెర్షన్ లేదు.</translation>
+<translation id="8748778103033196270">ఆర్కైవ్‌లో చూడండి</translation>
 <translation id="191143826155037518">Brave ని <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) క్రింద మీకు అందుకొనిచ్చారు మరియు అనుకూల్యముగా ఉన్న మరెన్నో ఇతర లైసెన్స్‌ల క్రింద <ph name="BEGIN_LINK_OSS"/>ఓపెన్ సోర్స్ సాఫ్ట్వేర్<ph name="END_LINK_OSS"/> ని కలిగి ఉన్నది.
  మీరు <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>డౌన్లోడ్ మరియు కాపీ రాయడం ఎలానో తెలుసుకొనుటకొరకు మార్గదర్శనాలను<ph name="END_LINK_BUILD_INSTRUCTIONS"/> చదవవచ్చు దాంట్లో ఉపయోగంచిన స్పెసిఫిక్<ph name="BEGIN_LINK_SOURCE_CODE"/>తనిఖీ కోడ్‌ను<ph name="END_LINK_SOURCE_CODE"/> కూడా చదవవచ్చు.</translation>
 <translation id="4474155171896946103">అన్ని టాబ్‌లను బుక్‌మార్క్ చెయ్యి...</translation>

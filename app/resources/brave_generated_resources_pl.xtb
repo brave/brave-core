@@ -216,11 +216,11 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="193368604235852218">Sieć Web3</translation>
 <translation id="4738583579791001083">Domeny sieci Web3</translation>
 <translation id="1458638489455808030">Wayback Machine</translation>
-<translation id="8039999492770627305">Przepraszamy, nie znaleziono tej strony.</translation>
-<translation id="208311458690012764">Nie można wczytać zapisanej wersji</translation>
-<translation id="4515057635283480525">Czy chcesz sprawdzić, czy zapisana wersja jest dostępna na Wayback Machine?</translation>
-<translation id="8252977752585110703">Wayback Machine nie może znaleźć zapisanej wersji tej strony.</translation>
-<translation id="8748778103033196270">Sprawdź zapisaną wersję</translation>
+<translation id="8039999492770627305">Brakuje strony</translation>
+<translation id="208311458690012764">Brak dostępnej zarchiwizowanej wersji</translation>
+<translation id="4515057635283480525">Internet Archive zapisuje poprzednie wersje wielu stron internetowych. Czy chcesz poszukać tej strony w archiwum?</translation>
+<translation id="8252977752585110703">Przepraszamy, sprawdziliśmy Internet Archive i nie ma tam zarchiwizowanej wersji tej strony.</translation>
+<translation id="8748778103033196270">Poszukaj w archiwum</translation>
 <translation id="191143826155037518">Przeglądarka Brave powstała na podstawie licencji <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) i zawiera <ph name="BEGIN_LINK_OSS"/>oprogramowanie open source<ph name="END_LINK_OSS"/> na podstawie różnych licencji. Możesz przeczytać <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instrukcję jak pobrać i skompilować<ph name="END_LINK_BUILD_INSTRUCTIONS"/> określony <ph name="BEGIN_LINK_SOURCE_CODE"/>kod źródłowy, aby utworzyć własną kopię kompilacji<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Dodaj wszystkie karty do zakładek...</translation>
 <translation id="3987546108749866209">Używaj kart pionowych</translation>

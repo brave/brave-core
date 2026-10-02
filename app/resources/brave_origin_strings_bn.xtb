@@ -36,7 +36,6 @@
 <translation id="1330562121671411446">ভাষা শনাক্ত করুন</translation>
 <translation id="108284536240904209">এছাড়া, Brave থেকেও ডেটা মুছে দিন (<ph name="URL"/>)</translation>
 <translation id="1345251407431278948">পিন করা আছে! টুলবারে থাকা নতুন বোতাম থেকে আবার আপনি 'ছবি সার্চ করা' ফিচার অ্যাক্সেস করতে পারবেন</translation>
-<translation id="1356661055722410047">নতুন! আপনি স্ক্রিনে টেক্সট ও ছবি দুটিই অনুবাদ করতে পারবেন</translation>
 <translation id="1383876407941801731">খুঁজুন</translation>
 <translation id="3535301204632475895">যেকোনও সময় ও জায়গায়, ব্রাউজ করা চালিয়ে যেতে Brave অ্যাপ ব্যবহার করুন</translation>
 <translation id="141901961143729572">আপনার মতামত শেয়ার করুন</translation>
@@ -65,6 +64,7 @@
 <translation id="5994491947936308173">দ্রুত অ্যাক্সেসের জন্য আপনার টাস্কবারে Brave পিন করতে, Windows বিজ্ঞপ্তিতে <ph name="BEGIN_BOLD"/>হ্যাঁ<ph name="END_BOLD"/> বিকল্পে ক্লিক করুন</translation>
 <translation id="5875673934455379806">Brave আবার ইন্সটল করুন</translation>
 <translation id="4529028207655448215">Brave <ph name="AUTHENTICATION_PURPOSE"/>-এর চেষ্টা করছে</translation>
+<translation id="6387107728249269341"><ph name="EXISTING_USER"/> আগেই সাইন-ইন করেছেন। আপনার ব্রাউজিংয়ের ডেটা আলাদা রাখতে, নিজের Brave প্রোফাইলে <ph name="USER_EMAIL_ADDRESS"/> হিসেবে সাইন-ইন করুন। এছাড়াও আপনি <ph name="DEVICE"/> থেকে নিজের এক্সটেনশন ও আরও অনেক কিছু পাবেন।</translation>
 <translation id="7362761326208547489">পরেরবার আপনার <ph name="DEVICE_TYPE"/>-এ Brave খোলার সময়, Brave Password Manager ব্যবহার করার জন্য আপনাকে প্রম্পট দেখানো হবে।</translation>
 <translation id="1838374766361614909">সার্চ সাফ করুন</translation>
 <translation id="3541642064306182066">শুধুমাত্র এই ডিভাইস থেকে ব্রাউজ করা ডেটা মুছে দিতে, তা নিজের Brave অ্যাকাউন্টে রেখে দেওয়ার সময়, <ph name="BEGIN_LINK"/>Brave থেকে সাইন-আউট করুন<ph name="END_LINK"/>।</translation>
@@ -143,6 +143,7 @@
 <translation id="2575822587468774919">'ছবি সার্চ করা' ফিচার ব্যবহার করে সার্চ করার জন্য যেকোনও কিছু বেছে নিন</translation>
 <translation id="3830890663494219270">নিজের সব ডিভাইসে পাসওয়ার্ড ও আরও অনেক কিছু পেতে, Brave-এ সাইন-ইন করুন</translation>
 <translation id="6908148552215338695">ফোনে QR কোড স্ক্যান করে Brave ডাউনলোড করুন ও আপনার Brave অ্যাকাউন্টে সাইন-ইন করুন।</translation>
+<translation id="7985444384142764643">Brave ব্যবহার করে সার্চ করতে।</translation>
 <translation id="6252796827759111076">Brave ব্যবহার করা চালিয়ে যান</translation>
 <translation id="259935314519650377">ডাউনলোড করা ইনস্টলার ক্যাশে করা যায়নি। সমস্যা হয়েছে: <ph name="UNPACK_CACHING_ERROR_CODE"/>।</translation>
 <translation id="2620436844016719705">সিস্টেম</translation>
@@ -186,6 +187,7 @@
 <translation id="3038232873781883849">ইনস্টল করার জন্য অপেক্ষা করা হচ্ছে...</translation>
 <translation id="3045032126857188731">যে ভাষায় অনুবাদ করা হয়েছে: <ph name="LANGUAGE"/></translation>
 <translation id="3047590466164881923">মতামত ডায়ালগ বন্ধ করুন</translation>
+<translation id="72283640173840794"><ph name="EXISTING_USER"/> আগেই সাইন-ইন করেছেন। আপনার ব্রাউজিংয়ের ডেটা আলাদা রাখতে, নিজের Brave প্রোফাইলে <ph name="USER_EMAIL_ADDRESS"/> হিসেবে সাইন-ইন করুন। এছাড়াও আপনি <ph name="DEVICE"/> থেকে নিজের পড়ার তালিকা ও আরও অনেক কিছু পাবেন।</translation>
 <translation id="4503085212612536713">Brave-এর অন্যান্য প্রোফাইল</translation>
 <translation id="2041039306630146369">এক্সটেনশন হল অ্যাড-অন যার মাধ্যমে আপনি Brave কাস্টমাইজ করতে পারবেন। গুছিয়ে কাজ করা থেকে দৈনন্দিন টাস্ক সহজ করে তোলা, এক্সটেনশনের সাহায্যে আপনি Brave-কে নিজের পছন্দমতো করে তুলতে পারবেন।</translation>
 <translation id="7918740962659365265">Brave-এ  <ph name="UMA_LINK"/> ও ক্র্যাশ রিপোর্ট পাঠিয়ে Brave আরও ভালো করতে সাহায্য করুন</translation>
@@ -282,6 +284,7 @@
 <translation id="6596295505984504022">আপনার Brave কাস্টমাইজ করুন</translation>
 <translation id="4148957013307229264">ইনস্টল হচ্ছে...</translation>
 <translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - নেটওয়ার্ক সাইন-ইন - Brave Origin</translation>
+<translation id="305023898453185745"><ph name="EXISTING_USER"/> আগেই সাইন-ইন করেছেন। আপনার ব্রাউজিংয়ের ডেটা আলাদা রাখতে, নিজের Brave প্রোফাইলে <ph name="USER_EMAIL_ADDRESS"/> হিসেবে সাইন-ইন করুন। এছাড়াও, আপনার সব ডিভাইসে পড়ার তালিকা ও আরও অনেক কিছু পাবেন।</translation>
 <translation id="2871190378186459992">Brave-এর জন্য খুব ভালো অ্যাপ্লিকেশান, গেম, এক্সটেনশন এবং থিমসমূহ আবিষ্কার করুন৷</translation>
 <translation id="462105622535258178">আপনার সব কম্পিউটারে এই এক্সটেনশন এবং আরও অনেক কিছু পেতে, Brave-এ সাইন-ইন করুন</translation>
 <translation id="6670140629169983459">তোমার অভিভাবকের পছন্দ মেনে অনলাইনে আরও নিরাপদ থাকতে, <ph name="USER_EMAIL_ADDRESS"/> হিসেবে আগে থেকেই সাইন-ইন করে আছো এমন Brave প্রোফাইলে পরিবর্তন করো</translation>
@@ -296,7 +299,6 @@
 <translation id="6368144843345980623">Brave থেকে পাসওয়ার্ড এক্সপোর্ট করুন</translation>
 <translation id="4304713468139749426">পাসওয়ার্ড ম্যানেজার</translation>
 <translation id="4334241893986177674">এই স্ক্রিনশট সার্চ করুন</translation>
-<translation id="3985621805803699376">Brave মিনিমাইজ করা থাকলেও, যেকোনও জায়গা থেকে সার্চ ও প্রশ্ন জিজ্ঞাসা করুন</translation>
 <translation id="242356249838681145">Windows চালু হলে Brave লঞ্চ করুন</translation>
 <translation id="4400772909124543403">কোনও আপডেট উপলভ্য নেই</translation>
 <translation id="9183662282810237335">তা স্বত্তেও Brave ছেড়ে যাবেন?</translation>
@@ -327,6 +329,7 @@
 <translation id="2182657378556811785">প্রায় আপ-টু-ডেট হয়েছে! আপডেট শেষ করতে Brave আবার চালু করুন।</translation>
 <translation id="6311668361877328515">Brave-এর ভি৮ ইঞ্জিন সাইটের স্পিড বাড়িয়ে দেয় কিন্তু Brave-এর অ্যাটাক প্রতিরোধের ক্ষমতা সামান্য কমে যায়</translation>
 <translation id="7960968658810899127">Brave-এর মাধ্যমে সার্চ খুলুন</translation>
+<translation id="4600669659668950128">Brave প্রোফাইল</translation>
 <translation id="7402642357351265733">আপনি Brave ব্যবহারের রিপোর্ট শেয়ার করলেও, আপনার দেখা URL তার মধ্যে অন্তর্ভুক্ত থাকে</translation>
 <translation id="4673710618874938871"><ph name="USER_NAME"/>, মেম্বারশিপ হিসেবে সাইন-ইন করেছেন। অ্যাকাউন্ট মেনু খুলুন</translation>
 <translation id="8142245354207161805">অন্য একটি কম্পিউটারে (<ph name="HOST_NAME"/>) প্রোফাইলটি অন্য Brave প্রক্রিয়া (<ph name="PROCESS_ID"/>) দ্বারা ব্যবহৃত হচ্ছে বলে মনে হচ্ছে৷ Brave প্রোফাইলটিকে লক করেছে যাতে এটি বিকৃত না হয়ে যায়৷ যদি আপনি নিশ্চিত হন যে আর কোনো প্রক্রিয়া এই প্রোফাইলটিকে ব্যবহার করছে না, তবে আপনি প্রোফাইলটিকে আনলক করতে পারেন এবং Brave কে পুনরায় লঞ্চ করতে পারেন৷</translation>
@@ -379,6 +382,7 @@
 <translation id="3311284381627742014">Brave-এর মাধ্যমে সার্চ খুলুন</translation>
 <translation id="5154625106151193600">Brave কিছু ফাইল কেন ব্লক করে সেই সম্পর্কে জানুন</translation>
 <translation id="1786715389543715322">Brave আপডেট হচ্ছে (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="3267146219387305979"><ph name="EXISTING_USER"/> আগেই সাইন-ইন করেছেন। আপনার ব্রাউজিংয়ের ডেটা আলাদা রাখতে, নিজের Brave প্রোফাইলে <ph name="USER_EMAIL_ADDRESS"/> হিসেবে সাইন-ইন করুন। এছাড়াও, আপনার সব ডিভাইসে এক্সটেনশন ও আরও অনেক কিছু পাবেন।</translation>
 <translation id="7021823858304886493">Brave-এ সাইন-ইন করতে দিন</translation>
 <translation id="5267531627648004734">Brave থেকে সরান</translation>
 <translation id="4620757336635063467">পারফর্ম্যান্স কমিয়ে দেয় তবে অ্যাটাকের হাত থেকে Brave-কে আরও বেশি প্রতিরোধক করে তোলে</translation>
@@ -455,6 +459,7 @@
 <translation id="6685697979743742605">এই ফাইল বিপজ্জনক হতে পারে<ph name="LINE_BREAK"/>আপনি নিজের পাসওয়ার্ড দিলে Brave আপনার জন্য এই ডাউনলোড চেক করতে পারবে। ফাইল সম্পর্কিত তথ্য Google Safe Browsing-কে পাঠানো হয়, তবে ফাইলের কন্টেন্ট ও পাসওয়ার্ড আপনার ডিভাইসেই থাকে।</translation>
 <translation id="6182736845697986886">ইনস্টলেশন করা যায়নি, কারণ আপডেট সার্ভারের ইন্টার্নাল সমস্যা আছে।</translation>
 <translation id="4368341489795135329">আপনার <ph name="TARGET_DEVICE_NAME"/>-এর Brave-এ সাইন-ইন করেছেন কিনা তা দেখে নিন এবং তারপরে আবার পাঠানোর চেষ্টা করুন।</translation>
+<translation id="3044046743226566469">Brave মিনিমাইজ করা থাকলেও, যেকোনও জায়গা থেকে সার্চ ও প্রশ্ন জিজ্ঞাসা করুন। Brave-কে ব্যাকগ্রাউন্ডে রান করার অনুমতি দেয়।</translation>
 <translation id="8320964054148936490">এই কম্পিউটারে ইতিমধ্যে Brave-এর আরও একটি সাম্প্রতিক ভার্সন রয়েছে৷ যদি সফ্টওয়্যার কাজ না করে, দয়া করে Brave আনইনস্টল করুন এবং আবার চেষ্টা করুন৷</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave এখন আবার লঞ্চ হবে}=1{Brave ১ সেকেন্ডের মধ্যে আবার লঞ্চ হবে}one{Brave # সেকেন্ডের মধ্যে আবার লঞ্চ হবে}other{Brave # সেকেন্ডের মধ্যে আবার লঞ্চ হবে}}</translation>
 <translation id="5980269616827212166">ফাইল ডাউনলোড করতে Brave-এর স্টোরেজ অ্যাক্সেসের অনুমতি প্রয়োজন</translation>
@@ -578,6 +583,7 @@
 <translation id="7288567540154601580">ট্যাব ও এক্সটেনশন</translation>
 <translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Brave আপনাকে এটি সরিয়ে দেওয়ার সাজেশন দেয়}one{Brave আপনাকে এগুলি সরিয়ে দেওয়ার সাজেশন দেয়}other{Brave আপনাকে এগুলি সরিয়ে দেওয়ার সাজেশন দেয়}}</translation>
 <translation id="4600669988724328687">সিস্টেম অডিও শেয়ার করতে, সিস্টেম সেটিংস খুলুন এবং Brave-এর জন্য 'শুধুমাত্র সিস্টেম অডিও রেকর্ডিং' বিকল্পে অনুমতি দিন। আপনাকে তারপরে Brave আবার চালু করতে হবে।</translation>
+<translation id="7299899569525778554">ডেস্কটপ থেকে সার্চ করুন</translation>
 <translation id="1864557848095568223">Brave আপডেট করা হচ্ছে</translation>
 <translation id="3403365884036456766">আপনার প্রেফারেন্স ফাইল ক্ষতিগ্রস্ত অথবা অসমর্থিত৷
 
@@ -631,6 +637,7 @@ Brave আপনার সেটিংস পুনরুদ্ধার কর�
 <translation id="8607348724092473027"><ph name="PAGE_TITLE"/> - Brave Origin Canary</translation>
 <translation id="2684504034454188774">আপনি যে ইন্টারনেট ট্রাফিক ব্যবহার করছেন, সেটির অ্যাক্সেস থাকা লোকজনেরা যাতে আপনি কোন কোন সাইট দেখেন তা দেখতে না পারেন তার ব্যবস্থা করুন। Brave সুরক্ষিত কানেকশন ব্যবহার করে ডিএনএস (ডোমেন নেম সিস্টেম)-এ কোনও সাইটের IP অ্যাড্রেস দেখে।</translation>
 <translation id="7810005234485217901">সহজে অ্যাক্সেস করার জন্য আপনি 'ছবি সার্চ করা' ফিচার পিন করে রাখতে পারেন</translation>
+<translation id="3219490697448569661">Brave-এর বাইরে থাকা কন্টেন্ট সম্পর্কে জিজ্ঞাসা করুন, যেমন অন্য কোনও অ্যাপ বা আপনার খোলা ফাইল</translation>
 <translation id="4191642852677143100">Brave-এর কী শেয়ার করবেন তা বেছে নিন</translation>
 <translation id="1652855885539187849">এই ডিভাইসে এই অ্যাকাউন্টের সাথে Brave প্রোফাইল আগে থেকেই আছে</translation>
 <translation id="7845233973568007926">ইনস্টল করার জন্য ধন্যবাদ। <ph name="BUNDLE_NAME"/> ব্যবহার করার আগে আপনাকে অবশ্যই কম্পিউটার রিস্টার্ট করতে হবে।</translation>
@@ -715,10 +722,10 @@ Brave আপনার সেটিংস পুনরুদ্ধার কর�
 <translation id="856656450041460113">ভাষার তালিকা সার্চ করুন</translation>
 <translation id="839677568225616901">একাধিক সংস্থা Brave ম্যানেজ করে</translation>
 <translation id="8121009781989288430">কপিরাইট <ph name="YEAR"/> Brave রচয়িতা৷ সর্বস্বত্ত্ব সংরক্ষিত৷</translation>
-<translation id="8601359445272098721">নতুন! "স্ক্রিন অনুবাদ করুন" বোতাম বেছে নিয়ে আপনি স্ক্রিনে টেক্সট ও ছবি দুটিই অনুবাদ করতে পারেন</translation>
 <translation id="3052349005266761501">Brave লঞ্চ করা হচ্ছে...</translation>
 <translation id="8624541899164515475">সেটিংস, নতুন ট্যাবে খোলে।</translation>
 <translation id="5128665650717824082">Brave for Testing-কে আপনার ডিফল্ট ব্রাউজার করে পারবেন না।</translation>
+<translation id="3053208669360972929">Brave ব্যবহার করে যেকোনও জায়গা থেকে সার্চ করুন</translation>
 <translation id="2433912322225810055">আপনি Brave শুরু করলে বা Omnibox থেকে সার্চ করলে কোন পৃষ্ঠাটি দেখানো হবে তাও এটি নিয়ন্ত্রণ করে।</translation>
 <translation id="4100716194836114130">এটি হল আপনার Brave</translation>
 <translation id="8712637175834984815">বুঝেছি</translation>
@@ -752,6 +759,7 @@ Brave আপনার সেটিংস পুনরুদ্ধার কর�
 <translation id="7731184591599776500">Brave Enterprise লোগো</translation>
 <translation id="2001474182910589370">আপনার <ph name="DEVICE_TYPE"/>-এ Brave অ্যাপের মাধ্যমে যেকোনও সময় ও জায়গায় Brave-এর নিরাপত্তা পান</translation>
 <translation id="6500340165622970282">Brave চালু করা যাচ্ছে না কারণ আপনার প্রোফাইল খোলার সময় কোনও সমস্যা হয়েছে। Brave রিস্টার্ট করার চেষ্টা করুন।</translation>
+<translation id="8079450595783684960">Brave ব্যবহার করে সার্চ করতে বা <ph name="BEGIN_LINK"/>সেটিংস<ph name="END_LINK"/> থেকে কাস্টমাইজ করতে</translation>
 <translation id="3424657754843264466">Brave প্রোফাইল ম্যানেজ করুন</translation>
 <translation id="1454821212628854849">Brave-এ Gemini ও আপনার খোলা ট্যাবের মধ্যে নেভিগেট করতে কীবোর্ড ব্যবহার করুন।</translation>
 <translation id="9018218886431812662">ইনস্টল হয়ে গেছে</translation>

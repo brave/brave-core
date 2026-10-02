@@ -1735,6 +1735,9 @@
 <translation id="2077392865355605472">トークンシンボルは必須です</translation>
 <translation id="4636925020451566238">トークンの小数点桁数は必須です</translation>
 <translation id="3797613444743816037">ミントアドレス</translation>
+<translation id="6571966497164575098">アセットID</translation>
+<translation id="2110442566771571217">トークンのアセットIDが無効または空になっています</translation>
+<translation id="4170599358417498979">このネットワークではカスタムアセットはサポートされていません</translation>
 <translation id="7951915459354237451">手数料の上限が基本手数料より低く設定されています。トランザクションに時間を要する、または失敗する可能性があります。</translation>
 <translation id="2227702748249086756">料金の見積もりを取ることができない</translation>
 <translation id="3225624966527491351">NFTをインポート</translation>
@@ -2021,7 +2024,7 @@
 <translation id="418195046117003119">共有ハブのスクリーンショット</translation>
 <translation id="4712056949543885424">パスワードマネージャーを表示</translation>
 <translation id="8037472847879765671">支払方法を表示</translation>
-<translation id="7269867954894010756">アドレスを表示</translation>
+<translation id="6262574309547773475">連絡先情報を表示</translation>
 <translation id="6799213269525079335">次を検索</translation>
 <translation id="8666632926482119393">前を検索</translation>
 <translation id="3567467864281922039">検索を閉じる / 停止</translation>
@@ -2150,6 +2153,7 @@
 <translation id="3142853026316054951">フォーカスモードを切り替え</translation>
 <translation id="3468387898712904997">新しいメールエイリアス</translation>
 <translation id="4711475997833555304">受信トレイに転送されるランダムなメールアドレスを作成します。</translation>
+<translation id="5663901348199429994">あなたのメールエイリアス</translation>
 <translation id="2796584247246518451">新しい一時コンテナ</translation>
 <translation id="8591883849678260674">オリジナルを見る</translation>
 <translation id="1969654232209826429">分で読めます</translation>
@@ -2214,6 +2218,7 @@
 <translation id="9215978379284690246">ステータスコード: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">ステータスコード: <ph name="STATUS_CODE"/>、内部ステータスコード: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">プレミアムレートの制限に達しました。数時間お待ちいただき、もう一度お試しください。</translation>
+<translation id="6873128487002733717">このモデルのPremium上限に達しました。別のモデルを選択するか、後でもう一度お試しください。</translation>
 <translation id="3683964919745779766">このモデルのレートが上限に達しているか、あるいはクレジットが不足しています。後でもう一度お試しください。</translation>
 <translation id="7692501701960747469">このモデルに設定されているAPIキーが無効です。設定を確認し、もう一度お試しください。</translation>
 <translation id="7905602379229309187">エンドポイントは現在過負荷の状態です。時間をおいて再度お試しください。</translation>
@@ -2393,6 +2398,9 @@
 <translation id="5021823940147712387">ツールを削除</translation>
 <translation id="8712279871321308580">利用可能なウェブサイトツール</translation>
 <translation id="3690996226559605619">利用可能なツール（<ph name="TOOL_COUNT"/>）</translation>
+<translation id="1467936490716897691">このセッションで許可</translation>
+<translation id="6240821072888636753">毎回確認</translation>
+<translation id="4290920330097335010">許可しない</translation>
 <translation id="318819763888864209">すべてのサブスクリプションは自動更新されますが、更新前にいつでもキャンセルすることができます。</translation>
 <translation id="5091223967610958">開いているページのホスト名 (<ph name="HOST_NAME"/>) をシェアして、Leoの改善にご協力ください。</translation>
 <translation id="8732450785281947197">LeoのAIツール</translation>
@@ -2467,7 +2475,7 @@
 <translation id="6077070599873946984">Brave AIは、次の操作について許可を求めています: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AIが **<ph name="SITE_ORIGIN"/>** で **<ph name="TOOL_NAME"/>** を実行しようとしています</translation>
 <translation id="4163837693685963037">この操作は、リクエストと一致していない可能性があると検出されました:</translation>
-<translation id="5137568953923142260">許可</translation>
+<translation id="5137568953923142260">一時的に許可</translation>
 <translation id="3927932062596804919">拒否</translation>
 <translation id="4191349941249805855">ツールの引数を表示</translation>
 <translation id="7237059533128264835">ツールの引数を非表示</translation>
@@ -2514,7 +2522,6 @@
 <translation id="6002159997868894136">クリックしてエイリアスをコピー</translation>
 <translation id="8105770564756958406"><ph name="DOMAINS"/>で使用</translation>
 <translation id="5006956315579221642">あなたの本当のメールアドレスを保護するために、最大5つの無料メールエイリアスが作成できます。</translation>
-<translation id="5663901348199429994">あなたのメールエイリアス</translation>
 <translation id="9046133327037621173">新しいメールエイリアス</translation>
 <translation id="3768606658230902536">ランダムなメールアドレスを作成し、個人的なメールアドレスをプライベートに保ったまま転送します。</translation>
 <translation id="4452721050684632493">エイリアスの上限に達しました</translation>
@@ -2945,7 +2952,9 @@ Tab + Enterキーの順に操作して開いているタブを切り替えます
 <translation id="4227581348172626540">パスワードの変更をキャンセル</translation>
 <translation id="808894953321890993">パスワードを変更</translation>
 <translation id="7967687455715421528">パスワードを変更できません</translation>
+<translation id="7413006094063730650">アカウントを削除</translation>
 <translation id="4869737930995549965">ログアウト</translation>
+<translation id="2902312830803030883">その他のアクション</translation>
 <translation id="5538654494923870167">Braveアカウントを始める</translation>
 <translation id="1544145635547515689">Braveアカウントを作成</translation>
 <translation id="3828644479849256404">すでにアカウントをお持ちですか？ ログイン</translation>
@@ -2970,6 +2979,11 @@ Tab + Enterキーの順に操作して開いているタブを切り替えます
 <translation id="7228810962389847249">ここにコードを入力</translation>
 <translation id="4683390091376980486">コードを確認</translation>
 <translation id="3970028678400797622">メールコードを再送信</translation>
+<translation id="3653907916071208187">Braveアカウントを削除しますか?</translation>
+<translation id="8216839865292766307">Braveアカウントを削除すると、そのメールエイリアスも削除されます。エイリアスを使用して登録したオンラインサービスへのアクセスができなくなる場合があります。この操作は元に戻せません。</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">アカウント削除を有効にするには <ph name="KEYWORD"/> と入力してください</translation>
+<translation id="536306385881145656">Braveアカウントを削除</translation>
 <translation id="2475982808118771221">エラーが発生しました</translation>
 <translation id="5430795854491041407">エラー</translation>
 <translation id="2232323423357029857">ブラウザで予期しないエラーが発生しました<ph name="ERROR_CODE"/>。ブラウザを再起動して再試行してください。</translation>
@@ -3002,4 +3016,10 @@ Tab + Enterキーの順に操作して開いているタブを切り替えます
 <translation id="1063227610401477317">変更を適用する</translation>
 <translation id="5539769255716491933">失敗したステップを報告</translation>
 <translation id="7562163394445060270">タスクの完了に失敗しました</translation>
+<translation id="691082536326552372">失敗したステップを報告</translation>
+<translation id="2731141092023803480">失敗したステップのレポートをBraveチームに送信します。このレポートには、問題を修正するために必要な情報が含まれます。<ph name="LINK_BEFORE"/>詳細はこちら。<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">現在のURL</translation>
+<translation id="4739707522207259415">失敗したステップ</translation>
+<translation id="1767991048059195456">レポートを送信</translation>
+<translation id="2168036794078614559">レポートを送信しました</translation>
 </translationbundle>

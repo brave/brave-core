@@ -61,6 +61,7 @@
 <translation id="1036511912703768636">Access any of these USB devices</translation>
 <translation id="1038462104119736705">At least <ph name="INSTALL_SIZE"/> of space is recommended for Linux. To increase free space, delete files from your device.</translation>
 <translation id="1038643060055067718">Lines:</translation>
+<translation id="1039216421321079051">Extension disabled by another extension</translation>
 <translation id="1039337018183941703">Invalid or corrupt file</translation>
 <translation id="1040761927998636252">Unnamed bookmark for <ph name="URL"/></translation>
 <translation id="1041175011127912238">This page isn't responding</translation>
@@ -139,6 +140,7 @@ Check your passwords at any time in <ph name="GOOGLE_PASSWORD_MANAGER"/>.</trans
 <translation id="1090541560108055381">Before pairing, make sure that this code is the same on both devices</translation>
 <translation id="1093457606523402488">Visible Networks:</translation>
 <translation id="1093645050124056515">ctrl + alt + down arrow</translation>
+<translation id="1095398697303758108">Press Ctrl twice for enhanced autofill</translation>
 <translation id="1676423917671990874">Brave Password Manager on the web</translation>
 <translation id="1097016918605049747">This page couldn't be translated</translation>
 <translation id="1099962274138857708">Image copied from <ph name="DEVICE_NAME"/></translation>
@@ -673,6 +675,7 @@ Check your passwords at any time in <ph name="GOOGLE_PASSWORD_MANAGER"/>.</trans
 <translation id="1523978563989812243">Text-to-speech engines</translation>
 <translation id="1524563461097350801">No, thanks</translation>
 <translation id="1525740877599838384">Use only Wi-Fi to determine location</translation>
+<translation id="1526274304859009691">Sign in to get your extensions and more from <ph name="DEVICE"/></translation>
 <translation id="1526560967942511387">Untitled Document</translation>
 <translation id="1527336312600375509">Monitor refresh rate</translation>
 <translation id="152913213824448541">Nearby Share contacts</translation>
@@ -853,6 +856,7 @@ Check your passwords at any time in <ph name="GOOGLE_PASSWORD_MANAGER"/>.</trans
 <translation id="1656528038316521561">Background opacity</translation>
 <translation id="4711067597921221305">Help make <ph name="PRODUCT_NAME"/> better by automatically sending usage statistics and crash reports to Brave.</translation>
 <translation id="1657937299377480641">To sign in again for access to educational resources, ask a parent to give you permission</translation>
+<translation id="1657952527687824398">Focus tab group</translation>
 <translation id="1658424621194652532">This page is accessing your microphone.</translation>
 <translation id="1660405268563702784">Update available for <ph name="APP_NAME"/></translation>
 <translation id="1661996889489595105">{NUM_TABS,plural, =1{Fix the tab that's slowing your browser}other{Fix the tabs that are slowing your browser}}</translation>
@@ -903,7 +907,6 @@ Check your passwords at any time in <ph name="GOOGLE_PASSWORD_MANAGER"/>.</trans
 <translation id="1696685050160038195">To keep your device secure, you should only run and install software from trusted sources and developers.</translation>
 <translation id="1697122132646041614">Thumbs down opens a form for submitting detailed feedback on why you dislike these results.</translation>
 <translation id="1697532407822776718">You're all set!</translation>
-<translation id="1698796500103229697">Payment methods</translation>
 <translation id="1698899521169711967">Caret Browsing</translation>
 <translation id="1699807488537653303">Fix password error</translation>
 <translation id="1700201317341192482">Remove your virtual card</translation>
@@ -1312,6 +1315,7 @@ Check your passwords at any time in <ph name="GOOGLE_PASSWORD_MANAGER"/>.</trans
 <translation id="2006638907958895361">Open Link in <ph name="APP"/></translation>
 <translation id="2007404777272201486">Report an Issue...</translation>
 <translation id="200781997903833896">To use Read Aloud, clear space on your device</translation>
+<translation id="2009047848105043829">Manage your devices</translation>
 <translation id="2010501376126504057">Compatible devices</translation>
 <translation id="2010636492623189611">Selected.</translation>
 <translation id="2012935757369720523">Delete file</translation>
@@ -1338,6 +1342,7 @@ Check your passwords at any time in <ph name="GOOGLE_PASSWORD_MANAGER"/>.</trans
 <translation id="2026367923222947564">Full page</translation>
 <translation id="2026377162111110983">Area voice</translation>
 <translation id="2028449514182362831">Features that need motion sensors won't work</translation>
+<translation id="2029064269235798707">Select keyboard shortcut</translation>
 <translation id="202918510990975568">Enter your password to configure security and sign-in</translation>
 <translation id="2030455719695904263">Trackpad</translation>
 <translation id="2030803782168502207">Remove subscription from device</translation>
@@ -1427,6 +1432,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2111670510994270194">New tab to the right</translation>
 <translation id="2111778868023567359">You won't see tab groups on this page again</translation>
 <translation id="2112554630428445878">Welcome, <ph name="USERNAME"/></translation>
+<translation id="211293389175579495"><ph name="NUM_MEGABYTES"/> MB</translation>
 <translation id="2113314491145966441">View imported certificates from macOS</translation>
 <translation id="21133533946938348">Pin Tab</translation>
 <translation id="2113479184312716848">Open &amp;File...</translation>
@@ -1980,6 +1986,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="252513908494776481">Ask about this tab</translation>
 <translation id="2525746158911982776">The update failed because the system lacks sufficient storage space.</translation>
 <translation id="2525842906387880861">You won't see suggestions on this page again</translation>
+<translation id="2526346836766369775">New isolated &amp;tab</translation>
 <translation id="2526590354069164005">Desktop</translation>
 <translation id="2526619973349913024">Check for update</translation>
 <translation id="2527167509808613699">Any kind of connection</translation>
@@ -2261,6 +2268,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2740531572673183784">OK</translation>
 <translation id="4939259950706542337">These passkeys are only saved on this device. They aren't saved to your Brave sync chain.</translation>
 <translation id="2741912629735277980">Display UI on the login screen</translation>
+<translation id="274229007420507506">Change shortcut in <ph name="BEGIN_LINK"/>Settings<ph name="END_LINK"/></translation>
 <translation id="2742373789128106053"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> isn't available right now.</translation>
 <translation id="2743301740238894839">Start</translation>
 <translation id="3491974999711898233">To save your password to Brave Password Manager, the Password Manager icon in the location bar</translation>
@@ -2300,6 +2308,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2767077837043621282">Couldn't update your Chromebook. Please try again later.</translation>
 <translation id="2767127727915954024"><ph name="ORIGIN"/> will be able to edit <ph name="FILENAME"/> until you close all tabs for this site</translation>
 <translation id="2769174155451290427">Uploaded image</translation>
+<translation id="2769715732905083104">Focus tab group</translation>
 <translation id="2770082596325051055">Pause <ph name="FILE_NAME"/></translation>
 <translation id="2770465223704140727">Remove from list</translation>
 <translation id="2770690685823456775">Export your passwords to another folder</translation>
@@ -2502,7 +2511,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2926708162326352948">Theme updated to uploaded image</translation>
 <translation id="2927017729816812676">Cache Storage</translation>
 <translation id="7099134950659097846">Choice saved. Your choice will apply when you sign in to other Brave services.</translation>
-<translation id="2928361271496576301">Accept hotkey</translation>
 <translation id="2928795416630981206">Allowed to track your camera position</translation>
 <translation id="8154235090364237757">{NUM_SITES,plural, =1{Brave removed permissions from 1 site}other{Brave removed permissions from {NUM_SITES} sites}}</translation>
 <translation id="2931157624143513983">Fit to printable area</translation>
@@ -2521,6 +2529,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2939908794993783865">Additional inactive sites</translation>
 <translation id="2939938020978911855">Show available Bluetooth devices</translation>
 <translation id="2941112035454246133">Low</translation>
+<translation id="2942228903502008519">Expand tabs (<ph name="KEYBOARD_SHORTCUT"/>)</translation>
 <translation id="2942560570858569904">Waiting...</translation>
 <translation id="2942581856830209953">Customise this page</translation>
 <translation id="2942707801577151363">Open, edit and save Word, Excel and PowerPoint files. A subscription may be required for some features.</translation>
@@ -2604,9 +2613,9 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3000461861112256445">Mono audio</translation>
 <translation id="3001144475369593262">Child accounts</translation>
 <translation id="3001614333383288217">{COUNT,plural, =0{No keys customised}=1{1 customised key}other{{COUNT} customised keys}}</translation>
-<translation id="3002745665522516995">Select anything on the page to search</translation>
 <translation id="3002864108328203174">Gemini bottom sheet at half height.</translation>
 <translation id="3003144360685731741">Preferred networks</translation>
+<translation id="4014744802831415408">Working on your Gemini app task in Brave. Check Brave for more updates</translation>
 <translation id="5730179015008010982">URLs that you visit are sent to Brave to predict what sites you might visit next and to show you additional info about the page that you're visiting</translation>
 <translation id="3003623123441819449">CSS cache</translation>
 <translation id="3003967365858406397">Your <ph name="PHONE_NAME"/> will create a private Wi-Fi connection.</translation>
@@ -2969,6 +2978,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3280237271814976245">Save &amp;as...</translation>
 <translation id="5340857474604400806">Stay in Brave</translation>
 <translation id="3282210178675490297">Sharing a tab to <ph name="APP_NAME"/></translation>
+<translation id="82609232232243542">Sign in to Brave</translation>
 <translation id="3284050785966252943">Auto-fill metadata preview</translation>
 <translation id="3285218179623157680"><ph name="WINDOW_TITLE"/> – bottom view</translation>
 <translation id="3285329711156774325">Search skills</translation>
@@ -3292,7 +3302,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3527473647192919613">New Isolated Window</translation>
 <translation id="3528498924003805721">Shortcut targets</translation>
 <translation id="35296112145429559">Pin scroll buttons</translation>
-<translation id="3529851166527095708">Addresses and more</translation>
 <translation id="3530919970074558307">Unfocus group</translation>
 <translation id="3531070080754387701">Microsoft 365 can't open <ph name="FILE_NAMES"/> from this folder</translation>
 <translation id="3531883061432162622">Find your reading list and bookmarks in Bookmarks and Lists</translation>
@@ -3446,6 +3455,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3641456520301071208">Sites can ask for your location</translation>
 <translation id="3642070413432681490">Circle cursor</translation>
 <translation id="3643962751030964445">This device is managed by <ph name="DEVICE_MANAGER"/>. A new profile is required for account <ph name="USER_EMAIL_ADDRESS"/> by <ph name="DEVICE_MANAGER"/></translation>
+<translation id="3644128856494356630">CppGC memory</translation>
 <translation id="3645372836428131288">Move slightly to capture a different part of the fingerprint.</translation>
 <translation id="3645951915068244649">A tab group was already created with this bookmark folder. Do you want to create a new tab group or replace the existing one?</translation>
 <translation id="3646789916214779970">Reset to default theme</translation>
@@ -3704,7 +3714,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3812525830114410218">Bad certificate</translation>
 <translation id="883304095704384301">Go to <ph name="BEGIN_LINK_CHROMIUM"/>Brave help<ph name="END_LINK_CHROMIUM"/> if you can't find what you're looking for</translation>
 <translation id="3813358687923336574">Language used for translating pages and Quick Answers</translation>
-<translation id="381485723922188688">Option</translation>
 <translation id="3815668647912194650">Keep this group to add tabs later, or leave it if you no longer want access to it.</translation>
 <translation id="8338457030135232378">Brave colours</translation>
 <translation id="3817524650114746564">Open your computer's proxy settings</translation>
@@ -4214,6 +4223,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="4226303886821889519">Updater version: <ph name="VERSION"/></translation>
 <translation id="4228209296591583948">{NUM_EXTENSIONS,plural, =1{This extension is not allowed}other{Some extensions are not allowed}}</translation>
 <translation id="4229538146709970028">Please unlock <ph name="TOKEN_NAME"/> to authenticate to <ph name="HOST_NAME"/> with your certificate.</translation>
+<translation id="2660716894375898341">The page title, URL and content of your current tab is shared with Brave to give you more relevant answers. You can add or remove tabs as you browse.</translation>
 <translation id="4232375817808480934">Configure Kerberos</translation>
 <translation id="4232376164796433044">Passwords and autofill</translation>
 <translation id="4233739489690259993">Your Chromebook is no longer receiving security and software updates. Upgrade your device for the latest security features and new features. Offer terms apply.</translation>
@@ -4555,7 +4565,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="4495002167047709180">Allow this extension on <ph name="SITE"/>?</translation>
 <translation id="4495419450179050807">Don't show on this page</translation>
 <translation id="4500055235123625757">Gemini can answer questions about the video or audio that you've played on <ph name="LINK_BEGIN"/>some websites<ph name="LINK_END"/>.</translation>
-<translation id="4500114933761911433"><ph name="PLUGIN_NAME"/> has crashed</translation>
 <translation id="4500647907053779331">&amp;Translate selection to <ph name="LANGUAGE"/></translation>
 <translation id="4501530680793980440">Confirm Removal</translation>
 <translation id="4502423230170890588">Remove from this device</translation>
@@ -4755,6 +4764,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="4652921642122345344">Voice speed <ph name="RATE"/>x</translation>
 <translation id="4654236001025007561">Share files with Chromebooks and Android devices around you</translation>
 <translation id="4654801841330730814">All</translation>
+<translation id="4656949320553787832">Allow split view drag and drop on left, right or bottom edge of window</translation>
 <translation id="4657724094180965385">Not interested</translation>
 <translation id="4657810666108475055">Tab search</translation>
 <translation id="4657914796247705218">TrackPoint speed</translation>
@@ -5030,7 +5040,6 @@ Use Ctrl + Alt + Brightness down to zoom out.</translation>
 <translation id="485480310608090163">More settings and permissions</translation>
 <translation id="4857304314344645169">See a step-by-step explanation of any problem</translation>
 <translation id="1913048435257025864">Ask Brave about previous page: <ph name="PAGE_TITLE"/></translation>
-<translation id="228735844055480091">The content and the URL of your current tab is shared with Brave to give you more relevant answers. You can add or remove tabs as you browse.</translation>
 <translation id="485806788160414322">Play or pause media</translation>
 <translation id="4858913220355269194">Footy</translation>
 <translation id="4860012864737017059">Recent tab</translation>
@@ -5041,6 +5050,7 @@ Use Ctrl + Alt + Brightness down to zoom out.</translation>
 <translation id="4864805589453749318">Select the parent who is granting permission to add a school account.</translation>
 <translation id="4864905533117889071"><ph name="SENSOR_NAME"/> (blocked)</translation>
 <translation id="486505726797718946">Memory saved</translation>
+<translation id="845205430231311424"><ph name="TASK_TITLE"/>: Working on your Gemini App task in Brave. Check Brave for more updates</translation>
 <translation id="486635084936119914">Open certain file types automatically after downloading</translation>
 <translation id="4868284252360267853">This dialogue is not currently focused. Press Command-Shift-Option A to focus this dialogue.</translation>
 <translation id="4869170227080975044">Read ChromeOS network information</translation>
@@ -5076,6 +5086,7 @@ Use Ctrl + Alt + Brightness down to zoom out.</translation>
 <translation id="488785315393301722">Show details</translation>
 <translation id="488862352499217187">Create new folder</translation>
 <translation id="4888715715847020167">go to settings</translation>
+<translation id="4888899258150891194">CppGC memory</translation>
 <translation id="4890292359366636311">Enter picture-in-picture automatically, so you can use it on top of other tabs and windows.</translation>
 <translation id="4890399733764921729">Cannot connect. Locked by another mobile provider.</translation>
 <translation id="4890585766056792498">Get protection against dangerous sites</translation>
@@ -5260,7 +5271,7 @@ Use Ctrl + Alt + Brightness down to zoom out.</translation>
 <translation id="5032430150487044192">Can't create QR code</translation>
 <translation id="5033137252639132982">Not allowed to use motion sensors</translation>
 <translation id="5035846135112863536">Choose 'More details' below to get more information from <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>.</translation>
-<translation id="5037676449506322593">Select All</translation>
+<translation id="5037676449506322593">Select all</translation>
 <translation id="5038621320029329200">Trusted certificates</translation>
 <translation id="5038818366306248416">You previously chose not to allow any extensions on <ph name="ORIGIN"/></translation>
 <translation id="5039071832298038564">Device network info</translation>
@@ -5292,6 +5303,7 @@ Use Ctrl + Alt + Brightness down to zoom out.</translation>
 <translation id="5060419232449737386">Caption settings</translation>
 <translation id="5061347216700970798">{NUM_BOOKMARKS,plural, =1{This folder contains a bookmark. Are you sure that you want to delete it?}other{This folder contains # bookmarks. Are you sure that you want to delete it?}}</translation>
 <translation id="5061531353537614467">Tundra</translation>
+<translation id="5061781067616989032">Set up your own keyboard shortcut</translation>
 <translation id="5062863364865466276">Movement</translation>
 <translation id="5063480226653192405">Usage</translation>
 <translation id="5064921774605267982">Open <ph name="PROFILE_NAME"/> profile. This profile is managed by your parent.</translation>
@@ -5419,6 +5431,7 @@ Use Ctrl + Alt + Brightness down to zoom out.</translation>
 <translation id="5155299520372681119">File upload has expired and been removed.</translation>
 <translation id="5156638757840305347">Cursor is highlighted when it appears or moves</translation>
 <translation id="5157250307065481244">View site details</translation>
+<translation id="5157258206078001821">Collapse tabs (<ph name="KEYBOARD_SHORTCUT"/>)</translation>
 <translation id="5159094275429367735">Set up Crostini</translation>
 <translation id="5159236862360390997">A series of tutorial bubbles with instructions will be displayed.
           Press <ph name="ACCELERATOR"/> to focus a bubble, then again to focus the element that it is pointing to.</translation>
@@ -5437,7 +5450,6 @@ Use Ctrl + Alt + Brightness down to zoom out.</translation>
 <translation id="5173668317844998239">Add and delete fingerprints saved on your security key</translation>
 <translation id="5174169235862638850">Password copied to clipboard</translation>
 <translation id="517488401359338823">Unlock security device</translation>
-<translation id="5176671554021050278">Use Google Lens to learn more about specific images or text on a page.</translation>
 <translation id="5177479852722101802">Continue blocking camera and microphone access</translation>
 <translation id="5178667623289523808">Find Previous</translation>
 <translation id="5179428098696668914">Turn off AI Playback</translation>
@@ -5756,6 +5768,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="5436510242972373446">Search <ph name="SITE_NAME"/>:</translation>
 <translation id="5438014818441491616"><ph name="WINDOW_SIDE"/> window now <ph name="WINDOW_SIZE_PERCENT"/> wide, <ph name="PANE_SIDE"/> pane now <ph name="PANE_SIZE_PERCENT"/> wide.</translation>
 <translation id="5438060324827306856">Find &amp;extensions</translation>
+<translation id="5440240650630588012">Apply a reading line or window to help with focus. Press ⌥L or go to Settings.</translation>
 <translation id="5440425659852470030">Close side panel</translation>
 <translation id="544083962418256601">Create shortcuts...</translation>
 <translation id="5417227405829889012">Web app installed from Brave browser</translation>
@@ -5940,6 +5953,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="5576472948015790634">You can now manage your tab groups and Gemini chats in one place. Unpin this at any time.</translation>
 <translation id="5578059481725149024">Auto sign-in</translation>
 <translation id="5578387000057347457">Enter a custom prompt or highlight text to create an image</translation>
+<translation id="557893471177655572">Try line focus</translation>
 <translation id="5650019292421185188">{ITEM_COUNT,plural, =1{1 item is saved only to this device. To use it on your other devices, <ph name="BEGIN_LINK"/>save it in your Brave sync chain<ph name="END_LINK"/>.}other{{ITEM_COUNT} passwords are saved only to this device. To use them on your other devices, <ph name="BEGIN_LINK"/>save them in your Brave sync chain<ph name="END_LINK"/>.}}</translation>
 <translation id="5579225964082017560">Remove <ph name="SITE"/> from the <ph name="SECTION_HEADER"/> list</translation>
 <translation id="5581031802689147441">Split view</translation>
@@ -5999,7 +6013,6 @@ You can assign multiple switches to this action.</translation>
 <translation id="5625225435499354052">Edit in Google Pay</translation>
 <translation id="5627832140542566187">Display orientation</translation>
 <translation id="5628434207686266338">Set device password</translation>
-<translation id="5628652442614339066">Easily open with</translation>
 <translation id="562935524653278697">Your administrator has disabled syncing of your bookmarks, history, passwords and other settings.</translation>
 <translation id="5631017369956619646">CPU Usage</translation>
 <translation id="5631272057151918206">This will remove up to <ph name="OFFLINE_STORAGE_SIZE"/> of space used by your offline files. Some files will still be available offline. <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
@@ -6056,6 +6069,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="5678955352098267522">Read your data on <ph name="WEBSITE_1"/></translation>
 <translation id="5680050361008726776">Remove '<ph name="ESIM_PROFILE_NAME"/>'?</translation>
 <translation id="5681586175480958839">File is already being opened</translation>
+<translation id="5682120590308014005">Sign in to easily add files from Drive to your AI Mode threads. You'll also get your passwords and more on all your devices.</translation>
 <translation id="5684110242705861346">The '<ph name="NAME"/>' extension was added by your organisation's policy and is controlling this setting. <ph name="BEGIN_LINK"/>See details<ph name="END_LINK"/></translation>
 <translation id="5684181005476681636">Wi-Fi details</translation>
 <translation id="5687340364605915800">Sites use their discretion when responding to this request</translation>
@@ -6332,6 +6346,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="5901630391730855834">Yellow</translation>
 <translation id="3535209993382976135">Brave Password Manager is turned off</translation>
 <translation id="5906457147959147328">Continue allowing this site to use identifiers to play protected content</translation>
+<translation id="5906549184882174190">Isolated</translation>
 <translation id="5906655207909574370">Nearly up to date! Restart your device to finish updating.</translation>
 <translation id="5906732635754427568">Data associated with this app will be removed from this device.</translation>
 <translation id="5906974869830879618">Please enter a pin</translation>
@@ -6462,7 +6477,6 @@ You can assign multiple switches to this action.</translation>
 <translation id="6003143259071779217">Remove eSIM mobile network</translation>
 <translation id="6003479444341796444">Title bar is now showing</translation>
 <translation id="6003582434972667631">Theme is set by your organisation</translation>
-<translation id="6005010326905893430">edit your own</translation>
 <translation id="6005045517426700202">Brick building</translation>
 <translation id="6006484371116297560">Classic</translation>
 <translation id="6007053304250788613">Only one display can be excluded in mirror mode</translation>
@@ -6486,6 +6500,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="296137235951584143">Make Brave your own</translation>
 <translation id="6024317249717725918">Search video frame with <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="6025215716629925253">Stack Trace</translation>
+<translation id="6026436621921471553">Unfocus tab group</translation>
 <translation id="6026819612896463875"><ph name="WINDOW_TITLE"/> – USB device connected</translation>
 <translation id="6027143200498653403">When you ask questions about your history, you can get answers about specific information from a page that you visited</translation>
 <translation id="6027945736510816438">Did you mean <ph name="WEBSITE"/>?</translation>
@@ -6555,6 +6570,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="6088475950266477163">Settin&amp;gs</translation>
 <translation id="608912389580139775">To add this page to your reading list, click the Bookmark icon</translation>
 <translation id="6089289670051481345">Tritanomaly</translation>
+<translation id="6090068946774422711">Sign in to get your reading list and more from <ph name="DEVICE"/></translation>
 <translation id="6090760257419195752">Dismissed warnings</translation>
 <translation id="609174145569509836">Clean up storage</translation>
 <translation id="6091761513005122595">Share mounted successfully.</translation>
@@ -6605,6 +6621,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="6126601353087978360">Please enter your feedback here:</translation>
 <translation id="6127292407256937949">Volume is on. Turn off volume.</translation>
 <translation id="6127598727646973981">Secure connections</translation>
+<translation id="6129686474468159207">See which sites you call from and when your camera or microphone is used</translation>
 <translation id="7089529486065491663">The selected data has been removed from Brave and synced devices. Your Brave sync chain may have other forms of browsing history such as searches and activity from other Brave services at <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="6129938384427316298">Netscape Certificate Comment</translation>
 <translation id="6129953537138746214">Space</translation>
@@ -6621,6 +6638,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="6136637346277431354">Add tabs and more</translation>
 <translation id="6140948187512243695">Show details</translation>
 <translation id="6141988275892716286">Confirm download</translation>
+<translation id="6142784636114866877">Expand tabs (<ph name="KEYBOARD_SHORTCUT"/>)</translation>
 <translation id="6143186082490678276">Get Help</translation>
 <translation id="6143366292569327983">Choose the page language to translate from</translation>
 <translation id="6144938890088808325">Help us improve Chromebooks</translation>
@@ -6691,7 +6709,6 @@ You can assign multiple switches to this action.</translation>
 <translation id="6190953336330058278">Phone Hub apps</translation>
 <translation id="6192333916571137726">Download file</translation>
 <translation id="6192413564913825901">Move to All bookmarks</translation>
-<translation id="6194333736420234626">Payment methods</translation>
 <translation id="6195005504600220730">Read information about your browser, OS and device</translation>
 <translation id="6196640612572343990">Block third-party cookies</translation>
 <translation id="6196854373336333322">The extension "<ph name="EXTENSION_NAME"/>" has taken control of your proxy settings, which means it can change, break or eavesdrop on anything you do online. If you aren't sure why this change happened, you probably don't want it.</translation>
@@ -6914,7 +6931,6 @@ You can assign multiple switches to this action.</translation>
 <translation id="6367396429435748845">Press <ph name="ALT"/> + <ph name="LAUNCHER"/> + <ph name="NUM_4"/> to pause and resume mouse keys</translation>
 <translation id="6367853307713830174">Gemini shows its steps and tries to confirm before taking sensitive ones. You can stop or take over at any time.</translation>
 <translation id="6367985768157257101">Receive with Nearby Share?</translation>
-<translation id="6368157733310917710">Addresses and more</translation>
 <translation id="6368276408895187373">Enabled – <ph name="VARIATION_NAME"/></translation>
 <translation id="6369420654782669629">Shortcuts for features and extensions</translation>
 <translation id="6370021412472292592">Could not load manifest.</translation>
@@ -6953,6 +6969,7 @@ You can assign multiple switches to this action.</translation>
 <translation id="6399675241776343019">Denied</translation>
 <translation id="6399774419735315745">Spy</translation>
 <translation id="6400360390396538896">Always on <ph name="ORIGIN"/></translation>
+<translation id="6400714103322134861">Unfocus tab group</translation>
 <translation id="6401118106417399952">Your device EID is <ph name="EID_NUMBER"/> and device serial number is <ph name="SERIAL_NUMBER"/>. These numbers can be used to help activate service.</translation>
 <translation id="8789425457808164956">To send this tab to another device, sign in to Brave there</translation>
 <translation id="6402042774506839496">To learn why, contact the app developer</translation>
@@ -7256,6 +7273,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="663569763553406962">See what extensions can read or change a site</translation>
 <translation id="6636258750460740634">History</translation>
 <translation id="6636623428211296678">Explore more settings below or finish now</translation>
+<translation id="6639343220434368353">Search menu or type an action</translation>
 <translation id="7039910610180903356">The skills feature is currently disabled. Update your Brave settings to get started.</translation>
 <translation id="6639554308659482635">SQLite memory</translation>
 <translation id="6640268266988685324">Open tab</translation>
@@ -7352,6 +7370,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="6710213216561001401">Previous</translation>
 <translation id="6710394144992407503">Check for spelling errors when you type text on web pages</translation>
 <translation id="6711236403841768371">Before <ph name="END_DATE"/></translation>
+<translation id="6711569175139833669">Press ⌘ twice for enhanced autofill</translation>
 <translation id="6712943853047024245">You already saved a password with this username for <ph name="WEBSITE"/></translation>
 <translation id="6713233729292711163">Add work profile</translation>
 <translation id="6713441551032149301">Hold the launcher key to change between function keys and system top-row keys</translation>
@@ -7472,7 +7491,6 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="6801435275744557998">Calibrate touchscreen</translation>
 <translation id="6801920212017470190">Keep up with all your price drops on the go</translation>
 <translation id="6802031077390104172"><ph name="USAGE"/> (<ph name="OID"/>)</translation>
-<translation id="6802825994120702390">Add context to your question by selecting an area or your entire screen</translation>
 <translation id="6803766346203101854">This site is allowed to save data on your device.</translation>
 <translation id="6805236548654699520">Remove unwanted pop-ups, fix network issues and more by restoring your settings to safe defaults.</translation>
 <translation id="6805478749741295868">This is an experimental AI feature and won't always get it right.</translation>
@@ -7645,6 +7663,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="6916818963747321523">Expand all</translation>
 <translation id="8995127535539248248">To share, join, and collaborate in tab groups, open settings and turn on Allow Brave sign-in</translation>
 <translation id="6919354101107095996">Try to sign in to the site. Then, download again</translation>
+<translation id="6919461818524183254">Select shortcut</translation>
 <translation id="4194845302979409023">Also turn on Enhanced Safe Browsing for this Brave profile?</translation>
 <translation id="6920989436227028121">Open as standard tab</translation>
 <translation id="6921104647315081813">Clear activities</translation>
@@ -7898,6 +7917,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="7124712201233930202">Your organisation's policies aren't met</translation>
 <translation id="7125148293026877011">Delete Crostini</translation>
 <translation id="7125177678433853645"><ph name="MODIFIER_ONE"/> + <ph name="MODIFIER_TWO"/> + <ph name="MODIFIER_THREE"/> + <ph name="MODIFIER_FOUR"/> + <ph name="KEY"/></translation>
+<translation id="7125576351373654452">Sign in to get your extensions and more on all your devices</translation>
 <translation id="7125932261198019860">Make sure that your printer is connected to the same Wi-Fi network as your Chromebook or use a USB cable. <ph name="LINK_BEGIN"/>Learn more about compatibility<ph name="LINK_END"/></translation>
 <translation id="7127980134843952133">Download history</translation>
 <translation id="7130438335435247835">Access Point Name (APN)</translation>
@@ -8118,6 +8138,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="7299588179200441056"><ph name="URL"/>–<ph name="FOLDER"/></translation>
 <translation id="730068416968462308">Animated</translation>
 <translation id="7301812050652048720">Passkey deleted</translation>
+<translation id="7303246449496241344">To easily add files from Drive to your AI Mode threads, verify that it's you. You'll also get your passwords and more on all your devices.</translation>
 <translation id="7303485269821975179">Set up a <ph name="DEVICE_TYPE"/> password</translation>
 <translation id="7303900363563182677">This site has been blocked from seeing text and images copied to the clipboard</translation>
 <translation id="7304030187361489308">High</translation>
@@ -8477,6 +8498,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="7578137152457315135">Fingerprint settings</translation>
 <translation id="7578692661782707876">Please enter your confirmation code.</translation>
 <translation id="757941033127302446">Signed in</translation>
+<translation id="7580311608678791180">Open from the Windows task bar</translation>
 <translation id="7581462281756524039">A cleanup tool</translation>
 <translation id="7582582252461552277">Prefer this network</translation>
 <translation id="7582844466922312471">Mobile Data</translation>
@@ -8490,6 +8512,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="7590883480672980941">Input settings</translation>
 <translation id="7592060599656252486">Some</translation>
 <translation id="7595547011743502844"><ph name="ERROR"/> (error code <ph name="ERROR_CODE"/>).</translation>
+<translation id="7597816893408026784">Open from the Mac menu bar</translation>
 <translation id="7600054753482800821">&amp;Manage search engines and Site Search</translation>
 <translation id="7600218158048761260">Google Drive is disabled for this account type.</translation>
 <translation id="7600965453749440009">Never translate <ph name="LANGUAGE"/></translation>
@@ -8498,11 +8521,13 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="7602173054665172958">Print management</translation>
 <translation id="7602805861133750578">You can now manage your tab groups, Gemini chats and AI Mode threads in one place. Unpin this at any time.</translation>
 <translation id="1062868744766141611">Ask Brave about this page</translation>
+<translation id="7603583710244190070">Your organisation blocks the screen sharing of this tab</translation>
 <translation id="7603785829538808504">Sites listed below follow a custom setting</translation>
 <translation id="7604543761927773395">{NUM_PASSWORDS,plural, =1{1 password not imported}other{{NUM_PASSWORDS} passwords not imported}}</translation>
 <translation id="7605163396341021431">Give Android apps control over USB devices on this Chromebook</translation>
 <translation id="7605594153474022051">Sync isn't working</translation>
 <translation id="7606560865764296217">Pause animation</translation>
+<translation id="7606639338662398635">Tab groups</translation>
 <translation id="7606802863538485839">Play effects</translation>
 <translation id="7607002721634913082">Paused</translation>
 <translation id="7608810328871051088">Android preferences</translation>
@@ -8649,6 +8674,7 @@ This can include information about installed software, files, your browser, the 
 <translation id="7707108266051544351">This site has been blocked from using motion sensors.</translation>
 <translation id="7707922173985738739">Use mobile data</translation>
 <translation id="7709152031285164251">Failed - <ph name="INTERRUPT_REASON"/></translation>
+<translation id="7709839510451455295">Clear custom shortcut for enhanced autofill</translation>
 <translation id="7710568461918838723">&amp;Cast...</translation>
 <translation id="7711968363685835633">Disable personalised conversions and suggestions as well as user dictionary</translation>
 <translation id="7712739869553853093">Print preview dialogue</translation>
@@ -8688,6 +8714,7 @@ This can include information about installed software, files, your browser, the 
 <translation id="7742706086992565332">You can set how much you zoom in or out on certain websites</translation>
 <translation id="7742879569460013116">Share link to</translation>
 <translation id="774377079771918250">Choose where to save</translation>
+<translation id="7743876437245989842">Your organisation blocks the screen sharing of a tab</translation>
 <translation id="7744047395460924128">See your printing history</translation>
 <translation id="7744192722284567281">Found in data breach</translation>
 <translation id="7744649840067671761">Press a new switch or keyboard key to start assignment.
@@ -8746,6 +8773,7 @@ Press an assigned switch or key to remove assignment.</translation>
 <translation id="7780992949171378848">Send an opt-out request to sites regarding use of your data</translation>
 <translation id="6191804255817539692">No more suggestions from Brave</translation>
 <translation id="7782717250816686129">Store persistent data on the login screen and inject credentials into the session.</translation>
+<translation id="7782885970382585765">Sign in to get your reading list and more on all your devices</translation>
 <translation id="7784020347632229094">Learn more about the keyboard shortcut</translation>
 <translation id="7784067724422331729">Security settings on your computer blocked this file.</translation>
 <translation id="7784796923038949829">Can't read or change site's data</translation>
@@ -9170,6 +9198,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8102139037507939978">Strip personally identifiable information from system_logs.txt.</translation>
 <translation id="810362914482827094">Search passkeys</translation>
 <translation id="8104088837833760645">Download eSIM profile</translation>
+<translation id="8104388155778519213">Share what’s on your screen with Google Lens</translation>
 <translation id="8104778744208707085">Needs your attention</translation>
 <translation id="8105273883928376822">Please sign in to continue.</translation>
 <translation id="8106114112474206597">Use 'i' to press a mouse button</translation>
@@ -9307,6 +9336,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8215129063232901118">Access your phone's capabilities from your <ph name="DEVICE_TYPE"/></translation>
 <translation id="8217212468862726597">Highlight pointer</translation>
 <translation id="8217399928341212914">Continue blocking automatic downloads of multiple files</translation>
+<translation id="8218411859495801458">Edit custom shortcut for enhanced autofill</translation>
 <translation id="8221358554841691213">Medium focus style</translation>
 <translation id="8221942262855134126">Manage password</translation>
 <translation id="8222112516148944758">Your tab groups automatically save and update across all your devices</translation>
@@ -9355,7 +9385,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8251441930213048644">Refresh now</translation>
 <translation id="8251509999076836464">Pairing to <ph name="DEVICE_NAME"/></translation>
 <translation id="8251578425305135684">Thumbnail removed.</translation>
-<translation id="825238165904109940">Always Show Full URLs</translation>
+<translation id="825238165904109940">Always show full URLs</translation>
 <translation id="8252569384384439529">Uploading…</translation>
 <translation id="8253198102038551905">Click '+' to get network properties</translation>
 <translation id="8255212965098517578">Recent photos, notifications and apps</translation>
@@ -9480,6 +9510,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8345099007452202761">A new version (<ph name="VERSION"/>) of <ph name="APP_NAME"/> is available. Would you like to apply it now?</translation>
 <translation id="8345848587667658367">You can now view your phone's recent photos, media, notifications and apps</translation>
 <translation id="8347227221149377169">Print jobs</translation>
+<translation id="8347728744337089388">Send to your &amp;device</translation>
 <translation id="8348430946834215779">Use HTTPS whenever possible and receive a warning before loading sites that don’t support it</translation>
 <translation id="8348896480272971199">Check your Internet and try again.</translation>
 <translation id="8349305172487531364">Bookmarks bar</translation>
@@ -9684,6 +9715,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="851263357009351303">Always allow <ph name="HOST"/> to show images</translation>
 <translation id="8513108775083588393">Auto-rotate</translation>
 <translation id="8513357934662532537">To import passwords to <ph name="BRAND"/> for <ph name="USER_EMAIL"/>, select a CSV file.</translation>
+<translation id="8514257511170433540">Use the default keyboard shortcut when filling in forms</translation>
 <translation id="8514746246728959655">Try a different security key</translation>
 <translation id="8514828975162859845">Cake pops</translation>
 <translation id="8514955299594277296">Don't allow sites to save data on your device (not recommended)</translation>
@@ -9804,6 +9836,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8616441548384109662">Add <ph name="CONTACT_NAME"/> to your contacts</translation>
 <translation id="8617601976406256334">Delete site data and permissions for <ph name="SITE_NAME"/>?</translation>
 <translation id="8617748779076050570">Secure connection ID: <ph name="CONNECTION_ID"/></translation>
+<translation id="8618586951885164886">&amp;Contact info</translation>
 <translation id="8619000641825875669">OneDrive</translation>
 <translation id="8619369551122276044">Not allowed to install web apps on your device</translation>
 <translation id="8619803522055190423">Drop shadow</translation>
@@ -9917,11 +9950,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8692107307702113268">Password is more than 1,000 characters</translation>
 <translation id="8693862390730570097">Don't allow 'Help me write' to automatically open</translation>
 <translation id="8694596275649352090">Lock when sleeping or lid is closed</translation>
+<translation id="8695214265159551349">Collapse tabs (<ph name="KEYBOARD_SHORTCUT"/>)</translation>
 <translation id="8695825812785969222">Open &amp;Location...</translation>
 <translation id="869884720829132584">Applications menu</translation>
 <translation id="869891660844655955">Expiry date</translation>
 <translation id="4880437500752902828">Content from password pages and related info is sent to Brave and reviewed by humans. Your password is encrypted and never seen by anyone. <ph name="PASSWORD_CHANGE"/></translation>
 <translation id="8700416429250425628">launcher + backspace</translation>
+<translation id="8701058912406466818">Apply a reading line or window to help with focus. Press Alt+L or go to Settings.</translation>
 <translation id="8702278591052316269">Menu containing hidden saved tab groups</translation>
 <translation id="8703346390800944767">Skip ad</translation>
 <translation id="8703372953981978786">This link doesn't work</translation>
@@ -10415,7 +10450,6 @@ This can include information about installed software, files, your browser, the 
 <translation id="9071664234353284876">No authentication</translation>
 <translation id="9072220108592671115">Installed version <ph name="VERSION"/></translation>
 <translation id="9072918088200875065">You gave Gemini permission to sign in to these sites to complete tasks for you</translation>
-<translation id="9074190188883314952">Use the lens button to share what's on your screen</translation>
 <translation id="9074618195273027322">{CORE_COUNT,plural, =1{1 core}other{{CORE_COUNT} cores}}</translation>
 <translation id="9074739597929991885">Bluetooth</translation>
 <translation id="9075413375877487220">This extension is not trusted by Enhanced Safe Browsing.</translation>
@@ -10568,7 +10602,6 @@ This can include information about installed software, files, your browser, the 
 <translation id="6436745840109002184">When your organisation limits saving to your Brave sync chain, you can’t share or join tab groups</translation>
 <translation id="9197456336762295195">Scan this QR code with the camera on the device that has your passkey for google.com</translation>
 <translation id="919840898042157087">Static movement</translation>
-<translation id="5475623029588353226">Ask Brave from anywhere</translation>
 <translation id="9199503643457729322">Click to navigate away from Privacy Guide.</translation>
 <translation id="9199695835892108985">Reset all serial port permissions?</translation>
 <translation id="9200339982498053969"><ph name="ORIGIN"/> will be able to edit files in <ph name="FOLDERNAME"/></translation>
@@ -10656,7 +10689,7 @@ This can include information about installed software, files, your browser, the 
 <translation id="967624055006145463">Data stored</translation>
 <translation id="96774243435178359">Managed printers</translation>
 <translation id="968000525894980488">Turn on Google Play services.</translation>
-<translation id="968037381421390582">Paste and Search for '<ph name="SEARCH_TERMS"/>'</translation>
+<translation id="968037381421390582">Paste and search for '<ph name="SEARCH_TERMS"/>'</translation>
 <translation id="969096075394517431">Change languages</translation>
 <translation id="969574218206797926">Memory saver frees up memory from inactive tabs so it can be used by active tabs and other apps</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 Tab}other{# Tabs}}</translation>
@@ -10665,6 +10698,7 @@ This can include information about installed software, files, your browser, the 
 <translation id="973558314812359997">Mouse size</translation>
 <translation id="973788791897303708">This tab group is full</translation>
 <translation id="97381968209917373">Delete certificate <ph name="CERT_NAME"/></translation>
+<translation id="97570902379088759">Your organisation blocks the screen sharing of <ph name="TAB_NAME"/></translation>
 <translation id="975893173032473675">Language to translate into</translation>
 <translation id="976572010712028687">Verify that you're a parent</translation>
 <translation id="977175416263153310">Open in Isolated Window</translation>
@@ -10677,6 +10711,7 @@ This can include information about installed software, files, your browser, the 
 <translation id="983192555821071799">Close all tabs</translation>
 <translation id="983531994960412650"><ph name="WINDOW_TITLE"/> – Camera and microphone recording</translation>
 <translation id="984705303330760860">Add spell check languages</translation>
+<translation id="986994187171579118">Extension disabled by <ph name="EXTENSION_NAME"/></translation>
 <translation id="987264212798334818">General</translation>
 <translation id="987574372967138078"><ph name="WEBSITE_ORIGIN"/> wants to get info from your mobile device</translation>
 <translation id="988320949174893488">Occasional stutter</translation>

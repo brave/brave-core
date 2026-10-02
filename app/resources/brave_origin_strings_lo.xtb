@@ -38,7 +38,6 @@
 <translation id="1330562121671411446">ກວດຫາພາສາ</translation>
 <translation id="108284536240904209">ລຶບຂໍ້ມູນອອກຈາກ Brave (<ph name="URL"/>) ນຳ</translation>
 <translation id="1345251407431278948">ປັກໝຸດແລ້ວ! ທ່ານສາມາດເຂົ້າເຖິງການຊອກຫາຮູບໄດ້ອີກຄັ້ງຈາກປຸ່ມໃໝ່ໃນແຖບເຄື່ອງມື</translation>
-<translation id="1356661055722410047">ໃໝ່! ທ່ານສາມາດແປໄດ້ທັງຂໍ້ຄວາມ ແລະ ຮູບພາບຢູ່ໜ້າຈໍຂອງທ່ານ</translation>
 <translation id="1383876407941801731">ຊອກຫາ</translation>
 <translation id="3535301204632475895">ໃຊ້ແອັບ Brave ເພື່ອທ່ອງເວັບໄດ້ທຸກບ່ອນທຸກເວລາ</translation>
 <translation id="141901961143729572">ແບ່ງປັນຄວາມຄິດຂອງທ່ານ</translation>
@@ -67,6 +66,7 @@
 <translation id="5994491947936308173">ຄລິກ <ph name="BEGIN_BOLD"/>ແມ່ນ<ph name="END_BOLD"/> ໃນການແຈ້ງເຕືອນ Windows ເພື່ອປັກໝຸດ Brave ໄວ້ຢູ່ແຖບໜ້າວຽກຂອງທ່ານເພື່ອການເຂົ້າເຖິງດ່ວນ.</translation>
 <translation id="5875673934455379806">ຕິດຕັ້ງ Brave ຄືນໃໝ່</translation>
 <translation id="4529028207655448215">Brave ກຳລັງພະຍາຍາມໃຊ້ <ph name="AUTHENTICATION_PURPOSE"/></translation>
+<translation id="6387107728249269341"><ph name="EXISTING_USER"/> ເຂົ້າສູ່ລະບົບຢູ່ແລ້ວ. ເພື່ອແຍກການທ່ອງເວັບຂອງທ່ານໄວ້ຕ່າງຫາກ, ໃຫ້ເຂົ້າສູ່ລະບົບ Brave ໃນໂປຣໄຟລ໌ຂອງທ່ານເອງດ້ວຍ <ph name="USER_EMAIL_ADDRESS"/>. ນອກຈາກນີ້, ທ່ານຍັງຈະໄດ້ຮັບສ່ວນຂະຫຍາຍ ແລະ ຂໍ້ມູນອື່ນໆຂອງທ່ານຈາກ <ph name="DEVICE"/> ນຳ.</translation>
 <translation id="7362761326208547489">ເທື່ອຕໍ່ໄປທີ່ທ່ານເປີດ Brave ຢູ່ <ph name="DEVICE_TYPE"/> ຂອງທ່ານ, ທ່ານຈະເຫັນຂໍ້ຄວາມແຈ້ງໃຫ້ໃຊ້ຕົວຈັດການລະຫັດຜ່ານ Brave.</translation>
 <translation id="1838374766361614909">ລຶບ​ການ​ຊອກ​ຫາ</translation>
 <translation id="3541642064306182066">ເພື່ອລຶບຂໍ້ມູນການທ່ອງເວັບໃນອຸປະກອນນີ້ເທົ່ານັ້ນ, ແຕ່ຍັງຮັກສາຂໍ້ມູນດັ່ງກ່າວໄວ້ໃນບັນຊີ Brave ຂອງທ່ານ, ໃຫ້ <ph name="BEGIN_LINK"/>ອອກຈາກລະບົບ Brave<ph name="END_LINK"/>.</translation>
@@ -145,6 +145,7 @@
 <translation id="2575822587468774919">ເລືອກຫຍັງກໍໄດ້ເພື່ອຊອກຫາດ້ວຍການຊອກຫາຮູບ</translation>
 <translation id="3830890663494219270">ເພື່ອຮັບລະຫັດຜ່ານ ແລະ ຂໍ້ມູນອື່ນໆຂອງທ່ານໃນອຸປະກອນທຸກເຄື່ອງຂອງທ່ານ, ໃຫ້ເຂົ້າສູ່ລະບົບ Brave</translation>
 <translation id="6908148552215338695">ສະແກນລະຫັດ QR ດ້ວຍໂທລະສັບຂອງທ່ານເພື່ອດາວໂຫຼດ Brave ແລະ ເຂົ້າສູ່ລະບົບບັນຊີ Brave ຂອງທ່ານ.</translation>
+<translation id="7985444384142764643">ເພື່ອຊອກຫາດ້ວຍ Brave.</translation>
 <translation id="6252796827759111076">ສືບຕໍ່ນຳໃຊ້ Brave</translation>
 <translation id="259935314519650377">ການແຄສຕົວຕິດຕັ້ງທີ່ດາວໂຫຼດໄວ້ບໍ່ສຳເລັດ. ຂໍ້ຜິດພາດ: <ph name="UNPACK_CACHING_ERROR_CODE"/>.</translation>
 <translation id="2620436844016719705">ລະ​ບົບ</translation>
@@ -188,6 +189,7 @@
 <translation id="3038232873781883849">ກຳ​ລັງ​ລໍ​ຖ້າ​ຕິດ​ຕັ້ງ...</translation>
 <translation id="3045032126857188731">ພາສາທີ່ແປ: <ph name="LANGUAGE"/></translation>
 <translation id="3047590466164881923">ປິດກ່ອງໂຕ້ຕອບຄຳຕິຊົມ</translation>
+<translation id="72283640173840794"><ph name="EXISTING_USER"/> ເຂົ້າສູ່ລະບົບຢູ່ແລ້ວ. ເພື່ອແຍກການທ່ອງເວັບຂອງທ່ານໄວ້ຕ່າງຫາກ, ໃຫ້ເຂົ້າສູ່ລະບົບ Brave ໃນໂປຣໄຟລ໌ຂອງທ່ານເອງດ້ວຍ <ph name="USER_EMAIL_ADDRESS"/>. ນອກຈາກນີ້, ທ່ານຍັງຈະໄດ້ຮັບລາຍຊື່ການອ່ານ ແລະ ຂໍ້ມູນອື່ນໆຂອງທ່ານຈາກ <ph name="DEVICE"/> ນຳ.</translation>
 <translation id="4503085212612536713">ໂປຣໄຟລ໌ Brave ອື່ນ</translation>
 <translation id="2041039306630146369">ສ່ວນຂະຫຍາຍແມ່ນສ່ວນເສີມທີ່ຊ່ວຍໃຫ້ທ່ານປັບແຕ່ງ Brave ໄດ້. ຕັ້ງແຕ່ການຈັດລະບຽບໄປຈົນຮອດການເຮັດໃຫ້ໜ້າວຽກປະຈຳວັນງ່າຍຂຶ້ນ, ສ່ວນຂະຫຍາຍຊ່ວຍໃຫ້ທ່ານປັບແຕ່ງ Brave ໃຫ້ເປັນຂອງທ່ານເອງໄດ້.</translation>
 <translation id="7918740962659365265">ຊ່ວຍເຮັດໃຫ້ Brave ດີຂຶ້ນໂດຍການສົ່ງລາຍງານການ​ຂັດຂ້ອງ ແລະ  <ph name="UMA_LINK"/>  ຫາ Brave.</translation>
@@ -284,6 +286,7 @@
 <translation id="6596295505984504022">ປັບແຕ່ງ Brave ຂອງທ່ານ</translation>
 <translation id="4148957013307229264">ກໍາລັງ​ຕິດ​ຕັ້ງ...</translation>
 <translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - ການເຂົ້າສູ່ລະບົບເຄືອຂ່າຍ - Brave Origin</translation>
+<translation id="305023898453185745"><ph name="EXISTING_USER"/> ເຂົ້າສູ່ລະບົບຢູ່ແລ້ວ. ເພື່ອແຍກການທ່ອງເວັບຂອງທ່ານໄວ້ຕ່າງຫາກ, ໃຫ້ເຂົ້າສູ່ລະບົບ Brave ໃນໂປຣໄຟລ໌ຂອງທ່ານເອງດ້ວຍ <ph name="USER_EMAIL_ADDRESS"/>. ນອກຈາກນີ້, ທ່ານຍັງຈະໄດ້ຮັບລາຍຊື່ການອ່ານ ແລະ ຂໍ້ມູນອື່ນໆຂອງທ່ານໃນອຸປະກອນທຸກເຄື່ອງຂອງທ່ານນຳ.</translation>
 <translation id="2871190378186459992">ຄົ້ນພົບແອັບ, ເກມ, ສ່ວນຂະຫຍາຍ ແລະ ຮູບແບບສີສັນສຳລັບ Brave.</translation>
 <translation id="462105622535258178">ເພື່ອຮັບສ່ວນຂະຫຍາຍນີ້ ແລະ ອື່ນໆຢູ່ຄອມພິວເຕີທັງໝົດຂອງທ່ານ, ໃຫ້ເຂົ້າສູ່ລະບົບ Brave</translation>
 <translation id="6670140629169983459">ເພື່ອທ່ອງໂລກອອນລາຍຢ່າງປອດໄພຍິ່ງຂຶ້ນດ້ວຍຕົວເລືອກຂອງຜູ້ປົກຄອງຂອງທ່ານ, ໃຫ້ປ່ຽນໄປໃຊ້ໂປຣໄຟລ໌ Brave ຂອງທ່ານທີ່ເຂົ້າສູ່ລະບົບໃນຖານະ <ph name="USER_EMAIL_ADDRESS"/> ຢູ່ກ່ອນແລ້ວ</translation>
@@ -298,7 +301,6 @@
 <translation id="6368144843345980623">ສົ່ງອອກລະຫັດຜ່ານຈາກ Brave</translation>
 <translation id="4304713468139749426">ຕົວຈັດການລະຫັດຜ່ານ</translation>
 <translation id="4334241893986177674">ຊອກຫາຮູບໜ້າຈໍນີ້</translation>
-<translation id="3985621805803699376">ຊອກຫາ ແລະ ຖາມຄຳຖາມໄດ້ຈາກທຸກບ່ອນ, ເຖິງແມ່ນວ່າຈະຫຍໍ້ Brave ຢູ່</translation>
 <translation id="242356249838681145">ເປີດໃຊ້ Brave ເມື່ອ Windows ເລີ່ມເຮັດວຽກ</translation>
 <translation id="4400772909124543403">ບໍ່ມີອັບເດດພ້ອມນຳໃຊ້</translation>
 <translation id="9183662282810237335">ຢືນຢັນການອອກຈາກ Brave ບໍ?</translation>
@@ -329,6 +331,7 @@
 <translation id="2182657378556811785">ອັບເດດໃກ້ແລ້ວໆ! ກະລຸນາປິດແລ້ວເປີດ Brave ຄືນໃໝ່ເພື່ອສິ້ນສຸດຂັ້ນຕອນການອັບເດດ.</translation>
 <translation id="6311668361877328515">ເພີ່ມຄວາມໄວເວັບໄຊດ້ວຍເຄື່ອງຈັກ V8 ຂອງ Brave ແຕ່ເຮັດໃຫ້ Brave ມີຄວາມທົນທານຕໍ່ການໂຈມຕີໜ້ອຍລົງເລັກນ້ອຍ</translation>
 <translation id="7960968658810899127">ເປີດການຊອກຫາດ້ວຍ Brave</translation>
+<translation id="4600669659668950128">ໂປຣໄຟລ໌ Brave</translation>
 <translation id="7402642357351265733">ຫາກທ່ານແບ່ງປັນລາຍງານການນຳໃຊ້ Brave ນຳ, ລາຍງານເຫຼົ່ານັ້ນຈະຮວມເອົາ URL ທີ່ທ່ານເຂົ້າເບິ່ງໄວ້ພ້ອມ</translation>
 <translation id="4673710618874938871">ເຂົ້າສູ່ລະບົບໃນຊື່ <ph name="USER_NAME"/>, ສະມາຊິກ. ເປີດເມນູບັນຊີ</translation>
 <translation id="8142245354207161805">ປະກົດວ່າໂປຣໄຟລ໌ໃຊ້ງານຢູ່ໂດຍຂະບວນການ Brave ອື່ນ (<ph name="PROCESS_ID"/>) ຢູ່ໃນຄອມພິວເຕີອື່ນ (<ph name="HOST_NAME"/>). Brave ໄດ້ລັອກໂປຣໄຟລ໌ໄວ້ ເພື່ອບໍ່ໃຫ້ມັນໄດ້ຮັບການ​ຂັດຂ້ອງ. ຖ້າທ່ານແນ່ໃຈວ່າ ບໍ່ມີຂະບວນການອື່ນໃຊ້ໂປຣໄຟລ໌ນີ້ຢູ່, ທ່ານສາມາດປົດລັອກໂປຣໄຟລ໌ ແລະເລີ່ມເປີດໃຊ້ Brave ໃໝ່ໄດ້.</translation>
@@ -382,6 +385,7 @@
 <translation id="3311284381627742014">ເປີດການຊອກຫາດ້ວຍ Brave</translation>
 <translation id="5154625106151193600">ສຶກສາວ່າເປັນຫຍັງ Brave ຈຶ່ງບລັອກໄຟລ໌ບາງລາຍການ</translation>
 <translation id="1786715389543715322">ກຳລັງອັບເດດ Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="3267146219387305979"><ph name="EXISTING_USER"/> ເຂົ້າສູ່ລະບົບຢູ່ແລ້ວ. ເພື່ອແຍກການທ່ອງເວັບຂອງທ່ານໄວ້ຕ່າງຫາກ, ໃຫ້ເຂົ້າສູ່ລະບົບ Brave ໃນໂປຣໄຟລ໌ຂອງທ່ານເອງດ້ວຍ <ph name="USER_EMAIL_ADDRESS"/>. ນອກຈາກນີ້, ທ່ານຍັງຈະໄດ້ຮັບສ່ວນຂະຫຍາຍ ແລະ ຂໍ້ມູນອື່ນໆຂອງທ່ານໃນອຸປະກອນທຸກເຄື່ອງຂອງທ່ານນຳ.</translation>
 <translation id="7021823858304886493">ອະນຸຍາດການເຂົ້າສູ່ລະບົບ Brave</translation>
 <translation id="5267531627648004734">ເອົາ​ອອກ​ຈາກ Brave</translation>
 <translation id="4620757336635063467">ຫຼຸດປະສິດທິພາບ ແຕ່ເຮັດໃຫ້ Brave ທົນທານຕໍ່ການໂຈມຕີໄດ້ຫຼາຍຂຶ້ນ</translation>
@@ -458,6 +462,7 @@
 <translation id="6685697979743742605">ໄຟລ໌ນີ້ອາດເປັນອັນຕະລາຍ<ph name="LINE_BREAK"/>Brave ສາມາດກວດສອບການດາວໂຫຼດນີ້ໃຫ້ທ່ານໄດ້ຫາກທ່ານລະບຸລະຫັດຜ່ານ. ຂໍ້ມູນກ່ຽວກັບໄຟລ໌ຈະຖືກສົ່ງໄປຫາ Google Safe Browsing, ແຕ່ເນື້ອຫາໄຟລ໌ ແລະ ລະຫັດຜ່ານຈະຍັງຢູ່ໃນອຸປະກອນຂອງທ່ານ.</translation>
 <translation id="6182736845697986886">ການຕິດຕັ້ງບໍ່ສຳເລັດເນື່ອງຈາກເຊີບເວີອັບເດດເກີດຂໍ້ຜິດພາດພາຍໃນ.</translation>
 <translation id="4368341489795135329">ກວດໃຫ້ແນ່ໃຈວ່າທ່ານໄດ້ເຂົ້າສູ່ລະບົບ Brave ໃນ <ph name="TARGET_DEVICE_NAME"/> ຂອງທ່ານ ແລ້ວລອງສົ່ງໃໝ່.</translation>
+<translation id="3044046743226566469">ຊອກຫາ ແລະ ຖາມຄຳຖາມໄດ້ຈາກທຸກບ່ອນ, ເຖິງແມ່ນວ່າຈະຫຍໍ້ Brave ຢູ່. ອະນຸຍາດໃຫ້ Brave ເຮັດວຽກໃນພື້ນຫຼັງ.</translation>
 <translation id="8320964054148936490">ຄອມພິວເຕີນີ້ມີ Brave ລຸ້ນໃໝ່ກ່ວາຢູ່ຮຽບຮ້ອຍແລ້ວ. ຖ້າຊອບແວບໍ່ເຮັດວຽກ, ກະລຸນາຖອນຕິດຕັ້ງ Brave ແລະລອງໃໝ່ອີກ.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave ຈະເປີດຄືນໃໝ່ດຽວນີ້}=1{Brave ຈະເປີດຄືນໃໝ່ໃນ 1 ວິນາທີ}other{Brave ຈະເປີດຄືນໃໝ່ໃນ # ວິນາທີ}}</translation>
 <translation id="5980269616827212166">Brave ຕ້ອງການການອະນຸຍາດເຂົ້າເຖິງບ່ອນຈັດເກັບຂໍ້ມູນເພື່ອດາວໂຫຼດໄຟລ໌</translation>
@@ -583,6 +588,7 @@
 <translation id="7288567540154601580">ແຖບ ແລະ ສ່ວນຂະຫຍາຍ</translation>
 <translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Brave ແນະນຳໃຫ້ທ່ານລຶບອອກ}other{Brave ແນະນຳໃຫ້ທ່ານລຶບອອກ}}</translation>
 <translation id="4600669988724328687">ເພື່ອແບ່ງປັນສຽງຂອງລະບົບ, ໃຫ້ເປີດການຕັ້ງຄ່າລະບົບ ແລະ ອະນຸຍາດ 'ການບັນທຶກສຽງຂອງລະບົບເທົ່ານັ້ນ' ສຳລັບ Brave. ຈາກນັ້ນທ່ານຈະຕ້ອງຣີສະຕາດ Brave.</translation>
+<translation id="7299899569525778554">ຊອກຫາຈາກເດັສທັອບ</translation>
 <translation id="1864557848095568223">ກໍາລັງອັບເດດ Brave</translation>
 <translation id="3403365884036456766">ໄຟລ໌ທີ່ມັກຂອງທ່ານເສຍຫາຍ ຫຼືໃຊ້ບໍ່ໄດ້.
 
@@ -637,6 +643,7 @@ Brave ບໍ່ສາມາດກູ້ການຕັ້ງຄ່າຂອງ�
 <translation id="8607348724092473027"><ph name="PAGE_TITLE"/> - Brave Origin Canary</translation>
 <translation id="2684504034454188774">ເຮັດໃຫ້ຜູ້ທີ່ມີສິດເຂົ້າເຖິງທຣາບຟິກອິນເຕີເນັດຂອງທ່ານເບິ່ງວ່າທ່ານເຂົ້າເບິ່ງເວັບໄຊໃດແດ່ໄດ້ຍາກຂຶ້ນ. Brave ໃຊ້ການເຊື່ອມຕໍ່ທີ່ປອດໄພເພື່ອຊອກຫາທີ່ຢູ່ IP ຂອງເວັບໄຊໃນ DNS (ລະບົບຊື່ໂດເມນ).</translation>
 <translation id="7810005234485217901">ທ່ານສາມາດປັກໝຸດການຊອກຫາຮູບເພື່ອໃຫ້ເຂົ້າເຖິງໄດ້ງ່າຍ</translation>
+<translation id="3219490697448569661">ຖາມກ່ຽວກັບເນື້ອຫານອກ Brave ເຊັ່ນ: ແອັບ ຫຼື ໄຟລ໌ອື່ນທີ່ທ່ານເປີດຢູ່</translation>
 <translation id="4191642852677143100">ເລືອກສິ່ງທີ່ຈະແບ່ງປັນກັບ Brave</translation>
 <translation id="1652855885539187849">ມີໂປຣໄຟລ໌ Brave ກັບບັນຊີນີ້ຢູ່ອຸປະກອນນີ້ຢູ່ກ່ອນແລ້ວ</translation>
 <translation id="7845233973568007926">ຂໍຂອບໃຈສຳລັບການຕິດຕັ້ງ. ທ່ານຈະຕ້ອງຣີສະຕາດຄອມພິວເຕີຂອງທ່ານກ່ອນການໃຊ້ <ph name="BUNDLE_NAME"/>.</translation>
@@ -721,10 +728,10 @@ Brave ບໍ່ສາມາດກູ້ການຕັ້ງຄ່າຂອງ�
 <translation id="856656450041460113">ຊອກຫາລາຍການພາສາ</translation>
 <translation id="839677568225616901">ຫຼາຍອົງການຈັດການ Brave</translation>
 <translation id="8121009781989288430">ລິຂະສິດ <ph name="YEAR"/> ຜູ້ຂຽນ Brave. ສະຫງວນສິດທັງໝົດ.</translation>
-<translation id="8601359445272098721">ໃໝ່! ທ່ານສາມາດແປໄດ້ທັງຂໍ້ຄວາມ ແລະ ຮູບພາບຢູ່ໜ້າຈໍຂອງທ່ານໂດຍເລືອກປຸ່ມ "ແປໜ້າຈໍ"</translation>
 <translation id="3052349005266761501">ກຳລັງເປີດໃຊ້ Brave...</translation>
 <translation id="8624541899164515475">ການຕັ້ງຄ່າ, ເປີດໃນແຖບໃໝ່.</translation>
 <translation id="5128665650717824082">ບໍ່ສາມາດຕັ້ງ Brave ສຳລັບການທົດສອບເປັນໂປຣແກຣມທ່ອງເວັບເລີ່ມຕົ້ນຂອງທ່ານໄດ້.</translation>
+<translation id="3053208669360972929">ຊອກຫາດ້ວຍ Brave ໄດ້ຈາກທຸກບ່ອນ</translation>
 <translation id="2433912322225810055">ມັນຍັງຄວບຄຸມວ່າຈະໃຫ້ສະແດງໜ້າໃດຂຶ້ນ ເມື່ອທ່ານເລີ່ມຕົ້ນເປີດ Brave ຫຼືຄົ້ນຫາຈາກ Omnibox.</translation>
 <translation id="4100716194836114130">ນີ້​ແມ່ນ Brave ຂອງ​ທ່ານ</translation>
 <translation id="8712637175834984815">ເຂົ້າໃຈແລ້ວ</translation>
@@ -758,6 +765,7 @@ Brave ບໍ່ສາມາດກູ້ການຕັ້ງຄ່າຂອງ�
 <translation id="7731184591599776500">ໂລໂກ້ Brave Enterprise</translation>
 <translation id="2001474182910589370">ນຳຄວາມປອດໄພຂອງ Brave ໄປໄດ້ທຸກບ່ອນທຸກເວລາດ້ວຍແອັບ Brave ຢູ່ <ph name="DEVICE_TYPE"/> ຂອງທ່ານ</translation>
 <translation id="6500340165622970282">ບໍ່ສາມາດເລີ່ມ Brave ໄດ້ເນື່ອງຈາກມີບາງຢ່າງຜິດພາດເກີດຂຶ້ນເມື່ອເປີດໂປຣໄຟລ໌ຂອງທ່ານ. ລອງຣີສະຕາດ Brave.</translation>
+<translation id="8079450595783684960">ເພື່ອຊອກຫາດ້ວຍ Brave ຫຼື ປັບແຕ່ງໃນ <ph name="BEGIN_LINK"/>ການຕັ້ງຄ່າ<ph name="END_LINK"/></translation>
 <translation id="3424657754843264466">ຈັດການໂປຣໄຟລ໌ Brave</translation>
 <translation id="1454821212628854849">ໃຊ້ແປ້ນພິມຂອງທ່ານເພື່ອນຳທາງລະຫວ່າງ Gemini ໃນ Brave ແລະ ແຖບທີ່ເປີດຢູ່ຂອງທ່ານ.</translation>
 <translation id="9018218886431812662">ສຳເລັດການຕິດຕັ້ງແລ້ວ</translation>

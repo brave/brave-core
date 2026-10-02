@@ -1737,6 +1737,7 @@
 <translation id="2077392865355605472">የቶከን ምልክት ያስፈልጋል</translation>
 <translation id="4636925020451566238">የቶከን አስርዮሽ ትክክለኛ ዋጋ ያስፈልጋል</translation>
 <translation id="3797613444743816037">የMint አድራሻ</translation>
+<translation id="4170599358417498979">በዚህ አውታረ መረብ ላይ ብጁ ንብረቶች አይችሉም</translation>
 <translation id="7951915459354237451">የተቀናበረው የክፍያ ገደብ ከመሠረታዊ ክፍያ ያነሰ ነው። ግብይትዎ ብዙ ጊዜ ሊወስድ ወይም ሊወድቅ ይችላል።</translation>
 <translation id="2227702748249086756">የክፍያ ግምቶችን ለማግኘት አልተቻለም</translation>
 <translation id="3225624966527491351">NFT ያስገቡ</translation>
@@ -2025,7 +2026,7 @@
 <translation id="418195046117003119">የማጋሪያ ማዕከል ቅጽበታዊ-ገጽ</translation>
 <translation id="4712056949543885424">የይለፍ ቃል አስተዳዳሪን አሳይ</translation>
 <translation id="8037472847879765671">የክፍያ ዘዴዎችን አሳይ</translation>
-<translation id="7269867954894010756">አድራሻዎችን አሳይ</translation>
+<translation id="6262574309547773475">የእውቂያ መረጃ አሳይ</translation>
 <translation id="6799213269525079335">ቀጣዩን አግኝ</translation>
 <translation id="8666632926482119393">ቀዳሚውን አግኝ</translation>
 <translation id="3567467864281922039">አግኝን ዝጋ ወይም አቁም</translation>
@@ -2154,6 +2155,7 @@
 <translation id="3142853026316054951">የትኩረት ሁነታን ቀይር</translation>
 <translation id="3468387898712904997">አዲስ ኢ-መልእክት እንፋላ</translation>
 <translation id="4711475997833555304">የእርስዎ ገቢ መልእክት ሳጥን ውስጥ የሚያስተላልፍ የዘፈቀደ ኢሜይል ይፍጠሩ።</translation>
+<translation id="5663901348199429994">እርስዎን የሚየክብሩ ምንጭ (ኢ-መልእክቶች)</translation>
 <translation id="2796584247246518451">አዲስ ጊዜያዊ መያዣ</translation>
 <translation id="8591883849678260674">ዋናውን ይመልከቱ</translation>
 <translation id="1969654232209826429">ደቂቃ ለማንበብ</translation>
@@ -2212,6 +2214,7 @@
 <translation id="9215978379284690246">የሁኔታ ኮድ: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">የሁኔታ ኮድ: <ph name="STATUS_CODE"/>, ውስጣዊ የሁኔታ ኮድ: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">የpremium ደረጃን እስከደረስነዋል። እባኮትን ከጥቂት ሰዓታት በኋላ ደግመው ይሞክሩ።</translation>
+<translation id="6873128487002733717">ለዚህ ሞዴል የPremium ገደብ ላይ ደርሰዋል። የተለየ ሞዴል ይምረጡ ወይም ቆይተው እንደገና ይሞክሩ።</translation>
 <translation id="3683964919745779766">የሞዴሉ እለፍ-ምልካ ተጠናቋል ወይም ያክራችሁን ካሚስ ያበርክተዋል። እባክዎትን ቀጣዩን ይሞክሩ።</translation>
 <translation id="7692501701960747469">ለዚህ ሞዴል የተቻለ ኤፒኤ ቁልፍ የማይሆን ነው። እባክዎትን ኮንፊግራሽን ይምረኩና ይቀጥሉ።</translation>
 <translation id="7905602379229309187">አቃፊዎች ሰርተሽንዎችን የቋርጥቋል። ቀጣዩን ይሞክሩ።</translation>
@@ -2391,6 +2394,9 @@
 <translation id="5021823940147712387">መሳሪያዎችን አስወግድ</translation>
 <translation id="8712279871321308580">የሚገኙ የድር ጣቢያ መሣሪያዎች</translation>
 <translation id="3690996226559605619">የሚገኙ መሣሪያዎች (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">ለዚህ ክፍለ ጊዜ ፍቀድ</translation>
+<translation id="6240821072888636753">በእያንዳንዱ ጊዜ ጠይቅ</translation>
+<translation id="4290920330097335010">በጭራሽ አትፍቀድ</translation>
 <translation id="318819763888864209">ሁሉም የደንበኝነት ምዝገባዎች በራስ-የታደሱ ናቸው ነገርግን ከመታደሳቸው በፊት በማንኛውም ጊዜ ሊሰረዙ ይችላሉ።</translation>
 <translation id="5091223967610958">Leo ን የተሻለ ለማድረግ እንዲረዳን አሁን ያሉበትን ገጽ አስተናጋጅ ስም (<ph name="HOST_NAME"/>) ያጋሩ።</translation>
 <translation id="8732450785281947197">Leo AI መሳሪያዎች</translation>
@@ -2465,7 +2471,7 @@
 <translation id="6077070599873946984">የBrave አእምሮ ማስተማሪ ለ: <ph name="TOOL_LABEL"/> ፈቃድዎን ይፈልጋል</translation>
 <translation id="908175046303050847">Brave AI በ **<ph name="SITE_ORIGIN"/>** ላይ **<ph name="TOOL_NAME"/>** ማስፈጸም ይፈልጋል</translation>
 <translation id="4163837693685963037">ይከናወነ የነበረው ተግባር ከተፈለገው ጥያቄዎ ጋር ምናልባት ሊልማድ ይችላል፡፡</translation>
-<translation id="5137568953923142260">ፍቀድ</translation>
+<translation id="5137568953923142260">አንዴ ፍቀድ</translation>
 <translation id="3927932062596804919">አልተቀበልኩም</translation>
 <translation id="4191349941249805855">የመሣሪያ ክርክሮችን አሳይ</translation>
 <translation id="7237059533128264835">የመሣሪያ ክርክሮችን ደብቅ</translation>
@@ -2512,7 +2518,6 @@
 <translation id="6002159997868894136">ዲሊፒን ለመቅዳት ጠቅ ያድርጉ</translation>
 <translation id="8105770564756958406">ተጠቃሚ በ <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">የበጣም እምነት ተደርጎ የተሽከሬንን እንኳን የሚጠላው አእምሮ እንደሚጠጋ ምርጫ ያቀርባሉ ።</translation>
-<translation id="5663901348199429994">እርስዎን የሚየክብሩ ምንጭ (ኢ-መልእክቶች)</translation>
 <translation id="9046133327037621173">አዲስ ኢ-መልእክት እንፋላ</translation>
 <translation id="3768606658230902536">የእርስዎን ጉዞ ኢ-መልእክት አድራሻ በገበያ መልእክት መመላከት እንደማይፈልጉ በተመለከተ ታውቀዋል።</translation>
 <translation id="4452721050684632493">የተለዋጭ ስም ገደብ ላይ ደርሷል</translation>
@@ -2936,7 +2941,9 @@ Brave የDNS ጥያቄዎች በእርስዎ VPN ግንኙነት ላይ በሚ�
 <translation id="4227581348172626540">የይለፍ ቃል መቀየርን ሰርዝ</translation>
 <translation id="808894953321890993">የይለፍ ቃል ቀይር</translation>
 <translation id="7967687455715421528">የይለፍ ቃል መቀየር አልተቻለም</translation>
+<translation id="7413006094063730650">መለያ ሰርዝ</translation>
 <translation id="4869737930995549965">ውጣ</translation>
+<translation id="2902312830803030883">ተጨማሪ ተግባራት</translation>
 <translation id="5538654494923870167">በ Brave መለያዎ ይጀምሩ</translation>
 <translation id="1544145635547515689">የ Brave መለያ ይፍጠሩ</translation>
 <translation id="3828644479849256404">መለያ አለዎት? ይግቡ</translation>
@@ -2961,6 +2968,11 @@ Brave የDNS ጥያቄዎች በእርስዎ VPN ግንኙነት ላይ በሚ�
 <translation id="7228810962389847249">ኮዱን እዚህ ያስገቡ</translation>
 <translation id="4683390091376980486">ኮድ ያረጋግጡ</translation>
 <translation id="3970028678400797622">የኢሜይል ኮድ እንደገና ላክ</translation>
+<translation id="3653907916071208187">የእርስዎን የ Brave መለያ ይሰርዙ?</translation>
+<translation id="8216839865292766307">የ Brave መለያን መሰረዝ የኢሜይል ተለዋጭ ስሞቹንም ይሰርዛል። ለመመዝገብ ተለዋጭ ስም የተጠቀሙባቸውን የመስመር ላይ አገልግሎቶች ማግኘት ላይችሉ ይችላሉ። ይህ ተግባር ወደ ኋላ ሊመለስ አይችልም።</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">የመለያ ሰረዛን ለማንቃት <ph name="KEYWORD"/> ብለው ይተይቡ</translation>
+<translation id="536306385881145656">የ Brave መለያ ሰርዝ</translation>
 <translation id="2475982808118771221">ስህተት ተከስቷል</translation>
 <translation id="5430795854491041407">ስህተት</translation>
 <translation id="2232323423357029857">አሳሹ ያልተጠበቀ ስህተት አጋጥሞታል<ph name="ERROR_CODE"/>። እባክዎ አሳሹን እንደገና ያስጀምሩ እና እንደገና ይሞክሩ።</translation>
@@ -2993,4 +3005,10 @@ Brave የDNS ጥያቄዎች በእርስዎ VPN ግንኙነት ላይ በሚ�
 <translation id="1063227610401477317">ለውጦችን ተግብር</translation>
 <translation id="5539769255716491933">ያልተሳኩ ደረጃዎችን ሪፖርት አድርግ</translation>
 <translation id="7562163394445060270">ተግባር ማጠናቀቅ አልተሳካም</translation>
+<translation id="691082536326552372">ያልተሳኩ ደረጃዎችን ሪፖርት አድርግ</translation>
+<translation id="2731141092023803480">ያልተሳኩ ደረጃዎችን ሪፖርት ለ Brave ቡድን ላክ። ይህ ሪፖርት ችግሩን ለመፍታት የሚያስፈልገንን መረጃ ይይዛል። <ph name="LINK_BEFORE"/>የበለጠ ይወቁ።<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">የአሁኑ URL</translation>
+<translation id="4739707522207259415">ያልተሳካ ደረጃ(ዎች)</translation>
+<translation id="1767991048059195456">ሪፖርት ላክ</translation>
+<translation id="2168036794078614559">ሪፖርት ተልኳል</translation>
 </translationbundle>

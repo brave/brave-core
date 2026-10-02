@@ -1732,6 +1732,9 @@
 <translation id="2077392865355605472">Tokeni sümbol on nõutav</translation>
 <translation id="4636925020451566238">Tokeni täpsed kümnendkohad on nõutavad</translation>
 <translation id="3797613444743816037">Mündi aadress</translation>
+<translation id="6571966497164575098">Vara ID</translation>
+<translation id="2110442566771571217">Kehtetu või tühi tokeni vara ID</translation>
+<translation id="4170599358417498979">Kohandatud varasid selles võrgus ei toetata</translation>
 <translation id="7951915459354237451">Tasu limiit on määratud madalamaks kui põhitasu. Teie tehingu sooritamine võib võtta kaua aega või tehing võib nurjuda.</translation>
 <translation id="2227702748249086756">Tasuhinnanguid ei saa tuua</translation>
 <translation id="3225624966527491351">Impordi NFT</translation>
@@ -2018,7 +2021,7 @@
 <translation id="418195046117003119">Jagamiskeskuse kuvatõmmis</translation>
 <translation id="4712056949543885424">Kuva paroolihaldur</translation>
 <translation id="8037472847879765671">Kuva makseviisid</translation>
-<translation id="7269867954894010756">Kuva aadressid</translation>
+<translation id="6262574309547773475">Kuva kontaktandmed</translation>
 <translation id="6799213269525079335">Leia järgmine</translation>
 <translation id="8666632926482119393">Leia eelmine</translation>
 <translation id="3567467864281922039">Sulge leidmine või peatamine</translation>
@@ -2147,6 +2150,7 @@
 <translation id="3142853026316054951">Lülita fookusrežiim sisse/välja</translation>
 <translation id="3468387898712904997">Uus e-posti alias</translation>
 <translation id="4711475997833555304">Loo juhuslik e-posti aadress, mis suunatakse teie postkasti.</translation>
+<translation id="5663901348199429994">Sinu e-posti alias</translation>
 <translation id="2796584247246518451">Uus ajutine ümbris</translation>
 <translation id="8591883849678260674">Kuva originaal</translation>
 <translation id="1969654232209826429">min lugemine</translation>
@@ -2211,6 +2215,7 @@
 <translation id="9215978379284690246">Olekukood: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Olekukood: <ph name="STATUS_CODE"/>, sisemine olekukood: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Olete jõudnud Premiumi määralimiidini. Proovige paari tunni pärast uuesti.</translation>
+<translation id="6873128487002733717">Olete jõudnud selle mudeli tariifilimiidini. Valige mõni muu mudel või proovige hiljem uuesti.</translation>
 <translation id="3683964919745779766">Olete jõudnud selle mudeli tariifilimiidini või on teil krediit otsas. Proovige hiljem uuesti.</translation>
 <translation id="7692501701960747469">Selle mudeli jaoks konfigureeritud API võti ei kehti. Palun kontrollige oma konfiguratsiooni ja proovige uuesti.</translation>
 <translation id="7905602379229309187">Lõpp-punkt on praegu ülekoormatud. Proovige hiljem uuesti.</translation>
@@ -2390,6 +2395,9 @@
 <translation id="5021823940147712387">Eemalda tööriistad</translation>
 <translation id="8712279871321308580">Saadaolevad veebisaidi tööriistad</translation>
 <translation id="3690996226559605619">Saadaolevad tööriistad (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Luba selleks seansiks</translation>
+<translation id="6240821072888636753">Küsi iga kord</translation>
+<translation id="4290920330097335010">Ära kunagi luba</translation>
 <translation id="318819763888864209">Kõik tellimused uuendatakse automaatselt, kuid enne uuendamist saab need igal ajal tühistada.</translation>
 <translation id="5091223967610958">Jagage selle lehekülje hostinime, millel te olete (<ph name="HOST_NAME"/>), et aidata meil Leod paremaks muuta.</translation>
 <translation id="8732450785281947197">Leo AI tööriistad</translation>
@@ -2464,7 +2472,7 @@
 <translation id="6077070599873946984">Brave AI vajab sinu luba järgmiseks toiminguks: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI soovib käivitada tööriista **<ph name="TOOL_NAME"/>** saidil **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Toiming tuvastati kui võimalik, et ei vasta sinu soovile:</translation>
-<translation id="5137568953923142260">Luba</translation>
+<translation id="5137568953923142260">Luba üks kord</translation>
 <translation id="3927932062596804919">Keeldu</translation>
 <translation id="4191349941249805855">Näita tööriista argumente</translation>
 <translation id="7237059533128264835">Peida tööriista argumendid</translation>
@@ -2511,7 +2519,6 @@
 <translation id="6002159997868894136">Klõpsa, et kopeerida alias</translation>
 <translation id="8105770564756958406">Kasutatakse domeenides <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Loo kuni 5 tasuta e-posti aliast, et kaitsta oma tegelikku e-posti aadressi.</translation>
-<translation id="5663901348199429994">Sinu e-posti alias</translation>
 <translation id="9046133327037621173">Uus e-posti alias</translation>
 <translation id="3768606658230902536">Loo juhuslik e-posti aadress, mis edastab kirjad sinu postkasti, hoides samal ajal sinu isikliku e-posti privaatsena.</translation>
 <translation id="4452721050684632493">Aliaste piirmäär saavutatud</translation>
@@ -2942,7 +2949,9 @@ olemasoleval vahelehel</translation>
 <translation id="4227581348172626540">Tühista parooli muutmine</translation>
 <translation id="808894953321890993">Muuda parooli</translation>
 <translation id="7967687455715421528">Parooli ei õnnestu muuta</translation>
+<translation id="7413006094063730650">Kustuta konto</translation>
 <translation id="4869737930995549965">Logi välja</translation>
+<translation id="2902312830803030883">Rohkem toiminguid</translation>
 <translation id="5538654494923870167">Alusta oma Brave'i kontoga</translation>
 <translation id="1544145635547515689">Loo Brave'i konto</translation>
 <translation id="3828644479849256404">Konto on juba olemas? Logi sisse</translation>
@@ -2967,6 +2976,11 @@ olemasoleval vahelehel</translation>
 <translation id="7228810962389847249">Sisesta kood siia</translation>
 <translation id="4683390091376980486">Kinnita kood</translation>
 <translation id="3970028678400797622">Saada e-posti kood uuesti</translation>
+<translation id="3653907916071208187">Kas kustutada oma Brave'i konto?</translation>
+<translation id="8216839865292766307">Brave'i konto kustutamine kustutab ka selle meilivarjunimed. Võite kaotada juurdepääsu veebiteenustele, kus kasutasite registreerimiseks varjunime. Seda toimingut ei saa tagasi võtta.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">Konto kustutamise lubamiseks tippige <ph name="KEYWORD"/></translation>
+<translation id="536306385881145656">Kustuta Brave'i konto</translation>
 <translation id="2475982808118771221">Tekkis tõrge</translation>
 <translation id="5430795854491041407">viga</translation>
 <translation id="2232323423357029857">Brauser sattus ootamatusse vea olukorda<ph name="ERROR_CODE"/>. Palun taaskäivitage brauser ja proovige uuesti.</translation>
@@ -2999,4 +3013,10 @@ olemasoleval vahelehel</translation>
 <translation id="1063227610401477317">Rakenda muudatused</translation>
 <translation id="5539769255716491933">Teata ebaõnnestunud sammudest</translation>
 <translation id="7562163394445060270">Ülesande lõpetamine nurjus</translation>
+<translation id="691082536326552372">Teata ebaõnnestunud sammudest</translation>
+<translation id="2731141092023803480">Saada Brave'i meeskonnale aruanne ebaõnnestunud sammudest. See aruanne sisaldab teavet, mida vajame probleemi lahendamiseks. <ph name="LINK_BEFORE"/>Lisateave.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">Praegune URL</translation>
+<translation id="4739707522207259415">Ebaõnnestunud samm(ud)</translation>
+<translation id="1767991048059195456">Saada aruanne</translation>
+<translation id="2168036794078614559">Aruanne saadetud</translation>
 </translationbundle>

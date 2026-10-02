@@ -216,11 +216,11 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Domain Web3</translation>
 <translation id="1458638489455808030">Mesin Wayback</translation>
-<translation id="8039999492770627305">Maaf, halaman tersebut tidak ditemukan.</translation>
-<translation id="208311458690012764">Tidak dapat memuat versi yang disimpan</translation>
-<translation id="4515057635283480525">Apakah Anda ingin memeriksa apabila mungkin tersedia versi disimpan di Wayback Machine?</translation>
-<translation id="8252977752585110703">Mesin Wayback tidak dapat menemukan versi yang disimpan dari situs ini.</translation>
-<translation id="8748778103033196270">Periksa versi yang disimpan</translation>
+<translation id="8039999492770627305">Halaman tidak ada</translation>
+<translation id="208311458690012764">Tidak ada versi arsip yang tersedia</translation>
+<translation id="4515057635283480525">Internet Archive menyimpan versi lama dari banyak halaman web. Apakah Anda ingin mencari halaman ini di Archive?</translation>
+<translation id="8252977752585110703">Maaf, kami memeriksa Internet Archive dan tidak ada versi arsip dari halaman ini.</translation>
+<translation id="8748778103033196270">Cari di Archive</translation>
 <translation id="191143826155037518">Brave disediakan bagi Anda berdasarkan <ph name="BEGIN_LINK_MPL"/>Lisensi Umum Mozilla 2.0<ph name="END_LINK_MPL"/> (MPL) dan menyertakan <ph name="BEGIN_LINK_OSS"/>peranti lunak sumber terbuka<ph name="END_LINK_OSS"/> dengan berbagai lisensi lainnya.
         Anda dapat membaca <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>petunjuk cara mengunduh dan membangun sendiri<ph name="END_LINK_BUILD_INSTRUCTIONS"/> secara spesisik <ph name="BEGIN_LINK_SOURCE_CODE"/>kode sumber yang digunakan untuk membuat salinan ini<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Bookmark semua tab...</translation>

@@ -2018,7 +2018,6 @@ other {Ce mois-ci, vous avez visité # créateurs soutenus par Brave Rewards}
 <translation id="418195046117003119">Capture d'écran du centre de partage</translation>
 <translation id="4712056949543885424">Afficher le gestionnaire de mots de passe</translation>
 <translation id="8037472847879765671">Afficher les modes de paiement</translation>
-<translation id="7269867954894010756">Afficher les adresses</translation>
 <translation id="6799213269525079335">Rechercher suivant</translation>
 <translation id="8666632926482119393">Rechercher précédent</translation>
 <translation id="3567467864281922039">Fermer la recherche ou arrêter</translation>
@@ -2147,6 +2146,7 @@ other {Ce mois-ci, vous avez visité # créateurs soutenus par Brave Rewards}
 <translation id="3142853026316054951">Activer/désactiver le mode focus</translation>
 <translation id="3468387898712904997">Nouvel alias d'adresse e-mail</translation>
 <translation id="4711475997833555304">Créez une adresse e-mail aléatoire qui redirige vers votre boîte de réception.</translation>
+<translation id="5663901348199429994">Vos alias d'adresse e-mail</translation>
 <translation id="2796584247246518451">Nouveau dossier temporaire</translation>
 <translation id="8591883849678260674">Voir l'original</translation>
 <translation id="1969654232209826429">min. de lecture</translation>
@@ -2464,7 +2464,6 @@ other {Ce mois-ci, vous avez visité # créateurs soutenus par Brave Rewards}
 <translation id="6077070599873946984">Brave IA a besoin de votre autorisation pour : <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI souhaite exécuter **<ph name="TOOL_NAME"/>** sur **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">L’opération a été détectée comme potentiellement non conforme à votre demande :</translation>
-<translation id="5137568953923142260">Autoriser</translation>
 <translation id="3927932062596804919">Refuser</translation>
 <translation id="4191349941249805855">Afficher les arguments de l'outil</translation>
 <translation id="7237059533128264835">Masquer les arguments de l'outil</translation>
@@ -2511,7 +2510,6 @@ other {Ce mois-ci, vous avez visité # créateurs soutenus par Brave Rewards}
 <translation id="6002159997868894136">Cliquez pour copier l'alias</translation>
 <translation id="8105770564756958406">Utilisée par <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Créez gratuitement jusqu'à 5 alias pour protéger votre adresse e-mail personnelle.</translation>
-<translation id="5663901348199429994">Vos alias d'adresse e-mail</translation>
 <translation id="9046133327037621173">Nouvel alias d'adresse e-mail</translation>
 <translation id="3768606658230902536">Créez une adresse e-mail aléatoire qui redirige les messages vers votre boîte de réception tout en gardant votre adresse e-mail personnelle privée.</translation>
 <translation id="4452721050684632493">Limite d'alias atteinte</translation>

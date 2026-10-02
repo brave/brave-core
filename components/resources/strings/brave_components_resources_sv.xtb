@@ -1732,6 +1732,9 @@
 <translation id="2077392865355605472">Tokensymbol krävs</translation>
 <translation id="4636925020451566238">Tokendecimaler med precisionsvärde krävs</translation>
 <translation id="3797613444743816037">Minta adress</translation>
+<translation id="6571966497164575098">Tillgångs-ID</translation>
+<translation id="2110442566771571217">Ogiltigt eller tomt tillgångs-ID för token</translation>
+<translation id="4170599358417498979">Anpassade tillgångar stöds inte i det här nätverket</translation>
 <translation id="7951915459354237451">Avgiftsgränsen är lägre än grundavgiften. Din transaktion kan ta lång tid eller misslyckas.</translation>
 <translation id="2227702748249086756">Det gick inte att hämta avgiftsberäkningar</translation>
 <translation id="3225624966527491351">Importera NFT</translation>
@@ -2018,7 +2021,7 @@
 <translation id="418195046117003119">Skärmbild av delningshubb</translation>
 <translation id="4712056949543885424">Visa lösenordshanterare</translation>
 <translation id="8037472847879765671">Visa betalningsmetoder</translation>
-<translation id="7269867954894010756">Visa adresser</translation>
+<translation id="6262574309547773475">Visa kontaktinformation</translation>
 <translation id="6799213269525079335">Hitta nästa</translation>
 <translation id="8666632926482119393">Hitta föregående</translation>
 <translation id="3567467864281922039">Stäng hitta eller stoppa</translation>
@@ -2147,6 +2150,7 @@
 <translation id="3142853026316054951">Växla fokusläge</translation>
 <translation id="3468387898712904997">Nytt e-postalias</translation>
 <translation id="4711475997833555304">Skapa en slumpmässig e-postadress som vidarebefordras till din inkorg.</translation>
+<translation id="5663901348199429994">Dina e-postalias</translation>
 <translation id="2796584247246518451">Ny tillfällig behållare</translation>
 <translation id="8591883849678260674">Se original</translation>
 <translation id="1969654232209826429">min. läsning</translation>
@@ -2211,6 +2215,7 @@
 <translation id="9215978379284690246">Statuskod: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Statuskod: <ph name="STATUS_CODE"/>, inre statuskod: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Du har nått frekvensgränsen för Premium. Försök igen om några timmar.</translation>
+<translation id="6873128487002733717">Du har nått premiumgränsen för den här modellen. Välj en annan modell eller försök igen senare.</translation>
 <translation id="3683964919745779766">Du har nått prisgränsen för den här modellen eller har slut på krediter. Vänligen försök igen senare.</translation>
 <translation id="7692501701960747469">API-nyckeln som är konfigurerad för den här modellen är ogiltig. Kontrollera din konfiguration och försök igen.</translation>
 <translation id="7905602379229309187">Slutpunkten är för närvarande överbelastad. Vänligen försök igen senare.</translation>
@@ -2390,6 +2395,9 @@
 <translation id="5021823940147712387">Ta bort verktyg</translation>
 <translation id="8712279871321308580">Tillgängliga webbplatsverktyg</translation>
 <translation id="3690996226559605619">Tillgängliga verktyg (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Tillåt för den här sessionen</translation>
+<translation id="6240821072888636753">Fråga varje gång</translation>
+<translation id="4290920330097335010">Tillåt aldrig</translation>
 <translation id="318819763888864209">Alla prenumerationer förnyas automatiskt men kan avbrytas när som helst före förnyelsen.</translation>
 <translation id="5091223967610958">Dela värdnamnet för sidan du är på (<ph name="HOST_NAME"/>) och hjälp oss att göra Leo bättre.</translation>
 <translation id="8732450785281947197">Leo AI-verktyg</translation>
@@ -2464,7 +2472,7 @@
 <translation id="6077070599873946984">Brave AI behöver din tillåtelse för: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI vill köra **<ph name="TOOL_NAME"/>** på **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Åtgärden upptäcktes som potentiellt oförenlig med din begäran:</translation>
-<translation id="5137568953923142260">Tillåt</translation>
+<translation id="5137568953923142260">Tillåt en gång</translation>
 <translation id="3927932062596804919">Neka</translation>
 <translation id="4191349941249805855">Visa verktygsargument</translation>
 <translation id="7237059533128264835">Dölj verktygsargument</translation>
@@ -2511,7 +2519,6 @@
 <translation id="6002159997868894136">Klicka för att kopiera alias</translation>
 <translation id="8105770564756958406">Används av <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Skapa upp till 5 gratis e-postalias för att skydda din riktiga e-postadress.</translation>
-<translation id="5663901348199429994">Dina e-postalias</translation>
 <translation id="9046133327037621173">Nytt e-postalias</translation>
 <translation id="3768606658230902536">Skapa en slumpmässig e-postadress som vidarebefordrar till din inkorg samtidigt som din personliga e-post förblir privat.</translation>
 <translation id="4452721050684632493">Aliasgränsen nådd</translation>
@@ -2941,7 +2948,9 @@ tryck på Tab och sedan på Retur för att växla till den öppna fliken</transl
 <translation id="4227581348172626540">Avbryt lösenordsändring</translation>
 <translation id="808894953321890993">Ändra lösenord</translation>
 <translation id="7967687455715421528">Det gick inte att ändra lösenord</translation>
+<translation id="7413006094063730650">Ta bort konto</translation>
 <translation id="4869737930995549965">Logga ut</translation>
+<translation id="2902312830803030883">Fler åtgärder</translation>
 <translation id="5538654494923870167">Kom igång med ditt Brave-konto</translation>
 <translation id="1544145635547515689">Skapa ett Brave-konto</translation>
 <translation id="3828644479849256404">Har du redan ett konto? Logga in</translation>
@@ -2966,6 +2975,11 @@ tryck på Tab och sedan på Retur för att växla till den öppna fliken</transl
 <translation id="7228810962389847249">Ange koden här</translation>
 <translation id="4683390091376980486">Bekräfta kod</translation>
 <translation id="3970028678400797622">Skicka e-postkoden igen</translation>
+<translation id="3653907916071208187">Vill du ta bort ditt Brave-konto?</translation>
+<translation id="8216839865292766307">Om du tar bort ett Brave-konto tas även dess e-postalias bort. Du kan förlora åtkomsten till onlinetjänster där du använde ett alias för att registrera dig. Denna åtgärd kan inte ångras.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">Skriv <ph name="KEYWORD"/> för att aktivera borttagning av kontot</translation>
+<translation id="536306385881145656">Ta bort Brave-konto</translation>
 <translation id="2475982808118771221">Ett fel uppstod</translation>
 <translation id="5430795854491041407">fel</translation>
 <translation id="2232323423357029857">Webbläsaren stötte på ett oväntat fel<ph name="ERROR_CODE"/>. Starta om webbläsaren och försök igen.</translation>
@@ -2998,4 +3012,10 @@ tryck på Tab och sedan på Retur för att växla till den öppna fliken</transl
 <translation id="1063227610401477317">Applicera förändringar</translation>
 <translation id="5539769255716491933">Rapportera misslyckade steg</translation>
 <translation id="7562163394445060270">Uppgiften kunde inte slutföras</translation>
+<translation id="691082536326552372">Rapportera misslyckade steg</translation>
+<translation id="2731141092023803480">Skicka en rapport om de misslyckade stegen till Brave-teamet. Den här rapporten innehåller den information som behövs för att vi ska kunna åtgärda problemet. <ph name="LINK_BEFORE"/>Läs mer.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">Aktuell URL</translation>
+<translation id="4739707522207259415">Misslyckade steg</translation>
+<translation id="1767991048059195456">Skicka rapport</translation>
+<translation id="2168036794078614559">Rapport skickad</translation>
 </translationbundle>
