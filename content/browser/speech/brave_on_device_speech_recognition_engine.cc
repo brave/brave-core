@@ -20,6 +20,7 @@
 #include "media/base/audio_bus.h"
 #include "media/base/audio_sample_types.h"
 #include "media/base/channel_layout.h"
+#include "media/base/converting_audio_fifo.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "services/on_device_model/public/mojom/on_device_model.mojom.h"
 

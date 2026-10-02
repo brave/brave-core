@@ -16,10 +16,13 @@
 #include "content/browser/speech/on_device_speech_recognition_engine_impl.h"
 #include "content/common/content_export.h"
 #include "media/base/audio_parameters.h"
-#include "media/base/converting_audio_fifo.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/on_device_model/public/mojom/on_device_model.mojom.h"
+
+namespace media {
+class ConvertingAudioFifo;
+}  // namespace media
 
 namespace content {
 
