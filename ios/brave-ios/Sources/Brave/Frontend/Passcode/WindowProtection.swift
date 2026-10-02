@@ -83,6 +83,7 @@ public class WindowProtection {
     }
   }
 
+  private let windowScene: UIWindowScene
   private let lockedViewController: LockedViewController
   private let viewModel: ViewModel = .init()
 
@@ -129,7 +130,13 @@ public class WindowProtection {
     didFinalizeAuthentication.eraseToAnyPublisher()
   }
 
+  private var isSystemLockEnabled: Bool {
+    windowScene.systemProtectionManager?.isUserAuthenticationEnabled == true
+  }
+
   public init(windowScene: UIWindowScene) {
+    self.windowScene = windowScene
+
     lockedViewController = LockedViewController(viewModel: viewModel)
 
     passcodeWindow = UIWindow(windowScene: windowScene)
@@ -145,7 +152,7 @@ public class WindowProtection {
 
     NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)
       .sink(receiveValue: { [weak self] _ in
-        guard let self = self else { return }
+        guard let self = self, !isSystemLockEnabled else { return }
         // Should set as non cancallable for browser lock
         self.isCancellable = false
         // Update visibility when entering background
@@ -158,12 +165,19 @@ public class WindowProtection {
     NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
       .sink(receiveValue: { [weak self] _ in
         guard let self = self else { return }
+        if isSystemLockEnabled {
+          // Ensure we reset any already visible locks if it was enabled in the middle of a session
+          self.isVisible = false
+          return
+        }
         self.context = LAContext()  // Reset context for new session
         self.updateVisibleStatusForForeground(viewType: .external)
       })
       .store(in: &cancellables)
 
-    updateVisibleStatusForForeground(viewType: .external)
+    if !isSystemLockEnabled {
+      updateVisibleStatusForForeground(viewType: .external)
+    }
   }
 
   @available(*, unavailable)
