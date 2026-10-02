@@ -55,6 +55,7 @@ public struct GlassHeroButtonStyle: ButtonStyle {
           .interactive(isEnabled),
         in: .capsule
       )
+      .contentShape(.capsule)
   }
 }
 
