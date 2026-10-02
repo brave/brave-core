@@ -7,8 +7,6 @@
 
 namespace brave_ads {
 
-BASE_FEATURE(kAccountStatementFeature,
-             "AccountStatement",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kAccountStatementFeature, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace brave_ads

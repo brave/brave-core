@@ -7,6 +7,6 @@
 
 namespace brave_ads {
 
-BASE_FEATURE(kIssuersFeature, "Issuers", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kIssuersFeature, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace brave_ads
