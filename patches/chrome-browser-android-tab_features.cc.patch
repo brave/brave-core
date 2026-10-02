@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/android/tab_features.cc b/chrome/browser/android/tab_features.cc
+index 7d68750f4ac615addbeb2ede1c0852c052a8955b..d501fbe6ee0e568e0e229dccbb0bd49ccd05c0f9 100644
+--- a/chrome/browser/android/tab_features.cc
++++ b/chrome/browser/android/tab_features.cc
+@@ -430,11 +430,6 @@ TabFeatures::TabFeatures(content::WebContents* web_contents, Profile* profile) {
+       GetUserDataFactory().CreateInstance<SearchEngineTabHelper>(*tab, *tab,
+                                                                  web_contents);
+ 
+-  net_error_tab_helper_ =
+-      GetUserDataFactory()
+-          .CreateInstance<chrome_browser_net::NetErrorTabHelper>(*tab, *tab,
+-                                                                 web_contents);
+-
+   if (!profile->IsOffTheRecord()) {
+     supervised_user_navigation_observer_ =
+         GetUserDataFactory().CreateInstance<SupervisedUserNavigationObserver>(

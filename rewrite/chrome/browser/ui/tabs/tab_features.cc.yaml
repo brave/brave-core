@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Don't create NetErrorTabHelper.
+
+      Brave disables DNS probes on network errors, so the helper isn't needed.
+      Covers both TabFeatures::Init() and the re-creation in
+      TabFeatures::WillDiscardContents().
+    count: 2
+    regex:
+      re_pattern: '\n\s*(?:net_error_tab_helper_\.reset\(\);\s*)?net_error_tab_helper_ =\s*GetUserDataFactory\(\)\s*\.CreateInstance<chrome_browser_net::NetErrorTabHelper>\([^;]*\);'
+      replace: ''
+
+  - description: |
+      Don't create FontPrewarmerTabHelper in TabFeatures::Init().
+
+      Brave doesn't prewarm fonts for search results pages.
+    regex:
+      re_pattern: '(TabFeatures::Init\(.*?)\n\s*font_prewarmer_tab_helper_ =\s*std::make_unique<FontPrewarmerTabHelper>\([^;]*\);'
+      re_flags: [DOTALL]
+      replace: '\1'
+
+  - description: |
+      Don't re-create FontPrewarmerTabHelper in
+      TabFeatures::WillDiscardContents().
+    regex:
+      re_pattern: '\n#if BUILDFLAG\(IS_WIN\)\s*font_prewarmer_tab_helper_ =\s*std::make_unique<FontPrewarmerTabHelper>\(new_contents\);\s*#endif\n'
+      replace: ''

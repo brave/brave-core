@@ -1,0 +1,50 @@
+diff --git a/chrome/browser/ui/tabs/tab_features.cc b/chrome/browser/ui/tabs/tab_features.cc
+index aba5dab268a2cd8b8b46500fae9478d8d6af55e6..898e7943248dec88cf380d724d0d6d23fdea762a 100644
+--- a/chrome/browser/ui/tabs/tab_features.cc
++++ b/chrome/browser/ui/tabs/tab_features.cc
+@@ -742,8 +742,6 @@ void TabFeatures::Init(TabInterface& tab, Profile* profile) {
+   commit_limit_oom_recovery_tracker_ =
+       GetUserDataFactory().CreateInstance<CommitLimitOOMRecoveryTracker>(tab,
+                                                                          tab);
+-  font_prewarmer_tab_helper_ =
+-      std::make_unique<FontPrewarmerTabHelper>(tab.GetContents());
+ #endif
+ 
+   if (base::FeatureList::IsEnabled(net::features::kVerifyQWACs)) {
+@@ -1038,11 +1036,6 @@ void TabFeatures::Init(TabInterface& tab, Profile* profile) {
+       GetUserDataFactory().CreateInstance<SearchEngineTabHelper>(
+           tab, tab, tab.GetContents());
+ 
+-  net_error_tab_helper_ =
+-      GetUserDataFactory()
+-          .CreateInstance<chrome_browser_net::NetErrorTabHelper>(
+-              tab, tab, tab.GetContents());
+-
+ #if BUILDFLAG(IS_CHROMEOS)
+   // Do not create for Incognito and Isolated mode.
+   if (!profile->IsPrimaryOTRProfileWithRegularParent()) {
+@@ -1292,11 +1285,6 @@ void TabFeatures::WillDiscardContents(tabs::TabInterface* tab,
+       std::make_unique<SharedHighlightingPromo>(new_contents);
+ #endif
+ 
+-#if BUILDFLAG(IS_WIN)
+-  font_prewarmer_tab_helper_ =
+-      std::make_unique<FontPrewarmerTabHelper>(new_contents);
+-#endif
+-
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+   desktop_session_duration_observer_ =
+       metrics::DesktopSessionDurationObserver::MaybeCreate(new_contents);
+@@ -1470,12 +1458,6 @@ void TabFeatures::WillDiscardContents(tabs::TabInterface* tab,
+       GetUserDataFactory().CreateInstance<SearchEngineTabHelper>(*tab, *tab,
+                                                                  new_contents);
+ 
+-  net_error_tab_helper_.reset();
+-  net_error_tab_helper_ =
+-      GetUserDataFactory()
+-          .CreateInstance<chrome_browser_net::NetErrorTabHelper>(*tab, *tab,
+-                                                                 new_contents);
+-
+   if (supervised_user_navigation_observer_) {
+     supervised_user_navigation_observer_.reset();
+     supervised_user_navigation_observer_ =
