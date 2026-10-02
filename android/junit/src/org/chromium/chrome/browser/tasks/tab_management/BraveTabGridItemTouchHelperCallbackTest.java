@@ -61,14 +61,16 @@ public class BraveTabGridItemTouchHelperCallbackTest {
     @Mock private Supplier<TabModel> mTabModelSupplier;
     @Mock private TabModel mTabModel;
     @Mock private TabActionListener mTabClosedListener;
-    @Mock private RecyclerView mRecyclerView;
     @Mock private SimpleRecyclerViewAdapter.ViewHolder mFromViewHolder;
     @Mock private SimpleRecyclerViewAdapter.ViewHolder mToViewHolder;
     @Mock private Tab mTab1;
     @Mock private Tab mTab2;
 
+    private RecyclerView mRecyclerView;
+
     @Before
     public void setUp() {
+        mRecyclerView = new RecyclerView(ContextUtils.getApplicationContext());
         when(mTabModelSupplier.get()).thenReturn(mTabModel);
         mFromViewHolder.model = tabCardModel(TAB1_ID);
         mToViewHolder.model = tabCardModel(TAB2_ID);
