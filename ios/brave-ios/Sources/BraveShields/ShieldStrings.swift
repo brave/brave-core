@@ -1015,8 +1015,8 @@ extension Strings.Shields {
   public static let advancedControls = NSLocalizedString(
     "BraveShieldsAdvancedControls",
     bundle: .module,
-    value: "Advanced controls",
-    comment: ""
+    value: "Advanced Controls",
+    comment: "The label above / exposing the advanced controls on the Shields panel."
   )
   public static let aboutBraveShieldsTitle = NSLocalizedString(
     "AboutBraveShields",
