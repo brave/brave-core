@@ -1366,6 +1366,18 @@
 -TabViewTest.IconDataChanged
 -UiaClient/LeakedNodeDetectionBrowsertest.DetectGhostNodeLeaks/0
 
+# Flaky upstream (via LUCI). Flaky on our CI and fails consistently locally.
+# This appears to be a race condition:
+# On the UI thread, NativeMessagePort creates its dispatcher on the IO thread.
+# On the IO thread, NativeMessageProcessHost::Start() posts LaunchHostProcess()
+# (native_message_process_host.cc:229). LaunchContext::Start() posts
+# LaunchInBackground to the thread pool (launch_context.cc:121), which reads
+# the manifest and then logs. The test only passes if all of that finishes
+# before the UI thread returns and calls StopCapturingLogs(). The output fits
+# this: the host launched and the extension reported [SUCCESS] stopHost, but
+# the log line arrives after capture had stopped.
+-NativeMessagingLaunchLoggingApiTest.SuccessLogsRedactedCommandLine
+
 # Known upstream flake: 10.5% flake rate over 30 days per LUCI Analysis.
 # Null pointer dereference in AutoPipSettingView::OnButtonPressed — widget
 # destroyed before test can interact with the bubble view.
