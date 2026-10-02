@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "حول";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "حول Brave Shields";
-
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "غالبًا ما تتضمن المواقع ملفات تعريف الارتباط والبرامج النصية التي تحاول التعرف عليك وعلى جهازك. وتريد معرفة هويتك ومتابعتك عبر الويب - تتبع ما تفعله على كل موقع.\n\nيقوم Brave بحظر هذه الأشياء حتى تتمكن من التصفح دون متابعة.";
-
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "يتيح لك ذلك حفظ الصورة في ألبوم الكاميرا.";
 
@@ -36,9 +30,6 @@
 
 /* Text for the toggle switch to clear 'Brave Ads' data in settings */
 "ads.braveAdsDataToggleOption" = "بيانات إعلانات Brave";
-
-/* individual blocking statistic title */
-"AdsAndTrackers" = "الإعلانات والمتتبعون";
 
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "اطلب دائمًا موقع سطح المكتب";
@@ -130,18 +121,6 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "الملء التلقائي";
 
-/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
-"AutoRedirectAMPPages" = "إعادة التوجيه التلقائي لصفحات AMP";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
-"AutoRedirectAMPPagesDescription" = "قم دائمًا بزيارة عناوين URL للصفحة الأصلية (التي ليست بتنسيق AMP)، بدلاً من إصدارات صفحات الجوال المسرَّعة من Google";
-
-/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
-"AutoRedirectTrackingURLs" = "إعادة التوجيه التلقائي لعناوين URL التتبعية";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "تمكين الدعم لتجاوز إعادة التوجيه عالية المستوى لعناوين URL التتبعية";
-
 /* cookie settings option */
 "Block3rdPartyCookies" = "حظر ملفات تعريف الارتباط الخاصة بالجهات الخارجية";
 
@@ -160,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "فشل في تعيين التفضيل. يرجى المحاولة مرة أخرى.";
 
-/* A title for a setting that enables cookie consent notices */
-"BlockCookieConsentNotices" = "حظر إشعارات الموافقة على ملفات تعريف الارتباط";
-
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "حجب المراقبة";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "حظر النوافذ المنبثقة";
-
-/* No comment provided by engineer. */
-"BlockScripts" = "حظر البرامج النصية";
-
-/* No comment provided by engineer. */
-"BlockScriptsDescription" = "يحظر JavaScript (قد يعطل المواقع).";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "إضافة إشارة مرجعية لعلامات التبويب %lld";
@@ -239,46 +209,10 @@
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "رفض";
 
 /* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "الضوابط المتقدمة";
-
-/* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave Shields والخصوصية";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Shields والخصوصية";
-
-/* The number of ads and trackers blocked will be next to this */
-"BraveShieldsBlockedCountLabel" = "الإعلانات والأشياء المريبة الأخرى التي تم حظرها";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "اعرف المزيد";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "تغيير إعدادات Shields الافتراضية العالمية";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalControls" = "الضوابط العالمية";
-
-/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "تخزين معلومات الاتصال لتقارير المواقع المعطلة في المستقبل";
-
-/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "إذا قدمت معلومات الاتصال، فسيتم تخزينها للتقارير المستقبلية";
-
-/* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "إذا ظهر هذا الموقع معطلًا ، فجرب إيقاف Shields";
-
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "دروع Brave";
-
-/* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "الأسفل";
-
-/* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "أعلى";
-
-/* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "انقر نقرًا مزدوجًا لتبديل Brave Shields";
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "محادثة Brave";
@@ -844,15 +778,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findPreviousTitle" = "بحث عن السابق";
 
-/* individual blocking statistic title */
-"FingerprintingMethods" = "طرق البصمات";
-
-/* No comment provided by engineer. */
-"FingerprintingProtection" = "حجب مسح البصمة";
-
-/* No comment provided by engineer. */
-"FingerprintingProtectionDescription" = "يجعل من الصعب على المواقع التعرف على الخصائص المميزة لجهازك. ";
-
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "السماح بفتح الروابط العامة في التطبيقات الخارجية";
 
@@ -919,15 +844,6 @@
 /* No comment provided by engineer. */
 "Home" = "الصفحة الرئيسية";
 
-/* No comment provided by engineer. */
-"HTTPSEverywhere" = "ترقية الاتصالات إلى HTTPS";
-
-/* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "لفتح المواقع باستخدام HTTPS الآمن بدلًا من HTTP متى أمكن.";
-
-/* individual blocking statistic title */
-"HTTPSUpgrades" = "ترقيات HTTPS";
-
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "استيراد بيانات التصفح";
 
@@ -948,6 +864,9 @@
 
 /* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "ليو";
+
+/* Title for Brave Leo voice input menu item. Brave Leo is the name of a product and should not be translated */
+"LeoVoiceInputMenuItem" = "الإدخال الصوتي في Leo";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "ستتم إزالة تسجيل الدخول المحفوظ نهائيًا.";
@@ -1666,9 +1585,6 @@
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "قائمة تشغيل بدون عنوان";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
-"PopoverShieldsMenuClose" = "إغلاق قائمة Shields";
-
 /* Settings privacy section title */
 "Privacy" = "الخصوصية";
 
@@ -2017,41 +1933,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "إزالة قائمة المفضلات";
 
-/* No comment provided by engineer. */
-"ReportABrokenSite" = "الإبلاغ عن موقع إلكتروني معطل";
-
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "الإبلاغ عن خطأ";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"ReportBrokenAdditionalDetails" = "التفاصيل الإضافية (اختياري):";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"reportBrokenAdditionalDetailsRequired" = "تفاصيل إضافية";
-
-/* A label for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "ما هي المشكلة الرئيسية التي تواجهها؟";
-
-/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
-"ReportBrokenContactMe" = "تواصل معي على: (اختياري)";
-
-/* Contact info storing description */
-"ReportBrokenContactMeDescription" = "إذا قدمت معلومات الاتصال سيتم تخزينها للإبلاغ عن المواقع المعطلة في المستقبل.";
-
-/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
-"ReportBrokenContactMeSuggestions" = "البريد الإلكتروني، تويتر، إلخ.";
-
-/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"ReportBrokenPlaceholder" = "حدد خيارًا واحدًا";
-
-/* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "إخطار مطوري Brave بأن هذا الموقع لا يعمل كما هو متوقع:";
-
-/* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "ملاحظة: سيتضمن التقرير المرسل إلى خوادم Brave عنوان الموقع ورقم إصدار متصفح Brave وإعدادات Shields وحالة VPN وإعدادات اللغة.";
-
-/* No comment provided by engineer. */
-"ReportBrokenSubmitButtonTitle" = "إرسال";
 
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraAndMicrophonePermissionPrompt" = "يرغب \"%@\" في الوصول إلى الكاميرا والميكروفون";
@@ -2329,9 +2212,6 @@
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "حفظ تسجيلات الدخول";
 
-/* individual blocking statistic title */
-"ScriptsBlocked" = "البرامج النصية المحظورة";
-
 /* The placeholder text for bookmark search */
 "searchBookmarksTitle" = "بحث في الإشارات المرجعية";
 
@@ -2500,6 +2380,12 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "الإرسال التلقائي لأداة البينج للاستخدام اليومي إلى Brave";
 
+/* Description under the settings toggle that enables Sponsored Ads */
+"settings.sponsoredAdsEnabledDescription" = "ساعد في دعم مهمة Brave لبناء ويب مستقل يضع المستخدم أولاً من خلال الإعلانات المدعومة. نقيس أداء الإعلانات بشكل خاص، دون التعرف على هويتك.";
+
+/* Title of the settings toggle that enables Sponsored Ads */
+"settings.sponsoredAdsEnabledTitle" = "تمكين الإعلانات المدعومة";
+
 /* Description to explain the survey panelist toggle */
 "settings.surveyPanelistDescription" = "السماح لـ Brave بإظهار الروابط لاستطلاعات الرأي الخاصة في صفحة علامة التبويب الجديدة. تساعدنا استطلاعات الرأي على إنشاء ميزات أفضل وقياس فعالية الحملات الإعلانية المستندة إلى المتصفح. [معرفة المزيد](%@)";
 
@@ -2577,21 +2463,6 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "يتم حظر الإعلانات أثناء مشاهدة مقاطع الفيديو على هذا الموقع.";
-
-/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "إعدادات Brave Shields الافتراضية العالمية";
-
-/* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "هذه هي إعدادات طرق الحماية الافتراضية للمواقع الجديدة. لن يؤثر تغييرها على إعداداتك الحالية لكل موقع";
-
-/* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "إنك تتصفح هذا الموقع دون حماية الخصوصية من Brave. ألا يعمل بشكل صحيح أثناء تشغيل Shields؟";
-
-/* shields overview message */
-"ShieldsOverview" = "تتيح لك دروع Shields الموقع التحكم في وقت حظر الإعلانات وأدوات التتبع لكل موقع تزوره. إذا كنت تفضل مشاهدة الإعلانات على موقع معين، فيمكنك تمكينها هنا.";
-
-/* shields overview footer message */
-"ShieldsOverviewFooter" = "ملاحظة: قد تتطلب بعض المواقع برامج نصية للعمل بشكل صحيح بحيث يتم إيقاف تشغيل هذا الدرع shield افتراضيًا.";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "علامة تبويب خاصة جديدة";
@@ -2778,15 +2649,6 @@
 
 /* Settings item for clearing site-specific settings and shields settings. */
 "SiteAndShieldsSettings" = "إعدادات الموقع و Shields";
-
-/* No comment provided by engineer. */
-"SiteReportedBody" = "شكراً لإخطارك مطوري Brave بوجود خطأٍ في هذا الموقع. سنبذل قصارى جهدنا لإصلاحه!";
-
-/* No comment provided by engineer. */
-"SiteReportedTitle" = "شكرًا";
-
-/* Brave panel topmost title */
-"SiteShieldSettings" = "طرق الحماية";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "أحفظ البيانات يوميًا عبر تصفح موقع الويب باستخدام Brave.";
@@ -3564,9 +3426,6 @@
 
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "تم الإلغاء بواسطة المستخدم";
-
-/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
-"UseRegionalAdblock" = "استخدام أداة حظر الإعلانات adblock الإقليمية";
 
 /* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "إغلاق";

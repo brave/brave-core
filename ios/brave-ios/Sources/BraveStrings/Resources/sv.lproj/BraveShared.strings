@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "Om";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "Om Brave sköldar";
-
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "Webbplatser innehåller ofta cookies och skript som försöker identifiera dig och din enhet. De vill räkna ut vem du är och följa dig på webben – spåra vad du gör på varje webbplats.\n\nBrave blockerar dessa saker så att du kan surfa utan att bli följd.";
-
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "Detta låter dig spara bilden till din kamerarulle.";
 
@@ -36,9 +30,6 @@
 
 /* Text for the toggle switch to clear 'Brave Ads' data in settings */
 "ads.braveAdsDataToggleOption" = "Brave Annonser-data";
-
-/* individual blocking statistic title */
-"AdsAndTrackers" = "Annonser och spårare";
 
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "Begär alltid skrivbordsplats";
@@ -130,18 +121,6 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "Autofyll";
 
-/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
-"AutoRedirectAMPPages" = "Omdirigera AMP-sidor automatiskt";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
-"AutoRedirectAMPPagesDescription" = "Besök alltid ursprungliga (icke-AMP) sid-URL:er istället för Googles versioner av Accelerated Mobile Page";
-
-/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
-"AutoRedirectTrackingURLs" = "Automatisk omdirigering av spårnings-URL:er";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "Aktivera stöd för att kringgå omdirigering av spårnings-URL:er på toppnivå";
-
 /* cookie settings option */
 "Block3rdPartyCookies" = "Blockera cookies från 3:e part";
 
@@ -160,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Det gick inte att spara inställningen. Försök igen.";
 
-/* A title for a setting that enables cookie consent notices */
-"BlockCookieConsentNotices" = "Blockera meddelanden om godkännande av cookies";
-
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Blockeringsvisare";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blockera popup-fönster";
-
-/* No comment provided by engineer. */
-"BlockScripts" = "Blockera skript";
-
-/* No comment provided by engineer. */
-"BlockScriptsDescription" = "Blockerar Javascript (kan få webbplatser att sluta fungera).";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "Lägg till bokmärke för %lld-flikar";
@@ -239,46 +209,10 @@
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Ta bort permanent";
 
 /* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "Avancerade kontroller";
-
-/* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave Shields & Integritet";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Shields & Integritet";
-
-/* The number of ads and trackers blocked will be next to this */
-"BraveShieldsBlockedCountLabel" = "Annonser och andra läskiga saker blockerade";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Läs mer";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "Ändra globala standardinställningar för Shields";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalControls" = "Globala kontroller";
-
-/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "Spara kontaktinformation för framtida rapporter om avbrutna webbsidor";
-
-/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "Om du uppger kontaktinformation kommer den att lagras för framtida rapporter";
-
-/* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "Om webbplatsen visas bruten försök med sköldar nere";
-
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave sköldar";
-
-/* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "Ner";
-
-/* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "Upp";
-
-/* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "Dubbeltryck för att växla Brave Shields";
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave-samtal";
@@ -844,15 +778,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findPreviousTitle" = "Sök föregående";
 
-/* individual blocking statistic title */
-"FingerprintingMethods" = "Fingeravtrycksmetoder";
-
-/* No comment provided by engineer. */
-"FingerprintingProtection" = "Blockera fingeravtryck";
-
-/* No comment provided by engineer. */
-"FingerprintingProtectionDescription" = "Gör det svårare för webbplatser att känna igen enhetens utmärkande egenskaper.";
-
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Tillåt att universella länkar öppnas i externa appar";
 
@@ -919,15 +844,6 @@
 /* No comment provided by engineer. */
 "Home" = "Hem";
 
-/* No comment provided by engineer. */
-"HTTPSEverywhere" = "Uppgradera anslutningar till HTTPS";
-
-/* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Öppnar webbplatser med det säkrare HTTPS i stället för HTTP när så är möjligt.";
-
-/* individual blocking statistic title */
-"HTTPSUpgrades" = "HTTPS-uppgraderingar";
-
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Importera surfningsdata";
 
@@ -948,6 +864,9 @@
 
 /* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
+
+/* Title for Brave Leo voice input menu item. Brave Leo is the name of a product and should not be translated */
+"LeoVoiceInputMenuItem" = "Leo-röstinmatning";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "Den sparade inloggningen tas bort permanent.";
@@ -1666,9 +1585,6 @@
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Namnlös spellista";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
-"PopoverShieldsMenuClose" = "Stäng sköldmenyn";
-
 /* Settings privacy section title */
 "Privacy" = "Integritet";
 
@@ -2017,41 +1933,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "Radera favorit";
 
-/* No comment provided by engineer. */
-"ReportABrokenSite" = "Rapportera en trasig webbplats";
-
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "Rapportera bugg";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"ReportBrokenAdditionalDetails" = "Ytterligare information (valfritt)";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"reportBrokenAdditionalDetailsRequired" = "Ytterligare uppgifter";
-
-/* A label for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "Vad ser du som det huvudsakliga problemet?";
-
-/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
-"ReportBrokenContactMe" = "Kontakta mig på: (valfritt)";
-
-/* Contact info storing description */
-"ReportBrokenContactMeDescription" = "Om du tillhandahåller kontaktinformation kommer den att lagras för att rapportera avbrutna webbplatser i framtiden.";
-
-/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
-"ReportBrokenContactMeSuggestions" = "E-post, Twitter, osv.";
-
-/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"ReportBrokenPlaceholder" = "Välj ett alternativ";
-
-/* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Låt Braves utvecklare veta att denna webbplats inte fungerar som förväntat:";
-
-/* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Observera: Rapporten som skickas till Brave-servrar innehåller webbplatsadress, Brave-versionsnummer, Shields-inställningar, VPN-status och språkinställningar.";
-
-/* No comment provided by engineer. */
-"ReportBrokenSubmitButtonTitle" = "Skicka";
 
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraAndMicrophonePermissionPrompt" = "\"%@\" vill ha tillgång till kameran och mikrofonen";
@@ -2329,9 +2212,6 @@
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Spara inloggningar";
 
-/* individual blocking statistic title */
-"ScriptsBlocked" = "Blockerade skript";
-
 /* The placeholder text for bookmark search */
 "searchBookmarksTitle" = "Sök efter bokmärken";
 
@@ -2500,6 +2380,12 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Skicka daglig användningsping till Brave automatiskt";
 
+/* Description under the settings toggle that enables Sponsored Ads */
+"settings.sponsoredAdsEnabledDescription" = "Hjälp till att stödja Braves uppdrag att bygga en oberoende, användarfokuserad webb med Sponsrade annonser. Vi mäter annonsprestanda privat, utan att identifiera dig.";
+
+/* Title of the settings toggle that enables Sponsored Ads */
+"settings.sponsoredAdsEnabledTitle" = "Aktivera Sponsrade annonser";
+
 /* Description to explain the survey panelist toggle */
 "settings.surveyPanelistDescription" = "Tillåter Brave att visa länkar till privata undersökningar i den nya fliken. Undersökningar hjälper oss att bygga bättre funktioner och mäta effektiviteten i webbläsarbaserade annonskampanjer. [Learn more](%@)";
 
@@ -2577,21 +2463,6 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Annonser blockeras när du tittar på videor på den här webbplatsen.";
-
-/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Globala standardinställningar för Brave Shields";
-
-/* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "Dessa är Shields standardinställningar för nya webbplatser. Om du ändrar dessa påverkas inte dina befintliga inställningar per webbplats.";
-
-/* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Du surfar på den här webbplatsen utan Braves sekretesskydd. Fungerar den inte korrekt med sköldar uppe?";
-
-/* shields overview message */
-"ShieldsOverview" = "Sköldarna låter dig styra när annonser och spårare blockeras för varje webbplats du besöker. Om du föredrar att se annonser på en viss webbplats kan du aktivera dem här.";
-
-/* shields overview footer message */
-"ShieldsOverviewFooter" = "Obs: Några webbplatser kan behöva skript för att fungera korrekt, därför är den här skölden avstängd som standard.";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Ny privat flik";
@@ -2778,15 +2649,6 @@
 
 /* Settings item for clearing site-specific settings and shields settings. */
 "SiteAndShieldsSettings" = "Inställningar för sajt och Shields";
-
-/* No comment provided by engineer. */
-"SiteReportedBody" = "Tack för att låter Braves utvecklare få veta att det är något fel med denna webbplats. Vi ska göra vårt bästa för att åtgärda problemet!";
-
-/* No comment provided by engineer. */
-"SiteReportedTitle" = "Tack!";
-
-/* Brave panel topmost title */
-"SiteShieldSettings" = "Sköldar";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Varje dag sparar jag data genom att surfa på webben med Brave.";
@@ -3564,9 +3426,6 @@
 
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "Användaren avbröt";
-
-/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
-"UseRegionalAdblock" = "Använd regional annonsblockering";
 
 /* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "Stäng";
