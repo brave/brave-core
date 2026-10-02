@@ -30,6 +30,9 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.tab.TabHidingType;
 
 @RunWith(BaseRobolectricTestRunner.class)
+// Tests fake isInPictureInPictureMode() and BraveActivity's YouTube picture-in-picture state;
+// BraveActivity is too heavy to build in a unit test.
+@SuppressWarnings("DoNotMock")
 public class BraveFullscreenHtmlApiHandlerBaseTest {
     private static final String DISABLE_BACKGROUND_MEDIA_SUSPEND =
             "disable-background-media-suspend";

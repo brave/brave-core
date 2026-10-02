@@ -28,6 +28,7 @@ import org.robolectric.android.controller.ActivityController;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.LazyOneshotSupplier;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSuppliers;
@@ -66,7 +67,6 @@ public class BraveHubManagerImplUnitTest {
 
     @Mock private BackPressManager mBackPressManager;
     @Mock private Pane mTabSwitcherPane;
-    @Mock private ViewGroup mTabSwitcherPaneView;
     @Mock private HubLayoutController mHubLayoutController;
     @Mock private MenuOrKeyboardActionController mMenuOrKeyboardActionController;
     @Mock private SnackbarManager mSnackbarManager;
@@ -80,6 +80,8 @@ public class BraveHubManagerImplUnitTest {
     @Mock private Tracker mTracker;
     @Mock private SearchActivityClient mSearchActivityClient;
 
+    private final ViewGroup mTabSwitcherPaneView =
+            new FrameLayout(ContextUtils.getApplicationContext());
     private final SettableNullableObservableSupplier<Tab> mTabSupplier =
             ObservableSuppliers.createNullable();
     private final SettableMonotonicObservableSupplier<FullButtonData> mActionButtonDataSupplier =

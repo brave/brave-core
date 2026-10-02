@@ -46,6 +46,9 @@ import org.chromium.ui.test.util.BlankUiTestActivity;
 @RunWith(ChromeJUnit4ClassRunner.class)
 @CommandLineFlags.Add({ChromeSwitches.DISABLE_FIRST_RUN_EXPERIENCE})
 @Batch(Batch.PER_CLASS)
+// Tests verify start() calls on SwipeRefreshLayout and capture its listeners, and a real
+// ContentView requires live WebContents. Upstream SwipeRefreshHandlerTest suppresses this too.
+@SuppressWarnings("DoNotMock")
 public class BraveSwipeRefreshHandlerTest {
     private static final int ACCESSIBILITY_SWIPE_REFRESH_STRING_ID =
             R.string.accessibility_swipe_refresh;

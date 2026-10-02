@@ -55,6 +55,9 @@ import org.chromium.ui.base.TestActivity;
     ChromeFeatureList.ANDROID_BOTTOM_BAR,
     ChromeFeatureList.CROSS_DEVICE_PREF_TRACKER_EXTRA_LOGS
 })
+// Tests fake findViewById() results and getGlobalVisibleRect() of toolbar buttons, which real Views
+// would only provide after inflating and laying out the whole toolbar hierarchy.
+@SuppressWarnings("DoNotMock")
 public class BraveNewBackgroundTabAnimationDataUnitTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
