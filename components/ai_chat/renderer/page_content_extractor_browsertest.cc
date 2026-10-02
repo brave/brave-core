@@ -62,8 +62,8 @@ class PageContentExtractorRenderViewTest : public content::RenderViewTest {
   mojo::Remote<mojom::PageContentExtractor> BindExtractor() {
     mojo::Remote<mojom::PageContentExtractor> remote;
     auto pipe = remote.BindNewPipeAndPassReceiver().PassPipe();
-    EXPECT_TRUE(registry_->TryBindInterface(
-        mojom::PageContentExtractor::Name_, &pipe));
+    EXPECT_TRUE(
+        registry_->TryBindInterface(mojom::PageContentExtractor::Name_, &pipe));
     return remote;
   }
 
