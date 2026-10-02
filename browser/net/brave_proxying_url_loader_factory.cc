@@ -173,7 +173,7 @@ template <template <typename> class T>
 bool BraveProxyingURLLoaderFactory<
     T>::InProgressRequest::IsBypassRedirectChecksAuthorized() const {
   if (!factory_->navigation_id_) {
-    return false;
+    return factory_->bypass_redirect_checks_;
   }
   auto* rfh = content::RenderFrameHost::FromFrameToken(render_frame_token_);
   return rfh &&
@@ -829,7 +829,8 @@ BraveProxyingURLLoaderFactory<T>::~BraveProxyingURLLoaderFactory() = default;
 
 // static
 template <template <typename> class T>
-void BraveProxyingURLLoaderFactory<T>::MaybeProxyRequest(
+BraveProxyingURLLoaderFactory<T>*
+BraveProxyingURLLoaderFactory<T>::MaybeProxyRequest(
     content::BrowserContext* browser_context,
     content::RenderFrameHost* render_frame_host,
     network::URLLoaderFactoryBuilder& factory_builder,
@@ -839,7 +840,7 @@ void BraveProxyingURLLoaderFactory<T>::MaybeProxyRequest(
     std::optional<int64_t> navigation_id,
     scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  ResourceContextData<T>::StartProxying(
+  return ResourceContextData<T>::StartProxying(
       browser_context,
       render_frame_host ? render_frame_host->GetGlobalFrameToken()
                         : content::GlobalRenderFrameHostToken(),
