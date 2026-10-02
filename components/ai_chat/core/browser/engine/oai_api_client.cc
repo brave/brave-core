@@ -390,8 +390,10 @@ void OAIAPIClient::OnQueryCompleted(
     const int status_code = result.IsResponseCodeValid()
                                 ? result.response_code()
                                 : result.error_code();
-    auto details = mojom::APIErrorDetails::New(status_code, /*error_type=*/"",
-                                               /*inner_status_code=*/0);
+    auto details =
+        mojom::APIErrorDetails::New(status_code, /*error_type=*/"",
+                                    /*inner_status_code=*/0,
+                                    /*rate_limit_expires_at=*/std::nullopt);
     std::move(callback).Run(base::unexpected(EngineConsumer::Error(
         MapResponseCodeToError(result.response_code()), std::move(details))));
     return;
