@@ -49,7 +49,11 @@ source_set("core") {
   }
 
   if (is_linux) {
-    sources += [ "linux/browser_identity_linux.cc" ]
+    sources += [
+      "linux/browser_identity_linux.cc",
+      "linux/browser_identity_linux_internal.cc",
+      "linux/browser_identity_linux_internal.h",
+    ]
   }
 
   if (is_mac) {
@@ -193,10 +197,15 @@ source_set("unit_tests") {
     "agent_app_unittest.cc",
     "browser_host_impl_unittest.cc",
     "browser_host_provider_impl_unittest.cc",
+    "browser_identity_unittest.cc",
     "browser_registry_unittest.cc",
     "shutdown_handlers_unittest.cc",
     "single_instance_unittest.cc",
   ]
+
+  if (is_linux) {
+    sources += [ "linux/browser_identity_linux_internal_unittest.cc" ]
+  }
 
   deps = [
     ":core",
