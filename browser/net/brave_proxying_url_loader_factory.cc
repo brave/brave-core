@@ -377,7 +377,9 @@ template <template <typename> class T>
 void BraveProxyingURLLoaderFactory<T>::InProgressRequest::OnReceiveRedirect(
     const net::RedirectInfo& redirect_info,
     network::mojom::URLResponseHeadPtr head) {
-  if (!IsBypassRedirectChecksAuthorized() &&
+  // Non-navigation redirects are validated downstream according to the
+  // factory-level `bypass_redirect_checks`, as upstream does.
+  if (factory_->navigation_id_ && !IsBypassRedirectChecksAuthorized() &&
       !content::IsSafeRedirectTarget(request_.url, redirect_info.new_url)) {
     OnRequestError(
         network::URLLoaderCompletionStatus(net::ERR_UNSAFE_REDIRECT));
