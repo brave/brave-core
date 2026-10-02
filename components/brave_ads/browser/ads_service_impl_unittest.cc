@@ -104,6 +104,7 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
         &rewards_service_,
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
         /*host_content_settings_map=*/nullptr);
+    ads_service_->Init();
   }
 
   void TearDown() override {
@@ -179,6 +180,42 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
 
   std::unique_ptr<AdsServiceImpl> ads_service_;
 };
+
+TEST_F(BraveAdsAdsServiceImplTest, ConstructorDoesNotRunStartupLogic) {
+  // Arrange
+  TestingPrefServiceSimple local_state;
+  RegisterLocalStatePrefs(local_state.registry());
+  local_state.registry()->RegisterStringPref(
+      variations::prefs::kVariationsCountry, "");
+
+  auto ads_service = std::make_unique<AdsServiceImpl>(
+      std::make_unique<test::FakeAdsServiceDelegate>(), prefs_, local_state,
+      std::make_unique<brave_policy::PolicyInitializationWaiter>(
+          /*policy_service=*/nullptr),
+      /*http_client=*/nullptr,
+      std::make_unique<test::FakeVirtualPrefProviderDelegate>(),
+      /*channel_name=*/"foo", profile_dir_.GetPath(),
+      std::make_unique<test::FakeAdsTooltipsDelegate>(),
+      std::make_unique<test::FakeDeviceId>(),
+      std::make_unique<test::FakeBatAdsServiceFactory>(),
+      std::make_unique<ApplicationStateMonitor>(),
+      std::make_unique<test::FakeShutdownMonitor>(), mock_resource_component_,
+      /*history_service=*/nullptr,
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+      &rewards_service_,
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+      /*host_content_settings_map=*/nullptr);
+
+  ASSERT_FALSE(local_state.HasPrefPath(prefs::kFirstRunAt));
+  ASSERT_FALSE(ads_service->IsIneligibleToStart());
+  ASSERT_FALSE(ads_service->IsInitialized());
+
+  // Act
+  ads_service->Init();
+
+  // Assert
+  EXPECT_TRUE(local_state.HasPrefPath(prefs::kFirstRunAt));
+}
 
 TEST_F(BraveAdsAdsServiceImplTest, ServiceStartsWhenSponsoredAdsAreEnabled) {
   // Arrange

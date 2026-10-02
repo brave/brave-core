@@ -132,6 +132,10 @@ class AdsServiceImpl : public AdsService,
 
   ~AdsServiceImpl() override;
 
+  // Runs the migration step for this service, registers the pref change
+  // registrars, and evaluates ads-eligibility to start the `bat_ads` service.
+  void Init();
+
   // AdsService:
   base::WeakPtr<AdsService> GetWeakPtr() override;
   bool IsIneligibleToStart() const override;

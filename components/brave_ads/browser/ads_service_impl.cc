@@ -200,7 +200,11 @@ AdsServiceImpl::AdsServiceImpl(
   if (!http_client_ || !history_service_ || !host_content_settings_map_) {
     CHECK_IS_TEST();
   }
+}
 
+AdsServiceImpl::~AdsServiceImpl() = default;
+
+void AdsServiceImpl::Init() {
   // Must run before the pref change registrars to keep prefs consistent across
   // upgrades regardless of whether the service is eligible to start.
   Migrate();
@@ -217,8 +221,6 @@ AdsServiceImpl::AdsServiceImpl(
       base::BindOnce(&AdsServiceImpl::MaybeStartBatAdsService,
                      weak_ptr_factory_.GetWeakPtr()));
 }
-
-AdsServiceImpl::~AdsServiceImpl() = default;
 
 base::WeakPtr<AdsService> AdsServiceImpl::GetWeakPtr() {
   return weak_ptr_factory_.GetWeakPtr();
