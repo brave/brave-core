@@ -14,6 +14,8 @@ inline constexpr char kBravePrivateWindowDisclaimerDismissed[] =
     "brave.brave_private_new_tab.private_window_disclaimer_dismissed";
 inline constexpr char kBraveTorWindowDisclaimerDismissed[] =
     "brave.brave_private_new_tab.tor_window_disclaimer_dismissed";
+inline constexpr char kBraveShowSearchBoxOnPrivateNewTab[] =
+    "brave.brave_private_new_tab.show_search_box";
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
