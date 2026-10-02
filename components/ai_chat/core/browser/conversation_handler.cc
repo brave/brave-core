@@ -20,6 +20,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/fixed_flat_set.h"
+#include "base/containers/map_util.h"
 #include "base/containers/span.h"
 #include "base/containers/to_vector.h"
 #include "base/debug/crash_logging.h"
@@ -56,6 +57,7 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "mojo/public/cpp/bindings/clone_traits.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -172,6 +174,17 @@ ConversationHandler::Suggestion& ConversationHandler::Suggestion::operator=(
     Suggestion&&) = default;
 ConversationHandler::Suggestion::~Suggestion() = default;
 
+ConversationHandler::ThreadContainer::~ThreadContainer() = default;
+
+ConversationHandler::ThreadContainer::ThreadContainer(mojom::ThreadPtr thread)
+    : thread(std::move(thread)) {}
+
+ConversationHandler::ThreadContainer::ThreadContainer(ThreadContainer&&) =
+    default;
+
+ConversationHandler::ThreadContainer&
+ConversationHandler::ThreadContainer::operator=(ThreadContainer&&) = default;
+
 void ConversationHandler::BuildCapabilitiesSet() {
   conversation_capabilities_.clear();
   // Set conversation capability based on profile-global state.
@@ -271,6 +284,11 @@ ConversationHandler::ConversationHandler(
              << metadata_->uuid << " with "
              << conversation_data->entries.size();
     chat_history_ = std::move(conversation_data->entries);
+    if (base::FeatureList::IsEnabled(features::kAIChatThreads)) {
+      for (auto& thread : conversation_data->threads) {
+        threads_.try_emplace(thread->uuid, std::move(thread));
+      }
+    }
   }
 
   MaybeSeedOrClearSuggestions();
@@ -457,12 +475,32 @@ void ConversationHandler::GetConversationHistory(
     const std::optional<std::string>& thread_uuid,
     mojom::UntrustedConversationHandler::GetConversationHistoryCallback
         callback) {
-  std::vector<mojom::ConversationTurnPtr> history;
-  for (const auto& turn : chat_history_) {
-    history.emplace_back(turn->Clone());
+  if (thread_uuid) {
+    if (!base::FeatureList::IsEnabled(features::kAIChatThreads)) {
+      std::move(callback).Run({});
+      return;
+    }
+
+    auto* container = base::FindOrNull(threads_, *thread_uuid);
+    if (!container) {
+      std::move(callback).Run({});
+      return;
+    }
+    if (container->entries.empty()) {
+      ai_chat_service_->GetConversationThreadEntries(
+          *thread_uuid,
+          base::BindOnce(
+              &ConversationHandler::OnConversationThreadHistoryReceived,
+              weak_ptr_factory_.GetWeakPtr(), *thread_uuid,
+              std::move(callback)));
+      return;
+    }
   }
 
-  if (pending_conversation_entry_) {
+  std::vector<mojom::ConversationTurnPtr> history =
+      mojo::Clone(GetMutableConversationHistory(thread_uuid));
+  if (pending_conversation_entry_ &&
+      pending_conversation_entry_->thread_uuid == thread_uuid) {
     history.push_back(pending_conversation_entry_->Clone());
   }
 
@@ -471,8 +509,27 @@ void ConversationHandler::GetConversationHistory(
 
 void ConversationHandler::GetConversationThreads(
     GetConversationThreadsCallback callback) {
-  // TODO(https://github.com/brave/brave-browser/issues/57705)
-  std::move(callback).Run({});
+  if (!base::FeatureList::IsEnabled(features::kAIChatThreads)) {
+    std::move(callback).Run({});
+    return;
+  }
+  std::vector<mojom::ThreadPtr> threads;
+  threads.reserve(threads_.size());
+  for (const auto& [_uuid, container] : threads_) {
+    threads.emplace_back(container.thread->Clone());
+  }
+  std::move(callback).Run(std::move(threads));
+}
+
+void ConversationHandler::OnConversationThreadHistoryReceived(
+    std::string thread_uuid,
+    GetConversationHistoryCallback callback,
+    std::vector<mojom::ConversationTurnPtr> entries) {
+  CHECK(base::FeatureList::IsEnabled(features::kAIChatThreads));
+  auto* container = base::FindOrNull(threads_, thread_uuid);
+  CHECK(container);
+  container->entries = std::move(entries);
+  std::move(callback).Run(mojo::Clone(container->entries));
 }
 
 void ConversationHandler::GetState(GetStateCallback callback) {
@@ -1324,6 +1381,18 @@ void ConversationHandler::AddToConversationHistory(
   chat_history_.push_back(std::move(turn));
 
   OnConversationEntryAdded(chat_history_.back());
+}
+
+std::vector<mojom::ConversationTurnPtr>&
+ConversationHandler::GetMutableConversationHistory(
+    std::optional<std::string_view> thread_uuid) {
+  if (thread_uuid.has_value()) {
+    CHECK(base::FeatureList::IsEnabled(features::kAIChatThreads));
+    auto* container = base::FindOrNull(threads_, thread_uuid.value());
+    CHECK(container);
+    return container->entries;
+  }
+  return chat_history_;
 }
 
 void ConversationHandler::InitToolsForNewGenerationLoop(
