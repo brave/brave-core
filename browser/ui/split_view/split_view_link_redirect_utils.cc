@@ -20,12 +20,14 @@
 #include "components/tabs/public/split_tab_data.h"
 #include "components/tabs/public/tab_collection.h"
 #include "components/tabs/public/tab_interface.h"
+#include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "content/public/common/referrer.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace {
 
@@ -152,10 +154,11 @@ content::WebContents* GetRightPaneIfLinked(
 
 namespace split_view {
 
-bool MaybeRedirectToRightPane(content::WebContents* source,
-                              const GURL& url,
-                              const content::Referrer& referrer) {
+bool MaybeRedirectToRightPane(content::NavigationHandle& handle) {
   CHECK(base::FeatureList::IsEnabled(features::kSplitViewLink));
+  CHECK(handle.GetInitiatorOrigin());
+
+  content::WebContents* source = handle.GetWebContents();
   CHECK(source);
 
   bool from_window_open = false;
@@ -170,15 +173,22 @@ bool MaybeRedirectToRightPane(content::WebContents* source,
   // another browser initiated navigation.
   tabs::TabInterface* target_tab =
       tabs::TabInterface::GetFromContents(target_contents);
-  NavigateParams params(target_tab->GetBrowserWindowInterface(), url,
-                        ui::PAGE_TRANSITION_LINK);
+  NavigateParams params(target_tab->GetBrowserWindowInterface(),
+                        handle.GetURL(), ui::PAGE_TRANSITION_LINK);
   params.source_contents = target_contents;
   params.disposition = WindowOpenDisposition::CURRENT_TAB;
   // Preserve original navigation's referrer.
   // As this redirects to existing right pane, orignal navigation's opener
   // can't be passed because this opener relationship is established only
   // when new WebContents is created.
-  params.referrer = referrer;
+  params.referrer = content::Referrer(handle.GetReferrer());
+  // Carry over the intercepted navigation's initiator origin. Without it the
+  // re-issued navigation looks like an omnibox navigation, which would send
+  // SameSite=Strict cookies and `Sec-Fetch-Site: none` on cross-site links.
+  // This mirrors RenderViewContextMenu::OpenLinkInSplitView(), which navigates
+  // the existing sibling tab of a split with the initiator origin set while
+  // keeping the navigation browser-initiated.
+  params.initiator_origin = handle.GetInitiatorOrigin();
   Navigate(&params);
 
   // Note that the |source| tab is new background tab which was spawned from the
