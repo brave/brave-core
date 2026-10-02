@@ -1063,11 +1063,11 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     }
 
     /**
-     * Puts Brave's share icon into the app menu icon row, in place of the forward icon.
+     * Puts Brave's share icon into the app menu icon row.
      *
-     * <p>The row renders five icons at most, and forward stays reachable from the menu footer, so
-     * it is the one that gives way. The page info icon is dropped as well, as Brave keeps page info
-     * in the menu list instead.
+     * <p>The row renders five icons at most. Forward is the navigation icon Brave keeps, as back is
+     * already served by the system back gesture. The page info icon is dropped as well, as Brave
+     * keeps page info in the menu list instead.
      */
     private void putShareIconIntoIconRow(MVCListAdapter.ModelList modelList) {
         for (int i = 0; i < modelList.size(); ++i) {
@@ -1076,7 +1076,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
             MVCListAdapter.ModelList icons =
                     modelList.get(i).model.get(AppMenuItemProperties.ADDITIONAL_ICONS);
-            maybeRemoveMenuItems(icons, R.id.forward_menu_id, R.id.info_menu_id);
+            maybeRemoveMenuItems(icons, R.id.back_menu_id, R.id.info_menu_id);
 
             PropertyModel shareIcon =
                     AppMenuItemUtils.buildModelForIcon(
