@@ -5,8 +5,7 @@
 
 #include "brave/components/brave_ads/browser/component_updater/resource_component_registrar.h"
 
-#include <stddef.h>
-
+#include <cstddef>
 #include <memory>
 #include <string>
 #include <utility>
