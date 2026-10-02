@@ -5,12 +5,21 @@
 
 #include "brave/components/brave_vpn/app/v2/agent/browser_identity.h"
 
-#include <string>
+#include <sys/socket.h>
+#include <unistd.h>
 
+#include <cstdint>
+#include <optional>
+#include <string>
+#include <utility>
+
+#include "base/files/scoped_file.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/notimplemented.h"
 #include "base/process/process_handle.h"
+#include "brave/components/brave_vpn/app/v2/agent/linux/browser_identity_linux_internal.h"
 #include "components/named_mojo_ipc_server/connection_info.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
@@ -21,7 +30,8 @@ BrowserIdentity::VerificationResult VerifyImpl(base::ProcessId /*pid*/) {
   // Implement the verification step on Linux.
   // The passed arguments are copied from the BrowserIdentity object, so this
   // function can be posted to a thread pool and run without any other context.
-  NOTIMPLEMENTED() << "Identity verification is not yet implemented on Linux";
+  NOTIMPLEMENTED_LOG_ONCE()
+      << "Identity verification is not yet implemented on Linux";
   return BrowserIdentity::VerificationResult::kAccepted;
 }
 }  // namespace
@@ -29,24 +39,55 @@ BrowserIdentity::VerificationResult VerifyImpl(base::ProcessId /*pid*/) {
 // static
 scoped_refptr<BrowserIdentity> BrowserIdentity::Capture(
     const named_mojo_ipc_server::ConnectionInfo& info) {
-  // TODO(https://github.com/brave/brave-browser/issues/54635)
-  // Implement the capture step on Linux: pin the peer process and take the
-  // platform-specific data BrowserIdentity needs. Returning null here refuses
-  // the connection outright.
-  NOTIMPLEMENTED() << "Identity capture is not yet implemented on Linux";
-  return base::WrapRefCounted(new BrowserIdentity(info.credentials.pid));
+  const ucred& credentials = info.credentials;
+  const pid_t pid = credentials.pid;
+  if (pid <= 0) {
+    return nullptr;
+  }
+  if (credentials.uid != geteuid()) {
+    VLOG(1) << "Peer process is not running as this user, pid=" << pid;
+    return nullptr;
+  }
+
+  base::ScopedFD pidfd = internal::OpenPidfd(pid);
+  if (!pidfd.is_valid()) {
+    VPLOG(1) << "Cannot obtain a pidfd for the peer, pid=" << pid;
+    return nullptr;
+  }
+
+  const std::optional<uint64_t> start_time_ticks =
+      internal::ReadProcessStartTimeTicks(pid);
+  if (!start_time_ticks) {
+    VLOG(1) << "Cannot read peer start time, pid=" << pid;
+    return nullptr;
+  }
+
+  // A pid is only freed once its process is reaped. If the process is still
+  // alive (zombies count) after the read, the read was of this process.
+  if (!internal::IsProcessAlive(pidfd)) {
+    VLOG(1) << "Peer process exited during capture, pid=" << pid;
+    return nullptr;
+  }
+
+  return base::WrapRefCounted(new BrowserIdentity(
+      pid, PlatformData{.pidfd = std::move(pidfd),
+                        .start_time_ticks = *start_time_ticks}));
 }
 
 std::string BrowserIdentity::GetDescription() const {
-  return absl::StrFormat("pid=%d", pid_);
+  if (!platform_data_) {
+    return absl::StrFormat("pid=%d", pid_);
+  }
+  return absl::StrFormat("pid=%d; start_time_ticks=%u", pid_,
+                         platform_data_->start_time_ticks);
 }
 
-bool BrowserIdentity::IsSameProcess(const BrowserIdentity& /*other*/) const {
-  // TODO(https://github.com/brave/brave-browser/issues/54635)
-  // Implement the comparison step on Linux: check if the process this object
-  // names is the same as the one |other| names.
-  NOTIMPLEMENTED() << "IsSameProcess is not yet implemented on Linux";
-  return true;
+bool BrowserIdentity::IsSameProcess(const BrowserIdentity& other) const {
+  if (pid_ != other.pid_ || !platform_data_ || !other.platform_data_) {
+    return false;
+  }
+  return platform_data_->start_time_ticks ==
+         other.platform_data_->start_time_ticks;
 }
 
 BrowserIdentity::VerificationRequestCallback
