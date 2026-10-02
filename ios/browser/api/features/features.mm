@@ -28,6 +28,7 @@
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/most_visited_sites/features.h"
 #include "brave/ios/browser/playlist/features.h"
+#include "brave/ios/browser/search_engines/features.h"
 #include "brave/ios/browser/toolbar/features.h"
 #include "brave/ios/browser/ui/commerce/features.h"
 #include "brave/ios/browser/ui/quick_view/features.h"
@@ -415,6 +416,11 @@
 + (Feature*)kBrowserToolbarRefactorEnabled {
   return [[Feature alloc]
       initWithFeature:&brave::features::kBrowserToolbarRefactorEnabled];
+}
+
++ (Feature*)kUseChromiumSearchEngines {
+  return [[Feature alloc]
+      initWithFeature:&brave::features::kUseChromiumSearchEngines];
 }
 
 @end
