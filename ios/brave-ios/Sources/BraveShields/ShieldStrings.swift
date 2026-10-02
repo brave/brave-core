@@ -925,13 +925,13 @@ extension Strings.Shields {
   public static let shieldsUpForSite = NSLocalizedString(
     "shields.shieldsUpForSite",
     bundle: .module,
-    value: "Shields is **up** for this site",
+    value: "Shields **up** for this site",
     comment: "A label displayed on Shields panel beside the toggle disabling shields."
   )
   public static let shieldsDownForSite = NSLocalizedString(
     "shields.shieldsDownForSite",
     bundle: .module,
-    value: "Shields is **down** for this site",
+    value: "Shields **down** for this site",
     comment: "A label displayed on Shields panel beside the toggle enabling shields."
   )
   public static let trackersAdsAndMoreBlocked = NSLocalizedString(
@@ -1015,8 +1015,8 @@ extension Strings.Shields {
   public static let advancedControls = NSLocalizedString(
     "BraveShieldsAdvancedControls",
     bundle: .module,
-    value: "Advanced controls",
-    comment: ""
+    value: "Advanced Controls",
+    comment: "The label above / exposing the advanced controls on the Shields panel."
   )
   public static let aboutBraveShieldsTitle = NSLocalizedString(
     "AboutBraveShields",
