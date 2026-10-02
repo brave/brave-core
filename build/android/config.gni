@@ -26,6 +26,7 @@ brave_chrome_java_deps = [
   "//brave/android:settings_insets_java",
   "//brave/android/java/org/chromium/chrome/browser/accessibility:java",
   "//brave/android/java/org/chromium/chrome/browser/brave_search:java",
+  "//brave/android/java/org/chromium/chrome/browser/day_zero:java",
   "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
   "//brave/android/nala:chrome_app_overlay_resources",
   "//brave/brave_domains/android:java",
