@@ -166,9 +166,9 @@ class RustToolchainExtraDepTest(unittest.TestCase):
             m.rust_toolchain_extra_dep(self.UPSTREAM_STEM, 1)
             m.rust_toolchain_extra_dep(self.UPSTREAM_STEM, 2)
 
-        first_round, second_round = seen_urls[:4], seen_urls[4:]
-        self.assertEqual(len(first_round), 4)
-        self.assertEqual(len(second_round), 4)
+        first_round, second_round = seen_urls[:3], seen_urls[3:]
+        self.assertEqual(len(first_round), 3)
+        self.assertEqual(len(second_round), 3)
         self.assertFalse(set(first_round) & set(second_round))
 
     def test_missing_index_raises(self):
