@@ -6,15 +6,48 @@
 import * as React from 'react'
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
-import { getLocale } from '$web-common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
+import { mojoTimeToJSDate } from '$web-common/mojomUtils'
+import * as Mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import PremiumSuggestion from '../premium_suggestion'
 import styles from './alerts.module.scss'
 
+const MS_PER_HOUR = 60 * 60 * 1000
+
 interface Props {
   _testIsCurrentModelLeo?: boolean
-  // Whether the premium rate limit was reached for the current model only.
-  isModelRateLimit?: boolean
+  // Either RateLimitReached or ModelRateLimitReached (the premium rate limit
+  // was reached for the current model only).
+  apiError: Mojom.APIError
+  errorDetails?: Mojom.APIErrorDetails | null
+}
+
+function formatDurationUntil(date: Date) {
+  // Round up so the limit never appears to have already reset.
+  const duration = Temporal.Now.instant().until(
+    Temporal.Instant.fromEpochMilliseconds(date.getTime()),
+    { largestUnit: 'hours', smallestUnit: 'minutes', roundingMode: 'ceil' },
+  )
+  return new Intl.DurationFormat(undefined, { style: 'long' }).format(duration)
+}
+
+function getModelRateLimitMessage(errorDetails?: Mojom.APIErrorDetails | null) {
+  if (!errorDetails?.rateLimitExpiresAt) {
+    return getLocale(S.CHAT_UI_ERROR_MODEL_RATE_LIMIT)
+  }
+  const expiresAt = mojoTimeToJSDate(errorDetails.rateLimitExpiresAt)
+  if (expiresAt.getTime() <= Date.now()) {
+    return getLocale(S.CHAT_UI_ERROR_MODEL_RATE_LIMIT)
+  }
+  const expiresTime = new Intl.DateTimeFormat(undefined, {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  }).format(expiresAt)
+  return formatLocale(S.CHAT_UI_ERROR_MODEL_RATE_LIMIT_WITH_TIME, {
+    $1: formatDurationUntil(expiresAt),
+    $2: expiresTime,
+  })
 }
 
 function ErrorRateLimit(props: Props) {
@@ -58,21 +91,31 @@ function ErrorRateLimit(props: Props) {
     )
   }
 
+  // Hide the retry button for model rate limits that won't expire for over an
+  // hour, since retrying before then will fail.
+  const isModelRateLimit =
+    props.apiError === Mojom.APIError.ModelRateLimitReached
+  const expiresAt = props.errorDetails?.rateLimitExpiresAt
+  const showRetry =
+    !isModelRateLimit
+    || !expiresAt
+    || mojoTimeToJSDate(expiresAt).getTime() - Date.now() <= MS_PER_HOUR
+
   return (
     <div className={styles.alert}>
       <Alert type='warning'>
-        {getLocale(
-          props.isModelRateLimit
-            ? S.CHAT_UI_ERROR_MODEL_RATE_LIMIT
-            : S.CHAT_UI_ERROR_RATE_LIMIT,
+        {isModelRateLimit
+          ? getModelRateLimitMessage(props.errorDetails)
+          : getLocale(S.CHAT_UI_ERROR_RATE_LIMIT)}
+        {showRetry && (
+          <Button
+            slot='actions'
+            kind='filled'
+            onClick={() => context.conversationHandler.retryAPIRequest()}
+          >
+            {getLocale(S.CHAT_UI_RETRY_BUTTON_LABEL)}
+          </Button>
         )}
-        <Button
-          slot='actions'
-          kind='filled'
-          onClick={() => context.conversationHandler.retryAPIRequest()}
-        >
-          {getLocale(S.CHAT_UI_RETRY_BUTTON_LABEL)}
-        </Button>
       </Alert>
     </div>
   )

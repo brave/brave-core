@@ -15,6 +15,35 @@ type RequestIdleCallbackDeadline = {
 }
 
 declare global {
+  // Typescript doesn't include Temporal or Intl.DurationFormat yet, but both
+  // are supported in Chromium. Only the parts we use are declared here.
+  namespace Temporal {
+    interface Duration {}
+
+    class Instant {
+      static fromEpochMilliseconds(epochMilliseconds: number): Instant
+      until(
+        other: Instant,
+        options: {
+          largestUnit: 'hours'
+          smallestUnit: 'minutes'
+          roundingMode: 'ceil'
+        },
+      ): Duration
+    }
+
+    namespace Now {
+      function instant(): Instant
+    }
+  }
+
+  namespace Intl {
+    class DurationFormat {
+      constructor(locales: undefined, options: { style: 'long' })
+      format(duration: Temporal.Duration): string
+    }
+  }
+
   interface Window {
     // Typescript doesn't include requestIdleCallback as it's non-standard.
     // Since it's supported in Chromium, we can include it here.

@@ -2215,7 +2215,8 @@ TEST_F(ConversationAPIClientUnitTest, ErrorParsing_SSE) {
             auto error_dict = base::test::ParseJsonDict(
                 request_count++ == 0
                     ? R"({"error":{"type":"1234","message":"rate limited"}})"
-                    : R"({"error":{"type":"42904","message":"rate limited"}})");
+                    : R"({"error":{"type":"42904","message":"rate limited",)"
+                      R"("rate_limit_expires_at":"2026-10-02T15:45:00Z"}})");
             std::move(result_callback)
                 .Run(api_request_helper::APIRequestResult(
                     net::HTTP_TOO_MANY_REQUESTS,
@@ -2234,11 +2235,18 @@ TEST_F(ConversationAPIClientUnitTest, ErrorParsing_SSE) {
           EXPECT_EQ(result.error().api_error,
                     mojom::APIError::RateLimitReached);
           EXPECT_EQ(result.error().details->error_type, "1234");
+          EXPECT_EQ(result.error().details->rate_limit_expires_at,
+                    std::nullopt);
           return;
         }
         EXPECT_EQ(result.error().api_error,
                   mojom::APIError::ModelRateLimitReached);
         EXPECT_EQ(result.error().details->error_type, "42904");
+        base::Time expected_expires_at;
+        ASSERT_TRUE(base::Time::FromUTCString("2026-10-02T15:45:00Z",
+                                              &expected_expires_at));
+        EXPECT_EQ(result.error().details->rate_limit_expires_at,
+                  expected_expires_at);
         run_loop.Quit();
       });
 
