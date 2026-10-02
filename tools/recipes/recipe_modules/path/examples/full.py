@@ -6,12 +6,32 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    path,
+    platform,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['path', 'platform', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    path: path.API
+    platform: platform.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    path: path.TEST_API
+    platform: platform.TEST_API
+
+
+def RunSteps(api: DEPS):
     if api.platform.is_win:
         assert api.path.sep == '\\'
         assert api.path.pathsep == ';'
@@ -42,7 +62,7 @@ def RunSteps(api):
     api.step('temp dirs', ['echo', str(first), str(second), str(unpacked)])
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     # `config_types.Path._OS_SEP` is driven by the simulated platform, not the
     # real host running the test suite: run the same case under both `linux` and
     # `win`, and check the separator in the recorded commands actually flips,

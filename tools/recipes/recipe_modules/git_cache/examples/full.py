@@ -6,14 +6,37 @@
 
 from __future__ import annotations
 
-import post_process
+from dataclasses import dataclass
 
-DEPS = ['env', 'git_cache', 'path', 'raw_io', 'step']
+import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    env,
+    git_cache,
+    path,
+    raw_io,
+    step,
+)
+from recipe_test_api import RecipeTestApi
+
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    git_cache: git_cache.API
+    step: step.API
+
+
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    env: env.TEST_API
+    path: path.TEST_API
+    raw_io: raw_io.TEST_API
+
 
 _URL = 'https://chromium.googlesource.com/chromium/src.git'
 
 
-def RunSteps(api):
+def RunSteps(api: DEPS):
     # Everything here works against whatever cache `$GIT_CACHE_PATH` names.
     api.step('cache path', ['echo', api.git_cache.validate()])
 
@@ -32,7 +55,7 @@ def RunSteps(api):
     api.step('mirror', ['echo', api.git_cache.mirror_dir(_URL)])
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     _mirror = '/b/cache/chromium.googlesource.com-chromium-src'
 
     # The environment names the cache; nothing else configures it.

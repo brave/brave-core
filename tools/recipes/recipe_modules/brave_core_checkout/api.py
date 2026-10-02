@@ -21,6 +21,7 @@ from PB.recipe_modules.brave.brave_core_checkout.properties import (
 from recipe_api import RecipeApi
 
 if TYPE_CHECKING:
+    from recipe_modules import brave_core_checkout
     from recipe_modules.git_cache.api import GitRef
 
 # Default SSH remote for the brave-core repository.
@@ -71,6 +72,8 @@ class BraveCoreCheckoutApi(RecipeApi):
     the working tree with only top-level files (cone mode), and
     `sparse-checkout set` then materialises exactly the requested directories.
     """
+
+    m: brave_core_checkout.DEPS
 
     @contextlib.contextmanager
     def _bootstrap_layout(self):

@@ -21,20 +21,23 @@ Run a recipe directly (recipe names are `/`-separated paths under recipes/).
 from __future__ import annotations
 
 import argparse
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
+import dataclasses
 import importlib
+import inspect
 import json
 import logging
 import os
 from pathlib import Path
 import sys
 import types
+import typing
 
 from google.protobuf import json_format as jsonpb
 
 import config_types
 import proto_support
-from recipe_api import RecipeApi
+from recipe_api import RecipeApi, RecipeScriptApi
 from recipe_test_api import RecipeTestApi
 from step_stack import StepStack
 
@@ -43,43 +46,6 @@ from step_stack import StepStack
 RECIPES_ROOT = Path(__file__).resolve().parent
 MODULES_PKG = 'recipe_modules'
 RECIPES_PKG = 'recipes'
-
-
-class RecipeScriptApi:
-    """The `api` object passed to a recipe's `RunSteps`.
-
-    Carries the recipe's top-level `DEPS`: each one is attached as an attribute
-    named after the module (e.g. `api.chromium_checkout`).
-    """
-
-    def __init__(self) -> None:
-        # Simulation context, seeded by `run_loaded_recipe` (see
-        # `RecipeApi._test`; the same `None`-means-production convention).
-        self._test = None
-
-        # This recipe's `/`-separated id (e.g. `gerrit/refresh_mirrors`),
-        # seeded by `run_loaded_recipe`. Used to namespace `resource()`'s
-        # test-mode token.
-        self._recipe_name: str = ''
-
-        # This recipe's own `<name>.resources` directory, seeded by
-        # `run_loaded_recipe`. `resource()` derives real paths from it.
-        self._resources_dir: Path = Path()
-
-    def resource(self, *pieces: str) -> config_types.Path:
-        """Path to a file under this recipe's `<name>.resources/` directory."""
-        base = config_types.ResolvedBasePath.for_recipe_script_resources(
-            self._test is not None, self._recipe_name, str(self._resources_dir)
-        )
-        return config_types.Path(base, *pieces)
-
-    def __getattr__(self, name: str):
-        # DEPS are injected by the engine; a missing one means it was not
-        # declared in the recipe's DEPS. (Also tells static analysis that
-        # attributes are dynamic, so accessing a dep is not flagged no-member.)
-        raise AttributeError(
-            f'{name!r} is not a declared dependency (add it to DEPS?)'
-        )
 
 
 def _ensure_on_sys_path() -> None:
@@ -148,6 +114,143 @@ def _find_test_api_class(
     return classes[0] if classes else RecipeTestApi
 
 
+def _module_api_class(
+    package: types.ModuleType, module_name: str
+) -> type[RecipeApi]:
+    """Return a module's `RecipeApi` subclass.
+
+    Prefers the `API` its `__init__.py` exports, falling back to finding the one
+    `RecipeApi` subclass defined in its `api.py`.
+    """
+    api_class = getattr(package, 'API', None)
+    if api_class is not None:
+        if not (
+            isinstance(api_class, type) and issubclass(api_class, RecipeApi)
+        ):
+            raise RuntimeError(
+                f"recipe module '{module_name}' exports API which is not a "
+                'subclass of RecipeApi'
+            )
+        return api_class
+    api_module = importlib.import_module(f'{MODULES_PKG}.{module_name}.api')
+    return _find_api_class(api_module, module_name)
+
+
+def _module_test_api_class(
+    package: types.ModuleType, module_name: str
+) -> type[RecipeTestApi]:
+    """Return a module's `RecipeTestApi` subclass, or the base class.
+
+    Prefers the `TEST_API` its `__init__.py` exports, falling back to finding
+    the (optional) `RecipeTestApi` subclass defined in its `test_api.py`.
+    """
+    test_api_class = getattr(package, 'TEST_API', None)
+    if test_api_class is not None:
+        if not (
+            isinstance(test_api_class, type)
+            and issubclass(test_api_class, RecipeTestApi)
+        ):
+            raise RuntimeError(
+                f"recipe module '{module_name}' exports TEST_API which is not "
+                'a subclass of RecipeTestApi'
+            )
+        return test_api_class
+    if not (RECIPES_ROOT / MODULES_PKG / module_name / 'test_api.py').exists():
+        # Modules without a test_api.py contribute the base api (no helpers).
+        return RecipeTestApi
+    test_module = importlib.import_module(
+        f'{MODULES_PKG}.{module_name}.test_api'
+    )
+    return _find_test_api_class(test_module, module_name)
+
+
+# Field names from the base api classes, which are not DEPS.
+_BASE_API_FIELDS: frozenset[str] = frozenset(
+    set(typing.get_type_hints(RecipeScriptApi))
+    | set(typing.get_type_hints(RecipeTestApi))
+)
+
+
+def parse_deps_spec(deps_spec: object, *, source: str) -> dict[str, str]:
+    """Normalise a `DEPS` (or `TEST_DEPS`) specification.
+
+    Two forms are accepted:
+
+        DEPS = ['module', 'other_module']
+
+        @dataclass
+        class DEPS(RecipeScriptApi):
+            module: module.API
+            other_name: other_module.API
+
+    Args:
+      deps_spec: The deps specification.
+      source: Source file where the specification lives, for errors.
+
+    Returns `{local_name: module_name}`.
+    """
+    if dataclasses.is_dataclass(deps_spec):
+        return _parse_deps_class(deps_spec, source)
+    if not deps_spec:
+        return {}
+    if isinstance(deps_spec, Sequence) and not isinstance(deps_spec, str):
+        return {name: name for name in deps_spec}
+    raise TypeError(
+        f'DEPS in {source} must be a list of module names or a dataclass; '
+        f'got {deps_spec!r}'
+    )
+
+
+def _parse_deps_class(deps_spec: type, source: str) -> dict[str, str]:
+    """Validate a `DEPS`/`TEST_DEPS` dataclass and return its deps.
+
+    Each field's annotation must be a class from a recipe module (normally
+    `<module>.API` or `<module>.TEST_API`); the module it was defined in names
+    the dependency, and the field name is its local name.
+    """
+    for name, member in vars(deps_spec).items():
+        if name.startswith('__') and name.endswith('__'):
+            continue
+        if inspect.isfunction(member) or isinstance(
+            member, (classmethod, staticmethod, property)
+        ):
+            raise ValueError(
+                f"Cannot define custom method '{name}' on "
+                f'{deps_spec.__name__} in {source}. {deps_spec.__name__} is '
+                'only used for type hinting and custom methods will not be '
+                'available at runtime.'
+            )
+
+    deps = {}
+    # No `globalns`: each class's annotations resolve against its own module,
+    # which holds a recipe's imports since recipes are imported normally.
+    for field_name, ann in typing.get_type_hints(deps_spec).items():
+        if field_name in _BASE_API_FIELDS:
+            continue
+        parts = getattr(ann, '__module__', '').split('.')
+        if len(parts) >= 2 and parts[0] == MODULES_PKG:
+            deps[field_name] = parts[1]
+        else:
+            raise ValueError(
+                f"Cannot infer DEPS path from {ann!r} in field '{field_name}' "
+                f'of {deps_spec.__name__} in {source}'
+            )
+    return deps
+
+
+def _module_deps(package: types.ModuleType) -> dict[str, str]:
+    """A recipe module's normalised `DEPS`."""
+    return parse_deps_spec(
+        getattr(package, 'DEPS', ()), source=str(package.__file__)
+    )
+
+
+def recipe_test_deps(recipe: types.ModuleType) -> dict[str, str]:
+    """A recipe's normalised `TEST_DEPS`, falling back to its `DEPS`."""
+    spec = getattr(recipe, 'TEST_DEPS', None) or getattr(recipe, 'DEPS', ())
+    return parse_deps_spec(spec, source=str(recipe.__file__))
+
+
 def instantiate_test_module(
     name: str, chain: list[str], cache: dict[str, RecipeTestApi]
 ) -> RecipeTestApi:
@@ -166,20 +269,11 @@ def instantiate_test_module(
 
     _ensure_protos()
     package = importlib.import_module(f'{MODULES_PKG}.{name}')
-    deps = list(getattr(package, 'DEPS', []))
-
-    if (RECIPES_ROOT / MODULES_PKG / name / 'test_api.py').exists():
-        test_module = importlib.import_module(f'{MODULES_PKG}.{name}.test_api')
-        api_class = _find_test_api_class(test_module, name)
-    else:
-        # Modules without a test_api.py contribute the base api (no helpers).
-        api_class = RecipeTestApi
-
-    inst = api_class(module=name)
-    for dep_name in deps:
+    inst = _module_test_api_class(package, name)(module=name)
+    for local_name, dep_name in _module_deps(package).items():
         setattr(
             inst.m,
-            dep_name,
+            local_name,
             instantiate_test_module(dep_name, chain + [name], cache),
         )
     setattr(inst.m, name, inst)
@@ -187,12 +281,23 @@ def instantiate_test_module(
     return inst
 
 
-def build_root_test_api(deps: list[str]) -> RecipeTestApi:
-    """Build the `api` passed to `GenTests`, with each DEP injected by name."""
-    root = RecipeTestApi(module=None)
+def build_root_test_api(recipe: types.ModuleType) -> RecipeTestApi:
+    """Build the `api` passed to a recipe's `GenTests`.
+
+    Each of the recipe's `TEST_DEPS` (or, absent those, `DEPS`) is injected
+    under its local name. A dataclass `TEST_DEPS` is instantiated with them.
+    """
     cache: dict[str, RecipeTestApi] = {}
-    for dep_name in deps:
-        setattr(root, dep_name, instantiate_test_module(dep_name, [], cache))
+    deps = {
+        local_name: instantiate_test_module(dep_name, [], cache)
+        for local_name, dep_name in recipe_test_deps(recipe).items()
+    }
+    test_deps_cls = getattr(recipe, 'TEST_DEPS', None)
+    if dataclasses.is_dataclass(test_deps_cls):
+        return test_deps_cls(**deps)
+    root = RecipeTestApi(module=None)
+    for local_name, dep in deps.items():
+        setattr(root, local_name, dep)
     return root
 
 
@@ -331,9 +436,7 @@ class _Engine:
         # from `PB`, so the proto package must exist before we import it.
         _ensure_protos()
         package = importlib.import_module(f'{MODULES_PKG}.{name}')
-        deps = list(getattr(package, 'DEPS', []))
-        api_module = importlib.import_module(f'{MODULES_PKG}.{name}.api')
-        api_class = _find_api_class(api_module, name)
+        api_class = _module_api_class(package, name)
 
         inst = api_class(*self._module_property_args(name, package))
         # Seed engine-provided values (workspace, and the
@@ -342,13 +445,13 @@ class _Engine:
         setattr(inst, '_workspace', self._workspace)
         setattr(inst, '_step_stack', self._step_stack)
         setattr(inst, '_module_name', name)
-        setattr(inst, '_module_dir', Path(api_module.__file__).resolve().parent)
+        setattr(inst, '_module_dir', Path(package.__file__).resolve().parent)
         setattr(inst, '_config_ctx', _load_config_ctx(name))
         inst.test_api = instantiate_test_module(name, [], self._test_api_cache)
-        for dep_name in deps:
+        for local_name, dep_name in _module_deps(package).items():
             setattr(
                 inst.m,
-                dep_name,
+                local_name,
                 self._instantiate_module(dep_name, chain + [name]),
             )
         # A module can reach itself via `self.m.<own_name>`.
@@ -393,17 +496,21 @@ class _Engine:
         if run_steps is None:
             raise RuntimeError(f"recipe '{recipe_name}' is missing RunSteps")
 
-        api = RecipeScriptApi()
-        setattr(api, '_test', self._test)
-        setattr(api, '_recipe_name', recipe_name)
         recipe_file = Path(recipe.__file__).resolve()
-        setattr(
-            api,
-            '_resources_dir',
-            recipe_file.parent / f'{recipe_file.stem}.resources',
-        )
-        for dep_name in getattr(recipe, 'DEPS', []):
-            setattr(api, dep_name, self._instantiate_module(dep_name, []))
+        resources_dir = recipe_file.parent / f'{recipe_file.stem}.resources'
+        deps_spec = getattr(recipe, 'DEPS', ())
+        deps = {
+            local_name: self._instantiate_module(dep_name, [])
+            for local_name, dep_name in parse_deps_spec(
+                deps_spec, source=str(recipe_file)
+            ).items()
+        }
+        if dataclasses.is_dataclass(deps_spec):
+            api = deps_spec(self._test, recipe_name, resources_dir, **deps)
+        else:
+            api = RecipeScriptApi(self._test, recipe_name, resources_dir)
+            for local_name, dep in deps.items():
+                setattr(api, local_name, dep)
 
         try:
             return _run_steps(

@@ -6,24 +6,40 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from dataclasses import dataclass
 
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    brave_core_checkout,
+    chromium_checkout,
+    platform,
+    raw_io,
+)
+from recipe_test_api import RecipeTestApi
 
-if TYPE_CHECKING:
-    from engine import RecipeScriptApi
 
-DEPS = ['brave_core_checkout', 'chromium_checkout', 'platform', 'raw_io']
+@dataclass
+class DEPS(RecipeScriptApi):
+    brave_core_checkout: brave_core_checkout.API
 
 
-def RunSteps(api: RecipeScriptApi) -> None:
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    brave_core_checkout: brave_core_checkout.TEST_API
+    chromium_checkout: chromium_checkout.TEST_API
+    platform: platform.TEST_API
+    raw_io: raw_io.TEST_API
+
+
+def RunSteps(api: DEPS) -> None:
     api.brave_core_checkout.set_config('brave')
     api.brave_core_checkout.ensure_checkout()
     api.brave_core_checkout.compile()
     api.brave_core_checkout.run_tests()
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     # Fresh workspace: brave-core and Chromium are deployed and synced, then
     # built and tested.
     yield api.test(

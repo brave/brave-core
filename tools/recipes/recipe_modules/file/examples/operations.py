@@ -9,12 +9,31 @@ success/failure handling that every operation here shares).
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    file,
+    path,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['file', 'path', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    file: file.API
+    path: path.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    file: file.TEST_API
+
+
+def RunSteps(api: DEPS):
     api.file.copy('copy file', '/src/a.txt', '/dst/a.txt')
     api.file.copytree(
         'copy tree',
@@ -75,7 +94,7 @@ def RunSteps(api):
     api.step('echo executable', ['echo', str(executable)])
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'basic',
         api.post_process(

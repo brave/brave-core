@@ -6,12 +6,31 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    futures,
+    json,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['futures', 'json', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    futures: futures.API
+    json: json.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    json: json.TEST_API
+
+
+def RunSteps(api: DEPS):
     # Nothing has run yet, so there is no open step: the tip of the stack is
     # still the synthetic root entry.
     assert api.step.active_result is None, api.step.active_result
@@ -45,7 +64,7 @@ def RunSteps(api):
     api.step('parent unaffected', ['echo', api.step.active_result.name])
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'active result',
         api.step_data('emit', api.json.output({'answer': '42'})),

@@ -9,14 +9,31 @@ rest of the module's operations.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 from PB.recipe_modules.brave.file.examples.full import Greeting
 
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    file,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['file', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    file: file.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    file: file.TEST_API
+
+
+def RunSteps(api: DEPS):
     # Each read takes a `test_data`: the result the step reports under
     # simulation, so a test only has to seed the reads it wants to steer.
     text = api.file.read_text(
@@ -63,7 +80,7 @@ def RunSteps(api):
     )
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     # Happy path: the recipe's own `test_data` supplies each read's result,
     # which flows through to the step after it.
     yield api.test(

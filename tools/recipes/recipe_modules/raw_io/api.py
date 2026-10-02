@@ -21,7 +21,7 @@ import errno
 import os
 from pathlib import Path
 import tempfile
-from typing import Any, Callable
+from typing import Any, Callable, TYPE_CHECKING
 
 from recipe_api import (
     InputPlaceholder,
@@ -29,6 +29,9 @@ from recipe_api import (
     RecipeApi,
     returns_placeholder,
 )
+
+if TYPE_CHECKING:
+    from recipe_modules import raw_io
 
 # What an output placeholder renders to under simulation. Steps never really run
 # there, so a fixed, obviously-fake path keeps expectations stable (and makes an
@@ -276,6 +279,8 @@ def _remove(path: str) -> None:  # pragma: no cover - production placeholder.
 
 class RawIOApi(RecipeApi):
     """Placeholders carrying raw bytes (or UTF-8 text) in and out of steps."""
+
+    m: raw_io.DEPS
 
     @returns_placeholder
     def input(

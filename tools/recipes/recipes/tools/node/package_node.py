@@ -8,17 +8,33 @@ bucket.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from dataclasses import dataclass
 
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    brave_core_checkout,
+    depot_tools,
+    path,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-if TYPE_CHECKING:
-    from engine import RecipeScriptApi
 
-DEPS = ['path', 'step', 'depot_tools', 'brave_core_checkout']
+@dataclass
+class DEPS(RecipeScriptApi):
+    brave_core_checkout: brave_core_checkout.API
+    depot_tools: depot_tools.API
+    path: path.API
+    step: step.API
 
 
-def RunSteps(api: RecipeScriptApi) -> None:
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    brave_core_checkout: brave_core_checkout.TEST_API
+
+
+def RunSteps(api: DEPS) -> None:
     brave_root = api.brave_core_checkout.deploy(
         [
             'third_party/node',
@@ -49,7 +65,7 @@ def RunSteps(api: RecipeScriptApi) -> None:
     )
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     # brave-core is deployed (sparse), then node is downloaded and packaged.
     # `deployed(...)` seeds the sparse path so the existence check passes.
     yield api.test(

@@ -6,19 +6,38 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    brave_core_checkout,
+    chromium_checkout,
+    env,
+    path,
+    raw_io,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = [
-    'brave_core_checkout',
-    'chromium_checkout',
-    'env',
-    'path',
-    'raw_io',
-    'step',
-]
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    brave_core_checkout: brave_core_checkout.API
+    env: env.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    brave_core_checkout: brave_core_checkout.TEST_API
+    chromium_checkout: chromium_checkout.TEST_API
+    env: env.TEST_API
+    path: path.TEST_API
+    raw_io: raw_io.TEST_API
+
+
+def RunSteps(api: DEPS):
     mode = api.env.get('MODE')
     if mode == 'dotenv':
         api.brave_core_checkout.set_config('brave')
@@ -44,7 +63,7 @@ def RunSteps(api):
         api.step('npm version', ['npm', '--version'])
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     # Fresh clone: `.git` absent, so it clones and sparse-checks-out; the
     # requested paths are seeded so the post-checkout existence checks pass.
     yield api.test(

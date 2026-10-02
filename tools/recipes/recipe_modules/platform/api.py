@@ -8,10 +8,14 @@ from __future__ import annotations
 
 import platform
 import sys
+from typing import TYPE_CHECKING
 
 import psutil
 
 from recipe_api import RecipeApi
+
+if TYPE_CHECKING:
+    from recipe_modules import platform as platform_mod
 
 
 def norm_bits(arch: str | int) -> int:
@@ -35,6 +39,8 @@ class PlatformApi(RecipeApi):
         * cpu_count (int): Logical CPU cores, via `capacity()`.
         * total_memory (int): Physical memory in MiB, via `capacity()`.
     """
+
+    m: platform_mod.DEPS
 
     def __init__(self) -> None:
         super().__init__()

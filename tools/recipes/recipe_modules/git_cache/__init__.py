@@ -4,8 +4,28 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """`git_cache` module."""
 
-from PB.recipe_modules.brave.git_cache.properties import EnvProperties
+from dataclasses import dataclass
 
-DEPS = ['env', 'git', 'path', 'raw_io', 'step']
+from PB.recipe_modules.brave.git_cache.properties import EnvProperties
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    env,
+    git,
+    path,
+    raw_io,
+    step,
+)
+
+from .api import GitCacheApi as API
+
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    env: env.API
+    git: git.API
+    path: path.API
+    raw_io: raw_io.API
+    step: step.API
+
 
 ENV_PROPERTIES = EnvProperties

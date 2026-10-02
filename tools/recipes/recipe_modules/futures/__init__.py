@@ -4,4 +4,13 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """`futures` module: in-recipe concurrency via green threads."""
 
-DEPS = []
+from dataclasses import dataclass
+
+from recipe_api import RecipeScriptApi
+
+from .api import FuturesApi as API
+
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    pass

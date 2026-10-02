@@ -30,11 +30,14 @@ from collections.abc import Mapping, Sequence
 import contextlib
 from pathlib import Path
 from types import MappingProxyType
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 import config_types
 from engine_types import PerGreenletState
 from recipe_api import RecipeApi
+
+if TYPE_CHECKING:
+    from recipe_modules import context
 
 
 def _check_type(
@@ -90,6 +93,8 @@ class ContextApi(RecipeApi):
     The scope lives in greenlet-local storage, so concurrently running steps
     each see their own; see `_State`.
     """
+
+    m: context.DEPS
 
     def __init__(self) -> None:
         super().__init__()

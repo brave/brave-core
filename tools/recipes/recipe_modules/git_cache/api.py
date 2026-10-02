@@ -11,9 +11,13 @@ import enum
 import logging
 import re
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from PB.recipe_modules.brave.git_cache.properties import EnvProperties
 from recipe_api import RecipeApi
+
+if TYPE_CHECKING:
+    from recipe_modules import git_cache
 
 # Flags we want passed in every fetch.
 FETCH_ARGS = ('--no-show-forced-updates',)
@@ -77,6 +81,8 @@ class GitRef:
 
 class GitCacheApi(RecipeApi):
     """Populates and locates the shared git mirrors."""
+
+    m: git_cache.DEPS
 
     def __init__(self, env_properties: EnvProperties) -> None:
         del env_properties  # Declared only so ENV_PROPERTIES is documented.

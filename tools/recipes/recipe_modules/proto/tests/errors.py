@@ -10,11 +10,31 @@ recipe.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 from PB.recipe_modules.brave.proto.examples.full import Config
 
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    env,
+    proto,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['env', 'proto', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    env: env.API
+    proto: proto.API
+    step: step.API
+
+
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    env: env.TEST_API
+
 
 MODES = (
     'bad_codec',
@@ -24,7 +44,7 @@ MODES = (
 )
 
 
-def RunSteps(api):
+def RunSteps(api: DEPS):
     mode = api.env.get('MODE')
     if mode == 'bad_codec':
         # Only the three named codecs exist.
@@ -43,7 +63,7 @@ def RunSteps(api):
         )
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     for mode in MODES:
         yield api.test(
             mode,

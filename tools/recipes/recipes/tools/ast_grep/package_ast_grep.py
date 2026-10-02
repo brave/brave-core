@@ -5,28 +5,45 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from dataclasses import dataclass
 
 import post_process
 from PB.recipes.brave.tools.ast_grep.package_ast_grep import InputProperties
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    brave_core_checkout,
+    chromium_checkout,
+    depot_tools,
+    osx_sdk,
+    path,
+    platform,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-if TYPE_CHECKING:
-    from engine import RecipeScriptApi
 
-DEPS = [
-    'path',
-    'step',
-    'depot_tools',
-    'chromium_checkout',
-    'brave_core_checkout',
-    'osx_sdk',
-    'platform',
-]
+@dataclass
+class DEPS(RecipeScriptApi):
+    brave_core_checkout: brave_core_checkout.API
+    chromium_checkout: chromium_checkout.API
+    depot_tools: depot_tools.API
+    osx_sdk: osx_sdk.API
+    path: path.API
+    step: step.API
+
+
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    brave_core_checkout: brave_core_checkout.TEST_API
+    chromium_checkout: chromium_checkout.TEST_API
+    osx_sdk: osx_sdk.TEST_API
+    platform: platform.TEST_API
+
 
 PROPERTIES = InputProperties
 
 
-def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
+def RunSteps(api: DEPS, properties: InputProperties) -> None:
     chromium_src = api.chromium_checkout.ensure_checkout(
         ref=properties.chromium_ref
     )
@@ -53,7 +70,7 @@ def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
         )
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     # Happy path: checkout (with a seeded git cache), deploy the build
     # scripts, then package. Non-mac: osx_sdk.ensure() is a no-op, so no
     # Xcode install/reset around the packaging step.

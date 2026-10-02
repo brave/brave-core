@@ -6,14 +6,33 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 from google.protobuf import struct_pb2
 
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    json,
+    path,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['json', 'path', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    json: json.API
+    path: path.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    json: json.TEST_API
+
+
+def RunSteps(api: DEPS):
     # Read a step's stdout as JSON: the value comes back parsed.
     result = api.step(
         'echo list', ['echo', '[1, 2, 3]'], stdout=api.json.output()
@@ -87,7 +106,7 @@ def RunSteps(api):
     assert api.json.loads('[1e300]') == [1e300]
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'basic',
         # `api.json.loads`/`dumps` on the test api are the same functions the

@@ -12,9 +12,13 @@ import os
 from pathlib import Path, PurePosixPath
 import posixpath
 import tempfile
+from typing import TYPE_CHECKING
 
 import config_types
 from recipe_api import RecipeApi
+
+if TYPE_CHECKING:
+    from recipe_modules import path as path_mod
 
 
 class _RealFs:  # pragma: no cover - production filesystem backend.
@@ -246,6 +250,8 @@ class PathApi(RecipeApi):
     `--workspace`); everything else is derived from it, so the on-disk layout is
     fixed and consistent across recipes.
     """
+
+    m: path_mod.DEPS
 
     @property
     def workspace(self) -> str | Path | config_types.Path:

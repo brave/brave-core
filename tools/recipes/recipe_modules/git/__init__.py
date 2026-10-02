@@ -4,4 +4,14 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """`git` module: low-level git repository maintenance shared across modules."""
 
-DEPS = ['step']
+from dataclasses import dataclass
+
+from recipe_api import RecipeScriptApi
+from recipe_modules import step
+
+from .api import GitApi as API
+
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    step: step.API

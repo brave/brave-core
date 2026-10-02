@@ -6,12 +6,19 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from PB.recipe_modules.brave.hello.properties import InputProperties
 from recipe_api import RecipeApi
+
+if TYPE_CHECKING:
+    from recipe_modules import hello
 
 
 class HelloApi(RecipeApi):
     """Greets the configured TARGET, running the configured tool as a step."""
+
+    m: hello.DEPS
 
     def __init__(self, properties: InputProperties) -> None:
         super().__init__()

@@ -6,17 +6,39 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    depot_tools,
+    env,
+    path,
+    platform,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['depot_tools', 'env', 'path', 'platform', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    depot_tools: depot_tools.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    env: env.TEST_API
+    path: path.TEST_API
+    platform: platform.TEST_API
+
+
+def RunSteps(api: DEPS):
     vpython3 = api.depot_tools.vpython3()
     api.step('use vpython3', [vpython3, '--version'])
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'clone',
         api.platform.name('linux'),

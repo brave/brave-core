@@ -30,6 +30,48 @@ curl -sL https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/to
         --properties '{ "brave_subrevision": 2, "chromium_ref": "refs/tags/151.0.7917.1" }'
 ```
 
+## DEPS
+
+A recipe declares the modules it uses as a `@dataclass` named `DEPS` that
+inherits from `RecipeScriptApi`, with one field per module, annotated with that
+module's `API`. It may also declare a `@dataclass` named `TEST_DEPS` that
+inherits from `RecipeTestApi`, naming the module `TEST_API`s its `GenTests` uses
+(without it, `GenTests` gets every module in `DEPS`). This is ordinary Python,
+so IDEs and type checkers see what `api` holds:
+
+```python
+from dataclasses import dataclass
+
+from recipe_api import RecipeScriptApi
+from recipe_modules import path, platform, step
+from recipe_test_api import RecipeTestApi
+
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    path: path.API
+    platform: platform.API
+    step: step.API
+
+
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    platform: platform.TEST_API
+
+
+def RunSteps(api: DEPS):
+    api.step('hello', ['echo', 'world'])
+
+
+def GenTests(api: TEST_DEPS):
+    yield api.test('mac', api.platform.name('mac'))
+```
+
+The module a field names is taken from its annotation, so the field name is the
+local name `api` uses and may differ from the module's. The classes only
+describe `api`: the engine instantiates them, so they may not define methods. A
+recipe module declares its own `DEPS` in its `__init__.py` the same way.
+
 ## Properties
 
 A recipe observes its input by defining protobuf messages and setting them as
@@ -133,7 +175,11 @@ Assign the message as `PROPERTIES` in the module's `__init__.py` (next to
 # recipe_modules/hello/__init__.py
 from PB.recipe_modules.brave.hello.properties import InputProperties
 
-DEPS = ['path', 'step']
+@dataclass
+class DEPS(RecipeScriptApi):
+    path: path.API
+    step: step.API
+
 PROPERTIES = InputProperties
 ```
 
@@ -307,9 +353,11 @@ A recipe (or another module) selects a config with `set_config`:
 
 ```python
 # recipe_modules/hello/examples/simple.py
-DEPS = ['hello']
+@dataclass
+class DEPS(RecipeScriptApi):
+    hello: hello.API
 
-def RunSteps(api):
+def RunSteps(api: DEPS):
     api.hello.set_config('default_tool')
     api.hello.greet()  # Greets 'Bob' with echo.
 ```
@@ -356,9 +404,11 @@ example/test recipes. A config item that raises `BadConf` surfaces as an
 # recipe_modules/hello/tests/badconf.py
 from post_process import DropExpectation, StatusException
 
-DEPS = ['hello']
+@dataclass
+class DEPS(RecipeScriptApi):
+    hello: hello.API
 
-def RunSteps(api):
+def RunSteps(api: DEPS):
     api.hello.set_config('super_tool', TARGET='Not Charlie')  # raises BadConf
 
 def GenTests(api):
@@ -378,9 +428,12 @@ Consider this recipe:
 # recipes/shake.py
 import post_process
 
-DEPS = ['path', 'step']
+@dataclass
+class DEPS(RecipeScriptApi):
+    path: path.API
+    step: step.API
 
-def RunSteps(api):
+def RunSteps(api: DEPS):
     result = api.step('determine blue moon',
                       [api.path.workspace / 'is_blue_moon.sh'],
                       check=False)
@@ -424,9 +477,13 @@ communicate anything more than "did it work". `api.json.output()` to the rescue:
 # recipes/war.py
 import post_process
 
-DEPS = ['json', 'path', 'step']
+@dataclass
+class DEPS(RecipeScriptApi):
+    json: json.API
+    path: path.API
+    step: step.API
 
-def RunSteps(api):
+def RunSteps(api: DEPS):
     result = api.step(
         'run tests',
         [api.path.workspace / 'do_test_things.sh', api.json.output()])

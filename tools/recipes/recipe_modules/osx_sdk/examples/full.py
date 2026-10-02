@@ -5,18 +5,39 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    brave_core_checkout,
+    osx_sdk,
+    platform,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['brave_core_checkout', 'osx_sdk', 'platform', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    osx_sdk: osx_sdk.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    brave_core_checkout: brave_core_checkout.TEST_API
+    osx_sdk: osx_sdk.TEST_API
+    platform: platform.TEST_API
+
+
+def RunSteps(api: DEPS):
     with api.osx_sdk.ensure('/b/checkout/src') as info:
         if info is not None:
             api.step('xcodebuild -version', ['xcodebuild', '-version'])
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     # Happy path on mac: reads the gni pin, installs + selects, runs a build
     # step, then resets.
     yield api.test(

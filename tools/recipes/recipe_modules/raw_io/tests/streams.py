@@ -11,12 +11,29 @@ command's output gets tested.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    raw_io,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['raw_io', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    raw_io: raw_io.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    pass
+
+
+def RunSteps(api: DEPS):
     result = api.step(
         'failing command',
         ['do-thing'],
@@ -30,7 +47,7 @@ def RunSteps(api):
     assert result.stdout == b'nope\n', result.stdout
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'basic',
         api.post_process(post_process.StepFailure, 'failing command'),

@@ -18,13 +18,16 @@ from __future__ import annotations
 import functools
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 from google.protobuf import json_format as jsonpb
 from google.protobuf import struct_pb2
 
 import config_types
 from recipe_api import OutputPlaceholder, RecipeApi, returns_placeholder
+
+if TYPE_CHECKING:
+    from recipe_modules import json as json_mod
 
 # JSON is meant to be read by whoever debugs a build, so anything encoded here
 # gets the same treatment: stable key order and a real indent.
@@ -120,6 +123,8 @@ class JsonOutputPlaceholder(OutputPlaceholder):
 
 class JsonApi(RecipeApi):
     """Encode and decode JSON, and carry it in and out of steps."""
+
+    m: json_mod.DEPS
 
     @staticmethod
     def dumps(*args, **kwargs) -> str:

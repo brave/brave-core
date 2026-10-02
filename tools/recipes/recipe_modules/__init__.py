@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Package marker for Brave recipe modules.
 
-Each subdirectory is a recipe module: an `__init__.py` declaring `DEPS` and an
-`api.py` defining exactly one `RecipeApi` subclass.
+Each subdirectory is a recipe module: an `__init__.py` declaring `DEPS` and
+exporting its `API` (and `TEST_API`, if it has one), and an `api.py` defining
+exactly one `RecipeApi` subclass.
 """

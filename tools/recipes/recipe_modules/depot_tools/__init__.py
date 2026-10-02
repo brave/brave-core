@@ -4,4 +4,22 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """`depot_tools` module: ensure a usable depot_tools install is on PATH."""
 
-DEPS = ['path', 'step', 'env', 'platform']
+from dataclasses import dataclass
+
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    env,
+    path,
+    platform,
+    step,
+)
+
+from .api import DepotToolsApi as API
+
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    env: env.API
+    path: path.API
+    platform: platform.API
+    step: step.API

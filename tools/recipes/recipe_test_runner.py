@@ -409,7 +409,7 @@ def run_tests(
     start = time.monotonic()
     seen_all: set[Path] = set()
     for recipe_id, recipe in _testable_recipes():
-        root_api = engine.build_root_test_api(list(getattr(recipe, 'DEPS', [])))
+        root_api = engine.build_root_test_api(recipe)
         seen: set[Path] = set()
         for test_data in recipe.GenTests(root_api):
             case_id = f'{recipe_id}.{test_data.name}'

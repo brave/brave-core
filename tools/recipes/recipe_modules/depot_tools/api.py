@@ -8,8 +8,12 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from recipe_api import RecipeApi
+
+if TYPE_CHECKING:
+    from recipe_modules import depot_tools
 
 # the urls we clone from
 DEPOT_TOOLS_URL = 'https://chromium.googlesource.com/chromium/tools/depot_tools'
@@ -20,6 +24,8 @@ DEPOT_TOOLS_PATH = 'third_party/depot_tools'
 
 class DepotToolsApi(RecipeApi):
     """Deploys depot_tools so `gclient`/`fetch` are available on PATH."""
+
+    m: depot_tools.DEPS
 
     def __init__(self) -> None:
         super().__init__()

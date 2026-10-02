@@ -11,9 +11,30 @@ bug in the recipe (or in the test), not a step failure to recover from.
 
 from __future__ import annotations
 
-import post_process
+from dataclasses import dataclass
 
-DEPS = ['env', 'raw_io', 'step']
+import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    env,
+    raw_io,
+    step,
+)
+from recipe_test_api import RecipeTestApi
+
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    env: env.API
+    raw_io: raw_io.API
+    step: step.API
+
+
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    env: env.TEST_API
+    raw_io: raw_io.TEST_API
+
 
 # Each mode, and the stdout placeholder the step should use for it.
 MODES = {
@@ -48,7 +69,7 @@ BAD_OUTPUT_DIR_DATA = {
 }
 
 
-def RunSteps(api):
+def RunSteps(api: DEPS):
     mode = api.env.get('MODE')
     if mode == 'input_not_bytes':
         api.step('cat', ['cat', api.raw_io.input(123)])
@@ -84,7 +105,7 @@ def RunSteps(api):
         api.step('cat', ['cat'], stdout=getattr(api.raw_io, MODES[mode])())
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     mismatched = {
         'text_placeholder_given_bytes': api.raw_io.output(b'bytes'),
         'bytes_placeholder_given_text': api.raw_io.output_text('text'),

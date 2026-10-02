@@ -8,9 +8,12 @@ from __future__ import annotations
 
 import contextlib
 from collections.abc import Iterator
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 from recipe_api import RecipeApi
+
+if TYPE_CHECKING:
+    from recipe_modules import osx_sdk
 
 # Path to `EphemeralXcode`.
 EPHEMERAL_XCODE_SCRIPT = 'tools/cr/toolchains/ephemeral_xcode.py'
@@ -21,6 +24,8 @@ MAC_SDK_GNI_PATH = 'build/config/mac/mac_sdk.gni'
 
 class OSXSDKApi(RecipeApi):
     """Installs and selects the exact Xcode that Chromium is using."""
+
+    m: osx_sdk.DEPS
 
     @contextlib.contextmanager
     def ensure(

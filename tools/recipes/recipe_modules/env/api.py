@@ -15,8 +15,12 @@ from __future__ import annotations
 
 import os
 import shutil
+from typing import TYPE_CHECKING
 
 from recipe_api import RecipeApi
+
+if TYPE_CHECKING:
+    from recipe_modules import env
 
 
 class _RealEnv:  # pragma: no cover - production env backend, not simulated.
@@ -73,6 +77,8 @@ class EnvApi(RecipeApi):
     backend; the methods below just delegate, so there is no per-call test-mode
     branching (the same shape as the `step` module's runner selection).
     """
+
+    m: env.DEPS
 
     def __init__(self) -> None:
         super().__init__()

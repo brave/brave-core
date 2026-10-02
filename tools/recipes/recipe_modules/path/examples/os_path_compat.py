@@ -11,12 +11,32 @@ test-only `mock_add_file`/`mock_add_directory`/`mock_copy_paths`/
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    context,
+    path,
+    platform,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['context', 'path', 'platform', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    context: context.API
+    path: path.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    platform: platform.TEST_API
+
+
+def RunSteps(api: DEPS):
     sample = api.path.chromium_src / 'chrome' / 'VERSION'
 
     # dirname/basename/split: a Path argument keeps dirname a Path; basename
@@ -98,7 +118,7 @@ def RunSteps(api):
     )
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     # Run under both simulated platforms: every assertion above is built
     # entirely from other `api.path.*` calls (never a hardcoded '/' or '\\'),
     # so it should hold either way -- the same proof of separator-independence
