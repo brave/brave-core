@@ -58,6 +58,7 @@ import java.util.concurrent.TimeUnit;
 /** Unit tests for {@link BraveYouTubePictureInPictureController}'s state-transition surface. */
 @RunWith(BaseRobolectricTestRunner.class)
 @Config(shadows = {ShadowLooper.class})
+// TODO(https://github.com/brave/brave-browser/issues/59632): Remove mocking of Views/Activities.
 // Tests fake picture-in-picture entry/state on BraveActivity, which is too heavy to build in a unit
 // test.
 @SuppressWarnings("DoNotMock")

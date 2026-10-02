@@ -42,6 +42,7 @@ import org.chromium.media_session.mojom.MediaSession.SuspendType;
 import java.time.Duration;
 
 @RunWith(BaseRobolectricTestRunner.class)
+// TODO(https://github.com/brave/brave-browser/issues/59632): Remove mocking of Views/Activities.
 // Tests fake isInPictureInPictureMode() and verify moveTaskToBack() on BraveActivity, which is too
 // heavy to build in a unit test.
 @SuppressWarnings("DoNotMock")

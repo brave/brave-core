@@ -55,6 +55,7 @@ import java.util.List;
     ChromeSwitches.DISABLE_FIRST_RUN_EXPERIENCE,
     BaseSwitches.DISABLE_NATIVE_INITIALIZATION
 })
+// TODO(https://github.com/brave/brave-browser/issues/59632): Remove mocking of Views/Activities.
 // Tests spy BraveActivity to toggle isShredButtonVisible(), which really depends on a pending
 // incognito re-auth that the test activity can't be put into.
 @SuppressWarnings("DoNotMock")
