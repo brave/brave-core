@@ -353,7 +353,7 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
 
 TEST(BraveBrowserViewTabbedLayoutImplTest,
      CalculateContentsCornerRadiiEmptyWithoutRoundedCorners) {
-  views::LayoutProvider layout_provider;
+  BraveLayoutProvider layout_provider;
   auto mock =
       std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
   EXPECT_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())
@@ -369,7 +369,7 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
 
 TEST(BraveBrowserViewTabbedLayoutImplTest,
      CalculateContentsCornerRadiiEmptyInTabFullscreen) {
-  views::LayoutProvider layout_provider;
+  BraveLayoutProvider layout_provider;
   auto mock =
       std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
   EXPECT_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())
@@ -388,7 +388,7 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
 
 TEST(BraveBrowserViewTabbedLayoutImplTest,
      CalculateContentsCornerRadiiWindowCornersAtTopEdge) {
-  views::LayoutProvider layout_provider;
+  BraveLayoutProvider layout_provider;
   auto mock =
       std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
   EXPECT_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())
