@@ -8,9 +8,7 @@
 #include <memory>
 #include <utility>
 
-#include "base/base64.h"
-#include "base/check.h"
-#include "base/containers/to_vector.h"
+#include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
@@ -34,17 +32,14 @@ void RegisterNTPSponsoredImagesComponentCallback(
 
 NTPSponsoredImagesComponentInstallerPolicy::
     NTPSponsoredImagesComponentInstallerPolicy(
-        const std::string& component_public_key,
+        base::span<const uint8_t, crypto::kSHA256Length> public_key_sha256,
         const std::string& component_id,
         const std::string& component_name,
         ComponentReadyCallback callback)
     : component_id_(component_id),
       component_name_(component_name),
       ready_callback_(std::move(callback)) {
-  // Generate hash from public key.
-  auto decoded_public_key = base::Base64Decode(component_public_key);
-  CHECK(decoded_public_key);
-  component_hash_ = crypto::SHA256Hash(*decoded_public_key);
+  base::span(component_hash_).copy_from(public_key_sha256);
 }
 
 NTPSponsoredImagesComponentInstallerPolicy::
@@ -89,7 +84,7 @@ NTPSponsoredImagesComponentInstallerPolicy::GetRelativeInstallDir() const {
 
 void NTPSponsoredImagesComponentInstallerPolicy::GetHash(
     std::vector<uint8_t>* hash) const {
-  *hash = base::ToVector(component_hash_);
+  hash->assign_range(component_hash_);
 }
 
 std::string NTPSponsoredImagesComponentInstallerPolicy::GetName() const {
@@ -107,7 +102,7 @@ bool NTPSponsoredImagesComponentInstallerPolicy::IsBraveComponent() const {
 
 void RegisterNTPSponsoredImagesComponent(
     component_updater::ComponentUpdateService* component_update_service,
-    const std::string& component_public_key,
+    base::span<const uint8_t, crypto::kSHA256Length> public_key_sha256,
     const std::string& component_id,
     const std::string& component_name,
     ComponentReadyCallback callback) {
@@ -119,7 +114,7 @@ void RegisterNTPSponsoredImagesComponent(
 
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<NTPSponsoredImagesComponentInstallerPolicy>(
-          component_public_key, component_id, component_name,
+          public_key_sha256, component_id, component_name,
           std::move(callback)));
   installer->Register(
       component_update_service,

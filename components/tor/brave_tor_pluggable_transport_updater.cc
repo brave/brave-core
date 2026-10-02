@@ -5,6 +5,8 @@
 
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 
+#include <cstdint>
+#include <iterator>
 #include <string>
 
 #include "base/check.h"
@@ -16,6 +18,7 @@
 #include "base/path_service.h"
 #include "base/task/task_traits.h"
 #include "build/build_config.h"
+#include "crypto/sha2.h"
 
 namespace tor {
 
@@ -23,40 +26,29 @@ namespace tor {
 constexpr const char kComponentName[] = "Brave Pluggable Transports (Windows)";
 constexpr const char kTorPluggableTransportComponentId[] =
     "dnkcahhmfcanmkjhnjejoomdihffoefm";
-constexpr const char kComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0IHQS/8g4/"
-    "MBIKh6qQRVQ4auvWHFaqMtCO+8C8VEqNxCxR9BWZb5kL+0QaLOeDjdbzO/YXdFSt/9tRiH4sQ/"
-    "/0XEuxmatKebzKSBBwg30oTveQeGrmtQf0FU3f6iPoPjtujNVmMtG2Azp33NqTH+"
-    "lYwdTSDpXwZwgpt2xxBdEaBwWf/"
-    "gz8OYaAniqu4xKvFpa7ai5ihRhOEP05gGFTJGSB9KbyRo4P6VSJwMZoeGlNxYSJkRr1ZpzU0lN"
-    "L1qWBpBR2LCk8SpDXluT4CZeDWJ/Ux9c5nb1yma/"
-    "uOscVniKvRRohudxoXxwsGSFtowmNLOZWSo49j+k3eBrFjdkzxn6QIDAQAB";
+constexpr uint8_t kComponentPublicKeySHA256[32] = {
+    0x3d, 0xa2, 0x07, 0x7c, 0x52, 0x0d, 0xca, 0x97, 0xd9, 0x49, 0xee,
+    0xc3, 0x87, 0x55, 0xe4, 0x5c, 0xd2, 0x8f, 0x09, 0xac, 0x4e, 0x37,
+    0x4d, 0xdb, 0xa3, 0x1e, 0x30, 0x48, 0x7f, 0xff, 0xa8, 0x70};
+static_assert(std::size(kComponentPublicKeySHA256) == crypto::kSHA256Length);
 #elif BUILDFLAG(IS_MAC)
 constexpr const char kComponentName[] = "Brave Pluggable Transports (Mac)";
 constexpr const char kTorPluggableTransportComponentId[] =
     "einfndjnccmoohcngmlldpmellegjjnk";
-constexpr const char kComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArO9CH6FdCcJkYZx073Atx+1OryS/"
-    "0uD2sHghK2ol3/SDmUmoJYSCMLgQ6DF+GtLpNTckRxss7ZM4HS1o/"
-    "RmUi02Y4siJzKjMiaXilI7EXMxwMmgTz8A6WEQo6uayBICFUQ1gzrqiQKSwQ47bjRfx2f5zuwn"
-    "Xb1sTJm+jRXpCIIeKs/YDG4e5hUHObnGR6dZCBt1R9N5DgKIPJttbfKRhJCCxY/"
-    "qeJ5maTLDHor8/h45B+VCw8w8jJ2e/"
-    "XO6PsXziSEJUIqbMBjeeLKrrFd7C7jU92MYAUzT3FWPW4Bd270iMfyLxbMhIpMeqzJvs+"
-    "wZdPOb8kowtrAtpRAQAFDX/twIDAQAB";
+constexpr uint8_t kComponentPublicKeySHA256[32] = {
+    0x48, 0xd5, 0xd3, 0x9d, 0x22, 0xce, 0xe7, 0x2d, 0x6c, 0xbb, 0x3f,
+    0xc4, 0xbb, 0x46, 0x99, 0xda, 0x47, 0x09, 0xe4, 0xe9, 0x80, 0x65,
+    0xaa, 0xb0, 0xf4, 0xda, 0x33, 0x5c, 0x23, 0x2a, 0x37, 0xd9};
+static_assert(std::size(kComponentPublicKeySHA256) == crypto::kSHA256Length);
 #elif BUILDFLAG(IS_LINUX)
 constexpr const char kComponentName[] = "Brave Pluggable Transports (Linux)";
 constexpr const char kTorPluggableTransportComponentId[] =
     "apfggiafobakjahnkchiecbomjgigkkn";
-constexpr const char kComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6V9OyRC0zja5KfQ+"
-    "cTbu1fgwD04dhcH36wU0NKlaERMSm/"
-    "kZqYFFyxr3THAki6Ajo+X4m89EW0mIcjhgvOeUqyb1AzoVLwX/"
-    "fKAM1Bf1q9zIjeDspaorSaniTtMMKcfxVI/"
-    "e+xKsPc+95NtVsxEtU1PoQdKbBvQfSXkz3QJA3Z5/"
-    "7vM+1omqwg5rCqvmqTXpyuhWOZl5lNeLRJ6zMfNiL/"
-    "rkvq+A7h3DRhABQdjKrd+UfsPhQuMlVS3tCvoHNvB/"
-    "qHEhWJqZzb0qpaMnHBCjZXD0s5PR5NxkEw/"
-    "Yd2Xcxt1xdKULx0AZWD8wx5X2Idhy5rJAHiWQ5iZCdo1IHuAy4wIDAQAB";
+constexpr uint8_t kComponentPublicKeySHA256[32] = {
+    0x0f, 0x56, 0x68, 0x05, 0xe1, 0x0a, 0x90, 0x7d, 0xa2, 0x78, 0x42,
+    0x1e, 0xc9, 0x68, 0x6a, 0xad, 0x02, 0x8f, 0x08, 0xf0, 0xb1, 0x3e,
+    0xcd, 0xac, 0x31, 0xd6, 0x39, 0xd8, 0xe2, 0xeb, 0xc9, 0xc5};
+static_assert(std::size(kComponentPublicKeySHA256) == crypto::kSHA256Length);
 #endif
 
 constexpr const char kSnowflakeExecutableName[] = "tor-snowflake-brave";
@@ -99,7 +91,7 @@ void BraveTorPluggableTransportUpdater::Register() {
     return;
 
   BraveComponent::Register(kComponentName, kTorPluggableTransportComponentId,
-                           kComponentBase64PublicKey);
+                           kComponentPublicKeySHA256);
   registered_ = true;
   is_ready_ = false;
 }

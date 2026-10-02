@@ -6,13 +6,17 @@
 #ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_CONTENT_NEW_TAB_TAKEOVER_STATIC_SPONSORED_IMAGES_COMPONENT_DATA_H_
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_CONTENT_NEW_TAB_TAKEOVER_STATIC_SPONSORED_IMAGES_COMPONENT_DATA_H_
 
+#include <array>
+#include <cstdint>
 #include <optional>
 #include <string_view>
+
+#include "crypto/sha2.h"
 
 namespace ntp_background_images {
 
 struct SponsoredImagesComponentInfo {
-  std::string_view public_key_base64;
+  std::array<uint8_t, crypto::kSHA256Length> public_key_sha256;
   std::string_view id;
 };
 

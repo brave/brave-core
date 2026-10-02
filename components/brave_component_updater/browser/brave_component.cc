@@ -22,11 +22,13 @@ BraveComponent::~BraveComponent() = default;
 
 void BraveComponent::Register(const std::string& component_name,
                               const std::string& component_id,
-                              const std::string& component_base64_public_key) {
+                              base::span<const uint8_t, crypto::kSHA256Length>
+                                  component_public_key_sha256) {
   VLOG(2) << "register component: " << component_id;
   component_name_ = component_name;
   component_id_ = component_id;
-  component_base64_public_key_ = component_base64_public_key;
+  base::span(component_public_key_sha256_)
+      .copy_from(component_public_key_sha256);
 
   auto registered_callback =
       base::BindOnce(&BraveComponent::OnComponentRegistered,
@@ -37,10 +39,8 @@ void BraveComponent::Register(const std::string& component_name,
                           weak_factory_.GetWeakPtr(),
                           component_id);
 
-  delegate_->Register(component_name_,
-                      component_base64_public_key_,
-                      std::move(registered_callback),
-                      ready_callback);
+  delegate_->Register(component_name_, component_public_key_sha256_,
+                      std::move(registered_callback), ready_callback);
 }
 
 bool BraveComponent::Unregister() {

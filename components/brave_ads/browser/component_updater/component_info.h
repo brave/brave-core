@@ -6,13 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_COMPONENT_UPDATER_COMPONENT_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_COMPONENT_UPDATER_COMPONENT_INFO_H_
 
+#include <array>
+#include <cstdint>
 #include <string_view>
+
+#include "crypto/sha2.h"
 
 namespace brave_ads {
 
 struct ComponentInfo {
   std::string_view id;
-  std::string_view public_key_base64;
+  std::array<uint8_t, crypto::kSHA256Length> public_key_sha256;
 };
 
 }  // namespace brave_ads

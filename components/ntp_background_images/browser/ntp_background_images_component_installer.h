@@ -6,14 +6,11 @@
 #ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_BACKGROUND_IMAGES_COMPONENT_INSTALLER_H_
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_BACKGROUND_IMAGES_COMPONENT_INSTALLER_H_
 
-#include <array>
-#include <cstdint>
 #include <string>
 #include <vector>
 
 #include "brave/components/ntp_background_images/browser/component_ready_callback.h"
 #include "components/component_updater/component_installer.h"
-#include "crypto/sha2.h"
 
 namespace base {
 class FilePath;
@@ -58,7 +55,6 @@ class NTPBackgroundImagesComponentInstallerPolicy
 
  private:
   ComponentReadyCallback ready_callback_;
-  std::array<uint8_t, crypto::kSHA256Length> component_hash_;
 };
 
 void RegisterNTPBackgroundImagesComponent(

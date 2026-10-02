@@ -264,8 +264,7 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
           << variations_country_code << " with ID "
           << *sponsored_images_component_id_;
   RegisterNTPSponsoredImagesComponent(
-      component_update_service_,
-      std::string(sponsored_images_component->public_key_base64),
+      component_update_service_, sponsored_images_component->public_key_sha256,
       *sponsored_images_component_id_,
       absl::StrFormat("NTP Sponsored Images (%s)", variations_country_code),
       base::BindRepeating(

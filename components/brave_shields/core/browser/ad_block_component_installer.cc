@@ -10,7 +10,8 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "base/containers/to_vector.h"
+#include "base/check.h"
+#include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
@@ -28,11 +29,19 @@ namespace {
 class AdBlockComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
-  explicit AdBlockComponentInstallerPolicy(
-      const std::string& component_public_key,
+  // Used for statically pinned, built-in components whose public key hash
+  // is known at compile time.
+  AdBlockComponentInstallerPolicy(
+      base::span<const uint8_t, crypto::kSHA256Length> component_hash,
       const std::string& component_id,
       const std::string& component_name,
       OnComponentReadyCallback callback);
+  // Used for filter list components whose public key is only known at
+  // runtime, e.g. from the filter list catalog.
+  AdBlockComponentInstallerPolicy(const std::string& component_public_key,
+                                  const std::string& component_id,
+                                  const std::string& component_name,
+                                  OnComponentReadyCallback callback);
   ~AdBlockComponentInstallerPolicy() override;
 
   AdBlockComponentInstallerPolicy(const AdBlockComponentInstallerPolicy&) =
@@ -66,6 +75,17 @@ class AdBlockComponentInstallerPolicy
 };
 
 AdBlockComponentInstallerPolicy::AdBlockComponentInstallerPolicy(
+    base::span<const uint8_t, crypto::kSHA256Length> component_hash,
+    const std::string& component_id,
+    const std::string& component_name,
+    OnComponentReadyCallback callback)
+    : component_id_(component_id),
+      component_name_(component_name),
+      ready_callback_(callback) {
+  base::span(component_hash_).copy_from(component_hash);
+}
+
+AdBlockComponentInstallerPolicy::AdBlockComponentInstallerPolicy(
     const std::string& component_public_key,
     const std::string& component_id,
     const std::string& component_name,
@@ -73,7 +93,8 @@ AdBlockComponentInstallerPolicy::AdBlockComponentInstallerPolicy(
     : component_id_(component_id),
       component_name_(component_name),
       ready_callback_(callback) {
-  // Generate hash from public key.
+  // The public key for a user/catalog-supplied filter list is only known at
+  // runtime, so it is hashed here rather than pinned at compile time.
   auto decoded_public_key = base::Base64Decode(component_public_key);
   CHECK(decoded_public_key);
   component_hash_ = crypto::SHA256Hash(*decoded_public_key);
@@ -118,7 +139,7 @@ base::FilePath AdBlockComponentInstallerPolicy::GetRelativeInstallDir() const {
 
 void AdBlockComponentInstallerPolicy::GetHash(
     std::vector<uint8_t>* hash) const {
-  *hash = base::ToVector(component_hash_);
+  hash->assign_range(component_hash_);
 }
 
 std::string AdBlockComponentInstallerPolicy::GetName() const {
@@ -155,7 +176,7 @@ void RegisterAdBlockDefaultResourceComponent(
 
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<AdBlockComponentInstallerPolicy>(
-          kAdBlockResourceComponentBase64PublicKey, kAdBlockResourceComponentId,
+          kAdBlockResourceComponentPublicKeySHA256, kAdBlockResourceComponentId,
           kAdBlockResourceComponentName, callback));
   installer->Register(
       cus, base::BindOnce(&OnRegistered, kAdBlockResourceComponentId));
@@ -172,7 +193,7 @@ void RegisterAdBlockFilterListCatalogComponent(
 
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<AdBlockComponentInstallerPolicy>(
-          kAdBlockFilterListCatalogComponentBase64PublicKey,
+          kAdBlockFilterListCatalogComponentPublicKeySHA256,
           kAdBlockFilterListCatalogComponentId,
           kAdBlockFilterListCatalogComponentName, callback));
   installer->Register(

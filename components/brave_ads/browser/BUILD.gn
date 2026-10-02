@@ -42,6 +42,7 @@ static_library("browser") {
     "//components/pref_registry",
     "//components/prefs",
     "//components/sessions",
+    "//crypto",
     "//third_party/blink/public/common",
     "//ui/base/idle",
     "//url",

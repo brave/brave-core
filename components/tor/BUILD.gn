@@ -17,6 +17,7 @@ source_set("constants") {
   deps = [
     "//base",
     "//components/component_updater:component_updater_paths",
+    "//crypto",
   ]
 }
 
@@ -70,6 +71,7 @@ static_library("tor") {
     "//components/prefs",
     "//components/user_prefs",
     "//content/public/browser",
+    "//crypto",
     "//net",
     "//services/data_decoder/public/cpp",
     "//services/service_manager",
