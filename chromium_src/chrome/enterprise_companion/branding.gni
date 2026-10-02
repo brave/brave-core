@@ -1,0 +1,29 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/chromium_src/chrome/updater/branding.gni")
+
+# Applied to upstream's .gni file with forward_variables_from(...). See the
+# comment in //brave/chromium_src/chrome/updater/branding.gni.
+brave_enterprise_companion_branding = {
+  enterprise_companion_crash_product_name = "Brave_Enterprise_Companion"
+  enterprise_companion_crash_upload_url = "https://cr.brave.com"
+  enterprise_companion_company_short_name = "BraveSoftware"
+  enterprise_companion_company_short_name_lowercase = "bravesoftware"
+  enterprise_companion_company_short_name_uppercase = "BRAVESOFTWARE"
+
+  # The updater's tests derive this from the updater's browser_name.
+  enterprise_companion_product_full_name = "BraveEnterpriseCompanion"
+  enterprise_companion_product_full_name_dashed_lowercase =
+      "brave-enterprise-companion"
+
+  enterprise_companion_keystone_app_name =
+      brave_updater_branding.keystone_app_name
+  mac_enterprise_companion_bundle_identifier =
+      "com.brave.BraveEnterpriseCompanion"
+
+  # Randomly generated so as not to clash with upstream's.
+  enterprise_companion_appid = "{bdcebdc8-261c-40cf-bf49-6a1ca8bfe249}"
+}
