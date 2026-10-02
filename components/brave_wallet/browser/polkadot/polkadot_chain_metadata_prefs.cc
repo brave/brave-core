@@ -166,7 +166,7 @@ PolkadotChainMetadataPrefs::GetChainMetadata(std::string_view chain_id) const {
   }
 
   if (!ReadBytes(*chain_metadata, kSignedExtensions,
-                 metadata->signed_extensions)) {
+                 metadata->signed_extensions.bytes)) {
     return std::nullopt;
   }
 
@@ -234,7 +234,7 @@ bool PolkadotChainMetadataPrefs::SetChainMetadata(
   value.Set(kAssetsTransferKeepAliveCallIndex,
             assets_transfer_keep_alive_call_index);
   value.Set(kSignedExtensions,
-            base::HexEncodeLower(metadata->signed_extensions));
+            base::HexEncodeLower(metadata->signed_extensions.bytes));
   value.Set(kSs58Prefix, ss58_prefix);
   value.Set(kSpecVersion, spec_version);
   ScopedDictPrefUpdate update(profile_prefs_.get(),
