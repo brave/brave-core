@@ -10,6 +10,7 @@
 #include "ios/chrome/browser/affiliations/model/ios_chrome_affiliation_service_factory.h"
 #include "ios/chrome/browser/aim/model/ios_chrome_aim_eligibility_service_factory.h"
 #include "ios/chrome/browser/autocomplete/model/autocomplete_classifier_factory.h"
+#include "ios/chrome/browser/autocomplete/model/provider_state_service_factory.h"
 #include "ios/chrome/browser/autocomplete/model/zero_suggest_cache_service_factory.h"
 #include "ios/chrome/browser/autofill/model/autocomplete_history_manager_factory.h"
 #include "ios/chrome/browser/autofill/model/autofill_image_fetcher_factory.h"
@@ -108,6 +109,7 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   ios::HostContentSettingsMapFactory::GetInstance();
   ios::LocalOrSyncableBookmarkSyncServiceFactory::GetInstance();
   ios::PasswordManagerLogRouterFactory::GetInstance();
+  ios::ProviderStateServiceFactory::GetInstance();
   ios::TemplateURLPrepopulateDataResolverFactory::GetInstance();
   ios::TemplateURLServiceFactory::GetInstance();
   ios::TopSitesFactory::GetInstance();
