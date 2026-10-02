@@ -3171,6 +3171,19 @@ extension BrowserViewController {
   }
 
   public func submitSearchText(_ text: String, isBraveSearchPromotion: Bool = false) {
+    if FeatureList.kUseChromiumSearchEngines.enabled {
+      if let searchURL = templateURLSearchURL(
+        for: text,
+        isBraveSearchPromotion: isBraveSearchPromotion,
+        isWidgetSearchAttribution: tabManager.selectedTab?.widgetSearchTabHelper != nil
+      ) {
+        finishEditingAndSubmit(searchURL)
+      } else {
+        assertionFailure("Couldn't generate search URL: \(text)")
+      }
+      return
+    }
+
     var engine = profile.searchEngines.defaultEngine(
       forType: privateBrowsingManager.isPrivateBrowsing ? .privateMode : .standard
     )
