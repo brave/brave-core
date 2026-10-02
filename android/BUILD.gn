@@ -345,7 +345,6 @@ android_resources("java_resources") {
     "java/brave-res/drawable/ic_popular_sources.xml",
     "java/brave-res/drawable/ic_rocket.xml",
     "java/brave-res/drawable/ic_search_21dp.xml",
-    "java/brave-res/drawable/ic_settings.xml",
     "java/brave-res/drawable/ic_settings_dapps.xml",
     "java/brave-res/drawable/ic_shield_done_filled.xml",
     "java/brave-res/drawable/ic_smartphone.xml",
