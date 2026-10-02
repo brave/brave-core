@@ -6,10 +6,12 @@
 #include "brave/components/brave_vpn/app/v2/agent/browser_identity.h"
 
 #include <bsm/libbsm.h>
+#include <unistd.h>
 
 #include <string>
 
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/notimplemented.h"
 #include "base/process/process_handle.h"
@@ -23,7 +25,8 @@ BrowserIdentity::VerificationResult VerifyImpl(base::ProcessId /*pid*/) {
   // Implement the verification step on macOS.
   // The passed arguments are copied from the BrowserIdentity object, so this
   // function can be posted to a thread pool and run without any other context.
-  NOTIMPLEMENTED() << "Identity verification is not yet implemented on macOS";
+  NOTIMPLEMENTED_LOG_ONCE()
+      << "Identity verification is not yet implemented on macOS";
   return BrowserIdentity::VerificationResult::kAccepted;
 }
 }  // namespace
@@ -31,25 +34,39 @@ BrowserIdentity::VerificationResult VerifyImpl(base::ProcessId /*pid*/) {
 // static
 scoped_refptr<BrowserIdentity> BrowserIdentity::Capture(
     const named_mojo_ipc_server::ConnectionInfo& info) {
-  // TODO(https://github.com/brave/brave-browser/issues/54634)
-  // Implement the capture step on macOS: pin the peer process and take the
-  // platform-specific data BrowserIdentity needs. Returning null here refuses
-  // the connection outright.
-  NOTIMPLEMENTED() << "Identity capture is not yet implemented on macOS";
+  // The audit token was taken by the kernel together with the connection, and
+  // its pidversion distinguishes this process instance from any later one that
+  // reuses the pid, so the token alone pins the peer.
+  const audit_token_t& token = info.audit_token;
+  const pid_t pid = audit_token_to_pid(token);
+  if (pid <= 0) {
+    return nullptr;
+  }
+
+  if (audit_token_to_euid(token) != geteuid()) {
+    VLOG(1) << "Peer process is not running as this user, pid=" << pid;
+    return nullptr;
+  }
+
   return base::WrapRefCounted(
-      new BrowserIdentity(audit_token_to_pid(info.audit_token)));
+      new BrowserIdentity(pid, PlatformData{.audit_token = token}));
 }
 
 std::string BrowserIdentity::GetDescription() const {
-  return absl::StrFormat("pid=%d", pid_);
+  if (!platform_data_) {
+    return absl::StrFormat("pid=%d", pid_);
+  }
+  return absl::StrFormat(
+      "pid=%d; pidversion=%d", pid_,
+      audit_token_to_pidversion(platform_data_->audit_token));
 }
 
-bool BrowserIdentity::IsSameProcess(const BrowserIdentity& /*other*/) const {
-  // TODO(https://github.com/brave/brave-browser/issues/54634)
-  // Implement the comparison step on macOS: check if the process this object
-  // names is the same as the one |other| names.
-  NOTIMPLEMENTED() << "IsSameProcess is not yet implemented on macOS";
-  return true;
+bool BrowserIdentity::IsSameProcess(const BrowserIdentity& other) const {
+  if (pid_ != other.pid_ || !platform_data_ || !other.platform_data_) {
+    return false;
+  }
+  return audit_token_to_pidversion(platform_data_->audit_token) ==
+         audit_token_to_pidversion(other.platform_data_->audit_token);
 }
 
 BrowserIdentity::VerificationRequestCallback
