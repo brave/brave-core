@@ -64,8 +64,8 @@ mojom::AccountIdPtr GetPolkadotPreferredDappAccount(
 mojom::PolkadotInjectedAccountPtr MakePolkadotInjectedAccount(
     const mojom::AccountInfo& account) {
   return mojom::PolkadotInjectedAccount::New(
-      account.address, /*genesis_hash=*/std::nullopt, account.name,
-      kPolkadotSr25519KeypairType);
+      account.address, /*genesis_hash=*/std::nullopt,
+      kPolkadotObfuscatedAccountName, kPolkadotSr25519KeypairType);
 }
 
 }  // namespace brave_wallet

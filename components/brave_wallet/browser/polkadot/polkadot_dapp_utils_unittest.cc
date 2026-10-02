@@ -227,7 +227,7 @@ TEST_F(PolkadotDappUtilsUnitTest, MakeInjectedAccount) {
   auto injected = MakePolkadotInjectedAccount(*account);
   ASSERT_TRUE(injected);
   EXPECT_EQ(injected->address, account->address);
-  EXPECT_EQ(injected->name, account->name);
+  EXPECT_EQ(injected->name, kPolkadotObfuscatedAccountName);
   EXPECT_EQ(injected->type, kPolkadotSr25519KeypairType);
   EXPECT_FALSE(injected->genesis_hash);
 }

@@ -15,6 +15,7 @@
 namespace brave_wallet {
 
 inline constexpr char kPolkadotSr25519KeypairType[] = "sr25519";
+inline constexpr char kPolkadotObfuscatedAccountName[] = "Brave Wallet Account";
 
 class KeyringService;
 
