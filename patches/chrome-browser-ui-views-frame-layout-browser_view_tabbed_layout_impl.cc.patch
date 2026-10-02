@@ -1,5 +1,9 @@
 diff --git a/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.cc b/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.cc
+<<<<<<< HEAD
 index 389c6f8c6e66768cb20a960f11ba620c7516f44b..15519835488a0e406c2571d991171274b16df399 100644
+=======
+index 29dfbde914c55ad1453a1c70998c9299b49c1132..75e81828b2fdd5a46acec2bf5d5100354bbb31dd 100644
+>>>>>>> 165829b5082 (Migrate "Hide completely when collapsed" for vertical tab)
 --- a/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.cc
 +++ b/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.cc
 @@ -764,7 +764,7 @@ BrowserViewTabbedLayoutImpl::CalculateProposedLayout(
@@ -11,3 +15,4 @@ index 389c6f8c6e66768cb20a960f11ba620c7516f44b..15519835488a0e406c2571d991171274
    const HorizontalLayout& horizontal_layout = layout_data_->horizontal_layout;
  
    if (IsParentedTo(views().organizer_tray, views().browser_view)) {
+

@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h b/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h
+index 52ee4b9479a2a1ca3a59dd83fec819d80fa63868..2ef522ac46913fb0404e496584518924bee47a9d 100644
+--- a/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h
++++ b/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h
+@@ -164,6 +164,15 @@ class VerticalTabStripRegionView final
+     return focus_swipe_controller_.get();
+   }
+ 
++  int GetCollapsedWidth() const;
++  void HandleMouseMoveEvent(const gfx::PointF& point_int_screen);
++
++ protected:
++  void ObserveHideCompletelyPref();
++  void OnHideCompletelyPrefChanged();
++  bool IsMouseInHotCorner() const;
++  PrefChangeRegistrar hide_completely_pref_registrar_;
++
+  private:
+   // Since VerticalTabStripRegionView inherits from AccessiblePaneView, which is
+   // a FocusChangeListener, we need to have a separate focus listener to avoid

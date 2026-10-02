@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/tabs/vertical_tab_strip_state_controller_impl.h b/chrome/browser/ui/tabs/vertical_tab_strip_state_controller_impl.h
+index 97e7fef48cea16c35417f630281a552beeb80ae0..2b38957390211485203228e12dfd67ba9e7311ff 100644
+--- a/chrome/browser/ui/tabs/vertical_tab_strip_state_controller_impl.h
++++ b/chrome/browser/ui/tabs/vertical_tab_strip_state_controller_impl.h
+@@ -69,6 +69,8 @@ class VerticalTabStripStateControllerImpl
+ 
+   const VerticalTabStripState& GetState() const override;
+ 
++  bool ShouldHideCompletelyWhenCollapsed() const override;
++
+  private:
+   class ScopedEnableStateLockImpl;
+ 

@@ -1,0 +1,101 @@
+diff --git a/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.cc b/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.cc
+index fdfdd93f076b3e42d0ff869963cfb61aa9d3ae82..1d3819423666b3fd9fc31fe86c208c17a53e4b34 100644
+--- a/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.cc
++++ b/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.cc
+@@ -111,6 +111,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
+                              TabStripOrientation::kVertical),
+       resize_area_width_(kResizeAreaWidth),
+       state_controller_(state_controller) {
++  [&]() -> void {
+   // For z-ordering purposes this needs to be on a layer.
+   SetPaintToLayer();
+   // Because corners may be transparent, this must be set to false.
+@@ -212,6 +213,8 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
+   }
+ 
+   SetNotifyEnterExitOnChild(true);
++  }();
++  ObserveHideCompletelyPref();
+ }
+ 
+ VerticalTabStripRegionView::~VerticalTabStripRegionView() {
+@@ -232,6 +235,7 @@ bool VerticalTabStripRegionView::IsAnimatingSize() const {
+ void VerticalTabStripRegionView::OnAnimationProgressed(
+     const BrowserAnimationController* controller,
+     BrowserAnimationUpdate status) {
++  [&]() -> void {
+   switch (status) {
+     case BrowserAnimationUpdate::kStarted: {
+       const auto motion =
+@@ -287,6 +291,8 @@ void VerticalTabStripRegionView::OnAnimationProgressed(
+       }
+       break;
+   }
++  }();
++  MaybeUpdateVisibility(state_controller_, this);
+ }
+ 
+ bool VerticalTabStripRegionView::IsPositionInWindowCaption(
+@@ -492,9 +498,11 @@ views::View* VerticalTabStripRegionView::GetDefaultFocusableChild() {
+ }
+ 
+ gfx::Size VerticalTabStripRegionView::GetMinimumSize() const {
++  if (state_controller_->ShouldHideCompletelyWhenCollapsed() &&
++    (state_controller_->IsCollapsed() || IsAnimatingSize())) return {};
+   auto min_size = BaseTabStripRegionView::GetMinimumSize();
+   min_size.set_width((state_controller_->IsCollapsed() || IsAnimatingSize())
+-                         ? kCollapsedWidth
++                         ? GetCollapsedWidth()
+                          : kUncollapsedMinWidth);
+   return min_size;
+ }
+@@ -507,11 +515,11 @@ gfx::Size VerticalTabStripRegionView::CalculatePreferredSize(
+   const auto motion =
+       controller->GetCurrentMotion(TabStripAnimations::kVerticalTabStrip);
+   const int expand_amount =
+-      std::max(0, target_collapse_state_.uncollapsed_width - kCollapsedWidth);
++      std::max(0, target_collapse_state_.uncollapsed_width - GetCollapsedWidth());
+   const double expand_percent =
+       *controller->GetCurrentValue(TabStripAnimations::kVerticalTabStrip,
+                                    TabStripAnimations::kTabStripWidth);
+-  size.set_width(kCollapsedWidth +
++  size.set_width(GetCollapsedWidth() +
+                  (motion == TabStripAnimations::kExpand
+                       ? std::floor<double>
+                       : std::ceil<double>)(expand_amount * expand_percent));
+@@ -597,7 +605,7 @@ void VerticalTabStripRegionView::HandleMouseExited() {
+   // underneath the expanded on hover overlay to outside it.
+ #if BUILDFLAG(IS_WIN)
+   constexpr base::TimeDelta kMouseExitDebounceTimer = base::Milliseconds(100);
+-  if (IsMouseHovered()) {
++  if ((IsMouseHovered() || IsMouseInHotCorner())) {
+     mouse_exit_timer_.Start(
+         FROM_HERE, kMouseExitDebounceTimer,
+         base::BindOnce(&VerticalTabStripRegionView::HandleMouseExited,
+@@ -747,7 +755,7 @@ void VerticalTabStripRegionView::OnResize(int resize_amount,
+                             : "VerticalTabs_TabStrip_ResizeToUncollapsed"));
+     base::UmaHistogramCounts1000(
+         "Tabs.VerticalTabs.TabStripSize",
+-        new_state.collapsed ? kCollapsedWidth : new_state.uncollapsed_width);
++        new_state.collapsed ? GetCollapsedWidth() : new_state.uncollapsed_width);
+   }
+ 
+   target_collapse_state_ = new_state;
+@@ -1009,7 +1017,7 @@ void VerticalTabStripRegionView::UpdateExpandOnHoverState(
+   const bool should_expand =
+       !suppress_expand_on_hover_ &&
+       state_controller_->IsExpandOnHoverEnabled() &&
+-      (hovered.value_or(IsMouseHovered()) ||
++      (hovered.value_or((IsMouseHovered() || IsMouseInHotCorner())) ||
+        (GetFocusManager() && Contains(GetFocusManager()->GetFocusedView())));
+ 
+   if (!should_expand) {
+@@ -1063,7 +1071,7 @@ void VerticalTabStripRegionView::RestartExpandOnHoverTimer(
+ void VerticalTabStripRegionView::OnMouseVelocityHeuristicInterval() {
+   const bool should_expand =
+       state_controller_->IsExpandOnHoverEnabled() &&
+-      (IsMouseHovered() ||
++      ((IsMouseHovered() || IsMouseInHotCorner()) ||
+        (GetFocusManager() && Contains(GetFocusManager()->GetFocusedView())));
+ 
+   if (!should_expand || is_expanded_on_hover_) {

@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/tabs/vertical_tab_strip_state_controller.h b/chrome/browser/ui/tabs/vertical_tab_strip_state_controller.h
+index 4fcb26f9e68181c6ead71d8cb06283715632e06d..12c6b98b602147fcd0fd77c2be529620a701bb1a 100644
+--- a/chrome/browser/ui/tabs/vertical_tab_strip_state_controller.h
++++ b/chrome/browser/ui/tabs/vertical_tab_strip_state_controller.h
+@@ -106,6 +106,8 @@ class VerticalTabStripStateController {
+   static constexpr char kUncollapsedWidthKey[] =
+       "vertical_tab_strip_uncollapsed_width";
+ 
++  virtual bool ShouldHideCompletelyWhenCollapsed() const;
++
+  protected:
+   explicit VerticalTabStripStateController(BrowserWindowInterface& browser);
+ 
