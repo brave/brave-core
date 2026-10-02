@@ -29,9 +29,11 @@ class BottomToolbarView: UIView, ToolbarProtocol {
   private var cancellables: Set<AnyCancellable> = []
   let line = UIView.separatorLine
   private let privateBrowsingManager: PrivateBrowsingManager
+  private let toolbarState: BrowserToolbarState
 
-  init(privateBrowsingManager: PrivateBrowsingManager) {
+  init(privateBrowsingManager: PrivateBrowsingManager, toolbarState: BrowserToolbarState) {
     self.privateBrowsingManager = privateBrowsingManager
+    self.toolbarState = toolbarState
     actionButtons = [
       backButton, shareButton, forwardButton, addTabButton, searchButton, tabsButton, menuButton,
     ]
@@ -77,6 +79,11 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     )
 
     updateColors()
+    configureToolbarMenus(state: toolbarState)
+
+    if #unavailable(iOS 26.0) {
+      startObservingProperties()
+    }
 
     registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
       self.helper?.updateForTraitCollection(
@@ -92,18 +99,38 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     backgroundColor = privateBrowsingManager.browserColors.chromeBackground
   }
 
-  private var isSearchButtonEnabled: Bool = false {
-    didSet {
-      addTabButton.isHidden = isSearchButtonEnabled
-      searchButton.isHidden = !addTabButton.isHidden
-    }
+  @available(iOS 26.0, *)
+  override func updateProperties() {
+    super.updateProperties()
+    updateObservedProperties()
   }
 
-  func setSearchButtonState(url: URL?) {
-    if let url = url {
-      isSearchButtonEnabled = url.isNewTabURL
-    } else {
-      isSearchButtonEnabled = false
+  func updateObservedProperties() {
+    backButton.isEnabled = toolbarState.canGoBack
+    shareButton.isEnabled = toolbarState.isWebPage
+    tabsButton.updateTabCount(toolbarState.tabCount)
+
+    // The forward button replaces the share button when available
+    let canGoForward = toolbarState.canGoForward
+    forwardButton.stackViewAnimationSafeIsHidden = !canGoForward
+    shareButton.stackViewAnimationSafeIsHidden = canGoForward
+
+    // The search button replaces the add tab button on the new tab page
+    let isNewTabPage = toolbarState.isNewTabPage
+    addTabButton.stackViewAnimationSafeIsHidden = isNewTabPage
+    searchButton.stackViewAnimationSafeIsHidden = !isNewTabPage
+  }
+
+  @available(iOS, introduced: 18, obsoleted: 26, message: "Use updateProperties directly")
+  private func startObservingProperties() {
+    withObservationTracking {
+      updateObservedProperties()
+    } onChange: { [weak self] in
+      DispatchQueue.main.async {
+        MainActor.assumeIsolated {
+          self?.startObservingProperties()
+        }
+      }
     }
   }
 
@@ -158,10 +185,5 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     default:
       break
     }
-  }
-
-  func updateForwardStatus(_ canGoForward: Bool) {
-    forwardButton.isHidden = !canGoForward
-    shareButton.isHidden = canGoForward
   }
 }
