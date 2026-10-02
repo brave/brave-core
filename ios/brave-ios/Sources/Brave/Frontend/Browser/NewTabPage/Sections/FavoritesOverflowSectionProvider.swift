@@ -129,8 +129,8 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
 extension FavoritesOverflowSectionProvider: NSFetchedResultsControllerDelegate {
   func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     try? frc.performFetch()
-    DispatchQueue.main.async {
-      self.sectionDidChange?()
-    }
+    // Notify synchronously so the collection view is reloaded before anything else can run and
+    // observe item counts that differ from what the collection view currently has cached.
+    sectionDidChange?()
   }
 }
