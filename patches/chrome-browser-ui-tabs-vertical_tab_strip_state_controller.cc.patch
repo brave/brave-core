@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/tabs/vertical_tab_strip_state_controller.cc b/chrome/browser/ui/tabs/vertical_tab_strip_state_controller.cc
+index 22ece00a8c729ef5ada1d20afa2e289b8fd95d16..da71179d87726bb899fcdbf1aab1bb35cecc1775 100644
+--- a/chrome/browser/ui/tabs/vertical_tab_strip_state_controller.cc
++++ b/chrome/browser/ui/tabs/vertical_tab_strip_state_controller.cc
+@@ -243,6 +243,7 @@ void VerticalTabStripStateController::SetUncollapsedWidth(int width) {
+ }
+ 
+ bool VerticalTabStripStateController::IsExpandOnHoverEnabled() const {
++  if (ShouldHideCompletelyWhenCollapsed()) return true;
+   return is_expand_on_hover_enabled_;
+ }
+ 
