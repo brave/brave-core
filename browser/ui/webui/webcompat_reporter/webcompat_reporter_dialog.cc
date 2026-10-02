@@ -16,12 +16,15 @@
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "base/values.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom-shared.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/webcompat_reporter/browser/fields.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "content/public/browser/render_frame_host.h"
@@ -167,9 +170,13 @@ void OpenReporterDialog(content::WebContents* initiator, UISource source) {
   brave_shields::BraveShieldsTabHelper* shields_data_controller =
       brave_shields::BraveShieldsTabHelper::FromWebContents(initiator);
   if (shields_data_controller != nullptr) {
-    shields_enabled = shields_data_controller->IsBraveShieldsEnabled();
-    fp_block_mode = shields_data_controller->GetFingerprintMode();
-    ad_block_mode = shields_data_controller->GetAdBlockMode();
+    auto* shields_settings = BraveShieldsSettingsServiceFactory::GetForProfile(
+        Profile::FromBrowserContext(initiator->GetBrowserContext()));
+    CHECK(shields_settings);
+    const auto& url = shields_data_controller->GetCurrentSiteURL();
+    shields_enabled = shields_settings->IsBraveShieldsEnabled(url);
+    fp_block_mode = shields_settings->GetFingerprintMode(url);
+    ad_block_mode = shields_settings->GetAdBlockMode(url);
   }
 
   bool is_error_page = false;
