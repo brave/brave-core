@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CLIENT_TEST_ADS_CLIENT_MOCK_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CLIENT_TEST_ADS_CLIENT_MOCK_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_TEST_ADS_CLIENT_MOCK_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_TEST_ADS_CLIENT_MOCK_H_
 
 #include <optional>
 #include <string>
@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
 class AdsClientMock : public AdsClient {
  public:
@@ -79,6 +79,6 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD(void, Log, (const char*, int, int, const std::string&));
 };
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CLIENT_TEST_ADS_CLIENT_MOCK_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_TEST_ADS_CLIENT_MOCK_H_
