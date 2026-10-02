@@ -87,7 +87,7 @@
       "0"
     ],
     "cwd": "[WORKSPACE]/b/src/brave",
-    "name": "disable auto-gc: gc.auto=0"
+    "name": "brave-core disable auto-gc: gc.auto=0"
   },
   {
     "cmd": [
@@ -97,7 +97,7 @@
       "0"
     ],
     "cwd": "[WORKSPACE]/b/src/brave",
-    "name": "disable auto-gc: gc.autodetach=0"
+    "name": "brave-core disable auto-gc: gc.autodetach=0"
   },
   {
     "cmd": [
@@ -107,7 +107,7 @@
       "0"
     ],
     "cwd": "[WORKSPACE]/b/src/brave",
-    "name": "disable auto-gc: gc.autopacklimit=0"
+    "name": "brave-core disable auto-gc: gc.autopacklimit=0"
   },
   {
     "cmd": [
@@ -117,7 +117,7 @@
       "false"
     ],
     "cwd": "[WORKSPACE]/b/src/brave",
-    "name": "disable auto-gc: maintenance.gc.enabled=false"
+    "name": "brave-core disable auto-gc: maintenance.gc.enabled=false"
   },
   {
     "cmd": [

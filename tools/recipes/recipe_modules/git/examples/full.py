@@ -25,6 +25,16 @@ class TEST_DEPS(RecipeTestApi):
 
 
 def RunSteps(api: DEPS):
+    # A plain git command, named `git <subcommand>` by default; `-c` options
+    # go before the subcommand, and anything else reaches the `step` module.
+    api.git('status', cwd='/b/checkout')
+    api.git(
+        'fetch',
+        'origin',
+        name='fetch with options',
+        git_config_options={'protocol.version': '2', 'core.fsync': 'none'},
+    )
+
     api.git.disable_auto_gc('/b/checkout')
     api.git.disable_auto_gc(
         '/b/cache/some-mirror', step_name='disable mirror auto-gc'
@@ -34,6 +44,22 @@ def RunSteps(api: DEPS):
 def GenTests(api: TEST_DEPS):
     yield api.test(
         'disables every auto-gc knob',
+        api.post_process(
+            post_process.StepCommandContains, 'git status', ['git', 'status']
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'fetch with options',
+            [
+                'git',
+                '-c',
+                'core.fsync=none',
+                '-c',
+                'protocol.version=2',
+                'fetch',
+                'origin',
+            ],
+        ),
         api.post_process(
             post_process.StepCommandContains,
             'disable auto-gc: gc.auto=0',

@@ -8,8 +8,8 @@ syntax = "proto3";
 package recipes.brave.toolchains.xcode.build_xcode_toolchain;
 
 message InputProperties {
-  // Chromium release tag (e.g. `150.0.7841.1`) whose pinned macOS SDK the
-  // toolchain is built for. Must be a tag: the builder reads it via gitiles'
-  // `refs/tags/{tag}` endpoint.
-  string chromium_tag = 1;
+  // Chromium release tag ref (e.g. `refs/tags/150.0.7841.1`) whose pinned
+  // macOS SDK the toolchain is built for. Must be a tag: the builder reads it
+  // via gitiles' `refs/tags/{tag}` endpoint.
+  string chromium_ref = 1;
 }

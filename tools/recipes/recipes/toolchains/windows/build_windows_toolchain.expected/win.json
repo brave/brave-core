@@ -17,22 +17,20 @@
   {
     "cmd": [
       "git",
-      "-C",
-      "[WORKSPACE]\\b\\src\\brave",
       "sparse-checkout",
       "list"
     ],
+    "cwd": "[WORKSPACE]\\b\\src\\brave",
     "name": "sparse-checkout list"
   },
   {
     "cmd": [
       "git",
-      "-C",
-      "[WORKSPACE]\\b\\src\\brave",
       "sparse-checkout",
       "add",
       "tools/cr"
     ],
+    "cwd": "[WORKSPACE]\\b\\src\\brave",
     "name": "sparse-checkout add"
   },
   {
@@ -59,7 +57,7 @@
       "--out-dir",
       "[WORKSPACE]\\out",
       "--chromium-tag",
-      "refs/tags/150.0.7841.1",
+      "150.0.7841.1",
       "--clear",
       "--upload"
     ],

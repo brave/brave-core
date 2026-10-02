@@ -69,16 +69,13 @@ class DepotToolsApi(RecipeApi):
         else:
             logging.info('Installing depot_tools under %s', depot_tools_path)
             self.m.path.mkdir(depot_tools_path.parent)
-            self.m.step(
-                'clone depot_tools',
-                [
-                    'git',
-                    'clone',
-                    '--depth',
-                    '1',
-                    DEPOT_TOOLS_URL,
-                    str(depot_tools_path),
-                ],
+            self.m.git(
+                'clone',
+                '--depth',
+                '1',
+                DEPOT_TOOLS_URL,
+                depot_tools_path,
+                name='clone depot_tools',
             )
 
         self.m.env.prepend_path(depot_tools_path)

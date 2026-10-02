@@ -8,8 +8,8 @@ syntax = "proto3";
 package recipes.brave.tools.ast_grep.package_ast_grep;
 
 message InputProperties {
-  // Chromium ref (e.g. `refs/tags/151.0.7917.1`) whose checkout the tool is
-  // packaged against.
+  // Required. Fully-qualified Chromium ref (e.g. `refs/tags/151.0.7917.1`)
+  // whose checkout the tool is packaged against.
   string chromium_ref = 1;
 }
 

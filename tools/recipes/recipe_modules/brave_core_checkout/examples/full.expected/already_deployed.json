@@ -17,11 +17,10 @@
   {
     "cmd": [
       "git",
-      "-C",
-      "[WORKSPACE]/b/src/brave",
       "sparse-checkout",
       "list"
     ],
+    "cwd": "[WORKSPACE]/b/src/brave",
     "name": "sparse-checkout list"
   },
   {
@@ -42,11 +41,10 @@
   {
     "cmd": [
       "git",
-      "-C",
-      "[WORKSPACE]/b/src/brave",
       "sparse-checkout",
       "list"
     ],
+    "cwd": "[WORKSPACE]/b/src/brave",
     "name": "sparse-checkout list (2)"
   },
   {
