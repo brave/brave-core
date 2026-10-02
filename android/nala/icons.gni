@@ -143,6 +143,13 @@ nala_chrome_app_icon_overrides = [
     dest = "ic_add_box_rounded_corner.xml"
   },
   {
+    # Override the extensions menu footer's settings icon
+    # (//chrome/browser/ui/android/extensions ships its own ic_settings.xml,
+    # which would otherwise win the resource_overlay merge unpredictably).
+    source = "ic_settings.xml"
+    dest = "ic_settings.xml"
+  },
+  {
     # Override Chromium's back arrow (app menu icon row, tablet toolbar; also
     # the RTL forward arrow through the values-ldrtl btn_forward alias).
     source = "ic_arrow_left.xml"
