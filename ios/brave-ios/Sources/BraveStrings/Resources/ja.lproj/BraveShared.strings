@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "企業情報";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "Brave Shieldについて";
-
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "多くのサイトには、お客様とお客様のデバイスを識別するためのクッキーやスクリプトが含まれています。これによってインターネット上のいたる所であなたを特定・追跡し、行動データを収集しようとしています。\n\nBraveはそういったものをブロックするので、あなたが追跡されることなくブラウジングすることが可能になります。";
-
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "カメラロールに画像を保存します。";
 
@@ -36,9 +30,6 @@
 
 /* Text for the toggle switch to clear 'Brave Ads' data in settings */
 "ads.braveAdsDataToggleOption" = "Brave広告のデータ";
-
-/* individual blocking statistic title */
-"AdsAndTrackers" = "広告とトラッカー";
 
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "常にPCサイトを表示";
@@ -130,18 +121,6 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "自動入力";
 
-/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
-"AutoRedirectAMPPages" = "AMPページの自動リダイレクト";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
-"AutoRedirectAMPPagesDescription" = "常に、Google Accelerated Mobile Pageバージョンではなく、元の (AMPではない) ページのURLを開きます";
-
-/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
-"AutoRedirectTrackingURLs" = "自動リダイレクト追跡URL";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "トップレベルのリダイレクト追跡URLのバイパスに対するサポートを有効にします";
-
 /* cookie settings option */
 "Block3rdPartyCookies" = "サードパーティの Cookie をブロック";
 
@@ -160,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "設定に失敗しました。もう一度やり直してください。";
 
-/* A title for a setting that enables cookie consent notices */
-"BlockCookieConsentNotices" = "Cookieの同意通知をブロック";
-
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "ブロックモニター";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "ポップアップをブロック";
-
-/* No comment provided by engineer. */
-"BlockScripts" = "スクリプトをブロック";
-
-/* No comment provided by engineer. */
-"BlockScriptsDescription" = "JavaScriptをブロックする（サイトが正常に動作しない可能性があります）";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "%lld個のタブにブックマークを追加";
@@ -239,46 +209,10 @@
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "表示しない";
 
 /* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "詳細設定";
-
-/* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave Shieldsとプライバシー";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Shieldsとプライバシー";
-
-/* The number of ads and trackers blocked will be next to this */
-"BraveShieldsBlockedCountLabel" = "ブロック済みの広告やトラッカー";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "以下について詳しく";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "Shieldsの全体のデフォルトを変更する";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalControls" = "グローバル設定";
-
-/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "今後の破損サイト報告のため、連絡先情報を保存する";
-
-/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "連絡先情報を入力すると、今後の報告のために保存されます。";
-
-/* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "もしサイトに正しく表示されていない場合は、Shieldをオフにしてみてください";
-
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave Shields";
-
-/* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "オフ";
-
-/* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "オン";
-
-/* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "ダブルタップでBrave Shieldを切り替える";
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
@@ -844,15 +778,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findPreviousTitle" = "前を検索";
 
-/* individual blocking statistic title */
-"FingerprintingMethods" = "フィンガープリント";
-
-/* No comment provided by engineer. */
-"FingerprintingProtection" = "フィンガープリントをブロック";
-
-/* No comment provided by engineer. */
-"FingerprintingProtectionDescription" = "サイトがあなたのデバイスの特徴を識別しにくくします";
-
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "外部アプリを開くユニバーサルリンクを許可する";
 
@@ -919,15 +844,6 @@
 /* No comment provided by engineer. */
 "Home" = "ホーム";
 
-/* No comment provided by engineer. */
-"HTTPSEverywhere" = "HTTPSに接続をアップグレードする";
-
-/* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "可能な場合、HTTPではなく安全なHTTPSでサイトを開く";
-
-/* individual blocking statistic title */
-"HTTPSUpgrades" = "HTTPS アップグレード";
-
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "閲覧データをインポート";
 
@@ -948,6 +864,9 @@
 
 /* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
+
+/* Title for Brave Leo voice input menu item. Brave Leo is the name of a product and should not be translated */
+"LeoVoiceInputMenuItem" = "Leo 音声入力";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "保存されたログイン情報が永久に削除されます。";
@@ -1666,9 +1585,6 @@
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "無題のプレイリスト";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
-"PopoverShieldsMenuClose" = "Shieldメニューを閉じる";
-
 /* Settings privacy section title */
 "Privacy" = "プライバシー";
 
@@ -2017,41 +1933,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "お気に入りを削除";
 
-/* No comment provided by engineer. */
-"ReportABrokenSite" = "表示が崩れたサイトを報告";
-
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "問題を報告する";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"ReportBrokenAdditionalDetails" = "追加情報 (オプション)";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"reportBrokenAdditionalDetailsRequired" = "詳細";
-
-/* A label for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "あなたが経験している主な問題は何ですか？";
-
-/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
-"ReportBrokenContactMe" = "連絡先: (オプション)";
-
-/* Contact info storing description */
-"ReportBrokenContactMeDescription" = "連絡先情報を入力すると、今後破損サイトを報告するために保存されます。";
-
-/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
-"ReportBrokenContactMeSuggestions" = "メールアドレス、Twitterなど";
-
-/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"ReportBrokenPlaceholder" = "カテゴリを1つ選択";
-
-/* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Braveの開発者に、このサイトが思ったように機能していないことをお知らせください：";
-
-/* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "注: Braveサーバーに送信されるレポートには、サイトのアドレス、Braveのバージョン番号、シールド設定、VPNステータス、言語設定が含まれます。";
-
-/* No comment provided by engineer. */
-"ReportBrokenSubmitButtonTitle" = "送信";
 
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraAndMicrophonePermissionPrompt" = "\"%@\" がカメラとマイクへのアクセスを要求しています";
@@ -2329,9 +2212,6 @@
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "ログイン情報を保存";
 
-/* individual blocking statistic title */
-"ScriptsBlocked" = "ブロック済みのスクリプト";
-
 /* The placeholder text for bookmark search */
 "searchBookmarksTitle" = "ブックマークを検索";
 
@@ -2572,21 +2452,6 @@
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "このサイトで動画を見ているとき広告はブロックされています。";
 
-/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Brave Shieldsの全体のデフォルト設定";
-
-/* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "今後アクセスするサイトに適用されるデフォルトのShield設定です。こちらを変更しても個別サイトの設定には影響しません。";
-
-/* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "現在Braveのプライバシー保護機能オフの状態でブラウジングしています。Shieldをオンにした状態では不具合が発生しますか？";
-
-/* shields overview message */
-"ShieldsOverview" = "サイトの保護機能では、サイト毎に広告やトラッカーをブロックするか設定することができます。特定のサイトで広告を表示させたい場合、ここで設定することができます。";
-
-/* shields overview footer message */
-"ShieldsOverviewFooter" = "注意: 一部のサイトでは適切な動作にスクリプトが必要なため、この保護機能はデフォルトでオフになっています。";
-
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "新しいプライベートタブ";
 
@@ -2772,15 +2637,6 @@
 
 /* Settings item for clearing site-specific settings and shields settings. */
 "SiteAndShieldsSettings" = "サイトとシールドの設定";
-
-/* No comment provided by engineer. */
-"SiteReportedBody" = "Braveの開発者にサイトの問題について知らせてくれてありがとうございます。修正するために最善を尽くします！";
-
-/* No comment provided by engineer. */
-"SiteReportedTitle" = "ありがとうございます";
-
-/* Brave panel topmost title */
-"SiteShieldSettings" = "Shield (保護機能)";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Braveでwebを閲覧してデータを節約しています";
@@ -3558,9 +3414,6 @@
 
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "ユーザが購入をキャンセルしました";
-
-/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
-"UseRegionalAdblock" = "地域別広告ブロックを使用";
 
 /* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "閉じる";

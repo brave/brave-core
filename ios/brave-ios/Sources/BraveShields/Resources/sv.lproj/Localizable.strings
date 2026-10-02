@@ -1,14 +1,326 @@
+/* The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "Om Brave sköldar";
+
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "Webbplatser innehåller ofta cookies och skript som försöker identifiera dig och din enhet. De vill räkna ut vem du är och följa dig på webben – spåra vad du gör på varje webbplats.\n\nBrave blockerar dessa saker så att du kan surfa utan att bli följd.";
+
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Lägg till ytterligare listor som skapas och underhålls av gemenskapen som du litar på.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Prenumerera bara på listor från entiteter som du litar på.** Din webbläsare söker regelbundet efter listuppdateringar från webbadressen du anger.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "Lägg till filter efter webbadress";
+
 /* Shields Ads Stat */
 "AdsAndTrackersrBlocked" = "Spårare & annonser har blockerats";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "Blockerade \nannonser";
 
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "**Brave Player** är din biljett till en reklamfri och oavbruten videoupplevelse.";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "Justera Shields åt mig";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "Den här webbplatsen har börjat blockera vissa annonsblockerare, vilket innebär att deras webbplats kanske inte fungerar som förväntat.";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "För att lösa det här problemet kan Brave justera dina Shields-inställningar åt dig. När du har justerat kan du prova att titta på det här innehållet i Brave Player istället.";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "Behåll nuvarande inställningar";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "Justera inställningarna för annonsblockering för den här webbplatsen";
+
+/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
+"AutoRedirectAMPPages" = "Omdirigera AMP-sidor automatiskt";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
+"AutoRedirectAMPPagesDescription" = "Besök alltid ursprungliga (icke-AMP) sid-URL:er istället för Googles versioner av Accelerated Mobile Page";
+
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "Automatisk omdirigering av spårnings-URL:er";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "Aktivera stöd för att kringgå omdirigering av spårnings-URL:er på toppnivå";
+
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Ta bort automatiskt";
+
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "Förstör automatiskt webbläsardata";
+
+/* Text for a button in a blocked page or a page not secure info screen that takes you back where you came from or back to home screen */
+"BackToSafetyButtonTitle" = "Tillbaka till säkerhet";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "Aggressiv";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "Förhindrar att annonser, popups och spårare läses in.";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "Inaktiverad";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "Standard";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Blockera \"Växla till appen\"-aviseringar";
+
+/* No comment provided by engineer. */
+"BlockScripts" = "Blockera skript";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "Blockerar Javascript (kan få webbplatser att sluta fungera).";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Brave Player";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "Öppna alltid videor från den här webbplatsen med Brave Player";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "Prova det";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "Inte nu";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Med Brave Player kan du titta på videor utan avbrott.";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "Titta i Brave Player istället";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "Avancerade kontroller";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "Annonser och andra läskiga saker blockerade";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Läs mer";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "Ändra globala standardinställningar för Shields";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "Globala kontroller";
+
+/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfo" = "Spara kontaktinformation för framtida rapporter om avbrutna webbsidor";
+
+/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfoDescription" = "Om du uppger kontaktinformation kommer den att lagras för framtida rapporter";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "Om webbplatsen visas bruten försök med sköldar nere";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Brave sköldar";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "Ner";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "Upp";
+
+/* The accessibility hint spoken when focused on the main shields toggle */
+"BraveShieldsToggleHint" = "Dubbeltryck för att växla Brave Shields";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Innehållsfiltrering";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Aktivera anpassade filter som blockerar regionala och språkspecifika spårare och irritationsmoment.";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Anpassa filterlista";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "Ange webbadress för filterlista";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "Anpassade filter";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "Lägg till anpassade filter här. Var noga med att använda filtersyntax för Adblock.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "Ogiltig regel `%1$@` på rad %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "Lägg till anpassade filter";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "Anpassade filter stöder inte mer än %i rader";
+
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Uppskattade data\nsparade";
 
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Filterlistor som standard";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "Eftersom du begärde att aggressivt blockera spårare och annonser blockerar Brave den här webbplatsen före den första nätverksanslutningen.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Brave har förhindrat följande webbplats från att laddas:";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "Den här webbplatsen kan försöka spåra dig på andra webbplatser";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "Fortsätt";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "Blockerad domän";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "Redigera anpassade filter";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "Be webbplatser att inte sälja eller dela dina uppgifter. [Läs mer](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "Aktivera Global Privacy Control";
+
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Sparad tid";
+
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "Externa filterlistor";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "Den webbadress du angav är ogiltig";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Endast säkra webbadresser (https) tillåts för anpassade filterlistor";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Lägg till";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Ytterligare populära listor från gemenskapen. Observera att webbläsarens hastighet försämras om för många filter aktiveras.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Nedladdningen misslyckades";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Väntande nedladdning";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Ändra";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Ange filterlistans URL";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Senast uppdaterad %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Ange filterlistans webbadress här";
+
+/* No comment provided by engineer. */
+"FingerprintingProtection" = "Blockera fingeravtryck";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "Gör det svårare för webbplatser att känna igen enhetens utmärkande egenskaper.";
+
+/* No comment provided by engineer. */
+"httpsEverywhereDescription" = "Öppnar webbplatser med det säkrare HTTPS i stället för HTTP när så är möjligt.";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "Strikt";
+
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "Listorna har uppdaterats";
+
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "Rapportera en trasig webbplats";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"ReportBrokenAdditionalDetails" = "Ytterligare information (valfritt)";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"reportBrokenAdditionalDetailsRequired" = "Ytterligare uppgifter";
+
+/* A label for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "Vad ser du som det huvudsakliga problemet?";
+
+/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
+"ReportBrokenContactMe" = "Kontakta mig på: (valfritt)";
+
+/* Contact info storing description */
+"ReportBrokenContactMeDescription" = "Om du tillhandahåller kontaktinformation kommer den att lagras för att rapportera avbrutna webbplatser i framtiden.";
+
+/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
+"ReportBrokenContactMeSuggestions" = "E-post, Twitter, osv.";
+
+/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"ReportBrokenPlaceholder" = "Välj ett alternativ";
+
+/* First part of the report a broken site copy. After the colon is a new line and then a website address */
+"ReportBrokenSiteBody1" = "Låt Braves utvecklare veta att denna webbplats inte fungerar som förväntat:";
+
+/* This is the info text that is presented when a user is submitting a web-compatibility report. */
+"ReportBrokenSiteBody2" = "Observera: Rapporten som skickas till Brave-servrar innehåller webbplatsadress, Brave-versionsnummer, Shields-inställningar, VPN-status och språkinställningar.";
+
+/* No comment provided by engineer. */
+"ReportBrokenSubmitButtonTitle" = "Skicka";
+
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "Aggressiv";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "Blockerad av";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "Blockerade förfrågningar";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "Blockerare av innehåll";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "Begär blockering";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "Begär URL";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "Resurstyp";
+
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "Om Shred ska ta bort historikobjekt.";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred tar bort historik";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "Uppdatera Auto Shred och justera vilka data som ska raderas.";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "Ta bort";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "Ta bort";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "Käll-URL";
+
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"ShieldsDefaults" = "Globala standardinställningar för Brave Shields";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "Dessa är Shields standardinställningar för nya webbplatser. Om du ändrar dessa påverkas inte dina befintliga inställningar per webbplats.";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "Du surfar på den här webbplatsen utan Braves sekretesskydd. Fungerar den inte korrekt med sköldar uppe?";
 
 /* Time Saved Days */
 "ShieldsTimeStatsDays" = "d";
@@ -22,6 +334,72 @@
 /* Time Saved Seconds */
 "ShieldsTimeStatsSeconds" = "s";
 
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Ta bort data";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Aldrig";
+
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "Webbläsardata strimlas aldrig automatiskt";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "Appen stängd";
+
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "Webbläsardata strimlas automatiskt när Brave-appen stängs/startas om";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Webbplatsflikar stängda";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "Webbläsardata strimlas automatiskt när alla flikar som är öppna för en webbplats stängs";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "Borttagning stänger alla flikar och tar bort alla webbplatsdata. Detta kan inte ångras.";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Ta bort webbplatsdata";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "Borttagning stänger alla flikar som är öppna för den här webbplatsen och tar bort alla webbplatsdata. Detta kan inte ångras.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Vill du ta bort webbplatsdata?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Ta bort webbplatsdata nu";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "Borttagning stänger de valda flikarna och tar bort alla webbplatsdata. Detta kan inte ångras.";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "Webbplatsen är inte säker";
+
+/* No comment provided by engineer. */
+"SiteReportedBody" = "Tack för att låter Braves utvecklare få veta att det är något fel med denna webbplats. Vi ska göra vårt bästa för att åtgärda problemet!";
+
+/* No comment provided by engineer. */
+"SiteReportedTitle" = "Tack!";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "Anslutningen till %@ är inte säker";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "Blockning av spårare & annonser";
+
 /* Shields Trackers Stat */
 "TrackersrBlocked" = "Blockerade\nspårare";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "Uppdatera listor";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "Uppdaterar listor";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "Uppgradera anslutningar till HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "Du ser den här varningen eftersom webbplats inte stöder HTTPS.";
 

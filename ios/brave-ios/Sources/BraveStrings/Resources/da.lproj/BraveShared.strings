@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "Om";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "Om Brave Shields ";
-
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "Websteder indeholder ofte cookies og scripts, som forsøger at identificere dig og din enhed. De ønsker at finde ud af, hvem du er og følge dig på tværs af internettet – dvs. spore, hvad du laver på hvert websted.\n\nBrave blokerer disse ting, så du kan browse uden at blive fulgt.";
-
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "Dette giver dig mulighed for at gemme billedet på din kamerarulle.";
 
@@ -36,9 +30,6 @@
 
 /* Text for the toggle switch to clear 'Brave Ads' data in settings */
 "ads.braveAdsDataToggleOption" = "Data om Brave Ads";
-
-/* individual blocking statistic title */
-"AdsAndTrackers" = "Annoncer og Trackere";
 
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "Anmod altid om skrivebordswebsted";
@@ -130,18 +121,6 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "AutoFyld";
 
-/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
-"AutoRedirectAMPPages" = "Automatisk omdirigering af AMP-sider";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
-"AutoRedirectAMPPagesDescription" = "Besøg altid originale (ikke-AMP) URL'er i stedet for Googles Accelerated Mobile Page-versioner";
-
-/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
-"AutoRedirectTrackingURLs" = "Auto-omdirigering af sporings-URL'er";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "Aktiver understøttelse af omgåelse af sporings-URL'er til omdirigering på øverste niveau";
-
 /* cookie settings option */
 "Block3rdPartyCookies" = "Bloker cookies fra tredjeparter";
 
@@ -160,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Præferencen kunne ikke indstilles. Prøv igen.";
 
-/* A title for a setting that enables cookie consent notices */
-"BlockCookieConsentNotices" = "Bloker meddelelser om samtykke til cookies";
-
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Blokeringsmonitor";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Bloker popups";
-
-/* No comment provided by engineer. */
-"BlockScripts" = "Bloker scripts";
-
-/* No comment provided by engineer. */
-"BlockScriptsDescription" = "Blokerer JavaScript (kan ødelægge websteder).";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "Tilføj bogmærke til %lld faner";
@@ -239,46 +209,10 @@
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Luk";
 
 /* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "Avancerede kontroller ";
-
-/* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave Shields og privatliv";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Shields og privatliv";
-
-/* The number of ads and trackers blocked will be next to this */
-"BraveShieldsBlockedCountLabel" = "Reklamer og andet utøj blev blokeret";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Flere oplysninger";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "Skift globale standarder for Shields";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalControls" = "Globale kontroller";
-
-/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "Gem kontaktoplysninger til fremtidige rapporter om sider, der ikke virker";
-
-/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "Hvis du oplyser dine kontaktoplysninger, vil de blive gemt til fremtidige rapporter";
-
-/* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "Hvis dette websted ser ud til at være ødelagt, så prøv at slå Shields fra";
-
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave-Skjolde";
-
-/* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "Nede";
-
-/* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "Op";
-
-/* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "Dobbelttryk for at skifte til Brave Shields";
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
@@ -844,15 +778,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findPreviousTitle" = "Find forrige";
 
-/* individual blocking statistic title */
-"FingerprintingMethods" = "Fingeraftryksmetoder";
-
-/* No comment provided by engineer. */
-"FingerprintingProtection" = "Blokér fingeraftrykslæsning ";
-
-/* No comment provided by engineer. */
-"FingerprintingProtectionDescription" = "Gør det sværere for websteder at genkende din enheds karakteristiske egenskaber. ";
-
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Tillad, at universelle links åbnes i eksterne apps";
 
@@ -919,15 +844,6 @@
 /* No comment provided by engineer. */
 "Home" = "Start";
 
-/* No comment provided by engineer. */
-"HTTPSEverywhere" = "Opgrader forbindelser til HTTPS";
-
-/* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Åbner websteder, der bruger sikker HTTPS i stedet for HTTP, når det er muligt.";
-
-/* individual blocking statistic title */
-"HTTPSUpgrades" = "HTTPS Opgraderinger";
-
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Importér browserdata";
 
@@ -948,6 +864,9 @@
 
 /* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
+
+/* Title for Brave Leo voice input menu item. Brave Leo is the name of a product and should not be translated */
+"LeoVoiceInputMenuItem" = "Leo stemmeinput";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "Gemt login vil blive fjernet permanent.";
@@ -1666,9 +1585,6 @@
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Unavngiven afspilningsliste";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
-"PopoverShieldsMenuClose" = "Luk Shields-menuen";
-
 /* Settings privacy section title */
 "Privacy" = "Privatliv";
 
@@ -2017,41 +1933,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "Fjern favorit";
 
-/* No comment provided by engineer. */
-"ReportABrokenSite" = "Rapporter en side der ikke virker";
-
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "Anmeld en fejl";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"ReportBrokenAdditionalDetails" = "Flere detaljer (valgfrit)";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"reportBrokenAdditionalDetailsRequired" = "Yderligere detaljer";
-
-/* A label for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "Hvad er det største problem, du oplever?";
-
-/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
-"ReportBrokenContactMe" = "Kontakt mig via: (valgfrit)";
-
-/* Contact info storing description */
-"ReportBrokenContactMeDescription" = "Hvis du oplyser dine kontaktoplysninger, vil de blive gemt, så vi i fremtiden kan rapportere om sider, der ikke virker.";
-
-/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
-"ReportBrokenContactMeSuggestions" = "E-mail, Twitter etc.";
-
-/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"ReportBrokenPlaceholder" = "Vælg en mulighed";
-
-/* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Fortæl Braves udviklere, at denne side ikke fungerer som forventet:";
-
-/* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Bemærk: Rapporten, der bliver sendt til Brave, indeholder webadressen, Braves versionsnummer, Shields-indstillinger, VPN-status og sprogindstillinger.";
-
-/* No comment provided by engineer. */
-"ReportBrokenSubmitButtonTitle" = "Indsend";
 
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraAndMicrophonePermissionPrompt" = "\"%@\" vil gerne have adgang til kameraet og mikrofonen";
@@ -2329,9 +2212,6 @@
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Gem login";
 
-/* individual blocking statistic title */
-"ScriptsBlocked" = "Scripts blokeret";
-
 /* The placeholder text for bookmark search */
 "searchBookmarksTitle" = "Søg efter bogmærker";
 
@@ -2572,21 +2452,6 @@
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Annoncer blokeres, mens du ser videoer på denne hjemmeside.";
 
-/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Globale standarder for Brave Shields";
-
-/* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "Her er Shields' standardindstillinger til nye websider. Hvis du ændrer dem, vil det ikke få indflydelse på dine eksisterende indstillinger for specifikke sider.";
-
-/* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Du ser denne side uden Braves privatlivsbeskyttelse. Fungerer den ikke korrekt med Shields slået til? ";
-
-/* shields overview message */
-"ShieldsOverview" = "Site Shields giver dig mulighed for at kontrollere, hvornår annoncer og trackere blokeres for hvert websted, du besøger. Hvis du foretrækker at se annoncer på et bestemt websted, kan du aktivere dem her.";
-
-/* shields overview footer message */
-"ShieldsOverviewFooter" = "Bemærk: Nogle websteder kræver muligvis scripts for at fungere korrekt, så dette skjold er slået fra som standard.";
-
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Ny privat fane";
 
@@ -2772,15 +2637,6 @@
 
 /* Settings item for clearing site-specific settings and shields settings. */
 "SiteAndShieldsSettings" = "Indstillinger for side og skjold";
-
-/* No comment provided by engineer. */
-"SiteReportedBody" = "Tak for at du har fortalt Braves udviklere om at der er fejl på siden. Vi vil gøre vores bedste for at ordne fejlen!";
-
-/* No comment provided by engineer. */
-"SiteReportedTitle" = "Tak";
-
-/* Brave panel topmost title */
-"SiteShieldSettings" = "Afskærmning";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Hver dag sparer jeg data ved at bruge Brave som browser.";
@@ -3558,9 +3414,6 @@
 
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "Bruger annulleret";
-
-/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
-"UseRegionalAdblock" = "Brug regional adblock";
 
 /* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "Luk";

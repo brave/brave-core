@@ -1,14 +1,326 @@
+/* The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "Seputar Brave Shields";
+
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "Sering kali saat membuka situs terdapat cookies dan skrip yang berusaha mengidentifikasi pengguna dan perangkatnya.  Mereka ingin mengetahui siapa Anda dan mengikuti Anda di seluruh situs - melacak apa yang Anda lakukan di setiap situs.\n\nBrave memblokir hal-hal tersebut sehingga Anda dapat menjelajah tanpa merasa diikuti.";
+
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Tambahkan daftar tambahan yang dibuat dan dikelola oleh komunitas tepercaya Anda.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Berlanggananlah hanya untuk daftar dari entitas yang Anda percayai**. Peramban Anda akan diperiksa secara berkala untuk pembaruan daftar dari URL yang Anda masukkan.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "Tambahkan Filter Berdasarkan URL";
+
 /* Shields Ads Stat */
 "AdsAndTrackersrBlocked" = "Pelacak & iklan diblokir";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "Iklan\nDiblokir";
 
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "**Pemutar Brave** adalah tiket Anda ke pengalaman menonton video yang bebas iklan dan tanpa interupsi.";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "Sesuaikan Perisai Untuk Saya";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "Situs ini telah mulai memblokir sejumlah pemblokir iklan, yang artinya situs mereka mungkin tidak berfungsi sebagaimana diharapkan.";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "Guna mengatasi masalah ini, Brave dapat menyesuaikan pengaturan perisai bagi Anda. Setelah disesuaikan, Anda dapat mencoba menonton konten ini di Pemutar Brave sebagai gantinya.";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "Tetap Gunakan Pengaturan Saat Ini";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "Sesuaikan Pengaturan Pemblokiran Iklan Untuk Situs Ini";
+
+/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
+"AutoRedirectAMPPages" = "Halaman AMP yang Diarahkan Ulang Otomatis";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
+"AutoRedirectAMPPagesDescription" = "Selalu kunjungi hanya URL laman orisinal (non-AMP), dan bukan versi Laman Seluler Terakselerasi Google";
+
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "URL Pelacakan Alih Otomatis";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "Mengaktifkan dukungan untuk melewati pengarahan ulang tingkat atas URL pelacakan";
+
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Musnahkan Otomatis";
+
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "Hancurkan Data Penjelajahan Secara Otomatis";
+
+/* Text for a button in a blocked page or a page not secure info screen that takes you back where you came from or back to home screen */
+"BackToSafetyButtonTitle" = "Kembali aman";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "Agresif";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "Mencegah dimuatnya iklan, popup, dan pelacak.";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "Dinonaktifkan";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "Standar";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Pemberitahuan Blokir 'Beralih ke Aplikasi'";
+
+/* No comment provided by engineer. */
+"BlockScripts" = "Blokir Skrip";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "Memblokir JavaScript (dapat merusak situs).";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Pemutar Brave";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "Selalu buka video dari situs ini dengan Pemutar Brave";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "Coba Pemutar";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "Jangan Sekarang";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Pemutar Brave memungkinkan Anda untuk menonton video tanpa interupsi.";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "Tonton Di Pemutar Brave Sebagai Gantinya";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "Kontrol lanjutan";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "Iklan dan hal mencurigakan lainnya diblokir";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Pelajari lebih lanjut";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "Ubah Bawaan Global Perisai Brave";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "Kontrol Global";
+
+/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfo" = "Menyimpan informasi kontak untuk pelaporan situs yang rusak di masa mendatang";
+
+/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfoDescription" = "Jika Anda memberikan info kontak, maka info akan disimpan untuk laporan di masa mendatang";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "Jika situs ini tampak rusak, coba turunkan Shield";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Brave Shields";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "Turun";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "Naik";
+
+/* The accessibility hint spoken when focused on the main shields toggle */
+"BraveShieldsToggleHint" = "Ketuk dua kali untuk mengalihkan Brave Shields";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Penyaringan Konten";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Mengaktifkan filter khusus yang memblokir pelacak serta Gangguan regional dan berbahasa tertentu";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Daftar Filter Khusus";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "URL Daftar Filter Khusus";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "Filter Ubahsuai";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "Tambahkan filter khusus di sini. Pastikan untuk menggunakan sintaks filter Adblock.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "Aturan `%1$@` yang tidak valid pada baris %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "Tambahkan Filter Khusus";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "Filter khusus tidak mendukung lebih dari %i baris";
+
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Perkiraan Data \nTersimpan";
 
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Daftar Filter Bawaan";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "Karena Anda meminta untuk memblokir pelacak dan iklan secara agresif, Brave memblokir situs ini sebelum koneksi jaringan pertama.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Brave telah mencegah pemuatan situs berikut:";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "Situs Ini Mungkin Akan Mencoba Untuk Melacak Anda ke Seluruh Situs Lainnya.";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "Lanjutkan";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "Domain Diblokir";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "Sunting Filter Khusus";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "Minta situs web untuk tidak menjual atau membagikan data Anda. [Pelajari selengkapnya](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "Mengaktifkan Kontrol Privasi Global";
+
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Est. Waktu \nDisimpan";
+
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "Daftar Filter Eksternal";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "URL yang dimasukkan tidak valid";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Hanya URL aman (https) yang diizinkan untuk daftar filter khusus";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Tambahkan";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Daftar komunitas populer tambahan. Perhatikanlah bahwa mengaktifkan terlalu banyak filter akan menurunkan kecepatan perambanan.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Download gagal";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Pengunduhan tertunda";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Edit";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Masukkan URL daftar filter";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Terakhir diperbarui %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Masukkan URL daftar filter di sini ";
+
+/* No comment provided by engineer. */
+"FingerprintingProtection" = "Blokir Penyidikjarian";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "Mempersulit bagi situs untuk mengenali karakteristik unik perangkat Anda.";
+
+/* No comment provided by engineer. */
+"httpsEverywhereDescription" = "Membuka situs dengan menggunakan HTTPS aman daripada dengan HTTP kapan saja memungkinkan.";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "Ketat";
+
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "Daftar Diperbarui";
+
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "Laporkan Situs Rusak";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"ReportBrokenAdditionalDetails" = "Detail tambahan (opsional)";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"reportBrokenAdditionalDetailsRequired" = "Detail tambahan";
+
+/* A label for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "Apa masalah utama yang Anda lihat?";
+
+/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
+"ReportBrokenContactMe" = "Hubungi saya di: (opsional)";
+
+/* Contact info storing description */
+"ReportBrokenContactMeDescription" = "Jika Anda memberikan info kontak, maka info akan disimpan untuk pelaporan situs yang rusak di masa mendatang.";
+
+/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
+"ReportBrokenContactMeSuggestions" = "Surel, Twitter, dsb.";
+
+/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"ReportBrokenPlaceholder" = "Pilih satu opsi";
+
+/* First part of the report a broken site copy. After the colon is a new line and then a website address */
+"ReportBrokenSiteBody1" = "Beri tahu pengembang Brave bahwa situs ini tidak bekerja seperti yang diharapkan:";
+
+/* This is the info text that is presented when a user is submitting a web-compatibility report. */
+"ReportBrokenSiteBody2" = "Catatan: Laporan yang dikirim ke peladen Brave akan mencakup alamat situs, nomor versi Brave, pengaturan Perisai, status VPN, serta pengaturan bahasa.";
+
+/* No comment provided by engineer. */
+"ReportBrokenSubmitButtonTitle" = "Kirim";
+
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "Agresif";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "Diblokir Oleh";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "Permintaan Diblokir";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "Pemblokir Konten";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "Minta Pemblokiran";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "Minta URL";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "Jenis Sumber Daya";
+
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "Jika Shred harus menghapus item riwayat.";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred Menghapus Riwayat";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "Perbarui Auto Shred dan sesuaikan data apa yang dihapus.";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "Hancurkan";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "Hancurkan";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "URL Sumber";
+
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"ShieldsDefaults" = "Default Global Perisai Brave";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "Ini adalah pengaturan bawaan Perisai untuk situs baru. Mengubah hal ini tidak akan memengaruhi pengaturan per-situs Anda yang telah ada.";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "Anda sedang meramban situs ini tanpa perlindungan privasi Brave. Apakah ini tidak berfungsi dengan benar jika memasang Shield?";
 
 /* Time Saved Days */
 "ShieldsTimeStatsDays" = "h";
@@ -22,6 +334,72 @@
 /* Time Saved Seconds */
 "ShieldsTimeStatsSeconds" = "dtk";
 
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Musnahkan Data";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Jangan pernah";
+
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "Data penjelajahan tidak pernah dihapus secara otomatis";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "Penutupan Aplikasi";
+
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "Data penjelajahan dihapus secara otomatis saat aplikasi Brave ditutup / dimulai ulang";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Tab Situs Tertutup";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "Data penjelajahan dihapus secara otomatis saat semua tab yang terbuka ke sebuah situs ditutup";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "Pemusnahan data akan menutup semua tab yang terbuka, dan menghapus semua data situs. Tindakan ini tidak dapat dibatalkan.";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Musnahkan Data Situs";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "Pemusnahan data akan menutup semua tab yang terbuka untuk situs ini, dan menghapus semua data situs. Tindakan ini tidak dapat dibatalkan.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Musnahkan Data Situs?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Musnahkan Data Situs Sekarang";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "Pemusnahan data akan menutup tab yang dipilih, dan menghapus semua data situs. Tindakan ini tidak dapat dibatalkan.";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "Situs tidak aman";
+
+/* No comment provided by engineer. */
+"SiteReportedBody" = "Terima kasih telah memberi tahu pengembang Brave tentang masalah dengan situs ini. Kami akan berusaha sebaik mungkin untuk memperbaikinya!";
+
+/* No comment provided by engineer. */
+"SiteReportedTitle" = "Terima Kasih";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "Sambungan ke %@ tidak aman";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "Pelacak & Pemblokiran Iklan";
+
 /* Shields Trackers Stat */
 "TrackersrBlocked" = "Pelacak \nDiblokir";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "Perbarui Daftar";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "Memperbarui Daftar";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "Tingkatkan Koneksi ke HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "Anda melihat peringatan ini karena situs tidak mendukung HTTPS.";
 
