@@ -36,7 +36,7 @@ ResourceContextData<T>::~ResourceContextData() = default;
 
 // static
 template <template <typename> class T>
-void ResourceContextData<T>::StartProxying(
+BraveProxyingURLLoaderFactory<T>* ResourceContextData<T>::StartProxying(
     content::BrowserContext* browser_context,
     content::GlobalRenderFrameHostToken render_frame_token,
     network::URLLoaderFactoryBuilder& factory_builder,
@@ -67,7 +67,9 @@ void ResourceContextData<T>::StartProxying(
                      self->weak_factory_.GetWeakPtr()),
       navigation_response_task_runner);
 
+  auto* proxy_ptr = proxy.get();
   self->proxies_.emplace(std::move(proxy));
+  return proxy_ptr;
 }
 
 // static
