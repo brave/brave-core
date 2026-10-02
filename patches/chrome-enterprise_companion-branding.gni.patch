@@ -1,10 +1,10 @@
 diff --git a/chrome/enterprise_companion/branding.gni b/chrome/enterprise_companion/branding.gni
-index 6b4469870d693df3df1bb8fe9cd9212dbbd2be86..23b4d132f89b059024d06879f98d4b6b5ce3d019 100644
+index 6b4469870d693df3df1bb8fe9cd9212dbbd2be86..cece896cc41f95fdf2014561c8faecd4b2dd0f51 100644
 --- a/chrome/enterprise_companion/branding.gni
 +++ b/chrome/enterprise_companion/branding.gni
 @@ -41,3 +41,5 @@ enterprise_companion_device_management_realtime_reporting_url =
  enterprise_companion_device_management_encrypted_reporting_url =
      "https://chromereporting-pa.googleapis.com/v1/record"
  enterprise_companion_event_logging_url = "https://play.googleapis.com/log"
-+import("//brave/chromium_src/chrome/updater/branding.gni")
-+forward_variables_from(brave_updater_branding, "*")
++import("//brave/chromium_src/chrome/enterprise_companion/branding.gni")
++forward_variables_from(brave_enterprise_companion_branding, "*")
