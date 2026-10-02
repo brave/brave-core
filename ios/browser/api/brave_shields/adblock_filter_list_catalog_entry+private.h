@@ -16,8 +16,6 @@ class FilterListCatalogEntry;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AdblockFilterListCatalogEntry (Private)
-@property(readonly) NSString* base64PublicKey;
-
 - (instancetype)initWithFilterListCatalogEntry:
     (brave_shields::FilterListCatalogEntry)entry;
 @end

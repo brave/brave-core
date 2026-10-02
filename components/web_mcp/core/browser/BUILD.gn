@@ -28,6 +28,7 @@ static_library("browser") {
   deps = [
     "//brave/components/brave_component_updater/browser:public",
     "//components/component_updater",
+    "//components/crx_file",
     "//crypto",
   ]
 }

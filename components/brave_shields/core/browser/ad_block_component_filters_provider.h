@@ -6,13 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_COMPONENT_FILTERS_PROVIDER_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_COMPONENT_FILTERS_PROVIDER_H_
 
+#include <cstdint>
 #include <string>
 
+#include "base/containers/span.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
+#include "crypto/sha2.h"
 
 using brave_component_updater::DATFileDataBuffer;
 
@@ -38,8 +41,7 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
   AdBlockComponentFiltersProvider(
       component_updater::ComponentUpdateService* cus,
       AdBlockFiltersProviderManager* manager,
-      std::string component_id,
-      std::string base64_public_key,
+      base::span<const uint8_t, crypto::kSHA256Length> public_key_sha256,
       std::string title,
       uint8_t permission_mask,
       bool is_default_engine = true);

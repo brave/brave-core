@@ -6,10 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_COMPONENT_INSTALLER_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_COMPONENT_INSTALLER_H_
 
+#include <cstdint>
 #include <string>
 
+#include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
+#include "crypto/sha2.h"
 
 namespace component_updater {
 class ComponentUpdateService;
@@ -30,8 +33,8 @@ void RegisterAdBlockFilterListCatalogComponent(
 
 void RegisterAdBlockFiltersComponent(
     component_updater::ComponentUpdateService* cus,
-    const std::string& component_public_key,
-    const std::string& component_id,
+    base::span<const uint8_t, crypto::kSHA256Length>
+        component_public_key_sha256,
     const std::string& component_name,
     OnComponentReadyCallback callback);
 

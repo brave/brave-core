@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 
+#include <array>
 #include <cstddef>
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -28,6 +30,7 @@
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
+#include "crypto/sha2.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
@@ -55,14 +58,12 @@ class CountingObserver : public AdBlockFiltersProvider::Observer {
 };
 
 FilterListCatalogEntry MakeCatalogEntry(const std::string& uuid) {
-  return FilterListCatalogEntry(uuid, "https://example.com/" + uuid,
-                                "Title " + uuid, /*langs=*/{},
-                                /*support_url=*/"", /*desc=*/"",
-                                /*hidden=*/false, /*default_enabled=*/true,
-                                /*first_party_protections=*/true,
-                                /*permission_mask=*/0, /*platforms=*/{},
-                                /*component_id=*/"cid-" + uuid,
-                                /*base64_public_key=*/"");
+  return FilterListCatalogEntry(
+      uuid, "https://example.com/" + uuid, "Title " + uuid, /*langs=*/{},
+      /*support_url=*/"", /*desc=*/"", /*hidden=*/false,
+      /*default_enabled=*/true, /*first_party_protections=*/true,
+      /*permission_mask=*/0, /*platforms=*/{},
+      /*public_key_sha256=*/std::array<uint8_t, crypto::kSHA256Length>{});
 }
 
 std::vector<FilterListCatalogEntry> MakeCatalog(size_t size) {
@@ -247,9 +248,12 @@ class AdBlockComponentServiceManagerAdblockOnlyModeTest : public testing::Test {
         /*cus=*/nullptr, catalog_provider_.get(), list_p3a_.get());
     base::ListValue catalog;
     for (const auto& [uuid, default_enabled] : kFilterListCatalogEntries) {
-      catalog.Append(base::DictValue()
-                         .Set("uuid", uuid)
-                         .Set("default_enabled", default_enabled));
+      catalog.Append(
+          base::DictValue()
+              .Set("uuid", uuid)
+              .Set("default_enabled", default_enabled)
+              .Set("list_text_component",
+                   base::DictValue().Set("base64_public_key", "dGVzdA==")));
     }
     manager_->OnFilterListCatalogLoaded(
         *base::WriteJson(base::Value(std::move(catalog))));

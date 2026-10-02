@@ -20,6 +20,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/crx_file/id_util.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 
@@ -33,9 +34,10 @@ std::optional<std::string> GetPsstComponentVersion(
 
   const std::vector<component_updater::ComponentInfo> components =
       component_update_service->GetComponents();
-  auto it = std::ranges::find_if(
-      components, [](const auto& c) { return c.id == psst::kPsstComponentId; });
-
+  const std::string psst_component_id = crx_file::id_util::GenerateIdFromHash(
+      psst::kPsstComponentPublicKeySHA256);
+  auto it = std::ranges::find(components, psst_component_id,
+                              &component_updater::ComponentInfo::id);
   if (it == components.end()) {
     return std::nullopt;
   }

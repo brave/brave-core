@@ -25,6 +25,7 @@ source_set("unit_tests") {
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/test:test_support",
     "//components/prefs:test_support",
+    "//crypto",
     "//testing/gtest",
   ]
 

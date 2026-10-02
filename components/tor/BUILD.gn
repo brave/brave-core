@@ -17,6 +17,8 @@ source_set("constants") {
   deps = [
     "//base",
     "//components/component_updater:component_updater_paths",
+    "//components/crx_file",
+    "//crypto",
   ]
 }
 
@@ -66,10 +68,12 @@ static_library("tor") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/resources:strings",
     "//brave/components/services/tor/public/interfaces",
+    "//components/crx_file",
     "//components/pref_registry",
     "//components/prefs",
     "//components/user_prefs",
     "//content/public/browser",
+    "//crypto",
     "//net",
     "//services/data_decoder/public/cpp",
     "//services/service_manager",

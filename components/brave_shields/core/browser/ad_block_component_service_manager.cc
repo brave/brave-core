@@ -37,6 +37,7 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/crx_file/id_util.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -265,7 +266,8 @@ void AdBlockComponentServiceManager::StartRegionalServices() {
 
   // Start component services associated with enabled filter lists
   for (const auto& catalog_entry : filter_list_catalog_) {
-    if (IsFilterListEnabled(catalog_entry.uuid)) {
+    if (IsFilterListEnabled(catalog_entry.uuid) &&
+        catalog_entry.public_key_sha256) {
       auto existing_provider =
           component_filters_providers_.find(catalog_entry.uuid);
       // Only check for new lists that are part of the catalog - don't touch any
@@ -401,7 +403,8 @@ void AdBlockComponentServiceManager::EnableFilterList(const std::string& uuid,
   auto catalog_entry =
       brave_shields::FindAdBlockFilterListByUUID(filter_list_catalog_, uuid);
 
-  if (catalog_entry == filter_list_catalog_.end()) {
+  if (catalog_entry == filter_list_catalog_.end() ||
+      !catalog_entry->public_key_sha256) {
     return;
   }
 
@@ -447,8 +450,10 @@ void AdBlockComponentServiceManager::UpdateFilterLists(
   }
 
   std::vector<std::string> component_ids = {
-      kAdBlockResourceComponentId,
-      kAdBlockFilterListCatalogComponentId,
+      crx_file::id_util::GenerateIdFromHash(
+          kAdBlockResourceComponentPublicKeySHA256),
+      crx_file::id_util::GenerateIdFromHash(
+          kAdBlockFilterListCatalogComponentPublicKeySHA256),
   };
 
   for (const auto& [key, provider] : component_filters_providers_) {
@@ -489,7 +494,8 @@ base::ListValue AdBlockComponentServiceManager::GetRegionalLists() {
       brave_shields::features::kBraveAdblockShowHiddenComponents);
   for (const auto& region_list : filter_list_catalog_) {
     if ((!show_hidden && region_list.hidden) ||
-        !region_list.SupportsCurrentPlatform()) {
+        !region_list.SupportsCurrentPlatform() ||
+        !region_list.public_key_sha256) {
       continue;
     }
     // Most settings come directly from the regional catalog from
@@ -500,8 +506,8 @@ base::ListValue AdBlockComponentServiceManager::GetRegionalLists() {
     dict.Set("title", region_list.title);
     dict.Set("desc", region_list.desc);
     dict.Set("support_url", region_list.support_url);
-    dict.Set("component_id", region_list.component_id);
-    dict.Set("base64_public_key", region_list.base64_public_key);
+    dict.Set("component_id", crx_file::id_util::GenerateIdFromHash(
+                                 region_list.public_key_sha256.value()));
     // However, the enabled/disabled flag is maintained in our
     // local_state preferences so retrieve it from there
     dict.Set("enabled", IsFilterListEnabled(region_list.uuid));
