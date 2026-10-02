@@ -1277,17 +1277,30 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
     scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner,
     bool is_for_network_service) {
   // TODO(iefremov): Skip proxying for certain requests?
+  base::OnceCallback<void(bool)> set_bypass_redirect_checks;
   if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUniquePtr)) {
-    BraveProxyingURLLoaderFactory<base::WeakPtr>::MaybeProxyRequest(
-        browser_context, frame, factory_builder, type, request_initiator,
-        isolation_info, navigation_id, navigation_response_task_runner);
+    if (auto* proxy =
+            BraveProxyingURLLoaderFactory<base::WeakPtr>::MaybeProxyRequest(
+                browser_context, frame, factory_builder, type,
+                request_initiator, isolation_info, navigation_id,
+                navigation_response_task_runner)) {
+      set_bypass_redirect_checks =
+          base::BindOnce(&BraveProxyingURLLoaderFactory<
+                             base::WeakPtr>::set_bypass_redirect_checks,
+                         base::Unretained(proxy));
+    }
   } else {
     // Ignore shared_ptr presubmit error, this is old code we are trying to
     // convert to unique_ptr/WeakPtr
-    BraveProxyingURLLoaderFactory<
-        std::shared_ptr>::MaybeProxyRequest(  // nocheck
-        browser_context, frame, factory_builder, type, request_initiator,
-        isolation_info, navigation_id, navigation_response_task_runner);
+    if (auto* proxy = BraveProxyingURLLoaderFactory<
+            std::shared_ptr>::MaybeProxyRequest(  // nocheck
+            browser_context, frame, factory_builder, type, request_initiator,
+            isolation_info, navigation_id, navigation_response_task_runner)) {
+      set_bypass_redirect_checks = base::BindOnce(
+          &BraveProxyingURLLoaderFactory<
+              std::shared_ptr>::set_bypass_redirect_checks,  // nocheck
+          base::Unretained(proxy));
+    }
   }
 
   ChromeContentBrowserClient::WillCreateURLLoaderFactory(
@@ -1296,6 +1309,12 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
       header_client, bypass_redirect_checks, disable_secure_dns,
       factory_override, navigation_response_task_runner,
       is_for_network_service);
+
+  // Brave's proxy sits outside upstream ones, so it must honor their
+  // authorization of otherwise-unsafe redirects, as downstream loaders do.
+  if (set_bypass_redirect_checks && bypass_redirect_checks) {
+    std::move(set_bypass_redirect_checks).Run(*bypass_redirect_checks);
+  }
 }
 
 // Intercept frame and worker handshakes so they go through Brave's network
