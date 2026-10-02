@@ -544,12 +544,12 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             }
         }
 
-        // Brave shows share instead of forward, and the row renders five icons at most.
+        // Brave shows share instead of back, and the row renders five icons at most.
         assertThat(
                 "Icon row items were: " + iconIds,
                 iconIds,
                 Matchers.contains(
-                        R.id.back_menu_id,
+                        R.id.forward_menu_id,
                         R.id.bookmark_this_page_id,
                         R.id.offline_page_id,
                         R.id.share_menu_id,
