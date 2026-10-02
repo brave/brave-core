@@ -91,6 +91,7 @@ public class BraveHubManagerImplUnitTest {
 
     private ActivityController<TestActivity> mActivityController;
     private Activity mActivity;
+    private BraveHubManagerImpl mHubManager;
 
     @Before
     public void setUp() {
@@ -125,6 +126,7 @@ public class BraveHubManagerImplUnitTest {
 
     @After
     public void tearDown() {
+        if (mHubManager != null) mHubManager.destroy();
         mActivityController.close();
         ChromeSharedPreferences.getInstance().removeKey(ChromePreferenceKeys.TOOLBAR_TOP_ANCHORED);
         ChromeSharedPreferences.getInstance()
@@ -135,14 +137,14 @@ public class BraveHubManagerImplUnitTest {
     @DisableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
     public void testToolbarOnTop_addressBarOnTop() {
         setAddressBarOnTop(true);
-        assertNotEquals(Gravity.BOTTOM, showHubAndGetToolbarGravity());
+        assertToolbarOnTop(showHub());
     }
 
     @Test
     @DisableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
     public void testToolbarOnBottom_addressBarOnBottom() {
         setAddressBarOnTop(false);
-        assertEquals(Gravity.BOTTOM, showHubAndGetToolbarGravity());
+        assertToolbarOnBottom(showHub());
     }
 
     @Test
@@ -150,7 +152,7 @@ public class BraveHubManagerImplUnitTest {
     public void testToolbarOnBottom_bottomBarEnabled_addressBarOnTop() {
         setAddressBarOnTop(true);
         setBottomBarSettingEnabled(true);
-        assertEquals(Gravity.BOTTOM, showHubAndGetToolbarGravity());
+        assertToolbarOnBottom(showHub());
     }
 
     @Test
@@ -158,7 +160,71 @@ public class BraveHubManagerImplUnitTest {
     public void testToolbarOnTop_bottomBarSettingDisabled_addressBarOnTop() {
         setAddressBarOnTop(true);
         setBottomBarSettingEnabled(false);
-        assertNotEquals(Gravity.BOTTOM, showHubAndGetToolbarGravity());
+        assertToolbarOnTop(showHub());
+    }
+
+    @Test
+    @DisableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
+    public void testActionButtonCentered_paneSwitcherFits() {
+        setAddressBarOnTop(false);
+        View hubToolbar = showHub().findViewById(R.id.hub_toolbar);
+        layoutActionContainer(hubToolbar, /* width= */ 360);
+        assertEquals(Gravity.CENTER, getGravity(getActionButtonGroup(hubToolbar)));
+    }
+
+    @Test
+    @DisableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
+    public void testActionButtonAtEnd_paneSwitcherOverlapsCenter() {
+        setAddressBarOnTop(false);
+        View hubToolbar = showHub().findViewById(R.id.hub_toolbar);
+        View paneSwitcherCard = hubToolbar.findViewById(R.id.pane_switcher_card);
+        // The card is hidden with a single pane; show it as if multiple panes were registered.
+        paneSwitcherCard.setVisibility(View.VISIBLE);
+        paneSwitcherCard.setMinimumWidth(300);
+        layoutActionContainer(hubToolbar, /* width= */ 360);
+        assertEquals(
+                Gravity.END | Gravity.CENTER_VERTICAL,
+                getGravity(getActionButtonGroup(hubToolbar)));
+    }
+
+    private static void layoutActionContainer(View hubToolbar, int width) {
+        View actionContainer = hubToolbar.findViewById(R.id.toolbar_action_container);
+        int height = 56;
+        actionContainer.measure(
+                View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
+        actionContainer.layout(0, 0, width, height);
+    }
+
+    private void assertToolbarOnTop(View containerView) {
+        View hubToolbar = containerView.findViewById(R.id.hub_toolbar);
+        assertNotEquals(Gravity.BOTTOM, getGravity((View) hubToolbar.getParent()));
+        assertEquals(
+                Gravity.START | Gravity.CENTER_VERTICAL,
+                getGravity(getActionButtonGroup(hubToolbar)));
+        assertNotEquals(
+                Gravity.START | Gravity.CENTER_VERTICAL,
+                getGravity(hubToolbar.findViewById(R.id.pane_switcher_card)));
+        // Space makes itself INVISIBLE rather than VISIBLE, so only check it isn't GONE.
+        assertNotEquals(View.GONE, hubToolbar.findViewById(R.id.margin_spacer).getVisibility());
+    }
+
+    private void assertToolbarOnBottom(View containerView) {
+        View hubToolbar = containerView.findViewById(R.id.hub_toolbar);
+        assertEquals(Gravity.BOTTOM, getGravity((View) hubToolbar.getParent()));
+        assertEquals(Gravity.CENTER, getGravity(getActionButtonGroup(hubToolbar)));
+        assertEquals(
+                Gravity.START | Gravity.CENTER_VERTICAL,
+                getGravity(hubToolbar.findViewById(R.id.pane_switcher_card)));
+        assertEquals(View.GONE, hubToolbar.findViewById(R.id.margin_spacer).getVisibility());
+    }
+
+    private static View getActionButtonGroup(View hubToolbar) {
+        return (View) hubToolbar.findViewById(R.id.toolbar_action_button).getParent();
+    }
+
+    private static int getGravity(View view) {
+        return ((FrameLayout.LayoutParams) view.getLayoutParams()).gravity;
     }
 
     private void setAddressBarOnTop(boolean onTop) {
@@ -171,13 +237,13 @@ public class BraveHubManagerImplUnitTest {
                 .writeBoolean(BravePreferenceKeys.BRAVE_ENABLE_BOTTOM_BAR, enabled);
     }
 
-    private int showHubAndGetToolbarGravity() {
+    private View showHub() {
         PaneListBuilder builder =
                 new PaneListBuilder(new DefaultPaneOrderController())
                         .registerPane(
                                 PaneId.TAB_SWITCHER,
                                 LazyOneshotSupplier.fromValue(mTabSwitcherPane));
-        BraveHubManagerImpl hubManager =
+        mHubManager =
                 new BraveHubManagerImpl(
                         mActivity,
                         mProfileProviderSupplier,
@@ -194,14 +260,9 @@ public class BraveHubManagerImplUnitTest {
                         mSearchActivityClient,
                         /* xrSpaceModeObservableSupplier= */ null,
                         /* defaultPaneId= */ PaneId.TAB_SWITCHER);
-        hubManager.getPaneManager().focusPane(PaneId.TAB_SWITCHER);
-        hubManager.setHubLayoutController(mHubLayoutController);
-        hubManager.onHubLayoutShow();
-
-        View toolbarWrapper =
-                (View) hubManager.getContainerView().findViewById(R.id.hub_toolbar).getParent();
-        int gravity = ((FrameLayout.LayoutParams) toolbarWrapper.getLayoutParams()).gravity;
-        hubManager.destroy();
-        return gravity;
+        mHubManager.getPaneManager().focusPane(PaneId.TAB_SWITCHER);
+        mHubManager.setHubLayoutController(mHubLayoutController);
+        mHubManager.onHubLayoutShow();
+        return mHubManager.getContainerView();
     }
 }
