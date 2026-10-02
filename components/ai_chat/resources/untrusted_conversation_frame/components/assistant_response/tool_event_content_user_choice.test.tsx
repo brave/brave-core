@@ -11,7 +11,7 @@ import MockContext from '../../mock_untrusted_conversation_context'
 import ToolEvent from './tool_event'
 
 const validArgumentsJsonThreeChoices =
-  '{"choices": ["first", "second", "third"]}'
+  '{"choice_type": "preference", "choices": ["first", "second", "third"]}'
 
 describe('ToolEventContentUserChoice', () => {
   it('should render clickable choices', () => {
@@ -50,6 +50,25 @@ describe('ToolEventContentUserChoice', () => {
       ],
       [],
     )
+  })
+
+  it('should not render follow-up choices, which become suggestions', () => {
+    const { container } = render(
+      <MockContext>
+        <ToolEvent
+          toolUseEvent={{
+            toolName: 'user_choice_tool',
+            id: '123',
+            argumentsJson:
+              '{"choice_type": "follow_up", "choices": ["first", "second"]}',
+            output: undefined,
+          }}
+          isEntryActive={true}
+        />
+      </MockContext>,
+    )
+
+    expect(container.innerHTML).toBe('')
   })
 
   it('should render disabled choices when not active', () => {

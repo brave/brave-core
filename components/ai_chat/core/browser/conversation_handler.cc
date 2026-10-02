@@ -44,6 +44,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
+#include "brave/components/ai_chat/core/browser/conversation_tools.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
@@ -1641,13 +1642,75 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
   OnHistoryUpdate(entry.Clone());
 }
 
+void ConversationHandler::TakeFollowUpSuggestionsFromLastEntry() {
+  if (chat_history_.empty()) {
+    return;
+  }
+
+  auto& last_entry = chat_history_.back();
+  if (last_entry->character_type != mojom::CharacterType::ASSISTANT ||
+      !last_entry->events) {
+    return;
+  }
+
+  std::vector<std::string> follow_ups;
+  if (std::erase_if(*last_entry->events, [&follow_ups](const auto& event) {
+        if (!event->is_tool_use_event()) {
+          return false;
+        }
+        auto& tool_use = event->get_tool_use_event();
+        if (tool_use->output.has_value()) {
+          return false;
+        }
+        auto suggestions = GetFollowUpSuggestionsFromToolUse(*tool_use);
+        if (!suggestions) {
+          return false;
+        }
+        std::ranges::move(*suggestions, std::back_inserter(follow_ups));
+        return true;
+      }) == 0) {
+    return;
+  }
+
+  // The request is removed above regardless, so the loop isn't left waiting on
+  // it, but with nothing usable to offer leave any existing suggestions alone.
+  if (follow_ups.empty()) {
+    return;
+  }
+
+  // These supersede any suggestions offered before this response, but leave
+  // content-specific actions (e.g. summarize page) in place.
+  std::erase_if(suggestions_, [](const auto& suggestion) {
+    return suggestion.action_type == mojom::ActionType::SUGGESTION;
+  });
+
+  for (auto& follow_up : follow_ups) {
+    suggestions_.emplace_back(std::move(follow_up));
+  }
+  suggestion_generation_status_ =
+      mojom::SuggestionGenerationStatus::HasGenerated;
+  OnSuggestedQuestionsChanged();
+}
+
 void ConversationHandler::MaybeSeedOrClearSuggestions() {
   if (!associated_content_manager_->HasAssociatedContent()) {
-    suggestions_.clear();
-    suggestion_generation_status_ = mojom::SuggestionGenerationStatus::None;
+    // Suggestions offered by the assistant during the conversation should
+    // survive content changes, so only reset for a conversation which hasn't
+    // started yet, where the starter prompts below belong.
     if (!chat_history_.empty()) {
+      // Suggestions which act on associated content are stale now there is
+      // none.
+      if (std::erase_if(suggestions_, [](const auto& suggestion) {
+            return suggestion.action_type ==
+                       mojom::ActionType::SUMMARIZE_PAGE ||
+                   suggestion.action_type == mojom::ActionType::SUMMARIZE_VIDEO;
+          }) > 0) {
+        OnSuggestedQuestionsChanged();
+      }
       return;
     }
+    suggestions_.clear();
+    suggestion_generation_status_ = mojom::SuggestionGenerationStatus::None;
 
 #define STARTER_PROMPT(TYPE)                                              \
   l10n_util::GetStringUTF8(IDS_AI_CHAT_STATIC_STARTER_TITLE_##TYPE),      \
@@ -1913,6 +1976,10 @@ void ConversationHandler::OnEngineCompletionComplete(
       return;
     }
   }
+
+  // Do this before the entry is broadcast and persisted so that the tool use
+  // request it removes never reaches a client or storage.
+  TakeFollowUpSuggestionsFromLastEntry();
 
   OnConversationEntryAdded(chat_history_.back());
 
