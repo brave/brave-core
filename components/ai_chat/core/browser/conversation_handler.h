@@ -432,7 +432,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Returns the entry list that entries for the given thread (or the root
   // conversation, if |thread_uuid| is nullopt) should be read from/appended
   // to.
-  std::vector<mojom::ConversationTurnPtr>& GetChatHistoryContainer(
+  std::vector<mojom::ConversationTurnPtr>& GetMutableConversationHistory(
       std::optional<std::string_view> thread_uuid);
 
   // When the current batch of tool use requests has been completed, we can

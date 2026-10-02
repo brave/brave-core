@@ -498,7 +498,7 @@ void ConversationHandler::GetConversationHistory(
   }
 
   std::vector<mojom::ConversationTurnPtr> history =
-      mojo::Clone(GetChatHistoryContainer(thread_uuid));
+      mojo::Clone(GetMutableConversationHistory(thread_uuid));
   if (pending_conversation_entry_ &&
       pending_conversation_entry_->thread_uuid == thread_uuid) {
     history.push_back(pending_conversation_entry_->Clone());
@@ -1384,7 +1384,7 @@ void ConversationHandler::AddToConversationHistory(
 }
 
 std::vector<mojom::ConversationTurnPtr>&
-ConversationHandler::GetChatHistoryContainer(
+ConversationHandler::GetMutableConversationHistory(
     std::optional<std::string_view> thread_uuid) {
   if (thread_uuid.has_value()) {
     CHECK(base::FeatureList::IsEnabled(features::kAIChatThreads));
