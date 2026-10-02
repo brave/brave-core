@@ -38,13 +38,6 @@ extra_deps = {
                 'condition': 'host_os == "mac" and host_cpu == "arm64"',
             },
             {
-                'object_name': 'mac-rust-toolchain-1edd55dcfcd573872c727fa3e086369a71661ee0-2-llvmorg-24-init-7747-g62397f8b-1.tar.xz',
-                'sha256sum': '5f055df0b56a0c862b923216777114809fe4e49e7d3d4188fe3b9783c47a66f3',
-                'size_bytes': 44270916,
-                'overlayed_on': 'Mac/rust-toolchain-1edd55dcfcd573872c727fa3e086369a71661ee0-2-llvmorg-24-init-7747-g62397f8b.tar.xz',
-                'condition': 'host_os == "mac" and host_cpu == "x64"',
-            },
-            {
                 'object_name': 'win-rust-toolchain-1edd55dcfcd573872c727fa3e086369a71661ee0-2-llvmorg-24-init-7747-g62397f8b-1.tar.xz',
                 'sha256sum': 'ed0542b781a8625d68c17dbfc3f018fcbdb819954445d34624fa8d9f549907b3',
                 'size_bytes': 44981332,
