@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add member public methods for "Hide completely when collapsed" feature
+
+    add_to_public:
+      class_name: 'VerticalTabStripRegionView'
+      code: |-
+        int GetCollapsedWidth() const;
+        void HandleMouseMoveEvent(const gfx::PointF& point_int_screen);
+
+  - description: |-
+      Add methods and member variables for "Hide completely when collapsed"
+      feature
+
+    add_to_protected:
+      class_name: 'VerticalTabStripRegionView'
+      code: |-
+        void ObserveHideCompletelyPref();
+        void OnHideCompletelyPrefChanged();
+        bool IsMouseInHotCorner() const;
+        PrefChangeRegistrar hide_completely_pref_registrar_;
