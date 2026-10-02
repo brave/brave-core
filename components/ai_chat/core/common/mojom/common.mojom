@@ -45,6 +45,9 @@ struct APIErrorDetails {
   string error_type;
   // Only applies to Oblivious HTTP requests.
   int32 inner_status_code;
+  // When the rate limit expires, if provided by the server. Only set for
+  // ModelRateLimitReached errors.
+  mojo_base.mojom.Time? rate_limit_expires_at;
 };
 
 enum SuggestionGenerationStatus {
