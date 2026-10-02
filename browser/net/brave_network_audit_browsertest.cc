@@ -39,7 +39,10 @@
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
@@ -57,6 +60,13 @@ namespace {
 //   --ui-test-action-timeout: should be greater than |kMaxTimeoutPerLoadedURL|.
 //   --test-launcher-timeout: should be able to fit the total sum of timeouts.
 constexpr int kMaxTimeoutPerLoadedURL = 30;
+
+#if defined(TOOLKIT_VIEWS)
+// The Leo panel crashes the renderer a few seconds after loading. Audit it with
+// a shorter window rather than skipping it entirely, so its requests are still
+// captured. See https://github.com/brave/brave-browser/issues/59592.
+constexpr int kTimeoutForLeoPanel = 1;
+#endif
 
 void WaitForTimeout(int timeout) {
   base::test::ScopedRunLoopTimeout file_download_timeout(
@@ -159,17 +169,22 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
   WaitForTimeout(kMaxTimeoutPerLoadedURL);
 
 #if defined(TOOLKIT_VIEWS)
-  auto* sidebar_controller = browser()->GetFeatures().sidebar_controller();
-  auto* sidebar_model = sidebar_controller->model();
-  const auto& all_items = sidebar_model->GetAllSidebarItems();
-  const int item_num = all_items.size();
-  for (int i = 0; i < item_num; ++i) {
-    auto item = all_items[i];
-    // Load all builtin panel items.
+  // Collet our default builtin panel ids.
+  auto* sidebar_model = browser()->GetFeatures().sidebar_controller()->model();
+  std::vector<SidePanelEntryId> panel_ids;
+  for (const auto& item : sidebar_model->GetAllSidebarItems()) {
     if (item.is_built_in_type() && item.open_in_panel) {
-      sidebar_controller->ActivateItemAt(i);
-      WaitForTimeout(kMaxTimeoutPerLoadedURL);
+      panel_ids.push_back(sidebar::SidePanelIdFromSideBarItem(item));
     }
+  }
+
+  // Load all builtin panel items.
+  auto* side_panel_ui = SidePanelUI::From(browser());
+  ASSERT_TRUE(side_panel_ui);
+  for (const auto id : panel_ids) {
+    side_panel_ui->Show(id);
+    WaitForTimeout(id == SidePanelEntryId::kChatUI ? kTimeoutForLeoPanel
+                                                   : kMaxTimeoutPerLoadedURL);
   }
 #endif
 }
