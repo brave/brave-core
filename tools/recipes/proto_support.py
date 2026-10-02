@@ -592,17 +592,30 @@ def _build_lock(deps_dir: str):
     CIPD root and on the PB compile/rename, corrupting the cache. An exclusive
     lock lets one process build while the rest wait and then reuse the result.
 
-    Uses `fcntl` (POSIX); on platforms without it (Windows) this is a no-op --
-    the parallel-build scenario is a POSIX CI concern.
+    Uses `fcntl.flock` on POSIX and `msvcrt.locking` on Windows.
     """
-    try:
-        import fcntl  # pylint: disable=import-outside-toplevel
-    except ImportError:
-        yield
-        return
     with open(
         os.path.join(deps_dir, '.build.lock'), 'w', encoding='utf-8'
     ) as lock_file:
+        if sys.platform == 'win32':
+            import msvcrt  # pylint: disable=import-outside-toplevel
+
+            # LK_LOCK gives up after about 10 seconds, so keep waiting.
+            while True:
+                try:
+                    msvcrt.locking(lock_file.fileno(), msvcrt.LK_LOCK, 1)
+                    break
+                except OSError:
+                    continue
+            try:
+                yield
+            finally:
+                lock_file.seek(0)
+                msvcrt.locking(lock_file.fileno(), msvcrt.LK_UNLCK, 1)
+            return
+
+        import fcntl  # pylint: disable=import-outside-toplevel
+
         fcntl.flock(lock_file, fcntl.LOCK_EX)
         try:
             yield
@@ -634,7 +647,8 @@ def ensure_compiled() -> str:
         if not _check_digest(proto_package, dgst):
             try:
                 _install_protos(proto_package, dgst, proto_files)
-            except Exception:  # pylint: disable=broad-except
+            except (Exception, SystemExit):  # pylint: disable=broad-except
+                # `_compile_protos` reports failure with sys.exit().
                 # If some other recipe engine compiled at the same time as us,
                 # it may have broken our compilation (e.g. if the other engine
                 # cleared tmp out from under us). Double-check the digest to see
