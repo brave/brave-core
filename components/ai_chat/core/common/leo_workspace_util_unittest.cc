@@ -30,13 +30,13 @@ TEST(AIChatCommonLeoWorkspaceUtilUnitTest, WorkspaceHostShapes) {
       // The suffix must be at the end.
       {"abc.leo-workspace.evil", false, false},
       // A viewer is not the workspace it belongs to.
-      {"view.abc.leo-workspace", false, true},
+      {"abc.view.leo-workspace", false, true},
       // The host that looks like a viewer of the workspace host is just a
       // workspace whose id happens to be "view".
       {"view.leo-workspace", true, false},
       // A viewer belongs to exactly one workspace, at a fixed depth.
-      {"view.a.b.leo-workspace", false, false},
-      {"view.view.abc.leo-workspace", false, false},
+      {"a.b.view.leo-workspace", false, false},
+      {"view.abc.view.leo-workspace", false, false},
   };
   for (const auto& [host, is_workspace, is_view] : expectations) {
     EXPECT_EQ(is_workspace, IsAIChatLeoWorkspaceHost(host)) << host;

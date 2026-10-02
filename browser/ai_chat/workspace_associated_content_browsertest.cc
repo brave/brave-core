@@ -52,7 +52,7 @@ namespace ai_chat {
 // Covers the browser-side half of the workspace pipeline: the hidden
 // chrome-untrusted://<uuid>.leo-workspace page is created and loaded, the
 // workspace origin is granted File System Access, the workspace frames its own
-// viewer at chrome-untrusted://view.<uuid>.leo-workspace and nothing else, and
+// viewer at chrome-untrusted://<uuid>.view.leo-workspace and nothing else, and
 // the delegate reports itself as a tool host. The page's own tool registration
 // (WebMCP) is covered separately by the workspace tools browser test, which
 // needs the workspace bundle.
@@ -94,8 +94,13 @@ class WorkspaceAssociatedContentBrowserTest : public InProcessBrowserTest {
   }
 
   static GURL ViewerURL(const GURL& workspace_url) {
-    const std::string host = base::StrCat(
-        {kAIChatLeoWorkspaceViewUIHostPrefix, workspace_url.host()});
+    // Convert <uuid>.leo-workspace to <uuid>.view.leo-workspace
+    const std::string ws_host = workspace_url.host();
+    CHECK(ws_host.ends_with(kAIChatLeoWorkspaceUIHostSuffix));
+    const std::string label = ws_host.substr(
+        0, ws_host.size() - strlen(kAIChatLeoWorkspaceUIHostSuffix));
+    const std::string host =
+        base::StrCat({label, kAIChatLeoWorkspaceViewUIHostSuffix});
     GURL::Replacements replacements;
     replacements.SetHostStr(host);
     return workspace_url.ReplaceComponents(replacements);
@@ -296,9 +301,9 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
   ASSERT_TRUE(content::WaitForLoadStop(web_contents));
 
   const GURL viewer_url = ViewerURL(content->url());
-  ASSERT_EQ(base::StrCat({kAIChatLeoWorkspaceViewUIHostPrefix, content->uuid(),
-                          kAIChatLeoWorkspaceUIHostSuffix}),
-            viewer_url.host());
+  ASSERT_EQ(
+      base::StrCat({content->uuid(), kAIChatLeoWorkspaceViewUIHostSuffix}),
+      viewer_url.host());
 
   ASSERT_TRUE(FrameLoads(web_contents, viewer_url));
 
@@ -345,14 +350,13 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
   for (const GURL& url : {
            // The registered host belongs to no workspace.
            GURL(base::StrCat({prefix, kAIChatLeoWorkspaceUIHost})),
-           // Too deep to be a workspace, and no viewer prefix.
+           // Too deep to be a workspace, and no viewer suffix.
            GURL(base::StrCat({prefix, "a.b", kAIChatLeoWorkspaceUIHostSuffix})),
            // A viewer belongs to exactly one workspace, at a fixed depth.
-           GURL(base::StrCat({prefix, kAIChatLeoWorkspaceViewUIHostPrefix,
-                              "a.b", kAIChatLeoWorkspaceUIHostSuffix})),
-           GURL(base::StrCat({prefix, kAIChatLeoWorkspaceViewUIHostPrefix,
-                              kAIChatLeoWorkspaceViewUIHostPrefix, "abc",
-                              kAIChatLeoWorkspaceUIHostSuffix})),
+           GURL(base::StrCat(
+               {prefix, "a.b", kAIChatLeoWorkspaceViewUIHostSuffix})),
+           GURL(base::StrCat(
+               {prefix, "view.abc", kAIChatLeoWorkspaceViewUIHostSuffix})),
        }) {
     EXPECT_FALSE(NavigateActiveTabAndGetSuccess(url)) << url;
     content::WebContents* web_contents =
@@ -368,14 +372,15 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
 // "view".
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
                        WorkspaceIdIsNotInterpreted) {
-  const GURL url(base::StrCat(
-      {content::kChromeUIUntrustedScheme, url::kStandardSchemeSeparator,
-       kAIChatLeoWorkspaceViewUIHostPrefix, kAIChatLeoWorkspaceUIHost}));
+  // "view.leo-workspace" is a valid workspace host where the uuid is "view"
+  const GURL url(base::StrCat({content::kChromeUIUntrustedScheme,
+                               url::kStandardSchemeSeparator, "view",
+                               kAIChatLeoWorkspaceUIHostSuffix}));
   EXPECT_TRUE(NavigateActiveTabAndGetSuccess(url)) << url;
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_TRUE(content::WaitForLoadStop(web_contents));
-  // The host is a workspace (`view.` is its id), so it is served the
+  // The host is a workspace (`view` is its id), so it is served the
   // workspace bundle, not the viewer one.
   EXPECT_EQ(u"Leo Workspace", web_contents->GetTitle());
 }

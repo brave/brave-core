@@ -26,9 +26,15 @@ constexpr bool IsAIChatLeoWorkspaceHost(std::string_view host) {
 }
 
 constexpr bool IsAIChatLeoWorkspaceViewHost(std::string_view host) {
-  const std::string_view prefix(kAIChatLeoWorkspaceViewUIHostPrefix);
-  return host.starts_with(prefix) &&
-         IsAIChatLeoWorkspaceHost(host.substr(prefix.size()));
+  // <uuid>.view.leo-workspace: the view suffix must end the host, and the part
+  // before it must be a valid workspace label (exactly one non-empty label).
+  if (!host.ends_with(kAIChatLeoWorkspaceViewUIHostSuffix)) {
+    return false;
+  }
+  const std::string_view label = host.substr(
+      0, host.size() -
+             std::string_view(kAIChatLeoWorkspaceViewUIHostSuffix).size());
+  return !label.empty() && label.find('.') == std::string_view::npos;
 }
 
 }  // namespace ai_chat

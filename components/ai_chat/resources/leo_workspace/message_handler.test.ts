@@ -13,7 +13,7 @@ import { createFakeWorkspace } from './test_file_system'
 
 // The page's own origin, and the `view.` sibling that is allowed to talk to it.
 const kWorkspaceOrigin = 'chrome-untrusted://a-uuid.leo-workspace'
-const kSenderOrigin = 'chrome-untrusted://view.a-uuid.leo-workspace'
+const kSenderOrigin = 'chrome-untrusted://a-uuid.view.leo-workspace'
 
 let resolveRoot: (handle: FileSystemDirectoryHandle) => void
 let rejectRoot: (reason: Error) => void
@@ -204,10 +204,10 @@ describe('READ_FILE handler', () => {
 
   it.each([
     [kWorkspaceOrigin, 'the workspace origin itself'],
-    ['chrome-untrusted://view.b-uuid.leo-workspace', 'another workspace'],
-    ['chrome-untrusted://evil.a-uuid.leo-workspace', 'another subdomain'],
-    ['https://view.a-uuid.leo-workspace', 'a different scheme'],
-    ['chrome-untrusted://view.a-uuid.leo-workspace.evil', 'a longer host'],
+    ['chrome-untrusted://b-uuid.view.leo-workspace', 'another workspace'],
+    ['chrome-untrusted://a-uuid.evil.leo-workspace', 'another subdomain'],
+    ['https://a-uuid.view.leo-workspace', 'a different scheme'],
+    ['chrome-untrusted://a-uuid.view.leo-workspace.evil', 'a longer host'],
   ])('ignores messages from %s (%s)', async (origin) => {
     expect(
       await send({ type: kReadFileRequest, path: 'notes.txt' }, origin),

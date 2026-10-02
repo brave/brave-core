@@ -24,7 +24,7 @@ class LeoWorkspaceUIConfig : public content::WebUIConfig {
   // registered for, so that each one is a separate origin. The workspace's
   // viewer document gets a subdomain of that in turn.
   bool ShouldHandleSubdomains() const override;
-  // Serves only <uuid>.leo-workspace and view.<uuid>.leo-workspace, since
+  // Serves only <uuid>.leo-workspace and <uuid>.view.leo-workspace, since
   // opting into subdomains means being handed every unclaimed host under this
   // one.
   bool ShouldHandleURL(const GURL& url) override;
@@ -55,7 +55,7 @@ class LeoWorkspaceUI : public ui::UntrustedWebUIController {
 };
 
 // The document a workspace is allowed to frame to display its contents, served
-// from chrome-untrusted://view.<guid>.leo-workspace. Nothing frames it yet.
+// from chrome-untrusted://<guid>.view.leo-workspace. Nothing frames it yet.
 // Being a different origin from the workspace it belongs to, it has none of
 // that workspace's File System Access grants, storage or WebMCP, and no other
 // page may frame it. Anything it needs has to cross the frame boundary.

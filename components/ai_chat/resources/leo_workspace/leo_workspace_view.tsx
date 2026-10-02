@@ -7,11 +7,10 @@ import { kReadFileRequest, kReadFileResponse } from './message_handler'
 
 const kScheme = 'chrome-untrusted://'
 
-// chrome-untrusted://view.<uuid>.leo-workspace -> chrome-untrusted://<uuid>.leo-workspace
+// chrome-untrusted://<uuid>.view.leo-workspace -> chrome-untrusted://<uuid>.leo-workspace
 export function workspaceOrigin(viewerOrigin: string): string {
-  const viewPrefix = `${kScheme}view.`
-  return viewerOrigin.startsWith(viewPrefix)
-    ? viewerOrigin.replace(viewPrefix, kScheme)
+  return viewerOrigin.startsWith(kScheme)
+    ? viewerOrigin.replace(/\.view\.leo-workspace$/, '.leo-workspace')
     : ''
 }
 

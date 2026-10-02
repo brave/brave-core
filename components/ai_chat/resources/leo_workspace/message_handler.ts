@@ -23,12 +23,12 @@ interface ReadFileResponse {
 
 const kScheme = 'chrome-untrusted://'
 
-// chrome-untrusted://leo-workspace -> chrome-untrusted://view.leo-workspace.
+// chrome-untrusted://<uuid>.leo-workspace -> chrome-untrusted://<uuid>.view.leo-workspace.
 // Derived at runtime so it follows the workspace host, and '' for anything that
 // isn't a chrome-untrusted origin, which must never be trusted.
 export function viewOrigin(origin: string): string {
   return origin.startsWith(kScheme)
-    ? origin.replace(kScheme, `${kScheme}view.`)
+    ? origin.replace(/\.leo-workspace$/, '.view.leo-workspace')
     : ''
 }
 

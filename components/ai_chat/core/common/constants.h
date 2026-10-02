@@ -66,10 +66,11 @@ static_assert(
         std::string_view(kAIChatLeoWorkspaceUIHost),
     "The workspace host suffix must be the workspace host, preceded by a dot.");
 
-// Prefixed to a workspace's host to get the host of that workspace's viewer
-// document (chrome-untrusted://view.<uuid>.leo-workspace), which is a separate
+// Replaces the workspace suffix to get the host of that workspace's viewer
+// document (chrome-untrusted://<uuid>.view.leo-workspace), which is a separate
 // origin from the workspace that frames it.
-inline constexpr char kAIChatLeoWorkspaceViewUIHostPrefix[] = "view.";
+inline constexpr char kAIChatLeoWorkspaceViewUIHostSuffix[] =
+    ".view.leo-workspace";
 
 }  // namespace ai_chat
 

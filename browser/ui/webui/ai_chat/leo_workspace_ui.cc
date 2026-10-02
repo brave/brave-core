@@ -50,6 +50,28 @@ std::string UntrustedOrigin(std::string_view host) {
       {content::kChromeUIUntrustedScheme, url::kStandardSchemeSeparator, host});
 }
 
+// For <uuid>.leo-workspace, the viewer host is <uuid>.view.leo-workspace.
+// We compute this by replacing the workspace suffix with the view suffix.
+std::string ViewerHost(std::string_view workspace_host) {
+  CHECK(workspace_host.ends_with(kAIChatLeoWorkspaceUIHostSuffix));
+  return base::StrCat(
+      {workspace_host.substr(
+           0, workspace_host.size() -
+                  std::string_view(kAIChatLeoWorkspaceUIHostSuffix).size()),
+       kAIChatLeoWorkspaceViewUIHostSuffix});
+}
+
+// For <uuid>.view.leo-workspace, the workspace host is <uuid>.leo-workspace.
+// We compute this by replacing the view suffix with the workspace suffix.
+std::string WorkspaceHost(std::string_view viewer_host) {
+  CHECK(viewer_host.ends_with(kAIChatLeoWorkspaceViewUIHostSuffix));
+  return base::StrCat(
+      {viewer_host.substr(
+           0, viewer_host.size() -
+                  std::string_view(kAIChatLeoWorkspaceViewUIHostSuffix).size()),
+       kAIChatLeoWorkspaceUIHostSuffix});
+}
+
 // Creates a data source with restrictive baseline CSPs. Callers should override
 // frame-src, frame-ancestors, and worker-src as needed for their use case.
 content::WebUIDataSource* CreateAndAddDataSource(
@@ -126,8 +148,7 @@ void CreateAndAddWorkspaceDataSource(content::BrowserContext* browser_context,
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       absl::StrFormat("frame-src %s;",
-                      UntrustedOrigin(base::StrCat(
-                          {kAIChatLeoWorkspaceViewUIHostPrefix, url.host()}))));
+                      UntrustedOrigin(ViewerHost(url.host()))));
 }
 
 // Registers the service worker from the browser since chrome-untrusted://
@@ -221,8 +242,7 @@ LeoWorkspaceViewUI::LeoWorkspaceViewUI(content::WebUI* web_ui, const GURL& url)
   content::BrowserContext* browser_context =
       web_ui->GetWebContents()->GetBrowserContext();
   const GURL viewer_url(UntrustedOrigin(url.host()) + "/");
-  const std::string_view workspace_host = url.host().substr(
-      std::string_view(kAIChatLeoWorkspaceViewUIHostPrefix).size());
+  const std::string workspace_host = WorkspaceHost(url.host());
   CreateAndAddViewerDataSource(browser_context, viewer_url, workspace_host);
   RegisterViewerServiceWorker(browser_context, viewer_url,
                               GURL(UntrustedOrigin(workspace_host) + "/"));
