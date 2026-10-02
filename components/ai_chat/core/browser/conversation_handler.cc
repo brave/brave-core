@@ -1379,8 +1379,8 @@ void ConversationHandler::ProcessPermissionChallenge(
 
     // Set output and notify UI
     tool_use->output = std::move(result);
-    OnToolUseEventOutput(GetChatHistoryContainer(thread_uuid).back().get(),
-                         tool_use);
+    OnToolUseEventOutput(
+        GetMutableConversationHistory(thread_uuid).back().get(), tool_use);
 
     // Directly call generation, bypassing the normal tool loop continuation
     // This stops processing of any remaining tools in this turn
@@ -1402,7 +1402,7 @@ void ConversationHandler::ProcessPermissionChallenge(
   tool_use->permission_challenge = nullptr;
 
   // Notify UI of the state change
-  OnToolUseEventOutput(GetChatHistoryContainer(thread_uuid).back().get(),
+  OnToolUseEventOutput(GetMutableConversationHistory(thread_uuid).back().get(),
                        tool_use);
 
   // Find the tool and notify it
@@ -1499,7 +1499,7 @@ void ConversationHandler::AddToConversationHistory(
     turn->uuid = base::Uuid::GenerateRandomV4().AsLowercaseString();
   }
 
-  auto& history = GetChatHistoryContainer(turn->thread_uuid);
+  auto& history = GetMutableConversationHistory(turn->thread_uuid);
 
   MaybeHandleNewThreadEntry(turn->thread_uuid);
 
@@ -1642,7 +1642,7 @@ void ConversationHandler::SetAPIError(EngineConsumer::Error error) {
 void ConversationHandler::UpdateOrCreateLastAssistantEntry(
     const std::optional<std::string>& thread_uuid,
     EngineConsumer::GenerationResultData result) {
-  auto& history = GetChatHistoryContainer(thread_uuid);
+  auto& history = GetMutableConversationHistory(thread_uuid);
   if (needs_new_entry_ || history.empty() ||
       history.back()->character_type != CharacterType::ASSISTANT) {
     needs_new_entry_ = false;
@@ -2115,7 +2115,7 @@ void ConversationHandler::OnEngineCompletionComplete(
     } else {
       DVLOG(2) << __func__ << ": With no error";
       // No error but check if no content was received
-      auto& last_entry = GetChatHistoryContainer(thread_uuid).back();
+      auto& last_entry = GetMutableConversationHistory(thread_uuid).back();
       if (last_entry->character_type != mojom::CharacterType::ASSISTANT) {
         SetAPIError(mojom::APIError::ConnectionIssue);
       } else {
@@ -2150,7 +2150,7 @@ void ConversationHandler::OnEngineCompletionComplete(
   // request it removes never reaches a client or storage.
   TakeFollowUpSuggestionsFromLastEntry();
 
-  OnConversationEntryAdded(GetChatHistoryContainer(thread_uuid).back());
+  OnConversationEntryAdded(GetMutableConversationHistory(thread_uuid).back());
 
   CompleteGeneration(thread_uuid, true);
 }
@@ -2711,7 +2711,7 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest(
   is_tool_use_in_progress_ = false;
   OnAPIRequestInProgressChanged();
 
-  auto& history = GetChatHistoryContainer(thread_uuid);
+  auto& history = GetMutableConversationHistory(thread_uuid);
   if (history.empty()) {
     return false;
   }
