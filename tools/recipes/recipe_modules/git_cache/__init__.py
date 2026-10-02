@@ -13,7 +13,6 @@ from recipe_modules import (
     git,
     path,
     raw_io,
-    step,
 )
 
 from .api import GitCacheApi as API
@@ -25,7 +24,6 @@ class DEPS(RecipeScriptApi):
     git: git.API
     path: path.API
     raw_io: raw_io.API
-    step: step.API
 
 
 ENV_PROPERTIES = EnvProperties

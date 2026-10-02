@@ -233,13 +233,14 @@ class TriggerTest(unittest.TestCase):
         self.assertEqual(args[0], rust.spec.job_urls)
         self.assertEqual(len(args[0]), 4)
         # Rust has no build parameter; the tag rides in the PROPERTIES payload,
-        # with `chromium_ref` filled from the triggered version.
+        # with `chromium_ref` filled from the triggered version as a
+        # fully-qualified tag ref.
         self.assertEqual(kwargs['params'], {})
         self.assertEqual(
             kwargs['properties'],
             {
                 'brave_subrevision': 7,
-                'chromium_ref': CHROMIUM_TAG,
+                'chromium_ref': f'refs/tags/{CHROMIUM_TAG}',
             },
         )
 
@@ -254,7 +255,7 @@ class TriggerTest(unittest.TestCase):
             kwargs['properties'],
             {
                 'brave_subrevision': toolchain.FIRST_BRAVE_SUBREVISION,
-                'chromium_ref': CHROMIUM_TAG,
+                'chromium_ref': f'refs/tags/{CHROMIUM_TAG}',
             },
         )
 
@@ -270,7 +271,7 @@ class TriggerTest(unittest.TestCase):
     def test_xcode_codifies_properties_and_no_build_param(self):
         spec = toolchain.XcodeToolchain().spec
         self.assertIsNone(spec.build_param)
-        self.assertEqual(spec.properties, ('chromium_tag',))
+        self.assertEqual(spec.properties, ('chromium_ref',))
 
     def test_xcode_triggers_single_job_with_properties_payload(self):
         xcode = toolchain.XcodeToolchain()
@@ -280,9 +281,11 @@ class TriggerTest(unittest.TestCase):
         self.assertEqual(len(args[0]), 1)
         # Like Windows and Rust, Xcode has no build parameter; the tag rides
         # in the PROPERTIES payload instead, filled from the triggered
-        # version under the `chromium_tag` name its recipe expects.
+        # version as a fully-qualified `chromium_ref`.
         self.assertEqual(kwargs['params'], {})
-        self.assertEqual(kwargs['properties'], {'chromium_tag': CHROMIUM_TAG})
+        self.assertEqual(
+            kwargs['properties'], {'chromium_ref': f'refs/tags/{CHROMIUM_TAG}'}
+        )
 
     def test_xcode_rejects_unexpected_extra_properties(self):
         launcher = MagicMock()
@@ -306,9 +309,11 @@ class TriggerTest(unittest.TestCase):
         self.assertEqual(len(args[0]), 1)
         # Like Rust, Windows has no build parameter; the tag rides in the
         # PROPERTIES payload instead, filled from the triggered version under
-        # the same `chromium_ref` name Rust uses.
+        # the same fully-qualified `chromium_ref` Rust uses.
         self.assertEqual(kwargs['params'], {})
-        self.assertEqual(kwargs['properties'], {'chromium_ref': CHROMIUM_TAG})
+        self.assertEqual(
+            kwargs['properties'], {'chromium_ref': f'refs/tags/{CHROMIUM_TAG}'}
+        )
 
 
 # ---------------------------------------------------------------------------

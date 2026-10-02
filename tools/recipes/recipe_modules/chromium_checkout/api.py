@@ -16,7 +16,7 @@ from recipe_api import RecipeApi
 
 if TYPE_CHECKING:
     from recipe_modules import chromium_checkout
-    from recipe_modules.git_cache.api import GitRef
+    from recipe_modules.git.api import GitRef
 
 # `chrome/VERSION` is a reliable fingerprint for a Chromium repo.
 CHROME_VERSION_FILE = 'chrome/VERSION'
@@ -94,7 +94,8 @@ class ChromiumCheckoutApi(RecipeApi):
         Args:
             chromium_src: Path to the Chromium `src/` directory. Defaults to the
                 `path` module's `chromium_src`, the standard job layout.
-            ref: Optional git ref (branch, tag, or commit) to check out.
+            ref: Optional fully-qualified ref (`refs/heads/...`,
+                `refs/tags/...`, ...) or commit hash to check out.
             run_sync: Whether `gclient sync` runs after the checkout (the
                 default). See `checkout_ref`.
             run_hooks: Whether the sync runs the DEPS hooks (the default). See
@@ -130,9 +131,12 @@ class ChromiumCheckoutApi(RecipeApi):
 
         logging.info('Checking for valid Chromium repo at %s', chromium_src)
         try:
-            self.m.step(
-                'check chrome/VERSION',
-                ['git', 'log', '-1', '--oneline', str(CHROME_VERSION_FILE)],
+            self.m.git(
+                'log',
+                '-1',
+                '--oneline',
+                CHROME_VERSION_FILE,
+                name='check chrome/VERSION',
                 cwd=chromium_src,
             )
         except (subprocess.CalledProcessError, OSError):
@@ -153,7 +157,7 @@ class ChromiumCheckoutApi(RecipeApi):
 
         Args:
             chromium_src: Path to the Chromium `src/` directory.
-            ref: Git ref (branch, tag, or commit) to check out. `origin/HEAD`
+            ref: Fully-qualified ref or commit hash to check out. `origin/HEAD`
                 if not given and *chromium_src* needs cloning; a no-op if not
                 given and *chromium_src* is already checked out.
             should_clone: Whether cloning *chromium_src* is allowed if it
@@ -178,7 +182,7 @@ class ChromiumCheckoutApi(RecipeApi):
         the mirror and *ref* is fetched and checked out explicitly.
         """
         chromium_src = self.m.path.abs(chromium_src)
-        git_ref = self.m.git_cache.parse_ref(ref) if ref else None
+        git_ref = self.m.git.parse_ref(ref) if ref else None
 
         if not self.has_valid_checkout(chromium_src):
             if not should_clone:
@@ -313,7 +317,7 @@ class ChromiumCheckoutApi(RecipeApi):
         self.m.git_cache.populate(
             CHROMIUM_URL,
             ref=ref.populate_ref if ref else None,
-            commit=ref.commit if ref else None,
+            commit=ref.populate_commit if ref else None,
             step_name=populate_step,
         )
         return self.m.git_cache.mirror_dir(CHROMIUM_URL, step_name=exists_step)

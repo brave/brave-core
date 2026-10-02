@@ -2,6 +2,26 @@
   {
     "cmd": [
       "git",
+      "status"
+    ],
+    "cwd": "/b/checkout",
+    "name": "git status"
+  },
+  {
+    "cmd": [
+      "git",
+      "-c",
+      "core.fsync=none",
+      "-c",
+      "protocol.version=2",
+      "fetch",
+      "origin"
+    ],
+    "name": "fetch with options"
+  },
+  {
+    "cmd": [
+      "git",
       "config",
       "gc.auto",
       "0"

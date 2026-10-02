@@ -44,6 +44,10 @@ PROPERTIES = InputProperties
 
 
 def RunSteps(api: DEPS, properties: InputProperties) -> None:
+    # Without a ref, a fresh checkout would silently build from `origin/HEAD`.
+    if not properties.chromium_ref:
+        raise ValueError('chromium_ref is required')
+
     chromium_src = api.chromium_checkout.ensure_checkout(
         ref=properties.chromium_ref
     )
@@ -104,4 +108,14 @@ def GenTests(api: TEST_DEPS):
         api.post_process(post_process.MustRun, 'package ast-grep'),
         api.post_process(post_process.MustRun, 'reset xcode'),
         api.post_process(post_process.StatusSuccess),
+    )
+    # No `chromium_ref` fails the run before anything is checked out.
+    yield api.test(
+        'no chromium_ref',
+        api.platform.name('linux'),
+        api.chromium_checkout.with_git_cache(),
+        api.post_process(post_process.DoesNotRun, 'clone from git cache'),
+        api.post_process(post_process.StatusException),
+        api.post_process(post_process.DropExpectation),
+        status='EXCEPTION',
     )

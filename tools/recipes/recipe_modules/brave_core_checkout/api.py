@@ -22,7 +22,7 @@ from recipe_api import RecipeApi
 
 if TYPE_CHECKING:
     from recipe_modules import brave_core_checkout
-    from recipe_modules.git_cache.api import GitRef
+    from recipe_modules.git.api import GitRef
 
 # Default SSH remote for the brave-core repository.
 REPO_URL = 'git@github.com:brave/brave-core.git'
@@ -99,7 +99,7 @@ class BraveCoreCheckoutApi(RecipeApi):
     @property
     def _git_ref(self) -> GitRef:
         """The `brave_core_ref`, checked to be safe to pass to git."""
-        return self.m.git_cache.parse_ref(self._brave_core_ref)
+        return self.m.git.parse_ref(self._brave_core_ref)
 
     def get_config_defaults(self) -> dict:
         # The module's properties are the defaults of the `.env` config.
@@ -164,7 +164,7 @@ class BraveCoreCheckoutApi(RecipeApi):
         # `git cache` comes from depot_tools.
         self.m.depot_tools.ensure_on_path()
         self.m.git_cache.populate(
-            CACHE_REPO_URL, ref=ref.populate_ref, commit=ref.commit
+            CACHE_REPO_URL, ref=ref.populate_ref, commit=ref.populate_commit
         )
         return self.m.git_cache.mirror_dir(CACHE_REPO_URL)
 
@@ -243,9 +243,12 @@ class BraveCoreCheckoutApi(RecipeApi):
 
     def _chromium_tag(self, mirror_dir: str, rev: str) -> str:
         """The Chromium tag `package.json` pins at *rev*, read with `git show`."""
-        result = self.m.step(
-            'read chromium tag',
-            ['git', '--git-dir', mirror_dir, 'show', f'{rev}:package.json'],
+        result = self.m.git(
+            '--git-dir',
+            mirror_dir,
+            'show',
+            f'{rev}:package.json',
+            name='read chromium tag',
             stdout=self.m.raw_io.output_text(),
             step_test_data=lambda: self.m.raw_io.test_api.stream_output_text(
                 self.test_api.package_json()
@@ -356,27 +359,25 @@ class BraveCoreCheckoutApi(RecipeApi):
             logging.info(
                 'brave-core checkout present at %s; updating to %s', dest, ref
             )
-            self.m.step(
-                'fetch brave-core ref',
-                [
-                    'git',
-                    '-C',
-                    str(dest),
-                    'fetch',
-                    '--depth',
-                    str(depth),
-                    'origin',
-                    ref,
-                ],
+            self.m.git(
+                'fetch',
+                '--depth',
+                str(depth),
+                'origin',
+                ref,
+                name='fetch brave-core ref',
+                cwd=dest,
             )
-            self.m.step(
-                'checkout brave-core ref',
-                ['git', '-C', str(dest), 'checkout', '--force', 'FETCH_HEAD'],
+            self.m.git(
+                'checkout',
+                '--force',
+                'FETCH_HEAD',
+                name='checkout brave-core ref',
+                cwd=dest,
             )
         else:
             self.m.path.mkdir(dest.parent)
-            clone_cmd = [
-                'git',
+            self.m.git(
                 'clone',
                 '--depth',
                 str(depth),
@@ -385,9 +386,9 @@ class BraveCoreCheckoutApi(RecipeApi):
                 '--branch',
                 git_ref.short_name,
                 url,
-                str(dest),
-            ]
-            self.m.step('clone brave-core (shallow, sparse)', clone_cmd)
+                dest,
+                name='clone brave-core (shallow, sparse)',
+            )
 
         # Ask the checkout which subtrees are already present and drop any
         # request it (or an ancestor) already covers, so a path is never
@@ -405,9 +406,12 @@ class BraveCoreCheckoutApi(RecipeApi):
             # Extend the sparse working tree with the not-yet-present subtrees.
             # `add` (rather than `set`) accumulates, so subtrees checked out by
             # a prior call or an external bootstrap into this checkout survive.
-            self.m.step(
-                'sparse-checkout add',
-                ['git', '-C', str(dest), 'sparse-checkout', 'add', *new_paths],
+            self.m.git(
+                'sparse-checkout',
+                'add',
+                *new_paths,
+                name='sparse-checkout add',
+                cwd=dest,
             )
 
         for rel in rel_paths:
@@ -426,9 +430,11 @@ class BraveCoreCheckoutApi(RecipeApi):
         cone is still empty) or is uninitialised. Non-zero is treated as
         "nothing deployed yet" rather than an error.
         """
-        result = self.m.step(
-            'sparse-checkout list',
-            ['git', '-C', str(dest), 'sparse-checkout', 'list'],
+        result = self.m.git(
+            'sparse-checkout',
+            'list',
+            name='sparse-checkout list',
+            cwd=dest,
             check=False,
             stdout=self.m.raw_io.output_text(),
         )

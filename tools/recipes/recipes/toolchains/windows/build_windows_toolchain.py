@@ -16,6 +16,7 @@ from recipe_api import RecipeScriptApi
 from recipe_modules import (
     brave_core_checkout,
     depot_tools,
+    git,
     path,
     platform,
     step,
@@ -27,6 +28,7 @@ from recipe_test_api import RecipeTestApi
 class DEPS(RecipeScriptApi):
     brave_core_checkout: brave_core_checkout.API
     depot_tools: depot_tools.API
+    git: git.API
     path: path.API
     step: step.API
 
@@ -41,6 +43,9 @@ PROPERTIES = InputProperties
 
 
 def RunSteps(api: DEPS, properties: InputProperties) -> None:
+    # The script takes the bare tag; anything but a tag ref fails the run.
+    chromium_tag = api.git.parse_ref(properties.chromium_ref).tag
+
     brave_core_root = api.brave_core_checkout.deploy('tools/cr')
 
     vpython3 = api.depot_tools.vpython3()
@@ -54,7 +59,7 @@ def RunSteps(api: DEPS, properties: InputProperties) -> None:
         '--out-dir',
         api.path.out,
         '--chromium-tag',
-        properties.chromium_ref,
+        chromium_tag,
         '--clear',
         '--upload',
     ]
@@ -74,7 +79,7 @@ def GenTests(api: TEST_DEPS):
         api.post_process(
             post_process.StepCommandContains,
             'build windows toolchain',
-            ['--chromium-tag', 'refs/tags/150.0.7841.1'],
+            ['--chromium-tag', '150.0.7841.1'],
         ),
         api.post_process(
             post_process.StepCommandContains,
@@ -88,3 +93,20 @@ def GenTests(api: TEST_DEPS):
         ),
         api.post_process(post_process.StatusSuccess),
     )
+    # The script reads the tag through gitiles, so a branch (or a bare,
+    # unqualified tag) is refused before anything is deployed.
+    for name, ref in (
+        ('branch', 'refs/heads/main'),
+        ('bare tag', '150.0.7841.1'),
+    ):
+        yield api.test(
+            f'{name} refused',
+            api.platform.name('win'),
+            api.properties(chromium_ref=ref),
+            api.post_process(
+                post_process.DoesNotRun, 'build windows toolchain'
+            ),
+            api.post_process(post_process.StatusException),
+            api.post_process(post_process.DropExpectation),
+            status='EXCEPTION',
+        )

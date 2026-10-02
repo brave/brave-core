@@ -91,7 +91,7 @@ TOOLCHAINS = {
                 'https://ci.brave.com/view/toolchains/job/'
                 'xcode-hermetic-toolchain-build/',
             ),
-            'properties': ('chromium_tag',),
+            'properties': ('chromium_ref',),
         },
         'repin': {
             'script': 'build/mac/download_hermetic_xcode.py',
@@ -460,9 +460,8 @@ class Toolchain:
 
         payload = dict(provided)
         if 'chromium_ref' in self.spec.properties:
-            payload.setdefault('chromium_ref', str(version))
-        if 'chromium_tag' in self.spec.properties:
-            payload.setdefault('chromium_tag', str(version))
+            # Recipes take fully-qualified refs, never a bare tag.
+            payload.setdefault('chromium_ref', f'refs/tags/{version}')
         if 'brave_subrevision' in self.spec.properties:
             payload.setdefault('brave_subrevision', FIRST_BRAVE_SUBREVISION)
         if set(payload) != set(self.spec.properties):

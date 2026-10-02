@@ -21,6 +21,27 @@
     "name": "no short name"
   },
   {
+    "cmd": [
+      "echo",
+      "none"
+    ],
+    "name": "no branch for tag"
+  },
+  {
+    "cmd": [
+      "echo",
+      "none"
+    ],
+    "name": "no tag for head"
+  },
+  {
+    "cmd": [
+      "echo",
+      "none"
+    ],
+    "name": "no commit for ref"
+  },
+  {
     "name": "$result"
   }
 ]
