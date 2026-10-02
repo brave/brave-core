@@ -877,7 +877,6 @@ if (!is_android) {
     sources = [
       "//brave/browser/net/brave_network_audit_allowed_lists.h",
       "//brave/browser/net/brave_network_audit_browsertest.cc",
-      "//brave/browser/net/brave_network_audit_search_ad_browsertest.cc",
       "//brave/browser/net/brave_network_audit_test_helper.cc",
       "//brave/browser/net/brave_network_audit_test_helper.h",
     ]
@@ -928,7 +927,14 @@ if (!is_android) {
     }
 
     if (enable_brave_ads) {
-      deps += [ "//brave/components/brave_ads/core/public:headers" ]
+      sources +=
+          [ "//brave/browser/net/brave_network_audit_search_ad_browsertest.cc" ]
+      deps += [
+        "//brave/browser/brave_ads",
+        "//brave/components/brave_ads/core/browser/service",
+        "//brave/components/brave_ads/core/browser/service:test_support",
+        "//brave/components/brave_ads/core/public:headers",
+      ]
     }
 
     if (enable_playlist_webui) {
