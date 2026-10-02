@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/extensions/extensions_menu_view.cc b/chrome/browser/ui/views/extensions/extensions_menu_view.cc
-index c5e88c382f28685b6bed8b6c7cda616f28f729df..4f3ecf5b7aa7d3f98a86cfc1f62a299d402769e5 100644
+index 2f7b5aa25e49ef18938316066e1440491d5d546e..025bdf34d6ccb7680afe5304319be0aa947968dc 100644
 --- a/chrome/browser/ui/views/extensions/extensions_menu_view.cc
 +++ b/chrome/browser/ui/views/extensions/extensions_menu_view.cc
-@@ -323,7 +323,7 @@ void ExtensionsMenuView::CreateAndInsertNewItem(
+@@ -325,7 +325,7 @@ void ExtensionsMenuView::CreateAndInsertNewItem(
  
    // The bare `new` is safe here, because InsertMenuItem is guaranteed to
    // be added to the view hierarchy, which takes ownership.

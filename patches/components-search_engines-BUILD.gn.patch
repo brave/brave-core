@@ -1,5 +1,5 @@
 diff --git a/components/search_engines/BUILD.gn b/components/search_engines/BUILD.gn
-index 56e40464d01fdc8e75d87b51f63f3264aa47fc4c..c44d1aeefd1032372a3d12ed6fed626384714041 100644
+index c9b4e5ef21dde6b83bfebfdf7534fa852e8ac7c5..0ff1b36e906ebe3d639a260fe73304d0993a077b 100644
 --- a/components/search_engines/BUILD.gn
 +++ b/components/search_engines/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 56e40464d01fdc8e75d87b51f63f3264aa47fc4c..c44d1aeefd1032372a3d12ed6fed6263
  import("//build/config/chrome_build.gni")
  import("//tools/json_to_struct/json_to_struct.gni")
  if (is_android) {
-@@ -128,6 +129,7 @@ static_library("search_engines") {
+@@ -129,6 +130,7 @@ static_library("search_engines") {
      "//ui/gfx/geometry",
      "//url",
    ]

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/component_updater/file_type_policies_component_installer.cc b/chrome/browser/component_updater/file_type_policies_component_installer.cc
-index a99d77d05e094373c2b026a534e10fbbe629f452..a1fd4e00e7330a9f709fe430b78b0073640097cd 100644
+index f6edcfdc20a2f99e5495bcc05349908e73a6348c..71438e5402db8bcd6106b3f4d656d20790245464 100644
 --- a/chrome/browser/component_updater/file_type_policies_component_installer.cc
 +++ b/chrome/browser/component_updater/file_type_policies_component_installer.cc
-@@ -123,10 +123,9 @@ FileTypePoliciesComponentInstallerPolicy::GetInstallerAttributes() const {
+@@ -124,10 +124,9 @@ FileTypePoliciesComponentInstallerPolicy::GetInstallerAttributes() const {
  }
  
  void RegisterFileTypePoliciesComponent(ComponentUpdateService* cus) {
