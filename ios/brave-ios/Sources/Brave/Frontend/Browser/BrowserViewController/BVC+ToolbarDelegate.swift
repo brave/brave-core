@@ -202,6 +202,12 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
   func topToolbarDisplayTextForURL(_ topToolbar: URL?) -> (String?, Bool) {
     // use the initial value for the URL so we can do proper pattern matching with search URLs
     let searchURL = self.tabManager.selectedTab?.currentInitialURL
+    if FeatureList.kUseChromiumSearchEngines.enabled {
+      if let searchURL, let query = templateURLSearchTerms(from: searchURL) {
+        return (query, true)
+      }
+      return (topToolbar?.absoluteString, false)
+    }
     if let query = profile.searchEngines.queryForSearchURL(
       searchURL as URL?,
       forType: privateBrowsingManager.isPrivateBrowsing ? .privateMode : .standard
