@@ -47,6 +47,26 @@ namespace {
 
 constexpr char kTestOrigin[] = "https://brave.com";
 
+void ExpectSingleInjectedAccount(
+    mojo::PendingRemote<mojom::PolkadotApi>&& pending_api,
+    const mojom::AccountInfoPtr& account) {
+  mojo::Remote<mojom::PolkadotApi> api(std::move(pending_api));
+  TestFuture<std::optional<std::vector<mojom::PolkadotInjectedAccountPtr>>,
+             mojom::PolkadotProviderErrorBundlePtr>
+      accounts_future;
+  api->GetAccounts(/*any_type=*/false, accounts_future.GetCallback());
+
+  auto [accounts, accounts_error] = accounts_future.Take();
+  ASSERT_FALSE(accounts_error);
+  ASSERT_TRUE(accounts);
+  ASSERT_EQ(accounts->size(), 1u);
+  EXPECT_THAT(
+      accounts->at(0),
+      EqualsMojo(mojom::PolkadotInjectedAccount::New(
+          account->address, /*genesis_hash=*/std::nullopt,
+          kPolkadotObfuscatedAccountName, kPolkadotSr25519KeypairType)));
+}
+
 class MockBraveWalletProviderDelegate : public BraveWalletProviderDelegate {
  public:
   MockBraveWalletProviderDelegate() = default;
@@ -233,21 +253,7 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_AlreadyPermitted) {
           IsAccountAllowed(mojom::CoinType::DOT, PermissionIdentifier(account)))
       .WillByDefault(testing::Return(true));
 
-  mojo::Remote<mojom::PolkadotApi> api(std::move(pending_api));
-  TestFuture<std::optional<std::vector<mojom::PolkadotInjectedAccountPtr>>,
-             mojom::PolkadotProviderErrorBundlePtr>
-      accounts_future;
-  api->GetAccounts(/*any_type=*/false, accounts_future.GetCallback());
-
-  auto [accounts, accounts_error] = accounts_future.Take();
-  ASSERT_FALSE(accounts_error);
-  ASSERT_TRUE(accounts);
-  ASSERT_EQ(accounts->size(), 1u);
-  EXPECT_THAT(
-      accounts->at(0),
-      EqualsMojo(mojom::PolkadotInjectedAccount::New(
-          account->address, /*genesis_hash=*/std::nullopt,
-          kPolkadotObfuscatedAccountName, kPolkadotSr25519KeypairType)));
+  ExpectSingleInjectedAccount(std::move(pending_api), account);
 }
 
 TEST_F(PolkadotProviderImplUnitTest, Enable_PermissionRequestGranted) {
@@ -273,21 +279,7 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_PermissionRequestGranted) {
           IsAccountAllowed(mojom::CoinType::DOT, PermissionIdentifier(account)))
       .WillByDefault(testing::Return(true));
 
-  mojo::Remote<mojom::PolkadotApi> api(std::move(pending_api));
-  TestFuture<std::optional<std::vector<mojom::PolkadotInjectedAccountPtr>>,
-             mojom::PolkadotProviderErrorBundlePtr>
-      accounts_future;
-  api->GetAccounts(/*any_type=*/false, accounts_future.GetCallback());
-
-  auto [accounts, accounts_error] = accounts_future.Take();
-  ASSERT_FALSE(accounts_error);
-  ASSERT_TRUE(accounts);
-  ASSERT_EQ(accounts->size(), 1u);
-  EXPECT_THAT(
-      accounts->at(0),
-      EqualsMojo(mojom::PolkadotInjectedAccount::New(
-          account->address, /*genesis_hash=*/std::nullopt,
-          kPolkadotObfuscatedAccountName, kPolkadotSr25519KeypairType)));
+  ExpectSingleInjectedAccount(std::move(pending_api), account);
 }
 
 TEST_F(PolkadotProviderImplUnitTest, Enable_ImportedAccountIsADappAccount) {
@@ -311,21 +303,7 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_ImportedAccountIsADappAccount) {
                                             PermissionIdentifier(imported)))
       .WillByDefault(testing::Return(true));
 
-  mojo::Remote<mojom::PolkadotApi> api(std::move(pending_api));
-  TestFuture<std::optional<std::vector<mojom::PolkadotInjectedAccountPtr>>,
-             mojom::PolkadotProviderErrorBundlePtr>
-      accounts_future;
-  api->GetAccounts(/*any_type=*/false, accounts_future.GetCallback());
-
-  auto [accounts, accounts_error] = accounts_future.Take();
-  ASSERT_FALSE(accounts_error);
-  ASSERT_TRUE(accounts);
-  ASSERT_EQ(accounts->size(), 1u);
-  EXPECT_THAT(
-      accounts->at(0),
-      EqualsMojo(mojom::PolkadotInjectedAccount::New(
-          imported->address, /*genesis_hash=*/std::nullopt,
-          kPolkadotObfuscatedAccountName, kPolkadotSr25519KeypairType)));
+  ExpectSingleInjectedAccount(std::move(pending_api), imported);
 }
 
 TEST_F(PolkadotProviderImplUnitTest, Enable_TabInactive) {
