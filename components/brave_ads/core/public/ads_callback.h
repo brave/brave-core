@@ -38,7 +38,8 @@ using GetDiagnosticsCallback =
     base::OnceCallback<void(std::optional<base::DictValue> diagnostics)>;
 
 using EvaluateConditionMatcherCallback =
-    base::OnceCallback<void(std::string current_value, std::string matches)>;
+    base::OnceCallback<void(const std::string& current_value,
+                            const std::string& matches)>;
 
 using GetStatementOfAccountsCallback =
     base::OnceCallback<void(mojom::StatementInfoPtr mojom_statement)>;
