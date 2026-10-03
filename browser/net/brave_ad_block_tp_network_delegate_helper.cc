@@ -58,6 +58,7 @@ ToAdblockFilterRuleInfo(const adblock::FilterRuleInfo* info) {
   result.raw_line = std::string(info->raw_line);
   result.source_index = info->source_index;
   result.line_number = info->line_number;
+  result.source_title = std::string(info->list_title);
 
   return result;
 }
@@ -116,10 +117,9 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
   base::ElapsedTimer elapsed_timer_;
 
  public:
-  AdblockCnameResolveHostClient(
-      const ResponseCallback& next_callback,
-      T<BraveRequestInfo> ctx,
-      EngineFlags previous_result) {
+  AdblockCnameResolveHostClient(const ResponseCallback& next_callback,
+                                T<BraveRequestInfo> ctx,
+                                EngineFlags previous_result) {
     DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
     cb_ = base::BindOnce(&UseCnameResult<T>, std::move(next_callback), ctx,
                          previous_result);

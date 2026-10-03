@@ -26,6 +26,7 @@ struct CONTENT_EXPORT AdblockFilterRuleInfo {
   std::string raw_line;
   uint32_t source_index = 0;
   uint32_t line_number = 0;
+  std::string source_title;
 };
 
 struct CONTENT_EXPORT AdblockInfo {

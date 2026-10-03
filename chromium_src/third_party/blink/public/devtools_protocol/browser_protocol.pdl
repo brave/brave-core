@@ -33,6 +33,7 @@ domain Network
       string rawLine
       integer sourceIndex
       integer lineNumber
+      optional string sourceTitle
 
   experimental type AdblockInfo extends object
     properties
