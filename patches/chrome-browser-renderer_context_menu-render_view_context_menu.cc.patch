@@ -1,7 +1,16 @@
 diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.cc b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
-index 5271cc2681aaca9a2ab6625de203ebd97ce9048f..0208e0ae810793b1ce7dd82f10ae2239854ad154 100644
+index 5271cc2681aaca9a2ab6625de203ebd97ce9048f..c6a2cc21c5433c26f09a0ecc074943ce5dc92563 100644
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.cc
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
+@@ -1205,7 +1205,7 @@ void RenderViewContextMenu::WriteURLToClipboard(const GURL& url, int id) {
+       ui::ClipboardBuffer::kCopyPaste,
+       CreateDataEndpoint(/*notify_if_restricted=*/true));
+   scw.SetDataSourceURL(main_frame_url_, current_url_);
+-  scw.WriteText(FormatURLForClipboard(url));
++  scw.WriteText(BRAVE_REPLACE_CHROME_TO_BRAVE_SCHEME(FormatURLForClipboard(url)));
+ 
+ #if !BUILDFLAG(IS_ANDROID)
+   if (id == IDC_CONTENT_CONTEXT_COPYLINKLOCATION &&
 @@ -2954,6 +2954,7 @@ void RenderViewContextMenu::AppendSearchProvider() {
    if (!selection_navigation_url_.is_valid()) {
      return;
