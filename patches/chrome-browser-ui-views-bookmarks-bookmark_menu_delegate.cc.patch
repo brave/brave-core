@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/bookmarks/bookmark_menu_delegate.cc b/chrome/browser/ui/views/bookmarks/bookmark_menu_delegate.cc
+index 59af504e3f36303e3664c007d4572bb6e36cd0d5..d9d619f40e6e5f24441663ec761e4b5cc2fe827d 100644
+--- a/chrome/browser/ui/views/bookmarks/bookmark_menu_delegate.cc
++++ b/chrome/browser/ui/views/bookmarks/bookmark_menu_delegate.cc
+@@ -82,7 +82,7 @@ namespace {
+ 
+ // Max width of a menu. There does not appear to be an OS value for this, yet
+ // both IE and FF restrict the max width of a menu.
+-const int kMaxMenuWidth = 400;
++const int kMaxMenuWidth = 500;
+ 
+ size_t GetSubmenuChildCount(const MenuItemView* menu) {
+   return menu->HasSubmenu() ? menu->GetSubmenu()->children().size() : 0;

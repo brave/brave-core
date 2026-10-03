@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Replace SavedTabGroupButton with BraveSavedTabGroupButton
+
+      Note that we're using regex instead of rename_class so that other places
+      still usage SavedTabGroupButton except construction time. This will help
+      us to reduce additional patches with polymorphism.
+    regex:
+      pattern: 'make_unique<SavedTabGroupButton>'
+      replace: 'make_unique<BraveSavedTabGroupButton>'

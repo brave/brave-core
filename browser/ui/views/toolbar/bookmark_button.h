@@ -9,6 +9,10 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
+namespace brave {
+void RestyleBookmarkLabel(views::Label* label);
+}  // namespace brave
+
 class BraveBookmarkButton : public ToolbarButton {
   METADATA_HEADER(BraveBookmarkButton, ToolbarButton)
  public:

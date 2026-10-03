@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_bar.cc b/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_bar.cc
+index 201ac592240d6f8882fd20ae560ae2e0d18ddd33..6c1aca1c73bbb7630cc348ec33e162deeb3e9e0c 100644
+--- a/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_bar.cc
++++ b/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_bar.cc
+@@ -380,7 +380,7 @@ void SavedTabGroupBar::AddTabGroupButton(const SavedTabGroup& group,
+   int clamped_index =
+       index < num_buttons ? index : std::max(0, num_buttons - 1);
+   views::View* view = AddChildViewAt(
+-      std::make_unique<SavedTabGroupButton>(
++      std::make_unique<BraveSavedTabGroupButton>(
+           group,
+           base::BindRepeating(&SavedTabGroupBar::OnTabGroupButtonPressed,
+                               weak_ptr_factory_.GetWeakPtr(),
