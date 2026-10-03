@@ -518,7 +518,6 @@ test("brave_unit_tests") {
       "//chrome/common/importer/mock_importer_bridge.cc",
       "//chrome/common/importer/mock_importer_bridge.h",
       "//components/gcm_driver/account_tracker_unittest.cc",
-      "//components/gcm_driver/gcm_account_mapper_unittest.cc",
       "//components/gcm_driver/gcm_account_tracker_unittest.cc",
       "//components/gcm_driver/gcm_client_impl_unittest.cc",
       "//components/gcm_driver/gcm_delayed_task_controller_unittest.cc",
