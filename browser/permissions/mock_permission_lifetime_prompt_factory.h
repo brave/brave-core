@@ -57,7 +57,7 @@ class MockPermissionLifetimePromptFactory {
  private:
   int show_count_;
 
-  std::vector<MockPermissionLifetimePrompt*> prompts_;
+  std::vector<raw_ptr<MockPermissionLifetimePrompt>> prompts_;
   PermissionRequestManager::AutoResponseType response_type_;
 
   base::RepeatingClosure show_bubble_quit_closure_;
