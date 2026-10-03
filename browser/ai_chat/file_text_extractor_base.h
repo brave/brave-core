@@ -45,14 +45,7 @@ class FileTextExtractorBase : public RestrictedWebContentsDelegate,
   FileTextExtractorBase(const FileTextExtractorBase&) = delete;
   FileTextExtractorBase& operator=(const FileTextExtractorBase&) = delete;
 
-  // Two entry points for text extraction:
-
-  // Use an existing file path directly (e.g. from file picker).
-  void ExtractText(content::BrowserContext* browser_context,
-                   const base::FilePath& file_path,
-                   ExtractTextCallback callback);
-
-  // Write bytes to a temp file first (e.g. from drag-and-drop).
+  // Writes bytes to a temp file before extracting text.
   // |extension| is the file extension for MIME type detection (without
   // leading dot).
   void ExtractText(content::BrowserContext* browser_context,
@@ -72,10 +65,6 @@ class FileTextExtractorBase : public RestrictedWebContentsDelegate,
   // Returns the URL to load for the given file path. Default returns a
   // file:// URL. Override to customize, e.g. view-source:file://.
   virtual GURL GetLoadURL(const base::FilePath& file_path) const;
-
-  // Starts loading a file in a hidden WebContents.
-  void LoadInWebContents(content::BrowserContext* browser_context,
-                         const base::FilePath& file_path);
 
   // Writes bytes to a temp file, then loads it. |extension| is the file
   // extension to use for MIME type detection (without leading dot).

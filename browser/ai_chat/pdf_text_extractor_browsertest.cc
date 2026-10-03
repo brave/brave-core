@@ -7,6 +7,7 @@
 
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/files/file_util.h"
@@ -34,21 +35,7 @@ class PdfTextExtractorBrowserTest : public InProcessBrowserTest {
   content::BrowserContext* browser_context() { return browser()->GetProfile(); }
 };
 
-IN_PROC_BROWSER_TEST_F(PdfTextExtractorBrowserTest, PathOverload_ExtractsText) {
-  base::FilePath pdf_path = GetTestPdfPath("dummy.pdf");
-
-  auto extractor = std::make_unique<PdfTextExtractor>();
-  base::test::TestFuture<std::optional<std::string>> future;
-
-  extractor->ExtractText(browser_context(), pdf_path, future.GetCallback());
-
-  auto result = future.Take();
-  ASSERT_TRUE(result.has_value());
-  EXPECT_EQ(*result, "This is the way\nI have spoken");
-}
-
-IN_PROC_BROWSER_TEST_F(PdfTextExtractorBrowserTest,
-                       BytesOverload_ExtractsText) {
+IN_PROC_BROWSER_TEST_F(PdfTextExtractorBrowserTest, ExtractsText) {
   std::optional<std::vector<uint8_t>> pdf_bytes;
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
@@ -68,12 +55,18 @@ IN_PROC_BROWSER_TEST_F(PdfTextExtractorBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(PdfTextExtractorBrowserTest, EmptyPdf_ReturnsEmpty) {
-  base::FilePath pdf_path = GetTestPdfPath("empty_pdf.pdf");
+  std::optional<std::vector<uint8_t>> pdf_bytes;
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    pdf_bytes = base::ReadFileToBytes(GetTestPdfPath("empty_pdf.pdf"));
+  }
+  ASSERT_TRUE(pdf_bytes.has_value());
 
   auto extractor = std::make_unique<PdfTextExtractor>();
   base::test::TestFuture<std::optional<std::string>> future;
 
-  extractor->ExtractText(browser_context(), pdf_path, future.GetCallback());
+  extractor->ExtractText(browser_context(), std::move(*pdf_bytes),
+                         FILE_PATH_LITERAL("pdf"), future.GetCallback());
 
   auto result = future.Take();
   // Empty PDF should either return empty string or nullopt.
