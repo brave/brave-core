@@ -53,7 +53,6 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_metrics.h"
 #include "chrome/browser/profiles/profile_window.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -151,12 +150,12 @@ namespace {
 
 bool CanTakeTabs(const BrowserWindowInterface* from,
                  const BrowserWindowInterface* to) {
-  return from != to && from->GetType() == Browser::TYPE_NORMAL &&
+  return from != to && from->GetType() == BrowserWindowInterface::TYPE_NORMAL &&
          !UnloadController::From(from)->is_attempting_to_close_browser() &&
          !from->IsDeleteScheduled() && to->GetProfile() == from->GetProfile();
 }
 
-std::vector<int> GetSelectedIndices(Browser* browser) {
+std::vector<int> GetSelectedIndices(BrowserWindowInterface* browser) {
   auto* model = browser->tab_strip_model();
   const auto& selection = model->selection_model().GetListSelectionModel();
   auto indices = std::vector<int>(selection.selected_indices().begin(),
@@ -221,7 +220,7 @@ class BookmarksExportListener : public ui::SelectFileDialog::Listener {
     file_selector_->ListenerDestroyed();
     delete this;
   }
-  void ShowFileDialog(Browser* browser) {
+  void ShowFileDialog(BrowserWindowInterface* browser) {
     ui::SelectFileDialog::FileTypeInfo file_types;
 
     // Only show HTML files in the file dialog.
@@ -270,7 +269,7 @@ void NewTorConnectionForSite(BrowserWindowInterface* browser) {
 }
 #endif
 
-void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
+void MaybeDistillAndShowSpeedreaderBubble(BrowserWindowInterface* browser) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
   if (!contents) {
@@ -283,7 +282,7 @@ void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 }
 
-void ShowBraveVPNBubble(Browser* browser) {
+void ShowBraveVPNBubble(BrowserWindowInterface* browser) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   BraveVPNController::From(browser)->ShowBraveVPNBubble();
 #endif
@@ -298,7 +297,7 @@ void ToggleBraveVPNTrayIcon() {
 #endif
 }
 
-void ToggleBraveVPNButton(Browser* browser) {
+void ToggleBraveVPNButton(BrowserWindowInterface* browser) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   auto* prefs = browser->GetProfile()->GetPrefs();
   const bool show = prefs->GetBoolean(brave_vpn::prefs::kBraveVPNShowButton);
@@ -306,7 +305,7 @@ void ToggleBraveVPNButton(Browser* browser) {
 #endif
 }
 
-void OpenBraveVPNUrls(Browser* browser, int command_id) {
+void OpenBraveVPNUrls(BrowserWindowInterface* browser, int command_id) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   auto* vpn_service =
       brave_vpn::BraveVpnServiceFactory::GetForProfile(browser->GetProfile());
@@ -333,7 +332,7 @@ void OpenBraveVPNUrls(Browser* browser, int command_id) {
 #endif
 }
 
-void ToggleSidePanel(Browser* browser, SidePanelEntryId id) {
+void ToggleSidePanel(BrowserWindowInterface* browser, SidePanelEntryId id) {
 #if defined(TOOLKIT_VIEWS)
   SidePanelUI* side_panel_ui = SidePanelUI::From(browser);
   side_panel_ui->Toggle(SidePanelEntry::Key(id),
@@ -341,18 +340,18 @@ void ToggleSidePanel(Browser* browser, SidePanelEntryId id) {
 #endif
 }
 
-void ToggleAIChat(Browser* browser) {
+void ToggleAIChat(BrowserWindowInterface* browser) {
   ToggleSidePanel(browser, SidePanelEntryId::kChatUI);
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-void ShowWalletBubble(Browser* browser) {
+void ShowWalletBubble(BrowserWindowInterface* browser) {
 #if defined(TOOLKIT_VIEWS)
   BraveBrowserView::GetBrowserViewForBrowser(browser)->CreateWalletBubble();
 #endif
 }
 
-void CloseWalletBubble(Browser* browser) {
+void CloseWalletBubble(BrowserWindowInterface* browser) {
 #if defined(TOOLKIT_VIEWS)
   BraveBrowserView::GetBrowserViewForBrowser(browser)->CloseWalletBubble();
 #endif
@@ -433,14 +432,14 @@ void ToggleVerticalTabStrip(BrowserWindowInterface* browser) {
                     !was_using_vertical_tab_strip);
 }
 
-void ToggleVerticalTabStripFloatingMode(Browser* browser) {
+void ToggleVerticalTabStripFloatingMode(BrowserWindowInterface* browser) {
   auto* prefs = browser->GetProfile()->GetOriginalProfile()->GetPrefs();
   prefs->SetBoolean(
       brave_tabs::kVerticalTabsFloatingEnabled,
       !prefs->GetBoolean(brave_tabs::kVerticalTabsFloatingEnabled));
 }
 
-void ToggleVerticalTabStripExpanded(Browser* browser) {
+void ToggleVerticalTabStripExpanded(BrowserWindowInterface* browser) {
   auto* prefs = browser->GetProfile()->GetPrefs();
   bool expanded_state_per_window =
       prefs->GetBoolean(brave_tabs::kVerticalTabsExpandedStatePerWindow);
@@ -464,7 +463,7 @@ void ToggleVerticalTabStripExpanded(Browser* browser) {
   vtsr_view->ToggleState();
 }
 
-void ToggleActiveTabAudioMute(Browser* browser) {
+void ToggleActiveTabAudioMute(BrowserWindowInterface* browser) {
   WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
   if (!contents) {
     return;
@@ -475,13 +474,13 @@ void ToggleActiveTabAudioMute(Browser* browser) {
                    std::string());
 }
 
-void ToggleSidebarPosition(Browser* browser) {
+void ToggleSidebarPosition(BrowserWindowInterface* browser) {
   auto* prefs = browser->GetProfile()->GetPrefs();
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment,
                     !prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
 }
 
-void ToggleSidebar(Browser* browser) {
+void ToggleSidebar(BrowserWindowInterface* browser) {
   if (!browser) {
     return;
   }
@@ -515,7 +514,7 @@ void ToggleFocusMode(BrowserWindowInterface* browser) {
   }
 }
 
-void ToggleShieldsEnabled(Browser* browser) {
+void ToggleShieldsEnabled(BrowserWindowInterface* browser) {
   if (!browser) {
     return;
   }
@@ -533,7 +532,7 @@ void ToggleShieldsEnabled(Browser* browser) {
   shields->SetBraveShieldsEnabled(!shields->IsBraveShieldsEnabled());
 }
 
-void ToggleJavascriptEnabled(Browser* browser) {
+void ToggleJavascriptEnabled(BrowserWindowInterface* browser) {
   if (!browser) {
     return;
   }
@@ -552,7 +551,7 @@ void ToggleJavascriptEnabled(Browser* browser) {
 }
 
 #if BUILDFLAG(ENABLE_COMMANDER)
-void ToggleCommander(Browser* browser) {
+void ToggleCommander(BrowserWindowInterface* browser) {
   if (auto* commander_service =
           commander::CommanderServiceFactory::GetForBrowserContext(
               browser->GetProfile())) {
@@ -562,12 +561,12 @@ void ToggleCommander(Browser* browser) {
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-void ShowPlaylistBubble(Browser* browser) {
+void ShowPlaylistBubble(BrowserWindowInterface* browser) {
   BraveBrowserWindow::FromBrowser(browser)->ShowPlaylistBubble();
 }
 #endif
 
-void GroupTabsOnCurrentOrigin(Browser* browser) {
+void GroupTabsOnCurrentOrigin(BrowserWindowInterface* browser) {
   auto url =
       browser->tab_strip_model()->GetActiveWebContents()->GetVisibleURL();
   auto origin = url::Origin::Create(url);
@@ -589,7 +588,7 @@ void GroupTabsOnCurrentOrigin(Browser* browser) {
   group->SetVisualData(data);
 }
 
-void MoveGroupToNewWindow(Browser* browser) {
+void MoveGroupToNewWindow(BrowserWindowInterface* browser) {
   auto* tsm = browser->tab_strip_model();
   auto current_group_id = tsm->GetTabGroupForTab(tsm->active_index());
   if (!current_group_id.has_value()) {
@@ -599,7 +598,7 @@ void MoveGroupToNewWindow(Browser* browser) {
   tsm->delegate()->MoveGroupToNewWindow(current_group_id.value());
 }
 
-bool IsInGroup(Browser* browser) {
+bool IsInGroup(BrowserWindowInterface* browser) {
   if (!browser) {
     return false;
   }
@@ -609,7 +608,7 @@ bool IsInGroup(Browser* browser) {
   return current_group_id.has_value();
 }
 
-bool HasUngroupedTabs(Browser* browser) {
+bool HasUngroupedTabs(BrowserWindowInterface* browser) {
   if (!browser) {
     return false;
   }
@@ -623,7 +622,7 @@ bool HasUngroupedTabs(Browser* browser) {
   return false;
 }
 
-void GroupUngroupedTabs(Browser* browser) {
+void GroupUngroupedTabs(BrowserWindowInterface* browser) {
   if (!browser) {
     return;
   }
@@ -644,7 +643,7 @@ void GroupUngroupedTabs(Browser* browser) {
   tsm->AddToNewGroup(group_indices);
 }
 
-void UngroupCurrentGroup(Browser* browser) {
+void UngroupCurrentGroup(BrowserWindowInterface* browser) {
   if (!browser) {
     return;
   }
@@ -663,7 +662,7 @@ void UngroupCurrentGroup(Browser* browser) {
   tsm->RemoveFromGroup(indices);
 }
 
-void RemoveTabFromGroup(Browser* browser) {
+void RemoveTabFromGroup(BrowserWindowInterface* browser) {
   if (!browser) {
     return;
   }
@@ -671,7 +670,7 @@ void RemoveTabFromGroup(Browser* browser) {
   tsm->RemoveFromGroup({tsm->active_index()});
 }
 
-void NameGroup(Browser* browser) {
+void NameGroup(BrowserWindowInterface* browser) {
   if (!browser) {
     return;
   }
@@ -685,7 +684,7 @@ void NameGroup(Browser* browser) {
   tsm->OpenTabGroupEditor(*group_id);
 }
 
-void NewTabInGroup(Browser* browser) {
+void NewTabInGroup(BrowserWindowInterface* browser) {
   if (!browser) {
     return;
   }
@@ -700,7 +699,7 @@ void NewTabInGroup(Browser* browser) {
   tsm->delegate()->AddTabAt(GURL(), tabs.end(), true, *group_id);
 }
 
-bool CanUngroupAllTabs(Browser* browser) {
+bool CanUngroupAllTabs(BrowserWindowInterface* browser) {
   if (!browser) {
     return false;
   }
@@ -713,7 +712,7 @@ bool CanUngroupAllTabs(Browser* browser) {
   return false;
 }
 
-void UngroupAllTabs(Browser* browser) {
+void UngroupAllTabs(BrowserWindowInterface* browser) {
   if (!browser) {
     return;
   }
@@ -723,7 +722,7 @@ void UngroupAllTabs(Browser* browser) {
   browser->tab_strip_model()->RemoveFromGroup(indices);
 }
 
-void ToggleGroupExpanded(Browser* browser) {
+void ToggleGroupExpanded(BrowserWindowInterface* browser) {
   if (!browser) {
     return;
   }
@@ -740,7 +739,7 @@ void ToggleGroupExpanded(Browser* browser) {
   group->SetVisualData(vd_update);
 }
 
-void CloseUngroupedTabs(Browser* browser) {
+void CloseUngroupedTabs(BrowserWindowInterface* browser) {
   if (!browser) {
     return;
   }
@@ -762,7 +761,7 @@ void CloseUngroupedTabs(Browser* browser) {
   }
 }
 
-void CloseTabsNotInCurrentGroup(Browser* browser) {
+void CloseTabsNotInCurrentGroup(BrowserWindowInterface* browser) {
   if (!browser) {
     return;
   }
@@ -789,7 +788,7 @@ void CloseTabsNotInCurrentGroup(Browser* browser) {
   }
 }
 
-void CloseGroup(Browser* browser) {
+void CloseGroup(BrowserWindowInterface* browser) {
   if (!browser) {
     return;
   }
@@ -941,7 +940,7 @@ void CloseDuplicatesOfActiveTab(BrowserWindowInterface* browser) {
   }
 }
 
-bool HasAnyDuplicateTabs(Browser* browser) {
+bool HasAnyDuplicateTabs(BrowserWindowInterface* browser) {
   auto* tsm = browser->tab_strip_model();
   base::flat_set<GURL> urls;
   for (int i = 0; i < tsm->count(); ++i) {
@@ -955,7 +954,7 @@ bool HasAnyDuplicateTabs(Browser* browser) {
   return false;
 }
 
-void CloseAllDuplicateTabs(Browser* browser) {
+void CloseAllDuplicateTabs(BrowserWindowInterface* browser) {
   auto* tsm = static_cast<BraveTabStripModel*>(browser->tab_strip_model());
   CHECK(tsm);
 
@@ -973,7 +972,7 @@ void CloseAllDuplicateTabs(Browser* browser) {
                               TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
 }
 
-bool CanCloseTabsToLeft(Browser* browser) {
+bool CanCloseTabsToLeft(BrowserWindowInterface* browser) {
   auto* tsm = browser->tab_strip_model();
   const auto& selection = tsm->selection_model();
   if (selection.empty()) {
@@ -985,7 +984,7 @@ bool CanCloseTabsToLeft(Browser* browser) {
   return left_selected > 0;
 }
 
-void CloseTabsToLeft(Browser* browser) {
+void CloseTabsToLeft(BrowserWindowInterface* browser) {
   auto* tsm = browser->tab_strip_model();
   const auto& selection = tsm->selection_model();
   if (selection.empty()) {
@@ -1000,13 +999,13 @@ void CloseTabsToLeft(Browser* browser) {
   }
 }
 
-bool CanCloseUnpinnedTabs(Browser* browser) {
+bool CanCloseUnpinnedTabs(BrowserWindowInterface* browser) {
   auto first_unpinned_index =
       browser->tab_strip_model()->IndexOfFirstNonPinnedTab();
   return first_unpinned_index < browser->tab_strip_model()->count();
 }
 
-void CloseUnpinnedTabs(Browser* browser) {
+void CloseUnpinnedTabs(BrowserWindowInterface* browser) {
   auto* tsm = browser->tab_strip_model();
   DCHECK(CanCloseUnpinnedTabs(browser));
 
@@ -1016,13 +1015,13 @@ void CloseUnpinnedTabs(Browser* browser) {
   }
 }
 
-void AddAllTabsToNewGroup(Browser* browser) {
+void AddAllTabsToNewGroup(BrowserWindowInterface* browser) {
   std::vector<int> indices(browser->tab_strip_model()->count());
   std::iota(indices.begin(), indices.end(), 0);
   browser->tab_strip_model()->AddToNewGroup(indices);
 }
 
-bool CanMuteAllTabs(Browser* browser, bool exclude_active) {
+bool CanMuteAllTabs(BrowserWindowInterface* browser, bool exclude_active) {
   auto* tsm = browser->tab_strip_model();
   for (int i = 0; i < tsm->count(); ++i) {
     if (exclude_active && tsm->active_index() == i) {
@@ -1037,7 +1036,7 @@ bool CanMuteAllTabs(Browser* browser, bool exclude_active) {
   return false;
 }
 
-void MuteAllTabs(Browser* browser, bool exclude_active) {
+void MuteAllTabs(BrowserWindowInterface* browser, bool exclude_active) {
   auto* tsm = browser->tab_strip_model();
   for (int i = 0; i < tsm->count(); ++i) {
     if (exclude_active && tsm->active_index() == i) {
@@ -1051,7 +1050,7 @@ void MuteAllTabs(Browser* browser, bool exclude_active) {
   }
 }
 
-bool CanUnmuteAllTabs(Browser* browser) {
+bool CanUnmuteAllTabs(BrowserWindowInterface* browser) {
   auto* tsm = browser->tab_strip_model();
   for (int i = 0; i < tsm->count(); ++i) {
     auto* contents = tsm->GetWebContentsAt(i);
@@ -1062,7 +1061,7 @@ bool CanUnmuteAllTabs(Browser* browser) {
   return false;
 }
 
-void UnmuteAllTabs(Browser* browser) {
+void UnmuteAllTabs(BrowserWindowInterface* browser) {
   auto* tsm = browser->tab_strip_model();
   for (int i = 0; i < tsm->count(); ++i) {
     auto* contents = tsm->GetWebContentsAt(i);
@@ -1072,17 +1071,17 @@ void UnmuteAllTabs(Browser* browser) {
   }
 }
 
-void ScrollTabToTop(Browser* browser) {
+void ScrollTabToTop(BrowserWindowInterface* browser) {
   auto* contents = browser->tab_strip_model()->GetActiveWebContents();
   contents->ScrollToTopOfDocument();
 }
 
-void ScrollTabToBottom(Browser* browser) {
+void ScrollTabToBottom(BrowserWindowInterface* browser) {
   auto* contents = browser->tab_strip_model()->GetActiveWebContents();
   contents->ScrollToBottomOfDocument();
 }
 
-void ExportAllBookmarks(Browser* browser) {
+void ExportAllBookmarks(BrowserWindowInterface* browser) {
   (new BookmarksExportListener(browser->GetProfile()))->ShowFileDialog(browser);
 }
 
@@ -1093,7 +1092,7 @@ void ToggleAllBookmarksButtonVisibility(BrowserWindowInterface* browser) {
       !prefs->GetBoolean(brave::bookmarks::prefs::kShowAllBookmarksButton));
 }
 
-bool CanOpenNewSplitTabsWithSideBySide(Browser* browser) {
+bool CanOpenNewSplitTabsWithSideBySide(BrowserWindowInterface* browser) {
   auto* tab_strip_model = browser->tab_strip_model();
   auto active_index = tab_strip_model->active_index();
   if (active_index == TabStripModel::kNoTab) {
@@ -1103,7 +1102,7 @@ bool CanOpenNewSplitTabsWithSideBySide(Browser* browser) {
   return !tab_strip_model->GetSplitForTab(active_index).has_value();
 }
 
-bool CanSplitTabsWithSideBySide(Browser* browser) {
+bool CanSplitTabsWithSideBySide(BrowserWindowInterface* browser) {
   auto* tab_strip_model = browser->tab_strip_model();
   if (tab_strip_model->empty()) {
     return false;
@@ -1119,7 +1118,7 @@ bool CanSplitTabsWithSideBySide(Browser* browser) {
   });
 }
 
-bool IsSplitTabs(Browser* browser) {
+bool IsSplitTabs(BrowserWindowInterface* browser) {
   auto* tab_strip_model = browser->tab_strip_model();
   if (tab_strip_model->empty()) {
     return false;
@@ -1131,7 +1130,7 @@ bool IsSplitTabs(Browser* browser) {
   });
 }
 
-void SplitTabsWithSideBySide(Browser* browser,
+void SplitTabsWithSideBySide(BrowserWindowInterface* browser,
                              split_tabs::SplitTabCreatedSource source) {
   CHECK(brave::CanSplitTabsWithSideBySide(browser));
 
@@ -1152,7 +1151,7 @@ void SplitTabsWithSideBySide(Browser* browser,
       source);
 }
 
-void RemoveSplitWithSideBySide(Browser* browser) {
+void RemoveSplitWithSideBySide(BrowserWindowInterface* browser) {
   auto selected_indices = GetSelectedIndices(browser);
   auto* tab_strip_model = browser->tab_strip_model();
   for (auto index : selected_indices) {
@@ -1162,7 +1161,7 @@ void RemoveSplitWithSideBySide(Browser* browser) {
   }
 }
 
-void SwapTabsInSplitWithSideBySide(Browser* browser) {
+void SwapTabsInSplitWithSideBySide(BrowserWindowInterface* browser) {
   auto* tab_strip_model = browser->tab_strip_model();
   auto active_index = tab_strip_model->active_index();
   CHECK_NE(TabStripModel::kNoTab, active_index);
@@ -1172,7 +1171,7 @@ void SwapTabsInSplitWithSideBySide(Browser* browser) {
   tab_strip_model->ReverseTabsInSplit(*split_id);
 }
 
-void ForcePasteInBrowser(Browser* browser) {
+void ForcePasteInBrowser(BrowserWindowInterface* browser) {
   CHECK(browser);
   auto* contents = browser->tab_strip_model()->GetActiveWebContents();
   if (!contents) {

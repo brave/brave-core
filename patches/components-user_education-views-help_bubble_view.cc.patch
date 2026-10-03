@@ -1,5 +1,5 @@
 diff --git a/components/user_education/views/help_bubble_view.cc b/components/user_education/views/help_bubble_view.cc
-index 3e5f91d201abd9d1da0985aee47cb1a5ba76c096..200dc1edea8775d0e96407ce14f5f1270d10929f 100644
+index d51a5ce1d151f991c92aa23accd21fcfaddaed90..2ccc0fa865f0dd5a5b2b8350eab43f7a16fcc34f 100644
 --- a/components/user_education/views/help_bubble_view.cc
 +++ b/components/user_education/views/help_bubble_view.cc
 @@ -141,6 +141,8 @@ class MdIPHBubbleButton : public views::MdTextButton {

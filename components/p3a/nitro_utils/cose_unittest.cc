@@ -140,24 +140,24 @@ class CoseSign1Test : public testing::Test {
 // test was written for is not currently in use.
 // Upstream change: https://chromium.googlesource.com/chromium/src/+/3f3d8dee
 TEST_F(CoseSign1Test, DISABLED_DecodeFromExampleBytes) {
-  EXPECT_TRUE(cose_sign1.payload().is_none());
-  EXPECT_TRUE(cose_sign1.protected_headers().is_none());
-  EXPECT_TRUE(cose_sign1.unprotected_headers().is_none());
+  EXPECT_FALSE(cose_sign1.payload().has_value());
+  EXPECT_FALSE(cose_sign1.protected_headers().has_value());
+  EXPECT_FALSE(cose_sign1.unprotected_headers().has_value());
   EXPECT_TRUE(cose_sign1.DecodeFromBytes(LoadExampleDocument()));
 
-  EXPECT_TRUE(cose_sign1.protected_headers().is_map());
+  EXPECT_TRUE(cose_sign1.protected_headers()->is_map());
 
   const cbor::Value::MapValue& protected_headers_map =
-      cose_sign1.protected_headers().GetMap();
+      cose_sign1.protected_headers()->GetMap();
   const cbor::Value::MapValue::const_iterator alg_value_it =
       protected_headers_map.find(cbor::Value(1));
   EXPECT_NE(alg_value_it, protected_headers_map.end());
   EXPECT_TRUE(alg_value_it->second.is_integer());
 
-  EXPECT_TRUE(cose_sign1.unprotected_headers().is_map());
+  EXPECT_TRUE(cose_sign1.unprotected_headers()->is_map());
 
-  EXPECT_TRUE(cose_sign1.payload().is_map());
-  const cbor::Value::MapValue& payload_map = cose_sign1.payload().GetMap();
+  EXPECT_TRUE(cose_sign1.payload()->is_map());
+  const cbor::Value::MapValue& payload_map = cose_sign1.payload()->GetMap();
   // Verify a couple fields to ensure decoded payload is being stored.
   const cbor::Value::MapValue::const_iterator nonce_value_it =
       payload_map.find(cbor::Value("nonce"));
@@ -180,9 +180,9 @@ TEST_F(CoseSign1Test, BadLength) {
   EXPECT_FALSE(
       cose_sign1.DecodeFromBytes(SerializeDocument(cbor::Value(doc_arr))));
 
-  EXPECT_TRUE(cose_sign1.payload().is_none());
-  EXPECT_TRUE(cose_sign1.protected_headers().is_none());
-  EXPECT_TRUE(cose_sign1.unprotected_headers().is_none());
+  EXPECT_FALSE(cose_sign1.payload().has_value());
+  EXPECT_FALSE(cose_sign1.protected_headers().has_value());
+  EXPECT_FALSE(cose_sign1.unprotected_headers().has_value());
 }
 
 // DISABLED for now. Upstream removed allow_and_canonicalize_out_of_order_keys
@@ -201,18 +201,18 @@ TEST_F(CoseSign1Test, DISABLED_BadSignature) {
   EXPECT_FALSE(
       cose_sign1.DecodeFromBytes(SerializeDocument(cbor::Value(doc_arr))));
 
-  EXPECT_TRUE(cose_sign1.payload().is_map());
-  EXPECT_TRUE(cose_sign1.protected_headers().is_map());
-  EXPECT_TRUE(cose_sign1.unprotected_headers().is_map());
+  EXPECT_TRUE(cose_sign1.payload()->is_map());
+  EXPECT_TRUE(cose_sign1.protected_headers()->is_map());
+  EXPECT_TRUE(cose_sign1.unprotected_headers()->is_map());
 }
 
 TEST_F(CoseSign1Test, BadRootType) {
   EXPECT_FALSE(
       cose_sign1.DecodeFromBytes(SerializeDocument(cbor::Value("bad doc"))));
 
-  EXPECT_TRUE(cose_sign1.payload().is_none());
-  EXPECT_TRUE(cose_sign1.protected_headers().is_none());
-  EXPECT_TRUE(cose_sign1.unprotected_headers().is_none());
+  EXPECT_FALSE(cose_sign1.payload().has_value());
+  EXPECT_FALSE(cose_sign1.protected_headers().has_value());
+  EXPECT_FALSE(cose_sign1.unprotected_headers().has_value());
 }
 
 }  // namespace nitro_utils

@@ -1,5 +1,5 @@
 diff --git a/extensions/browser/BUILD.gn b/extensions/browser/BUILD.gn
-index 1486919f4f9ad15ff8ed300f5185b98d534d76a7..f3d0702947f638ce6667c716a26260d7d3f22cf8 100644
+index 4bc6dc027159e0ec984622cfda5b2a0d37ea819f..81b20b2c99481b3bea8ba787f44815fc83bc3982 100644
 --- a/extensions/browser/BUILD.gn
 +++ b/extensions/browser/BUILD.gn
 @@ -10,7 +10,7 @@ import("//rlz/buildflags/buildflags.gni")

@@ -25,7 +25,7 @@
 namespace commander {
 CommanderProvider::CommanderProvider(AutocompleteProviderClient* client,
                                      AutocompleteProviderListener* listener)
-    : AutocompleteProvider(AutocompleteProvider::TYPE_BRAVE_COMMANDER),
+    : AutocompleteProvider(AutocompleteProvider::Type::kBraveCommander),
       client_(client) {
   if (listener) {
     AddListener(listener);
@@ -95,7 +95,7 @@ void CommanderProvider::OnCommanderUpdated() {
     }
 
     AutocompleteMatch match(this, rank--, false,
-                            AutocompleteMatchType::BOOKMARK_TITLE);
+                            omnibox::AutocompleteMatchType::kBookmarkTitle);
     match.RecordAdditionalInfo(kCommanderMatchMarker, true);
     match.takeover_action =
         base::MakeRefCounted<CommanderAction>(i, delegate->GetResultSetId());

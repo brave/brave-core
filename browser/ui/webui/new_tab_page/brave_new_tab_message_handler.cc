@@ -66,7 +66,8 @@ using ntp_background_images::prefs::kNewTabTakeoverNotificationDismissed;
 namespace {
 
 bool IsPrivateNewTab(Profile* profile) {
-  return profile->IsIncognitoProfile() || profile->IsGuestSession();
+  return profile->IsIncognitoProfile() || profile->IsGuestSession() ||
+         profile->IsEnterpriseIsolatedModeProfile();
 }
 
 base::DictValue GetStatsDictionary(PrefService* prefs) {

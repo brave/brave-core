@@ -101,7 +101,6 @@
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "chrome/browser/first_run/first_run.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #endif
 

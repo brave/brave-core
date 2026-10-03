@@ -23,6 +23,7 @@ brave_browser_misc_metrics_deps = [
   "//chrome/browser/bookmarks",
   "//chrome/browser/profiles",
   "//chrome/browser/profiles:profile_util",
+  "//chrome/browser/themes",
   "//components/keyed_service/content",
   "//components/keyed_service/core",
   "//content/public/browser",

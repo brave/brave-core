@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
-index c4af70fe195ee349c192c79fa8985ab29b9c5f94..eae4864ea01fcb7e5e4f7405ad9d6f1618144f5f 100644
+index 358acdc3073e374dcc64da051b091e99d155f974..91be9a9d40605488ea53eeed28e70a0a1e97bc51 100644
 --- a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 +++ b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 @@ -124,7 +124,7 @@ CoreAccountInfo GetSigninPrimaryAccount(Profile* profile) {
@@ -57,7 +57,7 @@ index c4af70fe195ee349c192c79fa8985ab29b9c5f94..eae4864ea01fcb7e5e4f7405ad9d6f16
  #endif
    TRACE_EVENT_BEGIN("identity", "MintTokenFlow",
                      IdentityMintRequestQueue::GetRequestTrack(this), "type",
-@@ -959,7 +967,7 @@ void IdentityGetAuthTokenFunction::OnIdentityAPIShutdown() {
+@@ -964,7 +972,7 @@ void IdentityGetAuthTokenFunction::OnIdentityAPIShutdown() {
    token_key_account_access_token_fetcher_.reset();
    refresh_tokens_loaded_waiter_.reset();
    scoped_identity_manager_observation_.Reset();
@@ -66,7 +66,7 @@ index c4af70fe195ee349c192c79fa8985ab29b9c5f94..eae4864ea01fcb7e5e4f7405ad9d6f16
    accounts_in_cookie_updated_waiter_.reset();
  #endif
    extensions::IdentityAPI::GetFactoryInstance()
-@@ -1034,7 +1042,7 @@ void IdentityGetAuthTokenFunction::ShowExtensionLoginPrompt() {
+@@ -1039,7 +1047,7 @@ void IdentityGetAuthTokenFunction::ShowExtensionLoginPrompt() {
  #endif
  
  void IdentityGetAuthTokenFunction::ShowRemoteConsentDialog() {
@@ -75,7 +75,7 @@ index c4af70fe195ee349c192c79fa8985ab29b9c5f94..eae4864ea01fcb7e5e4f7405ad9d6f16
    // On Android, Gaia session cookies are reconciled asynchronously after
    // sign-in. Defer showing the remote consent dialog until cookies are
    // ready in the cookie jar to prevent loading a blank consent page.
-@@ -1191,7 +1199,7 @@ void IdentityGetAuthTokenFunction::RefreshTokensLoadedWaiter::
+@@ -1196,7 +1204,7 @@ void IdentityGetAuthTokenFunction::RefreshTokensLoadedWaiter::
    std::move(callback_).Run();
  }
  

@@ -9,7 +9,6 @@
 #include <string>
 
 #include "base/values.h"
-#include "build/build_config.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
@@ -20,6 +19,38 @@
 #include "ui/base/clipboard/test/test_clipboard.h"
 
 using ui::Clipboard;
+
+namespace {
+
+// TestClipboard's IsMarkedByOriginatorAsConfidential() always returns false,
+// so this test needs to track the confidential privacy bit itself instead of
+// relying on the real platform clipboard (mac only). Using the real
+// NSPasteboard here made this test flaky in CI, since it's a resource shared
+// across every process on the machine.
+class ConfidentialTrackingTestClipboard : public ui::TestClipboard {
+ public:
+  void WritePortableAndPlatformRepresentations(
+      ui::ClipboardBuffer buffer,
+      const ObjectMap& objects,
+      const std::vector<RawData>& raw_objects,
+      std::vector<PlatformRepresentation> platform_representations,
+      std::unique_ptr<ui::DataTransferEndpoint> data_src,
+      uint32_t privacy_types) override {
+    is_confidential_ = (privacy_types & Clipboard::kNoDisplay) != 0;
+    ui::TestClipboard::WritePortableAndPlatformRepresentations(
+        buffer, objects, raw_objects, std::move(platform_representations),
+        std::move(data_src), privacy_types);
+  }
+
+  bool IsMarkedByOriginatorAsConfidential() const override {
+    return is_confidential_;
+  }
+
+ private:
+  bool is_confidential_ = false;
+};
+
+}  // namespace
 
 class BraveSyncHandlerUnittest : public testing::Test {
  public:
@@ -44,12 +75,8 @@ class BraveSyncHandlerUnittest : public testing::Test {
   }
 
   void SetUp() override {
-    // In order to use IsMarkedByOriginatorAsConfidential we cannot use
-    // TestClipboard class. TestClipboard is platform independent and the
-    // method IsMarkedByOriginatorAsConfidential always gives false.
-    // IsMarkedByOriginatorAsConfidential works only on mac, so
-    // we use platform clipboard. It requires gentle release on Teardown,
-    // see PlatformClipboardTraits::Destroy
+    Clipboard::SetClipboardForCurrentThread(
+        std::make_unique<ConfidentialTrackingTestClipboard>());
     clipboard_ = Clipboard::GetForCurrentThread();
   }
 
@@ -89,9 +116,5 @@ TEST_F(BraveSyncHandlerUnittest, CopySyncCodeToClipboard) {
       &clipboard(), ui::ClipboardBuffer::kCopyPaste,
       /* data_dst = */ nullptr);
   EXPECT_EQ(ascii_text, kSyncCodeExample);
-
-#if BUILDFLAG(IS_MAC)
-  // IsMarkedByOriginatorAsConfidential is implemented for mac only
   EXPECT_TRUE(clipboard().IsMarkedByOriginatorAsConfidential());
-#endif  // BUILDFLAG(IS_MAC)
 }

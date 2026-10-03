@@ -78,6 +78,7 @@ source_set("ai_chat") {
   if (!is_android) {
     deps += [
       "//chrome/browser/ui:chrome_pages",
+      "//chrome/browser/ui:singleton_tabs",
       "//chrome/browser/ui/tabs:tab_model",
       "//chrome/browser/ui/tabs:tab_strip",
       "//chrome/browser/ui/thumbnails",
@@ -124,6 +125,7 @@ source_set("unit_tests") {
     "//brave/components/ai_chat/core/common/mojom",
     "//chrome/browser/favicon",
     "//chrome/test:test_support",
+    "//chrome/test/base:chrome_render_view_host_test_harness",
     "//content/test:test_support",
     "//pdf:buildflags",
     "//services/data_decoder/public/cpp:test_support",
@@ -151,6 +153,7 @@ source_set("browser_tests") {
     "//chrome/browser/ui",
     "//chrome/test",
     "//chrome/test:test_support",
+    "//chrome/test/base:chrome_test_utils",
   ]
 
   if (!is_android) {

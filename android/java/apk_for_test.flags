@@ -89,12 +89,6 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.sync.settings.ManageSyncSettings {
-    *** mGoogleActivityControls;
-    *** mSyncEncryption;
-    *** mSyncEverything;
-}
-
 -keep class org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter {
     *** mProfile;
     *** getSearchEngineSourceType(...);

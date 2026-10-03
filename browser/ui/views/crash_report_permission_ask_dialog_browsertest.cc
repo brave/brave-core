@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/metrics/metrics_reporting_util.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/session_crashed_bubble.h"
 #include "chrome/browser/ui/test/test_browser_dialog.h"

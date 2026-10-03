@@ -13,7 +13,6 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.filters.SmallTest;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -103,7 +102,6 @@ public final class BraveToolbarLongPressMenuHandlerUnitTest {
      * is left with the "Move address bar to the bottom/top" item only.
      */
     @Test
-    @SmallTest
     @Restriction({DeviceFormFactor.PHONE})
     public void testbuildMenuItems() {
         ModelList list = mToolbarLongPressMenuHandler.buildMenuItems(true);
@@ -119,7 +117,6 @@ public final class BraveToolbarLongPressMenuHandlerUnitTest {
 
     /** Copy actions must be offered when the address bar has a URL to copy. */
     @Test
-    @SmallTest
     @Restriction({DeviceFormFactor.PHONE})
     public void testbuildMenuItemsWithUrl() {
         mUrl = JUnitTestGURLs.EXAMPLE_URL;

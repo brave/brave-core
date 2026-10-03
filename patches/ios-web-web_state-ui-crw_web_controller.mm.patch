@@ -1,8 +1,8 @@
 diff --git a/ios/web/web_state/ui/crw_web_controller.mm b/ios/web/web_state/ui/crw_web_controller.mm
-index 95054813280102408906ad7ddba90f3772a0cece..baf789a4b0cbaf079c1ceb4a2af3e827668bfdae 100644
+index e6bfd1f7e3b80eab872568aa50aaa79e420552ab..ac323d50dc140a5d80534ae1919221e228576f6d 100644
 --- a/ios/web/web_state/ui/crw_web_controller.mm
 +++ b/ios/web/web_state/ui/crw_web_controller.mm
-@@ -339,11 +339,11 @@ JavaScriptCompletionBlock WrapCompletionBlock(
+@@ -346,11 +346,11 @@ JavaScriptCompletionBlock WrapCompletionBlock(
        web::AnnotationsTextManager::CreateForWebState(_webStateImpl);
      }
  

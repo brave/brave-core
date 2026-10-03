@@ -15,10 +15,10 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -512,7 +512,8 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
 #if !BUILDFLAG(IS_MAC)
     // Verify new window is active and tab is active in the window
     EXPECT_TRUE(
-        Browser::FromSessionID(GetSessionIdForTabId(tab_to_move))->IsActive());
+        BrowserWindowInterface::FromSessionID(GetSessionIdForTabId(tab_to_move))
+            ->IsActive());
     EXPECT_FALSE(b2->IsActive());
     EXPECT_TRUE(tabs::TabHandle(tab_to_move).Get()->IsActivated());
 #endif

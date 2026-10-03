@@ -14,7 +14,6 @@
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/common/features.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"

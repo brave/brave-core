@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index 563383fc71d7bc73f0af0fd2130879d0844ba2af..0a0361d87d3eecc5514f88940d423706e57f2796 100644
+index 45ffea4f8d3b9c1b906dbfb2af90650461e3a7e9..ad380e9c35f1223cebdf04c367af1bcca1975fe3 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -27,3 +27,11 @@ index 563383fc71d7bc73f0af0fd2130879d0844ba2af..0a0361d87d3eecc5514f88940d423706
        sources += [
          # These files are temporary workarounds to allow for a lightweight
          # extensions runtime in desktop-android builds. They should be removed
+@@ -2040,6 +2042,7 @@ source_set("unit_tests") {
+     "//base",
+     "//base/test:test_config",
+     "//base/test:test_support",
++    "//brave/browser/extensions",
+     "//chrome/browser:browser_process_impl",
+     "//chrome/browser:global_features",
+     "//chrome/browser/background",

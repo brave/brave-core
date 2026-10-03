@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.h b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.h
-index 53bdc5b2e63b4b1437cf4166cb84ba17aa402ea6..454ca446fa630590fd7562f5442d6b7298237caa 100644
+index dec2563796d2b79c248c5dc5ee49c2b4333befa3..8698d467e8c05667dfaa6681a53897721d00940e 100644
 --- a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.h
 +++ b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.h
 @@ -146,7 +146,7 @@ class IdentityGetAuthTokenFunction : public ExtensionFunction,

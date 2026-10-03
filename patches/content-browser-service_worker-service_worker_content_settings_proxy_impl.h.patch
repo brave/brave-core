@@ -1,10 +1,10 @@
 diff --git a/content/browser/service_worker/service_worker_content_settings_proxy_impl.h b/content/browser/service_worker/service_worker_content_settings_proxy_impl.h
-index 7d85e7775efcef45aebe1f05d9408947fc91be40..e1dac7f497999a530b8458766a5557d76075a2ef 100644
+index 4b6577415c90e0b1d77eafa214e919553a215475..0f15952431bf6b8dd6cbf7425ef9e1275240c800 100644
 --- a/content/browser/service_worker/service_worker_content_settings_proxy_impl.h
 +++ b/content/browser/service_worker/service_worker_content_settings_proxy_impl.h
-@@ -40,6 +40,9 @@ class ServiceWorkerContentSettingsProxyImpl final
-   void AllowWebLocks(AllowCacheStorageCallback callback) override;
+@@ -41,6 +41,9 @@ class ServiceWorkerContentSettingsProxyImpl final
    void AllowFileSystem(AllowFileSystemCallback callback) override;
+   void AllowWriteToClipboard(AllowWriteToClipboardCallback callback) override;
  
 +  void GetBraveShieldsSettings(
 +      GetBraveShieldsSettingsCallback callback) override;

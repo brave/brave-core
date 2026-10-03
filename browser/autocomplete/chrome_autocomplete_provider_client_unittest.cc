@@ -20,8 +20,9 @@ class AutocompleteControllerLeoTest : public testing::Test {
   // Creates a "Leo" match in the result.
   static AutocompleteMatch MakeLeoMatch(const std::u16string& contents,
                                         int relevance) {
-    AutocompleteMatch match(nullptr, relevance, false,
-                            AutocompleteMatchType::SEARCH_SUGGEST_ENTITY);
+    AutocompleteMatch match(
+        nullptr, relevance, false,
+        omnibox::AutocompleteMatchType::kSearchSuggestEntity);
     match.contents = contents;
     match.RecordAdditionalInfo("match-from-brave-leo-provider", true);
     return match;
@@ -31,7 +32,7 @@ class AutocompleteControllerLeoTest : public testing::Test {
   static AutocompleteMatch MakeRegularMatch(const std::u16string& contents,
                                             int relevance) {
     AutocompleteMatch match(nullptr, relevance, false,
-                            AutocompleteMatchType::SEARCH_SUGGEST);
+                            omnibox::AutocompleteMatchType::kSearchSuggest);
     match.contents = contents;
     return match;
   }

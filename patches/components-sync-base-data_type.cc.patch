@@ -1,8 +1,8 @@
 diff --git a/components/sync/base/data_type.cc b/components/sync/base/data_type.cc
-index 83848e38518d8016425a520f37834aaab74005d2..04da0f31aad11a06ace16f9cec605c6bacc4e7bc 100644
+index c4cb0b89180a4039e7f57433a9d69fe3d89b377d..7e7024c0223cbedd922e3679bd38b353d57cff24 100644
 --- a/components/sync/base/data_type.cc
 +++ b/components/sync/base/data_type.cc
-@@ -1192,10 +1192,25 @@ constexpr std::array<DataTypeInfo, syncer::GetNumDataTypes()>
+@@ -1174,10 +1174,25 @@ constexpr std::array<DataTypeInfo, syncer::GetNumDataTypes()>
              .cross_user_sharing_policy = CrossUserSharingPolicy::kNone,
              .local_sync_support_policy = LocalSyncSupportPolicy::kUnsupported,
          },
@@ -24,12 +24,12 @@ index 83848e38518d8016425a520f37834aaab74005d2..04da0f31aad11a06ace16f9cec605c6b
      }};
  
  // LINT.IfChange(DataTypeHistogramSuffix)
--static_assert(GetNumDataTypes() == 65,
-+static_assert(GetNumDataTypes() == 65 + 1,
+-static_assert(GetNumDataTypes() == 64,
++static_assert(GetNumDataTypes() == 64 + 1,
                "When adding a new type, update kDataTypeInfoTable, update "
                "histograms.xml and follow the integration checklist in "
                "https://www.chromium.org/developers/design-documents/sync/"
-@@ -1418,6 +1433,9 @@ void AddDefaultFieldValue(DataType type, sync_pb::EntitySpecifics* specifics) {
+@@ -1397,6 +1412,9 @@ void AddDefaultFieldValue(DataType type, sync_pb::EntitySpecifics* specifics) {
      case AUTOFILL_ENTITY_SUPPRESSION:
        specifics->mutable_autofill_entity_suppression();
        break;
@@ -39,7 +39,7 @@ index 83848e38518d8016425a520f37834aaab74005d2..04da0f31aad11a06ace16f9cec605c6b
    }
  }
  
-@@ -1756,6 +1774,8 @@ DataTypeForHistograms DataTypeHistogramValue(DataType data_type) {
+@@ -1733,6 +1751,8 @@ DataTypeForHistograms DataTypeHistogramValue(DataType data_type) {
        return DataTypeForHistograms::kJourney;
      case AUTOFILL_ENTITY_SUPPRESSION:
        return DataTypeForHistograms::kAutofillEntitySuppression;

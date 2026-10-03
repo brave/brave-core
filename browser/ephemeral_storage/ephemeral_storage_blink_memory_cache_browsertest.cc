@@ -5,7 +5,6 @@
 
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/test/browser_test.h"

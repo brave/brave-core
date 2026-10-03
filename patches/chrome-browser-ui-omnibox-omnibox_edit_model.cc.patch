@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/omnibox/omnibox_edit_model.cc b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
-index 7956bfeda0b44dfb4d11e1e85f0cfe274c9ebc51..cca1e7f221eada31fa1bf9026f4c22d4f8fae964 100644
+index 04c7b809dc3569f234b2de2dc2c03aea38ded81c..2de7dd1b7f62ba2d10510c3b871422b9112a251d 100644
 --- a/chrome/browser/ui/omnibox/omnibox_edit_model.cc
 +++ b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
 @@ -544,6 +544,10 @@ bool OmniboxEditModel::ShouldShowCurrentPageIcon() const {
@@ -22,7 +22,7 @@ index 7956bfeda0b44dfb4d11e1e85f0cfe274c9ebc51..cca1e7f221eada31fa1bf9026f4c22d4
    const std::u16string input_text = MaybePrependKeyword(user_text_);
  
    size_t cursor_position =
-@@ -736,6 +742,9 @@ void OmniboxEditModel::StartAutocomplete(bool prevent_inline_autocomplete) {
+@@ -737,6 +743,9 @@ void OmniboxEditModel::StartAutocomplete(bool prevent_inline_autocomplete) {
  }
  
  bool OmniboxEditModel::CanPasteAndGo(const std::u16string& text) const {
