@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/mac/smart_restart.h"
+
 #include <optional>
 
 #include "chrome/browser/enterprise/browser_management/management_service_factory.h"
