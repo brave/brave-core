@@ -6,8 +6,10 @@
 #include "build/build_config.h"
 
 #if BUILDFLAG(IS_MAC)
-// Implemented in brave/browser/mac/smart_restart.cc.
+namespace keystone_glue {
+// Implemented in brave/browser/mac/keystone_glue.mm.
 bool BraveIsSparkleTheUpdater();
+}  // namespace keystone_glue
 #endif  // BUILDFLAG(IS_MAC)
 
 namespace {
@@ -16,7 +18,7 @@ namespace {
 // rewrite/chrome/browser/lifetime/smart_restart_policy.cc.yaml.
 bool IsSmartRestartBlockedByBrave() {
 #if BUILDFLAG(IS_MAC)
-  return BraveIsSparkleTheUpdater();
+  return keystone_glue::BraveIsSparkleTheUpdater();
 #else
   return false;
 #endif  // BUILDFLAG(IS_MAC)

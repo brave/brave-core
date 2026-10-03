@@ -3,10 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/mac/smart_restart.h"
-
 #include <optional>
 
+#include "brave/browser/mac/keystone_glue.h"
 #include "chrome/browser/enterprise/browser_management/management_service_factory.h"
 #include "chrome/browser/lifetime/restartability_monitor.h"
 #include "chrome/browser/lifetime/smart_restart_policy.h"
@@ -24,7 +23,9 @@ class BraveSmartRestartPolicyTest : public testing::Test {
       : profile_manager_(TestingBrowserProcess::GetGlobal()) {}
 
   void SetUp() override { ASSERT_TRUE(profile_manager_.SetUp()); }
-  void TearDown() override { SetSparkleIsUpdaterForTesting(std::nullopt); }
+  void TearDown() override {
+    keystone_glue::SetSparkleIsUpdaterForTesting(std::nullopt);
+  }
 
  protected:
   content::BrowserTaskEnvironment task_environment_;
@@ -35,24 +36,24 @@ class BraveSmartRestartPolicyTest : public testing::Test {
 };
 
 TEST_F(BraveSmartRestartPolicyTest, ZeroWindowProceedsWithoutSparkle) {
-  SetSparkleIsUpdaterForTesting(false);
+  keystone_glue::SetSparkleIsUpdaterForTesting(false);
   EXPECT_TRUE(SmartRestartPolicy::CanZeroWindowRestartProceed());
 }
 
 TEST_F(BraveSmartRestartPolicyTest, ZeroWindowBlockedWithSparkle) {
-  SetSparkleIsUpdaterForTesting(true);
+  keystone_glue::SetSparkleIsUpdaterForTesting(true);
   EXPECT_FALSE(SmartRestartPolicy::CanZeroWindowRestartProceed());
 }
 
 TEST_F(BraveSmartRestartPolicyTest, LockScreenProceedsWithoutSparkle) {
-  SetSparkleIsUpdaterForTesting(false);
+  keystone_glue::SetSparkleIsUpdaterForTesting(false);
   EXPECT_EQ(ExtendedExecutionOutcome::kExecuted,
             SmartRestartPolicy::CanLockScreenRestartProceed(
                 ExtendedRestartabilityState()));
 }
 
 TEST_F(BraveSmartRestartPolicyTest, LockScreenBlockedWithSparkle) {
-  SetSparkleIsUpdaterForTesting(true);
+  keystone_glue::SetSparkleIsUpdaterForTesting(true);
   EXPECT_EQ(ExtendedExecutionOutcome::kBlockedByPolicy,
             SmartRestartPolicy::CanLockScreenRestartProceed(
                 ExtendedRestartabilityState()));
