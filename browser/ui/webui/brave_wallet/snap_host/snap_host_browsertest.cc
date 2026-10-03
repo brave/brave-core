@@ -7,6 +7,7 @@
 
 #include "base/run_loop.h"
 #include "base/task/single_thread_task_runner.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -86,13 +87,13 @@ class SnapHostFeatureDisabledBrowserTest : public InProcessBrowserTest {
 // Proves resource wiring: the host loads and signals readiness to its
 // parent.
 IN_PROC_BROWSER_TEST_F(SnapHostBrowserTest, HostResourcesLoadAndSignalReady) {
-  auto* wallet_rfh =
-      ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletURL));
-  ASSERT_TRUE(wallet_rfh);
+  auto* host_rfh =
+      ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletSnapHostURL));
+  ASSERT_TRUE(host_rfh);
 
   // The assignment's value is the pending Promise itself, so this must not
   // wait on it — it only resolves once the iframe below is created.
-  ASSERT_TRUE(content::ExecJs(wallet_rfh, R"js(
+  ASSERT_TRUE(content::ExecJs(host_rfh, R"js(
     window.executorReadyPromise = new Promise(resolve => {
       window.addEventListener('message', function onMsg(event) {
         if (event.data && event.data.type === 'executorReady') {
@@ -104,20 +105,20 @@ IN_PROC_BROWSER_TEST_F(SnapHostBrowserTest, HostResourcesLoadAndSignalReady) {
   )js",
                               content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
 
-  auto* snap_rfh = AppendSnapHostFrame(wallet_rfh);
+  auto* snap_rfh = AppendSnapHostFrame(host_rfh);
   ASSERT_TRUE(snap_rfh);
   EXPECT_FALSE(snap_rfh->IsErrorDocument());
 
-  EXPECT_EQ(true, content::EvalJs(wallet_rfh, "window.executorReadyPromise"));
+  EXPECT_EQ(true, content::EvalJs(host_rfh, "window.executorReadyPromise"));
 }
 
 // Proves the new Function() CJS wrapper: a CommonJS bundle evaluates and
 // reports executeSnapResult with the exported string.
 IN_PROC_BROWSER_TEST_F(SnapHostBrowserTest, ExecuteSnapEvaluatesBundle) {
-  auto* wallet_rfh =
-      ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletURL));
-  ASSERT_TRUE(wallet_rfh);
-  auto* snap_rfh = AppendSnapHostFrame(wallet_rfh);
+  auto* host_rfh =
+      ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletSnapHostURL));
+  ASSERT_TRUE(host_rfh);
+  auto* snap_rfh = AppendSnapHostFrame(host_rfh);
   ASSERT_TRUE(snap_rfh);
 
   static constexpr char kBundle[] = R"js(
@@ -125,7 +126,7 @@ IN_PROC_BROWSER_TEST_F(SnapHostBrowserTest, ExecuteSnapEvaluatesBundle) {
   )js";
 
   auto execute_result =
-      content::EvalJs(wallet_rfh,
+      content::EvalJs(host_rfh,
                       content::JsReplace(R"js(
     new Promise(resolve => {
       window.addEventListener('message', function onMsg(event) {
@@ -147,6 +148,25 @@ IN_PROC_BROWSER_TEST_F(SnapHostBrowserTest, ExecuteSnapEvaluatesBundle) {
   EXPECT_TRUE(dict.FindBool("success").value_or(false));
   ASSERT_TRUE(dict.FindString("result"));
   EXPECT_EQ("npm:test-snap", *dict.FindString("result"));
+}
+
+// Depth-3 nesting: the untrusted host inside the snap host page inside the
+// wallet page. Exercises frame-ancestors against every ancestor.
+IN_PROC_BROWSER_TEST_F(SnapHostBrowserTest,
+                       EmbeddableFromNestedWalletSnapHost) {
+  auto* wallet_rfh =
+      ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletURL));
+  ASSERT_TRUE(wallet_rfh);
+  content::RenderFrameHost* host_rfh = nullptr;
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    host_rfh = content::ChildFrameAt(wallet_rfh, 0);
+    return host_rfh &&
+           host_rfh->GetLastCommittedURL() == GURL(kBraveUIWalletSnapHostURL);
+  }));
+
+  auto* snap_rfh = AppendSnapHostFrame(host_rfh);
+  ASSERT_TRUE(snap_rfh);
+  EXPECT_FALSE(snap_rfh->IsErrorDocument());
 }
 
 // An ordinary https page embedding the host must fail to load it.
@@ -180,10 +200,10 @@ IN_PROC_BROWSER_TEST_F(SnapHostBrowserTest,
 
 // connect-src is not relaxed; outbound fetch from the host is blocked.
 IN_PROC_BROWSER_TEST_F(SnapHostBrowserTest, BlocksOutboundFetch) {
-  auto* wallet_rfh =
-      ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletURL));
-  ASSERT_TRUE(wallet_rfh);
-  auto* snap_rfh = AppendSnapHostFrame(wallet_rfh);
+  auto* host_rfh =
+      ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletSnapHostURL));
+  ASSERT_TRUE(host_rfh);
+  auto* snap_rfh = AppendSnapHostFrame(host_rfh);
   ASSERT_TRUE(snap_rfh);
   ASSERT_FALSE(snap_rfh->IsErrorDocument());
 
@@ -206,11 +226,11 @@ IN_PROC_BROWSER_TEST_F(SnapHostFeatureDisabledBrowserTest,
   EXPECT_EQ(nullptr, content::WebUIConfigMap::GetInstance().GetConfig(
                          browser()->GetProfile(), GURL(kUntrustedSnapURL)));
 
-  auto* wallet_rfh =
-      ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletURL));
-  ASSERT_TRUE(wallet_rfh);
+  auto* host_rfh =
+      ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletSnapHostURL));
+  ASSERT_TRUE(host_rfh);
 
-  ASSERT_TRUE(content::ExecJs(wallet_rfh, R"js(
+  ASSERT_TRUE(content::ExecJs(host_rfh, R"js(
     window.executorReadySeen = false;
     window.addEventListener('message', event => {
       if (event.data && event.data.type === 'executorReady') {
@@ -220,7 +240,7 @@ IN_PROC_BROWSER_TEST_F(SnapHostFeatureDisabledBrowserTest,
   )js",
                               content::EXECUTE_SCRIPT_NO_USER_GESTURE));
 
-  EXPECT_TRUE(content::ExecJs(wallet_rfh,
+  EXPECT_TRUE(content::ExecJs(host_rfh,
                               content::JsReplace(R"js(
     new Promise(resolve => {
       const iframe = document.createElement('iframe');
@@ -239,7 +259,7 @@ IN_PROC_BROWSER_TEST_F(SnapHostFeatureDisabledBrowserTest,
       FROM_HERE, run_loop.QuitClosure(), base::Milliseconds(500));
   run_loop.Run();
 
-  EXPECT_EQ(false, content::EvalJs(wallet_rfh, "window.executorReadySeen"));
+  EXPECT_EQ(false, content::EvalJs(host_rfh, "window.executorReadySeen"));
 }
 
 }  // namespace brave_wallet
