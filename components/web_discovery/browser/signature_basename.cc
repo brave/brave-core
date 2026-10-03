@@ -6,6 +6,7 @@
 #include "brave/components/web_discovery/browser/signature_basename.h"
 
 #include <algorithm>
+#include <array>
 #include <string>
 #include <utility>
 
@@ -22,7 +23,7 @@
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "brave/components/web_discovery/browser/util.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 
 namespace web_discovery {
 
@@ -222,7 +223,8 @@ std::optional<BasenameResult> GenerateBasename(
     return std::nullopt;
   }
 
-  auto tag_hash = crypto::SHA256HashString(tag_json);
+  std::array<uint8_t, crypto::hash::kSha256Size> tag_hash =
+      crypto::hash::Sha256(tag_json);
   std::vector<uint8_t> tag_hash_vector(tag_hash.begin(), tag_hash.end());
   return std::make_optional<BasenameResult>(tag_hash_vector, *basename_count,
                                             count_tag_hash);

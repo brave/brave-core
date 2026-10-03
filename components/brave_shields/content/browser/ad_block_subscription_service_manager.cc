@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 
+#include <array>
 #include <memory>
 #include <optional>
 #include <string_view>
@@ -31,7 +32,7 @@
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 #include "net/base/filename_util.h"
 
 namespace brave_shields {
@@ -160,7 +161,8 @@ base::FilePath AdBlockSubscriptionServiceManager::GetSubscriptionPath(
   //     - constant length
   //     - path-safe
   //     - not too long (exactly 45 characters)
-  const std::string hash = crypto::SHA256HashString(sub_url.spec());
+  const std::array<uint8_t, crypto::hash::kSha256Size> hash =
+      crypto::hash::Sha256(sub_url.spec());
 
   std::string pathsafe_hash;
   base::Base64UrlEncode(hash, base::Base64UrlEncodePolicy::INCLUDE_PADDING,
