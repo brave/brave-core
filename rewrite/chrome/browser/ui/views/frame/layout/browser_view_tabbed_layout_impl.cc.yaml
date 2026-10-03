@@ -4,7 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: |
+  - description: |-
       Skip the leading-exclusion reservation when Brave vertical tabs are on.
 
       With Brave vertical tabs, the leading exclusion is owned by the
@@ -13,3 +13,13 @@ substitutions:
     regex:
       re_pattern: '(bool needs_exclusion = )true;'
       replace: '\1!delegate().ShouldShowVerticalTabs();'
+
+  - description: Get CollapsedWidth dynamically based on Brave vertical tabs
+    regex:
+      re_pattern: 'VerticalTabStripRegionView::kCollapsedWidth'
+      replace: 'views().vertical_tab_strip_region_view->GetCollapsedWidth()'
+
+  - description: Reveal top corner only when vertical tab has width
+    regex:
+      re_pattern: '(vertical_tab_strip_animation.top_corner\ >\ 0\.0);'
+      replace: '\1 && vertical_tab_strip_bounds.width() > 0;'
