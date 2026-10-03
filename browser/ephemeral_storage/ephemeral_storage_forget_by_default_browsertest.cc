@@ -363,7 +363,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
-                       PRE_DontForgetFirstPartyIfSubDomainIsOpened) {
+                       PRE_ForgetFirstPartyIfSubDomainIsOpened) {
   const GURL a_site_set_cookie_url(
       "https://a.com/set-cookie?name=acom;path=/"
       ";SameSite=None;Secure;Max-Age=600");
@@ -389,9 +389,9 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
-                       DontForgetFirstPartyIfSubDomainIsOpened) {
-  EXPECT_EQ(0u, WaitForCleanupAfterKeepAlive());
-  EXPECT_EQ(1u, GetAllCookies().size());
+                       ForgetFirstPartyIfSubDomainIsOpened) {
+  EXPECT_EQ(1u, WaitForCleanupAfterKeepAlive());
+  EXPECT_EQ(0u, GetAllCookies().size());
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
@@ -524,7 +524,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIsDefaultBrowserTest,
       ";SameSite=None;Secure;Max-Age=600");
   EXPECT_TRUE(brave_shields_settings_->GetForgetFirstPartyStorageEnabled(
       a_site_set_cookie_url));
-
+  EXPECT_TRUE(brave_shields_settings_->GetForgetFirstPartyStorageEnabled(
+      b_site_ephemeral_storage_url_));
   // Cookies should NOT exist for a.com.
   EXPECT_EQ(0u, GetAllCookies().size());
 
@@ -540,7 +541,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIsDefaultBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIsDefaultBrowserTest,
                        ForgetFirstPartyAfterRestart) {
-  EXPECT_EQ(1u, WaitForCleanupAfterKeepAlive());
+  EXPECT_EQ(2u, WaitForCleanupAfterKeepAlive());
   EXPECT_EQ(0u, GetAllCookies().size());
 }
 

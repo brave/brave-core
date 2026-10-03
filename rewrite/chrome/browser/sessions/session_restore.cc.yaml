@@ -11,3 +11,44 @@ substitutions:
       replace: |-
         \1BraveModifyStartupTabNavigationParams(startup_tab, browser, params);
         \1\2
+  - description:
+      'Skip restoring a tab whose URL is scheduled for ephemeral storage cleanup'
+    regex:
+      re_pattern: |-
+        int selected_index = GetNavigationIndexToSelect\(tab\);\n\n( *)RecordAppLaunchForTab\(browser, tab, selected_index\);
+      replace: |-
+        int selected_index = GetNavigationIndexToSelect(tab);
+
+        \1if (BraveIsScheduledForCleanup(tab.navigations[selected_index].virtual_url(),
+                                      profile_)) {
+        \1  return;
+        \1}
+
+        \1RecordAppLaunchForTab(browser, tab, selected_index);
+  - description:
+      'Add a fallback tab if a window ends up with no tabs after skipping ones
+      scheduled for cleanup, or show it anyway if the selected tab itself was
+      skipped'
+    after_function_impl:
+      function_name: RestoreTabsToBrowser
+      code: |-
+        if (auto fallback_index = MaybeAddFallbackTabIfEmpty(browser);
+            fallback_index != TabStripModel::kNoTab && !did_show_browser) {
+          ShowBrowser(browser, fallback_index);
+          did_show_browser = true;
+        }
+  - description:
+      'Skip appending a startup URL scheduled for ephemeral storage cleanup'
+    regex:
+      re_pattern: |-
+        const GURL& url = startup_tab\.url;
+      replace: |-
+        const GURL& url = startup_tab.url;
+              if (BraveIsScheduledForCleanup(url, profile_)) {
+                continue;
+              }
+  - description: 'Add a fallback tab if all startup URLs were skipped'
+    after_function_impl:
+      function_name: AppendURLsToBrowser
+      code: |-
+        MaybeAddFallbackTabIfEmpty(browser);

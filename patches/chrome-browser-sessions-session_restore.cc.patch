@@ -1,12 +1,66 @@
 diff --git a/chrome/browser/sessions/session_restore.cc b/chrome/browser/sessions/session_restore.cc
-index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..4f895fcde503d64fd42a7cd8bd66ee4460660399 100644
+index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..c0de41f7635208fae61194250273c75c56485b07 100644
 --- a/chrome/browser/sessions/session_restore.cc
 +++ b/chrome/browser/sessions/session_restore.cc
-@@ -1386,6 +1386,7 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1017,6 +1017,7 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+       base::flat_map<tab_groups::TabGroupId, tab_groups::TabGroupId>*
+           new_group_ids,
+       bool& did_show_browser) {
++  [&]() -> void {
+     DVLOG(1) << "RestoreTabsToBrowser " << window.tabs.size();
+     // TODO(crbug.com/40662817): Change to DCHECK once we understand
+     // why some browsers don't have an active tab on startup.
+@@ -1076,7 +1077,13 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+             split_id, tab_index_list, split_tabs::SplitTabVisualData());
+       }
+     }
++    }();
++  if (auto fallback_index = MaybeAddFallbackTabIfEmpty(browser);
++      fallback_index != TabStripModel::kNoTab && !did_show_browser) {
++    ShowBrowser(browser, fallback_index);
++    did_show_browser = true;
+   }
++}
+ 
+   // |tab_index| is ignored for pinned tabs which will always be pushed behind
+   // the last existing pinned tab. If |is_selected_tab| is true the tab will be
+@@ -1105,6 +1112,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+     SessionRestore::NotifySessionRestoreStartedLoadingTabs();
+     int selected_index = GetNavigationIndexToSelect(tab);
+ 
++    if (BraveIsScheduledForCleanup(tab.navigations[selected_index].virtual_url(),
++                              profile_)) {
++      return;
++    }
++
+     RecordAppLaunchForTab(browser, tab, selected_index);
+ 
+     // Associate sessionStorage (if any) to the restored tab.
+@@ -1367,9 +1379,13 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+   // Appends the urls in |startup_tabs| to |browser|.
+   void AppendURLsToBrowser(BrowserWindowInterface* browser,
+                            const StartupTabs& startup_tabs) {
++  [&]() -> void {
+     bool is_first_tab = true;
+     for (const auto& startup_tab : startup_tabs) {
+       const GURL& url = startup_tab.url;
++      if (BraveIsScheduledForCleanup(url, profile_)) {
++        continue;
++      }
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+       if (url == whats_new::GetWebUIStartupURL()) {
+         whats_new::StartWhatsNewFetch(browser);
+@@ -1386,9 +1402,12 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
                                 : WindowOpenDisposition::NEW_BACKGROUND_TAB;
        params.tabstrip_add_types = add_types;
        is_first_tab = false;
 +      BraveModifyStartupTabNavigationParams(startup_tab, browser, params);
        Navigate(&params);
      }
-   }
+-  }
++    }();
++  MaybeAddFallbackTabIfEmpty(browser);
++}
+ 
+   // Normally opens |startup_tabs| in |last_normal_browser|, but if there are
+   // urls set from LAST_AND_URLS startup pref, those are opened in a new
