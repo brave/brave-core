@@ -232,7 +232,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
    <div id="history-sync-optin" class="history-sync-optin">
      \${this.isSignInState_(HistorySignInState.SIGNED_OUT) ||
              this.isSignInState_(HistorySignInState.WEB_ONLY_SIGNED_IN) ?
-@@ -132,12 +128,11 @@
+@@ -135,12 +131,11 @@
        </cr-button>
      \`}
    </div>
@@ -927,19 +927,20 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.html.ts
 +++ gen/chrome/browser/resources/settings/preprocessed/clear_browsing_data_dialog/clear_browsing_data_dialog.html.ts
-@@ -3,18 +3,18 @@
+@@ -3,19 +3,18 @@
  import type {SettingsClearBrowsingDataDialogElement} from './clear_browsing_data_dialog.js';
  
  export function getHtml(this: SettingsClearBrowsingDataDialogElement) {
    return html\`<!--_html_template_start_-->
 -<cr-dialog id="deleteBrowsingDataDialog" close-text="$i18n{close}"
 -    show-on-attach ignore-popstate ignore-enter-key
--    ?hidden="\${this.showOtherGoogleDataDialog_}">
+-    ?hidden="\${this.showOtherGoogleDataDialog_}"
+-    @cancel="\${this.onDialogCancel_}">
 -  <div slot="title" class="dialog-title">$i18n{clearBrowsingData}</div>
 -  <div slot="header">
 -    <settings-clear-browsing-data-time-picker id="timePicker"
 -        @selected-time-period-change="\${this.onSelectedTimePeriodChange_}">
-+<cr-dialog id="deleteBrowsingDataDialog" close-text="$i18n{close}" show-on-attach="" ignore-popstate="" ignore-enter-key="" ?hidden="\${this.showOtherGoogleDataDialog_}">
++<cr-dialog id="deleteBrowsingDataDialog" close-text="$i18n{close}" show-on-attach="" ignore-popstate="" ignore-enter-key="" ?hidden="\${this.showOtherGoogleDataDialog_}" @cancel="\${this.onDialogCancel_}">
 +  <div slot="title" class="dialog-title" hidden="">$i18n{clearBrowsingData}</div><div slot="header">
 +       \${this.renderBraveTabs_()}
 +       <div id="tabsDivider"></div>
@@ -954,7 +955,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        \${this.expandedBrowsingDataTypeOptionsList_.map(item => html\`
          <settings-checkbox pref-key="\${item.prefKey}" no-set-pref
              .subLabelHtml="\${item.subLabel || ''}"
-@@ -35,39 +35,39 @@
+@@ -36,39 +35,39 @@
            \`)}
          \` : ''}
        </div>
@@ -2113,15 +2114,15 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  
  import {html} from '//resources/lit/v3_0/lit.rollup.js';
  
-@@ -9,93 +7,39 @@
+@@ -8,85 +6,40 @@
+ 
  export function getHtml(this: PowerBookmarksAppElement) {
-   // clang-format off
    return html\`<!--_html_template_start_-->
  <div class="column" id="powerBookmarksContainer">
 -  <cr-toolbar-search-field id="searchField" label="$i18n{searchBookmarks}"
 -      clear-label="$i18n{clearSearch}"
--      @search-changed="\${this.onSearchChanged_}"
--      ?disabled="\${this.editing_}" ?hidden="\${!this.sectionVisibility_.search}"
+-      @search-changed="\${this.onSearchChanged_}" ?disabled="\${this.editing_}"
+-      ?hidden="\${!this.sectionVisibility_.search}"
 -      @blur="\${this.onSearchBlur_}">
 +  <cr-toolbar-search-field id="searchField" label="$i18n{searchBookmarks}" clear-label="$i18n{clearSearch}" @search-changed="\${this.onSearchChanged_}" ?disabled="\${this.editing_}" ?hidden="\${!this.sectionVisibility_.search}" @blur="\${this.onSearchBlur_}">
    </cr-toolbar-search-field>
@@ -2140,12 +2141,10 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -      .activeFolderPath="\${this.activeFolderPath_}"
 -      @active-folder-path-changed="\${this.onActiveFolderPathChanged_}"
 -      @has-shown-bookmarks-changed="\${this.onHasShownBookmarksChanged_}"
--      .labels="\${this.labels_}"
--      .selectedBookmarks="\${this.selectedBookmarks_}"
+-      .labels="\${this.labels_}" .selectedBookmarks="\${this.selectedBookmarks_}"
 -      .contextMenuBookmark="\${this.contextMenuBookmark_}"
 -      .hasSomeActiveFilter="\${this.hasSomeActiveFilter_}"
--      .searchQuery="\${this.searchQuery_}"
--      .editing="\${this.editing_}"
+-      .searchQuery="\${this.searchQuery_}" .editing="\${this.editing_}"
 -      .renamingId="\${this.renamingId_}"
 -      @renaming-id-changed="\${this.onRenamingIdChanged_}"
 -      @has-scrollbars-changed="\${this.onHasScrollbarsChanged_}"
@@ -2159,31 +2158,25 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  
 -  <div class="sp-scroller"
 -      ?hidden="\${!this.sectionVisibility_.topLevelEmptyState}">
--    <sp-empty-state id="topLevelEmptyState"
--        ?guest="\${this.guestMode_}"
+-    <sp-empty-state id="topLevelEmptyState" ?guest="\${this.guestMode_}"
 -        image-path="\${this.getEmptyImagePath_()}"
 -        dark-image-path="\${this.getEmptyImagePathDark_()}"
--        heading="\${this.getEmptyTitle_()}"
--        body="\${this.getEmptyBody_()}">
+-        heading="\${this.getEmptyTitle_()}" body="\${this.getEmptyBody_()}">
 +  <div class="sp-scroller" ?hidden="\${!this.sectionVisibility_.topLevelEmptyState}">
 +    <sp-empty-state id="topLevelEmptyState" ?guest="\${this.guestMode_}" image-path="\${this.getEmptyImagePath_()}" dark-image-path="\${this.getEmptyImagePathDark_()}" heading="\${this.getEmptyTitle_()}" body="\${this.getEmptyBody_()}">
      </sp-empty-state>
    </div>
--  <sp-footer id="footer"
--      ?hidden="\${!this.sectionVisibility_.footer}"
--      pinned>
--    <cr-button id="addCurrentTabButton"
--        class="floating-button"
--        ?hidden="\${this.hideAddTabButton_()}"
--        @click="\${this.onAddTabClick_}"
+-  <sp-footer id="footer" ?hidden="\${!this.sectionVisibility_.footer}" pinned>
+-    <cr-button id="addCurrentTabButton" class="floating-button"
+-        ?hidden="\${this.hideAddTabButton_()}" @click="\${this.onAddTabClick_}"
 -        ?disabled="\${!this.canAddCurrentUrl_}">
 -      <cr-icon slot="prefix-icon"
--          icon="\${this.webuiRoundedIconsEnabled_
--              ? 'sp:add-circle'
--              : 'sp:add-circle-old'}"></cr-icon>
+-          icon="\${this.webuiRoundedIconsEnabled_ ? 'sp:add-circle' :
+-                                                   'sp:add-circle-old'}">
 +  <sp-footer id="footer" ?hidden="\${!this.sectionVisibility_.footer}" pinned="">
 +    <cr-button id="addCurrentTabButton" class="floating-button" ?hidden="\${this.hideAddTabButton_()}" @click="\${this.onAddTabClick_}" ?disabled="\${!this.canAddCurrentUrl_}">
-+      <cr-icon slot="prefix-icon" icon="plus-add"></cr-icon>
++      <cr-icon slot="prefix-icon" icon="plus-add">
+       </cr-icon>
        $i18n{addCurrentTab}
      </cr-button>
  
@@ -2194,24 +2187,24 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 +    <cr-toolbar-selection-overlay ?show="\${this.editing_}" cancel-label="$i18n{cancelA11yLabel}" selection-label="\${this.getSelectedDescription_()}" @clear-selected-items="\${this.onClearSelectedItems_}">
        <div class="sp-icon-buttons-row">
 -        <cr-icon-button id="deleteButton"
--            iron-icon="\${this.webuiRoundedIconsEnabled_
-+        <cr-icon-button id="deleteButton" iron-icon="\${this.webuiRoundedIconsEnabled_
-                 ? 'bookmarks:delete'
--                : 'bookmarks:delete-old'}"
+-            iron-icon="\${this.webuiRoundedIconsEnabled_ ?
++        <cr-icon-button id="deleteButton" iron-icon="\${this.webuiRoundedIconsEnabled_ ?
+                 'bookmarks:delete' :
+-                'bookmarks:delete-old'}"
 -            ?disabled="\${!this.getSelectedBookmarksLength_()}"
 -            title="$i18n{tooltipDelete}" aria-label="$i18n{tooltipDelete}"
 -            @click="\${this.onDeleteClick_}">
-+                : 'bookmarks:delete-old'}" ?disabled="\${!this.getSelectedBookmarksLength_()}" title="$i18n{tooltipDelete}" aria-label="$i18n{tooltipDelete}" @click="\${this.onDeleteClick_}">
++                'bookmarks:delete-old'}" ?disabled="\${!this.getSelectedBookmarksLength_()}" title="$i18n{tooltipDelete}" aria-label="$i18n{tooltipDelete}" @click="\${this.onDeleteClick_}">
          </cr-icon-button>
 -        <cr-icon-button
--            iron-icon="\${this.webuiRoundedIconsEnabled_
-+        <cr-icon-button iron-icon="\${this.webuiRoundedIconsEnabled_
-                 ? 'bookmarks:drive-file-move'
--                : 'bookmarks:move-old'}"
+-            iron-icon="\${this.webuiRoundedIconsEnabled_ ?
++        <cr-icon-button iron-icon="\${this.webuiRoundedIconsEnabled_ ?
+                 'bookmarks:drive-file-move' :
+-                'bookmarks:move-old'}"
 -            ?disabled="\${!this.getSelectedBookmarksLength_()}"
 -            title="$i18n{tooltipMove}" aria-label="$i18n{tooltipMove}"
 -            @click="\${this.onMoveClick_}">
-+                : 'bookmarks:move-old'}" ?disabled="\${!this.getSelectedBookmarksLength_()}" title="$i18n{tooltipMove}" aria-label="$i18n{tooltipMove}" @click="\${this.onMoveClick_}">
++                'bookmarks:move-old'}" ?disabled="\${!this.getSelectedBookmarksLength_()}" title="$i18n{tooltipMove}" aria-label="$i18n{tooltipMove}" @click="\${this.onMoveClick_}">
          </cr-icon-button>
 -        <cr-icon-button iron-icon="cr:more-vert"
 -            ?disabled="\${!this.getSelectedBookmarksLength_()}"
@@ -2222,7 +2215,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        </div>
      </cr-toolbar-selection-overlay>
    </sp-footer>
-@@ -112,14 +56,9 @@
+@@ -103,18 +56,12 @@
      </cr-button>
    </div>
  </cr-dialog>
@@ -2236,8 +2229,13 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 +<power-bookmarks-context-menu id="contextMenu" @delete-clicked="\${this.onContextMenuDeleteClicked_}" @disabled-feature="\${this.onDisabledFeature_}" @edit-clicked="\${this.onContextMenuEditClicked_}" @rename-clicked="\${this.onContextMenuRenameClicked_}" @close="\${this.onContextMenuClose_}">
  </power-bookmarks-context-menu>
  
- <cr-lazy-render-lit id="deletionToast" .template="\${() => html\`
-   <cr-toast duration="5000">
+-<cr-lazy-render-lit id="deletionToast"
+-    .template="\${() => html\`
++<cr-lazy-render-lit id="deletionToast" .template="\${() => html\`
+       <cr-toast duration="5000">
+         <div>\${this.deletionDescription_}</div>
+         <cr-button @click="\${this.onUndoClick_}">
+           $i18n{undoBookmarkDeletion}
 "
 `;
 
@@ -2245,10 +2243,10 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/side_panel/customize_chrome/app.html.ts
 +++ gen/chrome/browser/resources/side_panel/customize_chrome/preprocessed/app.html.ts
-@@ -4,32 +4,26 @@
+@@ -3,32 +3,26 @@
+ import type {AppElement} from './app.js';
  
  export function getHtml(this: AppElement) {
-   // clang-format off
    return html\`<!--_html_template_start_-->
 -<cr-page-selector id="container"
 -    class="sp-scroller sp-scroller-top-of-page sp-scroller-bottom-of-page"
@@ -2272,23 +2270,23 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 +      <brave-darker-theme-toggle></brave-darker-theme-toggle></div>
      <hr class="sp-cards-separator">
      \${this.toolbarCustomizationEnabled_ ? html\`
--    <cr-button id="toolbarButton" class="section sp-card"
--        @click="\${this.onToolbarCustomizationButtonClick_}">
--      <sp-heading hide-back-button id="toolbar-customization-heading">
--        <h2 slot="heading" id="toolbar-customization-inner-heading"
--            aria-label="$i18n{toolbarButtonA11yLabel}">
--          $i18n{toolbarHeader}
--        </h2>
-+    <cr-button id="toolbarButton" class="section sp-card" @click="\${this.onToolbarCustomizationButtonClick_}">
-+      <sp-heading hide-back-button="" id="toolbar-customization-heading">
-+        <h2 slot="heading" id="toolbar-customization-inner-heading" aria-label="$i18n{toolbarButtonA11yLabel}">$i18n{braveCustomizeMenuToolbarLabel}</h2>
-       </sp-heading>
--      <cr-icon icon="cr:chevron-right" slot="suffix-icon"></cr-icon>
-+      <cr-icon icon="window-edit" slot="prefix-icon"></cr-icon>
-     </cr-button>
+-      <cr-button id="toolbarButton" class="section sp-card"
+-          @click="\${this.onToolbarCustomizationButtonClick_}">
+-        <sp-heading hide-back-button id="toolbar-customization-heading">
+-          <h2 slot="heading" id="toolbar-customization-inner-heading"
+-              aria-label="$i18n{toolbarButtonA11yLabel}">
+-            $i18n{toolbarHeader}
+-          </h2>
++      <cr-button id="toolbarButton" class="section sp-card" @click="\${this.onToolbarCustomizationButtonClick_}">
++        <sp-heading hide-back-button="" id="toolbar-customization-heading">
++          <h2 slot="heading" id="toolbar-customization-inner-heading" aria-label="$i18n{toolbarButtonA11yLabel}">$i18n{braveCustomizeMenuToolbarLabel}</h2>
+         </sp-heading>
+-        <cr-icon icon="cr:chevron-right" slot="suffix-icon"></cr-icon>
++        <cr-icon icon="window-edit" slot="prefix-icon"></cr-icon>
+       </cr-button>
      \` : ''}
-     \${this.ntpNextFeaturesEnabled_ && this.ntpNextDisablementEnabled_
-       && this.aimPolicyEnabled_ && this.isSourceTabFirstPartyNtp_() ? html\`
+     \${this.ntpNextFeaturesEnabled_ && this.ntpNextDisablementEnabled_ &&
+             this.aimPolicyEnabled_ && this.isSourceTabFirstPartyNtp_() ?
 "
 `;
 
@@ -2296,21 +2294,19 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/side_panel/customize_chrome/appearance.html.ts
 +++ gen/chrome/browser/resources/side_panel/customize_chrome/preprocessed/appearance.html.ts
-@@ -4,82 +4,52 @@
+@@ -3,77 +3,52 @@
+ import type {AppearanceElement} from './appearance.js';
  
  export function getHtml(this: AppearanceElement) {
-   // clang-format off
    return html\`<!--_html_template_start_-->
--<customize-chrome-theme-snapshot id="themeSnapshot"
--    role="button" tabindex="0"
+-<customize-chrome-theme-snapshot id="themeSnapshot" role="button" tabindex="0"
 -    @keydown="\${this.onThemeSnapshotKeydown_}"
 -    @edit-theme-click="\${this.onEditThemeClick_}"
 -    ?hidden="\${!this.showThemeSnapshot_}">
 +<customize-chrome-theme-snapshot id="themeSnapshot" role="button" tabindex="0" @keydown="\${this.onThemeSnapshotKeydown_}" @edit-theme-click="\${this.onEditThemeClick_}" ?hidden="\${!this.showThemeSnapshot_}" style="display: none">
  </customize-chrome-theme-snapshot>
 -<customize-chrome-hover-button id="thirdPartyThemeLinkButton"
--    class="link-out-button theme-button"
--    ?hidden="\${!this.thirdPartyThemeId_}"
+-    class="link-out-button theme-button" ?hidden="\${!this.thirdPartyThemeId_}"
 -    @click="\${this.onThirdPartyThemeLinkButtonClick_}"
 -    label="\${this.thirdPartyThemeName_}"
 -    label-description="$i18n{currentTheme}">
@@ -2319,41 +2315,40 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -<customize-chrome-hover-button id="uploadedImageButton" class="theme-button"
 -    ?hidden="\${!this.showUploadedImageButton_}"
 -    @click="\${this.onUploadedImageButtonClick_}"
--    label="$i18n{yourUploadedImage}"
--    label-description="$i18n{currentTheme}">
+-    label="$i18n{yourUploadedImage}" label-description="$i18n{currentTheme}">
 +<customize-chrome-hover-button id="uploadedImageButton" class="theme-button" ?hidden="\${!this.showUploadedImageButton_}" @click="\${this.onUploadedImageButtonClick_}" label="$i18n{yourUploadedImage}" label-description="$i18n{currentTheme}">
  </customize-chrome-hover-button>
 -<customize-chrome-hover-button id="searchedImageButton" class="theme-button"
 -    ?hidden="\${!this.showSearchedImageButton_}"
 -    @click="\${this.onSearchedImageButtonClick_}"
--    label="$i18n{yourSearchedImage}"
--    label-description="$i18n{currentTheme}">
+-    label="$i18n{yourSearchedImage}" label-description="$i18n{currentTheme}">
 +<customize-chrome-hover-button id="searchedImageButton" class="theme-button" ?hidden="\${!this.showSearchedImageButton_}" @click="\${this.onSearchedImageButtonClick_}" label="$i18n{yourSearchedImage}" label-description="$i18n{currentTheme}">
  </customize-chrome-hover-button>
  \${this.showManagedButton_ ? html\`
 -  <customize-chrome-hover-button id="thirdPartyManageLinkButton"
--      aria-button-label="\${this.i18n('newTabPageManagedByA11yLabel',
--                           this.managedByName_)}"
+-      aria-button-label="\${
+-          this.i18n('newTabPageManagedByA11yLabel', this.managedByName_)}"
 -      class="link-out-button theme-button"
 -      @click="\${this.onNewTabPageManageByButtonClick_}"
--      label="\${this.managedByName_}"
--      label-description="\${this.managedByDesc_}">
-+  <customize-chrome-hover-button id="thirdPartyManageLinkButton" aria-button-label="\${this.i18n('newTabPageManagedByA11yLabel',
-+                           this.managedByName_)}" class="link-out-button theme-button" @click="\${this.onNewTabPageManageByButtonClick_}" label="\${this.managedByName_}" label-description="\${this.managedByDesc_}" style="display: none">
+-      label="\${this.managedByName_}" label-description="\${this.managedByDesc_}">
++  <customize-chrome-hover-button id="thirdPartyManageLinkButton" aria-button-label="\${
++          this.i18n('newTabPageManagedByA11yLabel', this.managedByName_)}" class="link-out-button theme-button" @click="\${this.onNewTabPageManageByButtonClick_}" label="\${this.managedByName_}" label-description="\${this.managedByDesc_}" style="display: none">
    </customize-chrome-hover-button>
-   \`: ''}
+ \` : ''}
 -<div id="editButtonsContainer" ?hidden="\${!this.showEditTheme_}">
 -  <cr-button id="editThemeButton" @click="\${this.onEditThemeClick_}"
 -      class="floating-button">
 -    <div id="editThemeIcon" class="cr-icon edit-theme-icon" slot="prefix-icon"
--        ?hidden="\${this.wallpaperSearchButtonEnabled_}"></div>
+-        ?hidden="\${this.wallpaperSearchButtonEnabled_}">
+-    </div>
 -    \${this.editThemeButtonText_}
 -  </cr-button>
 -  \${this.wallpaperSearchButtonEnabled_ ? html\`
 -    <cr-button id="wallpaperSearchButton"
 -        @click="\${this.onWallpaperSearchClick_}" class="floating-button">
 -      <div id="wallpaperSearchIcon" class="cr-icon edit-theme-icon"
--          slot="prefix-icon"></div>
+-          slot="prefix-icon">
+-      </div>
 -      $i18n{wallpaperSearchTileLabel}
 -    </cr-button>
 -  \` : ''}
@@ -2382,26 +2377,26 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  </customize-chrome-hover-button>
  \${this.showManagedDialog_ ? html\`
    <managed-dialog @close="\${this.onManagedDialogClose_}"
-       title="$i18n{managedColorsTitle}"
-       body="$i18n{managedColorsBody}">
+       title="$i18n{managedColorsTitle}" body="$i18n{managedColorsBody}">
    </managed-dialog>
  \` : ''}
 -<!--_html_template_end_-->\`;
 +<!--_html_template_end_--><div id="editButtonsContainer" ?hidden="\${!this.showEditTheme_}">
 +  <cr-button id="editThemeButton" @click="\${this.onEditThemeClick_}" class="floating-button">
-+    <div id="editThemeIcon" class="cr-icon edit-theme-icon" slot="prefix-icon" ?hidden="\${this.wallpaperSearchButtonEnabled_}"></div>
++    <div id="editThemeIcon" class="cr-icon edit-theme-icon" slot="prefix-icon" ?hidden="\${this.wallpaperSearchButtonEnabled_}">
++    </div>
 +    \${this.editThemeButtonText_}
 +  </cr-button>
 +  \${this.wallpaperSearchButtonEnabled_ ? html\`
 +    <cr-button id="wallpaperSearchButton"
 +        @click="\${this.onWallpaperSearchClick_}" class="floating-button">
 +      <div id="wallpaperSearchIcon" class="cr-icon edit-theme-icon"
-+          slot="prefix-icon"></div>
++          slot="prefix-icon">
++      </div>
 +      $i18n{wallpaperSearchTileLabel}
 +    </cr-button>
 +  \` : ''}
 +</div>\`;
-   // clang-format on
  }
 "
 `;
@@ -2447,12 +2442,12 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 +    
  <hr class="sp-cards-separator">
  <div class="sp-card" id="pinningSelectionCard">
-   \${
-       this.categories_.map(
-@@ -71,14 +67,12 @@
-               categoryIndex !== this.categories_.length - 1 ?
-                   html\`<hr class="sp-hr">\` :
-                   ''}
+   \${this.categories_.map((category, categoryIndex) => html\`
+     <h3 class="choose-icons-row category-title">\${category.displayName}</h3>
+@@ -60,14 +56,12 @@
+     \${categoryIndex !== this.categories_.length - 1 ? html\`
+       <hr class="sp-hr">
+     \` : ''}
    \`)}
 -</div>
 +</div><cr-button id="resetToDefaultButton" class="floating-button" @click="\${this.onResetToDefaultClick_}" ?disabled="\${this.resetToDefaultDisabled_}">
