@@ -15,6 +15,7 @@ source_set("unit_tests") {
       "//chrome/browser/ui",
       "//chrome/browser/ui/browser_window",
       "//chrome/test:test_support",
+      "//chrome/test/base:browser_with_test_window_test",
     ]
   }
 }
