@@ -1345,7 +1345,7 @@ bool BraveBrowserView::IsWebPanelContents(content::WebContents* contents) {
     return false;
   }
 
-  if (auto* sidebar_controller = browser_->GetFeatures().sidebar_controller()) {
+  if (auto* sidebar_controller = sidebar::SidebarController::From(browser_)) {
     if (auto* web_panel_controller =
             sidebar_controller->GetWebPanelController()) {
       return web_panel_controller->panel_contents() == contents;

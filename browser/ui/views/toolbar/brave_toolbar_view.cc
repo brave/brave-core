@@ -18,6 +18,7 @@
 #include "base/i18n/rtl.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -43,7 +44,6 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
@@ -380,7 +380,7 @@ void BraveToolbarView::Init() {
 
   side_panel_ = AddChildViewAt(
       std::make_unique<SidePanelButton>(
-          browser()->GetFeatures().sidebar_controller(), profile->GetPrefs()),
+          sidebar::SidebarController::From(browser()), profile->GetPrefs()),
       *GetIndexOf(app_menu_button_) - 1);
   SetBraveButtonFlexBehavior(side_panel_);
 

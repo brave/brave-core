@@ -30,7 +30,6 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -324,7 +323,7 @@ std::optional<SidePanelEntryId> GetLastUsedSidePanel(
   }
 #endif
   // If cached type item is not included in current model, return null.
-  if (!browser->GetFeatures().sidebar_controller()->model()->GetIndexOf(type)) {
+  if (!sidebar::SidebarController::From(browser)->model()->GetIndexOf(type)) {
     return std::nullopt;
   }
   return SidePanelIdFromSideBarItemType(type);

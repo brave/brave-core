@@ -75,16 +75,24 @@ std::vector<int> GetAllExistingTabIndexForHost(TabStripModel* tab_strip_model,
 
 }  // namespace
 
+DEFINE_USER_DATA(SidebarController);
+
 SidebarController::SidebarController(BrowserWindowInterface* browser,
                                      Profile* profile)
     : tab_strip_model_(browser->GetTabStripModel()),
       profile_(profile),
       browser_(browser),
-      sidebar_model_(new SidebarModel(profile_)) {
+      sidebar_model_(new SidebarModel(profile_)),
+      scoped_unowned_user_data_(browser->GetUnownedUserDataHost(), *this) {
   sidebar_service_observed_.Observe(GetSidebarService());
 }
 
 SidebarController::~SidebarController() = default;
+
+// static
+SidebarController* SidebarController::From(BrowserWindowInterface* browser) {
+  return Get(browser->GetUnownedUserDataHost());
+}
 
 bool SidebarController::IsActiveIndex(std::optional<size_t> index) const {
   return sidebar_model_->active_index() == index;
