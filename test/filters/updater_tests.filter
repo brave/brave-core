@@ -1,0 +1,17 @@
+##
+## Upstream tests to disable
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue.
+##
+
+# The test hardcodes Chromium's legacy COM GUIDs. Ours come from our Omaha 3
+# fork, see chromium_src/chrome/updater/branding.gni. Brave's equivalent is
+# BraveLegacyCOMClassesTest.CheckLegacyInterfaceIDs in brave_updater_unittests.
+-LegacyCOMClassesTest.CheckLegacyInterfaceIDs
+
+# These tests install a previously released updater, which we don't have yet.
+# See GetRealUpdaterLowerVersions() in
+# chromium_src/chrome/updater/test/integration_tests_win.cc.
+-IntegrationTestDeviceManagement.QualifyUpdaterWhenNextCheckDelayIsZero
+-IntegrationTestDeviceManagement.QualifyUpdaterWhenUpdateDisabled
