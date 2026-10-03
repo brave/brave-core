@@ -1247,7 +1247,14 @@ test("brave_browser_tests") {
   if (is_win) {
     public_configs = [ "//build/config/win:delayloads" ]
 
-    deps += [ "//brave/components/windows_recall" ]
+    sources +=
+        [ "//brave/browser/brave_font_prewarmer_tab_helper_browsertest.cc" ]
+
+    deps += [
+      "//brave/components/windows_recall",
+      "//chrome/browser:font_prewarmer_tab_helper",
+      "//components/search_engines",
+    ]
   }
 
   if (use_aura) {

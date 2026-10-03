@@ -1,0 +1,36 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Attach Brave tab helpers at the end of AttachTabHelpers
+
+      Placed before the closing brace so that, like upstream helpers, they are
+      skipped when the WebContents has already been adopted.
+    regex:
+      re_pattern: '(void TabHelpers::AttachTabHelpers\(.*?\n)(\}\n)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1  brave::AttachTabHelpers(web_contents);
+        \2
+
+  - description: |-
+      Do not create NetErrorTabHelper
+
+      It sends DNS probes when a page fails with a DNS error, which Brave
+      blocks.
+    regex:
+      re_pattern: '(chrome_browser_net::NetErrorTabHelper::CreateForWebContents\(.*?\);)'
+      re_flags: [DOTALL]
+      replace: '/* \1 */'
+
+  - description: |-
+      Do not create FontPrewarmerTabHelper
+
+      Brave does not prewarm the fonts of search results pages.
+    regex:
+      re_pattern: '(FontPrewarmerTabHelper::CreateForWebContents\(.*?\);)'
+      re_flags: [DOTALL]
+      replace: '/* \1 */'

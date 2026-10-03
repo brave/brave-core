@@ -1,10 +1,28 @@
 diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
-index 3b1e2e30efad9959ad08252e7f7932276a820f33..2313145a6a5b21e33f6209e6d9f1dbac377f1351 100644
+index 3b1e2e30efad9959ad08252e7f7932276a820f33..29ff49dc4e9e082e1cd8821859832ca6525cf0b4 100644
 --- a/chrome/browser/ui/tab_helpers.cc
 +++ b/chrome/browser/ui/tab_helpers.cc
+@@ -385,7 +385,7 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents,
+     BreadcrumbManagerTabHelper::CreateForWebContents(web_contents);
+   }
+   ChainedBackNavigationTracker::CreateForWebContents(web_contents);
+-  chrome_browser_net::NetErrorTabHelper::CreateForWebContents(web_contents);
++  /* chrome_browser_net::NetErrorTabHelper::CreateForWebContents(web_contents); */
+   // Password manager and password reuse detection rely on ChromeAutofillClient
+   // initialized by browser autofill, which is gated by enable_browser_autofill.
+   if (enable_browser_autofill) {
+@@ -782,7 +782,7 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents,
+ #endif
+ 
+ #if BUILDFLAG(IS_WIN)
+-  FontPrewarmerTabHelper::CreateForWebContents(web_contents);
++  /* FontPrewarmerTabHelper::CreateForWebContents(web_contents); */
+ #endif
+ 
+   // --- Section 3: Feature tab helpers behind BUILDFLAGs ---
 @@ -853,4 +853,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents,
  
    // This is common code for all of us. PLEASE DO YOUR PART to keep it tidy and
    // organized.
-+  BRAVE_TAB_HELPERS
++  brave::AttachTabHelpers(web_contents);
  }

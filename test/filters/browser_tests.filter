@@ -2689,9 +2689,9 @@
 # This test fails because padding expectation doesn't match
 -HorizontalTabGroupViewBrowserTest.PaddingBetweenCollapsedHeadersMatchesLegacy
 
-# Brave drops NetErrorTabHelper (chromium_src/chrome/browser/ui/tab_helpers.cc),
-# so the DNS probe never runs and DNS error pages stay on the "checking
-# the connection" (DNS_PROBE_POSSIBLE) variant instead of being updated with the
+# Brave drops NetErrorTabHelper (rewrite/chrome/browser/ui/tab_helpers.cc.yaml)
+# so the DNS probe never runs, and DNS error pages stay on the "checking the
+# connection" (DNS_PROBE_POSSIBLE) variant instead of being updated with the
 # ERR_NAME_NOT_RESOLVED details these tests look for.
 -DNSErrorPageIsolatedModeTest.IsolatedMode
 -DNSErrorPageTest.DNSError_Basic
