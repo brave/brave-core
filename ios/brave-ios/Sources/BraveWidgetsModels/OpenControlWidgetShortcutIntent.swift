@@ -15,13 +15,29 @@ public struct OpenControlWidgetShortcutIntent: UISceneAppIntent {
   public static let title: LocalizedStringResource = "Open Brave"
   public static let openAppWhenRun: Bool = true
 
+  /// Static controls deliver this stored value.
   public var shortcut: WidgetShortcut
 
+  /// Configurable controls only keep `@Parameter` values. `WidgetShortcut` cannot be an `AppEnum`,
+  /// so the raw value is stored beside `shortcut`.
+  @Parameter(title: "Shortcut")
+  public var shortcutRawValue: Int
+
   public init() {
-    self.shortcut = .unknown
+    shortcut = .unknown
+    shortcutRawValue = WidgetShortcut.unknown.rawValue
   }
 
   public init(shortcut: WidgetShortcut) {
     self.shortcut = shortcut
+    self.shortcutRawValue = shortcut.rawValue
+  }
+
+  /// Prefer the stored shortcut. Configurable controls will leave it `.unknown`.
+  public var resolvedShortcut: WidgetShortcut {
+    if shortcut != .unknown {
+      return shortcut
+    }
+    return WidgetShortcut(rawValue: shortcutRawValue) ?? .unknown
   }
 }
