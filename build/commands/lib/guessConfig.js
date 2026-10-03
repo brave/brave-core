@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import config from './config.ts'
+import EnvConfig from './envConfig.ts'
 import os from 'node:os'
 import path from 'node:path/posix'
 import fs from 'node:fs'
@@ -14,21 +15,29 @@ const extraArchitectures = ['arm64', 'x86']
 
 // Choose which brave-core build directory to look for pre-compiled resource
 // dependencies:
-// 1. Default for local builds for the actual platform / architecture
-// 2. platform / architecture overriden by environment variables
-// 3. most recently built - this caters to the common scenario when a
+// 1. platform / architecture / build config set by environment variables or
+//    `default_build_config` in .env
+// 2. most recently built - this caters to the common scenario when a
 //    non-standard target has been built but no arguments are provided to
 //    storybook.
 
 // This uses environment variables as there is currently no way to pass custom
 // arguments to the |storybook build| cli.
-config.update({
+const overrides = {
   target_arch: /** @type {any} */ (process.env.TARGET_ARCH),
   target_os: /** @type {any} */ (process.env.TARGET_OS),
   target_environment: /** @type {any} */ (process.env.TARGET_ENVIRONMENT),
   target: /** @type {any} */ (process.env.TARGET),
   build_config: process.env.BUILD_CONFIG,
-})
+}
+config.update(overrides)
+
+// Without an explicit configuration `config.outputDir` is just the default
+// (e.g. out/Component), which may be a stale build; prefer the most recent one.
+const isConfigExplicit =
+  Object.values(overrides).some((value) => value !== undefined)
+  || new EnvConfig(config.braveCoreDir).getString(['default_build_config'])
+    !== undefined
 
 let outputPath = config.outputDir
 
@@ -50,7 +59,7 @@ function getBuildOutputPathList() {
   }
 }
 
-if (fs.existsSync(outputPath)) {
+if (isConfigExplicit && fs.existsSync(outputPath)) {
   console.log(
     `[guessConfig] Using config-provided build output path: ${outputPath}`,
   )
