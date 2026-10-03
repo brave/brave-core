@@ -9,6 +9,8 @@
 // We don't want to send wallet requests as Brave doesn't support Google wallet.
 // Seems easier to replace upstream's class completely.
 
+#include <string>
+
 #include "base/memory/scoped_refptr.h"
 #include "components/wallet/core/browser/network/wallet_http_client.h"
 
@@ -26,7 +28,8 @@ class WalletHttpClientImpl : public WalletHttpClient {
  public:
   WalletHttpClientImpl(
       signin::IdentityManager* identity_manager,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      std::string app_locale);
   ~WalletHttpClientImpl() override;
 
   WalletHttpClientImpl(const WalletHttpClientImpl&) = delete;
