@@ -103,11 +103,6 @@ void AdsClientIOS::Load(const std::string& name,
   [bridge_ load:name callback:std::move(callback)];
 }
 
-void AdsClientIOS::ShowScheduledCaptcha(const std::string& payment_id,
-                                        const std::string& captcha_id) {
-  [bridge_ showScheduledCaptcha:payment_id captchaId:captcha_id];
-}
-
 void AdsClientIOS::Log(const char* file,
                        int line,
                        int verbose_level,

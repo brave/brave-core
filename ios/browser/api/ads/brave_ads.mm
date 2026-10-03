@@ -51,6 +51,7 @@
 #import "brave/ios/browser/api/ads/ads_client_ios.h"
 #import "brave/ios/browser/api/ads/brave_ads.mojom.objc+private.h"
 #import "brave/ios/browser/api/common/common_operations.h"
+#include "brave/ios/browser/brave_ads/ads_client_ios_observer.h"
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
 #include "brave/ios/browser/brave_ads/virtual_pref_provider_delegate_ios.h"
@@ -252,10 +253,17 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   adsService = brave_ads::AdsServiceFactoryIOS::GetForProfile(profile);
   CHECK(adsService);
 
+  const auto __weak weakSelf = self;
+  auto ads_observer = std::make_unique<brave_ads::AdsClientIOSObserver>(
+      base::BindRepeating(^(const std::string& payment_id,
+                            const std::string& captcha_id) {
+        [weakSelf showScheduledCaptcha:payment_id captchaId:captcha_id];
+      }));
   adsService->InitializeAds(
       base::SysNSStringToUTF8(self.storagePath),
       std::make_unique<AdsClientIOS>(self), std::move(cppSysInfo),
       std::move(cppBuildChannelInfo), std::move(cppWalletInfo),
+      std::move(ads_observer),
       base::BindOnce(^(bool success) {
         if (success) {
           [self registerAdsResources];

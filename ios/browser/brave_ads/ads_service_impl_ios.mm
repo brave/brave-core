@@ -27,6 +27,7 @@
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
+#include "brave/components/brave_ads/core/public/ads_observer.h"
 #include "brave/components/brave_ads/core/public/command_line_switches/command_line_switches_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -72,6 +73,7 @@ void AdsServiceImplIOS::InitializeAds(
     mojom::SysInfoPtr mojom_sys_info,
     mojom::BuildChannelInfoPtr mojom_build_channel,
     mojom::WalletInfoPtr mojom_wallet,
+    std::unique_ptr<AdsObserver> ads_observer,
     ResultCallback callback) {
   if (IsInitialized() || !CanStartBatAdsService()) {
     return std::move(callback).Run(/*success=*/false);
@@ -79,6 +81,7 @@ void AdsServiceImplIOS::InitializeAds(
 
   storage_path_ = base::FilePath(storage_path);
   ads_client_ = std::move(ads_client);
+  ads_observer_ = std::move(ads_observer);
   mojom_sys_info_ = std::move(mojom_sys_info);
   mojom_build_channel_ = std::move(mojom_build_channel);
   mojom_wallet_ = std::move(mojom_wallet);
@@ -484,6 +487,8 @@ void AdsServiceImplIOS::InitializeBatAdsCallback(ResultCallback callback,
   if (!success) {
     Shutdown();
   } else {
+    ads_->AddObserver(std::move(ads_observer_));
+
     NotifyDidInitializeAdsService();
   }
 

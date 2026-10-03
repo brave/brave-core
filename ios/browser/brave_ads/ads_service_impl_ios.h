@@ -33,6 +33,7 @@ namespace brave_ads {
 class Ads;
 class AdsClient;
 class AdsFactory;
+class AdsObserver;
 
 class AdsServiceImplIOS : public AdsService {
  public:
@@ -51,6 +52,7 @@ class AdsServiceImplIOS : public AdsService {
                      mojom::SysInfoPtr mojom_sys_info,
                      mojom::BuildChannelInfoPtr mojom_build_channel,
                      mojom::WalletInfoPtr mojom_wallet,
+                     std::unique_ptr<AdsObserver> ads_observer,
                      ResultCallback callback);
   void ShutdownAds(ResultCallback callback);
 
@@ -189,6 +191,7 @@ class AdsServiceImplIOS : public AdsService {
 
   base::FilePath storage_path_;
   std::unique_ptr<AdsClient> ads_client_;
+  std::unique_ptr<AdsObserver> ads_observer_;
   mojom::SysInfoPtr mojom_sys_info_;
   mojom::BuildChannelInfoPtr mojom_build_channel_;
   mojom::WalletInfoPtr mojom_wallet_;

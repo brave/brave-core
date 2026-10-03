@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TEST_ADS_OBSERVER_MOCK_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TEST_ADS_OBSERVER_MOCK_H_
 
+#include <string>
+
 #include "brave/components/brave_ads/core/public/ads_observer.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
@@ -25,6 +27,10 @@ class AdsObserverMock : public AdsObserver {
   MOCK_METHOD(void, OnBrowserUpgradeRequiredToServeAds, ());
 
   MOCK_METHOD(void, OnIneligibleWalletToServeAds, ());
+
+  MOCK_METHOD(void,
+              OnSolveCaptchaToServeAds,
+              (const std::string& payment_id, const std::string& captcha_id));
 
   MOCK_METHOD(void, OnRemindUser, (mojom::ReminderType));
 };
