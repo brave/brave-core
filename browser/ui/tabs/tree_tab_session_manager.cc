@@ -126,6 +126,8 @@ void TreeTabSessionManager::OnTreeTabChanged(const TreeTabChange& change) {
     case TreeTabChange::Type::kNodeReparented:
       UpdateTreeTabSessionDataForNode(change.GetReparentedChange().node.get());
       break;
+    case TreeTabChange::Type::kNodeChildrenChanged:
+      break;
     case TreeTabChange::Type::kNodeWillBeDestroyed:
       // Do not clear tree data when a node is destroyed. The tree node data
       // must remain in the session so that "restore closed tab" can place the

@@ -330,6 +330,24 @@ void BraveBrowserTabStripController::OnTreeTabChanged(
     }
     case TreeTabChange::Type::kNodeReparented:
       break;
+    case TreeTabChange::Type::kNodeChildrenChanged: {
+      const tabs::TreeTabNode* node = GetTreeTabNode(change.id);
+      if (!node) {
+        break;
+      }
+      for (const tabs::TabInterface* tab : node->GetTabs()) {
+        const int index = model_->GetIndexOfTab(tab);
+        if (index != TabStripModel::kNoTab &&
+            index < tabstrip_->GetTabCount()) {
+          auto* tab_view = static_cast<BraveTab*>(tabstrip_->tab_at(index));
+          tab_view->UpdateIconVisibility();
+          tab_view->InvalidateLayout();
+        }
+      }
+      static_cast<BraveTabStrip*>(tabstrip_.get())
+          ->InvalidateTabContainerLayout();
+      break;
+    }
   }
 }
 

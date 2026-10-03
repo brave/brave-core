@@ -181,7 +181,6 @@ int TreeTabNode::CalculateLevelAndHeightRecursivelyImpl() {
   }
 
   height_ = (max_height == std::numeric_limits<int>::min()) ? 0 : max_height;
-
   return height_;
 }
 
@@ -189,19 +188,22 @@ void TreeTabNode::OnChildHeightChangedImpl() {
   // Update height of this node.
   int max_height = std::numeric_limits<int>::min();
   for (const auto& child : collection_->GetTreeNodeChildren()) {
-    if (std::holds_alternative<tabs::TabCollection*>(child)) {
-      auto* collection = std::get<tabs::TabCollection*>(child);
-      if (collection->type() != TabCollection::Type::TREE_NODE) {
-        // If non-tree node child, height would be 1 for this node
-        max_height = std::max(max_height, 1);
-        continue;
-      }
-
-      max_height = std::max(
-          max_height,
-          static_cast<TreeTabNodeTabCollection*>(collection)->node().height_ +
-              1);
+    if (!std::holds_alternative<tabs::TabCollection*>(child)) {
+      // Skip non-TabCollection children - direct child should be considered
+      // as having height 0 for this node
+      continue;
     }
+
+    auto* collection = std::get<tabs::TabCollection*>(child);
+    if (collection->type() != TabCollection::Type::TREE_NODE) {
+      // If non-tree node child, e.g., split or group, height would be zero
+      // for this path
+      continue;
+    }
+
+    max_height = std::max(
+        max_height,
+        static_cast<TreeTabNodeTabCollection*>(collection)->node().height_ + 1);
   }
 
   auto new_height =

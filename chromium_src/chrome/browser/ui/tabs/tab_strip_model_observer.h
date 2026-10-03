@@ -17,6 +17,7 @@ struct TreeTabChange {
     kNodeWillBeDestroyed,
     kNodeCollapsedStateChanged,
     kNodeReparented,
+    kNodeChildrenChanged,
   };
 
   struct Delta {
