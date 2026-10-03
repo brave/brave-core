@@ -8,6 +8,8 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/span.h"
+#include "base/memory/weak_ptr.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/containers/containers_service_factory.h"
@@ -33,6 +35,8 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/storage_partition_config.h"
 #include "content/public/browser/web_contents.h"
@@ -40,6 +44,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "services/network/public/cpp/resource_request_body.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
@@ -95,11 +100,21 @@ class TrafficControlBrowserTest : public InProcessBrowserTest {
 
   // Starts a navigation that Traffic Control cancels and re-opens in a new tab.
   // Returns the new active WebContents after load.
-  content::WebContents* NavigateExpectingReroute(const GURL& url) {
+  content::WebContents* NavigateExpectingReroute(
+      const GURL& url,
+      ui::PageTransition transition = ui::PAGE_TRANSITION_TYPED,
+      bool is_renderer_initiated = false) {
     const int initial_count = browser()->tab_strip_model()->count();
     content::OpenURLParams params(url, content::Referrer(),
                                   WindowOpenDisposition::CURRENT_TAB,
-                                  ui::PAGE_TRANSITION_TYPED, false);
+                                  transition, is_renderer_initiated);
+    if (is_renderer_initiated) {
+      params.initiator_origin =
+          url::Origin::Create(browser()
+                                  ->tab_strip_model()
+                                  ->GetActiveWebContents()
+                                  ->GetLastCommittedURL());
+    }
     browser()->OpenURL(params, /*navigation_handle_callback=*/{});
 
     EXPECT_TRUE(base::test::RunUntil([&]() {
@@ -139,6 +154,15 @@ class TrafficControlBrowserTest : public InProcessBrowserTest {
     browser()->OpenURL(params, /*navigation_handle_callback=*/{});
   }
 
+  void NavigatePostInCurrentTab(const GURL& url) {
+    content::OpenURLParams params(url, content::Referrer(),
+                                  WindowOpenDisposition::CURRENT_TAB,
+                                  ui::PAGE_TRANSITION_FORM_SUBMIT, false);
+    params.post_data = network::ResourceRequestBody::CreateFromCopyOfBytes(
+        base::as_byte_span("traffic-control-test"));
+    browser()->OpenURL(params, /*navigation_handle_callback=*/{});
+  }
+
   std::string container_id_;
   base::test::ScopedFeatureList feature_list_;
 };
@@ -166,6 +190,74 @@ IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest,
   }));
 }
 
+IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest,
+                       PrivateWindowDoesNotInheritRulesOrStorage) {
+  const GURL url = TestUrl();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* regular_tab =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::ExecJs(regular_tab, R"(
+    localStorage.setItem('traffic-control', 'regular');
+    document.cookie = 'traffic_control=regular; path=/';
+  )"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), TestUrl("a.test")));
+
+  std::vector<mojom::TrafficRulePtr> rules;
+  rules.push_back(MakeRule("r1", true, "example.com", container_id_));
+  SetRules(std::move(rules));
+
+  content::WebContents* contained_tab = NavigateExpectingReroute(url);
+  ASSERT_TRUE(contained_tab);
+  ASSERT_EQ(containers::GetContainerIdForWebContents(contained_tab),
+            container_id_);
+  ASSERT_TRUE(content::ExecJs(contained_tab, R"(
+    localStorage.setItem('traffic-control', 'container');
+    document.cookie = 'traffic_control=container; path=/';
+  )"));
+  const int regular_tab_count = browser()->tab_strip_model()->count();
+
+  auto* private_browser = CreateIncognitoBrowser(browser()->GetProfile());
+  ASSERT_TRUE(private_browser->GetProfile()->IsOffTheRecord());
+  EXPECT_EQ(TrafficControlServiceFactory::GetForProfile(
+                private_browser->GetProfile()),
+            nullptr);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(private_browser, url));
+  content::WebContents* private_tab =
+      private_browser->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(private_tab);
+
+  EXPECT_EQ(private_browser->tab_strip_model()->count(), 1);
+  EXPECT_EQ(browser()->tab_strip_model()->count(), regular_tab_count);
+  EXPECT_EQ(private_tab->GetBrowserContext(), private_browser->GetProfile());
+  EXPECT_EQ(private_tab->GetLastCommittedURL(), url);
+  EXPECT_TRUE(containers::GetContainerIdForWebContents(private_tab).empty());
+  EXPECT_EQ(content::EvalJs(private_tab,
+                            "localStorage.getItem('traffic-control') === null"),
+            true);
+  EXPECT_EQ(content::EvalJs(private_tab, "document.cookie"), "");
+}
+
+IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest,
+                       RerouteFromNewEmptyTabClosesSourceTab) {
+  std::vector<mojom::TrafficRulePtr> rules;
+  rules.push_back(MakeRule("r1", true, "example.com", container_id_));
+  SetRules(std::move(rules));
+
+  const int initial_tab_count = browser()->tab_strip_model()->count();
+  NavigateParams params(browser(), GURL(chrome::kChromeUINewTabURL),
+                        ui::PAGE_TRANSITION_TYPED);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  Navigate(&params);
+  const int tab_count_with_empty_tab = browser()->tab_strip_model()->count();
+  ASSERT_EQ(tab_count_with_empty_tab, initial_tab_count + 1);
+
+  content::WebContents* new_tab = NavigateExpectingReroute(TestUrl());
+  ASSERT_TRUE(new_tab);
+
+  EXPECT_EQ(browser()->tab_strip_model()->count(), initial_tab_count + 1);
+  EXPECT_EQ(containers::GetContainerIdForWebContents(new_tab), container_id_);
+}
+
 IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest, KeepsNonEmptySourceTab) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), embedded_test_server()->GetURL("a.test", "/simple.html")));
@@ -185,6 +277,34 @@ IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest, KeepsNonEmptySourceTab) {
   EXPECT_NE(browser()->tab_strip_model()->GetIndexOfWebContents(source),
             TabStripModel::kNoTab);
   EXPECT_EQ(containers::GetContainerIdForWebContents(new_tab), container_id_);
+}
+
+IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest,
+                       KeepsSourceTabWithPendingNavigation) {
+  std::vector<mojom::TrafficRulePtr> rules;
+  rules.push_back(MakeRule("r1", true, "example.com", container_id_));
+  SetRules(std::move(rules));
+
+  content::WebContents* source =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(source);
+  base::WeakPtr<content::WebContents> source_weak = source->GetWeakPtr();
+  const int initial_tab_count = browser()->tab_strip_model()->count();
+
+  content::OpenURLParams params(TestUrl(), content::Referrer(),
+                                WindowOpenDisposition::CURRENT_TAB,
+                                ui::PAGE_TRANSITION_TYPED, false);
+  browser()->OpenURL(params, /*navigation_handle_callback=*/{});
+  NavigateInCurrentTab(TestUrl("a.test"), ui::PAGE_TRANSITION_LINK);
+
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return source_weak &&
+           source_weak->GetLastCommittedURL().host() == "a.test" &&
+           !source_weak->IsLoading();
+  }));
+  EXPECT_NE(browser()->tab_strip_model()->GetIndexOfWebContents(source),
+            TabStripModel::kNoTab);
+  EXPECT_EQ(browser()->tab_strip_model()->count(), initial_tab_count + 1);
 }
 
 IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest, AlreadyInContainerProceeds) {
@@ -344,6 +464,153 @@ IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest, OmniboxSameSiteDoesReroute) {
   content::WebContents* new_tab = NavigateExpectingReroute(same_site);
   ASSERT_TRUE(new_tab);
   EXPECT_EQ(containers::GetContainerIdForWebContents(new_tab), container_id_);
+}
+
+IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest,
+                       AutomaticTransitionIsPreservedWhenRerouted) {
+  std::vector<mojom::TrafficRulePtr> rules;
+  rules.push_back(MakeRule("r1", true, "example.com", container_id_));
+  SetRules(std::move(rules));
+
+  content::WebContents* new_tab =
+      NavigateExpectingReroute(TestUrl(), ui::PAGE_TRANSITION_AUTO_TOPLEVEL,
+                               /*is_renderer_initiated=*/true);
+  ASSERT_TRUE(new_tab);
+
+  content::NavigationEntry* entry =
+      new_tab->GetController().GetLastCommittedEntry();
+  ASSERT_TRUE(entry);
+  EXPECT_TRUE(ui::PageTransitionCoreTypeIs(entry->GetTransitionType(),
+                                           ui::PAGE_TRANSITION_AUTO_TOPLEVEL));
+}
+
+IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest,
+                       SandboxedTopNavigationDoesNotReroute) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), TestUrl("a.test")));
+  content::WebContents* source =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(source);
+  const int tab_count = browser()->tab_strip_model()->count();
+  const GURL destination_url = TestUrl();
+  // Allow top navigation to reach Traffic Control while omitting allow-popups.
+  const GURL frame_url = embedded_test_server()->GetURL(
+      "a.test",
+      "/set-header?Content-Security-Policy: sandbox allow-scripts "
+      "allow-same-origin allow-top-navigation");
+
+  std::vector<mojom::TrafficRulePtr> rules;
+  rules.push_back(MakeRule("r1", true, "example.com", container_id_));
+  SetRules(std::move(rules));
+
+  ASSERT_TRUE(content::ExecJs(source, content::JsReplace(R"JS(
+        const frame = document.createElement('iframe');
+        frame.src = $1;
+        document.body.appendChild(frame);
+      )JS",
+                                                         frame_url)));
+
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    content::RenderFrameHost* frame = content::ChildFrameAt(source, 0);
+    return frame && frame->GetLastCommittedURL() == frame_url;
+  }));
+
+  content::RenderFrameHost* frame = content::ChildFrameAt(source, 0);
+  ASSERT_TRUE(frame);
+
+  // Exercise the sandbox restriction without supplying a user activation.
+  content::ExecuteScriptAsyncWithoutUserGesture(
+      frame, content::JsReplace("top.location = $1", destination_url));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return source->GetLastCommittedURL() == destination_url; }));
+
+  EXPECT_EQ(browser()->tab_strip_model()->count(), tab_count);
+  EXPECT_EQ(browser()->tab_strip_model()->GetActiveWebContents(), source);
+  EXPECT_EQ(source->GetLastCommittedURL(), destination_url);
+  EXPECT_TRUE(containers::GetContainerIdForWebContents(source).empty());
+}
+
+IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest,
+                       PostNavigationDoesNotReroute) {
+  std::vector<mojom::TrafficRulePtr> rules;
+  rules.push_back(MakeRule("r1", true, "example.com", container_id_));
+  SetRules(std::move(rules));
+
+  content::WebContents* source =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(source);
+  const int tab_count = browser()->tab_strip_model()->count();
+  NavigatePostInCurrentTab(TestUrl());
+  ASSERT_TRUE(content::WaitForLoadStop(source));
+
+  EXPECT_EQ(browser()->tab_strip_model()->count(), tab_count);
+  EXPECT_EQ(browser()->tab_strip_model()->GetActiveWebContents(), source);
+  EXPECT_TRUE(containers::GetContainerIdForWebContents(source).empty());
+  EXPECT_EQ(source->GetLastCommittedURL().host(), "example.com");
+}
+
+IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest, ReloadDoesNotReroute) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), TestUrl()));
+  content::WebContents* source =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(source);
+  const int tab_count = browser()->tab_strip_model()->count();
+
+  std::vector<mojom::TrafficRulePtr> rules;
+  rules.push_back(MakeRule("r1", true, "example.com", container_id_));
+  SetRules(std::move(rules));
+
+  source->GetController().Reload(content::ReloadType::NORMAL,
+                                 /*check_for_repost=*/true);
+  ASSERT_TRUE(content::WaitForLoadStop(source));
+
+  EXPECT_EQ(browser()->tab_strip_model()->count(), tab_count);
+  EXPECT_EQ(browser()->tab_strip_model()->GetActiveWebContents(), source);
+  EXPECT_TRUE(containers::GetContainerIdForWebContents(source).empty());
+}
+
+IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest,
+                       HistoryNavigationDoesNotReroute) {
+  const GURL matching_url = TestUrl();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), matching_url));
+  content::WebContents* source =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(source);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), TestUrl("a.test")));
+  const int tab_count = browser()->tab_strip_model()->count();
+
+  std::vector<mojom::TrafficRulePtr> rules;
+  rules.push_back(MakeRule("r1", true, "example.com", container_id_));
+  SetRules(std::move(rules));
+
+  source->GetController().GoBack();
+  ASSERT_TRUE(content::WaitForLoadStop(source));
+
+  EXPECT_EQ(browser()->tab_strip_model()->count(), tab_count);
+  EXPECT_EQ(browser()->tab_strip_model()->GetActiveWebContents(), source);
+  EXPECT_TRUE(containers::GetContainerIdForWebContents(source).empty());
+  EXPECT_EQ(source->GetLastCommittedURL(), matching_url);
+}
+
+IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest,
+                       NonHttpNavigationDoesNotReroute) {
+  std::vector<mojom::TrafficRulePtr> rules;
+  rules.push_back(MakeRule("r1", true, "chrome://version", container_id_));
+  SetRules(std::move(rules));
+
+  auto* service =
+      TrafficControlServiceFactory::GetForProfile(browser()->GetProfile());
+  ASSERT_TRUE(service);
+  const GURL version_url(chrome::kChromeUIVersionURL);
+  ASSERT_TRUE(service->FindMatchingRule(version_url));
+
+  const int tab_count = browser()->tab_strip_model()->count();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), version_url));
+  content::WebContents* active =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  EXPECT_EQ(browser()->tab_strip_model()->count(), tab_count);
+  EXPECT_TRUE(containers::GetContainerIdForWebContents(active).empty());
+  EXPECT_EQ(active->GetLastCommittedURL(), version_url);
 }
 
 }  // namespace traffic_control
