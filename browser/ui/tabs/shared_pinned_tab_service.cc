@@ -13,6 +13,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/logging.h"
+#include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -88,7 +89,7 @@ class SharedContentsData
   SharedContentsData& operator=(const SharedContentsData&) = delete;
   ~SharedContentsData() override {
     while (!dummy_contentses_.empty()) {
-      auto* dummy_contents = *dummy_contentses_.begin();
+      content::WebContents* dummy_contents = *dummy_contentses_.begin();
       dummy_contentses_.erase(dummy_contents);
       DummyContentsData::RemoveFromWebContents(dummy_contents);
     }
@@ -127,7 +128,7 @@ class SharedContentsData
       return;
     }
 
-    for (auto* dummy_contents : dummy_contentses_) {
+    for (content::WebContents* dummy_contents : dummy_contentses_) {
       auto* dummy_contents_data =
           DummyContentsData::FromWebContents(dummy_contents);
       DCHECK(dummy_contents_data);
@@ -146,7 +147,7 @@ class SharedContentsData
 
   base::RepeatingCallback<void(content::WebContents*)> on_primary_page_changed_;
 
-  base::flat_set<content::WebContents*> dummy_contentses_;
+  base::flat_set<raw_ptr<content::WebContents>> dummy_contentses_;
 };
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(SharedContentsData);
@@ -446,7 +447,7 @@ void SharedPinnedTabService::OnTabChangedAt(tabs::TabInterface* tab,
 
   iter->renderer_data = tabs::TabData::FromTabInterface(
       iter->contents_owner_model->GetTabAtIndex(index));
-  for (auto* browser : browsers_) {
+  for (BrowserWindowInterface* browser : browsers_) {
     auto* tab_strip_model = browser->GetTabStripModel();
     if (tab_strip_model == change_source_model_) {
       continue;
@@ -669,7 +670,7 @@ void SharedPinnedTabService::SynchronizeNewPinnedTab(int index) {
   DCHECK_LT(index, static_cast<int>(pinned_tab_data_.size()));
   DCHECK(change_source_model_);
 
-  for (auto* browser : browsers_) {
+  for (BrowserWindowInterface* browser : browsers_) {
     auto* model = browser->GetTabStripModel();
     if (model == change_source_model_) {
       continue;
@@ -686,7 +687,7 @@ void SharedPinnedTabService::SynchronizeDeletedPinnedTab(int index) {
   DVLOG(2) << __FUNCTION__;
   DCHECK(change_source_model_);
 
-  for (auto* browser : browsers_) {
+  for (BrowserWindowInterface* browser : browsers_) {
     auto* model = browser->GetTabStripModel();
     if (model == change_source_model_) {
       continue;
@@ -702,7 +703,7 @@ void SharedPinnedTabService::SynchronizeMovedPinnedTab(int from, int to) {
   DVLOG(2) << __FUNCTION__;
   DCHECK(change_source_model_);
 
-  for (auto* browser : browsers_) {
+  for (BrowserWindowInterface* browser : browsers_) {
     auto* model = browser->GetTabStripModel();
     if (model == change_source_model_) {
       continue;
@@ -893,7 +894,7 @@ void SharedPinnedTabService::OnSharedPinnedTabEnabled() {
       });
 
   // Synchronize all pre-existing pinned tabs.
-  for (auto* browser : browsers_) {
+  for (BrowserWindowInterface* browser : browsers_) {
     auto* tab_strip_model = browser->GetTabStripModel();
     for (int i = 0; i < tab_strip_model->IndexOfFirstNonPinnedTab(); ++i) {
       auto* contents = tab_strip_model->GetWebContentsAt(i);
@@ -911,13 +912,13 @@ void SharedPinnedTabService::OnSharedPinnedTabEnabled() {
 void SharedPinnedTabService::OnSharedPinnedTabDisabled() {
   // Reset observers. Note that we should remove observers first so that
   // closing dummy contents won't close shared contents too.
-  for (auto* browser : browsers_) {
+  for (BrowserWindowInterface* browser : browsers_) {
     browser->GetTabStripModel()->RemoveObserver(this);
   }
   browser_collection_observation_.Reset();
 
   // Remove all dummy contents
-  for (auto* browser : browsers_) {
+  for (BrowserWindowInterface* browser : browsers_) {
     auto* tab_strip_model = browser->GetTabStripModel();
     for (auto i = tab_strip_model->IndexOfFirstNonPinnedTab() - 1; i >= 0;
          --i) {
