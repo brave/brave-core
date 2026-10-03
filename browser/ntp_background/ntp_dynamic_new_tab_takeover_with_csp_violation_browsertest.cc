@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/path_service.h"
@@ -10,11 +12,14 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service_waiter.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_dynamic_new_tab_takeover_source.h"
 #include "brave/components/ntp_background_images/browser/switches.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -53,6 +58,12 @@ class NTPDynamicNewTabTakeoverWithCSPViolationBrowserTest
     NTPBackgroundImagesServiceWaiter waiter(*ntp_background_images_service);
     ntp_background_images_service->Init();
     waiter.WaitForOnSponsoredContentDidUpdate();
+
+    // Normally registered by the NTP WebUI; this test navigates directly.
+    content::URLDataSource::Add(
+        chrome_test_utils::GetProfile(this),
+        std::make_unique<NTPDynamicNewTabTakeoverSource>(
+            ntp_background_images_service));
   }
 
   content::WebContents* GetActiveWebContents() {
