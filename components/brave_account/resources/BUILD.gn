@@ -64,6 +64,7 @@ build_webui("build") {
       "brave_account_row.ts",
       "brave_account_row_base.ts",
       "brave_account_row_browser_proxy.ts",
+      "brave_account_text_truncator.ts",
     ]
   }
 

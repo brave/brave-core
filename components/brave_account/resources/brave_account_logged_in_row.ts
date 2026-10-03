@@ -16,6 +16,7 @@ import { showError } from './brave_account_shared.js'
 import { BraveAccountRowBaseElement } from './brave_account_row_base.js'
 import { getCss } from './brave_account_logged_in_row.css.js'
 import { getHtml } from './brave_account_logged_in_row.html.js'
+import { TextTruncator } from './brave_account_text_truncator.js'
 
 export class BraveAccountLoggedInRowElement extends BraveAccountRowBaseElement<
   LoggedInVerificationIntent,
@@ -42,8 +43,9 @@ export class BraveAccountLoggedInRowElement extends BraveAccountRowBaseElement<
 
   protected accessor truncatedEmail = ''
   private isChangingPassword = false
-  private measure?: (text: string) => number
-  private resizeObserver?: ResizeObserver
+  private truncator = new TextTruncator((text: string) => {
+    this.truncatedEmail = text
+  })
 
   protected override makeVerificationIntent(
     intent: LoggedInVerificationIntent,
@@ -60,14 +62,21 @@ export class BraveAccountLoggedInRowElement extends BraveAccountRowBaseElement<
   override disconnectedCallback() {
     super.disconnectedCallback()
 
-    this.cleanUpEmailTruncation()
+    this.truncator.disconnect()
   }
 
   override updated(changedProperties: PropertyValues<this>) {
     super.updated(changedProperties)
 
     if ((changedProperties as Map<PropertyKey, unknown>).has('state')) {
-      this.updateEmailTruncation()
+      // The `#email` element only exists in the non-verification row, so stop
+      // truncating while a password-change verification is pending.
+      const element = this.shadowRoot?.querySelector<HTMLElement>('#email')
+      if (element) {
+        this.truncator.observe(element, this.state.email)
+      } else {
+        this.truncator.disconnect()
+      }
     }
   }
 
@@ -94,87 +103,6 @@ export class BraveAccountLoggedInRowElement extends BraveAccountRowBaseElement<
     }
 
     this.isChangingPassword = false
-  }
-
-  private updateEmailTruncation() {
-    // The `#email` element only exists in the non-verification row, so skip
-    // truncation while a password-change verification is pending.
-    if (this.state.verification) {
-      this.cleanUpEmailTruncation()
-      return
-    }
-
-    const emailEl = this.shadowRoot?.querySelector<HTMLElement>('#email')
-    if (!emailEl) return
-
-    if (!this.resizeObserver) {
-      const canvas = document.createElement('canvas')
-      const ctx = canvas.getContext('2d')!
-      ctx.font = getComputedStyle(emailEl).font
-      this.measure = (text: string) => ctx.measureText(text).width
-
-      this.resizeObserver = new ResizeObserver(() => {
-        this.truncateEmail(emailEl)
-      })
-      this.resizeObserver.observe(emailEl)
-    }
-
-    // Re-truncate on every `state` change so a live email update (e.g. from
-    // `AuthValidate` polling) is reflected even when the layout width is
-    // unchanged and the `ResizeObserver` does not fire.
-    this.truncateEmail(emailEl)
-  }
-
-  private truncateEmail(emailEl: HTMLElement) {
-    if (!this.measure) return
-
-    const email = this.state.email
-    if (!email) return
-
-    const availableWidth = emailEl.clientWidth
-    if (!availableWidth) {
-      this.truncatedEmail = email
-      return
-    }
-
-    if (this.measure(email) <= availableWidth) {
-      this.truncatedEmail = email
-      return
-    }
-
-    // Use binary search (O(log n)) to find the maximum number of characters
-    // that fit within available width. Characters are split evenly between
-    // the start and end of the email with '…' in the middle.
-    const chars = Array.from(email)
-    const makeCandidate = (kept: number): string => {
-      const prefixLen = Math.ceil(kept / 2)
-      const suffixLen = Math.floor(kept / 2)
-      return (
-        chars.slice(0, prefixLen).join('')
-        + '…'
-        + chars.slice(-suffixLen).join('')
-      )
-    }
-
-    let truncatedEmail = ''
-    for (let low = 0, high = chars.length; low < high; ) {
-      const middle = Math.ceil((low + high) / 2)
-      const candidate = makeCandidate(middle)
-      if (this.measure(candidate) <= availableWidth) {
-        truncatedEmail = candidate
-        low = middle
-      } else {
-        high = middle - 1
-      }
-    }
-
-    this.truncatedEmail = truncatedEmail
-  }
-
-  private cleanUpEmailTruncation() {
-    this.measure = undefined
-    this.resizeObserver?.disconnect()
-    this.resizeObserver = undefined
   }
 }
 

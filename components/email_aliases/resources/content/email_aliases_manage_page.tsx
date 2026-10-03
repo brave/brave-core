@@ -29,9 +29,7 @@ const PageCol = styled(Col)`
 `
 
 const BraveAccountSignIn = () => {
-  return React.createElement('brave-account-row', {
-    'initiating-service-name': 'email-aliases',
-  })
+  return React.createElement('brave-account-compact-row')
 }
 
 export const SignInPage = ({
