@@ -5,6 +5,8 @@
 
 import * as React from 'react'
 
+import Dropdown from '@brave/leo/react/dropdown'
+
 const countryNames = new Intl.DisplayNames(undefined, { type: 'region' })
 
 export function getCountryName(code: string) {
@@ -27,8 +29,7 @@ interface Props {
 }
 
 export function CountrySelect(props: Props) {
-  const onCountryChange = (event: React.FormEvent<HTMLSelectElement>) => {
-    const { value } = event.currentTarget
+  const onCountryChange = ({ value }: { value: string }) => {
     if (value !== props.value) {
       props.onChange(value)
     }
@@ -36,7 +37,7 @@ export function CountrySelect(props: Props) {
 
   // When the select element receives focus, automatically select the "default"
   // option - which will typically be the device country.
-  const onFocus = (event: React.FormEvent<HTMLSelectElement>) => {
+  const onFocus = () => {
     const { countries, defaultCountry } = props
     if (!props.value && defaultCountry && countries.includes(defaultCountry)) {
       props.onChange(defaultCountry)
@@ -44,21 +45,21 @@ export function CountrySelect(props: Props) {
   }
 
   return (
-    <select
+    <Dropdown
       className={!props.value ? 'empty' : ''}
       value={props.value}
       onChange={onCountryChange}
       onFocus={onFocus}
     >
-      <option value=''>{props.placeholderText}</option>
+      <leo-option value=''>{props.placeholderText}</leo-option>
       {getCountryOptions(props.countries).map((option) => (
-        <option
+        <leo-option
           key={option.code}
           value={option.code}
         >
           {option.name}
-        </option>
+        </leo-option>
       ))}
-    </select>
+    </Dropdown>
   )
 }
