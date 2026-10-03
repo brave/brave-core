@@ -90,8 +90,8 @@ ProtectionLevel GetCurrentProtectionLevel() {
 // How long to wait for the elevation service to respond before giving up on
 // this history entry. Bounded so an unresponsive elevation service cannot
 // hang browser startup indefinitely - the caller treats a timeout the same
-// as a failed decrypt and moves on (to an older history entry, or to the
-// unverified-newest fallback).
+// as a failed decrypt and moves on to the next-older history entry (or
+// concludes none verify).
 constexpr base::TimeDelta kAppBoundUnwrapTimeout = base::Seconds(10);
 
 // Holds the result of a `DecryptAppBoundString` call made on a COM-STA

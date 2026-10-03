@@ -38,7 +38,7 @@ std::optional<std::vector<uint8_t>> UnwrapWithDPAPI(
 // `SequencedTaskRunner::CurrentDefaultHandle` exists to bridge asynchronously
 // (the restore path).
 //
-// `step_description` is logged via LOG(INFO) before dispatching and after
+// `step_description` is logged via VLOG(1) before dispatching and after
 // completion, so a slow elevation-service round trip during startup is
 // explained in the logs rather than appearing as unexplained delay.
 //

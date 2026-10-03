@@ -319,12 +319,29 @@ TEST_F(OSCryptKeyBackupTest, AppendsAndDedupesAppBoundKeys) {
   ASSERT_EQ(1u, AppBoundKeyHistorySize());
   ::testing::Mock::VerifyAndClearExpectations(&mock_app_bound_);
 
-  // Same plaintext, mocked decrypt called once for the live key, once more
-  // for the (single, newest) history entry - the newest-first short-circuit
-  // means it stops there rather than continuing to scan.
-  EXPECT_CALL(mock_app_bound_, DecryptAppBoundString).Times(2);
+  // The exact same wrapped bytes as the newest entry: short-circuits on the
+  // byte-for-byte fast path, with no elevation-service round trip at all.
+  EXPECT_CALL(mock_app_bound_, DecryptAppBoundString).Times(0);
   EXPECT_EQ(OSCryptKeyBackupResult::kUpToDate,
             AppendOSCryptKeyBackupIfNew(path(), "", first));
+  EXPECT_EQ(1u, AppBoundKeyHistorySize());
+  ::testing::Mock::VerifyAndClearExpectations(&mock_app_bound_);
+
+  // Different wrapped bytes that still decrypt to the same plaintext key -
+  // simulating the elevation service (like DPAPI) non-deterministically
+  // re-wrapping an unchanged key. The fast byte-for-byte path can't
+  // short-circuit this (the bytes genuinely differ), so it falls through to
+  // unwrap-and-compare: once for the live key, once more for the (single,
+  // newest) history entry.
+  const std::string rewrapped_first = WrapAppBound("app-bound-one-rewrapped");
+  ASSERT_NE(first, rewrapped_first);
+  EXPECT_CALL(mock_app_bound_, DecryptAppBoundString)
+      .Times(2)
+      .WillRepeatedly(
+          ::testing::DoAll(::testing::SetArgReferee<1>("app-bound-one"),
+                           ::testing::Return(S_OK)));
+  EXPECT_EQ(OSCryptKeyBackupResult::kUpToDate,
+            AppendOSCryptKeyBackupIfNew(path(), "", rewrapped_first));
   EXPECT_EQ(1u, AppBoundKeyHistorySize());
   ::testing::Mock::VerifyAndClearExpectations(&mock_app_bound_);
 

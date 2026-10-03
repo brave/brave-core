@@ -15,7 +15,8 @@ namespace brave {
 // os_crypt_async::Init(), by rewrite/chrome/browser/chrome_browser_main_win.cc
 // .yaml. Defined in brave/browser/os_crypt/os_crypt_key_backup.cc, and declared
 // here so that chrome/browser does not depend on Brave targets. How the restore
-// went is recorded in `Local State`, not returned.
+// went is appended to the restore log at `kOSCryptKeyRestoreFileName`, not
+// returned.
 void MaybeRestoreOSCryptKey(const base::FilePath& user_data_dir,
                             PrefService* local_state);
 

@@ -252,12 +252,21 @@ std::optional<std::vector<uint8_t>> UnwrapBase64(
   return unwrap.Run(*raw);
 }
 
-// If `live_wrapped_key` unwraps and matches (by unwrapped value) any entry
-// already in `history`, does nothing and returns false. Otherwise (including
-// when the live key doesn't unwrap at all - nothing to compare, so nothing
-// to add) appends {`live_wrapped_key`, now} to `history`, evicting the
-// oldest entry if `history.size()` would exceed `kMaxHistoryEntries`, and
-// returns true.
+// Does nothing and returns false if `live_wrapped_key` doesn't unwrap at
+// all (nothing to compare, so nothing to add), or if it unwraps and matches
+// (by unwrapped value) any entry already in `history`. Otherwise appends
+// {`live_wrapped_key`, now} to `history`, evicting the oldest entry if
+// `history.size()` would exceed `kMaxHistoryEntries`, and returns true.
+//
+// The ordinary launch-to-launch case is the live key not having rotated at
+// all, in which case it's the exact same wrapped bytes already stored as
+// the newest entry - OSCrypt only re-wraps when the key actually changes,
+// not on every launch. That case is checked first, byte-for-byte, with no
+// unwrapping at all (an unwrap is a DPAPI/elevation-service call, so this
+// avoids paying for one on every single launch). Only when the wrapped
+// bytes differ - a rotation, or a non-deterministic re-wrap of the same
+// plaintext key - does this fall through to actually unwrap and compare by
+// unwrapped value.
 //
 // Scans `history` newest-to-oldest: the common case (key hasn't rotated)
 // matches the newest entry and returns after a single comparison. Only a
@@ -266,14 +275,19 @@ std::optional<std::vector<uint8_t>> UnwrapBase64(
 bool AppendIfNewDistinctKey(History& history,
                             const std::string& live_wrapped_key,
                             const UnwrapCallback& unwrap) {
+  if (!history.empty() && history.back().wrapped_key == live_wrapped_key) {
+    return false;
+  }
+
   std::optional<std::vector<uint8_t>> live_unwrapped =
       UnwrapBase64(unwrap, live_wrapped_key);
   if (!live_unwrapped) {
     return false;
   }
 
-  // Newest first: the common case (key hasn't rotated) matches on the first
-  // iteration.
+  // Newest first: a non-deterministic re-wrap of the same plaintext key
+  // (the live wrapped bytes changed, but the key didn't) matches on the
+  // first iteration.
   for (const HistoryEntry& entry : std::views::reverse(history)) {
     std::optional<std::vector<uint8_t>> entry_unwrapped =
         UnwrapBase64(unwrap, entry.wrapped_key);
