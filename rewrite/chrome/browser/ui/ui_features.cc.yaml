@@ -25,3 +25,12 @@ substitutions:
     set_feature_flag_default_state:
       feature_name: kTabHoverCardImages
       value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: |-
+      Ship kSessionRestoreInfobar disabled.
+
+      The infobar reappears on every launch (up to 3 times) even after being
+      dismissed, since dismissal is only tracked in-memory, not persisted.
+    set_feature_flag_default_state:
+      feature_name: kSessionRestoreInfobar
+      value: base::FEATURE_DISABLED_BY_DEFAULT
