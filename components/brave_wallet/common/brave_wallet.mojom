@@ -1386,11 +1386,11 @@ interface MeldIntegrationService {
       => (array<MeldPaymentMethod>? payment_methods, array<string>? error);
 
   // Obtains the list of fiat currencies
-  GetFiatCurrencies()
+  GetFiatCurrencies(string country)
       => (array<MeldFiatCurrency>? fiat_currencies, array<string>? error);
 
   // Obtains the list of crypto currencies
-  GetCryptoCurrencies()
+  GetCryptoCurrencies(string country)
       => (array<MeldCryptoCurrency>? fiat_currencies, array<string>? error);
 
   // Obtains the list of countries

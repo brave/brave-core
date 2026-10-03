@@ -201,10 +201,13 @@ std::optional<std::vector<mojom::MeldPaymentMethodPtr>> ParsePaymentMethods(
   // Parses results like this:
   // [
   //   {
-  //     "paymentMethod": "ACH",
-  //     "name": "ACH",
-  //     "paymentType": "BANK_TRANSFER",
-  //     "logos": {
+  //     "countryCode": "US",
+  //     "providerMethod": "ach",
+  //     "method": "ACH",
+  //     "name": "ACH Bank Transfer",
+  //     "type": "BANK_TRANSFER",
+  //     "headlessSupported": true,
+  //     "logo": {
   //       "dark": "https://images-paymentMethod.meld.io/ACH/logo_dark.png",
   //       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
   //     }
@@ -221,10 +224,10 @@ std::optional<std::vector<mojom::MeldPaymentMethodPtr>> ParsePaymentMethods(
       return std::nullopt;
     }
 
-    auto logos = ParseMeldLogos(payment_method_value->logos);
+    auto logo = ParseMeldLogos(payment_method_value->logo);
     auto pm = mojom::MeldPaymentMethod::New(
-        payment_method_value->payment_method, payment_method_value->name,
-        payment_method_value->payment_type, std::move(logos));
+        payment_method_value->method, payment_method_value->name,
+        payment_method_value->payment_type, std::move(logo));
 
     payment_methods.emplace_back(std::move(pm));
   }
@@ -239,28 +242,30 @@ std::optional<std::vector<mojom::MeldPaymentMethodPtr>> ParsePaymentMethods(
 std::optional<std::vector<mojom::MeldFiatCurrencyPtr>> ParseFiatCurrencies(
     const base::Value& json_value) {
   // Parses results like this:
-  // [
-  //   {
-  //     "currencyCode": "AFN",
-  //     "name": "Afghani",
-  //     "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
-  //   }
-  // ]
+  // {
+  //   "currencies": [
+  //     {
+  //       "currencyCode": "AFN",
+  //       "name": "Afghani",
+  //       "decimalPlaces": 2,
+  //       "type": "FIAT",
+  //       "symbol": "https://images-currency.meld.io/fiat/AFN/symbol.png"
+  //     }
+  //   ]
+  // }
 
-  if (!json_value.is_list()) {
+  const auto response_value =
+      meld_integration_responses::FiatCurrenciesResponse::FromValue(
+          json_value);
+  if (!response_value || !response_value->currencies) {
     return std::nullopt;
   }
-  std::vector<mojom::MeldFiatCurrencyPtr> fiat_currencies;
-  for (const auto& fc_item : json_value.GetList()) {
-    const auto fiat_currency_value =
-        meld_integration_responses::FiatCurrency::FromValue(fc_item);
-    if (!fiat_currency_value) {
-      return std::nullopt;
-    }
 
+  std::vector<mojom::MeldFiatCurrencyPtr> fiat_currencies;
+  for (const auto& fiat_currency_value : *response_value->currencies) {
     auto fc = mojom::MeldFiatCurrency::New(
-        fiat_currency_value->currency_code, fiat_currency_value->name,
-        fiat_currency_value->symbol_image_url);
+        fiat_currency_value.currency_code, fiat_currency_value.name,
+        fiat_currency_value.decimal_places, fiat_currency_value.symbol);
 
     fiat_currencies.emplace_back(std::move(fc));
   }
@@ -271,50 +276,40 @@ std::optional<std::vector<mojom::MeldFiatCurrencyPtr>> ParseFiatCurrencies(
 std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> ParseCryptoCurrencies(
     const base::Value& json_value) {
   // Parses results like this:
-  // [
-  //   {
-  //     "currencyCode": "USDT_KCC",
-  //     "name": "#REF!",
-  //     "chainCode": "KCC",
-  //     "chainName": "KuCoin Community Chain",
-  //     "chainId": null,
-  //     "contractAddress": null,
-  //     "symbolImageUrl":
-  //     "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
-  //   },
-  //   {
-  //     "currencyCode": "00",
-  //     "name": "00 Token",
-  //     "chainCode": "ETH",
-  //     "chainName": "Ethereum",
-  //     "chainId": "1",
-  //     "contractAddress": null,
-  //     "symbolImageUrl":
-  //     "https://images-currency.meld.io/crypto/00/symbol.png"
-  //   }
-  // ]
-  if (!json_value.is_list()) {
+  // {
+  //   "currencies": [
+  //     {
+  //       "currencyCode": "USDC",
+  //       "name": "USD Coin",
+  //       "decimalPlaces": 6,
+  //       "type": "CRYPTO",
+  //       "symbol": "https://images-currency.meld.io/crypto/USDC/symbol.png",
+  //       "chainCode": "ETH",
+  //       "contract": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+  //     }
+  //   ]
+  // }
+  const auto response_value =
+      meld_integration_responses::CryptoCurrenciesResponse::FromValue(
+          json_value);
+  if (!response_value || !response_value->currencies) {
     return std::nullopt;
   }
+
   std::vector<mojom::MeldCryptoCurrencyPtr> crypto_currencies;
-  for (const auto& cc_item : json_value.GetList()) {
-    const auto crypto_currency_value =
-        meld_integration_responses::CryptoCurrency::FromValue(cc_item);
-    if (!crypto_currency_value) {
-      return std::nullopt;
-    }
+  for (const auto& crypto_currency_value : *response_value->currencies) {
     std::optional<std::string> chain_id_hex;
     if (int chain_id_as_num;
-        crypto_currency_value->chain_id &&
-        base::StringToInt(*crypto_currency_value->chain_id, &chain_id_as_num)) {
+        crypto_currency_value.chain_id &&
+        base::StringToInt(*crypto_currency_value.chain_id, &chain_id_as_num)) {
       chain_id_hex = Uint256ValueToHex(chain_id_as_num);
     }
 
     auto cc = mojom::MeldCryptoCurrency::New(
-        crypto_currency_value->currency_code, crypto_currency_value->name,
-        crypto_currency_value->chain_code, crypto_currency_value->chain_name,
-        chain_id_hex, crypto_currency_value->contract_address,
-        crypto_currency_value->symbol_image_url);
+        crypto_currency_value.currency_code, crypto_currency_value.name,
+        crypto_currency_value.decimal_places, crypto_currency_value.chain_code,
+        crypto_currency_value.chain_name, chain_id_hex,
+        crypto_currency_value.contract, crypto_currency_value.symbol);
 
     crypto_currencies.emplace_back(std::move(cc));
   }
@@ -325,34 +320,30 @@ std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> ParseCryptoCurrencies(
 std::optional<std::vector<mojom::MeldCountryPtr>> ParseCountries(
     const base::Value& json_value) {
   // Parses results like this:
-  // [
-  //   {
-  //     "countryCode": "AF",
-  //     "name": "Afghanistan",
-  //     "flagImageUrl": "https://images-country.meld.io/AF/flag.svg",
-  //     "regions": null
-  //   },
-  //   {
-  //     "countryCode": "AL",
-  //     "name": "Albania",
-  //     "flagImageUrl": "https://images-country.meld.io/AL/flag.svg",
-  //     "regions": null
-  //   }
-  // ]
-  if (!json_value.is_list()) {
+  // {
+  //   "countries": [
+  //     {
+  //       "countryCode": "AF",
+  //       "name": "Afghanistan",
+  //       "flag": "https://images-country.meld.io/AF/flag.svg"
+  //     },
+  //     {
+  //       "countryCode": "AL",
+  //       "name": "Albania",
+  //       "flag": "https://images-country.meld.io/AL/flag.svg"
+  //     }
+  //   ]
+  // }
+  const auto response_value =
+      meld_integration_responses::CountriesResponse::FromValue(json_value);
+  if (!response_value || !response_value->countries) {
     return std::nullopt;
   }
-  std::vector<mojom::MeldCountryPtr> countries;
-  for (const auto& country_item : json_value.GetList()) {
-    const auto country_value =
-        meld_integration_responses::Country::FromValue(country_item);
-    if (!country_value) {
-      return std::nullopt;
-    }
 
-    auto country = mojom::MeldCountry::New(country_value->country_code,
-                                           country_value->name,
-                                           country_value->flag_image_url);
+  std::vector<mojom::MeldCountryPtr> countries;
+  for (const auto& country_value : *response_value->countries) {
+    auto country = mojom::MeldCountry::New(
+        country_value.country_code, country_value.name, country_value.flag);
 
     countries.emplace_back(std::move(country));
   }

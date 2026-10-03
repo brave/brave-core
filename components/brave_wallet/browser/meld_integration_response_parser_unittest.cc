@@ -239,10 +239,10 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
 TEST(MeldIntegrationResponseParserUnitTest, Parse_PaymentMethods) {
   std::string json(R"([
   {
-    "paymentMethod": "ACH",
+    "method": "ACH",
     "name": "ACH",
     "paymentType": "BANK_TRANSFER",
-    "logos": {
+    "logo": {
       "dark": "https://images-paymentMethod.meld.io/ACH/logo_dark.png",
       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
     }
@@ -269,10 +269,10 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_PaymentMethods) {
             1);
   std::string json_null_dark_logo(R"([
   {
-    "paymentMethod": "ACH",
+    "method": "ACH",
     "name": "ACH",
     "paymentType": "BANK_TRANSFER",
-    "logos": {
+    "logo": {
       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
     }
   }
@@ -298,7 +298,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_PaymentMethods) {
   {
     "name": "ACH",
     "paymentType": "BANK_TRANSFER",
-    "logos": {
+    "logo": {
       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
     }
   }
@@ -311,12 +311,14 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_PaymentMethods) {
 }
 
 TEST(MeldIntegrationResponseParserUnitTest, Parse_FiatCurrencies) {
-  std::string json(R"([
+  std::string json(R"({
+  "currencies": [
   {
     "currencyCode": "AFN",
     "name": "Afghani",
-    "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
-  }])");
+    "decimalPlaces": 2,
+    "symbol": "https://images-currency.meld.io/fiat/AFN/symbol.png"
+  }]})");
 
   auto fiat_currencies = ParseFiatCurrencies(ParseJson(json));
   EXPECT_TRUE(fiat_currencies);
@@ -325,17 +327,19 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_FiatCurrencies) {
                             [](const auto& item) {
                               return item->currency_code == "AFN" &&
                                      item->name == "Afghani" &&
-                                     item->symbol_image_url ==
+                                     item->decimal_places == 2 &&
+                                     item->symbol ==
                                          "https://images-currency.meld.io/fiat/"
                                          "AFN/symbol.png";
                             }),
       1);
 
-  EXPECT_FALSE(ParsePaymentMethods(ParseJson(R"([
+  EXPECT_FALSE(ParseFiatCurrencies(ParseJson(R"({
+  "currencies": [
   {
     "name": "Afghani",
-    "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
-  }])")));
+    "symbol": "https://images-currency.meld.io/fiat/AFN/symbol.png"
+  }]})")));
 
   EXPECT_FALSE(ParseFiatCurrencies(base::Value()));
 
@@ -344,42 +348,47 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_FiatCurrencies) {
 }
 
 TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies) {
-  std::string json(R"([
+  std::string json(R"({
+  "currencies": [
   {
     "currencyCode": "USDT_KCC",
     "name": "#REF!",
+    "decimalPlaces": 18,
     "chainCode": "KCC",
     "chainName": "KuCoin Community Chain",
     "chainId": "56",
-    "contractAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
-    "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
-  }])");
+    "contract": "0xe41d2489571d322189246dafa5ebde1f4699f498",
+    "symbol": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
+  }]})");
   auto crypto_currencies = ParseCryptoCurrencies(ParseJson(json));
   EXPECT_TRUE(crypto_currencies);
   EXPECT_EQ(std::ranges::count_if(
                 *crypto_currencies,
                 [](const auto& item) {
                   return item->currency_code == "USDT_KCC" &&
-                         item->name == "#REF!" && item->chain_code == "KCC" &&
+                         item->name == "#REF!" &&
+                         item->decimal_places == 18 &&
+                         item->chain_code == "KCC" &&
                          item->chain_name == "KuCoin Community Chain" &&
                          item->chain_id == "0x38" &&
-                         item->contract_address ==
+                         item->contract ==
                              "0xe41d2489571d322189246dafa5ebde1f4699f498" &&
-                         item->symbol_image_url ==
+                         item->symbol ==
                              "https://images-currency.meld.io/crypto/"
                              "USDT_KCC/symbol.png";
                 }),
             1);
 
-  EXPECT_FALSE(ParsePaymentMethods(ParseJson(R"([
+  EXPECT_FALSE(ParseCryptoCurrencies(ParseJson(R"({
+  "currencies": [
   {
     "name": "#REF!",
     "chainCode": "KCC",
     "chainName": "KuCoin Community Chain",
     "chainId": "56",
-    "contractAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
-    "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
-  }])")));
+    "contract": "0xe41d2489571d322189246dafa5ebde1f4699f498",
+    "symbol": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
+  }]})")));
 
   EXPECT_FALSE(ParseCryptoCurrencies(base::Value()));
 
@@ -388,12 +397,13 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies) {
 }
 
 TEST(MeldIntegrationResponseParserUnitTest, Parse_Countries) {
-  std::string json(R"([
+  std::string json(R"({
+  "countries": [
   {
     "countryCode": "AF",
     "name": "Afghanistan",
-    "flagImageUrl": "https://images-country.meld.io/AF/flag.svg"
-  }])");
+    "flag": "https://images-country.meld.io/AF/flag.svg"
+  }]})");
   auto countries = ParseCountries(ParseJson(json));
   EXPECT_TRUE(countries);
   EXPECT_EQ(std::ranges::count_if(
@@ -401,15 +411,16 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_Countries) {
                 [](const auto& item) {
                   return item->country_code == "AF" &&
                          item->name == "Afghanistan" &&
-                         item->flag_image_url ==
+                         item->flag ==
                              "https://images-country.meld.io/AF/flag.svg";
                 }),
             1);
-  EXPECT_FALSE(ParseCountries(ParseJson(R"([
+  EXPECT_FALSE(ParseCountries(ParseJson(R"({
+  "countries": [
   {
     "name": "Afghanistan",
-    "flagImageUrl": "https://images-country.meld.io/AF/flag.svg"
-  }])")));
+    "flag": "https://images-country.meld.io/AF/flag.svg"
+  }]})")));
   EXPECT_FALSE(ParseCountries(base::Value()));
 
   json = (R"({})");

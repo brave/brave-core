@@ -515,7 +515,9 @@ export class MockedWalletApiProxy {
   meldIntegrationService: Partial<
     InstanceType<typeof BraveWallet.MeldIntegrationServiceInterface>
   > = {
-    getFiatCurrencies: async (): Promise<{
+    getFiatCurrencies: async (
+      _country: string,
+    ): Promise<{
       fiatCurrencies: MeldFiatCurrency[] | null
       error: string[] | null
     }> => ({
@@ -523,12 +525,15 @@ export class MockedWalletApiProxy {
         {
           currencyCode: 'usd',
           name: 'United States Currency',
-          symbolImageUrl: '',
+          decimalPlaces: 2,
+          symbol: '',
         },
       ],
       error: null,
     }),
-    getCryptoCurrencies: async (): Promise<{
+    getCryptoCurrencies: async (
+      _country: string,
+    ): Promise<{
       fiatCurrencies: MeldCryptoCurrency[] | null
       error: string[] | null
     }> => ({

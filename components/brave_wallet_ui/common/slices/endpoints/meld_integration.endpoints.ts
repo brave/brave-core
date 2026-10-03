@@ -36,6 +36,10 @@ type GetPaymentMethodsArg = {
   sourceCurrencyCode: string
 }
 
+type GetMeldCurrenciesArg = {
+  country: string
+}
+
 type CreateMeldBuyWidgetArgs = {
   sessionData: CryptoBuySessionData
   customerData: CryptoWidgetCustomerData
@@ -46,13 +50,13 @@ export const meldIntegrationEndpoints = ({
   mutation,
 }: WalletApiEndpointBuilderParams) => {
   return {
-    getMeldFiatCurrencies: query<MeldFiatCurrency[], void>({
-      queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
+    getMeldFiatCurrencies: query<MeldFiatCurrency[], GetMeldCurrenciesArg>({
+      queryFn: async (arg, { endpoint }, _extraOptions, baseQuery) => {
         try {
           const { meldIntegrationService } = baseQuery(undefined).data
 
           const { fiatCurrencies, error } =
-            await meldIntegrationService.getFiatCurrencies()
+            await meldIntegrationService.getFiatCurrencies(arg.country)
 
           if (error) {
             return handleEndpointError(
@@ -75,29 +79,27 @@ export const meldIntegrationEndpoints = ({
       },
       providesTags: ['MeldFiatCurrencies'],
     }),
-    getMeldCryptoCurrencies: query<MeldCryptoCurrency[], void>({
-      queryFn: async (
-        _arg,
-        { endpoint, getState },
-        _extraOptions,
-        baseQuery,
-      ) => {
+    getMeldCryptoCurrencies: query<
+      MeldCryptoCurrency[],
+      GetMeldCurrenciesArg
+    >({
+      queryFn: async (arg, { endpoint, getState }, _extraOptions, baseQuery) => {
         try {
           const { meldIntegrationService, blockchainRegistry } =
             baseQuery(undefined).data
 
           const { fiatCurrencies: cryptoCurrencies, error } =
-            await meldIntegrationService.getCryptoCurrencies()
+            await meldIntegrationService.getCryptoCurrencies(arg.country)
 
           const tokenList = await mapLimit(
             cryptoCurrencies || [],
             1,
             async function (token: MeldCryptoCurrency) {
               const chainId = getMeldTokensChainId(token)
-              if (chainId && token.contractAddress) {
+              if (chainId && token.contract) {
                 const { coingeckoId } = await blockchainRegistry.getCoingeckoId(
                   chainId,
-                  token.contractAddress,
+                  token.contract,
                 )
                 if (coingeckoId) {
                   return {
