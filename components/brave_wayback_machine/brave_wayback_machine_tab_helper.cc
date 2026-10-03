@@ -112,7 +112,8 @@ void BraveWaybackMachineTabHelper::DidFinishNavigation(
 }
 
 void BraveWaybackMachineTabHelper::OnWaybackURLFetched(
-    const GURL& latest_wayback_url) {
+    const GURL& latest_wayback_url,
+    base::Time snapshot_time) {
   // Ignore the result if disabled.
   if (!wayback_enabled_.GetValue()) {
     return;
