@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/ui_features.cc b/chrome/browser/ui/ui_features.cc
-index 24f6808a21b00c50a101a1a4c0100ff80561e227..caf3665d6acc15bc5dbb6722461de1a752bcb6b6 100644
+index 24f6808a21b00c50a101a1a4c0100ff80561e227..6724510483454a89f1ce0a918aea1236df34f296 100644
 --- a/chrome/browser/ui/ui_features.cc
 +++ b/chrome/browser/ui/ui_features.cc
 @@ -129,7 +129,7 @@ bool ShouldUseActionsForBrowserCommands() {
@@ -36,3 +36,12 @@ index 24f6808a21b00c50a101a1a4c0100ff80561e227..caf3665d6acc15bc5dbb6722461de1a7
  
  BASE_FEATURE(kTabModalUsesDesktopWidget, base::FEATURE_DISABLED_BY_DEFAULT);
  
+@@ -373,7 +368,7 @@ BASE_FEATURE(kNonMilestoneUpdateToast, base::FEATURE_ENABLED_BY_DEFAULT);
+ BASE_FEATURE(kRespectShouldTriggerSessionRestoreOnDesktop,
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kSessionRestoreInfobar, base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kSessionRestoreInfobar, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE_PARAM(bool,
+                    kSetDefaultToContinueSession,
