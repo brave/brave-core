@@ -11,7 +11,8 @@ namespace wallet {
 
 WalletHttpClientImpl::WalletHttpClientImpl(
     signin::IdentityManager* identity_manager,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {}
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    std::string app_locale) {}
 
 WalletHttpClientImpl::~WalletHttpClientImpl() = default;
 
