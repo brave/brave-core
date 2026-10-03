@@ -71,6 +71,8 @@
 
 NSString* const kBraveAdsFirstRunAtPrefName =
     base::SysUTF8ToNSString(brave_ads::prefs::kFirstRunAt);
+NSString* const kBraveAdsSponsoredEnabledPrefName =
+    base::SysUTF8ToNSString(brave_ads::prefs::kSponsoredEnabled);
 
 #define BLOG(verbose_level, format, ...)                  \
   [self log:(__FILE__)                                    \
@@ -378,6 +380,16 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
   _profilePrefService = last_used_profile->GetPrefs();
   CHECK(_profilePrefService);
+
+  // iOS used to incorrectly set kNewTabPageShowBackgroundImage alongside
+  // kSponsoredEnabled, even though iOS doesn't use or expose this pref
+  // separately. Reset it back to its default (true) so it can't override
+  // kSponsoredEnabled in IsNewTabPageAdsEnabled.
+  if (_profilePrefService->HasPrefPath(
+          ntp_background_images::prefs::kNewTabPageShowBackgroundImage)) {
+    _profilePrefService->ClearPref(
+        ntp_background_images::prefs::kNewTabPageShowBackgroundImage);
+  }
 }
 
 #pragma mark - Local state prefs
