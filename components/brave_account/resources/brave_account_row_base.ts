@@ -12,6 +12,17 @@ import { BraveAccountSettingsStrings } from './brave_components_webui_strings.js
 import { DialogMode, VerificationIntent } from './brave_account.mojom-webui.js'
 import { showError, showSuccess } from './brave_account_shared.js'
 
+// Declared as a one-element array because preprocessing keeps exactly one
+// entry: two gated `export const`s of the same name would not lint.
+export const ROW_BUTTON_SIZE = [
+  // <if expr="not is_android and not is_ios">
+  'small',
+  // </if>
+  // <if expr="is_android or is_ios">
+  'medium',
+  // </if>
+][0]
+
 // Shared by the logged-out and logged-in rows, which differ only in their
 // verification intent type (`Intent`) and how it is tagged into a
 // `VerificationIntent` (logged-out vs logged-in). `Intent` is the bare
@@ -24,18 +35,18 @@ export abstract class BraveAccountRowBaseElement<
     return {
       browserProxy: { type: Object },
       initiatingServiceName: { type: String },
+      isResendingConfirmationEmail: { type: Boolean, state: true },
       state: { type: Object },
     }
   }
 
   accessor browserProxy!: BraveAccountRowBrowserProxy
   protected accessor initiatingServiceName = ''
+  protected accessor isResendingConfirmationEmail = false
   // `& object` is only here to satisfy the @webui-eslint/lit-property-accessor
   // lint rule, which expects Object reactive properties to be typed as objects.
   // The actual shape of `state` is defined by the `State` constraint above.
   protected accessor state!: State & object
-
-  private isResendingConfirmationEmail = false
 
   // Tags the bare per-state intent into the union the service expects.
   protected abstract makeVerificationIntent(intent: Intent): VerificationIntent

@@ -10,8 +10,36 @@
 :host {
   display: flex;
   flex-direction: column;
+
+  /* <if expr="is_android or is_ios"> */
+  margin: 0 auto;
+  max-width: 500px;
+  /* </if> */
 }
 
+.title-and-description {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+
+  .title {
+    color: var(--leo-color-text-primary);
+  }
+
+  .description {
+    color: var(--leo-color-text-secondary);
+  }
+}
+
+.cancel-verification-button {
+  --leo-button-color: var(--leo-color-systemfeedback-error-text);
+}
+
+leo-button {
+  flex: none;
+}
+
+/* <if expr="not is_android and not is_ios"> */
 .first-row {
   align-items: center;
   display: flex;
@@ -24,19 +52,14 @@
   }
 
   .title-and-description {
-    display: flex;
     flex: auto;
-    flex-direction: column;
-    min-width: 0;
     padding: var(--leo-spacing-l) 0;
 
     .title {
-      color: var(--leo-color-text-primary);
       font: var(--leo-font-default-semibold);
     }
 
     .description {
-      color: var(--leo-color-text-secondary);
       font: var(--leo-font-small-regular);
 
       leo-link {
@@ -53,12 +76,33 @@
   display: flex;
   gap: var(--leo-spacing-m);
   padding: var(--leo-spacing-xl);
+}
+/* </if> */
 
-  .cancel-verification-button {
-    --leo-button-color: var(--leo-color-systemfeedback-error-text);
+/* <if expr="is_android or is_ios"> */
+.first-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-3xl);
+  padding: var(--leo-spacing-2xl);
+
+  .title-and-description {
+    gap: var(--leo-spacing-m);
+
+    .title {
+      font: var(--leo-font-heading-h4);
+    }
+
+    .description {
+      font: var(--leo-font-default-regular);
+    }
   }
 }
 
-leo-button {
-  flex: none;
+.second-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+  padding: 0 var(--leo-spacing-2xl) var(--leo-spacing-2xl);
 }
+/* </if> */

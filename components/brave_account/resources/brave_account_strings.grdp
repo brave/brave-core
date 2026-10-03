@@ -169,7 +169,7 @@
   <message name="IDS_BRAVE_ACCOUNT_CONFIRM_CODE_BUTTON_LABEL" desc="Label for the button that submits the OTP code" formatter_data="webui=BraveAccount">
     Confirm code
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_RESEND_EMAIL_CODE_BUTTON_LABEL" desc="Label for the button that resends the OTP code via email" formatter_data="webui=BraveAccount">
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_EMAIL_CODE_BUTTON_LABEL" desc="Label for the button that resends the OTP code via email" formatter_data="webui=BraveAccount,BraveAccountSettings">
     Resend email code
   </message>
 
