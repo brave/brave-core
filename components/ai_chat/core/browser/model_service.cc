@@ -1209,6 +1209,15 @@ const std::vector<mojom::ModelPtr> ModelService::GetCustomModels() {
     model->supports_tools =
         model_pref.FindBool(kCustomModelSupportsTools).value_or(false);
     model->supported_capabilities = {};
+    // Tool-capable custom models can serve content-agent conversations;
+    // without this they are hidden from the agent-profile model picker
+    // (conversation_context.tsx filters by CONTENT_AGENT capability).
+    // Mirrors the capability assignment for the automatic model.
+    if (model->supports_tools) {
+      model->supported_capabilities = {
+          mojom::ConversationCapability::CONTENT_AGENT,
+          mojom::ConversationCapability::DEEP_RESEARCH};
+    }
     model->options = mojom::ModelOptions::NewCustomModelOptions(
         std::move(custom_model_opts));
 
