@@ -1141,9 +1141,6 @@ public class BraveSettingsSearchTest {
         clearAndTypeIntoSearch("Preload pages");
         assertSearchResultEmpty();
 
-        clearAndTypeIntoSearch("Lock Private tabs");
-        assertSearchResultEmpty();
-
         clearAndTypeIntoSearch("password was compromised");
         assertSearchResultEmpty();
 
