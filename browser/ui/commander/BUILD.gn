@@ -63,6 +63,7 @@ source_set("unit_tests") {
     "//chrome/browser/ui",
     "//chrome/browser/ui/window_metadata",
     "//chrome/test:test_support",
+    "//chrome/test/base:browser_with_test_window_test",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",
     "//testing/gtest",
