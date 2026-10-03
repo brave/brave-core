@@ -153,8 +153,6 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
   const base::FilePath folder = CreateWorkspaceFolder();
   auto content = CreateContent(folder);
 
-  EXPECT_EQ(folder, content->folder_path());
-
   // Each workspace is served from its own
   // chrome-untrusted://<uuid>.leo-workspace subdomain, so no two conversations
   // share an origin (and therefore neither storage nor File System Access
@@ -171,7 +169,10 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
   EXPECT_EQ(content::Visibility::HIDDEN, web_contents->GetVisibility());
 
   ASSERT_TRUE(content::WaitForLoadStop(web_contents));
-  EXPECT_EQ(url, web_contents->GetLastCommittedURL());
+  // The page is loaded without the folder, so it is never told which folder it
+  // has and cannot ask for a different one.
+  EXPECT_EQ(url.GetWithEmptyPath(), web_contents->GetLastCommittedURL());
+  EXPECT_FALSE(web_contents->GetLastCommittedURL().has_query());
 
   // Once loaded, the delegate is a live tool host, so the next generation loop
   // harvests whatever the page registered.
@@ -200,6 +201,36 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
   EXPECT_EQ(
       CONTENT_SETTING_ALLOW,
       GetSetting(workspace_url, ContentSettingsType::FILE_SYSTEM_WRITE_GUARD));
+
+  // The handle the page received is for the folder this content was created
+  // with: read the test file through the handle the page saved to IndexedDB.
+  // Poll, since the page saves it asynchronously after receiving it.
+  EXPECT_EQ("hello world",
+            content::EvalJs(content->GetWebContentsForTesting(), R"JS(
+      (async () => {
+        const getHandle = () => new Promise((resolve, reject) => {
+          const open = indexedDB.open('leo-workspace', 1);
+          open.onerror = () => reject(open.error);
+          open.onupgradeneeded = () => open.result.createObjectStore('handles');
+          open.onsuccess = () => {
+            const db = open.result;
+            const request =
+                db.transaction('handles').objectStore('handles').get('root');
+            request.onerror = () => reject(request.error);
+            request.onsuccess = () => {
+              db.close();
+              resolve(request.result);
+            };
+          };
+        });
+        let handle;
+        while (!(handle = await getHandle())) {
+          await new Promise(resolve => setTimeout(resolve, 10));
+        }
+        const file = await handle.getFileHandle('hello.txt');
+        return await (await file.getFile()).text();
+      })()
+  )JS"));
 
   // The grant is scoped to this workspace's own origin: it must not extend to
   // the workspace host itself, nor to any other workspace's subdomain.
@@ -262,7 +293,8 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
   // workspace page's markup to the model would be noise.
   base::test::TestFuture<PageContent> page_content;
   content->GetContent(page_content.GetCallback());
-  EXPECT_EQ(PageContent(), page_content.Get());
+  EXPECT_EQ(PageContent("", mojom::ContentType::Workspace), page_content.Get());
+  EXPECT_TRUE(page_content.Get().content.empty());
 }
 
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
@@ -284,6 +316,54 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
   auto content = CreateContent(CreateWorkspaceFolder());
   // The navigation started in the constructor is still in flight.
   content.reset();
+}
+
+// CreateFromUrl restores a workspace from a persisted URL. It must parse valid
+// workspace URLs and reject malformed ones gracefully (returning nullptr).
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
+                       CreateFromUrlParsesValidWorkspaceUrl) {
+  const GURL url("chrome-untrusted://abc-123.leo-workspace/");
+  auto content = WorkspaceAssociatedContent::CreateFromUrl(
+      url, browser()->GetProfile(), base::DoNothing());
+  ASSERT_TRUE(content);
+  EXPECT_EQ("abc-123", content->uuid());
+  EXPECT_EQ(url, content->url());
+}
+
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
+                       CreateFromUrlRejectsWrongScheme) {
+  // https:// is not a workspace URL.
+  const GURL url("https://abc.leo-workspace/");
+  auto content = WorkspaceAssociatedContent::CreateFromUrl(
+      url, browser()->GetProfile(), base::DoNothing());
+  EXPECT_FALSE(content);
+}
+
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
+                       CreateFromUrlRejectsWrongHostSuffix) {
+  // The suffix must be ".leo-workspace", not something else.
+  const GURL url("chrome-untrusted://abc.not-a-workspace/");
+  auto content = WorkspaceAssociatedContent::CreateFromUrl(
+      url, browser()->GetProfile(), base::DoNothing());
+  EXPECT_FALSE(content);
+}
+
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
+                       CreateFromUrlRejectsEmptyUuid) {
+  // The uuid part must not be empty.
+  const GURL url("chrome-untrusted://.leo-workspace/");
+  auto content = WorkspaceAssociatedContent::CreateFromUrl(
+      url, browser()->GetProfile(), base::DoNothing());
+  EXPECT_FALSE(content);
+}
+
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
+                       CreateFromUrlRejectsBareHost) {
+  // The bare host "leo-workspace" with no subdomain is not a workspace.
+  const GURL url("chrome-untrusted://leo-workspace/");
+  auto content = WorkspaceAssociatedContent::CreateFromUrl(
+      url, browser()->GetProfile(), base::DoNothing());
+  EXPECT_FALSE(content);
 }
 
 // A workspace displays its contents in an iframe served from a further
@@ -409,7 +489,8 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
   auto content = CreateContent(CreateWorkspaceFolder());
   content::WebContents* web_contents = content->GetWebContentsForTesting();
   ASSERT_TRUE(content::WaitForLoadStop(web_contents));
-  ASSERT_EQ(content->url(), web_contents->GetLastCommittedURL());
+  ASSERT_EQ(content->url().GetWithEmptyPath(),
+            web_contents->GetLastCommittedURL());
 
   // registerTool() rejects with a SecurityError when WebMCP isn't allowed for
   // the document's origin, so the promise resolving is the assertion here.

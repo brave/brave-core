@@ -222,10 +222,11 @@ TEST_F(OAIMessageUtilsTest, BuildOAISeedMessage) {
 
 TEST_F(OAIMessageUtilsTest, BuildOAIMessages) {
   // Create page contents for different turns
-  PageContent page_content1("Page content 1", false);
-  PageContent video_content1("Video transcript 1", true);
-  PageContent page_content3("Page content 3", false);
-  PageContent page_content4("Page content 4", false);
+  PageContent page_content1("Page content 1", mojom::ContentType::PageContent);
+  PageContent video_content1("Video transcript 1",
+                             mojom::ContentType::VideoTranscript);
+  PageContent page_content3("Page content 3", mojom::ContentType::PageContent);
+  PageContent page_content4("Page content 4", mojom::ContentType::PageContent);
 
   // Build page contents map (turn2 is assistant, no page contents)
   PageContentsMap page_contents_map;
@@ -315,8 +316,9 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages) {
 
 TEST_F(OAIMessageUtilsTest, BuildOAIMessages_ContentTruncation) {
   // Create page contents - older content is longer
-  PageContent old_content("Old content that will be dropped", false);
-  PageContent new_content("New content", false);
+  PageContent old_content("Old content that will be dropped",
+                          mojom::ContentType::PageContent);
+  PageContent new_content("New content", mojom::ContentType::PageContent);
 
   // Build page contents map
   PageContentsMap page_contents_map;
@@ -414,8 +416,8 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_UploadedFiles) {
                    std::make_move_iterator(pdfs_clone.end()));
 
   // Create page contents
-  PageContent page_content1("Page content 1", false);
-  PageContent page_content2("Page content 2", false);
+  PageContent page_content1("Page content 1", mojom::ContentType::PageContent);
+  PageContent page_content2("Page content 2", mojom::ContentType::PageContent);
 
   PageContentsMap page_contents_map;
   // User message 1: 2 images, no page content or selected text
@@ -694,7 +696,8 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory) {
   history.pop_back();
 
   // Set up page content and selected text for last human turn only
-  PageContent page_content("Page content for last turn", false);
+  PageContent page_content("Page content for last turn",
+                           mojom::ContentType::PageContent);
   PageContentsMap page_contents_map;
   page_contents_map[*history[2]->uuid] = {std::cref(page_content)};
   history[2]->selected_text = "Selected excerpt";
@@ -803,7 +806,8 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Skills) {
   history[3]->text = "response1";
 
   // Create page content for first human turn (turn 0)
-  PageContent page_content("This is page content", false);
+  PageContent page_content("This is page content",
+                           mojom::ContentType::PageContent);
   PageContentsMap page_contents_map;
   page_contents_map[*history[0]->uuid] = {std::cref(page_content)};
 
@@ -845,9 +849,10 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Skills) {
 
 TEST_F(OAIMessageUtilsTest, BuildOAIQuestionSuggestionsMessages) {
   PageContent text_content1(
-      "This is a very long first text content that will be truncated", false);
-  PageContent video_content("Short video", true);
-  PageContent text_content2("Short text", false);
+      "This is a very long first text content that will be truncated",
+      mojom::ContentType::PageContent);
+  PageContent video_content("Short video", mojom::ContentType::VideoTranscript);
+  PageContent text_content2("Short text", mojom::ContentType::PageContent);
   PageContents page_contents = {std::cref(text_content1),
                                 std::cref(video_content),
                                 std::cref(text_content2)};
@@ -914,7 +919,8 @@ TEST_F(OAIMessageUtilsTest,
   // selected text, and 1 assistant turn.
   // Tests one message with 1 page content block, one page excerpt block, and
   // one kRequestTitle block with text set to human turn's text is returned.
-  PageContent page_content("Test page content", false);
+  PageContent page_content("Test page content",
+                           mojom::ContentType::PageContent);
 
   auto history = CreateSampleChatHistory(1);
   history[0]->selected_text = "Selected text excerpt";
@@ -1062,10 +1068,10 @@ TEST_F(OAIMessageUtilsTest,
   // and 1 assistant turn.
   // Tests one message with 3 page content blocks and one kRequestTitle block
   // with text set to human turn's text is returned.
-  PageContent content1(std::string(1000, 'a'), false);
-  PageContent content2(std::string(1000, 'b'), false);
-  PageContent content3(std::string(1500, 'c'), false);
-  PageContent content4(std::string(500, 'd'), false);
+  PageContent content1(std::string(1000, 'a'), mojom::ContentType::PageContent);
+  PageContent content2(std::string(1000, 'b'), mojom::ContentType::PageContent);
+  PageContent content3(std::string(1500, 'c'), mojom::ContentType::PageContent);
+  PageContent content4(std::string(500, 'd'), mojom::ContentType::PageContent);
 
   auto history = CreateSampleChatHistory(1);
 
@@ -1160,8 +1166,8 @@ TEST_F(OAIMessageUtilsTest, BuildOAIPageContentBlocks_UTF8Truncation) {
       "\xF0\x9F\x98\x80";
   ASSERT_TRUE(base::IsStringUTF8AllowingNoncharacters(content2_str));
 
-  PageContent content1(content1_str, false);
-  PageContent content2(content2_str, false);
+  PageContent content1(content1_str, mojom::ContentType::PageContent);
+  PageContent content2(content2_str, mojom::ContentType::PageContent);
   PageContents page_contents = {std::cref(content1), std::cref(content2)};
 
   uint32_t remaining_length = kMaxContextCharsForTitleGeneration;
@@ -1204,7 +1210,7 @@ TEST_F(OAIMessageUtilsTest,
   ASSERT_EQ(content_str.size(), kMaxContextCharsForTitleGeneration);
   ASSERT_TRUE(base::IsStringUTF8AllowingNoncharacters(content_str));
 
-  PageContent content(content_str, false);
+  PageContent content(content_str, mojom::ContentType::PageContent);
   PageContents page_contents = {std::cref(content)};
 
   uint32_t remaining_length = kMaxContextCharsForTitleGeneration;

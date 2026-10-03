@@ -367,9 +367,6 @@ TEST_F(AIChatUIPageHandlerWorkspaceTest,
   auto delegates = conversation->associated_content_manager()
                        ->GetContentDelegatesForTesting();
   ASSERT_EQ(1u, delegates.size());
-  auto* workspace_content =
-      static_cast<WorkspaceAssociatedContent*>(delegates[0]);
-  EXPECT_EQ(folder, workspace_content->folder_path());
 
   // The workspace page's WebContents is owned by the conversation, which
   // outlives the test harness. Drop it here so the harness doesn't report a
