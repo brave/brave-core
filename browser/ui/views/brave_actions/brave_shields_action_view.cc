@@ -116,6 +116,7 @@ std::u16string BraveShieldsActionView::GetRenderedTooltipText(
 
 void BraveShieldsActionView::OnThemeChanged() {
   LabelButton::OnThemeChanged();
+  controller_->OnThemeChanged();
 
   // Match hover/pressed ink drop with other location bar icon views.
   SetHasInkDropActionOnClick(true);
