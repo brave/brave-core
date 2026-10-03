@@ -8,6 +8,7 @@ import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/tools/crates/build_crate.gni")
 import("//build/config/locales.gni")
+import("//build/config/rust.gni")
 import("//build/config/zip.gni")
 import("//chrome/browser/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -152,6 +153,10 @@ group("all") {
             [ "//brave/components/ai_chat/resources/shared_conversation_lib" ]
       }
     }
+  }
+
+  if (can_build_rust_unit_tests) {
+    deps += [ "//brave/test:brave_rust_unittests" ]
   }
 
   if (toolkit_views) {

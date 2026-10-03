@@ -6,9 +6,17 @@
 import("//build/rust/rust_static_library.gni")
 
 rust_static_library("rust_lib") {
-  visibility = [ "//brave/components/skus/browser/rs/cxx:*" ]
+  visibility = [
+    ":*",
+    "//brave/components/skus/browser/rs/cxx:*",
+  ]
   crate_name = "skus"
   crate_root = "src/lib.rs"
+
+  # Builds the #[cfg(test)] tests into skus_rust_unittests. Run them via
+  # //brave/test:brave_rust_unittests.
+  build_native_rust_unit_tests = true
+  unit_test_target = "skus_rust_unittests"
   sources = [
     "src/cache.rs",
     "src/errors.rs",
