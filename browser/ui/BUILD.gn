@@ -1664,6 +1664,7 @@ source_set("unit_tests") {
         "//chrome/browser/themes",
         "//chrome/browser/ui/views:layout_provider",
         "//chrome/test:test_support",
+        "//chrome/test/base:test_browser_window",
         "//chrome/test/base:testing_browser_process",
         "//skia",
         "//third_party/abseil-cpp:absl",
