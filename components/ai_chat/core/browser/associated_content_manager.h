@@ -157,7 +157,7 @@ class AssociatedContentManager : public ToolProvider,
   void OnContentToolsChanged(AssociatedContentDelegate* delegate) override;
 
   std::vector<AssociatedContentDelegate*> GetContentDelegatesForTesting() {
-    return content_delegates_;
+    return {content_delegates_.begin(), content_delegates_.end()};
   }
 
  private:
@@ -222,7 +222,7 @@ class AssociatedContentManager : public ToolProvider,
                  base::flat_map<std::string, mojom::ToolPermission>>
       content_tool_permissions_;
 
-  std::vector<AssociatedContentDelegate*> content_delegates_;
+  std::vector<raw_ptr<AssociatedContentDelegate>> content_delegates_;
   base::flat_map<std::string, std::string> content_uuid_to_conversation_turns_;
 
   // uuids whose tools attachment the user explicitly set.

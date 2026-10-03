@@ -8,6 +8,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/tabs/fake_tab_slot_controller.h"
@@ -26,16 +27,18 @@ class TestTabSlotController : public FakeTabSlotController {
   TestTabSlotController() = default;
   ~TestTabSlotController() override = default;
 
-  void SetTabsInSplit(std::vector<Tab*> tabs) { split_tabs_ = tabs; }
+  void SetTabsInSplit(std::vector<Tab*> tabs) {
+    split_tabs_.assign(tabs.begin(), tabs.end());
+  }
   void ClearSplitTabs() { split_tabs_.clear(); }
 
   // FakeTabSlotController:
   std::vector<Tab*> GetTabsInSplit(const Tab* tab) override {
-    return split_tabs_;
+    return {split_tabs_.begin(), split_tabs_.end()};
   }
 
  private:
-  std::vector<Tab*> split_tabs_;
+  std::vector<raw_ptr<Tab>> split_tabs_;
 };
 
 }  // namespace

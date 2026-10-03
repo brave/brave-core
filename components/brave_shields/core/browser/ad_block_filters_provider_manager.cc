@@ -84,7 +84,7 @@ std::string AdBlockFiltersProviderManager::GetNameForDebugging() {
   return "AdBlockFiltersProviderManager";
 }
 
-const base::flat_set<AdBlockFiltersProvider*>&
+const base::flat_set<raw_ptr<AdBlockFiltersProvider>>&
 AdBlockFiltersProviderManager::GetProviders(bool is_for_default_engine) const {
   return is_for_default_engine ? default_engine_filters_providers_
                                : additional_engine_filters_providers_;
@@ -131,7 +131,7 @@ bool AdBlockFiltersProviderManager::AreAllProvidersInitialized(
   if (filters_providers.empty()) {
     return false;
   }
-  for (auto* const& provider : filters_providers) {
+  for (AdBlockFiltersProvider* provider : filters_providers) {
     if (!provider->IsInitialized()) {
       return false;
     }
@@ -163,7 +163,7 @@ void AdBlockFiltersProviderManager::LoadFilterSetForEngine(
       filters_providers.size(),
       base::BindOnce(&AdBlockFiltersProviderManager::FinishCombinating,
                      weak_factory_.GetWeakPtr(), std::move(cb), flow_id));
-  for (auto* const provider : filters_providers) {
+  for (AdBlockFiltersProvider* provider : filters_providers) {
     task_tracker_.PostTask(
         base::SequencedTaskRunner::GetCurrentDefault().get(), FROM_HERE,
         base::BindOnce(&AdBlockFiltersProvider::LoadFilterSet,

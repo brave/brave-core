@@ -107,7 +107,7 @@ void AssociatedContentManager::CreateArchiveContent(
                               [](const auto& ptr) { return ptr->uuid(); });
   CHECK(it != content_delegates_.end()) << "Couldn't find |content_id|";
 
-  auto* delegate = *it;
+  AssociatedContentDelegate* delegate = *it;
   content_observations_.RemoveObservation(delegate);
 
   // Construct a "content archive" implementation of AssociatedContentDelegate
@@ -438,7 +438,7 @@ AssociatedContentManager::GetAssociatedContent() const {
   uint32_t total_consumed_chars = 0;
 
   std::vector<mojom::AssociatedContentPtr> result;
-  for (auto* delegate : content_delegates_) {
+  for (AssociatedContentDelegate* delegate : content_delegates_) {
     auto cached_page_content = delegate->cached_page_content();
     mojom::AssociatedContentPtr content = mojom::AssociatedContent::New();
     content->uuid = delegate->uuid();
@@ -538,7 +538,7 @@ void AssociatedContentManager::GetContent(base::OnceClosure callback) {
               self->on_page_text_fetch_complete_ = nullptr;
             },
             weak_ptr_factory_.GetWeakPtr()));
-    for (auto* content : content_delegates_) {
+    for (AssociatedContentDelegate* content : content_delegates_) {
       content->GetContent(base::BindOnce(
           [](base::RepeatingClosure callback, PageContent) { callback.Run(); },
           content_callback));
@@ -583,7 +583,7 @@ void AssociatedContentManager::GetScreenshots(
               },
               std::move(callback)));
 
-  for (auto* content : content_delegates_) {
+  for (AssociatedContentDelegate* content : content_delegates_) {
     content->GetScreenshots(all_screenshots);
   }
 }
@@ -603,7 +603,7 @@ void AssociatedContentManager::GetStagedEntriesFromContent(
 PageContents AssociatedContentManager::GetCachedContents() const {
   DVLOG(1) << __func__;
   PageContents result;
-  for (auto* delegate : content_delegates_) {
+  for (AssociatedContentDelegate* delegate : content_delegates_) {
     result.push_back(delegate->cached_page_content());
   }
 
@@ -691,7 +691,7 @@ void AssociatedContentManager::UpdateToolsForNewGenerationLoop(
   tools_.clear();
   // Only load tools from content the user has attached.
   std::vector<AssociatedContentDelegate*> attached_delegates;
-  for (auto* content : content_delegates_) {
+  for (AssociatedContentDelegate* content : content_delegates_) {
     if (content->tools_attached()) {
       attached_delegates.push_back(content);
     }
@@ -758,7 +758,7 @@ void AssociatedContentManager::DetachContent() {
 
 bool AssociatedContentManager::HasLiveContentForOrigin(
     const url::Origin& origin) const {
-  for (auto* delegate : content_delegates_) {
+  for (AssociatedContentDelegate* delegate : content_delegates_) {
     // Archived content can't expose tools.
     auto owned_it =
         std::ranges::find(owned_content_, delegate,

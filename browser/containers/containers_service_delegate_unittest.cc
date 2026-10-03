@@ -12,6 +12,7 @@
 
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
+#include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
@@ -103,7 +104,7 @@ class TabRestoreTestHarness {
 
   testing::NiceMock<MockTabRestoreService> mock_;
   sessions::TabRestoreService::Entries entries_;
-  std::vector<sessions::TabRestoreServiceObserver*> observers_;
+  std::vector<raw_ptr<sessions::TabRestoreServiceObserver>> observers_;
   bool loaded_ = true;
 };
 
