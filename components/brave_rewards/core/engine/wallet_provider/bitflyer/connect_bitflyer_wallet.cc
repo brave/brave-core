@@ -20,7 +20,7 @@
 #include "brave/components/brave_rewards/core/engine/util/random_util.h"
 #include "brave/components/brave_rewards/core/engine/util/url_helpers.h"
 #include "brave/components/brave_rewards/core/engine/wallet/wallet.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 
 namespace brave_rewards::internal {
 
@@ -65,9 +65,8 @@ void ConnectBitFlyerWallet::Authorize(ConnectExternalWalletCallback callback) {
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
-  const std::string hashed_payment_id =
-      crypto::SHA256HashString(rewards_wallet->payment_id);
-  const std::string external_account_id = base::HexEncode(hashed_payment_id);
+  const std::string external_account_id =
+      base::HexEncode(crypto::hash::Sha256(rewards_wallet->payment_id));
 
   bitflyer_server_.post_oauth().Request(
       external_account_id, oauth_info_.code, oauth_info_.code_verifier,
