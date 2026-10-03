@@ -35,7 +35,9 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/saved_tab_groups/public/tab_group_sync_service.h"
+#include "components/sessions/core/command_storage_read_status.h"
 #include "components/sessions/core/serialized_navigation_entry.h"
+#include "components/sessions/core/session_service_commands.h"
 #include "components/sessions/core/session_types.h"
 #include "components/sessions/core/tab_restore_service.h"
 #include "components/sessions/core/tab_restore_types.h"
@@ -77,7 +79,9 @@ IN_PROC_BROWSER_TEST_F(BraveSessionRestoreBrowserTest,
   base::RunLoop loop;
   session_service->GetLastSession(base::BindLambdaForTesting(
       [&](std::vector<std::unique_ptr<sessions::SessionWindow>> windows,
-          SessionID ignored_active_window, bool error_reading) {
+          SessionID ignored_active_window,
+          sessions::CommandStorageReadStatus status,
+          sessions::SessionReplayResult replay_result) {
         EXPECT_EQ(windows.size(), 1u);
         EXPECT_EQ(windows[0]->tabs.size(), 1u);
         EXPECT_EQ(windows[0]->tabs[0]->navigations.size(), 2u);
@@ -119,7 +123,9 @@ IN_PROC_BROWSER_TEST_F(BraveSessionRestoreBrowserTest,
   base::RunLoop loop;
   session_service->GetLastSession(base::BindLambdaForTesting(
       [&](std::vector<std::unique_ptr<sessions::SessionWindow>> windows,
-          SessionID ignored_active_window, bool error_reading) {
+          SessionID ignored_active_window,
+          sessions::CommandStorageReadStatus status,
+          sessions::SessionReplayResult replay_result) {
         EXPECT_EQ(windows.size(), 1u);
         EXPECT_EQ(windows[0]->tabs.size(), 1u);
         EXPECT_EQ(windows[0]->tabs[0]->navigations.size(), 2u);
@@ -305,8 +311,10 @@ class BraveTreeTabSessionRestoreBrowserTest : public InProcessBrowserTest {
     base::RunLoop loop;
     session_service()->GetLastSession(base::BindLambdaForTesting(
         [&](std::vector<std::unique_ptr<sessions::SessionWindow>> windows,
-            SessionID /*active_window*/, bool error_reading) {
-          ASSERT_FALSE(error_reading);
+            SessionID /*active_window*/,
+            sessions::CommandStorageReadStatus status,
+            sessions::SessionReplayResult /*replay_result*/) {
+          ASSERT_FALSE(sessions::IsCommandStorageReadError(status));
           std::move(predicate).Run(std::move(windows));
           loop.Quit();
         }));
