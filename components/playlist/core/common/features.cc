@@ -18,6 +18,8 @@ BASE_FEATURE(kPlaylist,
 #endif
 );
 
+BASE_FEATURE(kPlaylistServiceV2, base::FEATURE_DISABLED_BY_DEFAULT);
+
 BASE_FEATURE(kPlaylistFakeUA, base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace playlist::features
