@@ -958,4 +958,58 @@ TEST(CommonUtils, IsSnapFeatureEnabled) {
 #endif
 }
 
+TEST(CommonUtils, GetSnapExecutionEnvironment) {
+#if BUILDFLAG(ENABLE_SNAP)
+  {
+    // Default when the feature is enabled with no param.
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndEnableFeature(features::kBraveWalletSnapFeature);
+    EXPECT_EQ(SnapExecutionEnvironment::kWalletPage,
+              GetSnapExecutionEnvironment());
+  }
+  {
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndEnableFeatureWithParameters(
+        features::kBraveWalletSnapFeature,
+        {{"execution_environment", "wallet-page"}});
+    EXPECT_EQ(SnapExecutionEnvironment::kWalletPage,
+              GetSnapExecutionEnvironment());
+  }
+  {
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndEnableFeatureWithParameters(
+        features::kBraveWalletSnapFeature,
+        {{"execution_environment", "hidden-web-contents"}});
+    EXPECT_EQ(SnapExecutionEnvironment::kHiddenWebContents,
+              GetSnapExecutionEnvironment());
+  }
+  {
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndEnableFeatureWithParameters(
+        features::kBraveWalletSnapFeature,
+        {{"execution_environment", "host-page-debug"}});
+    EXPECT_EQ(SnapExecutionEnvironment::kHostPageDebug,
+              GetSnapExecutionEnvironment());
+  }
+  {
+    // Unrecognized value falls back to the default.
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndEnableFeatureWithParameters(
+        features::kBraveWalletSnapFeature,
+        {{"execution_environment", "bogus-value"}});
+    EXPECT_EQ(SnapExecutionEnvironment::kWalletPage,
+              GetSnapExecutionEnvironment());
+  }
+  {
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndDisableFeature(features::kBraveWalletSnapFeature);
+    EXPECT_EQ(SnapExecutionEnvironment::kWalletPage,
+              GetSnapExecutionEnvironment());
+  }
+#else
+  EXPECT_EQ(SnapExecutionEnvironment::kWalletPage,
+            GetSnapExecutionEnvironment());
+#endif
+}
+
 }  // namespace brave_wallet

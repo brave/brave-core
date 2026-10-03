@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/common/features.h"
 
+#include <array>
+
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 
@@ -92,7 +94,21 @@ BASE_FEATURE(kBraveWalletAccountHidingFeature,
 );
 
 #if BUILDFLAG(ENABLE_SNAP)
+namespace {
+constexpr auto kSnapExecutionEnvironmentOptions =
+    std::to_array<base::FeatureParam<SnapExecutionEnvironment>::Option>(
+        {{SnapExecutionEnvironment::kWalletPage, "wallet-page"},
+         {SnapExecutionEnvironment::kHiddenWebContents, "hidden-web-contents"},
+         {SnapExecutionEnvironment::kHostPageDebug, "host-page-debug"}});
+}  // namespace
+
 BASE_FEATURE(kBraveWalletSnapFeature, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE_ENUM_PARAM(SnapExecutionEnvironment,
+                        kSnapExecutionEnvironment,
+                        &kBraveWalletSnapFeature,
+                        "execution_environment",
+                        SnapExecutionEnvironment::kWalletPage,
+                        kSnapExecutionEnvironmentOptions);
 #endif
 
 BASE_FEATURE(kBraveWalletSidePanel, base::FEATURE_DISABLED_BY_DEFAULT);

@@ -14,6 +14,14 @@
 #include "components/permissions/permission_util.h"
 #include "content/public/browser/browser_context.h"
 
+#if BUILDFLAG(ENABLE_SNAP)
+#include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
+#include "brave/components/brave_wallet/content/browser/snap/hidden_web_contents_snap_host_bridge_controller.h"
+#include "url/gurl.h"
+#endif
+
 namespace {
 bool g_enable_wallet_autolock = true;
 }
@@ -105,5 +113,21 @@ base::AutoReset<bool>
 BraveWalletServiceDelegateBase::GetScopedDisableAutolockForTesting() {
   return {&g_enable_wallet_autolock, false};
 }
+
+#if BUILDFLAG(ENABLE_SNAP)
+std::unique_ptr<SnapHostBridgeController>
+BraveWalletServiceDelegateBase::CreateSnapHostBridgeController() {
+  switch (GetSnapExecutionEnvironment()) {
+    case SnapExecutionEnvironment::kWalletPage:
+      return BraveWalletServiceDelegate::CreateSnapHostBridgeController();
+    case SnapExecutionEnvironment::kHiddenWebContents:
+      return std::make_unique<HiddenWebContentsSnapHostBridgeController>(
+          context_, GURL(kBraveUIWalletSnapHostURL), /*start_host=*/true);
+    case SnapExecutionEnvironment::kHostPageDebug:
+      return std::make_unique<HiddenWebContentsSnapHostBridgeController>(
+          context_, GURL(kBraveUIWalletSnapHostURL), /*start_host=*/false);
+  }
+}
+#endif
 
 }  // namespace brave_wallet

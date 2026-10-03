@@ -36,6 +36,16 @@ class SnapHostBridgeController {
 
   virtual bool IsBound() const = 0;
 
+  // Ensures a bridge is bound or being established, then runs |on_ready|.
+  // |on_ready| also runs when the bridge could not be established, so bound
+  // mojo responders are never silently dropped — callers must re-check
+  // IsBound() inside it.
+  virtual void EnsureBridgeReady(base::OnceClosure on_ready) = 0;
+
+  // Drops the bridge and any host this controller owns, running any queued
+  // EnsureBridgeReady callbacks.
+  virtual void Shutdown() = 0;
+
   // Forwards to the bound bridge. LoadSnap reports a disconnection and
   // UnloadSnap is a no-op when no bridge is bound.
   virtual void LoadSnap(const std::string& snap_id,
