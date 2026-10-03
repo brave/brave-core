@@ -20,6 +20,7 @@
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/task_environment.h"
 #include "base/win/scoped_localalloc.h"
 #include "chrome/browser/os_crypt/app_bound_encryption_provider_win.h"
 #include "chrome/browser/os_crypt/app_bound_encryption_win.h"
@@ -227,6 +228,13 @@ class OSCryptKeyBackupTest : public ::testing::Test {
   base::ScopedTempDir temp_dir_;
   ::testing::NiceMock<MockAppBoundEncryptionOverrides> mock_app_bound_;
   ScopedOverridesForTesting overrides_{mock_app_bound_};
+
+ private:
+  // The app-bound unwrap path blocks on a `base::ThreadPool::
+  // CreateCOMSTATaskRunner` COM-STA task, which requires a live
+  // ThreadPoolInstance for the process - a plain SingleThreadTaskEnvironment
+  // doesn't provide one.
+  base::test::TaskEnvironment task_environment_;
 };
 
 // --- Append/dedup, DPAPI side. ---
