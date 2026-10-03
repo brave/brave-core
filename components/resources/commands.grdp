@@ -385,6 +385,9 @@
   <message name="IDS_IDC_TOGGLE_TAB_MUTE">
     Toggle tab mute
   </message>
+  <message name="IDS_IDC_TOGGLE_PICTURE_IN_PICTURE" desc="Label of the keyboard shortcut command that enters or exits picture-in-picture (PiP) for the active tab">
+    Toggle picture-in-picture (PiP)
+  </message>
   <message name="IDS_IDC_SIDEBAR_TOGGLE_POSITION">
     Toggle sidebar position
   </message>
