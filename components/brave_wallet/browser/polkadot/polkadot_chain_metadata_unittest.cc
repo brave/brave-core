@@ -21,7 +21,7 @@ namespace {
 
 std::string ScaleEncodeString(std::string_view value) {
   auto bytes = base::as_byte_span(value);
-  auto encoded = scale_encode_string(::rust::Slice(bytes));
+  auto encoded = scale_encode_string(bytes);
   return std::string(encoded.begin(), encoded.end());
 }
 
@@ -53,7 +53,7 @@ TEST(PolkadotChainMetadataUnitTest, FromFields) {
   EXPECT_EQ(metadata->assets_transfer_keep_alive_call_index, 9u);
   EXPECT_EQ(metadata->ss58_prefix, 42u);
   EXPECT_EQ(metadata->spec_version, 1'234'567u);
-  EXPECT_EQ(metadata->signed_extensions, signed_extensions);
+  EXPECT_EQ(metadata->signed_extensions.bytes, signed_extensions);
 }
 
 TEST(PolkadotChainMetadataUnitTest, EqualityOperator) {
@@ -76,7 +76,7 @@ TEST(PolkadotChainMetadataUnitTest, EqualityOperator) {
   metadata_c->spec_version = 1'234'568;
 
   PolkadotChainMetadata metadata_d = metadata_a;
-  metadata_d->signed_extensions[0] = 1;
+  metadata_d->signed_extensions.bytes[0] = 1;
 
   auto metadata_e = PolkadotChainMetadata::FromFields(
       /*system_pallet_index=*/0, /*balances_pallet_index=*/7,

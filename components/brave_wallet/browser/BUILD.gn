@@ -339,7 +339,6 @@ static_library("browser") {
     "//brave/components/brave_wallet/browser/cardano:generated_cardano_rpc_blockfrost_api",
     "//brave/components/brave_wallet/browser/internal:cardano_tx_decoder_rs",
     "//brave/components/brave_wallet/browser/internal:hd_key_common",
-    "//brave/components/brave_wallet/browser/internal:polkadot_extrinsic_rs",
     "//brave/components/brave_wallet/browser/polkadot:generated_polkadot_substrate_rpc_responses",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common/buildflags",
@@ -382,6 +381,7 @@ static_library("browser") {
   public_deps = [
     ":utils",
     "//brave/components/api_request_helper",
+    "//brave/components/brave_wallet/browser/internal:polkadot_extrinsic_bindings",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
   ]
@@ -893,7 +893,7 @@ source_set("unit_tests") {
     "//brave/components/brave_wallet/browser/cardano:generated_cardano_rpc_blockfrost_api",
     "//brave/components/brave_wallet/browser/internal:cardano_tx_decoder_rs",
     "//brave/components/brave_wallet/browser/internal:hd_key",
-    "//brave/components/brave_wallet/browser/internal:polkadot_extrinsic_rs",
+    "//brave/components/brave_wallet/browser/internal:polkadot_extrinsic_bindings",
     "//brave/components/brave_wallet/browser/polkadot:generated_polkadot_substrate_rpc_responses",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:common_constants",
