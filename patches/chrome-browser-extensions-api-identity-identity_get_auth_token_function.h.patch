@@ -1,31 +1,40 @@
 diff --git a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.h b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.h
-index dec2563796d2b79c248c5dc5ee49c2b4333befa3..8698d467e8c05667dfaa6681a53897721d00940e 100644
+index 882a1bb03cc37fcd3e18ae8b810bee04c824633f..67859a7590e976ba0eed58870ec2577496d756c4 100644
 --- a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.h
 +++ b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.h
-@@ -146,7 +146,7 @@ class IdentityGetAuthTokenFunction : public ExtensionFunction,
-   FRIEND_TEST_ALL_PREFIXES(GetAuthTokenFunctionTest, NoninteractiveShutdown);
+@@ -27,7 +27,7 @@
+ #include "google_apis/gaia/google_service_auth_error.h"
+ #include "google_apis/gaia/oauth2_mint_token_flow.h"
  
-   class RefreshTokensLoadedWaiter;
 -#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
 +#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
-   class AccountsInCookieUpdatedWaiter;
+ #include "components/signin/public/browser/web_signin_tracker.h"
  #endif
-   enum class InteractionType { kSignin, kConsent };
-@@ -159,7 +159,7 @@ class IdentityGetAuthTokenFunction : public ExtensionFunction,
+ 
+@@ -90,7 +90,7 @@ class IdentityGetAuthTokenFunction : public ExtensionFunction,
+ 
+   IdentityGetAuthTokenFunction();
+ 
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+   // Overrides how long the function waits for the Gaia cookies to be updated
+   // before giving up and failing the request. Restores the default value on
+   // destruction. Must not be nested.
+@@ -176,7 +176,7 @@ class IdentityGetAuthTokenFunction : public ExtensionFunction,
    // might be started.
    void GetAuthTokenForAccount(const GaiaId& gaia_id);
  
 -#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
 +#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
-   void OnCookiesUpdatedForRemoteConsent(bool success);
-   bool ShouldDelayRemoteConsent();
+   void OnWebSigninTrackerResult(signin::WebSigninTracker::Result result);
    void StartWaitingForCookies();
-@@ -272,7 +272,7 @@ class IdentityGetAuthTokenFunction : public ExtensionFunction,
+ #endif
+@@ -294,7 +294,7 @@ class IdentityGetAuthTokenFunction : public ExtensionFunction,
    // a permissions prompt will be popped up to the user.
    RemoteConsentResolutionData resolution_data_;
    std::unique_ptr<RefreshTokensLoadedWaiter> refresh_tokens_loaded_waiter_;
 -#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
 +#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
-   std::unique_ptr<AccountsInCookieUpdatedWaiter>
-       accounts_in_cookie_updated_waiter_;
- #endif
+   // Waits for the account to be available in the cookie jar before showing the
+   // remote consent dialog. Kept alive after reporting its result, until the
+   // next wait.
