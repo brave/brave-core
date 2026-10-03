@@ -1,5 +1,5 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index 582f9b21931b8bbb7a95d887a18036ba9609bacb..a50e89ed1c4af978f58e443942309fa1896aedc4 100644
+index 6f5f891dc689a2e7628cf731b7863264cc0ac0ab..efcb779d1bb15bd3b8aeb03c9e6114a6e0521134 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -18,15 +18,15 @@ index 582f9b21931b8bbb7a95d887a18036ba9609bacb..a50e89ed1c4af978f58e443942309fa1
      "//components/version_info",
      "//components/version_info:version_string",
    ]
-@@ -176,6 +178,7 @@ static_library("common_lib") {
+@@ -174,6 +176,7 @@ static_library("common_lib") {
      "webui_util.cc",
      "webui_util.h",
    ]
 +  sources += brave_chrome_common_sources
    defines = []
  
-   configs += [
-@@ -267,6 +270,7 @@ static_library("common_lib") {
+   configs += [ "//build/config:precompiled_headers" ]
+@@ -261,6 +264,7 @@ static_library("common_lib") {
      "//ui/resources",
      "//url",
    ]
@@ -34,7 +34,7 @@ index 582f9b21931b8bbb7a95d887a18036ba9609bacb..a50e89ed1c4af978f58e443942309fa1
  
    deps = [
      "//components/cdm/common:buildflags",
-@@ -282,6 +286,7 @@ static_library("common_lib") {
+@@ -276,6 +280,7 @@ static_library("common_lib") {
      "//components/pdf/common:constants",
      "//components/pdf/common:util",
    ]
@@ -42,15 +42,15 @@ index 582f9b21931b8bbb7a95d887a18036ba9609bacb..a50e89ed1c4af978f58e443942309fa1
  
    if (is_mac || is_win || is_linux || is_chromeos) {
      deps += [ "//components/webapps/isolated_web_apps:scheme" ]
-@@ -471,6 +476,7 @@ static_library("non_code_constants") {
-     "env_vars.h",
-   ]
-   configs += [ "//build/config/compiler:wexit_time_destructors" ]
-+  configs += [ "//brave/common:constants_configs" ]
- 
-   deps = [
-     ":buildflags",
-@@ -598,6 +604,7 @@ static_library("constants") {
+@@ -458,6 +463,7 @@ process_version("version_header") {
+ # Separate out the constants that aren't intermingled with or dependent on code
+ # so that they can be used without adding any binary bloat.
+ static_library("non_code_constants") {
++  configs = [ "//brave/common:constants_configs" ]
+   sources = [
+     "chrome_constants.cc",
+     "chrome_constants.h",
+@@ -588,6 +594,7 @@ static_library("constants") {
      "//printing/buildflags",
      "//third_party/widevine/cdm:buildflags",
    ]
@@ -58,3 +58,10 @@ index 582f9b21931b8bbb7a95d887a18036ba9609bacb..a50e89ed1c4af978f58e443942309fa1
  
    if (is_android) {
      sources += [ "chrome_paths_android.cc" ]
+@@ -897,5 +904,6 @@ source_set("unit_tests") {
+     sources += [ "media/cdm_registration_unittest.cc" ]
+     deps += [ "//third_party/widevine/cdm:headers" ]
+     data_deps = [ "//third_party/widevine/cdm" ]
++    deps += [ "//third_party/widevine/cdm:headers" ]
+   }
+ }
