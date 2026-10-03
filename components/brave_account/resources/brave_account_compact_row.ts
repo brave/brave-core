@@ -52,8 +52,7 @@ export class BraveAccountCompactRowElement extends CrLitElement {
   protected accessor displayDescription = ''
   protected accessor state: AccountState | undefined = undefined
 
-  private browserProxy: BraveAccountRowBrowserProxy =
-    new BraveAccountRowBrowserProxyImpl()
+  private browserProxy!: BraveAccountRowBrowserProxy
   private accountStateListenerId: number | null = null
   private truncator = new TextTruncator((text: string) => {
     this.displayDescription = text
@@ -62,6 +61,7 @@ export class BraveAccountCompactRowElement extends CrLitElement {
   override connectedCallback() {
     super.connectedCallback()
 
+    this.browserProxy = new BraveAccountRowBrowserProxyImpl()
     this.accountStateListenerId =
       this.browserProxy.authenticationObserverCallbackRouter.onAccountStateChanged.addListener(
         (state: AccountState) => {
@@ -77,6 +77,7 @@ export class BraveAccountCompactRowElement extends CrLitElement {
     this.browserProxy.authenticationObserverCallbackRouter.removeListener(
       this.accountStateListenerId,
     )
+    this.browserProxy.authenticationObserverCallbackRouter.$.close()
 
     this.truncator.disconnect()
   }

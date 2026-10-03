@@ -1,0 +1,99 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #scheme=relative
+ * #import=./brave_account_row_common.css.js
+ * #include=brave-account-row-common
+ * #css_wrapper_metadata_end */
+
+.delete-account-button {
+  --leo-button-color: var(--leo-color-systemfeedback-error-text);
+}
+
+/* <if expr="not is_android and not is_ios"> */
+.details {
+  column-gap: var(--leo-spacing-xl);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) auto;
+
+  .detail {
+    align-items: center;
+    border-bottom: 1px solid var(--leo-color-divider-subtle);
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    padding: var(--leo-spacing-l) var(--leo-spacing-2xl);
+
+    .label {
+      color: var(--leo-color-text-primary);
+      font: var(--leo-font-default-regular);
+      grid-column: 1;
+    }
+
+    leo-input {
+      grid-column: 2;
+    }
+
+    leo-button {
+      grid-column: 3;
+    }
+  }
+
+  .account-actions {
+    display: flex;
+    gap: var(--leo-spacing-m);
+    grid-column: 1 / -1;
+    padding: var(--leo-spacing-xl);
+  }
+}
+/* </if> */
+
+/* <if expr="is_android or is_ios"> */
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+  padding: 0 var(--leo-spacing-2xl) var(--leo-spacing-2xl);
+
+  .detail {
+    align-items: center;
+    border: 1px solid var(--leo-color-divider-subtle);
+    border-radius: var(--leo-radius-xl);
+    column-gap: var(--leo-spacing-xl);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: var(--leo-spacing-xl);
+    row-gap: var(--leo-spacing-s);
+
+    .label {
+      color: var(--leo-color-text-primary);
+      font: var(--leo-font-default-semibold);
+      grid-column: 1;
+    }
+
+    leo-input {
+      grid-column: 1 / -1;
+      min-width: 0;
+    }
+
+    leo-button {
+      grid-column: 2;
+    }
+  }
+
+  .account-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--leo-spacing-m);
+    margin: var(--leo-spacing-xl) 0 0;
+
+    leo-icon {
+      display: none;
+    }
+  }
+}
+/* </if> */

@@ -51,9 +51,6 @@
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_CHANGE_PASSWORD_BUTTON_LABEL" desc="Label for the button that cancels the pending password change when clicked" formatter_data="webui=BraveAccountSettings">
     Cancel password change
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_BUTTON_LABEL" desc="Label for the button that starts the password change process when clicked" formatter_data="webui=BraveAccountSettings">
-    Change password
-  </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_ERROR_TITLE" desc="Title for the alert shown when starting the password change process fails" formatter_data="webui=BraveAccountSettings">
     Unable to change password
   </message>
@@ -63,11 +60,30 @@
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL" desc="Label for the button that signs the user out of their account when clicked" formatter_data="webui=BraveAccountSettings">
     Log out
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_MORE_ACTIONS_BUTTON_LABEL" desc="Tooltip text for the button that shows a menu with more account actions when clicked" formatter_data="webui=BraveAccountSettings">
-    More actions
-  </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ACTION_REQUIRED_LABEL" desc="Description shown in the Brave Account row while an account action is waiting on the user, such as verifying their email address or setting a new password" formatter_data="webui=BraveAccountSettings">
     Action required
+  </message>
+  <if expr="is_android or is_ios">
+    <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ACCOUNT_DETAILS_TITLE" desc="Title of the section showing the details of the logged-in Brave Account" formatter_data="webui=BraveAccountSettings">
+      Account details
+    </message>
+    <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ACCOUNT_DETAILS_DESCRIPTION" desc="Description of the section showing the details of the logged-in Brave Account" formatter_data="webui=BraveAccountSettings">
+      Personal information about your Brave account.
+    </message>
+  </if>
+  <if expr="not is_android and not is_ios">
+    <message name="IDS_SETTINGS_BRAVE_ACCOUNT_DETAILS_SECTION_TITLE" desc="Title of the brave://settings section showing the details of the logged-in Brave Account" formatter_data="webui=BraveAccountSettings">
+      Brave account details
+    </message>
+  </if>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_EMAIL_ADDRESS_LABEL" desc="Label for the row showing the email address of the logged-in Brave Account" formatter_data="webui=BraveAccountSettings">
+    Email address
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_LABEL" desc="Label for the row that lets the user change the password of the logged-in Brave Account" formatter_data="webui=BraveAccountSettings">
+    Password
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CHANGE_BUTTON_LABEL" desc="Label for the button on the password row that starts the password change process when clicked" formatter_data="webui=BraveAccountSettings">
+    Change
   </message>
 
   <!-- 'Entry' dialog: -->
