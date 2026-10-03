@@ -12,8 +12,8 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_service_keys/buildflags.h"
+#include "crypto/hash.h"
 #include "crypto/hmac.h"
-#include "crypto/sha2.h"
 #include "net/http/http_auth_scheme.h"
 #include "net/http/http_request_headers.h"
 
@@ -27,7 +27,7 @@ constexpr char kRequestTargetHeader[] = "(request-target)";
 
 std::pair<std::string, std::string> GetDigestHeader(std::string_view payload) {
   const std::string value = base::StrCat(
-      {"SHA-256=", base::Base64Encode(crypto::SHA256HashString(payload))});
+      {"SHA-256=", base::Base64Encode(crypto::hash::Sha256(payload))});
   return std::make_pair(net::kDigestAuthScheme, value);
 }
 

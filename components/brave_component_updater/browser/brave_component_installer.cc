@@ -41,7 +41,7 @@ namespace brave_component_updater {
 
 BraveComponentInstallerPolicy::BraveComponentInstallerPolicy(
     const std::string& name,
-    base::span<const uint8_t, crypto::kSHA256Length> public_key_sha256,
+    base::span<const uint8_t, crypto::hash::kSha256Size> public_key_sha256,
     BraveComponent::ReadyCallback ready_callback)
     : name_(name), ready_callback_(std::move(ready_callback)) {
   base::span(public_key_sha256_).copy_from(public_key_sha256);
