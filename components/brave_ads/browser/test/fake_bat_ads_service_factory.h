@@ -33,6 +33,7 @@ class FakeBatAdsServiceFactory : public BatAdsServiceFactory {
   size_t launch_count() const { return launch_count_; }
   size_t initialize_count() const { return initialize_count_; }
   size_t shutdown_count() const { return shutdown_count_; }
+  size_t invalidate_count() const { return invalidate_count_; }
 
   size_t become_idle_count() const;
   size_t become_active_count() const;
@@ -51,28 +52,28 @@ class FakeBatAdsServiceFactory : public BatAdsServiceFactory {
   }
 
   // BatAdsServiceFactory:
-  mojo::Remote<bat_ads::mojom::BatAdsService> Launch() const override;
+  mojo::Remote<bat_ads::mojom::BatAdsService> Launch() override;
+  void Invalidate() override;
 
  private:
-  void OnInitialize() const { ++initialize_count_; }
-  void OnShutdown() const { ++shutdown_count_; }
+  void OnInitialize() { ++initialize_count_; }
+  void OnShutdown() { ++shutdown_count_; }
 
   // Returns the notifier from the most recently launched service, or `nullptr`
   // if no service has been launched yet.
   const FakeBatAdsClientNotifier* bat_ads_client_notifier() const;
 
-  // `mutable` because `Launch`, `OnInitialize`, and `OnShutdown` are `const`
-  // per the base class interface but must increment these counters.
-  mutable size_t launch_count_ = 0;
-  mutable size_t initialize_count_ = 0;
-  mutable size_t shutdown_count_ = 0;
+  size_t launch_count_ = 0;
+  size_t initialize_count_ = 0;
+  size_t shutdown_count_ = 0;
+  size_t invalidate_count_ = 0;
 
   bool simulate_initialization_failure_ = false;
   bool simulate_shutdown_disconnect_ = false;
 
   // Owns the service implementation so the receiver stays alive for as long
   // as the `mojo::Remote` returned by `Launch` is in use.
-  mutable std::unique_ptr<FakeBatAdsService> bat_ads_service_;
+  std::unique_ptr<FakeBatAdsService> bat_ads_service_;
 };
 
 }  // namespace brave_ads::test
