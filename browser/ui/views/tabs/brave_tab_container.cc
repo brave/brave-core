@@ -236,7 +236,7 @@ gfx::Size BraveTabContainer::CalculatePreferredSize(
     // When closing trailing tabs, the last tab's current bottom could be
     // greater than ideal bounds bottom. Note that closing tabs are not in
     // tabs_view_model_ so we have to check again here.
-    for (auto* tab : closing_tabs_) {
+    for (Tab* tab : closing_tabs_) {
       height = std::max(height, tab->bounds().bottom());
     }
   }

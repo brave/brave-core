@@ -499,6 +499,11 @@ TEST_F(AdBlockServiceTest, DATFailureFallbackWithUninitializedProvider) {
   auto result = ShouldStartRequest(service.get(), EngineType::kDefault,
                                    "https://late-provider.com/script.js");
   EXPECT_TRUE(result.matched);
+
+  // AddProvider() was called directly, so the provider won't unregister
+  // itself; do it before `provider` is destroyed ahead of `service`.
+  service->GetFiltersProviderManagerForTesting()->RemoveProvider(provider.get(),
+                                                                 true);
 }
 
 TEST_F(AdBlockServiceTest, DebugModeDisablesDATCache) {
