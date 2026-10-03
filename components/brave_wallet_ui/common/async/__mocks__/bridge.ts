@@ -554,6 +554,7 @@ export class MockedWalletApiProxy {
         ethDappSelectedAccount: selectedAccount,
         solDappSelectedAccount: mockSolanaAccount,
         adaDappSelectedAccount: mockCardanoAccount,
+        dotDappSelectedAccount: undefined,
       }
       return { allAccounts }
     },
@@ -1330,6 +1331,7 @@ export class MockedWalletApiProxy {
             BraveWallet.CoinType.DOT,
           ],
           isCardanoDappSupportEnabled: false,
+          isPolkadotDappSupportEnabled: false,
         },
       }
     },
