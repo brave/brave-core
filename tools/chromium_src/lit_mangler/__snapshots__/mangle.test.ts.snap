@@ -1835,23 +1835,176 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/settings/privacy_page/do_not_track_toggle.html.ts
 +++ gen/chrome/browser/resources/settings/preprocessed/privacy_page/do_not_track_toggle.html.ts
-@@ -3,15 +3,9 @@
+@@ -1,4 +1,8 @@
++// Copyright 2026 The Chromium Authors
++// Use of this source code is governed by a BSD-style license that can be
++// found in the LICENSE file.
++
+ import {html} from 'chrome://resources/lit/v3_0/lit.rollup.js';
+ 
  import type {SettingsDoNotTrackToggleElement} from './do_not_track_toggle.js';
  
- export function getHtml(this: SettingsDoNotTrackToggleElement) {
-   return html\`<!--_html_template_start_-->
--<settings-toggle-button id="toggle" class="toggle"
--    label="$i18n{doNotTrack}"
--    pref-key="enable_do_not_track"
--    @settings-boolean-control-change="\${this.onSettingsBooleanControlChange_}"
--    sub-label="\${this.doNotTrackSublabel_}"
--    icon="settings:forward"
--    no-set-pref>
-+<settings-toggle-button id="toggle" class="toggle hr" label="$i18n{doNotTrack}" pref-key="enable_do_not_track" @settings-boolean-control-change="\${this.onSettingsBooleanControlChange_}" sub-label="\${this.doNotTrackSublabel_}" icon="settings:forward" no-set-pref="">
- </settings-toggle-button>
- \${this.showDialog_ ? html\`
-   <cr-dialog id="confirmDialog"
-       close-text="$i18n{close}" @cancel="\${this.onDialogCancel_}"
+"
+`;
+
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/privacy_page/security/security_page.html.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/privacy_page/security/security_page.html
++++ gen/chrome/browser/resources/settings/preprocessed/privacy_page/security/security_page.html
+@@ -1,30 +1,17 @@
+ <!-- #html_wrapper_imports_start
+ import {SafeBrowsingSetting} from './safe_browsing_types.js';
+ import {HttpsFirstModeSetting} from './security_page.js';
++import {loadTimeData} from '../../i18n_setup.js';
+ #html_wrapper_imports_end -->
+ 
+-  <settings-subpage page-title="$i18n{securityPageTitle}"
+-      learn-more-url="$i18n{safeBrowsingHelpCenterURL}"
+-      route-path="\${this.routePath}">
++  <settings-subpage page-title="$i18n{securityPageTitle}" learn-more-url="$i18n{safeBrowsingHelpCenterURL}" route-path="\${this.routePath}">
+     <div id="safeBrowsingSection">
+       <h2 class="cr-title-text">$i18n{safeBrowsingSectionLabel}</h2>
+-      <settings-radio-group id="safeBrowsingRadioGroup" no-set-pref
+-          pref-key="generated.safe_browsing"
+-          selectable-elements="cr-radio-button, settings-collapse-radio-button"
+-          @change="\${this.onSafeBrowsingRadioChange_}">
+-        <settings-collapse-radio-button id="safeBrowsingEnhanced"
+-            name="\${SafeBrowsingSetting.ENHANCED}"
+-            pref-key="generated.safe_browsing"
+-            label="$i18n{safeBrowsingEnhanced}"
+-            sub-label="$i18n{safeBrowsingEnhancedDescUpdated}"
+-            indicator-aria-label="$i18n{controlledSettingPolicy}"
+-            expand-aria-label="$i18n{safeBrowsingEnhancedExpandA11yLabel}"
+-            @expand-clicked="\${this.onEnhancedProtectionExpandClicked_}"
+-            no-automatic-collapse>
++      <settings-radio-group id="safeBrowsingRadioGroup" no-set-pref="" pref-key="generated.safe_browsing" selectable-elements="cr-radio-button, settings-collapse-radio-button" @change="\${this.onSafeBrowsingRadioChange_}">
++        <settings-collapse-radio-button id="safeBrowsingEnhanced" name="\${SafeBrowsingSetting.ENHANCED}" pref-key="generated.safe_browsing" label="$i18n{safeBrowsingEnhanced}" sub-label="$i18n{safeBrowsingEnhancedDescUpdated}" indicator-aria-label="$i18n{controlledSettingPolicy}" expand-aria-label="$i18n{safeBrowsingEnhancedExpandA11yLabel}" @expand-clicked="\${this.onEnhancedProtectionExpandClicked_}" no-automatic-collapse="" hidden="">
+           <div slot="collapse">
+-            <div id="enhancedProtectionDescContainer"
+-                class="settings-columned-section">
++            <div id="enhancedProtectionDescContainer" class="settings-columned-section">
+               <div class="column">
+                 <h3 class="description-header">
+                   $i18n{columnHeadingWhenOn}
+                 </h3>
+@@ -84,44 +71,24 @@
+                   </li>
+                 </ul>
+               </div>
+             </div>
+-            <div id="learnMoreLabelContainer"
+-                @click="\${this.onEnhancedProtectionLearnMoreClick_}">
++            <div id="learnMoreLabelContainer" @click="\${this.onEnhancedProtectionLearnMoreClick_}">
+               <div class="cr-secondary-text">
+                 $i18nRaw{safeBrowsingEnhancedLearnMoreLabel}
+               </div>
+             </div>
+           </div>
+         </settings-collapse-radio-button>
+-        <settings-collapse-radio-button id="safeBrowsingStandard"
+-            ?no-collapse="\${this.hideExtendedReportingRadioButton_}"
+-            name="\${SafeBrowsingSetting.STANDARD}"
+-            pref-key="generated.safe_browsing"
+-            label="$i18n{safeBrowsingStandard}"
+-            sub-label="\${this.getSafeBrowsingStandardSubLabel_()}"
+-            indicator-aria-label="$i18n{controlledSettingPolicy}"
+-            expand-aria-label="$i18n{safeBrowsingStandardExpandA11yLabel}"
+-            @expand-clicked="\${this.onStandardProtectionExpandClicked_}"
+-            no-automatic-collapse>
++        <settings-collapse-radio-button id="safeBrowsingStandard" name="\${SafeBrowsingSetting.STANDARD}" pref-key="generated.safe_browsing" label="$i18n{safeBrowsingStandard}" sub-label="\${this.getSafeBrowsingStandardSubLabel_()}" indicator-aria-label="$i18n{controlledSettingPolicy}" expand-aria-label="$i18n{safeBrowsingStandardExpandA11yLabel}" @expand-clicked="\${this.onStandardProtectionExpandClicked_}" no-automatic-collapse="" no-collapse="">
+           <div slot="noSelectionCollapse">
+             \${!this.hideExtendedReportingRadioButton_ ? html\`
+-              <settings-toggle-button id="safeBrowsingReportingToggle"
+-                  pref-key="safebrowsing.scout_reporting_enabled"
+-                  label="$i18n{safeBrowsingStandardReportingLabel}"
+-                  sub-label="$i18n{safeBrowsingEnableExtendedReportingDesc}"
+-                  @change="\${this.onSafeBrowsingExtendedReportingChange_}"
+-                  ?disabled="\${this.getDisabledExtendedSafeBrowsing_()}">
++              <settings-toggle-button id="safeBrowsingReportingToggle" pref-key="safebrowsing.scout_reporting_enabled" label="$i18n{safeBrowsingStandardReportingLabel}" sub-label="$i18n{safeBrowsingEnableExtendedReportingDesc}" @change="\${this.onSafeBrowsingExtendedReportingChange_}" ?disabled="\${this.getDisabledExtendedSafeBrowsing_()}" hidden="">
+               </settings-toggle-button>
+             \` : ''}
+           </div>
+         </settings-collapse-radio-button>
+-        <settings-collapse-radio-button id="safeBrowsingDisabled" no-collapse
+-            name="\${SafeBrowsingSetting.DISABLED}"
+-            pref-key="generated.safe_browsing"
+-            label="$i18n{safeBrowsingNone}"
+-            sub-label="$i18n{safeBrowsingNoneDesc}"
+-            indicator-aria-label="$i18n{controlledSettingPolicy}">
++        <settings-collapse-radio-button id="safeBrowsingDisabled" no-collapse="" name="\${SafeBrowsingSetting.DISABLED}" pref-key="generated.safe_browsing" label="$i18n{safeBrowsingNone}" sub-label="$i18n{safeBrowsingNoneDesc}" indicator-aria-label="$i18n{controlledSettingPolicy}">
+         </settings-collapse-radio-button>
+       </settings-radio-group>
+     </div>
+     \${this.enableHttpsFirstModeNewSettings_ ? html\`
+@@ -161,19 +128,12 @@
+     \` : ''}
+     <div class="cr-row first">
+       <h2 class="cr-title-text">$i18n{advancedPageTitle}</h2>
+     </div>
+-    <settings-toggle-button id="passwordsLeakToggle"
+-        label="$i18n{passwordsLeakDetectionLabel}"
+-        pref-key="generated.password_leak_detection"
+-        sub-label="\${this.getPasswordsLeakToggleSubLabel_()}">
++    <settings-toggle-button id="passwordsLeakToggle" label="$i18n{passwordsLeakDetectionLabel}" pref-key="generated.password_leak_detection" sub-label="\${this.getPasswordsLeakToggleSubLabel_()}" hidden="">
+     </settings-toggle-button>
+     \${!this.enableHttpsFirstModeNewSettings_ ? html\`
+-      <settings-toggle-button id="httpsOnlyModeToggle"
+-          pref-key="generated.https_first_mode_enabled"
+-          label="$i18n{httpsOnlyModeTitle}"
+-          sub-label="\${this.getHttpsFirstModeSubLabel_()}"
+-          .numericCheckedValue="\${HttpsFirstModeSetting.ENABLED_FULL}">
++      <settings-toggle-button ?hidden="\${loadTimeData.getBoolean('isHttpsByDefaultEnabled')}" id="httpsOnlyModeToggle" pref-key="generated.https_first_mode_enabled" label="$i18n{httpsOnlyModeTitle}" sub-label="\${this.getHttpsFirstModeSubLabel_()}" .numericCheckedValue="\${HttpsFirstModeSetting.ENABLED_FULL}">
+       </settings-toggle-button>
+       \${this.showSecureDnsSetting_ ? html\`
+         <settings-secure-dns id="secureDnsSettingOld">
+         </settings-secure-dns>
+@@ -182,21 +142,10 @@
+     \${this.enableHttpsFirstModeNewSettings_ && this.showSecureDnsSetting_ ? html\`
+       <settings-secure-dns class="hr" id="secureDnsSettingNew">
+       </settings-secure-dns>
+     \` : ''}
+-<if expr="is_chromeos">
+-    \${this.showSecureDnsSettingLink_ ? html\`
+-      <cr-link-row id="openChromeOSSecureDnsSettings"
+-          @click="\${this.onOpenChromeOsSecureDnsSettingsClick_}"
+-          label="$i18n{openChromeOSSecureDnsSettingsLabel}" external>
+-      </cr-link-row>
+-    \` : ''}
+-</if>
+-    <cr-link-row id="javascriptOptimizerSettingLink" class="hr"
+-        @click="\${this.onJavascriptOptimizerSettingsClick_}"
+-        label="$i18n{securityJavascriptOptimizerLinkTitle}"
+-        sub-label="\${this.javascriptOptimizerSubLabel_}"
+-        role-description="$i18n{subpageArrowRoleDescription}">
++
++    <cr-link-row id="javascriptOptimizerSettingLink" class="hr" @click="\${this.onJavascriptOptimizerSettingsClick_}" label="$i18n{securityJavascriptOptimizerLinkTitle}" sub-label="\${this.javascriptOptimizerSubLabel_}" role-description="$i18n{subpageArrowRoleDescription}">
+     </cr-link-row>
+     \${this.enableSecurityKeysSubpage_ ? html\`
+       <cr-link-row id="securityKeysSubpageTrigger" class="hr"
+           label="$i18n{securityKeysTitle}"
+@@ -205,20 +154,12 @@
+           role-description="$i18n{subpageArrowRoleDescription}">
+       </cr-link-row>
+     \` : ''}
+ 
+-    <cr-link-row id="manageCertificatesLinkRow" class="hr"
+-        role-description="$i18n{subpageArrowRoleDescription}"
+-        label="$i18n{manageCertificates}"
+-        sub-label="$i18n{manageCertificatesDescription}"
+-        @click="\${this.onManageCertificatesClick_}" external>
++    <cr-link-row id="manageCertificatesLinkRow" class="hr" role-description="$i18n{subpageArrowRoleDescription}" label="$i18n{manageCertificates}" sub-label="$i18n{manageCertificatesDescription}" @click="\${this.onManageCertificatesClick_}" external="">
+     </cr-link-row>
+ 
+-    <cr-link-row id="advancedProtectionProgramLink" class="hr"
+-        label="$i18n{advancedProtectionProgramTitle}"
+-        sub-label="$i18n{advancedProtectionProgramDesc}"
+-        @click="\${this.onAdvancedProtectionProgramLinkClick_}"
+-        external>
++    <cr-link-row id="advancedProtectionProgramLink" class="hr" label="$i18n{advancedProtectionProgramTitle}" sub-label="$i18n{advancedProtectionProgramDesc}" @click="\${this.onAdvancedProtectionProgramLinkClick_}" external="" hidden="">
+     </cr-link-row>
+     \${this.showDisableSafebrowsingDialog_ ? html\`
+       <settings-simple-confirmation-dialog
+           title-text="$i18n{safeBrowsingDisableDialog}"
 "
 `;
 
