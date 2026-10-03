@@ -181,6 +181,10 @@ async function runTests(
     }
 
     if (config.isAndroid() && !isJunitTestSuite) {
+      if (isTeamcity) {
+        runArgs.push('--test-launcher-enable-teamcity-reporter')
+      }
+
       assert(
         config.targetArch === 'x86'
           || config.targetArch === 'x64'

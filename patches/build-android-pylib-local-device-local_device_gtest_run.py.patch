@@ -1,0 +1,26 @@
+diff --git a/build/android/pylib/local/device/local_device_gtest_run.py b/build/android/pylib/local/device/local_device_gtest_run.py
+index 0c8415e7782ceb902ba0433ab1cb3c4eb5c56f63..934abdd0dbb5d99a2ff63b2239d561cb3d7241c1 100644
+--- a/build/android/pylib/local/device/local_device_gtest_run.py
++++ b/build/android/pylib/local/device/local_device_gtest_run.py
+@@ -353,7 +353,14 @@ class _ApkDelegate:
+             )
+             logging.warning('*' * 80)
+ 
+-        with command_line_file, test_list_file, stdout_file:
++        with (
++            command_line_file,
++            test_list_file,
++            stdout_file,
++            _create_teamcity_service_message_watcher(
++                device, stdout_file.name, self._env.force_main_user
++            ),
++        ):
+             try:
+                 device.StartInstrumentation(
+                     self._component, extras=extras, raw=False, **kwargs
+@@ -1282,3 +1289,5 @@ class LocalDeviceGtestRun(local_device_test_run.LocalDeviceTestRun):
+     # override
+     def TearDown(self):
+         pass
++
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
