@@ -18,8 +18,8 @@
 #include "components/crx_file/crx_verifier.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
+#include "crypto/hash.h"
 #include "crypto/keypair.h"
-#include "crypto/sha2.h"
 #include "extensions/browser/crx_file_info.h"
 #include "extensions/browser/crx_installer.h"
 #include "extensions/browser/extension_creator.h"
@@ -36,20 +36,23 @@ std::vector<uint8_t> GetPublicKeyHash(const base::FilePath& pem_path) {
   base::ScopedAllowBlockingForTesting allow_blocking;
 
   std::string private_key_contents;
-  if (!base::ReadFileToString(pem_path, &private_key_contents))
+  if (!base::ReadFileToString(pem_path, &private_key_contents)) {
     return {};
+  }
   std::string private_key_bytes;
-  if (!Extension::ParsePEMKeyBytes(private_key_contents, &private_key_bytes))
+  if (!Extension::ParsePEMKeyBytes(private_key_contents, &private_key_bytes)) {
     return {};
+  }
 
   auto private_key = crypto::keypair::PrivateKey::FromPrivateKeyInfo(
       base::as_byte_span(private_key_bytes));
-  if (!private_key)
+  if (!private_key) {
     return {};
+  }
 
   auto public_key = private_key->ToSubjectPublicKeyInfo();
 
-  return base::ToVector(crypto::SHA256Hash(public_key));
+  return base::ToVector(crypto::hash::Sha256(public_key));
 }
 
 }  // namespace
