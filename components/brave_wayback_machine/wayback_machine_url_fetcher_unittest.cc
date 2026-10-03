@@ -11,6 +11,7 @@
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/time/time.h"
 #include "brave/components/brave_wayback_machine/url_constants.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -27,15 +28,20 @@ class WaybackClient : public WaybackMachineURLFetcher::Client {
     callback_ = std::move(callback);
   }
   void SetExpectedURL(GURL expected_url) { expected_url_ = expected_url; }
-  void OnWaybackURLFetched(const GURL& lastest_wayback_url) override {
+  void OnWaybackURLFetched(const GURL& lastest_wayback_url,
+                           base::Time snapshot_time) override {
     EXPECT_EQ(lastest_wayback_url, expected_url_);
+    snapshot_time_ = snapshot_time;
     if (callback_) {
       std::move(callback_).Run();
     }
   }
 
+  base::Time snapshot_time() const { return snapshot_time_; }
+
  private:
   GURL expected_url_;
+  base::Time snapshot_time_;
   base::OnceClosure callback_;
 };
 
@@ -109,6 +115,60 @@ TEST_F(WaybackMachineURLFetcherUnitTest, SanitizedResponse) {
   SetResponseText(
       R"(,{"archived_snapshots":{"closest":{"url":"https://web.archive.com/favicon.ico"}}})");
   Fetch(GURL::EmptyGURL());
+}
+
+TEST_F(WaybackMachineURLFetcherUnitTest, SnapshotTime) {
+  SetResponseText(
+      R"({"archived_snapshots":{"closest":{
+          "url":"https://web.archive.org/favicon.ico",
+          "timestamp":"20240226123456"}}})");
+  Fetch(GURL("https://web.archive.org/favicon.ico"));
+  base::Time expected;
+  ASSERT_TRUE(base::Time::FromUTCExploded({.year = 2024,
+                                           .month = 2,
+                                           .day_of_month = 26,
+                                           .hour = 12,
+                                           .minute = 34,
+                                           .second = 56},
+                                          &expected));
+  EXPECT_EQ(expected, client_->snapshot_time());
+
+  // Missing timestamp still returns the url.
+  SetResponseText(
+      R"({"archived_snapshots":{"closest":{
+          "url":"https://web.archive.org/favicon.ico"}}})");
+  Fetch(GURL("https://web.archive.org/favicon.ico"));
+  EXPECT_TRUE(client_->snapshot_time().is_null());
+
+  // No time is reported when the url is rejected.
+  SetResponseText(
+      R"({"archived_snapshots":{"closest":{
+          "url":"https://another_archive.org/favicon.ico",
+          "timestamp":"20240226123456"}}})");
+  Fetch(GURL::EmptyGURL());
+  EXPECT_TRUE(client_->snapshot_time().is_null());
+}
+
+TEST_F(WaybackMachineURLFetcherUnitTest, ParseSnapshotTimestampTest) {
+  EXPECT_FALSE(
+      WaybackMachineURLFetcher::ParseSnapshotTimestamp("20240226123456")
+          .is_null());
+  EXPECT_TRUE(WaybackMachineURLFetcher::ParseSnapshotTimestamp("").is_null());
+  EXPECT_TRUE(WaybackMachineURLFetcher::ParseSnapshotTimestamp("2024022612345")
+                  .is_null());
+  EXPECT_TRUE(
+      WaybackMachineURLFetcher::ParseSnapshotTimestamp("202402261234567")
+          .is_null());
+  EXPECT_TRUE(WaybackMachineURLFetcher::ParseSnapshotTimestamp("2024022612345a")
+                  .is_null());
+  EXPECT_TRUE(WaybackMachineURLFetcher::ParseSnapshotTimestamp("-0240226123456")
+                  .is_null());
+  EXPECT_TRUE(WaybackMachineURLFetcher::ParseSnapshotTimestamp("20241326123456")
+                  .is_null());
+  EXPECT_TRUE(WaybackMachineURLFetcher::ParseSnapshotTimestamp("20240230123456")
+                  .is_null());
+  EXPECT_TRUE(WaybackMachineURLFetcher::ParseSnapshotTimestamp("20240226250000")
+                  .is_null());
 }
 
 TEST_F(WaybackMachineURLFetcherUnitTest, InputURLSanitizeTest) {

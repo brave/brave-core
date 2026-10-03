@@ -12,6 +12,7 @@
 #include "base/functional/bind.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_bubble_view.h"
+#include "brave/browser/ui/views/page_action/wayback_machine_infobar_delegate.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
 #include "brave/components/brave_wayback_machine/features.h"
@@ -143,6 +144,8 @@ void WaybackMachinePageActionController::OnWaybackStateChanged(
   UpdatePageAction(tab_->GetContents());
   if (state == WaybackState::kNeedToCheck) {
     MaybeAutoShowBubble();
+  } else if (state == WaybackState::kFound) {
+    MaybeShowInfoBar();
   }
 }
 
@@ -211,6 +214,15 @@ void WaybackMachinePageActionController::MaybeAutoShowBubble() {
   }
 
   ShowBubble(item, /*user_gesture=*/false);
+}
+
+void WaybackMachinePageActionController::MaybeShowInfoBar() {
+  if (!tab_->IsActivated()) {
+    return;
+  }
+  if (content::WebContents* contents = tab_->GetContents()) {
+    WaybackMachineInfoBarDelegate::Create(contents);
+  }
 }
 
 void WaybackMachinePageActionController::AttachToTabHelper(

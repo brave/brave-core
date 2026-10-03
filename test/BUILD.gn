@@ -1381,10 +1381,13 @@ test("brave_browser_tests") {
   if (enable_brave_wayback_machine) {
     sources += [ "//brave/browser/ui/views/page_action/wayback_machine_page_action_browsertest.cc" ]
     deps += [
+      "//brave/browser/ui",
       "//brave/browser/ui/views/page_action",
       "//brave/components/brave_wayback_machine",
       "//chrome/browser/ui/actions",
       "//chrome/browser/ui/views/page_action:page_action_test_support",
+      "//components/infobars/content",
+      "//components/infobars/core",
       "//ui/views:test_support",
     ]
   }

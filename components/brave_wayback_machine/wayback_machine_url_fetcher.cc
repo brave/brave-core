@@ -5,9 +5,13 @@
 
 #include "brave/components/brave_wayback_machine/wayback_machine_url_fetcher.h"
 
+#include <algorithm>
+#include <string>
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
 #include "brave/components/brave_wayback_machine/url_constants.h"
 #include "net/base/load_flags.h"
@@ -71,21 +75,67 @@ void WaybackMachineURLFetcher::Fetch(const GURL& url) {
 void WaybackMachineURLFetcher::OnWaybackURLFetched(
     const GURL& original_url,
     api_request_helper::APIRequestResult api_request_result) {
+  auto notify_not_found = [&]() {
+    client_->OnWaybackURLFetched(GURL::EmptyGURL(), base::Time());
+  };
+
   auto& value_body = api_request_result.value_body();
   if (!value_body.is_dict()) {
-    client_->OnWaybackURLFetched(GURL::EmptyGURL());
+    notify_not_found();
     return;
   }
-  auto* url_string = value_body.GetDict().FindStringByDottedPath(
-      "archived_snapshots.closest.url");
+
+  const base::DictValue* closest =
+      value_body.GetDict().FindDictByDottedPath("archived_snapshots.closest");
+  const std::string* url_string =
+      closest ? closest->FindString("url") : nullptr;
 
   // Response doesn't have wayback url.
   if (!url_string) {
-    client_->OnWaybackURLFetched(GURL::EmptyGURL());
+    notify_not_found();
     return;
   }
 
-  client_->OnWaybackURLFetched(GetSanitizedWaybackURL(GURL(*url_string)));
+  GURL wayback_url = GetSanitizedWaybackURL(GURL(*url_string));
+  if (wayback_url.is_empty()) {
+    notify_not_found();
+    return;
+  }
+
+  const std::string* timestamp = closest->FindString("timestamp");
+  client_->OnWaybackURLFetched(
+      wayback_url,
+      timestamp ? ParseSnapshotTimestamp(*timestamp) : base::Time());
+}
+
+// static
+base::Time WaybackMachineURLFetcher::ParseSnapshotTimestamp(
+    std::string_view timestamp) {
+  if (timestamp.size() != 14 ||
+      !std::ranges::all_of(timestamp, base::IsAsciiDigit<char>)) {
+    return base::Time();
+  }
+
+  auto field = [&](size_t pos, size_t len) {
+    int value = 0;
+    base::StringToInt(timestamp.substr(pos, len), &value);
+    return value;
+  };
+
+  base::Time::Exploded exploded = {
+      .year = field(0, 4),
+      .month = field(4, 2),
+      .day_of_month = field(6, 2),
+      .hour = field(8, 2),
+      .minute = field(10, 2),
+      .second = field(12, 2),
+  };
+
+  base::Time time;
+  if (!base::Time::FromUTCExploded(exploded, &time)) {
+    return base::Time();
+  }
+  return time;
 }
 
 GURL WaybackMachineURLFetcher::GetSanitizedWaybackURL(const GURL& url) const {
