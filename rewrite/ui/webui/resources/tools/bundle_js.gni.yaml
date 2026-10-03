@@ -1,0 +1,35 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Make the Brave bundling settings available.
+    add_import:
+      import: //brave/ui/webui/resources/tools/sources.gni
+
+  - description: |-
+      Exclude the Brave resources from every bundle
+
+      Merged into the caller's `excludes`, since the bundler only takes the last
+      `--exclude` it is given.
+    add_after_line:
+      line: template("bundle_js") {
+      code: |2
+          _brave_excludes = brave_resource_tools_extra_excludes
+          if (defined(invoker.excludes)) {
+            _brave_excludes += invoker.excludes
+            invoker.excludes = []
+          }
+          invoker.excludes = _brave_excludes
+
+  - description: Resolve the Brave resources outside the bundle.
+    add_after_line:
+      line: external_paths += [ "//resources/lit/v3_0/|$lit_path" ]
+      code: |2-
+
+            if (is_chrome_untrusted) {
+              external_paths += brave_resource_tools_extra_external_paths_chrome_untrusted
+            } else {
+              external_paths += brave_resource_tools_extra_external_paths
+            }

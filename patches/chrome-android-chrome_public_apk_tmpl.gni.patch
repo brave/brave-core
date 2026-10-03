@@ -1,28 +1,35 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index 6b9413f634e59624356f64429523af6502f78fd3..5270844b839bc44767c1bd960b24912c453e7301 100644
+index 6b9413f634e59624356f64429523af6502f78fd3..ad3e7de3cfc31539834eae8462cb285ebaa8b858 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
-@@ -305,6 +305,7 @@ template("chrome_common_apk_or_module_tmpl") {
-       "*ic_file_download_white*",  # Bottom edge seems misaligned.
-       "*ic_lock.*",  # Bottom edge seems misaligned.
-     ]
+@@ -299,6 +299,7 @@ template("chrome_common_apk_or_module_tmpl") {
+ 
+     resource_exclusion_regex = common_resource_exclusion_regex
+     resource_exclusion_exceptions = common_resource_exclusion_exceptions
 +    resource_exclusion_exceptions += brave_resources_exclusion_exceptions
  
-     # Most of these, with the exception of resource_exclusion_exceptions,
-     # are currently duplicated in system_webview_apk_tmpl.gni.
-@@ -327,6 +328,7 @@ template("chrome_common_apk_or_module_tmpl") {
- 
-       proguard_enabled = true
-       proguard_configs = [ "//chrome/android/proguard/main.flags" ]
-+      proguard_configs += [ "//brave/android/java/proguard.flags" ]
-       if (_is_test) {
-         proguard_configs += [ "//chrome/android/proguard/apk_for_test.flags" ]
+     # Exceptions (rationale in https://crbug.com/41301595):
+     resource_exclusion_exceptions += [
+@@ -337,6 +338,7 @@ template("chrome_common_apk_or_module_tmpl") {
+       if (!_is_bundle && optimize_android_resources) {
+         resources_config_paths = [ "//chrome/android/aapt2.config" ]
        }
-@@ -699,6 +701,7 @@ template("chrome_common_apk_or_module_tmpl") {
++      proguard_configs += [ "//brave/android/java/proguard.flags" ]
+     }
+ 
+     # Java and native targets form two independent compile graphs. Deps from
+@@ -699,6 +701,14 @@ template("chrome_common_apk_or_module_tmpl") {
                                   "version_code",
                                   "version_name",
                                 ])
-+    _wireguard_target = "//brave/third_party/android_deps:com_wireguard_android_J__unpack_aar" deps += [ _wireguard_target] _libwireguard_dir = get_label_info("//brave/third_party/android_deps:com_wireguard_android($default_toolchain)","target_out_dir") + "/com_wireguard_android_java/jni" loadable_modules +=[ "$_libwireguard_dir/$android_app_abi/libwg-go.so" ]
++    _wireguard_target =
++        "//brave/third_party/android_deps:com_wireguard_android_J__unpack_aar"
++    deps += [ _wireguard_target ]
++    _libwireguard_dir =
++        get_label_info(
++            "//brave/third_party/android_deps:com_wireguard_android($default_toolchain)",
++            "target_out_dir") + "/com_wireguard_android_java/jni"
++    loadable_modules += [ "$_libwireguard_dir/$android_app_abi/libwg-go.so" ]
    }
  }
  
