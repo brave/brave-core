@@ -12,7 +12,7 @@
 #include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 
 namespace component_updater {
 class ComponentUpdateService;
@@ -33,7 +33,7 @@ void RegisterAdBlockFilterListCatalogComponent(
 
 void RegisterAdBlockFiltersComponent(
     component_updater::ComponentUpdateService* cus,
-    base::span<const uint8_t, crypto::kSHA256Length>
+    base::span<const uint8_t, crypto::hash::kSha256Size>
         component_public_key_sha256,
     const std::string& component_name,
     OnComponentReadyCallback callback);
