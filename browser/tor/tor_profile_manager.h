@@ -11,6 +11,7 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ptr.h"
 #include "base/no_destructor.h"
 #include "chrome/browser/profiles/profile_observer.h"
 #include "url/gurl.h"
@@ -49,7 +50,7 @@ class TorProfileManager : public ProfileObserver {
   void InitTorProfileUserPrefs(Profile* profile);
 
   // One regular profile can only have one tor profile
-  base::flat_map<std::string, Profile*> tor_profiles_;
+  base::flat_map<std::string, raw_ptr<Profile>> tor_profiles_;
   std::unique_ptr<BrowserCollectionObserver> browser_collection_observer_;
 
   TorProfileManager(const TorProfileManager&) = delete;
