@@ -24,7 +24,7 @@ bool LocalDataFilesService::Start() {
   if (initialized_)
     return true;
   Register(kLocalDataFilesComponentName, kLocalDataFilesComponentId,
-           kLocalDataFilesComponentBase64PublicKey);
+           kLocalDataFilesComponentPublicKeySHA256);
   initialized_ = true;
   return true;
 }

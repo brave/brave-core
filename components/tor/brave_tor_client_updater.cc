@@ -97,7 +97,7 @@ void BraveTorClientUpdater::Register() {
   }
 
   BraveComponent::Register(kTorClientComponentName, kTorClientComponentId,
-                           kTorClientComponentBase64PublicKey);
+                           kTorClientComponentPublicKeySHA256);
   registered_ = true;
 }
 

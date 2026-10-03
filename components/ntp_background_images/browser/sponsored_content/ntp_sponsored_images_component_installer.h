@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "brave/components/ntp_background_images/browser/component_ready_callback.h"
 #include "components/component_updater/component_installer.h"
 #include "crypto/sha2.h"
@@ -29,7 +30,7 @@ class NTPSponsoredImagesComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
   NTPSponsoredImagesComponentInstallerPolicy(
-      const std::string& component_public_key,
+      base::span<const uint8_t, crypto::kSHA256Length> public_key_sha256,
       const std::string& component_id,
       const std::string& component_name,
       ComponentReadyCallback callback);
@@ -68,7 +69,7 @@ class NTPSponsoredImagesComponentInstallerPolicy
 
 void RegisterNTPSponsoredImagesComponent(
     component_updater::ComponentUpdateService* component_update_service,
-    const std::string& component_public_key,
+    base::span<const uint8_t, crypto::kSHA256Length> public_key_sha256,
     const std::string& component_id,
     const std::string& component_name,
     ComponentReadyCallback callback);

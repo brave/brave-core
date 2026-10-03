@@ -5,20 +5,15 @@
 
 #include "brave/components/web_mcp/core/browser/web_mcp_component_installer.h"
 
-#include <array>
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "base/base64.h"
-#include "base/check.h"
-#include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/web_mcp/core/browser/web_mcp_rule_registry.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
-#include "crypto/sha2.h"
 
 namespace web_mcp {
 
@@ -60,17 +55,9 @@ class WebMcpComponentInstallerPolicy
   std::string GetName() const override;
   update_client::InstallerAttributes GetInstallerAttributes() const override;
   bool IsBraveComponent() const override;
-
- private:
-  std::array<uint8_t, crypto::kSHA256Length> component_hash_;
 };
 
-WebMcpComponentInstallerPolicy::WebMcpComponentInstallerPolicy() {
-  // Generate hash from public key.
-  auto decoded_public_key = base::Base64Decode(kWebMcpComponentBase64PublicKey);
-  CHECK(decoded_public_key);
-  component_hash_ = crypto::SHA256Hash(*decoded_public_key);
-}
+WebMcpComponentInstallerPolicy::WebMcpComponentInstallerPolicy() = default;
 
 bool WebMcpComponentInstallerPolicy::
     SupportsGroupPolicyEnabledComponentUpdates() const {
@@ -108,7 +95,7 @@ base::FilePath WebMcpComponentInstallerPolicy::GetRelativeInstallDir() const {
 }
 
 void WebMcpComponentInstallerPolicy::GetHash(std::vector<uint8_t>* hash) const {
-  *hash = base::ToVector(component_hash_);
+  hash->assign_range(kWebMcpComponentPublicKeySHA256);
 }
 
 std::string WebMcpComponentInstallerPolicy::GetName() const {

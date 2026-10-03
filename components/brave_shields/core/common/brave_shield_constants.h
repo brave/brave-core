@@ -6,11 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_BRAVE_SHIELD_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_BRAVE_SHIELD_CONSTANTS_H_
 
+#include <cstdint>
+#include <iterator>
+
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/map_util.h"
 #include "base/files/file_path.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "crypto/sha2.h"
 
 namespace brave_shields {
 
@@ -123,27 +127,23 @@ inline constexpr char kAdBlockResourceComponentName[] =
     "Brave Ad Block Resources Library";
 inline constexpr char kAdBlockResourceComponentId[] =
     "mfddibmblmbccpadfndgakiopmmhebop";
-inline constexpr char kAdBlockResourceComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7Qk6xtml8Siq8RD6cCbd"
-    "JpArt0kMci82W/KYw3KR96y67MZAsKJa8rOV2WC1BIpW539Qgl5b5lMS04cjw+sS"
-    "B7f2ZKM1WOqKNij24nvEKVubunP32u8tbjtzQk9VYNcM2MZMs330eqk7iuBRTvRV"
-    "iSMSeE3ymqp03HFpUGsdtjEBh1A5lroCg41eVnMn1I4GKPvuhT/Qc9Yem5gzXT/3"
-    "n7H6vOGQ2dVBHz44mhgwtiDcsduh+Det6lCE2TgHOhHPdCewklgcoiNXP4zfXxfp"
-    "Py1jbwb4w5KUnHSRelhfDnt+jI3jgHsD4IXdVNE5H5ZAnmcOJttbkRiT8kOVS0rJ"
-    "XwIDAQAB";
+inline constexpr uint8_t kAdBlockResourceComponentPublicKeySHA256[32] = {
+    0xc5, 0x33, 0x81, 0xc1, 0xbc, 0x12, 0x2f, 0x03, 0x5d, 0x36, 0x0a,
+    0x8e, 0xfc, 0xc7, 0x41, 0xef, 0xc6, 0x97, 0x1a, 0x07, 0x29, 0x1c,
+    0x97, 0x2c, 0x18, 0x2e, 0x1a, 0xd5, 0x76, 0xa6, 0x59, 0xfc};
+static_assert(std::size(kAdBlockResourceComponentPublicKeySHA256) ==
+              crypto::kSHA256Length);
 
 inline constexpr char kAdBlockFilterListCatalogComponentName[] =
     "Brave Ad Block List Catalog";
 inline constexpr char kAdBlockFilterListCatalogComponentId[] =
     "gkboaolpopklhgplhaaiboijnklogmbc";
-inline constexpr char kAdBlockFilterListCatalogComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsAnb1lw5UA1Ww4JIVE8P"
-    "jKNlPogAdFoie+Aczk6ppQ4OrHANxz6oAk1xFuT2W3uhGOc3b/1ydIUMqOIdRFvM"
-    "dEDUvKVeFyNAVXNSouFF7EBLEzcZfFtqoxeIbwEplVISUm+WUbsdVB9MInY3a4O3"
-    "kNNuUijY7bmHzAqWMTrBfenw0Lqv38OfREXCiNq/+Jm/gt7FhyBd2oviXWEGp6as"
-    "UwNavFnj8gQDGVvCf+dse8HRMJn00QH0MOypsZSWFZRmF08ybOu/jTiUo/TuIaHL"
-    "1H8y9SR970LqsUMozu3ioSHtFh/IVgq7Nqy4TljaKsTE+3AdtjiOyHpW9ZaOkA7j"
-    "2QIDAQAB";
+inline constexpr uint8_t kAdBlockFilterListCatalogComponentPublicKeySHA256[32] =
+    {0x6a, 0x1e, 0x0e, 0xbf, 0xef, 0xab, 0x76, 0xfb, 0x70, 0x08, 0x1e,
+     0x89, 0xda, 0xbe, 0x6c, 0x12, 0xd2, 0x32, 0x31, 0x85, 0xec, 0x24,
+     0xb0, 0x3d, 0x11, 0xe4, 0x69, 0x45, 0xb5, 0x29, 0x95, 0x62};
+static_assert(std::size(kAdBlockFilterListCatalogComponentPublicKeySHA256) ==
+              crypto::kSHA256Length);
 
 inline constexpr char kCookieListEnabledHistogram[] =
     "Brave.Shields.CookieListEnabled";

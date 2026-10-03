@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_LOCAL_DATA_FILES_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_LOCAL_DATA_FILES_SERVICE_H_
 
+#include <cstdint>
+#include <iterator>
 #include <memory>
 #include <string>
 
@@ -13,6 +15,7 @@
 #include "base/files/file_path.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "crypto/sha2.h"
 
 namespace brave_component_updater {
 
@@ -22,14 +25,12 @@ inline constexpr char kLocalDataFilesComponentName[] =
     "Brave Local Data Updater";
 inline constexpr char kLocalDataFilesComponentId[] =
     "afalakplffnnnlkncjhbmahjfjhmlkal";
-inline constexpr char kLocalDataFilesComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs4TIQXRCftLpGmQZxmm6"
-    "AU8pqGKLoDyi537HGQyRKcK7j/CSXCf3vwJr7xkV72p7bayutuzyNZ3740QxBPie"
-    "sfBOp8bBb8d2VgTHP3b+SuNmK/rsSRsMRhT05x8AAr/7ab6U3rW0Gsalm2653xnn"
-    "QS8vt0s62xQTmC+UMXowaSLUZ0Be/TOu6lHZhOeo0NBMKc6PkOu0R1EEfP7dJR6S"
-    "M/v4dBUBZ1HXcuziVbCXVyU51opZCMjlxyUlQR9pTGk+Zh5sDn1Vw1MwLnWiEfQ4"
-    "EGL1V7GeI4vgLoOLgq7tmhEratHGCfC1IHm9luMACRr/ybMI6DQJOvgBvecb292F"
-    "xQIDAQAB";
+inline constexpr uint8_t kLocalDataFilesComponentPublicKeySHA256[32] = {
+    0x05, 0x0b, 0x0a, 0xfb, 0x55, 0xdd, 0xdb, 0xad, 0x29, 0x71, 0xc0,
+    0x79, 0x59, 0x7c, 0xba, 0x0b, 0xd5, 0xac, 0x2b, 0x73, 0xca, 0xfc,
+    0xb5, 0x14, 0xfa, 0xb3, 0x3d, 0x16, 0x60, 0xa7, 0x9a, 0xaa};
+static_assert(std::size(kLocalDataFilesComponentPublicKeySHA256) ==
+              crypto::kSHA256Length);
 
 // The component in charge of delegating access to different DAT files
 // such as tracking protection.

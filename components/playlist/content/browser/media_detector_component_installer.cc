@@ -5,12 +5,11 @@
 
 #include "brave/components/playlist/content/browser/media_detector_component_installer.h"
 
+#include <iterator>
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "base/base64.h"
-#include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
@@ -25,6 +24,11 @@ namespace playlist {
 namespace {
 
 constexpr char kComponentID[] = "jccpmjhflblpphnhgemhlllckflnipjn";
+constexpr uint8_t kComponentPublicKeySHA256[32] = {
+    0x92, 0x2f, 0xc9, 0x75, 0xb1, 0xbf, 0xf7, 0xd7, 0x64, 0xc7, 0xbb,
+    0xb2, 0xa5, 0xbd, 0x8f, 0x9d, 0xf7, 0xa0, 0x02, 0x2d, 0x65, 0x2d,
+    0x1e, 0x00, 0xa2, 0x43, 0xf3, 0x0a, 0x06, 0x2b, 0x40, 0x15};
+static_assert(std::size(kComponentPublicKeySHA256) == crypto::kSHA256Length);
 
 class MediaDetectorComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
@@ -58,30 +62,11 @@ class MediaDetectorComponentInstallerPolicy
 
  private:
   OnComponentReadyCallback ready_callback_;
-  std::array<uint8_t, crypto::kSHA256Length> component_hash_;
 };
 
 MediaDetectorComponentInstallerPolicy::MediaDetectorComponentInstallerPolicy(
     OnComponentReadyCallback callback)
-    : ready_callback_(callback) {
-  // Generate hash from public key.
-  constexpr char kComponentPublicKey[] =
-      "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0l8glPqaai2KyD+"
-      "R2KoJaaWv7Lafg2"
-      "aWijf78E7i5ta4AxL5hMEIXlXA1bJupyDuPWOXH8LAItlgdbJh8xiDzrX7uj4Nr+"
-      "UiWOrQwd6Y"
-      "orvnqHRDzN1NEQBI2gL6IuA22/vNsXKAemu0lS2Gd3FkShuKUJPljdjAskfgn/"
-      "NHnDUWqxESb3"
-      "N6d+shcJw53Tm+nwcxdyDOet6p+VMugIMiUAbb+"
-      "EhfEmx4iEhJC9XTpl6yjRNzCwaNhcsXrO9U"
-      "pdaxZYSYceCm/"
-      "BKd5TyxNr2MVjGYWKdA1nemhXdz1zvy76ZAUCYPLcSyyKgx5KiJnB8mhtXUWF"
-      "Xw5qMzxOoIzAjHeQIDAQAB";
-
-  auto decoded_public_key = base::Base64Decode(kComponentPublicKey);
-  CHECK(decoded_public_key);
-  component_hash_ = crypto::SHA256Hash(*decoded_public_key);
-}
+    : ready_callback_(callback) {}
 
 MediaDetectorComponentInstallerPolicy::
     ~MediaDetectorComponentInstallerPolicy() = default;
@@ -124,7 +109,7 @@ base::FilePath MediaDetectorComponentInstallerPolicy::GetRelativeInstallDir()
 
 void MediaDetectorComponentInstallerPolicy::GetHash(
     std::vector<uint8_t>* hash) const {
-  *hash = base::ToVector(component_hash_);
+  hash->assign_range(kComponentPublicKeySHA256);
 }
 
 std::string MediaDetectorComponentInstallerPolicy::GetName() const {

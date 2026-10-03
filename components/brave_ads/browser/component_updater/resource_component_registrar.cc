@@ -56,7 +56,7 @@ void ResourceComponentRegistrar::RegisterResourceComponent(
           << *resource_component_id_;
 
   Register(component_name, *resource_component_id_,
-           std::string(component->public_key_base64));
+           component->public_key_sha256);
 
   if (last_install_dir_) {
     // The component was already ready before this registration. Replay
