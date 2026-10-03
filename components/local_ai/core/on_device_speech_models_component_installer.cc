@@ -37,7 +37,7 @@
 #include "components/update_client/crx_update_item.h"
 #include "components/update_client/update_client.h"
 #include "components/update_client/update_client_errors.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 
 namespace local_ai {
 
@@ -52,7 +52,7 @@ constexpr uint8_t kPublicKeySHA256[32] = {
     0xd7, 0xa4, 0xa2, 0x24, 0x53, 0xff, 0xef, 0x1b, 0x3e, 0xa8, 0x1a,
     0xe4, 0x6f, 0xf0, 0xd1, 0x10, 0xac, 0xaa, 0x39, 0x3b, 0x03, 0xcd,
     0xf1, 0x10, 0x04, 0x5e, 0xf9, 0x33, 0xf5, 0xe9, 0x6c, 0x4d};
-static_assert(std::size(kPublicKeySHA256) == crypto::kSHA256Length,
+static_assert(std::size(kPublicKeySHA256) == crypto::hash::kSha256Size,
               "Wrong hash length");
 
 // Owns the component registration for the whole session and follows the master

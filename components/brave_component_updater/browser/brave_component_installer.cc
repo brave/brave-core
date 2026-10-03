@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_component_updater/browser/brave_component_installer.h"
 
+#include <array>
 #include <memory>
 #include <utility>
 
@@ -19,7 +20,7 @@
 #include "components/crx_file/id_util.h"
 #include "components/update_client/update_client.h"
 #include "components/update_client/update_client_errors.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 
 namespace {
 using Result = update_client::CrxInstaller::Result;
@@ -125,7 +126,8 @@ base::FilePath BraveComponentInstallerPolicy::GetRelativeInstallDir() const {
 }
 
 void BraveComponentInstallerPolicy::GetHash(std::vector<uint8_t>* hash) const {
-  const std::string public_key_sha256 = crypto::SHA256HashString(public_key_);
+  const std::array<uint8_t, crypto::hash::kSha256Size> public_key_sha256 =
+      crypto::hash::Sha256(public_key_);
   hash->assign(public_key_sha256.begin(), public_key_sha256.end());
 }
 

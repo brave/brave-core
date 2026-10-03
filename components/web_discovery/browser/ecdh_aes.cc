@@ -12,8 +12,8 @@
 #include "base/check_op.h"
 #include "base/containers/span_writer.h"
 #include "base/logging.h"
+#include "crypto/hash.h"
 #include "crypto/random.h"
-#include "crypto/sha2.h"
 #include "third_party/boringssl/src/include/openssl/aead.h"
 #include "third_party/boringssl/src/include/openssl/ec.h"
 #include "third_party/boringssl/src/include/openssl/ec_key.h"
@@ -84,7 +84,8 @@ std::optional<AESEncryptResult> DeriveAESKeyAndEncrypt(
     return std::nullopt;
   }
 
-  auto key_material_hash = crypto::SHA256Hash(shared_key_material);
+  std::array<uint8_t, crypto::hash::kSha256Size> key_material_hash =
+      crypto::hash::Sha256(shared_key_material);
 
   auto aes_key = base::span<uint8_t>(key_material_hash).first<kAesKeySize>();
   auto* algo = EVP_aead_aes_128_gcm();

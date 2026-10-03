@@ -18,7 +18,7 @@
 #include "brave/components/web_mcp/core/browser/web_mcp_rule_registry.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 
 namespace web_mcp {
 
@@ -62,14 +62,14 @@ class WebMcpComponentInstallerPolicy
   bool IsBraveComponent() const override;
 
  private:
-  std::array<uint8_t, crypto::kSHA256Length> component_hash_;
+  std::array<uint8_t, crypto::hash::kSha256Size> component_hash_;
 };
 
 WebMcpComponentInstallerPolicy::WebMcpComponentInstallerPolicy() {
   // Generate hash from public key.
   auto decoded_public_key = base::Base64Decode(kWebMcpComponentBase64PublicKey);
   CHECK(decoded_public_key);
-  component_hash_ = crypto::SHA256Hash(*decoded_public_key);
+  component_hash_ = crypto::hash::Sha256(*decoded_public_key);
 }
 
 bool WebMcpComponentInstallerPolicy::
