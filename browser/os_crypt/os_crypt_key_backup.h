@@ -40,7 +40,7 @@ inline constexpr base::FilePath::CharType kOSCryptKeyRestoreFileName[] =
 // What happened when considering the key in `Local State` for backup. Not
 // persisted anywhere, so values don't need to be pinned.
 enum class OSCryptKeyBackupResult {
-  // Both keys (DPAPI / app-bound) already matched their newest history entry.
+  // Both keys (DPAPI / app-bound) already matched some history entry.
   // Nothing was written. The expected result for a regular launch.
   kUpToDate,
   // One of the two keys changed and we were able to record this.
@@ -54,10 +54,10 @@ enum class OSCryptKeyBackupResult {
 // non-empty, unwraps it too (a round trip to the elevation service). Neither
 // key's live value is compared to the backup's wrapped bytes - DPAPI and
 // app-bound wrapping are both non-deterministic, so comparison happens on
-// the unwrapped value. A key whose unwrapped value already matches the
-// newest history entry on file is left alone; a genuinely new value is
-// appended, evicting the oldest entry if the history would exceed
-// `kMaxHistoryEntries`.
+// the unwrapped value. A key whose unwrapped value already matches any
+// history entry on file (not just the newest - a key can rotate back to an
+// older value) is left alone; a genuinely new value is appended, evicting
+// the oldest entry if the history would exceed `kMaxHistoryEntries`.
 OSCryptKeyBackupResult AppendOSCryptKeyBackupIfNew(const base::FilePath& path,
                                                    std::string encrypted_key,
                                                    std::string app_bound_key);
@@ -71,17 +71,19 @@ enum class OSCryptKeyRestoreResult {
   // no app-bound restore was attempted at all. Nothing was read from disk.
   kNotAttempted = 0,
   // The key was missing and there is no backup to put back.
-  kNoBackup = 1,
-  // The key was missing and a history entry was found and verified (it
-  // actually unwrapped) before being put back.
-  kRestoredVerified = 2,
+  kKeyMissingNoBackup = 1,
   // The key was missing and a backup exists but could not be used (the file
   // is unreadable, or this key's history is empty).
-  kBackupUnusable = 3,
-  // The key was missing and no history entry could be verified. The newest
-  // entry was put back anyway - OSCrypt's own new-key-minting fallback is
-  // the safety net if it turns out not to work either.
-  kRestoredUnverifiedFallback = 4,
+  kKeyMissingBackupUnusable = 2,
+  // The key was missing and a history entry was found and restored (it
+  // actually unwrapped) before being put back.
+  kRestoreSuccess = 3,
+  // The key was missing and a history existed, but no entry could be
+  // verified (unwrapped). Nothing was put back - installing a value that
+  // doesn't actually unwrap would permanently break decryption instead of
+  // leaving it recoverable, since OSCrypt only mints a replacement key when
+  // its pref is absent/empty.
+  kRestoreFailed = 4,
 };
 
 BASE_DECLARE_FEATURE(kBraveOSCryptKeyRestore);
@@ -100,10 +102,13 @@ BASE_DECLARE_FEATURE(kBraveOSCryptKeyRestore);
 //
 // For each key, history entries are verified newest-to-oldest (verification
 // happening when unwrapped) and the first one that verifies is restored. If
-// none verify, the newest is restored anyway. Verifying an app-bound entry
-// blocks this (UI) thread on a round trip to the elevation service, since this
-// runs before any message loop exists to bridge asynchronously - see
-// `os_crypt_key_backup_com_bridge.h`.
+// none verify, nothing is installed and the live pref is left untouched
+// (blank) - OSCrypt only mints a replacement key when its pref is
+// absent/empty, so installing an entry that doesn't actually unwrap would
+// leave decryption permanently broken instead of recoverable. Verifying an
+// app-bound entry blocks this (UI) thread on a round trip to the elevation
+// service, since this runs before any message loop exists to bridge
+// asynchronously - see `os_crypt_key_backup_com_bridge.h`.
 //
 // Whenever either key is actually attempted, a record of both keys'
 // outcomes (one may be `kNotAttempted`) is appended to the restore log at
@@ -112,9 +117,11 @@ void MaybeRestoreOSCryptKey(const base::FilePath& user_data_dir,
                             PrefService* local_state);
 
 // Appends to the backup if the live key(s) are new, on a blocking background
-// task. Does nothing until a key exists to copy.
-void BackUpOSCryptKey(const base::FilePath& user_data_dir,
-                      PrefService* local_state);
+// task. Does nothing until a key exists to copy. Gated behind
+// `kBraveOSCryptKeyRestore`, same as `MaybeRestoreOSCryptKey` - there's no
+// point keeping a backup around for a restore path that's disabled.
+void MaybeBackupOSCryptKey(const base::FilePath& user_data_dir,
+                           PrefService* local_state);
 
 }  // namespace brave
 

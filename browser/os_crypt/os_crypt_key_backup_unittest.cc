@@ -451,7 +451,7 @@ TEST_F(OSCryptKeyRestoreTest, PutsTheKeyBackWhenItIsMissing) {
 
   EXPECT_EQ(wrapped, LiveKey());
   EXPECT_TRUE(AppBoundKey().empty());
-  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoredVerified, RecordedResult());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoreSuccess, RecordedResult());
   EXPECT_EQ(OSCryptKeyRestoreResult::kNotAttempted, RecordedAppBoundResult());
 }
 
@@ -474,7 +474,7 @@ TEST_F(OSCryptKeyRestoreTest, ReportsWhenThereIsNothingToRestoreFrom) {
   MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_);
 
   EXPECT_TRUE(LiveKey().empty());
-  EXPECT_EQ(OSCryptKeyRestoreResult::kNoBackup, RecordedResult());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kKeyMissingNoBackup, RecordedResult());
 }
 
 TEST_F(OSCryptKeyRestoreTest, ReportsAnUnusableBackup) {
@@ -483,7 +483,8 @@ TEST_F(OSCryptKeyRestoreTest, ReportsAnUnusableBackup) {
   MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_);
 
   EXPECT_TRUE(LiveKey().empty());
-  EXPECT_EQ(OSCryptKeyRestoreResult::kBackupUnusable, RecordedResult());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kKeyMissingBackupUnusable,
+            RecordedResult());
 }
 
 TEST_F(OSCryptKeyRestoreTest, ReportsAnEmptyEncryptedKeyHistory) {
@@ -492,7 +493,8 @@ TEST_F(OSCryptKeyRestoreTest, ReportsAnEmptyEncryptedKeyHistory) {
   MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_);
 
   EXPECT_TRUE(LiveKey().empty());
-  EXPECT_EQ(OSCryptKeyRestoreResult::kBackupUnusable, RecordedResult());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kKeyMissingBackupUnusable,
+            RecordedResult());
 }
 
 // A hand-edited or otherwise corrupted file could have more than the cap.
@@ -520,11 +522,9 @@ TEST_F(OSCryptKeyRestoreTest, CapsAnOversizedHistoryOnRead) {
 
   // The oldest entry (which would have verified) was dropped on read for
   // being past the cap, so only the newest 3 - all corrupted - are
-  // considered, and none of those verify: the newest is used as the
-  // unverified fallback.
-  EXPECT_EQ(newest_corrupt, LiveKey());
-  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoredUnverifiedFallback,
-            RecordedResult());
+  // considered, none of those verify, and nothing is installed.
+  EXPECT_TRUE(LiveKey().empty());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoreFailed, RecordedResult());
 }
 
 // The DPAPI key's history being empty/unusable must not prevent an
@@ -544,10 +544,10 @@ TEST_F(OSCryptKeyRestoreTest, RestoresAppBoundEvenWithNoEncryptedKeyHistory) {
   MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_);
 
   EXPECT_TRUE(LiveKey().empty());
-  EXPECT_EQ(OSCryptKeyRestoreResult::kBackupUnusable, RecordedResult());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kKeyMissingBackupUnusable,
+            RecordedResult());
   EXPECT_EQ(app_bound, AppBoundKey());
-  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoredVerified,
-            RecordedAppBoundResult());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoreSuccess, RecordedAppBoundResult());
 }
 
 // The kill switch: with the feature off, a lost key is left lost.
@@ -586,11 +586,13 @@ TEST_F(OSCryptKeyRestoreTest, SkipsACorruptedNewestEntry) {
   MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_);
 
   EXPECT_EQ(good, LiveKey());
-  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoredVerified, RecordedResult());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoreSuccess, RecordedResult());
 }
 
-// When nothing in history verifies, fall back to the newest entry anyway.
-TEST_F(OSCryptKeyRestoreTest, FallsBackToTheNewestEntryWhenNoneVerify) {
+// When nothing in history verifies, leave the pref untouched rather than
+// install a value that doesn't actually unwrap - that would permanently
+// block OSCrypt's own absent/empty-pref recovery path.
+TEST_F(OSCryptKeyRestoreTest, InstallsNothingWhenNoneVerify) {
   const std::string oldest_corrupt = CorruptDPAPIWrappedKey();
   const std::string newest_corrupt = CorruptDPAPIWrappedKey();
   const std::string json = absl::StrFormat(
@@ -603,9 +605,8 @@ TEST_F(OSCryptKeyRestoreTest, FallsBackToTheNewestEntryWhenNoneVerify) {
 
   MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_);
 
-  EXPECT_EQ(newest_corrupt, LiveKey());
-  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoredUnverifiedFallback,
-            RecordedResult());
+  EXPECT_TRUE(LiveKey().empty());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoreFailed, RecordedResult());
 }
 
 // The loop doesn't special-case first/last: a verified match in the middle
@@ -626,7 +627,7 @@ TEST_F(OSCryptKeyRestoreTest, VerifiesAMiddleEntry) {
   MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_);
 
   EXPECT_EQ(middle_good, LiveKey());
-  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoredVerified, RecordedResult());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoreSuccess, RecordedResult());
 }
 
 // The app-bound provider re-mints its own key whenever the stored one stops
@@ -642,7 +643,7 @@ TEST_F(OSCryptKeyRestoreTest, LeavesALiveAppBoundKeyAlone) {
   MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_);
 
   EXPECT_EQ("live-v20", AppBoundKey());
-  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoredVerified, RecordedResult());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoreSuccess, RecordedResult());
   EXPECT_EQ(OSCryptKeyRestoreResult::kNotAttempted, RecordedAppBoundResult());
 }
 
@@ -654,7 +655,7 @@ TEST_F(OSCryptKeyRestoreTest, OmitsAnAppBoundKeyTheBackupDoesNotHave) {
   MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_);
 
   EXPECT_TRUE(AppBoundKey().empty());
-  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoredVerified, RecordedResult());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoreSuccess, RecordedResult());
   EXPECT_EQ(OSCryptKeyRestoreResult::kNotAttempted, RecordedAppBoundResult());
 }
 
@@ -669,8 +670,7 @@ TEST_F(OSCryptKeyRestoreTest, RestoresAVerifiedAppBoundKey) {
   MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_);
 
   EXPECT_EQ(wrapped_app_bound, AppBoundKey());
-  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoredVerified,
-            RecordedAppBoundResult());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoreSuccess, RecordedAppBoundResult());
 }
 
 TEST_F(OSCryptKeyRestoreTest, SkipsACorruptedNewestAppBoundEntry) {
@@ -690,11 +690,10 @@ TEST_F(OSCryptKeyRestoreTest, SkipsACorruptedNewestAppBoundEntry) {
   MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_);
 
   EXPECT_EQ(good, AppBoundKey());
-  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoredVerified,
-            RecordedAppBoundResult());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoreSuccess, RecordedAppBoundResult());
 }
 
-TEST_F(OSCryptKeyRestoreTest, FallsBackToTheNewestAppBoundEntryWhenNoneVerify) {
+TEST_F(OSCryptKeyRestoreTest, InstallsNoAppBoundKeyWhenNoneVerify) {
   const std::string oldest_corrupt = CorruptAppBoundWrappedKey();
   const std::string newest_corrupt = CorruptAppBoundWrappedKey();
   const std::string json = absl::StrFormat(
@@ -711,9 +710,8 @@ TEST_F(OSCryptKeyRestoreTest, FallsBackToTheNewestAppBoundEntryWhenNoneVerify) {
 
   MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_);
 
-  EXPECT_EQ(newest_corrupt, AppBoundKey());
-  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoredUnverifiedFallback,
-            RecordedAppBoundResult());
+  EXPECT_TRUE(AppBoundKey().empty());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoreFailed, RecordedAppBoundResult());
 }
 
 // --- Restore log durability ---
@@ -730,9 +728,8 @@ TEST_F(OSCryptKeyRestoreTest, RestoreIsRecordedInItsOwnFile) {
   EXPECT_TRUE(base::PathExists(RestorePath()));
   EXPECT_EQ(1u, RestoreLogSize());
   // Both outcomes from the same attempt land in a single record together.
-  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoredVerified, RecordedResult());
-  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoredVerified,
-            RecordedAppBoundResult());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoreSuccess, RecordedResult());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kRestoreSuccess, RecordedAppBoundResult());
 }
 
 // The log is append-only: an earlier restore's record must survive a later,
@@ -752,14 +749,14 @@ TEST_F(OSCryptKeyRestoreTest, RestoresAccumulateAcrossLaunches) {
   EXPECT_EQ(2u, RestoreLogSize());
 }
 
-// `kNoBackup` and `kBackupUnusable` are themselves restore attempts (the
-// DPAPI key was missing, which is what triggers this whole function) and
-// must be recorded too, not just successful restores.
+// `kKeyMissingNoBackup` and `kKeyMissingBackupUnusable` are themselves
+// restore attempts (the DPAPI key was missing, which is what triggers this
+// whole function) and must be recorded too, not just successful restores.
 TEST_F(OSCryptKeyRestoreTest, RecordsANoBackupAttempt) {
   MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_);
 
   EXPECT_EQ(1u, RestoreLogSize());
-  EXPECT_EQ(OSCryptKeyRestoreResult::kNoBackup, RecordedResult());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kKeyMissingNoBackup, RecordedResult());
 }
 
 TEST_F(OSCryptKeyRestoreTest, RecordsAnUnusableBackupAttempt) {
@@ -768,7 +765,8 @@ TEST_F(OSCryptKeyRestoreTest, RecordsAnUnusableBackupAttempt) {
   MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_);
 
   EXPECT_EQ(1u, RestoreLogSize());
-  EXPECT_EQ(OSCryptKeyRestoreResult::kBackupUnusable, RecordedResult());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kKeyMissingBackupUnusable,
+            RecordedResult());
 }
 
 }  // namespace brave

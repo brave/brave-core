@@ -88,8 +88,9 @@ void BraveBrowserMainExtraParts::PostBrowserStart() {
   // Windows specific OSCrypt logic.
   // Brave's key (which is encrypted with OSCrypt) is stored in LocalState which
   // can get lost when corrupt. This will store a backup in a safe location.
-  brave::BackUpOSCryptKey(base::PathService::CheckedGet(chrome::DIR_USER_DATA),
-                          g_browser_process->local_state());
+  brave::MaybeBackupOSCryptKey(
+      base::PathService::CheckedGet(chrome::DIR_USER_DATA),
+      g_browser_process->local_state());
 #endif  // BUILDFLAG(IS_WIN)
 }
 

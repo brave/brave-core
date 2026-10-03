@@ -289,29 +289,16 @@ bool AppendIfNewDistinctKey(History& history,
   return true;
 }
 
-enum class HistoryRestoreOutcome {
-  kNoHistory,
-  kVerified,
-  kUnverifiedFallback,
-};
-
-struct HistoryRestoreResult {
-  HistoryRestoreOutcome outcome;
-  // Valid only when outcome != kNoHistory.
-  std::string wrapped_key;
-};
-
 // Walks `history` newest-to-oldest, unwrapping each entry, and returns the
-// first one that verifies. If none verify, returns the newest entry anyway
-// (OSCrypt's own new-key-minting fallback is the safety net downstream if it
-// doesn't work either).
-HistoryRestoreResult RestoreFromHistory(const History& history,
-                                        std::string_view key_name_for_logging,
-                                        const UnwrapCallback& unwrap) {
-  if (history.empty()) {
-    return {HistoryRestoreOutcome::kNoHistory, std::string()};
-  }
-
+// first one that verifies, or nullopt if none do (including when `history`
+// is empty) - the caller must leave the live pref untouched (blank) rather
+// than install an unverified value. OSCrypt only mints a replacement key
+// when its pref is absent/empty; installing a value that doesn't actually
+// unwrap would leave decryption permanently broken instead of recoverable.
+std::optional<std::string> RestoreFromHistory(
+    const History& history,
+    std::string_view key_name_for_logging,
+    const UnwrapCallback& unwrap) {
   size_t attempt = 0;
   // Newest first: verify the freshest key before falling back to older ones.
   for (const HistoryEntry& entry : std::views::reverse(history)) {
@@ -319,12 +306,11 @@ HistoryRestoreResult RestoreFromHistory(const History& history,
     VLOG(1) << "OSCrypt key backup: verifying " << key_name_for_logging
             << " backup entry " << attempt << " of " << history.size();
     if (UnwrapBase64(unwrap, entry.wrapped_key)) {
-      return {HistoryRestoreOutcome::kVerified, entry.wrapped_key};
+      return entry.wrapped_key;
     }
   }
 
-  return {HistoryRestoreOutcome::kUnverifiedFallback,
-          history.back().wrapped_key};
+  return std::nullopt;
 }
 
 UnwrapCallback DPAPIUnwrapCallback() {
@@ -402,7 +388,7 @@ void MaybeRestoreOSCryptKey(const base::FilePath& user_data_dir,
   }
 
   // If we get here, the DPAPI key is missing and we're going to attempt a
-  // a restore. This includes appending a record for the restore log.
+  // restore. This includes appending a record for the restore log.
   //
   // The result for the restore is stored for both the DPAPI key and (if
   // applicable) the app-bound key. The app-bound key is only used for
@@ -416,12 +402,12 @@ void MaybeRestoreOSCryptKey(const base::FilePath& user_data_dir,
       ReadBackup(user_data_dir.Append(kOSCryptKeyBackupFileName));
   switch (backup.result) {
     case BackupReadResult::kAbsent:
-      dpapi_outcome = OSCryptKeyRestoreResult::kNoBackup;
+      dpapi_outcome = OSCryptKeyRestoreResult::kKeyMissingNoBackup;
       AppendRestoreRecord(user_data_dir.Append(kOSCryptKeyRestoreFileName),
                           dpapi_outcome, app_bound_outcome);
       return;
     case BackupReadResult::kUnreadable:
-      dpapi_outcome = OSCryptKeyRestoreResult::kBackupUnusable;
+      dpapi_outcome = OSCryptKeyRestoreResult::kKeyMissingBackupUnusable;
       AppendRestoreRecord(user_data_dir.Append(kOSCryptKeyRestoreFileName),
                           dpapi_outcome, app_bound_outcome);
       return;
@@ -431,20 +417,22 @@ void MaybeRestoreOSCryptKey(const base::FilePath& user_data_dir,
 
   // Attempt to restore the DPAPI key.
   if (!backup.encrypted_key_history.empty()) {
-    // Restore the DPAPI key. Whether the restored key still unwraps has
-    // already been checked by `RestoreFromHistory` on a best-effort basis;
-    // if nothing in history verified, OSCrypt will fail to decrypt the
-    // unverified fallback and mint a replacement Brave key. This extra step
-    // at least gives us a chance to try a key that's known to work before
-    // going down that road.
-    const HistoryRestoreResult dpapi_result = RestoreFromHistory(
+    // Only install a history entry that actually verified (unwrapped).
+    // OSCrypt mints a replacement key only when its pref is absent/empty, so
+    // installing an entry that doesn't unwrap would leave the pref
+    // non-empty but broken - permanently blocking that recovery path rather
+    // than leaving the key recoverable. Leaving the pref untouched (blank)
+    // when nothing verifies preserves that recovery path instead.
+    std::optional<std::string> dpapi_result = RestoreFromHistory(
         backup.encrypted_key_history, "DPAPI", DPAPIUnwrapCallback());
-    local_state->SetString(kEncryptedKeyPrefName, dpapi_result.wrapped_key);
-    dpapi_outcome = dpapi_result.outcome == HistoryRestoreOutcome::kVerified
-                        ? OSCryptKeyRestoreResult::kRestoredVerified
-                        : OSCryptKeyRestoreResult::kRestoredUnverifiedFallback;
+    if (dpapi_result) {
+      local_state->SetString(kEncryptedKeyPrefName, *dpapi_result);
+      dpapi_outcome = OSCryptKeyRestoreResult::kRestoreSuccess;
+    } else {
+      dpapi_outcome = OSCryptKeyRestoreResult::kRestoreFailed;
+    }
   } else {
-    dpapi_outcome = OSCryptKeyRestoreResult::kBackupUnusable;
+    dpapi_outcome = OSCryptKeyRestoreResult::kKeyMissingBackupUnusable;
   }
 
   // Possibly restore the app-bound key. This is used for system-level
@@ -458,23 +446,28 @@ void MaybeRestoreOSCryptKey(const base::FilePath& user_data_dir,
   if (local_state->GetString(os_crypt_async::kAppBoundEncryptedKeyPrefName)
           .empty() &&
       !backup.app_bound_key_history.empty()) {
-    const HistoryRestoreResult app_bound_result = RestoreFromHistory(
+    std::optional<std::string> app_bound_result = RestoreFromHistory(
         backup.app_bound_key_history, "app-bound",
         AppBoundUnwrapCallback("verifying app-bound backup entry"));
-    local_state->SetString(os_crypt_async::kAppBoundEncryptedKeyPrefName,
-                           app_bound_result.wrapped_key);
-    app_bound_outcome =
-        app_bound_result.outcome == HistoryRestoreOutcome::kVerified
-            ? OSCryptKeyRestoreResult::kRestoredVerified
-            : OSCryptKeyRestoreResult::kRestoredUnverifiedFallback;
+    if (app_bound_result) {
+      local_state->SetString(os_crypt_async::kAppBoundEncryptedKeyPrefName,
+                             *app_bound_result);
+      app_bound_outcome = OSCryptKeyRestoreResult::kRestoreSuccess;
+    } else {
+      app_bound_outcome = OSCryptKeyRestoreResult::kRestoreFailed;
+    }
   }
 
   AppendRestoreRecord(user_data_dir.Append(kOSCryptKeyRestoreFileName),
                       dpapi_outcome, app_bound_outcome);
 }
 
-void BackUpOSCryptKey(const base::FilePath& user_data_dir,
-                      PrefService* local_state) {
+void MaybeBackupOSCryptKey(const base::FilePath& user_data_dir,
+                           PrefService* local_state) {
+  if (!base::FeatureList::IsEnabled(kBraveOSCryptKeyRestore)) {
+    return;
+  }
+
   if (user_data_dir.empty() || !local_state) {
     return;
   }
