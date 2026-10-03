@@ -210,6 +210,17 @@ void ConversationHandler::BuildCapabilitiesSet() {
   if (base::FeatureList::IsEnabled(features::kAIChatMathRendering)) {
     conversation_capabilities_.insert(mojom::ConversationCapability::MATH_ML);
   }
+  // Add WORKSPACES capability if workspace content is attached.
+  if (associated_content_manager_) {
+    for (const auto& content :
+         associated_content_manager_->GetAssociatedContent()) {
+      if (content->content_type == mojom::ContentType::Workspace) {
+        conversation_capabilities_.insert(
+            mojom::ConversationCapability::WORKSPACES);
+        break;
+      }
+    }
+  }
 }
 
 ConversationHandler::ConversationHandler(
@@ -352,6 +363,10 @@ void ConversationHandler::OnAssociatedContentUpdated() {
   metadata_->associated_content =
       associated_content_manager_->GetAssociatedContent();
   auto& associated_content = metadata_->associated_content;
+
+  // Rebuild capabilities since some depend on attached content (e.g. WORKSPACES
+  // capability is added when workspace content is attached).
+  BuildCapabilitiesSet();
 
   // Clone the content to avoid multiple calls to GetAssociatedContent.
   auto clone_content = [&associated_content]() {
