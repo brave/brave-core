@@ -53,6 +53,7 @@ public class BraveClassAdapter {
         chain = new BraveCommandLineInitUtilClassAdapter(chain);
         chain = new BraveContentSettingsResourcesClassAdapter(chain);
         chain = new BraveContentViewClassAdapter(chain);
+        chain = new BraveCredManSupportProviderClassAdapter(chain);
         chain = new BraveMessageQueueMediatorClassAdapter(chain);
         chain = new BraveCustomizationProviderDelegateImplClassAdapter(chain);
         chain = new BraveDefaultBrowserPromoUtilsClassAdapter(chain);
@@ -70,6 +71,7 @@ public class BraveClassAdapter {
         chain = new BraveForegroundServiceUtilsClassAdapter(chain);
         chain = new BraveFragmentDependencyProviderClassAdapter(chain);
         chain = new BraveFreIntentCreatorClassAdapter(chain);
+        chain = new BraveGmsCoreUtilsClassAdapter(chain);
         chain = new BraveHelpAndFeedbackLauncherImplClassAdapter(chain);
         chain = new BraveHomepageManagerClassAdapter(chain);
         chain = new BraveHttpURLConnectionFactoryImplClassAdapter(chain);

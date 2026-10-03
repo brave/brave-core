@@ -18,6 +18,7 @@ brave_bytecode_jars = [
   "obj/brave/browser/ui/android/omnibox/java.javac.jar",
   "obj/brave/browser/ui/android/theme/java.javac.jar",
   "obj/brave/browser/ui/android/toolbar/java.javac.jar",
+  "obj/brave/browser/webauthn/android/java.javac.jar",
   "obj/brave/components/browser_ui/notifications/android/java.javac.jar",
   "obj/brave/components/browser_ui/media/android/java.javac.jar",
   "obj/brave/components/browser_ui/site_settings/android/java.javac.jar",
@@ -69,6 +70,7 @@ brave_bytecode_jars = [
   "obj/components/signin/public/android/java.javac.jar",
   "obj/components/sync/android/sync_java.javac.jar",
   "obj/components/variations/android/variations_java.javac.jar",
+  "obj/components/webauthn/android/java.javac.jar",
   "obj/chrome/browser/language/android/base_module_java.javac.jar",
 ]
 
