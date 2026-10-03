@@ -19,6 +19,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -50,6 +51,7 @@ import com.google.android.material.tabs.TabLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
@@ -59,6 +61,7 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveSyncWorker;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
@@ -72,6 +75,7 @@ import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.sync.SyncService;
+import org.chromium.ui.KeyboardVisibilityDelegate;
 import org.chromium.ui.base.BraveClipboardHelper;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.base.ViewUtils;
@@ -452,17 +456,21 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                     TextView textView =
                             (TextView) listItemView.findViewById(R.id.brave_sync_device_text);
                     if (null != textView) {
-                        if (device.mIsCurrentDevice) {
-                            String currentDevice =
-                                    device.mName
-                                            + " "
-                                            + getResources()
-                                                    .getString(
-                                                            R.string.brave_sync_this_device_text);
-                            textView.setText(currentDevice);
-                        } else {
-                            textView.setText(device.mName);
-                        }
+                        textView.setText(getDeviceNameToDisplay(device));
+                    }
+
+                    AppCompatImageView renameButton =
+                            (AppCompatImageView)
+                                    listItemView.findViewById(R.id.brave_sync_rename_device);
+                    if (ChromeFeatureList.isEnabled(
+                            BraveFeatureList.BRAVE_SYNC_ALLOW_RENAME_DEVICE_LABEL)) {
+                        renameButton.setTag(device);
+                        renameButton.setOnClickListener(
+                                v ->
+                                        renameDeviceDialog(
+                                                (BraveSyncDevices.SyncDeviceInfo) v.getTag()));
+                    } else {
+                        renameButton.setVisibility(View.GONE);
                     }
 
                     AppCompatImageView deleteButton =
@@ -496,6 +504,22 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         } catch (Exception ex) {
             Log.e(TAG, "fillDevices exception: ", ex);
         }
+    }
+
+    /** Returns the user-chosen label when the device has one, otherwise the synced device name. */
+    private String getDeviceName(BraveSyncDevices.SyncDeviceInfo device) {
+        return TextUtils.isEmpty(device.mDisplayLabel) ? device.mName : device.mDisplayLabel;
+    }
+
+    private String getDeviceNameToDisplay(BraveSyncDevices.SyncDeviceInfo device) {
+        String deviceName = getDeviceName(device);
+        if (device.mIsCurrentDevice) {
+            deviceName =
+                    deviceName
+                            + " "
+                            + getResources().getString(R.string.brave_sync_this_device_text);
+        }
+        return deviceName;
     }
 
     public void onDevicesAvailable() {
@@ -1325,20 +1349,51 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                         }
                     }
                 };
-        String deviceNameToDisplay = device.mName;
-        if (device.mIsCurrentDevice) {
-            deviceNameToDisplay = deviceNameToDisplay + " "
-                    + getResources().getString(R.string.brave_sync_this_device_text);
-        }
         AlertDialog alertDialog =
                 alertBuilder
                         .setTitle(getResources().getString(R.string.brave_sync_remove_device_text))
                         .setMessage(
-                                getString(R.string.brave_sync_delete_device, deviceNameToDisplay))
+                                getString(
+                                        R.string.brave_sync_delete_device,
+                                        getDeviceNameToDisplay(device)))
                         .setPositiveButton(R.string.ok, onClickListener)
                         .setNegativeButton(R.string.cancel, onClickListener)
                         .create();
         alertDialog.getDelegate().setHandleNativeActionModesEnabled(false);
+        alertDialog.show();
+    }
+
+    private void renameDeviceDialog(BraveSyncDevices.SyncDeviceInfo device) {
+        View view = mInflater.inflate(R.layout.brave_sync_rename_device, null);
+        EditText input = (EditText) view.findViewById(R.id.brave_sync_rename_device_edittext);
+        input.setText(getDeviceName(device));
+        input.selectAll();
+
+        DialogInterface.OnClickListener onClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button) {
+                        if (button != AlertDialog.BUTTON_POSITIVE) {
+                            return;
+                        }
+                        String newName = input.getText().toString().trim();
+                        // Typing the synced name back drops the label instead of duplicating it.
+                        BraveSyncDevices.get()
+                                .setDeviceDisplayLabel(
+                                        device.mGuid, newName.equals(device.mName) ? "" : newName);
+                    }
+                };
+
+        AlertDialog alertDialog =
+                new AlertDialog.Builder(getActivity(), R.style.ThemeOverlay_BrowserUI_AlertDialog)
+                        .setTitle(getResources().getString(R.string.brave_sync_rename_device_title))
+                        .setView(view)
+                        .setPositiveButton(R.string.ok, onClickListener)
+                        .setNegativeButton(R.string.cancel, onClickListener)
+                        .create();
+        alertDialog.getDelegate().setHandleNativeActionModesEnabled(false);
+        alertDialog.setOnShowListener(
+                dialog -> KeyboardVisibilityDelegate.getInstance().showKeyboard(input));
         alertDialog.show();
     }
 

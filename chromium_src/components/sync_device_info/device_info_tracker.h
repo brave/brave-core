@@ -12,6 +12,10 @@
   DeleteDeviceInfo(const std::string& client_id, base::OnceClosure callback) { \
   }                                                                            \
   virtual std::vector<DeviceInfo> GetAllBraveDeviceInfo() const;               \
+  /* Sets the Brave-only display label of any device in the sync chain, */     \
+  /* clearing it when `display_label` is empty. */                             \
+  virtual void SetDeviceDisplayLabel(const std::string& client_id,             \
+                                     const std::string& display_label) {}      \
   virtual void ForcePulseForTest
 
 #include <components/sync_device_info/device_info_tracker.h>  // IWYU pragma: export

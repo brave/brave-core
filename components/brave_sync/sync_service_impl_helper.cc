@@ -69,4 +69,19 @@ void DeleteDevice(syncer::BraveSyncServiceImpl* sync_service_impl,
   tracker->DeleteDeviceInfo(device_guid, base::DoNothing());
 }
 
+void SetDeviceDisplayLabel(syncer::BraveSyncServiceImpl* sync_service_impl,
+                           syncer::DeviceInfoSyncService* device_info_service,
+                           const std::string& device_guid,
+                           const std::string& display_label) {
+  if (sync_service_impl->GetTransportState() !=
+      syncer::SyncService::TransportState::ACTIVE) {
+    return;
+  }
+  syncer::DeviceInfoTracker* tracker =
+      device_info_service->GetDeviceInfoTracker();
+  DCHECK(tracker);
+
+  tracker->SetDeviceDisplayLabel(device_guid, display_label);
+}
+
 }  // namespace brave_sync

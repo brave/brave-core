@@ -1069,6 +1069,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_SYNC_REMOVE_DEVICE_TEXT" desc="Text for Brave Sync remove device message.">
         Remove device
       </message>
+      <message name="IDS_BRAVE_SYNC_RENAME_DEVICE_TEXT" desc="Text for Brave Sync rename device button.">
+        Rename device
+      </message>
+      <message name="IDS_BRAVE_SYNC_RENAME_DEVICE_TITLE" desc="Title of the dialog where the user types the new name of the Brave Sync device.">
+        Enter a new name
+      </message>
       <message name="IDS_BRAVE_SYNC_DELETE_DEVICE" desc="Text for Brave Sync delete device message.">
         Are you sure you want to delete device '<ph name="DEVICE_NAME">%1$s</ph>'?
       </message>

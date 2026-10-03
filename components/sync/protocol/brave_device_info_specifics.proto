@@ -14,4 +14,9 @@ package sync_pb;
 
 message BraveSpecificFields {
   optional bool is_self_delete_supported = 1;
+  // User-chosen label for this device, shown in the sync chain device list
+  // instead of the automatically derived client name. Any device in the chain
+  // may set it; the labelled device carries it over when it re-uploads its own
+  // specifics.
+  optional string device_display_label = 2;
 }

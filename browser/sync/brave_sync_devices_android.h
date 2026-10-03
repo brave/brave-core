@@ -36,6 +36,11 @@ class BraveSyncDevicesAndroid : public syncer::DeviceInfoTracker::Observer {
   void DeleteDevice(JNIEnv* env,
                     const base::android::JavaRef<jstring>& device_guid);
 
+  void SetDeviceDisplayLabel(
+      JNIEnv* env,
+      const base::android::JavaRef<jstring>& device_guid,
+      const base::android::JavaRef<jstring>& display_label);
+
  private:
   // syncer::DeviceInfoTracker::Observer
   void OnDeviceInfoChange() override;
