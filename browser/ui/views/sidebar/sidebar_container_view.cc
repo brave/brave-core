@@ -51,6 +51,7 @@
 #include "ui/events/event_observer.h"
 #include "ui/events/types/event_type.h"
 #include "ui/gfx/geometry/point.h"
+#include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/webview/webview.h"
 #include "ui/views/event_monitor.h"
@@ -155,6 +156,32 @@ void SidebarContainerView::SetSidebarControlViewVisibilityChangedCallback(
   sidebar_control_view_visibility_changed_callback_ = std::move(callback);
 }
 
+void SidebarContainerView::SetUseGlassBackground(bool use_glass) {
+  if (use_glass_background_ == use_glass) {
+    return;
+  }
+
+  use_glass_background_ = use_glass;
+  ApplyGlassBackground();
+}
+
+void SidebarContainerView::ApplyGlassBackground() {
+  auto background = [this]() -> std::unique_ptr<views::Background> {
+    return use_glass_background_ ? nullptr
+                                 : views::CreateSolidBackground(kColorToolbar);
+  };
+
+  SetBackground(background());
+
+  if (sidebar_control_view_) {
+    sidebar_control_view_->SetBackground(background());
+    // Layers fill their bounds opaquely by default, which would paint black
+    // wherever the control view no longer paints.
+    sidebar_control_view_->layer()->SetFillsBoundsOpaquely(
+        !use_glass_background_);
+  }
+}
+
 void SidebarContainerView::ChildVisibilityChanged(views::View* child) {
   if (child == sidebar_control_view_ &&
       sidebar_control_view_visibility_changed_callback_) {
@@ -242,6 +269,9 @@ void SidebarContainerView::AddChildViews() {
 
   // To prevent showing layered-children while its bounds is invisible.
   sidebar_control_view_->layer()->SetMasksToBounds(true);
+
+  // The control view is created after the glass frame state is first applied.
+  ApplyGlassBackground();
 
   // Hide by default. Visibility will be controlled by show options callback
   // later.

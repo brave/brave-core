@@ -32,6 +32,7 @@ source_set("frame") {
     "//chrome/browser/ui/views/frame:browser_view_layout_delegate",
     "//chrome/browser/ui/views/frame:custom_corners_background",
     "//chrome/browser/ui/views/infobars",
+    "//ui/base:features",
     "//ui/compositor",
   ]
 }
