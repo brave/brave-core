@@ -5,7 +5,7 @@
 
 substitutions:
   - description: Build the Android extensions code with the core.
-    count: 3
+    count: 4
     regex:
       pattern: 'BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)'
       replace: 'BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)'
