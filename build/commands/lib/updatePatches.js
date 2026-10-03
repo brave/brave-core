@@ -5,7 +5,7 @@
 
 import path from 'node:path'
 import fs from 'fs-extra'
-import rootDir from './rootDir.cjs'
+import rootDir from './rootDir.ts'
 import util from './util.js'
 
 const desiredReplacementSeparator = '-'

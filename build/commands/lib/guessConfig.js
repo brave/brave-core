@@ -7,7 +7,7 @@ import config from './config.ts'
 import os from 'node:os'
 import path from 'node:path/posix'
 import fs from 'node:fs'
-import rootDir from './rootDir.cjs'
+import rootDir from './rootDir.ts'
 
 const buildConfigs = ['Component', 'Static', 'Debug', 'Release']
 const extraArchitectures = ['arm64', 'x86']

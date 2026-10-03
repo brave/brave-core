@@ -78,6 +78,9 @@ const jestConfig: Config = {
   ...createJsWithTsEsmPreset({
     tsconfig: 'tsconfig-jest.json',
     useESM: true,
+    astTransformers: {
+      before: ['<rootDir>/components/test/importMetaTransformer.ts'],
+    },
   }),
   testEnvironment: '<rootDir>/components/test/testEnvironment.ts',
   moduleFileExtensions: ['js', 'tsx', 'ts', 'json'],
