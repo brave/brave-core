@@ -235,6 +235,7 @@ export default function createAIChatApi(
           // </if>
           showSkillDialog(prompt) {},
           showImageLightbox(file) {},
+          showWorkspaceFileLightbox(filePath: string) {},
           requestNewConversation() {},
           handleResetError() {},
         },
