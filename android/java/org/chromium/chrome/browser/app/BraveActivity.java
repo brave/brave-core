@@ -209,6 +209,10 @@ import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.ui.RootUiCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuPropertiesDelegate;
+import org.chromium.chrome.browser.ui.browser_window.ChromeAndroidTask;
+import org.chromium.chrome.browser.ui.browser_window.ChromeAndroidTaskFeatureKey;
+import org.chromium.chrome.browser.ui.extensions.windowing.ExtensionWindowControllerBridge;
+import org.chromium.chrome.browser.ui.extensions.windowing.ExtensionWindowControllerBridgeFactory;
 import org.chromium.chrome.browser.ui.messages.snackbar.Snackbar;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager.SnackbarController;
@@ -246,6 +250,7 @@ import org.chromium.content_public.browser.WebContents;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.widget.Toast;
 import org.chromium.url.GURL;
 
@@ -1208,6 +1213,22 @@ public abstract class BraveActivity extends ChromeActivity
      */
     protected void onForegroundSessionEnds() {
         setForegroundSessionEndsTriggered();
+    }
+
+    // Upstream binds the bridge to the current model's profile. When recreated in incognito that
+    // is the incognito browser window, which closing the incognito tabs destroys under the bridge.
+    // The regular window lives as long as the activity.
+    @Override
+    protected void addWindowingFeatures(
+            ChromeAndroidTask chromeAndroidTask,
+            Profile profile,
+            ActivityWindowAndroid activityWindowAndroid) {
+        chromeAndroidTask.addFeature(
+                new ChromeAndroidTaskFeatureKey(
+                        ExtensionWindowControllerBridge.class,
+                        getTabModelSelector().getModel(/* incognito= */ false).getProfile(),
+                        activityWindowAndroid),
+                ExtensionWindowControllerBridgeFactory::create);
     }
 
     @Override

@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Use Brave's own default favicon resource names, instead of shadowing
+      the real ones.
+    regex:
+      pattern: |-
+        resource_id =
+                  dark_mode ? IDR_DEFAULT_FAVICON_DARK_64 : IDR_DEFAULT_FAVICON_64;
+      replace: |-
+        resource_id = dark_mode ? BRAVE_IDR_DEFAULT_FAVICON_DARK_64
+                                      : BRAVE_IDR_DEFAULT_FAVICON_64;
+
+  - description: |-
+      Use Brave's own default favicon resource names, instead of shadowing
+      the real ones.
+    regex:
+      pattern: |-
+        resource_id =
+                  dark_mode ? IDR_DEFAULT_FAVICON_DARK_32 : IDR_DEFAULT_FAVICON_32;
+      replace: |-
+        resource_id = dark_mode ? BRAVE_IDR_DEFAULT_FAVICON_DARK_32
+                                      : BRAVE_IDR_DEFAULT_FAVICON_32;

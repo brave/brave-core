@@ -6,6 +6,7 @@
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
 
 # Tests that do not run on Android
 android_test_exception_sources = [
@@ -152,5 +153,13 @@ if (enable_brave_wallet) {
   android_only_test_deps += [
     "//brave/browser/ui/webui/brave_wallet/wallet_page",
     "//brave/components/brave_wallet/browser:test_support",
+  ]
+}
+
+if (enable_extensions_core && !is_desktop_android) {
+  android_only_test_sources += [ "//brave/browser/extensions/android/brave_extension_management_browsertest.cc" ]
+  android_only_test_deps += [
+    "//chrome/browser/extensions:test_support",
+    "//extensions/browser",
   ]
 }

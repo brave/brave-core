@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 1b74cd83753feb11bf2571c635dbf32639f93677..c103f8f0d1183f0eb13c4e41163b183b9e2221c3 100644
+index 1b74cd83753feb11bf2571c635dbf32639f93677..292a7bb8ef8fee8b0fa72156289a455b49c5db01 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -161,6 +161,7 @@ if (_is_default_toolchain) {
@@ -34,7 +34,14 @@ index 1b74cd83753feb11bf2571c635dbf32639f93677..c103f8f0d1183f0eb13c4e41163b183b
  
      # From java_sources.gni.
      sources = chrome_java_sources
-@@ -1046,6 +1050,7 @@ if (_is_default_toolchain) {
+@@ -1040,12 +1044,13 @@ if (_is_default_toolchain) {
+       # TODO(crbug.com/434123514): see if we can remove these stub targets.
+       deps += [
+         "//chrome/browser/ui/android/extensions/side_panel/stub:java",
+-        "//chrome/browser/ui/android/extensions/windowing/stub:java",
+       ]
++      if (enable_extensions_core) { deps += [ "//chrome/browser/ui/android/extensions/windowing/internal:java" ] } else { deps += [ "//chrome/browser/ui/android/extensions/windowing/stub:java" ] }
+     }
      if (enable_webui_ntp) {
        deps += [ "//chrome/browser/ui/customize_chrome:java" ]
      }
