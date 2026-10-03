@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Put a backed-up OSCrypt key back before OSCrypt looks for one.
+
+      This has to run ahead of `os_crypt_async::Init()`, which is what reads
+      `os_crypt.encrypted_key` and what mints a replacement when it finds
+      none — minting over a key that `Local State` merely mislaid is how the
+      data becomes unreadable. `Init()` is called further down this same body,
+      so the top of the function is early enough, and asks nothing of the
+      statements in between. Only acts when the key is absent, so on a healthy
+      profile it reads one in-memory pref and returns.
+      See https://github.com/brave/brave-browser/issues/40375.
+    preempt_function_impl:
+      function_name: ChromeBrowserMainPartsWin::PreCreateMainMessageLoop
+      code: |-
+        brave::MaybeRestoreOSCryptKey(
+            base::PathService::CheckedGet(chrome::DIR_USER_DATA),
+            g_browser_process->local_state());

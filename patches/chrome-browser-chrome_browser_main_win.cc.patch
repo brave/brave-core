@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/chrome_browser_main_win.cc b/chrome/browser/chrome_browser_main_win.cc
+index 14bf87c503bb167c79f838b82fcf4810ddede740..d9380ecbf34fa4c2e794f65b64adc0e06a04bf52 100644
+--- a/chrome/browser/chrome_browser_main_win.cc
++++ b/chrome/browser/chrome_browser_main_win.cc
+@@ -599,6 +599,9 @@ void ChromeBrowserMainPartsWin::ToolkitInitialized() {
+ }
+ 
+ void ChromeBrowserMainPartsWin::PreCreateMainMessageLoop() {
++  brave::MaybeRestoreOSCryptKey(
++      base::PathService::CheckedGet(chrome::DIR_USER_DATA),
++      g_browser_process->local_state());
+   // installer_util references strings that are normally compiled into
+   // setup.exe.  In Chrome, these strings are in the locale files.
+   SetupInstallerUtilStrings();
