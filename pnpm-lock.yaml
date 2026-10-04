@@ -33,6 +33,7 @@ overrides:
   nanoid@3: 3.3.19
   postcss: 8.5.23
   prismjs: 1.30.0
+  probe-image-size: 7.4.0
   protobufjs: 7.6.5
   qs: 6.16.0
   tiny-secp256k1: 1.1.7
@@ -6523,8 +6524,8 @@ packages:
     resolution: {integrity: sha512-DEvV2ZF2r2/63V+tK8hQvrR2ZGn10srHbXviTlcv7Kpzw8jWiNTqbVgjO3IY8RxrrOUF8VPMQQFysYYYv0YZxw==}
     engines: {node: '>=6'}
 
-  probe-image-size@7.3.0:
-    resolution: {integrity: sha512-7CaDeBwiAbh6ohXsvLbAZhO7wzsZAmaevfxe39qvCwRh8LyaZfDlBGGLU1CCTgrTLtCOdwBBhjOrIHaIIimHfQ==}
+  probe-image-size@7.4.0:
+    resolution: {integrity: sha512-cdEprVtZxV+awMde9X+4jILBFYh4CARxVrQaMl4wY4YcPWbul9jntXrIW95NInBDyJwcVUP3U0T6yukN8rMBaQ==}
 
   process-nextick-args@2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
@@ -14614,7 +14615,7 @@ snapshots:
       make-dir: 5.1.0
       mime: 1.6.0
       needle: 3.5.0
-      probe-image-size: 7.3.0(supports-color@8.1.1)
+      probe-image-size: 7.4.0(supports-color@8.1.1)
       source-map: 0.6.1
     transitivePeerDependencies:
       - supports-color
@@ -15694,7 +15695,7 @@ snapshots:
 
   prismjs@1.30.0: {}
 
-  probe-image-size@7.3.0(supports-color@8.1.1):
+  probe-image-size@7.4.0(supports-color@8.1.1):
     dependencies:
       lodash.merge: 4.6.2
       needle: 2.9.1(supports-color@8.1.1)
