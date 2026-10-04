@@ -1,0 +1,36 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//chrome/common/features.gni")
+
+assert(enable_session_service)
+
+source_set("sessions") {
+  sources = [ "brave_session_keys.h" ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+  if (!is_android) {
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+    sources = [ "brave_session_restore_browsertest.cc" ]
+
+    deps = [
+      ":sessions",
+      "//base/test:test_support",
+      "//brave/browser/ui/tabs:tab_strip",
+      "//brave/browser/ui/tabs:tree_tab",
+      "//brave/components/tabs",
+      "//chrome/browser",
+      "//chrome/browser/prefs:util",
+      "//chrome/browser/profiles:profile",
+      "//chrome/browser/tab_group_sync:factories",
+      "//chrome/browser/ui/tabs",
+      "//chrome/test:test_support_ui",
+      "//components/sessions",
+      "//components/split_tabs",
+    ]
+  }
+}

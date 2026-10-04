@@ -1,0 +1,20 @@
+diff --git a/third_party/blink/renderer/modules/BUILD.gn b/third_party/blink/renderer/modules/BUILD.gn
+index 7eb1aa00fe2bb6cc442175690d754e5788ab76fe..8cd1ea85e711e72dfe23d852184cab09e67fb8f5 100644
+--- a/third_party/blink/renderer/modules/BUILD.gn
++++ b/third_party/blink/renderer/modules/BUILD.gn
+@@ -21,6 +21,7 @@ if (is_ios) {
+ }
+ 
+ visibility = [ "//third_party/blink/renderer/*" ]
++visibility += brave_blink_renderer_modules_visibility
+ 
+ config("modules_implementation") {
+   defines = [ "BLINK_MODULES_IMPLEMENTATION=1" ]
+@@ -169,6 +170,7 @@ component("modules") {
+     "//third_party/blink/renderer/modules/worklet",
+     "//third_party/blink/renderer/modules/xr",
+   ]
++  sub_modules += brave_blink_sub_modules
+ 
+   # This uses target_os rather than current_os (which is what is_android is set
+   # from) for the case of generating the v8 context snapshot for android. When

@@ -1,0 +1,21 @@
+diff --git a/components/browsing_data/core/pref_names.cc b/components/browsing_data/core/pref_names.cc
+index d69d20b9747bbfe02b25b99183ec1a2acf98232e..6a5825e6690da6c65fcea23c904b2cc7ea8d524a 100644
+--- a/components/browsing_data/core/pref_names.cc
++++ b/components/browsing_data/core/pref_names.cc
+@@ -12,6 +12,7 @@
+ namespace browsing_data::prefs {
+ 
+ void RegisterBrowserUserPrefs(user_prefs::PrefRegistrySyncable* registry) {
++  [&]() -> void {
+   registry->RegisterListPref(kBrowsingDataLifetime);
+   registry->RegisterBooleanPref(kClearBrowsingDataOnExitDeletionPending, false);
+   registry->RegisterListPref(kClearBrowsingDataOnExitList);
+@@ -48,6 +49,8 @@ void RegisterBrowserUserPrefs(user_prefs::PrefRegistrySyncable* registry) {
+ #endif  // BUILDFLAG(IS_IOS)
+ 
+   registry->RegisterBooleanPref(kQuickDeleteEverUsed, false);
++  }();
++  RegisterBraveUserPrefs(registry);
+ }
+ 
+ }  // namespace browsing_data::prefs

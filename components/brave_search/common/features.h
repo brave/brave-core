@@ -1,0 +1,108 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+#ifndef BRAVE_COMPONENTS_BRAVE_SEARCH_COMMON_FEATURES_H_
+#define BRAVE_COMPONENTS_BRAVE_SEARCH_COMMON_FEATURES_H_
+
+#include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
+#include "base/time/time.h"
+
+class PrefService;
+
+namespace brave_search {
+namespace features {
+
+inline constexpr char kBraveSearchDefaultAPIDailyLimitName[] =
+    "BraveSearchDefaultAPIDailyLimit";
+inline constexpr char kBraveSearchDefaultAPITotalLimitName[] =
+    "BraveSearchDefaultAPITotalLimit";
+
+BASE_DECLARE_FEATURE(kBraveSearchDefaultAPIFeature);
+extern const base::FeatureParam<int> kBraveSearchDefaultAPIDailyLimit;
+extern const base::FeatureParam<int> kBraveSearchDefaultAPITotalLimit;
+
+// If enabled, the initial search page and subsequent redirected pages will
+// all be rendered, instead of just the initial page.
+BASE_DECLARE_FEATURE(kBackupResultsFullRender);
+// The amount of requests required to reach the actual search engine
+// results page. This count includes the original request and the subsequent
+// redirects.
+extern const base::FeatureParam<int> kBackupResultsFullRenderMaxRequests;
+
+bool IsBackupResultsFullRenderEnabled();
+
+// Provides request configuration for the backup results service.
+BASE_DECLARE_FEATURE(kBackupResults);
+// JSON-serialized headers object {"Header-Name": "value"} to include in
+// SimpleURLLoader requests.
+extern const base::FeatureParam<std::string> kBackupResultsHeaders;
+// UA string override for WebContents and User-Agent header in SimpleURLLoader
+// requests.
+extern const base::FeatureParam<std::string> kBackupResultsUAOverride;
+// Base64-encoded pickled blink::UserAgentMetadata. Only used if
+// kBackupResultsUAOverride is also provided.
+extern const base::FeatureParam<std::string> kBackupResultsUAMetadata;
+// Maximum number of backup results fetches allowed per day. -1 means no limit.
+extern const base::FeatureParam<int> kBackupResultsMaxDailyRequests;
+// If true, seeds navigation history and loads the root URL first, then
+// loads the actual target URL after a randomized delay following
+// the root page's load completion.
+extern const base::FeatureParam<bool> kBackupResultsLoadAfterRestore;
+// Randomized delay range before loading the target URL after root page restore.
+// Used when low_latency_required is false.
+extern const base::FeatureParam<base::TimeDelta>
+    kBackupResultsLoadAfterRestoreDelayMin;
+extern const base::FeatureParam<base::TimeDelta>
+    kBackupResultsLoadAfterRestoreDelayMax;
+// Randomized delay range used when low_latency_required is true.
+extern const base::FeatureParam<base::TimeDelta>
+    kBackupResultsLoadAfterRestoreLowDelayMin;
+extern const base::FeatureParam<base::TimeDelta>
+    kBackupResultsLoadAfterRestoreLowDelayMax;
+// If true, allows fetch-style requests made from the page through the URL
+// loader throttle.
+extern const base::FeatureParam<bool> kBackupResultsAllowFetches;
+// If true, allows cosmetic asset requests (images, fonts, icons, etc.)
+// through the URL loader throttle.
+extern const base::FeatureParam<bool> kBackupResultsAllowCosmeticAssets;
+// If true, allows requests that don't match any known category through
+// the URL loader throttle.
+extern const base::FeatureParam<bool> kBackupResultsAllowUnclassifiedRequests;
+// Controls farbling behavior. 0 = use default setting. >0 = force enable
+// <0 = force disable
+extern const base::FeatureParam<int> kBackupResultsFarbling;
+// If true (default), seeds the navigation history with the origin root
+// before loading the target URL. If false, skips navigation history seeding.
+extern const base::FeatureParam<bool> kBackupResultsHistorySeed;
+// If false (default), resizes the backup results WebContents to 0x0.
+// If true, uses the last recorded or randomized view size.
+extern const base::FeatureParam<bool> kBackupResultsZeroSize;
+// If true, the target URL is rewritten to retain only the "q" query parameter;
+// all other query parameters and the fragment are removed. Requests for URLs
+// without a "q" parameter will fail.
+extern const base::FeatureParam<bool> kBackupResultsCleanUrl;
+// Controls the language list used for navigator.languages.
+// Valid values: "" (no override), "original" (use the
+// original profile's full accept-language list), "primary_single" (use only
+// the first language from the original profile), "primary_multiple" (use all
+// languages from the original profile that share the primary language code),
+// or a custom comma-separated language list (e.g. "en-US,en,fr").
+extern const base::FeatureParam<std::string> kBackupResultsRendererLanguages;
+// Controls the language list used for the Accept-Language HTTP header.
+// Same value format as kBackupResultsRendererLanguages.
+extern const base::FeatureParam<std::string> kBackupResultsLanguagesHeader;
+
+BASE_DECLARE_FEATURE(kSearchNewTabV1Source);
+// Returns true only if the feature was enabled at first run. Sets
+// `kNewTabV1SourceEnabledAtFirstRun` when enabled so that the source stays
+// enabled for subsequent runs.
+bool IsSearchNewTabV1SourceEnabled(PrefService* local_state,
+                                   bool is_first_run);
+
+}  // namespace features
+}  // namespace brave_search
+
+#endif  // BRAVE_COMPONENTS_BRAVE_SEARCH_COMMON_FEATURES_H_

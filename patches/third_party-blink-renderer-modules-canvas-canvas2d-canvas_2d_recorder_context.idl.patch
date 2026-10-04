@@ -1,0 +1,19 @@
+diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_2d_recorder_context.idl b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_2d_recorder_context.idl
+index 599abe37ee7666e5d51a57ff85b074a8bcd3f861..9a903f7b110cd49f7414f272f81fd199ad1ceda2 100644
+--- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_2d_recorder_context.idl
++++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_2d_recorder_context.idl
+@@ -67,10 +67,10 @@ interface mixin Canvas2DRecorderContext {
+ 
+     void clip(optional CanvasFillRule winding);
+     void clip(Path2D path, optional CanvasFillRule winding);
+-    [MeasureAs=Canvas2DIsPointInPath] boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
+-    [MeasureAs=Canvas2DIsPointInPath] boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
+-    [MeasureAs=Canvas2DIsPointInStroke] boolean isPointInStroke(unrestricted double x, unrestricted double y);
+-    [MeasureAs=Canvas2DIsPointInStroke] boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
++    [CallWith=ScriptState, MeasureAs=Canvas2DIsPointInPath] boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
++    [CallWith=ScriptState, MeasureAs=Canvas2DIsPointInPath] boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
++    [CallWith=ScriptState, MeasureAs=Canvas2DIsPointInStroke] boolean isPointInStroke(unrestricted double x, unrestricted double y);
++    [CallWith=ScriptState, MeasureAs=Canvas2DIsPointInStroke] boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
+ 
+     // drawing images
+     [RaisesException] void drawImage(CanvasImageSource image, unrestricted double x, unrestricted double y);

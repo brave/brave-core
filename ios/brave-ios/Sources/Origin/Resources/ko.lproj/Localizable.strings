@@ -1,0 +1,99 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "Ads";
+
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "brave.com에서 이미 구매하셨습니까?";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "분석";
+
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "지금 구매";
+
+/* A message shown in a toast informing the user that enabling or disabling a Brave feature requires restarting the browser to take effect */
+"featureEnabledToastMessage" = "Brave 기능을 활성화하거나 비활성화하려면 브라우저를 다시 시작하여 변경 사항을 적용해야 합니다. Brave를 닫고(앱 전환기에서 위로 스와이프) 다시 여세요.";
+
+/* A title shown in a toast that appears after toggling a Brave feature on or off in Origin settings */
+"featureEnabledToastTitle" = "Brave 기능 변경";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "**Brave를 계속 지원하면서 브라우저를 사용자 지정하세요**\n\nBrave Origin은 Brave를 비즈니스로 운영하기 위한 모든 기능이 필요하지 않지만 Brave만이 제공하는 프라이버시를 원하는 사용자를 위한 브라우저의 유료 버전입니다. Origin 사용자는 업계 최고 수준의 프라이버시, 광고 차단 및 속도(쉴드를 통해)는 물론 정기적인 소프트웨어 업데이트, Chromium 패치, 보안 및 프라이버시 개선 사항의 이점을 계속 누릴 수 있습니다. Origin은 브라우저에서 대부분의 다른 기능을 제거합니다.";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "기능";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Brave Origin 구매 확인";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "레오 AI";
+
+/* A button title that when triggered will allow a user to link their App Store purchase with Brave Account */
+"linkPurchase" = "구매 항목을 Brave 계정에 연결";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "뉴스";
+
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "일회성 구매";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "재생목록";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "개인 정보 보호 분석";
+
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "프로모션 코드가 있으신가요?";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"purchaseChoiceHeaderText" = "본인에게 맞는 결제 방법을 선택하세요.";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "구매를 완료할 수 없습니다. 다시 시도하거나 Apple에서 결제 세부 정보를 확인하고 다시 시도하세요.";
+
+/* The footer shown below the Purchase section of the settings page */
+"purchaseSectionFooter" = "다른 기기에서 Brave Origin을 사용하려면 App Store 구매 항목을 Brave 계정에 연결하세요";
+
+/* The header shown below the Purchase section of the settings page */
+"purchaseSectionHeader" = "구매";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "프로모션 코드 사용";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "기본값으로 재설정";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "복구";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "리워드";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "통계 보고";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "Talk";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "핵심 애드블록, 개인정보 보호, & 속도 유지";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "Brave 쉴드를 중심으로 한 최소한의 브라우저 UI";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "일회성 구매는 모든 기기에서 여러 번 활성화할 수 있습니다";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "미션 지원 & 오픈소스 작업";
+
+/* A button title that when triggered will allow a user to view their App Store receipt */
+"viewAppStoreReceipt" = "App Store 영수증 보기";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "월렛";
+

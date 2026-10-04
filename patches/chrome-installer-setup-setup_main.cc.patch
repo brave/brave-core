@@ -1,0 +1,20 @@
+diff --git a/chrome/installer/setup/setup_main.cc b/chrome/installer/setup/setup_main.cc
+index 8689571a44a1393ac6afde429d7302cf336d1814..134bf1419802c20685d6451a461aa4519e2e9a6e 100644
+--- a/chrome/installer/setup/setup_main.cc
++++ b/chrome/installer/setup/setup_main.cc
+@@ -826,6 +826,7 @@ installer::InstallStatus InstallProducts(InstallationState& original_state,
+     }
+   }
+ 
++  BRAVE_INSTALL_PRODUCTS
+   return install_status;
+ }
+ 
+@@ -1671,6 +1672,7 @@ int SetupMain() {
+                                      &exit_code)) {
+     return exit_code;
+   }
++  BRAVE_SETUP_MAIN
+ 
+   if (system_install && !IsUserAnAdmin()) {
+     if (!cmd_line.HasSwitch(installer::switches::kRunAsAdmin)) {

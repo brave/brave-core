@@ -1,0 +1,117 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/infobars/sync_cannot_run_infobar_delegate.h"
+
+#include <memory>
+#include <string>
+#include <utility>
+
+#include "base/check.h"
+#include "base/check_op.h"
+#include "base/memory/raw_ptr.h"
+#include "brave/browser/ui/brave_pages.h"
+#include "brave/components/sync/service/brave_sync_service_impl.h"
+#include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/infobars/confirm_infobar_creator.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/sync/sync_service_factory.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "components/infobars/content/content_infobar_manager.h"
+#include "components/infobars/core/infobar.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/views/vector_icons.h"
+
+using syncer::BraveSyncServiceImpl;
+
+namespace {
+
+BraveSyncServiceImpl* GetSyncService(Profile* profile) {
+  return SyncServiceFactory::IsSyncAllowed(profile)
+             ? static_cast<BraveSyncServiceImpl*>(
+                   SyncServiceFactory::GetForProfile(profile))
+             : nullptr;
+}
+
+}  // namespace
+
+// static
+void SyncCannotRunInfoBarDelegate::Create(
+    infobars::ContentInfoBarManager* infobar_manager,
+    BrowserWindowInterface* browser) {
+  BraveSyncServiceImpl* brave_sync_service =
+      GetSyncService(browser->GetProfile());
+  if (!brave_sync_service || !brave_sync_service->has_encryptor()) {
+    return;
+  }
+
+  if (brave_sync_service->GetSeed().has_value()) {
+    return;
+  }
+
+  infobar_manager->AddInfoBar(
+      CreateConfirmInfoBar(std::unique_ptr<ConfirmInfoBarDelegate>(
+          new SyncCannotRunInfoBarDelegate(browser))));
+}
+
+// Start class impl
+SyncCannotRunInfoBarDelegate::SyncCannotRunInfoBarDelegate(
+    BrowserWindowInterface* browser)
+    : browser_(browser) {}
+
+SyncCannotRunInfoBarDelegate::~SyncCannotRunInfoBarDelegate() = default;
+
+infobars::InfoBarDelegate::InfoBarIdentifier
+SyncCannotRunInfoBarDelegate::GetIdentifier() const {
+  return SYNC_CANNOT_RUN_INFOBAR;
+}
+
+const gfx::VectorIcon& SyncCannotRunInfoBarDelegate::GetVectorIcon() const {
+  return views::kInfoOldIcon;
+}
+
+bool SyncCannotRunInfoBarDelegate::ShouldExpire(
+    const NavigationDetails& details) const {
+  return false;
+}
+
+void SyncCannotRunInfoBarDelegate::InfoBarDismissed() {
+  // Small cross on right top was pressed
+}
+
+std::u16string SyncCannotRunInfoBarDelegate::GetMessageText() const {
+  return l10n_util::GetStringUTF16(IDS_BRAVE_SYNC_CANNOT_RUN_INFOBAR_MESSAGE);
+}
+
+int SyncCannotRunInfoBarDelegate::GetButtons() const {
+  return BUTTON_OK | BUTTON_CANCEL;
+}
+
+std::u16string SyncCannotRunInfoBarDelegate::GetButtonLabel(
+    InfoBarButton button) const {
+  if (button == BUTTON_CANCEL) {
+    return l10n_util::GetStringUTF16(
+        IDS_BRAVE_SYNC_CANNOT_RUN_INFOBAR_DONT_SHOW_BUTTON);
+  }
+
+  DCHECK(button == BUTTON_OK);
+
+  return l10n_util::GetStringUTF16(
+      IDS_BRAVE_SYNC_CANNOT_RUN_INFOBAR_CHECK_DETAILS_BUTTON);
+}
+
+bool SyncCannotRunInfoBarDelegate::Accept() {
+  // "Check details" button
+  brave::ShowSync(browser_);
+  return true;
+}
+
+bool SyncCannotRunInfoBarDelegate::Cancel() {
+  // "Don't show again" button
+  brave_sync::Prefs brave_sync_prefs(browser_->GetProfile()->GetPrefs());
+  brave_sync_prefs.DismissFailedDecryptSeedNotice();
+  return true;
+}

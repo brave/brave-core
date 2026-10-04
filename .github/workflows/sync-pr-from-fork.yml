@@ -1,0 +1,79 @@
+name: Sync PR from fork
+
+on:
+  workflow_dispatch:
+    inputs:
+      PR_NUMBER:
+        required: false
+        description: "Number of the PR from the fork"
+      COMMIT_HASH:
+        required: true
+        description: "Commit hash of the PR"
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  sync-pr-from-fork:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Sync PR from fork
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ inputs.PR_NUMBER }}
+          COMMIT_HASH: ${{ inputs.COMMIT_HASH }}
+        run: |
+          set -x
+
+          if ! grep -qix '[0-9a-f]\{40,40\}' <<<"$COMMIT_HASH"; then
+            echo "Provide a full commit hash; got: $COMMIT_HASH"
+            exit 1
+          fi
+
+          pr_number="${PR_NUMBER:-"$(gh pr list --search "$COMMIT_HASH" --json number -q '.[].number')"}"
+          gh_pr_view=$(gh pr view "${pr_number:?}" --json baseRefName,headRefName,headRepositoryOwner,isCrossRepository,labels)
+
+          JQ="jq -e -r"
+          baseRefName=$($JQ ".baseRefName" <<<"$gh_pr_view")
+          headRefName=$($JQ ".headRefName" <<<"$gh_pr_view")
+          headRepositoryOwnerLogin=$($JQ ".headRepositoryOwner.login" <<<"$gh_pr_view")
+          isCrossRepository=$($JQ ".isCrossRepository" <<<"$gh_pr_view")
+          labelsPayload=$($JQ '{labels: [.labels[].name]}' <<<"$gh_pr_view")
+
+          [[ "$isCrossRepository" = "true" ]] || { echo "PR is not cross repo. Exiting!"; exit 1; }
+
+          contribHeadRefName="contributor-$headRepositoryOwnerLogin-$headRefName"
+          if gh api "repos/${GITHUB_REPOSITORY}/git/refs/heads/$contribHeadRefName" > /dev/null 2>&1; then
+            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/git/refs/heads/$contribHeadRefName" \
+              --field sha="$COMMIT_HASH" --field force=true
+          else
+            gh api --method POST "repos/${GITHUB_REPOSITORY}/git/refs" \
+              --field ref="refs/heads/$contribHeadRefName" --field sha="$COMMIT_HASH"
+          fi
+
+          ci_prs=$(gh pr list -H "$contribHeadRefName" --json number)
+          ci_pr_count=$($JQ 'length' <<<"$ci_prs")
+          if (( ci_pr_count > 1 )); then
+            echo "Expected at most one PR for branch '$contribHeadRefName'; found $ci_pr_count"
+            exit 1
+          fi
+          ci_pr_number=$($JQ '.[0].number // ""' <<<"$ci_prs")
+          if [[ -z "$ci_pr_number" ]]; then
+            gh pr create \
+              --draft \
+              --base "$baseRefName" \
+              --head "$contribHeadRefName" \
+              --title "CI run for contributor PR #$pr_number" \
+              --body \
+          "## Description
+          This PR is created to run CI on the changes proposed in PR #$pr_number by @$headRepositoryOwnerLogin.
+
+          **This PR should not be merged.**"
+            ci_pr_number=$(gh pr list -H "$contribHeadRefName" --json number -q '.[0].number')
+          fi
+
+          gh api --method PUT "repos/${GITHUB_REPOSITORY}/issues/${ci_pr_number:?}/labels" \
+            --input - <<<"$labelsPayload"

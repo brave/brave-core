@@ -1,0 +1,12 @@
+diff --git a/third_party/tflite/BUILD.gn b/third_party/tflite/BUILD.gn
+index 6ae30e5975d91505ed84e491e7304d8da46134e1..b0a15fac2586241e0c8379502962c3f67c3d184a 100644
+--- a/third_party/tflite/BUILD.gn
++++ b/third_party/tflite/BUILD.gn
+@@ -402,6 +402,7 @@ if (!use_litert_tflite) {
+       "//third_party/mediapipe/*",
+       "//third_party/webrtc/modules/*",
+     ]
++    visibility += [ "//brave/services/passage_embeddings/*" ]
+ 
+     conditional_deps = [ ":tflite" ]
+   }

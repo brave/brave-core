@@ -1,0 +1,11 @@
+source_set("common") {
+  sources = [
+    "content_settings_util.cc",
+    "content_settings_util.h",
+  ]
+
+  deps = [
+    "//components/content_settings/core/common",
+    "//net",
+  ]
+}

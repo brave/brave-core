@@ -1,0 +1,207 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "신뢰할 수 있는 커뮤니티가 만들고 관리하는 목록을 추가합니다.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**출처를 신뢰할 수 있는 목록만 구독하세요**. 입력하신 URL에서 받은 목록 업데이트를 브라우저가 주기적으로 확인합니다.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "URL로 필터 추가";
+
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "**Brave 플레이어**를 이용하면 광고나 끊김 없이 동영상을 재생할 수 있습니다.";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "나에게 맞게 Shields 조정하기";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "이 사이트는 일부 광고 차단 프로그램을 차단하기 시작했으므로 사이트가 제대로 작동하지 않을 수 있습니다.";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "이 문제를 해결하려면 Brave의 Shield 설정을 조정하세요. 조정한 후 Brave 플레이어에서 이 콘텐츠를 시청하면 됩니다.";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "현재 설정 유지";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "이 사이트의 광고 차단 설정 조정";
+
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "자동 파쇄";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "강력";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "광고, 팝업, 트래커가 로드되지 않도록 차단합니다.";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "비활성화됨";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "표준";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "'앱으로 전환' 요청 차단";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Brave 플레이어";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "이 사이트의 동영상을 항상 Brave 플레이어로 열기";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "사용해보기";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "나중에";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Brave 플레이어를 이용하면 끊김 없이 동영상을 시청할 수 있습니다.";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "대신 Brave 플레이어에서 시청";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "콘텐츠 필터링";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "맞춤 필터를 활성화하여 특정 지역 및 언어에 특화된 트래커 등 짜증 나는 요소를 차단합니다.";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "맞춤 필터 목록";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "맞춤 필터 목록 URL";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "커스텀 필터";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "여기 맞춤 필터를 추가하세요. Adblock 필터 구문을 사용하세요.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "라인 %2$i에 유효하지 않은 규칙 '%1$@'";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "여기 맞춤 필터를 한 줄씩 추가하세요.";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "맞춤 필터는 %i개 라인 넘게 지원하지 않음";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "기본 필터 목록";
+
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "뒤로 가기";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "공격적인 트래커 및 광고 차단을 요청하셨기 때문에 첫 네트워크 연결 전 Brave가 이 사이트를 차단했습니다.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Brave는 다음 사이트의 로드를 차단했습니다:";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "이 사이트는 다른 사이트에서도 귀하의 추적을 시도할 수 있음";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "계속";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "도메인 차단";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "글로벌 프라이버시 컨트롤 JS API 활성화";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "글로벌 프라이버시 컨트롤 활성화";
+
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "외부 필터 목록";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "입력한 URL이 유효하지 않음";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "보안(https) URL만 맞춤 필터 목록에 추가할 수 있음";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "추가";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "추가적인 인기 커뮤니티 목록입니다. 너무 많은 필터를 활성화하면 브라우징 속도가 느려집니다.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "다운로드 실패";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "다운로드 대기 중";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "편집";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "필터 목록 URL 입력";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "최근 업데이트 %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "여기에 필터 목록 URL 입력";
+
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "사이트를 닫을 때 쿠키와 다른 사이트 데이터 삭제";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "이 사이트를 닫으면 기록 소거";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "엄격";
+
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "목록 업데이트됨";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "데이터 파쇄";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "사용하지 않음";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "앱을 닫았을 때";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "사이트 탭이 닫혔을 때";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "사이트 데이터 파쇄";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "파쇄하면 이 사이트에 열린 모든 탭이 닫히고 모든 사이트 데이터가 삭제됩니다. 번복할 수 없습니다.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "사이트 데이터를 파쇄하시겠습니까?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "지금 사이트 데이터 파쇄";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "사이트가 비보안임";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "%@ 연결이 비보안임";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "트래커 및 광고 차단";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "목록 업데이트";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "목록 업데이트 중";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "연결을 HTTPS로 업그레이드";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "이 사이트가 HTTPS를 지원하지 않아 이 경고가 표시되었습니다.";
+

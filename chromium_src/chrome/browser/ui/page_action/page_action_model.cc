@@ -1,0 +1,85 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include <chrome/browser/ui/page_action/page_action_model.cc>
+
+namespace page_actions {
+
+PageActionModel::~PageActionModel() = default;
+
+void PageActionModel::SetAlwaysShowLabel(PageActionPassKey, bool always_show) {
+  if (always_show_label_ == always_show) {
+    return;
+  }
+  always_show_label_ = always_show;
+  NotifyChange(Property::kAlwaysShowLabel);
+}
+
+bool PageActionModel::GetAlwaysShowLabel() const {
+  return always_show_label_;
+}
+
+void PageActionModel::SetOverrideChipColors(
+    PageActionPassKey,
+    std::optional<SkColor> override_background_color,
+    std::optional<SkColor> override_foreground_color) {
+  if (override_background_color_ == override_background_color &&
+      override_foreground_color_ == override_foreground_color) {
+    return;
+  }
+  override_background_color_ = override_background_color;
+  override_foreground_color_ = override_foreground_color;
+  NotifyChange(Property::kOverrideChipColors);
+}
+
+std::optional<SkColor> PageActionModel::GetOverrideBackgroundColor() const {
+  return override_background_color_;
+}
+
+std::optional<SkColor> PageActionModel::GetOverrideForegroundColor() const {
+  return override_foreground_color_;
+}
+
+void PageActionModel::SetOverrideHeight(PageActionPassKey,
+                                        std::optional<int> height) {
+  if (override_height_ == height) {
+    return;
+  }
+  override_height_ = height;
+  NotifyChange(Property::kOverrideHeight);
+}
+
+std::optional<int> PageActionModel::GetOverrideHeight() const {
+  return override_height_;
+}
+
+void PageActionModel::SetOverrideTriggerableEvent(
+    PageActionPassKey,
+    std::optional<int> event_flags) {
+  if (override_triggerable_event_flags_ == event_flags) {
+    return;
+  }
+  override_triggerable_event_flags_ = event_flags;
+  NotifyChange(Property::kOverrideTriggerableEvent);
+}
+
+std::optional<int> PageActionModel::GetOverrideTriggerableEvent() const {
+  return override_triggerable_event_flags_;
+}
+
+void PageActionModel::SetOverrideBorder(PageActionPassKey,
+                                        std::optional<gfx::Insets> border) {
+  if (override_border_ == border) {
+    return;
+  }
+  override_border_ = border;
+  NotifyChange(Property::kOverrideBorder);
+}
+
+std::optional<gfx::Insets> PageActionModel::GetOverrideBorder() const {
+  return override_border_;
+}
+
+}  // namespace page_actions

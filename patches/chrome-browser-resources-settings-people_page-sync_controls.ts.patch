@@ -1,0 +1,30 @@
+diff --git a/chrome/browser/resources/settings/people_page/sync_controls.ts b/chrome/browser/resources/settings/people_page/sync_controls.ts
+index 328752afd1152ab3640a99896b571ef0f6a4f103..6f8272265f303ce6c94277a1f5c500022b388b19 100644
+--- a/chrome/browser/resources/settings/people_page/sync_controls.ts
++++ b/chrome/browser/resources/settings/people_page/sync_controls.ts
+@@ -147,7 +147,7 @@ export class SettingsSyncControlsElement extends
+ 
+     const router = Router.getInstance();
+     const currentRoute = router.getCurrentRoute();
+-    if (currentRoute === routes.SYNC_ADVANCED) {
++    if (currentRoute === routes.BRAVE_SYNC_SETUP) {
+       this.syncBrowserProxy_.didNavigateToSyncPage();
+     }
+     if (currentRoute === routes.ACCOUNT) {
+@@ -361,6 +361,7 @@ export class SettingsSyncControlsElement extends
+ 
+   protected disableTypeCheckBox_(dataTypeManaged: boolean|undefined|null):
+       boolean {
++    if (dataTypeManaged) { return true; } if (!this.syncStatus || !this.syncPrefs) { return !!this.syncPrefs?.syncAllDataTypes; }
+     if (!this.syncStatus) {
+       return true;
+     }
+@@ -370,7 +371,7 @@ export class SettingsSyncControlsElement extends
+     }
+ 
+     if (this.syncStatus.signedInState === SignedInState.SYNCING) {
+-      return !!this.syncPrefs?.syncAllDataTypes;
++      return this.syncPrefs?.syncAllDataTypes;
+     }
+ 
+     // Toggles should be disabled on the account settings page if sync is

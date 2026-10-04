@@ -1,0 +1,85 @@
+[
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "2",
+      "--filter=blob:none",
+      "--sparse",
+      "--branch",
+      "master",
+      "git@github.com:brave/brave-core.git",
+      "[WORKSPACE]/b/src/brave"
+    ],
+    "name": "clone brave-core (shallow, sparse)"
+  },
+  {
+    "cmd": [
+      "git",
+      "sparse-checkout",
+      "list"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "sparse-checkout list"
+  },
+  {
+    "cmd": [
+      "git",
+      "sparse-checkout",
+      "add",
+      "third_party/node"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "sparse-checkout add"
+  },
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "2",
+      "--filter=blob:none",
+      "--sparse",
+      "--branch",
+      "master",
+      "git@github.com:brave/brave-core.git",
+      "[WORKSPACE]/b/src/brave"
+    ],
+    "name": "clone brave-core (shallow, sparse) (2)"
+  },
+  {
+    "cmd": [
+      "git",
+      "sparse-checkout",
+      "list"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "sparse-checkout list (2)"
+  },
+  {
+    "cmd": [
+      "git",
+      "sparse-checkout",
+      "add",
+      "tools/cr"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "sparse-checkout add (2)"
+  },
+  {
+    "cmd": [
+      "npm",
+      "--version"
+    ],
+    "env_prefixes": {
+      "PATH": [
+        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
+      ]
+    },
+    "name": "npm version"
+  },
+  {
+    "name": "$result"
+  }
+]

@@ -1,0 +1,134 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
+import Toggle from '@brave/leo/react/toggle'
+
+import {
+  TopSitesListKind,
+  sponsoredSiteLearnMoreURL,
+} from '../../state/top_sites_store'
+import {
+  useTopSitesState,
+  useTopSitesActions,
+} from '../../context/top_sites_context'
+import { useRewardsState } from '../../context/rewards_context'
+import { getString } from '../../lib/strings'
+import { SettingsPanel } from './settings_panel'
+import { formatString } from '$web-common/formatString'
+import { Link } from '../common/link'
+import classNames from '$web-common/classnames'
+
+import { style } from './top_sites_panel.style'
+
+export function TopSitesPanel() {
+  const actions = useTopSitesActions()
+
+  const showTopSites = useTopSitesState((s) => s.showTopSites)
+  const showSponsoredSites = useTopSitesState((s) => s.showSponsoredSites)
+  const listKind = useTopSitesState((s) => s.topSitesListKind)
+  const rewardsFeatureEnabled = useRewardsState((s) => s.rewardsFeatureEnabled)
+  const rewardsExternalWallet = useRewardsState((s) => s.rewardsExternalWallet)
+
+  function renderSelectedMarker(kind: TopSitesListKind) {
+    if (kind === listKind) {
+      return (
+        <span className='selected-marker'>
+          <Icon name='check-normal' />
+        </span>
+      )
+    }
+    return null
+  }
+
+  return (
+    <SettingsPanel
+      cssScope={style.scope}
+      title={getString(S.NEW_TAB_TOP_SITES_SETTINGS_TITLE)}
+    >
+      <Toggle
+        className='toggle-row'
+        size='small'
+        checked={showTopSites}
+        onChange={({ checked }) => {
+          actions.setShowTopSites(checked)
+        }}
+      >
+        <span className='label'>
+          {getString(S.NEW_TAB_SHOW_TOP_SITES_LABEL)}
+        </span>
+      </Toggle>
+      {showTopSites && rewardsFeatureEnabled && !rewardsExternalWallet && (
+        <Toggle
+          className='toggle-row'
+          size='small'
+          checked={showSponsoredSites}
+          onChange={({ checked }) => {
+            actions.setShowSponsoredSites(checked)
+          }}
+        >
+          <div className='label'>
+            <div>
+              {getString(S.NEW_TAB_SHOW_SPONSORED_SITES_LABEL)}
+              <div
+                className='subtext'
+                onClick={(e) => e.stopPropagation()}
+              >
+                {formatString(
+                  getString(S.NEW_TAB_SPONSORED_SITES_DESCRIPTION),
+                  {
+                    $1: (content) => (
+                      <Link
+                        url={sponsoredSiteLearnMoreURL}
+                        openInNewTab
+                      >
+                        {content}
+                      </Link>
+                    ),
+                  },
+                )}
+              </div>
+            </div>
+          </div>
+        </Toggle>
+      )}
+      {showTopSites && (
+        <div className='list-view-options'>
+          <button
+            className={classNames({
+              'custom': true,
+              'active': listKind === TopSitesListKind.kCustom,
+            })}
+            onClick={() => {
+              actions.setTopSitesListKind(TopSitesListKind.kCustom)
+            }}
+          >
+            <div className='list-view-image'>
+              {renderSelectedMarker(TopSitesListKind.kCustom)}
+            </div>
+            <h4>{getString(S.NEW_TAB_TOP_SITES_CUSTOM_OPTION_TITLE)}</h4>
+            <p>{getString(S.NEW_TAB_TOP_SITES_CUSTOM_OPTION_TEXT)}</p>
+          </button>
+          <button
+            className={classNames({
+              'most-visited': true,
+              'active': listKind === TopSitesListKind.kMostVisited,
+            })}
+            onClick={() => {
+              actions.setTopSitesListKind(TopSitesListKind.kMostVisited)
+            }}
+          >
+            <div className='list-view-image'>
+              {renderSelectedMarker(TopSitesListKind.kMostVisited)}
+            </div>
+            <h4>{getString(S.NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TITLE)}</h4>
+            <p>{getString(S.NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TEXT)}</p>
+          </button>
+        </div>
+      )}
+    </SettingsPanel>
+  )
+}

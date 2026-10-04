@@ -1,0 +1,14 @@
+diff --git a/third_party/rust/bitflags/v2/BUILD.gn b/third_party/rust/bitflags/v2/BUILD.gn
+index de80d2f7642c45700f709c61c70873514e3e2fb3..221730263bc1e0097a536ffc19028749fd8faf38 100644
+--- a/third_party/rust/bitflags/v2/BUILD.gn
++++ b/third_party/rust/bitflags/v2/BUILD.gn
+@@ -103,4 +103,9 @@ cargo_crate("lib") {
+   executable_configs += _configs_to_add
+   proc_macro_configs -= _configs_to_remove
+   proc_macro_configs += _configs_to_add
++  deps = [
++    "//third_party/rust/serde/v1:lib",
++    "//third_party/rust/serde_core/v1:lib",
++  ]
++  features = [ "serde" ]
+ }

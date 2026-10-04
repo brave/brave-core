@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/views/web_apps/create_shortcut_confirmation_view.cc b/chrome/browser/ui/views/web_apps/create_shortcut_confirmation_view.cc
+index 3d2c5d4bbd58152fa57eb5adb785aac27902f136..0f8c3b9df746b8a5005738cb588e22ff97f0a760 100644
+--- a/chrome/browser/ui/views/web_apps/create_shortcut_confirmation_view.cc
++++ b/chrome/browser/ui/views/web_apps/create_shortcut_confirmation_view.cc
+@@ -53,8 +53,8 @@ const char* g_title_to_use_for_app = nullptr;
+ 
+ bool ShowRadioButtons() {
+   // This UI is only for prototyping and is not intended for shipping.
+-  DCHECK_EQ(features::kDesktopPWAsTabStripSettings.default_state,
+-            base::FEATURE_DISABLED_BY_DEFAULT);
++  // DCHECK_EQ(features::kDesktopPWAsTabStripSettings.default_state,
++  //           base::FEATURE_DISABLED_BY_DEFAULT);
+   return base::FeatureList::IsEnabled(blink::features::kDesktopPWAsTabStrip) &&
+          base::FeatureList::IsEnabled(features::kDesktopPWAsTabStripSettings);
+ }

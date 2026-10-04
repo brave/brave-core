@@ -1,0 +1,77 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_origin.mojom;
+
+// Interface for communicating with BraveOriginService from WebUI
+interface BraveOriginSettingsHandler {
+  // Check if the current user is a Brave Origin user (has purchased Origin
+  // or is using a branded build). This performs an async SKU credential check.
+  IsBraveOriginUser() => (bool is_brave_origin_user);
+
+  // Re-check purchase state from SKU service. Call this after returning from
+  // the account page to detect a new purchase.
+  RefreshPurchaseState() => (bool is_purchased);
+
+  // Check if a specific policy is controlled by Brave Origin
+  IsPolicyControlledByBraveOrigin(string policy_key) =>
+      (bool is_controlled);
+
+  // Get the current value of a Brave Origin controlled policy
+  GetPolicyValue(string policy_key) => (bool? value);
+
+  // Set the value of a Brave Origin controlled policy
+  SetPolicyValue(string policy_key, bool value) => (bool success);
+
+  // Check if any Brave Origin policy values have been changed since
+  // browser startup, indicating a restart is needed.
+  GetNeedsRestart() => (bool needs_restart);
+
+  // Accept the Linux free tier without purchasing. Only functional on
+  // Linux builds; returns false on all other platforms.
+  ProceedFree() => (bool success);
+};
+
+// Interface for interaction between SubscriptionRenderFrameObserver
+// (renderer process) and browser process for Origin subscription linking.
+[EnableIf=is_android]
+interface OriginIAPSubscription {
+  GetPurchaseTokenOrderId() => (string token, string order_id);
+  SetLinkStatus(int32 status);
+};
+
+// The payment service's answer to "is this order out of device activations,
+// and can that budget be raised?".
+[EnableIf=is_android]
+struct ExtendEligibility {
+  // False when the credential fetch failed for some reason other than the
+  // activation limit, in which case extending would not help.
+  bool at_limit;
+  bool can_extend;
+};
+
+// Raising an order's device activation limit. A subscription can only be
+// activated on a limited number of devices; once that budget is spent,
+// fetching order credentials fails even though the subscription is still paid
+// for, locking the user out of what they bought.
+//
+// Mobile only - desktop recovers from the activation limit through the
+// account website instead.
+[EnableIf=is_android]
+interface OriginActivationLimit {
+  // `receipt_payload` is the complete request body both endpoints take,
+  // already serialized: {type, raw_receipt, package, subscription_id}, the
+  // same payload `/v1/orders/receipt` is given. Null eligibility means the
+  // service could not be reached, which is distinct from it answering that
+  // the budget cannot grow.
+  CanExtend(string order_id, string receipt_payload) =>
+      (ExtendEligibility? eligibility);
+
+  // Raises the activation budget for `order_id`. On failure `error_code`
+  // carries the service's application error code (e.g. "not_at_limit"), which
+  // is empty when the request never produced a response.
+  Extend(string order_id, string receipt_payload) =>
+      (bool succeeded, string error_code);
+};

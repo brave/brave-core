@@ -1,0 +1,242 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_tab_transfer_bridge.h"
+
+#include <utility>
+
+#include "base/check.h"
+#include "base/check_op.h"
+#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_movable_side_panel_web_view.h"
+#include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/components/ai_chat/core/common/ai_chat_urls.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/navigator/browser_navigator.h"
+#include "chrome/browser/ui/navigator/browser_navigator_params.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/side_panel/side_panel_enums.h"
+#include "chrome/browser/ui/side_panel/side_panel_registry.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_animation_content_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
+#include "chrome/browser/ui/webui/webui_embedding_context.h"
+#include "components/tabs/public/tab_interface.h"
+#include "content/public/browser/web_contents.h"
+#include "extensions/buildflags/buildflags.h"
+#include "ui/base/page_transition_types.h"
+#include "ui/base/window_open_disposition.h"
+#include "ui/gfx/geometry/rect.h"
+#include "ui/views/view_utils.h"
+#include "ui/views/widget/widget.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+#include "extensions/browser/view_type_utils.h"
+#endif
+
+namespace {
+
+SidePanelEntry::Key ChatEntryKey() {
+  return SidePanelEntry::Key(SidePanelEntry::Id::kChatUI);
+}
+
+AIChatUI* GetAIChatUIWebUI(content::WebContents* web_contents) {
+  if (!web_contents) {
+    return nullptr;
+  }
+
+  auto* web_ui = web_contents->GetWebUI();
+  if (!web_ui) {
+    return nullptr;
+  }
+
+  auto* controller = web_ui->GetController();
+  if (!controller) {
+    return nullptr;
+  }
+
+  return controller->GetAs<AIChatUI>();
+}
+
+// The page handler is created only when the frontend binds. A transfer can
+// happen before that (e.g. tests, or a very fast open-full-page), and a later
+// bind will pick up the correct standalone/side-panel mode from the new host.
+void NotifyDisplayModeChanged(content::WebContents* web_contents,
+                              bool is_standalone) {
+  AIChatUI* ai_chat_ui = GetAIChatUIWebUI(web_contents);
+  if (!ai_chat_ui) {
+    DVLOG(1) << "No AIChatUI found for the transferred WebContents";
+    return;
+  }
+  if (ai_chat::AIChatUIPageHandler* page_handler = ai_chat_ui->page_handler()) {
+    page_handler->SetDisplayMode(is_standalone);
+  }
+}
+
+}  // namespace
+
+DEFINE_USER_DATA(AIChatSidePanelTabTransferBridge);
+
+AIChatSidePanelTabTransferBridge::AIChatSidePanelTabTransferBridge(
+    BrowserWindowInterface* browser)
+    : browser_(browser),
+      scoped_unowned_user_data_(browser->GetUnownedUserDataHost(), *this) {
+  CHECK(browser_);
+}
+
+AIChatSidePanelTabTransferBridge::~AIChatSidePanelTabTransferBridge() = default;
+
+// static
+AIChatSidePanelTabTransferBridge* AIChatSidePanelTabTransferBridge::From(
+    BrowserWindowInterface* browser) {
+  return Get(browser->GetUnownedUserDataHost());
+}
+
+void AIChatSidePanelTabTransferBridge::TransferFullPageContentsToSidePanel(
+    std::unique_ptr<content::WebContents> web_contents,
+    const gfx::Rect& starting_bounds_in_browser_coordinates) {
+  CHECK(web_contents);
+  // A transfer is consumed synchronously by the re-show below, so there should
+  // never be one already in-flight.
+  CHECK(!pending_web_contents_);
+
+  // The bridge is only created for normal windows, which always have a side
+  // panel UI.
+  SidePanelUI* side_panel_ui = SidePanelUI::From(browser_);
+  CHECK(side_panel_ui);
+
+  pending_web_contents_ = std::move(web_contents);
+
+  const SidePanelEntry::Key key = ChatEntryKey();
+
+  // If AI Chat is already the visible side panel entry, close it first.
+  // Otherwise `Show()` below early-returns on the already-showing entry and
+  // never rebuilds the view to adopt the pending contents. Suppress animations
+  // so the close (and the teardown of the previous view) happens synchronously.
+  if (side_panel_ui->IsSidePanelEntryShowing(key)) {
+    side_panel_ui->Close(SidePanelEntryHideReason::kSidePanelClosed,
+                         /*suppress_animations=*/true);
+  }
+
+  // Drop any cached AI Chat view so the entry factory is guaranteed to run
+  // again and adopt the pending contents (see
+  // `AIChatMovableSidePanelWebView::CreateView`).
+  ClearChatEntryCache();
+
+  // Notify the page that it's now in a Side Panel
+  NotifyDisplayModeChanged(pending_web_contents_.get(),
+                           /*is_standalone=*/false);
+
+  // Animate the conversation into the panel from where the full page currently
+  // sits (flash-free). When the caller could not capture a starting rect (e.g.
+  // the full-page contents view was unavailable), fall back to a plain show.
+  if (starting_bounds_in_browser_coordinates.IsEmpty()) {
+    side_panel_ui->Show(key);
+  } else {
+    side_panel_ui->ShowFrom(key, starting_bounds_in_browser_coordinates);
+  }
+}
+
+bool AIChatSidePanelTabTransferBridge::HasPendingTransfer() const {
+  return pending_web_contents_ != nullptr;
+}
+
+std::unique_ptr<content::WebContents>
+AIChatSidePanelTabTransferBridge::TakePendingContents() {
+  return std::move(pending_web_contents_);
+}
+
+void AIChatSidePanelTabTransferBridge::ClearChatEntryCache() {
+  const SidePanelEntry::Key key = ChatEntryKey();
+
+  // The AI Chat entry lives in the window-scoped registry when the side panel
+  // is global, and in the active tab's registry when it is contextual. Clear
+  // whichever holds it; the other simply has no such entry.
+  if (SidePanelRegistry* global_registry = SidePanelRegistry::From(browser_)) {
+    if (SidePanelEntry* entry = global_registry->GetEntryForKey(key)) {
+      entry->ClearCachedView();
+    }
+  }
+
+  if (tabs::TabInterface* active_tab = browser_->GetActiveTabInterface()) {
+    if (SidePanelRegistry* tab_registry = SidePanelRegistry::From(active_tab)) {
+      if (SidePanelEntry* entry = tab_registry->GetEntryForKey(key)) {
+        entry->ClearCachedView();
+      }
+    }
+  }
+}
+
+bool AIChatSidePanelTabTransferBridge::MoveSidePanelContentsToTab(
+    content::WebContents* side_panel_contents) {
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
+  // If the Side Panel is still animating in then it won't yet be parented to
+  // the SidePanel and we need to find it on the BrowserView instead.
+  AIChatMovableSidePanelWebView* chat_view = nullptr;
+  if (auto* anim_view = browser_view->GetSidePanelAnimationContent()) {
+    CHECK_EQ(anim_view->children().size(), 1u);
+    chat_view = views::AsViewClass<AIChatMovableSidePanelWebView>(
+        anim_view->children()[0]);
+  }
+
+  if (!chat_view) {
+    chat_view = views::AsViewClass<AIChatMovableSidePanelWebView>(
+        browser_view->side_panel()->GetViewByID(
+            SidePanelWebUIView::kSidePanelWebViewId));
+  }
+
+  // Bail if there is no live movable chat view, or it hosts some other
+  // contents.
+  if (!chat_view || chat_view->web_contents() != side_panel_contents) {
+    return false;
+  }
+
+  // A tab-associated (contextual) conversation follows the active tab and
+  // carries `/tab` semantics that don't belong in a standalone full-page tab;
+  // leave it to the caller's fresh-tab path.
+  if (ai_chat::TabAssociatedConversationUrl().EqualsIgnoringRef(
+          side_panel_contents->GetLastCommittedURL())) {
+    return false;
+  }
+
+  // The bridge is only created for normal windows, which always have a side
+  // panel UI.
+  SidePanelUI* side_panel_ui = SidePanelUI::From(browser_);
+  CHECK(side_panel_ui);
+
+  // Take the live contents out of the view (not destroyed, not reloaded).
+  std::unique_ptr<content::WebContents> web_contents =
+      chat_view->ReleaseWebContents();
+  CHECK(web_contents);
+
+  // Restore the associations the contents needs as a tab, mirroring
+  // `ContextualTasksSidePanelCoordinator::DetachWebContentsForTask`.
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+  // Back to a tab-hosted view type (the movable view set `kComponent`).
+  extensions::SetViewType(web_contents.get(),
+                          extensions::mojom::ViewType::kTabContents);
+#endif
+  // The movable view is no longer a valid delegate once the contents leaves it.
+  web_contents->SetDelegate(nullptr);
+  // Drop the panel's browser-window association. Tab insertion re-establishes
+  // the tab (and its window) association; the webui embedding context CHECKs
+  // that the browser and tab associations are never set at the same time.
+  webui::SetBrowserWindowInterface(web_contents.get(), nullptr);
+
+  // Insert the live contents into a new foreground tab; `Navigate` re-runs the
+  // idempotent `AttachTabHelpers`.
+  NavigateParams params(browser_, std::move(web_contents));
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.transition = ui::PAGE_TRANSITION_LINK;
+  Navigate(&params);
+
+  // Notify the page that it's now in a full-page tab
+  NotifyDisplayModeChanged(side_panel_contents, /*is_standalone=*/true);
+  // The conversation now lives in a tab; close the (now-empty) panel. Its view
+  // is torn down on close, but its owned contents was already released.
+  side_panel_ui->Close();
+  return true;
+}

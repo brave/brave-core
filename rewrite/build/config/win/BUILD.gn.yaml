@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let Brave opt into large PDB pages
+
+      Swaps the 8 KiB page size for 16 KiB wherever upstream picked 8 KiB,
+      without restating upstream's condition for picking it.
+    append_to_target:
+      target: compiler
+      type: config
+      code: |-
+        import("//brave/build/config/win/config.gni")
+        if (brave_win_use_large_pdb &&
+            filter_include(ldflags, [ "/pdbpagesize:8192" ]) != []) {
+          ldflags -= [ "/pdbpagesize:8192" ]
+          ldflags += [ "/pdbpagesize:16384" ]
+        }

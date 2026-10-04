@@ -1,0 +1,12 @@
+diff --git a/sandbox/policy/win/sandbox_win.cc b/sandbox/policy/win/sandbox_win.cc
+index 19952265286a9ad3db226c4c508b2a7bacdfa78b..12dda93a3f61df781a826efc59f5b182eafddde8 100644
+--- a/sandbox/policy/win/sandbox_win.cc
++++ b/sandbox/policy/win/sandbox_win.cc
+@@ -637,6 +637,7 @@ ResultCode LaunchWithoutSandbox(
+   base::LaunchOptions options;
+   options.handles_to_inherit = handles_to_inherit;
+   options.feedback_cursor_off = true;
++  BRAVE_START_SANDBOXED_PROCESS
+   // Network process runs in a job even when unsandboxed. This is to ensure it
+   // does not outlive the browser, which could happen if there is a lot of I/O
+   // on process shutdown, in which case TerminateProcess can fail. See

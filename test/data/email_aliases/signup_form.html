@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Input types test page</title>
+  <style>
+    input {
+      width: 296px;
+      padding: 2px;
+    }
+  </style>
+</head>
+
+<body>
+  <form method="POST" action=".">
+    <input type="hidden" name="_token" value="P3DDXqa1B4Mf8JuRZJbN8g3LxmodJIeGJx3IuaAl">
+    <div>
+      <label>Email</label>
+
+      <div>
+        <input id="email" type="email" name="email" required autocomplete="email" autofocus>
+      </div>
+    </div>
+
+    <div>
+      <label>Password</label>
+
+      <div>
+        <input id="password" type="password" name="password" required autocomplete="new-password">
+      </div>
+    </div>
+
+    <div>
+      <label>Confirm Password</label>
+
+      <div>
+        <input id="password-confirm" type="password" name="password_confirmation" required autocomplete="new-password">
+      </div>
+    </div>
+  </form>
+</body>
+
+</html>

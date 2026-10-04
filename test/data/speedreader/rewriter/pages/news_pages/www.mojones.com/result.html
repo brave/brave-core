@@ -1,0 +1,526 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Abortion opponents don't want you to read news about abortion.</title><meta charset=""/><body id="article"><h1 class="title metadata">Abortion opponents don't want you to read news about abortion.</h1><p class="subhead metadata">A newly proposed ban is so sweeping it could criminalize journalism. We're speaking out—along with more than 20 other leading news organizations.</p><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+				
+				
+
+				
+<div class="hero is-image ">
+	<p><img alt="" class="skip-lazy wp-post-image" data-lazy-fallback="1" height="557" sizes="(max-width: 709px) 85vw, (max-width: 909px) 67vw, (max-width: 1362px) 62vw, 840px" src="https://www.motherjones.com/wp-content/uploads/2022/08/0816_sclaw_2000.jpg?w=990" srcset="https://www.motherjones.com/wp-content/uploads/2022/08/0816_sclaw_2000.jpg 2000w, https://www.motherjones.com/wp-content/uploads/2022/08/0816_sclaw_2000.jpg?resize=208,117 208w, https://www.motherjones.com/wp-content/uploads/2022/08/0816_sclaw_2000.jpg?resize=321,180 321w, https://www.motherjones.com/wp-content/uploads/2022/08/0816_sclaw_2000.jpg?resize=630,354 630w, https://www.motherjones.com/wp-content/uploads/2022/08/0816_sclaw_2000.jpg?resize=990,556 990w, https://www.motherjones.com/wp-content/uploads/2022/08/0816_sclaw_2000.jpg?resize=1536,863 1536w, https://www.motherjones.com/wp-content/uploads/2022/08/0816_sclaw_2000.jpg?resize=50,28 50w, https://www.motherjones.com/wp-content/uploads/2022/08/0816_sclaw_2000.jpg?resize=1300,731 1300w, https://www.motherjones.com/wp-content/uploads/2022/08/0816_sclaw_2000.jpg?resize=642,361 642w, https://www.motherjones.com/wp-content/uploads/2022/08/0816_sclaw_2000.jpg?resize=768,432 768w" width="990"></p><p class="wp-caption-text"><span class="media-credit">Mother Jones illustration</span></p></div>
+
+				<p>Fight disinformation: <a data-ga-action="click|https://www.motherjones.com/newsletters/?mj_oac=Article_Top_Support" data-ga-category="TopOfArticle" data-ga-label="ewsletterPromoCovid" href="https://www.motherjones.com/newsletters/?mj_oac=Article_Top_Fight_Disinfo">Sign up</a> for the free <em>Mother Jones Daily</em> newsletter and follow the news that matters.</p><p><span class="section-lead">Now that <em>Roe v. Wade</em></span> has been repealed&nbsp;by the Supreme Court, abortion opponents are aiming at a new target: those who <em>share</em> information about abortion.</p>
+<p>This push might put us at <em>Mother Jones</em>, a 46-year-old reader-supported investigative news organization, in a tough position.</p>
+<p>As journalists, we investigate, report, and contextualize the news. Then we share that hard-won knowledge with you, our readers. Our coverage of the fight over abortion has consistently broken news and fearlessly documented a perilous time for health care and human rights. To list just a handful of recent articles: Pema Levy investigated abortion laws <a href="https://www.motherjones.com/politics/2022/07/in-the-gops-new-surveillance-state-everyones-a-snitch/">that encourage vigilantes to file civil lawsuits against anyone involved in an abortion</a>; Abigail Weinberg interviewed a late-abortion doctor <a href="https://www.motherjones.com/politics/2022/07/warren-hern-boulder-late-abortion-doctor-interview-post-roe/">who predicted “women will die”</a> because of new restrictions; and Becca Andrews provided a <a href="https://www.motherjones.com/politics/2022/07/abortion-providers-roe-west-alabama-womens-center-power-house-reproductive-health-services/">powerful account of what happened to Alabama abortion providers moments after Roe was repealed</a>.</p>
+<p>Dusty, 1980s-era journalism textbooks preach that reporters are observers and shouldn’t <em>make</em> news. But at critical times, <em>Mother Jones</em> has sounded the alarm. In the past, we have never shied away from deeply reported pieces about voter suppression and the erosion of democracy in the United States, being among the first news organizations to do so. We grabbed the bullhorn to expose Facebook’s devastating effort <a href="https://www.motherjones.com/media/2020/10/facebook-mother-jones/">to throttle traffic to news organizations</a> that the social giant deemed too left-leaning.</p>
+<p>This is one of those times when we can’t be silent.</p>
+<p>Model legislation championed by the National Right to Life Committee, <a href="https://www.nrlc.org/about/history/">which calls itself</a> “the nation’s oldest and largest grassroots pro-life organization,” would make it a felony to publish information, “knowing that the information will be used, or is reasonably likely to be used” to induce or obtain an abortion.” If such a provision ever became law, it could devastate the ability of <em>Mother Jones</em>&nbsp;reporters to cover abortion for readers like you.</p>
+
+<p>A bill to this effect has already been <a href="https://scstatehouse.gov/sess124_2021-2022/bills/1373.htm">introduced</a> in South Carolina,<strong>&nbsp;</strong>and the NRLC is <a href="https://www.nrlc.org/communications/national-right-to-life-committee-proposes-legislation-to-protect-the-unborn-post-roe/">urging</a> state legislators elsewhere to pick it up as a “roadmap for the right-to-life movement.” Adopted, it could even expose journalists to criminal prosecution for publishing information about abortion.</p>
+<p>That’s why, this week, we have taken the unusual step of partnering with Rewire News Group, a nonprofit newsroom that focuses on reproductive health, and 24 other journalism and press freedom organizations like <em>Scalawag</em>, <em>Huffpost</em>, <em>BuzzFeed</em>, the News Leaders Association, and PEN America. All of them <a href="https://www.motherjones.com/press-releases/letter-to-department-of-justice/">signed a letter</a> asking the U.S. Department of Justice to intervene and shield journalists from attacks like this should it become necessary.</p>
+<p>The model legislation is <a href="https://www.nrlc.org/wp-content/uploads/NRLC-Post-Roe-Model-Abortion-Law-FINAL-1.pdf">sweeping, by design.</a> The version under consideration in South Carolina allows authorities to go after a vast array of possible sources a pregnant woman might consult about abortion. The list of actions that may be seen as “aiding and abetting” abortion includes hosting a website, communication by telephone or providing access to a website.</p>
+<p>The language in question is so broad, says David Loy, the legal director for the free speech advocacy group <a href="https://firstamendmentcoalition.org/">First Amendment Coalition</a>, that he worries that news organizations themselves could be targeted—with penalties up to 25 years in prison.</p>
+
+<p>“It’s deeply troubling these anti-abortion advocates are seeking to turn back the clock, not only on reproductive justice, obviously, but also the First Amendment ” he said.&nbsp;</p>
+<p>James Chadwick, a First Amendment attorney who also represents <em>Mother Jones</em>, points out that the Supreme Court decided a case on this issue in 1975. Then, Jeffrey Bigelow, the managing editor of <em>The Virginia Weekly</em>, was convicted of a misdemeanor because the <em>Weekly</em> published an advertisement from a group that helped women get abortions in New York, where the procedure was legal. The content was published in 1971, before <em>Roe v. Wade</em> protected the right to abortion nationwide. In the <em>Bigelow</em> case, the court decided that the advertisement was protected speech.</p>
+<p>Chadwick and Loy say parts of the South Carolina law under consideration may be unconstitutional because of that 1975 case. While the draft South Carolina bill states that it does not limit conduct protected by the First Amendment, if the bill passes, the mere fact of the law’s existence could violate the constitution because of its potentially enormous chilling effect on protected speech, Loy said.</p>
+<p>Even if you suspect that you are sharing information that’s protected by the First Amendment, “would you take a chance on that in court?” Loy asked.</p>
+<p>“It’s not simply a risk of financial liability for the organization,” he explained. “It’s a risk of imprisonment if you guess wrong about what a South Carolina court might do or what a South Carolina prosecutor might decide.”</p>
+<p>You can see why we want to speak out.</p>
+<p><em>Mother Jones&nbsp;</em>has published more than 50 stories about abortion since the Supreme Court overturned <em>Roe v. Wade</em>. Which ones are “reasonably likely to be used” by people who need an abortion? At Rewire News Group, nearly all of the newsroom’s work centers on reproductive justice. Would their story <a href="https://rewirenewsgroup.com/article/2022/08/01/we-were-forced-abortion-clinics-move-across-state-lines-to-stay-open/">about abortion clinics that moved across state lines to stay open violate this proposed law?</a></p>
+<p>We don’t know. But we do know it’s not unusual for deep-pocketed conservative organizations or wealthy individuals to use lawsuits and other penalties to shut down news organizations. We know this first hand. Between 2012 and 2015, <em>Mother Jones</em> and our insurance company spent more than $3 million to defeat a lawsuit filed by a conservative billionaire who disputed how he was described in a news story. Independent, nonprofit media organizations like <em>Mother Jones</em> and Rewire News Group are particularly vulnerable to these costly legal actions because we don’t have a corporate parent who can absorb the legal costs to fight back.</p>
+<p>We are keenly aware of how organizations like the NRLC use model legislation to create nearly identical laws in several states because we have written extensively about the phenomenon. <em>MoJo’s </em>Tim Murphy <a href="https://www.motherjones.com/politics/2016/04/alliance-defending-freedom-lobbies-anti-lgbt-bathroom-bills/">wrote about a similar strategy to create anti-trans bathroom bills in several states</a>. And Ari Berman and Nick Sturgy <a href="https://www.motherjones.com/politics/2021/05/heritage-foundation-dark-money-voter-suppression-laws/">uncovered leaked audio about how model legislation was used to create voter suppression laws</a>. James Bopp, the NRLC attorney who drafted the model legislation, has been a key strategist for several of these efforts, and <a href="https://www.motherjones.com/politics/2011/05/james-bopp-citizens-united/"><em>Mother Jones</em> has reported on his work for more than a decade</a>.</p>
+<p>Reproductive health is not just about a woman’s right to choose. Abortion coverage illuminates deeper issues that families face, like workplace discrimination, access to comprehensive health care for the LGBTQ<strong>&nbsp;</strong>community, racial injustice, and access to caregiving support.</p>
+<p>That’s why covering reproductive justice is core to our mission—and we have no plans to stop.</p>
+			</body>

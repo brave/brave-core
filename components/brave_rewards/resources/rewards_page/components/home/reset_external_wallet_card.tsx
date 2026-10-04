@@ -1,0 +1,63 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import * as React from 'react'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
+
+import { useAppState, useAppActions } from '../../lib/app_context'
+import { formatString } from '$web-common/formatString'
+import { getExternalWalletProviderName } from '../../../shared/lib/external_wallet'
+import { NewTabLink } from '../../../shared/components/new_tab_link'
+import { useSwitchAccountRouter } from '../../lib/connect_account_router'
+
+import { style } from './reset_external_wallet_card.style'
+
+export function ResetExternalWalletCard() {
+  const { getString } = useAppActions()
+  const openSwitchAccount = useSwitchAccountRouter()
+  const externalWallet = useAppState((s) => s.externalWallet)
+
+  if (!externalWallet) {
+    return null
+  }
+
+  const providerName = getExternalWalletProviderName(externalWallet.provider)
+
+  function learnMoreURL() {
+    return ''
+  }
+
+  function renderLearnMore(content: any) {
+    const url = learnMoreURL()
+    if (!url) {
+      return null
+    }
+    return <NewTabLink href={url}>{content}</NewTabLink>
+  }
+
+  return (
+    <div data-css-scope={style.scope}>
+      <div className='icon'>
+        <Icon name='warning-triangle-filled' />
+      </div>
+      <h3>
+        {formatString(getString('resetExternalWalletTitle'), [providerName])}
+      </h3>
+      <p>
+        {formatString(getString('resetExternalWalletText'), {
+          $1: providerName,
+          $2: renderLearnMore,
+        })}
+      </p>
+      <Button onClick={openSwitchAccount}>
+        {getString('resetExternalWalletButtonLabel')}
+      </Button>
+      <p className='note'>
+        {formatString(getString('resetExternalWalletNote'), [providerName])}
+      </p>
+    </div>
+  )
+}

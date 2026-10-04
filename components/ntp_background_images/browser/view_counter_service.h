@@ -1,0 +1,230 @@
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+#ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_VIEW_COUNTER_SERVICE_H_
+#define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_VIEW_COUNTER_SERVICE_H_
+
+#include <memory>
+#include <optional>
+#include <string>
+
+#include "base/functional/callback.h"
+#include "base/gtest_prod_util.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
+#include "base/timer/wall_clock_timer.h"
+#include "base/values.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
+#include "brave/components/ntp_background_images/browser/view_counter_model.h"
+#include "brave/components/ntp_background_images/buildflags/buildflags.h"
+#include "components/content_settings/core/browser/content_settings_observer.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/keyed_service/core/keyed_service.h"
+#include "components/prefs/pref_change_registrar.h"
+
+class PrefService;
+
+class WeeklyStorage;
+class DailyStorage;
+
+namespace ntp_background_images {
+
+class BraveNTPCustomBackgroundService;
+
+struct NTPBackgroundImagesData;
+struct NTPSponsoredContentData;
+
+inline constexpr char kNewTabsCreatedDailyHistogramName[] =
+    "Brave.NTP.NewTabsCreatedDaily";
+
+class ViewCounterService : public KeyedService,
+                           public content_settings::Observer,
+                           public NTPBackgroundImagesService::Observer,
+                           public brave_ads::AdsServiceObserver {
+ public:
+  ViewCounterService(HostContentSettingsMap* host_content_settings,
+                     NTPBackgroundImagesService* background_images_service,
+                     BraveNTPCustomBackgroundService* custom_background_service,
+                     brave_ads::AdsService* ads_service,
+                     PrefService* prefs,
+                     PrefService* local_state,
+                     bool is_supported_locale);
+  ~ViewCounterService() override;
+
+  ViewCounterService(const ViewCounterService&) = delete;
+  ViewCounterService& operator=(const ViewCounterService&) = delete;
+
+  // Lets the counter know that a New Tab Page view has occured.
+  // This should always be called as it will evaluate whether the user has
+  // opted-in or data is available.
+  void RegisterPageView();
+
+  void RecordViewedAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type);
+  void RecordClickedAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      const std::string& target_url,
+      brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type);
+
+  std::optional<base::DictValue> GetNextWallpaperForDisplay();
+  void GetCurrentWallpaperForDisplay(
+      base::OnceCallback<void(std::optional<base::DictValue>)> callback,
+      bool allow_sponsored_content = true);
+  std::optional<base::DictValue> GetCurrentWallpaper() const;
+  void GetNewTabTakeoverWallpaper(
+      base::OnceCallback<void(std::optional<base::DictValue>)> callback);
+  void GetNewTabTakeoverWallpaperFromAdsService(
+      base::OnceCallback<void(std::optional<base::DictValue>)> callback);
+
+  NTPSponsoredContentData* GetNewTabTakeover() const;
+
+ private:
+  friend class ViewCounterServiceTest;
+  friend class NTPBackgroundImagesServiceTest;
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, CanShowNewTabTakeover);
+  FRIEND_TEST_ALL_PREFIXES(
+      ViewCounterServiceTest,
+      AllowNewTabTakeoverWithRichMediaIfJavaScriptContentSettingIsSetToAllowed);
+  FRIEND_TEST_ALL_PREFIXES(
+      ViewCounterServiceTest,
+      BlockNewTabTakeoverWithRichMediaIfJavaScriptContentSettingIsSetToBlocked);
+  FRIEND_TEST_ALL_PREFIXES(
+      ViewCounterServiceTest,
+      AllowNewTabTakeoverWithImageIfJavaScriptContentSettingIsSetToAllowed);
+  FRIEND_TEST_ALL_PREFIXES(
+      ViewCounterServiceTest,
+      AllowNewTabTakeoverWithImageIfJavaScriptContentSettingIsSetToBlocked);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
+                           CannotShowSponsoredContentIfUninitialized);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
+                           CannotShowSponsoredContentIfMalformed);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
+                           CannotShowSponsoredContentIfOptedOut);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, IsActiveOptedIn);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, ActiveInitiallyOptedIn);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
+                           ActiveOptedInWithNTPBackgoundOption);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, ModelTest);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, CanShowBackgroundImages);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, CannotShowBackgroundImages);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
+                           CannotShowBackgroundImagesIfUninitialized);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
+                           CannotShowBackgroundImagesIfMalformed);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
+                           CannotShowBackgroundImagesIfOptedOut);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, PrefsWithModelTest);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, GetCurrentWallpaper);
+
+  void OnPreferenceChanged(const std::string& pref_name);
+
+  // brave_ads::AdsServiceObserver:
+  void OnDidInitializeAdsService() override;
+  void OnDidClearAdsServiceData() override;
+
+  // content_settings::Observer:
+  void OnContentSettingChanged(
+      const ContentSettingsPattern& primary_pattern,
+      const ContentSettingsPattern& secondary_pattern,
+      ContentSettingsTypeSet content_type_set) override;
+
+  // KeyedService:
+  void Shutdown() override;
+
+  // NTPBackgroundImagesService::Observer:
+  void OnBackgroundImagesDataDidUpdate(NTPBackgroundImagesData* data) override;
+  void DeprecatedOnSponsoredContentDidUpdate(
+      NTPSponsoredContentData* data) override;
+  void OnSponsoredContentDidUpdate(const base::DictValue& data) override;
+
+  void ParseAndSaveNewTabPageAdsCallback(bool success);
+
+  void ResetNotificationState();
+  bool IsShowBackgroundImageOptedIn() const;
+  bool CanShowNewTabTakeoverWallpaper() const;
+
+  // Registers or unregisters this profile's interest in the Sponsored Images
+  // component with `background_images_service_` based on the current opt-in
+  // prefs, tracking `is_sponsored_images_component_registered_` so the
+  // registration count stays balanced.
+  void UpdateSponsoredImagesComponentRegistration();
+
+  // Do we have a sponsored or referral wallpaper to show and has the user
+  // opted-in to showing it at some time.
+  bool CanShowNewTabTakeover() const;
+  // Should we show the branded wallpaper right now, in addition to the result
+  // from `CanShowNewTabTakeover()`.
+  bool ShouldShowNewTabTakeover() const;
+
+  bool CanShowBackgroundImages() const;
+
+  bool ShouldShowCustomBackgroundImages() const;
+
+  void ResetModel();
+
+  void OnGetNewTabTakeoverWallpaper(
+      base::OnceCallback<void(std::optional<base::DictValue>)> callback,
+      std::optional<base::DictValue> new_tab_takeover_wallpaper);
+  void CheckNewTabTakeoverCreativeFileExists(
+      base::OnceCallback<void(std::optional<base::DictValue>)> callback,
+      base::DictValue new_tab_takeover_wallpaper);
+  void OnCheckNewTabTakeoverCreativeFileExists(
+      base::OnceCallback<void(std::optional<base::DictValue>)> callback,
+      base::DictValue new_tab_takeover_wallpaper,
+      bool file_exists);
+  void GetNewTabTakeoverWallpaperFromAdsServiceCallback(
+      base::OnceCallback<void(std::optional<base::DictValue>)> callback,
+      brave_ads::mojom::NewTabPageAdInfoPtr ad);
+
+  void MaybeTriggerNewTabPageAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
+      brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type);
+
+  void UpdateP3AValues();
+
+  const raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
+  raw_ptr<NTPBackgroundImagesService> background_images_service_ = nullptr;
+  const raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
+  const raw_ptr<PrefService> prefs_ = nullptr;
+  const raw_ptr<PrefService> local_state_ = nullptr;
+  bool is_supported_locale_ = false;
+  bool is_sponsored_images_component_registered_ = false;
+  PrefChangeRegistrar pref_change_registrar_;
+  ViewCounterModel model_;
+  base::WallClockTimer p3a_update_timer_;
+
+  // Can be null if custom background is not supported.
+  const raw_ptr<BraveNTPCustomBackgroundService> custom_background_service_ =
+      nullptr;
+
+  // If P3A is enabled, these will track number of tabs created
+  // and the ratio of those which are New Tab Takeover ads.
+  std::unique_ptr<WeeklyStorage> new_tab_count_state_;
+  std::unique_ptr<DailyStorage> new_tab_count_daily_state_;
+  std::unique_ptr<WeeklyStorage> new_tab_takeover_count_state_;
+
+  base::ScopedObservation<brave_ads::AdsService, brave_ads::AdsServiceObserver>
+      ads_service_observation_{this};
+  base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
+      host_content_settings_map_observation_{this};
+  base::ScopedObservation<NTPBackgroundImagesService,
+                          NTPBackgroundImagesService::Observer>
+      ntp_background_images_service_observation_{this};
+
+  base::WeakPtrFactory<ViewCounterService> weak_ptr_factory_{this};
+};
+
+}  // namespace ntp_background_images
+
+#endif  // BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_VIEW_COUNTER_SERVICE_H_

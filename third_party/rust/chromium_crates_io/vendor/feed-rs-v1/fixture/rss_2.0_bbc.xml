@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:ppg="http://bbc.co.uk/2009/01/ppgRss"
+     xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+    <channel>
+        <title>In Our Time</title>
+        <link>http://www.bbc.co.uk/programmes/b006qykl</link>
+        <description>Melvyn Bragg and guests discuss the history of ideas</description>
+        <itunes:summary>Melvyn Bragg and guests discuss the history of ideas</itunes:summary>
+        <itunes:author>BBC Radio 4</itunes:author>
+        <itunes:owner>
+            <itunes:name>BBC</itunes:name>
+            <itunes:email>RadioMusic.Support@bbc.co.uk</itunes:email>
+        </itunes:owner>
+        <itunes:new-feed-url>https://podcasts.files.bbci.co.uk/b006qykl.rss</itunes:new-feed-url>
+        <language>en</language>
+        <ppg:seriesDetails frequency="weekly" daysLive="-1"/>
+        <ppg:systemRef systemId="pid.brand" key="b006qykl"/>
+        <ppg:systemRef systemId="pid.genre" key="C00060"/>
+        <ppg:systemRef systemId="pid.format" key="PT004"/>
+        <ppg:network id="radio4" name="BBC Radio 4"/>
+        <image>
+            <url>http://ichef.bbci.co.uk/images/ic/3000x3000/p087hyhs.jpg</url>
+            <title>In Our Time</title>
+            <link>http://www.bbc.co.uk/programmes/b006qykl</link>
+        </image>
+        <itunes:image href="http://ichef.bbci.co.uk/images/ic/3000x3000/p087hyhs.jpg"/>
+        <copyright>(C) BBC 2021</copyright>
+        <pubDate>Thu, 25 Feb 2021 10:15:00 +0000</pubDate>
+        <itunes:category text="History"/>
+        <itunes:explicit>no</itunes:explicit>
+        <media:rating scheme="urn:simple">nonadult</media:rating>
+        <atom:link href="http://www.bbc.co.uk/programmes/b006qykl/episodes/downloads.rss" rel="self"
+                   type="application/rss+xml"/>
+        <item>
+            <title>Marcus Aurelius</title>
+            <description>Melvyn Bragg and guests discuss...</description>
+            <itunes:subtitle>Melvyn Bragg and guests discuss the life and meditations of 'the last good Roman emperor'.</itunes:subtitle>
+            <itunes:summary>Melvyn Bragg and guests discuss the man who, according to Machiavelli...</itunes:summary>
+            <pubDate>Thu, 25 Feb 2021 10:15:00 +0000</pubDate>
+            <itunes:duration>3156</itunes:duration>
+            <enclosure url="http://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download/proto/http/vpid/p097wt5b.mp3" length="50496000" type="audio/mpeg"/>
+            <ppg:enclosureLegacy url="http://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download/proto/http/vpid/p097wt5b.mp3" length="50496000" type="audio/mpeg"/>
+            <ppg:enclosureSecure url="https://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download/proto/https/vpid/p097wt5b.mp3" length="50496000" type="audio/mpeg"/>
+            <guid isPermaLink="false">urn:bbc:podcast:m000sjxt</guid>
+            <link>http://www.bbc.co.uk/programmes/m000sjxt</link>
+            <itunes:explicit>clean</itunes:explicit>
+            <media:content url="http://open.live.bbc.co.uk/mediaselector/6/redir/version/2.0/mediaset/audio-nondrm-download/proto/http/vpid/p097wt5b.mp3" fileSize="50496000" type="audio/mpeg" medium="audio" expression="full" duration="3156"/>
+            <itunes:author>BBC Radio 4</itunes:author>
+            <ppg:canonical>/programmes/m000sjxt</ppg:canonical>
+        </item>
+    </channel>
+</rss>

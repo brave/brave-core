@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/resources/settings/settings_shared_lit.css b/chrome/browser/resources/settings/settings_shared_lit.css
+index c395aba353999cb0592c9ed8496b885632c5a757..076288aa7730bd0e1df3dee7cc0315ca9a4246fd 100644
+--- a/chrome/browser/resources/settings/settings_shared_lit.css
++++ b/chrome/browser/resources/settings/settings_shared_lit.css
+@@ -8,7 +8,8 @@
+  * #import=chrome://resources/cr_elements/cr_shared_vars.css.js
+  * #import=chrome://resources/cr_elements/search_highlight_style_lit.css.js
+  * #import=./settings_vars.css.js
+- * #include=cr-shared-style-lit search-highlight-style-lit
++ * #import=//resources/brave/page_specific/settings/br_settings_shared_lit.css.js
++ * #include=cr-shared-style-lit search-highlight-style-lit br-settings-shared-lit
+  * #css_wrapper_metadata_end */
+ 
+ /* Style overrides for Settings Refresh 2026 experiment */

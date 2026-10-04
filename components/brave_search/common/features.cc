@@ -1,0 +1,125 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+#include "brave/components/brave_search/common/features.h"
+
+#include <string>
+
+#include "base/check.h"
+#include "base/feature_list.h"
+#include "brave/components/brave_search/common/pref_names.h"
+#include "components/prefs/pref_service.h"
+
+namespace brave_search::features {
+
+BASE_FEATURE(kBraveSearchDefaultAPIFeature,
+             "BraveSearchDefaultAPI",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+const base::FeatureParam<int> kBraveSearchDefaultAPIDailyLimit{
+    &kBraveSearchDefaultAPIFeature, kBraveSearchDefaultAPIDailyLimitName, 3};
+
+const base::FeatureParam<int> kBraveSearchDefaultAPITotalLimit{
+    &kBraveSearchDefaultAPIFeature, kBraveSearchDefaultAPITotalLimitName, 10};
+
+BASE_FEATURE(kBackupResultsFullRender,
+             "BraveSearchBackupResultsFullRender",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+const base::FeatureParam<int> kBackupResultsFullRenderMaxRequests{
+    &kBackupResultsFullRender, "MaxRequests", 2};
+
+bool IsBackupResultsFullRenderEnabled() {
+  return base::FeatureList::IsEnabled(kBackupResultsFullRender);
+}
+
+BASE_FEATURE(kBackupResults,
+             "BraveSearchBackupResults",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+const base::FeatureParam<std::string> kBackupResultsHeaders{&kBackupResults,
+                                                            "headers", ""};
+
+const base::FeatureParam<std::string> kBackupResultsUAOverride{
+    &kBackupResults, "ua_override", ""};
+
+const base::FeatureParam<std::string> kBackupResultsUAMetadata{
+    &kBackupResults, "ua_metadata", ""};
+
+const base::FeatureParam<int> kBackupResultsMaxDailyRequests{
+    &kBackupResults, "max_daily_requests", -1};
+
+const base::FeatureParam<bool> kBackupResultsLoadAfterRestore{
+    &kBackupResults, "load_after_restore", false};
+
+const base::FeatureParam<base::TimeDelta>
+    kBackupResultsLoadAfterRestoreDelayMin{&kBackupResults,
+                                           "load_after_restore_delay_min",
+                                           base::Milliseconds(3000)};
+
+const base::FeatureParam<base::TimeDelta>
+    kBackupResultsLoadAfterRestoreDelayMax{&kBackupResults,
+                                           "load_after_restore_delay_max",
+                                           base::Milliseconds(6000)};
+
+const base::FeatureParam<base::TimeDelta>
+    kBackupResultsLoadAfterRestoreLowDelayMin{
+        &kBackupResults, "load_after_restore_low_delay_min",
+        base::Milliseconds(0)};
+
+const base::FeatureParam<base::TimeDelta>
+    kBackupResultsLoadAfterRestoreLowDelayMax{
+        &kBackupResults, "load_after_restore_low_delay_max",
+        base::Milliseconds(1500)};
+
+const base::FeatureParam<bool> kBackupResultsAllowFetches{
+    &kBackupResults, "allow_fetches", false};
+
+const base::FeatureParam<bool> kBackupResultsAllowCosmeticAssets{
+    &kBackupResults, "allow_cosmetic_assets", false};
+
+const base::FeatureParam<bool> kBackupResultsAllowUnclassifiedRequests{
+    &kBackupResults, "allow_unclassified_requests", false};
+
+const base::FeatureParam<int> kBackupResultsFarbling{&kBackupResults,
+                                                     "farbling", 0};
+
+const base::FeatureParam<bool> kBackupResultsHistorySeed{&kBackupResults,
+                                                         "history_seed", true};
+
+const base::FeatureParam<bool> kBackupResultsZeroSize{&kBackupResults,
+                                                      "zero_size", false};
+
+const base::FeatureParam<bool> kBackupResultsCleanUrl{&kBackupResults,
+                                                      "clean_url", false};
+
+const base::FeatureParam<std::string> kBackupResultsRendererLanguages{
+    &kBackupResults, "renderer_languages", ""};
+
+const base::FeatureParam<std::string> kBackupResultsLanguagesHeader{
+    &kBackupResults, "languages_header", ""};
+
+BASE_FEATURE(kSearchNewTabV1Source, base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsSearchNewTabV1SourceEnabled(PrefService* local_state,
+                                   bool is_first_run) {
+  CHECK(local_state);
+  if (local_state->GetString(prefs::kNewTabV1SourceSuffix).empty()) {
+    local_state->SetString(prefs::kNewTabV1SourceSuffix,
+                           is_first_run ? "c" : "b");
+  }
+  // If the feature was enabled at install time, leave it enabled forever.
+  if (local_state->GetBoolean(prefs::kNewTabV1SourceEnabledAtFirstRun)) {
+    return true;
+  }
+  if (!base::FeatureList::IsEnabled(kSearchNewTabV1Source) || !is_first_run) {
+    // Existing users are not included in the study.
+    return false;
+  }
+  local_state->SetBoolean(prefs::kNewTabV1SourceEnabledAtFirstRun, true);
+  return true;
+}
+
+}  // namespace brave_search::features

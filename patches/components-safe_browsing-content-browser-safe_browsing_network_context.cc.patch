@@ -1,0 +1,13 @@
+diff --git a/components/safe_browsing/content/browser/safe_browsing_network_context.cc b/components/safe_browsing/content/browser/safe_browsing_network_context.cc
+index 2c71195692a745b92763fec21a78cbf6457c662c..39d116bd5424310466fa2aadcf147d3588cbc021 100644
+--- a/components/safe_browsing/content/browser/safe_browsing_network_context.cc
++++ b/components/safe_browsing/content/browser/safe_browsing_network_context.cc
+@@ -81,7 +81,7 @@ class SafeBrowsingNetworkContext::SharedURLLoaderFactory
+       override {
+     DCHECK(content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
+     GetURLLoaderFactory()->CreateLoaderAndStart(
+-        std::move(loader), request_id, options, request, std::move(client),
++        std::move(loader), request_id, options, BRAVE_CREATE_LOADER_AND_START, std::move(client),
+         traffic_annotation);
+   }
+ 

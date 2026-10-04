@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/color/chrome_color_provider_utils.cc b/chrome/browser/ui/color/chrome_color_provider_utils.cc
+index 97e8c9f2663176910217d6de2678bc8dbb347c7a..eea6671da337fdaf22f52a6626661f074b2fa1c0 100644
+--- a/chrome/browser/ui/color/chrome_color_provider_utils.cc
++++ b/chrome/browser/ui/color/chrome_color_provider_utils.cc
+@@ -145,6 +145,7 @@ bool ShouldApplyHighContrastColors(const ui::ColorProviderKey& key) {
+ }
+ 
+ bool ShouldApplyChromeMaterialOverrides(const ui::ColorProviderKey& key) {
++  if ((true)) return false;
+   // Only apply material overrides when not using a custom theme or high
+   // contrast.
+   // TODO(tluk): Switch to using the high contrast configuration for ref tokens

@@ -1,0 +1,151 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
+assert(enable_brave_vpn)
+
+# Browser sources shared between v1 and v2 implementations.
+static_library("browser") {
+  sources = [
+    "brave_vpn_service.cc",
+    "brave_vpn_service.h",
+    "brave_vpn_service_observer.cc",
+    "brave_vpn_service_observer.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/skus/browser",
+    "//components/keyed_service/core",
+    "//mojo/public/cpp/bindings",
+  ]
+
+  deps = [ "//brave/components/brave_vpn/common" ]
+}
+
+static_library("v1_helper") {
+  sources = [
+    "brave_vpn_service_helper.cc",
+    "brave_vpn_service_helper.h",
+  ]
+
+  public_deps = [ "//brave/components/brave_vpn/common/mojom" ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/skus/browser",
+    "//components/prefs",
+  ]
+}
+
+static_library("v1_utils") {
+  sources = [
+    "brave_vpn_metrics.cc",
+    "brave_vpn_metrics.h",
+    "brave_vpn_service_delegate.h",
+    "brave_vpn_service_impl.cc",
+    "brave_vpn_service_impl.h",
+  ]
+
+  public_deps = [
+    ":browser",
+    ":v1_helper",
+    "api",
+    "connection:api",
+    "//base",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/misc_metrics",
+    "//brave/components/skus/browser",
+    "//brave/components/skus/common:mojom",
+    "//brave/components/time_period_storage",
+    "//build:buildflag_header_h",
+    "//components/prefs",
+    "//mojo/public/cpp/bindings",
+    "//services/network/public/cpp",
+  ]
+
+  deps = [
+    "connection",
+    "connection:common",
+    "//brave/components/constants",
+    "//brave/components/p3a_utils",
+    "//brave/components/resources:strings",
+    "//brave/components/version_info",
+    "//components/pref_registry",
+    "//components/version_info",
+    "//ui/base",
+    "//url",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "test/fake_brave_vpn_service.cc",
+    "test/fake_brave_vpn_service.h",
+  ]
+
+  public_deps = [ ":browser" ]
+
+  deps = [ "//brave/components/skus/browser" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "brave_vpn_service_observer_unittest.cc",
+    "brave_vpn_service_unittest.cc",
+  ]
+
+  if (enable_brave_vpn_v1) {
+    sources += [
+      "brave_vpn_metrics_unittest.cc",
+      "brave_vpn_service_impl_unittest.cc",
+    ]
+  }
+
+  deps = [
+    ":browser",
+    ":test_support",
+    "//base",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/constants",
+    "//brave/components/skus/browser",
+    "//brave/components/skus/common",
+    "//brave/components/skus/common:mojom",
+    "//components/prefs:test_support",
+    "//components/sync_preferences:test_support",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//services/network:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+
+  if (enable_brave_vpn_v1) {
+    deps += [
+      ":v1_utils",
+      "api",
+      "api:unit_tests",
+      "//brave/components/brave_vpn/browser/connection:api",
+      "//brave/components/brave_vpn/browser/connection:common",
+      "//brave/components/brave_vpn/browser/connection/wireguard/credentials:unit_tests",
+    ]
+
+    if (!is_android) {
+      deps += [
+        "connection:unit_tests",
+        "//brave/components/brave_vpn/browser/connection/ikev2:sim",
+      ]
+    }
+  }
+}

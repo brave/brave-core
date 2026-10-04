@@ -1,0 +1,12 @@
+diff --git a/components/web_modal/web_contents_modal_dialog_manager.cc b/components/web_modal/web_contents_modal_dialog_manager.cc
+index 94340c80ac8ead843d2070dc816788afd98f9927..8e1fcf307553ebc83db831c53a5d823e4854c177 100644
+--- a/components/web_modal/web_contents_modal_dialog_manager.cc
++++ b/components/web_modal/web_contents_modal_dialog_manager.cc
+@@ -206,6 +206,7 @@ void WebContentsModalDialogManager::OnVisibilityChanged(
+   const content::Visibility previous_web_contents_visibility =
+       web_contents_visibility_;
+   web_contents_visibility_ = visibility;
++  BRAVE_WEB_CONTENTS_MODAL_DIALOG_MANAGER_ON_VISIBILITY_CHANGED
+   if (child_dialogs_.empty()) {
+     return;
+   }

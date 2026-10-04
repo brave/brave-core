@@ -1,0 +1,45 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Remove the obsolete bottom-chin layer field.
+
+      Brave uses no bottom-chin height while the omnibox focus scrim is shown.
+    regex:
+      re_pattern:
+        '^[ \t]*private final BottomControlsStacker mBottomControlsStacker;\n'
+      re_flags: [MULTILINE]
+      replace: ''
+  - description: |-
+      Stop assigning the obsolete bottom-chin layer field.
+
+      Brave uses no bottom-chin height while the omnibox focus scrim is shown.
+    regex:
+      re_pattern:
+        '(public LocationBarFocusScrimHandler\([^)]*\) \{.*?\n)[
+        \t]*mBottomControlsStacker = bottomControlsStacker;\n'
+      re_flags: [DOTALL]
+      replace: '\g<1>'
+  - description: |-
+      Apply the omnibox focus scrim to the navigation bar.
+
+      Brave hides the bottom toolbar while the omnibox is focused. The system
+      navigation area must use the same scrim treatment as the focused page.
+    regex:
+      re_pattern: '^( *)(public LocationBarFocusScrimHandler.*?\{.*?)(\n^\1\})'
+      re_flags: [DOTALL, MULTILINE]
+      replace:
+        '\1\2\n\1\1mScrimModel.set(ScrimProperties.AFFECTS_NAVIGATION_BAR,
+        true);\3'
+  - description: |-
+      Set the omnibox focus scrim bottom margin to zero.
+
+      The focused omnibox hides Brave's bottom toolbar, so it must not reserve
+      the bottom-chin area. This keeps the gesture-navigation region covered.
+    regex:
+      re_pattern: 'mScrimModel\.set\(\s*ScrimProperties\.BOTTOM_MARGIN,.*?\);'
+      re_flags: [DOTALL]
+      replace: 'mScrimModel.set(ScrimProperties.BOTTOM_MARGIN, 0);'

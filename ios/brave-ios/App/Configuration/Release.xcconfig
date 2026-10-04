@@ -1,0 +1,16 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+#include "Base.xcconfig"
+
+MOZ_BUNDLE_DISPLAY_NAME = Brave
+
+// Bundle Identifier
+MOZ_BUNDLE_ID = $(BASE_BUNDLE_ID).browser
+BRAVE_GROUP_ID = group.$(MOZ_BUNDLE_ID)
+
+// Flag to indicate if we want to include the debug settings bundle or not
+INCLUDE_SETTINGS_BUNDLE = NO
+
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = BRAVE_CHANNEL_RELEASE $(brave_swift_active_compliation_conditions)

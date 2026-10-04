@@ -1,0 +1,11 @@
+{%- set enum_type = "%s%s"|format(class_prefix, enum.name) %}
+{%- set box_type = "%sBox"|format(enum_type) %}
+@implementation {{box_type}}
+- (instancetype)initWithValue:({{enum_type}})value
+{
+  if ((self = [super init])) {
+    _value = value;
+  }
+  return self;
+}
+@end

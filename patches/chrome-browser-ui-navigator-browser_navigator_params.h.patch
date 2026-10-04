@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/navigator/browser_navigator_params.h b/chrome/browser/ui/navigator/browser_navigator_params.h
+index 75d739d6e76c2dca8db4fceb59bff0720d069429..21d22d6410134d4061d8528f6016c6db877028f7 100644
+--- a/chrome/browser/ui/navigator/browser_navigator_params.h
++++ b/chrome/browser/ui/navigator/browser_navigator_params.h
+@@ -71,6 +71,9 @@ struct OpenURLParams;
+ 
+ // TODO(thestig): Split or ifdef out more fields that are not used on Android.
+ struct NavigateParams {
++#if BUILDFLAG(ENABLE_CONTAINERS)
++  std::optional<content::StoragePartitionConfig> storage_partition_config;
++#endif
+ #if BUILDFLAG(IS_ANDROID)
+   explicit NavigateParams(
+       std::unique_ptr<content::WebContents> contents_to_insert);

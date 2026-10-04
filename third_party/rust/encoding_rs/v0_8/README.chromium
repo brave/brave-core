@@ -1,0 +1,10 @@
+Name: encoding_rs
+URL: https://crates.io/crates/encoding_rs
+Version: 0.8.35
+Revision: 2fa58aecf537cc76ff52c0eb3d5e9f8fda466844
+License: Apache-2.0, BSD-3-Clause
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: A Gecko-oriented implementation of the Encoding Standard

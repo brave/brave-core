@@ -1,0 +1,848 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Latest News Archives</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">Latest News Archives</h1><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+      
+
+<div class="td-main-content-wrap td-container-wrap">
+    <div class="tdc-content-wrap">
+        <div class="tdc-zone" id="tdi_43"><div class="tdc_zone tdi_44  wpb_row td-pb-row">
+<div class="tdc-row stretch_row_1400 td-stretch-content" id="tdi_45"><div class="vc_row tdi_46  wpb_row td-pb-row">
+<div class="vc_column tdi_48  wpb_column vc_column_container tdc-column td-pb-span12">
+<div class="wpb_wrapper"><div class="wpb_wrapper td_block_empty_space td_block_wrap vc_empty_space tdi_50 " style="height: 32px"></div><div class="td-block td-a-rec td-a-rec-id-custom-spot tdi_51 td_block_template_1">
+
+<div class="eweek-inline-top eweek-target" data-advadstrackbid="1" data-advadstrackid="218081" id="eweek-513875132"><!-- Start: GAM Ad Slot Render | Eweek Inline Top -->
+<div id="inline-top" style="min-width: 300px; width: auto; text-align:center; max-height: 250px; height: auto; background-color: #ffffff; border:0px solid #efefef;">
+
+</div>
+<!-- End: GAM Ad Slot Render | Eweek Inline Top --></div></div><div class="td_block_wrap tdb_breadcrumbs tdi_52 td-pb-border-top td_block_template_1 tdb-breadcrumbs " data-td-block-uid="tdi_52">
+<div class="tdb-block-inner td-fix-index"><p><span><a class="tdb-entry-crumb" href="https://www.eweek.com/" title="">Home</a></span><i class="tdb-bread-sep tdb-bred-no-url-last td-icon-right"></i><span class="tdb-bred-no-url-last">Latest News</span></p></div></div><div class="td_block_wrap tdb_title tdi_53 tdb-category-title td-pb-border-top td_block_template_1" data-td-block-uid="tdi_53">
+<div class="tdb-block-inner td-fix-index"><h1 class="tdb-title-text">Latest News</h1><div></div><div class="tdb-title-line"></div></div></div></div></div></div></div><div class="tdc-row stretch_row_1400 td-stretch-content" id="tdi_54"><div class="vc_row tdi_55  wpb_row td-pb-row">
+<div class="vc_column tdi_57  wpb_column vc_column_container tdc-column td-pb-span9">
+<div class="wpb_wrapper"><div class="td_block_wrap tdb_loop tdi_58 td_with_ajax_pagination td-pb-border-top _ntv_main_well_2ndpos td_block_template_1 tdb-category-loop-posts" data-td-block-uid="tdi_58">
+
+<div class="td_block_inner tdb-block-inner td-fix-index" id="tdi_58">
+        <div class="tdb_module_loop td_module_wrap td-animation-stack ">
+            <div class="td-module-container td-category-pos-image">
+                                    <p><a class="td-image-wrap " href="https://www.eweek.com/security/zscaler-combat-ransomware-landscape/" rel="nofollow bookmark" title="Zscaler Uses Integrated Platform to Combat Ransomware"><span class="entry-thumb td-thumb-css rocket-lazyload" data-bg="https://www.eweek.com/wp-content/uploads/2022/01/E2D8C5FC43DA46C3ABC433A99759EA5F.jpeg" style=""></span></a></p>
+                
+                <div class="td-module-meta-info">
+                                        
+                    <h3 class="entry-title td-module-title"><a href="https://www.eweek.com/security/zscaler-combat-ransomware-landscape/" rel="bookmark" title="Zscaler Uses Integrated Platform to Combat Ransomware">Zscaler Uses Integrated Platform to Combat Ransomware</a></h3>
+                    
+                                            <div class="td-editor-date">
+                                                        
+                                                            <p><span class="td-author-date">
+                                                                        <span class="td-post-author-name"><a href="https://www.eweek.com/author/zeus-kerravala/">Zeus Kerravala</a> <span>-</span> </span>                                    <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2022-08-15T10:24:42-07:00">August 15, 2022</time></span>                                                                                                        </span></p></div>
+                    
+                    <p>Ransomware is on the rise and it’s coming from multiple sources. Additionally, whether the goal is to collect ransom for data or disrupt a...</p>
+                    
+                                    </div>
+            </div>
+        </div>
+
+        
+        <div class="tdb_module_loop td_module_wrap td-animation-stack ">
+            <div class="td-module-container td-category-pos-image">
+                                    <p><a class="td-image-wrap " href="https://www.eweek.com/enterprise-apps/citrix-vs-vmware/" rel="nofollow bookmark" title="Citrix vs. VMware: VDI/DaaS Comparison 2022"><span class="entry-thumb td-thumb-css rocket-lazyload" data-bg="https://www.eweek.com/wp-content/uploads/2022/01/Screen-Shot-2021-12-30-at-12.10.38-PM.png" style=""></span></a></p>
+                
+                <div class="td-module-meta-info">
+                                        
+                    <h3 class="entry-title td-module-title"><a href="https://www.eweek.com/enterprise-apps/citrix-vs-vmware/" rel="bookmark" title="Citrix vs. VMware: VDI/DaaS Comparison 2022">Citrix vs. VMware: VDI/DaaS Comparison 2022</a></h3>
+                    
+                                            <div class="td-editor-date">
+                                                        
+                                                            <p><span class="td-author-date">
+                                                                        <span class="td-post-author-name"><a href="https://www.eweek.com/author/drew-robb/">Drew Robb</a> <span>-</span> </span>                                    <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2022-08-11T12:13:23-07:00">August 11, 2022</time></span>                                                                                                        </span></p></div>
+                    
+                    <p>Citrix and VMware have been among the leading VDI pioneers and are now competing head-to-head in a related market, DaaS. Both vendors are well...</p>
+                    
+                                    </div>
+            </div>
+        </div>
+
+        
+        <div class="tdb_module_loop td_module_wrap td-animation-stack ">
+            <div class="td-module-container td-category-pos-image">
+                                    <p><a class="td-image-wrap " href="https://www.eweek.com/cloud/cloud-q2-22-results/" rel="nofollow bookmark" title="Cloud Earnings Results: Best of Times –&nbsp;or Worst?"><span class="entry-thumb td-thumb-css rocket-lazyload" data-bg="https://www.eweek.com/wp-content/uploads/2021/04/business-meeting-tech-analytics-696x494.jpeg" style=""></span></a></p>
+                
+                <div class="td-module-meta-info">
+                                        
+                    <h3 class="entry-title td-module-title"><a href="https://www.eweek.com/cloud/cloud-q2-22-results/" rel="bookmark" title="Cloud Earnings Results: Best of Times –&nbsp;or Worst?">Cloud Earnings Results: Best of Times –&nbsp;or Worst?</a></h3>
+                    
+                                            <div class="td-editor-date">
+                                                        
+                                                            <p><span class="td-author-date">
+                                                                        <span class="td-post-author-name"><a href="https://www.eweek.com/author/bernard-golden-2/">Bernard Golden</a> <span>-</span> </span>                                    <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2022-08-10T10:00:43-07:00">August 10, 2022</time></span>                                                                                                        </span></p></div>
+                    
+                    <p>Recently, the Big Three of cloud computing – Amazon, Microsoft, and Google, also known as AMG – announced their quarterly results. Their quarter could...</p>
+                    
+                                    </div>
+            </div>
+        </div>
+
+        
+        <div class="tdb_module_loop td_module_wrap td-animation-stack ">
+            <div class="td-module-container td-category-pos-image">
+                                    <p><a class="td-image-wrap " href="https://www.eweek.com/networking/ai-and-cloud-customer-experience/" rel="nofollow bookmark" title="Avaya’s Karen Hardy on AI, Cloud, and Customer Experience"><span class="entry-thumb td-thumb-css rocket-lazyload" data-bg="https://www.eweek.com/wp-content/uploads/2022/01/Fortinet-8903A0DC9DCF46469EDF97C625AC3777.webp" style=""></span></a></p>
+                
+                <div class="td-module-meta-info">
+                                        
+                    <h3 class="entry-title td-module-title"><a href="https://www.eweek.com/networking/ai-and-cloud-customer-experience/" rel="bookmark" title="Avaya’s Karen Hardy on AI, Cloud, and Customer Experience">Avaya’s Karen Hardy on AI, Cloud, and Customer Experience</a></h3>
+                    
+                                            <div class="td-editor-date">
+                                                        
+                                                            <p><span class="td-author-date">
+                                                                        <span class="td-post-author-name"><a href="https://www.eweek.com/author/zeus-kerravala/">Zeus Kerravala</a> <span>-</span> </span>                                    <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2022-08-09T10:09:14-07:00">August 9, 2022</time></span>                                                                                                        </span></p></div>
+                    
+                    <p>The pandemic has permanently changed the way people work, as well as the role that communication and collaboration technology plays in our lives. Clearly,...</p>
+                    
+                                    </div>
+            </div>
+        </div>
+
+        
+        <div class="tdb_module_loop td_module_wrap td-animation-stack ">
+            <div class="td-module-container td-category-pos-image">
+                                    <p><a class="td-image-wrap " href="https://www.eweek.com/security/aws-cloud-security/" rel="nofollow bookmark" title="AWS’s Ryan Orsi on Cloud Security"><span class="entry-thumb td-thumb-css rocket-lazyload" data-bg="https://www.eweek.com/wp-content/uploads/2022/08/eSPEAKS-thumbnail-2-696x392.png" style=""></span><span class="td-video-play-ico"><i class="td-icon-video-thumb-play"></i></span></a></p>
+                
+                <div class="td-module-meta-info">
+                                        
+                    <h3 class="entry-title td-module-title"><a href="https://www.eweek.com/security/aws-cloud-security/" rel="bookmark" title="AWS’s Ryan Orsi on Cloud Security">AWS’s Ryan Orsi on Cloud Security</a></h3>
+                    
+                                            <div class="td-editor-date">
+                                                        
+                                                            <p><span class="td-author-date">
+                                                                        <span class="td-post-author-name"><a href="https://www.eweek.com/author/jmaguire/">James Maguire</a> <span>-</span> </span>                                    <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2022-08-05T08:43:44-07:00">August 5, 2022</time></span>                                                                                                        </span></p></div>
+                    
+                    <p>I spoke with Ryan Orsi, Worldwide Partner Lead, Security, at AWS, about handling cloud security issues, and news updates on AWS cloud security.
+
+Among the...</p>
+                    
+                                    </div>
+            </div>
+        </div>
+
+        
+        <div class="tdb_module_loop td_module_wrap td-animation-stack ">
+            <div class="td-module-container td-category-pos-image">
+                                    <p><a class="td-image-wrap " href="https://www.eweek.com/big-data-and-analytics/automation-anywhere-ceo/" rel="nofollow bookmark" title="Automation Anywhere CEO Mihir Shukla on Intelligent Automation"><span class="entry-thumb td-thumb-css rocket-lazyload" data-bg="https://www.eweek.com/wp-content/uploads/2022/08/eSPEAKS-thumbnail-1-696x392.png" style=""></span><span class="td-video-play-ico"><i class="td-icon-video-thumb-play"></i></span></a></p>
+                
+                <div class="td-module-meta-info">
+                                        
+                    <h3 class="entry-title td-module-title"><a href="https://www.eweek.com/big-data-and-analytics/automation-anywhere-ceo/" rel="bookmark" title="Automation Anywhere CEO Mihir Shukla on Intelligent Automation">Automation Anywhere CEO Mihir Shukla on Intelligent Automation</a></h3>
+                    
+                                            <div class="td-editor-date">
+                                                        
+                                                            <p><span class="td-author-date">
+                                                                        <span class="td-post-author-name"><a href="https://www.eweek.com/author/jmaguire/">James Maguire</a> <span>-</span> </span>                                    <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2022-08-05T08:07:43-07:00">August 5, 2022</time></span>                                                                                                        </span></p></div>
+                    
+                    <p>I spoke with Mihir Shukla, CEO and Co-Founder of Automation Anywhere, about the RPA market and the challenges and potential of intelligent automation.
+
+Among the...</p>
+                    
+                                    </div>
+            </div>
+        </div>
+
+        
+        <div class="tdb_module_loop td_module_wrap td-animation-stack ">
+            <div class="td-module-container td-category-pos-image">
+                                    <p><a class="td-image-wrap " href="https://www.eweek.com/enterprise-apps/sisense-vs-tableau/" rel="nofollow bookmark" title="Sisense vs. Tableau: Analytics Software Comparison 2022"><span class="entry-thumb td-thumb-css rocket-lazyload" data-bg="https://www.eweek.com/wp-content/uploads/2022/01/Poly.headset-1-696x520.jpg" style=""></span></a></p>
+                
+                <div class="td-module-meta-info">
+                                        
+                    <h3 class="entry-title td-module-title"><a href="https://www.eweek.com/enterprise-apps/sisense-vs-tableau/" rel="bookmark" title="Sisense vs. Tableau: Analytics Software Comparison 2022">Sisense vs. Tableau: Analytics Software Comparison 2022</a></h3>
+                    
+                                            <div class="td-editor-date">
+                                                        
+                                                            <p><span class="td-author-date">
+                                                                        <span class="td-post-author-name"><a href="https://www.eweek.com/author/drew-robb/">Drew Robb</a> <span>-</span> </span>                                    <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2022-08-01T11:04:41-07:00">August 1, 2022</time></span>                                                                                                        </span></p></div>
+                    
+                    <p>Tableau and Sisense are two well respected business intelligence and data analytics platforms. Both were scored well by Gartner in its latest “Magic Quadrant...</p>
+                    
+                                    </div>
+            </div>
+        </div>
+
+        
+        <div class="tdb_module_loop td_module_wrap td-animation-stack ">
+            <div class="td-module-container td-category-pos-image">
+                                    <p><a class="td-image-wrap " href="https://www.eweek.com/security/security-startups-it-infrastructure/" rel="nofollow bookmark" title="Security Startups Focus on 3 Key Areas"><span class="entry-thumb td-thumb-css rocket-lazyload" data-bg="https://www.eweek.com/wp-content/uploads/2022/01/Enzoic-enzoic2-696x522.jpg" style=""></span></a></p>
+                
+                <div class="td-module-meta-info">
+                                        
+                    <h3 class="entry-title td-module-title"><a href="https://www.eweek.com/security/security-startups-it-infrastructure/" rel="bookmark" title="Security Startups Focus on 3 Key Areas">Security Startups Focus on 3 Key Areas</a></h3>
+                    
+                                            <div class="td-editor-date">
+                                                        
+                                                            <p><span class="td-author-date">
+                                                                        <span class="td-post-author-name"><a href="https://www.eweek.com/author/eweek-editors/">eWEEK EDITORS</a> <span>-</span> </span>                                    <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2022-07-29T14:58:39-07:00">July 29, 2022</time></span>                                                                                                        </span></p></div>
+                    
+                    <p>The RSA Conference is the industry’s biggest cybersecurity show, and it hosts the premier startup competition, Innovation Sandbox. In the competition, 10 entrepreneurs pitch...</p>
+                    
+                                    </div>
+            </div>
+        </div>
+
+        
+        <div class="tdb_module_loop td_module_wrap td-animation-stack ">
+            <div class="td-module-container td-category-pos-image">
+                                    <p><a class="td-image-wrap " href="https://www.eweek.com/cloud/overcoming-multicloud-challenges/" rel="nofollow bookmark" title="eWEEK TweetChat, August 16: Overcoming Multicloud Challenges"><span class="entry-thumb td-thumb-css rocket-lazyload" data-bg="https://www.eweek.com/wp-content/uploads/2022/01/Fortinet-fortinet-thumb2-6.15.21-696x522.jpeg" style=""></span></a></p>
+                
+                <div class="td-module-meta-info">
+                                        
+                    <h3 class="entry-title td-module-title"><a href="https://www.eweek.com/cloud/overcoming-multicloud-challenges/" rel="bookmark" title="eWEEK TweetChat, August 16: Overcoming Multicloud Challenges">eWEEK TweetChat, August 16: Overcoming Multicloud Challenges</a></h3>
+                    
+                                            <div class="td-editor-date">
+                                                        
+                                                            <p><span class="td-author-date">
+                                                                        <span class="td-post-author-name"><a href="https://www.eweek.com/author/jmaguire/">James Maguire</a> <span>-</span> </span>                                    <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2022-07-28T09:18:30-07:00">July 28, 2022</time></span>                                                                                                        </span></p></div>
+                    
+                    <p>On Tuesday, August 16, at 11 AM PT, @eWEEKNews will host its monthly #eWEEKChat. The topic will be Overcoming Multicloud Challenges, and it will...</p>
+                    
+                                    </div>
+            </div>
+        </div>
+
+        
+        <div class="tdb_module_loop td_module_wrap td-animation-stack ">
+            <div class="td-module-container td-category-pos-image">
+                                    <p><a class="td-image-wrap " href="https://www.eweek.com/mobile/dells-latitude-business-endpoints/" rel="nofollow bookmark" title="Dell’s Latitude 9330: Adaptability in Business Endpoints"><span class="entry-thumb td-thumb-css rocket-lazyload" data-bg="https://www.eweek.com/wp-content/uploads/2022/01/BMC-DBA-Image01-800x800-1-696x696.jpg" style=""></span></a></p>
+                
+                <div class="td-module-meta-info">
+                                        
+                    <h3 class="entry-title td-module-title"><a href="https://www.eweek.com/mobile/dells-latitude-business-endpoints/" rel="bookmark" title="Dell’s Latitude 9330: Adaptability in Business Endpoints">Dell’s Latitude 9330: Adaptability in Business Endpoints</a></h3>
+                    
+                                            <div class="td-editor-date">
+                                                        
+                                                            <p><span class="td-author-date">
+                                                                        <span class="td-post-author-name"><a href="https://www.eweek.com/author/charles-king/">Charles King</a> <span>-</span> </span>                                    <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2022-07-28T09:06:31-07:00">July 28, 2022</time></span>                                                                                                        </span></p></div>
+                    
+                    <p>Enterprises worldwide have clearly faced a wide array of serious business, logistical and operational challenges during the past few years. Equally undeniable is the...</p>
+                    
+                                    </div>
+            </div>
+        </div>
+
+        </div><p><a aria-label="prev-page" class="td-ajax-prev-page ajax-page-disabled" data-td_block_id="tdi_58" href="#" id="prev-page-tdi_58"><i class="td-next-prev-icon td-icon-font td-icon-menu-left"></i></a><a aria-label="next-page" class="td-ajax-next-page" data-td_block_id="tdi_58" href="#" id="next-page-tdi_58"><i class="td-next-prev-icon td-icon-font td-icon-menu-right"></i></a></p></div></div></div><div class="vc_column tdi_60  wpb_column vc_column_container tdc-column td-pb-span3 td-is-sticky">
+<div class="wpb_wrapper"><div class="td_block_wrap td_flex_block_1 tdi_61 td-pb-border-top td-subheader-flex _ntv_most_popular_3rdpos td_block_template_14 td_flex_block" data-td-block-uid="tdi_61">
+
+<div class="td-block-title-wrap"><h4 class="td-block-title"><span>Most Popular Articles</span></h4></div><div class="td_block_inner td-mc1-wrap" id="tdi_61">
+        <div class="td_module_flex td_module_flex_1 td_module_wrap td-animation-stack ">
+            <div class="td-module-container td-category-pos-image">
+                                    <div class="td-image-container">
+                        <p><a class="td-post-category" href="https://www.eweek.com/enterprise-apps/">Applications</a></p><p><a class="td-image-wrap " href="https://www.eweek.com/enterprise-apps/rethinking-customer-experience-in-post-pandemic-era/" rel="nofollow bookmark" title="Rethinking Customer Experience in Post-Pandemic Era"><span class="entry-thumb td-thumb-css rocket-lazyload" data-bg="https://www.eweek.com/wp-content/uploads/2021/02/pexels-torsten-dettlaff-54284-696x464.jpg" style=""></span></a></p>                                            </div>
+                
+                <div class="td-module-meta-info">
+                                        
+                    <h3 class="entry-title td-module-title"><a href="https://www.eweek.com/enterprise-apps/rethinking-customer-experience-in-post-pandemic-era/" rel="bookmark" title="Rethinking Customer Experience in Post-Pandemic Era">Rethinking Customer Experience in Post-Pandemic Era</a></h3>
+                    
+                                            <div class="td-editor-date">
+                                                        
+                                                            <p><span class="td-author-date">
+                                                                        <span class="td-post-author-name"><a href="https://www.eweek.com/author/zeus-kerravala/">Zeus Kerravala</a> <span>-</span> </span>                                    <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2021-02-15T12:11:31-08:00">February 15, 2021</time></span>                                                                        <span class="td-module-comments"><a href="https://www.eweek.com/enterprise-apps/rethinking-customer-experience-in-post-pandemic-era/#respond">0</a></span>                                </span></p></div>
+                    
+                    <p>Customer experience (CX) became the top brand differentiator in 2018, outpacing price, product quality and everything else. Businesses that offer a superior and differentiated...</p>
+                    
+                                        <div class="td-read-more">
+                        <p><a href="https://www.eweek.com/enterprise-apps/rethinking-customer-experience-in-post-pandemic-era/">Read more</a></p></div>
+                                    </div>
+            </div>
+        </div>
+
+        
+        <div class="td_module_flex td_module_flex_1 td_module_wrap td-animation-stack ">
+            <div class="td-module-container td-category-pos-image">
+                                    <div class="td-image-container">
+                        <p><a class="td-post-category" href="https://www.eweek.com/news/">Latest News</a></p><p><a class="td-image-wrap " href="https://www.eweek.com/storage/ibm-storage-squeezing-enterprise-value-into-smaller-form-factors/" rel="nofollow bookmark" title="IBM Storage: Squeezing Enterprise Value into Smaller Form Factors"><span class="entry-thumb td-thumb-css rocket-lazyload" data-bg="https://www.eweek.com/wp-content/uploads/2021/02/IBM.Storage-696x464.jpg" style=""></span></a></p>                                            </div>
+                
+                <div class="td-module-meta-info">
+                                        
+                    <h3 class="entry-title td-module-title"><a href="https://www.eweek.com/storage/ibm-storage-squeezing-enterprise-value-into-smaller-form-factors/" rel="bookmark" title="IBM Storage: Squeezing Enterprise Value into Smaller Form Factors">IBM Storage: Squeezing Enterprise Value into Smaller...</a></h3>
+                    
+                                            <div class="td-editor-date">
+                                                        
+                                                            <p><span class="td-author-date">
+                                                                        <span class="td-post-author-name"><a href="https://www.eweek.com/author/charles-king/">Charles King</a> <span>-</span> </span>                                    <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2021-02-09T14:36:42-08:00">February 9, 2021</time></span>                                                                        <span class="td-module-comments"><a href="https://www.eweek.com/storage/ibm-storage-squeezing-enterprise-value-into-smaller-form-factors/#respond">0</a></span>                                </span></p></div>
+                    
+                    <p>The trickle-down effect of enterprise IT is as old as business technology. Vendors have long aimed new innovations at enterprises whose deep pockets and...</p>
+                    
+                                        <div class="td-read-more">
+                        <p><a href="https://www.eweek.com/storage/ibm-storage-squeezing-enterprise-value-into-smaller-form-factors/">Read more</a></p></div>
+                                    </div>
+            </div>
+        </div>
+
+        
+        <div class="td_module_flex td_module_flex_1 td_module_wrap td-animation-stack ">
+            <div class="td-module-container td-category-pos-image">
+                                    <div class="td-image-container">
+                        <p><a class="td-post-category" href="https://www.eweek.com/cloud/">Cloud</a></p><p><a class="td-image-wrap " href="https://www.eweek.com/cloud/how-box-brings-value-adds-to-enterprise-collaboration/" rel="nofollow bookmark" title="How Box Brings Value-Adds to Enterprise Collaboration"><span class="entry-thumb td-thumb-css rocket-lazyload" data-bg="https://www.eweek.com/wp-content/uploads/2021/02/Box.logo_-696x464.jpg" style=""></span></a></p>                                            </div>
+                
+                <div class="td-module-meta-info">
+                                        
+                    <h3 class="entry-title td-module-title"><a href="https://www.eweek.com/cloud/how-box-brings-value-adds-to-enterprise-collaboration/" rel="bookmark" title="How Box Brings Value-Adds to Enterprise Collaboration">How Box Brings Value-Adds to Enterprise Collaboration</a></h3>
+                    
+                                            <div class="td-editor-date">
+                                                        
+                                                            <p><span class="td-author-date">
+                                                                        <span class="td-post-author-name"><a href="https://www.eweek.com/author/zeus-kerravala/">Zeus Kerravala</a> <span>-</span> </span>                                    <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2021-02-07T14:25:18-08:00">February 7, 2021</time></span>                                                                        <span class="td-module-comments"><a href="https://www.eweek.com/cloud/how-box-brings-value-adds-to-enterprise-collaboration/#respond">0</a></span>                                </span></p></div>
+                    
+                    <p>It’s fair to say the COVID-19 pandemic has changed the world in ways we could never have imagined. In-store shopping has been replaced with...</p>
+                    
+                                        <div class="td-read-more">
+                        <p><a href="https://www.eweek.com/cloud/how-box-brings-value-adds-to-enterprise-collaboration/">Read more</a></p></div>
+                                    </div>
+            </div>
+        </div>
+
+        
+        <div class="td_module_flex td_module_flex_1 td_module_wrap td-animation-stack ">
+            <div class="td-module-container td-category-pos-image">
+                                    <div class="td-image-container">
+                        <p><a class="td-post-category" href="https://www.eweek.com/it-management/">IT Management</a></p><p><a class="td-image-wrap " href="https://www.eweek.com/it-management/eweekchat-feb-9-down-the-batch-trends-in-data-orchestration/" rel="nofollow bookmark" title="#eWEEKchat Feb. 9: Down the Batch: Trends in Data Orchestration"><span class="entry-thumb td-thumb-css rocket-lazyload" data-bg="https://www.eweek.com/wp-content/uploads/2021/02/eWEEKchat2-new_1-2-696x464.jpg" style=""></span></a></p>                                            </div>
+                
+                <div class="td-module-meta-info">
+                                        
+                    <h3 class="entry-title td-module-title"><a href="https://www.eweek.com/it-management/eweekchat-feb-9-down-the-batch-trends-in-data-orchestration/" rel="bookmark" title="#eWEEKchat Feb. 9: Down the Batch: Trends in Data Orchestration">#eWEEKchat Feb. 9: Down the Batch: Trends...</a></h3>
+                    
+                                            <div class="td-editor-date">
+                                                        
+                                                            <p><span class="td-author-date">
+                                                                        <span class="td-post-author-name"><a href="https://www.eweek.com/author/cpreimesberger/">Chris Preimesberger</a> <span>-</span> </span>                                    <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2021-02-03T14:14:30-08:00">February 3, 2021</time></span>                                                                        <span class="td-module-comments"><a href="https://www.eweek.com/it-management/eweekchat-feb-9-down-the-batch-trends-in-data-orchestration/#respond">0</a></span>                                </span></p></div>
+                    
+                    <p>On Tuesday, Feb. 9, at 11 a.m. PST/2 p.m. EST/7 p.m. GMT, @eWEEKNews will host its 95th monthly #eWEEKchat. The topic will be "Down...</p>
+                    
+                                        <div class="td-read-more">
+                        <p><a href="https://www.eweek.com/it-management/eweekchat-feb-9-down-the-batch-trends-in-data-orchestration/">Read more</a></p></div>
+                                    </div>
+            </div>
+        </div>
+
+        
+        <div class="td_module_flex td_module_flex_1 td_module_wrap td-animation-stack ">
+            <div class="td-module-container td-category-pos-image">
+                                    <div class="td-image-container">
+                        <p><a class="td-post-category" href="https://www.eweek.com/news/">Latest News</a></p><p><a class="td-image-wrap " href="https://www.eweek.com/networking/top-data-center-switch-companies/" rel="nofollow bookmark" title="Top Data Center Switch Companies"><span class="entry-thumb td-thumb-css rocket-lazyload" data-bg="https://www.eweek.com/wp-content/uploads/2021/02/1088_DataCenterSwitch.PO_-696x464.png" style=""></span></a></p>                                            </div>
+                
+                <div class="td-module-meta-info">
+                                        
+                    <h3 class="entry-title td-module-title"><a href="https://www.eweek.com/networking/top-data-center-switch-companies/" rel="bookmark" title="Top Data Center Switch Companies">Top Data Center Switch Companies</a></h3>
+                    
+                                            <div class="td-editor-date">
+                                                        
+                                                            <p><span class="td-author-date">
+                                                                        <span class="td-post-author-name"><a href="https://www.eweek.com/author/cpreimesberger/">Chris Preimesberger</a> <span>-</span> </span>                                    <span class="td-post-date"><time class="entry-date updated td-module-date" datetime="2021-02-02T14:08:19-08:00">February 2, 2021</time></span>                                                                        <span class="td-module-comments"><a href="https://www.eweek.com/networking/top-data-center-switch-companies/#respond">0</a></span>                                </span></p></div>
+                    
+                    <p>The data network was once an IT resource to which few business leaders paid attention. Most people simply considered the network to be the...</p>
+                    
+                                        <div class="td-read-more">
+                        <p><a href="https://www.eweek.com/networking/top-data-center-switch-companies/">Read more</a></p></div>
+                                    </div>
+            </div>
+        </div>
+
+        </div></div><div class="td-block td-a-rec td-a-rec-id-custom-spot tdi_62 td_block_template_1">
+
+<div class="eweek-sticky-rail eweek-target" data-advadstrackbid="1" data-advadstrackid="218079" id="eweek-1208165042"><!-- Start: GAM Ad Slot Render | Eweek Sticky Rail -->
+<div id="sticky-rail" style="min-width: 160px; width: auto; text-align:center; max-height: 600px; height: auto; background-color: #ffffff; border:0px solid #efefef;">
+
+</div>
+<!-- End: GAM Ad Slot Render | Eweek Sticky Rail --></div></div></div></div></div></div><div class="tdc-row stretch_row_1400 td-stretch-content" id="tdi_63"><div class="vc_row tdi_64  wpb_row td-pb-row">
+<div class="vc_column tdi_66  wpb_column vc_column_container tdc-column td-pb-span12">
+<div class="wpb_wrapper"></div></div></div></div></div></div>    </div>
+</div>
+<footer>
+  </footer></body>

@@ -1,0 +1,23 @@
+[package]
+name = "halo2_legacy_pdqsort"
+version = "0.1.0"
+authors = [
+    "Daira Emma Hopwood <daira@jacaranda.org>",
+    "Sean Bowe <sean@electriccoin.co>",
+    "Jack Grigg <jack@electriccoin.co>",
+    "Kris Nuttycombe <kris@electriccoin.co>",
+    "Greg Pfeil <greg@electriccoin.co>",
+]
+edition = "2021"
+description = """
+A copy of the core::slice::sort module from the Rust 1.56.1 standard library, modified to behave the same on 32-bit platforms as on 64-bit.
+This is intended to work around a determinism bug in the halo2_proofs crate.
+"""
+repository = "https://github.com/zcash/halo2_legacy_pdqsort"
+license = "MIT OR Apache-2.0"
+categories = ["algorithms"]
+
+[dependencies]
+
+[dev-dependencies]
+rand = "0.8"

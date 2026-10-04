@@ -1,0 +1,182 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/history_embeddings/brave_history_embeddings_status.h"
+
+#include <memory>
+#include <utility>
+
+#include "base/test/scoped_feature_list.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/local_ai/core/pref_names.h"
+#include "chrome/browser/prefs/browser_prefs.h"
+#include "chrome/test/base/testing_browser_process.h"
+#include "chrome/test/base/testing_profile.h"
+#include "components/history_embeddings/core/history_embeddings_features.h"
+#include "components/prefs/pref_service.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "content/public/test/browser_task_environment.h"
+#include "testing/gtest/include/gtest/gtest.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+namespace history_embeddings {
+
+// The setting is captured at profile setup, so each test picks the value the
+// embedding services would have been built with before building `profile_`.
+// `feature_list_` is a member so the feature is already on by then — otherwise
+// the status would read off for two reasons at once.
+class BraveHistoryEmbeddingsStatusTest : public testing::Test {
+ protected:
+  void BuildProfileWithSetting(bool enabled) {
+    auto prefs =
+        std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
+    RegisterUserProfilePrefs(prefs->registry());
+    prefs->SetBoolean(local_ai::prefs::kBraveHistoryEmbeddingsEnabled, enabled);
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    if (seed_send_page_content_) {
+      prefs->SetBoolean(
+          ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent, true);
+    }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+    TestingProfile::Builder builder;
+    builder.SetPrefService(std::move(prefs));
+    profile_ = builder.Build();
+
+    // Stands in for BraveProfileManager::InitProfileUserPrefs(), which
+    // TestingProfile skips without a TestingProfileManager.
+    BraveHistoryEmbeddingsStatus::CreateForProfile(profile_.get(),
+                                                   local_state());
+  }
+
+  void SetSemanticHistorySearchEnabled(bool enabled) {
+    profile_->GetPrefs()->SetBoolean(
+        local_ai::prefs::kBraveHistoryEmbeddingsEnabled, enabled);
+  }
+
+  PrefService* local_state() {
+    return TestingBrowserProcess::GetGlobal()->GetTestingLocalState();
+  }
+
+  void SetLocalAiEnabled(bool enabled) {
+    local_state()->SetBoolean(local_ai::prefs::kBraveLocalAIEnabled, enabled);
+  }
+
+  BraveHistoryEmbeddingsStatus* status() {
+    return BraveHistoryEmbeddingsStatus::GetForProfile(profile_.get());
+  }
+
+  bool seed_send_page_content_ = false;
+  base::test::ScopedFeatureList feature_list_{kHistoryEmbeddings};
+  content::BrowserTaskEnvironment task_environment_;
+  std::unique_ptr<TestingProfile> profile_;
+};
+
+TEST_F(BraveHistoryEmbeddingsStatusTest, CapturesTheSettingAtProfileSetup) {
+  BuildProfileWithSetting(false);
+
+  EXPECT_FALSE(status()->IsEnabled());
+
+  BuildProfileWithSetting(true);
+
+  EXPECT_TRUE(status()->IsEnabled());
+}
+
+TEST_F(BraveHistoryEmbeddingsStatusTest, HoldsTheSettingWhenThePrefTurnsOn) {
+  BuildProfileWithSetting(false);
+
+  SetSemanticHistorySearchEnabled(true);
+
+  // The services are still running with the setting they were built with.
+  EXPECT_FALSE(status()->IsEnabled());
+}
+
+TEST_F(BraveHistoryEmbeddingsStatusTest, HoldsTheSettingWhenThePrefTurnsOff) {
+  BuildProfileWithSetting(true);
+
+  SetSemanticHistorySearchEnabled(false);
+
+  EXPECT_TRUE(status()->IsEnabled());
+}
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+
+// Tab Focus can only send page content while this index exists, so turning the
+// index off has to withdraw that consent rather than park it until the index
+// comes back.
+TEST_F(BraveHistoryEmbeddingsStatusTest,
+       TurningSemanticHistorySearchOffWithdrawsSendPageContent) {
+  BuildProfileWithSetting(true);
+  profile_->GetPrefs()->SetBoolean(
+      ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent, true);
+
+  SetSemanticHistorySearchEnabled(false);
+
+  EXPECT_FALSE(profile_->GetPrefs()->GetBoolean(
+      ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent));
+}
+
+TEST_F(BraveHistoryEmbeddingsStatusTest,
+       TurningSemanticHistorySearchOnLeavesSendPageContent) {
+  BuildProfileWithSetting(false);
+  profile_->GetPrefs()->SetBoolean(
+      ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent, true);
+
+  SetSemanticHistorySearchEnabled(true);
+
+  EXPECT_TRUE(profile_->GetPrefs()->GetBoolean(
+      ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent));
+}
+
+// The Local AI master switch only takes effect on relaunch, so a profile can
+// start with the index unavailable and no pref change to observe.
+TEST_F(BraveHistoryEmbeddingsStatusTest,
+       StartingWithTheIndexUnavailableWithdrawsSendPageContent) {
+  SetLocalAiEnabled(false);
+  seed_send_page_content_ = true;
+
+  BuildProfileWithSetting(true);
+
+  EXPECT_FALSE(profile_->GetPrefs()->GetBoolean(
+      ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent));
+}
+
+// The Local AI master switch turns the index off just as surely, so it has to
+// withdraw the consent too. It lives in local state, hence its own registrar.
+TEST_F(BraveHistoryEmbeddingsStatusTest,
+       TurningOffLocalAiWithdrawsSendPageContent) {
+  BuildProfileWithSetting(true);
+  profile_->GetPrefs()->SetBoolean(
+      ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent, true);
+
+  SetLocalAiEnabled(false);
+
+  EXPECT_FALSE(profile_->GetPrefs()->GetBoolean(
+      ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent));
+}
+
+// The pref is only registered when the AI Chat feature is on at runtime, and
+// touching an unregistered pref is fatal, so the observer has to check the
+// feature rather than the buildflag.
+TEST_F(BraveHistoryEmbeddingsStatusTest,
+       TurningSemanticHistorySearchOffWithoutAIChatLeavesUnregisteredPref) {
+  base::test::ScopedFeatureList disable_ai_chat;
+  disable_ai_chat.InitAndDisableFeature(ai_chat::features::kAIChat);
+  BuildProfileWithSetting(true);
+  ASSERT_FALSE(profile_->GetPrefs()->FindPreference(
+      ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent));
+
+  SetSemanticHistorySearchEnabled(false);
+
+  EXPECT_TRUE(status()->NeedsRestart());
+}
+
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+}  // namespace history_embeddings

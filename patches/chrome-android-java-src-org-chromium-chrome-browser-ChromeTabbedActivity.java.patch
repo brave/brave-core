@@ -1,0 +1,31 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
+index 6a9d0fadbca5a7ad98cfce597bf925bcfad5e230..8507425f10c4d4f57822f6b0250f830e4942345e 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
+@@ -981,6 +981,14 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
+ 
+                         private void closeIfNoTabsAndHomepageEnabled(
+                                 boolean isPendingClosure, boolean shouldRemoveWindowWithZeroTabs) {
++                            if (getTabModelSelector().getTotalTabCount() == 0) {
++                                shouldRemoveWindowWithZeroTabs = shouldRemoveWindowWithZeroTabs && org.chromium.chrome.browser.partnercustomizations.CloseBraveManager.shouldCloseAppWithZeroTabs();
++                            }
++                            closeIfNoTabsAndHomepageEnabled_ChromiumImpl(isPendingClosure, shouldRemoveWindowWithZeroTabs);
++                        }
++
++                        private void closeIfNoTabsAndHomepageEnabled_ChromiumImpl(
++                                boolean isPendingClosure, boolean shouldRemoveWindowWithZeroTabs) {
+                             if (getTabModelSelector().getTotalTabCount() == 0) {
+                                 if (shouldRemoveWindowWithZeroTabs) {
+                                     mMultiInstanceManager.closeChromeWindowIfEmpty(mWindowId);
+@@ -3922,6 +3930,11 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
+                 new TabModelSelectorObserver() {
+                     @Override
+                     public void onTabStateInitialized() {
++                        onTabStateInitialized_ChromiumImpl();
++                        onTabStateInitializedHandler();
++                    }
++
++                    private void onTabStateInitialized_ChromiumImpl() {
+                         if (mMultiInstanceManager != null) {
+                             mMultiInstanceManager.onTabStateInitialized();
+                         }

@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_group_highlight.h b/chrome/browser/ui/views/tabs/tab_group_highlight.h
+index b973394a2f28779ef8c7fe4a4ca7c094291aa98b..a7c42323ea934f399a3a79fc13a0d9e55c5a6096 100644
+--- a/chrome/browser/ui/views/tabs/tab_group_highlight.h
++++ b/chrome/browser/ui/views/tabs/tab_group_highlight.h
+@@ -32,8 +32,9 @@ class TabGroupHighlight : public views::View {
+   void OnPaint(gfx::Canvas* canvas) override;
+ 
+  private:
++  friend class BraveTabGroupHighlight;
+   // Returns the highlight shape, which immitates the tab highlight shape.
+-  SkPath GetPath() const;
++  virtual SkPath GetPath() const;
+ 
+   const raw_ptr<TabGroupViews> tab_group_views_;
+   const tab_groups::TabGroupId group_;

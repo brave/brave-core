@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the Brave grdp files to the WebUI resources.
+    add_literal_to_list:
+      target: build_grd
+      list_name: grdp_files
+      literal: brave_resources_extra_grdps
+      import: //brave/ui/webui/resources/sources.gni
+
+  - description: Depend on the targets producing the Brave grdp files.
+    add_literal_to_list:
+      target: build_grd
+      list_name: public_deps
+      literal: brave_resources_extra_grdps_deps
+      import: //brave/ui/webui/resources/sources.gni

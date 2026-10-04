@@ -1,0 +1,9 @@
+Name: url
+URL: https://crates.io/crates/url
+Version: 2.5.0
+License: Apache-2.0
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: URL library for Rust, based on the WHATWG URL Standard

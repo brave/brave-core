@@ -1,0 +1,36 @@
+diff --git a/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc b/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
+index 3a6e46a39f4a5687fa7a781d96433251f9dda581..0a786024ed659f28889298ce196dcf91a371cf8c 100644
+--- a/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
++++ b/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
+@@ -125,6 +125,7 @@ void RealtimeAnalyser::GetFloatFrequencyData(DOMFloat32Array* destination_array,
+   const size_t len = std::min(source_length, destination_array->length());
+   if (len > 0) {
+     base::span<float> destination = destination_array->AsSpan();
++    BRAVE_REALTIMEANALYSER_CONVERTFLOATTODB
+     for (unsigned i = 0; i < len; ++i) {
+       const float linear_value = magnitude_buffer_[i];
+       const double db_mag = audio_utilities::LinearToDecibels(linear_value);
+@@ -158,6 +159,7 @@ void RealtimeAnalyser::GetByteFrequencyData(DOMUint8Array* destination_array,
+     const double min_decibels = min_decibels_;
+ 
+     base::span<unsigned char> destination = destination_array->AsSpan();
++    BRAVE_REALTIMEANALYSER_CONVERTTOBYTEDATA
+     for (unsigned i = 0; i < len; ++i) {
+       const float linear_value = magnitude_buffer_[i];
+       const double db_mag = audio_utilities::LinearToDecibels(linear_value);
+@@ -189,6 +191,7 @@ void RealtimeAnalyser::GetFloatTimeDomainData(
+     const unsigned write_index = GetWriteIndex();
+ 
+     base::span<float> destination = destination_array->AsSpan();
++    BRAVE_REALTIMEANALYSER_GETFLOATTIMEDOMAINDATA
+     for (unsigned i = 0; i < len; ++i) {
+       // Buffer access is protected due to modulo operation.
+       float value =
+@@ -214,6 +217,7 @@ void RealtimeAnalyser::GetByteTimeDomainData(DOMUint8Array* destination_array) {
+     const unsigned write_index = GetWriteIndex();
+ 
+     base::span<unsigned char> destination = destination_array->AsSpan();
++    BRAVE_REALTIMEANALYSER_GETBYTETIMEDOMAINDATA
+     for (unsigned i = 0; i < len; ++i) {
+       // Buffer access is protected due to modulo operation.
+       const float value =

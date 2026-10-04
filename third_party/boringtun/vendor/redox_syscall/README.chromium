@@ -1,0 +1,13 @@
+Name: redox_syscall
+Short Name: redox_syscall
+URL: https://gitlab.redox-os.org/redox-os/syscall
+Version: 0.5.18
+License: MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/redox_syscall.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

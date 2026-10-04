@@ -1,0 +1,42 @@
+lints.workspace = true
+
+[package]
+name = "gix-odb"
+version = "0.71.1"
+repository = "https://github.com/GitoxideLabs/gitoxide"
+authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
+license = "MIT OR Apache-2.0"
+description = "Implements various git object databases"
+edition = "2021"
+include = ["src/**/*", "LICENSE-*"]
+rust-version = "1.82"
+autotests = false
+
+[lib]
+doctest = false
+
+[features]
+## Data structures implement `serde::Serialize` and `serde::Deserialize`.
+serde = ["dep:serde", "gix-hash/serde", "gix-object/serde", "gix-pack/serde"]
+
+[dependencies]
+gix-features = { version = "^0.44.1", path = "../gix-features", features = ["walkdir", "zlib", "crc32"] }
+gix-hashtable = { version = "^0.10.0", path = "../gix-hashtable" }
+gix-hash = { version = "^0.20.1", path = "../gix-hash" }
+gix-date = { version = "^0.10.7", path = "../gix-date" }
+gix-path = { version = "^0.10.21", path = "../gix-path" }
+gix-quote = { version = "^0.6.1", path = "../gix-quote" }
+gix-object = { version = "^0.51.1", path = "../gix-object" }
+gix-pack = { version = "^0.61.1", path = "../gix-pack", default-features = false }
+gix-fs = { version = "^0.17.0", path = "../gix-fs" }
+serde = { version = "1.0.114", optional = true, default-features = false, features = ["derive"] }
+
+tempfile = "3.23.0"
+thiserror = "2.0.17"
+parking_lot = { version = "0.12.4" }
+arc-swap = "1.5.0"
+
+document-features = { version = "0.2.0", optional = true }
+
+[package.metadata.docs.rs]
+features = ["document-features", "serde"]

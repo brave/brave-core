@@ -1,0 +1,17 @@
+diff --git a/third_party/widevine/cdm/widevine.gni b/third_party/widevine/cdm/widevine.gni
+index e8427c48432305af2baa5685b8788118339b17ae..b42c3d673b1614cc3a0a1e4b2852cdaf542efecb 100644
+--- a/third_party/widevine/cdm/widevine.gni
++++ b/third_party/widevine/cdm/widevine.gni
+@@ -33,6 +33,12 @@ library_widevine_cdm_available =
+ # Widevine CDM is available as a library CDM and it's supported by Chromium.
+ # This does not define how the CDM will be deployed. It can be bundled or
+ # component updated. See below.
++# Let Linux users manually supply Widevine on architectures where it
++# isn't publicly available.
++if (target_os == "linux") {
++  library_widevine_cdm_available = true
++}
++
+ enable_library_widevine_cdm =
+     enable_widevine && enable_library_cdms && library_widevine_cdm_available
+ 

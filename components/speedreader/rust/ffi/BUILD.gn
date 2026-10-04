@@ -1,0 +1,43 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/rust/rust_static_library.gni")
+
+rust_static_library("lib") {
+  visibility = [ ":*" ]
+  crate_name = "speedreader_ffi"
+  crate_root = "lib.rs"
+  edition = "2018"
+  allow_unsafe = true
+  sources = [
+    "charbuf.rs",
+    "lib.rs",
+    "speedreader.rs",
+  ]
+
+  deps = [
+    "//brave/components/speedreader/rust/lib",
+    "//third_party/rust/libc/v0_2:lib",
+  ]
+}
+
+source_set("ffi_header") {
+  configs += [ "//build/config/compiler:no_chromium_code" ]
+  sources = [ "speedreader_ffi.h" ]
+}
+
+source_set("ffi") {
+  sources = [
+    "speedreader.cc",
+    "speedreader.h",
+  ]
+
+  deps = [
+    ":lib",
+    "//base",
+  ]
+
+  public_deps = [ ":ffi_header" ]
+}

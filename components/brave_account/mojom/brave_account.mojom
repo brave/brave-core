@@ -1,0 +1,259 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_account.mojom;
+
+import "brave/components/brave_account/mojom/change_password.mojom";
+import "brave/components/brave_account/mojom/delete_account.mojom";
+import "brave/components/brave_account/mojom/get_service_token.mojom";
+import "brave/components/brave_account/mojom/login.mojom";
+import "brave/components/brave_account/mojom/register.mojom";
+import "brave/components/brave_account/mojom/resend_verification_email.mojom";
+import "brave/components/brave_account/mojom/reset_password.mojom";
+
+// These enum values are persisted to Preferences. Never reorder, repurpose,
+// or recycle a value — only append new ones with the next unused number.
+// When removing an enumerator, leave its number reserved as a comment.
+enum LoggedOutVerificationIntent {
+  kRegistration  = 0,
+  kResetPassword = 1,
+};
+
+// These enum values are persisted to Preferences. Never reorder, repurpose,
+// or recycle a value — only append new ones with the next unused number.
+// When removing an enumerator, leave its number reserved as a comment.
+enum LoggedInVerificationIntent {
+  kChangePassword = 0,
+};
+
+union VerificationIntent {
+  LoggedOutVerificationIntent logged_out_intent;
+  LoggedInVerificationIntent logged_in_intent;
+};
+
+struct LoggedOutVerification {
+  LoggedOutVerificationIntent intent;
+  // The verified email - empty until the email is verified.
+  string verified_email;
+};
+
+struct LoggedInVerification {
+  LoggedInVerificationIntent intent;
+  // The verified email - empty until the email is verified.
+  string verified_email;
+};
+
+struct LoggedOutState {
+  LoggedOutVerification? verification;
+};
+
+struct LoggedInState {
+  string email;
+  LoggedInVerification? verification;
+};
+
+union AccountState {
+  LoggedOutState logged_out;
+  LoggedInState logged_in;
+};
+
+// Services that depend on Brave Account.
+// Note: do not assign explicit values to enumerators,
+// as kMaxValue is used to validate that all services are handled.
+enum Service {
+  kAccounts,
+  kEmailAliases,
+  kPremium,
+  kSync,
+};
+
+interface AuthenticationObserver {
+  // Notified immediately upon registration with the current state,
+  // and whenever the account state changes thereafter.
+  OnAccountStateChanged(AccountState state);
+};
+
+interface Authentication {
+  AddObserver(pending_remote<AuthenticationObserver> observer);
+
+  // First step of the registration process.
+  // `initiatingService`: the service that
+  //                      initiated the registration process
+  // `email`: user's email address.
+  // `blindedMessage`: initial blinded request
+  //                   produced by the OPAQUE library,
+  //                   to be sent to the server.
+  // Returns `RegisterStep1Result` on success, or
+  //         `RegisterError` on failure.
+  RegisterStep1(Service initiatingService,
+                string email,
+                string blindedMessage)
+    => result<RegisterStep1Result, RegisterError>;
+
+  // Second step of the registration process.
+  // `encryptedVerificationToken`: verification token from the backend,
+  //                               locally encrypted with OSCrypt,
+  //                               required by the underlying endpoint
+  //                               to complete the step.
+  // `serializedRecord`: final message produced by the OPAQUE library,
+  //                     derived by unblinding `serializedResponse`,
+  //                     to be sent to the server.
+  // Returns `RegisterStep2Result` on success, or
+  //         `RegisterError` on failure.
+  RegisterStep2(string encryptedVerificationToken,
+                string serializedRecord)
+    => result<RegisterStep2Result, RegisterError>;
+
+  // Third step of the registration process.
+  // `code`: verification code sent to the user's email address,
+  //         required to verify the email and complete the registration.
+  // Returns `RegisterStep3Result` on success, or
+  //         `RegisterError` on failure.
+  RegisterStep3(string code)
+    => result<RegisterStep3Result, RegisterError>;
+
+  // Resends the verification email for the verification selected by
+  // `intent`.
+  // Returns `ResendVerificationEmailResult` on success, or
+  //         `ResendVerificationEmailError` on failure.
+  ResendVerificationEmail(VerificationIntent intent)
+    => result<ResendVerificationEmailResult, ResendVerificationEmailError>;
+
+  // Cancels the verification selected by `intent`.
+  CancelVerification(VerificationIntent intent);
+
+  // First step of the password reset process.
+  // `email`: user's email address.
+  // Returns `ResetPasswordStep1Result` on success, or
+  //         `ResetPasswordError` on failure.
+  ResetPasswordStep1(string email)
+    => result<ResetPasswordStep1Result, ResetPasswordError>;
+
+  // Second step of the password reset process.
+  // `code`: verification code sent to the user's email address,
+  //         required to verify the email before a new password can be set.
+  // Returns `ResetPasswordStep2Result` on success, or
+  //         `ResetPasswordError` on failure.
+  ResetPasswordStep2(string code)
+    => result<ResetPasswordStep2Result, ResetPasswordError>;
+
+  // Third step of the password reset process.
+  // `blindedMessage`: initial blinded request
+  //                   produced by the OPAQUE library,
+  //                   to be sent to the server.
+  // Returns `ResetPasswordStep3Result` on success, or
+  //         `ResetPasswordError` on failure.
+  ResetPasswordStep3(string blindedMessage)
+    => result<ResetPasswordStep3Result, ResetPasswordError>;
+
+  // Fourth step of the password reset process.
+  // `serializedRecord`: final message produced by the OPAQUE library,
+  //                     derived by unblinding `serializedResponse`,
+  //                     to be sent to the server.
+  // `email`: user's email address.
+  // Returns `ResetPasswordStep4Result` on success, or
+  //         `ResetPasswordError` on failure.
+  ResetPasswordStep4(string serializedRecord, string email)
+    => result<ResetPasswordStep4Result, ResetPasswordError>;
+
+  // First step of the login process.
+  // `initiatingService`: the service that
+  //                      initiated the login process
+  // `email`: user's email address.
+  // `serializedKE1`: initial blinded request
+  //                  produced by the OPAQUE library,
+  //                  to be sent to the server.
+  // Returns `LoginStep1Result` on success, or
+  //         `LoginError` on failure.
+  LoginStep1(Service initiatingService,
+             string email,
+             string serializedKE1)
+    => result<LoginStep1Result, LoginError>;
+
+  // Second step of the login process.
+  // `encryptedLoginToken`: login token from the backend,
+  //                        locally encrypted with OSCrypt,
+  //                        required by the underlying endpoint
+  //                        to complete the step.
+  // `clientMac`: final message produced by the OPAQUE library,
+  //              derived by unblinding `serializedKE2`,
+  //              to be sent to the server.
+  // Returns `LoginStep2Result` on success, or
+  //         `LoginError` on failure.
+  LoginStep2(string encryptedLoginToken, string clientMac)
+    => result<LoginStep2Result, LoginError>;
+
+  // First step of the password change process.
+  // `email`: user's email address.
+  // Returns `ChangePasswordStep1Result` on success, or
+  //         `ChangePasswordError` on failure.
+  ChangePasswordStep1(string email)
+    => result<ChangePasswordStep1Result, ChangePasswordError>;
+
+  // Second step of the password change process.
+  // `code`: verification code sent to the user's email address,
+  //         required to verify the email before a new password can be set.
+  // Returns `ChangePasswordStep2Result` on success, or
+  //         `ChangePasswordError` on failure.
+  ChangePasswordStep2(string code)
+    => result<ChangePasswordStep2Result, ChangePasswordError>;
+
+  // Third step of the password change process.
+  // `blindedMessage`: initial blinded request
+  //                   produced by the OPAQUE library,
+  //                   to be sent to the server.
+  // Returns `ChangePasswordStep3Result` on success, or
+  //         `ChangePasswordError` on failure.
+  ChangePasswordStep3(string blindedMessage)
+    => result<ChangePasswordStep3Result, ChangePasswordError>;
+
+  // Fourth step of the password change process.
+  // `serializedRecord`: final message produced by the OPAQUE library,
+  //                     derived by unblinding `serializedResponse`,
+  //                     to be sent to the server.
+  // Returns `ChangePasswordStep4Result` on success, or
+  //         `ChangePasswordError` on failure.
+  ChangePasswordStep4(string serializedRecord)
+    => result<ChangePasswordStep4Result, ChangePasswordError>;
+
+  // Logs out the user by clearing the authentication token.
+  LogOut();
+
+  // Deletes the user's account, logging out on success.
+  // Returns `DeleteAccountResult` on success, or
+  //         `DeleteAccountError` on failure.
+  DeleteAccount()
+    => result<DeleteAccountResult, DeleteAccountError>;
+
+  // Retrieves a service token for the specified service.
+  // `service`: the service for which to retrieve the token.
+  // Returns `GetServiceTokenResult` on success, or
+  //         `GetServiceTokenError` on failure.
+  GetServiceToken(Service service)
+    => result<GetServiceTokenResult, GetServiceTokenError>;
+};
+
+// What the page was opened to do.
+enum DialogMode {
+  // The page follows account state, showing whichever dialog it calls for.
+  kDefault,
+  // The page only ever shows the account deletion dialog. It closes as soon as
+  // the account leaves a plain logged-in state - which is how it closes once
+  // deletion succeeds.
+  kAccountDeletion,
+};
+
+// Interface for controlling the Brave Account dialog.
+interface DialogController {
+  CloseDialog();
+  // The dialog mode this page was opened in.
+  GetDialogMode() => (DialogMode dialog_mode);
+};
+
+// Interface for opening the Brave Account dialog.
+interface DialogOpener {
+  // Opens the Brave Account dialog over the page that hosts the account rows.
+  OpenDialog(string initiating_service_name, DialogMode dialog_mode);
+};

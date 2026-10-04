@@ -1,0 +1,27 @@
+/* Shields Ads Stat */
+"AdsAndTrackersrBlocked" = "Trình theo dõi & quảng cáo đã bị chặn";
+
+/* Shields Ads Stat */
+"AdsrBlocked" = "Quảng cáo \nđã chặn";
+
+/* Data Saved Shield Stat */
+"DataSavedStat" = "Dữ liệu tiết kiệm được\nước tính";
+
+/* Shields Time Saved Stat */
+"EstTimerSaved" = "Dữ liệu tiết kiệm được\nước tính";
+
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "n";
+
+/* Time Saved Hours */
+"ShieldsTimeStatsHour" = "giờ";
+
+/* Time Saved Minutes */
+"ShieldsTimeStatsMinutes" = "phút";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "giây";
+
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "Trình theo dõi\nđã chặn";
+

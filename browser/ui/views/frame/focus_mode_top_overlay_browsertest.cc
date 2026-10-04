@@ -1,0 +1,441 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/views/frame/focus_mode_top_overlay.h"
+
+#include "base/files/file_path.h"
+#include "base/test/run_until.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
+#include "brave/browser/ui/focus_mode/focus_mode_features.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/toolbar/bookmark_button.h"
+#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "build/build_config.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/immersive/immersive_mode_controller.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/browser_widget.h"
+#include "chrome/browser/ui/views/frame/top_container_view.h"
+#include "chrome/browser/ui/views/location_bar/location_bar_view.h"
+#include "chrome/browser/ui/views/tabs/tab_strip.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_view.h"
+#include "chrome/test/base/chrome_test_path_utils.h"
+#include "chrome/test/base/chrome_test_utils.h"
+#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
+#include "components/prefs/pref_service.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_navigation_observer.h"
+#include "net/dns/mock_host_resolver.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
+#include "ui/base/hit_test.h"
+#include "ui/gfx/geometry/insets.h"
+#include "ui/gfx/geometry/point.h"
+#include "ui/gfx/geometry/rect.h"
+#include "ui/gfx/scoped_animation_duration_scale_mode.h"
+#include "ui/views/border.h"
+#include "ui/views/focus/focus_manager.h"
+#include "ui/views/view.h"
+#include "ui/views/view_utils.h"
+#include "ui/views/widget/widget.h"
+#include "ui/views/window/non_client_view.h"
+#include "url/gurl.h"
+
+#if BUILDFLAG(IS_MAC)
+#include "ui/base/test/scoped_fake_nswindow_fullscreen.h"
+#endif
+
+class FocusModeTopOverlayBrowserTest : public InProcessBrowserTest {
+ protected:
+  FocusModeTopOverlayBrowserTest()
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS),
+        https_server_expired_(net::EmbeddedTestServer::TYPE_HTTPS) {
+    feature_list_.InitAndEnableFeature(features::kBraveFocusMode);
+  }
+
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+
+    // Resolve all hosts to the test servers so that non-localhost hostnames
+    // (used to obtain a "Not Secure" security level over HTTP) work.
+    host_resolver()->AddRule("*", "127.0.0.1");
+
+    embedded_test_server()->ServeFilesFromSourceDirectory("chrome/test/data");
+    ASSERT_TRUE(embedded_test_server()->Start());
+
+    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
+    https_server_.ServeFilesFromSourceDirectory("chrome/test/data");
+    ASSERT_TRUE(https_server_.Start());
+
+    https_server_expired_.SetSSLConfig(net::EmbeddedTestServer::CERT_EXPIRED);
+    https_server_expired_.ServeFilesFromSourceDirectory("chrome/test/data");
+    ASSERT_TRUE(https_server_expired_.Start());
+  }
+
+  BraveBrowserView* browser_view() {
+    return BraveBrowserView::From(
+        BrowserView::GetBrowserViewForBrowser(browser()));
+  }
+
+  BraveToolbarView* toolbar() {
+    return views::AsViewClass<BraveToolbarView>(browser_view()->toolbar());
+  }
+
+  FocusModeController* focus_mode_controller() {
+    return browser()->GetFeatures().focus_mode_controller();
+  }
+
+  content::WebContents* active_web_contents() {
+    return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
+  bool WaitForOverlayRevealed() {
+    auto* overlay = browser_view()->focus_mode_top_overlay();
+    return base::test::RunUntil(
+        [&]() { return overlay->GetRevealFraction() == 1.0; });
+  }
+
+  bool WaitForOverlayHidden() {
+    auto* overlay = browser_view()->focus_mode_top_overlay();
+    return base::test::RunUntil(
+        [&]() { return overlay->GetRevealFraction() == 0.0; });
+  }
+
+  bool WaitForOverlayActive(bool active) {
+    auto* overlay = browser_view()->focus_mode_top_overlay();
+    return base::test::RunUntil([&]() { return overlay->active() == active; });
+  }
+
+  net::EmbeddedTestServer https_server_;
+  net::EmbeddedTestServer https_server_expired_;
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+  gfx::ScopedAnimationDurationScaleMode zero_duration_mode_{
+      gfx::ScopedAnimationDurationScaleMode::ZERO_DURATION};
+};
+
+IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
+                       FocusModeActivatesOverlay) {
+  auto* overlay = browser_view()->focus_mode_top_overlay();
+  ASSERT_TRUE(overlay);
+  EXPECT_FALSE(overlay->active());
+
+  auto* top_container = browser_view()->top_container();
+  ASSERT_TRUE(top_container);
+  EXPECT_EQ(top_container->parent(), browser_view());
+
+  // Focus Mode stays disabled unless the active tab is secure, so navigate to
+  // an HTTPS page before enabling it.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("/empty.html")));
+
+  // Activate Focus Mode and wait for slide-out.
+  focus_mode_controller()->SetEnabled(true);
+  EXPECT_TRUE(overlay->active());
+  ASSERT_TRUE(WaitForOverlayHidden());
+
+  // Verify that the top container and tabstrip are reparented correctly.
+  EXPECT_EQ(top_container->parent(), overlay);
+  EXPECT_TRUE(
+      overlay->Contains(browser_view()->horizontal_tab_strip_for_testing()));
+  EXPECT_TRUE(overlay->Contains(browser_view()->toolbar()));
+
+  // Activating Focus Mode moves the overlay to the end of the child list so
+  // that it renders above its siblings, while the find bar host view remains
+  // the last child to keep the find bar widget on top of the overlay.
+  auto& browser_view_children = browser_view()->children();
+  ASSERT_GT(browser_view_children.size(), 1ul);
+  ASSERT_EQ(browser_view_children.back(), browser_view()->find_bar_host_view());
+  EXPECT_EQ(browser_view_children[browser_view_children.size() - 2], overlay);
+
+  // When hidden, the overlay is slid completely out of the window bounds.
+  EXPECT_EQ(overlay->bounds().bottom(), 0);
+  EXPECT_EQ(overlay->width(), browser_view()->width());
+
+  // Verify that `RevealTemporarily` reveals the overlay.
+  overlay->RevealTemporarily(base::Milliseconds(100));
+  ASSERT_TRUE(WaitForOverlayRevealed());
+
+  // When revealed, the overlay sits at the top edge, spans the browser width,
+  // and is as tall as the top container.
+  EXPECT_EQ(overlay->bounds().y(), 0);
+  EXPECT_EQ(overlay->width(), browser_view()->width());
+  EXPECT_EQ(overlay->height(), top_container->height());
+
+  ASSERT_TRUE(WaitForOverlayHidden());
+
+  // Deactivate Focus Mode.
+  focus_mode_controller()->SetEnabled(false);
+  EXPECT_FALSE(overlay->active());
+  EXPECT_EQ(top_container->parent(), browser_view());
+}
+
+IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
+                       PreservesFocusWhenReparenting) {
+  auto* overlay = browser_view()->focus_mode_top_overlay();
+  ASSERT_TRUE(overlay);
+  auto* top_container = browser_view()->top_container();
+  ASSERT_TRUE(top_container);
+  auto* focus_manager = browser_view()->GetFocusManager();
+  ASSERT_TRUE(focus_manager);
+
+  // Focus Mode stays disabled unless the active tab is secure, so navigate to
+  // an HTTPS page before enabling it.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("/empty.html")));
+
+  // Focus the location bar (omnibox), which lives inside the top container.
+  chrome::FocusLocationBar(browser());
+  views::View* focused = focus_manager->GetFocusedView();
+  ASSERT_TRUE(focused);
+  ASSERT_TRUE(top_container->Contains(focused));
+
+  // Activating Focus Mode reparents the top container into the overlay. Focus
+  // should travel with it.
+  focus_mode_controller()->SetEnabled(true);
+  ASSERT_TRUE(overlay->active());
+  EXPECT_EQ(focus_manager->GetFocusedView(), focused);
+  EXPECT_TRUE(overlay->Contains(focused));
+
+  // Deactivating reparents the top container back into the browser view. Focus
+  // should again be preserved.
+  focus_mode_controller()->SetEnabled(false);
+  ASSERT_FALSE(overlay->active());
+  EXPECT_EQ(focus_manager->GetFocusedView(), focused);
+  EXPECT_TRUE(top_container->Contains(focused));
+}
+
+IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
+                       InsecurePagesDeactivateOverlay) {
+  auto* overlay = browser_view()->focus_mode_top_overlay();
+  ASSERT_TRUE(overlay);
+  auto* top_container = browser_view()->top_container();
+  ASSERT_TRUE(top_container);
+
+  focus_mode_controller()->SetEnabled(true);
+
+  // Secure page: the overlay is active and hosts the top container.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("/empty.html")));
+  ASSERT_TRUE(WaitForOverlayActive(true));
+  ASSERT_EQ(top_container->parent(), overlay);
+
+  // Plain HTTP page ("Not Secure"): the overlay deactivates.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(),
+      embedded_test_server()->GetURL("insecure.test", "/empty.html")));
+  EXPECT_TRUE(WaitForOverlayActive(false));
+  EXPECT_EQ(top_container->parent(), browser_view());
+
+  // Returning to a secure page re-activates the overlay.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("/empty.html")));
+  ASSERT_TRUE(WaitForOverlayActive(true));
+  ASSERT_EQ(top_container->parent(), overlay);
+
+  // Certificate error page (interstitial commits at the requested URL): the
+  // overlay deactivates.
+  ui_test_utils::NavigateToURLBlockUntilNavigationsComplete(
+      browser(), https_server_expired_.GetURL("/empty.html"), 1);
+  EXPECT_TRUE(WaitForOverlayActive(false));
+  EXPECT_EQ(top_container->parent(), browser_view());
+
+  // Returning to a secure page re-activates the overlay.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("/empty.html")));
+  ASSERT_TRUE(WaitForOverlayActive(true));
+  ASSERT_EQ(top_container->parent(), overlay);
+
+  // file:// page (neutral "NONE" security level): the overlay deactivates.
+  GURL file_url = chrome_test_utils::GetTestUrl(
+      base::FilePath(base::FilePath::kCurrentDirectory),
+      base::FilePath(FILE_PATH_LITERAL("empty.html")));
+  ASSERT_TRUE(file_url.SchemeIsFile());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), file_url));
+  EXPECT_TRUE(WaitForOverlayActive(false));
+  EXPECT_EQ(top_container->parent(), browser_view());
+
+  // Returning to a secure page re-activates the overlay, providing a secure
+  // context from which to create the blob: URL below.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("/empty.html")));
+  ASSERT_TRUE(WaitForOverlayActive(true));
+  ASSERT_EQ(top_container->parent(), overlay);
+
+  // blob: page (neutral "NONE" security level): the overlay deactivates. The
+  // blob URL must be created and navigated to from the page that owns it.
+  content::TestNavigationObserver observer(active_web_contents());
+  content::ExecuteScriptAsync(
+      active_web_contents(),
+      "window.location.href = URL.createObjectURL("
+      "new Blob(['<html></html>'], {type: 'text/html'}));");
+  observer.Wait();
+  ASSERT_TRUE(observer.last_navigation_succeeded());
+  ASSERT_TRUE(active_web_contents()->GetLastCommittedURL().SchemeIsBlob());
+  EXPECT_TRUE(WaitForOverlayActive(false));
+  EXPECT_EQ(top_container->parent(), browser_view());
+}
+
+IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
+                       ToolbarBorderTracksOverlayActivation) {
+  // The caption-button border only applies with vertical tabs enabled and the
+  // window title hidden.
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow, false);
+
+  auto* overlay = browser_view()->focus_mode_top_overlay();
+  ASSERT_TRUE(overlay);
+  auto* toolbar = browser_view()->toolbar();
+  ASSERT_TRUE(toolbar);
+
+  // Reads the toolbar's border insets, treating a null border (left when the
+  // insets would be zero) as empty. This keeps the assertions meaningful even
+  // where the frame reports zero-width caption exclusions.
+  auto border_insets = [toolbar]() {
+    const auto* border = toolbar->GetBorder();
+    return border ? border->GetInsets() : gfx::Insets();
+  };
+
+  focus_mode_controller()->SetEnabled(true);
+
+  // Secure page: the overlay hosts the top container, which upstream lays out
+  // with caption exclusions applied, so no border is set here.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("/empty.html")));
+  ASSERT_TRUE(WaitForOverlayActive(true));
+  EXPECT_FALSE(toolbar->GetBorder());
+
+  // Suppressed (insecure page): the top container returns to the browser view
+  // and shares its row with the caption buttons, so the border is applied.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(),
+      embedded_test_server()->GetURL("insecure.test", "/empty.html")));
+  ASSERT_TRUE(WaitForOverlayActive(false));
+  const auto [expected_left, expected_right] =
+      tabs::utils::GetLeadingTrailingCaptionButtonWidth(
+          browser_view()->browser_widget());
+  EXPECT_EQ(border_insets().left(), expected_left);
+  EXPECT_EQ(border_insets().right(), expected_right);
+
+  // Returning to a secure page re-activates the overlay and clears the border.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("/empty.html")));
+  ASSERT_TRUE(WaitForOverlayActive(true));
+  EXPECT_FALSE(toolbar->GetBorder());
+}
+
+IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
+                       PermissionPromptRevealsOverlay) {
+  auto* overlay = browser_view()->focus_mode_top_overlay();
+  ASSERT_TRUE(overlay);
+
+  // A secure context is required both to keep Focus Mode active and to request
+  // geolocation.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("/empty.html")));
+  focus_mode_controller()->SetEnabled(true);
+  ASSERT_TRUE(overlay->active());
+
+  // With nothing holding it open, the overlay slides out of view.
+  ASSERT_TRUE(WaitForOverlayHidden());
+
+  // Requesting a permission shows an anchored prompt, which should reveal the
+  // overlay.
+  content::ExecuteScriptAsync(
+      active_web_contents(),
+      "navigator.geolocation.getCurrentPosition(() => {}, () => {});");
+  ASSERT_TRUE(WaitForOverlayRevealed());
+
+  // The origin-bearing location bar is now visible within the overlay.
+  auto* location_bar = browser_view()->GetLocationBarView();
+  ASSERT_TRUE(location_bar);
+  EXPECT_TRUE(overlay->Contains(location_bar));
+  EXPECT_TRUE(location_bar->IsDrawn());
+  EXPECT_EQ(overlay->bounds().y(), 0);
+}
+
+IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
+                       ToolbarButtonBubbleRevealsOverlay) {
+  auto* overlay = browser_view()->focus_mode_top_overlay();
+  ASSERT_TRUE(overlay);
+
+  ASSERT_TRUE(toolbar());
+  auto* bookmark_button = toolbar()->bookmark_button();
+  ASSERT_TRUE(bookmark_button);
+  ASSERT_TRUE(bookmark_button->GetVisible());
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("/empty.html")));
+  focus_mode_controller()->SetEnabled(true);
+  ASSERT_TRUE(overlay->active());
+  ASSERT_TRUE(WaitForOverlayHidden());
+
+  ASSERT_TRUE(base::test::RunUntil(
+      [this]() { return chrome::CanBookmarkCurrentTab(browser()); }));
+  chrome::BookmarkCurrentTab(browser());
+  toolbar()->ShowBookmarkBubble(active_web_contents()->GetLastCommittedURL(),
+                                /*already_bookmarked=*/true);
+
+  ASSERT_TRUE(WaitForOverlayRevealed());
+
+  EXPECT_TRUE(overlay->Contains(bookmark_button));
+  EXPECT_TRUE(bookmark_button->IsDrawn());
+  EXPECT_EQ(overlay->bounds().y(), 0);
+}
+
+#if BUILDFLAG(IS_MAC)
+IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
+                       ExitFullscreenWithSuppressedOverlay) {
+  // Real macOS fullscreen transitions are unreliable on bots.
+  ui::test::ScopedFakeNSWindowFullscreen fake_fullscreen;
+
+  auto* overlay = browser_view()->focus_mode_top_overlay();
+  ASSERT_TRUE(overlay);
+  auto* top_container = browser_view()->top_container();
+  ASSERT_TRUE(top_container);
+  auto* immersive_controller = ImmersiveModeController::From(browser());
+  ASSERT_TRUE(immersive_controller);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(),
+      embedded_test_server()->GetURL("insecure.test", "/empty.html")));
+  focus_mode_controller()->SetEnabled(true);
+  ASSERT_FALSE(overlay->active());
+
+  ui_test_utils::ToggleFullscreenModeAndWait(browser());
+  ASSERT_TRUE(browser_view()->IsFullscreen());
+  ASSERT_TRUE(immersive_controller->IsEnabled());
+  ASSERT_FALSE(focus_mode_controller()->IsEnabled());
+  ASSERT_EQ(top_container->parent(), browser_view()->overlay_view());
+
+  ui_test_utils::ToggleFullscreenModeAndWait(browser());
+  ASSERT_FALSE(browser_view()->IsFullscreen());
+  ASSERT_FALSE(immersive_controller->IsEnabled());
+  ASSERT_TRUE(focus_mode_controller()->IsEnabled());
+  ASSERT_FALSE(overlay->active());
+
+  ASSERT_EQ(top_container->parent(), browser_view());
+  auto* toolbar_view = browser_view()->toolbar();
+  ASSERT_TRUE(toolbar_view->GetVisible());
+  ASSERT_EQ(toolbar_view->GetWidget(), browser_view()->GetWidget());
+
+  gfx::Point point = toolbar_view->GetLocalBounds().CenterPoint();
+  views::View::ConvertPointToWidget(toolbar_view, &point);
+  auto hit_test_result =
+        browser_view()->GetWidget()->non_client_view()->NonClientHitTest(point);
+  EXPECT_NE(hit_test_result, HTNOWHERE);
+}
+#endif  // BUILDFLAG(IS_MAC)

@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+ <title>Link navigation test</title>
+ <script>
+  function run() {
+    const params = new URLSearchParams(document.location.search);
+    const policy = params.get('policy');
+
+    if (policy) {
+      const meta = document.createElement("meta");
+      meta.name = "referrer";
+      meta.content = policy;
+      document.head.appendChild(meta);
+    }
+  }
+ </script>
+ <script>
+  function clickLink(url) {
+    link = document.getElementById("link");
+    link.setAttribute("href", url);
+
+    var evt = document.createEvent("MouseEvents");
+    evt.initMouseEvent("click", true, true, window,
+                       0, 0, 0, 0, 0, false, false,
+                       false, false, 0, null);
+
+    return link.dispatchEvent(evt);
+  }
+ </script>
+</head>
+<body onload="run()" >
+ <a href="" id="link">Navigate away</a>
+</body>
+</html>

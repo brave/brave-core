@@ -1,0 +1,21 @@
+diff --git a/chrome/android/java/res/layout/bookmark_toolbar.xml b/chrome/android/java/res/layout/bookmark_toolbar.xml
+index 6276599f52c5a72970705a0edecfb09150a798af..22613031c5d22bfbbbb81cf0949ec3171a39ff3a 100644
+--- a/chrome/android/java/res/layout/bookmark_toolbar.xml
++++ b/chrome/android/java/res/layout/bookmark_toolbar.xml
+@@ -5,7 +5,7 @@ Use of this source code is governed by a BSD-style license that can be
+ found in the LICENSE file.
+ -->
+ 
+-<org.chromium.chrome.browser.bookmarks.BookmarkToolbar
++<org.chromium.chrome.browser.bookmarks.BraveBookmarkToolbar
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     android:id="@+id/bookmark_toolbar"
+@@ -13,4 +13,4 @@ found in the LICENSE file.
+     android:layout_height="@dimen/toolbar_height_no_shadow"
+     style="@style/ModernToolbar"
+     app:popupTheme="@style/ModernToolbarPopupTheme"
+-    android:focusable="false" />
+\ No newline at end of file
++    />
+\ No newline at end of file

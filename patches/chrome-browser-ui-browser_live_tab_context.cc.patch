@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/browser_live_tab_context.cc b/chrome/browser/ui/browser_live_tab_context.cc
+index b220ba6c8f4390cd0d770d6c4ff8175403825014..555243e554738a3f7020e6f2214bdc416483a25b 100644
+--- a/chrome/browser/ui/browser_live_tab_context.cc
++++ b/chrome/browser/ui/browser_live_tab_context.cc
+@@ -169,6 +169,7 @@ sessions::LiveTab* BrowserLiveTabContext::GetActiveLiveTab() const {
+ std::map<std::string, std::string> BrowserLiveTabContext::GetExtraDataForTab(
+     int index) const {
+   std::map<std::string, std::string> extra_data;
++  MaybePopulateTreeTabExtraData(*browser_, index, extra_data);
+ 
+   glic::PopulateGlicExtraData(tab_strip_model_->GetTabAtIndex(index),
+                               &extra_data);

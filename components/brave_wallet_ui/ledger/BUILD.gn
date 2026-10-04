@@ -1,0 +1,36 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
+assert(enable_brave_wallet)
+import("//brave/components/common/typescript.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+import("//tools/grit/preprocess_if_expr.gni")
+import("//tools/grit/repack.gni")
+
+transpile_web_ui("ledger_bridge_ui") {
+  output_module = false
+  entry_points = [ [
+        "ledger",
+        rebase_path("ledger.ts"),
+      ] ]
+  webpack_aliases = [ "browser" ]
+  resource_name = "ledger_bridge"
+
+  imports_from = [ "//brave/components/brave_wallet_ui/" ]
+
+  # TODO(apaymyshev): ledger iframe should not depend on wallet's mojo
+  deps = [
+    "//brave/components/brave_wallet/common:mojom_js",
+    "//brave/components/brave_wallet/common:preprocess_mojo",
+  ]
+}
+
+pack_web_resources("ledger_bridge_generated") {
+  resource_name = "ledger_bridge"
+  output_dir = "$root_gen_dir/brave/components/ledger_bridge/resources"
+  deps = [ ":ledger_bridge_ui" ]
+}

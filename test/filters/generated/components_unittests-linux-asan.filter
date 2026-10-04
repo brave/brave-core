@@ -1,0 +1,126 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream components_unittests tests with a flake rate >= 1.0% on
+## linux-asan bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+
+# 3.9% flake rate over 30 days per LUCI Analysis (20396 passed, 0 failed, 836 flaky).
+-All/HeapProfilerControllerChannelTest.StableChannel/2
+
+# 3.4% flake rate over 30 days per LUCI Analysis (20529 passed, 0 failed, 714 flaky).
+-All/HeapProfilerControllerProcessTest.ChildProcess/10
+
+# 21.3% flake rate over 30 days per LUCI Analysis (16705 passed, 0 failed, 4526 flaky).
+-CallbackReceiverTest.RunAndGetResultExternalRunLoop
+
+# 4.8% flake rate over 30 days per LUCI Analysis (20226 passed, 0 failed, 1018 flaky).
+-ClusterInteractionStateProcessorTest.FilterClustersWithDoneStateVisits
+
+# 4.2% flake rate over 30 days per LUCI Analysis (20362 passed, 0 failed, 883 flaky).
+-ClusterInteractionStateProcessorTest.FilterHiddenStateVisits
+
+# 39.2% flake rate over 30 days per LUCI Analysis (12914 passed, 0 failed, 8318 flaky).
+-ClusterSimilarityHeuristicsProcessorTest.NotMerged
+
+# 34.1% flake rate over 30 days per LUCI Analysis (13983 passed, 0 failed, 7247 flaky).
+-ClustererTest.ClusterTwoVisitsTiedBySimilarVisit
+
+# 3.3% flake rate over 30 days per LUCI Analysis (20544 passed, 0 failed, 697 flaky).
+-ContentLifetimeTest.ContentInvalidFromAge_ServerThreshold_Invalid
+
+# 1.7% flake rate over 30 days per LUCI Analysis (20889 passed, 0 failed, 355 flaky).
+-ContentLifetimeTest.ShouldWaitForNewContent_DefaultThreshold
+
+# 64.5% flake rate over 30 days per LUCI Analysis (7533 passed, 0 failed, 13699 flaky).
+-FileAccessCopyOrMoveDelegateFactoryTest.HasEmptySingleton
+
+# 78.7% flake rate over 30 days per LUCI Analysis (4531 passed, 0 failed, 16701 flaky).
+-FileAccessCopyOrMoveDelegateFactoryTest.InstanceGetInstance
+
+# 99.2% flake rate over 30 days per LUCI Analysis (179 passed, 0 failed, 21048 flaky).
+-FileAccessCopyOrMoveDelegateFactoryTest.InstanceHasInstance
+
+# 94.5% flake rate over 30 days per LUCI Analysis (1170 passed, 0 failed, 20057 flaky).
+-FileAccessCopyOrMoveDelegateFactoryTest.MultiSetInstance
+
+# 3.1% flake rate over 30 days per LUCI Analysis (20618 passed, 0 failed, 650 flaky).
+-FileClusteringBackendTest.Success
+
+# 1.4% flake rate over 30 days per LUCI Analysis (20959 passed, 0 failed, 287 flaky).
+-GaiaCookieManagerServiceTest.LogoutRetried
+
+# 2.3% flake rate over 30 days per LUCI Analysis (20770 passed, 0 failed, 480 flaky).
+-GaiaCookieManagerServiceTest.LogoutRetriedTwice
+
+# 74.8% flake rate over 30 days per LUCI Analysis (5355 passed, 0 failed, 15879 flaky).
+-HeavyAdBlocklistTest.DefaultParams
+
+# 68.7% flake rate over 30 days per LUCI Analysis (6651 passed, 0 failed, 14583 flaky).
+-HeavyAdBlocklistTest.TypeParams
+
+# 55.7% flake rate over 30 days per LUCI Analysis (9404 passed, 0 failed, 11829 flaky).
+-HeavyAdBlocklistTest.TypeVersionParam
+
+# 25.5% flake rate over 30 days per LUCI Analysis (15824 passed, 0 failed, 5409 flaky).
+-HistoryClustersConfigTest.LocaleOrLanguageAllowlistDefault
+
+# 11.3% flake rate over 30 days per LUCI Analysis (18825 passed, 0 failed, 2407 flaky).
+-HistoryClustersConfigTest.LocaleOrLanguageWildcard
+
+# 1.9% flake rate over 30 days per LUCI Analysis (20843 passed, 0 failed, 403 flaky).
+-HistoryClustersServiceTest.QueryClusters_IncompleteAndPersistedVisits
+
+# 1.1% flake rate over 30 days per LUCI Analysis (21011 passed, 0 failed, 232 flaky).
+-HistoryClustersServiceTest.QueryClusters_PersistedClusters_Today
+
+# 55.9% flake rate over 30 days per LUCI Analysis (9373 passed, 0 failed, 11861 flaky).
+-IOSSharedPrefsTest.MigrateExperimentsV2
+
+# 5.0% flake rate over 30 days per LUCI Analysis (20171 passed, 0 failed, 1057 flaky).
+-InfoCardTrackerTest.AdjustViewTimestamp_ClientTimestampLessThanServer
+
+# 4.3% flake rate over 30 days per LUCI Analysis (20345 passed, 0 failed, 922 flaky).
+-InfoCardTrackerTest.ComboActions
+
+# 1.2% flake rate over 30 days per LUCI Analysis (20984 passed, 0 failed, 255 flaky).
+-NextScheduledRequestTimeTest.NowPastAllRequestTimes
+
+# 34.3% flake rate over 30 days per LUCI Analysis (13953 passed, 0 failed, 7280 flaky).
+-PersistentMetricsData.SerializesAndDeserializes
+
+# 7.5% flake rate over 30 days per LUCI Analysis (19661 passed, 0 failed, 1585 flaky).
+-ScopedFileAccessDelegateTest.DeleteEmptyInstance
+
+# 5.9% flake rate over 30 days per LUCI Analysis (19996 passed, 0 failed, 1243 flaky).
+-ScopedFileAccessDelegateTest.DeleteInstanceDestruct
+
+# 7.9% flake rate over 30 days per LUCI Analysis (19568 passed, 0 failed, 1685 flaky).
+-ScopedFileAccessDelegateTest.GetEmptySingleton
+
+# 7.3% flake rate over 30 days per LUCI Analysis (19691 passed, 0 failed, 1557 flaky).
+-StreamModelTest.ClearAllErasesSharedStates
+
+# 6.1% flake rate over 30 days per LUCI Analysis (19954 passed, 0 failed, 1290 flaky).
+-StreamModelTest.RemoveAndAddRoot
+
+# 4.7% flake rate over 30 days per LUCI Analysis (20244 passed, 0 failed, 991 flaky).
+-StreamModelTest.RemoveCluster
+
+# 15.2% flake rate over 30 days per LUCI Analysis (18005 passed, 0 failed, 3230 flaky).
+-StreamModelTest.SecondRootStreamIsIgnored
+
+# 69.4% flake rate over 30 days per LUCI Analysis (6507 passed, 7 failed, 14739 flaky).
+-UmaPageLoadMetricsObserverTest.TestTracingLoadEventStart
+
+# 44.5% flake rate over 30 days per LUCI Analysis (11794 passed, 0 failed, 9440 flaky).
+-UserActionsCollectorTest.AddAndRetrieveMultipleEntries
+
+# 8.0% flake rate over 30 days per LUCI Analysis (19561 passed, 0 failed, 1708 flaky).
+-UserActionsCollectorTest.LimitCountOfMidsPerUrlEntry
+
+# 45.6% flake rate over 30 days per LUCI Analysis (11559 passed, 5 failed, 9670 flaky).
+-WebContentsTopSitesObserverTest.DoNotCallOnNavigationCommittedInFencedFrame
+
+# 50.8% flake rate over 30 days per LUCI Analysis (10445 passed, 0 failed, 10789 flaky).
+-XsurfaceDatastoreSliceTest.RemoveDatastoreEntry_RemovesData

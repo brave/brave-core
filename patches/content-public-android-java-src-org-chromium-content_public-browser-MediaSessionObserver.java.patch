@@ -1,0 +1,13 @@
+diff --git a/content/public/android/java/src/org/chromium/content_public/browser/MediaSessionObserver.java b/content/public/android/java/src/org/chromium/content_public/browser/MediaSessionObserver.java
+index 449202b925dcff8ded194225a34dd6e7798fc59a..b2ddac83cbcfcdb6f3ec597693488a28773b939a 100644
+--- a/content/public/android/java/src/org/chromium/content_public/browser/MediaSessionObserver.java
++++ b/content/public/android/java/src/org/chromium/content_public/browser/MediaSessionObserver.java
+@@ -20,6 +20,8 @@ import java.util.Set;
+  */
+ @NullMarked
+ public abstract class MediaSessionObserver {
++    /** Called only when a new document commits in the primary main frame. */
++    public void mediaSessionDocumentChanged() {}
+     private @Nullable MediaSession mMediaSession;
+ 
+     /** Construct a MediaSessionObserver and start observing |mediaSession|. */

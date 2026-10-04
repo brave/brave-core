@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/frame/browser_frame_view_win.cc b/chrome/browser/ui/views/frame/browser_frame_view_win.cc
+index 5b7aa7203114f12765c3f71c2a2d7b33265db2e3..e36af5b437f2356388ddacdf7780345f3ddaaa89 100644
+--- a/chrome/browser/ui/views/frame/browser_frame_view_win.cc
++++ b/chrome/browser/ui/views/frame/browser_frame_view_win.cc
+@@ -116,7 +116,7 @@ BrowserFrameViewWin::BrowserFrameViewWin(BrowserWidget* widget,
+ 
+   // If this is a web app window, the window title will be part of the
+   // BrowserView and thus we don't need to create another one here.
+-  if (!browser_view->GetIsWebAppType() && supports_title_bar) {
++  if (!browser_view->GetIsWebAppType() && (supports_title_bar || (VerticalTabController::From(browser) && VerticalTabController::From(browser)->SupportsBraveVerticalTabs()))) {
+     window_title_ = new views::Label(browser_view->GetWindowTitle());
+     window_title_->SetSubpixelRenderingEnabled(false);
+     window_title_->SetHorizontalAlignment(gfx::ALIGN_LEFT);

@@ -1,0 +1,18 @@
+diff --git a/components/content_settings/common/BUILD.gn b/components/content_settings/common/BUILD.gn
+index f4e43fbbe30ac81e56af1314f354917a02d7550b..04842f33a29f1ccbcf8c4a12cc9e08e5595d7b89 100644
+--- a/components/content_settings/common/BUILD.gn
++++ b/components/content_settings/common/BUILD.gn
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/components/content_settings/sources.gni")
+ import("//mojo/public/tools/bindings/mojom.gni")
+ 
+ mojom("mojom") {
+@@ -17,4 +18,5 @@ mojom("mojom") {
+     "//url/mojom:url_mojom_gurl",
+     "//url/mojom:url_mojom_origin",
+   ]
++  deps += brave_components_content_settings_common_mojom_deps
+ }

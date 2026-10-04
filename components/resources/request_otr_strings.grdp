@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_REQUEST_OTR_TITLE" desc="Title of request OTR interstitial page.">
+    Sensitive Website
+  </message>
+  <message name="IDS_REQUEST_OTR_HEADING" desc="Heading of request OTR interstitial page.">
+    This site may contain sensitive content.
+  </message>
+  <message name="IDS_REQUEST_OTR_PRIMARY_PARAGRAPH" desc="Main paragraph of request OTR interstitial page.">
+    Would you like to visit this site in Off-The-Record mode?
+  </message>
+  <message name="IDS_REQUEST_OTR_EXPLANATION" desc="Second paragraph of request OTR interstitial page.">
+    Brave wants to protect you when visiting sensitive sites. Sites you visit in Off-The-Record mode won't show up in your browsing history, and cookies will not be saved.
+  </message>
+  <message name="IDS_REQUEST_OTR_NEVER_ASK_AGAIN_BUTTON" desc="The text for the request OTR interstitial never ask checkbox.">
+    Don't ask me again
+  </message>
+  <message name="IDS_REQUEST_OTR_NEVER_ASK_AGAIN_EXPLANATION" desc="The text for the request OTR interstitial never ask label.">
+    You can change this later in Brave Settings in the Privacy and Security section
+  </message>
+  <message name="IDS_REQUEST_OTR_PROCEED_OTR_BUTTON" desc="The text for the proceed off-the-record button on the request OTR interstitial page.">
+    Proceed Off-The-Record
+  </message>
+  <message name="IDS_REQUEST_OTR_PROCEED_BUTTON" desc="The text for the proceed normally button on the request OTR interstitial page.">
+    Proceed Normally
+  </message>
+  <message name="IDS_REQUEST_OTR_INFOBAR_MESSAGE" desc="The string shown in the infobar when the user navigates to a site in Off-The-Record mode.">
+    You're browsing this website in Off-The-Record mode.
+  </message>
+  <message name="IDS_REQUEST_OTR_INFOBAR_BUTTON" desc="The string used in the infobar button allowing the user to turn off Off-The-Record mode and reload the page directly from the infobar.">
+    Turn off
+  </message>
+</grit-part>

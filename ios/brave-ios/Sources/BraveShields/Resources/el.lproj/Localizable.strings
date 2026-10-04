@@ -1,0 +1,27 @@
+/* Shields Ads Stat */
+"AdsAndTrackersrBlocked" = "Αποκλείστηκαν προγράμματα παρακολούθησης & διαφημίσεις";
+
+/* Shields Ads Stat */
+"AdsrBlocked" = "Αποκλεισμένες \nδιαφημίσεις";
+
+/* Data Saved Shield Stat */
+"DataSavedStat" = "Εκτ. εξοικ. \nδεδομένων";
+
+/* Shields Time Saved Stat */
+"EstTimerSaved" = "Εκτιμ. εξοικον.\nχρόνου";
+
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "ημ.";
+
+/* Time Saved Hours */
+"ShieldsTimeStatsHour" = "ώρ.";
+
+/* Time Saved Minutes */
+"ShieldsTimeStatsMinutes" = "λ.";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "δ.";
+
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "Αποκλεισμένα \nπρογράμματα παρακολούθησης";
+

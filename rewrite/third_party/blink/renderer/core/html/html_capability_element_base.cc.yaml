@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Abort user-media embedded permission registration.
+
+      The user-media descriptor path is disabled, and sending it to the browser
+      reaches an invalid permission-service path. Check the descriptor before
+      registration so camera and microphone elements return without triggering
+      that path, while other capability descriptors retain the upstream flow.
+    regex:
+      re_pattern: |-
+        ^([ \t]*)(GetPermissionService\(\)->RegisterPageEmbeddedPermissionControl\(\s*.*?)(CreateEmbeddedPermissionRequestDescriptor\(\))(.*?)(\);)
+      re_flags: [DOTALL, MULTILINE]
+      replace: |-
+        \1auto request_descriptor = CreateEmbeddedPermissionRequestDescriptor();
+        \1if (request_descriptor->detail->which() ==
+        \1    mojom::blink::EmbeddedPermissionControlDescriptorExtension::Tag::
+        \1        kUserMedia) {
+        \1  return false;
+        \1}
+        \1\2std::move(request_descriptor)\4\5

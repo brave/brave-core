@@ -1,0 +1,62 @@
+{
+  "version": 9,
+  "ping": 7200000,
+  "campaigns": [
+    {
+      "creativeSets": [
+        {
+          "creatives": [
+            {
+              "creativeInstanceId": "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
+              "type": {
+                "code": "notification_all_v1",
+                "name": "notification",
+                "platform": "all",
+                "version": 1
+              },
+              "payload": {
+                "body": "Test Body",
+                "title": "Test Title",
+                "targetUrl": "https://brave.com"
+              }
+            }
+          ],
+          "segments": [
+            {
+              "code": "Svp7l-zGN",
+              "name": "untargeted"
+            }
+          ],
+          "oses": [],
+          "conversions": [
+            {
+              "observationWindow": 30,
+              "urlPattern": "https://www.brave.com/*"
+            }
+          ],
+          "creativeSetId": "340c927f-696e-4060-9933-3eafc56c3f31",
+          "perDay": 1,
+          "perWeek": 1,
+          "perMonth": 1,
+          "totalMax": 1,
+          "value": "1.0"
+        }
+      ],
+      "dayParts": [],
+      "geoTargets": [
+        {
+          "code": "US",
+          "name": "United States"
+        }
+      ],
+      "campaignId": "27a624a1-9c80-494a-bf1b-af327b563f85",
+      "startAt": "<time:now>",
+      "endAt": "<time:distant_future>",
+      "dailyCap": 1,
+      "advertiserId": "a437c7f3-9a48-4fe8-b37b-99321bea93fe",
+      "priority": 1,
+      "ptr": 1.0
+    }
+  ],
+  "catalogId": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
+}

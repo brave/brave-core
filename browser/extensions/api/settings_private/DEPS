@@ -1,0 +1,5 @@
+include_rules = [
+  "+brave/components/ntp_background_images/common",
+  "+brave/components/traffic_control/buildflags",
+  "+brave/components/traffic_control/core/browser",
+]

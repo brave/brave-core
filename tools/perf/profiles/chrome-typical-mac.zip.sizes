@@ -1,0 +1,29 @@
+Total size 82270K
+
+GROUP chromium [57943K total]
+  2575K listdata.json 9.8200.9609 [ActorSafetyLists]
+     2K Amount Extraction Heuristic Regexes 4 [AmountExtractionHeuristicRegexes]
+     2K captcha_providers.json 8.5419.4434 [CaptchaProviders]
+  1330K crl-set-1633103923137597111.data 10808 [CertificateRevocation]
+    31K chromeCommerceHeuristics 2023.3.30.1305 [CommerceHeuristics]
+   330K Crowd Deny 2026.9.28.1389 [Crowd Deny]
+     9K fileTypePolicies 145.0.7584.0 [FileTypePolicies]
+    13K First Party Sets 2025.7.24.0 [FirstPartySetsPreloaded]
+     7K history_search_strings_farmhashed.binarypb 6.7431.9692 [HistorySearch]
+     9K MEI Preload 1.1.0.3 [MEIPreload]
+  7744K OnDeviceHeadSuggestENUS500000 20251024.824731831.14 [OnDeviceHeadSuggestModel]
+   127K Model Manifest 1.20260927.2 [OptimizationGuideModelsManifest]
+   558K Optimization Hints 751 [OptimizationHints]
+     1K Origin Trials Updates 1.0.0.20 [OriginTrials]
+   419K pkiMetadata 1788 [PKIMetadata]
+     4K sslErrorAssistant 7 [SSLErrorAssistant]
+   181K safetyTips 3091 [SafetyTips]
+   425K Subresource Filtering Rules 9.72.0 [Subresource Filter]
+    11K trustToken 2026.8.3.1 [TrustTokenKeyCommitments]
+ 22797K WASM TTS Engine 20260904.1 [WasmTtsEngine]
+ 19714K WidevineCdm 4.10.3050.0 [WidevineCdm]
+  1642K zxcvbnData 3 [ZxcvbnData]
+
+GROUP large_files [18057K total]
+  1873K Safe Browsing/ChromeExtMalware.store.32_13435172408740397
+ 16184K Safe Browsing/UrlSoceng.store.4_13435172408930371

@@ -1,0 +1,12 @@
+diff --git a/build/config/BUILDCONFIG.gn b/build/config/BUILDCONFIG.gn
+index bc4236a4e7080b005e18bacea92fe1d5d71b5cb1..1fe051f5741c66f46b9316d7b6f59705762fc556 100644
+--- a/build/config/BUILDCONFIG.gn
++++ b/build/config/BUILDCONFIG.gn
+@@ -393,6 +393,7 @@ default_compiler_configs = [
+   "//build/config/sanitizers:default_sanitizer_flags",
+   "//build/config:feature_flags",
+ ]
++default_compiler_configs += [ "//brave/build:compiler" ]
+ 
+ if (is_win) {
+   default_compiler_configs += [

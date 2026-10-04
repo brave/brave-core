@@ -1,0 +1,30 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
+index 1b5d10dbf1aa097d888a759305fa834cbe4c0686..1ee3374731f2cbd9bab02907de2f4ac1ef3248d8 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
+@@ -84,7 +84,7 @@ import java.util.function.Consumer;
+ 
+ /** Fragment to keep track of the all the privacy related preferences. */
+ @NullMarked
+-public class PrivacySettings extends ChromeBaseSettingsFragment
++public class PrivacySettings extends org.chromium.chrome.browser.settings.BravePreferenceFragment
+         implements Preference.OnPreferenceChangeListener {
+     private static final String PREF_CAN_MAKE_PAYMENT = "can_make_payment";
+     private static final String PREF_PRELOAD_PAGES = "preload_pages";
+@@ -572,6 +572,7 @@ public class PrivacySettings extends ChromeBaseSettingsFragment
+     @Override
+     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+         menu.clear();
++        super.onCreateOptionsMenu(menu, inflater);
+         MenuItem help =
+                 menu.add(Menu.NONE, R.id.menu_id_targeted_help, Menu.NONE, getHelpMenuStringRes());
+         help.setIcon(
+@@ -586,7 +587,7 @@ public class PrivacySettings extends ChromeBaseSettingsFragment
+                     .show(getActivity(), getString(R.string.help_context_privacy), null);
+             return true;
+         }
+-        return false;
++        return super.onOptionsItemSelected(item);
+     }
+ 
+     @Override

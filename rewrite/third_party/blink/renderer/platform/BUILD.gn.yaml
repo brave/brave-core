@@ -1,0 +1,34 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let Brave targets see blink platform
+
+      `visibility` is reset and reassigned upstream, so the append closes the
+      body instead of following the first assignment.
+    add_literal_to_list:
+      target: platform
+      list_name: visibility
+      literal: brave_blink_renderer_platform_visibility
+      assume_defined: true
+
+  - description: Add the Brave blink platform public_deps.
+    add_literal_to_list:
+      target: platform
+      list_name: public_deps
+      literal: brave_blink_renderer_platform_public_deps
+
+  - description: Add the Brave blink platform sources.
+    add_literal_to_list:
+      target: platform
+      list_name: sources
+      literal: brave_blink_renderer_platform_sources
+
+  - description: Add the Brave blink platform deps.
+    add_literal_to_list:
+      target: platform
+      list_name: deps
+      literal: brave_blink_renderer_platform_deps

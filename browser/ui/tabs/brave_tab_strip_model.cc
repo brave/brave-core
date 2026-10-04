@@ -1,0 +1,325 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+
+#include <algorithm>
+#include <cstdint>
+#include <iterator>
+#include <memory>
+#include <vector>
+
+#include "base/containers/span.h"
+#include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/brave_tree_tab_strip_collection_delegate.h"
+#include "brave/browser/ui/tabs/tree_tab_model.h"
+#include "brave/components/constants/pref_names.h"
+#include "brave/components/tabs/public/brave_tab_strip_collection.h"
+#include "brave/components/tabs/public/tree_tab_node.h"
+#include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_delegate.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+#include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_strip_collection.h"
+#include "components/tabs/public/unpinned_tab_collection.h"
+#include "content/public/browser/web_contents.h"
+#include "ui/base/models/list_selection_model.h"
+
+BraveTabStripModel::BraveTabStripModel(
+    TabStripModelDelegate* delegate,
+    Profile* profile,
+    TabGroupModelFactory* group_model_factory)
+    : TabStripModel(delegate, profile, group_model_factory) {
+  if (base::FeatureList::IsEnabled(tabs::kBraveTreeTab) &&
+      delegate->IsNormalWindow()) {
+    // Replace the default TabStripCollection with Brave's version
+    contents_data_ = std::make_unique<tabs::BraveTabStripCollection>();
+
+    tree_tabs_enabled_.Init(
+        brave_tabs::kTreeTabsEnabled, profile->GetPrefs(),
+        base::BindRepeating(&BraveTabStripModel::OnTreeTabRelatedPrefChanged,
+                            base::Unretained(this)));
+    vertical_tabs_enabled_.Init(
+        brave_tabs::kVerticalTabsEnabled, profile->GetPrefs(),
+        base::BindRepeating(&BraveTabStripModel::OnTreeTabRelatedPrefChanged,
+                            base::Unretained(this)));
+    OnTreeTabRelatedPrefChanged();
+  }
+}
+
+BraveTabStripModel::~BraveTabStripModel() = default;
+
+void BraveTabStripModel::SetTreeTabNodeCollapsed(
+    const tree_tab::TreeTabNodeId& id,
+    bool collapsed) {
+  if (!tree_tab_model_) {
+    return;
+  }
+
+  if (tree_tab_model_->SetCollapsed(id, collapsed)) {
+    auto* node = tree_tab_model_->GetNode(id);
+    CHECK(node);
+    auto change =
+        TreeTabChange(id, TreeTabChange::CollapsedStateChangedChange(*node));
+    observers_.Notify(&TabStripModelObserver::OnTreeTabChanged, change);
+  }
+}
+
+void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
+                                           TabStripUserGestureDetails detail) {
+  if (count() == 0) {
+    return;
+  }
+
+  bool is_mru_enabled = profile()->GetPrefs()->GetBoolean(kMRUCyclingEnabled);
+
+  if (is_mru_enabled) {
+    SelectMRUTab(direction, detail);
+  } else {
+    TabStripModel::SelectRelativeTab(direction, detail);
+  }
+}
+
+std::vector<int> BraveTabStripModel::GetTreeTabDescendantIndices(int index) {
+  if (!tree_tab_model_) {
+    return {};
+  }
+
+  auto* node_collection =
+      tabs::TreeTabNodeTabCollection::GetTreeTabNodeCollection(
+          GetTabAtIndex(index));
+  if (!node_collection) {
+    return {};
+  }
+
+  std::vector<tree_tab::TreeTabNodeId> descendant_ids;
+  node_collection->node().CollectDescendantIds(descendant_ids);
+
+  std::vector<int> descendant_indices;
+  for (const auto& id : descendant_ids) {
+    auto* node = tree_tab_model_->GetNode(id);
+    if (!node) {
+      continue;
+    }
+    for (const tabs::TabInterface* descendant_tab : node->GetTabs()) {
+      const int descendant_index = GetIndexOfTab(descendant_tab);
+      if (descendant_index != TabStripModel::kNoTab) {
+        descendant_indices.push_back(descendant_index);
+      }
+    }
+  }
+  return descendant_indices;
+}
+
+bool BraveTabStripModel::IsOnlyActiveTabAndTreeDescendantsSelected() {
+  const auto& selected_indices =
+      selection_model().GetListSelectionModel().selected_indices();
+  CHECK(!selected_indices.empty());
+
+  // When automatically selecting a tree tab, active index should be the
+  // smallest index of selected indices
+  if (active_index() != static_cast<int>(*selected_indices.begin())) {
+    return false;
+  }
+
+  const std::vector<int> descendant_indices =
+      GetTreeTabDescendantIndices(active_index());
+  if (descendant_indices.empty()) {
+    return false;
+  }
+
+  base::flat_set<size_t> expected_indices(descendant_indices.begin(),
+                                          descendant_indices.end());
+
+  expected_indices.insert(active_index());
+  return selected_indices == expected_indices;
+}
+
+void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
+                                      TabStripUserGestureDetails detail) {
+  if (mru_cycle_list_.empty()) {
+    // Start cycling
+
+    BrowserWindow* browser_window =
+        BrowserWindow::FindBrowserWindowWithWebContents(GetWebContentsAt(0));
+    if (!browser_window) {
+      return;
+    }
+
+    // Create a list of tab indexes sorted by time of last activation
+    for (int i = 0; i < count(); ++i) {
+      mru_cycle_list_.push_back(i);
+    }
+
+    std::sort(mru_cycle_list_.begin(), mru_cycle_list_.end(),
+              [this](int a, int b) {
+                return GetWebContentsAt(a)->GetLastActiveTimeTicks() >
+                       GetWebContentsAt(b)->GetLastActiveTimeTicks();
+              });
+
+    // Tell the cycling controller that we start cycling to handle tabs keys
+    BraveBrowserWindow::From(browser_window)->StartTabCycling();
+  }
+
+  if (direction == TabRelativeDirection::kNext) {
+    std::rotate(mru_cycle_list_.begin(), mru_cycle_list_.begin() + 1,
+                mru_cycle_list_.end());
+  } else {
+    std::rotate(mru_cycle_list_.rbegin(), mru_cycle_list_.rbegin() + 1,
+                mru_cycle_list_.rend());
+  }
+
+  ActivateTabAt(mru_cycle_list_[0], detail);
+}
+
+void BraveTabStripModel::StopMRUCycling() {
+  mru_cycle_list_.clear();
+}
+
+std::vector<int> BraveTabStripModel::GetTabIndicesForCommandAt(int tab_index) {
+  return TabStripModel::GetIndicesForCommand(tab_index);
+}
+
+bool BraveTabStripModel::GetAllTabsMuted(
+    const std::vector<int>& indices) const {
+  return std::all_of(indices.begin(), indices.end(), [this](int index) {
+    return GetWebContentsAt(index)->IsAudioMuted();
+  });
+}
+
+void BraveTabStripModel::CloseTabs(base::span<int> indices,
+                                   uint32_t close_types) {
+  std::vector<content::WebContents*> contentses;
+  for (const auto& index : indices) {
+    contentses.push_back(GetWebContentsAt(index));
+  }
+  TabStripModel::CloseTabs(contentses, close_types);
+}
+
+void BraveTabStripModel::OnTreeTabRelatedPrefChanged() {
+  if (*tree_tabs_enabled_ && *vertical_tabs_enabled_) {
+    BuildTreeTabs();
+  } else {
+    FlattenTreeTabs();
+  }
+}
+
+void BraveTabStripModel::BuildTreeTabs() {
+  CHECK(base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
+  CHECK(!tree_tab_model_);
+  tree_tab_model_ = std::make_unique<TreeTabModel>();
+
+  tree_tab_node_created_subscription_ =
+      std::make_unique<base::CallbackListSubscription>(
+          tree_tab_model_->RegisterAddTreeTabNodeCallback(
+              base::BindRepeating(&BraveTabStripModel::NotifyTreeTabNodeCreated,
+                                  base::Unretained(this))));
+
+  tree_tab_node_will_be_destroyed_subscription_ =
+      std::make_unique<base::CallbackListSubscription>(
+          tree_tab_model_->RegisterWillRemoveTreeTabNodeCallback(
+              base::BindRepeating(
+                  &BraveTabStripModel::NotifyTreeTabNodeWillBeDestroyed,
+                  base::Unretained(this))));
+
+  tree_tab_node_moved_subscription_ =
+      std::make_unique<base::CallbackListSubscription>(
+          tree_tab_model_->RegisterMovedTreeTabNodeCallback(base::BindRepeating(
+              &BraveTabStripModel::NotifyTreeTabNodeReparented,
+              base::Unretained(this))));
+
+  contents_data()->SetDelegate(
+      std::make_unique<BraveTreeTabStripCollectionDelegate>(
+          *contents_data(), tree_tab_model_->GetWeakPtr()));
+}
+
+void BraveTabStripModel::FlattenTreeTabs() {
+  CHECK(base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
+
+  if (!tree_tab_model_) {
+    return;
+  }
+
+  contents_data()->SetDelegate(nullptr);
+  tree_tab_node_will_be_destroyed_subscription_.reset();
+  tree_tab_node_created_subscription_.reset();
+  tree_tab_node_moved_subscription_.reset();
+  tree_tab_model_.reset();
+}
+
+void BraveTabStripModel::NotifyTreeTabNodeCreated(
+    const tabs::TreeTabNode& node) {
+  auto change = TreeTabChange(node.id(), TreeTabChange::CreatedChange(node));
+  for (auto& observer : observers_) {
+    observer.OnTreeTabChanged(change);
+  }
+}
+
+void BraveTabStripModel::NotifyTreeTabNodeWillBeDestroyed(
+    const tree_tab::TreeTabNodeId& id) {
+  auto* node = tree_tab_model_->GetNode(id);
+  CHECK(node);
+  auto change = TreeTabChange(id, TreeTabChange::WillBeDestroyedChange(*node));
+  for (auto& observer : observers_) {
+    observer.OnTreeTabChanged(change);
+  }
+}
+
+void BraveTabStripModel::NotifyTreeTabNodeReparented(
+    const tree_tab::TreeTabNodeId& id) {
+  auto* node = tree_tab_model_->GetNode(id);
+  if (!node) {
+    return;
+  }
+  auto change = TreeTabChange(id, TreeTabChange::ReparentedChange(*node));
+  observers_.Notify(&TabStripModelObserver::OnTreeTabChanged, change);
+}
+
+const tree_tab::TreeTabNodeId* BraveTabStripModel::GetTreeTabNodeIdForGroup(
+    tab_groups::TabGroupId group_id) const {
+  return static_cast<const tabs::BraveTabStripCollection*>(contents_data_.get())
+      ->GetTreeTabNodeIdForGroup(group_id);
+}
+
+tabs::TabStripCollection&
+BraveTabStripModel::GetTabStripCollectionForTesting() {
+  return *contents_data_;
+}
+
+void BraveTabStripModel::SetSplitPinnedImplForTesting(
+    split_tabs::SplitTabId split,
+    bool pinned) {
+  auto* split_collection = contents_data_->GetSplitTabCollection(split);
+  CHECK(split_collection);
+  TabStripModel::SetSplitPinnedImpl(split_collection, pinned);  // IN-TEST
+}
+
+std::vector<std::variant<std::unique_ptr<DetachedTab>,
+                         std::unique_ptr<DetachedTabCollection>>>
+BraveTabStripModel::DetachTabsAndCollectionsForInsertion(
+    const std::vector<int>& tab_indices) {
+  if (!tree_tab_model_) {
+    return TabStripModel::DetachTabsAndCollectionsForInsertion(tab_indices);
+  }
+
+  // Hoisting non-selected children out of a moving tab's tree node can shift
+  // tab positions (e.g. a hoisted child lands ahead of its former parent), so
+  // `tab_indices` may no longer point at the originally-selected tabs once
+  // this returns. Resolve the tabs first, then re-derive their indices from
+  // the (possibly moved) tabs before detaching.
+  const std::vector<tabs::TabInterface*> tabs = GetTabsAtIndices(tab_indices);
+  contents_data_->PrepareTreeTabNodesForBatchDetach(tabs);
+
+  std::vector<int> updated_indices;
+  updated_indices.reserve(tabs.size());
+  for (tabs::TabInterface* tab : tabs) {
+    updated_indices.push_back(GetIndexOfTab(tab));
+  }
+  return TabStripModel::DetachTabsAndCollectionsForInsertion(updated_indices);
+}

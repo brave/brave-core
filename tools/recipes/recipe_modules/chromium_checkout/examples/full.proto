@@ -1,0 +1,15 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+package recipe_modules.brave.chromium_checkout.examples.full;
+
+message InputProperties {
+  // Chromium ref (e.g. `refs/tags/151.0.7917.1`) to check out in the example.
+  string chromium_ref = 1;
+  // Skip `gclient sync` after the checkout.
+  bool skip_sync = 2;
+}

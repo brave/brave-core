@@ -1,0 +1,120 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//ui/webui/resources/tools/build_webui.gni")
+
+build_webui("build") {
+  grd_prefix = "brave_account"
+
+  static_files = [
+    "brave_account_page.css",
+    "brave_account_page.html",
+  ]
+
+  # Settings is native on Android/iOS, so this WebUI also serves the account
+  # rows as a second page at `brave://account/settings`. On desktop the rows
+  # are compiled into the brave://settings bundle instead - see
+  # //brave/browser/resources/settings/sources.gni.
+  if (is_android || is_ios) {
+    static_files += [ "brave_account_settings_page.html" ]
+  }
+
+  ts_files = [
+    "brave_account_browser_proxy.ts",
+    "brave_account_common.ts",
+    "brave_account_credentials_dialog.html.ts",
+    "brave_account_credentials_dialog.ts",
+    "brave_account_deletion_dialog.html.ts",
+    "brave_account_deletion_dialog.ts",
+    "brave_account_dialog.html.ts",
+    "brave_account_dialog.ts",
+    "brave_account_dialogs.html.ts",
+    "brave_account_dialogs.ts",
+    "brave_account_email_input.html.ts",
+    "brave_account_email_input.ts",
+    "brave_account_email_typo.ts",
+    "brave_account_entry_dialog.html.ts",
+    "brave_account_entry_dialog.ts",
+    "brave_account_otp_dialog.html.ts",
+    "brave_account_otp_dialog.ts",
+    "brave_account_otp_input.html.ts",
+    "brave_account_otp_input.ts",
+    "brave_account_password_icons.html.ts",
+    "brave_account_password_icons.ts",
+    "brave_account_password_input.html.ts",
+    "brave_account_password_input.ts",
+    "brave_account_password_reset_dialog.html.ts",
+    "brave_account_password_reset_dialog.ts",
+    "brave_account_password_strength_meter.html.ts",
+    "brave_account_password_strength_meter.ts",
+    "brave_account_shared.ts",
+    "brave_account_sign_in_dialog.html.ts",
+    "brave_account_sign_in_dialog.ts",
+  ]
+
+  if (is_android || is_ios) {
+    ts_files += [
+      "brave_account_logged_in_row.html.ts",
+      "brave_account_logged_in_row.ts",
+      "brave_account_logged_out_row.html.ts",
+      "brave_account_logged_out_row.ts",
+      "brave_account_row.html.ts",
+      "brave_account_row.ts",
+      "brave_account_row_base.ts",
+      "brave_account_row_browser_proxy.ts",
+    ]
+  }
+
+  css_files = [
+    "brave_account_common.css",
+    "brave_account_deletion_dialog.css",
+    "brave_account_dialog.css",
+    "brave_account_entry_dialog.css",
+    "brave_account_otp_input.css",
+    "brave_account_password_icons.css",
+    "brave_account_password_reset_dialog.css",
+    "brave_account_password_strength_meter.css",
+    "brave_account_sign_in_dialog.css",
+  ]
+
+  if (is_android || is_ios) {
+    css_files += [
+      "brave_account_logged_in_row.css",
+      "brave_account_row_common.css",
+    ]
+  }
+
+  webui_context_type = "trusted"
+
+  use_brave_grit = true
+  grit_output_dir = target_gen_dir
+
+  ts_definitions = [ "//tools/typescript/definitions/chrome_send.d.ts" ]
+
+  ts_deps = [
+    "//third_party/lit/v3_0:build_ts",
+    "//ui/webui/resources/js:build_ts",
+    "//ui/webui/resources/mojo:build_ts",
+  ]
+
+  mojo_files = [
+    "$root_gen_dir/brave/components/brave_account/mojom/brave_account.mojom-webui.ts",
+    "$root_gen_dir/brave/components/brave_account/mojom/change_password.mojom-webui.ts",
+    "$root_gen_dir/brave/components/brave_account/mojom/delete_account.mojom-webui.ts",
+    "$root_gen_dir/brave/components/brave_account/mojom/get_service_token.mojom-webui.ts",
+    "$root_gen_dir/brave/components/brave_account/mojom/login.mojom-webui.ts",
+    "$root_gen_dir/brave/components/brave_account/mojom/register.mojom-webui.ts",
+    "$root_gen_dir/brave/components/brave_account/mojom/resend_verification_email.mojom-webui.ts",
+    "$root_gen_dir/brave/components/brave_account/mojom/reset_password.mojom-webui.ts",
+    "$root_gen_dir/brave/components/password_strength_meter/password_strength_meter.mojom-webui.ts",
+    "$root_gen_dir/components/grit/brave_components_webui_strings.ts",
+  ]
+
+  mojo_files_deps = [
+    "//brave/components/brave_account/mojom:mojom_ts__generator",
+    "//brave/components/password_strength_meter:mojom_ts__generator",
+    "//brave/components/resources:strings_grit",
+  ]
+}

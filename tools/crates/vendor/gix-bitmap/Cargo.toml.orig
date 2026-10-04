@@ -1,0 +1,22 @@
+lints.workspace = true
+
+[package]
+name = "gix-bitmap"
+version = "0.2.15"
+repository = "https://github.com/GitoxideLabs/gitoxide"
+license = "MIT OR Apache-2.0"
+description = "A crate of the gitoxide project dedicated implementing the standard git bitmap format"
+authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
+edition = "2021"
+rust-version = "1.82"
+exclude = ["CHANGELOG.md"]
+
+[lib]
+doctest = false
+test = true
+
+[dependencies]
+thiserror = "2.0.17"
+
+[dev-dependencies]
+gix-testtools = { path = "../tests/tools" }

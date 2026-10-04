@@ -1,0 +1,12 @@
+diff --git a/components/crash/core/app/crash_reporter_client.cc b/components/crash/core/app/crash_reporter_client.cc
+index 0941e78cef59417f8ded359c02d8e97477908ea9..2866ef4eeea3b4f2804bbf8ab1fd6db3b7bda0a3 100644
+--- a/components/crash/core/app/crash_reporter_client.cc
++++ b/components/crash/core/app/crash_reporter_client.cc
+@@ -141,6 +141,7 @@ void CrashReporterClient::GetSanitizationInformation(
+ #endif
+ 
+ std::string CrashReporterClient::GetUploadUrl() {
++  BRAVE_CRASH_REPORTER_CLIENT_GET_UPLOAD_URL
+ #if BUILDFLAG(GOOGLE_CHROME_BRANDING) && defined(OFFICIAL_BUILD)
+   return kDefaultUploadURL;
+ #else

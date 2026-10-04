@@ -1,0 +1,53 @@
+[package]
+name = "fpe"
+version = "0.6.1"
+authors = ["Jack Grigg <thestr4d@gmail.com>"]
+license = "MIT/Apache-2.0"
+edition = "2021"
+rust-version = "1.56"
+description = "Format-preserving encryption"
+documentation = "https://docs.rs/fpe/"
+homepage = "https://github.com/str4d/fpe"
+repository = "https://github.com/str4d/fpe"
+keywords = ["ff1"]
+categories = ["cryptography", "no-std"]
+
+[dependencies]
+cbc = { version = "0.1", default-features = false }
+cipher = "0.4"
+libm = "0.2"
+
+num-bigint = { version = "0.4", optional = true, default-features = false }
+num-integer = { version = "0.1", optional = true, default-features = false }
+num-traits = { version = "0.2", optional = true, default-features = false }
+
+[dev-dependencies]
+aes = "0.8"
+
+# Tests
+proptest = "1.1"
+static_assertions = "1.1"
+
+# Benchmarks
+#aes-old = { package = "aes", version = "0.3" }
+#binary-ff1 = "0.1"
+criterion = "0.4"
+
+[target.'cfg(any(target_arch = "x86", target_arch = "x86_64"))'.dev-dependencies]
+criterion-cycles-per-byte = "0.4"
+
+[target.'cfg(unix)'.dev-dependencies]
+inferno = ">= 0.11, < 0.11.15"
+pprof = { version = "0.11", features = ["criterion", "flamegraph"] }
+
+[features]
+default = ["std"]
+alloc = ["num-bigint", "num-integer", "num-traits"]
+std = ["alloc"]
+
+[lib]
+bench = false
+
+[[bench]]
+name = "ff1"
+harness = false

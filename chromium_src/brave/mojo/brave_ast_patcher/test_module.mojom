@@ -1,0 +1,109 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at http://mozilla.org/MPL/2.0/.
+
+// This file contains patches to apply to an original mojom file.
+
+module brave_ast_patcher.mojom;
+
+// Add new definitions:
+
+const int32 kGlobalConstant2 = 2;
+
+[BraveAdd]
+enum NewGlobalEnum {
+  VALUE = 0,
+  VALUE_GLOBAL_CONSTANT = kGlobalConstant2,
+};
+
+[BraveAdd]
+struct NewGlobalStruct {
+  const int32 kNestedConstant1 = 1;
+
+  enum NestedEnum {
+    VALUE = 0,
+    VALUE_NESTED_CONSTANT = kNestedConstant1,
+  };
+
+  NewGlobalEnum new_global_enum_member = NewGlobalEnum.VALUE_GLOBAL_CONSTANT;
+  NestedEnum nested_enum_member = NestedEnum.VALUE_NESTED_CONSTANT;
+};
+
+[BraveAdd]
+union NewGlobalUnion {
+  int32 int32_value;
+  float float_value;
+};
+
+[BraveAdd]
+interface NewGlobalInterface {
+  const int32 kNestedConstant1 = 1;
+
+  enum NestedEnum {
+    VALUE = 0,
+    VALUE_NESTED_CONSTANT = kNestedConstant1,
+  };
+
+  TestNestedEnum() => (NestedEnum nested_enum);
+  TestNewGlobalEnum(NewGlobalEnum new_global_enum) => ();
+  TestNewGlobalStruct(NewGlobalStruct new_global_struct) => ();
+  TestNewGlobalUnion(NewGlobalUnion new_global_union) => ();
+};
+
+// Extend existing definitions:
+
+[BraveExtend]
+enum GlobalEnum {
+  NEW_VALUE = 1,
+  NEW_VALUE_GLOBAL_CONSTANT = kGlobalConstant2,
+};
+
+[BraveExtend]
+struct GlobalStruct {
+  const int32 kNestedConstant2 = 2;
+
+  [BraveExtend]
+  enum NestedEnum {
+    NEW_VALUE = 1,
+    NEW_VALUE_NESTED_CONSTANT = kNestedConstant2,
+  };
+
+  [BraveAdd]
+  enum NewNestedEnum {
+    VALUE = 1,
+    VALUE_NESTED_CONSTANT = kNestedConstant2,
+  };
+
+  string new_string_member;
+  NewGlobalEnum new_global_enum_member = NewGlobalEnum.VALUE_GLOBAL_CONSTANT;
+  NewNestedEnum new_nested_enum_member = NewNestedEnum.VALUE_NESTED_CONSTANT;
+};
+
+[BraveExtend]
+union GlobalUnion {
+  int32 int32_value;
+  float float_value;
+};
+
+[BraveExtend]
+interface GlobalInterface {
+  const int32 kNestedConstant2 = 2;
+
+  [BraveExtend]
+  enum NestedEnum {
+    NEW_VALUE = 1,
+    NEW_VALUE_NESTED_CONSTANT = kNestedConstant2,
+  };
+
+  [BraveAdd]
+  enum NewNestedEnum {
+    VALUE = 1,
+    VALUE_NESTED_CONSTANT = kNestedConstant2,
+  };
+
+  TestNewNestedEnum() => (NewNestedEnum new_nested_enum);
+  TestNewGlobalEnum(NewGlobalEnum new_global_enum) => ();
+  TestNewGlobalStruct(NewGlobalStruct new_global_struct) => ();
+  TestNewGlobalUnion(NewGlobalUnion new_global_union) => ();
+};

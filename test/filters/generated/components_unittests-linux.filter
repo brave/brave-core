@@ -1,0 +1,120 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream components_unittests tests with a flake rate >= 1.0% on
+## linux bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+
+# 27.6% flake rate over 30 days per LUCI Analysis (19890 passed, 1 failed, 7587 flaky).
+-All/HeapProfilerControllerChannelTest.CanaryChannel/2
+
+# 35.8% flake rate over 30 days per LUCI Analysis (17654 passed, 0 failed, 9832 flaky).
+-All/HeapProfilerControllerChannelTest.CanaryChannel/4
+
+# 41.5% flake rate over 30 days per LUCI Analysis (16070 passed, 0 failed, 11416 flaky).
+-All/HeapProfilerControllerChannelTest.UnknownChannel/2
+
+# 42.2% flake rate over 30 days per LUCI Analysis (15880 passed, 1 failed, 11598 flaky).
+-All/HeapProfilerControllerChannelTest.UnknownChannel/3
+
+# 57.1% flake rate over 30 days per LUCI Analysis (11783 passed, 60 failed, 15636 flaky).
+-All/HeapProfilerControllerMultipleChildTest.EndToEnd/0
+
+# 44.9% flake rate over 30 days per LUCI Analysis (15140 passed, 2 failed, 12344 flaky).
+-All/HeapProfilerControllerProcessTest.BrowserProcess/0
+
+# 46.7% flake rate over 30 days per LUCI Analysis (14645 passed, 1 failed, 12833 flaky).
+-All/HeapProfilerControllerProcessTest.BrowserProcess/1
+
+# 36.7% flake rate over 30 days per LUCI Analysis (17392 passed, 0 failed, 10094 flaky).
+-All/HeapProfilerControllerProcessTest.BrowserProcess/10
+
+# 32.7% flake rate over 30 days per LUCI Analysis (18498 passed, 0 failed, 8980 flaky).
+-All/HeapProfilerControllerProcessTest.BrowserProcess/11
+
+# 54.9% flake rate over 30 days per LUCI Analysis (12404 passed, 0 failed, 15082 flaky).
+-All/HeapProfilerControllerProcessTest.BrowserProcess/12
+
+# 59.7% flake rate over 30 days per LUCI Analysis (11083 passed, 0 failed, 16403 flaky).
+-All/HeapProfilerControllerProcessTest.BrowserProcess/13
+
+# 53.0% flake rate over 30 days per LUCI Analysis (12903 passed, 3 failed, 14573 flaky).
+-All/HeapProfilerControllerProcessTest.BrowserProcess/14
+
+# 50.5% flake rate over 30 days per LUCI Analysis (13613 passed, 2 failed, 13871 flaky).
+-All/HeapProfilerControllerProcessTest.BrowserProcess/2
+
+# 47.6% flake rate over 30 days per LUCI Analysis (14395 passed, 1 failed, 13083 flaky).
+-All/HeapProfilerControllerProcessTest.BrowserProcess/3
+
+# 50.1% flake rate over 30 days per LUCI Analysis (13710 passed, 4 failed, 13772 flaky).
+-All/HeapProfilerControllerProcessTest.BrowserProcess/4
+
+# 1.4% flake rate over 30 days per LUCI Analysis (27098 passed, 0 failed, 388 flaky).
+-All/HeapProfilerControllerProcessTest.ChildProcess/11
+
+# 1.4% flake rate over 30 days per LUCI Analysis (27097 passed, 0 failed, 389 flaky).
+-All/HeapProfilerControllerProcessTest.ChildProcess/12
+
+# 1.0% flake rate over 30 days per LUCI Analysis (27198 passed, 0 failed, 281 flaky).
+-All/HeapProfilerControllerProcessTest.ChildProcess/13
+
+# 9.1% flake rate over 30 days per LUCI Analysis (24987 passed, 0 failed, 2492 flaky).
+-All/HeapProfilerControllerTest.EmptyProfile/0
+
+# 4.8% flake rate over 30 days per LUCI Analysis (26158 passed, 0 failed, 1327 flaky).
+-All/HeapProfilerControllerTest.SamplingIntervalVariance/0
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-All/MetricsWebContentsObserverTest.MainFrameNavigationInternalAbort/0
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-All/MetricsWebContentsObserverTest.MainFrameNavigationInternalAbort/1
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-AppIdentifierTest.FromPrefValueWithZeroExpiration
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-AutofillStructuredAddressHouseNumberTest.DiscardWhitespaceWhenNormalizingHouseNumber/1
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-AutofillStructuredAddressHouseNumberTest.DiscardWhitespaceWhenNormalizingHouseNumber/2
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-AutofillStructuredAddressHouseNumberTest.DiscardWhitespaceWhenNormalizingHouseNumber/3
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-AutofillStructuredAddressHouseNumberTest.DiscardWhitespaceWhenNormalizingHouseNumber/6
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-AutofillStructuredAddressHouseNumberTest.DiscardWhitespaceWhenNormalizingHouseNumber/7
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-AutofillStructuredAddressHouseNumberTest.DiscardWhitespaceWhenNormalizingHouseNumber/8
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-AutofillStructuredAddressMergeReformatTest.MergeAndReformat/0
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-AutofillStructuredAddressMergeReformatTest.MergeAndReformat/1
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-AutofillStructuredAddressMergeReformatTest.MergeAndReformat/2
+
+# 3.3% flake rate over 30 days per LUCI Analysis (26584 passed, 0 failed, 895 flaky).
+-HintsManagerTest.OptimizationFiltersAreOnlyLoadedIfTypeIsRegistered
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-ManualTestingImportTest.LoadProfilesFromFile_Invalid_NotFullyStructured
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-OnDeviceTailModelExecutorTest.TestGenerateSuggestionsWithBadwordFilter
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-TabGroupSyncCoordinatorTest.CloseUnsavedLocalGroupsOnStartup
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-TabGroupSyncCoordinatorTest.SaveUnsavedLocalGroupsOnStartupForFirstTimeFeatureLaunch
+
+# 22.9% flake rate over 30 days per LUCI Analysis (21189 passed, 5 failed, 6296 flaky).
+-UmaPageLoadMetricsObserverTest.TestTracingDomContentLoadedEventStart

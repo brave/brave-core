@@ -1,0 +1,319 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
+
+// Selectors
+import { useSafeUISelector } from '$wallet/common/hooks/use-safe-selector'
+import { UISelectors } from '$wallet/common/selectors'
+
+// Utils
+import { getLocale } from '$web-common/locale'
+import Amount from '$wallet/utils/amount'
+import {
+  getPriceRequestsForTokens,
+  getTokenPriceFromRegistry,
+} from '$wallet/utils/pricing-utils'
+import { BraveWallet } from '$wallet/constants/types'
+import {
+  getIsRewardsToken,
+  getRewardsTokenDescription,
+} from '$wallet/utils/rewards_utils'
+import {
+  externalWalletProviderFromString, //
+} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
+import {
+  checkIfTokenNeedsNetworkIcon,
+  isShieldedToken,
+} from '$wallet/utils/asset-utils'
+
+// Queries
+import {
+  useGetDefaultFiatCurrencyQuery,
+  useGetNetworkQuery,
+  useGetTokenSpotPricesQuery,
+} from '$wallet/common/slices/api.slice'
+import { querySubscriptionOptions60s } from '$wallet/common/slices/constants'
+
+// Hooks
+import useExplorer from '$wallet/common/hooks/explorer'
+
+// Components
+import withPlaceholderIcon from '$wallet/components/shared/create-placeholder-icon'
+import { AssetDetailsMenu } from '$wallet/page/components/wallet_menus/asset_details_menu'
+import { CreateNetworkIcon } from '$wallet/components/shared/create-network-icon'
+import { ShieldedLabel } from '$wallet/components/shared/shielded_label/shielded_label'
+
+// Styled Components
+import {
+  MenuButton,
+  MenuButtonIcon,
+  HorizontalDivider,
+} from './shared_card_headers.style'
+import {
+  AssetIcon,
+  PercentChange,
+  UpDownIcon,
+  IconsWrapper,
+  NetworkIconWrapper,
+} from './asset_details_header.style'
+import { Button, ButtonIcon } from './shared_panel_headers.style'
+import {
+  Text,
+  Row,
+  Column,
+  HorizontalSpace,
+} from '$wallet/components/shared/style'
+import { Skeleton } from '$wallet/components/shared/loading-skeleton/styles'
+
+const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, {
+  size: 'big',
+  marginLeft: 0,
+  marginRight: 0,
+})
+
+interface Props {
+  selectedAsset?: BraveWallet.BlockchainToken
+  onBack: () => void
+  onClickTokenDetails: () => void
+  onClickHideToken: () => void
+  onClickEditToken?: () => void
+  isShowingMarketData?: boolean
+  selectedTimeline: BraveWallet.AssetPriceTimeframe
+}
+
+export const AssetDetailsHeader = (props: Props) => {
+  const {
+    selectedAsset,
+    onBack,
+    onClickHideToken,
+    onClickTokenDetails,
+    onClickEditToken,
+    isShowingMarketData,
+  } = props
+
+  // UI Selectors (safe)
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
+  const isMobileOrPanel = isMobile || isPanel
+
+  // queries
+  const { data: selectedAssetsNetwork, isLoading: isLoadingNetwork } =
+    useGetNetworkQuery(selectedAsset ?? skipToken)
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
+
+  const openExplorer = useExplorer(selectedAssetsNetwork)
+
+  // methods
+  const onClickViewOnExplorer = React.useCallback(() => {
+    if (selectedAsset) {
+      openExplorer('token', selectedAsset.contractAddress)()
+    }
+  }, [openExplorer, selectedAsset])
+
+  const tokenPriceRequests = React.useMemo(
+    () => getPriceRequestsForTokens([selectedAsset]),
+    [selectedAsset],
+  )
+
+  // queries
+  const { data: spotPrices } = useGetTokenSpotPricesQuery(
+    tokenPriceRequests.length && defaultFiatCurrency
+      ? {
+          requests: tokenPriceRequests,
+          vsCurrency: defaultFiatCurrency,
+        }
+      : skipToken,
+    querySubscriptionOptions60s,
+  )
+
+  // computed
+  const isRewardsToken = getIsRewardsToken(selectedAsset)
+
+  const networkDescription = isShowingMarketData
+    ? (selectedAsset?.symbol ?? '')
+    : isRewardsToken
+      ? getRewardsTokenDescription(
+          externalWalletProviderFromString(selectedAsset?.chainId ?? ''),
+        )
+      : getLocale(S.BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION)
+          .replace('$1', selectedAsset?.symbol ?? '')
+          .replace('$2', selectedAssetsNetwork?.chainName ?? '')
+
+  const selectedAssetFiatPrice =
+    selectedAsset
+    && spotPrices
+    && getTokenPriceFromRegistry(spotPrices, selectedAsset)
+
+  const isSelectedAssetPriceDown = selectedAssetFiatPrice
+    ? Number(selectedAssetFiatPrice.percentageChange24h) < 0
+    : false
+
+  return (
+    <Row
+      padding={isMobileOrPanel ? '20px 16px' : '24px 0px'}
+      justifyContent='space-between'
+    >
+      <Row width='unset'>
+        {isMobileOrPanel ? (
+          <Row
+            width='unset'
+            margin='0px 12px 0px 0px'
+          >
+            <Button onClick={onBack}>
+              <ButtonIcon name='carat-left' />
+            </Button>
+          </Row>
+        ) : (
+          <MenuButton
+            marginRight={16}
+            onClick={onBack}
+          >
+            <MenuButtonIcon
+              size={16}
+              name='arrow-left'
+            />
+          </MenuButton>
+        )}
+        <Row
+          width='unset'
+          gap='8px'
+        >
+          {selectedAsset ? (
+            <IconsWrapper>
+              <AssetIconWithPlaceholder asset={selectedAsset} />
+              {selectedAssetsNetwork
+                && checkIfTokenNeedsNetworkIcon(
+                  selectedAssetsNetwork,
+                  selectedAsset.contractAddress,
+                ) && (
+                  <NetworkIconWrapper>
+                    <CreateNetworkIcon
+                      network={selectedAssetsNetwork}
+                      marginRight={0}
+                    />
+                  </NetworkIconWrapper>
+                )}
+            </IconsWrapper>
+          ) : (
+            <Skeleton
+              height={'40px'}
+              width={'40px'}
+            />
+          )}
+          <Column alignItems='flex-start'>
+            {selectedAsset ? (
+              <Row
+                width='unset'
+                gap='6px'
+              >
+                <Text
+                  textColor='primary'
+                  variant='large.semibold'
+                  textAlign='left'
+                >
+                  {selectedAsset.name ?? ''}
+                </Text>
+                {isShieldedToken(selectedAsset) && <ShieldedLabel />}
+              </Row>
+            ) : (
+              <Skeleton
+                height={'18px'}
+                width={'100px'}
+              />
+            )}
+            {!selectedAsset || isLoadingNetwork ? (
+              <Skeleton
+                height={'16px'}
+                width={'150px'}
+              />
+            ) : (
+              <Text
+                textColor='secondary'
+                variant='small.regular'
+                textAlign='left'
+              >
+                {networkDescription}
+              </Text>
+            )}
+          </Column>
+        </Row>
+      </Row>
+      <Row width='unset'>
+        <Column alignItems='flex-end'>
+          <Text
+            textColor='primary'
+            variant='default.semibold'
+            textAlign='right'
+          >
+            {selectedAssetFiatPrice
+              ? new Amount(selectedAssetFiatPrice.price).compactAsSpotPrice(
+                  defaultFiatCurrency,
+                )
+              : '0.00'}
+          </Text>
+
+          {/* We may still keep BTC price value,
+          keeping this around until decided. */}
+
+          {/* <PriceText>
+            {
+              selectedAssetCryptoPrice
+                ? new Amount(selectedAssetCryptoPrice.price)
+                  .formatAsAsset(undefined, defaultCurrencies.crypto)
+                : ''
+            }
+          </PriceText> */}
+
+          <PercentChange isDown={isSelectedAssetPriceDown}>
+            <UpDownIcon
+              name={
+                isSelectedAssetPriceDown ? 'arrow-small-down' : 'arrow-small-up'
+              }
+            />
+            {selectedAssetFiatPrice
+              ? Number(selectedAssetFiatPrice.percentageChange24h).toFixed(2)
+              : '0.00'}
+            %
+          </PercentChange>
+        </Column>
+        {selectedAsset?.contractAddress
+          && !selectedAsset?.isErc721
+          && !selectedAsset.isNft
+          && !isRewardsToken && (
+            <>
+              {isMobileOrPanel ? (
+                <HorizontalSpace space='12px' />
+              ) : (
+                <>
+                  <HorizontalSpace space='16px' />
+                  <HorizontalDivider />
+                  <HorizontalSpace space='16px' />
+                </>
+              )}
+              <AssetDetailsMenu
+                assetSymbol={selectedAsset?.symbol ?? ''}
+                onClickHideToken={onClickHideToken}
+                onClickTokenDetails={onClickTokenDetails}
+                onClickViewOnExplorer={onClickViewOnExplorer}
+                onClickEditToken={onClickEditToken}
+              >
+                {isMobileOrPanel ? (
+                  <Button slot='anchor-content'>
+                    <ButtonIcon name='more-vertical' />
+                  </Button>
+                ) : (
+                  <MenuButton slot='anchor-content'>
+                    <MenuButtonIcon name='more-vertical' />
+                  </MenuButton>
+                )}
+              </AssetDetailsMenu>
+            </>
+          )}
+      </Row>
+    </Row>
+  )
+}

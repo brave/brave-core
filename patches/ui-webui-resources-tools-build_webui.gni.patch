@@ -1,0 +1,65 @@
+diff --git a/ui/webui/resources/tools/build_webui.gni b/ui/webui/resources/tools/build_webui.gni
+index eee5ac59c4f17fdb492fe1b7fdf886b0abb9c7c6..5d97774d6f98dca155c4f99b3aa8292d5edee7ae 100644
+--- a/ui/webui/resources/tools/build_webui.gni
++++ b/ui/webui/resources/tools/build_webui.gni
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/resources/brave_grit.gni")
+ import("//build/config/features.gni")
+ import(
+     "//tools/code_coverage/js_source_maps/create_js_source_maps/create_js_source_maps.gni")
+@@ -245,6 +246,12 @@ template("build_webui") {
+         enable_removal_comments = enable_source_maps
+       }
+       in_files = all_ts_files
++      if (defined(invoker.exclude_ts_preprocess_files)) {
++        in_files -= invoker.exclude_ts_preprocess_files
++      }
++      if (defined(invoker.preprocess_deps)) {
++        public_deps = invoker.preprocess_deps
++      }
+     }
+   }
+ 
+@@ -303,6 +310,12 @@ template("build_webui") {
+       if (defined(invoker.css_files)) {
+         in_files += invoker.css_files
+       }
++      if (defined(invoker.exclude_html_css_preprocess_files)) {
++        in_files -= invoker.exclude_html_css_preprocess_files
++      }
++      if (defined(invoker.preprocess_deps)) {
++        public_deps = invoker.preprocess_deps
++      }
+     }
+   }
+ 
+@@ -569,7 +582,7 @@ template("build_webui") {
+       }
+ 
+       # Enable by default on non-Ash WebUIs.
+-      enable_web_component_missing_deps = true
++      enable_web_component_missing_deps = false
+       if (is_ash_webui) {
+         enable_web_component_missing_deps = false
+       }
+@@ -654,6 +667,7 @@ template("build_webui") {
+         "//chrome/browser/resources/tab_search/shared",
+         "//ui/webui/resources/js",
+       ]
++      no_explicit_any_exceptions += [ "//brave/ui/webui/resources" ]
+ 
+       if (is_android) {
+         no_explicit_any_exceptions +=
+@@ -877,7 +891,8 @@ template("build_webui") {
+   }
+ 
+   if (!generate_grdp) {
+-    grit("resources") {
++    forward_variables_from(invoker, [ "use_brave_grit" ])
++    brave_or_default_grit("resources") {
+       # These arguments are needed since the grd is generated at build time.
+       enable_input_discovery_for_gn_analyze = false
+       source = "$target_gen_dir/resources.grd"

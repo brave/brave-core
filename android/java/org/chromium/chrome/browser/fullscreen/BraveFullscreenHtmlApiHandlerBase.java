@@ -1,0 +1,55 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+package org.chromium.chrome.browser.fullscreen;
+
+import android.app.Activity;
+
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.media.BraveFullscreenVideoPictureInPictureController;
+import org.chromium.chrome.browser.tab.TabHidingType;
+
+/**
+ * Super class of {@link FullscreenHtmlApiHandlerBase} introduced via bytecode changes. For more
+ * info see {@link org.brave.bytecode.BraveFullscreenHtmlApiHandlerBaseClassAdapter}.
+ *
+ * <p>The hooks below are called from upstream FullscreenHtmlApiHandlerBase via Plaster
+ * substitutions; if the names or signatures change, update the corresponding entries in {@code
+ * rewrite/chrome/android/.../FullscreenHtmlApiHandlerBase.java.yaml}.
+ */
+public abstract class BraveFullscreenHtmlApiHandlerBase {
+    /**
+     * Field accessed using {@code BraveFullscreenHtmlApiHandlerBase.class.cast(this)}. Used to keep
+     * track whether a tab was hidden by {@code TabHidingType.CHANGED_TABS} reason.
+     *
+     * <p>Note: {@link FullscreenHtmlApiHandlerBase} contains a change introduced by a patch.
+     */
+    protected boolean mTabHiddenByChangedTabs;
+
+    /** Keeps fullscreen state when hiding or stopping the activity interrupts an active PiP. */
+    public boolean shouldPreservePersistentFullscreenForPictureInPicture(Activity activity) {
+        // Screen lock must not turn a playing PiP into a fullscreen-exit pause.
+        if (activity.isInPictureInPictureMode()
+                && BraveFullscreenVideoPictureInPictureController
+                        .shouldPreservePlaybackOnScreenLock()) {
+            return true;
+        }
+
+        return activity instanceof final BraveActivity braveActivity
+                && braveActivity.isYouTubePictureInPictureActive();
+    }
+
+    /**
+     * Tab-hidden variant of {@link #shouldPreservePersistentFullscreenForPictureInPicture}. Records
+     * whether the tab was hidden because of a tab switch (so the Compat/Legacy {@code
+     * exitPersistentFullscreenMode} override can still tear down fullscreen UI in that case) and
+     * returns whether upstream should skip its tab-hidden fullscreen exit.
+     */
+    protected boolean maybeSkipExitFullscreenOnTabHidden(
+            Activity activity, @TabHidingType int reason) {
+        mTabHiddenByChangedTabs = reason == TabHidingType.CHANGED_TABS;
+        return shouldPreservePersistentFullscreenForPictureInPicture(activity);
+    }
+}

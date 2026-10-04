@@ -1,0 +1,29 @@
+{%- import "interface_macros.tmpl" as interface_macros -%}
+{%- set cpp_namespace = interface|cpp_namespace_from_kind %}
+{%- set objc_name = class_prefix ~ interface.name %}
+// Forwards `{{cpp_namespace}}::{{interface.name}}` messages to an Obj-C
+// implementation of `{{objc_name}}`.
+//
+// Instances are owned by the Obj-C implementation they forward to, so the
+// receiver is unbound when that object is deallocated or when the remote end
+// disconnects.
+class {{objc_name}}Bridge: public {{cpp_namespace}}::{{interface.name}} {
+public:
+  // Creates a bridge owned by `bridge` and returns a remote bound to it. Must
+  // be called on the UI thread.
+  static mojo::PendingRemote<{{cpp_namespace}}::{{interface.name}}>
+      CreateRemote(id<{{objc_name}}> bridge);
+
+  explicit {{objc_name}}Bridge(id<{{objc_name}}> bridge) : bridge_(bridge) { }
+  ~{{objc_name}}Bridge() override;
+
+  {{objc_name}}Bridge(const {{objc_name}}Bridge&) = delete;
+  {{objc_name}}Bridge& operator=(const {{objc_name}}Bridge&) = delete;
+
+private:
+  __weak id<{{objc_name}}> bridge_;
+  mojo::Receiver<{{cpp_namespace}}::{{interface.name}}> receiver_{this};
+{% for method in interface.methods %}
+  void {{method.name}}({{interface_macros.cpp_declare_request_params(method, cpp_namespace ~ "::" ~ interface.name)}}) override;
+{%- endfor %}
+};

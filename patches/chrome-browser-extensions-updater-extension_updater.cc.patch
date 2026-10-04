@@ -1,0 +1,23 @@
+diff --git a/chrome/browser/extensions/updater/extension_updater.cc b/chrome/browser/extensions/updater/extension_updater.cc
+index b538f65c4a375b267e73948bf6cb228f84bf83c5..e1782fb51ea00ac46ad8ad5018b8fda6f4e1c8a3 100644
+--- a/chrome/browser/extensions/updater/extension_updater.cc
++++ b/chrome/browser/extensions/updater/extension_updater.cc
+@@ -231,7 +231,8 @@ void ExtensionUpdater::Start() {
+   DCHECK(registry_);
+   alive_ = true;
+   // Check soon, and set up the first delayed check.
+-  if (!g_skip_scheduled_checks_for_tests) {
++  if (!g_skip_scheduled_checks_for_tests && base::FeatureList::IsEnabled(
++        extensions::features::kBraveAutoUpdateExtensions)) {
+     CheckSoon();
+     ScheduleNextCheck();
+   }
+@@ -270,6 +271,8 @@ void ExtensionUpdater::ScheduleNextCheck() {
+ }
+ 
+ void ExtensionUpdater::NextCheck() {
++  if (!base::FeatureList::IsEnabled(
++      extensions::features::kBraveAutoUpdateExtensions)) return;
+   if (!alive_) {
+     return;
+   }

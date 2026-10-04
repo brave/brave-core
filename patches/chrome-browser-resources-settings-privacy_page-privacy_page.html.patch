@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
+index 4d5030096f13459107589eb49bab52e37a1c3dda..214a682dfb2f8ced1ec8dcb918188ade36e206ee 100644
+--- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
++++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
+@@ -11,6 +11,7 @@
+           on-close="onPrivacyGuideDialogClosed_">
+       </settings-privacy-guide-dialog>
+     </template>
++    <settings-personalization-options prefs="{{prefs}}"></settings-personalization-options>
+     <cr-link-row id="clearBrowsingData"
+         start-icon="cr:delete"
+         label="$i18n{clearBrowsingData}"

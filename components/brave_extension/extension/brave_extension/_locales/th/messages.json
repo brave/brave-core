@@ -1,0 +1,226 @@
+{
+  "appName": {
+    "message": "ส่วนขยาย Brave ",
+    "description": "The name of the extension."
+  },
+  "shields": {
+    "message": "ปกป้อง",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "ขึ้น",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "ด้านล่าง",
+    "description": "Message for when shields is disabled"
+  },
+  "forThisSite": {
+    "message": "สำหรับเว็บไซต์นี้",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "หากไซต์ใดมีปัญหาให้ลองลดการปกป้องลง",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "คุณกำลังท่องเว็บนี้โดยไม่มีการปกป้องความเป็นส่วนตัวและความปลอดภัยจาก Brave การเปิดระบบปกป้องทำให้เว็บทำงานไม่ถูกต้องใช่หรือไม่",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "รายงานเว็บไซต์เสียหาย",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
+  },
+  "itemsBlocked": {
+    "message": "รายการถูกบล็อก",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  },
+  "itemBlocked": {
+    "message": "รายการถูกบล็อก",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  },
+  "and": {
+    "message": "และ",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  },
+  "connectionsUpgraded": {
+    "message": "อัปเกรดการเชื่อมต่อแล้ว",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
+  },
+  "connectionUpgraded": {
+    "message": "อัปเกรดการเชื่อมต่อแล้ว",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
+  },
+  "thirdPartyTrackersBlocked": {
+    "message": "ตัวติดตามข้ามไซต์ถูกบล็อก",
+    "description": "Message for the scripts blocked row label"
+  },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "บล็อกแอปติดตามและโฆษณาแล้ว",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "บล็อกโฆษณาและแอปติดตามแล้ว (แบบรุนแรง)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "บล็อกโฆษณาและแอปติดตาม (แบบมาตรฐาน)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "อนุญาตโฆษณาและแอปติดตามทั้งหมด",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
+  "connectionsUpgradedHTTPS": {
+    "message": "อัปเกรดการเชื่อมต่อไปยัง HTTPS แล้ว",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
+  },
+  "connectionUpgradedHTTPS": {
+    "message": "อัปเกรดการเชื่อมต่อไปยัง HTTPS แล้ว",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
+  },
+  "scriptsBlocked": {
+    "message": "บล็อกสคริปต์แล้ว",
+    "description": "Message for the scripts blocked row label"
+  },
+  "thirdPartyCookiesBlocked": {
+    "message": "คุกกี้ข้ามไซต์ถูกบล็อก",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "คุ้กกี้ได้รับการบล็อกแล้ว",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "อนุญาตคุ้กกี้ทั้งหมด",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "บล็อกการเก็บร่องรอย",
+    "description": "Message for the option in the fingerprinting field in read only view"
+  },
+  "standardFingerprinting": {
+    "message": "บล็อก Fingerprinting แล้ว (ธรรมดา)",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
+  },
+  "strictFingerprinting": {
+    "message": "บล็อก Fingerprinting แล้ว (เข้มงวด อาจทำหน้าเว็บเสียหาย)",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
+  },
+  "allowAllFingerprinting": {
+    "message": "อนุญาตการสร้างลายนิ้วมือทั้งหมด",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "การพิมพ์ลายนิ้วมือ",
+    "description": "Message for the fingerprinting attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "สคริปต์บนไซต์นี้",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "บล็อคสคริปต์ถูกบล็อค",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "อนุญาตสคริปต์",
+    "description": "Message for the script resources allowed"
+  },
+  "blockAll": {
+    "message": "บล็อกทั้งหมด",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "อนุญาตทั้งหมด",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "block": {
+    "message": "บล็อก",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "allow": {
+    "message": "อนุญาต",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "blockedOnce": {
+    "message": "ถูกบล็อกครั้งเดียว",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "อนุญาตครั้งเดียว",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "อนุญาตให้ใช้สคริปต์ครั้งเดียว",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
+  "cancel": {
+    "message": "ยกเลิก",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "ย้อนกลับ",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "ใช้ครั้งเดียว",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "แก้ไขค่าเริ่มต้นของเกราะสากล",
+    "description": "Message for the button action linking to the settings page"
+  },
+  "manageCustomFilters": {
+    "message": "จัดการตัวกรองแบบกำหนดเอง",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "บล็อกองค์ประกอบ",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
+  },
+  "advancedView": {
+    "message": "มุมมองขั้นสูง",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "มุมมองธรรมดา",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "เว็บไซต์มักจะมีคุกกี้หรือสคริปต์ที่พยายามระบุตัวตนของคุณและอุปกรณ์ที่ใช้ (มักจะฝังมากับโฆษณา) เว็บไซต์เหล่านี้ต้องการรู้ว่าคุณเป็นใครและติดตามคุณในเว็บว่าคุณทำอะไรบ้างในแต่ละเว็บไซต์ Brave จะบล็อกสิ่งเหล่านี้เพื่อให้คุณสามารถท่องเว็บได้โดยไม่ถูกติดตาม",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "บล็อกตัวติดตามข้ามเว็บไซต์และสิ่งอื่น ๆ ที่น่ากลัวแล้ว",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "การเปลี่ยนแปลงการตั้งค่า Shield ในมุมมองนี้อาจส่งผลต่อความเข้ากันได้กับเว็บบนไซต์นี้",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "สำเร็จ",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "เรียนรู้เพิ่มเติม",
+    "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "เพิ่มลงใน Brave",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "ลบจาก Brave",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "เพิ่มใน Chrome",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "นำออกจาก Chrome",
+    "description": "Message for removing an extension from Chrome"
+  }
+}

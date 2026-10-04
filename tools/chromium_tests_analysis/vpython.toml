@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+requires-python = '>=3.11,<3.12'
+dependencies = [
+  # Renders the live progress display of update-upstream-flake-filters.py.
+  'rich==13.2.0',
+  # Transitive dependencies of `rich`.
+  'mdurl==0.1.2',
+  'markdown-it-py==2.1.0',
+  'pygments==2.14.0',
+
+  # The concurrency substrate: update-upstream-flake-filters.py runs its API
+  # requests as greenlets so that thousands of them overlap on one thread.
+  'gevent==23.9.1',
+  'greenlet==3.0.1',
+  'zope-event==5.0',
+  'zope-interface==6.0',
+  # This is only required on the windows version of gevent.
+  "cffi==1.15.1; sys_platform == 'win32' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
+  # This is only required for cffi.
+  "pycparser==2.21; sys_platform == 'win32' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
+]

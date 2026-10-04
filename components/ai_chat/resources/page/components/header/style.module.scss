@@ -1,0 +1,78 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.header {
+  padding: var(--leo-spacing-m) var(--leo-spacing-xl);
+  background-color: var(--leo-color-page-background);
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  min-height: 60px;
+
+  & leo-button {
+    flex-grow: 0;
+  }
+}
+
+.actions {
+  --leo-icon-size: 20px;
+  --gap: 12px;
+  flex-grow: 1;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  color: var(--leo-color-icon-default);
+  gap: var(--gap);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  font: var(--leo-font-large-regular);
+  white-space: nowrap;
+}
+
+.logoTitle {
+  font: var(--leo-font-heading-h4);
+  color: var(--leo-color-text-primary);
+}
+
+.badgePremium {
+  margin-top: -2px;
+}
+
+.divider {
+  height: 20px;
+  width: 1px;
+  background: var(--leo-color-divider-subtle);
+}
+
+.logoBody {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-left: 36px;
+
+  &:not(:first-child) {
+    padding-left: 16px;
+  }
+}
+
+.conversationTitle {
+  margin-right: var(--leo-spacing-m);
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  overflow: hidden;
+}
+
+.conversationTitleText {
+  font: var(--leo-font-heading-h4);
+  color: var(--leo-color-text-primary);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

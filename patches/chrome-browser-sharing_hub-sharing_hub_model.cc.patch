@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/sharing_hub/sharing_hub_model.cc b/chrome/browser/sharing_hub/sharing_hub_model.cc
+index cf13237c7ea622fa00a49122c011fcb5cd7870fa..3c981cdde2fbdca28f1eefcf6b66b11d1b225e8b 100644
+--- a/chrome/browser/sharing_hub/sharing_hub_model.cc
++++ b/chrome/browser/sharing_hub/sharing_hub_model.cc
+@@ -97,7 +97,7 @@ void SharingHubModel::PopulateFirstPartyActions() {
+   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+ 
+   first_party_action_list_.emplace_back(
+-      IDC_COPY_URL, l10n_util::GetStringUTF16(IDS_SHARING_HUB_COPY_LINK_LABEL),
++      IDC_COPY_URL, l10n_util::GetStringUTF16(MaybeAddCopyCleanLinkItem(context_, &first_party_action_list_)),
+       &(features::IsRoundedIconsEnabled() ? vector_icons::kContentCopyIcon
+                                           : kCopyOldIcon),
+       "SharingHubDesktop.CopyURLSelected", IDS_LINK_COPIED);

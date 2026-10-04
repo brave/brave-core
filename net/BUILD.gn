@@ -1,0 +1,54 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+import("//brave/components/tor/buildflags/buildflags.gni")
+import("//testing/test.gni")
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "base/brave_host_port_pair_unittest.cc",
+    "decentralized_dns/constants_unittest.cc",
+    "http/partitioned_host_state_map_unittest.cc",
+    "http/transport_security_state_unittest.cc",
+  ]
+
+  if (enable_tor) {
+    sources += [
+      "proxy_resolution/configured_proxy_resolution_service_unittest.cc",
+      "proxy_resolution/proxy_config_service_tor_unittest.cc",
+    ]
+  }
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/net/base:unit_tests",
+    "//net",
+    "//net:test_support",
+    "//net/http:transport_security_state_unittest_data",
+    "//net/http:transport_security_state_unittest_data_default",
+    "//net/tools/huffman_trie:huffman_trie_generator_sources",
+    "//testing/gtest",
+    "//url",
+  ]
+}
+
+test("brave_cert_pinning_tests") {
+  testonly = true
+  sources = [
+    "http/brave_cert_pinning_test.cc",
+    "http/brave_cert_pinning_test_main.cc",
+  ]
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//net",
+    "//net:test_support",
+    "//net/http:generate_transport_security_state",
+    "//net/http:generate_transport_security_state_pins",
+    "//testing/gtest",
+    "//url",
+  ]
+}

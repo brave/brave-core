@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Depend on the Brave resource ID filtering.
+    add_literal_to_list:
+      target: default_resource_ids
+      list_name: deps
+      literal: brave_tools_gritsettings_deps
+      import: //brave/tools/gritsettings/filter_resource_ids.gni
+
+  - description: |-
+      Generate the resource IDs from the Brave-filtered spec
+
+      Overridden right after upstream sets it, before `args` reads it.
+    add_after_line:
+      line: _rebased_input = rebase_path(inputs[0], root_build_dir)
+      code: '  _rebased_input = filtered_resource_id_file_path'

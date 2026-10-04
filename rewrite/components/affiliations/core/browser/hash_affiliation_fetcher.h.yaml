@@ -1,0 +1,29 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      CompleteStubbedRequest() as completion handler for StartRequest()
+
+      The callback cannot be completed synchronously, so it has to be posted
+      with the lifetime of the object attached to it, so we need a function to
+      server as the completion handler.
+    add_to_protected:
+      class_name: HashAffiliationFetcher
+      code: 'void CompleteStubbedRequest();'
+
+  - description: |-
+      Add a WeakPtrFactory to guard the stubbed request's posted completion.
+
+      This weak factory is used to allow us to post the completion to
+      CompleteStubbedRequest() without having to worry about the lifetime of
+      HashAffiliationFetcher. `result_callback_` is run anyway during the
+      destruction of HashAffiliationFetcher if still engaged.
+    regex:
+      re_pattern: '(class HashAffiliationFetcher.*?)(\n};)'
+      re_flags: [DOTALL]
+      replace:
+        '\1\n\n  base::WeakPtrFactory<HashAffiliationFetcher>
+        weak_ptr_factory_{this};\2'

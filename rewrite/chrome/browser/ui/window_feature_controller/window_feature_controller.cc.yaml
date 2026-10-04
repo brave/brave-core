@@ -1,0 +1,45 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add `vertical tab controller` to the ctor.
+
+      This `vertical_tab_controller_` field is required for `NormalBrowserSupportsWindowFeature`.
+    regex:
+      re_pattern: '(WindowFeatureController::WindowFeatureController\(.*?)(\)\n\s+:)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1,
+              const base::WeakPtr<VerticalTabController>& vertical_tab_controller\2
+
+  - description: |
+      Initialise `vertical_tab_controller_` in the constructor
+
+      This `vertical_tab_controller_` field is required for `NormalBrowserSupportsWindowFeature`.
+    regex:
+      re_pattern:
+        '(WindowFeatureController::WindowFeatureController\(.*?)( \{\})'
+      re_flags: [DOTALL]
+      replace: |-
+        \1,
+              vertical_tab_controller_(vertical_tab_controller)\2
+
+  - description: |
+      Give Brave control over NormalBrowserSupportsWindowFeature on Windows.
+
+      When vertical tabs are enabled, Windows needs the ability to show the title
+      bar, so short-circuit kFeatureTitleBar before the upstream logic runs. The
+      tabs::utils helpers come from the chromium_src override's include.
+    preempt_function_impl:
+      function_name: WindowFeatureController::NormalBrowserSupportsWindowFeature
+      code: |-
+        #if BUILDFLAG(IS_WIN)
+        if (feature == WindowFeature::kFeatureTitleBar) {
+          // In case of vertical tab strip is allowed, we need to have ability to
+          // show title bar on Windows.
+          return BraveShouldShowTitlebar(vertical_tab_controller_);
+        }
+        #endif

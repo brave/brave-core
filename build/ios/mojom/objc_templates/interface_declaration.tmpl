@@ -1,0 +1,6 @@
+{%- import "interface_macros.tmpl" as interface_macros %}
+OBJC_EXPORT
+@protocol {{class_prefix}}{{interface.name}}
+@required
+{{- interface_macros.objc_methods(interface) }}
+@end

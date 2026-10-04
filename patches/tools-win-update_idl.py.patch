@@ -1,0 +1,12 @@
+diff --git a/tools/win/update_idl.py b/tools/win/update_idl.py
+index c083635977a0bb27e06bd687119a03afa7360ba5..dc387627e3ce6fbeb50947d1b3828d662d538878 100644
+--- a/tools/win/update_idl.py
++++ b/tools/win/update_idl.py
+@@ -59,6 +59,7 @@ class IDLUpdater:
+             f'blink_symbol_level=0\n'
+             f'v8_symbol_level=0\n'
+         ).format()
++        contents += 'translate_genders=false\n'; open(gn_args_path, 'wt', newline='').write('translate_genders=false\n') if not os.path.exists(gn_args_path) else None
+         if os.path.exists(gn_args_path):
+             with open(gn_args_path, 'rt', newline='') as f:
+                 new_contents = f.read()

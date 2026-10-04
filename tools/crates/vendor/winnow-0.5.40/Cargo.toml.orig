@@ -1,0 +1,172 @@
+[workspace]
+resolver = "2"
+members = ["fuzz"]
+
+[workspace.package]
+license = "MIT"
+edition = "2021"
+rust-version = "1.64.0"  # MSRV
+include = [
+  "build.rs",
+  "src/**/*",
+  "Cargo.toml",
+  "Cargo.lock",
+  "LICENSE*",
+  "README.md",
+  "benches/**/*",
+  "examples/**/*"
+]
+
+[package]
+name = "winnow"
+version = "0.5.40"
+description = "A byte-oriented, zero-copy, parser combinators library"
+repository = "https://github.com/winnow-rs/winnow"
+categories = ["parsing"]
+keywords = ["parser", "parser-combinators", "parsing", "streaming", "bit"]
+autoexamples = false
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+include.workspace = true
+
+[package.metadata.docs.rs]
+features = ["unstable-doc"]
+rustdoc-args = ["--cfg", "docsrs"]
+cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples"]
+
+[package.metadata.release]
+pre-release-replacements = [
+  {file="CHANGELOG.md", search="Unreleased", replace="{{version}}", min=1},
+  {file="CHANGELOG.md", search="\\.\\.\\.HEAD", replace="...{{tag_name}}", exactly=1},
+  {file="CHANGELOG.md", search="ReleaseDate", replace="{{date}}", min=1},
+  {file="CHANGELOG.md", search="<!-- next-header -->", replace="<!-- next-header -->\n## [Unreleased] - ReleaseDate\n", exactly=1},
+  {file="CHANGELOG.md", search="<!-- next-url -->", replace="<!-- next-url -->\n[Unreleased]: https://github.com/winnow-rs/winnow/compare/{{tag_name}}...HEAD", exactly=1},
+  {file="src/lib.rs", search="blob/v.+\\..+\\..+/CHANGELOG.md", replace="blob/v{{version}}/CHANGELOG.md", exactly=1},
+]
+
+[features]
+default = ["std"]
+alloc = []
+std = ["alloc", "memchr?/std"]
+simd = ["dep:memchr"]
+debug = ["dep:anstream", "dep:anstyle", "dep:is-terminal", "dep:terminal_size"]
+unstable-recover = []
+
+unstable-doc = ["alloc", "std", "simd", "unstable-recover"]
+
+[dependencies]
+anstream = { version = "0.3.2", optional = true }
+anstyle = { version = "1.0.1", optional = true }
+is-terminal = { version = "0.4.9", optional = true }
+memchr = { version = "2.5", optional = true, default-features = false }
+terminal_size = { version = "0.2.6", optional = true }
+
+[dev-dependencies]
+doc-comment = "0.3"
+proptest = "1.2.0"
+criterion = "0.5.1"
+lexopt = "0.3.0"
+term-transcript = "0.2.0"
+escargot = "0.5.7"
+snapbox = { version = "0.4.11", features = ["examples"] }
+circular = "0.3.0"
+rustc-hash = "1.1.0"
+
+[profile.bench]
+debug = true
+lto = true
+codegen-units = 1
+
+[[example]]
+name = "arithmetic"
+test = true
+required-features = ["alloc"]
+
+[[example]]
+name = "css"
+test = true
+required-features = ["alloc"]
+
+[[example]]
+name = "custom_error"
+test = true
+required-features = ["alloc"]
+
+[[example]]
+name = "http"
+required-features = ["alloc"]
+
+[[example]]
+name = "ini"
+test = true
+required-features = ["std"]
+
+[[example]]
+name = "json"
+test = true
+required-features = ["std"]
+
+[[example]]
+name = "ndjson"
+test = true
+required-features = ["std"]
+
+[[example]]
+name = "json_iterator"
+required-features = ["std"]
+
+[[example]]
+name = "iterator"
+
+[[example]]
+name = "s_expression"
+required-features = ["alloc"]
+
+[[example]]
+name = "string"
+required-features = ["alloc"]
+
+[[bench]]
+name = "arithmetic"
+path = "examples/arithmetic/bench.rs"
+harness = false
+required-features = ["alloc"]
+
+[[bench]]
+name = "contains_token"
+harness = false
+
+[[bench]]
+name = "find_slice"
+harness = false
+
+[[bench]]
+name = "iter"
+harness = false
+
+[[bench]]
+name = "next_slice"
+harness = false
+
+[[bench]]
+name = "number"
+harness = false
+
+[[bench]]
+name = "http"
+path = "examples/http/bench.rs"
+harness = false
+required-features = ["alloc"]
+
+[[bench]]
+name = "ini"
+path = "examples/ini/bench.rs"
+harness = false
+required-features = ["std"]
+
+[[bench]]
+name = "json"
+path = "examples/json/bench.rs"
+harness = false
+required-features = ["std"]

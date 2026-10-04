@@ -1,0 +1,18 @@
+diff --git a/components/sync/protocol/protocol_sources.gni b/components/sync/protocol/protocol_sources.gni
+index 47622636e8d844efb8bb6874276143d6679f2918..920b1b223b82c3c70be533826378b875b9d9490a 100644
+--- a/components/sync/protocol/protocol_sources.gni
++++ b/components/sync/protocol/protocol_sources.gni
+@@ -2,6 +2,8 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/components/sync/protocol/protocol_sources.gni")
++
+ sync_protocol_sources = [
+   "account_setting_specifics.proto",
+   "agile_encryption_keys.proto",
+@@ -98,3 +100,4 @@ sync_protocol_sources = [
+   "wifi_configuration_specifics.proto",
+   "workspace_desk_specifics.proto",
+ ]
++sync_protocol_sources += brave_sync_protocol_sources

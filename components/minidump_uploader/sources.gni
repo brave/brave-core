@@ -1,0 +1,9 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_components_minidump_uploader_util_java_sources = [ "//brave/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/util/BraveHttpURLConnectionFactoryImpl.java" ]
+
+brave_components_minidump_uploader_util_java_deps =
+    [ "//base/version_info/android:version_constants_java" ]

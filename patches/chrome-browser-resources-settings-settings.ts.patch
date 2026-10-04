@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/settings/settings.ts b/chrome/browser/resources/settings/settings.ts
+index 046eb1bfc1ae24145892174eb72dffdb783c5050..fe80e509344136bb84e748e7f645b59f3fdb80bd 100644
+--- a/chrome/browser/resources/settings/settings.ts
++++ b/chrome/browser/resources/settings/settings.ts
+@@ -2,6 +2,7 @@
+ // Use of this source code is governed by a BSD-style license that can be
+ // found in the LICENSE file.
+ 
++import './br/index.js';
+ import './settings_ui/settings_ui.js';
+ 
+ export {CrPolicyPrefIndicatorElement} from '/shared/settings/controls/cr_policy_pref_indicator.js';

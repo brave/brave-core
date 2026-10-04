@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/webui/tab_search/tab_search_page_handler_browsertest.cc b/chrome/browser/ui/webui/tab_search/tab_search_page_handler_browsertest.cc
+index 806964b180409fb18336b0a953dd77637ade0302..96f043253fb9b6ec550e5bad5bcaa15ffa93facf 100644
+--- a/chrome/browser/ui/webui/tab_search/tab_search_page_handler_browsertest.cc
++++ b/chrome/browser/ui/webui/tab_search/tab_search_page_handler_browsertest.cc
+@@ -105,6 +105,8 @@ class MockPage : public tab_search::mojom::Page {
+   MOCK_METHOD(void, TabUpdated, (tab_search::mojom::TabUpdateInfoPtr));
+   MOCK_METHOD(void, TabsRemoved, (tab_search::mojom::TabsRemovedInfoPtr));
+   MOCK_METHOD(void, TabUnsplit, ());
++  MOCK_METHOD(void, TabFocusShowFREChanged, (bool show));
++  MOCK_METHOD(void, TabFocusEnabledChanged, (bool enabled));
+ };
+ 
+ void ExpectNewTab(const tab_search::mojom::Tab* tab,

@@ -1,0 +1,94 @@
+name: CI
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+jobs:
+  test:
+    name: Tests
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            rust: 1.56.0
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            rust: 1.51.0
+          - os: ubuntu-latest
+            target: i686-unknown-linux-gnu
+            rust: 1.51.0
+          - os: windows-latest
+            target: i686-pc-windows-msvc
+            rust: 1.51.0
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            rust: 1.51.0
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            rust: stable
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            rust: beta
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Install rust
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: ${{ matrix.rust }}
+          target: ${{ matrix.target }}
+          override: true
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install linker
+        if: matrix.target == 'i686-unknown-linux-gnu'
+        run: |
+          sudo apt-get update
+          sudo apt-get install gcc-multilib
+      - name: Test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --target ${{ matrix.target }} --lib
+  nightly:
+    name: Nightly Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --lib
+  lint:
+    name: Linting (fmt + clippy)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install rust
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+          components: rustfmt, clippy
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Clippy
+        uses: actions-rs/cargo@v1
+        with:
+          command: clippy
+          args: --tests --examples
+      - name: Format check
+        uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          args: -- --check

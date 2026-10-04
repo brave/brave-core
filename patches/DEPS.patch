@@ -1,0 +1,13 @@
+diff --git a/DEPS b/DEPS
+index dbe4d8b99a8e2232255b970c27f585fbfb10dac6..733e510a521723eb616e731e80b3e8d92ab8cf8f 100644
+--- a/DEPS
++++ b/DEPS
+@@ -4535,7 +4535,7 @@ hooks = [
+     # Update the Mac toolchain if necessary.
+     'name': 'mac_toolchain',
+     'pattern': '.',
+-    'condition': 'checkout_mac or checkout_ios',
++    'condition': 'False',
+     'action': ['python3', 'src/build/mac_toolchain.py'],
+   },
+   {

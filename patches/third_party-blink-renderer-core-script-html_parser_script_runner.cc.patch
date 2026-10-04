@@ -1,0 +1,17 @@
+diff --git a/third_party/blink/renderer/core/script/html_parser_script_runner.cc b/third_party/blink/renderer/core/script/html_parser_script_runner.cc
+index b12dda9912ff38786de7486a2b0b07230046bfc7..6d1cbac66b9a4e66b71ae33e6959ae3edcb615ee 100644
+--- a/third_party/blink/renderer/core/script/html_parser_script_runner.cc
++++ b/third_party/blink/renderer/core/script/html_parser_script_runner.cc
+@@ -269,6 +269,12 @@ void HTMLParserScriptRunner::PendingScriptFinished(
+     return;
+   }
+ 
++  if (!document_) {
++    // It's possible to get here after HTMLParserScriptRunner::Detach(), which
++    // clears `document_`. See crbug.com/466701271.
++    return;
++  }
++
+   // Posting the script execution part to a new task so that we can allow
+   // yielding for cooperative scheduling. Cooperative scheduling requires that
+   // the Blink C++ stack be thin when it executes JavaScript.

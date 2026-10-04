@@ -1,0 +1,5 @@
+include_rules = [
+  "+brave/components/constants",
+  "+brave/components/translate/core/common",
+  "+components/grit/brave_components_resources.h",
+]

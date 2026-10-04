@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/browser/updater/buildflags.gni")
+
+# This group is used in the patch of chrome/browser/ui/webui/help/BUILD.gn to
+# bring in deps introduced by #includes in the chromium_src overrides under
+# chromium_src/chrome/browser/ui/webui/help/.
+group("help") {
+  public_deps = [ "//brave/browser:sparkle_buildflags" ]
+
+  if (is_mac) {
+    # Deps for the includes in the version_updater_mac.mm override.
+    public_deps += [ "//brave/browser/updater:buildflags" ]
+    if (enable_omaha4) {
+      public_deps += [ "//brave/browser/updater:features" ]
+    }
+  }
+}

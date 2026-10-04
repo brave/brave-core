@@ -1,0 +1,98 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the Brave settings web components.
+    add_literal_to_list:
+      target: build
+      list_name: web_component_files
+      literal: brave_settings_web_component_files
+      import: //brave/browser/resources/settings/sources.gni
+
+  - description: Add the Brave settings TypeScript files.
+    add_literal_to_list:
+      target: build
+      list_name: ts_files
+      literal: brave_settings_ts_files
+      import: //brave/browser/resources/settings/sources.gni
+
+  - description: Add the Brave settings CSS files.
+    add_literal_to_list:
+      target: build
+      list_name: css_files
+      literal: brave_settings_css_files
+      import: //brave/browser/resources/settings/sources.gni
+
+  - description:
+      Keep the Brave settings HTML/CSS out of Chromium's preprocessing.
+    add_literal_to_list:
+      target: build
+      list_name: exclude_html_css_preprocess_files
+      literal: brave_settings_exclude_html_css_preprocess_files
+      import: //brave/browser/resources/settings/sources.gni
+
+  - description:
+      Keep the Brave settings TypeScript out of Chromium's preprocessing.
+    add_literal_to_list:
+      target: build
+      list_name: exclude_ts_preprocess_files
+      literal: brave_settings_exclude_ts_preprocess_files
+      import: //brave/browser/resources/settings/sources.gni
+
+  - description: Depend on the Brave settings preprocessing.
+    add_literal_to_list:
+      target: build
+      list_name: preprocess_deps
+      literal: brave_settings_preprocess_deps
+      import: //brave/browser/resources/settings/sources.gni
+
+  - description: Pass the Brave buildflags to the settings preprocessor.
+    add_literal_to_list:
+      target: build
+      list_name: preprocessor_defines
+      literal: brave_settings_preprocessor_defines
+      import: //brave/browser/resources/settings/sources.gni
+
+  - description: Add the Brave settings TypeScript definitions.
+    add_literal_to_list:
+      target: build
+      list_name: ts_definitions
+      literal: brave_settings_ts_definitions
+      import: //brave/browser/resources/settings/sources.gni
+
+  - description: Add the Brave settings mojo files.
+    add_literal_to_list:
+      target: build
+      list_name: mojo_files
+      literal: brave_settings_mojo_files
+      import: //brave/browser/resources/settings/sources.gni
+
+  - description: Add the Brave settings mojo deps.
+    add_literal_to_list:
+      target: build
+      list_name: mojo_files_deps
+      literal: brave_settings_mojo_files_deps
+      import: //brave/browser/resources/settings/sources.gni
+
+  - description: Add the Brave settings TypeScript deps.
+    add_literal_to_list:
+      target: build
+      list_name: ts_deps
+      literal: brave_settings_ts_deps
+      import: //brave/browser/resources/settings/sources.gni
+
+  - description: |-
+      Add the Brave settings TypeScript extra deps and optimised resources
+
+      Upstream declares `ts_extra_deps` on ChromeOS only, and its `if (optimize)`
+      does not declare the grdp lists, so these are assigned by hand.
+    append_to_target:
+      target: build
+      code: |-
+        ts_extra_deps = brave_settings_ts_extra_deps
+        if (optimize_webui) {
+          extra_grdp_deps = [ "//brave/browser/resources/settings:resources" ]
+          extra_grdp_files = []
+        }

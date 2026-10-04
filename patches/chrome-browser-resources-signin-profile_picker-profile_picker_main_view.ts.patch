@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts
+index b3de5dba82eba6ee45dd0fd908d4315d6be8724a..82d6988b4957e1c075bb67c0921c63705f95ad71 100644
+--- a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts
++++ b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts
+@@ -149,6 +149,7 @@ export class ProfilePickerMainViewElement extends
+   }
+ 
+   override firstUpdated() {
++    this.$.addProfile.style.borderRadius = '8px';
+     this.addEventListener('view-enter-finish', this.onViewEnterFinish_);
+   }
+ 

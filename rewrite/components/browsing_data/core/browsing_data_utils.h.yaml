@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add BRAVE_AI_CHAT to BrowsingDataType, keeping MAX_VALUE last.
+
+      Guarded by ENABLE_AI_CHAT: builds without Brave Leo keep MAX_VALUE
+      pointed at the last upstream entry.
+    regex:
+      re_pattern: '(enum class BrowsingDataType \{.+?,)\s+MAX_VALUE = (\w+),'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+        #if BUILDFLAG(ENABLE_AI_CHAT)
+          BRAVE_AI_CHAT = \2 + 1,
+          MAX_VALUE = BRAVE_AI_CHAT,
+        #else
+          MAX_VALUE = \2,
+        #endif

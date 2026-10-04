@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Only log server card unmask attempts for virtual cards.
+
+      Do not log kMaskedServerCard or kFullServerCard. These used to be
+      excluded by the kAutofillEnableRemadeDownstreamMetrics feature flag
+      that was removed in Chromium 128.
+    regex:
+      re_pattern: |-
+        autofill_metrics::LogServerCardUnmaskAttempt\(
+                \s*record_type == CreditCard::RecordType::kVirtualCard
+                \s*\? PaymentsRpcCardType::kVirtualCard
+                \s*: PaymentsRpcCardType::kServerCard\);
+      replace: |-
+        if (record_type == CreditCard::RecordType::kVirtualCard) {
+              autofill_metrics::LogServerCardUnmaskAttempt(
+                  PaymentsRpcCardType::kVirtualCard);
+            }

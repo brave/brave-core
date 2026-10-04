@@ -1,0 +1,12 @@
+diff --git a/components/search_engines/template_url.cc b/components/search_engines/template_url.cc
+index f3fb0c74c4ac948c92c217bebd8b5e468e25db6b..cf48b43d6001a79496d43ff59b398195736c7b2b 100644
+--- a/components/search_engines/template_url.cc
++++ b/components/search_engines/template_url.cc
+@@ -843,6 +843,7 @@ bool TemplateURLRef::ParseParameter(size_t start,
+   } else if (parameter == "google:searchFieldtrialParameter") {
+     replacements->push_back(Replacement(GOOGLE_SEARCH_FIELDTRIAL_GROUP, start));
+   } else if (parameter == "google:searchSource") {
++    BRAVE_TEMPLATE_URL_REPLACE_PARAMETER
+     replacements->push_back(Replacement(GOOGLE_SEARCH_SOURCE, start));
+   } else if (parameter == "google:searchVersion") {
+     replacements->push_back(Replacement(GOOGLE_SEARCH_VERSION, start));

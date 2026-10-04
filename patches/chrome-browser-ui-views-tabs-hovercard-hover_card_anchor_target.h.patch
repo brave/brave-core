@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/views/tabs/hovercard/hover_card_anchor_target.h b/chrome/browser/ui/views/tabs/hovercard/hover_card_anchor_target.h
+index 86e026abb1760265ae15de32115d0b125466b6b0..153a4cbfe57cd42798c06cec08f095cd4cae8bdc 100644
+--- a/chrome/browser/ui/views/tabs/hovercard/hover_card_anchor_target.h
++++ b/chrome/browser/ui/views/tabs/hovercard/hover_card_anchor_target.h
+@@ -80,6 +80,10 @@ class HoverCardAnchorTarget {
+ 
+   virtual views::BubbleBorder::Arrow GetAnchorPosition() const = 0;
+ 
++  #if BUILDFLAG(ENABLE_CONTAINERS)
++  virtual std::optional<ContainerCardData> GetContainerCardData() const;
++  #endif
++
+  protected:
+   void SetHoverCardDataFrom(const tabs::TabData& data);
+   void SetHoverCardDataFrom(const tabs::TabGroupData& group_data);

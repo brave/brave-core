@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rss version="2.0" xml:base="http://www.nasa.gov/" xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+     xmlns:media="http://search.yahoo.com/mrss/">
+    <channel>
+        <title>NASA Breaking News</title>
+        <description>A RSS news feed containing the latest NASA news articles and press releases.</description>
+        <link>http://www.nasa.gov/</link>
+        <atom:link rel="self" href="http://www.nasa.gov/rss/dyn/breaking_news.rss"/>
+        <language>en-us</language>
+        <managingEditor>jim.wilson@nasa.gov</managingEditor>
+        <webMaster>brian.dunbar@nasa.gov</webMaster>
+        <docs>http://blogs.harvard.edu/tech/rss</docs>
+        <item>
+            <title>NASA Television to Broadcast Space Station Departure of Cygnus Cargo Ship</title>
+            <link>
+                http://www.nasa.gov/press-release/nasa-television-to-broadcast-space-station-departure-of-cygnus-cargo-ship
+            </link>
+            <description>More than three months after delivering several tons of supplies and scientific experiments to
+                the International Space Station, Northrop Grumman’s Cygnus cargo spacecraft, the SS Roger Chaffee, will
+                depart the orbiting laboratory Tuesday, Aug. 6.
+            </description>
+            <enclosure
+                    url="http://www.nasa.gov/sites/default/files/styles/1x1_cardfeed/public/thumbnails/image/47616261882_4bb534d293_k.jpg?itok=Djjjs81t"
+                    length="892854" type="image/jpeg"/>
+            <guid isPermaLink="false">
+                http://www.nasa.gov/press-release/nasa-television-to-broadcast-space-station-departure-of-cygnus-cargo-ship
+            </guid>
+            <pubDate>Thu, 01 Aug 2019 16:15 EDT</pubDate>
+            <source url="http://www.nasa.gov/rss/dyn/breaking_news.rss">NASA Breaking News</source>
+            <dc:identifier>449895</dc:identifier>
+        </item>
+    </channel>
+</rss>

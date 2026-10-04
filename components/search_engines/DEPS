@@ -1,0 +1,6 @@
+include_rules = [
+  "+components/country_codes",
+  "+components/regional_capabilities",
+  "+components/search_engines",
+  "+third_party/search_engines_data",
+]

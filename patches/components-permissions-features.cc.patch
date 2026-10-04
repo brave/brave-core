@@ -1,0 +1,35 @@
+diff --git a/components/permissions/features.cc b/components/permissions/features.cc
+index 4af77bfbb20c9e188b420b9546d5e6900655beba..ed3ba2624b680bf5d6f2f8f22648f10bec337da2 100644
+--- a/components/permissions/features.cc
++++ b/components/permissions/features.cc
+@@ -34,7 +34,7 @@ BASE_FEATURE(kPermissionElementPromptPositioning,
+ // Enables heuristic auto-grant for permissions.
+ BASE_FEATURE(kPermissionHeuristicAutoGrant, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kPermissionPredictionsV2, base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kPermissionPredictionsV2, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kPermissionsAIv4, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+@@ -64,7 +64,7 @@ BASE_FEATURE(kPermissionPromiseLifetimeModulationAndroid,
+ // configuring `PermissionAction` does not make sense in that case, since the
+ // user has not yet taken an action. Therefore, that parameter is ignored in
+ // that case.
+-BASE_FEATURE(kPermissionsPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kPermissionsPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // When enabled, use the value of the `allowlist_urls` FeatureParam as the
+ // list of origins which would be allowed to access browser permission and
+@@ -90,10 +90,10 @@ BASE_FEATURE(kRecordChooserPermissionLastVisitedTimestamps,
+ // When enabled, blocks condition to exclude auto granted permissions for
+ // storage access exceptions. This will allow RWS permission grants to be
+ // visible in the Embedded content settings page.
+-BASE_FEATURE(kShowRelatedWebsiteSetsPermissionGrants,
++BASE_OVERRIDDEN_FEATURE(kShowRelatedWebsiteSetsPermissionGrants,
+              base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kCpssUseTfliteSignatureRunner, base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kCpssUseTfliteSignatureRunner, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kGlicActorPermissionsAutoReject, base::FEATURE_ENABLED_BY_DEFAULT);
+ 

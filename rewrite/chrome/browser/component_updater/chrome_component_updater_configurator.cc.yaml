@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Build a BraveConfigurator instead of a ChromeConfigurator.'
+    regex:
+      pattern:
+        'return base::MakeRefCounted<ChromeConfigurator>(cmdline, pref_service);'
+      replace: |-
+        return base::MakeRefCounted<BraveConfigurator>(
+              cmdline, pref_service,
+              g_browser_process->system_network_context_manager()
+                  ->GetSharedURLLoaderFactory());

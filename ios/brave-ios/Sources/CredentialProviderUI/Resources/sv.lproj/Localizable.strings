@@ -1,0 +1,69 @@
+/* A message shown when a user tries to access their passwords and are presented with a Touch ID or passcode prompt. */
+"CredentialProvider.authenticationReason" = "Autentisera för att komma åt dina lösenord";
+
+/* A title for a button shown to a user to authenticate themselves to display their passwords */
+"CredentialProvider.authenticationUnlockButtonTitle" = "Lås upp";
+
+/* A button that cancels the autofill request and dismisses the screen */
+"CredentialProvider.cancelButtonTitle" = "Avbryt";
+
+/* A title for a button that when tapped copies the content highlighted into the users clipboard */
+"CredentialProvider.copyMenuItemTitle" = "Kopiera";
+
+/* The title shown at the top of a list of credentials. 'Brave' in this case is the company name */
+"CredentialProvider.credentialListTitle" = "Lösenord i Brave";
+
+/* The password field in the details form. Shows the password (if revealed) or a mask of the users password for the website next to it */
+"CredentialProvider.detailsFormPasswordField" = "Lösenord";
+
+/* The URL field in the details form. Shows a website URL next to it */
+"CredentialProvider.detailsFormURLField" = "URL";
+
+/* The username field in the details form. Shows the username for the website next to it */
+"CredentialProvider.detailsFormUsernameField" = "Användarnamn";
+
+/* Some text shown when there are no suggested logins for the website the user is trying to autofill on */
+"CredentialProvider.emptySuggestions" = "Inga förslag";
+
+/* A title for a button that when tapped hides a password that was previously revealed */
+"CredentialProvider.hidePasswordMenuItemTitle" = "Dölj lösenord";
+
+/* A header label shown above a list of logins (username/password combinations) for a particular website. '%@' is replaced by a website host for example: 'Logins for apple.com' */
+"CredentialProvider.loginsForWebsite" = "Inloggningar för %@";
+
+/* The title on a button that dismisses the onboarding view */
+"CredentialProvider.onboardingViewContinueCTA" = "Fortsätt";
+
+/* A footnote shown on a screen shown when the user turns on Brave as a password autofill provider. 'iCloud Keychain' is an Apple product. */
+"CredentialProvider.onboardingViewFootnote" = "Om du vill komma åt dina lösenord snabbare avmarkerar du iCloud-nyckelring";
+
+/* The subtitle on a screen shown when the user turns on Brave as a password autofill provider */
+"CredentialProvider.onboardingViewSubtitle" = "Du kan använda sparade lösenord i andra appar på din enhet";
+
+/* The title on a screen shown when the user turns on Brave as a password autofill provider */
+"CredentialProvider.onboardingViewTitle" = "Autofyll är aktiverat";
+
+/* A header label shown above a list of website logins (username/password combinations) */
+"CredentialProvider.otherLogins" = "Andra inloggningar";
+
+/* A title for a button that when tapped reveals a users password that is currently masked */
+"CredentialProvider.revealPasswordMenuItemTitle" = "Visa lösenord";
+
+/* The placeholder/prompt that is shown in the search bar */
+"CredentialProvider.searchBarPrompt" = "Sök inloggningar";
+
+/* A label shown when the users search has no results */
+"CredentialProvider.searchEmptyResults" = "Inga resultat för \"%@\"";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"CredentialProvider.setPasscodeAlertMessage" = "För att komma åt dina lösenord måste du först konfigurera en lösenkod på din enhet.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"CredentialProvider.setPasscodeAlertTitle" = "Ställ in lösenkod";
+
+/* A title for a button shown as a confirmation action on a login's detail screen. Tapping it uses the password when autofilling into the website */
+"CredentialProvider.useButtonTitle" = "Använd";
+
+/* An accessibility label read out when a user activates VoiceOver on a button that when taps drills down into a credentials details */
+"CredentialProvider.viewCredentialDetails" = "Visa detaljer";
+

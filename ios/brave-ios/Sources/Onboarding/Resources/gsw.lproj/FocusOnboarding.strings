@@ -1,0 +1,48 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "Halten Sie das Brave-Symbol gedrückt und ziehen Sie es für schnellen Zugriff in Ihr Dock.";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "Brave zu Ihrem Dock hinzufügen";
+
+/* The title of the button that changes the screen to next */
+"focusOnboarding.continueButtonTitle" = "Weiter";
+
+/* The subtitle of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Setze Brave noch heute als deinen Standardbrowser.";
+
+/* The title of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Werbeblockierung auf jeder Website, die Sie besuchen";
+
+/* The title of the button that closes the default browser full screen callout */
+"focusOnboarding.notNowActionButtonTitle" = "Nicht jetzt";
+
+/* The subtitle of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenDescription" = "Blockiere nervige Unterbrechungen auf deinen Lieblings-Streaming-Seiten.";
+
+/* The title of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenTitle" = "Blockiere Unterbrechungen, während du streamst";
+
+/* The subtitle of the screen that asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenDescription" = "Lass uns wissen, welche Funktionen dir am besten gefallen.";
+
+/* The title of the screen which asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenTitle" = "Mach Brave noch besser";
+
+/* The description shown below the toggle for enabling privacy preserving analytics. */
+"focusOnboarding.p3aToggleDescription" = "Teilen Sie vollständig private und anonyme Produkteinblicke darüber, welche Funktionen von Brave-Benutzern verwendet werden.";
+
+/* The title of the toggle that allows the user to enable/disable the privacy preserving analytics. */
+"focusOnboarding.p3aToggleTitle" = "Private Produkteinblicke";
+
+/* The description shown below the toggle for enabling crash reporting. */
+"focusOnboarding.sendCrashReportsToggleDescription" = "Senden Sie anonyme Diagnoseberichte, wenn Brave abstürzt oder hängen bleibt.";
+
+/* The title of the toggle that allows the user to enable/disable crash reporting. */
+"focusOnboarding.sendCrashReportsToggleTitle" = "Absturzberichte senden";
+
+/* The title of the button that finishes the onboarding without setting default */
+"focusOnboarding.startBrowseActionButtonTitle" = "Mit dem Surfen beginnen";
+
+/* The title of the button that triggers navigation link to settings */
+"focusOnboarding.systemSettingsButtonTitle" = "Als Standard festlegen";
+

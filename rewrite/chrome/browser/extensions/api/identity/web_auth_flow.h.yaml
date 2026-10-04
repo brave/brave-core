@@ -1,0 +1,11 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Build the Android extensions code with the core.
+    count: 2
+    regex:
+      pattern: 'BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)'
+      replace: 'BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)'

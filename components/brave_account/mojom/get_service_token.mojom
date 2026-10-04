@@ -1,0 +1,53 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_account.mojom;
+
+struct GetServiceTokenResult {
+  // Short-lived authentication token that allows a dependent service's backend
+  // to identify the user. Returned from prefs cache if available and not
+  // expired, otherwise fetched from /v2/auth/service_token.
+  string serviceToken;
+};
+
+enum GetServiceTokenClientErrorCode {
+  kCalledInWrongState,
+  kUnexpected,
+  kAuthenticationTokenDecryptionFailed,
+  kServiceTokenEncryptionFailed,
+};
+
+struct GetServiceTokenClientError {
+  GetServiceTokenClientErrorCode error_code;
+};
+
+enum GetServiceTokenServerErrorCode {
+  // Sentinel: server returned a malformed response
+  // (e.g. success body missing required fields).
+  kInvalidResponse         = -1,
+  // Sentinel: server returned "code": null in the JSON body.
+  kNull                    = 0,
+  // Sentinel: server returned an unrecognized "code" in the JSON body.
+  kUnknown                 = 1,
+  // /v2/auth/service_token:
+  // - internal:
+  kEmailDomainNotSupported = 13006,
+  kIncorrectCredentials    = 14004,
+  kInvalidTokenAudience    = 14007,
+  // - user-facing: -
+};
+
+struct GetServiceTokenServerError {
+  // < 0: network error code (net_error_list.h)
+  // >= 0: HTTP status code (http_status_code_list.h) if available,
+  //       otherwise net::OK
+  int32 net_error_or_http_status;
+  GetServiceTokenServerErrorCode error_code;
+};
+
+union GetServiceTokenError {
+  GetServiceTokenClientError client_error;
+  GetServiceTokenServerError server_error;
+};

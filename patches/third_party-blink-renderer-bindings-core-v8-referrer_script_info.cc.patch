@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/bindings/core/v8/referrer_script_info.cc b/third_party/blink/renderer/bindings/core/v8/referrer_script_info.cc
+index 1b797783987255622735047bd78ca0e8bb635d5e..fcfdb95c9c03239e9ddb46ce094a3efe2e47e3ed 100644
+--- a/third_party/blink/renderer/bindings/core/v8/referrer_script_info.cc
++++ b/third_party/blink/renderer/bindings/core/v8/referrer_script_info.cc
+@@ -56,6 +56,7 @@ bool ReferrerScriptInfo::IsDefaultValue(
+   return GetStoredBaseUrl(*this, script_origin_resource_name).IsNull() &&
+          credentials_mode_ == network::mojom::CredentialsMode::kSameOrigin &&
+          nonce_.empty() && parser_state_ == kNotParserInserted &&
++         BRAVE_REFERRER_SCRIPT_INFO_IS_DEFAULT_VALUE &&
+          referrer_policy_ == network::mojom::ReferrerPolicy::kDefault;
+ }
+ 

@@ -1,0 +1,286 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import { useHistory, useLocation } from 'react-router'
+import Checkbox from '@brave/leo/react/checkbox'
+
+// Types
+import { WalletRoutes } from '../../../constants/types'
+
+// Utils
+import { getLocale } from '../../../../common/locale'
+import { copyToClipboard } from '../../../utils/copy-to-clipboard'
+import { useRestoreWalletMutation } from '../../../common/slices/api.slice'
+import { WalletSelectors } from '../../../common/selectors'
+import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+
+// Components
+import { BackButton } from '../../../components/shared/back-button'
+import { PasswordInput } from '../../../components/shared/password-input'
+import { NavButton } from '../../../components/extension/buttons/nav-button/index'
+
+// Styles
+import {
+  StyledWrapper,
+  Title,
+  Description,
+  RecoveryPhraseInput,
+  ErrorText,
+  FormWrapper,
+  InputColumn,
+  FormText,
+} from './restore-wallet.style'
+import { Column, Row, Text } from '../../../components/shared/style'
+
+// hooks
+import { usePasswordStrength } from '../../../common/hooks/use-password-strength'
+
+export const RestoreWallet = () => {
+  // routing
+  let history = useHistory()
+  const { pathname: walletLocation } = useLocation()
+
+  // redux
+  const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
+
+  // custom hooks
+  const {
+    hasConfirmedPasswordError,
+    hasPasswordError,
+    password,
+    onPasswordChanged: handlePasswordChanged,
+    setConfirmedPassword: handleConfirmPasswordChanged,
+    isValid: isPasswordValid,
+  } = usePasswordStrength()
+
+  // mutations
+  const [restoreWallet, { data: restoreWalletResults }] =
+    useRestoreWalletMutation()
+  const { invalidMnemonic, success: isWalletCreated } =
+    restoreWalletResults || {}
+
+  // state
+  const [showRecoveryPhrase, setShowRecoveryPhrase] =
+    React.useState<boolean>(false)
+  const [isLegacyWallet, setIsLegacyWallet] = React.useState<boolean>(false)
+  const [recoveryPhrase, setRecoveryPhrase] = React.useState<string>('')
+
+  // memos
+  const isValidRecoveryPhrase = React.useMemo(() => {
+    if (recoveryPhrase.trim().split(/\s+/g).length >= 12) {
+      return true
+    } else {
+      return false
+    }
+  }, [recoveryPhrase])
+
+  // computed
+  const isDisabled = !isValidRecoveryPhrase || !isPasswordValid
+
+  // methods
+  const toggleShowRestore = React.useCallback(() => {
+    if (walletLocation === WalletRoutes.Restore) {
+      // If a user has not yet created a wallet and clicks Restore
+      // from the panel, we need to route to onboarding if they click back.
+      if (!isWalletCreated) {
+        history.push(WalletRoutes.Onboarding)
+        return
+      }
+      // If a user has created a wallet and clicks Restore from the panel while
+      // the wallet is locked, we need to route to unlock if they click back.
+      if (isWalletCreated && isWalletLocked) {
+        history.push(WalletRoutes.Unlock)
+      }
+    } else {
+      history.push(WalletRoutes.Restore)
+    }
+  }, [walletLocation, isWalletCreated, isWalletLocked, history])
+
+  const onBack = React.useCallback(() => {
+    toggleShowRestore()
+    setRecoveryPhrase('')
+  }, [toggleShowRestore])
+
+  const onSubmitRestore = React.useCallback(async () => {
+    const { success } = await restoreWallet({
+      // added an additional trim here in case the phrase length is
+      // 12, 15, 18 or 21 long and has a space at the end.
+      mnemonic: recoveryPhrase.trimEnd(),
+      password,
+      isLegacy: isLegacyWallet,
+      completeWalletSetup: true,
+    }).unwrap()
+
+    if (success) {
+      history.push(WalletRoutes.PortfolioAssets)
+    }
+  }, [restoreWallet, recoveryPhrase, password, isLegacyWallet, history])
+
+  const handleRecoveryPhraseChanged = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value
+
+      // This prevents there from being a space at the begining of the phrase.
+      const removeBegginingWhiteSpace = value.trimStart()
+
+      // This Prevents there from being more than one space between words.
+      const removedDoubleSpaces = removeBegginingWhiteSpace.replace(
+        / +(?= )/g,
+        '',
+      )
+
+      // Although the above removes double spaces, it is initially recognized as
+      // a double-space before it is removed and macOS automatically replaces
+      // double-spaces with a period.
+      const removePeriod = removedDoubleSpaces.replace(/['/.']/g, '')
+
+      // This prevents an extra space at the end of a 24 word phrase.
+      if (recoveryPhrase.split(' ').length === 24) {
+        setRecoveryPhrase(removePeriod.trimEnd())
+      } else {
+        setRecoveryPhrase(removePeriod)
+      }
+    },
+    [recoveryPhrase],
+  )
+
+  const handleKeyDown = React.useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === 'Enter' && !isDisabled) {
+        onSubmitRestore()
+      }
+    },
+    [onSubmitRestore, isDisabled],
+  )
+
+  const onClearClipboard = React.useCallback(() => {
+    copyToClipboard('')
+  }, [])
+
+  // render
+  return (
+    <Column
+      padding='24px'
+      justifyContent='flex-start'
+      alignItems='flex-start'
+      fullWidth
+    >
+      <BackButton onSubmit={onBack} />
+
+      <StyledWrapper>
+        <Title
+          textColor='primary'
+          variant='heading.h3'
+        >
+          {getLocale(S.BRAVE_WALLET_RESTORE_TITE)}
+        </Title>
+        <Description
+          textColor='secondary'
+          variant='default.regular'
+        >
+          {getLocale(S.BRAVE_WALLET_RESTORE_DESCRIPTION)}
+        </Description>
+
+        <FormWrapper>
+          <RecoveryPhraseInput
+            autoFocus={true}
+            placeholder={getLocale(S.BRAVE_WALLET_RESTORE_PLACEHOLDER)}
+            onChange={handleRecoveryPhraseChanged}
+            value={recoveryPhrase}
+            type={showRecoveryPhrase ? 'text' : 'password'}
+            autoComplete='off'
+            onPaste={onClearClipboard}
+          />
+
+          {invalidMnemonic && (
+            <ErrorText
+              textColor='error'
+              variant='small.regular'
+            >
+              {getLocale(S.BRAVE_WALLET_RESTORE_ERROR)}
+            </ErrorText>
+          )}
+
+          <Column
+            gap='10px'
+            margin='0px 0px 50px 0px'
+            alignItems='flex-start'
+            justifyContent='flex-start'
+          >
+            {recoveryPhrase.split(' ').length === 24 && (
+              <Row justifyContent='flex-start'>
+                <Checkbox
+                  checked={isLegacyWallet}
+                  onChange={(e) => setIsLegacyWallet(e.checked)}
+                >
+                  <Text
+                    textColor='secondary'
+                    variant='default.regular'
+                  >
+                    {getLocale(S.BRAVE_WALLET_RESTORE_LEGACY_CHECK_BOX)}
+                  </Text>
+                </Checkbox>
+              </Row>
+            )}
+
+            <Row justifyContent='flex-start'>
+              <Checkbox
+                checked={showRecoveryPhrase}
+                onChange={(e) => setShowRecoveryPhrase(e.checked)}
+              >
+                <Text
+                  textColor='secondary'
+                  variant='default.regular'
+                >
+                  {getLocale(S.BRAVE_WALLET_RESTORE_SHOW_PHRASE)}
+                </Text>
+              </Checkbox>
+            </Row>
+          </Column>
+
+          <FormText
+            textColor='primary'
+            isBold={true}
+          >
+            {getLocale(S.BRAVE_WALLET_RESTORE_FORM_TEXT)}
+          </FormText>
+          <Description
+            textAlign='left'
+            textColor='secondary'
+            variant='default.regular'
+          >
+            {getLocale(S.BRAVE_WALLET_CREATE_PASSWORD_DESCRIPTION)}
+          </Description>
+          <InputColumn>
+            <PasswordInput
+              placeholder={getLocale(S.BRAVE_WALLET_CREATE_PASSWORD_INPUT)}
+              onChange={handlePasswordChanged}
+              hasError={hasPasswordError}
+              error={getLocale(S.BRAVE_WALLET_CREATE_PASSWORD_ERROR)}
+              onKeyDown={handleKeyDown}
+            />
+            <PasswordInput
+              placeholder={getLocale(S.BRAVE_WALLET_CONFIRM_PASSWORD_INPUT)}
+              onChange={handleConfirmPasswordChanged}
+              hasError={hasConfirmedPasswordError}
+              error={getLocale(S.BRAVE_WALLET_CONFIRM_PASSWORD_ERROR)}
+              onKeyDown={handleKeyDown}
+            />
+          </InputColumn>
+        </FormWrapper>
+
+        <NavButton
+          disabled={isDisabled}
+          buttonType='primary'
+          text={getLocale(S.BRAVE_WALLET_WELCOME_RESTORE_BUTTON)}
+          onSubmit={onSubmitRestore}
+        />
+      </StyledWrapper>
+    </Column>
+  )
+}
+
+export default RestoreWallet

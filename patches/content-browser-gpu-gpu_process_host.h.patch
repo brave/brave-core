@@ -1,0 +1,21 @@
+diff --git a/content/browser/gpu/gpu_process_host.h b/content/browser/gpu/gpu_process_host.h
+index 1bdf1c4f5e0d8431533c183055c146d5dbe2a082..be55b1f2c7ac8f6196d5821488da00f571b5e288 100644
+--- a/content/browser/gpu/gpu_process_host.h
++++ b/content/browser/gpu/gpu_process_host.h
+@@ -133,6 +133,16 @@ class GpuProcessHost final : public BrowserChildProcessHostDelegate,
+   }
+ #endif
+ 
++  #if BUILDFLAG(IS_WIN)
++  const std::string& executable_path() const { return executable_path_; }
++  #endif  // BUILDFLAG(IS_WIN)
++
++ protected:
++  #if BUILDFLAG(IS_WIN)
++  void DidGetExecutablePath(const std::string& path) override;
++  std::string executable_path_;
++  #endif  // BUILDFLAG(IS_WIN)
++
+  private:
+   enum class GpuTerminationOrigin {
+     kUnknownOrigin = 0,

@@ -1,0 +1,116 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import { useHistory, useLocation } from 'react-router'
+
+// redux
+import { useAppDispatch } from '../../../../common/hooks/use-redux'
+
+import useMediaQuery from '$web-common/useMediaQuery'
+
+// assets
+import ExamplePhraseLight from './images/example_recovery_phrase_light.png'
+import ExamplePhraseDark from './images/example_recovery_phrase_dark.png'
+
+// utils
+import { getLocale } from '../../../../../common/locale'
+import { WalletPageActions } from '../../../actions'
+
+// routes
+import { WalletRoutes } from '../../../../constants/types'
+
+// components
+import { SkipWarningDialog } from './skip_warning_dialog'
+
+// style
+import { ContinueButton, SkipButton } from '../../onboarding/onboarding.style'
+import {
+  Subtitle,
+  BackupInstructions,
+  ExampleRecoveryPhrase,
+} from './explain-recovery-phrase.style'
+import { Column, VerticalSpace } from '../../../../components/shared/style'
+import {
+  OnboardingContentLayout, //
+} from '../../onboarding/components/onboarding_content_layout/content_layout'
+
+export const RecoveryPhraseExplainer = () => {
+  // state
+  const [isSkipWarningOpen, setIsSkipWarningOpen] = React.useState(false)
+
+  // redux
+  const dispatch = useAppDispatch()
+
+  // routing
+  const history = useHistory()
+  const { pathname } = useLocation()
+  const isOnboarding = pathname.includes(WalletRoutes.Onboarding)
+
+  // methods
+  const skipBackup = () => {
+    dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: '' }))
+    if (isOnboarding) {
+      history.push(WalletRoutes.OnboardingComplete)
+      return
+    }
+    history.push(WalletRoutes.PortfolioAssets)
+  }
+
+  const onContinue = () => {
+    history.push(
+      isOnboarding
+        ? WalletRoutes.OnboardingBackupRecoveryPhrase
+        : WalletRoutes.BackupRecoveryPhrase,
+    )
+  }
+
+  // hooks
+  const isDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+
+  // render
+  return (
+    <>
+      <SkipWarningDialog
+        isOpen={isSkipWarningOpen}
+        onBack={() => setIsSkipWarningOpen(false)}
+        onSkip={skipBackup}
+      />
+      <OnboardingContentLayout
+        title={getLocale(
+          S.BRAVE_WALLET_ONBOARDING_RECOVERY_PHRASE_BACKUP_INTRO_TITLE,
+        )}
+        subTitle=''
+        showBackButton={!isOnboarding}
+      >
+        <Subtitle>
+          {getLocale(
+            S.BRAVE_WALLET_ONBOARDING_RECOVERY_PHRASE_BACKUP_INTRO_DESCRIPTION,
+          )}
+        </Subtitle>
+        <VerticalSpace space='14px' />
+        <BackupInstructions>
+          {getLocale(S.BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_WARNING_IMPORTANT)}
+        </BackupInstructions>
+        <ExampleRecoveryPhrase
+          src={isDarkMode ? ExamplePhraseDark : ExamplePhraseLight}
+        />
+        <Column gap='24px'>
+          <ContinueButton onClick={onContinue}>
+            {getLocale(S.BRAVE_WALLET_BUTTON_GOT_IT)}
+          </ContinueButton>
+          <SkipButton
+            kind='plain-faint'
+            onClick={() => setIsSkipWarningOpen(true)}
+          >
+            {getLocale(S.BRAVE_WALLET_BUTTON_SKIP)}
+          </SkipButton>
+        </Column>
+      </OnboardingContentLayout>
+    </>
+  )
+}
+
+export default RecoveryPhraseExplainer

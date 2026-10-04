@@ -1,0 +1,29 @@
+diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
+index 563383fc71d7bc73f0af0fd2130879d0844ba2af..0a0361d87d3eecc5514f88940d423706e57f2796 100644
+--- a/chrome/browser/extensions/BUILD.gn
++++ b/chrome/browser/extensions/BUILD.gn
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/browser/extensions/resources.gni")
+ import("//build/config/chromebox_for_meetings/buildflags.gni")
+ import("//build/config/features.gni")
+ import("//build/config/ozone.gni")
+@@ -646,6 +647,7 @@ source_set("extensions") {
+     "//ui/native_window_tracker",
+     "//ui/shell_dialogs",
+   ]
++  deps += brave_extensions_resources
+   public_deps = [
+     "//chrome/browser/extensions/api/messaging",
+     "//chrome/browser/media/webrtc",
+@@ -689,7 +691,7 @@ source_set("extensions") {
+       "//chrome/browser/ui/android/tab_model",
+     ]
+ 
+-    if (enable_desktop_android_extensions) {
++    if (enable_extensions_core) {
+       sources += [
+         # These files are temporary workarounds to allow for a lightweight
+         # extensions runtime in desktop-android builds. They should be removed

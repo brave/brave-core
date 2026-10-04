@@ -1,0 +1,5 @@
+include_rules = [
+  "+brave/components/brave_wallet/browser",
+  "+brave/components/brave_wallet/resources",
+  "+brave/components/brave_wallet/common",
+]

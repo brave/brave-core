@@ -1,0 +1,22 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import Button from "@brave/leo/react/button";
+import { radius, spacing } from "@brave/leo/tokens/css/variables";
+import styled from "styled-components";
+
+
+const SettingsButton = styled(Button).attrs({
+  fab: true,
+  kind: 'plain-faint'
+})`
+  --leo-button-color: var(--leo-color-icon-default);
+  --leo-button-radius: ${radius.s};
+  --leo-button-padding: ${spacing.s};
+
+  flex: 0;
+`
+
+export default SettingsButton

@@ -1,0 +1,226 @@
+{
+  "appName": {
+    "message": "Расширение Brave",
+    "description": "The name of the extension."
+  },
+  "shields": {
+    "message": "Защита",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "ВКЛ",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "ВЫКЛ",
+    "description": "Message for when shields is disabled"
+  },
+  "forThisSite": {
+    "message": "для данного сайта",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Если сайт работает неправильно, попробуйте отключить Защиту",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Вы просматриваете этот сайт без использования средств приватности и безопасности Brave. Не работает правильно с включенной Защитой Brave?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Сообщить о неисправности сайта",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
+  },
+  "itemsBlocked": {
+    "message": "объектов заблокировано",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  },
+  "itemBlocked": {
+    "message": "объект заблокирован",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  },
+  "and": {
+    "message": "и",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  },
+  "connectionsUpgraded": {
+    "message": "соединения обновлены",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
+  },
+  "connectionUpgraded": {
+    "message": "соединение обновлено",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
+  },
+  "thirdPartyTrackersBlocked": {
+    "message": "Заблокированные трекеры",
+    "description": "Message for the scripts blocked row label"
+  },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "Трекеры и рекламные объявления заблокированы",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "Трекеры и реклама блокируются (агрессивно)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "Трекеры и реклама блокируются (стандарт)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "Разрешить все трекеры и рекламу",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
+  "connectionsUpgradedHTTPS": {
+    "message": "Подключение по HTTPS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
+  },
+  "connectionUpgradedHTTPS": {
+    "message": "Соединение обновлено до HTTPS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
+  },
+  "scriptsBlocked": {
+    "message": "Скрипты заблокированы",
+    "description": "Message for the scripts blocked row label"
+  },
+  "thirdPartyCookiesBlocked": {
+    "message": "Межсайтовые куки заблокированы",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "Файлы куки заблокированы",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "Все файлы куки разрешены",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "Сбор цифровых отпечатков заблокирован",
+    "description": "Message for the option in the fingerprinting field in read only view"
+  },
+  "standardFingerprinting": {
+    "message": "Сбор цифровых отпечатков заблокирован (стандартно)",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
+  },
+  "strictFingerprinting": {
+    "message": "Сбор цифровых отпечатков заблокирован (строго, может нарушать работу сайтов)",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
+  },
+  "allowAllFingerprinting": {
+    "message": "Разрешить сбор всех цифровых отпечатков",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Попытки сбора цифровых отпечатков",
+    "description": "Message for the fingerprinting attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Скриптов на данном сайте",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Заблокированные скрипты",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Скриптов разрешено",
+    "description": "Message for the script resources allowed"
+  },
+  "blockAll": {
+    "message": "Заблокировать все",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "Разрешить все",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "block": {
+    "message": "Блокировать",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "allow": {
+    "message": "Разрешить",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "blockedOnce": {
+    "message": "Заблокированы один раз",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "Разрешены один раз",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "Разрешить скрипты один раз",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
+  "cancel": {
+    "message": "Отмена",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Назад",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "Применить один раз",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Изменить глобальные настройки Защиты",
+    "description": "Message for the button action linking to the settings page"
+  },
+  "manageCustomFilters": {
+    "message": "Настроить фильтры",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "Блокировать элемент",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
+  },
+  "advancedView": {
+    "message": "Расширенный вид",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Простой вид",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Сайты используют куки-файлы и скрипты, чтобы идентифицировать вас и ваше устройство (часто они встраиваются в рекламу). Они хотят выяснить, кто вы, а также отслеживать вас и ваши действия на других сайтах по всему интернету. Brave блокирует подобное поведение, чтобы вы могли посещать веб-страницы без постоянной слежки.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Межсайтовый трекинг и другие нежелательные элементы заблокированы",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Изменение параметров Защиты в этом виде может повлиять на работу этого сайта.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Готово",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Узнать больше",
+    "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Добавить в Brave",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Удалить из Brave",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Установить",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Удалить из Chrome",
+    "description": "Message for removing an extension from Chrome"
+  }
+}

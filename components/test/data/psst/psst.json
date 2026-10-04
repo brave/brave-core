@@ -1,0 +1,35 @@
+[
+    {
+        "name": "a",
+        "include": [
+            "https://a.test/*"
+        ],
+        "exclude": [
+        ],
+        "version": 1,
+        "user_script": "user.js",
+        "policy_script": "policy.js"
+    },
+    {
+        "name": "b",
+        "include": [
+            "https://b.test/*"
+        ],
+        "exclude": [
+        ],
+        "version": 1,
+        "user_script": "user.js",
+        "policy_script": "policy.js"
+    },
+    {
+        "name": "rule_with_wrong_script_path",
+        "include": [
+            "https://url.test/*"
+        ],
+        "exclude": [
+        ],
+        "version": 1,
+        "user_script": "user.js",
+        "policy_script": "policy.js"
+    }
+]

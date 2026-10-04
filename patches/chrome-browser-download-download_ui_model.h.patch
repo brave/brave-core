@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/download/download_ui_model.h b/chrome/browser/download/download_ui_model.h
+index 329662b4db07a5727ba6faed063b9fcf019c850d..168b7400cbf86a4f8e0a249ce83230dccb2f73d9 100644
+--- a/chrome/browser/download/download_ui_model.h
++++ b/chrome/browser/download/download_ui_model.h
+@@ -529,6 +529,9 @@ class DownloadUIModel {
+   virtual bool IsExtensionDownload() const;
+ 
+  protected:
++  // Brave: virtual hooks for kDeleteLocalFile / kCopyDownloadLink commands.
++  virtual void DeleteLocalFile() {}
++  virtual void CopyDownloadLinkToClipboard() {}
+   // Returns the MIME type of the download.
+   virtual std::string GetMimeType() const;
+ 

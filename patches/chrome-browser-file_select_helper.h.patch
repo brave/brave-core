@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/file_select_helper.h b/chrome/browser/file_select_helper.h
+index a2acc4f5af93365996c34bf9330769b1054f3c6c..8fd66ba31868f26feb34ec73a9d2d59a583e62ff 100644
+--- a/chrome/browser/file_select_helper.h
++++ b/chrome/browser/file_select_helper.h
+@@ -77,6 +77,9 @@ class FileSelectHelper : public base::RefCountedThreadSafe<
+       scoped_refptr<content::FileSelectListener> listener,
+       const base::FilePath& path);
+ 
++ protected:
++  bool image_metadata_processed_ = false;
++
+  private:
+   friend class base::RefCountedThreadSafe<FileSelectHelper>;
+   friend class base::DeleteHelper<FileSelectHelper>;

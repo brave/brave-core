@@ -1,0 +1,46 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Block paste-and-go for Brave Commander commands
+
+      When Commander is enabled and the text is a Commander command, it must not
+      be treated as a paste-and-go navigation.
+    preempt_function_impl:
+      function_name: OmniboxEditModel::CanPasteAndGo
+      code: |-
+        if (IsBraveCommanderCommand(text)) {
+          return false;
+        }
+
+  - description: |
+      Always use a generic Google color icon for the Super G
+
+      Chromium dynamically updates the search engine favicon, and ships
+      prepackaged per-search icons that are Chrome-specific and that we don't
+      have. Return a single generic Google color icon for both light and dark
+      modes instead.
+    preempt_function_impl:
+      function_name: OmniboxEditModel::GetSuperGIcon
+      code: |-
+        if ((true)) {
+          return ui::ImageModel::FromVectorIcon(vector_icons::kGoogleColorIcon,
+                                                gfx::kPlaceholderColor, image_size);
+        }
+
+  - description: |
+      Flag clipboard-pasted input to the Brave search provider
+
+      `SetInputIsPastedFromClipboard` (defined in the chromium_src override)
+      installs a scoped flag the Brave search provider reads while autocomplete
+      runs. `paste_state_` is never mutated in this function, so seeding the flag
+      at the top of the body is equivalent to doing it right before the
+      autocomplete call.
+    preempt_function_impl:
+      function_name: OmniboxEditModel::StartAutocomplete
+      code: |-
+        auto pasted = SetInputIsPastedFromClipboard(
+            controller_, paste_state_ != PasteState::kNone);

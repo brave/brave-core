@@ -1,0 +1,115 @@
+diff --git a/../third_party/rust/chromium_crates_io/BUILD.gn.hbs b/third_party/rust/chromium_crates_io/BUILD.gn.hbs
+index 4e1eae6330f..bcec04193ad 100644
+--- a/../third_party/rust/chromium_crates_io/BUILD.gn.hbs
++++ b/third_party/rust/chromium_crates_io/BUILD.gn.hbs
+@@ -68,14 +68,14 @@ cargo_crate("{{this.name}}") {
+     ":lib",
+     {{/if}}
+     {{#each this.packages}}
+-      "//third_party/rust/{{this.name}}/{{this.epoch}}:lib",
++      "//brave/third_party/rust/{{this.name}}/{{this.epoch}}:lib",
+     {{/each}}
+   ]
+   {{else}}
+   if ({{this.cond}}) {
+     deps += [
+       {{#each this.packages}}
+-      "//third_party/rust/{{this.name}}/{{this.epoch}}:lib",
++      "//brave/third_party/rust/{{this.name}}/{{this.epoch}}:lib",
+       {{/each}}
+     ]
+   }
+@@ -84,7 +84,7 @@ cargo_crate("{{this.name}}") {
+   {{#if aliased_deps}}
+   aliased_deps = {
+     {{#each aliased_deps}}
+-    {{this.0}} = "//third_party/rust/{{this.1.name}}/{{this.1.epoch}}:lib"
++    {{this.0}} = "//brave/third_party/rust/{{this.1.name}}/{{this.1.epoch}}:lib"
+     {{/each}}
+   }
+   {{/if}}
+@@ -92,14 +92,14 @@ cargo_crate("{{this.name}}") {
+   {{#if @first}}
+   build_deps = [
+     {{#each this.packages}}
+-      "//third_party/rust/{{this.name}}/{{this.epoch}}:buildrs_support",
++      "//brave/third_party/rust/{{this.name}}/{{this.epoch}}:buildrs_support",
+     {{/each}}
+   ]
+   {{else}}
+   if ({{this.cond}}) {
+     build_deps += [
+     {{#each this.packages}}
+-      "//third_party/rust/{{this.name}}/{{this.epoch}}:buildrs_support",
++      "//brave/third_party/rust/{{this.name}}/{{this.epoch}}:buildrs_support",
+     {{/each}}
+     ]
+   }
+@@ -134,9 +134,36 @@ cargo_crate("{{this.name}}") {
+       ]
+     {{/if}}
+   {{/if}}
++  rustenv = [
++    {{#if rustenv}}
++      {{#each rustenv}}
++        "{{this}}",
++      {{/each}}
++    {{/if}}
++    {{#if extra_kv.rustenv}}
++      {{#each extra_kv.rustenv}}
++        "{{this}}",
++      {{/each}}
++    {{/if}}
++  ]
++  rustflags = [
++  {{#if rustflags}}
++    {{#each rustflags}}
++      "{{this}}",
++    {{/each}}
++  {{/if}}
++  {{#if extra_kv.rustflags}}
++    {{#each extra_kv.rustflags}}
++      "{{this}}",
++    {{/each}}
++  {{/if}}
++  ]
+   {{#if output_dir}}
+   output_dir = "{{output_dir}}"
+   {{/if}}
++  {{#if extra_kv.raw_gn}}
++    {{extra_kv.raw_gn}}
++  {{/if}}
+   {{#if native_libs}}
+   native_libs = [
+   {{#each native_libs}}
+@@ -145,29 +172,13 @@ cargo_crate("{{this.name}}") {
+   ]
+   {{/if}}
+   {{/with}}
+-
+-  {{#if gn_visibility.public}}
+-  {{#if detail.extra_kv.visibility}}
+-  visibility = []
+-  {{/if}}
+-  {{else}}
+-  # Only for usage from third-party crates. Add the crate to
+-  # //third_party/rust/chromium_crates_io/Cargo.toml to use
+-  # it from first-party code.
+-  visibility = [ "//third_party/rust/*" ]
+-  {{/if}}
+-  {{#if detail.extra_kv.visibility}}
+-    {{#each detail.extra_kv.visibility}}
+-      visibility += [ "{{this}}" ]
+-    {{/each}}
+-  {{/if}}
+   {{#if gn_visibility.testonly}}
+   testonly = true
+   {{/if}}
+ 
+   {{#if detail.extra_kv.allow_unstable_features}}
+   # `gnrt_config.toml` for this crate specifies `allow_unstable_features`.
+-  rustflags = [
++  rustflags += [
+     {{#each detail.extra_kv.allow_unstable_features}}
+       "-Zallow-features={{this}}",
+     {{/each}}

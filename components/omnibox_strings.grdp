@@ -1,0 +1,920 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+  <!-- Note, referenced part .grdp files must be in the same directory as the
+       referencing .grdp file or translation console pipeline breaks. -->
+  <part file="omnibox_pedal_ui_strings.grdp" />
+
+  <message name="IDS_ACC_OMNIBOX_AUTOCOMPLETE_PLACEHOLDER" desc="Accessibility announcement to inform users that there are suggestions to arrow through.">
+    Press up or down arrow for auto completions. Type to autocomplete.
+  </message>
+
+  <!-- Omnibox popup match descriptions. -->
+  <message name="IDS_AUTOCOMPLETE_SEARCH_DESCRIPTION" desc="Description for the default search match.">
+    <ph name="ENGINE">$1<ex>Brave</ex></ph> Search
+  </message>
+  <message name="IDS_OMNIBOX_ILLS_USE_APPROXIMATE_LOCATION" desc="Text shown next to an omnibox suggestions row, which informs the user that clicking the row will send location to search engine. Specifically mentions 'approximate' (as in the opposite of 'precise').">
+    Use approximate location
+  </message>
+  <message name="IDS_OMNIBOX_ILLS_USE_LOCATION" desc="Text shown next to an omnibox suggestions row, which informs the user that clicking the row will send location to search engine.">
+    Use location
+  </message>
+  <message name="IDS_OMNIBOX_ILLS_USE_PRECISE_LOCATION" desc="Text shown next to an omnibox suggestions row, which informs the user that clicking the row will send precise location to search engine. Specifically mentions 'precise' (as in accurate coordinates).">
+    Use precise location
+  </message>
+  <message name="IDS_AUTOCOMPLETE_ASK_DESCRIPTION" desc="Description for matches from ask-keywords; e.g. gemini or ai mode.">
+    Ask <ph name="ENGINE">$1<ex>AI Mode</ex></ph>
+  </message>
+
+  <message name="IDS_CONTEXTUAL_SEARCH_OPEN_LENS_ACTION_LABEL" desc="Label text for the action match that opens lens.">
+    Ask Brave about this page
+  </message>
+  <message name="IDS_CONTEXTUAL_SEARCH_OPEN_LENS_ACTION_LABEL_ALT" desc="Alternative label text for the action match that opens lens.">
+    Ask Google Lens about this page
+  </message>
+  <message name="IDS_CONTEXTUAL_SEARCH_OPEN_LENS_ACTION_LABEL_ALT2" desc="Second alternative label text for the action match that opens lens.">
+    Ask Brave Search about this page
+  </message>
+  <message name="IDS_OMNIBOX_TOOLBELT_LABEL" desc="The label shown before actions in the omnibox toolbelt.">
+    Search shortcuts
+  </message>
+
+  <message name="IDS_CONTEXTUAL_SEARCH_OPEN_LENS_ACTION_HINT" desc="The button text contents to suggest an omnibox action that opens lens">
+    Ask Brave about this page
+  </message>
+  <message name="IDS_CONTEXTUAL_SEARCH_OPEN_LENS_ACTION_SUGGESTION_CONTENTS" desc="The button hover tooltip text to describe omnibox action that opens lens">
+    Ask Brave about this page
+  </message>
+  <message name="IDS_ACC_CONTEXTUAL_SEARCH_OPEN_LENS_ACTION_SUFFIX" desc="Suffix for spoken suggestion description with omnibox action button, to explain keystroke used to open lens.">
+    <ph name="CONTEXTUAL_SEARCH_OPEN_LENS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Enter to ask Brave about this page
+  </message>
+  <message name="IDS_ACC_CONTEXTUAL_SEARCH_OPEN_LENS_ACTION" desc="Announcement when lens action button is focused">
+    Ask Brave about this page button, activate to ask Brave about this page
+  </message>
+
+  <!-- AI Mode Entrypoint Strings -->
+  <message name="IDS_AI_MODE_ENTRYPOINT_LABEL" desc="The label of the omnibox AI mode entrypoint" formatter_data="android_java">
+    AI Mode
+  </message>
+  <message name="IDS_AI_MODE_ENTRYPOINT_TOOLTIP_1P" desc="Tooltip text shown on hover for the 1P omnibox AI Mode entrypoint.">
+    Ask <ph name="AI_ENGINE_NAME">$1<ex>AI Mode</ex></ph> in <ph name="SEARCH_ENGINE_NAME">$2<ex>Brave</ex></ph> Search
+  </message>
+  <message name="IDS_AI_MODE_ENTRYPOINT_TOOLTIP_3P" desc="Tooltip text shown on hover for 3P omnibox AI Mode entrypoints.">
+    Ask <ph name="AI_ENGINE_NAME">$1<ex>AI Mode</ex></ph>
+  </message>
+  <message name="IDS_AI_MODE_ENTRYPOINT_ACC_FOCUSED" desc="Accessibility announcement when the omnibox AI Mode entrypoint gains focus.">
+    <ph name="AI_ENGINE_NAME">$1<ex>AI Mode</ex></ph> button, press Enter to ask <ph name="AI_ENGINE_NAME">$1<ex>AI Mode</ex></ph>
+  </message>
+  <if expr="use_titlecase">
+    <message name="IDS_AI_MODE_ENTRYPOINT_CONTEXT_MENU_SHOW" desc="In Title Case: Text label for the omnibox context menu option to toggle showing the omnibox AI Mode entrypoint.">
+      Always Show <ph name="AI_ENGINE_NAME">$1<ex>AI Mode</ex></ph>
+    </message>
+  </if>
+  <if expr="not use_titlecase">
+    <message name="IDS_AI_MODE_ENTRYPOINT_CONTEXT_MENU_SHOW" desc="Text label for the omnibox context menu option to toggle showing the omnibox AI Mode entrypoint.">
+      Always show <ph name="AI_ENGINE_NAME">$1<ex>AI Mode</ex></ph>
+    </message>
+  </if>
+  <message name="IDS_AI_MODE_OMNIBOX_PLACEHOLDER" desc="The text shown and announced, prompting the user to use the omnibox AI mode entrypoint. conditionally displayed in the Omnibox when it is focused with no input and AI Mode is enabled.">
+    Press tab then enter to ask <ph name="AI_ENGINE_NAME">$1<ex>AI Mode</ex></ph>
+  </message>
+  <message name="IDS_AI_MODE_OMNIBOX_PLACEHOLDER_ANDROID" desc="The text shown and announced, prompting the user to use the omnibox AI mode entrypoint. conditionally displayed in the Omnibox when it is focused with no input and AI Mode is enabled." formatter_data="android_java">
+    <ph name="TAB_KEY">&lt;tab_key&gt; &lt;/tab_key&gt;</ph> Press tab then enter to ask <ph name="AI_ENGINE_NAME">$1<ex>AI Mode</ex></ph>
+  </message>
+
+  <message name="IDS_EMPTY_KEYWORD_VALUE" desc="Shown in the location bar drop down when the user enters a string that matches a chrome keyword, but they haven't entered any text following the chrome keyword">
+    &lt;Type search term&gt;
+  </message>
+  <message name="IDS_EMPTY_STARTER_PACK_AI_MODE_VALUE" desc="Shown in the location bar drop down when the user enters a string that matches an ask-keyword, but they haven't entered any text following the chrome keyword">
+    &lt;Type a question&gt;
+  </message>
+
+  <if expr="use_titlecase">
+    <message name="IDS_LINK_FROM_CLIPBOARD" desc="The label in the omnibox dropdown explaining that the link has been extracted from the user's clipboard." meaning="Length: 35em">
+      Link You Copied
+    </message>
+    <message name="IDS_TEXT_FROM_CLIPBOARD" desc="The label in the omnibox dropdown explaining that the text has been extracted from the user's clipboard." meaning="Length: 35em">
+      Text You Copied
+    </message>
+    <message name="IDS_IMAGE_FROM_CLIPBOARD" desc="The label in the omnibox dropdown explaining that the image has been extracted from the user's clipboard." meaning="Length: 35em">
+      Image You Copied
+    </message>
+  </if>
+  <if expr="not use_titlecase">
+    <message name="IDS_LINK_FROM_CLIPBOARD" desc="The label in the omnibox dropdown explaining that the link has been extracted from the user's clipboard." meaning="Length: 21em">
+      Link you copied
+    </message>
+    <message name="IDS_TEXT_FROM_CLIPBOARD" desc="The label in the omnibox dropdown explaining that the text has been extracted from the user's clipboard." meaning="Length: 21em">
+      Text you copied
+    </message>
+    <message name="IDS_IMAGE_FROM_CLIPBOARD" desc="The label in the omnibox dropdown explaining that the image has been extracted from the user's clipboard." meaning="Length: 21em">
+      Image you copied
+    </message>
+  </if>
+
+  <message name="IDS_SECURE_VERBOSE_STATE" desc="An adjective or short adjective phrase shown next to the green lock icon in the omnibox to describe a secure site (valid HTTPS connection). Note that 'secure' in this case primarily refers to HTTPS connection security, so prefer translations with a connotation of 'private' (no one can intercept your communication with the site) rather than 'trustworthy' (which would be a judgment of site reputation). This phrase takes away space from the URL in the omnibox, so it should ideally be as short as possible while staying accurate. This phrase should also make sense compared to the companion phrase 'Not Secure'." meaning="Omnibox phrase to describe a secure site.">
+    Secure
+  </message>
+  <if expr="use_titlecase">
+    <then>
+      <message name="IDS_NOT_SECURE_VERBOSE_STATE" desc="An adjective or short adjective phrase shown next to the security indicator icon in the omnibox to describe a site that is not secure (unencrypted HTTP or invalid HTTPS connection). Note that 'not secure' in this case primarily refers to HTTPS connection security, so prefer translations with a connotation of 'not private' (someone can intercept your communication with the site) rather than 'not trustworthy' (which would be a judgment of site reputation). This phrase takes away space from the URL in the omnibox, so it should ideally be as short as possible while staying accurate. This phrase should also make sense compared to the companion phrase 'Secure'." meaning="Omnibox phrase to describe a site that is not secure.">
+        Not Secure
+      </message>
+    </then>
+    <else>
+      <message name="IDS_NOT_SECURE_VERBOSE_STATE" desc="An adjective or short adjective phrase shown next to the security indicator icon in the omnibox to describe a site that is not secure (unencrypted HTTP or invalid HTTPS connection). Note that 'not secure' in this case primarily refers to HTTPS connection security, so prefer translations with a connotation of 'not private' (someone can intercept your communication with the site) rather than 'not trustworthy' (which would be a judgment of site reputation). This phrase takes away space from the URL in the omnibox, so it should ideally be as short as possible while staying accurate. This phrase should also make sense compared to the companion phrase 'Secure'." meaning="Omnibox phrase to describe a site that is not secure.">
+        Not secure
+      </message>
+    </else>
+  </if>
+  <message name="IDS_DANGEROUS_VERBOSE_STATE" desc="Text for the Dangerous Omnibox Verbose State. Displayed when the current page fails the malware check.">
+    Dangerous
+  </message>
+  <message name="IDS_SUSPICIOUS_VERBOSE_STATE" desc="Text for the Suspicious Omnibox Verbose State. Displayed when the current page is marked as a suspicious site.">
+    Suspicious
+  </message>
+  <message name="IDS_OFFLINE_VERBOSE_STATE" desc="Text for the Offline Omnibox Verbose state. Displayed when the current page is loaded from a previously-downloaded cache.">
+    Offline
+  </message>
+  <if expr="is_ios or is_android or enable_vr">
+    <message name="IDS_OMNIBOX_EMPTY_HINT" desc="The text displayed in the omnibox when it is empty." formatter_data="android_java">
+      Search or type URL
+    </message>
+    <message name="IDS_OMNIBOX_EMPTY_HINT_WITH_DSE_NAME" desc="The text displayed in the omnibox when it is empty. Includes Default Search Engine name." formatter_data="android_java">
+      Search <ph name="ENGINE_NAME">$1<ex>Yahoo</ex></ph> or type URL
+    </message>
+    <message name="IDS_OMNIBOX_EMPTY_ASK_HINT_WITH_DSE_NAME" desc="Alternative text displayed in the omnibox when it is empty, prompting the user to ask. Includes Default Search Engine name." formatter_data="android_java">
+      Ask <ph name="ENGINE_NAME">$1<ex>Yahoo</ex></ph> or type URL
+    </message>
+    <if expr="is_android or enable_vr">
+      <message name="IDS_OMNIBOX_NAVATTACH_GALLERY" desc="The text displayed in the omnibox attachments popup. When clicked - opens image gallery." formatter_data="android_java">
+        Gallery
+      </message>
+      <message name="IDS_OMNIBOX_NAVATTACH_FILES" desc="The text displayed in the omnibox attachments popup. When clicked - opens file picker." formatter_data="android_java">
+        Files
+      </message>
+      <message name="IDS_OMNIBOX_NAVATTACH_ADD_IMAGES" desc="The text displayed in the omnibox attachments popup. When clicked - opens image gallery." formatter_data="android_java">
+        Add images
+      </message>
+      <message name="IDS_OMNIBOX_NAVATTACH_ADD_FILES" desc="The text displayed in the omnibox attachments popup. When clicked - opens file picker." formatter_data="android_java">
+        Add files
+      </message>
+      <message name="IDS_OMNIBOX_NAVATTACH_TABS" desc="The text displayed in the omnibox attachments popup. When clicked - opens tabs picker." formatter_data="android_java">
+        Tabs
+      </message>
+      <message name="IDS_OMNIBOX_NAVATTACH_DRIVE" desc="The text displayed in the omnibox attachments popup. When clicked - opens drive file picker." formatter_data="android_java">
+        Drive
+      </message>
+      <message name="IDS_FUSEBOX_ADD_CURRENT_TAB" desc="The text displayed in the omnibox attachments popup. When clicked - adds the curernt tab as context." formatter_data="android_java">
+        Add current tab
+      </message>
+      <message name="IDS_FUSEBOX_ADD_TAB" desc="The text displayed in the omnibox attachments popup for the Current tab option." formatter_data="android_java">
+        Add tab
+      </message>
+      <message name="IDS_FUSEBOX_UPLOAD_FAILED" desc="The text displayed in a snackbar when an attachment fails to upload" formatter_data="android_java">
+        Unable to add attachments
+      </message>
+      <message name="IDS_OMNIBOX_EMPTY_HINT_FOR_IMAGE_GENERATION" desc="The text displayed in the omnibox when it is empty and image generation is selected." formatter_data="android_java">
+        Describe your image
+      </message>
+      <message name="IDS_FUSEBOX_RECENT_TABS_HEADER" desc="The text displayed in the omnibox attachments popup as a header for the most recent tabs list." formatter_data="android_java">
+        Add recent tabs
+      </message>
+    </if>
+  </if>
+  <if expr="is_android">
+    <message name="IDS_OMNIBOX_ON_CCT_EMPTY_HINT" desc="Hint text shown in the Omnibox on a Custom Tab." formatter_data="android_java">
+      Search the web in Brave
+    </message>
+    <message name="IDS_OMNIBOX_EMPTY_ASK_HINT_SHORT_WITH_DSE_NAME" desc="Alternative text displayed in the omnibox when it is empty, prompting the user to ask. Includes Default Search Engine name." formatter_data="android_java">
+      Ask <ph name="ENGINE_NAME">$1<ex>Brave</ex></ph>
+    </message>
+  </if>
+  <message name="IDS_OMNIBOX_ADDITIONAL_TEXT_DASH_TEMPLATE" desc="The omnibox text when there is both traditional text (i.e., user text + inline autocompletion) and additional text (i.e. the default suggestion's URL when rich autocompleting a title) to display.">
+    <ph name="TRADITIONAL_TEXT">$1</ph> - <ph name="ADDITIONAL_TEXT">$2</ph>
+  </message>
+  <message name="IDS_OMNIBOX_TAB_SUGGEST_HINT" desc="The button text contents to say that this suggestion will switch to another tab.">
+    Switch to this tab
+  </message>
+  <if expr="not is_ios and not is_android">
+    <message name="IDS_OMNIBOX_HISTORY_EMBEDDING_HINT" desc="The chip text shown on the omnibox popup suggestions that were generated using history embeddings.">
+      AI Best Match
+    </message>
+  </if>
+  <message name="IDS_OMNIBOX_FILE" desc="Text shown in the omnibox to indicate a user is viewing a file.">
+    File
+  </message>
+  <message name="IDS_OMNIBOX_READER_MODE" desc="Text shown in the omnibox to indicate a user is viewing the reader mode view of an article.">
+    Reader Mode
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_BUGANIZER" desc="Buganizer issue name, for use in omnibox content suggestion descriptions.">
+    Buganizer Issue
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_COMMA_SEPARATED_VALUES" desc="Comma-separated values file format name, for use in omnibox content suggestion descriptions.">
+    Comma-Separated Values
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_APPS_SCRIPT" desc="Brave Apps Script product name, for use in omnibox content suggestion descriptions.">
+    Brave Apps Script
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_DOCS" desc="Google Docs product name, for use in omnibox content suggestion descriptions.">
+    Google Docs
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_DRAWINGS" desc="Brave Drawings product name, for use in omnibox content suggestion descriptions.">
+    Brave Drawings
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_DRIVE" desc="Google Drive product name shown when the file type is unknown, for use in omnibox content suggestion descriptions.">
+    Google Drive
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_DRIVE_FOLDER" desc="Google Drive product name shown when the file is a folder, for use in omnibox content suggestion descriptions.">
+    Google Drive Folder
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_FORMS" desc="Brave Forms product name, for use in omnibox content suggestion descriptions.">
+    Brave Forms
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_JAMBOARD" desc="Brave Jamboard product name, for use in omnibox content suggestion descriptions.">
+    Brave Jamboard
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_PHOTOS" desc="Google Photos product name, for use in omnibox content suggestion descriptions.">
+    Google Photos
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_SITES" desc="Brave Sites product name, for use in omnibox content suggestion descriptions.">
+    Brave Sites
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_SHEETS" desc="Brave Sheets product name, for use in omnibox content suggestion descriptions.">
+    Brave Sheets
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_GOOGLE_SLIDES" desc="Brave Slides product name, for use in omnibox content suggestion descriptions.">
+    Brave Slides
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_IMAGE_JPEG" desc="JPEG image file format name, for use in omnibox content suggestion descriptions.">
+    JPEG Image
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_IMAGE_PNG" desc="PNG image file format name, for use in omnibox content suggestion descriptions.">
+    PNG Image
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_IMAGE_SVG" desc="SVG image file format name, for use in omnibox content suggestion descriptions.">
+    SVG Image
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_JIRA" desc="Jira issue name, for use in omnibox content suggestion descriptions.">
+    Jira Issue
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_JSON" desc="JSON file format name, for use in omnibox content suggestion descriptions.">
+    JSON
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_MARKDOWN" desc="Markdown file format name, for use in omnibox content suggestion descriptions.">
+    Markdown
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_MS_EXCEL" desc="Microsoft Excel product name, for use in omnibox content suggestion descriptions.">
+    Microsoft Excel
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_MS_POWERPOINT" desc="Microsoft PowerPoint product name, for use in omnibox content suggestion descriptions.">
+    Microsoft PowerPoint
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_MS_WORD" desc="Microsoft Word product name, for use in omnibox content suggestion descriptions.">
+    Microsoft Word
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_OPEN_DOCUMENT_PRESENTATION" desc="OpenDocument Presentation product name, for use in omnibox content suggestion descriptions.">
+    OpenDocument Presentation
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_OPEN_DOCUMENT_SPREADSHEET" desc="OpenDocument Spreadsheet product name, for use in omnibox content suggestion descriptions.">
+    OpenDocument Spreadsheet
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_OPEN_DOCUMENT_TEXT" desc="OpenDocument Text product name, for use in omnibox content suggestion descriptions.">
+    OpenDocument Text
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_PDF" desc="PDF file format name, for use in omnibox content suggestion descriptions.">
+    PDF
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_PLAIN_TEXT" desc="Plain text file format name, for use in omnibox content suggestion descriptions.">
+    Plain Text
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_RICH_TEXT_FORMAT" desc="Rich Text Format file format name, for use in omnibox content suggestion descriptions.">
+    Rich Text Format
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_SALESFORCE" desc="Salesforce product name, for use in omnibox content suggestion descriptions.">
+    Salesforce
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_SLACK" desc="Slack message name, for use in omnibox content suggestion descriptions.">
+    Slack Message
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_VIDEO_MP4" desc="MP4 video file format name, for use in omnibox content suggestion descriptions.">
+    MP4 Video
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_VIDEO_QUICKTIME" desc="QuickTime video file format name, for use in omnibox content suggestion descriptions.">
+    QuickTime Video
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_VIDEO_WEBM" desc="WebM video file format name, for use in omnibox content suggestion descriptions.">
+    WebM Video
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_ZIP_FILE" desc="ZIP archive file format name, for use in omnibox content suggestion descriptions.">
+    ZIP Archive
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_TEMPLATE" desc="Product description for Google Drive omnibox results.">
+    <ph name="RESULT_MODIFIED_DATE">$1<ex>12/31/2018</ex></ph> - <ph name="RESULT_OWNER">$2<ex>First Last</ex></ph> - <ph name="RESULT_PRODUCT_SOURCE">$3<ex>Google Docs</ex></ph>
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_TEMPLATE_WITHOUT_DATE" desc="Product description for Google Drive omnibox results when date is missing.">
+    <ph name="RESULT_OWNER">$1<ex>First Last</ex></ph> - <ph name="RESULT_PRODUCT_SOURCE">$2<ex>Google Docs</ex></ph>
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_TEMPLATE_WITHOUT_OWNER" desc="Product description for Google Drive omnibox results when owner is missing.">
+    <ph name="RESULT_MODIFIED_DATE">$1<ex>12/31/2018</ex></ph> - <ph name="RESULT_PRODUCT_SOURCE">$2<ex>Google Docs</ex></ph>
+  </message>
+  <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_TEMPLATE_WITHOUT_FILE_TYPE_DESCRIPTION" desc="Product description for content suggestions in omnibox when the file type description is missing.">
+    <ph name="RESULT_MODIFIED_DATE">$1<ex>12/31/2018</ex></ph> - <ph name="RESULT_OWNER">$2<ex>First Last</ex></ph>
+  </message>
+  <message name="IDS_PERSON_SUGGESTION_DESCRIPTION" desc="Description for person suggestions in omnibox.">
+  <ph name="ENGINE">$1<ex>Agentspace</ex></ph> People
+  </message>
+
+  <!-- Accessibility labels for suggestion types -->
+  <message name="IDS_ACC_OMNIBOX_SUGGESTION_TYPE_SEARCH" desc="Accessibility announcement for search suggestion type." formatter_data="android_java">
+    Search
+  </message>
+  <message name="IDS_ACC_OMNIBOX_SUGGESTION_TYPE_NAVIGATION" desc="Accessibility announcement for navigation suggestion type." formatter_data="android_java">
+    Navigation
+  </message>
+  <message name="IDS_ACC_OMNIBOX_SUGGESTION_TYPE_CONVERSATION" desc="Accessibility announcement for conversation suggestion type." formatter_data="android_java">
+    Conversation
+  </message>
+
+  <!-- Accessibility templates for Grouped Omnibox Suggestions -->
+  <message name="IDS_ACC_OMNIBOX_SUGGESTION_IN_GROUP_WITH_TYPE" desc="Accessibility text for an omnibox suggestion in a specific group. Speaks the suggestion title, suggestion type, its position within the group, and the group's header if exists." formatter_data="android_java">
+    <ph name="SUGGESTION_TITLE">$1<ex>Brave</ex></ph>. <ph name="SUGGESTION_TYPE">$2<ex>Search</ex></ph>. <ph name="MATCH_POSITION">$3<ex>3</ex></ph> of <ph name="NUM_MATCHES_IN_GROUP">$4<ex>5</ex></ph> in the group <ph name="GROUP_HEADER">$5<ex>Trending Searches</ex></ph>.
+  </message>
+  <message name="IDS_ACC_OMNIBOX_SUGGESTION_IN_GROUP_WITH_TYPE_AND_DESCRIPTION" desc="Accessibility text for an omnibox suggestion in a specific group. Speaks the suggestion title and description, suggestion type, its position within the group, and the group's header if exists." formatter_data="android_java">
+    <ph name="SUGGESTION_TITLE">$1<ex>Brave</ex></ph>, <ph name="SUGGESTION_DESCRIPTION">$2<ex>Search result</ex></ph>. <ph name="SUGGESTION_TYPE">$3<ex>Navigation</ex></ph>. <ph name="MATCH_POSITION">$4<ex>3</ex></ph> of <ph name="NUM_MATCHES_IN_GROUP">$5<ex>5</ex></ph> in the group <ph name="GROUP_HEADER">$6<ex>Trending Searches</ex></ph>.
+  </message>
+
+  <message name="IDS_OMNIBOX_ACTION_CROSS_DEVICE_TAB_HINT" desc="The button text for the Cross-Device Tab omnibox action. Clicking this button takes users to a view of their synced tabs from other devices.">
+    More tabs from other devices
+  </message>
+  <message name="IDS_OMNIBOX_ACTION_CROSS_DEVICE_TAB_SUGGESTION_CONTENTS" desc="The button tooltip for the Cross-Device Tab omnibox action. Clicking this button takes users to a view of their synced tabs from other devices.">
+    More tabs from other devices
+  </message>
+  <message name="IDS_ACC_OMNIBOX_ACTION_CROSS_DEVICE_TAB_SUFFIX" desc="Suffix for spoken suggestion description with action button to explain keystroke used to see cross-device tabs.">
+    <ph name="CROSS_DEVICE_TAB_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>google.com</ex></ph>, press Tab, then Enter for more tabs from other devices
+  </message>
+  <message name="IDS_ACC_OMNIBOX_ACTION_CROSS_DEVICE_TAB" desc="Announcement when the Cross-Device Tab action button is focused.">
+    More tabs from other devices button, press Enter to see more tabs from other devices
+  </message>
+
+  <!-- History Clusters Actions. -->
+  <message name="IDS_OMNIBOX_HISTORY_CLUSTERS_SEARCH_HINT" desc="The button text for the History Clusters omnibox suggestion in sentence case. Clicking this button takes users to a view of their browsing history related to the suggestion.">
+    Resume browsing
+  </message>
+  <message name="IDS_OMNIBOX_ACTION_HISTORY_CLUSTERS_SEARCH_HINT" desc="The button text for the History Clusters omnibox action. Clicking this button takes users to a view of their browsing history related to the attached suggestion.">
+    Resume your journey
+  </message>
+  <message name="IDS_OMNIBOX_ACTION_HISTORY_CLUSTERS_SEARCH_SUGGESTION_CONTENTS" desc="The button tooltip for the History Clusters omnibox action. Clicking this button takes users to a view of their browsing history related to the attached suggestion.">
+    Resume your journey to see relevant activity in your Brave history
+  </message>
+  <message name="IDS_ACC_OMNIBOX_ACTION_HISTORY_CLUSTERS_SEARCH_SUFFIX" desc="Suffix for spoken suggestion description with action button to explain keystroke used to Search History Clusters.">
+    <ph name="HISTORY_CLUSTERS_SEARCH_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>dog food</ex></ph>, press Tab, then Enter to resume your journey and see relevant activity in your Brave history
+  </message>
+  <message name="IDS_ACC_OMNIBOX_ACTION_HISTORY_CLUSTERS_SEARCH" desc="Announcement when the Search History Clusters action button is focused.">
+    Resume your journey button, press Enter to resume your journey and see relevant activity in your Brave history
+  </message>
+
+  <!-- Omnibox Actions in Suggest. -->
+  <message name="IDS_ACC_OMNIBOX_ACTION_IN_SUGGEST_SUFFIX" desc="Suffix for spoken suggestion description with actions in suggest button(s) explaining that additional actions are available. Unlike Pedals or History Clusters, Actions come from the server and may encompass things like `Website` or `Call`, but are otherwise no different than, say, `Switch To Tab` on the attached screenshot.">
+    <ph name="ACTION_IN_SUGGEST_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>Call</ex></ph>, press Tab to browse available actions, then Enter to execute selected action.
+  </message>
+  <message name="IDS_OMNIBOX_ACTION_IN_SUGGEST_CALL_HINT" desc="Label for Omnibox Action button that pre-dials the phone number." meaning="Length: 12em">
+    Call
+  </message>
+  <message name="IDS_OMNIBOX_ACTION_IN_SUGGEST_CALL_CONTENTS" desc="The button hover tooltip text to describe action.">
+    Connect with a business by initiating a phone call.
+  </message>
+  <message name="IDS_OMNIBOX_ACTION_IN_SUGGEST_DIRECTIONS_HINT" desc="Label for Omnibox Action button that starts navigation to the POI." meaning="Length: 12em">
+    Directions
+  </message>
+  <message name="IDS_OMNIBOX_ACTION_IN_SUGGEST_DIRECTIONS_CONTENTS" desc="The button hover tooltip text to describe action.">
+    Get directions to your destination with turn-by-turn guidance using the navigation feature.
+  </message>
+  <message name="IDS_OMNIBOX_ACTION_IN_SUGGEST_REVIEWS_HINT" desc="Label for Omnibox Action button that opens Reviews page for the POI." meaning="Length: 12em">
+    Reviews
+  </message>
+  <message name="IDS_OMNIBOX_ACTION_IN_SUGGEST_REVIEWS_CONTENTS" desc="The button hover tooltip text to describe action.">
+    Read customer evaluations of products, services, or experiences to help inform your decisions with reviews.
+  </message>
+  <message name="IDS_OMNIBOX_ACTION_IN_SUGGEST_AIM_HINT" desc="Label for Omnibox Action button that opens the AIM webpage" meaning="Length: 12em">
+    AI Mode
+  </message>
+  <message name="IDS_OMNIBOX_ACTION_IN_SUGGEST_AIM_CONTENTS" desc="The button hover tooltip text to describe action.">
+    Open AI Mode with this suggestion.
+  </message>
+  <message name="IDS_OMNIBOX_ACTION_IN_SUGGEST_TAB_SWITCH_HINT" desc="Label for Omnibox Action button that switches to another tab" meaning="Length: 12em">
+    Switch to this tab
+  </message>
+  <message name="IDS_OMNIBOX_ACTION_IN_SUGGEST_TAB_SWITCH_CONTENTS" desc="The button hover tooltip text to describe action.">
+    Switch to this tab.
+  </message>
+
+  <message name="IDS_ACC_OMNIBOX_ACTION_IN_EXTENSION_SUGGEST_SUFFIX" desc="Suffix for spoken suggestion description with actions in suggest button(s) explaining that additional actions are available.">
+    <ph name="OMNIBOX_ACTION_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>Call</ex></ph>, press Tab to browse available actions, then Enter to execute selected action.
+  </message>
+
+  <!-- Fusebox -->
+  <message name="IDS_ACC_SEND_BUTTON_SEARCH_OR_NAVIGATE" desc="Accessibility text for the Omnibox `Send` button, announced when the user is in the search/open URL context" formatter_data="android_java">
+    Submit
+  </message>
+  <message name="IDS_ACC_SEND_BUTTON_SEND_TO_AI" desc="Accessibility text for the Omnibox `Send` button, announced when the user is in the AI Mode context" formatter_data="android_java">
+    Send
+  </message>
+  <message name="IDS_ACC_REMOVE_IMAGE_ATTACHMENT" desc="Accessibility text for the remove button of image attachment, announced when the user selects an image as an attachment" formatter_data="android_java">
+    Remove image attachment
+  </message>
+  <message name="IDS_ACC_REMOVE_ATTACHMENT" desc="Accessibility text for the remove button of tab or file attachment, announced when the user selects a tab or file as an attachment" formatter_data="android_java">
+    Remove attachment
+  </message>
+  <message name="IDS_ACC_FUSEBOX_POPUP_BUTTON_SELECTED" desc="Accessibility announcement when an option in the Omnibox `Add context` popup is selected." formatter_data="android_java">
+    <ph name="BUTTON_TEXT">%s<ex>AI Mode</ex></ph>, selected
+  </message>
+  <message name="IDS_FUSEBOX_MORE_OPTIONS" desc="The label and accessibility text for the More Options button in the Fusebox popup." formatter_data="android_java">
+    More options
+  </message>
+
+  <!-- Accessibility labels for autocomplete match types.
+       These are parameterized on the text being completed into the omnibox.
+  -->
+  <message name="IDS_ACC_AUTOCOMPLETE_HISTORY" desc="Text for screenreaders describing a URL from history.">
+    <ph name="LOCATION_TITLE">$2<ex>The Chromium Projects</ex></ph> <ph name="SHORT_URL">$1<ex>www.chromium.org</ex> location from history</ph>
+  </message>
+  <message name="IDS_ACC_AUTOCOMPLETE_HISTORY_EMBEDDINGS" desc="Text for screenreaders describing a AI match URL from history.">
+    <ph name="LOCATION_TITLE">$2<ex>The Chromium Projects</ex></ph> <ph name="SHORT_URL">$1<ex>www.chromium.org</ex>, AI best match, location from history</ph>
+  </message>
+  <message name="IDS_ACC_AUTOCOMPLETE_SEARCH_HISTORY" desc="Text for screenreaders describing a search from history.">
+    <ph name="TEXT">$1<ex>dogs</ex></ph> search from history
+  </message>
+  <message name="IDS_ACC_AUTOCOMPLETE_SEARCH" desc="Text for screenreaders describing a generic search.">
+    <ph name="TEXT">$1<ex>dogs</ex></ph> search
+  </message>
+  <message name="IDS_ACC_AUTOCOMPLETE_SUGGESTED_SEARCH" desc="Text for screenreaders describing a suggested search.">
+    <ph name="TEXT">$1<ex>dogs</ex></ph> search suggestion
+  </message>
+  <message name="IDS_ACC_AUTOCOMPLETE_SUGGESTED_SEARCH_ENTITY" desc="Text for screenreaders describing a suggested search for an entity with a description. The commas are significant as they will introduce a pause in the spoken text.">
+    <ph name="ENTITY">$1<ex>muhammad ali</ex></ph>, <ph name="DESCRIPTION">$2<ex>american professional boxer</ex></ph>, search suggestion
+  </message>
+  <message name="IDS_ACC_AUTOCOMPLETE_QUICK_ANSWER" desc="Text for screenreaders describing a query, followed by an indication that an answer to that query will follow, followed by the answer. The commas are significant as they will introduce a pause in the spoken text.">
+    <ph name="QUERY">$1<ex>weather in los angeles</ex></ph>, answer, <ph name="ANSWER">$2<ex>sunny and 84 degrees</ex></ph>
+  </message>
+  <message name="IDS_ACC_AUTOCOMPLETE_BOOKMARK" desc="Text for screenreaders describing a URL from a bookmark.">
+    <ph name="LOCATION_TITLE">$2<ex>The Chromium Projects</ex></ph> <ph name="SHORT_URL">$1<ex>www.chromium.org</ex> bookmark</ph>
+  </message>
+  <message name="IDS_ACC_AUTOCOMPLETE_CLIPBOARD_IMAGE" desc="Text for screenreaders describing an image from a clipboard.">
+    Search for clipboard image
+  </message>
+  <message name="IDS_ACC_AUTOCOMPLETE_CLIPBOARD_TEXT" desc="Text for screenreaders describing text from a clipboard.">
+    Search for clipboard text, <ph name="TEXT">$1<ex>Paris, france</ex></ph>
+  </message>
+  <message name="IDS_ACC_AUTOCOMPLETE_CLIPBOARD_URL" desc="Text for screenreaders describing a URL from a clipboard.">
+    Search for clipboard URL, <ph name="SHORT_URL">$1<ex>www.chromium.org</ex></ph>
+  </message>
+  <message name="IDS_ACC_SEARCH_ICON" desc="Text for screenreaders describing a search icon image.">
+    Search icon
+  </message>
+  <!-- Supplement accessibility label with item position, e.g. "1 of 3" -->
+  <message name="IDS_ACC_AUTOCOMPLETE_N_OF_M" desc="Text for screenreaders describing the current match's position in the list of suggestions.">
+    <ph name="FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, <ph name="MATCH_POSITION">$2<ex>2</ex></ph> of <ph name="NUM_MATCHES">$3<ex>3</ex></ph>
+  </message>
+  <!-- Accessibility suffix for suggestions with a tab switch match. Commas are important as they add pauses. -->
+  <message name="IDS_ACC_TAB_SWITCH_SUFFIX" desc="Suffix for tab switch suggestions to explain keystroke used to switch.">
+    <ph name="TAB_SWITCH_SUFFIX">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, currently open, press Tab then Enter to switch to the open tab
+  </message>
+  <message name="IDS_ACC_TAB_SWITCH_BUTTON" desc="Announcement when tab switch button focused.">
+    Tab switch button, press Enter to switch to this tab
+  </message>
+
+  <message name="IDS_ACC_MULTIPLE_ACTIONS_SUFFIX" desc="Suffix for spoken suggestion description with multiple actions available (pedals, switch tab, keyword search) to indicate that this suggestion has multiple actions available.">
+    <ph name="MULTIPLE_ACTIONS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, multiple actions are available, press Tab to cycle through them
+  </message>
+  <message name="IDS_ACC_KEYWORD_SUFFIX" desc="Suffix for spoken keyword suggestion description to explain keystroke used to search.">
+    <ph name="KEYWORD_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to search
+  </message>
+  <message name="IDS_ACC_KEYWORD_MODE" desc="Announcement when entering keyword search mode.">
+    Search <ph name="KEYWORD_SUFFIX">$1<ex>Youtube</ex></ph>
+  </message>
+  <message name="IDS_ACC_ASK_KEYWORD_MODE" desc="Announcement when entering keyword mode for an engine that is suitable for asking vs. searching (e.g. Gemini).">
+    Ask <ph name="KEYWORD_SUFFIX">$1<ex>Gemini</ex></ph>
+  </message>
+  <message name="IDS_ACC_KEYWORD_MODE_WITH_SHORTCUT" desc="Announcement when entering keyword search mode with shortcut.">
+    <ph name="KEYWORD_SHORTCUT">$1<ex>yt</ex></ph>, Search <ph name="KEYWORD_SUFFIX">$2<ex>Youtube</ex></ph>
+  </message>
+  <message name="IDS_ACC_ASK_KEYWORD_MODE_WITH_SHORTCUT" desc="Announcement when entering keyword mode for an engine that is suitable for asking vs. searching (e.g. Gemini) with shortcut.">
+    <ph name="KEYWORD_SHORTCUT">$1<ex>gemini</ex></ph>, Ask <ph name="KEYWORD_SUFFIX">$2<ex>Gemini</ex></ph>
+  </message>
+
+  <message name="IDS_OMNIBOX_KEYWORD_TEXT_MD" desc="Text shown in the search button at the front of the omnibox when the user has selected a keyword, in MD (no final colon)">
+    Search <ph name="SITE_NAME">$1<ex>google.com</ex></ph>
+  </message>
+
+  <!-- Accessibility labels for the omnibox thumbs up feedback button. -->
+  <message name="IDS_ACC_THUMBS_UP_SUGGESTION_FOCUSED_PREFIX" desc="Announcement when thumbs up feedback button is focused.">
+    Thumbs up button, press Enter to submit feedback that you like, <ph name="THUMBS_UP_SUGGESTION_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>
+  </message>
+  <message name="IDS_ACC_THUMBS_UP_SUGGESTION_BUTTON" desc="Announcement when thumbs up feedback button is focused.">
+    Thumbs up button, press Enter to submit feedback that you like this suggestion
+  </message>
+  <!-- Accessibility labels for the omnibox thumbs down feedback button. -->
+  <message name="IDS_ACC_THUMBS_DOWN_SUGGESTION_FOCUSED_PREFIX" desc="Announcement when thumbs down feedback button is focused.">
+    Thumbs down button, press Enter to open a form for submitting detailed feedback on why you dislike, <ph name="THUMBS_DOWN_SUGGESTION_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>
+  </message>
+  <message name="IDS_ACC_THUMBS_DOWN_SUGGESTION_BUTTON" desc="Announcement when thumbs down feedback button is focused.">
+    Thumbs down button, press Enter to open a form for submitting detailed feedback on why you dislike this suggestion
+  </message>
+  <!-- Accessibility labels for the omnibox suggestion remove button. -->
+  <message name="IDS_ACC_REMOVE_SUGGESTION_SUFFIX" desc="Suffix for suggestions with remove suggestion button to explain keystroke used to remove suggestion.">
+    <ph name="REMOVE_SUGGESTION_SUFFIX">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to Remove Suggestion.
+  </message>
+  <message name="IDS_ACC_REMOVE_SUGGESTION_FOCUSED_PREFIX" desc="Announcement when remove suggestion button is focused.">
+    Remove Suggestion button, press Enter to remove, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>
+  </message>
+  <message name="IDS_ACC_REMOVE_SUGGESTION_BUTTON" desc="Announcement when remove suggestion button is focused.">
+    Remove Suggestion button, press Enter to remove this suggestion
+  </message>
+  <!-- Accessibility announcements made for the Brave tip IPH suggestions sometimes shown at the bottom of the Omnibox -->
+  <message name="IDS_ACC_CHROME_TIP" desc="Announcement that is read after the last suggestion when the IPH row is present in the Omnibox.">
+    Role: Brave tip. Accessibility label: <ph name="CHROME_TIP">$1<ex>Type @gemini to Chat with Gemini</ex></ph>
+  </message>
+  <message name="IDS_ACC_DISMISS_CHROME_TIP_SUFFIX" desc="Suffix for Brave Tip IPH rows with a dismiss button to explain keystroke used to dismiss the tip.">
+    <ph name="CHROME_TIP">$1<ex>Type @gemini to Chat with Gemini</ex></ph>, press Tab then Enter to Dismiss Brave Tip.
+  </message>
+  <message name="IDS_ACC_DISMISS_CHROME_TIP_FOCUSED_PREFIX" desc="Announcement when dismiss chrome tip button is focused.">
+    Dismiss Brave Tip button, press Enter to dismiss, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>Type @gemini to Chat with Gemini</ex></ph>
+  </message>
+  <message name="IDS_ACC_DISMISS_CHROME_TIP_BUTTON" desc="Announcement when dismiss chrome tip button is focused.">
+    Dismiss Brave Tip button, press Enter to dismiss
+  </message>
+
+  <!-- Site Search/Keyword mode Starter Pack strings. Note: kCurrentDataVersion in template_url_starter_pack_data.cc must also be updated when changing these values. -->
+  <message name="IDS_SEARCH_ENGINES_STARTER_PACK_BOOKMARKS_NAME" desc="The name of the chrome bookmarks search engine as it appears on chrome://settings/searchEngines">
+    Bookmarks
+  </message>
+  <message name="IDS_SEARCH_ENGINES_STARTER_PACK_BOOKMARKS_KEYWORD" desc="The keyword required to trigger bookmarks search in keyword mode. This will be prepended with an '@'.">
+    Bookmarks
+  </message>
+  <message name="IDS_SEARCH_ENGINES_STARTER_PACK_HISTORY_NAME" desc="The name of the chrome history search engine as it appears on chrome://settings/searchEngines">
+    History
+  </message>
+  <message name="IDS_SEARCH_ENGINES_STARTER_PACK_HISTORY_KEYWORD" desc="The keyword required to trigger history search in keyword mode. This will be prepended with an '@'.">
+    History
+  </message>
+  <message name="IDS_SEARCH_ENGINES_STARTER_PACK_TABS_NAME" desc="The name of the search engine to search through open Brave Tabs as it appears on chrome://settings/searchEngines.">
+    Tabs
+  </message>
+  <message name="IDS_SEARCH_ENGINES_STARTER_PACK_TABS_KEYWORD" desc="The keyword required to trigger tab search in keyword mode. This will be prepended with an '@'.">
+    Tabs
+  </message>
+  <message name="IDS_SEARCH_ENGINES_STARTER_PACK_GEMINI_NAME" desc="The name of the Gemini engine as it appears on chrome://settings/searchEngines.">
+    Gemini
+  </message>
+  <message name="IDS_SEARCH_ENGINES_STARTER_PACK_GEMINI_KEYWORD" desc="The keyword required to trigger Ask Gemini in keyword mode. This will be prepended with an '@'.">
+    Gemini
+  </message>
+  <message name="IDS_SEARCH_ENGINES_STARTER_PACK_PAGE_NAME" desc="The name of the search engine to search with the current page context as it appears on chrome://settings/searchEngines." translateable="false">
+    Page
+  </message>
+  <message name="IDS_SEARCH_ENGINES_STARTER_PACK_PAGE_KEYWORD" desc="The keyword required to trigger page context search in keyword mode. This will be prepended with an '@'." translateable="false">
+    Page
+  </message>
+  <message name="IDS_SEARCH_ENGINES_STARTER_PACK_AI_MODE_NAME" desc="The name of the Brave AI Mode search engine as it appears on chrome://settings/searchEngines.">
+    Brave AI Mode
+  </message>
+  <message name="IDS_SEARCH_ENGINES_STARTER_PACK_AI_MODE_KEYWORD" desc="The keyword required to trigger the Brave AI Mode search engine. This will be stripped of whitespace and prepended with an '@'.">
+    AI Mode
+  </message>
+  <message name="IDS_STARTER_PACK_PAGE_KEYWORD_TEXT" desc="The text shown at the front of the Omnibox when a user has selected the starter pack page keyword mode." translateable="false">
+    Ask about this page
+  </message>
+  <message name="IDS_STARTER_PACK_PAGE_EMPTY_QUERY_MATCH_TEXT" desc="Shown in the location bar drop down as the first item in the list when the user enters the page search starter pack keyword mode but they haven't entered any text for a query yet." translateable="false">
+    &lt;Enter a question&gt;
+  </message>
+  <message name="IDS_OMNIBOX_INSTANT_KEYWORD_ASK_TEXT" desc="Text shown in an omnibox suggestion ready for instant keyword search when the destination is suitable for asking. For example, starter pack suggestions like @gemini will Ask Gemini.">
+    <ph name="KEYWORD">$1<ex>@gemini</ex></ph> - Ask <ph name="KEYWORD_SHORT_NAME">$2<ex>Gemini</ex></ph>
+  </message>
+  <message name="IDS_OMNIBOX_INSTANT_KEYWORD_SEARCH_TEXT" desc="Text shown in an omnibox suggestion ready for instant keyword search when the destination is suitable for searching. For example, starter pack suggestions like @bookmarks will search Bookmarks.">
+    <ph name="KEYWORD">$1<ex>@bookmarks</ex></ph> - Search <ph name="KEYWORD_SHORT_NAME">$2<ex>Bookmarks</ex></ph>
+  </message>
+  <message name="IDS_OMNIBOX_SELECTED_KEYWORD_ASK_TEXT" desc="Text shown at the front of the Omnibox when a user has selected a keyword that is suitable for asking. For example, starter pack suggestions like @gemini will Ask Gemini.">
+    Ask <ph name="KEYWORD_SHORT_NAME">$1<ex>Gemini</ex></ph>
+  </message>
+
+  <!-- No results description for the Starter Pack's tab search feature (@tabs). This appears as the first suggestion when no matching tabs are found. -->
+  <message name="IDS_OMNIBOX_TAB_SEARCH_NO_RESULTS_FOUND" desc="The string displayed as the first row in the Omnibox when no results are found in Tab Search mode.">
+    No results found
+  </message>
+
+  <message name="IDS_OMNIBOX_GEMINI_IPH" desc="The string displayed as the last row in the Omnibox as IPH directing users to the @gemini starter pack.">
+    Type @gemini to Chat with Gemini
+  </message>
+
+  <message name="IDS_OMNIBOX_FEATURED_ENTERPRISE_SITE_SEARCH_IPH" desc="The string displayed as the last row in the Omnibox as IPH directing users to the one or more featured Enterprise search engines.">
+    Type @ to search across <ph name="FEATURED_SEARCH_LIST">$1<ex>jira.atlassian.com, office.com, salesforce.com</ex></ph>
+  </message>
+
+  <message name="IDS_OMNIBOX_FEATURED_ENTERPRISE_SEARCH_AGGREGATOR_IPH" desc="The string displayed as the last row in the Omnibox as IPH directing users to the Enterprise Search Aggregator search engine.">
+    Type <ph name="SEARCH_AGGREGATOR_KEYWORD">$1<ex>@work</ex></ph> to search or ask <ph name="SEARCH_AGGREGATOR_SHORT_NAME">$2<ex>Work</ex></ph>
+  </message>
+
+  <message name="IDS_OMNIBOX_HISTORY_EMBEDDINGS_SETTINGS_PROMO_IPH" desc="The string displayed as the last row in the Omnibox as IPH directing users to the chrome://settings/ai page to enable the history embeddings setting.">
+    For a more powerful way to search your browsing history, turn on
+  </message>
+  <message name="IDS_OMNIBOX_HISTORY_EMBEDDINGS_SETTINGS_PROMO_IPH_LINK_TEXT" desc="The link displayed on the last row in the Omnibox as IPH directing users to the chrome://settings/ai page to enable the history embeddings setting.">
+    History search, powered by AI
+  </message>
+
+  <message name="IDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH" desc="The string displayed as the last row in the Omnibox as IPH informing them their info is sent to Brave.">
+    Your searches, best matches, and their page contents are sent to Brave and may be seen by human reviewers to improve this feature. This is an experimental feature and won't always get it right.
+  </message>
+  <message name="IDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH_LINK_TEXT" desc="The link displayed on the last row in the Omnibox as IPH informing them their info is sent to Brave.">
+    Learn more
+  </message>
+  <message name="IDS_ACC_OMNIBOX_IPH_LINK_SELECTED" desc="Announcement when an IPH Brave Tip link is selected.">
+    Brave Tip link, press Enter to open <ph name="IPH_LINK_FOCUSED_LINK_TEXT">$1<ex>Learn more</ex></ph>
+  </message>
+
+  <message name="IDS_ACC_OMNIBOX_TOOLBELT_NEXT_SUFFIX" desc="Additional text announcement when a match preceding the toolbelt is selected.">
+    <ph name="TOOLBELT_PRECEDING_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, Press tab for more search shortcuts available after this search suggestion
+  </message>
+
+  <message name="IDS_OMNIBOX_HISTORY_SCOPE_PROMO_IPH" desc="The string displayed as the last row in the Omnibox as IPH encouraging users to try the @history scope.">
+    Type @history to search your browsing history
+  </message>
+
+  <message name="IDS_OMNIBOX_HISTORY_EMBEDDINGS_SCOPE_PROMO_IPH" desc="The string displayed as the last row in the Omnibox as IPH encouraging users to try the @history scope when AI features are enabled.">
+    Type @history to search your browsing history, powered by AI
+  </message>
+
+  <message name="IDS_OMNIBOX_ONE_LINE_CALCULATOR_SUGGESTION_TEMPLATE" desc="The string displayed when a calculator answer is suggested.">
+    <ph name="EXPRESSION">$1</ph> = <ph name="ANSWER">$2</ph>
+  </message>
+
+  <!-- Placeholder text for the various starter pack scopes -->
+  <message name="IDS_OMNIBOX_BOOKMARKS_SCOPE_PLACEHOLDER_TEXT" desc="The string displayed in the omnibox as placeholder text when the user input is empty and the user is in the @bookmarks scope.">
+    Enter a word or two
+  </message>
+  <message name="IDS_OMNIBOX_HISTORY_SCOPE_PLACEHOLDER_TEXT" desc="The string displayed in the omnibox as placeholder text when the user input is empty and the user is in the @history scope and hasn't opted into the history AI setting.">
+    Enter a word or two
+  </message>
+  <message name="IDS_OMNIBOX_HISTORY_EMBEDDINGS_SCOPE_PLACEHOLDER_TEXT" desc="The string displayed in the omnibox as placeholder text when the user input is empty and the user is in the @history scope and has opted into the history AI setting.">
+    In a few words, describe what you're searching for
+  </message>
+  <message name="IDS_OMNIBOX_TABS_SCOPE_PLACEHOLDER_TEXT" desc="The string displayed in the omnibox as placeholder text when the user input is empty and the user is in the @tabs scope.">
+    Enter a word or two
+  </message>
+  <message name="IDS_OMNIBOX_GEMINI_SCOPE_PLACEHOLDER_TEXT" desc="The string displayed in the omnibox as placeholder text when the user input is empty and the user is in the @gemini scope.">
+    Enter a question
+  </message>
+  <message name="IDS_OMNIBOX_PAGE_SCOPE_PLACEHOLDER_TEXT" desc="The string displayed in the omnibox as placeholder text when the user has selected the @page starter pack match without further text input." translateable="false">
+    Enter a question
+  </message>
+  <message name="IDS_OMNIBOX_AI_MODE_SCOPE_PLACEHOLDER_TEXT" desc="The string displayed in the omnibox as placeholder text when the user has selected the AI Mode starter pack without further text input." formatter_data="android_java">
+    Ask anything
+  </message>
+
+  <!-- Strings for Android Hub Search. -->
+  <message name="IDS_OMNIBOX_HUB_OPEN_TABS_HEADER" desc="The header for the open tabs zero-prefix suggestions section.">
+    Last open tabs
+  </message>
+  <message name="IDS_OMNIBOX_HUB_SEARCH_HEADER" desc="The header for the search typed suggestions section.">
+    Search the web
+  </message>
+  <message name="IDS_OMNIBOX_HUB_HISTORY_HEADER" desc="The header for the history suggestions section.">
+    History
+  </message>
+  <!-- NTP Action Chips Fallback Prompts -->
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_1" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Help me settle a debate with a friend by providing an objective, data-driven analysis that represents both sides fairly
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_2" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    What are some thing I can do to help decrease stress?
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_3" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Ask me questions about how I'm feeling and use my answers to make a playlist tailored to my mood
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_4" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Help me practice for my interview by asking me questions like you're a hiring manager
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_5" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Can you help me think through something?
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_6" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Can you brainstorm with me to help me solve my problem?
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_7" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Brainstorm to help me come up with unique gift ideas for someone, using their hobbies and interests that I share with you
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_8" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Help me prepare for a tough conversation by roleplaying with me so I can practice my responses
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_9" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Compare my health plan options and breakdown the key differences between them
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_10" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    What are some tips to help me promote my brand? Include advice on how I can optimize my website
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_11" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Plan a home fitness routine that helps me meet my goals
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_12" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Create a packing list for my upcoming trip. Help me make sure I don't forget anything important
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_13" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Create a to-do list for me today to help me stay on track
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_14" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Create a customized tracker to stay on top of my goals
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_15" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Make me a grocery list based on a recipe or meal plan
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_16" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Create a fun itinerary for a weekend movie marathon. Come up with a theme, at least 4 must-watch films, and recommend specific snacks to pair with the movie
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_17" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Create a prioritized, room-by-room deep cleaning checklist targeting commonly missed spots
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_18" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Create a realistic digital detox plan for me this weekend
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_19" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Draft an 8-week training schedule for a complete beginner who wants to run a 5K. Include alternating walking and running intervals, and designated rest days
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_20" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Help me create a 10-minute full body workout. I want to focus on strength, stamina and flexibility
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_21" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Create a 10-minute workout routine that I can do in my room that doesn't include jumping or loud movements
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_22" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Create a 15-minute morning routine that helps make my mornings run smoother. Make sure it includes a mindfulness exercise
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_23" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Create a 7-day study schedule for my upcoming exam using the pomodoro technique and spaced repetition. I don't want to cram the day before the test so make sure the day before includes light review and sleep
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_24" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Draft a lesson plan, outlining an engaging session for my class
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_25" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    I want to impress someone. Look for open tables for 2 at restaurants everyone’s talking about right now
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_26" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    I’m in the mood for a cozy café where I can unplug for a bit, read, and maybe get some work done. Can you find spots nearby that are known for being quiet, comfortable, and have reliable wi-fi?
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_27" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Are there any open tables at nearby restaurants tonight?
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_28" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">
+    Find family-friendly restaurants that take reservations. Must have a kids menu and a casual atmosphere
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_PROMPT_1" desc="Text shown on the composebox searchbox on click of the help me learn chip on the NTP">
+    Help me learn how to code in python
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_PROMPT_2" desc="Text shown on the composebox searchbox on click of the help me learn chip on the NTP">
+    Create practice questions to test my knowledge about a topic
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_PROMPT_3" desc="Text shown on the composebox searchbox on click of the help me learn chip on the NTP">
+    Create a beginner's guide to stargazing to help me learn what to look for in the night sky, including 3 easily identifiable constellations
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_PROMPT_4" desc="Text shown on the composebox searchbox on click of the help me learn chip on the NTP">
+    Can you breakdown the lifecycle of a star?
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_PROMPT_5" desc="Text shown on the composebox searchbox on click of the help me learn chip on the NTP">
+    I'm trying to learn a new language. Create a quiz to help me practice vocabulary and grammar
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_PROMPT_6" desc="Text shown on the composebox searchbox on click of the help me learn chip on the NTP">
+    Calculate my GPA by weighting credit hours, course levels, and grade-point values
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_PROMPT_7" desc="Text shown on the composebox searchbox on click of the help me learn chip on the NTP">
+    Help me graph a function to visualize the mathematical equation and see the shape of the curve
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_1" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
+    Rewrite my email by tweaking the tone to be more persuasive
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_2" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
+    Rewrite the following text to sound professional, polite, and clear for a workplace setting. Maintain the original core message but elevate the tone to be appropriate for an executive audience: [Insert your text here]
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_3" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
+    Draft a brief, polite response declining an invitation
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_4" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
+    Rewrite my bio to sound more professional
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_5" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
+    Shorten my email by trimming the message to its core points
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_6" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
+    Draft an outline that organizes my thoughts into a clear and concise format
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_7" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
+    Help me draft a polite reply to decline plans to meet
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_PROMPT_8" desc="Text shown on the composebox searchbox on click of the write or edit chip on the NTP">
+    Draft a cover letter intro that highlights my skills and experience for a specific role
+  </message>
+  <message name="IDS_OMNIBOX_HUB_TYPED_MATCH_HEADER" desc="The header for the typed match suggestions section.">
+    Tabs and tab groups
+  </message>
+
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_1" desc="Suggestion shown on the NTP searchbox dropdown">
+        Curate a playlist based on my mood
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_2" desc="Suggestion shown on the NTP searchbox dropdown">
+        Brainstorm with me
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_3" desc="Suggestion shown on the NTP searchbox dropdown">
+        Help me solve a problem
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_4" desc="Suggestion shown on the NTP searchbox dropdown">
+        Brainstorm unique gift ideas
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_5" desc="Suggestion shown on the NTP searchbox dropdown">
+        Help me prepare for a tough conversation
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_6" desc="Suggestion shown on the NTP searchbox dropdown">
+        Compare health plan options
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_7" desc="Suggestion shown on the NTP searchbox dropdown">
+        Design a custom fitness routine
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_8" desc="Suggestion shown on the NTP searchbox dropdown">
+        Create a packing list for my trip
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_9" desc="Suggestion shown on the NTP searchbox dropdown">
+        Make me a to-do list
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_10" desc="Suggestion shown on the NTP searchbox dropdown">
+        Create a grocery list
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_11" desc="Suggestion shown on the NTP searchbox dropdown">
+        Make a deep-clean checklist for my home
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_12" desc="Suggestion shown on the NTP searchbox dropdown">
+        Help me plan a digital detox
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_13" desc="Suggestion shown on the NTP searchbox dropdown">
+        Draft an 8-week training schedule for a 5k
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_14" desc="Suggestion shown on the NTP searchbox dropdown">
+        Create a study schedule for me
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_15" desc="Suggestion shown on the NTP searchbox dropdown">
+        Draft a lesson plan
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_16" desc="Suggestion shown on the NTP searchbox dropdown">
+        Look for openings at trending restaurants
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_17" desc="Suggestion shown on the NTP searchbox dropdown">
+        Find me a quiet cafe
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_18" desc="Suggestion shown on the NTP searchbox dropdown">
+        Find me a last-minute reservations at nearby restaurants tonight
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_SHORT_PROMPT_19" desc="Suggestion shown on the NTP searchbox dropdown">
+        Find family-friendly restaurants with kids' menus
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_SHORT_PROMPT_1" desc="Suggestion shown on the NTP searchbox dropdown">
+        Teach me how to code
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_SHORT_PROMPT_2" desc="Suggestion shown on the NTP searchbox dropdown">
+        Quiz me on a topic
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_SHORT_PROMPT_3" desc="Suggestion shown on the NTP searchbox dropdown">
+        Teach me about the stars
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_SHORT_PROMPT_4" desc="Suggestion shown on the NTP searchbox dropdown">
+        Map out the lifecycle of a star
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_SHORT_PROMPT_5" desc="Suggestion shown on the NTP searchbox dropdown">
+        Teach me a new language
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_SHORT_PROMPT_6" desc="Suggestion shown on the NTP searchbox dropdown">
+        Calculate my weighted GPA
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_HELP_ME_LEARN_SHORT_PROMPT_7" desc="Suggestion shown on the NTP searchbox dropdown">
+        Visualize a mathematical equation for me
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_SHORT_PROMPT_1" desc="Suggestion shown on the NTP searchbox dropdown">
+        Rewrite my email to be more persuasive
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_SHORT_PROMPT_2" desc="Suggestion shown on the NTP searchbox dropdown">
+        Help me rewrite some text to sound more professional
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_SHORT_PROMPT_3" desc="Suggestion shown on the NTP searchbox dropdown">
+        Help me draft a reply
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_SHORT_PROMPT_4" desc="Suggestion shown on the NTP searchbox dropdown">
+        Rewrite my bio to sound more professional
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_SHORT_PROMPT_5" desc="Suggestion shown on the NTP searchbox dropdown">
+        Shorten my email
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_SHORT_PROMPT_6" desc="Suggestion shown on the NTP searchbox dropdown">
+        Draft an outline
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_SHORT_PROMPT_7" desc="Suggestion shown on the NTP searchbox dropdown">
+        How can I decline plans in a polite way?
+      </message>
+      <message name="IDS_NTP_ACTION_CHIP_WRITE_EDIT_SHORT_PROMPT_8" desc="Suggestion shown on the NTP searchbox dropdown">
+        Write my cover letter
+      </message>
+</grit-part>

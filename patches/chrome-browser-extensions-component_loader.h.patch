@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/extensions/component_loader.h b/chrome/browser/extensions/component_loader.h
+index 0a47e6ac8a4aa7d82ab46f52e0bd13853ee99bdc..a05042a548ef6c2fa3fa95147b3a0c6d5d79a346 100644
+--- a/chrome/browser/extensions/component_loader.h
++++ b/chrome/browser/extensions/component_loader.h
+@@ -120,7 +120,7 @@ class ComponentLoader : public KeyedService {
+   // the loader will skip loading component extensions that weren't supposed to
+   // be loaded unless we are in signed user session (ChromeOS). For all other
+   // platforms this `skip_session_components` is expected to be unset.
+-  void AddDefaultComponentExtensions(bool skip_session_components);
++  virtual void AddDefaultComponentExtensions(bool skip_session_components);
+ 
+   // Similar to above but adds the default component extensions for kiosk mode.
+   void AddDefaultComponentExtensionsForKioskMode(bool skip_session_components);
+@@ -168,6 +168,7 @@ class ComponentLoader : public KeyedService {
+   void set_profile_for_testing(Profile* profile) { profile_ = profile; }
+ 
+  private:
++  friend class BraveComponentLoader;
+   friend class ComponentLoaderFactory;
+   friend class TtsApiTest;
+   friend class ComponentLoaderTest;

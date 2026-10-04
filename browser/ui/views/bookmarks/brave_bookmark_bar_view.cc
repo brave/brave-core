@@ -1,0 +1,59 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/views/bookmarks/brave_bookmark_bar_view.h"
+
+#include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/bookmarks/controllers/bookmark_bar_ui_controller.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "components/bookmarks/browser/bookmark_model.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/views/controls/button/menu_button.h"
+
+BraveBookmarkBarView::BraveBookmarkBarView(
+    BrowserWindowInterface* browser,
+    std::unique_ptr<BookmarkBarUIController> controller,
+    BrowserView* browser_view)
+    : BookmarkBarView(browser, std::move(controller), browser_view) {
+  show_all_bookmarks_button_pref_.Init(
+      brave::bookmarks::prefs::kShowAllBookmarksButton,
+      browser_->GetProfile()->GetPrefs(),
+      base::BindRepeating(
+          &BraveBookmarkBarView::OnShowAllBookmarksButtonPrefChanged,
+          base::Unretained(this)));
+
+  MaybeUpdateOtherAndManagedButtonsVisibility();
+}
+
+BraveBookmarkBarView::~BraveBookmarkBarView() = default;
+
+void BraveBookmarkBarView::MaybeUpdateOtherAndManagedButtonsVisibility() {
+  if (bookmark_service_ && bookmark_service_->bookmark_model() &&
+      bookmark_service_->bookmark_model()->loaded()) {
+    UpdateOtherAndManagedButtonsVisibility();
+  }
+}
+
+bool BraveBookmarkBarView::UpdateOtherAndManagedButtonsVisibility() {
+  bool result = BookmarkBarView::UpdateOtherAndManagedButtonsVisibility();
+  if (all_bookmarks_button_ && all_bookmarks_button_->GetVisible() &&
+      !show_all_bookmarks_button_pref_.GetValue()) {
+    all_bookmarks_button_->SetVisible(false);
+    UpdateBookmarksSeparatorVisibility();
+    return true;
+  }
+  return result;
+}
+
+void BraveBookmarkBarView::OnShowAllBookmarksButtonPrefChanged() {
+  if (UpdateOtherAndManagedButtonsVisibility()) {
+    UpdateBookmarksSeparatorVisibility();
+    LayoutAndPaint();
+  }
+}
+
+BEGIN_METADATA(BraveBookmarkBarView)
+END_METADATA

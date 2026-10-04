@@ -1,0 +1,82 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/browser/updater/buildflags.gni")
+import("//brave/build/config.gni")
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = []
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  deps = [
+    "//base",
+    "//chrome/browser/profiles",
+    "//chrome/browser/search_engines",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/navigator",
+    "//chrome/test",
+    "//chrome/test:test_support",
+    "//components/omnibox/browser",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//ui/base",
+  ]
+
+  if (!is_android) {
+    sources += [
+      "brave_settings_ui_browsertest.cc",
+      "searchbox/brave_realbox_handler_browsertest.cc",
+      "webui_service_worker_browsertest.cc",
+    ]
+
+    deps += [
+      "//brave/components/ai_chat/core/common/buildflags",
+      "//brave/components/brave_search/common",
+      "//chrome/browser/ui/webui/searchbox",
+      "//chrome/browser/ui/webui/searchbox:searchbox_test_utils",
+      "//content/public/browser",
+      "//third_party/blink/public/common",
+      "//ui/webui",
+      "//ui/webui:test_support",
+    ]
+
+    if (enable_ai_chat) {
+      deps += [ "//brave/components/ai_chat/core/common" ]
+    }
+  }
+
+  if (enable_brave_custom_profile_image_webui) {
+    deps += [ "//brave/browser/ui/webui/signin:browser_tests" ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_sanitized_image_source_unittest.cc" ]
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+    "//services/data_decoder/public/cpp:test_support",
+    "//services/network:test_support",
+    "//testing/gtest",
+  ]
+
+  if (enable_sparkle && enable_omaha4) {
+    sources += [ "help/brave_version_updater_mac_unittest.mm" ]
+    deps += [
+      "//brave/browser/updater:features",
+      "//chrome/browser/ui/webui/help",
+    ]
+  }
+}

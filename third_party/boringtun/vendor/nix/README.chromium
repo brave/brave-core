@@ -1,0 +1,13 @@
+Name: nix
+Short Name: nix
+URL: https://github.com/nix-rust/nix
+Version: 0.25.1
+License: MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/nix.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

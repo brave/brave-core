@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/traffic_control/buildflags/buildflags.gni")
+
+assert(enable_traffic_control)
+
+component("features") {
+  defines = [ "IS_TRAFFIC_CONTROL_FEATURES_IMPL" ]
+
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  public_deps = [ "//brave/components/traffic_control/buildflags" ]
+  deps = [ "//base" ]
+}
+
+group("common") {
+  public_deps = [ ":features" ]
+}

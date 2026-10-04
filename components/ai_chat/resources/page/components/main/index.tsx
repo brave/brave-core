@@ -1,0 +1,279 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import * as React from 'react'
+import AlertCenter from '@brave/leo/react/alertCenter'
+import Button from '@brave/leo/react/button'
+import Dialog from '@brave/leo/react/dialog'
+import Icon from '@brave/leo/react/icon'
+import { getLocale } from '$web-common/locale'
+import classnames from '$web-common/classnames'
+import DragOverlay from '../drag_overlay'
+import * as Mojom from '../../../common/mojom'
+import scrollerStyles from '../../../common/scroller.module.scss'
+import { useConversation } from '../../state/conversation_context'
+import { useAIChat } from '../../state/ai_chat_context'
+import ConversationsList from '../conversations_list'
+import DeleteConversationModal from '../delete_conversation_modal'
+import { ConversationHeader } from '../header'
+import InputBox, { type InputBoxHandle } from '../input_box'
+import ImageLightbox from '../image_lightbox'
+import RateMessagePrivacyModal from '../rate_message_privacy_modal'
+import SkillModal from '../skill_modal/skill_modal'
+import PrivacyMessage from '../privacy_message'
+import FeedbackForm from '../feedback_form'
+import ShareConversationModal from '../share_conversation_modal'
+import SharedConversationsModal from '../shared_conversations_modal'
+import ToolsMenu, {
+  ExtendedActionEntry,
+  getIsSkill,
+} from '../filter_menu/tools_menu'
+import WelcomeGuide from '../welcome_guide'
+import styles from './style.module.scss'
+import Attachments from '../attachments'
+import useHasConversationStarted from '../../hooks/useHasConversationStarted'
+import { useExtractedQuery } from '../filter_menu/query'
+import TabsMenu from '../filter_menu/attachments_menu'
+import { stringifyContent } from '../input_box/editable_content'
+
+function Main() {
+  const aiChatContext = useAIChat()
+  const conversationContext = useConversation()
+  const [isConversationListOpen, setIsConversationsListOpen] =
+    React.useState(false)
+  const [isShareDialogOpen, setIsShareDialogOpen] = React.useState(false)
+  const [isSharedConversationsDialogOpen, setIsSharedConversationsDialogOpen] =
+    React.useState(false)
+  const { isDragActive, isDragOver } = conversationContext
+
+  const showAttachments = !!conversationContext.attachmentsDialog
+
+  const headerElement = React.useRef<HTMLDivElement>(null)
+  const inputBoxRef = React.useRef<InputBoxHandle>(null)
+
+  // Ask for opt-in once the first message is sent
+  const showAgreementModal =
+    !aiChatContext.hasAcceptedAgreement
+    && !!conversationContext.conversationHistory.length
+
+  const hasConversationStarted = useHasConversationStarted(
+    conversationContext.conversationUuid,
+  )
+
+  const isHistoryPlaceholderData =
+    conversationContext.api.useGetConversationHistory().isPlaceholderData
+
+  const maybeShowSoftKeyboard = (querySubmitted: boolean) => {
+    if (
+      aiChatContext.isMobile
+      && aiChatContext.hasAcceptedAgreement
+      // We have loaded real data
+      && !isHistoryPlaceholderData
+      && !querySubmitted
+      && !conversationContext.isGenerating
+      && conversationContext.conversationHistory.length === 0
+    ) {
+      aiChatContext.api.uiHandler.showSoftKeyboard()
+      return true
+    }
+    return false
+  }
+
+  const extractedQuery = useExtractedQuery(
+    stringifyContent(conversationContext.inputText),
+    {
+      onlyAtStart: true,
+      triggerCharacter: '/',
+    },
+  )
+
+  // Transform skills into ActionGroup format and append to actionList
+  const categoriesWithSkills = React.useMemo(() => {
+    if (!aiChatContext.skills || aiChatContext.skills.length === 0) {
+      return aiChatContext.actionList
+    }
+
+    const skillGroup = {
+      category: getLocale(S.CHAT_UI_SKILLS_GROUP),
+      entries: aiChatContext.skills,
+    }
+
+    return [skillGroup, ...aiChatContext.actionList]
+  }, [aiChatContext.actionList, aiChatContext.skills])
+
+  const handleToolsMenuSelect = React.useCallback(
+    (value: ExtendedActionEntry) => {
+      if (getIsSkill(value)) {
+        conversationContext.handleSkillClick(value)
+      } else {
+        conversationContext.handleActionTypeClick(
+          value.details!.type,
+          value.details!.label,
+        )
+      }
+      requestAnimationFrame(() => {
+        inputBoxRef.current?.focusInput()
+      })
+    },
+    [
+      conversationContext.handleSkillClick,
+      conversationContext.handleActionTypeClick,
+    ],
+  )
+
+  const handleToolsMenuClick = React.useCallback(
+    (value: ExtendedActionEntry) => {
+      if (getIsSkill(value)) {
+        aiChatContext.api.metrics.recordSkillClick(value.shortcut)
+      }
+      handleToolsMenuSelect(value)
+    },
+    [aiChatContext.api.metrics, handleToolsMenuSelect],
+  )
+
+  const handleToolsMenuEditClick = (skill: Mojom.Skill) => {
+    conversationContext.handleSkillEdit(skill)
+  }
+
+  const handleNewSkillClick = React.useCallback(() => {
+    const inputText = stringifyContent(conversationContext.inputText)
+    aiChatContext.setSkillDialog({
+      id: '',
+      shortcut: inputText.startsWith('/') ? inputText.substring(1) : inputText,
+      prompt: '',
+      model: '',
+      createdTime: { internalValue: BigInt(0) },
+      lastUsed: { internalValue: BigInt(0) },
+    })
+  }, [conversationContext.inputText, aiChatContext.setSkillDialog])
+
+  return (
+    <main
+      data-testid={
+        aiChatContext.isStandalone ? 'standalone-main' : 'sidepanel-main'
+      }
+      className={classnames({
+        [styles.main]: true,
+        [styles.mainPanel]: !aiChatContext.isStandalone,
+        [styles.mainMobile]: aiChatContext.isMobile,
+        [styles.dragOver]: isDragOver,
+        [styles.dragActive]: isDragActive,
+      })}
+    >
+      <DragOverlay />
+      {isConversationListOpen && !aiChatContext.isStandalone && (
+        <div className={styles.conversationsList}>
+          <div
+            className={classnames({
+              [styles.conversationsListHeader]: true,
+            })}
+          >
+            <Button
+              kind='plain-faint'
+              fab
+              onClick={() => {
+                setIsConversationsListOpen?.(false)
+              }}
+            >
+              <Icon name='arrow-left' />
+            </Button>
+          </div>
+          <ConversationsList
+            setIsConversationsListOpen={setIsConversationsListOpen}
+          />
+        </div>
+      )}
+      {showAgreementModal && <PrivacyMessage />}
+      <ConversationHeader
+        ref={headerElement}
+        setIsConversationsListOpen={setIsConversationsListOpen}
+        startSharingConversation={() => setIsShareDialogOpen(true)}
+        manageSharedConversations={() =>
+          setIsSharedConversationsDialogOpen(true)
+        }
+      />
+      <AlertCenter
+        position='top-center'
+        className={styles.alertCenter}
+      />
+      {!aiChatContext.hasAcceptedAgreement && !hasConversationStarted ? (
+        <div
+          className={classnames(
+            scrollerStyles.scroller,
+            styles.centeredContent,
+          )}
+        >
+          <WelcomeGuide />
+        </div>
+      ) : (
+        <>
+          <aiChatContext.conversationEntriesComponent
+            className={styles.conversationContainer}
+          />
+        </>
+      )}
+      {aiChatContext.isConversationShareEnabled && (
+        <ShareConversationModal
+          isOpen={isShareDialogOpen}
+          onClose={() => setIsShareDialogOpen(false)}
+          onManageShares={() => {
+            setIsShareDialogOpen(false)
+            setIsSharedConversationsDialogOpen(true)
+          }}
+        />
+      )}
+      {/* Mounted only while open so the list of shares is fetched fresh each
+      time the dialog is shown. */}
+      {isSharedConversationsDialogOpen && (
+        <SharedConversationsModal
+          onClose={() => setIsSharedConversationsDialogOpen(false)}
+        />
+      )}
+      {showAttachments && (
+        <Dialog
+          isOpen
+          onClose={() => conversationContext.setAttachmentsDialog(null)}
+          className={styles.attachmentsDialog}
+        >
+          <Attachments />
+        </Dialog>
+      )}
+      <div className={styles.input}>
+        <ToolsMenu
+          isOpen={
+            !conversationContext.selectedSkill
+            && !conversationContext.selectedActionType
+            && conversationContext.isToolsMenuOpen
+          }
+          setIsOpen={conversationContext.setIsToolsMenuOpen}
+          query={extractedQuery}
+          categories={categoriesWithSkills}
+          isMobile={aiChatContext.isMobile}
+          handleClick={handleToolsMenuClick}
+          handleEditClick={handleToolsMenuEditClick}
+          handleNewSkillClick={handleNewSkillClick}
+          handleAutoSelect={handleToolsMenuSelect}
+        />
+        <TabsMenu />
+        <InputBox
+          ref={inputBoxRef}
+          conversationStarted={hasConversationStarted}
+          context={{ ...conversationContext, ...aiChatContext }}
+          maybeShowSoftKeyboard={maybeShowSoftKeyboard}
+        />
+      </div>
+      <DeleteConversationModal />
+      <ImageLightbox
+        file={conversationContext.previewUploadedFile}
+        onClose={() => conversationContext.setPreviewUploadedFile(null)}
+      />
+      <RateMessagePrivacyModal />
+      <FeedbackForm />
+      {aiChatContext.skillDialog && <SkillModal />}
+    </main>
+  )
+}
+
+export default Main

@@ -1,0 +1,134 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #css_wrapper_metadata_end */
+
+:host {
+  color: var(--leo-color-text-primary);
+  display: block;
+  width: 100%;
+}
+
+#row {
+  --avatar-size: var(--icon-size, var(--leo-spacing-6xl));
+  --selected-border: var(--leo-spacing-s);
+
+  align-items: center;
+  box-sizing: border-box;
+  column-gap: var(--icon-grid-gap, var(--leo-spacing-2xl));
+  display: grid;
+  grid-template-areas:
+    'title title'
+    'preview actions';
+  grid-template-columns:
+    calc(var(--avatar-size) + var(--leo-spacing-xs)) auto;
+  justify-content: start;
+  min-height: 0;
+  padding-block-start: var(--leo-spacing-s);
+  padding-inline-start: var(--leo-spacing-s);
+  row-gap: var(--leo-spacing-xl);
+  width: 100%;
+}
+
+#preview {
+  --leo-button-padding: calc(
+    (var(--avatar-size) - var(--leo-icon-l)) / 2
+  );
+}
+
+#preview.selected {
+  --avatar-selected-color: var(--leo-color-divider-interactive);
+
+  align-items: center;
+  background: var(--leo-color-container-highlight);
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: var(--leo-radius-full);
+  box-sizing: border-box;
+  color: var(--leo-color-icon-default);
+  display: inline-flex;
+  height: var(--avatar-size);
+  justify-content: center;
+  padding: 0;
+  position: relative;
+  width: var(--avatar-size);
+
+  outline: var(--selected-border) solid var(--avatar-selected-color);
+}
+
+#previewImage {
+  border-radius: var(--leo-radius-full);
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+#plusIcon {
+  --leo-icon-color: var(--leo-color-icon-default);
+  --leo-icon-size: var(--leo-icon-l);
+}
+
+#previewLabel {
+  clip-path: inset(100%);
+  position: fixed;
+}
+
+#selectedIndicator {
+  --leo-icon-color: var(--leo-color-schemes-on-primary);
+  --leo-icon-size: var(--leo-icon-m);
+
+  background: var(--leo-color-icon-interactive);
+  border-radius: var(--leo-radius-full);
+  height: var(--leo-icon-m);
+  inset-inline-end: -1px;
+  padding: 1px;
+  position: absolute;
+  top: -1px;
+  width: var(--leo-icon-m);
+}
+
+#actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--leo-spacing-l);
+  justify-content: flex-start;
+}
+
+#fileError {
+  color: var(--leo-color-systemfeedback-error-text);
+  font: var(--leo-font-small-regular);
+  grid-column: 1 / -1;
+}
+
+:host([hide-title]) #row {
+  grid-template-areas: 'preview actions';
+  row-gap: 0;
+}
+
+:host([hide-title]) #title {
+  display: none;
+}
+
+#row #title {
+  font: var(--leo-font-heading-h3);
+  grid-area: title;
+}
+
+#row #preview {
+  grid-area: preview;
+}
+
+#row #actions {
+  grid-area: actions;
+}
+
+#row #actions leo-button {
+  --leo-button-padding: 0 var(--leo-spacing-2xl);
+
+  flex: none;
+  min-width: 104px;
+}

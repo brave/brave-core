@@ -1,0 +1,174 @@
+/* A label read by VoiceOver accessibility technology that indicates the button will toggle AirPlay */
+"playlist.accessibilityAirPlay" = "AirPlay";
+
+/* A label that VoiceOver accessibility technology will read out if the user taps the media progress bar */
+"playlist.accessibilityCurrentMediaTime" = "Ora del file multimediale corrente";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will toggle fullscreen mode on */
+"playlist.accessibilityEnterFullscreen" = "Attiva Schermo intero";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will enter picture in picture mode */
+"playlist.accessibilityEnterPictureInPicture" = "Attiva Picture in Picture";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will toggle fullscreen mode on */
+"playlist.accessibilityExitFullscreen" = "Chiudi schermo intero";
+
+/* A label shown on an item when the item is ready for offline play */
+"playlist.accessibilityItemDownloadStatusReady" = "Elemento pronto";
+
+/* A button title that VoiceOver accessibility technology will read out when highlighting the more menu button (ellipsis icon) */
+"playlist.accessibilityMoreMenuButtonTitle" = "Altro";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will play the next item in the queue */
+"playlist.accessibilityNextItem" = "Elemento successivo";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will pause some currently playing media */
+"playlist.accessibilityPause" = "Pausa";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will play some media */
+"playlist.accessibilityPlay" = "Play";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will display playback speed options */
+"playlist.accessibilityPlaybackSpeed" = "Velocità di riproduzione";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will play the previous item in the queue */
+"playlist.accessibilityPreviousItem" = "Elemento precedente";
+
+/* A label read by VoiceOver accessibility technology that indicates the repeat mode button is toggled to the All option (repeats entire playlist) */
+"playlist.accessibilityRepeatModeAll" = "Modalità di ripetizione: tutto";
+
+/* A label read by VoiceOver accessibility technology that indicates the repeat mode button is toggled off */
+"playlist.accessibilityRepeatModeOff" = "Modalità di ripetizione: non attiva";
+
+/* A label read by VoiceOver accessibility technology that indicates the repeat mode button is toggled to the One option (repeats single item) */
+"playlist.accessibilityRepeatModeOne" = "Modalità di ripetizione: un elemento";
+
+/* A label read by VoiceOver accessibility technology that indicates the shuffle mode button is toggled off */
+"playlist.accessibilityShuffleModeOff" = "Modalità di riproduzione casuale: non attiva";
+
+/* A label read by VoiceOver accessibility technology that indicates the shuffle mode button is toggled off */
+"playlist.accessibilityShuffleModeOn" = "Modalità di riproduzione casuale: attiva";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will move the media progress by a step backwards */
+"playlist.accessibilityStepBack" = "Indietro";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will move the media progress by a step forward */
+"playlist.accessibilityStepForwards" = "Avanti";
+
+/* A label read by VoiceOver accessibility technology that indicates that tapping the screen will display playback controls */
+"playlist.accessibilityTapToToggleControls" = "Tocca per attivare/disattivare i controlli";
+
+/* A button title that when tapped will create a new playlist */
+"playlist.createNewPlaylistButtonTitle" = "Crea";
+
+/* A button title that when tapped will allow the user to delete the selected item. */
+"playlist.deleteItem" = "Elimina";
+
+/* A menu button that when tapped will present a confirmation dialog to delete a playlist and all its contents */
+"playlist.deletePlaylist" = "Elimina la playlist…";
+
+/* A message display when the user attempts to delete a playlist. */
+"playlist.deletePlaylistConfirmationMessage" = "Tutti i video su questa playlist saranno rimossi";
+
+/* A button call to action that allows the user to dismiss the active modal */
+"playlist.doneButtonTitle" = "Fine";
+
+/* A button title that when tapped will allow the user to edit the selected playlist. */
+"playlist.editPlaylist" = "Modifica la playlist";
+
+/* A button title that when tapped will allow the user to edit the selected playlist. */
+"playlist.editPlaylistShortTitle" = "Modifica";
+
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Scrivi qualcosa per cercare gli audio e i video salvati";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Cerca nei media";
+
+/* A title shown above a list of videos in your default playlist. */
+"playlist.fillNewPlaylistSubtitle" = "Tocca per selezionare i file multimediali";
+
+/* A title shown above a list of videos in your default playlist. '%@' will be replaced with the default playlist name which has already been localized, for example: 'Add from your Play Later playlist' */
+"playlist.fillNewPlaylistTitle" = "Aggiungi dalla tua playlist **%@**";
+
+/* A count of how many items there are in the playlist. '%lld' would be replaced with a number, for example: 10 items */
+"playlist.itemCountPlural" = "%lld elementi";
+
+/* A count of how many items there are in the playlist */
+"playlist.itemCountSingular" = "1 elemento";
+
+/* A label shown on an item when it is being prepared for offline play */
+"playlist.itemDownloadStatusPreparing" = "Preparazione in corso";
+
+/* A label shown next to the media progress bar that when the particular media being played is being live streamed. */
+"playlist.liveIndicator" = "In tempo reale";
+
+/* A button title that when tapped will allow the user to move the selected item to another playlist. */
+"playlist.moveItem" = "Sposta";
+
+/* A button title that will display a list of menu options to move an item to a different playlist */
+"playlist.moveMenuItemTitle" = "Sposta…";
+
+/* A button title that when tapped will prompt the user to create a new playlist */
+"playlist.newPlaylistButtonTitle" = "Crea";
+
+/* A placeholder shown in the text field when creating a new playlist. */
+"playlist.newPlaylistPlaceholder" = "La mia nuova playlist";
+
+/* Shown when the user has not selected any media to play. */
+"playlist.noMediaSelectedEmptyState" = "Tocca i video della tua playlist per riprodurli.";
+
+/* Shown when there is no content available to play for a given folder */
+"playlist.noMediaToPickFromEmptyState" = "Aggiungi file multimediali dai tuoi siti preferiti e riproducili qui.";
+
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "Nessun risultato";
+
+/* A button title that will open the selected item in a new private tab. */
+"playlist.openInNewPrivateTab" = "Apri in una nuova scheda privata";
+
+/* A button title that will open the selected item in a new tab. */
+"playlist.openInNewTab" = "Apri in una nuova scheda";
+
+/* A button title that will delete the selected items data saved to the users device. */
+"playlist.removeOfflineData" = "Rimuovi dati offline";
+
+/* A menu button that when tapped will present the user with a text box to change the name of the selected playlist */
+"playlist.renamePlaylist" = "Rinomina la playlist";
+
+/* A repeat mode option, where selecting All will mean that the entire playlist will repeat from the beginning when the last item in it completes. */
+"playlist.repeatModeOptionAll" = "Tutti";
+
+/* A repeat mode option, where selecting None will mean that repeat mode is off and nothing will repeat. */
+"playlist.repeatModeOptionNone" = "Niente";
+
+/* A repeat mode option, where selecting One will mean that the current playing item will repeat itself when completing. */
+"playlist.repeatModeOptionOne" = "Un elemento";
+
+/* A button call to action that allows the user to save their selection */
+"playlist.saveButtonTitle" = "Salva";
+
+/* A button title that will attempt to save the selected item for offline playback. */
+"playlist.saveOfflineData" = "Salva i dati offline";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Ricerca";
+
+/* A button title that will present a share sheet for the selected item */
+"playlist.share" = "Condividi";
+
+/* Describes an icon which allows the user to set a timer that when reaches 0 will stop playback of any media. */
+"playlist.sleepTimer" = "Timer di sospensione";
+
+/* A button title shown when the sleep timer is currently active and allows the user to turn off the sleep timer. */
+"playlist.sleepTimerCancelTimer" = "Annulla il timer";
+
+/* An option in the sleep timer menu which describes that playback will stop when the current media item that is playing finishes. */
+"playlist.sleepTimerEndOfItem" = "Fine dell’elemento";
+
+/* A title shown above a set of time based options that describe when playback should stop. */
+"playlist.sleepTimerStopPlaybackAfter" = "Interrompi la riproduzione dopo…";
+
+/* A fallback error message displayed when a video fails to play */
+"playlist.somethingWentWrong" = "Qualcosa è andato storto";
+

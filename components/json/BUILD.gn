@@ -1,0 +1,33 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//testing/test.gni")
+
+component("json") {
+  sources = [
+    "json_export.h",
+    "json_helper.cc",
+    "json_helper.h",
+  ]
+
+  defines = [ "JSON_HELPER_IMPLEMENTATION" ]
+
+  deps = [
+    "rs:rust_lib",
+    "//base",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "json_parser_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/json",
+    "//testing/gtest",
+  ]
+}

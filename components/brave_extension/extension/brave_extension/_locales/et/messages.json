@@ -1,0 +1,226 @@
+{
+  "appName": {
+    "message": "Brave Extension",
+    "description": "The name of the extension."
+  },
+  "shields": {
+    "message": "Kaitse",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "üles",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "alla",
+    "description": "Message for when shields is disabled"
+  },
+  "forThisSite": {
+    "message": "selle saidi jaoks",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Kui tundub, et sait ei toimi, proovi võtta kaitse maha",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Sirvite seda veebisaiti ilma Brave’i privaatsuse ja turvalisuse kaitseta. Kas see ei tööta õigesti, kui kaitse on aktiivne?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Teata mittetoimivast veebisaidist",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
+  },
+  "itemsBlocked": {
+    "message": "Üksused blokeeritud",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  },
+  "itemBlocked": {
+    "message": "Üksus blokeeritud",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  },
+  "and": {
+    "message": "ja",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  },
+  "connectionsUpgraded": {
+    "message": "ühendust täiendatud",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
+  },
+  "connectionUpgraded": {
+    "message": "ühendus täiendatud",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
+  },
+  "thirdPartyTrackersBlocked": {
+    "message": "Saitidevahelised jälitajad on blokeeritud",
+    "description": "Message for the scripts blocked row label"
+  },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "Blokeeritud jälitajad ja reklaamid",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "Jälgijad ja reklaamid blokeeritud (põhjalik)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "Jälgijad ja reklaamid blokeeritud (tavaline)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "Luba kõik jälgijad ja reklaamid",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
+  "connectionsUpgradedHTTPS": {
+    "message": "Ühendused täiendatud HTTPS-ile",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
+  },
+  "connectionUpgradedHTTPS": {
+    "message": "Ühendus täiendatud HTTPS-ile",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
+  },
+  "scriptsBlocked": {
+    "message": "Blokeeritud skriptid",
+    "description": "Message for the scripts blocked row label"
+  },
+  "thirdPartyCookiesBlocked": {
+    "message": "Saitidevahelised küpsised on blokeeritud",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "Küpsised blokeeritud",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "Kõik küpsised lubatud",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "Seadmetuvastus blokeeritud",
+    "description": "Message for the option in the fingerprinting field in read only view"
+  },
+  "standardFingerprinting": {
+    "message": "Sõrmejälje lugemine blokeeritud (standard)",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
+  },
+  "strictFingerprinting": {
+    "message": "Sõrmejälje lugemine blokeeritud (piiratud, võib saite lõhkuda)",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
+  },
+  "allowAllFingerprinting": {
+    "message": "Luba seadmetuvastus igal pool",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Seadmetuvastuse katsed",
+    "description": "Message for the fingerprinting attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Selle saidi skriptid",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Blokeeritud skriptid",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Kolmanda osapoole seadme tuvastamine on blokeeritud",
+    "description": "Message for the script resources allowed"
+  },
+  "blockAll": {
+    "message": "Blokeeri kõik",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "Luba kõik",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "block": {
+    "message": "Blokeeri",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "allow": {
+    "message": "Luba",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "blockedOnce": {
+    "message": "Blokeeritud ühe korra",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "Lubatud ühe korra",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "Luba skriptid ühe korra",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
+  "cancel": {
+    "message": "Tühista",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Mine tagasi",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "Rakenda üks kord",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Muuda kaitse vaikeseadeid",
+    "description": "Message for the button action linking to the settings page"
+  },
+  "manageCustomFilters": {
+    "message": "Halda kohandatud filtreid",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "Blokeeri element",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
+  },
+  "advancedView": {
+    "message": "Täpsem vaade",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Lihtne vaade",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Saidid sisaldavad tihti küpsiseid ja skripte, mis üritavad teid ja teie seadet tuvastada (tihti on need manustatud reklaamidesse). Need soovivad teada saada, kes te olete ja teid veebis jälitada, ehk jälgida, mida igal saidil teete. Brave blokeerib need asjad, et saaksite sirvida ilma, et keegi teid jälitaks.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Saitidevahelised jälitajad ja muud kahtlased asjad on blokeeritud",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Selles vaates kaitse seadete muutmine võib mõjutada veebi ühilduvust sellel saidil.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Selge",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Lisateave",
+    "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Brave'i lisamine",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Eemalda Brave'ist",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Lisa Chrome'i",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Chrome'ist eemaldamine",
+    "description": "Message for removing an extension from Chrome"
+  }
+}

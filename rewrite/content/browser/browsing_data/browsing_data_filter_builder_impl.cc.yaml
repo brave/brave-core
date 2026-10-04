@@ -1,0 +1,46 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add a kThirdPartiesOnly case to the first (per-origin) switch in
+      MatchesStorageKey.
+
+      kThirdPartiesOnly restricts cleanup to third-party storage keys only,
+      matching by origin rather than by registrable domain.
+    regex:
+      re_pattern:
+        '(bool MatchesStorageKey\(.*?\)\s*\{.*?switch \(match_mode\) \{)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+              case BrowsingDataFilterBuilder::OriginMatchingMode::kThirdPartiesOnly:
+                if (storage_key.IsThirdPartyContext() &&
+                    storage_key.MatchesOriginForTrustedStorageDeletion(origin)) {
+                  return is_delete_list;
+                }
+                break;
+
+  - description: |
+      Add a kThirdPartiesOnly case to the second (registrable-domain) switch
+      in MatchesStorageKey.
+
+      Same as the per-origin case above, but matching by registrable domain.
+    regex:
+      re_pattern:
+        '(bool MatchesStorageKey\(.*?\)\s*\{.*?switch \(match_mode\) \{.*?switch
+        \(match_mode\) \{)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            case OriginMatchingMode::kThirdPartiesOnly:
+              return is_delete_list ==
+                     std::ranges::any_of(registerable_domains, [&](const std::string&
+                                                                       domain) {
+                       return storage_key.IsThirdPartyContext() &&
+                              storage_key
+                                  .MatchesRegistrableDomainForTrustedStorageDeletion(
+                                      domain);
+                     });

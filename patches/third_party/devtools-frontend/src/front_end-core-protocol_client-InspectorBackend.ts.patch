@@ -1,0 +1,12 @@
+diff --git a/front_end/core/protocol_client/InspectorBackend.ts b/front_end/core/protocol_client/InspectorBackend.ts
+index 79ac3ba21bea97aec046af41c1400e1d898d1988..1a62c34d7544707264500d871546ab09af40307f 100644
+--- a/front_end/core/protocol_client/InspectorBackend.ts
++++ b/front_end/core/protocol_client/InspectorBackend.ts
+@@ -78,6 +78,7 @@ export class InspectorBackend implements InspectorBackendCommands.InspectorBacke
+     globalThis.Protocol ||= {};
+ 
+     InspectorBackendCommands.registerCommands(this);
++    this.registerEvent('Network.requestAdblockInfoReceived' as QualifiedName, ['requestId', 'info']);
+   }
+ 
+   private getOrCreateEventParameterNamesForDomain(domain: ProtocolDomainName): EventParameterNames {

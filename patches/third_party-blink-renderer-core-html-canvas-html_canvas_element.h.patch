@@ -1,0 +1,26 @@
+diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
+index 179817e58cabf2686bf30258cfa27a8c8c0ec9b8..cdd7e61abc365b980fd1d79aaa2d189297b08241 100644
+--- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
++++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
+@@ -408,12 +408,21 @@ class CORE_EXPORT HTMLCanvasElement final
+     return hit_testable_descendants_;
+   }
+ 
++  String toDataURL(ScriptState* script_state, const String& mime_type,
++                   const ScriptValue& quality_argument,
++                   ExceptionState& exception_state) const;
++  String toDataURL(ScriptState* script_state, const String& mime_type,
++                   ExceptionState& exception_state) const {
++    return toDataURL(script_state, mime_type, ScriptValue(), exception_state);
++  }
++
+  protected:
+   void DidMoveToNewDocument(Document& old_document) override;
+   void DidRecalcStyle(const StyleRecalcChange change) override;
+   void RemovedFrom(ContainerNode& insertion_point) override;
+ 
+  private:
++  mutable UntracedMember<ExecutionContext> scoped_execution_context_;
+   void Dispose();
+ 
+   void ColorSchemeMayHaveChanged();

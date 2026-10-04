@@ -1,0 +1,106 @@
+<!--
+Copyright (c) 2023 The Brave Authors. All rights reserved.
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this file,
+You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<head>
+  <meta name='viewport' content='initial-scale=1, maximum-scale=1, viewport-fit=cover'>
+  <meta name="referrer" content="no-referrer">
+  <title>%page_title%</title>
+  <link rel="stylesheet" href="internal://local/interstitial-style/InterstitialStyles.css">
+  <link rel="stylesheet" href="internal://local/interstitial-style/Web3Domain.css">
+</head>
+
+<body dir="&locale.dir;" class="background content">
+  <div class="container post">
+    <img src="internal://local/interstitial-icon/Info.svg" alt="Icon" class="icon" />
+    
+    <p class="title">
+    %error_title%
+    </p>
+    
+    <p class="ud-intro">%ud_intro%</p>
+                               
+    <div id="extensionsSection" class="extensions-section" style="display:none">
+      <div id="extensionsGrid" class="extensions-grid"></div>
+      <button id="showMoreBtn" class="show-more-btn">%ud_more%</button>
+    </div>
+    
+    <p class="description">%error_description%</p>
+
+    <br />
+    
+    <div id="navigationButtons" class="navigation-buttons">
+      <button id="proceedWeb3Button" class="proceed-button proceed-button-title">%button_procced%</button>
+      <button id="disableWeb3Button" class="disable-button disable-button-title">%button_disable%</button>
+    </div>
+    
+    <script type="text/javascript">
+      // Clickjacking protection: delay before accepting proceed clicks
+      var PROCEED_CLICK_DELAY_MS = 500;
+      var proceedClicksEnabled = false;
+      
+      var INITIAL_COUNT = 10;
+      var extensions = "%ud_extensions%".split(",").filter(Boolean);
+      
+      if (extensions.length > 0) {
+         document.getElementById("extensionsSection").style.display = "block";
+         var grid = document.getElementById("extensionsGrid");
+                                             
+         function renderPills(count) {
+             grid.innerHTML = "";
+             extensions.slice(0, count).forEach(function(ext) {
+                 var pill = document.createElement("span");
+                 pill.className = "extension-pill";
+                 pill.textContent = ext;
+                 grid.appendChild(pill);
+             });
+         }
+                              
+         renderPills(INITIAL_COUNT);
+                              
+         var showMoreBtn = document.getElementById("showMoreBtn");
+         if (extensions.length <= INITIAL_COUNT) {
+             showMoreBtn.style.display = "none";
+         } else {
+             showMoreBtn.addEventListener("click", function() {
+                 renderPills(extensions.length);
+                 showMoreBtn.style.display = "none";
+             });
+         }
+     }
+
+      
+      var disableButton = document.getElementById("disableWeb3Button")
+      disableButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        // Don't proceed is always allowed (safer action)
+        webkit.messageHandlers["%message_handler%"].postMessage({
+          "button_type": "disable",
+          "service_id": "%service_id%"
+        });
+      });
+      
+      var proceedButton = document.getElementById("proceedWeb3Button")
+      proceedButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        // Prevent clickjacking by requiring a delay before allowing proceed
+        if (!proceedClicksEnabled) {
+          return;
+        }
+        webkit.messageHandlers["%message_handler%"].postMessage({
+          "button_type": "proceed",
+          "service_id": "%service_id%"
+        });
+      });
+      
+      // Enable proceed clicks after delay to prevent clickjacking
+      setTimeout(function() {
+        proceedClicksEnabled = true;
+      }, PROCEED_CLICK_DELAY_MS);
+      
+    </script>
+  </div>
+</body>

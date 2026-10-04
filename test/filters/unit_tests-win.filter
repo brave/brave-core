@@ -1,0 +1,49 @@
+##
+## Upstream tests to disable
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue.
+##
+
+# These tests pass locally but fail on CI
+-AntiVirusMetricsProviderTest.CallAsyncInitConcurrently/*
+-AntiVirusMetricsProviderTest.GetMetricsFullName/*
+-FileSystemAccessUIHelpersTest.GetElidedPathForDisplayAsTitle
+-NotificationHelperLaunchesChrome.ChromeLaunchTest
+-PerformanceManagerMetricsProviderDesktopTest.TestCpuThrottlingMetricRecordedWhereAvailable
+
+# This test is disabled because our CIs use Windows Server which doesn't appear
+# to have FOLDERID_OneDrive entry in the registry making this test fail.
+-PathServiceTest.Get
+
+# These fail due to CHECK in ResourceBundle::GetLocalizedStringImpl because: "If
+# this happens in a browser test running on Windows, it may be that dead-code
+# elimination stripped out the code that uses the resource, causing the resource
+# to be stripped out because the resource is not used by chrome.dll"
+-DesktopMediaPickerViewsSingleTabPaneTest.AccessibleProperties
+
+# Upstream flake introduced by Chromium commit 56d90776362b5 ("Implement
+# platform-agnostic system media permission caching", 2026-07-23), which removed
+# the cached IAppCapability COM objects that SystemMediaSourceWin used to hold
+# and replaced them with a fresh live query (CreateAppCapability + CheckAccess)
+# on every call. The test asserts that two consecutive SystemPermissionStatus()
+# calls on the same object return equal values, but nothing caches the result
+# anymore, so on CI bots the live WinRT AppCapability check can return a
+# different AppCapabilityAccessStatus between the two calls. 0% flaky before
+# 2026-07-24, ~0.26% since, per LUCI Analysis (60-day lookback) -- confirms this
+# is an upstream regression, not a Brave-specific issue (no chromium_src
+# overrides or patches touch this file).
+-SystemMediaSourceWinTest.ConstructionDoesNotCrash
+
+# Tests below this point have not been diagnosed or had issues created yet.
+-EnterpriseReportingPrivateGetContextInfoOSFirewallTest.*
+-EnterpriseReportingPrivateGetPersistentSecretFunctionTest.GetSecret
+-ExtensionServiceTest.*
+-LayoutProviderTest.*
+-PlatformStateStoreWinTest.*
+-RenderViewContextMenuPrefsTest.SearchWebForOptionOnPasswordManagerCheckIsDisabled
+-RenderViewContextMenuPrefsTest.SearchWebForOptionOnPasswordManagerSettingsIsDisabled
+-RenderViewContextMenuPrefsTest.SearchWebForOptionOnPasswordsManagerSubPageIsDisabled
+-ShellIntegrationWinTest.*
+-WebAppCommandManagerTest.ToDebugValue
+-WebAppShortcutWinTest.*

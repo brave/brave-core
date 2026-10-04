@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.h b/chrome/browser/ui/webui/settings/site_settings_helper.h
+index 9ad278a3b1e96a25e8bff489c2e0e57077fe582f..26f91c20e4601171f826b6e8f175fea3045c9668 100644
+--- a/chrome/browser/ui/webui/settings/site_settings_helper.h
++++ b/chrome/browser/ui/webui/settings/site_settings_helper.h
+@@ -66,6 +66,7 @@ enum class SiteSettingSource {
+   kHostedApp,
+   kPreference,
+   kDefault,
++  kRemoteList,
+   kNumSources,
+ };
+ 

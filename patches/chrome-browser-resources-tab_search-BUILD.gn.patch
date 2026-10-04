@@ -1,0 +1,40 @@
+diff --git a/chrome/browser/resources/tab_search/BUILD.gn b/chrome/browser/resources/tab_search/BUILD.gn
+index c7e2b6c4141f19b67c76dde642b027d1848d1120..e8e6f8536360005fd9893f0f02fc69a006eb7795 100644
+--- a/chrome/browser/resources/tab_search/BUILD.gn
++++ b/chrome/browser/resources/tab_search/BUILD.gn
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/browser/resources/tab_search/sources.gni")
+ import("//chrome/common/features.gni")
+ import("//ui/webui/resources/tools/build_webui.gni")
+ import("//ui/webui/resources/tools/generate_grd.gni")
+@@ -10,6 +11,11 @@ import("//ui/webui/webui_features.gni")
+ assert(is_linux || is_chromeos || is_win || is_mac)
+ 
+ build_webui("build") {
++  extra_grdp_files = brave_tab_search_extra_grdp_files
++  extra_grdp_deps = brave_tab_search_extra_grdp_deps
++  preprocess_deps = brave_tab_search_preprocess_deps
++  exclude_html_css_preprocess_files = brave_tab_search_css_files
++  exclude_ts_preprocess_files = brave_tab_search_ts_files
+   grd_prefix = "tab_search"
+ 
+   static_files = [
+@@ -47,6 +53,7 @@ build_webui("build") {
+     "tab_search_utils.ts",
+     "title_item.ts",
+   ]
++  ts_files += brave_tab_search_ts_files
+ 
+   css_files = [
+     "app.css",
+@@ -58,6 +65,7 @@ build_webui("build") {
+     "tab_search_page.css",
+     "tab_search_split_item.css",
+   ]
++  css_files += brave_tab_search_css_files
+ 
+   mojo_files_deps = [
+     "//chrome/browser/ui/webui/tab_search:mojo_bindings_ts__generator",

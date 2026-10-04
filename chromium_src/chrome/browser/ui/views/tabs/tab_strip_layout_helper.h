@@ -1,0 +1,54 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_STRIP_LAYOUT_HELPER_H_
+#define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_STRIP_LAYOUT_HELPER_H_
+
+#include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
+
+class BraveTabStrip;
+
+// As TabStripLayoutHelper's destructor is not virtual, it'd be safer not to
+// make virtual methods and child class of it
+#define UpdateIdealBounds                                             \
+  UnUsed() {                                                          \
+    return {};                                                        \
+  }                                                                   \
+  void set_use_vertical_tabs(bool vertical) {                         \
+    use_vertical_tabs_ = vertical;                                    \
+  }                                                                   \
+  void set_tab_strip(TabStrip* tab_strip) {                           \
+    tab_strip_ = tab_strip;                                           \
+  }                                                                   \
+  void set_use_tree_tabs(bool tree) {                                 \
+    use_tree_tabs_ = tree;                                            \
+  }                                                                   \
+                                                                      \
+ private:                                                             \
+  friend class BraveTabContainer;                                     \
+  bool FillGroupInfo(std::vector<TabWidthConstraints>& tab_widths);   \
+  bool FillNestingInfo(std::vector<TabWidthConstraints>& tab_widths); \
+  BraveTabStrip* GetBraveTabStrip() const;                            \
+  bool use_vertical_tabs_ = false;                                    \
+  bool use_tree_tabs_ = false;                                        \
+  raw_ptr<TabStrip> tab_strip_ = nullptr;                             \
+                                                                      \
+ public:                                                              \
+  int UpdateIdealBounds
+
+// Add non-const version of group_header_ideal_bounds()
+#define group_header_ideal_bounds()                                          \
+  group_header_ideal_bounds_Unused();                                        \
+  std::map<tab_groups::TabGroupId, gfx::Rect>& group_header_ideal_bounds() { \
+    return group_header_ideal_bounds_;                                       \
+  }                                                                          \
+  const std::map<tab_groups::TabGroupId, gfx::Rect>& group_header_ideal_bounds()
+
+#include <chrome/browser/ui/views/tabs/tab_strip_layout_helper.h>  // IWYU pragma: export
+
+#undef group_header_ideal_bounds
+#undef UpdateIdealBounds
+
+#endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_STRIP_LAYOUT_HELPER_H_

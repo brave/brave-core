@@ -1,0 +1,71 @@
+diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
+index c90c7c5e5521e0355bc2df9c3435b500a6613118..6eacad12a3068aa50e4c64043087189a667c43af 100644
+--- a/tools/gritsettings/resource_ids.spec
++++ b/tools/gritsettings/resource_ids.spec
+@@ -38,6 +38,12 @@
+   "chrome/app/chromium_strings.grd": {
+     "messages": [800],
+   },
++  "chrome/app/brave_strings.grd": {
++    "messages": [800],
++  },
++  "chrome/app/brave_origin_strings.grd": {
++    "messages": [800],
++  },
+   "chrome/app/google_chrome_strings.grd": {
+     "messages": [800],
+   },
+@@ -501,7 +507,7 @@
+     "includes": [3900],
+   },
+   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/extensions/resources.grd": {
+-    "META": {"sizes": {"includes": [120],}},
++    "META": {"sizes": {"includes": [123],}},
+     "includes": [3920],
+   },
+   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/extensions_zero_state_promo/resources.grd": {
+@@ -549,7 +555,7 @@
+     "includes": [4035],
+   },
+   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/history/resources.grd": {
+-    "META": {"sizes": {"includes": [60]}},
++    "META": {"sizes": {"includes": [63]}},
+     "includes": [4040],
+   },
+   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/indigo/resources.grd": {
+@@ -741,7 +747,7 @@
+     "includes": [4730],
+   },
+   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings/resources.grd": {
+-    "META": {"sizes": {"includes": [700],}},
++    "META": {"sizes": {"includes": [930],}},
+     "includes": [4740],
+   },
+   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings_shared/resources.grd": {
+@@ -1240,6 +1246,12 @@
+     "META": {"join": 2},
+     "messages": [7020],
+   },
++  "components/components_brave_strings.grd": {
++    "messages": [7020],
++  },
++  "components/components_brave_origin_strings.grd": {
++    "messages": [7020],
++  },
+   "components/components_google_chrome_strings.grd": {
+     "messages": [7020],
+   },
+@@ -1766,11 +1778,11 @@
+     "includes": [9980],
+   },
+   "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_code_cache_resources.grd": {
+-    "META": {"sizes": {"includes": [250]}},
++    "META": {"sizes": {"includes": [252]}},
+     "includes": [9990],
+   },
+   "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_resources.grd": {
+-    "META": {"sizes": {"includes": [1100]}},
++    "META": {"sizes": {"includes": [1400]}},
+     "includes": [10000],
+   },
+ 

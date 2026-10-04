@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Brave additions to `source_set("configs")`.
+    regex:
+      re_pattern: '(source_set\("configs"\).*?)\n\}'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          import("//brave/browser/ui/webui/sources.gni")
+          deps += brave_browser_ui_webui_configs_deps
+        }
+  - description: |
+      Define `favicon_source` on regular Android too.
+
+      Upstream only builds FaviconSource where it was previously compiled into
+      //chrome/browser/ui:ui, which excludes regular Android. Brave's WebUIs
+      (wallet, AI chat, rewards, etc.) need FaviconSource on Android; the
+      chromium_src override of favicon_source.cc maps the default favicon
+      resources so the source compiles there.
+    regex:
+      re_pattern: 'if \(([^)]+)\) \{\n  source_set\("favicon_source"\)'
+      replace: |-
+        if (\1 || is_android) {
+          source_set("favicon_source")

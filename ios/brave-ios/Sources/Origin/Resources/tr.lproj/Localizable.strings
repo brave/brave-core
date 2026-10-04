@@ -1,0 +1,99 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "Reklamlar";
+
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "brave.com adresinden zaten satın aldınız mı?";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "Analitik";
+
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "Şimdi Satın Al";
+
+/* A message shown in a toast informing the user that enabling or disabling a Brave feature requires restarting the browser to take effect */
+"featureEnabledToastMessage" = "Brave özelliğini etkinleştirmek veya devre dışı bırakmak değişiklikleri uygulamak için tarayıcının yeniden başlatılmasını gerektirir. Lütfen Brave'i kapatın (Uygulama Değiştirici'de yukarı kaydırın) ve ardından yeniden açın.";
+
+/* A title shown in a toast that appears after toggling a Brave feature on or off in Origin settings */
+"featureEnabledToastTitle" = "Brave özellikleri değiştiriliyor";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "**Brave'i desteklemeye devam ederken tarayıcınızı özelleştirin**\n\nBrave Origin, tarayıcının ücretli bir sürümüdür ve Brave'i bir işletme olarak desteklemek için gereken tüm özelliklere ihtiyaç duymayan, ancak yalnızca Brave'in sunduğu gizliliği isteyen kullanıcılara yöneliktir. Origin kullanıcıları, endüstri lideri gizlilik, reklam engelleme ve hız (Kalkanlar aracılığıyla) avantajlarından, düzenli yazılım güncellemelerinden, Chromium yamalarından ve güvenlik ile gizlilik iyileştirmelerinden yararlanmaya devam edecektir. Origin, tarayıcıdan diğer birçok özelliği kaldıracaktır.";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "Özellik";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Brave Origin Satın Almayı Doğrula";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "Leo Yapay Zeka";
+
+/* A button title that when triggered will allow a user to link their App Store purchase with Brave Account */
+"linkPurchase" = "Satın Alımı Brave Hesabınıza Bağlayın";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "Haberler";
+
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "Tek Seferlik Satın Alma";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "Oynatma Listesi";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "Gizliliği koruyan analitik";
+
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "Promosyon kodunuz var mı?";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"purchaseChoiceHeaderText" = "Sizin için uygun olan ödeme yöntemini seçin:";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "Satın alma işlemi tamamlanamıyor. Lütfen yeniden deneyin veya Apple'daki ödeme bilgilerinizi kontrol edin ve yeniden deneyin.";
+
+/* The footer shown below the Purchase section of the settings page */
+"purchaseSectionFooter" = "Brave Origin'i diğer cihazlarda kullanmak için App Store satın alımınızı Brave hesabınıza bağlayın";
+
+/* The header shown below the Purchase section of the settings page */
+"purchaseSectionHeader" = "Satın al";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "Promosyon Kodunu Kullanın";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "Varsayılanlara Sıfırla";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "Geri yükle";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "Ödüller";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "İstatistik raporlama";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "Sohbet";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "Temel adblock, gizlilik, & hızını koruyun";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "Brave Kalkanlar merkezli minimalist tarayıcı kullanıcı arayüzü";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "Tek seferlik satın alma, tüm cihazlarınızda birden fazla kez etkinleştirilebilir";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "Misyonumuzu destekleyin & açık kaynak çalışmaları";
+
+/* A button title that when triggered will allow a user to view their App Store receipt */
+"viewAppStoreReceipt" = "App Store Makbuzunu Görüntüle";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "Cüzdan";
+

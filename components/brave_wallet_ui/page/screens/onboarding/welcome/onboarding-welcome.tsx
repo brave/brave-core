@@ -1,0 +1,136 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import { useHistory } from 'react-router'
+import { useDispatch, useSelector } from 'react-redux'
+
+// redux
+import { WalletPageActions } from '../../../actions'
+import { PageSelectors } from '../../../selectors'
+
+// utils
+import { getLocale } from '../../../../../common/locale'
+
+// components
+import { WelcomeAction } from '../components/welcome_action/welcome_action'
+
+// routes
+import { WalletRoutes } from '../../../../constants/types'
+
+// Page API Proxy
+import getWalletPageApiProxy from '../../../../page/wallet_page_api_proxy'
+
+// Selectors
+import { UISelectors } from '../../../../common/selectors'
+import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
+
+// styles
+import * as leo from '@brave/leo/tokens/css/variables'
+import { Row, VerticalSpace } from '../../../../components/shared/style'
+import {
+  BraveIcon,
+  Content,
+  WelcomePageBackground,
+  WelcomePageWrapper,
+  Title,
+  Heading,
+  ActionsContainer,
+  Footer,
+  SubHeading,
+} from './onboarding-welcome.style'
+
+export const OnboardingWelcome = () => {
+  // routing
+  const history = useHistory()
+
+  // redux
+  const dispatch = useDispatch()
+  const setupStillInProgress = useSelector(PageSelectors.setupStillInProgress)
+
+  // selectors
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
+
+  const walletIcons = isMobile
+    ? [
+        'brave-icon-release-color',
+        'phantom-color',
+        'metamask-color',
+        'coinbase-color',
+      ]
+    : [
+        'brave-icon-release-color',
+        'phantom-color',
+        'metamask-color',
+        'coinbase-color',
+        'trezor-color',
+        'wallet-ledger',
+      ]
+
+  // effects
+  React.useEffect(() => {
+    // start wallet setup
+    if (!setupStillInProgress) {
+      dispatch(WalletPageActions.walletSetupComplete(false))
+    }
+  }, [setupStillInProgress, dispatch])
+
+  return (
+    <>
+      <WelcomePageBackground />
+      <WelcomePageWrapper>
+        <Content>
+          <Row
+            gap='10px'
+            justifyContent='flex-start'
+            marginBottom={leo.spacing['5Xl']}
+          >
+            <BraveIcon />
+            <Title>{getLocale(S.BRAVE_WALLET_TITLE)}</Title>
+          </Row>
+          <Heading>{getLocale(S.BRAVE_WALLET_WELCOME_TITLE)}</Heading>
+          <SubHeading>
+            {getLocale(S.BRAVE_WALLET_WELCOME_DESCRIPTION)}
+          </SubHeading>
+
+          <ActionsContainer>
+            <WelcomeAction
+              title={getLocale(S.BRAVE_WALLET_WELCOME_NEW_WALLET_TITLE)}
+              description={getLocale(
+                S.BRAVE_WALLET_WELCOME_NEW_WALLET_DESCRIPTION,
+              )}
+              iconName='plus-add'
+              onSelect={() => {
+                if (isMobile) {
+                  getWalletPageApiProxy().pageHandler.showOnboarding(true)
+                } else {
+                  history.push(WalletRoutes.OnboardingNewWalletTerms)
+                }
+              }}
+            />
+
+            <WelcomeAction
+              title={getLocale(S.BRAVE_WALLET_WELCOME_IMPORT_WALLET_TITLE)}
+              description={getLocale(
+                S.BRAVE_WALLET_WELCOME_IMPORT_WALLET_DESCRIPTION,
+              )}
+              iconName='import-arrow'
+              walletIcons={walletIcons}
+              onSelect={() => {
+                if (isMobile) {
+                  getWalletPageApiProxy().pageHandler.showOnboarding(false)
+                } else {
+                  history.push(WalletRoutes.OnboardingImportSelectWalletType)
+                }
+              }}
+            />
+          </ActionsContainer>
+          <VerticalSpace space='96px' />
+          <Footer>{getLocale(S.BRAVE_WALLET_WELCOME_COPYRIGHT)}</Footer>
+        </Content>
+      </WelcomePageWrapper>
+    </>
+  )
+}

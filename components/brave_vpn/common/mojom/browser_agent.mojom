@@ -1,0 +1,68 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_vpn.mojom;
+
+// Newest version of the browser to agent contract below, sent by browsers in
+// Initialize(). The agent accepts a range of versions rather than an exact
+// match, so a browser and agent from different updates can still talk; it
+// answers anything outside that range with InitializeResult::kVersionMismatch.
+// Bump on an incompatible change, and prefer [MinVersion] for additive ones.
+//
+// Note that on official desktop builds message ID scrambling already stops
+// binaries from different Brave versions exchanging messages at all, so this
+// handshake is only reachable between binaries sharing that salt.
+const uint32 kProtocolVersion = 1;
+
+// Browser's subordinate surface, passed to the agent's BrowserHost, so the
+// agent can call back into the browser once it accepts.
+interface BrowserEndpoint {
+};
+
+enum InitializeResult {
+  kSuccess,
+  kVersionMismatch,
+  kNotIdentified,
+  kRejected,
+  kInconclusive,
+  kInvalidRequest,
+};
+
+enum BindBrowserHostResult {
+  kSuccess,
+  kUninitialized,
+  kAlreadyBound,
+};
+
+// The browser's connection to the agent, and the only interface reachable on
+// a fresh connection. The browser MUST keep this remote alive for as long as
+// it uses the BrowserHost obtained from it. The underlying transport is bound
+// to this receiver, so dropping it tears down the whole connection,
+// BrowserHost included.
+interface BrowserHostProvider {
+  // First call on a connection, and the one that authenticates the browser.
+  // Settles the protocol version, then verifies the calling browser, which may
+  // take a while: the reply arrives once that verdict is in. Also hands over
+  // the optional channel the agent identifies itself on where the platform
+  // requires the agent to speak before it can be identified at all; the agent
+  // answers that channel only once it has accepted the browser, so it never
+  // self-identifies to a peer it has not verified. May succeed only once.
+  // Calling it again after it has succeeded, is answered with kInvalidRequest.
+  Initialize(uint32 protocol_version, handle<platform>? identity_channel)
+      => (InitializeResult result);
+
+  // Asks for the authenticated API surface. The browser was already verified
+  // during Initialize(), so this only binds. A browser that drops its host may
+  // ask again on the same connection without being re-verified; a request
+  // while one is already bound is answered with kAlreadyBound.
+  BindBrowserHost(pending_remote<BrowserEndpoint> browser_endpoint,
+                  pending_receiver<BrowserHost> host)
+                    => (BindBrowserHostResult result);
+};
+
+// Agent browser-facing real API surface, owns the VPN related functionality
+// passed to the authenticanted browsers.
+interface BrowserHost {
+};

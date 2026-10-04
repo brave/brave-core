@@ -1,0 +1,34 @@
+diff --git a/chrome/browser/ui/omnibox/omnibox_edit_model.cc b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
+index 7956bfeda0b44dfb4d11e1e85f0cfe274c9ebc51..cca1e7f221eada31fa1bf9026f4c22d4f8fae964 100644
+--- a/chrome/browser/ui/omnibox/omnibox_edit_model.cc
++++ b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
+@@ -544,6 +544,10 @@ bool OmniboxEditModel::ShouldShowCurrentPageIcon() const {
+ 
+ ui::ImageModel OmniboxEditModel::GetSuperGIcon(int image_size,
+                                                bool dark_mode) const {
++  if ((true)) {
++    return ui::ImageModel::FromVectorIcon(vector_icons::kGoogleColorIcon,
++                                          gfx::kPlaceholderColor, image_size);
++  }
+ #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+   if (dark_mode) {
+     return ui::ImageModel::FromVectorIcon(
+@@ -690,6 +694,8 @@ void OmniboxEditModel::Revert() {
+ }
+ 
+ void OmniboxEditModel::StartAutocomplete(bool prevent_inline_autocomplete) {
++  auto pasted = SetInputIsPastedFromClipboard(
++      controller_, paste_state_ != PasteState::kNone);
+   const std::u16string input_text = MaybePrependKeyword(user_text_);
+ 
+   size_t cursor_position =
+@@ -736,6 +742,9 @@ void OmniboxEditModel::StartAutocomplete(bool prevent_inline_autocomplete) {
+ }
+ 
+ bool OmniboxEditModel::CanPasteAndGo(const std::u16string& text) const {
++  if (IsBraveCommanderCommand(text)) {
++    return false;
++  }
+   return searchbox::CanPasteAndGo(controller_->client(), text);
+ }
+ 

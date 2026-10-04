@@ -1,0 +1,62 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Insert kActionShowPartitionedStorage and kActionShowPsstIcon before
+      kActionVirtualCardEnroll'
+    regex:
+      pattern: 'kActionVirtualCardEnroll,'
+      replace: |-
+        kActionShowPartitionedStorage,
+                {
+                    .histogram_name = "PartitionedStorage",
+                    .type = brave::kPartitionedStorageActionIconType,
+                },
+            },
+            {
+                kActionShowPsstIcon,
+                {
+                   .histogram_name = "PsstIcon",
+                   .type = brave::kPsstIconActionIconType,
+                },
+            },
+            {
+                kActionShowSpeedreader,
+                {
+                    .histogram_name = "Speedreader",
+                    .type = brave::kSpeedreaderPageActionIconType,
+                },
+            },
+            {
+                kActionShowWaybackMachine,
+                {
+                    .histogram_name = "WaybackMachine",
+                    .type = brave::kWaybackMachineActionIconType,
+                },
+            },
+            {
+                kActionShowPlaylistPageAction,
+                {
+                    .histogram_name = "Playlist",
+                    .type = brave::kPlaylistPageActionIconType,
+                },
+            },
+            {
+                kActionShowOnionLocation,
+                {
+                    .histogram_name = "OnionLocation",
+                    .type = brave::kOnionLocationPageActionIconType,
+                },
+            },
+            {
+                kActionShowBraveNews,
+                {
+                    .histogram_name = "BraveNews",
+                    .type = brave::kBraveNewsPageActionIconType,
+                },
+            },
+            {
+                kActionVirtualCardEnroll,

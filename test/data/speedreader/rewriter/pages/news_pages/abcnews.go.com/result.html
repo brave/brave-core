@@ -1,0 +1,495 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Prosecutor sues Florida governor over suspension, says 1st Amendment rights violated</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">Prosecutor sues Florida governor over suspension, says 1st Amendment rights violated</h1><p class="subhead metadata">Florida state attorney Andrew Warren sued Gov. Ron DeSantis for suspending him earlier this month, claiming his removal from office violated his First Amendment rights.</p><div class=""><p class="metadata">By ABC News</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><p class="fnmMv geuMB alqtB wqIGQ ">The Florida state attorney who was <a class="  uOtk efBMc LIsPj wIScF " href="https://abcnews.go.com/Politics/florida-governors-battle-state-attorney-suspension/story?id=88301988" tabindex="0" target="_self">suspended by Gov. Ron DeSantis</a> this month sued the governor on Wednesday, claiming his removal from office violated his First Amendment rights.</p><p class="fnmMv geuMB alqtB wqIGQ ">The lawsuit, filed in federal court, alleges the Republican governor retaliated against Andrew Warren, the Hillsborough County state attorney, for siding with progressive prosecutors who vowed not to prosecute crimes related to abortion and gender-transition treatments for children.</p><p class="fnmMv geuMB alqtB wqIGQ ">Warren, a Democrat, has called the suspension "political theater" and has claimed DeSantis suspended him to advance his own career.</p><p class="fnmMv geuMB alqtB wqIGQ ">Warren's legal team filed the suit in the U.S. District Court for the Northern District of Florida. They hope a judge will rule to reinstate the twice-elected state attorney, who is the top prosecutor in the Tampa Bay area.</p><div class="snXP  FYsKf rNiFf  vABDa LKeu uJbEF "><div class="InlineImage fnIPT "><figure class="GKCm dkOCJ oGxfq GkpGd "><img alt="PHOTO: Ron DeSantis, governor of Florida, speaks during a Unite and Win rally in Phoenix, Aug. 14, 2022." class="sRQoy DZhB  kXXJS " draggable="false" src="https://s.abcnews.com/images/Politics/florida-prosecutor-first-ammendment-ron-desantis-02-usa-llr-220817_1660758343436_hpEmbed_16x9_992.jpg"><figcaption><div class="SUcsq "><p><span class="Vazkv cFeHI EhGqu kXXJS Vxqj GPHpJ UvhRR "><span><span class="BYPR XnCit wAxXa tLmN vpbH NLayE Ejtl fVjQS Rtzw pBIKW brmof mjVrX jogbi GMWpL KRsj iFQpk ">Ron DeSantis, governor of Florida, speaks during a Unite and Win rally in Phoenix, Aug. 14, 2022.</span></span></span></p><p><span aria-label="Antranik Tavitian/The Republic via USA Today Network" class="VQiJ xTlfF  BYPR XnCit wAxXa tLmN vpbH NLayE Ejtl fVjQS Rtzw pBIKW brmof mjVrX jogbi GMWpL KRsj iFQpk ">Antranik Tavitian/The Republic via USA Today Network</span></p></div></figcaption></figure></div></div><p class="fnmMv geuMB alqtB wqIGQ ">"I have the same first amendment right that everybody else in Florida does," Warren said at a press conference in Tallahassee on Wednesday morning, adding that the governor's decision amounted to an abuse of power.</p><p class="fnmMv geuMB alqtB wqIGQ ">Jean Jaques Cabou, a lawyer for Warren, said at the press conference that the governor had no grounds to oust Warren. He said DeSantis took his client out of office "because of policy differences [and] because the governor would like to do his job differently than Mr. Warren wants to do his job."</p><p class="fnmMv geuMB alqtB wqIGQ ">"Those are not bases for which the governor can suspend Warren," Cabou added.</p><p class="fnmMv geuMB alqtB wqIGQ ">DeSantis did not immediately respond to ABC News' request for comment on the lawsuit. After he suspended Warren on Aug. 4, the governor said in a statement that "state attorneys have a duty to prosecute crimes as defined in Florida law, not to pick and choose which laws to enforce based on his personal agenda."</p><p class="fnmMv geuMB alqtB wqIGQ ">The governor also touted his decision to remove Warren from office while on the campaign trail this week.</p><p class="fnmMv geuMB alqtB wqIGQ ">"Out of 20 elected prosecutors, we found one who decided to put himself above the law, saying he didn't have to enforce laws that he disagreed with," he said during a speech in Carlsbad, New Mexico, on Sunday.</p><p class="fnmMv geuMB alqtB wqIGQ ">Warren has signed two joint statements pledging not to prosecute crimes related to abortion and gender-transition treatments for children. By doing so, DeSantis claims, Warren has neglected his duty and demonstrated incompetence.</p><p class="fnmMv geuMB alqtB wqIGQ ">DeSantis signed a law in April that bans abortions in Florida after a 15-week gestation period. The law went into effect on July 1, a week after the U.S. Supreme Court <a class="  uOtk efBMc LIsPj wIScF " href="https://abcnews.go.com/Politics/supreme-court-rules-major-case-involving-abortion-rights/story?id=85160781" tabindex="0" target="_self">overturned Roe v. Wade</a>.</p><p class="fnmMv geuMB alqtB wqIGQ ">Florida health care providers last week filed a notice of appeal with the state Supreme Court <a class="  uOtk efBMc LIsPj wIScF " href="https://www.aclu.org/press-releases/floridas-15-week-abortion-ban-heads-state-supreme-court" tabindex="0" target="_self">challenging the abortion law</a>. The plaintiffs argue the law violates the state constitution.</p><p class="fnmMv geuMB alqtB wqIGQ ">There is currently no law in Florida that criminalizes gender-related treatment for minors, although some state legislators have pushed for one. The state's Agency for Health Care Administration recently passed a rule barring transgender residents from using Medicaid to pay for gender-affirming care.</p><div class="snXP  FYsKf rNiFf  vABDa LKeu uJbEF "><div class="InlineImage fnIPT "><figure class="GKCm dkOCJ oGxfq GkpGd "><img alt="PHOTO: Andrew Warren, who was removed from his elected post as Hillsborough's state attorney by Gov. Ron DeSantis, prepares for a press conference in Tallahassee, Fla., Aug. 17, 2022." class="sRQoy DZhB  kXXJS " draggable="false" src="https://s.abcnews.com/images/Politics/florida-prosecutor-first-ammendment-andrew-warren-01-zp-llr-220817_1660758311698_hpMain_16x9_992.jpg"><figcaption><div class="SUcsq "><p><span class="Vazkv cFeHI EhGqu kXXJS Vxqj GPHpJ UvhRR "><span><span class="BYPR XnCit wAxXa tLmN vpbH NLayE Ejtl fVjQS Rtzw pBIKW brmof mjVrX jogbi GMWpL KRsj iFQpk ">Andrew Warren, who was removed from his elected post as Hillsborough's state attorney by Gov. Ron DeSantis, prepares for a press conference in Tallahassee, Fla., Aug. 17, 2022.</span></span></span></p><p><span aria-label=" Tampa Bay Times via ZumaPress" class="VQiJ xTlfF  BYPR XnCit wAxXa tLmN vpbH NLayE Ejtl fVjQS Rtzw pBIKW brmof mjVrX jogbi GMWpL KRsj iFQpk "> Tampa Bay Times via ZumaPress</span></p></div></figcaption></figure></div></div><p class="fnmMv geuMB alqtB wqIGQ ">The governor says Warren's decision to sign the joint statements, coupled with other decisions Warren has made in his two terms as a state attorney, are sufficient under the Florida Constitution for suspension.</p><p class="fnmMv geuMB alqtB wqIGQ ">Cabou argues that it's up to the court to decide whether Warren's statements meet the criteria for a suspension.</p><p class="fnmMv geuMB alqtB wqIGQ ">"Just because the governor calls something neglect of duty or the government calls something incompetence doesn't make it true," he said.</p><p class="fnmMv geuMB alqtB wqIGQ ">Scott Stephens, a Florida constitutional law professor and former Hillsborough County circuit judge, told ABC News the court will decide whether Warren's decision to sign the two letters can be used as evidence that he neglected his duty or is incompetent.</p><p class="fnmMv geuMB alqtB wqIGQ ">Under Florida law, Warren has the right to a hearing before the state senate to decide whether his suspension was constitutional.</p><p class="fnmMv geuMB alqtB wqIGQ ">Debbie Brown, the secretary of the Republican-controlled body, sent Warren a letter on Monday to initiate the process for a hearing.</p><p class="fnmMv geuMB alqtB wqIGQ ">This process is now on hold due to Wednesday's filing. </p></body>

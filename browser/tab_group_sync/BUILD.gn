@@ -1,0 +1,24 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+
+android_library("java") {
+  sources = [
+    "android/java/src/org/chromium/chrome/browser/tab_group_sync/BraveStartupHelper.java",
+    "android/java/src/org/chromium/chrome/browser/tab_group_sync/BraveSyncedTabGroupHelper.java",
+    "android/java/src/org/chromium/chrome/browser/tab_group_sync/BraveTabGroupSyncControllerImpl.java",
+  ]
+
+  deps = [
+    "//base:base_java",
+    "//build/android:build_java",
+    "//chrome/browser/preferences:java",
+    "//chrome/browser/tab_group_sync:java",
+    "//chrome/browser/tabmodel:java",
+    "//components/prefs/android:java",
+    "//components/saved_tab_groups/public:java",
+  ]
+}

@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/download/download_core_service_impl.cc b/chrome/browser/download/download_core_service_impl.cc
+index 9d63759c8776824a638170b37782d428268d031f..d9a3ac30ec6a5fb241ce6b83cdfd7632ddb7fb37 100644
+--- a/chrome/browser/download/download_core_service_impl.cc
++++ b/chrome/browser/download/download_core_service_impl.cc
+@@ -58,7 +58,7 @@ DownloadCoreServiceImpl::GetDownloadManagerDelegate() {
+   // SetDownloadManagerDelegateForTesting.
+   if (!manager_delegate_.get())
+     manager_delegate_ =
+-        std::make_unique<ChromeDownloadManagerDelegate>(profile_);
++        CreateBraveDownloadManagerDelegate(profile_);
+ 
+   manager_delegate_->SetDownloadManager(manager);
+ 

@@ -1,0 +1,24 @@
+diff --git a/chrome/test/data/webui/build_webui_tests.gni b/chrome/test/data/webui/build_webui_tests.gni
+index bc5c7723400f45eec708f715786674d20f815846..4861bd5730bdaca35738c992c0895491ac31b925 100644
+--- a/chrome/test/data/webui/build_webui_tests.gni
++++ b/chrome/test/data/webui/build_webui_tests.gni
+@@ -46,6 +46,9 @@ template("build_webui_tests") {
+       out_folder = preprocess_dir
+       in_files = static_files
+       out_manifest = "${target_gen_dir}/preprocess_static_files_manifest.json"
++      if (defined(invoker.preprocessor_defines)) {
++        defines += invoker.preprocessor_defines
++      }
+     }
+   }
+ 
+@@ -58,6 +61,9 @@ template("build_webui_tests") {
+     in_folder = "."
+     out_folder = preprocess_dir
+     in_files = files
++    if (defined(invoker.preprocessor_defines)) {
++      defines += invoker.preprocessor_defines
++    }
+   }
+ 
+   if (defined(invoker.mojo_files_deps)) {

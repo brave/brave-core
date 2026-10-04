@@ -1,0 +1,21 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/webapps/AppInstallMenuHandler.java b/chrome/android/java/src/org/chromium/chrome/browser/webapps/AppInstallMenuHandler.java
+index 2e35b10bb657ba070bf8378da11fedfadfa6c5b9..807bac9ebd4340690cce208c2aadeea6b4073310 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/webapps/AppInstallMenuHandler.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/webapps/AppInstallMenuHandler.java
+@@ -15,6 +15,7 @@ import org.chromium.base.Log;
+ import org.chromium.build.annotations.NullMarked;
+ import org.chromium.build.annotations.Nullable;
+ import org.chromium.chrome.R;
++import org.chromium.components.embedder_support.util.UrlConstants;
+ import org.chromium.chrome.browser.banners.AppMenuVerbiage;
+ import org.chromium.chrome.browser.browserservices.TwaValidator;
+ import org.chromium.chrome.browser.open_in_app.OpenInAppDelegate;
+@@ -83,7 +84,7 @@ public class AppInstallMenuHandler {
+ 
+         @Nullable BottomSheetController controller =
+                 BottomSheetControllerProvider.from(windowAndroid);
+-        if (controller == null) {
++        if ((currentTab.getUrl() != null && UrlConstants.CHROME_SCHEME.equals(currentTab.getUrl().getScheme())) || controller == null) {
+             // We have three options when this function fails. One is to abort the operation and do
+             // nothing (by returning false), or we can make one of the two options of the Universal
+             // Install dialog the default and go with that in case of errors. Since Install App is

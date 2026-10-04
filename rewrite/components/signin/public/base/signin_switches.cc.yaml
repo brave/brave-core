@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Ship kFirstRunDesktopRefresh disabled on Windows, Mac and Linux.
+
+      The feature is only declared under
+      `#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)`,
+      as two separate BASE_FEATURE statements (one for Windows, one for the
+      Mac/Linux #else branch), so two matches are expected here.
+    count: 2
+    set_feature_flag_default_state:
+      feature_name: kFirstRunDesktopRefresh
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kSyncEnableBookmarksInTransportMode disabled.'
+    set_feature_flag_default_state:
+      feature_name: kSyncEnableBookmarksInTransportMode
+      value: base::FEATURE_DISABLED_BY_DEFAULT

@@ -1,0 +1,19 @@
+/** Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #import=./cr_url_list_item-chromium.css.js
+ * #scheme=relative
+ * #include=cr-url-list-item-chromium
+ * #css_wrapper_metadata_end */
+
+:host([is-folder_]) #iconContainer:not(#z) {
+  background: var(--leo-color-container-interactive);
+  border: 1px solid var(--leo-color-divider-interactive);
+  border-radius: var(--leo-radius-s);
+  color: var(--leo-color-icon-interactive);
+}
+

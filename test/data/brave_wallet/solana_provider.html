@@ -1,0 +1,219 @@
+<html>
+
+<script>
+  var connectedAccount = ''
+  var signMessageResult = ''
+  var signAndSendTransactionResult = ''
+  var signTransactionResult = ''
+  var signAllTransactionsResult = ''
+  var requestResult = ''
+  var accountChangedResult = ''
+  var disconnectEmitted = false
+
+  function registerAccountChanged() {
+    window.braveSolana.on('accountChanged', result => {
+        if (result instanceof Object) {
+          accountChangedResult = result.toString()
+        } else {
+          accountChangedResult = ''
+        }
+        window.domAutomationController.send('result ready')
+    })
+  }
+
+  function registerDisconnect() {
+    window.braveSolana.on('disconnect', result => {
+        disconnectEmitted = true
+        window.domAutomationController.send('result ready')
+    })
+  }
+
+  function solanaConnect() {
+    window.braveSolana.connect().then(result => {
+        connectedAccount = result.publicKey.toString()
+    }).catch(error => {
+        connectedAccount = ''
+    })
+  }
+
+  async function solanaDisconnect() {
+    const result = await window.braveSolana.disconnect()
+    if (result == undefined)
+      return true
+    else
+      return false
+  }
+
+  function getConnectedAccount() {
+    return connectedAccount;
+  }
+
+  function isSolanaConnected() {
+    return window.braveSolana.isConnected;
+  }
+
+  function solanaSignMessage(message, encoding) {
+    const encodedMessage = new TextEncoder().encode(message)
+    window.braveSolana.signMessage(encodedMessage, encoding)
+      .then(result => {
+        signMessageResult = result.signature.join()
+        window.domAutomationController.send('result ready')
+      }).catch(error => {
+        signMessageResult = error.message
+        window.domAutomationController.send('result ready')
+      })
+  }
+
+  function solanaSignAndSendTransaction(v0, serializedTx, sendOptions, pubkeyString, signature) {
+    let tx
+    if (v0) {
+      tx = solanaWeb3.VersionedTransaction.deserialize(serializedTx)
+    } else {
+      tx = solanaWeb3.Transaction.from(serializedTx)
+    }
+    if (pubkeyString) {
+      const pubkey = new solanaWeb3.PublicKey(pubkeyString)
+      tx.addSignature(pubkey, signature)
+    }
+    window.braveSolana.signAndSendTransaction(tx, sendOptions)
+      .then(result => {
+        signAndSendTransactionResult = result.signature
+        window.domAutomationController.send('result ready')
+      }).catch(error => {
+        signAndSendTransactionResult = error.message
+        window.domAutomationController.send('result ready')
+      })
+  }
+
+  function solanaSignTransaction(v0, serializedTx, pubkeyString, signature) {
+    let tx
+    if (v0) {
+      tx = solanaWeb3.VersionedTransaction.deserialize(serializedTx)
+    } else {
+      tx = solanaWeb3.Transaction.from(serializedTx)
+    }
+    if (pubkeyString) {
+      const pubkey = new solanaWeb3.PublicKey(pubkeyString)
+      tx.addSignature(pubkey, signature)
+    }
+    window.braveSolana.signTransaction(tx)
+      .then(result => {
+        signTransactionResult = result.serialize().join()
+        window.domAutomationController.send('result ready')
+      }).catch(error => {
+        signTransactionResult = error.message
+        window.domAutomationController.send('result ready')
+      })
+    }
+
+  function solanaSignAllTransactions(v0, serializedTx, expectedSignTx, pubkeyString, signature) {
+    let tx
+    if (v0) {
+      tx = solanaWeb3.VersionedTransaction.deserialize(serializedTx)
+    } else {
+      tx = solanaWeb3.Transaction.from(serializedTx)
+    }
+    if (pubkeyString) {
+      const pubkey = new solanaWeb3.PublicKey(pubkeyString)
+      tx.addSignature(pubkey, signature)
+    }
+    const expectedTx = expectedSignTx.join()
+    window.braveSolana.signAllTransactions([tx, tx])
+      .then(result => {
+        const isSameTx =
+          (tx) => tx.serialize().join() === expectedTx
+        if (result.every(isSameTx))
+          signAllTransactionsResult = 'success'
+        else
+          signAllTransactionsResult = 'fail'
+        window.domAutomationController.send('result ready')
+      }).catch(error => {
+        signAllTransactionsResult = error.message
+        window.domAutomationController.send('result ready')
+      })
+  }
+
+  function solanaRequest(json) {
+    window.braveSolana.request(json)
+      .then(result => {
+        switch (json.method) {
+          case "connect":
+              requestResult = result.publicKey.toString()
+              break
+          case "disconnect":
+              requestResult = 'success'
+              break
+          case "signTransaction":
+          case "signAndSendTransaction":
+          case "signMessage":
+              requestResult = result.signature
+              break
+          case "signAllTransactions":
+              requestResult = result.signature.join()
+              break
+          default:
+              requestResult = 'method not supported'
+        }
+        window.domAutomationController.send('result ready')
+      }).catch(error => {
+        requestResult = error.message
+        window.domAutomationController.send('result ready')
+      })
+  }
+
+  function getSignMessageResult() {
+    return signMessageResult;
+  }
+
+  function getSignAndSendTransactionResult() {
+    return signAndSendTransactionResult;
+  }
+
+  function getSignTransactionResult() {
+    return signTransactionResult;
+  }
+
+  function getSignAllTransactionsResult() {
+    return signAllTransactionsResult;
+  }
+
+  function getRequestResult() {
+    let result = requestResult;
+    requestResult = ''
+    return result;
+  }
+
+  function getAccountChangedResult() {
+    let result = accountChangedResult;
+    accountChangedResult = ''
+    return result;
+  }
+
+  function getDisconnectEmitted() {
+    let result = disconnectEmitted
+    disconnectEmitted = false
+    return result
+  }
+
+  function getIsBraveWalletViaProxy() {
+    proxy1 = new Proxy(window.solana, {})
+    proxy2 = new Proxy(window.braveSolana, {})
+    return proxy1.isBraveWallet && proxy2.isBraveWallet;
+  }
+
+  async function solanaDisconnectViaProxy() {
+    proxy1 = new Proxy(window.solana, {})
+    proxy2 = new Proxy(window.braveSolana, {})
+    const result1 = await proxy1.disconnect()
+    const result2 = await proxy2.disconnect()
+    if (result1 === undefined && result2 === undefined)
+      return true;
+    else
+      return false;
+  }
+
+</script>
+
+<body>
+</body>
+</html>

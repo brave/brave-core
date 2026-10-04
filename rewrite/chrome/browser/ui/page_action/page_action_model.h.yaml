@@ -1,0 +1,70 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Adding interfaces to PageActionModelInterface for PageActionView.
+
+      The brave PageActionModel override (chromium_src/.../page_action_model.h)
+      implements these new interfaces and it will be used by
+      PartitionedStoragePageActionController via PageActionControllerImpl. As
+      there's also FakePageActionModel, we can't cast to the brave
+      PageActionModel in PageActionControllerImpl, so we need a default empty
+      implementation here.
+    add_to_public:
+      class_name: PageActionModelInterface
+      code: |-
+        virtual void SetOverrideChipColors(
+            PageActionPassKey,
+            std::optional<SkColor> override_background_color,
+            std::optional<SkColor> override_foreground_color) = 0;
+        virtual void SetAlwaysShowLabel(PageActionPassKey,
+                                        bool always_show) = 0;
+        virtual void SetOverrideHeight(PageActionPassKey,
+                                       std::optional<int> height) = 0;
+        virtual void SetOverrideTriggerableEvent(PageActionPassKey,
+                                                 std::optional<int> event_flags) = 0;
+        virtual void SetOverrideBorder(PageActionPassKey,
+                                       std::optional<gfx::Insets> border) = 0;
+        virtual std::optional<SkColor> GetOverrideBackgroundColor() const = 0;
+        virtual std::optional<SkColor> GetOverrideForegroundColor() const = 0;
+        virtual bool GetAlwaysShowLabel() const = 0;
+        virtual std::optional<int> GetOverrideHeight() const = 0;
+        virtual std::optional<int> GetOverrideTriggerableEvent() const = 0;
+        virtual std::optional<gfx::Insets> GetOverrideBorder() const = 0;
+
+  - description: |
+      Adding Property types for NotifyChange for the new set methods added.
+
+      Keys are appended at the end of the PageActionModel::Property enum, and
+      kMaxValue is re-pointed to the last Brave-added entry so PropertySet's
+      EnumSet range covers them.
+    regex:
+      re_pattern: '(enum class Property \{.+?,\n)\s+kMaxValue = \w+,'
+      re_flags: [DOTALL]
+      replace: |-
+        \1    kAlwaysShowLabel,
+            kOverrideChipColors,
+            kOverrideHeight,
+            kOverrideTriggerableEvent,
+            kOverrideBorder,
+            kMaxValue = kOverrideBorder,
+
+  - description: |
+      Rename PageActionModel to PageActionModel_ChromiumImpl.
+
+      This makes the brave `page_actions::PageActionModel` a full shadow: the
+      renamed upstream class is left abstract (it does not implement the pure
+      virtuals added to PageActionModelInterface above), so only the brave
+      `PageActionModel` can be instantiated by Chromium code.
+    rename_class:
+      class_name: PageActionModel
+      rename: PageActionModel_ChromiumImpl
+
+  - description: |
+      Friend the brave PageActionModel so it can call NotifyChange.
+    add_friend:
+      class_name: PageActionModel_ChromiumImpl
+      friend_type: class ::page_actions::PageActionModel

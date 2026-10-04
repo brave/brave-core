@@ -1,0 +1,69 @@
+// Copyright 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import BraveCore
+import Foundation
+import Preferences
+import Shared
+
+class RewardsNotification: NSObject, BraveNotification {
+  enum Action {
+    /// The user opened the ad by either clicking on it directly or by swiping and clicking the "view" button
+    case opened
+    /// The user swiped the ad away
+    case dismissed
+    /// The user ignored the ad for a given amount of time for it to automatically dismiss
+    case timedOut
+  }
+
+  var view: UIView
+  var dismissAction: (() -> Void)?
+  var id: String { ad.placementId }
+  let ad: BraveAds.NotificationAdInfo
+  var dismissPolicy: DismissPolicy {
+    guard view is AdView else { return .automatic() }
+
+    var dismissTimeInterval: TimeInterval = 30
+    if !AppConstants.isOfficialBuild,
+      let override = Preferences.Rewards.adsDurationOverride.value, override > 0
+    {
+      dismissTimeInterval = TimeInterval(override)
+    }
+    return .automatic(after: dismissTimeInterval)
+  }
+
+  private let handler: (Action) -> Void
+
+  func willDismiss(timedOut: Bool) {
+    guard view is AdView else { return }
+    handler(timedOut ? .timedOut : .dismissed)
+  }
+
+  init(
+    ad: BraveAds.NotificationAdInfo,
+    handler: @escaping (Action) -> Void
+  ) {
+    self.ad = ad
+    self.view = AdView()
+    self.handler = handler
+    super.init()
+    self.setup()
+  }
+
+  private func setup() {
+    guard let adView = view as? AdView else { return }
+
+    adView.adContentButton.titleLabel.text = ad.title
+    adView.adContentButton.bodyLabel.text = ad.body
+
+    adView.adContentButton.addTarget(self, action: #selector(tappedAdView(_:)), for: .touchUpInside)
+  }
+
+  @objc private func tappedAdView(_ sender: AdContentButton) {
+    guard sender.superview is AdView else { return }
+    dismissAction?()
+    handler(.opened)
+  }
+}

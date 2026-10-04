@@ -1,0 +1,9 @@
+Name: windows_x86_64_msvc
+URL: https://crates.io/crates/windows_x86_64_msvc
+Version: 0.52.6
+License: Apache-2.0
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Import lib for Windows

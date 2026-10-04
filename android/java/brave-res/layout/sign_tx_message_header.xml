@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/fragment_sign_tx_msg_tv_network_name"
+        style="@style/BraveWalletTextView"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/mainnet"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/fragment_sign_tx_msg_tv_counter"
+        style="@style/BraveWalletTextView"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="20dp"
+        tools:text="1 of 2"
+        android:textSize="16sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/fragment_encryption_msg_btn_next"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/fragment_encryption_msg_btn_next"
+        style="@style/BraveWalletTextButton"
+        android:text="@string/brave_wallet_next"
+        app:layout_constraintBottom_toBottomOf="@id/fragment_sign_tx_msg_tv_counter"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:minWidth="0dp"
+        android:padding="8dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@id/fragment_sign_tx_msg_tv_counter"
+        app:layout_constraintTop_toTopOf="@id/fragment_sign_tx_msg_tv_counter"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/fragment_sign_tx_msg_cv_account_image_container"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:elevation="12dp"
+        app:cardBackgroundColor="@color/brave_theme_color"
+        app:cardCornerRadius="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_sign_tx_msg_tv_network_name"
+        app:strokeColor="@color/brave_white"
+        app:strokeWidth="2dp">
+
+        <ImageView
+            android:id="@+id/fragment_sign_tx_msg_cv_iv_account"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/accessibility_wallet_dapp_panel_account"
+            tools:srcCompat="@drawable/ic_brave_logo" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/domain"
+        style="@style/BraveWalletTextView"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_sign_tx_msg_cv_account_image_container" />
+
+    <TextView
+        android:id="@+id/fragment_sign_tx_msg_tv_account_name"
+        style="@style/BraveWalletTextView"
+        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/domain"
+        tools:text="Ledger Nano" />
+
+    <TextView
+        android:id="@+id/fragment_sign_tx_msg_tv_message"
+        style="@style/BraveWalletTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        android:gravity="center"
+        android:text="@string/fragment_sign_message_description"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_sign_tx_msg_tv_account_name"
+        tools:text="Your signature is being requested" />
+</androidx.constraintlayout.widget.ConstraintLayout>

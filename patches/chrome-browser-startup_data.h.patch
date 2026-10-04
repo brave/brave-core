@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/startup_data.h b/chrome/browser/startup_data.h
+index 6a5ce87dd23987d16b6fc098cb603e7510c506ed..f6a5052221923bec5adc09009a961da8cfee61da 100644
+--- a/chrome/browser/startup_data.h
++++ b/chrome/browser/startup_data.h
+@@ -15,7 +15,7 @@
+ #include "components/leveldb_proto/public/proto_database_provider.h"  // nogncheck
+ #endif
+ 
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+ namespace extensions {
+ class ExtensionsBrowserClient;
+ }
+@@ -95,7 +95,7 @@ class StartupData {
+   TakeProtoDatabaseProvider();
+ #endif
+ 
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+   // Passes ownership of the `extensions_browser_client_` to the caller.
+   std::unique_ptr<extensions::ExtensionsBrowserClient>
+   TakeExtensionsBrowserClient();
+@@ -123,7 +123,7 @@ class StartupData {
+   std::unique_ptr<leveldb_proto::ProtoDatabaseProvider> proto_db_provider_;
+ #endif
+ 
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+   std::unique_ptr<extensions::ExtensionsBrowserClient>
+       extensions_browser_client_;
+ #endif

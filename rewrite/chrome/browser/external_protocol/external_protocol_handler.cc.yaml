@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Don't fast-path mailto past the external protocol prompt.
+
+      Upstream returns DONT_BLOCK for mailto before the policy and per-origin
+      preference checks run, launching the OS mail client without asking.
+      Short-circuiting the condition lets mailto follow the same path as
+      every other external scheme, so enterprise policy and a remembered
+      "always allow" still apply, and otherwise the user is prompted.
+    regex:
+      pattern: 'if (scheme == "mailto") {'
+      replace: 'if ((false) && scheme == "mailto") {'

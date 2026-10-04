@@ -1,0 +1,5 @@
+specific_include_rules = {
+  "shim\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ]
+}

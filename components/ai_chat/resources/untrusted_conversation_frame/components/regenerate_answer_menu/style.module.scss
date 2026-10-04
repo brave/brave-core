@@ -1,0 +1,96 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.buttonMenu {
+  --leo-menu-max-height: 320px;
+  leo-menu-item {
+    --leo-icon-size: 20px;
+    font: var(--leo-font-default-regular);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--leo-spacing-m);
+    padding: var(--leo-spacing-m);
+    min-width: 240px;
+    &:hover {
+      background-color: var(--leo-color-container-highlight);
+    }
+  }
+}
+
+.section {
+  padding: var(--leo-spacing-s);
+  leo-menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--leo-spacing-xl);
+    padding: var(--leo-spacing-m);
+    min-width: 240px;
+    border-radius: var(--leo-radius-s);
+    &:hover {
+      background-color: var(--leo-color-container-highlight);
+    }
+    &[aria-selected] {
+      background-color: var(--leo-color-container-interactive);
+      color: var(--leo-color-text-interactive);
+    }
+  }
+}
+
+.menuHeader {
+  display: flex;
+  background-color: var(--leo-color-container-highlight);
+  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+  color: var(--leo-color-text-secondary);
+  font: var(--leo-font-components-label);
+}
+
+.anchorButton {
+  --leo-button-padding: 0px;
+  --leo-button-color: none;
+  --anchor-button-text-color: var(--leo-color-text-tertiary);
+  --anchor-button-icon-color: var(--leo-color-icon-secondary);
+  opacity: 0.7;
+  display: flex;
+  flex: 0;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.anchorButtonOpen {
+  opacity: 1;
+  --anchor-button-text-color: var(--leo-color-text-interactive);
+  --anchor-button-icon-color: var(--leo-color-icon-interactive);
+}
+
+.anchorButtonContent {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: var(--leo-spacing-s);
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.anchorButtonText {
+  font: var(--leo-font-small-regular);
+  color: var(--anchor-button-text-color);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.anchorButtonIcon {
+  --leo-icon-size: 18px;
+  --leo-icon-color: var(--anchor-button-icon-color);
+  transform: rotate(0deg);
+  transition: transform 0.2s ease;
+}
+
+.anchorButtonIconOpen {
+  transform: rotate(180deg);
+}

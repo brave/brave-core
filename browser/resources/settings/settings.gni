@@ -1,0 +1,32 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# you can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
+import("//chrome/browser/resources/settings/settings.gni")
+
+settings_namespace_rewrites = [
+  "settings.BraveAppearanceBrowserProxyImpl|BraveAppearanceBrowserProxyImpl",
+  "settings.BraveLeoAssistantBrowserProxyImpl|BraveLeoAssistantBrowserProxyImpl",
+  "settings.BraveVPNBrowserProxyImpl|BraveVPNBrowserProxyImpl",
+  "settings.BraveWalletBrowserProxyImpl|BraveWalletBrowserProxyImpl",
+  "settings.BraveDefaultExtensionsBrowserProxyImpl|BraveDefaultExtensionsBrowserProxyImpl",
+  "settings.BraveNewTabBrowserProxyImpl|BraveNewTabBrowserProxyImpl",
+  "settings.BravePrivacyBrowserProxyImpl|BravePrivacyBrowserProxyImpl",
+  "settings.BraveRewardsBrowserProxyImpl|BraveRewardsBrowserProxyImpl",
+  "settings.BraveSearchEnginesPageBrowserProxyImpl|BraveSearchEnginesPageBrowserProxyImpl",
+  "settings.BraveSyncBrowserProxy|BraveSyncBrowserProxy",
+  "settings.DefaultBraveShieldsBrowserProxyImpl|DefaultBraveShieldsBrowserProxyImpl",
+  "settings.SocialBlockingPageProxyImpl|SocialBlockingPageProxyImpl",
+  "settings.Router|Router",
+]
+
+if (enable_pin_shortcut) {
+  settings_namespace_rewrites += [
+    "settings.PinShortcutPageBrowserProxyImpl|PinShortcutPageBrowserProxyImpl",
+  ]
+}
+
+settings_auto_imports =
+    [ "chrome/browser/resources/settings/router.html|Router,Route" ]

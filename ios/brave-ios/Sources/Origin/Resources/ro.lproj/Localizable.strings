@@ -1,0 +1,99 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "Reclame";
+
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "Deja achiziționat pe brave.com?";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "Analiză";
+
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "Cumpără acum";
+
+/* A message shown in a toast informing the user that enabling or disabling a Brave feature requires restarting the browser to take effect */
+"featureEnabledToastMessage" = "Activarea sau dezactivarea unei caracteristici Brave necesită o repornire a browserului pentru a aplica modificările. Te rog să închizi (glisează în sus în App Switcher) și apoi să redeschizi Brave.";
+
+/* A title shown in a toast that appears after toggling a Brave feature on or off in Origin settings */
+"featureEnabledToastTitle" = "Modificarea funcțiilor Brave";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "**Personalizează-ți browserul susținând în continuare Brave**\n\nBrave Origin este o versiune plătită a browserului pentru utilizatorii care nu au nevoie de toate funcțiile care susțin Brave ca business, dar care doresc totuși confidențialitatea pe care doar Brave o oferă. Utilizatorii Origin vor continua să beneficieze de confidențialitate de top din industrie, blocare de reclame și viteză (prin Shields), precum și actualizări regulate ale software-ului, patch-uri Chromium și îmbunătățiri de securitate și confidențialitate. Origin va elimina majoritatea celorlalte funcții din browser.";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "Funcționalități";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Verifică achiziția Brave Origin";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "Leo IA";
+
+/* A button title that when triggered will allow a user to link their App Store purchase with Brave Account */
+"linkPurchase" = "Conectează achiziția la contul tău Brave";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "Știri";
+
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "Achiziție unică";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "Playlist";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "Analizele care păstrează confidențialitatea";
+
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "Ai un cod promoțional?";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"purchaseChoiceHeaderText" = "Alege metoda de plată care funcționează pentru tine:";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "Nu s-a putut finaliza achiziția. Te rog să încerci din nou sau să verifici detaliile de plată în Apple și apoi să încerci din nou.";
+
+/* The footer shown below the Purchase section of the settings page */
+"purchaseSectionFooter" = "Conectează achiziția App Store la contul tău Brave pentru a putea utiliza Brave Origin și pe alte dispozitive";
+
+/* The header shown below the Purchase section of the settings page */
+"purchaseSectionHeader" = "Achiziție";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "Utilizează un cod de ofertă";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "Resetare la valorile implicite";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "Restabilește";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "Recompense";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "Raportarea statisticilor";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "Talk";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "Mențineți adblock-ul de bază, confidențialitatea, viteza &";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "IU minimalist a browserului centrat pe Brave Shields";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "Achiziția unică poate fi activată de mai multe ori pe toate dispozitivele tale";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "Sprijiniți-ne misiunea & muncă open-source";
+
+/* A button title that when triggered will allow a user to view their App Store receipt */
+"viewAppStoreReceipt" = "Vezi chitanța App Store";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "Wallet";
+

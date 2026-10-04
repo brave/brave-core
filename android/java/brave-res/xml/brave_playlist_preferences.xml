@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:key="playlist_preference_screen" >
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="enable_playlist"
+        android:title="@string/enable_playlist"
+        android:summary="@string/enable_playlist_summary"
+        android:defaultValue="true" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="add_to_playlist_button"
+        android:title="@string/add_to_playlist_button"
+        android:summary="@string/add_to_playlist_button_summary"
+        android:defaultValue="true" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="remember_file_playback_position"
+        android:title="@string/remember_file_playback_position"
+        android:summary="@string/remember_file_playback_position_summary"
+        android:defaultValue="true" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="remember_list_playback_position"
+        android:title="@string/remember_list_playback_position"
+        android:summary="@string/remember_list_playback_position_summary"
+        android:defaultValue="false" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="continuous_listening"
+        android:title="@string/continuous_listening"
+        android:summary="@string/continuous_listening_summary"
+        android:defaultValue="true" />
+
+    <org.chromium.chrome.browser.playlist.settings.BravePlaylistResetPreference
+        android:key="reset_playlist"
+        android:title="@string/reset_playlist"
+        android:summary="@string/reset_playlist_summary" />
+
+</PreferenceScreen>

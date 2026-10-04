@@ -1,0 +1,38 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import { html } from '//resources/lit/v3_0/lit.rollup.js'
+
+import './brave_account_dialog.js'
+import './brave_account_email_input.js'
+import { BraveAccountPasswordResetDialogElement } from './brave_account_password_reset_dialog.js'
+import type { EmailInputEventDetail } from './brave_account_email_input.js'
+
+export function getHtml(this: BraveAccountPasswordResetDialogElement) {
+  return html`<!--_html_template_start_-->
+    <brave-account-dialog
+      dialog-description="$i18n{BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_DESCRIPTION}"
+      dialog-title="$i18n{BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_TITLE}"
+      show-back-button
+    >
+      <div slot="inputs">
+        <brave-account-email-input
+          @email-input=${(e: CustomEvent<EmailInputEventDetail>) => {
+            this.email = e.detail.email
+            this.isEmailValid = e.detail.isValid
+          }}
+        >
+        </brave-account-email-input>
+      </div>
+      <leo-button
+        slot="buttons"
+        ?isDisabled=${!this.isEmailValid || this.isSubmitting}
+        @click=${this.onResetPasswordButtonClicked}
+      >
+        $i18n{BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL}
+      </leo-button>
+    </brave-account-dialog>
+    <!--_html_template_end_-->`
+}

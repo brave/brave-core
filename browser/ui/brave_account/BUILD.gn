@@ -1,0 +1,36 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("brave_account") {
+  sources = [ "brave_account_dialog_opener.h" ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_account/mojom",
+    "//content/public/browser",
+  ]
+
+  if (!is_android) {
+    sources += [ "brave_account_dialog_opener_desktop.cc" ]
+
+    deps += [
+      "//brave/browser/brave_account",
+      "//brave/components/brave_account:constants",
+      "//brave/components/constants",
+      "//chrome/browser/profiles",
+      "//chrome/browser/ui/webui",
+      "//net",
+      "//ui/compositor",
+      "//ui/gfx/geometry",
+      "//ui/views",
+      "//ui/web_dialogs",
+      "//url",
+    ]
+  } else {
+    sources += [ "brave_account_dialog_opener_android.cc" ]
+
+    deps += [ "//brave/browser/ui/android/brave_account:jni_headers" ]
+  }
+}

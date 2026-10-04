@@ -1,0 +1,55 @@
+/* manrope-100 */
+@font-face {
+    font-family: 'Poppins';
+    font-weight: 100;
+    src: url('./third_party/manrope/manrope-v11-200.woff2') format('woff2');
+}
+
+/* manrope-200 */
+@font-face {
+    font-family: 'Poppins';
+    font-weight: 200;
+    src: url('./third_party/manrope/manrope-v11-200.woff2') format('woff2');
+}
+/* manrope-300 */
+@font-face {
+    font-family: 'Poppins';
+    font-weight: 300;
+    src: url('./third_party/manrope/manrope-v11-300.woff2') format('woff2');
+}
+/* manrope-400 */
+@font-face {
+    font-family: 'Poppins';
+    font-weight: 400;
+    src: url('./third_party/manrope/manrope-v11-400.woff2') format('woff2');
+}
+/* manrope-500 */
+@font-face {
+    font-family: 'Poppins';
+    font-weight: 500;
+    src: url('./third_party/manrope/manrope-v11-500.woff2') format('woff2');
+}
+/* manrope-600 */
+@font-face {
+    font-family: 'Poppins';
+    font-weight: 600;
+    src: url('./third_party/manrope/manrope-v11-600.woff2') format('woff2');
+}
+/* manrope-700 */
+@font-face {
+    font-family: 'Poppins';
+    font-weight: 700;
+    src: url('./third_party/manrope/manrope-v11-700.woff2') format('woff2');
+}
+/* manrope-800 */
+@font-face {
+    font-family: 'Poppins';
+    font-weight: 800;
+    src: url('./third_party/manrope/manrope-v11-800.woff2') format('woff2');    
+}
+/* manrope-900 */
+@font-face {
+    font-family: 'Poppins';
+    font-weight: 900;
+    src: url('./third_party/manrope/manrope-v11-800.woff2') format('woff2');    
+}

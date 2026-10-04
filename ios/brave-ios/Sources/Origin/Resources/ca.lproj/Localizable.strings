@@ -1,0 +1,99 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "Anuncis";
+
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "Ja has comprat a brave.com?";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "Analítica";
+
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "Comprar ara";
+
+/* A message shown in a toast informing the user that enabling or disabling a Brave feature requires restarting the browser to take effect */
+"featureEnabledToastMessage" = "Habilitar o inhabilitar una funció de Brave requereix que reinicieu el navegador per aplicar els canvis. Tanqueu (lliscant cap amunt al commutador d'aplicacions) i torneu a obrir Brave.";
+
+/* A title shown in a toast that appears after toggling a Brave feature on or off in Origin settings */
+"featureEnabledToastTitle" = "Canviar funcions de Brave";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "**Personalitza el teu navegador mentre continues donant suport a Brave**\n\nBrave Origin és una versió de pagament del navegador per a usuaris que no necessiten totes les funcions que suporten Brave com a negoci, però que encara volen la privacitat que només Brave ofereix. Els usuaris d'Origin continuaran beneficiant-se de la nostra privacitat líder del sector, bloqueig de publicitat i velocitat (mitjançant Escuts), així com actualitzacions de programari regulars, pegats de Chromium i millores de seguretat i privacitat. Origin eliminarà la majoria de les altres funcions del navegador.";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "Funcions";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Verifica la compra de Brave Origin";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "IA Leo";
+
+/* A button title that when triggered will allow a user to link their App Store purchase with Brave Account */
+"linkPurchase" = "Enllaça la compra al teu compte de Brave";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "Notícies";
+
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "Compra única";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "Llista de reproducció";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "Analítica que preserva la privadesa";
+
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "Tens un codi promocional?";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"purchaseChoiceHeaderText" = "Tria el mètode de pagament que prefereixis:";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "No es pot completar la compra. Torna-ho a provar o comprova les teves dades de pagament a Apple i torna-ho a provar.";
+
+/* The footer shown below the Purchase section of the settings page */
+"purchaseSectionFooter" = "Enllaça la compra de l'App Store al teu compte de Brave per utilitzar Brave Origin en altres aparells";
+
+/* The header shown below the Purchase section of the settings page */
+"purchaseSectionHeader" = "Compra";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "Bescanviar codi promocional";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "Restablir valors predeterminats";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "Restaura";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "Recompenses";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "Informes d'estadístiques";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "Conversa";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "Manté el bloqueig d'anuncis bàsic, la privadesa i la velocitat";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "IU de navegador minimalista centrada en Escuts de Brave";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "La compra única es pot activar diverses vegades en tots els vostres aparells";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "Dona suport a la nostra missió i al nostre treball de codi obert";
+
+/* A button title that when triggered will allow a user to view their App Store receipt */
+"viewAppStoreReceipt" = "Veure el rebut de l'App Store";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "Cartera";
+

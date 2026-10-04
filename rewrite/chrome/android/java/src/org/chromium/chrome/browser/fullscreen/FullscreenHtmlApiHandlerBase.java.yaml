@@ -1,0 +1,38 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Preserve fullscreen when a tab hide interrupts video PiP.
+
+      The Brave hook preserves active YouTube sessions and any locked PiP with
+      background playback enabled. It also records tab switches for cleanup.
+    regex:
+      re_pattern: '(public void onHidden\(.*\)\s+\{)'
+      replace: |-
+        \1
+                                if (BraveFullscreenHtmlApiHandlerBase.class.cast(
+                                                FullscreenHtmlApiHandlerBase.this)
+                                        .maybeSkipExitFullscreenOnTabHidden(mActivity, reason)) {
+                                    return;
+                                }
+
+  - description: |-
+      Preserve fullscreen when an activity stop interrupts video PiP.
+
+      Exiting fullscreen on screen lock also suspends media. The Brave hook
+      preserves active YouTube sessions and any locked PiP with background
+      playback enabled. Activity destruction still performs normal cleanup.
+    regex:
+      re_pattern:
+        '(public void onActivityStateChange\(Activity activity, int
+        newState\)\s+\{\n\s+if \(newState == ActivityState\.STOPPED &&
+        mExitFullscreenOnStop\)\s+\{)'
+      replace: |-
+        \1
+                    if (BraveFullscreenHtmlApiHandlerBase.class.cast(FullscreenHtmlApiHandlerBase.this)
+                                .shouldPreservePersistentFullscreenForPictureInPicture(activity)) {
+                        return;
+                    }

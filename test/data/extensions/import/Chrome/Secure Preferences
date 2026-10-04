@@ -1,0 +1,62 @@
+{
+	"extensions": {
+		"settings" : {
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa": {
+            	"was_installed_by_default":  false,
+            	"state":  1,
+            	"from_webstore": true,
+            	"manifest": {
+            		"key": "0"
+            	}
+            },
+            "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb": {
+            	"was_installed_by_default":  false,
+            	"state":  1,
+            	"from_webstore": true,
+            	"manifest": {
+            		"key": "1"
+            	}
+            },
+            "cccccccccccccccccccccccccccccccc": {
+            	"was_installed_by_default":  false,
+            	"state":  1,
+            	"from_webstore": true,
+            	"manifest": {
+            		"key": "2"
+            	}
+            },
+            "dddddddddddddddddddddddddddddddd": {
+            	"was_installed_by_default":  false,
+            	"state":  1,
+            	"from_webstore": true,
+            	"manifest": {
+            	  "key": "3"
+            	}
+            },
+            "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee": {
+            	"was_installed_by_default":  true,
+            	"state":  1,
+            	"from_webstore": true,
+            	"manifest": {
+            	  "key": "4"
+            	}
+            },
+            "ffffffffffffffffffffffffffffffff": {
+            	"was_installed_by_default":  false,
+            	"state":  0,
+            	"from_webstore": true,
+            	"manifest": {
+            	  "key": "5"
+            	}
+            },
+            "gggggggggggggggggggggggggggggggg": {
+            	"was_installed_by_default":  false,
+            	"state":  0,
+            	"from_webstore": false,
+            	"manifest": {
+            	  "key": "6"
+            	}
+            }
+		}
+	}
+}

@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc b/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
+index 0a2644a4431b7e356dcd8372ac5dc678676c6602..6df0e96e1e623e950ca53521767f8c3b79872842 100644
+--- a/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
++++ b/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
+@@ -574,6 +574,7 @@ void BookmarkBubbleView::ShowBubble(
+       dialog_model_builder.Build(), bubble_anchor,
+       views::BubbleBorder::TOP_RIGHT);
+   bookmark_bubble_ = bubble.get();
++  bubble->SetArrow(views::BubbleBorder::TOP_LEFT);
+   bubble->SetHighlightedElement(kBookmarkStarViewElementId);
+ 
+   if (ShouldShowShoppingCollectionFootnote(profile, bookmark_model,

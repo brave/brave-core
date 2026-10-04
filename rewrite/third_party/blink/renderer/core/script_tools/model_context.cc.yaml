@@ -1,0 +1,29 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Tell WebLocalFrameObservers that the document's WebMCP tools changed.
+
+      Preempted rather than appended so that a page `toolchange` handler which
+      detaches the frame can't make the notification be silently dropped.
+    preempt_function_impl:
+      function_name: ModelContext::NotifyToolChange
+      code: |-
+        if (auto* web_frame = WebLocalFrameImpl::FromFrame(document_->GetFrame())) {
+          web_frame->NotifyScriptToolsChanged();
+        }
+
+  - description: |
+      Allow chrome-untrusted:// WebUI documents to use the Model Context (WebMCP)
+      API.
+
+      Only Leo's "workspace" documents qualify; see
+      `IsAIChatLeoWorkspaceDocument()` in chromium_src for what that means.
+    regex:
+      re_pattern: '(!document_->GetSettings\(\)->GetWebSecurityEnabled\(\)\));'
+      replace: |-
+        \1 ||
+                 IsAIChatLeoWorkspaceDocument(*document_);

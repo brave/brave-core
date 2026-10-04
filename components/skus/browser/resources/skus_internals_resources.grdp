@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+   <include name="IDR_SKUS_INTERNALS_HTML" file="../skus/browser/resources/skus_internals.html" type="BINDATA" />
+</grit-part>

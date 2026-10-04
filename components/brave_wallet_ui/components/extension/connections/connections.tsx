@@ -1,0 +1,123 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+
+// Types
+import { BraveWallet } from '../../../constants/types'
+
+// Queries
+import {
+  useGetActiveOriginQuery,
+  useGetSelectedDappAccountsQuery,
+} from '../../../common/slices/api.slice'
+
+// Hooks
+import {
+  useSafeWalletSelector, //
+} from '../../../common/hooks/use-safe-selector'
+
+// selectors
+import { WalletSelectors } from '../../../common/selectors'
+
+// Utils
+import { getLocale } from '$web-common/locale'
+
+// Components
+import {
+  WalletPageWrapper, //
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
+import {
+  DefaultPanelHeader, //
+} from '$wallet/page/components/card_headers/default_panel_header'
+import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
+import {
+  ConnectionSection, //
+} from './components/connection_section/connection_section'
+
+// Styled Components
+import {
+  FavIcon,
+  DomainText,
+  DomainTextContainer, //
+} from './connections.style'
+import { Column } from '../../shared/style'
+
+export const Connections = () => {
+  // Queries
+  const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
+    useGetActiveOriginQuery()
+  const { data: dappsAccounts } = useGetSelectedDappAccountsQuery()
+
+  // Redux
+  const isCardanoDappSupportEnabled = useSafeWalletSelector(
+    WalletSelectors.isCardanoDappSupportEnabled,
+  )
+
+  return (
+    <WalletPageWrapper
+      wrapContentInBox={true}
+      noCardPadding={true}
+      useDarkBackground={true}
+      isConnection={true}
+      cardHeader={
+        <DefaultPanelHeader title={getLocale(S.BRAVE_WALLET_CONNECTIONS)} />
+      }
+    >
+      <Column
+        fullWidth={true}
+        padding='8px 16px'
+      >
+        <FavIcon
+          src={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(
+            activeOrigin.originSpec,
+          )}`}
+        />
+        <DomainTextContainer
+          gap='4px'
+          margin='0px 0px 24px 0px'
+          padding='0px 24px'
+        >
+          <DomainText
+            textSize='16px'
+            isBold={true}
+            textColor='primary'
+          >
+            {activeOrigin.eTldPlusOne}
+          </DomainText>
+          <DomainText
+            textSize='14px'
+            isBold={false}
+            textColor='tertiary'
+          >
+            <CreateSiteOrigin
+              originSpec={activeOrigin.originSpec}
+              eTldPlusOne={activeOrigin.eTldPlusOne}
+            />
+          </DomainText>
+        </DomainTextContainer>
+        <Column
+          gap='16px'
+          width='100%'
+        >
+          <ConnectionSection
+            coin={BraveWallet.CoinType.ETH}
+            selectedAccountId={dappsAccounts?.ethAccountId}
+          />
+          <ConnectionSection
+            coin={BraveWallet.CoinType.SOL}
+            selectedAccountId={dappsAccounts?.solAccountId}
+          />
+          {isCardanoDappSupportEnabled && dappsAccounts?.adaAccountId && (
+            <ConnectionSection
+              coin={BraveWallet.CoinType.ADA}
+              selectedAccountId={dappsAccounts?.adaAccountId}
+            />
+          )}
+        </Column>
+      </Column>
+    </WalletPageWrapper>
+  )
+}

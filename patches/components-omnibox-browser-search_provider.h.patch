@@ -1,0 +1,13 @@
+diff --git a/components/omnibox/browser/search_provider.h b/components/omnibox/browser/search_provider.h
+index b8fbfb8fa2446a449c8b60db45dc266187c41864..7b4d501a1e19ca531413434849de434a18392f87 100644
+--- a/components/omnibox/browser/search_provider.h
++++ b/components/omnibox/browser/search_provider.h
+@@ -207,7 +207,7 @@ class SearchProvider : public BaseSearchProvider,
+ 
+   // Updates |matches_| from the latest results; applies calculated relevances
+   // if suggested relevances cause undesirable behavior. Updates |done_|.
+-  void UpdateMatches();
++  virtual void UpdateMatches();
+ 
+   // Checks constraints that may be violated by suggested relevances and
+   // revises/rolls back the suggested relevance scores to make all constraints

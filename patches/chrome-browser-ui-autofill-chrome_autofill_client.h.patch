@@ -1,0 +1,29 @@
+diff --git a/chrome/browser/ui/autofill/chrome_autofill_client.h b/chrome/browser/ui/autofill/chrome_autofill_client.h
+index b7001aa96704150bea04e5f05f4f65e27c688f2d..a66a461614570c9228cdf2d7305751b70fcc413f 100644
+--- a/chrome/browser/ui/autofill/chrome_autofill_client.h
++++ b/chrome/browser/ui/autofill/chrome_autofill_client.h
+@@ -147,8 +147,7 @@ class ChromeAutofillClient : public ContentAutofillClient {
+   scoped_refptr<network::SharedURLLoaderFactory> GetURLLoaderFactory() final;
+   AutofillCrowdsourcingManager& GetCrowdsourcingManager() final;
+   VotesUploader& GetVotesUploader() final;
+-  AutofillOptimizationGuideDecider* GetAutofillOptimizationGuideDecider()
+-      const final;
++  AutofillOptimizationGuideDecider* GetAutofillOptimizationGuideDecider() const override;
+   FieldClassificationModelHandler* GetAutofillFieldClassificationModelHandler()
+       final;
+   FieldClassificationModelHandler*
+@@ -237,12 +236,12 @@ class ChromeAutofillClient : public ContentAutofillClient {
+   bool IsTabInActorMode() const final;
+   ActorAutofillManager* GetActorAutofillManager() final;
+   int64_t GetNavigationId() const final;
+-  bool IsAutofillEnabled() const final;
++  bool IsAutofillEnabled() const override;
+   bool IsAutofillProfileEnabled() const final;
+   bool IsAutofillTypeBlockedByPolicy(
+       const GURL& url,
+       AutofillPolicyDataCategory category) const final;
+-  bool IsAutocompleteEnabled() const final;
++  bool IsAutocompleteEnabled() const override;
+   bool IsWalletPublicPassStorageEnabled() const final;
+   bool IsPasswordManagerEnabled() const final;
+   bool UsesPlatformAutofill() const final;

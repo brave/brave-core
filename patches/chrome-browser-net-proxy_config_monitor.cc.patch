@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/net/proxy_config_monitor.cc b/chrome/browser/net/proxy_config_monitor.cc
+index 0874f5e29440471706f847a9212cdfa2b2eba2a3..528a76674b95355fff02c6bc5f4430ee90254bce 100644
+--- a/chrome/browser/net/proxy_config_monitor.cc
++++ b/chrome/browser/net/proxy_config_monitor.cc
+@@ -66,6 +66,11 @@ ProxyConfigMonitor::ProxyConfigMonitor(Profile* profile) {
+             enterprise_proxy_service);
+   }
+ 
++#if BUILDFLAG(ENABLE_TOR)
++  if (profile && profile->IsTor())
++    proxy_config_service_ = CreateProxyConfigServiceTor(profile);
++  else
++#endif  // BUILDFLAG(ENABLE_TOR)
+   proxy_config_service_ = ProxyServiceFactory::CreateProxyConfigService(
+       pref_proxy_config_tracker_.get(), profile);
+ 

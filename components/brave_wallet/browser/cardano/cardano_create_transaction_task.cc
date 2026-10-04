@@ -1,0 +1,231 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_wallet/browser/cardano/cardano_create_transaction_task.h"
+
+#include <stdint.h>
+
+#include <optional>
+#include <utility>
+#include <vector>
+
+#include "base/check.h"
+#include "base/check_op.h"
+#include "base/containers/to_vector.h"
+#include "base/functional/bind.h"
+#include "base/numerics/checked_math.h"
+#include "base/task/bind_post_task.h"
+#include "base/types/expected.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_knapsack_solver.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_max_lovelace_send_solver.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_max_token_send_solver.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_wallet_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/cardano_address.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
+
+namespace brave_wallet {
+
+// Transaction is valid for 2 hours.
+// https://github.com/input-output-hk/cardano-js-sdk/blob/5bc90ee9f24d89db6ea4191d705e7383d52fef6a/packages/tx-construction/src/ensureValidityInterval.ts#L3
+constexpr uint64_t kTxValiditySeconds = 2 * 3600;
+
+namespace {
+static bool g_arrange_tx_for_test = false;
+
+std::vector<CardanoTransaction::TxInput> TxInputsFromUtxos(
+    const cardano_rpc::UnspentOutputs& utxos) {
+  return base::ToVector(utxos, &CardanoTransaction::TxInput::FromRpcUtxo);
+}
+}  // namespace
+
+CardanoCreateTransactionTask::CardanoCreateTransactionTask(
+    CardanoWalletService& cardano_wallet_service,
+    const mojom::AccountIdPtr& account_id,
+    const CardanoAddress& address_to,
+    uint64_t amount,
+    bool sending_max_amount,
+    std::optional<cardano_rpc::TokenId> token_to_send)
+    : cardano_wallet_service_(cardano_wallet_service),
+      account_id_(account_id.Clone()),
+      address_to_(address_to),
+      amount_(amount),
+      sending_max_amount_(sending_max_amount),
+      token_to_send_(token_to_send) {
+  CHECK(IsCardanoAccount(account_id));
+}
+
+CardanoCreateTransactionTask::~CardanoCreateTransactionTask() = default;
+
+// static
+void CardanoCreateTransactionTask::SetArrangeTransactionForTesting(bool value) {
+  g_arrange_tx_for_test = value;
+}
+
+void CardanoCreateTransactionTask::Start(Callback callback) {
+  callback_ = base::BindPostTaskToCurrentDefault(std::move(callback));
+  FetchAllRequiredData();
+}
+
+cardano_rpc::CardanoRpc* CardanoCreateTransactionTask::GetCardanoRpc() {
+  return cardano_wallet_service_->GetCardanoRpc(
+      GetNetworkForCardanoAccount(account_id_));
+}
+
+void CardanoCreateTransactionTask::FetchAllRequiredData() {
+  GetCardanoRpc()->GetLatestEpochParameters(
+      base::BindOnce(&CardanoCreateTransactionTask::OnGetLatestEpochParameters,
+                     weak_ptr_factory_.GetWeakPtr()));
+  GetCardanoRpc()->GetLatestBlock(
+      base::BindOnce(&CardanoCreateTransactionTask::OnGetLatestBlock,
+                     weak_ptr_factory_.GetWeakPtr()));
+  cardano_wallet_service_->GetUtxos(
+      account_id_.Clone(),
+      base::BindOnce(&CardanoCreateTransactionTask::OnGetUtxos,
+                     weak_ptr_factory_.GetWeakPtr()));
+  cardano_wallet_service_->DiscoverNextUnusedAddress(
+      account_id_.Clone(), mojom::CardanoKeyRole::kExternal,
+      base::BindOnce(
+          &CardanoCreateTransactionTask::OnDiscoverNextUnusedChangeAddress,
+          weak_ptr_factory_.GetWeakPtr()));
+}
+
+bool CardanoCreateTransactionTask::IsAllRequiredDataFetched() {
+  return latest_epoch_parameters_ && latest_block_ && utxos_ && change_address_;
+}
+
+void CardanoCreateTransactionTask::OnMaybeAllRequiredDataFetched() {
+  if (IsAllRequiredDataFetched()) {
+    RunSolverForTransaction();
+  }
+}
+
+void CardanoCreateTransactionTask::RunSolverForTransaction() {
+  CHECK(IsAllRequiredDataFetched());
+
+  if (address_to_.IsStakeOnlyAddress()) {
+    StopWithError(WalletInternalErrorMessage());
+    return;
+  }
+
+  TxBuilderParms builder_params(address_to_, *change_address_);
+  builder_params.amount = amount_;
+  builder_params.sending_max_amount = sending_max_amount_;
+  builder_params.token_to_send = token_to_send_;
+  builder_params.epoch_parameters = *latest_epoch_parameters_;
+  if (!base::CheckAdd<uint64_t>(latest_block_->slot, kTxValiditySeconds)
+           .AssignIfValid(&builder_params.invalid_after)) {
+    StopWithError(WalletInternalErrorMessage());
+    return;
+  }
+
+  base::expected<CardanoTransaction, std::string> solved_transaction;
+  if (builder_params.sending_max_amount) {
+    if (builder_params.token_to_send) {
+      // Sending max amount of specified token.
+      CardanoMaxTokenSendSolver solver(std::move(builder_params),
+                                       TxInputsFromUtxos(*utxos_));
+      solved_transaction = solver.Solve();
+    } else {
+      // Sending max amount of lovelace.
+      CardanoMaxLovelaceSendSolver solver(std::move(builder_params),
+                                          TxInputsFromUtxos(*utxos_));
+      solved_transaction = solver.Solve();
+    }
+  } else {
+    // Sending specified amount of lovelace or token.
+    CardanoKnapsackSolver solver(std::move(builder_params),
+                                 TxInputsFromUtxos(*utxos_));
+    solved_transaction = solver.Solve();
+  }
+
+  if (!solved_transaction.has_value()) {
+    StopWithError(solved_transaction.error());
+    return;
+  }
+
+  CHECK(CardanoTransactionSerializer::ValidateAmounts(
+      *solved_transaction, *latest_epoch_parameters_));
+
+  StopWithResult(std::move(*solved_transaction));
+}
+
+void CardanoCreateTransactionTask::StopWithError(std::string error_string) {
+  weak_ptr_factory_.InvalidateWeakPtrs();
+
+  std::move(callback_).Run(base::unexpected(std::move(error_string)));
+}
+
+void CardanoCreateTransactionTask::StopWithResult(CardanoTransaction result) {
+  weak_ptr_factory_.InvalidateWeakPtrs();
+
+  std::move(callback_).Run(base::ok(std::move(result)));
+}
+
+void CardanoCreateTransactionTask::OnGetLatestEpochParameters(
+    base::expected<cardano_rpc::EpochParameters, std::string>
+        epoch_parameters) {
+  if (!epoch_parameters.has_value()) {
+    StopWithError(std::move(epoch_parameters.error()));
+    return;
+  }
+
+  latest_epoch_parameters_ = std::move(epoch_parameters.value());
+  OnMaybeAllRequiredDataFetched();
+}
+
+void CardanoCreateTransactionTask::OnGetLatestBlock(
+    base::expected<cardano_rpc::Block, std::string> block) {
+  if (!block.has_value()) {
+    StopWithError(std::move(block.error()));
+    return;
+  }
+
+  latest_block_ = std::move(block.value());
+  OnMaybeAllRequiredDataFetched();
+}
+
+void CardanoCreateTransactionTask::OnGetUtxos(
+    base::expected<cardano_rpc::UnspentOutputs, std::string> utxos) {
+  if (!utxos.has_value()) {
+    StopWithError(std::move(utxos.error()));
+    return;
+  }
+
+  if (utxos->empty()) {
+    StopWithError(WalletInsufficientBalanceErrorMessage());
+    return;
+  }
+
+  utxos_ = std::move(utxos.value());
+  OnMaybeAllRequiredDataFetched();
+}
+
+void CardanoCreateTransactionTask::OnDiscoverNextUnusedChangeAddress(
+    base::expected<mojom::CardanoAddressPtr, std::string> address) {
+  if (!address.has_value()) {
+    StopWithError(std::move(address.error()));
+    return;
+  }
+  // TODO(https://github.com/brave/brave-browser/issues/46092): we support only
+  // simple Cardano accounts now when there is only one address per account. So
+  // change address is also external address.
+  DCHECK_EQ(address.value()->payment_key_id->role,
+            mojom::CardanoKeyRole::kExternal);
+  // TODO(https://github.com/brave/brave-browser/issues/46092): should update
+  // account pref with new address.
+  change_address_ = CardanoAddress::FromString(address.value()->address_string);
+  if (!change_address_) {
+    StopWithError(WalletInternalErrorMessage());
+    return;
+  }
+  OnMaybeAllRequiredDataFetched();
+}
+
+}  // namespace brave_wallet

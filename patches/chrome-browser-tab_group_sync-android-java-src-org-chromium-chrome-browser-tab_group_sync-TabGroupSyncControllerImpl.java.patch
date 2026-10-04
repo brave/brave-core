@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/tab_group_sync/android/java/src/org/chromium/chrome/browser/tab_group_sync/TabGroupSyncControllerImpl.java b/chrome/browser/tab_group_sync/android/java/src/org/chromium/chrome/browser/tab_group_sync/TabGroupSyncControllerImpl.java
+index 3167294cb77d25af93ce09a940c6ea107c855099..32532b529459d5be4a01467f21c45a049c00c9ef 100644
+--- a/chrome/browser/tab_group_sync/android/java/src/org/chromium/chrome/browser/tab_group_sync/TabGroupSyncControllerImpl.java
++++ b/chrome/browser/tab_group_sync/android/java/src/org/chromium/chrome/browser/tab_group_sync/TabGroupSyncControllerImpl.java
+@@ -29,7 +29,7 @@ import java.util.function.Supplier;
+  * current window only.
+  */
+ @NullMarked
+-public final class TabGroupSyncControllerImpl
++public class TabGroupSyncControllerImpl
+         implements TabGroupSyncController, TabGroupUiActionHandler {
+     /**
+      * A delegate in helping out with creating and navigating tabs in response to remote updates

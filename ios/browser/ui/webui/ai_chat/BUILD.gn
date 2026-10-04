@@ -1,0 +1,87 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Kept separate from ":ai_chat" so it can be unit tested without pulling in the
+# WebUI page handler's dependencies.
+source_set("image_utils") {
+  sources = [
+    "image_utils.h",
+    "image_utils.mm",
+  ]
+
+  deps = [
+    "//brave/components/screenshot/core/browser",
+    "//skia",
+    "//ui/gfx/codec",
+  ]
+}
+
+source_set("ai_chat") {
+  sources = [
+    "ai_chat_ui.h",
+    "ai_chat_ui.mm",
+    "ai_chat_ui_page_handler.h",
+    "ai_chat_ui_page_handler.mm",
+    "ai_chat_untrusted_conversation_ui.h",
+    "ai_chat_untrusted_conversation_ui.mm",
+    "associated_url_content.h",
+    "associated_url_content.mm",
+  ]
+
+  deps = [
+    ":image_utils",
+    "//base",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/ai_chat/ios/browser",
+    "//brave/components/ai_chat/ios/common:mojom",
+    "//brave/components/ai_chat/resources",
+    "//brave/components/constants",
+    "//brave/components/resources:static_resources",
+    "//brave/components/resources:strings_grit",
+    "//brave/components/version_info",
+    "//brave/ios/browser/ai_chat",
+    "//brave/ios/browser/api/profile",
+    "//brave/ios/browser/api/web_view",
+    "//brave/ios/browser/misc_metrics",
+    "//brave/ios/browser/ui/webui:data_sources",
+    "//brave/ios/web/webui",
+    "//components/favicon/core",
+    "//components/favicon_base",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//components/resources",
+    "//ios/chrome/browser/bookmarks/model",
+    "//ios/chrome/browser/favicon/model",
+    "//ios/chrome/browser/history/model",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/components/webui:url_constants",
+    "//ios/web",
+    "//ios/web/public",
+    "//ios/web/public/webui",
+    "//ios/web/web_state:web_state_impl_header",
+    "//ios/web/webui",
+    "//ios/web_view/framework:web_view_sources",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/js:resources",
+    "//ui/base",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "image_utils_unittest.mm" ]
+
+  deps = [
+    ":image_utils",
+    "//base",
+    "//skia",
+    "//testing/gtest",
+    "//ui/gfx:test_support",
+    "//ui/gfx/codec",
+  ]
+}

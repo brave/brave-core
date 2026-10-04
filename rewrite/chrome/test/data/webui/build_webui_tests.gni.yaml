@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Pass caller-supplied defines to static test file preprocessing.
+
+      Preserve the default Chromium defines and add any supplied by the caller.
+    append_to_target:
+      target: preprocess_static_files
+      type: preprocess_if_expr
+      code: |-
+        if (defined(invoker.preprocessor_defines)) {
+          defines += invoker.preprocessor_defines
+        }
+  - description: |-
+      Pass caller-supplied defines to TypeScript test preprocessing.
+
+      Use the same defines as static test files so both follow the same conditions.
+    append_to_target:
+      target: preprocess
+      type: preprocess_if_expr
+      code: |-
+        if (defined(invoker.preprocessor_defines)) {
+          defines += invoker.preprocessor_defines
+        }

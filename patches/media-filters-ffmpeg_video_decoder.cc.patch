@@ -1,0 +1,21 @@
+diff --git a/media/filters/ffmpeg_video_decoder.cc b/media/filters/ffmpeg_video_decoder.cc
+index 3e351538d12f075224fa840d24a75ca99f117faf..04b96fdcedd8ba6e631210b386297db0c67e10fd 100644
+--- a/media/filters/ffmpeg_video_decoder.cc
++++ b/media/filters/ffmpeg_video_decoder.cc
+@@ -69,7 +69,7 @@ static int GetFFmpegVideoDecoderThreadCount(const VideoDecoderConfig& config) {
+ 
+   // Some ffmpeg codecs don't actually benefit from using more threads.
+   // Only add more threads for those codecs that we know will benefit.
+-  switch (config.codec()) {
++  switch (HEVCAsH264IfFFmpegSupportsHEVC(config.codec())) {
+     case VideoCodec::kUnknown:
+     case VideoCodec::kVC1:
+     case VideoCodec::kMPEG2:
+@@ -117,6 +117,7 @@ static void ReleaseVideoBufferImpl(void* opaque, uint8_t* data) {
+ 
+ // static
+ bool FFmpegVideoDecoder::IsCodecSupported(VideoCodec codec) {
++  codec = HEVCAsH264IfFFmpegSupportsHEVC(codec);
+   // We only build support for H.264.
+   return codec == VideoCodec::kH264 && IsDecoderBuiltInVideoCodec(codec);
+ }

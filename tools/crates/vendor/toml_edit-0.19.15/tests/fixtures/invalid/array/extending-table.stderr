@@ -1,0 +1,6 @@
+TOML parse error at line 5, column 1
+  |
+5 | [a.c]
+  | ^
+invalid table header
+dotted key `a` attempted to extend non-table type (array)

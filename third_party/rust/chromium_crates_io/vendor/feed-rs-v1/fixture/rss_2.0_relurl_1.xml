@@ -1,0 +1,32 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
+    <channel>
+        <title>Insanity Industries</title>
+        <link>https://insanity.industries/</link>
+        <description>"Industrial production of readable insanity"</description>
+        <language>en-US</language>
+        <lastBuildDate>Tue, 02 Mar 2021 23:39:15 +0100</lastBuildDate>
+        <atom:link href="https://insanity.industries/index.xml" rel="self" type="application/rss+xml"/>
+        <item xml:base="https://insanity.industries/post/pareto-optimal-compression/">
+            <title>Pareto-optimal compression</title>
+            <link>https://insanity.industries/post/pareto-optimal-compression/</link>
+            <pubDate>Tue, 02 Mar 2021 23:39:15 +0100</pubDate>
+            <author>jonas@insanity.industries (Jonas Große Sundrup)</author>
+            <guid>https://insanity.industries/post/pareto-optimal-compression/</guid>
+            <description>Everyone wants good compression. But what exactly <em>is</em> good compression? Time for a closer look.</description>
+            <content:encoded>
+                ...
+            </content:encoded>
+        </item>
+        <item xml:base="https://insanity.industries/post/pacman-tracking-leftover-packages/">
+            <title>Tracking leftover packages with pacman</title>
+            <link>https://insanity.industries/post/pacman-tracking-leftover-packages/</link>
+            <pubDate>Sat, 13 Feb 2021 00:00:00 +0000</pubDate>
+            <author>jonas@insanity.industries (Jonas Große Sundrup)</author>
+            <guid>https://insanity.industries/post/pacman-tracking-leftover-packages/</guid>
+            <description>Package managers take care of resolving dependencies for you, but over time, dependencies that are no longer needed might stay around. Time to change that.</description>
+            <content:encoded>
+                <![CDATA[ <p>Automatically resolving and installing dependencies is one of the core features of package managers (and one of the most convenient)... ]]>
+            </content:encoded>
+        </item>
+    </channel>
+</rss>

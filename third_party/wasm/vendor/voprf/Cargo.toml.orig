@@ -1,0 +1,69 @@
+[package]
+authors = ["Kevin Lewi <lewi.kevin.k@gmail.com>"]
+categories = ["no-std", "algorithms", "cryptography"]
+description = "An implementation of a verifiable oblivious pseudorandom function (VOPRF)"
+edition = "2021"
+keywords = ["oprf"]
+license = "MIT"
+name = "voprf"
+readme = "README.md"
+repository = "https://github.com/facebook/voprf/"
+rust-version = "1.65"
+version = "0.5.0"
+
+[features]
+alloc = []
+danger = []
+default = ["ristretto255-ciphersuite", "dep:serde"]
+ristretto255 = ["dep:curve25519-dalek", "generic-array/more_lengths"]
+ristretto255-ciphersuite = ["ristretto255", "dep:sha2"]
+serde = ["generic-array/serde", "dep:serde"]
+std = ["alloc"]
+
+[dependencies]
+curve25519-dalek = { version = "4", default-features = false, features = [
+  "rand_core",
+  "zeroize",
+], optional = true }
+derive-where = { version = "1", features = ["zeroize-on-drop"] }
+digest = "0.10"
+displaydoc = { version = "0.2", default-features = false }
+elliptic-curve = { version = "0.13", features = [
+  "hash2curve",
+  "sec1",
+  "voprf",
+] }
+generic-array = "0.14"
+rand_core = { version = "0.6", default-features = false }
+serde = { version = "1", default-features = false, features = [
+  "derive",
+], optional = true }
+sha2 = { version = "0.10", default-features = false, optional = true }
+subtle = { version = "2.3", default-features = false }
+zeroize = { version = "1.5", default-features = false }
+
+[dev-dependencies]
+generic-array = { version = "0.14", features = ["more_lengths"] }
+hex = "0.4"
+p256 = { version = "0.13", default-features = false, features = [
+  "hash2curve",
+  "voprf",
+] }
+p384 = { version = "0.13", default-features = false, features = [
+  "hash2curve",
+  "voprf",
+] }
+p521 = { version = "0.13.3", default-features = false, features = [
+  "hash2curve",
+  "voprf",
+] }
+proptest = "1"
+rand = "0.8"
+regex = "1"
+serde_json = "1"
+sha2 = "0.10"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+targets = []

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_PERMISSIONS_BUBBLE_LIFETIME_COMBOBOX_LABEL" desc="The label that is used to describe a combobox with permission lifetime choices.">
+    Remember my decision
+  </message>
+  <message name="IDS_PERMISSIONS_BUBBLE_UNTIL_PAGE_CLOSE_LIFETIME_OPTION" desc="The predifined value in a permission lifetime combobox.">
+    until I close this site
+  </message>
+  <message name="IDS_PERMISSIONS_BUBBLE_24_HOURS_LIFETIME_OPTION" desc="The predifined value in a permission lifetime combobox.">
+    for 24 hours
+  </message>
+  <message name="IDS_PERMISSIONS_BUBBLE_1_WEEK_LIFETIME_OPTION" desc="The predifined value in a permission lifetime combobox.">
+    for 1 week
+  </message>
+  <message name="IDS_PERMISSIONS_BUBBLE_FOREVER_LIFETIME_OPTION" desc="The predifined value in a permission lifetime combobox.">
+    forever
+  </message>
+  <message name="IDS_PERMISSIONS_BUBBLE_FOOTNOTE_TEXT" desc="Message shown on the bottom of the permissions bubble.">
+    You can change your <ph name="SITE_PERMISSIONS">$1<ex>site permissions</ex></ph> at any time. <ph name="LEARN_MORE">$2<ex>Learn more</ex></ph>
+  </message>
+  <message name="IDS_PERMISSIONS_BUBBLE_SITE_PERMISSION_LINK" desc="Site permission link in the footnote description.">
+    site permission
+  </message>
+  <message name="IDS_OPEN_AI_CHAT_PERMISSION_FRAGMENT" desc="Label for Leo AI chat permission prompt.">
+    Allow opening Leo AI conversations in Brave?
+  </message>
+  <message name="IDS_OPEN_AI_CHAT_INFOBAR_TEXT" desc="Label for Leo AI chat permission prompt (Android).">
+    Allow <ph name="URL">$1<ex>search.brave.com</ex></ph> to open Leo AI conversations in Brave?
+  </message>
+</grit-part>

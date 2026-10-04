@@ -1,0 +1,411 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
+
+#include <optional>
+
+#include "base/check.h"
+#include "base/check_is_test.h"
+#include "base/command_line.h"
+#include "base/feature_list.h"
+#include "base/notreached.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "brave/browser/ui/sidebar/sidebar_model.h"
+#include "brave/browser/ui/sidebar/sidebar_service_factory.h"
+#include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/constants/brave_switches.h"
+#include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/sidebar/browser/constants.h"
+#include "brave/components/sidebar/browser/pref_names.h"
+#include "brave/components/sidebar/common/features.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search/search.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/ui_features.h"
+#include "chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h"
+#include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
+#include "chrome/common/pref_names.h"
+#include "chrome/common/webui_url_constants.h"
+#include "components/prefs/pref_service.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/common/url_constants.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
+#endif
+
+namespace sidebar {
+
+using BuiltInItemType = SidebarItem::BuiltInItemType;
+using ShowSidebarOption = SidebarService::ShowSidebarOption;
+
+namespace {
+
+SidebarService* GetSidebarService(Profile* profile) {
+  return SidebarServiceFactory::GetForProfile(profile);
+}
+
+bool IsActiveTabNTP(content::WebContents* active_web_contents) {
+  content::NavigationEntry* entry =
+      active_web_contents->GetController().GetLastCommittedEntry();
+  if (!entry) {
+    entry = active_web_contents->GetController().GetVisibleEntry();
+  }
+  if (!entry) {
+    return false;
+  }
+  const GURL url = entry->GetURL();
+  return NewTabUI::IsNewTab(url) || NewTabPageUI::IsNewTabPageOrigin(url) ||
+         search::NavEntryIsInstantNTP(active_web_contents, entry);
+}
+
+bool IsURLAlreadyAddedToSidebar(SidebarService* service, const GURL& url) {
+  const GURL converted_url = ConvertURLToBuiltInItemURL(url);
+  for (const auto& item : service->items()) {
+    if (item.url == converted_url) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+}  // namespace
+
+bool HiddenDefaultSidebarItemsContains(SidebarService* service,
+                                       const GURL& url) {
+  const auto not_added_default_items = service->GetHiddenDefaultSidebarItems();
+  if (not_added_default_items.empty()) {
+    return false;
+  }
+  const GURL converted_url = ConvertURLToBuiltInItemURL(url);
+  for (const auto& item : not_added_default_items) {
+    if (item.url == converted_url) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool CanUseSidebar(BrowserWindowInterface* browser) {
+  DCHECK(browser);
+  return browser->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL;
+}
+
+// If url is relavant with bulitin items, use builtin item's url.
+// Ex, we don't need to add bookmarks manager as a sidebar shortcut
+// if sidebar panel already has bookmarks item.
+GURL ConvertURLToBuiltInItemURL(const GURL& url) {
+  if (url == GURL(chrome::kChromeUIBookmarksURL)) {
+    return GURL(chrome::kChromeUIBookmarksSidePanelURL);
+  }
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+  if (url.host() == kBraveTalkHost) {
+    return GURL(kBraveTalkURL);
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  if (url.SchemeIs(content::kChromeUIScheme) && url.host() == kWalletPageHost) {
+    return GURL(kBraveUIWalletPageURL);
+  }
+#endif
+  return url;
+}
+
+bool CanAddCurrentActiveTabToSidebar(BrowserWindowInterface* browser) {
+  auto* active_web_contents =
+      browser->GetTabStripModel()->GetActiveWebContents();
+  if (!active_web_contents) {
+    return false;
+  }
+
+  if (IsActiveTabNTP(active_web_contents)) {
+    return false;
+  }
+
+  const GURL url = active_web_contents->GetLastCommittedURL();
+  if (!url.is_valid()) {
+    return false;
+  }
+
+  auto* service = GetSidebarService(browser->GetProfile());
+  if (IsURLAlreadyAddedToSidebar(service, url)) {
+    return false;
+  }
+
+  if (HiddenDefaultSidebarItemsContains(service, url)) {
+    return false;
+  }
+
+  return true;
+}
+
+bool IsWebPanelFeatureEnabled() {
+  return base::FeatureList::IsEnabled(features::kSidebarWebPanel);
+}
+
+bool IsWebPanelRelatedFocusChange(
+    SidebarWebPanelController* web_panel_controller,
+    TabStripModel* tab_strip_model,
+    content::WebContents* focused_contents) {
+  CHECK(web_panel_controller);
+  const content::WebContents* panel_contents =
+      web_panel_controller->panel_contents();
+  if (!panel_contents) {
+    return false;
+  }
+
+  if (panel_contents == focused_contents) {
+    return true;
+  }
+
+  return tab_strip_model->GetActiveTab()->GetContents() == panel_contents;
+}
+
+SidePanelEntryId SidePanelIdFromSideBarItemType(BuiltInItemType type) {
+  switch (type) {
+    case BuiltInItemType::kReadingList:
+      return SidePanelEntryId::kReadingList;
+    case BuiltInItemType::kBookmarks:
+      return SidePanelEntryId::kBookmarks;
+#if BUILDFLAG(ENABLE_PLAYLIST)
+    case BuiltInItemType::kPlaylist:
+      return SidePanelEntryId::kPlaylist;
+#endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    case BuiltInItemType::kChatUI:
+      return SidePanelEntryId::kChatUI;
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+    case BuiltInItemType::kBraveNews:
+      return SidePanelEntryId::kBraveNews;
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    case BuiltInItemType::kWallet:
+      return SidePanelEntryId::kWallet;
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+    case BuiltInItemType::kBraveTalk:
+      break;
+#endif
+    case BuiltInItemType::kHistory:
+      break;
+    case BuiltInItemType::kNone:
+      break;
+  }
+
+  NOTREACHED() << "Asked for a panel Id from a sidebar item which could "
+                  "not have a panel Id.";
+}
+
+std::optional<BuiltInItemType> BuiltInItemTypeFromSidePanelId(
+    SidePanelEntryId id) {
+  switch (id) {
+    case SidePanelEntryId::kReadingList:
+      return BuiltInItemType::kReadingList;
+    case SidePanelEntryId::kBookmarks:
+      return BuiltInItemType::kBookmarks;
+#if BUILDFLAG(ENABLE_PLAYLIST)
+    case SidePanelEntryId::kPlaylist:
+      return BuiltInItemType::kPlaylist;
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    case SidePanelEntryId::kWallet:
+      return BuiltInItemType::kWallet;
+#endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    case SidePanelEntryId::kChatUI:
+      return BuiltInItemType::kChatUI;
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+    case SidePanelEntryId::kBraveNews:
+      return BuiltInItemType::kBraveNews;
+#endif
+    default:
+      break;
+  }
+
+  return std::nullopt;
+}
+
+SidePanelEntryId SidePanelIdFromSideBarItem(const SidebarItem& item) {
+  CHECK(item.open_in_panel) << static_cast<int>(item.built_in_item_type);
+  return SidePanelIdFromSideBarItemType(item.built_in_item_type);
+}
+
+std::optional<SidebarItem> AddItemForSidePanelIdIfNeeded(Profile* profile,
+                                                         SidePanelEntryId id) {
+  const auto hidden_default_items =
+      GetSidebarService(profile)->GetHiddenDefaultSidebarItems();
+  if (hidden_default_items.empty()) {
+    return std::nullopt;
+  }
+
+  for (const auto& item : hidden_default_items) {
+    // Only panel item could have panel id.
+    if (item.open_in_panel && id == sidebar::SidePanelIdFromSideBarItem(item)) {
+      GetSidebarService(profile)->AddItem(item);
+      return item;
+    }
+  }
+
+  return std::nullopt;
+}
+
+void SetLastUsedSidePanel(PrefService* prefs,
+                          std::optional<SidePanelEntryId> id) {
+  BuiltInItemType type = BuiltInItemType::kNone;
+  if (id) {
+    switch (*id) {
+      case SidePanelEntryId::kReadingList:
+        type = BuiltInItemType::kReadingList;
+        break;
+      case SidePanelEntryId::kBookmarks:
+        type = BuiltInItemType::kBookmarks;
+        break;
+#if BUILDFLAG(ENABLE_PLAYLIST)
+      case SidePanelEntryId::kPlaylist:
+        type = BuiltInItemType::kPlaylist;
+        break;
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+      case SidePanelEntryId::kWallet:
+        type = BuiltInItemType::kWallet;
+        break;
+#endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+      case SidePanelEntryId::kChatUI:
+        type = BuiltInItemType::kChatUI;
+        break;
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+      case SidePanelEntryId::kBraveNews:
+        type = BuiltInItemType::kBraveNews;
+        break;
+#endif
+      default:
+        break;
+    }
+  }
+
+  prefs->SetInteger(kLastUsedBuiltInItemType, static_cast<int>(type));
+}
+
+std::optional<SidePanelEntryId> GetLastUsedSidePanel(
+    BrowserWindowInterface* browser) {
+  PrefService* prefs = browser->GetProfile()->GetPrefs();
+  BuiltInItemType type =
+      static_cast<BuiltInItemType>(prefs->GetInteger(kLastUsedBuiltInItemType));
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  // Wallet may be the last-used panel while kBraveWalletSidePanel is off after
+  // relaunch, but the entry is not registered in that state.
+  if (type == BuiltInItemType::kWallet &&
+      !base::FeatureList::IsEnabled(
+          brave_wallet::features::kBraveWalletSidePanel)) {
+    return std::nullopt;
+  }
+#endif
+  // If cached type item is not included in current model, return null.
+  if (!browser->GetFeatures().sidebar_controller()->model()->GetIndexOf(type)) {
+    return std::nullopt;
+  }
+  return SidePanelIdFromSideBarItemType(type);
+}
+
+bool IsDisabledItemForPrivate(SidebarItem::BuiltInItemType type) {
+  switch (type) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    case SidebarItem::BuiltInItemType::kChatUI:
+      return true;
+#endif
+#if BUILDFLAG(ENABLE_PLAYLIST)
+    case SidebarItem::BuiltInItemType::kPlaylist:
+      return true;
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+    case SidebarItem::BuiltInItemType::kBraveNews:
+      return true;
+#endif
+    default:
+      break;
+  }
+  return false;
+}
+
+bool IsDisabledItemForGuest(SidebarItem::BuiltInItemType type) {
+  switch (type) {
+    case SidebarItem::BuiltInItemType::kBookmarks:
+    case SidebarItem::BuiltInItemType::kReadingList:
+      return true;
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    case SidebarItem::BuiltInItemType::kChatUI:
+      return true;
+#endif
+#if BUILDFLAG(ENABLE_PLAYLIST)
+    case SidebarItem::BuiltInItemType::kPlaylist:
+      return true;
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+    case SidebarItem::BuiltInItemType::kBraveNews:
+      return true;
+#endif
+    default:
+      break;
+  }
+  return false;
+}
+
+SidebarService::ShowSidebarOption GetDefaultShowSidebarOption(
+    version_info::Channel channel) {
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  return ShowSidebarOption::kShowNever;
+#else
+  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
+          switches::kDontShowSidebarOnNonStable) &&
+      channel != version_info::Channel::STABLE) {
+    return ShowSidebarOption::kShowAlways;
+  }
+
+  if (!g_browser_process) {
+    CHECK_IS_TEST();
+    return ShowSidebarOption::kShowAlways;
+  }
+
+  if (auto* local_state = g_browser_process->local_state()) {
+    return local_state->GetBoolean(kTargetUserForSidebarEnabledTest)
+               ? ShowSidebarOption::kShowAlways
+               : ShowSidebarOption::kShowNever;
+  }
+
+  return ShowSidebarOption::kShowNever;
+#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+}
+
+views::BubbleBorder::Arrow GetBubbleArrowForSidebar(PrefService* prefs) {
+  DCHECK(prefs);
+  const bool on_right = prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment);
+  // When sidebar is on the right, bubble appears to the left with RIGHT arrow.
+  // When sidebar is on the left, bubble appears to the right with LEFT arrow.
+  return on_right ? views::BubbleBorder::RIGHT_TOP
+                  : views::BubbleBorder::LEFT_TOP;
+}
+
+}  // namespace sidebar

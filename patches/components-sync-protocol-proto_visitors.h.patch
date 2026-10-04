@@ -1,0 +1,37 @@
+diff --git a/components/sync/protocol/proto_visitors.h b/components/sync/protocol/proto_visitors.h
+index 12daa7042f23fbb55221a31543e00f709e6184eb..d07012eec8f2ec178b1edd10caa741a1d3383987 100644
+--- a/components/sync/protocol/proto_visitors.h
++++ b/components/sync/protocol/proto_visitors.h
+@@ -665,6 +665,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
+   VISIT(signin_scoped_device_id);
+   VISIT(last_updated_timestamp);
+   VISIT(feature_fields);
++  BRAVE_VISIT_DEVICE_INFO_SPECIFICS_BRAVE_FIELDS
+   VISIT(sharing_fields);
+   VISIT(model);
+   VISIT(manufacturer);
+@@ -702,6 +703,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
+   VISIT(glic_experimental_triggering_version);
+ }
+ 
++BRAVE_VISIT_PROTO_FIELDS_BRAVE_SPECIFIC_FIELD
+ VISIT_PROTO_FIELDS(const sync_pb::SharingSpecificFields& proto) {
+   VISIT_REP(enabled_features);
+   VISIT(sender_id_fcm_token_v2);
+@@ -786,7 +788,7 @@ VISIT_PROTO_FIELDS(
+ }
+ 
+ VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
+-  static_assert(65 == GetNumDataTypes(),
++  static_assert(65 + 1 == GetNumDataTypes(),
+                 "When adding a new protocol type, you will likely need to add "
+                 "it here as well.");
+   VISIT(encrypted);
+@@ -854,6 +856,7 @@ VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
+   VISIT(contextual_task);
+   VISIT(skill);
+   VISIT(gemini_thread);
++  VISIT(ai_chat_conversation);
+   VISIT(notebook);
+   VISIT(journey);
+ }

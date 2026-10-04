@@ -1,0 +1,10 @@
+# Skips CI (including noplatform)
+no-browser-changes:
+  - changed-files:
+    - any-glob-to-all-files: 
+      - "**/*.md"
+      - ".github/**/*"
+      - LICENSE
+      - LICENSE.html
+      - "docs/**/*"
+      - snapcraft.yaml

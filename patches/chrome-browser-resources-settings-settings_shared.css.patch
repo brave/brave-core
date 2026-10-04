@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/resources/settings/settings_shared.css b/chrome/browser/resources/settings/settings_shared.css
+index 8c711d3c16049df7d138106de12e174ffc31effe..2378f6471e8802c502cab98521711ea09cfc6df2 100644
+--- a/chrome/browser/resources/settings/settings_shared.css
++++ b/chrome/browser/resources/settings/settings_shared.css
+@@ -8,7 +8,8 @@
+  * #import=//resources/cr_elements/cr_shared_vars.css.js
+  * #import=//resources/cr_elements/search_highlight_style.css.js
+  * #import=./settings_vars.css.js
+- * #include=cr-shared-style search-highlight-style
++ * #import=//resources/brave/page_specific/settings/br_settings_shared.css.js
++ * #include=cr-shared-style search-highlight-style br-settings-shared
+  * #css_wrapper_metadata_end */
+ 
+ /* Purposefully empty since this style is generated at build time from the

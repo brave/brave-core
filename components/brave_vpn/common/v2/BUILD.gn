@@ -1,0 +1,76 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/v2/branding.gni")
+import("//build/buildflag_header.gni")
+
+assert(enable_brave_vpn_v2)
+
+buildflag_header("branding_buildflags") {
+  header = "branding_buildflags.h"
+  flags = [ "VPN_AGENT_IPC_NAME=\"$vpn_agent_ipc_name\"" ]
+  if (is_mac) {
+    flags += [ "VPN_AGENT_APP_NAME=\"$vpn_agent_product_full_name.app\"" ]
+  } else if (is_win) {
+    flags += [ "VPN_AGENT_EXE_NAME=\"$vpn_agent_executable_name.exe\"" ]
+  } else {
+    flags += [ "VPN_AGENT_EXE_NAME=\"$vpn_agent_executable_name\"" ]
+  }
+}
+
+source_set("common") {
+  sources = []
+
+  deps = []
+
+  public_deps = []
+
+  if (enable_brave_vpn_v2_apps) {
+    sources += [
+      "agent_utils.cc",
+      "agent_utils.h",
+    ]
+
+    if (is_mac) {
+      sources += [
+        "identity_channel_mac.cc",
+        "identity_channel_mac.h",
+      ]
+    }
+
+    deps += [ ":branding_buildflags" ]
+
+    public_deps += [
+      "//base",
+      "//mojo/public/cpp/platform",
+    ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = []
+
+  deps = []
+
+  if (enable_brave_vpn_v2_apps) {
+    sources += [ "agent_utils_unittest.cc" ]
+
+    if (is_mac) {
+      sources += [ "identity_channel_mac_unittest.cc" ]
+      libs = [ "bsm" ]
+    }
+
+    deps += [
+      ":common",
+      "//base",
+      "//base/test:test_config",
+      "//mojo/public/cpp/platform",
+      "//testing/gtest",
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+diff --git a/base/threading/thread_restrictions.h b/base/threading/thread_restrictions.h
+index db88f6ab7629f41a1c51945c570a82c35e9ef723..04e031cfe7388dd1d2020a77d9452c20e253d2c0 100644
+--- a/base/threading/thread_restrictions.h
++++ b/base/threading/thread_restrictions.h
+@@ -752,6 +752,8 @@ class BASE_EXPORT ScopedAllowBaseSyncPrimitives {
+       const ScopedAllowBaseSyncPrimitives&) = delete;
+ 
+  private:
++  friend class ::BraveBrowsingDataRemoverDelegate;
++  friend class brave::ProcessLauncher;
+   // This can only be instantiated by friends. Use
+   // ScopedAllowBaseSyncPrimitivesForTesting in unit tests to avoid the friend
+   // requirement.

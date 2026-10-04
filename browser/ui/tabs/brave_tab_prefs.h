@@ -1,0 +1,111 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_BROWSER_UI_TABS_BRAVE_TAB_PREFS_H_
+#define BRAVE_BROWSER_UI_TABS_BRAVE_TAB_PREFS_H_
+
+#include "build/build_config.h"
+
+class PrefRegistrySimple;
+class PrefService;
+
+namespace brave_tabs {
+
+enum TabHoverMode { TOOLTIP = 0, CARD = 1, CARD_WITH_PREVIEW = 2 };
+
+inline constexpr char kTabHoverMode[] = "brave.tabs.hover_mode";
+
+inline constexpr char kVerticalTabsEnabled[] =
+    "brave.tabs.vertical_tabs_enabled";
+inline constexpr char kVerticalTabsCollapsed[] =
+    "brave.tabs.vertical_tabs_collapsed";
+inline constexpr char kVerticalTabsExpandedStatePerWindow[] =
+    "brave.tabs.vertical_tabs_expanded_state_per_window";
+inline constexpr char kVerticalTabsShowTitleOnWindow[] =
+    "brave.tabs.vertical_tabs_show_title_on_window";
+inline constexpr char kVerticalTabsHideCompletelyWhenCollapsed[] =
+    "brave.tabs.vertical_tabs_hide_completely_when_collapsed";
+inline constexpr char kVerticalTabsFloatingEnabled[] =
+    "brave.tabs.vertical_tabs_floating_enabled";
+inline constexpr char kVerticalTabsShowToggleButton[] =
+    "brave.tabs.vertical_tabs_show_toggle_button";
+inline constexpr char kVerticalTabsExpandedWidth[] =
+    "brave.tabs.vertical_tabs_expanded_width";
+inline constexpr char kVerticalTabsOnRight[] =
+    "brave.tabs.vertical_tabs_on_right";
+inline constexpr char kVerticalTabsShowScrollbar[] =
+    "brave.tabs.vertical_tabs_show_scrollbar";
+// When tabs::kBraveScrollableTabStrip is on: toggles visibility of the
+// horizontal tab strip scroll buttons only (wheel/trackpad overflow scrolling
+// is unchanged).
+inline constexpr char kShowHorizontalTabScrollButtons[] =
+    "brave.tabs.show_horizontal_tab_scroll_buttons";
+inline constexpr char kTreeTabsEnabled[] = "brave.tabs.tree_tabs_enabled";
+
+inline constexpr char kSharedPinnedTab[] = "brave.tabs.shared_pinned_tab";
+
+// A boolean local state pref that, when true, will reduce the height of the
+// horizontal tab strip and toolbar. This pref is stored in local state instead
+// of profile prefs in order to allow access where a Profile is not available
+// in the current Chromium architecture (i.e. `layout_constants.cc`).
+inline constexpr char kCompactHorizontalTabs[] =
+    "brave.tabs.compact_horizontal_tabs";
+
+inline constexpr char kAlwaysHideTabCloseButton[] =
+    "brave.tabs.always_hide_tab_close_button";
+
+inline constexpr char kMiddleClickCloseTabEnabled[] =
+    "brave.tabs.middle_click_close_tab_enabled";
+
+inline constexpr char kTabMinWidthMode[] = "brave.tabs.min_width_mode";
+
+// When true (and kBraveScrollableTabStrip is enabled), the horizontal tab strip
+// scrolls when there are more tabs than fit. When false, tabs shrink instead.
+inline constexpr char kScrollableHorizontalTabStrip[] =
+    "brave.tabs.scrollable_horizontal_tab_strip";
+
+// When true, tabs that have an accent (e.g. container tabs) always show the
+// mini (small) accent icon instead of the large one, regardless of the tab's
+// width.
+inline constexpr char kAlwaysUseMiniAccentIcon[] =
+    "brave.tabs.always_use_mini_accent_icon";
+
+// Integer values stored in prefs; stable for migration. kDefault is reserved so
+// the product default can change without migrating explicit user choices.
+enum class TabMinWidthMode {
+  kDefault = 0,
+  kMinimum = 1,
+  kMedium = 2,
+  kLarge = 3,
+  kFull = 4,
+};
+
+void RegisterBraveProfilePrefs(PrefRegistrySimple* registry);
+void MigrateBraveProfilePrefs(PrefService* prefs);
+
+#if !BUILDFLAG(IS_ANDROID)
+// Dev/QA-only: applies a forced override of Chromium's native
+// `prefs::kVerticalTabsEnabled` pref based on the
+// `tabs::switches::kVerticalTabMigrationSwitch` command-line switch, to force
+// or reset which vertical-tab backend (Brave's or upstream's) is active for
+// this launch. See docs/chrome/browser/ui/tabs/vertical_tab_migration.md §8.
+// Deliberately NOT part of MigrateBraveProfilePrefs() above — that function's
+// one-time/default-guarded migration semantics must stay uncontaminated by
+// this unconditional, every-launch dev override.
+void MaybeApplyVerticalTabMigrationTestingOverride(PrefService* prefs);
+#endif  // !BUILDFLAG(IS_ANDROID)
+
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
+
+bool AreTooltipsEnabled(PrefService* prefs);
+bool AreCardPreviewsEnabled(PrefService* prefs);
+
+// True when the scrollable horizontal tab strip feature flag is enabled and the
+// user pref to use it is on.
+bool IsScrollableHorizontalTabStripEnabled(const PrefService* prefs);
+
+}  // namespace brave_tabs
+
+#endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_PREFS_H_

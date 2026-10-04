@@ -1,0 +1,476 @@
+##
+## Upstream tests to disable
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue.
+##
+
+# Known upstream flake (crbug.com/40831552): ~1% flake rate over 30 days per
+# LUCI Analysis. Already disabled on Android upstream. DCHECK failure in
+# MockResultQueue::NextOperationResult due to MOCK_TIME auto-advancing the
+# PurgeStale timer during TestFuture::Take(), consuming an extra mock queue
+# entry. Same root cause affects both FileBacked and InMemoryOnly variants.
+-All/SharedStorageManagerErrorParamTest.InitFailure_DestroyAndRecreateDatabase/FileBacked
+-All/SharedStorageManagerErrorParamTest.OtherOperationResults_NoErrorsAdded/FileBacked
+-All/SharedStorageManagerErrorParamTest.OtherOperationResults_NoErrorsAdded/InMemoryOnly
+
+# These tests fail because we override Prefetch methods to do nothing.
+-AffiliationServiceImplTest.*
+
+# These tests fail because RankerURLFetcher::Request no longer performs a
+# real network fetch; it synchronously returns false and never invokes its
+# callback, see
+# brave/chromium_src/components/assist_ranker/ranker_url_fetcher.cc. This
+# also covers our own RankerModelLoaderImplTest.LoadRemoteRankerNoFetch in
+# brave/components/assist_ranker/ranker_model_loader_impl_unittest.cc, which
+# shares the fixture name with the upstream tests below.
+-RankerModelLoaderImplTest.*
+
+# `HashAffiliationFetcher::StartRequest` is stubbed off in Brave (see
+# chromium_src/components/affiliations/core/browser/hash_affiliation_fetcher.cc),
+# so none of this fixture's tests exercise real behavior any more. Covered
+# instead by DisabledHashAffiliationFetcherTest in
+# chromium_src/components/affiliations/core/browser/hash_affiliation_fetcher_unittest.cc.
+-HashAffiliationFetcherTest.*
+
+# These AffiliationFetcherManagerTest cases exercise the same stubbed
+# `HashAffiliationFetcher::StartRequest` indirectly via
+# AffiliationFetcherManager::Fetch, so they no longer see a real network
+# request or real response data.
+-AffiliationFetcherManagerTest.OneFetchCallCreatesOneFetcher
+-AffiliationFetcherManagerTest.MultipleFetchCallsCreateMultipleFetchers
+-AffiliationFetcherManagerTest.CompletionClosureInvokedOnFetchCompletion
+-AffiliationFetcherManagerTest.CompletionClosureInvokedOnMultipleFetchCompletions
+-AffiliationFetcherManagerTest.DelegateInvokedOnFetchSuccess
+-AffiliationFetcherManagerTest.DelegateInvokedOnAllPossibleResponses
+
+# This test fails because we use a different sync server endpoint.
+-HistoryNoticeUtilsTest.WebHistoryStates
+
+# These tests fail because we default to saving bookmarks in the "Bookmarks"
+# folder, not in "Other bookmarks"
+-BookmarkModelTest.ParentForNewNodesWithEmptyModel
+-BookmarkUtilsTest.GetMostRecentlyModifiedUserFolders_DefaultOrderWithAccountBookmarks
+-BookmarkUtilsTest.GetMostRecentlyModifiedUserFolders_DefaultOrderWithoutAccountBookmarks
+-BookmarkUtilsTest.GetMostRecentlyModifiedUserFolders_DefinedModifiedOrderWithCustomLocalFolders
+-BookmarkUtilsTest.GetMostRecentlyModifiedUserFolders_LocalFolderModifiedAfterAccountFoldersAdded
+-BookmarkUtilsTest.GetMostRecentlyModifiedUserFolders_LocalFolderModifiedBeforeAccountFoldersAdded
+-BookmarkUtilsTest.GetParentForNewNodes_ClientOverride
+
+# This test fails because we disable Amount Extraction Heuristic Regexes and
+# disalow component installation.
+-AmountExtractionHeuristicRegexesInstallerPolicyTest.ComponentRegistered
+
+# This test crashes due to sequence check in BraveSearchProvider::DoHistoryQuery
+# https://github.com/brave/brave-browser/issues/47218
+-OmniboxTextUtilTest.AdjustTextForCopy
+
+# The following tests use Chromium's list of "starter pack engines", which
+# includes entries not supported by Brave (i.e. "@gemini" and "@aimode").
+-AutocompleteControllerTest.ContextualSearchActionAttachedPageKeywordMode
+-AutocompleteControllerTest.ContextualSearchOpenLensActionAttachedPageKeywordMode
+-AutocompleteControllerTest.ExtraHeaders
+-AutocompleteControllerTest.ShouldRunProvider_StarterPack
+-FeaturedSearchProviderTest.*
+
+# These tests fail because we stub out
+# optimization_guide::IsUserPermittedToFetchRemoteOptimizationGuide and
+# optimization_guide::features::IsModelDownloadingEnabled
+-All/OnDeviceModelServiceControllerBackgroundDownloadTest.Run/ConfigNotAvailableIfBackgroundDownloadEnabledAndAssetPending
+-HintsManagerFetchingTest.*
+-HintsManagerProactivePersonalizationFetchingTest.*
+-ModelBrokerClientTest.*
+-OnDeviceAssetManagerTest.*
+-OptimizationGuidePermissionsUtilTest.IsUserPermittedToFetchHintsDefaultUserAnonymousDataCollectionEnabled
+-PDPMetricsTest.TestFalseOptGuideResponseIsRecorded
+-PDPMetricsTest.TestPDPIsRecorded
+-PredictionManagerTest.*
+
+# These tests fail because we disable commerce::kShoppingList
+-All/ShoppingServiceTest.TestShoppingList*/*
+
+# These tests fail because we override SyncAuthManager::DetermineAccountToUse.
+-SyncServiceImplStartupWithDetermineAccountTypeTest.StartupWithConsumerAccount
+-SyncServiceImplStartupWithDetermineAccountTypeTest.StartupWithManagedAccount
+
+# These tests fail because we force a resolved (non-managed) consumer status in
+# SyncAuthManager::ActiveAccount::StartDeterminingAccountType, skipping
+# AccountManagedStatusFinder, since Brave Sync uses a fake account with no
+# refresh token. See brave/rewrite/components/sync/service/sync_auth_manager.cc.yaml.
+-SyncAuthManagerTest.AccountChangeWhileDeterminingAccountType
+-SyncAuthManagerTest.DeterminesAccountTypeAsynchronously
+-SyncAuthManagerTest.DeterminesAccountTypeSynchronously
+
+# This test fails because we use different search engine keywords.
+-SearchEngineChoiceEligibilityTest.ChoiceScreenConditions_SkipFor3p_Waffle
+
+# This test assumes Google is the default search engine for the JP test fixture,
+# but Brave overrides the per-country default DSE (see
+# regional_capabilities_utils.cc's JP entry in the default-engine map and
+# template_url_prepopulate_data_resolver.cc's GetPrepopulatedFallbackSearch
+# override), so JP resolves to a Yahoo JP engine instead. That engine also
+# carries our own prepopulate_id, not upstream's yahoo_jp/yahoo_jp_next id, so
+# it can't classify as kLegacy/kNew and always records kUnknown.
+-SearchEngineSplitTemplateURLServiceSplitRegionTest.SearchEngineSplitProfileLoadMetrics_SplitRegion
+
+# These tests fail because upstream doesn't expect passwords to be syncable
+-SyncPrefsMigrationTest.GlobalToAccount_CustomPassphrase
+-SyncPrefsMigrationTest.GlobalToAccount_CustomState
+-SyncPrefsMigrationTest.GlobalToAccount_DefaultState
+-SyncPrefsTest.DefaultSelectedTypesForAccountInTransportMode_SyncToSigninDisabled
+-SyncPrefsTest.DefaultSelectedTypesForAccountInTransportMode_SyncToSigninEnabled
+-SyncPrefsTest.SelectedTypesKeepEverythingSynced
+-SyncPrefsTest.SelectedTypesKeepEverythingSyncedButPolicyRestricted
+-SyncPrefsTest.SelectedTypesNotKeepEverythingSynced
+-SyncPrefsTest.SelectedTypesNotKeepEverythingSyncedAndPolicyRestricted
+-SyncUserSettingsImplTest.DefaultSelectedTypesWhileSignedIn_SyncToSigninDisabled
+-SyncUserSettingsImplTest.DefaultSelectedTypesWhileSignedIn_SyncToSigninEnabled
+-SyncUserSettingsImplTest.PreferredTypesNotKeepEverythingSynced
+-SyncUserSettingsImplTest.PreferredTypesSyncEverything
+-SyncUserSettingsImplTest.SetSelectedTypeInFullSyncMode
+
+# These tests fail because we disable
+# switches::kSyncEnableBookmarksInTransportMode
+-InitialAccountBookmarkDeduplicatorTest.*
+-SyncPrefsTest.BookmarksEnabledWithExplicitBrowserPref
+
+# These tests fail because we patch ImageServiceConsentHelper::GetConsentStatus
+# to return false always
+-ImageServiceConsentHelperTest.*
+-ImageServiceImplTest.*
+
+# These tests fail because IdentityManager's primary account has no kSignin
+# consent level
+-AccountPreviewDataServiceTest.*
+-AccountUtilsTest.*
+-ContextualTasksServiceImplTest.CreateTaskFromUrl_MatchesPrimaryAccount
+-IdentityUtilsTest.GetOrderedAccountsForDisplayCookieOrderOnDesktop
+-LensIdentityDelegationHelperTest.FetchIdentityDelegationHeaders_*
+-WebSigninTrackerTest.FreshCookiesWithSigninAccountShouldTriggerSuccessResult
+
+# These tests fail because we do not record permissions UKM, see
+# brave/chromium_src/components/permissions/permission_uma_util.cc
+# GetUkmSourceId override.
+-PermissionsDelegationUmaUtilTest.PermissionAiRelevanceModelUkmTest
+
+# This test fails because we override GetTypesWithTemporaryGrantsInHcsm to
+# return an empty vector.
+-All/PEPCInitiatedPermissionRequestTestWithAutolocate.PEPCRequestHeuristicallyGrantedGeolocation/0
+-ContentSettingsPrefProviderTest.EphemeralGrantClearsPersistentGrant
+-ContentSettingsPrefProviderTest.EphemeralGrantSetsBlockedToAsk
+
+# These tests fail because we disable popular site suggestions functionality
+-MostVisitedSitesTest.CustomLinksCappedAtTenWhenRedesignDisabled
+-MostVisitedSitesTest.ShouldDeduplicatePopularSitesWithMostVisitedIffHostAndTitleMatches
+-MostVisitedSitesTest.ShouldHandleTopSitesCacheHit
+-MostVisitedSitesWithCustomLinksTest.DisableCustomLinksWhenInitialized
+-MostVisitedSitesWithEnterpriseShortcutsTest.ShouldMixEnterpriseAndCustomShortcuts
+-MostVisitedSitesWithEnterpriseShortcutsTest.ShouldMixEnterpriseShortcutsAndTopSites
+
+# These tests fail because we do not record permissions UKM, see
+# brave/chromium_src/components/permissions/permission_uma_util.cc
+# GetUkmSourceId override.
+-Accuracies/PermissionRequestManagerApproximateGeolocationTest.ReportAccuracyInUma*
+
+# These tests fail because we override WalletHttpClientImpl.
+-WalletHttpClientImplTest.*
+
+# This tests fails because we disable safe browsing enhanced protection and
+# patch safe_browsing::IsEnhancedProtectionEnabled to return false
+-All/ClientSideDetectionServiceBaseLimitTest.AtPhishingReportLimitESB/*
+-All/ClientSideDetectionServiceBaseLimitTest.GetNumReportTestESB/*
+-All/ClientSideDetectionServiceBaseOnlyESBTest.TestReceivingImageClassifierUpdatesAfterResubscription/*
+-All/ClientSideDetectionServiceOnlyESBTest.TestReceivingImageClassifierUpdatesAfterResubscription/*
+-ClientSideDetectionHostBaseTest.*
+-ClientSideDetectionServiceBaseTest.TestReceivingImageEmbedderUpdatesAfterResubscription
+-GetUserPopulationTest.PopulatesPopulation_WithoutSBERDeprecation
+-RealTimeUrlLookupServiceTest.TestCanSendRTSampleRequest_FeatureEnabled
+-RealTimeUrlLookupServiceTest.TestFillLlamaForcedTriggerCapability
+-SuspiciousSiteTriggerTest.MonitorMode_SuspiciousHitDuringLoad
+-TriggerManagerTest.AdSamplerTrigger
+-TriggerManagerTest.CollectionWhenSBERDisabledByPolicy_WithSBERDeprecation
+-TriggerManagerTest.DataCollection_SBEROptInDisallowed_WithSBERDeprecation_ESB
+-TriggerManagerTest.NoCollectionWhenOutOfQuota
+-TriggerManagerTest.ReportSentWhenEsbIsEnabled
+-TriggerManagerTest.StartAndFinishCollectingThreatDetails
+-TriggerManagerTest.UserOptedOutOfSBER_DataCollected_ReportSent_WithSBERDeprecation
+-TriggerManagerTest.UserOptsInToESB_DataCollected_ReportSent
+-TriggerManagerTest.UserOptsOutOfSBER_DataCollected_ReportSent_WithSBERDeprecation
+
+# These tests fail because the text contains "Google" instead of "Brave" (the
+# string is hard-coded into the test)
+-BnplUtilTest.GetBnplUiFooterTextForAi_AiTerms*
+
+# These tests fail because we disable kAimEnabled.
+-AimEligibilityServiceTest.*
+
+# This test fails because we have a different set of regional search engines.
+-RegionalCapabilitiesUtilsTest.GetPrepopulatedEngines
+
+# These tests fail because they use raw
+# TemplateURLPrepopulateData::kCurrentDataVersion to compare with the version
+# that is overridden to add Brave's version bump.
+-TemplateURLPrepopulateDataUpdateRequirementsTest.ComputeDatabaseUpdateRequirements/UpgradeToBoth
+-TemplateURLPrepopulateDataUpdateRequirementsTest.ComputeDatabaseUpdateRequirements/UpToDateMetadataWithBothMigrations
+-TemplateURLPrepopulateDataUpdateRequirementsTest.ComputeDatabaseUpdateRequirements/UpToDateMetadataWithEngineMigration
+-TemplateURLPrepopulateDataUpdateRequirementsTest.ComputeDatabaseUpdateRequirements/UpToDateMetadataWithShadowVariants
+
+# These tests fail because we disable kAimEnabled.
+-AimEligibilityServiceTest.*
+
+# These tests fail because the default search engine is Brave instead of Google.
+-DefaultSearchManagerTest.DefaultSearchOverridesIgnoredWhenFlagEnabled
+
+# This test fails because we disable Actor Safety Lists component.
+-ActorSafetyListsComponentInstallerPolicyTest.ComponentRegistered
+
+# This test verifies that {google:searchSource} expands to source=chrome.ob /
+# source=chrome.rb, but Brave suppresses that Chrome-specific attribution.
+-TemplateURLTest.URLRefTestSearchSource
+
+# These tests assume the upstream 3-day significance/autocomplete age threshold
+# (kLowQualityMatchAgeLimitInDays). Brave raises that threshold to one year in
+# chromium_src/components/history/core/browser/url_database.cc when
+# history::kHistoryMoreSearchResults is enabled (the Brave default), so URLs the
+# tests seed as old-but-insignificant now qualify as significant.
+-BatchRecentVisitsTest.ExcludesInsignificantURLs
+-HistoryURLProviderTest.PromoteShorterURLs
+-InMemoryURLIndexTest.TitleSearch
+-URLDatabaseTest.EnumeratorForSignificant
+
+# These fail because we disable kPersonalContext feature, which prevents
+# PersonalContextService from being created and ContextHubService which depends
+# on PersonalContextService.
+-PersonalContextFetcherTest.*
+
+# This test fails because brave.omnibox.history_suggestions_enabled is not
+# registered.
+-SearchboxUtilsTest.CanPasteAndGo
+-SearchboxUtilsTest.ClassifyStringSearchQuery
+-SearchboxUtilsTest.ClassifyStringUrl
+
+# This test fails because its message is hardcoded to look for "Google Search"
+# instead of "Brave Search"
+-AiModeButtonServiceTest.ConfigWithGoogleDse
+
+# These tests fail because we use our own hardcoded CUP signing key (see
+# chromium_src/components/update_client/request_sender.cc), bypassing upstream's
+# ECDSA/ML-DSA-44 (PQC) key-selection logic entirely, so this assertion of
+# upstream key selection never holds in our builds.
+-All/RequestSenderTest.CupKeySelection/*
+
+# Brave ships blink::features::kPrerender2 disabled.
+-PageLoadTrackerTest.PrerenderActivationInBackgroundTab
+-RecordReplayDriverFactoryTest.GetActiveDrivers
+-ContentAutofillDriverTest_Prerender.BadMessageIfPrerendering
+-ContentAutofillDriverTest_Prerender.ObserveFieldVisibilityDisconnectsIfInactive
+
+# This test asserts features::kSkillsEnabled's upstream default which we
+# override.
+-SkillsFeaturesTest.IsSkillsEnabled_Default_PrefOn
+
+# These tests fail because of the following CHECK in identity_test_utils.cc:
+# identity_manager->AreRefreshTokensLoaded()
+-AccountPreviewDataServiceTest.GetPreferredAccountForPromo
+-AccountPreviewDataServiceTest.GetPreferredAccountForPromoRespectsDefaultAccountOrderCookieJar
+-AccountPreviewDataServiceTest.GetPreferredAccountForPromoRespectsUsernamePatternPolicy
+-AccountPreviewDataServiceTest.RateLimitOn429PeriodicRefresh
+-AccountPreviewDataServiceTest.RemainingAccountsAllCachedDoesNotCrashAndRecomputes
+-IdentityUtilsTest.GetOrderedAccountsForDisplayCookieOrderOnDesktop
+
+# This test fails because we disable kEmailVerificationProtocol feature.
+-EmailVerifierDelegateTestBase.ThirdPartyOriginTrialEnabled
+
+# These tests enable kReplaceSyncPromos* via ScopedFeatureList and assert
+# the sign-in-promo behavior that Brave unconditionally disables,
+# brave-browser#58511
+-AccountCheckerTest.TestFetchPriceEmailPref
+-AccountCheckerTest.TestSendPriceEmailPrefOnPrefChange
+-All/PrimaryAccountManagerExplicitSigninNewFeatureTest.*
+-All/ShoppingServiceReadyTest.TestServiceReadyDelaysForSync_TransportStartsInactive/*
+-BrowsingDataUtilsTest.AutofillCounterResultWithReplaceSyncPromosWithSignInPromosEnabled
+-CollaborationServiceImplTest.SyncDisabledByEnterprise
+-CollaborationServiceImplTest.SyncTypeDisabledByEnterprise
+-PasswordManagerFeaturesUtilTest.ShouldShowAccountStorageSettingToggle_SyncToSigninOn
+-ShoppingBookmarkModelObserverTest.TestShoppingCollectionChangeMetrics/*
+-SyncPrefsMigrationTest.GlobalPrefsAreUnchanged
+-SyncPrefsMigrationTest.GlobalToAccount_HistoryDisabled
+-SyncPrefsMigrationTest.GlobalToAccount_SavedTabGroupsEnabled
+-SyncPrefsMigrationTest.GlobalToAccount_TabsDisabled
+-SyncPrefsMigrationTest.Part2RunsOnSecondAttempt
+-SyncPrefsMigrationTest.RunsAgainAfterFeatureReenabled
+-SyncPrefsMigrationTest.TurnsAutofillOffForCustomPassphraseUser
+-SyncToSigninMigrationDataTypesTest.*
+-SyncToSigninMigrationMetricsTest.*
+-SyncToSigninMigrationTest.*
+-SyncToSigninMigrationUndoTest.*
+-UnifiedConsentServiceTest.ReplaceSync_*
+
+
+# This test fails because we override VariationsIdsProvider's method
+# GetClientDataHeaders to return nullptr, so the X-Client-Data header the test
+# expects to find is never added.
+-LogoServiceImplTest.IncludesVariationsHeaderWhenDSEIsGoogle
+
+# Tests below this point have not been diagnosed or had issues created yet.
+-AccountInvestigatorTest.*
+-AccountReconcilorDiceTest.*
+-AccountReconcilorMirrorTest.*
+-AccountReconcilorTest.*
+-AccountReconcilorTestDicePreChromeSignIn.TableRowTest/*
+-AccountReconcilorTestUnoMultilogin.TableRowTest/*
+-AccountReconcilorThrottlerTest.*
+-AggregatableTriggerConfigTest.Create
+-AggregatableTriggerConfigTest.ParseTriggerContextId
+-AggregatableTriggerConfigTest.Serialize
+-All/PasswordFormManagerTest.Autofill/*
+-All/PrivacySandboxAttestationsTest.*
+-All/WellKnownChangePasswordStateTest.PrefetchCallbackTriggersOnProcessingFinished/*
+-AutocompleteProviderTest.AllowExactKeywordMatch
+-AutocompleteProviderTest.CurbDefaultSuggestions
+-AutocompleteProviderTest.ExtraQueryParams
+-AutofillCrowdsourcingManagerTest.*
+-BackgroundSyncPermissionContextTest.TestBlockOrigin
+-BackgroundSyncPermissionContextTest.TestSecureRequestingUrl
+-CaptivePortalServiceTest.*
+-CardInfoRetrievalUnmaskingYellowPathMetricsTest.CardInfoRetrievalUnmasking_AuthenticationRequired_Metrics/0
+-ChildAccountServiceTest.GetGoogleAuthStateAuthenticated
+-ChildAccountServiceTest.UpdateForceGoogleSafeSearch
+-CommitProcessorTest.*
+-ContentAutofillDriverFactoryTestLifecycleState.NavigatePrerendering
+-ContentAutofillDriverTest.ExtractLabeledTextNodeValue_DoesNotTriggerOnInactiveFrame
+-ContentAutofillDriverTest_PrerenderBadMessage.BadMessageIfPrerendering
+-ContentSettingsRegistryTest.Inheritance
+-CookieSettingsBaseTest.CookieAccessNotAllowedWithNoncePartitionKey
+-CookieSettingsTest.CookiesBlockSingle
+-CookieSettingsTest.CookiesExplicitSessionOnly
+-CookieSettingsTestP.CookiesBlockThirdParty/GrantSource_0
+-CookieSettingsTestP.CookiesBlockThirdParty/GrantSource_2
+-CookieSettingsTestP.CookiesBlockThirdParty/GrantSource_3
+-CookieSettingsTestP.CookiesBlockThirdParty/GrantSource_4
+-CredentialsFilterTest.*
+-CreditCardAccessManagerAuthFlowTest.FetchServerCardCVCSuccess/0
+-CrossOriginFrame/CrossFramePermissionsDelegationUmaUtilTest.CrossOriginFrame/*
+-CustomLinksManagerImplTest.AddLinkWhenAtMaxLinks
+-DataTypeManagerImplTest.PrioritizedConfiguration
+-DefaultSearchManagerTest.DefaultSearchSetByUserPref
+-Dice_Mirror/AccountReconcilorMethodParamTest.StartReconcileWithSessionInfoExpiredDefault/*
+-DocumentProviderTest.MatchDescriptionString
+-DocumentProviderTest.ProductDescriptionStringsAndAccessibleLabels
+-DocumentSuggestionsServiceTest.EnsureVariationHeaders
+-DownloadItemTest.AnnotationWithEmptyURLInIncognito
+-EntryPointDisplayReasonTest.ShouldShowPromoIfHasNoValidTargetDevice
+-EntryPointDisplayReasonTest.ShouldShowPromoIfSignedOut
+-FeedbackUploaderDispatchTest.VariationHeaders
+-FeedbackUploaderDispatchTest.VariationHeadersForProductID
+-GetUserPopulationTest.PopulatesPopulation
+-HashRealTimeUtilsTest.TestDetermineHashRealTimeSelection
+-HistoryClustersServiceKeywordTest.*
+-HistoryURLProviderTest.DoesNotInlinePunycodeMatches
+-IdentityManagerBuilderTest.BuildIdentityManagerInitParameters
+-IdentityManagerTest.*
+-IdentityTestEnvironmentTest.TriggerListAccount
+-LocationBarModelUtilTest.GetSecurityVectorIconWithSecureLevel
+-MirrorTableMultilogin/AccountReconcilorTestMirrorMultilogin.TableRowTest/*
+-OhttpKeyServiceTest.AsyncFetch_PrefChanges_BackgroundHprtDisabled
+-OhttpKeyServiceTest.GetOhttpKey_BackgroundLookupsForbidden
+-OnDeviceModelAdaptationLoaderTest.*
+-OnDeviceModelComponentTest.*
+-OnDeviceModelServiceControllerTest.*
+-OnDeviceModelServiceControllerTsIntervalTests/OnDeviceModelServiceControllerTsIntervalTest.DetectsRepeatsWithSafetyModel/*
+-OptimizationGuideFeaturesTest.OptimizationGuidePersonalizedFetchingDefaultBehaviour
+-PageLoadTrackerTest.PrerenderPageType
+-PageLoadTrackerTest.ResumeOnPrerenderActivation
+-PageLoadTrackerTest.StopObservingOnPrerender
+-PageSpecificContentSettingsWithPrerenderTest.ContentAllowedAndBlocked
+-PageSpecificContentSettingsWithPrerenderTest.DelegateUpdatesSentAfterActivation
+-PageSpecificContentSettingsWithPrerenderTest.SiteDataAccessed
+-PageSpecificContentSettingsWithPrerenderTest.UpdateLocationBarAfterActivation
+-PageTextObserverWithPrerenderTest.AMPRequestedOnOOPIFInPrerendering
+-PageTextObserverWithPrerenderTest.PrerenderingShouldNotResetOutstandingRequest
+-PasswordFormFillingTest.Autofill
+-PasswordFormFillingTest.TestFillOnLoadSuggestion
+-PasswordFormFillingTest.TestFillOnLoadSuggestionWithPrefill
+-PasswordManagerTest.AutofillingOfAffiliatedCredentials/0
+-PasswordManagerTest.AutofillingOfAffiliatedCredentials/1
+-PaymentsNetworkInterfaceTest.*
+-PermissionUmaUtilTest.ScopedRevocationReporter
+-PermissionsDelegationUmaUtilTest.SiteLevelAndOSPromptVariantsTest
+-PrimaryAccountManagerTest.*
+-PrimaryAccountMutatorTest.RevokeSyncConsent
+-PrivacySandboxSettingsSharedStorageDebugTest.NoEnrollments
+-RealTimePolicyEngineTest.TestCanPerformFullURLLookupWithToken_ClientControlledWithEnhancedProtection
+-RealTimePolicyEngineTest.TestCanPerformFullURLLookup_EnhancedProtection
+-RealTimePolicyEngineTest.TestCanPerformFullURLLookup_RTLookupForEpEnabled_WithTokenDisabled
+-RealTimePolicyEngineTest.TestHasPrefPermissionsToPerformFullURLLookup_EnhancedProtection
+-RealTimeUrlLookupServiceTest.TestFillReferringAppInfo
+-RealTimeUrlLookupServiceTest.TestReferrerChain_NotSanitizedIfSubresourceAllowed
+-RealTimeUrlLookupServiceTest.TestStartLookup_PingWithTokenUpdatesEsbProtegoPingWithTokenLastLogTime
+-RealTimeUrlLookupServiceTest.TestStartLookup_PingWithoutTokenSetsEsbProtegoPingWithoutTokenLastLogTime
+-Regular/PasswordProtectionServiceBaseTest.TestPasswordOnFocusRequestEnhancedProtectionShouldHaveToken/0
+-SBER/PasswordProtectionServiceBaseTest.TestPasswordOnFocusRequestEnhancedProtectionShouldHaveToken/0
+-SBNavigationObserverTest.TestAddAndroidNotificationOriginToReferrerChain
+-SBNavigationObserverTest.TestAddDesktopNotificationOriginToReferrerChain
+-SBNavigationObserverTest.TestCleanUpStableNotificationNavigationEvents
+-SBNavigationObserverTest.TestNotificationNavigationEventsAddedForExtensions
+-SBNavigationObserverTest.TestNotificationNavigationEventsNotAddedForNonExtensionsAndNonHttps
+-SafeBrowsingMetricsCollectorTest.*
+-SafeBrowsingPrefsTest.EnhancedProtection
+-SafeBrowsingPrefsTest.GetSafeBrowsingExtendedReportingLevelWhenSBERDeprecated
+-SearchEngineChoiceServiceTest.RecordChoiceMade
+-ShortcutsProviderTest.DaysAgoMatches
+-ShortcutsProviderTest.FragmentLengthMatches
+-ShortcutsProviderTest.HistoryClusterSuggestions
+-ShortcutsProviderTest.RemoveDuplicates
+-ShortcutsProviderTest.SimpleSingleMatch
+-ShortcutsProviderTest.SimpleSingleMatchKeyword
+-ShortcutsProviderTest.TrickySingleMatch
+-ShortcutsProviderTest.TypedCountMatches
+-StructuredMetricsRecorderTest.*
+-StructuredMetricsServiceTest.*
+-SubresourceFilterFeaturesTest.*
+-SyncServiceImplBookmarksLimitExceededErrorTest.*
+-SyncServiceImplStartupTest.*
+-SyncServiceImplStartupTest.WebSignoutAfterInitialization
+-SyncServiceImplTest.*
+-SyncServiceUtilsTest.UploadToGoogleDisabledIfCustomPassphraseInUse
+-SyncSessionDurationsMetricsRecorderTest.*
+-SyncUIUtilTestAbout.ConstructAboutInformationWithTrustedSpecifiedVaultAutoUpgradeExperiment
+-SyncUIUtilTestAbout.ConstructAboutInformationWithTrustedUnspecifiedVaultAutoUpgradeExperiment
+-SyncUIUtilTestAbout.ConstructAboutInformationWithUnrecoverableErrorTest
+-TemplateURLPrepopulateDataListTest.*
+-TemplateURLPrepopulateDataTest.ClearProvidersFromPrefs
+-TemplateURLPrepopulateDataTest.EntriesPerCountryConsistency
+-TemplateURLPrepopulateDataTest.FindGoogleAsFallback
+-TemplateURLPrepopulateDataTest.GetPrepopulatedEngineFromFullList
+-TemplateURLPrepopulateDataTest.NumberOfEntriesPerCountryConsistency
+-TemplateURLPrepopulateDataTest.ProvidersFromPrepopulated
+-TemplateURLPrepopulateDataUpdateRequirementsTest.ComputeDatabaseUpdateRequirements/CountryOverride
+-TemplateURLPrepopulateDataUpdateRequirementsTest.ComputeDatabaseUpdateRequirements/DbCountryMissing
+-TemplateURLPrepopulateDataUpdateRequirementsTest.ComputeDatabaseUpdateRequirements/DbMoreRecent
+-TemplateURLPrepopulateDataUpdateRequirementsTest.ComputeDatabaseUpdateRequirements/DbOlder
+-TemplateURLPrepopulateDataUpdateRequirementsTest.ComputeDatabaseUpdateRequirements/DifferentCountry
+-TemplateURLPrepopulateDataUpdateRequirementsTest.ComputeDatabaseUpdateRequirements/DifferentCountryWithEngineMigrationDowngrade
+-TemplateURLPrepopulateDataUpdateRequirementsTest.ComputeDatabaseUpdateRequirements/ShadowVariantsRollback
+-TemplateURLPrepopulateDataUpdateRequirementsTest.ComputeDatabaseUpdateRequirements/UpToDateMetadata
+-TemplateURLPrepopulateDataUpdateRequirementsTest.ComputeDatabaseUpdateRequirements/UpToDateMetadataWithEngineMigrationDowngrade
+-TemplateURLServiceUtilLoadTest.GetSearchProvidersUsingLoadedEngines_InEea
+-TemplateURLServiceUtilLoadTest.GetSearchProvidersUsingLoadedEngines_OutOfEea
+-TextEliderTest.FormatOriginForSecurityDisplay
+-TranslateLanguageListTest.GetSupportedLanguagesFetch
+-TranslateLanguageListTest.TranslateLanguageUrl
+-TranslateScriptTest.CheckScriptParameters
+-TranslateUIDelegateTest.ShouldShowAlwaysTranslateShortcut
+-TranslateUtilTest.SecurityOrigin
+-TriggerRegistrationTest.ToJson
+-UkmRecorderPermissionUmaUtilTest.NotificationRevocationHistogramDidRecordUkmTest
+-UkmRecorderPermissionUmaUtilTest.NotificationRevocationHistogramDroppedUkmTest
+-UkmRecorderPermissionUmaUtilTest.NotificationUsageHistogramDidRecordUkmTest
+-UkmRecorderPermissionUmaUtilTest.NotificationUsageHistogramDroppedUkmTest
+-UnstartedPagePaintObserverTest.PrerenderPageDoesNotFireHistogram
+-UserAgentUtilsTest.CustomUserAgent
+-UserAgentUtilsTest.GenerateBrandVersionListAdditionalBrandVersions
+-UserAgentUtilsTest.UserAgentMetadata
+-VariationsIdsProviderTest.*
+-ViewElementTest.GetSources
+-WebContentsModalDialogManagerTest.OccludedToVisible

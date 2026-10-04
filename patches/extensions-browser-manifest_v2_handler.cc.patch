@@ -1,0 +1,12 @@
+diff --git a/extensions/browser/manifest_v2_handler.cc b/extensions/browser/manifest_v2_handler.cc
+index 5841d3dfbc88884916629485c70b7c2671a6bc6b..2cc739a61715dfeaa2cd80f51d10158706296c4f 100644
+--- a/extensions/browser/manifest_v2_handler.cc
++++ b/extensions/browser/manifest_v2_handler.cc
+@@ -109,6 +109,7 @@ bool ManifestV2HandlerFactory::ServiceIsCreatedWithBrowserContext() const {
+ 
+ // Returns true if legacy extensions should be disabled.
+ bool ShouldDisableLegacyExtensions() {
++  BRAVE_SHOULD_DISABLE_LEGACY_EXTENSIONS
+   if (g_allow_mv2_for_testing) {
+     // We allow legacy MV2 extensions for testing purposes.
+     return false;

@@ -1,0 +1,39 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+group("lib") {
+  public_deps = [ ":idna_rust" ]
+
+  deps = [ ":idna_cpp" ]
+}
+
+rust_static_library("idna_rust") {
+  visibility = [ ":*" ]
+  crate_name = "idna"
+  crate_root = "crate/src/lib.rs"
+  allow_unsafe = true
+  sources = [ "crate/src/lib.rs" ]
+  cxx_bindings = [ "crate/src/lib.rs" ]
+}
+
+static_library("idna_cpp") {
+  visibility = [ ":*" ]
+  sources = [
+    "crate/idna.cc",
+    "crate/idna.h",
+  ]
+
+  deps = [
+    ":idna_rust",
+    "//base",
+    "//base:i18n",
+    "//url",
+  ]
+}

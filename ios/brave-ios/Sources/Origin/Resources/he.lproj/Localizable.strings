@@ -1,0 +1,99 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "מודעות";
+
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "כבר רכשת ב-brave.com?";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "אנליטיקה";
+
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "קנה עכשיו";
+
+/* A message shown in a toast informing the user that enabling or disabling a Brave feature requires restarting the browser to take effect */
+"featureEnabledToastMessage" = "הפעלה או השבתה של תכונת Brave דורשת הפעלה מחדש של הדפדפן כדי להחיל שינויים. אנא סגור (החלק כלפי מעלה במחליף האפליקציות) ולאחר מכן פתח מחדש את Brave.";
+
+/* A title shown in a toast that appears after toggling a Brave feature on or off in Origin settings */
+"featureEnabledToastTitle" = "שינוי תכונות Brave";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "**התאם אישית את הדפדפן שלך תוך המשך התמיכה ב-Brave**\n\nBrave Origin היא גרסה בתשלום של הדפדפן למשתמשים שלא זקוקים לכל התכונות התומכות ב-Brave כעסק, אך עדיין רוצים את הפרטיות שרק Brave מציעה. משתמשי Origin ימשיכו ליהנות מהפרטיות המובילה בתעשייה, חסימת מודעות ומהירות שלנו (דרך מגנים), כמו גם עדכוני תוכנה רגילים, תיקוני Chromium ושיפורי אבטחה ופרטיות. Origin יסיר את רוב התכונות האחרות מהדפדפן.";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "תכונות";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "אמת רכישת Brave Origin";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "Leo המבוסס בינה מלאכותית";
+
+/* A button title that when triggered will allow a user to link their App Store purchase with Brave Account */
+"linkPurchase" = "קישור הרכישה לחשבון ה-Brave שלך";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "חדשות";
+
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "רכישה חד-פעמית";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "רשימת השמעה";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "ניתוח נתונים תוך שמירה על פרטיות";
+
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "יש לך קוד מבצע?";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"purchaseChoiceHeaderText" = "יש לבחור את אמצעי התשלום שמתאים לך:";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "לא ניתן להשלים את הרכישה. יש לנסות שוב או לבדוק את פרטי התשלום שלך ב-Apple ואז לנסות שוב.";
+
+/* The footer shown below the Purchase section of the settings page */
+"purchaseSectionFooter" = "יש לקשר את רכישת App Store לחשבון Brave שלך כדי להשתמש ב-Brave Origin במכשירים אחרים";
+
+/* The header shown below the Purchase section of the settings page */
+"purchaseSectionHeader" = "קנייה";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "מימוש קוד מבצע";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "אפס להגדרות ברירת מחדל";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "שחזר";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "פרסים";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "דיווח סטטיסטי";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "שיחות";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "שמירה על חסימת פרסומות, פרטיות, & מהירות";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "ממשק דפדפן מינימליסטי שממוקד על מגיני Brave";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "רכישה חד-פעמית ניתנת להפעלה מספר פעמים בכל המכשירים שלך";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "תמכו במשימה שלנו & עבודה בקוד פתוח";
+
+/* A button title that when triggered will allow a user to view their App Store receipt */
+"viewAppStoreReceipt" = "הצגת קבלה מ-App Store";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "ארנק";
+

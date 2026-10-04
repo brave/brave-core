@@ -1,0 +1,14 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+credential_provider_public_headers = [
+  # These Chromium headers are Obj-C only and only contain @protocol
+  # definitions, so are fine to export directly.
+  "//ios/chrome/common/credential_provider/credential.h",
+  "//ios/chrome/common/credential_provider/credential_store.h",
+  "//brave/ios/browser/api/credential_provider/credential_provider_api.h",
+]
+
+credential_provider_public_deps = [ "//ios/chrome/common/credential_provider" ]

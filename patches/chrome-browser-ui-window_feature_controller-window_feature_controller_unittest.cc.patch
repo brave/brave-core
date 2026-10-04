@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/window_feature_controller/window_feature_controller_unittest.cc b/chrome/browser/ui/window_feature_controller/window_feature_controller_unittest.cc
+index 5374d020b4683fae7e91a18dcc2b42f51e4f86cf..dfd9707346f9dce8fb806f80fe8e21aea259e2a5 100644
+--- a/chrome/browser/ui/window_feature_controller/window_feature_controller_unittest.cc
++++ b/chrome/browser/ui/window_feature_controller/window_feature_controller_unittest.cc
+@@ -34,7 +34,7 @@ class WindowFeatureControllerTest : public testing::Test {
+       BrowserWindowFullscreenController* fullscreen_controller) {
+     return std::make_unique<WindowFeatureController>(
+         fullscreen_controller, /*app_controller=*/nullptr, browser_type,
+-        is_trusted_source, unowned_user_data_host_);
++        is_trusted_source, unowned_user_data_host_, mock_browser_window_interface_);
+   }
+ 
+   testing::NiceMock<MockBrowserWindowInterface> mock_browser_window_interface_;

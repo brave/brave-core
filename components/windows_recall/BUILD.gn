@@ -1,0 +1,34 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+
+assert(is_win)
+
+static_library("windows_recall") {
+  sources = [
+    "windows_recall.cc",
+    "windows_recall.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/prefs",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "windows_recall_unittest.cc" ]
+
+  deps = [
+    ":windows_recall",
+    "//base",
+    "//base/test:test_support",
+    "//components/prefs:test_support",
+    "//testing/gtest",
+  ]
+}

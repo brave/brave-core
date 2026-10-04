@@ -1,0 +1,12 @@
+diff --git a/content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm b/content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm
+index d55b8386da9f8d56e4428e591a74b0c0088f678d..17a8d987564ef2f5978786061ba416f93807d9c9 100644
+--- a/content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm
++++ b/content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm
+@@ -2378,6 +2378,7 @@ static NSWindow* __weak _deferredResignKeyWindow;
+ }
+ 
+ - (id)accessibilityParent {
++  BRAVE_ACCESSIBILITY_PARENT
+   if (_accessibilityParent)
+     return NSAccessibilityUnignoredAncestor(_accessibilityParent);
+   return [super accessibilityParent];

@@ -1,0 +1,4 @@
+include_rules = [
+  "+services/passage_embeddings",
+  "+third_party/litert",
+]

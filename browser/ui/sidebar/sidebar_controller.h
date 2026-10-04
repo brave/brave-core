@@ -1,0 +1,137 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_CONTROLLER_H_
+#define BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_CONTROLLER_H_
+
+#include <memory>
+#include <optional>
+#include <string>
+
+#include "base/memory/raw_ptr.h"
+#include "base/scoped_observation.h"
+#include "brave/components/sidebar/browser/sidebar_item.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
+#include "ui/base/window_open_disposition.h"
+
+class BrowserWindowInterface;
+class GURL;
+class Profile;
+class SidePanelUI;
+class TabStripModel;
+
+namespace sidebar {
+
+class Sidebar;
+class SidebarModel;
+class SidebarWebPanelController;
+
+// This controls the sidebar. Each browser could have different runtime sidebar
+// state and it's stored in the model. Model initializes with persisted data
+// that stored in user data. That persisted data is per-profile data and
+// SidebarService manages. That data will include installed sidebar item list,
+// order and etc. Browser object will be the owner of this controller.
+// This will observe SidebarService to know per-profile sidebar data changing
+// such as adding new item or deleting existing item.
+// Controller will request about add/delete items to SidebarService.
+// TODO(https://github.com/brave/brave-browser/issues/45977): Avoid direct
+// Browser dependency. We should pass what we need like TabStripModel.
+class SidebarController : public SidebarService::Observer {
+ public:
+  SidebarController(BrowserWindowInterface* browser, Profile* profile);
+  ~SidebarController() override;
+
+  SidebarController(const SidebarController&) = delete;
+  SidebarController& operator=(const SidebarController&) = delete;
+
+  // NOTE: Don't call this directly for panel item. Use SidePanelUI instead.
+  // This should be called as a result of SidePanelCoordinator's entry
+  // opening/closing event. If this method is called directly for activating
+  // panel, SidePanelCoordinator doesn't know about it.
+
+  // |disposition| is only valid for shortcut type. If |disposition| is not
+  // CURRENT_TAB, item at |index| is handled based on |disposition|.
+  void ActivateItemAt(
+      std::optional<size_t> index,
+      WindowOpenDisposition disposition = WindowOpenDisposition::CURRENT_TAB);
+
+  // Called when the item at |index| is pressed by the user. Deactivates the
+  // current panel if the item is already active.
+  // |disposition| is only used for shortcut type items.
+  void OnItemPressed(
+      size_t index,
+      WindowOpenDisposition disposition = WindowOpenDisposition::CURRENT_TAB);
+  void AddItemWithCurrentTab();
+  void UpdateActiveItemState(std::optional<SidebarItem::BuiltInItemType>
+                                 active_panel_item = std::nullopt);
+
+  // Toggles a session-only "pin" that forces the sidebar control view
+  // visible regardless of the current show option. Pinned state is cleared
+  // when the show option changes (via OnShowSidebarOptionChanged) and when
+  // the browser window closes; it is not persisted. V2 only — invoked by
+  // the toolbar SidePanelButton when V2 is enabled.
+  void ToggleSidebarPinning();
+  bool sidebar_pinned() const { return sidebar_pinned_; }
+
+  void SetSidePanelUIForTesting(SidePanelUI* side_panel_ui) {
+    side_panel_ui_for_testing_ = side_panel_ui;
+  }
+
+  // If current browser doesn't have a tab for |url|, active tab will load
+  // |url|. Otherwise, existing tab will be activated.
+  // ShowSingletonTab() has similar functionality but it loads url in the
+  // new tab.
+  void LoadAtTab(const GURL& url);
+
+  bool IsActiveIndex(std::optional<size_t> index) const;
+  bool DoesBrowserHaveOpenedTabForItem(const SidebarItem& item) const;
+
+  void TearDownPreBrowserWindowDestruction();
+
+  void SetSidebar(Sidebar* sidebar);
+  Sidebar* sidebar() const { return sidebar_; }
+  SidebarModel* model() const { return sidebar_model_.get(); }
+
+  SidebarWebPanelController* GetWebPanelController();
+  SidebarService* GetSidebarService();
+
+  // SidebarService::Observer overrides:
+  void OnShowSidebarOptionChanged(
+      SidebarService::ShowSidebarOption option) override;
+
+ private:
+  void OnPreferenceChanged(const std::string& pref_name);
+
+  // Ask panel item activation state change to SidePanelUI.
+  // Outside of this class, use SidePanelUI directly.
+  void ActivatePanelItem(SidebarItem::BuiltInItemType panel_item);
+
+  SidePanelUI* GetSidePanelUI();
+
+  // Iterate tabs by host (if tabs with host of URL exist).
+  // Otherwise, load URL in the active tab.
+  void IterateOrLoadAtActiveTab(const GURL& url);
+
+  // Try to find a tab that loads |url| from other browsers
+  // and activate it if found.
+  bool ActiveTabFromOtherBrowsersForHost(const GURL& url);
+
+  // Sidebar is visible when pinned regardless of show option.
+  bool sidebar_pinned_ = false;
+  raw_ptr<TabStripModel> tab_strip_model_ = nullptr;
+  raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
+  raw_ptr<Sidebar> sidebar_ = nullptr;
+  raw_ptr<SidePanelUI> side_panel_ui_for_testing_ = nullptr;
+
+  std::unique_ptr<SidebarModel> sidebar_model_;
+  std::unique_ptr<SidebarWebPanelController> web_panel_controller_;
+  base::ScopedObservation<SidebarService, SidebarService::Observer>
+      sidebar_service_observed_{this};
+};
+
+}  // namespace sidebar
+
+#endif  // BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_CONTROLLER_H_

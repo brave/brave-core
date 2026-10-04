@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/extensions/api/settings_private/prefs_util.h b/chrome/browser/extensions/api/settings_private/prefs_util.h
+index 819adc65556dfa622f8b6cf3dc3b7132bfc7b4d2..0863d2da1751576477b873d61cfb5b7bc1d9b1da 100644
+--- a/chrome/browser/extensions/api/settings_private/prefs_util.h
++++ b/chrome/browser/extensions/api/settings_private/prefs_util.h
+@@ -33,7 +33,7 @@ class PrefsUtil {
+   // Gets the list of allowlisted pref keys -- that is, those which correspond
+   // to prefs that clients of the settingsPrivate API may retrieve and
+   // manipulate.
+-  const TypedPrefMap& GetAllowlistedKeys();
++  virtual const TypedPrefMap& GetAllowlistedKeys();
+ 
+   // Returns the pref type for |pref_name| or PREF_TYPE_NONE if not in the
+   // allowlist.

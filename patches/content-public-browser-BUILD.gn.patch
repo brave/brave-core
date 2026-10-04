@@ -1,0 +1,20 @@
+diff --git a/content/public/browser/BUILD.gn b/content/public/browser/BUILD.gn
+index 790d6657077abd23c475e8570668b24c5ca7729b..0c1d5119f40d35e5134469d7145ef55c353a27bb 100644
+--- a/content/public/browser/BUILD.gn
++++ b/content/public/browser/BUILD.gn
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD - style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/content/public/browser/sources.gni")
+ import("//build/config/ui.gni")
+ import("//content/common/features.gni")
+ import("//content/public/common/features.gni")
+@@ -552,6 +553,7 @@ source_set("browser_sources") {
+     "webui_config_map.h",
+     "zoom_level_delegate.h",
+   ]
++  sources += brave_content_public_browser_sources
+   configs += [
+     "//build/config:precompiled_headers",
+     "//build/config/compiler:wexit_time_destructors",

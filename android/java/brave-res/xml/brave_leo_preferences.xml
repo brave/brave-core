@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:key="leo_category"
+        android:title="@string/leo_summary">
+
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="autocomplete_switch"
+            android:title="@string/leo_autocomplete_pref"
+            android:defaultValue="true" />
+        
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="leo_quick_search_engine"
+            android:title="@string/leo_quick_search_engine_pref"
+            android:summary="@string/leo_quick_search_engine_summary"
+            android:defaultValue="true" />
+
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="history_switch"
+            android:title="@string/leo_history_pref"
+            android:defaultValue="true"
+            app:isPreferenceVisible="false" />
+
+        <Preference
+            android:fragment="org.chromium.chrome.browser.settings.BraveLeoDefaultModelPreferences"
+            android:key="default_model"
+            android:title="@string/leo_default_model_pref" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="subscription_category"
+        android:title="@string/leo_subscription_pref">
+
+        <org.chromium.components.browser_ui.settings.ChromeBasePreference
+            android:key="link_subscription"
+            android:title="@string/link_subscription_title_leo"
+            android:summary="@string/link_subscription_summary_leo"
+            app:isPreferenceVisible="false"/>
+        <org.chromium.components.browser_ui.settings.ChromeBasePreference
+            android:key="subscription_manage"
+            android:title="@string/manage_subscription_leo"
+            app:isPreferenceVisible="false"/>
+        <org.chromium.components.browser_ui.settings.ChromeBasePreference
+            android:key="go_premium"
+            android:title="@string/leo_go_premium_pref"
+            app:isPreferenceVisible="false"/>
+
+    </PreferenceCategory>
+
+    <org.chromium.chrome.browser.settings.BraveLeoResetPreference
+        android:key="reset_data"
+        android:title="@string/leo_reset_data"/>
+</PreferenceScreen>

@@ -1,0 +1,12 @@
+diff --git a/content/common/BUILD.gn b/content/common/BUILD.gn
+index 986ccc4601a39e1963aa654c44013a9a0d540328..9c1b9a17f0e3bbe2b3a1c356d79040baf994601b 100644
+--- a/content/common/BUILD.gn
++++ b/content/common/BUILD.gn
+@@ -64,6 +64,7 @@ source_set("common") {
+   # must not link to this because it will duplicate the code in the component
+   # build.
+   visibility = [ "//content/*" ]
++  visibility += [ "//brave/content/*" ]
+ 
+   sources = [
+     "background_fetch/background_fetch_types.cc",

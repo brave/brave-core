@@ -1,0 +1,20 @@
+diff --git a/components/sessions/content/content_serialized_navigation_builder.cc b/components/sessions/content/content_serialized_navigation_builder.cc
+index 4c076211931dd4efc256f70b41fc69ef5fb17176..798a3617c19d06c78ea18020d330963d44e340e5 100644
+--- a/components/sessions/content/content_serialized_navigation_builder.cc
++++ b/components/sessions/content/content_serialized_navigation_builder.cc
+@@ -65,6 +65,7 @@ ContentSerializedNavigationBuilder::FromNavigationEntry(
+       navigation.extended_info_map_[handler_entry.first] = value;
+   }
+ 
++  MaybeSaveStoragePartitionKey(entry, &navigation);
+   return navigation;
+ }
+ 
+@@ -198,6 +199,7 @@ ContentSerializedNavigationBuilder::ToNavigationEntry(
+   DCHECK_EQ(SerializedNavigationEntry::STATE_INVALID,
+             navigation->blocked_state_);
+ 
++  MaybeRestoreStoragePartitionKey(navigation, entry.get());
+   return entry;
+ }
+ 

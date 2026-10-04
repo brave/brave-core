@@ -1,0 +1,1342 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_conversions.h"
+
+#include <cstdint>
+#include <optional>
+#include <string>
+#include <vector>
+
+#include "base/containers/flat_map.h"
+#include "base/hash/hash.h"
+#include "base/location.h"
+#include "base/numerics/byte_conversions.h"
+#include "base/time/time.h"
+#include "brave/components/ai_chat/core/browser/test_utils.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/sync/protocol/ai_chat_specifics.pb.h"
+#include "components/sync/protocol/entity_data.h"
+#include "components/sync/protocol/entity_specifics.pb.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
+
+namespace ai_chat {
+namespace {
+
+// A string long enough to cross kSyncCompressionThresholdBytes and highly
+// repetitive, so gzip is guaranteed to shrink it.
+std::string CompressibleString() {
+  return std::string(2 * kSyncCompressionThresholdBytes, 'a');
+}
+
+// Sets one of every AIChatCompressibleString the size-budget policy is allowed
+// to omit to a distinct marker, and returns those markers so a test can assert
+// on the whole set at once instead of field by field.
+std::vector<std::string> PopulateOmittableStrings(
+    sync_pb::AIChatConversationSpecifics_Entry* entry) {
+  auto* content = entry->add_associated_content();
+  content->set_uuid("ac-1");
+  content->mutable_last_contents()->set_raw("associated content text");
+
+  auto* file = entry->add_uploaded_files();
+  file->set_filename("doc.pdf");
+  file->mutable_extracted_text()->set_raw("file extracted text");
+
+  entry->add_events()->mutable_inline_search()->mutable_results_json()->set_raw(
+      "inline search results");
+
+  auto* web_sources = entry->add_events()->mutable_web_sources();
+  web_sources->add_sources()->mutable_page_content()->set_raw(
+      "event page content");
+  web_sources->add_rich_results()->set_raw("event rich result");
+
+  auto* tool_use = entry->add_events()->mutable_tool_use();
+  tool_use->mutable_arguments_json()->set_raw("tool arguments");
+  tool_use->add_artifacts()->mutable_content_json()->set_raw(
+      "artifact content");
+  tool_use->add_output()->mutable_text_content_block()->mutable_text()->set_raw(
+      "tool output text");
+  auto* nested = tool_use->add_output()->mutable_web_sources_content_block();
+  nested->add_sources()->mutable_page_content()->set_raw(
+      "tool output page content");
+  nested->add_rich_results()->set_raw("tool output rich result");
+
+  entry->add_events()->mutable_completion()->set_raw("completion");
+
+  return {"associated content text",
+          "file extracted text",
+          "inline search results",
+          "event page content",
+          "event rich result",
+          "tool arguments",
+          "artifact content",
+          "tool output text",
+          "tool output page content",
+          "tool output rich result",
+          "completion"};
+}
+
+}  // namespace
+
+TEST(AIChatSyncConversionsTest, WriteCompressibleStringShortStaysRaw) {
+  sync_pb::AIChatCompressibleString out;
+  WriteCompressibleString("hello", &out);
+  EXPECT_TRUE(out.has_raw());
+  EXPECT_FALSE(out.has_gzipped());
+  EXPECT_EQ(out.raw(), "hello");
+  EXPECT_FALSE(out.has_omitted_content_hash());
+}
+
+TEST(AIChatSyncConversionsTest, WriteCompressibleStringBelowThresholdStaysRaw) {
+  // Exactly one byte under the threshold must not be compressed.
+  const std::string value(kSyncCompressionThresholdBytes - 1, 'a');
+  sync_pb::AIChatCompressibleString out;
+  WriteCompressibleString(value, &out);
+  EXPECT_TRUE(out.has_raw());
+  EXPECT_FALSE(out.has_gzipped());
+  EXPECT_EQ(out.raw(), value);
+}
+
+TEST(AIChatSyncConversionsTest, WriteCompressibleStringLongGetsGzipped) {
+  const std::string value = CompressibleString();
+  sync_pb::AIChatCompressibleString out;
+  WriteCompressibleString(value, &out);
+  EXPECT_TRUE(out.has_gzipped());
+  EXPECT_FALSE(out.has_raw());
+  EXPECT_LT(out.gzipped().size(), value.size());
+}
+
+TEST(AIChatSyncConversionsTest, OmitCompressibleStringStoresContentHash) {
+  sync_pb::AIChatCompressibleString out;
+  WriteCompressibleString("some value", &out);
+  OmitCompressibleString(&out);
+  EXPECT_TRUE(out.has_omitted_content_hash());
+  EXPECT_FALSE(out.has_raw());
+  EXPECT_FALSE(out.has_gzipped());
+  // The hash is over the original plaintext so a receiver can match it against
+  // a local copy.
+  EXPECT_EQ(out.omitted_content_hash(), base::PersistentHash("some value"));
+}
+
+TEST(AIChatSyncConversionsTest, OmitCompressibleStringHashesGzippedPlaintext) {
+  // Omitting a value that was stored gzipped must hash the decompressed
+  // plaintext, not the gzip bytes, so it matches the receiver's local copy.
+  const std::string value = CompressibleString();
+  sync_pb::AIChatCompressibleString out;
+  WriteCompressibleString(value, &out);
+  ASSERT_TRUE(out.has_gzipped());
+  OmitCompressibleString(&out);
+  EXPECT_EQ(out.omitted_content_hash(), base::PersistentHash(value));
+}
+
+TEST(AIChatSyncConversionsTest, OmitUploadedFileDataStoresDataHash) {
+  sync_pb::AIChatUploadedFile file;
+  const std::string bytes = "some raw uploaded file bytes";
+  file.set_data(bytes);
+  OmitUploadedFileData(&file);
+  EXPECT_FALSE(file.has_data());
+  EXPECT_TRUE(file.has_omitted_data_hash());
+  // The hash is over the original bytes so a receiver can match it against a
+  // local copy.
+  EXPECT_EQ(file.omitted_data_hash(), base::PersistentHash(bytes));
+}
+
+TEST(AIChatSyncConversionsTest, ReadCompressibleStringRawRoundTrip) {
+  sync_pb::AIChatCompressibleString in;
+  in.set_raw("plain");
+  EXPECT_EQ(ReadCompressibleString(in), "plain");
+}
+
+TEST(AIChatSyncConversionsTest, ReadCompressibleStringEmptyRawIsEmptyNotNull) {
+  // An explicitly-set empty raw string is distinct from an unset field: it
+  // reads back as "" rather than nullopt.
+  sync_pb::AIChatCompressibleString in;
+  in.set_raw("");
+  std::optional<std::string> result = ReadCompressibleString(in);
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(*result, "");
+}
+
+TEST(AIChatSyncConversionsTest, ReadCompressibleStringGzippedRoundTrip) {
+  const std::string value = CompressibleString();
+  sync_pb::AIChatCompressibleString wire;
+  WriteCompressibleString(value, &wire);
+  ASSERT_TRUE(wire.has_gzipped());
+  EXPECT_EQ(ReadCompressibleString(wire), value);
+}
+
+TEST(AIChatSyncConversionsTest, ReadCompressibleStringOmittedReturnsNullopt) {
+  sync_pb::AIChatCompressibleString in;
+  WriteCompressibleString("some value", &in);
+  OmitCompressibleString(&in);
+  EXPECT_EQ(ReadCompressibleString(in), std::nullopt);
+}
+
+TEST(AIChatSyncConversionsTest, ReadCompressibleStringUnsetReturnsNullopt) {
+  sync_pb::AIChatCompressibleString in;
+  EXPECT_EQ(ReadCompressibleString(in), std::nullopt);
+}
+
+TEST(AIChatSyncConversionsTest, ReadCompressibleStringBadGzipReturnsNullopt) {
+  sync_pb::AIChatCompressibleString in;
+  in.set_gzipped("this is not valid gzip data");
+  EXPECT_EQ(ReadCompressibleString(in), std::nullopt);
+}
+
+TEST(AIChatSyncConversionsTest,
+     ReadCompressibleStringRejectsOversizedDecompressedSize) {
+  // A gzip stream's uncompressed-size trailer (ISIZE, the last 4 bytes) is
+  // attacker-controlled; a tiny blob can claim a huge size. Reading must reject
+  // a claim over kSyncCompressionMaxDecompressedBytes without decompressing.
+  sync_pb::AIChatCompressibleString in;
+  WriteCompressibleString(CompressibleString(), &in);
+  ASSERT_TRUE(in.has_gzipped());
+
+  std::string gzipped = in.gzipped();
+  ASSERT_GE(gzipped.size(), 4u);
+  base::as_writable_byte_span(gzipped).last<4u>().copy_from(
+      base::U32ToLittleEndian(
+          static_cast<uint32_t>(kSyncCompressionMaxDecompressedBytes + 1)));
+  in.set_gzipped(gzipped);
+
+  EXPECT_EQ(ReadCompressibleString(in), std::nullopt);
+}
+
+TEST(AIChatSyncConversionsTest, ConversationMetadataToSpecifics) {
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv-1";
+  conversation->title = "My conversation";
+  conversation->model_key = "model-key";
+  conversation->total_tokens = 1234;
+  conversation->trimmed_tokens = 56;
+
+  sync_pb::AIChatConversationSpecifics specifics =
+      ConversationMetadataToSpecifics(*conversation);
+
+  ASSERT_TRUE(specifics.has_conversation());
+  EXPECT_FALSE(specifics.has_entry());
+  const auto& meta = specifics.conversation();
+  EXPECT_EQ(meta.uuid(), "conv-1");
+  EXPECT_EQ(meta.title(), "My conversation");
+  EXPECT_EQ(meta.model_key(), "model-key");
+  EXPECT_EQ(meta.total_tokens(), 1234u);
+  EXPECT_EQ(meta.trimmed_tokens(), 56u);
+}
+
+TEST(AIChatSyncConversionsTest, ConversationMetadataToSpecificsNoModelKey) {
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv-1";
+  conversation->title = "No model";
+  conversation->model_key = std::nullopt;
+
+  sync_pb::AIChatConversationSpecifics specifics =
+      ConversationMetadataToSpecifics(*conversation);
+
+  ASSERT_TRUE(specifics.has_conversation());
+  EXPECT_FALSE(specifics.conversation().has_model_key());
+}
+
+TEST(AIChatSyncConversionsTest, EntryToSpecificsMapsFields) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-1";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->text = "the entry text";
+  entry->prompt = "the prompt";
+  entry->selected_text = "selected";
+  entry->model_key = "model-key";
+  entry->created_time =
+      base::Time::FromDeltaSinceWindowsEpoch(base::Microseconds(42));
+
+  sync_pb::AIChatConversationSpecifics specifics =
+      EntryToSpecifics("conv-1", *entry, {});
+
+  ASSERT_TRUE(specifics.has_entry());
+  EXPECT_FALSE(specifics.has_conversation());
+  const auto& proto = specifics.entry();
+  EXPECT_EQ(proto.uuid(), "entry-1");
+  EXPECT_EQ(proto.conversation_uuid(), "conv-1");
+  EXPECT_EQ(proto.entry_text(), "the entry text");
+  EXPECT_EQ(proto.prompt(), "the prompt");
+  EXPECT_EQ(proto.selected_text(), "selected");
+  EXPECT_EQ(proto.model_key(), "model-key");
+  EXPECT_EQ(proto.character_type(),
+            static_cast<int32_t>(mojom::CharacterType::HUMAN));
+  EXPECT_EQ(proto.action_type(),
+            static_cast<int32_t>(mojom::ActionType::QUERY));
+  EXPECT_EQ(proto.created_time_windows_epoch_micros(), 42);
+}
+
+TEST(AIChatSyncConversionsTest,
+     EntryToSpecificsSyncsLatestEditUnderOriginalIdentity) {
+  // An edited turn keeps its original text in |text| and stores each revision
+  // in |edits| (most recent last). Sync must carry the latest edit's content,
+  // but under the original turn's identity (uuid + created_time), so the sync
+  // entity is stable across edits and keeps its conversation position.
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-1";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->text = "original text";
+  entry->model_key = "original-model";
+  entry->created_time =
+      base::Time::FromDeltaSinceWindowsEpoch(base::Microseconds(42));
+
+  auto first_edit = mojom::ConversationTurn::New();
+  first_edit->uuid = "edit-1";
+  first_edit->character_type = mojom::CharacterType::HUMAN;
+  first_edit->action_type = mojom::ActionType::QUERY;
+  first_edit->text = "first edit";
+  first_edit->created_time =
+      base::Time::FromDeltaSinceWindowsEpoch(base::Microseconds(100));
+
+  auto latest_edit = mojom::ConversationTurn::New();
+  latest_edit->uuid = "edit-2";
+  latest_edit->character_type = mojom::CharacterType::HUMAN;
+  latest_edit->action_type = mojom::ActionType::QUERY;
+  latest_edit->text = "latest edit";
+  latest_edit->model_key = "edited-model";
+  latest_edit->created_time =
+      base::Time::FromDeltaSinceWindowsEpoch(base::Microseconds(200));
+  latest_edit->events = std::vector<mojom::ConversationEntryEventPtr>{};
+  latest_edit->events->push_back(
+      mojom::ConversationEntryEvent::NewCompletionEvent(
+          mojom::CompletionEvent::New("latest answer")));
+
+  entry->edits = std::vector<mojom::ConversationTurnPtr>{};
+  entry->edits->push_back(std::move(first_edit));
+  entry->edits->push_back(std::move(latest_edit));
+
+  sync_pb::AIChatConversationSpecifics specifics =
+      EntryToSpecifics("conv-1", *entry, {});
+
+  ASSERT_TRUE(specifics.has_entry());
+  const auto& proto = specifics.entry();
+  // Identity: from the original turn.
+  EXPECT_EQ(proto.uuid(), "entry-1");
+  EXPECT_EQ(proto.created_time_windows_epoch_micros(), 42);
+  // Content: from the most recent edit, not the original or intermediate edit.
+  EXPECT_EQ(proto.entry_text(), "latest edit");
+  EXPECT_EQ(proto.model_key(), "edited-model");
+  ASSERT_EQ(proto.events_size(), 1);
+  ASSERT_TRUE(proto.events(0).has_completion());
+  EXPECT_EQ(ReadCompressibleString(proto.events(0).completion()),
+            "latest answer");
+}
+
+TEST(AIChatSyncConversionsTest, EntryToSpecificsFiltersAssociatedContent) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-1";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->created_time = base::Time::Now();
+
+  // One content tied to this entry, one tied to a different entry, and one
+  // with no entry association at all.
+  std::vector<mojom::AssociatedContentPtr> content;
+
+  auto mine = mojom::AssociatedContent::New();
+  mine->uuid = "content-mine";
+  mine->title = "Mine";
+  mine->url = GURL("https://example.com/mine");
+  mine->content_type = mojom::ContentType::PageContent;
+  mine->content_used_percentage = 50;
+  mine->conversation_turn_uuid = "entry-1";
+  content.push_back(std::move(mine));
+
+  auto other = mojom::AssociatedContent::New();
+  other->uuid = "content-other";
+  other->content_type = mojom::ContentType::PageContent;
+  other->conversation_turn_uuid = "entry-2";
+  content.push_back(std::move(other));
+
+  auto unattached = mojom::AssociatedContent::New();
+  unattached->uuid = "content-unattached";
+  unattached->content_type = mojom::ContentType::PageContent;
+  unattached->conversation_turn_uuid = std::nullopt;
+  content.push_back(std::move(unattached));
+
+  sync_pb::AIChatConversationSpecifics specifics =
+      EntryToSpecifics("conv-1", *entry, content);
+
+  ASSERT_TRUE(specifics.has_entry());
+  ASSERT_EQ(specifics.entry().associated_content_size(), 1);
+  const auto& proto_content = specifics.entry().associated_content(0);
+  EXPECT_EQ(proto_content.uuid(), "content-mine");
+  EXPECT_EQ(proto_content.title(), "Mine");
+  EXPECT_EQ(proto_content.url(), "https://example.com/mine");
+  EXPECT_EQ(proto_content.content_used_percentage(), 50);
+}
+
+TEST(AIChatSyncConversionsTest, EntryToSpecificsCompletionEventCompressed) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-1";
+  entry->character_type = mojom::CharacterType::ASSISTANT;
+  entry->action_type = mojom::ActionType::RESPONSE;
+  entry->created_time = base::Time::Now();
+  const std::string completion = CompressibleString();
+  entry->events = std::vector<mojom::ConversationEntryEventPtr>{};
+  entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New(completion)));
+
+  sync_pb::AIChatConversationSpecifics specifics =
+      EntryToSpecifics("conv-1", *entry, {});
+
+  ASSERT_TRUE(specifics.has_entry());
+  ASSERT_EQ(specifics.entry().events_size(), 1);
+  const auto& event = specifics.entry().events(0);
+  ASSERT_TRUE(event.has_completion());
+  EXPECT_TRUE(event.completion().has_gzipped());
+  EXPECT_EQ(ReadCompressibleString(event.completion()), completion);
+}
+
+TEST(AIChatSyncConversionsTest, EntryToSpecificsSearchQueriesEvent) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-1";
+  entry->character_type = mojom::CharacterType::ASSISTANT;
+  entry->action_type = mojom::ActionType::RESPONSE;
+  entry->created_time = base::Time::Now();
+  entry->events = std::vector<mojom::ConversationEntryEventPtr>{};
+  entry->events->push_back(mojom::ConversationEntryEvent::NewSearchQueriesEvent(
+      mojom::SearchQueriesEvent::New(
+          std::vector<std::string>{"query one", "query two"})));
+
+  sync_pb::AIChatConversationSpecifics specifics =
+      EntryToSpecifics("conv-1", *entry, {});
+
+  ASSERT_TRUE(specifics.has_entry());
+  ASSERT_EQ(specifics.entry().events_size(), 1);
+  const auto& event = specifics.entry().events(0);
+  ASSERT_TRUE(event.has_search_queries());
+  ASSERT_EQ(event.search_queries().queries_size(), 2);
+  EXPECT_EQ(event.search_queries().queries(0), "query one");
+  EXPECT_EQ(event.search_queries().queries(1), "query two");
+}
+
+TEST(AIChatSyncConversionsTest, CreateEntityDataFromSpecificsConversation) {
+  sync_pb::AIChatConversationSpecifics specifics;
+  specifics.mutable_conversation()->set_uuid("conv-1");
+
+  auto entity_data = CreateEntityDataFromSpecifics(specifics);
+  ASSERT_TRUE(entity_data);
+  EXPECT_EQ(entity_data->name, "conversation:conv-1");
+  ASSERT_TRUE(entity_data->specifics.has_ai_chat_conversation());
+  EXPECT_EQ(entity_data->specifics.ai_chat_conversation().conversation().uuid(),
+            "conv-1");
+}
+
+TEST(AIChatSyncConversionsTest, CreateEntityDataFromSpecificsEntry) {
+  sync_pb::AIChatConversationSpecifics specifics;
+  specifics.mutable_entry()->set_uuid("entry-1");
+
+  auto entity_data = CreateEntityDataFromSpecifics(specifics);
+  ASSERT_TRUE(entity_data);
+  EXPECT_EQ(entity_data->name, "entry:entry-1");
+  ASSERT_TRUE(entity_data->specifics.has_ai_chat_conversation());
+  EXPECT_EQ(entity_data->specifics.ai_chat_conversation().entry().uuid(),
+            "entry-1");
+}
+
+TEST(AIChatSyncConversionsTest, StorageKeyAndClientTagForConversation) {
+  sync_pb::AIChatConversationSpecifics specifics;
+  specifics.mutable_conversation()->set_uuid("conv-1");
+
+  EXPECT_EQ(GetStorageKeyFromSpecifics(specifics), "c:conv-1");
+  // The client tag is identical to the storage key.
+  EXPECT_EQ(GetClientTagFromSpecifics(specifics),
+            GetStorageKeyFromSpecifics(specifics));
+}
+
+TEST(AIChatSyncConversionsTest, StorageKeyAndClientTagForEntry) {
+  sync_pb::AIChatConversationSpecifics specifics;
+  specifics.mutable_entry()->set_uuid("entry-1");
+
+  EXPECT_EQ(GetStorageKeyFromSpecifics(specifics), "e:entry-1");
+  EXPECT_EQ(GetClientTagFromSpecifics(specifics),
+            GetStorageKeyFromSpecifics(specifics));
+}
+
+TEST(AIChatSyncConversionsTest, GetStorageKeyFromEntitySpecifics) {
+  sync_pb::AIChatConversationSpecifics specifics;
+  specifics.mutable_entry()->set_uuid("entry-1");
+
+  sync_pb::EntitySpecifics entity_specifics;
+  *entity_specifics.mutable_ai_chat_conversation() = specifics;
+
+  EXPECT_EQ(GetStorageKeyFromEntitySpecifics(entity_specifics), "e:entry-1");
+}
+
+TEST(AIChatSyncConversionsTest, EntryToSpecificsWebSourcesEvent) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-web";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::ASSISTANT;
+  entry->action_type = mojom::ActionType::RESPONSE;
+
+  auto source = mojom::WebSource::New();
+  source->title = "Paris";
+  source->url = GURL("https://en.wikipedia.org/wiki/Paris");
+  source->favicon_url = GURL("https://en.wikipedia.org/favicon.ico");
+  source->page_content = "Paris is the capital of France.";
+  source->extra_snippets = std::vector<std::string>{"Snippet A", "Snippet B"};
+  auto sources_event = mojom::WebSourcesEvent::New();
+  sources_event->sources.push_back(std::move(source));
+  std::vector<mojom::ConversationEntryEventPtr> events;
+  events.push_back(
+      mojom::ConversationEntryEvent::NewSourcesEvent(std::move(sources_event)));
+  entry->events = std::move(events);
+
+  auto specifics = EntryToSpecifics("conv-1", *entry, {});
+  ASSERT_TRUE(specifics.has_entry());
+  ASSERT_EQ(specifics.entry().events_size(), 1);
+  const auto& event = specifics.entry().events(0);
+  ASSERT_TRUE(event.has_web_sources());
+  ASSERT_EQ(event.web_sources().sources_size(), 1);
+  EXPECT_EQ(event.web_sources().sources(0).title(), "Paris");
+  EXPECT_EQ(event.web_sources().sources(0).url(),
+            "https://en.wikipedia.org/wiki/Paris");
+  EXPECT_EQ(event.web_sources().sources(0).favicon_url(),
+            "https://en.wikipedia.org/favicon.ico");
+  EXPECT_EQ(
+      ReadCompressibleString(event.web_sources().sources(0).page_content()),
+      "Paris is the capital of France.");
+  EXPECT_EQ(event.web_sources().sources(0).extra_snippets_size(), 2);
+}
+
+TEST(AIChatSyncConversionsTest, EntryToSpecificsToolUseEvent) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-tool";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::ASSISTANT;
+  entry->action_type = mojom::ActionType::RESPONSE;
+
+  auto tool_use = mojom::ToolUseEvent::New();
+  tool_use->tool_name = "search";
+  tool_use->id = "tool-1";
+  tool_use->arguments_json = "{\"q\":\"test\"}";
+  tool_use->is_server_result = true;
+  std::vector<mojom::ContentBlockPtr> output;
+  auto text = mojom::TextContentBlock::New();
+  text->text = "result";
+  output.push_back(mojom::ContentBlock::NewTextContentBlock(std::move(text)));
+  tool_use->output = std::move(output);
+  std::vector<mojom::ConversationEntryEventPtr> events;
+  events.push_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(std::move(tool_use)));
+  entry->events = std::move(events);
+
+  auto specifics = EntryToSpecifics("conv-1", *entry, {});
+  ASSERT_TRUE(specifics.has_entry());
+  ASSERT_EQ(specifics.entry().events_size(), 1);
+  const auto& event = specifics.entry().events(0);
+  ASSERT_TRUE(event.has_tool_use());
+  EXPECT_EQ(event.tool_use().tool_name(), "search");
+  EXPECT_EQ(event.tool_use().id(), "tool-1");
+  EXPECT_TRUE(event.tool_use().is_server_result());
+  EXPECT_EQ(ReadCompressibleString(event.tool_use().arguments_json()),
+            "{\"q\":\"test\"}");
+  ASSERT_EQ(event.tool_use().output_size(), 1);
+  ASSERT_TRUE(event.tool_use().output(0).has_text_content_block());
+  EXPECT_EQ(ReadCompressibleString(
+                event.tool_use().output(0).text_content_block().text()),
+            "result");
+}
+
+TEST(AIChatSyncConversionsTest, EntryToSpecificsUploadedFiles) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-files";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+
+  std::vector<mojom::UploadedFilePtr> files;
+  auto img = mojom::UploadedFile::New();
+  img->filename = "cat.jpg";
+  img->filesize = 5;
+  img->type = mojom::UploadedFileType::kImage;
+  img->data = {0x89, 0x50, 0x4e, 0x47, 0x0a};
+  files.push_back(std::move(img));
+  auto pdf = mojom::UploadedFile::New();
+  pdf->filename = "spec.pdf";
+  pdf->filesize = 0;
+  pdf->type = mojom::UploadedFileType::kPdf;
+  pdf->extracted_text = std::string(2048, 'x');  // Triggers gzip.
+  files.push_back(std::move(pdf));
+  entry->uploaded_files = std::move(files);
+
+  auto specifics = EntryToSpecifics("conv-1", *entry, {});
+  ASSERT_TRUE(specifics.has_entry());
+  ASSERT_EQ(specifics.entry().uploaded_files_size(), 2);
+  EXPECT_EQ(specifics.entry().uploaded_files(0).filename(), "cat.jpg");
+  EXPECT_EQ(specifics.entry().uploaded_files(0).data().size(), 5u);
+  EXPECT_TRUE(specifics.entry().uploaded_files(0).has_data());
+  EXPECT_FALSE(specifics.entry().uploaded_files(0).has_omitted_data_hash());
+  EXPECT_TRUE(
+      specifics.entry().uploaded_files(1).extracted_text().has_gzipped());
+}
+
+TEST(AIChatSyncConversionsTest,
+     EntryToSpecificsWritesSkillAndNearVerification) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-skill";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->skill = mojom::SkillEntry::New("/summarize", "Summarize this page");
+  entry->near_verification_status = mojom::NEARVerificationStatus::New(true);
+
+  auto specifics = EntryToSpecifics("conv-1", *entry, {});
+  ASSERT_TRUE(specifics.has_entry());
+  const auto& proto = specifics.entry();
+  ASSERT_TRUE(proto.has_skill());
+  EXPECT_EQ(proto.skill().shortcut(), "/summarize");
+  EXPECT_EQ(proto.skill().prompt(), "Summarize this page");
+  ASSERT_TRUE(proto.has_near_verification_status());
+  EXPECT_TRUE(proto.near_verification_status().verified());
+}
+
+TEST(AIChatSyncConversionsTest, EntryToSpecificsOmitsAbsentSkillAndNear) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-plain";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+
+  auto specifics = EntryToSpecifics("conv-1", *entry, {});
+  ASSERT_TRUE(specifics.has_entry());
+  EXPECT_FALSE(specifics.entry().has_skill());
+  EXPECT_FALSE(specifics.entry().has_near_verification_status());
+}
+
+TEST(AIChatSyncConversionsTest, ConversationMetadataRoundTrip) {
+  // Built with the positional constructor on purpose: a new mojom::Conversation
+  // field forces a compile error here, so the author must decide whether it
+  // should be synced (and the round-trip assertion below then enforces it).
+  auto original = mojom::Conversation::New(
+      "conv-123" /* uuid */, "Test conversation" /* title */,
+      base::Time() /* updated_time (not synced) */,
+      false /* has_content (not synced) */, "claude-opus" /* model_key */,
+      4096u /* total_tokens */, 256u /* trimmed_tokens */,
+      false /* temporary (not synced) */,
+      std::vector<mojom::AssociatedContentPtr>() /* associated_content */);
+
+  auto rebuilt = SpecificsToConversationMetadata(
+      ConversationMetadataToSpecifics(*original));
+  ASSERT_TRUE(rebuilt);
+
+  // Compares every synced field; non-persisted fields (e.g. has_content, which
+  // the receiver infers) are excluded by the helper.
+  ExpectConversationEquals(FROM_HERE, rebuilt, original,
+                           /*compare_non_persisted_fields=*/false);
+}
+
+TEST(AIChatSyncConversionsTest, ConversationMetadataRoundTripUnsetModelKey) {
+  auto original = mojom::Conversation::New();
+  original->uuid = "conv-min";
+  original->title = "Minimal";
+
+  auto rebuilt = SpecificsToConversationMetadata(
+      ConversationMetadataToSpecifics(*original));
+  ASSERT_TRUE(rebuilt);
+  EXPECT_FALSE(rebuilt->model_key.has_value());
+  ExpectConversationEquals(FROM_HERE, rebuilt, original,
+                           /*compare_non_persisted_fields=*/false);
+}
+
+TEST(AIChatSyncConversionsTest, EntryRoundTripBasic) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-1";
+  entry->created_time = base::Time::Now();
+  entry->text = "What is the capital of France?";
+  entry->prompt = "Be concise.";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->selected_text = "France";
+  entry->model_key = "claude-opus";
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  auto rebuilt =
+      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
+  ASSERT_TRUE(rebuilt);
+  ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
+  EXPECT_TRUE(rebuilt_content.empty());
+}
+
+// Populates every field of ConversationTurn (and every nested synced struct)
+// using positional constructors on purpose: adding a field to any of these
+// mojom structs forces a compile error here, so the author must populate it
+// and decide whether it should be synced. The round-trip assertions then
+// enforce that decision -- a newly-synced field must survive the round trip,
+// while an intentionally-unsynced one must be excluded (like |edits|).
+TEST(AIChatSyncConversionsTest, EntryRoundTripAllFields) {
+  // One event of every synced variant, each built positionally.
+  std::vector<mojom::ConversationEntryEventPtr> events;
+  events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("the completion")));
+  events.push_back(mojom::ConversationEntryEvent::NewSearchQueriesEvent(
+      mojom::SearchQueriesEvent::New(
+          std::vector<std::string>{"query one", "query two"})));
+
+  std::vector<mojom::WebSourcePtr> event_sources;
+  event_sources.push_back(mojom::WebSource::New(
+      "Source" /* title */, GURL("https://example.com/source") /* url */,
+      GURL("https://example.com/source.ico") /* favicon_url */,
+      "source page content" /* page_content */,
+      std::vector<std::string>{"snippet"} /* extra_snippets */));
+  events.push_back(mojom::ConversationEntryEvent::NewSourcesEvent(
+      mojom::WebSourcesEvent::New(
+          std::move(event_sources) /* sources */,
+          std::vector<std::string>{"{\"rich\":1}"} /* rich_results */)));
+
+  events.push_back(mojom::ConversationEntryEvent::NewInlineSearchEvent(
+      mojom::InlineSearchEvent::New("inline query" /* query */,
+                                    "{\"results\":1}" /* results_json */)));
+
+  // Tool use, exercising every synced content-block variant and an artifact.
+  std::vector<mojom::ContentBlockPtr> output;
+  output.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("text output")));
+  output.push_back(mojom::ContentBlock::NewImageContentBlock(
+      mojom::ImageContentBlock::New(GURL("https://example.com/image.png"))));
+  std::vector<mojom::WebSourcePtr> block_sources;
+  block_sources.push_back(mojom::WebSource::New(
+      "Block Source" /* title */, GURL("https://example.com/block") /* url */,
+      GURL("https://example.com/block.ico") /* favicon_url */,
+      "block page content" /* page_content */,
+      std::vector<std::string>{"block snippet"} /* extra_snippets */));
+  output.push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
+      mojom::WebSourcesContentBlock::New(
+          std::move(block_sources) /* sources */,
+          std::vector<std::string>{"block query"} /* queries */,
+          std::vector<std::string>{"{\"block\":1}"} /* rich_results */)));
+
+  std::vector<mojom::ToolArtifactPtr> artifacts;
+  artifacts.push_back(mojom::ToolArtifact::New(
+      std::nullopt /* id (not synced) */, "line_chart" /* type */,
+      "[1,2,3]" /* content_json */));
+
+  events.push_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "tool" /* tool_name */, "tool-id" /* id */,
+          "{\"arg\":1}" /* arguments_json */, std::move(output) /* output */,
+          std::move(artifacts) /* artifacts */,
+          nullptr /* permission_challenge (not synced) */,
+          true /* is_server_result */)));
+
+  // Uploaded files: one with inline bytes, one with extracted text.
+  std::vector<mojom::UploadedFilePtr> uploaded_files;
+  uploaded_files.push_back(mojom::UploadedFile::New(
+      "image.png" /* filename */, 5u /* filesize */,
+      std::vector<uint8_t>{1, 2, 3, 4, 5} /* data */,
+      mojom::UploadedFileType::kImage, std::nullopt /* extracted_text */));
+  uploaded_files.push_back(mojom::UploadedFile::New(
+      "doc.pdf" /* filename */, 0u /* filesize */,
+      std::vector<uint8_t>{} /* data */, mojom::UploadedFileType::kPdf,
+      "extracted text" /* extracted_text */));
+
+  auto entry = mojom::ConversationTurn::New(
+      "entry-all" /* uuid */, std::nullopt /* thread_uuid */,
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      "entry text" /* text */, "the prompt" /* prompt */,
+      "selected text" /* selected_text */, std::move(events) /* events */,
+      base::Time::Now() /* created_time */,
+      std::nullopt /* edits (not synced) */,
+      std::move(uploaded_files) /* uploaded_files */,
+      mojom::SkillEntry::New("/skill", "skill prompt") /* skill */,
+      false /* from_brave_search_SERP (not synced) */,
+      "model-key" /* model_key */,
+      mojom::NEARVerificationStatus::New(true) /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */);
+
+  // Associated content is carried alongside the entry; its extracted text
+  // rides in the texts map keyed by AC uuid.
+  std::vector<mojom::AssociatedContentPtr> associated_content;
+  associated_content.push_back(mojom::AssociatedContent::New(
+      "ac-uuid" /* uuid */, mojom::ContentType::PageContent,
+      "AC title" /* title */, 0 /* content_id (not synced) */,
+      GURL("https://example.com/ac") /* url */,
+      42 /* content_used_percentage */,
+      "entry-all" /* conversation_turn_uuid */,
+      false /* tools_attached (not synced) */));
+
+  base::flat_map<std::string, std::string> texts;
+  texts["ac-uuid"] = "associated content extracted text";
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  base::flat_map<std::string, std::string> rebuilt_texts;
+  auto rebuilt = SpecificsToEntry(
+      EntryToSpecifics("conv-all", *entry, associated_content, texts),
+      rebuilt_content, &rebuilt_texts);
+  ASSERT_TRUE(rebuilt);
+  ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
+  ExpectAssociatedContentEquals(FROM_HERE, rebuilt_content, associated_content,
+                                /*compare_non_persisted_fields=*/false);
+  EXPECT_EQ(rebuilt_texts,
+            (base::flat_map<std::string, std::string>{
+                {"ac-uuid", "associated content extracted text"}}));
+}
+
+TEST(AIChatSyncConversionsTest, EntryRoundTripCompletionEvent) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-completion";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::ASSISTANT;
+  entry->action_type = mojom::ActionType::RESPONSE;
+
+  std::vector<mojom::ConversationEntryEventPtr> events;
+  auto completion = mojom::CompletionEvent::New();
+  completion->completion = "Paris.";
+  events.push_back(
+      mojom::ConversationEntryEvent::NewCompletionEvent(std::move(completion)));
+  entry->events = std::move(events);
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  auto rebuilt =
+      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
+  ASSERT_TRUE(rebuilt);
+  ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
+}
+
+TEST(AIChatSyncConversionsTest, EntryRoundTripSearchQueriesEvent) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-queries";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::ASSISTANT;
+  entry->action_type = mojom::ActionType::RESPONSE;
+
+  std::vector<mojom::ConversationEntryEventPtr> events;
+  auto sq = mojom::SearchQueriesEvent::New();
+  sq->search_queries = {"capital of France", "Paris facts"};
+  events.push_back(
+      mojom::ConversationEntryEvent::NewSearchQueriesEvent(std::move(sq)));
+  entry->events = std::move(events);
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  auto rebuilt =
+      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
+  ASSERT_TRUE(rebuilt);
+  ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
+}
+
+TEST(AIChatSyncConversionsTest, EntryRoundTripWebSourcesEvent) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-web";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::ASSISTANT;
+  entry->action_type = mojom::ActionType::RESPONSE;
+
+  auto source = mojom::WebSource::New();
+  source->title = "Paris";
+  source->url = GURL("https://en.wikipedia.org/wiki/Paris");
+  source->favicon_url = GURL("https://en.wikipedia.org/favicon.ico");
+  source->page_content = "Paris is the capital of France.";
+  source->extra_snippets = std::vector<std::string>{"Snippet A", "Snippet B"};
+
+  auto sources_event = mojom::WebSourcesEvent::New();
+  sources_event->sources.push_back(std::move(source));
+  sources_event->rich_results = {"{\"x\":1}"};
+
+  std::vector<mojom::ConversationEntryEventPtr> events;
+  events.push_back(
+      mojom::ConversationEntryEvent::NewSourcesEvent(std::move(sources_event)));
+  entry->events = std::move(events);
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  auto rebuilt =
+      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
+  ASSERT_TRUE(rebuilt);
+  ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
+}
+
+TEST(AIChatSyncConversionsTest, EntryRoundTripToolUseEvent) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-tool";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::ASSISTANT;
+  entry->action_type = mojom::ActionType::RESPONSE;
+
+  auto tool_use = mojom::ToolUseEvent::New();
+  tool_use->tool_name = "search";
+  tool_use->id = "tool-1";
+  tool_use->arguments_json = "{\"q\":\"test\"}";
+  tool_use->is_server_result = true;
+
+  std::vector<mojom::ContentBlockPtr> output;
+  auto text = mojom::TextContentBlock::New();
+  text->text = "result";
+  output.push_back(mojom::ContentBlock::NewTextContentBlock(std::move(text)));
+  tool_use->output = std::move(output);
+
+  std::vector<mojom::ConversationEntryEventPtr> events;
+  events.push_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(std::move(tool_use)));
+  entry->events = std::move(events);
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  auto rebuilt =
+      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
+  ASSERT_TRUE(rebuilt);
+  ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
+}
+
+TEST(AIChatSyncConversionsTest, EntryRoundTripToolUseArtifacts) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-artifacts";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::ASSISTANT;
+  entry->action_type = mojom::ActionType::RESPONSE;
+
+  auto tool_use = mojom::ToolUseEvent::New();
+  tool_use->tool_name = "chart";
+  tool_use->id = "tool-artifact";
+  tool_use->arguments_json = "{}";
+  std::vector<mojom::ToolArtifactPtr> artifacts;
+  // |id| is a local identifier and is intentionally not synced, so leave it
+  // unset to keep the round trip an identity.
+  artifacts.push_back(
+      mojom::ToolArtifact::New(std::nullopt, "line_chart", "[1,2,3]"));
+  tool_use->artifacts = std::move(artifacts);
+
+  std::vector<mojom::ConversationEntryEventPtr> events;
+  events.push_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(std::move(tool_use)));
+  entry->events = std::move(events);
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  auto rebuilt =
+      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
+  ASSERT_TRUE(rebuilt);
+  ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
+}
+
+TEST(AIChatSyncConversionsTest, EntryRoundTripImageContentBlock) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-image";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::ASSISTANT;
+  entry->action_type = mojom::ActionType::RESPONSE;
+
+  auto image = mojom::ImageContentBlock::New();
+  image->image_url = GURL("https://example.com/screenshot.png");
+  std::vector<mojom::ContentBlockPtr> output;
+  output.push_back(mojom::ContentBlock::NewImageContentBlock(std::move(image)));
+
+  auto tool_use = mojom::ToolUseEvent::New();
+  tool_use->tool_name = "screenshot";
+  tool_use->id = "tool-image";
+  tool_use->arguments_json = "{}";
+  tool_use->output = std::move(output);
+
+  std::vector<mojom::ConversationEntryEventPtr> events;
+  events.push_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(std::move(tool_use)));
+  entry->events = std::move(events);
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  auto rebuilt =
+      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
+  ASSERT_TRUE(rebuilt);
+  ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
+}
+
+TEST(AIChatSyncConversionsTest, EntryRoundTripInlineSearchEvent) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-inline";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::ASSISTANT;
+  entry->action_type = mojom::ActionType::RESPONSE;
+
+  auto inline_search = mojom::InlineSearchEvent::New();
+  inline_search->query = "weather today";
+  inline_search->results_json = R"({"temp":72})";
+  std::vector<mojom::ConversationEntryEventPtr> events;
+  events.push_back(mojom::ConversationEntryEvent::NewInlineSearchEvent(
+      std::move(inline_search)));
+  entry->events = std::move(events);
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  auto rebuilt =
+      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
+  ASSERT_TRUE(rebuilt);
+  ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
+}
+
+TEST(AIChatSyncConversionsTest,
+     EntryRoundTripAssociatedContentFilteredByEntry) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-with-content";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+
+  auto mine = mojom::AssociatedContent::New();
+  mine->uuid = "content-mine";
+  mine->title = "Mine";
+  mine->url = GURL("https://example.com/mine");
+  mine->content_type = mojom::ContentType::PageContent;
+  mine->content_used_percentage = 75;
+  mine->conversation_turn_uuid = "entry-with-content";
+
+  auto other = mojom::AssociatedContent::New();
+  other->uuid = "content-other";
+  other->title = "Other";
+  other->url = GURL("https://example.com/other");
+  other->content_type = mojom::ContentType::PageContent;
+  other->content_used_percentage = 50;
+  other->conversation_turn_uuid = "different-entry";
+
+  // Only |mine| (tied to this entry) survives the round trip.
+  std::vector<mojom::AssociatedContentPtr> expected_content;
+  expected_content.push_back(mine->Clone());
+
+  std::vector<mojom::AssociatedContentPtr> all_content;
+  all_content.push_back(std::move(mine));
+  all_content.push_back(std::move(other));
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  auto rebuilt = SpecificsToEntry(
+      EntryToSpecifics("conv-1", *entry, all_content), rebuilt_content);
+  ASSERT_TRUE(rebuilt);
+  ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
+  ExpectAssociatedContentEquals(FROM_HERE, rebuilt_content, expected_content,
+                                /*compare_non_persisted_fields=*/false);
+}
+
+TEST(AIChatSyncConversionsTest,
+     SpecificsToConversationReturnsNullForWrongKind) {
+  sync_pb::AIChatConversationSpecifics specifics;
+  specifics.mutable_entry()->set_uuid("e1");
+  EXPECT_FALSE(SpecificsToConversationMetadata(specifics));
+}
+
+TEST(AIChatSyncConversionsTest, SpecificsToEntryReturnsNullForWrongKind) {
+  sync_pb::AIChatConversationSpecifics specifics;
+  specifics.mutable_conversation()->set_uuid("c1");
+  std::vector<mojom::AssociatedContentPtr> content;
+  EXPECT_FALSE(SpecificsToEntry(specifics, content));
+}
+
+TEST(AIChatSyncConversionsTest, EntryRoundTripUploadedFiles) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-files";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+
+  std::vector<mojom::UploadedFilePtr> files;
+  auto img = mojom::UploadedFile::New();
+  img->filename = "cat.jpg";
+  img->filesize = 5;
+  img->type = mojom::UploadedFileType::kImage;
+  img->data = {0x89, 0x50, 0x4e, 0x47, 0x0a};
+  files.push_back(std::move(img));
+
+  auto pdf = mojom::UploadedFile::New();
+  pdf->filename = "spec.pdf";
+  pdf->filesize = 0;
+  pdf->type = mojom::UploadedFileType::kPdf;
+  pdf->extracted_text = std::string(2048, 'x');  // Triggers gzip.
+  files.push_back(std::move(pdf));
+
+  entry->uploaded_files = std::move(files);
+
+  auto specifics = EntryToSpecifics("conv-1", *entry, {});
+  ASSERT_TRUE(specifics.has_entry());
+  ASSERT_EQ(specifics.entry().uploaded_files_size(), 2);
+  // Raw bytes are inlined for the image; the large extracted text is gzipped.
+  EXPECT_TRUE(specifics.entry().uploaded_files(0).has_data());
+  EXPECT_FALSE(specifics.entry().uploaded_files(0).has_omitted_data_hash());
+  EXPECT_TRUE(
+      specifics.entry().uploaded_files(1).extracted_text().has_gzipped());
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  auto rebuilt = SpecificsToEntry(specifics, rebuilt_content);
+  ASSERT_TRUE(rebuilt);
+  ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
+}
+
+TEST(AIChatSyncConversionsTest, EntryRoundTripWebSourcesContentBlock) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-tool-ws";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::ASSISTANT;
+  entry->action_type = mojom::ActionType::RESPONSE;
+
+  auto ws_block = mojom::WebSourcesContentBlock::New();
+  auto source = mojom::WebSource::New();
+  source->title = "MDN";
+  source->url = GURL("https://developer.mozilla.org/");
+  source->page_content = "Web docs.";
+  ws_block->sources.push_back(std::move(source));
+  ws_block->queries = {"mdn web docs"};
+  ws_block->rich_results = {"{\"a\":1}"};
+
+  std::vector<mojom::ContentBlockPtr> output;
+  output.push_back(
+      mojom::ContentBlock::NewWebSourcesContentBlock(std::move(ws_block)));
+
+  auto tool_use = mojom::ToolUseEvent::New();
+  tool_use->tool_name = "search";
+  tool_use->id = "tool-2";
+  tool_use->arguments_json = "{}";
+  tool_use->output = std::move(output);
+
+  std::vector<mojom::ConversationEntryEventPtr> events;
+  events.push_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(std::move(tool_use)));
+  entry->events = std::move(events);
+
+  auto specifics = EntryToSpecifics("conv-1", *entry, {});
+  ASSERT_EQ(specifics.entry().events(0).tool_use().output_size(), 1);
+  EXPECT_TRUE(specifics.entry()
+                  .events(0)
+                  .tool_use()
+                  .output(0)
+                  .has_web_sources_content_block());
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  auto rebuilt = SpecificsToEntry(specifics, rebuilt_content);
+  ASSERT_TRUE(rebuilt);
+  ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
+}
+
+TEST(AIChatSyncConversionsTest, EntryRoundTripAssociatedContentText) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-ac";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+
+  auto ac = mojom::AssociatedContent::New();
+  ac->uuid = "ac-1";
+  ac->title = "Page";
+  ac->url = GURL("https://example.com/");
+  ac->content_type = mojom::ContentType::PageContent;
+  ac->content_used_percentage = 100;
+  ac->conversation_turn_uuid = "entry-ac";
+  std::vector<mojom::AssociatedContentPtr> expected_content;
+  expected_content.push_back(ac->Clone());
+
+  std::vector<mojom::AssociatedContentPtr> all_content;
+  all_content.push_back(std::move(ac));
+
+  // Highly-compressible text so gzip kicks in (validates the encoding path).
+  const std::string content_text(4096, 'P');
+  base::flat_map<std::string, std::string> texts;
+  texts["ac-1"] = content_text;
+
+  auto specifics = EntryToSpecifics("conv-1", *entry, all_content, texts);
+  ASSERT_EQ(specifics.entry().associated_content_size(), 1);
+  ASSERT_TRUE(specifics.entry().associated_content(0).has_last_contents());
+  EXPECT_TRUE(
+      specifics.entry().associated_content(0).last_contents().has_gzipped());
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  base::flat_map<std::string, std::string> rebuilt_texts;
+  auto rebuilt = SpecificsToEntry(specifics, rebuilt_content, &rebuilt_texts);
+  ASSERT_TRUE(rebuilt);
+  ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
+  ExpectAssociatedContentEquals(FROM_HERE, rebuilt_content, expected_content,
+                                /*compare_non_persisted_fields=*/false);
+  EXPECT_EQ(rebuilt_texts,
+            (base::flat_map<std::string, std::string>{{"ac-1", content_text}}));
+}
+
+TEST(AIChatSyncConversionsTest, EntryRoundTripSkillAndNearVerification) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-skill";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->skill = mojom::SkillEntry::New("/summarize", "Summarize this page");
+  entry->near_verification_status = mojom::NEARVerificationStatus::New(true);
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  auto rebuilt =
+      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
+  ASSERT_TRUE(rebuilt);
+  ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
+}
+
+TEST(AIChatSyncConversionsTest, EntryRoundTripWithoutSkillOrNear) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-plain";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  auto rebuilt =
+      SpecificsToEntry(EntryToSpecifics("conv-1", *entry, {}), rebuilt_content);
+  ASSERT_TRUE(rebuilt);
+  ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
+  EXPECT_FALSE(rebuilt->skill);
+  EXPECT_FALSE(rebuilt->near_verification_status);
+}
+
+TEST(AIChatSyncConversionsTest, FitEntryNoOpBelowBudget) {
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("e1");
+  entry.set_conversation_uuid("c1");
+  entry.set_entry_text("short");
+
+  ASSERT_LE(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_TRUE(FitEntryWithinSyncBudget(&entry));
+  // Nothing should have been touched.
+  EXPECT_EQ(entry.entry_text(), "short");
+}
+
+TEST(AIChatSyncConversionsTest, ForEachOmittableStringVisitsEveryCategory) {
+  // Pins the field set the size-budget policy can reach, which is also the set
+  // the receiver has to be able to restore.
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  const std::vector<std::string> expected = PopulateOmittableStrings(&entry);
+
+  std::vector<std::string> visited;
+  ForEachOmittableString(&entry,
+                         [&visited](sync_pb::AIChatCompressibleString& value) {
+                           visited.push_back(value.raw());
+                         });
+  EXPECT_THAT(visited, testing::UnorderedElementsAreArray(expected));
+}
+
+TEST(AIChatSyncConversionsTest, FitEntryOmitsFileBytesFirst) {
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("e1");
+  entry.set_conversation_uuid("c1");
+  // Make a single uploaded file that on its own exceeds the budget.
+  auto* file = entry.add_uploaded_files();
+  file->set_filename("big.bin");
+  file->set_filesize(kSyncMaxRecordBytes + 1024);
+  const std::string file_bytes(kSyncMaxRecordBytes + 1024, '\x01');
+  file->set_data(file_bytes);
+
+  // Add an AC with a small last_contents so we can verify it is NOT omitted
+  // when the file alone is enough to bring us under budget.
+  auto* ac = entry.add_associated_content();
+  ac->set_uuid("ac-1");
+  WriteCompressibleString("small page text", ac->mutable_last_contents());
+
+  ASSERT_GT(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_TRUE(FitEntryWithinSyncBudget(&entry));
+  EXPECT_FALSE(entry.uploaded_files(0).has_data());
+  // The omitted bytes leave behind a hash of the original content.
+  EXPECT_EQ(entry.uploaded_files(0).omitted_data_hash(),
+            base::PersistentHash(file_bytes));
+  // The AC's last_contents must still be intact.
+  EXPECT_FALSE(
+      entry.associated_content(0).last_contents().has_omitted_content_hash());
+  EXPECT_LE(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+}
+
+TEST(AIChatSyncConversionsTest, FitEntryOmitsLargestFileAndStopsWhenItFits) {
+  // Three attachments where dropping the big one alone is enough. The small
+  // two must survive, and they must keep their original order on the wire.
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("e1");
+  entry.set_conversation_uuid("c1");
+
+  auto* small = entry.add_uploaded_files();
+  small->set_filename("small.bin");
+  small->set_data(std::string(8 * 1024, '\x01'));
+
+  auto* big = entry.add_uploaded_files();
+  big->set_filename("big.bin");
+  big->set_data(std::string(kSyncMaxRecordBytes + 1024, '\x02'));
+
+  auto* medium = entry.add_uploaded_files();
+  medium->set_filename("medium.bin");
+  medium->set_data(std::string(16 * 1024, '\x03'));
+
+  ASSERT_GT(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_TRUE(FitEntryWithinSyncBudget(&entry));
+
+  // Only the largest went, even though it is not first in the list.
+  EXPECT_TRUE(entry.uploaded_files(1).has_omitted_data_hash());
+  EXPECT_FALSE(entry.uploaded_files(0).has_omitted_data_hash());
+  EXPECT_FALSE(entry.uploaded_files(2).has_omitted_data_hash());
+  // Sorting is only about which bytes to drop; the wire order is untouched.
+  EXPECT_EQ(entry.uploaded_files(0).filename(), "small.bin");
+  EXPECT_EQ(entry.uploaded_files(1).filename(), "big.bin");
+  EXPECT_EQ(entry.uploaded_files(2).filename(), "medium.bin");
+  EXPECT_LE(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+}
+
+TEST(AIChatSyncConversionsTest, FitEntryKeepsExplicitlyEmptyStrings) {
+  // An empty raw string is a value, not an omission: replacing it with a
+  // content hash would tell the receiver to restore from local instead.
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("e1");
+  entry.set_conversation_uuid("c1");
+  entry.add_events()->mutable_completion()->set_raw("");
+  entry.set_selected_text(std::string(kSyncMaxRecordBytes + 1024, 'Z'));
+
+  ASSERT_GT(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_FALSE(FitEntryWithinSyncBudget(&entry));
+  EXPECT_TRUE(entry.events(0).completion().has_raw());
+  EXPECT_FALSE(entry.events(0).completion().has_omitted_content_hash());
+}
+
+TEST(AIChatSyncConversionsTest, FitEntryOmitsLowerPriorityFieldsFirst) {
+  // Needs more than one category to go: dropping the file bytes alone leaves
+  // the entry over budget, so the associated content text — the first of the
+  // compressible-string categories — has to go too. The completion is the last
+  // category, so it must survive. Assign raw values rather than going through
+  // WriteCompressibleString so the on-the-wire sizes are deterministic.
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("e1");
+  entry.set_conversation_uuid("c1");
+
+  auto* file = entry.add_uploaded_files();
+  file->set_data(std::string(50 * 1024, '\x02'));
+
+  auto* ac = entry.add_associated_content();
+  ac->set_uuid("ac-1");
+  ac->mutable_last_contents()->set_raw(std::string(400 * 1024, 'A'));
+
+  entry.add_events()->mutable_completion()->set_raw(
+      std::string(100 * 1024, 'B'));
+
+  ASSERT_GT(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_TRUE(FitEntryWithinSyncBudget(&entry));
+  EXPECT_TRUE(entry.uploaded_files(0).has_omitted_data_hash());
+  EXPECT_TRUE(
+      entry.associated_content(0).last_contents().has_omitted_content_hash());
+  EXPECT_FALSE(entry.events(0).completion().has_omitted_content_hash());
+  EXPECT_LE(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+}
+
+TEST(AIChatSyncConversionsTest, FitEntryRefusesEntryOversizedByPlainField) {
+  // selected_text is a plain proto string, so no amount of omission can shrink
+  // this entry. The policy must still drop everything it is able to drop
+  // before giving up, and must report the failure so the caller can refuse to
+  // commit.
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("pathological");
+  entry.set_conversation_uuid("c1");
+  PopulateOmittableStrings(&entry);
+  entry.mutable_uploaded_files(0)->set_data("file bytes");
+  entry.set_selected_text(std::string(kSyncMaxRecordBytes + 1024, 'Z'));
+
+  ASSERT_GT(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_FALSE(FitEntryWithinSyncBudget(&entry));
+
+  EXPECT_TRUE(entry.uploaded_files(0).has_omitted_data_hash());
+  // A field that survived still holds its marker, so collecting the stragglers
+  // names them in the failure output.
+  std::vector<std::string> not_omitted;
+  ForEachOmittableString(
+      &entry, [&not_omitted](sync_pb::AIChatCompressibleString& value) {
+        if (!value.has_omitted_content_hash()) {
+          not_omitted.push_back(value.raw());
+        }
+      });
+  EXPECT_THAT(not_omitted, testing::IsEmpty());
+}
+
+}  // namespace ai_chat

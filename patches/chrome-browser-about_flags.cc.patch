@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
+index 67e956fea7fd0e4e3e3bbf3ba30d47dbf5196901..d412c9e7203c9ec9ae821d06bfadf1be556c5a21 100644
+--- a/chrome/browser/about_flags.cc
++++ b/chrome/browser/about_flags.cc
+@@ -5038,6 +5038,7 @@ constexpr char kEnterpriseIsolatedModeInternalName[] =
+ 
+ // When adding a new choice, add it to the end of the list.
+ const FeatureEntry kFeatureEntries[] = {
++    BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES
+ // Include generated flags for flag unexpiry; see //docs/flag_expiry.md and
+ // //tools/flags/generate_unexpire_flags.py.
+ #include "build/chromeos_buildflags.h"

@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Disable the UnnecessaryParentheses check.
+
+      Java plasters short-circuit a method with `if ((true))`, mirroring the
+      C++ plaster idiom, and this check rejects the doubled parentheses.
+    regex:
+      re_pattern: '(\nERRORPRONE_WARNINGS_TO_DISABLE = \[)'
+      replace: |-
+        \1
+            'UnnecessaryParentheses',

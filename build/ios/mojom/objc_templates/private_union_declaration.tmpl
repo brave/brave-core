@@ -1,0 +1,7 @@
+
+{%- set cpp_namespace = union|cpp_namespace_from_kind %}
+@interface {{class_prefix}}{{union.name}} (Private)
+- (instancetype)initWith{{union.name}}:(const {{cpp_namespace}}::{{union.name}} &)obj;
+- (instancetype)initWith{{union.name}}Ptr:({{cpp_namespace}}::{{union.name}}Ptr)obj;
+- ({{cpp_namespace}}::{{union.name}}Ptr)cppObjPtr;
+@end

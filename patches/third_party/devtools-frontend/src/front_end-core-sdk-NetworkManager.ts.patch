@@ -1,0 +1,12 @@
+diff --git a/front_end/core/sdk/NetworkManager.ts b/front_end/core/sdk/NetworkManager.ts
+index ce656fe3df5757ad0fe939e57596e239eb3dd707..be98f6265f94ce42297557620a2a58994f5b6456 100644
+--- a/front_end/core/sdk/NetworkManager.ts
++++ b/front_end/core/sdk/NetworkManager.ts
+@@ -1811,6 +1811,7 @@ export class NetworkDispatcher implements ProtocolProxyApi.NetworkDispatcher {
+     return `${host}:${port}`;
+   }
+ }
++import { PatchNetworkDispatcher } from './NetworkManager.patch.js'; (NetworkDispatcher as any) = PatchNetworkDispatcher(NetworkDispatcher);
+ 
+ export type RequestConditionsSetting = {
+   url: string,

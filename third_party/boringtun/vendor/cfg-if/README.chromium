@@ -1,0 +1,14 @@
+Name: cfg-if
+Short Name: cfg-if
+URL: https://github.com/rust-lang/cfg-if
+Version: 1.0.4
+License: MIT OR Apache-2.0
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/cfg-if.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

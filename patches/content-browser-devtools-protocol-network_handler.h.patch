@@ -1,0 +1,15 @@
+diff --git a/content/browser/devtools/protocol/network_handler.h b/content/browser/devtools/protocol/network_handler.h
+index 7606ba57cc4286e5e2e6742c83ae7327d14c3c60..e9022304508a64e92feb04a8cbc91d387ac3908b 100644
+--- a/content/browser/devtools/protocol/network_handler.h
++++ b/content/browser/devtools/protocol/network_handler.h
+@@ -376,6 +376,10 @@ class NetworkHandler : public DevToolsDomainHandler,
+       const std::optional<base::UnguessableToken>& frame_token,
+       base::TimeTicks timestamp);
+ 
++  void RequestAdblockInfoReceived(
++      const std::string& request_id,
++      std::unique_ptr<protocol::Network::AdblockInfo> info);
++
+  private:
+   void RequestWillBeSent(
+       const std::string& request_id,

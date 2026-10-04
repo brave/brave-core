@@ -1,0 +1,25 @@
+diff --git a/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.h b/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.h
+index 4091112541511dc4dcbd8568b5e8bf3078ffac2b..bdc38035b2f51922e731f1d7ea78d3033c3fe283 100644
+--- a/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.h
++++ b/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.h
+@@ -103,7 +103,10 @@ class TabHoverCardBubbleView : public views::BubbleDialogDelegateView {
+   // available, or `std::nullopt` to disable crossfades entirely.
+   static std::optional<double> GetPreviewImageCrossfadeStart();
+ 
++  bool HasThumbnailView() const;
++
+  protected:
++  void BraveUpdateCardContent(const HoverCardAnchorTarget* anchor_target);
+   class ThumbnailView;
+ 
+   // views::View:
+@@ -113,7 +116,9 @@ class TabHoverCardBubbleView : public views::BubbleDialogDelegateView {
+   int corner_radius() { return corner_radius_; }
+ 
+  private:
++  friend class BraveTabCardView;
+   class TabCardView;
++  std::unique_ptr<TabCardView> CreateTabCardView();
+   class GroupCardView;
+ 
+   // views::BubbleDialogDelegateView:

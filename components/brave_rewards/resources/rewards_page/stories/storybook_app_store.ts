@@ -1,0 +1,314 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import { AppActions, AppStore, defaultAppStore } from '../lib/app_store'
+import { localeStrings } from './storybook_strings'
+import { optional } from '../../shared/lib/optional'
+
+function delay(ms: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms)
+  })
+}
+
+function repeat<T>(array: T[], times: number) {
+  const result = []
+  for (let i = 0; i < times; ++i) {
+    result.push(...array)
+  }
+  return result
+}
+
+export function createAppStore(): AppStore {
+  const store = defaultAppStore()
+  store.update({
+    embedder: {
+      platform: 'desktop',
+      isAutoResizeBubble: false,
+      isBubble: false,
+      animatedBackgroundEnabled: false,
+    },
+    loading: false,
+    paymentId: 'abc123',
+    countryCode: 'US',
+    adsInfo: {
+      browserUpgradeRequired: false,
+      isSupportedRegion: true,
+      adsEnabled: {
+        'new-tab-page': true,
+        'notification': false,
+      },
+      adTypesReceivedThisMonth: {
+        'new-tab-page': 92,
+        'notification': 4,
+      },
+      minEarningsPreviousMonth: 1.244,
+      nextPaymentDate: Date.now() + 4 * 24 * 60 * 60 * 1000,
+      notificationAdsPerHour: 5,
+      shouldAllowSubdivisionTargeting: true,
+      currentSubdivision: 'US-NY',
+      availableSubdivisions: [
+        { code: 'US-NY', name: 'New York' },
+        { code: 'US-CA', name: 'California' },
+      ],
+      autoDetectedSubdivision: 'US-NY',
+    },
+    externalWallet: null,
+    externalWalletProviders: ['uphold', 'solana'],
+    balance: optional(4.123),
+    tosUpdateRequired: false,
+    selfCustodyProviderInvites: ['solana'],
+    selfCustodyInviteDismissed: false,
+    recurringContributions: [
+      {
+        site: {
+          id: '1',
+          name: 'Alice',
+          url: 'https://brave.com',
+          platform: '',
+        },
+        amount: 2.5,
+        nextContributionDate: Date.now() - 10000,
+      },
+      {
+        site: {
+          id: '2',
+          name: 'Bob',
+          url: 'https://brave.com',
+          platform: 'youtube',
+        },
+        amount: 0.025,
+        nextContributionDate: Date.now(),
+      },
+    ],
+    rewardsParameters: {
+      tipChoices: [1.25, 5.0, 10.5],
+      rate: 0.56,
+      walletProviderRegions: {
+        bitflyer: { allow: [], block: ['US'] },
+        uphold: { allow: [], block: ['US'] },
+        solana: { allow: [], block: ['US'] },
+      },
+      payoutStatus: {
+        uphold: 'off',
+        bitflyer: 'processing',
+      },
+    },
+    currentCreator: {
+      site: {
+        id: 'wikipedia.org',
+        platform: '',
+        url: 'https://wikipedia.org',
+        name: 'wikipedia.org',
+      },
+      banner: {
+        title: 'Wikipedia',
+        description: '',
+        background: '',
+        logo: '',
+        web3URL: '',
+      },
+      supportedWalletProviders: ['uphold'],
+    },
+    captchaInfo: null,
+    notifications: [],
+    cards: [
+      {
+        name: 'community-card',
+        title: '',
+        order: 0,
+        section: '',
+        banner: null,
+        items: [
+          {
+            title: 'Brave meetup in Toronto!',
+            description: 'December 12 in Toronto, Canada',
+            url: '{{ some link to event details }}',
+            thumbnail: '',
+          },
+        ],
+      },
+      {
+        name: 'merch-store-card',
+        title: '',
+        order: 0,
+        section: '',
+        banner: null,
+        items: [
+          {
+            title: 'Brave Embroidered Crop Top',
+            description:
+              'The beautiful embroidery, trendy raw hem, and matching drawstring are great.',
+            url: 'https://store.brave.com/p/brave-lion-embroidered-eco-hoodie/3576345201/',
+            thumbnail:
+              'https://cdn.store.brave.com/6944e95453a447ed8bd4ba69524eb76bb0b6b924db88ab0726b169affe0ac743.png',
+          },
+        ],
+      },
+      {
+        name: 'partner-promo-card',
+        title: 'Ledger Hardware Wallet',
+        order: 0,
+        section: '',
+        banner: null,
+        items: [
+          {
+            title: 'Secure Your Crypto with Ledger Nano',
+            description:
+              'Keep your cryptocurrencies, NFTs and tokens safe with industry-leading hardware wallet security.',
+            url: 'https://shop.ledger.com/products/ledger-nano-x',
+            thumbnail: '',
+          },
+        ],
+      },
+      {
+        name: 'top-banner-card',
+        title: 'Top Banner',
+        section: 'top',
+        order: 0,
+        banner: {
+          image: '',
+          url: '',
+        },
+        items: [],
+      },
+    ],
+  })
+
+  function getString(key: string) {
+    return (localeStrings as Record<string, string>)[key] ?? ''
+  }
+
+  const actions: AppActions = {
+    ...store.getState().actions,
+
+    getString,
+
+    async getPluralString(key: string, count: number) {
+      return getString(key).replace('#', String(count))
+    },
+
+    async getAvailableCountries() {
+      return {
+        countryCodes: ['US'],
+        defaultCountryCode: 'US',
+      }
+    },
+
+    async resetRewards() {
+      await delay(100)
+      store.update({ paymentId: '', externalWallet: null })
+    },
+
+    async enableRewards(countryCode) {
+      await delay(500)
+      setTimeout(() => {
+        store.update({ paymentId: 'abc123' })
+      }, 20)
+      return 'success'
+    },
+
+    async beginExternalWalletLogin(provider) {
+      await delay(500)
+      return false
+    },
+
+    async connectExternalWallet(provider, args) {
+      await delay(2000)
+      return 'unexpected-error'
+    },
+
+    async setAdTypeEnabled(adType, enabled) {
+      const { adsInfo } = store.getState()
+      if (adsInfo) {
+        adsInfo.adsEnabled[adType] = enabled
+        store.update({ adsInfo })
+      }
+    },
+
+    async setNotificationAdsPerHour(adsPerHour) {
+      const { adsInfo } = store.getState()
+      if (adsInfo) {
+        adsInfo.notificationAdsPerHour = adsPerHour
+        store.update({ adsInfo })
+      }
+    },
+
+    async setAdsSubdivision(subdivision) {
+      const { adsInfo } = store.getState()
+      if (adsInfo) {
+        adsInfo.currentSubdivision = subdivision
+        store.update({ adsInfo })
+      }
+    },
+
+    async getAdsHistory() {
+      return repeat(
+        [
+          {
+            createdAt: Date.now(),
+            type: 'notification',
+            id: '123',
+            name: 'Brave',
+            text: 'Data Regulation & GDPR...',
+            domain: 'kite.lnk',
+            url: 'https://brave.com',
+            likeStatus: '',
+            inappropriate: false,
+          },
+          {
+            createdAt: Date.now(),
+            id: '124',
+            type: 'notification',
+            name: 'Brave',
+            text: 'Data Regulation & GDPR...',
+            domain: 'kite.lnk',
+            url: 'https://brave.com',
+            likeStatus: 'liked',
+            inappropriate: false,
+          },
+        ],
+        500,
+      )
+    },
+
+    async removeRecurringContribution(id) {
+      let { recurringContributions } = store.getState()
+      recurringContributions = recurringContributions.filter((entry) => {
+        return entry.site.id !== id
+      })
+      store.update({ recurringContributions })
+    },
+
+    async sendContribution(creatorID, amount, recurring) {
+      await delay(2000)
+      return true
+    },
+
+    async acceptTermsOfServiceUpdate() {
+      store.update({ tosUpdateRequired: false })
+    },
+
+    async dismissSelfCustodyInvite() {
+      store.update({ selfCustodyInviteDismissed: true })
+    },
+
+    async onCaptchaResult(success) {
+      store.update({ captchaInfo: null })
+    },
+
+    async clearNotification(id: string) {
+      store.update({
+        notifications: store.getState().notifications.filter((item) => {
+          return item.id !== id
+        }),
+      })
+    },
+  }
+
+  store.update({ actions })
+
+  return store
+}

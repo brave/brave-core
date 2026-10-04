@@ -1,0 +1,5 @@
+# This file contains supported CI features in the current checkout to
+# conditionally enable them on CI. Use lower_snake_case naming.
+
+brave_network_tests
+crx_private_key

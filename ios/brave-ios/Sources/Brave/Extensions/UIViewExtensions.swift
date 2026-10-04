@@ -1,0 +1,93 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import Foundation
+import UIKit
+
+extension UIView {
+  /// Takes a screenshot of the view with the given size.
+  func screenshot(_ size: CGSize, offset: CGPoint? = nil, quality: CGFloat = 1) -> UIImage? {
+    assert(0...1 ~= quality)
+
+    let offset = offset ?? .zero
+
+    guard size.width.isFinite, size.height.isFinite, size.width > 0, size.height > 0 else {
+      return nil
+    }
+
+    let format = UIGraphicsImageRendererFormat()
+    format.scale = UIScreen.main.scale * quality
+    format.opaque = false
+
+    let renderer = UIGraphicsImageRenderer(size: size, format: format)
+    return renderer.image { _ in
+      drawHierarchy(in: CGRect(origin: offset, size: frame.size), afterScreenUpdates: false)
+    }
+  }
+
+  /// Takes a screenshot of the view with the given aspect ratio.
+  /// An aspect ratio of 0 means capture the entire view.
+  func screenshot(
+    _ aspectRatio: CGFloat = 0,
+    offset: CGPoint? = nil,
+    quality: CGFloat = 1
+  ) -> UIImage? {
+    assert(aspectRatio >= 0)
+
+    var size: CGSize
+    if aspectRatio > 0 {
+      size = CGSize()
+      let viewAspectRatio = frame.width / frame.height
+      if viewAspectRatio > aspectRatio {
+        size.height = frame.height
+        size.width = size.height * aspectRatio
+      } else {
+        size.width = frame.width
+        size.height = size.width / aspectRatio
+      }
+    } else {
+      size = frame.size
+    }
+
+    return screenshot(size, offset: offset, quality: quality)
+  }
+
+  /// Getting a snapshot from a view using image renderer
+  var snapshot: UIImage {
+    UIGraphicsImageRenderer(size: bounds.size).image { _ in
+      drawHierarchy(in: bounds, afterScreenUpdates: true)
+    }
+  }
+
+  /// This allows us to find the view in a current view hierarchy that is currently the first responder
+  static func findSubViewWithFirstResponder(_ view: UIView) -> UIView? {
+    let subviews = view.subviews
+
+    guard !subviews.isEmpty else {
+      return nil
+    }
+
+    if let firstResponderSubview = subviews.first(where: { $0.isFirstResponder }) {
+      return firstResponderSubview
+    }
+
+    guard let firstSubview = subviews.first(where: { !($0 is UIRefreshControl) }) else {
+      return nil
+    }
+
+    return findSubViewWithFirstResponder(firstSubview)
+  }
+
+  /// Returns a line with height of 1pt. Used to imitate a separator line in custom views.
+  static var separatorLine: UIView {
+    let view = UIView().then {
+      $0.backgroundColor = UIColor(braveSystemName: .dividerStrong)
+      $0.snp.makeConstraints {
+        $0.height.equalTo(1.0 / UIScreen.main.scale)
+      }
+    }
+
+    return view
+  }
+}

@@ -1,0 +1,353 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
+
+#include <optional>
+#include <vector>
+
+#include "base/check.h"
+#include "base/check_op.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
+#include "brave/browser/ui/sidebar/sidebar.h"
+#include "brave/browser/ui/sidebar/sidebar_model.h"
+#include "brave/browser/ui/sidebar/sidebar_service_factory.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/sidebar/browser/pref_names.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
+#include "brave/components/sidebar/common/features.h"
+#include "chrome/browser/history/history_service_factory.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
+#include "chrome/browser/ui/navigator/browser_navigator.h"
+#include "chrome/browser/ui/navigator/browser_navigator_params.h"
+#include "chrome/browser/ui/navigator/browser_navigator_params_utils.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
+#include "chrome/browser/ui/singleton_tabs.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+namespace sidebar {
+
+namespace {
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+void RecordLeoOpenedViaSidebar(Profile* profile) {
+  auto* profile_metrics =
+      misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
+          profile);
+  if (!profile_metrics) {
+    return;
+  }
+
+  if (auto* ai_chat_metrics = profile_metrics->GetAIChatMetrics()) {
+    ai_chat_metrics->HandleOpenViaEntryPoint(ai_chat::EntryPoint::kSidebar);
+  }
+}
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+std::vector<int> GetAllExistingTabIndexForHost(TabStripModel* tab_strip_model,
+                                               std::string_view host) {
+  const int tab_count = tab_strip_model->count();
+  std::vector<int> all_index;
+  for (int i = 0; i < tab_count; ++i) {
+    content::WebContents* tab = tab_strip_model->GetWebContentsAt(i);
+    if (tab->GetVisibleURL().host() == host)
+      all_index.push_back(i);
+  }
+
+  return all_index;
+}
+
+}  // namespace
+
+SidebarController::SidebarController(BrowserWindowInterface* browser,
+                                     Profile* profile)
+    : tab_strip_model_(browser->GetTabStripModel()),
+      profile_(profile),
+      browser_(browser),
+      sidebar_model_(new SidebarModel(profile_)) {
+  sidebar_service_observed_.Observe(GetSidebarService());
+}
+
+SidebarController::~SidebarController() = default;
+
+bool SidebarController::IsActiveIndex(std::optional<size_t> index) const {
+  return sidebar_model_->active_index() == index;
+}
+
+bool SidebarController::DoesBrowserHaveOpenedTabForItem(
+    const SidebarItem& item) const {
+  // This method is only for builtin item's icon state updating.
+  DCHECK(item.is_built_in_type());
+  DCHECK(!item.open_in_panel);
+
+  bool result = false;
+  ProfileBrowserCollection::GetForProfile(profile_)->ForEach(
+      [&item, &result](BrowserWindowInterface* browser) {
+        const auto all_index = GetAllExistingTabIndexForHost(
+            browser->GetTabStripModel(), item.url.host());
+        if (!all_index.empty()) {
+          result = true;
+          return false;
+        }
+        return true;
+      });
+
+  return result;
+}
+
+void SidebarController::TearDownPreBrowserWindowDestruction() {
+  web_panel_controller_.reset();
+  sidebar_service_observed_.Reset();
+  sidebar_ = nullptr;
+}
+
+void SidebarController::OnItemPressed(size_t index,
+                                      WindowOpenDisposition disposition) {
+  if (IsActiveIndex(index)) {
+    GetSidePanelUI()->Close();
+    return;
+  }
+
+  CHECK_LT(index, sidebar_model_->GetAllSidebarItems().size());
+  const auto& item = sidebar_model_->GetAllSidebarItems()[index];
+
+  // Built-in panel items are handled by SidePanelCoordinator. Web panel item is
+  // not a side panel, so it goes through ActivateItemAt() as it's loaded into
+  // another contents view in MultiContentsView.
+  if (!item.is_web_type() && item.open_in_panel) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    if (item.built_in_item_type == SidebarItem::BuiltInItemType::kChatUI) {
+      RecordLeoOpenedViaSidebar(profile_);
+    }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+    ActivatePanelItem(item.built_in_item_type);
+    return;
+  }
+
+  ActivateItemAt(index, disposition);
+}
+
+void SidebarController::ActivateItemAt(std::optional<size_t> index,
+                                       WindowOpenDisposition disposition) {
+  // disengaged means there is no active item.
+  if (!index) {
+    sidebar_model_->SetActiveIndex(index);
+    return;
+  }
+
+  DCHECK_LT(index.value(), sidebar_model_->GetAllSidebarItems().size());
+
+  const auto& item = sidebar_model_->GetAllSidebarItems()[*index];
+
+  if (sidebar::IsWebPanelFeatureEnabled() && item.is_web_panel_type()) {
+    // TODO(https://github.com/brave/brave-browser/issues/33533): web panel item
+    // also should be activated.
+    GetWebPanelController()->ToggleWebPanel(item);
+    return;
+  }
+
+  // Only an item for panel can get activated.
+  if (!item.is_web_type() && item.open_in_panel) {
+    sidebar_model_->SetActiveIndex(index);
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    if (sidebar::features::kOpenOneShotLeoPanel.Get() &&
+        item.built_in_item_type == SidebarItem::BuiltInItemType::kChatUI) {
+      // Prevent one-time Leo panel open.
+      profile_->GetPrefs()->SetBoolean(kLeoPanelOneShotOpen, true);
+    }
+#endif
+    return;
+  }
+
+  if (disposition != WindowOpenDisposition::CURRENT_TAB) {
+    DCHECK_NE(WindowOpenDisposition::UNKNOWN, disposition);
+    NavigateParams params(profile_, item.url,
+                          ui::PAGE_TRANSITION_AUTO_BOOKMARK);
+    params.disposition = disposition;
+    params.browser = browser_;
+    Navigate(&params);
+    return;
+  }
+
+  // Iterate whenever builtin shortcut type item icon clicks.
+  if (item.is_built_in_type()) {
+    IterateOrLoadAtActiveTab(item.url);
+    return;
+  }
+
+  LoadAtTab(item.url);
+}
+
+void SidebarController::ActivatePanelItem(
+    SidebarItem::BuiltInItemType panel_item) {
+  CHECK_NE(panel_item, SidebarItem::BuiltInItemType::kNone);
+
+  // Suppress opening animation when we have active item.
+  // When opening another panel while other panel is visible,
+  // we don't need to open new panel with animation.
+  const bool suppress_animations = sidebar_model_->active_index().has_value();
+  GetSidePanelUI()->Show(sidebar::SidePanelIdFromSideBarItemType(panel_item),
+                         /*open_trigger*/ std::nullopt, suppress_animations);
+}
+
+SidePanelUI* SidebarController::GetSidePanelUI() {
+  // For panel item activation, SidePanelUI is the single source of truth.
+  auto* side_panel_ui = side_panel_ui_for_testing_
+                            ? side_panel_ui_for_testing_.get()
+                            : SidePanelUI::From(browser_);
+  CHECK(side_panel_ui);
+  return side_panel_ui;
+}
+
+void SidebarController::ToggleSidebarPinning() {
+  sidebar_pinned_ = !sidebar_pinned_;
+  sidebar_->UpdateSidebarVisibility();
+}
+
+bool SidebarController::ActiveTabFromOtherBrowsersForHost(const GURL& url) {
+  bool found = false;
+  ProfileBrowserCollection::GetForProfile(profile_)->ForEach(
+      [this, &found, &url](BrowserWindowInterface* browser) {
+        // Skip current browser. we are here because current active browser
+        // doesn't have a tab that loads |url|.
+        if (browser == browser_) {
+          return true;
+        }
+
+        const auto all_index = GetAllExistingTabIndexForHost(
+            browser->GetTabStripModel(), url.host());
+        if (all_index.empty()) {
+          return true;
+        }
+
+        // Pick first tab for simplicity.
+        browser->GetTabStripModel()->ActivateTabAt(all_index[0]);
+        BrowserWindow::FromBrowser(browser)->Activate();
+        found = true;
+        return false;
+      });
+
+  return found;
+}
+
+void SidebarController::IterateOrLoadAtActiveTab(const GURL& url) {
+  // Get target tab index
+  const auto all_index =
+      GetAllExistingTabIndexForHost(tab_strip_model_, url.host());
+  if (all_index.empty()) {
+    if (ActiveTabFromOtherBrowsersForHost(url))
+      return;
+
+    // Load at current active tab if there is no tab that loaded |url|.
+    auto params = GetSingletonTabNavigateParams(browser_, url);
+    params.disposition = WindowOpenDisposition::CURRENT_TAB;
+    Navigate(&params);
+    return;
+  }
+
+  const int active_index = tab_strip_model_->active_index();
+  for (const auto i : all_index) {
+    if (i > active_index) {
+      tab_strip_model_->ActivateTabAt(i);
+      return;
+    }
+  }
+
+  tab_strip_model_->ActivateTabAt(all_index[0]);
+}
+
+void SidebarController::LoadAtTab(const GURL& url) {
+  auto params = GetSingletonTabNavigateParams(browser_, url);
+  int tab_index = GetIndexOfExistingTabMatchingURL(browser_, params);
+  // If browser has a tab that already loaded |item.url|, just activate it.
+  if (tab_index >= 0) {
+    tab_strip_model_->ActivateTabAt(tab_index);
+  } else {
+    // Load on current tab.
+    params.disposition = WindowOpenDisposition::CURRENT_TAB;
+    Navigate(&params);
+  }
+}
+
+void SidebarController::OnShowSidebarOptionChanged(
+    SidebarService::ShowSidebarOption option) {
+  CHECK(sidebar_);
+  sidebar_pinned_ = false;
+  sidebar_->SetSidebarShowOption(option);
+}
+
+void SidebarController::AddItemWithCurrentTab() {
+  if (!sidebar::CanAddCurrentActiveTabToSidebar(browser_)) {
+    return;
+  }
+
+  auto* active_contents = tab_strip_model_->GetActiveWebContents();
+  DCHECK(active_contents);
+  const GURL url = active_contents->GetVisibleURL();
+  const std::u16string title = active_contents->GetTitle();
+  GetSidebarService()->AddItem(SidebarItem::Create(
+      url, title, SidebarItem::Type::kTypeWeb,
+      SidebarItem::BuiltInItemType::kNone, IsWebPanelFeatureEnabled()));
+}
+
+void SidebarController::UpdateActiveItemState(
+    std::optional<SidebarItem::BuiltInItemType> active_panel_item) {
+  if (!active_panel_item) {
+    ActivateItemAt(std::nullopt);
+    return;
+  }
+
+  if (auto index = sidebar_model_->GetIndexOf(*active_panel_item)) {
+    ActivateItemAt(*index);
+  }
+}
+
+void SidebarController::SetSidebar(Sidebar* sidebar) {
+  DCHECK(!sidebar_);
+  // |sidebar| can be null in unit test.
+  if (!sidebar)
+    return;
+  sidebar_ = sidebar;
+
+  sidebar_model_->Init(HistoryServiceFactory::GetForProfile(
+      profile_, ServiceAccessType::EXPLICIT_ACCESS));
+}
+
+SidebarWebPanelController* SidebarController::GetWebPanelController() {
+  CHECK(IsWebPanelFeatureEnabled());
+
+  // It's too early or late to get web panel controller.
+  if (!sidebar_) {
+    return nullptr;
+  }
+
+  if (!web_panel_controller_) {
+    web_panel_controller_ = std::make_unique<SidebarWebPanelController>(
+        *BrowserView::GetBrowserViewForBrowser(browser_));
+  }
+
+  return web_panel_controller_.get();
+}
+
+SidebarService* SidebarController::GetSidebarService() {
+  return SidebarServiceFactory::GetForProfile(profile_);
+}
+
+}  // namespace sidebar

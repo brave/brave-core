@@ -1,0 +1,243 @@
+diff --git a/chrome/browser/ui/toasts/toast_controller_unittest.cc b/chrome/browser/ui/toasts/toast_controller_unittest.cc
+index f0b9a3720f33583f29fc8fc4adc482714ae310b0..f64a09d59d98d082970803b228f1e5d6bafb181b 100644
+--- a/chrome/browser/ui/toasts/toast_controller_unittest.cc
++++ b/chrome/browser/ui/toasts/toast_controller_unittest.cc
+@@ -72,7 +72,7 @@ class ToastControllerUnitTest : public testing::Test {
+ TEST_F(ToastControllerUnitTest, ShowToast) {
+   ToastRegistry* const registry = toast_registry();
+   registry->RegisterToast(
+-      ToastId::kLinkCopied,
++      ToastId::kLinkToHighlightCopied,
+       ToastSpecification::Builder(features::IsRoundedIconsEnabled()
+                                       ? vector_icons::kMailFilledIcon
+                                       : vector_icons::kEmailOldIcon,
+@@ -83,19 +83,19 @@ TEST_F(ToastControllerUnitTest, ShowToast) {
+ 
+   // We should be able to show the toast because there is no toast showing.
+   EXPECT_FALSE(controller->IsShowingToast());
+-  EXPECT_TRUE(controller->CanShowToast(ToastId::kLinkCopied));
++  EXPECT_TRUE(controller->CanShowToast(ToastId::kLinkToHighlightCopied));
+ 
+   EXPECT_CALL(*controller, CreateToast);
+-  EXPECT_TRUE(controller->MaybeShowToast(ToastParams(ToastId::kLinkCopied)));
++  EXPECT_TRUE(controller->MaybeShowToast(ToastParams(ToastId::kLinkToHighlightCopied)));
+   ::testing::Mock::VerifyAndClear(controller.get());
+   EXPECT_TRUE(controller->IsShowingToast());
+-  EXPECT_TRUE(controller->CanShowToast(ToastId::kLinkCopied));
++  EXPECT_TRUE(controller->CanShowToast(ToastId::kLinkToHighlightCopied));
+ }
+ 
+ TEST_F(ToastControllerUnitTest, ShowToastWithBodyStringOverride) {
+   ToastRegistry* const registry = toast_registry();
+   registry->RegisterToast(
+-      ToastId::kLinkCopied,
++      ToastId::kLinkToHighlightCopied,
+       ToastSpecification::Builder(features::IsRoundedIconsEnabled()
+                                       ? vector_icons::kMailFilledIcon
+                                       : vector_icons::kEmailOldIcon)
+@@ -105,23 +105,23 @@ TEST_F(ToastControllerUnitTest, ShowToastWithBodyStringOverride) {
+ 
+   // We should be able to show the toast because there is no toast showing.
+   EXPECT_FALSE(controller->IsShowingToast());
+-  EXPECT_TRUE(controller->CanShowToast(ToastId::kLinkCopied));
++  EXPECT_TRUE(controller->CanShowToast(ToastId::kLinkToHighlightCopied));
+ 
+   EXPECT_CALL(*controller, CreateToast);
+ 
+-  ToastParams params = ToastParams(ToastId::kLinkCopied);
++  ToastParams params = ToastParams(ToastId::kLinkToHighlightCopied);
+   params.body_string_override = u"Some toast body";
+ 
+   EXPECT_TRUE(controller->MaybeShowToast(std::move(params)));
+   ::testing::Mock::VerifyAndClear(controller.get());
+   EXPECT_TRUE(controller->IsShowingToast());
+-  EXPECT_TRUE(controller->CanShowToast(ToastId::kLinkCopied));
++  EXPECT_TRUE(controller->CanShowToast(ToastId::kLinkToHighlightCopied));
+ }
+ 
+ TEST_F(ToastControllerUnitTest, ShowToastWithReplacementsAndCardinality) {
+   ToastRegistry* const registry = toast_registry();
+   registry->RegisterToast(
+-      ToastId::kLinkCopied,
++      ToastId::kLinkToHighlightCopied,
+       ToastSpecification::Builder(features::IsRoundedIconsEnabled()
+                                       ? vector_icons::kMailFilledIcon
+                                       : vector_icons::kEmailOldIcon,
+@@ -132,7 +132,7 @@ TEST_F(ToastControllerUnitTest, ShowToastWithReplacementsAndCardinality) {
+ 
+   EXPECT_CALL(*controller, CreateToast);
+ 
+-  ToastParams params = ToastParams(ToastId::kLinkCopied);
++  ToastParams params = ToastParams(ToastId::kLinkToHighlightCopied);
+   params.body_string_replacement_params = {u"Ctrl+W"};
+   params.body_string_cardinality_param = 2;
+ 
+@@ -144,7 +144,7 @@ TEST_F(ToastControllerUnitTest, ShowToastWithReplacementsAndCardinality) {
+ TEST_F(ToastControllerUnitTest, ShowToastWithImage) {
+   ToastRegistry* const registry = toast_registry();
+   registry->RegisterToast(
+-      ToastId::kLinkCopied,
++      ToastId::kLinkToHighlightCopied,
+       ToastSpecification::Builder(features::IsRoundedIconsEnabled()
+                                       ? vector_icons::kMailFilledIcon
+                                       : vector_icons::kEmailOldIcon,
+@@ -155,24 +155,24 @@ TEST_F(ToastControllerUnitTest, ShowToastWithImage) {
+ 
+   // We should be able to show the toast because there is no toast showing.
+   EXPECT_FALSE(controller->IsShowingToast());
+-  EXPECT_TRUE(controller->CanShowToast(ToastId::kLinkCopied));
++  EXPECT_TRUE(controller->CanShowToast(ToastId::kLinkToHighlightCopied));
+ 
+   EXPECT_CALL(*controller, CreateToast);
+ 
+-  ToastParams params = ToastParams(ToastId::kLinkCopied);
++  ToastParams params = ToastParams(ToastId::kLinkToHighlightCopied);
+   params.image_override =
+       ui::ImageModel::FromImage(gfx::test::CreateImage(16, 16, 0xff0000));
+ 
+   EXPECT_TRUE(controller->MaybeShowToast(std::move(params)));
+   ::testing::Mock::VerifyAndClear(controller.get());
+   EXPECT_TRUE(controller->IsShowingToast());
+-  EXPECT_TRUE(controller->CanShowToast(ToastId::kLinkCopied));
++  EXPECT_TRUE(controller->CanShowToast(ToastId::kLinkToHighlightCopied));
+ }
+ 
+ TEST_F(ToastControllerUnitTest, ToastAutomaticallyCloses) {
+   ToastRegistry* const registry = toast_registry();
+   registry->RegisterToast(
+-      ToastId::kLinkCopied,
++      ToastId::kLinkToHighlightCopied,
+       ToastSpecification::Builder(features::IsRoundedIconsEnabled()
+                                       ? vector_icons::kMailFilledIcon
+                                       : vector_icons::kEmailOldIcon,
+@@ -181,7 +181,7 @@ TEST_F(ToastControllerUnitTest, ToastAutomaticallyCloses) {
+   auto controller = std::make_unique<TestToastController>(registry);
+ 
+   EXPECT_CALL(*controller, CreateToast);
+-  EXPECT_TRUE(controller->MaybeShowToast(ToastParams(ToastId::kLinkCopied)));
++  EXPECT_TRUE(controller->MaybeShowToast(ToastParams(ToastId::kLinkToHighlightCopied)));
+   ::testing::Mock::VerifyAndClear(controller.get());
+   EXPECT_TRUE(controller->IsShowingToast());
+ 
+@@ -193,7 +193,7 @@ TEST_F(ToastControllerUnitTest, ToastAutomaticallyCloses) {
+ TEST_F(ToastControllerUnitTest, ToastCloseCallbackTriggered) {
+   ToastRegistry* const registry = toast_registry();
+   registry->RegisterToast(
+-      ToastId::kLinkCopied,
++      ToastId::kLinkToHighlightCopied,
+       ToastSpecification::Builder(features::IsRoundedIconsEnabled()
+                                       ? vector_icons::kMailFilledIcon
+                                       : vector_icons::kEmailOldIcon,
+@@ -202,7 +202,7 @@ TEST_F(ToastControllerUnitTest, ToastCloseCallbackTriggered) {
+   auto controller = std::make_unique<TestToastController>(registry);
+ 
+   EXPECT_CALL(*controller, CreateToast);
+-  ToastParams params = ToastParams(ToastId::kLinkCopied);
++  ToastParams params = ToastParams(ToastId::kLinkToHighlightCopied);
+   bool callback_called = false;
+   params.toast_close_callback = base::ScopedClosureRunner(
+       base::BindOnce([](bool* callback_called) { *callback_called = true; },
+@@ -221,7 +221,7 @@ TEST_F(ToastControllerUnitTest, ToastCloseCallbackTriggered) {
+ TEST_F(ToastControllerUnitTest, ToastWithActionButtonAutomaticallyCloses) {
+   ToastRegistry* const registry = toast_registry();
+   registry->RegisterToast(
+-      ToastId::kLinkCopied,
++      ToastId::kLinkToHighlightCopied,
+       ToastSpecification::Builder(features::IsRoundedIconsEnabled()
+                                       ? vector_icons::kMailFilledIcon
+                                       : vector_icons::kEmailOldIcon,
+@@ -230,7 +230,7 @@ TEST_F(ToastControllerUnitTest, ToastWithActionButtonAutomaticallyCloses) {
+   auto controller = std::make_unique<TestToastController>(registry);
+ 
+   EXPECT_CALL(*controller, CreateToast);
+-  EXPECT_TRUE(controller->MaybeShowToast(ToastParams(ToastId::kLinkCopied)));
++  EXPECT_TRUE(controller->MaybeShowToast(ToastParams(ToastId::kLinkToHighlightCopied)));
+   ::testing::Mock::VerifyAndClear(controller.get());
+   EXPECT_TRUE(controller->IsShowingToast());
+ 
+@@ -242,14 +242,14 @@ TEST_F(ToastControllerUnitTest, ToastWithActionButtonAutomaticallyCloses) {
+ TEST_F(ToastControllerUnitTest, CloseTimerResetsWhenToastShown) {
+   ToastRegistry* const registry = toast_registry();
+   registry->RegisterToast(
+-      ToastId::kLinkCopied,
++      ToastId::kLinkToHighlightCopied,
+       ToastSpecification::Builder(features::IsRoundedIconsEnabled()
+                                       ? vector_icons::kMailFilledIcon
+                                       : vector_icons::kEmailOldIcon,
+                                   kTestStringResId)
+           .Build());
+   registry->RegisterToast(
+-      ToastId::kImageCopied,
++      ToastId::kClearBrowsingData,
+       ToastSpecification::Builder(features::IsRoundedIconsEnabled()
+                                       ? vector_icons::kMailFilledIcon
+                                       : vector_icons::kEmailOldIcon,
+@@ -259,7 +259,7 @@ TEST_F(ToastControllerUnitTest, CloseTimerResetsWhenToastShown) {
+   auto controller = std::make_unique<TestToastController>(registry);
+ 
+   EXPECT_CALL(*controller, CreateToast);
+-  EXPECT_TRUE(controller->MaybeShowToast(ToastParams(ToastId::kLinkCopied)));
++  EXPECT_TRUE(controller->MaybeShowToast(ToastParams(ToastId::kLinkToHighlightCopied)));
+   ::testing::Mock::VerifyAndClear(controller.get());
+   EXPECT_TRUE(controller->IsShowingToast());
+ 
+@@ -270,7 +270,7 @@ TEST_F(ToastControllerUnitTest, CloseTimerResetsWhenToastShown) {
+ 
+   // Show a different toast before the link copied toast times out.
+   EXPECT_CALL(*controller, CreateToast);
+-  EXPECT_TRUE(controller->MaybeShowToast(ToastParams(ToastId::kImageCopied)));
++  EXPECT_TRUE(controller->MaybeShowToast(ToastParams(ToastId::kClearBrowsingData)));
+   ::testing::Mock::VerifyAndClear(controller.get());
+   EXPECT_TRUE(controller->IsShowingToast());
+ 
+@@ -282,13 +282,13 @@ TEST_F(ToastControllerUnitTest, CloseTimerResetsWhenToastShown) {
+ 
+ TEST_F(ToastControllerUnitTest, RecordToastDismissReasonHistogram) {
+   base::HistogramTester histogram_tester;
+-  RecordToastDismissReason(ToastId::kLinkCopied,
++  RecordToastDismissReason(ToastId::kLinkToHighlightCopied,
+                            toasts::ToastCloseReason::kFeatureDismiss);
+   histogram_tester.ExpectUniqueSample("Toast.LinkCopied.Dismissed",
+                                       toasts::ToastCloseReason::kFeatureDismiss,
+                                       1);
+ 
+-  RecordToastDismissReason(ToastId::kLinkCopied,
++  RecordToastDismissReason(ToastId::kLinkToHighlightCopied,
+                            toasts::ToastCloseReason::kAutoDismissed);
+   histogram_tester.ExpectBucketCount("Toast.LinkCopied.Dismissed",
+                                      toasts::ToastCloseReason::kAutoDismissed,
+@@ -299,14 +299,14 @@ TEST_F(ToastControllerUnitTest,
+        NavigationDismissesRegularToastButNotPersistOnNavigationToast) {
+   ToastRegistry* const registry = toast_registry();
+   registry->RegisterToast(
+-      ToastId::kLinkCopied,
++      ToastId::kLinkToHighlightCopied,
+       ToastSpecification::Builder(features::IsRoundedIconsEnabled()
+                                       ? vector_icons::kMailFilledIcon
+                                       : vector_icons::kEmailOldIcon,
+                                   kTestStringResId)
+           .Build());
+   registry->RegisterToast(
+-      ToastId::kImageCopied,
++      ToastId::kClearBrowsingData,
+       ToastSpecification::Builder(features::IsRoundedIconsEnabled()
+                                       ? vector_icons::kMailFilledIcon
+                                       : vector_icons::kEmailOldIcon,
+@@ -318,7 +318,7 @@ TEST_F(ToastControllerUnitTest,
+ 
+   // 1. Regular toast has persist_on_navigation = false.
+   EXPECT_CALL(*controller, CreateToast);
+-  EXPECT_TRUE(controller->MaybeShowToast(ToastParams(ToastId::kLinkCopied)));
++  EXPECT_TRUE(controller->MaybeShowToast(ToastParams(ToastId::kLinkToHighlightCopied)));
+   EXPECT_TRUE(controller->IsShowingToast());
+   EXPECT_TRUE(controller->GetToastCloseTimerForTesting()->IsRunning());
+ 
+@@ -329,7 +329,7 @@ TEST_F(ToastControllerUnitTest,
+ 
+   // 2. Toast with persist_on_navigation = true.
+   EXPECT_CALL(*controller, CreateToast);
+-  EXPECT_TRUE(controller->MaybeShowToast(ToastParams(ToastId::kImageCopied)));
++  EXPECT_TRUE(controller->MaybeShowToast(ToastParams(ToastId::kClearBrowsingData)));
+   EXPECT_TRUE(controller->IsShowingToast());
+   EXPECT_TRUE(controller->GetToastCloseTimerForTesting()->IsRunning());
+ 

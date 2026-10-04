@@ -1,0 +1,38 @@
+diff --git a/chrome/browser/ui/views/frame/browser_frame_view_win.h b/chrome/browser/ui/views/frame/browser_frame_view_win.h
+index e731b2c4c161f1fae16606e07892bc7adf2771cc..3eec8211c90d06692d7ff5ece48d23f87ea4ce13 100644
+--- a/chrome/browser/ui/views/frame/browser_frame_view_win.h
++++ b/chrome/browser/ui/views/frame/browser_frame_view_win.h
+@@ -96,6 +96,7 @@ class BrowserFrameViewWin : public BrowserFrameView, public TabIconViewModel {
+   void Layout(PassKey) override;
+ 
+  private:
++  friend class BraveBrowserFrameViewWin;
+   friend class BrowserCaptionButtonContainer;
+ 
+   // Describes the type of titlebar that a window might have; used to query
+@@ -118,7 +119,7 @@ class BrowserFrameViewWin : public BrowserFrameView, public TabIconViewModel {
+   // which is sometimes different than FrameBorderThickness(). Does not include
+   // the titlebar/tabstrip area. If |restored| is true, this is calculated as if
+   // the window was restored, regardless of its current state.
+-  int FrameTopBorderThickness(bool restored) const;
++  virtual int FrameTopBorderThickness(bool restored) const;
+   int FrameTopBorderThicknessPx(bool restored) const;
+ 
+   // Returns the height of the titlebar for popups or other browser types that
+@@ -138,14 +139,14 @@ class BrowserFrameViewWin : public BrowserFrameView, public TabIconViewModel {
+ 
+   // Returns whether or not the window should display a title of the specified
+   // |type|.
+-  bool ShouldShowWindowTitle(TitlebarType type) const;
++  virtual bool ShouldShowWindowTitle(TitlebarType type) const;
+ 
+   // Paint various sub-components of this view.
+   void PaintTitlebar(gfx::Canvas* canvas) const;
+ 
+   // Layout various sub-components of this view.
+   void LayoutTitleBar();
+-  void LayoutCaptionButtons();
++  virtual void LayoutCaptionButtons();
+   void LayoutClientView();
+   void LayoutWebAppWindowTitle(const gfx::Rect& available_space,
+                                views::Label& window_title_label) const;

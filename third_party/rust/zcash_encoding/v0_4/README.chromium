@@ -1,0 +1,9 @@
+Name: zcash_encoding
+URL: https://crates.io/crates/zcash_encoding
+Version: 0.4.0
+License: Apache-2.0
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Binary encodings used throughout the Zcash ecosystem.

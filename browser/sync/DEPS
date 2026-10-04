@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/components/sync/service",
+  "+brave/components/sync_device_info",
+]

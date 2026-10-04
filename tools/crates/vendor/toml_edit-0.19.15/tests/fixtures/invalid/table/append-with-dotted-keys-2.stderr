@@ -1,0 +1,5 @@
+TOML parse error at line 8, column 3
+  |
+8 |   b.c.d.k.t = "Using dotted keys to add to [a.b.c.d] after explicitly defining it above is not allowed"
+  |   ^
+duplicate key `d`

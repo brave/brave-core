@@ -1,0 +1,61 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as leo from '@brave/leo/tokens/css/variables'
+import Icon from '@brave/leo/react/icon'
+import styled from 'styled-components'
+
+// Shared Styles
+import { WalletButton } from '../../../shared/style'
+
+export const ConnectPanelButton = styled(WalletButton)<{
+  border?: 'top' | 'bottom'
+}>`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background: none;
+  padding: 8px 0px;
+  border-top: ${(p) =>
+    p.border === 'top' ? `1px solid ${leo.color.divider.subtle}` : 'none'};
+  border-bottom: ${(p) =>
+    p.border === 'bottom' ? `1px solid ${leo.color.divider.subtle}` : 'none'};
+`
+
+export const NameAndAddressColumn = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  margin-left: 12px;
+`
+
+export const LeftSide = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+`
+
+export const AccountCircle = styled.div<{
+  orb: string
+}>`
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background-image: url(${(p) => p.orb});
+  background-size: cover;
+`
+
+export const SelectedIcon = styled(Icon)<{ isSelected: boolean }>`
+  --leo-icon-size: 20px;
+  color: ${(p) =>
+    p.isSelected ? leo.color.primary[40] : leo.color.icon.default};
+`

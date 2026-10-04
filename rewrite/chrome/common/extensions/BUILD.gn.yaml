@@ -1,0 +1,37 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Append the Brave public headers to `source_set("extensions")`.
+
+      The import brings in the variable lists this and the entries below
+      read, all shared between Brave and the upstream target.
+    add_literal_to_list:
+      target: extensions
+      list_name: public
+      literal: brave_chrome_common_extensions_public
+      import: //brave/common/extensions/sources.gni
+
+  - description: Append the Brave sources to `source_set("extensions")`.
+    add_literal_to_list:
+      target: extensions
+      list_name: sources
+      literal: brave_chrome_common_extensions_sources
+      import: //brave/common/extensions/sources.gni
+
+  - description: Append the Brave public_deps to `source_set("extensions")`.
+    add_literal_to_list:
+      target: extensions
+      list_name: public_deps
+      literal: brave_chrome_common_extensions_public_deps
+      import: //brave/common/extensions/sources.gni
+
+  - description: Append the Brave deps to `source_set("extensions")`.
+    add_literal_to_list:
+      target: extensions
+      list_name: deps
+      literal: brave_chrome_common_extensions_deps
+      import: //brave/common/extensions/sources.gni

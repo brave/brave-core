@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- The application name displayed to the user. -->
+    <string name="app_name" translatable="false">Brave</string>
+    <string name="bookmark_widget_title" translatable="false">Brave bookmarks</string>
+    <string name="search_widget_title" translatable="false">Brave search</string>
+    <string name="quick_action_search_widget_title" translatable="false">Brave quick action search</string>
+</resources>

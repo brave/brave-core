@@ -1,0 +1,18 @@
+static_library("body_sniffer") {
+  sources = [
+    "body_sniffer_throttle.cc",
+    "body_sniffer_throttle.h",
+    "body_sniffer_url_loader.cc",
+    "body_sniffer_url_loader.h",
+  ]
+
+  deps = [
+    "//base",
+    "//net",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+    "//third_party/abseil-cpp:absl",
+    "//third_party/blink/public/common",
+    "//url",
+  ]
+}

@@ -1,0 +1,495 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Most workers do not expect full-time office return, survey says</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">Most workers do not expect full-time office return, survey says</h1><p class="subhead metadata">Most people do not believe workers will return to the office full-time, according to YouGov research.</p><div class=""><p class="metadata">By By Lora Jones &amp; Rebecca Wearn</p><p class="metadata date">Updated Sep. 16, 2021 11:56 AM</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><div class="ssrcss-vk3nhx-ComponentWrapper ep2nwvo1" data-component="image-block"><figure class="ssrcss-wpgbih-StyledFigure e34k3c23"><p><span class="ssrcss-11kpz0x-Placeholder e16icw910"><img alt="Young woman entering office wearing face mask" class="ssrcss-evoj7m-Image ee0ct7c0" height="549" loading="eager" src="https://ichef.bbci.co.uk/news/976/cpsprodpb/12F25/production/_120550677_gettyimages-1272585655.jpg" srcset="https://ichef.bbci.co.uk/news/240/cpsprodpb/12F25/production/_120550677_gettyimages-1272585655.jpg 240w, https://ichef.bbci.co.uk/news/320/cpsprodpb/12F25/production/_120550677_gettyimages-1272585655.jpg 320w, https://ichef.bbci.co.uk/news/480/cpsprodpb/12F25/production/_120550677_gettyimages-1272585655.jpg 480w, https://ichef.bbci.co.uk/news/624/cpsprodpb/12F25/production/_120550677_gettyimages-1272585655.jpg 624w, https://ichef.bbci.co.uk/news/800/cpsprodpb/12F25/production/_120550677_gettyimages-1272585655.jpg 800w, https://ichef.bbci.co.uk/news/976/cpsprodpb/12F25/production/_120550677_gettyimages-1272585655.jpg 976w" width="976"></span><span class="ssrcss-tvuve5-StyledFigureCopyright e34k3c20" role="text"><span class="visually-hidden ssrcss-1f39n02-VisuallyHidden e1y6uwnp0">Image source, </span>Getty Images</span></p></figure></div><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00"><b class="ssrcss-hmf8ql-BoldText e5tfeyi3">Most people do not believe workers will return to the office full-time after the coronavirus pandemic, an exclusive survey for the BBC suggests.</b></p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">A total of 70% of 1,684 people polled predicted that workers would "never return to offices at the same rate".</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">The majority of workers said that they would prefer to work from home either full-time or at least some of the time.</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">But managers raised concerns that creativity in the workplace would be affected.</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">Half of 530 senior leaders also surveyed by polling organisation YouGov for the BBC said that workers staying at home would adversely affect both creativity and collaboration - against just 38% of the general public.</p><div class="ssrcss-uf6wea-RichTextComponentWrapper ep2nwvo0" data-component="text-block"><div class="ssrcss-7uxr49-RichTextContainer e5tfeyi1"><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">Bosses at big firms such as investment bank Goldman Sachs and <a class="ssrcss-k17ofw-InlineLink e1no5rhv0" href="https://www.bbc.co.uk/news/technology-57385999">tech giant Apple</a> have rejected calls for more flexibility, with the former even <a class="ssrcss-k17ofw-InlineLink e1no5rhv0" href="https://www.bbc.co.uk/news/business-56192048">calling working from home an "aberration".</a></p></div></div><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">Managers and members of the public surveyed for the BBC agreed, however, that neither productivity nor the economy would be harmed by continuing work-from-home policies.</p><div class="ssrcss-18mjolk-ComponentWrapper ep2nwvo1" data-component="image-block"><figure class="ssrcss-wpgbih-StyledFigure e34k3c23"><p><span class="ssrcss-1gfdfc7-Placeholder e16icw910"><span><img alt="Chart - majority think people will not return to office at pre-pandemic rate" class="ssrcss-evoj7m-Image ee0ct7c0" height="260" loading="lazy" src="https://ichef.bbci.co.uk/news/640/cpsprodpb/F182/production/_120562816_returntooffice-1-nc-003.png" srcset="https://ichef.bbci.co.uk/news/240/cpsprodpb/F182/production/_120562816_returntooffice-1-nc-003.png 240w, https://ichef.bbci.co.uk/news/320/cpsprodpb/F182/production/_120562816_returntooffice-1-nc-003.png 320w, https://ichef.bbci.co.uk/news/480/cpsprodpb/F182/production/_120562816_returntooffice-1-nc-003.png 480w, https://ichef.bbci.co.uk/news/624/cpsprodpb/F182/production/_120562816_returntooffice-1-nc-003.png 624w, https://ichef.bbci.co.uk/news/800/cpsprodpb/F182/production/_120562816_returntooffice-1-nc-003.png 800w, https://ichef.bbci.co.uk/news/976/cpsprodpb/F182/production/_120562816_returntooffice-1-nc-003.png 976w" width="640"></span></span></p></figure></div><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">BT's chief executive Philip Jansen, for example, told the BBC that it is planning to let most of its office workers work on-site three or four days of the week in future - although thousands of its engineers won't be offered the same flexibility.</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">"We are a people business so collaboration, dynamism, teamwork, creativity... is really important to us," he said.</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">According to the research, more than three-quarters of people believe their boss will allow them to continue working from home some of the time.</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00"><a class="ssrcss-k17ofw-InlineLink e1no5rhv0" href="https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/articles/businessandindividualattitudestowardsthefutureofhomeworkinguk/apriltomay2021">According to the latest official figures</a>, the proportion of workers who did at least some work from home in 2020 increased to 37%, up from 27% the previous year.</p><div class="ssrcss-18mjolk-ComponentWrapper ep2nwvo1" data-component="image-block"><figure class="ssrcss-wpgbih-StyledFigure e34k3c23"><p><span class="ssrcss-lr8ohi-Placeholder e16icw910"><span><img alt="2px presentational grey line" class="ssrcss-evoj7m-Image ee0ct7c0" height="2" loading="lazy" src="https://ichef.bbci.co.uk/news/640/cpsprodpb/1226D/production/_105894347_grey_line-nc.png" srcset="https://ichef.bbci.co.uk/news/240/cpsprodpb/1226D/production/_105894347_grey_line-nc.png 240w, https://ichef.bbci.co.uk/news/320/cpsprodpb/1226D/production/_105894347_grey_line-nc.png 320w, https://ichef.bbci.co.uk/news/480/cpsprodpb/1226D/production/_105894347_grey_line-nc.png 480w, https://ichef.bbci.co.uk/news/624/cpsprodpb/1226D/production/_105894347_grey_line-nc.png 624w, https://ichef.bbci.co.uk/news/800/cpsprodpb/1226D/production/_105894347_grey_line-nc.png 800w, https://ichef.bbci.co.uk/news/976/cpsprodpb/1226D/production/_105894347_grey_line-nc.png 976w" width="640"></span></span></p></figure></div><div class="ssrcss-dm4ypg-ComponentWrapper-HeadlineComponentWrapper egtrm1f0" data-component="subheadline-block"><h2 class="ssrcss-y2fd7s-StyledHeading e1fj1fc10" id="I-want-to-be-in-the-office-as-much-as-possible" tabindex="-1"><span role="text">'I want to be in the office as much as possible'</span></h2></div><div class="ssrcss-18mjolk-ComponentWrapper ep2nwvo1" data-component="video-block"><figure class="ssrcss-wpgbih-StyledFigure e34k3c23"><figcaption class="ssrcss-1mget3o-StyledFigureCaption e34k3c22"><span class="visually-hidden ssrcss-1f39n02-VisuallyHidden e1y6uwnp0">Media caption, </span><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">Maisie started work at TalkTalk in July through the Kickstart scheme</p></figcaption></figure></div><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">Maisie Lawrinson joined TalkTalk through the government's Kickstart jobs scheme in July. Under the scheme, Jobcentre work coaches match young people aged between 16 and 24 who are on Universal Credit to new, temporary, roles.</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">While Maisie is grateful for the six-month contract, she's keen to be in the office as much as possible so she can make a good impression.</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">"I've never had a job where I'm speaking to people online or emailing," she says, referring to her past experience in retail.</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">She adds: "I'm more productive when I am in the office because it's more of a professional environment and you get to see people."</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">Having started the role remotely, she only got to meet her colleagues for the first time in-person recently.</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">"We recently had team drinks and I finally got to meet everyone. It was really nice, I got to see everyone in person and get an idea of who they are, rather than just what their email is." </p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">She says she will still take the opportunity to work from home some days, though, perhaps towards the end of the week.</p><div class="ssrcss-18mjolk-ComponentWrapper ep2nwvo1" data-component="image-block"><figure class="ssrcss-wpgbih-StyledFigure e34k3c23"><p><span class="ssrcss-lr8ohi-Placeholder e16icw910"><span><img alt="2px presentational grey line" class="ssrcss-evoj7m-Image ee0ct7c0" height="2" loading="lazy" src="https://ichef.bbci.co.uk/news/640/cpsprodpb/1226D/production/_105894347_grey_line-nc.png" srcset="https://ichef.bbci.co.uk/news/240/cpsprodpb/1226D/production/_105894347_grey_line-nc.png 240w, https://ichef.bbci.co.uk/news/320/cpsprodpb/1226D/production/_105894347_grey_line-nc.png 320w, https://ichef.bbci.co.uk/news/480/cpsprodpb/1226D/production/_105894347_grey_line-nc.png 480w, https://ichef.bbci.co.uk/news/624/cpsprodpb/1226D/production/_105894347_grey_line-nc.png 624w, https://ichef.bbci.co.uk/news/800/cpsprodpb/1226D/production/_105894347_grey_line-nc.png 800w, https://ichef.bbci.co.uk/news/976/cpsprodpb/1226D/production/_105894347_grey_line-nc.png 976w" width="640"></span></span></p></figure></div><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">More than 60% of those surveyed thought young people would struggle to progress without face-to-face contact or in-person mentoring.</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00"><a class="ssrcss-k17ofw-InlineLink e1no5rhv0" href="https://www.bbc.co.uk/news/business-58543554">As experts have pointed out</a>, under-25s in particular were hit hard by job losses or reduced hours at the onset of the pandemic.</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">The bespoke research for the BBC suggests that some inequalities may be exacerbated by the pandemic, while others might have improved.</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">Half of the workers surveyed thought that women's careers might be boosted by home-working, with childcare duties being less of a hindrance. </p><div class="ssrcss-dm4ypg-ComponentWrapper-HeadlineComponentWrapper egtrm1f0" data-component="subheadline-block"><h2 class="ssrcss-y2fd7s-StyledHeading e1fj1fc10" id="This-is-the-new-now" tabindex="-1"><span role="text">'This is the new now'</span></h2></div><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">One enthusiastic home-worker is Antony Howard, who works in procurement for a large defence company in Manchester.</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">He's found big benefits to logging on remotely for the last 16 months, from avoiding expensive coffee shops to cutting down on travel time.</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">"My health and carbon footprint have never been better. I'm no longer commuting 92 miles a day and I'm more productive," he says.</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00"> While he's also been saving money by shopping more locally, he does worry about those newer to the company.</p><div class="ssrcss-18mjolk-ComponentWrapper ep2nwvo1" data-component="image-block"><figure class="ssrcss-wpgbih-StyledFigure e34k3c23"><p><span class="ssrcss-1gfdfc7-Placeholder e16icw910"><span><img alt="Chart - many think young workers will struggle to progress working from home" class="ssrcss-evoj7m-Image ee0ct7c0" height="260" loading="lazy" src="https://ichef.bbci.co.uk/news/640/cpsprodpb/F345/production/_120577226_returntooffice-3-nc-002.png" srcset="https://ichef.bbci.co.uk/news/240/cpsprodpb/F345/production/_120577226_returntooffice-3-nc-002.png 240w, https://ichef.bbci.co.uk/news/320/cpsprodpb/F345/production/_120577226_returntooffice-3-nc-002.png 320w, https://ichef.bbci.co.uk/news/480/cpsprodpb/F345/production/_120577226_returntooffice-3-nc-002.png 480w, https://ichef.bbci.co.uk/news/624/cpsprodpb/F345/production/_120577226_returntooffice-3-nc-002.png 624w, https://ichef.bbci.co.uk/news/800/cpsprodpb/F345/production/_120577226_returntooffice-3-nc-002.png 800w, https://ichef.bbci.co.uk/news/976/cpsprodpb/F345/production/_120577226_returntooffice-3-nc-002.png 976w" width="640"></span></span></p></figure></div><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">"We've had 17-year-old apprentices starting in September who have never been on-site," he says.</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">"For me as a 57-year-old, hybrid working is a great scenario, but for the younger ones starting out, they need that workplace experience, that structure."</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">Even so, he hopes that the pandemic will "recalibrate" the workplace. Rather than being a novelty, he says, "I think this is the new now."</p><div class="ssrcss-dm4ypg-ComponentWrapper-HeadlineComponentWrapper egtrm1f0" data-component="subheadline-block"><h2 class="ssrcss-y2fd7s-StyledHeading e1fj1fc10" id="Messy-situation" tabindex="-1"><span role="text">'Messy' situation</span></h2></div><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">Recruiters are finding it tricky to navigate the expectations of candidates demanding hybrid and remote working, and companies who want people back in the office for at least some of the time.</p><div class="ssrcss-18mjolk-ComponentWrapper ep2nwvo1" data-component="image-block"><figure class="ssrcss-wpgbih-StyledFigure e34k3c23"><p><span class="ssrcss-11kpz0x-Placeholder e16icw910"><span><img alt="Kam Vara" class="ssrcss-evoj7m-Image ee0ct7c0" height="549" loading="lazy" src="https://ichef.bbci.co.uk/news/976/cpsprodpb/12730/production/_120586557_kamvararecruiter.jpg" srcset="https://ichef.bbci.co.uk/news/240/cpsprodpb/12730/production/_120586557_kamvararecruiter.jpg 240w, https://ichef.bbci.co.uk/news/320/cpsprodpb/12730/production/_120586557_kamvararecruiter.jpg 320w, https://ichef.bbci.co.uk/news/480/cpsprodpb/12730/production/_120586557_kamvararecruiter.jpg 480w, https://ichef.bbci.co.uk/news/624/cpsprodpb/12730/production/_120586557_kamvararecruiter.jpg 624w, https://ichef.bbci.co.uk/news/800/cpsprodpb/12730/production/_120586557_kamvararecruiter.jpg 800w, https://ichef.bbci.co.uk/news/976/cpsprodpb/12730/production/_120586557_kamvararecruiter.jpg 976w" width="976"></span></span></p><figcaption class="ssrcss-1mget3o-StyledFigureCaption e34k3c22"><span class="visually-hidden ssrcss-1f39n02-VisuallyHidden e1y6uwnp0">Image caption, </span><p>Kam Vara says people are turning down jobs which don't offer remote working</p></figcaption></figure></div><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">Kam Vara, a consultant at Katie Bard recruitment, says it has been a very challenging few months.</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">"It used to be that people would fit their lives around their work. Covid is teaching people that it doesn't work that way any more", she says. </p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">"People are turning down opportunities because they don't offer remote working, and they would rather sit tight and wait for the right job to become available".</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">She adds: "It feels quite messy right now. What an employer is looking for is some sort of order. To get people into the office and have some structure. But what employees are looking for is something very different. It's going to be like this for a while until the jigsaw fits together."</p><div class="ssrcss-dm4ypg-ComponentWrapper-HeadlineComponentWrapper egtrm1f0" data-component="subheadline-block"><h2 class="ssrcss-y2fd7s-StyledHeading e1fj1fc10" id="Gradual-return" tabindex="-1"><span role="text">'Gradual return'</span></h2></div><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">In England, Prime Minister Boris Johnson recommended a "gradual return to work" over the summer as coronavirus restrictions eased. Across the rest of the UK, people are still being advised to keep clocking on remotely where possible.</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">And working remotely full-time for office staff could well become the norm again.</p><div class="ssrcss-18mjolk-ComponentWrapper ep2nwvo1" data-component="video-block"><figure class="ssrcss-wpgbih-StyledFigure e34k3c23"><figcaption class="ssrcss-1mget3o-StyledFigureCaption e34k3c22"><span class="visually-hidden ssrcss-1f39n02-VisuallyHidden e1y6uwnp0">Media caption, </span><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">Q&amp;A: How do you bring people back to workplace?</p></figcaption></figure></div><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00"><a class="ssrcss-k17ofw-InlineLink e1no5rhv0" href="https://www.bbc.co.uk/news/explainers-52530518">On Tuesday, Health Secretary Sajid Javid told MPs</a> that advising people in England should work from home again would be part of the government's contingency plans if there was considerable pressure on the NHS this winter.</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">Prof Andrew Hayward, a member of the Scientific Advisory Group for Emergencies, added that the policy could make "a significant difference to transmission if we get into trouble".</p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">He told BBC Radio 4's Today programme on Wednesday: "The most important and effective way of reducing spread of the virus is not to be in contact with other people." </p><div class="ssrcss-18mjolk-ComponentWrapper ep2nwvo1" data-component="image-block"><figure class="ssrcss-wpgbih-StyledFigure e34k3c23"><p><span class="ssrcss-lr8ohi-Placeholder e16icw910"><span><img alt="2px presentational grey line" class="ssrcss-evoj7m-Image ee0ct7c0" height="2" loading="lazy" src="https://ichef.bbci.co.uk/news/640/cpsprodpb/1226D/production/_105894347_grey_line-nc.png" srcset="https://ichef.bbci.co.uk/news/240/cpsprodpb/1226D/production/_105894347_grey_line-nc.png 240w, https://ichef.bbci.co.uk/news/320/cpsprodpb/1226D/production/_105894347_grey_line-nc.png 320w, https://ichef.bbci.co.uk/news/480/cpsprodpb/1226D/production/_105894347_grey_line-nc.png 480w, https://ichef.bbci.co.uk/news/624/cpsprodpb/1226D/production/_105894347_grey_line-nc.png 624w, https://ichef.bbci.co.uk/news/800/cpsprodpb/1226D/production/_105894347_grey_line-nc.png 800w, https://ichef.bbci.co.uk/news/976/cpsprodpb/1226D/production/_105894347_grey_line-nc.png 976w" width="640"></span></span></p></figure></div><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00"><i class="ssrcss-xbdn93-ItalicText e5tfeyi2">The BBC commissioned polling organisation YouGov to survey 1,684 working adults and 530 senior leaders in business about their predictions and opinions on working from home. YouGov also re-ran a previous survey of 4,041 British adults, first conducted in March 2021, about their current working from home situation.</i></p><div class="ssrcss-18mjolk-ComponentWrapper ep2nwvo1" data-component="image-block"><figure class="ssrcss-wpgbih-StyledFigure e34k3c23"><p><span class="ssrcss-1ciwq9q-Placeholder e16icw910"><span><img alt="Banner saying 'Get in touch'" class="ssrcss-evoj7m-Image ee0ct7c0" height="244.26666666666668" loading="lazy" src="https://ichef.bbci.co.uk/news/2048/cpsprodpb/1739F/production/_113753159_yqa_get_in_touch_top_no_yqa_text_640-nc.png" srcset="https://ichef.bbci.co.uk/news/240/cpsprodpb/1739F/production/_113753159_yqa_get_in_touch_top_no_yqa_text_640-nc.png 240w, https://ichef.bbci.co.uk/news/320/cpsprodpb/1739F/production/_113753159_yqa_get_in_touch_top_no_yqa_text_640-nc.png 320w, https://ichef.bbci.co.uk/news/480/cpsprodpb/1739F/production/_113753159_yqa_get_in_touch_top_no_yqa_text_640-nc.png 480w, https://ichef.bbci.co.uk/news/624/cpsprodpb/1739F/production/_113753159_yqa_get_in_touch_top_no_yqa_text_640-nc.png 624w, https://ichef.bbci.co.uk/news/800/cpsprodpb/1739F/production/_113753159_yqa_get_in_touch_top_no_yqa_text_640-nc.png 800w, https://ichef.bbci.co.uk/news/976/cpsprodpb/1739F/production/_113753159_yqa_get_in_touch_top_no_yqa_text_640-nc.png 976w" width="2048"></span></span></p></figure></div><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00"><b class="ssrcss-hmf8ql-BoldText e5tfeyi3">Have your working arrangements changed? Are the changes for better or worse? Share your views and experiences by emailing </b><a class="ssrcss-k17ofw-InlineLink e1no5rhv0" href="mailto:haveyoursay@bbc.co.uk?subject=HybridWorking58559179">haveyoursay@bbc.co.uk</a><b class="ssrcss-hmf8ql-BoldText e5tfeyi3">.</b></p><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">Please include a contact number if you are willing to speak to a BBC journalist. You can also get in touch in the following ways:</p><div class="ssrcss-1kgou70-ComponentWrapper-IncludeComponentWrapper e1vuxjf41" data-component="include-block"><p class="ssrcss-1q0x1qg-Paragraph eq5iqo00">If you are reading this page and can't see the form you will need to visit the mobile version of the <a class="ssrcss-k17ofw-InlineLink e1no5rhv0" href="https://www.bbc.co.uk/news/have_your_say">BBC website</a> to submit your question or comment or you can email us at <a class="ssrcss-k17ofw-InlineLink e1no5rhv0" href="mailto:Haveyoursay@bbc.co.uk">HaveYourSay@bbc.co.uk</a>. Please include your name, age and location with any submission. </p></div><div class="ssrcss-5i1hhv-LinksComponentWrapper e3eyuya0" data-component="links-block"><section class="ssrcss-msolhr-LinksWrapper e3eyuya5"><div class="ssrcss-1lqqmgw-LinksHeadingWrapper e3eyuya4"><h2 class="ssrcss-q4zz1q-StyledHeading e1fj1fc10">More on this story</h2></div></section></div></body>

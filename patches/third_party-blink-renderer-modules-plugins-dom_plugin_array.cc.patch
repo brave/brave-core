@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc b/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
+index 3608837758b40f02b78631c3d709a2b7561cea7e..7f1fd3cd1c08f5f1c74b7aa5854d5491ad6dd905 100644
+--- a/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
++++ b/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
+@@ -64,6 +64,7 @@ DOMPluginArray::DOMPluginArray(LocalDOMWindow* window) : window_(window) {
+     for (auto name : plugins) {
+       dom_plugins_.push_back(MakeFakePlugin(name, window));
+     }
++    BRAVE_DOM_PLUGINS_UPDATE_PLUGIN_DATA__FARBLE_PLUGIN_DATA
+   }
+ }
+ 

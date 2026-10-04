@@ -1,0 +1,76 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+package org.chromium.chrome.browser.suggestions.tile;
+
+import android.content.Context;
+import android.view.View;
+
+import androidx.annotation.Nullable;
+
+import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetProvider;
+import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
+import org.chromium.ui.modelutil.PropertyModel;
+
+public class BraveMostVisitedTilesMediator extends MostVisitedTilesMediator {
+    private TileGroup mTileGroup;
+    private final UiConfig mUiConfig;
+
+    public BraveMostVisitedTilesMediator(
+            Context context,
+            UiConfig uiConfig,
+            View mvTilesContainerLayout,
+            TileRenderer renderer,
+            PropertyModel propertyModel,
+            boolean isTablet,
+            @Nullable Runnable snapshotTileGridChangedRunnable,
+            @Nullable Runnable tileCountChangedRunnable) {
+        super(
+                context,
+                uiConfig,
+                mvTilesContainerLayout,
+                renderer,
+                propertyModel,
+                isTablet,
+                snapshotTileGridChangedRunnable,
+                tileCountChangedRunnable);
+        mUiConfig = uiConfig;
+    }
+
+    @Override
+    void updateMvtWidth(int totalWidth, int mvtWidth) {
+        // BraveNewTabPageLayout#initializeSiteSectionView detaches the tiles container from the
+        // NTP layout tree and reparents it as a RecyclerView item (see BraveNtpAdapter), which
+        // owns its width/margins from then on. Letting upstream's width/margin logic keep running
+        // here fights that ownership on every measure pass — with no `gravity="center_horizontal"`
+        // parent left to honor a WRAP_CONTENT width, and a different margin than the one
+        // BraveNtpAdapter applies — leaving the tile row mis-margined and never centered.
+    }
+
+    @Override
+    public void onConfigurationChanged() {
+        // Upstream never refreshes this UiConfig's cached display style on a config change
+        // (crbug.com/515150822). maybeSetPortraitIntervalPaddings() reads it the first time the
+        // tile row settles in portrait, which can be the first onConfigurationChanged after a
+        // rotation, so keep it fresh.
+        mUiConfig.updateDisplayStyle();
+        super.onConfigurationChanged();
+    }
+
+    @Override
+    public void onTileDataChanged() {
+        super.onTileDataChanged();
+        // Write the new tiles to shared preferences and update the GridView widget
+        QuickActionSearchAndBookmarkWidgetProvider.DataManager.parseTilesAndWriteWidgetTiles(
+                mTileGroup.getTileSections().get(TileSectionType.PERSONALIZED));
+    }
+
+    @Override
+    public void onTileIconChanged(Tile tile) {
+        super.onTileIconChanged(tile);
+        // Notify the GridView widget to refresh its data when a tile icon changes
+        QuickActionSearchAndBookmarkWidgetProvider.notifyWidgetDataChanged();
+    }
+}

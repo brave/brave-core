@@ -1,0 +1,54 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java b/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
+index d5e3323fb5a644e075d0aeb6852c132581f01e5d..7b45bd5c7ebd6e353236c023473e4152f1147458 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
+@@ -332,6 +332,10 @@ public class FullscreenVideoPictureInPictureController {
+             }
+         }
+ 
++        if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
++                .braveAttemptPictureInPicture(mActivity, webContents, builder, bounds)) {
++            return;
++        }
+         try {
+             if (!mActivity.enterPictureInPictureMode(builder.build())) return;
+         } catch (IllegalStateException | IllegalArgumentException e) {
+@@ -458,6 +462,10 @@ public class FullscreenVideoPictureInPictureController {
+     // Closing used to suspend media as a side-effect of hiding the page, but that no longer happens
+     // on large form factors (see IsBackgroundMediaSuspendEnabled), so suspend it here.
+     public void onStop() {
++        if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
++                .maybeHandleStopForScreenLock(mShouldSuspendMediaOnStop)) {
++            return;
++        }
+         if (mShouldSuspendMediaOnStop) {
+             mShouldSuspendMediaOnStop = false;
+ 
+@@ -469,6 +477,10 @@ public class FullscreenVideoPictureInPictureController {
+     }
+ 
+     public void onResume() {
++        if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
++                .maybeHandleResumeAfterScreenLock(mActivity)) {
++            return;
++        }
+         // Pip was restored rather than closed, so media should keep playing.
+         mShouldSuspendMediaOnStop = false;
+         // Unconditionally dismiss pip, because the activity has been resumed.  This can happen if
+@@ -667,6 +679,16 @@ public class FullscreenVideoPictureInPictureController {
+      * This will also update our auto-PiP preference with the framework, if it's changed.
+      */
+     private void dismissActivityIfNeeded(Activity activity, @MetricsEndReason int reason) {
++        if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
++                .maybeHandleDismissActivityForYouTubePictureInPicture(
++                        activity,
++                        reason == MetricsEndReason.START,
++                        reason == MetricsEndReason.RESUME,
++                        reason == MetricsEndReason.LEFT_FULLSCREEN,
++                        reason == MetricsEndReason.WEB_CONTENTS_LEFT_FULLSCREEN,
++                        reason == MetricsEndReason.NEW_TAB)) {
++            return;
++        }
+         // Something interesting happened -- make sure we've updated our preference for auto-PiP
+         // with the framework, if applicable.
+         Log.i(TAG, "Dismiss activity with reason " + reason);

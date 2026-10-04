@@ -1,0 +1,51 @@
+diff --git a/build/config/android/internal_rules.gni b/build/config/android/internal_rules.gni
+index 72c9c992e8b542bf24390b15c9a48f9d8340e830..3025ee37d7487a5c3e2071ebf0946ba0cc6f5904 100644
+--- a/build/config/android/internal_rules.gni
++++ b/build/config/android/internal_rules.gni
+@@ -3668,6 +3668,12 @@ if (enable_java_templates) {
+           # required.
+           _processed_jar_path = _javac_jar_path
+         }
++        foreach(bytecode_jar, brave_bytecode_jars) {
++          if (rebase_path(_javac_jar_path, root_build_dir) == bytecode_jar) {
++            _processed_jar_path =
++                "$target_out_dir/$target_name.bytecode-rewritten.jar"
++          }
++        }
+       }
+ 
+       if (_build_device_jar) {
+@@ -3941,6 +3947,9 @@ if (enable_java_templates) {
+           java_resources_jar = _processed_jar_path
+         }
+       }
++      if (_type == "java_library") {
++        needs_full_javac_classpath = true
++      }
+     }
+ 
+     if (_is_prebuilt || _has_sources) {
+@@ -4280,6 +4289,23 @@ if (enable_java_templates) {
+         not_needed(invoker, [ "missing_classes_allowlist" ])
+       }
+ 
++      _rebased_unprocessed_jar_path =
++          rebase_path(_unprocessed_jar_path, root_build_dir)
++      _rebased_javac_jar_path = ""
++      if (_has_sources) {
++        _rebased_javac_jar_path = rebase_path(_javac_jar_path, root_build_dir)
++      }
++      foreach(bytecode_jar, brave_bytecode_jars) {
++        if (_rebased_unprocessed_jar_path == bytecode_jar ||
++            _rebased_javac_jar_path == bytecode_jar) {
++          _bytecode_rewriter_output_jar = _processed_jar_path
++          brave_bytecode_rewriter("${target_name}__bytecode_rewrite") {
++            build_config = _build_config
++          }
++          _unprocessed_jar_deps += [ ":${target_name}__bytecode_rewrite" ]
++          _unprocessed_jar_path = _bytecode_rewriter_output_jar
++        }
++      }
+       if (_filter_jar && _is_prebuilt) {
+         _filter_jar_target_name = "${target_name}__filter_jar"
+ 

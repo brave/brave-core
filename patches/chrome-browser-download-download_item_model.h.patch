@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/download/download_item_model.h b/chrome/browser/download/download_item_model.h
+index 63fc080e40adaa37fa6a687d4d607381b2d6e1f3..98d870ff87c4809e8e3e5323ab1564f5f40ec1cd 100644
+--- a/chrome/browser/download/download_item_model.h
++++ b/chrome/browser/download/download_item_model.h
+@@ -155,6 +155,7 @@ class DownloadItemModel : public DownloadUIModel,
+   void OnDownloadDestroyed(download::DownloadItem* download) override;
+ 
+  private:
++  friend class BraveDownloadItemModel;
+   // DownloadUIModel implementation.
+   std::string GetMimeType() const override;
+ 

@@ -1,0 +1,26 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at http://mozilla.org/MPL/2.0/.
+
+MOVE_TO, 42, 24,
+CUBIC_TO, 42, 14.08f, 33.92f, 6, 24, 6,
+CUBIC_TO, 14.08f, 6, 6, 14.08f, 6, 24,
+CUBIC_TO, 6, 33.92f, 14.08f, 42, 24, 42,
+CUBIC_TO, 33.92f, 42, 42, 33.92f, 42, 24,
+MOVE_TO, 45, 24,
+CUBIC_TO, 45, 35.58f, 35.58f, 45, 24, 45,
+CUBIC_TO, 12.42f, 45, 3, 35.58f, 3, 24,
+CUBIC_TO, 3, 12.42f, 12.42f, 3, 24, 3,
+CUBIC_TO, 35.58f, 3, 45, 12.42f, 45, 24,
+MOVE_TO, 35.48f, 23.75f,
+CUBIC_TO, 35.48f, 24.67f, 34.94f, 25.51f, 34.01f, 26.04f,
+LINE_TO, 19.98f, 34.08f,
+CUBIC_TO, 19.48f, 34.37f, 18.96f, 34.51f, 18.47f, 34.51f,
+CUBIC_TO, 18.04f, 34.51f, 17.63f, 34.4f, 17.26f, 34.19f,
+CUBIC_TO, 16.46f, 33.73f, 16, 32.85f, 16, 31.77f,
+LINE_TO, 16, 15.73f,
+CUBIC_TO, 16, 14.65f, 16.46f, 13.77f, 17.26f, 13.31f,
+CUBIC_TO, 18.06f, 12.84f, 19.05f, 12.89f, 19.98f, 13.42f,
+LINE_TO, 34.01f, 21.45f,
+CUBIC_TO, 34.94f, 21.99f, 35.48f, 22.82f, 35.48f, 23.75f,
+CLOSE
