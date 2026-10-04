@@ -1407,7 +1407,8 @@
 -TabViewTest.IconDataChanged
 -UiaClient/LeakedNodeDetectionBrowsertest.DetectGhostNodeLeaks/0
 
-# Flaky upstream (via LUCI). Flaky on our CI and fails consistently locally.
+# Flaky upstream (1.2% flake rate over 30 days per LUCI Analysis).
+# Flaky on our CI and fails consistently locally.
 # This appears to be a race condition:
 # On the UI thread, NativeMessagePort creates its dispatcher on the IO thread.
 # On the IO thread, NativeMessageProcessHost::Start() posts LaunchHostProcess()
