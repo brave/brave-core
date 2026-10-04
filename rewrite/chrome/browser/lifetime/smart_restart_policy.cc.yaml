@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Block the zero-window SmartRestart while Sparkle is the updater.
+
+      Sparkle replaces the whole app bundle when it installs an update on quit,
+      so a SmartRestart relaunch can start the old version while its Versions
+      folder is being removed, and the relaunched browser crashes at startup.
+    preempt_function_impl:
+      function_name: SmartRestartPolicy::CanZeroWindowRestartProceed
+      code: |-
+        if (IsSmartRestartBlockedByBrave()) {
+          return false;
+        }
+
+  - description: |-
+      Block the lock-screen SmartRestart while Sparkle is the updater.
+
+      Its restart races Sparkle's app bundle replacement the same way the
+      zero-window restart does.
+    preempt_function_impl:
+      function_name: SmartRestartPolicy::CanLockScreenRestartProceed
+      code: |-
+        if (IsSmartRestartBlockedByBrave()) {
+          return ExtendedExecutionOutcome::kBlockedByPolicy;
+        }
