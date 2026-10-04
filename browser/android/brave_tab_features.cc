@@ -28,10 +28,10 @@ BraveTabFeatures::BraveTabFeatures(content::WebContents* web_contents,
   if (ai_chat::IsAllowedForContext(profile)) {
     tab_data_observer_ = std::make_unique<ai_chat::TabDataWebContentsObserver>(
         TabAndroid::FromWebContents(web_contents)->GetAndroidId(),
-        web_contents);
+        tab_interface);
     // Injects Brave-provided WebMCP tools into matching pages; see
     // WebMcpInjector. Null when WebMCP is disabled or has no rules.
-    web_mcp_injector_ = ai_chat::WebMcpInjector::MaybeCreate(web_contents);
+    web_mcp_injector_ = ai_chat::WebMcpInjector::MaybeCreate(tab_interface);
   }
 
   if (base::FeatureList::IsEnabled(

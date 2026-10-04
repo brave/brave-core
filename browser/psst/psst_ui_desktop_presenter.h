@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_PSST_PSST_UI_DESKTOP_PRESENTER_H_
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/psst/psst_ui_presenter.h"
 #include "brave/browser/ui/views/page_action/psst_action_controller.h"
@@ -16,6 +17,10 @@
 namespace content {
 class WebContents;
 }  // namespace content
+
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
 
 class ConstrainedWebDialogDelegate;
 
@@ -55,8 +60,10 @@ class PsstUiDesktopPresenter
     base::WeakPtrFactory<PsstUiDesktopDelegate> weak_ptr_factory_{this};
   };
 
-  explicit PsstUiDesktopPresenter(
-      base::WeakPtr<content::WebContents> web_contents,
+  // `tab` must outlive this presenter. Its contents are looked up when needed,
+  // because they are replaced when the tab is discarded.
+  PsstUiDesktopPresenter(
+      tabs::TabInterface& tab,
       base::WeakPtr<page_actions::PsstActionController> psst_action_controller);
   ~PsstUiDesktopPresenter() override;
 
@@ -88,7 +95,7 @@ class PsstUiDesktopPresenter
   // Handles the omnibar menu item that disables Psst
   void OnDisablePrivacySettingsTuningSelected() override;
 
-  base::WeakPtr<content::WebContents> web_contents_;
+  const raw_ref<tabs::TabInterface> tab_;
   base::WeakPtr<page_actions::PsstActionController> psst_action_controller_;
   base::WeakPtr<psst::PsstUiDesktopPresenter::PsstUiDesktopDelegate>
       dialog_delegate_;

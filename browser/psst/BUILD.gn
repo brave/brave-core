@@ -44,6 +44,7 @@ static_library("psst") {
     "//components/infobars/core",
     "//components/permissions",
     "//components/prefs",
+    "//components/tabs:public",
     "//components/variations/service",
     "//content/public/browser",
     "//content/public/common",
