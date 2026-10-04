@@ -437,7 +437,7 @@ class PsstTabWebContentsObserverUnitTest
 };
 
 TEST_F(PsstTabWebContentsObserverUnitTest, CreateForRegularBrowserContext) {
-  EXPECT_NE(PsstTabWebContentsObserver::MaybeCreateForWebContents(
+  EXPECT_NE(PsstTabWebContentsObserver::MaybeCreate(
                 mock_tab_interface(), browser_context(),
                 std::make_unique<MockUiDelegate>(), psst_settings_service(),
                 variations_service(), 2),
@@ -453,7 +453,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       otr_profile, site_instance);
 
   EXPECT_EQ(
-      PsstTabWebContentsObserver::MaybeCreateForWebContents(
+      PsstTabWebContentsObserver::MaybeCreate(
           mock_tab_interface(), otr_profile, std::make_unique<MockUiDelegate>(),
           psst_settings_service(), variations_service(), 2),
       nullptr);
@@ -1625,7 +1625,7 @@ class PsstTabWebContentsObserverFeatureDisabledUnitTest
 };
 
 TEST_F(PsstTabWebContentsObserverFeatureDisabledUnitTest, DontCreate) {
-  EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreateForWebContents(
+  EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreate(
                 mock_tab_interface(), browser_context(),
                 std::make_unique<MockUiDelegate>(), psst_settings_service(),
                 variations_service(), 2),

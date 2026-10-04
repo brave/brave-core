@@ -109,7 +109,7 @@ void PrepareParametersForPolicyExecution(
 
 // static
 std::unique_ptr<PsstTabWebContentsObserver>
-PsstTabWebContentsObserver::MaybeCreateForWebContents(
+PsstTabWebContentsObserver::MaybeCreate(
     tabs::TabInterface& tab,
     content::BrowserContext* browser_context,
     std::unique_ptr<PsstUiDelegate> ui_delegate,

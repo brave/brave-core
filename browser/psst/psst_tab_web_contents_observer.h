@@ -77,7 +77,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
   // `variations_service` may be null, in which case the country used for
   // rule matching is left empty. `world_id` is the isolated world that PSST
   // scripts are injected into.
-  static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(
+  static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreate(
       tabs::TabInterface& tab,
       content::BrowserContext* browser_context,
       std::unique_ptr<PsstUiDelegate> ui_delegate,
