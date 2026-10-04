@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Do not create FontPrewarmerTabHelper
+
+      Brave does not prewarm the fonts of search results pages.
+    count: 2 # Created in TabFeatures::Init() and WillDiscardContents().
+    regex:
+      re_pattern: '^( *)(font_prewarmer_tab_helper_ =[^;]*;)'
+      re_flags: [MULTILINE]
+      replace: '\1/* \2 */'
