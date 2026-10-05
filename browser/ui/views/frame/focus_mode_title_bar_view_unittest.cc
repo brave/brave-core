@@ -23,7 +23,6 @@
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "ui/base/unowned_user_data/unowned_user_data_host.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/text_constants.h"
 #include "ui/views/controls/label.h"
@@ -39,11 +38,9 @@ class FakeTab : public tabs::MockTabInterface {
         contents_(content::WebContentsTester::CreateTestWebContents(profile,
                                                                     nullptr)) {
     using ::testing::Return;
-    using ::testing::ReturnRef;
 
     ON_CALL(*this, GetContents()).WillByDefault(Return(contents_.get()));
     ON_CALL(*this, GetTabFeatures()).WillByDefault(Return(tab_features_.get()));
-    ON_CALL(*this, GetUnownedUserDataHost()).WillByDefault(ReturnRef(host_));
     ON_CALL(*this, RegisterWillDetach(::testing::_))
         .WillByDefault([this](tabs::TabInterface::WillDetach callback) {
           return will_detach_callbacks_.Add(std::move(callback));
@@ -63,7 +60,6 @@ class FakeTab : public tabs::MockTabInterface {
   }
 
  private:
-  ui::UnownedUserDataHost host_;
   std::unique_ptr<tabs::TabFeatures> tab_features_;
   std::unique_ptr<content::WebContents> contents_;
   base::RepeatingCallbackList<void(tabs::TabInterface*,
