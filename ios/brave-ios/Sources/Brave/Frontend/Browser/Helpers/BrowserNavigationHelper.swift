@@ -17,6 +17,9 @@ import UIKit
 class BrowserNavigationHelper {
   private weak var bvc: BrowserViewController?
 
+  /// The in-flight task preparing the share sheet, if any
+  private var shareTask: Task<Void, Never>?
+
   init(_ browserViewController: BrowserViewController) {
     bvc = browserViewController
   }
@@ -164,11 +167,14 @@ class BrowserNavigationHelper {
 
     guard let tab = bvc.tabManager.selectedTab, let url = tab.visibleURL else { return }
 
-    Task { @MainActor in
-      @MainActor func share(url: URL) {
+    // Cancel any previous request that has not yet presented its share sheet
+    shareTask?.cancel()
+    shareTask = Task { @MainActor [weak bvc, weak tab] in
+      guard let bvc, let tab else { return }
+      @MainActor func share(url: URL, document: ShareableDocument? = nil) {
         bvc.presentActivityViewController(
           url,
-          tab: url.isFileURL ? nil : bvc.tabManager.selectedTab,
+          tab: url.isFileURL ? nil : tab,
           source: .init(
             view: bvc.view,
             rect: bvc.view.convert(
@@ -176,17 +182,29 @@ class BrowserNavigationHelper {
               from: bvc.topToolbar.menuButton.superview
             ),
             arrowDirection: [.up]
-          )
+          ),
+          onDismiss: {
+            // Retain the document until the share sheet is dismissed which deletes the file
+            _ = document
+          }
         )
       }
 
-      if let temporaryDocument = tab.temporaryDocument {
-        let tempDocURL = await temporaryDocument.getURL()
-        // If we successfully got a temp file URL, share it like a downloaded file,
-        // otherwise present the ordinary share menu for the web URL.
-        if tempDocURL.isFileURL {
-          share(url: tempDocURL)
-        } else {
+      if let document = tab.shareableDocumentHelper?.document {
+        // The user may have switched tabs or navigated while the document was downloading
+        @MainActor func isStillCurrent() -> Bool {
+          !Task.isCancelled && bvc.tabManager.selectedTab === tab
+            && tab.shareableDocumentHelper?.document === document
+        }
+        do {
+          let fileURL = try await document.fileURL()
+          guard isStillCurrent() else { return }
+          share(url: fileURL, document: document)
+        } catch is CancellationError {
+          return
+        } catch {
+          guard isStillCurrent() else { return }
+          // Fallback to sharing the web URL if the document could not be downloaded
           share(url: url)
         }
       } else if let readerSourceURL = url.self.decodeEmbeddedInternalURL(for: .readermode) {

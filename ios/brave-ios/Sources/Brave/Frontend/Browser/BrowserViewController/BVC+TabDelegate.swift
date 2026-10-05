@@ -131,17 +131,9 @@ extension BrowserViewController: TabDelegate {
           title: Strings.shareLinkActionTitle,
           image: UIImage(braveSystemNamed: "leo.share.macos")
         ) { _ in
-          // TODO: Find a way to add fixes brave-ios#3323 and brave-ios#2961 here:
-          // Normally we use `tab.temporaryDocument` for the downloaded file on the tab.
-          // `temporaryDocument` returns the downloaded file to disk on the current tab.
-          // Using a downloaded file url results in having functions like "Save to files" available.
-          // It also attaches the file (image, pdf, etc) and not the url to emails, slack, etc.
-          // Since this is **not** a tab but a standalone web view, the downloaded temporary file is **not** available.
-          // This results in the fixes for #3323 and #2961 not being included in this share scenario.
-          // This is not a regression, we simply never handled this scenario in both fixes.
-          // Some possibile fixes include:
-          // - Detect the file type and download it if necessary and don't rely on the `tab.temporaryDocument`.
-          // - Add custom "Save to file" functionality (needs investigation).
+          // The tab share sheet downloads the displayed document via `ShareableDocument` so that
+          // functions like "Save to Files" are available and the file is attached to emails, etc.
+          // A link is not the tab's displayed content so that path does not apply here.
           self.presentActivityViewController(
             url,
             tab: self.tabManager.selectedTab,

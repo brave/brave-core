@@ -22,7 +22,6 @@ class UserScriptManager {
   private var alwaysEnabledScripts: [ScriptType] {
     var scripts: [ScriptType] = [
       .faviconFetcher,
-      .resourceDownloader,
       .nightMode,
     ]
 
@@ -119,7 +118,6 @@ class UserScriptManager {
     case deAmp
     case requestBlocking
     case trackerProtectionStats
-    case resourceDownloader
     case ethereumProvider
     case solanaProvider
     case cardanoProvider
@@ -163,7 +161,6 @@ class UserScriptManager {
       case .nightMode: return DarkReaderScriptHandler.userScript
       case .playlist:
         return Preferences.UserScript.playlist.value ? PlaylistScriptHandler.userScript : nil
-      case .resourceDownloader: return ResourceDownloadScriptHandler.userScript
       case .youtubeQuality:
         return Preferences.UserScript.youtubeQuality.value
           ? YoutubeQualityScriptHandler.userScript : nil
