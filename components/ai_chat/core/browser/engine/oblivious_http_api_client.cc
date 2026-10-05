@@ -382,9 +382,10 @@ void ObliviousHttpAPIClient::OnInnerResponse(
     }
     std::move(request.completed_callback)
         .Run(base::unexpected(EngineConsumer::Error(
-            error, mojom::APIErrorDetails::New(outer_response_code,
-                                               /*error_type=*/"",
-                                               inner_response_code))));
+            error, mojom::APIErrorDetails::New(
+                       outer_response_code,
+                       /*error_type=*/"", inner_response_code,
+                       /*rate_limit_expires_at=*/std::nullopt))));
     return;
   }
 
