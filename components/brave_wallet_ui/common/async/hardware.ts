@@ -60,7 +60,7 @@ export function dialogErrorFromLedgerErrorCode(
   // @ledgerhq/errors StatusCodes.CONDITIONS_OF_USE_NOT_SATISFIED
   const CONDITIONS_OF_USE_NOT_SATISFIED = 0x6985
 
-  if (code === CONDITIONS_OF_USE_NOT_SATISFIED) {
+  if (Number(code) === CONDITIONS_OF_USE_NOT_SATISFIED) {
     return 'transactionRejected'
   }
 
