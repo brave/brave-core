@@ -14,9 +14,15 @@ import UIKit
 /// This struct stores managed object ID as well as properties that we observer whether they have changed.
 /// Note: `order` property does not have to be stored, favorite's frc handles order updates, it returns items in correct order.
 struct TopsitesTileDiffable: Hashable {
-  let id: TopsiteID
+  let id: TopSiteTile.ID
   let title: String?
   let url: String?
+
+  init(_ tile: TopSiteTile) {
+    self.id = tile.id
+    self.title = tile.title
+    self.url = tile.url.absoluteString
+  }
 
   func hash(into hasher: inout Hasher) {
     hasher.combine(id)

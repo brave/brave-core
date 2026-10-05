@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - UICollectionViewDragDelegate & UICollectionViewDropDelegate
 
-extension TopsitesViewController: UICollectionViewDragDelegate, UICollectionViewDropDelegate {
+extension TopSitesViewController: UICollectionViewDragDelegate, UICollectionViewDropDelegate {
   func collectionView(
     _ collectionView: UICollectionView,
     itemsForBeginning session: UIDragSession,
@@ -25,7 +25,9 @@ extension TopsitesViewController: UICollectionViewDragDelegate, UICollectionView
     case .topsites:
       // Only favorites can be reordered, and only when there is more than one.
       guard tileSource.isReorderingEnabled,
-        case .favorite(let favorite) = tileSource[indexPath.item]?.source
+        let tile = tiles[safe: indexPath.item],
+        case .favorite(let objectID) = tile.id,
+        let favorite = Favorite.get(with: objectID)
       else {
         return []
       }

@@ -4,12 +4,13 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveUI
+import Data
 import Shared
 import UIKit
 
 // MARK: - ContextMenu
 
-extension TopsitesViewController {
+extension TopSitesViewController {
   func collectionView(
     _ collectionView: UICollectionView,
     contextMenuConfigurationForItemsAt indexPaths: [IndexPath],
@@ -24,7 +25,7 @@ extension TopsitesViewController {
 
     switch section {
     case .topsites:
-      guard let topsiteViewModel = tileSource[indexPath.item] else { return nil }
+      guard let tile = tiles[safe: indexPath.item] else { return nil }
       return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) {
         _ -> UIMenu? in
         let openInNewTab = UIAction(
@@ -32,33 +33,14 @@ extension TopsitesViewController {
           handler: UIAction.deferredActionHandler { _ in
             self.topSiteAction(
               .opened(
-                url: favorite.url?.asURL,
-                isFavorite: true,
+                url: tile.url,
+                isFavorite: tile.isFavorite,
                 inNewTab: true,
                 switchingToPrivateMode: false
               )
             )
           }
         )
-        var children: [UIMenuElement] = []
-        if case .favorite(let favorite) = topsiteViewModel.source {
-          let edit = UIAction(
-            title: Strings.editFavorite,
-            handler: UIAction.deferredActionHandler { _ in
-              self.topsiteAction(.edited(favorite: favorite))
-            }
-          )
-          let delete = UIAction(
-            title: Strings.removeFavorite,
-            attributes: .destructive,
-            handler: UIAction.deferredActionHandler { _ in
-              favorite.delete()
-            }
-          )
-
-          let favMenu = UIMenu(title: "", options: .displayInline, children: [edit, delete])
-          children.append(favMenu)
-        }
 
         var urlChildren: [UIAction] = [openInNewTab]
         if !self.privateBrowsingManager.isPrivateBrowsing {
@@ -67,8 +49,8 @@ extension TopsitesViewController {
             handler: UIAction.deferredActionHandler { _ in
               self.topSiteAction(
                 .opened(
-                  url: favorite.url?.asURL,
-                  isFavorite: true,
+                  url: tile.url,
+                  isFavorite: tile.isFavorite,
                   inNewTab: true,
                   switchingToPrivateMode: true
                 )
@@ -78,12 +60,44 @@ extension TopsitesViewController {
           urlChildren.append(openInNewPrivateTab)
         }
 
-        let urlMenu = UIMenu(title: "", options: .displayInline, children: urlChildren)
-        children.append(urlMenu)
+        let modeChildren: [UIAction]
+        switch tile.id {
+        case .favorite(let objectID):
+          modeChildren = [
+            UIAction(
+              title: Strings.editFavorite,
+              handler: UIAction.deferredActionHandler { _ in
+                guard let favorite = Favorite.get(with: objectID) else { return }
+                self.topSiteAction(.edited(favorite: favorite))
+              }
+            ),
+            UIAction(
+              title: Strings.removeFavorite,
+              attributes: .destructive,
+              handler: UIAction.deferredActionHandler { _ in
+                Favorite.get(with: objectID)?.delete()
+              }
+            ),
+          ]
+        case .mostVisited:
+          modeChildren = [
+            UIAction(
+              title: Strings.excludeMostVisitedSite,
+              attributes: .destructive,
+              handler: UIAction.deferredActionHandler { _ in
+                self.topSiteAction(.excluded(tile: tile))
+              }
+            )
+          ]
+        }
+
         return UIMenu(
-          title: topsiteViewModel.title ?? topsiteViewModel.url?.absoluteString ?? "",
+          title: tile.title ?? tile.url.absoluteString,
           identifier: nil,
-          children: children
+          children: [
+            UIMenu(title: "", options: .displayInline, children: urlChildren),
+            UIMenu(title: "", options: .displayInline, children: modeChildren),
+          ]
         )
       }
     case .recentSearches, .recentSearchesOptIn:

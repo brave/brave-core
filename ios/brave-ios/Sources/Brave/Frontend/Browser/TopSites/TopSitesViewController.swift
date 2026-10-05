@@ -7,12 +7,13 @@ import BraveUI
 import Combine
 import CoreData
 import Data
+import Observation
 import Preferences
 import Shared
 import UIKit
 import os.log
 
-class TopsitesCompositionalLayout: UICollectionViewCompositionalLayout {
+class TopSitesCompositionalLayout: UICollectionViewCompositionalLayout {
   let browserColors: BrowserColors
 
   init(
@@ -61,13 +62,13 @@ class TopsitesCompositionalLayout: UICollectionViewCompositionalLayout {
   }
 }
 
-class TopsitesViewController: UIViewController {
+class TopSitesViewController: UIViewController {
 
   // UI Properties
   private let layoutConfig = UICollectionViewCompositionalLayoutConfiguration().then {
     $0.interSectionSpacing = 8.0
   }
-  private lazy var compositionLayout = TopsitesCompositionalLayout(
+  private lazy var compositionLayout = TopSitesCompositionalLayout(
     browserColors: privateBrowsingManager.browserColors,
     sectionProvider: { [weak self] sectionIndex, environment in
       guard let self else { return nil }
@@ -122,7 +123,7 @@ class TopsitesViewController: UIViewController {
   var availableSections: [TopsitesSection] {
     var sections = [TopsitesSection]()
 
-    if !tileSource.isEmpty {
+    if !tiles.isEmpty {
       sections.append(.topsites)
     }
 
@@ -147,11 +148,15 @@ class TopsitesViewController: UIViewController {
   private let defaultSearchEngine: OpenSearchEngine?
 
   // Tiles Source
-  let tileSource: TopsitesTileSource
+  let tileSource: TopSitesTileSource
+  /// The tiles the collection view is currently showing. Kept separate from the source so that the
+  /// snapshot and the items it describes can't disagree while a reload is pending.
+  private(set) var tiles: [TopSiteTile] = []
 
   init(
     privateBrowsingManager: PrivateBrowsingManager,
     defaultSearchEngine: OpenSearchEngine?,
+    tileSource: TopSitesTileSource,
     topSiteAction: @escaping (TopSiteAction) -> Void,
     recentSearchAction: @escaping (RecentSearch?, Bool) -> Void
   ) {
@@ -209,7 +214,7 @@ class TopsitesViewController: UIViewController {
       )
     }
 
-    tileSource.addObserver(self)
+    updateTiles()
   }
 
   @available(*, unavailable)
@@ -431,7 +436,7 @@ class TopsitesViewController: UIViewController {
 
 // MARK: - UICollectionViewDataSource & UICollectionViewDelegateFlowLayout
 
-extension TopsitesViewController: UICollectionViewDelegateFlowLayout {
+extension TopSitesViewController: UICollectionViewDelegateFlowLayout {
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     guard let section = availableSections[safe: indexPath.section] else {
@@ -443,10 +448,10 @@ extension TopsitesViewController: UICollectionViewDelegateFlowLayout {
     case .recentSearchesOptIn:
       break
     case .topsites:
-      guard let tile = tileSource[indexPath.item] else {
+      guard let tile = tiles[safe: indexPath.item] else {
         return
       }
-      topSiteAction(.opened(url: favorite.url?.asURL, isFavorite: true))
+      topSiteAction(.opened(url: tile.url, isFavorite: tile.isFavorite))
     case .recentSearches:
       guard let searchItem = recentSearchesFRC.fetchedObjects?[safe: indexPath.item] else {
         return
@@ -466,7 +471,7 @@ extension TopsitesViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - Action
 
-extension TopsitesViewController {
+extension TopSitesViewController {
   func onOpenRecentSearch(_ recentSearch: RecentSearch) {
     recentSearchAction(recentSearch, false)
   }
@@ -518,7 +523,7 @@ extension TopsitesViewController {
 
 // MARK: - Preference Observer
 
-extension TopsitesViewController: PreferencesObserver {
+extension TopSitesViewController: PreferencesObserver {
   func preferencesDidChange(for key: String) {
     preferenceBeingObserved = true
     updateUIWithSnapshot()
@@ -527,7 +532,7 @@ extension TopsitesViewController: PreferencesObserver {
 
 // MARK: -  NSFetchedResultsControllerDelegate + Diffable DataSource
 
-extension TopsitesViewController: NSFetchedResultsControllerDelegate {
+extension TopSitesViewController: NSFetchedResultsControllerDelegate {
   private var favoritesSectionExists: Bool {
     availableSections.contains(.topsites)
   }
@@ -548,7 +553,7 @@ extension TopsitesViewController: NSFetchedResultsControllerDelegate {
 
     if favoritesSectionExists {
       snapshot.appendItems(
-        tileSource.tileDiffables.map { .topsites($0) },
+        tiles.map { .topsites(TopsitesTileDiffable($0)) },
         toSection: .topsites
       )
     }
@@ -627,20 +632,16 @@ extension TopsitesViewController: NSFetchedResultsControllerDelegate {
 
     switch wrapper {
     case .topsites(let topsitesWrapper):
-      guard let tile = tileSource.tile(for: topsitesWrapper.id) else { return nil }
+      guard let tile = tiles.first(where: { $0.id == topsitesWrapper.id }) else { return nil }
 
       let cell = collectionView.dequeueReusableCell(for: indexPath) as TopsitesCollectionViewCell
 
       cell.isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
-      cell.textLabel.text = tile.title ?? tile.url?.absoluteString
-      if let url = tile.url {
-        cell.imageView.loadFavicon(
-          siteURL: url,
-          isPrivateBrowsing: self.privateBrowsingManager.isPrivateBrowsing
-        )
-      } else {
-        cell.imageView.cancelLoading()
-      }
+      cell.textLabel.text = tile.title ?? tile.url.absoluteString
+      cell.imageView.loadFavicon(
+        siteURL: tile.url,
+        isPrivateBrowsing: self.privateBrowsingManager.isPrivateBrowsing
+      )
       cell.accessibilityLabel = cell.textLabel.text
 
       return cell
@@ -807,8 +808,15 @@ extension TopsitesViewController: NSFetchedResultsControllerDelegate {
   }
 }
 
-extension TopsitesViewController: TopsitesTileSourceObserver {
-  func topsitesTileSourceDidChangeTiles(_ source: TopsitesTileSource) {
-    updateUIWithSnapshot(animated: true)
+extension TopSitesViewController {
+  private func updateTiles() {
+    tiles = withObservationTracking {
+      tileSource.tiles
+    } onChange: { [weak self] in
+      DispatchQueue.main.async {
+        self?.updateTiles()
+        self?.updateUIWithSnapshot(animated: true)
+      }
+    }
   }
 }
