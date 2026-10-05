@@ -69,23 +69,8 @@ interface UntrustedConversationHandler {
   // e.g. reduce rate limiting.
   SwitchToNonPremiumModel();
 
-  ModifyConversation(string entry_uuid, string new_text, string? skill_shortcut);
-
-  // Allows a client to provide an answer to a tool use request
-  // as a result of a user action.
-  RespondToToolUseRequest(string tool_id, array<ContentBlock> output_json, array<ToolArtifact> artifacts);
-
-  // Called when user responds to a permission challenge. kAllowSession is only
-  // honoured for challenges which reported |supports_allow_session|.
-  ProcessPermissionChallenge(string tool_use_id,
-                             PermissionChallengeDecision decision);
-
   // Regenerate answer using specified model.
   RegenerateAnswer(string turn_uuid, string model_key);
-
-  // Submit one of the generated suggested questions for response from
-  // the assistant.
-  SubmitSuggestion(string question);
 
   // The browser should generate some questions and fire an event when they
   // are ready.
@@ -100,6 +85,32 @@ interface UntrustedConversationHandler {
   // empty thread, so duplicate empty threads aren't created, or if the origin entry
   // is not an assistant response.
   CreateConversationThread(string origin_entry_uuid) => (string? thread_uuid);
+};
+
+// Browser-side handler for the subset of a Conversation's actions that must
+// have been initiated by the user. Every method on this pipe is rejected
+// unless the untrusted frame had transient user activation when it sent the
+// message, and rejection closes the pipe. Anything the UI must be able to call
+// without a user gesture belongs on UntrustedConversationHandler instead.
+interface UntrustedConversationUserActions {
+  ModifyConversation(string entry_uuid,
+                     string new_text,
+                     string? skill_shortcut);
+
+  // Allows a client to provide an answer to a tool use request
+  // as a result of a user action.
+  RespondToToolUseRequest(string tool_id,
+                          array<ContentBlock> output_json,
+                          array<ToolArtifact> artifacts);
+
+  // Called when user responds to a permission challenge. kAllowSession is only
+  // honoured for challenges which reported |supports_allow_session|.
+  ProcessPermissionChallenge(string tool_use_id,
+                             PermissionChallengeDecision decision);
+
+  // Submit one of the generated suggested questions for response from
+  // the assistant.
+  SubmitSuggestion(string question);
 };
 
 // Untrusted-UI-side handler for a Conversation, responsible for displaying
@@ -134,10 +145,12 @@ interface UntrustedUI {
 // Browser-side handler for untrusted frame that handles rendering of
 // conversation entries.
 interface UntrustedUIHandler {
-  // Bind the conversation handler
+  // Bind the conversation handler. |user_actions| is a second pipe to the same
+  // conversation, which the browser gates on user gesture.
   BindConversationHandler(
     string conversation_id,
-    pending_receiver<UntrustedConversationHandler> conversation_handler
+    pending_receiver<UntrustedConversationHandler> conversation_handler,
+    pending_receiver<UntrustedConversationUserActions> user_actions
   );
 
   // Bind UntrustedUI for callbacks

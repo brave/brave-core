@@ -59,6 +59,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/clone_traits.h"
+#include "mojo/public/cpp/bindings/message.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -328,6 +329,13 @@ void ConversationHandler::Bind(
 void ConversationHandler::Bind(
     mojo::PendingReceiver<mojom::UntrustedConversationHandler> receiver) {
   untrusted_receivers_.Add(this, std::move(receiver));
+}
+
+void ConversationHandler::BindUserActions(
+    mojo::PendingReceiver<mojom::UntrustedConversationUserActions> receiver,
+    std::unique_ptr<mojo::MessageFilter> gesture_filter) {
+  user_action_receivers_.Add(this, std::move(receiver), /*context=*/{},
+                             std::move(gesture_filter));
 }
 
 void ConversationHandler::BindUntrustedConversationUI(
@@ -1062,6 +1070,7 @@ void ConversationHandler::SetSuggestedQuestionForTest(std::string title,
                                                       std::string prompt) {
   suggestions_.clear();
   suggestions_.emplace_back(title, prompt);
+  OnSuggestedQuestionsChanged();
 }
 
 void ConversationHandler::GenerateQuestions() {

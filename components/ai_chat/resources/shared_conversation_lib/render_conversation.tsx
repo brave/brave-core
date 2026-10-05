@@ -23,6 +23,7 @@ import createUntrustedConversationApi, {
 import {
   createMockParentUIFrame,
   createMockUntrustedConversationHandler,
+  createMockUntrustedConversationUserActions,
   createMockUntrustedService,
   createMockUntrustedUIHandler,
 } from '../untrusted_conversation_frame/api/mock_interfaces'
@@ -49,12 +50,14 @@ type RenderConversationResult = {
  */
 function createLocalConversationApi(): UntrustedConversationAPI {
   const conversationHandler = createMockUntrustedConversationHandler()
+  const userActions = createMockUntrustedConversationUserActions()
   const uiHandler = createMockUntrustedUIHandler()
   const parentUIFrame = createMockParentUIFrame()
   const service = createMockUntrustedService()
 
   return createUntrustedConversationApi(
     conversationHandler,
+    userActions,
     uiHandler,
     parentUIFrame,
     service,

@@ -64,7 +64,9 @@
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "mojo/public/cpp/bindings/message.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "services/network/public/cpp/network_context_getter.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -219,6 +221,24 @@ std::vector<mojom::WebSourcePtr> CreateWebSources(size_t num_sources) {
   }
   return sources;
 }
+
+// Stands in for the platform layer's user-gesture filter when the frame has no
+// activation. Counts the messages it saw so a test can tell "rejected" apart
+// from "never reached the filter".
+class RejectAllFilter : public mojo::MessageFilter {
+ public:
+  explicit RejectAllFilter(int* attempts) : attempts_(attempts) {}
+  ~RejectAllFilter() override = default;
+
+  bool WillDispatch(mojo::Message* message) override {
+    ++*attempts_;
+    return false;
+  }
+  void DidDispatchOrReject(mojo::Message* message, bool accepted) override {}
+
+ private:
+  raw_ptr<int> attempts_;
+};
 
 std::vector<mojom::ContentBlockPtr> CreateWebSourcesOutput(
     size_t num_sources,
@@ -1908,6 +1928,66 @@ TEST_F(ConversationHandlerUnitTest, MAYBE_ModifyConversation) {
   // Edit time should be set differently
   EXPECT_NE(conversation_history[1]->edits->at(0)->created_time,
             conversation_history[1]->created_time);
+}
+
+// The user-actions pipe is gated per-pipe rather than per-method, so
+// ModifyConversation is a sufficient probe for the whole interface.
+TEST_F(ConversationHandlerUnitTest, UserActionsRejectedByFilterClosesPipe) {
+  auto history = SetupHistory({{"prompt", false}, {"answer", false}});
+
+  int filter_attempts = 0;
+  mojo::Remote<mojom::UntrustedConversationUserActions> user_actions;
+  conversation_handler_->BindUserActions(
+      user_actions.BindNewPipeAndPassReceiver(),
+      std::make_unique<RejectAllFilter>(&filter_attempts));
+
+  base::RunLoop disconnect_loop;
+  user_actions.set_disconnect_handler(disconnect_loop.QuitClosure());
+
+  user_actions->ModifyConversation(history[1]->uuid.value(), "edited answer",
+                                   std::nullopt);
+  disconnect_loop.Run();
+
+  EXPECT_EQ(filter_attempts, 1);
+  EXPECT_FALSE(conversation_handler_->GetConversationHistory()[1]->edits);
+}
+
+// The iOS path, where no per-frame activation API exists to gate on.
+TEST_F(ConversationHandlerUnitTest, UserActionsWithoutFilterDispatches) {
+  auto history = SetupHistory({{"prompt", false}, {"answer", false}});
+
+  mojo::Remote<mojom::UntrustedConversationUserActions> user_actions;
+  conversation_handler_->BindUserActions(
+      user_actions.BindNewPipeAndPassReceiver(), /*gesture_filter=*/nullptr);
+
+  user_actions->ModifyConversation(history[1]->uuid.value(), "edited answer",
+                                   std::nullopt);
+  user_actions.FlushForTesting();
+
+  const auto& edits = conversation_handler_->GetConversationHistory()[1]->edits;
+  ASSERT_TRUE(edits);
+  ASSERT_EQ(edits->size(), 1u);
+  EXPECT_EQ(edits->at(0)->text, "edited answer");
+}
+
+TEST_F(ConversationHandlerUnitTest, UserActionsFilterDoesNotGateReads) {
+  SetupHistory({{"prompt", false}, {"answer", false}});
+
+  int filter_attempts = 0;
+  mojo::Remote<mojom::UntrustedConversationUserActions> user_actions;
+  conversation_handler_->BindUserActions(
+      user_actions.BindNewPipeAndPassReceiver(),
+      std::make_unique<RejectAllFilter>(&filter_attempts));
+
+  mojo::Remote<mojom::UntrustedConversationHandler> untrusted_handler;
+  conversation_handler_->Bind(untrusted_handler.BindNewPipeAndPassReceiver());
+
+  base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>>
+      history_future;
+  untrusted_handler->GetConversationHistory(std::nullopt,
+                                            history_future.GetCallback());
+  EXPECT_EQ(history_future.Take().size(), 2u);
+  EXPECT_EQ(filter_attempts, 0);
 }
 
 TEST_F(ConversationHandlerUnitTest, RegenerateAnswer) {
