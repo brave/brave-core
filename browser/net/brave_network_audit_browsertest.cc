@@ -52,28 +52,28 @@
 namespace brave {
 namespace {
 
-// Max amount of time to wait after getting an URL loaded, in milliseconds. Note
-// that the value passed to --ui-test-action-timeout in //brave/package.json, as
-// part of the 'network-audit' script, must be big enough to accomodate this.
+// Max amount of time to wait after getting an URL loaded. Note that the value
+// passed to --ui-test-action-timeout in //brave/package.json, as part of the
+// 'network-audit' script, must be big enough to accomodate this.
 //
 // In particular:
 //   --ui-test-action-timeout: should be greater than |kMaxTimeoutPerLoadedURL|.
 //   --test-launcher-timeout: should be able to fit the total sum of timeouts.
-constexpr int kMaxTimeoutPerLoadedURL = 30;
+constexpr base::TimeDelta kMaxTimeoutPerLoadedURL = base::Seconds(30);
 
 #if defined(TOOLKIT_VIEWS)
 // The Leo panel crashes the renderer a few seconds after loading. Audit it with
 // a shorter window rather than skipping it entirely, so its requests are still
-// captured. See https://github.com/brave/brave-browser/issues/59592.
-constexpr int kTimeoutForLeoPanel = 1;
+// captured.
+constexpr base::TimeDelta kTimeoutForLeoPanel = base::Seconds(1);
 #endif
 
-void WaitForTimeout(int timeout) {
+void WaitForTimeout(base::TimeDelta timeout) {
   base::test::ScopedRunLoopTimeout file_download_timeout(
-      FROM_HERE, base::Seconds(kMaxTimeoutPerLoadedURL + 1));
+      FROM_HERE, kMaxTimeoutPerLoadedURL + base::Seconds(1));
   base::RunLoop run_loop;
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE, run_loop.QuitClosure(), base::Seconds(timeout));
+      FROM_HERE, run_loop.QuitClosure(), timeout);
   run_loop.Run();
 }
 
