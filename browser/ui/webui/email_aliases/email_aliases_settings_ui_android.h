@@ -17,7 +17,8 @@
 
 class EmailAliasesSettingsUIAndroid
     : public content::WebUIController,
-      public brave_account::mojom::DialogController {
+      public brave_account::mojom::DialogController,
+      public brave_account::mojom::DialogOpener {
  public:
   explicit EmailAliasesSettingsUIAndroid(content::WebUI* web_ui);
   EmailAliasesSettingsUIAndroid(const EmailAliasesSettingsUIAndroid&) = delete;
@@ -35,15 +36,22 @@ class EmailAliasesSettingsUIAndroid
       mojo::PendingReceiver<brave_account::mojom::Authentication> receiver);
   void BindInterface(
       mojo::PendingReceiver<brave_account::mojom::DialogController> receiver);
+  void BindInterface(mojo::PendingReceiver<brave_account::mojom::DialogOpener>
+                         pending_receiver);
 
  private:
+  // brave_account::mojom::DialogOpener:
   void OpenDialog(const std::string& initiating_service_name,
                   brave_account::mojom::DialogMode dialog_mode) override;
+
+  // brave_account::mojom::DialogController:
   void CloseDialog() override;
   void GetDialogMode(GetDialogModeCallback callback) override;
 
   mojo::Receiver<brave_account::mojom::DialogController>
       dialog_controller_receiver_{this};
+  mojo::Receiver<brave_account::mojom::DialogOpener> dialog_opener_receiver_{
+      this};
 
  public:
   WEB_UI_CONTROLLER_TYPE_DECL();
