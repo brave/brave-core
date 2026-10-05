@@ -32,7 +32,6 @@ OBJC_EXPORT
 @property(readonly) BraveWalletAPI* braveWalletAPI;
 @property(readonly) BraveStats* braveStats;
 @property(readonly) id<IpfsAPI> ipfsAPI;
-- (AIChat*)aiChatAPIWithDelegate:(id<AIChatDelegate>)delegate;
 /// The default content settings for regular browsing windows
 @property(readonly) DefaultHostContentSettings* defaultHostContentSettings;
 @property(readonly) NTPBackgroundImagesService* backgroundImagesService;
