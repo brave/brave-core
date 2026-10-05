@@ -14,7 +14,8 @@ substitutions:
     preempt_function_impl:
       function_name: CookiesEventRouter::OnCookieChange
       return_if:
-        'otr && !profile_->GetPrimaryOTRProfile(/*create_if_needed=*/false)'
+        'otr &&
+        !ExtensionsBrowserClient::Get()->HasOffTheRecordContext(browser_context_)'
 
   - description: |
       Skip Tor profiles when starting to observe a new OTR profile.
@@ -22,5 +23,5 @@ substitutions:
       Tor windows must not be observed for cookie changes (see the
       OnCookieChange substitution above for the same reasoning).
     preempt_function_impl:
-      function_name: CookiesEventRouter::OnOffTheRecordProfileCreated
-      return_if: 'off_the_record->IsTor()'
+      function_name: CookiesEventRouter::OnRelatedOffTheRecordBrowserContextCreated
+      return_if: 'off_the_record_context.IsTor()'
