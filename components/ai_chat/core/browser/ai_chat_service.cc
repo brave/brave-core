@@ -365,6 +365,19 @@ void AIChatService::GetConversationThreadEntries(
       .Then(std::move(callback));
 }
 
+void AIChatService::GetAllConversationEntries(
+    const std::string& conversation_uuid,
+    base::OnceCallback<void(std::vector<mojom::ConversationTurnPtr>)>
+        callback) {
+  if (!ai_chat_db_) {
+    std::move(callback).Run({});
+    return;
+  }
+  ai_chat_db_.AsyncCall(&AIChatDatabase::GetAllConversationEntries)
+      .WithArgs(conversation_uuid)
+      .Then(std::move(callback));
+}
+
 void AIChatService::GetConversation(
     std::string_view conversation_uuid,
     base::OnceCallback<void(ConversationHandler*)> callback) {

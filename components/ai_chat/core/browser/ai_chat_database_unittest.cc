@@ -328,6 +328,50 @@ TEST_P(AIChatDatabaseTest, ConversationThreadEntries) {
   EXPECT_TRUE(db_->GetConversationThreads(uuid).empty());
 }
 
+TEST_P(AIChatDatabaseTest, GetAllConversationEntries) {
+  const std::string uuid = "all_entries";
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "all entries", base::Time::Now(), true, std::nullopt, 0, 0, false,
+      std::vector<mojom::AssociatedContentPtr>());
+
+  auto history = CreateSampleChatHistory(2u);
+  auto edit = history[0]->Clone();
+  edit->uuid = "edit";
+  edit->text = "edited query";
+  edit->created_time = history[0]->created_time + base::Seconds(1);
+  history[0]->edits.emplace();
+  history[0]->edits->push_back(std::move(edit));
+  const std::string thread_uuid = "thread";
+  history[2]->thread_uuid = thread_uuid;
+  history[3]->thread_uuid = thread_uuid;
+
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
+  for (size_t i = 1; i < history.size(); ++i) {
+    EXPECT_TRUE(db_->AddConversationEntry(uuid, history[i]->Clone()));
+  }
+
+  // Entries of another conversation are not returned.
+  mojom::ConversationPtr other_metadata = mojom::Conversation::New(
+      "other", "other", base::Time::Now(), true, std::nullopt, 0, 0, false,
+      std::vector<mojom::AssociatedContentPtr>());
+  EXPECT_TRUE(db_->AddConversation(other_metadata->Clone(), {},
+                                   CreateSampleChatHistory(1u)[0]->Clone()));
+
+  auto entries = db_->GetAllConversationEntries(uuid);
+  ASSERT_EQ(entries.size(), 4u);
+  for (size_t i = 0; i < entries.size(); ++i) {
+    EXPECT_EQ(entries[i]->uuid, history[i]->uuid);
+  }
+  ASSERT_TRUE(entries[0]->edits.has_value());
+  ASSERT_EQ(entries[0]->edits->size(), 1u);
+  EXPECT_EQ(entries[0]->edits->at(0)->text, "edited query");
+  EXPECT_FALSE(entries[1]->thread_uuid.has_value());
+  EXPECT_EQ(entries[2]->thread_uuid, thread_uuid);
+  EXPECT_EQ(entries[3]->thread_uuid, thread_uuid);
+
+  EXPECT_TRUE(db_->GetAllConversationEntries("unknown").empty());
+}
+
 TEST_P(AIChatDatabaseTest, WebSourcesEvent) {
   const std::string uuid = "first";
   const GURL page_url = GURL("https://example.com/page");

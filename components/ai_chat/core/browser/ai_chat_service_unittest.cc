@@ -1256,6 +1256,21 @@ TEST_P(AIChatServiceUnitTest, Observer_ReportsStorageReady) {
   EXPECT_TRUE(ai_chat_service_->IsStorageReady());
 }
 
+TEST_P(AIChatServiceUnitTest, GetAllConversationEntries) {
+  if (IsAIChatHistoryEnabled()) {
+    ASSERT_TRUE(base::test::RunUntil([&] { return HasDatabase(); }));
+  }
+  ConversationHandler* conversation = CreateConversation();
+  auto client = CreateConversationClient(conversation);
+  conversation->SetChatHistoryForTesting(CreateSampleChatHistory(2u));
+
+  base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>> future;
+  ai_chat_service_->GetAllConversationEntries(
+      conversation->get_conversation_uuid(), future.GetCallback());
+  // Without storage nothing was persisted, so there is nothing to read.
+  EXPECT_EQ(future.Take().size(), IsAIChatHistoryEnabled() ? 4u : 0u);
+}
+
 TEST_P(
     AIChatServiceUnitTest,
     CreateConversationHandlerForContent_ShouldNotAssociate_WhenPageContextEnabledInitiallyDisabled) {

@@ -524,6 +524,22 @@ AIChatDatabase::GetConversationThreadEntries(std::string_view thread_uuid) {
   return GetConversationEntries(statement);
 }
 
+std::vector<mojom::ConversationTurnPtr>
+AIChatDatabase::GetAllConversationEntries(std::string_view conversation_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return {};
+  }
+
+  sql::Statement statement(GetDB().GetCachedStatement(
+      SQL_FROM_HERE, absl::StrFormat(kConversationEntriesQueryTemplate,
+                                     "conversation_uuid=?")));
+  CHECK(statement.is_valid());
+  statement.BindString(0, conversation_uuid);
+
+  return GetConversationEntries(statement);
+}
+
 std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
     sql::Statement& statement) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

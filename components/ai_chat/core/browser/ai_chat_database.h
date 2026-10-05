@@ -69,6 +69,12 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   virtual std::vector<mojom::ConversationTurnPtr> GetConversationThreadEntries(
       std::string_view thread_uuid);
 
+  // Gets every entry of the conversation with the provided uuid, including the
+  // entries of its threads, in creation order. Unlike GetConversationData(),
+  // neither thread metadata nor associated content is read.
+  virtual std::vector<mojom::ConversationTurnPtr> GetAllConversationEntries(
+      std::string_view conversation_uuid);
+
   // Returns new ID for the provided entry and any provided associated content
   virtual bool AddConversation(mojom::ConversationPtr conversation,
                                std::vector<std::string> contents,

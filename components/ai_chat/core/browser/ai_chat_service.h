@@ -188,6 +188,14 @@ class AIChatService : public KeyedService,
       base::OnceCallback<void(std::vector<mojom::ConversationTurnPtr>)>
           callback);
 
+  // Reads every stored entry of the conversation, including the entries of its
+  // threads, without loading the conversation. Runs `callback` with no entries
+  // when storage is unavailable.
+  void GetAllConversationEntries(
+      const std::string& conversation_uuid,
+      base::OnceCallback<void(std::vector<mojom::ConversationTurnPtr>)>
+          callback);
+
   // Creates and owns a ConversationHandler if one hasn't been made for the
   // associated_content_id yet. |associated_content_id| should not be stored. It
   // is an ephemeral identifier for active browser content.
