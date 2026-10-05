@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/chrome_content_browser_client.cc
+index 19045777b3d811c15ba6e3f16cff859a05327b88..bbd72f2f1ca82a22e9218a85855a93fb7251566f 100644
+--- a/chrome/browser/chrome_content_browser_client.cc
++++ b/chrome/browser/chrome_content_browser_client.cc
+@@ -8809,6 +8809,7 @@ base::FilePath ChromeContentBrowserClient::GetChildProcessPath(int flags) {
+ 
+ bool ChromeContentBrowserClient::ShouldUseFirstPartyStorageKey(
+     const url::Origin& origin) {
++  if (BraveShouldUseFirstPartyStorageKey(origin)) return true;
+ #if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+   return origin.scheme() == extensions::kExtensionScheme;
+ #else
