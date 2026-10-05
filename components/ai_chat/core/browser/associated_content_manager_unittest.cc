@@ -39,6 +39,8 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest-death-test.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
+#include "url/origin.h"
 
 using ::testing::NiceMock;
 
@@ -895,6 +897,57 @@ TEST_F(AssociatedContentManagerUnitTest,
 }
 
 TEST_F(AssociatedContentManagerUnitTest,
+       SetToolPermission_UsesTheContentsOriginNotItsUrl) {
+  // Workspaces are identified by a workspace:// url, whose origin is opaque, so
+  // permissions are keyed on the origin the content's tools run in instead.
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("workspace://6a0b4a8e-4f3c-4b7e-9d33-0f2d6a1c9b11"));
+  ASSERT_TRUE(url::Origin::Create(content.url()).opaque());
+  content.SetOrigin(url::Origin::Create(
+      GURL("chrome-untrusted://"
+           "6a0b4a8e-4f3c-4b7e-9d33-0f2d6a1c9b11.leo-workspace")));
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            tools.push_back(std::make_unique<NiceMock<MangledNameTool>>());
+            tools.push_back(
+                std::make_unique<NiceMock<MockTool>>("browse_store"));
+            std::move(cb).Run(std::move(tools));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+
+  // A choice made in the dialog is kept.
+  manager->SetToolPermission(content.uuid(), "browse_store",
+                             mojom::ToolPermission::kNeverAllow);
+
+  // And so is one made in answer to a challenge.
+  base::test::TestFuture<void> loaded;
+  manager->UpdateToolsForNewGenerationLoop(loaded.GetCallback());
+  ASSERT_TRUE(loaded.Wait());
+  manager->SetToolPermissionForModelToolName(
+      "web_shop_cancel_cart", mojom::ToolPermission::kAllowSession);
+
+  base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> infos;
+  manager->GetToolInfos(content.uuid(), infos.GetCallback());
+  ASSERT_EQ(2u, infos.Get().size());
+  EXPECT_EQ("cancel_cart", infos.Get()[0]->name);
+  EXPECT_EQ(mojom::ToolPermission::kAllowSession, infos.Get()[0]->permission);
+  EXPECT_EQ("browse_store", infos.Get()[1]->name);
+  EXPECT_EQ(mojom::ToolPermission::kNeverAllow, infos.Get()[1]->permission);
+
+  // The blocked tool is withheld from the model.
+  base::test::TestFuture<void> reloaded;
+  manager->UpdateToolsForNewGenerationLoop(reloaded.GetCallback());
+  ASSERT_TRUE(reloaded.Wait());
+  auto tools = manager->GetTools();
+  ASSERT_EQ(1u, tools.size());
+  EXPECT_EQ("web_shop_cancel_cart", std::string(tools[0]->Name()));
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
        SetToolPermissionForModelToolName_UnknownToolIsIgnored) {
   // Only content tools have a permission to record.
   NiceMock<MockAssociatedContent> content;
@@ -1056,7 +1109,8 @@ TEST_F(AssociatedContentManagerUnitTest,
 
   // Should have empty cached page content.
   EXPECT_TRUE(associated_content.cached_page_content().content.empty());
-  EXPECT_FALSE(associated_content.cached_page_content().is_video);
+  EXPECT_EQ(associated_content.cached_page_content().content_type,
+            mojom::ContentType::PageContent);
 
   // Conversation metadata should have no associated content.
   EXPECT_TRUE(conversation_->associated_content.empty());
@@ -1067,7 +1121,8 @@ TEST_F(AssociatedContentManagerUnitTest,
   // GetContent should have been called when adding the content to the manager.
   EXPECT_EQ("Some video transcript",
             associated_content.cached_page_content().content);
-  EXPECT_TRUE(associated_content.cached_page_content().is_video);
+  EXPECT_EQ(associated_content.cached_page_content().content_type,
+            mojom::ContentType::VideoTranscript);
 
   // Conversation metadata should have been updated now the AssociatedContent
   // knows its a video.

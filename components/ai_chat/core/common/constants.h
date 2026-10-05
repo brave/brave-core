@@ -71,6 +71,11 @@ static_assert(
 // origin from the workspace that frames it.
 inline constexpr char kAIChatLeoWorkspaceViewUIHostPrefix[] = "view.";
 
+// The scheme of the URL a workspace is identified by, as stored in the
+// conversation's associated content: workspace://<uuid>. It is never loaded;
+// the workspace's page is chrome-untrusted://<uuid>.leo-workspace.
+inline constexpr char kAIChatWorkspaceScheme[] = "workspace";
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_CONSTANTS_H_

@@ -17,6 +17,7 @@
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace ai_chat {
 
@@ -24,10 +25,10 @@ struct PageContent {
   // Note: |content| is not sanitized for use in the backend. Run it through
   // |EngineConsumer::SanitizeInput| before sending it.
   std::string content = "";
-  bool is_video = false;
+  mojom::ContentType content_type = mojom::ContentType::PageContent;
 
   PageContent();
-  PageContent(std::string content, bool is_video);
+  PageContent(std::string content, mojom::ContentType content_type);
 
   PageContent(const PageContent&);
   PageContent(PageContent&&);
@@ -35,7 +36,7 @@ struct PageContent {
   PageContent& operator=(PageContent&&);
 
   bool operator==(const PageContent& other) const {
-    return content == other.content && is_video == other.is_video;
+    return content == other.content && content_type == other.content_type;
   }
 };
 
@@ -113,6 +114,11 @@ class AssociatedContentDelegate {
 
   const std::u16string& title() const { return title_; }
   const GURL& url() const { return url_; }
+
+  // The origin the content's tools run in, which tool permissions are keyed
+  // on. Defaults to the origin of |url()|; content whose |url()| is only an
+  // identifier (and so has an opaque origin) must override this.
+  virtual url::Origin GetOrigin() const;
 
   // Whether tools provided by this content are enabled for the LLM. This is
   // live-only state (it relies on the content's WebContents being live) and is

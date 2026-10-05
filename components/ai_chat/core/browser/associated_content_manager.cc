@@ -22,6 +22,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
@@ -66,11 +67,24 @@ void AssociatedContentManager::LoadArchivedContent(
     }
 
     auto* content = content_it->get();
-    bool is_video =
-        (content->content_type == mojom::ContentType::VideoTranscript);
-    owned_content_.push_back(std::make_unique<AssociatedArchiveContent>(
-        content->url, archive_content->content,
-        base::UTF8ToUTF16(content->title), is_video, content->uuid));
+    std::unique_ptr<AssociatedContentDelegate> owned_content;
+    if (content->content_type == mojom::ContentType::Workspace) {
+      owned_content =
+          conversation_->ai_chat_service()
+              ->RestoreWorkspaceAssociatedContentFromUrl(content->url);
+    }
+
+    // Not a workspace, or workspace restoration failed, so create an archive.
+    if (!owned_content) {
+      bool is_video =
+          (content->content_type == mojom::ContentType::VideoTranscript);
+      owned_content = std::make_unique<AssociatedArchiveContent>(
+          content->url, archive_content->content,
+          base::UTF8ToUTF16(content->title), is_video, content->uuid);
+    }
+
+    CHECK(owned_content);
+    owned_content_.push_back(std::move(owned_content));
     AddContent(owned_content_.back().get(), /*notify_updated=*/false);
 
     // Be sure to record the turn that this content is associated with.
@@ -86,7 +100,8 @@ void AssociatedContentManager::CreateArchiveContent(
   DVLOG(1) << __func__;
   auto content_uuid = to_archive->uuid();
   auto text_content = to_archive->cached_page_content().content;
-  auto is_video = to_archive->cached_page_content().is_video;
+  auto is_video = to_archive->cached_page_content().content_type ==
+                  mojom::ContentType::VideoTranscript;
 
   auto it = std::ranges::find(content_delegates_, content_uuid,
                               [](const auto& ptr) { return ptr->uuid(); });
@@ -183,7 +198,7 @@ void AssociatedContentManager::RemoveContent(
   url::Origin origin;
   if (it != content_delegates_.end()) {
     // Captured now, as erasing owned content below may delete |delegate|.
-    origin = url::Origin::Create(delegate->url());
+    origin = delegate->GetOrigin();
     // Let the content know it isn't associated with this conversation
     // anymore.
     content_observations_.RemoveObservation(delegate);
@@ -249,10 +264,9 @@ void AssociatedContentManager::GetToolInfos(std::string_view content_uuid,
     return;
   }
 
-  (*it)->GetContentTools(
-      base::BindOnce(&AssociatedContentManager::OnToolInfosFetched,
-                     weak_ptr_factory_.GetWeakPtr(),
-                     url::Origin::Create((*it)->url()), std::move(callback)));
+  (*it)->GetContentTools(base::BindOnce(
+      &AssociatedContentManager::OnToolInfosFetched,
+      weak_ptr_factory_.GetWeakPtr(), (*it)->GetOrigin(), std::move(callback)));
 }
 
 void AssociatedContentManager::OnToolInfosFetched(
@@ -286,7 +300,7 @@ void AssociatedContentManager::SetToolPermission(
 
   // Each url::Origin::Create() of an opaque origin gets a fresh nonce, so
   // there's no key to record the choice against that could be found again.
-  const url::Origin origin = url::Origin::Create((*it)->url());
+  const url::Origin origin = (*it)->GetOrigin();
   if (origin.opaque()) {
     return;
   }
@@ -328,7 +342,7 @@ void AssociatedContentManager::SetToolPermissionForModelToolName(
   // and announced exactly like one made in the dialog.
   auto delegate_it =
       std::ranges::find_if(content_delegates_, [&](const auto& delegate) {
-        return url::Origin::Create(delegate->url()) == tool_it->origin;
+        return delegate->GetOrigin() == tool_it->origin;
       });
   if (delegate_it == content_delegates_.end()) {
     return;
@@ -431,9 +445,7 @@ AssociatedContentManager::GetAssociatedContent() const {
     content->content_id = delegate->content_id();
     content->url = delegate->url();
     content->title = base::UTF16ToUTF8(delegate->title());
-    content->content_type = cached_page_content.is_video
-                                ? mojom::ContentType::VideoTranscript
-                                : mojom::ContentType::PageContent;
+    content->content_type = cached_page_content.content_type;
 
     const uint32_t content_length =
         cached_page_content.content.length() + kAdditionalCharsPerContent;
@@ -638,7 +650,8 @@ bool AssociatedContentManager::IsVideo() const {
   DVLOG(1) << __func__;
 
   return content_delegates_.size() == 1 &&
-         content_delegates_[0]->cached_page_content().is_video;
+         content_delegates_[0]->cached_page_content().content_type ==
+             mojom::ContentType::VideoTranscript;
 }
 
 size_t AssociatedContentManager::GetContentDelegateCount() const {
@@ -701,8 +714,7 @@ void AssociatedContentManager::UpdateToolsForNewGenerationLoop(
           }
           done.Run();
         },
-        weak_ptr_factory_.GetWeakPtr(), url::Origin::Create(content->url()),
-        barrier));
+        weak_ptr_factory_.GetWeakPtr(), content->GetOrigin(), barrier));
   }
 }
 
@@ -754,7 +766,7 @@ bool AssociatedContentManager::HasLiveContentForOrigin(
     if (owned_it != owned_content_.end()) {
       continue;
     }
-    if (url::Origin::Create(delegate->url()) == origin) {
+    if (delegate->GetOrigin() == origin) {
       return true;
     }
   }
