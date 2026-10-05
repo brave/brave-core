@@ -120,7 +120,6 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
 
   // content::WebContentsObserver overrides
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
-  void PrimaryPageChanged(content::Page& page) override;
   void DidFinishNavigation(content::NavigationHandle* handle) override;
 
   void SetInjectScriptCallback(InjectScriptCallback inject_script_callback);

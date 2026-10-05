@@ -1192,6 +1192,26 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   ASSERT_NO_FATAL_FAILURE(WaitForPsstIconHidden());
 }
 
+// Regression test for https://github.com/brave/brave-browser/issues/59666:
+// the PSST icon must be hidden after the tab navigates to a site with no
+// matching PSST rule. No PSST script runs on such a page, so the navigation
+// itself has to reset the icon.
+IN_PROC_BROWSER_TEST_F(
+    PsstTabWebContentsObserverBrowserTest,
+    LocationBarIconHiddenWhenNavigatingAwayFromApplicableSite) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+  ASSERT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+  ASSERT_NO_FATAL_FAILURE(NavigateAndWaitForPsstIconVisible(url));
+
+  const GURL unrelated_url =
+      GetEmbeddedTestServer().GetURL("c.test", "/title1.html");
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), unrelated_url));
+
+  ASSERT_NO_FATAL_FAILURE(WaitForPsstIconHidden());
+}
+
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        LocationBarIconLeftClickShowsConsentDialog) {
   GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);

@@ -228,11 +228,9 @@ void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
   registry_->CheckIfMatch(
       web_contents()->GetLastCommittedURL(),
       base::BindOnce(&PsstTabWebContentsObserver::InsertUserScript,
+                     page_weak_factory_.GetWeakPtr()),
+      base::BindOnce(&PsstTabWebContentsObserver::PageScopedReset,
                      page_weak_factory_.GetWeakPtr()));
-}
-
-void PsstTabWebContentsObserver::PrimaryPageChanged(content::Page& page) {
-  PageScopedReset();
 }
 
 void PsstTabWebContentsObserver::InsertUserScript(
