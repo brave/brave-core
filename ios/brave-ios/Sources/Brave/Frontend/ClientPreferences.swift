@@ -28,7 +28,7 @@ enum BackgroundMediaType: Int, CaseIterable {
   }
 }
 
-public enum TopsitesMode: Int, CaseIterable, Identifiable {
+public enum TopSitesMode: Int, CaseIterable, Identifiable {
   case none
   case mostVisited
   case favourite
@@ -362,7 +362,7 @@ extension Preferences {
     ///
     /// Defaults to favourites so the mode matches what the NTP renders for users who never picked
     /// one. Most visited is an explicit choice until the NTP reads the mode itself.
-    public static let topsitesMode = Option<TopsitesMode>(
+    public static let topSitesMode = Option<TopSitesMode>(
       key: "newtabpage.topsites-mode",
       default: .favourite
     )

@@ -140,25 +140,4 @@ class TopSitesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
     )
     return UIEdgeInsets(top: 0, left: insets.left, bottom: 0, right: insets.right)
   }
-
-  private func updateMostVisitedObservation() {
-    if Preferences.NewTabPage.topsitesMode.value == .mostVisited, !isPrivateBrowsing {
-      guard mostVisitedObservation == nil else { return }
-      mostVisitedObservation = mostVisitedSites?.addMostVisitedURLsObserver(self, maxNumSites: 20)
-      mostVisitedSites?.enableTopSitesOnlyTileTypes()
-    } else {
-      mostVisitedObservation?.invalidate()
-      mostVisitedObservation = nil
-      mostVisitedTiles = []
-    }
-  }
-}
-
-extension TopsitesOverflowSectionProvider: NSFetchedResultsControllerDelegate {
-  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    try? frc.performFetch()
-    // Notify synchronously so the collection view is reloaded before anything else can run and
-    // observe item counts that differ from what the collection view currently has cached.
-    sectionDidChange?()
-  }
 }

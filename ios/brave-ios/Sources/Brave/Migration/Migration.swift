@@ -165,10 +165,10 @@ public class BraveProfileMigrations {
   private func migrateShowNewFavoritesPreference() {
     Preferences.NewTabPage.showNewTabFavourites.migrate { value in
       if value {
-        Preferences.NewTabPage.topsitesMode.value =
-          Favorite.hasFavorites ? TopsitesMode.favourite : TopsitesMode.mostVisited
+        Preferences.NewTabPage.topSitesMode.value =
+          Favorite.hasFavorites ? TopSitesMode.favourite : TopSitesMode.mostVisited
       } else {
-        Preferences.NewTabPage.topsitesMode.value = TopsitesMode.none
+        Preferences.NewTabPage.topSitesMode.value = TopSitesMode.none
       }
     }
   }

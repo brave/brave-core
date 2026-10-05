@@ -195,7 +195,7 @@ class NewTabPageViewController: UIViewController {
     super.init(nibName: nil, bundle: nil)
 
     Preferences.NewTabPage.showNewTabPrivacyHub.observe(from: self)
-    Preferences.NewTabPage.topsitesMode.observe(from: self)
+    Preferences.NewTabPage.topSitesMode.observe(from: self)
 
     let topSitesTileSource = TopSitesTileSource(
       mostVisitedSites: mostVisitedSites,
@@ -1072,7 +1072,7 @@ class NewTabPageViewController: UIViewController {
 extension NewTabPageViewController: PreferencesObserver {
   func preferencesDidChange(for key: String) {
     if key == Preferences.NewTabPage.showNewTabPrivacyHub.key
-      || key == Preferences.NewTabPage.topsitesMode.key
+      || key == Preferences.NewTabPage.topSitesMode.key
     {
       collectionView.reloadData()
       return
