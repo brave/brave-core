@@ -136,6 +136,17 @@ constexpr ResourceTableEntry kResourceTable[] = {
      &GetAntiTargetingResourceState,
      &GetAntiTargetingResourceManifestVersion}};
 
+bool HasApplicableCatalogPermission() {
+  if (!IsNotificationAdsEnabled()) {
+    // Don't report a benign "catalog does not exist" permission failure
+    // when notification ads are disabled, as the catalog is never fetched
+    // in that case.
+    return true;
+  }
+
+  return HasCatalogPermission();
+}
+
 struct PermissionRuleTableEntry final {
   DiagnosticEntryType type;
   const char* name;
@@ -144,7 +155,7 @@ struct PermissionRuleTableEntry final {
 
 constexpr PermissionRuleTableEntry kPermissionRuleTable[] = {
     {DiagnosticEntryType::kCatalogPermission, "Catalog permission",
-     &HasCatalogPermission},
+     &HasApplicableCatalogPermission},
     {DiagnosticEntryType::kNetworkConnectionPermission,
      "Network connection permission", &HasNetworkConnectionPermission},
     {DiagnosticEntryType::kBrowserIsActivePermission,
