@@ -27,6 +27,7 @@ namespace ai_chat {
 class CodeExecutionTool;
 class ConversationSearchTool;
 class HistorySearchTool;
+class MemorySemanticSearchTool;
 class TabManagementTool;
 
 // Implementation of ToolProvider that provides browser-specific
@@ -48,6 +49,7 @@ class BrowserToolProvider : public ToolProvider {
   HistorySearchTool* GetHistorySearchToolForTesting();
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   ConversationSearchTool* GetConversationSearchToolForTesting();
+  MemorySemanticSearchTool* GetMemorySemanticSearchToolForTesting();
 #endif
 
  private:
@@ -58,6 +60,7 @@ class BrowserToolProvider : public ToolProvider {
   std::unique_ptr<HistorySearchTool> history_search_tool_;
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   std::unique_ptr<ConversationSearchTool> conversation_search_tool_;
+  std::unique_ptr<MemorySemanticSearchTool> memory_semantic_search_tool_;
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
   std::unique_ptr<TabManagementTool> tab_management_tool_;

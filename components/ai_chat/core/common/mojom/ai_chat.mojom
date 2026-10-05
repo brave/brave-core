@@ -22,6 +22,7 @@ const string kMemoryStorageToolName = "memory_storage_tool";
 const string kCodeExecutionToolName = "code_execution_tool";
 const string kSemanticHistorySearchToolName = "semantic_history_search";
 const string kConversationSearchToolName = "conversation_search";
+const string kMemorySemanticSearchToolName = "memory_semantic_search";
 
 [EnableIf=enable_ai_chat_tab_management_tool]
 const string kTabManagementToolName = "tab_management";

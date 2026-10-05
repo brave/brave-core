@@ -30,6 +30,7 @@
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/browser/ai_chat/ai_chat_embeddings_service_factory.h"
 #include "brave/browser/ai_chat/tools/conversation_search_tool.h"
+#include "brave/browser/ai_chat/tools/memory_semantic_search_tool.h"
 #include "brave/components/ai_chat/core/browser/embeddings/ai_chat_embeddings_service.h"
 #endif
 
@@ -55,6 +56,9 @@ std::vector<base::WeakPtr<Tool>> BrowserToolProvider::GetTools() {
   if (conversation_search_tool_) {
     tool_ptrs.push_back(conversation_search_tool_->GetWeakPtr());
   }
+  if (memory_semantic_search_tool_) {
+    tool_ptrs.push_back(memory_semantic_search_tool_->GetWeakPtr());
+  }
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
@@ -77,6 +81,12 @@ BrowserToolProvider::GetConversationSearchToolForTesting() {
   CHECK_IS_TEST();
   return conversation_search_tool_.get();
 }
+
+MemorySemanticSearchTool*
+BrowserToolProvider::GetMemorySemanticSearchToolForTesting() {
+  CHECK_IS_TEST();
+  return memory_semantic_search_tool_.get();
+}
 #endif
 
 void BrowserToolProvider::CreateTools(
@@ -94,6 +104,8 @@ void BrowserToolProvider::CreateTools(
               browser_context)) {
     conversation_search_tool_ = std::make_unique<ConversationSearchTool>(
         embeddings_service->GetWeakPtr(), conversation_uuid_);
+    memory_semantic_search_tool_ = std::make_unique<MemorySemanticSearchTool>(
+        embeddings_service->GetWeakPtr());
   }
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
