@@ -75,7 +75,7 @@ class TopSitesViewController: UIViewController {
       let traitCollection = environment.traitCollection
       let section = self.availableSections[sectionIndex]
       switch section {
-      case .topsites:
+      case .topSites:
         return self.favoritesLayoutSection(
           contentSizeCategory: traitCollection.preferredContentSizeCategory
         )
@@ -124,7 +124,7 @@ class TopSitesViewController: UIViewController {
     var sections = [TopSitesSection]()
 
     if !tiles.isEmpty {
-      sections.append(.topsites)
+      sections.append(.topSites)
     }
 
     if !privateBrowsingManager.isPrivateBrowsing
@@ -447,7 +447,7 @@ extension TopSitesViewController: UICollectionViewDelegateFlowLayout {
     switch section {
     case .recentSearchesOptIn:
       break
-    case .topsites:
+    case .topSites:
       guard let tile = tiles[safe: indexPath.item] else {
         return
       }
@@ -534,7 +534,7 @@ extension TopSitesViewController: PreferencesObserver {
 
 extension TopSitesViewController: NSFetchedResultsControllerDelegate {
   private var favoritesSectionExists: Bool {
-    availableSections.contains(.topsites)
+    availableSections.contains(.topSites)
   }
 
   private var recentSearchesSectionExists: Bool {
@@ -553,8 +553,8 @@ extension TopSitesViewController: NSFetchedResultsControllerDelegate {
 
     if favoritesSectionExists {
       snapshot.appendItems(
-        tiles.map { .topsites(TopSitesTileDiffable($0)) },
-        toSection: .topsites
+        tiles.map { .topSites(TopSitesTileDiffable($0)) },
+        toSection: .topSites
       )
     }
 
@@ -596,8 +596,8 @@ extension TopSitesViewController: NSFetchedResultsControllerDelegate {
       if favoritesSectionExists {
         // New snapshot is created, items from the other frc must be added to it.
         newSnapshot.appendItems(
-          currentSnapshot.itemIdentifiers(inSection: .topsites),
-          toSection: .topsites
+          currentSnapshot.itemIdentifiers(inSection: .topSites),
+          toSection: .topSites
         )
       }
 
@@ -631,7 +631,7 @@ extension TopSitesViewController: NSFetchedResultsControllerDelegate {
   ) -> UICollectionViewCell? {
 
     switch wrapper {
-    case .topsites(let topsitesWrapper):
+    case .topSites(let topsitesWrapper):
       guard let tile = tiles.first(where: { $0.id == topsitesWrapper.id }) else { return nil }
 
       let cell = collectionView.dequeueReusableCell(for: indexPath) as TopSitesCollectionViewCell
@@ -759,7 +759,7 @@ extension TopSitesViewController: NSFetchedResultsControllerDelegate {
 
     if kind == UICollectionView.elementKindSectionHeader {
       switch section {
-      case .topsites:
+      case .topSites:
         if let header = collectionView.dequeueReusableSupplementaryView(
           ofKind: kind,
           withReuseIdentifier: "fav_header",

@@ -22,7 +22,7 @@ extension TopSitesViewController: UICollectionViewDragDelegate, UICollectionView
     }
 
     switch section {
-    case .topsites:
+    case .topSites:
       // Only favorites can be reordered, and only when there is more than one.
       guard tileSource.isReorderingEnabled,
         let tile = tiles[safe: indexPath.item],
@@ -94,7 +94,7 @@ extension TopSitesViewController: UICollectionViewDragDelegate, UICollectionView
   ) -> UICollectionViewDropProposal {
     guard tileSource.isReorderingEnabled,
       let destinationIndexPath,
-      availableSections[safe: destinationIndexPath.section] == .topsites
+      availableSections[safe: destinationIndexPath.section] == .topSites
     else {
       return .init(operation: .cancel)
     }

@@ -24,7 +24,7 @@ extension TopSitesViewController {
     }
 
     switch section {
-    case .topsites:
+    case .topSites:
       guard let tile = tiles[safe: indexPath.item] else { return nil }
       return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) {
         _ -> UIMenu? in

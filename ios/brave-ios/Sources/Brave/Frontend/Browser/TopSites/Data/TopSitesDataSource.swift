@@ -32,7 +32,7 @@ struct TopSitesTileDiffable: Hashable {
 /// TopSites VC has two fetch result controllers to pull from.
 /// This enum stores both models.
 enum TopSitesDataWrapper: Hashable {
-  case topsites(TopSitesTileDiffable)
+  case topSites(TopSitesTileDiffable)
 
   // Recent searches are static, we do not need any wrapper class for them.
   case recentSearch(NSManagedObjectID)
@@ -42,7 +42,7 @@ enum TopSitesDataWrapper: Hashable {
 
 /// TopSites VC sections
 enum TopSitesSection: Int, CaseIterable {
-  case topsites
+  case topSites
   case recentSearches
   case recentSearchesOptIn
 }
