@@ -369,11 +369,6 @@
         <item name="android:layout_marginStart">8dp</item>
     </style>
 
-    <!-- Brave Leo preferences -->
-    <style name="BraveLeoResetTextColor" parent="Widget.AppCompat.TextView">
-        <item name="android:textColor">@color/leo_reset_text_color</item>
-    </style>
-
     <style name="TimerBottomSheetDialogTheme"
            parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/TimerBottomSheetDialogStyle</item>
@@ -451,11 +446,6 @@
     <style name="TextAppearance.Brave.PreferenceTitle.DestructiveAction"
            parent="TextAppearance.TextLarge.Primary">
         <item name="android:textColor">@color/systemfeedback_error_text</item>
-    </style>
-
-    <style name="TextAppearance.Brave.PreferenceTitle.WalletDestructiveAction"
-           parent="TextAppearance.TextLarge.Primary">
-        <item name="android:textColor">@color/wallet_error_text_color</item>
     </style>
 
     <style name="LargeSemibold">
