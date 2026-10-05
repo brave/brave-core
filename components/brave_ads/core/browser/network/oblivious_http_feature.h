@@ -20,7 +20,7 @@ BASE_DECLARE_FEATURE(kAdsObliviousHttpFeature);
 // Controls whether Oblivious HTTP (OHTTP) is enabled for requests. When
 // enabled, eligible network requests will be sent using OHTTP.
 inline constexpr base::FeatureParam<bool> kShouldSupportOhttp{
-    &kAdsObliviousHttpFeature, "should_support", true};
+    &kAdsObliviousHttpFeature, "should_support", false};
 
 // Because OHTTP requests are routed through a relay and gateway, overall
 // latency may increase. This timeout prevents requests from hanging on slow or
