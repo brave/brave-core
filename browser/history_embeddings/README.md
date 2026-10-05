@@ -42,6 +42,9 @@ Two prefs gate the feature, via the `IsHistoryEmbeddings*` overrides in
   toggle in brave://settings/privacy; gates
   `IsHistoryEmbeddingsEnabledForProfile()`.
 
+The same toggle turns on the index of Leo conversations and memories (see
+[`components/ai_chat/core/browser/embeddings`](../../components/ai_chat/core/browser/embeddings/README.md)).
+
 Whenever either pref leaves the feature unavailable, the Tab Focus page-content
 opt-in (`kBraveAIChatTabOrganizationSendPageContent`) is cleared, so turning
 Semantic History Search back on needs a fresh opt-in rather than silently
