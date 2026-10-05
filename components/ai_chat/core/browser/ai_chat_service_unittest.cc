@@ -258,6 +258,25 @@ class MockAIChatDatabase : public AIChatDatabase {
               (override));
 };
 
+class MockAIChatServiceObserver : public AIChatService::Observer {
+ public:
+  MOCK_METHOD(void, OnStorageReady, (), (override));
+  MOCK_METHOD(void,
+              OnConversationEntryAdded,
+              (const std::string&, const mojom::ConversationTurn&),
+              (override));
+  MOCK_METHOD(void,
+              OnConversationEntryRemoved,
+              (const std::string&, const std::string&),
+              (override));
+  MOCK_METHOD(void,
+              OnConversationTitleChanged,
+              (const std::string&, const std::string&),
+              (override));
+  MOCK_METHOD(void, OnConversationDeleted, (const std::string&), (override));
+  MOCK_METHOD(void, OnAllConversationsDeleted, (), (override));
+};
+
 }  // namespace
 
 class AIChatServiceUnitTest : public testing::Test,
@@ -386,6 +405,8 @@ class AIChatServiceUnitTest : public testing::Test,
     task_environment_.AdvanceClock(base::Seconds(5));
     task_environment_.RunUntilIdle();
   }
+
+  bool HasDatabase() { return !ai_chat_service_->ai_chat_db_.is_null(); }
 
   // Waits for asynchronous storage initialization to create the database, then
   // flushes the database sequence so the sync bridge (re)install that
@@ -1135,6 +1156,104 @@ TEST_P(AIChatServiceUnitTest, DeleteConversations_TimeRange) {
   // Verify deleted from database
   ResetService();
   ExpectConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 1 : 0);
+}
+
+TEST_P(AIChatServiceUnitTest, Observer_ReportsPersistedChanges) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  ASSERT_TRUE(base::test::RunUntil([&] { return HasDatabase(); }));
+  testing::StrictMock<MockAIChatServiceObserver> observer;
+  base::ScopedObservation<AIChatService, AIChatService::Observer> observation(
+      &observer);
+  observation.Observe(ai_chat_service_.get());
+
+  ConversationHandler* conversation = CreateConversation();
+  auto client = CreateConversationClient(conversation);
+  const std::string uuid = conversation->get_conversation_uuid();
+
+  // One query and one response.
+  EXPECT_CALL(observer, OnConversationEntryAdded(uuid, _)).Times(2);
+  conversation->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  EXPECT_CALL(observer, OnConversationTitleChanged(uuid, "New title"));
+  ai_chat_service_->RenameConversation(uuid, "New title");
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  const std::string entry_uuid =
+      conversation->GetConversationHistory().back()->uuid.value();
+  EXPECT_CALL(observer, OnConversationEntryRemoved(uuid, entry_uuid));
+  ai_chat_service_->OnConversationEntryRemoved(conversation, entry_uuid);
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  EXPECT_CALL(observer, OnConversationDeleted(uuid));
+  ai_chat_service_->DeleteConversation(uuid);
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  EXPECT_CALL(observer, OnAllConversationsDeleted());
+  ai_chat_service_->DeleteConversations();
+}
+
+TEST_P(AIChatServiceUnitTest, Observer_IgnoresTemporaryConversations) {
+  if (IsAIChatHistoryEnabled()) {
+    ASSERT_TRUE(base::test::RunUntil([&] { return HasDatabase(); }));
+  }
+  // Strict, so that any notification fails the test.
+  testing::StrictMock<MockAIChatServiceObserver> observer;
+  base::ScopedObservation<AIChatService, AIChatService::Observer> observation(
+      &observer);
+  observation.Observe(ai_chat_service_.get());
+
+  ConversationHandler* conversation = CreateConversation();
+  auto client = CreateConversationClient(conversation);
+  conversation->SetTemporary(true);
+  const std::string uuid = conversation->get_conversation_uuid();
+
+  conversation->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+  ai_chat_service_->RenameConversation(uuid, "New title");
+  ai_chat_service_->OnConversationEntryRemoved(
+      conversation,
+      conversation->GetConversationHistory().back()->uuid.value());
+  ai_chat_service_->DeleteConversation(uuid);
+}
+
+TEST_P(AIChatServiceUnitTest, Observer_ReportsStorageDisabled) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  ASSERT_TRUE(base::test::RunUntil([&] { return HasDatabase(); }));
+  testing::StrictMock<MockAIChatServiceObserver> observer;
+  base::ScopedObservation<AIChatService, AIChatService::Observer> observation(
+      &observer);
+  observation.Observe(ai_chat_service_.get());
+
+  EXPECT_CALL(observer, OnAllConversationsDeleted());
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
+}
+
+TEST_P(AIChatServiceUnitTest, Observer_ReportsStorageReady) {
+  if (!IsAIChatHistoryEnabled()) {
+    EXPECT_FALSE(ai_chat_service_->IsStorageReady());
+    return;
+  }
+  ASSERT_TRUE(base::test::RunUntil([&] { return HasDatabase(); }));
+  EXPECT_TRUE(ai_chat_service_->IsStorageReady());
+  testing::StrictMock<MockAIChatServiceObserver> observer;
+  base::ScopedObservation<AIChatService, AIChatService::Observer> observation(
+      &observer);
+  observation.Observe(ai_chat_service_.get());
+
+  EXPECT_CALL(observer, OnAllConversationsDeleted());
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
+  EXPECT_FALSE(ai_chat_service_->IsStorageReady());
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(observer, OnStorageReady()).WillOnce([&] { run_loop.Quit(); });
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
+  run_loop.Run();
+  EXPECT_TRUE(ai_chat_service_->IsStorageReady());
 }
 
 TEST_P(

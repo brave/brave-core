@@ -218,6 +218,18 @@ void AIChatService::Bind(mojo::PendingReceiver<mojom::Service> receiver) {
   receivers_.Add(this, std::move(receiver));
 }
 
+void AIChatService::AddObserver(Observer* observer) {
+  observers_.AddObserver(observer);
+}
+
+void AIChatService::RemoveObserver(Observer* observer) {
+  observers_.RemoveObserver(observer);
+}
+
+bool AIChatService::IsStorageReady() const {
+  return !ai_chat_db_.is_null();
+}
+
 void AIChatService::Shutdown() {
   // Disconnect remotes
   receivers_.ClearWithReason(0, "Shutting down");
@@ -463,6 +475,7 @@ void AIChatService::DeleteConversations(std::optional<base::Time> begin_time,
     if (ai_chat_db_) {
       ai_chat_db_.AsyncCall(base::IgnoreResult(&AIChatDatabase::DeleteAllData));
       ReloadConversations();
+      observers_.Notify(&Observer::OnAllConversationsDeleted);
     }
     if (ai_chat_metrics_ != nullptr) {
       ai_chat_metrics_->RecordConversationsCleared();
@@ -590,6 +603,7 @@ void AIChatService::MaybeInitStorage() {
       ai_chat_db.AsyncCall(&AIChatDatabase::DeleteAllData)
           .Then(base::BindOnce(&AIChatService::OnDataDeletedForDisabledStorage,
                                weak_ptr_factory_.GetWeakPtr()));
+      observers_.Notify(&Observer::OnAllConversationsDeleted);
     }
   }
   OnStateChanged();
@@ -617,6 +631,7 @@ void AIChatService::OnOsCryptAsyncReady(
     ai_chat_db_.PostTaskWithThisObject(
         base::BindOnce(&AIChatSyncBackend::SetDatabase, sync_backend_));
   }
+  observers_.Notify(&Observer::OnStorageReady);
 }
 
 void AIChatService::OnDataDeletedForDisabledStorage(bool success) {
@@ -876,6 +891,7 @@ void AIChatService::DeleteConversation(const std::string& id) {
     ai_chat_db_
         .AsyncCall(base::IgnoreResult(&AIChatDatabase::DeleteConversation))
         .WithArgs(id);
+    observers_.Notify(&Observer::OnConversationDeleted, id);
   }
 }
 
@@ -1242,6 +1258,8 @@ void AIChatService::HandleFirstEntry(
               base::BindOnce(&AIChatSyncBackend::OnConversationEntryAdded,
                              sync_backend_, conversation->uuid, *entry->uuid));
     }
+    observers_.Notify(&Observer::OnConversationEntryAdded, conversation->uuid,
+                      *entry);
   }
   // Record metrics
   if (ai_chat_metrics_ != nullptr) {
@@ -1298,6 +1316,8 @@ void AIChatService::HandleNewEntry(
               base::BindOnce(&AIChatSyncBackend::OnConversationModified,
                              sync_backend_, handler->get_conversation_uuid()));
     }
+    observers_.Notify(&Observer::OnConversationEntryAdded,
+                      handler->get_conversation_uuid(), *entry);
   }
 
   // Record metrics
@@ -1321,6 +1341,8 @@ void AIChatService::OnConversationEntryRemoved(ConversationHandler* handler,
               base::BindOnce(&AIChatSyncBackend::OnConversationEntryDeleted,
                              sync_backend_, entry_uuid));
     }
+    observers_.Notify(&Observer::OnConversationEntryRemoved,
+                      handler->get_conversation_uuid(), entry_uuid);
   }
 }
 
@@ -1379,6 +1401,8 @@ void AIChatService::OnConversationTitleChanged(
                     base::BindOnce(&AIChatSyncBackend::OnConversationModified,
                                    sync_backend_, conversation_uuid));
     }
+    observers_.Notify(&Observer::OnConversationTitleChanged, conversation_uuid,
+                      new_title);
   }
 }
 

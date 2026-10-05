@@ -23,6 +23,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
 #include "base/scoped_multi_source_observation.h"
 #include "base/threading/sequence_bound.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
@@ -86,6 +87,32 @@ class AIChatService : public KeyedService,
   using GetFocusTabsCallback = base::OnceCallback<void(
       base::expected<std::vector<std::string>, mojom::APIError>)>;
 
+  // Notified of the conversation changes that are persisted, so that data
+  // derived from stored conversations can be kept in step. Temporary
+  // conversations are never persisted, so they are never reported. An edited
+  // entry is reported as removed and then added again, with its `edits`.
+  class Observer : public base::CheckedObserver {
+   public:
+    // Stored conversations can be read. Reported each time storage becomes
+    // available, which it never does while storage is turned off.
+    virtual void OnStorageReady() {}
+    // `entry` is complete: an assistant response is only reported once its
+    // generation has finished.
+    virtual void OnConversationEntryAdded(
+        const std::string& conversation_uuid,
+        const mojom::ConversationTurn& entry) {}
+    virtual void OnConversationEntryRemoved(
+        const std::string& conversation_uuid,
+        const std::string& entry_uuid) {}
+    virtual void OnConversationTitleChanged(
+        const std::string& conversation_uuid,
+        const std::string& title) {}
+    virtual void OnConversationDeleted(const std::string& conversation_uuid) {}
+    // Every stored conversation was deleted, either on request or because
+    // storage was turned off.
+    virtual void OnAllConversationsDeleted() {}
+  };
+
   AIChatService(
       ModelService* model_service,
       TabTrackerService* tab_tracker_service,
@@ -106,6 +133,12 @@ class AIChatService : public KeyedService,
 
   mojo::PendingRemote<mojom::Service> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::Service> receiver);
+
+  void AddObserver(Observer* observer);
+  void RemoveObserver(Observer* observer);
+
+  // Whether stored conversations can be read; see Observer::OnStorageReady().
+  bool IsStorageReady() const;
 
   // KeyedService
   void Shutdown() override;
@@ -487,6 +520,7 @@ class AIChatService : public KeyedService,
   base::ScopedMultiSourceObservation<ConversationHandler,
                                      ConversationHandler::Observer>
       conversation_observations_{this};
+  base::ObserverList<Observer> observers_;
   mojo::ReceiverSet<mojom::Service> receivers_;
   mojo::RemoteSet<mojom::ServiceObserver> observer_remotes_;
 
