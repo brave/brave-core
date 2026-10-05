@@ -12,6 +12,9 @@
         android:order="1"
         android:icon="@drawable/ic_social_brave_release_favicon_fullheight_color"
         android:title="@string/settings_brave_account_row_title"/>
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:key="email_aliases"
+        android:title="@string/email_aliases_settings_title_android"/>
     <PreferenceCategory
         android:key="features_section"
         android:order="2"
