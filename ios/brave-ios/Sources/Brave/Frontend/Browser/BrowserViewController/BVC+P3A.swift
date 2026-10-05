@@ -368,9 +368,10 @@ extension BrowserViewController {
       case ntpAndPush = 3
     }
     var answer: Answer = .none
-    if rewards.ads.isEnabled && Preferences.NewTabPage.backgroundMediaType.isSponsored {
+    if rewards.ads.isNotificationsEnabled && Preferences.NewTabPage.backgroundMediaType.isSponsored
+    {
       answer = .ntpAndPush
-    } else if rewards.ads.isEnabled {
+    } else if rewards.ads.isNotificationsEnabled {
       answer = .pushOnly
     } else if Preferences.NewTabPage.backgroundMediaType.isSponsored {
       answer = .ntpOnly

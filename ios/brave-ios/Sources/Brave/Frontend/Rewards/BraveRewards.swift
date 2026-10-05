@@ -36,7 +36,7 @@ public class BraveRewards: PreferencesObserver {
 
     ads = BraveAds(stateStoragePath: configuration.storageURL.appendingPathComponent("ads").path)
 
-    if Preferences.Rewards.adsEnabledTimestamp.value == nil, ads.isEnabled {
+    if Preferences.Rewards.adsEnabledTimestamp.value == nil, ads.isNotificationsEnabled {
       Preferences.Rewards.adsEnabledTimestamp.value = Date()
     }
 
@@ -68,7 +68,7 @@ public class BraveRewards: PreferencesObserver {
     }
     rewardsAPI?.initializeRewardsService { [weak self] in
       guard let self = self, let rewardsAPI = self.rewardsAPI else { return }
-      if self.ads.isEnabled {
+      if self.ads.isNotificationsEnabled {
         self.fetchWalletAndInitializeAds()
       }
       self.rewardsServiceDidStart?(rewardsAPI)
@@ -96,14 +96,14 @@ public class BraveRewards: PreferencesObserver {
           )
         }
         if let toggleAds {
-          self.ads.isEnabled = toggleAds
+          self.ads.isNotificationsEnabled = toggleAds
         }
         self.isTurningOnRewards = false
         return
       }
       self.ads.initialize(walletInfo: walletInfo) { success in
         if success, let toggleAds {
-          self.ads.isEnabled = toggleAds
+          self.ads.isNotificationsEnabled = toggleAds
         }
         self.isTurningOnRewards = false
       }
@@ -115,10 +115,10 @@ public class BraveRewards: PreferencesObserver {
   /// Whether or not rewards is enabled
   @objc public var isEnabled: Bool {
     get {
-      ads.isEnabled
+      ads.isNotificationsEnabled
     }
     set {
-      let wasEnabled = ads.isEnabled
+      let wasEnabled = ads.isNotificationsEnabled
       if !wasEnabled && newValue {
         Preferences.Rewards.adsEnabledTimestamp.value = Date()
       } else if wasEnabled && !newValue {
@@ -127,14 +127,14 @@ public class BraveRewards: PreferencesObserver {
       if newValue == false && rewardsAPI == nil {
         // The rewards service isn't set up, no need to start it and create a wallet if we're just
         // disabling push ads
-        ads.isEnabled = newValue
+        ads.isNotificationsEnabled = newValue
         return
       }
       createWalletIfNeeded { [weak self] in
         guard let self = self else { return }
         Preferences.Rewards.rewardsToggledOnce.value = true
         if !newValue {
-          self.ads.isEnabled = newValue
+          self.ads.isNotificationsEnabled = newValue
           self.isTurningOnRewards = false
         } else {
           self.fetchWalletAndInitializeAds(toggleAds: true)
@@ -172,7 +172,7 @@ public class BraveRewards: PreferencesObserver {
       try? await AsyncFileManager.default.removeItem(
         at: configuration.storageURL.appendingPathComponent("ads")
       )
-      if ads.isEnabled {
+      if ads.isNotificationsEnabled {
         await withCheckedContinuation { continuation in
           ads.initialize { _ in
             continuation.resume()

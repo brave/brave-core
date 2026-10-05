@@ -234,9 +234,9 @@ TEST_F(BraveAdsTest,
       profile_prefs()->HasPrefPath(brave_ads::prefs::kSponsoredEnabled));
 }
 
-TEST_F(BraveAdsTest, IsEnabledDefaultsToFalse) {
+TEST_F(BraveAdsTest, IsNotificationsEnabledDefaultsToFalse) {
   // Act & Assert
-  EXPECT_FALSE([ads_ isEnabled]);
+  EXPECT_FALSE([ads_ isNotificationsEnabled]);
 }
 
 TEST_F(BraveAdsTest, SetEnabledTogglesRewardsAndNotificationsPrefsWhenTrue) {
