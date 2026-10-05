@@ -4,12 +4,13 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveUI
+import Data
 import Shared
 import UIKit
 
 // MARK: - ContextMenu
 
-extension FavoritesViewController {
+extension TopSitesViewController {
   func collectionView(
     _ collectionView: UICollectionView,
     contextMenuConfigurationForItemsAt indexPaths: [IndexPath],
@@ -23,8 +24,8 @@ extension FavoritesViewController {
     }
 
     switch section {
-    case .favorites:
-      guard let favorite = favoritesFRC.fetchedObjects?[indexPath.item] else { return nil }
+    case .topsites:
+      guard let tile = tiles[safe: indexPath.item] else { return nil }
       return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) {
         _ -> UIMenu? in
         let openInNewTab = UIAction(
@@ -32,25 +33,12 @@ extension FavoritesViewController {
           handler: UIAction.deferredActionHandler { _ in
             self.topSiteAction(
               .opened(
-                url: favorite.url?.asURL,
-                isFavorite: true,
+                url: tile.url,
+                isFavorite: tile.isFavorite,
                 inNewTab: true,
                 switchingToPrivateMode: false
               )
             )
-          }
-        )
-        let edit = UIAction(
-          title: Strings.editFavorite,
-          handler: UIAction.deferredActionHandler { _ in
-            self.topSiteAction(.edited(favorite: favorite))
-          }
-        )
-        let delete = UIAction(
-          title: Strings.removeFavorite,
-          attributes: .destructive,
-          handler: UIAction.deferredActionHandler { _ in
-            favorite.delete()
           }
         )
 
@@ -61,8 +49,8 @@ extension FavoritesViewController {
             handler: UIAction.deferredActionHandler { _ in
               self.topSiteAction(
                 .opened(
-                  url: favorite.url?.asURL,
-                  isFavorite: true,
+                  url: tile.url,
+                  isFavorite: tile.isFavorite,
                   inNewTab: true,
                   switchingToPrivateMode: true
                 )
@@ -72,12 +60,44 @@ extension FavoritesViewController {
           urlChildren.append(openInNewPrivateTab)
         }
 
-        let urlMenu = UIMenu(title: "", options: .displayInline, children: urlChildren)
-        let favMenu = UIMenu(title: "", options: .displayInline, children: [edit, delete])
+        let modeChildren: [UIAction]
+        switch tile.id {
+        case .favorite(let objectID):
+          modeChildren = [
+            UIAction(
+              title: Strings.editFavorite,
+              handler: UIAction.deferredActionHandler { _ in
+                guard let favorite = Favorite.get(with: objectID) else { return }
+                self.topSiteAction(.edited(favorite: favorite))
+              }
+            ),
+            UIAction(
+              title: Strings.removeFavorite,
+              attributes: .destructive,
+              handler: UIAction.deferredActionHandler { _ in
+                Favorite.get(with: objectID)?.delete()
+              }
+            ),
+          ]
+        case .mostVisited:
+          modeChildren = [
+            UIAction(
+              title: Strings.excludeMostVisitedSite,
+              attributes: .destructive,
+              handler: UIAction.deferredActionHandler { _ in
+                self.topSiteAction(.excluded(tile: tile))
+              }
+            )
+          ]
+        }
+
         return UIMenu(
-          title: favorite.title ?? favorite.url ?? "",
+          title: tile.title ?? tile.url.absoluteString,
           identifier: nil,
-          children: [urlMenu, favMenu]
+          children: [
+            UIMenu(title: "", options: .displayInline, children: urlChildren),
+            UIMenu(title: "", options: .displayInline, children: modeChildren),
+          ]
         )
       }
     case .recentSearches, .recentSearchesOptIn:
@@ -91,7 +111,7 @@ extension FavoritesViewController {
     contextMenuConfiguration configuration: UIContextMenuConfiguration,
     highlightPreviewForItemAt indexPath: IndexPath
   ) -> UITargetedPreview? {
-    guard let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCollectionViewCell
+    guard let cell = collectionView.cellForItem(at: indexPath) as? TopSitesCollectionViewCell
     else {
       return nil
     }
@@ -103,7 +123,7 @@ extension FavoritesViewController {
     contextMenuConfiguration configuration: UIContextMenuConfiguration,
     dismissalPreviewForItemAt indexPath: IndexPath
   ) -> UITargetedPreview? {
-    guard let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCollectionViewCell
+    guard let cell = collectionView.cellForItem(at: indexPath) as? TopSitesCollectionViewCell
     else {
       return nil
     }

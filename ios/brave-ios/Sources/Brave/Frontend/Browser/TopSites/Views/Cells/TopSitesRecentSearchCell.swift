@@ -8,7 +8,7 @@ import Foundation
 import SnapKit
 import UIKit
 
-class FavoritesRecentSearchCell: UICollectionViewCell, CollectionViewReusable {
+class TopSitesRecentSearchCell: UICollectionViewCell, CollectionViewReusable {
   static let identifier = "RecentSearchCell"
   var openButtonAction: (() -> Void)?
 

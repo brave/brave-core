@@ -7,12 +7,13 @@ import BraveUI
 import Combine
 import CoreData
 import Data
+import Observation
 import Preferences
 import Shared
 import UIKit
 import os.log
 
-class FavoritesCompositionalLayout: UICollectionViewCompositionalLayout {
+class TopSitesCompositionalLayout: UICollectionViewCompositionalLayout {
   let browserColors: BrowserColors
 
   init(
@@ -22,7 +23,7 @@ class FavoritesCompositionalLayout: UICollectionViewCompositionalLayout {
   ) {
     self.browserColors = browserColors
     super.init(sectionProvider: sectionProvider, configuration: configuration)
-    self.register(FavoritesSectionBackgroundView.self, forDecorationViewOfKind: "background")
+    self.register(TopSitesSectionBackgroundView.self, forDecorationViewOfKind: "background")
   }
 
   @available(*, unavailable)
@@ -41,7 +42,7 @@ class FavoritesCompositionalLayout: UICollectionViewCompositionalLayout {
       if attr.representedElementKind == "background",
         let indexPath = attr.indexPath as IndexPath?
       {
-        let customAttr = FavoritesSectionBackgroundLayoutAttribute(
+        let customAttr = TopSitesSectionBackgroundLayoutAttribute(
           forDecorationViewOfKind: "background",
           with: indexPath
         )
@@ -61,20 +62,20 @@ class FavoritesCompositionalLayout: UICollectionViewCompositionalLayout {
   }
 }
 
-class FavoritesViewController: UIViewController {
+class TopSitesViewController: UIViewController {
 
   // UI Properties
   private let layoutConfig = UICollectionViewCompositionalLayoutConfiguration().then {
     $0.interSectionSpacing = 8.0
   }
-  private lazy var compositionLayout = FavoritesCompositionalLayout(
+  private lazy var compositionLayout = TopSitesCompositionalLayout(
     browserColors: privateBrowsingManager.browserColors,
     sectionProvider: { [weak self] sectionIndex, environment in
       guard let self else { return nil }
       let traitCollection = environment.traitCollection
       let section = self.availableSections[sectionIndex]
       switch section {
-      case .favorites:
+      case .topsites:
         return self.favoritesLayoutSection(
           contentSizeCategory: traitCollection.preferredContentSizeCategory
         )
@@ -94,9 +95,9 @@ class FavoritesViewController: UIViewController {
 
   // Data Source
   private typealias DataSource = UICollectionViewDiffableDataSource<
-    FavoritesSection, FavoritesDataWrapper
+    TopSitesSection, TopSitesDataWrapper
   >
-  private typealias Snapshot = NSDiffableDataSourceSnapshot<FavoritesSection, FavoritesDataWrapper>
+  private typealias Snapshot = NSDiffableDataSourceSnapshot<TopSitesSection, TopSitesDataWrapper>
   private lazy var dataSource: DataSource = DataSource(
     collectionView: collectionView,
     cellProvider: { [weak self] collectionView, indexPath, wrapper -> UICollectionViewCell? in
@@ -113,18 +114,17 @@ class FavoritesViewController: UIViewController {
   var recentSearchAction: (RecentSearch?, Bool) -> Void
 
   // Fetched Result
-  let favoritesFRC = Favorite.frc()
   private let recentSearchesFRC = RecentSearch.frc().then {
     $0.fetchRequest.fetchLimit = 5
   }
 
   private var preferenceBeingObserved = false
 
-  var availableSections: [FavoritesSection] {
-    var sections = [FavoritesSection]()
+  var availableSections: [TopSitesSection] {
+    var sections = [TopSitesSection]()
 
-    if let favoritesObjects = favoritesFRC.fetchedObjects, !favoritesObjects.isEmpty {
-      sections.append(.favorites)
+    if !tiles.isEmpty {
+      sections.append(.topsites)
     }
 
     if !privateBrowsingManager.isPrivateBrowsing
@@ -147,9 +147,16 @@ class FavoritesViewController: UIViewController {
   // Search Engines
   private let defaultSearchEngine: OpenSearchEngine?
 
+  // Tiles Source
+  let tileSource: TopSitesTileSource
+  /// The tiles the collection view is currently showing. Kept separate from the source so that the
+  /// snapshot and the items it describes can't disagree while a reload is pending.
+  private(set) var tiles: [TopSiteTile] = []
+
   init(
     privateBrowsingManager: PrivateBrowsingManager,
     defaultSearchEngine: OpenSearchEngine?,
+    tileSource: TopSitesTileSource,
     topSiteAction: @escaping (TopSiteAction) -> Void,
     recentSearchAction: @escaping (RecentSearch?, Bool) -> Void
   ) {
@@ -157,10 +164,10 @@ class FavoritesViewController: UIViewController {
     self.recentSearchAction = recentSearchAction
     self.privateBrowsingManager = privateBrowsingManager
     self.defaultSearchEngine = defaultSearchEngine
+    self.tileSource = tileSource
 
     super.init(nibName: nil, bundle: nil)
 
-    favoritesFRC.delegate = self
     recentSearchesFRC.delegate = self
 
     KeyboardHelper.defaultHelper.addDelegate(self)
@@ -178,21 +185,21 @@ class FavoritesViewController: UIViewController {
       })
 
     collectionView.do {
-      $0.register(FavoritesCollectionViewCell.self)
-      $0.register(FavoritesRecentSearchCell.self)
+      $0.register(TopSitesCollectionViewCell.self)
+      $0.register(TopSitesRecentSearchCell.self)
       $0.register(SearchActionsCell.self)
       $0.register(
-        FavoritesHeaderView.self,
+        TopSitesHeaderView.self,
         forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
         withReuseIdentifier: "fav_header"
       )
       $0.register(
-        FavoritesRecentSearchHeaderView.self,
+        TopSitesRecentSearchHeaderView.self,
         forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
         withReuseIdentifier: "recent_searches_header"
       )
       $0.register(
-        FavoritesRecentSearchFooterView.self,
+        TopSitesRecentSearchFooterView.self,
         forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
         withReuseIdentifier: "recent_search_footer"
       )
@@ -206,6 +213,8 @@ class FavoritesViewController: UIViewController {
         indexPath: indexPath
       )
     }
+
+    updateTiles()
   }
 
   @available(*, unavailable)
@@ -427,7 +436,7 @@ class FavoritesViewController: UIViewController {
 
 // MARK: - UICollectionViewDataSource & UICollectionViewDelegateFlowLayout
 
-extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
+extension TopSitesViewController: UICollectionViewDelegateFlowLayout {
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     guard let section = availableSections[safe: indexPath.section] else {
@@ -438,11 +447,11 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
     switch section {
     case .recentSearchesOptIn:
       break
-    case .favorites:
-      guard let favorite = favoritesFRC.fetchedObjects?[safe: indexPath.item] else {
+    case .topsites:
+      guard let tile = tiles[safe: indexPath.item] else {
         return
       }
-      topSiteAction(.opened(url: favorite.url?.asURL, isFavorite: true))
+      topSiteAction(.opened(url: tile.url, isFavorite: tile.isFavorite))
     case .recentSearches:
       guard let searchItem = recentSearchesFRC.fetchedObjects?[safe: indexPath.item] else {
         return
@@ -462,7 +471,7 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - Action
 
-extension FavoritesViewController {
+extension TopSitesViewController {
   func onOpenRecentSearch(_ recentSearch: RecentSearch) {
     recentSearchAction(recentSearch, false)
   }
@@ -514,7 +523,7 @@ extension FavoritesViewController {
 
 // MARK: - Preference Observer
 
-extension FavoritesViewController: PreferencesObserver {
+extension TopSitesViewController: PreferencesObserver {
   func preferencesDidChange(for key: String) {
     preferenceBeingObserved = true
     updateUIWithSnapshot()
@@ -523,9 +532,9 @@ extension FavoritesViewController: PreferencesObserver {
 
 // MARK: -  NSFetchedResultsControllerDelegate + Diffable DataSource
 
-extension FavoritesViewController: NSFetchedResultsControllerDelegate {
+extension TopSitesViewController: NSFetchedResultsControllerDelegate {
   private var favoritesSectionExists: Bool {
-    availableSections.contains(.favorites)
+    availableSections.contains(.topsites)
   }
 
   private var recentSearchesSectionExists: Bool {
@@ -536,26 +545,17 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
     availableSections.contains(.recentSearchesOptIn)
   }
 
-  private func updateUIWithSnapshot() {
-    do {
-      try favoritesFRC.performFetch()
-    } catch {
-      Logger.module.error("Favorites fetch error: \(error.localizedDescription))")
-    }
-
+  func updateUIWithSnapshot(animated: Bool = false) {
     fetchRecentSearches()
 
     var snapshot = Snapshot()
     snapshot.appendSections(availableSections)
 
-    let fetchedFavorites: [FavoritesDataWrapper]? = favoritesFRC.fetchedObjects?.compactMap {
-      return .favorite(
-        FavoritesDiffable(objectID: $0.objectID, title: $0.displayTitle, url: $0.url)
+    if favoritesSectionExists {
+      snapshot.appendItems(
+        tiles.map { .topsites(TopSitesTileDiffable($0)) },
+        toSection: .topsites
       )
-    }
-
-    if favoritesSectionExists, let favorites = fetchedFavorites {
-      snapshot.appendItems(favorites, toSection: .favorites)
     }
 
     if recentSearchesSectionExists, let objects = recentSearchesFRC.fetchedObjects {
@@ -567,7 +567,7 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
       snapshot.appendItems([.recentSearchOptIn], toSection: .recentSearchesOptIn)
     }
 
-    dataSource.apply(snapshot, animatingDifferences: false)
+    dataSource.apply(snapshot, animatingDifferences: animated)
   }
 
   func controller(
@@ -592,58 +592,17 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
 
     guard let ids = snapshot.itemIdentifiers as? [NSManagedObjectID] else { return }
 
-    if controller === favoritesFRC {
-      var items = [FavoritesDataWrapper]()
-
-      if favoritesSectionExists {
-        ids.forEach {
-          // Fetch existing item from the DB then add it to snapshot.
-          // This way the snapshot will be able to detect changes on the object.
-          // Non existing objects are not added, this simulates removing the item.
-          if let existingItem = controller.managedObjectContext.object(with: $0) as? Favorite {
-            items.append(
-              .favorite(
-                FavoritesDiffable(
-                  objectID: $0,
-                  title: existingItem.title,
-                  url: existingItem.url
-                )
-              )
-            )
-          }
-        }
-
-        newSnapshot.appendItems(items, toSection: .favorites)
-      }
-
-      // New snapshot is created, items from the other frc must be added to it.
-      if recentSearchesSectionExists {
-        newSnapshot.appendItems(
-          currentSnapshot.itemIdentifiers(inSection: .recentSearches),
-          toSection: .recentSearches
-        )
-      }
-
-      // New snapshot is created, need to add back `.recentSearchesOptIn` if there is one before
-      if recentSearchesOptInSectionExists {
-        newSnapshot.appendItems(
-          currentSnapshot.itemIdentifiers(inSection: .recentSearchesOptIn),
-          toSection: .recentSearchesOptIn
-        )
-      }
-    }
-
     if controller === recentSearchesFRC {
       if favoritesSectionExists {
         // New snapshot is created, items from the other frc must be added to it.
         newSnapshot.appendItems(
-          currentSnapshot.itemIdentifiers(inSection: .favorites),
-          toSection: .favorites
+          currentSnapshot.itemIdentifiers(inSection: .topsites),
+          toSection: .topsites
         )
       }
 
       if recentSearchesSectionExists {
-        var items = [FavoritesDataWrapper]()
+        var items = [TopSitesDataWrapper]()
 
         ids.forEach {
           if RecentSearch.get(with: $0) != nil {
@@ -668,32 +627,28 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
   private func cellProvider(
     collectionView: UICollectionView,
     indexPath: IndexPath,
-    wrapper: FavoritesDataWrapper
+    wrapper: TopSitesDataWrapper
   ) -> UICollectionViewCell? {
 
     switch wrapper {
-    case .favorite(let favoriteWrapper):
-      guard let favorite = Favorite.get(with: favoriteWrapper.objectID) else { return nil }
+    case .topsites(let topsitesWrapper):
+      guard let tile = tiles.first(where: { $0.id == topsitesWrapper.id }) else { return nil }
 
-      let cell = collectionView.dequeueReusableCell(for: indexPath) as FavoritesCollectionViewCell
+      let cell = collectionView.dequeueReusableCell(for: indexPath) as TopSitesCollectionViewCell
 
       cell.isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
-      cell.textLabel.text = favorite.displayTitle ?? favorite.url
-      if let url = favorite.url?.asURL {
-        cell.imageView.loadFavicon(
-          siteURL: url,
-          isPrivateBrowsing: self.privateBrowsingManager.isPrivateBrowsing
-        )
-      } else {
-        cell.imageView.cancelLoading()
-      }
+      cell.textLabel.text = tile.title ?? tile.url.absoluteString
+      cell.imageView.loadFavicon(
+        siteURL: tile.url,
+        isPrivateBrowsing: self.privateBrowsingManager.isPrivateBrowsing
+      )
       cell.accessibilityLabel = cell.textLabel.text
 
       return cell
     case .recentSearch(let objectID):
       guard let recentSearch = RecentSearch.get(with: objectID) else { return nil }
 
-      let cell = collectionView.dequeueReusableCell(for: indexPath) as FavoritesRecentSearchCell
+      let cell = collectionView.dequeueReusableCell(for: indexPath) as TopSitesRecentSearchCell
 
       guard let searchType = RecentSearchType(rawValue: recentSearch.searchType) else {
         cell.setTitle(recentSearch.text)
@@ -804,12 +759,12 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
 
     if kind == UICollectionView.elementKindSectionHeader {
       switch section {
-      case .favorites:
+      case .topsites:
         if let header = collectionView.dequeueReusableSupplementaryView(
           ofKind: kind,
           withReuseIdentifier: "fav_header",
           for: indexPath
-        ) as? FavoritesHeaderView {
+        ) as? TopSitesHeaderView {
           header.isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
           return header
         }
@@ -818,7 +773,7 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
           ofKind: kind,
           withReuseIdentifier: "recent_searches_header",
           for: indexPath
-        ) as? FavoritesRecentSearchHeaderView {
+        ) as? TopSitesRecentSearchHeaderView {
           header.clearButton.addTarget(
             self,
             action: #selector(onRecentSearchClearPressed(_:)),
@@ -850,5 +805,18 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
       return footer
     }
     return UICollectionReusableView()
+  }
+}
+
+extension TopSitesViewController {
+  private func updateTiles() {
+    tiles = withObservationTracking {
+      tileSource.tiles
+    } onChange: { [weak self] in
+      DispatchQueue.main.async {
+        self?.updateTiles()
+        self?.updateUIWithSnapshot(animated: true)
+      }
+    }
   }
 }

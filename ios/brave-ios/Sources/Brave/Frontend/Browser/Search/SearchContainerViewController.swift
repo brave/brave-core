@@ -29,7 +29,7 @@ class SearchContainerViewController: UIViewController {
   weak var delegate: SearchContainerViewControllerDelegate?
 
   let inputBar: SearchURLBarInputView
-  private let favoritesController: FavoritesViewController
+  private let topSitesController: TopSitesViewController
   private let searchController: SearchViewController
   private let searchLoader: SearchLoader
 
@@ -46,6 +46,7 @@ class SearchContainerViewController: UIViewController {
     bookmarkManager: BookmarkManager,
     historyAPI: BraveHistoryAPI,
     searchEngines: SearchEngines,
+    tileSource: TopSitesTileSource,
     privateBrowsingManager: PrivateBrowsingManager,
     speechRecognizer: SpeechRecognizer,
     isAIChatAvailable: Bool,
@@ -77,11 +78,12 @@ class SearchContainerViewController: UIViewController {
     searchLoader.addListener(searchController)
     self.searchLoader = searchLoader
 
-    self.favoritesController = FavoritesViewController(
+    self.topSitesController = TopSitesViewController(
       privateBrowsingManager: privateBrowsingManager,
       defaultSearchEngine: searchEngines.defaultEngine(
         forType: privateBrowsingManager.isPrivateBrowsing ? .privateMode : .standard
       ),
+      tileSource: tileSource,
       topSiteAction: topSiteAction,
       recentSearchAction: recentSearchAction
     )
@@ -119,16 +121,16 @@ class SearchContainerViewController: UIViewController {
     searchController.view.snp.makeConstraints { $0.edges.equalTo(view) }
     searchController.didMove(toParent: self)
 
-    addChild(favoritesController)
-    view.addSubview(favoritesController.view)
-    favoritesController.view.snp.makeConstraints { $0.edges.equalTo(view) }
-    favoritesController.didMove(toParent: self)
+    addChild(topSitesController)
+    view.addSubview(topSitesController.view)
+    topSitesController.view.snp.makeConstraints { $0.edges.equalTo(view) }
+    topSitesController.didMove(toParent: self)
 
     view.addSubview(inputBar)
 
     // Favorites shows first; the search screen appears once the user types.
     searchController.view.isHidden = true
-    favoritesController.view.isHidden = false
+    topSitesController.view.isHidden = false
 
     searchController.isUsingBottomBar = isUsingBottomBar
     // Called after the search view is in the hierarchy so its engine row can be laid out.
@@ -162,13 +164,13 @@ class SearchContainerViewController: UIViewController {
       isUsingBottomBar
       ? .init(top: 0, left: 0, bottom: inputBarHeight, right: 0)
       : .init(top: inputBarHeight, left: 0, bottom: 0, right: 0)
-    favoritesController.additionalSafeAreaInsets = insets
+    topSitesController.additionalSafeAreaInsets = insets
     searchController.additionalSafeAreaInsets = insets
   }
 
   private func showSearchResults(_ show: Bool) {
     searchController.view.isHidden = !show
-    favoritesController.view.isHidden = show
+    topSitesController.view.isHidden = show
   }
 
   // MARK: - Editing
