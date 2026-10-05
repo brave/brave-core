@@ -174,7 +174,7 @@ RegisterPolymerTemplateModifications({
         id="autofillPrivateWindowsToggle"
         label="${loadTimeData.getString('autofillInPrivateSettingLabel')}"
         sub-label="${loadTimeData.getString('autofillInPrivateSettingDesc')}"
-        pref="{{prefs.brave.autofill_private_windows}}">
+        pref-key="brave.autofill_private_windows">
       </settings-toggle-button>
     `)
   },
