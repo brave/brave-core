@@ -670,6 +670,7 @@ source_set("brave_ads_unit_tests") {
   ]
 
   deps = [
+    "//base/i18n:test_support",
     "//base/test:test_support",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/core/browser/internals:unit_tests",

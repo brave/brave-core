@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 
-#include "base/test/icu_test_util.h"
+#include "base/i18n/language_tag.h"
+#include "base/i18n/test/scoped_icu_locale.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/test/scoped_timezone_for_testing.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -20,7 +21,8 @@ class BraveAdsTimeFormattingUtilTest : public test::TestBase {};
 TEST_F(BraveAdsTimeFormattingUtilTest,
        LongFriendlyDateAndTimeWithSentenceStyle) {
   // Arrange
-  const base::test::ScopedRestoreICUDefaultLocale scoped_locale("en-US");
+  const base::i18n::ScopedDefaultIcuLocale scoped_locale(
+      base::i18n::GetKnownLanguageTag("en-US"));
   const test::ScopedTimezoneForTesting scoped_timezone("UTC");
   const base::Time time = test::TimeFromUTCString("November 18 2020 14:30:00");
 
@@ -32,7 +34,8 @@ TEST_F(BraveAdsTimeFormattingUtilTest,
 TEST_F(BraveAdsTimeFormattingUtilTest,
        LongFriendlyDateAndTimeWithoutSentenceStyle) {
   // Arrange
-  const base::test::ScopedRestoreICUDefaultLocale scoped_locale("en-US");
+  const base::i18n::ScopedDefaultIcuLocale scoped_locale(
+      base::i18n::GetKnownLanguageTag("en-US"));
   const test::ScopedTimezoneForTesting scoped_timezone("UTC");
   const base::Time time = test::TimeFromUTCString("November 18 2020 14:30:00");
 
@@ -43,7 +46,8 @@ TEST_F(BraveAdsTimeFormattingUtilTest,
 
 TEST_F(BraveAdsTimeFormattingUtilTest, FriendlyDateAndTimeWithSentenceStyle) {
   // Arrange
-  const base::test::ScopedRestoreICUDefaultLocale scoped_locale("en-US");
+  const base::i18n::ScopedDefaultIcuLocale scoped_locale(
+      base::i18n::GetKnownLanguageTag("en-US"));
   const test::ScopedTimezoneForTesting scoped_timezone("UTC");
   AdvanceClockTo(test::TimeFromUTCString("November 18 2020 14:30:00"));
 
@@ -56,7 +60,8 @@ TEST_F(BraveAdsTimeFormattingUtilTest, FriendlyDateAndTimeWithSentenceStyle) {
 TEST_F(BraveAdsTimeFormattingUtilTest,
        FriendlyDateAndTimeWithoutSentenceStyle) {
   // Arrange
-  const base::test::ScopedRestoreICUDefaultLocale scoped_locale("en-US");
+  const base::i18n::ScopedDefaultIcuLocale scoped_locale(
+      base::i18n::GetKnownLanguageTag("en-US"));
   const test::ScopedTimezoneForTesting scoped_timezone("UTC");
   AdvanceClockTo(test::TimeFromUTCString("November 18 2020 14:30:00"));
 
