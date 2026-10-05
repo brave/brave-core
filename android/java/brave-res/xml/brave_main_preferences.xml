@@ -14,7 +14,7 @@
         android:title="@string/settings_brave_account_row_title"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:key="email_aliases"
-        android:title="@string/email_aliases_settings_title_android"/>
+        android:title="@string/settings_email_aliases_label"/>
     <PreferenceCategory
         android:key="features_section"
         android:order="2"
