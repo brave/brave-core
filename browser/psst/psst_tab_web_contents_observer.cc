@@ -413,6 +413,8 @@ void PsstTabWebContentsObserver::SetInjectAsyncScriptCallback(
 }
 
 void PsstTabWebContentsObserver::PageScopedReset() {
+  // Hide the omnibar icon
+  ui_delegate_->UpdateTasks(0, {}, mojom::PsstStatus::kFailed);
   script_injector_remote_.reset();
   page_weak_factory_.InvalidateWeakPtrs();
   should_process_current_page_ = false;
