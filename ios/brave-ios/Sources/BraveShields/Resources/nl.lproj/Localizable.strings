@@ -1,14 +1,326 @@
+/* The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "Over Brave Shields";
+
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "Sites bevatten vaak cookies en scripts die zowel jou als je apparaat proberen te identificeren. Ze willen erachter komen wie je bent, je over het hele web volgen en bijhouden wat je op elke site doet.\n\nBrave blokkeert deze dingen, zodat je kunt surfen zonder dat je gevolgd wordt.";
+
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Voeg extra lijsten toe die door je vertrouwde community zijn gemaakt en worden onderhouden.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Meld je alleen aan voor lijsten van entiteiten die je vertrouwt**. Je browser zal de ingevoerde URL gebruiken om regelmatig te zoeken naar updates voor lijsten.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "Voeg filter op URL toe";
+
 /* Shields Ads Stat */
 "AdsAndTrackersrBlocked" = "Trackers en advertenties geblokkeerd";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "Geblokkeerde\nadvertenties";
 
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "Met **Brave Player** geniet je van een ononderbroken videoweergave zonder advertenties.";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "Pas Shields aan voor mij";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "Deze site blokkeert nu bepaalde advertentieblokkeringen, waardoor de site mogelijk niet zoals verwacht werkt.";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "Om dit probleem op te lossen, kan Brave de Shields-instellingen voor jou aanpassen. Daarna kun je deze content in Brave Player bekijken.";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "Behoud huidige instellingen";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "Pas instellingen van advertentieblokkering aan voor deze site";
+
+/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
+"AutoRedirectAMPPages" = "Leid AMP-pagina's automatisch om";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
+"AutoRedirectAMPPagesDescription" = "Bezoek altijd originele (niet-AMP) pagina-URL's in plaats van Accelerated Mobile Page-versies van Google";
+
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "Leid tracking-URL's automatisch om";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "Schakel ondersteuning in voor omzeiling van top-level tracking-URLs";
+
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Automatische versnippering";
+
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "Browsegegevens automatisch versnipperen";
+
+/* Text for a button in a blocked page or a page not secure info screen that takes you back where you came from or back to home screen */
+"BackToSafetyButtonTitle" = "Breng me in veiligheid";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "Agressief";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "Voorkomt dat advertenties, pop-ups en trackers worden geladen.";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "Uitgeschakeld";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "Standaard";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Blokkeer meldingen om apps te openen";
+
+/* No comment provided by engineer. */
+"BlockScripts" = "Blokkeer scripts";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "Blokkeert JavaScript (sites werken mogelijk niet correct).";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Brave Player";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "Open video's op deze site altijd met Brave Player";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "Probeer";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "Niet nu";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Met Brave Player kun je video's zonder onderbrekingen bekijken.";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "Bekijk in Brave Player";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "Geavanceerde instellingen";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "Advertenties en andere griezelige dingen zijn geblokkeerd";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Meer informatie";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "Wijzig standaardinstellingen van Shields";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "Algemene instellingen";
+
+/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfo" = "Bewaar contactgegevens voor toekomstige foutrapporten over niet-werkende sites";
+
+/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfoDescription" = "Als je contactgegevens opgeeft, worden deze bewaard voor toekomstige rapporten";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "Als deze site niet correct werkt, zet je Shields uit";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Brave Shields";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "Uit";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "Aan";
+
+/* The accessibility hint spoken when focused on the main shields toggle */
+"BraveShieldsToggleHint" = "Dubbeltik om Brave Shields aan of uit te zetten";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Contentfilter";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Schakel aangepaste filters in die regionale en taalspecifieke trackers en storende elementen blokkeren";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Aangepaste filterlijst";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "URL van aangepaste filterlijst";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "Aangepaste filters";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "Voeg hier aangepaste filters toe. Zorg dat je de Adblock-filtersyntaxis gebruikt.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "Ongeldige regel '%1$@' op regel %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "Aangepaste filters toevoegen";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "Aangepaste filters ondersteunen maximaal %i regels";
+
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Geschatte\nbespaarde\ndata";
 
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Standaard filterlijsten";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "Je hebt gekozen voor de agressieve blokkering van trackers en advertenties. Daarom blokkeert Brave deze site vóór de eerste netwerkverbinding.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Brave heeft voorkomen dat de volgende site werd geladen:";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "Deze site probeert je mogelijk via andere sites te volgen";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "Ga verder";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "Domein geblokkeerd";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "Aangepaste filters bewerken";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "Vraag websites om je gegevens niet te verkopen of te delen. [Meer informatie](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "Schakel Global Privacy Control in";
+
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Geschatte\nbespaarde\ntijd";
+
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "Externe filterlijsten";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "De ingevoerde URL is ongeldig";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Alleen beveiligde URL's (https) zijn toegestaan voor aangepaste filterlijsten";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Voeg toe";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Aanvullende veelgebruikte communitylijsten. Als je te veel filters inschakelt, browse je trager.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Download mislukt";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Download in afwachting";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Wijzig";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Voer de URL van de filterlijst in";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Laatst bijgewerkt op %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Voer de URL van de filterlijst hier in";
+
+/* No comment provided by engineer. */
+"FingerprintingProtection" = "Blokkeer fingerprinting";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "Maakt het moeilijker voor sites om de unieke kenmerken van je apparaat te herkennen.";
+
+/* No comment provided by engineer. */
+"httpsEverywhereDescription" = "Open sites met beveiligd HTTPS-protocol in plaats van HTTP indien mogelijk.";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "Streng";
+
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "Lijsten bijgewerkt";
+
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "Meld een niet-werkende site";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"ReportBrokenAdditionalDetails" = "Aanvullende gegevens (optioneel)";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"reportBrokenAdditionalDetailsRequired" = "Aanvullende details";
+
+/* A label for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "Wat is het voornaamste probleem?";
+
+/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
+"ReportBrokenContactMe" = "Neem contact met me op via: (optioneel)";
+
+/* Contact info storing description */
+"ReportBrokenContactMeDescription" = "Als je contactgegevens opgeeft, worden deze bewaard om in de toekomst niet-werkende sites te melden.";
+
+/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
+"ReportBrokenContactMeSuggestions" = "E-mail, Twitter, etc.";
+
+/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"ReportBrokenPlaceholder" = "Selecteer een optie";
+
+/* First part of the report a broken site copy. After the colon is a new line and then a website address */
+"ReportBrokenSiteBody1" = "Laat de ontwikkelaars van Brave weten dat deze site niet zoals verwacht werkt:";
+
+/* This is the info text that is presented when a user is submitting a web-compatibility report. */
+"ReportBrokenSiteBody2" = "Opmerking: het rapport dat wordt gestuurd naar de Brave-servers bevat het adres van de site, het versienummer van Brave, de Shields-instellingen, de VPN-status en de taalinstellingen.";
+
+/* No comment provided by engineer. */
+"ReportBrokenSubmitButtonTitle" = "Stuur";
+
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "Agressief";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "Geblokkeerd door";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "Geblokkeerde verzoeken";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "Contentblokkering";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "Verzoekblokkering";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "Verzoek-URL";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "Brontype";
+
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "Als Shred geschiedenis items moet verwijderen.";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred verwijdert geschiedenis";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "Update Auto Shred en pas aan welke gegevens worden verwijderd.";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "Versnipperen";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "Versnipperen";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "Bron-URL";
+
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"ShieldsDefaults" = "Standaardinstellingen van Brave Shields";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "Hier vind je de standaard Shields-instellingen voor nieuwe sites. Als je deze instellingen wijzigt, blijven de bestaande instellingen voor specifieke websites ongewijzigd.";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "Je bezoekt deze site zonder de privacybescherming van Brave. Werkt de site niet goed als Shields aan staat?";
 
 /* Time Saved Days */
 "ShieldsTimeStatsDays" = "d";
@@ -22,6 +334,72 @@
 /* Time Saved Seconds */
 "ShieldsTimeStatsSeconds" = "s";
 
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Versnipper gegevens";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Nooit";
+
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "Browsegegevens worden nooit automatisch versnipperd";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "App gesloten";
+
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "Browsegegevens worden automatisch versnipperd wanneer de Brave-app wordt gesloten / opnieuw wordt opgestart";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Tabbladen van site gesloten";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "Browsegegevens worden automatisch versnipperd wanneer alle geopende tabbladen naar een site zijn gesloten";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "Door de versnippering worden alle tabbladen gesloten en worden alle sitegegevens verwijderd. Deze actie kun je niet ongedaan maken.";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Versnipper sitegegevens";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "Door de versnippering worden alle tabbladen van deze site gesloten en worden alle sitegegevens verwijderd. Deze actie kun je niet ongedaan maken.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Sitegegevens versnipperen?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Versnipper sitegegevens nu";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "Door de versnippering worden de geselecteerde tabbladen gesloten en alle sitegegevens verwijderd. Deze actie kun je niet ongedaan maken.";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "Site is niet veilig";
+
+/* No comment provided by engineer. */
+"SiteReportedBody" = "Bedankt dat je de ontwikkelaars van Brave hebt laten weten dat er iets mis is met deze site. We zullen ons best doen om dit op te lossen.";
+
+/* No comment provided by engineer. */
+"SiteReportedTitle" = "Bedankt";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "De verbinding met %@ is niet veilig";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "Blokkering van trackers en advertenties";
+
 /* Shields Trackers Stat */
 "TrackersrBlocked" = "Geblokkeerde\ntrackers";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "Werk lijsten bij";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "Lijsten bijwerken";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "Upgrade verbindingen naar HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "Je ziet deze waarschuwing omdat deze site geen ondersteuning voor HTTPS biedt.";
 
