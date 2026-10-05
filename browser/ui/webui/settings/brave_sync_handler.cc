@@ -230,7 +230,6 @@ void BraveSyncHandler::HandleGetQRCode(const base::ListValue& args) {
   }
 
   const std::string data_url = webui::GetBitmapDataUrl(qr_image.value());
-  VLOG(1) << "QR code data url: " << data_url;
   ResolveJavascriptCallback(args[0].Clone(), base::Value(data_url));
 }
 
