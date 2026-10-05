@@ -339,12 +339,11 @@ void BraveBrowserTabStripController::OnTreeTabChanged(
         const int index = model_->GetIndexOfTab(tab);
         if (index != TabStripModel::kNoTab &&
             index < tabstrip_->GetTabCount()) {
-          auto* tab_view = static_cast<BraveTab*>(tabstrip_->tab_at(index));
-          tab_view->UpdateIconVisibility();
+          auto* tab_view = tabstrip_->tab_at(index);
           tab_view->InvalidateLayout();
         }
       }
-      static_cast<BraveTabStrip*>(tabstrip_.get())
+      views::AsViewClass<BraveTabStrip>(tabstrip_.get())
           ->InvalidateTabContainerLayout();
       break;
     }
