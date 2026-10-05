@@ -504,8 +504,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private void updatePreferenceIcons() {
         updatePreferenceIcon(PREF_PASSWORDS, R.drawable.ic_key);
         updatePreferenceIcon(
-                BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES,
-                R.drawable.ic_email_shield);
+                BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES, R.drawable.ic_email_shield);
         updatePreferenceIcon(PREF_CONTENT_SETTINGS, R.drawable.ic_tune);
         updatePreferenceIcon(PREF_PAYMENT_METHODS, R.drawable.ic_credit_card);
         updatePreferenceIcon(PREF_DOWNLOADS, R.drawable.ic_download);
