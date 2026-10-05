@@ -89,6 +89,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
   private let toolbarState: BrowserToolbarState
 
   private(set) var displayTabTraySwipeGestureRecognizer: UISwipeGestureRecognizer?
+  private var changeTabsPanGestureRecognizer: UIPanGestureRecognizer?
+  private var previousPanX: CGFloat = 0.0
 
   // MARK: State
 
@@ -353,6 +355,15 @@ class TopToolbarView: UIView, ToolbarProtocol {
     swipeGestureRecognizer.isEnabled = false
     locationView.addGestureRecognizer(swipeGestureRecognizer)
 
+    let panGestureRecognizer = UIPanGestureRecognizer(
+      target: self,
+      action: #selector(didSwipeLocationViewToChangeTabs(_:))
+    )
+    panGestureRecognizer.delegate = self
+    panGestureRecognizer.isEnabled = false
+    locationView.addGestureRecognizer(panGestureRecognizer)
+    self.changeTabsPanGestureRecognizer = panGestureRecognizer
+
     let dragInteraction = UIDragInteraction(delegate: self)
     dragInteraction.allowsSimultaneousRecognitionDuringLift = true
     locationView.addInteraction(dragInteraction)
@@ -446,6 +457,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   // that can show in either mode.
   func setShowToolbar(_ shouldShow: Bool) {
     toolbarIsShowing = shouldShow
+    changeTabsPanGestureRecognizer?.isEnabled = shouldShow
     setNeedsUpdateConstraints()
     // when we transition from portrait to landscape, calling this here causes
     // the constraints to be calculated too early and there are constraint errors
@@ -613,6 +625,30 @@ class TopToolbarView: UIView, ToolbarProtocol {
     delegate?.topToolbarDidPressTabs(self)
   }
 
+  @objc private func didSwipeLocationViewToChangeTabs(_ pan: UIPanGestureRecognizer) {
+    switch pan.state {
+    case .began:
+      let velocity = pan.velocity(in: locationView)
+      if velocity.x > 100 {
+        tabToolbarDelegate?.tabToolbarDidSwipeToChangeTabs(self, direction: .right)
+      } else if velocity.x < -100 {
+        tabToolbarDelegate?.tabToolbarDidSwipeToChangeTabs(self, direction: .left)
+      }
+      previousPanX = pan.translation(in: locationView).x
+    case .changed:
+      let point = pan.translation(in: locationView)
+      if point.x > previousPanX + 50 {
+        tabToolbarDelegate?.tabToolbarDidSwipeToChangeTabs(self, direction: .right)
+        previousPanX = point.x
+      } else if point.x < previousPanX - 50 {
+        tabToolbarDelegate?.tabToolbarDidSwipeToChangeTabs(self, direction: .left)
+        previousPanX = point.x
+      }
+    default:
+      break
+    }
+  }
+
   @objc private func didTapBraveShieldsButton() {
     delegate?.topToolbarDidTapBraveShieldsButton(self)
   }
@@ -696,6 +732,16 @@ extension TopToolbarView: TabLocationViewDelegate {
 
   func tabLocationViewDidTapSecureContentState(_ urlBar: TabLocationView) {
     delegate?.topToolbarDidTapSecureContentState(self)
+  }
+}
+
+extension TopToolbarView: UIGestureRecognizerDelegate {
+  override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    guard let pan = gestureRecognizer as? UIPanGestureRecognizer,
+      pan === changeTabsPanGestureRecognizer
+    else { return true }
+    let velocity = pan.velocity(in: locationView)
+    return abs(velocity.x) > abs(velocity.y)
   }
 }
 
