@@ -155,6 +155,19 @@ static_library("ai_chat") {
       "//brave/components/screenshot/content",
     ]
   }
+
+  if (enable_local_ai) {
+    sources += [
+      "ai_chat_embeddings_service_factory.cc",
+      "ai_chat_embeddings_service_factory.h",
+    ]
+    deps += [
+      "//brave/browser/history_embeddings:status",
+      "//brave/components/ai_chat/core/browser/embeddings",
+      "//chrome/browser/passage_embeddings",
+      "//components/passage_embeddings/core",
+    ]
+  }
 }
 
 if (enable_ai_chat_tab_management_tool) {

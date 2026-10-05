@@ -36,6 +36,7 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -50,6 +51,10 @@
 #include "brave/browser/ai_chat/ollama/ollama_service_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT) && BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/browser/ai_chat/ai_chat_embeddings_service_factory.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
@@ -231,6 +236,9 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
     ai_chat::ModelServiceFactory::GetInstance();
     ai_chat::OllamaServiceFactory::GetInstance();
     ai_chat::TabTrackerServiceFactory::GetInstance();
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+    ai_chat::AIChatEmbeddingsServiceFactory::GetInstance();
+#endif
   }
 #endif
 

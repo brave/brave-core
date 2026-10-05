@@ -13,33 +13,69 @@ static_library("embeddings") {
   sources = [
     "ai_chat_embeddings_database.cc",
     "ai_chat_embeddings_database.h",
+    "ai_chat_embeddings_service.cc",
+    "ai_chat_embeddings_service.h",
     "passage_splitter.cc",
     "passage_splitter.h",
   ]
 
   public_deps = [
     "//base",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//components/keyed_service/core",
     "//components/os_crypt/async/common",
+    "//components/passage_embeddings/core:passage_embeddings_types",
+    "//components/prefs",
     "//sql",
   ]
 
-  deps = [ "//components/passage_embeddings/core:passage_embeddings_types" ]
+  deps = [
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/local_ai/core",
+    "//components/os_crypt/async/browser",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+  sources = [
+    "fake_embedder.cc",
+    "fake_embedder.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//components/passage_embeddings/core:passage_embeddings_types",
+  ]
 }
 
 source_set("unit_tests") {
   testonly = true
   sources = [
     "ai_chat_embeddings_database_unittest.cc",
+    "ai_chat_embeddings_service_unittest.cc",
     "passage_splitter_unittest.cc",
   ]
 
   deps = [
     ":embeddings",
+    ":test_support",
     "//base",
     "//base/test:test_support",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/browser:test_support",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/local_ai/core",
+    "//components/os_crypt/async/browser",
     "//components/os_crypt/async/browser:test_support",
     "//components/os_crypt/async/common",
     "//components/passage_embeddings/core:passage_embeddings_types",
+    "//components/sync_preferences:test_support",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//testing/gmock",
     "//testing/gtest",
   ]
 }
