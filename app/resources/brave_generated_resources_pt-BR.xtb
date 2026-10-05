@@ -216,11 +216,11 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Domínios Web3</translation>
 <translation id="1458638489455808030">Máquina Wayback</translation>
-<translation id="8039999492770627305">Desculpe, essa página não está disponível.</translation>
-<translation id="208311458690012764">Não foi possível carregar a versão salva</translation>
-<translation id="4515057635283480525">Deseja verificar se há uma versão salva disponível no Wayback Machine?</translation>
-<translation id="8252977752585110703">A Wayback Machine não conseguiu encontrar uma versão salva deste site.</translation>
-<translation id="8748778103033196270">Verificar a versão salva</translation>
+<translation id="8039999492770627305">A página está ausente</translation>
+<translation id="208311458690012764">Nenhuma versão arquivada está disponível</translation>
+<translation id="4515057635283480525">O Internet Archive salva versões anteriores de muitas páginas da web. Você quer procurar esta página no Archive?</translation>
+<translation id="8252977752585110703">Desculpe, verificamos o Internet Archive e ele não tem uma versão arquivada desta página.</translation>
+<translation id="8748778103033196270">Procurar no Archive</translation>
 <translation id="191143826155037518">O Brave é disponibilizado para você sob a <ph name="BEGIN_LINK_MPL"/>Licença Pública da Mozilla 2.0<ph name="END_LINK_MPL"/> (MPL) e inclui <ph name="BEGIN_LINK_OSS"/>software de código aberto<ph name="END_LINK_OSS"/> sob uma variedade de outras licenças.
         Você pode ler <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruções sobre como baixar e criar para você mesmo<ph name="END_LINK_BUILD_INSTRUCTIONS"/> o <ph name="BEGIN_LINK_SOURCE_CODE"/>código fonte específico usado para criar esta cópia<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Adicionar todas as guias aos favoritos...</translation>

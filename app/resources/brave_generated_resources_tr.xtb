@@ -217,11 +217,11 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 Alan Adları</translation>
 <translation id="1458638489455808030">Wayback Makinesi</translation>
-<translation id="8039999492770627305">Üzgünüz, bu sayfa mevcut değil.</translation>
-<translation id="208311458690012764">Kayıtlı versiyon yüklenemedi</translation>
-<translation id="4515057635283480525">Kayıtlı bir versiyonun Wayback Machine'de olup olmadığını kontrol etmek ister misiniz?</translation>
-<translation id="8252977752585110703">Wayback Machine bu sitenin kayıtlı bir versiyonunu bulamadı.</translation>
-<translation id="8748778103033196270">Kayıtlı versiyonu kontrol et</translation>
+<translation id="8039999492770627305">Sayfa eksik</translation>
+<translation id="208311458690012764">Arşivlenmiş sürüm mevcut değil</translation>
+<translation id="4515057635283480525">Internet Archive, birçok web sayfasının geçmiş sürümlerini kaydeder. Bu sayfayı Arşiv'de aramak ister misiniz?</translation>
+<translation id="8252977752585110703">Üzgünüz, Internet Archive'i kontrol ettik ve bu sayfanın arşivlenmiş bir sürümü yok.</translation>
+<translation id="8748778103033196270">Arşiv'e bak</translation>
 <translation id="191143826155037518">Brave'i <ph name="BEGIN_LINK_MPL"/>Mozilla Kamu Lisansı 2.0<ph name="END_LINK_MPL"/> (MPL) altında ve <ph name="BEGIN_LINK_OSS"/>açık kaynak yazılım<ph name="END_LINK_OSS"/> dahil çeşitli diğer lisanslar altında kullanabilirsiniz.
        <ph name="BEGIN_LINK_SOURCE_CODE"/>Bu kopyayı oluşturmak için kullanılan kaynak kodunu <ph name="END_LINK_SOURCE_CODE"/> <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>indirmek ve inşa etmek için talimatları<ph name="END_LINK_BUILD_INSTRUCTIONS"/> okuyabilirsiniz.</translation>
 <translation id="4474155171896946103">Tüm sekmelere yer işareti koy...</translation>

@@ -1752,6 +1752,9 @@ CoinGecko</translation>
 <translation id="2077392865355605472">סמל אסימון נדרש</translation>
 <translation id="4636925020451566238">עשרוני אסימונים לערך מדויק נדרשים</translation>
 <translation id="3797613444743816037">כתובת הטבעה</translation>
+<translation id="6571966497164575098">מזהה נכס</translation>
+<translation id="2110442566771571217">מזהה נכס אסימון ריק או לא חוקי</translation>
+<translation id="4170599358417498979">נכסים מותאמים אישית אינם נתמכים ברשת זאת</translation>
 <translation id="7951915459354237451">מגבלת העמלה נקבעת לפי ערך שהוא נמוך יותר מעמלת הבסיס. העסקה שלך עשויה להימשך זמן רב או להיכשל.</translation>
 <translation id="2227702748249086756">לא ניתן להביא הערכות עמלות</translation>
 <translation id="3225624966527491351">ייבוא ​​NFT</translation>
@@ -2040,7 +2043,7 @@ CoinGecko</translation>
 <translation id="418195046117003119">צילום מסך של רכזת שיתוף</translation>
 <translation id="4712056949543885424">הצג מנהל ססמאות</translation>
 <translation id="8037472847879765671">הצג את שיטות התשלום</translation>
-<translation id="7269867954894010756">הצג כתובות</translation>
+<translation id="6262574309547773475">הצגת פרטי קשר</translation>
 <translation id="6799213269525079335">מצא את הבא</translation>
 <translation id="8666632926482119393">מצא את הקודם</translation>
 <translation id="3567467864281922039">סגור, מצא או עצור</translation>
@@ -2169,6 +2172,7 @@ CoinGecko</translation>
 <translation id="3142853026316054951">הפעל או כבה מצב מיקוד</translation>
 <translation id="3468387898712904997">מייל בדוי חדש</translation>
 <translation id="4711475997833555304">יצירת אימייל אקראי שיועבר לתיבת הדואר הנכנס שלך.</translation>
+<translation id="5663901348199429994">המיילים הבדויים שלך</translation>
 <translation id="2796584247246518451">קונטיינר זמני חדש</translation>
 <translation id="8591883849678260674">צפה במקור</translation>
 <translation id="1969654232209826429">קריאה מינימלית</translation>
@@ -2233,6 +2237,7 @@ CoinGecko</translation>
 <translation id="9215978379284690246">קוד מצב: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">קוד מצב: <ph name="STATUS_CODE"/>, קוד מצב פנימי: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">הגעתם לגבול דירוג הפרימיום. אנא נסו שוב בעוד מספר שעות</translation>
+<translation id="6873128487002733717">הגעת למגבלת הפרימיום עבור מודל זה. נא לבחור מודל אחר או לנסות שוב מאוחר יותר.</translation>
 <translation id="3683964919745779766">הגעת למגבלת התעריף עבור מודל זה או שאזלו לך הקרדיטים. נא לנסות שוב מאוחר יותר.</translation>
 <translation id="7692501701960747469">מפתח ה-API שהוגדר עבור מודל זה אינו חוקי. נא לבדוק את הקונפיגורציה שלך ולנסות שוב.</translation>
 <translation id="7905602379229309187">נקודת הקצה נמצאת בעומס יתר כרגע. נא לנסות שוב מאוחר יותר.</translation>
@@ -2412,6 +2417,9 @@ CoinGecko</translation>
 <translation id="5021823940147712387">הסרת כלים</translation>
 <translation id="8712279871321308580">כלי אתר זמינים</translation>
 <translation id="3690996226559605619">כלים זמינים (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">התרה עבור הפעלה זו</translation>
+<translation id="6240821072888636753">שאל בכל פעם</translation>
+<translation id="4290920330097335010">אף פעם אל תתיר</translation>
 <translation id="318819763888864209">כל המנויים מתחדשים באופן אוטומטי אך ניתן לבטלם בכל עת לפני החידוש.</translation>
 <translation id="5091223967610958">שתף את שם המארח של הדף שבו אתה נמצא (<ph name="HOST_NAME"/>) כדי לעזור לשפר את ליאו</translation>
 <translation id="8732450785281947197">כלי הבינה המלאכותית של ליאו</translation>
@@ -2486,7 +2494,7 @@ CoinGecko</translation>
 <translation id="6077070599873946984">Brave AI זקוק להרשאתך עבור: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI רוצה להריץ את **<ph name="TOOL_NAME"/>** ב-**<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">הפעולה זוהתה ככזו שעלולה להיות לא תואמת לבקשתך:</translation>
-<translation id="5137568953923142260">זה בסדר</translation>
+<translation id="5137568953923142260">התר פעם אחת</translation>
 <translation id="3927932062596804919">דחייה</translation>
 <translation id="4191349941249805855">הצגת ארגומנטים של הכלי</translation>
 <translation id="7237059533128264835">הסתרת ארגומנטים של הכלי</translation>
@@ -2533,7 +2541,6 @@ CoinGecko</translation>
 <translation id="6002159997868894136">יש ללחוץ כדי להעתיק מייל בדוי</translation>
 <translation id="8105770564756958406">בשימוש על ידי <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">יצירת עד 5 מיילים בדויים בחינם כדי להגן על כתובת האימייל האמיתית שלך.</translation>
-<translation id="5663901348199429994">המיילים הבדויים שלך</translation>
 <translation id="9046133327037621173">מייל בדוי חדש</translation>
 <translation id="3768606658230902536">יצירת כתובת אימייל אקראית שמפנה לתיבת הדואר הנכנס שלך ושומרת על הפרטיות של האימייל האישי שלך.</translation>
 <translation id="4452721050684632493">הגעת למגבלת הכינויים</translation>
@@ -2965,7 +2972,9 @@ Brave יש שירות עוזר שמגן עליך מפני חשיפה זו על �
 <translation id="4227581348172626540">ביטול שינוי הסיסמה</translation>
 <translation id="808894953321890993">שינוי סיסמה</translation>
 <translation id="7967687455715421528">לא ניתן לשנות את הסיסמה</translation>
+<translation id="7413006094063730650">מחיקת חשבון</translation>
 <translation id="4869737930995549965">התנתקות</translation>
+<translation id="2902312830803030883">פעולות נוספות</translation>
 <translation id="5538654494923870167">להתחיל עם חשבון ה-Brave שלך</translation>
 <translation id="1544145635547515689">יצירת חשבון Brave</translation>
 <translation id="3828644479849256404">כבר יש לך חשבון? התחבר</translation>
@@ -2990,6 +2999,11 @@ Brave יש שירות עוזר שמגן עליך מפני חשיפה זו על �
 <translation id="7228810962389847249">הזן את הקוד כאן</translation>
 <translation id="4683390091376980486">אישור קוד</translation>
 <translation id="3970028678400797622">שליחת קוד אימייל מחדש</translation>
+<translation id="3653907916071208187">למחוק את חשבון Brave שלך?</translation>
+<translation id="8216839865292766307">מחיקת חשבון Brave תמחק גם את כינויי הדוא"ל שלו. ייתכן שתאבד גישה לשירותים מקוונים בהם השתמשת בכינוי כדי להירשם. לא ניתן לבטל פעולה זו.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">הקלד <ph name="KEYWORD"/> כדי לאפשר מחיקת חשבון</translation>
+<translation id="536306385881145656">מחיקת חשבון Brave</translation>
 <translation id="2475982808118771221">אירעה שגיאה</translation>
 <translation id="5430795854491041407">שגיאה</translation>
 <translation id="2232323423357029857">הדפדפן נתקל בשגיאה לא צפויה<ph name="ERROR_CODE"/>. נא להפעיל מחדש את הדפדפן ולנסות שוב.</translation>
@@ -3022,4 +3036,10 @@ Brave יש שירות עוזר שמגן עליך מפני חשיפה זו על �
 <translation id="1063227610401477317">החל שינויים</translation>
 <translation id="5539769255716491933">דווח על שלבים שנכשלו</translation>
 <translation id="7562163394445060270">השלמת המשימה נכשלה</translation>
+<translation id="691082536326552372">דווח על שלבים שנכשלו</translation>
+<translation id="2731141092023803480">שלח דוח על השלבים שנכשלו לצוות של Brave. דוח זה יכיל את המידע הדרוש לנו כדי לתקן את הבעיה. <ph name="LINK_BEFORE"/>למידע נוסף.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">כתובת URL נוכחית</translation>
+<translation id="4739707522207259415">שלב(ים) שנכשלו</translation>
+<translation id="1767991048059195456">שליחת דוח</translation>
+<translation id="2168036794078614559">הדוח נשלח</translation>
 </translationbundle>

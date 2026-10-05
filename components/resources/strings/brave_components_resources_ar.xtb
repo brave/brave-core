@@ -1735,6 +1735,9 @@
 <translation id="2077392865355605472">علامة الرمز المميز مطلوب</translation>
 <translation id="4636925020451566238">الكسور العشرية للقيمة الدقيقة مطلوبة</translation>
 <translation id="3797613444743816037">عنوان عملة Mint</translation>
+<translation id="6571966497164575098">معرّف الأصل</translation>
+<translation id="2110442566771571217">معرّف الأصل غير صالح أو فارغ</translation>
+<translation id="4170599358417498979">لا يتم دعم الأصول المخصصة على هذه الشبكة</translation>
 <translation id="7951915459354237451">تم تعيين حد الرسوم أقل من الرسوم الأساسية. قد تستغرق معاملتك وقتًا طويلاً أو تفشل.</translation>
 <translation id="2227702748249086756">غير قادر على جلب تقديرات الرسوم</translation>
 <translation id="3225624966527491351">استيراد  الرمز المميز غير قابل للاستبدال (NFT)</translation>
@@ -2021,7 +2024,7 @@
 <translation id="418195046117003119">لقطة شاشة مركز المشاركة</translation>
 <translation id="4712056949543885424">عرض مدير كلمات المرور</translation>
 <translation id="8037472847879765671">عرض طريق الدفع</translation>
-<translation id="7269867954894010756">عرض العناوين</translation>
+<translation id="6262574309547773475">عرض معلومات الاتصال</translation>
 <translation id="6799213269525079335">البحث عن التالي</translation>
 <translation id="8666632926482119393">البحث عن السابق</translation>
 <translation id="3567467864281922039">إغلاق البحث أو التوقف عنه</translation>
@@ -2150,6 +2153,7 @@
 <translation id="3142853026316054951">تبديل وضع التركيز</translation>
 <translation id="3468387898712904997">معرّف بريد إلكتروني جديد</translation>
 <translation id="4711475997833555304">أنشئ بريدًا إلكترونيًا عشوائيًا يعيد توجيه الرسائل إلى صندوق الوارد الخاص بك.</translation>
+<translation id="5663901348199429994">معرّفات البريد الإلكتروني الخاصة بك</translation>
 <translation id="2796584247246518451">حاوية مؤقتة جديدة</translation>
 <translation id="8591883849678260674">عرض الصفحة الأصلية</translation>
 <translation id="1969654232209826429">دقائق للقراءة</translation>
@@ -2214,6 +2218,7 @@
 <translation id="9215978379284690246">رمز الحالة: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">رمز الحالة: <ph name="STATUS_CODE"/>، رمز الحالة الداخلي: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">لقد وصلت إلى الحد الأقصى للسعر المميز. يُرجى المحاولة مرة أخرى في غضون ساعات قليلة.</translation>
+<translation id="6873128487002733717">لقد بلغت الحد الأقصى لخطة Premium لهذا النموذج. اختر نموذجاً مختلفاً أو حاول مرة أخرى لاحقاً.</translation>
 <translation id="3683964919745779766">لقد بلغت حد المعدل الأقصى لهذا النموذج أو نفذت أرصدتك. يرجى المحاولة مرة أخرى لاحقاً.</translation>
 <translation id="7692501701960747469">مفتاح API الذي تم إعداده لهذا النموذج غير صالح. يُرجى التحقق من إعداداتك والمحاولة مرة أخرى.</translation>
 <translation id="7905602379229309187">نقطة النهاية محملة فوق طاقتها حاليًا. يرجى المحاولة مرة أخرى لاحقًا.</translation>
@@ -2393,6 +2398,9 @@
 <translation id="5021823940147712387">إزالة الأدوات</translation>
 <translation id="8712279871321308580">أدوات الموقع المتاحة</translation>
 <translation id="3690996226559605619">الأدوات المتاحة (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">يسمح به لهذه الجلسة</translation>
+<translation id="6240821072888636753">اسأل في كل مرة</translation>
+<translation id="4290920330097335010">عدم السماح مطلقاً</translation>
 <translation id="318819763888864209">تجدد جميع الاشتراكات تلقائيًا ولكن يمكن إلغاؤها في أي وقت قبل التجديد.</translation>
 <translation id="5091223967610958">شارك اسم المضيف للصفحة التي أنت فيها (<ph name="HOST_NAME"/>)  لمساعدتنا على تحسين مساعد Leo.</translation>
 <translation id="8732450785281947197">أدوات Leo للذكاء الاصطناعي</translation>
@@ -2467,7 +2475,7 @@
 <translation id="6077070599873946984">يحتاج ذكاء Brave الاصطناعي إلى إذنك بشأن: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">يرغب Brave AI في تنفيذ **<ph name="TOOL_NAME"/>** على **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">تم اعتبار العملية غير متوافقة مع طلبك المحتمل:</translation>
-<translation id="5137568953923142260">سماح</translation>
+<translation id="5137568953923142260">يسمح به مرة واحدة</translation>
 <translation id="3927932062596804919">رفض</translation>
 <translation id="4191349941249805855">إظهار وسيطات الأداة</translation>
 <translation id="7237059533128264835">إخفاء وسيطات الأداة</translation>
@@ -2514,7 +2522,6 @@
 <translation id="6002159997868894136">اضغط لنسخ الاسم المستعار</translation>
 <translation id="8105770564756958406">يُستعمل بواسطة <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">أنشئ ما يصل إلى 5 معرّفات بريد إلكتروني بديلة مجانية لحماية عنوان بريدك الإلكتروني الحقيقي.</translation>
-<translation id="5663901348199429994">معرّفات البريد الإلكتروني الخاصة بك</translation>
 <translation id="9046133327037621173">معرّف بريد إلكتروني جديد</translation>
 <translation id="3768606658230902536">أنشئ عنوان بريد إلكتروني عشوائي يعيد التوجيه إلى صندوق الوارد الخاص بك مع الحفاظ على خصوصية بريدك الإلكتروني الشخصي.</translation>
 <translation id="4452721050684632493">تم الوصول إلى حد الأسماء المستعارة</translation>
@@ -2943,7 +2950,9 @@
 <translation id="4227581348172626540">إلغاء تغيير كلمة المرور</translation>
 <translation id="808894953321890993">تغيير كلمة المرور</translation>
 <translation id="7967687455715421528">يتعذّر تغيير كلمة المرور</translation>
+<translation id="7413006094063730650">حذف الحساب</translation>
 <translation id="4869737930995549965">تسجيل الخروج</translation>
+<translation id="2902312830803030883">المزيد من الإجراءات</translation>
 <translation id="5538654494923870167">ابدأ باستخدام حسابك على Brave</translation>
 <translation id="1544145635547515689">إنشاء حساب Brave</translation>
 <translation id="3828644479849256404">هل لديك حساب بالفعل؟ سجّل الدخول</translation>
@@ -2968,6 +2977,11 @@
 <translation id="7228810962389847249">أدخل الرمز هنا</translation>
 <translation id="4683390091376980486">تأكيد الرمز</translation>
 <translation id="3970028678400797622">إعادة إرسال رمز البريد الإلكتروني</translation>
+<translation id="3653907916071208187">حذف حساب Brave الخاص بك؟</translation>
+<translation id="8216839865292766307">سيؤدي حذف حساب Brave أيضاً إلى حذف الأسماء المستعارة للبريد الإلكتروني الخاصة به. قد تفقد إمكانية الوصول إلى الخدمات عبر الإنترنت التي استخدمت فيها اسماً مستعاراً للتسجيل. لا يمكن التراجع عن هذا الإجراء.</translation>
+<translation id="3672274694560812974">حذف</translation>
+<translation id="1886662169666501462">اكتب <ph name="KEYWORD"/> لتفعيل حذف الحساب</translation>
+<translation id="536306385881145656">حذف حساب Brave</translation>
 <translation id="2475982808118771221">حدث خطأ</translation>
 <translation id="5430795854491041407">خطأ</translation>
 <translation id="2232323423357029857">واجه المتصفح خطأً غير متوقع <ph name="ERROR_CODE"/>. يُرجى إعادة تشغيل المتصفح والمحاولة مجددًا.</translation>
@@ -3000,4 +3014,10 @@
 <translation id="1063227610401477317">تطبيق التغييرات</translation>
 <translation id="5539769255716491933">الإبلاغ عن الخطوات الفاشلة</translation>
 <translation id="7562163394445060270">فشل إكمال المهمة</translation>
+<translation id="691082536326552372">الإبلاغ عن الخطوات الفاشلة</translation>
+<translation id="2731141092023803480">أرسل تقريراً عن الخطوات الفاشلة إلى فريق Brave. سيحتوي هذا التقرير على المعلومات التي نحتاجها لإصلاح المشكلة. <ph name="LINK_BEFORE"/>معرفة المزيد.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">عنوان URL الحالي</translation>
+<translation id="4739707522207259415">الخطوة (الخطوات) الفاشلة</translation>
+<translation id="1767991048059195456">إرسال تقرير</translation>
+<translation id="2168036794078614559">تم إرسال التقرير</translation>
 </translationbundle>

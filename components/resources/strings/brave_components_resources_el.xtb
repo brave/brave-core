@@ -1732,6 +1732,9 @@
 <translation id="2077392865355605472">Απαιτείται σύμβολο διακριτικού</translation>
 <translation id="4636925020451566238">Απαιτείται ακρίβεια δεκαδικών διακριτικού</translation>
 <translation id="3797613444743816037">Διεύθυνση νομισματοκοπείου</translation>
+<translation id="6571966497164575098">Αναγνωριστικό στοιχείου κεφαλαίου</translation>
+<translation id="2110442566771571217">Μη έγκυρο ή κενό αναγνωριστικό στοιχείου κεφαλαίου διακριτικού</translation>
+<translation id="4170599358417498979">Δεν υποστηρίζονται προσαρμοσμένα στοιχεία σε αυτό το δίκτυο</translation>
 <translation id="7951915459354237451">Το όριο τελών είναι χαμηλότερο από το βασικό τέλος. Η συναλλαγή σας ίσως αργήσει πολύ ή αποτύχει.</translation>
 <translation id="2227702748249086756">Δεν είναι δυνατή η ανάκτηση των εκτιμώμενων τελών</translation>
 <translation id="3225624966527491351">Εισαγωγή NFT</translation>
@@ -2018,7 +2021,7 @@
 <translation id="418195046117003119">Στιγμιότυπο οθόνης κέντρου κοινοποίησης</translation>
 <translation id="4712056949543885424">Εμφάνιση διαχείρισης κωδικών πρόσβασης</translation>
 <translation id="8037472847879765671">Εμφάνιση μεθόδων πληρωμής</translation>
-<translation id="7269867954894010756">Εμφάνιση διευθύνσεων</translation>
+<translation id="6262574309547773475">Εμφάνιση στοιχείων επικοινωνίας</translation>
 <translation id="6799213269525079335">Εύρεση επόμενου</translation>
 <translation id="8666632926482119393">Εύρεση προηγούμενου</translation>
 <translation id="3567467864281922039">Κλείσιμο εύρεσης ή διακοπή</translation>
@@ -2147,6 +2150,7 @@
 <translation id="3142853026316054951">Εναλλαγή λειτουργίας εστίασης</translation>
 <translation id="3468387898712904997">Νέο email alias</translation>
 <translation id="4711475997833555304">Δημιουργήστε ένα τυχαίο email που προωθείται στα εισερχόμενά σας.</translation>
+<translation id="5663901348199429994">Τα Email Alias</translation>
 <translation id="2796584247246518451">Νέος προσωρινός φάκελος</translation>
 <translation id="8591883849678260674">Δείτε το πρωτότυπο</translation>
 <translation id="1969654232209826429">λ. ανάγνωση</translation>
@@ -2211,6 +2215,7 @@
 <translation id="9215978379284690246">Κωδικός κατάστασης: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Κωδικός κατάστασης: <ph name="STATUS_CODE"/>, εσωτερικός κωδικός κατάστασης: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Συμπληρώσατε το όριο ρυθμού premium. Δοκιμάστε ξανά σε λίγες ώρες.</translation>
+<translation id="6873128487002733717">Συμπληρώσατε το όριο Premium για αυτό το μοντέλο. Επιλέξτε ένα διαφορετικό μοντέλο ή προσπαθήστε ξανά αργότερα.</translation>
 <translation id="3683964919745779766">Συμπληρώσατε το όριο ρυθμού για αυτό το μοντέλο ή δεν έχετε πια πίστωση. Προσπαθήστε ξανά αργότερα.</translation>
 <translation id="7692501701960747469">Το κλειδί API που έχει ρυθμιστεί για αυτό το μοντέλο δεν είναι έγκυρο. Ελέγξτε τη διαμόρφωσή σας και προσπαθήστε ξανά.</translation>
 <translation id="7905602379229309187">Το τελικό σημείο είναι επί του παρόντος υπερφορτωμένο. Προσπαθήστε ξανά αργότερα.</translation>
@@ -2390,6 +2395,9 @@
 <translation id="5021823940147712387">Κατάργηση εργαλείων</translation>
 <translation id="8712279871321308580">Διαθέσιμα εργαλεία ιστότοπου</translation>
 <translation id="3690996226559605619">Διαθέσιμα εργαλεία (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Επιτρέπεται για αυτήν τη συνεδρία</translation>
+<translation id="6240821072888636753">Ερώτηση κάθε φορά</translation>
+<translation id="4290920330097335010">Να μην επιτρέπεται ποτέ</translation>
 <translation id="318819763888864209">Όλες οι συνδρομές ανανεώνονται αυτόματα, αλλά μπορούν να ακυρωθούν οποιαδήποτε στιγμή πριν από την ανανέωση.</translation>
 <translation id="5091223967610958">Κοινοποιήστε το όνομα κεντρικού υπολογιστή της σελίδας όπου βρίσκεστε (<ph name="HOST_NAME"/>), για να μας βοηθήσετε να βελτιώσουμε το Leo.</translation>
 <translation id="8732450785281947197">Εργαλεία AI Leo</translation>
@@ -2464,7 +2472,7 @@
 <translation id="6077070599873946984">Το Brave AI χρειάζεται την άδειά σας για: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Το Brave AI θα ήθελε να εκτελέσει το **<ph name="TOOL_NAME"/>** στο **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Η ενέργεια ανιχνεύτηκε ως ενδεχομένως μη ευθυγραμμισμένη με το αίτημά σας:</translation>
-<translation id="5137568953923142260">Αποδοχή</translation>
+<translation id="5137568953923142260">Επιτράπηκε μία φορά</translation>
 <translation id="3927932062596804919">Άρνηση</translation>
 <translation id="4191349941249805855">Εμφάνιση ορισμάτων εργαλείου</translation>
 <translation id="7237059533128264835">Απόκρυψη ορισμάτων εργαλείου</translation>
@@ -2511,7 +2519,6 @@
 <translation id="6002159997868894136">Κάντε κλικ για αντιγραφή του ψευδωνύμου</translation>
 <translation id="8105770564756958406">Χρησιμοποιείται από <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Δημιουργήστε έως 5 δωρεάν email alias για να προστατεύσετε την πραγματική σας διεύθυνση email.</translation>
-<translation id="5663901348199429994">Τα Email Alias</translation>
 <translation id="9046133327037621173">Νέο email alias</translation>
 <translation id="3768606658230902536">Δημιουργήστε μια τυχαία διεύθυνση email που προωθείται στα εισερχόμενά σας, ενώ διατηρείτε την προσωπική σας διεύθυνση email ιδιωτική.</translation>
 <translation id="4452721050684632493">Συμπληρώθηκε το όριο ψευδωνύμων</translation>
@@ -2941,7 +2948,9 @@
 <translation id="4227581348172626540">Ακύρωση αλλαγής κωδικού πρόσβασης</translation>
 <translation id="808894953321890993">Αλλαγή κωδικού πρόσβασης</translation>
 <translation id="7967687455715421528">Δεν είναι δυνατή η αλλαγή κωδικού πρόσβασης</translation>
+<translation id="7413006094063730650">Διαγραφή λογαριασμού</translation>
 <translation id="4869737930995549965">Αποσύνδεση</translation>
+<translation id="2902312830803030883">Περισσότερες ενέργειες</translation>
 <translation id="5538654494923870167">Ξεκινήστε με τον λογαριασμό σας Brave</translation>
 <translation id="1544145635547515689">Δημιουργία λογαριασμού Brave</translation>
 <translation id="3828644479849256404">Έχετε ήδη λογαριασμό; Συνδεθείτε</translation>
@@ -2966,6 +2975,11 @@
 <translation id="7228810962389847249">Εισαγάγετε τον κωδικό εδώ</translation>
 <translation id="4683390091376980486">Επιβεβαίωση κωδικού</translation>
 <translation id="3970028678400797622">Επαναποστολή κωδικού email</translation>
+<translation id="3653907916071208187">Διαγραφή του λογαριασμού σας Brave;</translation>
+<translation id="8216839865292766307">Η διαγραφή ενός λογαριασμού Brave θα διαγράψει επίσης τα ψευδώνυμα email του. Ενδέχεται να χάσετε την πρόσβαση σε διαδικτυακές υπηρεσίες όπου χρησιμοποιήσατε ένα ψευδώνυμο για εγγραφή. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">Πληκτρολογήστε <ph name="KEYWORD"/> για ενεργοποίηση της διαγραφής λογαριασμού</translation>
+<translation id="536306385881145656">Διαγραφή λογαριασμού Brave</translation>
 <translation id="2475982808118771221">Παρουσιάστηκε σφάλμα</translation>
 <translation id="5430795854491041407">σφάλμα</translation>
 <translation id="2232323423357029857">Το πρόγραμμα περιήγησης αντιμετώπισε ένα μη αναμενόμενο σφάλμα<ph name="ERROR_CODE"/>. Παρακαλώ επανεκκινήστε το πρόγραμμα περιήγησης και δοκιμάστε ξανά.</translation>
@@ -2998,4 +3012,10 @@
 <translation id="1063227610401477317">Εφαρμογή Αλλαγών</translation>
 <translation id="5539769255716491933">Αναφορά Αποτυχημένων Βημάτων</translation>
 <translation id="7562163394445060270">Η ολοκλήρωση της εργασίας απέτυχε</translation>
+<translation id="691082536326552372">Αναφορά αποτυχημένων βημάτων</translation>
+<translation id="2731141092023803480">Στείλτε μια αναφορά των αποτυχημένων βημάτων στην ομάδα του Brave. Αυτή η αναφορά θα περιέχει τις πληροφορίες που χρειαζόμαστε για να διορθώσουμε το πρόβλημα. <ph name="LINK_BEFORE"/>Μάθετε περισσότερα.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">Τρέχον URL</translation>
+<translation id="4739707522207259415">Αποτυχημένο(-α) βήμα(-τα)</translation>
+<translation id="1767991048059195456">Αποστολή αναφοράς</translation>
+<translation id="2168036794078614559">Η αναφορά στάλθηκε</translation>
 </translationbundle>

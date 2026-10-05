@@ -216,11 +216,11 @@
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 網域</translation>
 <translation id="1458638489455808030">回溯機</translation>
-<translation id="8039999492770627305">抱歉，頁面遺失。</translation>
-<translation id="208311458690012764">無法載入已儲存的版本</translation>
-<translation id="4515057635283480525">您想要檢查 Wayback Machine 上是否有已儲存的版本嗎？</translation>
-<translation id="8252977752585110703">Wayback Machine 找不到此網站已儲存的版本。</translation>
-<translation id="8748778103033196270">檢查已儲存的版本</translation>
+<translation id="8039999492770627305">找不到頁面</translation>
+<translation id="208311458690012764">沒有可用的封存版本</translation>
+<translation id="4515057635283480525">Internet Archive 儲存了許多網頁的過往版本。您想在 Archive 中尋找此頁面嗎？</translation>
+<translation id="8252977752585110703">抱歉，我們檢查了 Internet Archive，但沒有此頁面的封存版本。</translation>
+<translation id="8748778103033196270">在 Archive 中尋找</translation>
 <translation id="191143826155037518">Brave 是以 <ph name="BEGIN_LINK_MPL"/>Mozilla 公眾授權條款 2.0<ph name="END_LINK_MPL"/> (MPL) 提供，其包含了其他多種授權條款的 <ph name="BEGIN_LINK_OSS"/>開放原始碼軟體<ph name="END_LINK_OSS"/>。
         您可以閱讀 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>如何下載並自行建構<ph name="END_LINK_BUILD_INSTRUCTIONS"/> 特定 <ph name="BEGIN_LINK_SOURCE_CODE"/>原始碼來建立此副本<ph name="END_LINK_SOURCE_CODE"/> 的說明。</translation>
 <translation id="4474155171896946103">將所有分頁加入書籤...</translation>

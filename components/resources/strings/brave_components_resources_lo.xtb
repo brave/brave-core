@@ -1715,6 +1715,9 @@
 <translation id="2077392865355605472">ຊື່ໂທເຄັນຕ້ອງມີຢ່າງແນ່ນອນ</translation>
 <translation id="4636925020451566238">ຄຸນຄ່າຄາດເຊິນຂອງໂທເຄັນຕ້ອງໄດ້ຮັບການຕັ້ງ</translation>
 <translation id="3797613444743816037">Mint address</translation>
+<translation id="6571966497164575098">ໄອດີ (ID) ຊັບສິນ</translation>
+<translation id="2110442566771571217">ໄອດີ (ID) ຊັບສິນໂທເຄັນທີ່ບໍ່ຖືກຕ້ອງຫຼືຫວ່າງເປົ່າ</translation>
+<translation id="4170599358417498979">ຊັບສິນທີ່ກຳນົດເອງບໍ່ຮອງຮັບໃນເຄືອຂ່າຍນີ້</translation>
 <translation id="7951915459354237451">ຄ່າທີ່ກຳນົດເສັຽຄ່າຈຳກັດຕໍາກວ່າຄ່າພື້ນຖານ. ທຸລະກຳຂອງທ່ານ ອາດໃຊ້ເວລາຍາວ ຫຼື ລົ້ມເຫຼວ.</translation>
 <translation id="2227702748249086756">ບໍ່ສາມາດຮັບຄ່າປະເມີນຄ່າທີ່ຢູ່</translation>
 <translation id="3225624966527491351">ນຳເຂົ້າ NFT</translation>
@@ -2001,7 +2004,7 @@
 <translation id="418195046117003119">ສູນການແບ່ງປັນຮູບພາບໜ້າເວັບ</translation>
 <translation id="4712056949543885424">ສະແດງຜູ້ຄຸ້ມລະຫັດຜ່ານ</translation>
 <translation id="8037472847879765671">ສະແດງວິທີການຊຳລະເງິນ</translation>
-<translation id="7269867954894010756">ສະແດງທີ່ຢູ່</translation>
+<translation id="6262574309547773475">ສະແດງຂໍ້ມູນຕິດຕໍ່</translation>
 <translation id="6799213269525079335">ຄົ້ນຫາຖັດໄປ</translation>
 <translation id="8666632926482119393">ຄົ້ນຫາກ່ອນໜ້າ</translation>
 <translation id="3567467864281922039">ປິດບໍຫຼຸດເຊື່ອມຊື່ມາ</translation>
@@ -2130,6 +2133,7 @@
 <translation id="3142853026316054951">ສະຫຼັບໂໝດໂຟກັສ</translation>
 <translation id="3468387898712904997">ອີເມວອະລາການໃຫມ່</translation>
 <translation id="4711475997833555304">ສ້າງອີເມວແບບສຸ່ມທີ່ສົ່ງຕໍ່ໄປຫາກ່ອງຈົດໝາຍຂອງທ່ານ.</translation>
+<translation id="5663901348199429994">ອີເມວອະລາການຂອງທ່ານ</translation>
 <translation id="2796584247246518451">ກ່ອງເກັບຊົ່ວຄາວໃໝ່</translation>
 <translation id="8591883849678260674">View original</translation>
 <translation id="1969654232209826429">min. read</translation>
@@ -2194,6 +2198,7 @@
 <translation id="9215978379284690246">ລະຫັດສະຖານະ: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">ລະຫັດສະຖານະ: <ph name="STATUS_CODE"/>, ລະຫັດສະຖານະພາຍໃນ: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">ທ່ານບໍ່ສາມາດເອົາໄດ້ນີ້ເພາະຖືກຈຳກັດວຽກວານພິເສດ. ກະລຸນາລອງໃໝ່ເພື່ອບົດຂັ້ນຕອນໃໜ່.</translation>
+<translation id="6873128487002733717">ທ່ານໄດ້ບັນລຸຂີດຈຳກັດ premium ສຳລັບໂມເດລນີ້ແລ້ວ. ເລືອກໂມເດລອື່ນ ຫຼື ລອງໃໝ່ພາຍຫຼັງ.</translation>
 <translation id="3683964919745779766">ທ່ານໄດ້ໃຊ້ສິດທີ່ຈະຢຸດລາຍການນີ້ເພື່ອແບບໜຶ່ງໃນການເຮັດວຽກນຳໃນໂມເດລນີ້ ຫຼືໃຊ້ໝູ່ໃນການແນະນຳຂອງທ່ານ. ກະລຸນາລອງໃໝ່ພາຍຫຼັງ.</translation>
 <translation id="7692501701960747469">ກະແບບຂອງ API ສຳລັບໂມເດລນີ້ບໍ່ຖືກຕ້ອງ. ກະລຸນາກວດຄືນການຕັ້ງຄ່າຂອງທ່ານແລະລອງໃໝ່.</translation>
 <translation id="7905602379229309187">ຂະນະນີ້ທາງເດືອນກຳລັງເຕີມແຕ່. ກະລຸນາລອງໃໝ່ພາຍຫຼັງ.</translation>
@@ -2373,6 +2378,9 @@
 <translation id="5021823940147712387">ຖອນເຄື່ອງມືອອກ</translation>
 <translation id="8712279871321308580">ເຄື່ອງມືເວັບໄຊທ໌ທີ່ມີໃຫ້</translation>
 <translation id="3690996226559605619">ເຄື່ອງມືທີ່ມີໃຫ້ (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">ອະນຸຍາດສຳລັບເຊດຊັນນີ້</translation>
+<translation id="6240821072888636753">ຖາມທຸກຄັ້ງ</translation>
+<translation id="4290920330097335010">ບໍ່ອະນຸຍາດເລີຍ</translation>
 <translation id="318819763888864209">ການສະໝັກໃຊ້ງານທັງໝົດຈະຕໍ່ອາຍຸອັດຕະໂນມັດແຕ່ທ່ານສາມາດຍົກເລີກໄດ້ຕະຫຼອດເວລາກ່ອນຮອດຮອບຖັດໄປ.</translation>
 <translation id="5091223967610958">ແຊເຫມົ້ານາມຂອງເວັບທີ່ທ່ານຢູ່ຍູ່ (<ph name="HOST_NAME"/>) ເພື່ອຊ່ວຍເຮັດໃຫ້ Leo ເປັນຫມູ່.</translation>
 <translation id="8732450785281947197">Leo AI tools</translation>
@@ -2447,7 +2455,7 @@
 <translation id="6077070599873946984">Brave AI ຕ້ອງການຄວາມຍິນຍອມຂອງທ່ານສຳລັບ: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI ຢາກຈະປະຕິບັດ **<ph name="TOOL_NAME"/>** ໃນ **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">ການປະຕິບັດຖືກກວດພົບວ່າອາດເຂົ້າຍ້າງຕໍ່ຄໍາຂໍຂອງທ່ານ:</translation>
-<translation id="5137568953923142260">ອະນຸຍາດ</translation>
+<translation id="5137568953923142260">ອະນຸຍາດຄັ້ງດຽວ</translation>
 <translation id="3927932062596804919">ປະຕິເສດ</translation>
 <translation id="4191349941249805855">ສະແດງອາກິວເມັນຂອງເຄື່ອງມື</translation>
 <translation id="7237059533128264835">ເຊື່ອງອາກິວເມັນຂອງເຄື່ອງມື</translation>
@@ -2494,7 +2502,6 @@
 <translation id="6002159997868894136">ຄລິກເພື່ອຄັດລອກ aliases</translation>
 <translation id="8105770564756958406">ໃຊ້ໂດຍ <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">ສ້າງອີເມວອະລີຍໄດ້ເຖິງ 5 ອີເມວຟໍາລໍາເພື່ອປ້ອງກັນທີ່ຢູ່ອີເມວຈິງຂອງທ່ານ.</translation>
-<translation id="5663901348199429994">ອີເມວອະລາການຂອງທ່ານ</translation>
 <translation id="9046133327037621173">ອີເມວອະລາການໃຫມ່</translation>
 <translation id="3768606658230902536">ສ້າງທີ່ຢູ່ອີເມວສຸ່ມເພື່ອສົ່ງໄປຫາກະດານເຂົ້າໃຫ້ທ່ານໂດຍເກັບທີ່ຢູ່ອີເມວສ່ວນຕົວຂອງທ່ານໃຫ້ຄົງຈິງ.</translation>
 <translation id="4452721050684632493">ຮອດຂີດຈຳກັດນາມແຝງແລ້ວ</translation>
@@ -2914,7 +2921,9 @@
 <translation id="4227581348172626540">ຍົກເລີກການປ່ຽນລະຫັດຜ່ານ</translation>
 <translation id="808894953321890993">ປ່ຽນລະຫັດຜ່ານ</translation>
 <translation id="7967687455715421528">ບໍ່ສາມາດປ່ຽນລະຫັດຜ່ານ</translation>
+<translation id="7413006094063730650">ລຶບບັນຊີ</translation>
 <translation id="4869737930995549965">ອອກຈາກລະບົບ</translation>
+<translation id="2902312830803030883">ການດຳເນີນການເພີ່ມເຕີມ</translation>
 <translation id="5538654494923870167">ເລີ່ມຕົ້ນກັບບັນຊີ Brave ຂອງທ່ານ</translation>
 <translation id="1544145635547515689">ສ້າງບັນຊີ Brave</translation>
 <translation id="3828644479849256404">ມີບັນຊີແລ້ວ? ເຂົ້າສູ່ລະບົບ</translation>
@@ -2939,6 +2948,11 @@
 <translation id="7228810962389847249">ໃສ່ລະຫັດຢູ່ບ່ອນນີ້</translation>
 <translation id="4683390091376980486">ຢືນຢັນລະຫັດ</translation>
 <translation id="3970028678400797622">ສົ່ງລະຫັດອີເມວໃໝ່</translation>
+<translation id="3653907916071208187">ລຶບບັນຊີ Brave ຂອງທ່ານບໍ?</translation>
+<translation id="8216839865292766307">ການລຶບບັນຊີ Brave ຈະລຶບອີເມວ alias ຂອງມັນນຳ. ທ່ານອາດຈະສູນເສຍການເຂົ້າເຖິງບໍລິການອອນລາຍທີ່ທ່ານໃຊ້ alias ເພື່ອລົງທະບຽນ. ການດຳເນີນການນີ້ບໍ່ສາມາດຍົກເລີກໄດ້.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">ພິມ <ph name="KEYWORD"/> ເພື່ອເປີດໃຊ້ການລຶບບັນຊີ</translation>
+<translation id="536306385881145656">ລຶບບັນຊີ Brave</translation>
 <translation id="2475982808118771221">ເກີດຂໍ້ຜິດພາດ</translation>
 <translation id="5430795854491041407">ຜິດພາດ</translation>
 <translation id="2232323423357029857">ບຣາວເຊີພົບກັບຂໍ້ຜິດພາດທີ່ບໍ່ຄາດຄິດ<ph name="ERROR_CODE"/>. ກະລຸນາເລີ່ມຕົ້ນບຣາວເຊີໃໝ່ ແລະລອງອີກຄັ້ງ.</translation>
@@ -2971,4 +2985,10 @@
 <translation id="1063227610401477317">ນຳໃຊ້ການປ່ຽນແປງ</translation>
 <translation id="5539769255716491933">ລາຍງານຂັ້ນຕອນທີ່ລົ້ມເຫລວ</translation>
 <translation id="7562163394445060270">ການເຮັດໜ້າວຽກໃຫ້ສຳເລັດລົ້ມເຫລວ</translation>
+<translation id="691082536326552372">ລາຍງານຂັ້ນຕອນທີ່ລົ້ມເຫລວ</translation>
+<translation id="2731141092023803480">ສົ່ງລາຍງານຂອງຂັ້ນຕອນທີ່ລົ້ມເຫລວໄປໃຫ້ທີມ Brave. ລາຍງານນີ້ຈະມີຂໍ້ມູນທີ່ຈຳເປັນສຳລັບພວກເຮົາໃນການແກ້ໄຂບັນຫາ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">URL ປະຈຸບັນ</translation>
+<translation id="4739707522207259415">ຂັ້ນຕອນທີ່ລົ້ມເຫລວ</translation>
+<translation id="1767991048059195456">ສົ່ງລາຍງານ</translation>
+<translation id="2168036794078614559">ສົ່ງລາຍງານແລ້ວ</translation>
 </translationbundle>
