@@ -1740,6 +1740,9 @@
 <translation id="2077392865355605472">Symbol tokena jest wymagany</translation>
 <translation id="4636925020451566238">Miejsca po przecinku tokena są wymagane</translation>
 <translation id="3797613444743816037">Adres tworzenia tokenów</translation>
+<translation id="6571966497164575098">Identyfikator zasobu</translation>
+<translation id="2110442566771571217">Nieprawidłowy lub pusty identyfikator zasobu tokena</translation>
+<translation id="4170599358417498979">Zasoby niestandardowe nie są obsługiwane w tej sieci</translation>
 <translation id="7951915459354237451">Limit opłaty jest ustawiony poniżej opłaty podstawowej. Twoja transakcja może zająć dużo czasu lub nie dojść do skutku.</translation>
 <translation id="2227702748249086756">Nie można pobrać szacunkowych opłat</translation>
 <translation id="3225624966527491351">Importowanie NFT</translation>
@@ -2028,7 +2031,7 @@
 <translation id="418195046117003119">Hub udostępniania zrzutów ekranu</translation>
 <translation id="4712056949543885424">Pokaż menedżera haseł</translation>
 <translation id="8037472847879765671">Pokaż metody płatności</translation>
-<translation id="7269867954894010756">Pokaż adresy</translation>
+<translation id="6262574309547773475">Pokaż informacje kontaktowe</translation>
 <translation id="6799213269525079335">Znajdź następne</translation>
 <translation id="8666632926482119393">Znajdź poprzednie</translation>
 <translation id="3567467864281922039">Zamknij okno wyszukiwania lub zatrzymaj</translation>
@@ -2157,6 +2160,7 @@
 <translation id="3142853026316054951">Przełącz tryb skupienia</translation>
 <translation id="3468387898712904997">Nowy alias e-mail</translation>
 <translation id="4711475997833555304">Utwórz losowy adres e-mail, który przekierowuje do Twojej skrzynki odbiorczej.</translation>
+<translation id="5663901348199429994">Twoje aliasy e-mail</translation>
 <translation id="2796584247246518451">Nowy kontener tymczasowy</translation>
 <translation id="8591883849678260674">Zobacz stronę oryginalną</translation>
 <translation id="1969654232209826429">min. czytania</translation>
@@ -2221,6 +2225,7 @@
 <translation id="9215978379284690246">Kod statusu: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Kod statusu: <ph name="STATUS_CODE"/>, wewnętrzny kod statusu: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Osiągnięto limit częstości w wersji premium. Spróbuj ponownie za kilka godzin.</translation>
+<translation id="6873128487002733717">Osiągnięto limit Premium dla tego modelu. Wybierz inny model lub spróbuj ponownie później.</translation>
 <translation id="3683964919745779766">Osiągnięto limit zapytań dla tego modelu lub skończyły się kredyty. Spróbuj ponownie później.</translation>
 <translation id="7692501701960747469">Klucz API skonfigurowany dla tego modelu jest nieprawidłowy. Sprawdź konfigurację i spróbuj ponownie.</translation>
 <translation id="7905602379229309187">Punkt końcowy jest obecnie przeciążony. Spróbuj ponownie później.</translation>
@@ -2400,6 +2405,9 @@
 <translation id="5021823940147712387">Usuń narzędzia</translation>
 <translation id="8712279871321308580">Dostępne narzędzia witryny</translation>
 <translation id="3690996226559605619">Dostępne narzędzia (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Zezwól na tę sesję</translation>
+<translation id="6240821072888636753">Pytaj za każdym razem</translation>
+<translation id="4290920330097335010">Nigdy nie zezwalaj</translation>
 <translation id="318819763888864209">Wszystkie subskrypcje są odnawiane automatycznie, ale można je anulować przed odnowieniem.</translation>
 <translation id="5091223967610958">Podziel się z nami nazwą hosta witryny, którą odwiedzasz (<ph name="HOST_NAME"/>), aby pomóc nam ulepszyć Leo.</translation>
 <translation id="8732450785281947197">Narzędzia SI Leo</translation>
@@ -2474,7 +2482,7 @@
 <translation id="6077070599873946984">Brave AI potrzebuje twojej zgody na: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI chce wykonać **<ph name="TOOL_NAME"/>** na **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Operacja została zidentyfikowana jako potencjalnie niezgodna z twoim żądaniem:</translation>
-<translation id="5137568953923142260">Zezwalaj</translation>
+<translation id="5137568953923142260">Zezwól tylko teraz</translation>
 <translation id="3927932062596804919">Odmów</translation>
 <translation id="4191349941249805855">Pokaż argumenty narzędzia</translation>
 <translation id="7237059533128264835">Ukryj argumenty narzędzia</translation>
@@ -2521,7 +2529,6 @@
 <translation id="6002159997868894136">Kliknij, aby skopiować alias</translation>
 <translation id="8105770564756958406">Używane przez <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Utwórz do 5 darmowych aliasów e-mail, aby chronić swój prawdziwy adres e-mail.</translation>
-<translation id="5663901348199429994">Twoje aliasy e-mail</translation>
 <translation id="9046133327037621173">Nowy alias e-mail</translation>
 <translation id="3768606658230902536">Stwórz losowy adres e-mail, który przekierowuje do Twojej skrzynki odbiorczej, jednocześnie chroniąc Twój osobisty adres e-mail.</translation>
 <translation id="4452721050684632493">Osiągnięto limit aliasów</translation>
@@ -2951,7 +2958,9 @@ Zaraz Cię połączymy!</translation>
 <translation id="4227581348172626540">Anuluj zmianę hasła</translation>
 <translation id="808894953321890993">Zmień hasło</translation>
 <translation id="7967687455715421528">Nie można zmienić hasła</translation>
+<translation id="7413006094063730650">Usuń konto</translation>
 <translation id="4869737930995549965">Wyloguj się</translation>
+<translation id="2902312830803030883">Więcej akcji</translation>
 <translation id="5538654494923870167">Rozpocznij korzystanie z konta Brave</translation>
 <translation id="1544145635547515689">Utwórz konto Brave</translation>
 <translation id="3828644479849256404">Masz już konto? Zaloguj się</translation>
@@ -2976,6 +2985,11 @@ Zaraz Cię połączymy!</translation>
 <translation id="7228810962389847249">Wprowadź kod tutaj</translation>
 <translation id="4683390091376980486">Potwierdź kod</translation>
 <translation id="3970028678400797622">Wyślij ponownie kod e-mail</translation>
+<translation id="3653907916071208187">Usunąć konto Brave?</translation>
+<translation id="8216839865292766307">Usunięcie konta Brave spowoduje również usunięcie powiązanych z nim aliasów e-mail. Możesz utracić dostęp do usług online, w których użyłeś aliasu do rejestracji. Tej operacji nie można cofnąć.</translation>
+<translation id="3672274694560812974">USUŃ</translation>
+<translation id="1886662169666501462">Wpisz <ph name="KEYWORD"/>, aby włączyć usuwanie konta</translation>
+<translation id="536306385881145656">Usuń konto Brave</translation>
 <translation id="2475982808118771221">Wystąpił błąd</translation>
 <translation id="5430795854491041407">błąd</translation>
 <translation id="2232323423357029857">Przeglądarka napotkała nieoczekiwany błąd<ph name="ERROR_CODE"/>. Uruchom ponownie przeglądarkę i spróbuj ponownie.</translation>
@@ -3008,4 +3022,10 @@ Zaraz Cię połączymy!</translation>
 <translation id="1063227610401477317">Zatwierdź zmiany</translation>
 <translation id="5539769255716491933">Zgłoś nieudane kroki</translation>
 <translation id="7562163394445060270">Ukończenie zadania nie powiodło się</translation>
+<translation id="691082536326552372">Zgłoś nieudane kroki</translation>
+<translation id="2731141092023803480">Wyślij raport o nieudanych krokach do zespołu Brave. Ten raport będzie zawierał informacje potrzebne nam do rozwiązania problemu. <ph name="LINK_BEFORE"/>Dowiedz się więcej.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">Bieżący adres URL</translation>
+<translation id="4739707522207259415">Nieudane kroki</translation>
+<translation id="1767991048059195456">Wyślij raport</translation>
+<translation id="2168036794078614559">Raport wysłany</translation>
 </translationbundle>

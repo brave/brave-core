@@ -61,6 +61,7 @@
 <translation id="1036511912703768636">Bu USB cihazlardan istənilən birinə daxil olun</translation>
 <translation id="1038462104119736705">Linux üçün minimum <ph name="INSTALL_SIZE"/> boş yerin olması tövsiyə edilir. Yer boşaltmaq üçün cihazdan faylları silin.</translation>
 <translation id="1038643060055067718">Sətirlər:</translation>
+<translation id="1039216421321079051">Artırma başqa artırma tərəfindən deaktiv edilib</translation>
 <translation id="1039337018183941703">Yanlış və ya zədələnmiş fayl</translation>
 <translation id="1040761927998636252"><ph name="URL"/> üçün adsız əlfəcin</translation>
 <translation id="1041175011127912238">Bu səhifə cavab vermir</translation>
@@ -139,6 +140,7 @@ Parollarınızı istənilən vaxt <ph name="GOOGLE_PASSWORD_MANAGER"/> bölməsi
 <translation id="1090541560108055381">Birləşdirməzdən əvvəl, bu kodun hər iki cihazda eyni olduğuna əmin olun</translation>
 <translation id="1093457606523402488">Görünən Şəbəkələr:</translation>
 <translation id="1093645050124056515">ctrl + alt + aşağı ox</translation>
+<translation id="1095398697303758108">Qabaqcıl avtodoldurma üçün Ctrl düyməsinə iki dəfə basın</translation>
 <translation id="1676423917671990874">Vebdə Brave Parol Meneceri</translation>
 <translation id="1097016918605049747">Bu səhifəni tərcümə etmək mümkün olmadı</translation>
 <translation id="1099962274138857708">Şəkil <ph name="DEVICE_NAME"/> cihazından kopyalanıb</translation>
@@ -613,6 +615,7 @@ Parollarınızı istənilən vaxt <ph name="GOOGLE_PASSWORD_MANAGER"/> bölməsi
 <translation id="1472675084647422956">Daha çox göstərin</translation>
 <translation id="1473223074251193484">Modem Rejimi Konfiqurasiyasını ayarlayın</translation>
 <translation id="1473616112002966036">&amp;Video Kadrı</translation>
+<translation id="1475224725276659152">Oxu siyahısı və daha çoxunu bütün cihazlarınızda əldə etmək üçün <ph name="EMAIL"/> kimi daxil olun</translation>
 <translation id="1476607407192946488">&amp;Dil Ayarları</translation>
 <translation id="1477654881618305065">Təşkilatınız bu məzmunu paylaşmağa icazə vermir. Yardıma ehtiyacınız varsa, admininizlə əlaqə saxlayın.</translation>
 <translation id="1478340334823509079">Ətraflı: <ph name="FILE_NAME"/></translation>
@@ -672,6 +675,7 @@ Parollarınızı istənilən vaxt <ph name="GOOGLE_PASSWORD_MANAGER"/> bölməsi
 <translation id="1523978563989812243">Mətndən-nitqə mexanizmləri</translation>
 <translation id="1524563461097350801">Xeyr, təşəkkürlər</translation>
 <translation id="1525740877599838384">Məkanı müəyyən etmək üçün yalnız Wi-Fi istifadə edin</translation>
+<translation id="1526274304859009691"><ph name="DEVICE"/> cihazından artırmaları və daha çoxunu əldə etmək üçün daxil olun</translation>
 <translation id="1526560967942511387">Başlıqsız Sənəd</translation>
 <translation id="1527336312600375509">Monitorun yenilənmə sürəti</translation>
 <translation id="152913213824448541">Yaxındakılarla Paylaşma kontaktları</translation>
@@ -852,6 +856,7 @@ Parollarınızı istənilən vaxt <ph name="GOOGLE_PASSWORD_MANAGER"/> bölməsi
 <translation id="1656528038316521561">Arxa fonun qeyri-şəffaflığı</translation>
 <translation id="4711067597921221305">İstifadə statistikası və xəta hesabatlarını avtomatik Brave'a göndərməklə <ph name="PRODUCT_NAME"/> tətbiqini təkmilləşdirməyə kömək edin</translation>
 <translation id="1657937299377480641">Təhsillə bağlı resurslara giriş üçün yenidən daxil olmaq məqsədilə valideyndən sizə icazə verməsini istəyin</translation>
+<translation id="1657952527687824398">Tab qrupuna fokuslanın</translation>
 <translation id="1658424621194652532">Bu səhifə mikrofonunuza daxil olur.</translation>
 <translation id="1660405268563702784"><ph name="APP_NAME"/> üçün güncəllənmə əlçatandır</translation>
 <translation id="1661996889489595105">{NUM_TABS,plural, =1{Brauzeri yavaşladan tabı düzəldin}other{Brauzeri yavaşladan tabları düzəldin}}</translation>
@@ -902,7 +907,6 @@ Parollarınızı istənilən vaxt <ph name="GOOGLE_PASSWORD_MANAGER"/> bölməsi
 <translation id="1696685050160038195">Cihazınızı təhlükəsiz saxlamaq üçün yalnız etibarlı mənbə və tərtibatçılardan gələn proqram təminatlarını işə salmalı və quraşdırmalısınız.</translation>
 <translation id="1697122132646041614">"Baş barmaq aşağı" seçdikdə bu nəticələri bəyənməməyinizlə bağlı ətraflı rəy təqdim etmək üçün forma açılır.</translation>
 <translation id="1697532407822776718">Hər şey hazırdır!</translation>
-<translation id="1698796500103229697">&amp;Ödəniş metodları</translation>
 <translation id="1698899521169711967">Klaviatura ilə baxış</translation>
 <translation id="1699807488537653303">Parol xətasını düzəldin</translation>
 <translation id="1700201317341192482">Virtual kartınızı silin</translation>
@@ -1302,6 +1306,7 @@ Parollarınızı istənilən vaxt <ph name="GOOGLE_PASSWORD_MANAGER"/> bölməsi
 <translation id="2006638907958895361">Linki <ph name="APP"/> tətbiqində açın</translation>
 <translation id="2007404777272201486">Problemi xəbər verin...</translation>
 <translation id="200781997903833896">Səsli oxunuşdan istifadə etmək üçün cihazınızda yer təmizləyin</translation>
+<translation id="2009047848105043829">Cihazlarınızı idarə edin</translation>
 <translation id="2010501376126504057">Uyğun cihazlar</translation>
 <translation id="2010636492623189611">Seçilib.</translation>
 <translation id="2012935757369720523">Faylı silin</translation>
@@ -1328,6 +1333,7 @@ Parollarınızı istənilən vaxt <ph name="GOOGLE_PASSWORD_MANAGER"/> bölməsi
 <translation id="2026367923222947564">Tam səhifə</translation>
 <translation id="2026377162111110983">Mühitin səsi</translation>
 <translation id="2028449514182362831">Hərəkət sensoru tələb edən xüsusiyyətlər işləməyəcək</translation>
+<translation id="2029064269235798707">Klaviatura qısayolu seçin</translation>
 <translation id="202918510990975568">Təhlükəsizliyi və girişi konfiqurasiya etmək üçün parolunuzu daxil edin</translation>
 <translation id="2030455719695904263">Trekped</translation>
 <translation id="2030803782168502207">Abunəni cihazdan silin</translation>
@@ -1417,6 +1423,7 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="2111670510994270194">Sağa yeni panel</translation>
 <translation id="2111778868023567359">Bu səhifədə Tab Qruplarını bir daha görməyəcəksiniz</translation>
 <translation id="2112554630428445878">Xoş gəlmisiniz, <ph name="USERNAME"/></translation>
+<translation id="211293389175579495"><ph name="NUM_MEGABYTES"/>MB</translation>
 <translation id="2113314491145966441">macOS-dən import edilmiş sertifikatlara baxın</translation>
 <translation id="21133533946938348">Tabı sancın</translation>
 <translation id="2113479184312716848">Fayl Açın...</translation>
@@ -1473,6 +1480,7 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="2148248734299717598">Sol Görünüşü Bağlayın</translation>
 <translation id="2148401732477136168">Quraşdırılmış tətbiqlər üçün sorğu göndərmək alınmadı.</translation>
 <translation id="2148892889047469596">Yayım paneli</translation>
+<translation id="2149773378153994101"><ph name="DEVICE"/> cihazından artırmalar və daha çoxunu əldə etmək üçün <ph name="EMAIL"/> kimi daxil olun</translation>
 <translation id="2149973817440762519">Əlfəcinə düzəliş edin</translation>
 <translation id="2150139952286079145">Axtarış istiqamətləri</translation>
 <translation id="2150168665016482929">&amp;Kiçildin</translation>
@@ -1970,6 +1978,7 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="252513908494776481">Bu tab haqqında soruşun</translation>
 <translation id="2525746158911982776">Sistemdə kifayət qədər yaddaş yeri olmadığına görə güncəllənmə alınmadı.</translation>
 <translation id="2525842906387880861">Bu səhifədə təklifləri bir daha görməyəcəksiniz</translation>
+<translation id="2526346836766369775">Yeni təcrid edilmiş &amp;tab</translation>
 <translation id="2526590354069164005">Masaüstü</translation>
 <translation id="2526619973349913024">Güncəllənmə olmasını yoxlayın</translation>
 <translation id="2527167509808613699">Əlaqənin hər hansı növü</translation>
@@ -2251,6 +2260,7 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="2740531572673183784">Ok</translation>
 <translation id="4939259950706542337">Bu giriş açarları yalnız bu cihazda yadda saxlanılır. Onlar Brave Hesabınızda saxlanmır.</translation>
 <translation id="2741912629735277980">Giriş ekranında UI-ni göstərin</translation>
+<translation id="274229007420507506"><ph name="BEGIN_LINK"/>Ayarlarda<ph name="END_LINK"/> qısayolu dəyişin</translation>
 <translation id="2742373789128106053"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> əlçatan deyil.</translation>
 <translation id="2743301740238894839">Başladın</translation>
 <translation id="3491974999711898233">Parolu Brave Parol Menecerində yadda saxlamaq üçün Məkan zolağındakı Parol Meneceri ikonası</translation>
@@ -2290,6 +2300,7 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="2767077837043621282">Chromebook'u güncəlləmək mümkün olmadı. Sonra cəhd edin.</translation>
 <translation id="2767127727915954024">Siz bu sayt üzrə bütün tabları bağlayanadək <ph name="ORIGIN"/> <ph name="FILENAME"/> faylını redaktə edə biləcək</translation>
 <translation id="2769174155451290427">Yüklənmiş şəkil</translation>
+<translation id="2769715732905083104">Tab qrupuna fokuslanın</translation>
 <translation id="2770082596325051055"><ph name="FILE_NAME"/> cihazını durdurun</translation>
 <translation id="2770465223704140727">Siyahıdan silin</translation>
 <translation id="2770690685823456775">Parolları digər qovluğa eksport edin</translation>
@@ -2492,7 +2503,6 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="2926708162326352948">Tema yüklənmiş şəklə yeniləndi</translation>
 <translation id="2927017729816812676">Keş Yaddaşı</translation>
 <translation id="7099134950659097846">Seçim saxlanıldı. Digər Brave xidmətlərinə daxil olduqda seçiminiz tətbiq olunacaq.</translation>
-<translation id="2928361271496576301">Qısayol düyməsini qəbul edin</translation>
 <translation id="2928795416630981206">Kameranızın mövqeyini izləmək icazəsi verilib</translation>
 <translation id="8154235090364237757">{NUM_SITES,plural, =1{Brave 1 saytdan icazələri sildi}other{Brave {NUM_SITES} saytdan icazələri sildi}}</translation>
 <translation id="2931157624143513983">Çap olunan sahəyə sığdırın</translation>
@@ -2511,6 +2521,7 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="2939908794993783865">Əlavə deaktiv aaytlar</translation>
 <translation id="2939938020978911855">Əlçatan Bluetooth cihazlarını göstərin</translation>
 <translation id="2941112035454246133">Aşağı</translation>
+<translation id="2942228903502008519">Tabları genişləndirin (<ph name="KEYBOARD_SHORTCUT"/>)</translation>
 <translation id="2942560570858569904">Gözlənilir...</translation>
 <translation id="2942581856830209953">Bu səhifəni fərdiləşdirin</translation>
 <translation id="2942707801577151363">Word, Excel və PowerPoint fayllarını açın, redaktə edin və yadda saxlayın. Bəzi funksiyalar üçün abunə tələb edilə bilər.</translation>
@@ -2594,9 +2605,9 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="3000461861112256445">Mono audio</translation>
 <translation id="3001144475369593262">Uşaq hesabları</translation>
 <translation id="3001614333383288217">{COUNT,plural, =0{Düymə fərdiləşdirilməyib}=1{1 fərdiləşdirilmiş düymə}other{{COUNT} fərdiləşdirilmiş düymə}}</translation>
-<translation id="3002745665522516995">Axtarmaq üçün səhifədə istənilən kontenti seçin</translation>
 <translation id="3002864108328203174">Gemini üzrə yarım hündürlükdə açılmış aşağıdakı vərəq.</translation>
 <translation id="3003144360685731741">Üstünlük verilən şəbəkələr</translation>
+<translation id="4014744802831415408">Brave-da Gemini tətbiqi tapşırığınız üzərində işləyir. Digər güncəllənmələr üçün Brave-u yoxlayın</translation>
 <translation id="5730179015008010982">Növbəti axtarışları proqnozlaşdırmaq və baxdığınız səhifə haqqında əlavə məlumat göstərmək üçün daxil olduğunuz URL-lər Brave-a göndərilir</translation>
 <translation id="3003623123441819449">CSS Keşi</translation>
 <translation id="3003967365858406397"><ph name="PHONE_NAME"/> şəxsi Wi-Fi bağlantısı yaradacaq.</translation>
@@ -2959,6 +2970,7 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="3280237271814976245">Saxlama formatı:</translation>
 <translation id="5340857474604400806">Brave'da qalın</translation>
 <translation id="3282210178675490297">Tab <ph name="APP_NAME"/> ilə paylaşılır</translation>
+<translation id="82609232232243542">Brave'a daxil olun</translation>
 <translation id="3284050785966252943">Metadatanın avtomatik doldurulmasını önizləmə</translation>
 <translation id="3285218179623157680"><ph name="WINDOW_TITLE"/> - Aşağıdan görünüş</translation>
 <translation id="3285329711156774325">Bacarıqları axtarın</translation>
@@ -3282,7 +3294,6 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="3527473647192919613">Yeni İzolə edilmiş Pəncərə</translation>
 <translation id="3528498924003805721">Qısayol hədəfləri</translation>
 <translation id="35296112145429559">Sürüşdürmə düymələri bərkidilsin</translation>
-<translation id="3529851166527095708">&amp;Ünvanlar və s.</translation>
 <translation id="3530919970074558307">Qrupu fokusdan çıxarın</translation>
 <translation id="3531070080754387701">Microsoft 365 bu qovluqda <ph name="FILE_NAMES"/> faylını aça bilmir</translation>
 <translation id="3531883061432162622">Əlfəcinlər və siyahılar bölməsində oxu siyahısı və əlfəcinləri tapa bilərsiniz</translation>
@@ -3436,6 +3447,7 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="3641456520301071208">Saytlar məkanınızı tələb edə bilər</translation>
 <translation id="3642070413432681490">Dairəvi kursor</translation>
 <translation id="3643962751030964445">Bu cihaz <ph name="DEVICE_MANAGER"/> tərəfindən idarə olunur. <ph name="DEVICE_MANAGER"/> tərəfindən <ph name="USER_EMAIL_ADDRESS"/> hesabı üçün yeni profil tələb olunur</translation>
+<translation id="3644128856494356630">CppGC yaddaşı</translation>
 <translation id="3645372836428131288">Barmaq izinin fərqli hissələrini tutmaq üçün barmağınızı yavaşca hərəkət etdirin.</translation>
 <translation id="3645951915068244649">Bu əlfəcin qovluğu ilə artıq tab qrupu yaradılıb. Yeni tab qrupu yaratmaq və ya mövcud tab qrupunu əvəz etmək istəyirsiniz?</translation>
 <translation id="3646789916214779970">Defolt temaya sıfırlayın</translation>
@@ -3694,7 +3706,6 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="3812525830114410218">İşləməyən sertifikat</translation>
 <translation id="883304095704384301">Axtardığınızı tapa bilmirsinizsə <ph name="BEGIN_LINK_CHROMIUM"/>Brave yardımı<ph name="END_LINK_CHROMIUM"/> bölməsinə gedin</translation>
 <translation id="3813358687923336574">Səhifələrin tərcüməsi və Sürətli cavablar üçün istifadə olunan dil</translation>
-<translation id="381485723922188688">Seçim</translation>
 <translation id="3815668647912194650">Sonra tab əlavə etmək üçün bu qrupu saxlayın və ya artıq ona daxil olmaq istəmirsinizsə, çıxın.</translation>
 <translation id="8338457030135232378">Brave Rəngləri</translation>
 <translation id="3817524650114746564">Kompüterin proksi ayarlarına keçin</translation>
@@ -4095,6 +4106,7 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="4131283654370308898">Bu saytda <ph name="EXTENSION_NAME"/> artırmasına icazə verin</translation>
 <translation id="4131410914670010031">Ağ və qara</translation>
 <translation id="413193092008917129">Şəbəkə Diaqnostikası Rejimləri</translation>
+<translation id="4132108564882155194"><ph name="DEVICE"/> cihazından oxu siyahısı və daha çoxunu əldə etmək üçün <ph name="EMAIL"/> kimi daxil olun</translation>
 <translation id="4132137475637520539">Keçidi olan hər kəs qoşulsun</translation>
 <translation id="4132364317545104286">eSIM profilinin adını dəyişin</translation>
 <translation id="4132969033912447558">Davam etdirin: <ph name="FILE_NAME"/></translation>
@@ -4188,6 +4200,7 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="4213540068152645535">Parolunuzu dəyişərkən problem oldu</translation>
 <translation id="42137655013211669">Bu resursa giriş server tərəfindən qadağan edilib.</translation>
 <translation id="4214192212360095377">İndi deaktiv edin</translation>
+<translation id="421564716234835106">Artırmaları və daha çoxunu bütün cihazlarınızda əldə etmək üçün <ph name="EMAIL"/> kimi daxil olun</translation>
 <translation id="5225126413804430873">Təşkilatınız Brave Hesabınızda tabların yadda saxlanılmasını deaktiv etdi</translation>
 <translation id="4216511743389425832">Bu səhifəni dinləyin</translation>
 <translation id="4217571870635786043">İmla</translation>
@@ -4202,6 +4215,7 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="4226303886821889519">Güncəlləyici versiyası: <ph name="VERSION"/></translation>
 <translation id="4228209296591583948">{NUM_EXTENSIONS,plural, =1{Bu artırmaya icazə verilmir}other{Bəzi artırmalara icazə verilmir}}</translation>
 <translation id="4229538146709970028">Sertifikatınızla <ph name="HOST_NAME"/> saytını doğrulamaq üçün <ph name="TOKEN_NAME"/> cihazını kiliddən çıxarın.</translation>
+<translation id="2660716894375898341">Daha uyğun cavablar vermək üçün cari tabınızın səhifə başlığı, URL-i və kontenti Brave ilə paylaşılır. Brauzerlə axtarış etdikcə tablar əlavə edə və ya silə bilərsiniz.</translation>
 <translation id="4232375817808480934">Kerberos'u konfiqurasiya edin</translation>
 <translation id="4232376164796433044">Parollar və avto-doldurma</translation>
 <translation id="4233739489690259993">Chromebook artıq təhlükəsizlik və proqram təminatı güncəllənmələri qəbul etmir. Ən son təhlükəsizlik və yeni funksiyalar üçün cihazı təkmilləşdirin. Təklif şərtləri tətbiq edilir.</translation>
@@ -4405,6 +4419,7 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="4379623957571212011">Temanı dərhal tətbiq etmək üçün şəkil seçin</translation>
 <translation id="4380055775103003110">Bu problem davam etsə, <ph name="SITE_ETLD_PLUS_ONE"/> saytında davam etmək üçün başqa yolları sınaya bilərsiniz.</translation>
 <translation id="4380648069038809855">Tam ekrana keçdiniz</translation>
+<translation id="4380934846131873000"><ph name="DEVICE"/> cihazından yadda saxlanılmış məlumatları və daha çoxunu əldə etmək üçün <ph name="EMAIL"/> kimi daxil olun</translation>
 <translation id="4381902252848068865">Sayta datanı yadda saxlamaq icazəsi verməyin</translation>
 <translation id="4381997246130185847">Davam edə və ya yolda olarkən yeni tab qrupları yarada bilərsiniz</translation>
 <translation id="4384312707950789900">Tərcihlərə əlavə edin</translation>
@@ -4543,7 +4558,6 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="4495002167047709180"><ph name="SITE"/> saytında bu artırmaya icazə verilsin?</translation>
 <translation id="4495419450179050807">Bu səhifədə göstərməyin</translation>
 <translation id="4500055235123625757">Gemini <ph name="LINK_BEGIN"/>bəzi veb-saytlarda<ph name="LINK_END"/> oxutduğunuz video və ya audio haqqında suallara cavab verə bilər.</translation>
-<translation id="4500114933761911433"><ph name="PLUGIN_NAME"/> ilə bağlı xəta oldu</translation>
 <translation id="4500647907053779331">&amp;Seçilən hissəni <ph name="LANGUAGE"/> dilinə tərcümə edin</translation>
 <translation id="4501530680793980440">Silinməni təsdiq edin</translation>
 <translation id="4502423230170890588">Bu cihazdan silin</translation>
@@ -4743,6 +4757,7 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="4652921642122345344">Səs sürəti <ph name="RATE"/>x</translation>
 <translation id="4654236001025007561">Faylları ətrafınızdakı Chromebook və Android cihazları ilə paylaşın</translation>
 <translation id="4654801841330730814">Hamısı</translation>
+<translation id="4656949320553787832">Pəncərənin sol, sağ və ya aşağı kənarında bölünmüş görünüşü sürüşdürüb buraxmağa icazə verin</translation>
 <translation id="4657724094180965385">Maraqlı deyil</translation>
 <translation id="4657810666108475055">Tab axtarışı</translation>
 <translation id="4657914796247705218">TrackPoint sürəti</translation>
@@ -5018,7 +5033,6 @@ Uzaqlaşdırmaq üçün Ctrl + Alt + Parlaqlığı Azalt düymələrindən istif
 <translation id="485480310608090163">Daha çox ayar və icazələr</translation>
 <translation id="4857304314344645169">Problemin addım-addım izahatına baxın</translation>
 <translation id="1913048435257025864">Brave-dan əvvəlki səhifə haqqında soruşun: <ph name="PAGE_TITLE"/></translation>
-<translation id="228735844055480091">Daha uyğun cavablar vermək üçün cari tabınızın kontenti və URL-i Brave ilə paylaşılır. Brauzerlə axtarış etdikcə tablar əlavə edə və ya silə bilərsiniz.</translation>
 <translation id="485806788160414322">Medianı oxudun və ya ona pauza verin</translation>
 <translation id="4858913220355269194">Fritz</translation>
 <translation id="4860012864737017059">Son tab</translation>
@@ -5029,6 +5043,7 @@ Uzaqlaşdırmaq üçün Ctrl + Alt + Parlaqlığı Azalt düymələrindən istif
 <translation id="4864805589453749318">Məktəb hesabı əlavə etmək üçün icazəni verən valideyni seçin.</translation>
 <translation id="4864905533117889071"><ph name="SENSOR_NAME"/> (bloklanıb)</translation>
 <translation id="486505726797718946">Yaddaş qənaəti</translation>
+<translation id="845205430231311424"><ph name="TASK_TITLE"/>: Brave-da Gemini tətbiqi tapşırığınız üzərində işləyir. Digər güncəllənmələr üçün Brave-u yoxlayın</translation>
 <translation id="486635084936119914">Endirdikdən sonra müəyyən fayl növlərini avtomatik açın</translation>
 <translation id="4868284252360267853">Bu dialoq hazırda fokuslanmayıb. Bu dialoqu fokuslamaq üçün Command-Shift-Option A düymələrini basın.</translation>
 <translation id="4869170227080975044">ChromeOS şəbəkə məlumatını oxumaq</translation>
@@ -5064,6 +5079,7 @@ Uzaqlaşdırmaq üçün Ctrl + Alt + Parlaqlığı Azalt düymələrindən istif
 <translation id="488785315393301722">Detalları göstər</translation>
 <translation id="488862352499217187">Yeni Qovluq Yaradın</translation>
 <translation id="4888715715847020167">ayarlara keçin</translation>
+<translation id="4888899258150891194">CppGC Yaddaşı</translation>
 <translation id="4890292359366636311">Şəkildə şəkil rejiminə avtomatik daxil olun ki, digər tab və pəncərələrin üstündə istifadə edə biləsiniz.</translation>
 <translation id="4890399733764921729">Qoşulmaq mümkün deyil. Başqa mobil provayder tərəfindən kilidlənib.</translation>
 <translation id="4890585766056792498">Təhlükəli saytlardan özünüzü qoruyun</translation>
@@ -5280,6 +5296,7 @@ Uzaqlaşdırmaq üçün Ctrl + Alt + Parlaqlığı Azalt düymələrindən istif
 <translation id="5060419232449737386">Altyazı ayarları</translation>
 <translation id="5061347216700970798">{NUM_BOOKMARKS,plural, =1{Bu qovluqda əlfəcin var. Onu silmək istədiyinizə əminsiniz?}other{Bu qovluqda # əlfəcin var. Onu silmək istədiyinizə əminsiniz?}}</translation>
 <translation id="5061531353537614467">Tundra</translation>
+<translation id="5061781067616989032">Öz klaviatura qısayolunuzu ayarlayın</translation>
 <translation id="5062863364865466276">Hərəkət</translation>
 <translation id="5063480226653192405">Istifadə</translation>
 <translation id="5064921774605267982"><ph name="PROFILE_NAME"/> profilini açın. Bu profili valideyniniz idarə edir.</translation>
@@ -5407,6 +5424,7 @@ Uzaqlaşdırmaq üçün Ctrl + Alt + Parlaqlığı Azalt düymələrindən istif
 <translation id="5155299520372681119">Fayl yükləməsinin müddəti bitib və silinib.</translation>
 <translation id="5156638757840305347">Kursor göründükdə və ya hərəkət etdikdə vurğulanır</translation>
 <translation id="5157250307065481244">Sayt detallarına baxın</translation>
+<translation id="5157258206078001821">Tabları yığcamlaşdırın (<ph name="KEYBOARD_SHORTCUT"/>)</translation>
 <translation id="5159094275429367735">Crostini'ni ayarlayın</translation>
 <translation id="5159236862360390997">Təlimatların olduğu bir sıra dərslik qabarcıqları göstəriləcək.
           Qabarcığı fokuslamaq üçün <ph name="ACCELERATOR"/> düyməsini basın, sonra onun yönəldiyi elementi fokuslamaq üçün yenidən basın.</translation>
@@ -5425,7 +5443,6 @@ Uzaqlaşdırmaq üçün Ctrl + Alt + Parlaqlığı Azalt düymələrindən istif
 <translation id="5173668317844998239">Təhlükəsizlik açarınızda saxlanılan barmaq izlərini əlavə edin və silin</translation>
 <translation id="5174169235862638850">Parol mübadilə buferinə kopyalandı</translation>
 <translation id="517488401359338823">Təhlükəsizlik cihazını kiliddən çıxarın</translation>
-<translation id="5176671554021050278">Səhifədəki xüsusi şəkillər və ya mətn haqqında ətraflı məlumat əldə etmək üçün Brave Linzadan istifadə edin.</translation>
 <translation id="5177479852722101802">Kamera və mikrofon girişini blok etməyə davam edin</translation>
 <translation id="5178667623289523808">Öncəkini tapın</translation>
 <translation id="5179428098696668914">Sİ oxutmasını deaktiv edin</translation>
@@ -5744,6 +5761,7 @@ Bu əməliyyata birdən çox keçirici təyin edə bilərsiniz.</translation>
 <translation id="5436510242972373446"><ph name="SITE_NAME"/> axtarın:</translation>
 <translation id="5438014818441491616"><ph name="WINDOW_SIDE"/> pəncərəsinin eni hazırda: <ph name="WINDOW_SIZE_PERCENT"/>, <ph name="PANE_SIDE"/> panelinin eni hazırda: <ph name="PANE_SIZE_PERCENT"/>.</translation>
 <translation id="5438060324827306856">Axtarış artırmaları</translation>
+<translation id="5440240650630588012">Fokuslanmağa kömək etmək üçün oxu sətri və ya pəncərə tətbiq edin. ⌥L düyməsinə basın və ya Ayarlara keçin.</translation>
 <translation id="5440425659852470030">Yan Paneli bağlayın</translation>
 <translation id="544083962418256601">Qısayollar yaradın...</translation>
 <translation id="5417227405829889012">Veb Tətbiqi Brave brauzerindən quraşdırılmışdır</translation>
@@ -5928,6 +5946,7 @@ Bu əməliyyata birdən çox keçirici təyin edə bilərsiniz.</translation>
 <translation id="5576472948015790634">Artıq tab qruplarını və Gemini söhbətlərini bir yerdə idarə edə bilərsiniz. İstənilən vaxt bunun bərkidilməsini ləğv edin.</translation>
 <translation id="5578059481725149024">Hesaba avtomatik giriş</translation>
 <translation id="5578387000057347457">Şəkil yaratmaq üçün fərdi sorğu daxil edin və ya mətni vurğulayın</translation>
+<translation id="557893471177655572">Sətir fokusunu sınayın</translation>
 <translation id="5650019292421185188">{ITEM_COUNT,plural, =1{1 element yalnız bu cihazda yadda saxlanılır. Onu digər cihazlarda istifadə etmək üçün <ph name="BEGIN_LINK"/>Brave Hesabınızda yadda saxlayın<ph name="END_LINK"/>.}other{{ITEM_COUNT} element yalnız bu cihazda yadda saxlanılır. Digər cihazlarda istifadə etmək üçün <ph name="BEGIN_LINK"/>Brave Hesabınızda yadda saxlayın<ph name="END_LINK"/>.}}</translation>
 <translation id="5579225964082017560"><ph name="SITE"/> saytını <ph name="SECTION_HEADER"/> siyahısından silin</translation>
 <translation id="5581031802689147441">Bölünmüş görünüş</translation>
@@ -5987,7 +6006,6 @@ Bu əməliyyata birdən çox keçirici təyin edə bilərsiniz.</translation>
 <translation id="5625225435499354052">Google Pay'də redaktə edin</translation>
 <translation id="5627832140542566187">Displeyin orientasiyası</translation>
 <translation id="5628434207686266338">Cihaz parolu ayarlayın</translation>
-<translation id="5628652442614339066">Bununla asanlıqla açın:</translation>
 <translation id="562935524653278697">Administratorunuz əlfəcin, tarixçə, parol və digər ayarlar üçün sinxronizasiyanı deaktiv edib.</translation>
 <translation id="5631017369956619646">CPU İstifadəsi</translation>
 <translation id="5631272057151918206">Oflayn faylların tutduğu maksimum <ph name="OFFLINE_STORAGE_SIZE"/> yer təmizlənəcək. Bəzi fayllar oflayn əlçatan qalacaq. <ph name="LINK_BEGIN"/>Ətraflı məlumat<ph name="LINK_END"/></translation>
@@ -6044,6 +6062,7 @@ Bu əməliyyata birdən çox keçirici təyin edə bilərsiniz.</translation>
 <translation id="5678955352098267522">Datanızı <ph name="WEBSITE_1"/> üzərində oxuyun</translation>
 <translation id="5680050361008726776">"<ph name="ESIM_PROFILE_NAME"/>" silinsin?</translation>
 <translation id="5681586175480958839">Fayl artıq açılır</translation>
+<translation id="5682120590308014005">Diskdən Sİ rejimi mövzularınıza asanlıqla fayllar əlavə etmək üçün daxil olun. Bütün cihazlarınızda parollarınızı və daha çoxunu əldə edəcəksiniz.</translation>
 <translation id="5684110242705861346">"<ph name="NAME"/>" artırması təşkilatınızın siyasəti tərəfindən əlavə edilib və bu ayara nəzarət edir. <ph name="BEGIN_LINK"/>Təfərrüatlara baxın<ph name="END_LINK"/></translation>
 <translation id="5684181005476681636">Wi-Fi detalları</translation>
 <translation id="5687340364605915800">Saytlar öz mülahizələrinə əsasən bu sorğunu cavablandırır</translation>
@@ -6068,6 +6087,7 @@ Bu əməliyyata birdən çox keçirici təyin edə bilərsiniz.</translation>
 <translation id="5700761515355162635">Üçüncü tərəf kukilərinə icazə verildi</translation>
 <translation id="5700836101007545240">Administrator bağlantı əlavə edilməsini deaktiv etdi</translation>
 <translation id="5701212929149679556">Mobil rouminq</translation>
+<translation id="5701500921291556452"><ph name="DEVICE"/> cihazındakı parolları və daha çoxunu əldə etmək üçün <ph name="EMAIL"/> kimi daxil olun</translation>
 <translation id="5701786609538182967">Digər tətbiqlər <ph name="APP_NAME"/> ilə eyni keçidləri açmaq üçün ayarlanıb. Bununla <ph name="APP_NAME_2"/>, <ph name="APP_NAME_3"/>, <ph name="APP_NAME_4"/> və digər 1 tətbiqin dəstəklənən keçidləri açması deaktiv ediləcək.</translation>
 <translation id="5702161882524398150">Əvvəlki tab haqqında soruşun</translation>
 <translation id="5703716265115423771">həcmi azaldın</translation>
@@ -6320,6 +6340,7 @@ Bu əməliyyata birdən çox keçirici təyin edə bilərsiniz.</translation>
 <translation id="5901630391730855834">Sarı</translation>
 <translation id="3535209993382976135">Brave Parol Meneceri deaktiv edilib</translation>
 <translation id="5906457147959147328">Bu sayta qorunan kontenti oxutmaq üçün identifikatorlardan istifadə imkanı verməyə davam edin</translation>
+<translation id="5906549184882174190">İzolə edilmiş</translation>
 <translation id="5906655207909574370">Güncəllənmək üzrədir! Güncəlləməni tamamlamaq üçün cihazı yenidən başladın.</translation>
 <translation id="5906732635754427568">Bu tətbiqlə bağlı data cihazdan silinəcək.</translation>
 <translation id="5906974869830879618">Pin daxil edin</translation>
@@ -6450,7 +6471,6 @@ Bu əməliyyata birdən çox keçirici təyin edə bilərsiniz.</translation>
 <translation id="6003143259071779217">eSIM Mobil şəbəkəsini silin</translation>
 <translation id="6003479444341796444">Başlıq paneli indi göstərilir</translation>
 <translation id="6003582434972667631">Tema Təşkilatınız tərəfindən ayarlanıb</translation>
-<translation id="6005010326905893430">özünüz redaktə edin</translation>
 <translation id="6005045517426700202">Kərpic ilə tikinti</translation>
 <translation id="6006484371116297560">Klassik</translation>
 <translation id="6007053304250788613">Yalnız bir displey güzgü rejimində istisna edilə bilər</translation>
@@ -6474,6 +6494,7 @@ Bu əməliyyata birdən çox keçirici təyin edə bilərsiniz.</translation>
 <translation id="296137235951584143">Brave'u özünüzküləşdirin</translation>
 <translation id="6024317249717725918">&amp;Videoçərçivəni <ph name="VISUAL_SEARCH_PROVIDER"/> ilə axtarın</translation>
 <translation id="6025215716629925253">İz Toplusu</translation>
+<translation id="6026436621921471553">Tab qrupunu fokusdan çıxarın</translation>
 <translation id="6026819612896463875"><ph name="WINDOW_TITLE"/> - USB cihaz qoşuldu</translation>
 <translation id="6027143200498653403">Tarixçənizlə bağlı suallar verdiyiniz zaman daxil olduğunuz səhifədən konkret məlumatlar haqqında cavab ala bilərsiniz</translation>
 <translation id="6027945736510816438"><ph name="WEBSITE"/> nəzərdə tuturdunuz?</translation>
@@ -6543,6 +6564,7 @@ Bu əməliyyata birdən çox keçirici təyin edə bilərsiniz.</translation>
 <translation id="6088475950266477163">Ayarlar</translation>
 <translation id="608912389580139775">Bu səhifəni oxu siyahınıza əlavə etmək üçün Əlfəcin ikonasına toxunun</translation>
 <translation id="6089289670051481345">Tritanomaliya</translation>
+<translation id="6090068946774422711"><ph name="DEVICE"/> cihazından oxu siyahısı və daha çoxunu əldə etmək üçün daxil olun</translation>
 <translation id="6090760257419195752">Qapadılmış xəbərdarlıqlar</translation>
 <translation id="609174145569509836">Yaddaşı təmizləyin</translation>
 <translation id="6091761513005122595">Paylaşım başladı.</translation>
@@ -6593,6 +6615,7 @@ Bu əməliyyata birdən çox keçirici təyin edə bilərsiniz.</translation>
 <translation id="6126601353087978360">Rəyinizi bura daxil edin:</translation>
 <translation id="6127292407256937949">Səs aktivdir. Səs səviyyəsini deaktiv edin.</translation>
 <translation id="6127598727646973981">Güvənli bağlantılar</translation>
+<translation id="6129686474468159207">Zəng etdiyiniz saytlara və kamera və ya mikrofonunuzun nə vaxt istifadə edildiyinə baxın</translation>
 <translation id="7089529486065491663">Seçilmiş data Brave və sinxronizasiya olunmuş cihazlardan silindi. <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> bölməsində Brave Hesabınızın axtarış tarixçəsinin digər formaları ola bilər.</translation>
 <translation id="6129938384427316298">Netscape Sertifikat Şərhi</translation>
 <translation id="6129953537138746214">Boşluq</translation>
@@ -6609,6 +6632,7 @@ Bu əməliyyata birdən çox keçirici təyin edə bilərsiniz.</translation>
 <translation id="6136637346277431354">Tablar və s. əlavə edin</translation>
 <translation id="6140948187512243695">Detalları göstərin</translation>
 <translation id="6141988275892716286">Endirməni təsdiq edin</translation>
+<translation id="6142784636114866877">Tabları genişləndirin (<ph name="KEYBOARD_SHORTCUT"/>)</translation>
 <translation id="6143186082490678276">Yardım</translation>
 <translation id="6143366292569327983">Səhifənin hansı dildən tərcümə ediləcəyini seçin</translation>
 <translation id="6144938890088808325">Chromebook'ları təkmilləşdirməyə yardım edin</translation>
@@ -6679,7 +6703,6 @@ Bu əməliyyata birdən çox keçirici təyin edə bilərsiniz.</translation>
 <translation id="6190953336330058278">Telefon Mərkəzi tətbiqləri</translation>
 <translation id="6192333916571137726">Faylı endirin</translation>
 <translation id="6192413564913825901">Bütün Əlfəcinlərə köçürün</translation>
-<translation id="6194333736420234626">&amp;Ödəniş metodları</translation>
 <translation id="6195005504600220730">Brauzer, ƏS və cihazınız haqqında məlumatları oxuyun</translation>
 <translation id="6196640612572343990">Üçüncü tərəf kukiləri blok edin</translation>
 <translation id="6196854373336333322">"<ph name="EXTENSION_NAME"/>" artırması proksi ayarlarınıza nəzarət edir, bu o dəməkdir ki, onlayn etdiyiniz hər bir şey üzərində dəyişdirə, poza və gizli izləyə bilər. Bu dəyişikliyin niyə baş verdiyinə əmin deyilsinizsə, yəqin Siz bunu istəməmisiniz.</translation>
@@ -6902,7 +6925,6 @@ Bu əməliyyata birdən çox keçirici təyin edə bilərsiniz.</translation>
 <translation id="6367396429435748845">Maus düymələrini durdurmaq və davam etdirmək üçün <ph name="ALT"/> + <ph name="LAUNCHER"/> + <ph name="NUM_4"/> üzərinə basın</translation>
 <translation id="6367853307713830174">Gemini mərhələləri göstərir və həssas olanları yerinə yetirməzdən əvvəl təsdiqləməyə çalışır. İstənilən vaxt dayandıra və ya özünüz davam etdirə bilərsiniz.</translation>
 <translation id="6367985768157257101">Yaxındakılarla Paylaşma ilə qəbul edilsin?</translation>
-<translation id="6368157733310917710">&amp;Ünvanlar və s.</translation>
 <translation id="6368276408895187373">Aktivdir – <ph name="VARIATION_NAME"/></translation>
 <translation id="6369420654782669629">Funksiya və artırmalar üçün qısayollar</translation>
 <translation id="6370021412472292592">Manifesti endirmək alınmadı.</translation>
@@ -6941,6 +6963,7 @@ Bu əməliyyata birdən çox keçirici təyin edə bilərsiniz.</translation>
 <translation id="6399675241776343019">Rədd edilib</translation>
 <translation id="6399774419735315745">Cəsus</translation>
 <translation id="6400360390396538896">Həmişə aktiv <ph name="ORIGIN"/></translation>
+<translation id="6400714103322134861">Tab qrupunu fokusdan çıxarın</translation>
 <translation id="6401118106417399952">Cihazın EID nömrəsi: <ph name="EID_NUMBER"/>. Cihazın seriya nömrəsi: <ph name="SERIAL_NUMBER"/>. Bu nömrələr xidməti aktivləşdirmək üçün istifadə edilə bilər.</translation>
 <translation id="8789425457808164956">Bu tabı başqa cihaza göndərmək üçün orada Brave'a daxil olun</translation>
 <translation id="6402042774506839496">Səbəbini öyrənmək üçün tətbiqin tərtibatçısı ilə əlaqə saxlayın</translation>
@@ -7244,6 +7267,7 @@ Daha # oğurlanmış parolunuz var. Brave Parol Meneceri bu parolları indi yoxl
 <translation id="663569763553406962">Saytı oxuya və ya dəyişə bilən artırmalara baxın</translation>
 <translation id="6636258750460740634">Tarixçə</translation>
 <translation id="6636623428211296678">Aşağıda digər ayarları araşdırın və ya indi bitirin</translation>
+<translation id="6639343220434368353">Menyuda axtarın və ya əməliyyat yazın</translation>
 <translation id="7039910610180903356">Bacarıqlar funksiyası hazırda deaktivdir. İşə başlamaq üçün Brave Ayarlarınızı yeniləyin.</translation>
 <translation id="6639554308659482635">SQLite yaddaş</translation>
 <translation id="6640268266988685324">Açıq Tab</translation>
@@ -7340,6 +7364,7 @@ Daha # oğurlanmış parolunuz var. Brave Parol Meneceri bu parolları indi yoxl
 <translation id="6710213216561001401">Əvvəlki</translation>
 <translation id="6710394144992407503">Veb səhifələrdə mətn yazarkən orfoqrafik səhvləri yoxlayın</translation>
 <translation id="6711236403841768371"><ph name="END_DATE"/> tarixindən əvvəl</translation>
+<translation id="6711569175139833669">Qabaqcıl avtodoldurma üçün ⌘ düyməsinə iki dəfə basın</translation>
 <translation id="6712943853047024245"><ph name="WEBSITE"/> üçün bu istifadəçi adı ilə parolu artıq yadda saxlamısınız</translation>
 <translation id="6713233729292711163">İş Profili əlavə edin</translation>
 <translation id="6713441551032149301">Funksiya düymələri və sistemin yuxarı sıra düymələri arasında dəyişmək üçün başladıcı düyməsini basıb saxlayın</translation>
@@ -7460,7 +7485,6 @@ Daha # oğurlanmış parolunuz var. Brave Parol Meneceri bu parolları indi yoxl
 <translation id="6801435275744557998">Sensor ekranı kalibrləyin</translation>
 <translation id="6801920212017470190">Yolda olarkən bütün qiymət endirimlərindən xəbərdar olun</translation>
 <translation id="6802031077390104172"><ph name="USAGE"/> (<ph name="OID"/>)</translation>
-<translation id="6802825994120702390">Bir sahə və ya bütün ekranı seçməklə suala kontekst əlavə edin</translation>
 <translation id="6803766346203101854">Bu sayta cihazda data yadda saxlamaq icazəsi verilib.</translation>
 <translation id="6805236548654699520">Təhlükəsiz defolt ayarları bərpa edərək arzuolunmayan popap pəncərələri aradan qaldırın, şəbəkə problemlərini həll edin və s.</translation>
 <translation id="6805478749741295868">Bu, təcrübi AI funksiyasıdır və həmişə doğru nəticə verməyə bilər.</translation>
@@ -7633,6 +7657,7 @@ Daha # oğurlanmış parolunuz var. Brave Parol Meneceri bu parolları indi yoxl
 <translation id="6916818963747321523">Hamısını genişləndirin</translation>
 <translation id="8995127535539248248">Tab qruplarında paylaşmaq, onlara qoşulmaq və əməkdaşlıq etmək üçün ayarları açın və Brave girişinə icazə verin funksiyasını aktiv edin</translation>
 <translation id="6919354101107095996">Sayta daxil olmağa çalışın. Sonra yenidən endirin</translation>
+<translation id="6919461818524183254">Qısayol seçin</translation>
 <translation id="4194845302979409023">Həmçinin bu Brave profili üçün Qabaqcıl Güvənli Baxış aktiv edilsin?</translation>
 <translation id="6920989436227028121">Adi panel kimi açın</translation>
 <translation id="6921104647315081813">Fəaliyyətləri silin</translation>
@@ -7885,6 +7910,7 @@ Daha # oğurlanmış parolunuz var. Brave Parol Meneceri bu parolları indi yoxl
 <translation id="7124712201233930202">Təşkilatınızın siyasətlərinə cavab verilmir</translation>
 <translation id="7125148293026877011">Crostini'ni silin</translation>
 <translation id="7125177678433853645"><ph name="MODIFIER_ONE"/> + <ph name="MODIFIER_TWO"/> + <ph name="MODIFIER_THREE"/> + <ph name="MODIFIER_FOUR"/> + <ph name="KEY"/></translation>
+<translation id="7125576351373654452">Daxil olaraq bütün cihazlarda artırmaları və daha çoxunu əldə edin</translation>
 <translation id="7125932261198019860">Printeri Chromebook ilə eyni Wi-Fi şəbəkəsinə qoşun, yaxud USB kabeli istifadə edin. <ph name="LINK_BEGIN"/>Uyğunluq haqqında ətraflı<ph name="LINK_END"/></translation>
 <translation id="7127980134843952133">Endirmə tarixi</translation>
 <translation id="7130438335435247835">Giriş nöqtəsi adı (APN)</translation>
@@ -8105,6 +8131,7 @@ Daha # oğurlanmış parolunuz var. Brave Parol Meneceri bu parolları indi yoxl
 <translation id="7299588179200441056"><ph name="URL"/> - <ph name="FOLDER"/></translation>
 <translation id="730068416968462308">Animasiya</translation>
 <translation id="7301812050652048720">Giriş açarı silindi</translation>
+<translation id="7303246449496241344">Diskdən Sİ rejimi mövzularınıza asanlıqla fayllar əlavə etmək üçün kimliyinizi doğrulayın. Bütün cihazlarınızda parollarınızı və daha çoxunu əldə edəcəksiniz.</translation>
 <translation id="7303485269821975179"><ph name="DEVICE_TYPE"/> parolu ayarlayın</translation>
 <translation id="7303900363563182677">Bu səhifənin buferə kopyalanan mətn və şəkilləri görməsi blok edilib</translation>
 <translation id="7304030187361489308">Yüksək</translation>
@@ -8196,6 +8223,7 @@ Daha # oğurlanmış parolunuz var. Brave Parol Meneceri bu parolları indi yoxl
 <translation id="7368927539449986686">Sayt axtarışını redaktə edin</translation>
 <translation id="7370592524170198497">Ethernet EAP:</translation>
 <translation id="7374376573160927383">USB cihazlarını idarə edin</translation>
+<translation id="7375506263741703384">Admininiz tərəfindən bloklanıb</translation>
 <translation id="7376124766545122644">Bu keçiddən istifadə etmək mümkün deyil. Yenidən cəhd etmək üçün keçidinizin 'http://' və ya 'https://' ilə başladığını yoxlayın.</translation>
 <translation id="7376553024552204454">Hərəkətdə olarkən maus kursorunu vurğulayın</translation>
 <translation id="7377250337652426186">1 səhifədən çox geri getmək üçün Geri düyməsinə klikləyib saxlayın.</translation>
@@ -8215,6 +8243,7 @@ Daha # oğurlanmış parolunuz var. Brave Parol Meneceri bu parolları indi yoxl
 <translation id="738322632977123193">Yükləmək olmur. Şəkli bu formatlardan birində istifadə edin: .jpg, .gif, .png, .bmp, .tif və ya .webp</translation>
 <translation id="7384687527486377545">Klaviaturanın avto-təkrarlanması</translation>
 <translation id="7384804382450832142">Microsoft OneDrive-a qoşulun</translation>
+<translation id="7385713560829077068">Əlfəcinləri və digər məlumatları bütün cihazlarınızda əldə etmək üçün <ph name="EMAIL"/> kimi daxil olun</translation>
 <translation id="7385854874724088939">Çap etməyə çalışarkən xəta oldu. Printeri yoxlayın və yenidən cəhd edin.</translation>
 <translation id="7385870590821097913">Digər cihazda addımları tamamlayın</translation>
 <translation id="7387107590792462040">Quraşdırma davam edərkən gözləyin</translation>
@@ -8403,6 +8432,7 @@ Daha # oğurlanmış parolunuz var. Brave Parol Meneceri bu parolları indi yoxl
 <translation id="9075033240840348521">Brave Hesabındakı parollar üçün Brave-un defolt şifrələməsindən istifadə edin</translation>
 <translation id="385431757934284424">Ailə üzvü parol qəbul edə bilmir. Brave-u güncəlləməsini və parolları sinxronlaşdırmasını istəyin.</translation>
 <translation id="7518079994230200553">Bu seçim əlçatan deyil.</translation>
+<translation id="752021853309481824">Yadda saxlanılmış məlumatları və daha çoxunu bütün cihazlarınızda əldə etmək üçün <ph name="EMAIL"/> kimi daxil olun</translation>
 <translation id="752098910262610337">Qısayolları göstərin</translation>
 <translation id="7521430434164837205">Microsoft 365 faylları</translation>
 <translation id="7521805955117875767">Son vaxtlar istifadə etmədiyiniz üçün əlfəcin paneliniz gizlədildi</translation>
@@ -8464,6 +8494,7 @@ Daha # oğurlanmış parolunuz var. Brave Parol Meneceri bu parolları indi yoxl
 <translation id="7578137152457315135">Barmaq izi ayarları</translation>
 <translation id="7578692661782707876">Təsdiq kodunuzu daxil edin.</translation>
 <translation id="757941033127302446">Giriş edildi</translation>
+<translation id="7580311608678791180">Windows tapşırıq panelindən açın</translation>
 <translation id="7581462281756524039">Təmizləmə aləti</translation>
 <translation id="7582582252461552277">Bu şəbəkəyə üstünlük verin</translation>
 <translation id="7582844466922312471">Mobil data</translation>
@@ -8477,6 +8508,7 @@ Daha # oğurlanmış parolunuz var. Brave Parol Meneceri bu parolları indi yoxl
 <translation id="7590883480672980941">Daxiletmə ayarları</translation>
 <translation id="7592060599656252486">Bəzi</translation>
 <translation id="7595547011743502844"><ph name="ERROR"/> (xəta kodu <ph name="ERROR_CODE"/>).</translation>
+<translation id="7597816893408026784">Mac menyu panelindən açın</translation>
 <translation id="7600054753482800821">&amp;Axtarış sistemlərini və sayt axtarışını idarə edin</translation>
 <translation id="7600218158048761260">Brave Disk bu hesab növü üçün deaktiv edilib.</translation>
 <translation id="7600965453749440009"><ph name="LANGUAGE"/> heç vaxt tərcümə etməyin</translation>
@@ -8485,11 +8517,13 @@ Daha # oğurlanmış parolunuz var. Brave Parol Meneceri bu parolları indi yoxl
 <translation id="7602173054665172958">Çap idarəetməsi</translation>
 <translation id="7602805861133750578">Artıq tab qruplarını, Gemini söhbətlərini və Sİ rejimi mövzularını bir yerdə idarə edə bilərsiniz. İstənilən vaxt bunun bərkidilməsini ləğv edin.</translation>
 <translation id="1062868744766141611">Bu səhifə haqqında Brave-dan soruşun</translation>
+<translation id="7603583710244190070">Təşkilatınız bu tabın ekran paylaşımını bloklayır</translation>
 <translation id="7603785829538808504">Aşağıda sıralanmış saytlar fərdi ayarı izləyir</translation>
 <translation id="7604543761927773395">{NUM_PASSWORDS,plural, =1{1 parol import edilmədi}other{{NUM_PASSWORDS} parol import edilmədi}}</translation>
 <translation id="7605163396341021431">Android tətbiqlərinə bu Chromebook-da USB cihazları üzərində nəzarət imkanı verin</translation>
 <translation id="7605594153474022051">Sinxronizasiya işləmir</translation>
 <translation id="7606560865764296217">Animasiyanı durdurun</translation>
+<translation id="7606639338662398635">Tab qrupları</translation>
 <translation id="7606802863538485839">Effektləri işə salın</translation>
 <translation id="7607002721634913082">Durduruldu</translation>
 <translation id="7608810328871051088">Android tərcihləri</translation>
@@ -8636,6 +8670,7 @@ Buraya quraşdırılmış proqram təminatı, fayllar, brauzeriniz, cihazın əm
 <translation id="7707108266051544351">Bu saytın hərəkət sensorlarınıza girişi blok edilib.</translation>
 <translation id="7707922173985738739">Mobil data istifadə edin</translation>
 <translation id="7709152031285164251">Alınmadı - <ph name="INTERRUPT_REASON"/></translation>
+<translation id="7709839510451455295">Qabaqcıl avtodoldurma üçün fərdi qısayolu silin</translation>
 <translation id="7710568461918838723">&amp;Yayım...</translation>
 <translation id="7711968363685835633">Fərdi çevirmələri və təklifləri, həmçinin istifadəçi lüğətini deaktiv edin</translation>
 <translation id="7712739869553853093">Çap önbaxışı dialoqu</translation>
@@ -8675,6 +8710,7 @@ Buraya quraşdırılmış proqram təminatı, fayllar, brauzeriniz, cihazın əm
 <translation id="7742706086992565332">Müəyyən veb-saytlarda yaxınlaşdırma və uzaqlaşdırma dərəcəsini təyin edə bilərsiniz</translation>
 <translation id="7742879569460013116">Keçidi burada paylaşın:</translation>
 <translation id="774377079771918250">Harada yadda saxlanacağını seçin</translation>
+<translation id="7743876437245989842">Təşkilatınız tabın ekran paylaşımını bloklayır</translation>
 <translation id="7744047395460924128">Çap tarixçənizi görün</translation>
 <translation id="7744192722284567281">Verilənlərin təhlükəsizliyinin pozulması halı aşkarlanıb</translation>
 <translation id="7744649840067671761">Təyinata başlamaq üçün yeni keçirici və ya klaviatura düyməsini basın.
@@ -8733,6 +8769,7 @@ Təyinatı silmək üçün təyin edilmiş keçirici və ya düyməni basın.</t
 <translation id="7780992949171378848">Datanızın istifadəsi ilə bağlı saytlara imtina sorğusu göndərin</translation>
 <translation id="6191804255817539692">Brave'dan daha təklif yoxdur</translation>
 <translation id="7782717250816686129">Daimi datanı giriş ekranında saxlayıb kredensialları sessiyaya daxil edin.</translation>
+<translation id="7782885970382585765">Daxil olaraq bütün cihazlarda oxu siyahısı və daha çoxunu əldə edin</translation>
 <translation id="7784020347632229094">Klaviatura qısayolu haqqında ətraflı məlumat</translation>
 <translation id="7784067724422331729">Kompüterinizdəki güvənlik ayarları bu faylı blokladı.</translation>
 <translation id="7784796923038949829">Saytın datasını oxumaq yaxud dəyişmək mümkün deyil</translation>
@@ -9157,6 +9194,7 @@ Açar faylınızı güvənli yerdə saxlayın.</translation>
 <translation id="8102139037507939978">Şəxsi Eyniləşdirici Məlumatları system_logs.txt faylından çıxarın.</translation>
 <translation id="810362914482827094">Parolları axtarın</translation>
 <translation id="8104088837833760645">eSIM profilini endirin</translation>
+<translation id="8104388155778519213">Ekranınızdakıları Brave Linza ilə paylaşın</translation>
 <translation id="8104778744208707085">Diqqət yetirin</translation>
 <translation id="8105273883928376822">Davam etmək üçün daxil olun.</translation>
 <translation id="8106114112474206597">Maus düyməsini basmaq üçün "i" düyməsindən istifadə edin</translation>
@@ -9294,6 +9332,7 @@ Açar faylınızı güvənli yerdə saxlayın.</translation>
 <translation id="8215129063232901118"><ph name="DEVICE_TYPE"/> cihazınızdan telefonunuzun imkanlarına giriş edin</translation>
 <translation id="8217212468862726597">Göstəricini vurğulayın</translation>
 <translation id="8217399928341212914">Çoxsaylı faylların avtomatik endirilməsini bloklamağa davam edin</translation>
+<translation id="8218411859495801458">Qabaqcıl avtodoldurma üçün fərdi qısayolu redaktə edin</translation>
 <translation id="8221358554841691213">Orta fokus üslubu</translation>
 <translation id="8221942262855134126">Parolu idarə edin</translation>
 <translation id="8222112516148944758">Tab qrupları bütün cihazlarda avtomatik yadda saxlanılır və güncəllənir</translation>
@@ -9467,6 +9506,7 @@ Açar faylınızı güvənli yerdə saxlayın.</translation>
 <translation id="8345099007452202761"><ph name="APP_NAME"/> tətbiqinin yeni versiyası (<ph name="VERSION"/>) əlçatandır. İndi tətbiq etmək istəyirsiniz?</translation>
 <translation id="8345848587667658367">İndi telefonunuzun son fotolarına, mediasına, bildirişlərinə və tətbiqlərinə baxa bilərsiniz</translation>
 <translation id="8347227221149377169">Çap işləri</translation>
+<translation id="8347728744337089388">Cihazınıza göndərin</translation>
 <translation id="8348430946834215779">Mümkün olduqda HTTPS istifadə edin və onu dəstəkləməyən saytları yükləməzdən əvvəl xəbərdarlıq alın</translation>
 <translation id="8348896480272971199">İnternet bağlantısını yoxlayıb, yenidən cəhd edin.</translation>
 <translation id="8349305172487531364">Əlfəcin paneli</translation>
@@ -9671,6 +9711,7 @@ Açar faylınızı güvənli yerdə saxlayın.</translation>
 <translation id="851263357009351303"><ph name="HOST"/> şəkilləri göstərməyə hər zaman icazə verin</translation>
 <translation id="8513108775083588393">Avtodönüş</translation>
 <translation id="8513357934662532537"><ph name="USER_EMAIL"/> üçün parolları <ph name="BRAND"/> bölməsinə import etmək məqsədilə CSV faylı seçin.</translation>
+<translation id="8514257511170433540">Formaları doldurarkən defolt klaviatura qısayolundan istifadə edin</translation>
 <translation id="8514746246728959655">Başqa təhlükəsizlik açarından istifadə edin</translation>
 <translation id="8514828975162859845">Keks dilimləri</translation>
 <translation id="8514955299594277296">Saytlara cihazınızda məlumat saxlamağa icazə verməyin (tövsiyə edilmir)</translation>
@@ -9791,6 +9832,7 @@ Açar faylınızı güvənli yerdə saxlayın.</translation>
 <translation id="8616441548384109662"><ph name="CONTACT_NAME"/> adlı şəxsi kontaktlarınıza əlavə edin</translation>
 <translation id="8617601976406256334"><ph name="SITE_NAME"/> üçün sayt datası və icazələr silinsin?</translation>
 <translation id="8617748779076050570">Təhlükəsiz bağlantı ID'si: <ph name="CONNECTION_ID"/></translation>
+<translation id="8618586951885164886">&amp;Əlaqə Məlumatları</translation>
 <translation id="8619000641825875669">OneDrive</translation>
 <translation id="8619369551122276044">Cihazınızda veb-tətbiqlər quraşdırmağa icazə verilmədi</translation>
 <translation id="8619803522055190423">Düşən kölgə</translation>
@@ -9904,11 +9946,13 @@ Açar faylınızı güvənli yerdə saxlayın.</translation>
 <translation id="8692107307702113268">Parol 1000 simvoldan uzundur</translation>
 <translation id="8693862390730570097">"Yazmağa kömək et" funksiyasının avtomatik açılmasına icazə verməyin</translation>
 <translation id="8694596275649352090">Yatarkən və ya qapaq bağlı olduqda kilidləyin</translation>
+<translation id="8695214265159551349">Tabları yığcamlaşdırın (<ph name="KEYBOARD_SHORTCUT"/>)</translation>
 <translation id="8695825812785969222">Məkan açın...</translation>
 <translation id="869884720829132584">Tətbiqlər menyusu</translation>
 <translation id="869891660844655955">Bitmə tarixi</translation>
 <translation id="4880437500752902828">Parol səhifələrindəki kontent və əlaqəli məlumatlar Brave-a göndərilir və insanlar tərəfindən nəzərdən keçirilir. Parolunuz şifrlənib və heç kəs tərəfindən görünmür. <ph name="PASSWORD_CHANGE"/></translation>
 <translation id="8700416429250425628">başladıcı + geri düyməsi</translation>
+<translation id="8701058912406466818">Fokuslanmağa kömək etmək üçün oxu sətri və ya pəncərə tətbiq edin. Alt+L kombinasiyasına basın və ya Ayarlara keçin.</translation>
 <translation id="8702278591052316269">Gizli saxlanmış tab qrupları olan menyu</translation>
 <translation id="8703346390800944767">Reklamı Keçin</translation>
 <translation id="8703372953981978786">Bu keçid işləmir</translation>
@@ -10087,6 +10131,7 @@ Buraya quraşdırılmış proqram təminatı, fayllar, brauzeriniz, cihazın əm
 <translation id="8841843049738266382">İcazə verilənlər siyahısında olan istifadəçiləri oxuyun və dəyişin</translation>
 <translation id="8841884135319684422">Tapşırığı sonlandırın</translation>
 <translation id="8842594465773264717">Bu barmaq izini silin</translation>
+<translation id="8843160937959801189"><ph name="DEVICE"/> cihazından əlfəcinlərinizi və daha çoxunu əldə etmək üçün <ph name="EMAIL"/> kimi daxil olun</translation>
 <translation id="8845001906332463065">Yardım alın</translation>
 <translation id="8846132060409673887">Bu kompüterin istehsalçı və modelini oxuyun</translation>
 <translation id="8846239054091760429">Mono audio, başlanğıc, Canlı Altyazı və s</translation>
@@ -10400,7 +10445,6 @@ Buraya quraşdırılmış proqram təminatı, fayllar, brauzeriniz, cihazın əm
 <translation id="9071664234353284876">İdentifikasiya yoxdur</translation>
 <translation id="9072220108592671115">Quraşdırılmış versiya: <ph name="VERSION"/></translation>
 <translation id="9072918088200875065">Gemini-a sizin üçün tapşırıqları tamamlamaq məqsədilə bu saytlara daxil olmaq icazəsi verdiniz</translation>
-<translation id="9074190188883314952">Ekranda olanları paylaşmaq üçün linza düyməsindən istifadə edin</translation>
 <translation id="9074618195273027322">{CORE_COUNT,plural, =1{1 nüvə}other{{CORE_COUNT} nüvə}}</translation>
 <translation id="9074739597929991885">Bluetooth</translation>
 <translation id="9075413375877487220">Qabaqcıl Güvənli Baxış bu artırmaya etibar etmir.</translation>
@@ -10553,7 +10597,6 @@ Buraya quraşdırılmış proqram təminatı, fayllar, brauzeriniz, cihazın əm
 <translation id="6436745840109002184">Təşkilatınız Brave Hesabınızda yadda saxlaya biləcəklərinizi məhdudlaşdırdıqda tab qruplarını paylaşa və ya onlara qoşula bilməzsiniz</translation>
 <translation id="9197456336762295195">Bu QR kodunu google.com üçün giriş açarınızın olduğu cihazın kamerası ilə skan edin</translation>
 <translation id="919840898042157087">Statik hərəkət</translation>
-<translation id="5475623029588353226">İstənilən yerdən Brave-dan soruşun</translation>
 <translation id="9199503643457729322">Məxfilik Bələdçisindən uzaqlaşmaq üçün klikləyin.</translation>
 <translation id="9199695835892108985">Seriya port icazələri sıfırlansın?</translation>
 <translation id="9200339982498053969"><ph name="ORIGIN"/> <ph name="FOLDERNAME"/> qovluğundakı faylları redaktə edə biləcək</translation>
@@ -10650,6 +10693,7 @@ Buraya quraşdırılmış proqram təminatı, fayllar, brauzeriniz, cihazın əm
 <translation id="973558314812359997">Maus ölçüsü</translation>
 <translation id="973788791897303708">Bu tap qrupu doludur</translation>
 <translation id="97381968209917373"><ph name="CERT_NAME"/> sertifikatını silin</translation>
+<translation id="97570902379088759">Təşkilatınız <ph name="TAB_NAME"/> tabının ekran paylaşımını bloklayır</translation>
 <translation id="975893173032473675">Tərcümə ediləcək dil</translation>
 <translation id="976572010712028687">Valideyn olduğunuzu doğrulayın</translation>
 <translation id="977175416263153310">İzolə edilmiş pəncərədə açın</translation>
@@ -10662,6 +10706,7 @@ Buraya quraşdırılmış proqram təminatı, fayllar, brauzeriniz, cihazın əm
 <translation id="983192555821071799">Bütün panelləri bağlayın</translation>
 <translation id="983531994960412650"><ph name="WINDOW_TITLE"/> - Kamera və mikrofon qeydə alır</translation>
 <translation id="984705303330760860">Orfoqrafik yoxlanış dilləri əlavə edin</translation>
+<translation id="986994187171579118">Artırma <ph name="EXTENSION_NAME"/> tərəfindən deaktiv edilib</translation>
 <translation id="987264212798334818">Ümumi</translation>
 <translation id="987574372967138078"><ph name="WEBSITE_ORIGIN"/> mobil cihazınızdan məlumat əldə etmək istəyir</translation>
 <translation id="988320949174893488">Arabir Kəsilmə</translation>

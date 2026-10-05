@@ -36,7 +36,6 @@
 <translation id="1330562121671411446">זיהוי שפה אוטומטי</translation>
 <translation id="108284536240904209">‏אני רוצה למחוק את הנתונים גם מ-Brave (<ph name="URL"/>)</translation>
 <translation id="1345251407431278948">התכונה הוצמדה. מעכשיו אפשר לגשת לחיפוש התמונות דרך הכפתור החדש בסרגל הכלים</translation>
-<translation id="1356661055722410047">חדש! אפשר לתרגם טקסט ותמונות במסך</translation>
 <translation id="1383876407941801731">חיפוש</translation>
 <translation id="3535301204632475895">‏עם אפליקציית Brave אפשר להמשיך לגלוש בכל מקום</translation>
 <translation id="141901961143729572">כאן אפשר לשתף את המחשבות שלך</translation>
@@ -65,6 +64,7 @@
 <translation id="5994491947936308173">‏כדי להצמיד את Brave לסרגל האפליקציות לגישה מהירה, צריך ללחוץ על <ph name="BEGIN_BOLD"/>כן<ph name="END_BOLD"/> בהתראה של Windows.</translation>
 <translation id="5875673934455379806">‏התקנת Brave מחדש</translation>
 <translation id="4529028207655448215">‏Brave מנסה <ph name="AUTHENTICATION_PURPOSE"/></translation>
+<translation id="6387107728249269341">‏החשבון של <ph name="EXISTING_USER"/> כבר מחובר. כדי לשמור על סביבת גלישה נפרדת, אפשר להיכנס ל-Brave בפרופיל נפרד בתור <ph name="USER_EMAIL_ADDRESS"/>. אפשר לקבל גם את התוספים ופריטים נוספים ממכשיר <ph name="DEVICE"/>.</translation>
 <translation id="7362761326208547489">‏בפעם הבאה ש-Brave ייפתח במכשיר <ph name="DEVICE_TYPE"/>, תופיע הנחיה להשתמש במנהל הסיסמאות של Brave.</translation>
 <translation id="1838374766361614909">ניקוי חיפוש</translation>
 <translation id="3541642064306182066">‏כדי למחוק את נתוני הגלישה מהמכשיר הזה בלבד ועדיין לשמור אותם בחשבון שלך ב-Brave, <ph name="BEGIN_LINK"/>עליך לצאת מהחשבון ב-Brave<ph name="END_LINK"/>.</translation>
@@ -143,6 +143,7 @@
 <translation id="2575822587468774919">אפשר לבחור משהו לחיפוש באמצעות התכונה 'חיפוש תמונות'</translation>
 <translation id="3830890663494219270">‏כדי לקבל גישה לסיסמאות ולנתונים נוספים בכל המכשירים שלך, כדאי להיכנס ל-Brave</translation>
 <translation id="6908148552215338695">‏זה קוד ה-QR שצריך לסרוק בטלפון כדי להוריד את Brave ולהיכנס לחשבון ב-Brave.</translation>
+<translation id="7985444384142764643">‏כדי לחפש באמצעות Brave.</translation>
 <translation id="6252796827759111076">‏המשך השימוש ב-Brave</translation>
 <translation id="259935314519650377">שמירת מנהל ההתקנה שהורד במטמון נכשלה. השגיאה: <ph name="UNPACK_CACHING_ERROR_CODE"/>.</translation>
 <translation id="2620436844016719705">מערכת</translation>
@@ -186,6 +187,7 @@
 <translation id="3038232873781883849">בהמתנה להתקנה…</translation>
 <translation id="3045032126857188731">שפת התרגום: <ph name="LANGUAGE"/></translation>
 <translation id="3047590466164881923">סגירה של תיבת דו-שיח של משוב</translation>
+<translation id="72283640173840794">‏החשבון של <ph name="EXISTING_USER"/> כבר מחובר. כדי לשמור על סביבת גלישה נפרדת, אפשר להיכנס ל-Brave בפרופיל נפרד בתור <ph name="USER_EMAIL_ADDRESS"/>. אפשר לקבל גם את רשימת הקריאה ופריטים נוספים ממכשיר <ph name="DEVICE"/>.</translation>
 <translation id="4503085212612536713">‏פרופילים אחרים ב-Brave</translation>
 <translation id="2041039306630146369">‏תוספים הם רכיבים נוספים שמאפשרים לך להתאים אישית את Brave. תוספים עוזרים לך להתאים את Brave לצרכים שלך, בין אם זה לשמור על הסדר או לפשט משימות יומיומיות.</translation>
 <translation id="7918740962659365265">‏עזרה בשיפור Brave על ידי שליחת <ph name="UMA_LINK"/> ודוחות קריסה אל Brave</translation>
@@ -250,7 +252,7 @@
 
           **הצעת שאלות:** יצירת רשימה של 3-5 שאלות מעוררות מחשבה שהמשתמש יכול לשאול כדי להבין טוב יותר את צילום המסך. לפחות שאלה אחת צריכה להתייחס באופן ספציפי לאובייקט חזותי, לעיצוב שלו או למיקום שלו.</translation>
 <translation id="6899774208752247219"><ph name="PAGE_TITLE"/> - Brave Origin</translation>
-<translation id="1118754729376002185">‏לאתר הזה דרושה הרשאת גישה לרשת המקומית מ-Brave</translation>
+<translation id="387514319934708384">‏לאתר הזה דרושה הרשאת גישה לרשת המקומית מ-Brave</translation>
 <translation id="3885770153807205175">הכלי לבחירת שפה</translation>
 <translation id="6315734375101223238">‏התאמה אישית וניהול של Brave נחוצה פעולה שלך - יש ללחוץ לקבלת פרטים נוספים.</translation>
 <translation id="7130675370997202556">‏יש ללחוץ על השם שלך כדי לפתוח את Brave ולהתחיל לגלוש.</translation>
@@ -280,6 +282,7 @@
 <translation id="6596295505984504022">‏התאמה אישית של Brave</translation>
 <translation id="4148957013307229264">מתקין...</translation>
 <translation id="5011704081781303429">‏<ph name="PAGE_TITLE"/> – כניסה לרשת – Brave Origin</translation>
+<translation id="305023898453185745">‏החשבון של <ph name="EXISTING_USER"/> כבר מחובר. כדי לשמור על סביבת גלישה נפרדת, אפשר להיכנס ל-Brave בפרופיל נפרד בתור <ph name="USER_EMAIL_ADDRESS"/>. אפשר לקבל גם את רשימת הקריאה ופריטים נוספים בכל המכשירים.</translation>
 <translation id="2871190378186459992">‏אפליקציות, משחקים, תוספים ועיצובים מעולים בשביל Brave.</translation>
 <translation id="462105622535258178">‏כדי לקבל גישה לתוסף הזה ולנתונים נוספים בכל המחשבים, צריך להיכנס ל-Brave</translation>
 <translation id="6670140629169983459">‏כדי לשמור על הבטיחות אונליין בהתאם לאפשרויות שנבחרו על ידי ההורה שלך, עליך לעבור לפרופיל Brave שבו כבר נכנסת לחשבון עם האימייל <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -294,7 +297,6 @@
 <translation id="6368144843345980623">‏ייצוא סיסמאות מ-Brave</translation>
 <translation id="4304713468139749426">מנהל הסיסמאות</translation>
 <translation id="4334241893986177674">חיפוש צילום המסך הזה</translation>
-<translation id="3985621805803699376">‏הקלדת חיפושים ושאלות מכל מקום במכשיר, גם אם Brave ממוזער</translation>
 <translation id="242356249838681145">‏הפעלת Brave יחד עם Windows</translation>
 <translation id="4400772909124543403">אין עדכונים כרגע.</translation>
 <translation id="9183662282810237335">‏לסגור את Brave בכל זאת?</translation>
@@ -325,6 +327,7 @@
 <translation id="2182657378556811785">‏העדכון כמעט הושלם! הפעל מחדש את Brave‏ כדי לסיים את העדכון.</translation>
 <translation id="6311668361877328515">‏אפשר להאיץ ביצועים של אתרים באמצעות מנוע V8 של Brave, אבל Brave יהיה קצת פחות עמיד בפני מתקפות.</translation>
 <translation id="7960968658810899127">‏פתיחת החיפוש באמצעות Brave</translation>
+<translation id="4600669659668950128">‏פרופיל Brave</translation>
 <translation id="7402642357351265733">‏אם בנוסף ישותפו דוחות שימוש ב-Brave, הדוחות האלה יכללו את כתובות ה-URL שבהן ביקרת</translation>
 <translation id="4673710618874938871">נכנסת בתור <ph name="USER_NAME"/>, עם מינוי. פתיחת תפריט החשבון</translation>
 <translation id="8142245354207161805">‏נראה שהפרופיל נמצא בשימוש על ידי תהליך Brave אחר (<ph name="PROCESS_ID"/>) במחשב אחר (<ph name="HOST_NAME"/>)‏. Brave נעל את הפרופיל כדי שלא ייפגם. אם וידאת שאף תהליך אחר אינו משתמש בפרופיל זה, אפשר את נעילת הפרופיל ולהפעיל את Brave מחדש.</translation>
@@ -377,6 +380,7 @@
 <translation id="3311284381627742014">‏פתיחת החיפוש באמצעות Brave</translation>
 <translation id="5154625106151193600">‏למה קבצים מסוימים נחסמים ב-Brave</translation>
 <translation id="1786715389543715322">‏מתבצע עדכון של Brave‏ (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="3267146219387305979">‏החשבון של <ph name="EXISTING_USER"/> כבר מחובר. כדי לשמור על סביבת גלישה נפרדת, אפשר להיכנס ל-Brave בפרופיל נפרד בתור <ph name="USER_EMAIL_ADDRESS"/>. אפשר לקבל גם את התוספים ופריטים נוספים בכל המכשירים.</translation>
 <translation id="7021823858304886493">‏התרת כניסה אל Brave</translation>
 <translation id="5267531627648004734">‏להסיר מ-‏Brave‏</translation>
 <translation id="4620757336635063467">‏ירידה ברמת הביצועים בתמורה להגברת העמידות של Brave בפני מתקפות</translation>
@@ -453,6 +457,7 @@
 <translation id="6685697979743742605">‏הקובץ הזה עלול להיות מסוכן<ph name="LINE_BREAK"/>דפדפן Brave יכול לבדוק את ההורדה הזו אם מזינים את הסיסמה. מידע על הקובץ נשלח אל התכונה 'גלישה בטוחה של Brave', אבל הסיסמה והתוכן של הקובץ נשארים במכשיר.</translation>
 <translation id="6182736845697986886">ההתקנה נכשלה עקב שגיאה פנימית בשרת העדכון.</translation>
 <translation id="4368341489795135329">‏יש לוודא שנכנסת ל-Brave ב-<ph name="TARGET_DEVICE_NAME"/> שלך ולשלוח שוב.</translation>
+<translation id="3044046743226566469">‏הקלדת חיפושים ושאלות מכל מקום במכשיר, גם אם Brave ממוזער ההגדרה מאפשרת ל-Brave לפעול ברקע.</translation>
 <translation id="8320964054148936490">‏במחשב זה קיימת כבר גרסה מתקדמת יותר של Brave. אם התוכנה אינה פועלת, יש להסיר את ההתקנה של Brave ולנסות שוב.</translation>
 <translation id="3574823187131579180">{0,plural, =0{‏Brave יופעל מחדש עכשיו}=1{‏Brave יופעל מחדש בעוד שנייה אחת}one{‏Brave יופעל מחדש בעוד # שניות}two{‏Brave יופעל מחדש בעוד # שניות}other{‏Brave יופעל מחדש בעוד # שניות}}</translation>
 <translation id="5980269616827212166">‏נדרשת הרשאת גישה לאחסון ב-Brave כדי להוריד קבצים</translation>
@@ -578,6 +583,7 @@
 <translation id="7288567540154601580">כרטיסיות ותוספים</translation>
 <translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{‏ההמלצה של Brave היא להסיר אותו}one{‏ההמלצה של Brave היא להסיר אותם}two{‏ההמלצה של Brave היא להסיר אותם}other{‏ההמלצה של Brave היא להסיר אותם}}</translation>
 <translation id="4600669988724328687">‏כדי לשתף אודיו מהמערכת, צריך לפתוח את הגדרות המערכת ולבחור באפשרות "הקלטת אודיו של המערכת בלבד" ל-Brave. לאחר מכן צריך להפעיל מחדש את Brave.</translation>
+<translation id="7299899569525778554">חיפוש מהמחשב</translation>
 <translation id="1864557848095568223">‏העדכון של Brave‏ מתבצע</translation>
 <translation id="3403365884036456766">‏קובץ ההעדפות שלך פגום או לא חוקי. 
 
@@ -632,6 +638,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="8607348724092473027">‏<ph name="PAGE_TITLE"/> – Brave Origin בגרסת Canary</translation>
 <translation id="2684504034454188774">‏לאנשים שיש להם גישה לתעבורת הנתונים שלך יהיה קשה יותר לראות את האתרים שביקרת בהם. ‫Brave משתמש בחיבור מאובטח לחיפוש כתובות IP של אתרים ב-DNS.</translation>
 <translation id="7810005234485217901">אפשר להצמיד את התכונה 'חיפוש תמונות' כדי לאפשר גישה נוחה</translation>
+<translation id="3219490697448569661">‏אפשר לשאול על תוכן מחוץ ל-Brave, כמו אפליקציה אחרת או קובץ פתוח אחר</translation>
 <translation id="4191642852677143100">‏בחירת המידע שישותף עם Brave</translation>
 <translation id="1652855885539187849">‏כבר קיים במכשיר פרופיל Brave עם החשבון הזה.</translation>
 <translation id="7845233973568007926">תודה שהתקנת. עליך להפעיל מחדש את המחשב לפני השימוש ב-<ph name="BUNDLE_NAME"/>.</translation>
@@ -716,10 +723,10 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="856656450041460113">רשימת שפות לחיפוש</translation>
 <translation id="839677568225616901">‏מספר ארגונים מנהלים את Brave</translation>
 <translation id="8121009781989288430">‏Copyright © <ph name="YEAR"/> Brave Software Inc. כל הזכויות שמורות.</translation>
-<translation id="8601359445272098721">חדש! אפשר לתרגם טקסט ותמונות במסך באמצעות לחיצה על הכפתור "תרגום המסך"</translation>
 <translation id="3052349005266761501">‏הפעלת Brave מתבצעת...</translation>
 <translation id="8624541899164515475">הגדרות, ייפתחו בכרטיסייה חדשה.</translation>
 <translation id="5128665650717824082">‏לא ניתן להגדיר את Brave for Testing כדפדפן ברירת המחדל.</translation>
+<translation id="3053208669360972929">‏חיפוש באמצעות Brave מכל מקום</translation>
 <translation id="2433912322225810055">‏הגדרה זו גם קובעת איזה דף מוצג כשמפעילים את Brave או מבצעים חיפוש מסרגל הכתובות.</translation>
 <translation id="4100716194836114130">‏זהו ה-Brave שלך</translation>
 <translation id="8712637175834984815">הבנתי</translation>
@@ -753,6 +760,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="7731184591599776500">‏הלוגו של Brave Enterprise</translation>
 <translation id="2001474182910589370">‏עם אפליקציית Brave במכשיר <ph name="DEVICE_TYPE"/>, תכונות הבטיחות של Brave הולכות איתך לכל מקום</translation>
 <translation id="6500340165622970282">‏אי אפשר להפעיל את Brave בגלל שמשהו השתבש בפתיחת הפרופיל. כדאי לנסות להפעיל מחדש את Brave.</translation>
+<translation id="8079450595783684960">‏כדי לחפש באמצעות Brave או להתאים אישית ב<ph name="BEGIN_LINK"/>הגדרות<ph name="END_LINK"/></translation>
 <translation id="3424657754843264466">‏ניהול הפרופילים ב-Brave</translation>
 <translation id="1454821212628854849">‏כדי לעבור בין Gemini ב-Brave לבין הכרטיסייה הפתוחה, אפשר להשתמש במקלדת.</translation>
 <translation id="9018218886431812662">ההתקנה הושלמה</translation>

@@ -1732,6 +1732,9 @@
 <translation id="2077392865355605472">Alama ya tokeni inahitajika</translation>
 <translation id="4636925020451566238">Desimali za tokeni za thamani ya usahihi zinahitjika</translation>
 <translation id="3797613444743816037">Anwani ya Mint</translation>
+<translation id="6571966497164575098">Kitambulisho cha rasilimali</translation>
+<translation id="2110442566771571217">Kitambulisho cha rasilimali ya tokeni si sahihi au ni tupu</translation>
+<translation id="4170599358417498979">Rasilimali maalum hazitumiki kwenye mtandao huu</translation>
 <translation id="7951915459354237451">Kikomo cha ada kimewekwa chini ya ada ya msingi. Muamala wako unaweza kuchukua muda mrefu au ukashindwa.</translation>
 <translation id="2227702748249086756">Imeshindwa kuleta makadirio ya ada</translation>
 <translation id="3225624966527491351">Hamisha NFT</translation>
@@ -2018,7 +2021,7 @@
 <translation id="418195046117003119">Picha ya skrini ya kituo cha kushiriki</translation>
 <translation id="4712056949543885424">Onyesha kidhibiti cha manenosiri</translation>
 <translation id="8037472847879765671">Onyesha njia za kulipa</translation>
-<translation id="7269867954894010756">Onyesha anwani</translation>
+<translation id="6262574309547773475">Onyesha maelezo ya mawasiliano</translation>
 <translation id="6799213269525079335">Tafuta ifuatayo</translation>
 <translation id="8666632926482119393">Tafuta iliyopita</translation>
 <translation id="3567467864281922039">Funga utafutaji au sitisha</translation>
@@ -2147,6 +2150,7 @@
 <translation id="3142853026316054951">Washa/zima hali ya kuzingatia</translation>
 <translation id="3468387898712904997">Jina bandia jipya la barua pepe</translation>
 <translation id="4711475997833555304">Unda barua pepe ya nasibu inayotuma mbele kwenye kikasha chako.</translation>
+<translation id="5663901348199429994">Majina yako bandia ya barua pepe</translation>
 <translation id="2796584247246518451">Kontena mpya ya muda</translation>
 <translation id="8591883849678260674">Tazama asili</translation>
 <translation id="1969654232209826429">usomaji wa dakika</translation>
@@ -2205,6 +2209,7 @@
 <translation id="9215978379284690246">Msimbo wa hali: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Msimbo wa hali: <ph name="STATUS_CODE"/>, msimbo wa hali wa ndani: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Umefikia kikomo cha kiwango cha toleo la kulipia. Tafadhali jaribu tena baada ya saa chache.</translation>
+<translation id="6873128487002733717">Umefikia kikomo cha premium kwa muundo huu. Teua muundo tofauti au ujaribu tena baadaye.</translation>
 <translation id="3683964919745779766">Umefikia kikomo cha kiwango kwa muundo huu au huna mikopo. Tafadhali jaribu tena baadaye.</translation>
 <translation id="7692501701960747469">Ufunguo wa API uliowekwa kwa muundo huu si sahihi. Tafadhali angalia usanidi wako na ujaribu tena.</translation>
 <translation id="7905602379229309187">Sehemu ya mwisho ya huduma iliyojaa sana. Tafadhali jaribu tena baadaye.</translation>
@@ -2384,6 +2389,9 @@
 <translation id="5021823940147712387">Ondoa zana</translation>
 <translation id="8712279871321308580">Zana za tovuti zinazopatikana</translation>
 <translation id="3690996226559605619">Zana zinazopatikana (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Ruhusu kwa kipindi hiki</translation>
+<translation id="6240821072888636753">Uliza kila wakati</translation>
+<translation id="4290920330097335010">Usiruhusu kamwe</translation>
 <translation id="318819763888864209">Usajili wote husasishwa kiotomatiki lakini unaweza kukatishwa wakati wowote kabla ya kusasishwa.</translation>
 <translation id="5091223967610958">Shiriki jina la mpangishaji la ukurasa uliko (<ph name="HOST_NAME"/>) ili kutusaidia kufanya Leo kuwa bora zaidi.</translation>
 <translation id="8732450785281947197">Zana za AI za Leo</translation>
@@ -2458,7 +2466,7 @@
 <translation id="6077070599873946984">Brave AI inahitaji ruhusa yako kwa: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI ingependa kutekeleza **<ph name="TOOL_NAME"/>** kwenye **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Hatua hii imegunduliwa ikiwa inaweza kuwa si sawa na ombi lako:</translation>
-<translation id="5137568953923142260">Ruhusu</translation>
+<translation id="5137568953923142260">Ruhusu mara moja</translation>
 <translation id="3927932062596804919">Kataa</translation>
 <translation id="4191349941249805855">Onyesha hoja za zana</translation>
 <translation id="7237059533128264835">Ficha hoja za zana</translation>
@@ -2505,7 +2513,6 @@
 <translation id="6002159997868894136">Bofya kunakili jina la bandia</translation>
 <translation id="8105770564756958406">Inatumika na <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Tengeneza majina bandia ya barua pepe hadi 5 bila malipo ili kulinda anwani yako halisi ya barua pepe.</translation>
-<translation id="5663901348199429994">Majina yako bandia ya barua pepe</translation>
 <translation id="9046133327037621173">Jina bandia jipya la barua pepe</translation>
 <translation id="3768606658230902536">Tengeneza anwani ya barua pepe isiyo ya kawaida ambayo inaelekeza kwa kisanduku chako cha barua pepe huku ukihifadhi barua pepe yako binafsi kwa faragha.</translation>
 <translation id="4452721050684632493">Kikomo cha lakabu kimefikiwa</translation>
@@ -2936,7 +2943,9 @@ Turuhusu tukuunganishe!</translation>
 <translation id="4227581348172626540">Ghairi kubadilisha nenosiri</translation>
 <translation id="808894953321890993">Badilisha nenosiri</translation>
 <translation id="7967687455715421528">Imeshindwa kubadilisha nenosiri</translation>
+<translation id="7413006094063730650">Futa akaunti</translation>
 <translation id="4869737930995549965">Ondoka</translation>
+<translation id="2902312830803030883">Vitendo zaidi</translation>
 <translation id="5538654494923870167">Anza na akaunti yako ya Brave</translation>
 <translation id="1544145635547515689">Unda akaunti ya Brave</translation>
 <translation id="3828644479849256404">Tayari una akaunti? Ingia</translation>
@@ -2961,6 +2970,11 @@ Turuhusu tukuunganishe!</translation>
 <translation id="7228810962389847249">Weka msimbo hapa</translation>
 <translation id="4683390091376980486">Thibitisha msimbo</translation>
 <translation id="3970028678400797622">Tuma tena msimbo wa barua pepe</translation>
+<translation id="3653907916071208187">Futa akaunti yako ya Brave?</translation>
+<translation id="8216839865292766307">Kufuta akaunti ya Brave kutafuta pia lakabu zake za barua pepe. Unaweza kupoteza ufikiaji wa huduma za mtandaoni ambazo ulizitumia lakabu kujisajili. Kitendo hiki hakiwezi kutenduliwa.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">Andika <ph name="KEYWORD"/> ili kuwezesha ufutaji wa akaunti</translation>
+<translation id="536306385881145656">Futa akaunti ya Brave</translation>
 <translation id="2475982808118771221">Hitilafu imetokea</translation>
 <translation id="5430795854491041407">hitilafu</translation>
 <translation id="2232323423357029857">Kivinjari kimekutana na hitilafu isiyotarajiwa<ph name="ERROR_CODE"/>. Tafadhali anzisha kivinjari upya na ujaribu tena.</translation>
@@ -2993,4 +3007,10 @@ Turuhusu tukuunganishe!</translation>
 <translation id="1063227610401477317">Tekeleza Mabadiliko</translation>
 <translation id="5539769255716491933">Ripoti Hatua Zilizoshindwa</translation>
 <translation id="7562163394445060270">Utekelezaji wa kazi umeshindikana</translation>
+<translation id="691082536326552372">Ripoti hatua zilizoshindwa</translation>
+<translation id="2731141092023803480">Tuma ripoti ya hatua zilizoshindwa kwa timu ya Brave. Ripoti hii itakuwa na taarifa tunazohitaji kurekebisha tatizo. <ph name="LINK_BEFORE"/>Pata maelezo zaidi.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">URL ya sasa</translation>
+<translation id="4739707522207259415">Hatua zilizoshindwa</translation>
+<translation id="1767991048059195456">Tuma ripoti</translation>
+<translation id="2168036794078614559">Ripoti imetumwa</translation>
 </translationbundle>

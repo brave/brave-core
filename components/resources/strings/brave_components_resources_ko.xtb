@@ -1732,6 +1732,9 @@
 <translation id="2077392865355605472">토큰 기호는 필수</translation>
 <translation id="4636925020451566238">토큰 소수 자릿수 값은 필수</translation>
 <translation id="3797613444743816037">민트 주소</translation>
+<translation id="6571966497164575098">자산 ID</translation>
+<translation id="2110442566771571217">유효하지 않거나 빈 토큰 자산 ID</translation>
+<translation id="4170599358417498979">이 네트워크에는 커스텀 자산이 지원되지 않습니다</translation>
 <translation id="7951915459354237451">수수료 한도가 기본 수수료보다 낮게 설정되어 있습니다. 트랜잭션이 오래 걸리거나 실패할 수 있습니다.</translation>
 <translation id="2227702748249086756">예상 수수료를 가져올 수 없음</translation>
 <translation id="3225624966527491351">NFT 가져오기</translation>
@@ -2018,7 +2021,7 @@
 <translation id="418195046117003119">공유 허브 스크린샷</translation>
 <translation id="4712056949543885424">비밀번호 관리자 표시</translation>
 <translation id="8037472847879765671">결제 수단 표시</translation>
-<translation id="7269867954894010756">주소 표시</translation>
+<translation id="6262574309547773475">연락처 정보 표시</translation>
 <translation id="6799213269525079335">다음 찾기</translation>
 <translation id="8666632926482119393">이전 찾기</translation>
 <translation id="3567467864281922039">찾기 닫기 또는 중지</translation>
@@ -2147,6 +2150,7 @@
 <translation id="3142853026316054951">포커스 모드 토글</translation>
 <translation id="3468387898712904997">새 이메일 별명</translation>
 <translation id="4711475997833555304">받은 편지함으로 전달되는 임의 이메일을 만듭니다.</translation>
+<translation id="5663901348199429994">이메일 별명</translation>
 <translation id="2796584247246518451">새 임시 컨테이너</translation>
 <translation id="8591883849678260674">원본 보기</translation>
 <translation id="1969654232209826429">읽기(분)</translation>
@@ -2211,6 +2215,7 @@
 <translation id="9215978379284690246">상태 코드: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">상태 코드: <ph name="STATUS_CODE"/>, 내부 상태 코드: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">프리미엄 답변 한도에 도달했습니다. 몇 시간 후 다시 시도해보세요.</translation>
+<translation id="6873128487002733717">이 모델의 프리미엄 한도에 도달했습니다. 다른 모델을 선택하거나 나중에 다시 시도해 주세요.</translation>
 <translation id="3683964919745779766">이 모델의 요청 한도에 도달했거나 크레딧이 부족합니다. 나중에 다시 시도해 주세요.</translation>
 <translation id="7692501701960747469">이 모델에 구성된 API 키가 잘못되었습니다. 구성을 확인한 후 다시 시도하세요.</translation>
 <translation id="7905602379229309187">현재 엔드포인트에 과부하가 걸렸습니다. 나중에 다시 시도하세요.</translation>
@@ -2390,6 +2395,9 @@
 <translation id="5021823940147712387">도구 제거</translation>
 <translation id="8712279871321308580">사용 가능한 웹사이트 도구</translation>
 <translation id="3690996226559605619">사용 가능한 도구 (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">이 세션에서 허용함</translation>
+<translation id="6240821072888636753">매번 확인</translation>
+<translation id="4290920330097335010">허용 안 함</translation>
 <translation id="318819763888864209">모든 구독은 자동 갱신되지만, 갱신 전 언제든지 취소할 수 있습니다.</translation>
 <translation id="5091223967610958">현재 보고 있는 페이지의 호스트 이름(<ph name="HOST_NAME"/>)을 공유하여 레오 개선에 도움을 줍니다.</translation>
 <translation id="8732450785281947197">레오 AI 도구</translation>
@@ -2464,7 +2472,7 @@
 <translation id="6077070599873946984">Brave AI에서 다음 작업에 대한 권한이 필요합니다: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI가 **<ph name="SITE_ORIGIN"/>**에서 **<ph name="TOOL_NAME"/>**을(를) 실행하려고 합니다</translation>
 <translation id="4163837693685963037">해당 작업이 귀하의 요청과 일치하지 않을 가능성이 있습니다:</translation>
-<translation id="5137568953923142260">허용</translation>
+<translation id="5137568953923142260">한 번 허용함</translation>
 <translation id="3927932062596804919">거부</translation>
 <translation id="4191349941249805855">도구 인수 표시</translation>
 <translation id="7237059533128264835">도구 인수 숨기기</translation>
@@ -2511,7 +2519,6 @@
 <translation id="6002159997868894136">클릭하여 별명 복사</translation>
 <translation id="8105770564756958406"><ph name="DOMAINS"/> 에서 사용됨</translation>
 <translation id="5006956315579221642">실제 이메일 주소를 보호하기 위해 최대 5개의 무료 이메일 별명을 만드세요.</translation>
-<translation id="5663901348199429994">이메일 별명</translation>
 <translation id="9046133327037621173">새 이메일 별명</translation>
 <translation id="3768606658230902536">개인 이메일을 비공개로 유지하면서 받은 편지함으로 전달되는 무작위 이메일 주소를 생성하세요.</translation>
 <translation id="4452721050684632493">별칭 한도 도달</translation>
@@ -2942,7 +2949,9 @@ Brave에는 VPN 연결에서 DNS 쿼리가 생성되는 방식을 필터링하�
 <translation id="4227581348172626540">비밀번호 변경 취소</translation>
 <translation id="808894953321890993">비밀번호 변경</translation>
 <translation id="7967687455715421528">비밀번호를 변경할 수 없음</translation>
+<translation id="7413006094063730650">계정 삭제</translation>
 <translation id="4869737930995549965">로그아웃</translation>
+<translation id="2902312830803030883">추가 작업</translation>
 <translation id="5538654494923870167">Brave 계정으로 시작하기</translation>
 <translation id="1544145635547515689">Brave 계정 만들기</translation>
 <translation id="3828644479849256404">이미 계정이 있습니까? 로그인</translation>
@@ -2967,6 +2976,11 @@ Brave에는 VPN 연결에서 DNS 쿼리가 생성되는 방식을 필터링하�
 <translation id="7228810962389847249">여기에 코드 입력</translation>
 <translation id="4683390091376980486">코드 확인</translation>
 <translation id="3970028678400797622">이메일 코드 다시 전송</translation>
+<translation id="3653907916071208187">Brave 계정을 삭제하시겠습니까?</translation>
+<translation id="8216839865292766307">Brave 계정을 삭제하면 해당 계정의 이메일 별칭도 함께 삭제됩니다. 가입 시 별칭을 사용한 온라인 서비스에 대한 액세스 권한을 잃을 수 있습니다. 이 작업은 되돌릴 수 없습니다.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">계정 삭제를 활성화하려면 <ph name="KEYWORD"/>을(를) 입력하세요</translation>
+<translation id="536306385881145656">Brave 계정 삭제</translation>
 <translation id="2475982808118771221">오류가 발생했습니다</translation>
 <translation id="5430795854491041407">오류</translation>
 <translation id="2232323423357029857">브라우저에서 예기치 않은 오류가 발생했습니다<ph name="ERROR_CODE"/>. 브라우저를 다시 시작한 후 다시 시도해 주세요.</translation>
@@ -2999,4 +3013,10 @@ Brave에는 VPN 연결에서 DNS 쿼리가 생성되는 방식을 필터링하�
 <translation id="1063227610401477317">변경사항 적용</translation>
 <translation id="5539769255716491933">실패한 단계 보고</translation>
 <translation id="7562163394445060270">작업 완료 실패</translation>
+<translation id="691082536326552372">실패한 단계 보고</translation>
+<translation id="2731141092023803480">실패한 단계에 대한 보고서를 Brave 팀에 보냅니다. 이 보고서에는 문제 해결에 필요한 정보가 포함됩니다. <ph name="LINK_BEFORE"/>자세히 알아보기.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">현재 URL</translation>
+<translation id="4739707522207259415">실패한 단계</translation>
+<translation id="1767991048059195456">보고서 보내기</translation>
+<translation id="2168036794078614559">보고서 전송됨</translation>
 </translationbundle>

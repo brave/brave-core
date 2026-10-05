@@ -1733,6 +1733,9 @@ Meld‏<ph name="LINK_AFTER"/> را خوانده‌ام و با آن موافق�
 <translation id="2077392865355605472">نمایه توکن الزامی است</translation>
 <translation id="4636925020451566238">ارقام اعشاری عدد دقیق الزامی است</translation>
 <translation id="3797613444743816037">آدرس منبع</translation>
+<translation id="6571966497164575098">شناسه سرمایه</translation>
+<translation id="2110442566771571217">شناسه سرمایه توکن نامعتبر یا خالی است</translation>
+<translation id="4170599358417498979">دارایی‌های سفارشی در این شبکه پشتیبانی نمی‌شوند</translation>
 <translation id="7951915459354237451">محدوده مبلغ، کمتر از مبلغ پایه تنظم شده است. تراکنش شما ممکن است زمان بیشتری طول بکشد یا ناموفق باشد.</translation>
 <translation id="2227702748249086756">امکان واکشی تخمین هزینه وجود ندارد.</translation>
 <translation id="3225624966527491351">وارد کردن NFT</translation>
@@ -2019,7 +2022,7 @@ Meld‏<ph name="LINK_AFTER"/> را خوانده‌ام و با آن موافق�
 <translation id="418195046117003119">عکس صفحه مرکز اشتراک‌گذاری</translation>
 <translation id="4712056949543885424">نمایش مدیر رمز عبور</translation>
 <translation id="8037472847879765671">نمایش روش‌های پرداخت</translation>
-<translation id="7269867954894010756">نمایش آدرس‌ها</translation>
+<translation id="6262574309547773475">نمایش اطلاعات تماس</translation>
 <translation id="6799213269525079335">یافتن بعدی</translation>
 <translation id="8666632926482119393">یافتن قبلی</translation>
 <translation id="3567467864281922039">بستن یافتن یا توقف</translation>
@@ -2148,6 +2151,7 @@ Meld‏<ph name="LINK_AFTER"/> را خوانده‌ام و با آن موافق�
 <translation id="3142853026316054951">تغییر حالت تمرکز</translation>
 <translation id="3468387898712904997">ایمیل مستعار جدید</translation>
 <translation id="4711475997833555304">یک ایمیل تصادفی بسازید که به صندوق ورودی شما ارسال می‌شود.</translation>
+<translation id="5663901348199429994">ایمیل‌های مستعار شما</translation>
 <translation id="2796584247246518451">محفظه موقت جدید</translation>
 <translation id="8591883849678260674">مشاهده اصلی</translation>
 <translation id="1969654232209826429">حداقل بخوانید</translation>
@@ -2212,6 +2216,7 @@ Meld‏<ph name="LINK_AFTER"/> را خوانده‌ام و با آن موافق�
 <translation id="9215978379284690246">کد وضعیت: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">کد وضعیت: <ph name="STATUS_CODE"/>، کد وضعیت داخلی: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">به محدودیت نرخ پریمیوم رسیده‌اید. لطفاً چند ساعت دیگر دوباره امتحان کنید.</translation>
+<translation id="6873128487002733717">شما به حد مجاز پرمیوم برای این مدل رسیده‌اید. مدل دیگری انتخاب کنید یا بعداً دوباره تلاش کنید.</translation>
 <translation id="3683964919745779766">شما به حد مجاز نرخ برای این مدل رسیده‌اید یا موجودی اعتبارتان تمام شده است. لطفاً بعداً دوباره تلاش کنید.</translation>
 <translation id="7692501701960747469">کلید API تنظیم‌شده برای این مدل نامعتبر است. لطفاً تنظیمات خود را بررسی کنید و دوباره تلاش کنید.</translation>
 <translation id="7905602379229309187">این نقطه پایان در حال حاضر تحت بار سنگین است. لطفاً بعداً دوباره تلاش کنید.</translation>
@@ -2391,6 +2396,9 @@ Meld‏<ph name="LINK_AFTER"/> را خوانده‌ام و با آن موافق�
 <translation id="5021823940147712387">حذف ابزارها</translation>
 <translation id="8712279871321308580">ابزارهای موجود وب‌سایت</translation>
 <translation id="3690996226559605619">ابزارهای موجود (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">مجاز برای این نشست</translation>
+<translation id="6240821072888636753">هر بار بپرس</translation>
+<translation id="4290920330097335010">هرگز مجاز نکن</translation>
 <translation id="318819763888864209">همه اشتراک‌ها به‌طور خودکار تمدید می‌شوند، اما در هر زمان قبل از تمدید، می‌توان آنها را لغو کرد.</translation>
 <translation id="5091223967610958">نام میزبان صفحه‌ای را که در <ph name="HOST_NAME"/> هستید به اشتراک بگذارید تا به ما در بهتر کردن Leo کمک کنید.</translation>
 <translation id="8732450785281947197">ابزارهای هوش مصنوعی Leo</translation>
@@ -2465,7 +2473,7 @@ Meld‏<ph name="LINK_AFTER"/> را خوانده‌ام و با آن موافق�
 <translation id="6077070599873946984">Brave AI برای انجام عملیات زیر به اجازه‌ی شما نیاز دارد: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI می‌خواهد **<ph name="TOOL_NAME"/>** را روی **<ph name="SITE_ORIGIN"/>** اجرا کند</translation>
 <translation id="4163837693685963037">این عملیات به عنوان احتمالا ناسازگار با درخواست شما تشخیص داده شده است:</translation>
-<translation id="5137568953923142260">اجازه دادن</translation>
+<translation id="5137568953923142260">یک‌بار مجاز</translation>
 <translation id="3927932062596804919">رد</translation>
 <translation id="4191349941249805855">نمایش آرگومان‌های ابزار</translation>
 <translation id="7237059533128264835">مخفی کردن آرگومان‌های ابزار</translation>
@@ -2512,7 +2520,6 @@ Meld‏<ph name="LINK_AFTER"/> را خوانده‌ام و با آن موافق�
 <translation id="6002159997868894136">برای کپی کردن نام مستعار کلیک کنید</translation>
 <translation id="8105770564756958406">استفاده‌شده توسط <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">تا ۵ ایمیل مستعار رایگان برای محافظت از آدرس ایمیل واقعی خود ایجاد کنید.</translation>
-<translation id="5663901348199429994">ایمیل‌های مستعار شما</translation>
 <translation id="9046133327037621173">ایمیل مستعار جدید</translation>
 <translation id="3768606658230902536">یک آدرس ایمیل تصادفی ایجاد کنید که به صندوق ورودی شما بازارسال می‌شود و ایمیل شخصی شما را خصوصی نگه می‌دارد.</translation>
 <translation id="4452721050684632493">به محدودیت حداکثر نام مستعار رسیده‌اید</translation>
@@ -2942,7 +2949,9 @@ Brave یک سرویس کمکی دارد که با فیلتر کردن روشی �
 <translation id="4227581348172626540">لغو تغییر رمز عبور</translation>
 <translation id="808894953321890993">تغییر رمز عبور</translation>
 <translation id="7967687455715421528">تغییر رمز عبور امکان‌پذیر نیست</translation>
+<translation id="7413006094063730650">حذف حساب</translation>
 <translation id="4869737930995549965">خروج</translation>
+<translation id="2902312830803030883">اقدامات بیشتر</translation>
 <translation id="5538654494923870167">با حساب Brave خود شروع کنید</translation>
 <translation id="1544145635547515689">ایجاد حساب Brave</translation>
 <translation id="3828644479849256404">قبلاً حساب کاربری دارید؟ وارد شوید</translation>
@@ -2967,6 +2976,11 @@ Brave یک سرویس کمکی دارد که با فیلتر کردن روشی �
 <translation id="7228810962389847249">کد را اینجا وارد کنید</translation>
 <translation id="4683390091376980486">تأیید کد</translation>
 <translation id="3970028678400797622">ارسال مجدد کد ایمیل</translation>
+<translation id="3653907916071208187">حساب Brave خود را حذف می‌کنید؟</translation>
+<translation id="8216839865292766307">حذف یک حساب Brave، نام‌های مستعار ایمیل آن را نیز حذف می‌کند. ممکن است دسترسی خود را به سرویس‌های آنلاینی که با یک نام مستعار ثبت‌نام کرده‌اید از دست بدهید. این اقدام قابل بازگشت نیست.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">برای فعال‌سازی حذف حساب، <ph name="KEYWORD"/> را تایپ کنید</translation>
+<translation id="536306385881145656">حذف حساب Brave</translation>
 <translation id="2475982808118771221">خطایی رخ داد</translation>
 <translation id="5430795854491041407">خطا</translation>
 <translation id="2232323423357029857">مرورگر با خطای غیرمنتظره‌ای مواجه شد<ph name="ERROR_CODE"/>. لطفاً مرورگر را راه‌اندازی مجدد کرده و دوباره تلاش کنید.</translation>
@@ -2999,4 +3013,10 @@ Brave یک سرویس کمکی دارد که با فیلتر کردن روشی �
 <translation id="1063227610401477317">تغییرات را اعمال کنید</translation>
 <translation id="5539769255716491933">گزارش مراحل ناموفق</translation>
 <translation id="7562163394445060270">تکمیل کار ناموفق بود</translation>
+<translation id="691082536326552372">گزارش مراحل ناموفق</translation>
+<translation id="2731141092023803480">گزارشی از مراحل ناموفق را به تیم Brave ارسال کنید. این گزارش حاوی اطلاعات لازم برای رفع مشکل توسط ما خواهد بود. <ph name="LINK_BEFORE"/>بیشتر بدانید.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">نشانی اینترنتی فعلی</translation>
+<translation id="4739707522207259415">مرحله (مراحل) ناموفق</translation>
+<translation id="1767991048059195456">ارسال گزارش</translation>
+<translation id="2168036794078614559">گزارش ارسال شد</translation>
 </translationbundle>

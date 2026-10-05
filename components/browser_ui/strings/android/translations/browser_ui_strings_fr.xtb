@@ -565,7 +565,7 @@
 <translation id="6787751205395685251">Sélectionnez une option pour <ph name="SITE_NAME"/></translation>
 <translation id="6790428901817661496">Lire</translation>
 <translation id="6818926723028410516">Sélectionner des éléments</translation>
-<translation id="7912249371524580097">Utiliser Brave par défaut</translation>
+<translation id="7912249371524580097">Utilisez Brave par défaut</translation>
 <translation id="6840760312327750441">Pour regrouper des onglets, appuyez de manière prolongée sur un onglet, puis faites-le glisser vers un autre.</translation>
 <translation id="6842868554183332230">Les sites détectent généralement les moments où vous êtes en train d'utiliser votre appareil, afin d'indiquer si vous êtes disponible dans les applications de chat</translation>
 <translation id="6864395892908308021">Lecture NFC impossible sur cet appareil</translation>
@@ -729,7 +729,7 @@ La Protection Avancée contrôle les paramètres Brave suivants :</translation
 <translation id="8525306231823319788">Plein écran</translation>
 <translation id="854876774113449365">Les sites que vous consultez peuvent intégrer des contenus d'autres sites, tels que des images, des annonces et du texte. Ces autres sites peuvent demander l'autorisation d'utiliser les informations qu'ils ont enregistrées vous concernant lorsque vous les parcourez. <ph name="BEGIN_LINK"/>En savoir plus sur le contenu intégré<ph name="END_LINK"/></translation>
 <translation id="8549127125482561383">Comment afficher les demandes</translation>
-<translation id="4273503381657013953">Vous pouvez désormais utiliser Brave chaque fois que vous parcourez ou appuyez sur des liens dans des messages, des documents et d'autres applis.</translation>
+<translation id="4273503381657013953">Vous pouvez désormais utiliser Brave chaque fois que vous naviguez sur Internet ou appuyez sur des liens dans des messages, des documents et d'autres applis.</translation>
 <translation id="857943718398505171">Autorisé (recommandé)</translation>
 <translation id="8593422116412089302">Lorsque cette option est activée, les sites peuvent demander à utiliser les informations qu'ils ont enregistrées vous concernant, ce qu'ils ne peuvent pas faire si elle est désactivée.</translation>
 <translation id="8609465669617005112">Monter</translation>
@@ -746,7 +746,7 @@ La Protection Avancée contrôle les paramètres Brave suivants :</translation
 <translation id="8719283222052720129">Activez l'autorisation pour <ph name="APP_NAME"/> dans les <ph name="BEGIN_LINK"/>paramètres Android<ph name="END_LINK"/>.</translation>
 <translation id="8721719390026067591">Lorsque cette option est activée, les sites peuvent demander à rechercher des appareils Bluetooth. Lorsqu'elle est désactivée, les sites ne peuvent pas rechercher les appareils Bluetooth.</translation>
 <translation id="8725066075913043281">Réessayer</translation>
-<translation id="6614332522102257453">Profiter pleinement de Brave</translation>
+<translation id="6614332522102257453">Profitez pleinement de Brave</translation>
 <translation id="8730621377337864115">OK</translation>
 <translation id="8737426583868847403">Les sites pour lesquels vous avez enregistré un niveau de zoom personnalisé s'afficheront ici</translation>
 <translation id="8748714929822124637">Ne pas autoriser les sites à accéder à d'autres appareils sur votre réseau local</translation>

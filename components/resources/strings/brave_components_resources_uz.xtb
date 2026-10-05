@@ -1729,6 +1729,9 @@
 <translation id="2077392865355605472">Token belgisi talab qilinadi</translation>
 <translation id="4636925020451566238">Token aniqlik qiymati uchun oʻnliklar majburiy</translation>
 <translation id="3797613444743816037">Mint manzili</translation>
+<translation id="6571966497164575098">Aktiv identifikatori</translation>
+<translation id="2110442566771571217">Yaroqsiz yoki bo'sh token aktiv identifikatori</translation>
+<translation id="4170599358417498979">Bu tarmoqda maxsus aktivlar qoʻllab-quvvatlanmaydi</translation>
 <translation id="7951915459354237451">Toʻlov limiti bazaviy toʻlovdan past belgilangan. Tranzaksiya uzoq vaqt davom etishi yoki muvaffaqiyatsiz boʻlishi mumkin.</translation>
 <translation id="2227702748249086756">Toʻlov baholarini olishning iloji yoʻq</translation>
 <translation id="3225624966527491351">NFT ni import qilish</translation>
@@ -2015,7 +2018,7 @@
 <translation id="418195046117003119">Skrinshot ulashish markazi</translation>
 <translation id="4712056949543885424">Parol boshqaruvchisini koʻrsatish</translation>
 <translation id="8037472847879765671">Toʻlov usullarini koʻrsatish</translation>
-<translation id="7269867954894010756">Manzillarni koʻrsatish</translation>
+<translation id="6262574309547773475">Aloqa maʼlumotlarini koʻrsatish</translation>
 <translation id="6799213269525079335">Keyingisini topish</translation>
 <translation id="8666632926482119393">Oldingisini topish</translation>
 <translation id="3567467864281922039">Qidirishni yopish yoki toʻxtatish</translation>
@@ -2144,6 +2147,7 @@
 <translation id="3142853026316054951">Focus rejimini almashtirish</translation>
 <translation id="3468387898712904997">Yangi email manzili</translation>
 <translation id="4711475997833555304">Pochtangizga yo'naltiriladigan tasodifiy email yarating.</translation>
+<translation id="5663901348199429994">Sizning email manzillaringiz</translation>
 <translation id="2796584247246518451">Yangi vaqtinchalik konteyner</translation>
 <translation id="8591883849678260674">Aslni ko‘rish</translation>
 <translation id="1969654232209826429">min. o‘qish</translation>
@@ -2208,6 +2212,7 @@
 <translation id="9215978379284690246">Holat kodi: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Holat kodi: <ph name="STATUS_CODE"/>, ichki holat kodi: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Siz premium chegara limitiga yetdingiz. Iltimos, bir necha soatdan so'ng qayta urinib ko'ring.</translation>
+<translation id="6873128487002733717">Siz ushbu model uchun premium limitiga yetib keldingiz. Boshqa modelni tanlang yoki keyinroq qayta urinib koʻring.</translation>
 <translation id="3683964919745779766">Siz ushbu model uchun stavka limitiga yetib keldingiz yoki kreditlaringiz tugadi. Iltimos, keyinroq qayta urinib ko‘ring.</translation>
 <translation id="7692501701960747469">Ushbu model uchun sozlangan API kaliti yaroqsiz. Iltimos, sozlamalaringizni tekshiring va qayta urinib ko‘ring.</translation>
 <translation id="7905602379229309187">Ayni paytda endpoint yuklangan. Iltimos, keyinroq qayta urinib ko‘ring.</translation>
@@ -2387,6 +2392,9 @@
 <translation id="5021823940147712387">Vositalarni olib tashlash</translation>
 <translation id="8712279871321308580">Mavjud sayt vositalari</translation>
 <translation id="3690996226559605619">Mavjud vositalar (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Ushbu sessiya uchun ruxsat berish</translation>
+<translation id="6240821072888636753">Har safar soʻrash</translation>
+<translation id="4290920330097335010">Hech qachon ruxsat berilmasin</translation>
 <translation id="318819763888864209">Barcha obunalar avtomatik yangilanadi, lekin yangilashdan oldinistalgan payt bekor qilinishi mumkin.</translation>
 <translation id="5091223967610958">Leo'ni yaxshilashga yordam berish uchun sahifada bo'lgan sahifa hosnamini (<ph name="HOST_NAME"/>) ulashing</translation>
 <translation id="8732450785281947197">Leo AI vositalari</translation>
@@ -2461,7 +2469,7 @@
 <translation id="6077070599873946984">Brave AI uchun ruxsatingiz kerak: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI **<ph name="SITE_ORIGIN"/>** saytida **<ph name="TOOL_NAME"/>** ni bajarmoqchi</translation>
 <translation id="4163837693685963037">Ushbu operatsiya sizning so‘rovingizga nomuvofiq bo‘lishi mumkin deb baholandi:</translation>
-<translation id="5137568953923142260">Ruxsat</translation>
+<translation id="5137568953923142260">Bir marta ruxsat berish</translation>
 <translation id="3927932062596804919">Rad etish</translation>
 <translation id="4191349941249805855">Vosita argumentlarini ko‘rsatish</translation>
 <translation id="7237059533128264835">Vosita argumentlarini berkitish</translation>
@@ -2508,7 +2516,6 @@
 <translation id="6002159997868894136">Taxallusni nusxalash uchun bosing</translation>
 <translation id="8105770564756958406"><ph name="DOMAINS"/> tomonidan foydalanilgan</translation>
 <translation id="5006956315579221642">Haqiqiy email manzilingizni himoyalash uchun 5 tagacha shartli email yarating.</translation>
-<translation id="5663901348199429994">Sizning email manzillaringiz</translation>
 <translation id="9046133327037621173">Yangi email manzili</translation>
 <translation id="3768606658230902536">Shaxsiy emailingizni maxfiy saqlagan holda kiruvchi jildingizga yuboriladigan tasodifiy email manzilini yarating.</translation>
 <translation id="4452721050684632493">Taxallus chegarasiga yetildi</translation>
@@ -2938,7 +2945,9 @@ Sizni ulanishga tayyorlaylik!</translation>
 <translation id="4227581348172626540">Parol oʻzgartirishni bekor qilish</translation>
 <translation id="808894953321890993">Parolni oʻzgartirish</translation>
 <translation id="7967687455715421528">Parolni oʻzgartirib boʻlmadi</translation>
+<translation id="7413006094063730650">Hisobni oʻchirish</translation>
 <translation id="4869737930995549965">Chiqish</translation>
+<translation id="2902312830803030883">Boshqa amallar</translation>
 <translation id="5538654494923870167">Brave hisobingiz bilan ishni boshlang</translation>
 <translation id="1544145635547515689">Brave hisobini yaratish</translation>
 <translation id="3828644479849256404">Hisobingiz bormi? Kiring</translation>
@@ -2963,6 +2972,11 @@ Sizni ulanishga tayyorlaylik!</translation>
 <translation id="7228810962389847249">Kodni shu yerga kiriting</translation>
 <translation id="4683390091376980486">Kodni tasdiqlash</translation>
 <translation id="3970028678400797622">Email kodini qayta yuborish</translation>
+<translation id="3653907916071208187">Brave hisobingizni oʻchirasizmi?</translation>
+<translation id="8216839865292766307">Brave hisobini oʻchirish uning email taxalluslarini ham oʻchiradi. Roʻyxatdan oʻtishda taxallusdan foydalangan onlayn xizmatlarga kirish imkoniyatini yoʻqotishingiz mumkin. Bu amalni bekor qilib boʻlmaydi.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">Hisobni oʻchirishni yoqish uchun <ph name="KEYWORD"/> deb yozing</translation>
+<translation id="536306385881145656">Brave hisobini oʻchirish</translation>
 <translation id="2475982808118771221">Xato yuz berdi</translation>
 <translation id="5430795854491041407">xato</translation>
 <translation id="2232323423357029857">Brauzerda kutilmagan xatolik yuz berdi<ph name="ERROR_CODE"/>. Iltimos, brauzerni qayta ishga tushiring va qayta urinib koʻring.</translation>
@@ -2995,4 +3009,10 @@ Sizni ulanishga tayyorlaylik!</translation>
 <translation id="1063227610401477317">Oʻzgarishlarni qoʻllash</translation>
 <translation id="5539769255716491933">Bajarilmagan qadamlarni xabar qilish</translation>
 <translation id="7562163394445060270">Vazifa bajarilishi muvaffaqiyatsiz tugadi</translation>
+<translation id="691082536326552372">Bajarilmagan qadamlarni xabar qilish</translation>
+<translation id="2731141092023803480">Bajarilmagan qadamlar boʻyicha hisobotni Brave jamoasiga yuboring. Ushbu hisobot muammoni bartaraf etishimiz uchun zarur boʻlgan maʼlumotlarni oʻz ichiga oladi. <ph name="LINK_BEFORE"/>Batafsil.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">Joriy URL</translation>
+<translation id="4739707522207259415">Bajarilmagan qadam(lar)</translation>
+<translation id="1767991048059195456">Hisobotni yuborish</translation>
+<translation id="2168036794078614559">Hisobot yuborildi</translation>
 </translationbundle>

@@ -1736,6 +1736,9 @@
 <translation id="2077392865355605472">Потрібен символ токена</translation>
 <translation id="4636925020451566238">Укажіть значення з точністю до десятих</translation>
 <translation id="3797613444743816037">Адреса мінту</translation>
+<translation id="6571966497164575098">Ідентифікатор активу</translation>
+<translation id="2110442566771571217">Недійсний або порожній ідентифікатор активу токена</translation>
+<translation id="4170599358417498979">Власні активи не підтримуються в цій мережі</translation>
 <translation id="7951915459354237451">Ліміт комісії встановлено нижче базової комісії. Ваша транзакція може зайняти багато часу або не вдасться.</translation>
 <translation id="2227702748249086756">Не вдалось розрахувати приблизну вартість послуг</translation>
 <translation id="3225624966527491351">Імпортувати NFT</translation>
@@ -2022,7 +2025,7 @@
 <translation id="418195046117003119">Знімок екрана Центру спільного доступу</translation>
 <translation id="4712056949543885424">Показати диспетчер паролів</translation>
 <translation id="8037472847879765671">Показати способи оплати</translation>
-<translation id="7269867954894010756">Показати адреси</translation>
+<translation id="6262574309547773475">Показати контактну інформацію</translation>
 <translation id="6799213269525079335">Знайти далі</translation>
 <translation id="8666632926482119393">Знайти попереднє</translation>
 <translation id="3567467864281922039">Закрити пошук або зупинити</translation>
@@ -2151,6 +2154,7 @@
 <translation id="3142853026316054951">Переключити режим фокусування</translation>
 <translation id="3468387898712904997">Новий псевдонім електронної пошти</translation>
 <translation id="4711475997833555304">Створіть випадкову електронну адресу, яка пересилатиме листи до вашої скриньки.</translation>
+<translation id="5663901348199429994">Ваші псевдоніми електронної пошти</translation>
 <translation id="2796584247246518451">Новий тимчасовий контейнер</translation>
 <translation id="8591883849678260674">Переглянути оригінал</translation>
 <translation id="1969654232209826429">хв. на читання</translation>
@@ -2217,6 +2221,7 @@
 <translation id="9215978379284690246">Код статусу: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Код статусу: <ph name="STATUS_CODE"/>, внутрішній код статусу: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Досягнуто ліміту для рівня преміум. Повторіть спробу за кілька годин.</translation>
+<translation id="6873128487002733717">Вичерпано ліміт Premium для цієї моделі. Виберіть іншу модель або спробуйте пізніше.</translation>
 <translation id="3683964919745779766">Вичерпано ліміт запитів для цієї моделі або баланс кредитів. Спробуйте пізніше.</translation>
 <translation id="7692501701960747469">API-ключ для цієї моделі недійсний. Перевірте налаштування та спробуйте ще раз.</translation>
 <translation id="7905602379229309187">Сервер зараз перевантажений. Повторіть спробу пізніше.</translation>
@@ -2397,6 +2402,9 @@
 <translation id="5021823940147712387">Видалити інструменти</translation>
 <translation id="8712279871321308580">Доступні інструменти сайту</translation>
 <translation id="3690996226559605619">Доступні інструменти (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Дозволити для цього сеансу</translation>
+<translation id="6240821072888636753">Питати щоразу</translation>
+<translation id="4290920330097335010">Ніколи не дозволяти</translation>
 <translation id="318819763888864209">Усі передплати поновлюються автоматично, але їх можна будь-коли скасувати до наступного поновлення.</translation>
 <translation id="5091223967610958">Поділитись іменем хосту сторінки, на якій ви перебуваєте (<ph name="HOST_NAME"/>), щоб допомогти нам покращити Leo.</translation>
 <translation id="8732450785281947197">Інструменти Leo на базі ШІ</translation>
@@ -2471,7 +2479,7 @@
 <translation id="6077070599873946984">Brave AI запитує доступ до: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI хоче виконати **<ph name="TOOL_NAME"/>** на **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Операцію виявлено як потенційно не відповідну до вашого запиту:</translation>
-<translation id="5137568953923142260">Дозволити</translation>
+<translation id="5137568953923142260">Дозволити один раз</translation>
 <translation id="3927932062596804919">Відхилити</translation>
 <translation id="4191349941249805855">Показати аргументи інструмента</translation>
 <translation id="7237059533128264835">Приховати аргументи інструмента</translation>
@@ -2518,7 +2526,6 @@
 <translation id="6002159997868894136">Натисніть, щоб скопіювати псевдонім</translation>
 <translation id="8105770564756958406">Використовується <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Створіть до 5 безкоштовних псевдонімів електронної пошти, щоб захистити свою справжню електронну адресу.</translation>
-<translation id="5663901348199429994">Ваші псевдоніми електронної пошти</translation>
 <translation id="9046133327037621173">Новий псевдонім електронної пошти</translation>
 <translation id="3768606658230902536">Створіть випадкову адресу електронної пошти, яка буде пересилати листи вам, зберігаючи вашу справжню електронну адресу в таємниці.</translation>
 <translation id="4452721050684632493">Досягнуто ліміту псевдонімів</translation>
@@ -2950,7 +2957,9 @@ Brave має допоміжну службу, яка захищає вас ві�
 <translation id="4227581348172626540">Скасувати зміну пароля</translation>
 <translation id="808894953321890993">Змінити пароль</translation>
 <translation id="7967687455715421528">Неможливо змінити пароль</translation>
+<translation id="7413006094063730650">Видалити обліковий запис</translation>
 <translation id="4869737930995549965">Вийти</translation>
+<translation id="2902312830803030883">Більше дій</translation>
 <translation id="5538654494923870167">Почніть із вашим обліковим записом Brave</translation>
 <translation id="1544145635547515689">Створити обліковий запис Brave</translation>
 <translation id="3828644479849256404">Уже маєте обліковий запис? Увійти</translation>
@@ -2975,6 +2984,11 @@ Brave має допоміжну службу, яка захищає вас ві�
 <translation id="7228810962389847249">Введіть код тут</translation>
 <translation id="4683390091376980486">Підтвердити код</translation>
 <translation id="3970028678400797622">Надіслати код повторно</translation>
+<translation id="3653907916071208187">Видалити обліковий запис Brave?</translation>
+<translation id="8216839865292766307">Видалення облікового запису Brave також видалить його псевдоніми електронної пошти. Ви можете втратити доступ до онлайн-сервісів, де ви використовували псевдонім для реєстрації. Цю дію не можна скасувати.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">Введіть <ph name="KEYWORD"/>, щоб увімкнути видалення облікового запису</translation>
+<translation id="536306385881145656">Видалити обліковий запис Brave</translation>
 <translation id="2475982808118771221">Сталася помилка</translation>
 <translation id="5430795854491041407">помилка</translation>
 <translation id="2232323423357029857">Браузер зіткнувся з неочікуваною помилкою<ph name="ERROR_CODE"/>. Перезапустіть браузер і повторіть спробу.</translation>
@@ -3007,4 +3021,10 @@ Brave має допоміжну службу, яка захищає вас ві�
 <translation id="1063227610401477317">Застосувати зміни</translation>
 <translation id="5539769255716491933">Сповістити про невдалі кроки</translation>
 <translation id="7562163394445060270">Виконання завдання не вдалося</translation>
+<translation id="691082536326552372">Сповістити про невдалі кроки</translation>
+<translation id="2731141092023803480">Надіслати команді Brave звіт про невдалі кроки. Цей звіт міститиме інформацію, потрібну нам для усунення проблеми. <ph name="LINK_BEFORE"/>Докладніше.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">Поточна URL-адреса</translation>
+<translation id="4739707522207259415">Невдалі кроки</translation>
+<translation id="1767991048059195456">Надіслати звіт</translation>
+<translation id="2168036794078614559">Звіт надіслано</translation>
 </translationbundle>

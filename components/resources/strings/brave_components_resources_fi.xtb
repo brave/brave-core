@@ -1732,6 +1732,9 @@
 <translation id="2077392865355605472">Tokenin symboli on pakollinen</translation>
 <translation id="4636925020451566238">Tokenin tarkkuuden desimaalien arvo on pakollinen</translation>
 <translation id="3797613444743816037">Minttauksen osoite</translation>
+<translation id="6571966497164575098">Omaisuustunnus</translation>
+<translation id="2110442566771571217">Virheellinen tai tyhjä tokenin omaisuustunnus</translation>
+<translation id="4170599358417498979">Mukautettuja resursseja ei tueta tässä verkossa</translation>
 <translation id="7951915459354237451">Maksuraja on määritetty alemmaksi kuin perusmaksu. Maksutapahtumasi voi kestää kauan tai epäonnistua.</translation>
 <translation id="2227702748249086756">Maksuarvioita ei voi noutaa</translation>
 <translation id="3225624966527491351">Tuo NFT</translation>
@@ -2018,7 +2021,7 @@
 <translation id="418195046117003119">Jakamiskeskuksen kuvakaappaus</translation>
 <translation id="4712056949543885424">Näytä salasananhallinta</translation>
 <translation id="8037472847879765671">Näytä maksutavat</translation>
-<translation id="7269867954894010756">Näytä osoitteet</translation>
+<translation id="6262574309547773475">Näytä yhteystiedot</translation>
 <translation id="6799213269525079335">Etsi seuraava</translation>
 <translation id="8666632926482119393">Etsi edellinen</translation>
 <translation id="3567467864281922039">Sulje etsi tai lopeta</translation>
@@ -2147,6 +2150,7 @@
 <translation id="3142853026316054951">Vaihda keskittymistilaa</translation>
 <translation id="3468387898712904997">Uusi sähköpostialias</translation>
 <translation id="4711475997833555304">Luo satunnainen sähköpostiosoite, joka välittyy postilaatikkoosi.</translation>
+<translation id="5663901348199429994">Sähköpostialiaksesi</translation>
 <translation id="2796584247246518451">Uusi väliaikainen säilö</translation>
 <translation id="8591883849678260674">Katso alkuperäinen</translation>
 <translation id="1969654232209826429">min. luku</translation>
@@ -2211,6 +2215,7 @@
 <translation id="9215978379284690246">Tilakoodi: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Tilakoodi: <ph name="STATUS_CODE"/>, sisäinen tilakoodi: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Olet saavuttanut premium-määrärajan. Yritä uudelleen muutaman tunnin kuluttua.</translation>
+<translation id="6873128487002733717">Olet saavuttanut tämän mallin premium-rajan. Valitse toinen malli tai yritä myöhemmin uudelleen.</translation>
 <translation id="3683964919745779766">Olet saavuttanut tämän mallin hintarajan tai sinulla ei ole enää krediittejä. Yritä myöhemmin uudelleen.</translation>
 <translation id="7692501701960747469">Tähän malliin määritetty API-avain on virheellinen. Tarkista asetukset ja yritä uudelleen.</translation>
 <translation id="7905602379229309187">Päätepiste on tällä hetkellä ylikuormitettu. Yritä myöhemmin uudelleen.</translation>
@@ -2390,6 +2395,9 @@
 <translation id="5021823940147712387">Poista työkalut</translation>
 <translation id="8712279871321308580">Käytettävissä olevat sivuston työkalut</translation>
 <translation id="3690996226559605619">Käytettävissä olevat työkalut (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Salli tämän istunnon ajan</translation>
+<translation id="6240821072888636753">Kysy joka kerta</translation>
+<translation id="4290920330097335010">Älä koskaan salli</translation>
 <translation id="318819763888864209">Kaikki tilaukset uusiutuvat automaattisesti, mutta ne ovat peruttavissa milloin tahansa ennen uusimista.</translation>
 <translation id="5091223967610958">Jaa sen sivun isäntänimi, jolla olet (<ph name="HOST_NAME"/>), jotta voimme parannella Leoa.</translation>
 <translation id="8732450785281947197">Leo-tekoälytyökalut</translation>
@@ -2464,7 +2472,7 @@
 <translation id="6077070599873946984">Brave AI tarvitsee luvan kohteelle: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI haluaisi suorittaa työkalun **<ph name="TOOL_NAME"/>** sivustolla **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Toiminto havaittiin mahdollisesti poikkeavan pyynnöstäsi:</translation>
-<translation id="5137568953923142260">Salli</translation>
+<translation id="5137568953923142260">Salli kerran</translation>
 <translation id="3927932062596804919">Estä</translation>
 <translation id="4191349941249805855">Näytä työkalun argumentit</translation>
 <translation id="7237059533128264835">Piilota työkalun argumentit</translation>
@@ -2511,7 +2519,6 @@
 <translation id="6002159997868894136">Klikkaa kopioidaksesi aliaksen</translation>
 <translation id="8105770564756958406">Verkkotunnuksen <ph name="DOMAINS"/> käytössä</translation>
 <translation id="5006956315579221642">Luo jopa 5 ilmaista sähköpostialiasta ja suojaa todellinen sähköpostiosoitteesi.</translation>
-<translation id="5663901348199429994">Sähköpostialiaksesi</translation>
 <translation id="9046133327037621173">Uusi sähköpostialias</translation>
 <translation id="3768606658230902536">Luo satunnainen sähköpostiosoite, joka välittää viestejä postilaatikkoosi pitäen henkilökohtaisen sähköpostisi yksityisenä.</translation>
 <translation id="4452721050684632493">Aliasten raja saavutettu</translation>
@@ -2942,7 +2949,9 @@ Muodostetaan sinulle yhteys!</translation>
 <translation id="4227581348172626540">Peruuta salasanan vaihto</translation>
 <translation id="808894953321890993">Vaihda salasana</translation>
 <translation id="7967687455715421528">Salasanan vaihtaminen ei onnistu</translation>
+<translation id="7413006094063730650">Poista tili</translation>
 <translation id="4869737930995549965">Kirjaudu ulos</translation>
+<translation id="2902312830803030883">Lisää toimintoja</translation>
 <translation id="5538654494923870167">Aloita Brave-tilisi käyttö</translation>
 <translation id="1544145635547515689">Luo Brave-tili</translation>
 <translation id="3828644479849256404">Onko sinulla jo tili? Kirjaudu sisään</translation>
@@ -2967,6 +2976,11 @@ Muodostetaan sinulle yhteys!</translation>
 <translation id="7228810962389847249">Syötä koodi tähän</translation>
 <translation id="4683390091376980486">Vahvista koodi</translation>
 <translation id="3970028678400797622">Lähetä sähköpostikoodi uudelleen</translation>
+<translation id="3653907916071208187">Poistetaanko Brave-tilisi?</translation>
+<translation id="8216839865292766307">Brave-tilin poistaminen poistaa myös sen sähköpostialiakset. Saatat menettää pääsyn verkkopalveluihin, joihin rekisteröidyit aliaksella. Tätä toimintoa ei voi kumota.</translation>
+<translation id="3672274694560812974">POISTA</translation>
+<translation id="1886662169666501462">Kirjoita <ph name="KEYWORD"/> ottaaksesi tilin poistamisen käyttöön</translation>
+<translation id="536306385881145656">Poista Brave-tili</translation>
 <translation id="2475982808118771221">Tapahtui virhe</translation>
 <translation id="5430795854491041407">virhe</translation>
 <translation id="2232323423357029857">Selaimessa tapahtui odottamaton virhe<ph name="ERROR_CODE"/>. Käynnistä selain uudelleen ja yritä uudelleen.</translation>
@@ -2999,4 +3013,10 @@ Muodostetaan sinulle yhteys!</translation>
 <translation id="1063227610401477317">Ota muutokset käyttöön</translation>
 <translation id="5539769255716491933">Raportoi epäonnistuneet vaiheet</translation>
 <translation id="7562163394445060270">Tehtävän suorittaminen epäonnistui</translation>
+<translation id="691082536326552372">Raportoi epäonnistuneet vaiheet</translation>
+<translation id="2731141092023803480">Lähetä raportti epäonnistuneista vaiheista Brave-tiimille. Tämä raportti sisältää tiedot, joita tarvitsemme ongelman korjaamiseen. <ph name="LINK_BEFORE"/>Lue lisää.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">Nykyinen URL-osoite</translation>
+<translation id="4739707522207259415">Epäonnistuneet vaiheet</translation>
+<translation id="1767991048059195456">Lähetä raportti</translation>
+<translation id="2168036794078614559">Raportti lähetetty</translation>
 </translationbundle>

@@ -216,11 +216,11 @@
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 도메인</translation>
 <translation id="1458638489455808030">웨이백 머신</translation>
-<translation id="8039999492770627305">죄송합니다. 해당 페이지가 없습니다.</translation>
-<translation id="208311458690012764">저장된 버전을 로드할 수 없음</translation>
-<translation id="4515057635283480525">Wayback Machine에서 저장된 버전을 사용할 수 있는지 확인하시겠습니까?</translation>
-<translation id="8252977752585110703">이 사이트의 저장된 버전을 Wayback Machine이 찾을 수 없습니다.</translation>
-<translation id="8748778103033196270">저장된 버전 확인</translation>
+<translation id="8039999492770627305">페이지가 누락됨</translation>
+<translation id="208311458690012764">사용 가능한 아카이브 버전 없음</translation>
+<translation id="4515057635283480525">Internet Archive는 여러 웹 페이지의 과거 버전을 저장합니다. 이 페이지를 Archive에서 찾아보시겠습니까?</translation>
+<translation id="8252977752585110703">죄송합니다. Internet Archive를 확인해 보았지만 이 페이지의 아카이브 버전이 없습니다.</translation>
+<translation id="8748778103033196270">Archive에서 찾아보기</translation>
 <translation id="191143826155037518">Brave (브레이브)는 <ph name="BEGIN_LINK_MPL"/>모질라 공용 허가서 2.0<ph name="END_LINK_MPL"/> (MPL)에 따라 사용자에게 제공되며, 여러 다양한 기타 허가서에 따라 <ph name="BEGIN_LINK_OSS"/>오픈 소스 소프트웨어<ph name="END_LINK_OSS"/>를 포함합니다. 
         귀하는 <ph name="BEGIN_LINK_SOURCE_CODE"/>이 사본을 만드는 데 사용되는 특정 소스 코드<ph name="END_LINK_SOURCE_CODE"/>를 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>다운로드하고 구축하는 방법에 대한 지침<ph name="END_LINK_BUILD_INSTRUCTIONS"/>을 읽으실 수 있습니다.</translation>
 <translation id="4474155171896946103">모든 탭 북마크...</translation>

@@ -1732,6 +1732,9 @@
 <translation id="2077392865355605472">Токеннің символы қажет</translation>
 <translation id="4636925020451566238">Токеннің дәлдік мәні міндетті түрде енгізілуі керек</translation>
 <translation id="3797613444743816037">Mint мекенжайы</translation>
+<translation id="6571966497164575098">Актив идентификаторы</translation>
+<translation id="2110442566771571217">Токен активінің идентификаторы жарамсыз немесе бос</translation>
+<translation id="4170599358417498979">Бұл желіде теңшелетін активтерге қолдау көрсетілмейді</translation>
 <translation id="7951915459354237451">Төлем лимиті негізгі төлемнен төмен орнатылып отыр. Сіздің транзакцияңыз ұзаққа созылуы немесе сәтсіз аяқталуы мүмкін.</translation>
 <translation id="2227702748249086756">Төлем бағалаулары алынбай жатыр</translation>
 <translation id="3225624966527491351">NFT импорттау</translation>
@@ -2018,7 +2021,7 @@
 <translation id="418195046117003119">Бөлісу хаб скриншоты</translation>
 <translation id="4712056949543885424">Құпия сөз менеджерін көрсету</translation>
 <translation id="8037472847879765671">Төлем әдістерін көрсету</translation>
-<translation id="7269867954894010756">Мекенжайларды көрсету</translation>
+<translation id="6262574309547773475">Байланыс ақпаратын көрсету</translation>
 <translation id="6799213269525079335">Келесі табу</translation>
 <translation id="8666632926482119393">Алдыңғы табу</translation>
 <translation id="3567467864281922039">Іздеуді жабу немесе тоқтату</translation>
@@ -2147,6 +2150,7 @@
 <translation id="3142853026316054951">Фокус режимін ауыстыру</translation>
 <translation id="3468387898712904997">Жаңа электрондық пошта псевдонимі</translation>
 <translation id="4711475997833555304">Кіріс жәшігіңізге бағытталатын кездейсоқ электрондық пошта жасаңыз.</translation>
+<translation id="5663901348199429994">Сіздің электрондық пошта псевдонимдеріңіз</translation>
 <translation id="2796584247246518451">Жаңа уақытша контейнер</translation>
 <translation id="8591883849678260674">Түпнұсқаны көру</translation>
 <translation id="1969654232209826429">мин. оқу</translation>
@@ -2211,6 +2215,7 @@
 <translation id="9215978379284690246">Күй коды: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Күй коды: <ph name="STATUS_CODE"/>, ішкі күй коды: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Сіз премиум лимитке жеттіңіз. Бірнеше сағаттан кейін қайта көріңіз.</translation>
+<translation id="6873128487002733717">Модель бойынша Premium шегіне жеттіңіз. Басқа модельді таңдаңыз немесе кейінірек қайталап көріңіз.</translation>
 <translation id="3683964919745779766">Модель бойынша сұрау шегі немесе несиелер аяқталды. Кейінірек қайталап көріңіз.</translation>
 <translation id="7692501701960747469">Бұл модель үшін конфигурацияланған API кілті жарамсыз. Конфигурацияңызды тексеріп, қайталап көріңіз.</translation>
 <translation id="7905602379229309187">Қазіргі уақытта соңғы нүкте жүктелуде. Кейінірек қайталап көріңіз.</translation>
@@ -2390,6 +2395,9 @@
 <translation id="5021823940147712387">Құралдарды жою</translation>
 <translation id="8712279871321308580">Қол жетімді веб-сайт құралдары</translation>
 <translation id="3690996226559605619">Қол жетімді құралдар (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Осы сеанс үшін рұқсат ету</translation>
+<translation id="6240821072888636753">Әр жолы сұрау</translation>
+<translation id="4290920330097335010">Ешқашан рұқсат етпеу</translation>
 <translation id="318819763888864209">Барлық жазылымдар автоматты түрде жаңартылады, бірақ оларды жаңартылмай тұрып кез келген уақытта тоқтатуға болады.</translation>
 <translation id="5091223967610958">Бетте тұрған беттің хостын бөлісу (<ph name="HOST_NAME"/>) Леоны жақсартуға көмектеседі.</translation>
 <translation id="8732450785281947197">Лео AI құралдары</translation>
@@ -2464,7 +2472,7 @@
 <translation id="6077070599873946984">Brave AI келесіге рұқсат сұрайды: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI **<ph name="SITE_ORIGIN"/>** сайтында **<ph name="TOOL_NAME"/>** орындағысы келеді</translation>
 <translation id="4163837693685963037">Әрекет сіздің сұранысыңызбен сәйкес келмейтін болуы мүмкін:</translation>
-<translation id="5137568953923142260">Рұқсат ету</translation>
+<translation id="5137568953923142260">Бір рет рұқсат ету</translation>
 <translation id="3927932062596804919">Бас тарту</translation>
 <translation id="4191349941249805855">Құрал аргументтерін көрсету</translation>
 <translation id="7237059533128264835">Құрал аргументтерін жасыру</translation>
@@ -2511,7 +2519,6 @@
 <translation id="6002159997868894136">Псевдонимды көшіру үшін басыңыз</translation>
 <translation id="8105770564756958406">Қолданылады <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Нақты электрондық пошта мекенжайыңыздың қорғалуын қамтамасыз ету үшін 5 тегін электрондық пошта псевдонимін жасаңыз.</translation>
-<translation id="5663901348199429994">Сіздің электрондық пошта псевдонимдеріңіз</translation>
 <translation id="9046133327037621173">Жаңа электрондық пошта псевдонимі</translation>
 <translation id="3768606658230902536">Жеке электрондық поштаңызды құпия сақтай отырып, кіріс жәшігіңізге жіберілетін кездейсоқ электрондық пошта мекенжайын жасаңыз.</translation>
 <translation id="4452721050684632493">Бүркеншік ат шегіне жетті</translation>
@@ -2932,7 +2939,9 @@ Brave бұл ақпараттың әшкереленуінен қорғану ү
 <translation id="4227581348172626540">Құпиясөзді өзгертуден бас тарту</translation>
 <translation id="808894953321890993">Құпиясөзді өзгерту</translation>
 <translation id="7967687455715421528">Құпиясөзді өзгерту мүмкін емес</translation>
+<translation id="7413006094063730650">Аккаунтты жою</translation>
 <translation id="4869737930995549965">Шығу</translation>
+<translation id="2902312830803030883">Қосымша әрекеттер</translation>
 <translation id="5538654494923870167">Brave тіркелгіңізді пайдалануды бастаңыз</translation>
 <translation id="1544145635547515689">Brave тіркелгісін жасау</translation>
 <translation id="3828644479849256404">Тіркелгіңіз бар ма? Кіріңіз</translation>
@@ -2957,6 +2966,11 @@ Brave бұл ақпараттың әшкереленуінен қорғану ү
 <translation id="7228810962389847249">Кодты осында енгізіңіз</translation>
 <translation id="4683390091376980486">Кодты растау</translation>
 <translation id="3970028678400797622">Электрондық пошта кодын қайта жіберу</translation>
+<translation id="3653907916071208187">Brave аккаунтыңызды жою керек пе?</translation>
+<translation id="8216839865292766307">Brave аккаунтын жою оның электрондық пошта бүркеншік аттарын да жояды. Тіркелу үшін бүркеншік атты пайдаланған онлайн қызметтерге кіру мүмкіндігінен айырылуыңыз мүмкін. Бұл әрекетті кері қайтару мүмкін емес.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">Аккаунтты жоюды қосу үшін <ph name="KEYWORD"/> деп теріңіз</translation>
+<translation id="536306385881145656">Brave аккаунтын жою</translation>
 <translation id="2475982808118771221">Қате орын алды</translation>
 <translation id="5430795854491041407">қате</translation>
 <translation id="2232323423357029857">Браузерде күтпеген қате орын алды<ph name="ERROR_CODE"/>. Браузерді қайта іске қосып, қайталап көріңіз.</translation>
@@ -2989,4 +3003,10 @@ Brave бұл ақпараттың әшкереленуінен қорғану ү
 <translation id="1063227610401477317">Өзгерістерді қолдану</translation>
 <translation id="5539769255716491933">Сәтсіз қадамдар туралы есеп беру</translation>
 <translation id="7562163394445060270">Тапсырманы аяқтау сәтсіз аяқталды</translation>
+<translation id="691082536326552372">Сәтсіз қадамдар туралы есеп беру</translation>
+<translation id="2731141092023803480">Сәтсіз қадамдар туралы есепті Brave тобына жіберіңіз. Бұл есеп мәселені түзету үшін бізге қажетті ақпаратты қамтиды. <ph name="LINK_BEFORE"/>Толығырақ.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">Ағымдағы URL</translation>
+<translation id="4739707522207259415">Сәтсіз қадам(дар)</translation>
+<translation id="1767991048059195456">Есепті жіберу</translation>
+<translation id="2168036794078614559">Есеп жіберілді</translation>
 </translationbundle>

@@ -1722,6 +1722,9 @@
 <translation id="2077392865355605472">Simboli i token-it është i domosdoshëm</translation>
 <translation id="4636925020451566238">Numri i decimalëve të token-it është i domosdoshëm</translation>
 <translation id="3797613444743816037">Adresa e mint-it</translation>
+<translation id="6571966497164575098">ID e asetit</translation>
+<translation id="2110442566771571217">ID e pasurisë së tokenit e pavlefshme ose bosh</translation>
+<translation id="4170599358417498979">Asetet e personalizuara nuk mbështeten në këtë rrjet</translation>
 <translation id="7951915459354237451">Kufiri i tarifës është vendosur më poshtë se tarifa bazë. Transaksioni juaj mund të zgjasë shumë ose të dështojë.</translation>
 <translation id="2227702748249086756">Nuk mund të merren përllogaritjet e tarifës</translation>
 <translation id="3225624966527491351">Importo NFT</translation>
@@ -2008,7 +2011,7 @@
 <translation id="418195046117003119">Shfaq menaxherin e fjalëkalimeve</translation>
 <translation id="4712056949543885424">Shfaq mënyrat e pagesës</translation>
 <translation id="8037472847879765671">Shfaq adresat</translation>
-<translation id="7269867954894010756">Gjej më pas</translation>
+<translation id="6262574309547773475">Shfaq informacionin e kontaktit</translation>
 <translation id="6799213269525079335">Gjej më parë</translation>
 <translation id="8666632926482119393">Mbyll kërkimin ose ndal}</translation>
 <translation id="3567467864281922039">Rivendos zmadhimin</translation>
@@ -2137,6 +2140,7 @@
 <translation id="3142853026316054951">Aktivizo/çaktivizo modalitetin e fokusit</translation>
 <translation id="3468387898712904997">Pseudonim i ri i email-it</translation>
 <translation id="4711475997833555304">Krijoni një email të rastësishëm që përcillet te kutia juaj postare.</translation>
+<translation id="5663901348199429994">Pseudonimet e Email-it tënd</translation>
 <translation id="2796584247246518451">Kontejner i përkohshëm i ri</translation>
 <translation id="8591883849678260674">Shfaq origjinalin</translation>
 <translation id="1969654232209826429">min. leximi</translation>
@@ -2201,6 +2205,7 @@
 <translation id="9215978379284690246">Kodi i statusit: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Kodi i statusit: <ph name="STATUS_CODE"/>, kodi i brendshëm i statusit: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Ke arritur kufirin e shpejtësisë premium. Provoni përsëri pas disa orësh.</translation>
+<translation id="6873128487002733717">Keni arritur limitin premium për këtë model. Zgjidhni një model tjetër ose provoni përsëri më vonë.</translation>
 <translation id="3683964919745779766">Keni arritur limitin e shpejtësisë për këtë model ose jeni pa kredite. Ju lutem provoni përsëri më vonë.</translation>
 <translation id="7692501701960747469">Çelësi API i konfiguruar për këtë model është i pavlefshëm. Ju lutem kontrolloni konfigurimin tuaj dhe provoni përsëri.</translation>
 <translation id="7905602379229309187">Pika e fundit është aktualisht e ngarkuar. Ju lutem provoni përsëri më vonë.</translation>
@@ -2380,6 +2385,9 @@
 <translation id="5021823940147712387">Hiqni mjetet</translation>
 <translation id="8712279871321308580">Mjetet e disponueshme të sajtit</translation>
 <translation id="3690996226559605619">Mjetet e disponueshme (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Lejo për këtë seancë</translation>
+<translation id="6240821072888636753">Pyet çdo herë</translation>
+<translation id="4290920330097335010">Mos e lejo kurrë</translation>
 <translation id="318819763888864209">Të gjitha abonimet rinovohen automatikisht, por mund tëanulohen në çdo kohë përpara rinovimit.</translation>
 <translation id="5091223967610958">Ndaj emrin e hostit të faqes ku je (<ph name="HOST_NAME"/>) për të na ndihmuar të përmirësojmë Leoin.</translation>
 <translation id="8732450785281947197">Mjetet Leo AI</translation>
@@ -2454,7 +2462,7 @@
 <translation id="6077070599873946984">Brave AI ka nevojë për lejen tuaj për: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI dëshiron të ekzekutojë **<ph name="TOOL_NAME"/>** në **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Operacioni është detektuar si potencialisht jo në përputhje me kërkesën tuaj:</translation>
-<translation id="5137568953923142260">Lejoje</translation>
+<translation id="5137568953923142260">Lejo një herë</translation>
 <translation id="3927932062596804919">Refuzo</translation>
 <translation id="4191349941249805855">Shfaq argumentet e mjetit</translation>
 <translation id="7237059533128264835">Fshih argumentet e mjetit</translation>
@@ -2501,7 +2509,6 @@
 <translation id="6002159997868894136">Kliko për të kopjuar pseudonimin</translation>
 <translation id="8105770564756958406">Përdorur nga <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Krijo deri në 5 pseudonime falas të email-it për të mbrojtur adresën tënde të vërtetë të email-it.</translation>
-<translation id="5663901348199429994">Pseudonimet e Email-it tënd</translation>
 <translation id="9046133327037621173">Pseudonim i ri i email-it</translation>
 <translation id="3768606658230902536">Krijo një adresë të rastësishme të email-it që dërgon në kutinë tënde postare ndërsa mban private adresën tënde personale të email-it.</translation>
 <translation id="4452721050684632493">Kufiri i pseudonimeve u arrit</translation>
@@ -2930,7 +2937,9 @@ Le të ju lidhim!</translation>
 <translation id="4227581348172626540">Anulo ndryshimin e fjalëkalimit</translation>
 <translation id="808894953321890993">Ndrysho fjalëkalimin</translation>
 <translation id="7967687455715421528">I pamundur ndryshimi i fjalëkalimit</translation>
+<translation id="7413006094063730650">Fshij llogarinë</translation>
 <translation id="4869737930995549965">Çkyçu</translation>
+<translation id="2902312830803030883">Më shumë veprime</translation>
 <translation id="5538654494923870167">Fillo me llogarinë tënde Brave</translation>
 <translation id="1544145635547515689">Krijo një llogari Brave</translation>
 <translation id="3828644479849256404">Ke tashmë një llogari? Futu</translation>
@@ -2955,6 +2964,11 @@ Le të ju lidhim!</translation>
 <translation id="7228810962389847249">Fut kodin këtu</translation>
 <translation id="4683390091376980486">Konfirmo kodin</translation>
 <translation id="3970028678400797622">Ridërgo kodin me email</translation>
+<translation id="3653907916071208187">Të fshij llogarinë tënde Brave?</translation>
+<translation id="8216839865292766307">Fshirja e një llogarie Brave do të fshijë gjithashtu pseudonimet e email-it të saj. Mund të humbisni aksesin në shërbimet online ku keni përdorur një pseudonim për t'u regjistruar. Ky veprim nuk mund të zhbëhet.</translation>
+<translation id="3672274694560812974">FSHIJ</translation>
+<translation id="1886662169666501462">Shkruani <ph name="KEYWORD"/> për të aktivizuar fshirjen e llogarisë</translation>
+<translation id="536306385881145656">Fshij llogarinë Brave</translation>
 <translation id="2475982808118771221">Ndodhi një gabim</translation>
 <translation id="5430795854491041407">gabim</translation>
 <translation id="2232323423357029857">Browser-i hasi një gabim të papritur<ph name="ERROR_CODE"/>. Të lutemi rinise browser-in dhe provo sërish.</translation>
@@ -2987,4 +3001,10 @@ Le të ju lidhim!</translation>
 <translation id="1063227610401477317">Zbato Ndryshimet</translation>
 <translation id="5539769255716491933">Raporto Hapat e Dështuar</translation>
 <translation id="7562163394445060270">Përfundimi i detyrës dështoi</translation>
+<translation id="691082536326552372">Raporto hapat e dështuar</translation>
+<translation id="2731141092023803480">Dërgoni një raport të hapave të dështuar te ekipi i Brave. Ky raport do të përmbajë informacionin e nevojshëm që ne të rregullojmë problemin. <ph name="LINK_BEFORE"/>Mëso më shumë.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">URL-ja aktuale</translation>
+<translation id="4739707522207259415">Hapi(at) e dështuar</translation>
+<translation id="1767991048059195456">Dërgo raportin</translation>
+<translation id="2168036794078614559">Raporti u dërgua</translation>
 </translationbundle>
