@@ -953,6 +953,28 @@ def ApplyBanRuleExcludes():
 ApplyBanRuleExcludes()
 
 
+# Fail if a per_check_files_to_skip key names no existing check, e.g. after
+# upstream renames a check.
+def ValidatePerCheckFilesToSkip():
+    import presubmit_canned_checks
+
+    unknown_checks = {
+        name
+        for name in chromium_presubmit_overrides.config[
+            'per_check_files_to_skip'
+        ]
+        if not callable(globals().get(name))
+        and not callable(getattr(presubmit_canned_checks, name, None))
+    }
+    if unknown_checks:
+        raise RuntimeError(
+            f'ERROR: Unknown per_check_files_to_skip checks: {unknown_checks}'
+        )
+
+
+ValidatePerCheckFilesToSkip()
+
+
 @chromium_presubmit_overrides.override_check(globals())
 def CheckForIncludeGuards(original_check, input_api, output_api, **kwargs):
     # Add 'brave/' prefix for header guard checks to properly validate guards.
