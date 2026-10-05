@@ -5,6 +5,26 @@
 ## why the filter is required and create an associated tracking issue if needed.
 ##
 
+# References menu items by explicit index, which doesn't match our menu since we
+# insert an additional "Clear browsing data" item ahead of them.
+-RecentTabsSubMenuModelTest.MaxSessionsAndRecency
+
+# References the recently closed submenu by explicit index, which doesn't match
+# our menu since we disable History Clusters and every item shifts down by one
+# (submenu is at index 3 for us).
+-RecentTabsSubMenuModelTest.RecentlyClosedGroupsFromCurrentSession
+-RecentTabsSubMenuModelTest.RecentlyClosedSplitsFromCurrentSession
+-RecentTabsSubMenuModelTest.RecentlyClosedWindowWithSplit
+-RecentTabsSubMenuModelTest.RecentlyClosedWindowWithGroupsAndSplits
+-RecentTabsSubMenuModelTest.RecentlyClosedWindowWithSplitAndRegularTabs
+-RecentTabsSubMenuModelTest.RecentlyClosedGroupWithSplit
+-RecentTabsSubMenuModelTest.RecentlyClosedTabsAndWindowsFromLastSessionWithRefresh
+-RecentTabsSubMenuModelTest.SavingBrowserHistoryDisabledPolicyChangeMidSession
+
+# Upstream code won't execute IDC_SHOW_HISTORY_CLUSTERS_SIDE_PANEL when
+# history clusters aren't enabled, but the test doesn't check for it.
+-RecentTabsSubMenuModelTest.LogMenuMetricsForShowGroupedHistory
+
 # These width/height/sizing tests fail because we reparent the upstream
 # SidePanel into SidebarContainerView, which manages its width independently of
 # upstream's BrowserView layout and SidePanel::UpdateWidthOnEntryChanged.
