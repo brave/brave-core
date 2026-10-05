@@ -26,6 +26,13 @@ transpile_web_ui("email_aliases_ui") {
     ],
   ]
 
+  if (is_android) {
+    entry_points += [ [
+          "email_aliases_settings",
+          rebase_path("email_aliases_settings.ts"),
+        ] ]
+  }
+
   imports_from = [
     "//brave/browser/resources/settings/email_aliases_page/",
     "//brave/components/email_aliases/resources/",
