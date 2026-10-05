@@ -146,7 +146,10 @@ export function computeHealthChecks(state: AppState): HealthCheck[] {
   // Tokens.
   const confirmationTokensRemaining = getDiagnosticValue(
     state.confirmationTokensDiagnosticEntries, 'Confirmation tokens remaining')
-  if (state.isInitialized && confirmationTokensRemaining === '0') {
+  if (
+    state.isInitialized && walletConnected &&
+      confirmationTokensRemaining === '0'
+  ) {
     add('confirmation-tokens-empty', 'warning',
       'No confirmation tokens remaining; new ad events can\'t be ' +
         'confirmed until more are refilled.', routes.confirmationTokens)
