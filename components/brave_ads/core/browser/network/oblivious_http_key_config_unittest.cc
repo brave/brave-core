@@ -9,6 +9,8 @@
 #include <string_view>
 
 #include "base/memory/scoped_refptr.h"
+#include "base/run_loop.h"
+#include "base/task/single_thread_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
@@ -200,6 +202,42 @@ TEST_F(BraveAdsObliviousHttpKeyConfigTest,
   EXPECT_EQ(2U, request_count);
   ASSERT_TRUE(
       base::test::RunUntil([&] { return ohttp_key_config.Get().has_value(); }));
+  EXPECT_THAT(ohttp_key_config.Get(), ::testing::Optional(kKeyConfig));
+}
+
+TEST_F(BraveAdsObliviousHttpKeyConfigTest,
+       StopCancelsInFlightFetchSoResponseIsDiscarded) {
+  // Arrange
+  ObliviousHttpKeyConfig ohttp_key_config(prefs_, shared_url_loader_factory_,
+                                          GURL(kKeyConfigUrl));
+  ohttp_key_config.MaybeFetch();
+  ASSERT_EQ(1, url_loader_factory_.NumPending());
+
+  // Act
+  ohttp_key_config.Stop();
+  url_loader_factory_.AddResponse(kKeyConfigUrl, kKeyConfig);
+
+  // Assert
+  base::RunLoop run_loop;
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, run_loop.QuitClosure());
+  run_loop.Run();
+  EXPECT_FALSE(ohttp_key_config.Get().has_value());
+}
+
+TEST_F(BraveAdsObliviousHttpKeyConfigTest, StopDoesNotClearCachedConfig) {
+  // Arrange
+  url_loader_factory_.AddResponse(kKeyConfigUrl, kKeyConfig);
+  ObliviousHttpKeyConfig ohttp_key_config(prefs_, shared_url_loader_factory_,
+                                          GURL(kKeyConfigUrl));
+  ohttp_key_config.MaybeFetch();
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return ohttp_key_config.Get().has_value(); }));
+
+  // Act
+  ohttp_key_config.Stop();
+
+  // Assert
   EXPECT_THAT(ohttp_key_config.Get(), ::testing::Optional(kKeyConfig));
 }
 
