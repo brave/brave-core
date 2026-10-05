@@ -40,9 +40,6 @@ views::Widget* SidebarItemAddedFeedbackBubble::Create(
       anchor_view, items_contents_view, prefs);
   auto* bubble = views::BubbleDialogDelegateView::CreateBubble(delegate);
   auto* frame_view = delegate->GetBubbleFrameView();
-  frame_view->bubble_border()->set_md_shadow_elevation(
-      ChromeLayoutProvider::Get()->GetShadowElevationMetric(
-          views::Emphasis::kHigh));
   frame_view->SetContentMargins(gfx::Insets::VH(10, 18));
   frame_view->SetDisplayVisibleArrow(true);
   delegate->SizeToContents();
@@ -56,9 +53,13 @@ SidebarItemAddedFeedbackBubble::SidebarItemAddedFeedbackBubble(
     views::View* items_contents_view,
     PrefService* prefs)
     : BubbleDialogDelegateView(anchor_view,
-                               sidebar::GetBubbleArrowForSidebar(prefs),
-                               views::BubbleBorder::STANDARD_SHADOW),
+                               sidebar::GetBubbleArrowForSidebar(prefs)),
       animation_(base::Milliseconds(kFadeoutDurationInMs), 60, this) {
+  set_shadow_config({
+      .shadow_type = views::BubbleBorder::STANDARD_SHADOW,
+      .elevation = ChromeLayoutProvider::Get()->GetShadowElevationMetric(
+          views::Emphasis::kHigh),
+  });
   // This bubble uses same color for all themes.
   constexpr SkColor kBubbleBackground = SkColorSetRGB(0x33, 0x9A, 0xF0);
   SetBackgroundColor(kBubbleBackground);

@@ -111,9 +111,6 @@ views::Widget* SidebarAddItemBubbleDelegateView::Create(
   auto* delegate = new SidebarAddItemBubbleDelegateView(browser, anchor_view);
   auto* bubble = views::BubbleDialogDelegateView::CreateBubble(delegate);
   auto* frame_view = delegate->GetBubbleFrameView();
-  frame_view->bubble_border()->set_md_shadow_elevation(
-      ChromeLayoutProvider::Get()->GetShadowElevationMetric(
-          views::Emphasis::kHigh));
   frame_view->SetDisplayVisibleArrow(true);
   delegate->SizeToContents();
   frame_view->SetRoundedCorners(gfx::RoundedCornersF(4));
@@ -126,10 +123,14 @@ SidebarAddItemBubbleDelegateView::SidebarAddItemBubbleDelegateView(
     views::View* anchor_view)
     : BubbleDialogDelegateView(
           anchor_view,
-          sidebar::GetBubbleArrowForSidebar(browser->GetProfile()->GetPrefs()),
-          views::BubbleBorder::STANDARD_SHADOW),
+          sidebar::GetBubbleArrowForSidebar(browser->GetProfile()->GetPrefs())),
       browser_(browser) {
   DCHECK(browser_);
+  set_shadow_config({
+      .shadow_type = views::BubbleBorder::STANDARD_SHADOW,
+      .elevation = ChromeLayoutProvider::Get()->GetShadowElevationMetric(
+          views::Emphasis::kHigh),
+  });
 
   set_margins(gfx::Insets());
   set_title_margins(gfx::Insets());
