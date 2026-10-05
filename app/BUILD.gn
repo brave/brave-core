@@ -201,7 +201,6 @@ source_set("unit_tests") {
     "//components/safe_browsing/core/common",
     "//components/search",
     "//components/segmentation_platform/public",
-    "//components/send_tab_to_self:features",
     "//components/shared_highlighting/core/common",
     "//components/signin/public/base:signin_buildflags",
     "//components/site_token_provider",
