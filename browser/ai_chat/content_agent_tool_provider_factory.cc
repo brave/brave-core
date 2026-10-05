@@ -6,6 +6,7 @@
 #include "brave/browser/ai_chat/content_agent_tool_provider_factory.h"
 
 #include <memory>
+#include <string>
 
 #include "brave/browser/ai_chat/content_agent_tool_provider.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
@@ -22,7 +23,8 @@ ContentAgentToolProviderFactory::ContentAgentToolProviderFactory(
 ContentAgentToolProviderFactory::~ContentAgentToolProviderFactory() = default;
 
 std::unique_ptr<ToolProvider>
-ContentAgentToolProviderFactory::CreateToolProvider() {
+ContentAgentToolProviderFactory::CreateToolProvider(
+    const std::string& conversation_uuid) {
   return std::make_unique<ContentAgentToolProvider>(
       profile_, actor_service_.get(),
       *actor_service_->GetActorUiStateManager());

@@ -7,12 +7,14 @@
 #define BRAVE_BROWSER_AI_CHAT_BROWSER_TOOL_PROVIDER_H_
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 
 class Profile;
 
@@ -23,6 +25,7 @@ class BrowserContext;
 namespace ai_chat {
 
 class CodeExecutionTool;
+class ConversationSearchTool;
 class HistorySearchTool;
 class TabManagementTool;
 
@@ -32,7 +35,7 @@ class TabManagementTool;
 // that the tools for a conversation perform actions on.
 class BrowserToolProvider : public ToolProvider {
  public:
-  explicit BrowserToolProvider(Profile* profile);
+  BrowserToolProvider(Profile* profile, std::string conversation_uuid);
 
   ~BrowserToolProvider() override;
 
@@ -43,6 +46,9 @@ class BrowserToolProvider : public ToolProvider {
   std::vector<base::WeakPtr<Tool>> GetTools() override;
 
   HistorySearchTool* GetHistorySearchToolForTesting();
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  ConversationSearchTool* GetConversationSearchToolForTesting();
+#endif
 
  private:
   void CreateTools(content::BrowserContext* browser_context);
@@ -50,9 +56,14 @@ class BrowserToolProvider : public ToolProvider {
   // Browser-specific tools owned by this provider
   std::unique_ptr<CodeExecutionTool> code_execution_tool_;
   std::unique_ptr<HistorySearchTool> history_search_tool_;
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  std::unique_ptr<ConversationSearchTool> conversation_search_tool_;
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
   std::unique_ptr<TabManagementTool> tab_management_tool_;
 #endif
+  // The conversation the tools are for.
+  const std::string conversation_uuid_;
   raw_ptr<Profile> profile_ = nullptr;
 };
 

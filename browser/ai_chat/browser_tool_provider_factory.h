@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_AI_CHAT_BROWSER_TOOL_PROVIDER_FACTORY_H_
 
 #include <memory>
+#include <string>
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
@@ -27,7 +28,8 @@ class BrowserToolProviderFactory : public ToolProviderFactory {
       delete;
 
   // ToolProviderFactory implementation
-  std::unique_ptr<ToolProvider> CreateToolProvider() override;
+  std::unique_ptr<ToolProvider> CreateToolProvider(
+      const std::string& conversation_uuid) override;
 
  private:
   raw_ptr<Profile> profile_ = nullptr;

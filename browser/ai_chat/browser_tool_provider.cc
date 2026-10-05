@@ -6,6 +6,8 @@
 #include "brave/browser/ai_chat/browser_tool_provider.h"
 
 #include <memory>
+#include <string>
+#include <utility>
 #include <vector>
 
 #include "base/check_is_test.h"
@@ -16,6 +18,7 @@
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
@@ -24,9 +27,17 @@
 #include "brave/browser/ai_chat/tools/tab_management_tool.h"
 #endif
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/browser/ai_chat/ai_chat_embeddings_service_factory.h"
+#include "brave/browser/ai_chat/tools/conversation_search_tool.h"
+#include "brave/components/ai_chat/core/browser/embeddings/ai_chat_embeddings_service.h"
+#endif
+
 namespace ai_chat {
 
-BrowserToolProvider::BrowserToolProvider(Profile* profile) : profile_(profile) {
+BrowserToolProvider::BrowserToolProvider(Profile* profile,
+                                         std::string conversation_uuid)
+    : conversation_uuid_(std::move(conversation_uuid)), profile_(profile) {
   CreateTools(profile);
 }
 
@@ -40,6 +51,11 @@ std::vector<base::WeakPtr<Tool>> BrowserToolProvider::GetTools() {
   if (history_search_tool_) {
     tool_ptrs.push_back(history_search_tool_->GetWeakPtr());
   }
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  if (conversation_search_tool_) {
+    tool_ptrs.push_back(conversation_search_tool_->GetWeakPtr());
+  }
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
   if (tab_management_tool_) {
@@ -55,6 +71,14 @@ HistorySearchTool* BrowserToolProvider::GetHistorySearchToolForTesting() {
   return history_search_tool_.get();
 }
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+ConversationSearchTool*
+BrowserToolProvider::GetConversationSearchToolForTesting() {
+  CHECK_IS_TEST();
+  return conversation_search_tool_.get();
+}
+#endif
+
 void BrowserToolProvider::CreateTools(
     content::BrowserContext* browser_context) {
   if (features::IsCodeExecutionToolEnabled()) {
@@ -64,6 +88,14 @@ void BrowserToolProvider::CreateTools(
           Profile::FromBrowserContext(browser_context))) {
     history_search_tool_ = std::make_unique<HistorySearchTool>(browser_context);
   }
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  if (AIChatEmbeddingsService* embeddings_service =
+          AIChatEmbeddingsServiceFactory::GetForBrowserContext(
+              browser_context)) {
+    conversation_search_tool_ = std::make_unique<ConversationSearchTool>(
+        embeddings_service->GetWeakPtr(), conversation_uuid_);
+  }
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
   if (base::FeatureList::IsEnabled(features::kTabManagementTool)) {
     tab_management_tool_ = std::make_unique<TabManagementTool>(profile_);

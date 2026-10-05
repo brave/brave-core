@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_TOOLS_TOOL_PROVIDER_FACTORY_H_
 
 #include <memory>
+#include <string>
 
 namespace ai_chat {
 
@@ -21,8 +22,10 @@ class ToolProviderFactory {
  public:
   virtual ~ToolProviderFactory() = default;
 
-  // Creates a new ToolProvider instance for a conversation
-  virtual std::unique_ptr<ToolProvider> CreateToolProvider() = 0;
+  // Creates a new ToolProvider instance for the conversation with
+  // `conversation_uuid`.
+  virtual std::unique_ptr<ToolProvider> CreateToolProvider(
+      const std::string& conversation_uuid) = 0;
 };
 
 }  // namespace ai_chat

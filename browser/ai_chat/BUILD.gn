@@ -160,6 +160,8 @@ static_library("ai_chat") {
     sources += [
       "ai_chat_embeddings_service_factory.cc",
       "ai_chat_embeddings_service_factory.h",
+      "tools/conversation_search_tool.cc",
+      "tools/conversation_search_tool.h",
     ]
     deps += [
       "//brave/browser/history_embeddings:status",
@@ -322,6 +324,11 @@ source_set("unit_tests") {
     deps += [ "//brave/browser/ai_chat:ai_chat_tab_management_tool_impl" ]
   }
 
+  if (enable_local_ai) {
+    sources += [ "tools/conversation_search_tool_unittest.cc" ]
+    deps += [ "//brave/components/ai_chat/core/browser/embeddings" ]
+  }
+
   if (!is_android) {
     sources += [ "text_file_extractor_unittest.cc" ]
   }
@@ -432,8 +439,13 @@ source_set("browser_tests") {
     ]
 
     if (enable_local_ai) {
-      sources += [ "tools/history_search_tool_browsertest.cc" ]
+      sources += [
+        "tools/conversation_search_tool_browsertest.cc",
+        "tools/history_search_tool_browsertest.cc",
+      ]
       deps += [
+        "//brave/components/ai_chat/core/browser/embeddings",
+        "//brave/components/ai_chat/core/browser/embeddings:test_support",
         "//brave/components/history_embeddings:test_support",
         "//brave/components/local_ai/core",
       ]

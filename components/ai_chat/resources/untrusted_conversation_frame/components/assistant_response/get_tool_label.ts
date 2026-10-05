@@ -48,6 +48,19 @@ function getSemanticHistorySearchToolNameLabel(toolInput: any) {
   return getLocale(S.CHAT_UI_TOOL_LABEL_SEMANTIC_HISTORY_SEARCH_GENERIC)
 }
 
+/**
+ * See conversation_search_tool.cc
+ * @param toolInput Expects { "query": string } but is not guaranteed.
+ */
+function getConversationSearchToolNameLabel(toolInput: any) {
+  if (typeof toolInput?.query === 'string' && toolInput.query.length > 0) {
+    return formatLocale(S.CHAT_UI_TOOL_LABEL_CONVERSATION_SEARCH, {
+      $1: toolInput.query as string,
+    })
+  }
+  return getLocale(S.CHAT_UI_TOOL_LABEL_CONVERSATION_SEARCH_GENERIC)
+}
+
 function getSearchToolNameLabel(toolInput: any) {
   // toolInput is parsed (possibly malformed) JSON, so it may be undefined and
   // its `query` field — confusingly named — may be missing or not actually be
@@ -93,6 +106,8 @@ export function getToolLabel(toolName: string, toolInput: any) {
       return getLocale(S.CHAT_UI_TOOL_LABEL_CODE_EXECUTION)
     case Mojom.SEMANTIC_HISTORY_SEARCH_TOOL_NAME:
       return getSemanticHistorySearchToolNameLabel(toolInput)
+    case Mojom.CONVERSATION_SEARCH_TOOL_NAME:
+      return getConversationSearchToolNameLabel(toolInput)
     // <if expr="enable_ai_chat_tab_management_tool">
     case Mojom.TAB_MANAGEMENT_TOOL_NAME:
       return getLocale(S.CHAT_UI_TOOL_LABEL_TAB_MANAGEMENT)

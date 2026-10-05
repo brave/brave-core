@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_AI_CHAT_CONTENT_AGENT_TOOL_PROVIDER_FACTORY_H_
 
 #include <memory>
+#include <string>
 
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider_factory.h"
@@ -36,7 +37,8 @@ class ContentAgentToolProviderFactory : public ToolProviderFactory {
       const ContentAgentToolProviderFactory&) = delete;
 
   // ToolProviderFactory implementation
-  std::unique_ptr<ToolProvider> CreateToolProvider() override;
+  std::unique_ptr<ToolProvider> CreateToolProvider(
+      const std::string& conversation_uuid) override;
 
  private:
   // Each instance needs an actor service to perform the actions. Not provided

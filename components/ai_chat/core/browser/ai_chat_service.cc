@@ -299,7 +299,7 @@ ConversationHandler* AIChatService::CreateConversation() {
       std::make_unique<ConversationHandler>(
           conversation, this, model_service_, credential_manager_.get(),
           feedback_api_.get(), profile_prefs_, url_loader_factory_,
-          CreateToolProvidersForNewConversation());
+          CreateToolProvidersForNewConversation(conversation_uuid));
   conversation_observations_.AddObservation(conversation_handler.get());
 
   // Own it
@@ -431,7 +431,8 @@ void AIChatService::OnConversationDataReceived(
       std::make_unique<ConversationHandler>(
           conversation, this, model_service_, credential_manager_.get(),
           feedback_api_.get(), profile_prefs_, url_loader_factory_,
-          CreateToolProvidersForNewConversation(), std::move(data));
+          CreateToolProvidersForNewConversation(conversation_uuid),
+          std::move(data));
   conversation_observations_.AddObservation(conversation_handler.get());
   conversation_handlers_.insert_or_assign(conversation_uuid,
                                           std::move(conversation_handler));
@@ -1697,11 +1698,12 @@ void AIChatService::OnGetFocusTabs(
 }
 
 std::vector<std::unique_ptr<ToolProvider>>
-AIChatService::CreateToolProvidersForNewConversation() {
+AIChatService::CreateToolProvidersForNewConversation(
+    const std::string& conversation_uuid) {
   std::vector<std::unique_ptr<ToolProvider>> tool_providers;
 
   for (const auto& factory : tool_provider_factories_) {
-    tool_providers.push_back(factory->CreateToolProvider());
+    tool_providers.push_back(factory->CreateToolProvider(conversation_uuid));
   }
 
   // Basic set of tools that we can provide

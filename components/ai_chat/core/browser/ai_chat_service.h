@@ -459,7 +459,7 @@ class AIChatService : public KeyedService,
       GetFocusTabsCallback callback,
       base::expected<std::vector<std::string>, mojom::APIError> result);
   std::vector<std::unique_ptr<ToolProvider>>
-  CreateToolProvidersForNewConversation();
+  CreateToolProvidersForNewConversation(const std::string& conversation_uuid);
 
   raw_ptr<ModelService> model_service_;
   raw_ptr<TabTrackerService> tab_tracker_service_;

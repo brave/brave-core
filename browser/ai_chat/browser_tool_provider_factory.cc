@@ -6,6 +6,7 @@
 #include "brave/browser/ai_chat/browser_tool_provider_factory.h"
 
 #include <memory>
+#include <string>
 
 #include "brave/browser/ai_chat/browser_tool_provider.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
@@ -18,8 +19,9 @@ BrowserToolProviderFactory::BrowserToolProviderFactory(Profile* profile)
 
 BrowserToolProviderFactory::~BrowserToolProviderFactory() = default;
 
-std::unique_ptr<ToolProvider> BrowserToolProviderFactory::CreateToolProvider() {
-  return std::make_unique<BrowserToolProvider>(profile_);
+std::unique_ptr<ToolProvider> BrowserToolProviderFactory::CreateToolProvider(
+    const std::string& conversation_uuid) {
+  return std::make_unique<BrowserToolProvider>(profile_, conversation_uuid);
 }
 
 }  // namespace ai_chat
