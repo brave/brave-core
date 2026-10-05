@@ -279,8 +279,8 @@ public class BraveMainSettingsFragmentTest {
         // settings screen in that case.
         int expectedCount =
                 ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
-                ? 34
-                : 35;
+                        ? 34
+                        : 35;
 
         assertEquals(
                 "Number of preferences has changed, please check and update preferenceCount"
