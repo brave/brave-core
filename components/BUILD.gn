@@ -135,6 +135,10 @@ test("brave_components_unittests") {
     }
     if (enable_ai_chat) {
       deps += [ "//brave/components/ai_chat/content/browser:unit_tests" ]
+      if (enable_local_ai) {
+        deps +=
+            [ "//brave/components/ai_chat/core/browser/embeddings:unit_tests" ]
+      }
     }
     if (enable_brave_wallet) {
       deps += [

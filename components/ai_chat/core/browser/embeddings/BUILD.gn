@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/local_ai/buildflags/buildflags.gni")
+
+assert(enable_ai_chat)
+assert(enable_local_ai)
+
+static_library("embeddings") {
+  sources = [
+    "passage_splitter.cc",
+    "passage_splitter.h",
+  ]
+
+  deps = [ "//base" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "passage_splitter_unittest.cc" ]
+
+  deps = [
+    ":embeddings",
+    "//base",
+    "//testing/gtest",
+  ]
+}
