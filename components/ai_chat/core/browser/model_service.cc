@@ -168,7 +168,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
 
       auto model = mojom::Model::New();
       model->key = "chat-qwen";
-      model->display_name = "Qwen 3.5 35B";
+      model->display_name = "Qwen 3.6 35B";
       model->vision_support = true;
       model->supports_tools = false;
       model->supported_capabilities = {
@@ -235,7 +235,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       models.push_back(std::move(model));
     }
 
-    // GPT 5.6 Luna
+    // GPT Luna
     {
       auto options = mojom::LeoModelOptions::New();
       options->display_maker = "OpenAI";
@@ -249,7 +249,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
 
       auto model = mojom::Model::New();
       model->key = "chat-gpt-5-6-luna-bedrock";
-      model->display_name = "GPT 5.6 Luna";
+      model->display_name = "GPT Luna";
       model->vision_support = true;
       model->supports_tools = false;
       model->supported_capabilities = {
@@ -287,7 +287,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       models.push_back(std::move(model));
     }
 
-    // Grok 4.6
+    // Grok 4.7
     {
       auto options = mojom::LeoModelOptions::New();
       options->display_maker = "xAI";
@@ -299,7 +299,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
 
       auto model = mojom::Model::New();
       model->key = "chat-grok-4-6-bedrock";
-      model->display_name = "Grok 4.6";
+      model->display_name = "Grok 4.7";
       model->vision_support = true;
       model->supports_tools = false;
       model->supported_capabilities = {

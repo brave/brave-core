@@ -115,7 +115,7 @@
     Model changes dynamically to use the best one for the task.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_QWEN" desc="AI Chat intro message for the qwen model" formatter_data="webui=AiChat">
-    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Qwen VL 30B, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
+    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Qwen 3.6 35B, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_NEAR_GLM_5_1" desc="AI Chat intro message for the glm-5.3 flash model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GLM-5.3 Flash, a model created by Zhipu AI to be performant and applicable to many use cases. GLM-5.3 Flash is NEAR-hosted through their own verifiably private secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
@@ -126,11 +126,11 @@
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_CLAUDE_SONNET" desc="AI Chat intro message for the Claude Sonnet model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Sonnet, a model created by Anthropic to power conversational and text processing tasks. Claude Sonnet is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
-  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_GROK_4_6_BEDROCK" desc="AI Chat intro message for the Grok 4.6 model" formatter_data="webui=AiChat">
-    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Grok 4.6, xAI's frontier reasoning model on Amazon Bedrock Mantle. Grok 4.6 is served through Brave's secure AWS infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_GROK_4_6_BEDROCK" desc="AI Chat intro message for the Grok 4.7 model" formatter_data="webui=AiChat">
+    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Grok 4.7, xAI's frontier reasoning model on Amazon Bedrock. Grok 4.7 is served through Brave's secure AWS infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
-  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_GPT_5_6_LUNA_BEDROCK" desc="AI Chat intro message for the GPT 5.6 Luna model" formatter_data="webui=AiChat">
-    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GPT 5.6 Luna, OpenAI's fast, low-latency model on Amazon Bedrock Mantle. GPT 5.6 Luna is served through Brave's secure AWS infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_GPT_5_6_LUNA_BEDROCK" desc="AI Chat intro message for the GPT Luna model" formatter_data="webui=AiChat">
+    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GPT Luna, OpenAI's fast, low-latency model on Amazon Bedrock. GPT Luna is served through Brave's secure AWS infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_GPT_5_6_TERRA_BEDROCK" desc="AI Chat intro message for the GPT 5.6 Terra model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GPT 5.6 Terra, OpenAI's balanced production model on Amazon Bedrock Mantle. GPT 5.6 Terra is served through Brave's secure AWS infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
@@ -388,7 +388,7 @@
     Change model for answer
   </message>
   <message name="IDS_CHAT_UI_REGENERATE_ANSWER_MENU_TOOLTIP" desc="Tooltip of menu to regenerate AI agent answer with a specific model" formatter_data="webui=AiChat">
-    Change model for answer (current model: <ph name="MODEL_NAME">$1<ex>Qwen VL 30B</ex></ph>)
+    Change model for answer (current model: <ph name="MODEL_NAME">$1<ex>Qwen 3.6 35B</ex></ph>)
   </message>
   <message name="IDS_CHAT_UI_OPTION_NOT_HELPFUL" desc="Select option for feedback form if the answer is not helpful" formatter_data="webui=AiChat">
     Not helpful
