@@ -13,6 +13,7 @@
 #include "base/metrics/field_trial_params.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 
 static_assert(BUILDFLAG(ENABLE_AI_CHAT));
 
@@ -215,6 +216,47 @@ BASE_DECLARE_FEATURE(kAIChatExportJSON);
 // https://github.com/brave/brave-browser/issues/56523
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kAIChatMathRendering);
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+// Enables memories that Leo learns from past chats. This flag is only one of
+// the conditions, chat history storage and the memory pref must also be on.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+BASE_DECLARE_FEATURE(kAIChatLearnedMemory);
+COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatLearnedMemoryEnabled();
+
+// URL of the local server that answers the decision model questions. Learned
+// memory stays inactive when this is empty.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<std::string> kLearnedMemoryDecisionModelUrl;
+
+// Model key of the local LLM (a custom model) that rewrites and merges
+// memories. Learned memory stays inactive when this is empty.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<std::string> kLearnedMemoryLocalLlmModelKey;
+
+// A decision model answer is certain when its probability is at least
+// kLearnedMemoryCertainThreshold and it is at least
+// kLearnedMemoryCertainMargin above the next answer.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<double> kLearnedMemoryCertainThreshold;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<double> kLearnedMemoryCertainMargin;
+
+// Limits for the local LLM requests in one Dreaming run.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<size_t> kLearnedMemoryMaxRelationRequests;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<size_t> kLearnedMemoryMaxRewriteRequests;
+
+// A Dreaming run stops after this time and continues in the next run.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<base::TimeDelta> kLearnedMemoryRunTimeLimit;
+
+// How long a chat turn waits for the relevance answer before it continues
+// without learned memories.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<base::TimeDelta> kLearnedMemoryRelevanceTimeout;
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 }  // namespace ai_chat::features
 

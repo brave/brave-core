@@ -14,6 +14,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
 
@@ -253,5 +254,37 @@ const base::FeatureParam<int> kAIChatConversationShareExpiryDays{
 BASE_FEATURE(kAIChatExportJSON, base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kAIChatMathRendering, base::FEATURE_ENABLED_BY_DEFAULT);
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+BASE_FEATURE(kAIChatLearnedMemory, base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsAIChatLearnedMemoryEnabled() {
+  return base::FeatureList::IsEnabled(features::kAIChatLearnedMemory);
+}
+
+const base::FeatureParam<std::string> kLearnedMemoryDecisionModelUrl{
+    &kAIChatLearnedMemory, "decision_model_url", ""};
+
+const base::FeatureParam<std::string> kLearnedMemoryLocalLlmModelKey{
+    &kAIChatLearnedMemory, "local_llm_model_key", ""};
+
+const base::FeatureParam<double> kLearnedMemoryCertainThreshold{
+    &kAIChatLearnedMemory, "certain_threshold", 0.8};
+
+const base::FeatureParam<double> kLearnedMemoryCertainMargin{
+    &kAIChatLearnedMemory, "certain_margin", 0.2};
+
+const base::FeatureParam<size_t> kLearnedMemoryMaxRelationRequests{
+    &kAIChatLearnedMemory, "max_relation_requests", 20};
+
+const base::FeatureParam<size_t> kLearnedMemoryMaxRewriteRequests{
+    &kAIChatLearnedMemory, "max_rewrite_requests", 50};
+
+const base::FeatureParam<base::TimeDelta> kLearnedMemoryRunTimeLimit{
+    &kAIChatLearnedMemory, "run_time_limit", base::Seconds(30)};
+
+const base::FeatureParam<base::TimeDelta> kLearnedMemoryRelevanceTimeout{
+    &kAIChatLearnedMemory, "relevance_timeout", base::Seconds(1)};
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 }  // namespace ai_chat::features
