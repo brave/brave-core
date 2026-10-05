@@ -4,12 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
-import BraveStrings
 import BraveWidgetsModels
 import DesignSystem
 import Foundation
 import OrderedCollections
-import Strings
 import UIKit
 
 extension WidgetShortcut {
@@ -65,33 +63,6 @@ extension WidgetShortcut {
       disabled.insert(.braveLeoVoiceInput)
     }
     return disabled
-  }
-
-  var displayString: String {
-    switch self {
-    case .unknown:
-      return ""
-    case .bookmarks:
-      return Strings.bookmarksMenuItem
-    case .history:
-      return Strings.historyMenuItem
-    case .downloads:
-      return Strings.downloadsMenuItem
-    case .playlist:
-      return Strings.bravePlaylistItemTitle
-    case .wallet:
-      return Strings.Wallet.wallet
-    case .braveNews:
-      return Strings.braveNewsItemTitle
-    case .braveLeo:
-      return Strings.leoMenuItem
-    case .askBrave:
-      return Strings.askBraveMenuItem
-    case .braveLeoVoiceInput:
-      return Strings.leoVoiceInputMenuItem
-    default:
-      return ""
-    }
   }
 
   var image: UIImage? {
