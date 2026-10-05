@@ -2667,6 +2667,10 @@
 -HistorySyncOptinUIDialogPixelTest.InvokeUi_default/*
 -HistorySyncOptinUIWindowPixelTest.InvokeUi_default/*
 
+# These tests expect avatar button promos, which Brave never computes.
+-AvatarToolbarButtonPromoBrowserTest.*
+-AvatarToolbarButtonPromoClickBrowserTest.*
+
 # These tests crash because pinned_toolbar_actions_container_ in
 # BraveToolbarView is set to nullptr
 -PinnedToolbarActionsContainerTest.*
