@@ -78,8 +78,14 @@
 
       <!-- Email Aliases -->
       <if expr="enable_email_aliases">
+        <include name="IDR_EMAIL_ALIASES_MANAGEMENT_BUNDLE_JS" file="${root_gen_dir}/brave/web-ui-email_aliases/email_aliases.bundle.js" resource_path="email_aliases.bundle.js" use_base_dir="false" type="BINDATA" />
         <include name="IDR_EMAIL_ALIASES_PANEL_HTML" file="../email_aliases/resources/email_aliases_panel.html" type="BINDATA" />
         <include name="IDR_EMAIL_ALIASES_PROMO_HTML" file="../email_aliases/resources/email_aliases_promo.html" type="BINDATA" />
+
+        <if expr="is_android">
+          <include name="IDR_EMAIL_ALIASES_SETTINGS_HTML" file="../email_aliases/resources/email_aliases_settings.html" type="BINDATA" />
+          <include name="IDR_EMAIL_ALIASES_SETTINGS_BUNDLE_JS" file="${root_gen_dir}/brave/web-ui-email_aliases/email_aliases_settings.bundle.js" resource_path="email_aliases_settings.bundle.js" use_base_dir="false" type="BINDATA" />
+        </if>
       </if>
 
       <!-- WebUI Local AI resources -->
