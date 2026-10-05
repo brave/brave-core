@@ -3,12 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import BraveCore
 import BraveUI
-import CoreData
-import Data
 import Foundation
-import Preferences
+import Observation
 import Shared
 import UIKit
 
@@ -54,7 +51,7 @@ class FavoritesOverflowButton: SpringButton {
   }
 }
 
-class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
+class TopSitesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
   let action: () -> Void
   var sectionDidChange: (() -> Void)?
 
@@ -62,15 +59,34 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
     FavoritesOverflowButton
   >
 
-  private var frc: NSFetchedResultsController<Favorite>
+  private let tileSource: TopSitesTileSource
+  /// The tiles the top sites section is currently showing, whose count decides whether there is
+  /// any overflow to reveal. Kept separate from the source for the same reason as the top sites
+  /// section: so that it can't change underneath the collection view while a reload is pending.
+  private var tiles: [TopSiteTile] = []
 
-  init(action: @escaping () -> Void) {
+  init(
+    action: @escaping () -> Void,
+    tileSource: TopSitesTileSource
+  ) {
     self.action = action
-    frc = Favorite.frc()
-    frc.fetchRequest.fetchLimit = 20
+    self.tileSource = tileSource
+
     super.init()
-    try? frc.performFetch()
-    frc.delegate = self
+
+    updateTiles()
+  }
+
+  /// Snapshots the source's tiles and re-arms tracking for the next change.
+  private func updateTiles() {
+    tiles = withObservationTracking {
+      tileSource.tiles
+    } onChange: { [weak self] in
+      DispatchQueue.main.async {
+        self?.updateTiles()
+        self?.sectionDidChange?()
+      }
+    }
   }
 
   @objc private func tappedButton() {
@@ -82,11 +98,10 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
     numberOfItemsInSection section: Int
   ) -> Int {
     let width = fittingSizeForCollectionView(collectionView, section: section).width
-    let count = frc.fetchedObjects?.count ?? 0
 
     let isShowShowMoreButtonVisible =
-      count > FavoritesSectionProvider.numberOfItems(in: collectionView, availableWidth: width)
-      && Preferences.NewTabPage.topsitesMode.value != TopsitesMode.none
+      tiles.count
+      > TopSitesSectionProvider.numberOfItems(in: collectionView, availableWidth: width)
     return isShowShowMoreButtonVisible ? 1 : 0
   }
 
@@ -120,18 +135,9 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
   ) -> UIEdgeInsets {
     let insets = horizontalInsets(
       for: collectionView,
-      maxWidth: FavoritesSectionProvider.maxWidth,
+      maxWidth: TopSitesSectionProvider.maxWidth,
       minimumInset: 16
     )
     return UIEdgeInsets(top: 0, left: insets.left, bottom: 0, right: insets.right)
-  }
-}
-
-extension FavoritesOverflowSectionProvider: NSFetchedResultsControllerDelegate {
-  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    try? frc.performFetch()
-    // Notify synchronously so the collection view is reloaded before anything else can run and
-    // observe item counts that differ from what the collection view currently has cached.
-    sectionDidChange?()
   }
 }

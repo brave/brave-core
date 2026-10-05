@@ -24,26 +24,33 @@ extension FavoritesViewController {
 
     switch section {
     case .favorites:
-      guard let bookmark = favoritesFRC.fetchedObjects?[indexPath.item] else { return nil }
+      guard let favorite = favoritesFRC.fetchedObjects?[indexPath.item] else { return nil }
       return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) {
         _ -> UIMenu? in
         let openInNewTab = UIAction(
           title: Strings.openNewTabButtonTitle,
           handler: UIAction.deferredActionHandler { _ in
-            self.bookmarkAction(bookmark, .opened(inNewTab: true, switchingToPrivateMode: false))
+            self.topSiteAction(
+              .opened(
+                url: favorite.url?.asURL,
+                isFavorite: true,
+                inNewTab: true,
+                switchingToPrivateMode: false
+              )
+            )
           }
         )
         let edit = UIAction(
           title: Strings.editFavorite,
           handler: UIAction.deferredActionHandler { _ in
-            self.bookmarkAction(bookmark, .edited)
+            self.topSiteAction(.edited(favorite: favorite))
           }
         )
         let delete = UIAction(
           title: Strings.removeFavorite,
           attributes: .destructive,
           handler: UIAction.deferredActionHandler { _ in
-            bookmark.delete()
+            favorite.delete()
           }
         )
 
@@ -52,7 +59,14 @@ extension FavoritesViewController {
           let openInNewPrivateTab = UIAction(
             title: Strings.openNewPrivateTabButtonTitle,
             handler: UIAction.deferredActionHandler { _ in
-              self.bookmarkAction(bookmark, .opened(inNewTab: true, switchingToPrivateMode: true))
+              self.topSiteAction(
+                .opened(
+                  url: favorite.url?.asURL,
+                  isFavorite: true,
+                  inNewTab: true,
+                  switchingToPrivateMode: true
+                )
+              )
             }
           )
           urlChildren.append(openInNewPrivateTab)
@@ -61,7 +75,7 @@ extension FavoritesViewController {
         let urlMenu = UIMenu(title: "", options: .displayInline, children: urlChildren)
         let favMenu = UIMenu(title: "", options: .displayInline, children: [edit, delete])
         return UIMenu(
-          title: bookmark.title ?? bookmark.url ?? "",
+          title: favorite.title ?? favorite.url ?? "",
           identifier: nil,
           children: [urlMenu, favMenu]
         )

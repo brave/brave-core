@@ -80,6 +80,9 @@ class FavoritesCell: UICollectionViewCell, CollectionViewReusable {
     config: .init(borderColor: .clear, borderWidth: 0, cornerRadius: 8, displayBackground: false)
   )
 
+  /// The site whose favicon `imageView` is currently showing, or is loading.
+  var loadedSiteURL: URL?
+
   override var isHighlighted: Bool {
     didSet {
       UIView.animate(

@@ -15,7 +15,7 @@ struct NewTabPageSettingsView: View {
 
   @ObservedObject private var backgroundImages = Preferences.NewTabPage.backgroundImages
   @ObservedObject private var showNewTabPrivacyHub = Preferences.NewTabPage.showNewTabPrivacyHub
-  @ObservedObject private var topsitesModeSelection = Preferences.NewTabPage.topsitesMode
+  @ObservedObject private var topSitesModeSelection = Preferences.NewTabPage.topSitesMode
 
   // This is observed to ensure the view updates correctly, but we instead access
   // Preferences.NewTabPage.backgroundMediaType which accesses backgroundMediaTypeRaw
@@ -62,13 +62,13 @@ struct NewTabPageSettingsView: View {
           Picker(
             Strings.NTP.topsites,
             selection: Binding(
-              get: { topsitesModeSelection.value },
+              get: { topSitesModeSelection.value },
               set: {
-                topsitesModeSelection.value = $0
+                topSitesModeSelection.value = $0
               }
             )
           ) {
-            ForEach(TopsitesMode.allCases) { mode in
+            ForEach(TopSitesMode.allCases) { mode in
               Text(mode.title)
             }
           }
@@ -77,9 +77,9 @@ struct NewTabPageSettingsView: View {
           Toggle(
             Strings.Widgets.favoritesWidgetTitle,
             isOn: Binding(
-              get: { topsitesModeSelection.value != TopsitesMode.none },
+              get: { topSitesModeSelection.value != TopSitesMode.none },
               set: {
-                topsitesModeSelection.value = $0 ? TopsitesMode.favourite : TopsitesMode.none
+                topSitesModeSelection.value = $0 ? TopSitesMode.favourite : TopSitesMode.none
               }
             )
           )
