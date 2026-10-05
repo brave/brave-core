@@ -18,6 +18,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/misc_metrics/features.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/page_action/action_ids.h"
 #include "chrome/browser/ui/page_action/page_action_controller.h"
@@ -26,6 +27,11 @@
 #include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/tabs/public/tab_interface.h"
+
+#if BUILDFLAG(IS_WIN)
+#include "brave/browser/new_tab/background_color_tab_helper.h"
+#include "brave/browser/ui/brave_ui_features.h"
+#endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/container_tab_tracker.h"
@@ -200,6 +206,13 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
     cloudflare_js_detection_tab_helper_ = misc_metrics::CaptchaMetrics::
         CloudflareJsDetectionTabHelper::MaybeCreate(tab);
   }
+
+#if BUILDFLAG(IS_WIN)
+  if (base::FeatureList::IsEnabled(features::kBraveWorkaroundNewWindowFlash)) {
+    background_color_tab_helper_ =
+        std::make_unique<BackgroundColorTabHelper>(tab);
+  }
+#endif
 }
 
 }  // namespace tabs
