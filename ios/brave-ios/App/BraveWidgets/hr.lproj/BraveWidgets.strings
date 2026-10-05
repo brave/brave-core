@@ -71,6 +71,9 @@
 "e13lS3-VBH4G6" = "Možete li potvrditi jeste li htjeli „Povijest”?";
 
 /* (No Comment) */
+"e13lS3-vQ8mZ1" = "Samo da potvrdim, htjeli ste „Leo AI glasovni upis”?";
+
+/* (No Comment) */
 "e13lS3-vs094F" = "Možete li potvrditi jeste li htjeli „Nova privatna kartica”?";
 
 /* (No Comment) */
@@ -108,6 +111,9 @@
 
 /* (No Comment) */
 "EvESs0-VBH4G6" = "Možete li potvrditi jeste li htjeli „Povijest”?";
+
+/* (No Comment) */
+"EvESs0-vQ8mZ1" = "Samo da potvrdim, htjeli ste „Leo AI glasovni upis”?";
 
 /* (No Comment) */
 "EvESs0-vs094F" = "Možete li potvrditi jeste li htjeli „Nova privatna kartica”?";
@@ -164,6 +170,9 @@
 "L1fziM-VBH4G6" = "Sljedeći broj mogućnosti: ${count} podudara se s „Povijest”.";
 
 /* (No Comment) */
+"L1fziM-vQ8mZ1" = "Postoji ${count} mogućnosti koje odgovaraju „Leo AI glasovnom upisu”.";
+
+/* (No Comment) */
 "L1fziM-vs094F" = "Sljedeći broj mogućnosti: ${count} podudara se s „Nova privatna kartica”.";
 
 /* (No Comment) */
@@ -212,6 +221,9 @@
 "r2EI05-VBH4G6" = "Možete li potvrditi jeste li htjeli „Povijest”?";
 
 /* (No Comment) */
+"r2EI05-vQ8mZ1" = "Samo da potvrdim, htjeli ste „Leo AI glasovni upis”?";
+
+/* (No Comment) */
 "r2EI05-vs094F" = "Možete li potvrditi jeste li htjeli „Nova privatna kartica”?";
 
 /* (No Comment) */
@@ -257,6 +269,9 @@
 "tNCrcE-VBH4G6" = "Sljedeći broj mogućnosti: ${count} podudara se s „Povijest”.";
 
 /* (No Comment) */
+"tNCrcE-vQ8mZ1" = "Postoji ${count} mogućnosti koje odgovaraju „Leo AI glasovnom upisu”.";
+
+/* (No Comment) */
 "tNCrcE-vs094F" = "Sljedeći broj mogućnosti: ${count} podudara se s „Nova privatna kartica”.";
 
 /* (No Comment) */
@@ -296,6 +311,9 @@
 "TxuMja-VBH4G6" = "Sljedeći broj mogućnosti: ${count} podudara se s „Povijest”.";
 
 /* (No Comment) */
+"TxuMja-vQ8mZ1" = "Postoji ${count} mogućnosti koje odgovaraju „Leo AI glasovnom upisu”.";
+
+/* (No Comment) */
 "TxuMja-vs094F" = "Sljedeći broj mogućnosti: ${count} podudara se s „Nova privatna kartica”.";
 
 /* (No Comment) */
@@ -315,6 +333,9 @@
 
 /* (No Comment) */
 "vjA5pZ" = "Procij. smanj. br. pod.";
+
+/* (No Comment) */
+"vQ8mZ1" = "Leo AI glasovni upis";
 
 /* (No Comment) */
 "vs094F" = "Nova privatna kartica";
@@ -359,6 +380,9 @@
 "YQiQuz-VBH4G6" = "Možete li potvrditi jeste li htjeli „Povijest”?";
 
 /* (No Comment) */
+"YQiQuz-vQ8mZ1" = "Samo da potvrdim, htjeli ste „Leo AI glasovni upis”?";
+
+/* (No Comment) */
 "YQiQuz-vs094F" = "Možete li potvrditi jeste li htjeli „Nova privatna kartica”?";
 
 /* (No Comment) */
@@ -393,6 +417,9 @@
 
 /* (No Comment) */
 "z517nu-VBH4G6" = "Sljedeći broj mogućnosti: ${count} podudara se s „Povijest”.";
+
+/* (No Comment) */
+"z517nu-vQ8mZ1" = "Postoji ${count} mogućnosti koje odgovaraju „Leo AI glasovnom upisu”.";
 
 /* (No Comment) */
 "z517nu-vs094F" = "Sljedeći broj mogućnosti: ${count} podudara se s „Nova privatna kartica”.";

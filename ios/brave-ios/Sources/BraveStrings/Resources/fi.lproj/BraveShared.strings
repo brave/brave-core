@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "Tietoja asetuksista";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "Tietoja Brave Shieldsistä";
-
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "Sivustoilla on usein evästeitä ja merkkijonoja, joita käytetään sinun ja laitteesi tunnistamiseen. Ne tahtovat selvittää henkilöllisyytesi sekä seurata sinua verkossa, tarkkaillen jokaisen sivuston käyttöä.\n\nBrave estää kyseiset seuraimet, joten voit rauhassa selata nettiä ilman tarkkailijoita.";
-
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "Tämän avulla voit tallentaa kuvia kameran kuviin.";
 
@@ -36,9 +30,6 @@
 
 /* Text for the toggle switch to clear 'Brave Ads' data in settings */
 "ads.braveAdsDataToggleOption" = "Brave-mainosten tiedot";
-
-/* individual blocking statistic title */
-"AdsAndTrackers" = "Mainokset ja seurantaohjelmat";
 
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "Pyydä aina tietokoneversiota";
@@ -130,18 +121,6 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "Automaattinen täyttö";
 
-/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
-"AutoRedirectAMPPages" = "AMP-sivujen automaattinen uudelleenohjaus";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
-"AutoRedirectAMPPagesDescription" = "Käy aina sivun alkuperäisessä URL-osoitteessa (ei-AMP) Googlen Accelerated Mobile Pages -tekniikkaa käyttävän version sijaan";
-
-/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
-"AutoRedirectTrackingURLs" = "Seuranta-URL-osoitteiden automaattinen uudelleenohjauksen";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "Ota käyttöön tuki ylimmän tason seuranta-URL-osoitteiden uudelleenohjauksen ohittamiseksi.";
-
 /* cookie settings option */
 "Block3rdPartyCookies" = "Estä kolmannen osapuolen evästeet";
 
@@ -160,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Asetuksen asettaminen epäonnistui. Yritä uudelleen.";
 
-/* A title for a setting that enables cookie consent notices */
-"BlockCookieConsentNotices" = "Estä evästeitä koskevat suostumusilmoitukset";
-
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Esto-ominaisuuksien valvonta";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Estä ponnahdusikkunat";
-
-/* No comment provided by engineer. */
-"BlockScripts" = "Estä komentosarjat";
-
-/* No comment provided by engineer. */
-"BlockScriptsDescription" = "Estää JavaScriptin (voi rikkoa sivustoja).";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "Lisää %lld välilehteä kirjanmerkkeihin";
@@ -239,46 +209,10 @@
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Piilota";
 
 /* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "Edistyneet kontrollit";
-
-/* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave-suojaukset ja yksityisyys";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Suojaukset ja yksityisyys";
-
-/* The number of ads and trackers blocked will be next to this */
-"BraveShieldsBlockedCountLabel" = "Estetyt mainokset ja muut epäilyttävät kohteet";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Lisätietoa";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "Muuta suojauksen yleisiä oletuksia";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalControls" = "Yleiset ohjaimet";
-
-/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "Säilytä yhteystiedot tulevia rikkoutuneita sivustoja koskevia raportteja varten";
-
-/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "Jos annat yhteystiedot, ne tallennetaan tulevia raportteja varten";
-
-/* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "Kokeile käyttöä ilman Shieldsiä, jos sivusto vaikuttaa olevan rikkinäinen.";
-
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave Shields";
-
-/* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "Alas";
-
-/* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "Ylös";
-
-/* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "Vaihda Brave-suojauksen asetusta kaksoisnapauttamalla";
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
@@ -844,15 +778,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findPreviousTitle" = "Etsi edellinen";
 
-/* individual blocking statistic title */
-"FingerprintingMethods" = "Sormenjälkitunnistusmenetelmät";
-
-/* No comment provided by engineer. */
-"FingerprintingProtection" = "Estä sormenjälkitunnistus";
-
-/* No comment provided by engineer. */
-"FingerprintingProtectionDescription" = "Sivustojen on vaikeampi tunnistaa laitteesi erityispiirteitä. ";
-
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Salli yleisten linkkien avaaminen ulkoisissa sovelluksissa";
 
@@ -919,15 +844,6 @@
 /* No comment provided by engineer. */
 "Home" = "Etusivu";
 
-/* No comment provided by engineer. */
-"HTTPSEverywhere" = "Nosta yhteystasoksi HTTPS";
-
-/* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Avaa sivustot käyttämällä HTTPS:ää HTTP:n sijaan, kun se on mahdollista.";
-
-/* individual blocking statistic title */
-"HTTPSUpgrades" = "HTTPS -päivitykset";
-
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Tuo selaustiedot";
 
@@ -948,6 +864,9 @@
 
 /* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
+
+/* Title for Brave Leo voice input menu item. Brave Leo is the name of a product and should not be translated */
+"LeoVoiceInputMenuItem" = "Leo-äänisyöte";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "Tallennetut kirjautumistiedot poistetaan pysyvästi.";
@@ -1666,9 +1585,6 @@
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Nimetön soittolista";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
-"PopoverShieldsMenuClose" = "Sulje Brave-suojaus";
-
 /* Settings privacy section title */
 "Privacy" = "Tietosuoja";
 
@@ -2017,41 +1933,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "Poista suosikki";
 
-/* No comment provided by engineer. */
-"ReportABrokenSite" = "Ilmoita toimimattomasta sivustosta";
-
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "Ilmoita virheestä";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"ReportBrokenAdditionalDetails" = "Lisätiedot (valinnainen)";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"reportBrokenAdditionalDetailsRequired" = "Lisätietoja";
-
-/* A label for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "Mikä on pääasiallinen näkemäsi ongelma?";
-
-/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
-"ReportBrokenContactMe" = "Ota minuun yhteyttä paikassa: (valinnainen)";
-
-/* Contact info storing description */
-"ReportBrokenContactMeDescription" = "Jos annat yhteystietosi, ne tallennetaan, jotta voit ilmoittaa rikkinäisistä sivustoista tulevaisuudessa.";
-
-/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
-"ReportBrokenContactMeSuggestions" = "Sähköposti, Twitter jne.";
-
-/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"ReportBrokenPlaceholder" = "Valitse yksi vaihtoehto";
-
-/* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Ilmoita Braven kehittäjille, että sivusto ei toimi odotetulla tavalla:";
-
-/* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Huomaa: Brave-palvelimille lähetettävä raportti sisältää sivuston osoitteen, Brave-versionumeron, Shields-asetukset, VPN-tilan ja kieliasetukset. ";
-
-/* No comment provided by engineer. */
-"ReportBrokenSubmitButtonTitle" = "Lähetä";
 
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraAndMicrophonePermissionPrompt" = "\"%@\" haluaa kameran ja mikrofonin käyttöoikeuden";
@@ -2329,9 +2212,6 @@
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Tallenna kirjautumistiedot";
 
-/* individual blocking statistic title */
-"ScriptsBlocked" = "Komentosarjat estetty";
-
 /* The placeholder text for bookmark search */
 "searchBookmarksTitle" = "Hae kirjanmerkeistä";
 
@@ -2500,6 +2380,12 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Lähetä automaattisesti päivittäinen käyttöping Bravelle";
 
+/* Description under the settings toggle that enables Sponsored Ads */
+"settings.sponsoredAdsEnabledDescription" = "Auta tukemaan Braven tehtävää rakentaa itsenäinen, käyttäjää ensisijaisesti palveleva verkko sponsoroiduilla mainoksilla. Mittaamme mainosten tehokkuutta yksityisesti tunnistamatta sinua.";
+
+/* Title of the settings toggle that enables Sponsored Ads */
+"settings.sponsoredAdsEnabledTitle" = "Ota sponsoroidut mainokset käyttöön";
+
 /* Description to explain the survey panelist toggle */
 "settings.surveyPanelistDescription" = "Sallii Braven näyttää linkkejä yksityisiin kyselyihin uudella välilehdellä. Kyselyt auttavat meitä rakentamaan parempia ominaisuuksia ja mittaamaan selainpohjaisten mainoskampanjoiden tehokkuutta. [Lisätietoja](%@)";
 
@@ -2577,21 +2463,6 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Mainokset on estetty, kun katsot videoita tällä sivulla.";
-
-/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Brave-suojausten yleiset oletukset";
-
-/* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "Nämä ovat oletusarvoiset suojausasetukset uusille sivustoille. Näiden muuttaminen ei vaikuta voimassa oleviin sivukohtaisiin asetuksiin.";
-
-/* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Selaat tätä sivustoa ilman Braven tietosuojaa. Eikö se toimi kunnolla, kun Shields on käytössä?";
-
-/* shields overview message */
-"ShieldsOverview" = "Sivustosuojauksen avulla voit hallita, milloin mainokset ja seurantaohjelmat estetään kullakin sivustolla, jolla käyt. Jos haluat nähdä mainoksia tietyllä sivustolla, voit ottaa ne käyttöön täällä.";
-
-/* shields overview footer message */
-"ShieldsOverviewFooter" = "Huomautus: jotkin sivustot saattavat vaatia komentosarjoja toimiakseen oikein, joten tämä suojaus on oletuksena pois päältä.";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Uusi yksityinen välilehti";
@@ -2778,15 +2649,6 @@
 
 /* Settings item for clearing site-specific settings and shields settings. */
 "SiteAndShieldsSettings" = "Sivuston ja suojien asetukset";
-
-/* No comment provided by engineer. */
-"SiteReportedBody" = "Toit Braven kehittäjien tietoon, että tällä sivustolla on jotakin vialla. Kiitos siitä! Teemme parhaamme korjataksemme asian.";
-
-/* No comment provided by engineer. */
-"SiteReportedTitle" = "Kiitos";
-
-/* Brave panel topmost title */
-"SiteShieldSettings" = "Suojaukset";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Joka päivä tallennan tietoja selaamalla verkkoa Brave-selaimella.";
@@ -3564,9 +3426,6 @@
 
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "Käyttäjä peruutettu";
-
-/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
-"UseRegionalAdblock" = "Käytä alueellista mainostenestoa";
 
 /* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "Sulje";

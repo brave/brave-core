@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "정보";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "Brave 실드 정보";
-
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "사이트에는 방문자와 방문자의 기기를 식별하기 위한 쿠키 및 스크립트가 포함되어 있을 수 있습니다. 이러한 요소는 방문자를 식별하고 방문자가 방문하는 웹사이트를 따라다니며 모든 사이트에서의 방문자 행동 패턴을 추적합니다.\n\nBrave는 이러한 요소를 차단하므로 추적되지 않고 브라우징을 즐길 수 있습니다.";
-
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "이는 카메라 롤에 이미지를 저장하도록 허용합니다.";
 
@@ -36,9 +30,6 @@
 
 /* Text for the toggle switch to clear 'Brave Ads' data in settings */
 "ads.braveAdsDataToggleOption" = "Brave Ads 데이터";
-
-/* individual blocking statistic title */
-"AdsAndTrackers" = "광고 및 개인정보 트래커";
 
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "항상 데스크톱 사이트 요청";
@@ -130,18 +121,6 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "자동 완성";
 
-/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
-"AutoRedirectAMPPages" = "AMP 페이지 자동 리디렉션";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
-"AutoRedirectAMPPagesDescription" = "항상 Google AMP(Accelerated Mobile Page) 버전이 아닌 원본(비AMP) 페이지 URL을 방문하세요.";
-
-/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
-"AutoRedirectTrackingURLs" = "추적 URL 자동 리디렉션";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "최상위 리디렉션 추적 URL 바이패싱 지원 활성화";
-
 /* cookie settings option */
 "Block3rdPartyCookies" = "제3자 쿠키 차단";
 
@@ -160,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "환경 설정을 설정하는 데 실패했습니다. 다시 시도하십시오.";
 
-/* A title for a setting that enables cookie consent notices */
-"BlockCookieConsentNotices" = "쿠키 동의 문구 차단";
-
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "차단 모니터";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "팝업 차단";
-
-/* No comment provided by engineer. */
-"BlockScripts" = "스크립트 차단";
-
-/* No comment provided by engineer. */
-"BlockScriptsDescription" = "자바스크립트 차단(사이트가 깨질 수 있음).";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "%lld개 탭에 북마크 추가";
@@ -239,46 +209,10 @@
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "숨기기";
 
 /* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "고급 컨트롤";
-
-/* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave Shields 및 프라이버시";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Shields 및 프라이버시";
-
-/* The number of ads and trackers blocked will be next to this */
-"BraveShieldsBlockedCountLabel" = "광고 및 기타 불쾌한 것 차단됨";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "자세히 알아보기";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "Shields 전역 기본값 변경";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalControls" = "글로벌 컨트롤";
-
-/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "향후 고장난 사이트 보고서를 위해 연락처 정보 저장";
-
-/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "연락처 정보를 제공하면 향후 보고서를 위해 저장됩니다.";
-
-/* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "이 사이트가 손상된 것 같으면 실드 다운을 시도합니다";
-
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave Shields";
-
-/* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "해제";
-
-/* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "사용";
-
-/* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "두 번 탭하여 Brave Shields 토글";
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
@@ -844,15 +778,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findPreviousTitle" = "이전 찾기";
 
-/* individual blocking statistic title */
-"FingerprintingMethods" = "디지털 지문 방식";
-
-/* No comment provided by engineer. */
-"FingerprintingProtection" = "지문 차단";
-
-/* No comment provided by engineer. */
-"FingerprintingProtectionDescription" = "기기의 고유한 특성을 사이트가 인식하기 어렵게 만듭니다.";
-
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "유니버설 링크로 외부 앱을 열 수 있게 허용";
 
@@ -919,15 +844,6 @@
 /* No comment provided by engineer. */
 "Home" = "홈";
 
-/* No comment provided by engineer. */
-"HTTPSEverywhere" = "연결을 HTTPS로 업그레이드";
-
-/* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "가능한 경우, HTTP 대신 안전한 HTTPS를 사용하여 사이트를 엽니다.";
-
-/* individual blocking statistic title */
-"HTTPSUpgrades" = "HTTPS 업그레이드";
-
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "브라우징 데이터 가져오기";
 
@@ -948,6 +864,9 @@
 
 /* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "레오";
+
+/* Title for Brave Leo voice input menu item. Brave Leo is the name of a product and should not be translated */
+"LeoVoiceInputMenuItem" = "Leo 음성 입력";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "저장된 로그인 정보가 영구적으로 제거됩니다.";
@@ -1666,9 +1585,6 @@
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "무제 재생목록";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
-"PopoverShieldsMenuClose" = "Shields 메뉴 닫기";
-
 /* Settings privacy section title */
 "Privacy" = "개인정보";
 
@@ -2017,41 +1933,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "즐겨찾기 제거";
 
-/* No comment provided by engineer. */
-"ReportABrokenSite" = "작동이 멈춘 사이트 보고";
-
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "버그 신고";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"ReportBrokenAdditionalDetails" = "추가 세부정보(선택사항)";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"reportBrokenAdditionalDetailsRequired" = "추가 세부 정보";
-
-/* A label for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "확인된 핵심 문제";
-
-/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
-"ReportBrokenContactMe" = "연락 방법:(선택사항)";
-
-/* Contact info storing description */
-"ReportBrokenContactMeDescription" = "연락처 정보를 제공하면 향후 고장난 사이트를 보고하기 위해 저장됩니다.";
-
-/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
-"ReportBrokenContactMeSuggestions" = "이메일, Twitter 등";
-
-/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"ReportBrokenPlaceholder" = "택일";
-
-/* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Brave 개발자에게 이 사이트가 제대로 작동하지 않는다고 알려주세요:";
-
-/* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "참고: Brave 서버로 전송된 보고서에는 사이트 주소, Brave 버전 번호, Shields 설정, VPN 상태, 언어 설정이 포함됩니다.";
-
-/* No comment provided by engineer. */
-"ReportBrokenSubmitButtonTitle" = "제출";
 
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraAndMicrophonePermissionPrompt" = "\"%@\"에서 카메라 및 마이크 액세스를 요청함";
@@ -2329,9 +2212,6 @@
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "로그인 정보 저장";
 
-/* individual blocking statistic title */
-"ScriptsBlocked" = "차단된 스크립트";
-
 /* The placeholder text for bookmark search */
 "searchBookmarksTitle" = "북마크 검색";
 
@@ -2500,6 +2380,12 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "일일 사용 Ping을 Brave에 자동으로 보내기";
 
+/* Description under the settings toggle that enables Sponsored Ads */
+"settings.sponsoredAdsEnabledDescription" = "스폰서 광고로 독립적이고 사용자 우선의 웹을 구축하려는 Brave의 미션을 지원하세요. 저희는 광고 성과를 사용자를 식별하지 않고 비공개로 측정합니다.";
+
+/* Title of the settings toggle that enables Sponsored Ads */
+"settings.sponsoredAdsEnabledTitle" = "스폰서 광고 활성화";
+
 /* Description to explain the survey panelist toggle */
 "settings.surveyPanelistDescription" = "Brave가 새 탭 페이지에서 비공개 설문조사 링크를 표시할 수 있도록 허용합니다. 설문조사는 더 나은 기능을 개발하고, 브라우저 기반 광고 캠페인의 효과를 측정하는 데 도움이 됩니다. [자세히 알아보기]%@";
 
@@ -2577,21 +2463,6 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "이 웹사이트에서 동영상을 시청하는 동안 광고가 차단되었습니다.";
-
-/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Brave Shields 전역 기본값";
-
-/* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "새 사이트에 적용되는 기본 Shields 설정이 있습니다. 설정을 변경해도 기존 사이트별 설정에는 영향을 주지 않습니다.";
-
-/* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Brave의 개인 정보 보호없이 이 사이트를 탐색하고 있습니다. 실드가 제대로 작동하지 않습니까?";
-
-/* shields overview message */
-"ShieldsOverview" = "사이트 차단을 사용하면 방문하는 사이트별로 광고와 트래커를 차단할지 관리할 수 있습니다. 특정 사이트에서 광고를 표시하려면 여기에서 해당 기능을 활성화할 수 있습니다.";
-
-/* shields overview footer message */
-"ShieldsOverviewFooter" = "참고: 일부 사이트에서는 스크립트가 정상 작동하도록 하여 이 차단을 기본적으로 비활성화할 수 있습니다.";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "새 비공개 탭";
@@ -2778,15 +2649,6 @@
 
 /* Settings item for clearing site-specific settings and shields settings. */
 "SiteAndShieldsSettings" = "사이트 및 방패 설정";
-
-/* No comment provided by engineer. */
-"SiteReportedBody" = "이 사이트에 문제가 있다는 것을 Brave (브레이브) 개발자에게 알려 주셔서 감사합니다. 최선을 다해 문제를 해결하겠습니다!";
-
-/* No comment provided by engineer. */
-"SiteReportedTitle" = "감사합니다.";
-
-/* Brave panel topmost title */
-"SiteShieldSettings" = "보호";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "매일 Brave를 사용하여 웹 브라우징하여 데이터를 절약합니다.";
@@ -3564,9 +3426,6 @@
 
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "사용자가 취소함";
-
-/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
-"UseRegionalAdblock" = "지역 Adblock 사용";
 
 /* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "닫기";

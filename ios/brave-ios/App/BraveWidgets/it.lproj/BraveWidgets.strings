@@ -71,6 +71,9 @@
 "e13lS3-VBH4G6" = "Solo per conferma, volevi “Cronologia”?";
 
 /* (No Comment) */
+"e13lS3-vQ8mZ1" = "Solo per conferma, intendevi \"Leo AI Voice Input\"?";
+
+/* (No Comment) */
 "e13lS3-vs094F" = "Solo per conferma, volevi “Nuova scheda privata”?";
 
 /* (No Comment) */
@@ -108,6 +111,9 @@
 
 /* (No Comment) */
 "EvESs0-VBH4G6" = "Solo per conferma, volevi “Cronologia”?";
+
+/* (No Comment) */
+"EvESs0-vQ8mZ1" = "Solo per conferma, intendevi \"Leo AI Voice Input\"?";
 
 /* (No Comment) */
 "EvESs0-vs094F" = "Solo per conferma, volevi “Nuova scheda privata”?";
@@ -164,6 +170,9 @@
 "L1fziM-VBH4G6" = "Ci sono ${count} opzioni che corrispondono a “Cronologia”.";
 
 /* (No Comment) */
+"L1fziM-vQ8mZ1" = "Ci sono ${count} opzioni per \"Leo AI Voice Input\".";
+
+/* (No Comment) */
 "L1fziM-vs094F" = "Ci sono ${count} opzioni che corrispondono a “Nuova scheda privata”.";
 
 /* (No Comment) */
@@ -212,6 +221,9 @@
 "r2EI05-VBH4G6" = "Solo per conferma, volevi “Cronologia”?";
 
 /* (No Comment) */
+"r2EI05-vQ8mZ1" = "Solo per conferma, intendevi \"Leo AI Voice Input\"?";
+
+/* (No Comment) */
 "r2EI05-vs094F" = "Solo per conferma, volevi “Nuova scheda privata”?";
 
 /* (No Comment) */
@@ -257,6 +269,9 @@
 "tNCrcE-VBH4G6" = "Ci sono ${count} opzioni che corrispondono a “Cronologia”.";
 
 /* (No Comment) */
+"tNCrcE-vQ8mZ1" = "Ci sono ${count} opzioni per \"Leo AI Voice Input\".";
+
+/* (No Comment) */
 "tNCrcE-vs094F" = "Ci sono ${count} opzioni che corrispondono a “Nuova scheda privata”.";
 
 /* (No Comment) */
@@ -296,6 +311,9 @@
 "TxuMja-VBH4G6" = "Ci sono ${count} opzioni che corrispondono a “Cronologia”.";
 
 /* (No Comment) */
+"TxuMja-vQ8mZ1" = "Ci sono ${count} opzioni per \"Leo AI Voice Input\".";
+
+/* (No Comment) */
 "TxuMja-vs094F" = "Ci sono ${count} opzioni che corrispondono a “Nuova scheda privata”.";
 
 /* (No Comment) */
@@ -315,6 +333,9 @@
 
 /* (No Comment) */
 "vjA5pZ" = "Dati risparmiati stimati";
+
+/* (No Comment) */
+"vQ8mZ1" = "Input vocale Leo AI";
 
 /* (No Comment) */
 "vs094F" = "Nuova scheda privata";
@@ -359,6 +380,9 @@
 "YQiQuz-VBH4G6" = "Solo per conferma, volevi “Cronologia”?";
 
 /* (No Comment) */
+"YQiQuz-vQ8mZ1" = "Solo per conferma, intendevi \"Leo AI Voice Input\"?";
+
+/* (No Comment) */
 "YQiQuz-vs094F" = "Solo per conferma, volevi “Nuova scheda privata”?";
 
 /* (No Comment) */
@@ -393,6 +417,9 @@
 
 /* (No Comment) */
 "z517nu-VBH4G6" = "Ci sono ${count} opzioni che corrispondono a “Cronologia”.";
+
+/* (No Comment) */
+"z517nu-vQ8mZ1" = "Ci sono ${count} opzioni per \"Leo AI Voice Input\".";
 
 /* (No Comment) */
 "z517nu-vs094F" = "Ci sono ${count} opzioni che corrispondono a “Nuova scheda privata”.";

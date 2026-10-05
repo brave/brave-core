@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "Основни подаци";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "О Brave штитовима";
-
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "Сајтови често укључују колачиће и скрипте који покушавају да идентификују вас и ваш уређај. Желе да утврде ко сте и да вас прате на вебу – да прате шта радите на сваком сајту.\n\nBrave блокира те ствари, тако да можете да прегледате веб, а да притом не будете праћени.";
-
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "То вам омогућава да сачувате слику у галерију.";
 
@@ -36,9 +30,6 @@
 
 /* Text for the toggle switch to clear 'Brave Ads' data in settings */
 "ads.braveAdsDataToggleOption" = "Подаци о Brave огласима";
-
-/* individual blocking statistic title */
-"AdsAndTrackers" = "Огласи и праћења";
 
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "Увек захтевај десктоп верзију сајта";
@@ -130,18 +121,6 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "Аутоматски унос";
 
-/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
-"AutoRedirectAMPPages" = "Аутоматски преусмери AMP странице";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
-"AutoRedirectAMPPagesDescription" = "Увек посећујте URL-ове изворних страница (које нису AMP), уместо Google-ових верзија убрзане мобилне странице";
-
-/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
-"AutoRedirectTrackingURLs" = "Аутоматски преусмери URL-ове за праћење";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "Активирај заобилажење URL-ова за праћење са преусмеравањем на највишем нивоу";
-
 /* cookie settings option */
 "Block3rdPartyCookies" = "Блокирај колачиће трећих страна";
 
@@ -160,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Подешавање опције није успело. Пробајте поново касније.";
 
-/* A title for a setting that enables cookie consent notices */
-"BlockCookieConsentNotices" = "Блокирај обавештења о давању сагласности за колачиће";
-
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Преглед блокирања";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Блокирај искачуће прозоре";
-
-/* No comment provided by engineer. */
-"BlockScripts" = "Блокирај скрипте";
-
-/* No comment provided by engineer. */
-"BlockScriptsDescription" = "Блокира JavaScript (може да доведе до нефункционалности сајта).";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "Додај обележивач за картице (%lld)";
@@ -239,46 +209,10 @@
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Одбаци";
 
 /* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "Напредне контроле";
-
-/* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave штитови и приватност";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Штитови и приватност";
-
-/* The number of ads and trackers blocked will be next to this */
-"BraveShieldsBlockedCountLabel" = "Огласи и остале језиве ствари су блокирани";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Сазнајте више";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "Промени опште подразумеване вредности штитова";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalControls" = "Глобалне контроле";
-
-/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "Сачувај информације за контакт за будуће пријаве сајтова који не функционишу";
-
-/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "Ако дате информације за контакт, оне ће бити сачуване за будуће пријаве";
-
-/* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "Ако је на овом сајту приказано да не функционише, пробајте да искључите штитове";
-
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave штитови";
-
-/* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "Искључено";
-
-/* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "Укључено";
-
-/* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "Двапут додирните да активирате Brave штитове";
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave разговор";
@@ -844,15 +778,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findPreviousTitle" = "Пронађи претходно";
 
-/* individual blocking statistic title */
-"FingerprintingMethods" = "Методе отискивања";
-
-/* No comment provided by engineer. */
-"FingerprintingProtection" = "Блокирај отискивање";
-
-/* No comment provided by engineer. */
-"FingerprintingProtectionDescription" = "Отежава сајтовима да препознају карактеристике вашег уређаја. ";
-
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Дозволи да се универзални линкови отворе у екстерним апликацијама";
 
@@ -919,15 +844,6 @@
 /* No comment provided by engineer. */
 "Home" = "Дом";
 
-/* No comment provided by engineer. */
-"HTTPSEverywhere" = "Надогради везе на HTTPS";
-
-/* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Отвара сајтове користећи безбедни HTTPS уместо HTTP када је могуће.";
-
-/* individual blocking statistic title */
-"HTTPSUpgrades" = "HTTPS надоградње";
-
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Увези податке прегледања веба";
 
@@ -948,6 +864,9 @@
 
 /* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
+
+/* Title for Brave Leo voice input menu item. Brave Leo is the name of a product and should not be translated */
+"LeoVoiceInputMenuItem" = "Leo гласовни унос";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "Сачувана пријава ће бити трајно уклоњена.";
@@ -1666,9 +1585,6 @@
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Плејлиста без наслова";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
-"PopoverShieldsMenuClose" = "Затвори мени за штитове";
-
 /* Settings privacy section title */
 "Privacy" = "Приватност";
 
@@ -2017,41 +1933,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "Уклони омиљено";
 
-/* No comment provided by engineer. */
-"ReportABrokenSite" = "Пријавите да сајт не функционише";
-
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "Пријавите грешку";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"ReportBrokenAdditionalDetails" = "Додатни детаљи (опционо)";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"reportBrokenAdditionalDetailsRequired" = "Додатни детаљи";
-
-/* A label for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "Који је главни проблем који видите?";
-
-/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
-"ReportBrokenContactMe" = "Обратите ми се на: (опционо)";
-
-/* Contact info storing description */
-"ReportBrokenContactMeDescription" = "Ако наведете информације за контакт, оне ће бити сачуване за будуће пријављивање неисправних сајтова.";
-
-/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
-"ReportBrokenContactMeSuggestions" = "Имејл, Twitter итд.";
-
-/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"ReportBrokenPlaceholder" = "Изаберите једну опцију";
-
-/* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Обавестите развојне програмере Brave-а да овај сајт не функционише како је очекивано:";
-
-/* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Напомена: Извештај који се шаље Brave-овим серверима садржи адресу сајта, број верзије Brave-а, подешавања штитова, статус VPN-а и подешавања језика.";
-
-/* No comment provided by engineer. */
-"ReportBrokenSubmitButtonTitle" = "Пошаљи";
 
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraAndMicrophonePermissionPrompt" = "„%@“ жели да приступи камери и микрофону";
@@ -2329,9 +2212,6 @@
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Сачувај пријаве";
 
-/* individual blocking statistic title */
-"ScriptsBlocked" = "Блокиране скрипте";
-
 /* The placeholder text for bookmark search */
 "searchBookmarksTitle" = "Претрага обележивача";
 
@@ -2500,6 +2380,12 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Аутоматски шаљи Brave-u пинг за свакодневно коришћење";
 
+/* Description under the settings toggle that enables Sponsored Ads */
+"settings.sponsoredAdsEnabledDescription" = "Помозите да подржите Brave мисију за изградњу независног интернета који ставља кориснике на прво место уз Спонзорисане огласе. Приватно меримо учинак огласа, без вашег идентификовања.";
+
+/* Title of the settings toggle that enables Sponsored Ads */
+"settings.sponsoredAdsEnabledTitle" = "Активирај спонзорисане огласе";
+
 /* Description to explain the survey panelist toggle */
 "settings.surveyPanelistDescription" = "Омогућава Brave-у да приказује линкове за приватне анкете на новој картици. Анкете нам помажу да креирамо боље функције и меримо ефикасност огласних кампања заснованих на прегледачу. [Сазнајте више](%@)";
 
@@ -2577,21 +2463,6 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Огласи су блокирани док гледате видео садржаје на овом веб-сајту.";
-
-/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Глобалне подразумеване вредности за Brave штитове";
-
-/* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "Ово су подразумевана подешавања штитова за нове сајтове. Промена ових подешавања неће утицати на ваша постојећа подешавања по сајту.";
-
-/* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Прегледате овај сајт без Brave-ове заштите приватности. Да ли сајт не функционише исправно са укљученим штитовима?";
-
-/* shields overview message */
-"ShieldsOverview" = "Штитови за сајтове вам омогућавају да контролишете када су огласи и праћења блокирани за сваки сајт који посетите. Ако преферирате да видите огласе на одређеном сајту, можете их активирати овде.";
-
-/* shields overview footer message */
-"ShieldsOverviewFooter" = "Напомена: Неким сајтовима могу бити потребне скрипте да би правилно функционисали, тако да је овај штит подразумевано искључен.";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Нова приватна картица";
@@ -2778,15 +2649,6 @@
 
 /* Settings item for clearing site-specific settings and shields settings. */
 "SiteAndShieldsSettings" = "Подешавања сајтова и штитова";
-
-/* No comment provided by engineer. */
-"SiteReportedBody" = "Хвала што сте обавестили развојне програмере Brave-а да нешто није у реду са овим сајтом. Даћемо све од себе да то исправимо!";
-
-/* No comment provided by engineer. */
-"SiteReportedTitle" = "Хвала";
-
-/* Brave panel topmost title */
-"SiteShieldSettings" = "Штитови";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Сваки дан трошим мање података тако што прегледам веб помоћу Brave-а.";
@@ -3564,9 +3426,6 @@
 
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "Корисник је прекинуо";
-
-/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
-"UseRegionalAdblock" = "Користи додатни блокатор огласа";
 
 /* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "Затвори";
