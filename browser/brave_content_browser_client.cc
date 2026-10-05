@@ -364,6 +364,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/email_aliases/email_aliases_settings_ui_android.h"
+#endif
 #include "brave/browser/ui/webui/email_aliases/email_aliases_panel_ui.h"
 #include "brave/browser/ui/webui/email_aliases/email_aliases_promo_ui.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
@@ -859,6 +862,16 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 #else   // !BUILDFLAG(IS_ANDROID)
   registry.ForWebUI<NewTabTakeoverUI>()
       .Add<new_tab_takeover::mojom::NewTabTakeover>();
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+  if (email_aliases::features::IsEmailAliasesEnabled()) {
+    registry.ForWebUI<EmailAliasesSettingsUIAndroid>()
+        .Add<brave_account::mojom::Authentication>()
+      .Add<brave_account::mojom::DialogController>()
+        .Add<email_aliases::mojom::EmailAliasesService>()
+        .Add<email_aliases::mojom::EmailAliasesMetrics>();
+  }
+#endif
 
   if (brave_account::features::IsBraveAccountEnabled()) {
     registry.ForWebUI<BraveAccountUIAndroid>()
