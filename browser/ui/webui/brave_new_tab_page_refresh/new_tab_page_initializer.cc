@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/strings/strcat.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
 #include "brave/browser/resources/brave_new_tab_page_refresh/grit/brave_new_tab_page_refresh_generated_map.h"
@@ -26,7 +27,11 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ntp_background_images/browser/features.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_dynamic_new_tab_takeover_source.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/static/ntp_static_new_tab_takeover_source.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/site/ntp_sponsored_site_image_source.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
@@ -45,6 +50,7 @@
 #include "components/regional_capabilities/regional_capabilities_country_id.h"
 #include "components/regional_capabilities/regional_capabilities_service.h"
 #include "components/strings/grit/components_strings.h"
+#include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
@@ -126,6 +132,7 @@ void NewTabPageInitializer::Initialize() {
   AddFaviconDataSource();
   AddCustomImageDataSource();
   AddSanitizedImageDataSource();
+  AddNTPBackgroundImagesDataSources(GetProfile());
 
   web_ui_->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   web_ui_->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));
@@ -161,6 +168,28 @@ void NewTabPageInitializer::MigrateProfilePrefs(PrefService* prefs) {
       prefs->SetBoolean(kShowNTPChatInput, false);
     }
   }
+}
+
+//static
+void NewTabPageInitializer::AddNTPBackgroundImagesDataSources(
+    Profile* profile) {
+  auto* service = g_brave_browser_process->ntp_background_images_service();
+  if (!service) {
+    return;
+  }
+
+  using ntp_background_images::NTPBackgroundImagesSource;
+  using ntp_background_images::NTPDynamicNewTabTakeoverSource;
+  using ntp_background_images::NTPSponsoredSiteImageSource;
+  using ntp_background_images::NTPStaticNewTabTakeoverSource;
+  content::URLDataSource::Add(
+      profile, std::make_unique<NTPBackgroundImagesSource>(service));
+  content::URLDataSource::Add(
+      profile, std::make_unique<NTPStaticNewTabTakeoverSource>(service));
+  content::URLDataSource::Add(
+      profile, std::make_unique<NTPDynamicNewTabTakeoverSource>(service));
+  content::URLDataSource::Add(
+      profile, std::make_unique<NTPSponsoredSiteImageSource>(service));
 }
 
 Profile* NewTabPageInitializer::GetProfile() {

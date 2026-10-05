@@ -117,9 +117,12 @@ class NewTabTakeoverUITest : public ChromeRenderViewHostTestHarness {
   void TearDown() override {
     new_tab_takeover_.reset();
     new_tab_takeover_ui_.reset();
-    ntp_background_images_service_.reset();
 
+    // The profile owns URL data sources that point at the service, so the
+    // service must outlive it.
     ChromeRenderViewHostTestHarness::TearDown();
+
+    ntp_background_images_service_.reset();
   }
 
   void SetPage(FakeNewTabTakeoverPage& page) {
