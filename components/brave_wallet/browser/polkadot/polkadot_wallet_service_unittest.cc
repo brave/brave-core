@@ -781,7 +781,7 @@ TEST_F(PolkadotWalletServiceUnitTest,
       8, 9, 10, 11, 12, 0x63};
 
   auto metadata = MakeWestendMetadata();
-  metadata->signed_extensions = tampered_extensions;
+  metadata->signed_extensions.bytes = tampered_extensions;
   metadata->spec_version = kSpecVersion;
 
   // Seed the untrusted on-disk cache. The service is already constructed, so
