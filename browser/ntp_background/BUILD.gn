@@ -134,6 +134,7 @@ if (enable_custom_background) {
       "//brave/components/ntp_background_images/browser:test_support",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
+      "//chrome/common",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
       "//content/test:test_support",
