@@ -11,20 +11,35 @@ assert(enable_local_ai)
 
 static_library("embeddings") {
   sources = [
+    "ai_chat_embeddings_database.cc",
+    "ai_chat_embeddings_database.h",
     "passage_splitter.cc",
     "passage_splitter.h",
   ]
 
-  deps = [ "//base" ]
+  public_deps = [
+    "//base",
+    "//components/os_crypt/async/common",
+    "//sql",
+  ]
+
+  deps = [ "//components/passage_embeddings/core:passage_embeddings_types" ]
 }
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "passage_splitter_unittest.cc" ]
+  sources = [
+    "ai_chat_embeddings_database_unittest.cc",
+    "passage_splitter_unittest.cc",
+  ]
 
   deps = [
     ":embeddings",
     "//base",
+    "//base/test:test_support",
+    "//components/os_crypt/async/browser:test_support",
+    "//components/os_crypt/async/common",
+    "//components/passage_embeddings/core:passage_embeddings_types",
     "//testing/gtest",
   ]
 }
