@@ -14,6 +14,7 @@
 #include "base/no_destructor.h"
 #include "brave/browser/drag_drop/brave_drag_drop_image_metadata_stripper.h"
 #include "brave/browser/misc_metrics/captcha_metrics.h"
+#include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
@@ -206,6 +207,9 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
     cloudflare_js_detection_tab_helper_ = misc_metrics::CaptchaMetrics::
         CloudflareJsDetectionTabHelper::MaybeCreate(tab);
   }
+
+  page_metrics_tab_helper_ =
+      std::make_unique<misc_metrics::PageMetricsTabHelper>(tab);
 
 #if BUILDFLAG(IS_WIN)
   if (base::FeatureList::IsEnabled(features::kBraveWorkaroundNewWindowFlash)) {

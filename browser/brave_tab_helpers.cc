@@ -17,7 +17,6 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
-#include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/serp_metrics/serp_metrics_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
@@ -208,8 +207,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::BraveWalletTabHelper::CreateForWebContents(web_contents);
 #endif
-
-  misc_metrics::PageMetricsTabHelper::CreateForWebContents(web_contents);
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   if (!web_contents->GetBrowserContext()->IsOffTheRecord() &&
