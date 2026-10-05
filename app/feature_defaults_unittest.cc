@@ -86,7 +86,9 @@
 #include "chrome/browser/flags/android/chrome_feature_list.h"
 #include "components/feed/feed_feature_list.h"
 #include "components/security_interstitials/core/features.h"
+#include "components/send_tab_to_self/features.h"
 #else
+#include "chrome/browser/child_module/features.h"
 #include "chrome/browser/enterprise/data_protection/data_protection_features.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/toasts/toast_features.h"
@@ -155,6 +157,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kPreloadingEagerViewportHeuristics,
       &browser_actuator::kBrowserActuator,
       &browser_actuator::kBrowserActuatorProtoStreamTransport,
+#if !BUILDFLAG(IS_ANDROID)
+      &child_module::features::kDynamicPatching,
+#endif
 #if BUILDFLAG(IS_ANDROID)
       &chrome::android::kAndroidPageInfoAsAppMenuItem,
 #endif
@@ -181,6 +186,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX)
       &feature_engagement::kIPHAutofillAccountNameEmailSuggestionFeature,
+      &feature_engagement::kIPHBookmarkBarSimplifiedFeature,
       &feature_engagement::kIPHDiscardRingFeature,
       &feature_engagement::kIPHGMCCastStartStopFeature,
       &feature_engagement::kIPHPasswordsManagementBubbleAfterSaveFeature,
@@ -307,9 +313,13 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if BUILDFLAG(IS_ANDROID)
       &security_interstitials::features::kHttpsFirstDialogUi,
 #endif
+      &segmentation_platform::features::kAndroidTipsNotifications,
       &segmentation_platform::features::kSegmentationPlatformDeviceTier,
       &segmentation_platform::features::kSegmentationPlatformFeature,
       &segmentation_platform::features::kSegmentationPlatformTimeDelaySampling,
+#if BUILDFLAG(IS_ANDROID)
+      &send_tab_to_self::kSendTabToSelfEnhancedBottomsheet,
+#endif
       &site_token_provider::features::kSiteTokenProviderEnabled,
       &subresource_filter::kAdTagging,
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
@@ -371,6 +381,7 @@ TEST(FeatureDefaultsTest, DisabledBlinkRuntimeEnabledFeatures) {
       &blink::features::kAISummarizationAPI,
       &blink::features::kAIWriterAPI,
       &blink::features::kControlledFrame,
+      &blink::features::kExtensionScriptTagging,
       &blink::features::kFledge,
       &blink::features::kLanguageDetectionAPI,
       &blink::features::kParakeet,
