@@ -96,7 +96,7 @@ class SpeechRecognitionFactoryImpl
   private readonly streams = new Set<AsrStreamInputAdapter>()
   private model: OrtNemotronModel | null = null
   // The browser only delivers the English model so far.
-  private readonly modelType: NemotronModelType = 'english'
+  private readonly modelType: NemotronModelType = 'multilingual'
 
   constructor() {
     this.receiver = new SpeechRecognitionFactoryReceiver(this)
