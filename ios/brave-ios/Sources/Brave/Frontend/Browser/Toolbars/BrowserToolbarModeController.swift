@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import SpeechRecognition
 import UIKit
 
 /// A view controller that displays the toolbars for a single `BrowserToolbarLayout`.
@@ -29,11 +30,22 @@ protocol BrowserToolbarModeController: UIViewController {
 
   /// Applies the scroll driven visibility state of the toolbars
   ///
+  /// Implementations update constraints and alpha values only. The caller animates the change by
+  /// calling this inside an animation block along with laying out the view hierarchy, which keeps
+  /// layout driven by the toolbars (such as the web view's frame on OS versions where it isn't laid
+  /// out underneath them) in sync.
+  ///
   /// - Parameters:
   ///   - state: The toolbar state that is transitioning or has transitioned
   ///   - progress: The interactive transition progress, or `nil` if the state should be applied in
   ///     full
   func applyToolbarVisibility(state: ToolbarVisibilityViewModel.ToolbarState, progress: CGFloat?)
+
+  /// A bar displayed directly below the top toolbar, such as the reader mode bar, or `nil` if there
+  /// isn't one.
+  ///
+  /// The bar moves with the top toolbar while it collapses and is accounted for in `metrics`.
+  var readerModeBar: UIView? { get set }
 
   /// Sets the scroll view displayed underneath the toolbars, such as the selected tab's web view
   /// scroll view, or `nil` if no scroll view is displayed
@@ -68,4 +80,8 @@ struct BrowserToolbarViewContext {
   var privateBrowsingManager: PrivateBrowsingManager
   var toolbarState: BrowserToolbarState
   var toolbarVisibilityViewModel: ToolbarVisibilityViewModel
+  var speechRecognizer: SpeechRecognizer
+  /// The tabs bar displayed by layouts which show one. A layout that displays it must add it as a
+  /// child view controller.
+  var tabsBarViewController: TabsBarViewController
 }

@@ -205,6 +205,15 @@ public class BrowserViewController: UIViewController {
   }
 
   var toolbarVisibilityViewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 44)
+
+  /// The toolbar layer displayed above the web view, only created when
+  /// `FeatureList.kBrowserToolbarRefactorEnabled` is enabled.
+  ///
+  /// While it exists the legacy `header`/`footer` are never displayed, so a mode the layer has no
+  /// layout for displays no toolbars.
+  var toolbarsViewController: BrowserToolbarsViewController?
+  /// Whether or not the toolbar UI has been set up and is ready to be displayed
+  var isToolbarUIReady: Bool = false
   private var toolbarLayoutGuide = UILayoutGuide().then {
     $0.identifier = "toolbar-visibility-layout-guide"
   }
@@ -730,7 +739,11 @@ public class BrowserViewController: UIViewController {
 
     var minViewportInset = UIEdgeInsets()
     var maxViewportInset = UIEdgeInsets()
-    if isUsingBottomBar {
+    if let toolbarsViewController {
+      let metrics = toolbarsViewController.metrics
+      minViewportInset = metrics.minimumViewportInset
+      maxViewportInset = metrics.maximumViewportInset
+    } else if isUsingBottomBar {
       minViewportInset.top = view.safeAreaInsets.top
       maxViewportInset.top = view.safeAreaInsets.top
       minViewportInset.bottom = footer.bounds.height + collapsedURLBarView.bounds.height
@@ -741,7 +754,7 @@ public class BrowserViewController: UIViewController {
       minViewportInset.bottom = footer.bounds.height
       maxViewportInset.bottom = footer.bounds.height
     }
-    if let readerModeBar {
+    if !isUsingToolbarsLayer, let readerModeBar {
       readerModeBar.layoutIfNeeded()
       minViewportInset.top += readerModeBar.bounds.height
       maxViewportInset.top += readerModeBar.bounds.height
@@ -823,6 +836,7 @@ public class BrowserViewController: UIViewController {
     updateURLBar()
 
     toolbarVisibilityViewModel.toolbarState = .expanded
+    updateToolbarsLayer(using: newCollection)
     updateTabsBarVisibility()
   }
 
@@ -1080,6 +1094,26 @@ public class BrowserViewController: UIViewController {
     view.addSubview(statusBarOverlay)
     view.addSubview(header)
 
+    if FeatureList.kBrowserToolbarRefactorEnabled.enabled {
+      let toolbarsViewController = BrowserToolbarsViewController(
+        context: .init(
+          privateBrowsingManager: privateBrowsingManager,
+          toolbarState: toolbarState,
+          toolbarVisibilityViewModel: toolbarVisibilityViewModel,
+          speechRecognizer: speechRecognizer,
+          tabsBarViewController: tabsBar
+        )
+      )
+      toolbarsViewController.delegate = self
+      addChild(toolbarsViewController)
+      view.addSubview(toolbarsViewController.view)
+      toolbarsViewController.view.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+      }
+      toolbarsViewController.didMove(toParent: self)
+      self.toolbarsViewController = toolbarsViewController
+    }
+
     if #available(iOS 26.0, *) {
       view.addSubview(topEdgeView)
     }
@@ -1110,8 +1144,8 @@ public class BrowserViewController: UIViewController {
 
   private func setupInteractions() {
     // We now show some elements since we're ready to use the app
-    header.isHidden = false
-    footer.isHidden = false
+    isToolbarUIReady = true
+    updateLegacyToolbarsVisibility()
     observePrivateBrowsingUnlock()
 
     NotificationCenter.default.do {
@@ -1263,8 +1297,9 @@ public class BrowserViewController: UIViewController {
       .receive(on: RunLoop.main)
       .sink { [weak self] _ in
         guard let self = self else { return }
-        self.updateTabsBarVisibility()
         self.updateUsingBottomBar(using: self.traitCollection)
+        self.updateToolbarsLayer(using: self.traitCollection)
+        self.updateTabsBarVisibility()
       }
       .store(in: &cancellables)
 
@@ -1464,15 +1499,24 @@ public class BrowserViewController: UIViewController {
       )
     }
 
-    toolbarVisibilityViewModel.transitionDistance =
-      header.expandedBarStackView.bounds.height - header.collapsedBarContainerView.bounds.height
-    // Since the height of the WKWebView changes while collapsing we need to use a stable value to determine
-    // if the toolbars can collapse. We don't subtract the bottom safe area inset because the footer includes
-    // that safe area
-    toolbarVisibilityViewModel.minimumCollapsableContentHeight =
-      view.bounds.height - view.safeAreaInsets.top
-    toolbarVisibilityViewModel.minimumCollapsableTransitionDistance =
-      header.bounds.height + footer.bounds.height
+    if let toolbarsViewController {
+      let metrics = toolbarsViewController.metrics
+      toolbarVisibilityViewModel.transitionDistance = metrics.transitionDistance
+      toolbarVisibilityViewModel.minimumCollapsableContentHeight =
+        metrics.minimumCollapsableContentHeight
+      toolbarVisibilityViewModel.minimumCollapsableTransitionDistance =
+        metrics.minimumCollapsableTransitionDistance
+    } else {
+      toolbarVisibilityViewModel.transitionDistance =
+        header.expandedBarStackView.bounds.height - header.collapsedBarContainerView.bounds.height
+      // Since the height of the WKWebView changes while collapsing we need to use a stable value to determine
+      // if the toolbars can collapse. We don't subtract the bottom safe area inset because the footer includes
+      // that safe area
+      toolbarVisibilityViewModel.minimumCollapsableContentHeight =
+        view.bounds.height - view.safeAreaInsets.top
+      toolbarVisibilityViewModel.minimumCollapsableTransitionDistance =
+        header.bounds.height + footer.bounds.height
+    }
 
     if #available(iOS 26.0, *) {
       updateWebViewObscuredInsets()
@@ -1618,6 +1662,12 @@ public class BrowserViewController: UIViewController {
   var screenTimeViewController: STWebpageController?
 
   override public func updateViewConstraints() {
+    if isUsingToolbarsLayer {
+      remakeConstraintsForToolbarsLayer()
+      super.updateViewConstraints()
+      return
+    }
+
     readerModeBar?.snp.remakeConstraints { make in
       var insets: UIEdgeInsets = .zero
       if #available(iOS 26, *) {
@@ -1870,11 +1920,13 @@ public class BrowserViewController: UIViewController {
       toolbar?.line.isHidden = isUsingBottomBar
     }
 
-    tabsBar.view.removeFromSuperview()
-    if isUsingBottomBar {
-      header.expandedBarStackView.insertArrangedSubview(tabsBar.view, at: 0)
-    } else {
-      header.expandedBarStackView.addArrangedSubview(tabsBar.view)
+    if !isUsingToolbarsLayer {
+      tabsBar.view.removeFromSuperview()
+      if isUsingBottomBar {
+        header.expandedBarStackView.insertArrangedSubview(tabsBar.view, at: 0)
+      } else {
+        header.expandedBarStackView.addArrangedSubview(tabsBar.view)
+      }
     }
 
     if tabManager.selectedTab == nil {
@@ -2417,6 +2469,21 @@ public class BrowserViewController: UIViewController {
     _ state: ToolbarVisibilityViewModel.ToolbarState,
     progress: CGFloat?
   ) {
+    if isUsingToolbarsLayer {
+      // Changing the web view size while scrolling and a PDF is visible causes strange flickering,
+      // so only show final expanded/collapsed states while a PDF is visible
+      if let tab = tabManager.selectedTab, !tab.isLoading {
+        let isPDF = tab.contentsMimeType == MIMEType.pdf
+        toolbarsViewController?.applyToolbarVisibility(
+          state: state,
+          progress: isPDF ? nil : progress
+        )
+      } else {
+        // The toolbars are always expanded while a tab is loading
+        toolbarsViewController?.applyToolbarVisibility(state: .expanded, progress: nil)
+      }
+      return
+    }
     guard
       let tab = tabManager.selectedTab,
       !tab.isLoading

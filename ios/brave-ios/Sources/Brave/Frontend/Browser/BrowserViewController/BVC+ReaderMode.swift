@@ -68,8 +68,12 @@ extension BrowserViewController {
         privateBrowsingManager: tabManager.privateBrowsingManager
       )
       readerModeBar.delegate = self
-      view.insertSubview(readerModeBar, aboveSubview: webViewContainer)
       self.readerModeBar = readerModeBar
+      // The toolbar layer places the bar when it is displaying a layout
+      if !isUsingToolbarsLayer {
+        view.insertSubview(readerModeBar, aboveSubview: webViewContainer)
+      }
+      toolbarsViewController?.readerModeBar = readerModeBar
     }
 
     updateViewConstraints()
@@ -79,6 +83,7 @@ extension BrowserViewController {
     if let readerModeBar = self.readerModeBar {
       readerModeBar.removeFromSuperview()
       self.readerModeBar = nil
+      toolbarsViewController?.readerModeBar = nil
       self.updateViewConstraints()
     }
   }
