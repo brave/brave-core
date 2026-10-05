@@ -225,9 +225,7 @@ bool IsShowAIChatInputOnNewTabPageEnabled(PrefService* local_state,
   return true;
 }
 
-BASE_FEATURE(kAIChatDeepResearch,
-             "AIChatDeepResearch",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kAIChatDeepResearch, base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsAIChatDeepResearchEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatDeepResearch);
