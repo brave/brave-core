@@ -123,6 +123,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
     private @Nullable BraveAccountSectionController mAccountController;
+    private @Nullable BraveEmailAliasesSectionController mEmailAliasesController;
     private @Nullable VpnCalloutPreference mVpnCalloutPreference;
     private boolean mNotificationClicked;
 
@@ -146,6 +147,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         CustomizeBraveMenu.propagateMenuItemExtras(findPreference(PREF_APPEARANCE), getArguments());
 
         mAccountController = BraveAccountSectionController.maybeCreate(this);
+        mEmailAliasesController = BraveEmailAliasesSectionController.maybeCreate(this);
 
         overrideChromiumPreferences();
         initRateBrave();
@@ -169,6 +171,10 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     @Override
     public void onResume() {
         super.onResume();
+
+        if (mEmailAliasesController != null) {
+            mEmailAliasesController.updateVisibility();
+        }
 
         // We need to organise the Brave preferences right away so all the theming is applied
         // correctly.
@@ -424,8 +430,26 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         setPreferenceOrder(PREF_BRAVE_LANGUAGES, ++displaySectionOrder);
 
         int passwordsAndAutofillSectionOrder = displaySectionOrder;
-        setPreferenceOrder(
-                MainSettings.PREF_AUTOFILL_AND_PASSWORDS, ++passwordsAndAutofillSectionOrder);
+        // MainSettings removes the separate autofill rows when the flag is on.
+        if (ChromeFeatureList.isEnabled(ChromeFeatureList.YOUR_SAVED_INFO_SETTINGS_PAGE_ANDROID)) {
+            setPreferenceOrder(
+                    MainSettings.PREF_AUTOFILL_AND_PASSWORDS, ++passwordsAndAutofillSectionOrder);
+        } else {
+            setPreferenceOrder(
+                    MainSettings.PREF_AUTOFILL_SECTION, ++passwordsAndAutofillSectionOrder);
+            setPreferenceOrder(PREF_PASSWORDS, ++passwordsAndAutofillSectionOrder);
+            if (mEmailAliasesController != null) {
+              setPreferenceOrder(
+                      BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES,
+                      ++passwordsAndAutofillSectionOrder);
+            } else {
+              removePreferenceIfPresent(BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES);
+            }
+            setPreferenceOrder(
+                    MainSettings.PREF_AUTOFILL_OPTIONS, ++passwordsAndAutofillSectionOrder);
+            setPreferenceOrder(PREF_PAYMENT_METHODS, ++passwordsAndAutofillSectionOrder);
+            setPreferenceOrder(PREF_ADDRESSES, ++passwordsAndAutofillSectionOrder);
+        }
 
         int supportSectionOrder = passwordsAndAutofillSectionOrder;
         setPreferenceOrder(PREF_SUPPORT_SECTION, ++supportSectionOrder);
@@ -504,6 +528,9 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     }
 
     private void updatePreferenceIcons() {
+        updatePreferenceIcon(
+                BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES,
+                R.drawable.ic_email_shield);
         updatePreferenceIcon(PREF_CONTENT_SETTINGS, R.drawable.ic_tune);
         updatePreferenceIcon(PREF_DOWNLOADS, R.drawable.ic_download);
         updatePreferenceIcon(PREF_LANGUAGES, R.drawable.ic_product_translate);
@@ -865,6 +892,10 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                     if (!BraveAccountFeatures.isBraveAccountEnabled()) {
                         indexData.removeEntry(
                                 getUniqueId(BraveAccountSectionController.PREF_BRAVE_ACCOUNT));
+                    }
+                    if (!BraveEmailAliasesSectionController.isEnabled(profile)) {
+                        indexData.removeEntry(
+                                getUniqueId(BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES));
                     }
                     // Brave leaf switches/actions in main settings have no sub-screen to
                     // navigate to from search results, so exclude them from the index.
