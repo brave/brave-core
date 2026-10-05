@@ -852,6 +852,9 @@
   <message name="IDS_AI_CHAT_CONVERSATION_LIST_FILTER_NO_RESULTS_SUBTITLE" desc="Subtitle shown when no conversations match the filter query" formatter_data="webui=AiChat">
     Please try a different query
   </message>
+  <message name="IDS_AI_CHAT_CONVERSATION_LIST_CONVERSATION_SEARCH_HEADING" desc="Heading of the section of the conversation list showing the conversations that match the search query by their content and meaning, rather than by their title." formatter_data="webui=AiChat">
+    Related conversations
+  </message>
   <message name="IDS_AI_CHAT_TEMPORARY_CHAT_LABEL" desc="Label for the temporary chat toggle in the feature menu" formatter_data="webui=AiChat">
     Temporary chat
   </message>

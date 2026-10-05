@@ -309,6 +309,13 @@ function ConversationEntries(props: {
       <div key={firstEntryEdit.uuid || entryNumber}>
         <div
           data-id={entryNumber}
+          data-entry-uuids={group
+            .flatMap((entry) => [
+              entry.uuid,
+              ...(entry.edits ?? []).map((e) => e.uuid),
+            ])
+            .filter(Boolean)
+            .join(' ')}
           data-testid={isHuman ? 'human-turn' : 'assistant-turn'}
           className={turnClass}
           onMouseEnter={() => isHuman && setHoverMenuButtonId(entryNumber)}

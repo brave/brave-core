@@ -95,7 +95,10 @@ source_set("ai_chat") {
   if (enable_local_ai) {
     # SearchForTabs ranks the user's open tabs with on-device history
     # embeddings; open_tab_search is desktop only.
-    deps += [ "//brave/browser/history_embeddings:open_tab_search" ]
+    deps += [
+      "//brave/browser/history_embeddings:open_tab_search",
+      "//brave/components/ai_chat/core/browser/embeddings",
+    ]
   }
 
   if (enable_brave_ai_chat_agent_profile) {
@@ -134,6 +137,16 @@ source_set("unit_tests") {
   ]
 
   sources = [ "ai_chat_ui_page_handler_unittest.cc" ]
+
+  if (enable_local_ai) {
+    deps += [
+      "//brave/components/ai_chat/core/browser:test_support",
+      "//brave/components/ai_chat/core/browser/embeddings",
+      "//brave/components/ai_chat/core/browser/embeddings:test_support",
+      "//brave/components/local_ai/buildflags",
+      "//components/user_prefs",
+    ]
+  }
 }
 
 source_set("browser_tests") {

@@ -241,6 +241,7 @@ export function createMockUIHandler(
       }),
     getPluralString: () => Promise.resolve({ pluralString: '' }),
     getFaviconDataURL: () => Promise.resolve({ dataUrl: null }),
+    searchConversations: () => Promise.resolve({ matches: null }),
     setChatUI: () => Promise.resolve({ isStandalone: false }),
     showWorkspaceFolderPicker: () => Promise.resolve({ selectedPath: null }),
 

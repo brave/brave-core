@@ -233,6 +233,14 @@ void AIChatUIPageHandler::GetFaviconDataURL(
       &favicon_task_tracker_);
 }
 
+void AIChatUIPageHandler::SearchConversations(
+    const std::string& query,
+    SearchConversationsCallback callback) {
+  // Conversations are searched with the on-device embedder of semantic
+  // history search, which iOS doesn't have.
+  std::move(callback).Run(std::nullopt);
+}
+
 void AIChatUIPageHandler::ShowWorkspaceFolderPicker(
     const std::string& conversation_uuid,
     ShowWorkspaceFolderPickerCallback callback) {

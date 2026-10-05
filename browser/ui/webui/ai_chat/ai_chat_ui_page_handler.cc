@@ -39,6 +39,7 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/screenshot/core/browser/utils.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -80,6 +81,11 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
 #include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/browser/ai_chat/ai_chat_ui_semantic_search.h"
+#include "brave/components/ai_chat/core/browser/embeddings/ai_chat_embeddings_service.h"
 #endif
 
 namespace {
@@ -400,6 +406,39 @@ void AIChatUIPageHandler::GetFaviconDataURL(
       /*fallback_to_host=*/true,
       base::BindOnce(&OnFaviconRawBitmapAvailable, std::move(callback)),
       &favicon_task_tracker_);
+}
+
+void AIChatUIPageHandler::SearchConversations(
+    const std::string& query,
+    SearchConversationsCallback callback) {
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  SearchConversationsForUI(
+      profile_, query,
+      base::BindOnce(
+          [](SearchConversationsCallback callback,
+             std::optional<std::vector<ConversationSearchResult>> results) {
+            if (!results) {
+              std::move(callback).Run(std::nullopt);
+              return;
+            }
+            std::vector<mojom::ConversationSearchMatchPtr> matches;
+            for (ConversationSearchResult& result : *results) {
+              std::optional<std::string> snippet;
+              std::optional<std::string> entry_uuid;
+              if (!result.passages.empty()) {
+                snippet = std::move(result.passages.front().text);
+                entry_uuid = std::move(result.passages.front().entry_uuid);
+              }
+              matches.push_back(mojom::ConversationSearchMatch::New(
+                  std::move(result.conversation_uuid), std::move(snippet),
+                  std::move(entry_uuid)));
+            }
+            std::move(callback).Run(std::move(matches));
+          },
+          std::move(callback)));
+#else
+  std::move(callback).Run(std::nullopt);
+#endif
 }
 
 void AIChatUIPageHandler::ShowWorkspaceFolderPicker(

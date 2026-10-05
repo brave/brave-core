@@ -122,6 +122,12 @@ export default function createAIChatApi(
         getFaviconDataURL: {
           response: (result) => result.dataUrl,
         },
+        // Null where semantic conversation search isn't available. Fetched
+        // afresh for each search, since the stored conversations change.
+        searchConversations: {
+          response: (result) => result.matches,
+          staleTime: 0,
+        },
       }),
 
       ...endpointsFor(bookmarksService, {

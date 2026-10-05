@@ -154,6 +154,66 @@
   width: 100%;
 }
 
+.conversationSearch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-s);
+  padding-bottom: var(--leo-spacing-m);
+  border-bottom: 1px solid var(--leo-color-divider-subtle);
+}
+
+.conversationSearchHeading {
+  font: var(--leo-font-small-semibold);
+  color: var(--leo-color-text-tertiary);
+  padding: 0 var(--leo-spacing-xl);
+}
+
+.conversationSearchItem {
+  background: var(--leo-color-container-background);
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: var(--leo-radius-l);
+  color: var(--leo-color-text-primary);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-s);
+  margin: 0 var(--leo-spacing-m) var(--leo-spacing-s);
+  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+  text-decoration: none;
+  transition: all 0.2s ease-out allow-discrete;
+
+  &:hover {
+    background: var(--leo-color-container-highlight);
+    box-shadow: var(--leo-effect-elevation-01);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--leo-color-button-background);
+    outline-offset: 2px;
+  }
+}
+
+.conversationSearchItemActive {
+  border-color: var(--leo-color-button-background);
+}
+
+.conversationSearchTitle {
+  font: var(--leo-font-default-semibold);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.conversationSearchSnippet {
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
 .conversationTitleSearchNoResults {
   display: flex;
   flex-direction: column;

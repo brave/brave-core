@@ -13,9 +13,11 @@ import * as Mojom from '../../../common/mojom'
 import { useAIChat } from '../../state/ai_chat_context'
 import { getLocale } from '$web-common/locale'
 import { useConversation } from '../../state/conversation_context'
+import useSearchDelay from '../../hooks/useSearchDelay'
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
 import { Link } from '$web-common/useRoute'
+import { makeEntryFragment } from '../../../common/entry_fragment'
 
 interface SimpleInputProps {
   text?: string
@@ -173,6 +175,68 @@ function ConversationItem(props: ConversationItemProps) {
   )
 }
 
+interface ConversationSearchItemProps extends ConversationsListProps {
+  conversation: Mojom.Conversation
+  snippet: string | undefined
+  // The entry the snippet is from.
+  entryUuid: string | undefined
+}
+
+// A conversation that matches the search query by its content, shown as a card
+// with the passage that matched. It opens the conversation at the entry the
+// passage is from.
+function ConversationSearchItem(props: ConversationSearchItemProps) {
+  const conversationContext = useConversation()
+
+  const { uuid } = props.conversation
+  const title =
+    props.conversation.title || getLocale(S.AI_CHAT_CONVERSATION_LIST_UNTITLED)
+
+  return (
+    <li>
+      <a
+        className={classnames(
+          styles.conversationSearchItem,
+          uuid === conversationContext.conversationUuid
+            && styles.conversationSearchItemActive,
+        )}
+        href={`/${uuid}`}
+        data-entry-uuid={props.entryUuid}
+        data-testid='conversation-search-item'
+        onClick={(e) => {
+          props.setIsConversationsListOpen?.(false)
+          // Leave clicks that open another tab or window alone.
+          if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) {
+            return
+          }
+          e.preventDefault()
+          // The fragment is made for each click, so that clicking the card
+          // again scrolls again.
+          const fragment = props.entryUuid
+            ? makeEntryFragment(props.entryUuid)
+            : ''
+          window.history.pushState(null, '', `/${uuid}${fragment}`)
+        }}
+      >
+        <div
+          className={styles.conversationSearchTitle}
+          title={title}
+        >
+          {title}
+        </div>
+        {props.snippet && (
+          <div
+            className={styles.conversationSearchSnippet}
+            data-testid='conversation-search-snippet'
+          >
+            {props.snippet}
+          </div>
+        )}
+      </a>
+    </li>
+  )
+}
+
 interface ConversationsListProps {
   setIsConversationsListOpen?: (value: boolean) => unknown
 }
@@ -195,6 +259,29 @@ export default function ConversationsList(props: ConversationsListProps) {
       return title.toLowerCase().includes(lower)
     })
   }, [startedNonTemporaryConversations, conversationTitleSearch])
+
+  // Conversations matching by content are searched for once typing pauses, as
+  // brave://history searches its history semantically.
+  const conversationSearch = useSearchDelay(conversationTitleSearch)
+  const { data: conversationSearchMatches } =
+    aiChatContext.api.useSearchConversations(conversationSearch)
+  const conversationSearchResults = (
+    (conversationTitleSearch && conversationSearchMatches)
+    || []
+  ).flatMap((match) => {
+    const conversation = startedNonTemporaryConversations.find(
+      (c) => c.uuid === match.conversationUuid,
+    )
+    return conversation
+      ? [
+          {
+            conversation,
+            snippet: match.snippet,
+            entryUuid: match.entryUuid,
+          },
+        ]
+      : []
+  })
 
   return (
     <>
@@ -267,8 +354,34 @@ export default function ConversationsList(props: ConversationsListProps) {
                 {getLocale(S.CHAT_UI_NOTICE_CONVERSATION_HISTORY_EMPTY)}
               </Alert>
             )}
+          {conversationSearchResults.length > 0 && (
+            <section
+              className={styles.conversationSearch}
+              data-testid='conversation-search-results'
+            >
+              <div className={styles.conversationSearchHeading}>
+                {getLocale(
+                  S.AI_CHAT_CONVERSATION_LIST_CONVERSATION_SEARCH_HEADING,
+                )}
+              </div>
+              <ol>
+                {conversationSearchResults.map(
+                  ({ conversation, snippet, entryUuid }) => (
+                    <ConversationSearchItem
+                      key={conversation.uuid}
+                      {...props}
+                      conversation={conversation}
+                      snippet={snippet}
+                      entryUuid={entryUuid}
+                    />
+                  ),
+                )}
+              </ol>
+            </section>
+          )}
           {conversationTitleSearch
-            && conversationTitleSearchResults.length === 0 && (
+            && conversationTitleSearchResults.length === 0
+            && conversationSearchResults.length === 0 && (
               <div className={styles.conversationTitleSearchNoResults}>
                 <span>
                   {getLocale(S.AI_CHAT_CONVERSATION_LIST_FILTER_NO_RESULTS)}

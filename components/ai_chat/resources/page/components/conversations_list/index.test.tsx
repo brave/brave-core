@@ -6,7 +6,14 @@
 import '$test-utils/disable_custom_elements'
 
 import * as React from 'react'
-import { render, screen, act, waitFor } from '@testing-library/react'
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react'
 import { MockContext } from '../../state/mock_context'
 import { clearAllDataForTesting } from '$web-common/api'
 import ConversationsList from './index'
@@ -347,6 +354,177 @@ describe('ConversationsList', () => {
           screen.queryByText('AI_CHAT_CONVERSATION_LIST_FILTER_NO_RESULTS'),
         ).not.toBeInTheDocument()
       })
+    })
+  })
+
+  describe('Conversation search', () => {
+    async function renderWithConversationSearch(
+      searchConversations: Mojom.AIChatUIHandlerInterface['searchConversations'],
+    ) {
+      const { container } = await renderConversationsList(
+        <MockContext
+          service={{
+            getConversations: () =>
+              Promise.resolve({ conversations: mockConversations }),
+          }}
+          uiHandler={{ searchConversations }}
+          initialState={{
+            serviceState: { isStoragePrefEnabled: true },
+          }}
+        >
+          <ConversationsList />
+        </MockContext>,
+      )
+      await waitFor(() => {
+        expect(screen.getByText('How to use TypeScript')).toBeInTheDocument()
+      })
+      return container
+    }
+
+    function search(container: HTMLElement, value: string) {
+      const leoInput = container.querySelector('leo-input')!
+      act(() => {
+        leoInput.dispatchEvent(
+          Object.assign(new Event('input', { bubbles: true }), { value }),
+        )
+      })
+    }
+
+    it('shows conversations that match by content in their own section', async () => {
+      const searchConversations = jest.fn(async (query: string) => ({
+        matches:
+          query === 'block trackers'
+            ? [
+                {
+                  conversationUuid: 'uuid-2',
+                  snippet: 'Shields block trackers by default.',
+                  entryUuid: 'entry-7',
+                },
+              ]
+            : [],
+      }))
+      const container = await renderWithConversationSearch(searchConversations)
+
+      search(container, 'block trackers')
+
+      const section = await screen.findByTestId('conversation-search-results')
+      expect(
+        within(section).getByText(
+          'AI_CHAT_CONVERSATION_LIST_CONVERSATION_SEARCH_HEADING',
+        ),
+      ).toBeInTheDocument()
+      expect(
+        within(section).getByText('Brave browser features'),
+      ).toBeInTheDocument()
+      expect(
+        within(section).getByText('Shields block trackers by default.'),
+      ).toBeInTheDocument()
+      expect(searchConversations).toHaveBeenCalledWith('block trackers')
+      // No title matches, but a conversation did match by content.
+      expect(
+        screen.queryByText('AI_CHAT_CONVERSATION_LIST_FILTER_NO_RESULTS'),
+      ).not.toBeInTheDocument()
+    })
+
+    describe('card', () => {
+      let pushState: jest.SpyInstance
+
+      beforeEach(() => {
+        pushState = jest
+          .spyOn(window.history, 'pushState')
+          .mockImplementation(() => {})
+      })
+
+      afterEach(() => {
+        pushState.mockRestore()
+      })
+
+      async function renderCard(entryUuid: string | undefined) {
+        const container = await renderWithConversationSearch(async () => ({
+          matches: [
+            {
+              conversationUuid: 'uuid-2',
+              snippet: 'Shields block trackers by default.',
+              entryUuid,
+            },
+          ],
+        }))
+        search(container, 'block trackers')
+        return screen.findByTestId('conversation-search-item')
+      }
+
+      it('opens the conversation at the entry the passage is from', async () => {
+        const card = await renderCard('entry-7')
+        expect(card).toHaveAttribute('href', '/uuid-2')
+
+        fireEvent.click(card)
+
+        expect(pushState).toHaveBeenCalledTimes(1)
+        const url = pushState.mock.calls[0][2] as string
+        expect(url.startsWith('/uuid-2#entry=entry-7&n=')).toBe(true)
+      })
+
+      it('names the entry afresh for each click', async () => {
+        const card = await renderCard('entry-7')
+        const now = jest.spyOn(Date, 'now')
+        now.mockReturnValueOnce(1000).mockReturnValueOnce(2000)
+
+        fireEvent.click(card)
+        fireEvent.click(card)
+
+        expect(pushState.mock.calls[0][2]).not.toBe(pushState.mock.calls[1][2])
+        now.mockRestore()
+      })
+
+      it('opens the conversation at its start when only its title matched', async () => {
+        const card = await renderCard(undefined)
+
+        fireEvent.click(card)
+
+        expect(pushState).toHaveBeenCalledWith(null, '', '/uuid-2')
+      })
+
+      it('leaves clicks that open another tab to the browser', async () => {
+        const card = await renderCard('entry-7')
+
+        fireEvent.click(card, { ctrlKey: true })
+
+        expect(pushState).not.toHaveBeenCalled()
+      })
+    })
+
+    it('leaves out conversations that are no longer listed', async () => {
+      const container = await renderWithConversationSearch(async () => ({
+        matches: [{ conversationUuid: 'deleted', snippet: 'Gone' }],
+      }))
+
+      search(container, 'block trackers')
+
+      await waitFor(() => {
+        expect(
+          screen.getByText('AI_CHAT_CONVERSATION_LIST_FILTER_NO_RESULTS'),
+        ).toBeInTheDocument()
+      })
+      expect(
+        screen.queryByTestId('conversation-search-results'),
+      ).not.toBeInTheDocument()
+    })
+
+    it('shows no section where conversation search is unavailable', async () => {
+      const searchConversations = jest.fn(async () => ({ matches: null }))
+      const container = await renderWithConversationSearch(searchConversations)
+
+      search(container, 'block trackers')
+
+      await waitFor(() => {
+        expect(searchConversations).toHaveBeenCalledWith('block trackers')
+      })
+      expect(
+        screen.getByText('AI_CHAT_CONVERSATION_LIST_FILTER_NO_RESULTS'),
+      ).toBeInTheDocument()
+      expect(
+        screen.queryByTestId('conversation-search-results'),
+      ).not.toBeInTheDocument()
     })
   })
 })

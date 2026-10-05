@@ -160,6 +160,8 @@ static_library("ai_chat") {
     sources += [
       "ai_chat_embeddings_service_factory.cc",
       "ai_chat_embeddings_service_factory.h",
+      "ai_chat_ui_semantic_search.cc",
+      "ai_chat_ui_semantic_search.h",
       "tools/conversation_search_tool.cc",
       "tools/conversation_search_tool.h",
       "tools/memory_semantic_search_tool.cc",

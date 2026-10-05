@@ -13,6 +13,21 @@
   padding-top: var(--leo-spacing-2xl);
 }
 
+// Plays once on the turn a search result opened the conversation at.
+@keyframes turnHighlight {
+  from {
+    background-color: var(--leo-color-container-highlight);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
+.turn[data-highlighted] {
+  animation: turnHighlight 2s ease-out;
+  border-radius: var(--leo-radius-l);
+}
+
 .turnAI {
   background-color: transparent;
   align-items: flex-start;

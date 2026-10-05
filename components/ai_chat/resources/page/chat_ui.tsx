@@ -9,6 +9,8 @@ import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import { setIconBasePath } from '@brave/leo/react/icon'
 import '$web-common/defaultTrustedTypesPolicy'
 import * as Mojom from '../common/mojom'
+import { useLocation } from '$web-common/useRoute'
+import { parseEntryFragment } from '../common/entry_fragment'
 import bindWebUiServices from './api/bind_webui_services'
 import useUpdateDocumentTitle from './hooks/useUpdateDocumentTitle'
 import {
@@ -118,6 +120,13 @@ function ConversationEntries(props: ConversationEntriesProps) {
 
   const [iframeSrc, setIframeSrc] = React.useState<string>()
 
+  // The entry the page's URL names, for the conversation to scroll to.
+  const location = useLocation()
+  const entryFragment = React.useMemo(() => {
+    const hash = new URL(location).hash
+    return parseEntryFragment(hash) ? hash : ''
+  }, [location])
+
   React.useEffect(() => {
     // The state conversationUuid can bounce from a valid value to a null
     // value whilst the conversationUuid for a newly-bound conversation is
@@ -126,9 +135,9 @@ function ConversationEntries(props: ConversationEntriesProps) {
       return
     }
     setIframeSrc(
-      `chrome-untrusted://leo-ai-conversation-entries/${state.conversationUuid}`,
+      `chrome-untrusted://leo-ai-conversation-entries/${state.conversationUuid}${entryFragment}`,
     )
-  }, [state.conversationUuid])
+  }, [state.conversationUuid, entryFragment])
 
   return (
     <div className={props.className}>

@@ -31,6 +31,7 @@ import LongConversationInfo from '../alerts/long_conversation_info'
 import styles from './style.module.scss'
 import { useModelIntroMarkers } from './useModelIntroMarkers'
 import { useScrollToBottom } from './useScrollToBottom'
+import { useScrollToEntry } from './useScrollToEntry'
 
 export interface ConversationProps {
   onIsContentReady?: (isReady: boolean) => void
@@ -165,8 +166,16 @@ function Conversation(props: ConversationProps) {
     [scrollToBottomContinuously],
   )
 
-  // Scroll to bottom when opening a conversation
+  // Scroll to the entry the frame is opened at, if there is one
+  const entryTarget = useScrollToEntry(scrollElementRef, contentRef)
+  const isOpenedAtEntry = React.useRef(!!entryTarget)
+
+  // Scroll to bottom when opening a conversation, unless it is opened at an
+  // entry
   React.useEffect(() => {
+    if (isOpenedAtEntry.current) {
+      return
+    }
     scrollToBottomContinuously(/*animate=*/ false)
   }, [scrollToBottomContinuously])
 

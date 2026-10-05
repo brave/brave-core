@@ -254,6 +254,17 @@ interface ServiceObserver {
 
 // Browser-side handler for general AI Chat UI functions, implemented
 // per-platform
+// A stored conversation found by AIChatUIHandler::SearchConversations().
+struct ConversationSearchMatch {
+  string conversation_uuid;
+  // The conversation's best matching passage, or null when only its title
+  // matched.
+  string? snippet;
+  // The entry the best matching passage is from, or null when only the title
+  // matched.
+  string? entry_uuid;
+};
+
 interface AIChatUIHandler {
   // Open various external links or dialogs depending on the platform
   OpenAIChatSettings();
@@ -303,6 +314,13 @@ interface AIChatUIHandler {
   // (chrome://favicon2), so this is only needed when the image data itself is
   // required.
   GetFaviconDataURL(url.mojom.Url page_url) => (string? data_url);
+
+  // Searches the stored conversations semantically, on device, as
+  // brave://history searches browsing history: queries of fewer words than
+  // its minimum find nothing. Null where that isn't available, e.g. while the
+  // Semantic history search setting is off. Best match first.
+  SearchConversations(string query)
+      => (array<ConversationSearchMatch>? matches);
 
   // Shows a native folder picker so the user can choose a local "workspace"
   // folder for the given conversation. The local workspace tools then operate

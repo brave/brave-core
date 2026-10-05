@@ -34,6 +34,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
@@ -55,6 +56,16 @@
 #include "ui/gfx/image/image_unittest_util.h"
 #include "ui/shell_dialogs/select_file_dialog.h"
 #include "ui/shell_dialogs/select_file_dialog_factory.h"
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "base/test/run_until.h"
+#include "brave/browser/ai_chat/ai_chat_embeddings_service_factory.h"
+#include "brave/components/ai_chat/core/browser/embeddings/ai_chat_embeddings_service.h"
+#include "brave/components/ai_chat/core/browser/embeddings/fake_embedder.h"
+#include "brave/components/ai_chat/core/browser/test_utils.h"
+#include "chrome/browser/browser_process.h"
+#include "components/user_prefs/user_prefs.h"
+#endif
 #include "ui/shell_dialogs/select_file_policy.h"
 #include "ui/shell_dialogs/selected_file_info.h"
 #include "url/gurl.h"
@@ -531,6 +542,97 @@ TEST_F(AIChatUIPageHandlerTest, GetFaviconDataURL_NoFavicon) {
                                     future.GetCallback());
   EXPECT_FALSE(future.Get());
 }
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+
+TEST_F(AIChatUIPageHandlerTest, SearchConversations_OffWithSemanticSearch) {
+  // The Semantic history search setting is off by default.
+  base::test::TestFuture<
+      std::optional<std::vector<mojom::ConversationSearchMatchPtr>>>
+      future;
+  page_handler()->SearchConversations("block trackers", future.GetCallback());
+  EXPECT_FALSE(future.Get());
+}
+
+// Searches a real index of the profile's conversations, embedded by a fake.
+class AIChatUIPageHandlerConversationSearchTest
+    : public AIChatUIPageHandlerTest {
+ protected:
+  TestingProfile::TestingFactories GetTestingFactories() const override {
+    TestingProfile::TestingFactories factories =
+        AIChatUIPageHandlerTest::GetTestingFactories();
+    factories.emplace_back(
+        AIChatEmbeddingsServiceFactory::GetInstance(),
+        base::BindRepeating(
+            [](FakeEmbedder* embedder,
+               FakeEmbedderMetadataProvider* embedder_metadata_provider,
+               content::BrowserContext* context)
+                -> std::unique_ptr<KeyedService> {
+              return std::make_unique<AIChatEmbeddingsService>(
+                  AIChatServiceFactory::GetForBrowserContext(context),
+                  user_prefs::UserPrefs::Get(context),
+                  g_browser_process->os_crypt_async(), embedder,
+                  embedder_metadata_provider, context->GetPath());
+            },
+            &embedder_, &embedder_metadata_provider_));
+    return factories;
+  }
+
+  std::optional<std::vector<mojom::ConversationSearchMatchPtr>>
+  SearchConversations(const std::string& query) {
+    base::test::TestFuture<
+        std::optional<std::vector<mojom::ConversationSearchMatchPtr>>>
+        future;
+    page_handler()->SearchConversations(query, future.GetCallback());
+    return future.Take();
+  }
+
+  // Built with the testing factories, so it outlives the profile's services.
+  mutable FakeEmbedder embedder_;
+  mutable FakeEmbedderMetadataProvider embedder_metadata_provider_;
+};
+
+TEST_F(AIChatUIPageHandlerConversationSearchTest, FindsConversations) {
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return service()->IsStorageReady(); }));
+  ConversationHandler* conversation = service()->CreateConversation();
+  std::vector<mojom::ConversationTurnPtr> history = CreateSampleChatHistory(1u);
+  history[0]->text = "Tell me about my cat";
+  history[1]->events->clear();
+  history[1]->events->push_back(
+      mojom::ConversationEntryEvent::NewCompletionEvent(
+          mojom::CompletionEvent::New("Cats sleep for most of the day.")));
+  const std::optional<std::string> query_uuid = history[0]->uuid;
+  ASSERT_TRUE(query_uuid);
+  conversation->SetChatHistoryForTesting(std::move(history));
+  AIChatEmbeddingsService* embeddings_service =
+      AIChatEmbeddingsServiceFactory::GetForBrowserContext(profile());
+  ASSERT_TRUE(embeddings_service);
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return embedder_.HasEmbedded("Cats sleep for most of the day.") &&
+           embeddings_service->IsIndexingIdleForTesting();
+  }));
+  base::test::TestFuture<void> flushed;
+  embeddings_service->FlushForTesting(flushed.GetCallback());
+  ASSERT_TRUE(flushed.Wait());
+
+  std::optional<std::vector<mojom::ConversationSearchMatchPtr>> matches =
+      SearchConversations("my cat");
+  ASSERT_TRUE(matches);
+  ASSERT_EQ(matches->size(), 1u);
+  EXPECT_EQ((*matches)[0]->conversation_uuid,
+            conversation->get_conversation_uuid());
+  // The passage that matches best, and the entry it is from.
+  EXPECT_EQ((*matches)[0]->snippet, "Tell me about my cat");
+  EXPECT_EQ((*matches)[0]->entry_uuid, query_uuid);
+
+  // Like brave://history, a query of a single word isn't searched.
+  matches = SearchConversations("cat");
+  ASSERT_TRUE(matches);
+  EXPECT_TRUE(matches->empty());
+}
+
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 #if !BUILDFLAG(IS_ANDROID)
 
