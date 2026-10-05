@@ -1359,11 +1359,17 @@ Are you sure you want to do this?
       <message name="IDS_BRAVE_NTP_SHOW_FREQUENTLY_VISITED" desc="Menu item to switch the NTP top-sites widget to show frequently visited sites from browser history.">
         Show frequently visited
       </message>
-      <message name="IDS_BRAVE_NTP_SHOW_SHORTCUTS" desc="Menu item to switch the NTP top-sites widget to show pinned shortcuts (favorites).">
-        Show shortcuts
+      <message name="IDS_BRAVE_NTP_SHOW_FAVORITES" desc="Menu item to switch the NTP top-sites widget to show pinned shortcuts (favorites).">
+        Show favorites
       </message>
       <message name="IDS_BRAVE_NTP_HIDE_WIDGET" desc="Menu item to hide the NTP top-sites widget entirely.">
         Hide widget
+      </message>
+      <message name="IDS_BRAVE_CONTEXTMENU_EDIT_FAVORITE" desc="Overrides IDS_CONTEXTMENU_EDIT_SHORTCUT: menu item to edit a pinned NTP tile, which Brave calls a 'favorite' rather than a 'shortcut'.">
+        Edit favorite
+      </message>
+      <message name="IDS_BRAVE_CONTEXTMENU_PIN_THIS_FAVORITE" desc="Overrides IDS_CONTEXTMENU_PIN_THIS_SHORTCUT: menu item to pin an NTP tile, which Brave calls a 'favorite' rather than a 'shortcut'.">
+        Pin this favorite
       </message>
       <message name="IDS_OPENING_SCREEN_TITLE" desc="Title for opening screen settings category">
         Opening Screen

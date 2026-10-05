@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.native_page;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
@@ -26,7 +27,7 @@ import java.util.List;
  * Brave's {@link ContextMenuManager}. Hides the "Open in new tab in group" item from native page
  * context menus (e.g. New Tab Page shortcut tiles, Recent tabs) when the Brave "Enable tab groups"
  * master switch is off, adds icons to native page context menu items, and adds the NTP top-sites
- * widget-control items ("Add site" / "Show frequently visited" / "Show shortcuts" / "Hide widget")
+ * widget-control items ("Add site" / "Show frequently visited" / "Show favorites" / "Hide widget")
  * when the delegate is a {@link BraveNtpDelegate}. Instantiated in place of the upstream class via
  * a plaster redirect.
  *
@@ -44,6 +45,16 @@ public class BraveContextMenuManager extends ContextMenuManager {
             Runnable closeContextMenuCallback,
             String userActionPrefix) {
         super(navigationDelegate, touchEnabledDelegate, closeContextMenuCallback, userActionPrefix);
+    }
+
+    @Override
+    protected @StringRes int getResourceIdForMenuItem(@ContextMenuItemId int id) {
+        if (id == ContextMenuItemId.EDIT_SHORTCUT) {
+            return R.string.brave_contextmenu_edit_favorite;
+        } else if (id == ContextMenuItemId.PIN_THIS_SHORTCUT) {
+            return R.string.brave_contextmenu_pin_this_favorite;
+        }
+        return super.getResourceIdForMenuItem(id);
     }
 
     @Override
@@ -143,7 +154,7 @@ public class BraveContextMenuManager extends ContextMenuManager {
         };
         int[] widgetItemRes = {
             R.string.brave_ntp_show_frequently_visited,
-            R.string.brave_ntp_show_shortcuts,
+            R.string.brave_ntp_show_favorites,
             R.string.brave_ntp_hide_widget
         };
         int[] widgetItemIcons = {
