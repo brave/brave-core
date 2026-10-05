@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
@@ -141,6 +142,7 @@ static_library("browser") {
     "//brave/components/brave_stats/browser",
     "//brave/components/constants",
     "//brave/components/l10n/common",
+    "//brave/components/local_ai/buildflags",
     "//brave/components/p3a_utils",
     "//brave/components/resources:static_resources_grit",
     "//brave/components/resources:strings_grit",
@@ -175,6 +177,10 @@ static_library("browser") {
 
   if (enable_text_recognition) {
     deps += [ "//brave/components/text_recognition/browser" ]
+  }
+
+  if (enable_local_ai) {
+    sources += [ "learned_memory_types.h" ]
   }
 }
 
@@ -236,6 +242,7 @@ source_set("unit_tests") {
     "//brave/components/api_request_helper:test_support",
     "//brave/components/constants",
     "//brave/components/l10n/common:test_support",
+    "//brave/components/local_ai/buildflags",
     "//brave/components/resources:strings_grit",
     "//brave/components/skus/browser",
     "//brave/components/skus/common",

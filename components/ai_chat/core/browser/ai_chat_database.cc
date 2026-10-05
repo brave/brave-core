@@ -15,16 +15,19 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/containers/span.h"
 #include "base/logging.h"
 #include "base/sequence_checker.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/string_view_util.h"
 #include "base/threading/thread_restrictions.h"
+#include "base/uuid.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/proto_conversion.h"
 #include "brave/components/ai_chat/core/proto/store.pb.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "components/os_crypt/async/common/encryptor.h"
 #include "components/sync/model/metadata_batch.h"
 #include "components/sync/protocol/data_type_state.pb.h"
@@ -69,6 +72,31 @@ void BindOptionalString(sql::Statement& statement,
     statement.BindNull(index);
   }
 }
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+std::string VectorToBytes(const std::vector<float>& vector) {
+  return std::string(base::as_string_view(
+      base::as_byte_span(base::allow_nonunique_obj, vector)));
+}
+
+std::optional<std::vector<float>> BytesToVector(std::string_view bytes) {
+  if (bytes.empty() || bytes.size() % sizeof(float) != 0) {
+    return std::nullopt;
+  }
+  std::vector<float> vector(bytes.size() / sizeof(float));
+  base::as_writable_byte_span(base::allow_nonunique_obj, vector)
+      .copy_from(base::as_byte_span(bytes));
+  return vector;
+}
+
+template <typename Enum>
+std::optional<Enum> IntToEnum(int value) {
+  if (value < 0 || value > static_cast<int>(Enum::kMaxValue)) {
+    return std::nullopt;
+  }
+  return static_cast<Enum>(value);
+}
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 bool MigrateFrom1To2(sql::Database* db) {
   // Add a new column to the associated_content table to store the content type.
@@ -214,7 +242,7 @@ constexpr int kLowestSupportedDatabaseVersion = 1;
 constexpr int kCompatibleDatabaseVersionNumber = 7;
 
 // Current version of the database. Increase if breaking changes are made.
-constexpr int kCurrentDatabaseVersion = 11;
+constexpr int kCurrentDatabaseVersion = 12;
 
 AIChatDatabase::AIChatDatabase(
     const base::FilePath& db_file_path,
@@ -368,6 +396,14 @@ sql::InitStatus AIChatDatabase::InitInternal() {
                             meta_table.SetVersionNumber(11);
       }
       current_version = 11;
+    }
+    if (migration_success && current_version == 11) {
+      // The learned memory tables are new, so CreateSchema() already created
+      // them and only the version changes.
+      migration_success = meta_table.SetCompatibleVersionNumber(
+                              kCompatibleDatabaseVersionNumber) &&
+                          meta_table.SetVersionNumber(12);
+      current_version = 12;
     }
     // Migration unsuccessful, raze the database and re-init
     if (!migration_success) {
@@ -1605,6 +1641,20 @@ bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
     return false;
   }
 
+  if (!DeleteMemoryDataFromConversation(conversation_uuid)) {
+    return false;
+  }
+
+  static constexpr char kDeleteMemoryWatermarkQuery[] =
+      "DELETE FROM memory_watermark WHERE conversation_uuid=?";
+  sql::Statement delete_watermark_statement(
+      GetDB().GetUniqueStatement(kDeleteMemoryWatermarkQuery));
+  CHECK(delete_watermark_statement.is_valid());
+  delete_watermark_statement.BindString(0, conversation_uuid);
+  if (!delete_watermark_statement.Run()) {
+    return false;
+  }
+
   if (!transaction.Commit()) {
     DVLOG(0) << "Transaction commit failed with reason: "
              << db_.GetErrorMessage();
@@ -1686,6 +1736,30 @@ bool AIChatDatabase::DeleteConversationEntry(
                      "entry uuid: "
                   << conversation_entry_uuid;
       return false;
+    }
+  }
+
+  // Delete the learned memory data from the entry and from its edits. This
+  // must run before the edits are deleted, to find their uuids.
+  {
+    std::vector<std::string> entry_uuids = {
+        std::string(conversation_entry_uuid)};
+    static constexpr char kSelectEditsQuery[] =
+        "SELECT uuid FROM conversation_entry WHERE editing_entry_uuid=?";
+    sql::Statement select_edits_statement(
+        GetDB().GetUniqueStatement(kSelectEditsQuery));
+    CHECK(select_edits_statement.is_valid());
+    select_edits_statement.BindString(0, conversation_entry_uuid);
+    while (select_edits_statement.Step()) {
+      entry_uuids.push_back(select_edits_statement.ColumnString(0));
+    }
+    if (!select_edits_statement.Succeeded()) {
+      return false;
+    }
+    for (const auto& entry_uuid : entry_uuids) {
+      if (!DeleteMemoryDataFromEntry(entry_uuid)) {
+        return false;
+      }
     }
   }
 
@@ -1819,6 +1893,437 @@ AIChatDatabase::DeleteAssociatedWebContent(std::optional<base::Time> begin_time,
     return std::nullopt;
   }
   return cleared;
+}
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+std::vector<LearnedMemory> AIChatDatabase::GetAllLearnedMemories() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return {};
+  }
+
+  static constexpr char kQuery[] =
+      "SELECT uuid, text, vector, category, type, created_date, updated_date,"
+      "  last_used_date, previous_text, previous_vector"
+      " FROM learned_memory"
+      " ORDER BY created_date ASC, uuid ASC";
+  sql::Statement statement(GetDB().GetUniqueStatement(kQuery));
+  CHECK(statement.is_valid());
+
+  std::vector<LearnedMemory> memories;
+  while (statement.Step()) {
+    LearnedMemory memory;
+    int index = 0;
+    memory.uuid = statement.ColumnString(index++);
+    memory.text = DecryptColumnToString(statement, index++);
+    auto vector = BytesToVector(DecryptColumnToString(statement, index++));
+    auto category =
+        IntToEnum<LearnedMemoryCategory>(statement.ColumnInt(index++));
+    auto type = IntToEnum<LearnedMemoryType>(statement.ColumnInt(index++));
+    if (memory.text.empty() || !vector || !category || !type) {
+      DVLOG(0) << "Skipping unreadable learned memory " << memory.uuid;
+      continue;
+    }
+    memory.vector = std::move(*vector);
+    memory.category = *category;
+    memory.type = *type;
+    memory.created_date = statement.ColumnTime(index++);
+    memory.updated_date = statement.ColumnTime(index++);
+    memory.last_used_date = statement.ColumnTime(index++);
+    memory.links =
+        GetMemorySourceLinks(memory.uuid, MemoryLinkOwner::kMemoryText);
+
+    auto previous_text = DecryptOptionalColumnToString(statement, index++);
+    auto previous_vector = DecryptOptionalColumnToString(statement, index++);
+    if (previous_text && previous_vector) {
+      auto decoded_previous_vector = BytesToVector(*previous_vector);
+      if (decoded_previous_vector) {
+        memory.previous = PreviousMemoryText{
+            .text = std::move(*previous_text),
+            .vector = std::move(*decoded_previous_vector),
+            .links = GetMemorySourceLinks(
+                memory.uuid, MemoryLinkOwner::kMemoryPreviousText)};
+      }
+    }
+    memories.push_back(std::move(memory));
+  }
+  if (!statement.Succeeded()) {
+    DVLOG(0) << "Failed to read learned memories: " << db_.GetErrorMessage();
+    return {};
+  }
+  return memories;
+}
+
+bool AIChatDatabase::AddOrUpdateLearnedMemory(const LearnedMemory& memory) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return false;
+  }
+  if (memory.uuid.empty() || memory.text.empty() || memory.vector.empty()) {
+    DVLOG(0) << "A learned memory needs a uuid, a text and a vector";
+    return false;
+  }
+
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    DVLOG(0) << "Transaction cannot begin\n";
+    return false;
+  }
+
+  static constexpr char kQuery[] =
+      "INSERT OR REPLACE INTO learned_memory(uuid, text, vector, category,"
+      "  type, created_date, updated_date, last_used_date, previous_text,"
+      "  previous_vector)"
+      " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  sql::Statement statement(GetDB().GetUniqueStatement(kQuery));
+  CHECK(statement.is_valid());
+  int index = 0;
+  statement.BindString(index++, memory.uuid);
+  if (!BindAndEncryptString(statement, index++, memory.text) ||
+      !BindAndEncryptString(statement, index++, VectorToBytes(memory.vector))) {
+    return false;
+  }
+  statement.BindInt(index++, static_cast<int>(memory.category));
+  statement.BindInt(index++, static_cast<int>(memory.type));
+  statement.BindTime(index++, memory.created_date);
+  statement.BindTime(index++, memory.updated_date);
+  statement.BindTime(index++, memory.last_used_date);
+  if (memory.previous) {
+    BindAndEncryptOptionalString(statement, index++, memory.previous->text);
+    BindAndEncryptOptionalString(statement, index++,
+                                 VectorToBytes(memory.previous->vector));
+  } else {
+    statement.BindNull(index++);
+    statement.BindNull(index++);
+  }
+  if (!statement.Run()) {
+    DVLOG(0) << "Failed to write learned memory: " << db_.GetErrorMessage();
+    return false;
+  }
+
+  if (!ReplaceMemorySourceLinks(memory.uuid, MemoryLinkOwner::kMemoryText,
+                                memory.links) ||
+      !ReplaceMemorySourceLinks(
+          memory.uuid, MemoryLinkOwner::kMemoryPreviousText,
+          memory.previous ? memory.previous->links
+                          : std::vector<MemorySourceLink>())) {
+    return false;
+  }
+
+  return transaction.Commit();
+}
+
+bool AIChatDatabase::DeleteLearnedMemory(std::string_view memory_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return false;
+  }
+
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    DVLOG(0) << "Transaction cannot begin\n";
+    return false;
+  }
+
+  static constexpr char kDeleteMemoryQuery[] =
+      "DELETE FROM learned_memory WHERE uuid=?";
+  sql::Statement delete_memory_statement(
+      GetDB().GetUniqueStatement(kDeleteMemoryQuery));
+  CHECK(delete_memory_statement.is_valid());
+  delete_memory_statement.BindString(0, memory_uuid);
+  if (!delete_memory_statement.Run()) {
+    return false;
+  }
+
+  static constexpr char kDeleteLinksQuery[] =
+      "DELETE FROM memory_source_link WHERE owner_uuid=? AND owner_kind IN"
+      " (?, ?)";
+  sql::Statement delete_links_statement(
+      GetDB().GetUniqueStatement(kDeleteLinksQuery));
+  CHECK(delete_links_statement.is_valid());
+  delete_links_statement.BindString(0, memory_uuid);
+  delete_links_statement.BindInt(
+      1, static_cast<int>(MemoryLinkOwner::kMemoryText));
+  delete_links_statement.BindInt(
+      2, static_cast<int>(MemoryLinkOwner::kMemoryPreviousText));
+  if (!delete_links_statement.Run()) {
+    return false;
+  }
+
+  return transaction.Commit();
+}
+
+bool AIChatDatabase::ForgetLearnedMemory(std::string_view memory_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return false;
+  }
+
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    DVLOG(0) << "Transaction cannot begin\n";
+    return false;
+  }
+
+  std::string vector_bytes;
+  {
+    static constexpr char kSelectVectorQuery[] =
+        "SELECT vector FROM learned_memory WHERE uuid=?";
+    sql::Statement select_statement(
+        GetDB().GetUniqueStatement(kSelectVectorQuery));
+    CHECK(select_statement.is_valid());
+    select_statement.BindString(0, memory_uuid);
+    if (!select_statement.Step()) {
+      return false;
+    }
+    vector_bytes = DecryptColumnToString(select_statement, 0);
+  }
+  if (vector_bytes.empty()) {
+    return false;
+  }
+
+  const std::string tombstone_uuid =
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
+  static constexpr char kInsertTombstoneQuery[] =
+      "INSERT INTO memory_tombstone(uuid, vector, created_date)"
+      " VALUES(?, ?, ?)";
+  sql::Statement insert_statement(
+      GetDB().GetUniqueStatement(kInsertTombstoneQuery));
+  CHECK(insert_statement.is_valid());
+  insert_statement.BindString(0, tombstone_uuid);
+  if (!BindAndEncryptString(insert_statement, 1, vector_bytes)) {
+    return false;
+  }
+  insert_statement.BindTime(2, base::Time::Now());
+  if (!insert_statement.Run()) {
+    return false;
+  }
+
+  if (!ReplaceMemorySourceLinks(
+          tombstone_uuid, MemoryLinkOwner::kTombstone,
+          GetMemorySourceLinks(memory_uuid, MemoryLinkOwner::kMemoryText))) {
+    return false;
+  }
+
+  if (!DeleteLearnedMemory(memory_uuid)) {
+    return false;
+  }
+
+  return transaction.Commit();
+}
+
+std::vector<MemoryTombstone> AIChatDatabase::GetAllMemoryTombstones() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return {};
+  }
+
+  static constexpr char kQuery[] =
+      "SELECT uuid, vector, created_date FROM memory_tombstone"
+      " ORDER BY created_date ASC, uuid ASC";
+  sql::Statement statement(GetDB().GetUniqueStatement(kQuery));
+  CHECK(statement.is_valid());
+
+  std::vector<MemoryTombstone> tombstones;
+  while (statement.Step()) {
+    MemoryTombstone tombstone;
+    tombstone.uuid = statement.ColumnString(0);
+    auto vector = BytesToVector(DecryptColumnToString(statement, 1));
+    if (!vector) {
+      DVLOG(0) << "Skipping unreadable memory tombstone " << tombstone.uuid;
+      continue;
+    }
+    tombstone.vector = std::move(*vector);
+    tombstone.created_date = statement.ColumnTime(2);
+    tombstone.links =
+        GetMemorySourceLinks(tombstone.uuid, MemoryLinkOwner::kTombstone);
+    tombstones.push_back(std::move(tombstone));
+  }
+  if (!statement.Succeeded()) {
+    DVLOG(0) << "Failed to read memory tombstones: " << db_.GetErrorMessage();
+    return {};
+  }
+  return tombstones;
+}
+
+std::map<std::string, base::Time> AIChatDatabase::GetAllMemoryWatermarks() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return {};
+  }
+
+  static constexpr char kQuery[] =
+      "SELECT conversation_uuid, last_processed_entry_date"
+      " FROM memory_watermark";
+  sql::Statement statement(GetDB().GetUniqueStatement(kQuery));
+  CHECK(statement.is_valid());
+
+  std::map<std::string, base::Time> watermarks;
+  while (statement.Step()) {
+    watermarks[statement.ColumnString(0)] = statement.ColumnTime(1);
+  }
+  if (!statement.Succeeded()) {
+    DVLOG(0) << "Failed to read memory watermarks: " << db_.GetErrorMessage();
+    return {};
+  }
+  return watermarks;
+}
+
+bool AIChatDatabase::SetMemoryWatermark(std::string_view conversation_uuid,
+                                        base::Time last_processed_entry_date) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return false;
+  }
+
+  static constexpr char kQuery[] =
+      "INSERT OR REPLACE INTO memory_watermark(conversation_uuid,"
+      "  last_processed_entry_date)"
+      " VALUES(?, ?)";
+  sql::Statement statement(GetDB().GetUniqueStatement(kQuery));
+  CHECK(statement.is_valid());
+  statement.BindString(0, conversation_uuid);
+  statement.BindTime(1, last_processed_entry_date);
+  return statement.Run();
+}
+
+std::vector<MemorySourceLink> AIChatDatabase::GetMemorySourceLinks(
+    std::string_view owner_uuid,
+    MemoryLinkOwner owner) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  static constexpr char kQuery[] =
+      "SELECT conversation_uuid, entry_uuid, sentence_index"
+      " FROM memory_source_link"
+      " WHERE owner_uuid=? AND owner_kind=?"
+      " ORDER BY rowid ASC";
+  sql::Statement statement(GetDB().GetUniqueStatement(kQuery));
+  CHECK(statement.is_valid());
+  statement.BindString(0, owner_uuid);
+  statement.BindInt(1, static_cast<int>(owner));
+
+  std::vector<MemorySourceLink> links;
+  while (statement.Step()) {
+    links.push_back(MemorySourceLink{
+        .conversation_uuid = statement.ColumnString(0),
+        .entry_uuid = statement.ColumnString(1),
+        .sentence_index = static_cast<uint32_t>(statement.ColumnInt64(2))});
+  }
+  return links;
+}
+
+bool AIChatDatabase::ReplaceMemorySourceLinks(
+    std::string_view owner_uuid,
+    MemoryLinkOwner owner,
+    const std::vector<MemorySourceLink>& links) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  static constexpr char kDeleteQuery[] =
+      "DELETE FROM memory_source_link WHERE owner_uuid=? AND owner_kind=?";
+  sql::Statement delete_statement(GetDB().GetUniqueStatement(kDeleteQuery));
+  CHECK(delete_statement.is_valid());
+  delete_statement.BindString(0, owner_uuid);
+  delete_statement.BindInt(1, static_cast<int>(owner));
+  if (!delete_statement.Run()) {
+    return false;
+  }
+
+  static constexpr char kInsertQuery[] =
+      "INSERT OR IGNORE INTO memory_source_link(owner_uuid, owner_kind,"
+      "  conversation_uuid, entry_uuid, sentence_index)"
+      " VALUES(?, ?, ?, ?, ?)";
+  for (const auto& link : links) {
+    sql::Statement insert_statement(GetDB().GetUniqueStatement(kInsertQuery));
+    CHECK(insert_statement.is_valid());
+    insert_statement.BindString(0, owner_uuid);
+    insert_statement.BindInt(1, static_cast<int>(owner));
+    insert_statement.BindString(2, link.conversation_uuid);
+    insert_statement.BindString(3, link.entry_uuid);
+    insert_statement.BindInt64(4, link.sentence_index);
+    if (!insert_statement.Run()) {
+      return false;
+    }
+  }
+  return true;
+}
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
+// The learned memory tables exist in all builds, so the cascade runs in all
+// builds. Without ENABLE_LOCAL_AI, the tables stay empty.
+bool AIChatDatabase::DeleteMemoryDataFromConversation(
+    std::string_view conversation_uuid) {
+  return DeleteMemoryDataFromSource("conversation_uuid", conversation_uuid);
+}
+
+bool AIChatDatabase::DeleteMemoryDataFromEntry(std::string_view entry_uuid) {
+  return DeleteMemoryDataFromSource("entry_uuid", entry_uuid);
+}
+
+bool AIChatDatabase::DeleteMemoryDataFromSource(std::string_view link_column,
+                                                std::string_view uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK(link_column == "conversation_uuid" || link_column == "entry_uuid");
+  DCHECK_GT(GetDB().transaction_nesting(), 0);
+
+  const int text_kind = static_cast<int>(MemoryLinkOwner::kMemoryText);
+  const int previous_kind =
+      static_cast<int>(MemoryLinkOwner::kMemoryPreviousText);
+  // The link_column is one of the two constants above, never user input. The
+  // uuid is bound.
+  const std::string previous_owners_from_source = absl::StrFormat(
+      "SELECT owner_uuid FROM memory_source_link"
+      " WHERE owner_kind=%d AND %s=?",
+      previous_kind, link_column);
+  const std::string text_owners_from_source = absl::StrFormat(
+      "SELECT owner_uuid FROM memory_source_link"
+      " WHERE owner_kind=%d AND %s=?",
+      text_kind, link_column);
+  const std::string text_owners_from_other_sources = absl::StrFormat(
+      "SELECT owner_uuid FROM memory_source_link"
+      " WHERE owner_kind=%d AND %s<>?",
+      text_kind, link_column);
+
+  struct Step {
+    std::string query;
+    int bind_count;
+  };
+  const Step steps[] = {
+      // A previous text with a link to the source is deleted as a whole.
+      {absl::StrFormat("UPDATE learned_memory SET previous_text=NULL,"
+                       " previous_vector=NULL WHERE uuid IN (%s)",
+                       previous_owners_from_source),
+       1},
+      {absl::StrFormat("DELETE FROM memory_source_link WHERE owner_kind=%d"
+                       " AND owner_uuid IN (%s)",
+                       previous_kind, previous_owners_from_source),
+       1},
+      // A memory stays when its current text has a link to another source.
+      {absl::StrFormat("DELETE FROM learned_memory WHERE uuid IN (%s)"
+                       " AND uuid NOT IN (%s)",
+                       text_owners_from_source, text_owners_from_other_sources),
+       2},
+      {absl::StrFormat("DELETE FROM memory_source_link WHERE %s=?",
+                       link_column),
+       1},
+      // The links of the deleted memories, which have other sources.
+      {absl::StrFormat("DELETE FROM memory_source_link WHERE owner_kind IN"
+                       " (%d, %d) AND owner_uuid NOT IN"
+                       " (SELECT uuid FROM learned_memory)",
+                       text_kind, previous_kind),
+       0},
+  };
+  for (const auto& step : steps) {
+    sql::Statement statement(GetDB().GetUniqueStatement(step.query));
+    if (!statement.is_valid()) {
+      return false;
+    }
+    for (int i = 0; i < step.bind_count; ++i) {
+      statement.BindString(i, uuid);
+    }
+    if (!statement.Run()) {
+      DVLOG(0) << "Failed to delete memory data: " << db_.GetErrorMessage();
+      return false;
+    }
+  }
+  return true;
 }
 
 sql::Database& AIChatDatabase::GetDB() {
@@ -2077,6 +2582,69 @@ bool AIChatDatabase::CreateSchema() {
       ")";
   CHECK(GetDB().IsSQLValid(kCreateSyncMetadataTableQuery));
   if (!GetDB().Execute(kCreateSyncMetadataTableQuery)) {
+    return false;
+  }
+
+  // Memories that Leo learns from past chats.
+  static constexpr char kCreateLearnedMemoryTableQuery[] =
+      "CREATE TABLE IF NOT EXISTS learned_memory("
+      "uuid TEXT PRIMARY KEY NOT NULL,"
+      // Encrypted memory text
+      "text BLOB NOT NULL,"
+      // Encrypted embedding, as the bytes of the floats
+      "vector BLOB NOT NULL,"
+      // LearnedMemoryCategory
+      "category INTEGER NOT NULL,"
+      // LearnedMemoryType
+      "type INTEGER NOT NULL,"
+      "created_date INTEGER NOT NULL,"
+      "updated_date INTEGER NOT NULL,"
+      "last_used_date INTEGER NOT NULL,"
+      // Encrypted text and embedding that the last replace or merge
+      // overwrote. Both are NULL when there is nothing to undo.
+      "previous_text BLOB,"
+      "previous_vector BLOB)";
+  CHECK(GetDB().IsSQLValid(kCreateLearnedMemoryTableQuery));
+  if (!GetDB().Execute(kCreateLearnedMemoryTableQuery)) {
+    return false;
+  }
+
+  // The user sentences that a memory, its previous text or a tombstone came
+  // from.
+  static constexpr char kCreateMemorySourceLinkTableQuery[] =
+      "CREATE TABLE IF NOT EXISTS memory_source_link("
+      // The uuid of the learned_memory or memory_tombstone row
+      "owner_uuid TEXT NOT NULL,"
+      // MemoryLinkOwner
+      "owner_kind INTEGER NOT NULL,"
+      "conversation_uuid TEXT NOT NULL,"
+      "entry_uuid TEXT NOT NULL,"
+      "sentence_index INTEGER NOT NULL,"
+      "PRIMARY KEY(owner_uuid, owner_kind, entry_uuid, sentence_index)"
+      ")";
+  CHECK(GetDB().IsSQLValid(kCreateMemorySourceLinkTableQuery));
+  if (!GetDB().Execute(kCreateMemorySourceLinkTableQuery)) {
+    return false;
+  }
+
+  static constexpr char kCreateMemoryTombstoneTableQuery[] =
+      "CREATE TABLE IF NOT EXISTS memory_tombstone("
+      "uuid TEXT PRIMARY KEY NOT NULL,"
+      // Encrypted embedding, as the bytes of the floats
+      "vector BLOB NOT NULL,"
+      "created_date INTEGER NOT NULL)";
+  CHECK(GetDB().IsSQLValid(kCreateMemoryTombstoneTableQuery));
+  if (!GetDB().Execute(kCreateMemoryTombstoneTableQuery)) {
+    return false;
+  }
+
+  static constexpr char kCreateMemoryWatermarkTableQuery[] =
+      "CREATE TABLE IF NOT EXISTS memory_watermark("
+      "conversation_uuid TEXT PRIMARY KEY NOT NULL,"
+      // The date of the last user turn that Dreaming processed
+      "last_processed_entry_date INTEGER NOT NULL)";
+  CHECK(GetDB().IsSQLValid(kCreateMemoryWatermarkTableQuery));
+  if (!GetDB().Execute(kCreateMemoryWatermarkTableQuery)) {
     return false;
   }
 

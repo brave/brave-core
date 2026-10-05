@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_DATABASE_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_DATABASE_H_
 
+#include <map>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -14,12 +15,18 @@
 #include "base/gtest_prod_util.h"
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "components/os_crypt/async/common/encryptor.h"
 #include "components/sync/model/sync_metadata_store.h"
 #include "sql/database.h"
 #include "sql/init_status.h"
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/ai_chat/core/browser/learned_memory_types.h"
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 namespace sql {
 class Statement;
@@ -118,15 +125,43 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
                                      uint64_t total_tokens,
                                      uint64_t trimmed_tokens);
 
-  // Deletes the conversation with the provided UUID
+  // Deletes the conversation with the provided UUID, and the learned memory
+  // data that came from it (see DeleteMemoryDataFromSource()).
   virtual bool DeleteConversation(std::string_view conversation_uuid);
 
   // Deletes the conversation entry with the provided ID and all associated
-  // edits and events.
+  // edits and events, and the learned memory data that came from them.
   virtual bool DeleteConversationEntry(
       std::string_view conversation_entry_uuid);
 
-  // Drops all data and tables in the database, and re-creates empty tables
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // Gets all learned memories, with their vectors and source links.
+  virtual std::vector<LearnedMemory> GetAllLearnedMemories();
+
+  // Adds the memory, or replaces the stored memory with the same uuid,
+  // including its source links and previous text.
+  virtual bool AddOrUpdateLearnedMemory(const LearnedMemory& memory);
+
+  // Deletes the memory with its source links. Use this when Leo removes a
+  // memory, for example after an expiry or a merge.
+  virtual bool DeleteLearnedMemory(std::string_view memory_uuid);
+
+  // Deletes the memory like DeleteLearnedMemory() and writes a tombstone with
+  // its vector and source links, so that Dreaming does not learn it again. Use
+  // this when the user deletes a memory.
+  virtual bool ForgetLearnedMemory(std::string_view memory_uuid);
+
+  virtual std::vector<MemoryTombstone> GetAllMemoryTombstones();
+
+  // The watermark of a conversation is the date of the last user turn that
+  // Dreaming processed. Conversations without a watermark are not in the map.
+  virtual std::map<std::string, base::Time> GetAllMemoryWatermarks();
+  virtual bool SetMemoryWatermark(std::string_view conversation_uuid,
+                                  base::Time last_processed_entry_date);
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
+  // Drops all data and tables in the database, and re-creates empty tables.
+  // This includes the learned memory tables, which exist in all builds.
   virtual bool DeleteAllData();
 
   // Clears (sets to NULL) the url/title/last_contents of associated content for
@@ -159,6 +194,14 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   friend class AIChatDatabaseMigrationTest;
   FRIEND_TEST_ALL_PREFIXES(AIChatDatabaseTest, ConversationThreadEntries);
 
+  // What a row in the memory_source_link table belongs to. The values are
+  // stored in the database. Do not reorder or reuse them.
+  enum class MemoryLinkOwner {
+    kMemoryText = 0,
+    kMemoryPreviousText = 1,
+    kTombstone = 2,
+  };
+
   sql::Database& GetDB();
 
   // Initializes the database if it hasn't been initialized yet. If |re_init|
@@ -176,6 +219,25 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
 
   bool GetAllEntityMetadata(syncer::MetadataBatch* metadata_batch);
   bool GetDataTypeState(sync_pb::DataTypeState* state);
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  std::vector<MemorySourceLink> GetMemorySourceLinks(
+      std::string_view owner_uuid,
+      MemoryLinkOwner owner);
+  bool ReplaceMemorySourceLinks(std::string_view owner_uuid,
+                                MemoryLinkOwner owner,
+                                const std::vector<MemorySourceLink>& links);
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
+  // Removes what came from the conversation or the conversation entry: the
+  // links, the memories with no link left in their current text, the previous
+  // texts with a link to it, and the tombstone links. Tombstones stay, so that
+  // a deleted chat does not make Dreaming learn a deleted memory again. The
+  // caller must have a transaction open.
+  bool DeleteMemoryDataFromConversation(std::string_view conversation_uuid);
+  bool DeleteMemoryDataFromEntry(std::string_view entry_uuid);
+  bool DeleteMemoryDataFromSource(std::string_view link_column,
+                                  std::string_view uuid);
 
   std::string DecryptColumnToString(sql::Statement& statement, int index);
   std::optional<std::string> DecryptOptionalColumnToString(

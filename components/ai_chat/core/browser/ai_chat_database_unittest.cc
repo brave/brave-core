@@ -7,19 +7,23 @@
 
 #include <stdint.h>
 
+#include <map>
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
 #include "base/check.h"
 #include "base/containers/flat_tree.h"
+#include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_view_util.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
@@ -28,12 +32,14 @@
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync/model/metadata_batch.h"
 #include "components/sync/protocol/data_type_state.pb.h"
 #include "components/sync/protocol/entity_metadata.pb.h"
 #include "sql/init_status.h"
 #include "sql/meta_table.h"
+#include "sql/statement.h"
 #include "sql/test/test_helpers.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
@@ -74,6 +80,18 @@ class AIChatDatabaseTest : public testing::Test,
 
   base::FilePath db_file_path() {
     return temp_directory_.GetPath().AppendASCII("ai_chat");
+  }
+
+  // Runs |query| on the database connection directly.
+  sql::Statement RawStatement(const std::string& query) {
+    return sql::Statement(db_->GetDB().GetUniqueStatement(query));
+  }
+
+  int CountRows(const std::string& table) {
+    sql::Statement statement =
+        RawStatement(base::StrCat({"SELECT COUNT(*) FROM ", table}));
+    EXPECT_TRUE(statement.Step());
+    return statement.ColumnInt(0);
   }
 
  protected:
@@ -1380,6 +1398,282 @@ TEST_P(AIChatDatabaseTest, DeleteConversationEntryWithAssociatedContent) {
   EXPECT_EQ(archive_result->entries[0]->uuid.value(), history[1]->uuid.value());
 }
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+namespace {
+
+LearnedMemory MakeLearnedMemory(std::string uuid,
+                                std::vector<MemorySourceLink> links) {
+  LearnedMemory memory;
+  memory.uuid = uuid;
+  memory.text = "Lives in Berlin " + uuid;
+  memory.vector = {0.25f, -1.5f, 3.0f};
+  memory.category = LearnedMemoryCategory::kPersonalFact;
+  memory.type = LearnedMemoryType::kLongTerm;
+  memory.created_date = base::Time::FromSecondsSinceUnixEpoch(1000);
+  memory.updated_date = base::Time::FromSecondsSinceUnixEpoch(2000);
+  memory.last_used_date = base::Time::FromSecondsSinceUnixEpoch(3000);
+  memory.links = std::move(links);
+  return memory;
+}
+
+PreviousMemoryText MakePreviousText(std::vector<MemorySourceLink> links) {
+  return PreviousMemoryText{.text = "Lives in San Francisco",
+                            .vector = {1.0f, 2.0f, 4.0f},
+                            .links = std::move(links)};
+}
+
+}  // namespace
+
+TEST_P(AIChatDatabaseTest, LearnedMemory_AddGetAndUpdate) {
+  EXPECT_TRUE(db_->GetAllLearnedMemories().empty());
+
+  LearnedMemory first = MakeLearnedMemory(
+      "first", {{"chat-a", "entry-a1", 0}, {"chat-a", "entry-a1", 2}});
+  first.previous = MakePreviousText({{"chat-b", "entry-b1", 1}});
+  LearnedMemory second =
+      MakeLearnedMemory("second", {{"chat-b", "entry-b2", 0}});
+  second.created_date = base::Time::FromSecondsSinceUnixEpoch(500);
+  EXPECT_TRUE(db_->AddOrUpdateLearnedMemory(first));
+  EXPECT_TRUE(db_->AddOrUpdateLearnedMemory(second));
+
+  // Memories are ordered by the creation date.
+  EXPECT_EQ(db_->GetAllLearnedMemories(),
+            (std::vector<LearnedMemory>{second, first}));
+
+  // An update replaces the row, the links and the previous text.
+  first.text = "Moved to Berlin";
+  first.vector = {9.0f, 8.0f};
+  first.category = LearnedMemoryCategory::kPreference;
+  first.type = LearnedMemoryType::kPermanent;
+  first.last_used_date = base::Time::FromSecondsSinceUnixEpoch(4000);
+  first.links = {{"chat-c", "entry-c1", 7}};
+  first.previous = std::nullopt;
+  EXPECT_TRUE(db_->AddOrUpdateLearnedMemory(first));
+  EXPECT_EQ(db_->GetAllLearnedMemories(),
+            (std::vector<LearnedMemory>{second, first}));
+  EXPECT_EQ(CountRows("memory_source_link"), 2);
+}
+
+TEST_P(AIChatDatabaseTest, LearnedMemory_RejectsMemoryWithoutTextOrVector) {
+  LearnedMemory no_text = MakeLearnedMemory("no-text", {});
+  no_text.text = "";
+  EXPECT_FALSE(db_->AddOrUpdateLearnedMemory(no_text));
+
+  LearnedMemory no_vector = MakeLearnedMemory("no-vector", {});
+  no_vector.vector.clear();
+  EXPECT_FALSE(db_->AddOrUpdateLearnedMemory(no_vector));
+
+  EXPECT_TRUE(db_->GetAllLearnedMemories().empty());
+}
+
+TEST_P(AIChatDatabaseTest, LearnedMemory_TextAndVectorAreEncrypted) {
+  LearnedMemory memory = MakeLearnedMemory("encrypted", {});
+  memory.previous = MakePreviousText({});
+  ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(memory));
+
+  sql::Statement statement = RawStatement(
+      "SELECT text, vector, previous_text, previous_vector FROM "
+      "learned_memory");
+  ASSERT_TRUE(statement.Step());
+  auto contains = [&](int column, std::string_view plain) {
+    return statement.ColumnBlobAsString(column).find(plain) !=
+           std::string::npos;
+  };
+  auto bytes_of = [](const std::vector<float>& vector) {
+    return std::string(base::as_string_view(
+        base::as_byte_span(base::allow_nonunique_obj, vector)));
+  };
+  EXPECT_FALSE(contains(0, "Berlin"));
+  EXPECT_FALSE(contains(1, bytes_of(memory.vector)));
+  EXPECT_FALSE(contains(2, "San Francisco"));
+  EXPECT_FALSE(contains(3, bytes_of(memory.previous->vector)));
+}
+
+TEST_P(AIChatDatabaseTest, LearnedMemory_Delete) {
+  LearnedMemory deleted = MakeLearnedMemory("deleted", {{"chat-a", "e1", 0}});
+  deleted.previous = MakePreviousText({{"chat-b", "e2", 0}});
+  LearnedMemory kept = MakeLearnedMemory("kept", {{"chat-a", "e1", 1}});
+  ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(deleted));
+  ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(kept));
+
+  EXPECT_TRUE(db_->DeleteLearnedMemory("deleted"));
+
+  EXPECT_EQ(db_->GetAllLearnedMemories(), (std::vector<LearnedMemory>{kept}));
+  EXPECT_EQ(CountRows("memory_source_link"), 1);
+  // Removing a memory does not write a tombstone.
+  EXPECT_TRUE(db_->GetAllMemoryTombstones().empty());
+}
+
+TEST_P(AIChatDatabaseTest, LearnedMemory_ForgetWritesTombstone) {
+  LearnedMemory forgotten = MakeLearnedMemory(
+      "forgotten", {{"chat-a", "e1", 0}, {"chat-a", "e1", 3}});
+  forgotten.previous = MakePreviousText({{"chat-b", "e2", 0}});
+  LearnedMemory kept = MakeLearnedMemory("kept", {{"chat-a", "e1", 1}});
+  ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(forgotten));
+  ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(kept));
+  const base::Time forget_time = base::Time::Now();
+
+  EXPECT_TRUE(db_->ForgetLearnedMemory("forgotten"));
+
+  EXPECT_EQ(db_->GetAllLearnedMemories(), (std::vector<LearnedMemory>{kept}));
+  // The tombstone has the vector and the links of the current text. The
+  // previous text is gone.
+  std::vector<MemoryTombstone> tombstones = db_->GetAllMemoryTombstones();
+  ASSERT_EQ(tombstones.size(), 1u);
+  EXPECT_FALSE(tombstones[0].uuid.empty());
+  EXPECT_NE(tombstones[0].uuid, "forgotten");
+  EXPECT_EQ(tombstones[0].vector, forgotten.vector);
+  EXPECT_EQ(tombstones[0].created_date, forget_time);
+  EXPECT_EQ(tombstones[0].links, forgotten.links);
+  EXPECT_EQ(CountRows("memory_source_link"), 3);
+
+  // A memory that does not exist leaves no tombstone.
+  EXPECT_FALSE(db_->ForgetLearnedMemory("forgotten"));
+  EXPECT_EQ(db_->GetAllMemoryTombstones().size(), 1u);
+}
+
+TEST_P(AIChatDatabaseTest, MemoryWatermarks) {
+  EXPECT_TRUE(db_->GetAllMemoryWatermarks().empty());
+
+  const base::Time first_date = base::Time::FromSecondsSinceUnixEpoch(100);
+  const base::Time second_date = base::Time::FromSecondsSinceUnixEpoch(200);
+  const base::Time newer_date = base::Time::FromSecondsSinceUnixEpoch(300);
+  EXPECT_TRUE(db_->SetMemoryWatermark("chat-a", first_date));
+  EXPECT_TRUE(db_->SetMemoryWatermark("chat-b", second_date));
+  EXPECT_EQ(db_->GetAllMemoryWatermarks(),
+            (std::map<std::string, base::Time>{{"chat-a", first_date},
+                                               {"chat-b", second_date}}));
+
+  EXPECT_TRUE(db_->SetMemoryWatermark("chat-a", newer_date));
+  EXPECT_EQ(db_->GetAllMemoryWatermarks(),
+            (std::map<std::string, base::Time>{{"chat-a", newer_date},
+                                               {"chat-b", second_date}}));
+}
+
+TEST_P(AIChatDatabaseTest, DeleteConversationDeletesMemoryData) {
+  auto add_conversation = [&](const std::string& uuid) {
+    auto history = CreateSampleChatHistory(1u);
+    EXPECT_TRUE(db_->AddConversation(
+        mojom::Conversation::New(uuid, "title", base::Time::Now(), true,
+                                 std::nullopt, 0, 0, false,
+                                 std::vector<mojom::AssociatedContentPtr>()),
+        {}, history[0]->Clone()));
+    return history[0]->uuid.value();
+  };
+  const std::string entry_a = add_conversation("chat-a");
+  const std::string entry_b = add_conversation("chat-b");
+
+  // Only from chat A, so it is deleted with it.
+  LearnedMemory only_a = MakeLearnedMemory("only-a", {{"chat-a", entry_a, 0}});
+  // From both chats, so it stays with the link to chat B.
+  LearnedMemory shared = MakeLearnedMemory(
+      "shared", {{"chat-a", entry_a, 1}, {"chat-b", entry_b, 0}});
+  // The text is from chat B but the previous text is from chat A, so the memory
+  // stays and only the previous text goes.
+  LearnedMemory previous_from_a =
+      MakeLearnedMemory("previous-from-a", {{"chat-b", entry_b, 1}});
+  previous_from_a.previous = MakePreviousText({{"chat-a", entry_a, 2}});
+  // Both texts are from chat B, so nothing changes.
+  LearnedMemory only_b = MakeLearnedMemory("only-b", {{"chat-b", entry_b, 2}});
+  only_b.previous = MakePreviousText({{"chat-b", entry_b, 3}});
+  // Forgotten memory with links to both chats.
+  LearnedMemory forgotten = MakeLearnedMemory(
+      "forgotten", {{"chat-a", entry_a, 3}, {"chat-b", entry_b, 4}});
+  for (const auto& memory :
+       {only_a, shared, previous_from_a, only_b, forgotten}) {
+    ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(memory));
+  }
+  ASSERT_TRUE(db_->ForgetLearnedMemory("forgotten"));
+  ASSERT_TRUE(db_->SetMemoryWatermark("chat-a", base::Time::Now()));
+  ASSERT_TRUE(db_->SetMemoryWatermark("chat-b", base::Time::Now()));
+
+  ASSERT_TRUE(db_->DeleteConversation("chat-a"));
+
+  shared.links = {{"chat-b", entry_b, 0}};
+  previous_from_a.previous = std::nullopt;
+  EXPECT_EQ(db_->GetAllLearnedMemories(),
+            (std::vector<LearnedMemory>{only_b, previous_from_a, shared}));
+  // The tombstone stays, without the link to chat A.
+  std::vector<MemoryTombstone> tombstones = db_->GetAllMemoryTombstones();
+  ASSERT_EQ(tombstones.size(), 1u);
+  EXPECT_EQ(tombstones[0].vector, forgotten.vector);
+  EXPECT_EQ(tombstones[0].links,
+            (std::vector<MemorySourceLink>{{"chat-b", entry_b, 4}}));
+  EXPECT_EQ(db_->GetAllMemoryWatermarks().size(), 1u);
+  EXPECT_EQ(db_->GetAllMemoryWatermarks().count("chat-b"), 1u);
+  // No link of a deleted memory or of chat A is left. These are the links of
+  // shared (1), previous_from_a (1), only_b (2) and the tombstone (1).
+  EXPECT_EQ(CountRows("memory_source_link"), 5);
+}
+
+TEST_P(AIChatDatabaseTest, DeleteConversationEntryDeletesMemoryData) {
+  const std::string uuid = "chat";
+  auto history = CreateSampleChatHistory(2u);
+  const std::string deleted_entry = history[2]->uuid.value();
+  const std::string kept_entry = history[0]->uuid.value();
+  const std::string edit_entry =
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
+  history[2]->edits = std::vector<mojom::ConversationTurnPtr>{};
+  history[2]->edits->emplace_back(mojom::ConversationTurn::New(
+      edit_entry, std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+      mojom::ActionType::QUERY, "edited query", std::nullopt /* prompt */,
+      std::nullopt /* selected_text */, std::nullopt /* events */,
+      base::Time::Now() + base::Minutes(121), std::nullopt /* edits */,
+      std::nullopt /* uploaded_files */, nullptr /* skill */,
+      false /* from_brave_search_SERP */, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */));
+  ASSERT_TRUE(db_->AddConversation(
+      mojom::Conversation::New(uuid, "title", base::Time::Now(), true,
+                               std::nullopt, 0, 0, false,
+                               std::vector<mojom::AssociatedContentPtr>()),
+      {}, history[0]->Clone()));
+  ASSERT_TRUE(db_->AddConversationEntry(uuid, history[2]->Clone()));
+
+  LearnedMemory from_entry =
+      MakeLearnedMemory("from-entry", {{uuid, deleted_entry, 0}});
+  LearnedMemory from_edit =
+      MakeLearnedMemory("from-edit", {{uuid, edit_entry, 0}});
+  LearnedMemory from_other_entry =
+      MakeLearnedMemory("from-other-entry", {{uuid, kept_entry, 0}});
+  LearnedMemory from_both = MakeLearnedMemory(
+      "from-both", {{uuid, deleted_entry, 1}, {uuid, kept_entry, 1}});
+  for (const auto& memory :
+       {from_entry, from_edit, from_other_entry, from_both}) {
+    ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(memory));
+  }
+  ASSERT_TRUE(db_->SetMemoryWatermark(uuid, base::Time::Now()));
+
+  ASSERT_TRUE(db_->DeleteConversationEntry(deleted_entry));
+
+  from_both.links = {{uuid, kept_entry, 1}};
+  EXPECT_EQ(db_->GetAllLearnedMemories(),
+            (std::vector<LearnedMemory>{from_both, from_other_entry}));
+  EXPECT_EQ(CountRows("memory_source_link"), 2);
+  // The conversation still exists, so it keeps its watermark.
+  EXPECT_EQ(db_->GetAllMemoryWatermarks().size(), 1u);
+}
+
+TEST_P(AIChatDatabaseTest, DeleteAllDataDeletesMemoryData) {
+  LearnedMemory memory = MakeLearnedMemory("memory", {{"chat-a", "e1", 0}});
+  memory.previous = MakePreviousText({{"chat-a", "e1", 1}});
+  ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(memory));
+  ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(
+      MakeLearnedMemory("forgotten", {{"chat-a", "e1", 2}})));
+  ASSERT_TRUE(db_->ForgetLearnedMemory("forgotten"));
+  ASSERT_TRUE(db_->SetMemoryWatermark("chat-a", base::Time::Now()));
+
+  ASSERT_TRUE(db_->DeleteAllData());
+
+  EXPECT_TRUE(db_->GetAllLearnedMemories().empty());
+  EXPECT_TRUE(db_->GetAllMemoryTombstones().empty());
+  EXPECT_TRUE(db_->GetAllMemoryWatermarks().empty());
+  EXPECT_EQ(CountRows("memory_source_link"), 0);
+  // The tables are usable again.
+  EXPECT_TRUE(db_->AddOrUpdateLearnedMemory(memory));
+}
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
 // Sync metadata tests (non-parameterized, use the same fixture setup pattern).
 class AIChatDatabaseSyncTest : public testing::Test {
  public:
@@ -1536,6 +1830,10 @@ class AIChatDatabaseMigrationTest : public testing::Test,
   bool IsInitOk() {
     return db_->db_init_status_.has_value() &&
            db_->db_init_status_.value() == sql::InitStatus::INIT_OK;
+  }
+
+  bool DoesTableExist(std::string_view table) {
+    return db_->GetDB().DoesTableExist(table);
   }
 
   base::FilePath db_file_path() {
@@ -1855,6 +2153,37 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
       }
     }
   }
+
+  // V12 Specific Migration checks
+  {
+    // The learned memory tables exist after migration in all builds.
+    EXPECT_TRUE(DoesTableExist("learned_memory"));
+    EXPECT_TRUE(DoesTableExist("memory_source_link"));
+    EXPECT_TRUE(DoesTableExist("memory_tombstone"));
+    EXPECT_TRUE(DoesTableExist("memory_watermark"));
+  }
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  {
+    // The learned memory tables can be used after migration.
+    EXPECT_TRUE(db_->GetAllLearnedMemories().empty());
+    LearnedMemory memory;
+    memory.uuid = "migration-memory";
+    memory.text = "Lives in Berlin";
+    memory.vector = {0.5f, 1.5f};
+    memory.links = {{"1ae484fe-ab33-4f42-8813-14080e4addc1",
+                     "5616a89c-7f56-4e7d-8e74-f882b76623a7", 0}};
+    EXPECT_TRUE(db_->AddOrUpdateLearnedMemory(memory));
+    EXPECT_EQ(db_->GetAllLearnedMemories(),
+              (std::vector<LearnedMemory>{memory}));
+    EXPECT_TRUE(db_->SetMemoryWatermark("1ae484fe-ab33-4f42-8813-14080e4addc1",
+                                        base::Time::Now()));
+    // Deleting the migrated conversation also deletes the memory data.
+    EXPECT_TRUE(
+        db_->DeleteConversation("1ae484fe-ab33-4f42-8813-14080e4addc1"));
+    EXPECT_TRUE(db_->GetAllLearnedMemories().empty());
+    EXPECT_TRUE(db_->GetAllMemoryWatermarks().empty());
+  }
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 }
 
 TEST_P(AIChatDatabaseMigrationTest, Migration_Version7To8_SkillColumn) {
