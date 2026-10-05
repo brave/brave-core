@@ -25,6 +25,7 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/webui_config.h"
 #include "content/public/browser/webui_config_map.h"
+#include "content/public/common/child_process_id.h"
 #include "content/public/common/url_constants.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -315,13 +316,13 @@ IN_PROC_BROWSER_TEST_F(WebUISubdomainBrowserTest,
 
   // Navigating between two subdomains within a single tab also swaps processes,
   // even though both subdomains share a WebUI type (their common config).
-  const int process_before =
-      tab_a->GetPrimaryMainFrame()->GetProcess()->GetDeprecatedID();
+  const content::ChildProcessId process_before =
+      tab_a->GetPrimaryMainFrame()->GetProcess()->GetID();
   ASSERT_EQ(tab_a, browser()->tab_strip_model()->GetWebContentsAt(1));
   browser()->tab_strip_model()->ActivateTabAt(1);
   ASSERT_EQ(tab_a, NavigateActiveTab(url_b));
   EXPECT_NE(process_before,
-            tab_a->GetPrimaryMainFrame()->GetProcess()->GetDeprecatedID());
+            tab_a->GetPrimaryMainFrame()->GetProcess()->GetID());
   EXPECT_FALSE(tab_a->IsCrashed());
 }
 
