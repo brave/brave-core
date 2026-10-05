@@ -8,6 +8,7 @@ import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
+import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
@@ -59,6 +60,7 @@ if (!is_android) {
       "//brave/browser/ui/views/page_action",
       "//brave/components/image_metadata_stripper/common",
       "//brave/components/misc_metrics",
+      "//brave/components/request_otr/common/buildflags",
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/profiles",
       "//chrome/browser/ui:ui_features",
@@ -75,6 +77,13 @@ if (!is_android) {
 
     if (enable_ai_chat) {
       deps += [ "//brave/browser/ai_chat" ]
+    }
+
+    if (enable_request_otr) {
+      deps += [
+        "//brave/browser/request_otr:tab_helper",
+        "//brave/components/request_otr/common",
+      ]
     }
 
     if (enable_containers) {
