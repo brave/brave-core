@@ -179,21 +179,22 @@ interface ConversationsListProps {
 
 export default function ConversationsList(props: ConversationsListProps) {
   const aiChatContext = useAIChat()
-  const [filterText, setFilterText] = React.useState('')
+  const [conversationTitleSearch, setConversationTitleSearch] =
+    React.useState('')
   const [openOptionsMenuUuid, setOpenOptionsMenuUuid] = React.useState<string>()
 
   const startedNonTemporaryConversations = aiChatContext.conversations.filter(
     (c) => !c.temporary && c.hasContent,
   )
 
-  const filteredConversations = React.useMemo(() => {
-    if (!filterText) return startedNonTemporaryConversations
-    const lower = filterText.toLowerCase()
+  const conversationTitleSearchResults = React.useMemo(() => {
+    if (!conversationTitleSearch) return startedNonTemporaryConversations
+    const lower = conversationTitleSearch.toLowerCase()
     return startedNonTemporaryConversations.filter((c) => {
       const title = c.title || getLocale(S.AI_CHAT_CONVERSATION_LIST_UNTITLED)
       return title.toLowerCase().includes(lower)
     })
-  }, [startedNonTemporaryConversations, filterText])
+  }, [startedNonTemporaryConversations, conversationTitleSearch])
 
   return (
     <>
@@ -201,17 +202,17 @@ export default function ConversationsList(props: ConversationsListProps) {
         <nav className={styles.nav}>
           {startedNonTemporaryConversations.length > 0 && (
             <Input
-              className={styles.filterInput}
+              className={styles.conversationTitleSearchInput}
               style={
-                filterText
+                conversationTitleSearch
                   ? ''
                   : '--leo-control-color: var(--leo-color-page-background)'
               }
               placeholder={getLocale(
                 S.AI_CHAT_CONVERSATION_LIST_FILTER_PLACEHOLDER,
               )}
-              value={filterText}
-              onInput={(e) => setFilterText(e.value)}
+              value={conversationTitleSearch}
+              onInput={(e) => setConversationTitleSearch(e.value)}
             >
               <Icon
                 name='search'
@@ -222,8 +223,8 @@ export default function ConversationsList(props: ConversationsListProps) {
                 kind='plain-faint'
                 size='small'
                 slot='right-icon'
-                style={`visibility: ${filterText ? 'visible' : 'hidden'}`}
-                onClick={() => setFilterText('')}
+                style={`visibility: ${conversationTitleSearch ? 'visible' : 'hidden'}`}
+                onClick={() => setConversationTitleSearch('')}
               >
                 <Icon name='close' />
               </Button>
@@ -266,21 +267,22 @@ export default function ConversationsList(props: ConversationsListProps) {
                 {getLocale(S.CHAT_UI_NOTICE_CONVERSATION_HISTORY_EMPTY)}
               </Alert>
             )}
-          {filterText && filteredConversations.length === 0 && (
-            <div className={styles.filterNoResults}>
-              <span>
-                {getLocale(S.AI_CHAT_CONVERSATION_LIST_FILTER_NO_RESULTS)}
-              </span>
-              <span>
-                {getLocale(
-                  S.AI_CHAT_CONVERSATION_LIST_FILTER_NO_RESULTS_SUBTITLE,
-                )}
-              </span>
-            </div>
-          )}
-          {filteredConversations.length > 0 && (
+          {conversationTitleSearch
+            && conversationTitleSearchResults.length === 0 && (
+              <div className={styles.conversationTitleSearchNoResults}>
+                <span>
+                  {getLocale(S.AI_CHAT_CONVERSATION_LIST_FILTER_NO_RESULTS)}
+                </span>
+                <span>
+                  {getLocale(
+                    S.AI_CHAT_CONVERSATION_LIST_FILTER_NO_RESULTS_SUBTITLE,
+                  )}
+                </span>
+              </div>
+            )}
+          {conversationTitleSearchResults.length > 0 && (
             <ol>
-              {filteredConversations.map((conversation) => (
+              {conversationTitleSearchResults.map((conversation) => (
                 <ConversationItem
                   key={conversation.uuid}
                   {...props}
