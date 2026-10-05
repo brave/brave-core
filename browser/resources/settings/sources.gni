@@ -47,7 +47,6 @@ brave_settings_web_component_files = [
   "brave_default_extensions_page/brave_extensions_manifest_v2_subpage.ts",
   "brave_new_tab_page/brave_new_tab_page.ts",
   "brave_origin_page/brave_origin_onboarding.ts",
-  "brave_origin_page/brave_origin_page.ts",
   "brave_origin_page/origin_toggle_button.ts",
   "brave_privacy_page/brave_personalization_options.ts",
   "brave_search_engines_page/brave_search_engines_page.ts",
@@ -110,6 +109,8 @@ brave_settings_ts_files = [
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_proxy.ts",
   "brave_add_site_dialog/brave_add_site_dialog.ts",
   "brave_data_collection_page/brave_data_collection_browser_proxy.ts",
+  "brave_origin_page/brave_origin_page.html.ts",
+  "brave_origin_page/brave_origin_page.ts",
   "brave_default_extensions_page/brave_default_extensions_browser_proxy.ts",
   "brave_new_tab_page/brave_new_tab_browser_proxy.ts",
   "brave_privacy_page/brave_privacy_page_browser_proxy.ts",
@@ -122,7 +123,7 @@ brave_settings_ts_files = [
   "shortcuts_page/shortcuts_page.ts",
 ]
 
-brave_settings_local_css_files = []
+brave_settings_local_css_files = [ "brave_origin_page/brave_origin_page.css" ]
 
 # Shared with the Brave Account UI, so these are preprocessed by
 # :preprocess_brave_account out of //brave/components/brave_account/resources,
