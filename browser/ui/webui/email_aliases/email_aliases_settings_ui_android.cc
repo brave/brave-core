@@ -10,8 +10,8 @@
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/strings/strcat.h"
+#include "brave/browser/brave_account/brave_account_dialog_mode_holder.h"
 #include "brave/browser/brave_account/brave_account_service_factory.h"
-#include "brave/browser/brave_account/dialog_mode_holder.h"
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ui/brave_account/brave_account_dialog_opener.h"
 #include "brave/components/brave_account/brave_account_service.h"
@@ -95,6 +95,13 @@ void EmailAliasesSettingsUIAndroid::BindInterface(
   dialog_controller_receiver_.Bind(std::move(receiver));
 }
 
+void EmailAliasesSettingsUIAndroid::BindInterface(
+    mojo::PendingReceiver<brave_account::mojom::DialogOpener>
+        pending_receiver) {
+  dialog_opener_receiver_.reset();
+  dialog_opener_receiver_.Bind(std::move(pending_receiver));
+}
+
 void EmailAliasesSettingsUIAndroid::OpenDialog(
     const std::string& initiating_service_name,
     brave_account::mojom::DialogMode dialog_mode) {
@@ -108,8 +115,9 @@ void EmailAliasesSettingsUIAndroid::CloseDialog() {
 
 void EmailAliasesSettingsUIAndroid::GetDialogMode(
     GetDialogModeCallback callback) {
-  std::move(callback).Run(brave_account::DialogModeHolder::GetDialogMode(
-      CHECK_DEREF(web_ui()->GetWebContents())));
+  std::move(callback).Run(
+      brave_account::BraveAccountDialogModeHolder::GetDialogMode(
+          CHECK_DEREF(web_ui()->GetWebContents())));
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(EmailAliasesSettingsUIAndroid)

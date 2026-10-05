@@ -859,7 +859,7 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
   }
 #endif
 
-#else   // !BUILDFLAG(IS_ANDROID)
+#else  // !BUILDFLAG(IS_ANDROID)
   registry.ForWebUI<NewTabTakeoverUI>()
       .Add<new_tab_takeover::mojom::NewTabTakeover>();
 
@@ -867,7 +867,8 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
   if (email_aliases::features::IsEmailAliasesEnabled()) {
     registry.ForWebUI<EmailAliasesSettingsUIAndroid>()
         .Add<brave_account::mojom::Authentication>()
-      .Add<brave_account::mojom::DialogController>()
+        .Add<brave_account::mojom::DialogController>()
+        .Add<brave_account::mojom::DialogOpener>()
         .Add<email_aliases::mojom::EmailAliasesService>()
         .Add<email_aliases::mojom::EmailAliasesMetrics>();
   }
