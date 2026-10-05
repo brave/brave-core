@@ -1732,6 +1732,9 @@
 <translation id="2077392865355605472">Symbole du jeton obligatoire</translation>
 <translation id="4636925020451566238">La valeur des décimales de précision du jeton est obligatoire</translation>
 <translation id="3797613444743816037">Adresse de monnayage</translation>
+<translation id="6571966497164575098">ID d'atout</translation>
+<translation id="2110442566771571217">ID d'atout du jeton non valide ou vide</translation>
+<translation id="4170599358417498979">Ce réseau ne prend pas en charge les actifs personnalisés</translation>
 <translation id="7951915459354237451">La limite des frais est inférieure aux frais de base. Votre transaction peut prendre beaucoup de temps ou échouer.</translation>
 <translation id="2227702748249086756">Impossible de récupérer des estimations de frais</translation>
 <translation id="3225624966527491351">Importer des NFT</translation>
@@ -2018,7 +2021,7 @@
 <translation id="418195046117003119">Capture d'écran du centre de partage</translation>
 <translation id="4712056949543885424">Afficher le gestionnaire de mots de passe</translation>
 <translation id="8037472847879765671">Afficher les modes de paiement</translation>
-<translation id="7269867954894010756">Afficher les adresses</translation>
+<translation id="6262574309547773475">Afficher les coordonnées</translation>
 <translation id="6799213269525079335">Rechercher suivant</translation>
 <translation id="8666632926482119393">Rechercher précédent</translation>
 <translation id="3567467864281922039">Fermer la recherche ou arrêter</translation>
@@ -2147,6 +2150,7 @@
 <translation id="3142853026316054951">Activer/désactiver le mode Focus</translation>
 <translation id="3468387898712904997">Nouvel alias courriel</translation>
 <translation id="4711475997833555304">Créez une adresse courriel aléatoire qui achemine vers votre boîte de réception.</translation>
+<translation id="5663901348199429994">Vos alias courriel</translation>
 <translation id="2796584247246518451">Nouveau dossier temporaire</translation>
 <translation id="8591883849678260674">Voir l'original</translation>
 <translation id="1969654232209826429">min. de lecture</translation>
@@ -2211,6 +2215,7 @@
 <translation id="9215978379284690246">Code de statut : <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Code de statut : <ph name="STATUS_CODE"/>, code de statut interne : <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Vous avez atteint la limite de taux premium. Veuillez réessayer dans quelques heures.</translation>
+<translation id="6873128487002733717">Vous avez atteint la limite premium pour ce modèle. Sélectionnez un autre modèle ou réessayez plus tard.</translation>
 <translation id="3683964919745779766">Vous avez atteint la limite de taux pour ce modèle ou n'avez plus assez de crédit. Veuillez réessayer.</translation>
 <translation id="7692501701960747469">La clé API configurée pour ce modèle est invalide. Veuillez vérifier votre configuration et réessayer.</translation>
 <translation id="7905602379229309187">Le point de terminaison est actuellement surchargé. Veuillez réessayer plus tard.</translation>
@@ -2390,6 +2395,9 @@
 <translation id="5021823940147712387">Supprimer les outils</translation>
 <translation id="8712279871321308580">Outils de site Web disponibles</translation>
 <translation id="3690996226559605619">Outils disponibles (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Autoriser pour cette session</translation>
+<translation id="6240821072888636753">Demander à chaque fois</translation>
+<translation id="4290920330097335010">Ne jamais autoriser</translation>
 <translation id="318819763888864209">Tous les abonnements sont à renouvellement automatique, mais il est possible d'annuler à tout moment avant le renouvellement.</translation>
 <translation id="5091223967610958">Partager le nom d'hôte de la page que vous consultez (<ph name="HOST_NAME"/>) pour nous aider à améliorer Leo.</translation>
 <translation id="8732450785281947197">Outils IA Leo</translation>
@@ -2464,7 +2472,7 @@
 <translation id="6077070599873946984">Brave IA a besoin de votre permission pour : <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI aimerait exécuter **<ph name="TOOL_NAME"/>** sur **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">L’opération semble ne pas correspondre à votre demande :</translation>
-<translation id="5137568953923142260">Autoriser</translation>
+<translation id="5137568953923142260">Autoriser une fois</translation>
 <translation id="3927932062596804919">Refuser</translation>
 <translation id="4191349941249805855">Afficher les arguments de l'outil</translation>
 <translation id="7237059533128264835">Masquer les arguments de l'outil</translation>
@@ -2511,7 +2519,6 @@
 <translation id="6002159997868894136">Cliquez pour copier l'alias</translation>
 <translation id="8105770564756958406">Utilisé par <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Créez jusqu'à 5 alias de courriels gratuits pour protéger votre véritable adresse courriel.</translation>
-<translation id="5663901348199429994">Vos alias courriel</translation>
 <translation id="9046133327037621173">Nouvel alias courriel</translation>
 <translation id="3768606658230902536">Créez une adresse courriel aléatoire qui redirige vers votre boîte de réception tout en gardant votre adresse courriel personnelle privée.</translation>
 <translation id="4452721050684632493">Limite d'alias atteinte</translation>
@@ -2942,7 +2949,9 @@ Connectez-vous!</translation>
 <translation id="4227581348172626540">Annuler le changement de mot de passe</translation>
 <translation id="808894953321890993">Changer le mot de passe</translation>
 <translation id="7967687455715421528">Impossible de changer le mot de passe</translation>
+<translation id="7413006094063730650">Supprimer le compte</translation>
 <translation id="4869737930995549965">Se déconnecter</translation>
+<translation id="2902312830803030883">Plus d'actions</translation>
 <translation id="5538654494923870167">Démarrez avec votre compte Brave</translation>
 <translation id="1544145635547515689">Créer un compte Brave</translation>
 <translation id="3828644479849256404">Vous avez déjà un compte ? Connectez-vous</translation>
@@ -2967,6 +2976,11 @@ Connectez-vous!</translation>
 <translation id="7228810962389847249">Saisissez le code ici</translation>
 <translation id="4683390091376980486">Confirmer le code</translation>
 <translation id="3970028678400797622">Renvoyer le code par courriel</translation>
+<translation id="3653907916071208187">Supprimer votre compte Brave?</translation>
+<translation id="8216839865292766307">La suppression d'un compte Brave supprimera également ses alias de courriel. Vous pourriez perdre l'accès aux services en ligne où vous avez utilisé un alias pour vous inscrire. Cette action est irréversible.</translation>
+<translation id="3672274694560812974">SUPPRIMER</translation>
+<translation id="1886662169666501462">Saisissez <ph name="KEYWORD"/> pour activer la suppression du compte</translation>
+<translation id="536306385881145656">Supprimer le compte Brave</translation>
 <translation id="2475982808118771221">Une erreur s’est produite</translation>
 <translation id="5430795854491041407">erreur</translation>
 <translation id="2232323423357029857">Le navigateur a rencontré une erreur inattendue<ph name="ERROR_CODE"/>. Veuillez redémarrer le navigateur et réessayer.</translation>
@@ -2999,4 +3013,10 @@ Connectez-vous!</translation>
 <translation id="1063227610401477317">Appliquer les modifications</translation>
 <translation id="5539769255716491933">Signaler les étapes échouées</translation>
 <translation id="7562163394445060270">Échec de la réalisation de la tâche</translation>
+<translation id="691082536326552372">Signaler les étapes échouées</translation>
+<translation id="2731141092023803480">Envoyez un rapport des étapes échouées à l'équipe Brave. Ce rapport contiendra les informations dont nous avons besoin pour résoudre le problème. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">URL actuelle</translation>
+<translation id="4739707522207259415">Étape(s) échouée(s)</translation>
+<translation id="1767991048059195456">Envoyer le rapport</translation>
+<translation id="2168036794078614559">Rapport envoyé</translation>
 </translationbundle>

@@ -416,7 +416,7 @@
 <translation id="5198930230016462977">Bảng tuỳ chỉnh trang thẻ mới của bạn ở dưới cùng đã đóng</translation>
 <translation id="5216942107514965959">Lần truy cập gần đây nhất: hôm nay</translation>
 <translation id="5225463052809312700">Bật máy ảnh</translation>
-<translation id="5234764350956374838">Bỏ qua</translation>
+<translation id="5234764350956374838">Đóng</translation>
 <translation id="5239623327352565343">Cho phép truy cập thông tin vị trí</translation>
 <translation id="5246825184569358663">Thao tác này sẽ xoá toàn bộ dữ liệu cục bộ, kể cả cookie, và đặt lại mọi quyền cho <ph name="DOMAIN"/> cũng như mọi trang web thuộc miền này</translation>
 <translation id="5264323282659631142">Xóa "<ph name="CHIP_LABEL"/>"</translation>
@@ -729,7 +729,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="8525306231823319788">Toàn màn hình</translation>
 <translation id="854876774113449365">Các trang web bạn truy cập có thể nhúng nội dung từ các trang web khác, chẳng hạn như hình ảnh, quảng cáo và văn bản. Các trang web khác này có thể yêu cầu quyền sử dụng thông tin mà họ đã lưu về bạn khi bạn duyệt xem trang web. <ph name="BEGIN_LINK"/>Tìm hiểu thêm về nội dung được nhúng<ph name="END_LINK"/></translation>
 <translation id="8549127125482561383">Cách hiển thị yêu cầu</translation>
-<translation id="4273503381657013953">Giờ bạn có thể dùng Brave mỗi khi duyệt web hoặc nhấn vào liên kết trong thư/tin nhắn, tài liệu, v.v.</translation>
+<translation id="4273503381657013953">Giờ bạn có thể dùng Brave mỗi khi duyệt web hoặc nhấn vào đường liên kết trong thư/tin nhắn, tài liệu, v.v.</translation>
 <translation id="857943718398505171">Được phép (nên dùng)</translation>
 <translation id="8593422116412089302">Khi bạn bật tuỳ chọn này, các trang web có thể yêu cầu sử dụng thông tin mà trang web đã lưu về bạn. Khi bạn tắt tuỳ chọn này, các trang web không thể yêu cầu sử dụng thông tin mà trang web đã lưu về bạn.</translation>
 <translation id="8609465669617005112">Di chuyển lên</translation>

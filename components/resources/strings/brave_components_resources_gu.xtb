@@ -1732,6 +1732,9 @@
 <translation id="2077392865355605472">ટોકન ચિન્હ આવશ્યક છે</translation>
 <translation id="4636925020451566238">સુચિતાશ દ્વારા ટોકન ડેઝિમલ્સની કિંમત જરૂરી છે</translation>
 <translation id="3797613444743816037">મ્યિન્ટ સરનામું</translation>
+<translation id="6571966497164575098">એસેટ ID</translation>
+<translation id="2110442566771571217">અયોગ્ય અથવા ખાલી ટોકન એસેટ ID</translation>
+<translation id="4170599358417498979">આ નેટવર્ક પર કસ્ટમ એસેટ્સ સપોર્ટેડ નથી</translation>
 <translation id="7951915459354237451">ફી મર્યાદા આધારભૂત ફી કરતાં ઓછી સેટ છે. તમારો ટ્રાન્ઝેક્શન લાંબુ સમય લેવાશે અથવા નિષ્ફળ થશે.</translation>
 <translation id="2227702748249086756">ફી અનુમાન મેળવવા માટે અસમર્થ</translation>
 <translation id="3225624966527491351">NFT આયાત કરો</translation>
@@ -2018,7 +2021,7 @@
 <translation id="418195046117003119">શેરિંગ હબ સ્ક્રીનશૉટ</translation>
 <translation id="4712056949543885424">પાસવર્ડ મેનેજર બતાવો</translation>
 <translation id="8037472847879765671">ચુકવણી પદ્ધતિઓ બતાવો</translation>
-<translation id="7269867954894010756">સરનામા બતાવો</translation>
+<translation id="6262574309547773475">સંપર્ક માહિતી બતાવો</translation>
 <translation id="6799213269525079335">આગલું શોધો</translation>
 <translation id="8666632926482119393">પાછલું શોધો</translation>
 <translation id="3567467864281922039">શોધો બંધ કરો અથવા બંધ કરો</translation>
@@ -2147,6 +2150,7 @@
 <translation id="3142853026316054951">ફોકસ મોડ ટૉગલ કરો</translation>
 <translation id="3468387898712904997">નવું ઇમેઇલ ઉપનામ</translation>
 <translation id="4711475997833555304">તમારા ઇનબોક્સ પર ફોરવર્ડ થાય તેવો રેન્ડમ ઇમેઇલ બનાવો.</translation>
+<translation id="5663901348199429994">તમારા ઇમેઇલ ઉપનામો</translation>
 <translation id="2796584247246518451">નવું ટેમ્પરરી કન્ટેનર</translation>
 <translation id="8591883849678260674">મૂળરૃપ જુઓ</translation>
 <translation id="1969654232209826429">મિનિટ. વાંચન</translation>
@@ -2211,6 +2215,7 @@
 <translation id="9215978379284690246">સ્થિતિ કોડ: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">સ્થિતિ કોડ: <ph name="STATUS_CODE"/>, આંતરિક સ્થિતિ કોડ: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">તમે પ્રાઇમ રેટ લિમિટ પર પહોંચ્યા છે. કૃપા કરીને થોડા કલાકો પછી ફરી પ્રયાસ કરો.</translation>
+<translation id="6873128487002733717">તમે આ મોડેલ માટે પ્રીમિયમ મર્યાદા પહોંચ્યા છો. અલગ મોડેલ પસંદ કરો અથવા થોડીવાર પછી ફરી પ્રયાસ કરો.</translation>
 <translation id="3683964919745779766">તમે આ મોડેલ માટેની દર મર્યાદા પહોંચ્યા છો અથવા ક્રેડિટ ખતમ થઈ ગયા છે. કૃપા કરી થોડીવાર પછી ફરી પ્રયાસ કરો.</translation>
 <translation id="7692501701960747469">આ મોડેલ માટે સંપર્કારિત API કી અમાન્ય છે. કૃપા કરી તમારી રૂપરેખા તપાસો અને ફરી પ્રયાસ કરો.</translation>
 <translation id="7905602379229309187">એન્ડપોઇન્ટ હાલમાં વધુ કર્મદટા ભરેલી છે. કૃપા કરી થોડીવાર પછી ફરી પ્રયાસ કરો.</translation>
@@ -2390,6 +2395,9 @@
 <translation id="5021823940147712387">સાધનો દૂર કરો</translation>
 <translation id="8712279871321308580">ઉપલબ્ધ વેબસાઇટ ટૂલ્સ</translation>
 <translation id="3690996226559605619">ઉપલબ્ધ ટૂલ્સ (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">આ સત્ર માટે મંજૂરી આપો</translation>
+<translation id="6240821072888636753">દર વખતે પૂછો</translation>
+<translation id="4290920330097335010">ક્યારેય મંજૂરી ન આપો</translation>
 <translation id="318819763888864209">તમામ સબ્સ્ક્રિપ્શન ઓટો-રિન્યૂ કરવામાં આવે છે પરંતુરિન્યૂઅલ પહેલાં કોઈપણ સમયે કેન્સલ કરી શકાય છે.</translation>
 <translation id="5091223967610958">લીઓને વધુ સારું બનાવવામાં અમારી સહાય કરવા માટે તમે જે પેજ પર છો તેનું હોસ્ટનામ (<ph name="HOST_NAME"/>) શેર કરો.</translation>
 <translation id="8732450785281947197">લિઓ એ આઇ યુંસ</translation>
@@ -2464,7 +2472,7 @@
 <translation id="6077070599873946984">Brave AI ને તમારી મંજૂરી જોઈએ છે: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI **<ph name="SITE_ORIGIN"/>** પર **<ph name="TOOL_NAME"/>** એક્ઝિક્યુટ કરવા માંગે છે</translation>
 <translation id="4163837693685963037">ચાલું ઑપરેશન તમારી વિનંતી સાથે સંભવિત રીતે વિસંગત હોય એવું શોધાયું છે:</translation>
-<translation id="5137568953923142260">મંજૂરી આપો</translation>
+<translation id="5137568953923142260">એક વખત મંજૂરી આપો</translation>
 <translation id="3927932062596804919">નકારો</translation>
 <translation id="4191349941249805855">ટૂલ આર્ગ્યુમેન્ટ્સ બતાવો</translation>
 <translation id="7237059533128264835">ટૂલ આર્ગ્યુમેન્ટ્સ છુપાવો</translation>
@@ -2511,7 +2519,6 @@
 <translation id="6002159997868894136">ઉપનામ નકલ કરવા માટે કિલક કરો</translation>
 <translation id="8105770564756958406"><ph name="DOMAINS"/> દ્વારા ઉપયોગ થાય છે</translation>
 <translation id="5006956315579221642">તમારા વાસ્તવિક ઇમેઇલ એડ્રેસને સુરક્ષિત રાખવા માટે 5 મફત ઇમેઇલ ઉપનામો બનાવો.</translation>
-<translation id="5663901348199429994">તમારા ઇમેઇલ ઉપનામો</translation>
 <translation id="9046133327037621173">નવું ઇમેઇલ ઉપનામ</translation>
 <translation id="3768606658230902536">એક રેન્ડમ ઇમેઇલ એડ્રેસ બનાવો જે તમારા ઇનબોક્સમાં ફોરવર્ડ થાય અને સાથે સાથે તમારા વ્યક્તિગત ઇમેઇલને ખાનગી પણ રાખે.</translation>
 <translation id="4452721050684632493">ઉપનામની મર્યાદા પહોંચી ગઈ</translation>
@@ -2940,7 +2947,9 @@ Brave પાસે એક મદદ પણ છે જે DNS ક્વેરી�
 <translation id="4227581348172626540">પાસવર્ડ બદલવાનું રદ કરો</translation>
 <translation id="808894953321890993">પાસવર્ડ બદલો</translation>
 <translation id="7967687455715421528">પાસવર્ડ બદલવામાં અસમર્થ</translation>
+<translation id="7413006094063730650">એકાઉન્ટ ડિલીટ કરો</translation>
 <translation id="4869737930995549965">લૉગ આઉટ કરો</translation>
+<translation id="2902312830803030883">વધુ ક્રિયાઓ</translation>
 <translation id="5538654494923870167">તમારા Brave એકાઉન્ટ સાથે પ્રારંભ કરો</translation>
 <translation id="1544145635547515689">Brave એકાઉન્ટ બનાવો</translation>
 <translation id="3828644479849256404">પહેલેથી જ એકાઉન્ટ છે? લૉગ ઇન કરો</translation>
@@ -2965,6 +2974,11 @@ Brave પાસે એક મદદ પણ છે જે DNS ક્વેરી�
 <translation id="7228810962389847249">કોડ અહીં દાખલ કરો</translation>
 <translation id="4683390091376980486">કોડની પુષ્ટિ કરો</translation>
 <translation id="3970028678400797622">ઇમેઇલ કોડ ફરી મોકલો</translation>
+<translation id="3653907916071208187">તમારું Brave એકાઉન્ટ ડિલીટ કરવું છે?</translation>
+<translation id="8216839865292766307">Brave એકાઉન્ટ ડિલીટ કરવાથી તેના ઈમેલ ઉપનામો પણ ડિલીટ થશે. તમે જે ઓનલાઈન સેવાઓ માટે ઉપનામ વાપરીને સાઈન અપ કર્યું હતું તેની એક્સેસ ગુમાવી શકો છો. આ ક્રિયા પૂર્વવત્ કરી શકાતી નથી.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">એકાઉન્ટ ડિલીટ કરવાનું સક્ષમ કરવા માટે <ph name="KEYWORD"/> ટાઈપ કરો</translation>
+<translation id="536306385881145656">Brave એકાઉન્ટ ડિલીટ કરો</translation>
 <translation id="2475982808118771221">એક ભૂલ આવી</translation>
 <translation id="5430795854491041407">ભૂલ</translation>
 <translation id="2232323423357029857">બ્રાઉઝરમાં અણધારી ભૂલ આવી<ph name="ERROR_CODE"/>. કૃપા કરીને બ્રાઉઝર પુનઃપ્રારંભ કરો અને ફરી પ્રયાસ કરો.</translation>
@@ -2997,4 +3011,10 @@ Brave પાસે એક મદદ પણ છે જે DNS ક્વેરી�
 <translation id="1063227610401477317">ફેરફારો લાગુ કરો</translation>
 <translation id="5539769255716491933">નિષ્ફળ પગલાંની જાણ કરો</translation>
 <translation id="7562163394445060270">કાર્ય પૂર્ણ થવામાં નિષ્ફળ</translation>
+<translation id="691082536326552372">નિષ્ફળ પગલાંની જાણ કરો</translation>
+<translation id="2731141092023803480">નિષ્ફળ પગલાંનો અહેવાલ Brave ટીમને મોકલો. આ અહેવાલમાં અમને સમસ્યા ઠીક કરવા માટે જરૂરી માહિતી હશે. <ph name="LINK_BEFORE"/>વધુ જાણો.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">વર્તમાન URL</translation>
+<translation id="4739707522207259415">નિષ્ફળ પગલું(ઓ)</translation>
+<translation id="1767991048059195456">અહેવાલ મોકલો</translation>
+<translation id="2168036794078614559">અહેવાલ મોકલ્યો</translation>
 </translationbundle>

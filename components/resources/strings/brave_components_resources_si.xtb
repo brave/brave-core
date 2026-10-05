@@ -1719,6 +1719,9 @@
 <translation id="2077392865355605472">ටෝකන් සංකේතය අවශ්යයි</translation>
 <translation id="4636925020451566238">නිරවද්‍යතාවය අගයේ ටෝකන් දශම අවශ්‍ය වේ</translation>
 <translation id="3797613444743816037">මින්ට් ලිපිනය</translation>
+<translation id="6571966497164575098">වත්කම් ID</translation>
+<translation id="2110442566771571217">වලංගු නොවන හෝ හිස් සංකේත වත්කම් ID</translation>
+<translation id="4170599358417498979">මෙම ජාලයේ අභිරුචි වත්කම් සහාය නොදක්වයි</translation>
 <translation id="7951915459354237451">ගාස්තු මූලික ගාස්තුවට වඩා අඩුවෙන් සකසා ඇත. ඔබේ ගනුදෙනුව බොහෝ කාලයක් ගත විය නොහැකි හෝ අසාර්ථක විය හැක.</translation>
 <translation id="2227702748249086756">තක්සේරු ගාස්තු ලබා ගැනීමට නොහැකි විය</translation>
 <translation id="3225624966527491351">NFT ආයාත කරන්න</translation>
@@ -2005,7 +2008,7 @@
 <translation id="418195046117003119">බෙදාගැනීමේ නැබයේ තිරසේයාව</translation>
 <translation id="4712056949543885424">මුරපද කළමනාකරු පෙන්වන්න</translation>
 <translation id="8037472847879765671">ගෙවීම් ක්‍රම පෙන්වන්න</translation>
-<translation id="7269867954894010756">ලිපින පෙන්වන්න</translation>
+<translation id="6262574309547773475">සම්බන්ධතා තොරතුරු පෙන්වන්න</translation>
 <translation id="6799213269525079335">ඊළඟ සොයන්න</translation>
 <translation id="8666632926482119393">කලින් සොයන්න</translation>
 <translation id="3567467864281922039">සෙවීම වසන්න හෝ නවත්වන්න</translation>
@@ -2133,6 +2136,7 @@
 <translation id="3142853026316054951">නාභිගත ප්‍රකාරය ටොගල් කරන්න</translation>
 <translation id="3468387898712904997">නව ඊ-මේල් අමතර ලිපියක්</translation>
 <translation id="4711475997833555304">ඔබගේ එන ලිපි වෙත යොමු කරන අහඹු විද්‍යුත් තැපෑලක් සාදන්න.</translation>
+<translation id="5663901348199429994">ඔබේ ඊ-මේල් අමතර ලිපිනයන්</translation>
 <translation id="2796584247246518451">නව තාවකාලික බහාලුම</translation>
 <translation id="8591883849678260674">මුල් පිටපත බලන්න</translation>
 <translation id="1969654232209826429">අවම කියවීම</translation>
@@ -2191,6 +2195,7 @@
 <translation id="9215978379284690246">තත්ව කේතය: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">තත්ව කේතය: <ph name="STATUS_CODE"/>, අභ්‍යන්තර තත්ව කේතය: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">ඔබ ආධික්‍ය සීමාවට ළඟා වී ඇත. කරුණාකර පැය කිහිපයකින් නැවත උත්සාහ කරන්න.</translation>
+<translation id="6873128487002733717">ඔබ මෙම ආකෘතිය සඳහා ප්‍රිමියම් සීමාවට ළඟා වී ඇත. වෙනත් ආකෘතියක් තෝරන්න නැතහොත් පසුව නැවත උත්සාහ කරන්න.</translation>
 <translation id="3683964919745779766">ඔබ මෙම ආකෘතිය සඳහා අනුපාත සීමාවට ළඟා වී ඇත නැතහොත් ණය අවසන් වී ඇත. කරුණාකර පසුව නැවත උත්සාහ කරන්න.</translation>
 <translation id="7692501701960747469">මෙම ආකෘතිය සඳහා වින්‍යාස කර ඇති API යතුර වලංගු නොවේ. කරුණාකර ඔබේ වින්‍යාසය පරීක්ෂා කර නැවත උත්සාහ කරන්න.</translation>
 <translation id="7905602379229309187">අන්ත ලක්ෂ්‍යය දැනට අධික ලෙස පටවා ඇත. කරුණාකර පසුව නැවත උත්සාහ කරන්න.</translation>
@@ -2368,6 +2373,9 @@
 <translation id="5021823940147712387">මෙවලම් ඉවත් කරන්න</translation>
 <translation id="8712279871321308580">තිබෙන වෙබ් අඩවි මෙවලම්</translation>
 <translation id="3690996226559605619">තිබෙන මෙවලම් (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">මෙම සැසිය සඳහා ඉඩ දෙන්න</translation>
+<translation id="6240821072888636753">සෑම විටම විමසන්න</translation>
+<translation id="4290920330097335010">කිසි විටෙකත් ඉඩ නොදෙන්න</translation>
 <translation id="318819763888864209">සියලු දායකත්වයන් ස්වයංක්‍රීයව අළුත් වන නමුත් ඊට පෙර ඕනෑම විටෙක අවලංගු කළ හැකිය.</translation>
 <translation id="5091223967610958">ලියෝ වැඩිදියුණුවට ඔබ සිටින පිටුවේ සත්කාරක නාමය බෙදාගෙන (<ph name="HOST_NAME"/>) අපට උදව් කරන්න.</translation>
 <translation id="8732450785281947197">ලියෝ AI මෙවලම්</translation>
@@ -2440,7 +2448,7 @@
 <translation id="6077070599873946984">Brave AI සඳහා ඔබේ අවසරය අවශ්‍යයි: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI **<ph name="SITE_ORIGIN"/>** මත **<ph name="TOOL_NAME"/>** ක්‍රියාත්මක කිරීමට කැමතියි</translation>
 <translation id="4163837693685963037">මෙම මෙහෙයුම ඔබගේ ඉල්ලීමට ව්‍යාජ ලෙස අනුකූල නොවීමක් ලෙස අනාවරණය විය:</translation>
-<translation id="5137568953923142260">ඉඩදෙන්න</translation>
+<translation id="5137568953923142260">වරක් ඉඩ දෙන්න</translation>
 <translation id="3927932062596804919">ප්‍රතික්ෂේප කරන්න</translation>
 <translation id="4191349941249805855">මෙවලම් තර්ක පෙන්වන්න</translation>
 <translation id="7237059533128264835">මෙවලම් තර්ක සඟවන්න</translation>
@@ -2484,7 +2492,6 @@
 <translation id="6002159997868894136">අමතර ලිපිනය පිටපත් කිරීමට ක්ලික් කරන්න.</translation>
 <translation id="8105770564756958406"><ph name="DOMAINS"/> භාවිතා කරයි.</translation>
 <translation id="5006956315579221642">ඔබේ සත්‍ය ඊ-මේල් ලිපිනය ආරක්ෂා කිරීමට නොමිලේ ඊ-මේල් අමතර ලිපින 5ක් දක්වා සාදාගන්න.</translation>
-<translation id="5663901348199429994">ඔබේ ඊ-මේල් අමතර ලිපිනයන්</translation>
 <translation id="9046133327037621173">නව ඊ-මේල් අමතර ලිපියක්</translation>
 <translation id="3768606658230902536">ඔබේ පුද්ගලික ඊ-මේල් ලිපිනය රහසිගතව තබා තබා දෙගින්න තුල ප්‍රවේසම් ප‍්‍රේෂණය කරන අහඹු ඊ-මේල් ලිපියක් සාදන්න.</translation>
 <translation id="4452721050684632493">අන්වර්ථ සීමාවට ළඟා විය</translation>
@@ -2912,7 +2919,9 @@
 <translation id="4227581348172626540">මුරපද වෙනස් කිරීම අවලංගු කරන්න</translation>
 <translation id="808894953321890993">මුරපදය වෙනස් කරන්න</translation>
 <translation id="7967687455715421528">මුරපදය වෙනස් කිරීමට නොහැකිය</translation>
+<translation id="7413006094063730650">ගිණුම මකන්න</translation>
 <translation id="4869737930995549965">නික්මෙන්න</translation>
+<translation id="2902312830803030883">තවත් ක්‍රියා</translation>
 <translation id="5538654494923870167">ඔබගේ බ්‍රේව් ගිණුම සමඟ ආරම්භ කරන්න</translation>
 <translation id="1544145635547515689">බ්‍රේව් ගිණුමක් සාදන්න</translation>
 <translation id="3828644479849256404">දැනටමත් ගිණුමක් තිබේද? පිවිසෙන්න</translation>
@@ -2933,6 +2942,11 @@
 <translation id="7228810962389847249">කේතය මෙහි ඇතුළත් කරන්න</translation>
 <translation id="4683390091376980486">කේතය තහවුරු කරන්න</translation>
 <translation id="3970028678400797622">විද්‍යුත් තැපැල් කේතය නැවත එවන්න</translation>
+<translation id="3653907916071208187">ඔබේ Brave ගිණුම මකන්නද?</translation>
+<translation id="8216839865292766307">Brave ගිණුමක් මැකීමෙන් එහි ඊමේල් අන්වර්ථ ද මැකෙනු ඇත. අන්වර්ථයක් භාවිතයෙන් ලියාපදිංචි වූ මාර්ගගත සේවාවන් වෙත ප්‍රවේශය ඔබට අහිමි විය හැක. මෙම ක්‍රියාව අහෝසි කළ නොහැක.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">ගිණුම මැකීම සබල කිරීමට <ph name="KEYWORD"/> ටයිප් කරන්න</translation>
+<translation id="536306385881145656">Brave ගිණුම මකන්න</translation>
 <translation id="2475982808118771221">දෝෂයක් ඇතිවිය</translation>
 <translation id="5430795854491041407">දෝෂයකි</translation>
 <translation id="2232323423357029857">බ්‍රවුසරයට අනපේක්ෂිත දෝෂයක් ඇතිවිය<ph name="ERROR_CODE"/>. කරුණාකර බ්‍රවුසරය නැවත ආරම්භ කර නැවත උත්සාහ කරන්න.</translation>
@@ -2962,4 +2976,10 @@
 <translation id="528205534230423181">මෙම වෙබ් අඩවිය බ්‍රේව්ට ඔබ වෙනුවෙන් ස්වයංක්‍රීයව සකස් කළ හැකි පෞද්ගලිකත්ව සැකසුම් ලබා දෙයි. අපි නිර්දේශ කරන දේ මෙන්න:</translation>
 <translation id="1063227610401477317">වෙනස්කම් යොදන්න</translation>
 <translation id="5539769255716491933">අසාර්ථක පියවර වාර්තා කරන්න</translation>
+<translation id="691082536326552372">අසාර්ථක පියවර වාර්තා කරන්න</translation>
+<translation id="2731141092023803480">අසාර්ථක පියවර පිළිබඳ වාර්තාවක් Brave කණ්ඩායමට යවන්න. මෙම වාර්තාවේ ගැටලුව නිරාකරණය කිරීමට අපට අවශ්‍ය තොරතුරු අඩංගු වේ. <ph name="LINK_BEFORE"/>තව දැනගන්න.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">වත්මන් URL</translation>
+<translation id="4739707522207259415">අසාර්ථක පියවර(යන්)</translation>
+<translation id="1767991048059195456">වාර්තාව යවන්න</translation>
+<translation id="2168036794078614559">වාර්තාව යවන ලදී</translation>
 </translationbundle>

@@ -217,11 +217,11 @@ vindue med Tor</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3-domæner</translation>
 <translation id="1458638489455808030">Wayback-maskine</translation>
-<translation id="8039999492770627305">Beklager, den side mangler.</translation>
-<translation id="208311458690012764">Den gemte version kunne ikke indlæses</translation>
-<translation id="4515057635283480525">Ønsker du at tjekke om en gemt version er tilgængelig på Wayback Machine?</translation>
-<translation id="8252977752585110703">Wayback Machine kunne ikke finde en gemt version af denne side.</translation>
-<translation id="8748778103033196270">Tjek gemt version</translation>
+<translation id="8039999492770627305">Siden mangler</translation>
+<translation id="208311458690012764">Ingen arkiveret version er tilgængelig</translation>
+<translation id="4515057635283480525">Internet Archive gemmer tidligere versioner af mange websider. Vil du lede efter denne side i arkivet?</translation>
+<translation id="8252977752585110703">Beklager, vi tjekkede Internet Archive, og det har ikke en arkiveret version af denne side.</translation>
+<translation id="8748778103033196270">Kig i arkivet</translation>
 <translation id="191143826155037518">Brave bliver gjort tilgængelig for dig under <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) og inkluderer <ph name="BEGIN_LINK_OSS"/> open-source software <ph name="END_LINK_OSS"/> under forskellige andre licensaftaler.
 DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan du downloader og bygger selv<ph name="END_LINK_BUILD_INSTRUCTIONS"/> <ph name="BEGIN_LINK_SOURCE_CODE"/>den kildekode som bruges til at lave denne kopi<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Tilføj alle faner som bogmærker...</translation>

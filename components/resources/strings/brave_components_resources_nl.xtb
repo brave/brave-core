@@ -1732,6 +1732,9 @@
 <translation id="2077392865355605472">Tokensymbool is vereist</translation>
 <translation id="4636925020451566238">Tokendecimalen van precisiewaarde zijn vereist</translation>
 <translation id="3797613444743816037">Mintadres</translation>
+<translation id="6571966497164575098">Asset-ID</translation>
+<translation id="2110442566771571217">Ongeldige of lege token-asset-ID</translation>
+<translation id="4170599358417498979">Aangepaste assets worden niet ondersteund in dit netwerk</translation>
 <translation id="7951915459354237451">Kostenlimiet is lager ingesteld dan de basiskosten. Het kan lang duren voordat uw transactie wordt verwerkt of de transactie mislukt.</translation>
 <translation id="2227702748249086756">Kan schatting van kosten niet ophalen</translation>
 <translation id="3225624966527491351">NFT importeren</translation>
@@ -2018,7 +2021,7 @@
 <translation id="418195046117003119">Schermopname deelhub</translation>
 <translation id="4712056949543885424">Wachtwoordmanager weergeven</translation>
 <translation id="8037472847879765671">Betaalmethoden weergeven</translation>
-<translation id="7269867954894010756">Adressen weergeven</translation>
+<translation id="6262574309547773475">Contactgegevens weergeven</translation>
 <translation id="6799213269525079335">Volgende zoeken</translation>
 <translation id="8666632926482119393">Vorige zoeken</translation>
 <translation id="3567467864281922039">Zoeken sluiten of stoppen</translation>
@@ -2147,6 +2150,7 @@
 <translation id="3142853026316054951">Focusmodus aan/uit</translation>
 <translation id="3468387898712904997">Nieuwe e-mailalias</translation>
 <translation id="4711475997833555304">Maak een willekeurig e-mailadres aan dat wordt doorgestuurd naar uw inbox.</translation>
+<translation id="5663901348199429994">Je e-mailaliassen</translation>
 <translation id="2796584247246518451">Nieuwe tijdelijke container</translation>
 <translation id="8591883849678260674">Origineel bekijken</translation>
 <translation id="1969654232209826429">minuten leestijd</translation>
@@ -2211,6 +2215,7 @@
 <translation id="9215978379284690246">Statuscode: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Statuscode: <ph name="STATUS_CODE"/>, interne statuscode: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Je hebt de limiet van Premium bereikt. Probeer het opnieuw over een paar uur.</translation>
+<translation id="6873128487002733717">Je hebt de premiumlimiet voor dit model bereikt. Selecteer een ander model of probeer het later opnieuw.</translation>
 <translation id="3683964919745779766">Je hebt de limiet voor dit model bereikt of je hebt geen credits meer. Probeer het later nog eens.</translation>
 <translation id="7692501701960747469">De geconfigureerde API-sleutel voor dit model is ongeldig. Controleer de configuratie en probeer het opnieuw.</translation>
 <translation id="7905602379229309187">Het eindpunt is momenteel overbelast. Probeer het later nog eens.</translation>
@@ -2390,6 +2395,9 @@
 <translation id="5021823940147712387">Tools verwijderen</translation>
 <translation id="8712279871321308580">Beschikbare websitetools</translation>
 <translation id="3690996226559605619">Beschikbare tools (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Voor deze sessie toestaan</translation>
+<translation id="6240821072888636753">Elke keer vragen</translation>
+<translation id="4290920330097335010">Nooit toestaan</translation>
 <translation id="318819763888864209">Alle abonnementen worden automatisch verlengd, maar kunnen voor de verlengdatum op elk gewenst moment worden opgezegd.</translation>
 <translation id="5091223967610958">Deel de hostnaam van van de pagina waarop u zich bevindt (<ph name="HOST_NAME"/>) om ons te helpen Leo nog beter te maken.</translation>
 <translation id="8732450785281947197">AI-tools van Leo</translation>
@@ -2464,7 +2472,7 @@
 <translation id="6077070599873946984">Brave AI heeft jouw toestemming nodig voor: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI wil **<ph name="TOOL_NAME"/>** uitvoeren op **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Er is vastgesteld dat de bewerking mogelijk niet overeenkomt met jouw verzoek:</translation>
-<translation id="5137568953923142260">Toestaan</translation>
+<translation id="5137568953923142260">Eenmaal toestaan</translation>
 <translation id="3927932062596804919">Weigeren</translation>
 <translation id="4191349941249805855">Toolargumenten tonen</translation>
 <translation id="7237059533128264835">Toolargumenten verbergen</translation>
@@ -2511,7 +2519,6 @@
 <translation id="6002159997868894136">Klik om alias te kopiëren</translation>
 <translation id="8105770564756958406">Gebruikt door <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Maak tot 5 gratis e-mailaliassen om je echte e-mailadres te beschermen.</translation>
-<translation id="5663901348199429994">Je e-mailaliassen</translation>
 <translation id="9046133327037621173">Nieuwe e-mailalias</translation>
 <translation id="3768606658230902536">Houd je persoonlijke e-mailadres privé door een willekeurig e-mailadres te maken waarmee je e-mail laat doorsturen naar je inbox.</translation>
 <translation id="4452721050684632493">Aliaslimiet bereikt</translation>
@@ -2942,7 +2949,9 @@ Laten we je verbinding snel in orde brengen!</translation>
 <translation id="4227581348172626540">Wijziging van wachtwoord annuleren</translation>
 <translation id="808894953321890993">Wachtwoord wijzigen</translation>
 <translation id="7967687455715421528">Kan wachtwoord niet wijzigen</translation>
+<translation id="7413006094063730650">Account verwijderen</translation>
 <translation id="4869737930995549965">Uitloggen</translation>
+<translation id="2902312830803030883">Meer handelingen</translation>
 <translation id="5538654494923870167">Aan de slag met uw Brave-account</translation>
 <translation id="1544145635547515689">Een Brave-account aanmaken</translation>
 <translation id="3828644479849256404">Heb je al een account? Log in</translation>
@@ -2967,6 +2976,11 @@ Laten we je verbinding snel in orde brengen!</translation>
 <translation id="7228810962389847249">Voer de code hier in</translation>
 <translation id="4683390091376980486">Code bevestigen</translation>
 <translation id="3970028678400797622">E-mailcode opnieuw verzenden</translation>
+<translation id="3653907916071208187">Je Brave-account verwijderen?</translation>
+<translation id="8216839865292766307">Als je een Brave-account verwijdert, worden ook de e-mailaliassen ervan verwijderd. Je kunt de toegang verliezen tot online diensten waarvoor je je met een alias hebt aangemeld. Deze handeling kan niet ongedaan worden gemaakt.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">Typ <ph name="KEYWORD"/> om accountverwijdering in te schakelen</translation>
+<translation id="536306385881145656">Brave-account verwijderen</translation>
 <translation id="2475982808118771221">Er is een fout opgetreden</translation>
 <translation id="5430795854491041407">fout</translation>
 <translation id="2232323423357029857">De browser kwam een onverwachte fout tegen<ph name="ERROR_CODE"/>. Start de browser opnieuw op en probeer het nogmaals.</translation>
@@ -2999,4 +3013,10 @@ Laten we je verbinding snel in orde brengen!</translation>
 <translation id="1063227610401477317">Wijzigingen toepassen</translation>
 <translation id="5539769255716491933">Mislukte stappen rapporteren</translation>
 <translation id="7562163394445060270">Taak voltooien mislukt</translation>
+<translation id="691082536326552372">Mislukte stappen rapporteren</translation>
+<translation id="2731141092023803480">Stuur een rapport van de mislukte stappen naar het Brave-team. Dit rapport bevat de informatie die we nodig hebben om het probleem op te lossen. <ph name="LINK_BEFORE"/>Meer informatie.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">Huidige URL</translation>
+<translation id="4739707522207259415">Mislukte stap(pen)</translation>
+<translation id="1767991048059195456">Rapport verzenden</translation>
+<translation id="2168036794078614559">Rapport verzonden</translation>
 </translationbundle>

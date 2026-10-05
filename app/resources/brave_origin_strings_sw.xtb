@@ -38,7 +38,6 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="1330562121671411446">Tambua lugha</translation>
 <translation id="108284536240904209">Futa pia data kutoka Brave (<ph name="URL"/>)</translation>
 <translation id="1345251407431278948">Kimebandikwa! Unaweza kufikia tena kipengele cha Kutafuta kwa Picha katika kitufe kipya kilicho kwenye upau wa vidhibiti</translation>
-<translation id="1356661055722410047">Mpya! Unaweza kutafsiri maandishi na picha kwenye skrini yako</translation>
 <translation id="1383876407941801731">Tafuta</translation>
 <translation id="3535301204632475895">Tumia programu ya Brave ili uendelee kuvinjari popote ulipo</translation>
 <translation id="141901961143729572">Eleza mawazo yako</translation>
@@ -67,6 +66,7 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="5994491947936308173">Bofya <ph name="BEGIN_BOLD"/>Ndiyo<ph name="END_BOLD"/> kwenye arifa ya Windows ili ubandike Brave kwenye upauzana wako ili uifikie kwa haraka.</translation>
 <translation id="5875673934455379806">Sakinisha Brave Upya</translation>
 <translation id="4529028207655448215">Brave inajaribu <ph name="AUTHENTICATION_PURPOSE"/></translation>
+<translation id="6387107728249269341">Tayari umeingia katika akaunti ya <ph name="EXISTING_USER"/>. Ili utenganishe shughuli zako za kuvinjari, ingia katika akaunti kwenye Brave katika wasifu wako binafsi ukitumia <ph name="USER_EMAIL_ADDRESS"/>. Pia utapata viendelezi vyako na zaidi kwenye <ph name="DEVICE"/>.</translation>
 <translation id="7362761326208547489">Utakapofungua Brave tena kwenye <ph name="DEVICE_TYPE"/> yako, utaona kidokezo cha kutumia Kidhibiti cha Manenosiri cha Brave.</translation>
 <translation id="1838374766361614909">Futa utafutaji</translation>
 <translation id="3541642064306182066">Ili ufute data ya kuvinjari kwenye kifaa hiki pekee, bila kuifuta katika Akaunti yako ya Brave, <ph name="BEGIN_LINK"/>ondoka kwenye akaunti ya Brave<ph name="END_LINK"/>.</translation>
@@ -145,6 +145,7 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="2575822587468774919">Chagua hoja yoyote ya kutafuta ukitumia kipengele cha Kutafuta kwa Picha</translation>
 <translation id="3830890663494219270">Ili upate manenosiri yako na zaidi kwenye vifaa vyako vyote, ingia katika akaunti kwenye Brave</translation>
 <translation id="6908148552215338695">Changanua msimbo wa QR ukitumia simu yako ili upakue Brave kisha uingie katika Akaunti yako ya Brave.</translation>
+<translation id="7985444384142764643">ili utafute ukitumia Brave.</translation>
 <translation id="6252796827759111076">Endelea kutumia Brave</translation>
 <translation id="259935314519650377">Imeshindwa kuweka akiba ya kisakinishaji kilichopakuliwa. Hitilafu: <ph name="UNPACK_CACHING_ERROR_CODE"/>.</translation>
 <translation id="2620436844016719705">Mfumo</translation>
@@ -188,6 +189,7 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="3038232873781883849">Inasubiri kusakinisha...</translation>
 <translation id="3045032126857188731">Lugha iliyotafsiriwa: <ph name="LANGUAGE"/></translation>
 <translation id="3047590466164881923">Funga kidirisha cha maoni</translation>
+<translation id="72283640173840794">Tayari umeingia katika akaunti ya <ph name="EXISTING_USER"/>. Ili utenganishe shughuli zako za kuvinjari, ingia katika akaunti kwenye Brave katika wasifu wako binafsi ukitumia <ph name="USER_EMAIL_ADDRESS"/>. Pia utapata orodha yako ya kusoma na zaidi kwenye <ph name="DEVICE"/>.</translation>
 <translation id="4503085212612536713">Wasifu nyingine za Brave</translation>
 <translation id="2041039306630146369">Viendelezi ni programu jalizi zinazokuwezesha uwekee Brave mapendeleo. Iwe ni kupanga mambo yako au kurahisisha majukumu ya kila siku, viendelezi hukusaidia kubadilisha Brave upendavyo.</translation>
 <translation id="7918740962659365265">Saidia kuboresha Brave kwa kutuma ripoti za kuacha kufanya kazi na <ph name="UMA_LINK"/> kwenda Brave</translation>
@@ -254,7 +256,7 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 
           **Pendekeza Maswali:** Tayarisha orodha iliyowekewa vitone yenye maswali 3 hadi 5 ya kuchochea mawazo ambayo mtumiaji anaweza kuuliza ili kuelewa vyema zaidi kuhusu picha ya skrini. Maswali haya yanapaswa kujumuisha angalau swali moja mahususi kwa kipengee cha picha, muundo wake au sehemu kilipowekwa.</translation>
 <translation id="6899774208752247219"><ph name="PAGE_TITLE"/> - Brave Origin</translation>
-<translation id="1118754729376002185">Brave inahitaji ruhusa ya kufikia mtandao wa karibu ili kutumia tovuti hii</translation>
+<translation id="387514319934708384">Brave inahitaji ruhusa ya kufikia mtandao wa karibu ili kutumia tovuti hii</translation>
 <translation id="3885770153807205175">Kiteua lugha</translation>
 <translation id="6315734375101223238">Dhibiti na uweke mapendeleo kwenye Brave. Unahitaji kushughulikia jambo fulani. Bofya ili upate maelezo.</translation>
 <translation id="7130675370997202556">Bofya jina lako ili ufungue Brave na uanze kuvinjari.</translation>
@@ -284,6 +286,7 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="6596295505984504022">Badilisha Brave upendavyo</translation>
 <translation id="4148957013307229264">Inasakinisha...</translation>
 <translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - Kuingia katika Akaunt ya Mtandao - Brave Origin</translation>
+<translation id="305023898453185745">Tayari umeingia katika akaunti ya <ph name="EXISTING_USER"/>. Ili utenganishe shughuli zako za kuvinjari, ingia katika akaunti kwenye Brave katika wasifu wako binafsi ukitumia <ph name="USER_EMAIL_ADDRESS"/>. Pia utapata orodha yako ya kusoma na zaidi kwenye vifaa vyako vyote.</translation>
 <translation id="2871190378186459992">Gundua programu, michezo, viendelezi na mandhari bora ya Brave.</translation>
 <translation id="462105622535258178">Ili upate kiendelezi hiki na zaidi kwenye kompyuta zako zote, ingia katika Brave</translation>
 <translation id="6670140629169983459">Ili uendelee kulinda usalama wako mtandaoni kwa kutumia chaguo za mzazi wako, nenda kwenye wasifu wako wa Brave ambapo tayari umeingia katika akaunti ukitumia <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -298,7 +301,6 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="6368144843345980623">Hamisha Manenosiri Kutoka Brave</translation>
 <translation id="4304713468139749426">Kidhibiti cha Manenosiri</translation>
 <translation id="4334241893986177674">Tafuta picha hii ya skrini</translation>
-<translation id="3985621805803699376">Tafuta na uulize maswali mahali popote, hata wakati kidirisha cha Brave kimepunguzwa</translation>
 <translation id="242356249838681145">Fungua Brave unapowasha Windows</translation>
 <translation id="4400772909124543403">Hakuna sasisho linalopatikana</translation>
 <translation id="9183662282810237335">Ungependa kufunga Brave?</translation>
@@ -329,6 +331,7 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="2182657378556811785">Inakaribia kukamilisha kusasishwa! Anzisha Brave upya ili ukamilishe kusasisha.</translation>
 <translation id="6311668361877328515">Huongeza kasi ya tovuti kwa kutumia mtambo wa V8 wa Brave lakini huifanya Brave iwe na uwezo mdogo wa kustahimili mashambulio</translation>
 <translation id="7960968658810899127">Fungua kipengele cha Utafutaji ukitumia Brave</translation>
+<translation id="4600669659668950128">Wasifu wa Brave</translation>
 <translation id="7402642357351265733">Ikiwa pia unashiriki ripoti za matumizi ya Brave, ripoti hizo zinajumuisha URL unazotembelea</translation>
 <translation id="4673710618874938871">Umeingia ukitumia akaunti ya <ph name="USER_NAME"/>, uanachama. Fungua menyu ya akaunti</translation>
 <translation id="8142245354207161805">Wasifu unaonekana kuwa unatumika na mchakato mwingine wa Brave (<ph name="PROCESS_ID"/>) kwenye kompyuta nyingine (<ph name="HOST_NAME"/>). Brave imefunga wasifu huu ili usifisidiwe. Kama una uhakika hakuna michakato mingine inatumia wasifu huu, unaweza kufungua wasifu na uzindue tena Brave.</translation>
@@ -381,6 +384,7 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="3311284381627742014">Fungua kipengele cha utafutaji ukitumia Brave</translation>
 <translation id="5154625106151193600">Fahamu kwa nini Brave huzuia baadhi ya faili</translation>
 <translation id="1786715389543715322">Inasasisha Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="3267146219387305979">Tayari umeingia katika akaunti ya <ph name="EXISTING_USER"/>. Ili utenganishe shughuli zako za kuvinjari, ingia katika akaunti kwenye Brave katika wasifu wako binafsi ukitumia <ph name="USER_EMAIL_ADDRESS"/>. Pia utapata viendelezi vyako na zaidi kwenye vifaa vyako vyote.</translation>
 <translation id="7021823858304886493">Ruhusu kuingia katika akaunti ya Brave</translation>
 <translation id="5267531627648004734">Ondoa kwenye Brave</translation>
 <translation id="4620757336635063467">Hupunguza utendaji lakini hufanya Brave istahimili zaidi mashambulio</translation>
@@ -457,6 +461,7 @@ Jaribu kuruhusu uboreshaji ikiwa ukurasa huu haufanyi kazi inavyotarajiwa.</tran
 <translation id="6685697979743742605">Huenda faili hii ni hatari<ph name="LINE_BREAK"/>Brave inaweza kukagua kipakuliwa hiki kwa niaba yako ikiwa utaweka nenosiri. Maelezo kuhusu faili hutumwa katika Kipengele cha Kuvinjari Salama na Brave, lakini maudhui ya faili na nenosiri husalia kwenye kifaa chako.</translation>
 <translation id="6182736845697986886">Imeshindwa kusakinisha kwa sababu ya hitilafu ya ndani ya seva ya usasishaji.</translation>
 <translation id="4368341489795135329">Hakikisha kwamba umeingia katika akaunti kwenye Brave kwa kutumia <ph name="TARGET_DEVICE_NAME"/> yako kisha ujaribu kutuma tena.</translation>
+<translation id="3044046743226566469">Tafuta na uulize maswali mahali popote, hata wakati kidirisha cha Brave kimepunguzwa. Huruhusu Brave itumike chinichini.</translation>
 <translation id="8320964054148936490">Kompyuta hii tayari ina toleo la hivi punde la Brave. Ikiwa programu haifanyikazi, tafadhali ondoa Brave kisha ujaribu tena.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave itafunguka upya hivi sasa}=1{Brave itafunguka upya ndani ya sekunde 1}other{Brave itafunguka upya ndani ya sekunde #}}</translation>
 <translation id="5980269616827212166">Brave inahitaji ruhusa ya kufikia nafasi ya hifadhi ili ipakue faili</translation>
@@ -582,6 +587,7 @@ Huwezi kuhifadhi alamisho mpya kwenye akaunti yako hadi ufute baadhi ya alamisho
 <translation id="7288567540154601580">Vichupo na viendelezi</translation>
 <translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Brave inapendekeza ukiondoe}other{Brave inapendekeza uviondoe}}</translation>
 <translation id="4600669988724328687">Ili utume sauti ya mfumo, fungua Mipangilio ya Mfumo kisha uruhusu 'Kurekodi Sauti ya Mfumo Pekee' kwenye Brave. Utahitaji kuzima kisha uwashe Brave.</translation>
+<translation id="7299899569525778554">Kutafuta kwenye kompyuta ya mezani</translation>
 <translation id="1864557848095568223">Inasasisha Brave</translation>
 <translation id="3403365884036456766">Faili yako ya mapendeleo imeharibika au ni batili. 
 
@@ -636,6 +642,7 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="8607348724092473027"><ph name="PAGE_TITLE"/> - Toleo la Jaribio la Brave Origin</translation>
 <translation id="2684504034454188774">Fanya iwe vigumu watu wanaoweza kufikia shughuli yako kwenye intaneti kuona tovuti unazotembelea. Brave hutumia muunganisho salama kutafuta anwani ya IP ya tovuti katika DNS (Mfumo wa Majina ya Vikoa).</translation>
 <translation id="7810005234485217901">Unaweza kubandika kipengele cha Kutafuta kwa Picha ili uweze kukifikia kwa urahisi</translation>
+<translation id="3219490697448569661">Uliza kuhusu maudhui yaliyo nje ya Brave, kama vile programu au faili nyingine uliyofungua</translation>
 <translation id="4191642852677143100">Chagua unachoruhusu Brave ifikie</translation>
 <translation id="1652855885539187849">Tayari kuna wasifu kwenye Brave unaotumia akaunti hii katika kifaa hiki</translation>
 <translation id="7845233973568007926">Asante kwa kusakinisha. Ni lazima uzime kisha uwashe tena kompyuta yako kabla ya kutumia <ph name="BUNDLE_NAME"/>.</translation>
@@ -720,10 +727,10 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="856656450041460113">Tafuta orodha ya lugha</translation>
 <translation id="839677568225616901">Mashirika mengi yanadhibiti Brave</translation>
 <translation id="8121009781989288430">Hakimiliki <ph name="YEAR"/> Wasanidi wa Brave. Haki zote zimehifadhiwa.</translation>
-<translation id="8601359445272098721">Mpya! Unaweza kutafsiri matini na picha kwenye skrini kwa kuchagua kitufe cha "tafsiri skrini"</translation>
 <translation id="3052349005266761501">Inaanzisha Brave...</translation>
 <translation id="8624541899164515475">Mipangilio, hufunguka katika kichupo kipya.</translation>
 <translation id="5128665650717824082">Huwezi kufanya Brave ya Majaribio iwe kivinjari chako chaguomsingi.</translation>
+<translation id="3053208669360972929">Tafuta ukitumia Brave popote ulipo</translation>
 <translation id="2433912322225810055">Pia inadhibiti ukurasa unaoonyeshwa unapoanzisha Brave au unapotafuta kutoka Sanduku Kuu.</translation>
 <translation id="4100716194836114130">Hii ni Brave yako</translation>
 <translation id="8712637175834984815">Nimeelewa</translation>
@@ -757,6 +764,7 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="7731184591599776500">Nembo ya Brave Enterprise</translation>
 <translation id="2001474182910589370">Pata usalama wa Brave popote ulipo ukitumia programu ya Brave kwenye <ph name="DEVICE_TYPE"/> yako</translation>
 <translation id="6500340165622970282">Imeshindwa kuwasha Brave kwa sababu hitilafu fulani imetokea wakati wa kufungua wasifu wako. Jaribu kuzima kisha uwashe Brave.</translation>
+<translation id="8079450595783684960">ili utafute ukitumia Brave au uweke mapendeleo katika <ph name="BEGIN_LINK"/>Mipangilio<ph name="END_LINK"/></translation>
 <translation id="3424657754843264466">Dhibiti wasifu wa Brave</translation>
 <translation id="1454821212628854849">Tumia kibodi yako kusogeza kati ya Gemini kwenye Brave na kichupo ulichofungua.</translation>
 <translation id="9018218886431812662">Imemaliza kusakinisha</translation>

@@ -1732,6 +1732,9 @@
 <translation id="2077392865355605472">必須有代幣符號</translation>
 <translation id="4636925020451566238">必須有精確的代幣小數位數</translation>
 <translation id="3797613444743816037">Mint 地址</translation>
+<translation id="6571966497164575098">資產 ID</translation>
+<translation id="2110442566771571217">無效或空的代幣資產 ID</translation>
+<translation id="4170599358417498979">此網路不支援自訂資產</translation>
 <translation id="7951915459354237451">費用限制設定為低於基本費用。您的交易可能需要處理很久的時間或失敗。</translation>
 <translation id="2227702748249086756">無法擷取預估費用</translation>
 <translation id="3225624966527491351">匯入 NFT</translation>
@@ -2018,7 +2021,7 @@
 <translation id="418195046117003119">共享中心螢幕擷取畫面</translation>
 <translation id="4712056949543885424">顯示密碼管理員</translation>
 <translation id="8037472847879765671">顯示付款方式</translation>
-<translation id="7269867954894010756">顯示地址</translation>
+<translation id="6262574309547773475">顯示聯絡資訊</translation>
 <translation id="6799213269525079335">尋找下一個</translation>
 <translation id="8666632926482119393">尋找上一個</translation>
 <translation id="3567467864281922039">關閉尋找或停止</translation>
@@ -2147,6 +2150,7 @@
 <translation id="3142853026316054951">切換焦點模式</translation>
 <translation id="3468387898712904997">新的電子郵件別名</translation>
 <translation id="4711475997833555304">建立一個會轉寄到您收件匣的隨機電子郵件。</translation>
+<translation id="5663901348199429994">您的電子郵件別名</translation>
 <translation id="2796584247246518451">新增臨時容器</translation>
 <translation id="8591883849678260674">查看原始頁面</translation>
 <translation id="1969654232209826429">分鐘的閱讀時間</translation>
@@ -2211,6 +2215,7 @@
 <translation id="9215978379284690246">狀態碼：<ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">狀態碼：<ph name="STATUS_CODE"/>，內部狀態碼：<ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">您已達到  premium 速率限制。請在幾小時候重試。</translation>
+<translation id="6873128487002733717">您已達到此模型的高級版上限。請選擇其他模型或稍後再試。</translation>
 <translation id="3683964919745779766">您已到達此模型的費率上限，或點數已用完。請稍後再試。</translation>
 <translation id="7692501701960747469">為此模型設定的 API 金鑰無效。請檢查您的設定並重試。</translation>
 <translation id="7905602379229309187">端點目前已超載。請稍後再試。</translation>
@@ -2390,6 +2395,9 @@
 <translation id="5021823940147712387">移除工具</translation>
 <translation id="8712279871321308580">可用的網站工具</translation>
 <translation id="3690996226559605619">可用的工具 (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">允許此工作階段</translation>
+<translation id="6240821072888636753">每次都詢問</translation>
+<translation id="4290920330097335010">永不允許</translation>
 <translation id="318819763888864209">所有訂閱方案都會自動續訂，不過您可以在續訂前隨時取消訂閱。</translation>
 <translation id="5091223967610958">請分享您所在頁面 (<ph name="HOST_NAME"/>) 的主機名稱，協助我們改善 Leo。</translation>
 <translation id="8732450785281947197">Leo AI 工具</translation>
@@ -2464,7 +2472,7 @@
 <translation id="6077070599873946984">Brave AI 需要你的許可：<ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI 想要在 **<ph name="SITE_ORIGIN"/>** 上執行 **<ph name="TOOL_NAME"/>**</translation>
 <translation id="4163837693685963037">此操作與你的請求可能存在不一致：</translation>
-<translation id="5137568953923142260">允許</translation>
+<translation id="5137568953923142260">允許一次</translation>
 <translation id="3927932062596804919">拒絕</translation>
 <translation id="4191349941249805855">顯示工具引數</translation>
 <translation id="7237059533128264835">隱藏工具引數</translation>
@@ -2511,7 +2519,6 @@
 <translation id="6002159997868894136">點擊以複製別名</translation>
 <translation id="8105770564756958406">被 <ph name="DOMAINS"/> 使用</translation>
 <translation id="5006956315579221642">建立最多 5 個免費的電子郵件別名來保護您的真實電子郵件地址。</translation>
-<translation id="5663901348199429994">您的電子郵件別名</translation>
 <translation id="9046133327037621173">新的電子郵件別名</translation>
 <translation id="3768606658230902536">建立一個隨機的電子郵件地址，該地址將轉發到您的收件匣，同時保持您的個人電子郵件隱私。</translation>
 <translation id="4452721050684632493">已達別名數上限</translation>
@@ -2942,7 +2949,9 @@ Brave 的協助程式服務可過濾對您 VPN 連線執行 DNS 查詢的方式�
 <translation id="4227581348172626540">取消密碼變更</translation>
 <translation id="808894953321890993">變更密碼</translation>
 <translation id="7967687455715421528">無法變更密碼</translation>
+<translation id="7413006094063730650">刪除帳戶</translation>
 <translation id="4869737930995549965">登出</translation>
+<translation id="2902312830803030883">更多操作</translation>
 <translation id="5538654494923870167">開始使用您的 Brave 帳戶</translation>
 <translation id="1544145635547515689">建立 Brave 帳戶</translation>
 <translation id="3828644479849256404">已經有帳戶？登入</translation>
@@ -2967,6 +2976,11 @@ Brave 的協助程式服務可過濾對您 VPN 連線執行 DNS 查詢的方式�
 <translation id="7228810962389847249">在此輸入代碼</translation>
 <translation id="4683390091376980486">確認代碼</translation>
 <translation id="3970028678400797622">重新發送電子郵件代碼</translation>
+<translation id="3653907916071208187">刪除您的 Brave 帳戶?</translation>
+<translation id="8216839865292766307">刪除 Brave 帳戶時，也會一併刪除其電子郵件別名。您可能會失去使用別名註冊的線上服務的存取權限。此操作無法復原。</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">輸入 <ph name="KEYWORD"/> 以啟用帳戶刪除</translation>
+<translation id="536306385881145656">刪除 Brave 帳戶</translation>
 <translation id="2475982808118771221">發生錯誤</translation>
 <translation id="5430795854491041407">錯誤</translation>
 <translation id="2232323423357029857">瀏覽器遇到非預期的錯誤<ph name="ERROR_CODE"/>。請重新啟動瀏覽器並再試一次。</translation>
@@ -2999,4 +3013,10 @@ Brave 的協助程式服務可過濾對您 VPN 連線執行 DNS 查詢的方式�
 <translation id="1063227610401477317">套用變更</translation>
 <translation id="5539769255716491933">回報失敗的步驟</translation>
 <translation id="7562163394445060270">任務完成失敗</translation>
+<translation id="691082536326552372">回報失敗的步驟</translation>
+<translation id="2731141092023803480">將失敗步驟的報告傳送給 Brave 團隊。此報告將包含我們修正問題所需的資訊。<ph name="LINK_BEFORE"/>了解更多。<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">目前的 URL</translation>
+<translation id="4739707522207259415">失敗的步驟</translation>
+<translation id="1767991048059195456">傳送報告</translation>
+<translation id="2168036794078614559">報告已傳送</translation>
 </translationbundle>

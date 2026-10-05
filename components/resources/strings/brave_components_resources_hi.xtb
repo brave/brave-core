@@ -1734,6 +1734,9 @@
 <translation id="2077392865355605472">टोकन सिंबल ज़रूरी है</translation>
 <translation id="4636925020451566238">सटीक मान के टोकन डेसिमल ज़रूरी है</translation>
 <translation id="3797613444743816037">मिंट का पता</translation>
+<translation id="6571966497164575098">एसेट ID</translation>
+<translation id="2110442566771571217">टोकन एसेट ID अमान्य है या खाली है</translation>
+<translation id="4170599358417498979">इस नेटवर्क पर कस्टम एसेट्स सपोर्टेड नहीं हैं</translation>
 <translation id="7951915459354237451">शुल्क सीमा मूल शुल्क से कम तय की गई होती है. आपके लेन-देन में ज़्यादा समय लग सकता है या विफल हो सकता है.</translation>
 <translation id="2227702748249086756">फ़ी का अनुमान फ़ेच नहीं किया जा सका</translation>
 <translation id="3225624966527491351">NFT आयात करें</translation>
@@ -2020,7 +2023,7 @@
 <translation id="418195046117003119">शेयरिंग हब का स्क्रीनशॉट</translation>
 <translation id="4712056949543885424">पासवर्ड मैनेजर दिखाएँ</translation>
 <translation id="8037472847879765671">भुगतान के तरीके दिखाएँ</translation>
-<translation id="7269867954894010756">पता दिखाएँ</translation>
+<translation id="6262574309547773475">संपर्क जानकारी दिखाएँ</translation>
 <translation id="6799213269525079335">अगला खोजें</translation>
 <translation id="8666632926482119393">पिछला खोजें</translation>
 <translation id="3567467864281922039">खोजना या पेज लोड करना बंद करें</translation>
@@ -2149,6 +2152,7 @@
 <translation id="3142853026316054951">फ़ोकस मोड टॉगल करें</translation>
 <translation id="3468387898712904997">नया ईमेल उपनाम</translation>
 <translation id="4711475997833555304">अपने इनबॉक्स में फॉरवर्ड होने वाला एक रैंडम ईमेल बनाएं।</translation>
+<translation id="5663901348199429994">आपके ईमेल उपनाम</translation>
 <translation id="2796584247246518451">नया अस्थायी कंटेनर</translation>
 <translation id="8591883849678260674">मूल देखें</translation>
 <translation id="1969654232209826429">पढ़ने में कम से कम इतना समय लगेगा</translation>
@@ -2213,6 +2217,7 @@
 <translation id="9215978379284690246">स्टेटस कोड: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">स्टेटस कोड: <ph name="STATUS_CODE"/>, इनर स्टेटस कोड: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">आप प्रीमियम रेट की सीमा पूरी कर चुके हैं. कुछ घंटों में कृपया फिर से कोशिश करें.</translation>
+<translation id="6873128487002733717">आप इस मॉडल के लिए प्रीमियम सीमा तक पहुँच गए हैं। कोई दूसरा मॉडल चुनें या बाद में फिर से कोशिश करें।</translation>
 <translation id="3683964919745779766">आप इस मॉडल के लिए रेट की सीमा तक पहुँच गए हैं या आपके क्रेडिट खत्म हो चुके हैं। कृपया बाद में कोशिश करें।</translation>
 <translation id="7692501701960747469">इस मॉडल के लिए कॉन्फ़िगर की गई API की अमान्य है। कृपया अपना कॉन्फ़िगरेशन देखें और फिर से कोशिश करें।</translation>
 <translation id="7905602379229309187">फ़िलहाल, एंडपॉइंट ओवरलोडेड है। कृपया बाद में कोशिश करें।</translation>
@@ -2392,6 +2397,9 @@
 <translation id="5021823940147712387">टूल निकालें</translation>
 <translation id="8712279871321308580">उपलब्ध वेबसाइट टूल</translation>
 <translation id="3690996226559605619">उपलब्ध टूल (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">इस सत्र के लिए अनुमति दें</translation>
+<translation id="6240821072888636753">हर बार पूछें</translation>
+<translation id="4290920330097335010">कभी अनुमति न दें</translation>
 <translation id="318819763888864209">सभी सदस्यताएं अपने आप नवीनीकृत हो जाती हैं, लेकिन नवीनीकरण से पहले किसी भी समय रद्द की जा सकती हैं।</translation>
 <translation id="5091223967610958">(<ph name="HOST_NAME"/>) पर आप जिस पेज पर हैं, उसका होस्टनेम शेयर करें, ताकि हम Leo को बेहतर बना सकें।</translation>
 <translation id="8732450785281947197">Leo AI टूल</translation>
@@ -2466,7 +2474,7 @@
 <translation id="6077070599873946984">Brave AI को इसके लिए आपकी अनुमति की आवश्यकता है: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI **<ph name="SITE_ORIGIN"/>** पर **<ph name="TOOL_NAME"/>** को एक्ज़ीक्यूट करना चाहेगा</translation>
 <translation id="4163837693685963037">यह ऑपरेशन सम्भवतः आपके अनुरोध से मेल नहीं खा रहा था:</translation>
-<translation id="5137568953923142260">अनुमति दें</translation>
+<translation id="5137568953923142260">एक बार अनुमति दें</translation>
 <translation id="3927932062596804919">अस्वीकार करें</translation>
 <translation id="4191349941249805855">टूल आर्ग्युमेंट दिखाएँ</translation>
 <translation id="7237059533128264835">टूल आर्ग्युमेंट छुपाएँ</translation>
@@ -2513,7 +2521,6 @@
 <translation id="6002159997868894136">उपनाम कॉपी करने के लिए क्लिक करें</translation>
 <translation id="8105770564756958406"><ph name="DOMAINS"/> द्वारा इस्तेमाल किया गया</translation>
 <translation id="5006956315579221642">अपने असली ईमेल पते को सुरक्षित रखने के लिए अधिकतम 5 मुफ़्त ईमेल उपनाम बना सकते हैं।</translation>
-<translation id="5663901348199429994">आपके ईमेल उपनाम</translation>
 <translation id="9046133327037621173">नया ईमेल उपनाम</translation>
 <translation id="3768606658230902536">ऐसा रैंडम ईमेल पता बनाएँ जो आपके इनबॉक्स में फ़ॉरवर्ड करता हो और आपका व्यक्तिगत ईमेल निजी रखता हो।</translation>
 <translation id="4452721050684632493">अलियास सीमा पूरी हो गई</translation>
@@ -2943,7 +2950,9 @@ Brave में एक सहयोगी सेवा है, जो आपक�
 <translation id="4227581348172626540">पासवर्ड बदलना रद्द करें</translation>
 <translation id="808894953321890993">पासवर्ड बदलें</translation>
 <translation id="7967687455715421528">पासवर्ड बदला नहीं जा सका</translation>
+<translation id="7413006094063730650">अकाउंट मिटाएँ</translation>
 <translation id="4869737930995549965">लॉग आउट करें</translation>
+<translation id="2902312830803030883">और क्रियाएँ</translation>
 <translation id="5538654494923870167">अपने Brave अकाउंट के साथ शुरुआत करें</translation>
 <translation id="1544145635547515689">Brave अकाउंट बनायें</translation>
 <translation id="3828644479849256404">पहले से अकाउंट है? लॉग इन करें</translation>
@@ -2968,6 +2977,11 @@ Brave में एक सहयोगी सेवा है, जो आपक�
 <translation id="7228810962389847249">कोड यहां दर्ज करें</translation>
 <translation id="4683390091376980486">कोड की पुष्टि करें</translation>
 <translation id="3970028678400797622">ईमेल कोड फिर से भेजें</translation>
+<translation id="3653907916071208187">अपना Brave अकाउंट मिटाएँ?</translation>
+<translation id="8216839865292766307">किसी Brave अकाउंट को मिटाने से उसके ईमेल उपनाम भी मिट जाएँगे। आप उन ऑनलाइन सेवाओं तक पहुँच खो सकते हैं जहाँ आपने साइन अप करने के लिए उपनाम का उपयोग किया था। इस क्रिया को पूर्ववत नहीं किया जा सकता।</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">अकाउंट मिटाना सक्षम करने के लिए <ph name="KEYWORD"/> टाइप करें</translation>
+<translation id="536306385881145656">Brave अकाउंट मिटाएँ</translation>
 <translation id="2475982808118771221">एक त्रुटि हुई</translation>
 <translation id="5430795854491041407">गड़बड़ी</translation>
 <translation id="2232323423357029857">ब्राउज़र में एक अप्रत्याशित त्रुटि आई<ph name="ERROR_CODE"/>। कृपया ब्राउज़र को पुनः आरंभ करें और फिर से कोशिश करें।</translation>
@@ -3000,4 +3014,10 @@ Brave में एक सहयोगी सेवा है, जो आपक�
 <translation id="1063227610401477317">बदलाव लागू करें</translation>
 <translation id="5539769255716491933">विफल चरणों की रिपोर्ट करें</translation>
 <translation id="7562163394445060270">कार्य पूरा होने में विफल</translation>
+<translation id="691082536326552372">विफल चरणों की रिपोर्ट करें</translation>
+<translation id="2731141092023803480">Brave टीम को विफल चरणों की एक रिपोर्ट भेजें। इस रिपोर्ट में समस्या को ठीक करने के लिए हमें आवश्यक जानकारी होगी। <ph name="LINK_BEFORE"/>और जानें।<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">मौजूदा URL</translation>
+<translation id="4739707522207259415">विफल चरण</translation>
+<translation id="1767991048059195456">रिपोर्ट भेजें</translation>
+<translation id="2168036794078614559">रिपोर्ट भेजी गई</translation>
 </translationbundle>
