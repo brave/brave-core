@@ -15,15 +15,25 @@ source_set("email_aliases") {
     "email_aliases_promo_ui.h",
   ]
 
+  if (is_android) {
+    sources += [
+      "email_aliases_settings_ui_android.cc",
+      "email_aliases_settings_ui_android.h",
+    ]
+  }
+
   deps = [
     "//base",
     "//brave/browser/brave_account",
     "//brave/browser/email_aliases",
-    "//brave/browser/resources/settings:resources",
     "//brave/components/brave_account",
     "//brave/components/brave_account/mojom",
+    "//brave/components/brave_account/resources",
     "//brave/components/constants",
+    "//brave/components/email_aliases:mojom",
+    "//brave/components/email_aliases:service",
     "//brave/components/resources:static_resources_grit",
+    "//brave/components/resources:strings_grit",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/webui",
     "//ui/webui",
