@@ -12,6 +12,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service_waiter.h"
 #include "brave/components/ntp_background_images/browser/switches.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -53,6 +54,11 @@ class NTPDynamicNewTabTakeoverWithCSPViolationBrowserTest
     NTPBackgroundImagesServiceWaiter waiter(*ntp_background_images_service);
     ntp_background_images_service->Init();
     waiter.WaitForOnSponsoredContentDidUpdate();
+
+    // Loading the New Tab Page registers the URLDataSource that serves
+    // chrome-untrusted://new-tab-takeover.
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(),
+                                             GURL(chrome::kChromeUINewTabURL)));
   }
 
   content::WebContents* GetActiveWebContents() {
