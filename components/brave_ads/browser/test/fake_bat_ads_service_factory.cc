@@ -20,6 +20,10 @@ FakeBatAdsServiceFactory::FakeBatAdsServiceFactory() = default;
 
 FakeBatAdsServiceFactory::~FakeBatAdsServiceFactory() = default;
 
+void FakeBatAdsServiceFactory::Invalidate() {
+  ++invalidate_count_;
+}
+
 const FakeBatAdsClientNotifier*
 FakeBatAdsServiceFactory::bat_ads_client_notifier() const {
   return bat_ads_service_ ? bat_ads_service_->bat_ads_client_notifier()
@@ -55,8 +59,7 @@ size_t FakeBatAdsServiceFactory::trigger_notification_ad_event_count() const {
   return bat_ads ? bat_ads->trigger_notification_ad_event_count() : 0U;
 }
 
-mojo::Remote<bat_ads::mojom::BatAdsService> FakeBatAdsServiceFactory::Launch()
-    const {
+mojo::Remote<bat_ads::mojom::BatAdsService> FakeBatAdsServiceFactory::Launch() {
   ++launch_count_;
 
   mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_remote;
