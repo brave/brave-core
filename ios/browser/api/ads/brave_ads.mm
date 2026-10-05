@@ -146,7 +146,8 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
         std::make_unique<brave_ads::VirtualPrefProviderDelegateIOS>(*profile));
 
     httpClient = std::make_unique<brave_ads::HttpClient>(
-        *self.localStatePrefService, profile->GetSharedURLLoaderFactory(),
+        *self.profilePrefService, *self.localStatePrefService,
+        profile->GetSharedURLLoaderFactory(),
         base::BindRepeating(
             [](ProfileIOS* profile) { return profile->GetNetworkContext(); },
             profile),

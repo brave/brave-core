@@ -75,6 +75,12 @@ void ObliviousHttpKeyConfig::Refetch() {
   Fetch();
 }
 
+void ObliviousHttpKeyConfig::Stop() {
+  fetch_timer_.Stop();
+  is_fetching_ = false;
+  weak_ptr_factory_.InvalidateWeakPtrs();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 base::TimeDelta ObliviousHttpKeyConfig::ExpiresAfter() const {

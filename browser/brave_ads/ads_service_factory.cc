@@ -145,7 +145,7 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
       HostContentSettingsMapFactory::GetForProfile(profile);
 
   auto http_client = std::make_unique<HttpClient>(
-      *local_state,
+      *prefs, *local_state,
       default_store_partition->GetURLLoaderFactoryForBrowserProcess(),
       base::BindRepeating(&GetNetworkContextForProfile, context),
       /*use_ohttp_staging=*/IsStagingEnvironment(*prefs));
