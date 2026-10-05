@@ -57,8 +57,9 @@ public enum NavigationPath: Equatable {
     } else if urlString.starts(with: "\(scheme)://open-url") {
       let urlText = components.valueForQuery("url")
       let url = URIFixup.getURL(urlText ?? "") ?? urlText?.asURL
-      let forcedPrivate = Preferences.Privacy.privateBrowsingOnly.value || isPrivateBrowsing
-      let isPrivate = Bool(components.valueForQuery("private") ?? "") ?? forcedPrivate
+      let isPrivate =
+        Preferences.Privacy.privateBrowsingOnly.value
+        ? true : Bool(components.valueForQuery("private") ?? "") ?? isPrivateBrowsing
       self = .url(webURL: url, isPrivate: isPrivate)
     } else if urlString.starts(with: "\(scheme)://open-text") {
       let text = components.valueForQuery("text")
