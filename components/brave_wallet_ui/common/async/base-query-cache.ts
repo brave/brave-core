@@ -126,7 +126,6 @@ export class BaseQueryCache {
         {
           ...networkEntityAdapter.getInitialState(),
           hiddenIds: allNetworks.hiddenChainIds,
-          offRampChainIds: allNetworks.offRampChainIds,
           ankrChainIds: allNetworks.ankrChainIds,
           swapChainIds: allNetworks.swapChainIds,
         },

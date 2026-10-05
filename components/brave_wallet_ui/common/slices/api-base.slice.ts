@@ -50,8 +50,6 @@ export function createWalletApiBase() {
       'NFTPinningStatus',
       'NFTSPinningStatus',
       'AutoPinEnabled',
-      'OnRampAssets',
-      'OffRampAssets',
       'CoingeckoId',
       'TokenSuggestionRequests',
       'CoingeckoId',

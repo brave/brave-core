@@ -22,7 +22,6 @@ import { qrCodeEndpoints } from './endpoints/qr-code.endpoints'
 import { handleEndpointError } from '../../utils/api-utils'
 import { walletEndpoints } from './endpoints/wallet.endpoints'
 import { tokenEndpoints } from './endpoints/token.endpoints'
-import { offRampEndpoints } from './endpoints/off-ramp.endpoints'
 import { coingeckoEndpoints } from './endpoints/coingecko-endpoints'
 import {
   tokenSuggestionsEndpoints, //
@@ -117,8 +116,6 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: pricingEndpoints })
       // nfts endpoints
       .injectEndpoints({ endpoints: nftsEndpoints })
-      // offRamp endpoints
-      .injectEndpoints({ endpoints: offRampEndpoints })
       // coingecko endpoints
       .injectEndpoints({ endpoints: coingeckoEndpoints })
       // token suggestion request endpoints
@@ -218,7 +215,6 @@ export const {
   useGetNftAssetIdsByCollectionRegistryQuery,
   useGetNftDiscoveryEnabledStatusQuery,
   useGetNftMetadataQuery,
-  useGetOffRampAssetsQuery,
   useGetPendingAddChainRequestQuery,
   useGetPendingDecryptRequestQuery,
   useGetPendingGetEncryptionPublicKeyRequestQuery,
@@ -278,7 +274,6 @@ export const {
   useLazyGetNftDiscoveryEnabledStatusQuery,
   useLazyGetPendingTokenSuggestionRequestsQuery,
   useLazyGetPolkadotAddressForNetworkQuery,
-  useLazyGetSellAssetUrlQuery,
   useLazyGetSolanaEstimatedFeeQuery,
   useLazyGetTokenBalancesForChainIdQuery,
   useLazyGetTokenBalancesRegistryQuery,
@@ -364,19 +359,6 @@ export const useGetNetworksQuery = (opts?: { skip?: boolean }) => {
       isLoading: res.isLoading,
       error: res.error,
       data: networkSelectors.selectAll(res.data),
-    }),
-    skip: opts?.skip,
-  })
-
-  return queryResults
-}
-
-export const useGetOffRampNetworksQuery = (opts?: { skip?: boolean }) => {
-  const queryResults = useGetNetworksRegistryQuery(undefined, {
-    selectFromResult: (res) => ({
-      isLoading: res.isLoading,
-      error: res.error,
-      data: networkSelectors.selectOffRampNetworks(res.data),
     }),
     skip: opts?.skip,
   })

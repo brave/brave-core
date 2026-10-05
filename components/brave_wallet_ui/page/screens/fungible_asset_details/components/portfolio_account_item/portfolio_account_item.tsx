@@ -76,20 +76,10 @@ interface Props {
   assetBalance: string
   assetNetwork?: BraveWallet.NetworkInfo | null
   hideBalances?: boolean
-  isSellSupported: boolean
-  showSellModal: () => void
 }
 
 export const PortfolioAccountItem = (props: Props) => {
-  const {
-    asset,
-    assetBalance,
-    account,
-    assetNetwork,
-    hideBalances,
-    isSellSupported,
-    showSellModal,
-  } = props
+  const { asset, assetBalance, account, assetNetwork, hideBalances } = props
 
   // Routing
   const history = useHistory()
@@ -147,16 +137,9 @@ export const PortfolioAccountItem = (props: Props) => {
     })
   }, [spotPrices, assetBalance, asset])
 
-  const isAssetsBalanceZero = React.useMemo(() => {
-    return new Amount(assetBalance).isZero()
-  }, [assetBalance])
-
   const blockExplorerSupported = !!account.address
   const isDepositSupported = getDoesTokenSupportDeposit(asset)
-  const showAccountMenu =
-    blockExplorerSupported
-    || (isSellSupported && !isAssetsBalanceZero)
-    || isDepositSupported
+  const showAccountMenu = blockExplorerSupported || isDepositSupported
 
   // Methods
   const onSelectAccount = React.useCallback(() => {
@@ -250,11 +233,6 @@ export const PortfolioAccountItem = (props: Props) => {
           <PortfolioAccountMenu
             onClickViewOnExplorer={
               blockExplorerSupported ? onViewAccountOnBlockExplorer : undefined
-            }
-            onClickSell={
-              isSellSupported && !isAssetsBalanceZero
-                ? showSellModal
-                : undefined
             }
             onClickDeposit={
               isDepositSupported ? () => setShowDepositModal(true) : undefined

@@ -324,7 +324,6 @@ describe('parseSwapInfo', () => {
       },
       ids: [sourceNetworkId, destinationNetworkId],
       hiddenIds: [],
-      offRampChainIds: [],
       ankrChainIds: [],
       swapChainIds: [],
     }

@@ -61,35 +61,6 @@ export const isValidIconExtension = (url?: string) =>
 export const isDataURL = (url?: string) =>
   url?.startsWith('chrome://erc-token-images/')
 
-export const getRampNetworkPrefix = (chainId: string, isOfframp?: boolean) => {
-  switch (chainId) {
-    // Offramp uses ETH prefix
-    case BraveWallet.MAINNET_CHAIN_ID:
-      return isOfframp ? 'ETH' : ''
-    case BraveWallet.AVALANCHE_MAINNET_CHAIN_ID:
-      return 'AVAXC'
-    case BraveWallet.BNB_SMART_CHAIN_MAINNET_CHAIN_ID:
-      return 'BSC'
-    case BraveWallet.POLYGON_MAINNET_CHAIN_ID:
-      return 'MATIC'
-    case BraveWallet.SOLANA_MAINNET:
-      return 'SOLANA'
-    case BraveWallet.OPTIMISM_MAINNET_CHAIN_ID:
-      return 'OPTIMISM'
-    // Offramp uses CELO prefix
-    case BraveWallet.CELO_MAINNET_CHAIN_ID:
-      return isOfframp ? 'CELO' : ''
-    case BraveWallet.FANTOM_MAINNET_CHAIN_ID:
-      return 'FANTOM'
-    case BraveWallet.FILECOIN_MAINNET:
-      return 'FILECOIN'
-    case BraveWallet.BITCOIN_MAINNET:
-      return isOfframp ? 'BTC' : ''
-    default:
-      return ''
-  }
-}
-
 export const formatAsDouble = (value: string): string =>
   // Removes all characters except numbers, commas and decimals
   value.replace(/[^0-9.,]+/g, '')

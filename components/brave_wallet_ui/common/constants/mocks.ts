@@ -736,26 +736,6 @@ BraveWallet.SignCardanoTransactionRequest = {
   }),
 }
 
-export const mockOnRampCurrency: BraveWallet.OnRampCurrency = {
-  currencyCode: 'USD',
-  currencyName: 'United States Dollar',
-  providers: [],
-}
-
-export const mockOnRampCurrencies: BraveWallet.OnRampCurrency[] = [
-  mockOnRampCurrency,
-  {
-    currencyCode: 'EUR',
-    currencyName: 'Euro',
-    providers: [],
-  },
-  {
-    currencyCode: 'GBP',
-    currencyName: 'British Pound Sterling',
-    providers: [],
-  },
-]
-
 export type NativeAssetBalanceRegistry = Record<
   string, // account address
   | Record<
