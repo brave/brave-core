@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "เกี่ยวกับ";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "เกี่ยวกับ Brave Shields";
-
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "เว็บไซต์ต่างๆ มักมีคุกกี้และสคริปต์ที่พยายามระบุตัวตนและอุปกรณ์ของคุณ โดยต้องการค้นหาว่าคุณเป็นใครและติดตามคุณไปทั่วทุกเว็บไซต์ด้วยการติดตามสิ่งที่คุณทำบนทุกเว็บไซต์\n\nซึ่ง Brave จะบล็อกสิ่งเหล่านี้เพื่อให้คุณท่องเว็บได้โดยไม่ถูกติดตาม";
-
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "การดำเนินการนี้จะทำให้คุณสามารถบันทึกภาพไปยังคลังภาพของคุณได้";
 
@@ -36,9 +30,6 @@
 
 /* Text for the toggle switch to clear 'Brave Ads' data in settings */
 "ads.braveAdsDataToggleOption" = "ข้อมูล Brave Ads";
-
-/* individual blocking statistic title */
-"AdsAndTrackers" = "โฆษณาและตัวติดตาม";
 
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "ขอไซต์เดสก์ท็อปเสมอ";
@@ -130,18 +121,6 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "ป้อนอัตโนมัติ";
 
-/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
-"AutoRedirectAMPPages" = "เปลี่ยนเส้นทางหน้า AMP อัตโนมัติ";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
-"AutoRedirectAMPPagesDescription" = "ไปที่ URL หน้าเดิม (ที่ไม่ใช่ AMP) เสมอแทนเวอร์ชัน Accelerated Mobile Page ของ Google";
-
-/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
-"AutoRedirectTrackingURLs" = "เปลี่ยนเส้นทาง URL แบบติดตามอัตโนมัติ";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "เปิดใช้การรองรับในการเลี่ยงเปลี่ยนเส้นทาง URL ติดตามระดับสูง";
-
 /* cookie settings option */
 "Block3rdPartyCookies" = "บล็อกคุกกี้จากบุคคลที่ 3";
 
@@ -160,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "ตั้งค่าไม่สำเร็จ โปรดลองอีกครั้ง";
 
-/* A title for a setting that enables cookie consent notices */
-"BlockCookieConsentNotices" = "บล็อกการแจ้งเตือนความยินยอมในการจัดเก็บคุกกี้";
-
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "การบล็อกตัวติดตาม";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "บล็อกป๊อปอัป";
-
-/* No comment provided by engineer. */
-"BlockScripts" = "บล็อกสคริปต์";
-
-/* No comment provided by engineer. */
-"BlockScriptsDescription" = "บล็อก JavaScript (อาจทำให้เว็บไซต์เสียหาย)";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "เพิ่มบุ๊กมาร์กให้กับ %lld แท็บ";
@@ -239,46 +209,10 @@
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "ปิด";
 
 /* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "การควบคุมขั้นสูง";
-
-/* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave Shield & ความเป็นส่วนตัว";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Shields & ความเป็นส่วนตัว";
-
-/* The number of ads and trackers blocked will be next to this */
-"BraveShieldsBlockedCountLabel" = "บล็อกโฆษณาและสิ่งที่น่ากลัวต่างๆ แล้ว";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "ดูข้อมูลเพิ่มเติม";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "ค่าเริ่มต้นทั่วไปของ Brave Shields";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalControls" = "การควบคุมทั่วไป";
-
-/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "บันทึกข้อมูลการติดต่อสำหรับการรายงานเว็บไซต์ที่เสียในอนาคต";
-
-/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "หากคุณให้ข้อมูลการติดต่อ ข้อมูลจะถูกบันทึกเพื่อใช้ในรายงานในอนาคต";
-
-/* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "หากเว็บไซต์นี้ดูเหมือนมีปัญหา ให้ลองปิด Shields";
-
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave Shields";
-
-/* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "ล่าง";
-
-/* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "บน";
-
-/* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "แตะสองครั้งเพื่อเปิดใช้ Brave Shields";
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
@@ -844,15 +778,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findPreviousTitle" = "ค้นหาก่อนหน้า";
 
-/* individual blocking statistic title */
-"FingerprintingMethods" = "วิธีพิมพ์ลายนิ้วมือ";
-
-/* No comment provided by engineer. */
-"FingerprintingProtection" = "บล็อกการเก็บร่องรอย";
-
-/* No comment provided by engineer. */
-"FingerprintingProtectionDescription" = "ทำให้เว็บไซต์จดจำคุณลักษณะเฉพาะของอุปกรณ์ของคุณได้ยากขึ้น";
-
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "อนุญาตให้เปิด Universal Links ในแอปภายนอกได้";
 
@@ -919,15 +844,6 @@
 /* No comment provided by engineer. */
 "Home" = "หน้าแรก";
 
-/* No comment provided by engineer. */
-"HTTPSEverywhere" = "อัปเกรดการเชื่อมต่อเป็น HTTPS";
-
-/* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "เปิดเว็บไซต์โดยใช้ HTTPS ที่ปลอดภัยแทน HTTP เมื่อสามารถทำได้";
-
-/* individual blocking statistic title */
-"HTTPSUpgrades" = "การอัพเกรด HTTPS ";
-
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "นำเข้าข้อมูลการเรียกดู";
 
@@ -948,6 +864,9 @@
 
 /* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
+
+/* Title for Brave Leo voice input menu item. Brave Leo is the name of a product and should not be translated */
+"LeoVoiceInputMenuItem" = "การป้อนข้อมูลข้อความเสียง Leo";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "การลงชื่อเข้าใช้ที่บันทึกเอาไว้จะถูกลบแบบถาวร";
@@ -1666,9 +1585,6 @@
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "เพลย์ลิสต์ที่ไม่มีชื่อ";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
-"PopoverShieldsMenuClose" = "ปิดเมนู Shields";
-
 /* Settings privacy section title */
 "Privacy" = "ความเป็นส่วนตัว";
 
@@ -2017,41 +1933,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "นำรายการโปรดออก";
 
-/* No comment provided by engineer. */
-"ReportABrokenSite" = "รายงานเว็บไซต์เสียหาย";
-
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "รายงานข้อบกพร่อง";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"ReportBrokenAdditionalDetails" = "รายละเอียดเพิ่มเติม (ไม่บังคับ)";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"reportBrokenAdditionalDetailsRequired" = "รายละเอียดเพิ่มเติม";
-
-/* A label for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "ปัญหาหลักที่คุณกำลังเห็นคืออะไร";
-
-/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
-"ReportBrokenContactMe" = "ติดต่อฉันที่: (ไม่บังคับ)";
-
-/* Contact info storing description */
-"ReportBrokenContactMeDescription" = "หากคุณให้ข้อมูลติดต่อไว้ ข้อมูลนั้นจะถูกเก็บเพื่อรายงานปัญหาเว็บไซต์ที่เสียในอนาคต";
-
-/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
-"ReportBrokenContactMeSuggestions" = "อีเมล, Twitter, ฯลฯ";
-
-/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"ReportBrokenPlaceholder" = "เลือกหนึ่งตัวเลือก";
-
-/* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "แจ้งให้ผู้พัฒนา Brave ทราบว่าเว็บไซต์นี้ทำงานไม่ถูกต้องตามที่คิดไว้:";
-
-/* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "หมายเหตุ: รายงานที่ส่งไปยังเซิร์ฟเวอร์ของ Brave จะรวมแอดเดรสของเว็บไซต์ หมายเลขเวอร์ชันของ Brave การตั้งค่า Shields สถานะ VPN และการตั้งค่าภาษา";
-
-/* No comment provided by engineer. */
-"ReportBrokenSubmitButtonTitle" = "ส่ง";
 
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraAndMicrophonePermissionPrompt" = "\"%@\" ต้องการเข้าถึงกล้องและไมโครโฟน";
@@ -2329,9 +2212,6 @@
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "บันทึกการลงชื่อเข้าใช้";
 
-/* individual blocking statistic title */
-"ScriptsBlocked" = "บล็อกสคริปต์";
-
 /* The placeholder text for bookmark search */
 "searchBookmarksTitle" = "ค้นหาบุ๊กมาร์ก";
 
@@ -2572,21 +2452,6 @@
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "โฆษณาถูกบล็อกขณะดูวิดีโอบนเว็บไซต์นี้";
 
-/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "ค่าเริ่มต้นทั่วไปของ Brave Shields";
-
-/* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "นี่คือการตั้งค่า Shields เริ่มต้นสำหรับเว็บไซต์ใหม่ โดยการเปลี่ยนแปลงเหล่านี้จะไม่ส่งผลต่อการตั้งค่าที่มีอยู่ของแต่ละเว็บไซต์";
-
-/* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "คุณกำลังค้นเว็บนี้โดยไม่มีการป้องกันความเป็นส่วนตัวของ Brave เว็บนี้ทำงานไม่ถูกต้องเมื่อเปิด Shields หรือ?";
-
-/* shields overview message */
-"ShieldsOverview" = "Shields ของเว็บไซต์จะให้การควบคุมกับคุณเมื่อโฆษณาและตัวติดตามถูกบล็อกบนแต่ละเว็บไซต์ที่คุณเยี่ยมชม หากคุณต้องการเห็นโฆษณาบนเว็บไซต์นั้นๆ คุณสามารถเปิดใช้พวกมันได้จากที่นี่";
-
-/* shields overview footer message */
-"ShieldsOverviewFooter" = "หมายเหตุ: เว็บไซต์บางแห่งอาจต้องใช้สคริปต์เพื่อใช้ในการทำงานได้อย่างถูกต้อง ดังนั้นแล้ว Shield จึงถูกปิดใช้งานในค่าเริ่มต้น";
-
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "แท็บส่วนตัวใหม่";
 
@@ -2772,15 +2637,6 @@
 
 /* Settings item for clearing site-specific settings and shields settings. */
 "SiteAndShieldsSettings" = "การตั้งค่าเว็บไซต์และชิลด์";
-
-/* No comment provided by engineer. */
-"SiteReportedBody" = "ขอบคุณที่แจ้งให้ผู้พัฒนา Brave ทราบว่ามีข้อผิดพลาดในเว็บไซต์นี้ เราจะพยายามแก้ไขปัญหานี้อย่างเต็มที่";
-
-/* No comment provided by engineer. */
-"SiteReportedTitle" = "ขอบคุณ";
-
-/* Brave panel topmost title */
-"SiteShieldSettings" = "Shields";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "ฉันบันทึกข้อมูลด้วยการท่องเว็บด้วย Brave ทุกวัน";
@@ -3558,9 +3414,6 @@
 
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "ยกเลิกโดยผู้ใช้";
-
-/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
-"UseRegionalAdblock" = "ใช้การบล็อกโฆษณาภายในภูมิภาค";
 
 /* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "ปิด";

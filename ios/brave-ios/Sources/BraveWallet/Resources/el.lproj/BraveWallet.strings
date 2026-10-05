@@ -7,41 +7,11 @@
 /* The title displayed above a text field that contains the account's name */
 "wallet.accountDetailsNameTitle" = "Όνομα λογαριασμού";
 
-/* The title displayed on the account details screen */
-"wallet.accountDetailsTitle" = "Λεπτομέρειες λογαριασμού";
-
 /* The error shown below the account name field when adding or renaming a wallet account if the length is longer than max characters. '%lld' refers to a number (for example "Account name must be at 30 characters or less") */
 "wallet.accountNameLengthError" = "Το όνομα λογαριασμού πρέπει να έχει %lld χαρακτήρες ή λιγότερους";
 
-/* A button title for displaying their accounts private key */
-"wallet.accountPrivateKey" = "Ιδιωτικό κλειδί";
-
-/* A warning message displayed at the top of the Private Key screen */
-"wallet.accountPrivateKeyDisplayWarning" = "Προειδοποίηση: Μην κοινοποιείτε ποτέ το ιδιωτικό σας κλειδί. Οποιοσδήποτε έχει αυτό το κλειδί μπορεί να πάρει τα στοιχεία σας για πάντα.";
-
-/* The title of a confirmation dialog when attempting to remove an account */
-"wallet.accountRemoveAlertConfirmation" = "Κατάργηση αυτού του λογαριασμού;";
-
-/* A button title to trigger deleting a secondary account */
-"wallet.accountRemoveButtonTitle" = "Κατάργηση λογαριασμού";
-
-/* The description used below Security title in the row opening DApp settings in Account Details. */
-"wallet.accountSecurityDescription" = "Συνδεδεμένοι ιστότοποι και δικαιώματα";
-
 /* The title of the accounts page in the Crypto tab */
 "wallet.accountsPageTitle" = "Λογαριασμοί";
-
-/* The title of the button at the bottom of Swap Screen, when the sell token is erc20 and it has not been activated its allowance. %@ will be replaced with the sell token's symbol such as 'DAI' or 'USDC' */
-"wallet.activateToken" = "Ενεργοποίηση διακριτικού %@";
-
-/* The description when showing no transactions inside Activity tab. */
-"wallet.activityPageEmptyDescription" = "Μόλις πραγματοποιήσετε μια συναλλαγή, θα μπορέσετε να τη δείτε εδώ.";
-
-/* The title when showing no transactions inside Activity tab. */
-"wallet.activityPageEmptyTitle" = "Δεν υπάρχουν ακόμη συναλλαγές για προβολή";
-
-/* The title of the tab that will display user's transaction activity for all accounts. */
-"wallet.activityPageTitle" = "Δραστηριότητα";
 
 /* The title of the button which when tapped will add a new account to the users list of crypto accounts. It will be used as the title of the navigation bar item button on the top right of the add custom token scree. */
 "wallet.addAccountAddButton" = "Προσθήκη";
@@ -52,38 +22,8 @@
 /* The title of the add account screen. '%@' will be placed with a coin type title. For example, 'Add Ethereum Account'. */
 "wallet.addAccountWithCoinTypeTitle" = "Προσθήκη λογαριασμού %@";
 
-/* The title of the button that is located in the same area of the assets list header but on the right side. Users will click it and go to add custom asset screen. */
-"wallet.addCustomAsset" = "Προσθήκη προσαρμοσμένου στοιχείου";
-
 /* The title of bar item for users to add custom network screen */
 "wallet.addCustomNetworkBarItemTitle" = "Προσθήκη δικτύου";
-
-/* The title of last option in the network selection dropdown menu. A short-cut for user to add new custom network. */
-"wallet.addCustomNetworkDropdownButtonTitle" = "Προσθήκη δικτύου…";
-
-/* A title of one segment on top of Add Custom Assets screen. Users would need to select this segment if they are willing to add a custom non-fungible token. */
-"wallet.addCustomNFTTitle" = "NFT";
-
-/* A title of an initally hidden section in Add custom asset screen for users to input icon url and coingecko id. */
-"wallet.addCustomTokenAdvanced" = "Για προχωρημένους";
-
-/* A title that will be displayed on top of the text field for users to input the custom token's coingecko ID. */
-"wallet.addCustomTokenCoingeckoId" = "Αναγνωριστικό Coingecko";
-
-/* The message of the error pop up when there is an error occurs during the process of adding a custom token. */
-"wallet.addCustomTokenErrorMessage" = "Αποτυχία προσθήκης προσαρμοσμένου token, δοκιμάστε ξανά.";
-
-/* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
-"wallet.addCustomTokenErrorTitle" = "Δεν είναι δυνατή η προσθήκη προσαρμοσμένου διακριτικού";
-
-/* A title that will be displayed on top of the text field for users to input the custom token's icon URL. */
-"wallet.addCustomTokenIconURL" = "Εικονίδιο URL";
-
-/* A title that will be displayed on top of the text field for users to input the custom token's ID. */
-"wallet.addCustomTokenId" = "Αναγνωριστικό token (μόνο για το ERC721)";
-
-/* A title of one segment on top of Add Custom Assets screen, which is default selected. Users would need to select this segment if they are willing to add a custom fungible token. */
-"wallet.addCustomTokenTitle" = "Token";
 
 /* The description of the view shown over a dapps website that describes what adding a new network will do. */
 "wallet.addNetworkDescription" = "Αυτό θα επιτρέψει τη χρήση αυτού του δικτύου στο Πορτοφόλι Brave.";
@@ -106,59 +46,14 @@
 /* The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen. */
 "wallet.advancedSettingsTransaction" = "Σύνθετες ρυθμίσεις";
 
-/* The label of badge beside the filter option that allows users to select which accounts to filter assets by, when all accounts are selected. Used in Portfolio/NFT filters and display settings. */
-"wallet.allAccountsLabel" = "Όλοι οι λογαριασμοί";
-
-/* The label of badge beside the filter option that allows users to select which networks to filter assets by, when all networks are selected. Used in Portfolio/NFT filters and display settings. */
-"wallet.allNetworksLabel" = "Όλα τα δίκτυα";
-
 /* A title displayed above two numbers (the amount and transaction fee) showing the user the breakdown of the amount transferred and transaction fee for any Solana transaction. The "+" is a literal plus as the label below will show such as "0.004 SOL + 0.00064 SOL" */
 "wallet.amountAndFee" = "Ποσό + τέλος";
 
 /* A title displayed above two numbers (the amount and gas) showing the user the breakdown of the amount transferred and gas fee. The "+" is a literal plus as the label below will show such as "0.004 ETH + 0.00064 ETH" */
 "wallet.amountAndGas" = "Ποσό + Καύσιμο";
 
-/* A placeholder on a text field to describe an amount of some currency. '%@' will be replaced with a currency code such as 'USD' or 'BAT' */
-"wallet.amountInCurrency" = "Ποσό σε %@";
-
 /* The title of the button to approve adding a new network on a add new network request from a dapps website. */
 "wallet.approveNetworkButtonTitle" = "Έγκριση";
-
-/* A subtitle on the asset details screen that uses the name and symbol. Example: Basic Attention Token Price (BAT) */
-"wallet.assetDetailSubtitle" = "Τιμή %1$@ (%2$@)";
-
-/* The description of the assets row in Account Details when user has zero or multiple Assets. */
-"wallet.assetsDescription" = "%d στοιχεία";
-
-/* The text displayed when a user uses a query to search for assets that yields no results */
-"wallet.assetSearchEmpty" = "Δεν βρέθηκαν στοιχεία";
-
-/* The description of the assets row in Account Details when user has 1 Asset. */
-"wallet.assetsSingularDescription" = "%d στοιχείο";
-
-/* The title which is displayed above a list of assets/tokens */
-"wallet.assetsTitle" = "Στοιχεία κεφαλαίου";
-
-/* The title of the sort option that sorts alphabetically from A to Z. Used in Portfolio/NFT filters and display settings. */
-"wallet.aToZSortOption" = "Α έως Ω";
-
-/* The description of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. This will displayed right below `auroraBridgeAlertTitle`. */
-"wallet.auroraBridgeAlertDescription" = "Το Rainbow Bridge είναι μια ανεξάρτητη υπηρεσία που σας βοηθά να γεφυρώσετε στοιχεία μεταξύ δικτύων και να χρησιμοποιείτε τα κρυπτονομίσματά σας σε άλλα δίκτυα και άλλα οικοσυστήματα DApp. Η γεφύρωση στοιχείων με άλλα δίκτυα έχει ορισμένους κινδύνους.";
-
-/* The title of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. */
-"wallet.auroraBridgeAlertTitle" = "Άνοιγμα της εφαρμογής Rainbow Bridge;";
-
-/* The title for the button for users to click inside any asset details screen, whose asset is supported to redirect users to Aurora site. */
-"wallet.auroraBridgeButtonTitle" = "Γέφυρα στο Aurora";
-
-/* A text link for user to click inside the custom alert, It will redirect user to the website explaining using Rainbow Bridge. */
-"wallet.auroraBridgeLearnMore" = "Μάθετε περισσότερα σχετικά με τη χρήση του Rainbow Bridge";
-
-/* A text link for user to click inside the custom alert, It will redirect user to the website explaining the risk of using Rainbow Bridge. */
-"wallet.auroraBridgeRisk" = "Μάθετε πώς να μειώνετε τον κίνδυνο στο Rainbow Bridge";
-
-/* A text button for user to click so this pop up will not show again. */
-"wallet.auroraPopupDontShowAgain" = "Να μην εμφανιστεί ξανά";
 
 /* The footer beneath the auto-lock title and interval duration */
 "wallet.autoLockFooter" = "Ο αριθμός των λεπτών για ανομονή έως ότου το Brave Wallet κλειδωθεί αυτόματα";
@@ -184,9 +79,6 @@
 /* The title on the pop up when user decides to skip backup recovery phrases. */
 "wallet.backupSkipPromptTitle" = "Μπορείτε να παραλείψετε αυτό το βήμα τώρα, αλλά πρέπει να δημιουργήσετε αντίγραφα ασφαλείας της φράσης ανάκτησης για να διασφαλίσετε τον λογαριασμό.";
 
-/* The title of the back up wallet option inside the menu when user clicks the three dots button beside assets search button. */
-"wallet.backUpWallet" = "Δημιουργία αντιγράφων ασφαλείας τώρα";
-
 /* The title that will be displayed when long-pressing the back button in the navigation bar */
 "wallet.backupWalletBackButtonTitle" = "Εφεδρικό πορτοφόλι";
 
@@ -201,12 +93,6 @@
 
 /* The title of the backup wallet screen */
 "wallet.backupWalletTitle" = "Δημιουργήστε αντίγραφο ασφαλείας για το πορτοφόλι κρυπτονομισμάτων σας";
-
-/* The message displayed on the crypto tab if you have not yet completed the backup process */
-"wallet.backupWalletWarningMessage" = "Δημιουργήστε αντίγραφο ασφαλείας του πορτοφολιού σας τώρα για να προστατεύσετε τα στοιχεία κρυπτονομισμάτων σας και να διασφαλίσετε ότι δεν θα χάσετε ποτέ την πρόσβαση.";
-
-/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
-"wallet.balances" = "Υπόλοιπα";
 
 /* The button title that enables the biometric unlock feature. %@` will be replaced with the biometric type name of the current device. */
 "wallet.biometricsSetupEnableButtonTitle" = "Χρήση %@";
@@ -232,41 +118,11 @@
 /* The label displayed in Add Account above the private key box when adding or importing a Bitcoin account. The '%@' is the standard supported for the selected network (for example "Only zprv extended keys are supported.") */
 "wallet.bitcoinImportExtendedKeyWarning" = "Υποστηρίζονται μόνο τα κλειδιά επέκτασης %@ .";
 
-/* The title for Brave Fee label in Swap. The fee percentage is displayed beside the label. */
-"wallet.braveFeeLabel" = "Τέλος Brave: %@";
-
-/* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
-"wallet.braveSwapFeeDisclaimer" = "Η προσφορά περιλαμβάνει τέλος Brave %@.";
-
 /* The text beside the striked-through percentage Brave would normally charge for a swap. */
 "wallet.braveSwapFree" = "Δωρεάν";
 
 /* A description of an Bitcoin account, displayed in Accounts tab. */
 "wallet.btcAccountDescription" = "Bitcoin";
-
-/* Description displayed in row beside users available balance. */
-"wallet.btcAvailableBalanceDesc" = "Διαθέσιμοι πόροι για χρήση.";
-
-/* Title displayed in row beside users available BTC balance. */
-"wallet.btcAvailableBalanceTitle" = "Διαθέσιμο";
-
-/* A warning displayed in row before the Send button in Send Crypto view when a Bitcoin asset is selected. */
-"wallet.btcOrdinalsUnsupportedWarning" = "Το Brave Wallet δεν υποστηρίζει αυτήν τη στιγμή Bitcoin NFT (ordinals). Η αποστολή BTC από μια διεύθυνση που έχει ordinals μπορεί να έχει ως αποτέλεσμα την ακούσια μεταφορά των ordinals.";
-
-/* Description displayed in row beside users pending balance. */
-"wallet.btcPendingBalanceDesc" = "Υπάρχει μια εκκρεμής αλλαγή στο υπόλοιπο του πορτοφολιού σας.";
-
-/* Banner description displayed below BTC rows displaying balance when there is a pending BTC balance. */
-"wallet.btcPendingBalancesBannerDesc" = "Ορισμένα υπόλοιπα ενδέχεται να μην είναι διαθέσιμα";
-
-/* Title displayed in row beside users pending BTC balance. */
-"wallet.btcPendingBalanceTitle" = "Σε εκκρεμότητα";
-
-/* Description displayed in row beside users total balance. */
-"wallet.btcTotalBalanceDesc" = "Οι διαθέσιμοι πόροι σας συν τυχόν συναλλαγές που δεν έχουν επιβεβαιωθεί ακόμη.";
-
-/* Title displayed in row beside users total BTC balance. */
-"wallet.btcTotalBalanceTitle" = "Σύνολο";
 
 /* As in buying cryptocurrency */
 "wallet.buy" = "Αγορά";
@@ -294,30 +150,6 @@
 
 /* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to send but cancelled after. For exapmple: 10 ETH has been reverted to account 0x345...436 */
 "wallet.cancelTxRevertMsg" = "έχει επανέλθει σε";
-
-/* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
-"wallet.chartAxisDateLabel" = "Ημερομηνία";
-
-/* The y-axis label on an asset or portfolio chart describing that y-axis values are based on the price at a given date */
-"wallet.chartAxisPriceLabel" = "Τιμή";
-
-/* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
-"wallet.coinGeckoDisclaimer" = "Δεδομένα τιμής από την CoinGecko";
-
-/* The title of the 24h volume of this coin from market. */
-"wallet.coinMarket24HVolume" = "Όγκος 24 ωρών";
-
-/* The message will be displayed when there is no coin market loaded or having an error. */
-"wallet.coinMarketEmptyMsg" = "Δεν υπάρχουν ακόμη διαθέσιμες πληροφορίες για την αγορά";
-
-/* The header title of the section that display coin market information. */
-"wallet.coinMarketInformation" = "Πληροφορίες";
-
-/* The title of the market cap of this coin from market. */
-"wallet.coinMarketMarketCap" = "Κεφαλαιοποίηση αγοράς";
-
-/* The title of the rank of this coin from market. */
-"wallet.coinMarketRank" = "Κατάταξη";
 
 /* One of the coin types for users to create an account to store ADA assets */
 "wallet.coinTypeAda" = "Cardano";
@@ -399,15 +231,6 @@
 
 /* A title of a button which will close this transaction status view. */
 "wallet.confirmedTransactionCloseButtonTitle" = "Κλείσιμο";
-
-/* A description explains confirmed transaction has been included in a block. */
-"wallet.confirmedTransactionDescription" = "Η συναλλαγή έχει συμπεριληφθεί με επιτυχία σε ένα μπλοκ. Για να αποφύγετε τον κίνδυνο διπλής δαπάνης, συνιστούμε να περιμένετε για επιβεβαιώσεις μπλοκ.";
-
-/* A title of a button which can open a confirmed transaction details screen. */
-"wallet.confirmedTransactionReceiptButtonTitle" = "Απόδειξη";
-
-/* A title of transaction confirmed status view indicating this transaction has been included in a block. */
-"wallet.confirmedTransactionTitle" = "Η συναλλαγή ολοκληρώθηκε";
 
 /* The title displayed in the navigation of the confirmation view where a user tries to remove a secondary account. */
 "wallet.confirmPasswordTitle" = "Επιβεβαίωση Κωδικού Πρόσβασης";
@@ -514,15 +337,6 @@
 /* The placeholder for the input field for users to input network rpc url in Custom Network Details Screen. */
 "wallet.customNetworkUrlsPlaceholder" = "Εισαγάγετε διευθύνσεις URL";
 
-/* A title for the btton that users can click to choose the network they are willing to add custom asset in. */
-"wallet.customTokenNetworkButtonTitle" = "Επιλογή δικτύου";
-
-/* A title that will be displayed on top of the text field for users to choose a network they are willing to add the custom asset in. */
-"wallet.customTokenNetworkHeader" = "Επιλογή δικτύου";
-
-/* The title displayed on the add custom token screen */
-"wallet.customTokenTitle" = "Προσθήκη προσαρμοσμένου στοιχείου";
-
 /* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. The '%@' will be the site attempting to connect. For example: "app.uniswap.org wants to interact with Brave Wallet" */
 "wallet.dappsConnectionNotificationOriginTitle" = "Το %@ θέλει να αλληλεπιδράσει με το Πορτοφόλι Brave";
 
@@ -549,48 +363,6 @@
 
 /* The singular word that will be used in `manageSiteConnectionsAccount`. */
 "wallet.dappsSettingsWebsiteSingular" = "ιστότοπος";
-
-/* Describes what range of data to show on the graph (all data available) */
-"wallet.dateIntervalAll" = "Όλα";
-
-/* An abbreivated form of "1 Day" used to describe what range of data to show on the graph (past day) */
-"wallet.dateIntervalDay" = "1 Η";
-
-/* Describes what range of data to show on the graph (past day) */
-"wallet.dateIntervalDayAccessibilityLabel" = "1 ημέρα";
-
-/* An abbreivated form of "1 Hour" used to describe what range of data to show on the graph (past hour) */
-"wallet.dateIntervalHour" = "1 Ω";
-
-/* Describes what range of data to show on the graph (past hour) */
-"wallet.dateIntervalHourAccessibilityLabel" = "1 ώρα";
-
-/* An abbreivated form of "1 Month" used to describe what range of data to show on the graph (past month) */
-"wallet.dateIntervalMonth" = "1 Μ";
-
-/* Describes what range of data to show on the graph (past month) */
-"wallet.dateIntervalMonthAccessibilityLabel" = "1 μήνας";
-
-/* An abbreivated form of "3 Months" used to describe what range of data to show on the graph (past 3 months) */
-"wallet.dateIntervalThreeMonths" = "3 Μ";
-
-/* Describes what range of data to show on the graph (past 3 months) */
-"wallet.dateIntervalThreeMonthsAccessibilityLabel" = "3 μήνες";
-
-/* An abbreivated form of "1 Week" used to describe what range of data to show on the graph (past week) */
-"wallet.dateIntervalWeek" = "1 ΕΒΔ";
-
-/* Describes what range of data to show on the graph (past week) */
-"wallet.dateIntervalWeekAccessibilityLabel" = "1 εβδομάδα";
-
-/* An abbreivated form of "1 Year" used to describe what range of data to show on the graph (past year) */
-"wallet.dateIntervalYear" = "1 Ε";
-
-/* Describes what range of data to show on the graph (past year) */
-"wallet.dateIntervalYearAccessibilityLabel" = "1 έτος";
-
-/* A title that will be displayed on top of the text field for users to input the custom token's decimals of precision */
-"wallet.decimalsPrecision" = "Δεκαδικά ψηφία ακριβείας";
 
 /* The message displayed when the user takes a screenshot of their dapp decrypt request. */
 "wallet.decryptMessageScreenshotDetectedMessage" = "Προειδοποίηση: Ενδέχεται να δημιουργηθεί αντίγραφο ασφαλείας ενός στιγμιοτύπου οθόνης του μηνύματός σας σε μια υπηρεσία αρχείων cloud και να είναι αναγνώσιμο από οποιαδήποτε εφαρμογή με πρόσβαση στις φωτογραφίες. Η Brave συνιστά να μην αποθηκεύσετε αυτό το στιγμιότυπο οθόνης και να το διαγράψετε το συντομότερο δυνατό.";
@@ -619,23 +391,11 @@
 /* As in depsit some crypto coins to a specific wallet address. */
 "wallet.deposit" = "Κατάθεση";
 
-/* The button title for user to click to copy the account address for deposit. */
-"wallet.depositAddressCopy" = "Αντιγραφή";
-
 /* The description of a swap button on the buy/send/swap/deposit modal */
 "wallet.depositDescription" = "Στοιχεία κατάθεσης";
 
-/* The disclosure at the bottom of the deposit view for ETH address indicates ETH wallet supports Ethereum Mainnet as well as the level 2 EVM. `%@` will be replaced with current supported level 2 EVM network names. */
-"wallet.depositEthDisclosure" = "Αυτό είναι το πορτοφόλι Ethereum το οποίο υποστηρίζει το Δίκτυο Ethereum και δίκτυο επιπέδου 2 όπως το %@";
-
 /* The title of a button that Deselects all visible options. */
 "wallet.deselectAllButtonTitle" = "Αποεπιλογή όλων";
-
-/* A button title which when pressed displays a new screen with additional details/information */
-"wallet.detailsButtonTitle" = "Λεπτομέρειες";
-
-/* An error message that will get displayed when user is trying to add an existed custom token. */
-"wallet.duplicationTokenError" = "Αυτό το διακριτικό έχει ήδη προστεθεί στο χαρτοφυλάκιό σας.";
 
 /* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority, on accounts tab for editing an account name, etc. */
 "wallet.editButtonTitle" = "Επεξεργασία";
@@ -709,9 +469,6 @@
 /* The transaction edit error alert button which will dismiss the alert. */
 "wallet.editTransactionErrorCTA" = "Πίσω";
 
-/* The button title for showing the screen to change what assets are visible */
-"wallet.editVisibleAssetsButtonTitle" = "Επεξεργασία ορατών στοιχείων";
-
 /* Title on the button that users can click to enable Brave to resolve the ENS domain they entered. */
 "wallet.ensDomainInterstitialPageButtonProceed" = "Συνεχίστε χρησιμοποιώντας διακομιστή Chainstack";
 
@@ -730,15 +487,6 @@
 /* Title displayed when users chose Brave to ask them if they want the ENS Offchain domain to be resolved every time they enter one. */
 "wallet.ensOffchainDomainInterstitialPageTitle" = "Ενεργοποίηση υποστήριξης της αναζήτησης εκτός αλυσίδας υπηρεσίας ονόματος Ethereum (ΥΟΕ) στο Brave;";
 
-/* Button title when requesting to do an ENS off chain lookup. */
-"wallet.ensOffchainGatewayButton" = "Χρήση τομέα ENS";
-
-/* Description shown send address / ENS domain when requesting to do an ENS off chain lookup. */
-"wallet.ensOffchainGatewayDesc" = "Φαίνεται ότι έχετε εισαγάγει μια διεύθυνση ENS. Θα χρειαστεί να χρησιμοποιήσουμε ένα πρόγραμμα επίλυσης τρίτων για να επιλύσουμε αυτό το αίτημα. Αυτό βοηθά να διασφαλιστεί ότι ο τομέας σας .eth δεν θα διαρρεύσει και ότι η συναλλαγή σας θα είναι ασφαλής.";
-
-/* Title shown send address / ENS domain when requesting to do an ENS off chain lookup. */
-"wallet.ensOffchainGatewayTitle" = "Το Brave υποστηρίζει τη χρήση πυλών εκτός αλυσίδας για την επίλυση τομέων .eth.";
-
 /* The description for the options to allow Ethereum Name service domain names offchain. '%@' will be replaced with a url to explain more about ENS offchain lookup. */
 "wallet.ensOffchainResolveMethodDescription" = "[Μάθετε περισσότερα](%@) σχετικά με ζητήματα απορρήτου αναζήτησης εκτός αλυσίδας ENS.";
 
@@ -748,32 +496,11 @@
 /* The title for the options to resolve Ethereum Name service domain names. */
 "wallet.ensResolveMethodTitle" = "Επίλυση ονομάτων τομέα Υπηρεσίας ονομάτων Ethereum (ENS).";
 
-/* A placeholder for the text field that users will input the custom token address */
-"wallet.enterAddress" = "Εισαγάγετε διεύθυνση";
-
-/* The header title for the textField users will input the dollar value of the crypto they want to buy */
-"wallet.enterAmount" = "Δώστε ποσό";
-
 /* The navigation bar title displayed on the screen to enter wallet password to enable biometrics unlock from wallet settings. */
 "wallet.enterPasswordForBiometricsNavTitle" = "Ενεργοποίηση βιομετρικών";
 
 /* The title displayed on the screen to enter password to enable biometrics unlock from wallet settings. */
 "wallet.enterPasswordForBiometricsTitle" = "Εισαγάγετε τον κωδικό πρόσβασης του πορτοφολιού σας για να ενεργοποιήσετε τα βιομετρικά στοιχεία για το πορτοφόλι (θα σας ζητηθεί μόνο μία φορά)";
-
-/* A placeholder for the text field that users will input the custom token Coingecko ID. */
-"wallet.enterTokenCoingeckoId" = "Εισαγάγετε αναγνωριστικό Coingecko διακριτικού";
-
-/* A placeholder for the text field that users will input the custom token icon URL */
-"wallet.enterTokenIconURL" = "Εισαγάγετε τη διεύθυνση URL του εικονιδίου διακριτικού";
-
-/* A placeholder for the text field that users will input the custom token's ID. */
-"wallet.enterTokenId" = "Εισαγάγετε αναγνωριστικό διακριτικού";
-
-/* A placeholder for the text field that users will input the custom token name */
-"wallet.enterTokenName" = "Εισαγάγετε όνομα διακριτικού";
-
-/* A placeholder for the text field that users will input the custom token symbol */
-"wallet.enterTokenSymbol" = "Εισαγάγετε σύμβολο διακριτικού";
 
 /* A title displayed in an alert above the error message or description. */
 "wallet.errorAlertTitle" = "Σφάλμα";
@@ -793,32 +520,11 @@
 /* The title of an alert when the account the user attempted to import fails for some reason */
 "wallet.failedToImportAccountErrorTitle" = "Η εισαγωγή λογαριασμού απέτυχε.";
 
-/* The message of an alert when the user attempted to remove custom network and it fails for some reason */
-"wallet.failedToRemoveCustomNetworkErrorMessage" = "Η κατάργηση του δικτύου απέτυχε.\nΔοκιμάστε ξανά.";
-
-/* A description explains transaction is failed. */
-"wallet.failedTransactionDescription" = "Η συναλλαγή απέτυχε λόγω μεγάλης μεταβολής των τιμών. Αυξήστε την ανοχή πτώσης απόδοσης για να πετύχετε σε μεγαλύτερη κίνηση τιμών.";
-
-/* A description of the view that will display the error message. */
-"wallet.failedTransactionErrorViewDescription" = "Αποθηκεύστε το μήνυμα σφάλματος για μελλοντική αναφορά.";
-
-/* A title of the view that will display the error message. */
-"wallet.failedTransactionErrorViewTitle" = "Μήνυμα λάθους";
-
-/* A title of transaction failed status view indicating this transaction has not been included in a block. */
-"wallet.failedTransactionTitle" = "Η συναλλαγή απέτυχε";
-
-/* A title of a button which will a new view to display the error. */
-"wallet.failedTransactionViewErrorButtonTitle" = "Προβολή σφάλματος";
-
 /* The title above the featured networks in onboarding network selection screen. */
 "wallet.featured" = "Προβαλλόμενα";
 
 /* A description of an Filecoin account, displayed in Accounts tab. */
 "wallet.filAccountDescription" = "Filecoin";
-
-/* The title of the modal for filtering Portfolio and NFT views. */
-"wallet.filtersAndDisplaySettings" = "Φίλτρα και ρυθμίσεις εμφάνισης";
 
 /* A title above a text field for inputting the gas amount limit */
 "wallet.gasAmountLimit" = "Όριο ποσότητας καυσίμου";
@@ -856,50 +562,11 @@
 /* A title of the view shown over a dapps website that requests the users public encryption key. */
 "wallet.getEncryptionPublicKeyRequestTitle" = "Αίτημα δημόσιου κλειδιού κρυπτογράφησης";
 
-/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
-"wallet.graph" = "Γράφημα";
-
-/* The title of the sort option that groups assets by each account. Used in Portfolio/NFT filters and display settings. */
-"wallet.groupByAccountsOptionTitle" = "Λογαριασμοί";
-
-/* The description label of the sort option that groups assets by the selected filter value, shown below the title. Used in Portfolio/NFT filters and display settings. */
-"wallet.groupByDescription" = "Ομαδοποίηση στοιχείων κεφαλαίου κατά";
-
-/* The title of the sort option that groups assets by each network. Used in Portfolio/NFT filters and display settings. */
-"wallet.groupByNetworksOptionTitle" = "Δίκτυα";
-
-/* The title of the sort option that does not group assets. Used in Portfolio/NFT filters and display settings. */
-"wallet.groupByNoneOptionTitle" = "Καμία";
-
-/* The label of the sort option that groups assets by the selected filter value. Used in Portfolio/NFT filters and display settings. */
-"wallet.groupByTitle" = "Ομαδοποίηση κατά";
-
 /* The title of the Help Center option inside the menu when user clicks the three dots button beside assets search button or on wallet panel. */
 "wallet.helpCenter" = "Κέντρο βοήθειας:";
 
 /* A button title which when pressed hides the details screen. */
 "wallet.hideDetailsButtonTitle" = "Απόκρυψη λεπτομερειών";
-
-/* A button title that will redact a private key on the screen */
-"wallet.hidePrivateKeyButtonTitle" = "Απόκρυψη Ιδιωτικού κλειδιού";
-
-/* The description label of the filter option that hides assets if their fiat value is below $0.05, shown below the title. Used in Portfolio/NFT filters and display settings. */
-"wallet.hideSmallBalancesDescription" = "Στοιχεία με αξία μικρότερη από 0,05 $";
-
-/* The label of the filter option that hides assets if their fiat value is below $0.05. Used in Portfolio/NFT filters and display settings. */
-"wallet.hideSmallBalancesTitle" = "Απόκρυψη μικρών υπολοίπων";
-
-/* The description label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings. */
-"wallet.hideUnownedNFTsDescription" = "Απόκρυψη NFT που δεν έχουν υπόλοιπο";
-
-/* The label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings. */
-"wallet.hideUnownedNFTsTitle" = "Απόκρυψη όσων δεν σας ανήκουν";
-
-/* The title of a button that updates the filter to hide tokens with zero balances. */
-"wallet.hideZeroBalances" = "Απόκρυψη μηδενικών υπολοίπων";
-
-/* The title of the sort option that sorts highest value to lowest value. Used in Portfolio/NFT filters and display settings. */
-"wallet.highToLowSortOption" = "Υψηλό προς χαμηλό";
 
 /* A title above a text field that is used to enter a password */
 "wallet.importAccountOriginPasswordTitle" = "Κωδικός πρόσβασης για το Origin";
@@ -922,9 +589,6 @@
 /* The error message displayed when the user enters the wrong password while unlocking the wallet */
 "wallet.incorrectPasswordErrorMessage" = "Λανθασμένος κωδικός πρόσβασης";
 
-/* A title above additional information about an asset */
-"wallet.infoTitle" = "Πληροφορίες";
-
 /* A label shown inside of a box when there is no input data for a given transaction */
 "wallet.inputDataPlaceholder" = "Δεν υπάρχουν δεδομένα.";
 
@@ -936,15 +600,6 @@
 
 /* An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
 "wallet.insufficientBalance" = "Ανεπαρκές υπόλοιπο";
-
-/* An error message displayed when the user does not have enough funds to make or confirm a transaction */
-"wallet.insufficientFunds" = "Ανεπαρκή κεφάλαια";
-
-/* An error message when there is no insufficient funds for gas fee. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
-"wallet.insufficientFundsForGas" = "Ανεπαρκή κεφάλαια για καύσιμα";
-
-/* An error message displayed when the user doesn't have enough liquidity to proceed with a transaction. */
-"wallet.insufficientLiquidity" = "Ανεπαρκής ρευστότητα";
 
 /* The title of a button that Deselects all visible options. */
 "wallet.internalErrorMessage" = "Παρουσιάστηκε εσωτερικό σφάλμα";
@@ -967,12 +622,6 @@
 /* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.lock" = "Κλείδωμα";
 
-/* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
-"wallet.lockWallet" = "Κλείδωμα πορτοφολιού";
-
-/* The title of the sort option that sorts lowest value to highest value. Used in Portfolio/NFT filters and display settings. */
-"wallet.lowToHighSortOption" = "Χαμηλό σε υψηλό";
-
 /* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in manage site connections screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example "1 account" or "2 accounts") */
 "wallet.manageSiteConnectionsAccount" = "%1$lld %2$@";
 
@@ -981,9 +630,6 @@
 
 /* The singular word that will be used in `manageSiteConnectionsAccount`. */
 "wallet.manageSiteConnectionsAccountSingular" = "λογαριασμός";
-
-/* The message of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
-"wallet.manageSiteConnectionsConfirmAlertMessage" = "Αυτό θα καταργήσει όλα τα δικαιώματα σύνδεσης Πορτοφολιού για όλους τους ιστότοπους.";
 
 /* The title of the confirmation button in the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
 "wallet.manageSiteConnectionsConfirmAlertRemove" = "Κατάργηση";
@@ -1003,41 +649,14 @@
 /* The title of the button on the screen to manage web3 sites account connections that will show an alert to remove all connected website permissions. */
 "wallet.manageSiteConnectionsRemoveAll" = "Κατάργηση όλων";
 
-/* The page title that will display the top 250 tokens from the market via CoinGecko */
-"wallet.marketPageTitle" = "Αγορά";
-
 /* The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount */
 "wallet.maximumGasFee" = "Μέγιστο τέλος";
 
 /* The title of the edit gas fee screen for EIP-1559 transactions */
 "wallet.maxPriorityFeeTitle" = "Τέλος μέγιστης προτεραιότητας";
 
-/* The header title of the section that user can pick an account in buy screen in Brave Wallet. */
-"wallet.meldAccountHeaderTitle" = "Λογαριασμός";
-
-/* The header title of the section that user can pick a country in buy screen in Brave Wallet. */
-"wallet.meldCountryHeaderTitle" = "Χώρα";
-
-/* The header title of the section that user can pick a payment method in buy screen in Brave Wallet. */
-"wallet.meldPaymentMethodHeaderTitle" = "Τρόπος πληρωμής";
-
-/* The title of the pop up when user first time open buy screen in Brave Wallet. */
-"wallet.meldTransactionPartner" = "Συνεργάτης συναλλαγών";
-
-/* The description of the pop up when user first time open buy screen in Brave Wallet. */
-"wallet.meldTransactionPartnerDescription" = "Το Brave Wallet χρησιμοποιεί το Meld.io για να σας βοηθήσει να συγκεντρώσετε και να αναδείξετε διάφορους παρόχους κρυπτογράφησης για την περιοχή σας. Θα μοιραστούμε πληροφορίες με το Meld.io για την ολοκλήρωση της συναλλαγής, συμπεριλαμβανομένης της διεύθυνσης πορτοφολιού και του κωδικού χώρας σας. Για περισσότερες πληροφορίες διαβάστε τους όρους χρήσης της Meld.";
-
-/* The description of the checkbox for the pop up when user first time open buy screen in Brave Wallet. */
-"wallet.meldTransactionPartnerLegal" = "Έχω διαβάσει και συμφωνώ με τους [Όρους χρήσης της Meld](%@)";
-
 /* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
 "wallet.module" = "Πορτοφόλι Brave";
-
-/* A button title for user to open more option in asset details screen other than buy/send/swap. */
-"wallet.more" = "Περισσότερα";
-
-/* The title displayed on the view to filter by a network / all networks. */
-"wallet.networkFilterTitle" = "Επιλογή δικτύων";
 
 /* The footer beneath the networks title in settings screen. */
 "wallet.networkFooter" = "Προσαρμογή δικτύων πορτοφολιού";
@@ -1048,17 +667,11 @@
 /* The title for the label that is shown above the name of the network on a request to switch networks or add a new network from a dapps website. */
 "wallet.networkNameTitle" = "Ονομασία Δικτύου";
 
-/* A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support token purchasing. */
-"wallet.networkNotSupportedForBuyToken" = "Η αγορά δεν υποστηρίζεται για το επιλεγμένο δίκτυο";
-
 /* The title of the section for primary networks in the network selection view. */
 "wallet.networkSelectionPrimaryNetworks" = "Κύρια δίκτυα";
 
 /* The title of the section for secondary networks in the network selection view. */
 "wallet.networkSelectionSecondaryNetworks" = "Δευτερεύοντα δίκτυα";
-
-/* A VoiceOver label that will be read out when a user focuses on the show test networks button in the network selection view. "%@" will be replaced with the network name such as "Solana" or "Ethereum" */
-"wallet.networkSelectionTestnetAccessibilityLabel" = "Προβολή δοκιμαστικών δικτύων %@";
 
 /* The title of the section for test networks in the network selection view. */
 "wallet.networkSelectionTestNetworks" = "Δοκιμαστικά δίκτυα";
@@ -1086,123 +699,6 @@
 
 /* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as "1 of 4" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
 "wallet.next" = "Επόμενο";
-
-/* The title of one of the dropdown options to group NFTs. This group will display all user's visible NFTs. */
-"wallet.nftCollected" = "Συλλέχθηκε";
-
-/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's blockchain */
-"wallet.nftDetailBlockchain" = "Blockchain";
-
-/* The title of a section in NFT detail screen that will display NFT's description if there is any. */
-"wallet.nftDetailDescription" = "Περιγραφή";
-
-/* This is one type of token standard. And most likey this does not need to be translated */
-"wallet.nftDetailERC721" = "ERC 721";
-
-/* A placeholder text, indicates this NFT image was not able to be loaded. */
-"wallet.nftDetailImageNotAvailable" = "Η εικόνα δεν είναι διαθέσιμη";
-
-/* The section header that displays the overview information of this NFT. */
-"wallet.nftDetailOverview" = "Επισκόπηση";
-
-/* The title of the row under `Overview` section in NFT details screen. When this NFT has an owner. */
-"wallet.nftDetailOwnedBy" = "Ανήκει σε";
-
-/* The section header that displays the all the properties/attributes information of this NFT. */
-"wallet.nftDetailProperties" = "Ιδιότητες";
-
-/* The title of the button inside NFT detail screen, which user can click to start sending this NFT. */
-"wallet.nftDetailSendNFTButtonTitle" = "Αποστολή";
-
-/* This is one type of NFT standard. And most likey this does not need to be translated */
-"wallet.nftDetailSPL" = "SPL";
-
-/* A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information. */
-"wallet.nftDetailSVGImageDisclaimer" = "Η εικόνα που αποδίδεται παραπάνω ενδέχεται να μην συμφωνεί ακριβώς με το NFT";
-
-/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token Id value. */
-"wallet.nftDetailTokenID" = "Αναγνωριστικό token";
-
-/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard */
-"wallet.nftDetailTokenStandard" = "Τυπικό Token";
-
-/* The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated. */
-"wallet.nftDiscoveryCalloutDescription" = "Το Πορτοφόλι Brave μπορεί να χρησιμοποιεί μια υπηρεσία τρίτων για αυτόματη εμφάνιση των NFT σας. Η Brave θα κοινοποιήσει τις διευθύνσεις του πορτοφολιού σας στο SimpleHash για την παροχή αυτής της υπηρεσίας. Μάθετε περισσότερα.";
-
-/* This is the same `Learn more` at the end of `nftDiscoveryCalloutDescription`, but we need a separat translation to detect the range of it in order to build some attributed strings. */
-"wallet.nftDiscoveryCalloutDescriptionLearnMore" = "Μάθετε περισσότερα";
-
-/* The title of the button that user clicks to disable NFT discovery. */
-"wallet.nftDiscoveryCalloutDisable" = "Όχι, ευχαριστώ, θα το κάνω μη αυτόματα";
-
-/* The title of the button that user clicks to enable NFT discovery. */
-"wallet.nftDiscoveryCalloutEnable" = "Ναι, συνέχεια";
-
-/* The title of the alert that asks users either to enable NFT discovery or import manually. */
-"wallet.nftDiscoveryCalloutTitle" = "Επιθυμείτε να εμφανίζονται τα NFT σας αυτόματα;";
-
-/* The title of the button that user clicks to add his/her first NFT */
-"wallet.nftEmptyImportNFT" = "Εισαγωγή NFT";
-
-/* The title of one of the dropdown options to group NFTs. This group will display all user's hidden NFTs. */
-"wallet.nftHidden" = "Σε απόκρυψη";
-
-/* The title of the empty state inside NFT tab under Hidden group. */
-"wallet.nftInvisiblePageEmptyTitle" = "Δεν υπάρχουν ακόμη κρυφά NFT εδώ.";
-
-/* The description of the empty state inside NFT tab. */
-"wallet.nftPageEmptyDescription" = "Είστε έτοιμοι να προσθέσετε ορισμένα; Απλώς πατήστε το κουμπί παρακάτω για εισαγωγή.";
-
-/* The title of the empty state inside NFT tab. */
-"wallet.nftPageEmptyTitle" = "Δεν υπάρχουν NFT εδώ ακόμη.";
-
-/* The title of the tab that will display user's visible NFT assets. */
-"wallet.nftPageTitle" = "NFT";
-
-/* The title of context button for user to do not show a NFT in wallet at all. */
-"wallet.nftRemoveFromWallet" = "Να μην εμφανίζεται στο πορτοφόλι";
-
-/* The description of the alert when user attempts to remove an NFT from wallet. */
-"wallet.nftRemoveFromWalletAlertDescription" = "Το NFT θα αφαιρεθεί από το Πορτοφόλι Brave, αλλά θα παραμείνει στο blockchain. Εάν το αφαιρέσετε και μετά αλλάξετε γνώμη, θα χρειαστεί να το εισαγάγετε ξανά μη αυτόματα.";
-
-/* The title of the alert when user attempts to remove an NFT from wallet. */
-"wallet.nftRemoveFromWalletAlertTitle" = "Κατάργηση από το πορτοφόλι Brave;";
-
-/* The description of the NFTs row in Account Details when user has zero or multiple NFTs. */
-"wallet.nftsDescription" = "%d NFT";
-
-/* The title of an overlay on top left of the junk NFT grid. */
-"wallet.nftSpam" = "Ανεπιθύμητα";
-
-/* The description of the NFTs row in Account Details when user has 1 NFT. */
-"wallet.nftsSingularDescription" = "%d NFT";
-
-/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
-"wallet.nftsTab" = "Καρτέλα NFT";
-
-/* The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token. */
-"wallet.nftsTitle" = "NFT";
-
-/* The title of context button for user to unhide visible NFT. */
-"wallet.nftUnhide" = "Κατάργηση απόκρυφης";
-
-/* The title of context button for user to unspam a NFT. */
-"wallet.nftUnspam" = "Επισήμανση ως μη ανεπιθύμητου";
-
-/* The empty state description displayed when the user has no accounts associated with a transaction or asset */
-"wallet.noAccountDescription" = "Εδώ θα εμφανίζονται οι λογαριασμοί με υπόλοιπο.";
-
-/* The empty state displayed when the user has no accounts associated with a transaction or asset */
-"wallet.noAccounts" = "Δεν υπάρχουν λογαριασμοί";
-
-/* The empty state displayed when the user has no assets associated with an account */
-"wallet.noAssets" = "Δεν υπάρχουν στοιχεία";
-
-/* The empty state shown when you have no imported accounts */
-"wallet.noSecondaryAccounts" = "Δεν υπάρχουν δευτερεύοντες λογαριασμοί.";
-
-/* The empty state displayed when the user has no transactions associated with an account */
-"wallet.noTransactions" = "Δεν υπάρχουν συναλλαγές";
 
 /* The title of the button in the last step for user to create a new wallet. This will direct users to the wallet portfolio screen. */
 "wallet.onboardingCompletedButtonTitle" = "Μετάβαση στο χαρτοφυλάκιό μου";
@@ -1249,9 +745,6 @@
 /* A label will be displayed beside input password when it is considered as a weak password */
 "wallet.passwordStatusWeak" = "Αδύναμος";
 
-/* A button title that when tapped will paste some data from the users clipboard to a text field */
-"wallet.pasteFromPasteboard" = "Επικόλληση";
-
 /* A title above a text field for inputting the per-gas price limit in Gwei */
 "wallet.perGasPriceLimit" = "Όριο τιμής ανά καύσιμο (Gwei)";
 
@@ -1264,62 +757,8 @@
 /* The title above the popular networks in onboarding network selection screen. */
 "wallet.popular" = "Δημοφιλή";
 
-/* The title of the empty state in Portfolio when no assets are shown. */
-"wallet.portfolioEmptyStateDescription" = "Για να ξεκινήσετε, καταθέστε ή αγοράστε token. Αν δεν βλέπετε token από κάποιον εισηγμένο λογαριασμό, ελέγξτε τα φίλτρα και τις ρυθμίσεις εμφάνισης. Τα άγνωστα token μπορεί να πρέπει να εισαχθούν ως προσαρμοσμένα στοιχεία.";
-
-/* The title of the empty state in Portfolio when no assets are shown. */
-"wallet.portfolioEmptyStateTitle" = "Δεν υπάρχουν διαθέσιμα στοιχεία";
-
-/* The title of the portfolio page in the Crypto tab */
-"wallet.portfolioPageTitle" = "Χαρτοφυλάκιο";
-
-/* The message displayed when the user takes a screenshot of their private key */
-"wallet.privateKeyScreenshotDetectedMessage" = "Προειδοποίηση: Ενδέχεται να δημιουργηθεί αντίγραφο ασφαλείας ενός στιγμιοτύπου οθόνης του ιδιωτικού κλειδιού σας σε μια υπηρεσία αρχείων cloud και να είναι αναγνώσιμο από οποιαδήποτε εφαρμογή με πρόσβαση στις φωτογραφίες. Η Brave συνιστά να μην αποθηκεύσετε αυτό το στιγμιότυπο οθόνης και να το διαγράψετε το συντομότερο δυνατό.";
-
-/* The title for Protocol Fee label in Swap. The fee percentage is displayed beside the label. */
-"wallet.protocolFeeLabel" = "Τέλος πρωτοκόλλου: %@";
-
-/* A label that will display on the provider option to indicate this is the best option. */
-"wallet.providerListBestOption" = "ΚΑΛΥΤΕΡΗ ΕΠΙΛΟΓΗ";
-
-/* The title of the button that user can use to open the link to buy crypto. */
-"wallet.providerListBuyWith" = "Αγορά με %@";
-
-/* One of title that displays under provider option. Exchange rate with fees that this provider offers. */
-"wallet.providerListExchangeRateWithFees" = "Συναλλαγματική ισοτιμία με χρεώσεις";
-
-/* One of title that displays under provider option. The fees that provider will charge. */
-"wallet.providerListFees" = "Χρεώσεις";
-
-/* The description that will show when there is no available provider with givin input. */
-"wallet.providerListNoProviderDescription" = "Δοκιμάστε να αναζητήσετε ένα διαφορετικό στοιχείο.";
-
-/* The title that will show when there is no available provider with givin input. */
-"wallet.providerListNoProviderTitle" = "Δεν βρέθηκαν πάροχοι για %@";
-
-/* One of title that displays under provider option. The price of the target currency on market. */
-"wallet.providerListPrice" = "Τιμή";
-
-/* One of title that displays under provider option. The total cost of this purchase. */
-"wallet.providerListTotal" = "Σύνολο";
-
-/* The button title for users to click. It will redirect user to that specific provider website. '%@' will be replaced provider's short name. For example, Buy with Ramp'. */
-"wallet.providerSelectionButtonTitle" = "Αγορά με %@";
-
-/* The title of the screen for users to select a purchase method. For example, 'Ramp.Network'. */
-"wallet.providerSelectionScreenTitle" = "Επιλέξτε μέθοδο αγοράς";
-
-/* The section header for the list of available purchse methods. */
-"wallet.providerSelectionSectionHeader" = "Ορίστε μια από τις παρακάτω επιλογές";
-
-/* The title of the button for users to click to select a purchase method. */
-"wallet.purchaseMethodButtonTitle" = "Επιλέξτε μέθοδο αγοράς";
-
 /* The message displayed when the user takes a screenshot of their recovery phrase */
 "wallet.recoveryPhraseScreenshotDetectedMessage" = "Προειδοποίηση: Ενδέχεται να δημιουργηθεί αντίγραφο ασφαλείας ενός στιγμιοτύπου οθόνης της φράσης ανάκτησης σε μια υπηρεσία αρχείων cloud και να είναι αναγνώσιμο από οποιαδήποτε εφαρμογή με πρόσβαση στις φωτογραφίες. Η Brave συνιστά να μην αποθηκεύσετε αυτό το στιγμιότυπο οθόνης και να το διαγράψετε το συντομότερο δυνατό.";
-
-/* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
-"wallet.refreshMarketPriceLabel" = "Ανανέωση τιμής αγοράς";
 
 /* A button title that allows the user to reject all unapproved transactions at once. %d will be replaced with a number, example: Reject 4 Transactions */
 "wallet.rejectAllTransactions" = "Απόρριψη %d συναλλαγών";
@@ -1330,18 +769,6 @@
 /* A message that will be displayed above the password entry field when the user tries to remove a secondary account. '%@' will be replaced with the account's name */
 "wallet.removeAccountConfirmationMessage" = "Είστε βέβαιοι ότι θέλετε να καταργήσετε τον λογαριασμό «%@»;";
 
-/* A message that will be displayed under the password entry field when the user enters an incorrect password and their secondary account is not removed. */
-"wallet.removeAccountErrorMessage" = "Μη έγκυρος κωδικός πρόσβασης";
-
-/* The message in the error pop up when there is an error occurs during the process of removing a custom token. */
-"wallet.removeCustomTokenErrorMessage" = "Επαληθεύστε ότι πρόκειται για νέο προσαρμοσμένο στοιχείο, ελέγξτε τη σύνδεσή σας στο διαδίκτυο και δοκιμάστε ξανά.";
-
-/* The title of the error pop up when there is an error occurs during the process of removing a custom token. */
-"wallet.removeCustomTokenErrorTitle" = "Δεν είναι δυνατή η κατάργηση του προσαρμοσμένου διακριτικού";
-
-/* A button on an account screen which when pressed presents a new screen to  rename the account */
-"wallet.renameButtonTitle" = "Μετονομασία";
-
 /* A label will be displayed when the repeat password field input is matched with the password field. */
 "wallet.repeatedPasswordMatch" = "Οι κωδικοί πρόσβασης ταιριάζουν!";
 
@@ -1350,9 +777,6 @@
 
 /* A label for toggle for user to use to indicate importing a legacy brave wallet or not */
 "wallet.restoreLegacyBraveWalletToggleTitle" = "Εισαγωγή από παλαιότερα Πορτοφόλια κρυπτονομισμάτων Brave;";
-
-/* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
-"wallet.restoreWalletBackButtonTitle" = "Επαναφορά πορτοφολιού";
 
 /* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Brave */
 "wallet.restoreWalletButtonTitle" = "Ανάκτηση";
@@ -1363,17 +787,11 @@
 /* A button title when 24 recovery-word grids are displayed for users to restore legacy wallet. Users can click this button to display the 12 recovery-word grids to restore regular wallet. */
 "wallet.restoreWalletImportFromRegularBraveWallet" = "Έχω μια φράση ανάκτησης 12 λέξεων";
 
-/* A title displayed above 2 text fields for entering a new wallet password */
-"wallet.restoreWalletNewPasswordTitle" = "Νέος κωδικός πρόσβασης";
-
 /* The error message displayed when a user enters an invalid phrase to restore from. By phrase we mean 'recovery phrase' or 'recovery mnemonic' */
 "wallet.restoreWalletPhraseInvalidError" = "Μη έγκυρη φράση ανάκτησης";
 
 /* The placeholder on the mneomic/recovery phrase text field of each grid. */
 "wallet.restoreWalletPhrasePlaceholder" = "Λέξη #%d";
-
-/* A toggle label that will enable or disable visibility of the contents in the recovery phrase text field */
-"wallet.restoreWalletShowRecoveryPhrase" = "Εμφάνιση φράσης ανάκτησης";
 
 /* The subtitle on the restore wallet screen. */
 "wallet.restoreWalletSubtitle" = "Μπορείτε να επικολλήσετε ολόκληρη τη φράση ανάκτησης σε οποιοδήποτε πεδίο.";
@@ -1387,38 +805,14 @@
 /* A button title for saving the users selected gas fee options. Or to save a custom nonce value. Or to save a custom network */
 "wallet.saveButtonTitle" = "Αποθήκευση";
 
-/* The title of the label of the button to save all changes. Used in Portfolio/NFT filters and display settings. */
-"wallet.saveChangesButtonTitle" = "Αποθήκευση αλλαγών";
-
-/* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
-"wallet.scanQRCodeAccessibilityLabel" = "Σάρωση κωδικού QR";
-
 /* A title of an alert when the user takes a screenshot of their device */
 "wallet.screenshotDetectedTitle" = "Εντοπίστηκε στιγμιότυπο οθόνης";
-
-/* The label as a placeholder in search fields. */
-"wallet.search" = "Αναζήτηση";
-
-/* The title of the asset search page */
-"wallet.searchTitle" = "Αναζήτηση στοιχείων";
-
-/* A subtitle above a list of crypto accounts that are imported */
-"wallet.secondaryCryptoAccountsSubtitle" = "Εισαγάγετε τον εξωτερικό λογαριασμό πορτοφολιού σας με μια χωριστή φράση seed.";
 
 /* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
 "wallet.securityRiskDetectedTitle" = "Εντοπίστηκε κίνδυνος ασφαλείας";
 
-/* The title used in the row opening DApp settings in Account Details. */
-"wallet.securityTitle" = "Ασφάλεια";
-
 /* The title of the button to show details. */
 "wallet.seeDetailsButtonTitle" = "Εμφάνιση λεπτομερειών";
-
-/* The description label of the filter option that allows users to select which accounts to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings. */
-"wallet.selectAccountsDescription" = "Επιλογή λογαριασμών για φιλτράρισμα";
-
-/* The label of the filter option that allows users to select which accounts to filter assets by. Used in Portfolio/NFT filters and display settings. */
-"wallet.selectAccountsTitle" = "Επιλογή λογαριασμών";
 
 /* The title of the account selection screen. Will show above a list of accounts the user may pick from */
 "wallet.selectAccountTitle" = "Επιλέξτε λογαριασμό";
@@ -1429,53 +823,14 @@
 /* The accessibility label for the selected account picker */
 "wallet.selectedAccount" = "Επιλεγμένος λογαριασμός";
 
-/* The accessibility label for the ethereum network picker */
-"wallet.selectedNetwork" = "Επιλεγμένο δίκτυο";
-
-/* The description label of the filter option that allows users to select which networks to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings. */
-"wallet.selectNetworksDescription" = "Επιλογή δικτύων για φιλτράρισμα";
-
 /* The label of the filter option that allows users to select which networks to filter assets by. Used in Portfolio/NFT filters and display settings. */
 "wallet.selectNetworksTitle" = "Επιλογή δικτύων";
-
-/* The description of the view that lets the user select a token & account at the same time in the Send crypto view when there are no available tokens. */
-"wallet.selectTokenToSendNoTokens" = "Δεν υπάρχουν διαθέσιμα διακριτικά";
-
-/* The title of the view that lets the user select a token & account at the same time in the Send crypto view. */
-"wallet.selectTokenToSendTitle" = "Επιλογή διακριτικού για αποστολή";
 
 /* As in sending cryptocurrency to another account */
 "wallet.send" = "Αποστολή";
 
-/* An error that appears below the send amount 4 grids when the user inputs an invalid amount format. */
-"wallet.sendAmountFormatError" = "Μη έγκυρη μορφή ποσού";
-
-/* A title above the amount of asset you want to send. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
-"wallet.sendCryptoAmountTitle" = "Εισαγάγετε ποσό %@ για αποστολή";
-
-/* A title above the cryptocurrency token/asset you are sending from. For example this would appear over a cell that has the 'BAT' token selected */
-"wallet.sendCryptoFromTitle" = "Από ";
-
-/* The title of the button for users to click when they want to send the sending-transaction */
-"wallet.sendCryptoSendButtonTitle" = "Αποστολή";
-
-/* The error message will appear when there is any error occurs during unpproved transaction */
-"wallet.sendCryptoSendError" = "Προς το παρόν δεν μπορούμε να προχωρήσουμε με τη συναλλαγή σας";
-
-/* A title above the address you want to send to. For example this would appear over a cell that has the 'OxFCdf***DDee' with a clipboard icon and a qr-code icon on the right hand side */
-"wallet.sendCryptoToTitle" = "Προς";
-
 /* The description of a send button on the buy/send/swap/deposit modal */
 "wallet.sendDescription" = "Στείλτε κρυπτονομίσματα ή κάντε μεταφορά από έναν λογαριασμό σε έναν άλλο.";
-
-/* An error that appears below the send crypto address text field, when the input `To` address is not a valid Bitcoin address. */
-"wallet.sendErrorBtcAddressNotValid" = "Δεν είναι έγκυρη διεύθυνση BTC";
-
-/* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn't have a linked ETH address` */
-"wallet.sendErrorDomainNotRegistered" = "Ο τομέας δεν έχει συνδεδεμένη διεύθυνση %@";
-
-/* An error that appears below the send crypto address text field, when the input `To` Filecoin address that is invalid */
-"wallet.sendErrorInvalidRecipientAddress" = "Μη έγκυρη διεύθυνση παραλήπτη";
 
 /* An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash unified address error - network mismatch. */
 "wallet.sendErrorZecAddressNetworkMissmatch" = "Αδυναμία αντιστοίχισης δικτύου";
@@ -1491,27 +846,6 @@
 
 /* An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash unified address. */
 "wallet.sendErrorZecAddressWrongUnifiedAddress" = "Λανθασμένη μορφή ενοποιημένης διεύθυνσης";
-
-/* A placeholder of the address text field. */
-"wallet.sendToCryptoAddressPlaceholder" = "Εισαγάγετε διεύθυνση";
-
-/* A warning that appears below the send crypto address text field, when the input `To` address has invalid checksum. */
-"wallet.sendWarningAddressInvalidChecksum" = "Η διεύθυνση δεν πέρασε από την επαλήθευση (μη έγκυρο checksum). Δοκιμάστε ξανά, αντικαθιστώντας τα πεζά με κεφαλαία.";
-
-/* A warning that appears below the send crypto address text field, when the input `To` address is a token contract address. */
-"wallet.sendWarningAddressIsContract" = "Η διεύθυνση παραλήπτη αποτελεί τη διεύθυνση συμβολαίου ενός token";
-
-/* A warning that appears below the send crypto address text field, when the input `To` address is the same as the current selected account's address. */
-"wallet.sendWarningAddressIsOwn" = "Η διεύθυνση παραλήπτη είναι η δική σας διεύθυνση";
-
-/* A warning that appears below the send crypto address text field, when the input `To` address is missing checksum information. */
-"wallet.sendWarningAddressMissingChecksumInfo" = "Αυτή η διεύθυνση δεν μπορεί να επαληθευτεί (λείπει το checksum). Συνέχεια;";
-
-/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address. */
-"wallet.sendWarningAddressNotValid" = "Μη έγκυρη διεύθυνση ΕΤΗ";
-
-/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid SOL address. */
-"wallet.sendWarningSolAddressNotValid" = "Μη έγκυρη διεύθυνση SOL";
 
 /* As in sent cryptocurrency from one asset to another */
 "wallet.sent" = "Στάλθηκε";
@@ -1564,9 +898,6 @@
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As in the first step of an onboarding process is to welcome a user. */
 "wallet.setupCryptoButtonBackButtonTitle" = "Καλώς ήρθατε";
 
-/* The button title to continue to the next step on the 'setup crypto' screen. As in to begin the process of creating a wallet/setting up the cryptocurrency feature */
-"wallet.setupCryptoButtonTitle" = "Έναρξη";
-
 /* The subtitle displayed in the section for user that need to create a brand new wallet */
 "wallet.setupCryptoCreateNewSubTitle" = "Ξεκινήστε με το Πορτοφόλι Brave σε λίγα λεπτά.";
 
@@ -1591,20 +922,8 @@
 /* A button title to confirm a shield ZEC transaction. It is shown below details about a given transaction. */
 "wallet.shieldZEC" = "Θωράκιση ZEC";
 
-/* The description label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
-"wallet.showNFTNetworkLogoDescription" = "Εμφάνιση λογότυπου δικτύου στα NFT";
-
-/* The label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
-"wallet.showNFTNetworkLogoTitle" = "Λογότυπο Δικτύου";
-
-/* A button title that will make a private key visible on the screen */
-"wallet.showPrivateKeyButtonTitle" = "Προβολή Ιδιωτικού κλειδιού";
-
 /* The title beside the toggle in onboarding network selection screen that shows test networks. */
 "wallet.showTestnets" = "Εμφάνιση testnet";
-
-/* The title of a button that updates the filter to show tokens with zero balances. */
-"wallet.showZeroBalances" = "Εμφάνιση μηδενικών υπολοίπων";
 
 /* The title of the button used to sign a message request on the signature request view. */
 "wallet.sign" = "Υπογραφή";
@@ -1647,9 +966,6 @@
 
 /* The section header displayed in details for Sign Cardano Transaction Request when the transaction includes stake reward withdrawals. */
 "wallet.signCardanoTxRequestDetailsWithdrawalsLabel" = "Αναλήψεις";
-
-/* A description explains signed transaction will be sent to network by dapps and awaits confirmation. */
-"wallet.signedTransactionDescription" = "Η συναλλαγή έχει υπογραφεί και θα σταλεί στο δίκτυο από τα dapp και περιμένει επιβεβαίωση.";
 
 /* A title of transaction signed status view indicating this transaction has been signed. */
 "wallet.signedTransactionTitle" = "Η συναλλαγή υπεγράφη";
@@ -1819,9 +1135,6 @@
 /* The label displayed beside the Program Id for an instruction type we don't support decoding. Ex. "Program Id: 1111223344aabbccd" */
 "wallet.solanaInstructionProgramId" = "Αναγνωριστικό προγράμματος";
 
-/* The title displayed above the Token Program Mint To Checked instruction type for Solana Instruction details. */
-"wallet.solanaMintToCheckedInstructionName" = "Κοπή σε ελεγμένα";
-
 /* The title displayed above the Token Program Mint To instruction type for Solana Instruction details. */
 "wallet.solanaMintToInstructionName" = "Κοπή σε";
 
@@ -1836,9 +1149,6 @@
 
 /* The warning message to let users understand the risk of using Brave Wallet to sign any transaction. */
 "wallet.solanaSignTransactionWarning" = "Λάβετε υπόψη ότι το Brave δεν μπορεί να επαληθεύσει τι θα συμβεί αν υπογράψετε. Η υπογραφή θα μπορούσε να εξουσιοδοτήσει σχεδόν οποιαδήποτε λειτουργία στον λογαριασμό σας ή εκ μέρους σας, συμπεριλαμβανομένου (ενδεικτικά) του πλήρους ελέγχου του λογαριασμού σας και των στοιχείων κρυπτονομισμάτων στον ιστότοπο που υποβάλλει το αίτημα. Υπογράψτε μόνο αν είστε σίγουροι ότι θέλετε να προβείτε σε αυτήν την ενέργεια και εμπιστεύεστε τον ιστότοπο που υποβάλλει το αίτημα.";
-
-/* The title displayed above the value of a Solana swap transaction in transaction confirmation view, transaction details view and transaction summary rows. */
-"wallet.solanaSwapTransactionTitle" = "Συναλλαγή ανταλλαγής";
 
 /* The title displayed above the Token Program Sync Native instruction type for Solana Instruction details. */
 "wallet.solanaSyncNativeInstructionName" = "Συγχρονισμός εγγενών";
@@ -1870,12 +1180,6 @@
 /* The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaWithdrawNonceAccountInstructionName" = "Ανάληψη από λογαριασμό nonce";
 
-/* The description label of the sort option that sorts assets by their fiat value, shown below the title. Used in Portfolio/NFT filters and display settings. */
-"wallet.sortAssetsDescription" = "Ταξινόμηση κατά αξία παραστατικού χρήματος ή κατά όνομα";
-
-/* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
-"wallet.sortAssetsTitle" = "Ταξινόμηση στοιχείων";
-
 /* The title of the banner which will be displayed at the top of the transaction status screen when transaction is in submitted status and user wants to speed it up. */
 "wallet.speedUpBannerTitle" = "Διαρκεί περισσότερο από το αναμενόμενο;";
 
@@ -1884,9 +1188,6 @@
 
 /* The title for the button to speed up a submitted transaction. */
 "wallet.speedUpTransactionButtonTitle" = "Επιτάχυνση";
-
-/* A description explains submitted transaction has been sent to the netwokr and awaits confirmation. */
-"wallet.submittedTransactionDescription" = "Για να συνεχίσετε να χρησιμοποιείτε τις Ανταμοιβές Brave, επιλέξτε τη χώρα σας, έτσι ώστε να σας δείξουμε τις σωστές επιλογές και διαφημίσεις για την περιοχή σας";
 
 /* A title of transaction signed status view indicating this transaction has been submitted to the network. */
 "wallet.submittedTransactionTitle" = "Η συναλλαγή υποβλήθηκε";
@@ -1909,53 +1210,8 @@
 /* A title displayed in transaction confirmation above the token being swapped from in a Swap transaction. */
 "wallet.swapConfirmationYouSpend" = "Τα έξοδά σας";
 
-/* A title above the amount of asset you will receive from the swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
-"wallet.swapCryptoAmountReceivingTitle" = "Λήψη ποσού σε %@ (εκτιμώμενο)";
-
-/* A title above the amount of asset you want to swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
-"wallet.swapCryptoAmountTitle" = "Εισαγάγετε ποσό %@ για ανταλλαγή";
-
-/* A title above the cryptocurrency token/asset you are swapping from. For example this would appear over a cell that has the 'BAT' token selected */
-"wallet.swapCryptoFromTitle" = "Από ";
-
-/* The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT' */
-"wallet.swapCryptoMarketPriceTitle" = "Τιμή αγοράς σε %@";
-
-/* The title for Slippage tolerance field. User will choose the tolerance for slippage as a percentage value */
-"wallet.swapCryptoSlippageTitle" = "Ανοχή Πτώσης Απόδοσης";
-
-/* The title of the button for users to click when they want to swap between two cryptos */
-"wallet.swapCryptoSwapButtonTitle" = "Ανταλλαγή";
-
-/* A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected */
-"wallet.swapCryptoToTitle" = "Προς";
-
-/* The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network' */
-"wallet.swapCryptoUnsupportNetworkBody" = "Το Brave δεν υποστηρίζει αυτήν τη στιγμή την ανταλλαγή στο %@. Μεταβείτε σε μια υποστηριζόμενη αλυσίδα.";
-
-/* The title below account picker when user has selected a test network to swap cryptos */
-"wallet.swapCryptoUnsupportNetworkTitle" = "Μη υποστηριζόμενη αλυσίδα";
-
 /* The description of a swap button on the buy/send/swap/deposit modal */
 "wallet.swapDescription" = "Ανταλλάξτε token και περιουσιακά στοιχεία.";
-
-/* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. The first '%@' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of the company's data usage. */
-"wallet.swapDexAggrigatorDisclaimer" = "Η %1$@ θα επεξεργαστεί τη διεύθυνση %2$@ και τη διεύθυνση IP για να ολοκληρώσει μια συναλλαγή (συμπεριλαμβανομένης της λήψης προσφορών). Η %3$@ θα χρησιμοποιήσει αυτά τα δεδομένα ΜΟΝΟ για σκοπούς επεξεργασίας συναλλαγών.";
-
-/* A disclaimer note shown on the Swap screen. '%@' will be replaced by a company name, ex. '0x' / 'Jupiter'. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange) */
-"wallet.swapDexAggrigatorNote" = "Το Brave χρησιμοποιεί το %@ ως αθροιστή DEX.";
-
-/* The 'Limit' order type. Limit orders only execute when the price requirements are met */
-"wallet.swapLimitOrderType" = "Όριο";
-
-/* The 'Market' order type. Market orders execute immediately based on the price at the time of the order. */
-"wallet.swapMarketOrderType" = "Αγορά";
-
-/* The type of order you want to place. Options are: 'Market' and 'Limit' */
-"wallet.swapOrderTypeLabel" = "Τύπος παραγγελίας";
-
-/* An accessibility message for the swap button below from amount shortcut grids for users to swap the two selected tokens. */
-"wallet.swapSelectedTokens" = "Ανταλλαγή επιλεγμένων διακριτικών";
 
 /* The title of the button to approve switching the network on a switch network request from a dapps website. */
 "wallet.switchNetworkButtonTitle" = "Εναλλαγή";
@@ -1972,83 +1228,20 @@
 /* The title above the testnets in onboarding network selection screen. */
 "wallet.testnets" = "Testnets";
 
-/* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
-"wallet.today" = "Σήμερα";
-
-/* A title that will be displayed on top of the text field for users to input the custom token address */
-"wallet.tokenAddress" = "Διεύθυνση διακριτικού";
-
-/* A title that will be displayed on top of the text field for users to input the custom token mint address */
-"wallet.tokenMintAddress" = "Διεύθυνση νομισματοκοπείου";
-
-/* A title that will be displayed on top of the text field for users to input the custom token name */
-"wallet.tokenName" = "Όνομα token";
-
-/* A title that will be displayed on top of the text field for users to input the custom token symbol */
-"wallet.tokenSymbol" = "Σύμβολο token";
-
 /* A title displayed beside a number describing the total amount of gas and ETH that will be transferred */
 "wallet.total" = "Σύνολο";
-
-/* A title label that will display total balance of all none-zero balance accounts */
-"wallet.totalBalance" = "Συνολικό υπόλοιπο";
-
-/* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
-"wallet.transactionApprovalTitle" = "Εγκρίθηκε";
-
-/* The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: "Approved 150.0 BAT" */
-"wallet.transactionApproveSymbolTitle" = "Εγκρίθηκαν %1$@ %2$@";
-
-/* Text of toggle for a confirmation prompt when there's a backlog of wallet transactions */
-"wallet.transactionBacklogAcknowledgement" = "Εκκαθάριση & αντικατάσταση ημιτελών συναλλαγών";
-
-/* Additional information, when users have previously clear and replace the incomplete transaction(s) */
-"wallet.transactionBacklogAfterReplacement" = "Προς το παρόν, δεν απαιτείται καμία πρόσθετη ενέργεια. Απλώς περιμένετε να εκκαθαριστούν οι μη επιβεβαιωμένες συναλλαγές.";
-
-/* Text body of confirmation prompt when there's a backlog of wallet transactions */
-"wallet.transactionBacklogBody" = "Προσπαθείτε να ξεκινήσετε μια νέα συναλλαγή ενώ έχετε υποβάλει προηγουμένως συναλλαγές που δεν έχουν επιβεβαιωθεί. Αυτό θα αποκλείσει την υποβολή νέων.";
-
-/* Title of confirmation prompt when there's a backlog of wallet transactions */
-"wallet.transactionBacklogTitle" = "Εκκρεμείς συναλλαγές";
 
 /* Displays the number of transactions and the current transaction that you are viewing when confirming or rejecting multiple transactions. Each '%lld' will be replaced by a number, for example: '1 of 4' */
 "wallet.transactionCount" = "%1$lld από %2$lld";
 
-/* The label for displaying the date a transaction occurred. Appears next to the formatted date such as '3:00PM - Jan 1 2022' */
-"wallet.transactionDetailsDateTitle" = "Ημερομηνία";
-
-/* The label for the market price of the asset used in a cryptocurrency transaction. Appears next to the formatted currency such as $1523.50 */
-"wallet.transactionDetailsMarketPriceTitle" = "Τιμή αγοράς";
-
 /* The label for the network a transaction occurred on. Appears next to 'Ethereum Mainnet', 'Rinkeby Test Network', 'Ropsten Test Network', etc. */
 "wallet.transactionDetailsNetworkTitle" = "Δίκτυο";
-
-/* The label for the transaction status, which describes the how far along a transaction is to completing. Appears next to the words such as 'Approved', 'Submitted', 'Pending', etc. */
-"wallet.transactionDetailsStatusTitle" = "Κατάσταση";
-
-/* The title for the view displaying the details of a cryptocurrency transaction. */
-"wallet.transactionDetailsTitle" = "Λεπτομέρειες συναλλαγής";
-
-/* The label for the transaction hash (the identifier) of a cryptocurrency transaction. Appears next to a button that opens a URL for the transaction. */
-"wallet.transactionDetailsTransactionHashTitle" = "Κατακερματισμός συναλλαγής";
-
-/* The label for the fees involved in a cryptocurrency transaction. Appears next to the value transferred and the currency amount. */
-"wallet.transactionDetailsTxFeeTitle" = "Τέλος συναλλαγής";
 
 /* A title displayed beside a number describing the cost of the transaction in SOL for any Solana transaction */
 "wallet.transactionFee" = "Χρέωση Συναλλαγής";
 
 /* A VoiceOver label that will be read out when a user focuses a transactions "from address" and "to address" labels. "%@" will be replaced with either an account name or a truncated ethereum address such as "Account 1" or "0x1234***3003" */
 "wallet.transactionFromToAccessibilityLabel" = "Από: %1$@. Προς: %2$@";
-
-/* The description of the transactions row in Account Details when user has zero or multiple Transactions. */
-"wallet.transactionsDescription" = "%d συναλλαγές";
-
-/* A title shown for a send transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: "Sent 0.0054 ETH ($22.44)" */
-"wallet.transactionSendTitle" = "Στάλθηκαν %1$@ %2$@ (%3$@)";
-
-/* The description of the transactions row in Account Details when user has 1 Transaction. */
-"wallet.transactionsSingularDescription" = "%d συναλλαγές";
 
 /* A status that explains that the transaction has been approved by the user */
 "wallet.transactionStatusApproved" = "Εγκρίθηκε";
@@ -2077,29 +1270,11 @@
 /* A transaction status that the app currently does not support displaying */
 "wallet.transactionStatusUnknown" = "Άγνωστη";
 
-/* The title which is displayed above a list of transactions */
-"wallet.transactionsTitle" = "Συναλλαγές";
-
-/* A transactions gas fee. The first '%@' becomes the fee amount, the second '%@' becomes the symbol for the fee's currency and the last '%@' becomes the fiat amount. For example: "Fee: 0.0054 ETH ($22.44)" */
-"wallet.transactionSummaryFee" = "Τέλος: %1$@ %2$@ (%3$@)";
-
-/* The label used to describe a transaction type. Used like 'Send from' or 'Approved from'. */
-"wallet.transactionSummaryIntentLabel" = "%@ από";
-
 /* The label to describe an Solana Swap transaction. */
 "wallet.transactionSummarySolanaSwap" = "Αντικατάσταση Solana";
 
-/* The label to describe an Swap transaction. */
-"wallet.transactionSummarySwapOn" = "Ανταλλαγή σε";
-
-/* A title shown for a swap transaction. The first '%@' becomes the from amount, the second '%@' becomes the symbol for the from currency, the third '%@' becomes the to amount, and the last '%@' becomes the to symbol. For example: "Swapped 0.0054 ETH to 1.5 DAI" */
-"wallet.transactionSwappedTitle" = "Ανταλλάχθηκαν %1$@ %2$@ με %3$@ %4$@";
-
 /* Explains that this transaction is an ERC20 approval transaction and is displayed among other transaction info */
 "wallet.transactionTypeApprove" = "Έγκριση";
-
-/* A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: "Sent ETH" */
-"wallet.transactionUnknownSendTitle" = "Απεσταλμένα %@";
 
 /* The title displays in confirmation screen when there is no more pending transaction. */
 "wallet.txConfirmationNoMorePendingTitle" = "Δεν υπάρχουν άλλες εκκρεμείς συναλλαγές";
@@ -2233,9 +1408,6 @@
 /* A button title to confirm an unshield ZEC transaction. It is shown below details about a given transaction. */
 "wallet.unshieldZEC" = "Αποσύρω Θωράκιση ZEC";
 
-/* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
-"wallet.userAssetSymbolNetwork" = "%1$@ σε %2$@";
-
 /* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the value. */
 "wallet.valueLabel" = "Αξία";
 
@@ -2280,9 +1452,6 @@
 
 /* The description for wallet panel when users haven't set up a wallet yet. */
 "wallet.walletPanelSetupWalletDescription" = "Χρησιμοποιήστε αυτό το πλαίσιο για ασφαλή πρόσβαση στο web3 και σε όλα τα περιουσιακά στοιχεία των κρυπτονομισμάτων σας.";
-
-/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
-"wallet.walletSettings" = "Ρυθμίσεις Πορτοφολιού";
 
 /* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets. */
 "wallet.walletTypeNone" = "Καμία";
@@ -2338,9 +1507,6 @@
 /* The title for the entry displaying the preferred option to display web3 site notifications. */
 "wallet.web3PreferencesDisplayWeb3Notifications" = "Εμφάνιση ειδοποιήσεων Web3";
 
-/* The title for the entry that by clicking will direct users to the screen to manage web3 sites account connections, and the title for the Manage Site Connections screen. */
-"wallet.web3PreferencesManageSiteConnections" = "Διαχείριση επεκτάσεων ιστότοπου";
-
 /* The section title for users to set up preferences for interation with web3 sites. */
 "wallet.web3PreferencesSectionTitle" = "Προτιμήσεις Web3";
 
@@ -2352,7 +1518,4 @@
 
 /* A description of an ZCash account, displayed in Accounts tab. */
 "wallet.zecAccountDescription" = "ZCash";
-
-/* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
-"wallet.zToASortOption" = "Ω έως Α";
 
