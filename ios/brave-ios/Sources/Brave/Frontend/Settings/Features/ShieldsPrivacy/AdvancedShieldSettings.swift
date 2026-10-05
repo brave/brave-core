@@ -424,8 +424,8 @@ import os
         for filterList in filterLists {
           switch filterList.entry.componentId {
           case AdblockFilterListCatalogEntry.mobileAnnoyancesComponentID:
-            if filterList.isEnabled != self.blockMobileAnnoyances {
-              self.blockMobileAnnoyances = filterList.isEnabled
+            if filterList.isEnabledOrDefault != self.blockMobileAnnoyances {
+              self.blockMobileAnnoyances = filterList.isEnabledOrDefault
             }
           default:
             continue

@@ -228,7 +228,12 @@ struct FilterListsView: View {
 
     ForEach($filterListStorage.filterLists) { $filterList in
       if !filterList.isHidden && filterList.satisfies(searchText: searchText) {
-        Toggle(isOn: $filterList.isEnabled) {
+        Toggle(
+          isOn: Binding(
+            get: { filterList.isEnabledOrDefault },
+            set: { $filterList.wrappedValue.isEnabled = $0 }
+          )
+        ) {
           VStack(alignment: .leading) {
             Text(filterList.entry.title)
             Text(filterList.entry.desc)
@@ -382,7 +387,7 @@ extension FilterListStorage {
   /// their default enabled state.
   fileprivate subscript(allEnabledMatching searchText: String) -> Bool {
     get {
-      filterLists.allSatisfy { $0.isEnabled || !$0.satisfies(searchText: searchText) }
+      filterLists.allSatisfy { $0.isEnabledOrDefault || !$0.satisfies(searchText: searchText) }
     }
     set {
       for (index, filterList) in filterLists.enumerated()
