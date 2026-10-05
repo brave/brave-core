@@ -136,7 +136,8 @@ class MockPsstRuleRegistry final : public PsstRuleRegistry {
   MOCK_METHOD(void,
               CheckIfMatch,
               (const GURL&,
-               base::OnceCallback<void(std::unique_ptr<MatchedRule>)>),
+               base::OnceCallback<void(std::unique_ptr<MatchedRule>)>,
+               base::OnceClosure),
               (override));
 
   MOCK_METHOD(void,
@@ -158,6 +159,13 @@ ACTION_P(CheckIfMatchFailsCallback, loop) {
   std::move(
       const_cast<base::OnceCallback<void(std::unique_ptr<MatchedRule>)>&>(arg1))
       .Run(nullptr);
+  loop->Quit();
+}
+
+// Simulates no rule matching the URL at al. This is what
+// PsstRuleRegistryImpl::CheckIfMatch does when no rule's pattern matches.
+ACTION_P(CheckIfMatchNoRuleFoundCallback, loop) {
+  std::move(const_cast<base::OnceClosure&>(arg2)).Run();
   loop->Quit();
 }
 
@@ -384,7 +392,7 @@ class PsstTabWebContentsObserverUnitTest
   // but the logical flow marked as cancelled.
   void StartFlowAndCancelWhilePolicyScriptInFlight() {
     base::RunLoop check_loop;
-    EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+    EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _))
         .WillOnce(CheckIfMatchCallback(
             &check_loop, CreateMatchedRule(user_script_, policy_script_,
                                            stored_script_version_)));
@@ -485,7 +493,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest, ShouldOnlyProcessHttpOrHttps) {
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(_, _)).Times(0);
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(_, _, _)).Times(0);
   {
     DocumentOnLoadObserver observer(web_contents());
     content::NavigationSimulator::NavigateAndCommitFromBrowser(
@@ -518,7 +526,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   const GURL first_navigation_url("https://example1.com");
 
   base::RunLoop first_nav_check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(first_navigation_url, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(first_navigation_url, _, _))
       .WillOnce(CheckIfMatchCallback(
           &first_nav_check_loop,
           CreateMatchedRule(first_nav_user_script, policy_script_)));
@@ -544,7 +552,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   const std::string second_nav_user_script = "user2";
   const GURL second_navigation_url("https://example2.com");
   base::RunLoop second_nav_check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(second_navigation_url, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(second_navigation_url, _, _))
       .WillOnce(CheckIfMatchCallback(
           &second_nav_check_loop,
           CreateMatchedRule(second_nav_user_script, policy_script_)));
@@ -573,14 +581,14 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
   base::RunLoop first_nav_check_loop;
   base::RunLoop second_nav_check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _))
       .WillOnce(CheckIfMatchCallback(
           &first_nav_check_loop,
           CreateMatchedRule(user_script_, policy_script_)));
   // The second page has no matching rule, so it starts no flow of its own and
   // anything observed afterwards can only come from the stale first flow.
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(second_navigation_url, _))
-      .WillOnce(CheckIfMatchFailsCallback(&second_nav_check_loop));
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(second_navigation_url, _, _))
+      .WillOnce(CheckIfMatchNoRuleFoundCallback(&second_nav_check_loop));
 
   // Hold the user script result until after the second navigation commits.
   PsstTabWebContentsObserver::InsertScriptInPageCallback
@@ -591,7 +599,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   // The stale result must not reach the UI or trigger the policy script.
   EXPECT_CALL(ui_delegate(), GetPsstWebsiteSettings).Times(0);
   EXPECT_CALL(ui_delegate(), Show).Times(0);
-  EXPECT_CALL(ui_delegate(), UpdateTasks).Times(0);
+  // Called one to hide the PST icon if visible
+  EXPECT_CALL(ui_delegate(), UpdateTasks).Times(1);
   EXPECT_CALL(inject_async_script_callback(), Run).Times(0);
 
   {
@@ -639,13 +648,13 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   // The back navigation may or may not reach DocumentOnLoadCompleted in the
   // test harness, so no run loop is tied to a rule check for it. What matters
   // for this test is only that the back navigation commits.
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _))
       .WillOnce(
           CheckIfMatchCallback(&first_nav_check_loop,
                                CreateMatchedRule(user_script_, policy_script_)))
       .WillRepeatedly(CheckIfMatchWithoutRule());
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(second_navigation_url, _))
-      .WillOnce(CheckIfMatchFailsCallback(&second_nav_check_loop));
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(second_navigation_url, _, _))
+      .WillOnce(CheckIfMatchNoRuleFoundCallback(&second_nav_check_loop));
 
   PsstTabWebContentsObserver::InsertScriptInPageCallback
       held_user_script_callback;
@@ -654,7 +663,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
   EXPECT_CALL(ui_delegate(), GetPsstWebsiteSettings).Times(0);
   EXPECT_CALL(ui_delegate(), Show).Times(0);
-  EXPECT_CALL(ui_delegate(), UpdateTasks).Times(0);
+  // Called one to hide the PST icon if visible
+  EXPECT_CALL(ui_delegate(), UpdateTasks).Times(1);
   EXPECT_CALL(inject_async_script_callback(), Run).Times(0);
 
   {
@@ -693,9 +703,9 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 TEST_F(PsstTabWebContentsObserverUnitTest, ShouldProcessRedirectsNavigations) {
   const GURL redirect_target("https://redirect.example1.com/");
 
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _)).Times(0);
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _)).Times(0);
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(redirect_target, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(redirect_target, _, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script_, policy_script_)));
 
@@ -727,7 +737,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   GURL url("https://example.com/");
 
   // call one for the main frame and then not again
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _)).Times(1);
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _, _)).Times(1);
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
                                                              url);
@@ -747,7 +757,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 TEST_F(PsstTabWebContentsObserverUnitTest,
        ShouldNotProcessIfNavigationNotCommitted) {
   const GURL url("https://example.com");
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _)).Times(0);
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _, _)).Times(0);
   auto simulator =
       content::NavigationSimulator::CreateBrowserInitiated(url, web_contents());
 
@@ -759,7 +769,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 TEST_F(PsstTabWebContentsObserverUnitTest,
        ShouldNotProcessIfSameDocumentNavigation) {
   // should call once for the initial load and then not again
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _)).Times(1);
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _)).Times(1);
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
                                                              url_);
@@ -772,7 +782,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest, DefaultPrefEnabledShouldProcess) {
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _)).Times(1);
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _)).Times(1);
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -792,7 +802,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   ASSERT_EQ(country_id, variations_service()->GetLatestCountry());
 
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script_, policy_script_)));
 
@@ -816,7 +826,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
 TEST_F(PsstTabWebContentsObserverUnitTest, PrefDisabledDontProcess) {
   psst_settings_service()->SetPsstEnabled(false);
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _)).Times(0);
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _)).Times(0);
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
                                                              url_);
@@ -825,7 +835,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, PrefDisabledDontProcess) {
 
 TEST_F(PsstTabWebContentsObserverUnitTest, CheckIfMatchReturnsNull) {
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _))
       .WillOnce(CheckIfMatchFailsCallback(&check_loop));
   EXPECT_CALL(inject_script_callback(), Run).Times(0);
 
@@ -840,7 +850,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, CheckIfMatchReturnsNull) {
 TEST_F(PsstTabWebContentsObserverUnitTest,
        UserScriptReturnsEmptyNoPolicyScript) {
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script_, policy_script_)));
   base::test::TestFuture<base::Value> user_script_insert_future;
@@ -868,7 +878,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   // Policy script is empty
   const std::string policy_script = "";
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script_, policy_script)));
 
@@ -897,7 +907,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 TEST_F(PsstTabWebContentsObserverUnitTest,
        UserScriptNotReturnUserNoPolicyScript) {
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script_, policy_script_)));
   base::test::TestFuture<base::Value> user_script_insert_future;
@@ -925,7 +935,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 TEST_F(PsstTabWebContentsObserverUnitTest,
        UserScriptReturnsUserHasPolicyScript) {
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script_, policy_script_)));
   base::test::TestFuture<base::Value> user_script_insert_future;
@@ -1019,7 +1029,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   for (const auto& test_case : test_cases) {
     SCOPED_TRACE(test_case.test_name);
     base::RunLoop check_loop;
-    EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+    EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _))
         .WillOnce(CheckIfMatchCallback(
             &check_loop, CreateMatchedRule(user_script_, policy_script_)));
     base::test::TestFuture<base::Value> user_script_insert_future;
@@ -1048,7 +1058,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 TEST_F(PsstTabWebContentsObserverUnitTest,
        UserScriptReturnsUnsupportedDictNoPolicyScriptParams) {
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script_, policy_script_)));
 
@@ -1114,7 +1124,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
   base::RunLoop check_loop;
   base::test::TestFuture<long> progress_future;
   base::test::TestFuture<std::vector<PolicyTask>> applied_tasks_future;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script_, policy_script_)));
 
@@ -1216,7 +1226,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   base::RunLoop check_loop;
   base::test::TestFuture<long> progress_future;
   base::test::TestFuture<std::vector<PolicyTask>> applied_tasks_future;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script_, policy_script_)));
 
@@ -1272,7 +1282,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   settings.uids_to_perform = stored_uids_to_perform;
 
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script_, policy_script_,
                                          current_script_version_)));
@@ -1368,7 +1378,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 TEST_F(PsstTabWebContentsObserverUnitTest,
        CancelInFlightFlowDropsPendingPolicyScriptResult) {
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script_, policy_script_)));
 
@@ -1455,7 +1465,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   const std::string continuation_user_script = "user_continuation";
 
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(continuation_url, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(continuation_url, _, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop,
           CreateMatchedRule(continuation_user_script, policy_script_,
@@ -1504,12 +1514,12 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
   base::RunLoop restarted_check_loop;
   base::RunLoop continuation_check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(restarted_url, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(restarted_url, _, _))
       .WillOnce(CheckIfMatchCallback(
           &restarted_check_loop,
           CreateMatchedRule(restarted_user_script, policy_script_,
                             stored_script_version_)));
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(continuation_url, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(continuation_url, _, _))
       .WillOnce(CheckIfMatchCallback(
           &continuation_check_loop,
           CreateMatchedRule(continuation_user_script, policy_script_,
