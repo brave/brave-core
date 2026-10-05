@@ -21,7 +21,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -50,7 +49,7 @@ void BraveBrowser::SuppressBrowserWindowClosingDialogForTesting(bool suppress) {
 
 BraveBrowser::BraveBrowser(BrowserWindowCreateParams params)
     : Browser(std::move(params)) {
-  if (auto* sidebar_controller = GetFeatures().sidebar_controller()) {
+  if (auto* sidebar_controller = sidebar::SidebarController::From(this)) {
     // TODO(https://github.com/brave/brave-browser/issues/45633): Cleanup this.
     // Below call order is important.
     // When reaches here, Sidebar UI is setup in BraveBrowserView but
@@ -157,7 +156,7 @@ void BraveBrowser::OnTabStripModelChanged(
   }
 
   // sidebar() can return a nullptr in unit tests.
-  auto* sidebar_controller = GetFeatures().sidebar_controller();
+  auto* sidebar_controller = sidebar::SidebarController::From(this);
   if (!sidebar_controller || !sidebar_controller->sidebar()) {
     return;
   }

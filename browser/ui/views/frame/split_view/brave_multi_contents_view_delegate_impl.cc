@@ -8,7 +8,6 @@
 #include "base/types/to_address.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/tabs/public/tab_interface.h"
@@ -40,7 +39,8 @@ void BraveMultiContentsViewDelegateImpl::WebContentsFocused(
   // active. Activate directly in both cases.
   if (sidebar::IsWebPanelFeatureEnabled() &&
       sidebar::IsWebPanelRelatedFocusChange(
-          bwi_->GetFeatures().sidebar_controller()->GetWebPanelController(),
+          sidebar::SidebarController::From(base::to_address(bwi_))
+              ->GetWebPanelController(),
           model, contents)) {
     if (tabs::TabInterface* tab =
             tabs::TabInterface::MaybeGetFromContents(contents);

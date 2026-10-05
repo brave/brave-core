@@ -38,6 +38,7 @@ source_set("sidebar") {
     "//components/history/core/browser",
     "//components/keyed_service/content",
     "//ui/base",
+    "//ui/base/unowned_user_data",
     "//ui/views",
   ]
 }
