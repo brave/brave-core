@@ -9,7 +9,7 @@
   <message name="IDS_SETTINGS_EMAIL_ALIASES_LEARN_MORE" desc="The label for the learn more link" formatter_data="webui=EmailAliases">
     Learn more
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_LABEL" desc="The label for the email aliases" formatter_data="webui=EmailAliases">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_LABEL" desc="The label for the email aliases" formatter_data="webui=EmailAliases android_java">
     Email Aliases
   </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_AUTOFILL_SUGGESTION_LABEL" desc="The label for the email aliases autofill suggestion toggle" formatter_data="webui=EmailAliases">

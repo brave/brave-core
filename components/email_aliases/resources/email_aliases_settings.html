@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="$i18n{language}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Email Aliases</title>
+  <link rel="stylesheet" href="chrome://resources/brave/css/reset.css">
+  <link rel="stylesheet" href="chrome://resources/css/text_defaults_md.css">
+  <link rel="stylesheet" href="chrome://resources/brave/fonts/inter.css">
+  <link rel="stylesheet" href="chrome://resources/brave/css/nala.css">
+  <link rel="stylesheet" href="brave_account_page.css">
+  <script src="chrome://resources/js/load_time_data_deprecated.js"></script>
+  <script src="/strings.js"></script>
+  <script type="module" src="./strings.m.js"></script>
+  <script type="module" src="//resources/brave/leo.bundle.js"></script>
+  <script type="module" src="brave_account_row.js"></script>
+  <style>
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--leo-color-container-background);
+      color: var(--leo-color-text-primary);
+    }
+
+    #mountPoint {
+      box-sizing: border-box;
+      margin: 0 auto;
+      max-width: 720px;
+      padding: 24px 16px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <script type="module" src="email_aliases_settings.bundle.js"></script>
+  <div id="mountPoint">
+    <div id="signInRoot"></div>
+    <div id="manageRoot"></div>
+  </div>
+</body>
+</html>
