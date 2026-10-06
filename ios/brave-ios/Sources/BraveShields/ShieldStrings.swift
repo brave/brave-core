@@ -1166,4 +1166,46 @@ extension Strings.Shields {
       "If you provide contact info it will be stored for reporting broken sites in the future.",
     comment: "Contact info storing description"
   )
+
+  public static let elementPickerCreateDisabledTitle = NSLocalizedString(
+    "ElementPickerCreateDisabledTitle",
+    bundle: .module,
+    value: "Select element you want to block",
+    comment: "Label for the element picker's create button while no element is selected."
+  )
+
+  public static let elementPickerCreateEnabledTitle = NSLocalizedString(
+    "ElementPickerCreateEnabledTitle",
+    bundle: .module,
+    value: "Block Elements",
+    comment: "Label for the element picker's create button once an element is selected."
+  )
+
+  public static let elementPickerManageTitle = NSLocalizedString(
+    "ElementPickerManageTitle",
+    bundle: .module,
+    value: "Manage filters",
+    comment: "Label for the element picker's button that opens the custom filters editor."
+  )
+
+  public static let elementPickerShowRulesTitle = NSLocalizedString(
+    "ElementPickerShowRulesTitle",
+    bundle: .module,
+    value: "Show rules",
+    comment: "Label for the element picker's button that reveals the generated filter rules."
+  )
+
+  public static let elementPickerHideRulesTitle = NSLocalizedString(
+    "ElementPickerHideRulesTitle",
+    bundle: .module,
+    value: "Hide rules",
+    comment: "Label for the element picker's button that hides the generated filter rules."
+  )
+
+  public static let elementPickerQuitTitle = NSLocalizedString(
+    "ElementPickerQuitTitle",
+    bundle: .module,
+    value: "Cancel",
+    comment: "Label for the element picker's button that closes the picker without blocking."
+  )
 }
