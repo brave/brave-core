@@ -107,11 +107,6 @@ void NotifyObserversAliasesAccountUpdated(
   }
 }
 
-bool operator!=(const email_aliases::AliasesAccountInfo& lhs,
-                const email_aliases::AliasesAccountInfo& rhs) {
-  return lhs.max_aliases_count != rhs.max_aliases_count;
-}
-
 }  // namespace
 
 EmailAliasesService::EmailAliasesService(
@@ -124,8 +119,6 @@ EmailAliasesService::EmailAliasesService(
       metrics_(pref_service) {
   CHECK(base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases));
   CHECK(brave_account_auth);
-
-  aliases_account_info_.max_aliases_count = mojom::kDefaultMaxAliases;
 
   auth_.emplace(std::move(brave_account_auth),
                 base::BindRepeating(&EmailAliasesService::OnAuthChanged,
@@ -367,12 +360,9 @@ void EmailAliasesService::OnRefreshAliasesResponse(
     return;
   }
 
-  if (aliases_account_info_ != response.body.value()->info) {
-    aliases_account_info_ = std::move(response.body.value()->info);
-    NotifyObserversAliasesAccountUpdated(
-        observers_, mojom::AliasesAccountUpdate::New(
-                        aliases_account_info_.max_aliases_count));
-  }
+  NotifyObserversAliasesAccountUpdated(
+      observers_, mojom::AliasesAccountUpdate::New(
+                      response.body.value()->info.max_aliases_count));
 
   EmailAliasesNotes notes(pref_service_.get(), GetAuthEmail());
   notes.RemoveNotesForDeletedAliases(response.body.value()->result);

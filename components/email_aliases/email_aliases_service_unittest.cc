@@ -52,6 +52,10 @@ class AliasObserver : public mojom::EmailAliasesServiceObserver {
     last_update_ = std::move(update);
   }
 
+  void OnAliasesAccountUpdated(mojom::AliasesAccountUpdatePtr update) override {
+    last_account_update_ = std::move(update);
+  }
+
   bool WaitForAliasUpdateCount(size_t count) {
     return base::test::RunUntil(
         [this, count]() { return alias_updates >= count; });
@@ -66,14 +70,20 @@ class AliasObserver : public mojom::EmailAliasesServiceObserver {
 
   const mojom::AliasesUpdatePtr& last_update() const { return last_update_; }
 
+  const mojom::AliasesAccountUpdatePtr& last_account_update() const {
+    return last_account_update_;
+  }
+
   void ResetForTesting() {
     alias_updates = 0;
     last_update_.reset();
+    last_account_update_.reset();
   }
 
  private:
   size_t alias_updates = 0;
   mojom::AliasesUpdatePtr last_update_;
+  mojom::AliasesAccountUpdatePtr last_account_update_;
   mojo::Receiver<mojom::EmailAliasesServiceObserver> receiver{this};
 };
 
@@ -97,7 +107,8 @@ class EmailAliasesAPITest : public ::testing::Test {
     const GURL manage_url = test::GetEmailAliasesServiceURL();
     url_loader_factory_.AddResponse(
         manage_url.Resolve("?status=active").spec(),
-        refresh_body.value_or("{ \"result\": [] }"));
+        refresh_body.value_or(
+            R"({ "info": { "max_aliases_count": 5 }, "result": [] })"));
   }
 
   template <typename T, typename InvokeFn>
@@ -390,13 +401,15 @@ TEST_F(EmailAliasesAPITest, RefreshAliases_Notifies_OnValidResponse) {
       alias_email,
       /*put_body=*/R"({"message":"updated"})",
       /*refresh_body=*/
-      std::string(
-          "{ \"result\":[{\"email\":\"dest@example.com\",\"alias\":\"") +
+      std::string("{ \"info\":{\"max_aliases_count\":17}, "
+                  "\"result\":[{\"email\":\"dest@example.com\",\"alias\":\"") +
           alias_email +
           "\",\"created_at\":\"2025-01-01T00:00:00Z\",\"last_used\":\"\","
           "\"status\":\"active\"}] }",
       "note");
   ASSERT_TRUE(result_out.has_value());
+  ASSERT_TRUE(observer_.last_account_update());
+  EXPECT_EQ(observer_.last_account_update()->max_aliases_count, 17u);
   ASSERT_TRUE(observer_.last_update());
   ASSERT_EQ(observer_.last_update()->which(),
             mojom::AliasesUpdate::Tag::kAliases);
@@ -466,6 +479,7 @@ TEST_F(EmailAliasesAPITest, Notes) {
                               .Set("last_used", ""));
     }
     return base::DictValue()
+        .Set("info", base::DictValue().Set("max_aliases_count", 5))
         .Set("result", std::move(aliases_list))
         .DebugString();
   };

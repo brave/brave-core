@@ -147,7 +147,6 @@ class EmailAliasesService : public KeyedService,
   EmailAliasesMetrics metrics_;
 
   std::vector<email_aliases::mojom::AliasPtr> aliases_;
-  email_aliases::AliasesAccountInfo aliases_account_info_;
 
   // WeakPtrFactory to safely bind callbacks across async network operations.
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};
