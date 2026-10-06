@@ -163,7 +163,14 @@ export default function ToolPermissionChallenge(props: Props) {
           </>
         )}
 
-        {toolPermissionImplications && <p>{toolPermissionImplications}</p>}
+        {permissionChallenge.implications ? (
+          <MarkdownRenderer
+            text={permissionChallenge.implications}
+            shouldShowTextCursor={false}
+          />
+        ) : (
+          toolPermissionImplications && <p>{toolPermissionImplications}</p>
+        )}
         {permissionChallenge.plan && (
           <p className={styles.assessment}>{permissionChallenge.plan}</p>
         )}

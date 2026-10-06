@@ -590,32 +590,39 @@ TabManagementTool::RequiresUserInteractionBeforeHandling(
   auto challenge = mojom::PermissionChallenge::New(
       std::nullopt,
       plan && !plan->empty() ? std::make_optional(*plan) : std::nullopt,
-      std::nullopt, /*supports_allow_session=*/false);
+      std::nullopt, std::nullopt, /*supports_allow_session=*/false);
+  challenge->implications = GetPermissionChallengeImplications(tool_use);
+  return challenge;
+}
+
+std::optional<std::string>
+TabManagementTool::GetPermissionChallengeImplications(
+    const mojom::ToolUseEvent& tool_use) const {
   // Page content goes with the tab list whenever it can be read, since the
   // model can't tell ahead of time whether titles and URLs will be enough.
   // One challenge covers both, so the user is asked once.
-  if (CanReadPageContent()) {
-    challenge->description = PageContentChallengeDescription();
+  if (!CanReadPageContent()) {
+    return std::nullopt;
   }
-  return challenge;
+  return PageContentChallengeImplications();
 }
 
 void TabManagementTool::UserPermissionGranted(
     const std::string& tool_use_id,
     const mojom::PermissionChallenge& challenge) {
   user_has_granted_permission_ = true;
-  // Only this tool's own challenge carries the page-content description, and
-  // only when it was shown, so the challenge the user answered says on its own
-  // whether they agreed to send page content.
-  if (challenge.description == PageContentChallengeDescription()) {
+  // Only this tool supplies the page-content implications, and only when they
+  // were shown, so the challenge the user answered says on its own whether
+  // they agreed to send page content.
+  if (challenge.implications == PageContentChallengeImplications()) {
     user_has_granted_page_content_permission_ = true;
   }
 }
 
 // static
-std::string TabManagementTool::PageContentChallengeDescription() {
+std::string TabManagementTool::PageContentChallengeImplications() {
   return l10n_util::GetStringUTF8(
-      IDS_CHAT_UI_TOOL_TAB_MANAGEMENT_PAGE_CONTENT_PERMISSION_SUMMARY);
+      IDS_CHAT_UI_TOOL_TAB_MANAGEMENT_PAGE_CONTENT_PERMISSION_IMPLICATIONS);
 }
 
 void TabManagementTool::SetTabPassagesFetcherForTesting(

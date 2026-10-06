@@ -122,6 +122,15 @@ class Tool {
   virtual std::optional<std::string> GetPermissionChallengeDescription(
       const mojom::ToolUseEvent& tool_use) const;
 
+  // Returns markdown-formatted implications of allowing this tool use, shown
+  // instead of the UI's default for this tool. Like
+  // GetPermissionChallengeDescription(), this has no side effects and also
+  // decorates a PermissionChallenge created elsewhere, so the user is shown
+  // the same implications whichever challenge they answer. Returns nullopt
+  // to keep the UI's default.
+  virtual std::optional<std::string> GetPermissionChallengeImplications(
+      const mojom::ToolUseEvent& tool_use) const;
+
   // Whether this tool supports the given conversation. Can be used to filter
   // tools based on conversation properties like temporary status.
   virtual bool SupportsConversation(

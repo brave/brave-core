@@ -976,7 +976,9 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
   auto challenge = GetChallenge(tool, *use);
   ASSERT_TRUE(challenge);
   EXPECT_EQ(challenge->plan, "group by topic");
-  EXPECT_THAT(challenge->description,
+  // The summary stays the tool's usual one; only what allowing it sends grows.
+  EXPECT_FALSE(challenge->description);
+  EXPECT_THAT(challenge->implications,
               testing::Optional(testing::HasSubstr("page text")));
 
   tool.UserPermissionGranted(use->id, *challenge);
@@ -1004,7 +1006,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
   auto use = ToolUse("1", kListInput);
   auto challenge = GetChallenge(tool, *use);
   ASSERT_TRUE(challenge);
-  EXPECT_FALSE(challenge->description);
+  EXPECT_FALSE(challenge->implications);
   tool.UserPermissionGranted(use->id, *challenge);
 
   base::DictValue output = base::test::ParseJsonDict(
@@ -1021,7 +1023,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
   challenge = GetChallenge(tool, *content_only);
   ASSERT_TRUE(challenge);
   EXPECT_FALSE(challenge->plan);
-  EXPECT_TRUE(challenge->description);
+  EXPECT_TRUE(challenge->implications);
 
   tool.UserPermissionGranted(content_only->id, *challenge);
   output = base::test::ParseJsonDict(
@@ -1029,8 +1031,8 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
   EXPECT_TRUE(FindPassages(output, url));
 }
 
-// A grant for a challenge that never disclosed page content, such as the
-// server's alignment check, doesn't extend to it.
+// A grant for a challenge that never disclosed page content doesn't extend to
+// it.
 IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
                        UnrelatedGrantDoesNotSendPassages) {
   TabManagementTool tool(profile());
@@ -1041,9 +1043,9 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
   AddTabAndGetHandle(browser(), url);
 
   tool.UserPermissionGranted(
-      "server-challenge",
-      *mojom::PermissionChallenge::New("off-topic", std::nullopt, std::nullopt,
-                                       /*supports_allow_session=*/false));
+      "server-challenge", *mojom::PermissionChallenge::New(
+                              "off-topic", std::nullopt, std::nullopt,
+                              std::nullopt, /*supports_allow_session=*/false));
 
   base::DictValue output = base::test::ParseJsonDict(
       RunToolAndGetText(FROM_HERE, &tool, kListInput));
@@ -1051,7 +1053,35 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
   EXPECT_FALSE(fetched);
   auto challenge = GetChallenge(tool, *ToolUse("1", kListInput));
   ASSERT_TRUE(challenge);
-  EXPECT_TRUE(challenge->description);
+  EXPECT_TRUE(challenge->implications);
+}
+
+// The server's alignment check shows this tool's implications, so answering
+// it grants page content and the list asks nothing more.
+IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
+                       ServerChallengeWithImplicationsSendsPassages) {
+  TabManagementTool tool(profile());
+  SetPassage(tool, kPassage);
+  const GURL url("https://a.test/");
+  AddTabAndGetHandle(browser(), url);
+
+  auto use = ToolUse("1", kListInput);
+  auto implications = tool.GetPermissionChallengeImplications(*use);
+  ASSERT_TRUE(implications);
+  EXPECT_EQ(implications, GetChallenge(tool, *use)->implications);
+
+  tool.UserPermissionGranted(
+      use->id, *mojom::PermissionChallenge::New(
+                   "off-topic", std::nullopt, std::nullopt, implications,
+                   /*supports_allow_session=*/false));
+  EXPECT_FALSE(GetChallenge(tool, *ToolUse("2", kListInput)));
+
+  base::DictValue output = base::test::ParseJsonDict(
+      RunToolAndGetText(FROM_HERE, &tool, kListInput));
+  EXPECT_TRUE(FindPassages(output, url));
+
+  SetSemanticHistorySearchEnabled(false);
+  EXPECT_FALSE(tool.GetPermissionChallengeImplications(*use));
 }
 
 // A list is sent whole rather than in chunks, so it carries no more page
@@ -1106,12 +1136,12 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
 
   auto with_page_content = GetChallenge(tool, *ToolUse("1", kListInput));
   ASSERT_TRUE(with_page_content);
-  ASSERT_TRUE(with_page_content->description);
+  ASSERT_TRUE(with_page_content->implications);
 
   SetSemanticHistorySearchEnabled(false);
   auto tabs_only = GetChallenge(tool, *ToolUse("1", kListInput));
   ASSERT_TRUE(tabs_only);
-  EXPECT_FALSE(tabs_only->description);
+  EXPECT_FALSE(tabs_only->implications);
   tool.UserPermissionGranted("1", *tabs_only);
 
   // Page content is readable again, and still has to be asked for.
@@ -1124,8 +1154,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
 }
 
 // A page-content challenge left unanswered or denied can't be answered under
-// its ID by a challenge this tool never raised, such as the server's
-// alignment check.
+// its ID by a challenge that didn't disclose page content.
 IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
                        ServerChallengeReusingIdGrantsNoPageContent) {
   TabManagementTool tool(profile());
@@ -1137,11 +1166,12 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
 
   auto with_page_content = GetChallenge(tool, *ToolUse("1", kListInput));
   ASSERT_TRUE(with_page_content);
-  ASSERT_TRUE(with_page_content->description);
+  ASSERT_TRUE(with_page_content->implications);
 
-  tool.UserPermissionGranted("1", *mojom::PermissionChallenge::New(
-                                      "off-topic", std::nullopt, std::nullopt,
-                                      /*supports_allow_session=*/false));
+  tool.UserPermissionGranted(
+      "1", *mojom::PermissionChallenge::New("off-topic", std::nullopt,
+                                            std::nullopt, std::nullopt,
+                                            /*supports_allow_session=*/false));
 
   EXPECT_TRUE(GetChallenge(tool, *ToolUse("2", kListInput)));
   base::DictValue output = base::test::ParseJsonDict(

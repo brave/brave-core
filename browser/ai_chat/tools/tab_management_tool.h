@@ -41,6 +41,8 @@ class TabManagementTool : public Tool {
   std::variant<bool, mojom::PermissionChallengePtr>
   RequiresUserInteractionBeforeHandling(
       const mojom::ToolUseEvent& tool_use) const override;
+  std::optional<std::string> GetPermissionChallengeImplications(
+      const mojom::ToolUseEvent& tool_use) const override;
   void UserPermissionGranted(
       const std::string& tool_use_id,
       const mojom::PermissionChallenge& challenge) override;
@@ -84,9 +86,10 @@ class TabManagementTool : public Tool {
                           std::optional<int> index,
                           std::string* error) const;
 
-  // What a challenge that discloses page content says. Only this tool's own
-  // challenges carry it.
-  static std::string PageContentChallengeDescription();
+  // The implications shown by a challenge that discloses page content. Only
+  // this tool supplies them, for its own challenges and ones raised for its
+  // tool uses elsewhere.
+  static std::string PageContentChallengeImplications();
 
   // Whether the history embeddings index can supply page excerpts for this
   // profile's tabs. Decides whether a challenge discloses page content, so
