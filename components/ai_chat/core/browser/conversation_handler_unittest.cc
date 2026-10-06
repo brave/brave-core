@@ -6456,6 +6456,54 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_UserAllowsForSession) {
 }
 
 TEST_F(ConversationHandlerUnitTest,
+       PermissionChallenge_DenyCannotBeReansweredWithAllowSession) {
+  // A denial leaves permission_challenge in place so the UI can keep showing
+  // what was refused, so a second decision for the same tool use must be
+  // rejected on the output instead. Otherwise the untrusted frame can follow
+  // the user's Deny with kAllowSession and win a standing session permission
+  // for the tool just refused. The gated pipe is no defence here: the denying
+  // click is itself the transient user activation the filter requires.
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com/cart"));
+  ON_CALL(content, GetContentTools)
+      .WillByDefault([](AssociatedContentDelegate::GetContentToolsCallback cb) {
+        std::vector<std::unique_ptr<Tool>> tools;
+        tools.push_back(std::make_unique<NiceMock<MockTool>>("cancel_cart"));
+        std::move(cb).Run(std::move(tools));
+      });
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  base::test::TestFuture<void> loaded;
+  manager->UpdateToolsForNewGenerationLoop(loaded.GetCallback());
+  ASSERT_TRUE(loaded.Wait());
+
+  StageHaltedToolUse(
+      conversation_handler_.get(), "cancel_cart",
+      mojom::PermissionChallenge::New(std::nullopt, std::nullopt, std::nullopt,
+                                      /*supports_allow_session=*/true));
+
+  conversation_handler_->ProcessPermissionChallenge(
+      "tool_id_1", mojom::PermissionChallengeDecision::kDeny);
+
+  // The denial is recorded as output, and the challenge is kept for the UI.
+  auto* denied_tool_event = conversation_handler_->GetConversationHistory()
+                                .back()
+                                ->events.value()[0]
+                                ->get_tool_use_event()
+                                .get();
+  ASSERT_TRUE(denied_tool_event->output.has_value());
+  EXPECT_TRUE(denied_tool_event->permission_challenge);
+
+  conversation_handler_->ProcessPermissionChallenge(
+      "tool_id_1", mojom::PermissionChallengeDecision::kAllowSession);
+
+  base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> infos;
+  manager->GetToolInfos(content.uuid(), infos.GetCallback());
+  ASSERT_EQ(1u, infos.Get().size());
+  EXPECT_EQ(mojom::ToolPermission::kAsk, infos.Get()[0]->permission);
+}
+
+TEST_F(ConversationHandlerUnitTest,
        PermissionChallenge_AllowSessionNeedsTheChallengeToOfferIt) {
   // The server's alignment check is shown however the user answered before, so
   // a client asking to stop being asked records nothing.

@@ -1312,6 +1312,16 @@ void ConversationHandler::ProcessPermissionChallenge(
     return;
   }
 
+  // A denial records the tool's output but deliberately leaves the challenge in
+  // place so the UI can keep showing what was refused, so the output is what
+  // marks a challenge answered. Without this the untrusted frame could
+  // re-answer a denied challenge with kAllowSession and win a standing session
+  // permission for the tool the user just refused.
+  if (tool_use->output) {
+    DLOG(ERROR) << "Permission challenge already answered: " << tool_use_id;
+    return;
+  }
+
   DVLOG(0) << __func__ << " user answered " << decision
            << " for permission for: " << tool_use->tool_name;
 
