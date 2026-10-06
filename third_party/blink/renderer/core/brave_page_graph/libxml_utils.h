@@ -10,6 +10,7 @@
 
 #include <string_view>
 
+#include "base/memory/stack_allocated.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace brave_page_graph {
@@ -17,6 +18,8 @@ namespace brave_page_graph {
 // Creates valid UTF-8 strings to use in libxml API (null-terminated and valid
 // UTF-8 characters).
 class XmlUtf8String {
+  STACK_ALLOCATED();
+
  public:
   explicit XmlUtf8String(std::string_view str);
   explicit XmlUtf8String(const blink::String& str);
