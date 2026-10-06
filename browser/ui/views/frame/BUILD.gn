@@ -38,6 +38,7 @@ source_set("frame") {
     "//chrome/browser/ui/views/frame:custom_corners_background",
     "//chrome/browser/ui/views/frame:multi_contents_view",
     "//chrome/browser/ui/views/frame:top_container_view",
+    "//chrome/browser/ui/views/frame:vertical_tab_strip_region_view",
     "//chrome/browser/ui/views/infobars",
     "//ui/compositor",
   ]
