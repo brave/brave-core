@@ -21,6 +21,7 @@ import androidx.annotation.VisibleForTesting;
 import org.chromium.base.ActivityState;
 import org.chromium.base.ApplicationState;
 import org.chromium.base.ApplicationStatus;
+import org.chromium.base.BraveExternalActivityLaunchTracker;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.FeatureList;
@@ -99,6 +100,13 @@ import java.util.Set;
 public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateListener {
     private static final Object PRE_NATIVE_OVERLAY_TAG = new Object();
 
+    // How recently BraveExternalActivityLaunchTracker's timestamp must have been set for a
+    // return to Brave to be treated as "a quick round trip through something we launched"
+    // rather than a real backgrounding. Deliberately generous — covers slower file-picker
+    // browsing, not just an instant share-sheet dismiss — since exceeding it simply means a
+    // normal re-arm happens, matching what would have happened anyway without this mechanism.
+    private static final long MAX_EXTERNAL_LAUNCH_REARM_SUPPRESSION_MS = 90_000;
+
     private static @Nullable BraveBrowserLockManager sInstance;
 
     /**
@@ -143,13 +151,6 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     // Lazily created per activity the first time a lock (pre-native or real) needs to block the
     // system Back button; reused (via setEnabled) thereafter. Removed in onActivityDestroyed.
     private final Map<Activity, OnBackPressedCallback> mBackPressBlockers = new HashMap<>();
-
-    // Consumed by the very next app-state transition to HAS_STOPPED_ACTIVITIES/
-    // HAS_DESTROYED_ACTIVITIES. Set via suppressNextRearm() immediately before launching a known
-    // system screen that returns control shortly after (e.g. the "no screen lock configured"
-    // redirect to OS security settings) — otherwise that round trip would needlessly re-show the
-    // lock on return even though the user never left the app in any meaningful sense.
-    private boolean mSuppressNextRearm;
 
     private boolean mReauthInFlight;
 
@@ -217,11 +218,7 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
             newState -> {
                 if (newState == ApplicationState.HAS_STOPPED_ACTIVITIES
                         || newState == ApplicationState.HAS_DESTROYED_ACTIVITIES) {
-                    if (mSuppressNextRearm) {
-                        mSuppressNextRearm = false;
-                    } else {
-                        mLockArmed = isBrowserLockEnabled();
-                    }
+                    mLockArmed = isBrowserLockEnabled();
                     applySecureFlagToAllActivities();
                 }
             };
@@ -318,6 +315,15 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     @Override
     public void onActivityStateChange(Activity activity, @ActivityState int newState) {
         if (newState == ActivityState.STARTED) {
+            if (mLockArmed && isReturningFromRecentExternalLaunch()) {
+                // We background whenever any external activity takes over — a file picker, a
+                // share sheet, a link that opens another app — exactly like a genuine
+                // backgrounding, since there is no way to tell those apart at the moment they
+                // take over. This only runs once we're back, when it's finally knowable whether
+                // the round trip was quick (not a meaningful absence from Brave) or not (treated
+                // as a real backgrounding — see BraveExternalActivityLaunchTracker).
+                mLockArmed = false;
+            }
             if (mProfile == null) {
                 showPreNativeOverlayIfRequired(activity);
             } else {
@@ -327,16 +333,16 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     }
 
     /**
-     * Suppresses the very next re-arm check (on the next transition to {@link
-     * ApplicationState#HAS_STOPPED_ACTIVITIES} or {@link
-     * ApplicationState#HAS_DESTROYED_ACTIVITIES}) — call immediately before launching a system
-     * screen known to hand control back shortly after, so that round trip doesn't needlessly
-     * re-show the lock. Only suppresses one transition; a later, genuine backgrounding re-arms
-     * normally.
+     * Whether this {@code STARTED} transition looks like a quick return from an external activity
+     * Brave itself launched (via {@link
+     * BraveExternalActivityLaunchTracker#notifyLaunchingExternalActivity()}), rather than a
+     * meaningful absence from the app — regardless of whether the user was actively using that
+     * external activity the whole time or wandered off elsewhere before coming back; either way,
+     * exceeding the bound here means a real re-arm is warranted.
      */
-    public static void suppressNextRearm() {
-        BraveBrowserLockManager instance = sInstance;
-        if (instance != null) instance.mSuppressNextRearm = true;
+    private static boolean isReturningFromRecentExternalLaunch() {
+        long elapsedMs = BraveExternalActivityLaunchTracker.consumeElapsedMsSinceLastLaunch();
+        return elapsedMs >= 0 && elapsedMs < MAX_EXTERNAL_LAUNCH_REARM_SUPPRESSION_MS;
     }
 
     public static boolean isBrowserLockEnabled() {

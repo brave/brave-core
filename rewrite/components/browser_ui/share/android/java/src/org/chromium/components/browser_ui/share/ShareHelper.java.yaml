@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Import the tracker used below.
+    regex:
+      re_pattern: |-
+        import org\.chromium\.base\.ContextUtils;
+      replace: |-
+        import org.chromium.base.BraveExternalActivityLaunchTracker;
+        import org.chromium.base.ContextUtils;
+  - description: |-
+      Record that we're firing a share intent with no result callback
+      (the only share path that bypasses WindowAndroid.showIntent, so it
+      isn't already covered by the equivalent patch on
+      ActivityIntentRequestTrackerDelegate), so BraveBrowserLockManager
+      can tell a quick round trip through the share sheet apart from a
+      real backgrounding.
+    regex:
+      re_pattern: |-
+        ( +)activity\.startActivity\(intent\);
+      replace: |-
+        \1BraveExternalActivityLaunchTracker.notifyLaunchingExternalActivity();
+        \1activity.startActivity(intent);

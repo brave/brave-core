@@ -1,0 +1,20 @@
+diff --git a/components/browser_ui/share/android/java/src/org/chromium/components/browser_ui/share/ShareHelper.java b/components/browser_ui/share/android/java/src/org/chromium/components/browser_ui/share/ShareHelper.java
+index 383646380f195242a02a2070b5571a379871e971..780f1e74f95c2d5e19b302811364e4f8400cb7ab 100644
+--- a/components/browser_ui/share/android/java/src/org/chromium/components/browser_ui/share/ShareHelper.java
++++ b/components/browser_ui/share/android/java/src/org/chromium/components/browser_ui/share/ShareHelper.java
+@@ -28,6 +28,7 @@ import androidx.annotation.IntDef;
+ import androidx.annotation.VisibleForTesting;
+ 
+ import org.chromium.base.ApiCompatibilityUtils;
++import org.chromium.base.BraveExternalActivityLaunchTracker;
+ import org.chromium.base.ContextUtils;
+ import org.chromium.base.IntentUtils;
+ import org.chromium.base.Log;
+@@ -156,6 +157,7 @@ public class ShareHelper {
+             // WindowAndroid.
+             Activity activity = window.getActivity().get();
+             assumeNonNull(activity);
++            BraveExternalActivityLaunchTracker.notifyLaunchingExternalActivity();
+             activity.startActivity(intent);
+         }
+     }

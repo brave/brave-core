@@ -1,0 +1,20 @@
+diff --git a/components/external_intents/android/java/src/org/chromium/components/external_intents/ExternalNavigationHandler.java b/components/external_intents/android/java/src/org/chromium/components/external_intents/ExternalNavigationHandler.java
+index 5706ca75a1c07d1fabee8e39b2e831dcb4ca384e..9d1a2e8d748fcc00995486fc3158ffad368407e3 100644
+--- a/components/external_intents/android/java/src/org/chromium/components/external_intents/ExternalNavigationHandler.java
++++ b/components/external_intents/android/java/src/org/chromium/components/external_intents/ExternalNavigationHandler.java
+@@ -35,6 +35,7 @@ import android.webkit.WebView;
+ import androidx.annotation.IntDef;
+ import androidx.annotation.VisibleForTesting;
+ 
++import org.chromium.base.BraveExternalActivityLaunchTracker;
+ import org.chromium.base.CommandLine;
+ import org.chromium.base.ContextUtils;
+ import org.chromium.base.IntentUtils;
+@@ -2579,6 +2580,7 @@ public class ExternalNavigationHandler implements ExternalNavigationHelper {
+         StrictMode.ThreadPolicy oldPolicy = StrictMode.allowThreadDiskWrites();
+         try {
+             if (debug()) Log.i(TAG, "startActivity");
++            BraveExternalActivityLaunchTracker.notifyLaunchingExternalActivity();
+             context.startActivity(intent);
+             recordExternalNavigationDispatched(intent);
+             return OverrideUrlLoadingResult.forExternalIntent();

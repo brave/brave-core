@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Import the tracker used below.
+    regex:
+      re_pattern: |-
+        import org\.chromium\.base\.CommandLine;
+      replace: |-
+        import org.chromium.base.BraveExternalActivityLaunchTracker;
+        import org.chromium.base.CommandLine;
+  - description: |-
+      Record that we're handing a navigation off to an external app (a
+      tel:/mailto: link, a custom URL scheme, a WebAPK, etc.), so
+      BraveBrowserLockManager can tell a quick round trip through that app
+      apart from a real backgrounding.
+    regex:
+      re_pattern: |-
+        ( +)context\.startActivity\(intent\);
+      replace: |-
+        \1BraveExternalActivityLaunchTracker.notifyLaunchingExternalActivity();
+        \1context.startActivity(intent);

@@ -1,0 +1,36 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Import the tracker used below.
+    regex:
+      re_pattern: |-
+        import org\.chromium\.build\.annotations\.NullMarked;
+      replace: |-
+        import org.chromium.base.BraveExternalActivityLaunchTracker;
+        import org.chromium.build.annotations.NullMarked;
+  - description: |-
+      Record that we're launching an external activity expected to hand
+      control back shortly (file picker, document picker, camera, etc.),
+      so BraveBrowserLockManager can tell a quick round trip apart from a
+      real backgrounding. This covers every caller of
+      WindowAndroid.showIntent/showCancelableIntent, since they all funnel
+      through here.
+    regex:
+      re_pattern: |-
+        ( +)activity\.startActivityForResult\(intent, requestCode\);
+      replace: |-
+        \1BraveExternalActivityLaunchTracker.notifyLaunchingExternalActivity();
+        \1activity.startActivityForResult(intent, requestCode);
+  - description: |-
+      Same as above, for the IntentSender-based variant (e.g. Storage
+      Access Framework flows using a PendingIntent).
+    regex:
+      re_pattern: |-
+        ( +)activity\.startIntentSenderForResult\(intentSender, requestCode, new Intent\(\), 0, 0, 0\);
+      replace: |-
+        \1BraveExternalActivityLaunchTracker.notifyLaunchingExternalActivity();
+        \1activity.startIntentSenderForResult(intentSender, requestCode, new Intent(), 0, 0, 0);
