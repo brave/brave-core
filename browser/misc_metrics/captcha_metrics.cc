@@ -10,14 +10,18 @@
 #include <string_view>
 
 #include "base/check.h"
+#include "base/command_line.h"
 #include "base/memory/ptr_util.h"
 #include "base/notreached.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
+#include "brave/components/p3a_utils/custom_attributes.h"
+#include "chrome/browser/headless/headless_mode_util.h"
 #include "chrome/browser/page_load_metrics/observers/captcha_provider_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/page_load_metrics/browser/page_load_metrics_observer.h"
@@ -31,6 +35,7 @@
 #include "content/public/browser/page.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/content_switches.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -425,6 +430,9 @@ void CaptchaMetrics::MaybeReportProvider(
   }
 
   const int total = provider->FindInt(kCaptchaDictValueTotalKey).value_or(0);
+  p3a_utils::SetCustomAttribute(
+      kCaptchaCustomAttributeBotName,
+      brave_stats::IsHeadlessOrAutomationMode() ? "true" : "false");
   if (total > 0) {
     p3a_utils::RecordToHistogramBucket(provider_details.total_histogram_name,
                                        kCaptchaCountBuckets, total);
