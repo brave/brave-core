@@ -10,7 +10,7 @@
 // names, so it lands in the model's training distribution. Search and
 // repo-structure helpers with no text-editor analog are registered as separate
 // auxiliary tools. All ops run against the FileSystemDirectoryHandle in
-// file_ops.
+// file_ops, which is resolved lazily on each call (see registerTools).
 
 import * as ops from './file_ops'
 
@@ -55,8 +55,11 @@ function asInt(v: unknown, fallback: number): number {
   return typeof v === 'number' ? v : fallback
 }
 
+// |getRoot| is called each time a tool runs, rather than once up front, so the
+// tools can be registered before the workspace has a folder and the folder can
+// be chosen the first time one is actually needed.
 export async function registerTools(
-  root: FileSystemDirectoryHandle,
+  getRoot: () => Promise<FileSystemDirectoryHandle>,
 ): Promise<void> {
   const mc = document.modelContext
   if (!mc) {
@@ -68,7 +71,10 @@ export async function registerTools(
     name: string,
     description: string,
     inputSchema: object,
-    run: (input: Record<string, unknown>) => Promise<string>,
+    run: (
+      root: FileSystemDirectoryHandle,
+      input: Record<string, unknown>,
+    ) => Promise<string>,
   ) =>
     mc.registerTool({
       name,
@@ -76,7 +82,7 @@ export async function registerTools(
       inputSchema,
       execute: async (input) => {
         try {
-          return await run(input ?? {})
+          return await run(await getRoot(), input ?? {})
         } catch (e) {
           return `Error: ${e instanceof Error ? e.message : String(e)}`
         }
@@ -125,7 +131,7 @@ export async function registerTools(
       },
       ['command', 'path'],
     ),
-    async (i) => {
+    async (root, i) => {
       const path = asString(i.path)
       switch (i.command) {
         case 'view':
@@ -178,7 +184,7 @@ export async function registerTools(
       },
       ['pattern'],
     ),
-    (i) =>
+    (root, i) =>
       ops.grep(
         root,
         asString(i.path),
@@ -200,7 +206,7 @@ export async function registerTools(
       },
       ['pattern'],
     ),
-    (i) => ops.glob(root, asString(i.path), asString(i.pattern)),
+    (root, i) => ops.glob(root, asString(i.path), asString(i.pattern)),
   )
 
   await reg(
@@ -217,7 +223,7 @@ export async function registerTools(
       },
       ['path', 'content'],
     ),
-    (i) => ops.appendFile(root, asString(i.path), asString(i.content)),
+    (root, i) => ops.appendFile(root, asString(i.path), asString(i.content)),
   )
 
   console.log('[leo-workspace] registered WebMCP tools')

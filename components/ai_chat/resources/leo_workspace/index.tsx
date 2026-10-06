@@ -13,9 +13,12 @@
 //
 // The handle is delivered via launchQueue; once captured, it's stored in
 // IndexedDB so the workspace can restore it on subsequent loads without
-// requiring launchQueue again. The file tools are registered with Leo via
-// WebMCP (see tools.ts / file_ops.ts). The `view.` sibling origin can also
-// read files over postMessage (see message_handler.ts).
+// requiring launchQueue again. A workspace that is created without a folder is
+// never sent one: the first time one of its tools runs, the origin private file
+// system (OPFS) root becomes its folder, and is stored in IndexedDB the same
+// way. The file tools are registered with Leo via WebMCP (see tools.ts /
+// file_ops.ts). The `view.` sibling origin can also read files over
+// postMessage (see message_handler.ts).
 //
 // When navigated to with a #file=<path> fragment, the workspace creates a
 // fullscreen iframe to the viewer origin which displays the file content.
@@ -39,33 +42,61 @@ declare global {
 }
 
 // The directory handle arrives asynchronously, so expose it as a promise that
-// consumers can await rather than a slot they have to poll.
-const {
-  promise: rootHandle,
-  resolve: resolveRoot,
-  reject: rejectRoot,
-} = Promise.withResolvers<FileSystemDirectoryHandle>()
-// Nothing awaits it until a request arrives, so don't let a failed launch
-// surface as an unhandled rejection. Awaiting consumers still see it.
-rootHandle.catch(() => {})
+// consumers can await rather than a slot they have to poll. It is never
+// rejected: a workspace without a folder falls back to OPFS (see getRoot).
+const { promise: rootHandle, resolve: resolveRoot } =
+  Promise.withResolvers<FileSystemDirectoryHandle>()
+let hasRoot = false
 
-// Called when we have a valid directory handle (from launchQueue or IndexedDB).
+// Called when we have a valid directory handle. The first one wins.
 function onDirectoryHandle(
   root: FileSystemDirectoryHandle,
-  fromStorage: boolean,
+  source: 'IndexedDB' | 'launchQueue' | 'OPFS',
 ) {
+  if (hasRoot) {
+    return
+  }
   console.debug(
     '[leo-workspace] received directory handle:',
     root.name,
-    fromStorage ? '(from IndexedDB)' : '(from launchQueue)',
+    `(from ${source})`,
   )
+  hasRoot = true
   resolveRoot(root)
-  void registerTools(root)
 
-  // Store in IndexedDB for future loads (only if from launchQueue)
-  if (!fromStorage) {
-    void storeDirectoryHandle(root)
+  // Store in IndexedDB for future loads (unless that's where it came from).
+  if (source !== 'IndexedDB') {
+    storeDirectoryHandle(root).catch((e) => {
+      console.error('[leo-workspace] failed to store directory handle:', e)
+    })
   }
+}
+
+// Looks for the folder the workspace already has: the one stored in IndexedDB,
+// or failing that one delivered via launchQueue. setConsumer flushes a launch
+// that is already queued, so a folder that has been sent is picked up here.
+async function findExistingRoot() {
+  const storedHandle = await restoreDirectoryHandle()
+  if (storedHandle) {
+    onDirectoryHandle(storedHandle, 'IndexedDB')
+  } else if (window.launchQueue) {
+    window.launchQueue.setConsumer(onLaunch)
+  } else {
+    console.error('[leo-workspace] window.launchQueue is unavailable')
+  }
+}
+let foundExistingRoot: Promise<void>
+
+// The root the tools run against. A workspace created without a folder is
+// never sent one, so the first time a tool runs without a folder, the origin
+// private file system root (private to the workspace, as each has its own
+// origin) becomes the workspace folder.
+async function getRoot(): Promise<FileSystemDirectoryHandle> {
+  await foundExistingRoot
+  if (!hasRoot) {
+    onDirectoryHandle(await navigator.storage.getDirectory(), 'OPFS')
+  }
+  return rootHandle
 }
 
 function onLaunch(params: LaunchParams) {
@@ -75,11 +106,11 @@ function onLaunch(params: LaunchParams) {
       '[leo-workspace] launch params missing a directory handle',
       params,
     )
-    // Don't reject yet - we might have a stored handle
+    // Don't reject - we might have a stored handle, or fall back to OPFS.
     return
   }
   const root = entry as FileSystemDirectoryHandle
-  onDirectoryHandle(root, false)
+  onDirectoryHandle(root, 'launchQueue')
 }
 
 // Parses the #file=<filename> fragment from the URL.
@@ -131,7 +162,7 @@ function handleHashChange() {
   }
 }
 
-async function initialize() {
+function initialize() {
   console.debug('[leo-workspace] bundle loaded at', window.location.origin)
   installMessageHandler(rootHandle)
 
@@ -139,20 +170,10 @@ async function initialize() {
   handleHashChange()
   window.addEventListener('hashchange', handleHashChange)
 
-  // Try to restore directory handle from IndexedDB first
-  const storedHandle = await restoreDirectoryHandle()
-  if (storedHandle) {
-    onDirectoryHandle(storedHandle, true)
-    return
-  }
-
-  // Fall back to launchQueue
-  if (window.launchQueue) {
-    window.launchQueue.setConsumer(onLaunch)
-  } else {
-    console.error('[leo-workspace] window.launchQueue is unavailable')
-    rejectRoot(new Error('workspace folder is unavailable'))
-  }
+  foundExistingRoot = findExistingRoot()
+  // Register the tools up front: they resolve the folder when they run, so a
+  // workspace that is never sent a folder still gets them (backed by OPFS).
+  void registerTools(getRoot)
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

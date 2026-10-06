@@ -33,7 +33,7 @@ function setModelContext(value: unknown) {
 /** Registers the tools against a fresh fake workspace and returns the root. */
 async function setUpWorkspace(layout: Record<string, string> = {}) {
   const root = createFakeWorkspace(layout)
-  await registerTools(root)
+  await registerTools(async () => root)
   return root
 }
 
@@ -117,9 +117,28 @@ describe('registerTools', () => {
     ])
   })
 
+  it('resolves the root each time a tool runs, not at registration', async () => {
+    const root = createFakeWorkspace({ 'a.txt': 'x' })
+    const getRoot = jest.fn(async () => root)
+    await registerTools(getRoot)
+    expect(getRoot).not.toHaveBeenCalled()
+    await run('glob', { pattern: '*' })
+    await run('glob', { pattern: '*' })
+    expect(getRoot).toHaveBeenCalledTimes(2)
+  })
+
+  it('reports a root that cannot be resolved as a tool error', async () => {
+    await registerTools(async () => {
+      throw new Error('no folder')
+    })
+    expect(await run('glob', { pattern: '*' })).toBe('Error: no folder')
+  })
+
   it('does nothing but log when WebMCP is unavailable', async () => {
     setModelContext(undefined)
-    await expect(registerTools(createFakeWorkspace())).resolves.toBeUndefined()
+    await expect(
+      registerTools(async () => createFakeWorkspace()),
+    ).resolves.toBeUndefined()
     expect(console.error).toHaveBeenCalledWith(
       expect.stringContaining('document.modelContext is unavailable'),
     )
