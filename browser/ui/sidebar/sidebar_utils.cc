@@ -388,13 +388,10 @@ SidebarService::ShowSidebarOption GetDefaultShowSidebarOption(
     return ShowSidebarOption::kShowAlways;
   }
 
-  if (auto* local_state = g_browser_process->local_state()) {
-    return local_state->GetBoolean(kTargetUserForSidebarEnabledTest)
-               ? ShowSidebarOption::kShowAlways
-               : ShowSidebarOption::kShowNever;
-  }
-
-  return ShowSidebarOption::kShowNever;
+  return g_browser_process->local_state()->GetBoolean(
+             kTargetUserForSidebarEnabledTest)
+             ? ShowSidebarOption::kShowAlways
+             : ShowSidebarOption::kShowNever;
 #endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 }
 

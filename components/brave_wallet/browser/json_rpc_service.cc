@@ -15,7 +15,6 @@
 #include "base/barrier_callback.h"
 #include "base/base64.h"
 #include "base/check.h"
-#include "base/check_is_test.h"
 #include "base/containers/extend.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_set.h"
@@ -361,10 +360,6 @@ JsonRpcService::JsonRpcService(
       network_manager_(network_manager),
       prefs_(prefs),
       local_state_prefs_(local_state_prefs) {
-  if (!local_state_prefs_) {
-    CHECK_IS_TEST();
-  }
-
   api_request_helper_ens_offchain_ = std::make_unique<APIRequestHelper>(
       GetENSOffchainNetworkTrafficAnnotationTag(), url_loader_factory);
 

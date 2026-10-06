@@ -57,11 +57,6 @@ std::optional<base::Time> OnboardingTabHelper::s_sentinel_time_for_testing_;
 void OnboardingTabHelper::MaybeCreateForWebContents(
     content::WebContents* web_contents,
     base::OnceClosure creation_callback_for_test) {
-  if (!g_browser_process->local_state()) {
-    CHECK_IS_TEST();
-    return;
-  }
-
   if (creation_callback_for_test) {
     CHECK_IS_TEST();
   }
