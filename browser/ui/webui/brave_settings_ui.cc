@@ -6,12 +6,15 @@
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/check_deref.h"
 #include "base/compiler_specific.h"
 #include "base/feature_list.h"
+#include "base/memory/raw_ptr.h"
 #include "base/strings/strcat.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/browser/brave_account/brave_account_service_factory.h"
@@ -77,6 +80,10 @@
 #include "brave/components/ai_chat/core/browser/ollama/ollama_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/browser/ai_chat/ai_chat_ui_semantic_search.h"
+#endif
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -158,6 +165,27 @@ bool IsLocaleJapan(Profile* profile) {
   }
   return false;
 }
+
+#if BUILDFLAG(ENABLE_AI_CHAT) && BUILDFLAG(ENABLE_LOCAL_AI)
+// Searches the memories on the profile's on-device index.
+class MemorySearchDelegate
+    : public ai_chat::CustomizationSettingsHandler::Delegate {
+ public:
+  explicit MemorySearchDelegate(content::BrowserContext* context)
+      : context_(context) {}
+
+  // ai_chat::CustomizationSettingsHandler::Delegate:
+  void SearchMemories(
+      const std::string& query,
+      base::OnceCallback<void(const std::optional<std::vector<std::string>>&)>
+          callback) override {
+    ai_chat::SearchMemoriesForUI(context_, query, std::move(callback));
+  }
+
+ private:
+  raw_ptr<content::BrowserContext> context_;
+};
+#endif
 
 }  // namespace
 
@@ -401,9 +429,14 @@ void BraveSettingsUI::BindInterface(
 void BraveSettingsUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::CustomizationSettingsHandler>
         pending_receiver) {
+  content::BrowserContext* context =
+      web_ui()->GetWebContents()->GetBrowserContext();
+  std::unique_ptr<ai_chat::CustomizationSettingsHandler::Delegate> delegate;
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  delegate = std::make_unique<MemorySearchDelegate>(context);
+#endif
   auto handler = std::make_unique<ai_chat::CustomizationSettingsHandler>(
-      user_prefs::UserPrefs::Get(
-          web_ui()->GetWebContents()->GetBrowserContext()));
+      user_prefs::UserPrefs::Get(context), std::move(delegate));
   MakeOwnedReceiver(std::move(handler), std::move(pending_receiver));
 }
 

@@ -55,6 +55,11 @@ interface CustomizationSettingsHandler {
 
   // Delete all stored memories.
   DeleteAllMemories();
+
+  // Return the stored memories related to `query` by meaning, most related
+  // first. Empty when `query` is too short to search, and null while semantic
+  // search is unavailable.
+  SearchMemories(string query) => (array<string>? memories);
 };
 
 // Interface for browser -> settings UI communication. This interface allows

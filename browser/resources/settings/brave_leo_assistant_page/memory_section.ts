@@ -79,6 +79,12 @@ class MemorySection extends MemorySectionBase {
       searchQuery_: {
         type: String,
         value: ''
+      },
+      // The memories related to searchQuery_ by meaning, found once typing
+      // pauses.
+      relatedMemories_: {
+        type: Array,
+        value: []
       }
     }
   }
@@ -94,6 +100,9 @@ class MemorySection extends MemorySectionBase {
   declare deleteMemoryItem_: string | null
   declare showDeleteAllDialog_: boolean
   declare searchQuery_: string
+  declare relatedMemories_: string[]
+  private relatedMemoriesTimer_: ReturnType<typeof setTimeout> | null = null
+  private relatedMemoriesRequestId_ = 0
 
   override ready() {
     super.ready()
@@ -101,11 +110,21 @@ class MemorySection extends MemorySectionBase {
     this.setupCallbacks_()
   }
 
+  override disconnectedCallback() {
+    super.disconnectedCallback()
+    if (this.relatedMemoriesTimer_ !== null) {
+      clearTimeout(this.relatedMemoriesTimer_)
+      this.relatedMemoriesTimer_ = null
+    }
+  }
+
   setupCallbacks_() {
     const callbackRouter =
       this.browserProxy_.getCustomizationSettingsCallbackRouter()
     callbackRouter.onMemoriesChanged.addListener((memories: string[]) => {
       this.memoriesList_ = [...memories]
+      this.relatedMemories_ = this.relatedMemories_.filter(
+        (memory) => memories.includes(memory))
     })
   }
 
@@ -238,24 +257,65 @@ class MemorySection extends MemorySectionBase {
 
   onSearchInput_(e: { value: string }) {
     this.searchQuery_ = e.value
+    this.scheduleRelatedMemoriesSearch_()
   }
 
   clearSearch_() {
     this.searchQuery_ = ''
+    this.scheduleRelatedMemoriesSearch_()
   }
 
-  getFilteredMemories_(memoriesList: string[], searchQuery: string): string[] {
+  // Searches by meaning once typing pauses, as brave://history's search field
+  // does (see cr_search_field_mixin.ts): 500ms after the first character,
+  // 100ms less for each further one, down to 200ms.
+  scheduleRelatedMemoriesSearch_() {
+    if (this.relatedMemoriesTimer_ !== null) {
+      clearTimeout(this.relatedMemoriesTimer_)
+      this.relatedMemoriesTimer_ = null
+    }
+    const query = this.searchQuery_.trim()
+    if (!query) {
+      this.relatedMemoriesRequestId_++
+      this.relatedMemories_ = []
+      return
+    }
+    const delayMs = 500 - 100 * (Math.min(query.length, 4) - 1)
+    this.relatedMemoriesTimer_ = setTimeout(() => {
+      this.relatedMemoriesTimer_ = null
+      this.searchRelatedMemories_(query)
+    }, delayMs)
+  }
+
+  searchRelatedMemories_(query: string) {
+    const requestId = ++this.relatedMemoriesRequestId_
+    const handler = this.browserProxy_.getCustomizationSettingsHandler()
+    handler.searchMemories(query).then(
+      (result: { memories: string[] | null }) => {
+        // A later search or a cleared box makes this result stale.
+        if (requestId !== this.relatedMemoriesRequestId_) {
+          return
+        }
+        this.relatedMemories_ = result.memories ?? []
+      })
+  }
+
+  // The memories containing the query, except those already shown as related.
+  getFilteredMemories_(memoriesList: string[], searchQuery: string,
+                       relatedMemories: string[]): string[] {
+    const unrelated = memoriesList.filter(
+      memory => !relatedMemories.includes(memory))
     if (!searchQuery || !searchQuery.trim()) {
-      return memoriesList
+      return unrelated
     }
 
     const query = searchQuery.trim().toLowerCase()
-    return memoriesList.filter(memory =>
+    return unrelated.filter(memory =>
       memory.toLowerCase().includes(query)
     )
   }
 
-  hasNoSearchResults_(memoriesList: string[], searchQuery: string): boolean {
+  hasNoSearchResults_(memoriesList: string[], searchQuery: string,
+                      relatedMemories: string[]): boolean {
     if (!searchQuery || !searchQuery.trim()) {
       return false // No search query means we're not searching
     }
@@ -266,14 +326,19 @@ class MemorySection extends MemorySectionBase {
       return false
     }
 
-    const filteredResults = this.getFilteredMemories_(memoriesList, searchQuery)
-    return filteredResults.length === 0
+    const filteredResults = this.getFilteredMemories_(
+      memoriesList, searchQuery, relatedMemories)
+    return filteredResults.length === 0 && relatedMemories.length === 0
   }
 
-  shouldShowMemories_(memoriesList: string[], searchQuery: string): boolean {
-    // Show memories if we have memories AND we're not in the "no results" state
-    return this.hasMemories_(memoriesList) &&
-           !this.hasNoSearchResults_(memoriesList, searchQuery)
+  shouldShowFilteredMemories_(memoriesList: string[], searchQuery: string,
+                              relatedMemories: string[]): boolean {
+    return this.getFilteredMemories_(
+      memoriesList, searchQuery, relatedMemories).length > 0
+  }
+
+  hasRelatedMemories_(relatedMemories: string[]): boolean {
+    return relatedMemories.length > 0
   }
 
 }

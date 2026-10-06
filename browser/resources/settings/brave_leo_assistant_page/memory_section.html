@@ -141,6 +141,16 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     margin-bottom: var(--leo-spacing-l);
   }
 
+  .related-heading {
+    margin-bottom: var(--leo-spacing-m);
+    color: var(--leo-color-text-secondary);
+    font: var(--leo-font-small-semibold);
+  }
+
+  .related-memories {
+    margin-bottom: var(--leo-spacing-xl);
+  }
+
   .no-results-title {
     color: var(--leo-color-text-primary);
     font-weight: 600;
@@ -204,7 +214,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
     <template
       is="dom-if"
-      if="[[hasNoSearchResults_(memoriesList_, searchQuery_)]]"
+      if="[[hasNoSearchResults_(memoriesList_, searchQuery_, relatedMemories_)]]"
     >
       <div class="empty-memories-table">
         <div class="no-results-title">$i18n{braveLeoAssistantNoSearchResultsFound}</div>
@@ -214,12 +224,47 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
     <template
       is="dom-if"
-      if="[[shouldShowMemories_(memoriesList_, searchQuery_)]]"
+      if="[[hasRelatedMemories_(relatedMemories_)]]"
+    >
+      <div class="related-heading">
+        $i18n{braveLeoAssistantRelatedMemoriesHeading}
+      </div>
+      <div class="list related-memories">
+        <template
+          is="dom-repeat"
+          items="[[relatedMemories_]]"
+        >
+          <div class="memory">
+            <div class="memory-info">
+              <div class="label">[[item]]</div>
+            </div>
+            <div class="memory-actions">
+              <leo-button
+                kind="plain-faint"
+                fab size="medium"
+                on-click="handleEdit_">
+                <leo-icon name="edit-pencil"></leo-icon>
+              </leo-button>
+              <leo-button
+                kind="plain-faint"
+                fab size="medium"
+                on-click="handleDelete_">
+                <leo-icon name="trash"></leo-icon>
+              </leo-button>
+            </div>
+          </div>
+        </template>
+      </div>
+    </template>
+
+    <template
+      is="dom-if"
+      if="[[shouldShowFilteredMemories_(memoriesList_, searchQuery_, relatedMemories_)]]"
     >
       <div class="list">
         <template
           is="dom-repeat"
-          items="[[getFilteredMemories_(memoriesList_, searchQuery_)]]"
+          items="[[getFilteredMemories_(memoriesList_, searchQuery_, relatedMemories_)]]"
         >
           <div class="memory">
             <div class="memory-info">

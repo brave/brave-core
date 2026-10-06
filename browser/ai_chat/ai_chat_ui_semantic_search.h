@@ -32,6 +32,16 @@ void SearchConversationsForUI(content::BrowserContext* context,
                               const std::string& query,
                               UISearchConversationsCallback callback);
 
+using UISearchMemoriesCallback =
+    base::OnceCallback<void(const std::optional<std::vector<std::string>>&)>;
+
+// Searches the memories of `context` semantically for the UI, under the same
+// limits as SearchConversationsForUI(). `callback` gets null while semantic
+// search is unavailable.
+void SearchMemoriesForUI(content::BrowserContext* context,
+                         const std::string& query,
+                         UISearchMemoriesCallback callback);
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_BROWSER_AI_CHAT_AI_CHAT_UI_SEMANTIC_SEARCH_H_

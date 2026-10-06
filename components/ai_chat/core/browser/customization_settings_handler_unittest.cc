@@ -6,9 +6,14 @@
 #include "brave/components/ai_chat/core/browser/customization_settings_handler.h"
 
 #include <memory>
+#include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
+#include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
+#include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -38,14 +43,46 @@ class MockCustomizationSettingsUI : public mojom::CustomizationSettingsUI {
               (override));
 };
 
+// Finds the memories a test gives it, and records the queries it is asked.
+class FakeMemorySearchDelegate : public CustomizationSettingsHandler::Delegate {
+ public:
+  FakeMemorySearchDelegate() = default;
+  ~FakeMemorySearchDelegate() override = default;
+
+  void SearchMemories(
+      const std::string& query,
+      base::OnceCallback<void(const std::optional<std::vector<std::string>>&)>
+          callback) override {
+    queries.push_back(query);
+    std::move(callback).Run(results);
+  }
+
+  std::vector<std::string> queries;
+  std::optional<std::vector<std::string>> results;
+};
+
+std::optional<std::vector<std::string>> SearchMemories(
+    CustomizationSettingsHandler& handler,
+    const std::string& query) {
+  base::test::TestFuture<std::optional<std::vector<std::string>>> future;
+  handler.SearchMemories(
+      query, base::BindLambdaForTesting(
+                 [&](const std::optional<std::vector<std::string>>& memories) {
+                   future.SetValue(memories);
+                 }));
+  return future.Take();
+}
+
 class CustomizationSettingsHandlerTest : public ::testing::Test {
  public:
   void SetUp() override {
     pref_service_ = std::make_unique<TestingPrefServiceSimple>();
     prefs::RegisterProfilePrefs(pref_service_->registry());
 
-    handler_ =
-        std::make_unique<CustomizationSettingsHandler>(pref_service_.get());
+    auto delegate = std::make_unique<FakeMemorySearchDelegate>();
+    delegate_ = delegate.get();
+    handler_ = std::make_unique<CustomizationSettingsHandler>(
+        pref_service_.get(), std::move(delegate));
   }
 
   void TearDown() override {
@@ -55,6 +92,7 @@ class CustomizationSettingsHandlerTest : public ::testing::Test {
 
  protected:
   std::unique_ptr<TestingPrefServiceSimple> pref_service_;
+  raw_ptr<FakeMemorySearchDelegate> delegate_ = nullptr;
   std::unique_ptr<CustomizationSettingsHandler> handler_;
   base::test::TaskEnvironment task_environment_;
 };
@@ -380,6 +418,37 @@ TEST_F(CustomizationSettingsHandlerTest, BindUI_Notifications) {
 
   EXPECT_EQ(prefs::GetMemoriesFromPrefs(*pref_service_),
             std::vector<std::string>{"Test Memory"});
+}
+
+TEST_F(CustomizationSettingsHandlerTest, SearchMemories) {
+  delegate_->results = std::vector<std::string>{"Likes cats"};
+
+  EXPECT_EQ(SearchMemories(*handler_, "pets at home"),
+            std::vector<std::string>{"Likes cats"});
+  EXPECT_EQ(delegate_->queries, std::vector<std::string>{"pets at home"});
+}
+
+TEST_F(CustomizationSettingsHandlerTest, SearchMemories_Unavailable) {
+  delegate_->results = std::nullopt;
+
+  EXPECT_EQ(SearchMemories(*handler_, "pets at home"), std::nullopt);
+}
+
+TEST_F(CustomizationSettingsHandlerTest, SearchMemories_MemoryDisabled) {
+  delegate_->results = std::vector<std::string>{"Likes cats"};
+  pref_service_->SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+
+  EXPECT_EQ(SearchMemories(*handler_, "pets at home"), std::nullopt);
+  EXPECT_TRUE(delegate_->queries.empty());
+}
+
+TEST(CustomizationSettingsHandlerNoDelegateTest, SearchMemories) {
+  base::test::TaskEnvironment task_environment;
+  TestingPrefServiceSimple pref_service;
+  prefs::RegisterProfilePrefs(pref_service.registry());
+  CustomizationSettingsHandler handler(&pref_service, nullptr);
+
+  EXPECT_EQ(SearchMemories(handler, "pets at home"), std::nullopt);
 }
 
 }  // namespace ai_chat

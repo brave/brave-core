@@ -18,6 +18,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
@@ -34,6 +35,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/prefs.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
@@ -60,6 +62,7 @@
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "base/test/run_until.h"
 #include "brave/browser/ai_chat/ai_chat_embeddings_service_factory.h"
+#include "brave/browser/ai_chat/ai_chat_ui_semantic_search.h"
 #include "brave/components/ai_chat/core/browser/embeddings/ai_chat_embeddings_service.h"
 #include "brave/components/ai_chat/core/browser/embeddings/fake_embedder.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
@@ -630,6 +633,48 @@ TEST_F(AIChatUIPageHandlerConversationSearchTest, FindsConversations) {
   matches = SearchConversations("cat");
   ASSERT_TRUE(matches);
   EXPECT_TRUE(matches->empty());
+}
+
+namespace {
+
+std::optional<std::vector<std::string>> SearchMemories(
+    content::BrowserContext* context,
+    const std::string& query) {
+  base::test::TestFuture<std::optional<std::vector<std::string>>> future;
+  SearchMemoriesForUI(
+      context, query,
+      base::BindLambdaForTesting(
+          [&](const std::optional<std::vector<std::string>>& memories) {
+            future.SetValue(memories);
+          }));
+  return future.Take();
+}
+
+}  // namespace
+
+TEST_F(AIChatUIPageHandlerConversationSearchTest, FindsMemories) {
+  prefs::AddMemoryToPrefs("Has a cat named Tom", *profile()->GetPrefs());
+  prefs::AddMemoryToPrefs("Is learning to play the piano",
+                          *profile()->GetPrefs());
+  AIChatEmbeddingsService* embeddings_service =
+      AIChatEmbeddingsServiceFactory::GetForBrowserContext(profile());
+  ASSERT_TRUE(embeddings_service);
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return embedder_.HasEmbedded("Has a cat named Tom") &&
+           embeddings_service->IsIndexingIdleForTesting();
+  }));
+  base::test::TestFuture<void> flushed;
+  embeddings_service->FlushForTesting(flushed.GetCallback());
+  ASSERT_TRUE(flushed.Wait());
+
+  EXPECT_EQ(SearchMemories(profile(), "my cat"),
+            std::vector<std::string>{"Has a cat named Tom"});
+  // Like brave://history, a query of a single word isn't searched.
+  EXPECT_EQ(SearchMemories(profile(), "cat"), std::vector<std::string>());
+}
+
+TEST_F(AIChatUIPageHandlerTest, SearchesNoMemoriesWithoutSemanticSearch) {
+  EXPECT_EQ(SearchMemories(profile(), "my cat"), std::nullopt);
 }
 
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)

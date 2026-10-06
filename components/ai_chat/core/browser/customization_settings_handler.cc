@@ -18,6 +18,7 @@
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
+#include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 namespace ai_chat {
@@ -28,8 +29,10 @@ bool IsValidMemoryLength(const std::string& value) {
   return !value.empty() && value.size() <= mojom::kMaxMemoryRecordLength;
 }
 
-CustomizationSettingsHandler::CustomizationSettingsHandler(PrefService* prefs)
-    : prefs_(prefs) {
+CustomizationSettingsHandler::CustomizationSettingsHandler(
+    PrefService* prefs,
+    std::unique_ptr<Delegate> delegate)
+    : delegate_(std::move(delegate)), prefs_(prefs) {
   DCHECK(prefs_);
   pref_change_registrar_.Init(prefs_);
 
@@ -102,6 +105,16 @@ void CustomizationSettingsHandler::EditMemory(const std::string& old_memory,
 
 void CustomizationSettingsHandler::GetMemories(GetMemoriesCallback callback) {
   std::move(callback).Run(prefs::GetMemoriesFromPrefs(*prefs_));
+}
+
+void CustomizationSettingsHandler::SearchMemories(
+    const std::string& query,
+    SearchMemoriesCallback callback) {
+  if (!delegate_ || !prefs_->GetBoolean(prefs::kBraveAIChatUserMemoryEnabled)) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  delegate_->SearchMemories(query, std::move(callback));
 }
 
 void CustomizationSettingsHandler::DeleteMemory(const std::string& memory) {

@@ -2010,6 +2010,9 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SEARCH_MEMORIES_PLACEHOLDER" desc="The placeholder text for the memory search input field">
     Search for a memory
   </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_RELATED_MEMORIES_HEADING" desc="Heading of the section of the memory list showing the memories that match the search query by their meaning, rather than by their words.">
+    Related memories
+  </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_OLLAMA_SYNC_LABEL" desc="The label for the Ollama sync toggle button">
     Sync your Ollama local models
   </message>

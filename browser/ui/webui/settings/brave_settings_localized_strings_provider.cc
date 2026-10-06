@@ -840,6 +840,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"braveLeoAssistantClearSearch", IDS_SETTINGS_LEO_ASSISTANT_CLEAR_SEARCH},
       {"braveLeoAssistantSearchMemoriesPlaceholder",
        IDS_SETTINGS_LEO_ASSISTANT_SEARCH_MEMORIES_PLACEHOLDER},
+      {"braveLeoAssistantRelatedMemoriesHeading",
+       IDS_SETTINGS_LEO_ASSISTANT_RELATED_MEMORIES_HEADING},
       {"braveLeoAssistantOllamaSyncLabel",
        IDS_SETTINGS_LEO_ASSISTANT_OLLAMA_SYNC_LABEL},
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)

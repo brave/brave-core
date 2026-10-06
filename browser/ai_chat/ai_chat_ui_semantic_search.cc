@@ -57,4 +57,26 @@ void SearchConversationsForUI(content::BrowserContext* context,
           std::move(callback)));
 }
 
+void SearchMemoriesForUI(content::BrowserContext* context,
+                         const std::string& query,
+                         UISearchMemoriesCallback callback) {
+  AIChatEmbeddingsService* service =
+      AIChatEmbeddingsServiceFactory::GetForBrowserContext(context);
+  if (!service) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  if (!HasEnoughWords(query)) {
+    std::move(callback).Run(std::vector<std::string>());
+    return;
+  }
+  service->SearchMemories(query, GetResultCount(),
+                          base::BindOnce(
+                              [](UISearchMemoriesCallback callback,
+                                 std::vector<std::string> memories) {
+                                std::move(callback).Run(std::move(memories));
+                              },
+                              std::move(callback)));
+}
+
 }  // namespace ai_chat

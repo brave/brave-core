@@ -6,8 +6,12 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CUSTOMIZATION_SETTINGS_HANDLER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CUSTOMIZATION_SETTINGS_HANDLER_H_
 
+#include <memory>
+#include <optional>
 #include <string>
+#include <vector>
 
+#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
@@ -21,7 +25,22 @@ namespace ai_chat {
 class CustomizationSettingsHandler
     : public mojom::CustomizationSettingsHandler {
  public:
-  explicit CustomizationSettingsHandler(PrefService* prefs);
+  // Provides what the handler can't reach itself.
+  class Delegate {
+   public:
+    virtual ~Delegate() = default;
+
+    // Finds the memories related to `query` by meaning. `callback` gets null
+    // while semantic search is unavailable.
+    virtual void SearchMemories(
+        const std::string& query,
+        base::OnceCallback<void(const std::optional<std::vector<std::string>>&)>
+            callback) = 0;
+  };
+
+  // `delegate` can be null, which leaves semantic search unavailable.
+  explicit CustomizationSettingsHandler(PrefService* prefs,
+                                        std::unique_ptr<Delegate> delegate);
   ~CustomizationSettingsHandler() override;
 
   CustomizationSettingsHandler(const CustomizationSettingsHandler&) = delete;
@@ -45,6 +64,8 @@ class CustomizationSettingsHandler
   void DeleteMemory(const std::string& memory) override;
   void DeleteAllMemories() override;
   void GetMemories(GetMemoriesCallback callback) override;
+  void SearchMemories(const std::string& query,
+                      SearchMemoriesCallback callback) override;
 
  private:
   // Called when customization preferences change
@@ -55,6 +76,8 @@ class CustomizationSettingsHandler
 
   // Interface to communicate with the settings page in the renderer.
   mojo::Remote<mojom::CustomizationSettingsUI> ui_;
+
+  std::unique_ptr<Delegate> delegate_;
 
   // Profile preferences service for customization and memory data persistence.
   raw_ptr<PrefService> prefs_ = nullptr;
