@@ -181,6 +181,8 @@ static_library("browser") {
 
   if (enable_local_ai) {
     sources += [
+      "dreaming_run.cc",
+      "dreaming_run.h",
       "dreaming_text_utils.cc",
       "dreaming_text_utils.h",
       "learned_memory_types.h",
@@ -190,8 +192,13 @@ static_library("browser") {
       "memory_llm_prompts.h",
       "ollama_decision_client.cc",
       "ollama_decision_client.h",
+      "user_memory_manager.cc",
+      "user_memory_manager.h",
     ]
-    deps += [ "//base:i18n" ]
+    deps += [
+      "//base:i18n",
+      "//components/passage_embeddings/core:passage_embeddings_types",
+    ]
   }
 }
 
@@ -293,6 +300,12 @@ source_set("unit_tests") {
       "memory_decision_client_unittest.cc",
       "ollama_decision_client_unittest.cc",
     ]
+    if (!is_ios) {
+      # Needs the database, see the TODO above.
+      sources += [ "user_memory_manager_unittest.cc" ]
+      deps +=
+          [ "//components/passage_embeddings/core:passage_embeddings_types" ]
+    }
   }
 
   if (use_blink) {

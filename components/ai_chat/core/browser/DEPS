@@ -10,6 +10,7 @@ include_rules = [
   "+components/history/core/test",
   "+components/keyed_service",
   "+components/os_crypt/async",
+  "+components/passage_embeddings/core",
   "+components/prefs",
   "+components/sync/base",
   "+components/sync/model",

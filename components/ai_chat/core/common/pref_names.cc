@@ -10,6 +10,7 @@
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "components/prefs/pref_registry_simple.h"
 
 namespace ai_chat::prefs {
@@ -49,6 +50,9 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
     registry->RegisterStringPref(kBraveAIChatConversationShares, "");
     registry->RegisterDictionaryPref(kAIChatObliviousHttpKeyConfigs);
     registry->RegisterTimePref(kRemoteModelsCachedAt, {});
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+    registry->RegisterTimePref(kBraveAIChatLastDreamingTime, {});
+#endif
   }
   registry->RegisterBooleanPref(kEnabledByPolicy, true);
 }

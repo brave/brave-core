@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_PREF_NAMES_H_
 
 #include "base/component_export.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "build/build_config.h"
 
 class PrefRegistrySimple;
@@ -160,6 +161,11 @@ inline constexpr char kBraveAIChatConversationShares[] =
 // and cached to disk. Used for TTL checks without reading the cache file.
 inline constexpr char kRemoteModelsCachedAt[] =
     "brave.ai_chat.remote_models_cached_at";
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+// The time of the last learned memory run (Dreaming). The daily timer uses it.
+inline constexpr char kBraveAIChatLastDreamingTime[] =
+    "brave.ai_chat.learned_memory_last_dreaming_time";
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
