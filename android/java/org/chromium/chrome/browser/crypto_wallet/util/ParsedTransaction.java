@@ -195,7 +195,6 @@ public class ParsedTransaction extends ParsedTransactionFees {
         parsedTransaction.mType = txInfo.txType;
         parsedTransaction.mNonce = nonce;
         parsedTransaction.mToken = token;
-        parsedTransaction.mCreatedTime = txInfo.createdTime;
         parsedTransaction.mStatus = txInfo.txStatus;
         parsedTransaction.mSender = sender;
         parsedTransaction.isSolanaDappTransaction =
