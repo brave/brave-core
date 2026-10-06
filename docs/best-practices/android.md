@@ -1174,7 +1174,18 @@ use `browser/<feature>/android/` rather than
 `android/java/org/chromium/chrome/browser/...` (paths relative to
 `brave-core`). This keeps Android code with the feature it implements.
 
-For example, Brave's `BraveOriginServiceFactory.java` lives under
+Illustrative paths for a new standalone feature class (not existing files):
+
+```text
+# ❌ WRONG - new feature code in the legacy tree
+android/java/org/chromium/chrome/browser/my_feature/MyFeatureController.java
+
+# ✅ CORRECT - keep the class with its feature
+browser/my_feature/android/java/src/org/chromium/chrome/browser/my_feature/MyFeatureController.java
+```
+
+For an existing feature-local example, Brave's `BraveOriginServiceFactory.java`
+lives under
 `browser/brave_origin/android/java/src/org/chromium/brave/browser/brave_origin/`.
 
 `chrome/browser/android/` serves a different purpose: common browser-support
@@ -1195,5 +1206,14 @@ includes these legacy sources under
 `chrome_java_sources`. It also aggregates feature-local source lists, so
 membership in `brave_java_sources` alone does not determine a file's location.
 Use the default and subclass exception above to choose the directory.
+
+```java
+// ✅ CORRECT - existing upstream subclass in the corresponding legacy location
+// android/java/org/chromium/chrome/browser/app/bookmarks/BraveBookmarkActivity.java
+// Listed in brave_java_sources in android/brave_java_sources.gni.
+public class BraveBookmarkActivity extends BookmarkActivity {
+    // ...
+}
+```
 
 ---
