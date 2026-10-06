@@ -9,14 +9,19 @@
 #include <string_view>
 #include <tuple>
 #include <utility>
+#include <variant>
 
 #include "base/command_line.h"
 #include "base/files/file_path.h"
+#include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/string_util.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "brave/browser/brave_content_browser_client.h"
+#include "brave/browser/speech/on_device_speech_model_consent.h"
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/components/brave_component_updater/browser/mock_on_demand_updater.h"
 #include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/on_device_speech_models_component_installer.h"
@@ -24,11 +29,18 @@
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "brave/components/local_ai/core/test/fake_asr_session.h"
+#include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "chrome/test/permissions/permission_request_manager_test_api.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/permissions/permission_request_manager.h"
 #include "components/prefs/pref_service.h"
 #include "components/update_client/update_client_errors.h"
 #include "content/public/browser/render_frame_host.h"
@@ -37,11 +49,21 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "media/base/media_switches.h"
+#include "media/mojo/mojom/speech_recognizer.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/events/base_event_utils.h"
+#include "ui/events/event.h"
+#include "ui/events/event_constants.h"
+#include "ui/gfx/geometry/point.h"
+#include "ui/views/bubble/bubble_dialog_delegate_view.h"
+#include "ui/views/controls/button/checkbox.h"
+#include "ui/views/test/button_test_api.h"
+#include "ui/views/widget/widget.h"
 
 // What a page is told by Web Speech's `available()`, `install()` and
 // `start()`, for each quality and with or without Brave's model on disk. Every
@@ -64,6 +86,16 @@ struct Expected {
   bool installed;
   std::string_view available_again;
   std::string_view start;
+};
+
+// Counts the permission prompts a page's calls bring up.
+class PromptObserver : public permissions::PermissionRequestManager::Observer {
+ public:
+  void OnPromptAdded() override { ++count_; }
+  int count() const { return count_; }
+
+ private:
+  int count_ = 0;
 };
 
 // Hands out the fake worker session in place of the real controller, which
@@ -128,11 +160,12 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
     // components and the registrar has no update service. Start it here
     // instead, as a user who enabled the model leaves it.
     g_browser_process->local_state()->SetBoolean(
-        local_ai::prefs::kOnDeviceSpeechModelEnabled, true);
+        local_ai::prefs::kOnDeviceSpeechModelEnabled, ModelEnabledAtStart());
     local_ai::ManageOnDeviceSpeechModelsComponentRegistration(
         g_browser_process->component_updater(),
         g_browser_process->local_state());
     DrainRegistrationRequest();
+    prompt_manager()->AddObserver(&prompts_);
     // Only a test that calls `AnswerDownloadWith` expects a download. Set after
     // the drain, so it also takes over from the drain's expectation.
     EXPECT_CALL(
@@ -146,6 +179,7 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
   }
 
   void TearDownOnMainThread() override {
+    prompt_manager()->RemoveObserver(&prompts_);
     content::SetBrowserClientForTesting(original_client_);
     // Drops the registrar's pointers to this browser, so the next `Manage...`
     // call can start it again.
@@ -160,6 +194,21 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
  protected:
   content::RenderFrameHost* main_frame() {
     return chrome_test_utils::GetActiveWebContents(this)->GetPrimaryMainFrame();
+  }
+
+  // Whether the model is already enabled when the browser starts. Most tests
+  // are about what a page is told after it is, so they start that way, and the
+  // ones about asking the user do not.
+  virtual bool ModelEnabledAtStart() const { return true; }
+
+  permissions::PermissionRequestManager* prompt_manager() {
+    return permissions::PermissionRequestManager::FromWebContents(
+        chrome_test_utils::GetActiveWebContents(this));
+  }
+
+  bool IsEnabled() {
+    return g_browser_process->local_state()->GetBoolean(
+        local_ai::prefs::kOnDeviceSpeechModelEnabled);
   }
 
   // What the component installer publishes once a model is on disk. Nothing
@@ -261,6 +310,7 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
 
   local_ai::FakeAsrSession fake_session_;
   TestContentBrowserClient client_{fake_session_};
+  PromptObserver prompts_;
 
  private:
   // Starting the registrar asks for a download of its own while the feature
@@ -508,5 +558,150 @@ INSTANTIATE_TEST_SUITE_P(
                      testing::Bool(),
                      testing::Bool()),
     FeatureOffCaseName);
+
+// Runs with the model not enabled, so `install()` asks.
+class BraveOnDeviceSpeechConsentBrowserTest
+    : public BraveOnDeviceSpeechBrowserTest {
+ protected:
+  bool ModelEnabledAtStart() const override { return false; }
+};
+
+// Agreeing is what starts the download, and what lets `install()` finish.
+IN_PROC_BROWSER_TEST_F(BraveOnDeviceSpeechConsentBrowserTest,
+                       AllowDownloadsTheModel) {
+  prompt_manager()->set_auto_response_for_test(
+      permissions::PermissionRequestManager::ACCEPT_ALL);
+  AnswerDownloadWith(update_client::Error::NONE);
+  NavigateToUrl("foo.com");
+
+  EXPECT_EQ(kDownloadable, Available("command"));
+  EXPECT_FALSE(IsEnabled());
+
+  EXPECT_EQ(true, Install("command"));
+  EXPECT_EQ(1, prompts_.count());
+  EXPECT_TRUE(IsEnabled());
+  EXPECT_EQ(kAvailable, Available("command"));
+}
+
+// Blocking starts nothing. The answer a page gets about the model does not
+// change, so it learns nothing about the choice.
+IN_PROC_BROWSER_TEST_F(BraveOnDeviceSpeechConsentBrowserTest, DenyRefuses) {
+  prompt_manager()->set_auto_response_for_test(
+      permissions::PermissionRequestManager::DENY_ALL);
+  NavigateToUrl("foo.com");
+
+  EXPECT_EQ(false, Install("command"));
+  EXPECT_EQ(1, prompts_.count());
+  EXPECT_FALSE(IsEnabled());
+  EXPECT_EQ(kDownloadable, Available("command"));
+}
+
+// "Don't ask again" belongs to a profile, and holds without a prompt.
+IN_PROC_BROWSER_TEST_F(BraveOnDeviceSpeechConsentBrowserTest,
+                       DontAskAgainRefusesWithoutAsking) {
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
+      local_ai::prefs::kAskEnableOnDeviceSpeechModel, false);
+  prompt_manager()->set_auto_response_for_test(
+      permissions::PermissionRequestManager::ACCEPT_ALL);
+  NavigateToUrl("foo.com");
+
+  EXPECT_EQ(false, Install("command"));
+  EXPECT_EQ(0, prompts_.count());
+  EXPECT_FALSE(IsEnabled());
+  EXPECT_EQ(kDownloadable, Available("command"));
+}
+
+// With the model already enabled, a download that has to be asked for again,
+// such as one that failed, does not ask the user.
+IN_PROC_BROWSER_TEST_F(BraveOnDeviceSpeechConsentBrowserTest,
+                       AlreadyEnabledDoesNotAskAgain) {
+  g_browser_process->local_state()->SetBoolean(
+      local_ai::prefs::kOnDeviceSpeechModelEnabled, true);
+  prompt_manager()->set_auto_response_for_test(
+      permissions::PermissionRequestManager::DENY_ALL);
+  AnswerDownloadWith(update_client::Error::NONE);
+  NavigateToUrl("foo.com");
+
+  EXPECT_EQ(true, Install("command"));
+  EXPECT_EQ(0, prompts_.count());
+}
+
+// The prompt itself, not an automatic answer to it: it offers "Don't ask
+// again", which is what stops a site from asking over and over, because a
+// block has no content setting to be kept in.
+IN_PROC_BROWSER_TEST_F(BraveOnDeviceSpeechConsentBrowserTest,
+                       PromptOffersDontAskAgain) {
+  NavigateToUrl("foo.com");
+  // Not awaited: the promise settles once the prompt is answered.
+  ASSERT_TRUE(content::ExecJs(main_frame(), R"JS(
+    window.installed = SpeechRecognition.install({
+      langs: ['en-US'], processLocally: true, quality: 'command'});
+    undefined;
+  )JS"));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return prompt_manager()->IsRequestInProgress(); }));
+
+  test::PermissionRequestManagerTestApi test_api(browser());
+  views::Widget* widget = test_api.GetPromptWindow();
+  ASSERT_TRUE(widget);
+  auto* bubble =
+      static_cast<views::BubbleDialogDelegateView*>(widget->widget_delegate());
+  // The icon and text of the request, and the checkbox. There is no
+  // lifetime option, because the request has no content setting.
+  ASSERT_EQ(2u, bubble->children().size());
+  auto* checkbox = views::AsViewClass<views::Checkbox>(bubble->children()[1]);
+  ASSERT_TRUE(checkbox);
+  EXPECT_EQ(
+      l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_DONT_ASK_AGAIN_CHECKBOX),
+      checkbox->GetText());
+
+  views::test::ButtonTestApi(checkbox).NotifyClick(
+      ui::MouseEvent(ui::EventType::kMousePressed, gfx::Point(), gfx::Point(),
+                     ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON,
+                     ui::EF_LEFT_MOUSE_BUTTON));
+  ASSERT_TRUE(checkbox->GetChecked());
+  prompt_manager()->Deny(std::monostate());
+
+  EXPECT_EQ(false, content::EvalJs(main_frame(), "window.installed"));
+  EXPECT_FALSE(browser()->GetProfile()->GetPrefs()->GetBoolean(
+      local_ai::prefs::kAskEnableOnDeviceSpeechModel));
+  EXPECT_FALSE(IsEnabled());
+}
+
+#if BUILDFLAG(ENABLE_TOR)
+// Downloading the model is a global, persistent opt-in, so a Tor window never
+// asks for it, the same as for Widevine.
+IN_PROC_BROWSER_TEST_F(BraveOnDeviceSpeechConsentBrowserTest,
+                       TorWindowDoesNotAsk) {
+  ui_test_utils::BrowserCreatedObserver tor_browser_creation_observer;
+  brave::NewOffTheRecordWindowTor(browser());
+  BrowserWindowInterface* tor_browser = tor_browser_creation_observer.Wait();
+  ASSERT_TRUE(tor_browser);
+  ASSERT_TRUE(tor_browser->GetProfile()->IsTor());
+
+  content::WebContents* tor_contents =
+      tor_browser->GetTabStripModel()->GetActiveWebContents();
+  auto* tor_prompt_manager =
+      permissions::PermissionRequestManager::FromWebContents(tor_contents);
+  ASSERT_TRUE(tor_prompt_manager);
+  PromptObserver tor_prompts;
+  tor_prompt_manager->AddObserver(&tor_prompts);
+  tor_prompt_manager->set_auto_response_for_test(
+      permissions::PermissionRequestManager::ACCEPT_ALL);
+
+  base::test::TestFuture<bool> answer;
+  RequestBraveOnDeviceSpeechModelConsent(
+      *tor_contents->GetPrimaryMainFrame(),
+      // Only an agreement runs this, and so answers true.
+      base::BindOnce([](base::OnceCallback<void(bool)> callback) {
+        std::move(callback).Run(true);
+      }),
+      answer.GetCallback());
+  EXPECT_FALSE(answer.Get());
+  EXPECT_EQ(0, tor_prompts.count());
+  EXPECT_FALSE(IsEnabled());
+  tor_prompt_manager->RemoveObserver(&tor_prompts);
+}
+#endif  // BUILDFLAG(ENABLE_TOR)
 
 }  // namespace speech

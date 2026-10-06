@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/speech/on_device_speech_recognition_util.h"
+
 #include <string_view>
 
 #include "base/files/file_path.h"
@@ -16,10 +18,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace speech {
-
-media::mojom::AvailabilityStatus GetBraveOnDeviceSpeechAvailability(
-    std::string_view language,
-    media::mojom::SpeechRecognitionQuality quality);
 
 namespace {
 

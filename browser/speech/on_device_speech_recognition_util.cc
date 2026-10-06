@@ -7,6 +7,8 @@
 // `chrome/browser/speech/on_device_speech_recognition_util.cc` forward
 // declares.
 
+#include "brave/browser/speech/on_device_speech_recognition_util.h"
+
 #include <optional>
 #include <string_view>
 
@@ -19,7 +21,6 @@
 
 namespace speech {
 
-// Brave's on-device speech recognition availability, in place of upstream's.
 media::mojom::AvailabilityStatus GetBraveOnDeviceSpeechAvailability(
     std::string_view language,
     media::mojom::SpeechRecognitionQuality quality) {

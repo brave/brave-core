@@ -36,15 +36,23 @@ if (enable_local_ai) {
   source_set("chromium_impl") {
     sources = [
       "brave_soda_installer_factory.cc",
+      "on_device_speech_model_consent.cc",
+      "on_device_speech_model_consent.h",
       "on_device_speech_recognition_util.cc",
+      "on_device_speech_recognition_util.h",
     ]
 
     deps = [
       ":speech",
+      "//base",
       "//base/i18n:language_tag",
       "//brave/components/local_ai/core",
       "//chrome/browser:browser_process",
+      "//chrome/browser/profiles:profile",
+      "//components/permissions",
+      "//components/prefs",
       "//components/soda",
+      "//content/public/browser",
       "//media/mojo/mojom:web_speech_recognition",
     ]
   }
@@ -89,14 +97,17 @@ if (enable_local_ai) {
     sources = [ "brave_on_device_speech_browsertest.cc" ]
 
     deps = [
+      ":chromium_impl",
       "//base",
       "//base/test:test_support",
+      "//brave/app:brave_generated_resources_grit",
       "//brave/browser",
       "//brave/components/brave_component_updater/browser:test_support",
       "//brave/components/local_ai/core",
       "//brave/components/local_ai/core:features",
       "//brave/components/local_ai/core:speech_recognition_mojom",
       "//brave/components/local_ai/core:test_support",
+      "//brave/components/tor/buildflags",
       "//chrome/browser:browser_process",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
@@ -111,6 +122,11 @@ if (enable_local_ai) {
       "//net:test_support",
       "//testing/gmock",
       "//testing/gtest",
+      "//ui/base",
+      "//ui/events",
+      "//ui/gfx/geometry",
+      "//ui/views",
+      "//ui/views:test_support",
     ]
   }
 
@@ -119,6 +135,7 @@ if (enable_local_ai) {
 
     sources = [
       "brave_soda_installer_unittest.cc",
+      "on_device_speech_model_consent_unittest.cc",
       "on_device_speech_model_permission_request_unittest.cc",
       "on_device_speech_recognition_controller_unittest.cc",
       "on_device_speech_recognition_util_unittest.cc",

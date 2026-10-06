@@ -21,12 +21,26 @@ substitutions:
         }
 
   - description: |
-      The same rewrite, so the quality reaches the SODA branch where
+      Rewrite the quality as in `Available`, so it reaches the SODA branch where
       `BraveSodaInstaller` installs Brave's own model, rather than the
       optimization guide branch that asks for a model Brave does not ship.
+
+      Then ask the user before a download starts. Once they agree, `Install`
+      runs again and the agreement hands it on to upstream.
+
+      The two hooks are declared in the chromium_src override of this source.
     preempt_function_impl:
       function_name: OnDeviceSpeechRecognitionImpl::Install
       code: |-
         if (quality == media::mojom::SpeechRecognitionQuality::kDictation) {
           quality = media::mojom::SpeechRecognitionQuality::kCommand;
+        }
+        if (CanRenderFrameHostUseOnDeviceSpeechRecognition() &&
+            ShouldRequestBraveOnDeviceSpeechModelConsent(languages, quality)) {
+          RequestBraveOnDeviceSpeechModelConsent(
+              render_frame_host(),
+              base::BindOnce(&OnDeviceSpeechRecognitionImpl::Install,
+                             weak_ptr_factory_.GetWeakPtr(), languages, quality),
+              std::move(callback));
+          return;
         }
