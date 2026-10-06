@@ -12,6 +12,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
@@ -109,19 +110,14 @@ scoped_refptr<BrowserIdentity> BrowserIdentity::Capture(
 }
 
 std::string BrowserIdentity::GetDescription() const {
-  const auto pid = static_cast<unsigned long>(pid_);
-  if (!platform_data_) {
-    return absl::StrFormat("pid=%u", pid);
-  }
-  return absl::StrFormat("pid=%u; creation_time=%u", pid,
-                         platform_data_->creation_time);
+  return absl::StrFormat("pid=%u; creation_time=%u",
+                         static_cast<unsigned long>(pid_),
+                         platform_data_.creation_time);
 }
 
 bool BrowserIdentity::IsSameProcess(const BrowserIdentity& other) const {
-  if (pid_ != other.pid_ || !platform_data_ || !other.platform_data_) {
-    return false;
-  }
-  return platform_data_->creation_time == other.platform_data_->creation_time;
+  return pid_ == other.pid_ &&
+         platform_data_.creation_time == other.platform_data_.creation_time;
 }
 
 BrowserIdentity::VerificationRequestCallback

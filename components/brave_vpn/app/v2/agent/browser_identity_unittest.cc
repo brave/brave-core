@@ -6,6 +6,8 @@
 #include "brave/components/brave_vpn/app/v2/agent/browser_identity.h"
 
 #include <cstdint>
+#include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/check.h"
@@ -37,19 +39,13 @@ namespace {
 
 using named_mojo_ipc_server::ConnectionInfo;
 
-// Exposes the protected constructors, to build identities that Capture() would
-// never produce: ones without platform data, or with made-up platform data
-// that simulates pid reuse.
+// Exposes the protected constructor, to build identities from made-up platform
+// data, such as two instances of one pid that simulate pid reuse.
 class TestBrowserIdentity final : public BrowserIdentity {
  public:
   using BrowserIdentity::PlatformData;
 
-  static scoped_refptr<BrowserIdentity> WithoutPlatformData(
-      base::ProcessId pid) {
-    return base::WrapRefCounted(new TestBrowserIdentity(pid));
-  }
-
-  static scoped_refptr<BrowserIdentity> WithPlatformData(
+  static scoped_refptr<BrowserIdentity> CreateWithPlatformData(
       base::ProcessId pid,
       PlatformData platform_data) {
     return base::WrapRefCounted(
@@ -74,7 +70,7 @@ TestBrowserIdentity::PlatformData MakePlatformData(base::ProcessId pid,
   return {.audit_token = token};
 #elif BUILDFLAG(IS_LINUX)
   return {.pidfd = base::ScopedFD(), .start_time_ticks = instance};
-#endif
+#endif  // BUILDFLAG(IS_WIN)
 }
 
 // Fills |info| as the server would for a connection from |pid|. On macOS only
@@ -82,9 +78,7 @@ TestBrowserIdentity::PlatformData MakePlatformData(base::ProcessId pid,
 // can obtain.
 void DescribeConnectionFrom(base::ProcessId pid, ConnectionInfo& info) {
   info.pid = pid;
-#if BUILDFLAG(IS_LINUX)
-  info.credentials = {.pid = pid, .uid = geteuid(), .gid = getegid()};
-#elif BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_WIN)
   DWORD session_id = 0;
   CHECK(::ProcessIdToSessionId(pid, &session_id));
   info.session_id = session_id;
@@ -97,7 +91,9 @@ void DescribeConnectionFrom(base::ProcessId pid, ConnectionInfo& info) {
   CHECK_EQ(task_info(mach_task_self(), TASK_AUDIT_TOKEN,
                      reinterpret_cast<task_info_t>(&info.audit_token), &count),
            KERN_SUCCESS);
-#endif
+#elif BUILDFLAG(IS_LINUX)
+  info.credentials = {.pid = pid, .uid = geteuid(), .gid = getegid()};
+#endif  // BUILDFLAG(IS_WIN)
 }
 
 scoped_refptr<BrowserIdentity> CaptureCurrentProcess() {
@@ -122,7 +118,7 @@ base::Process SpawnExitedChild() {
   CHECK(child.WaitForExit(&exit_code));
   return child;
 }
-#endif
+#endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
 
 }  // namespace
 
@@ -131,6 +127,14 @@ TEST(BrowserIdentityTest, CapturesCurrentProcess) {
   ASSERT_TRUE(identity);
   EXPECT_EQ(identity->pid(), base::GetCurrentProcId());
   EXPECT_TRUE(base::StartsWith(identity->GetDescription(), "pid="));
+#if BUILDFLAG(IS_WIN)
+  constexpr std::string_view kPlatformField = "; creation_time=";
+#elif BUILDFLAG(IS_MAC)
+  constexpr std::string_view kPlatformField = "; pidversion=";
+#elif BUILDFLAG(IS_LINUX)
+  constexpr std::string_view kPlatformField = "; start_time_ticks=";
+#endif
+  EXPECT_NE(identity->GetDescription().find(kPlatformField), std::string::npos);
 }
 
 TEST(BrowserIdentityTest, CapturesOfOneProcessAreSameProcess) {
@@ -159,7 +163,7 @@ TEST(BrowserIdentityTest, RejectsPeerRunningAsAnotherUser) {
 #endif
   EXPECT_FALSE(BrowserIdentity::Create(info));
 }
-#endif
+#endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
 
 #if BUILDFLAG(IS_WIN)
 TEST(BrowserIdentityTest, RejectsExitedPeer) {
@@ -203,35 +207,21 @@ TEST(BrowserIdentityTest, RejectsPeerInAnotherSession) {
   ++info.session_id;
   EXPECT_FALSE(BrowserIdentity::Create(info));
 }
-#endif
-
-TEST(BrowserIdentityTest, IdentityWithoutPlatformDataIsNeverSameProcess) {
-  scoped_refptr<BrowserIdentity> captured = CaptureCurrentProcess();
-  ASSERT_TRUE(captured);
-  scoped_refptr<BrowserIdentity> bare =
-      TestBrowserIdentity::WithoutPlatformData(captured->pid());
-  scoped_refptr<BrowserIdentity> other_bare =
-      TestBrowserIdentity::WithoutPlatformData(captured->pid());
-
-  EXPECT_FALSE(bare->IsSameProcess(*bare));
-  EXPECT_FALSE(bare->IsSameProcess(*other_bare));
-  EXPECT_FALSE(bare->IsSameProcess(*captured));
-  EXPECT_FALSE(captured->IsSameProcess(*bare));
-  EXPECT_TRUE(base::StartsWith(bare->GetDescription(), "pid="));
-}
+#endif  // BUILDFLAG(IS_WIN)
 
 TEST(BrowserIdentityTest, ComparesProcessInstanceNotJustPid) {
   constexpr base::ProcessId kPid = 1234;
   scoped_refptr<BrowserIdentity> original =
-      TestBrowserIdentity::WithPlatformData(
+      TestBrowserIdentity::CreateWithPlatformData(
           kPid, MakePlatformData(kPid, /*instance=*/1));
-  scoped_refptr<BrowserIdentity> same = TestBrowserIdentity::WithPlatformData(
-      kPid, MakePlatformData(kPid, /*instance=*/1));
+  scoped_refptr<BrowserIdentity> same =
+      TestBrowserIdentity::CreateWithPlatformData(
+          kPid, MakePlatformData(kPid, /*instance=*/1));
   scoped_refptr<BrowserIdentity> pid_reused =
-      TestBrowserIdentity::WithPlatformData(
+      TestBrowserIdentity::CreateWithPlatformData(
           kPid, MakePlatformData(kPid, /*instance=*/2));
   scoped_refptr<BrowserIdentity> other_pid =
-      TestBrowserIdentity::WithPlatformData(
+      TestBrowserIdentity::CreateWithPlatformData(
           kPid + 1, MakePlatformData(kPid + 1, /*instance=*/1));
 
   EXPECT_TRUE(original->IsSameProcess(*same));

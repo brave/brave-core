@@ -102,19 +102,13 @@ scoped_refptr<BrowserIdentity> BrowserIdentity::Capture(
 }
 
 std::string BrowserIdentity::GetDescription() const {
-  if (!platform_data_) {
-    return absl::StrFormat("pid=%d", pid_);
-  }
   return absl::StrFormat("pid=%d; start_time_ticks=%u", pid_,
-                         platform_data_->start_time_ticks);
+                         platform_data_.start_time_ticks);
 }
 
 bool BrowserIdentity::IsSameProcess(const BrowserIdentity& other) const {
-  if (pid_ != other.pid_ || !platform_data_ || !other.platform_data_) {
-    return false;
-  }
-  return platform_data_->start_time_ticks ==
-         other.platform_data_->start_time_ticks;
+  return pid_ == other.pid_ && platform_data_.start_time_ticks ==
+                                   other.platform_data_.start_time_ticks;
 }
 
 BrowserIdentity::VerificationRequestCallback

@@ -53,20 +53,14 @@ scoped_refptr<BrowserIdentity> BrowserIdentity::Capture(
 }
 
 std::string BrowserIdentity::GetDescription() const {
-  if (!platform_data_) {
-    return absl::StrFormat("pid=%d", pid_);
-  }
-  return absl::StrFormat(
-      "pid=%d; pidversion=%d", pid_,
-      audit_token_to_pidversion(platform_data_->audit_token));
+  return absl::StrFormat("pid=%d; pidversion=%d", pid_,
+                         audit_token_to_pidversion(platform_data_.audit_token));
 }
 
 bool BrowserIdentity::IsSameProcess(const BrowserIdentity& other) const {
-  if (pid_ != other.pid_ || !platform_data_ || !other.platform_data_) {
-    return false;
-  }
-  return audit_token_to_pidversion(platform_data_->audit_token) ==
-         audit_token_to_pidversion(other.platform_data_->audit_token);
+  return pid_ == other.pid_ &&
+         audit_token_to_pidversion(platform_data_.audit_token) ==
+             audit_token_to_pidversion(other.platform_data_.audit_token);
 }
 
 BrowserIdentity::VerificationRequestCallback

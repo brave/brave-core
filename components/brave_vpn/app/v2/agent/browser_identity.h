@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_VPN_APP_V2_AGENT_BROWSER_IDENTITY_H_
 
 #include <cstdint>
-#include <optional>
 #include <string>
 
 #include "base/auto_reset.h"
@@ -78,7 +77,6 @@ class BrowserIdentity : public base::RefCounted<BrowserIdentity> {
   // True if |other| names the same process instance, not merely the same pid.
   // Used to notice that a cached identity went stale because its pid was
   // recycled by an unrelated process.
-  // Fail-closed: returns false if either identity carries no platform data.
   virtual bool IsSameProcess(const BrowserIdentity& other) const;
 
   // Posts an expensive part of verification to a thread pool with all the
@@ -98,7 +96,8 @@ class BrowserIdentity : public base::RefCounted<BrowserIdentity> {
   struct PlatformData {
 #if BUILDFLAG(IS_WIN)
     // Held open so the pid cannot be reused while this identity is alive.
-    base::Process process;
+    // Braced since Process's default constructor is explicit.
+    base::Process process{};
     // Raw FILETIME creation time (100 ns intervals since 1601-01-01 UTC).
     uint64_t creation_time = 0;
 #elif BUILDFLAG(IS_MAC)
@@ -122,7 +121,6 @@ class BrowserIdentity : public base::RefCounted<BrowserIdentity> {
   static scoped_refptr<BrowserIdentity> Capture(
       const named_mojo_ipc_server::ConnectionInfo& info);
 
-  explicit BrowserIdentity(base::ProcessId pid);
   BrowserIdentity(base::ProcessId pid, PlatformData platform_data);
   virtual ~BrowserIdentity();
 
@@ -131,7 +129,7 @@ class BrowserIdentity : public base::RefCounted<BrowserIdentity> {
   VerificationRequestCallback BindVerificationRequest() const;
 
   const base::ProcessId pid_;
-  const std::optional<PlatformData> platform_data_;
+  const PlatformData platform_data_;
 };
 
 using BrowserIdentityCaptureCallback =
