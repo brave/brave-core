@@ -18,7 +18,10 @@ source_set("vertical_tabs") {
     sources += [ "vertical_tab_strip_region_view_mac.mm" ]
   }
 
-  public_deps = [ "//brave/browser/ui/focus_mode" ]
+  public_deps = [
+    "//brave/browser/ui/focus_mode",
+    "//chrome/browser/ui/views/frame:horizontal_tab_strip_region_view",
+  ]
 
   deps = [
     "//base",
@@ -76,6 +79,7 @@ source_set("browser_tests") {
     "//chrome/browser/ui/views/frame:browser_frame_view",
     "//chrome/browser/ui/views/frame:custom_floating_corner",
     "//chrome/browser/ui/views/frame:opaque_browser_frame_view",
+    "//chrome/browser/ui/views/frame:vertical_tab_strip_region_view",
     "//chrome/browser/ui/views/location_bar",
     "//chrome/browser/ui/views/tabs:new_tab_button",
     "//chrome/browser/ui/views/tabs:tab_strip",
