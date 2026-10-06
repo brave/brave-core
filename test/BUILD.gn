@@ -1338,8 +1338,10 @@ test("brave_browser_tests") {
         "//brave/browser/ui/webui/brave_wallet/wallet_panel:browser_tests",
       ]
       if (enable_snap) {
-        deps +=
-            [ "//brave/browser/ui/webui/brave_wallet/snap_host:browser_tests" ]
+        deps += [
+          "//brave/browser/ui/webui/brave_wallet/snap_host:browser_tests",
+          "//brave/browser/ui/webui/brave_wallet/snaps_container:browser_tests",
+        ]
       }
     }
   }

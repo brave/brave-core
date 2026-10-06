@@ -377,6 +377,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
 #include "brave/components/brave_wallet/common/ledger_bridge.mojom.h"
 #endif
+#if BUILDFLAG(ENABLE_SNAP)
+#include "brave/browser/ui/webui/brave_wallet/snaps_container/snaps_container_ui.h"
+#endif
 #endif
 
 namespace {
@@ -765,7 +768,7 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
       ;
 #if BUILDFLAG(ENABLE_SNAP)
   if (brave_wallet::IsSnapFeatureEnabled()) {
-    registry.ForWebUI<brave_wallet::WalletPageUI>()
+    registry.ForWebUI<brave_wallet::SnapsContainerUI>()
         .Add<brave_wallet::mojom::SnapService>();
   }
 #endif  // BUILDFLAG(ENABLE_SNAP)

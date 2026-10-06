@@ -26,10 +26,11 @@ UntrustedSnapHostUI::UntrustedSnapHostUI(content::WebUI* web_ui)
   untrusted_source->SetDefaultResource(IDR_BRAVE_WALLET_SNAP_HOST_HTML);
   untrusted_source->AddResourcePaths(kSnapHostGenerated);
 
-  // v1 is wallet-page-only; the panel's real URL is
-  // chrome://wallet-panel.top-chrome/, not chrome://wallet-panel/, and
-  // snap_host.ts hardcodes WALLET_PAGE_ORIGIN = 'chrome://wallet' anyway.
+  // Parented by chrome://snaps-container/. chrome://wallet must also be listed
+  // because frame-ancestors is evaluated against every ancestor and the wallet
+  // page is this frame's grandparent.
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPageURL));
+  untrusted_source->AddFrameAncestor(GURL(kBraveUISnapsContainerURL));
 
   // 'unsafe-eval' is required for new Function() evaluation of snap bundles.
   // 'unsafe-inline' is unnecessary because snap_host.html loads an external

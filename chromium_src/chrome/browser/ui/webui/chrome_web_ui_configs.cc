@@ -32,6 +32,10 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
 #endif
+#if BUILDFLAG(ENABLE_SNAP)
+#include "brave/browser/ui/webui/brave_wallet/snaps_container/snaps_container_ui.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
+#endif
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -120,6 +124,12 @@ void RegisterChromeWebUIConfigs() {
   map.AddWebUIConfig(std::make_unique<brave_wallet::WalletPageUIConfig>());
 #if !BUILDFLAG(IS_ANDROID)
   map.AddWebUIConfig(std::make_unique<WalletPanelUIConfig>());
+#endif
+#if BUILDFLAG(ENABLE_SNAP)
+  if (brave_wallet::IsSnapFeatureEnabled()) {
+    map.AddWebUIConfig(
+        std::make_unique<brave_wallet::SnapsContainerUIConfig>());
+  }
 #endif
 #endif
 

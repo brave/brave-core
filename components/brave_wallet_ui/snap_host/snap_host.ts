@@ -4,18 +4,18 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Snap host running inside chrome-untrusted://snap-host/.
-// Receives snap source from the parent wallet page via postMessage and
+// Receives snap source from the parent snaps container page via postMessage and
 // evaluates it with new Function().
 
 import {
   ExecuteSnapPayload,
   isExecuteSnapCommand,
   SnapMessageType,
-  WALLET_PAGE_ORIGIN,
+  SNAPS_CONTAINER_ORIGIN,
 } from '../common/snap/snap_messages'
 
 function sendToParent(message: unknown) {
-  window.parent.postMessage(message, WALLET_PAGE_ORIGIN)
+  window.parent.postMessage(message, SNAPS_CONTAINER_ORIGIN)
 }
 
 function handleExecuteSnap(requestId: number, payload: ExecuteSnapPayload) {
@@ -49,13 +49,15 @@ function handleExecuteSnap(requestId: number, payload: ExecuteSnapPayload) {
 }
 
 window.addEventListener('message', (event) => {
-  if (event.origin !== WALLET_PAGE_ORIGIN || event.source !== window.parent) {
+  if (
+    event.origin !== SNAPS_CONTAINER_ORIGIN
+    || event.source !== window.parent
+  ) {
     return
   }
   if (!isExecuteSnapCommand(event.data)) {
     return
   }
-
   handleExecuteSnap(event.data.requestId, event.data.payload)
 })
 
