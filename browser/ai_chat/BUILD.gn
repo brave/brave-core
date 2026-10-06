@@ -245,6 +245,7 @@ if (enable_brave_ai_chat_agent_profile) {
       "//chrome/browser/profiles:profile",
       "//chrome/browser/profiles:profile_util",
       "//chrome/browser/ui",
+      "//chrome/browser/ui:browser_tabstrip",
       "//components/actor/core:task_id",
       "//components/optimization_guide/content/browser",
       "//components/policy/core/common:common_constants",
@@ -456,6 +457,7 @@ source_set("browser_tests") {
       deps += [
         ":ai_chat_tab_management_tool_impl",
         "//brave/components/local_ai/buildflags",
+        "//chrome/browser/ui:browser_tabstrip",
         "//chrome/browser/ui:browser_window_header",
         "//chrome/browser/ui/tabs:tabs_public",
         "//components/tab_groups",

@@ -48,6 +48,7 @@ source_set("browser_tests") {
       "//brave/components/brave_rewards/core",
       "//chrome/browser/profiles/keep_alive",
       "//chrome/browser/ui",
+      "//chrome/browser/ui:browser_tabstrip",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
       "//net:test_support",
