@@ -93,7 +93,7 @@ IN_PROC_BROWSER_TEST_F(SidebarInteractiveUITest, IterateBuiltInWebTypeTest) {
   auto browser2_wallet_item_index = browser2_controller->model()->GetIndexOf(
       SidebarItem::BuiltInItemType::kWallet);
   ASSERT_TRUE(browser2_wallet_item_index.has_value());
-  browser2_controller->ActivateItemAt(browser2_wallet_item_index.value());
+  browser2_controller->OnItemPressed(browser2_wallet_item_index.value());
   activation_waiter.WaitForActivation();
 
   EXPECT_TRUE(BrowserWindow::FromBrowser(browser())->IsActive());

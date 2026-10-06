@@ -22,6 +22,7 @@ class GURL;
 class Profile;
 class SidePanelUI;
 class TabStripModel;
+enum class SidePanelEntryId;
 
 namespace sidebar {
 
@@ -53,17 +54,6 @@ class SidebarController : public SidebarService::Observer {
   SidebarController(const SidebarController&) = delete;
   SidebarController& operator=(const SidebarController&) = delete;
 
-  // NOTE: Don't call this directly for panel item. Use SidePanelUI instead.
-  // This should be called as a result of SidePanelCoordinator's entry
-  // opening/closing event. If this method is called directly for activating
-  // panel, SidePanelCoordinator doesn't know about it.
-
-  // |disposition| is only valid for shortcut type. If |disposition| is not
-  // CURRENT_TAB, item at |index| is handled based on |disposition|.
-  void ActivateItemAt(
-      std::optional<size_t> index,
-      WindowOpenDisposition disposition = WindowOpenDisposition::CURRENT_TAB);
-
   // Called when the item at |index| is pressed by the user. Deactivates the
   // current panel if the item is already active.
   // |disposition| is only used for shortcut type items.
@@ -71,8 +61,11 @@ class SidebarController : public SidebarService::Observer {
       size_t index,
       WindowOpenDisposition disposition = WindowOpenDisposition::CURRENT_TAB);
   void AddItemWithCurrentTab();
-  void UpdateActiveItemState(std::optional<SidebarItem::BuiltInItemType>
-                                 active_panel_item = std::nullopt);
+
+  // Called by BraveSidePanelCoordinator when a side panel entry is shown or
+  // hidden, so the sidebar can mirror which item is active.
+  void HandleSidePanelOpened(SidePanelEntryId id);
+  void HandleSidePanelClosed();
 
   // Toggles a session-only "pin" that forces the sidebar control view
   // visible regardless of the current show option. Pinned state is cleared
@@ -110,10 +103,6 @@ class SidebarController : public SidebarService::Observer {
 
  private:
   void OnPreferenceChanged(const std::string& pref_name);
-
-  // Ask panel item activation state change to SidePanelUI.
-  // Outside of this class, use SidePanelUI directly.
-  void ActivatePanelItem(SidebarItem::BuiltInItemType panel_item);
 
   SidePanelUI* GetSidePanelUI();
 

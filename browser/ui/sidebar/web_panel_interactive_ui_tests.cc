@@ -85,7 +85,7 @@ IN_PROC_BROWSER_TEST_F(SidebarWebPanelInteractiveUITest,
   controller()->AddItemWithCurrentTab();
   const int web_panel_item_index =
       static_cast<int>(model()->GetAllSidebarItems().size()) - 1;
-  controller()->ActivateItemAt(web_panel_item_index);
+  controller()->OnItemPressed(web_panel_item_index);
   ASSERT_TRUE(GetBraveMultiContentsView()->IsWebPanelVisible());
 
   ASSERT_EQ(2, browser()->tab_strip_model()->count());
