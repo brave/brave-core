@@ -29,6 +29,7 @@ describe('ToolEventContentUserChoice', () => {
             argumentsJson: validArgumentsJsonThreeChoices,
             output: undefined,
           }}
+          entryUuid='entry-1'
           isEntryActive={true}
         />
       </MockContext>,
@@ -40,6 +41,7 @@ describe('ToolEventContentUserChoice', () => {
 
     fireEvent.click(screen.getByTestId('tool-choice-text-0'))
     expect(mockRespondToToolUseRequest).toHaveBeenCalledWith(
+      'entry-1',
       '123',
       [
         {
@@ -94,6 +96,30 @@ describe('ToolEventContentUserChoice', () => {
     expect(screen.getByTestId('tool-choice-text-0').textContent).toBe('first')
     expect(screen.getByTestId('tool-choice-text-1').textContent).toBe('second')
     expect(screen.getByTestId('tool-choice-text-2').textContent).toBe('third')
+
+    fireEvent.click(screen.getByTestId('tool-choice-text-0'))
+    expect(mockRespondToToolUseRequest).not.toHaveBeenCalled()
+  })
+
+  it('should not answer when the response is not known', () => {
+    const mockRespondToToolUseRequest = jest.fn()
+    render(
+      <MockContext
+        userActions={{
+          respondToToolUseRequest: mockRespondToToolUseRequest,
+        }}
+      >
+        <ToolEvent
+          toolUseEvent={{
+            toolName: 'user_choice_tool',
+            id: '123',
+            argumentsJson: validArgumentsJsonThreeChoices,
+            output: undefined,
+          }}
+          isEntryActive={true}
+        />
+      </MockContext>,
+    )
 
     fireEvent.click(screen.getByTestId('tool-choice-text-0'))
     expect(mockRespondToToolUseRequest).not.toHaveBeenCalled()

@@ -204,6 +204,7 @@ function Progress(props: Props & TabProps) {
         <ToolEvent
           key={index}
           toolUseEvent={event.toolUseEvent!}
+          entryUuid={props.assistantEntries.at(-1)?.uuid ?? undefined}
           isEntryActive={props.isActiveTask}
           isExecuting={props.isToolExecuting}
         />

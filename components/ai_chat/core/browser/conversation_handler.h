@@ -274,6 +274,7 @@ class ConversationHandler : public mojom::ConversationHandler,
       const std::string& new_text,
       const std::optional<std::string>& skill_shortcut) override;
   void RespondToToolUseRequest(
+      const std::string& entry_uuid,
       const std::string& tool_id,
       std::vector<mojom::ContentBlockPtr> output_json,
       std::vector<mojom::ToolArtifactPtr> artifacts) override;
