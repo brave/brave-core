@@ -29,6 +29,7 @@
 #include "base/version.h"
 #import "brave/browser/mac/keystone_registration.h"
 #include "brave/browser/sparkle_buildflags.h"
+#include "brave/browser/updater/buildflags.h"
 #include "build/branding_buildflags.h"
 #include "build/build_config.h"
 #include "chrome/common/channel_info.h"
@@ -42,6 +43,10 @@
 #if BUILDFLAG(ENABLE_SPARKLE)
 #include "brave/browser/mac/sparkle_glue.h"
 #endif
+
+#if BUILDFLAG(ENABLE_OMAHA4)
+#include "brave/browser/updater/features.h"
+#endif  // BUILDFLAG(ENABLE_OMAHA4)
 
 namespace ksr = keystone_registration;
 
@@ -1173,6 +1178,12 @@ std::string BrandCodeInternal() {
 
 #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
 
+namespace {
+
+std::optional<bool> g_sparkle_is_updater_for_testing;
+
+}  // namespace
+
 namespace keystone_glue {
 
 std::string BrandCode() {
@@ -1198,6 +1209,24 @@ std::u16string CurrentlyInstalledVersion() {
 #else
   return std::u16string();
 #endif
+}
+
+bool BraveIsSparkleTheUpdater() {
+  if (g_sparkle_is_updater_for_testing.has_value()) {
+    return *g_sparkle_is_updater_for_testing;
+  }
+#if BUILDFLAG(ENABLE_OMAHA4)
+  // Check Omaha 4 first: asking the Sparkle glue for its state loads the
+  // Sparkle framework, which must not happen while Omaha 4 is in use.
+  if (brave_updater::ShouldUseOmaha4()) {
+    return false;
+  }
+#endif  // BUILDFLAG(ENABLE_OMAHA4)
+  return KeystoneEnabled();
+}
+
+void SetSparkleIsUpdaterForTesting(std::optional<bool> sparkle_is_updater) {
+  g_sparkle_is_updater_for_testing = sparkle_is_updater;
 }
 
 }  // namespace keystone_glue
