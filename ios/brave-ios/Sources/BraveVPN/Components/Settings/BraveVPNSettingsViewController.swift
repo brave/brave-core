@@ -479,14 +479,6 @@ public struct VPNSettingsView: View {
   }
 }
 
-// Binding<ResetConfigurationResult?> presentation helper
-extension VPNSettingsView.ResetConfigurationResult? {
-  fileprivate var isPresented: Bool {
-    get { self != nil }
-    set { if !newValue { self = nil } }
-  }
-}
-
 public class BraveVPNSettingsViewController: UIHostingController<VPNSettingsView> {
   public var openURL: ((URL) -> Void)?
 

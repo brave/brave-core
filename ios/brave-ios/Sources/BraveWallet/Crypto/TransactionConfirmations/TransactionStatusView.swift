@@ -5,6 +5,7 @@
 
 import BigNumber
 import BraveCore
+import BraveUI
 import DesignSystem
 import Strings
 import SwiftUI
@@ -733,22 +734,17 @@ struct TransactionStatusView: View {
         speedUpTimer = nil
       }
     }
-    .alert(
-      isPresented: Binding(
-        get: { followUpActionError != nil },
-        set: {
-          if !$0 {
-            followUpActionError = nil
-            isShowingTxCancellationConfirmation = false
-          }
-        }
-      )
-    ) {
+    .alert(isPresented: $followUpActionError.isPresented) {
       Alert(
         title: Text(Strings.genericErrorTitle),
         message: Text(followUpActionError ?? ""),
         dismissButton: .default(Text(Strings.OKString))
       )
+    }
+    .onChange(of: followUpActionError) { _, newValue in
+      if newValue == nil {
+        isShowingTxCancellationConfirmation = false
+      }
     }
     .onAppear {
       if txStatusStore.activeTxStatus == .submitted && txStatusStore.isSpeedUpAvailable {

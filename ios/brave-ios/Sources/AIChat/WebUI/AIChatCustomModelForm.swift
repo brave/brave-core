@@ -351,14 +351,6 @@ extension String? {
   }
 }
 
-// Binding<FormValidationError?> presentation helper
-extension CustomModelForm.FormValidationError? {
-  fileprivate var isPresented: Bool {
-    get { self != nil }
-    set { if !newValue { self = nil } }
-  }
-}
-
 private struct CustomModelFormInputLabeledContentStyle: LabeledContentStyle {
   func makeBody(configuration: Configuration) -> some View {
     VStack(alignment: .leading) {

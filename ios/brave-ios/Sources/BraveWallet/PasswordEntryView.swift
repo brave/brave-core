@@ -105,8 +105,8 @@ struct PasswordEntryField: View {
 struct PasswordEntryField_Previews: PreviewProvider {
   static var previews: some View {
     PasswordEntryField(
-      password: Binding(get: { "" }, set: { _ in }),
-      error: Binding(get: { nil }, set: { _ in }),
+      password: .constant(""),
+      error: .constant(nil),
       shouldShowBiometrics: false,
       keyringStore: .previewStore,
       onCommit: {}
