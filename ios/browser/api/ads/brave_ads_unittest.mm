@@ -241,7 +241,7 @@ TEST_F(BraveAdsTest, IsNotificationsEnabledDefaultsToFalse) {
 
 TEST_F(BraveAdsTest, SetEnabledTogglesRewardsAndNotificationsPrefsWhenTrue) {
   // Act
-  ads_.enabled = YES;
+  ads_.notificationsEnabled = YES;
 
   // Assert
   EXPECT_TRUE(profile_prefs()->GetBoolean(brave_rewards::prefs::kEnabled));
@@ -251,10 +251,10 @@ TEST_F(BraveAdsTest, SetEnabledTogglesRewardsAndNotificationsPrefsWhenTrue) {
 
 TEST_F(BraveAdsTest, SetEnabledTogglesRewardsAndNotificationsPrefsWhenFalse) {
   // Arrange
-  ads_.enabled = YES;
+  ads_.notificationsEnabled = YES;
 
   // Act
-  ads_.enabled = NO;
+  ads_.notificationsEnabled = NO;
 
   // Assert
   EXPECT_FALSE(profile_prefs()->GetBoolean(brave_rewards::prefs::kEnabled));

@@ -223,11 +223,11 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   return self.profilePrefService->GetBoolean(brave_rewards::prefs::kEnabled);
 }
 
-- (void)setEnabled:(BOOL)enabled {
+- (void)setNotificationsEnabled:(BOOL)notificationsEnabled {
   [self setProfilePref:brave_rewards::prefs::kEnabled
-                 value:base::Value(enabled)];
+                 value:base::Value(notificationsEnabled)];
   [self setProfilePref:brave_ads::prefs::kNotificationsEnabled
-                 value:base::Value(enabled)];
+                 value:base::Value(notificationsEnabled)];
 }
 
 #pragma mark - Initialization / Shutdown

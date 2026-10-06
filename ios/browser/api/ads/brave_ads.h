@@ -83,7 +83,7 @@ OBJC_EXPORT
 /// Whether or not the user should receive notification-style ads and be
 /// rewarded for it
 @property(nonatomic, assign, getter=isNotificationsEnabled)
-    BOOL enabled NS_SWIFT_NAME(isNotificationsEnabled);
+    BOOL notificationsEnabled NS_SWIFT_NAME(isNotificationsEnabled);
 
 #pragma mark - Initialization / Shutdown
 
