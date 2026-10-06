@@ -21,7 +21,6 @@
 #include "components/autofill/core/browser/webdata/autocomplete/autocomplete_entry.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
-#include "components/optimization_guide/core/optimization_guide_features.h"
 #include "components/strike_database/strike_database.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -81,9 +80,6 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
 
   AutofillOptimizationGuideDecider* GetAutofillOptimizationGuideDecider()
       const override {
-    if (optimization_guide::features::IsOptimizationHintsEnabled()) {
-      return ChromeAutofillClient::GetAutofillOptimizationGuideDecider();
-    }
     return nullptr;
   }
 
