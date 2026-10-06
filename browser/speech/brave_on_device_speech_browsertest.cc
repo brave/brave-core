@@ -29,6 +29,8 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/permissions/permission_request_manager.h"
+#include "components/permissions/test/mock_permission_prompt_factory.h"
 #include "components/prefs/pref_service.h"
 #include "components/update_client/update_client_errors.h"
 #include "content/public/browser/render_frame_host.h"
@@ -416,6 +418,71 @@ IN_PROC_BROWSER_TEST_P(BraveOnDeviceSpeechQualityBrowserTest,
 INSTANTIATE_TEST_SUITE_P(
     All,
     BraveOnDeviceSpeechQualityBrowserTest,
+    testing::Values("command", "dictation"),
+    [](const testing::TestParamInfo<std::string_view>& info) {
+      return info.param == "command" ? "Command" : "Dictation";
+    });
+
+// A user who has not enabled the model yet, so `install()` prompts before it
+// downloads.
+class BraveOnDeviceSpeechPromptBrowserTest
+    : public BraveOnDeviceSpeechQualityBrowserTest {
+ public:
+  void SetUpOnMainThread() override {
+    BraveOnDeviceSpeechQualityBrowserTest::SetUpOnMainThread();
+    g_browser_process->local_state()->ClearPref(
+        local_ai::prefs::kOnDeviceSpeechModelEnabled);
+    prompt_factory_ =
+        std::make_unique<permissions::MockPermissionPromptFactory>(
+            permissions::PermissionRequestManager::FromWebContents(
+                chrome_test_utils::GetActiveWebContents(this)));
+  }
+
+  void TearDownOnMainThread() override {
+    prompt_factory_.reset();
+    BraveOnDeviceSpeechQualityBrowserTest::TearDownOnMainThread();
+  }
+
+ protected:
+  bool IsEnabled() {
+    return g_browser_process->local_state()->GetBoolean(
+        local_ai::prefs::kOnDeviceSpeechModelEnabled);
+  }
+
+  std::unique_ptr<permissions::MockPermissionPromptFactory> prompt_factory_;
+};
+
+// Allowing enables the model, and `install()` waits for the download that
+// starts.
+IN_PROC_BROWSER_TEST_P(BraveOnDeviceSpeechPromptBrowserTest, AllowDownloads) {
+  prompt_factory_->set_response_type(
+      permissions::PermissionRequestManager::ACCEPT_ALL);
+  AnswerDownloadWith(update_client::Error::NONE);
+  NavigateToUrl("foo.com");
+
+  EXPECT_EQ(kDownloadable, Available(GetParam()));
+  EXPECT_EQ(true, Install(GetParam()));
+  EXPECT_EQ(kAvailable, Available(GetParam()));
+  EXPECT_EQ(1, prompt_factory_->show_count());
+  EXPECT_TRUE(IsEnabled());
+}
+
+// Denying refuses `install()`, and nothing is downloaded.
+IN_PROC_BROWSER_TEST_P(BraveOnDeviceSpeechPromptBrowserTest, DenyRefuses) {
+  prompt_factory_->set_response_type(
+      permissions::PermissionRequestManager::DENY_ALL);
+  NavigateToUrl("foo.com");
+
+  EXPECT_EQ(kDownloadable, Available(GetParam()));
+  EXPECT_EQ(false, Install(GetParam()));
+  EXPECT_EQ(kDownloadable, Available(GetParam()));
+  EXPECT_EQ(1, prompt_factory_->show_count());
+  EXPECT_FALSE(IsEnabled());
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    All,
+    BraveOnDeviceSpeechPromptBrowserTest,
     testing::Values("command", "dictation"),
     [](const testing::TestParamInfo<std::string_view>& info) {
       return info.param == "command" ? "Command" : "Dictation";
