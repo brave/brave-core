@@ -1,0 +1,12 @@
+diff --git a/ios/web/public/navigation/navigation_manager.h b/ios/web/public/navigation/navigation_manager.h
+index cb8ccf1ff092c163bb7385ea5371b5adda57cb22..effc3c92ad93c416062bde29eff55bc8b3ad0e6c 100644
+--- a/ios/web/public/navigation/navigation_manager.h
++++ b/ios/web/public/navigation/navigation_manager.h
+@@ -181,6 +181,7 @@ class NavigationManager {
+   // This takes ownership of `items` (must be moved).
+   virtual void Restore(int last_committed_item_index,
+                        std::vector<std::unique_ptr<NavigationItem>> items) = 0;
++  virtual bool IsNativeRestoreInProgress() const { return false; }
+ };
+ 
+ }  // namespace web
