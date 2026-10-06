@@ -72,6 +72,12 @@ class EngineConsumerOAIRemote : public EngineConsumer {
       const PageContentsMap& page_contents,
       const ConversationHistoryView& conversation_history,
       GenerationCompletedCallback completed_callback) override;
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  void GenerateMemoryText(
+      const std::string& system_prompt,
+      const std::string& user_message,
+      GenerationCompletedCallback completed_callback) override;
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
   void SanitizeInput(std::string& input) override;
   void ClearAllQueries() override;
   bool SupportsDeltaTextResponses() const override;

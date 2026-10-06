@@ -20,6 +20,7 @@
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 
 class PrefService;
 
@@ -138,6 +139,16 @@ class EngineConsumer {
       const PageContentsMap& page_contents,
       const ConversationHistoryView& conversation_history,
       GenerationCompletedCallback completed_callback) {}
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // Sends one system prompt and one user message, and gives the full answer
+  // in a completion event. Learned memory (Dreaming) uses this for short
+  // fixed-format requests to a local BYOM model. The default gives an error.
+  virtual void GenerateMemoryText(
+      const std::string& system_prompt,
+      const std::string& user_message,
+      GenerationCompletedCallback completed_callback);
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
   // Prevent indirect prompt injections being sent to the AI model.
   // Include break-out strings contained in prompts, as well as the base

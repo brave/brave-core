@@ -9,6 +9,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -22,6 +23,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 
 namespace api_request_helper {
 class APIRequestResult;
@@ -59,6 +61,18 @@ class OAIAPIClient {
           std::nullopt);
 
   virtual void ClearAllQueries();
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // Sends a request with no stream and no tools, and adds "reasoning_effort"
+  // to the body. Learned memory uses "none", so that a local thinking model
+  // (for example qwen3.5 on Ollama) answers in seconds, not minutes.
+  // |model_options| must hold a CustomModelOptions variant.
+  void PerformRequestWithReasoningEffort(
+      const mojom::ModelOptions& model_options,
+      std::vector<OAIMessage> messages,
+      std::string_view reasoning_effort,
+      GenerationCompletedCallback completed_callback);
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
   static base::ListValue SerializeOAIMessages(std::vector<OAIMessage> messages);
 
@@ -102,6 +116,17 @@ class OAIAPIClient {
  private:
   void OnQueryCompleted(GenerationCompletedCallback callback,
                         api_request_helper::APIRequestResult result);
+
+  // The OAIAPIClient implementation of PerformRequest(). |extra_fields| are
+  // added to the request body.
+  void PerformRequestImpl(
+      const mojom::ModelOptions& model_options,
+      std::vector<OAIMessage> messages,
+      std::optional<base::ListValue> oai_tool_definitions,
+      GenerationDataCallback data_received_callback,
+      GenerationCompletedCallback completed_callback,
+      const std::optional<std::vector<std::string>>& stop_sequences,
+      base::DictValue extra_fields);
 
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
 

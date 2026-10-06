@@ -202,6 +202,33 @@ void EngineConsumerOAIRemote::GenerateConversationTitle(
       std::vector<std::string>{"</title>"});
 }
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+void EngineConsumerOAIRemote::GenerateMemoryText(
+    const std::string& system_prompt,
+    const std::string& user_message,
+    GenerationCompletedCallback completed_callback) {
+  std::vector<OAIMessage> messages;
+  for (auto [role, text] : {std::pair{"system", &system_prompt},
+                            std::pair{"user", &user_message}}) {
+    OAIMessage message;
+    message.role = role;
+    message.content.push_back(mojom::ContentBlock::NewTextContentBlock(
+        mojom::TextContentBlock::New(*text)));
+    messages.push_back(std::move(message));
+  }
+  // A BYOM model goes to the OpenAI-compatible endpoint with no thinking.
+  // Other models get a normal request with no stream.
+  if (model_options_->is_custom_model_options()) {
+    api_->PerformRequestWithReasoningEffort(*model_options_,
+                                            std::move(messages), "none",
+                                            std::move(completed_callback));
+    return;
+  }
+  api_->PerformRequest(*model_options_, std::move(messages), std::nullopt,
+                       base::NullCallback(), std::move(completed_callback));
+}
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
 void EngineConsumerOAIRemote::GenerateAssistantResponse(
     PageContentsMap&& page_contents,
     const ConversationHistoryView& conversation_history,

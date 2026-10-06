@@ -10,9 +10,11 @@
 
 #include "base/base64.h"
 #include "base/containers/to_vector.h"
+#include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -111,6 +113,18 @@ EngineConsumer::ConversationHistoryView EngineConsumer::ToHistoryView(
 const std::string& EngineConsumer::GetModelName() const {
   return model_name_;
 }
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+void EngineConsumer::GenerateMemoryText(
+    const std::string& system_prompt,
+    const std::string& user_message,
+    GenerationCompletedCallback completed_callback) {
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(std::move(completed_callback),
+                     base::unexpected(mojom::APIError::InternalError)));
+}
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 void EngineConsumer::OnConversationTitleGenerated(
     GenerationCompletedCallback completion_callback,

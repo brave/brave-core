@@ -13,6 +13,7 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace ai_chat {
@@ -53,6 +54,15 @@ class MockEngineConsumer : public EngineConsumer {
                const ConversationHistoryView& conversation_history,
                GenerationCompletedCallback completed_callback),
               (override));
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  MOCK_METHOD(void,
+              GenerateMemoryText,
+              (const std::string& system_prompt,
+               const std::string& user_message,
+               GenerationCompletedCallback completed_callback),
+              (override));
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
   MOCK_METHOD(void, SanitizeInput, (std::string & input), (override));
 

@@ -333,6 +333,33 @@ void OAIAPIClient::PerformRequest(
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
     const std::optional<std::vector<std::string>>& stop_sequences) {
+  PerformRequestImpl(
+      model_options, std::move(messages), std::move(oai_tool_definitions),
+      std::move(data_received_callback), std::move(completed_callback),
+      stop_sequences, base::DictValue());
+}
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+void OAIAPIClient::PerformRequestWithReasoningEffort(
+    const mojom::ModelOptions& model_options,
+    std::vector<OAIMessage> messages,
+    std::string_view reasoning_effort,
+    GenerationCompletedCallback completed_callback) {
+  PerformRequestImpl(
+      model_options, std::move(messages), std::nullopt, base::NullCallback(),
+      std::move(completed_callback), std::nullopt,
+      base::DictValue().Set("reasoning_effort", reasoning_effort));
+}
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
+void OAIAPIClient::PerformRequestImpl(
+    const mojom::ModelOptions& model_options,
+    std::vector<OAIMessage> messages,
+    std::optional<base::ListValue> oai_tool_definitions,
+    GenerationDataCallback data_received_callback,
+    GenerationCompletedCallback completed_callback,
+    const std::optional<std::vector<std::string>>& stop_sequences,
+    base::DictValue extra_fields) {
   CHECK(model_options.is_custom_model_options());
   const auto& opts = *model_options.get_custom_model_options();
 
@@ -343,12 +370,12 @@ void OAIAPIClient::PerformRequest(
 
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
+  base::DictValue body = CreateJSONRequestBody(
+      SerializeOAIMessages(std::move(messages)), is_sse_enabled,
+      opts.model_request_name, std::move(oai_tool_definitions), stop_sequences);
+  body.Merge(std::move(extra_fields));
   std::string request_body;
-  base::JSONWriter::Write(
-      CreateJSONRequestBody(SerializeOAIMessages(std::move(messages)),
-                            is_sse_enabled, opts.model_request_name,
-                            std::move(oai_tool_definitions), stop_sequences),
-      &request_body);
+  base::JSONWriter::Write(body, &request_body);
   base::flat_map<std::string, std::string> headers;
   if (!opts.api_key.empty()) {
     headers.emplace("Authorization", base::StrCat({"Bearer ", opts.api_key}));

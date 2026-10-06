@@ -186,6 +186,8 @@ static_library("browser") {
       "learned_memory_types.h",
       "memory_decision_client.cc",
       "memory_decision_client.h",
+      "memory_llm_prompts.cc",
+      "memory_llm_prompts.h",
       "ollama_decision_client.cc",
       "ollama_decision_client.h",
     ]
@@ -327,6 +329,7 @@ source_set("test_support") {
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common:test_support",
     "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/local_ai/buildflags",
     "//services/network/public/cpp",
     "//testing/gmock",
     "//testing/gtest",
