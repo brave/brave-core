@@ -72,7 +72,6 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/binding/node_binding.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/binding/node_binding_event.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/filter/node_ad_filter.h"
-#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/filter/node_fingerprinting_filter.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/filter/node_tracker_filter.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_dom_root.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_frame_owner.h"
@@ -175,7 +174,6 @@ using brave_page_graph::NodeAdFilter;
 using brave_page_graph::NodeBinding;
 using brave_page_graph::NodeBindingEvent;
 using brave_page_graph::NodeDOMRoot;
-using brave_page_graph::NodeFingerprintingFilter;
 using brave_page_graph::NodeFrameOwner;
 using brave_page_graph::NodeHTML;
 using brave_page_graph::NodeHTMLElement;
@@ -1039,10 +1037,6 @@ void PageGraph::AddGraphItem(std::unique_ptr<GraphItem> graph_item) {
                    DynamicTo<NodeTrackerFilter>(graph_node)) {
       tracker_filter_nodes_.insert(tracker_filter_node->GetHost(),
                                    tracker_filter_node);
-    } else if (auto* fingerprinting_filter_node =
-                   DynamicTo<NodeFingerprintingFilter>(graph_node)) {
-      fingerprinting_filter_nodes_.emplace(
-          fingerprinting_filter_node->GetRule(), fingerprinting_filter_node);
     } else if (auto* binding_node = DynamicTo<NodeBinding>(graph_node)) {
       binding_nodes_.insert(binding_node->GetBinding(), binding_node);
     } else if (auto* js_webapi_node = DynamicTo<NodeJSWebAPI>(graph_node)) {
@@ -1732,19 +1726,6 @@ void PageGraph::RegisterResourceBlockJavaScript(const blink::WebURL& url) {
   AddEdge<EdgeResourceBlock>(js_shield_node_, resource_node);
 }
 
-void PageGraph::RegisterResourceBlockFingerprinting(
-    const blink::WebURL& url,
-    const FingerprintingRule& rule) {
-  VLOG(1) << "RegisterResourceBlockFingerprinting) url: " << url
-          << ", rule: " << rule.ToString();
-
-  NodeResource* const resource_node = GetResourceNodeForUrl(url);
-  NodeFingerprintingFilter* const filter_node =
-      GetFingerprintingFilterNodeForRule(rule);
-
-  AddEdge<EdgeResourceBlock>(filter_node, resource_node);
-}
-
 void PageGraph::RegisterScriptCompilation(
     blink::ExecutionContext* execution_context,
     const ScriptId script_id,
@@ -2113,17 +2094,6 @@ NodeTrackerFilter* PageGraph::GetTrackerFilterNodeForHost(const String& host) {
   }
   auto* filter_node = AddNode<NodeTrackerFilter>(host);
   AddEdge<EdgeFilter>(tracker_shield_node_, filter_node);
-  return filter_node;
-}
-
-NodeFingerprintingFilter* PageGraph::GetFingerprintingFilterNodeForRule(
-    const FingerprintingRule& rule) {
-  auto fingerprinting_filter_node_it = fingerprinting_filter_nodes_.find(rule);
-  if (fingerprinting_filter_node_it != fingerprinting_filter_nodes_.end()) {
-    return fingerprinting_filter_node_it->second;
-  }
-  auto* filter_node = AddNode<NodeFingerprintingFilter>(rule);
-  AddEdge<EdgeFilter>(fingerprinting_shield_node_, filter_node);
   return filter_node;
 }
 

@@ -19,7 +19,6 @@ class NodeFilter : public GraphNode {
   bool IsNodeFilter() const override;
 
   virtual bool IsNodeAdFilter() const;
-  virtual bool IsNodeFingerprintingFilter() const;
   virtual bool IsNodeTrackerFilter() const;
 };
 
