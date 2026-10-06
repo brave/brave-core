@@ -19,6 +19,7 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -286,7 +287,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
   // of the Tool, such as pre-operation validation, should be unit tested.
   TabManagementTool tool(profile());
 
-  tool.UserPermissionGranted("");
+  tool.UserPermissionGranted("", *mojom::PermissionChallenge::New());
 
   // Setup: create tabs across two windows
   BrowserWindowInterface* b1 = browser();
@@ -792,7 +793,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
 IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest,
                        MoveMultipleTabsPreservesOrder) {
   TabManagementTool tool(profile());
-  tool.UserPermissionGranted("");
+  tool.UserPermissionGranted("", *mojom::PermissionChallenge::New());
 
   BrowserWindowInterface* b1 = browser();
   TabStripModel* strip1 = b1->tab_strip_model();
@@ -853,7 +854,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, CloseTabsAcrossWindows) {
   TabManagementTool tool(profile());
-  tool.UserPermissionGranted("");
+  tool.UserPermissionGranted("", *mojom::PermissionChallenge::New());
 
   BrowserWindowInterface* b1 = browser();
   BrowserWindowInterface* b2 = CreateBrowser(profile());
@@ -978,7 +979,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
   EXPECT_THAT(challenge->description,
               testing::Optional(testing::HasSubstr("page text")));
 
-  tool.UserPermissionGranted(use->id);
+  tool.UserPermissionGranted(use->id, *challenge);
   EXPECT_FALSE(GetChallenge(tool, *ToolUse("2", kListInput)));
 
   base::DictValue output = base::test::ParseJsonDict(
@@ -1004,7 +1005,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
   auto challenge = GetChallenge(tool, *use);
   ASSERT_TRUE(challenge);
   EXPECT_FALSE(challenge->description);
-  tool.UserPermissionGranted(use->id);
+  tool.UserPermissionGranted(use->id, *challenge);
 
   base::DictValue output = base::test::ParseJsonDict(
       RunToolAndGetText(FROM_HERE, &tool, kListInput));
@@ -1022,7 +1023,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
   EXPECT_FALSE(challenge->plan);
   EXPECT_TRUE(challenge->description);
 
-  tool.UserPermissionGranted(content_only->id);
+  tool.UserPermissionGranted(content_only->id, *challenge);
   output = base::test::ParseJsonDict(
       RunToolAndGetText(FROM_HERE, &tool, R"({"action":"list"})"));
   EXPECT_TRUE(FindPassages(output, url));
@@ -1039,7 +1040,10 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
   const GURL url("https://a.test/");
   AddTabAndGetHandle(browser(), url);
 
-  tool.UserPermissionGranted("server-challenge");
+  tool.UserPermissionGranted(
+      "server-challenge",
+      *mojom::PermissionChallenge::New("off-topic", std::nullopt, std::nullopt,
+                                       /*supports_allow_session=*/false));
 
   base::DictValue output = base::test::ParseJsonDict(
       RunToolAndGetText(FROM_HERE, &tool, kListInput));
@@ -1077,8 +1081,9 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
   AddTabAndGetHandle(browser(), third);
 
   auto use = ToolUse("1", kListInput);
-  ASSERT_TRUE(GetChallenge(tool, *use));
-  tool.UserPermissionGranted(use->id);
+  auto challenge = GetChallenge(tool, *use);
+  ASSERT_TRUE(challenge);
+  tool.UserPermissionGranted(use->id, *challenge);
 
   base::DictValue output = base::test::ParseJsonDict(
       RunToolAndGetText(FROM_HERE, &tool, kListInput));
@@ -1107,10 +1112,37 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
   auto tabs_only = GetChallenge(tool, *ToolUse("1", kListInput));
   ASSERT_TRUE(tabs_only);
   EXPECT_FALSE(tabs_only->description);
-  tool.UserPermissionGranted("1");
+  tool.UserPermissionGranted("1", *tabs_only);
 
   // Page content is readable again, and still has to be asked for.
   SetSemanticHistorySearchEnabled(true);
+  EXPECT_TRUE(GetChallenge(tool, *ToolUse("2", kListInput)));
+  base::DictValue output = base::test::ParseJsonDict(
+      RunToolAndGetText(FROM_HERE, &tool, kListInput));
+  EXPECT_FALSE(FindPassages(output, url));
+  EXPECT_FALSE(fetched);
+}
+
+// A page-content challenge left unanswered or denied can't be answered under
+// its ID by a challenge this tool never raised, such as the server's
+// alignment check.
+IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
+                       ServerChallengeReusingIdGrantsNoPageContent) {
+  TabManagementTool tool(profile());
+  bool fetched = false;
+  SetPassage(tool, kPassage,
+             base::BindLambdaForTesting([&] { fetched = true; }));
+  const GURL url("https://a.test/");
+  AddTabAndGetHandle(browser(), url);
+
+  auto with_page_content = GetChallenge(tool, *ToolUse("1", kListInput));
+  ASSERT_TRUE(with_page_content);
+  ASSERT_TRUE(with_page_content->description);
+
+  tool.UserPermissionGranted("1", *mojom::PermissionChallenge::New(
+                                      "off-topic", std::nullopt, std::nullopt,
+                                      /*supports_allow_session=*/false));
+
   EXPECT_TRUE(GetChallenge(tool, *ToolUse("2", kListInput)));
   base::DictValue output = base::test::ParseJsonDict(
       RunToolAndGetText(FROM_HERE, &tool, kListInput));
@@ -1130,8 +1162,9 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
   AddTabAndGetHandle(browser(), url);
 
   auto use = ToolUse("1", kListInput);
-  ASSERT_TRUE(GetChallenge(tool, *use));
-  tool.UserPermissionGranted(use->id);
+  auto challenge = GetChallenge(tool, *use);
+  ASSERT_TRUE(challenge);
+  tool.UserPermissionGranted(use->id, *challenge);
 
   SetSemanticHistorySearchEnabled(false);
 
@@ -1154,8 +1187,9 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
   AddTabAndGetHandle(browser(), url);
 
   auto use = ToolUse("1", kListInput);
-  ASSERT_TRUE(GetChallenge(tool, *use));
-  tool.UserPermissionGranted(use->id);
+  auto challenge = GetChallenge(tool, *use);
+  ASSERT_TRUE(challenge);
+  tool.UserPermissionGranted(use->id, *challenge);
 
   base::DictValue output = base::test::ParseJsonDict(
       RunToolAndGetText(FROM_HERE, &tool, kListInput));

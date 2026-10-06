@@ -594,21 +594,28 @@ TabManagementTool::RequiresUserInteractionBeforeHandling(
   // Page content goes with the tab list whenever it can be read, since the
   // model can't tell ahead of time whether titles and URLs will be enough.
   // One challenge covers both, so the user is asked once.
-  page_content_challenge_id_.reset();
   if (CanReadPageContent()) {
-    challenge->description = l10n_util::GetStringUTF8(
-        IDS_CHAT_UI_TOOL_TAB_MANAGEMENT_PAGE_CONTENT_PERMISSION_SUMMARY);
-    page_content_challenge_id_ = tool_use.id;
+    challenge->description = PageContentChallengeDescription();
   }
   return challenge;
 }
 
-void TabManagementTool::UserPermissionGranted(const std::string& tool_use_id) {
+void TabManagementTool::UserPermissionGranted(
+    const std::string& tool_use_id,
+    const mojom::PermissionChallenge& challenge) {
   user_has_granted_permission_ = true;
-  if (page_content_challenge_id_ == tool_use_id) {
+  // Only this tool's own challenge carries the page-content description, and
+  // only when it was shown, so the challenge the user answered says on its own
+  // whether they agreed to send page content.
+  if (challenge.description == PageContentChallengeDescription()) {
     user_has_granted_page_content_permission_ = true;
   }
-  page_content_challenge_id_.reset();
+}
+
+// static
+std::string TabManagementTool::PageContentChallengeDescription() {
+  return l10n_util::GetStringUTF8(
+      IDS_CHAT_UI_TOOL_TAB_MANAGEMENT_PAGE_CONTENT_PERMISSION_SUMMARY);
 }
 
 void TabManagementTool::SetTabPassagesFetcherForTesting(

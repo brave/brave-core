@@ -38,7 +38,9 @@ class ContentTool : public Tool {
   std::variant<bool, mojom::PermissionChallengePtr>
   RequiresUserInteractionBeforeHandling(
       const mojom::ToolUseEvent& tool_use) const override;
-  void UserPermissionGranted(const std::string& tool_use_id) override;
+  void UserPermissionGranted(
+      const std::string& tool_use_id,
+      const mojom::PermissionChallenge& challenge) override;
   void SetUserPermissionStrategy(mojom::ToolPermission permission) override;
   std::optional<std::string> GetPermissionChallengeDescription(
       const mojom::ToolUseEvent& tool_use) const override;

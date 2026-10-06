@@ -114,7 +114,7 @@ TEST_F(HistorySearchToolTest, RequiresUserInteractionBeforeHandling) {
   EXPECT_TRUE(std::get<mojom::PermissionChallengePtr>(result));
 
   // After permission is granted: no further interaction needed.
-  tool->UserPermissionGranted("1");
+  tool->UserPermissionGranted("1", *mojom::PermissionChallenge::New());
   result = tool->RequiresUserInteractionBeforeHandling(event);
   ASSERT_TRUE(std::holds_alternative<bool>(result));
   EXPECT_FALSE(std::get<bool>(result));

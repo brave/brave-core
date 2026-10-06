@@ -167,7 +167,9 @@ ContentTool::RequiresUserInteractionBeforeHandling(
   return challenge;
 }
 
-void ContentTool::UserPermissionGranted(const std::string& tool_use_id) {
+void ContentTool::UserPermissionGranted(
+    const std::string& tool_use_id,
+    const mojom::PermissionChallenge& challenge) {
   user_permission_granted_ = true;
 }
 

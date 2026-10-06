@@ -59,7 +59,8 @@ Tool::RequiresUserInteractionBeforeHandling(
   return false;
 }
 
-void Tool::UserPermissionGranted(const std::string& tool_use_id) {
+void Tool::UserPermissionGranted(const std::string& tool_use_id,
+                                 const mojom::PermissionChallenge& challenge) {
   // Default: no-op. Tools can override if they need to track permission state.
 }
 

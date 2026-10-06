@@ -75,7 +75,8 @@ class MockTool : public Tool {
 
   MOCK_METHOD(void,
               UserPermissionGranted,
-              (const std::string& tool_use_id),
+              (const std::string& tool_use_id,
+               const mojom::PermissionChallenge& challenge),
               (override));
 
   MOCK_METHOD(void,

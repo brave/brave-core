@@ -236,7 +236,8 @@ TEST_F(ContentToolTest, RequiresPermissionChallengeUntilGranted) {
             "**https\\:\\/\\/example\\.com**");
   EXPECT_TRUE(challenge->supports_allow_session);
 
-  tool.UserPermissionGranted(/*tool_use_id=*/"any");
+  tool.UserPermissionGranted(/*tool_use_id=*/"any",
+                             *mojom::PermissionChallenge::New());
 
   auto after = tool.RequiresUserInteractionBeforeHandling(*tool_use);
   ASSERT_TRUE(std::holds_alternative<bool>(after));
@@ -347,7 +348,8 @@ TEST_F(ContentToolTest,
   // by the server's alignment check).
   auto mojo_tool = MakeScriptTool("echo", "");
   ContentTool tool(*mojo_tool, weak_document());
-  tool.UserPermissionGranted(/*tool_use_id=*/"any");
+  tool.UserPermissionGranted(/*tool_use_id=*/"any",
+                             *mojom::PermissionChallenge::New());
 
   auto tool_use = mojom::ToolUseEvent::New();
   EXPECT_EQ(tool.GetPermissionChallengeDescription(*tool_use),

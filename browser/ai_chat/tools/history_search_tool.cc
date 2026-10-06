@@ -167,7 +167,9 @@ HistorySearchTool::RequiresUserInteractionBeforeHandling(
       /*description=*/std::nullopt, /*supports_allow_session=*/false);
 }
 
-void HistorySearchTool::UserPermissionGranted(const std::string& tool_use_id) {
+void HistorySearchTool::UserPermissionGranted(
+    const std::string& tool_use_id,
+    const mojom::PermissionChallenge& challenge) {
   user_has_granted_permission_ = true;
 }
 

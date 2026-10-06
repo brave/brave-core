@@ -41,7 +41,9 @@ class TabManagementTool : public Tool {
   std::variant<bool, mojom::PermissionChallengePtr>
   RequiresUserInteractionBeforeHandling(
       const mojom::ToolUseEvent& tool_use) const override;
-  void UserPermissionGranted(const std::string& tool_use_id) override;
+  void UserPermissionGranted(
+      const std::string& tool_use_id,
+      const mojom::PermissionChallenge& challenge) override;
   void UseTool(const std::string& input_json,
                UseToolCallback callback) override;
 
@@ -82,6 +84,10 @@ class TabManagementTool : public Tool {
                           std::optional<int> index,
                           std::string* error) const;
 
+  // What a challenge that discloses page content says. Only this tool's own
+  // challenges carry it.
+  static std::string PageContentChallengeDescription();
+
   // Whether the history embeddings index can supply page excerpts for this
   // profile's tabs. Decides whether a challenge discloses page content, so
   // it has to hold whenever `HandleListTabs` would read any.
@@ -113,12 +119,6 @@ class TabManagementTool : public Tool {
   // grant for any other challenge, such as the server's alignment check,
   // never extends to it.
   bool user_has_granted_page_content_permission_ = false;
-  // The tool use whose challenge disclosed page content, set only while that
-  // is the latest challenge this tool raised. Recorded when the challenge is
-  // raised, since whether page content is readable can change before the user
-  // answers it, and replaced by every later challenge, so a challenge that
-  // reuses the ID of an unanswered one grants only what it showed.
-  mutable std::optional<std::string> page_content_challenge_id_;
 
   // Cancels in-flight passage reads when the tool goes away.
   base::CancelableTaskTracker passages_task_tracker_;
