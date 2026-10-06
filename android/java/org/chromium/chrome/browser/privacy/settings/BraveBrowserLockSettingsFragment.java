@@ -57,6 +57,10 @@ import org.chromium.components.user_prefs.UserPrefs;
  *
  * <p>This fragment is only reachable when a device screen lock is configured; the main settings
  * item redirects to OS security settings instead when none is set up.
+ *
+ * <p>Only one reauth flow runs at a time across all three controls — rapid taps while one is
+ * pending are rejected (and any switch that auto-flipped itself on tap is reverted) rather than
+ * launching a second, concurrent {@link IncognitoReauthManager}.
  */
 @NullMarked
 public class BraveBrowserLockSettingsFragment extends Fragment
@@ -66,6 +70,10 @@ public class BraveBrowserLockSettingsFragment extends Fragment
             ObservableSuppliers.createMonotonic();
 
     private @Nullable Profile mProfile;
+
+    // Guards against rapid taps across any of the three controls below launching concurrent
+    // reauth flows (each would create its own IncognitoReauthManager/biometric prompt).
+    private boolean mReauthInFlight;
 
     @Override
     public void setProfile(Profile profile) {
@@ -162,24 +170,32 @@ public class BraveBrowserLockSettingsFragment extends Fragment
         if (profile == null) return;
         boolean previous = ChromeSharedPreferences.getInstance().readBoolean(prefKey, false);
         if (previous == isChecked) return;
+        if (mReauthInFlight) {
+            revertToggle(toggle, prefKey, previous);
+            return;
+        }
+        mReauthInFlight = true;
 
         IncognitoReauthManager reauth = new IncognitoReauthManager(requireActivity(), profile);
         reauth.startReauthenticationFlow(
                 new IncognitoReauthManager.IncognitoReauthCallback() {
                     @Override
                     public void onIncognitoReauthNotPossible() {
+                        mReauthInFlight = false;
                         reauth.destroy();
                         revertToggle(toggle, prefKey, previous);
                     }
 
                     @Override
                     public void onIncognitoReauthSuccess() {
+                        mReauthInFlight = false;
                         reauth.destroy();
                         ChromeSharedPreferences.getInstance().writeBoolean(prefKey, isChecked);
                     }
 
                     @Override
                     public void onIncognitoReauthFailure() {
+                        mReauthInFlight = false;
                         reauth.destroy();
                         revertToggle(toggle, prefKey, previous);
                     }
@@ -201,18 +217,25 @@ public class BraveBrowserLockSettingsFragment extends Fragment
         if (profile == null) return;
         boolean previous = isPrivateTabsEnabled(profile);
         if (previous == isChecked) return;
+        if (mReauthInFlight) {
+            revertPrivateTabsToggle(toggle, previous);
+            return;
+        }
+        mReauthInFlight = true;
 
         IncognitoReauthManager reauth = new IncognitoReauthManager(requireActivity(), profile);
         reauth.startReauthenticationFlow(
                 new IncognitoReauthManager.IncognitoReauthCallback() {
                     @Override
                     public void onIncognitoReauthNotPossible() {
+                        mReauthInFlight = false;
                         reauth.destroy();
                         revertPrivateTabsToggle(toggle, previous);
                     }
 
                     @Override
                     public void onIncognitoReauthSuccess() {
+                        mReauthInFlight = false;
                         reauth.destroy();
                         UserPrefs.get(profile)
                                 .setBoolean(Pref.INCOGNITO_REAUTHENTICATION_FOR_ANDROID, isChecked);
@@ -220,6 +243,7 @@ public class BraveBrowserLockSettingsFragment extends Fragment
 
                     @Override
                     public void onIncognitoReauthFailure() {
+                        mReauthInFlight = false;
                         reauth.destroy();
                         revertPrivateTabsToggle(toggle, previous);
                     }
@@ -241,17 +265,21 @@ public class BraveBrowserLockSettingsFragment extends Fragment
         if (profile == null) return;
         int previous = BraveBrowserLockManager.getScreenshotMode();
         if (previous == newMode) return;
+        if (mReauthInFlight) return;
+        mReauthInFlight = true;
 
         IncognitoReauthManager reauth = new IncognitoReauthManager(requireActivity(), profile);
         reauth.startReauthenticationFlow(
                 new IncognitoReauthManager.IncognitoReauthCallback() {
                     @Override
                     public void onIncognitoReauthNotPossible() {
+                        mReauthInFlight = false;
                         reauth.destroy();
                     }
 
                     @Override
                     public void onIncognitoReauthSuccess() {
+                        mReauthInFlight = false;
                         reauth.destroy();
                         BraveBrowserLockManager.setScreenshotMode(newMode);
                         // Unify with the incognito-tab screenshot protection Chrome already
@@ -270,6 +298,7 @@ public class BraveBrowserLockSettingsFragment extends Fragment
 
                     @Override
                     public void onIncognitoReauthFailure() {
+                        mReauthInFlight = false;
                         reauth.destroy();
                     }
                 });
