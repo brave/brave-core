@@ -191,8 +191,8 @@ struct OnboardingNetworkSelectionView: View {
         } else {
           ForEach(networks) { selectableNetwork in
             NetworkGridItemView(
-              network: selectableNetwork,
-              didSelect: didSelect(network:)
+              network: selectableNetwork.model,
+              isSelected: self.$networks[isSelected: selectableNetwork.id]
             )
           }
         }
@@ -205,7 +205,7 @@ struct OnboardingNetworkSelectionView: View {
           allModels: networks,
           selectedModels: networks.filter(\.isSelected),
           select: { selectableNetwork in
-            didSelect(network: selectableNetwork.model)
+            self.networks[isSelected: selectableNetwork.id].toggle()
           }
         )
         .background(Color(braveSystemName: .containerBackground))
@@ -264,22 +264,6 @@ struct OnboardingNetworkSelectionView: View {
 
   // MARK: Helper functions
 
-  private func didSelect(network: BraveWallet.NetworkInfo) {
-    guard
-      !network.isMandatoryNetwork,
-      let networkIndex = networks.firstIndex(
-        where: { $0.model.chainId == network.chainId }
-      ),
-      let selectableNetwork = networks[safe: networkIndex]
-    else {
-      return
-    }
-    networks[networkIndex] = .init(
-      isSelected: !selectableNetwork.isSelected,
-      model: network
-    )
-  }
-
   private func deselectTestNetworks() {
     for (index, network) in networks.enumerated() where network.model.isKnownTestnet {
       networks[index] = .init(isSelected: false, model: network.model)
@@ -314,12 +298,27 @@ struct OnboardingNetworkSelectionView: View {
 }
 #endif
 
+extension Array where Element == Selectable<BraveWallet.NetworkInfo> {
+  /// Whether or not the network matching `id` is selected. Mandatory networks cannot be deselected.
+  fileprivate subscript(isSelected id: BraveWallet.NetworkInfo.ID) -> Bool {
+    get { first(where: { $0.id == id })?.isSelected ?? false }
+    set {
+      guard let index = firstIndex(where: { $0.id == id }),
+        !self[index].model.isMandatoryNetwork
+      else {
+        return
+      }
+      self[index] = .init(isSelected: newValue, model: self[index].model)
+    }
+  }
+}
+
 private struct SelectableGridItemView<Content: View, Item: Identifiable & Equatable>: View {
 
-  let item: Selectable<Item>
+  let item: Item
+  @Binding var isSelected: Bool
   let isSelectable: Bool
-  @ViewBuilder let content: (Selectable<Item>) -> Content
-  let didSelect: (Item) -> Void
+  @ViewBuilder let content: (Item) -> Content
 
   @ScaledMetric private var width: CGFloat = SharedConstants.defaultGridItemWidth
   @ScaledMetric private var height: CGFloat = 96
@@ -329,7 +328,7 @@ private struct SelectableGridItemView<Content: View, Item: Identifiable & Equata
       if isSelectable {
         Button(
           action: {
-            didSelect(item.model)
+            isSelected.toggle()
           },
           label: {
             content(item)
@@ -343,25 +342,18 @@ private struct SelectableGridItemView<Content: View, Item: Identifiable & Equata
     .padding(12)
     .frame(width: width, height: height)
     .overlay(alignment: .topTrailing) {
-      WalletCheckbox(
-        isChecked: Binding(
-          get: { item.isSelected },
-          set: { _ in
-            guard isSelectable else { return }
-            didSelect(item.model)
-          }
-        ),
-        colorOverride: isSelectable ? nil : UIColor(braveSystemName: .neutral20)
-      )
-      .padding(.top, 8)
-      .padding(.trailing, 8)
+      Toggle(isOn: $isSelected) {
+        EmptyView()
+      }
+      .padding([.top, .trailing], 8)
       .disabled(!isSelectable)
+      .toggleStyle(CheckboxToggleStyle())
     }
     .overlay {
       ContainerRelativeShape()
         .strokeBorder(
           Color(
-            braveSystemName: item.isSelected && isSelectable
+            braveSystemName: isSelected && isSelectable
               ? .buttonBackground : .dividerSubtle
           )
         )
@@ -378,7 +370,8 @@ private struct LoadingGridItemView: View {
 
   var body: some View {
     SelectableGridItemView(
-      item: Selectable(isSelected: false, model: LoadingItem()),
+      item: LoadingItem(),
+      isSelected: .constant(false),
       isSelectable: false,
       content: { _ in
         VStack {
@@ -388,8 +381,7 @@ private struct LoadingGridItemView: View {
             .multilineTextAlignment(.center)
             .redacted(reason: .placeholder)
         }
-      },
-      didSelect: { _ in }
+      }
     )
     .shimmer(true)
   }
@@ -397,28 +389,28 @@ private struct LoadingGridItemView: View {
 
 private struct NetworkGridItemView: View {
 
-  let network: Selectable<BraveWallet.NetworkInfo>
-  let didSelect: (BraveWallet.NetworkInfo) -> Void
+  let network: BraveWallet.NetworkInfo
+  @Binding var isSelected: Bool
 
   var body: some View {
     SelectableGridItemView(
       item: network,
-      isSelectable: !WalletConstants.mandatoryNetworkChainIds.contains(network.model.chainId),
+      isSelected: $isSelected,
+      isSelectable: !network.isMandatoryNetwork,
       content: { network in
         VStack {
           NetworkIconView(
-            network: network.model,
+            network: network,
             length: 24,
             maxLength: 24
           )
-          Text(network.model.chainName)
+          Text(network.chainName)
             .multilineTextAlignment(.center)
             .minimumScaleFactor(0.75)
             .allowsTightening(true)
             .foregroundColor(Color(braveSystemName: .textPrimary))
         }
-      },
-      didSelect: didSelect
+      }
     )
   }
 }
