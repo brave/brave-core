@@ -1187,4 +1187,13 @@ are allowed in the corresponding deprecated Brave location.** For example,
 extends upstream `BookmarkActivity` in
 `chrome/android/java/src/org/chromium/chrome/browser/app/bookmarks/`.
 
+The `brave_java_sources` GN source list in
+[`android/brave_java_sources.gni`](../../android/brave_java_sources.gni)
+includes these legacy sources under
+`android/java/org/chromium/chrome/browser/`, including
+`BraveBookmarkActivity.java`, and is appended to upstream
+`chrome_java_sources`. It also aggregates feature-local source lists, so
+membership in `brave_java_sources` alone does not determine a file's location.
+Use the default and subclass exception above to choose the directory.
+
 ---
