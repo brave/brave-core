@@ -32,7 +32,6 @@ import {
   mockEthAccount,
   mockFilecoinAccount,
   mockFilecoinMainnetNetwork,
-  mockOnRampCurrencies,
   mockSolanaAccount,
   mockSolanaMainnetNetwork,
 } from '../../constants/mocks'
@@ -257,18 +256,6 @@ export class MockedWalletApiProxy {
         tokens: this.blockchainTokens.filter(
           (t) => t.chainId === chainId && t.coin === coin,
         ),
-      }
-    },
-
-    getBuyTokens: async (provider, chainId) => {
-      return {
-        tokens: this.blockchainTokens.filter((t) => t.chainId === chainId),
-      }
-    },
-
-    getOnRampCurrencies: async () => {
-      return {
-        currencies: mockOnRampCurrencies,
       }
     },
 

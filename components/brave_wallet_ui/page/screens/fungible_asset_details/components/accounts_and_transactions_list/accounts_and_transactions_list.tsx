@@ -39,9 +39,6 @@ import {
 import {
   SegmentedControl, //
 } from '../../../../../components/shared/segmented_control/segmented_control'
-import {
-  SellAssetModal, //
-} from '../../../../../components/desktop/popup-modals/sell-asset-modal/sell-asset-modal'
 import { LoadingSkeleton } from '../../../../../components/shared/loading-skeleton/index'
 import {
   VirtualizedTransactionList, //
@@ -51,9 +48,6 @@ import {
 } from '../../../../../components/desktop/popup-modals/transaction_details_modal/transaction_details_modal'
 
 // Hooks
-import {
-  useMultiChainSellAssets, //
-} from '../../../../../common/hooks/use-multi-chain-sell-assets'
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
@@ -117,18 +111,7 @@ export const AccountsAndTransactionsList = ({
     data: { balance: rewardsBalance, rewardsAccount } = emptyRewardsInfo,
   } = useGetRewardsInfoQuery()
 
-  // hooks
-  const {
-    checkIsAssetSellSupported,
-    sellAmount,
-    setSellAmount,
-    openSellAssetLink,
-  } = useMultiChainSellAssets()
-
   // state
-  const [selectedSellAccount, setSelectedSellAccount] =
-    React.useState<BraveWallet.AccountInfo>()
-  const [showSellModal, setShowSellModal] = React.useState<boolean>(false)
   const [selectedTransaction, setSelectedTransaction] =
     React.useState<SerializableTransactionInfo>()
 
@@ -193,20 +176,6 @@ export const AccountsAndTransactionsList = ({
   }, [selectedAssetTransactions])
 
   // Methods
-  const onShowSellModal = React.useCallback(
-    (account: BraveWallet.AccountInfo) => {
-      setSelectedSellAccount(account)
-      setShowSellModal(true)
-    },
-    [],
-  )
-
-  const onOpenSellAssetLink = React.useCallback(() => {
-    openSellAssetLink({
-      sellAsset: selectedAsset,
-    })
-  }, [selectedAsset, openSellAssetLink])
-
   const onToggleHideBalances = React.useCallback(() => {
     setHidePortfolioBalances((prev) => !prev)
   }, [setHidePortfolioBalances])
@@ -398,8 +367,6 @@ export const AccountsAndTransactionsList = ({
                             )
                       }
                       assetNetwork={assetNetwork}
-                      showSellModal={() => onShowSellModal(account)}
-                      isSellSupported={checkIsAssetSellSupported(selectedAsset)}
                       hideBalances={hidePortfolioBalances}
                     />
                   ))}
@@ -478,22 +445,6 @@ export const AccountsAndTransactionsList = ({
         <TransactionDetailsModal
           onClose={() => setSelectedTransaction(undefined)}
           transaction={selectedTransaction}
-        />
-      )}
-      {showSellModal && selectedAsset && (
-        <SellAssetModal
-          selectedAsset={selectedAsset}
-          onClose={() => setShowSellModal(false)}
-          sellAmount={sellAmount}
-          setSellAmount={setSellAmount}
-          openSellAssetLink={onOpenSellAssetLink}
-          showSellModal={showSellModal}
-          account={selectedSellAccount}
-          sellAssetBalance={getBalance(
-            selectedSellAccount?.accountId,
-            selectedAsset,
-            tokenBalancesRegistry,
-          )}
         />
       )}
     </>

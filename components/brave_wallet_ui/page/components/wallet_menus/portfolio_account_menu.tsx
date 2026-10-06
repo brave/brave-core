@@ -15,11 +15,10 @@ import { ButtonMenu } from './wallet_menus.style'
 interface Props {
   onClickDeposit?: () => void
   onClickViewOnExplorer?: () => void
-  onClickSell?: () => void
 }
 
 export const PortfolioAccountMenu = (props: Props) => {
-  const { onClickSell, onClickViewOnExplorer, onClickDeposit } = props
+  const { onClickViewOnExplorer, onClickDeposit } = props
 
   return (
     <ButtonMenu placement='bottom-end'>
@@ -31,12 +30,6 @@ export const PortfolioAccountMenu = (props: Props) => {
       >
         <Icon name='more-vertical' />
       </Button>
-      {onClickSell && (
-        <leo-menu-item onClick={onClickSell}>
-          <Icon name='usd-circle' />
-          {getLocale(S.BRAVE_WALLET_SELL)}
-        </leo-menu-item>
-      )}
       {onClickViewOnExplorer && (
         <leo-menu-item onClick={onClickViewOnExplorer}>
           <Icon name='launch' />

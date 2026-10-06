@@ -16,7 +16,6 @@ import {
 
 // utils
 import Amount from './amount'
-import { getRampNetworkPrefix } from './string-utils'
 import { getNetworkLogo, makeNativeAssetLogo } from '../options/asset-options'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 import { getBalance } from './balance-utils'
@@ -33,21 +32,6 @@ export const isValidPolkadotAssetId = (assetId: string) => {
   )
 }
 
-export const getUniqueAssets = (assets: BraveWallet.BlockchainToken[]) => {
-  return assets.filter((asset, index) => {
-    return (
-      index
-      === assets.findIndex((item) => {
-        return (
-          item.contractAddress.toLowerCase()
-            === asset.contractAddress.toLowerCase()
-          && item.chainId === asset.chainId
-        )
-      })
-    )
-  })
-}
-
 export const isSelectedAssetInAssetOptions = (
   selectedAsset: BraveWallet.BlockchainToken,
   assetOptions: BraveWallet.BlockchainToken[],
@@ -62,31 +46,6 @@ export const isSelectedAssetInAssetOptions = (
       )
     }) !== -1
   )
-}
-
-export const getRampAssetSymbol = (
-  asset: BraveWallet.BlockchainToken,
-  isOfframp?: boolean,
-) => {
-  if (
-    asset.symbol.toUpperCase() === 'BAT'
-    && asset.chainId === BraveWallet.MAINNET_CHAIN_ID
-  ) {
-    // BAT is the only token on Ethereum Mainnet with a prefix on Ramp.Network
-    return 'ETH_BAT'
-  }
-
-  if (
-    asset.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID
-    && asset.contractAddress === ''
-  ) {
-    return isOfframp ? 'AVAX_AVAX' : asset.symbol // AVAX native token has no prefix for buy
-  }
-
-  const rampNetworkPrefix = getRampNetworkPrefix(asset.chainId, isOfframp)
-  return rampNetworkPrefix !== ''
-    ? `${rampNetworkPrefix}_${asset.symbol.toUpperCase()}`
-    : asset.symbol
 }
 
 export const addChainIdToToken = (

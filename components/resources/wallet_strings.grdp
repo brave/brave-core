@@ -83,8 +83,6 @@
   <message name="IDS_BRAVE_WALLET_SWAP" desc="Swap tab button" formatter_data="webui=Wallet">Swap</message>
   <message name="IDS_BRAVE_WALLET_BRIDGE" desc="Bridge tab button" formatter_data="webui=Wallet">Bridge</message>
   <message name="IDS_BRAVE_WALLET_RESET" desc="Reset button text" formatter_data="webui=Wallet">Reset</message>
-  <message name="IDS_BRAVE_WALLET_SELL" desc="Sell button text" formatter_data="webui=Wallet">Sell</message>
-  <message name="IDS_BRAVE_WALLET_NOT_ENOUGH_BALANCE" desc="Sell modal not enough of token balance to sell error" formatter_data="webui=Wallet">You don’t have enough <ph name="TOKEN_SYMBOL"><ex>BAT</ex>$1</ph> in this account.</message>
   <message name="IDS_BRAVE_WALLET_CHOOSE_ASSET_TO_SEND" desc="Send asset modal title" formatter_data="webui=Wallet">Choose asset to send</message>
   <message name="IDS_BRAVE_WALLET_CHOOSE_ASSET_TO_SWAP" desc="Swap asset modal title" formatter_data="webui=Wallet">Choose asset to swap</message>
   <message name="IDS_BRAVE_WALLET_ENTER_RECIPIENT_ADDRESS" desc="Send tab Enter recipient address" formatter_data="webui=Wallet">Enter recipient address</message>
@@ -665,7 +663,6 @@
   <message name="IDS_BRAVE_WALLET_MARKET_DATA_BUY_DEPOSIT_COLUMN" desc="Market data table buy/deposit column name" formatter_data="webui=Wallet">Buy/Deposit</message>
   <message name="IDS_BRAVE_WALLET_MARKET_DATA_NO_ASSETS_FOUND" desc="Text displayed when market data table rows are empty" formatter_data="webui=Wallet">No assets matching search or filter found</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_FIL_ADDRESS" desc="Send input not valid FIL address error" formatter_data="webui=Wallet">Not a valid FIL address</message>
-  <message name="IDS_BRAVE_WALLET_SELL_WITH_PROVIDER" desc="Sell with Provider option label" formatter_data="webui=Wallet">Sell with <ph name="OFFRAMP_PROVIDER">$1<ex>Ramp</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_TRANSACTIONS_PARTNER" desc="Transactions partner modal title" formatter_data="webui=Wallet">Transactions partner</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_PARTNER_CONSENT" desc="Meld consent description" formatter_data="webui=Wallet">Brave Wallet uses Meld.io to help aggregate and surface various crypto providers for your region. We will share information with Meld.io to complete the transaction, including your wallet address and country code. For more information please read Meld’s terms of use.</message>
   <message name="IDS_BRAVE_WALLET_MELD_TERMS_OF_USE" desc="Meld terms of use checkbox label" formatter_data="webui=Wallet">I have read and agree to the <ph name="LINK_BEFORE">$1</ph>Meld's Terms of use<ph name="LINK_AFTER">/$1</ph></message>
@@ -673,7 +670,7 @@
   <message name="IDS_BRAVE_WALLET_EXCHANGE_RATE_WITH_FEES" desc="Buy exchange rate with fees label" formatter_data="webui=Wallet">Exchange rate with fees</message>
   <message name="IDS_BRAVE_WALLET_FEES" desc="Buy fees label" formatter_data="webui=Wallet">Fees</message>
   <message name="IDS_BRAVE_WALLET_PRICE_CURRENCY" desc="Buy price and currency label" formatter_data="webui=Wallet">Price <ph name="CURRENCY">$1<ex>USD</ex></ph></message>
-  <message name="IDS_BRAVE_WALLET_BUY_WITH_PROVIDER" desc="Buy with provider label" formatter_data="webui=Wallet">Buy with <ph name="PROVIDER">$1<ex>Ramp</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_BUY_WITH_PROVIDER" desc="Buy with provider label" formatter_data="webui=Wallet">Buy with <ph name="PROVIDER">$1<ex>MoonPay</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_ASSETS" desc="Buy asset label" formatter_data="webui=Wallet">Asset</message>
   <message name="IDS_BRAVE_WALLET_SELECTED" desc="Buy selected label" formatter_data="webui=Wallet">Selected</message>
   <message name="IDS_BRAVE_WALLET_NO_AVAILABLE_CURRENCIES" desc="Buy no available currencies for search value" formatter_data="webui=Wallet">No available currencies</message>
@@ -681,7 +678,7 @@
   <message name="IDS_BRAVE_WALLET_BUY_ASSET" desc="Buy asset title label" formatter_data="webui=Wallet">Buy <ph name="ASSET">$1<ex>BAT</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_NO_PROVIDER_FOUND" desc="No provider found for buy asset title" formatter_data="webui=Wallet">No providers found for <ph name="ASSET">$1<ex>BAT</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_TRY_SEARCHING_FOR_DIFFERENT_ASSET" desc="Hint for no provider found for buy asset" formatter_data="webui=Wallet">Try searching for a different asset.</message>
-  <message name="IDS_BRAVE_WALLET_NO_RESULTS_FOUND" desc="No search results for provider title" formatter_data="webui=Wallet">No results found for <ph name="PROVIDER">$1<ex>Ramp</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_NO_RESULTS_FOUND" desc="No search results for provider title" formatter_data="webui=Wallet">No results found for <ph name="PROVIDER">$1<ex>MoonPay</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_TRY_DIFFERENT_KEYWORDS" desc="Hint for no search result for provider" formatter_data="webui=Wallet">Try using a different keyword or check your spelling.</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_TO_BUY_TITLE" desc="Create account modal title" formatter_data="webui=Wallet">Do you want to create a <ph name="ACCOUNT_TYPE">$1<ex>Zcash</ex></ph> account?</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_TO_BUY_DESCRIPTION" desc="Create account modal description" formatter_data="webui=Wallet">In order to receive <ph name="TOKEN_SYMBOL">$1<ex>ZEC</ex></ph> you will need a <ph name="ACCOUNT_TYPE">$2<ex>Zcash</ex></ph> account.</message>
