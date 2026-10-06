@@ -7,6 +7,24 @@ import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 
 assert(enable_request_otr)
 
+if (!is_android) {
+  source_set("tab_helper") {
+    sources = [
+      "request_otr_tab_helper.cc",
+      "request_otr_tab_helper.h",
+    ]
+    deps = [
+      "//base",
+      "//brave/browser/infobars:request_otr_infobar_delegate",
+      "//brave/components/request_otr/browser",
+      "//chrome/browser/ui/tabs:tabs_public",
+      "//components/infobars/content",
+      "//components/infobars/core",
+      "//content/public/browser",
+    ]
+  }
+}
+
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]

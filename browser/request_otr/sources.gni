@@ -12,8 +12,6 @@ if (enable_request_otr) {
   brave_browser_request_otr_sources += [
     "//brave/browser/request_otr/request_otr_service_factory.cc",
     "//brave/browser/request_otr/request_otr_service_factory.h",
-    "//brave/browser/request_otr/request_otr_tab_helper.cc",
-    "//brave/browser/request_otr/request_otr_tab_helper.h",
   ]
 
   brave_browser_request_otr_deps += [

@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/request_otr/common/buildflags/buildflags.gni")
+
+if (!is_android && enable_request_otr) {
+  source_set("request_otr_infobar_delegate") {
+    sources = [
+      "request_otr_infobar_delegate.cc",
+      "request_otr_infobar_delegate.h",
+    ]
+    deps = [
+      "//base",
+      "//brave/components/infobars/core",
+      "//brave/components/request_otr/browser",
+      "//brave/components/resources:static_resources",
+      "//brave/components/resources:strings",
+      "//chrome/app:generated_resources",
+      "//chrome/browser/infobars",
+      "//components/infobars/content",
+      "//components/infobars/core",
+      "//components/vector_icons",
+      "//content/public/browser",
+      "//ui/base",
+      "//ui/views",
+    ]
+  }
+}
