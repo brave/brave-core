@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "brave/common/brave_renderer_configuration.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -116,16 +115,12 @@ BraveRendererUpdater::BraveRendererUpdater(
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
-  if (local_state_) {
-    widevine_enabled_.Init(kWidevineEnabled, local_state_);
-    local_state_change_registrar_.Init(local_state_);
-    local_state_change_registrar_.Add(
-        kWidevineEnabled,
-        base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
-                            base::Unretained(this)));
-  } else {
-    CHECK_IS_TEST();
-  }
+  widevine_enabled_.Init(kWidevineEnabled, local_state_);
+  local_state_change_registrar_.Init(local_state_);
+  local_state_change_registrar_.Add(
+      kWidevineEnabled,
+      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
+                          base::Unretained(this)));
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -300,11 +295,7 @@ void BraveRendererUpdater::UpdateRenderer(
 #endif
   bool widevine_enabled = false;
 #if BUILDFLAG(ENABLE_WIDEVINE)
-  if (local_state_) {
-    widevine_enabled = local_state_->GetBoolean(kWidevineEnabled);
-  } else {
-    CHECK_IS_TEST();
-  }
+  widevine_enabled = local_state_->GetBoolean(kWidevineEnabled);
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
