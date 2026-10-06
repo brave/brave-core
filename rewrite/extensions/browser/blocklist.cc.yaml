@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Report embedder-blocklisted extensions as BLOCKLISTED_MALWARE.
+
+      Wrapping the callback ahead of the Safe Browsing early return keeps the
+      embedder list enforced when Safe Browsing is unavailable, and covers both
+      callers: the install-time BlocklistCheck and the periodic sweep.
+    preempt_function_impl:
+      function_name: Blocklist::GetBlocklistedIDs
+      code: |-
+        callback = base::BindOnce(&AddEmbedderMalwareStates, ids,
+                                  std::move(callback));
