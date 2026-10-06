@@ -6,7 +6,6 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_PAGE_GRAPH_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_PAGE_GRAPH_H_
 
-#include <map>
 #include <memory>
 #include <optional>
 #include <string>
@@ -27,7 +26,6 @@
 #include "third_party/blink/renderer/core/inspector/console_message.h"
 #include "third_party/blink/renderer/core/inspector/protocol/dom.h"
 #include "third_party/blink/renderer/core/inspector/protocol/protocol.h"
-#include "third_party/blink/renderer/platform/allow_discouraged_type.h"
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 #include "third_party/blink/renderer/platform/heap/member.h"
 #include "third_party/blink/renderer/platform/supplementable.h"
@@ -47,7 +45,6 @@ class NodeActor;
 class NodeAdFilter;
 class NodeBinding;
 class NodeExtensions;
-class NodeFingerprintingFilter;
 class NodeHTML;
 class NodeHTMLElement;
 class NodeHTMLText;
@@ -247,7 +244,6 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   PAGE_GRAPH_USING_DECL(BindingType);
   PAGE_GRAPH_USING_DECL(EdgeList);
   PAGE_GRAPH_USING_DECL(EventListenerId);
-  PAGE_GRAPH_USING_DECL(FingerprintingRule);
   PAGE_GRAPH_USING_DECL(GraphEdge);
   PAGE_GRAPH_USING_DECL(GraphItemId);
   PAGE_GRAPH_USING_DECL(GraphItemUniquePtrList);
@@ -258,7 +254,6 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   PAGE_GRAPH_USING_DECL(NodeAdFilter);
   PAGE_GRAPH_USING_DECL(NodeBinding);
   PAGE_GRAPH_USING_DECL(NodeExtensions);
-  PAGE_GRAPH_USING_DECL(NodeFingerprintingFilter);
   PAGE_GRAPH_USING_DECL(NodeHTML);
   PAGE_GRAPH_USING_DECL(NodeHTMLElement);
   PAGE_GRAPH_USING_DECL(NodeHTMLText);
@@ -383,8 +378,6 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   void RegisterResourceBlockTracker(const blink::WebURL& url,
                                     const String& host);
   void RegisterResourceBlockJavaScript(const blink::WebURL& url);
-  void RegisterResourceBlockFingerprinting(const blink::WebURL& url,
-                                           const FingerprintingRule& rule);
 
   void RegisterScriptCompilation(blink::ExecutionContext* execution_context,
                                  const ScriptId script_id,
@@ -439,8 +432,6 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   NodeResource* GetResourceNodeForUrl(const KURL& url);
   NodeAdFilter* GetAdFilterNodeForRule(const String& rule);
   NodeTrackerFilter* GetTrackerFilterNodeForHost(const String& host);
-  NodeFingerprintingFilter* GetFingerprintingFilterNodeForRule(
-      const FingerprintingRule& rule);
   NodeBinding* GetBindingNode(const Binding binding,
                               const BindingType binding_type);
   NodeJSWebAPI* GetJSWebAPINode(const MethodName& method);
@@ -512,15 +503,10 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   // in JS funcs and methods. This map does not own the references.
   HashMap<MethodName, NodeJSBuiltin*> js_builtin_nodes_;
 
-  using FingerprintingFilterNodes ALLOW_DISCOURAGED_TYPE(
-      "TODO(https://github.com/brave/brave-browser/issues/28238)") =
-      std::map<FingerprintingRule, NodeFingerprintingFilter*>;
-
   // Index structure for looking up filter nodes.
   // These maps do not own the references.
   HashMap<String, NodeAdFilter*> ad_filter_nodes_;
   HashMap<String, NodeTrackerFilter*> tracker_filter_nodes_;
-  FingerprintingFilterNodes fingerprinting_filter_nodes_;
 
   NodeShields* shields_node_;
   NodeShield* ad_shield_node_;
