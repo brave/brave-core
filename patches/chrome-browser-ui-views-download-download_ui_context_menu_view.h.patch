@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/download/download_ui_context_menu_view.h b/chrome/browser/ui/views/download/download_ui_context_menu_view.h
+index aeb07c5b420a92aafd44df7b9147cff6b9725d03..32bb69cb6df8d36c76cba349c514b16c1eb9b4f1 100644
+--- a/chrome/browser/ui/views/download/download_ui_context_menu_view.h
++++ b/chrome/browser/ui/views/download/download_ui_context_menu_view.h
+@@ -64,7 +64,7 @@ class DownloadUiContextMenuView : public DownloadUiContextMenu {
+   base::TimeTicks close_time_;
+ 
+   // Determines whether we should record if a DownloadCommand was executed.
+-  std::array<bool, DownloadCommands::kMaxValue + 1>
++  std::array<bool, DownloadCommands::COPY_DOWNLOAD_LINK + 1>
+       download_commands_executed_recorded_{false};
+ };
+ 
