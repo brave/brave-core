@@ -6,14 +6,17 @@
 #include <algorithm>
 #include <memory>
 
+#include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
+#include "base/strings/strcat.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/threading/thread_restrictions.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
@@ -22,6 +25,7 @@
 #include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/content/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/content/browser/playlist_constants.h"
 #include "brave/components/playlist/content/browser/playlist_service.h"
@@ -439,6 +443,42 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlaylistTabHelper) {
       IDC_FORWARD);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return playlist_tab_helper->found_items().size() == 0; }));
+}
+
+// chrome-untrusted://playlist-data must allow the pages that load from it, as
+// WebUIURLLoaderFactory rejects cross-origin loads between chrome-untrusted://
+// hosts otherwise.
+IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, UntrustedPagesLoadPlaylistData) {
+  constexpr char kItemId[] = "test-item";
+  base::FilePath thumbnail_path;
+  ASSERT_TRUE(GetService()->GetThumbnailPath(kItemId, &thumbnail_path));
+  base::FilePath test_data_dir;
+  ASSERT_TRUE(base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir));
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    ASSERT_TRUE(base::CreateDirectory(thumbnail_path.DirName()));
+    ASSERT_TRUE(base::CopyFile(
+        test_data_dir.AppendASCII("playlist").AppendASCII("thumbnail.png"),
+        thumbnail_path));
+  }
+
+  constexpr char kLoadImageScript[] = R"(
+    new Promise(resolve => {
+      const img = new Image();
+      img.onload = () => resolve('loaded');
+      img.onerror = () => resolve('error');
+      img.src = $1;
+    });
+  )";
+  const GURL thumbnail_url(base::StrCat(
+      {"chrome-untrusted://playlist-data/", kItemId, "/thumbnail/"}));
+  for (const char* page_url : {kPlaylistURL, kPlaylistPlayerURL}) {
+    SCOPED_TRACE(page_url);
+    ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(), GURL(page_url)));
+    EXPECT_EQ("loaded", content::EvalJs(GetActiveWebContents(),
+                                        content::JsReplace(kLoadImageScript,
+                                                           thumbnail_url)));
+  }
 }
 
 class PlaylistBrowserTestWithSitesUsingMediaSource
