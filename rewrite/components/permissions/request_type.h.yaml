@@ -17,6 +17,7 @@ substitutions:
           kWidevine,
           kBraveEthereum,
           kBraveSolana,
+          kBraveOnDeviceSpeechModel,
           kBraveOpenAIChat,
           kBraveGoogleSignInPermission,
           kBraveCardano,
