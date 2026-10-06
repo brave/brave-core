@@ -21,6 +21,7 @@
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/most_visited_sites/features.h"
 #include "brave/ios/browser/playlist/features.h"
+#include "brave/ios/browser/search_engines/features.h"
 #include "brave/ios/browser/toolbar/features.h"
 #include "brave/ios/browser/ui/quick_view/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
@@ -417,6 +418,13 @@ const flags_ui::FeatureEntry::FeatureVariation
           "Enables the refactored browser toolbar hierarchy",                  \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave::features::kBrowserToolbarRefactorEnabled), \
+      },                                                                       \
+      {                                                                        \
+          "brave-use-chromium-search-engines",                                 \
+          "Use Chromium search engines",                                       \
+          "Manage search engines using Chromium's TemplateURLService",         \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave::features::kUseChromiumSearchEngines),      \
       },                                                                       \
       {                                                                        \
           "brave-origin",                                                      \
