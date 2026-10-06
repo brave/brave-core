@@ -17,6 +17,12 @@
       menu-options="[[newTabShowOptions_]]">
     </settings-dropdown-menu>
   </div>
+  <settings-toggle-button
+    class="hr"
+    pref-key="brave.brave_private_new_tab.show_search_box"
+    label="$i18n{braveNewTabPrivateWindowSearchBox}"
+    sub-label="$i18n{braveNewTabPrivateWindowSearchBoxDesc}">
+  </settings-toggle-button>
   <template is="dom-if" if="[[showNewTabDashboardSettings_]]">
     <div class="settings-row">
       <cr-link-row

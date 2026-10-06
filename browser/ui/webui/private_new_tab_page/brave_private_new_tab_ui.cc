@@ -43,6 +43,11 @@ BravePrivateNewTabUI::BravePrivateNewTabUI(content::WebUI* web_ui)
 
   source->AddBoolean("isWindowTor", profile->IsTor());
 
+  source->AddBoolean(
+      "showSearchBox",
+      profile->GetOriginalProfile()->GetPrefs()->GetBoolean(
+          brave_private_new_tab::prefs::kBraveShowSearchBoxOnPrivateNewTab));
+
   AddBackgroundColorToSource(source, web_ui->GetWebContents());
 }
 

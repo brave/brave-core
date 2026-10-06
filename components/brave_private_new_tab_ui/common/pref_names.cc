@@ -12,6 +12,7 @@ namespace brave_private_new_tab::prefs {
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kBravePrivateWindowDisclaimerDismissed, false);
   registry->RegisterBooleanPref(kBraveTorWindowDisclaimerDismissed, false);
+  registry->RegisterBooleanPref(kBraveShowSearchBoxOnPrivateNewTab, true);
 }
 
 }  // namespace brave_private_new_tab::prefs
