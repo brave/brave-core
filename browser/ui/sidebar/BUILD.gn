@@ -35,6 +35,7 @@ source_set("sidebar") {
     "//brave/components/playlist/core/common/buildflags",
     "//brave/components/sidebar/browser",
     "//chrome/browser/ui/tabs:tab_strip_model_observer",
+    "//chrome/browser/ui/tabs:tabs_public",
     "//components/history/core/browser",
     "//components/keyed_service/content",
     "//ui/base",
@@ -81,6 +82,7 @@ source_set("sidebar_impl") {
     "//components/image_fetcher/core",
     "//components/pref_registry",
     "//components/prefs",
+    "//components/tabs:public",
     "//components/user_prefs",
     "//ui/base",
   ]

@@ -145,6 +145,9 @@ class BraveTabFeatures : public TabFeatures {
   // Shows an infobar while browsing a site off the record at its request.
   std::unique_ptr<ContentsObservingTabFeature> request_otr_tab_helper_;
 
+  // Opens the Leo panel once for users in the sidebar test.
+  std::unique_ptr<ContentsObservingTabFeature> sidebar_tab_helper_;
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
   std::unique_ptr<ai_chat::WebMcpInjector> web_mcp_injector_;

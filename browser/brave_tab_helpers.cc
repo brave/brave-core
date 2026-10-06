@@ -105,7 +105,6 @@
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/onboarding/onboarding_tab_helper.h"
-#include "brave/browser/ui/sidebar/sidebar_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -195,7 +194,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
 #if defined(TOOLKIT_VIEWS)
   OnboardingTabHelper::MaybeCreateForWebContents(web_contents);
-  sidebar::SidebarTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
