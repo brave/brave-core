@@ -736,11 +736,13 @@ void BraveTabContainer::Layout(PassKey) {
 
   // We don't need to layout if the height is 0 as it's invisible.
   if (scroll_direction == views::LayoutOrientation::kVertical && !height()) {
+    UpdateAccessibleTabIndicesIfNeeded();
     return;
   }
 
   // If size hasn't changed since last layout, no need to relayout tabs.
   if (last_layout_size_ == size()) {
+    UpdateAccessibleTabIndicesIfNeeded();
     return;
   }
 
