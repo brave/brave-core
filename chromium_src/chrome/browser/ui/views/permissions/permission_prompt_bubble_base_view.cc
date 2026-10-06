@@ -18,6 +18,7 @@
 #include "brave/browser/ui/views/infobars/custom_styled_label.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "brave/components/permissions/permission_widevine_utils.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -71,38 +72,60 @@ constexpr char kGeolocationPermissionLearnMoreURL[] =
     "https://www.brave.com/";
 #endif
 
-#if BUILDFLAG(ENABLE_WIDEVINE)
+// Shared by the requests that have no content setting to remember a "Block" in,
+// and so offer a checkbox to stop being asked instead.
 class DontAskAgainCheckbox : public views::Checkbox {
   METADATA_HEADER(DontAskAgainCheckbox, views::Checkbox)
  public:
-  explicit DontAskAgainCheckbox(WidevinePermissionRequest* request);
+  explicit DontAskAgainCheckbox(permissions::PermissionRequest* request);
   DontAskAgainCheckbox(const DontAskAgainCheckbox&) = delete;
   DontAskAgainCheckbox& operator=(const DontAskAgainCheckbox&) = delete;
 
  private:
   void ButtonPressed();
 
-  raw_ptr<WidevinePermissionRequest, DanglingUntriaged> request_ = nullptr;
+  raw_ptr<permissions::PermissionRequest, DanglingUntriaged> request_ = nullptr;
 };
 
 BEGIN_METADATA(DontAskAgainCheckbox)
 END_METADATA
 
-DontAskAgainCheckbox::DontAskAgainCheckbox(WidevinePermissionRequest* request)
-    : views::Checkbox(
-          l10n_util::GetStringUTF16(IDS_WIDEVINE_DONT_ASK_AGAIN_CHECKBOX),
-          base::BindRepeating(&DontAskAgainCheckbox::ButtonPressed,
-                              base::Unretained(this))),
+DontAskAgainCheckbox::DontAskAgainCheckbox(
+    permissions::PermissionRequest* request)
+    : views::Checkbox(l10n_util::GetStringUTF16(
+                          IDS_PERMISSIONS_BUBBLE_DONT_ASK_AGAIN_CHECKBOX),
+                      base::BindRepeating(&DontAskAgainCheckbox::ButtonPressed,
+                                          base::Unretained(this))),
       request_(request) {}
 
 void DontAskAgainCheckbox::ButtonPressed() {
   request_->set_dont_ask_again(GetChecked());
 }
 
-void AddAdditionalWidevineViewControlsIfNeeded(
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+bool IsOnDeviceSpeechModelRequest(
+    const std::vector<std::unique_ptr<permissions::PermissionRequest>>&
+        requests) {
+  // The request is never grouped with another.
+  return requests.size() == 1 &&
+         requests[0]->request_type() ==
+             permissions::RequestType::kBraveOnDeviceSpeechModel;
+}
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
+void AddAdditionalPermissionViewControlsIfNeeded(
     views::BubbleDialogDelegateView* dialog_delegate_view,
     const std::vector<std::unique_ptr<permissions::PermissionRequest>>&
         requests) {
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  if (IsOnDeviceSpeechModelRequest(requests)) {
+    dialog_delegate_view->AddChildView(
+        std::make_unique<DontAskAgainCheckbox>(requests[0].get()));
+    return;
+  }
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
   if (!HasWidevinePermissionRequest(requests)) {
     return;
   }
@@ -124,8 +147,10 @@ void AddAdditionalWidevineViewControlsIfNeeded(
   dialog_delegate_view->AddChildView(text);
   dialog_delegate_view->AddChildView(
       new DontAskAgainCheckbox(widevine_request));
+#endif  // BUILDFLAG(ENABLE_WIDEVINE)
 }
 
+#if BUILDFLAG(ENABLE_WIDEVINE)
 void AddWidevineFootnoteView(
     views::BubbleDialogDelegateView* dialog_delegate_view,
     BrowserWindowInterface* browser) {
@@ -142,12 +167,7 @@ void AddWidevineFootnoteView(
       views::CreateStyledLabelForDialogFootnote(browser, footnote, replacements,
                                                 urls));
 }
-#else
-void AddAdditionalWidevineViewControlsIfNeeded(
-    views::BubbleDialogDelegateView* dialog_delegate_view,
-    const std::vector<raw_ptr<permissions::PermissionRequest,
-                              VectorExperimental>>& requests) {}
-#endif
+#endif  // BUILDFLAG(ENABLE_WIDEVINE)
 
 // Custom combobox, shows permission lifetime options and applies selected value
 // to all permissions currently visible in the bubble.
@@ -388,6 +408,14 @@ void AddFootnoteViewIfNeeded(
     return;
   }
 #endif
+
+  // The footnote is about site permissions and their lifetime, and this
+  // request has neither.
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  if (IsOnDeviceSpeechModelRequest(requests)) {
+    return;
+  }
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
   if (!base::FeatureList::IsEnabled(
           permissions::features::kPermissionLifetime)) {

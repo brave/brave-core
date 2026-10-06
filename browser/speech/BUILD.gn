@@ -53,6 +53,8 @@ if (enable_local_ai) {
     sources = [
       "brave_soda_installer.cc",
       "brave_soda_installer.h",
+      "on_device_speech_model_permission_request.cc",
+      "on_device_speech_model_permission_request.h",
       "on_device_speech_recognition_controller.cc",
       "on_device_speech_recognition_controller.h",
     ]
@@ -66,12 +68,15 @@ if (enable_local_ai) {
       "//chrome/browser:browser_process",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/profiles:profile_manager",
+      "//components/permissions",
+      "//components/prefs",
       "//components/soda",
       "//components/soda:constants",
       "//mojo/public/cpp/base",
       "//mojo/public/cpp/bindings",
       "//services/network/public/mojom",
       "//services/on_device_model/public/mojom",
+      "//ui/base",
       "//url",
     ]
   }
@@ -114,6 +119,7 @@ if (enable_local_ai) {
 
     sources = [
       "brave_soda_installer_unittest.cc",
+      "on_device_speech_model_permission_request_unittest.cc",
       "on_device_speech_recognition_controller_unittest.cc",
       "on_device_speech_recognition_util_unittest.cc",
     ]
