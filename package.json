@@ -236,7 +236,7 @@
     "events": "3.3.0",
     "history": "4.10.1",
     "jszip": "3.8.0",
-    "katex": "0.18.1",
+    "katex": "0.18.2",
     "onnxruntime-web": "1.26.0",
     "prettier-bytes": "1.0.4",
     "qr-image": "3.2.0",
