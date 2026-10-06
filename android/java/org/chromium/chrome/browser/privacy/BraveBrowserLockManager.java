@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import androidx.activity.ComponentActivity;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.VisibleForTesting;
 
 import org.chromium.base.ActivityState;
@@ -36,6 +38,7 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.ui.modaldialog.DialogDismissalCause;
+import org.chromium.ui.modaldialog.ModalDialogManagerHolder;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -80,6 +83,15 @@ import java.util.Set;
  * overlay is shown for an activity, that activity's content view is excluded from the accessibility
  * tree ({@link View#IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS}) so only the lock screen
  * itself is reachable; it is restored once the lock is dismissed.
+ *
+ * <p><b>Input:</b> A visual overlay alone does not stop input from reaching the content behind it.
+ * Touches are consumed by the overlay views themselves (clickable, with the real lock view's own
+ * touch listener consuming everything). Keyboard/D-pad focus is pulled onto the overlay and the
+ * content view's descendants are blocked from being focused at all ({@link
+ * ViewGroup#FOCUS_BLOCK_DESCENDANTS}) for as long as a lock is showing, so focus can't be returned
+ * to (or kept on) a background view. The system Back button is independently blocked via an {@link
+ * androidx.activity.OnBackPressedCallback} — without it, Back would navigate the content behind the
+ * overlay (e.g. closing a tab) without ever authenticating.
  */
 @NullMarked
 // Chromium's wrapper doesn't give us a way to register a listener for changes.
@@ -128,6 +140,17 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     // leaks a reference to a destroyed activity's controller.
     private final Map<Activity, ScreenshotModeObserver> mScreenshotModeObservers = new HashMap<>();
 
+    // Lazily created per activity the first time a lock (pre-native or real) needs to block the
+    // system Back button; reused (via setEnabled) thereafter. Removed in onActivityDestroyed.
+    private final Map<Activity, OnBackPressedCallback> mBackPressBlockers = new HashMap<>();
+
+    // Consumed by the very next app-state transition to HAS_STOPPED_ACTIVITIES/
+    // HAS_DESTROYED_ACTIVITIES. Set via suppressNextRearm() immediately before launching a known
+    // system screen that returns control shortly after (e.g. the "no screen lock configured"
+    // redirect to OS security settings) — otherwise that round trip would needlessly re-show the
+    // lock on return even though the user never left the app in any meaningful sense.
+    private boolean mSuppressNextRearm;
+
     private boolean mReauthInFlight;
 
     private final ProfileManager.Observer mProfileObserver =
@@ -174,6 +197,8 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
                 public void onActivityDestroyed(Activity activity) {
                     mForcedSecureActivities.remove(activity);
                     mScreenshotModeObservers.remove(activity);
+                    OnBackPressedCallback backPressBlocker = mBackPressBlockers.remove(activity);
+                    if (backPressBlocker != null) backPressBlocker.remove();
                     ActiveLock lock = mActiveLocks.remove(activity);
                     if (lock == null) return;
 
@@ -192,7 +217,11 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
             newState -> {
                 if (newState == ApplicationState.HAS_STOPPED_ACTIVITIES
                         || newState == ApplicationState.HAS_DESTROYED_ACTIVITIES) {
-                    mLockArmed = isBrowserLockEnabled();
+                    if (mSuppressNextRearm) {
+                        mSuppressNextRearm = false;
+                    } else {
+                        mLockArmed = isBrowserLockEnabled();
+                    }
                     applySecureFlagToAllActivities();
                 }
             };
@@ -295,6 +324,19 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
                 showLockIfRequired(activity);
             }
         }
+    }
+
+    /**
+     * Suppresses the very next re-arm check (on the next transition to {@link
+     * ApplicationState#HAS_STOPPED_ACTIVITIES} or {@link
+     * ApplicationState#HAS_DESTROYED_ACTIVITIES}) — call immediately before launching a system
+     * screen known to hand control back shortly after, so that round trip doesn't needlessly
+     * re-show the lock. Only suppresses one transition; a later, genuine backgrounding re-arms
+     * normally.
+     */
+    public static void suppressNextRearm() {
+        BraveBrowserLockManager instance = sInstance;
+        if (instance != null) instance.mSuppressNextRearm = true;
     }
 
     public static boolean isBrowserLockEnabled() {
@@ -424,9 +466,25 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
         IncognitoReauthManager reauthManager = new BraveIncognitoReauthManager(activity, profile);
         BraveBrowserLockCoordinator coordinator = createCoordinator(activity, reauthManager);
         mActiveLocks.put(activity, new ActiveLock(coordinator, reauthManager));
+        dismissModalDialogsIfPresent(activity);
         coordinator.show();
-        setContentAccessibilityHidden(activity, true);
+        setContentLocked(activity, true);
+        setBackPressBlocked(activity, true);
         maybeStartNextReauth();
+    }
+
+    /**
+     * Dismisses any dialog tracked by {@code activity}'s own {@link ModalDialogManager}, if it has
+     * one. A dialog lives in a separate window the lock overlay (attached to the decor view) can't
+     * visually or input-wise cover — if one was already showing when the app backgrounds, it would
+     * otherwise reappear above the lock on resume. This only reaches dialogs routed through
+     * Chromium's own dialog system; a raw platform {@code PopupWindow} or system-level dialog (e.g.
+     * an autofill save prompt) is outside its reach.
+     */
+    private void dismissModalDialogsIfPresent(Activity activity) {
+        if (activity instanceof ModalDialogManagerHolder holder) {
+            holder.getModalDialogManager().dismissAllDialogs(DialogDismissalCause.UNKNOWN);
+        }
     }
 
     private void maybeStartNextReauth() {
@@ -449,7 +507,8 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
             IncognitoReauthManager reauthManager = lock.mReauthManager;
             // Must defer since we could be called from within the scope of a living object.
             ThreadUtils.postOnUiThread(reauthManager::destroy);
-            setContentAccessibilityHidden(entry.getKey(), false);
+            setContentLocked(entry.getKey(), false);
+            setBackPressBlocked(entry.getKey(), false);
         }
         mActiveLocks.clear();
     }
@@ -458,14 +517,23 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
         if (!mLockArmed) return;
         ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
         if (decor.findViewWithTag(PRE_NATIVE_OVERLAY_TAG) != null) return;
+        dismissModalDialogsIfPresent(activity);
         View overlay = new View(activity);
         overlay.setTag(PRE_NATIVE_OVERLAY_TAG);
         overlay.setBackgroundColor(Color.BLACK);
+        // Clickable so touches are consumed here instead of falling through to the content
+        // beneath; focusable so it can steal focus away from (and block it returning to) that
+        // content, mirroring what BraveBrowserLockCoordinator's real lock view already does.
+        overlay.setClickable(true);
+        overlay.setFocusable(true);
+        overlay.setFocusableInTouchMode(true);
         decor.addView(
                 overlay,
                 new ViewGroup.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        setContentAccessibilityHidden(activity, true);
+        overlay.requestFocus();
+        setContentLocked(activity, true);
+        setBackPressBlocked(activity, true);
     }
 
     private void removeAllPreNativeOverlays() {
@@ -474,22 +542,52 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
             View overlay = decor.findViewWithTag(PRE_NATIVE_OVERLAY_TAG);
             if (overlay != null) {
                 decor.removeView(overlay);
-                setContentAccessibilityHidden(activity, false);
+                setContentLocked(activity, false);
+                setBackPressBlocked(activity, false);
             }
         }
     }
 
     /**
-     * Excludes (or restores) an activity's content view from the accessibility tree. See the
-     * class-level "Accessibility" doc for why this is needed alongside FLAG_SECURE.
+     * Excludes (or restores) an activity's content view from the accessibility tree and from normal
+     * keyboard/D-pad focus traversal. See the class-level "Accessibility" doc for why the
+     * accessibility exclusion is needed alongside FLAG_SECURE; focus is blocked for the same
+     * underlying reason touches are — so a hardware keyboard or D-pad can't reach (or keep) a view
+     * already focused in the content behind the lock overlay.
      */
-    private void setContentAccessibilityHidden(Activity activity, boolean hidden) {
+    private void setContentLocked(Activity activity, boolean locked) {
         View content = activity.findViewById(android.R.id.content);
         if (content == null) return;
         content.setImportantForAccessibility(
-                hidden
+                locked
                         ? View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
                         : View.IMPORTANT_FOR_ACCESSIBILITY_AUTO);
+        ((ViewGroup) content)
+                .setDescendantFocusability(
+                        locked
+                                ? ViewGroup.FOCUS_BLOCK_DESCENDANTS
+                                : ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+    }
+
+    /**
+     * Blocks (or allows) the system Back button for {@code activity} while a lock (pre-native or
+     * real) is showing — otherwise Back navigates the content behind the overlay (e.g. closing a
+     * tab) without ever authenticating.
+     */
+    private void setBackPressBlocked(Activity activity, boolean blocked) {
+        OnBackPressedCallback callback = mBackPressBlockers.get(activity);
+        if (callback != null) {
+            callback.setEnabled(blocked);
+            return;
+        }
+        if (!blocked || !(activity instanceof ComponentActivity componentActivity)) return;
+        callback =
+                new OnBackPressedCallback(/* enabled= */ true) {
+                    @Override
+                    public void handleOnBackPressed() {}
+                };
+        componentActivity.getOnBackPressedDispatcher().addCallback(callback);
+        mBackPressBlockers.put(activity, callback);
     }
 
     @VisibleForTesting
@@ -529,9 +627,20 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     }
 
     @VisibleForTesting
+    ApplicationStatus.ApplicationStateListener getAppStateListenerForTesting() {
+        return mAppStateListener;
+    }
+
+    @VisibleForTesting
     boolean isPreNativeOverlayShownForTesting(Activity activity) {
         ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
         return decor.findViewWithTag(PRE_NATIVE_OVERLAY_TAG) != null;
+    }
+
+    @VisibleForTesting
+    @Nullable View getPreNativeOverlayForTesting(Activity activity) {
+        ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
+        return decor.findViewWithTag(PRE_NATIVE_OVERLAY_TAG);
     }
 
     @VisibleForTesting
