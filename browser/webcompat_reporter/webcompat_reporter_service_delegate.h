@@ -32,7 +32,7 @@ class WebcompatReporterServiceDelegateImpl
       const std::string& application_locale,
       component_updater::ComponentUpdateService* component_update_service,
       brave_shields::AdBlockService* adblock_service,
-      HostContentSettingsMap* host_content_settings_map,
+      scoped_refptr<HostContentSettingsMap> host_content_settings_map,
       scoped_refptr<content_settings::CookieSettings> content_settings);
   WebcompatReporterServiceDelegateImpl(
       const WebcompatReporterServiceDelegateImpl&) = delete;
@@ -53,7 +53,7 @@ class WebcompatReporterServiceDelegateImpl
   const raw_ref<PrefService> local_state_;
   const std::string application_locale_;
   const raw_ptr<brave_shields::AdBlockService> adblock_service_;
-  const raw_ptr<HostContentSettingsMap> host_content_settings_map_;
+  scoped_refptr<HostContentSettingsMap> host_content_settings_map_;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
 };
 
