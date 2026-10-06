@@ -1843,8 +1843,14 @@ if (is_android) {
       "//url/mojom:url_mojom_gurl_java",
     ]
     if (enable_brave_wallet) {
-      sources += [ "//brave/android/javatests/org/chromium/chrome/browser/brave_wallet/BraveWalletUtilsTest.java" ]
-      deps += [ "//brave/components/brave_wallet/common:mojom_java" ]
+      sources += [
+        "//brave/android/javatests/org/chromium/chrome/browser/brave_wallet/BraveWalletUtilsTest.java",
+        "//brave/android/javatests/org/chromium/chrome/browser/settings/BraveWalletPreferencesTest.java",
+      ]
+      deps += [
+        "//brave/components/brave_wallet/common:mojom_java",
+        "//mojo/public/java:system_java",
+      ]
     }
   }
 
