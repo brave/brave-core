@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/extensions/chrome_browser_context_lifetime_tracker.cc b/chrome/browser/extensions/chrome_browser_context_lifetime_tracker.cc
+index 378a90ded8bc12d55be0da3c681994667f482a01..558a12e802aa9eef1bcef2ff9f049383a4e3d586 100644
+--- a/chrome/browser/extensions/chrome_browser_context_lifetime_tracker.cc
++++ b/chrome/browser/extensions/chrome_browser_context_lifetime_tracker.cc
+@@ -40,7 +40,7 @@ class ChromeBrowserContextLifetimeTracker::ProfileWatcher
+     // unlike desktop Chrome. Extensions APIs may have built-in assumptions
+     // that there will only be one OTR profile. We need to determine how this
+     // will be handled in Desktop Android.
+-    if (!off_the_record->IsPrimaryOTRProfile()) {
++    if (!off_the_record->IsPrimaryOTRProfile() || off_the_record->IsTor()) {
+       return;
+     }
+     ObserveOffTheRecordProfile(*off_the_record);
