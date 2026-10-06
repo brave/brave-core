@@ -203,7 +203,7 @@ RegisterPolymerTemplateModifications({
     }
     viewManager.append(html`
       <settings-email-aliases-page slot="view" id="email-aliases"
-          prefs="{{prefs}}" data-parent-view-id="parent">
+          data-parent-view-id="parent">
       </settings-email-aliases-page>
     `)
   }
