@@ -1122,6 +1122,10 @@ test("brave_browser_tests") {
       "//brave/browser/brave_news:browser_tests",
       "//brave/components/brave_news/browser",
     ]
+
+    if (!is_android) {
+      deps += [ "//brave/browser/ui/webui/brave_news:browser_tests" ]
+    }
   }
 
   if (enable_email_aliases) {

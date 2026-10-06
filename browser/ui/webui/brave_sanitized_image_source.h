@@ -62,6 +62,8 @@ class BraveSanitizedImageSource : public content::URLDataSource {
   bool AllowCaching() override;
   std::string GetMimeType(const GURL& url) override;
   std::string GetSource() override;
+  std::string GetAccessControlAllowOriginForOrigin(
+      const std::string& origin) override;
 
  private:
   struct RequestAttributes {
