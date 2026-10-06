@@ -74,6 +74,11 @@ std::optional<std::string> Tool::GetPermissionChallengeDescription(
   return std::nullopt;
 }
 
+std::optional<std::string> Tool::GetPermissionChallengeImplications(
+    const mojom::ToolUseEvent& tool_use) const {
+  return std::nullopt;
+}
+
 bool Tool::SupportsConversation(
     bool is_temporary,
     bool has_untrusted_content,

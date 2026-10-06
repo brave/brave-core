@@ -2611,6 +2611,12 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
           tool_use_event->permission_challenge->description =
               tool_ptr->GetPermissionChallengeDescription(*tool_use_event);
         }
+        // Granting it also grants what the Tool's implications disclose, so
+        // they have to be shown on it too.
+        if (!tool_use_event->permission_challenge->implications && tool_ptr) {
+          tool_use_event->permission_challenge->implications =
+              tool_ptr->GetPermissionChallengeImplications(*tool_use_event);
+        }
 
         OnToolUseEventOutput(last_entry.get(), tool_use_event.get());
         break;
