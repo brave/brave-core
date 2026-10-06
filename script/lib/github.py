@@ -8,12 +8,14 @@ from __future__ import absolute_import
 from builtins import str
 import json
 import base64
+import math
 import re
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
 from email.utils import parsedate_to_datetime
+from http.client import IncompleteRead
 
 try:
     from .util import execute, scoped_cwd
@@ -90,14 +92,15 @@ def _parse_retry_after(value):
         return max(0, int(text))
     except ValueError:
         pass
-    # Retry-After may be an HTTP date instead of a number of seconds.
+    # Retry-After may be an HTTP date. Ceil so a fractional second does not
+    # wake the retry before that deadline.
     try:
         when = parsedate_to_datetime(text)
     except (TypeError, ValueError, IndexError):
         return None
     if when.tzinfo is None:
         return None
-    return max(0, int(when.timestamp() - time.time()))
+    return max(0, math.ceil(when.timestamp() - time.time()))
 
 
 def _retry_wait_seconds(err):
@@ -186,11 +189,11 @@ class GitHub:
             error_headers = {}
             if e.headers is not None:
                 error_headers = {
-                    key.lower(): value
-                    for key, value in e.headers.items()
+                    key.lower(): value for key, value in e.headers.items()
                 }
             raise GitHubError(
-                e.code, _parse_github_body(e.read()), error_headers) from e
+                e.code, _parse_github_body(e.read()), error_headers
+            ) from e
         except ValueError:
             # Returned response may be empty in some cases
             r = {}
@@ -482,8 +485,9 @@ def _patch_issue(repo, issue_number, patch_data):
     for attempt in range(attempts):
         try:
             return repo.issues(issue_number).patch(data=patch_data)
-        except (GitHubError, urllib.error.URLError) as e:
-            # A connection failure and an ambiguous 422 are safe to repeat.
+        except (GitHubError, urllib.error.URLError, IncompleteRead) as e:
+            # A dropped connection, a truncated body, and an ambiguous 422 are
+            # safe to repeat.
             if attempt + 1 == attempts or (
                 isinstance(e, GitHubError)
                 and not _is_transient_issue_patch_error(e)
