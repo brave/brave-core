@@ -1845,7 +1845,10 @@ if (is_android) {
         "//brave/android/javatests/org/chromium/chrome/browser/brave_wallet/BraveWalletUtilsTest.java",
         "//brave/android/javatests/org/chromium/chrome/browser/settings/BraveWalletPreferencesTest.java",
       ]
-      deps += [ "//brave/components/brave_wallet/common:mojom_java" ]
+      deps += [
+        "//brave/components/brave_wallet/common:mojom_java",
+        "//mojo/public/java:system_java",
+      ]
     }
   }
 
