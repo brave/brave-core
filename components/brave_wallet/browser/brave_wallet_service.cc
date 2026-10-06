@@ -61,6 +61,7 @@
 #include "url/url_constants.h"
 
 #if BUILDFLAG(ENABLE_SNAP)
+#include "brave/components/brave_wallet/browser/snap/execution_environment/snap_host_bridge_controller.h"
 #include "brave/components/brave_wallet/browser/snap_service.h"
 #endif
 
@@ -298,7 +299,8 @@ BraveWalletService::BraveWalletService(
 
 #if BUILDFLAG(ENABLE_SNAP)
   if (IsSnapFeatureEnabled()) {
-    snap_service_ = std::make_unique<SnapService>();
+    snap_service_ = std::make_unique<SnapService>(
+        *keyring_service_, delegate_->CreateSnapHostBridgeController());
   }
 #endif
 
@@ -381,6 +383,11 @@ void BraveWalletService::Shutdown() {
   if (host_content_settings_map_) {
     host_content_settings_map_->RemoveObserver(this);
   }
+#if BUILDFLAG(ENABLE_SNAP)
+  if (snap_service_) {
+    snap_service_->Shutdown();
+  }
+#endif
 }
 
 // For unit tests

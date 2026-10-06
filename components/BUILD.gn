@@ -146,6 +146,11 @@ test("brave_components_unittests") {
         "//brave/components/brave_wallet/browser:unit_tests",
         "//brave/components/brave_wallet/renderer/test:unit_tests",
       ]
+      if (enable_snap) {
+        deps += [
+          "//brave/components/brave_wallet/content/browser/snaps:unit_tests",
+        ]
+      }
     }
   }
 
