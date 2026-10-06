@@ -64,7 +64,9 @@
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "mojo/public/cpp/bindings/message.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "services/network/public/cpp/network_context_getter.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -219,6 +221,24 @@ std::vector<mojom::WebSourcePtr> CreateWebSources(size_t num_sources) {
   }
   return sources;
 }
+
+// Stands in for the platform layer's user-gesture filter when the frame has no
+// activation. Counts the messages it saw so a test can tell "rejected" apart
+// from "never reached the filter".
+class RejectAllFilter : public mojo::MessageFilter {
+ public:
+  explicit RejectAllFilter(int* attempts) : attempts_(attempts) {}
+  ~RejectAllFilter() override = default;
+
+  bool WillDispatch(mojo::Message* message) override {
+    ++*attempts_;
+    return false;
+  }
+  void DidDispatchOrReject(mojo::Message* message, bool accepted) override {}
+
+ private:
+  raw_ptr<int> attempts_;
+};
 
 std::vector<mojom::ContentBlockPtr> CreateWebSourcesOutput(
     size_t num_sources,
@@ -1908,6 +1928,66 @@ TEST_F(ConversationHandlerUnitTest, MAYBE_ModifyConversation) {
   // Edit time should be set differently
   EXPECT_NE(conversation_history[1]->edits->at(0)->created_time,
             conversation_history[1]->created_time);
+}
+
+// The user-actions pipe is gated per-pipe rather than per-method, so
+// ModifyConversation is a sufficient probe for the whole interface.
+TEST_F(ConversationHandlerUnitTest, UserActionsRejectedByFilterClosesPipe) {
+  auto history = SetupHistory({{"prompt", false}, {"answer", false}});
+
+  int filter_attempts = 0;
+  mojo::Remote<mojom::UntrustedConversationUserActions> user_actions;
+  conversation_handler_->BindUserActions(
+      user_actions.BindNewPipeAndPassReceiver(),
+      std::make_unique<RejectAllFilter>(&filter_attempts));
+
+  base::RunLoop disconnect_loop;
+  user_actions.set_disconnect_handler(disconnect_loop.QuitClosure());
+
+  user_actions->ModifyConversation(history[1]->uuid.value(), "edited answer",
+                                   std::nullopt);
+  disconnect_loop.Run();
+
+  EXPECT_EQ(filter_attempts, 1);
+  EXPECT_FALSE(conversation_handler_->GetConversationHistory()[1]->edits);
+}
+
+// The iOS path, where no per-frame activation API exists to gate on.
+TEST_F(ConversationHandlerUnitTest, UserActionsWithoutFilterDispatches) {
+  auto history = SetupHistory({{"prompt", false}, {"answer", false}});
+
+  mojo::Remote<mojom::UntrustedConversationUserActions> user_actions;
+  conversation_handler_->BindUserActions(
+      user_actions.BindNewPipeAndPassReceiver(), /*gesture_filter=*/nullptr);
+
+  user_actions->ModifyConversation(history[1]->uuid.value(), "edited answer",
+                                   std::nullopt);
+  user_actions.FlushForTesting();
+
+  const auto& edits = conversation_handler_->GetConversationHistory()[1]->edits;
+  ASSERT_TRUE(edits);
+  ASSERT_EQ(edits->size(), 1u);
+  EXPECT_EQ(edits->at(0)->text, "edited answer");
+}
+
+TEST_F(ConversationHandlerUnitTest, UserActionsFilterDoesNotGateReads) {
+  SetupHistory({{"prompt", false}, {"answer", false}});
+
+  int filter_attempts = 0;
+  mojo::Remote<mojom::UntrustedConversationUserActions> user_actions;
+  conversation_handler_->BindUserActions(
+      user_actions.BindNewPipeAndPassReceiver(),
+      std::make_unique<RejectAllFilter>(&filter_attempts));
+
+  mojo::Remote<mojom::UntrustedConversationHandler> untrusted_handler;
+  conversation_handler_->Bind(untrusted_handler.BindNewPipeAndPassReceiver());
+
+  base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>>
+      history_future;
+  untrusted_handler->GetConversationHistory(std::nullopt,
+                                            history_future.GetCallback());
+  EXPECT_EQ(history_future.Take().size(), 2u);
+  EXPECT_EQ(filter_attempts, 0);
 }
 
 TEST_F(ConversationHandlerUnitTest, RegenerateAnswer) {
@@ -6373,6 +6453,54 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_UserAllowsForSession) {
   manager->GetToolInfos(content.uuid(), infos.GetCallback());
   ASSERT_EQ(1u, infos.Get().size());
   EXPECT_EQ(mojom::ToolPermission::kAllowSession, infos.Get()[0]->permission);
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       PermissionChallenge_DenyCannotBeReansweredWithAllowSession) {
+  // A denial leaves permission_challenge in place so the UI can keep showing
+  // what was refused, so a second decision for the same tool use must be
+  // rejected on the output instead. Otherwise the untrusted frame can follow
+  // the user's Deny with kAllowSession and win a standing session permission
+  // for the tool just refused. The gated pipe is no defence here: the denying
+  // click is itself the transient user activation the filter requires.
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com/cart"));
+  ON_CALL(content, GetContentTools)
+      .WillByDefault([](AssociatedContentDelegate::GetContentToolsCallback cb) {
+        std::vector<std::unique_ptr<Tool>> tools;
+        tools.push_back(std::make_unique<NiceMock<MockTool>>("cancel_cart"));
+        std::move(cb).Run(std::move(tools));
+      });
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  base::test::TestFuture<void> loaded;
+  manager->UpdateToolsForNewGenerationLoop(loaded.GetCallback());
+  ASSERT_TRUE(loaded.Wait());
+
+  StageHaltedToolUse(
+      conversation_handler_.get(), "cancel_cart",
+      mojom::PermissionChallenge::New(std::nullopt, std::nullopt, std::nullopt,
+                                      /*supports_allow_session=*/true));
+
+  conversation_handler_->ProcessPermissionChallenge(
+      "tool_id_1", mojom::PermissionChallengeDecision::kDeny);
+
+  // The denial is recorded as output, and the challenge is kept for the UI.
+  auto* denied_tool_event = conversation_handler_->GetConversationHistory()
+                                .back()
+                                ->events.value()[0]
+                                ->get_tool_use_event()
+                                .get();
+  ASSERT_TRUE(denied_tool_event->output.has_value());
+  EXPECT_TRUE(denied_tool_event->permission_challenge);
+
+  conversation_handler_->ProcessPermissionChallenge(
+      "tool_id_1", mojom::PermissionChallengeDecision::kAllowSession);
+
+  base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> infos;
+  manager->GetToolInfos(content.uuid(), infos.GetCallback());
+  ASSERT_EQ(1u, infos.Get().size());
+  EXPECT_EQ(mojom::ToolPermission::kAsk, infos.Get()[0]->permission);
 }
 
 TEST_F(ConversationHandlerUnitTest,

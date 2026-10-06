@@ -10,6 +10,7 @@ import createUntrustedConversationApi, {
 } from './api/untrusted_conversation_api'
 import {
   createMockUntrustedConversationHandler,
+  createMockUntrustedConversationUserActions,
   createMockUntrustedUIHandler,
   createMockParentUIFrame,
   createMockUntrustedService,
@@ -26,6 +27,7 @@ export interface MockContextProps {
 
   // Direct Mojo interface overrides
   conversationHandler?: Partial<Mojom.UntrustedConversationHandlerInterface>
+  userActions?: Partial<Mojom.UntrustedConversationUserActionsInterface>
   uiHandler?: Partial<Mojom.UntrustedUIHandlerInterface>
   parentUIFrame?: Partial<Mojom.ParentUIFrameInterface>
   service?: Partial<Mojom.UntrustedServiceInterface>
@@ -70,7 +72,7 @@ export interface MockContextRef {
  *
  * // With interface overrides for testing actions
  * render(
- *   <MockContext conversationHandler={{ respondToToolUseRequest: jest.fn() }}>
+ *   <MockContext userActions={{ respondToToolUseRequest: jest.fn() }}>
  *     <MyComponent />
  *   </MockContext>
  * )
@@ -86,6 +88,7 @@ const MockContext = React.forwardRef<MockContextRef, MockContextProps>(
     const {
       children,
       conversationHandler,
+      userActions,
       uiHandler,
       parentUIFrame,
       service,
@@ -97,12 +100,15 @@ const MockContext = React.forwardRef<MockContextRef, MockContextProps>(
     const [untrustedApi] = React.useState(() => {
       const mockConversationHandler =
         createMockUntrustedConversationHandler(conversationHandler)
+      const mockUserActions =
+        createMockUntrustedConversationUserActions(userActions)
       const mockUIHandler = createMockUntrustedUIHandler(uiHandler)
       const mockParentUIFrame = createMockParentUIFrame(parentUIFrame)
       const mockService = createMockUntrustedService(service)
 
       return createUntrustedConversationApi(
         mockConversationHandler,
+        mockUserActions,
         mockUIHandler,
         mockParentUIFrame,
         mockService,

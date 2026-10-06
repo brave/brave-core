@@ -155,7 +155,9 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
   void BindConversationHandler(
       const std::string& conversation_id,
       mojo::PendingReceiver<ai_chat::mojom::UntrustedConversationHandler>
-          untrusted_conversation_handler_receiver) override {
+          untrusted_conversation_handler_receiver,
+      mojo::PendingReceiver<ai_chat::mojom::UntrustedConversationUserActions>
+          user_actions_receiver) override {
     if (conversation_id.empty()) {
       return;
     }
@@ -173,6 +175,9 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
         base::BindOnce(
             [](mojo::PendingReceiver<
                    ai_chat::mojom::UntrustedConversationHandler> receiver,
+               mojo::PendingReceiver<
+                   ai_chat::mojom::UntrustedConversationUserActions>
+                   user_actions_receiver,
                ai_chat::ConversationHandler* conversation_handler) {
               if (!conversation_handler) {
                 DVLOG(0)
@@ -181,8 +186,14 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
                 return;
               }
               conversation_handler->Bind(std::move(receiver));
+              // //ios/web exposes no per-frame user activation (nothing in
+              // ios/web/public; web::UserInteractionState is internal and
+              // per-WKWebView), so there's nothing to gate on here yet.
+              conversation_handler->BindUserActions(
+                  std::move(user_actions_receiver), /*gesture_filter=*/nullptr);
             },
-            std::move(untrusted_conversation_handler_receiver)));
+            std::move(untrusted_conversation_handler_receiver),
+            std::move(user_actions_receiver)));
   }
 
   void BindUntrustedUI(

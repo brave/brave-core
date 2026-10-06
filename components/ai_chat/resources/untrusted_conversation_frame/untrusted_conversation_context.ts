@@ -167,6 +167,11 @@ export function useProvideUntrustedConversationContext(
     conversationHandler: api.conversationHandler,
 
     /**
+     * @deprecated Use `api.actions.userActions` instead
+     */
+    userActions: api.userActions,
+
+    /**
      * @deprecated Use `api.actions.uiHandler` instead
      */
     uiHandler: api.uiHandler,

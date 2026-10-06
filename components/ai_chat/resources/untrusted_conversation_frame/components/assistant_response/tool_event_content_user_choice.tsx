@@ -52,7 +52,7 @@ const ToolEventContentUserChoice: ToolComponent = (props) => {
       if (!props.isEntryActive) {
         return
       }
-      context.conversationHandler?.respondToToolUseRequest(
+      context.userActions?.respondToToolUseRequest(
         props.toolUseEvent.id,
         [createTextContentBlock(choice)],
         [],

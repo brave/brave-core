@@ -71,16 +71,32 @@ export function createMockUntrustedConversationHandler(
       }),
 
     // Action methods - fire and forget stubs
-    modifyConversation: () => {},
-    respondToToolUseRequest: () => {},
-    processPermissionChallenge: () => {},
     regenerateAnswer: () => {},
-    submitSuggestion: () => {},
     generateQuestions: () => {},
     retryAPIRequest: () => {},
     createConversationThread: (_originEntryUuid: string) =>
       Promise.resolve({ threadUuid: null }),
     switchToNonPremiumModel() {},
+
+    // Apply overrides
+    ...overrides,
+  })
+}
+
+/**
+ * Creates a mock UntrustedConversationUserActionsInterface for Storybook/tests.
+ *
+ * @param overrides - Partial implementation to override default behavior
+ */
+export function createMockUntrustedConversationUserActions(
+  overrides: Partial<Mojom.UntrustedConversationUserActionsInterface> = {},
+): Closable<Mojom.UntrustedConversationUserActionsInterface> {
+  return makeCloseable({
+    // Action methods - fire and forget stubs
+    modifyConversation: () => {},
+    respondToToolUseRequest: () => {},
+    processPermissionChallenge: () => {},
+    submitSuggestion: () => {},
 
     // Apply overrides
     ...overrides,

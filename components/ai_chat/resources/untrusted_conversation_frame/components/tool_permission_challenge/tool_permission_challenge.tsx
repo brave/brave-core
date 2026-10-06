@@ -116,7 +116,7 @@ export default function ToolPermissionChallenge(props: Props) {
     if (!props.isInteractive) {
       return
     }
-    conversationContext.conversationHandler?.processPermissionChallenge?.(
+    conversationContext.userActions?.processPermissionChallenge?.(
       props.toolUseEvent.id,
       decision,
     )

@@ -59,6 +59,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/clone_traits.h"
+#include "mojo/public/cpp/bindings/message.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -339,6 +340,13 @@ void ConversationHandler::Bind(
 void ConversationHandler::Bind(
     mojo::PendingReceiver<mojom::UntrustedConversationHandler> receiver) {
   untrusted_receivers_.Add(this, std::move(receiver));
+}
+
+void ConversationHandler::BindUserActions(
+    mojo::PendingReceiver<mojom::UntrustedConversationUserActions> receiver,
+    std::unique_ptr<mojo::MessageFilter> gesture_filter) {
+  user_action_receivers_.Add(this, std::move(receiver), /*context=*/{},
+                             std::move(gesture_filter));
 }
 
 void ConversationHandler::BindUntrustedConversationUI(
@@ -1077,6 +1085,7 @@ void ConversationHandler::SetSuggestedQuestionForTest(std::string title,
                                                       std::string prompt) {
   suggestions_.clear();
   suggestions_.emplace_back(title, prompt);
+  OnSuggestedQuestionsChanged();
 }
 
 void ConversationHandler::GenerateQuestions() {
@@ -1315,6 +1324,16 @@ void ConversationHandler::ProcessPermissionChallenge(
 
   if (!tool_use->permission_challenge) {
     DLOG(ERROR) << "No permission challenge for tool use: " << tool_use_id;
+    return;
+  }
+
+  // A denial records the tool's output but deliberately leaves the challenge in
+  // place so the UI can keep showing what was refused, so the output is what
+  // marks a challenge answered. Without this the untrusted frame could
+  // re-answer a denied challenge with kAllowSession and win a standing session
+  // permission for the tool the user just refused.
+  if (tool_use->output) {
+    DLOG(ERROR) << "Permission challenge already answered: " << tool_use_id;
     return;
   }
 

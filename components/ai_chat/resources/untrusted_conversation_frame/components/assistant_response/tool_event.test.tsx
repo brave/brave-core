@@ -114,7 +114,7 @@ describe('ToolEvent', () => {
     const mockProcessPermissionChallenge = jest.fn()
     render(
       <MockContext
-        conversationHandler={{
+        userActions={{
           processPermissionChallenge: mockProcessPermissionChallenge,
         }}
       >
@@ -168,7 +168,7 @@ describe('ToolEvent', () => {
     const mockProcessPermissionChallenge = jest.fn()
     render(
       <MockContext
-        conversationHandler={{
+        userActions={{
           processPermissionChallenge: mockProcessPermissionChallenge,
         }}
       >
@@ -251,7 +251,7 @@ describe('ToolEvent', () => {
     const mockProcessPermissionChallenge = jest.fn()
     render(
       <MockContext
-        conversationHandler={{
+        userActions={{
           processPermissionChallenge: mockProcessPermissionChallenge,
         }}
       >
@@ -285,7 +285,7 @@ describe('ToolEvent', () => {
     const mockProcessPermissionChallenge = jest.fn()
     render(
       <MockContext
-        conversationHandler={{
+        userActions={{
           processPermissionChallenge: mockProcessPermissionChallenge,
         }}
       >

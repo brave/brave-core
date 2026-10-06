@@ -18,7 +18,7 @@ describe('ToolEventContentUserChoice', () => {
     const mockRespondToToolUseRequest = jest.fn()
     render(
       <MockContext
-        conversationHandler={{
+        userActions={{
           respondToToolUseRequest: mockRespondToToolUseRequest,
         }}
       >
@@ -75,7 +75,7 @@ describe('ToolEventContentUserChoice', () => {
     const mockRespondToToolUseRequest = jest.fn()
     render(
       <MockContext
-        conversationHandler={{
+        userActions={{
           respondToToolUseRequest: mockRespondToToolUseRequest,
         }}
       >
@@ -103,7 +103,7 @@ describe('ToolEventContentUserChoice', () => {
     const mockRespondToToolUseRequest = jest.fn()
     render(
       <MockContext
-        conversationHandler={{
+        userActions={{
           respondToToolUseRequest: mockRespondToToolUseRequest,
         }}
       >

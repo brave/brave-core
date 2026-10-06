@@ -72,6 +72,7 @@ export type ConversationEntriesUIState = Mojom.ConversationEntriesState & {
 
 export default function createUntrustedConversationApi(
   conversationHandler: Closable<Mojom.UntrustedConversationHandlerInterface>,
+  userActions: Closable<Mojom.UntrustedConversationUserActionsInterface>,
   uiHandler: Mojom.UntrustedUIHandlerInterface,
   parentUIFrame: Closable<Mojom.ParentUIFrameInterface>,
   service: Closable<Mojom.UntrustedServiceInterface>,
@@ -85,6 +86,12 @@ export default function createUntrustedConversationApi(
       conversationHandler: conversationHandler as Pick<
         Mojom.UntrustedConversationHandlerInterface,
         VoidMethodKeys<Mojom.UntrustedConversationHandlerInterface>
+      >,
+      // The browser rejects anything sent here that didn't follow a user
+      // gesture, and closes the pipe.
+      userActions: userActions as Pick<
+        Mojom.UntrustedConversationUserActionsInterface,
+        VoidMethodKeys<Mojom.UntrustedConversationUserActionsInterface>
       >,
       uiHandler: uiHandler as UIHandlerActions,
       parentUIFrame: parentUIFrame as Pick<
@@ -263,6 +270,7 @@ export default function createUntrustedConversationApi(
     close: () => {
       api.close()
       conversationHandler.$.close()
+      userActions.$.close()
       parentUIFrame.$.close()
       service.$.close()
     },

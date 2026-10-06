@@ -13,6 +13,7 @@ import createUntrustedConversationApi from './untrusted_conversation_api'
  */
 export async function bindUntrustedConversation() {
   const conversationHandler = new Mojom.UntrustedConversationHandlerRemote()
+  const userActions = new Mojom.UntrustedConversationUserActionsRemote()
   const uiHandler = Mojom.UntrustedUIHandler.getRemote()
   const parentUIFrame = new Mojom.ParentUIFrameRemote()
   // Service is bound directly to the WebUI via the interface broker
@@ -24,12 +25,14 @@ export async function bindUntrustedConversation() {
   uiHandler.bindConversationHandler(
     conversationId,
     conversationHandler.$.bindNewPipeAndPassReceiver(),
+    userActions.$.bindNewPipeAndPassReceiver(),
   )
 
   uiHandler.bindParentPage(parentUIFrame.$.bindNewPipeAndPassReceiver())
 
   const conversationAPI = createUntrustedConversationApi(
     conversationHandler,
+    userActions,
     uiHandler,
     parentUIFrame,
     service,
