@@ -41,6 +41,19 @@ bool IsWalletDebugEnabled();
 bool IsMojoForLedgerEnabled();
 bool IsSnapFeatureEnabled();
 
+// Where snap bundles are evaluated. Selected by the `execution_environment`
+// param on kBraveWalletSnapFeature.
+enum class SnapExecutionEnvironment {
+  // v1: iframe inside an already-open chrome://wallet tab.
+  kWalletPage,
+  // Hidden never-composited WebContents at chrome://wallet-snap-host/.
+  kHiddenWebContents,
+  // Dev only: no host is started; waits for a manually-opened
+  // chrome://wallet-snap-host/ tab so the iframe is inspectable.
+  kHostPageDebug,
+};
+SnapExecutionEnvironment GetSnapExecutionEnvironment();
+
 bool IsEthereumKeyring(mojom::KeyringId keyring_id);
 bool IsEthereumAccount(const mojom::AccountIdPtr& account_id);
 

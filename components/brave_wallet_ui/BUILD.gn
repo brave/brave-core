@@ -38,9 +38,14 @@ repack("resources") {
     ]
 
     if (enable_snap) {
-      deps +=
-          [ "//brave/components/brave_wallet_ui/snap_host:snap_host_generated" ]
-      sources += [ "$root_gen_dir/brave/components/snap_host/resources/snap_host_generated.pak" ]
+      deps += [
+        "//brave/components/brave_wallet_ui/snap_host:snap_host_generated",
+        "//brave/components/brave_wallet_ui/wallet_snap_host:wallet_snap_host_generated",
+      ]
+      sources += [
+        "$root_gen_dir/brave/components/snap_host/resources/snap_host_generated.pak",
+        "$root_gen_dir/brave/components/wallet_snap_host/resources/wallet_snap_host_generated.pak",
+      ]
     }
   }
 

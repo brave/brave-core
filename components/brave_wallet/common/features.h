@@ -10,6 +10,7 @@
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "build/build_config.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
@@ -47,6 +48,7 @@ BASE_DECLARE_FEATURE(kBraveWalletAccountHidingFeature);
 
 #if BUILDFLAG(ENABLE_SNAP)
 BASE_DECLARE_FEATURE(kBraveWalletSnapFeature);
+BASE_DECLARE_FEATURE_PARAM(SnapExecutionEnvironment, kSnapExecutionEnvironment);
 #endif
 
 BASE_DECLARE_FEATURE(kBraveWalletSidePanel);

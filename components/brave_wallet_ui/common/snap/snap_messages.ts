@@ -8,6 +8,11 @@
 
 export const SNAP_HOST_ORIGIN = 'chrome-untrusted://snap-host'
 export const WALLET_PAGE_ORIGIN = 'chrome://wallet'
+export const WALLET_SNAP_HOST_ORIGIN = 'chrome://wallet-snap-host'
+export const ALLOWED_PARENT_ORIGINS: readonly string[] = [
+  WALLET_PAGE_ORIGIN,
+  WALLET_SNAP_HOST_ORIGIN,
+]
 
 export const enum SnapCommand {
   ExecuteSnap = 'executeSnap',

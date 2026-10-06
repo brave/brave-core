@@ -131,6 +131,10 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->AddBoolean("isLedgerMojoBridgeEnabled", IsMojoForLedgerEnabled());
   source->AddBoolean("walletDebug", IsWalletDebugEnabled());
   source->AddBoolean("isSnapEnabled", IsSnapFeatureEnabled());
+  source->AddBoolean(
+      "isSnapHostedByWalletPage",
+      IsSnapFeatureEnabled() && GetSnapExecutionEnvironment() ==
+                                    SnapExecutionEnvironment::kWalletPage);
 
 #if !BUILDFLAG(IS_ANDROID)
   content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
@@ -175,7 +179,8 @@ void WalletPageUI::BindInterface(
 #if BUILDFLAG(ENABLE_SNAP)
 void WalletPageUI::BindInterface(
     mojo::PendingReceiver<mojom::SnapService> receiver) {
-  if (!IsSnapFeatureEnabled()) {
+  if (!IsSnapFeatureEnabled() ||
+      GetSnapExecutionEnvironment() != SnapExecutionEnvironment::kWalletPage) {
     return;
   }
   auto* profile = Profile::FromWebUI(web_ui());

@@ -112,6 +112,17 @@ bool IsSnapFeatureEnabled() {
 #endif
 }
 
+SnapExecutionEnvironment GetSnapExecutionEnvironment() {
+#if BUILDFLAG(ENABLE_SNAP)
+  if (!IsSnapFeatureEnabled()) {
+    return SnapExecutionEnvironment::kWalletPage;
+  }
+  return features::kSnapExecutionEnvironment.Get();
+#else
+  return SnapExecutionEnvironment::kWalletPage;
+#endif
+}
+
 bool IsEthereumKeyring(mojom::KeyringId keyring_id) {
   return keyring_id == mojom::KeyringId::kDefault;
 }
