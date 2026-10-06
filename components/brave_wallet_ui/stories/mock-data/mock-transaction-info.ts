@@ -320,12 +320,12 @@ export const mockSvmTxInfos: BraveWallet.TransactionInfo[] = [
 
 export const mockFilSendTransaction: FileCoinTransactionInfo = {
   chainId: BraveWallet.FILECOIN_MAINNET,
-  confirmedTime: { msec: new Date().getUTCMilliseconds() },
-  createdTime: { msec: new Date().getUTCMilliseconds() },
+  confirmedTime: { msec: Date.now() },
+  createdTime: { msec: Date.now() },
   fromAccountId: mockFilecoinAccount.accountId,
   id: 'fil-send-tx',
   originInfo: undefined,
-  submittedTime: { msec: new Date().getUTCMilliseconds() },
+  submittedTime: { msec: Date.now() },
   txArgs: [],
   txDataUnion: {
     filTxData: {

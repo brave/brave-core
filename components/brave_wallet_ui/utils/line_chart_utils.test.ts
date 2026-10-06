@@ -143,7 +143,7 @@ describe('sanitizeTokenPriceHistory', () => {
 
   it('should reject objects with prototype pollution', () => {
     const malicious = JSON.parse(
-      '{"date": 1000, "close": 42.5, "__proto__": {"polluted": true}}',
+      '{"date": 1, "close": 42.5, "__proto__": {"polluted": true}}',
     )
     expect(sanitizeTokenPriceHistory(malicious)).toBeUndefined()
   })
@@ -151,8 +151,8 @@ describe('sanitizeTokenPriceHistory', () => {
 
 describe('sanitizeLineChartIframeData', () => {
   const validPriceData = [
-    { date: 1000, close: 100.5 },
-    { date: 2000, close: 105.25 },
+    { date: 1, close: 100.5 },
+    { date: 2, close: 105.25 },
   ]
 
   const validData = {
@@ -165,8 +165,8 @@ describe('sanitizeLineChartIframeData', () => {
     const result = sanitizeLineChartIframeData(validData)
     expect(result).toEqual({
       priceData: [
-        { date: 1000, close: 100.5 },
-        { date: 2000, close: 105.25 },
+        { date: 1, close: 100.5 },
+        { date: 2, close: 105.25 },
       ],
       defaultFiatCurrency: 'USD',
       hidePortfolioBalances: false,
@@ -290,8 +290,8 @@ describe('sanitizeLineChartIframeData', () => {
     expect(
       sanitizeLineChartIframeData({
         priceData: [
-          { date: 1000, close: 100 },
-          { date: 2000, close: 'invalid' }, // invalid close
+          { date: 1, close: 100 },
+          { date: 2, close: 'invalid' }, // invalid close
         ],
         defaultFiatCurrency: 'USD',
         hidePortfolioBalances: false,
@@ -302,7 +302,7 @@ describe('sanitizeLineChartIframeData', () => {
   it('should return undefined if a priceData item has a non-finite value', () => {
     expect(
       sanitizeLineChartIframeData({
-        priceData: [{ date: 1000, close: Infinity }],
+        priceData: [{ date: 1, close: Infinity }],
         defaultFiatCurrency: 'USD',
         hidePortfolioBalances: false,
       }),
@@ -326,8 +326,8 @@ describe('sanitizeLineChartIframeData', () => {
     })
     expect(result).toEqual({
       priceData: [
-        { date: 1000, close: 100.5 },
-        { date: 2000, close: 105.25 },
+        { date: 1, close: 100.5 },
+        { date: 2, close: 105.25 },
       ],
       defaultFiatCurrency: 'USD',
       hidePortfolioBalances: true,
@@ -368,13 +368,13 @@ describe('integration: JSON parsing from external sources', () => {
 
   it('should safely parse and sanitize valid JSON', () => {
     const jsonString =
-      '{"priceData":[{"date":1000,"close":50}],'
+      '{"priceData":[{"date":1,"close":50}],'
       + '"defaultFiatCurrency":"USD","hidePortfolioBalances":false}'
     const parsed = JSON.parse(jsonString)
     const result = sanitizeLineChartIframeData(parsed)
 
     expect(result).toEqual({
-      priceData: [{ date: 1000, close: 50 }],
+      priceData: [{ date: 1, close: 50 }],
       defaultFiatCurrency: 'USD',
       hidePortfolioBalances: false,
     })
