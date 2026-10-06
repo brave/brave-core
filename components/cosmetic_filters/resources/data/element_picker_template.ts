@@ -1,3 +1,11 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Markup for the element picker's shadow root. Kept as a module so both the
+// webpack and rollup builds can consume it without a raw-text loader.
+export const elementPickerTemplate: string = `
 <style>
   :host {
     background: transparent;
@@ -402,3 +410,4 @@
     </svg>
   </div>
 </section>
+`
