@@ -128,3 +128,9 @@ export const MULTILINGUAL_SUPPORTED_LANGUAGES = {
   'pt-PT': 13,
   'hi-IN': 6,
 } as const
+
+export const MULTILINGUAL_LANGUAGE_TAG_TOKENS = new Set(
+  Object.keys(MULTILINGUAL_SUPPORTED_LANGUAGES).map(
+    (lang) => `<${lang}>`,
+  ),
+)

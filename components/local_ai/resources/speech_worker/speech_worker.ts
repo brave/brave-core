@@ -97,6 +97,9 @@ class SpeechRecognitionFactoryImpl
   private model: OrtNemotronModel | null = null
   // The browser only delivers the English model so far.
   private readonly modelType: NemotronModelType = 'multilingual'
+  // private readonly promptId: number = 2
+  // private readonly modelType: NemotronModelType | null = null
+  // private promptId: number | null = null
 
   constructor() {
     this.receiver = new SpeechRecognitionFactoryReceiver(this)
@@ -108,6 +111,7 @@ class SpeechRecognitionFactoryImpl
 
   async init(files: OrtModelFiles) {
     try {
+      // const { modelType, promptId } = getNemotronModelType(lang)
       this.model = await OrtNemotronModel.buildFromBytes(
         readBigBuffer(files.encoder, 'Encoder'),
         readBigBuffer(files.encoderData, 'EncoderData'),
@@ -118,6 +122,8 @@ class SpeechRecognitionFactoryImpl
           readBigBuffer(files.melFilters, 'Filterbank').slice().buffer,
         ),
       )
+      // this.modelType = modelType
+      // this.promptId = promptId ?? null
       return { success: true }
     } catch (err) {
       console.error('[speech-worker] init failed:', err)
@@ -130,7 +136,7 @@ class SpeechRecognitionFactoryImpl
     stream: AsrStreamInputPendingReceiver,
     responder: AsrStreamResponderRemote,
   ) {
-    if (!this.model) {
+    if (!this.model || !this.modelType) {
       console.error('[speech-worker] createAsrStream before init')
       responder.$.close()
       return
@@ -140,7 +146,7 @@ class SpeechRecognitionFactoryImpl
     try {
       // The browser falls back to en-US when a page sets no language, so a
       // missing one only comes from a caller that skips that.
-      const language = options.language ?? 'en-US'
+      const language = options.language ?? 'es-ES'
       const { modelType, promptId } = getNemotronModelType(language)
       if (modelType !== this.modelType) {
         throw new Error(`${language} needs the ${modelType} model`)
