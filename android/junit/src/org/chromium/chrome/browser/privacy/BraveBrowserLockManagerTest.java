@@ -396,6 +396,33 @@ public class BraveBrowserLockManagerTest {
         verify(mCoordinatorsByActivity.get(secondActivity)).hide(anyInt());
     }
 
+    // --- Pref change listener ---
+
+    @Test
+    public void prefDisabled_whileLockShown_hidesCoordinator() {
+        // Regression coverage: disabling the lock pref (e.g. from a different multi-instance
+        // window) must dismiss an already-showing lock, not just pre-native placeholder overlays.
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_BROWSER_LOCK, true);
+
+        TestManager manager = createTestManager();
+        manager.setLockArmedForTesting(true);
+        manager.onActivityStateChange(mActivity, ActivityState.STARTED);
+        assertTrue(manager.isLockShownForTesting(mActivity));
+        assertTrue(manager.isReauthInFlightForTesting());
+
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_BROWSER_LOCK, false);
+        manager.getPrefChangeListenerForTesting()
+                .onSharedPreferenceChanged(
+                        /* sharedPreferences= */ null, BravePreferenceKeys.BRAVE_BROWSER_LOCK);
+
+        assertFalse(manager.isLockShownForTesting(mActivity));
+        assertFalse(manager.isLockArmedForTesting());
+        assertFalse(manager.isReauthInFlightForTesting());
+        verify(mMockCoordinator).hide(anyInt());
+    }
+
     // --- getScreenshotMode / shouldForceSecureWindow ---
 
     @Test
