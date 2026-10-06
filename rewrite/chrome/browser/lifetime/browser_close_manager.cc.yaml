@@ -17,3 +17,19 @@ substitutions:
     add_before_line:
       line: 'ProfileManager::ShutdownSessionServices();'
       code: '  sidebar::CloseAllWebPanels();'
+  - description: |-
+      Mark closing all browsers as started
+
+      Read by `BrowserCloseManager::BrowserClosingStarted()`.
+    preempt_function_impl:
+      function_name: BrowserCloseManager::StartClosingBrowsers
+      code: g_browser_closing_started = true;
+  - description: |-
+      Clear the closing flag when the close is cancelled
+
+      Otherwise `BraveBrowser` keeps skipping its window closing confirmation
+      for the rest of the session after a quit is cancelled, e.g. from a
+      beforeunload dialog.
+    preempt_function_impl:
+      function_name: BrowserCloseManager::CancelBrowserClose
+      code: g_browser_closing_started = false;

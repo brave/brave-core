@@ -14,6 +14,7 @@
 #include "chrome/browser/download/download_manager_utils.h"
 #include "chrome/browser/download/download_prefs.h"
 #include "chrome/browser/lifetime/application_lifetime_desktop.h"
+#include "chrome/browser/lifetime/browser_close_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -271,6 +272,39 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
   // Close browser
   ASSERT_NO_FATAL_FAILURE(AcceptClose());
   ui_test_utils::WaitForBrowserToClose(browser_window);
+}
+
+// A quit cancelled from a beforeunload dialog must not keep suppressing the
+// window closing confirmation for the rest of the session.
+IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
+                       TestWithQuitCancelledByOnBeforeUnload) {
+  ASSERT_TRUE(embedded_test_server()->Start());
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), embedded_test_server()->GetURL("/beforeunload.html")));
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL(url::kAboutBlankURL),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  PrepareForBeforeUnloadDialog(browser());
+  EXPECT_FALSE(BrowserCloseManager::BrowserClosingStarted());
+
+  // Quitting doesn't ask, but the beforeunload dialog cancels the quit.
+  chrome::CloseAllBrowsersAndQuit();
+  EXPECT_TRUE(BrowserCloseManager::BrowserClosingStarted());
+  ASSERT_NO_FATAL_FAILURE(CancelClose());
+  SetClosingBrowserCallbackAndWait();
+  EXPECT_FALSE(closing_confirm_dialog_created_);
+  EXPECT_FALSE(BrowserCloseManager::BrowserClosingStarted());
+  EXPECT_TRUE(ShouldAskBeforeClosing(browser()));
+
+  // Closing the window asks again.
+  allow_to_close_ = true;
+  PrepareForBeforeUnloadDialog(browser());
+  chrome::CloseWindow(browser());
+  EXPECT_TRUE(closing_confirm_dialog_created_);
+  ASSERT_NO_FATAL_FAILURE(AcceptClose());
+  ui_test_utils::WaitForBrowserToClose(browser());
 }
 
 // Disabling on Mac due to excessive flakiness
