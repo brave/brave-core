@@ -73,6 +73,7 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kVerboseLoggingFeature;
 @property(class, nonatomic, readonly) Feature* kBraveHttpsByDefault;
 @property(class, nonatomic, readonly) Feature* kBlockAllCookiesToggle;
+@property(class, nonatomic, readonly) Feature* kBraveShieldsElementPicker;
 @property(class, nonatomic, readonly) Feature* kBraveTranslateEnabled;
 @property(class, nonatomic, readonly) Feature* kBraveAppleTranslateEnabled;
 @property(class, nonatomic, readonly) Feature* kUseBraveUserAgent;
