@@ -132,6 +132,7 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationEntriesBrowserTest,
            base::EscapeQueryParamValue(
                embedded_https_test_server().GetURL("/logo.png").spec(),
                /*use_plus=*/false)})),
+      GURL("chrome-untrusted://favicon2?size=64&pageUrl=https%3A%2F%2Fa.com"),
   };
   for (const GURL& image_url : image_urls) {
     SCOPED_TRACE(image_url);
