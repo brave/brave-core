@@ -27,7 +27,8 @@ class BrowserToolProviderFactory : public ToolProviderFactory {
       delete;
 
   // ToolProviderFactory implementation
-  std::unique_ptr<ToolProvider> CreateToolProvider() override;
+  std::unique_ptr<ToolProvider> CreateToolProvider(
+      ConversationHandler* conversation) override;
 
  private:
   raw_ptr<Profile> profile_ = nullptr;

@@ -10,6 +10,7 @@
 
 namespace ai_chat {
 
+class ConversationHandler;
 class ToolProvider;
 
 // Factory interface for creating ToolProvider instances.
@@ -21,8 +22,10 @@ class ToolProviderFactory {
  public:
   virtual ~ToolProviderFactory() = default;
 
-  // Creates a new ToolProvider instance for a conversation
-  virtual std::unique_ptr<ToolProvider> CreateToolProvider() = 0;
+  // Creates a new ToolProvider instance for |conversation|, which is never null
+  // and owns the returned provider, so outlives it.
+  virtual std::unique_ptr<ToolProvider> CreateToolProvider(
+      ConversationHandler* conversation) = 0;
 };
 
 }  // namespace ai_chat

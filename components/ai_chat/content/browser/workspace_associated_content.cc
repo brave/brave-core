@@ -85,14 +85,14 @@ std::optional<std::string> ParseWorkspaceUrl(const GURL& url) {
 }  // namespace
 
 WorkspaceAssociatedContent::WorkspaceAssociatedContent(
-    base::FilePath folder_path,
+    std::optional<base::FilePath> folder_path,
     content::BrowserContext* browser_context,
     base::OnceCallback<void(content::WebContents*)> attach_tab_helpers)
     : WorkspaceAssociatedContent(
           base::Uuid::GenerateRandomV4().AsLowercaseString()) {
   folder_path_ = std::move(folder_path);
   DVLOG(2) << __func__ << " creating workspace " << url().spec()
-           << " for folder " << *folder_path_;
+           << " for folder " << folder_path_.value_or(base::FilePath());
   AttachWebContents(browser_context, std::move(attach_tab_helpers));
 }
 

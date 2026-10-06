@@ -11,6 +11,7 @@
 #include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/browser/ai_chat/tools/attach_workspace_tool.h"
 #include "brave/browser/ai_chat/tools/code_execution_tool.h"
 #include "brave/browser/ai_chat/tools/history_search_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
@@ -26,14 +27,19 @@
 
 namespace ai_chat {
 
-BrowserToolProvider::BrowserToolProvider(Profile* profile) : profile_(profile) {
-  CreateTools(profile);
+BrowserToolProvider::BrowserToolProvider(Profile* profile,
+                                         ConversationHandler* conversation)
+    : profile_(profile) {
+  CreateTools(profile, conversation);
 }
 
 BrowserToolProvider::~BrowserToolProvider() = default;
 
 std::vector<base::WeakPtr<Tool>> BrowserToolProvider::GetTools() {
   std::vector<base::WeakPtr<Tool>> tool_ptrs;
+  if (attach_workspace_tool_) {
+    tool_ptrs.push_back(attach_workspace_tool_->GetWeakPtr());
+  }
   if (code_execution_tool_) {
     tool_ptrs.push_back(code_execution_tool_->GetWeakPtr());
   }
@@ -55,8 +61,12 @@ HistorySearchTool* BrowserToolProvider::GetHistorySearchToolForTesting() {
   return history_search_tool_.get();
 }
 
-void BrowserToolProvider::CreateTools(
-    content::BrowserContext* browser_context) {
+void BrowserToolProvider::CreateTools(content::BrowserContext* browser_context,
+                                      ConversationHandler* conversation) {
+  if (base::FeatureList::IsEnabled(features::kAIChatWorkspaceTools)) {
+    attach_workspace_tool_ =
+        std::make_unique<AttachWorkspaceTool>(browser_context, conversation);
+  }
   if (features::IsCodeExecutionToolEnabled()) {
     code_execution_tool_ = std::make_unique<CodeExecutionTool>(browser_context);
   }

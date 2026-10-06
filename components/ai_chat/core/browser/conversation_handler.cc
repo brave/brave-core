@@ -313,6 +313,18 @@ ConversationHandler::~ConversationHandler() {
   }
 }
 
+void ConversationHandler::AddToolProviders(
+    std::vector<std::unique_ptr<ToolProvider>> providers) {
+  CHECK(!tool_providers_.empty() &&
+        tool_providers_.back().get() == associated_content_manager_);
+  for (const auto& provider : providers) {
+    provider->AddObserver(this);
+  }
+  tool_providers_.insert(std::prev(tool_providers_.end()),
+                         std::make_move_iterator(providers.begin()),
+                         std::make_move_iterator(providers.end()));
+}
+
 void ConversationHandler::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
 }
