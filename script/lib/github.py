@@ -8,14 +8,11 @@ from __future__ import absolute_import
 from builtins import str
 import json
 import base64
-import math
 import re
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
-from email.utils import parsedate_to_datetime
-from http.client import IncompleteRead
 
 try:
     from .util import execute, scoped_cwd
@@ -24,118 +21,8 @@ except ImportError:
 
 GITHUB_URL = 'https://api.github.com'
 GITHUB_UPLOAD_ASSET_URL = 'https://uploads.github.com'
-# Validation failures are not retried. These are the responses GitHub uses for
-# rate limits and temporary outages.
-TRANSIENT_GITHUB_STATUS_CODES = (429, 500, 502, 503, 504)
-# Primary rate-limit windows are one hour. Longer values are a bad header.
-_MAX_RETRY_WAIT_SECONDS = 3600
-# A secondary limit can omit Retry-After while the primary quota remains.
-# That response's reset timestamp is the wrong window.
-_SECONDARY_RATE_LIMIT_WAIT_SECONDS = 60
-
-
-class GitHubError(Exception):
-    """GitHub HTTP or API error. str() is the response body when it is JSON."""
-
-    def __init__(self, status_code, body, headers=None):
-        self.status_code = status_code
-        self.body = body
-        self.headers = headers or {}
-        if isinstance(body, (dict, list)):
-            message = json.dumps(body, indent=2, separators=(',', ': '))
-        else:
-            message = 'HTTP Error %s: %s' % (status_code, body)
-        super(GitHubError, self).__init__(message)
-
-
-def _parse_github_body(raw):
-    if not raw:
-        return {}
-    text = raw.decode('utf-8', errors='replace')
-    try:
-        return json.loads(text)
-    except ValueError:
-        return text
-
-
-def _is_transient_github_error(err):
-    code = getattr(err, 'status_code', None)
-    if code in TRANSIENT_GITHUB_STATUS_CODES:
-        return True
-    text = str(err).lower()
-    return code == 403 and ('rate limit' in text or 'secondary rate' in text)
-
-
-def _is_transient_issue_patch_error(err):
-    if _is_transient_github_error(err):
-        return True
-    if getattr(err, 'status_code', None) != 422:
-        return False
-    body = getattr(err, 'body', None)
-    # GitHub also uses 422 when an endpoint has been spammed. A field-specific
-    # error is permanent; an ambiguous 422 is safe to retry for this idempotent
-    # PATCH and still fails after the bounded attempts.
-    return not isinstance(body, dict) or not body.get('errors')
-
-
-def _is_rate_limited(err):
-    code = getattr(err, 'status_code', None)
-    # 429 is always a rate limit. 403 is one only when the body says so.
-    return code in (403, 429) and _is_transient_github_error(err)
-
-
-def _parse_retry_after(value):
-    text = str(value).strip()
-    if not text:
-        return None
-    try:
-        return max(0, int(text))
-    except ValueError:
-        pass
-    # Retry-After may be an HTTP date. Ceil so a fractional second does not
-    # wake the retry before that deadline.
-    try:
-        when = parsedate_to_datetime(text)
-    except (TypeError, ValueError, IndexError):
-        return None
-    if when.tzinfo is None:
-        return None
-    return max(0, math.ceil(when.timestamp() - time.time()))
-
-
-def _retry_wait_seconds(err):
-    """Seconds GitHub asked us to wait, or None when the caller should back off.
-
-    X-RateLimit-Reset is the primary quota window, so it applies only when
-    that quota is exhausted. Any other rate-limit response waits 60 seconds.
-    A secondary limit can omit Retry-After while remaining is still positive,
-    and the primary timestamp would wait out the wrong window or retry at once.
-    """
-    headers = getattr(err, 'headers', None) or {}
-    retry_after = headers.get('retry-after')
-    if retry_after is not None:
-        delay = _parse_retry_after(retry_after)
-        if delay is not None:
-            return min(delay, _MAX_RETRY_WAIT_SECONDS)
-    if not _is_rate_limited(err):
-        return None
-    remaining = headers.get('x-ratelimit-remaining')
-    reset = headers.get('x-ratelimit-reset')
-    if (
-        remaining is not None
-        and str(remaining).strip() == '0'
-        and reset is not None
-    ):
-        try:
-            reset_at = int(str(reset).strip())
-        except ValueError:
-            reset_at = None
-        if reset_at is not None:
-            # +1s so a retry does not land in the same window the header just
-            # closed.
-            delay = max(0, reset_at - int(time.time()) + 1)
-            return min(delay, _MAX_RETRY_WAIT_SECONDS)
-    return _SECONDARY_RATE_LIMIT_WAIT_SECONDS
+# GitHub uses 403 and 429 for rate limits. The rest are temporary outages.
+_TRANSIENT_HTTP_CODES = (403, 429, 500, 502, 503, 504)
 
 
 class GitHub:
@@ -174,31 +61,15 @@ class GitHub:
                 url += '?' + urllib.parse.urlencode(params)
             request = urllib.request.Request(url, **kw)
             with urllib.request.urlopen(request) as response:
-                raw = response.read()
+                r = json.loads(response.read())
                 kw['headers']['ResponseHeaders'] = dict(
                     response.headers.items()
                 )
-                r = _parse_github_body(raw)
-                # A successful response that is not JSON is treated as empty.
-                if isinstance(r, str):
-                    r = {}
-        except urllib.error.HTTPError as e:
-            # urlopen raises before the body can be parsed. Keep the body so a
-            # 422 reports GitHub's field error instead of only the status line.
-            # Headers are kept so a rate-limit retry can honor Retry-After.
-            error_headers = {}
-            if e.headers is not None:
-                error_headers = {
-                    key.lower(): value for key, value in e.headers.items()
-                }
-            raise GitHubError(
-                e.code, _parse_github_body(e.read()), error_headers
-            ) from e
         except ValueError:
             # Returned response may be empty in some cases
             r = {}
-        if isinstance(r, dict) and 'message' in r:
-            raise GitHubError(None, r)
+        if 'message' in r:
+            raise Exception(json.dumps(r, indent=2, separators=(',', ': ')))
         return r
 
 
@@ -479,32 +350,43 @@ def set_issue_details(
         )
 
 
+def _retry_http_error(code, body):
+    if code in _TRANSIENT_HTTP_CODES:
+        return True
+    if code != 422:
+        return False
+    # GitHub also returns 422 when an endpoint has been spammed. A body that
+    # names field errors is a rejected value and is not retried.
+    try:
+        parsed = json.loads(body)
+    except ValueError:
+        return True
+    return not isinstance(parsed, dict) or not parsed.get('errors')
+
+
 def _patch_issue(repo, issue_number, patch_data):
     delay_seconds = 2
-    attempts = 3
-    for attempt in range(attempts):
+    for attempt in range(3):
         try:
             return repo.issues(issue_number).patch(data=patch_data)
-        except (GitHubError, urllib.error.URLError, IncompleteRead) as e:
-            # A dropped connection, a truncated body, and an ambiguous 422 are
-            # safe to repeat.
-            if attempt + 1 == attempts or (
-                isinstance(e, GitHubError)
-                and not _is_transient_issue_patch_error(e)
-            ):
+        except urllib.error.HTTPError as e:
+            body = e.read().decode('utf-8', errors='replace')
+            if attempt == 2 or not _retry_http_error(e.code, body):
+                raise Exception(
+                    'HTTP Error ' + str(e.code) + ': ' + body
+                ) from e
+        except urllib.error.URLError:
+            if attempt == 2:
                 raise
-            wait = _retry_wait_seconds(e)
-            if wait is None:
-                wait = delay_seconds
-                delay_seconds *= 2
-            print(
-                '[WARNING] transient GitHub error updating '
-                + str(list(patch_data.keys()))
-                + ', retrying in '
-                + str(wait)
-                + 's'
-            )
-            time.sleep(wait)
+        print(
+            '[WARNING] transient GitHub error updating '
+            + str(list(patch_data.keys()))
+            + ', retrying in '
+            + str(delay_seconds)
+            + 's'
+        )
+        time.sleep(delay_seconds)
+        delay_seconds *= 2
 
 
 def fetch_origin_check_staged(path):
