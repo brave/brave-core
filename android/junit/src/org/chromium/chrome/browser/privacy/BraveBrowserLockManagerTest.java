@@ -15,7 +15,11 @@ import static org.mockito.Mockito.verify;
 
 import android.app.Activity;
 import android.os.Build.VERSION_CODES;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+
+import androidx.activity.ComponentActivity;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -28,6 +32,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.annotation.Config;
 
 import org.chromium.base.ActivityState;
+import org.chromium.base.ApplicationState;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.FeatureOverrides;
 import org.chromium.base.test.BaseRobolectricTestRunner;
@@ -38,6 +43,8 @@ import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthManager;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthSettingUtils;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.ui.modaldialog.ModalDialogManager;
+import org.chromium.ui.modaldialog.ModalDialogManagerHolder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,6 +65,17 @@ public class BraveBrowserLockManagerTest {
         BraveBrowserLockCoordinator createCoordinator(
                 Activity activity, IncognitoReauthManager incognitoReauthManager) {
             return mMockCoordinator;
+        }
+    }
+
+    /** An Activity exposing a mock ModalDialogManager, for testing dialog-dismissal on lock. */
+    private static class TestActivityWithDialogManager extends Activity
+            implements ModalDialogManagerHolder {
+        final ModalDialogManager mModalDialogManager = mock(ModalDialogManager.class);
+
+        @Override
+        public ModalDialogManager getModalDialogManager() {
+            return mModalDialogManager;
         }
     }
 
@@ -133,6 +151,56 @@ public class BraveBrowserLockManagerTest {
         BraveBrowserLockManager manager = createManager();
         manager.setLockArmedForTesting(BraveBrowserLockManager.isBrowserLockEnabled());
         assertFalse(manager.isLockArmedForTesting());
+    }
+
+    @Test
+    public void suppressNextRearm_skipsOneBackgroundTransition() {
+        // Regression coverage: a known benign round trip (e.g. the "no screen lock configured"
+        // redirect to OS security settings) must not re-show the lock purely because it
+        // transiently stops all of Brave's own activities.
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_BROWSER_LOCK, true);
+        BraveBrowserLockManager manager = createManager();
+        BraveBrowserLockManager.setInstanceForTesting(manager);
+        manager.setLockArmedForTesting(false);
+
+        BraveBrowserLockManager.suppressNextRearm();
+        manager.getAppStateListenerForTesting()
+                .onApplicationStateChange(ApplicationState.HAS_STOPPED_ACTIVITIES);
+
+        assertFalse(manager.isLockArmedForTesting());
+    }
+
+    @Test
+    public void suppressNextRearm_onlySkipsTheNextTransitionNotLaterOnes() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_BROWSER_LOCK, true);
+        BraveBrowserLockManager manager = createManager();
+        BraveBrowserLockManager.setInstanceForTesting(manager);
+        manager.setLockArmedForTesting(false);
+
+        BraveBrowserLockManager.suppressNextRearm();
+        manager.getAppStateListenerForTesting()
+                .onApplicationStateChange(ApplicationState.HAS_STOPPED_ACTIVITIES);
+        assertFalse(manager.isLockArmedForTesting());
+
+        // A later, genuine backgrounding is not suppressed.
+        manager.getAppStateListenerForTesting()
+                .onApplicationStateChange(ApplicationState.HAS_STOPPED_ACTIVITIES);
+        assertTrue(manager.isLockArmedForTesting());
+    }
+
+    @Test
+    public void appStateListener_withoutSuppression_armsNormally() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_BROWSER_LOCK, true);
+        BraveBrowserLockManager manager = createManager();
+        manager.setLockArmedForTesting(false);
+
+        manager.getAppStateListenerForTesting()
+                .onApplicationStateChange(ApplicationState.HAS_STOPPED_ACTIVITIES);
+
+        assertTrue(manager.isLockArmedForTesting());
     }
 
     // --- First-launch arming ---
@@ -281,6 +349,94 @@ public class BraveBrowserLockManagerTest {
         manager.onNativeInitialized(mProfile);
 
         assertFalse(manager.isPreNativeOverlayShownForTesting(mActivity));
+    }
+
+    @Test
+    public void preNativeOverlay_isClickableAndFocusable() {
+        // Regression coverage: a plain, non-clickable View lets touches fall through to the
+        // content beneath it despite looking opaque.
+        mActivity = Robolectric.buildActivity(Activity.class).create().start().get();
+
+        TestManager manager = new TestManager();
+        manager.setLockArmedForTesting(true);
+        manager.onActivityStateChange(mActivity, ActivityState.STARTED);
+
+        View overlay = manager.getPreNativeOverlayForTesting(mActivity);
+        assertTrue(overlay.isClickable());
+        assertTrue(overlay.isFocusable());
+    }
+
+    @Test
+    public void showLock_blocksContentDescendantFocus_restoresOnReauthSuccess() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_BROWSER_LOCK, true);
+        mActivity = Robolectric.buildActivity(Activity.class).create().start().get();
+
+        TestManager manager = createTestManager();
+        manager.setLockArmedForTesting(true);
+        manager.onActivityStateChange(mActivity, ActivityState.STARTED);
+
+        ViewGroup content = (ViewGroup) mActivity.findViewById(android.R.id.content);
+        assertEquals(ViewGroup.FOCUS_BLOCK_DESCENDANTS, content.getDescendantFocusability());
+
+        manager.getReauthCallbackForTesting().onIncognitoReauthSuccess();
+
+        assertEquals(ViewGroup.FOCUS_BEFORE_DESCENDANTS, content.getDescendantFocusability());
+    }
+
+    @Test
+    public void showLock_blocksBackPress_unblocksOnReauthSuccess() {
+        // Regression coverage: without this, pressing Back navigates the content behind the lock
+        // (e.g. closing a tab) without ever authenticating.
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_BROWSER_LOCK, true);
+        ComponentActivity activity =
+                Robolectric.buildActivity(ComponentActivity.class).create().start().get();
+
+        TestManager manager = createTestManager();
+        manager.setLockArmedForTesting(true);
+        manager.onActivityStateChange(activity, ActivityState.STARTED);
+
+        assertTrue(activity.getOnBackPressedDispatcher().hasEnabledCallbacks());
+
+        manager.getReauthCallbackForTesting().onIncognitoReauthSuccess();
+
+        assertFalse(activity.getOnBackPressedDispatcher().hasEnabledCallbacks());
+    }
+
+    @Test
+    public void showLock_dismissesModalDialogs() {
+        // Regression coverage: a dialog lives in its own window the lock overlay can't cover —
+        // if one was already showing when the app backgrounds, it would otherwise reappear above
+        // the lock on resume.
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_BROWSER_LOCK, true);
+        TestActivityWithDialogManager activity =
+                Robolectric.buildActivity(TestActivityWithDialogManager.class)
+                        .create()
+                        .start()
+                        .get();
+
+        TestManager manager = createTestManager();
+        manager.setLockArmedForTesting(true);
+        manager.onActivityStateChange(activity, ActivityState.STARTED);
+
+        verify(activity.mModalDialogManager).dismissAllDialogs(anyInt());
+    }
+
+    @Test
+    public void preNativeOverlay_dismissesModalDialogs() {
+        TestActivityWithDialogManager activity =
+                Robolectric.buildActivity(TestActivityWithDialogManager.class)
+                        .create()
+                        .start()
+                        .get();
+
+        TestManager manager = new TestManager(); // mProfile == null, no onNativeInitialized
+        manager.setLockArmedForTesting(true);
+        manager.onActivityStateChange(activity, ActivityState.STARTED);
+
+        verify(activity.mModalDialogManager).dismissAllDialogs(anyInt());
     }
 
     @Test
