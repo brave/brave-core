@@ -28,12 +28,10 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
-#include "net/base/schemeful_site.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/service_worker/service_worker_status_code.h"
 #include "third_party/blink/public/common/storage_key/storage_key.h"
 #include "third_party/blink/public/mojom/service_worker/service_worker_registration_options.mojom.h"
-#include "third_party/blink/public/mojom/storage_key/ancestor_chain_bit.mojom-shared.h"
 #include "ui/webui/webui_util.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -133,8 +131,7 @@ void CreateAndAddWorkspaceDataSource(content::BrowserContext* browser_context,
 // Registers the service worker from the browser since chrome-untrusted://
 // origins cannot call navigator.serviceWorker.register().
 void RegisterViewerServiceWorker(content::BrowserContext* browser_context,
-                                 const GURL& viewer_url,
-                                 const GURL& workspace_url) {
+                                 const GURL& viewer_url) {
   content::ServiceWorkerContext* service_worker_context =
       browser_context->GetStoragePartitionForUrl(viewer_url)
           ->GetServiceWorkerContext();
@@ -142,11 +139,8 @@ void RegisterViewerServiceWorker(content::BrowserContext* browser_context,
     return;
   }
 
-  // Storage is partitioned under the workspace's site since the viewer is
-  // cross-site framed by the workspace.
-  const blink::StorageKey storage_key = blink::StorageKey::Create(
-      url::Origin::Create(viewer_url), net::SchemefulSite(workspace_url),
-      blink::mojom::AncestorChainBit::kCrossSite);
+  const blink::StorageKey storage_key =
+      blink::StorageKey::CreateFirstParty(url::Origin::Create(viewer_url));
 
   blink::mojom::ServiceWorkerRegistrationOptions options(
       viewer_url, blink::mojom::ScriptType::kModule,
@@ -224,8 +218,7 @@ LeoWorkspaceViewUI::LeoWorkspaceViewUI(content::WebUI* web_ui, const GURL& url)
   const std::string_view workspace_host = url.host().substr(
       std::string_view(kAIChatLeoWorkspaceViewUIHostPrefix).size());
   CreateAndAddViewerDataSource(browser_context, viewer_url, workspace_host);
-  RegisterViewerServiceWorker(browser_context, viewer_url,
-                              GURL(UntrustedOrigin(workspace_host) + "/"));
+  RegisterViewerServiceWorker(browser_context, viewer_url);
 }
 
 LeoWorkspaceViewUI::~LeoWorkspaceViewUI() = default;
