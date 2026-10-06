@@ -31,3 +31,22 @@ source_set("brave_news") {
     "//ui/webui",
   ]
 }
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "brave_news_ui_browsertest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_news/common",
+    "//brave/components/constants",
+    "//chrome/test:test_support",
+    "//chrome/test/base:chrome_test_utils",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//testing/gtest",
+  ]
+}
