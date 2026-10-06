@@ -180,7 +180,12 @@ static_library("browser") {
   }
 
   if (enable_local_ai) {
-    sources += [ "learned_memory_types.h" ]
+    sources += [
+      "dreaming_text_utils.cc",
+      "dreaming_text_utils.h",
+      "learned_memory_types.h",
+    ]
+    deps += [ "//base:i18n" ]
   }
 }
 
@@ -274,6 +279,10 @@ source_set("unit_tests") {
       "sync/ai_chat_sync_bridge_unittest.cc",
       "sync/ai_chat_sync_conversions_unittest.cc",
     ]
+  }
+
+  if (enable_local_ai) {
+    sources += [ "dreaming_text_utils_unittest.cc" ]
   }
 
   if (use_blink) {
