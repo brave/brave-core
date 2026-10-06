@@ -5,6 +5,24 @@
 
 import("//build/config/android/rules.gni")
 
+source_set("wipe_model_upon_sync_disabled_behavior") {
+  sources = [
+    "brave_wipe_model_upon_sync_disabled_behavior.cc",
+    "brave_wipe_model_upon_sync_disabled_behavior.h",
+  ]
+
+  # Both types appear in the header.
+  public_deps = [
+    "//components/password_manager/core/browser/password_store:password_store_interface",
+    "//components/sync/model",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_sync:features",
+  ]
+}
+
 source_set("password_migration") {
   sources = [
     "brave_account_to_profile_password_migration.cc",
@@ -27,11 +45,13 @@ source_set("unit_tests") {
   sources = [
     "brave_account_storage_flag_unittest.cc",
     "brave_account_to_profile_password_migration_unittest.cc",
+    "brave_wipe_model_upon_sync_disabled_behavior_unittest.cc",
     "password_ui_view_android_unittest.cc",
   ]
 
   deps = [
     ":password_migration",
+    ":wipe_model_upon_sync_disabled_behavior",
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_sync:features",
