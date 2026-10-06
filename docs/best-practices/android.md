@@ -1159,3 +1159,32 @@ Material class.
 author may have a valid constraint that just isn't documented. Before flagging,
 verify the flagged class does **not** extend any `com.google.android.material.*`
 component (check the full class hierarchy, not just the file in the diff).
+
+---
+
+<a id="AND-056"></a>
+
+## ✅ Place New Java Files in Feature-Local Android Directories
+
+**Default: put new feature-specific Java files in the feature's Android
+directory, not the legacy Android Java tree.** In Chromium, prefer
+`chrome/browser/<feature>/android/` over the deprecated
+`chrome/android/java/src/org/chromium/chrome/browser/...` layout. In Brave,
+use `browser/<feature>/android/` rather than
+`android/java/org/chromium/chrome/browser/...` (paths relative to
+`brave-core`). This keeps Android code with the feature it implements.
+
+For example, Brave's `BraveOriginServiceFactory.java` lives under
+`browser/brave_origin/android/java/src/org/chromium/brave/browser/brave_origin/`.
+
+`chrome/browser/android/` serves a different purpose: common browser-support
+code that feature-local Android code can depend on. It is not deprecated by
+this rule and is not the default home for feature-specific Java files.
+
+**Exception: new files that subclass upstream classes in deprecated locations
+are allowed in the corresponding deprecated Brave location.** For example,
+`android/java/org/chromium/chrome/browser/app/bookmarks/BraveBookmarkActivity.java`
+extends upstream `BookmarkActivity` in
+`chrome/android/java/src/org/chromium/chrome/browser/app/bookmarks/`.
+
+---
