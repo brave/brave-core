@@ -97,6 +97,7 @@
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "chrome/browser/flags/android/chrome_feature_list.h"
 #else
+#include "brave/browser/ui/split_view/split_view_features.h"
 #include "brave/browser/ui/tabs/public/switches.h"
 #include "brave/browser/workspaces/features.h"
 #include "brave/components/commander/common/features.h"
@@ -1090,6 +1091,20 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
 #define BRAVE_SIDEBAR_WEB_PANEL_FEATURE_ENTRY
 #endif
 
+#if defined(TOOLKIT_VIEWS)
+#define BRAVE_SPLIT_VIEW_LINK_FEATURE_ENTRY                                 \
+  EXPAND_FEATURE_ENTRIES({                                                  \
+      "brave-split-view-link",                                              \
+      "Brave Split View Link",                                              \
+      "When the split view is linked, navigations from the left pane open " \
+      "in the right pane.",                                                 \
+      kOsWin | kOsMac | kOsLinux,                                           \
+      FEATURE_VALUE_TYPE(split_view::features::kSplitViewLink),             \
+  })
+#else
+#define BRAVE_SPLIT_VIEW_LINK_FEATURE_ENTRY
+#endif
+
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
@@ -1712,6 +1727,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
   })                                                                           \
   BRAVE_SCREENSHOT_FEATURE_ENTRY                                               \
   BRAVE_SIDEBAR_WEB_PANEL_FEATURE_ENTRY                                        \
+  BRAVE_SPLIT_VIEW_LINK_FEATURE_ENTRY                                          \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {
