@@ -25,8 +25,10 @@ substitutions:
       Report the element identifiers of Brave's image models.
 
       Upstream reports the identifiers of every model in its static ordering,
-      including the ones Brave removes, and misses Brave's own.
+      including the ones Brave removes.
     preempt_function_impl:
       function_name: ContentSettingImageModel::GetAllElementIdentifiers
       return_if: '(true)'
-      return_value: 'BraveGetAllElementIdentifiers()'
+      return_value:
+        'BraveGetAllElementIdentifiers<kContentSettingImageOrder,
+        GetElementIdentifierForType>()'

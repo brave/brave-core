@@ -6,10 +6,10 @@
 #include "chrome/browser/ui/content_settings/content_setting_image_model.h"
 
 #include <algorithm>
-#include <vector>
+#include <array>
 
+#include "base/check_op.h"
 #include "base/containers/span.h"
-#include "base/no_destructor.h"
 #include "brave/browser/ui/content_settings/brave_content_setting_image_models.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "components/vector_icons/vector_icons.h"
@@ -31,24 +31,29 @@ bool BraveGetIconFromType(ContentSettingsType type,
   return true;
 }
 
+constexpr bool IsShownByBrave(ContentSettingImageModel::ImageType type) {
+  return !std::ranges::contains(kBraveRemovedContentSettingImageTypes, type);
+}
+
+// Returns the element identifiers of `kImageOrder`, less the image models
+// Brave removes. Brave's autoplay model reuses kMediaStream's image type, so it
+// adds no identifier of its own.
+template <const auto& kImageOrder, auto kGetElementIdentifier>
 base::span<const ui::ElementIdentifier> BraveGetAllElementIdentifiers() {
-  // Derive the identifiers from our model list, as upstream's implementation
-  // reports the models we remove. Autoplay shares kMediaStream's identifier,
-  // so skip duplicates.
-  static const base::NoDestructor<std::vector<ui::ElementIdentifier>>
-      kIdentifiers([] {
-        std::vector<ui::ElementIdentifier> result;
-        for (const auto& model :
-             ContentSettingImageModel::GenerateContentSettingImageModels()) {
-          const ui::ElementIdentifier identifier =
-              model->GetElementIdentifier();
-          if (!std::ranges::contains(result, identifier)) {
-            result.push_back(identifier);
-          }
-        }
-        return result;
-      }());
-  return *kIdentifiers;
+  static constexpr auto kIdentifiers = []() consteval {
+    std::array<ui::ElementIdentifier,
+               std::ranges::count_if(kImageOrder, IsShownByBrave)>
+        result;
+    size_t i = 0;
+    for (ContentSettingImageModel::ImageType type : kImageOrder) {
+      if (IsShownByBrave(type)) {
+        result[i++] = kGetElementIdentifier(type);
+      }
+    }
+    CHECK_EQ(i, result.size());
+    return result;
+  }();
+  return kIdentifiers;
 }
 
 }  // namespace
