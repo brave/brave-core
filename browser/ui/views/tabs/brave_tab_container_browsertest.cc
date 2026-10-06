@@ -31,15 +31,19 @@
 #include "chrome/browser/ui/views/frame/browser_root_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
+#include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_control_button.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/accessibility/ax_enums.mojom.h"
+#include "ui/accessibility/ax_node_data.h"
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event_constants.h"
 #include "ui/events/test/event_generator.h"
+#include "ui/views/accessibility/view_accessibility.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/repeat_controller.h"
 #include "ui/views/view_utils.h"
@@ -921,4 +925,41 @@ IN_PROC_BROWSER_TEST_F(VerticalTabsScrollBarModeBrowserTest,
   ASSERT_EQ(State::kCollapsed, region->state());
   EXPECT_EQ(views::ScrollView::ScrollBarMode::kHiddenButEnabled,
             container_view->GetScrollBarMode());
+}
+
+using VerticalTabContainerBrowserTest = VerticalTabsScrollBarModeBrowserTest;
+
+// Upstream refreshes the accessible tab indices at the end of Layout(), which
+// BraveTabContainer skips in scroll mode when its size hasn't changed. Moving a
+// tab doesn't change the size, so the indices must still be refreshed.
+IN_PROC_BROWSER_TEST_F(VerticalTabContainerBrowserTest,
+                       AccessibleTabIndicesUpdatedAfterMove) {
+  ToggleVerticalTabStrip();
+  chrome::AddTabAt(browser(), GURL(), -1, true);
+  chrome::AddTabAt(browser(), GURL(), -1, true);
+
+  BraveTabContainer* tab_container = container();
+  ASSERT_TRUE(tab_container);
+  ASSERT_EQ(views::LayoutOrientation::kVertical,
+            tab_container->GetScrollDirection());
+  const int tab_count = tab_container->GetTabCount();
+  ASSERT_EQ(3, tab_count);
+
+  // Settle the layout so the next one sees an unchanged size.
+  tab_container->CompleteAnimationAndLayout();
+
+  browser()->tab_strip_model()->MoveWebContentsAt(0, 2,
+                                                  /*select_after_move=*/false);
+  RunScheduledLayouts();
+
+  for (int i = 0; i < tab_count; ++i) {
+    ui::AXNodeData ax_node_data;
+    tab_container->GetTabAtModelIndex(i)
+        ->GetViewAccessibility()
+        .GetAccessibleNodeData(&ax_node_data);
+    EXPECT_EQ(i + 1,
+              ax_node_data.GetIntAttribute(ax::mojom::IntAttribute::kPosInSet));
+    EXPECT_EQ(tab_count,
+              ax_node_data.GetIntAttribute(ax::mojom::IntAttribute::kSetSize));
+  }
 }
