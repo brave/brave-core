@@ -32,7 +32,8 @@ EdgeEventListenerAction::EdgeEventListenerAction(
 EdgeEventListenerAction::~EdgeEventListenerAction() = default;
 
 ScriptId EdgeEventListenerAction::GetListenerScriptId() const {
-  if (auto* node_script = blink::DynamicTo<NodeScript>(listener_script_)) {
+  if (auto* node_script =
+          blink::DynamicTo<NodeScript>(listener_script_.get())) {
     return node_script->GetScriptId();
   }
   return 0;
