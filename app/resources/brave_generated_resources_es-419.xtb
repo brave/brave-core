@@ -217,11 +217,11 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Dominios Web3</translation>
 <translation id="1458638489455808030">Máquina del Tiempo</translation>
-<translation id="8039999492770627305">Lo sentimos, esta página no está disponible.</translation>
-<translation id="208311458690012764">No se ha podido cargar la versión guardada</translation>
-<translation id="4515057635283480525">¿Quieres verificar si hay disponible una versión guardada en Wayback Machine?</translation>
-<translation id="8252977752585110703">Wayback Machine no ha encontrado ninguna versión guardada de este sitio web.</translation>
-<translation id="8748778103033196270">Verificar versión guardada</translation>
+<translation id="8039999492770627305">Falta la página</translation>
+<translation id="208311458690012764">No hay ninguna versión archivada disponible</translation>
+<translation id="4515057635283480525">Internet Archive guarda versiones anteriores de muchas páginas web. ¿Quieres buscar esta página en el Archive?</translation>
+<translation id="8252977752585110703">Lo sentimos, revisamos Internet Archive y no tiene ninguna versión archivada de esta página.</translation>
+<translation id="8748778103033196270">Buscar en el Archive</translation>
 <translation id="191143826155037518">Brave es accesible gracias a la <ph name="BEGIN_LINK_MPL"/>versión 2.0 de la Licencia Pública de Mozilla<ph name="END_LINK_MPL"/> (MPL, por sus siglas en inglés). Además, es compatible con el <ph name="BEGIN_LINK_OSS"/>software de código abierto<ph name="END_LINK_OSS"/> de una gran variedad de otras licencias.
         Lee las <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instrucciones sobre cómo descargar y crear por ti mismo<ph name="END_LINK_BUILD_INSTRUCTIONS"/> el <ph name="BEGIN_LINK_SOURCE_CODE"/>código abierto específico utilizado para crear esta copia<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Agregar a favoritos todas las pestañas...</translation>

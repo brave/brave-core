@@ -1732,6 +1732,9 @@
 <translation id="2077392865355605472">ಟೋಕನ್ ಚಿಹ್ನೆ ಅಗತ್ಯವಿದೆ</translation>
 <translation id="4636925020451566238">ನಿಖರ ಮೌಲ್ಯದ ಟೋಕನ್ ದಶಾಂಶ ಅಗತ್ಯವಿದೆ</translation>
 <translation id="3797613444743816037">ಮಿಂಟ್ ವಿಳಾಸ</translation>
+<translation id="6571966497164575098">ಆಸ್ತಿ ಐಡಿ</translation>
+<translation id="2110442566771571217">ಅಮಾನ್ಯ ಅಥವಾ ಖಾಲಿ ಟೋಕನ್ ಆಸ್ತಿ ಐಡಿ</translation>
+<translation id="4170599358417498979">ಈ ನೆಟ್‌ವರ್ಕ್‌ನಲ್ಲಿ ಕಸ್ಟಮ್ ಆಸ್ತಿಗಳು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ</translation>
 <translation id="7951915459354237451">ಮೂಲ ಫೀಗಿಂತ ಕಡಿಮೆಗೆ ಫೀ ಮಿತಿಯನ್ನು ನಿಗದಿಪಡಿಸಲಾಗಿದೆ. ನಿಮ್ಮ ವಹಿವಾಟಿಗೆ ತುಂಬಾ ಸಮಯ ತೆಗೆದುಕೊಳ್ಳಬಹುದು ಅಥವಾ ವಿಫಲವಾಗಬಹುದು.</translation>
 <translation id="2227702748249086756">ಶುಲ್ಕ ಅಂದಾಜುಗಳನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ</translation>
 <translation id="3225624966527491351">NFT ಇಂಪೋರ್ಟ್ ಮಾಡಿ</translation>
@@ -2017,7 +2020,7 @@
 <translation id="418195046117003119">ಹಂಚಿಕೊಳ್ಳುವಿಕೆ ಹಬ್ ಸ್ಕ್ರೀನ್‌ಶಾಟ್</translation>
 <translation id="4712056949543885424">ಪಾಸ್‌ವರ್ಡ್ ಮ್ಯಾನೇಜರ್ ತೋರಿಸಿ</translation>
 <translation id="8037472847879765671">ಪಾವತಿ ವಿಧಾನಗಳನ್ನು ತೋರಿಸಿ</translation>
-<translation id="7269867954894010756">ವಿಳಾಸಗಳನ್ನು ತೋರಿಸಿ</translation>
+<translation id="6262574309547773475">ಸಂಪರ್ಕ ಮಾಹಿತಿ ತೋರಿಸಿ</translation>
 <translation id="6799213269525079335">ಮುಂದಿನದನ್ನು ಹುಡುಕಿ</translation>
 <translation id="8666632926482119393">ಹಿಂದಿನದನ್ನು ಹುಡುಕಿ</translation>
 <translation id="3567467864281922039">ಹುಡುಕುವಿಕೆ ಅಥವಾ ನಿಲ್ಲಿಸುವಿಕೆಯನ್ನು ಮುಚ್ಚಿ</translation>
@@ -2146,6 +2149,7 @@
 <translation id="3142853026316054951">ಫೋಕಸ್ ಮೋಡ್ ಟಾಗಲ್ ಮಾಡಿ</translation>
 <translation id="3468387898712904997">ಹೊಸ ಇಮೇಲ್ ಅಲಿಯಾಸ್</translation>
 <translation id="4711475997833555304">ನಿಮ್ಮ ಇನ್‌ಬಾಕ್ಸ್‌ಗೆ ಫಾರ್ವರ್ಡ್ ಆಗುವ ಯಾದೃಚ್ಛಿಕ ಇಮೇಲ್ ಒಂದನ್ನು ರಚಿಸಿ.</translation>
+<translation id="5663901348199429994">ನಿಮ್ಮ ಇಮೇಲ್ ಅಲಿಯಾಸ್‌ಗಳು</translation>
 <translation id="2796584247246518451">ಹೊಸ ತಾತ್ಕಾಲಿಕ ಕಂಟೇನರ್</translation>
 <translation id="8591883849678260674">ಮೂಲವನ್ನು ವೀಕ್ಷಿಸಿ</translation>
 <translation id="1969654232209826429">ಕನಿಷ್ಠ. ಓದುವಿಕೆ</translation>
@@ -2210,6 +2214,7 @@
 <translation id="9215978379284690246">ಸ್ಥಿತಿ ಕೋಡ್: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">ಸ್ಥಿತಿ ಕೋಡ್: <ph name="STATUS_CODE"/>, ಆಂತರಿಕ ಸ್ಥಿತಿ ಕೋಡ್: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">ನೀವು ಪ್ರೀಮಿಯಂ ದರ ಮಿತಿಯನ್ನು ತಲುಪಿದ್ದೀರಿ. ಕೆಲವು ಗಂಟೆಗಳಲ್ಲಿ ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="6873128487002733717">ನೀವು ಈ ಮಾದರಿಯ premium ಮಿತಿಯನ್ನು ತಲುಪಿದ್ದೀರಿ. ಬೇರೆ ಮಾದರಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ ಅಥವಾ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="3683964919745779766">ನೀವು ಈ ಮಾದರಿಯ ದರ ಮಿತಿಯನ್ನು ತಲುಪಿದ್ದೀರಿ ಅಥವಾ ಕ್ರೆಡಿಟ್‌ ಮಿತಿ ದಾಟಿದ್ದೀರಿ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="7692501701960747469">ಈ ಮಾದರಿಗಾಗಿ ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾದ API ಕೀ ಅಮಾನ್ಯವಾಗಿದೆ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ಕಾನ್ಫಿಗರೇಶನ್ ಪರಿಶೀಲಿಸಿ ಹಾಗೂ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="7905602379229309187">ಎಂಡ್‌ ಪಾಯಿಂಟ್ ಪ್ರಸ್ತುತ ಓವರ್‌ಲೋಡ್ ಆಗಿದೆ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
@@ -2390,6 +2395,9 @@ Uttaravannu iṣṭ;</translation>
 <translation id="5021823940147712387">ಪರಿಕರಗಳನ್ನು ತೆಗೆದುಹಾಕಿ</translation>
 <translation id="8712279871321308580">ಲಭ್ಯ ವೆಬ್‌ಸೈಟ್ ಟೂಲ್‌ಗಳು</translation>
 <translation id="3690996226559605619">ಲಭ್ಯ ಟೂಲ್‌ಗಳು (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">ಈ ಸೆಷನ್‌ಗಾಗಿ ಅನುಮತಿಸಿ</translation>
+<translation id="6240821072888636753">ಪ್ರತಿ ಬಾರಿ ಕೇಳಿ</translation>
+<translation id="4290920330097335010">ಎಂದಿಗೂ ಅನುಮತಿಸಬೇಡಿ</translation>
 <translation id="318819763888864209">ಎಲ್ಲಾ ಚಂದಾದಾರಿಕೆಗಳನ್ನ ಸ್ವಯಂ-ನವೀಕರಿಸಲಾಗಿದೆ ಆದರೆ ನವೀಕರಣಕ್ಕೂ ಮೊದಲು ಯಾವುದೇ ಸಮಯದಲ್ಲಿ ರದ್ದುಗೊಳಿಸಬಹುದು.</translation>
 <translation id="5091223967610958">Leo ಅನ್ನು ಉತ್ತಮಗೊಳಿಸಲು ನಮಗೆ ಸಹಾಯ ಮಾಡುವುದಕ್ಕಾಗಿ ನೀವು ಇರುವ ಪುಟದ ಹೋಸ್ಟ್‌ ಹೆಸರನ್ನು (<ph name="HOST_NAME"/>) ಗೆ ಹಂಚಿಕೊಳ್ಳಿ.</translation>
 <translation id="8732450785281947197">Leo AI ಪರಿಕರಗಳು</translation>
@@ -2464,7 +2472,7 @@ Uttaravannu iṣṭ;</translation>
 <translation id="6077070599873946984">Brave AI ನಿಮಗೆ ಅನುಮತಿ ಬೇಕು: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI **<ph name="SITE_ORIGIN"/>** ನಲ್ಲಿ **<ph name="TOOL_NAME"/>** ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸಲು ಬಯಸುತ್ತದೆ</translation>
 <translation id="4163837693685963037">ಕ್ರಿಯೆಯನ್ನು ನಿಮ್ಮ ವಿನಂತಿಗೆ ಹೊಂದಿಕೆಯಾಗದಂತೆ ಕಂಡುಹಿಡಲಾಗಿದೆ:</translation>
-<translation id="5137568953923142260">ಅನುಮತಿಸಿ</translation>
+<translation id="5137568953923142260">ಒಮ್ಮೆ ಅನುಮತಿಸಿ</translation>
 <translation id="3927932062596804919">नಿರಾಕರಿಸಿ</translation>
 <translation id="4191349941249805855">ಟೂಲ್ ಆರ್ಗ್ಯುಮೆಂಟ್‌ಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="7237059533128264835">ಟೂಲ್ ಆರ್ಗ್ಯುಮೆಂಟ್‌ಗಳನ್ನು ಮರೆಮಾಡಿ</translation>
@@ -2511,7 +2519,6 @@ Uttaravannu iṣṭ;</translation>
 <translation id="6002159997868894136">ಅಲಿಯಾಸ್ ಕಾಪಿ ಮಾಡಲು ಕ್ಲಿಕ್ ಮಾಡಿ</translation>
 <translation id="8105770564756958406">ಇದರ ಮೂಲಕ ಬಳಸಲಾಗಿದೆ <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">ನಿಮ್ಮ ನಿಜವಾದ ಇಮೇಲ್ ವಿಳಾಸವನ್ನು ರಕ್ಷಿಸಲು 5 ಉಚಿತ ಇಮೇಲ್ ಅಲಿಯಾಸ್‌ಗಳನ್ನು ಸೃಷ್ಟಿಸಿ.</translation>
-<translation id="5663901348199429994">ನಿಮ್ಮ ಇಮೇಲ್ ಅಲಿಯಾಸ್‌ಗಳು</translation>
 <translation id="9046133327037621173">ಹೊಸ ಇಮೇಲ್ ಅಲಿಯಾಸ್</translation>
 <translation id="3768606658230902536">ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಇಮೇಲ್ ಖಾಸಗಿಯಾಗಿ ಇಡಲು ಇನ್‌ಬಾಕ್ಸ್‌ಗೆ ಫಾರ್ವರ್ಡ್ ಮಾಡುವ ರ್ಯಾಂಡಮ್ ಇಮೇಲ್ ವಿಳಾಸ ಸೃಷ್ಟಿಸಿ.</translation>
 <translation id="4452721050684632493">ಅಲಿಯಾಸ್ ಮಿತಿ ತಲುಪಿದೆ</translation>
@@ -2945,7 +2952,9 @@ Uttaravannu iṣṭ;</translation>
 <translation id="4227581348172626540">ಪಾಸ್‌ವರ್ಡ್ ಬದಲಾವಣೆ ರದ್ದುಗೊಳಿಸಿ</translation>
 <translation id="808894953321890993">ಪಾಸ್‌ವರ್ಡ್ ಬದಲಾಯಿಸಿ</translation>
 <translation id="7967687455715421528">ಪಾಸ್‌ವರ್ಡ್ ಬದಲಾಯಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</translation>
+<translation id="7413006094063730650">ಖಾತೆ ಅಳಿಸಿ</translation>
 <translation id="4869737930995549965">ಲಾಗ್ ಔಟ್</translation>
+<translation id="2902312830803030883">ಇನ್ನಷ್ಟು ಕ್ರಿಯೆಗಳು</translation>
 <translation id="5538654494923870167">ನಿಮ್ಮ Brave ಖಾತೆಯೊಂದಿಗೆ ಪ್ರಾರಂಭಿಸಿ</translation>
 <translation id="1544145635547515689">Brave ಖಾತೆ ರಚಿಸಿ</translation>
 <translation id="3828644479849256404">ಈಗಾಗಲೇ ಖಾತೆ ಹೊಂದಿದ್ದೀರಾ? ಲಾಗ್ ಇನ್ ಮಾಡಿ</translation>
@@ -2970,6 +2979,11 @@ Uttaravannu iṣṭ;</translation>
 <translation id="7228810962389847249">ಕೋಡ್ ಅನ್ನು ಇಲ್ಲಿ ನಮೂದಿಸಿ</translation>
 <translation id="4683390091376980486">ಕೋಡ್ ದೃಢೀಕರಿಸಿ</translation>
 <translation id="3970028678400797622">ಇಮೇಲ್ ಕೋಡ್ ಮರುಕಳುಹಿಸಿ</translation>
+<translation id="3653907916071208187">ನಿಮ್ಮ Brave ಖಾತೆಯನ್ನು ಅಳಿಸಬೇಕೇ?</translation>
+<translation id="8216839865292766307">Brave ಖಾತೆಯನ್ನು ಅಳಿಸಿದರೆ ಅದರ ಇಮೇಲ್ ಅಲಿಯಾಸ್‌ಗಳೂ ಅಳಿಸಲಾಗುತ್ತದೆ. ನೀವು ಅಲಿಯಾಸ್ ಬಳಸಿ ಸೈನ್ ಅಪ್ ಮಾಡಿದ ಆನ್‌ಲೈನ್ ಸೇವೆಗಳ ಪ್ರವೇಶವನ್ನು ಕಳೆದುಕೊಳ್ಳಬಹುದು. ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದುಗೊಳಿಸಲಾಗುವುದಿಲ್ಲ.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">ಖಾತೆ ಅಳಿಸುವಿಕೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು <ph name="KEYWORD"/> ಎಂದು ಟೈಪ್ ಮಾಡಿ</translation>
+<translation id="536306385881145656">Brave ಖಾತೆ ಅಳಿಸಿ</translation>
 <translation id="2475982808118771221">ದೋಷ ಸಂಭವಿಸಿದೆ</translation>
 <translation id="5430795854491041407">ದೋಷ</translation>
 <translation id="2232323423357029857">ಬ್ರೌಸರ್ ಅನಿರೀಕ್ಷಿತ ದೋಷವನ್ನು ಎದುರಿಸಿತು<ph name="ERROR_CODE"/>. ದಯವಿಟ್ಟು ಬ್ರೌಸರ್ ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿ ಮತ್ತು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
@@ -3002,4 +3016,10 @@ Uttaravannu iṣṭ;</translation>
 <translation id="1063227610401477317">ಬದಲಾವಣೆಗಳನ್ನು ಅನ್ವಯಿಸಿ</translation>
 <translation id="5539769255716491933">ವಿಫಲವಾದ ಹಂತಗಳನ್ನು ವರದಿ ಮಾಡಿ</translation>
 <translation id="7562163394445060270">ಕಾರ್ಯ ಪೂರ್ಣಗೊಳಿಸುವಿಕೆ ವಿಫಲವಾಗಿದೆ</translation>
+<translation id="691082536326552372">ವಿಫಲವಾದ ಹಂತಗಳನ್ನು ವರದಿ ಮಾಡಿ</translation>
+<translation id="2731141092023803480">ವಿಫಲವಾದ ಹಂತಗಳ ವರದಿಯನ್ನು Brave ತಂಡಕ್ಕೆ ಕಳುಹಿಸಿ. ಈ ವರದಿಯು ಸಮಸ್ಯೆಯನ್ನು ಸರಿಪಡಿಸಲು ನಮಗೆ ಅಗತ್ಯವಾದ ಮಾಹಿತಿಯನ್ನು ಹೊಂದಿರುತ್ತದೆ. <ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">ಪ್ರಸ್ತುತ URL</translation>
+<translation id="4739707522207259415">ವಿಫಲವಾದ ಹಂತ(ಗಳು)</translation>
+<translation id="1767991048059195456">ವರದಿ ಕಳುಹಿಸಿ</translation>
+<translation id="2168036794078614559">ವರದಿ ಕಳುಹಿಸಲಾಗಿದೆ</translation>
 </translationbundle>

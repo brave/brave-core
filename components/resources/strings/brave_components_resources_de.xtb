@@ -2018,7 +2018,6 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="418195046117003119">Bildschirmfoto Freigabezentrum</translation>
 <translation id="4712056949543885424">Passwortmanager anzeigen</translation>
 <translation id="8037472847879765671">Zahlungsmethoden anzeigen</translation>
-<translation id="7269867954894010756">Adressen anzeigen</translation>
 <translation id="6799213269525079335">Nächste finden</translation>
 <translation id="8666632926482119393">Vorherige finden</translation>
 <translation id="3567467864281922039">Suche schließen oder abbrechen</translation>
@@ -2147,6 +2146,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="3142853026316054951">Fokusmodus ein- oder ausschalten</translation>
 <translation id="3468387898712904997">Neuer E-Mail-Alias</translation>
 <translation id="4711475997833555304">Erstellen Sie eine zufällige E-Mail-Adresse, die an Ihren Posteingang weitergeleitet wird.</translation>
+<translation id="5663901348199429994">Deine E-Mail-Aliase</translation>
 <translation id="2796584247246518451">Neuer temporärer Container</translation>
 <translation id="8591883849678260674">Orginal anzeigen</translation>
 <translation id="1969654232209826429">Min. Lesezeit</translation>
@@ -2464,7 +2464,6 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="6077070599873946984">Die KI von Brave benötigt Ihre Zustimmung für: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI möchte **<ph name="TOOL_NAME"/>** auf **<ph name="SITE_ORIGIN"/>** ausführen</translation>
 <translation id="4163837693685963037">Es wurde festgestellt, dass der Vorgang möglicherweise nicht Ihrer Anfrage entspricht:</translation>
-<translation id="5137568953923142260">Zulassen</translation>
 <translation id="3927932062596804919">Ablehnen</translation>
 <translation id="4191349941249805855">Tool-Argumente anzeigen</translation>
 <translation id="7237059533128264835">Tool-Argumente ausblenden</translation>
@@ -2511,7 +2510,6 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="6002159997868894136">Alias kopieren</translation>
 <translation id="8105770564756958406">Verwendet von <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Erstelle bis zu 5 kostenlose E-Mail-Aliase, um deine echte E-Mail-Adresse zu schützen.</translation>
-<translation id="5663901348199429994">Deine E-Mail-Aliase</translation>
 <translation id="9046133327037621173">Neuer E-Mail-Alias</translation>
 <translation id="3768606658230902536">Erstelle eine zufällige E-Mail-Adresse, die an deinen Posteingang weiterleitet und deine persönliche E-Mail-Adresse privat hält.</translation>
 <translation id="4452721050684632493">Alias-Limit erreicht</translation>

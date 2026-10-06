@@ -216,11 +216,11 @@
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">نطاقات Web3</translation>
 <translation id="1458638489455808030">آلة الاسترجاع</translation>
-<translation id="8039999492770627305">عذراً، هذه الصفحة مفقودة.</translation>
-<translation id="208311458690012764">تعذر تحميل النسخة المحفوظة</translation>
-<translation id="4515057635283480525">هل تريد التحقق مما إذا كان هناك إصدار محفوظ متاح على "واي باك مشين"؟</translation>
-<translation id="8252977752585110703">لم يتمكن Wayback Machine من العثور على نسخة محفوظة من هذا الموقع.</translation>
-<translation id="8748778103033196270">تحقق من النسخة المحفوظة</translation>
+<translation id="8039999492770627305">الصفحة مفقودة</translation>
+<translation id="208311458690012764">لا تتوفر نسخة مؤرشفة</translation>
+<translation id="4515057635283480525">يحفظ أرشيف الإنترنت الإصدارات السابقة للعديد من صفحات الويب. هل تريد البحث عن هذه الصفحة في الأرشيف؟</translation>
+<translation id="8252977752585110703">عذرًا، لقد تحققنا من أرشيف الإنترنت ولا يحتوي على نسخة مؤرشفة من هذه الصفحة.</translation>
+<translation id="8748778103033196270">البحث في الأرشيف</translation>
 <translation id="191143826155037518">يتم توفير Brave لك بموجب <ph name="BEGIN_LINK_MPL"/>ترخيص Mozilla العام 2.0<ph name="END_LINK_MPL"/> (MPL) ويشمل <ph name="BEGIN_LINK_OSS"/>برمجيات مفتوحة المصدر<ph name="END_LINK_OSS"/> بموجب مختلف التراخيص الأخرى.
         يمكنك قراءة <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>التعليمات حول كيفية تنزيل وبناء<ph name="END_LINK_BUILD_INSTRUCTIONS"/> <ph name="BEGIN_LINK_SOURCE_CODE"/> التعليمات البرمجية الأصلية المحددة المستخدمة لإنشاء هذه النسخة<ph name="END_LINK_SOURCE_CODE"/> لنفسك.</translation>
 <translation id="4474155171896946103">وضع إشارات على كل علامات التبويب...</translation>

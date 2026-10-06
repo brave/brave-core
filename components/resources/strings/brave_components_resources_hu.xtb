@@ -1728,6 +1728,9 @@
 <translation id="2077392865355605472">A tokenszimbólumot kötelező megadni</translation>
 <translation id="4636925020451566238">A token tizedeshely-pontossági értékét kötelező megadni</translation>
 <translation id="3797613444743816037">Kiadási cím</translation>
+<translation id="6571966497164575098">Eszközazonosító</translation>
+<translation id="2110442566771571217">Érvénytelen vagy üres tokeneszköz-azonosító</translation>
+<translation id="4170599358417498979">Az egyéni eszközök nem támogatottak ezen a hálózaton</translation>
 <translation id="7951915459354237451">A díjkorlát alacsonyabbra van állítva az alapdíjnál. A tranzakció hosszú ideig tarthat vagy meghiúsulhat.</translation>
 <translation id="2227702748249086756">Nem sikerült lehívni a díjbecsléseket</translation>
 <translation id="3225624966527491351">NFT importálása</translation>
@@ -2014,7 +2017,7 @@
 <translation id="418195046117003119">Megosztási hub képernyőkép</translation>
 <translation id="4712056949543885424">Jelszókezelő megjelenítése</translation>
 <translation id="8037472847879765671">Fizetési módok megjelenítése</translation>
-<translation id="7269867954894010756">Címek megjelenítése</translation>
+<translation id="6262574309547773475">Kapcsolattartási adatok megjelenítése</translation>
 <translation id="6799213269525079335">Következő megkeresése</translation>
 <translation id="8666632926482119393">Előző megkeresése</translation>
 <translation id="3567467864281922039">Keresés bezárása vagy leállítás</translation>
@@ -2143,6 +2146,7 @@
 <translation id="3142853026316054951">Fókusz mód váltása</translation>
 <translation id="3468387898712904997">Új e-mail álnév</translation>
 <translation id="4711475997833555304">Hozzon létre egy véletlenszerű e-mail-címet, amely a postaládájába továbbít.</translation>
+<translation id="5663901348199429994">Az Ön e-mail álnevei</translation>
 <translation id="2796584247246518451">Új ideiglenes konténer</translation>
 <translation id="8591883849678260674">Eredeti megtekintése</translation>
 <translation id="1969654232209826429">perces olvasmány</translation>
@@ -2207,6 +2211,7 @@
 <translation id="9215978379284690246">Állapotkód: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Állapotkód: <ph name="STATUS_CODE"/>, belső állapotkód: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Elérte a prémium gyakorisági korlátot. Néhány óra múlva próbálja újra.</translation>
+<translation id="6873128487002733717">Elérte a modell prémium használati mennyiségét. Válasszon egy másik modellt, vagy próbálja meg később.</translation>
 <translation id="3683964919745779766">Elérte a modell által megengedett használati mennyiséget, vagy nem rendelkezik elegendő kredittel a további használathoz. Kérjük próbálja meg később.</translation>
 <translation id="7692501701960747469">A modellhez konfigurált API-kulcs érvénytelen. Kérjük, ellenőrizze a konfigurációt, és próbálja meg újra.</translation>
 <translation id="7905602379229309187">A szolgáltatás jelenleg túlterhelt. Kérjük, próbálja meg később.</translation>
@@ -2386,6 +2391,9 @@
 <translation id="5021823940147712387">Eszközök eltávolítása</translation>
 <translation id="8712279871321308580">Elérhető webhelyeszközök</translation>
 <translation id="3690996226559605619">Elérhető eszközök (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Engedélyezés erre a munkamenetre</translation>
+<translation id="6240821072888636753">Rákérdezés minden alkalommal</translation>
+<translation id="4290920330097335010">Soha ne engedélyezze</translation>
 <translation id="318819763888864209">Minden előfizetés automatikus megújul, de a megújulás előtt bármikor lemondható.</translation>
 <translation id="5091223967610958">Az éppen felkeresett oldal kiszolgálónevének megosztása (<ph name="HOST_NAME"/>) a Leo továbbfejlesztéséhez.</translation>
 <translation id="8732450785281947197">Leo MI-eszközök</translation>
@@ -2460,7 +2468,7 @@
 <translation id="6077070599873946984">A Brave AI engedélyt kér a következőre: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">A Brave AI szeretné végrehajtani a következőt: **<ph name="TOOL_NAME"/>** ezen: **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Megállapítottuk, hogy ez a művelet esetleg eltérhet a kérésétől:</translation>
-<translation id="5137568953923142260">Engedélyezés</translation>
+<translation id="5137568953923142260">Egyszer engedélyezve</translation>
 <translation id="3927932062596804919">Elutasít</translation>
 <translation id="4191349941249805855">Eszközargumentumok megjelenítése</translation>
 <translation id="7237059533128264835">Eszközargumentumok elrejtése</translation>
@@ -2507,7 +2515,6 @@
 <translation id="6002159997868894136">Kattintson az alias másolásához</translation>
 <translation id="8105770564756958406">Használja: <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Hozzon létre legfeljebb 5 ingyenes e-mail álnevet, hogy megvédje valós e-mail címét.</translation>
-<translation id="5663901348199429994">Az Ön e-mail álnevei</translation>
 <translation id="9046133327037621173">Új e-mail álnév</translation>
 <translation id="3768606658230902536">Hozzon létre egy véletlenszerű e-mail címet, amely továbbítja a leveleit az Ön postafiókjába, miközben személyes e-mailjeit bizalmasan tartja.</translation>
 <translation id="4452721050684632493">Aliasok korlátja elérve</translation>
@@ -2938,7 +2945,9 @@ a meglévő lapra való váltás helyett</translation>
 <translation id="4227581348172626540">Jelszó módosításának megszakítása</translation>
 <translation id="808894953321890993">Jelszó módosítása</translation>
 <translation id="7967687455715421528">Nem sikerült módosítani a jelszót</translation>
+<translation id="7413006094063730650">Fiók törlése</translation>
 <translation id="4869737930995549965">Kijelentkezés</translation>
+<translation id="2902312830803030883">További műveletek</translation>
 <translation id="5538654494923870167">Kezdje el használni a Brave-fiókját</translation>
 <translation id="1544145635547515689">Brave-fiók létrehozása</translation>
 <translation id="3828644479849256404">Már van fiókja? Jelentkezzen be</translation>
@@ -2963,6 +2972,11 @@ a meglévő lapra való váltás helyett</translation>
 <translation id="7228810962389847249">Adja meg a kódot itt</translation>
 <translation id="4683390091376980486">Kód megerősítése</translation>
 <translation id="3970028678400797622">E-mail-kód újraküldése</translation>
+<translation id="3653907916071208187">Törli a Brave-fiókját?</translation>
+<translation id="8216839865292766307">A Brave-fiók törlésekor annak e-mail-álnevei is törlődnek. Előfordulhat, hogy elveszíti a hozzáférését azokhoz az online szolgáltatásokhoz, amelyekhez álnévvel regisztrált. Ez a művelet nem vonható vissza.</translation>
+<translation id="3672274694560812974">TÖRLÉS</translation>
+<translation id="1886662169666501462">Írja be a(z) <ph name="KEYWORD"/> szót a fiók törlésének engedélyezéséhez</translation>
+<translation id="536306385881145656">Brave-fiók törlése</translation>
 <translation id="2475982808118771221">Hiba történt</translation>
 <translation id="5430795854491041407">hiba</translation>
 <translation id="2232323423357029857">A böngésző váratlan hibába ütközött<ph name="ERROR_CODE"/>. Indítsa újra a böngészőt, és próbálja újra.</translation>
@@ -2995,4 +3009,10 @@ a meglévő lapra való váltás helyett</translation>
 <translation id="1063227610401477317">Módosítások elfogadása</translation>
 <translation id="5539769255716491933">Sikertelen lépések jelentése</translation>
 <translation id="7562163394445060270">A feladat befejezése sikertelen</translation>
+<translation id="691082536326552372">Sikertelen lépések jelentése</translation>
+<translation id="2731141092023803480">Küldjön jelentést a sikertelen lépésekről a Brave csapatának. Ez a jelentés tartalmazni fogja a probléma megoldásához szükséges információkat. <ph name="LINK_BEFORE"/>Tudjon meg többet.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">Aktuális URL-cím</translation>
+<translation id="4739707522207259415">Sikertelen lépés(ek)</translation>
+<translation id="1767991048059195456">Jelentés küldése</translation>
+<translation id="2168036794078614559">Jelentés elküldve</translation>
 </translationbundle>
