@@ -15,6 +15,7 @@ import static org.mockito.Mockito.verify;
 
 import android.app.Activity;
 import android.os.Build.VERSION_CODES;
+import android.view.WindowManager;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -421,6 +422,119 @@ public class BraveBrowserLockManagerTest {
         assertFalse(manager.isLockArmedForTesting());
         assertFalse(manager.isReauthInFlightForTesting());
         verify(mMockCoordinator).hide(anyInt());
+    }
+
+    // --- applySecureFlagToAllActivities ---
+
+    @Test
+    public void applySecureFlag_doesNotClearFlagItDidNotSet() {
+        // Regression coverage: an upstream per-activity incognito-aware controller may have set
+        // FLAG_SECURE on its own (e.g. a currently-showing incognito tab under
+        // PRIVATE_TABS_ONLY) — Brave's own sweep must leave it alone since it never set it.
+        BraveBrowserLockManager manager = createManager();
+        mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        assertFalse(manager.isForcedSecureForTesting(mActivity));
+
+        manager.getPrefChangeListenerForTesting()
+                .onSharedPreferenceChanged(
+                        /* sharedPreferences= */ null, BravePreferenceKeys.BRAVE_BROWSER_LOCK);
+
+        assertTrue(
+                (mActivity.getWindow().getAttributes().flags
+                                & WindowManager.LayoutParams.FLAG_SECURE)
+                        != 0);
+    }
+
+    @Test
+    public void applySecureFlag_clearsFlagItSetItself() {
+        BraveBrowserLockManager.setScreenshotMode(
+                BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_EVERYTHING);
+        BraveBrowserLockManager manager = createManager();
+        assertTrue(manager.isForcedSecureForTesting(mActivity));
+
+        BraveBrowserLockManager.setScreenshotMode(
+                BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_PRIVATE_TABS_ONLY);
+        manager.getPrefChangeListenerForTesting()
+                .onSharedPreferenceChanged(
+                        /* sharedPreferences= */ null,
+                        BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE);
+
+        assertFalse(manager.isForcedSecureForTesting(mActivity));
+        assertEquals(
+                0,
+                mActivity.getWindow().getAttributes().flags
+                        & WindowManager.LayoutParams.FLAG_SECURE);
+    }
+
+    // --- shouldSecureForIncognitoVisibility ---
+
+    @Test
+    public void shouldSecureForIncognitoVisibility_everything_alwaysTrue() {
+        BraveBrowserLockManager.setScreenshotMode(
+                BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_EVERYTHING);
+
+        assertTrue(BraveBrowserLockManager.shouldSecureForIncognitoVisibility(false));
+        assertTrue(BraveBrowserLockManager.shouldSecureForIncognitoVisibility(true));
+    }
+
+    @Test
+    public void shouldSecureForIncognitoVisibility_allow_alwaysFalse() {
+        BraveBrowserLockManager.setScreenshotMode(
+                BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_ALLOW);
+
+        assertFalse(BraveBrowserLockManager.shouldSecureForIncognitoVisibility(false));
+        assertFalse(BraveBrowserLockManager.shouldSecureForIncognitoVisibility(true));
+    }
+
+    @Test
+    public void shouldSecureForIncognitoVisibility_privateTabsOnly_matchesVisibility() {
+        BraveBrowserLockManager.setScreenshotMode(
+                BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_PRIVATE_TABS_ONLY);
+
+        assertFalse(BraveBrowserLockManager.shouldSecureForIncognitoVisibility(false));
+        assertTrue(BraveBrowserLockManager.shouldSecureForIncognitoVisibility(true));
+    }
+
+    // --- ScreenshotModeObserver ---
+
+    @Test
+    public void setScreenshotMode_notifiesRegisteredObserver() {
+        // Regression coverage: a live per-activity incognito screenshot controller must recompute
+        // immediately on a mode change, rather than waiting for its own unrelated trigger.
+        BraveBrowserLockManager manager = createManager();
+        BraveBrowserLockManager.setInstanceForTesting(manager);
+        BraveBrowserLockManager.ScreenshotModeObserver observer =
+                mock(BraveBrowserLockManager.ScreenshotModeObserver.class);
+        BraveBrowserLockManager.addScreenshotModeObserver(mActivity, observer);
+
+        BraveBrowserLockManager.setScreenshotMode(
+                BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_EVERYTHING);
+
+        verify(observer).onScreenshotModeChanged();
+    }
+
+    @Test
+    public void setScreenshotMode_withNoRegisteredObserver_doesNotThrow() {
+        BraveBrowserLockManager manager = createManager();
+        BraveBrowserLockManager.setInstanceForTesting(manager);
+
+        BraveBrowserLockManager.setScreenshotMode(
+                BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_ALLOW);
+    }
+
+    @Test
+    public void screenshotModeObserver_unregisteredOnActivityDestroyed() {
+        BraveBrowserLockManager manager = createManager();
+        BraveBrowserLockManager.setInstanceForTesting(manager);
+        BraveBrowserLockManager.ScreenshotModeObserver observer =
+                mock(BraveBrowserLockManager.ScreenshotModeObserver.class);
+        BraveBrowserLockManager.addScreenshotModeObserver(mActivity, observer);
+
+        manager.getAppLifecycleCallbacksForTesting().onActivityDestroyed(mActivity);
+        BraveBrowserLockManager.setScreenshotMode(
+                BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_EVERYTHING);
+
+        verify(observer, never()).onScreenshotModeChanged();
     }
 
     // --- getScreenshotMode / shouldForceSecureWindow ---
