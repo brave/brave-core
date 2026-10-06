@@ -7,6 +7,7 @@
 
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
+#include "base/types/to_address.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
@@ -28,7 +29,7 @@ BraveStatsHelper::BraveStatsHelper(PrefService& local_state,
                                    ProfileManager* profile_manager)
     : local_state_(local_state), profile_manager_(profile_manager) {
 #if !BUILDFLAG(IS_ANDROID)
-  last_used_profile_pref_change_registrar_.Init(&*local_state_);
+  last_used_profile_pref_change_registrar_.Init(base::to_address(local_state_));
   last_used_profile_pref_change_registrar_.Add(
       ::prefs::kProfileLastUsed,
       base::BindRepeating(&BraveStatsHelper::OnLastUsedProfileChanged,
@@ -151,9 +152,10 @@ void BraveStatsHelper::MaybeReportAdsInstallationTimeMetric(
   }
   local_state_->SetBoolean(prefs::kEverEnabledForAnyProfile, true);
 
-  base::Time first_run = !testing_first_run_time_.is_null()
-                             ? testing_first_run_time_
-                             : brave_stats::GetFirstRunTime(&*local_state_);
+  base::Time first_run =
+      !testing_first_run_time_.is_null()
+          ? testing_first_run_time_
+          : brave_stats::GetFirstRunTime(base::to_address(local_state_));
   int hours_from_first_run = (base::Time::Now() - first_run).InHours();
 
   p3a_utils::RecordToHistogramBucket(kAdsEnabledInstallationTimeHistogramName,

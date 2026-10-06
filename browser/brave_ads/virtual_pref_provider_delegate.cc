@@ -6,6 +6,7 @@
 #include "brave/browser/brave_ads/virtual_pref_provider_delegate.h"
 
 #include "base/strings/utf_string_conversions.h"
+#include "base/types/to_address.h"
 #include "base/values.h"
 #include "base/version_info/channel.h"
 #include "chrome/browser/profiles/profile.h"
@@ -33,7 +34,8 @@ std::string_view VirtualPrefProviderDelegate::GetChannel() const {
 
 std::string VirtualPrefProviderDelegate::GetDefaultSearchEngineName() const {
   auto* prepopulate_data_resolver =
-      TemplateURLPrepopulateData::ResolverFactory::GetForProfile(&*profile_);
+      TemplateURLPrepopulateData::ResolverFactory::GetForProfile(
+          base::to_address(profile_));
   const auto template_url_data = prepopulate_data_resolver->GetFallbackSearch();
   const std::u16string& default_search_engine_name =
       template_url_data ? template_url_data->short_name() : u"";

@@ -20,6 +20,7 @@
 #include "base/notimplemented.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
+#include "base/types/to_address.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_util.h"
@@ -452,7 +453,7 @@ void AdsServiceImplIOS::Shutdown() {
 bool AdsServiceImplIOS::CanStartBatAdsService() const {
   // Never start if Rewards is disabled by policy, feature flag, or
   // unsupported region, regardless of which ad units are enabled.
-  return brave_rewards::IsSupported(&*prefs_);
+  return brave_rewards::IsSupported(base::to_address(prefs_));
 }
 
 bool AdsServiceImplIOS::UserHasJoinedBraveRewards() const {
@@ -565,7 +566,7 @@ void AdsServiceImplIOS::ClearAdsDataCallback(ResultCallback callback,
 }
 
 void AdsServiceImplIOS::InitializePrefChangeRegistrar() {
-  pref_change_registrar_.Init(&*prefs_);
+  pref_change_registrar_.Init(base::to_address(prefs_));
   pref_change_registrar_.Add(
       prefs::kSponsoredEnabled,
       base::BindRepeating(&AdsServiceImplIOS::OnAdsPrefChanged,
