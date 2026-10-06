@@ -56,9 +56,9 @@ static_assert(std::size(kPublicKeySHA256) == crypto::kSHA256Length,
               "Wrong hash length");
 
 // Owns the component registration for the whole session and follows the master
-// switch so it stays in sync with it. It is also the one place that decides
-// when an install request is over, and answers it with whether a model is
-// installed.
+// switch and `kOnDeviceSpeechModelEnabled`, so the model is on disk only
+// while both allow it. It is also the one place that decides when an install
+// request is over, and answers it with whether a model is installed.
 //
 // Registering and removing the model both go through the one
 // `ComponentInstaller` this holds, which is what orders a removal against an
@@ -87,6 +87,10 @@ class OnDeviceSpeechModelsComponentRegistrar
         prefs::kBraveLocalAIEnabled,
         base::BindRepeating(&OnDeviceSpeechModelsComponentRegistrar::Sync,
                             base::Unretained(this)));
+    pref_change_registrar_.Add(
+        prefs::kOnDeviceSpeechModelEnabled,
+        base::BindRepeating(&OnDeviceSpeechModelsComponentRegistrar::Sync,
+                            base::Unretained(this)));
     Sync();
   }
 
@@ -108,7 +112,7 @@ class OnDeviceSpeechModelsComponentRegistrar
     callback = base::BindPostTaskToCurrentDefault(std::move(callback));
 
     if (!cus_ ||
-        !IsOnDeviceSpeechRecognitionAllowed(pref_change_registrar_.prefs())) {
+        !ShouldInstallOnDeviceSpeechModel(pref_change_registrar_.prefs())) {
       std::move(callback).Run(false);
       return;
     }
@@ -132,7 +136,16 @@ class OnDeviceSpeechModelsComponentRegistrar
   ~OnDeviceSpeechModelsComponentRegistrar() override = default;
 
   void Sync() {
-    if (!IsOnDeviceSpeechRecognitionAllowed(pref_change_registrar_.prefs())) {
+    PrefService* local_state = pref_change_registrar_.prefs();
+    // Enabling the model does not outlive the switch, so turning it back on
+    // asks again rather than downloading. Clearing it runs `Sync` again, and
+    // that run removes the model.
+    if (!CanOfferOnDeviceSpeech(local_state) &&
+        local_state->GetBoolean(prefs::kOnDeviceSpeechModelEnabled)) {
+      local_state->ClearPref(prefs::kOnDeviceSpeechModelEnabled);
+      return;
+    }
+    if (!ShouldInstallOnDeviceSpeechModel(local_state)) {
       Unregister();
       return;
     }
@@ -147,10 +160,10 @@ class OnDeviceSpeechModelsComponentRegistrar
       SettlePendingRequests();
       return;
     }
-    // The switch turned off while this was in flight, so the unregister it ran
-    // found nothing to remove. Nothing else will try again, so finish the
-    // removal here.
-    if (!IsOnDeviceSpeechRecognitionAllowed(pref_change_registrar_.prefs())) {
+    // The switch turned off, or the model was disabled, while this was in
+    // flight, so the unregister it ran found nothing to remove. Nothing else
+    // will try again, so finish the removal here.
+    if (!ShouldInstallOnDeviceSpeechModel(pref_change_registrar_.prefs())) {
       Unregister();
       return;
     }
@@ -217,9 +230,10 @@ class OnDeviceSpeechModelsComponentRegistrar
       EnsureInstaller();
       installer_->Uninstall();
     }
-    // A registration still in flight reads the switch again when it lands,
-    // which is what lets a switch turned off and back on finish the install it
-    // started. With none in flight, nothing else will answer what is waiting.
+    // A registration still in flight reads the prefs again when it lands,
+    // which is what lets a request made again before then finish the install
+    // it started. With none in flight, nothing else will answer what is
+    // waiting.
     if (!registration_pending_) {
       SettlePendingRequests();
     }
@@ -310,8 +324,9 @@ void OnDeviceSpeechModelsComponentInstallerPolicy::ComponentReady(
     return;
   }
   // Unregistration is deferred behind an in-flight update, so this still fires
-  // for a download that started before the switch turned off.
-  if (!IsOnDeviceSpeechRecognitionAllowed(local_state_)) {
+  // for a download that started before the switch turned off or the model was
+  // disabled.
+  if (!ShouldInstallOnDeviceSpeechModel(local_state_)) {
     return;
   }
   OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(install_dir);

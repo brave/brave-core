@@ -25,8 +25,7 @@ media::mojom::AvailabilityStatus GetBraveOnDeviceSpeechAvailability(
     media::mojom::SpeechRecognitionQuality quality) {
   // With the feature or the master switch off Brave serves nothing, and there
   // is no upstream on-device backend to fall back to.
-  if (!local_ai::IsOnDeviceSpeechRecognitionAllowed(
-          g_browser_process->local_state())) {
+  if (!local_ai::CanOfferOnDeviceSpeech(g_browser_process->local_state())) {
     return media::mojom::AvailabilityStatus::kUnavailable;
   }
 
