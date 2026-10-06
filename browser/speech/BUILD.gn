@@ -36,15 +36,21 @@ if (enable_local_ai) {
   source_set("chromium_impl") {
     sources = [
       "brave_soda_installer_factory.cc",
+      "on_device_speech_recognition_impl.cc",
       "on_device_speech_recognition_util.cc",
     ]
 
     deps = [
       ":speech",
+      "//base",
       "//base/i18n:language_tag",
       "//brave/components/local_ai/core",
       "//chrome/browser:browser_process",
+      "//chrome/browser/profiles:profile",
+      "//components/permissions",
+      "//components/prefs",
       "//components/soda",
+      "//content/public/browser",
       "//media/mojo/mojom:web_speech_recognition",
     ]
   }
@@ -121,6 +127,7 @@ if (enable_local_ai) {
       "brave_soda_installer_unittest.cc",
       "on_device_speech_model_permission_request_unittest.cc",
       "on_device_speech_recognition_controller_unittest.cc",
+      "on_device_speech_recognition_impl_unittest.cc",
       "on_device_speech_recognition_util_unittest.cc",
     ]
 
@@ -134,9 +141,12 @@ if (enable_local_ai) {
       "//brave/components/local_ai/core:features",
       "//brave/components/local_ai/core:speech_recognition_mojom",
       "//chrome/browser/profiles:profile",
+      "//chrome/browser/speech",
       "//chrome/test:test_support",
       "//components/component_updater",
       "//components/component_updater:test_support",
+      "//components/permissions",
+      "//components/permissions:test_support",
       "//components/prefs",
       "//components/soda",
       "//components/soda:constants",

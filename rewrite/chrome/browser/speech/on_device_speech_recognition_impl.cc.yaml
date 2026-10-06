@@ -24,9 +24,17 @@ substitutions:
       The same rewrite, so the quality reaches the SODA branch where
       `BraveSodaInstaller` installs Brave's own model, rather than the
       optimization guide branch that asks for a model Brave does not ship.
+
+      Then ask before a download starts, and run `Install` again once allowed.
     preempt_function_impl:
       function_name: OnDeviceSpeechRecognitionImpl::Install
       code: |-
         if (quality == media::mojom::SpeechRecognitionQuality::kDictation) {
           quality = media::mojom::SpeechRecognitionQuality::kCommand;
+        }
+        if (CanRenderFrameHostUseOnDeviceSpeechRecognition() &&
+            MaybePromptBeforeInstall(weak_ptr_factory_.GetWeakPtr(),
+                                     render_frame_host(), languages, quality,
+                                     callback)) {
+          return;
         }
