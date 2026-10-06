@@ -1,0 +1,62 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//ios/web/public/js_messaging/optimize_ts.gni")
+
+source_set("element_picker") {
+  sources = [
+    "element_picker_javascript_feature.h",
+    "element_picker_javascript_feature.mm",
+  ]
+  deps = [
+    ":element_picker_js",
+    "//url",
+  ]
+  public_deps = [
+    "//base",
+    "//brave/ios/web/js_messaging:message_handler_token",
+    "//brave/ios/web/js_messaging:randomized_message_handler_name",
+    "//ios/web/public",
+    "//ios/web/public/js_messaging",
+  ]
+}
+
+optimize_ts("element_picker_js") {
+  visibility = [ ":element_picker" ]
+
+  sources = [ "resources/element_picker.ts" ]
+
+  deps = [
+    ":element_picker_api_webkit",
+    ":element_picker_shared",
+  ]
+}
+
+compile_ts("element_picker_api_webkit") {
+  sources = [ "resources/element_picker_api_webkit.ts" ]
+
+  deps = [
+    ":element_picker_shared",
+    "//brave/ios/web/js_messaging:util_scripts",
+    "//ios/web/public/js_messaging:util_scripts",
+  ]
+}
+
+# The picker UI itself is shared with the non-iOS (webpack) build. Compiled
+# here so the iOS entry point can supply its own `ElementPickerAPI`.
+#
+# These sources live under //brave/components, whose nearest package.json is
+# treated as CommonJS, while //brave/ios sources are ESM (`"type": "module"`).
+# Under the default `nodenext` config that would emit CommonJS, which rollup
+# can't link against the ESM bundle. The custom tsconfig forces ESM output.
+compile_ts("element_picker_shared") {
+  tsconfig_base = "element_picker.tsconfig.json"
+
+  sources = [
+    "//brave/components/cosmetic_filters/resources/data/element_picker.ts",
+    "//brave/components/cosmetic_filters/resources/data/element_picker_api.ts",
+    "//brave/components/cosmetic_filters/resources/data/element_picker_template.ts",
+  ]
+}

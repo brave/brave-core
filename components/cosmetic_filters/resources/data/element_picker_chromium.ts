@@ -5,5 +5,6 @@
 
 import { showElementPicker } from './element_picker'
 import { ChromiumElementPickerAPI } from './element_picker_api_chromium'
+import { elementPickerTemplate } from './element_picker_template'
 
-showElementPicker(new ChromiumElementPickerAPI())
+showElementPicker(new ChromiumElementPickerAPI(), elementPickerTemplate)

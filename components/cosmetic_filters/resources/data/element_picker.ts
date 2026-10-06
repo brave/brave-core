@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import type { ElementPickerAPI } from './element_picker_api'
-import { elementPickerTemplate } from './element_picker_template'
 
 const NSSVG = 'http://www.w3.org/2000/svg'
 
@@ -18,8 +17,9 @@ let btnCreateDisabledText: string
 let btnShowRulesBoxText: string
 let btnHideRulesBoxText: string
 
-// Set by `showElementPicker()` before any of the picker UI is created.
+// Both set by `showElementPicker()` before any of the picker UI is created.
 let api: ElementPickerAPI
+let template: string
 
 // When the picker is activated, it eats all pointer events and takes up the
 // entire screen. All calls to document.elementFromPoint(..) will return the
@@ -321,7 +321,7 @@ const attachElementPicker = () => {
 
   // It's a trusted content so it's safe to use innerHTML.
   // eslint-disable-next-line no-unsanitized/property
-  shadowRoot.innerHTML = elementPickerTemplate
+  shadowRoot.innerHTML = template
 
   const pickerCSSStyle: string = [
     'background: transparent',
@@ -898,8 +898,17 @@ const localizeTextData = (
 // Opens the element picker, or un-minimizes it if it is already open. The
 // platform supplies its own `ElementPickerAPI` since the browser-side
 // transport differs between Chromium and WebKit.
-export const showElementPicker = (platformApi: ElementPickerAPI) => {
+//
+// `pickerTemplate` is passed in rather than imported because this file is
+// bundled by webpack for Chromium and by rollup for iOS, and the two disagree
+// on how a cross-directory module path may be spelled. Only the per-platform
+// entry points can name the template in a way their own bundler accepts.
+export const showElementPicker = (
+  platformApi: ElementPickerAPI,
+  pickerTemplate: string,
+) => {
   api = platformApi
+  template = pickerTemplate
 
   const active = document.getElementById('brave-element-picker')
   if (active) {
