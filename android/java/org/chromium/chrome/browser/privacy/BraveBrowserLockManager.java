@@ -28,6 +28,7 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.incognito.reauth.BraveBrowserLockCoordinator;
+import org.chromium.chrome.browser.incognito.reauth.BraveIncognitoReauthManager;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthManager;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthSettingUtils;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -175,7 +176,13 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
                         || BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE.equals(key)) {
                     applySecureFlagToAllActivities();
                     if (!isBrowserLockEnabled()) {
+                        mLockArmed = false;
+                        mReauthInFlight = false;
                         removeAllPreNativeOverlays();
+                        // Also dismiss any lock already showing on another activity (e.g. a
+                        // second multi-instance window) — the pref may have been disabled from
+                        // elsewhere while that lock is still up.
+                        hideAllCoordinators(DialogDismissalCause.ACTION_ON_DIALOG_COMPLETED);
                     }
                 }
             };
@@ -335,7 +342,7 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
                 || profile == null) {
             return;
         }
-        IncognitoReauthManager reauthManager = new IncognitoReauthManager(activity, profile);
+        IncognitoReauthManager reauthManager = new BraveIncognitoReauthManager(activity, profile);
         BraveBrowserLockCoordinator coordinator = createCoordinator(activity, reauthManager);
         mActiveLocks.put(activity, new ActiveLock(coordinator, reauthManager));
         coordinator.show();
@@ -430,6 +437,11 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     @VisibleForTesting
     IncognitoReauthManager.IncognitoReauthCallback getReauthCallbackForTesting() {
         return mReauthCallback;
+    }
+
+    @VisibleForTesting
+    SharedPreferences.OnSharedPreferenceChangeListener getPrefChangeListenerForTesting() {
+        return mPrefChangeListener;
     }
 
     @VisibleForTesting
