@@ -561,7 +561,7 @@
 -NotificationsEngagementServiceTest.EraseStaleEntries
 
 # This test fails because we stub out NetworkService::UpdateKeysPinList
--PKIMetadataComponentInstallerTest.InstallComponentUpdatesPinningConfig
+-PKIMetadataComponentInstallerKeyPinningTest.InstallComponentUpdatesPinningConfig
 
 # These tests are disabled because we hide the password card in
 # brave://settings/safetyCheck which also involves always returning a "safe"
