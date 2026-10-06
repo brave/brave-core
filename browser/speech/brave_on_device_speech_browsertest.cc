@@ -126,7 +126,9 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
     // Browser tests run with `--disable-component-update`
     // (`chrome/test/base/test_launcher_utils.cc`), so startup registers no
     // components and the registrar has no update service. Start it here
-    // instead.
+    // instead, as a user who enabled the model leaves it.
+    g_browser_process->local_state()->SetBoolean(
+        local_ai::prefs::kOnDeviceSpeechModelEnabled, true);
     local_ai::ManageOnDeviceSpeechModelsComponentRegistration(
         g_browser_process->component_updater(),
         g_browser_process->local_state());
