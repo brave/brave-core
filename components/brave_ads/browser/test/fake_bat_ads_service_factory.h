@@ -15,6 +15,7 @@
 
 namespace brave_ads::test {
 
+class FakeBatAds;
 class FakeBatAdsClientNotifier;
 class FakeBatAdsService;
 
@@ -40,6 +41,8 @@ class FakeBatAdsServiceFactory : public BatAdsServiceFactory {
   base::TimeDelta last_idle_time() const;
   bool last_screen_was_locked() const;
 
+  size_t trigger_notification_ad_event_count() const;
+
   // Causes subsequently launched services to report initialization failure.
   void set_simulate_initialization_failure() {
     simulate_initialization_failure_ = true;
@@ -62,6 +65,10 @@ class FakeBatAdsServiceFactory : public BatAdsServiceFactory {
   // Returns the notifier from the most recently launched service, or `nullptr`
   // if no service has been launched yet.
   const FakeBatAdsClientNotifier* bat_ads_client_notifier() const;
+
+  // Returns the `FakeBatAds` from the most recently launched service, or
+  // `nullptr` if no service has been launched yet.
+  const FakeBatAds* bat_ads() const;
 
   size_t launch_count_ = 0;
   size_t initialize_count_ = 0;
