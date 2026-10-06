@@ -184,6 +184,10 @@ static_library("browser") {
       "dreaming_text_utils.cc",
       "dreaming_text_utils.h",
       "learned_memory_types.h",
+      "memory_decision_client.cc",
+      "memory_decision_client.h",
+      "ollama_decision_client.cc",
+      "ollama_decision_client.h",
     ]
     deps += [ "//base:i18n" ]
   }
@@ -282,7 +286,11 @@ source_set("unit_tests") {
   }
 
   if (enable_local_ai) {
-    sources += [ "dreaming_text_utils_unittest.cc" ]
+    sources += [
+      "dreaming_text_utils_unittest.cc",
+      "memory_decision_client_unittest.cc",
+      "ollama_decision_client_unittest.cc",
+    ]
   }
 
   if (use_blink) {
