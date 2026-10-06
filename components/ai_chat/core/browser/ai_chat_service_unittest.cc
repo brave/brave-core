@@ -969,6 +969,22 @@ TEST_P(AIChatServiceUnitTest, SyncBackendSurvivesStorageToggle) {
   EXPECT_TRUE(ai_chat_service_->CreateConversation());
 }
 
+TEST_P(AIChatServiceUnitTest, GetConversations_StorageTurnedOffWhileLoading) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  WaitForSyncBridgeReady();
+  ConversationHandler* conversation_handler = CreateConversation();
+  auto client = CreateConversationClient(conversation_handler);
+  conversation_handler->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+
+  base::test::TestFuture<std::vector<mojom::ConversationPtr>> future;
+  ai_chat_service_->GetConversations(future.GetCallback());
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
+  // The conversation, still open, is listed from memory.
+  EXPECT_EQ(future.Take().size(), 1u);
+}
+
 TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries_NoPermission) {
   NiceMock<MockAssociatedContent> associated_content{};
   ConversationHandler* conversation =

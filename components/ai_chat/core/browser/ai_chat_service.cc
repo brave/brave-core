@@ -713,7 +713,8 @@ void AIChatService::OnLoadConversationsLazyData(
       conversations_.emplace(uuid, std::move(conversation));
     }
     auto handler_it = conversation_handlers_.find(uuid);
-    if (handler_it != conversation_handlers_.end()) {
+    // Storage can have been turned off while the conversations loaded.
+    if (handler_it != conversation_handlers_.end() && ai_chat_db_) {
       // Notify the handler that metadata is possibly changed
       ConversationHandler* handler = handler_it->second.get();
       // If a reload was asked for, then we should also update the deeper
