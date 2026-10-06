@@ -36,8 +36,10 @@ source_set("browser_tests") {
     "//chrome/test",
     "//chrome/test:test_support",
     "//components/prefs",
+    "//ui/accessibility:ax_base",
     "//ui/base:test_support",
     "//ui/events:test_support",
+    "//ui/views",
   ]
 
   if (use_ozone) {
