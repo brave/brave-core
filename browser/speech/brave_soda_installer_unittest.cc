@@ -63,6 +63,10 @@ class BraveSodaInstallerUnitTest : public testing::Test {
   // installs one.
   void SetUp() override {
     ON_CALL(cus_, RegisterComponent).WillByDefault(testing::Return(true));
+    // An enabled model, so the registrar registers it and the installer's
+    // requests reach the download.
+    local_state()->SetBoolean(local_ai::prefs::kOnDeviceSpeechModelEnabled,
+                              true);
 
     // Starting the registrar asks for a download of its own. Waiting for it
     // means a test's own request starts a registration rather than joining

@@ -56,9 +56,9 @@ static_assert(std::size(kPublicKeySHA256) == crypto::kSHA256Length,
               "Wrong hash length");
 
 // Owns the component registration for the whole session and follows the master
-// switch so it stays in sync with it. It is also the one place that decides
-// when an install request is over, and answers it with whether a model is
-// installed.
+// switch and `kOnDeviceSpeechModelEnabled`, so the model is on disk only
+// while both allow it. It is also the one place that decides when an install
+// request is over, and answers it with whether a model is installed.
 //
 // Registering and removing the model both go through the one
 // `ComponentInstaller` this holds, which is what orders a removal against an
@@ -87,6 +87,11 @@ class OnDeviceSpeechModelsComponentRegistrar
         prefs::kBraveLocalAIEnabled,
         base::BindRepeating(&OnDeviceSpeechModelsComponentRegistrar::Sync,
                             base::Unretained(this)));
+    pref_change_registrar_.Add(
+        prefs::kOnDeviceSpeechModelEnabled,
+        base::BindRepeating(
+            &OnDeviceSpeechModelsComponentRegistrar::OnEnabledChanged,
+            base::Unretained(this)));
     Sync();
   }
 
@@ -108,7 +113,7 @@ class OnDeviceSpeechModelsComponentRegistrar
     callback = base::BindPostTaskToCurrentDefault(std::move(callback));
 
     if (!cus_ ||
-        !IsOnDeviceSpeechRecognitionAllowed(pref_change_registrar_.prefs())) {
+        !IsOnDeviceSpeechModelEnabled(pref_change_registrar_.prefs())) {
       std::move(callback).Run(false);
       return;
     }
@@ -132,11 +137,28 @@ class OnDeviceSpeechModelsComponentRegistrar
   ~OnDeviceSpeechModelsComponentRegistrar() override = default;
 
   void Sync() {
-    if (!IsOnDeviceSpeechRecognitionAllowed(pref_change_registrar_.prefs())) {
-      Unregister();
+    PrefService* local_state = pref_change_registrar_.prefs();
+    if (IsOnDeviceSpeechModelEnabled(local_state)) {
+      Register(base::DoNothing());
       return;
     }
-    Register(base::DoNothing());
+    // Enabling the model does not outlive the switch, so turning it back on
+    // asks again rather than downloading. `OnEnabledChanged` leaves this
+    // change to the removal below.
+    if (!IsOnDeviceSpeechRecognitionAllowed(local_state)) {
+      local_state->ClearPref(prefs::kOnDeviceSpeechModelEnabled);
+    }
+    // Nothing asked for the model, so a copy still on disk is removed rather
+    // than kept up to date.
+    Unregister();
+  }
+
+  void OnEnabledChanged() {
+    // `Sync` clears it while the switch is off, and removes the model itself.
+    if (!IsOnDeviceSpeechRecognitionAllowed(pref_change_registrar_.prefs())) {
+      return;
+    }
+    Sync();
   }
 
   void OnRegistered() {
@@ -147,10 +169,10 @@ class OnDeviceSpeechModelsComponentRegistrar
       SettlePendingRequests();
       return;
     }
-    // The switch turned off while this was in flight, so the unregister it ran
-    // found nothing to remove. Nothing else will try again, so finish the
-    // removal here.
-    if (!IsOnDeviceSpeechRecognitionAllowed(pref_change_registrar_.prefs())) {
+    // The switch turned off, or the model was disabled, while this was in
+    // flight, so the unregister it ran found nothing to remove. Nothing else
+    // will try again, so finish the removal here.
+    if (!IsOnDeviceSpeechModelEnabled(pref_change_registrar_.prefs())) {
       Unregister();
       return;
     }
@@ -217,9 +239,10 @@ class OnDeviceSpeechModelsComponentRegistrar
       EnsureInstaller();
       installer_->Uninstall();
     }
-    // A registration still in flight reads the switch again when it lands,
-    // which is what lets a switch turned off and back on finish the install it
-    // started. With none in flight, nothing else will answer what is waiting.
+    // A registration still in flight reads the prefs again when it lands,
+    // which is what lets a request made again before then finish the install
+    // it started. With none in flight, nothing else will answer what is
+    // waiting.
     if (!registration_pending_) {
       SettlePendingRequests();
     }
@@ -310,8 +333,9 @@ void OnDeviceSpeechModelsComponentInstallerPolicy::ComponentReady(
     return;
   }
   // Unregistration is deferred behind an in-flight update, so this still fires
-  // for a download that started before the switch turned off.
-  if (!IsOnDeviceSpeechRecognitionAllowed(local_state_)) {
+  // for a download that started before the switch turned off or the model was
+  // disabled.
+  if (!IsOnDeviceSpeechModelEnabled(local_state_)) {
     return;
   }
   OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(install_dir);

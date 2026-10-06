@@ -21,6 +21,11 @@ bool IsOnDeviceSpeechRecognitionAllowed(const PrefService* local_state) {
          (!local_state || local_state->GetBoolean(prefs::kBraveLocalAIEnabled));
 }
 
+bool IsOnDeviceSpeechModelEnabled(const PrefService* local_state) {
+  return local_state && IsOnDeviceSpeechRecognitionAllowed(local_state) &&
+         local_state->GetBoolean(prefs::kOnDeviceSpeechModelEnabled);
+}
+
 std::optional<mojo_base::BigBuffer> ReadFileToBigBuffer(
     const base::FilePath& path) {
   base::File file(path, base::File::FLAG_OPEN | base::File::FLAG_READ);

@@ -52,6 +52,17 @@ TEST_F(BraveOnDeviceSpeechAvailabilityUnitTest, DownloadableUntilInstalled) {
   state->SetInstallDir(base::FilePath());
 }
 
+// Enabling the model does not change what a site sees until the model is
+// installed, so a site cannot see that a user enabled it.
+TEST_F(BraveOnDeviceSpeechAvailabilityUnitTest,
+       DownloadableWhenEnabledButNotInstalled) {
+  PrefService* local_state = TestingBrowserProcess::GetGlobal()->local_state();
+  local_state->SetBoolean(local_ai::prefs::kOnDeviceSpeechModelEnabled, true);
+  EXPECT_EQ(AvailabilityStatus::kDownloadable,
+            GetBraveOnDeviceSpeechAvailability("en-US", Quality::kCommand));
+  local_state->ClearPref(local_ai::prefs::kOnDeviceSpeechModelEnabled);
+}
+
 TEST_F(BraveOnDeviceSpeechAvailabilityUnitTest, UnavailableWhenLocalAIOff) {
   PrefService* local_state = TestingBrowserProcess::GetGlobal()->local_state();
   local_state->SetBoolean(local_ai::prefs::kBraveLocalAIEnabled, false);

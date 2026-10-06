@@ -22,6 +22,11 @@ namespace local_ai {
 // speech recognition. A null `local_state` reads as the switch's default, on.
 bool IsOnDeviceSpeechRecognitionAllowed(const PrefService* local_state);
 
+// Whether the on-device speech recognition model is to be on disk: on-device
+// speech recognition is allowed, and the model is enabled. A null `local_state`
+// reads as not enabled.
+bool IsOnDeviceSpeechModelEnabled(const PrefService* local_state);
+
 // Reads a file directly into BigBuffer storage. For files >64KB BigBuffer
 // uses shared memory. Returns std::nullopt if the file can't be opened, is
 // empty, or can't be fully read. Must run on a sequence that allows blocking.

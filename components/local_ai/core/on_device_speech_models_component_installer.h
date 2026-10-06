@@ -40,8 +40,8 @@ inline constexpr char kOnDeviceSpeechModelsComponentId[] =
 class OnDeviceSpeechModelsComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
-  // `local_state` gates `ComponentReady` on the `kBraveLocalAIEnabled` master
-  // switch, which can turn off while an update is already in flight.
+  // `local_state` gates `ComponentReady` on `IsOnDeviceSpeechModelEnabled`,
+  // which can turn false while an update is already in flight.
   explicit OnDeviceSpeechModelsComponentInstallerPolicy(
       PrefService* local_state);
   ~OnDeviceSpeechModelsComponentInstallerPolicy() override;
@@ -75,8 +75,10 @@ class OnDeviceSpeechModelsComponentInstallerPolicy
 
 // Called once, while components are registered at startup. Sets up the
 // registrar, which from then on follows the `kBraveLocalAIEnabled` master
-// switch and the feature for the rest of the session, registering the
-// component or taking the model back off disk to match.
+// switch, the feature and `kOnDeviceSpeechModelEnabled` for the rest of
+// the session. It registers the component only while the model is enabled, and
+// otherwise takes the model back off disk. Turning the switch or the feature
+// off also clears `kOnDeviceSpeechModelEnabled`.
 //
 // Brave Origin manages the switch and verifies the purchase asynchronously, so
 // its value can land after components are registered, which is why the switch
@@ -99,7 +101,8 @@ void ShutdownOnDeviceSpeechModelsComponentRegistration();
 // updater to download one that is not. Safe to call repeatedly. `callback`
 // runs once, asynchronously, with whether a model ended up installed, even
 // when nothing is registered, which is the case while the feature or the
-// master switch is off, or before
+// master switch is off, while the model is not enabled
+// (`kOnDeviceSpeechModelEnabled`), or before
 // `ManageOnDeviceSpeechModelsComponentRegistration` has run.
 void MaybeRegisterOnDeviceSpeechModelsComponent(
     base::OnceCallback<void(bool)> callback);
