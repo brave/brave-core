@@ -1299,4 +1299,12 @@
   <message name="IDS_BRAVE_WALLET_REQUIRE_UNLOCK_NEXT_TIME" desc="Description under the lock wallet button in the wallet card hub settings screen" formatter_data="webui=Wallet">Require unlock next time</message>
   <message name="IDS_BRAVE_WALLET_HIDE_CARD_FROM_HOME" desc="Title of the confirmation dialog for hiding a wallet card hub card from home" formatter_data="webui=Wallet">Hide <ph name="CARD_NAME">$1<ex>Crypto</ex></ph> from home?</message>
   <message name="IDS_BRAVE_WALLET_HIDE_CARD_FROM_HOME_DESCRIPTION" desc="Description of the confirmation dialog for hiding a wallet card hub card from home" formatter_data="webui=Wallet">Your <ph name="CARD_NAME">$1<ex>Crypto</ex></ph> balance is unchanged. This only hides the card from home. You can show it again anytime in Settings, under Wallet.</message>
+  <message name="IDS_BRAVE_WALLET_ADD_FUNDS" desc="Action label on the wallet card hub details screen to add funds" formatter_data="webui=Wallet">Add funds</message>
+  <message name="IDS_BRAVE_WALLET_NEW_CARD" desc="Action label on the wallet card hub details screen to create a new card" formatter_data="webui=Wallet">New card</message>
+  <message name="IDS_BRAVE_WALLET_EARNINGS" desc="Title for the earnings row on the wallet card hub details screen. $1 and /$1 wrap the date in a secondary style. $2 is the month and year." formatter_data="webui=Wallet">Earnings <ph name="DATE_BEGIN">$1</ph>(<ph name="DATE">$2<ex>September 2026</ex></ph>)<ph name="DATE_END">/$1</ph></message>
+  <message name="IDS_BRAVE_WALLET_INTEREST_PLUS_CASHBACK" desc="Subtitle for the earnings row showing interest and BAT cashback on the wallet card hub details screen" formatter_data="webui=Wallet">Interest + <ph name="AMOUNT">$1<ex>0.000</ex></ph> BAT cashback</message>
+  <message name="IDS_BRAVE_WALLET_SPENDING" desc="Title for the spending row on the wallet card hub details screen" formatter_data="webui=Wallet">Spending</message>
+  <message name="IDS_BRAVE_WALLET_THIS_MONTH" desc="Subtitle for the spending row on the wallet card hub details screen" formatter_data="webui=Wallet">This month</message>
+  <message name="IDS_BRAVE_WALLET_GET_PHYSICAL_CARD" desc="Title for the get physical card row on the wallet card hub details screen" formatter_data="webui=Wallet">Get physical card</message>
+  <message name="IDS_BRAVE_WALLET_USE_IN_STORES_AND_ATMS" desc="Subtitle for the get physical card row on the wallet card hub details screen" formatter_data="webui=Wallet">Use in stores and ATMs</message>
 </grit-part>

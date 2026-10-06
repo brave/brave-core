@@ -47,17 +47,13 @@ export const ScreenPane = styled.div`
 export const DetailsPane = styled.div<{ $visible?: boolean }>`
   position: absolute;
   inset: 0;
-  z-index: 3;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  pointer-events: none;
+  pointer-events: ${(p) => (p.$visible ? 'auto' : 'none')};
   opacity: ${(p) => (p.$visible ? 1 : 0)};
   transition: opacity ${leo.duration.m} ${leo.easing.out};
-
-  ${DetailsHeader} {
-    pointer-events: ${(p) => (p.$visible ? 'auto' : 'none')};
-  }
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;
@@ -128,6 +124,9 @@ export const CardStack = styled.div<{ $frozen?: boolean }>`
   ${(p) =>
     p.$frozen
       ? `
+    position: relative;
+    z-index: 2;
+    pointer-events: none;
     & > *:hover {
       --card-lift: 0px;
     }
