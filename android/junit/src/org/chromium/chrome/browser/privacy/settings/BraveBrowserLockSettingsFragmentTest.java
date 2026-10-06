@@ -14,6 +14,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import android.os.Bundle;
@@ -303,6 +304,56 @@ public class BraveBrowserLockSettingsFragmentTest {
                                             .BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_PRIVATE_TABS_ONLY,
                                     BraveBrowserLockManager.getScreenshotMode());
                             assertFalse(BraveBrowserLockManager.shouldForceSecureWindow());
+                        });
+    }
+
+    @Test
+    @SmallTest
+    public void secondSwitchTap_whileFirstReauthPending_isRejectedAndReverted() {
+        // Deliberately do not stub a reauth result, so the first flow never resolves and stays
+        // "in flight" — regression coverage for rapid taps across different controls launching
+        // concurrent IncognitoReauthManager flows (and therefore concurrent biometric prompts).
+        buildFragmentScenario()
+                .onFragment(
+                        fragment -> {
+                            MaterialSwitch switchEntireApp =
+                                    fragment.requireView()
+                                            .findViewById(R.id.switch_entire_application);
+                            MaterialSwitch switchPrivateTabs =
+                                    fragment.requireView().findViewById(R.id.switch_private_tabs);
+
+                            switchEntireApp.performClick();
+                            switchPrivateTabs.performClick();
+
+                            verify(mReauthenticatorBridge, times(1)).reauthenticate(any());
+                            assertFalse(switchPrivateTabs.isChecked());
+                            verify(mPrefService, never())
+                                    .setBoolean(
+                                            eq(Pref.INCOGNITO_REAUTHENTICATION_FOR_ANDROID),
+                                            anyBoolean());
+                        });
+    }
+
+    @Test
+    @SmallTest
+    public void screenshotModeTap_whileSwitchReauthPending_isRejected() {
+        buildFragmentScenario()
+                .onFragment(
+                        fragment -> {
+                            MaterialSwitch switchEntireApp =
+                                    fragment.requireView()
+                                            .findViewById(R.id.switch_entire_application);
+
+                            switchEntireApp.performClick();
+                            fragment.requireView()
+                                    .findViewById(R.id.row_screenshot_everything)
+                                    .performClick();
+
+                            verify(mReauthenticatorBridge, times(1)).reauthenticate(any());
+                            assertEquals(
+                                    BravePreferenceKeys
+                                            .BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_PRIVATE_TABS_ONLY,
+                                    BraveBrowserLockManager.getScreenshotMode());
                         });
     }
 
