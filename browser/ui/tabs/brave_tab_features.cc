@@ -92,10 +92,10 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::IsAllowedForContext(profile)) {
     tab_data_observer_ = std::make_unique<ai_chat::TabDataWebContentsObserver>(
-        tab.GetHandle().raw_value(), tab.GetContents());
+        tab.GetHandle().raw_value(), tab);
     // Injects Brave-provided WebMCP tools into matching pages; see
     // WebMcpInjector. Null when WebMCP is disabled or has no rules.
-    web_mcp_injector_ = ai_chat::WebMcpInjector::MaybeCreate(tab.GetContents());
+    web_mcp_injector_ = ai_chat::WebMcpInjector::MaybeCreate(tab);
   }
 #endif
 
@@ -119,8 +119,7 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
             PsstReporterServiceFactory::GetForProfile(profile),
             profile->GetPrefs(),
             std::make_unique<psst::PsstUiDesktopPresenter>(
-                tab.GetContents()->GetWeakPtr(),
-                psst_action_controller_->AsWeakPtr())),
+                tab, psst_action_controller_->AsWeakPtr())),
         psst_settings_service, variations_service,
         ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }

@@ -70,7 +70,7 @@ std::string BuildRegisterToolScript(const web_mcp::WebMcpInjectionRule& rule) {
 
 // static
 std::unique_ptr<WebMcpInjector> WebMcpInjector::MaybeCreate(
-    content::WebContents* web_contents) {
+    tabs::TabInterface& tab) {
   // kWebMCP's base::Feature gates the runtime feature; if it is force-disabled
   // there is no point injecting. Rules arrive asynchronously from the component
   // updater, so an empty registry here is expected and not a reason to skip
@@ -78,13 +78,22 @@ std::unique_ptr<WebMcpInjector> WebMcpInjector::MaybeCreate(
   if (!base::FeatureList::IsEnabled(blink::features::kWebMCP)) {
     return nullptr;
   }
-  return std::make_unique<WebMcpInjector>(web_contents);
+  return std::make_unique<WebMcpInjector>(tab);
 }
 
-WebMcpInjector::WebMcpInjector(content::WebContents* web_contents)
-    : content::WebContentsObserver(web_contents) {}
+WebMcpInjector::WebMcpInjector(tabs::TabInterface& tab)
+    : tabs::ContentsObservingTabFeature(tab) {}
 
 WebMcpInjector::~WebMcpInjector() = default;
+
+void WebMcpInjector::OnDiscardContents(tabs::TabInterface* tab,
+                                       content::WebContents* old_contents,
+                                       content::WebContents* new_contents) {
+  // The remote is bound to a frame of the old contents.
+  script_injector_remote_.reset();
+  tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
+                                                       new_contents);
+}
 
 void WebMcpInjector::DocumentOnLoadCompletedInPrimaryMainFrame() {
   const GURL& url = web_contents()->GetLastCommittedURL();
