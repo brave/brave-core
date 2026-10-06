@@ -22,6 +22,7 @@ import org.chromium.base.ApplicationStatus;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.FeatureList;
+import org.chromium.base.ResettersForTesting;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.build.annotations.NullMarked;
@@ -37,7 +38,9 @@ import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.ui.modaldialog.DialogDismissalCause;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Singleton manager for the browser-wide biometric lock. Its lifetime matches the Application
@@ -86,6 +89,17 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
 
     private static @Nullable BraveBrowserLockManager sInstance;
 
+    /**
+     * Notified whenever the screenshot-protection mode changes, so a live per-activity incognito
+     * screenshot controller (e.g. {@link
+     * org.chromium.chrome.browser.incognito.BraveIncognitoTabbedSnapshotController}) can recompute
+     * immediately instead of waiting for its own unrelated trigger (a tab-model switch or Hub
+     * show/hide for the tabbed case; nothing at all, post-construction, for Custom Tabs).
+     */
+    public interface ScreenshotModeObserver {
+        void onScreenshotModeChanged();
+    }
+
     private @Nullable Profile mProfile;
 
     private boolean mNativeInitializedOnce;
@@ -103,6 +117,16 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     }
 
     private final Map<Activity, ActiveLock> mActiveLocks = new HashMap<>();
+
+    // Activities Brave itself added FLAG_SECURE to (via EVERYTHING mode). Tracked so clearing it
+    // later only undoes what Brave set, never a flag an upstream per-activity incognito-aware
+    // controller (e.g. BraveIncognitoTabbedSnapshotController) is independently managing.
+    private final Set<Activity> mForcedSecureActivities = new HashSet<>();
+
+    // At most one per activity — ChromeTabbedActivity and CustomTabActivity each wire up their
+    // own single incognito screenshot controller. Removed in onActivityDestroyed so this never
+    // leaks a reference to a destroyed activity's controller.
+    private final Map<Activity, ScreenshotModeObserver> mScreenshotModeObservers = new HashMap<>();
 
     private boolean mReauthInFlight;
 
@@ -127,6 +151,7 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
                         Activity activity, @Nullable Bundle savedInstanceState) {
                     if (shouldForceSecureWindow()) {
                         activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+                        mForcedSecureActivities.add(activity);
                     }
                 }
 
@@ -147,6 +172,8 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
 
                 @Override
                 public void onActivityDestroyed(Activity activity) {
+                    mForcedSecureActivities.remove(activity);
+                    mScreenshotModeObservers.remove(activity);
                     ActiveLock lock = mActiveLocks.remove(activity);
                     if (lock == null) return;
 
@@ -209,6 +236,13 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
                     maybeStartNextReauth();
                 }
             };
+
+    @VisibleForTesting
+    public static void setInstanceForTesting(@Nullable BraveBrowserLockManager instance) {
+        BraveBrowserLockManager previous = sInstance;
+        sInstance = instance;
+        ResettersForTesting.register(() -> sInstance = previous);
+    }
 
     public static void initialize(Application application) {
         if (sInstance != null) {
@@ -304,6 +338,23 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     public static void setScreenshotMode(int mode) {
         ChromeSharedPreferences.getInstance()
                 .writeInt(BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE, mode);
+        BraveBrowserLockManager instance = sInstance;
+        if (instance == null) return;
+        for (ScreenshotModeObserver observer : instance.mScreenshotModeObservers.values()) {
+            observer.onScreenshotModeChanged();
+        }
+    }
+
+    /**
+     * Registers {@code observer} to be notified of future {@link #setScreenshotMode} calls, until
+     * {@code activity} is destroyed (at which point it is automatically unregistered — callers do
+     * not need their own unregister path).
+     */
+    public static void addScreenshotModeObserver(
+            Activity activity, ScreenshotModeObserver observer) {
+        BraveBrowserLockManager instance = sInstance;
+        if (instance == null) return;
+        instance.mScreenshotModeObservers.put(activity, observer);
     }
 
     /**
@@ -323,12 +374,40 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
                 == BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_EVERYTHING;
     }
 
+    /**
+     * Returns whether FLAG_SECURE should be set for a window given the current screenshot mode and
+     * whether an incognito tab is currently showing in it.
+     *
+     * <p>Used by Brave's subclasses of upstream's per-activity incognito screenshot controllers
+     * (e.g. {@link org.chromium.chrome.browser.incognito.BraveIncognitoTabbedSnapshotController})
+     * so the decision is driven directly by {@link #getScreenshotMode()} — instantly, via the pref
+     * — instead of upstream's own logic, which depends on {@link
+     * org.chromium.chrome.browser.flags.ChromeFeatureList#sIncognitoScreenshot}. That flag is only
+     * read from a cache populated at native-init time, so it stays stale (reflecting whatever mode
+     * was active at the last relaunch) until the user restarts the app — meaning PRIVATE_TABS_ONLY
+     * protection would otherwise silently not apply to a just-selected mode until relaunch.
+     */
+    public static boolean shouldSecureForIncognitoVisibility(boolean isShowingIncognito) {
+        int mode = getScreenshotMode();
+        if (mode == BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_EVERYTHING) {
+            return true;
+        }
+        if (mode == BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_ALLOW) {
+            return false;
+        }
+        return isShowingIncognito;
+    }
+
     private void applySecureFlagToAllActivities() {
         boolean secure = shouldForceSecureWindow();
         for (Activity activity : ApplicationStatus.getRunningActivities()) {
             if (secure) {
                 activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
-            } else {
+                mForcedSecureActivities.add(activity);
+            } else if (mForcedSecureActivities.remove(activity)) {
+                // Only clear a flag Brave itself set here or in onActivityCreated — never one an
+                // upstream per-activity incognito-aware controller is independently managing
+                // (e.g. for a currently-showing incognito tab under PRIVATE_TABS_ONLY).
                 activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
             }
         }
@@ -445,6 +524,11 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     }
 
     @VisibleForTesting
+    Application.ActivityLifecycleCallbacks getAppLifecycleCallbacksForTesting() {
+        return mAppLifecycleCallbacks;
+    }
+
+    @VisibleForTesting
     boolean isPreNativeOverlayShownForTesting(Activity activity) {
         ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
         return decor.findViewWithTag(PRE_NATIVE_OVERLAY_TAG) != null;
@@ -463,5 +547,10 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     @VisibleForTesting
     boolean isReauthInFlightForTesting() {
         return mReauthInFlight;
+    }
+
+    @VisibleForTesting
+    boolean isForcedSecureForTesting(Activity activity) {
+        return mForcedSecureActivities.contains(activity);
     }
 }
