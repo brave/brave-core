@@ -80,7 +80,6 @@ public class BraveAppearancePreferencesTest {
             AppearancePreferences.PREF_BRAVE_NIGHT_MODE_ENABLED,
             AppearancePreferences.PREF_BRAVE_DISABLE_SHARING_HUB,
             AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON,
-            AppearancePreferences.PREF_ADS_SWITCH,
             AppearanceSettingsFragment.PREF_BOOKMARK_BAR,
             AppearancePreferences.PREF_BRAVE_ENABLE_TAB_GROUPS,
             AppearancePreferences.PREF_SHOW_UNDO_WHEN_TABS_CLOSED,
