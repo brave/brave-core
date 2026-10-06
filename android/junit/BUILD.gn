@@ -11,7 +11,10 @@ testonly = true
 
 if (is_android) {
   robolectric_library("brave_junit_tests_org.chromium.base") {
-    sources = [ "src/org/chromium/base/BraveCommandLineInitUtilTest.java" ]
+    sources = [
+      "src/org/chromium/base/BraveCommandLineInitUtilTest.java",
+      "src/org/chromium/base/BraveExternalActivityLaunchTrackerTest.java",
+    ]
 
     deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
   }
@@ -255,7 +258,10 @@ if (is_android) {
     resources_package = "org.chromium.chrome.browser.privacy.settings"
     sources = [ "src/org/chromium/chrome/browser/privacy/settings/BraveBrowserLockSettingsFragmentTest.java" ]
 
-    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+    deps = [
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/settings:java",
+    ]
   }
 
   robolectric_library(
