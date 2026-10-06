@@ -75,12 +75,7 @@ struct NewTabPageSettingsView: View {
         } else {
           Toggle(
             Strings.Widgets.favoritesWidgetTitle,
-            isOn: Binding(
-              get: { topSitesModeSelection.value != TopSitesMode.none },
-              set: {
-                topSitesModeSelection.value = $0 ? TopSitesMode.favourite : TopSitesMode.none
-              }
-            )
+            isOn: $topSitesModeSelection.value.isEnabled
           )
         }
       } header: {
