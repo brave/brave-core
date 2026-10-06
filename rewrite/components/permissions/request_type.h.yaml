@@ -20,6 +20,7 @@ substitutions:
           kBraveOpenAIChat,
           kBraveGoogleSignInPermission,
           kBraveCardano,
+          kBraveOnDeviceSpeechModel,
           kBraveMinValue = kWidevine,
-          kBraveMaxValue = kBraveCardano,
-          kMaxValue = kBraveCardano
+          kBraveMaxValue = kBraveOnDeviceSpeechModel,
+          kMaxValue = kBraveOnDeviceSpeechModel

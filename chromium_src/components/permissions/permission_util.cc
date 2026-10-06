@@ -31,6 +31,7 @@
     BRAVE_WALLET_UMA_CASES                        \
   case RequestType::kBraveGoogleSignInPermission: \
   case RequestType::kBraveOpenAIChat:             \
+  case RequestType::kBraveOnDeviceSpeechModel:    \
     return RequestTypeForUma::PERMISSION_VR;
 
 // These requests may be batched together, so we must handle them explicitly as

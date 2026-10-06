@@ -43,6 +43,7 @@ substitutions:
             case RequestType::kBraveCardano:
             case RequestType::kBraveGoogleSignInPermission:
             case RequestType::kBraveOpenAIChat:
+            case RequestType::kBraveOnDeviceSpeechModel:
               return IDR_ANDROID_INFOBAR_PERMISSION_COOKIE;\2
 
   - description: 'Add Brave permission types to `GetIconIdDesktop`'
@@ -57,7 +58,13 @@ substitutions:
             case RequestType::kBraveCardano:
             case RequestType::kBraveGoogleSignInPermission:
             case RequestType::kBraveOpenAIChat:
-              return vector_icons::kExtensionOldIcon;\2
+              return vector_icons::kExtensionOldIcon;
+            case RequestType::kBraveOnDeviceSpeechModel:
+              // Not a microphone: a speech site also asks for the microphone,
+              // and the bubble would show two of them.
+              return ::features::IsRoundedIconsEnabled()
+                         ? vector_icons::kDownloadIcon
+                         : vector_icons::kFileDownloadChromeRefreshOldIcon;\2
 
   - description: 'Brave mappings for `RequestType` -> `ContentSettingsType`'
     regex:
@@ -81,6 +88,7 @@ substitutions:
             case RequestType::kBraveOpenAIChat:
               return ContentSettingsType::BRAVE_OPEN_AI_CHAT;\2
             case RequestType::kWidevine:
+            case RequestType::kBraveOnDeviceSpeechModel:
         #if !BUILDFLAG(ENABLE_BRAVE_WALLET)
             case RequestType::kBraveEthereum:
             case RequestType::kBraveSolana:
@@ -111,4 +119,6 @@ substitutions:
             case permissions::RequestType::kBraveGoogleSignInPermission:
               return "brave_google_sign_in";
             case permissions::RequestType::kBraveOpenAIChat:
-              return "brave_ai_chat";\2
+              return "brave_ai_chat";
+            case permissions::RequestType::kBraveOnDeviceSpeechModel:
+              return "brave_on_device_speech_model";\2

@@ -1,8 +1,8 @@
 diff --git a/components/permissions/request_type.h b/components/permissions/request_type.h
-index 70ce0b07da74da50a292c88f7f360442f77cc0b4..b2b9f9eef7ebac80fb0f486c1e9f7ed92020b02f 100644
+index 70ce0b07da74da50a292c88f7f360442f77cc0b4..5921ba1f86f6dd0a0451ed46342cb5571e1b8f6b 100644
 --- a/components/permissions/request_type.h
 +++ b/components/permissions/request_type.h
-@@ -74,7 +74,15 @@ enum class RequestType {
+@@ -74,7 +74,16 @@ enum class RequestType {
    kWebPrinting,
  #endif
    kWindowManagement,
@@ -13,9 +13,10 @@ index 70ce0b07da74da50a292c88f7f360442f77cc0b4..b2b9f9eef7ebac80fb0f486c1e9f7ed9
 +  kBraveOpenAIChat,
 +  kBraveGoogleSignInPermission,
 +  kBraveCardano,
++  kBraveOnDeviceSpeechModel,
 +  kBraveMinValue = kWidevine,
-+  kBraveMaxValue = kBraveCardano,
-+  kMaxValue = kBraveCardano
++  kBraveMaxValue = kBraveOnDeviceSpeechModel,
++  kMaxValue = kBraveOnDeviceSpeechModel
  };
  
  #if BUILDFLAG(IS_ANDROID)

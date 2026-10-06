@@ -19,8 +19,10 @@
 #define PermissionRequest PermissionRequest_ChromiumImpl
 #define IsDuplicateOf IsDuplicateOf_ChromiumImpl
 
-// `kWidevine` handled by an override in `WidevinePermissionRequest` and the
-// Brave Ethereum/Solana permission has its own permission request prompt.
+// `kWidevine` and `kBraveOnDeviceSpeechModel` are handled by an override in
+// their own `PermissionRequest` subclass and the Brave Ethereum/Solana
+// permission has its own permission request prompt. `kBraveOnDeviceSpeechModel`
+// does not exist on Android, which the feature is not built for.
 #if BUILDFLAG(IS_ANDROID)
 // CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_ENUM_ITEMS_FOR_SWITCH \
@@ -31,11 +33,12 @@
     NOTREACHED();
 #else
 // CHROMIUM_SRC_INTERNAL_USE
-#define BRAVE_ENUM_ITEMS_FOR_SWITCH \
-  case RequestType::kBraveEthereum: \
-  case RequestType::kBraveSolana:   \
-  case RequestType::kBraveCardano:  \
-  case RequestType::kWidevine:      \
+#define BRAVE_ENUM_ITEMS_FOR_SWITCH            \
+  case RequestType::kBraveEthereum:            \
+  case RequestType::kBraveSolana:              \
+  case RequestType::kBraveCardano:             \
+  case RequestType::kWidevine:                 \
+  case RequestType::kBraveOnDeviceSpeechModel: \
     NOTREACHED();
 #endif
 
@@ -145,6 +148,8 @@ PermissionRequest::GetDialogAnnotatedMessageText(
 bool PermissionRequest::SupportsLifetime() const {
   static constexpr auto kExcludedTypes = base::MakeFixedFlatSet<RequestType>(
       {RequestType::kDiskQuota, RequestType::kMultipleDownloads,
+       // No content setting to attach a lifetime to.
+       RequestType::kBraveOnDeviceSpeechModel,
 #if BUILDFLAG(IS_ANDROID)
        RequestType::kProtectedMediaIdentifier,
 #else

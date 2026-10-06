@@ -11,6 +11,7 @@ namespace local_ai::prefs {
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kBraveHistoryEmbeddingsEnabled, false);
+  registry->RegisterBooleanPref(kAskEnableOnDeviceSpeechModel, true);
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
