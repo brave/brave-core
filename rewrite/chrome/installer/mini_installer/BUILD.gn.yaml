@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Make the Brave archive action available.
+    add_import:
+      import: //brave/chromium_src/chrome/installer/mini_installer/build.gni
+
+  - description: Build the installer archive with the Brave dependencies.
+    regex:
+      pattern: action("mini_installer_archive") {
+      replace: brave_mini_installer_archive_action("mini_installer_archive") {
+
+  - description: Let `generate_mini_installer()` callers add deps.
+    add_literal_to_list:
+      target: target_name
+      type: executable
+      template: generate_mini_installer
+      list_name: deps
+      literal: invoker.extra_deps
+      conditional: defined(invoker.extra_deps)
+
+  - description: Build the delta installer.
+    add_before_line:
+      line: generate_mini_installer("mini_installer") {
+      code: |
+        generate_mini_installer("delta_installer_unsigned") {
+          rc_file = "$target_gen_dir/packed_delta_files.rc"
+          extra_deps = [ "//brave:delta_installer_archive" ]
+        }

@@ -1,8 +1,8 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 1b74cd83753feb11bf2571c635dbf32639f93677..c103f8f0d1183f0eb13c4e41163b183b9e2221c3 100644
+index 1b74cd83753feb11bf2571c635dbf32639f93677..ea8311f5a6c3c684741a3f6d9b901f3ef2129740 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -161,6 +161,7 @@ if (_is_default_toolchain) {
+@@ -161,10 +161,12 @@ if (_is_default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
      ]
@@ -10,23 +10,36 @@ index 1b74cd83753feb11bf2571c635dbf32639f93677..c103f8f0d1183f0eb13c4e41163b183b
    }
  
    android_resources("chrome_app_java_resources") {
-@@ -264,6 +265,7 @@ if (_is_default_toolchain) {
+     sources = chrome_java_resources
++    sources += brave_java_resources
+     sources += [
+       "//chrome/android/java/res_app/layout/main.xml",
+       "//chrome/android/java/res_app/layout/main_forked_with_secondary_ui_container.xml",
+@@ -252,6 +254,7 @@ if (_is_default_toolchain) {
+       "//third_party/androidx:androidx_gridlayout_gridlayout_java",
+       "//third_party/androidx:androidx_preference_preference_java",
+     ]
++    deps += brave_chrome_app_java_resources_deps
+ 
+     if (autofill_use_internal_android_resources) {
+       deps += [ "//clank/components/autofill:java_resources" ]
+@@ -264,6 +267,7 @@ if (_is_default_toolchain) {
      if (enable_extensions_core) {
        deps += [ "//chrome/browser/ui/android/extensions:java_resources" ]
      }
-+    deps += brave_chrome_app_java_resources_deps sources += brave_java_resources resource_overlay = true
++    resource_overlay = true
    }
  
    android_resources("java_overlay_resources") {
-@@ -871,6 +873,7 @@ if (_is_default_toolchain) {
+@@ -869,6 +873,7 @@ if (_is_default_toolchain) {
+       "//url/mojom:url_mojom_gurl_java",
+       "//url/mojom:url_mojom_origin_java",
      ]
- 
-     deps += feed_deps
 +    deps += brave_chrome_java_deps
  
-     srcjar_deps = [
-       ":chrome_android_java_enums_srcjar",
-@@ -890,6 +893,7 @@ if (_is_default_toolchain) {
+     deps += feed_deps
+ 
+@@ -890,6 +895,7 @@ if (_is_default_toolchain) {
        "//components/supervised_user/core/browser:supervised_user_utils_enum_javagen",
        "//components/touch_to_search/core/browser:quick_action_category_enum_javagen",
      ]
@@ -34,15 +47,15 @@ index 1b74cd83753feb11bf2571c635dbf32639f93677..c103f8f0d1183f0eb13c4e41163b183b
  
      # From java_sources.gni.
      sources = chrome_java_sources
-@@ -1046,6 +1050,7 @@ if (_is_default_toolchain) {
-     if (enable_webui_ntp) {
-       deps += [ "//chrome/browser/ui/customize_chrome:java" ]
-     }
+@@ -1030,6 +1036,7 @@ if (_is_default_toolchain) {
+       "//components/segmentation_platform/internal:internal_java",
+       "//components/visited_url_ranking/internal:internal_java",
+     ]
 +    deps += brave_chrome_all_java_deps
-   }
  
-   action_with_pydeps("chrome_android_java_google_api_keys_srcjar") {
-@@ -1822,6 +1827,7 @@ if (_is_default_toolchain) {
+     if (is_desktop_android) {
+       deps += [
+@@ -1822,6 +1829,7 @@ if (_is_default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
      ]
@@ -50,7 +63,7 @@ index 1b74cd83753feb11bf2571c635dbf32639f93677..c103f8f0d1183f0eb13c4e41163b183b
  
      # Dep needed to ensure override works properly.
      deps = [ ":chrome_base_module_resources" ]
-@@ -1973,6 +1979,7 @@ if (_is_default_toolchain) {
+@@ -1973,6 +1981,7 @@ if (_is_default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
@@ -58,15 +71,23 @@ index 1b74cd83753feb11bf2571c635dbf32639f93677..c103f8f0d1183f0eb13c4e41163b183b
      }
    }
  
-@@ -2261,6 +2268,7 @@ if (_is_default_toolchain) {
+@@ -2209,6 +2218,7 @@ if (_is_default_toolchain) {
+       "java/src/org/chromium/chrome/browser/services/gcm/InvalidationGcmUpstreamSender.java",
+       "java/src/org/chromium/chrome/browser/tracing/TracingNotificationService.java",
+     ]
++    sources += brave_java_base_module_sources
+     deps = [
+       ":chrome_base_module_resources",
+       "$google_play_services_package:google_firebase_firebase_messaging_java",
+@@ -2261,6 +2271,7 @@ if (_is_default_toolchain) {
        "//third_party/androidx:androidx_annotation_annotation_experimental_java",
        "//third_party/androidx:androidx_browser_browser_java",
      ]
-+    sources += brave_java_base_module_sources deps += brave_java_base_module_deps
++    deps += brave_java_base_module_deps
  
      # More deps for DFMs.
      if (enable_chrome_android_internal) {
-@@ -3224,6 +3232,7 @@ if (_is_default_toolchain) {
+@@ -3224,6 +3235,7 @@ if (_is_default_toolchain) {
        "java/src/org/chromium/chrome/browser/webapps/WebappRegistry.java",
        "java/src/org/chromium/chrome/browser/xr/scenecore/XrModuleBridge.java",
      ]

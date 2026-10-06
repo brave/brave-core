@@ -1,0 +1,79 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the Brave base module resources.
+    add_literal_to_list:
+      target: chrome_base_module_resources
+      list_name: sources
+      literal: brave_base_module_resources
+
+  - description: Add the Brave app Java resources deps.
+    add_literal_to_list:
+      target: chrome_app_java_resources
+      list_name: deps
+      literal: brave_chrome_app_java_resources_deps
+
+  - description: Add the Brave app Java resources.
+    add_literal_to_list:
+      target: chrome_app_java_resources
+      list_name: sources
+      literal: brave_java_resources
+
+  - description: Let the Brave app resources override upstream ones.
+    append_to_target:
+      target: chrome_app_java_resources
+      code: resource_overlay = true
+
+  - description: Add the Brave Java deps.
+    add_literal_to_list:
+      target: chrome_java
+      list_name: deps
+      literal: brave_chrome_java_deps
+
+  - description: Add the Brave Java srcjar deps.
+    add_literal_to_list:
+      target: chrome_java
+      list_name: srcjar_deps
+      literal: brave_chrome_java_srcjar_deps
+
+  - description: Add the Brave deps to all of Chrome's Java.
+    add_literal_to_list:
+      target: chrome_all_java
+      list_name: deps
+      literal: brave_chrome_all_java_deps
+
+  - description: Add the Brave base module resources to the public APK.
+    add_literal_to_list:
+      target: chrome_public_apk_base_module_resources
+      list_name: sources
+      literal: brave_base_module_resources
+
+  - description: Package the Brave paks with Chrome's.
+    add_literal_to_list:
+      target: target_name
+      list_name: deps
+      literal: '[ "//brave:brave_pak_assets" ]'
+      type: android_assets
+      template: resource_packaging
+
+  - description: Add the Brave base module Java sources.
+    add_literal_to_list:
+      target: base_module_java
+      list_name: sources
+      literal: brave_java_base_module_sources
+
+  - description: Add the Brave base module Java deps.
+    add_literal_to_list:
+      target: base_module_java
+      list_name: deps
+      literal: brave_java_base_module_deps
+
+  - description: Add the Brave JNI header sources.
+    add_literal_to_list:
+      target: chrome_jni_headers
+      list_name: sources
+      literal: brave_jni_headers_sources
+      type: generate_jni
