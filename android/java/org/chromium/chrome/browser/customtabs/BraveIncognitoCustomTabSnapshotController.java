@@ -21,8 +21,7 @@ import java.util.function.Supplier;
  * just {@code ChromeTabbedActivity}.
  */
 @NullMarked
-public class BraveIncognitoCustomTabSnapshotController
-        extends IncognitoCustomTabSnapshotController
+public class BraveIncognitoCustomTabSnapshotController extends IncognitoCustomTabSnapshotController
         implements BraveBrowserLockManager.ScreenshotModeObserver {
     private final Activity mActivity;
     private final Supplier<Boolean> mIsShowingIncognitoSupplier;
