@@ -56,14 +56,6 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   void InitPostBrowserViewConstruction(BrowserView* browser_view) override;
   void TearDownPreBrowserWindowDestruction() override;
 
-  FocusModeController* focus_mode_controller() {
-    return focus_mode_controller_.get();
-  }
-
-  const FocusModeController* focus_mode_controller() const {
-    return focus_mode_controller_.get();
-  }
-
  private:
   std::unique_ptr<sidebar::SidebarController> sidebar_controller_;
 #if BUILDFLAG(ENABLE_BRAVE_VPN)

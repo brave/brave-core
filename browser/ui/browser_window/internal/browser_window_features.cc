@@ -80,7 +80,9 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
   // and it's initialized in BrowserWindowFeatures_ChromiumImpl::Init().
 
   if (BrowserSupportsFocusMode(browser)) {
-    focus_mode_controller_ = std::make_unique<FocusModeController>();
+    focus_mode_controller_ =
+        GetUserDataFactory().CreateInstance<FocusModeController>(
+            *browser, browser->GetUnownedUserDataHost());
   }
 
   // VerticalTabController should be constructed in Init() instead of

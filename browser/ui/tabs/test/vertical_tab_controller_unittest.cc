@@ -33,7 +33,8 @@ class VerticalTabControllerUnitTest : public testing::Test {
   }
 
   sync_preferences::TestingPrefServiceSyncable pref_service_;
-  // Each test creates at most one controller, which registers itself here.
+  // Each test creates at most one controller of each type, which registers
+  // itself here.
   ui::UnownedUserDataHost user_data_host_;
 };
 
@@ -84,7 +85,7 @@ TEST_F(VerticalTabControllerUnitTest, ShouldShowWindowTitleFalseInFocusMode) {
   pref_service_.SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
   pref_service_.SetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow, true);
 
-  FocusModeController focus_mode_controller;
+  FocusModeController focus_mode_controller(user_data_host_);
   auto controller = MakeController(BrowserWindowInterface::TYPE_NORMAL,
                                    &focus_mode_controller);
   EXPECT_TRUE(controller->ShouldShowWindowTitleForVerticalTabs());

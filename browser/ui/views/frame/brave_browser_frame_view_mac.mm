@@ -23,7 +23,6 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/fullscreen_util_mac.h"
 #include "chrome/browser/ui/immersive/immersive_mode_controller.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -78,7 +77,7 @@ BraveBrowserFrameViewMac::BraveBrowserFrameViewMac(
             base::Unretained(this)));
   }
 
-  if (auto* controller = browser->GetFeatures().focus_mode_controller()) {
+  if (auto* controller = FocusModeController::From(browser)) {
     focus_mode_observation_.Observe(controller);
     if (auto* overlay =
             BraveBrowserView::From(browser_view)->focus_mode_top_overlay()) {
@@ -299,7 +298,7 @@ void BraveBrowserFrameViewMac::OnFullscreenStateChanged() {
   if (GetBrowserView()->IsFullscreen()) {
     if (!scoped_focus_mode_disable_) {
       auto* browser = GetBrowserView()->browser();
-      if (auto* controller = browser->GetFeatures().focus_mode_controller()) {
+      if (auto* controller = FocusModeController::From(browser)) {
         scoped_focus_mode_disable_ =
             std::make_unique<ScopedFocusModeDisable>(controller);
       }

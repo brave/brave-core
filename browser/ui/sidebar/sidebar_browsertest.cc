@@ -68,7 +68,6 @@
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
@@ -2411,7 +2410,7 @@ class SidebarBrowserTestWithFocusMode : public SidebarBrowserTest {
   ~SidebarBrowserTestWithFocusMode() override = default;
 
   FocusModeController* focus_mode_controller() {
-    return browser()->GetFeatures().focus_mode_controller();
+    return FocusModeController::From(browser());
   }
 
   void SetSidebarShowOption(SidebarService::ShowSidebarOption option) {

@@ -8,7 +8,6 @@
 #include "base/feature_list.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/focus_mode/focus_mode_features.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 
 bool BrowserSupportsFocusMode(const BrowserWindowInterface* browser) {
@@ -20,6 +19,6 @@ bool IsFocusModeEnabled(const BrowserWindowInterface* browser) {
   if (!browser) {
     return false;
   }
-  auto* controller = browser->GetFeatures().focus_mode_controller();
+  auto* controller = FocusModeController::From(browser);
   return controller && controller->IsEnabled();
 }

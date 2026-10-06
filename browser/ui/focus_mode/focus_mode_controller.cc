@@ -5,9 +5,26 @@
 
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 
-FocusModeController::FocusModeController() = default;
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+
+DEFINE_USER_DATA(FocusModeController);
+
+FocusModeController::FocusModeController(ui::UnownedUserDataHost& host)
+    : scoped_unowned_user_data_(host, *this) {}
 
 FocusModeController::~FocusModeController() = default;
+
+// static
+FocusModeController* FocusModeController::From(
+    BrowserWindowInterface* browser) {
+  return Get(browser->GetUnownedUserDataHost());
+}
+
+// static
+const FocusModeController* FocusModeController::From(
+    const BrowserWindowInterface* browser) {
+  return Get(browser->GetUnownedUserDataHost());
+}
 
 void FocusModeController::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);

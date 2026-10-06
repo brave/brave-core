@@ -20,6 +20,7 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -35,7 +36,6 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -945,7 +945,7 @@ class BraveBrowserCommandControllerFocusModeTest
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerFocusModeTest,
                        FocusModeToggle) {
-  auto* controller = browser()->GetFeatures().focus_mode_controller();
+  auto* controller = FocusModeController::From(browser());
   ASSERT_TRUE(controller);
 
   EXPECT_FALSE(controller->IsEnabled());

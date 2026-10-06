@@ -15,7 +15,6 @@
 #include "brave/browser/ui/focus_mode/focus_mode_features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -79,7 +78,7 @@ class FocusModeTitleBarViewBrowserTest : public InProcessBrowserTest {
   }
 
   void EnableFocusMode() {
-    browser()->GetFeatures().focus_mode_controller()->SetEnabled(true);
+    FocusModeController::From(browser())->SetEnabled(true);
     views::test::RunScheduledLayout(browser_view());
   }
 
@@ -102,7 +101,7 @@ IN_PROC_BROWSER_TEST_F(FocusModeTitleBarViewBrowserTest, TitleBarWiring) {
       browser(), https_server_.GetURL("a.test", "/empty.html")));
 
   // Enabling Focus Mode shows the title bar and points it at the active tab.
-  browser()->GetFeatures().focus_mode_controller()->SetEnabled(true);
+  FocusModeController::From(browser())->SetEnabled(true);
   views::test::RunScheduledLayout(browser_view());
   ASSERT_TRUE(title_bar()->GetVisible());
   ASSERT_TRUE(WaitForDomainToContain(u"a.test"));
@@ -130,7 +129,7 @@ IN_PROC_BROWSER_TEST_F(FocusModeTitleBarViewBrowserTest, TitleBarWiring) {
   EXPECT_TRUE(WaitForDomainToContain(u"a.test"));
 
   // Disabling Focus Mode hides the title bar again.
-  browser()->GetFeatures().focus_mode_controller()->SetEnabled(false);
+  FocusModeController::From(browser())->SetEnabled(false);
   EXPECT_FALSE(title_bar()->GetVisible());
 }
 
