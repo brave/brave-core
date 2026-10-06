@@ -660,11 +660,32 @@ test("brave_unit_tests") {
     deps += [ "//brave/components/brave_talk" ]
   }
 
-  if (enable_extensions) {
+  if (enable_extensions_core) {
     sources += [
       "//brave/browser/extensions/api/brave_extensions_api_client_unittest.cc",
       "//brave/browser/extensions/chrome_content_verifier_delegate_unittest.cc",
       "//brave/browser/extensions/install_verifier_unittest.cc",
+    ]
+
+    deps += [
+      "//brave/browser/extensions:core",
+      "//brave/browser/extensions/manifest_v2:unit_tests",
+      "//chrome/browser/extensions",
+      "//extensions/browser",
+      "//extensions/common",
+    ]
+  }
+
+  if (is_android && !is_desktop_android && enable_extensions_core) {
+    sources += [ "//brave/browser/extensions/android/brave_extension_management_unittest.cc" ]
+    deps += [
+      "//chrome/browser/flags:flags_android",
+      "//extensions:test_support",
+    ]
+  }
+
+  if (enable_extensions) {
+    sources += [
       "//brave/browser/extensions/mv2_warning_unittest.cc",
       "//brave/common/importer/chrome_importer_utils_unittest.cc",
       "//chrome/browser/extensions/extension_service_test_base.cc",
@@ -674,7 +695,6 @@ test("brave_unit_tests") {
     deps += [
       "//brave/browser/extensions",
       "//brave/browser/extensions/api:unit_tests",
-      "//brave/browser/extensions/manifest_v2:unit_tests",
       "//brave/browser/importer:unit_tests",
       "//brave/common/importer",
       "//chrome/browser/extensions",
@@ -1694,6 +1714,7 @@ if (is_android) {
       "//brave/android/javatests/org/chromium/chrome/browser/BraveSafetyNetThreatsPrioritiesTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/BytecodeTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/PrivateTabSystemUiModeChangeTest.java",
+      "//brave/android/javatests/org/chromium/chrome/browser/app/BraveActivityWindowingFeaturesTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/autofill/settings/BraveAutofillPaymentMethodsFragmentTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/autofill/settings/options/BraveAutofillOptionsFragmentTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/homepage/settings/BraveHomepageSettingsTest.java",
@@ -1769,6 +1790,7 @@ if (is_android) {
       "//chrome/browser/ui/android/desktop_windowing:java",
       "//chrome/browser/ui/android/edge_to_edge:java",
       "//chrome/browser/ui/android/extensions:java",
+      "//chrome/browser/ui/android/extensions/windowing:java",
       "//chrome/browser/ui/android/favicon:java",
       "//chrome/browser/ui/android/layouts:java",
       "//chrome/browser/ui/android/layouts/test:java",
@@ -1781,6 +1803,8 @@ if (is_android) {
       "//chrome/browser/ui/android/theme:java",
       "//chrome/browser/ui/android/toolbar:java",
       "//chrome/browser/ui/android/toolbar:optional_button_java",
+      "//chrome/browser/ui/browser_window/public/android:factory_java",
+      "//chrome/browser/ui/browser_window/public/android:java",
       "//chrome/browser/ui/messages/android:java",
       "//chrome/browser/user_education:java",
       "//chrome/test:test_support_java",

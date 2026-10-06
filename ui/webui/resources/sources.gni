@@ -6,6 +6,8 @@
 # Extra GRDPs to give //ui/webui/resources:build_grd
 # (which generates //ui/webui/resources/webui_generated_resources.grd)
 
+import("//extensions/buildflags/buildflags.gni")
+
 brave_resources_extra_grdps_path = "$root_gen_dir/brave/ui/webui/resources"
 
 brave_resources_extra_grdps = [
@@ -22,7 +24,22 @@ brave_resources_extra_grdps_deps = [ "//brave/ui/webui/resources:grdp" ]
 # This could change and, when it does, the `include_polymer` conditional can be
 # removed here and the one in //brave/ui/webui/resources/BUILD.gn be relied on
 # to only add polymer-related files when appropriate.
-if (!is_android && !is_ios) {
+if ((!is_android && !is_ios) || enable_extensions_core) {
   brave_resources_extra_grdps +=
       [ "$brave_resources_extra_grdps_path/resources.grdp" ]
+}
+
+# Upstream bundles these only for desktop, but chrome://extensions needs them
+# wherever the extensions core is built.
+if (is_android && !is_desktop_android && enable_extensions_core) {
+  brave_resources_extra_grdps += [
+    "$root_gen_dir/ui/webui/resources/cr_components/color_change_listener/resources.grdp",
+    "$root_gen_dir/ui/webui/resources/cr_components/cr_shortcut_input/resources.grdp",
+    "$root_gen_dir/ui/webui/resources/cr_components/managed_footnote/resources.grdp",
+  ]
+  brave_resources_extra_grdps_deps += [
+    "//ui/webui/resources/cr_components/color_change_listener:build_grdp",
+    "//ui/webui/resources/cr_components/cr_shortcut_input:build_grdp",
+    "//ui/webui/resources/cr_components/managed_footnote:build_grdp",
+  ]
 }

@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/local_ai/buildflags/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
 
 assert(enable_ai_chat)
 
@@ -81,7 +82,6 @@ source_set("ai_chat") {
       "//chrome/browser/ui/tabs:tab_model",
       "//chrome/browser/ui/tabs:tab_strip",
       "//chrome/browser/ui/thumbnails",
-      "//chrome/browser/ui/webui:theme_source",
       "//chrome/browser/ui/webui/top_chrome",
       "//chrome/browser/ui/webui/util",
     ]
@@ -90,6 +90,10 @@ source_set("ai_chat") {
       "//chrome/browser/android:tabs_public",
       "//chrome/browser/ui/android/tab_model",
     ]
+  }
+
+  if (!is_android || enable_extensions_core) {
+    deps += [ "//chrome/browser/ui/webui:theme_source" ]
   }
 
   if (enable_local_ai) {

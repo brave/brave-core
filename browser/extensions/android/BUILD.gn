@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//extensions/buildflags/buildflags.gni")
+
+assert(is_android && !is_desktop_android && enable_extensions_core)
+
+source_set("side_panel_stub") {
+  visibility = [ "//chrome/browser/ui" ]
+  sources = [ "extension_side_panel_coordinator_stub.cc" ]
+  deps = [ "//chrome/browser/ui/extensions" ]
+}

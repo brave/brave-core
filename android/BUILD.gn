@@ -196,6 +196,7 @@ android_resources("java_resources") {
     "java/brave-res/drawable/blue_rounded_notification_bg.xml",
     "java/brave-res/drawable/bookmark_menu_bg.xml",
     "java/brave-res/drawable/brave_checkbox.xml",
+    "java/brave-res/drawable/brave_ic_settings.xml",
     "java/brave-res/drawable/brave_icon_search.xml",
     "java/brave-res/drawable/brave_menu_new_private_tab.xml",
     "java/brave-res/drawable/brave_new_group_tab.xml",

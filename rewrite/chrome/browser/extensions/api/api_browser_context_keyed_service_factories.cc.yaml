@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Include the desktop-android buildflag.
+    regex:
+      pattern: |
+        #include "chrome/common/buildflags.h"
+      replace: |
+        #include "build/android_buildflags.h"
+        #include "chrome/common/buildflags.h"
+  - description: |-
+      Leave the mDNS API out on mobile Android, matching the
+      //chrome/browser/extensions/api/mdns dependency. Matches the include and
+      the factory registration.
+    count: 2
+    regex:
+      re_pattern:
+        '#if BUILDFLAG\(ENABLE_SERVICE_DISCOVERY\)(\n(?:#include
+        "chrome/browser/extensions/api/mdns/mdns_api\.h"|  extensions::MDnsAPI::GetFactoryInstance\(\);)\n)'
+      replace:
+        '#if BUILDFLAG(ENABLE_SERVICE_DISCOVERY) &&
+        \\\n    (!BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_DESKTOP_ANDROID))\1'

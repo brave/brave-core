@@ -9,4 +9,4 @@ substitutions:
       target: build
       list_name: ts_deps
       literal: '[ "//brave/ui/webui/resources:build_ts" ]'
-      conditional: '!is_android && !is_ios'
+      conditional: '(!is_android && !is_ios) || enable_extensions_core'
