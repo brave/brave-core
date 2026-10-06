@@ -40,6 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol PrintHandler;
 @protocol RequestBlockingTabHelperBridge;
 @protocol CosmeticFilteringTabHelperBridge;
+@protocol ElementPickerTabHelperBridge;
 @protocol ScriptletsTabHelperBridge;
 @protocol BraveWalletProviderDelegate;
 
@@ -303,6 +304,16 @@ CWV_EXPORT
 /// A bridge for Cosmetic Filtering javascript feature
 - (void)setCosmeticFilteringTabHelperBridge:
     (id<CosmeticFilteringTabHelperBridge>)bridge;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (ElementPicker)
+/// A bridge for the Element Picker javascript feature
+- (void)setElementPickerTabHelperBridge:
+    (id<ElementPickerTabHelperBridge>)bridge;
+/// Injects and shows the element picker in this web view's main frame. If the
+/// picker is already showing it is un-minimized instead.
+- (void)showElementPicker;
 @end
 
 CWV_EXPORT
