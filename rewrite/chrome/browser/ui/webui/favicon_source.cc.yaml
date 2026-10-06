@@ -8,9 +8,8 @@ substitutions:
       Use Brave's own default favicon resource names, instead of shadowing
       the real ones.
     regex:
-      pattern: |-
-        resource_id =
-                  dark_mode ? IDR_DEFAULT_FAVICON_DARK_64 : IDR_DEFAULT_FAVICON_64;
+      re_pattern: >-
+        resource_id\s*=\s*dark_mode\s*\?\s*IDR_DEFAULT_FAVICON_DARK_64\s*:\s*IDR_DEFAULT_FAVICON_64;
       replace: |-
         resource_id = dark_mode ? BRAVE_IDR_DEFAULT_FAVICON_DARK_64
                                       : BRAVE_IDR_DEFAULT_FAVICON_64;
@@ -19,9 +18,8 @@ substitutions:
       Use Brave's own default favicon resource names, instead of shadowing
       the real ones.
     regex:
-      pattern: |-
-        resource_id =
-                  dark_mode ? IDR_DEFAULT_FAVICON_DARK_32 : IDR_DEFAULT_FAVICON_32;
+      re_pattern: >-
+        resource_id\s*=\s*dark_mode\s*\?\s*IDR_DEFAULT_FAVICON_DARK_32\s*:\s*IDR_DEFAULT_FAVICON_32;
       replace: |-
         resource_id = dark_mode ? BRAVE_IDR_DEFAULT_FAVICON_DARK_32
                                       : BRAVE_IDR_DEFAULT_FAVICON_32;

@@ -14,7 +14,8 @@ substitutions:
         \{.*?\n  \};\n)(\n  AddComponentResourceEntries\(kComponentExtensionResources\);\n)(  AddComponentResourceEntries\(kExtraComponentExtensionResources\);\n)'
       replace:
         '\n#if !BUILDFLAG(IS_ANDROID) ||
-        BUILDFLAG(IS_DESKTOP_ANDROID)\1#endif\n\2#if !BUILDFLAG(IS_ANDROID) ||
+        BUILDFLAG(IS_DESKTOP_ANDROID)\1#endif  // !BUILDFLAG(IS_ANDROID) ||
+        BUILDFLAG(IS_DESKTOP_ANDROID)\n\2#if !BUILDFLAG(IS_ANDROID) ||
         BUILDFLAG(IS_DESKTOP_ANDROID)\n\3#endif\n'
       re_flags: [DOTALL]
   - description: |
