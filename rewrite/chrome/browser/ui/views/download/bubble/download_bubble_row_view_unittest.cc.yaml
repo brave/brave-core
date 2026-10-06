@@ -1,0 +1,21 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Append ON_CALL for GetFullPath() returning kTestFilePath after
+      SetInputProtectorForTesting(...) call to provide default implementation
+      for the test mock.
+    after_function_impl:
+      function_name: SetUp
+      code: |-
+        ON_CALL(download_item_, GetFullPath()).WillByDefault(ReturnRef(kTestFilePath));
+
+  - description: |-
+      Replace the quick_actions size check (2u) with EXPECT_EQ that validates
+      the size is 3u and the last command is DELETE_LOCAL_FILE.
+    regex:
+      pattern: 'ASSERT_EQ(row_view()->info().quick_actions().size(), 2u);'
+      replace: 'ASSERT_EQ(row_view()->info().quick_actions().size(), 3u);'

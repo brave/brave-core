@@ -1,0 +1,23 @@
+diff --git a/chrome/browser/ui/views/download/bubble/download_bubble_row_view.cc b/chrome/browser/ui/views/download/bubble/download_bubble_row_view.cc
+index 5949c0061d4fe4dfbad9cf9caa7ac3ecc4fa135f..83392dda553e3a8478a36d4441b5411f166c6c08 100644
+--- a/chrome/browser/ui/views/download/bubble/download_bubble_row_view.cc
++++ b/chrome/browser/ui/views/download/bubble/download_bubble_row_view.cc
+@@ -451,6 +451,7 @@ DownloadBubbleRowView::DownloadBubbleRowView(
+   AddQuickAction(DownloadCommands::SHOW_IN_FOLDER);
+   AddQuickAction(DownloadCommands::CANCEL);
+   AddQuickAction(DownloadCommands::OPEN_WHEN_COMPLETE);
++AddQuickAction(DownloadCommands::DELETE_LOCAL_FILE);
+   quick_action_holder_->SetVisible(false);
+   quick_action_holder_->SetProperty(views::kViewIgnoredByLayoutKey, true);
+   quick_action_holder_->SetBackground(
+@@ -862,6 +863,10 @@ std::u16string DownloadBubbleRowView::GetAccessibleNameForQuickAction(
+       return l10n_util::GetStringFUTF16(
+           IDS_DOWNLOAD_BUBBLE_CANCEL_QUICK_ACTION_ACCESSIBILITY,
+           info_->model()->GetFileNameToReportUser().LossyDisplayName());
++case DownloadCommands::DELETE_LOCAL_FILE:
++  return l10n_util::GetStringFUTF16(
++      IDS_DOWNLOAD_BUBBLE_DELETE_MAIN_BUTTON_ACCESSIBILITY,
++      info_->model()->GetFileNameToReportUser().LossyDisplayName());
+     case DownloadCommands::SHOW_IN_FOLDER:
+       return l10n_util::GetStringFUTF16(
+           IDS_DOWNLOAD_BUBBLE_SHOW_IN_FOLDER_QUICK_ACTION_ACCESSIBILITY,
