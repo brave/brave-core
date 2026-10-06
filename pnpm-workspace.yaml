@@ -87,6 +87,7 @@ overrides:
   # stream-json is deliberately not overridden: GHSA-528h-pc64-c93x is only fixed
   # in 3.x, which moved every entry point under src/ and lowercased filenames, so
   # jayson's require('stream-json/streamers/StreamValues') would fail at runtime.
+  'shell-quote': '1.11.0'
   'tiny-secp256k1': '1.1.7'
   'toml': '4.3.0'
   'uuid': '14.0.0'
