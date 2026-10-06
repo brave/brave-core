@@ -57,6 +57,7 @@ if (!is_android) {
       "//chrome/browser/ui",
       "//chrome/browser/ui:browser_command_controller",
       "//chrome/browser/ui:browser_commands",
+      "//chrome/browser/ui:browser_tabstrip",
       "//chrome/browser/ui:ui_features",
       "//chrome/browser/ui/actions",
       "//chrome/browser/ui/browser_window",
