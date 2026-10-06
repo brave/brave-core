@@ -61,6 +61,9 @@ public class BraveBrowserLockCoordinator extends IncognitoReauthCoordinatorBase 
         unlockButton.setText(org.chromium.chrome.R.string.brave_browser_lock_unlock_button);
 
         ((ViewGroup) mActivity.getWindow().getDecorView()).addView(mLockView);
+        // Steal focus away from whatever was focused in the content behind the lock, so a
+        // hardware keyboard or D-pad can't act on it while this overlay is shown.
+        mLockView.requestFocus();
     }
 
     @Override
