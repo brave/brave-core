@@ -782,6 +782,121 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/autofill_page/contact_info/contact_info_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/autofill_page/contact_info/contact_info_page.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/autofill_page/contact_info/contact_info_page.html.ts
+@@ -3,44 +3,26 @@
+ import type {SettingsContactInfoPageElement} from './contact_info_page.js';
+ 
+ export function getHtml(this: SettingsContactInfoPageElement) {
+   return html\`<!--_html_template_start_-->
+-  <settings-subpage page-title="$i18n{contactInfoTitle}"
+-      learn-more-url="$i18n{addressesAndPaymentMethodsLearnMoreURL}"
+-      class="multi-card">
++  <settings-subpage page-title="$i18n{contactInfoTitle}" learn-more-url="$i18n{addressesAndPaymentMethodsLearnMoreURL}" class="multi-card">
+     <div class="card">
+-      <settings-toggle-button id="autofillProfileToggle"
+-          no-extension-indicator label="$i18n{enableProfilesLabel}"
+-          sub-label="$i18n{enableProfilesSublabel}"
+-          .pref="\${this.profileEnabledSyntheticPref_}"
+-          @settings-boolean-control-change="\${
++      <settings-toggle-button id="autofillProfileToggle" no-extension-indicator="" label="$i18n{enableProfilesLabel}" sub-label="$i18n{enableProfilesSublabel}" .pref="\${this.profileEnabledSyntheticPref_}" @settings-boolean-control-change="\${
+               this.onAutofillProfileToggleSettingsBooleanControlChange_}">
+       </settings-toggle-button>
+-      <div id="otpFillingLoadingRow" class="cr-row hr cr-padded-text"
+-          aria-live="polite" aria-busy="true"
+-          ?hidden="\${!this.shouldShowOtpFillingLoadingRow_()}">
++      <div id="otpFillingLoadingRow" class="cr-row hr cr-padded-text" aria-live="polite" aria-busy="true" ?hidden="\${!this.shouldShowOtpFillingLoadingRow_()}">
+         <div class="flex" id="otpFillingLoadingLabelWrapper">
+           <div class="label">$i18n{enableGmailOtpFillingTitle}</div>
+-          <div class="cr-secondary-text label"
+-              id="otpFillingLoadingSubLabel">
+-            <div id="otpFillingLoadingSubLabelWithLink"
+-                .innerHTML="\${this.getGmailOtpFillingDescription_()}"
+-                @click="\${this.onGmailOtpFillingLinkClick_}">
++          <div class="cr-secondary-text label" id="otpFillingLoadingSubLabel">
++            <div id="otpFillingLoadingSubLabelWithLink" .innerHTML="\${this.getGmailOtpFillingDescription_()}" @click="\${this.onGmailOtpFillingLinkClick_}">
+             </div>
+           </div>
+         </div>
+         <div id="otpFillingLoadingSpinner" class="spinner"></div>
+       </div>
+-      <settings-toggle-button id="autofillOtpFillingToggle" class="hr"
+-          ?hidden="\${!this.shouldShowOtpFillingToggle_()}"
+-          label="$i18n{enableGmailOtpFillingTitle}"
+-          sub-label-with-link="$i18n{enableGmailOtpFillingDescription}"
+-          @sub-label-link-clicked="\${
+-              this.onGmailOtpFillingSubLabelLinkClicked_}"
+-          @settings-boolean-control-change="\${
+-              this.onAutofillOtpFillingToggleSettingsBooleanControlChange_}"
+-          .pref="\${this.otpFillingTogglePref_}"
+-          no-set-pref>
++      <settings-toggle-button id="autofillOtpFillingToggle" class="hr" ?hidden="\${!this.shouldShowOtpFillingToggle_()}" label="$i18n{enableGmailOtpFillingTitle}" sub-label-with-link="$i18n{enableGmailOtpFillingDescription}" @sub-label-link-clicked="\${
++              this.onGmailOtpFillingSubLabelLinkClicked_}" @settings-boolean-control-change="\${
++              this.onAutofillOtpFillingToggleSettingsBooleanControlChange_}" .pref="\${this.otpFillingTogglePref_}" no-set-pref="">
+       </settings-toggle-button>
+       \${this.profileEnabledSyntheticPref_?.extensionId ? html\`
+         <div class="cr-row continuation">
+           <extension-controlled-indicator class="flex"
+@@ -57,17 +39,13 @@
+     </div>
+     <div class="card">
+       <div class="cr-row continuation">
+         <h2 class="flex">$i18n{addresses}</h2>
+-        <cr-button id="addAddress" class="header-aligned-button"
+-            @click="\${this.onAddAddressClick_}"
+-            aria-label="$i18n{addAddressTitle}"
+-            ?disabled="\${!this.profileEnabledSyntheticPref_?.value}">
++        <cr-button id="addAddress" class="header-aligned-button" @click="\${this.onAddAddressClick_}" aria-label="$i18n{addAddressTitle}" ?disabled="\${!this.profileEnabledSyntheticPref_?.value}">
+           $i18n{add}
+         </cr-button>
+       </div>
+-      <div class="list-frame" aria-label="$i18n{addressesTableAriaLabel}"
+-          role="list">
++      <div class="list-frame" aria-label="$i18n{addressesTableAriaLabel}" role="list">
+         <div id="addressList" class="vertical-list" role="none">
+           \${this.addresses.map((item, index) => html\`
+             <div class="list-item" role="listitem">
+               <div class="start">
+@@ -94,10 +72,9 @@
+               </cr-icon-button>
+             </div>
+           \`)}
+         </div>
+-        <div id="noAddressesLabel" class="list-item"
+-            ?hidden="\${this.addresses.length > 0}">
++        <div id="noAddressesLabel" class="list-item" ?hidden="\${this.addresses.length > 0}">
+           $i18n{noAddressesFound}
+         </div>
+       </div>
+       <cr-action-menu id="addressSharedMenu" role-description="$i18n{menu}">
+@@ -152,9 +129,9 @@
+             @close="\${this.onEmailRemoveConfirmationDialogClose_}">
+         </settings-simple-confirmation-dialog>
+       \` : ''}
+     </div>
+-    <div class="card">
++    <div class="card" hidden="">
+       <div class="cr-row continuation">
+         <h2 class="flex">$i18n{emailVerificationSectionTitle}</h2>
+       </div>
+       \${this.isEmailVerificationProtocolEnabled_ ? html\`
+@@ -181,10 +158,9 @@
+           $i18n{emailVerificationEmptyLabel}
+         </div>
+       \` : ''}
+       <cr-action-menu id="emailSharedMenu" role-description="$i18n{menu}">
+-        <button id="menuRemoveEmail" class="dropdown-item"
+-            @click="\${this.onMenuRemoveEmailClick_}">
++        <button id="menuRemoveEmail" class="dropdown-item" @click="\${this.onMenuRemoveEmailClick_}">
+           $i18n{removeVerifiedEmailPermission}
+         </button>
+       </cr-action-menu>
+     </div>
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/autofill_page/payments/payments_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/settings/autofill_page/payments/payments_page.html.ts
