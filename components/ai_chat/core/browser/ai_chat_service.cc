@@ -737,10 +737,13 @@ void AIChatService::OnLoadConversationsLazyData(
     }
   }
   if (on_conversations_loaded_callbacks_.has_value()) {
-    for (auto& callback : on_conversations_loaded_callbacks_.value()) {
+    // Taken first, since a callback can ask for the conversations again, and
+    // must then get them straight away.
+    std::vector<ConversationMapCallback> callbacks;
+    callbacks.swap(*on_conversations_loaded_callbacks_);
+    for (auto& callback : callbacks) {
       std::move(callback).Run(conversations_);
     }
-    on_conversations_loaded_callbacks_->clear();
   }
   OnConversationListChanged();
 }
