@@ -1387,7 +1387,8 @@ void ConversationHandler::ProcessPermissionChallenge(
   }
 
   // User approved - clear the permission challenge
-  tool_use->permission_challenge = nullptr;
+  mojom::PermissionChallengePtr answered_challenge =
+      std::move(tool_use->permission_challenge);
 
   // Notify UI of the state change
   OnToolUseEventOutput(chat_history_.back().get(), tool_use);
@@ -1406,10 +1407,8 @@ void ConversationHandler::ProcessPermissionChallenge(
     return;
   }
 
-  // Notify tool that permission was granted. At the moment there is no
-  // need to distinguish between different permission challenges. If that
-  // changes then we can add relevant parameters to this method.
-  tool_ptr->UserPermissionGranted(tool_use_id);
+  // Notify tool that permission was granted, and for which challenge.
+  tool_ptr->UserPermissionGranted(tool_use_id, *answered_challenge);
 
   // Continue with tool execution
   MaybeRespondToNextToolUseRequest();

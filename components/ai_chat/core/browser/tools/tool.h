@@ -96,8 +96,12 @@ class Tool {
 
   // Called after user grants permission when a tool requires a
   // PermissionChallenge. Tools can override to perform any setup needed
-  // before UseTool is called.
-  virtual void UserPermissionGranted(const std::string& tool_use_id);
+  // before UseTool is called. `challenge` is the one the user answered, which
+  // may have been raised by the server's alignment check rather than this tool,
+  // so a tool can tell what the user was shown.
+  virtual void UserPermissionGranted(
+      const std::string& tool_use_id,
+      const mojom::PermissionChallenge& challenge);
 
   // A decision the user has already made about this tool, so that
   // RequiresUserInteractionBeforeHandling() can skip the challenge it would

@@ -6309,6 +6309,16 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge) {
       .WillOnce(
           testing::InvokeWithoutArgs([&second_loop]() { second_loop.Quit(); }));
 
+  // The tool is told which challenge the user answered, so it can tell the
+  // server's alignment check from one of its own.
+  EXPECT_CALL(*tool1,
+              UserPermissionGranted(
+                  StrEq("tool_id_1"),
+                  testing::Field(
+                      &mojom::PermissionChallenge::assessment,
+                      testing::Optional(StrEq("Server determined this tool use "
+                                              "is off-topic")))));
+
   // User approves permission
   conversation_handler_->ProcessPermissionChallenge(
       "tool_id_1", mojom::PermissionChallengeDecision::kAllowOnce);

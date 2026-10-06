@@ -57,7 +57,9 @@ class HistorySearchTool : public Tool {
   std::variant<bool, mojom::PermissionChallengePtr>
   RequiresUserInteractionBeforeHandling(
       const mojom::ToolUseEvent& tool_use) const override;
-  void UserPermissionGranted(const std::string& tool_use_id) override;
+  void UserPermissionGranted(
+      const std::string& tool_use_id,
+      const mojom::PermissionChallenge& challenge) override;
   void UseTool(const std::string& input_json,
                UseToolCallback callback) override;
 
