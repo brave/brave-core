@@ -33,6 +33,8 @@
 #include "brave/ios/browser/brave_search/brave_search_make_default_tab_helper.h"
 #include "brave/ios/browser/brave_search/brave_search_make_default_tab_helper_bridge.h"
 #include "brave/ios/browser/brave_shields/cosmetic_filtering/cosmetic_filtering_tab_helper.h"
+#include "brave/ios/browser/brave_shields/element_picker/element_picker_javascript_feature.h"
+#include "brave/ios/browser/brave_shields/element_picker/element_picker_tab_helper.h"
 #include "brave/ios/browser/brave_shields/protection_stats_tab_helper.h"
 #include "brave/ios/browser/brave_shields/protection_stats_tab_helper_bridge.h"
 #include "brave/ios/browser/brave_shields/request_blocking/request_blocking_tab_helper.h"
@@ -302,6 +304,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
     requestBlockingTabHelperBridge;
 @property(nonatomic, weak) id<CosmeticFilteringTabHelperBridge>
     cosmeticFilteringTabHelperBridge;
+@property(nonatomic, weak) id<ElementPickerTabHelperBridge>
+    elementPickerTabHelperBridge;
 @property(nonatomic, weak) id<ScriptletsTabHelperBridge>
     scriptletsTabHelperBridge;
 @property(nonatomic, weak) id<BraveWalletProviderDelegate>
@@ -494,6 +498,10 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
     CosmeticFilteringTabHelper::CreateForWebState(self.webState);
     CosmeticFilteringTabHelper::FromWebState(self.webState)
         ->SetBridge(self.cosmeticFilteringTabHelperBridge);
+
+    ElementPickerTabHelper::CreateForWebState(self.webState);
+    ElementPickerTabHelper::FromWebState(self.webState)
+        ->SetBridge(self.elementPickerTabHelperBridge);
 
     ScriptletsTabHelper::CreateForWebState(self.webState);
     ScriptletsTabHelper::FromWebState(self.webState)
@@ -1026,6 +1034,23 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
           CosmeticFilteringTabHelper::FromWebState(self.webState)) {
     tab_helper->SetBridge(bridge);
   }
+}
+
+@end
+
+@implementation BraveWebView (ElementPicker)
+
+- (void)setElementPickerTabHelperBridge:
+    (id<ElementPickerTabHelperBridge>)bridge {
+  _elementPickerTabHelperBridge = bridge;
+  if (ElementPickerTabHelper* tab_helper =
+          ElementPickerTabHelper::FromWebState(self.webState)) {
+    tab_helper->SetBridge(bridge);
+  }
+}
+
+- (void)showElementPicker {
+  ElementPickerJavaScriptFeature::GetInstance()->ShowPicker(self.webState);
 }
 
 @end

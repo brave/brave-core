@@ -135,6 +135,7 @@ extension BrowserViewController: TabManagerDelegate {
     if FeatureList.kUseProfileWebViewConfiguration.enabled {
       tab.requestBlockingTabHelper = .init(tab: tab)
       tab.cosmeticFilteringTabHelper = .init(tab: tab)
+      tab.elementPickerTabHelper = .init(tab: tab)
       tab.scriptletsTabHelper = .init(tab: tab)
     }
 

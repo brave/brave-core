@@ -15,6 +15,8 @@
 #include "base/functional/callback_helpers.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/values.h"
+#include "brave/ios/browser/brave_shields/element_picker/element_picker_localized_texts.h"
+#include "brave/ios/browser/brave_shields/element_picker/element_picker_tab_helper.h"
 #include "ios/web/public/js_messaging/script_message.h"
 #include "ios/web/public/js_messaging/web_frame.h"
 #include "ios/web/public/js_messaging/web_frames_manager.h"
@@ -33,6 +35,16 @@ constexpr char kRequestAddCosmeticFilter[] = "add_cosmetic_filter";
 constexpr char kRequestManageCustomFilters[] = "manage_custom_filters";
 constexpr char kRequestThemeInfo[] = "theme_info";
 constexpr char kRequestLocalizedTexts[] = "localized_texts";
+
+// Reply keys expected by element_picker_api_webkit.ts.
+constexpr char kResponseIsDarkModeEnabledKey[] = "isDarkModeEnabled";
+constexpr char kResponseBackgroundColorKey[] = "bgcolor";
+constexpr char kResponseCreateDisabledTextKey[] = "btnCreateDisabledText";
+constexpr char kResponseCreateEnabledTextKey[] = "btnCreateEnabledText";
+constexpr char kResponseManageTextKey[] = "btnManageText";
+constexpr char kResponseShowRulesTextKey[] = "btnShowRulesBoxText";
+constexpr char kResponseHideRulesTextKey[] = "btnHideRulesBoxText";
+constexpr char kResponseQuitTextKey[] = "btnQuitText";
 
 }  // namespace
 
@@ -114,6 +126,12 @@ void ElementPickerJavaScriptFeature::ScriptMessageReceivedWithReply(
     return;
   }
 
+  auto* tab_helper = ElementPickerTabHelper::FromWebState(web_state);
+  if (!tab_helper) {
+    std::move(callback).Run(nullptr, nil);
+    return;
+  }
+
   if (*request_type == kRequestAddCosmeticFilter) {
     const base::DictValue* data_dict = script_dict->FindDict(kMessageDataKey);
     const std::string* selector =
@@ -122,27 +140,53 @@ void ElementPickerJavaScriptFeature::ScriptMessageReceivedWithReply(
       std::move(callback).Run(nullptr, nil);
       return;
     }
-    // TODO(https://github.com/brave/brave-browser/issues/60111): Forward the
-    // selector to the tab helper so it can be persisted as a custom filter for
-    // `frame_url`.
+    // The host the rule applies to is derived from the frame's own origin
+    // rather than anything the page supplied.
+    tab_helper->AddCosmeticFilter(*selector, frame_url);
     std::move(callback).Run(nullptr, nil);
     return;
   } else if (*request_type == kRequestManageCustomFilters) {
-    // TODO(https://github.com/brave/brave-browser/issues/60111): Ask the tab
-    // helper to present the custom filters settings UI.
+    tab_helper->ManageCustomFilters();
     std::move(callback).Run(nullptr, nil);
     return;
   } else if (*request_type == kRequestThemeInfo) {
-    // TODO(https://github.com/brave/brave-browser/issues/60111): Reply with
-    // `{isDarkModeEnabled, bgcolor}` from the tab helper, which needs the
-    // browser's current theme.
-    std::move(callback).Run(nullptr, nil);
+    tab_helper->ThemeInfo(base::BindOnce(
+        [](ScriptMessageReplyCallback callback, BOOL is_dark_mode_enabled,
+           int32_t background_color) {
+          base::DictValue response;
+          response.Set(kResponseIsDarkModeEnabledKey,
+                       static_cast<bool>(is_dark_mode_enabled));
+          response.Set(kResponseBackgroundColorKey, background_color);
+          base::Value value(std::move(response));
+          std::move(callback).Run(&value, nil);
+        },
+        std::move(callback)));
     return;
   } else if (*request_type == kRequestLocalizedTexts) {
-    // TODO(https://github.com/brave/brave-browser/issues/60111): Reply with the
-    // picker's button labels. iOS localizes in the Swift layer, so these come
-    // across the tab helper bridge.
-    std::move(callback).Run(nullptr, nil);
+    tab_helper->LocalizedTexts(base::BindOnce(
+        [](ScriptMessageReplyCallback callback,
+           ElementPickerLocalizedTexts* texts) {
+          if (!texts) {
+            std::move(callback).Run(nullptr, nil);
+            return;
+          }
+          base::DictValue response;
+          response.Set(kResponseCreateDisabledTextKey,
+                       base::SysNSStringToUTF8(texts.createDisabledText));
+          response.Set(kResponseCreateEnabledTextKey,
+                       base::SysNSStringToUTF8(texts.createEnabledText));
+          response.Set(kResponseManageTextKey,
+                       base::SysNSStringToUTF8(texts.manageText));
+          response.Set(kResponseShowRulesTextKey,
+                       base::SysNSStringToUTF8(texts.showRulesText));
+          response.Set(kResponseHideRulesTextKey,
+                       base::SysNSStringToUTF8(texts.hideRulesText));
+          response.Set(kResponseQuitTextKey,
+                       base::SysNSStringToUTF8(texts.quitText));
+          base::Value value(std::move(response));
+          std::move(callback).Run(&value, nil);
+        },
+        std::move(callback)));
     return;
   }
   std::move(callback).Run(nullptr, nil);
