@@ -16,6 +16,14 @@ extension Strings {
       comment: "The title of the button that changes the screen to next"
     )
 
+    public static let gotItButtonTitle = NSLocalizedString(
+      "focusOnboarding.gotItButtonTitle",
+      tableName: "FocusOnboarding",
+      bundle: .module,
+      value: "Got It",
+      comment: "The title of the button that dismisses the add-to-dock explainer opened from Settings"
+    )
+
     public static let noVideoAdsScreenTitle = NSLocalizedString(
       "focusOnboarding.noVideoAdsScreenTitle",
       tableName: "FocusOnboarding",

@@ -29,6 +29,13 @@ private struct AddToDockGraphicView: View {
 
 public struct AddToDockOnboardingStep: OnboardingStep {
   public var id: String = "add-to-dock"
+  /// Replaces the defailt (Continue) when set. Onboarding leaves this unset; 
+  public var ctaTitle: String?
+
+  public init(ctaTitle: String? = nil) {
+    self.ctaTitle = ctaTitle
+  }
+
   public func makeTitle() -> some View {
     OnboardingTitleView(
       title: Strings.FocusOnboarding.addToDockScreenTitle,
@@ -42,7 +49,7 @@ public struct AddToDockOnboardingStep: OnboardingStep {
     Button {
       continueHandler()
     } label: {
-      Text(Strings.FocusOnboarding.continueButtonTitle)
+      Text(ctaTitle ?? Strings.FocusOnboarding.continueButtonTitle)
         .frame(maxWidth: .infinity)
     }
     .primaryContinueAction()
