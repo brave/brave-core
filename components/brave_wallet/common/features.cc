@@ -93,6 +93,8 @@ BASE_FEATURE(kBraveWalletAccountHidingFeature,
 
 #if BUILDFLAG(ENABLE_SNAP)
 BASE_FEATURE(kBraveWalletSnapFeature, base::FEATURE_DISABLED_BY_DEFAULT);
+const base::FeatureParam<bool> kUseHiddenWebContents{
+    &kBraveWalletSnapFeature, "use_hidden_webcontents", false};
 #endif
 
 BASE_FEATURE(kBraveWalletSidePanel, base::FEATURE_DISABLED_BY_DEFAULT);

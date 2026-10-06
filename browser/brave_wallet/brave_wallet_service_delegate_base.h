@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_SERVICE_DELEGATE_BASE_H_
 #define BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_SERVICE_DELEGATE_BASE_H_
 
+#include <memory>
 #include <string>
 
 #include "base/auto_reset.h"
@@ -13,6 +14,7 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 
 namespace content {
 class BrowserContext;
@@ -55,6 +57,11 @@ class BraveWalletServiceDelegateBase : public BraveWalletServiceDelegate {
   bool IsPrivateWindow() override;
 
   bool IsAutolockEnabled() override;
+
+#if BUILDFLAG(ENABLE_SNAP)
+  std::unique_ptr<SnapHostBridgeController> CreateSnapHostBridgeController()
+      override;
+#endif
 
  protected:
   base::FilePath wallet_base_directory_;

@@ -36,6 +36,21 @@ void WalletPageSnapHostBridgeController::OnDisconnect() {
   snap_host_bridge_.reset();
 }
 
+void WalletPageSnapHostBridgeController::EnsureBridgeReady(
+    base::OnceClosure on_ready) {
+  // The wallet page owns its own lifetime; nothing to start here. Running
+  // synchronously preserves v1's "fail if no page is open" behavior.
+  std::move(on_ready).Run();
+}
+
+void WalletPageSnapHostBridgeController::Shutdown() {
+  snap_host_bridge_.reset();
+}
+
+std::string WalletPageSnapHostBridgeController::GetUnavailableError() const {
+  return "Wallet page is not running";
+}
+
 void WalletPageSnapHostBridgeController::LoadSnap(
     const std::string& snap_id,
     const std::string& source_code,

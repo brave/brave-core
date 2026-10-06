@@ -47,6 +47,8 @@ BASE_DECLARE_FEATURE(kBraveWalletAccountHidingFeature);
 
 #if BUILDFLAG(ENABLE_SNAP)
 BASE_DECLARE_FEATURE(kBraveWalletSnapFeature);
+// Evaluates snap bundles in a hidden WebContents instead of the wallet page.
+extern const base::FeatureParam<bool> kUseHiddenWebContents;
 #endif
 
 BASE_DECLARE_FEATURE(kBraveWalletSidePanel);

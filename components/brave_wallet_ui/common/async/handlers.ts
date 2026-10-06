@@ -117,15 +117,8 @@ startAppListening({
 
 startAppListening({
   actionCreator: WalletActions.unlocked,
-  effect: async (_, listenerApi) => {
-    await refreshWalletInfo(listenerApi)
-    const { keyringService } = getAPIProxy()
-    keyringService.notifyUserInteraction()
-    interactionNotifier.beginWatchingForInteraction(
-      50000,
-      false,
-      onInteractionInterval,
-    )
+  effect: async () => {
+    window.location.reload()
   },
 })
 

@@ -958,7 +958,10 @@ source_set("unit_tests") {
   }
 
   if (enable_snap) {
-    sources += [ "snap/execution_environment/wallet_page_snap_host_bridge_controller_unittest.cc" ]
+    sources += [
+      "snap/execution_environment/wallet_page_snap_host_bridge_controller_unittest.cc",
+      "snap_service_unittest.cc",
+    ]
     deps += [
       "//brave/components/brave_wallet/browser/snap/execution_environment",
       "//brave/components/brave_wallet/browser/snap/execution_environment:test_support",
