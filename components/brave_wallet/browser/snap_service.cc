@@ -7,20 +7,38 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/snap/execution_environment/snap_host_bridge_controller.h"
-#include "brave/components/brave_wallet/browser/snap/execution_environment/wallet_page_snap_host_bridge_controller.h"
 
 namespace brave_wallet {
 
-SnapService::SnapService()
-    : bridge_controller_(
-          std::make_unique<WalletPageSnapHostBridgeController>()) {}
+SnapService::SnapService(
+    KeyringService& keyring_service,
+    std::unique_ptr<SnapHostBridgeController> bridge_controller)
+    : keyring_service_(keyring_service),
+      bridge_controller_(std::move(bridge_controller)) {
+  CHECK(bridge_controller_);
+  keyring_service_->AddObserver(keyring_observer_.BindNewPipeAndPassRemote());
+}
 
 SnapService::~SnapService() = default;
 
 void SnapService::Bind(mojo::PendingReceiver<mojom::SnapService> receiver) {
   receivers_.Add(this, std::move(receiver));
+}
+
+void SnapService::Shutdown() {
+  bridge_controller_->Shutdown();
+}
+
+void SnapService::Locked() {
+  bridge_controller_->Shutdown();
+}
+
+void SnapService::WalletReset() {
+  bridge_controller_->Shutdown();
 }
 
 void SnapService::BindSnapHostBridge(
@@ -35,10 +53,11 @@ void SnapService::LoadSnap(const std::string& snap_id,
   // inert while `snap_bundles_` is only populated by tests, but needs a
   // permission check before real bundles are installable.
 
-  // Snap execution is hosted by the already-open wallet page. Do not open a
-  // page; fail if none is running.
-  if (!bridge_controller_->IsBound()) {
-    std::move(callback).Run(false, "Wallet page is not running", std::nullopt);
+  // Fail fast rather than starting a host for a locked wallet. IsLockedSync()
+  // is used instead of a cached Locked()/Unlocked() flag so this does not race
+  // the async mojo observer delivery.
+  if (keyring_service_->IsLockedSync()) {
+    std::move(callback).Run(false, "Wallet is locked", std::nullopt);
     return;
   }
 
@@ -48,8 +67,21 @@ void SnapService::LoadSnap(const std::string& snap_id,
     return;
   }
 
+  bridge_controller_->EnsureBridgeReady(base::BindOnce(
+      &SnapService::OnBridgeReady, weak_ptr_factory_.GetWeakPtr(), snap_id,
+      it->second, std::move(callback)));
+}
+
+void SnapService::OnBridgeReady(const std::string& snap_id,
+                                const std::string& source_code,
+                                LoadSnapCallback callback) {
+  if (!bridge_controller_->IsBound()) {
+    std::move(callback).Run(false, bridge_controller_->GetUnavailableError(),
+                            std::nullopt);
+    return;
+  }
   bridge_controller_->LoadSnap(
-      snap_id, it->second,
+      snap_id, source_code,
       base::BindOnce(&SnapService::OnLoadSnapResult,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }

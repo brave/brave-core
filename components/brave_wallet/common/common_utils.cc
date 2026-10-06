@@ -112,6 +112,14 @@ bool IsSnapFeatureEnabled() {
 #endif
 }
 
+bool IsSnapHiddenHostEnabled() {
+#if BUILDFLAG(ENABLE_SNAP)
+  return IsSnapFeatureEnabled() && features::kUseHiddenWebContents.Get();
+#else
+  return false;
+#endif
+}
+
 bool IsEthereumKeyring(mojom::KeyringId keyring_id) {
   return keyring_id == mojom::KeyringId::kDefault;
 }

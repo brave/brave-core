@@ -128,7 +128,11 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->AddBoolean("rewardsFeatureEnabled", IsRewardsFeatureEnabled(profile));
   source->AddBoolean("isLedgerMojoBridgeEnabled", IsMojoForLedgerEnabled());
   source->AddBoolean("walletDebug", IsWalletDebugEnabled());
-  source->AddBoolean("isSnapEnabled", IsSnapFeatureEnabled());
+  // The wallet page only hosts the snap environment when the browser isn't
+  // already running one in a hidden WebContents; two hosts would race to bind
+  // the profile-wide bridge.
+  source->AddBoolean("walletPageHostsSnaps",
+                     IsSnapFeatureEnabled() && !IsSnapHiddenHostEnabled());
   source->AddString("braveSnapsContainerUrl", kBraveUISnapsContainerURL);
 
 #if !BUILDFLAG(IS_ANDROID)

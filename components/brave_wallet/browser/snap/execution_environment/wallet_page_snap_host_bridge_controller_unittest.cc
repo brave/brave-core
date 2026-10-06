@@ -8,6 +8,7 @@
 #include <optional>
 #include <string>
 
+#include "base/functional/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/snap/execution_environment/snap_host_bridge_test_utils.h"
@@ -107,6 +108,23 @@ TEST_F(WalletPageSnapHostBridgeControllerUnitTest, DisconnectUnbinds) {
                          const std::optional<std::string>&>());
   auto [success, error, result] = future.Take();
   EXPECT_FALSE(success);
+  EXPECT_FALSE(controller_.IsBound());
+}
+
+TEST_F(WalletPageSnapHostBridgeControllerUnitTest,
+       EnsureBridgeReadyRunsSynchronously) {
+  bool ran = false;
+  controller_.EnsureBridgeReady(
+      base::BindOnce([](bool* ran) { *ran = true; }, &ran));
+  EXPECT_TRUE(ran);
+}
+
+TEST_F(WalletPageSnapHostBridgeControllerUnitTest, ShutdownUnbinds) {
+  FakeSnapHostBridge bridge;
+  controller_.BindNewBridge(bridge.BindNewPipeAndPassRemote());
+  EXPECT_TRUE(controller_.IsBound());
+
+  controller_.Shutdown();
   EXPECT_FALSE(controller_.IsBound());
 }
 

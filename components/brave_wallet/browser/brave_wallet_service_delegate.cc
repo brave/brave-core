@@ -11,6 +11,12 @@
 
 #include "base/notimplemented.h"
 #include "base/types/expected.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_SNAP)
+#include "brave/components/brave_wallet/browser/snap/execution_environment/snap_host_bridge_controller.h"
+#include "brave/components/brave_wallet/browser/snap/execution_environment/wallet_page_snap_host_bridge_controller.h"
+#endif
 
 namespace brave_wallet {
 
@@ -98,5 +104,12 @@ void BraveWalletServiceDelegate::DisplayTxNotification(
     const GURL& tx_url) {
   NOTIMPLEMENTED();
 }
+
+#if BUILDFLAG(ENABLE_SNAP)
+std::unique_ptr<SnapHostBridgeController>
+BraveWalletServiceDelegate::CreateSnapHostBridgeController() {
+  return std::make_unique<WalletPageSnapHostBridgeController>();
+}
+#endif
 
 }  // namespace brave_wallet
