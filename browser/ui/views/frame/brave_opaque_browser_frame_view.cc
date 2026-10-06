@@ -40,7 +40,7 @@ BraveOpaqueBrowserFrameView::BraveOpaqueBrowserFrameView(
   frame_graphic_ =
       std::make_unique<BraveWindowFrameGraphic>(browser->GetProfile());
 
-  if (auto* controller = browser->GetFeatures().focus_mode_controller()) {
+  if (auto* controller = FocusModeController::From(browser)) {
     focus_mode_observation_.Observe(controller);
     if (auto* overlay =
             BraveBrowserView::From(browser_view)->focus_mode_top_overlay()) {

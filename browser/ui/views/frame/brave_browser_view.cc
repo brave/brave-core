@@ -50,6 +50,7 @@
 #include "brave/browser/ui/views/toolbar/screenshot_button.h"
 #include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
@@ -68,7 +69,6 @@
 #include "chrome/browser/ui/browser_actions.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_element_identifiers.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
@@ -400,7 +400,7 @@ BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
   }
 
   if (BrowserSupportsFocusMode(browser_)) {
-    auto* controller = browser_->GetFeatures().focus_mode_controller();
+    auto* controller = FocusModeController::From(browser_);
     CHECK(controller);
     focus_mode_observation_.Observe(controller);
 

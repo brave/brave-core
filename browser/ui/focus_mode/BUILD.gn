@@ -13,7 +13,10 @@ source_set("focus_mode") {
     "focus_mode_utils.h",
   ]
 
-  public_deps = [ "//base" ]
+  public_deps = [
+    "//base",
+    "//ui/base/unowned_user_data",
+  ]
 
   deps = [ "//chrome/browser/ui/browser_window" ]
 }

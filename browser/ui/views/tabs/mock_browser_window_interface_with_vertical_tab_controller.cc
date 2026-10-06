@@ -12,7 +12,8 @@
 #include "testing/gmock/include/gmock/gmock.h"
 
 MockBrowserWindowInterfaceWithVerticalTabController::
-    MockBrowserWindowInterfaceWithVerticalTabController(PrefService* prefs) {
+    MockBrowserWindowInterfaceWithVerticalTabController(PrefService* prefs)
+    : focus_mode_controller_(GetUnownedUserDataHost()) {
   vertical_tab_controller_ = std::make_unique<VerticalTabController>(
       GetUnownedUserDataHost(), BrowserWindowInterface::TYPE_NORMAL, prefs,
       &focus_mode_controller_);
