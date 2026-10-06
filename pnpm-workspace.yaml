@@ -1,11 +1,3 @@
-# Copyright (c) 2026 The Brave Authors. All rights reserved.
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at https://mozilla.org/MPL/2.0/.
-
-# See https://pnpm.io/settings for documentation on the settings below.
-
-# Packages allowed to run install/build lifecycle scripts.
 allowBuilds:
   '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/b5a6139df7ebd3f7d55aa8d6af60a524edab87b0': true
   '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/ff620e4e53b70dc9868c2215c5cb56e8145e92df': true
@@ -64,7 +56,7 @@ overrides:
   # Security-related overrides.
   #
   # Scoped to Storybook's copy; webpack-dev-server already uses a patched 7.x.
-  '@storybook/builder-webpack5>webpack-dev-middleware': '7.4.5'
+  '@storybook/builder-webpack5>webpack-dev-middleware': '7.4.6'
   'axios': '1.20.0'
   # Pinned per major line: consumers span all three and the fixes were backported.
   'brace-expansion@1': '1.1.21'
