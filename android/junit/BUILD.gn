@@ -359,6 +359,12 @@ if (is_android) {
     ]
   }
 
+  robolectric_library("brave_multiwindow_junit_test_utils") {
+    sources = [ "src/org/chromium/chrome/browser/multiwindow/BraveMultiWindowTestUtils.java" ]
+
+    deps = [ "//chrome/browser/ui/android/multiwindow:java" ]
+  }
+
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.hub") {
     sources = [
       "src/org/chromium/chrome/browser/hub/BraveHubManagerImplUnitTest.java",
@@ -366,6 +372,7 @@ if (is_android) {
     ]
 
     deps = [
+      ":brave_multiwindow_junit_test_utils",
       "//base:base_java",
       "//base:base_junit_test_support",
       "//brave/browser/brave_shields/android:java",
@@ -419,6 +426,7 @@ if (is_android) {
     ]
 
     deps = [
+      ":brave_multiwindow_junit_test_utils",
       "//chrome/android:chrome_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
     ]
