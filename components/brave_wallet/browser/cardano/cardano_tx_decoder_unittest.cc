@@ -120,6 +120,35 @@ TEST(CardanoTxDecoderTest, EncodeTransaction_FailsOnDuplicateInputs) {
             "9bca439b62e232731fb5290c495601cf40b358f915ade8bcff1eb7b802f5f6");
 }
 
+TEST(CardanoTxDecoderTest, EncodeDecodeTransaction_TtlRoundTrip) {
+  auto serializable_tx = GetSignedReferenceTransaction().ToSerializableTx();
+  ASSERT_TRUE(serializable_tx);
+
+  auto round_trip_ttl =
+      [&](std::optional<uint64_t> ttl) -> std::optional<uint64_t> {
+    if (ttl) {
+      serializable_tx->tx_body.ttl = *ttl;
+    } else {
+      serializable_tx->tx_body.ttl.reset();
+    }
+    auto encoded = CardanoTxDecoder::EncodeTransaction(*serializable_tx);
+    if (!encoded) {
+      ADD_FAILURE() << "EncodeTransaction failed";
+      return std::nullopt;
+    }
+    auto decoded = CardanoTxDecoder::DecodeTransaction(*encoded);
+    if (!decoded) {
+      ADD_FAILURE() << "DecodeTransaction failed";
+      return std::nullopt;
+    }
+    return decoded->tx.tx_body.ttl;
+  };
+
+  EXPECT_EQ(round_trip_ttl(149770436u), 149770436u);
+  EXPECT_EQ(round_trip_ttl(0u), 0u);
+  EXPECT_EQ(round_trip_ttl(std::nullopt), std::nullopt);
+}
+
 TEST(CardanoTxDecoderTest, DecodeTransaction_ValidTransaction) {
   auto tx = GetSignedReferenceTransaction();
   auto tx_bytes = CardanoTransactionSerializer().SerializeTransaction(tx);
@@ -512,7 +541,9 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_ValidMinimalTransaction) {
   std::vector<uint8_t> expected_address(28, 0);
   EXPECT_EQ(restored_tx.tx_body.outputs[0].address_bytes, expected_address);
 
+  EXPECT_FALSE(restored_tx.tx_body.ttl.has_value());
   EXPECT_TRUE(restored_tx.tx_body.withdrawals.empty());
+  EXPECT_FALSE(restored_tx.tx_body.script_data_hash.has_value());
   EXPECT_TRUE(restored_tx.tx_body.mint.empty());
   EXPECT_TRUE(restored_tx.tx_body.collateral.empty());
   EXPECT_FALSE(restored_tx.tx_body.collateral_return.has_value());
@@ -899,7 +930,138 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_WithCollateral) {
   EXPECT_EQ(body.collateral_return->address_bytes, expected_return_addr);
 
   ASSERT_TRUE(body.total_collateral.has_value());
-  EXPECT_EQ(static_cast<uint64_t>(*body.total_collateral), 2000000u);
+  EXPECT_EQ(*body.total_collateral, 2000000u);
+}
+
+TEST(CardanoTxDecoderTest, DecodeTransaction_WithTtlAndScriptDataHash) {
+  // Body with ttl (3) and script data hash (11).
+  // clang-format off
+  std::vector<uint8_t> cbor = {
+      0x82,        // [transaction_body, witness_set]
+      0xa5,        // body map with 5 entries
+      0x00,        // Key 0: inputs
+      0x81,
+      0x82, 0x58, 0x20,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00,
+      0x01,        // Key 1: outputs
+      0x81,
+      0x82, 0x58, 0x1c,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,
+      0x1a, 0x00, 0x98, 0x96, 0x80,
+      0x02,        // Key 2: fee
+      0x1a, 0x00, 0x00, 0x27, 0x10,
+      0x03,        // Key 3: ttl
+      0x1a, 0x08, 0xed, 0x50, 0xc4,  // 149770436
+      0x0b,        // Key 11: script data hash
+      0x58, 0x20,
+      0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc,
+      0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc,
+      0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc,
+      0xa0,        // Empty witness set
+  };
+  // clang-format on
+
+  auto decode_result = CardanoTxDecoder::DecodeTransaction(cbor);
+  ASSERT_TRUE(decode_result.has_value());
+
+  const auto& body = decode_result->tx.tx_body;
+  ASSERT_TRUE(body.ttl.has_value());
+  EXPECT_EQ(*body.ttl, 149770436u);
+
+  std::array<uint8_t, 32> expected_script_data_hash;
+  expected_script_data_hash.fill(0xcc);
+  EXPECT_EQ(body.script_data_hash, expected_script_data_hash);
+
+  EXPECT_FALSE(body.collateral_return.has_value());
+  EXPECT_FALSE(body.total_collateral.has_value());
+}
+
+TEST(CardanoTxDecoderTest, DecodeTransaction_ZeroValuedOptionalFieldsPresent) {
+  // Optional fields that are present with zero values must decode as present,
+  // not as absent.
+  // clang-format off
+  std::vector<uint8_t> cbor = {
+      0x82,        // [transaction_body, witness_set]
+      0xa6,        // body map with 6 entries
+      0x00,        // Key 0: inputs
+      0x81,
+      0x82, 0x58, 0x20,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00,
+      0x01,        // Key 1: outputs
+      0x81,
+      0x82, 0x58, 0x1c,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,
+      0x1a, 0x00, 0x98, 0x96, 0x80,
+      0x02,        // Key 2: fee
+      0x1a, 0x00, 0x00, 0x27, 0x10,
+      0x03,        // Key 3: ttl
+      0x00,        // 0
+      0x0b,        // Key 11: script data hash
+      0x58, 0x20,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x11,        // Key 17: total collateral
+      0x00,        // 0
+      0xa0,        // Empty witness set
+  };
+  // clang-format on
+
+  auto decode_result = CardanoTxDecoder::DecodeTransaction(cbor);
+  ASSERT_TRUE(decode_result.has_value());
+
+  const auto& body = decode_result->tx.tx_body;
+  ASSERT_TRUE(body.ttl.has_value());
+  EXPECT_EQ(*body.ttl, 0u);
+
+  ASSERT_TRUE(body.script_data_hash.has_value());
+  EXPECT_EQ(*body.script_data_hash, (std::array<uint8_t, 32>{}));
+
+  ASSERT_TRUE(body.total_collateral.has_value());
+  EXPECT_EQ(*body.total_collateral, 0u);
+}
+
+TEST(CardanoTxDecoderTest, DecodeTransaction_ScriptDataHashWrongSizeRejected) {
+  // clang-format off
+  std::vector<uint8_t> cbor = {
+      0x82,        // [transaction_body, witness_set]
+      0xa4,        // body map with 4 entries
+      0x00,        // Key 0: inputs
+      0x81,
+      0x82, 0x58, 0x20,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00,
+      0x01,        // Key 1: outputs
+      0x81,
+      0x82, 0x58, 0x1c,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,
+      0x1a, 0x00, 0x98, 0x96, 0x80,
+      0x02,        // Key 2: fee
+      0x1a, 0x00, 0x00, 0x27, 0x10,
+      0x0b,        // Key 11: script data hash, 31 bytes instead of 32
+      0x58, 0x1f,
+      0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc,
+      0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc,
+      0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc,
+      0xa0,        // Empty witness set
+  };
+  // clang-format on
+
+  EXPECT_FALSE(CardanoTxDecoder::DecodeTransaction(cbor));
 }
 
 TEST(CardanoTxDecoderTest,
