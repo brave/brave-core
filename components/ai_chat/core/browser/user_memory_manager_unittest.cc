@@ -33,6 +33,7 @@
 #include "brave/components/ai_chat/core/browser/dreaming_run.h"
 #include "brave/components/ai_chat/core/browser/dreaming_text_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/learned_memory_eval.h"
 #include "brave/components/ai_chat/core/browser/memory_decision_client.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -245,7 +246,7 @@ class UserMemoryManagerTest : public testing::Test {
     MakeManager(/*with_llm=*/true);
   }
 
-  void MakeManager(bool with_llm) {
+  void MakeManager(bool with_llm, bool record_trace = false) {
     auto client = std::make_unique<FakeDecisionClient>();
     client_ = client.get();
     // A new engine for each run, the same as AIChatService.
@@ -260,9 +261,11 @@ class UserMemoryManagerTest : public testing::Test {
           return llm;
         });
     manager_.reset();
+    DreamingConfig config = UserMemoryManager::GetDreamingConfigFromFeatures();
+    config.record_trace = record_trace;
     manager_ = std::make_unique<UserMemoryManager>(
         std::move(client), std::move(llm_engine_factory), &embedder_, &prefs_,
-        UserMemoryManager::GetDreamingConfigFromFeatures());
+        config);
   }
 
   std::map<std::string, LearnedMemory> MemoriesByText() {
@@ -594,18 +597,25 @@ TEST_F(UserMemoryManagerTest, RewriteThatIsTooLongUsesTheUserSentence) {
 }
 
 TEST_F(UserMemoryManagerTest, RewriteWithANewNameIsStored) {
-  // The user reviews the memories, so a new name does not drop the rewrite.
+  // The user reviews the memories, so a new name is only a flag in the trace.
+  MakeManager(/*with_llm=*/true, /*record_trace=*/true);
   const std::string turn = "We just moved to Berlin.";
   AddChat("chat-1", {turn});
   KeepSentence(turn, turn);
   llm_.rewrites[turn] = "Moved to Berlin from Paris";
   manager_->OnDatabaseAvailable(&db_);
 
-  Dream();
+  DreamingResult result = Dream();
 
   auto memories = GetMemories();
   ASSERT_EQ(memories.size(), 1u);
   EXPECT_EQ(memories[0].text, "Moved to Berlin from Paris");
+  for (const auto& step : result.trace) {
+    if (*step.GetDict().FindString("step") == "rewrite_parsed") {
+      const auto& fact = step.GetDict().FindList("facts")->front().GetDict();
+      EXPECT_EQ(fact.FindBool("no_new_details"), false);
+    }
+  }
 }
 
 TEST_F(UserMemoryManagerTest, ReplaceKeepsTheOldText) {
@@ -751,6 +761,57 @@ TEST_F(UserMemoryManagerTest, NoTimerWithoutDatabase) {
   manager_->OnDatabaseAvailable(&db_);
   manager_->OnDatabaseUnavailable();
   EXPECT_FALSE(manager_->is_dreaming_scheduled());
+}
+
+TEST_F(UserMemoryManagerTest, TraceRecordsEachStep) {
+  MakeManager(/*with_llm=*/true, /*record_trace=*/true);
+  const std::string turn = "We just moved to Berlin.";
+  AddChat("chat-1", {turn});
+  KeepSentence(turn, turn);
+  llm_.rewrites[turn] = "Moved to Berlin";
+  embedder_.vectors["Moved to Berlin"] = embedder_.Vector(turn);
+  manager_->OnDatabaseAvailable(&db_);
+
+  DreamingResult result = Dream();
+
+  std::vector<std::string> steps;
+  for (const auto& step : result.trace) {
+    steps.push_back(*step.GetDict().FindString("step"));
+  }
+  EXPECT_THAT(
+      steps,
+      ElementsAre("loaded", "turn", "gate", "split", "sentence_decisions",
+                  "llm_call", "rewrite_parsed", "embed", "rewrite_checked",
+                  "fact", "neighbors", "store", "watermark", "done"));
+  // Without the trace, the result has no steps.
+  MakeManager(/*with_llm=*/true);
+  manager_->OnDatabaseAvailable(&db_);
+  EXPECT_TRUE(Dream().trace.empty());
+}
+
+TEST(LearnedMemoryEvalTest, ParseChatSet) {
+  const base::Time now = base::Time::Now();
+  auto chats = LearnedMemoryEval::ParseChatSet(
+      R"({"name": "x", "expect": {}, "chats": [
+          {"title": "Gyms", "days_ago": 2, "turns": [
+            {"user": "We moved to Berlin.", "assistant": "Welcome!"},
+            {"user": "Any gyms?"}]}]})",
+      now);
+  ASSERT_TRUE(chats);
+  ASSERT_EQ(chats->size(), 1u);
+  const EvalChat& chat = (*chats)[0];
+  EXPECT_EQ(chat.conversation->uuid, "eval-0");
+  EXPECT_EQ(chat.conversation->title, "Gyms");
+  ASSERT_EQ(chat.entries.size(), 4u);
+  EXPECT_EQ(chat.entries[0]->uuid, "eval-0-0-user");
+  EXPECT_EQ(chat.entries[0]->text, "We moved to Berlin.");
+  EXPECT_EQ(chat.entries[0]->created_time, now - base::Days(2));
+  EXPECT_EQ(chat.entries[1]->character_type, mojom::CharacterType::ASSISTANT);
+  EXPECT_EQ(chat.entries[3]->text, "OK.");
+  EXPECT_LT(chat.entries[2]->created_time, chat.entries[3]->created_time);
+
+  EXPECT_FALSE(LearnedMemoryEval::ParseChatSet(R"({"chats": [{}]})", now));
+  EXPECT_FALSE(LearnedMemoryEval::ParseChatSet("not json", now));
 }
 
 TEST_F(UserMemoryManagerTest, GetLearnableText) {

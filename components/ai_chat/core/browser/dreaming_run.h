@@ -21,6 +21,7 @@
 #include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "base/values.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/learned_memory_types.h"
 #include "brave/components/ai_chat/core/browser/memory_decision_client.h"
@@ -53,6 +54,8 @@ enum class DreamingStatus {
 };
 
 const char* DreamingStatusToString(DreamingStatus status);
+const char* LearnedMemoryCategoryToString(LearnedMemoryCategory category);
+const char* LearnedMemoryTypeToString(LearnedMemoryType type);
 
 struct DreamingResult {
   DreamingResult();
@@ -70,6 +73,9 @@ struct DreamingResult {
   size_t memories_added = 0;
   // Same, replace and merge.
   size_t memories_updated = 0;
+  // Each step with its inputs, outputs and latency, when
+  // DreamingConfig::record_trace is true. The eval harness reads it.
+  base::ListValue trace;
 };
 
 struct DreamingConfig {
@@ -97,6 +103,8 @@ struct DreamingConfig {
   // memories that are at least |min_neighbor_similarity| close to it.
   size_t max_neighbors = 5;
   float min_neighbor_similarity = 0.5f;
+  // Records each step in DreamingResult::trace.
+  bool record_trace = false;
 };
 
 // One Dreaming run. UserMemoryManager makes it, and deletes it after |done|
@@ -219,17 +227,34 @@ class DreamingRun {
   void OnStored(LearnedMemory memory, bool is_new, bool success);
   void NextFact();
 
-  void AskLlm(MemoryLlmRequest request, LlmCallback callback);
-  void OnLlmAnswer(LlmCallback callback,
+  // |purpose| names the call in the trace.
+  void AskLlm(std::string_view purpose,
+              MemoryLlmRequest request,
+              LlmCallback callback);
+  void OnLlmAnswer(std::string purpose,
+                   std::string user_message,
+                   LlmCallback callback,
                    EngineConsumer::GenerationResult result);
-  void Embed(std::vector<std::string> passages, EmbeddingsCallback callback);
-  void OnEmbedded(EmbeddingsCallback callback,
+  void Embed(std::string_view purpose,
+             std::vector<std::string> passages,
+             EmbeddingsCallback callback);
+  void OnEmbedded(std::string purpose,
+                  EmbeddingsCallback callback,
                   std::vector<std::string> passages,
                   std::vector<passage_embeddings::Embedding> embeddings,
                   uint64_t job_id,
                   passage_embeddings::ComputeEmbeddingsStatus status);
 
   void Finish(DreamingStatus status);
+
+  // Adds a step to the trace when the config asks for it. The step gets the
+  // time since the start of the run, and the current turn.
+  bool tracing() const { return config_.record_trace; }
+  void Trace(std::string_view step, base::DictValue data);
+  void StartCall() { call_start_ = base::TimeTicks::Now(); }
+  int64_t CallMs() const {
+    return (base::TimeTicks::Now() - call_start_).InMilliseconds();
+  }
 
   template <typename Answer>
   std::optional<Answer> Certain(
@@ -268,6 +293,8 @@ class DreamingRun {
   size_t writing_requests_ = 0;
   size_t relation_requests_ = 0;
   std::optional<passage_embeddings::Embedder::Job> embed_job_;
+  base::TimeTicks run_start_;
+  base::TimeTicks call_start_;
   DreamingResult result_;
   base::OneShotTimer time_limit_timer_;
 

@@ -1,0 +1,75 @@
+{
+  "name": "multilingual",
+  "description": "Facts in German and Spanish, and a normal English task. Tests: sentence split, decisions and rewrite on other languages.",
+  "chats": [
+    {
+      "title": "München",
+      "days_ago": 30,
+      "turns": [
+        {
+          "user": "Ich wohne in München und arbeite als Lehrerin. Kannst du mir einen Wanderweg empfehlen?"
+        }
+      ]
+    },
+    {
+      "title": "Perro",
+      "days_ago": 22,
+      "turns": [
+        {
+          "user": "Mi perro se llama Canela y tiene cinco años. ¿Qué juguetes recomiendas?"
+        }
+      ]
+    },
+    {
+      "title": "Essen",
+      "days_ago": 14,
+      "turns": [
+        {
+          "user": "Ich bin Vegetarierin. Hast du ein schnelles Rezept mit Kichererbsen?"
+        }
+      ]
+    },
+    {
+      "title": "Books",
+      "days_ago": 4,
+      "turns": [
+        {
+          "user": "Any good bookstores to visit in a new city?"
+        }
+      ]
+    }
+  ],
+  "expect": {
+    "memories": [
+      {
+        "label": "lives in Munich",
+        "any": [
+          "münchen",
+          "munich"
+        ]
+      },
+      {
+        "label": "dog named Canela",
+        "all": [
+          "canela"
+        ]
+      },
+      {
+        "label": "is vegetarian",
+        "any": [
+          "vegetari"
+        ]
+      },
+      {
+        "label": "is a teacher",
+        "any": [
+          "lehrerin",
+          "teacher"
+        ]
+      }
+    ],
+    "absent": [],
+    "forbidden": [],
+    "max_memories": 8
+  }
+}

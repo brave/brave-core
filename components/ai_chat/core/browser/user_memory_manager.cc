@@ -14,6 +14,7 @@
 #include "base/logging.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
+#include "brave/components/ai_chat/core/browser/learned_memory_eval.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -27,13 +28,12 @@ DreamingConfig UserMemoryManager::GetDreamingConfigFromFeatures() {
   config.certain_margin = features::kLearnedMemoryCertainMargin.Get();
   config.gate_threshold = features::kLearnedMemoryGateThreshold.Get();
   config.fact_threshold = features::kLearnedMemoryFactThreshold.Get();
-  config.gate_threshold = features::kLearnedMemoryGateThreshold.Get();
-  config.fact_threshold = features::kLearnedMemoryFactThreshold.Get();
   config.time_limit = features::kLearnedMemoryRunTimeLimit.Get();
   config.max_writing_requests =
       features::kLearnedMemoryMaxRewriteRequests.Get();
   config.max_relation_requests =
       features::kLearnedMemoryMaxRelationRequests.Get();
+  config.record_trace = LearnedMemoryEval::IsEnabled();
   return config;
 }
 
@@ -60,11 +60,22 @@ void UserMemoryManager::OnDatabaseAvailable(
     base::SequenceBound<AIChatDatabase>* db) {
   CHECK(db);
   db_ = db;
+  if (LearnedMemoryEval::IsEnabled()) {
+    if (!eval_) {
+      eval_ = LearnedMemoryEval::CreateFromCommandLine();
+      eval_->Start(*db_, config_,
+                   base::BindOnce(&UserMemoryManager::LearnFromChats,
+                                  base::Unretained(this)));
+    }
+    return;
+  }
   ScheduleNextDailyDreaming();
 }
 
 void UserMemoryManager::OnDatabaseUnavailable() {
   dreaming_timer_.Stop();
+  // The eval has a pointer to the database.
+  eval_.reset();
   // Cancel first: the run does no database call after this, and the callback
   // sees the end of the run.
   if (dreaming_run_) {
@@ -134,7 +145,9 @@ void UserMemoryManager::OnDreamingDone(DreamingResult result) {
   task_runner->DeleteSoon(FROM_HERE, std::move(dreaming_run_));
   task_runner->DeleteSoon(FROM_HERE, std::move(run_llm_engine_));
 
-  switch (result.status) {
+  // In eval mode, the eval reports the result, and no timer runs.
+  const bool schedule = !LearnedMemoryEval::IsEnabled();
+  switch (schedule ? result.status : DreamingStatus::kCanceled) {
     case DreamingStatus::kCompleted:
     case DreamingStatus::kTimedOut:
       // A run that timed out continues from the watermark in the next run.

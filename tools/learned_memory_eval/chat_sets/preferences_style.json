@@ -1,0 +1,120 @@
+{
+  "name": "preferences_style",
+  "description": "How the user likes answers. Tests: the preference category, and 'same' relation: the short-answer preference is stated in two chats and must be stored once.",
+  "chats": [
+    {
+      "title": "Phone",
+      "days_ago": 30,
+      "turns": [
+        {
+          "user": "Keep answers short, I read on my phone.",
+          "assistant": "Got it."
+        }
+      ]
+    },
+    {
+      "title": "Units",
+      "days_ago": 26,
+      "turns": [
+        {
+          "user": "Please use metric units, I'm not familiar with miles or pounds.",
+          "assistant": "Sure."
+        }
+      ]
+    },
+    {
+      "title": "Format",
+      "days_ago": 22,
+      "turns": [
+        {
+          "user": "I prefer bullet points over long paragraphs.",
+          "assistant": "Understood."
+        }
+      ]
+    },
+    {
+      "title": "Code",
+      "days_ago": 18,
+      "turns": [
+        {
+          "user": "I mostly write TypeScript with React. How do I debounce an input?",
+          "assistant": "Use a custom useDebounce hook."
+        }
+      ]
+    },
+    {
+      "title": "Phone again",
+      "days_ago": 12,
+      "turns": [
+        {
+          "user": "Again, short answers please. I'm on mobile.",
+          "assistant": "Okay."
+        }
+      ]
+    },
+    {
+      "title": "Tone",
+      "days_ago": 8,
+      "turns": [
+        {
+          "user": "I like dry humor but no emojis, please.",
+          "assistant": "Noted."
+        }
+      ]
+    },
+    {
+      "title": "Names",
+      "days_ago": 2,
+      "turns": [
+        {
+          "user": "What is a good name for a bakery?"
+        }
+      ]
+    }
+  ],
+  "expect": {
+    "memories": [
+      {
+        "label": "prefers short answers",
+        "all": [
+          "short"
+        ]
+      },
+      {
+        "label": "prefers metric units",
+        "all": [
+          "metric"
+        ]
+      },
+      {
+        "label": "prefers bullet points",
+        "all": [
+          "bullet"
+        ]
+      },
+      {
+        "label": "writes TypeScript",
+        "all": [
+          "typescript"
+        ]
+      },
+      {
+        "label": "no emojis",
+        "all": [
+          "emoji"
+        ]
+      }
+    ],
+    "absent": [],
+    "forbidden": [],
+    "at_most_one": [
+      {
+        "label": "short answers stored once",
+        "all": [
+          "short"
+        ]
+      }
+    ],
+    "max_memories": 8
+  }
+}

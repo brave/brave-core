@@ -9,7 +9,10 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/i18n/time_formatting.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
@@ -50,11 +53,78 @@ bool CanChangeText(LearnedMemoryType new_type, LearnedMemoryType old_type) {
          old_type == LearnedMemoryType::kLongTerm;
 }
 
+const char* Name(bool answer) {
+  return answer ? "yes" : "no";
+}
+
+const char* Name(SafetyAnswer answer) {
+  switch (answer) {
+    case SafetyAnswer::kOk:
+      return "ok";
+    case SafetyAnswer::kSensitive:
+      return "sensitive";
+    case SafetyAnswer::kInstruction:
+      return "instruction";
+    case SafetyAnswer::kShortLived:
+      return "short_lived";
+    case SafetyAnswer::kNotAboutUser:
+      return "not_about_user";
+  }
+}
+
+const char* Name(LearnedMemoryCategory category) {
+  return LearnedMemoryCategoryToString(category);
+}
+
+const char* Name(LearnedMemoryType type) {
+  return LearnedMemoryTypeToString(type);
+}
+
+const char* Name(RelationAnswer answer) {
+  switch (answer) {
+    case RelationAnswer::kDifferent:
+      return "different";
+    case RelationAnswer::kSame:
+      return "same";
+    case RelationAnswer::kReplace:
+      return "replace";
+    case RelationAnswer::kMerge:
+      return "merge";
+    case RelationAnswer::kSameTopic:
+      return "same_topic";
+  }
+}
+
+template <typename Answer>
+base::DictValue ToDict(const AnswerProbabilities<Answer>& probabilities) {
+  base::DictValue dict;
+  for (const auto& [answer, probability] : probabilities) {
+    dict.Set(Name(answer), probability);
+  }
+  return dict;
+}
+
 template <typename Answer>
 double ProbabilityOf(const AnswerProbabilities<Answer>& probabilities,
                      Answer answer) {
   auto it = probabilities.find(answer);
   return it == probabilities.end() ? 0.0 : it->second;
+}
+
+template <typename Answer>
+base::Value CertainToValue(const std::optional<Answer>& answer) {
+  return answer ? base::Value(Name(*answer)) : base::Value("not_certain");
+}
+
+base::ListValue LinksToList(const std::vector<MemorySourceLink>& links) {
+  base::ListValue list;
+  for (const auto& link : links) {
+    list.Append(base::DictValue()
+                    .Set("conversation", link.conversation_uuid)
+                    .Set("entry", link.entry_uuid)
+                    .Set("sentence", static_cast<int>(link.sentence_index)));
+  }
+  return list;
 }
 
 }  // namespace
@@ -73,6 +143,28 @@ const char* DreamingStatusToString(DreamingStatus status) {
       return "busy";
     case DreamingStatus::kUnavailable:
       return "unavailable";
+  }
+}
+
+const char* LearnedMemoryCategoryToString(LearnedMemoryCategory category) {
+  switch (category) {
+    case LearnedMemoryCategory::kPreference:
+      return "preference";
+    case LearnedMemoryCategory::kPersonalFact:
+      return "personal_fact";
+    case LearnedMemoryCategory::kTopic:
+      return "topic";
+  }
+}
+
+const char* LearnedMemoryTypeToString(LearnedMemoryType type) {
+  switch (type) {
+    case LearnedMemoryType::kPermanent:
+      return "permanent";
+    case LearnedMemoryType::kLongTerm:
+      return "long_term";
+    case LearnedMemoryType::kShortTerm:
+      return "short_term";
   }
 }
 
@@ -121,6 +213,7 @@ std::optional<std::string> DreamingRun::GetLearnableText(
 }
 
 void DreamingRun::Start() {
+  run_start_ = base::TimeTicks::Now();
   time_limit_timer_.Start(
       FROM_HERE, config_.time_limit,
       base::BindOnce(&DreamingRun::Finish, base::Unretained(this),
@@ -150,6 +243,17 @@ void DreamingRun::OnMemories(std::vector<LearnedMemory> memories) {
 
 void DreamingRun::OnTombstones(std::vector<MemoryTombstone> tombstones) {
   tombstones_ = std::move(tombstones);
+  if (tracing()) {
+    base::ListValue memories;
+    for (const auto& memory : memories_) {
+      memories.Append(memory.text);
+    }
+    Trace("loaded",
+          base::DictValue()
+              .Set("memories", std::move(memories))
+              .Set("tombstones", static_cast<int>(tombstones_.size()))
+              .Set("watermarks", static_cast<int>(watermarks_.size())));
+  }
   db_->AsyncCall(&AIChatDatabase::GetAllConversations)
       .Then(base::BindOnce(&DreamingRun::OnConversations,
                            weak_ptr_factory_.GetWeakPtr()));
@@ -208,6 +312,19 @@ void DreamingRun::OnConversationData(std::string conversation_uuid,
   ReadNextConversation();
 }
 
+void DreamingRun::Trace(std::string_view step, base::DictValue data) {
+  if (!tracing()) {
+    return;
+  }
+  data.Set("step", step);
+  data.Set("t_ms", static_cast<int>(
+                       (base::TimeTicks::Now() - run_start_).InMilliseconds()));
+  if (!turns_.empty()) {
+    data.Set("entry", turn().entry_uuid);
+  }
+  result_.trace.Append(std::move(data));
+}
+
 void DreamingRun::ProcessNextTurn() {
   if (turns_.empty()) {
     Finish(DreamingStatus::kCompleted);
@@ -217,6 +334,11 @@ void DreamingRun::ProcessNextTurn() {
   candidates_.clear();
   facts_.clear();
   next_fact_ = 0;
+  Trace("turn", base::DictValue()
+                    .Set("conversation", turn().conversation_uuid)
+                    .Set("date", base::TimeFormatAsIso8601(turn().date))
+                    .Set("text", turn().text));
+  StartCall();
   decision_client_->AskGate(
       turn().text,
       base::BindOnce(&DreamingRun::OnGate, weak_ptr_factory_.GetWeakPtr()));
@@ -230,6 +352,11 @@ void DreamingRun::OnGate(std::optional<AnswerProbabilities<bool>> gate) {
   // The gate removes only turns that are clearly not about the user, so it
   // uses its own, lower threshold.
   const bool keep = ProbabilityOf(*gate, true) >= config_.gate_threshold;
+  Trace("gate", base::DictValue()
+                    .Set("latency_ms", static_cast<int>(CallMs()))
+                    .Set("probabilities", ToDict(*gate))
+                    .Set("threshold", config_.gate_threshold)
+                    .Set("result", keep ? "keep" : "skip"));
   if (!keep) {
     FinishTurn();
     return;
@@ -241,19 +368,29 @@ void DreamingRun::OnGate(std::optional<AnswerProbabilities<bool>> gate) {
   std::vector<std::string> all_sentences = SplitIntoSentences(turn().text);
   std::vector<size_t> sentence_indexes;
   std::vector<std::string> sentences;
+  base::ListValue split;
   for (size_t i = 0; i < all_sentences.size(); ++i) {
     // A sentence with a denied pattern never reaches a model.
-    if (HasDeniedPattern(all_sentences[i])) {
+    const bool denied = HasDeniedPattern(all_sentences[i]);
+    if (tracing()) {
+      split.Append(base::DictValue()
+                       .Set("index", static_cast<int>(i))
+                       .Set("text", all_sentences[i])
+                       .Set("denylist", denied));
+    }
+    if (denied) {
       continue;
     }
     sentence_indexes.push_back(i);
     sentences.push_back(std::move(all_sentences[i]));
   }
+  Trace("split", base::DictValue().Set("sentences", std::move(split)));
   if (sentences.empty()) {
     FinishTurn();
     return;
   }
   std::vector<std::string> request = sentences;
+  StartCall();
   decision_client_->AskSentenceDecisions(
       std::move(request),
       base::BindOnce(&DreamingRun::OnSentenceDecisions,
@@ -269,21 +406,46 @@ void DreamingRun::OnSentenceDecisions(
     Finish(DreamingStatus::kFailed);
     return;
   }
+  base::ListValue traced;
   for (size_t i = 0; i < sentences.size(); ++i) {
     const SentenceDecisions& decision = (*decisions)[i];
     // The sentence must be a fact about the user, and no unsafe answer may
-    // reach its limit.
+    // reach its limit. The reason is for the trace.
+    const double fact_yes = ProbabilityOf(decision.fact, true);
     const struct {
       SafetyAnswer answer;
       double limit;
     } kLimits[] = {{SafetyAnswer::kSensitive, config_.max_sensitive},
                    {SafetyAnswer::kInstruction, config_.max_instruction},
                    {SafetyAnswer::kShortLived, config_.max_short_lived}};
-    bool keep = ProbabilityOf(decision.fact, true) >= config_.fact_threshold;
+    std::string drop_reason;
+    if (fact_yes < config_.fact_threshold) {
+      drop_reason = base::StringPrintf("no fact (%.2f < %.2f)", fact_yes,
+                                       config_.fact_threshold);
+    }
     for (const auto& [answer, limit] : kLimits) {
-      if (ProbabilityOf(decision.safety, answer) >= limit) {
-        keep = false;
+      const double probability = ProbabilityOf(decision.safety, answer);
+      if (drop_reason.empty() && probability >= limit) {
+        drop_reason = base::StringPrintf("%s (%.2f >= %.2f)", Name(answer),
+                                         probability, limit);
       }
+    }
+    const bool keep = drop_reason.empty();
+    if (tracing()) {
+      const std::string result =
+          keep ? "keep" : base::StrCat({"drop: ", drop_reason});
+      traced.Append(base::DictValue()
+                        .Set("index", static_cast<int>(sentence_indexes[i]))
+                        .Set("text", sentences[i])
+                        .Set("fact", ToDict(decision.fact))
+                        .Set("safety", ToDict(decision.safety))
+                        .Set("category", ToDict(decision.category))
+                        .Set("temporary", ToDict(decision.temporary))
+                        .Set("category_answer",
+                             CertainToValue(Certain(decision.category)))
+                        .Set("temporary_answer",
+                             CertainToValue(Certain(decision.temporary)))
+                        .Set("result", result));
     }
     if (!keep) {
       continue;
@@ -300,6 +462,9 @@ void DreamingRun::OnSentenceDecisions(
                       static_cast<uint32_t>(sentence_indexes[i])};
     candidates_.push_back(std::move(candidate));
   }
+  Trace("sentence_decisions", base::DictValue()
+                                  .Set("latency_ms", static_cast<int>(CallMs()))
+                                  .Set("sentences", std::move(traced)));
   if (candidates_.empty()) {
     FinishTurn();
     return;
@@ -315,6 +480,7 @@ void DreamingRun::OnSentenceDecisions(
     texts.push_back(candidate.text);
   }
   AskLlm(
+      "rewrite",
       BuildRewriteRequest(
           std::move(texts), turn().date,
           [this](std::string& input) { llm_engine_->SanitizeInput(input); }),
@@ -328,12 +494,28 @@ void DreamingRun::OnRewrite(std::optional<std::string> answer) {
   }
   // The guards are mechanical: ParseRewriteAnswer() drops a fact with no text
   // or no valid source, and a fact that is too long is dropped here. The user
-  // reviews the memories.
+  // reviews the memories. IsFaithfulRewrite() only writes a flag in the trace.
   std::vector<bool> covered(candidates_.size(), false);
+  base::ListValue traced;
   for (auto& rewritten_fact :
        rewritten.value_or(std::vector<RewrittenFact>())) {
+    std::vector<std::string> sources;
+    base::ListValue source_indexes;
+    for (size_t index : rewritten_fact.sources) {
+      sources.push_back(candidates_[index].text);
+      source_indexes.Append(static_cast<int>(index));
+    }
     const bool too_long =
         base::UTF8ToUTF16(rewritten_fact.text).size() > kMaxMemoryTextLength;
+    if (tracing()) {
+      traced.Append(
+          base::DictValue()
+              .Set("text", rewritten_fact.text)
+              .Set("sources", std::move(source_indexes))
+              .Set("no_new_details", IsFaithfulRewrite(rewritten_fact.text,
+                                                       sources, {turn().date}))
+              .Set("too_long", too_long));
+    }
     if (too_long) {
       continue;
     }
@@ -361,12 +543,17 @@ void DreamingRun::OnRewrite(std::optional<std::string> answer) {
     fact.links = {candidates_[i].link};
     facts_.push_back(std::move(fact));
   }
+  Trace("rewrite_parsed", base::DictValue()
+                              .Set("used_llm", answer.has_value())
+                              .Set("parsed", rewritten.has_value())
+                              .Set("facts", std::move(traced)));
   std::vector<std::string> passages;
   for (const auto& fact : facts_) {
     passages.push_back(fact.text);
   }
-  Embed(std::move(passages), base::BindOnce(&DreamingRun::OnFactEmbeddings,
-                                            weak_ptr_factory_.GetWeakPtr()));
+  Embed("facts", std::move(passages),
+        base::BindOnce(&DreamingRun::OnFactEmbeddings,
+                       weak_ptr_factory_.GetWeakPtr()));
 }
 
 void DreamingRun::OnFactEmbeddings(std::vector<std::vector<float>> vectors) {
@@ -374,11 +561,23 @@ void DreamingRun::OnFactEmbeddings(std::vector<std::vector<float>> vectors) {
   for (size_t i = 0; i < facts_.size(); ++i) {
     facts_[i].vector = std::move(vectors[i]);
   }
+  if (tracing()) {
+    base::ListValue facts;
+    for (const auto& fact : facts_) {
+      facts.Append(base::DictValue()
+                       .Set("text", fact.text)
+                       .Set("category", Name(fact.category))
+                       .Set("type", Name(fact.type)));
+    }
+    Trace("rewrite_checked", base::DictValue().Set("facts", std::move(facts)));
+  }
   next_fact_ = 0;
   ProcessNextFact();
 }
 
 void DreamingRun::FinishTurn() {
+  Trace("watermark",
+        base::DictValue().Set("date", base::TimeFormatAsIso8601(turn().date)));
   db_->AsyncCall(&AIChatDatabase::SetMemoryWatermark)
       .WithArgs(turn().conversation_uuid, turn().date)
       .Then(base::BindOnce(&DreamingRun::OnWatermarkSet,
@@ -399,10 +598,19 @@ void DreamingRun::ProcessNextFact() {
     FinishTurn();
     return;
   }
+  Trace("fact", base::DictValue()
+                    .Set("text", fact().text)
+                    .Set("category", Name(fact().category))
+                    .Set("type", Name(fact().type))
+                    .Set("links", LinksToList(fact().links)));
   for (const auto& tombstone : tombstones_) {
     const float similarity = Similarity(fact().vector, tombstone.vector);
     if (similarity >= config_.tombstone_similarity) {
       // The user deleted a memory like this one.
+      Trace("fact_dropped",
+            base::DictValue()
+                .Set("reason", "close to a deleted memory (tombstone)")
+                .Set("similarity", similarity));
       NextFact();
       return;
     }
@@ -418,6 +626,23 @@ void DreamingRun::ProcessNextFact() {
   if (scored.size() > config_.max_neighbors) {
     scored.resize(config_.max_neighbors);
   }
+  if (tracing()) {
+    base::ListValue neighbors;
+    for (const auto& [score, index] : scored) {
+      neighbors.Append(base::DictValue()
+                           .Set("text", memories_[index].text)
+                           .Set("similarity", score));
+    }
+    float best = 0.0f;
+    for (const auto& memory : memories_) {
+      best = std::max(best, Similarity(fact().vector, memory.vector));
+    }
+    Trace("neighbors", base::DictValue()
+                           .Set("memories", static_cast<int>(memories_.size()))
+                           .Set("best_similarity", best)
+                           .Set("floor", config_.min_neighbor_similarity)
+                           .Set("neighbors", std::move(neighbors)));
+  }
   if (scored.empty()) {
     AddNewMemory();
     return;
@@ -428,6 +653,7 @@ void DreamingRun::ProcessNextFact() {
     neighbors_.push_back(index);
     old_texts.push_back(memories_[index].text);
   }
+  StartCall();
   decision_client_->AskRelations(
       fact().text, std::move(old_texts),
       base::BindOnce(&DreamingRun::OnRelations,
@@ -441,6 +667,19 @@ void DreamingRun::OnRelations(
     return;
   }
   relations_ = std::move(*relations);
+  if (tracing()) {
+    base::ListValue pairs;
+    for (size_t i = 0; i < relations_.size(); ++i) {
+      pairs.Append(base::DictValue()
+                       .Set("old", memories_[neighbors_[i]].text)
+                       .Set("probabilities", ToDict(relations_[i]))
+                       .Set("answer", CertainToValue(Certain(relations_[i]))));
+    }
+    Trace("relations", base::DictValue()
+                           .Set("latency_ms", static_cast<int>(CallMs()))
+                           .Set("new", fact().text)
+                           .Set("pairs", std::move(pairs)));
+  }
   next_relation_ = 0;
   EvaluateNextRelation();
 }
@@ -460,11 +699,16 @@ void DreamingRun::EvaluateNextRelation() {
   // Not certain: ask the LLM. Without the LLM, do not add the fact. It can
   // come back in a later chat.
   if (!llm_engine_ || relation_requests_ >= config_.max_relation_requests) {
+    Trace("fact_dropped",
+          base::DictValue()
+              .Set("reason", "relation not certain, and no LLM left")
+              .Set("old", neighbor().text));
     NextFact();
     return;
   }
   ++relation_requests_;
-  AskLlm(BuildRelationRequest(
+  AskLlm("relation",
+         BuildRelationRequest(
              fact().text, neighbor().text,
              [this](std::string& input) { llm_engine_->SanitizeInput(input); }),
          base::BindOnce(&DreamingRun::OnLlmRelation,
@@ -474,7 +718,12 @@ void DreamingRun::EvaluateNextRelation() {
 void DreamingRun::OnLlmRelation(std::optional<std::string> answer) {
   std::optional<RelationAnswer> relation =
       answer ? ParseRelationAnswer(*answer) : std::nullopt;
+  Trace("llm_relation", base::DictValue()
+                            .Set("old", neighbor().text)
+                            .Set("answer", CertainToValue(relation)));
   if (!relation) {
+    Trace("fact_dropped",
+          base::DictValue().Set("reason", "no valid LLM relation answer"));
     NextFact();
     return;
   }
@@ -486,6 +735,12 @@ void DreamingRun::ApplyRelation(RelationAnswer relation, bool certain) {
   // The text of an old memory changes only when the rules allow it, and the
   // decision model was certain. A wrong replace or merge loses information.
   const bool can_change = CanChangeText(fact().type, old.type) && certain;
+  Trace("relation_applied", base::DictValue()
+                                .Set("relation", Name(relation))
+                                .Set("old", old.text)
+                                .Set("old_type", Name(old.type))
+                                .Set("decision_model_certain", certain)
+                                .Set("text_change_allowed", can_change));
   if (relation == RelationAnswer::kSame) {
     LearnedMemory updated = old;
     updated.updated_date = std::max(old.updated_date, turn().date);
@@ -512,6 +767,7 @@ void DreamingRun::ApplyRelation(RelationAnswer relation, bool certain) {
     }
     ++writing_requests_;
     AskLlm(
+        "merge",
         BuildMergeRequest(
             old.text, fact().text,
             [this](std::string& input) { llm_engine_->SanitizeInput(input); }),
@@ -527,17 +783,26 @@ void DreamingRun::ApplyRelation(RelationAnswer relation, bool certain) {
 void DreamingRun::OnMerged(std::optional<std::string> answer) {
   std::optional<std::string> merged =
       answer ? ParseMergeAnswer(*answer) : std::nullopt;
+  const LearnedMemory& old = neighbor();
   // Mechanical guards only, the same as for a rewrite. ParseMergeAnswer()
   // drops an empty text.
   const bool too_long =
       merged && base::UTF8ToUTF16(*merged).size() > kMaxMemoryTextLength;
+  Trace("merge_parsed",
+        base::DictValue()
+            .Set("text", merged ? base::Value(*merged) : base::Value())
+            .Set("no_new_details",
+                 merged && IsFaithfulRewrite(*merged, {old.text, fact().text},
+                                             {turn().date, old.created_date,
+                                              old.updated_date}))
+            .Set("too_long", too_long));
   if (!merged || too_long) {
     // Both memories stay.
     AddNewMemory();
     return;
   }
   std::string text = *merged;
-  Embed({std::move(*merged)},
+  Embed("merge", {std::move(*merged)},
         base::BindOnce(&DreamingRun::OnMergedEmbedding,
                        weak_ptr_factory_.GetWeakPtr(), std::move(text)));
 }
@@ -582,6 +847,17 @@ void DreamingRun::OnStored(LearnedMemory memory, bool is_new, bool success) {
     Finish(DreamingStatus::kFailed);
     return;
   }
+  if (tracing()) {
+    Trace("store", base::DictValue()
+                       .Set("action", is_new ? "add" : "update")
+                       .Set("text", memory.text)
+                       .Set("category", Name(memory.category))
+                       .Set("type", Name(memory.type))
+                       .Set("previous", memory.previous
+                                            ? base::Value(memory.previous->text)
+                                            : base::Value())
+                       .Set("links", LinksToList(memory.links)));
+  }
   if (is_new) {
     ++result_.memories_added;
     memories_.push_back(std::move(memory));
@@ -603,14 +879,21 @@ bool DreamingRun::CanWrite() const {
   return llm_engine_ && writing_requests_ < config_.max_writing_requests;
 }
 
-void DreamingRun::AskLlm(MemoryLlmRequest request, LlmCallback callback) {
+void DreamingRun::AskLlm(std::string_view purpose,
+                         MemoryLlmRequest request,
+                         LlmCallback callback) {
+  StartCall();
+  std::string user_message = request.user_message;
   llm_engine_->GenerateMemoryText(
       request.system_prompt, request.user_message,
       base::BindOnce(&DreamingRun::OnLlmAnswer, weak_ptr_factory_.GetWeakPtr(),
+                     std::string(purpose), std::move(user_message),
                      std::move(callback)));
 }
 
-void DreamingRun::OnLlmAnswer(LlmCallback callback,
+void DreamingRun::OnLlmAnswer(std::string purpose,
+                              std::string user_message,
+                              LlmCallback callback,
                               EngineConsumer::GenerationResult result) {
   // A failed LLM request does not stop the run: the step uses its fallback.
   std::optional<std::string> answer;
@@ -618,18 +901,31 @@ void DreamingRun::OnLlmAnswer(LlmCallback callback,
       result->event->is_completion_event()) {
     answer = result->event->get_completion_event()->completion;
   }
+  Trace("llm_call",
+        base::DictValue()
+            .Set("purpose", purpose)
+            .Set("latency_ms", static_cast<int>(CallMs()))
+            .Set("request", user_message)
+            .Set("answer", answer ? base::Value(*answer) : base::Value())
+            .Set("error",
+                 answer ? base::Value()
+                        : base::Value(result.has_value() ? "no completion"
+                                                         : "request failed")));
   std::move(callback).Run(std::move(answer));
 }
 
-void DreamingRun::Embed(std::vector<std::string> passages,
+void DreamingRun::Embed(std::string_view purpose,
+                        std::vector<std::string> passages,
                         EmbeddingsCallback callback) {
+  StartCall();
   embed_job_ = embedder_->ComputePassagesEmbeddings(
       passage_embeddings::PassagePriority::kPassive, std::move(passages),
       base::BindOnce(&DreamingRun::OnEmbedded, weak_ptr_factory_.GetWeakPtr(),
-                     std::move(callback)));
+                     std::string(purpose), std::move(callback)));
 }
 
 void DreamingRun::OnEmbedded(
+    std::string purpose,
     EmbeddingsCallback callback,
     std::vector<std::string> passages,
     std::vector<passage_embeddings::Embedding> embeddings,
@@ -638,6 +934,22 @@ void DreamingRun::OnEmbedded(
   const bool success =
       status == passage_embeddings::ComputeEmbeddingsStatus::kSuccess &&
       embeddings.size() == passages.size();
+  if (tracing()) {
+    base::ListValue texts;
+    for (const auto& passage : passages) {
+      texts.Append(passage);
+    }
+    Trace("embed",
+          base::DictValue()
+              .Set("purpose", purpose)
+              .Set("latency_ms", static_cast<int>(CallMs()))
+              .Set("status", static_cast<int>(status))
+              .Set("passages", std::move(texts))
+              .Set("dimensions",
+                   embeddings.empty()
+                       ? 0
+                       : static_cast<int>(embeddings[0].GetData().size())));
+  }
   if (!success) {
     Finish(DreamingStatus::kFailed);
     return;
@@ -657,6 +969,12 @@ void DreamingRun::Finish(DreamingStatus status) {
   weak_ptr_factory_.InvalidateWeakPtrs();
   embed_job_.reset();
   result_.status = status;
+  Trace("done",
+        base::DictValue()
+            .Set("status", DreamingStatusToString(status))
+            .Set("total_ms",
+                 static_cast<int>(
+                     (base::TimeTicks::Now() - run_start_).InMilliseconds())));
   // The owner can delete this object in |done_|, so this must be the last
   // use of the members.
   std::move(done_).Run(std::move(result_));

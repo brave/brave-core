@@ -1,0 +1,109 @@
+{
+  "name": "temporary_states",
+  "description": "Lasting facts mixed with states that end in days or weeks. Tests: short-lived safety answer, the type decision (short-term), and the rule that a short-term memory never replaces a lasting one.",
+  "chats": [
+    {
+      "title": "Home",
+      "days_ago": 40,
+      "turns": [
+        {
+          "user": "I live in Lisbon and work remotely as a data engineer. Can you suggest a standing desk?"
+        }
+      ]
+    },
+    {
+      "title": "Tokyo",
+      "days_ago": 14,
+      "turns": [
+        {
+          "user": "I'm in Tokyo this week for a conference. Any good ramen places near Shinjuku?"
+        }
+      ]
+    },
+    {
+      "title": "Dentist",
+      "days_ago": 12,
+      "turns": [
+        {
+          "user": "I have a dentist appointment on Friday at 3pm, can you help me draft a reschedule email?"
+        }
+      ]
+    },
+    {
+      "title": "Renovation",
+      "days_ago": 8,
+      "turns": [
+        {
+          "user": "I'm staying with my parents this month while my apartment is renovated. Any tips for working from their house?"
+        }
+      ]
+    },
+    {
+      "title": "Half marathon",
+      "days_ago": 5,
+      "turns": [
+        {
+          "user": "I'm training for a half marathon in March. What should my weekly plan look like?"
+        }
+      ]
+    },
+    {
+      "title": "Flight",
+      "days_ago": 2,
+      "turns": [
+        {
+          "user": "My flight is at 6pm tomorrow, how early should I get to the airport?"
+        }
+      ]
+    }
+  ],
+  "expect": {
+    "memories": [
+      {
+        "label": "lives in Lisbon",
+        "all": [
+          "lisbon"
+        ]
+      },
+      {
+        "label": "trains for a half marathon",
+        "all": [
+          "marathon"
+        ],
+        "type": "long_term"
+      }
+    ],
+    "absent": [
+      {
+        "label": "dentist appointment is not stored",
+        "all": [
+          "dentist"
+        ]
+      },
+      {
+        "label": "flight is not stored",
+        "all": [
+          "flight"
+        ]
+      }
+    ],
+    "types": [
+      {
+        "label": "Tokyo trip is short-term, if stored",
+        "all": [
+          "tokyo"
+        ],
+        "type": "short_term"
+      },
+      {
+        "label": "stay with parents is short-term, if stored",
+        "all": [
+          "parents"
+        ],
+        "type": "short_term"
+      }
+    ],
+    "forbidden": [],
+    "max_memories": 6
+  }
+}

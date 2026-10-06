@@ -26,6 +26,7 @@ class PrefService;
 namespace ai_chat {
 
 class AIChatDatabase;
+class LearnedMemoryEval;
 
 // Learns memories from past chats (Dreaming) and finds the memories that fit a
 // chat turn. AIChatService owns one instance. A timer starts Dreaming one time
@@ -45,7 +46,8 @@ class UserMemoryManager {
   // After a failed run, for example when Ollama is not running.
   static constexpr base::TimeDelta kRetryDelay = base::Hours(1);
 
-  // Reads the Dreaming settings from the learned memory feature params.
+  // Reads the Dreaming settings from the learned memory feature params. In eval
+  // mode (see learned_memory_eval.h), the run records a trace.
   static DreamingConfig GetDreamingConfigFromFeatures();
 
   // |embedder| and |prefs| must outlive the manager.
@@ -60,7 +62,8 @@ class UserMemoryManager {
 
   // AIChatService calls these when the chat database comes and goes. |db| must
   // stay valid until OnDatabaseUnavailable(). The timer runs only while the
-  // database is available.
+  // database is available. In eval mode, the manager runs the eval one time
+  // instead of the timer.
   void OnDatabaseAvailable(base::SequenceBound<AIChatDatabase>* db);
   // Stops the timer and the current run.
   void OnDatabaseUnavailable();
@@ -92,6 +95,7 @@ class UserMemoryManager {
   std::unique_ptr<EngineConsumer> run_llm_engine_;
   std::unique_ptr<DreamingRun> dreaming_run_;
   DreamingCallback dreaming_callback_;
+  std::unique_ptr<LearnedMemoryEval> eval_;
 };
 
 }  // namespace ai_chat

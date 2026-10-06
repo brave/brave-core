@@ -185,6 +185,8 @@ static_library("browser") {
       "dreaming_run.h",
       "dreaming_text_utils.cc",
       "dreaming_text_utils.h",
+      "learned_memory_eval.cc",
+      "learned_memory_eval.h",
       "learned_memory_types.h",
       "memory_decision_client.cc",
       "memory_decision_client.h",

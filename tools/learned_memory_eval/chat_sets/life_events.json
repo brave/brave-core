@@ -1,0 +1,145 @@
+{
+  "name": "life_events",
+  "description": "Months of normal use. The user moves city, adopts a second dog, changes diet and starts to train. Tests: replace (home), merge (dogs), several kinds of facts, and skipping of task questions.",
+  "chats": [
+    {
+      "title": "Project tools",
+      "days_ago": 90,
+      "turns": [
+        {
+          "user": "I live in San Francisco and work as a product designer. Can you suggest a good project management tool?",
+          "assistant": "Try Linear or Notion for small design teams."
+        }
+      ]
+    },
+    {
+      "title": "Dog food",
+      "days_ago": 75,
+      "turns": [
+        {
+          "user": "I have a dog named Luna, she is a 3 year old beagle. What is a good food for her?",
+          "assistant": "A balanced adult kibble with real meat as the first ingredient works well for beagles."
+        }
+      ]
+    },
+    {
+      "title": "Moving plans",
+      "days_ago": 60,
+      "turns": [
+        {
+          "user": "We are moving to Berlin next month for my partner's job.",
+          "assistant": "Congratulations! Do you want a checklist?"
+        },
+        {
+          "user": "What should I know about registering an apartment (Anmeldung)?",
+          "assistant": "You must register within 14 days at the Bürgeramt."
+        }
+      ]
+    },
+    {
+      "title": "Settling in",
+      "days_ago": 45,
+      "turns": [
+        {
+          "user": "We just moved to Berlin from San Francisco. Any good gyms near Kreuzberg?",
+          "assistant": "Try a few places near Görlitzer Park."
+        }
+      ]
+    },
+    {
+      "title": "Second dog",
+      "days_ago": 30,
+      "turns": [
+        {
+          "user": "We adopted a second dog last weekend, a rescue named Pixel. How do I introduce two dogs?",
+          "assistant": "Start on neutral ground and keep walks parallel."
+        }
+      ]
+    },
+    {
+      "title": "Dinner idea",
+      "days_ago": 20,
+      "turns": [
+        {
+          "user": "I'm vegetarian, so no meat recipes please. Give me a quick dinner idea with lentils.",
+          "assistant": "Red lentil dal with rice takes 25 minutes."
+        }
+      ]
+    },
+    {
+      "title": "Running",
+      "days_ago": 10,
+      "turns": [
+        {
+          "user": "I'm training for the Berlin marathon in September. How should I structure my long runs?",
+          "assistant": "Build up to 32 km over 12 weeks with a recovery week every fourth week."
+        }
+      ]
+    },
+    {
+      "title": "Networking",
+      "days_ago": 3,
+      "turns": [
+        {
+          "user": "Explain the difference between TCP and UDP.",
+          "assistant": "TCP is reliable and ordered; UDP is connectionless and faster."
+        }
+      ]
+    }
+  ],
+  "expect": {
+    "memories": [
+      {
+        "label": "lives in Berlin",
+        "all": [
+          "berlin"
+        ],
+        "any": [
+          "live",
+          "moved",
+          "move"
+        ]
+      },
+      {
+        "label": "has a dog named Luna",
+        "all": [
+          "luna"
+        ]
+      },
+      {
+        "label": "has a second dog (Pixel)",
+        "all": [
+          "pixel"
+        ]
+      },
+      {
+        "label": "is vegetarian",
+        "all": [
+          "vegetarian"
+        ]
+      },
+      {
+        "label": "trains for a marathon",
+        "all": [
+          "marathon"
+        ]
+      },
+      {
+        "label": "is a product designer",
+        "all": [
+          "designer"
+        ]
+      }
+    ],
+    "absent": [
+      {
+        "label": "old home is replaced (lives in San Francisco)",
+        "all": [
+          "lives in san francisco"
+        ]
+      }
+    ],
+    "forbidden": [],
+    "max_memories": 12
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "name": "task_only",
+  "description": "Questions about tasks and the world, with nothing about the user. Tests: the gate and fact decisions. The expected result is zero memories.",
+  "chats": [
+    {
+      "title": "TCP",
+      "days_ago": 20,
+      "turns": [
+        {
+          "user": "Explain the difference between TCP and UDP."
+        }
+      ]
+    },
+    {
+      "title": "Python",
+      "days_ago": 18,
+      "turns": [
+        {
+          "user": "Write a Python function that merges two sorted lists."
+        }
+      ]
+    },
+    {
+      "title": "History",
+      "days_ago": 16,
+      "turns": [
+        {
+          "user": "Summarize the main causes of World War I."
+        }
+      ]
+    },
+    {
+      "title": "Capital",
+      "days_ago": 14,
+      "turns": [
+        {
+          "user": "What is the capital of Australia?"
+        }
+      ]
+    },
+    {
+      "title": "Transformers",
+      "days_ago": 12,
+      "turns": [
+        {
+          "user": "How does an attention head in a transformer work?"
+        }
+      ]
+    },
+    {
+      "title": "Convert",
+      "days_ago": 10,
+      "turns": [
+        {
+          "user": "Convert 72 degrees Fahrenheit to Celsius."
+        }
+      ]
+    },
+    {
+      "title": "Bug",
+      "days_ago": 8,
+      "turns": [
+        {
+          "user": "Fix this code: for i in range(10) print(i)"
+        }
+      ]
+    },
+    {
+      "title": "Translate",
+      "days_ago": 6,
+      "turns": [
+        {
+          "user": "Translate 'good morning' to Spanish and German."
+        }
+      ]
+    },
+    {
+      "title": "Names",
+      "days_ago": 4,
+      "turns": [
+        {
+          "user": "What is a good name for a bakery? Give me five ideas."
+        }
+      ]
+    }
+  ],
+  "expect": {
+    "memories": [],
+    "absent": [],
+    "forbidden": [],
+    "max_memories": 0
+  }
+}
