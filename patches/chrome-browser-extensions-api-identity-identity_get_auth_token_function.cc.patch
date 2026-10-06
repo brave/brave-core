@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
-index 19c25b3cf271b6f805afb543bfd53581c5666d92..80812640cbec859d19751dd1aeb600e0de440526 100644
+index 80434eba0af815e846be84f700e91549f85e5e52..38639d280b6d7b875afa6d5b9b68427f3747ce6f 100644
 --- a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 +++ b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 @@ -124,7 +124,7 @@ CoreAccountInfo GetSigninPrimaryAccount(Profile* profile) {
@@ -8,19 +8,10 @@ index 19c25b3cf271b6f805afb543bfd53581c5666d92..80812640cbec859d19751dd1aeb600e0
  
 -#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
 +#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
- // How long to wait for the Gaia cookies to be updated after sign-in before
- // giving up on showing the remote consent dialog.
- constexpr base::TimeDelta kCookieUpdatedWaiterTimeout = base::Seconds(10);
-@@ -164,7 +164,7 @@ class IdentityGetAuthTokenFunction::RefreshTokensLoadedWaiter
-       identity_manager_observation_{this};
- };
- 
--#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
-+#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
- class IdentityGetAuthTokenFunction::AccountsInCookieUpdatedWaiter
-     : public signin::IdentityManager::Observer {
-  public:
-@@ -333,6 +333,10 @@ ExtensionFunction::ResponseAction IdentityGetAuthTokenFunction::Run() {
+ // Maximum time spent waiting for the account to become available in the cookie
+ // jar before giving up on showing the remote consent dialog.
+ constexpr base::TimeDelta kWaitForCookiesTimeout = base::Seconds(10);
+@@ -308,6 +308,10 @@ ExtensionFunction::ResponseAction IdentityGetAuthTokenFunction::Run() {
    // From here on out, results must be returned asynchronously.
    StartAsyncRun();
  
@@ -31,16 +22,16 @@ index 19c25b3cf271b6f805afb543bfd53581c5666d92..80812640cbec859d19751dd1aeb600e0
    base::OnceCallback next_step =
        base::BindOnce(&IdentityGetAuthTokenFunction::GetAuthTokenForAccount,
                       weak_ptr_factory_.GetWeakPtr(), gaia_id);
-@@ -415,7 +419,7 @@ void IdentityGetAuthTokenFunction::GetAuthTokenForAccount(
+@@ -390,7 +394,7 @@ void IdentityGetAuthTokenFunction::GetAuthTokenForAccount(
    }
  }
  
 -#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
 +#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
- bool IdentityGetAuthTokenFunction::ShouldDelayRemoteConsent() {
-   signin::IdentityManager* identity_manager =
-       IdentityManagerFactory::GetForProfile(GetProfile());
-@@ -549,12 +553,16 @@ void IdentityGetAuthTokenFunction::StartSigninFlow() {
+ void IdentityGetAuthTokenFunction::StartWaitingForCookies() {
+   // A tracker from a previous wait, if any, has already reported its result.
+   web_signin_tracker_.reset();
+@@ -533,12 +537,16 @@ void IdentityGetAuthTokenFunction::StartSigninFlow() {
  void IdentityGetAuthTokenFunction::StartMintTokenFlow(
      IdentityMintRequestQueue::MintType type) {
  #if !BUILDFLAG(IS_CHROMEOS)
@@ -57,16 +48,16 @@ index 19c25b3cf271b6f805afb543bfd53581c5666d92..80812640cbec859d19751dd1aeb600e0
  #endif
    TRACE_EVENT_BEGIN("identity", "MintTokenFlow",
                      IdentityMintRequestQueue::GetRequestTrack(this), "type",
-@@ -964,7 +972,7 @@ void IdentityGetAuthTokenFunction::OnIdentityAPIShutdown() {
+@@ -950,7 +958,7 @@ void IdentityGetAuthTokenFunction::OnIdentityAPIShutdown() {
    token_key_account_access_token_fetcher_.reset();
    refresh_tokens_loaded_waiter_.reset();
    scoped_identity_manager_observation_.Reset();
 -#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
 +#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
-   accounts_in_cookie_updated_waiter_.reset();
+   web_signin_tracker_.reset();
  #endif
    extensions::IdentityAPI::GetFactoryInstance()
-@@ -1039,7 +1047,7 @@ void IdentityGetAuthTokenFunction::ShowExtensionLoginPrompt() {
+@@ -1025,7 +1033,7 @@ void IdentityGetAuthTokenFunction::ShowExtensionLoginPrompt() {
  #endif
  
  void IdentityGetAuthTokenFunction::StartRemoteConsentFlow() {
@@ -75,12 +66,12 @@ index 19c25b3cf271b6f805afb543bfd53581c5666d92..80812640cbec859d19751dd1aeb600e0
    // On Android, Gaia session cookies are reconciled asynchronously after
    // sign-in. Defer showing the remote consent dialog until cookies are
    // ready in the cookie jar to prevent loading a blank consent page.
-@@ -1200,7 +1208,7 @@ void IdentityGetAuthTokenFunction::RefreshTokensLoadedWaiter::
+@@ -1189,7 +1197,7 @@ void IdentityGetAuthTokenFunction::RefreshTokensLoadedWaiter::
    std::move(callback_).Run();
  }
  
 -#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
 +#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
- IdentityGetAuthTokenFunction::AccountsInCookieUpdatedWaiter::
-     AccountsInCookieUpdatedWaiter(signin::IdentityManager& identity_manager,
-                                   const CoreAccountInfo& account_info,
+ IdentityGetAuthTokenFunction::ScopedCookieWaiterTimeoutForTesting::
+     ScopedCookieWaiterTimeoutForTesting(base::TimeDelta timeout) {
+   // Nesting is not supported: the destructor restores the default.
