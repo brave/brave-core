@@ -219,19 +219,7 @@ struct FilterListsView: View {
   @ViewBuilder private var defaultFilterListRows: some View {
     let searchText = searchText
     #if DEBUG
-    let allEnabled = Binding {
-      filterListStorage.filterLists.allSatisfy({
-        $0.isEnabled || !$0.satisfies(searchText: searchText)
-      })
-    } set: { isEnabled in
-      filterListStorage.filterLists.enumerated().forEach { index, filterList in
-        guard filterList.satisfies(searchText: searchText) else { return }
-        let isEnabled = filterList.entry.hidden ? filterList.entry.defaultEnabled : isEnabled
-        filterListStorage.filterLists[index].isEnabled = isEnabled
-      }
-    }
-
-    Toggle(isOn: allEnabled) {
+    Toggle(isOn: $filterListStorage[allEnabledMatching: searchText]) {
       VStack(alignment: .leading) {
         Text("All")
       }
@@ -259,20 +247,7 @@ struct FilterListsView: View {
       if filterListURL.satisfies(searchText: searchText) {
         VStack(alignment: .leading, spacing: 4) {
           Toggle(
-            isOn: Binding(
-              get: {
-                filterListURL.setting.isEnabled
-              },
-              set: { isEnabled in
-                guard
-                  let item = customFilterListStorage.filterListsURLs.first(where: {
-                    $0.id == filterListURL.id
-                  })
-                else { return }
-                item.setting.isEnabled = isEnabled
-                CustomFilterListSetting.save(inMemory: !customFilterListStorage.persistChanges)
-              }
-            )
+            isOn: $customFilterListStorage[isEnabled: filterListURL.id]
           ) {
             VStack(alignment: .leading, spacing: 4) {
               Text(filterListURL.title)
@@ -398,6 +373,27 @@ extension FilterList {
       || entry.desc.localizedCaseInsensitiveContains(searchText)
   }
 }
+
+#if DEBUG
+extension FilterListStorage {
+  /// Whether or not every filter list matching `searchText` is enabled.
+  ///
+  /// Setting this toggles every matching filter list, except hidden lists which are reset to
+  /// their default enabled state.
+  fileprivate subscript(allEnabledMatching searchText: String) -> Bool {
+    get {
+      filterLists.allSatisfy { $0.isEnabled || !$0.satisfies(searchText: searchText) }
+    }
+    set {
+      for (index, filterList) in filterLists.enumerated()
+      where filterList.satisfies(searchText: searchText) {
+        filterLists[index].isEnabled =
+          filterList.entry.hidden ? filterList.entry.defaultEnabled : newValue
+      }
+    }
+  }
+}
+#endif
 
 extension FilterListCustomURL {
   @MainActor fileprivate func satisfies(searchText: String) -> Bool {

@@ -37,44 +37,6 @@ struct DappsSettings: View {
     }
   }
 
-  private var defaultWallet: BraveWallet.DefaultWallet {
-    switch coin {
-    case .eth:
-      return settingsStore.defaultEthWallet
-    case .sol:
-      return settingsStore.defaultSolWallet
-    case .ada:
-      return settingsStore.defaultCardanoWallet
-    default:
-      return .braveWallet
-    }
-  }
-
-  /// Bridges the picker to the `DefaultWallet` value held by the `SettingsStore`.
-  /// iOS only exposes `none` and `brave` as options.
-  private var defaultWalletBinding: Binding<BraveWallet.DefaultWallet> {
-    Binding(
-      get: {
-        if defaultWallet == .braveWalletPreferExtension {
-          return .braveWallet
-        }
-        return defaultWallet
-      },
-      set: { newValue in
-        switch coin {
-        case .eth:
-          settingsStore.defaultEthWallet = newValue
-        case .sol:
-          settingsStore.defaultSolWallet = newValue
-        case .ada:
-          settingsStore.defaultCardanoWallet = newValue
-        default:
-          break
-        }
-      }
-    )
-  }
-
   private var defaultWalletTitle: String {
     switch coin {
     case .eth:
@@ -111,7 +73,7 @@ struct DappsSettings: View {
         header: Text(Strings.Wallet.dappsSettingsGeneralSectionTitle)
           .foregroundColor(Color(braveSystemName: .textSecondary))
       ) {
-        Picker(selection: defaultWalletBinding) {
+        Picker(selection: $settingsStore[defaultWalletFor: coin]) {
           Text(Strings.Wallet.walletTypeNone)
             .tag(BraveWallet.DefaultWallet.none)
           Text(Strings.Wallet.braveWallet)

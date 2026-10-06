@@ -452,6 +452,19 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     self.activeTxStatusStore = nil
   }
 
+  /// Whether or not there is an active transaction status to display.
+  ///
+  /// Setting this to `false` closes the active transaction status store. Setting it to `true` has no
+  /// effect.
+  var isShowingTxStatus: Bool {
+    get { activeTxStatusStore != nil }
+    set {
+      if !newValue {
+        closeTxStatusStore()
+      }
+    }
+  }
+
   func updateAllTx(with txId: String) async -> Bool {
     // cancel or speed up only supported for .eth
     guard let txInfo = await txService.transactionInfo(coinType: .eth, txMetaId: txId),

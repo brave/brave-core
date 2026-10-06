@@ -794,11 +794,15 @@ public class FeedDataSource: ObservableObject {
     needsReloadCards = true
   }
 
-  public func isFollowingChannelBinding(channel: FeedChannel) -> Binding<Bool> {
-    .init {
+  /// Whether or not the user is following `channel`.
+  ///
+  /// Setting this follows or unfollows the channel and schedules a card reload.
+  public subscript(isFollowing channel: FeedChannel) -> Bool {
+    get {
       Preferences.BraveNews.followedChannels.value[channel.localeIdentifier]?.contains(channel.name)
         ?? false
-    } set: { [self] newValue in
+    }
+    set {
       if newValue {
         Preferences.BraveNews.followedChannels.value[channel.localeIdentifier, default: []].append(
           channel.name
@@ -819,10 +823,14 @@ public class FeedDataSource: ObservableObject {
     }
   }
 
-  public func isFollowingSourceBinding(source: FeedItem.Source) -> Binding<Bool> {
-    .init {
+  /// Whether or not the user is following `source`.
+  ///
+  /// Setting this follows or unfollows the source and schedules a card reload.
+  public subscript(isFollowing source: FeedItem.Source) -> Bool {
+    get {
       FeedSourceOverride.get(fromId: source.id)?.enabled ?? false
-    } set: { [self] newValue in
+    }
+    set {
       if newValue {
         FeedSourceOverride.setEnabled(forId: source.id, enabled: true)
       } else {
