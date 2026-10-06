@@ -244,6 +244,8 @@ class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
        PsstTabWebContentsObserver::ConsentCallback apply_changes_callback),
       (override));
 
+  MOCK_METHOD(void, HideAll, (), (override));
+
   MOCK_METHOD(void,
               UpdateTasks,
               (long progress,
@@ -600,7 +602,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_CALL(ui_delegate(), GetPsstWebsiteSettings).Times(0);
   EXPECT_CALL(ui_delegate(), Show).Times(0);
   // Called one to hide the PST icon if visible
-  EXPECT_CALL(ui_delegate(), UpdateTasks).Times(1);
+  EXPECT_CALL(ui_delegate(), UpdateTasks).Times(0);
+  EXPECT_CALL(ui_delegate(), HideAll).Times(1);
   EXPECT_CALL(inject_async_script_callback(), Run).Times(0);
 
   {
@@ -664,7 +667,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_CALL(ui_delegate(), GetPsstWebsiteSettings).Times(0);
   EXPECT_CALL(ui_delegate(), Show).Times(0);
   // Called one to hide the PST icon if visible
-  EXPECT_CALL(ui_delegate(), UpdateTasks).Times(1);
+  EXPECT_CALL(ui_delegate(), UpdateTasks).Times(0);
+  EXPECT_CALL(ui_delegate(), HideAll).Times(1);
   EXPECT_CALL(inject_async_script_callback(), Run).Times(0);
 
   {

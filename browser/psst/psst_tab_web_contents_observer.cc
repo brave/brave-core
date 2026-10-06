@@ -229,8 +229,12 @@ void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
       web_contents()->GetLastCommittedURL(),
       base::BindOnce(&PsstTabWebContentsObserver::InsertUserScript,
                      page_weak_factory_.GetWeakPtr()),
-      base::BindOnce(&PsstTabWebContentsObserver::PageScopedReset,
+      base::BindOnce(&PsstTabWebContentsObserver::NoRulesFoundHandler,
                      page_weak_factory_.GetWeakPtr()));
+}
+
+void PsstTabWebContentsObserver::PrimaryPageChanged(content::Page& page) {
+  PageScopedReset();
 }
 
 void PsstTabWebContentsObserver::InsertUserScript(
@@ -411,11 +415,15 @@ void PsstTabWebContentsObserver::SetInjectAsyncScriptCallback(
 }
 
 void PsstTabWebContentsObserver::PageScopedReset() {
-  // Hide the omnibar icon
-  ui_delegate_->UpdateTasks(0, {}, mojom::PsstStatus::kFailed);
+  timeout_timer_.Stop();
   script_injector_remote_.reset();
   page_weak_factory_.InvalidateWeakPtrs();
   should_process_current_page_ = false;
+}
+
+void PsstTabWebContentsObserver::NoRulesFoundHandler() {
+  ui_delegate_->HideAll();
+  PageScopedReset();
 }
 
 }  // namespace psst
