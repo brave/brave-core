@@ -9,9 +9,10 @@ import { AliasList } from '../content/email_aliases_list'
 import {
   Alias,
   EmailAliasesServiceInterface,
-  MAX_ALIASES,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 import { clickLeoButton } from './test_utils'
+
+const MAX_ALIASES = 5
 
 // Mock the clipboard API
 Object.assign(navigator, {
@@ -49,6 +50,7 @@ describe('AliasList', () => {
       <AliasList
         aliases={mockAliases}
         authEmail={mockAuthEmail}
+        aliasLimit={MAX_ALIASES}
         emailAliasesService={mockEmailAliasesService}
       />,
     )
@@ -102,6 +104,7 @@ describe('AliasList', () => {
     render(
       <AliasList
         aliases={maxAliases}
+        aliasLimit={MAX_ALIASES}
         authEmail={mockAuthEmail}
         emailAliasesService={mockEmailAliasesService}
       />,

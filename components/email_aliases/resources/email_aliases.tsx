@@ -39,11 +39,12 @@ export const ManagePageConnected = ({
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
   metrics?: ReturnType<typeof EmailAliasesMetrics.getRemote>
 }) => {
-  const { aliasesUpdate } = useEmailAliases(bindObserver)
+  const { aliasesUpdate, accountInfo } = useEmailAliases(bindObserver)
   return (
     <ManagePage
       authEmail={authEmail}
       aliasesUpdate={aliasesUpdate}
+      aliasLimit={accountInfo.maxAliasesCount}
       emailAliasesService={emailAliasesService}
       metrics={metrics}
     />

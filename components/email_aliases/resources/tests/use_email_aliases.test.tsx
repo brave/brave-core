@@ -12,6 +12,7 @@ import {
 import type { AccountState } from 'gen/brave/components/brave_account/mojom/brave_account.mojom.m'
 import {
   Alias,
+  AliasesAccountUpdate,
   AliasesUpdate,
   EmailAliasesServiceObserverInterface,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
@@ -94,6 +95,18 @@ describe('useEmailAliases', () => {
     })
 
     expect(result.current.aliasesUpdate).toEqual({ error: 'load failed' })
+  })
+
+  it('applies account limit updates', () => {
+    const { result } = renderHook(() => useEmailAliases(bindObserver))
+
+    act(() => {
+      lastObserver!.onAliasesAccountUpdated({
+        maxAliasesCount: 12,
+      } as AliasesAccountUpdate)
+    })
+
+    expect(result.current.accountInfo.maxAliasesCount).toBe(12)
   })
 
   it('runs bindObserver cleanup on unmount', () => {
