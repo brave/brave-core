@@ -580,7 +580,7 @@ public class BrowserViewController: UIViewController {
       })
     }
 
-    rewardsEnabledObserveration = rewards.ads.observe(\.isEnabled, options: [.new]) {
+    rewardsEnabledObserveration = rewards.ads.observe(\.isNotificationsEnabled, options: [.new]) {
       [weak self] _, _ in
       guard let self = self else { return }
       self.updateRewardsButtonState()

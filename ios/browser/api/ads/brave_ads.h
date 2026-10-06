@@ -80,10 +80,10 @@ OBJC_EXPORT
 /// disabled.
 - (void)notifySponsoredImagesIsEnabledPreferenceDidChange:(BOOL)isEnabled;
 
-/// Whether or not Brave Ads is enabled and the user should receive
-/// notification-style ads and be rewarded for it
-@property(nonatomic, assign, getter=isEnabled)
-    BOOL enabled NS_SWIFT_NAME(isEnabled);
+/// Whether or not the user should receive notification-style ads and be
+/// rewarded for it
+@property(nonatomic, assign, getter=isNotificationsEnabled)
+    BOOL enabled NS_SWIFT_NAME(isNotificationsEnabled);
 
 #pragma mark - Initialization / Shutdown
 
