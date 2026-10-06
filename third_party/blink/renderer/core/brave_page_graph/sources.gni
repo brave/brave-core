@@ -124,8 +124,6 @@ if (enable_brave_page_graph) {
     "//brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/filter/node_ad_filter.h",
     "//brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/filter/node_filter.cc",
     "//brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/filter/node_filter.h",
-    "//brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/filter/node_fingerprinting_filter.cc",
-    "//brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/filter/node_fingerprinting_filter.h",
     "//brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/filter/node_tracker_filter.cc",
     "//brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/filter/node_tracker_filter.h",
     "//brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/graph_node.cc",
