@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/content_settings/content_setting_image_model.cc b/chrome/browser/ui/content_settings/content_setting_image_model.cc
-index d48d0c006c6a33ba46289a9027112608bb16d36c..86982019089fc8643080b3d228c4c1bb0d7b150a 100644
+index d48d0c006c6a33ba46289a9027112608bb16d36c..5d41a8b85104c6da88d512d92acd7d19c1889aa0 100644
 --- a/chrome/browser/ui/content_settings/content_setting_image_model.cc
 +++ b/chrome/browser/ui/content_settings/content_setting_image_model.cc
 @@ -644,6 +644,7 @@ void GetIconFromType(ContentSettingsType type,
@@ -30,7 +30,7 @@ index d48d0c006c6a33ba46289a9027112608bb16d36c..86982019089fc8643080b3d228c4c1bb
  // static
  base::span<const ui::ElementIdentifier>
  ContentSettingImageModel::GetAllElementIdentifiers() {
-+  if ((true)) return BraveGetAllElementIdentifiers();
++  if ((true)) return BraveGetAllElementIdentifiers<kContentSettingImageOrder, GetElementIdentifierForType>();
    static constexpr auto kAllElementIdentifiers = []() consteval {
      std::array<ui::ElementIdentifier, kContentSettingImageOrder.size()> result;
      std::ranges::transform(kContentSettingImageOrder, result.begin(),
