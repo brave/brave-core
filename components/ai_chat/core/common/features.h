@@ -224,15 +224,19 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kAIChatLearnedMemory);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatLearnedMemoryEnabled();
 
-// URL of the local server that answers the decision model questions. Learned
-// memory stays inactive when this is empty.
+// The Ollama System One endpoint that answers the decision model questions,
+// and the name of the decision model. Learned memory stays inactive when one
+// of them is empty.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<std::string> kLearnedMemoryDecisionModelUrl;
-
-// Model key of the local LLM (a custom model) that rewrites and merges
-// memories. Learned memory stays inactive when this is empty.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
-extern const base::FeatureParam<std::string> kLearnedMemoryLocalLlmModelKey;
+extern const base::FeatureParam<std::string> kLearnedMemoryDecisionModelName;
+
+// The model request name of the local LLM that rewrites and merges memories.
+// The user adds it as a custom (BYOM) model, for example qwen3.5:9b on
+// Ollama. Dreaming runs without the LLM when no custom model has this name.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<std::string> kLearnedMemoryLocalLlmModelName;
 
 // A decision model answer is certain when its probability is at least
 // kLearnedMemoryCertainThreshold and it is at least
@@ -241,6 +245,15 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<double> kLearnedMemoryCertainThreshold;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<double> kLearnedMemoryCertainMargin;
+
+// The gate keeps a turn when its "yes" probability is at least this value. The
+// gate only removes turns that are clearly about a task, so it is not strict.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<double> kLearnedMemoryGateThreshold;
+
+// A sentence needs at least this "yes" probability for the fact question.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<double> kLearnedMemoryFactThreshold;
 
 // Limits for the local LLM requests in one Dreaming run.
 COMPONENT_EXPORT(AI_CHAT_COMMON)

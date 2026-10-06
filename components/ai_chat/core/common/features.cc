@@ -263,16 +263,26 @@ bool IsAIChatLearnedMemoryEnabled() {
 }
 
 const base::FeatureParam<std::string> kLearnedMemoryDecisionModelUrl{
-    &kAIChatLearnedMemory, "decision_model_url", ""};
+    &kAIChatLearnedMemory, "decision_model_url",
+    "http://localhost:11434/v1/systemone"};
 
-const base::FeatureParam<std::string> kLearnedMemoryLocalLlmModelKey{
-    &kAIChatLearnedMemory, "local_llm_model_key", ""};
+const base::FeatureParam<std::string> kLearnedMemoryDecisionModelName{
+    &kAIChatLearnedMemory, "decision_model_name", "clef-flash:9b"};
+
+const base::FeatureParam<std::string> kLearnedMemoryLocalLlmModelName{
+    &kAIChatLearnedMemory, "local_llm_model_name", "qwen3.5:9b"};
 
 const base::FeatureParam<double> kLearnedMemoryCertainThreshold{
     &kAIChatLearnedMemory, "certain_threshold", 0.8};
 
 const base::FeatureParam<double> kLearnedMemoryCertainMargin{
     &kAIChatLearnedMemory, "certain_margin", 0.2};
+
+const base::FeatureParam<double> kLearnedMemoryGateThreshold{
+    &kAIChatLearnedMemory, "gate_threshold", 0.2};
+
+const base::FeatureParam<double> kLearnedMemoryFactThreshold{
+    &kAIChatLearnedMemory, "fact_threshold", 0.6};
 
 const base::FeatureParam<size_t> kLearnedMemoryMaxRelationRequests{
     &kAIChatLearnedMemory, "max_relation_requests", 20};
