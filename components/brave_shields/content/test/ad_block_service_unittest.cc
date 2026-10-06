@@ -31,6 +31,7 @@
 #include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
@@ -496,6 +497,30 @@ TEST_F(AdBlockServiceTest, DATFailureFallbackWithUninitializedProvider) {
   auto result = ShouldStartRequest(service.get(), EngineType::kDefault,
                                    "https://late-provider.com/script.js");
   EXPECT_TRUE(result.matched);
+}
+
+TEST_F(AdBlockServiceTest, DebugModeDisablesDATCache) {
+  CreateCachedDATFiles("||from-cache.com^\n", "");
+  prefs_.SetBoolean(prefs::kAdBlockDebugMode, true);
+
+  auto service = CreateService();
+
+  bool default_filter_list_loaded = false;
+  FilterListObserver observer(
+      base::BindLambdaForTesting([&](bool is_default, bool success) {
+        if (is_default) {
+          default_filter_list_loaded = success;
+        }
+      }));
+  service->AddObserver(&observer);
+
+  auto provider = std::make_unique<TestFiltersProvider>(
+      "||from-filter-set.com^", /*engine_is_default=*/true);
+  provider->RegisterAsSourceProvider(service.get());
+
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return default_filter_list_loaded;
+  })) << "Filter set should load when adblock debug mode disables DAT cache";
 }
 
 TEST_F(AdBlockServiceDATCacheDisabledTest, CachedDATIgnoredWhenFlagDisabled) {
