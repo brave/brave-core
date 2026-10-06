@@ -44,6 +44,9 @@ class WalletURLBarButton: UIButton {
       return UIColor(braveSystemName: .textPrimary)
     }
     self.configuration = configuration
+    imageView?.contentMode = .scaleAspectFit
+    setContentCompressionResistancePriority(.required, for: .horizontal)
+    setContentHuggingPriority(.defaultHigh, for: .horizontal)
 
     updateIconSize()
 
