@@ -282,14 +282,47 @@ inline constexpr auto kCollectedExpressHistograms =
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kDateOfActivation, MetricAttribute::kVersion, MetricAttribute::kYoi, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode, MetricAttribute::kWoi},
       .record_activation_date = true,
     }},
-    {"Brave.CaptchaCount.Cloudflare", MetricConfig{.ephemeral = true}},
-    {"Brave.CaptchaCount.Cloudflare.UserActivated", MetricConfig{.ephemeral = true}},
-    {"Brave.CaptchaCount.Google", MetricConfig{.ephemeral = true}},
-    {"Brave.CaptchaCount.Google.UserActivated", MetricConfig{.ephemeral = true}},
-    {"Brave.CaptchaCount.Total", MetricConfig{.ephemeral = true}},
-    {"Brave.CaptchaCount.Total.UserActivated", MetricConfig{.ephemeral = true}},
-    {"Brave.CaptchaCount.hCaptcha", MetricConfig{.ephemeral = true}},
-    {"Brave.CaptchaCount.hCaptcha.UserActivated", MetricConfig{.ephemeral = true}},
+    // Please keep the names consistent with captcha_metrics.h
+    {"Brave.CaptchaCount.Cloudflare", MetricConfig{
+       .ephemeral = true,
+       .append_attributes = {MetricAttribute::kCustomAttribute},
+       .custom_attributes = {"likely_bot"},
+    }},
+    {"Brave.CaptchaCount.Cloudflare.UserActivated", MetricConfig{
+      .ephemeral = true,
+      .append_attributes = {MetricAttribute::kCustomAttribute},
+      .custom_attributes = {"likely_bot"},
+    }},
+    {"Brave.CaptchaCount.Google", MetricConfig{
+      .ephemeral = true,
+      .append_attributes = {MetricAttribute::kCustomAttribute},
+      .custom_attributes = {"likely_bot"},
+    }},
+    {"Brave.CaptchaCount.Google.UserActivated", MetricConfig{
+      .ephemeral = true,
+      .append_attributes = {MetricAttribute::kCustomAttribute},
+      .custom_attributes = {"likely_bot"},
+    }},
+    {"Brave.CaptchaCount.Total", MetricConfig{
+      .ephemeral = true,
+      .append_attributes = {MetricAttribute::kCustomAttribute},
+      .custom_attributes = {"likely_bot"},
+    }},
+    {"Brave.CaptchaCount.Total.UserActivated", MetricConfig{
+      .ephemeral = true,
+      .append_attributes = {MetricAttribute::kCustomAttribute},
+      .custom_attributes = {"likely_bot"},
+    }},
+    {"Brave.CaptchaCount.hCaptcha", MetricConfig{
+      .ephemeral = true,
+      .append_attributes = {MetricAttribute::kCustomAttribute},
+      .custom_attributes = {"likely_bot"},
+    }},
+    {"Brave.CaptchaCount.hCaptcha.UserActivated", MetricConfig{
+      .ephemeral = true,
+      .append_attributes = {MetricAttribute::kCustomAttribute},
+      .custom_attributes = {"likely_bot"},
+    }},
 
     {"Brave.Core.IsDefaultDaily.2", MetricConfig{
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kDateOfInstall, MetricAttribute::kDateOfActivation, MetricAttribute::kGeneralPlatform, MetricAttribute::kSubregion, MetricAttribute::kVersion},
