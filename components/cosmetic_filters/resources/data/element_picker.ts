@@ -216,7 +216,7 @@ const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
         if (data !== undefined && data.length > 0) {
           // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
           if (data.startsWith('data:')) {
-            data = data.split(',')[1].slice(0, 256)
+            data = data.split(',')[1]?.slice(0, 256)
           }
         }
         if (data === undefined || data.length === 0) {
@@ -367,7 +367,6 @@ interface TargetRect {
 
 class Target {
   element: Element
-  rectElem: Element
   coord: TargetRect
 
   constructor(elem: Element) {
@@ -464,7 +463,8 @@ const onTargetSelected = (selected: Element | null, index: number): string => {
     0b10011, // No attributes, no class names
     0b11111, // All selector rules (default)
   ]
-  const mask: number = specificityMasks[index]
+  // Fall back to the default (all selector rules) for an out-of-range index.
+  const mask: number = specificityMasks[index] ?? 0b11111
 
   if (mask & SpecificityFlags.Hierarchy) {
     while (elem !== null && elem !== document.body) {
@@ -479,6 +479,9 @@ const onTargetSelected = (selected: Element | null, index: number): string => {
   let i = 0
   for (; i < selectorBuilders.length; i++) {
     const b = selectorBuilders[i]
+    if (!b) {
+      continue
+    }
     try {
       if (
         (mask & SpecificityFlags.Id && b.hasId)
@@ -639,15 +642,10 @@ const launchElementPicker = (root: ShadowRoot) => {
     },
   })
 
+  // ShadowRoot has no typed event map, so the handler needs a cast here.
   root.addEventListener(
     'keydown',
-    (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        event.stopPropagation()
-        event.preventDefault()
-        quitElementPicker()
-      }
-    },
+    elementPickerOnKeydown as EventListener,
     true,
   )
 
@@ -730,7 +728,7 @@ const launchElementPicker = (root: ShadowRoot) => {
   }
   const retrieveTheme = () => {
     api.getElementPickerThemeInfo(
-      (isDarkModeEnabled: boolean, bgcolor: number) => {
+      (_isDarkModeEnabled: boolean, bgcolor: number) => {
         const bgcolorMaskOut = bgcolor & 0xffffff
         const colorHex = `#${bgcolorMaskOut.toString(16).padStart(6, '0')}`
         section.style.setProperty('--theme-background-color', colorHex)
@@ -740,7 +738,7 @@ const launchElementPicker = (root: ShadowRoot) => {
     )
   }
   const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)')
-  const handleColorSchemeChange = (event: MediaQueryListEvent) => {
+  const handleColorSchemeChange = () => {
     retrieveTheme()
   }
   prefersDarkScheme.addEventListener('change', handleColorSchemeChange)
@@ -765,7 +763,9 @@ const launchElementPicker = (root: ShadowRoot) => {
       elem = elementFromFrameCoords(event.clientX, event.clientY)
     } else if (event instanceof TouchEvent) {
       const touch = event.touches[0]
-      elem = elementFromFrameCoords(touch.clientX, touch.clientY)
+      if (touch) {
+        elem = elementFromFrameCoords(touch.clientX, touch.clientY)
+      }
     }
 
     if (elem) {
@@ -808,7 +808,7 @@ const launchElementPicker = (root: ShadowRoot) => {
     if (!target || !trigger) {
       return
     }
-    trigger.addEventListener('click', (e) => {
+    trigger.addEventListener('click', () => {
       if (target.style.display !== 'block') {
         target.style.display = 'block'
         setShowRulesHiddenBtnState(trigger, true)
@@ -856,7 +856,6 @@ const highlightElements = () => {
     // target rectangle orange
     const targetingArea = mask.cloneNode(false) as SVGRectElement
     targetingArea.classList.add('target')
-    target.rectElem = targetingArea
 
     svgFragment.appendChild(targetingArea)
   }
