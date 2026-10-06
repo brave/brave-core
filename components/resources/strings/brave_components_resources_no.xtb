@@ -1733,6 +1733,9 @@
 <translation id="2077392865355605472">Tokensymbol kreves</translation>
 <translation id="4636925020451566238">Tokendesimaler for nøyaktighet av verdi kreves</translation>
 <translation id="3797613444743816037">Mint-adresse</translation>
+<translation id="6571966497164575098">Ressurs-ID</translation>
+<translation id="2110442566771571217">Ressurs-ID for token er tom eller ugyldig</translation>
+<translation id="4170599358417498979">Egendefinerte ressurser støttes ikke på dette nettverket</translation>
 <translation id="7951915459354237451">Avgiftsgrensen er satt lavere enn grunnavgiften. Transaksjonen din kan komme til å ta lang tid eller mislykkes.</translation>
 <translation id="2227702748249086756">Kan ikke hente beregnede avgifter</translation>
 <translation id="3225624966527491351">Importer NFT</translation>
@@ -2019,7 +2022,7 @@
 <translation id="418195046117003119">Skjermbilde av delingshub</translation>
 <translation id="4712056949543885424">Vis passordadministratoren</translation>
 <translation id="8037472847879765671">Vis betalingsmåter</translation>
-<translation id="7269867954894010756">Vis adresser</translation>
+<translation id="6262574309547773475">Vis kontaktinformasjon</translation>
 <translation id="6799213269525079335">Finn neste</translation>
 <translation id="8666632926482119393">Finn forrige</translation>
 <translation id="3567467864281922039">Lukk, finn eller stopp</translation>
@@ -2148,6 +2151,7 @@
 <translation id="3142853026316054951">Slå på/av fokusmodus</translation>
 <translation id="3468387898712904997">Nytt e-postalias</translation>
 <translation id="4711475997833555304">Opprett en tilfeldig e-postadresse som videresender til innboksen din.</translation>
+<translation id="5663901348199429994">Dine e-postaliaser</translation>
 <translation id="2796584247246518451">Ny midlertidig beholder</translation>
 <translation id="8591883849678260674">Vis original</translation>
 <translation id="1969654232209826429">min. lest</translation>
@@ -2212,6 +2216,7 @@
 <translation id="9215978379284690246">Statuskode: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Statuskode: <ph name="STATUS_CODE"/>, indre statuskode: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Du har nådd premium-grensen. Prøv på nytt om noen timer.</translation>
+<translation id="6873128487002733717">Du har nådd Premium-grensen for denne modellen. Velg en annen modell eller prøv igjen senere.</translation>
 <translation id="3683964919745779766">Du har enten nådd maksgrensen for denne modellen, eller så er du tom for kreditter. Prøv igjen senere.</translation>
 <translation id="7692501701960747469">API-nøkkelen som er konfigurert for denne modellen er ugyldig. Sjekk konfigurasjonen og prøv på nytt.</translation>
 <translation id="7905602379229309187">Endepunktet er overbelastet. Prøv igjen senere.</translation>
@@ -2391,6 +2396,9 @@
 <translation id="5021823940147712387">Fjern verktøy</translation>
 <translation id="8712279871321308580">Tilgjengelige nettstedsverktøy</translation>
 <translation id="3690996226559605619">Tilgjengelige verktøy (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Tillat for denne økten</translation>
+<translation id="6240821072888636753">Spør hver gang</translation>
+<translation id="4290920330097335010">Aldri tillat</translation>
 <translation id="318819763888864209">Alle abonnementer fornyes automatisk, men kan kanselleres når som helst før fornyelsesdatoen.</translation>
 <translation id="5091223967610958">Del vertsnavnet til siden du er på (<ph name="HOST_NAME"/>) for å hjelpe oss med å gjøre Leo bedre.</translation>
 <translation id="8732450785281947197">Leo AI-verktøy</translation>
@@ -2465,7 +2473,7 @@
 <translation id="6077070599873946984">Brave KI trenger tillatelse for: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI ønsker å utføre **<ph name="TOOL_NAME"/>** på **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Handlingene ble vurdert som potensielt ikke i tråd med forespørselen din:</translation>
-<translation id="5137568953923142260">Tillat</translation>
+<translation id="5137568953923142260">Tillat én gang</translation>
 <translation id="3927932062596804919">Avslå</translation>
 <translation id="4191349941249805855">Vis verktøyargumenter</translation>
 <translation id="7237059533128264835">Skjul verktøyargumenter</translation>
@@ -2512,7 +2520,6 @@
 <translation id="6002159997868894136">Klikk for å kopiere alias</translation>
 <translation id="8105770564756958406">Brukes av <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Lag opptil 5 gratis e-postaliaser for å beskytte den ekte e-postadressen din.</translation>
-<translation id="5663901348199429994">Dine e-postaliaser</translation>
 <translation id="9046133327037621173">Nytt e-postalias</translation>
 <translation id="3768606658230902536">Opprett en tilfeldig e-postadresse som videresender alle e-poster til innboksen din, samtidig som den personlige e-postadressen din holdes hemmelig.</translation>
 <translation id="4452721050684632493">Aliasgrensen er nådd</translation>
@@ -2943,7 +2950,9 @@ eksisterende fanen</translation>
 <translation id="4227581348172626540">Avbryt endring av passord</translation>
 <translation id="808894953321890993">Endre passord</translation>
 <translation id="7967687455715421528">Kunne ikke endre passord</translation>
+<translation id="7413006094063730650">Slett konto</translation>
 <translation id="4869737930995549965">Logg ut</translation>
+<translation id="2902312830803030883">Flere handlinger</translation>
 <translation id="5538654494923870167">Kom i gang med Brave-kontoen din</translation>
 <translation id="1544145635547515689">Opprett en Brave-konto</translation>
 <translation id="3828644479849256404">Har du allerede en konto? Logg på</translation>
@@ -2968,6 +2977,11 @@ eksisterende fanen</translation>
 <translation id="7228810962389847249">Skriv inn koden her</translation>
 <translation id="4683390091376980486">Bekreft kode</translation>
 <translation id="3970028678400797622">Send e-postkode på nytt</translation>
+<translation id="3653907916071208187">Slette Brave-kontoen din?</translation>
+<translation id="8216839865292766307">Å slette en Brave-konto vil også slette e-postaliasene dens. Du kan miste tilgangen til nettjenester der du brukte et alias for å registrere deg. Denne handlingen kan ikke angres.</translation>
+<translation id="3672274694560812974">SLETT</translation>
+<translation id="1886662169666501462">Skriv <ph name="KEYWORD"/> for å aktivere kontosletting</translation>
+<translation id="536306385881145656">Slett Brave-konto</translation>
 <translation id="2475982808118771221">Det oppstod en feil</translation>
 <translation id="5430795854491041407">feil</translation>
 <translation id="2232323423357029857">Nettleseren oppdaget en uventet feil<ph name="ERROR_CODE"/>. Start nettleseren på nytt og prøv igjen.</translation>
@@ -3000,4 +3014,10 @@ eksisterende fanen</translation>
 <translation id="1063227610401477317">Bruk endringene</translation>
 <translation id="5539769255716491933">Rapporter mislykkede trinn</translation>
 <translation id="7562163394445060270">Fullføring av oppgave mislyktes</translation>
+<translation id="691082536326552372">Rapporter mislykkede trinn</translation>
+<translation id="2731141092023803480">Send en rapport om de mislykkede trinnene til Brave-teamet. Denne rapporten vil inneholde informasjonen vi trenger for å løse problemet. <ph name="LINK_BEFORE"/>Finn ut mer.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">Gjeldende URL</translation>
+<translation id="4739707522207259415">Mislykket(e) trinn</translation>
+<translation id="1767991048059195456">Send rapport</translation>
+<translation id="2168036794078614559">Rapport sendt</translation>
 </translationbundle>

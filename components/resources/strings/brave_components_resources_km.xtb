@@ -1724,6 +1724,9 @@
 <translation id="2077392865355605472">តំណាងតោកខិនគឺត្រូវការ</translation>
 <translation id="4636925020451566238">តំណាងកំណត់ចំណាំនៃតថ្វតូចត្រូវការ</translation>
 <translation id="3797613444743816037">អាសយដ្ឋានប្ដួរតំណៃង</translation>
+<translation id="6571966497164575098">លេខសម្គាល់ទ្រព្យសកម្ម</translation>
+<translation id="2110442566771571217">លេខសម្គាល់ទ្រព្យសកម្មមិនត្រឹមត្រូវ ឬទទេ</translation>
+<translation id="4170599358417498979">ទ្រព្យសកម្មផ្ទាល់ខ្លួនមិនត្រូវបានគាំទ្រនៅលើបណ្តាញនេះទេ</translation>
 <translation id="7951915459354237451">ដែនកំណត់កម្រៃត្រូវបានកំណត់ទាបជាងកម្រៃមូលដ្ឋាន។ ប្រតិបត្តិការរបស់អ្នកអាចចំណាយពេលយូរឬបរាជ័យ។</translation>
 <translation id="2227702748249086756">មិនអាចទាញយកការប៉ាន់ស្មានកម្រៃទេ</translation>
 <translation id="3225624966527491351">នាំចូល NFT</translation>
@@ -2007,7 +2010,7 @@
 <translation id="418195046117003119">ការចែករំលែកស្កេន</translation>
 <translation id="4712056949543885424">បង្ហាញកម្មវិធីគ្រប់គ្រងពាក្យសំងាត់</translation>
 <translation id="8037472847879765671">បង្ហាញវិធីទូទាត់</translation>
-<translation id="7269867954894010756">បង្ហាញអាសយដ្ឋាន</translation>
+<translation id="6262574309547773475">បង្ហាញព័ត៌មានទំនាក់ទំនង</translation>
 <translation id="6799213269525079335">ស្វែងរកបន្ទាប់</translation>
 <translation id="8666632926482119393">ស្វែងរកមុន</translation>
 <translation id="3567467864281922039">បិទការស្វែងរកឬបញ្ឈប់</translation>
@@ -2136,6 +2139,7 @@
 <translation id="3142853026316054951">បិទ/បើករបៀបផ្ដោតអារម្មណ៍</translation>
 <translation id="3468387898712904997">ឈ្មោះអ៊ីមែលថ្មី</translation>
 <translation id="4711475997833555304">បង្កើតអ៊ីមែលចៃដន្យដែលបញ្ជូនបន្តទៅប្រអប់ទទួលរបស់អ្នក។</translation>
+<translation id="5663901348199429994">ឈ្មោះអ៊ីមែលរបស់អ្នក</translation>
 <translation id="2796584247246518451">កុងតឺន័របណ្ដោះអាសន្នថ្មី</translation>
 <translation id="8591883849678260674">មើលប្រភព</translation>
 <translation id="1969654232209826429">នាទីអាន</translation>
@@ -2200,6 +2204,7 @@
 <translation id="9215978379284690246">កូដស្ថានភាព៖ <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">កូដស្ថានភាព៖ <ph name="STATUS_CODE"/>, កូដស្ថានភាពខាងក្នុង៖ <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">អ្នកបានឈានដល់កម្រិតប្រមូលតម្លៃទូទាត់។ សូមព្យាយាមម្តងទៀតក្នុងរយៈពេលប៉ុន្មានម៉ោងក្រោយ។</translation>
+<translation id="6873128487002733717">អ្នកបានឈានដល់កម្រិតកំណត់ premium សម្រាប់ម៉ូដែលនេះ។ ជ្រើសរើសម៉ូដែលផ្សេង ឬសាកល្បងម្តងទៀតនៅពេលក្រោយ។</translation>
 <translation id="3683964919745779766">លោកអ្នកបានឆ្លៀតការកំណត់លំនាំរបស់គំរូនេះឬហ្វឺគោល។ សូមព្យាយាមម្តងទៀតនៅពេលក្រោយ។</translation>
 <translation id="7692501701960747469">កូនសោ API ដែលបានកំណត់សម្រាប់គំរូនេះមិនត្រឹមត្រូវទេ។ សូមពិនិត្យការកំណត់របស់លោកអ្នកហើយព្យាយាមឡើងវិញ។</translation>
 <translation id="7905602379229309187">ចំណុចបញ្ចប់ត្រូវបានធ្លាក់ចុះ។ សូមព្យាយាមម្តងទៀតនៅពេលក្រោយ។</translation>
@@ -2379,6 +2384,9 @@
 <translation id="5021823940147712387">ដកឧបករណ៍ចេញ</translation>
 <translation id="8712279871321308580">ឧបករណ៍គេហទំព័រដែលមាន</translation>
 <translation id="3690996226559605619">ឧបករណ៍ដែលមាន (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">អនុញ្ញាតសម្រាប់វគ្គនេះ</translation>
+<translation id="6240821072888636753">សួររាល់ពេល</translation>
+<translation id="4290920330097335010">កុំអនុញ្ញាតឡើយ</translation>
 <translation id="318819763888864209">ការជាវទាំងអស់ត្រូវបានបន្តដោយស្វ័យប្រវត្តិ ប៉ុន្តែអាចត្រូវបានបោះបង់គ្រប់ពេលមុនពេលបន្ត។</translation>
 <translation id="5091223967610958">ចែករំលែក hostname នៃទំព័រដែលអ្នកកំពុងលើ (<ph name="HOST_NAME"/>) ដើម្បីជួយយើងឱ្យធ្វើឱ្យ Leo ឡើងតិចជាង។</translation>
 <translation id="8732450785281947197">ប្រើប្រាស់ឧបករណ៍ Leo AI</translation>
@@ -2453,7 +2461,7 @@
 <translation id="6077070599873946984">Brave AI ត្រូវការការអនុញ្ញាតរបស់អ្នកសម្រាប់៖ <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI ចង់ប្រតិបត្តិ **<ph name="TOOL_NAME"/>** នៅលើ **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">ប្រតិបត្តិការបានរកឃើញថាអាចយ៉ាងមិនស្របជាមួយសំណើរបស់អ្នក៖</translation>
-<translation id="5137568953923142260">អនុញ្ញាត</translation>
+<translation id="5137568953923142260">អនុញ្ញាតម្តង</translation>
 <translation id="3927932062596804919">បដិសេធ</translation>
 <translation id="4191349941249805855">បង្ហាញអាគុយម៉ង់ឧបករណ៍</translation>
 <translation id="7237059533128264835">លាក់អាគុយម៉ង់ឧបករណ៍</translation>
@@ -2500,7 +2508,6 @@
 <translation id="6002159997868894136">ចុចដើម្បីចម្លងឈ្មោះ</translation>
 <translation id="8105770564756958406">បានប្រើដោយ <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">បង្កើតឈ្មោះអ៊ីមែលឥតគិតថ្លៃរហូតដល់ 5 ដើម្បីការពារអាសយដ្ឋានអ៊ីមែលពិតប្រាកដរបស់អ្នក។</translation>
-<translation id="5663901348199429994">ឈ្មោះអ៊ីមែលរបស់អ្នក</translation>
 <translation id="9046133327037621173">ឈ្មោះអ៊ីមែលថ្មី</translation>
 <translation id="3768606658230902536">បង្កើតអាសយដ្ឋានអ៊ីមែលចៃដន្យដែលបញ្ជូនបន្តទៅប្រអប់សាររបស់អ្នក ខណៈពេលដែលរក្សាអ៊ីមែលផ្ទាល់ខ្លួនរបស់អ្នកជាឯកជន។</translation>
 <translation id="4452721050684632493">បានដល់ដែនកំណត់ alias</translation>
@@ -2917,7 +2924,9 @@
 <translation id="4227581348172626540">បោះបង់ការផ្លាស់ប្តូរពាក្យសម្ងាត់</translation>
 <translation id="808894953321890993">ប្ដូរ​ពាក្យ​សម្ងាត់</translation>
 <translation id="7967687455715421528">មិនអាចផ្លាស់ប្តូរពាក្យសម្ងាត់បានទេ</translation>
+<translation id="7413006094063730650">លុបគណនី</translation>
 <translation id="4869737930995549965">ចាកចេញ</translation>
+<translation id="2902312830803030883">សកម្មភាពច្រើនទៀត</translation>
 <translation id="5538654494923870167">ចាប់ផ្តើមជាមួយគណនី Brave របស់អ្នក</translation>
 <translation id="1544145635547515689">បង្កើតគណនី Brave</translation>
 <translation id="3828644479849256404">មានគណនីរួចហើយ? ចូល</translation>
@@ -2942,6 +2951,11 @@
 <translation id="7228810962389847249">បញ្ចូលលេខកូដនៅទីនេះ</translation>
 <translation id="4683390091376980486">បញ្ជាក់លេខកូដ</translation>
 <translation id="3970028678400797622">ផ្ញើលេខកូដអ៊ីមែលឡើងវិញ</translation>
+<translation id="3653907916071208187">លុបគណនី Brave របស់អ្នក?</translation>
+<translation id="8216839865292766307">ការលុបគណនី Brave ក៏នឹងលុបឈ្មោះក្លែងក្លាយអ៊ីមែលរបស់វាផងដែរ។ អ្នកអាចនឹងបាត់បង់សិទ្ធិចូលទៅកាន់សេវាកម្មអនឡាញដែលអ្នកបានប្រើឈ្មោះក្លែងក្លាយដើម្បីចុះឈ្មោះ។ សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">វាយ <ph name="KEYWORD"/> ដើម្បីបើកការលុបគណនី</translation>
+<translation id="536306385881145656">លុបគណនី Brave</translation>
 <translation id="2475982808118771221">មានកំហុសកើតឡើង</translation>
 <translation id="5430795854491041407">កំហុសឆ្គង</translation>
 <translation id="2232323423357029857">កម្មវិធីរុករកបានជួបប្រទះកំហុសដែលមិនបានរំពឹងទុក<ph name="ERROR_CODE"/>។ សូមចាប់ផ្តើមកម្មវិធីរុករកឡើងវិញ ហើយព្យាយាមម្តងទៀត។</translation>
@@ -2974,4 +2988,10 @@
 <translation id="1063227610401477317">អនុវត្តការផ្លាស់ប្តូរ</translation>
 <translation id="5539769255716491933">រាយការណ៍ពីជំហានដែលបរាជ័យ</translation>
 <translation id="7562163394445060270">ការបញ្ចប់កិច្ចការបានបរាជ័យ</translation>
+<translation id="691082536326552372">រាយការណ៍ពីជំហានដែលបរាជ័យ</translation>
+<translation id="2731141092023803480">ផ្ញើរបាយការណ៍អំពីជំហានដែលបរាជ័យទៅកាន់ក្រុម Brave។ របាយការណ៍នេះនឹងមានព័ត៌មានដែលចាំបាច់សម្រាប់យើងក្នុងការជួសជុលបញ្ហា។ <ph name="LINK_BEFORE"/>ស្វែងយល់បន្ថែម។<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">URL បច្ចុប្បន្ន</translation>
+<translation id="4739707522207259415">ជំហាន(ដែល)បរាជ័យ</translation>
+<translation id="1767991048059195456">ផ្ញើរបាយការណ៍</translation>
+<translation id="2168036794078614559">បានផ្ញើរបាយការណ៍</translation>
 </translationbundle>

@@ -827,6 +827,8 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="2384307209577226199">Enterprise default</translation>
 <translation id="5244533701344680487">Update Brave from your Brave settings</translation>
 <translation id="2386255080630008482">Server's certificate has been revoked</translation>
+<translation id="1999573251664171397">Suggested by Gemini · <ph name="SRC_LINK"/>View sources<ph name="END_SRC_LINK"/>
+You can remove this suggestion from Brave. Your original source won't be deleted. <ph name="MANAGE_LINK"/>Manage enhanced autofill<ph name="END_MANAGE_LINK"/></translation>
 <translation id="239203817277685015">Elaborate</translation>
 <translation id="2392959068659972793">Show policies with no value set</translation>
 <translation id="239429038616798445">This delivery method isn’t available. Try a different method.</translation>
@@ -865,6 +867,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="2467272921457885625">Device hardware specifications and statistics such as CPU/RAM utilisation history</translation>
 <translation id="2467421459221956357">Use sensors?</translation>
 <translation id="2467694685043708798"><ph name="BEGIN_LINK"/>Running network diagnostics<ph name="END_LINK"/></translation>
+<translation id="2468247643665097563">Order</translation>
 <translation id="2469153820345007638">1-to-N order</translation>
 <translation id="24699311393038040">Paper (coated)</translation>
 <translation id="2471632709106952369">Comparison tables</translation>
@@ -915,6 +918,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="2544644783021658368">Single document</translation>
 <translation id="5342827302598046226">Set Brave as Default Browser</translation>
 <translation id="2546283357679194313">Cookies and site data</translation>
+<translation id="254672217349157196">Automatically verify your email</translation>
 <translation id="254947805923345898">Policy value is not valid.</translation>
 <translation id="255002559098805027"><ph name="HOST_NAME"/> sent an invalid response.</translation>
 <translation id="2551608178605132291">Address: <ph name="ADDRESS"/>.</translation>
@@ -1072,6 +1076,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="2859806420264540918">This site shows intrusive or misleading ads.</translation>
 <translation id="2873317327342476681">Dino game, tap the dino or press space to play</translation>
 <translation id="287387905105155974">Help bubble</translation>
+<translation id="2111353921621866764">When security events are flagged by Brave, relevant data about the events is sent to your administrator. This can include URLs and titles of pages that you visit in Brave, URLs of pages that you copied data from, file names or metadata, IP addresses, browser or tab crashes, and the username that you use to sign in to web-based applications, your device and Brave.</translation>
 <translation id="1117301625415017890"><ph name="MANAGE_SECURITY_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>; press tab and then Enter to manage your Safe Browsing and more in Brave settings</translation>
 <translation id="2878197950673342043">Poster fold</translation>
 <translation id="2878424575911748999">A1</translation>
@@ -1109,7 +1114,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="2931453528659195355">Manage shopping info</translation>
 <translation id="2933624813161016821">Embossing foil</translation>
 <translation id="2935726091208500473">sharing your tabs</translation>
-<translation id="503249467791680577">Select the promo code field to autofill offers from Brave Wallet</translation>
 <translation id="293796669683825859">Comments</translation>
 <translation id="2938225289965773019">Open <ph name="PROTOCOL"/> links</translation>
 <translation id="2938370569652058706"><ph name="ORIGIN"/> – to show your cursor, switch apps, reload the page or go back</translation>
@@ -1152,6 +1156,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="3008410317623852235">Now you can find and fill info from Gmail and more.</translation>
 <translation id="3009036448238594149"><ph name="ACTION_IN_SUGGEST_FOCUSED_FRIENDLY_MATCH_TEXT"/>, press Tab to browse available actions, then Enter to execute selected action.</translation>
 <translation id="3010991137650052245">To use your <ph name="PERMISSION"/> on this site, give <ph name="SHORT_PRODUCT_NAME"/> access</translation>
+<translation id="3013536714390403689">Verified email</translation>
 <translation id="3014726756341138577">Advanced printer features</translation>
 <translation id="301521992641321250">Automatically blocked</translation>
 <translation id="3016780570757425217">Know your location</translation>
@@ -1393,6 +1398,7 @@ To hide pay later options, go to <ph name="BEGIN_LINK"/>payment settings<ph name
 <translation id="3432601291244612633">Close page</translation>
 <translation id="3044702330949941099">Brave Password Manager needs more access</translation>
 <translation id="343474037147570563">Files you upload or attach are sent to Google Cloud or third parties for analysis. For example, they might be scanned for sensitive data or malware and might be stored based on company policies and visible to your administrator.</translation>
+<translation id="3435267628744367511">Press Ctrl twice in any form to find and fill info without switching tabs</translation>
 <translation id="3435557549311968410">Continuous (short)</translation>
 <translation id="3435738964857648380">Security</translation>
 <translation id="3436125638121079308">Automatically share relevant tabs for better responses in this thread?</translation>
@@ -1479,6 +1485,8 @@ To hide pay later options, go to <ph name="BEGIN_LINK"/>payment settings<ph name
 <translation id="3577473026931028326">Something went wrong. Try again.</translation>
 <translation id="3580550219062570293"><ph name="TOS_TITLE"/> <ph name="LOGO_DESCRIPTION"/></translation>
 <translation id="230476913390177517">Brave will let you know when this page is ready. &lt;a&gt;Cancel&lt;/a&gt;</translation>
+<translation id="3581499772329034229">Automatically add tabs</translation>
+<translation id="3582670569275100909">Deliveries</translation>
 <translation id="3582930987043644930">Add name</translation>
 <translation id="3583757800736429874">&amp;Redo Move</translation>
 <translation id="3584299510153766161">Dual punch bottom</translation>
@@ -1512,6 +1520,7 @@ To hide pay later options, go to <ph name="BEGIN_LINK"/>payment settings<ph name
 <translation id="3632892046558972264">Screen share paused</translation>
 <translation id="3634530185120165534">Tray 5</translation>
 <translation id="3638102297696182302">Resume Help me write. Tab and press enter to open</translation>
+<translation id="5522999398661802511">This IBAN is saved in Brave Wallet so that you can use it across Brave products.</translation>
 <translation id="3642196846309122856">Try downloading your files again</translation>
 <translation id="3642638418806704195">Application:</translation>
 <translation id="3647286794400715637">Each URL string entry must contain between 1 and 2 URLs.</translation>
@@ -1524,7 +1533,6 @@ To hide pay later options, go to <ph name="BEGIN_LINK"/>payment settings<ph name
 <translation id="3655670868607891010">If you're seeing this frequently, try these <ph name="HELP_LINK"/>.</translation>
 <translation id="3658742229777143148">Revision</translation>
 <translation id="3659521826520353662">Which administrator-defined websites are visited and when: <ph name="ALLOWLISTED_WEBSITES"/></translation>
-<translation id="4298771595289948957">This IBAN is saved in Brave Wallet so that you can use it across Brave services.</translation>
 <translation id="3664479564786885722">Search more buying options from other shops that sell this product.</translation>
 <translation id="3664782872746246217">Keywords:</translation>
 <translation id="3670030362669914947">Number</translation>
@@ -1552,11 +1560,13 @@ To hide pay later options, go to <ph name="BEGIN_LINK"/>payment settings<ph name
 <translation id="3705189812819839667"><ph name="RESULT_OWNER"/> – <ph name="RESULT_PRODUCT_SOURCE"/></translation>
 <translation id="370665806235115550">Loading...</translation>
 <translation id="3709599264800900598">Text that you copied</translation>
+<translation id="3711223220609269738">New isolated tab</translation>
 <translation id="450379565246785127">Brave browser is trying to show passwords</translation>
 <translation id="3711895659073496551">Suspend</translation>
 <translation id="3712004750972384495">Saving screen recording</translation>
 <translation id="3712006010833051684">Envelope no.10</translation>
 <translation id="3712624925041724820">Licenses exhausted</translation>
+<translation id="371302509916403935">Underline</translation>
 <translation id="3713277100229669269">Now you can see card benefits before you pay</translation>
 <translation id="3714633008798122362">web calendar</translation>
 <translation id="3714780639079136834">Turning on mobile data or Wi-Fi</translation>
@@ -1569,6 +1579,7 @@ To hide pay later options, go to <ph name="BEGIN_LINK"/>payment settings<ph name
 <translation id="3727309136762649052">Namespace</translation>
 <translation id="8077319455765501118">To use Brave Password Manager with macOS Keychain, relaunch Brave and allow Keychain access. Your tabs will reopen after relaunching.</translation>
 <translation id="2967969024210491578">Brave browser will no longer require your fingerprint to autofill passwords</translation>
+<translation id="3729811201279509483">Manually add tabs</translation>
 <translation id="8656776619448807468">Brave browser is trying to fill your sensitive info on <ph name="APP_NAME"/>.</translation>
 <translation id="3738166223076830879">Your browser is managed by your administrator.</translation>
 <translation id="3739842843727261045">Thumbs up submits feedback that you like these results</translation>
@@ -1885,6 +1896,7 @@ To hide pay later options, go to <ph name="BEGIN_LINK"/>payment settings<ph name
 <translation id="4265635050210404830">Your loyalty cards</translation>
 <translation id="4265872034478892965">Allowed by your administrator</translation>
 <translation id="7044970527849636581">To get your history from your other devices, sign in and sync history. You'll also get your passwords and more on all your devices. You can stop syncing at any time in Settings. Brave may personalise Search and other services based on your history.</translation>
+<translation id="4267837382000002014">URLs and titles of pages that you visit are sent to Google Cloud or third parties for analysis, and may be visible to your administrator. For example, they might be scanned to detect unsafe websites or filter websites based on rules set by the administrator.</translation>
 <translation id="4268025649754414643">Key Encipherment</translation>
 <translation id="4269599248168651462">The server certificate is issued to a non-unique name.</translation>
 <translation id="4270541775497538019">Stacker 6</translation>
@@ -1958,7 +1970,6 @@ To hide pay later options, go to <ph name="BEGIN_LINK"/>payment settings<ph name
 <translation id="4377869186417956230">Change to all loyalty cards under this menu item.</translation>
 <translation id="4378154925671717803">Phone</translation>
 <translation id="4378221908737133050">Make a deep-clean checklist for my home</translation>
-<translation id="4379357028567121852">From <ph name="APP_NAME"/></translation>
 <translation id="4381997246130185847">You can pick up where you left off or create new tab groups on the go</translation>
 <translation id="4382484599443659549">PDF</translation>
 <translation id="4382833368532556056">From now on, save your files to cloud storage</translation>
@@ -2153,6 +2164,7 @@ To hide pay later options, go to <ph name="BEGIN_LINK"/>payment settings<ph name
 <translation id="4750917950439032686">Your information (for example, passwords or credit card numbers) is private when it is sent to this site.</translation>
 <translation id="4754461935447132332">Not allowed for non-secure sites</translation>
 <translation id="4756501505996488486">PRC 16K</translation>
+<translation id="4757119894147311267">Select the promo code field to view and fill your saved offers</translation>
 <translation id="4757740693289347881">Code is invalid</translation>
 <translation id="1015173303159845845">You just entered your password on a deceptive site. To secure your accounts, Brave recommends checking your saved passwords.</translation>
 <translation id="4758311279753947758">Add contact info</translation>
@@ -2338,7 +2350,6 @@ To hide pay later options, go to <ph name="BEGIN_LINK"/>payment settings<ph name
 <translation id="5052488928733955073">Trouble filling in your info. Check your connection.</translation>
 <translation id="4845759156174221500">A virtual card number will be filled when you check out with this card to protect your actual details. Manage in Brave Wallet. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="5056425809654826431">{NUM_FILES,plural, =1{To send this file using Nearby Share, free up space (<ph name="DISK_SPACE_SIZE"/>) on your device}other{To send these files using Nearby Share, free up space (<ph name="DISK_SPACE_SIZE"/>) on your device}}</translation>
-<translation id="5056587122125565772">Create image</translation>
 <translation id="505757197798929356">Provide reason for opening (required)</translation>
 <translation id="5058282932481719070">learn more about enhanced autofill in settings</translation>
 <translation id="5061227663725596739">Did you mean <ph name="LOOKALIKE_DOMAIN"/>?</translation>
@@ -2548,7 +2559,6 @@ To hide pay later options, go to <ph name="BEGIN_LINK"/>payment settings<ph name
 <translation id="5414306071315087019">Buy now, pay later is available with Google Pay</translation>
 <translation id="5414446060143308245">Review is required before transferring</translation>
 <translation id="5414511064953050917">Move anyway</translation>
-<translation id="5418700249417444482">URLs of pages that you visit are sent to Google Cloud or third parties for analysis, and may be visible to your administrator. For example, they might be scanned to detect unsafe websites or filter websites based on rules set by the administrator.</translation>
 <translation id="5419311651396341287">Your administrator may be able to view:</translation>
 <translation id="5423269318075950257">Track price</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> wants to send you notifications</translation>
@@ -2569,7 +2579,6 @@ To hide pay later options, go to <ph name="BEGIN_LINK"/>payment settings<ph name
 <translation id="4784093498984929780">Save passport in Brave Wallet</translation>
 <translation id="5447235695608032700">Allow <ph name="SITE"/> to use info they've saved about you</translation>
 <translation id="5447973833955560753">Recovery password</translation>
-<translation id="6108397422772394696">When security events are flagged by Brave, relevant data about the events is sent to your administrator. This can include URLs of pages that you visit in Brave, URLs of pages that you copied data from, file names or metadata, IP addresses, browser or tab crashes, and the username that you use to sign in to web-based applications, your device and Brave.</translation>
 <translation id="5452270690849572955">This <ph name="HOST_NAME"/> page can’t be found</translation>
 <translation id="5452923259299906094">Pay with eWallet and Pix</translation>
 <translation id="5455374756549232013">Bad policy timestamp</translation>
@@ -2701,6 +2710,7 @@ To hide pay later options, go to <ph name="BEGIN_LINK"/>payment settings<ph name
 <translation id="5649053991847567735">Automatic downloads</translation>
 <translation id="5651323159439184939">Tractor feed</translation>
 <translation id="5987316528511737389">Update identity card securely in Brave Wallet</translation>
+<translation id="7288726880908739179">Save your info and get things done faster, like filling forms across Brave products. You can <ph name="MANAGE_WALLET_SETTINGS_LINK"/> for <ph name="ACCOUNT"/>.</translation>
 <translation id="5654927323611874862">Uploaded crash report ID:</translation>
 <translation id="5654965123204121933">URL doesn't include required replacement string <ph name="SEARCH_TERMS_REPLACEMENT"/>: <ph name="SEARCH_URL"/></translation>
 <translation id="5659593005791499971">Email</translation>
@@ -2824,6 +2834,7 @@ To hide pay later options, go to <ph name="BEGIN_LINK"/>payment settings<ph name
 <translation id="5884465125445718607">Envelope Chinese no.6</translation>
 <translation id="5887400589839399685">Card saved</translation>
 <translation id="5887687176710214216">Last visited yesterday</translation>
+<translation id="5887791684215121787">Press ⌘ ⌘ in any form to find and fill info without switching tabs</translation>
 <translation id="4104845878245066653">To get your history from your other devices, verify that it's you and sync your history and tabs. You can stop syncing at any time in Settings. Brave may personalise Search and other services based on your history.</translation>
 <translation id="5895138241574237353">Restart</translation>
 <translation id="5895187275912066135">Issued On</translation>
@@ -3082,6 +3093,7 @@ To hide pay later options, go to <ph name="BEGIN_LINK"/>payment settings<ph name
 <translation id="7867333304076398451">This site will remain blocked because you are under Brave's Advanced Protection Programme. <ph name="BEGIN_LEARN_MORE_LINK"/>Learn more about this warning<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="6321917430147971392">Check your DNS settings</translation>
 <translation id="6322182122604171028">Couldn't use Windows Hello</translation>
+<translation id="5267531627648004734">Remove from Brave</translation>
 <translation id="7962450223988560278">Set Brave as the system's default browser in iOS settings</translation>
 <translation id="6328639280570009161">Try disabling network prediction</translation>
 <translation id="2992154309947281535">To autofill your info, turn on 'Use passes across Brave' in Wallet settings</translation>
@@ -3111,7 +3123,6 @@ To hide pay later options, go to <ph name="BEGIN_LINK"/>payment settings<ph name
 <translation id="6361757823711327522">B7</translation>
 <translation id="6363786367719063276">View logs</translation>
 <translation id="6364095313648930329"><ph name="BEGIN_LINK"/>Checking the proxy, firewall and secure DNS configuration<ph name="END_LINK"/></translation>
-<translation id="6365513578140103119">Automatically confirm your emails</translation>
 <translation id="6366710531182496394">Dual staple left</translation>
 <translation id="6367196786591004737">Delete entry</translation>
 <translation id="6370022303958842211">Device access actions such as logins (including failed login reasons), logouts, locks and unlocks</translation>
@@ -3144,6 +3155,7 @@ To hide pay later options, go to <ph name="BEGIN_LINK"/>payment settings<ph name
 <translation id="6410264514553301377">Enter the expiry date and CVC for <ph name="CREDIT_CARD"/></translation>
 <translation id="6411107829285739505">A4 x 8</translation>
 <translation id="6412543105195503444">Parent approval dialogue</translation>
+<translation id="6413532517183895572">manage your Wallet settings</translation>
 <translation id="6416877227920300343">EDP</translation>
 <translation id="6418199314628742460">Make sure that any critical business or personal data is stored externally.</translation>
 <translation id="4561848316196784217">Update vehicle securely in Brave Wallet</translation>
@@ -3235,6 +3247,7 @@ To hide pay later options, go to <ph name="BEGIN_LINK"/>payment settings<ph name
 <translation id="6578434528542148658">Invalid extension ID.</translation>
 <translation id="3157702622633401823">Attackers on the site that you tried visiting might install harmful software that steals or deletes things like your passwords, photos, messages or credit card numbers. Brave strongly recommends going back to safety. <ph name="BEGIN_LEARN_MORE_LINK"/>Learn more about this warning<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2571911185264872034">Stored in Brave Wallet</translation>
+<translation id="4503563163243322840">This card is saved in Brave Wallet so that you can use it across Brave products</translation>
 <translation id="6587893660316489419">Envelope B5</translation>
 <translation id="6587923378399804057">Link that you copied</translation>
 <translation id="6591833882275308647">Your <ph name="DEVICE_TYPE"/> is not managed</translation>
@@ -3761,6 +3774,7 @@ Additional details:
 <translation id="7514365320538308">Download</translation>
 <translation id="7515998400212163428">Android</translation>
 <translation id="7516123895971374904">VR allowed this time</translation>
+<translation id="7517198908921983825">Suggested by Gemini · <ph name="SOURCES"/></translation>
 <translation id="7517414872996418597">Envelope C10</translation>
 <translation id="7518003948725431193">No web page was found for the web address: <ph name="URL"/></translation>
 <translation id="7521387064766892559">JavaScript</translation>
@@ -3825,7 +3839,6 @@ Additional details:
 <translation id="7615932826417658001">Add identity card</translation>
 <translation id="7616390733770379387">These are shown in random order.</translation>
 <translation id="8565825862287624454">Your administrator has turned on Brave Enterprise Connectors on your browser. These connectors have access to some of your data.</translation>
-<translation id="6114261010694947707">This card is saved in Brave Wallet so that you can use it across Brave services</translation>
 <translation id="7617825962482469577">Envelope C7/C6</translation>
 <translation id="7619838219691048931">End sheet</translation>
 <translation id="7621546470643449009">Create a beginner's guide to stargazing to help me learn what to look for in the night sky, including 3 easily identifiable constellations</translation>
@@ -3916,6 +3929,7 @@ Additional details:
 <translation id="7758069387465995638">Firewall or antivirus software may have blocked the connection.</translation>
 <translation id="7759147511335618829">MIDI device control and reprogramming</translation>
 <translation id="7759809451544302770">Optional</translation>
+<translation id="7760566304700414795">Delivery</translation>
 <translation id="776110834126722255">Deprecated</translation>
 <translation id="7761159795823346334">Allow camera?</translation>
 <translation id="7761701407923456692">Server's certificate does not match the URL.</translation>
@@ -4129,7 +4143,6 @@ Additional details:
 <translation id="208389643640023363">Info from your Brave sync chain <ph name="ACCOUNT"/> can help you fill in forms faster in Brave</translation>
 <translation id="8150722005171944719">The file at <ph name="URL"/> is not readable.  It may have been removed, moved or file permissions may be preventing access.</translation>
 <translation id="8151185429379586178">Developer tools</translation>
-<translation id="8152194419479742504">Type @@ in any form to find and fill info without switching tabs</translation>
 <translation id="8153865548451212769">{0,plural, =1{Administrator policy doesn’t recommend downloading this file to <ph name="DESTINATION_NAME"/>}other{Administrator policy doesn’t recommend downloading these files to <ph name="DESTINATION_NAME"/>}}</translation>
 <translation id="8155253549374198915">Last open tabs</translation>
 <translation id="7904243652775639741">Brave has built-in safety features to protect you while you browse, like Google Safe Browsing, which <ph name="BEGIN_LINK"/>recently found malware<ph name="END_LINK"/> on the site that you tried visiting.</translation>
@@ -4192,6 +4205,7 @@ Additional details:
 <translation id="8269242089528251720">Separate documents/Collated copies</translation>
 <translation id="8269703227894255363">{0,plural, =1{File blocked from opening}other{<ph name="FILE_COUNT"/> files blocked from opening}}</translation>
 <translation id="8270242299912238708">PDF documents</translation>
+<translation id="8270320981823560179">Drive</translation>
 <translation id="8277900682056760511">Payment handler sheet is opened</translation>
 <translation id="827820107214076967">Refresh logs</translation>
 <translation id="2164614088382669062">Brave notifications must be on. You can turn them on in <ph name="BEGIN_LINK"/><ph name="NOTIFICATION_SETTINGS"/><ph name="END_LINK"/>.</translation>
@@ -4260,6 +4274,7 @@ Additional details:
 <translation id="8371841335382565017">Show device list for casting</translation>
 <translation id="8371889962595521444">Custom root certificates</translation>
 <translation id="8374636051559112948">Varies</translation>
+<translation id="8377507422902936905">Orders</translation>
 <translation id="837840316697671463">If you can't find a file on your device, look for it on <ph name="CLOUD_PROVIDER"/>.</translation>
 <translation id="8378714024927312812">Managed by your organisation</translation>
 <translation id="8380941800586852976">Dangerous</translation>
@@ -4569,7 +4584,6 @@ Additional details:
 <translation id="8963117664422609631">Go to site settings</translation>
 <translation id="8963213021028234748"><ph name="MARKUP_1"/>Suggestions:<ph name="MARKUP_2"/>Make sure that you have a data connection<ph name="MARKUP_3"/>Reload this web page later<ph name="MARKUP_4"/>Check the address that you entered<ph name="MARKUP_5"/></translation>
 <translation id="8963969435440878110">Your local files will be deleted in <ph name="HOURS"/> hours</translation>
-<translation id="8964904785315870349">Verified email</translation>
 <translation id="8968766641738584599">Save card</translation>
 <translation id="8970887620466824814">Something went wrong.</translation>
 <translation id="8971063699422889582">Server's certificate has expired.</translation>

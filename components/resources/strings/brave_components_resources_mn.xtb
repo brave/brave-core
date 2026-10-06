@@ -1732,6 +1732,9 @@
 <translation id="2077392865355605472">Токены тэмдэгт шаардлагатай</translation>
 <translation id="4636925020451566238">Токены нарийвчлалын утга шаардлагатай</translation>
 <translation id="3797613444743816037">Гэрээний хаяг</translation>
+<translation id="6571966497164575098">Хөрөнгийн ID</translation>
+<translation id="2110442566771571217">Хөрөнгийн ID буруу эсвэл хоосон байна</translation>
+<translation id="4170599358417498979">Энэ сүлжээнд захиалгат хөрөнгө дэмжигдэхгүй байна</translation>
 <translation id="7951915459354237451">Төлбөрийн хязгаар үндсэн төлбөрөөс доогуур байна. Таны гүйлгээ амжилтгүй эсвэл удаан үргэлжилж магадгүй.</translation>
 <translation id="2227702748249086756">Төлбөрийн урьдчилсан тооцооллыг татаж чадсангүй</translation>
 <translation id="3225624966527491351">NFT импортлох</translation>
@@ -2018,7 +2021,7 @@
 <translation id="418195046117003119">Хуваалцах төвийн дэлгэцийн зураг авах</translation>
 <translation id="4712056949543885424">Нууц үгийн менежерийг харуулах</translation>
 <translation id="8037472847879765671">Төлбөрийн аргуудыг харуулах</translation>
-<translation id="7269867954894010756">Хаягуудыг харуулах</translation>
+<translation id="6262574309547773475">Холбоо барих мэдээллийг харуулах</translation>
 <translation id="6799213269525079335">Дараагийнхийг хайх</translation>
 <translation id="8666632926482119393">Өмнөхийг хайх</translation>
 <translation id="3567467864281922039">Хайлт эсвэл зогсоохыг хаах</translation>
@@ -2147,6 +2150,7 @@
 <translation id="3142853026316054951">Анхаарал төвлөрөх горимыг асаах/унтраах</translation>
 <translation id="3468387898712904997">Шинэ нууц хаягнуудын нэрс</translation>
 <translation id="4711475997833555304">Таны хайрцаг руу дамжуулах санамсаргүй имэйл үүсгэнэ үү.</translation>
+<translation id="5663901348199429994">Таны Цахим шуудангийн нууц нэрүүд</translation>
 <translation id="2796584247246518451">Шинэ түр зуурын багц</translation>
 <translation id="8591883849678260674">Эх хуудсыг харах</translation>
 <translation id="1969654232209826429">мин. унших</translation>
@@ -2211,6 +2215,7 @@
 <translation id="9215978379284690246">Статусын код: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Статусын код: <ph name="STATUS_CODE"/>, дотоод статусын код: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Та Premium хэрэглээний хязгаарт хүрсэн байна. Дахин хэдэн цагийн дараа оролдоно уу.</translation>
+<translation id="6873128487002733717">Та энэ моделийн премиум хязгаарт хүрсэн байна. Өөр модель сонгох эсвэл дараа дахин оролдоно уу.</translation>
 <translation id="3683964919745779766">Та энэ моделины хэрэглээний хязгаарт хүрсэн эсвэл кредит дууссан байна. Дараа дахин оролдоно уу.</translation>
 <translation id="7692501701960747469">Энэ моделины тохируулсан API түлхүүр худлаа байна. Тохиргоогоо шалгаж, дахин оролдоно уу.</translation>
 <translation id="7905602379229309187">Мэдээллийн үйлчилгээ хэт их ачаалалтай байна. Дараа дахин оролдоно уу.</translation>
@@ -2390,6 +2395,9 @@
 <translation id="5021823940147712387">Хэрэгслүүдийг устгах</translation>
 <translation id="8712279871321308580">Боломжит вэбсайтын хэрэгслүүд</translation>
 <translation id="3690996226559605619">Боломжит хэрэгслүүд (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Энэ сешнд зөвшөөрөх</translation>
+<translation id="6240821072888636753">Тухай бүрд асуух</translation>
+<translation id="4290920330097335010">Хэзээ ч бүү зөвшөөр</translation>
 <translation id="318819763888864209">Бүх захиалга автоматаар сунгагддаг ч  сунгагдахаас өмнө хэзээ ч цуцлах боломжтой.</translation>
 <translation id="5091223967610958">Та үзэж буй хуудсынхаа нэрийг (<ph name="HOST_NAME"/>) хуваалцаж, Леог илүү сайжруулахад тусал.</translation>
 <translation id="8732450785281947197">Лео AI хэрэгслүүд</translation>
@@ -2464,7 +2472,7 @@
 <translation id="6077070599873946984">Brave AI дараах зүйлд танд зөвшөөрөл хэрэгтэй байна: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI **<ph name="SITE_ORIGIN"/>** дээр **<ph name="TOOL_NAME"/>**-г ажиллуулахыг хүсэж байна</translation>
 <translation id="4163837693685963037">Энэ үйлдэл нь таны хүсэлттэй тохирохгүй байж болзошгүй гэж илэрсэн:</translation>
-<translation id="5137568953923142260">Зөвшөөрөх</translation>
+<translation id="5137568953923142260">Нэг удаа зөвшөөрөх</translation>
 <translation id="3927932062596804919">Татгалзах</translation>
 <translation id="4191349941249805855">Хэрэгслийн аргументуудыг харуулах</translation>
 <translation id="7237059533128264835">Хэрэгслийн аргументуудыг нуух</translation>
@@ -2511,7 +2519,6 @@
 <translation id="6002159997868894136">Нууц нэрийг хуулбарлахын тулд товшино уу</translation>
 <translation id="8105770564756958406"><ph name="DOMAINS"/> дээр ашиглагдсан;</translation>
 <translation id="5006956315579221642">5 хүртэлх нууц хаяг үнэгүй үүсгэж, жинхэнэ мэйл хаягаа хамгаалаарай.</translation>
-<translation id="5663901348199429994">Таны Цахим шуудангийн нууц нэрүүд</translation>
 <translation id="9046133327037621173">Шинэ нууц хаягнуудын нэрс</translation>
 <translation id="3768606658230902536">Хувийн цахим шууданг нууцлан таны ирсэн мэйлийн хайрцаг руу чиглүүлдэг санамсаргүй нэр үүсгээрэй.</translation>
 <translation id="4452721050684632493">Алиасын хязгаарт хүрсэн</translation>
@@ -2941,7 +2948,9 @@ Brave нь DNS хайлтын баталгаажуулалтыг хамгаал�
 <translation id="4227581348172626540">Нууц үг өөрчлөхийг цуцлах</translation>
 <translation id="808894953321890993">Нууц үг өөрчлөх</translation>
 <translation id="7967687455715421528">Нууц үг өөрчлөх боломжгүй</translation>
+<translation id="7413006094063730650">Бүртгэл устгах</translation>
 <translation id="4869737930995549965">Гарах</translation>
+<translation id="2902312830803030883">Илүү олон үйлдэл</translation>
 <translation id="5538654494923870167">Brave бүртгэлээ ашиглаж эхлэх</translation>
 <translation id="1544145635547515689">Brave бүртгэл үүсгэх</translation>
 <translation id="3828644479849256404">Бүртгэлтэй юу? Нэвтрэх</translation>
@@ -2966,6 +2975,11 @@ Brave нь DNS хайлтын баталгаажуулалтыг хамгаал�
 <translation id="7228810962389847249">Кодыг энд оруулна уу</translation>
 <translation id="4683390091376980486">Кодыг баталгаажуулах</translation>
 <translation id="3970028678400797622">Имэйл кодыг дахин илгээх</translation>
+<translation id="3653907916071208187">Brave бүртгэлээ устгах уу?</translation>
+<translation id="8216839865292766307">Brave бүртгэлийг устгахад түүний имэйл alias-ууд мөн устана. Та alias ашиглан бүртгүүлсэн онлайн үйлчилгээндээ хандах эрхээ алдаж болзошгүй. Энэ үйлдлийг буцаах боломжгүй.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">Бүртгэл устгахыг идэвхжүүлэхийн тулд <ph name="KEYWORD"/> гэж бичнэ үү</translation>
+<translation id="536306385881145656">Brave бүртгэл устгах</translation>
 <translation id="2475982808118771221">Алдаа гарлаа</translation>
 <translation id="5430795854491041407">алдаа</translation>
 <translation id="2232323423357029857">Хөтчид санаандгүй алдаа гарлаа<ph name="ERROR_CODE"/>. Хөтчөө дахин эхлүүлж, дахин оролдоно уу.</translation>
@@ -2998,4 +3012,10 @@ Brave нь DNS хайлтын баталгаажуулалтыг хамгаал�
 <translation id="1063227610401477317">Өөрчлөлтийг хэрэгжүүлэх</translation>
 <translation id="5539769255716491933">Амжилтгүй алхмуудыг мэдэгдэх</translation>
 <translation id="7562163394445060270">Даалгаврыг гүйцэтгэж чадсангүй</translation>
+<translation id="691082536326552372">Амжилтгүй алхмуудыг мэдэгдэх</translation>
+<translation id="2731141092023803480">Амжилтгүй алхмуудын тайланг Brave багт илгээнэ үү. Энэ тайланд асуудлыг засахад бидэнд шаардлагатай мэдээлэл багтана. <ph name="LINK_BEFORE"/>Дэлгэрэнгүй.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">Одоогийн URL</translation>
+<translation id="4739707522207259415">Амжилтгүй алхам(ууд)</translation>
+<translation id="1767991048059195456">Тайлан илгээх</translation>
+<translation id="2168036794078614559">Тайлан илгээгдсэн</translation>
 </translationbundle>

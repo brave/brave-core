@@ -1733,6 +1733,9 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2077392865355605472">ต้องระบุสัญลักษณ์โทเค็น</translation>
 <translation id="4636925020451566238">ต้องระบุจำนวนหลักทศนิยมของโทเค็น</translation>
 <translation id="3797613444743816037">ที่อยู่การสร้าง</translation>
+<translation id="6571966497164575098">รหัสแอสเซท</translation>
+<translation id="2110442566771571217">รหัสแอสเซทของโทเค็นไม่ถูกต้องหรือว่างเปล่า</translation>
+<translation id="4170599358417498979">เครือข่ายนี้ไม่รองรับสินทรัพย์แบบกำหนดเอง</translation>
 <translation id="7951915459354237451">ขีดจำกัดค่าธรรมเนียมถูกกำหนดไว้ต่ำกว่าค่าธรรมเนียมพื้นฐาน ธุรกรรมของคุณอาจใช้เวลานานหรือล้มเหลว</translation>
 <translation id="2227702748249086756">ไม่สามารถดึงข้อมูลค่าธรรมเนียมโดยประมาณได้</translation>
 <translation id="3225624966527491351">นำเข้า NFT</translation>
@@ -2019,7 +2022,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="418195046117003119">การแชร์ภาพหน้าจอฮับ</translation>
 <translation id="4712056949543885424">แสดงตัวจัดการรหัสผ่าน</translation>
 <translation id="8037472847879765671">แสดงวิธีการชำระเงิน</translation>
-<translation id="7269867954894010756">แสดงที่อยู่</translation>
+<translation id="6262574309547773475">แสดงข้อมูลติดต่อ</translation>
 <translation id="6799213269525079335">ค้นหาถัดไป</translation>
 <translation id="8666632926482119393">ค้นหาก่อนหน้า</translation>
 <translation id="3567467864281922039">ปิดค้นหาหรือหยุด</translation>
@@ -2148,6 +2151,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3142853026316054951">สลับโหมดโฟกัส</translation>
 <translation id="3468387898712904997">นามแฝงอีเมลใหม่</translation>
 <translation id="4711475997833555304">สร้างอีเมลแบบสุ่มที่ส่งต่อไปยังกล่องจดหมายของคุณ</translation>
+<translation id="5663901348199429994">นามแฝงสำหรับอีเมลของคุณ</translation>
 <translation id="2796584247246518451">คอนเทนเนอร์ชั่วคราวใหม่</translation>
 <translation id="8591883849678260674">ดูต้นฉบับ</translation>
 <translation id="1969654232209826429">นาทีในการอ่าน</translation>
@@ -2212,6 +2216,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="9215978379284690246">รหัสสถานะ: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">รหัสสถานะ: <ph name="STATUS_CODE"/>, รหัสสถานะภายใน: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">คุณได้ถึงขีดจำกัดอัตราแบบ Premium แล้วโปรดลองอีกครั้งใน 2-3 ชั่วโมง</translation>
+<translation id="6873128487002733717">คุณถึงขีดจำกัด Premium สำหรับโมเดลนี้แล้ว เลือกโมเดลอื่นหรือลองใหม่ภายหลัง</translation>
 <translation id="3683964919745779766">คุณถึงขีดจำกัดการใช้งานของโมเดลนี้หรือหมดเครดิตแล้ว กรุณาลองใหม่ภายหลัง</translation>
 <translation id="7692501701960747469">คีย์ API ที่ตั้งค่าสำหรับโมเดลนี้ไม่ถูกต้อง กรุณาตรวจสอบการตั้งค่าและลองใหม่อีกครั้ง</translation>
 <translation id="7905602379229309187">ขณะนี้เอนด์พอยต์มีภาระงานมากเกินไป กรุณาลองใหม่ภายหลัง</translation>
@@ -2391,6 +2396,9 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5021823940147712387">นำเครื่องมือออก</translation>
 <translation id="8712279871321308580">เครื่องมือของเว็บไซต์ที่พร้อมใช้งาน</translation>
 <translation id="3690996226559605619">เครื่องมือที่พร้อมใช้งาน (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">อนุญาตสำหรับเซสชันนี้</translation>
+<translation id="6240821072888636753">ถามทุกครั้ง</translation>
+<translation id="4290920330097335010">ไม่อนุญาตเลย</translation>
 <translation id="318819763888864209">การสมัครสมาชิกทั้งหมดจะได้รับการต่ออายุโดยอัตโนมัติ แต่สามารถยกเลิกได้ทุกเมื่อก่อนต่ออายุ</translation>
 <translation id="5091223967610958">แชร์ชื่อโฮสต์ของหน้าที่คุณเปิดอยู่ (<ph name="HOST_NAME"/>) เพื่อช่วยเราทำให้ Leo ดีขึ้น</translation>
 <translation id="8732450785281947197">เครื่องมือ Leo AI</translation>
@@ -2465,7 +2473,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6077070599873946984">Brave AI ต้องการการอนุญาตจากคุณสำหรับ: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI ต้องการดำเนินการ **<ph name="TOOL_NAME"/>** บน **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">ตรวจพบว่าการดำเนินการนี้อาจไม่สอดคล้องกับคำขอของคุณ:</translation>
-<translation id="5137568953923142260">อนุญาต</translation>
+<translation id="5137568953923142260">อนุญาตครั้งเดียว</translation>
 <translation id="3927932062596804919">ปฏิเสธ</translation>
 <translation id="4191349941249805855">แสดงอาร์กิวเมนต์ของเครื่องมือ</translation>
 <translation id="7237059533128264835">ซ่อนอาร์กิวเมนต์ของเครื่องมือ</translation>
@@ -2512,7 +2520,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6002159997868894136">คลิกเพื่อคัดลอกนามแฝง</translation>
 <translation id="8105770564756958406">ใช้งานโดย <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">สร้างนามแฝงสำหรับอีเมลได้สูงสุด 5 รายการฟรี เพื่อป้องกันที่อยู่อีเมลจริงของคุณ</translation>
-<translation id="5663901348199429994">นามแฝงสำหรับอีเมลของคุณ</translation>
 <translation id="9046133327037621173">นามแฝงอีเมลใหม่</translation>
 <translation id="3768606658230902536">สร้างที่อยู่อีเมลแบบสุ่มที่ส่งต่อไปยังกล่องขาเข้าของคุณเพื่อรักษาความเป็นส่วนตัวของอีเมลส่วนตัวของคุณ</translation>
 <translation id="4452721050684632493">ถึงขีดจำกัดของนามแฝงแล้ว</translation>
@@ -2943,7 +2950,9 @@ Brave มีบริการช่วยเหลือที่ปกป้�
 <translation id="4227581348172626540">ยกเลิกการเปลี่ยนรหัสผ่าน</translation>
 <translation id="808894953321890993">เปลี่ยนรหัสผ่าน</translation>
 <translation id="7967687455715421528">ไม่สามารถเปลี่ยนรหัสผ่านได้</translation>
+<translation id="7413006094063730650">ลบบัญชี</translation>
 <translation id="4869737930995549965">ออกจากระบบ</translation>
+<translation id="2902312830803030883">การกระทำเพิ่มเติม</translation>
 <translation id="5538654494923870167">เริ่มต้นกับบัญชี Brave ของคุณ</translation>
 <translation id="1544145635547515689">สร้างบัญชี Brave</translation>
 <translation id="3828644479849256404">มีบัญชีอยู่แล้วใช่ไหม ล็อกอิน</translation>
@@ -2968,6 +2977,11 @@ Brave มีบริการช่วยเหลือที่ปกป้�
 <translation id="7228810962389847249">ป้อนรหัสที่นี่</translation>
 <translation id="4683390091376980486">ยืนยันรหัส</translation>
 <translation id="3970028678400797622">ส่งรหัสอีเมลอีกครั้ง</translation>
+<translation id="3653907916071208187">ลบบัญชี Brave ของคุณหรือไม่?</translation>
+<translation id="8216839865292766307">การลบบัญชี Brave จะลบอีเมลนามแฝงของบัญชีนั้นด้วย คุณอาจสูญเสียการเข้าถึงบริการออนไลน์ที่คุณใช้นามแฝงในการลงทะเบียน การกระทำนี้ไม่สามารถยกเลิกได้</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">พิมพ์ <ph name="KEYWORD"/> เพื่อเปิดใช้งานการลบบัญชี</translation>
+<translation id="536306385881145656">ลบบัญชี Brave</translation>
 <translation id="2475982808118771221">เกิดข้อผิดพลาด</translation>
 <translation id="5430795854491041407">ข้อผิดพลาด</translation>
 <translation id="2232323423357029857">เบราว์เซอร์พบข้อผิดพลาดที่ไม่คาดคิด<ph name="ERROR_CODE"/> กรุณารีสตาร์ทเบราว์เซอร์และลองอีกครั้ง</translation>
@@ -3000,4 +3014,10 @@ Brave มีบริการช่วยเหลือที่ปกป้�
 <translation id="1063227610401477317">ใช้การเปลี่ยนแปลง</translation>
 <translation id="5539769255716491933">รายงานขั้นตอนที่ล้มเหลว</translation>
 <translation id="7562163394445060270">ไม่สามารถทำงานให้เสร็จสมบูรณ์</translation>
+<translation id="691082536326552372">รายงานขั้นตอนที่ล้มเหลว</translation>
+<translation id="2731141092023803480">ส่งรายงานขั้นตอนที่ล้มเหลวไปยังทีมงาน Brave รายงานนี้จะมีข้อมูลที่จำเป็นสำหรับเราในการแก้ไขปัญหา <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">URL ปัจจุบัน</translation>
+<translation id="4739707522207259415">ขั้นตอนที่ล้มเหลว</translation>
+<translation id="1767991048059195456">ส่งรายงาน</translation>
+<translation id="2168036794078614559">ส่งรายงานแล้ว</translation>
 </translationbundle>

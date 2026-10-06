@@ -1732,6 +1732,9 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="2077392865355605472">Необходим е символът на жетона</translation>
 <translation id="4636925020451566238">Необходима е стойността на жетона с десетична точност</translation>
 <translation id="3797613444743816037">Адрес за монетосечене</translation>
+<translation id="6571966497164575098">ID на актив</translation>
+<translation id="2110442566771571217">Невалиден или празен ID на актив за жетона</translation>
+<translation id="4170599358417498979">Персонализираните активи не се поддържат в тази мрежа</translation>
 <translation id="7951915459354237451">Лимитът на таксата е зададен по-ниско от базовата такса. Трансакцията ви може да отнеме много време или да бъде неуспешна.</translation>
 <translation id="2227702748249086756">Неуспешно извличане на оценка за таксите</translation>
 <translation id="3225624966527491351">Импортирай NFT</translation>
@@ -2018,7 +2021,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="418195046117003119">Екранна снимка на платформата за споделяне</translation>
 <translation id="4712056949543885424">Показване на мениджъра на пароли</translation>
 <translation id="8037472847879765671">Показване на начините на плащане</translation>
-<translation id="7269867954894010756">Показване на адресите</translation>
+<translation id="6262574309547773475">Показване на информацията за контакт</translation>
 <translation id="6799213269525079335">Намерете следващ</translation>
 <translation id="8666632926482119393">Намерете предишен</translation>
 <translation id="3567467864281922039">Затваряне на намиране или спиране</translation>
@@ -2147,6 +2150,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="3142853026316054951">Превключване на режима на фокус</translation>
 <translation id="3468387898712904997">Нов имейл псевдоним</translation>
 <translation id="4711475997833555304">Създайте случаен имейл, който препраща към входящата ви поща.</translation>
+<translation id="5663901348199429994">Твоите имейл псевдоними</translation>
 <translation id="2796584247246518451">Нов временен контейнер</translation>
 <translation id="8591883849678260674">Вижте оригинала</translation>
 <translation id="1969654232209826429">мин. четене</translation>
@@ -2211,6 +2215,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="9215978379284690246">Код на състоянието: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Код на състоянието: <ph name="STATUS_CODE"/>, вътрешен код на състоянието: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Достигнахте лимита за оценка за premium. Моля, опитайте отново след няколко часа.</translation>
+<translation id="6873128487002733717">Достигнал си премиум лимита за този модел. Избери различен модел или опитай отново по-късно.</translation>
 <translation id="3683964919745779766">Достигнал си лимита на тарифата за този модел или си изчерпал своя кредит. Моля, опитай отново по-късно.</translation>
 <translation id="7692501701960747469">Конфигурираният за този модел API ключ е невалиден. Моля, провери конфигурацията си и опитай отново.</translation>
 <translation id="7905602379229309187">Крайното устройство в момента е претоварено. Моля, опитай отново по-късно.</translation>
@@ -2390,6 +2395,9 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="5021823940147712387">Премахване на инструментите</translation>
 <translation id="8712279871321308580">Налични инструменти на уебсайта</translation>
 <translation id="3690996226559605619">Налични инструменти (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Разрешаване за тази сесия</translation>
+<translation id="6240821072888636753">Питай всеки път</translation>
+<translation id="4290920330097335010">Никога не разрешавай</translation>
 <translation id="318819763888864209">Всички абонаменти се подновяват автоматично, но могат да бъдат отказани по всяко време преди подновяването.</translation>
 <translation id="5091223967610958">Споделете името на хоста на страницата, на която се намирате (<ph name="HOST_NAME"/>), за да ни помогнете да направим Лео по-добър.</translation>
 <translation id="8732450785281947197">ИИ Инструменти от Лео</translation>
@@ -2464,7 +2472,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="6077070599873946984">Brave AI изисква вашето разрешение за: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI би искал да изпълни **<ph name="TOOL_NAME"/>** на **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Операцията е разпозната като потенциално неотговаряща на вашето запитване:</translation>
-<translation id="5137568953923142260">Разрешаване</translation>
+<translation id="5137568953923142260">Разрешаване веднъж</translation>
 <translation id="3927932062596804919">Отказ</translation>
 <translation id="4191349941249805855">Показване на аргументите на инструмента</translation>
 <translation id="7237059533128264835">Скриване на аргументите на инструмента</translation>
@@ -2511,7 +2519,6 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="6002159997868894136">Кликни, за да копираш псевдонима</translation>
 <translation id="8105770564756958406">Използва се от <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Създай до 5 безплатни имейл псевдонима, за да защитиш истинския си имейл адрес.</translation>
-<translation id="5663901348199429994">Твоите имейл псевдоними</translation>
 <translation id="9046133327037621173">Нов имейл псевдоним</translation>
 <translation id="3768606658230902536">Създава произволен имейл адрес, който се препраща към твоята поща, като същевременно запазва личния ти имейл в тайна.</translation>
 <translation id="4452721050684632493">Достигнат лимит за псевдоними</translation>
@@ -2942,7 +2949,9 @@ Brave има помощна услуга, която Ви защитава от 
 <translation id="4227581348172626540">Отказ от промяна на паролата</translation>
 <translation id="808894953321890993">Промяна на паролата</translation>
 <translation id="7967687455715421528">Не може да се промени паролата</translation>
+<translation id="7413006094063730650">Изтриване на акаунт</translation>
 <translation id="4869737930995549965">Изход</translation>
+<translation id="2902312830803030883">Още действия</translation>
 <translation id="5538654494923870167">Започнете с вашия акаунт в Brave</translation>
 <translation id="1544145635547515689">Създаване на акаунт в Brave</translation>
 <translation id="3828644479849256404">Вече имате акаунт? Влезте</translation>
@@ -2967,6 +2976,11 @@ Brave има помощна услуга, която Ви защитава от 
 <translation id="7228810962389847249">Въведете кода тук</translation>
 <translation id="4683390091376980486">Потвърдете кода</translation>
 <translation id="3970028678400797622">Изпрати повторно кода</translation>
+<translation id="3653907916071208187">Изтриване на твоя акаунт в Brave?</translation>
+<translation id="8216839865292766307">Изтриването на акаунт в Brave ще изтрие и неговите имейл псевдоними. Може да загубиш достъп до онлайн услуги, за които си използвал псевдоним при регистрация. Това действие не може да бъде отменено.</translation>
+<translation id="3672274694560812974">ИЗТРИЙ</translation>
+<translation id="1886662169666501462">Въведи <ph name="KEYWORD"/>, за да активираш изтриването на акаунта</translation>
+<translation id="536306385881145656">Изтриване на акаунт в Brave</translation>
 <translation id="2475982808118771221">Възникна грешка</translation>
 <translation id="5430795854491041407">грешка</translation>
 <translation id="2232323423357029857">Браузърът срещна неочаквана грешка<ph name="ERROR_CODE"/>. Моля, рестартирайте браузъра и опитайте отново.</translation>
@@ -2999,4 +3013,10 @@ Brave има помощна услуга, която Ви защитава от 
 <translation id="1063227610401477317">Приложете промените</translation>
 <translation id="5539769255716491933">Докладване на неуспешни стъпки</translation>
 <translation id="7562163394445060270">Завършването на задачата е неуспешно</translation>
+<translation id="691082536326552372">Докладване на неуспешни стъпки</translation>
+<translation id="2731141092023803480">Изпрати доклад за неуспешните стъпки до екипа на Brave. Този доклад ще съдържа информацията, необходима, за да отстраним проблема. <ph name="LINK_BEFORE"/>Научи повече.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">Текущ URL адрес</translation>
+<translation id="4739707522207259415">Неуспешни стъпки</translation>
+<translation id="1767991048059195456">Изпращане на доклад</translation>
+<translation id="2168036794078614559">Докладът е изпратен</translation>
 </translationbundle>

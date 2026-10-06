@@ -1732,6 +1732,9 @@
 <translation id="2077392865355605472">Token symbol is required</translation>
 <translation id="4636925020451566238">Token decimals of precision value is required</translation>
 <translation id="3797613444743816037">Mint address</translation>
+<translation id="6571966497164575098">Asset ID</translation>
+<translation id="2110442566771571217">Invalid or empty token asset ID</translation>
+<translation id="4170599358417498979">Custom assets aren't supported on this network</translation>
 <translation id="7951915459354237451">Fee limit is set lower than the base fee. Your transaction may take a long time or fail.</translation>
 <translation id="2227702748249086756">Unable to fetch fee estimates</translation>
 <translation id="3225624966527491351">Import NFT</translation>
@@ -2018,7 +2021,7 @@
 <translation id="418195046117003119">Sharing hub screenshot</translation>
 <translation id="4712056949543885424">Show password manager</translation>
 <translation id="8037472847879765671">Show payment methods</translation>
-<translation id="7269867954894010756">Show addresses</translation>
+<translation id="6262574309547773475">Show contact info</translation>
 <translation id="6799213269525079335">Find next</translation>
 <translation id="8666632926482119393">Find previous</translation>
 <translation id="3567467864281922039">Close find or stop</translation>
@@ -2147,6 +2150,7 @@
 <translation id="3142853026316054951">Toggle focus mode</translation>
 <translation id="3468387898712904997">New Email Alias</translation>
 <translation id="4711475997833555304">Create a random email that forwards to your inbox.</translation>
+<translation id="5663901348199429994">Your Email aliases</translation>
 <translation id="2796584247246518451">New temporary container</translation>
 <translation id="8591883849678260674">View original</translation>
 <translation id="1969654232209826429">min. read</translation>
@@ -2211,6 +2215,7 @@
 <translation id="9215978379284690246">Status code: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Status code: <ph name="STATUS_CODE"/>, inner status code: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">You've reached the premium rate limit. Please try again in a few hours.</translation>
+<translation id="6873128487002733717">You've reached the premium limit for this model. Select a different model or try again later.</translation>
 <translation id="3683964919745779766">You've reached the rate limit for this model or are out of credits. Please try again later.</translation>
 <translation id="7692501701960747469">The API key configured for this model is invalid. Please check your configuration and try again.</translation>
 <translation id="7905602379229309187">The endpoint is currently overloaded. Please try again later.</translation>
@@ -2390,6 +2395,9 @@
 <translation id="5021823940147712387">Remove tools</translation>
 <translation id="8712279871321308580">Available website tools</translation>
 <translation id="3690996226559605619">Available tools (<ph name="TOOL_COUNT"/>)</translation>
+<translation id="1467936490716897691">Allow for this session</translation>
+<translation id="6240821072888636753">Ask every time</translation>
+<translation id="4290920330097335010">Never allow</translation>
 <translation id="318819763888864209">All subscriptions are auto-renewed but can be cancelled at any time before renewal.</translation>
 <translation id="5091223967610958">Share the hostname of the page you are on (<ph name="HOST_NAME"/>) to help us make Leo better.</translation>
 <translation id="8732450785281947197">Leo AI tools</translation>
@@ -2464,7 +2472,7 @@
 <translation id="6077070599873946984">Brave AI needs your permission for: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI would like to execute **<ph name="TOOL_NAME"/>** on **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">The operation was detected as potentially misaligned with your request:</translation>
-<translation id="5137568953923142260">Allow</translation>
+<translation id="5137568953923142260">Allow once</translation>
 <translation id="3927932062596804919">Deny</translation>
 <translation id="4191349941249805855">Show tool arguments</translation>
 <translation id="7237059533128264835">Hide tool arguments</translation>
@@ -2511,7 +2519,6 @@
 <translation id="6002159997868894136">Click to copy alias</translation>
 <translation id="8105770564756958406">Used by <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Create up to 5 free email aliases to protect your real email address.</translation>
-<translation id="5663901348199429994">Your Email aliases</translation>
 <translation id="9046133327037621173">New email alias</translation>
 <translation id="3768606658230902536">Create a random email address that forwards to your inbox while keeping your personal email private.</translation>
 <translation id="4452721050684632493">Alias limit reached</translation>
@@ -2945,7 +2952,9 @@ Let's get you connected!</translation>
 <translation id="4227581348172626540">Cancel password change</translation>
 <translation id="808894953321890993">Change password</translation>
 <translation id="7967687455715421528">Unable to change password</translation>
+<translation id="7413006094063730650">Delete account</translation>
 <translation id="4869737930995549965">Log out</translation>
+<translation id="2902312830803030883">More actions</translation>
 <translation id="5538654494923870167">Get started with your Brave account</translation>
 <translation id="1544145635547515689">Create a Brave account</translation>
 <translation id="3828644479849256404">Already have an account? Log in</translation>
@@ -2970,6 +2979,11 @@ Let's get you connected!</translation>
 <translation id="7228810962389847249">Enter the code here</translation>
 <translation id="4683390091376980486">Confirm code</translation>
 <translation id="3970028678400797622">Resend email code</translation>
+<translation id="3653907916071208187">Delete your Brave account?</translation>
+<translation id="8216839865292766307">Deleting a Brave account will also delete its email aliases. You may lose access to online services where you used an alias to sign up. This action cannot be undone.</translation>
+<translation id="3672274694560812974">DELETE</translation>
+<translation id="1886662169666501462">Type <ph name="KEYWORD"/> to enable account deletion</translation>
+<translation id="536306385881145656">Delete Brave account</translation>
 <translation id="2475982808118771221">An error occurred</translation>
 <translation id="5430795854491041407">error</translation>
 <translation id="2232323423357029857">The browser encountered an unexpected error<ph name="ERROR_CODE"/>. Please restart the browser and try again.</translation>
@@ -3002,4 +3016,10 @@ Let's get you connected!</translation>
 <translation id="1063227610401477317">Apply Changes</translation>
 <translation id="5539769255716491933">Report Failed Steps</translation>
 <translation id="7562163394445060270">Task completion failed</translation>
+<translation id="691082536326552372">Report failed steps</translation>
+<translation id="2731141092023803480">Send a report of the failed steps to the Brave team. This report will contain the information needed for us to fix the issue. <ph name="LINK_BEFORE"/>Learn more.<ph name="LINK_AFTER"/></translation>
+<translation id="6439064699013106117">Current URL</translation>
+<translation id="4739707522207259415">Failed step(s)</translation>
+<translation id="1767991048059195456">Send report</translation>
+<translation id="2168036794078614559">Report sent</translation>
 </translationbundle>
