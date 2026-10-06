@@ -101,7 +101,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "brave/browser/extensions/extension_malware_blocklist_enforcer.h"
+#include "brave/browser/extensions/extension_malware_blocklist_enforcer_factory.h"
 #include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_migrator.h"
 #endif
 
