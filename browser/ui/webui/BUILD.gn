@@ -6,6 +6,7 @@
 import("//brave/browser/updater/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
 
 source_set("browser_tests") {
@@ -49,6 +50,16 @@ source_set("browser_tests") {
 
     if (enable_ai_chat) {
       deps += [ "//brave/components/ai_chat/core/common" ]
+    }
+
+    if (enable_brave_wallet) {
+      sources += [ "untrusted_sanitized_image_source_browsertest.cc" ]
+      deps += [
+        "//brave/components/brave_wallet/common:common_constants",
+        "//brave/components/constants",
+        "//chrome/test/base:chrome_test_utils",
+        "//net:test_support",
+      ]
     }
   }
 
