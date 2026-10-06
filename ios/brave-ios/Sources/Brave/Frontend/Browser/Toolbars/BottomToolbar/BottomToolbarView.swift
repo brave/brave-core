@@ -49,10 +49,6 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     contentView.axis = .horizontal
     contentView.distribution = .fillEqually
 
-    addGestureRecognizer(
-      UIPanGestureRecognizer(target: self, action: #selector(didSwipeToolbar(_:)))
-    )
-
     line.snp.makeConstraints {
       $0.bottom.equalTo(self.snp.top)
       $0.leading.trailing.equalToSuperview()
@@ -160,30 +156,5 @@ class BottomToolbarView: UIView, ToolbarProtocol {
 
   func addButtons(_ buttons: [UIButton]) {
     buttons.forEach { contentView.addArrangedSubview($0) }
-  }
-
-  private var previousX: CGFloat = 0.0
-  @objc private func didSwipeToolbar(_ pan: UIPanGestureRecognizer) {
-    switch pan.state {
-    case .began:
-      let velocity = pan.velocity(in: self)
-      if velocity.x > 100 {
-        tabToolbarDelegate?.tabToolbarDidSwipeToChangeTabs(self, direction: .right)
-      } else if velocity.x < -100 {
-        tabToolbarDelegate?.tabToolbarDidSwipeToChangeTabs(self, direction: .left)
-      }
-      previousX = pan.translation(in: self).x
-    case .changed:
-      let point = pan.translation(in: self)
-      if point.x > previousX + 50 {
-        tabToolbarDelegate?.tabToolbarDidSwipeToChangeTabs(self, direction: .right)
-        previousX = point.x
-      } else if point.x < previousX - 50 {
-        tabToolbarDelegate?.tabToolbarDidSwipeToChangeTabs(self, direction: .left)
-        previousX = point.x
-      }
-    default:
-      break
-    }
   }
 }
