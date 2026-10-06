@@ -40,6 +40,7 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -58,12 +59,22 @@ class Encryptor;
 class OSCryptAsync;
 }  // namespace os_crypt_async
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+namespace passage_embeddings {
+class Embedder;
+}  // namespace passage_embeddings
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
 class PrefService;
 namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
 
 namespace ai_chat {
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+class UserMemoryManager;
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 class AIChatSyncBackend;
 class ModelService;
@@ -289,6 +300,16 @@ class AIChatService : public KeyedService,
   bool GetIsContentAgentAllowed() const;
   void SetIsContentAgentAllowed(bool is_allowed);
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // Makes the learned memory manager when the learned memory feature is on.
+  // The browser layer calls this after construction, because the embedder
+  // comes from that layer. |embedder| must outlive this service.
+  void InitLearnedMemory(passage_embeddings::Embedder* embedder);
+  UserMemoryManager* GetUserMemoryManagerForTesting() {
+    return user_memory_manager_.get();
+  }
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
   bool HasUserOptedIn();
   bool IsPremiumStatus();
 
@@ -461,6 +482,12 @@ class AIChatService : public KeyedService,
   std::vector<std::unique_ptr<ToolProvider>>
   CreateToolProvidersForNewConversation(const std::string& conversation_uuid);
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // Makes the engine of the custom (BYOM) model whose request name is the
+  // learned memory LLM param, or null when there is no such model.
+  std::unique_ptr<EngineConsumer> CreateLearnedMemoryLlmEngine();
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
   raw_ptr<ModelService> model_service_;
   raw_ptr<TabTrackerService> tab_tracker_service_;
   raw_ptr<PrefService> profile_prefs_;
@@ -564,6 +591,12 @@ class AIChatService : public KeyedService,
   // can hand out a proxy delegate before the bridge itself exists; the bridge
   // is owned, accessed, and destroyed only on |db_task_runner_|.
   scoped_refptr<AIChatSyncBackend> sync_backend_;
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // Null when learned memory is off. It has a pointer to |ai_chat_db_|, so it
+  // is declared after it, and Shutdown() deletes it first.
+  std::unique_ptr<UserMemoryManager> user_memory_manager_;
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};
 };

@@ -54,6 +54,7 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/prefs/pref_service.h"
@@ -67,6 +68,11 @@
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/ai_chat/core/browser/ollama_decision_client.h"
+#include "brave/components/ai_chat/core/browser/user_memory_manager.h"
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 namespace ai_chat {
 namespace {
@@ -234,6 +240,10 @@ void AIChatService::Shutdown() {
   // Disconnect remotes
   receivers_.ClearWithReason(0, "Shutting down");
   weak_ptr_factory_.InvalidateWeakPtrs();
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // It has a pointer to |ai_chat_db_|, which goes away below.
+  user_memory_manager_.reset();
+#endif
   // Tear down the sync bridge on the DB sequence BEFORE destroying the
   // database. The bridge holds a raw_ptr<AIChatDatabase>; if the database
   // were destroyed first, the raw_ptr would dangle until the
@@ -610,6 +620,11 @@ void AIChatService::MaybeInitStorage() {
           .PostTask(FROM_HERE, base::BindOnce(&AIChatSyncBackend::ClearDatabase,
                                               sync_backend_));
     }
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+    if (user_memory_manager_) {
+      user_memory_manager_->OnDatabaseUnavailable();
+    }
+#endif
     // Delete all stored data from database
     if (ai_chat_db_) {
       DVLOG(0) << "Unloading AI Chat database due to pref change";
@@ -646,6 +661,11 @@ void AIChatService::OnOsCryptAsyncReady(
         base::BindOnce(&AIChatSyncBackend::SetDatabase, sync_backend_));
   }
   observers_.Notify(&Observer::OnStorageReady);
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  if (user_memory_manager_) {
+    user_memory_manager_->OnDatabaseAvailable(&ai_chat_db_);
+  }
+#endif
 }
 
 void AIChatService::OnDataDeletedForDisabledStorage(bool success) {
@@ -1536,6 +1556,43 @@ std::unique_ptr<EngineConsumer> AIChatService::GetEngineForModel(
   return model_service_->GetEngineForModel(model_key, url_loader_factory_,
                                            credential_manager_.get());
 }
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+void AIChatService::InitLearnedMemory(passage_embeddings::Embedder* embedder) {
+  if (!features::IsAIChatLearnedMemoryEnabled() || !embedder ||
+      user_memory_manager_) {
+    return;
+  }
+  auto decision_client =
+      OllamaDecisionClient::CreateFromFeatures(url_loader_factory_);
+  if (!decision_client) {
+    return;
+  }
+  // The service owns the manager, so Unretained is safe.
+  user_memory_manager_ = std::make_unique<UserMemoryManager>(
+      std::move(decision_client),
+      base::BindRepeating(&AIChatService::CreateLearnedMemoryLlmEngine,
+                          base::Unretained(this)),
+      embedder, profile_prefs_,
+      UserMemoryManager::GetDreamingConfigFromFeatures());
+  if (ai_chat_db_) {
+    user_memory_manager_->OnDatabaseAvailable(&ai_chat_db_);
+  }
+}
+
+std::unique_ptr<EngineConsumer> AIChatService::CreateLearnedMemoryLlmEngine() {
+  const std::string name = features::kLearnedMemoryLocalLlmModelName.Get();
+  for (const auto& model : model_service_->GetCustomModels()) {
+    if (model->options && model->options->is_custom_model_options() &&
+        model->options->get_custom_model_options()->model_request_name ==
+            name) {
+      return GetEngineForModel(model->key);
+    }
+  }
+  VLOG(1) << "Learned memory: no custom model named " << name;
+  return nullptr;
+}
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 size_t AIChatService::GetInMemoryConversationCountForTesting() {
   return conversation_handlers_.size();

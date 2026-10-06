@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
 
 namespace base {
@@ -35,6 +36,11 @@ class AIChatServiceFactory : public ProfileKeyedServiceFactory {
   // ProfileKeyedServiceFactory overrides:
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // Learned memory (Dreaming) runs on a timer, so the service must exist
+  // without the user opening Leo.
+  bool ServiceIsCreatedWithBrowserContext() const override;
+#endif
 };
 
 }  // namespace ai_chat
