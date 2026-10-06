@@ -45,6 +45,7 @@ import org.chromium.chrome.browser.notifications.permissions.BraveNotificationPe
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
 import org.chromium.chrome.browser.policy.PolicyServiceFactory;
+import org.chromium.chrome.browser.privacy.BraveBrowserLockManager;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
@@ -559,6 +560,10 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                         IncognitoReauthSettingUtils.getSummaryString(requireActivity()));
                 browserLockPref.setOnPreferenceClickListener(
                         pref -> {
+                            // This redirect hands control straight back to OS security settings
+                            // and returns shortly after — not a genuine backgrounding, so don't
+                            // let it needlessly re-show the lock on return.
+                            BraveBrowserLockManager.suppressNextRearm();
                             requireContext()
                                     .startActivity(
                                             IncognitoReauthSettingUtils

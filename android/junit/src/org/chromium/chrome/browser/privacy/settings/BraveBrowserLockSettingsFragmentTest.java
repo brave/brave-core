@@ -24,7 +24,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentFactory;
 import androidx.fragment.app.testing.FragmentScenario;
-import androidx.test.filters.SmallTest;
 
 import com.google.android.material.materialswitch.MaterialSwitch;
 
@@ -41,6 +40,9 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Callback;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveFeatureUtil;
+import org.chromium.chrome.browser.BraveFeatureUtilJni;
+import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.device_reauth.BiometricStatus;
 import org.chromium.chrome.browser.device_reauth.ReauthenticatorBridge;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthManager;
@@ -73,6 +75,7 @@ public class BraveBrowserLockSettingsFragmentTest {
     @Mock private Profile mProfile;
     @Mock private PrefService mPrefService;
     @Mock private ReauthenticatorBridge mReauthenticatorBridge;
+    @Mock private BraveFeatureUtil.Natives mBraveFeatureUtilNatives;
 
     // Mockito doesn't link a stubbed setter to a getter automatically — back the mock with real
     // state so a write is reflected by the next read, matching how the real PrefService behaves.
@@ -99,6 +102,9 @@ public class BraveBrowserLockSettingsFragmentTest {
         doReturn(BiometricStatus.BIOMETRICS_AVAILABLE)
                 .when(mReauthenticatorBridge)
                 .getBiometricAvailabilityStatus();
+
+        BraveFeatureUtilJni.setInstanceForTesting(mBraveFeatureUtilNatives);
+        BraveRelaunchUtils.setDisableDialogForTesting(true);
     }
 
     private void stubReauthResult(boolean success) {
@@ -113,7 +119,6 @@ public class BraveBrowserLockSettingsFragmentTest {
     }
 
     @Test
-    @SmallTest
     public void privateTabsToggle_onReauthSuccess_writesRealIncognitoReauthPref() {
         stubReauthResult(/* success= */ true);
 
@@ -133,7 +138,6 @@ public class BraveBrowserLockSettingsFragmentTest {
     }
 
     @Test
-    @SmallTest
     public void privateTabsToggle_onReauthFailure_revertsWithoutWritingPref() {
         stubReauthResult(/* success= */ false);
 
@@ -153,7 +157,6 @@ public class BraveBrowserLockSettingsFragmentTest {
     }
 
     @Test
-    @SmallTest
     public void screenshotModeRadio_defaultsToPrivateTabsOnly() {
         // Fresh Robolectric environment: no FeatureOverrides set, native uninitialized, so
         // ChromeFeatureList.sIncognitoScreenshot falls back to its own disabled-by-default value
@@ -169,7 +172,6 @@ public class BraveBrowserLockSettingsFragmentTest {
     }
 
     @Test
-    @SmallTest
     public void screenshotModeRadio_tappingAlreadySelected_doesNothing() {
         // Regression coverage for the explicit requirement: re-selecting the current option must
         // not go through authentication at all. The radio indicator itself is non-clickable (it
@@ -191,7 +193,6 @@ public class BraveBrowserLockSettingsFragmentTest {
     }
 
     @Test
-    @SmallTest
     public void screenshotModeRadio_selectEverything_onReauthSuccess_forcesSecureWindow() {
         stubReauthResult(/* success= */ true);
 
@@ -216,7 +217,6 @@ public class BraveBrowserLockSettingsFragmentTest {
     }
 
     @Test
-    @SmallTest
     public void screenshotModeRadio_worksWithNoLocksEnabled() {
         // The radio choice must not require "Entire application" or "Private tabs" to already be
         // enabled — it is independently useful and already gated on its own authentication.
@@ -238,7 +238,6 @@ public class BraveBrowserLockSettingsFragmentTest {
     }
 
     @Test
-    @SmallTest
     public void screenshotModeRadio_onReauthFailure_leavesSelectionUnchanged() {
         stubReauthResult(/* success= */ false);
 
@@ -261,7 +260,6 @@ public class BraveBrowserLockSettingsFragmentTest {
     }
 
     @Test
-    @SmallTest
     public void screenshotModeRadio_onReauthNotPossible_leavesSelectionUnchanged() {
         doReturn(BiometricStatus.UNAVAILABLE)
                 .when(mReauthenticatorBridge)
@@ -283,7 +281,6 @@ public class BraveBrowserLockSettingsFragmentTest {
     }
 
     @Test
-    @SmallTest
     public void screenshotModeRadio_whileReauthPending_doesNotChangeSelectionOrPrefYet() {
         // Deliberately do not stub a reauth result, so the callback never fires and the flow
         // stays pending — verifying the selection and the underlying pref only change on
@@ -308,7 +305,6 @@ public class BraveBrowserLockSettingsFragmentTest {
     }
 
     @Test
-    @SmallTest
     public void secondSwitchTap_whileFirstReauthPending_isRejectedAndReverted() {
         // Deliberately do not stub a reauth result, so the first flow never resolves and stays
         // "in flight" — regression coverage for rapid taps across different controls launching
@@ -335,7 +331,6 @@ public class BraveBrowserLockSettingsFragmentTest {
     }
 
     @Test
-    @SmallTest
     public void screenshotModeTap_whileSwitchReauthPending_isRejected() {
         buildFragmentScenario()
                 .onFragment(

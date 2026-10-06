@@ -13,8 +13,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import androidx.test.filters.SmallTest;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -56,7 +54,6 @@ public class BraveIncognitoReauthManagerTest {
     }
 
     @Test
-    @SmallTest
     public void startReauthenticationFlow_whileFlowInProgress_ignoresSecondCall() {
         // Never invoke the ReauthenticatorBridge's callback, simulating a still-pending prompt.
         mManager.startReauthenticationFlow(mFirstCallback);
@@ -71,7 +68,6 @@ public class BraveIncognitoReauthManagerTest {
     }
 
     @Test
-    @SmallTest
     public void startReauthenticationFlow_afterSuccess_allowsNextCall() {
         doAnswer(
                         invocation -> {
@@ -92,7 +88,6 @@ public class BraveIncognitoReauthManagerTest {
     }
 
     @Test
-    @SmallTest
     public void startReauthenticationFlow_afterFailure_allowsNextCall() {
         doAnswer(
                         invocation -> {
@@ -113,7 +108,6 @@ public class BraveIncognitoReauthManagerTest {
     }
 
     @Test
-    @SmallTest
     public void startReauthenticationFlow_afterNotPossible_allowsNextCall() {
         when(mReauthenticatorBridge.getBiometricAvailabilityStatus())
                 .thenReturn(BiometricStatus.UNAVAILABLE);
