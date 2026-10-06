@@ -1,8 +1,24 @@
 diff --git a/chrome/browser/lifetime/browser_close_manager.cc b/chrome/browser/lifetime/browser_close_manager.cc
-index cfe99807369de9710f5ec43d87fa75cbe043fc38..803066061c1bbcf830c777c4de8e320cb1d95a41 100644
+index cfe99807369de9710f5ec43d87fa75cbe043fc38..490aefbb88b3bf11bb5265bb3e287fbf87102972 100644
 --- a/chrome/browser/lifetime/browser_close_manager.cc
 +++ b/chrome/browser/lifetime/browser_close_manager.cc
-@@ -192,6 +192,7 @@ void BrowserCloseManager::CloseBrowsers() {
+@@ -57,6 +57,7 @@ BrowserCloseManager::BrowserCloseManager() : current_browser_(nullptr) {}
+ BrowserCloseManager::~BrowserCloseManager() = default;
+ 
+ void BrowserCloseManager::StartClosingBrowsers() {
++  g_browser_closing_started = true;
+   close_timer_.emplace();
+ 
+   // If the session is ending or a silent exit was requested, skip straight to
+@@ -71,6 +72,7 @@ void BrowserCloseManager::StartClosingBrowsers() {
+ }
+ 
+ void BrowserCloseManager::CancelBrowserClose() {
++  g_browser_closing_started = false;
+   // This is the abort endpoint. Record the metric if we haven't already.
+   if (close_timer_) {
+     base::UmaHistogramMediumTimes("Shutdown.Time.BrowserCloseManager.Canceled",
+@@ -192,6 +194,7 @@ void BrowserCloseManager::CloseBrowsers() {
  #if BUILDFLAG(ENABLE_SESSION_SERVICE)
    // Before we close the browsers shutdown all session services. That way an
    // exit can restore all browsers open before exiting.
