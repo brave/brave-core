@@ -19,7 +19,6 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/serp_metrics/serp_metrics_tab_helper.h"
-#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
@@ -75,10 +74,6 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
-#endif
-
-#if BUILDFLAG(IS_WIN)
-#include "brave/browser/new_tab/background_color_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
@@ -141,12 +136,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   // Add tab helpers here unless they are intended for android too
   brave_shields::BraveShieldsTabHelper::CreateForWebContents(web_contents);
   BraveGeolocationPermissionTabHelper::CreateForWebContents(web_contents);
-#endif
-
-#if BUILDFLAG(IS_WIN)
-  if (base::FeatureList::IsEnabled(features::kBraveWorkaroundNewWindowFlash)) {
-    BackgroundColorTabHelper::CreateForWebContents(web_contents);
-  }
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)

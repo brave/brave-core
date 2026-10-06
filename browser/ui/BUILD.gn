@@ -44,6 +44,7 @@ group("ui_public_dependencies") {
   ]
   public_deps = [
     ":brave_tab_prefs",
+    ":ui_features",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/containers/buildflags",
@@ -157,8 +158,6 @@ source_set("ui") {
   sources = [
     "brave_scheme_utils.cc",
     "brave_scheme_utils.h",
-    "brave_ui_features.cc",
-    "brave_ui_features.h",
     "toolbar/brave_location_bar_model_delegate.cc",
     "toolbar/brave_location_bar_model_delegate.h",
     "webui/brave_adblock_internals_ui.cc",
@@ -1551,6 +1550,14 @@ source_set("ui") {
       "//brave/components/email_aliases:mojom",
     ]
   }
+}
+
+source_set("ui_features") {
+  sources = [
+    "brave_ui_features.cc",
+    "brave_ui_features.h",
+  ]
+  public_deps = [ "//base" ]
 }
 
 source_set("brave_tab_prefs") {

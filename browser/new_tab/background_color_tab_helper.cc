@@ -6,13 +6,13 @@
 #include "brave/browser/new_tab/background_color_tab_helper.h"
 
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_widget_host_view.h"
+#include "content/public/browser/web_contents.h"
 #include "ui/color/color_provider.h"
 
-BackgroundColorTabHelper::BackgroundColorTabHelper(
-    content::WebContents* web_contents)
-    : WebContentsObserver(web_contents),
-      content::WebContentsUserData<BackgroundColorTabHelper>(*web_contents) {}
+BackgroundColorTabHelper::BackgroundColorTabHelper(tabs::TabInterface& tab)
+    : tabs::ContentsObservingTabFeature(tab) {}
 
 BackgroundColorTabHelper::~BackgroundColorTabHelper() = default;
 
@@ -28,5 +28,3 @@ void BackgroundColorTabHelper::RenderFrameCreated(
         kColorNewTabPageBackground));
   }
 }
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(BackgroundColorTabHelper);
