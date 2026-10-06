@@ -66,7 +66,8 @@ struct PlaylistSidebarList: View {
 
 struct PlaylistSidebarListHeader: View {
   var folders: [PlaylistFolder]
-  @Binding var selectedFolder: PlaylistFolder
+  var selectedFolder: PlaylistFolder
+  @Binding var selectedFolderID: PlaylistFolder.ID
   var selectedItemID: PlaylistItem.ID?
   @Binding var isPlaying: Bool
   @Binding var isNewPlaylistAlertPresented: Bool
@@ -80,14 +81,16 @@ struct PlaylistSidebarListHeader: View {
 
   init(
     folders: [PlaylistFolder],
-    selectedFolder: Binding<PlaylistFolder>,
+    selectedFolder: PlaylistFolder,
+    selectedFolderID: Binding<PlaylistFolder.ID>,
     selectedItemID: PlaylistItem.ID?,
     isPlaying: Binding<Bool>,
     isNewPlaylistAlertPresented: Binding<Bool>,
     isEditModePresented: Binding<Bool>
   ) {
     self.folders = folders
-    self._selectedFolder = selectedFolder
+    self.selectedFolder = selectedFolder
+    self._selectedFolderID = selectedFolderID
     self.selectedItemID = selectedItemID
     self._isPlaying = isPlaying
     self._isNewPlaylistAlertPresented = isNewPlaylistAlertPresented
@@ -155,10 +158,10 @@ struct PlaylistSidebarListHeader: View {
       .disabled(selectedItemID == nil && selectedFolderItems.isEmpty)
       VStack(alignment: .leading) {
         Menu {
-          Picker("", selection: $selectedFolder) {
+          Picker("", selection: $selectedFolderID) {
             ForEach(folders, id: \.objectID) { folder in
               Label(folder.title ?? "", braveSystemImage: "leo.product.playlist")
-                .tag(folder)
+                .tag(folder.id)
             }
           }
           .pickerStyle(.inline)
