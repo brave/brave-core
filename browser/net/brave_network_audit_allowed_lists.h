@@ -66,12 +66,6 @@ inline constexpr auto kAllowedUrlPrefixes = std::to_array<std::string_view>({
     // p3a
     "https://star-randsrv.bsg.brave.com/",
 
-    // Brave Ads OHTTP key config and gateway, production and staging.
-    "https://static.ads.brave.com/v1/ohttp/hpkekeyconfig",
-    "https://static.ads.bravesoftware.com/v1/ohttp/hpkekeyconfig",
-    "https://ohttp.ads.brave.com/v1/ohttp/gateway",
-    "https://ohttp.ads.bravesoftware.com/v1/ohttp/gateway",
-
     // Other
     "https://brave-core-ext.s3.brave.com/",
     "https://dict.brave.com/",

@@ -110,15 +110,11 @@ class BraveRewardsNetworkAuditTest : public InProcessBrowserTest {
 
             // Brave Ads production.
             "https://geo.ads.brave.com/v1/getstate",
-            "https://ohttp.ads.brave.com/v1/ohttp/gateway",
             "https://static.ads.brave.com/v9/catalog",
-            "https://static.ads.brave.com/v1/ohttp/hpkekeyconfig",
 
             // Brave Ads staging.
             "https://geo.ads.bravesoftware.com/v1/getstate",
-            "https://ohttp.ads.bravesoftware.com/v1/ohttp/gateway",
             "https://static.ads.bravesoftware.com/v9/catalog",
-            "https://static.ads.bravesoftware.com/v1/ohttp/hpkekeyconfig",
         });
   }
 
