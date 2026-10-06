@@ -897,7 +897,10 @@ void RenderViewContextMenu::InitMenu() {
                : IDS_CONTENT_CONTEXT_OPENLINKTOR);
   }
 #endif
-  if (!params_.link_url.is_empty() && params_.link_url.SchemeIsHTTPOrHTTPS()) {
+  // Only offer "Copy clean link" when cleaning would actually change the link.
+  if (!params_.link_url.is_empty() && params_.link_url.SchemeIsHTTPOrHTTPS() &&
+      brave::GetLinkWithStrictCleaning(GetProfile(), params_.link_url) !=
+          params_.link_url) {
     std::optional<size_t> link_index =
         menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_COPYLINKLOCATION);
     if (link_index.has_value()) {

@@ -27,6 +27,11 @@ DebounceService::~DebounceService() = default;
 
 bool DebounceService::Debounce(const GURL& original_url,
                                GURL* final_url) const {
+  // The component installer may be null, e.g. when created in a unit test.
+  if (!component_installer_) {
+    return false;
+  }
+
   // Check host cache to see if this URL needs to have any debounce rules
   // applied.
   const base::flat_set<std::string>& host_cache =

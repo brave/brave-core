@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/query_filter/browser/test_support/query_filter_test_helper.h"
 #include "build/build_config.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/autocomplete/autocomplete_classifier_factory.h"
@@ -153,6 +154,7 @@ class BraveRenderViewContextMenuTest : public testing::Test {
 
  private:
   content::BrowserTaskEnvironment browser_task_environment;
+  query_filter::test::ScopedTestingQueryFilterRules query_filter_rules_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<custom_handlers::ProtocolHandlerRegistry> registry_;
   std::unique_ptr<BrowserWindowInterface> browser_;
@@ -179,15 +181,26 @@ TEST_F(BraveRenderViewContextMenuTest, MenuForSelectedUrl) {
   EXPECT_TRUE(context_menu->IsCommandIdEnabled(IDC_COPY_CLEAN_LINK));
 }
 
-TEST_F(BraveRenderViewContextMenuTest, MenuForLink) {
+TEST_F(BraveRenderViewContextMenuTest, MenuForLinkWithTrackingParams) {
   content::ContextMenuParams params =
-      CreateLinkParams(GURL("https://brave.com"));
+      CreateLinkParams(GURL("https://brave.com/?fbclid=123&foo=bar"));
   auto context_menu = CreateContextMenu(GetWebContents(), params);
   EXPECT_TRUE(context_menu);
   std::optional<size_t> clean_link_index =
       context_menu->menu_model().GetIndexOfCommandId(IDC_COPY_CLEAN_LINK);
   EXPECT_TRUE(clean_link_index.has_value());
   EXPECT_TRUE(context_menu->IsCommandIdEnabled(IDC_COPY_CLEAN_LINK));
+}
+
+TEST_F(BraveRenderViewContextMenuTest, MenuForLink) {
+  // A link which is already clean shouldn't get the "Copy clean link" item.
+  content::ContextMenuParams params =
+      CreateLinkParams(GURL("https://brave.com/?foo=bar"));
+  auto context_menu = CreateContextMenu(GetWebContents(), params);
+  EXPECT_TRUE(context_menu);
+  std::optional<size_t> clean_link_index =
+      context_menu->menu_model().GetIndexOfCommandId(IDC_COPY_CLEAN_LINK);
+  EXPECT_FALSE(clean_link_index.has_value());
 
 #if !BUILDFLAG(IS_ANDROID)
   // Split view item should be last in first section (right before first

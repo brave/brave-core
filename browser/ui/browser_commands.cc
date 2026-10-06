@@ -374,24 +374,20 @@ void CopySanitizedURL(BrowserWindowInterface* browser, const GURL& url) {
   scw.WriteText(base::UTF8ToUTF16(sanitized_url.spec()));
 }
 
-// Copies an url cleared through:
-// - Debouncer (potentially debouncing many levels)
-// - Query filter
-// - URLSanitizerService
-void CopyLinkWithStrictCleaning(BrowserWindowInterface* browser,
-                                const GURL& url) {
-  if (!browser || !browser->GetProfile()) {
-    return;
-  }
+GURL GetLinkWithStrictCleaning(Profile* profile, const GURL& url) {
+  CHECK(profile);
   DCHECK(url.SchemeIsHTTPOrHTTPS());
-  GURL final_url;
+  GURL final_url = url;
   // Apply debounce rules.
   auto* debounce_service =
-      debounce::DebounceServiceFactory::GetForBrowserContext(
-          browser->GetProfile());
-  if (debounce_service && !debounce_service->Debounce(url, &final_url)) {
-    VLOG(1) << "Unable to apply debounce rules";
-    final_url = url;
+      debounce::DebounceServiceFactory::GetForBrowserContext(profile);
+  if (debounce_service) {
+    GURL debounced_url;
+    if (debounce_service->Debounce(url, &debounced_url)) {
+      final_url = debounced_url;
+    } else {
+      VLOG(1) << "Unable to apply debounce rules";
+    }
   }
   // Apply query filters.
   auto filtered_url = query_filter::ApplyQueryFilter(final_url);
@@ -399,9 +395,16 @@ void CopyLinkWithStrictCleaning(BrowserWindowInterface* browser,
     final_url = filtered_url.value();
   }
   // Sanitize url.
-  final_url = brave::URLSanitizerServiceFactory::GetForBrowserContext(
-                  browser->GetProfile())
-                  ->SanitizeURL(final_url);
+  return brave::URLSanitizerServiceFactory::GetForBrowserContext(profile)
+      ->SanitizeURL(final_url);
+}
+
+void CopyLinkWithStrictCleaning(BrowserWindowInterface* browser,
+                                const GURL& url) {
+  if (!browser || !browser->GetProfile()) {
+    return;
+  }
+  const GURL final_url = GetLinkWithStrictCleaning(browser->GetProfile(), url);
 
   ui::ScopedClipboardWriter scw(ui::ClipboardBuffer::kCopyPaste);
   if (browser->GetProfile()->IsOffTheRecord()) {

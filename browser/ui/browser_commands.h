@@ -66,10 +66,12 @@ void ToggleBraveVPNTrayIcon();
 void OpenBraveVPNUrls(Browser* browser, int command_id);
 // Copies an url sanitized by URLSanitizerService.
 void CopySanitizedURL(BrowserWindowInterface* browser, const GURL& url);
-// Copies an url cleared through:
+// Returns |url| cleared through:
 // - Debouncer (potentially debouncing many levels)
 // - Query filter
 // - URLSanitizerService
+GURL GetLinkWithStrictCleaning(Profile* profile, const GURL& url);
+// Copies an url cleared through GetLinkWithStrictCleaning().
 void CopyLinkWithStrictCleaning(BrowserWindowInterface* browser,
                                 const GURL& url);
 
