@@ -138,6 +138,8 @@ class BraveTabFeatures : public TabFeatures {
 
   // Avoids a white flash on new tabs. Windows only, null elsewhere.
   std::unique_ptr<ContentsObservingTabFeature> background_color_tab_helper_;
+  // Records page and media session metrics.
+  std::unique_ptr<ContentsObservingTabFeature> page_metrics_tab_helper_;
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;

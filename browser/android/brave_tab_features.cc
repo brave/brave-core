@@ -10,6 +10,7 @@
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
 #include "brave/browser/ai_chat/web_mcp_injection/web_mcp_injector.h"
 #include "brave/browser/misc_metrics/captcha_metrics.h"
+#include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/components/misc_metrics/features.h"
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/profiles/profile.h"
@@ -39,6 +40,9 @@ BraveTabFeatures::BraveTabFeatures(content::WebContents* web_contents,
     cloudflare_js_detection_tab_helper_ = misc_metrics::CaptchaMetrics::
         CloudflareJsDetectionTabHelper::MaybeCreate(tab_interface);
   }
+
+  page_metrics_tab_helper_ =
+      std::make_unique<misc_metrics::PageMetricsTabHelper>(tab_interface);
 }
 
 BraveTabFeatures::~BraveTabFeatures() = default;

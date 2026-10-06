@@ -38,6 +38,10 @@ class BraveTabFeatures : public TabFeatures_Chromium {
   // incognito/guest profiles and when captcha metrics are disabled.
   std::unique_ptr<ContentsObservingTabFeature>
       cloudflare_js_detection_tab_helper_;
+
+  // Records page and media session metrics.
+  std::unique_ptr<ContentsObservingTabFeature> page_metrics_tab_helper_;
+
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
   std::unique_ptr<ai_chat::WebMcpInjector> web_mcp_injector_;
 };
