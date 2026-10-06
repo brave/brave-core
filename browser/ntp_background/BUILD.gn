@@ -53,6 +53,10 @@ source_set("ntp_background") {
     ]
   }
 
+  if (!is_android) {
+    deps += [ "//brave/browser/infobars" ]
+  }
+
   if (enable_custom_background) {
     sources += [
       "brave_ntp_custom_background_service_delegate.cc",

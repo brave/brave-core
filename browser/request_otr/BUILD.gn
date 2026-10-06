@@ -37,7 +37,7 @@ source_set("impl") {
   if (!is_android) {
     sources += [ "request_otr_tab_helper.cc" ]
     deps += [
-      "//brave/browser/infobars:request_otr_infobar_delegate",
+      "//brave/browser/infobars",
       "//components/infobars/content",
       "//components/infobars/core",
       "//content/public/browser",

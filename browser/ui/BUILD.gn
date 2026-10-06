@@ -938,6 +938,7 @@ source_set("ui") {
     }
 
     deps += [
+      "//brave/browser/infobars",
       "//chrome/browser/infobars",
       "//chrome/browser/obsolete_system",
     ]
