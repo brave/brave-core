@@ -75,12 +75,6 @@
         android:summary="@string/show_brave_rewards_icon_summary" />
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="ads_switch"
-        android:icon="@drawable/ic_notification"
-        android:title="@string/show_ads_when_brave_is_not_in_use_title"
-        android:summary="@string/show_ads_when_brave_is_not_in_use_summary" />
-
-    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="brave_enable_tab_groups"
         android:title="@string/enable_tab_groups_title"
         android:summary="@string/enable_tab_groups_text"

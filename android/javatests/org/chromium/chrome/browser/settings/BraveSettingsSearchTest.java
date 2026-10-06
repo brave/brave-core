@@ -793,9 +793,6 @@ public class BraveSettingsSearchTest {
         clearAndTypeIntoSearch("Brave Rewards icon");
         assertSearchResult("Brave Rewards icon");
 
-        clearAndTypeIntoSearch("Brave Ads");
-        assertSearchResult("Brave Ads");
-
         clearAndTypeIntoSearch("Night");
         assertSearchResult("Night Mode");
 

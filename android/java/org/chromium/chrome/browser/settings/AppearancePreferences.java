@@ -62,7 +62,6 @@ public class AppearancePreferences extends AppearanceSettingsFragment
     /* package */ static final String PREF_GENERAL_SECTION = "general_section";
     public static final String PREF_SHOW_BRAVE_REWARDS_ICON = "show_brave_rewards_icon";
     public static final String PREF_ADDRESS_BAR = "address_bar";
-    /* package */ static final String PREF_ADS_SWITCH = "ads_switch";
     /* package */ static final String PREF_BRAVE_NIGHT_MODE_ENABLED =
             "brave_night_mode_enabled_key";
     /* package */ static final String PREF_BRAVE_DISABLE_SHARING_HUB = "brave_disable_sharing_hub";
@@ -164,13 +163,6 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         if (showBraveRewardsIconPref != null) {
             showBraveRewardsIconPref.setChecked(NtpUtil.shouldShowRewardsIcon());
             showBraveRewardsIconPref.setOnPreferenceChangeListener(this);
-        }
-
-        ChromeSwitchPreference adsSwitchPref =
-                (ChromeSwitchPreference) findPreference(PREF_ADS_SWITCH);
-        if (adsSwitchPref != null) {
-            adsSwitchPref.setChecked(getPrefAdsInBackgroundEnabled());
-            adsSwitchPref.setOnPreferenceChangeListener(this);
         }
 
         Preference nightModeEnabled = findPreference(PREF_BRAVE_NIGHT_MODE_ENABLED);
@@ -332,8 +324,6 @@ public class AppearancePreferences extends AppearanceSettingsFragment
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(PREF_SHOW_BRAVE_REWARDS_ICON, !(boolean) newValue);
             shouldRelaunch = true;
-        } else if (PREF_ADS_SWITCH.equals(key)) {
-            setPrefAdsInBackgroundEnabled((boolean) newValue);
         } else if (PREF_BRAVE_NIGHT_MODE_ENABLED.equals(key)) {
             BraveFeatureUtil.enableFeature(
                     BraveFeatureList.ENABLE_FORCE_DARK, (boolean) newValue, true);
@@ -385,16 +375,6 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         }
 
         return true;
-    }
-
-    /** Returns the user preference for whether the brave ads in background is enabled. */
-    public static boolean getPrefAdsInBackgroundEnabled() {
-        return ChromeSharedPreferences.getInstance().readBoolean(PREF_ADS_SWITCH, false);
-    }
-
-    /** Sets the user preference for whether the brave ads in background is enabled. */
-    public void setPrefAdsInBackgroundEnabled(boolean enabled) {
-        ChromeSharedPreferences.getInstance().writeBoolean(PREF_ADS_SWITCH, enabled);
     }
 
     private static boolean isSharingHubEnabled() {
@@ -451,10 +431,9 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         setPreferenceOrder(PREF_BRAVE_NIGHT_MODE_ENABLED, 9);
         setPreferenceOrder(PREF_BRAVE_DISABLE_SHARING_HUB, 10);
         setPreferenceOrder(PREF_SHOW_BRAVE_REWARDS_ICON, 11);
-        setPreferenceOrder(PREF_ADS_SWITCH, 12);
-        setPreferenceOrder(AppearanceSettingsFragment.PREF_BOOKMARK_BAR, 13);
-        setPreferenceOrder(PREF_BRAVE_ENABLE_TAB_GROUPS, 14);
-        setPreferenceOrder(PREF_SHOW_UNDO_WHEN_TABS_CLOSED, 15);
+        setPreferenceOrder(AppearanceSettingsFragment.PREF_BOOKMARK_BAR, 12);
+        setPreferenceOrder(PREF_BRAVE_ENABLE_TAB_GROUPS, 13);
+        setPreferenceOrder(PREF_SHOW_UNDO_WHEN_TABS_CLOSED, 14);
     }
 
     private void setPreferenceOrder(String key, int order) {
@@ -473,7 +452,6 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         if (BraveRewardsPolicy.isDisabledByPolicy(getProfile())) {
             // Policy disables Brave Rewards - remove rewards-related preferences
             removePreferenceIfPresent(PREF_SHOW_BRAVE_REWARDS_ICON);
-            removePreferenceIfPresent(PREF_ADS_SWITCH);
         }
     }
 
@@ -540,7 +518,6 @@ public class AppearancePreferences extends AppearanceSettingsFragment
 
                     if (BraveRewardsPolicy.isDisabledByPolicy(profile)) {
                         indexData.removeEntryForKey(frag, PREF_SHOW_BRAVE_REWARDS_ICON);
-                        indexData.removeEntryForKey(frag, PREF_ADS_SWITCH);
                     }
 
                     if (!shouldShowSharingHubPreference()) {
