@@ -6,6 +6,7 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_GRAPH_EDGE_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_GRAPH_EDGE_H_
 
+#include "base/memory/raw_ptr.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/graph_item.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 
@@ -50,8 +51,8 @@ class GraphEdge : public GraphItem {
 
  private:
   // These pointers are not owning: the GraphItemContext instance owns them.
-  GraphNode* const out_node_;
-  GraphNode* const in_node_;
+  const raw_ptr<GraphNode, UnprotectedInRelease> out_node_;
+  const raw_ptr<GraphNode, UnprotectedInRelease> in_node_;
 };
 
 }  // namespace brave_page_graph

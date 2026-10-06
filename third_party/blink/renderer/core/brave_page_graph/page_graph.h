@@ -12,6 +12,7 @@
 #include <variant>
 
 #include "base/containers/span_or_size.h"
+#include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/elapsed_timer.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/blink_probe_types.h"
@@ -282,8 +283,8 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
 #undef PAGE_GRAPH_USING_DECL
 
   struct ExecutionContextNodes {
-    NodeParser* parser_node;
-    NodeExtensions* extensions_node;
+    raw_ptr<NodeParser, UnprotectedInRelease> parser_node;
+    raw_ptr<NodeExtensions, UnprotectedInRelease> extensions_node;
   };
 
   struct ProcessedJavascriptURL {
@@ -508,20 +509,21 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   HashMap<String, NodeAdFilter*> ad_filter_nodes_;
   HashMap<String, NodeTrackerFilter*> tracker_filter_nodes_;
 
-  NodeShields* shields_node_;
-  NodeShield* ad_shield_node_;
-  NodeShield* tracker_shield_node_;
-  NodeShield* js_shield_node_;
-  NodeShield* fingerprinting_shield_node_;
+  raw_ptr<NodeShields, UnprotectedInRelease> shields_node_;
+  raw_ptr<NodeShield, UnprotectedInRelease> ad_shield_node_;
+  raw_ptr<NodeShield, UnprotectedInRelease> tracker_shield_node_;
+  raw_ptr<NodeShield, UnprotectedInRelease> js_shield_node_;
+  raw_ptr<NodeShield, UnprotectedInRelease> fingerprinting_shield_node_;
 
   String source_url_;
 
-  NodeStorageRoot* storage_node_;
-  NodeStorageCookieJar* cookie_jar_node_;
-  NodeStorageLocalStorage* local_storage_node_;
-  NodeStorageSessionStorage* session_storage_node_;
+  raw_ptr<NodeStorageRoot, UnprotectedInRelease> storage_node_;
+  raw_ptr<NodeStorageCookieJar, UnprotectedInRelease> cookie_jar_node_;
+  raw_ptr<NodeStorageLocalStorage, UnprotectedInRelease> local_storage_node_;
+  raw_ptr<NodeStorageSessionStorage, UnprotectedInRelease>
+      session_storage_node_;
 
-  NodeUnknown* unknown_actor_node_;
+  raw_ptr<NodeUnknown, UnprotectedInRelease> unknown_actor_node_;
 };
 
 }  // namespace blink
