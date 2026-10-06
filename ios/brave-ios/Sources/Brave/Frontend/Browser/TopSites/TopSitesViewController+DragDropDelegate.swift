@@ -77,9 +77,9 @@ extension TopSitesViewController: UICollectionViewDragDelegate, UICollectionView
         destinationIndexPath: destinationIndexPath,
         isInteractiveDragReorder: true
       )
-      // The reorder writes synchronously on the view context, so the tiles are already current.
-      // Applying here rather than waiting for the tile source's async notification keeps the
-      // snapshot in step with the drop animation.
+      // Re-read the tiles and apply immediately rather than waiting for the tile source's async
+      // notification, which would leave the snapshot out of step with the drop animation.
+      updateTiles()
       updateUIWithSnapshot(animated: true)
     case .copy:
       break

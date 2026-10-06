@@ -29,8 +29,6 @@ struct TopSitesTileDiffable: Hashable {
   }
 }
 
-/// TopSites VC has two fetch result controllers to pull from.
-/// This enum stores both models.
 enum TopSitesDataWrapper: Hashable {
   case topSites(TopSitesTileDiffable)
 

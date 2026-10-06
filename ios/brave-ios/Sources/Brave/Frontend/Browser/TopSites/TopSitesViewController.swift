@@ -809,7 +809,7 @@ extension TopSitesViewController: NSFetchedResultsControllerDelegate {
 }
 
 extension TopSitesViewController {
-  private func updateTiles() {
+  func updateTiles() {
     tiles = withObservationTracking {
       tileSource.tiles
     } onChange: { [weak self] in
