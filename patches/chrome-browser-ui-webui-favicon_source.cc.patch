@@ -1,8 +1,18 @@
 diff --git a/chrome/browser/ui/webui/favicon_source.cc b/chrome/browser/ui/webui/favicon_source.cc
-index 41c17c3fee32931c3d6579bd772d67c643b02d4d..b08b4a6014682808597d1ceb7a97ef77ea1b7dbc 100644
+index 665031dcff88c20ed9e3917f7814af4e65556132..1d082574869f208c984b0e0b2d32780898090a9f 100644
 --- a/chrome/browser/ui/webui/favicon_source.cc
 +++ b/chrome/browser/ui/webui/favicon_source.cc
-@@ -332,11 +332,11 @@ void FaviconSource::SendDefaultResponse(
+@@ -249,6 +249,9 @@ bool FaviconSource::ShouldServiceRequest(
+ 
+ std::string FaviconSource::GetAccessControlAllowOriginForOrigin(
+     const std::string& origin) {
++  if (serve_untrusted_ && IsBraveUntrustedFaviconOrigin(origin)) {
++    return origin;
++  }
+   // chrome-untrusted://favicon2 serves the favicons that the Data Sharing
+   // page renders for the tabs of a shared tab group.
+   if (serve_untrusted_ &&
+@@ -336,11 +339,11 @@ void FaviconSource::SendDefaultResponse(
  #if !BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_DESKTOP_ANDROID)
      case 64:
        resource_id =

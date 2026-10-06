@@ -31,3 +31,16 @@ substitutions:
     regex:
       pattern: IDR_DEFAULT_FAVICON_32
       replace: BRAVE_IDR_DEFAULT_FAVICON_32
+
+  - description: |-
+      Allow Brave's chrome-untrusted:// pages to load from favicon2
+
+      WebUIURLLoaderFactory rejects loads between chrome-untrusted:// hosts
+      unless the target data source allows the initiator. The AI Chat
+      conversation entries frame shows favicons from chrome-untrusted://favicon2.
+    preempt_function_impl:
+      function_name: FaviconSource::GetAccessControlAllowOriginForOrigin
+      code: |-
+        if (serve_untrusted_ && IsBraveUntrustedFaviconOrigin(origin)) {
+          return origin;
+        }
