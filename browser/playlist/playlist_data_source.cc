@@ -24,8 +24,10 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/notreached.h"
 #include "base/strings/escape.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/content/browser/mime_util.h"
 #include "brave/components/playlist/content/browser/playlist_service.h"
 #include "components/favicon_base/favicon_url_parser.h"
@@ -310,6 +312,17 @@ bool PlaylistDataSource::SupportsRangeRequests(const GURL& url) const {
   }
 
   return DataRequest(url).type == DataRequest::Type::kMedia;
+}
+
+std::string PlaylistDataSource::GetAccessControlAllowOriginForOrigin(
+    const std::string& origin) {
+  // The playlist page and its player frame load thumbnails, favicons and media
+  // from chrome-untrusted://playlist-data.
+  const std::string origin_url = base::StrCat({origin, "/"});
+  if (origin_url == kPlaylistURL || origin_url == kPlaylistPlayerURL) {
+    return origin;
+  }
+  return content::URLDataSource::GetAccessControlAllowOriginForOrigin(origin);
 }
 
 }  // namespace playlist

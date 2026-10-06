@@ -39,6 +39,8 @@ class PlaylistDataSource : public FaviconSource {
   std::string GetMimeType(const GURL& url) override;
   bool AllowCaching() override;
   bool SupportsRangeRequests(const GURL& url) const override;
+  std::string GetAccessControlAllowOriginForOrigin(
+      const std::string& origin) override;
 
  private:
   struct DataRequest {
