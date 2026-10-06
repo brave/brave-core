@@ -131,6 +131,7 @@ source_set("ui") {
       "//chrome/browser/ui/views/frame:browser_frame_view",
       "//chrome/browser/ui/views/frame:opaque_browser_frame_view_layout",
       "//chrome/browser/ui/views/frame:top_container_view",
+      "//chrome/browser/ui/views/frame:vertical_tab_strip_region_view",
       "//chrome/browser/ui/views/tabs/hovercard",
     ]
   }
