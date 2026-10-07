@@ -21,6 +21,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import engine_bootstrap as bootstrap  # pylint: disable=wrong-import-position
 
+_HASH = 'c0ffee' * 6 + 'c0ff'
+
 
 class MainForwardingTest(unittest.TestCase):
     """main() deploys the engine and launches it under vpython3, forwarding
@@ -48,7 +50,8 @@ class MainForwardingTest(unittest.TestCase):
         # The engine checkout is deployed under --workspace, and vpython3 was
         # on PATH, so the bare name is used (no depot_tools clone).
         deploy.assert_called_once_with(
-            Path('/work') / bootstrap.RECIPES_ENGINE_DEST
+            Path('/work') / bootstrap.RECIPES_ENGINE_DEST,
+            bootstrap.BRAVE_CORE_REF,
         )
         forwarded = run.call_args[0][0]
         self.assertEqual(
@@ -100,30 +103,205 @@ class MainForwardingTest(unittest.TestCase):
         forwarded = run.call_args[0][0]
         self.assertEqual(forwarded[0], str(depot_tools / bootstrap.VPYTHON3))
 
+    def test_revision_is_consumed(self):
+        """--revision picks what is deployed and is not forwarded, as the
+        engine does not know it."""
+        engine_path = Path(
+            '/work/recipes_engine_bootstrap/tools/recipes/engine.py'
+        )
+        with (
+            mock.patch.object(
+                bootstrap, '_deploy_recipes', return_value=engine_path
+            ) as deploy,
+            mock.patch.object(
+                bootstrap.shutil, 'which', return_value='/path/to/vpython3'
+            ),
+            mock.patch.object(bootstrap.subprocess, 'run') as run,
+        ):
+            run.return_value = types.SimpleNamespace(returncode=0)
+            bootstrap.main(
+                [
+                    'github/mirror_chromium',
+                    '--revision',
+                    _HASH,
+                    '--workspace',
+                    '/work',
+                ]
+            )
+
+        deploy.assert_called_once_with(
+            Path('/work') / bootstrap.RECIPES_ENGINE_DEST, _HASH
+        )
+        self.assertEqual(
+            run.call_args[0][0][-3:],
+            ['github/mirror_chromium', '--workspace', '/work'],
+        )
+
 
 class DeployRecipesTest(unittest.TestCase):
-    """_deploy_recipes wipes the destination before cloning."""
+    """_deploy_recipes reuses, updates or clones the checkout at *dest*."""
 
-    def test_nukes_existing_dest(self):
+    def _checkout(self, work, *, git=True):
+        """A fake checkout under *work*, holding the engine and its spec."""
+        dest = Path(work) / 'bc'
+        recipes = dest / bootstrap.RECIPES_PATH
+        recipes.mkdir(parents=True)
+        for name in ('engine.py', bootstrap.VPYTHON_SPEC):
+            (recipes / name).write_text('', encoding='utf-8', newline='')
+        if git:
+            (dest / '.git').mkdir()
+        return dest.resolve()
+
+    def _fetch_calls(self, dest, revision):
+        return [
+            mock.call(
+                'git',
+                '-C',
+                dest,
+                'fetch',
+                '--depth',
+                '2',
+                '--filter=blob:none',
+                'origin',
+                revision,
+            ),
+            mock.call(
+                'git',
+                '-C',
+                dest,
+                'checkout',
+                '--force',
+                '--detach',
+                'FETCH_HEAD',
+            ),
+        ]
+
+    def _verify_call(self, dest):
+        return mock.call(
+            'git',
+            '-C',
+            dest,
+            'rev-parse',
+            '--verify',
+            '--quiet',
+            f'{_HASH}^{{commit}}',
+            check=False,
+        )
+
+    def _diff_call(self, dest):
+        return mock.call(
+            'git', '-C', dest, 'diff', '--quiet', _HASH, '--', check=False
+        )
+
+    def _run_checks(self, *results):
+        """A `_run` side effect: the `check=False` calls return *results* in
+        order, the checked ones succeed."""
+        results = iter(results)
+
+        def run(*_cmd, cwd=None, check=True):  # pylint: disable=unused-argument
+            return True if check else next(results)
+
+        return run
+
+    def test_reuses_checkout_at_revision(self):
         with tempfile.TemporaryDirectory() as work:
-            dest = Path(work) / 'bc'
-            engine_file = dest / bootstrap.RECIPES_PATH / 'engine.py'
-            engine_file.parent.mkdir(parents=True)
-            engine_file.write_text('', encoding='utf-8', newline='')
-            # The spec is validated too, so it must exist alongside the engine.
-            (engine_file.parent / bootstrap.VPYTHON_SPEC).write_text(
-                '', encoding='utf-8', newline=''
-            )
-            # _rmtree is mocked, so the pre-created engine file survives the
-            # is_file() check; _run is mocked so no real git runs.
+            dest = self._checkout(work)
+            with mock.patch.object(
+                bootstrap, '_run', side_effect=self._run_checks(True, True)
+            ) as run:
+                result = bootstrap._deploy_recipes(dest, _HASH)
+        self.assertEqual(
+            run.call_args_list, [self._verify_call(dest), self._diff_call(dest)]
+        )
+        self.assertEqual(result, dest / bootstrap.RECIPES_PATH / 'engine.py')
+
+    def test_fetches_revision_not_in_checkout(self):
+        with tempfile.TemporaryDirectory() as work:
+            dest = self._checkout(work)
+            with (
+                mock.patch.object(
+                    bootstrap, '_run', side_effect=self._run_checks(False)
+                ) as run,
+                mock.patch.object(bootstrap, '_rmtree') as rmtree,
+            ):
+                bootstrap._deploy_recipes(dest, _HASH)
+        rmtree.assert_not_called()
+        self.assertEqual(
+            run.call_args_list,
+            [self._verify_call(dest), *self._fetch_calls(dest, _HASH)],
+        )
+
+    def test_checks_out_revision_not_checked_out(self):
+        with tempfile.TemporaryDirectory() as work:
+            dest = self._checkout(work)
+            with mock.patch.object(
+                bootstrap, '_run', side_effect=self._run_checks(True, False)
+            ) as run:
+                bootstrap._deploy_recipes(dest, _HASH)
+        self.assertEqual(
+            run.call_args_list,
+            [
+                self._verify_call(dest),
+                self._diff_call(dest),
+                *self._fetch_calls(dest, _HASH),
+            ],
+        )
+
+    def test_always_fetches_a_branch(self):
+        """A branch may have moved, so it is never taken as checked out."""
+        with tempfile.TemporaryDirectory() as work:
+            dest = self._checkout(work)
+            with mock.patch.object(bootstrap, '_run') as run:
+                bootstrap._deploy_recipes(dest, 'master')
+        self.assertEqual(run.call_args_list, self._fetch_calls(dest, 'master'))
+
+    def test_clones_when_no_checkout(self):
+        """Leftovers without a `.git` are cleared, then a sparse clone is
+        made and *revision* fetched into it."""
+        with tempfile.TemporaryDirectory() as work:
+            # _rmtree is mocked, so the engine files survive to be found.
+            dest = self._checkout(work, git=False)
             with (
                 mock.patch.object(bootstrap, '_run') as run,
                 mock.patch.object(bootstrap, '_rmtree') as rmtree,
             ):
-                result = bootstrap._deploy_recipes(dest)
-        rmtree.assert_called_once_with(dest.resolve())
-        self.assertTrue(run.called)
-        self.assertEqual(result, engine_file.resolve())
+                bootstrap._deploy_recipes(dest, _HASH)
+        rmtree.assert_called_once_with(dest)
+        self.assertEqual(
+            run.call_args_list,
+            [
+                mock.call(
+                    'git',
+                    'clone',
+                    '--depth',
+                    '1',
+                    '--filter=blob:none',
+                    '--sparse',
+                    '--no-checkout',
+                    bootstrap.REPO_URL,
+                    dest,
+                ),
+                mock.call(
+                    'git',
+                    '-C',
+                    dest,
+                    'sparse-checkout',
+                    'add',
+                    bootstrap.RECIPES_PATH,
+                ),
+                *self._fetch_calls(dest, _HASH),
+            ],
+        )
+
+    def test_missing_engine_fails(self):
+        with tempfile.TemporaryDirectory() as work:
+            dest = Path(work) / 'bc'
+            (dest / '.git').mkdir(parents=True)
+            with (
+                mock.patch.object(bootstrap, '_run'),
+                self.assertRaisesRegex(RuntimeError, 'engine not found'),
+            ):
+                bootstrap._deploy_recipes(dest, 'master')
 
 
 class DeployDepotToolsTest(unittest.TestCase):

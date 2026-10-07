@@ -30,6 +30,11 @@ curl -sL https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/to
         --properties '{ "brave_subrevision": 2, "chromium_ref": "refs/tags/151.0.7917.1" }'
 ```
 
+The engine comes from `master` unless `--revision` names another brave-core
+revision. A pipeline running several recipes resolves one commit hash and passes
+it to every bootstrap: a checkout already at that commit is reused as is, like
+recipes-py's `recipes.py`, so later stages run the same engine without fetching.
+
 ## DEPS
 
 A recipe declares the modules it uses as a `@dataclass` named `DEPS` that
