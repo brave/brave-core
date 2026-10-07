@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/functional/bind.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar.h"
@@ -131,9 +132,13 @@ void SidebarController::OnItemPressed(size_t index,
   const auto& item = sidebar_model_->GetAllSidebarItems()[index];
 
   if (item.is_web_panel_type()) {
-    // TODO(https://github.com/brave/brave-browser/issues/33533): web panel item
-    // also should be activated.
-    GetWebPanelController()->ToggleWebPanel(item);
+    auto* web_panel_controller = GetWebPanelController();
+    CHECK(web_panel_controller);
+
+    // Try to close side panel as we could open web panel.
+    // Otherwise, it's no-op.
+    GetSidePanelUI()->Close();
+    web_panel_controller->ToggleWebPanel(item);
     return;
   }
 
@@ -273,6 +278,11 @@ void SidebarController::AddItemWithCurrentTab() {
 }
 
 void SidebarController::HandleSidePanelOpened(SidePanelEntryId id) {
+  // We open side panel so close web panel if existed.
+  if (web_panel_controller_) {
+    web_panel_controller_->CloseWebPanel();
+  }
+
   const auto item_type = BuiltInItemTypeFromSidePanelId(id);
   if (!item_type) {
     // An entry without a sidebar item is showing, so no item is active.
@@ -297,6 +307,24 @@ void SidebarController::HandleSidePanelClosed() {
   sidebar_model_->SetActiveIndex(std::nullopt);
 }
 
+void SidebarController::OnWebPanelStateChanged() {
+  CHECK(web_panel_controller_);
+
+  if (web_panel_controller_->HasOpenPanel()) {
+    sidebar_model_->SetActiveIndex(
+        sidebar_model_->GetIndexOf(web_panel_controller_->panel_item()));
+    return;
+  }
+
+  // Panel closed. Only clear if the active item is still the panel's - a side
+  // panel may already have taken over the active state.
+  const auto index = sidebar_model_->active_index();
+  if (index &&
+      sidebar_model_->GetAllSidebarItems()[*index].is_web_panel_type()) {
+    sidebar_model_->SetActiveIndex(std::nullopt);
+  }
+}
+
 void SidebarController::SetSidebar(Sidebar* sidebar) {
   DCHECK(!sidebar_);
   // |sidebar| can be null in unit test.
@@ -318,7 +346,9 @@ SidebarWebPanelController* SidebarController::GetWebPanelController() {
 
   if (!web_panel_controller_) {
     web_panel_controller_ = std::make_unique<SidebarWebPanelController>(
-        *BrowserView::GetBrowserViewForBrowser(browser_));
+        *BrowserView::GetBrowserViewForBrowser(browser_),
+        base::BindRepeating(&SidebarController::OnWebPanelStateChanged,
+                            base::Unretained(this)));
   }
 
   return web_panel_controller_.get();

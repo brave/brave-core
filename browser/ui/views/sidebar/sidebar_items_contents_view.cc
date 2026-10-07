@@ -135,10 +135,10 @@ void SidebarItemsContentsView::OnThemeChanged() {
 }
 
 void SidebarItemsContentsView::Update() {
-  UpdateAllBuiltInItemsViewState();
+  UpdateAllItemsViewState();
 }
 
-void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
+void SidebarItemsContentsView::UpdateAllItemsViewState() {
   const auto& items = sidebar_model_->GetAllSidebarItems();
   // It's not initialized yet if child view count and items size are different.
   if (children().size() != items.size()) {
@@ -149,10 +149,6 @@ void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
   const size_t items_num = items.size();
   for (size_t item_index = 0; item_index < items_num; ++item_index) {
     const auto item = items[item_index];
-    if (!item.is_built_in_type()) {
-      continue;
-    }
-
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
     // If browser window has tab that loads brave talk, brave talk panel icon
     // will use colored one for normal state also.
@@ -165,7 +161,10 @@ void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
     }
 #endif
 
-    UpdateItemViewStateAt(item_index, item_index == active_index);
+    // Items that opens in panel can have active state.
+    if (item.open_in_panel) {
+      UpdateItemViewStateAt(item_index, item_index == active_index);
+    }
   }
 }
 
