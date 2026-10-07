@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Declare CreateCookieOptions() so Brave can fill in ephemeral storage
+      params.
+
+      Defined in chromium_src/net/url_request/url_request_http_job.cc.
+    regex:
+      re_pattern: '(\n private:\n)'
+      replace: |
+        \1  CookieOptions CreateCookieOptions(
+              CookieOptions::SameSiteCookieContext same_site_context) const;
