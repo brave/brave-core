@@ -17,6 +17,7 @@ if (is_win || is_mac || is_linux) {
       sources += [
         "com_classes_legacy_unittest.cc",
         "win_constants_unittest.cc",
+        "win_util_unittest.cc",
       ]
     }
     if (is_mac) {
