@@ -21,7 +21,13 @@ That is the bootstrapping equivalent to running, from a checkout:
 
 The bootstrap has to deploy a sparse checkout of brave-core's `tools/recipes/`
 to get the engine, and it has to deploy depot_tools if `vpython3` is not already
-on PATH, so it can run the engine.
+on PATH, so it can run the engine. Both are reused when already deployed, so a
+pipeline running several recipes pins one brave-core commit and passes it to
+each bootstrap:
+
+    ... | python3 - gerrit/refresh_mirrors --revision "${REVISION}"
+    python3 recipes_engine_bootstrap/tools/recipes/engine_bootstrap.py \\
+        github/mirror_chromium --revision "${REVISION}"
 """
 
 from __future__ import annotations
@@ -60,10 +66,21 @@ DEPOT_TOOLS_DEST = 'depot_tools_bootstrap'
 DEPOT_TOOLS_MIRROR_DIR = 'chromium.googlesource.com-chromium-tools-depot_tools'
 
 
-def _run(*cmd: str | Path, cwd: str | Path | None = None) -> None:
-    """Run *cmd*, logging the invocation, and raise on a non-zero exit."""
+def _run(
+    *cmd: str | Path, cwd: str | Path | None = None, check: bool = True
+) -> bool:
+    """Run *cmd*, logging the invocation.
+
+    Returns whether it exited zero; with *check*, a non-zero exit raises
+    instead.
+    """
     logging.info(' >>>> %s', ' '.join(str(arg) for arg in cmd))
-    subprocess.run([str(arg) for arg in cmd], cwd=cwd, check=True)
+    return (
+        subprocess.run(
+            [str(arg) for arg in cmd], cwd=cwd, check=check
+        ).returncode
+        == 0
+    )
 
 
 def _rmtree(path: str | Path) -> None:
@@ -84,41 +101,87 @@ def _rmtree(path: str | Path) -> None:
     shutil.rmtree(path, onerror=_make_writable_and_retry)
 
 
-def _deploy_recipes(dest: str | Path) -> Path:
-    """Shallow-, sparse-clone brave-core's `tools/recipes/` into *dest*.
+def _is_commit_hash(revision: str) -> bool:
+    return len(revision) == 40 and all(
+        c in '0123456789abcdef' for c in revision
+    )
 
-    *dest* is always wiped first so every run starts from a clean checkout --
-    no stale sparse state, and no partial clone left by a failed prior run.
+
+def _deploy_recipes(dest: str | Path, revision: str) -> Path:
+    """Check out brave-core's `tools/recipes/` at *revision* into *dest*.
+
+    a checkout already at *revision* (a commit hash) is reused as is, so a
+    pipeline can bootstrap several times at one pinned revision for the cost of
+    one fetch. Otherwise *revision* is shallow-fetched into the existing sparse
+    checkout, which is first cloned if missing.
 
     Returns the path to the checked-out `engine.py`.
     """
     dest = Path(dest).expanduser().resolve()
+    has_checkout = (dest / '.git').is_dir()
 
-    if dest.exists():
-        logging.info('Removing existing checkout at %s', dest)
+    # As in `recipes.py`, both quiet: the first fails silently on a revision
+    # not fetched yet, which the second would report as an error.
+    if (
+        has_checkout
+        and _is_commit_hash(revision)
+        and _run(
+            'git',
+            '-C',
+            dest,
+            'rev-parse',
+            '--verify',
+            '--quiet',
+            f'{revision}^{{commit}}',
+            check=False,
+        )
+        and _run(
+            'git', '-C', dest, 'diff', '--quiet', revision, '--', check=False
+        )
+    ):
+        logging.info('Reusing checkout at %s (%s)', dest, revision)
+        return _deployed_engine(dest)
+
+    if not has_checkout:
+        # Clear anything left by a failed prior run.
         _rmtree(dest)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        _run(
+            'git',
+            'clone',
+            '--depth',
+            '1',
+            '--filter=blob:none',
+            '--sparse',
+            '--no-checkout',
+            REPO_URL,
+            dest,
+        )
+        _run('git', '-C', dest, 'sparse-checkout', 'add', RECIPES_PATH)
 
-    dest.parent.mkdir(parents=True, exist_ok=True)
     _run(
         'git',
-        'clone',
+        '-C',
+        dest,
+        'fetch',
         '--depth',
         '2',
         '--filter=blob:none',
-        '--sparse',
-        '--branch',
-        BRAVE_CORE_REF,
-        REPO_URL,
-        dest,
+        'origin',
+        revision,
     )
-    _run('git', '-C', dest, 'sparse-checkout', 'add', RECIPES_PATH)
+    _run('git', '-C', dest, 'checkout', '--force', '--detach', 'FETCH_HEAD')
+    return _deployed_engine(dest)
 
+
+def _deployed_engine(dest: Path) -> Path:
+    """Return the `engine.py` of the recipes checkout at *dest*."""
     engine = dest / RECIPES_PATH / 'engine.py'
     if not engine.is_file():
-        raise RuntimeError(f'engine not found after checkout: {engine}')
+        raise RuntimeError(f'engine not found in checkout: {engine}')
     spec = engine.parent / VPYTHON_SPEC
     if not spec.is_file():
-        raise RuntimeError(f'vpython spec not found after checkout: {spec}')
+        raise RuntimeError(f'vpython spec not found in checkout: {spec}')
     return engine
 
 
@@ -185,6 +248,18 @@ def _ensure_vpython3(depot_tools_dest: str | Path) -> str:
 def main(argv: list[str] | None = None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
 
+    # Bootstrap-only options, consumed here rather than forwarded to engine.py.
+    bootstrap_parser = argparse.ArgumentParser(
+        add_help=False, allow_abbrev=False
+    )
+    bootstrap_parser.add_argument(
+        '--revision',
+        default=BRAVE_CORE_REF,
+        help='brave-core revision to run the engine from; pass a commit hash '
+        'to run several bootstraps in one pipeline from the same revision',
+    )
+    bootstrap_args, argv = bootstrap_parser.parse_known_args(argv)
+
     parser = argparse.ArgumentParser(
         description='Bootstrap and run a Brave recipe from a shallow '
         'brave-core checkout.'
@@ -208,7 +283,9 @@ def main(argv: list[str] | None = None) -> int:
         Path(args.workspace).expanduser() if args.workspace else Path.cwd()
     )
     vpython3 = _ensure_vpython3(workspace / DEPOT_TOOLS_DEST)
-    engine = _deploy_recipes(workspace / RECIPES_ENGINE_DEST)
+    engine = _deploy_recipes(
+        workspace / RECIPES_ENGINE_DEST, bootstrap_args.revision
+    )
 
     spec = engine.parent / VPYTHON_SPEC
     forwarded = [vpython3, '-vpython-spec', str(spec), '-u', str(engine), *argv]

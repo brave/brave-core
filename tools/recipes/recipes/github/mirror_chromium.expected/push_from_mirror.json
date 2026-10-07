@@ -1,0 +1,28 @@
+[
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "name": "git cache exists"
+  },
+  {
+    "cmd": [
+      "git",
+      "push",
+      "https://github.com/brave/chromium.git",
+      "refs/heads/main:refs/heads/main",
+      "--tags"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "name": "push to github"
+  },
+  {
+    "name": "$result"
+  }
+]
