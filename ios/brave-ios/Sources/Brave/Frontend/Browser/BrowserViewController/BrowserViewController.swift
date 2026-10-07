@@ -184,7 +184,7 @@ public class BrowserViewController: UIViewController {
 
   /// The most visited sites shown by the top sites section of every NTP and the search screen in
   /// this window.
-  lazy var mostVisitedSites: MostVisitedSites = {
+  private(set) lazy var mostVisitedSites: MostVisitedSites = {
     let mostVisitedSites = MostVisitedSitesFactory.get(for: profileController.profile)
     mostVisitedSites.enableTopSitesOnlyTileTypes()
     return mostVisitedSites
