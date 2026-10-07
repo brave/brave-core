@@ -13,9 +13,12 @@
 #include "ios/web/js_messaging/java_script_feature_manager.h"
 #include "ios/web/js_messaging/web_frame_internal.h"
 #include "ios/web/js_messaging/web_view_js_utils.h"
+#include "ios/web/public/download/crw_web_view_download.h"
 #include "ios/web/public/favicon/favicon_status.h"
 #include "ios/web/public/find_in_page/crw_find_interaction.h"
 #include "ios/web/public/js_messaging/web_frames_manager.h"
+#include "ios/web/public/navigation/navigation_item.h"
+#include "ios/web/public/navigation/navigation_manager.h"
 #include "ios/web/public/ui/crw_web_view_proxy.h"
 #include "ios/web/web_state/ui/crw_web_controller.h"
 #include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
@@ -26,6 +29,7 @@
 #include "ios/web_view/internal/web_view_browser_state.h"
 #include "ios/web_view/public/cwv_navigation_delegate.h"
 #include "net/base/apple/url_conversions.h"
+#include "net/base/filename_util.h"
 
 const CWVUserAgentType CWVUserAgentTypeNone =
     static_cast<CWVUserAgentType>(web::UserAgentType::NONE);
@@ -35,6 +39,60 @@ const CWVUserAgentType CWVUserAgentTypeMobile =
     static_cast<CWVUserAgentType>(web::UserAgentType::MOBILE);
 const CWVUserAgentType CWVUserAgentTypeDesktop =
     static_cast<CWVUserAgentType>(web::UserAgentType::DESKTOP);
+
+@interface CWVWebViewDownload () <CRWWebViewDownloadDelegate>
+- (instancetype)initWithCompletionHandler:
+    (void (^)(NSError* _Nullable error))completionHandler;
+@property(nonatomic, nullable) id<CRWWebViewDownload> download;
+@property(nonatomic, copy, nullable) void (^completionHandler)
+    (NSError* _Nullable error);
+@end
+
+@implementation CWVWebViewDownload
+
+- (instancetype)initWithCompletionHandler:
+    (void (^)(NSError* _Nullable error))completionHandler {
+  if ((self = [super init])) {
+    self.completionHandler = completionHandler;
+  }
+  return self;
+}
+
+- (void)dealloc {
+  // The underlying download only holds a weak reference to its delegate, so
+  // stop it if nothing is retaining this handle anymore.
+  [_download cancelDownload:nil];
+}
+
+- (void)cancel {
+  // Complete immediately since the underlying `WKDownload` is created
+  // asynchronously and its cancellation callback is not invoked if it has not
+  // been created yet. Any later delegate callbacks are ignored.
+  [self.download cancelDownload:nil];
+  [self completeWithError:[NSError errorWithDomain:NSURLErrorDomain
+                                              code:NSURLErrorCancelled
+                                          userInfo:nil]];
+}
+
+- (void)completeWithError:(nullable NSError*)error {
+  if (self.completionHandler) {
+    self.completionHandler(error);
+    self.completionHandler = nil;
+  }
+  self.download = nil;
+}
+
+#pragma mark - CRWWebViewDownloadDelegate
+
+- (void)downloadDidFinish {
+  [self completeWithError:nil];
+}
+
+- (void)downloadDidFailWithError:(NSError*)error {
+  [self completeWithError:error];
+}
+
+@end
 
 @implementation CWVWebView (Extras)
 
@@ -73,6 +131,37 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
 
 - (void)createFullPagePDF:(void (^)(NSData* _Nullable))completionHandler {
   self.webState->CreateFullPagePdf(base::BindOnce(completionHandler));
+}
+
+- (CWVWebViewDownload*)downloadCurrentPageToPath:(NSString*)path
+                               completionHandler:
+                                   (void (^)(NSError* _Nullable error))
+                                       completionHandler {
+  if (!self.webState->IsRealized() || !self.internalWebView) {
+    completionHandler([NSError errorWithDomain:NSURLErrorDomain
+                                          code:NSURLErrorUnknown
+                                      userInfo:nil]);
+    return nil;
+  }
+  CWVWebViewDownload* download =
+      [[CWVWebViewDownload alloc] initWithCompletionHandler:completionHandler];
+  __weak CWVWebViewDownload* weakDownload = download;
+  self.webState->DownloadCurrentPage(path, download,
+                                     ^(id<CRWWebViewDownload> webViewDownload) {
+                                       weakDownload.download = webViewDownload;
+                                     });
+  return download;
+}
+
+- (NSString*)suggestedFilenameForCurrentPageWithContentDisposition:
+    (NSString*)contentDisposition {
+  web::NavigationItem* item =
+      self.webState->GetNavigationManager()->GetLastCommittedItem();
+  const GURL url = item ? item->GetURL() : GURL();
+  return base::SysUTF16ToNSString(net::GetSuggestedFilename(
+      url, base::SysNSStringToUTF8(contentDisposition),
+      /*referrer_charset=*/"", /*suggested_name=*/"",
+      self.webState->GetContentsMimeType(), /*default_name=*/"document"));
 }
 
 - (BOOL)canTakeSnapshot {

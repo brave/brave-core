@@ -164,6 +164,14 @@ public class AnyTabState: TabState {
     try await tab.createFullPagePDF()
   }
 
+  public func downloadCurrentPage(to fileURL: URL) async throws {
+    try await tab.downloadCurrentPage(to: fileURL)
+  }
+
+  public func suggestedFilenameForCurrentPage(contentDisposition: String?) -> String {
+    tab.suggestedFilenameForCurrentPage(contentDisposition: contentDisposition)
+  }
+
   public var isFindNavigatorVisible: Bool {
     tab.isFindNavigatorVisible
   }
