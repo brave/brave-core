@@ -6,6 +6,10 @@
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import {
+  PrefServiceObserverMixin,
+  PrefServiceObserverMixinInterface,
+} from '/shared/settings/prefs2/pref_service_observer_mixin.js'
+import {
   WebUiListenerMixin,
   WebUiListenerMixinInterface,
 } from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
@@ -25,9 +29,11 @@ import '../controls/settings_dropdown_menu.js'
 import '../privacy_page/do_not_track_toggle.js'
 
 const SettingsBravePersonalizationOptionsBase = WebUiListenerMixin(
-  PolymerElement,
+  PrefServiceObserverMixin(PolymerElement),
 ) as {
-  new (): PolymerElement & WebUiListenerMixinInterface
+  new (): PolymerElement &
+    WebUiListenerMixinInterface &
+    PrefServiceObserverMixinInterface
 }
 
 export class SettingsBravePersonalizationOptions extends SettingsBravePersonalizationOptionsBase {
@@ -129,6 +135,7 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
           return loadTimeData.getBoolean('isSemanticHistorySearchAvailable')
         },
       },
+      semanticHistorySearchPref_: Object,
       // </if>
       requestOTRActions_: {
         readOnly: true,
@@ -142,6 +149,7 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
         },
       },
       requestOTRAction_: String,
+      pushMessagingPref_: Object,
       isWindowsRecallAvailable_: {
         readOnly: true,
         type: Boolean,
@@ -166,9 +174,11 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   declare private isPsstFeatureEnabled_: boolean
   // <if expr="enable_local_ai">
   declare private isSemanticHistorySearchAvailable_: boolean
+  declare private semanticHistorySearchPref_: chrome.settingsPrivate.PrefObject<boolean>
   // </if>
   declare private requestOTRActions_: Object[]
   declare private requestOTRAction_: String
+  declare private pushMessagingPref_: chrome.settingsPrivate.PrefObject<boolean>
   declare private isWindowsRecallAvailable_: boolean
   declare private windowsRecallDisabledPref_: chrome.settingsPrivate.PrefObject
 
@@ -214,6 +224,18 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   restartBrowser_(e: Event) {
     e.stopPropagation()
     window.open('chrome://restart', '_self')
+  }
+
+  override connectedCallback() {
+    super.connectedCallback()
+
+    this.mirrorPref('brave.gcm.channel_status', 'pushMessagingPref_')
+    // <if expr="enable_local_ai">
+    this.mirrorPref(
+      'brave.history_embeddings_enabled',
+      'semanticHistorySearchPref_',
+    )
+    // </if>
   }
 
   override ready() {
