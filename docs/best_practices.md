@@ -29,9 +29,9 @@ section links to a detailed document.
   terms, product messaging
 - **[Front-End (TypeScript/React)](./best-practices/frontend.md)** - Component
   props, spread args, XSS prevention
-- **[Android (Java/Kotlin)](./best-practices/android.md)** - Java file placement,
-  Activity/Fragment lifecycle, null safety, LazyHolder singletons, theme handling,
-  Robolectric, bytecode patching, Material component preference, NullAway (`@Nullable`
+- **[Android (Java/Kotlin)](./best-practices/android.md)** - Activity/Fragment
+  lifecycle, null safety, LazyHolder singletons, theme handling, Robolectric,
+  bytecode patching, Material component preference, NullAway (`@Nullable`
   placement, `@MonotonicNonNull`, assert/assume patterns, destruction, view
   binders, Supplier variance, JNI nullness)
 - **[chromium_src Overrides](./best-practices/chromium-src-overrides.md)** -
