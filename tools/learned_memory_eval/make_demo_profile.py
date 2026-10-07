@@ -32,8 +32,7 @@ MARKER = ".learned_memory_demo"
 LAST_DREAMING_PREF = "learned_memory_last_dreaming_time"
 SETTINGS_URL = "brave://settings/leo-ai/customization"
 # Tables that Dreaming writes. The chat tables stay.
-MEMORY_TABLES = ("learned_memory", "memory_source_link", "memory_watermark",
-                 "memory_tombstone")
+MEMORY_TABLES = ("learned_memory", "memory_source_link", "memory_watermark")
 WINDOWS_TO_UNIX_EPOCH_S = 11644473600
 
 

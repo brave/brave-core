@@ -97,8 +97,6 @@ struct DreamingConfig {
   // LLM limits for each run. Rewrites and merges count as writing.
   size_t max_writing_requests = 50;
   size_t max_relation_requests = 20;
-  // A fact this close to a deleted memory is not learned again.
-  float tombstone_similarity = 0.9f;
   // The relation question compares a fact with up to |max_neighbors| old
   // memories that are at least |min_neighbor_similarity| close to it.
   size_t max_neighbors = 5;
@@ -115,7 +113,7 @@ struct DreamingConfig {
 //  4. rewrites the kept sentences with the LLM (mechanical guards only: the
 //  user
 //     reviews the memories)
-//  5. finds the closest old memories, and drops facts close to a tombstone
+//  5. finds the closest old memories
 //  6. asks the relation question, and the LLM when it is not certain
 //  7. merges with the LLM (the same guards)
 //  8. stores the memory, and moves the watermark of the chat
@@ -189,7 +187,6 @@ class DreamingRun {
   // Loading.
   void OnWatermarks(std::map<std::string, base::Time> watermarks);
   void OnMemories(std::vector<LearnedMemory> memories);
-  void OnTombstones(std::vector<MemoryTombstone> tombstones);
   void OnConversations(std::vector<mojom::ConversationPtr> conversations);
   void ReadNextConversation();
   void OnConversationData(std::string conversation_uuid,
@@ -277,7 +274,6 @@ class DreamingRun {
 
   std::map<std::string, base::Time> watermarks_;
   std::vector<LearnedMemory> memories_;
-  std::vector<MemoryTombstone> tombstones_;
   base::circular_deque<std::string> conversations_to_read_;
   base::circular_deque<UserTurn> turns_;
 

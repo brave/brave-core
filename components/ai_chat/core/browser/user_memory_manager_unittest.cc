@@ -591,20 +591,34 @@ TEST_F(UserMemoryManagerTest, DreamNowRunsLongerThanTheDailyRun) {
   EXPECT_EQ(future.Take().status, DreamingStatus::kTimedOut);
 }
 
-TEST_F(UserMemoryManagerTest, ForgetLearnedMemoryWritesATombstone) {
-  AddMemory("Lives in Berlin.");
+TEST_F(UserMemoryManagerTest, DeleteLearnedMemoryDeletesItForGood) {
+  // The user deletes a memory. Nothing remembers it, so a later chat that
+  // states the same fact makes a new memory.
+  const std::string first_turn = "We just moved to Berlin.";
+  AddChat("chat-1", {first_turn}, /*hours_ago=*/30);
+  KeepSentence(first_turn, first_turn);
+  llm_.rewrites[first_turn] = "Moved to Berlin";
   manager_->OnDatabaseAvailable(&db_);
+  Dream();
+  auto memories = GetMemories();
+  ASSERT_EQ(memories.size(), 1u);
+  const std::string deleted_uuid = memories[0].uuid;
 
-  base::test::TestFuture<bool> forgotten;
-  manager_->ForgetLearnedMemory("old-Lives in Berlin.",
-                                forgotten.GetCallback());
-
-  EXPECT_TRUE(forgotten.Get());
+  base::test::TestFuture<bool> deleted;
+  manager_->DeleteLearnedMemory(deleted_uuid, deleted.GetCallback());
+  EXPECT_TRUE(deleted.Get());
   EXPECT_TRUE(GetMemories().empty());
-  base::test::TestFuture<std::vector<MemoryTombstone>> tombstones;
-  db_.AsyncCall(&AIChatDatabase::GetAllMemoryTombstones)
-      .Then(tombstones.GetCallback());
-  EXPECT_EQ(tombstones.Get().size(), 1u);
+
+  const std::string second_turn = "I moved to Berlin last month.";
+  AddChat("chat-2", {second_turn}, /*hours_ago=*/1);
+  KeepSentence(second_turn, second_turn);
+  llm_.rewrites[second_turn] = "Moved to Berlin";
+  Dream();
+
+  memories = GetMemories();
+  ASSERT_EQ(memories.size(), 1u);
+  EXPECT_EQ(memories[0].text, "Moved to Berlin");
+  EXPECT_NE(memories[0].uuid, deleted_uuid);
 }
 
 TEST_F(UserMemoryManagerTest, LearnedMemoriesNeedTheDatabase) {
@@ -613,7 +627,7 @@ TEST_F(UserMemoryManagerTest, LearnedMemoriesNeedTheDatabase) {
   EXPECT_TRUE(memories.Get().empty());
 
   base::test::TestFuture<bool> forgotten;
-  manager_->ForgetLearnedMemory("any", forgotten.GetCallback());
+  manager_->DeleteLearnedMemory("any", forgotten.GetCallback());
   EXPECT_FALSE(forgotten.Get());
 }
 

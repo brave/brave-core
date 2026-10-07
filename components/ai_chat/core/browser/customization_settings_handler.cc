@@ -134,14 +134,14 @@ void CustomizationSettingsHandler::GetLearnedMemories(
   delegate_->GetLearnedMemories(std::move(callback));
 }
 
-void CustomizationSettingsHandler::ForgetLearnedMemory(
+void CustomizationSettingsHandler::DeleteLearnedMemory(
     const std::string& uuid,
-    ForgetLearnedMemoryCallback callback) {
+    DeleteLearnedMemoryCallback callback) {
   if (!delegate_) {
     std::move(callback).Run(false);
     return;
   }
-  delegate_->ForgetLearnedMemory(uuid, std::move(callback));
+  delegate_->DeleteLearnedMemory(uuid, std::move(callback));
 }
 
 void CustomizationSettingsHandler::DreamNow(DreamNowCallback callback) {

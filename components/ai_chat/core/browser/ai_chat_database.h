@@ -138,20 +138,28 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   // Gets all learned memories, with their vectors and source links.
   virtual std::vector<LearnedMemory> GetAllLearnedMemories();
 
+  // The uuid and the text version of every learned memory. Decrypts nothing.
+  virtual std::vector<LearnedMemoryStamp> GetLearnedMemoryStamps();
+
+  // Gets the learned memories with the given uuids. The memories have no
+  // vector, no source links and no previous text. A uuid that is not stored is
+  // left out.
+  virtual std::vector<LearnedMemory> GetLearnedMemoriesByUuid(
+      const std::vector<std::string>& memory_uuids);
+
+  // Gets the learned memories of the permanent type, with the same content as
+  // GetLearnedMemoriesByUuid().
+  virtual std::vector<LearnedMemory> GetPermanentLearnedMemories();
+
   // Adds the memory, or replaces the stored memory with the same uuid,
-  // including its source links and previous text.
+  // including its source links and previous text. The database sets the text
+  // version: 1 for a new memory, the stored version + 1 when the text differs
+  // from the stored text, else the stored version.
   virtual bool AddOrUpdateLearnedMemory(const LearnedMemory& memory);
 
-  // Deletes the memory with its source links. Use this when Leo removes a
-  // memory, for example after an expiry or a merge.
+  // Deletes the memory with its source links and its previous text. Nothing
+  // remembers the memory afterwards: Dreaming can learn it again.
   virtual bool DeleteLearnedMemory(std::string_view memory_uuid);
-
-  // Deletes the memory like DeleteLearnedMemory() and writes a tombstone with
-  // its vector and source links, so that Dreaming does not learn it again. Use
-  // this when the user deletes a memory.
-  virtual bool ForgetLearnedMemory(std::string_view memory_uuid);
-
-  virtual std::vector<MemoryTombstone> GetAllMemoryTombstones();
 
   // The watermark of a conversation is the date of the last user turn that
   // Dreaming processed. Conversations without a watermark are not in the map.
@@ -199,10 +207,18 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   enum class MemoryLinkOwner {
     kMemoryText = 0,
     kMemoryPreviousText = 1,
-    kTombstone = 2,
+    // 2 was the owner kind of a tombstone in an earlier version. Do not reuse
+    // it.
   };
 
   sql::Database& GetDB();
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // Reads the rows of a statement that selects the columns of
+  // kLightLearnedMemoryColumns (see the .cc file).
+  std::vector<LearnedMemory> ReadLightLearnedMemories(
+      sql::Statement& statement);
+#endif
 
   // Initializes the database if it hasn't been initialized yet. If |re_init|
   // is true, it will forget previous intiialization state and attempt to

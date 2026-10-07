@@ -58,8 +58,8 @@ class CustomizationSettingsHandler
 
   // learned memories
   void GetLearnedMemories(GetLearnedMemoriesCallback callback) override;
-  void ForgetLearnedMemory(const std::string& uuid,
-                           ForgetLearnedMemoryCallback callback) override;
+  void DeleteLearnedMemory(const std::string& uuid,
+                           DeleteLearnedMemoryCallback callback) override;
   void DreamNow(DreamNowCallback callback) override;
 
  private:

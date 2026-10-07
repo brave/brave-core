@@ -118,9 +118,9 @@ interface CustomizationSettingsHandler {
   GetLearnedMemories() =>
     (bool available, array<LearnedMemoryItem> memories);
 
-  // Deletes a learned memory, and remembers the deletion so that Dreaming does
-  // not learn the same memory again.
-  ForgetLearnedMemory(string uuid) => (bool success);
+  // Deletes a learned memory for good. Nothing remembers it, so Dreaming can
+  // learn the same fact again from another chat.
+  DeleteLearnedMemory(string uuid) => (bool success);
 
   // Starts a Dreaming run now, and replies when the run ends.
   DreamNow() => (DreamNowResult result);

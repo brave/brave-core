@@ -235,8 +235,7 @@ def render(chat_set: dict, report: dict, extra: dict | None = None) -> tuple:
         by_entry[entry].append(step)
     loaded = next((s for s in trace if s["step"] == "loaded"), None)
     if loaded:
-        md.append(f'Start: {len(loaded["memories"])} memories, '
-                  f'{loaded["tombstones"]} tombstones.\n')
+        md.append(f'Start: {len(loaded["memories"])} memories.\n')
     for entry in order:
         steps = by_entry[entry]
         turn = next((s for s in steps if s["step"] == "turn"), None)

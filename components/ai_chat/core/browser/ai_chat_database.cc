@@ -1904,7 +1904,7 @@ std::vector<LearnedMemory> AIChatDatabase::GetAllLearnedMemories() {
 
   static constexpr char kQuery[] =
       "SELECT uuid, text, vector, category, type, created_date, updated_date,"
-      "  last_used_date, previous_text, previous_vector"
+      "  last_used_date, previous_text, previous_vector, text_version"
       " FROM learned_memory"
       " ORDER BY created_date ASC, uuid ASC";
   sql::Statement statement(GetDB().GetUniqueStatement(kQuery));
@@ -1945,10 +1945,114 @@ std::vector<LearnedMemory> AIChatDatabase::GetAllLearnedMemories() {
                 memory.uuid, MemoryLinkOwner::kMemoryPreviousText)};
       }
     }
+    memory.text_version = statement.ColumnInt(index++);
     memories.push_back(std::move(memory));
   }
   if (!statement.Succeeded()) {
     DVLOG(0) << "Failed to read learned memories: " << db_.GetErrorMessage();
+    return {};
+  }
+  return memories;
+}
+
+std::vector<LearnedMemoryStamp> AIChatDatabase::GetLearnedMemoryStamps() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return {};
+  }
+
+  static constexpr char kQuery[] =
+      "SELECT uuid, text_version FROM learned_memory ORDER BY uuid ASC";
+  sql::Statement statement(GetDB().GetUniqueStatement(kQuery));
+  CHECK(statement.is_valid());
+
+  std::vector<LearnedMemoryStamp> stamps;
+  while (statement.Step()) {
+    stamps.push_back({statement.ColumnString(0), statement.ColumnInt(1)});
+  }
+  if (!statement.Succeeded()) {
+    DVLOG(0) << "Failed to read learned memory stamps: "
+             << db_.GetErrorMessage();
+    return {};
+  }
+  return stamps;
+}
+
+namespace {
+
+// The columns that ReadLightLearnedMemories() reads.
+constexpr char kLightLearnedMemoryColumns[] =
+    "uuid, text, category, type, created_date, updated_date, last_used_date,"
+    " text_version";
+
+}  // namespace
+
+std::vector<LearnedMemory> AIChatDatabase::ReadLightLearnedMemories(
+    sql::Statement& statement) {
+  std::vector<LearnedMemory> memories;
+  while (statement.Step()) {
+    LearnedMemory memory;
+    int index = 0;
+    memory.uuid = statement.ColumnString(index++);
+    memory.text = DecryptColumnToString(statement, index++);
+    auto category =
+        IntToEnum<LearnedMemoryCategory>(statement.ColumnInt(index++));
+    auto type = IntToEnum<LearnedMemoryType>(statement.ColumnInt(index++));
+    if (memory.text.empty() || !category || !type) {
+      DVLOG(0) << "Skipping unreadable learned memory " << memory.uuid;
+      continue;
+    }
+    memory.category = *category;
+    memory.type = *type;
+    memory.created_date = statement.ColumnTime(index++);
+    memory.updated_date = statement.ColumnTime(index++);
+    memory.last_used_date = statement.ColumnTime(index++);
+    memory.text_version = statement.ColumnInt(index++);
+    memories.push_back(std::move(memory));
+  }
+  return memories;
+}
+
+std::vector<LearnedMemory> AIChatDatabase::GetLearnedMemoriesByUuid(
+    const std::vector<std::string>& memory_uuids) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return {};
+  }
+
+  std::vector<LearnedMemory> memories;
+  for (const std::string& uuid : memory_uuids) {
+    sql::Statement statement(GetDB().GetUniqueStatement(
+        absl::StrFormat("SELECT %s FROM learned_memory WHERE uuid=?",
+                        kLightLearnedMemoryColumns)));
+    CHECK(statement.is_valid());
+    statement.BindString(0, uuid);
+    std::vector<LearnedMemory> found = ReadLightLearnedMemories(statement);
+    if (!statement.Succeeded()) {
+      DVLOG(0) << "Failed to read a learned memory: " << db_.GetErrorMessage();
+      return {};
+    }
+    std::ranges::move(found, std::back_inserter(memories));
+  }
+  return memories;
+}
+
+std::vector<LearnedMemory> AIChatDatabase::GetPermanentLearnedMemories() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return {};
+  }
+
+  sql::Statement statement(GetDB().GetUniqueStatement(absl::StrFormat(
+      "SELECT %s FROM learned_memory WHERE type=? ORDER BY created_date ASC,"
+      " uuid ASC",
+      kLightLearnedMemoryColumns)));
+  CHECK(statement.is_valid());
+  statement.BindInt(0, static_cast<int>(LearnedMemoryType::kPermanent));
+  std::vector<LearnedMemory> memories = ReadLightLearnedMemories(statement);
+  if (!statement.Succeeded()) {
+    DVLOG(0) << "Failed to read permanent learned memories: "
+             << db_.GetErrorMessage();
     return {};
   }
   return memories;
@@ -1970,11 +2074,27 @@ bool AIChatDatabase::AddOrUpdateLearnedMemory(const LearnedMemory& memory) {
     return false;
   }
 
+  // The text version counts the changes of the text.
+  int text_version = 1;
+  {
+    static constexpr char kSelectQuery[] =
+        "SELECT text, text_version FROM learned_memory WHERE uuid=?";
+    sql::Statement select(GetDB().GetUniqueStatement(kSelectQuery));
+    CHECK(select.is_valid());
+    select.BindString(0, memory.uuid);
+    if (select.Step()) {
+      const int stored_version = select.ColumnInt(1);
+      text_version = DecryptColumnToString(select, 0) == memory.text
+                         ? stored_version
+                         : stored_version + 1;
+    }
+  }
+
   static constexpr char kQuery[] =
       "INSERT OR REPLACE INTO learned_memory(uuid, text, vector, category,"
       "  type, created_date, updated_date, last_used_date, previous_text,"
-      "  previous_vector)"
-      " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "  previous_vector, text_version)"
+      " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   sql::Statement statement(GetDB().GetUniqueStatement(kQuery));
   CHECK(statement.is_valid());
   int index = 0;
@@ -1996,6 +2116,7 @@ bool AIChatDatabase::AddOrUpdateLearnedMemory(const LearnedMemory& memory) {
     statement.BindNull(index++);
     statement.BindNull(index++);
   }
+  statement.BindInt(index++, text_version);
   if (!statement.Run()) {
     DVLOG(0) << "Failed to write learned memory: " << db_.GetErrorMessage();
     return false;
@@ -2051,99 +2172,6 @@ bool AIChatDatabase::DeleteLearnedMemory(std::string_view memory_uuid) {
   }
 
   return transaction.Commit();
-}
-
-bool AIChatDatabase::ForgetLearnedMemory(std::string_view memory_uuid) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!LazyInit()) {
-    return false;
-  }
-
-  sql::Transaction transaction(&GetDB());
-  if (!transaction.Begin()) {
-    DVLOG(0) << "Transaction cannot begin\n";
-    return false;
-  }
-
-  std::string vector_bytes;
-  {
-    static constexpr char kSelectVectorQuery[] =
-        "SELECT vector FROM learned_memory WHERE uuid=?";
-    sql::Statement select_statement(
-        GetDB().GetUniqueStatement(kSelectVectorQuery));
-    CHECK(select_statement.is_valid());
-    select_statement.BindString(0, memory_uuid);
-    if (!select_statement.Step()) {
-      return false;
-    }
-    vector_bytes = DecryptColumnToString(select_statement, 0);
-  }
-  if (vector_bytes.empty()) {
-    return false;
-  }
-
-  const std::string tombstone_uuid =
-      base::Uuid::GenerateRandomV4().AsLowercaseString();
-  static constexpr char kInsertTombstoneQuery[] =
-      "INSERT INTO memory_tombstone(uuid, vector, created_date)"
-      " VALUES(?, ?, ?)";
-  sql::Statement insert_statement(
-      GetDB().GetUniqueStatement(kInsertTombstoneQuery));
-  CHECK(insert_statement.is_valid());
-  insert_statement.BindString(0, tombstone_uuid);
-  if (!BindAndEncryptString(insert_statement, 1, vector_bytes)) {
-    return false;
-  }
-  insert_statement.BindTime(2, base::Time::Now());
-  if (!insert_statement.Run()) {
-    return false;
-  }
-
-  if (!ReplaceMemorySourceLinks(
-          tombstone_uuid, MemoryLinkOwner::kTombstone,
-          GetMemorySourceLinks(memory_uuid, MemoryLinkOwner::kMemoryText))) {
-    return false;
-  }
-
-  if (!DeleteLearnedMemory(memory_uuid)) {
-    return false;
-  }
-
-  return transaction.Commit();
-}
-
-std::vector<MemoryTombstone> AIChatDatabase::GetAllMemoryTombstones() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!LazyInit()) {
-    return {};
-  }
-
-  static constexpr char kQuery[] =
-      "SELECT uuid, vector, created_date FROM memory_tombstone"
-      " ORDER BY created_date ASC, uuid ASC";
-  sql::Statement statement(GetDB().GetUniqueStatement(kQuery));
-  CHECK(statement.is_valid());
-
-  std::vector<MemoryTombstone> tombstones;
-  while (statement.Step()) {
-    MemoryTombstone tombstone;
-    tombstone.uuid = statement.ColumnString(0);
-    auto vector = BytesToVector(DecryptColumnToString(statement, 1));
-    if (!vector) {
-      DVLOG(0) << "Skipping unreadable memory tombstone " << tombstone.uuid;
-      continue;
-    }
-    tombstone.vector = std::move(*vector);
-    tombstone.created_date = statement.ColumnTime(2);
-    tombstone.links =
-        GetMemorySourceLinks(tombstone.uuid, MemoryLinkOwner::kTombstone);
-    tombstones.push_back(std::move(tombstone));
-  }
-  if (!statement.Succeeded()) {
-    DVLOG(0) << "Failed to read memory tombstones: " << db_.GetErrorMessage();
-    return {};
-  }
-  return tombstones;
 }
 
 std::map<std::string, base::Time> AIChatDatabase::GetAllMemoryWatermarks() {
@@ -2591,6 +2619,8 @@ bool AIChatDatabase::CreateSchema() {
       "uuid TEXT PRIMARY KEY NOT NULL,"
       // Encrypted memory text
       "text BLOB NOT NULL,"
+      // Counts the changes of the text, from 1
+      "text_version INTEGER NOT NULL DEFAULT 1,"
       // Encrypted embedding, as the bytes of the floats
       "vector BLOB NOT NULL,"
       // LearnedMemoryCategory
@@ -2608,12 +2638,21 @@ bool AIChatDatabase::CreateSchema() {
   if (!GetDB().Execute(kCreateLearnedMemoryTableQuery)) {
     return false;
   }
+  // The learned memory tables of version 12 are not released yet. A profile
+  // that has an earlier shape of them gets the current shape.
+  if (!GetDB().DoesColumnExist("learned_memory", "text_version") &&
+      !GetDB().Execute("ALTER TABLE learned_memory ADD COLUMN text_version"
+                       " INTEGER NOT NULL DEFAULT 1")) {
+    return false;
+  }
+  if (!GetDB().Execute("DROP TABLE IF EXISTS memory_tombstone")) {
+    return false;
+  }
 
-  // The user sentences that a memory, its previous text or a tombstone came
-  // from.
+  // The user sentences that a memory or its previous text came from.
   static constexpr char kCreateMemorySourceLinkTableQuery[] =
       "CREATE TABLE IF NOT EXISTS memory_source_link("
-      // The uuid of the learned_memory or memory_tombstone row
+      // The uuid of the learned_memory row
       "owner_uuid TEXT NOT NULL,"
       // MemoryLinkOwner
       "owner_kind INTEGER NOT NULL,"
@@ -2624,17 +2663,6 @@ bool AIChatDatabase::CreateSchema() {
       ")";
   CHECK(GetDB().IsSQLValid(kCreateMemorySourceLinkTableQuery));
   if (!GetDB().Execute(kCreateMemorySourceLinkTableQuery)) {
-    return false;
-  }
-
-  static constexpr char kCreateMemoryTombstoneTableQuery[] =
-      "CREATE TABLE IF NOT EXISTS memory_tombstone("
-      "uuid TEXT PRIMARY KEY NOT NULL,"
-      // Encrypted embedding, as the bytes of the floats
-      "vector BLOB NOT NULL,"
-      "created_date INTEGER NOT NULL)";
-  CHECK(GetDB().IsSQLValid(kCreateMemoryTombstoneTableQuery));
-  if (!GetDB().Execute(kCreateMemoryTombstoneTableQuery)) {
     return false;
   }
 

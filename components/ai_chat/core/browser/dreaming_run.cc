@@ -223,22 +223,14 @@ void DreamingRun::OnWatermarks(std::map<std::string, base::Time> watermarks) {
 
 void DreamingRun::OnMemories(std::vector<LearnedMemory> memories) {
   memories_ = std::move(memories);
-  db_->AsyncCall(&AIChatDatabase::GetAllMemoryTombstones)
-      .Then(base::BindOnce(&DreamingRun::OnTombstones,
-                           weak_ptr_factory_.GetWeakPtr()));
-}
-
-void DreamingRun::OnTombstones(std::vector<MemoryTombstone> tombstones) {
-  tombstones_ = std::move(tombstones);
   if (tracing()) {
-    base::ListValue memories;
+    base::ListValue texts;
     for (const auto& memory : memories_) {
-      memories.Append(memory.text);
+      texts.Append(memory.text);
     }
     Trace("loaded",
           base::DictValue()
-              .Set("memories", std::move(memories))
-              .Set("tombstones", static_cast<int>(tombstones_.size()))
+              .Set("memories", std::move(texts))
               .Set("watermarks", static_cast<int>(watermarks_.size())));
   }
   db_->AsyncCall(&AIChatDatabase::GetAllConversations)
@@ -590,18 +582,6 @@ void DreamingRun::ProcessNextFact() {
                     .Set("category", Name(fact().category))
                     .Set("type", Name(fact().type))
                     .Set("links", LinksToList(fact().links)));
-  for (const auto& tombstone : tombstones_) {
-    const float similarity = VectorSimilarity(fact().vector, tombstone.vector);
-    if (similarity >= config_.tombstone_similarity) {
-      // The user deleted a memory like this one.
-      Trace("fact_dropped",
-            base::DictValue()
-                .Set("reason", "close to a deleted memory (tombstone)")
-                .Set("similarity", similarity));
-      NextFact();
-      return;
-    }
-  }
   std::vector<std::pair<float, size_t>> scored;
   for (size_t i = 0; i < memories_.size(); ++i) {
     float score = VectorSimilarity(fact().vector, memories_[i].vector);

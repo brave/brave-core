@@ -71,6 +71,11 @@ struct PreviousMemoryText {
 struct LearnedMemory {
   std::string uuid;
   std::string text;
+  // Starts at 1. The database adds 1 each time AddOrUpdateLearnedMemory()
+  // changes the text, and ignores the value that the caller gives. A mention of
+  // the same fact, which only moves the dates and the sources, does not change
+  // it.
+  int text_version = 1;
   std::vector<float> vector;
   LearnedMemoryCategory category = LearnedMemoryCategory::kPersonalFact;
   LearnedMemoryType type = LearnedMemoryType::kLongTerm;
@@ -83,15 +88,14 @@ struct LearnedMemory {
   bool operator==(const LearnedMemory& other) const = default;
 };
 
-// Written when the user deletes a learned memory, so that Dreaming does not
-// learn the same memory again.
-struct MemoryTombstone {
+// The version of the text of a learned memory. The embedding of the memory is
+// valid for one version. A memory without an embedding of its current version
+// is embedded again.
+struct LearnedMemoryStamp {
   std::string uuid;
-  std::vector<float> vector;
-  base::Time created_date;
-  std::vector<MemorySourceLink> links;
+  int text_version = 1;
 
-  bool operator==(const MemoryTombstone& other) const = default;
+  bool operator==(const LearnedMemoryStamp& other) const = default;
 };
 
 }  // namespace ai_chat

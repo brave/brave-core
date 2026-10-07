@@ -63,8 +63,8 @@ class FakeMemoryManagerDelegate : public MemoryManagerDelegate {
     std::move(callback).Run(learned_available, mojo::Clone(learned));
   }
 
-  void ForgetLearnedMemory(const std::string& uuid,
-                           ForgetLearnedMemoryCallback callback) override {
+  void DeleteLearnedMemory(const std::string& uuid,
+                           DeleteLearnedMemoryCallback callback) override {
     forgotten.push_back(uuid);
     std::move(callback).Run(true);
   }
@@ -487,7 +487,7 @@ TEST_F(CustomizationSettingsHandlerTest, LearnedMemoriesGoThroughTheDelegate) {
   EXPECT_EQ(memories.Get<1>()[0]->text, "Lives in Berlin.");
 
   base::test::TestFuture<bool> forgotten;
-  handler_->ForgetLearnedMemory("uuid-1", forgotten.GetCallback());
+  handler_->DeleteLearnedMemory("uuid-1", forgotten.GetCallback());
   EXPECT_TRUE(forgotten.Get());
   EXPECT_EQ(delegate_->forgotten, std::vector<std::string>{"uuid-1"});
 
@@ -511,7 +511,7 @@ TEST(CustomizationSettingsHandlerNoDelegateTest, LearnedMemoryIsNotAvailable) {
   EXPECT_TRUE(memories.Get<1>().empty());
 
   base::test::TestFuture<bool> forgotten;
-  handler.ForgetLearnedMemory("uuid", forgotten.GetCallback());
+  handler.DeleteLearnedMemory("uuid", forgotten.GetCallback());
   EXPECT_FALSE(forgotten.Get());
 
   base::test::TestFuture<mojom::DreamNowResultPtr> dream;

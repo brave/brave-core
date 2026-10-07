@@ -102,10 +102,10 @@ class UserMemoryManager {
   // when the database is not available.
   void GetLearnedMemories(LearnedMemoriesCallback callback);
 
-  // Deletes the memory and writes a tombstone, so that Dreaming does not learn
-  // it again. |callback| gets false when the database is not available or the
-  // delete failed.
-  void ForgetLearnedMemory(const std::string& uuid,
+  // Deletes the memory for good. Nothing remembers it, so Dreaming can learn
+  // the same fact again from another chat. |callback| gets false when the
+  // database is not available or the delete failed.
+  void DeleteLearnedMemory(const std::string& uuid,
                            base::OnceCallback<void(bool)> callback);
 
   // Chat time. Finds the learned memories for a chat turn, and runs |callback|

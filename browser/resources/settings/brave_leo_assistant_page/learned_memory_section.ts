@@ -123,9 +123,9 @@ class LearnedMemorySection extends LearnedMemorySectionBase {
     }
   }
 
-  onForget_(e: { model: { item: LearnedMemoryItem } }) {
+  onDelete_(e: { model: { item: LearnedMemoryItem } }) {
     const handler = this.browserProxy_.getCustomizationSettingsHandler()
-    handler.forgetLearnedMemory(e.model.item.uuid).then(() => {
+    handler.deleteLearnedMemory(e.model.item.uuid).then(() => {
       this.loadLearnedMemories_()
     })
   }

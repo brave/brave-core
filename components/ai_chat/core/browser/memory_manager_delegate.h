@@ -27,8 +27,8 @@ class MemoryManagerDelegate {
       base::OnceCallback<void(const std::optional<std::vector<std::string>>&)>;
   using GetLearnedMemoriesCallback =
       mojom::CustomizationSettingsHandler::GetLearnedMemoriesCallback;
-  using ForgetLearnedMemoryCallback =
-      mojom::CustomizationSettingsHandler::ForgetLearnedMemoryCallback;
+  using DeleteLearnedMemoryCallback =
+      mojom::CustomizationSettingsHandler::DeleteLearnedMemoryCallback;
   using DreamNowCallback =
       mojom::CustomizationSettingsHandler::DreamNowCallback;
 
@@ -43,9 +43,9 @@ class MemoryManagerDelegate {
   // memory is off or the chat database is not ready.
   virtual void GetLearnedMemories(GetLearnedMemoriesCallback callback) = 0;
 
-  // Deletes a learned memory. `callback` gets false when it could not.
-  virtual void ForgetLearnedMemory(const std::string& uuid,
-                                   ForgetLearnedMemoryCallback callback) = 0;
+  // Deletes a learned memory for good. `callback` gets false when it could not.
+  virtual void DeleteLearnedMemory(const std::string& uuid,
+                                   DeleteLearnedMemoryCallback callback) = 0;
 
   // Starts a Dreaming run now. `callback` gets the result when the run ends.
   virtual void DreamNow(DreamNowCallback callback) = 0;

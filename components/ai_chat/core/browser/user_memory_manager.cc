@@ -109,14 +109,14 @@ void UserMemoryManager::GetLearnedMemories(LearnedMemoriesCallback callback) {
       .Then(std::move(callback));
 }
 
-void UserMemoryManager::ForgetLearnedMemory(
+void UserMemoryManager::DeleteLearnedMemory(
     const std::string& uuid,
     base::OnceCallback<void(bool)> callback) {
   if (!db_) {
     std::move(callback).Run(false);
     return;
   }
-  db_->AsyncCall(&AIChatDatabase::ForgetLearnedMemory)
+  db_->AsyncCall(&AIChatDatabase::DeleteLearnedMemory)
       .WithArgs(uuid)
       .Then(std::move(callback));
 }

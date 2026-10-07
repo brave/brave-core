@@ -22,6 +22,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
+#include "base/strings/cstring_view.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_view_util.h"
 #include "base/test/task_environment.h"
@@ -86,6 +87,18 @@ class AIChatDatabaseTest : public testing::Test,
   sql::Statement RawStatement(const std::string& query) {
     return sql::Statement(db_->GetDB().GetUniqueStatement(query));
   }
+
+  bool Execute(const std::string& query) { return db_->GetDB().Execute(query); }
+
+  bool DoesColumnExist(base::cstring_view table, base::cstring_view column) {
+    return db_->GetDB().DoesColumnExist(table, column);
+  }
+
+  bool DoesTableExist(base::cstring_view table) {
+    return db_->GetDB().DoesTableExist(table);
+  }
+
+  bool CreateSchema() { return db_->CreateSchema(); }
 
   int CountRows(const std::string& table) {
     sql::Statement statement =
@@ -1442,6 +1455,7 @@ TEST_P(AIChatDatabaseTest, LearnedMemory_AddGetAndUpdate) {
 
   // An update replaces the row, the links and the previous text.
   first.text = "Moved to Berlin";
+  first.text_version = 2;
   first.vector = {9.0f, 8.0f};
   first.category = LearnedMemoryCategory::kPreference;
   first.type = LearnedMemoryType::kPermanent;
@@ -1500,36 +1514,90 @@ TEST_P(AIChatDatabaseTest, LearnedMemory_Delete) {
 
   EXPECT_EQ(db_->GetAllLearnedMemories(), (std::vector<LearnedMemory>{kept}));
   EXPECT_EQ(CountRows("memory_source_link"), 1);
-  // Removing a memory does not write a tombstone.
-  EXPECT_TRUE(db_->GetAllMemoryTombstones().empty());
+  // Nothing remembers the deleted memory: the same uuid can be added again.
+  EXPECT_TRUE(db_->AddOrUpdateLearnedMemory(deleted));
+  EXPECT_EQ(db_->GetAllLearnedMemories().size(), 2u);
 }
 
-TEST_P(AIChatDatabaseTest, LearnedMemory_ForgetWritesTombstone) {
-  LearnedMemory forgotten = MakeLearnedMemory(
-      "forgotten", {{"chat-a", "e1", 0}, {"chat-a", "e1", 3}});
-  forgotten.previous = MakePreviousText({{"chat-b", "e2", 0}});
-  LearnedMemory kept = MakeLearnedMemory("kept", {{"chat-a", "e1", 1}});
-  ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(forgotten));
-  ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(kept));
-  const base::Time forget_time = base::Time::Now();
+TEST_P(AIChatDatabaseTest, LearnedMemory_TextVersionCountsTextChanges) {
+  LearnedMemory memory = MakeLearnedMemory("memory", {{"chat-a", "e1", 0}});
+  // The caller's value is ignored. A new memory starts at 1.
+  memory.text_version = 7;
+  ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(memory));
+  EXPECT_EQ(db_->GetLearnedMemoryStamps(),
+            (std::vector<LearnedMemoryStamp>{{"memory", 1}}));
 
-  EXPECT_TRUE(db_->ForgetLearnedMemory("forgotten"));
+  // A mention of the same fact moves the dates and the sources, not the text.
+  memory.updated_date = base::Time::FromSecondsSinceUnixEpoch(5000);
+  memory.links.push_back({"chat-b", "e2", 1});
+  ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(memory));
+  EXPECT_EQ(db_->GetLearnedMemoryStamps(),
+            (std::vector<LearnedMemoryStamp>{{"memory", 1}}));
 
-  EXPECT_EQ(db_->GetAllLearnedMemories(), (std::vector<LearnedMemory>{kept}));
-  // The tombstone has the vector and the links of the current text. The
-  // previous text is gone.
-  std::vector<MemoryTombstone> tombstones = db_->GetAllMemoryTombstones();
-  ASSERT_EQ(tombstones.size(), 1u);
-  EXPECT_FALSE(tombstones[0].uuid.empty());
-  EXPECT_NE(tombstones[0].uuid, "forgotten");
-  EXPECT_EQ(tombstones[0].vector, forgotten.vector);
-  EXPECT_EQ(tombstones[0].created_date, forget_time);
-  EXPECT_EQ(tombstones[0].links, forgotten.links);
-  EXPECT_EQ(CountRows("memory_source_link"), 3);
+  // A change of the text, for example a replace or a merge, adds 1.
+  memory.text = "Moved to Berlin";
+  ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(memory));
+  EXPECT_EQ(db_->GetLearnedMemoryStamps(),
+            (std::vector<LearnedMemoryStamp>{{"memory", 2}}));
+  ASSERT_EQ(db_->GetAllLearnedMemories().size(), 1u);
+  EXPECT_EQ(db_->GetAllLearnedMemories()[0].text_version, 2);
 
-  // A memory that does not exist leaves no tombstone.
-  EXPECT_FALSE(db_->ForgetLearnedMemory("forgotten"));
-  EXPECT_EQ(db_->GetAllMemoryTombstones().size(), 1u);
+  memory.text = "Lives in Berlin";
+  ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(memory));
+  EXPECT_EQ(db_->GetLearnedMemoryStamps(),
+            (std::vector<LearnedMemoryStamp>{{"memory", 3}}));
+}
+
+TEST_P(AIChatDatabaseTest, LearnedMemory_LightQueries) {
+  LearnedMemory first = MakeLearnedMemory("first", {{"chat-a", "e1", 0}});
+  first.previous = MakePreviousText({{"chat-b", "e2", 0}});
+  LearnedMemory permanent = MakeLearnedMemory("permanent", {});
+  permanent.type = LearnedMemoryType::kPermanent;
+  LearnedMemory third = MakeLearnedMemory("third", {{"chat-a", "e1", 2}});
+  for (const auto& memory : {first, permanent, third}) {
+    ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(memory));
+  }
+
+  // The memories come in the order of the uuids. A missing uuid is left out.
+  // The memories have no vector, no links and no previous text.
+  std::vector<LearnedMemory> found =
+      db_->GetLearnedMemoriesByUuid({"third", "missing", "first"});
+  ASSERT_EQ(found.size(), 2u);
+  EXPECT_EQ(found[0].uuid, "third");
+  EXPECT_EQ(found[0].text, third.text);
+  EXPECT_EQ(found[0].updated_date, third.updated_date);
+  EXPECT_TRUE(found[0].vector.empty());
+  EXPECT_TRUE(found[0].links.empty());
+  EXPECT_EQ(found[1].uuid, "first");
+  EXPECT_FALSE(found[1].previous.has_value());
+
+  std::vector<LearnedMemory> permanents = db_->GetPermanentLearnedMemories();
+  ASSERT_EQ(permanents.size(), 1u);
+  EXPECT_EQ(permanents[0].uuid, "permanent");
+  EXPECT_EQ(permanents[0].type, LearnedMemoryType::kPermanent);
+
+  EXPECT_EQ(db_->GetLearnedMemoryStamps(),
+            (std::vector<LearnedMemoryStamp>{
+                {"first", 1}, {"permanent", 1}, {"third", 1}}));
+  EXPECT_TRUE(db_->GetLearnedMemoriesByUuid({}).empty());
+}
+
+TEST_P(AIChatDatabaseTest, LearnedMemory_UpgradesAnEarlierShapeOfTheTables) {
+  // The shape of a profile that migrated to version 12 before the text version
+  // and before the tombstone was removed.
+  ASSERT_TRUE(db_->GetAllLearnedMemories().empty());  // Opens the database.
+  ASSERT_TRUE(Execute("ALTER TABLE learned_memory DROP COLUMN text_version"));
+  ASSERT_TRUE(
+      Execute("CREATE TABLE memory_tombstone(uuid TEXT PRIMARY KEY NOT NULL,"
+              " vector BLOB NOT NULL, created_date INTEGER NOT NULL)"));
+  ASSERT_FALSE(DoesColumnExist("learned_memory", "text_version"));
+
+  ASSERT_TRUE(CreateSchema());
+
+  EXPECT_TRUE(DoesColumnExist("learned_memory", "text_version"));
+  EXPECT_FALSE(DoesTableExist("memory_tombstone"));
+  EXPECT_TRUE(db_->AddOrUpdateLearnedMemory(
+      MakeLearnedMemory("memory", {{"chat-a", "e1", 0}})));
 }
 
 TEST_P(AIChatDatabaseTest, MemoryWatermarks) {
@@ -1576,14 +1644,9 @@ TEST_P(AIChatDatabaseTest, DeleteConversationDeletesMemoryData) {
   // Both texts are from chat B, so nothing changes.
   LearnedMemory only_b = MakeLearnedMemory("only-b", {{"chat-b", entry_b, 2}});
   only_b.previous = MakePreviousText({{"chat-b", entry_b, 3}});
-  // Forgotten memory with links to both chats.
-  LearnedMemory forgotten = MakeLearnedMemory(
-      "forgotten", {{"chat-a", entry_a, 3}, {"chat-b", entry_b, 4}});
-  for (const auto& memory :
-       {only_a, shared, previous_from_a, only_b, forgotten}) {
+  for (const auto& memory : {only_a, shared, previous_from_a, only_b}) {
     ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(memory));
   }
-  ASSERT_TRUE(db_->ForgetLearnedMemory("forgotten"));
   ASSERT_TRUE(db_->SetMemoryWatermark("chat-a", base::Time::Now()));
   ASSERT_TRUE(db_->SetMemoryWatermark("chat-b", base::Time::Now()));
 
@@ -1593,17 +1656,11 @@ TEST_P(AIChatDatabaseTest, DeleteConversationDeletesMemoryData) {
   previous_from_a.previous = std::nullopt;
   EXPECT_EQ(db_->GetAllLearnedMemories(),
             (std::vector<LearnedMemory>{only_b, previous_from_a, shared}));
-  // The tombstone stays, without the link to chat A.
-  std::vector<MemoryTombstone> tombstones = db_->GetAllMemoryTombstones();
-  ASSERT_EQ(tombstones.size(), 1u);
-  EXPECT_EQ(tombstones[0].vector, forgotten.vector);
-  EXPECT_EQ(tombstones[0].links,
-            (std::vector<MemorySourceLink>{{"chat-b", entry_b, 4}}));
   EXPECT_EQ(db_->GetAllMemoryWatermarks().size(), 1u);
   EXPECT_EQ(db_->GetAllMemoryWatermarks().count("chat-b"), 1u);
   // No link of a deleted memory or of chat A is left. These are the links of
-  // shared (1), previous_from_a (1), only_b (2) and the tombstone (1).
-  EXPECT_EQ(CountRows("memory_source_link"), 5);
+  // shared (1), previous_from_a (1) and only_b (2).
+  EXPECT_EQ(CountRows("memory_source_link"), 4);
 }
 
 TEST_P(AIChatDatabaseTest, DeleteConversationEntryDeletesMemoryData) {
@@ -1658,15 +1715,11 @@ TEST_P(AIChatDatabaseTest, DeleteAllDataDeletesMemoryData) {
   LearnedMemory memory = MakeLearnedMemory("memory", {{"chat-a", "e1", 0}});
   memory.previous = MakePreviousText({{"chat-a", "e1", 1}});
   ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(memory));
-  ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(
-      MakeLearnedMemory("forgotten", {{"chat-a", "e1", 2}})));
-  ASSERT_TRUE(db_->ForgetLearnedMemory("forgotten"));
   ASSERT_TRUE(db_->SetMemoryWatermark("chat-a", base::Time::Now()));
 
   ASSERT_TRUE(db_->DeleteAllData());
 
   EXPECT_TRUE(db_->GetAllLearnedMemories().empty());
-  EXPECT_TRUE(db_->GetAllMemoryTombstones().empty());
   EXPECT_TRUE(db_->GetAllMemoryWatermarks().empty());
   EXPECT_EQ(CountRows("memory_source_link"), 0);
   // The tables are usable again.
@@ -2159,7 +2212,7 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
     // The learned memory tables exist after migration in all builds.
     EXPECT_TRUE(DoesTableExist("learned_memory"));
     EXPECT_TRUE(DoesTableExist("memory_source_link"));
-    EXPECT_TRUE(DoesTableExist("memory_tombstone"));
+    EXPECT_FALSE(DoesTableExist("memory_tombstone"));
     EXPECT_TRUE(DoesTableExist("memory_watermark"));
   }
 #if BUILDFLAG(ENABLE_LOCAL_AI)
