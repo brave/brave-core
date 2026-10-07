@@ -151,6 +151,7 @@ source_set("ui") {
     deps += [
       "//brave/browser/history_embeddings:status",
       "//brave/browser/ui/webui/local_ai",
+      "//brave/components/local_ai/core",
     ]
   }
 
