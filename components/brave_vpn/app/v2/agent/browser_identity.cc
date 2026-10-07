@@ -25,7 +25,9 @@ BrowserIdentityCaptureCallback& GetBrowserIdentityCaptureCallbackInstance() {
 }
 }  // namespace
 
-BrowserIdentity::BrowserIdentity(base::ProcessId pid) : pid_(pid) {}
+BrowserIdentity::BrowserIdentity(base::ProcessId pid,
+                                 PlatformData platform_data)
+    : pid_(pid), platform_data_(std::move(platform_data)) {}
 
 BrowserIdentity::~BrowserIdentity() = default;
 
