@@ -20,3 +20,21 @@ substitutions:
     set_feature_flag_default_state:
       feature_name: kSyncEnableBookmarksInTransportMode
       value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: |-
+      Ship kProfileDiscOnAllPages disabled.
+
+      The Android toolbar would otherwise show a Google sign-in button
+      instead of the profile disc.
+    set_feature_flag_default_state:
+      feature_name: kProfileDiscOnAllPages
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: |-
+      Ship kSigninLevelUpButton disabled.
+
+      The Android toolbar would otherwise show a Google sign-in button
+      instead of the profile disc.
+    set_feature_flag_default_state:
+      feature_name: kSigninLevelUpButton
+      value: base::FEATURE_DISABLED_BY_DEFAULT
