@@ -1169,10 +1169,10 @@ component (check the full class hierarchy, not just the file in the diff).
 **Default: put new feature-specific Java files in the feature's Android
 directory, not the legacy Android Java tree.** In Chromium, prefer
 `chrome/browser/<feature>/android/` over the deprecated
-`chrome/android/java/src/org/chromium/chrome/browser/...` layout. In Brave,
-use `browser/<feature>/android/` rather than
-`android/java/org/chromium/chrome/browser/...` (paths relative to
-`brave-core`). This keeps Android code with the feature it implements.
+`chrome/android/java/src/org/chromium/chrome/browser/...` layout. In Brave, use
+`browser/<feature>/android/` rather than
+`android/java/org/chromium/chrome/browser/...` (paths relative to `brave-core`).
+This keeps Android code with the feature it implements.
 
 Illustrative GN configurations for a new standalone feature class (the
 `my_feature` files and target below are hypothetical). Assume the class uses
@@ -1208,9 +1208,9 @@ brave_chrome_java_deps += [ "//brave/browser/my_feature/android:java" ]
 ```
 
 Keep the module's dependencies limited to the APIs it uses; do not add a reverse
-dependency on `//chrome/android:chrome_java`. If the caller is in another module,
-add the feature target to that caller's `deps` instead. Do not also add the
-feature's Java files to `brave_java_sources`.
+dependency on `//chrome/android:chrome_java`. If the caller is in another
+module, add the feature target to that caller's `deps` instead. Do not also add
+the feature's Java files to `brave_java_sources`.
 
 For an existing feature-local example, see
 [`browser/brave_origin/android/BUILD.gn`](../../browser/brave_origin/android/BUILD.gn),
@@ -1220,8 +1220,8 @@ with its own dependencies and JNI generation. Its target is included in
 [`build/android/config.gni`](../../build/android/config.gni).
 
 `chrome/browser/android/` serves a different purpose: common browser-support
-code that feature-local Android code can depend on. It is not deprecated by
-this rule and is not the default home for feature-specific Java files.
+code that feature-local Android code can depend on. It is not deprecated by this
+rule and is not the default home for feature-specific Java files.
 
 **Exception: new files that subclass upstream classes in deprecated locations
 are allowed in the corresponding deprecated Brave location.** For example,
@@ -1231,9 +1231,8 @@ extends upstream `BookmarkActivity` in
 
 The `brave_java_sources` GN source list in
 [`android/brave_java_sources.gni`](../../android/brave_java_sources.gni)
-includes these legacy sources under
-`android/java/org/chromium/chrome/browser/`, including
-`BraveBookmarkActivity.java`, and is appended to upstream
+includes these legacy sources under `android/java/org/chromium/chrome/browser/`,
+including `BraveBookmarkActivity.java`, and is appended to upstream
 `chrome_java_sources`. It also aggregates feature-local source lists, so
 membership in `brave_java_sources` alone does not determine a file's location.
 Use the default and subclass exception above to choose the directory.
