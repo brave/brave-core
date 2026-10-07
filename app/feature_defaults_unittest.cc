@@ -320,6 +320,10 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
       &switches::kFirstRunDesktopRefresh,
 #endif
+#if BUILDFLAG(IS_ANDROID)
+      &switches::kProfileDiscOnAllPages,
+      &switches::kSigninLevelUpButton,
+#endif
       &switches::kSyncEnableBookmarksInTransportMode,
       &syncer::kSyncAutofillValuableMetadata,
       &ttc::kTtc,
