@@ -199,7 +199,7 @@ struct SubmitReportView: View {
         considerAllShieldsOption: false
       ) ?? true)
     let adblkList = FilterListStorage.shared.filterLists
-      .compactMap({ return $0.isEnabled ? $0.entry.title : nil })
+      .compactMap({ return $0.isEnabledOrDefault ? $0.entry.title : nil })
       .joined(separator: ",")
     isSubmittingReport = true
     webcompatReporter.submitWebcompatReport(
