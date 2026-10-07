@@ -9,11 +9,8 @@
 #include <map>
 
 #include "base/check.h"
-#include "base/feature_list.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/no_destructor.h"
-#include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
-#include "net/base/features.h"
 
 namespace ephemeral_storage {
 
@@ -72,9 +69,8 @@ TLDEphemeralLifetime* TLDEphemeralLifetime::Get(
 
 // static
 scoped_refptr<TLDEphemeralLifetime> TLDEphemeralLifetime::GetOrCreate(
-    const TLDEphemeralLifetimeKey& key) {
-  auto* ephemeral_storage_service =
-      EphemeralStorageServiceFactory::GetForContext(key.browser_context);
+    const TLDEphemeralLifetimeKey& key,
+    EphemeralStorageService* ephemeral_storage_service) {
   if (!ephemeral_storage_service) {
     return nullptr;
   }

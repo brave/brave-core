@@ -50,10 +50,13 @@ class TLDEphemeralLifetime : public base::RefCounted<TLDEphemeralLifetime> {
  public:
   using OnDestroyCallback = base::OnceCallback<void(const std::string&)>;
 
-  explicit TLDEphemeralLifetime(const TLDEphemeralLifetimeKey& key, base::WeakPtr<EphemeralStorageService> ephemeral_storage_service);
+  TLDEphemeralLifetime(
+      const TLDEphemeralLifetimeKey& key,
+      base::WeakPtr<EphemeralStorageService> ephemeral_storage_service);
   static TLDEphemeralLifetime* Get(const TLDEphemeralLifetimeKey& key);
   static scoped_refptr<TLDEphemeralLifetime> GetOrCreate(
-      const TLDEphemeralLifetimeKey& key);
+      const TLDEphemeralLifetimeKey& key,
+      EphemeralStorageService* ephemeral_storage_service);
 
   const TLDEphemeralLifetimeKey& key() const { return key_; }
   void SetShieldsStateOnHost(std::string_view host, bool enabled);

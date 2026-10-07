@@ -48,7 +48,8 @@ class EphemeralStorageTabHelper
 #endif
       public content::WebContentsUserData<EphemeralStorageTabHelper> {
  public:
-  explicit EphemeralStorageTabHelper(content::WebContents* web_contents);
+  EphemeralStorageTabHelper(content::WebContents* web_contents,
+                            EphemeralStorageService* ephemeral_storage_service);
   ~EphemeralStorageTabHelper() override;
 
   std::optional<base::UnguessableToken> GetEphemeralStorageToken(
@@ -87,6 +88,7 @@ class EphemeralStorageTabHelper
 
   const base::raw_ptr<HostContentSettingsMap> host_content_settings_map_;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
+  raw_ptr<EphemeralStorageService> ephemeral_storage_service_;
   base::flat_set<scoped_refptr<TLDEphemeralLifetime>>
       provisional_tld_ephemeral_lifetimes_;
   scoped_refptr<TLDEphemeralLifetime> tld_ephemeral_lifetime_;
