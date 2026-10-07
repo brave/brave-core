@@ -23,6 +23,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.test.util.Batch;
 import org.chromium.base.test.util.CommandLineFlags;
 import org.chromium.base.test.util.Criteria;
 import org.chromium.base.test.util.CriteriaHelper;
@@ -44,6 +45,7 @@ import org.chromium.content_public.browser.WebContents;
 @RunWith(ChromeJUnit4ClassRunner.class)
 @CommandLineFlags.Add({ChromeSwitches.DISABLE_FIRST_RUN_EXPERIENCE})
 @EnableFeatures(BraveFeatureList.BRAVE_PICTURE_IN_PICTURE_FOR_YOUTUBE_VIDEOS)
+@Batch(Batch.PER_CLASS)
 public class BraveYouTubePipIconTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
