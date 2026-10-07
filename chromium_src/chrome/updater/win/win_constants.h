@@ -22,7 +22,9 @@
 
 namespace updater {
 
-// `kShutdownEvent` in omaha/base/const_object_names.h of our Omaha 3 fork.
+// `kShutdownEvent` in omaha/base/const_object_names.h of our Omaha 3 fork. The
+// fork also prefixes it differently from upstream, see
+// GetLegacyShutdownEventName in chromium_src/chrome/updater/util/win_util.cc.
 inline constexpr wchar_t kShutdownEvent[] =
     L"{4613C8D6-D26E-4F10-B494-72CFF6F0BF0B}";
 
