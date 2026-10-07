@@ -22,6 +22,15 @@ void PrerenderManager::StopPrewarmSearchResultForTesting() {}
 
 void PrerenderManager::SetPrewarmUrlForTesting(const GURL& url) {}
 
+content::PrerenderHandle::Observer*
+PrerenderManager::GetPrewarmObserverForTesting() {
+  return nullptr;
+}
+
+bool PrerenderManager::HasSearchPrewarmTaskForTesting() const {
+  return false;
+}
+
 base::WeakPtr<content::PrerenderHandle>
 PrerenderManager::StartPrerenderDirectUrlInput(
     const GURL& prerendering_url,
