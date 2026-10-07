@@ -38,7 +38,7 @@ namespace ai_chat {
 // loaded. The page holds a
 // FileSystemDirectoryHandle for a user-picked folder (delivered by the browser
 // via launchQueue) and registers the local file tools with Leo via WebMCP
-// (navigator.modelContext). This delegate owns the background WebContents, so
+// (document.modelContext). This delegate owns the background WebContents, so
 // its lifetime (and the page's) is tied to the conversation that owns the
 // delegate. Tool discovery reuses the same AIPageContentAgent harvest as tab
 // content (see GetContentTools).
