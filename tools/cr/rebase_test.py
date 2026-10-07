@@ -338,6 +338,7 @@ class PatternMatchTest(unittest.TestCase):
             ('iwyu', '[cr149] IWYU fixes.'),
             ('resource_ids', '[cr149] Bump resource_ids'),
             ('lit_mangler', '[cr149] Update Lit mangler snapshot'),
+            ('codehealth_tracker', '[cr149] Version CodeHealth tracker'),
             ('disable_tests', '[cr149] Disable failing upstream tests'),
             ('disable_tests', '[cr149] Filter upstream tests as needed'),
             (
