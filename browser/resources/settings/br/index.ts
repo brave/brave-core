@@ -21,7 +21,9 @@ import './basic_page.js'
 import './contact_info_page.js'
 import './add_site_dialog.js'
 import './cookies_page.js'
+// <if expr="not is_macosx and not is_chromeos">
 import './edit_dictionary_page.js'
+// </if>
 import './import_data_dialog.js'
 import './page_visibility.js'
 import './passwords_section.js'

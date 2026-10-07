@@ -88,7 +88,6 @@ brave_settings_ts_files = [
   "br/config.ts",
   "br/contact_info_page.ts",
   "br/cookies_page.ts",
-  "br/edit_dictionary_page.ts",
   "br/import_data_dialog.ts",
   "br/index.ts",
   "br/page_visibility.ts",
@@ -150,6 +149,11 @@ brave_account_settings_css_files = [
   "brave_account_logged_in_row.css",
   "brave_account_row_common.css",
 ]
+
+# Matches upstream (minus chromeos)
+if (!is_mac) {
+  brave_settings_ts_files += [ "br/edit_dictionary_page.ts" ]
+}
 
 if (enable_brave_vpn_wireguard) {
   brave_settings_web_component_files +=
