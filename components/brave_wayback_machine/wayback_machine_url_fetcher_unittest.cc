@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wayback_machine/wayback_machine_url_fetcher.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -15,6 +16,7 @@
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/brave_wayback_machine/url_constants.h"
+#include "brave/components/brave_wayback_machine/wayback_snapshot_info.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -30,10 +32,10 @@ class WaybackClient : public WaybackMachineURLFetcher::Client {
     callback_ = std::move(callback);
   }
   void SetExpectedURL(GURL expected_url) { expected_url_ = expected_url; }
-  void OnWaybackURLFetched(const GURL& latest_wayback_url,
-                           base::Time snapshot_time) override {
-    EXPECT_EQ(latest_wayback_url, expected_url_);
-    snapshot_time_ = snapshot_time;
+  void OnWaybackURLFetched(
+      std::optional<WaybackSnapshotInfo> snapshot) override {
+    EXPECT_EQ(snapshot ? snapshot->url : GURL(), expected_url_);
+    snapshot_time_ = snapshot ? snapshot->time : base::Time();
     ++call_count_;
     if (callback_) {
       std::move(callback_).Run();

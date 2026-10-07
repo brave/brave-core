@@ -10,6 +10,7 @@ enum class WaybackState {
   kInitial,       // Initial state.
   kNeedToCheck,   // Found current page is missing.
   kFetching,      // Asked to wayback machine.
+  kFound,         // Wayback url is found but not loaded yet.
   kLoaded,        // Wayback url is loaded.
   kNotAvailable,  // wayback url is not available.
 };
