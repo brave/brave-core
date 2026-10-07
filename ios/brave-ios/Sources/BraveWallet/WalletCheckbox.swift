@@ -3,30 +3,29 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import DesignSystem
 import SwiftUI
 
-struct WalletCheckbox: View {
-  @Binding var isChecked: Bool
-  let colorOverride: UIColor?
+struct CheckboxToggleStyle: ToggleStyle {
+  @Environment(\.isEnabled) private var isEnabled
 
-  init(
-    isChecked: Binding<Bool>,
-    colorOverride: UIColor? = nil
-  ) {
-    self._isChecked = isChecked
-    self.colorOverride = colorOverride
-  }
-
-  var body: some View {
+  func makeBody(configuration: Configuration) -> some View {
     Button {
-      isChecked.toggle()
+      configuration.isOn.toggle()
     } label: {
-      Image(braveSystemName: isChecked ? "leo.checkbox.checked" : "leo.checkbox.unchecked")
-        .renderingMode(.template)
-        .foregroundStyle(
-          colorOverride.map(Color.init)
-            ?? Color(braveSystemName: isChecked ? .buttonBackground : .buttonDisabled)
+      HStack {
+        Image(
+          braveSystemName: configuration.isOn ? "leo.checkbox.checked" : "leo.checkbox.unchecked"
         )
+        .foregroundStyle(
+          Color(
+            braveSystemName: (isEnabled
+              ? (configuration.isOn ? .buttonBackground : .buttonDisabled) : .buttonDisabled)
+          )
+        )
+        configuration.label
+      }
     }
+    .buttonStyle(.plain)
   }
 }
