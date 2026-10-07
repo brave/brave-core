@@ -375,6 +375,8 @@ class QuickViewController: UIViewController {
         self.changedShieldSettings()
       case .shredSiteData:  // not available in quickview mode
         break
+      case .blockElement:  // not available in quickview mode
+        break
       case .openURLInNewTab(let url):
         self.openNewTab(with: URLRequest(url: url), inPrivateMode: currentTab?.isPrivate ?? false)
       }

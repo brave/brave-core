@@ -1036,6 +1036,13 @@ extension Strings.Shields {
     comment: "Contact info storing description"
   )
 
+  public static let blockElementButtonTitle = NSLocalizedString(
+    "BlockElementButtonTitle",
+    bundle: .module,
+    value: "Block Element",
+    comment: "Title of a button in the shields panel that starts the element picker."
+  )
+
   public static let elementPickerCreateDisabledTitle = NSLocalizedString(
     "ElementPickerCreateDisabledTitle",
     bundle: .module,
