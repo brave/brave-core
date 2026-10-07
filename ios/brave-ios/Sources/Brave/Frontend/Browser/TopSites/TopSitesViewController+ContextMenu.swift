@@ -28,7 +28,7 @@ extension TopSitesViewController {
       guard let tile = tiles[safe: indexPath.item] else { return nil }
       let isPrivate = privateBrowsingManager.isPrivateBrowsing
       return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) {
-        _ -> UIMenu? in
+        [unowned self] _ -> UIMenu? in
         let openInNewTab = UIAction(
           title: Strings.openNewTabButtonTitle,
           handler: UIAction.deferredActionHandler { [weak self] _ in

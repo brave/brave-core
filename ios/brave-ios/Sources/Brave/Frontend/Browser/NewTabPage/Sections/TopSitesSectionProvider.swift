@@ -200,7 +200,7 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
 
     let isPrivate = isPrivateBrowsing
     return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) {
-      _ -> UIMenu? in
+      [unowned self] _ -> UIMenu? in
       let openInNewTab = UIAction(
         title: Strings.openNewTabButtonTitle,
         handler: UIAction.deferredActionHandler { [weak self] _ in
