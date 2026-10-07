@@ -47,6 +47,11 @@
 #include "brave/components/windows_recall/windows_recall.h"
 #endif
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/local_ai/core/pref_names.h"
+#include "brave/components/local_ai/core/utils.h"
+#endif
+
 #if BUILDFLAG(ENABLE_PSST)
 #include "brave/components/psst/core/common/features.h"
 #endif
@@ -69,6 +74,12 @@ BravePrivacyHandler::BravePrivacyHandler() {
             &BravePrivacyHandler::OnWindowsRecallDisabledChanged,
             base::Unretained(this)));
   }
+#endif
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  local_state_change_registrar_.Add(
+      local_ai::prefs::kOnDeviceSpeechModelEnabled,
+      base::BindRepeating(&BravePrivacyHandler::OnSpeechModelEnabledChanged,
+                          base::Unretained(this)));
 #endif
 }
 
@@ -106,6 +117,17 @@ void BravePrivacyHandler::RegisterMessages() {
                             base::Unretained(this),
                             windows_recall::prefs::kWindowsRecallDisabled));
   }
+#endif
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  web_ui()->RegisterMessageCallback(
+      "getOnDeviceSpeechModelEnabled",
+      base::BindRepeating(&BravePrivacyHandler::GetLocalStateBooleanEnabled,
+                          base::Unretained(this),
+                          local_ai::prefs::kOnDeviceSpeechModelEnabled));
+  web_ui()->RegisterMessageCallback(
+      "setOnDeviceSpeechModelEnabled",
+      base::BindRepeating(&BravePrivacyHandler::SetOnDeviceSpeechModelEnabled,
+                          base::Unretained(this)));
 #endif
 }
 
@@ -253,6 +275,30 @@ void BravePrivacyHandler::OnP3AEnabledChanged() {
     FireWebUIListener("p3a-enabled-changed", user_enabled, is_managed);
   }
 }
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+void BravePrivacyHandler::SetOnDeviceSpeechModelEnabled(
+    const base::ListValue& args) {
+  // The registrar leaves the pref alone while the feature or the Local AI
+  // switch is off, so a value set then would stay. It would start a download
+  // the user was not asked about once either one came back.
+  if (!local_ai::IsOnDeviceSpeechRecognitionAllowed(
+          g_browser_process->local_state())) {
+    return;
+  }
+  SetLocalStateBooleanEnabled(local_ai::prefs::kOnDeviceSpeechModelEnabled,
+                              args);
+}
+
+void BravePrivacyHandler::OnSpeechModelEnabledChanged() {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+  FireWebUIListener("on-device-speech-model-enabled-changed",
+                    base::Value(g_browser_process->local_state()->GetBoolean(
+                        local_ai::prefs::kOnDeviceSpeechModelEnabled)));
+}
+#endif
 
 #if BUILDFLAG(IS_WIN)
 void BravePrivacyHandler::OnWindowsRecallDisabledChanged() {

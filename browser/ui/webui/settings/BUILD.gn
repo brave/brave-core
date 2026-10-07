@@ -6,6 +6,7 @@
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
+import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
 
 source_set("unit_tests") {
@@ -39,6 +40,15 @@ source_set("unit_tests") {
       "//ui/base/clipboard",
       "//ui/base/clipboard:clipboard_test_support",
     ]
+
+    if (enable_local_ai) {
+      sources += [ "brave_privacy_handler_unittest.cc" ]
+
+      deps += [
+        "//brave/components/local_ai/core",
+        "//brave/components/local_ai/core:features",
+      ]
+    }
 
     if (enable_brave_ads) {
       sources += [ "brave_clear_browsing_data_handler_unittest.cc" ]

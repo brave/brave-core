@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -47,6 +48,11 @@ class BravePrivacyHandler : public settings::SettingsPageUIHandler {
 
 #if BUILDFLAG(IS_WIN)
   void OnWindowsRecallDisabledChanged();
+#endif
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  void SetOnDeviceSpeechModelEnabled(const base::ListValue& args);
+  void OnSpeechModelEnabledChanged();
 #endif
 
   raw_ptr<Profile> profile_ = nullptr;

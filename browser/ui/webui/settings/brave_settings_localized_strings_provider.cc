@@ -73,7 +73,10 @@
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/browser/history_embeddings/brave_history_embeddings_status.h"
+#include "brave/components/local_ai/core/on_device_speech_models_state.h"
+#include "brave/components/local_ai/core/utils.h"
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
+#include "ui/base/text/bytes_formatting.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -509,6 +512,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_SEMANTIC_HISTORY_SEARCH_LABEL},
       {"semanticHistorySearchSubLabel",
        IDS_SETTINGS_SEMANTIC_HISTORY_SEARCH_SUB_LABEL},
+      {"onDeviceSpeechModelLabel", IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_LABEL},
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
       {"historyRetentionLabel", IDS_SETTINGS_HISTORY_RETENTION_LABEL},
       {"historyRetentionSubLabel", IDS_SETTINGS_HISTORY_RETENTION_SUB_LABEL},
@@ -1237,6 +1241,17 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "semanticHistorySearchEnabledAtStartup",
       history_embeddings::BraveHistoryEmbeddingsStatus::GetForProfile(profile)
           ->IsEnabled());
+
+  // The speech model is downloaded when this is turned on, so the row says
+  // how large it is. It is hidden while the feature or the Local AI switch
+  // is off, because the model cannot be enabled then.
+  html_source->AddString(
+      "onDeviceSpeechModelSubLabel",
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_SUB_LABEL,
+                                 ui::FormatBytes(local_ai::kApproxModelSize)));
+  html_source->AddBoolean("isOnDeviceSpeechModelAvailable",
+                          local_ai::IsOnDeviceSpeechRecognitionAllowed(
+                              g_browser_process->local_state()));
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY)

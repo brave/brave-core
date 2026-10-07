@@ -12,6 +12,9 @@ export interface BravePrivacyBrowserProxy {
 
   isWindowsRecallDisabled: () => Promise<boolean>
   setWindowsRecallDisabled: (disabled: boolean) => void
+
+  getOnDeviceSpeechModelEnabled: () => Promise<boolean>
+  setOnDeviceSpeechModelEnabled: (enabled: boolean) => void
 }
 
 export class BravePrivacyBrowserProxyImpl implements BravePrivacyBrowserProxy {
@@ -29,6 +32,14 @@ export class BravePrivacyBrowserProxyImpl implements BravePrivacyBrowserProxy {
 
   setWindowsRecallDisabled(disabled: boolean) {
     chrome.send('setWindowsRecallDisabled', [disabled])
+  }
+
+  getOnDeviceSpeechModelEnabled(): Promise<boolean> {
+    return sendWithPromise('getOnDeviceSpeechModelEnabled')
+  }
+
+  setOnDeviceSpeechModelEnabled(enabled: boolean) {
+    chrome.send('setOnDeviceSpeechModelEnabled', [enabled])
   }
 
   static getInstance(): BravePrivacyBrowserProxyImpl {

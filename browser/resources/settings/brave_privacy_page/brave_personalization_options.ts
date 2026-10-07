@@ -129,6 +129,21 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
           return loadTimeData.getBoolean('isSemanticHistorySearchAvailable')
         },
       },
+      isOnDeviceSpeechModelAvailable_: {
+        readOnly: true,
+        type: Boolean,
+        value: function () {
+          return loadTimeData.getBoolean('isOnDeviceSpeechModelAvailable')
+        },
+      },
+      // The model is a local state pref, which `prefs` does not hold, so this
+      // stands in for it and is kept in step through the browser proxy.
+      onDeviceSpeechModelEnabledPref_: {
+        type: Object,
+        value: () => {
+          return {}
+        },
+      },
       // </if>
       requestOTRActions_: {
         readOnly: true,
@@ -166,6 +181,8 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   declare private isPsstFeatureEnabled_: boolean
   // <if expr="enable_local_ai">
   declare private isSemanticHistorySearchAvailable_: boolean
+  declare private isOnDeviceSpeechModelAvailable_: boolean
+  declare private onDeviceSpeechModelEnabledPref_: chrome.settingsPrivate.PrefObject
   // </if>
   declare private requestOTRActions_: Object[]
   declare private requestOTRAction_: String
@@ -194,6 +211,20 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
       loadTimeData.getBoolean('semanticHistorySearchEnabledAtStartup')
     )
   }
+
+  onDeviceSpeechModelEnabledChange_(event: Event) {
+    const target = event.target
+    assert(target instanceof SettingsToggleButtonElement)
+    this.browserProxy_.setOnDeviceSpeechModelEnabled(target.checked)
+  }
+
+  setOnDeviceSpeechModelEnabled_(enabled: boolean) {
+    this.onDeviceSpeechModelEnabledPref_ = {
+      key: '',
+      type: chrome.settingsPrivate.PrefType.BOOLEAN,
+      value: enabled,
+    }
+  }
   // </if>
 
   windowsRecallDisabledChange_(event: Event) {
@@ -218,6 +249,18 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
 
   override ready() {
     super.ready()
+
+    // <if expr="enable_local_ai">
+    if (this.isOnDeviceSpeechModelAvailable_) {
+      this.addWebUiListener(
+        'on-device-speech-model-enabled-changed',
+        this.setOnDeviceSpeechModelEnabled_.bind(this),
+      )
+      this.browserProxy_
+        .getOnDeviceSpeechModelEnabled()
+        .then(this.setOnDeviceSpeechModelEnabled_.bind(this))
+    }
+    // </if>
 
     if (this.isWindowsRecallAvailable_) {
       this.addWebUiListener(
