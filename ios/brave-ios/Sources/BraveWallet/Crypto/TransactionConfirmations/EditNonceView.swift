@@ -51,6 +51,7 @@ struct EditNonceView: View {
         .frame(maxWidth: .infinity)
         .listRowInsets(.zero)
       }
+      .listRowBackground(Color.clear)
     }
     .listStyle(InsetGroupedListStyle())
     .navigationBarTitleDisplayMode(.inline)
@@ -80,7 +81,7 @@ struct EditNonceView: View {
 #if DEBUG
 struct EditNonceView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
+    NavigationStack {
       EditNonceView(
         confirmationStore: .previewStore,
         transaction: .previewConfirmedSend

@@ -34,20 +34,17 @@ struct LegalView: View {
         .multilineTextAlignment(.center)
         .fixedSize(horizontal: false, vertical: true)
         .padding(.bottom, 20)
-        HStack(alignment: .top, spacing: 8) {
-          WalletCheckbox(isChecked: $isResponsibilityCheckboxChecked)
-            .font(.title2)
+
+        Toggle(isOn: $isResponsibilityCheckboxChecked) {
           Text(Strings.Wallet.legalUserResponsibility)
             .foregroundColor(Color(uiColor: WalletV2Design.textPrimary))
             .font(.subheadline)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .onTapGesture {
-              isResponsibilityCheckboxChecked.toggle()
-            }
+            .multilineTextAlignment(.leading)
         }
-        HStack(spacing: 8) {
-          WalletCheckbox(isChecked: $isTermsCheckboxChecked)
-            .font(.title2)
+        .font(.title2)
+
+        Toggle(isOn: $isTermsCheckboxChecked) {
           Text(
             LocalizedStringKey(
               String.localizedStringWithFormat(
@@ -60,10 +57,10 @@ struct LegalView: View {
           .tint(Color(braveSystemName: .textInteractive))
           .font(.subheadline)
           .frame(maxWidth: .infinity, alignment: .leading)
-          .onTapGesture {
-            isTermsCheckboxChecked.toggle()
-          }
+          .multilineTextAlignment(.leading)
         }
+        .font(.title2)
+
         Button {
           isShowingNetworkSelection = true
         } label: {
@@ -76,19 +73,17 @@ struct LegalView: View {
         .padding(.top, 40)
       }
     }
+    .toggleStyle(CheckboxToggleStyle())
     .padding()
-    .background(
-      NavigationLink(
-        destination: OnboardingNetworkSelectionView(
+    .navigationDestination(
+      isPresented: $isShowingNetworkSelection,
+      destination: {
+        OnboardingNetworkSelectionView(
           keyringStore: keyringStore,
           setupOption: setupOption,
           dismissAction: dismissAction
-        ),
-        isActive: $isShowingNetworkSelection,
-        label: {
-          EmptyView()
-        }
-      )
+        )
+      }
     )
     .accessibilityEmbedInScrollView()
     .background(Color(braveSystemName: .containerBackground).edgesIgnoringSafeArea(.all))

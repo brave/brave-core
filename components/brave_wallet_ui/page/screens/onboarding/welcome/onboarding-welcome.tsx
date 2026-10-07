@@ -88,15 +88,19 @@ export const OnboardingWelcome = () => {
             marginBottom={leo.spacing['5Xl']}
           >
             <BraveIcon />
-            <Title>{getLocale('braveWalletTitle')}</Title>
+            <Title>{getLocale(S.BRAVE_WALLET_TITLE)}</Title>
           </Row>
-          <Heading>{getLocale('braveWalletWelcomeTitle')}</Heading>
-          <SubHeading>{getLocale('braveWalletWelcomeDescription')}</SubHeading>
+          <Heading>{getLocale(S.BRAVE_WALLET_WELCOME_TITLE)}</Heading>
+          <SubHeading>
+            {getLocale(S.BRAVE_WALLET_WELCOME_DESCRIPTION)}
+          </SubHeading>
 
           <ActionsContainer>
             <WelcomeAction
-              title={getLocale('braveWalletWelcomeNewWalletTitle')}
-              description={getLocale('braveWalletWelcomeNewWalletDescription')}
+              title={getLocale(S.BRAVE_WALLET_WELCOME_NEW_WALLET_TITLE)}
+              description={getLocale(
+                S.BRAVE_WALLET_WELCOME_NEW_WALLET_DESCRIPTION,
+              )}
               iconName='plus-add'
               onSelect={() => {
                 if (isMobile) {
@@ -108,9 +112,9 @@ export const OnboardingWelcome = () => {
             />
 
             <WelcomeAction
-              title={getLocale('braveWalletWelcomeImportWalletTitle')}
+              title={getLocale(S.BRAVE_WALLET_WELCOME_IMPORT_WALLET_TITLE)}
               description={getLocale(
-                'braveWalletWelcomeImportWalletDescription',
+                S.BRAVE_WALLET_WELCOME_IMPORT_WALLET_DESCRIPTION,
               )}
               iconName='import-arrow'
               walletIcons={walletIcons}
@@ -124,7 +128,7 @@ export const OnboardingWelcome = () => {
             />
           </ActionsContainer>
           <VerticalSpace space='96px' />
-          <Footer>{getLocale('braveWalletCopyright')}</Footer>
+          <Footer>{getLocale(S.BRAVE_WALLET_WELCOME_COPYRIGHT)}</Footer>
         </Content>
       </WelcomePageWrapper>
     </>

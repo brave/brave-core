@@ -10,6 +10,7 @@ import android.content.ComponentCallbacks;
 import android.content.res.Configuration;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 
@@ -26,6 +27,7 @@ import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.settings.AddressBarPreference;
+import org.chromium.chrome.browser.ui.bottombar.BottomBarConfigUtils;
 import org.chromium.chrome.browser.ui.bottombar.BottomBarHostManager;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeControllerFactory;
@@ -48,6 +50,7 @@ public class BraveHubManagerImpl extends HubManagerImpl {
     // This field is deleted by BraveHubManagerImplClassAdapter so the parent's field is used.
     private MonotonicObservableSupplier<EdgeToEdgeController> mEdgeToEdgeSupplier;
     private EdgeToEdgePadAdjuster mEdgeToEdgePadAdjuster;
+    private @Nullable View mActionContainerWithLayoutListener;
 
     public BraveHubManagerImpl(
             Activity activity,
@@ -133,6 +136,7 @@ public class BraveHubManagerImpl extends HubManagerImpl {
             mEdgeToEdgePadAdjuster.destroy();
             mEdgeToEdgePadAdjuster = null;
         }
+        mActionContainerWithLayoutListener = null;
         super.onHubLayoutDoneHiding();
     }
 
@@ -150,7 +154,7 @@ public class BraveHubManagerImpl extends HubManagerImpl {
     }
 
     private void maybeUpdateBottomMarginForContainerView() {
-        if (mIsTablet || isToolbarBottomAnchored()) return;
+        if (mIsTablet || shouldShowToolbarAtBottom()) return;
 
         // We want to prevent crash at cr136
         // which happened at:
@@ -191,12 +195,12 @@ public class BraveHubManagerImpl extends HubManagerImpl {
     }
 
     /**
-     * Repositions the hub toolbar from top to bottom when the address bar is at the bottom. This
-     * moves all hub controls (new tab, menu, pane switcher, search) to the bottom of the tab
-     * switcher for one-handed accessibility.
+     * Repositions the hub toolbar from top to bottom when the address bar is at the bottom or the
+     * bottom bar is enabled. This moves all hub controls (new tab, menu, pane switcher, search) to
+     * the bottom of the tab switcher for one-handed accessibility.
      */
     private void maybeRepositionToolbarToBottom() {
-        if (mIsTablet || !isToolbarBottomAnchored()) return;
+        if (mIsTablet || !shouldShowToolbarAtBottom()) return;
 
         HubContainerView containerView = getContainerView();
         if (containerView == null) return;
@@ -213,6 +217,8 @@ public class BraveHubManagerImpl extends HubManagerImpl {
             params.gravity = Gravity.BOTTOM;
             toolbarWrapper.setLayoutParams(params);
         }
+
+        swapActionButtonAndPaneSwitcher(hubToolbar);
 
         // Swap the pane host container margins: top margin → bottom margin so the content
         // area leaves space for the toolbar at the bottom instead of the top.
@@ -232,6 +238,91 @@ public class BraveHubManagerImpl extends HubManagerImpl {
         // Apply bottom padding for the system navigation bar so the toolbar content
         // does not sit behind the gesture bar, matching the address bar behavior.
         applyNavigationBarPadding(hubToolbar, hostContainer);
+    }
+
+    // Puts the new tab button in the center, which is easier to reach at the bottom.
+    private void swapActionButtonAndPaneSwitcher(View hubToolbar) {
+        View actionButton = hubToolbar.findViewById(R.id.toolbar_action_button);
+        View paneSwitcherCard = hubToolbar.findViewById(R.id.pane_switcher_card);
+        if (actionButton == null || paneSwitcherCard == null) return;
+
+        View actionButtonGroup = (View) actionButton.getParent();
+        if (!(actionButtonGroup.getLayoutParams() instanceof FrameLayout.LayoutParams)
+                || !(paneSwitcherCard.getLayoutParams() instanceof FrameLayout.LayoutParams)) {
+            return;
+        }
+
+        // The spacer aligns the button with the first tab, which would push it off center.
+        View marginSpacer = actionButtonGroup.findViewById(R.id.margin_spacer);
+        if (marginSpacer != null) marginSpacer.setVisibility(View.GONE);
+
+        int edgeMargin =
+                mActivity
+                        .getResources()
+                        .getDimensionPixelSize(R.dimen.hub_toolbar_action_button_start_margin);
+        FrameLayout.LayoutParams paneSwitcherParams =
+                (FrameLayout.LayoutParams) paneSwitcherCard.getLayoutParams();
+        paneSwitcherParams.gravity = Gravity.START | Gravity.CENTER_VERTICAL;
+        paneSwitcherParams.setMarginStart(edgeMargin);
+        paneSwitcherCard.setLayoutParams(paneSwitcherParams);
+
+        updateActionButtonPosition(actionButtonGroup, paneSwitcherCard, edgeMargin);
+
+        // Pane count, button label and window width can all change after the first layout.
+        View actionContainer = (View) actionButtonGroup.getParent();
+        if (actionContainer == mActionContainerWithLayoutListener) return;
+        mActionContainerWithLayoutListener = actionContainer;
+        actionContainer.addOnLayoutChangeListener(
+                (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) ->
+                        updateActionButtonPosition(
+                                actionButtonGroup, paneSwitcherCard, edgeMargin));
+    }
+
+    // Centers the new tab button, or moves it next to the end buttons if the pane switcher
+    // would overlap it, e.g. on narrow windows.
+    private void updateActionButtonPosition(
+            View actionButtonGroup, View paneSwitcherCard, int minGap) {
+        View actionContainer = (View) actionButtonGroup.getParent();
+        int containerWidth = actionContainer.getWidth();
+
+        int gravity = Gravity.CENTER;
+        int marginEnd = 0;
+        if (containerWidth > 0) {
+            boolean isRtl = actionContainer.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+            // The pane switcher is anchored at the start, so its end edge doesn't depend on
+            // where the button currently is.
+            int paneSwitcherEnd =
+                    isRtl
+                            ? containerWidth - paneSwitcherCard.getLeft()
+                            : paneSwitcherCard.getRight();
+            int centeredButtonStart = (containerWidth - actionButtonGroup.getWidth()) / 2;
+            if (paneSwitcherEnd + minGap > centeredButtonStart) {
+                gravity = Gravity.END | Gravity.CENTER_VERTICAL;
+                View endButtons = actionContainer.findViewById(R.id.menu_button_container);
+                if (endButtons != null && endButtons.getVisibility() != View.GONE) {
+                    marginEnd = endButtons.getWidth();
+                    // Match the gap between the shred and menu buttons.
+                    View shredButton =
+                            endButtons.findViewById(
+                                    org.chromium.chrome.browser.brave_shields.R.id
+                                            .shred_data_button);
+                    if (shredButton != null
+                            && shredButton.getLayoutParams()
+                                    instanceof ViewGroup.MarginLayoutParams) {
+                        marginEnd +=
+                                ((ViewGroup.MarginLayoutParams) shredButton.getLayoutParams())
+                                        .getMarginEnd();
+                    }
+                }
+            }
+        }
+
+        FrameLayout.LayoutParams params =
+                (FrameLayout.LayoutParams) actionButtonGroup.getLayoutParams();
+        if (params.gravity == gravity && params.getMarginEnd() == marginEnd) return;
+        params.gravity = gravity;
+        params.setMarginEnd(marginEnd);
+        actionButtonGroup.setLayoutParams(params);
     }
 
     /**
@@ -269,7 +360,9 @@ public class BraveHubManagerImpl extends HubManagerImpl {
                 });
     }
 
-    private boolean isToolbarBottomAnchored() {
-        return !AddressBarPreference.isToolbarConfiguredToShowOnTop();
+    // The bottom bar is not shown in the hub, so its controls take its place at the bottom.
+    private boolean shouldShowToolbarAtBottom() {
+        return !AddressBarPreference.isToolbarConfiguredToShowOnTop()
+                || BottomBarConfigUtils.isBottomBarEnabled(mActivity);
     }
 }

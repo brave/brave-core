@@ -10,7 +10,7 @@ buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [
     "ENABLE_BRAVE_WALLET=$enable_brave_wallet",
-    "ENABLE_SNAPS=$enable_snaps",
+    "ENABLE_SNAP=$enable_snap",
   ]
 }
 

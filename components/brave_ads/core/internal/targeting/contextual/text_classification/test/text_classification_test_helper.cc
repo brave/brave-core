@@ -8,6 +8,10 @@
 #include <string>
 #include <vector>
 
+#include "base/check.h"
+#include "base/test/run_until.h"
+#include "brave/components/brave_ads/core/internal/common/resources/resource_load_state_types.h"
+
 namespace brave_ads::test {
 
 TextClassificationHelper::TextClassificationHelper() : processor_(resource_) {}
@@ -15,6 +19,10 @@ TextClassificationHelper::TextClassificationHelper() : processor_(resource_) {}
 TextClassificationHelper::~TextClassificationHelper() = default;
 
 void TextClassificationHelper::Simulate() {
+  CHECK(base::test::RunUntil([this] {
+    return resource_.GetLoadState() == ResourceLoadStateType::kLoaded;
+  }));
+
   const std::vector<std::string> texts = {
       "Savoring food and drinks, life's simple pleasure.",
       "Decentralization frees finance, making banking borderless.",

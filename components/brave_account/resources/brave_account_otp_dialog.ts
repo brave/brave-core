@@ -10,8 +10,7 @@ import {
   BraveAccountBrowserProxy,
   BraveAccountBrowserProxyImpl,
 } from './brave_account_browser_proxy.js'
-import { BraveAccountStrings } from './brave_components_webui_strings.js'
-import { showError, showSuccess } from './brave_account_common.js'
+import { showError, showSuccess } from './brave_account_shared.js'
 import { getHtml } from './brave_account_otp_dialog.html.js'
 import {
   LoggedInVerificationIntent,
@@ -20,22 +19,6 @@ import {
   VerificationIntentFieldTags,
   whichVerificationIntent,
 } from './brave_account.mojom-webui.js'
-import {
-  ChangePasswordClientErrorCode,
-  ChangePasswordError,
-} from './change_password.mojom-webui.js'
-import {
-  RegisterClientErrorCode,
-  RegisterError,
-} from './register.mojom-webui.js'
-import {
-  ResendVerificationEmailClientErrorCode,
-  ResendVerificationEmailError,
-} from './resend_verification_email.mojom-webui.js'
-import {
-  ResetPasswordClientErrorCode,
-  ResetPasswordError,
-} from './reset_password.mojom-webui.js'
 
 export class BraveAccountOtpDialogElement extends CrLitElement {
   static get is() {
@@ -95,18 +78,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
     try {
       await this.browserProxy.authentication.registerStep3(this.code)
     } catch (e) {
-      let error: RegisterError
-
-      if (e && typeof e === 'object') {
-        error = e as RegisterError
-      } else {
-        console.error('Unexpected error:', e)
-        error = {
-          clientError: { errorCode: RegisterClientErrorCode.kUnexpected },
-        }
-      }
-
-      showError({ kind: 'register', details: error })
+      showError('register', e)
     }
   }
 
@@ -114,18 +86,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
     try {
       await this.browserProxy.authentication.resetPasswordStep2(this.code)
     } catch (e) {
-      let error: ResetPasswordError
-
-      if (e && typeof e === 'object') {
-        error = e as ResetPasswordError
-      } else {
-        console.error('Unexpected error:', e)
-        error = {
-          clientError: { errorCode: ResetPasswordClientErrorCode.kUnexpected },
-        }
-      }
-
-      showError({ kind: 'resetPassword', details: error })
+      showError('resetPassword', e)
     }
   }
 
@@ -133,18 +94,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
     try {
       await this.browserProxy.authentication.changePasswordStep2(this.code)
     } catch (e) {
-      let error: ChangePasswordError
-
-      if (e && typeof e === 'object') {
-        error = e as ChangePasswordError
-      } else {
-        console.error('Unexpected error:', e)
-        error = {
-          clientError: { errorCode: ChangePasswordClientErrorCode.kUnexpected },
-        }
-      }
-
-      showError({ kind: 'changePassword', details: error })
+      showError('changePassword', e)
     }
   }
 
@@ -152,35 +102,13 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
     if (this.isResendingConfirmationEmail) return
     this.isResendingConfirmationEmail = true
 
-    let error: ResendVerificationEmailError | undefined
-
     try {
       await this.browserProxy.authentication.resendVerificationEmail(
         this.intent,
       )
+      showSuccess('resendVerificationEmail')
     } catch (e) {
-      if (e && typeof e === 'object') {
-        error = e as ResendVerificationEmailError
-      } else {
-        console.error('Unexpected error:', e)
-        error = {
-          clientError: {
-            errorCode: ResendVerificationEmailClientErrorCode.kUnexpected,
-          },
-        }
-      }
-    }
-
-    if (error) {
-      showError(
-        { kind: 'resendVerificationEmail', details: error },
-        BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ERROR_TITLE,
-      )
-    } else {
-      showSuccess(
-        BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS,
-        BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS_TITLE,
-      )
+      showError('resendVerificationEmail', e)
     }
 
     this.isResendingConfirmationEmail = false

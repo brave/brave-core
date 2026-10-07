@@ -20,6 +20,10 @@ import {
   isTokenWatchOnly,
   getDoesCoinSupportSwap,
   getDoesCoinSupportBridge,
+  getDoesTokenSupportSwap,
+  getDoesTokenSupportBridge,
+  getDoesTokenSupportDeposit,
+  isLegacyShieldedToken,
 } from './asset-utils'
 import { getAccountBalancesKey } from './balance-utils'
 
@@ -30,6 +34,7 @@ import {
   mockBasicAttentionToken,
   mockMoonCatNFT,
   mockErc721Token,
+  mockZecToken,
 } from '../stories/mock-data/mock-asset-options'
 import { mockAccounts } from '../stories/mock-data/mock-wallet-accounts'
 
@@ -218,6 +223,64 @@ describe('getDoesCoinSupportBridge', () => {
   it('returns false for coins that do not support bridge', () => {
     expect(getDoesCoinSupportBridge(BraveWallet.CoinType.FIL)).toBe(false)
     expect(getDoesCoinSupportBridge(BraveWallet.CoinType.DOT)).toBe(false)
+  })
+})
+
+const mockOrchardZecToken = {
+  ...mockZecToken,
+  zcashTokenType: BraveWallet.ZCashTokenType.kOrchard,
+}
+
+const mockIronwoodZecToken = {
+  ...mockZecToken,
+  zcashTokenType: BraveWallet.ZCashTokenType.kIronwood,
+}
+
+describe('isLegacyShieldedToken', () => {
+  it('returns true for Orchard (legacy shielded) ZEC', () => {
+    expect(isLegacyShieldedToken(mockOrchardZecToken)).toBe(true)
+  })
+
+  it('returns false for Ironwood, transparent ZEC, and other coins', () => {
+    expect(isLegacyShieldedToken(mockIronwoodZecToken)).toBe(false)
+    expect(isLegacyShieldedToken(mockZecToken)).toBe(false)
+    expect(isLegacyShieldedToken(mockEthToken)).toBe(false)
+  })
+})
+
+describe('getDoesTokenSupportSwap', () => {
+  it('returns false for Orchard (legacy shielded) ZEC', () => {
+    expect(getDoesTokenSupportSwap(mockOrchardZecToken)).toBe(false)
+  })
+
+  it('follows coin-level swap support for other tokens', () => {
+    expect(getDoesTokenSupportSwap(mockEthToken)).toBe(true)
+    expect(getDoesTokenSupportSwap(mockZecToken)).toBe(false)
+    expect(getDoesTokenSupportSwap(mockIronwoodZecToken)).toBe(false)
+  })
+})
+
+describe('getDoesTokenSupportBridge', () => {
+  it('returns false for Orchard (legacy shielded) ZEC', () => {
+    expect(getDoesTokenSupportBridge(mockOrchardZecToken)).toBe(false)
+  })
+
+  it('follows coin-level bridge support for other tokens', () => {
+    expect(getDoesTokenSupportBridge(mockEthToken)).toBe(true)
+    expect(getDoesTokenSupportBridge(mockZecToken)).toBe(true)
+    expect(getDoesTokenSupportBridge(mockIronwoodZecToken)).toBe(true)
+  })
+})
+
+describe('getDoesTokenSupportDeposit', () => {
+  it('returns false for Orchard (legacy shielded) ZEC', () => {
+    expect(getDoesTokenSupportDeposit(mockOrchardZecToken)).toBe(false)
+  })
+
+  it('returns true for Ironwood, transparent ZEC, and other coins', () => {
+    expect(getDoesTokenSupportDeposit(mockIronwoodZecToken)).toBe(true)
+    expect(getDoesTokenSupportDeposit(mockZecToken)).toBe(true)
+    expect(getDoesTokenSupportDeposit(mockEthToken)).toBe(true)
   })
 })
 

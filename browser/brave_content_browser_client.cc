@@ -97,6 +97,7 @@
 #include "brave/components/skus/common/skus_utils.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/traffic_control/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_switches.h"
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -118,7 +119,6 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/embedder_support/switches.h"
 #include "components/prefs/pref_service.h"
-#include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
 #include "components/user_prefs/user_prefs.h"
 #include "components/version_info/version_info.h"
 #include "content/public/browser/browser_context.h"
@@ -130,6 +130,7 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/security_principal.h"
+#include "content/public/browser/service_worker_version_base_info.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/weak_document_ptr.h"
@@ -139,11 +140,16 @@
 #include "content/public/common/content_switches.h"
 #include "content/public/common/url_constants.h"
 #include "extensions/buildflags/buildflags.h"
+#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "mojo/public/cpp/bindings/self_owned_associated_receiver.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
+#include "net/base/net_errors.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
+#include "services/network/public/mojom/web_transport.mojom.h"
+#include "services/network/public/mojom/websocket.mojom.h"
 #include "services/service_manager/public/cpp/binder_registry.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/features.h"
@@ -152,6 +158,7 @@
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/origin.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/hid/brave_hid_delegate.h"
@@ -162,17 +169,14 @@
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page.mojom.h"
 #include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page_ui.h"
-#include "brave/browser/ui/webui/history/brave_history_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
-#if BUILDFLAG(ENABLE_LOCAL_AI)
-#include "brave/browser/ui/webui/history/brave_history_embeddings.mojom.h"
-#endif
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/browser/speech/on_device_speech_recognition_controller.h"
 #include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_worker_ui.h"
 #include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
@@ -211,9 +215,6 @@
 
 using blink::web_pref::WebPreferences;
 using brave_shields::BraveShieldsWebContentsObserver;
-using brave_shields::ControlType;
-using brave_shields::GetFingerprintingControlType;
-using brave_shields::IsBraveShieldsEnabled;
 using content::BrowserThread;
 using content::ContentBrowserClient;
 using content::RenderFrameHost;
@@ -251,12 +252,17 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #endif
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+#include "brave/browser/traffic_control/traffic_control_navigation_throttle.h"
+#include "brave/browser/traffic_control/traffic_control_service_factory.h"
+#include "brave/components/traffic_control/core/common/features.h"
+#include "brave/components/traffic_control/core/mojom/traffic_control.mojom.h"
+#endif
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/split_view/split_view_link_navigation_throttle.h"
 #include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
-#include "brave/components/brave_account/mojom/brave_account_row.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
@@ -279,9 +285,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/tor/onion_location_navigation_throttle.h"
 #include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
-#include "net/base/net_errors.h"
 #include "net/base/url_util.h"
-#include "services/network/public/mojom/websocket.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -373,6 +377,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
 #include "brave/components/brave_wallet/common/ledger_bridge.mojom.h"
 #endif
+#if BUILDFLAG(ENABLE_SNAP)
+#include "brave/browser/ui/webui/brave_wallet/snaps_container/snaps_container_ui.h"
+#endif
 #endif
 
 namespace {
@@ -397,7 +404,8 @@ void BindCosmeticFiltersResources(
 
 void BindBraveSearchFallbackHost(
     content::ChildProcessId process_id,
-    mojo::PendingReceiver<brave_search::mojom::BraveSearchFallback> receiver) {
+    mojo::PendingAssociatedReceiver<brave_search::mojom::BraveSearchFallback>
+        receiver) {
   content::RenderProcessHost* render_process_host =
       content::RenderProcessHost::FromID(process_id);
   if (!render_process_host) {
@@ -407,7 +415,7 @@ void BindBraveSearchFallbackHost(
   content::BrowserContext* context = render_process_host->GetBrowserContext();
   auto* backup_results_service =
       brave_search::BackupResultsServiceFactory::GetForBrowserContext(context);
-  mojo::MakeSelfOwnedReceiver(
+  mojo::MakeSelfOwnedAssociatedReceiver(
       std::make_unique<brave_search::BraveSearchFallbackHost>(
           backup_results_service),
       std::move(receiver));
@@ -538,6 +546,22 @@ bool IsJsBlockingEnforced(content::BrowserContext* browser_context,
   return settings_service->IsJsBlockingEnforced(url);
 }
 
+bool ShouldBlockOnionRequest(content::BrowserContext* browser_context,
+                             const GURL& url) {
+#if BUILDFLAG(ENABLE_TOR)
+  if (!browser_context) {
+    return false;
+  }
+  if (!browser_context->IsTor() &&
+      user_prefs::UserPrefs::Get(browser_context)
+          ->GetBoolean(tor::prefs::kOnionOnlyInTorWindows) &&
+      net::IsOnion(url)) {
+    return true;
+  }
+#endif
+  return false;
+}
+
 }  // namespace
 
 BraveContentBrowserClient::BraveContentBrowserClient() = default;
@@ -662,6 +686,13 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
         .Add<containers::mojom::ContainersSettingsHandler>();
   }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+  if (base::FeatureList::IsEnabled(
+          traffic_control::features::kTrafficControl)) {
+    registry.ForWebUI<BraveSettingsUI>()
+        .Add<traffic_control::mojom::TrafficControlSettingsHandler>();
+  }
+#endif  // BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
 #if !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_AI_CHAT)
   registry.ForWebUI<BraveSettingsUI>()
@@ -683,7 +714,7 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
   if (brave_account::features::IsBraveAccountEnabled()) {
     registry.ForWebUI<BraveSettingsUI>()
         .Add<brave_account::mojom::Authentication>()
-        .Add<brave_account::mojom::RowHandler>();
+        .Add<brave_account::mojom::DialogOpener>();
   }
   registry.ForWebUI<BraveSettingsUI>()
       .Add<brave_origin::mojom::BraveOriginSettingsHandler>();
@@ -735,6 +766,12 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
       .Add<brave_rewards::mojom::RewardsPageHandler>()
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
       ;
+#if BUILDFLAG(ENABLE_SNAP)
+  if (brave_wallet::IsSnapFeatureEnabled()) {
+    registry.ForWebUI<brave_wallet::SnapsContainerUI>()
+        .Add<brave_wallet::mojom::SnapService>();
+  }
+#endif  // BUILDFLAG(ENABLE_SNAP)
 #if !BUILDFLAG(IS_ANDROID)
   registry.ForWebUI<WalletPanelUI>()
       .Add<brave_wallet::mojom::PanelHandlerFactory>()
@@ -756,8 +793,7 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
           .Add<brave_news::mojom::BraveNewsController>()
 #endif
-          .Add<
-              ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>();
+          .Add<ntp_background_images::mojom::SponsoredContentAdEventHandler>();
 
   auto ntp_registration =
       registry.ForWebUI<BraveNewTabUI>()
@@ -830,6 +866,7 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
   if (brave_account::features::IsBraveAccountEnabled()) {
     registry.ForWebUI<BraveAccountUIAndroid>()
         .Add<brave_account::mojom::Authentication>()
+        .Add<brave_account::mojom::DialogOpener>()
         .Add<brave_account::mojom::DialogController>()
         .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
   }
@@ -867,7 +904,7 @@ void BraveContentBrowserClient::RegisterUntrustedWebUIInterfaceBrokers(
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET) && !BUILDFLAG(IS_ANDROID)
-  if (brave_wallet::IsMojoForHardwareWalletEnabled()) {
+  if (brave_wallet::IsMojoForLedgerEnabled()) {
     registry.ForWebUI<ledger::UntrustedLedgerUI>()
         .Add<brave_wallet::mojom::LedgerBridgeUIHandler>();
   }
@@ -936,6 +973,19 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
       brave_user_agent::ShouldHideBraveBrand(url));
 }
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+mojo::PendingRemote<local_ai::mojom::AsrSession>
+BraveContentBrowserClient::GetAsrSession() {
+  return speech::OnDeviceSpeechRecognitionController::Get()->GetAsrSession();
+}
+#endif
+
+std::unique_ptr<optimization_guide::ModelBrokerClient>
+BraveContentBrowserClient::CreateModelBrokerClient(content::BrowserContext*) {
+  // Brave does not use optimization guide models.
+  return nullptr;
+}
+
 bool BraveContentBrowserClient::CanCreateWindow(
     content::RenderFrameHost* opener,
     const GURL& opener_url,
@@ -976,15 +1026,19 @@ bool BraveContentBrowserClient::CanCreateWindow(
                                   opener, opener_url, target_url);
 }
 
-void BraveContentBrowserClient::ExposeInterfacesToRenderer(
-    service_manager::BinderRegistry* registry,
-    blink::AssociatedInterfaceRegistry* associated_registry,
-    content::RenderProcessHost* render_process_host) {
-  ChromeContentBrowserClient::ExposeInterfacesToRenderer(
-      registry, associated_registry, render_process_host);
-  registry->AddInterface(base::BindRepeating(&BindBraveSearchFallbackHost,
-                                             render_process_host->GetID()),
-                         content::GetUIThreadTaskRunner({}));
+void BraveContentBrowserClient::
+    RegisterAssociatedInterfaceBindersForServiceWorker(
+        const content::ServiceWorkerVersionBaseInfo&
+            service_worker_version_info,
+        blink::AssociatedInterfaceRegistry& associated_registry) {
+  ChromeContentBrowserClient::
+      RegisterAssociatedInterfaceBindersForServiceWorker(
+          service_worker_version_info, associated_registry);
+  if (brave_search::IsAllowedHost(service_worker_version_info.scope)) {
+    associated_registry.AddInterface<brave_search::mojom::BraveSearchFallback>(
+        base::BindRepeating(&BindBraveSearchFallbackHost,
+                            service_worker_version_info.process_id));
+  }
 }
 
 void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
@@ -1030,10 +1084,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
-#if BUILDFLAG(ENABLE_LOCAL_AI)
-  content::RegisterWebUIControllerInterfaceBinder<
-      brave_history_embeddings::mojom::PageHandlerFactory, BraveHistoryUI>(map);
-#endif
   content::RegisterWebUIControllerInterfaceBinder<
       brave_private_new_tab::mojom::PageHandler, BravePrivateNewTabUI>(map);
   content::RegisterWebUIControllerInterfaceBinder<
@@ -1231,31 +1281,61 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
     bool* bypass_redirect_checks,
     bool* disable_secure_dns,
     network::mojom::URLLoaderFactoryOverridePtr* factory_override,
-    scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner) {
+    scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner,
+    bool is_for_network_service) {
   // TODO(iefremov): Skip proxying for certain requests?
   if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUniquePtr)) {
     BraveProxyingURLLoaderFactory<base::WeakPtr>::MaybeProxyRequest(
         browser_context, frame, factory_builder, type, request_initiator,
-        isolation_info, navigation_response_task_runner);
+        isolation_info, navigation_id, navigation_response_task_runner);
   } else {
     // Ignore shared_ptr presubmit error, this is old code we are trying to
     // convert to unique_ptr/WeakPtr
     BraveProxyingURLLoaderFactory<
         std::shared_ptr>::MaybeProxyRequest(  // nocheck
         browser_context, frame, factory_builder, type, request_initiator,
-        isolation_info, navigation_response_task_runner);
+        isolation_info, navigation_id, navigation_response_task_runner);
   }
 
   ChromeContentBrowserClient::WillCreateURLLoaderFactory(
       browser_context, frame, render_process_id, type, request_initiator,
       isolation_info, std::move(navigation_id), ukm_source_id, factory_builder,
       header_client, bypass_redirect_checks, disable_secure_dns,
-      factory_override, navigation_response_task_runner);
+      factory_override, navigation_response_task_runner,
+      is_for_network_service);
 }
 
+// Intercept frame and worker handshakes so they go through Brave's network
+// request handling (e.g. ad blocking). Shared and service workers have no
+// RenderFrameHost; see crbug.com/40195467.
 bool BraveContentBrowserClient::WillInterceptWebSocket(
-    content::RenderFrameHost* frame) {
-  return (frame != nullptr);
+    content::RenderFrameHost*) {
+  return base::FeatureList::IsEnabled(
+      features::kBraveEnableShieldsForWebSocketsFromWorkers);
+}
+
+void BraveContentBrowserClient::WillCreateWebTransport(
+    int process_id,
+    int frame_routing_id,
+    const GURL& url,
+    const url::Origin& initiator_origin,
+    mojo::PendingRemote<network::mojom::WebTransportHandshakeClient>
+        handshake_client,
+    WillCreateWebTransportCallback callback) {
+  if (auto* render_process_host =
+          content::RenderProcessHost::FromID(process_id)) {
+    if (ShouldBlockOnionRequest(render_process_host->GetBrowserContext(),
+                                url)) {
+      auto error = network::mojom::WebTransportError::New();
+      error->net_error = net::ERR_NAME_NOT_RESOLVED;
+      std::move(callback).Run(std::move(handshake_client), std::move(error));
+      return;
+    }
+  }
+
+  ChromeContentBrowserClient::WillCreateWebTransport(
+      process_id, frame_routing_id, url, initiator_origin,
+      std::move(handshake_client), std::move(callback));
 }
 
 template <template <typename> class T>
@@ -1276,7 +1356,7 @@ void BraveContentBrowserClient::CreateChromeWebSocket(
     proxy->Start(std::move(handshake_client), std::move(options.header_client));
   }
 }
-void BraveContentBrowserClient::CreateWebSocket(
+void BraveContentBrowserClient::CreateWebSocketWithFrameId(
     content::RenderFrameHost* frame,
     content::ContentBrowserClient::WebSocketFactory factory,
     const GURL& url,
@@ -1284,25 +1364,43 @@ void BraveContentBrowserClient::CreateWebSocket(
     const std::optional<std::string>& user_agent,
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client,
-    content::ContentBrowserClient::WebSocketOptions options) {
-#if BUILDFLAG(ENABLE_TOR)
+    content::ContentBrowserClient::WebSocketOptions options,
+    int process_id,
+    const url::Origin& initiator_origin) {
+  content::BrowserContext* browser_context = nullptr;
+  content::GlobalRenderFrameHostToken render_frame_token;
+  url::Origin request_initiator;
   if (frame) {
-    content::BrowserContext* browser_context = frame->GetBrowserContext();
-    Profile* profile = Profile::FromBrowserContext(browser_context);
-    if (!profile->IsTor() &&
-        profile->GetPrefs()->GetBoolean(tor::prefs::kOnionOnlyInTorWindows) &&
-        net::IsOnion(url)) {
+    browser_context = frame->GetBrowserContext();
+    render_frame_token = frame->GetGlobalFrameToken();
+    request_initiator = frame->GetLastCommittedOrigin();
+  } else {
+    // Frameless SharedWorker/ServiceWorker handshake (crbug.com/40195467): use
+    // the initiator renderer's process and origin instead of a RenderFrameHost.
+    auto* process = content::RenderProcessHost::FromID(process_id);
+    if (!process) {
+      // The initiating renderer is already gone; close the handshake rather
+      // than leaving the pipe hanging.
       mojo::Remote<network::mojom::WebSocketHandshakeClient> client(
           std::move(handshake_client));
-      client->OnFailure(std::string(), net::ERR_NAME_NOT_RESOLVED, 0);
+      client->OnFailure(std::string(), net::ERR_FAILED, 0);
       return;
     }
+    browser_context = process->GetBrowserContext();
+    request_initiator = initiator_origin;
   }
-#endif
+
+  if (ShouldBlockOnionRequest(browser_context, url)) {
+    mojo::Remote<network::mojom::WebSocketHandshakeClient> client(
+        std::move(handshake_client));
+    client->OnFailure(std::string(), net::ERR_NAME_NOT_RESOLVED, 0);
+    return;
+  }
 
   if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUniquePtr)) {
     auto* proxy = BraveProxyingWebSocket<base::WeakPtr>::ProxyWebSocket(
-        frame, std::move(factory), url, site_for_cookies, user_agent);
+        browser_context, render_frame_token, request_initiator,
+        std::move(factory), url, site_for_cookies, user_agent);
     CreateChromeWebSocket<base::WeakPtr>(
         frame, url, site_for_cookies, user_agent, std::move(handshake_client),
         std::move(options), proxy);
@@ -1311,7 +1409,8 @@ void BraveContentBrowserClient::CreateWebSocket(
     // convert to unique_ptr/WeakPtr
     auto* proxy =
         BraveProxyingWebSocket<std::shared_ptr>::ProxyWebSocket(  // nocheck
-            frame, std::move(factory), url, site_for_cookies, user_agent);
+            browser_context, render_frame_token, request_initiator,
+            std::move(factory), url, site_for_cookies, user_agent);
     CreateChromeWebSocket<std::shared_ptr>(  // nocheck
         frame, url, site_for_cookies,        // nocheck
         user_agent, std::move(handshake_client), std::move(options), proxy);
@@ -1458,6 +1557,15 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
       registry,
       debounce::DebounceServiceFactory::GetForBrowserContext(context));
 
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+  if (base::FeatureList::IsEnabled(
+          traffic_control::features::kTrafficControl)) {
+    traffic_control::TrafficControlNavigationThrottle::MaybeCreateAndAdd(
+        registry, TrafficControlServiceFactory::GetForProfile(
+                      Profile::FromBrowserContext(context)));
+  }
+#endif
+
   // The HostContentSettingsMap might be null for some irregular profiles, e.g.
   // the System Profile.
   auto* host_content_settings_map =
@@ -1515,37 +1623,6 @@ bool UpdateGlobalPrivacyControlWebPreference(WebContents* web_contents,
   return true;
 }
 
-bool PreventDarkModeFingerprinting(WebContents* web_contents,
-                                   content::SiteInstance& main_frame_site,
-                                   WebPreferences* prefs) {
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents->GetBrowserContext());
-  // The HostContentSettingsMap might be null for some irregular profiles, e.g.
-  // the System Profile.
-  auto* host_content_settings_map =
-      HostContentSettingsMapFactory::GetForProfile(profile);
-  if (!host_content_settings_map) {
-    return false;
-  }
-  const GURL url =
-      main_frame_site.GetSecurityPrincipal().GetDeprecatedSiteURL();
-  const bool shields_up =
-      brave_shields::IsBraveShieldsEnabled(host_content_settings_map, url);
-  auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
-      host_content_settings_map, url);
-  // https://github.com/brave/brave-browser/issues/15265
-  // Always use color scheme Light if fingerprinting mode strict
-  if (base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveDarkModeBlock) &&
-      shields_up && fingerprinting_type == ControlType::BLOCK &&
-      prefs->preferred_color_scheme !=
-          blink::mojom::PreferredColorScheme::kLight) {
-    prefs->preferred_color_scheme = blink::mojom::PreferredColorScheme::kLight;
-    return true;
-  }
-  return false;
-}
-
 std::vector<url::Origin>
 BraveContentBrowserClient::GetOriginsRequiringDedicatedProcess() {
   std::vector<url::Origin> isolated_origin_list;
@@ -1577,8 +1654,7 @@ bool BraveContentBrowserClient::OverrideWebPreferencesAfterNavigation(
       ChromeContentBrowserClient::OverrideWebPreferencesAfterNavigation(
           web_contents, main_frame_site, prefs);
 
-  return PreventDarkModeFingerprinting(web_contents, main_frame_site, prefs) ||
-         UpdateGlobalPrivacyControlWebPreference(web_contents, prefs) ||
+  return UpdateGlobalPrivacyControlWebPreference(web_contents, prefs) ||
          changed;
 }
 
@@ -1588,8 +1664,12 @@ void BraveContentBrowserClient::OverrideWebPreferences(
     WebPreferences* web_prefs) {
   ChromeContentBrowserClient::OverrideWebPreferences(
       web_contents, main_frame_site, web_prefs);
-  PreventDarkModeFingerprinting(web_contents, main_frame_site, web_prefs);
   UpdateGlobalPrivacyControlWebPreference(web_contents, web_prefs);
+
+  // WebPreferences are rebuilt from defaults on every recompute (theme, font
+  // and other pref changes), so derive `is_tor_window` here. Otherwise the
+  // renderer would drop its Tor-only restrictions (e.g. RTCPeerConnection).
+  web_prefs->is_tor_window = web_contents->GetBrowserContext()->IsTor();
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (playlist::PlaylistBackgroundWebContentsHelper::FromWebContents(

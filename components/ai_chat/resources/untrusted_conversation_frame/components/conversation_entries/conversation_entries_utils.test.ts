@@ -10,6 +10,7 @@ import {
   removeReasoning,
   removeCitationsWithMissingLinks,
   normalizeCitationSpacing,
+  normalizeMathDelimiters,
   groupConversationEntries,
   isAssistantGroupTask,
   replaceCitationsWithUrlsExcludingCode,
@@ -241,6 +242,143 @@ describe('normalizeCitationSpacing', () => {
   it('does not insert a space inside inline code', () => {
     expect(normalizeCitationSpacing('Use `arr[1]` then Japan[1].')).toBe(
       'Use `arr[1]` then Japan [1].',
+    )
+  })
+})
+
+describe('normalizeMathDelimiters', () => {
+  it('converts an inline \\(...\\) expression to $$...$$', () => {
+    expect(normalizeMathDelimiters('the area is \\(\\pi r^2\\) exactly')).toBe(
+      'the area is $$\\pi r^2$$ exactly',
+    )
+  })
+
+  it('converts multiple inline expressions on one line', () => {
+    expect(normalizeMathDelimiters('\\(a\\) and \\(b\\)')).toBe(
+      '$$a$$ and $$b$$',
+    )
+  })
+
+  it('collapses whitespace inside an inline expression', () => {
+    expect(normalizeMathDelimiters('x is \\( a +\n  b \\) here')).toBe(
+      'x is $$a + b$$ here',
+    )
+  })
+
+  it('converts a \\[...\\] expression on its own line to a $$ fence', () => {
+    expect(normalizeMathDelimiters('before\n\\[x^2\\]\nafter')).toBe(
+      'before\n\n\n$$\nx^2\n$$\n\n\nafter',
+    )
+  })
+
+  it('converts a multi-line \\[...\\] expression to a $$ fence', () => {
+    expect(normalizeMathDelimiters('\\[\n  a = b\n\\]')).toBe(
+      '\n\n$$\na = b\n$$\n\n',
+    )
+  })
+
+  // A fence needs blank lines around it, and injecting those mid-paragraph
+  // would split the paragraph apart.
+  it('keeps a mid-line \\[...\\] expression inline', () => {
+    expect(normalizeMathDelimiters('the value \\[x^2\\] shown')).toBe(
+      'the value $$x^2$$ shown',
+    )
+  })
+
+  it('leaves an unterminated expression alone so streaming does not flicker', () => {
+    expect(normalizeMathDelimiters('partial \\(x^')).toBe('partial \\(x^')
+    expect(normalizeMathDelimiters('partial \\[x^')).toBe('partial \\[x^')
+  })
+
+  it('leaves prose without math delimiters unchanged', () => {
+    const input = 'costs $5 and $10, see arr[1] and f(x)'
+    expect(normalizeMathDelimiters(input)).toBe(input)
+  })
+
+  it('converts a single-dollar expression to $$...$$', () => {
+    expect(normalizeMathDelimiters('the area is $\\pi r^2$ exactly')).toBe(
+      'the area is $$\\pi r^2$$ exactly',
+    )
+  })
+
+  // The shape models reach for when naming the parts of a diagram.
+  it('converts every symbol in a sentence of single-letter variables', () => {
+    expect(
+      normalizeMathDelimiters('sides $a$, $b$ and $c$ opposite $A$, $B$, $C$'),
+    ).toBe('sides $$a$$, $$b$$ and $$c$$ opposite $$A$$, $$B$$, $$C$$')
+  })
+
+  it.each([
+    ['is always $180^\\circ$, so', 'is always $$180^\\circ$$, so'],
+    ['the ($\\sin^{-1}$) function', 'the ($$\\sin^{-1}$$) function'],
+    ['solve $f(x)$ for x', 'solve $$f(x)$$ for x'],
+    ['given $a + b$ here', 'given $$a + b$$ here'],
+    ['so $2+2=4$ holds', 'so $$2+2=4$$ holds'],
+  ])('converts %j', (input, expected) => {
+    expect(normalizeMathDelimiters(input)).toBe(expected)
+  })
+
+  it.each([
+    'costs $5 and $10 total',
+    'price is $5.99 USD and $3.50 tax',
+    'it cost $1,000.00 and $250',
+    'revenue grew from $1.5M to $2M',
+    'discount $10 off $50 orders',
+    'set $HOME and $PATH first',
+  ])('leaves the dollar amounts in %j alone', (input) => {
+    expect(normalizeMathDelimiters(input)).toBe(input)
+  })
+
+  // A range leaves the dash hanging at the end of the span, which would
+  // otherwise read as the operator that makes the span an expression.
+  it.each([
+    'the range is $5-$10',
+    'salary of $100k-$150k a year',
+    'valued at $1.5M-$2M today',
+    'raised $2bn-$3bn in total',
+    'between $100 million-$150 million',
+    'the range is $5\u2013$10',
+    'the range is $5\u2014$10',
+  ])('leaves the dollar range in %j alone', (input) => {
+    expect(normalizeMathDelimiters(input)).toBe(input)
+  })
+
+  // A rejected span must not consume the delimiters after it, or an expression
+  // that follows a price in the same paragraph would never be considered.
+  it('converts math that follows dollar amounts on the same line', () => {
+    expect(
+      normalizeMathDelimiters('costs $5 and $10. For side $a$ we get'),
+    ).toBe('costs $5 and $10. For side $$a$$ we get')
+  })
+
+  it('leaves an already-doubled delimiter untouched', () => {
+    const input = 'inline $$x^2$$ and a lone $ sign'
+    expect(normalizeMathDelimiters(input)).toBe(input)
+  })
+
+  it('ignores an escaped dollar sign', () => {
+    const input = 'escaped \\$5 and \\$10 stay as prose'
+    expect(normalizeMathDelimiters(input)).toBe(input)
+  })
+
+  it('leaves an unterminated single-dollar expression alone', () => {
+    expect(normalizeMathDelimiters('partial $x^')).toBe('partial $x^')
+  })
+
+  it('does not rewrite delimiters inside fenced code blocks', () => {
+    const input = '```tex\n\\(x^2\\)\n```'
+    expect(normalizeMathDelimiters(input)).toBe(input)
+  })
+
+  it('does not rewrite single dollars inside code', () => {
+    expect(normalizeMathDelimiters('run `echo $a` then $b$')).toBe(
+      'run `echo $a` then $$b$$',
+    )
+  })
+
+  it('does not rewrite delimiters inside inline code', () => {
+    expect(normalizeMathDelimiters('use `\\(x\\)` or \\(y\\)')).toBe(
+      'use `\\(x\\)` or $$y$$',
     )
   })
 })

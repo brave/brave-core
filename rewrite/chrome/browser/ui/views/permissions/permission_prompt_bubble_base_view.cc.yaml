@@ -1,0 +1,35 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Wire up Brave's widevine/lifetime/footnote/geolocation extras for the
+      bubble's buttons.
+    after_function_impl:
+      function_name: PermissionPromptBubbleBaseView::CreatePermissionButtons
+      code: |-
+        BrowserWindowInterface* const brave_browser = GetBrowser();
+        AddAdditionalWidevineViewControlsIfNeeded(this, delegate_->Requests());
+        auto* permission_lifetime_view =
+            AddPermissionLifetimeComboboxIfNeeded(this, delegate_.get());
+        AddFootnoteViewIfNeeded(this, delegate_->Requests(), brave_browser);
+        if (permission_lifetime_view) {
+          set_fixed_width(
+              std::max(GetPreferredSize().width(),
+                       permission_lifetime_view->GetPreferredSize().width()) +
+              margins().width());
+          set_should_ignore_snapping(true);
+        }
+        AddGeolocationDescriptionIfNeeded(this, delegate_.get(), brave_browser);
+
+  - description: |-
+      Elevate the bubble's z-order sublevel once the widget is created.
+
+      Done after the widget's own CreateWidget() so the manager's initial
+      z-order check (in its constructor) sees a fully set up widget.
+    after_function_impl:
+      function_name: PermissionPromptBubbleBaseView::CreateWidget
+      code: |-
+        z_order_manager_ = std::make_unique<PermissionPromptBubbleZOrderManager>(*this);

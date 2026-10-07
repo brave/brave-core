@@ -2,8 +2,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""bots snapshot: write `infra/config` builders matrix.
-"""
+"""bots snapshot: write `infra/config` builders matrix."""
 
 from __future__ import annotations
 
@@ -25,6 +24,7 @@ def _load_config() -> None:
         sys.path.insert(0, config_dir)
     importlib.import_module('gn_args')
     import builders as builders_package
+
     for module_info in pkgutil.iter_modules(builders_package.__path__):
         importlib.import_module('builders.' + module_info.name)
 
@@ -33,22 +33,25 @@ def _dump(data) -> str:
     return json.dumps(data, indent=2, sort_keys=True) + '\n'
 
 
-def compute_fresh_output(builders_registry,
-                         gn_args_registry) -> dict[str, str]:
+def compute_fresh_output(builders_registry, gn_args_registry) -> dict[str, str]:
     """Returns `{relative_path: content}` for every registered builder."""
     output = {}
     for builder in builders_registry.all():
         resolved = gn_args_registry.resolve(builder.name)
         output[f'{builder.name}/gn-args.json'] = _dump(resolved)
-        output[f'{builder.name}/sync.json'] = _dump({
-            'target_os': builder.sync_config.target_os,
-            'target_cpu': builder.sync_config.target_cpu,
-            'gclient_overrides': builder.sync_config.gclient_overrides,
-        })
-        output[f'{builder.name}/targets.json'] = _dump({
-            'compile': list(builder.targets.compile),
-            'tests': list(builder.targets.tests),
-        })
+        output[f'{builder.name}/sync.json'] = _dump(
+            {
+                'target_os': builder.sync_config.target_os,
+                'target_cpu': builder.sync_config.target_cpu,
+                'gclient_overrides': builder.sync_config.gclient_overrides,
+            }
+        )
+        output[f'{builder.name}/targets.json'] = _dump(
+            {
+                'compile': list(builder.targets.compile),
+                'tests': list(builder.targets.tests),
+            }
+        )
     return output
 
 
@@ -73,14 +76,14 @@ def _scan_existing(output_dir: Path) -> set[str]:
         return set()
     return {
         p.relative_to(output_dir).as_posix()
-        for p in output_dir.rglob('*') if p.is_file()
+        for p in output_dir.rglob('*')
+        if p.is_file()
     }
 
 
-def write_output(output_dir: Path,
-                 fresh: dict[str, str],
-                 *,
-                 dry_run: bool = False) -> SnapshotResult:
+def write_output(
+    output_dir: Path, fresh: dict[str, str], *, dry_run: bool = False
+) -> SnapshotResult:
     """Reconciles `output_dir` with `fresh` (`{relative_path: content}`).
 
     Writes the output dirs, with the builders, and makes sure that freshness/
@@ -106,16 +109,16 @@ def write_output(output_dir: Path,
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(fresh[rel_path], encoding='utf-8')
 
-    return SnapshotResult(changed=changed,
-                          unchanged=unchanged,
-                          deleted=deleted)
+    return SnapshotResult(changed=changed, unchanged=unchanged, deleted=deleted)
 
 
-def write_snapshot(builders_registry,
-                   gn_args_registry,
-                   output_dir: Path,
-                   *,
-                   dry_run: bool = False) -> SnapshotResult:
+def write_snapshot(
+    builders_registry,
+    gn_args_registry,
+    output_dir: Path,
+    *,
+    dry_run: bool = False,
+) -> SnapshotResult:
     """Resolves every registered builder and reconciles `output_dir` with it.
 
     Combines `compute_fresh_output()` and `write_output()`, so a caller never
@@ -129,10 +132,9 @@ def cmd_snapshot(args: argparse.Namespace) -> int:
     _load_config()
     from lib.config import builders, gn_args
 
-    result = write_snapshot(builders,
-                            gn_args,
-                            gen_paths.BUILDERS_OUTPUT_DIR,
-                            dry_run=args.check)
+    result = write_snapshot(
+        builders, gn_args, gen_paths.BUILDERS_OUTPUT_DIR, dry_run=args.check
+    )
 
     for path in result.deleted:
         print(f'deleted:   {path}')
@@ -146,7 +148,8 @@ def cmd_snapshot(args: argparse.Namespace) -> int:
         print(
             'infra/config/generated/builders/ is stale; run '
             '`bots.py snapshot` to update it.',
-            file=sys.stderr)
+            file=sys.stderr,
+        )
         return 1
     return 0
 
@@ -155,13 +158,14 @@ def add_subparser(subparsers) -> argparse.ArgumentParser:
     """Registers the `snapshot` subcommand onto `bots.py`'s subparsers."""
     snapshot_parser = subparsers.add_parser(
         'snapshot',
-        help='Write infra/config/generated/builders/ from the '
-        'current spec.')
+        help='Write infra/config/generated/builders/ from the current spec.',
+    )
     snapshot_parser.add_argument(
         '--check',
         action='store_true',
         help="Don't write anything; exit non-zero if snapshotting would "
-        'change anything (for presubmit).')
+        'change anything (for presubmit).',
+    )
     snapshot_parser.add_argument('-v', '--verbose', action='store_true')
     snapshot_parser.set_defaults(func=cmd_snapshot)
     return snapshot_parser

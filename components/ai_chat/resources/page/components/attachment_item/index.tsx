@@ -46,14 +46,25 @@ type Props = {
   // this component in the conversation thread where remove
   // is not needed.
   remove?: () => void
+
+  // When set, the whole item becomes a button that activates what it
+  // describes, e.g. switching to the tab it represents.
+  onClick?: () => void
 }
 
 const tooltipHideDelay = 0
 const tooltipShowDelay = 500
 
 export function AttachmentItem(props: Props) {
+  const Wrapper = props.onClick ? 'button' : 'div'
   return (
-    <div className={classnames(styles.itemWrapper, props.className)}>
+    <Wrapper
+      className={classnames(styles.itemWrapper, props.className, {
+        [styles.clickable]: !!props.onClick,
+      })}
+      onClick={props.onClick}
+      title={props.onClick ? props.title : undefined}
+    >
       <div className={styles.leftSide}>
         {props.icon}
         <div className={styles.info}>
@@ -80,7 +91,7 @@ export function AttachmentItem(props: Props) {
           <Icon name='close' />
         </Button>
       )}
-    </div>
+    </Wrapper>
   )
 }
 
@@ -112,6 +123,7 @@ export function AttachmentPageItem(props: {
    */
   faviconUrl?: string
   remove?: () => void
+  onClick?: () => void
   className?: string
 }) {
   // We don't display the scheme in the subtitle.
@@ -166,6 +178,7 @@ export function AttachmentPageItem(props: {
         </>
       }
       remove={props.remove}
+      onClick={props.onClick}
       className={props.className}
     />
   )

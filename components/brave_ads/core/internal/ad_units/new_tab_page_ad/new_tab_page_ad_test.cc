@@ -22,7 +22,7 @@
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -193,14 +193,35 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 }
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest,
-       DoNotServeAdIfUserHasNotOptedInToNewTabPageAds) {
+       DoNotServeAdIfNewTabPageBackgroundImagesAreDisabled) {
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(
       {kNewTabPageAdServingFeature});
 
   test::ForcePermissionRules();
 
-  test::OptOutOfNewTabPageAds();
+  test::DisableNewTabPageBackgroundImages();
+
+  MockCreativeNewTabPageAds();
+
+  // Act & Assert
+  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  GetAds().MaybeServeNewTabPageAd(callback.Get());
+  run_loop.Run();
+}
+
+TEST_F(BraveAdsNewTabPageAdIntegrationTest,
+       DoNotServeAdIfSponsoredAdsAreDisabled) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      {kNewTabPageAdServingFeature});
+
+  test::ForcePermissionRules();
+
+  test::DisableSponsoredAds();
 
   MockCreativeNewTabPageAds();
 

@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import Growth
 import Lottie
 import Preferences
 import SafariServices

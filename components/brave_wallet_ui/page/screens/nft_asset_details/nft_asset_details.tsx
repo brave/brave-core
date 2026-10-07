@@ -20,7 +20,7 @@ import { getAssetIdKey } from '../../../utils/asset-utils'
 import { NftScreen } from '../../../nft/components/nft-details/nft-screen'
 import {
   NftAssetHeader, //
-} from '../../../components/desktop/card-headers/nft-asset-header'
+} from '$wallet/page/components/card_headers/nft_asset_header'
 
 // Hooks
 import {
@@ -42,7 +42,7 @@ import { useRoute } from '../../../common/hooks/use_route'
 import { Skeleton } from '../../../components/shared/loading-skeleton/styles'
 import {
   WalletPageWrapper, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import { Column } from '../../../components/shared/style'
 
 export const NFTAssetDetails = () => {

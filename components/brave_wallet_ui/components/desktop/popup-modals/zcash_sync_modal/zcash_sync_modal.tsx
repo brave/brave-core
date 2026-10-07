@@ -128,7 +128,7 @@ export const ZCashSyncModal = (props: Props) => {
   return (
     <PopupModal
       onClose={onClose}
-      title={getLocale('braveWalletSyncAccountName').replace(
+      title={getLocale(S.BRAVE_WALLET_SYNC_ACCOUNT_NAME).replace(
         '$1',
         account.name,
       )}
@@ -163,7 +163,7 @@ export const ZCashSyncModal = (props: Props) => {
               textColor='primary'
               isBold={false}
             >
-              {getLocale('braveWalletInitializing')}
+              {getLocale(S.BRAVE_WALLET_INITIALIZING)}
             </Text>
           ) : (
             <>
@@ -173,14 +173,14 @@ export const ZCashSyncModal = (props: Props) => {
                   textColor='primary'
                   isBold={false}
                 >
-                  {getLocale('braveWalletProcessingBlock')}
+                  {getLocale(S.BRAVE_WALLET_PROCESSING_BLOCK)}
                 </Text>
                 <Text
                   textSize='16px'
                   textColor='primary'
                   isBold={true}
                 >
-                  {getLocale('braveWalletBlocksLeft').replace(
+                  {getLocale(S.BRAVE_WALLET_BLOCKS_LEFT).replace(
                     '$1',
                     (endBlock - calculatedBlock).toLocaleString(),
                   )}
@@ -190,7 +190,7 @@ export const ZCashSyncModal = (props: Props) => {
                   textColor='tertiary'
                   isBold={false}
                 >
-                  {getLocale('braveWalletBlocksOfBlocks')
+                  {getLocale(S.BRAVE_WALLET_BLOCKS_OF_BLOCKS)
                     .replace('$1', calculatedBlock.toLocaleString())
                     .replace('$2', endBlock.toLocaleString())}
                 </Text>
@@ -201,14 +201,14 @@ export const ZCashSyncModal = (props: Props) => {
                   textColor='primary'
                   isBold={false}
                 >
-                  {getLocale('braveWalletRanges')}
+                  {getLocale(S.BRAVE_WALLET_RANGES)}
                 </Text>
                 <Text
                   textSize='16px'
                   textColor='primary'
                   isBold={true}
                 >
-                  {getLocale('braveWalletBlocksOfBlocks')
+                  {getLocale(S.BRAVE_WALLET_BLOCKS_OF_BLOCKS)
                     .replace('$1', scannedRanges.toLocaleString())
                     .replace('$2', totalRanges.toLocaleString())}
                 </Text>
@@ -232,21 +232,21 @@ export const ZCashSyncModal = (props: Props) => {
                   />
                 )}
                 {syncComplete
-                  ? getLocale('braveWalletButtonClose')
+                  ? getLocale(S.BRAVE_WALLET_BUTTON_CLOSE)
                   : syncStatus === 'stopped'
-                    ? getLocale('braveWalletButtonContinue')
-                    : getLocale('braveWalletPause')}
+                    ? getLocale(S.BRAVE_WALLET_BUTTON_CONTINUE)
+                    : getLocale(S.BRAVE_WALLET_PAUSE)}
               </Button>
             </>
           )}
           {syncComplete && !syncError && (
             <Alert type='success'>
-              {getLocale('braveWalletSyncCompleteMessage')}
+              {getLocale(S.BRAVE_WALLET_SYNC_COMPLETE_MESSAGE)}
             </Alert>
           )}
           {!syncComplete && !syncError && (
             <Alert type='warning'>
-              {getLocale('braveWalletSyncStartedMessage')}
+              {getLocale(S.BRAVE_WALLET_SYNC_STARTED_MESSAGE)}
             </Alert>
           )}
           {syncError && <Alert type='error'>{syncError}</Alert>}
@@ -266,7 +266,7 @@ export const ZCashSyncModal = (props: Props) => {
                     name='launch'
                     slot='icon-before'
                   />
-                  {getLocale('braveWalletContinueUsingWallet')}
+                  {getLocale(S.BRAVE_WALLET_CONTINUE_USING_WALLET)}
                 </Button>
               </div>
             </Row>

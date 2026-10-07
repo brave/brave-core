@@ -10,12 +10,31 @@ ones raise on `__enter__`, the valid one runs the block.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    context,
+    env,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['context', 'env', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    context: context.API
+    env: env.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    env: env.TEST_API
+
+
+def RunSteps(api: DEPS):
     mode = api.env.get('MODE')
     if mode == 'bad_cwd':
         # cwd must be a str/Path; an int is rejected by _check_type.
@@ -29,7 +48,7 @@ def RunSteps(api):
         api.step('inside context', ['echo', 'ok'])
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'bad cwd type',
         api.env.set('MODE', 'bad_cwd'),

@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "ui/gfx/geometry/rect.h"
 
 // Provide a base implementation (important for `TestBrowserWindow ` in tests)
 // For real implementation, see `BraveBrowserView`.

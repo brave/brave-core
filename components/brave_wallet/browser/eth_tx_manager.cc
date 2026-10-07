@@ -51,6 +51,34 @@ std::optional<uint256_t> IncreaseBy10Percent(uint256_t val) {
   return std::nullopt;
 }
 
+// Check if the transaction is being sent to a restricted address or if its
+// calldata has a restricted recipient. Also includes a check for ERC20
+// approvals, as an authorized spender can also be on the restricted list.
+bool HasRestrictedAddress(const std::string& chain_id,
+                          const std::string& to,
+                          mojom::TransactionType tx_type,
+                          const std::vector<std::string>& tx_args) {
+  auto* registry = BlockchainRegistry::GetInstance();
+
+  if (registry->IsRestrictedAddress(to)) {
+    return true;
+  }
+
+  if (auto recipient = GetFinalRecipient(chain_id, to, tx_type, tx_args);
+      recipient && registry->IsRestrictedAddress(*recipient)) {
+    return true;
+  }
+
+  // Because ERC20 approvals authorize a spender, we need to check them against
+  // the restricted list as well.
+  if (tx_type == mojom::TransactionType::ERC20Approve && !tx_args.empty() &&
+      registry->IsRestrictedAddress(tx_args.front())) {
+    return true;
+  }
+
+  return false;
+}
+
 }  // namespace
 
 // static
@@ -292,28 +320,40 @@ void EthTxManager::ContinueAddUnapprovedTransaction(
     const std::string& result,
     mojom::ProviderError error,
     const std::string& error_message) {
+  mojom::TransactionType tx_type = mojom::TransactionType::Other;
+  std::vector<std::string> tx_args;
+  if (auto tx_info = GetTransactionInfoFromData(tx->data())) {
+    tx_type = std::get<0>(*tx_info);
+    tx_args = std::move(std::get<2>(*tx_info));
+  }
+
+  // Every transaction creation path we have seems to route through this
+  // function, which makes it the perfect spot to scan the transaction
+  // (including its calldata) for restricted addresses.
+  if (HasRestrictedAddress(Uint256ValueToHex(tx->chain_id()),
+                           tx->GetToChecksumAddress(), tx_type, tx_args)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
+    return;
+  }
+
   uint256_t gas_limit;
   if (error != mojom::ProviderError::kSuccess ||
       !HexValueToUint256(result, &gas_limit)) {
     gas_limit = 0;
-    auto tx_info = GetTransactionInfoFromData(tx->data());
-    if (tx_info) {
-      mojom::TransactionType tx_type = std::get<0>(*tx_info);
 
-      // Try to use reasonable values when we can't get an estimation.
-      // These are taken via looking through the different types of transactions
-      // on etherscan and taking the next rounded up value for the largest found
-      if (tx_type == mojom::TransactionType::ETHSend ||
-          tx_type == mojom::TransactionType::ETHFilForwarderTransfer) {
-        gas_limit = kDefaultSendEthGasLimit;
-      } else if (tx_type == mojom::TransactionType::ERC20Transfer) {
-        gas_limit = kDefaultERC20TransferGasLimit;
-      } else if (tx_type == mojom::TransactionType::ERC721TransferFrom ||
-                 tx_type == mojom::TransactionType::ERC721SafeTransferFrom) {
-        gas_limit = kDefaultERC721TransferGasLimit;
-      } else if (tx_type == mojom::TransactionType::ERC20Approve) {
-        gas_limit = kDefaultERC20ApproveGasLimit;
-      }
+    // Try to use reasonable values when we can't get an estimation.
+    // These are taken via looking through the different types of transactions
+    // on etherscan and taking the next rounded up value for the largest found
+    if (tx_type == mojom::TransactionType::ETHSend ||
+        tx_type == mojom::TransactionType::ETHFilForwarderTransfer) {
+      gas_limit = kDefaultSendEthGasLimit;
+    } else if (tx_type == mojom::TransactionType::ERC20Transfer) {
+      gas_limit = kDefaultERC20TransferGasLimit;
+    } else if (tx_type == mojom::TransactionType::ERC721TransferFrom ||
+               tx_type == mojom::TransactionType::ERC721SafeTransferFrom) {
+      gas_limit = kDefaultERC721TransferGasLimit;
+    } else if (tx_type == mojom::TransactionType::ERC20Approve) {
+      gas_limit = kDefaultERC20ApproveGasLimit;
     }
   }
   tx->set_gas_limit(gas_limit);
@@ -327,8 +367,7 @@ void EthTxManager::ContinueAddUnapprovedTransaction(
   meta.set_sign_only(sign_only);
   meta.set_swap_info(swap_info.Clone());
   if (!tx_state_manager().AddOrUpdateTx(meta)) {
-    std::move(callback).Run(
-        false, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
   std::move(callback).Run(true, meta.id(), "");

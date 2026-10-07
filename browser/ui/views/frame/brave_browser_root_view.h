@@ -12,7 +12,7 @@
 #include "ui/native_theme/native_theme.h"
 #include "ui/native_theme/native_theme_observer.h"
 
-class Browser;
+class BrowserWindowInterface;
 
 // Observe native theme changes to propagate brave theme change notification
 // to child views for non-normal profile windows.
@@ -33,7 +33,7 @@ class BraveBrowserRootView : public BrowserRootView,
   void OnNativeThemeUpdated(ui::NativeTheme* observed_theme) override;
 
  private:
-  raw_ptr<Browser, DanglingUntriaged> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface, DanglingUntriaged> browser_ = nullptr;
   base::ScopedObservation<ui::NativeTheme, ui::NativeThemeObserver>
       theme_observation_{this};
 };

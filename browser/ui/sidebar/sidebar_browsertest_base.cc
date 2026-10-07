@@ -15,11 +15,13 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
@@ -32,7 +34,6 @@
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
@@ -110,13 +111,24 @@ void SidebarBrowserTest::SimulateSidebarItemClickAt(size_t index) {
   auto* item = sidebar_items_contents_view->children()[index].get();
   DCHECK(item);
 
+  const auto& item_model = model()->GetAllSidebarItems()[index];
+  const bool was_active = model()->active_index() == index;
+
   const gfx::Point origin(0, 0);
   ui::MouseEvent event(ui::EventType::kMousePressed, origin, origin,
                        ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON, 0);
   sidebar_items_contents_view->OnItemPressed(item, event);
 
-  if (model()->GetAllSidebarItems()[index].open_in_panel) {
-    auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  // A web panel item becomes active without a side panel, and clicking the
+  // active one toggles it off.
+  if (item_model.is_web_panel_type()) {
+    ASSERT_TRUE(base::test::RunUntil(
+        [&]() { return (model()->active_index() == index) != was_active; }));
+    return;
+  }
+
+  if (item_model.open_in_panel) {
+    auto* panel_ui = SidePanelUI::From(browser());
     WaitUntil(base::BindLambdaForTesting([&]() {
       return (model()->active_index() == index &&
               panel_ui->IsSidePanelShowing());
@@ -233,6 +245,10 @@ int SidebarBrowserTest::GetFirstWebItemIndex() {
   auto const iter =
       std::ranges::find(items, false, &SidebarItem::open_in_panel);
   return std::distance(items.cbegin(), iter);
+}
+
+BraveMultiContentsView* SidebarBrowserTest::GetBraveMultiContentsView() {
+  return browser_view()->GetBraveMultiContentsView();
 }
 
 BraveBrowserView* SidebarBrowserTest::browser_view() {

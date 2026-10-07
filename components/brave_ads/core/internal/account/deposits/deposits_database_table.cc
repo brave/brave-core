@@ -147,8 +147,9 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
           FROM
             $1
           WHERE
-            creative_instance_id = '$2')",
-      {kTableName, creative_instance_id}, nullptr);
+            creative_instance_id = ?)",
+      {kTableName}, nullptr);
+  BindColumnString(mojom_db_action, 0, creative_instance_id);
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 

@@ -1,8 +1,8 @@
 diff --git a/media/base/supported_types_unittest.cc b/media/base/supported_types_unittest.cc
-index 2ee18cebecfd0a667a2424883200f47ec685609a..045894346c502b765e5656f3a3c9f0bf6863668d 100644
+index 689324b907585871878b8c106eb0fef3c4aa6707..3b4a715deee6590c91c001d0eaffed5e1f841ad3 100644
 --- a/media/base/supported_types_unittest.cc
 +++ b/media/base/supported_types_unittest.cc
-@@ -65,9 +65,10 @@ TEST(SupportedTypesTest, IsDecoderSupportedVideoTypeBasics) {
+@@ -66,9 +66,10 @@ TEST(SupportedTypesTest, IsDecoderSupportedVideoTypeBasics) {
                                             VIDEO_CODEC_PROFILE_UNKNOWN,
                                             kUnspecifiedLevel, kColorSpace}));
  #else
@@ -16,7 +16,7 @@ index 2ee18cebecfd0a667a2424883200f47ec685609a..045894346c502b765e5656f3a3c9f0bf
  #endif
  }
  
-@@ -488,7 +489,7 @@ TEST(SupportedTypesTest, IsDecoderBuiltInVideoCodec) {
+@@ -513,7 +514,7 @@ TEST(SupportedTypesTest, IsDecoderBuiltInVideoCodec) {
    EXPECT_FALSE(IsDecoderBuiltInVideoCodec(VideoCodec::kMPEG4));
    EXPECT_FALSE(IsDecoderBuiltInVideoCodec(VideoCodec::kVC1));
    EXPECT_FALSE(IsDecoderBuiltInVideoCodec(VideoCodec::kMPEG2));

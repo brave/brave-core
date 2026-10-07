@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "Informácie";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "O Brave štítoch";
-
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "Stránky často obsahujú súbory cookie a skripty, ktoré sa snažia identifikovať vás a vaše zariadenie. Chcú zistiť, kto ste, a sledovať vás na webe – sledovať, čo robíte na každej stránke.\n\nBrave blokuje ich blokuje, takže stránky môžete prehliadať bez toho, aby vás niekto sledoval.";
-
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "To vám umožní uložiť obrázok do galérie.";
 
@@ -36,9 +30,6 @@
 
 /* Text for the toggle switch to clear 'Brave Ads' data in settings */
 "ads.braveAdsDataToggleOption" = "Údaje Brave Ads";
-
-/* individual blocking statistic title */
-"AdsAndTrackers" = "Reklamy a sledovače";
 
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "Vždy požiadať o stránku v zobrazení pre počítače";
@@ -91,6 +82,9 @@
 /* Label for the button used to delete the current login. */
 "autofill.managePasswords.deleteManagePasswordButtonTitle" = "Odstrániť";
 
+/* Label for the button used to confirm delete action for the current password. */
+"autofill.managePasswords.deleteManagePasswordConfrimButtonTitle" = "Odstrániť heslo";
+
 /* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
 "autofill.managePasswords.headerTitle" = "Uložené";
 
@@ -102,6 +96,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "Ponúknuť uloženie hesiel";
+
+/* Navigation title when creating a new saved login from password management */
+"autofill.managePasswords.passwordDetail.addCredentialTitle" = "Pridať heslo";
+
+/* Alert message warning the user that deleting the password will remove it from their sync chain and device */
+"autofill.managePasswords.passwordDetail.deleteConfirmMessage" = "Toto heslo bude odstránené z vašej synchronizačnej reťaze a z vášho zariadenia.";
 
 /* Placeholder for the password field when adding or editing a login */
 "autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "Zadajte heslo";
@@ -121,18 +121,6 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "Automatické dopĺňanie";
 
-/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
-"AutoRedirectAMPPages" = "Stránky AMP s automatickým presmerovaním";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
-"AutoRedirectAMPPagesDescription" = "Namiesto verzií Accelerated Mobile Page od spoločnosti Google vždy navštevujte pôvodné (iné ako AMP) URL adresy webových stránok.";
-
-/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
-"AutoRedirectTrackingURLs" = "Sledovacie adresy URL s automatickým presmerovaním";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "Povoliť podporu pre obchádzanie sledovacích adries URL presmerovania najvyššej úrovne";
-
 /* cookie settings option */
 "Block3rdPartyCookies" = "Zakázať cookies tretích strán";
 
@@ -151,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Predvoľbu sa nepodarilo nastaviť. Skúste to znova.";
 
-/* A title for a setting that enables cookie consent notices */
-"BlockCookieConsentNotices" = "Blokovať oznámenia o súhlase so súbormi cookie";
-
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Monitor blokovania";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blokovať kontextové okná";
-
-/* No comment provided by engineer. */
-"BlockScripts" = "Blokovať skripty";
-
-/* No comment provided by engineer. */
-"BlockScriptsDescription" = "Blokuje JavaScript (môže prerušiť webové stránky).";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "Pridať záložku pre karty %lld";
@@ -230,46 +209,10 @@
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Zatvoriť";
 
 /* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "Pokročilé ovládanie";
-
-/* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Štíty Brave a súkromie";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Štíty a súkromie";
-
-/* The number of ads and trackers blocked will be next to this */
-"BraveShieldsBlockedCountLabel" = "Blokovanie reklám a ďalších nechutných záležitostí";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Zjistěte více.";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "Zmena globálnych predvolených nastavení štítov";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalControls" = "Globálne ovládacie prvky";
-
-/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "Uložiť kontaktné údaje pre budúce správy o nefunkčných stránkach";
-
-/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "Ak poskytnete kontaktné údaje, budú uložené pre budúce správy";
-
-/* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "Ak sa táto stránka javí ako nefunkčná, skúste štíty vypnúť";
-
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave štíty";
-
-/* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "dolu";
-
-/* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "Hore";
-
-/* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "Dvojitým klepnutím prepínate štíty Brave";
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
@@ -727,6 +670,18 @@
 /* Accessibility Title for the button that edits the quick-search engines list. */
 "EditQuickSearchEnginesAccessibilityTitle" = "Upraviť rýchle vyhľadávače";
 
+/* The message on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertMessage" = "Ak sa vyskytne pád alebo zamrznutie, prehliadač Brave môže automaticky odosielať anonymné diagnostické správy na vyriešenie problému. Toto môžete kedykoľvek neskôr vypnúť v Nastaveniach.";
+
+/* The title on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertTitle" = "Povoliť automatické správy o páde";
+
+/* The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting */
+"EnableCrashReporterConfirmButtonTitle" = "Aktivovať";
+
+/* The button title on an alert presented to the user after the app crashes that ignores the alert */
+"EnableCrashReporterDenyButtonTitle" = "Teraz nie";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Povoliť obnovenie potiahnutím";
 
@@ -823,15 +778,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findPreviousTitle" = "Nájsť predchádzajúce";
 
-/* individual blocking statistic title */
-"FingerprintingMethods" = "Metódy snímania odtlačkov prstov";
-
-/* No comment provided by engineer. */
-"FingerprintingProtection" = "Blokovať Odtlačky prstov";
-
-/* No comment provided by engineer. */
-"FingerprintingProtectionDescription" = "Sťažuje webom rozpoznať charakteristické vlastnosti vášho zariadenia. ";
-
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Povoliť otváranie univerzálnych odkazov v externých aplikáciách";
 
@@ -898,15 +844,6 @@
 /* No comment provided by engineer. */
 "Home" = "Domov";
 
-/* No comment provided by engineer. */
-"HTTPSEverywhere" = "Inovovať pripojenia na HTTPS";
-
-/* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Ak je to možné, otvára stránky pomocou zabezpečeného HTTPS namiesto HTTP.";
-
-/* individual blocking statistic title */
-"HTTPSUpgrades" = "Aktualizácie HTTPS";
-
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Import údajov prehliadača";
 
@@ -927,6 +864,9 @@
 
 /* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
+
+/* Title for Brave Leo voice input menu item. Brave Leo is the name of a product and should not be translated */
+"LeoVoiceInputMenuItem" = "Hlasový vstup Leo";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "Uložené prihlasovacie údaje budú natrvalo odstránené.";
@@ -1095,9 +1035,6 @@
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Predvolené obrázky";
-
-/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "Sponzorované obrázky a videá";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "Sponzorované obrázky";
@@ -1648,9 +1585,6 @@
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Zoznam prehrávania bez názvu";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
-"PopoverShieldsMenuClose" = "Zatvoriť ponuku Štíty";
-
 /* Settings privacy section title */
 "Privacy" = "Ochrana súkromia";
 
@@ -1999,41 +1933,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "Odstrániť obľúbené";
 
-/* No comment provided by engineer. */
-"ReportABrokenSite" = "Nahlásiť nefunkčnú stránku";
-
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "Nahlásiť chybu";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"ReportBrokenAdditionalDetails" = "Ďalšie podrobnosti (voliteľné)";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"reportBrokenAdditionalDetailsRequired" = "Ďalšie podrobnosti";
-
-/* A label for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "Aký je hlavný problém, ktorý vidíte?";
-
-/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
-"ReportBrokenContactMe" = "Kontaktujte ma na: (voliteľné)";
-
-/* Contact info storing description */
-"ReportBrokenContactMeDescription" = "Ak poskytnete kontaktné údaje, budú uložené na nahlasovanie nefunkčných stránok v budúcnosti.";
-
-/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
-"ReportBrokenContactMeSuggestions" = "E-mail, Twitter atď.";
-
-/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"ReportBrokenPlaceholder" = "Vyberte jednu možnosť";
-
-/* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Dajte vývojárom Brave vedieť, že táto stránka nefunguje podľa očakávaní:";
-
-/* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Poznámka: Správa odoslaná serverom Brave bude obsahovať adresu lokality, číslo verzie Brave, nastavenia ochrany, stav VPN a jazykové nastavenia.";
-
-/* No comment provided by engineer. */
-"ReportBrokenSubmitButtonTitle" = "Odeslat";
 
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraAndMicrophonePermissionPrompt" = "„%@“ chce získať prístup k fotoaparátu a mikrofónu";
@@ -2079,6 +1980,15 @@
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Ďakujeme, že podporujete značku Brave a komunitu BAT.";
+
+/* Message of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationMessage" = "Obnovením sa váš aktuálny profil Odmeny Brave odstráni a Odmeny Brave už nebudú povolené.";
+
+/* Title of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationTitle" = "Obnovte Brave odmeny";
+
+/* Title of a button that resets the user's Brave Rewards profile */
+"rewards.settingsResetTitle" = "Obnoviť";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Podporte značku Brave a komunitu BAT povolením Brave Rewards a zobrazovaním Brave Ads.";
@@ -2302,9 +2212,6 @@
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Uložiť prihlasovacie údaje";
 
-/* individual blocking statistic title */
-"ScriptsBlocked" = "skripty zablokované";
-
 /* The placeholder text for bookmark search */
 "searchBookmarksTitle" = "Hľadať v záložkách";
 
@@ -2461,17 +2368,17 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Nastavenia kvality";
 
+/* Description to explain the send crash reports toggle */
+"settings.sendCrashReportsDescription" = "Odošlite anonymné diagnostické správy, ak dôjde k zlyhaniu alebo zamrznutiu.";
+
+/* Title to explain the send crash reports toggle */
+"settings.sendCrashReportsTitle" = "Odoslať správy o zlyhaní";
+
 /* Description to explain the daily usage ping toggle */
 "settings.sendUsagePingDescription" = "Tento súkromný ping umožňuje spoločnosti Brave odhadnúť počet aktívnych používateľov.";
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Automaticky odoslať správu o dennom využívaní službe Brave";
-
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "Umožňuje spoločnosti Brave zobrazovať odkazy na súkromné prieskumy na stránke novej karty. Prieskumy nám pomáhajú vytvárať lepšie funkcie a merať účinnosť reklamných kampaní v prehliadači. [Viac informácií](%@)";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "Povoliť prieskumy od Brave";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -2544,21 +2451,6 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Počas sledovania videí na tomto webe sú blokované reklamy.";
-
-/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Globálne predvolené hodnoty štítov Brave";
-
-/* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "Toto sú predvolené nastavenia Shield pre nové webové stránky. Zmena týchto nastavení nebude mať vplyv na vaše existujúce nastavenia pre jednotlivé stránky.";
-
-/* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Túto stránku si prezeráte bez ochrany súkromia Brave. Nefunguje to správne, keď sú štíty hore?";
-
-/* shields overview message */
-"ShieldsOverview" = "Štíty stránky vám umožňujú kontrolovať, kedy sú reklamy a sledovače blokované pre každú stránku, ktorú navštívite. Ak uprednostňujete zobrazovanie reklám na konkrétnej stránke, môžete ich povoliť tu.";
-
-/* shields overview footer message */
-"ShieldsOverviewFooter" = "Poznámka: Niektoré stránky môžu vyžadovať, aby skripty fungovali správne, takže tento štít je predvolene vypnutý.";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Nová karta režimu Inkognito";
@@ -2745,15 +2637,6 @@
 
 /* Settings item for clearing site-specific settings and shields settings. */
 "SiteAndShieldsSettings" = "Nastavenia stránky a štítov";
-
-/* No comment provided by engineer. */
-"SiteReportedBody" = "Ďakujeme, že ste vývojárom Brave oznámili, že na tejto stránke je niečo chybné. Urobíme všetko pre to, aby sme to napravili!";
-
-/* No comment provided by engineer. */
-"SiteReportedTitle" = "Ďakujem";
-
-/* Brave panel topmost title */
-"SiteShieldSettings" = "Štíty";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Každý deň šetrím dáta tým, že web prehliadam pomocou prehliadača Brave.";
@@ -2945,7 +2828,7 @@
 "sync.maximumDeviceReachedErrorTitle" = "Limit zariadenia";
 
 /* New sync code button title */
-"sync.newSyncCode" = "Spustiť nový synchronizačný reťazec ";
+"sync.newSyncCode" = "Nový synchronizačný reťazec";
 
 /* No internet connection alert body. */
 "sync.noConnectionBody" = "Skontrolujte svoje internetové pripojenie a skúste to znova.";
@@ -3115,6 +2998,9 @@
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Súkromné ​​prehliadanie";
 
+/* A label in the tab tray mode switcher for private browsing mode */
+"tabGrid.privateBrowsingModeTitle" = "Inkognito";
+
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Nastavenia súkromných kariet";
 
@@ -3139,11 +3025,23 @@
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Skartovať karty";
 
+/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
+"tabGrid.tabsCountFormatPlural" = "%lld karty";
+
+/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
+"tabGrid.tabsCountFormatSingular" = "%lld karta";
+
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "Zobraziť históriu";
 
+/* Label for history menu item button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryMenuItemLabel" = "História";
+
 /* Accessibility label for a button that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsAccessibilityLabel" = "Zobraziť synchronizované karty";
+
+/* Label for synced tabs menu item that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsMenuItemLabel" = "Synchronizácia";
 
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "Zapne alebo vypne súkromný režim";
@@ -3516,9 +3414,6 @@
 
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "Používateľ bol zrušený";
-
-/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
-"UseRegionalAdblock" = "Použiť regionálne blokovanie reklám";
 
 /* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "Zavrieť";

@@ -94,6 +94,57 @@ constexpr char16_t kYoutubePictureInPictureSupport[] =
 }());
 )";
 
+// m.youtube.com has a bug whereby taps of the video's gear icon no-ops.
+// Work around this by forcibly exiting fullscreen, then replay the player
+// settings icon tap through YouTube's handler. See
+// https://github.com/brave/brave-browser/issues/57763.
+constexpr char16_t kYoutubeFullscreenSettingsWorkaround[] =
+    uR"(
+(function() {
+  let pending = false;
+  document.addEventListener('click', async (event) => {
+    const playerSettingsIcon = event.target instanceof Element
+        ? event.target.closest('button.player-settings-icon') : null;
+    if (!playerSettingsIcon || !document.fullscreenElement) {
+      return;
+    }
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if (pending) {
+      return;
+    }
+    pending = true;
+    try {
+      await document.exitFullscreen();
+      document.querySelector('button.player-settings-icon')?.click();
+    } catch (error) {
+      // The document may have become inactive during the fullscreen exit.
+    } finally {
+      pending = false;
+    }
+  }, true);
+}());
+)";
+
+// Fit the mobile video to the fullscreen viewport instead of YouTube's inline
+// size and offsets. See https://github.com/brave/brave-browser/issues/56763.
+constexpr char16_t kYoutubeFullscreenVideoFitWorkaround[] =
+    uR"(
+(function() {
+  const style = document.createElement('style');
+  style.textContent = `
+    #player-container-id:fullscreen video.html5-main-video {
+      width: 100% !important;
+      height: 100dvh !important;
+      left: 0 !important;
+      top: 0 !important;
+      object-fit: contain !important;
+    }
+  `;
+  document.documentElement.appendChild(style);
+}());
+)";
+
 // Drives the YouTube player into fullscreen so the caller can follow up with
 // Picture in Picture. On a cold load the player and its controls hydrate
 // asynchronously, so the fullscreen button may be absent at injection time: the
@@ -382,6 +433,18 @@ void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
       IsAndroidPictureInPictureSupported()) {
     contents->GetPrimaryMainFrame()->ExecuteJavaScript(
         kYoutubePictureInPictureSupport, base::NullCallback());
+  }
+  if (IsYouTubeDomain(/*mobileOnly=*/true) &&
+      base::FeatureList::IsEnabled(
+          preferences::features::kBraveYoutubeFullscreenSettingsWorkaround)) {
+    contents->GetPrimaryMainFrame()->ExecuteJavaScript(
+        kYoutubeFullscreenSettingsWorkaround, base::NullCallback());
+  }
+  if (IsYouTubeDomain(/*mobileOnly=*/true) &&
+      base::FeatureList::IsEnabled(
+          preferences::features::kBraveYoutubeFullscreenVideoFitWorkaround)) {
+    contents->GetPrimaryMainFrame()->ExecuteJavaScript(
+        kYoutubeFullscreenVideoFitWorkaround, base::NullCallback());
   }
 }
 

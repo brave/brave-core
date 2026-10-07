@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import BraveShared
+import BraveStrings
 import BraveWidgetsModels
 import FaviconModels
 import Strings
@@ -55,7 +56,7 @@ struct FaviconImage: View {
   var body: some View {
     Image(uiImage: image)
       .resizable()
-      .widgetAccentedRenderingModeFullColor()
+      .widgetAccentedRenderingMode(.fullColor)
       .aspectRatio(1, contentMode: .fit)
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .clipped()
@@ -67,7 +68,7 @@ private struct NoFavoritesFoundView: View {
   var body: some View {
     VStack {
       Image("brave-icon")
-        .widgetAccentedRenderingModeFullColor()
+        .widgetAccentedRenderingMode(.fullColor)
         .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
       Text(Strings.Widgets.noFavoritesFound)
         .multilineTextAlignment(.center)
@@ -90,7 +91,7 @@ private struct FavoritesView: View {
       }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .widgetBackground { Color(UIColor(braveSystemName: .containerHighlight)) }
+    .containerBackground(for: .widget) { Color(UIColor(braveSystemName: .containerHighlight)) }
   }
 }
 

@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Never apply upstream's Material color overrides.
+
+      Brave installs its own Material-based colors, so upstream's
+      ShouldApplyChromeMaterialOverrides() decision must be false for every
+      key; otherwise the upstream Material mixers would apply their overrides
+      on top of Brave's colors.
+    preempt_function_impl:
+      function_name: ShouldApplyChromeMaterialOverrides
+      return_if: '(true)'
+      return_value: 'false'

@@ -17,6 +17,7 @@
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace ai_chat {
 
@@ -24,10 +25,10 @@ struct PageContent {
   // Note: |content| is not sanitized for use in the backend. Run it through
   // |EngineConsumer::SanitizeInput| before sending it.
   std::string content = "";
-  bool is_video = false;
+  mojom::ContentType content_type = mojom::ContentType::PageContent;
 
   PageContent();
-  PageContent(std::string content, bool is_video);
+  PageContent(std::string content, mojom::ContentType content_type);
 
   PageContent(const PageContent&);
   PageContent(PageContent&&);
@@ -35,7 +36,7 @@ struct PageContent {
   PageContent& operator=(PageContent&&);
 
   bool operator==(const PageContent& other) const {
-    return content == other.content && is_video == other.is_video;
+    return content == other.content && content_type == other.content_type;
   }
 };
 
@@ -66,6 +67,8 @@ class AssociatedContentDelegate {
     virtual void OnRequestArchive(AssociatedContentDelegate* delegate) {}
     virtual void OnNewPage(AssociatedContentDelegate* delegate) {}
     virtual void OnTitleChanged(AssociatedContentDelegate* delegate) {}
+    virtual void OnToolsAttachedChanged(AssociatedContentDelegate* delegate) {}
+    virtual void OnContentToolsChanged(AssociatedContentDelegate* delegate) {}
   };
 
   AssociatedContentDelegate();
@@ -93,6 +96,10 @@ class AssociatedContentDelegate {
       base::OnceCallback<void(std::vector<std::unique_ptr<Tool>>)>;
   virtual void GetContentTools(GetContentToolsCallback callback);
 
+  // Called by AssociatedContentManager when this content is attached to a
+  // conversation.
+  virtual void OnAssociatedWithConversation() {}
+
   base::WeakPtr<AssociatedContentDelegate> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();
   }
@@ -108,14 +115,18 @@ class AssociatedContentDelegate {
   const std::u16string& title() const { return title_; }
   const GURL& url() const { return url_; }
 
+  // The origin the content's tools run in, which tool permissions are keyed
+  // on. Defaults to the origin of |url()|; content whose |url()| is only an
+  // identifier (and so has an opaque origin) must override this.
+  virtual url::Origin GetOrigin() const;
+
   // Whether tools provided by this content are enabled for the LLM. This is
   // live-only state (it relies on the content's WebContents being live) and is
   // not persisted. Content is attached when it is first found to expose tools,
   // and can subsequently be overridden by the user.
   bool tools_attached() const { return tools_attached_; }
-  void set_tools_attached(bool tools_attached) {
-    tools_attached_ = tools_attached;
-  }
+  // Notifies observers when the value changes.
+  void set_tools_attached(bool tools_attached);
 
   // Get current cache of content, if available. Do not perform any fresh
   // fetch for the content.
@@ -126,6 +137,8 @@ class AssociatedContentDelegate {
  protected:
   // Content has navigated
   virtual void OnNewPage(int64_t navigation_id);
+
+  void NotifyContentToolsChanged();
 
   void set_uuid(std::string uuid) { uuid_ = std::move(uuid); }
   void NotifyNewPage();

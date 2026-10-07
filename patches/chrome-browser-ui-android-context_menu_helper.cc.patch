@@ -1,0 +1,47 @@
+diff --git a/chrome/browser/ui/android/context_menu_helper.cc b/chrome/browser/ui/android/context_menu_helper.cc
+index db3e147e0ae3ad5b3044a80f16f396e533bb06b5..bd4ec2ede0be560ed76c240761ba3459a1182803 100644
+--- a/chrome/browser/ui/android/context_menu_helper.cc
++++ b/chrome/browser/ui/android/context_menu_helper.cc
+@@ -23,10 +23,10 @@
+ #include "ui/gfx/geometry/size.h"
+ #include "url/gurl.h"
+ 
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+ #include "chrome/browser/extensions/extension_menu_model_android.h"
+ #include "ui/menus/simple_menu_model.h"
+-#endif  // BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#endif  // BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+ 
+ // Must come after all headers that specialize FromJniType() / ToJniType().
+ #include "chrome/android/chrome_jni_headers/ContextMenuHelper_jni.h"
+@@ -43,9 +43,9 @@ ContextMenuHelper::ContextMenuHelper(content::WebContents* web_contents)
+ }
+ 
+ ContextMenuHelper::~ContextMenuHelper() {
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+   extension_menu_model_.reset();
+-#endif  // BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#endif  // BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+   JNIEnv* env = base::android::AttachCurrentThread();
+   Java_ContextMenuHelper_destroy(env, GetJavaObject(env));
+ }
+@@ -57,7 +57,7 @@ void ContextMenuHelper::ShowContextMenu(
+   context_menu_params_ = params;
+   gfx::NativeView view = GetWebContents().GetNativeView();
+ 
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+   // Reset any previous menu model, in case a new menu is shown
+   // before the old one was gracefully closed.
+   extension_menu_model_.reset();
+@@ -67,7 +67,7 @@ void ContextMenuHelper::ShowContextMenu(
+   ui::MenuModel* model_ptr = extension_menu_model_.get();
+ #else
+   ui::MenuModel* model_ptr = nullptr;
+-#endif  // BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#endif  // BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+ 
+   Java_ContextMenuHelper_showContextMenu(
+       env, GetJavaObject(env),

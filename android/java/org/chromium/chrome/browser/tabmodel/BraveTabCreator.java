@@ -13,7 +13,7 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
-import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
+import org.chromium.chrome.browser.ntp_background_images.util.SponsoredContentUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
@@ -56,7 +56,7 @@ public class BraveTabCreator extends ChromeTabCreator {
             ChromeTabbedActivity chromeTabbedActivity = BraveActivity.getChromeTabbedActivity();
             if (chromeTabbedActivity != null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
                 TabModel tabModel = chromeTabbedActivity.getCurrentTabModel();
-                if (tabModel.getCount() >= SponsoredImageUtil.MAX_TABS
+                if (tabModel.getCount() >= SponsoredContentUtil.MAX_TABS
                         && UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                                 .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
                     Tab tab =

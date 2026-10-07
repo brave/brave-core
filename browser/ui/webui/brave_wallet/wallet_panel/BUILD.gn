@@ -68,18 +68,31 @@ source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "wallet_panel_ui_browsertest.cc" ]
+  sources = [
+    "wallet_panel_handler_browsertest.cc",
+    "wallet_panel_ui_browsertest.cc",
+  ]
   deps = [
     ":wallet_panel",
     "//base/test:test_support",
     "//brave/browser/brave_wallet",
+    "//brave/browser/brave_wallet:tab_helper",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:utils",
+    "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:common_constants",
+    "//brave/components/brave_wallet/common:mojom",
     "//chrome/browser:browser_process",
     "//chrome/test:test_support",
     "//chrome/test:test_support_ui",
+    "//components/permissions",
+    "//components/permissions:test_support",
+    "//content/public/browser",
     "//content/test:test_support",
+    "//mojo/public/cpp/bindings",
+    "//net:test_support",
     "//testing/gtest",
+    "//third_party/blink/public/common",
+    "//url",
   ]
 }

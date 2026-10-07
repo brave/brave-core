@@ -22,11 +22,14 @@ static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 
 namespace brave_wallet {
 
+bool IsFilecoinLedgerEnabled();
 bool IsBitcoinEnabled();
 bool IsBitcoinImportEnabled();
 bool IsBitcoinLedgerEnabled();
 bool IsZCashEnabled();
 bool IsPolkadotEnabled();
+bool IsPolkadotAssetDiscoveryEnabled();
+bool IsPolkadotDAppSupportEnabled();
 bool IsCardanoEnabled();
 bool IsCardanoDAppSupportEnabled();
 bool IsZCashShieldedTransactionsEnabled();
@@ -35,11 +38,8 @@ bool IsAnkrBalancesEnabled();
 bool IsTransactionSimulationsEnabled();
 bool IsAccountHidingEnabled();
 bool IsWalletDebugEnabled();
-bool IsMojoForHardwareWalletEnabled();
-bool IsSnapsFeatureEnabled();
-#if BUILDFLAG(IS_IOS)
-bool IsWalletWebUIEnabled();
-#endif
+bool IsMojoForLedgerEnabled();
+bool IsSnapFeatureEnabled();
 
 bool IsEthereumKeyring(mojom::KeyringId keyring_id);
 bool IsEthereumAccount(const mojom::AccountIdPtr& account_id);

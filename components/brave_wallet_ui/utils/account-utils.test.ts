@@ -197,28 +197,28 @@ describe('Account Utils', () => {
 describe('Test getAccountTypeDescription', () => {
   test('ETH Account Description', () => {
     expect(getAccountTypeDescription(mockEthAccount.accountId)).toEqual(
-      'braveWalletETHAccountDescription',
+      S.BRAVE_WALLET_ETH_ACCOUNT_DESCRIPTION,
     )
   })
   test('SOL Account Description', () => {
     expect(getAccountTypeDescription(mockSolanaAccount.accountId)).toEqual(
-      'braveWalletSOLAccountDescription',
+      S.BRAVE_WALLET_SOL_ACCOUNT_DESCRIPTION,
     )
   })
   test('FIL Account Description', () => {
     expect(getAccountTypeDescription(mockFilecoinAccount.accountId)).toEqual(
-      'braveWalletFILAccountDescription',
+      S.BRAVE_WALLET_FIL_ACCOUNT_DESCRIPTION,
     )
   })
   test('BTC Mainnet Account Description', () => {
     expect(getAccountTypeDescription(mockBitcoinAccount.accountId)).toEqual(
-      'braveWalletBTCMainnetAccountDescription',
+      S.BRAVE_WALLET_BTC_MAINNET_ACCOUNT_DESCRIPTION,
     )
   })
   test('BTC Testnet Account Description', () => {
     expect(
       getAccountTypeDescription(mockBitcoinTestnetAccount.accountId),
-    ).toEqual('braveWalletBTCTestnetAccountDescription')
+    ).toEqual(S.BRAVE_WALLET_BTC_TESTNET_ACCOUNT_DESCRIPTION)
   })
 })
 

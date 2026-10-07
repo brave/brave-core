@@ -12,5 +12,6 @@ mojom("mojom") {
   public_deps = [
     "//brave/components/ntp_background_images/browser/mojom",
     "//mojo/public/mojom/base",
+    "//ui/gfx/geometry/mojom",
   ]
 }

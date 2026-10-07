@@ -101,7 +101,8 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
         if self.isEditing {
           self.autocompleteDelegate?.autocompleteTextField(
             self,
-            didEnterText: self.text?.preferredSearchSuggestionText ?? ""
+            didEnterText: self.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+              ?? ""
           )
           self.isPasting = false
         }
@@ -118,7 +119,9 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
           }
           self.autocompleteDelegate?.autocompleteTextField(
             self,
-            didDeleteAutoSelectedText: text?.preferredSearchSuggestionText ?? ""
+            didDeleteAutoSelectedText: text?.trimmingCharacters(
+              in: CharacterSet.whitespacesAndNewlines
+            ) ?? ""
           )
         }
       }

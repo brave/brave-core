@@ -9,7 +9,6 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "content/public/browser/web_contents.h"
@@ -31,7 +30,7 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ui/brave_browser.h"
-#include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #endif  // BUILDFLAG(!IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_COMMANDER)
@@ -39,7 +38,21 @@
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
 #endif  // BUILDFLAG(ENABLE_COMMANDER)
 
+// Must precede the macro below, which would otherwise rewrite these
+// declarations.
+#include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
+#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
+
+// The setting is live, but the service is built from it once at profile setup,
+// so the two can disagree. `HistoryEmbeddingsProvider::Start()` CHECKs on the
+// service.
+#define IsHistoryEmbeddingsEnabledForProfile(profile)                    \
+  IsHistoryEmbeddingsEnabledForProfile(profile) &&                       \
+      HistoryEmbeddingsServiceFactory::GetForProfile(profile) != nullptr
+
 #include <chrome/browser/autocomplete/chrome_autocomplete_provider_client.cc>
+
+#undef IsHistoryEmbeddingsEnabledForProfile
 
 #if BUILDFLAG(ENABLE_COMMANDER)
 commander::CommanderFrontendDelegate*
@@ -77,12 +90,11 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
   if (ai_chat_service->IsAIChatHistoryEnabled() &&
       ai_chat::features::kOmniboxOpensFullPage.Get()) {
     conversation_handler = ai_chat_service->CreateConversation();
-    browser->GetBrowserForMigrationOnly()->OpenURL(
-        {ai_chat::ConversationUrl(
-             conversation_handler->get_conversation_uuid()),
-         content::Referrer(), WindowOpenDisposition::CURRENT_TAB,
-         ui::PageTransition::PAGE_TRANSITION_GENERATED, false},
-        {});
+    browser->OpenURL({ai_chat::ConversationUrl(
+                          conversation_handler->get_conversation_uuid()),
+                      content::Referrer(), WindowOpenDisposition::CURRENT_TAB,
+                      ui::PageTransition::PAGE_TRANSITION_GENERATED, false},
+                     {});
   } else {
     auto* chat_tab_helper = ai_chat::AIChatTabHelper::FromWebContents(
         browser->GetTabStripModel()->GetActiveWebContents());
@@ -101,9 +113,9 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
     conversation_handler->MaybeUnlinkAssociatedContent();
 
     // Activate the panel.
-    auto* sidebar_controller = browser->GetFeatures().sidebar_controller();
-    sidebar_controller->ActivatePanelItem(
-        sidebar::SidebarItem::BuiltInItemType::kChatUI);
+    if (auto* side_panel_ui = SidePanelUI::From(browser)) {
+      side_panel_ui->Show(SidePanelEntryId::kChatUI);
+    }
   }
 
   if (!conversation_handler) {

@@ -33,14 +33,14 @@ def _finalized(*assignments):
 
 
 class PlaceholderFilingTest(unittest.TestCase):
-
     def test_unnamed_placeholder_lands_under_its_namespaces(self):
         data = _finalized((_placeholder(), {'passed': 791}))
         self.assertEqual(data.json.output, {'passed': 791})
 
     def test_named_placeholders_land_under_the_plural(self):
-        data = _finalized((_placeholder(name='a'), 1),
-                          (_placeholder(name='b'), 2))
+        data = _finalized(
+            (_placeholder(name='a'), 1), (_placeholder(name='b'), 2)
+        )
         self.assertEqual(data.json.outputs, {'a': 1, 'b': 2})
         # With more than one name and nothing unnamed, there is no default.
         with self.assertRaises(AttributeError):
@@ -52,15 +52,18 @@ class PlaceholderFilingTest(unittest.TestCase):
         self.assertEqual(data.json.output, 'value')
 
     def test_an_unnamed_placeholder_wins_the_default(self):
-        data = _finalized((_placeholder(name='a'), 'named'),
-                          (_placeholder(), 'unnamed'))
+        data = _finalized(
+            (_placeholder(name='a'), 'named'), (_placeholder(), 'unnamed')
+        )
         self.assertEqual(data.json.output, 'unnamed')
         self.assertEqual(data.json.outputs, {'a': 'named'})
 
     def test_methods_and_modules_are_kept_apart(self):
-        data = _finalized((_placeholder(), 'json output'),
-                          (_placeholder(method='input'), 'json input'),
-                          (_placeholder(module='raw_io'), 'raw_io output'))
+        data = _finalized(
+            (_placeholder(), 'json output'),
+            (_placeholder(method='input'), 'json input'),
+            (_placeholder(module='raw_io'), 'raw_io output'),
+        )
         self.assertEqual(data.json.output, 'json output')
         self.assertEqual(data.json.input, 'json input')
         self.assertEqual(data.raw_io.output, 'raw_io output')
@@ -78,7 +81,6 @@ class PlaceholderFilingTest(unittest.TestCase):
 
 
 class ErrorMessageTest(unittest.TestCase):
-
     def test_unknown_namespace_names_the_step(self):
         data = _finalized()
         with self.assertRaisesRegex(AttributeError, "'a step'.*'json'"):
@@ -86,8 +88,9 @@ class ErrorMessageTest(unittest.TestCase):
 
     def test_unknown_attribute_names_the_namespace(self):
         data = _finalized((_placeholder(), 'value'))
-        with self.assertRaisesRegex(AttributeError,
-                                    r"'a step'\)\.json.*'nope'"):
+        with self.assertRaisesRegex(
+            AttributeError, r"'a step'\)\.json.*'nope'"
+        ):
             _ = data.json.nope
 
     def test_two_indistinguishable_placeholders_raise(self):
@@ -117,7 +120,6 @@ class FinalizedTest(unittest.TestCase):
 
 
 class AlwaysPresentMembersTest(unittest.TestCase):
-
     def test_name_retcode_and_handles(self):
         data = StepData('a step', 3)
         self.assertEqual(data.name, 'a step')
@@ -128,16 +130,18 @@ class AlwaysPresentMembersTest(unittest.TestCase):
 
 
 class PlaceholderLabelTest(unittest.TestCase):
-
     def test_label_reflects_the_name(self):
         self.assertEqual(_placeholder().label, 'json.output')
         self.assertEqual(_placeholder(name='cfg').label, 'json.output[cfg]')
 
     def test_repr_survives_an_unnamespaced_placeholder(self):
-        self.assertEqual(repr(OutputPlaceholder()),
-                         'OutputPlaceholder(<unnamespaced>)')
-        self.assertEqual(repr(_placeholder(name='cfg')),
-                         'OutputPlaceholder(json.output[cfg])')
+        self.assertEqual(
+            repr(OutputPlaceholder()), 'OutputPlaceholder(<unnamespaced>)'
+        )
+        self.assertEqual(
+            repr(_placeholder(name='cfg')),
+            'OutputPlaceholder(json.output[cfg])',
+        )
 
 
 if __name__ == '__main__':

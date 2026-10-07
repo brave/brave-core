@@ -1,5 +1,5 @@
 {
-  "originHash" : "0759595b0a629230e15af28a034785bdc421f1babec4bbe36d2d6b941bf7b075",
+  "originHash" : "20132b104c1b86f5dbe3cc6678ab3007b0747b7bb7302b04ea8b47e4d792cebf",
   "pins" : [
     {
       "identity" : "feedkit",
@@ -35,14 +35,6 @@
       "state" : {
         "revision" : "04f2fd18cc9404a0a0917265a449002674f24ec9",
         "version" : "4.5.2"
-      }
-    },
-    {
-      "identity" : "panmodal",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/brave/PanModal",
-      "state" : {
-        "revision" : "e67e9eff53c05f19b41bbb2ca7d27ff5859a586c"
       }
     },
     {
@@ -121,8 +113,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/siteline/SwiftUI-Introspect",
       "state" : {
-        "revision" : "121c146fe591b1320238d054ae35c81ffa45f45a",
-        "version" : "0.12.0"
+        "revision" : "dd0888ef99d2809863b04e46cad52d1dfd8fc840",
+        "version" : "26.0.2"
       }
     },
     {

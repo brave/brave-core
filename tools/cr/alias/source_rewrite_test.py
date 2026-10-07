@@ -80,8 +80,7 @@ class IsPathExcludedTest(unittest.TestCase):
         self.assertFalse(_is_path_excluded('third_party/devtools-frontend'))
 
     def test_devtools_frontend_subpath_not_excluded(self):
-        self.assertFalse(
-            _is_path_excluded('third_party/devtools-frontend/src'))
+        self.assertFalse(_is_path_excluded('third_party/devtools-frontend/src'))
 
     # --- normal paths: not excluded ---
 
@@ -172,23 +171,28 @@ class UpdateReferencesFilterTest(unittest.TestCase):
         """A file inside third_party (non-blink) is skipped."""
         self._write('third_party/foo/test.cc', '#include "A/foo.h"\n')
         update_references(Path('A/foo.h'), Path('B/foo.h'))
-        self.assertIn('#include "A/foo.h"',
-                      self._read('third_party/foo/test.cc'))
+        self.assertIn(
+            '#include "A/foo.h"', self._read('third_party/foo/test.cc')
+        )
 
     def test_blink_file_updated(self):
         """A file inside third_party/blink IS updated (+blink override)."""
-        self._write('third_party/blink/renderer/test.cc',
-                    '#include "A/foo.h"\n')
+        self._write(
+            'third_party/blink/renderer/test.cc', '#include "A/foo.h"\n'
+        )
         update_references(Path('A/foo.h'), Path('B/foo.h'))
-        self.assertIn('#include "B/foo.h"',
-                      self._read('third_party/blink/renderer/test.cc'))
+        self.assertIn(
+            '#include "B/foo.h"',
+            self._read('third_party/blink/renderer/test.cc'),
+        )
 
     def test_out_file_not_updated(self):
         """A file inside out/ is skipped."""
         self._write('out/Default/gen/test.cc', '#include "A/foo.h"\n')
         update_references(Path('A/foo.h'), Path('B/foo.h'))
-        self.assertIn('#include "A/foo.h"',
-                      self._read('out/Default/gen/test.cc'))
+        self.assertIn(
+            '#include "A/foo.h"', self._read('out/Default/gen/test.cc')
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -217,73 +221,106 @@ class UpdateGnReferencesTest(unittest.TestCase):
 
     def test_build_gn_root_reference_rewritten(self):
         """`"//brave/foo"` → `"//brave/bar"` when foo's BUILD.gn moves."""
-        self._write('consumer/BUILD.gn',
-                    'deps = [ "//brave/components/api_request_helper" ]\n')
-        update_references(Path('brave/components/api_request_helper/BUILD.gn'),
-                          Path('brave/components/api_test/BUILD.gn'))
-        self.assertIn('"//brave/components/api_test"',
-                      self._read('consumer/BUILD.gn'))
+        self._write(
+            'consumer/BUILD.gn',
+            'deps = [ "//brave/components/api_request_helper" ]\n',
+        )
+        update_references(
+            Path('brave/components/api_request_helper/BUILD.gn'),
+            Path('brave/components/api_test/BUILD.gn'),
+        )
+        self.assertIn(
+            '"//brave/components/api_test"', self._read('consumer/BUILD.gn')
+        )
 
     def test_build_gn_root_reference_with_target_rewritten(self):
         """`"//brave/foo:target"` is rewritten and target preserved."""
         self._write(
             'consumer/BUILD.gn',
-            'deps = [ "//brave/components/api_request_helper:test_support" ]\n'
+            'deps = [ "//brave/components/api_request_helper:test_support" ]\n',
         )
-        update_references(Path('brave/components/api_request_helper/BUILD.gn'),
-                          Path('brave/components/api_test/BUILD.gn'))
-        self.assertIn('"//brave/components/api_test:test_support"',
-                      self._read('consumer/BUILD.gn'))
+        update_references(
+            Path('brave/components/api_request_helper/BUILD.gn'),
+            Path('brave/components/api_test/BUILD.gn'),
+        )
+        self.assertIn(
+            '"//brave/components/api_test:test_support"',
+            self._read('consumer/BUILD.gn'),
+        )
 
     def test_build_gn_root_reference_with_subpath_rewritten(self):
         """`"//brave/foo/sub"` is rewritten and subpath preserved."""
         self._write(
             'consumer/BUILD.gn',
-            'sources = [ "//brave/components/api_request_helper/foo.h" ]\n')
-        update_references(Path('brave/components/api_request_helper/BUILD.gn'),
-                          Path('brave/components/api_test/BUILD.gn'))
-        self.assertIn('"//brave/components/api_test/foo.h"',
-                      self._read('consumer/BUILD.gn'))
+            'sources = [ "//brave/components/api_request_helper/foo.h" ]\n',
+        )
+        update_references(
+            Path('brave/components/api_request_helper/BUILD.gn'),
+            Path('brave/components/api_test/BUILD.gn'),
+        )
+        self.assertIn(
+            '"//brave/components/api_test/foo.h"',
+            self._read('consumer/BUILD.gn'),
+        )
 
     def test_build_gn_similar_prefix_not_rewritten(self):
         """`"//brave/foo_v2"` is NOT touched when only `foo` moved."""
-        self._write('consumer/BUILD.gn',
-                    'deps = [ "//brave/components/api_request_helper_v2" ]\n')
-        update_references(Path('brave/components/api_request_helper/BUILD.gn'),
-                          Path('brave/components/api_test/BUILD.gn'))
-        self.assertIn('"//brave/components/api_request_helper_v2"',
-                      self._read('consumer/BUILD.gn'))
+        self._write(
+            'consumer/BUILD.gn',
+            'deps = [ "//brave/components/api_request_helper_v2" ]\n',
+        )
+        update_references(
+            Path('brave/components/api_request_helper/BUILD.gn'),
+            Path('brave/components/api_test/BUILD.gn'),
+        )
+        self.assertIn(
+            '"//brave/components/api_request_helper_v2"',
+            self._read('consumer/BUILD.gn'),
+        )
 
     def test_build_gn_root_reference_in_gni_rewritten(self):
         """The walk applies to .gni files too, not just BUILD.gn."""
         self._write(
             'config/sources.gni',
-            'shared_deps = [ "//brave/components/api_request_helper" ]\n')
-        update_references(Path('brave/components/api_request_helper/BUILD.gn'),
-                          Path('brave/components/api_test/BUILD.gn'))
-        self.assertIn('"//brave/components/api_test"',
-                      self._read('config/sources.gni'))
+            'shared_deps = [ "//brave/components/api_request_helper" ]\n',
+        )
+        update_references(
+            Path('brave/components/api_request_helper/BUILD.gn'),
+            Path('brave/components/api_test/BUILD.gn'),
+        )
+        self.assertIn(
+            '"//brave/components/api_test"', self._read('config/sources.gni')
+        )
 
     # ----- BUILD.gn move: relative references -----
 
     def test_build_gn_relative_sibling_rewritten(self):
         """`"../api_request_helper"` from a sibling dir is rewritten."""
-        self._write('components/ai_chat/BUILD.gn',
-                    'deps = [ "../api_request_helper" ]\n')
-        update_references(Path('brave/components/api_request_helper/BUILD.gn'),
-                          Path('brave/components/api_test/BUILD.gn'))
-        self.assertIn('"../api_test"',
-                      self._read('components/ai_chat/BUILD.gn'))
+        self._write(
+            'components/ai_chat/BUILD.gn',
+            'deps = [ "../api_request_helper" ]\n',
+        )
+        update_references(
+            Path('brave/components/api_request_helper/BUILD.gn'),
+            Path('brave/components/api_test/BUILD.gn'),
+        )
+        self.assertIn(
+            '"../api_test"', self._read('components/ai_chat/BUILD.gn')
+        )
 
     def test_build_gn_relative_from_parent_rewritten(self):
         """`"components/api_request_helper:foo"` from brave/BUILD.gn."""
         self._write(
             'BUILD.gn',
-            'deps = [ "components/api_request_helper:test_support" ]\n')
-        update_references(Path('brave/components/api_request_helper/BUILD.gn'),
-                          Path('brave/components/api_test/BUILD.gn'))
-        self.assertIn('"components/api_test:test_support"',
-                      self._read('BUILD.gn'))
+            'deps = [ "components/api_request_helper:test_support" ]\n',
+        )
+        update_references(
+            Path('brave/components/api_request_helper/BUILD.gn'),
+            Path('brave/components/api_test/BUILD.gn'),
+        )
+        self.assertIn(
+            '"components/api_test:test_support"', self._read('BUILD.gn')
+        )
 
     def test_build_gn_implicit_target_renamed_in_moved_file(self):
         """In the moved BUILD.gn, the dir-name target is renamed."""
@@ -296,9 +333,12 @@ class UpdateGnReferencesTest(unittest.TestCase):
             '}\n'
             'source_set("test_support") {\n'
             '  testonly = true\n'
-            '}\n')
-        update_references(Path('brave/components/api_request_helper/BUILD.gn'),
-                          Path('brave/components/api_foo/BUILD.gn'))
+            '}\n',
+        )
+        update_references(
+            Path('brave/components/api_request_helper/BUILD.gn'),
+            Path('brave/components/api_foo/BUILD.gn'),
+        )
         content = self._read('components/api_foo/BUILD.gn')
         self.assertIn('static_library("api_foo")', content)
         self.assertNotIn('"api_request_helper"', content)
@@ -314,9 +354,12 @@ class UpdateGnReferencesTest(unittest.TestCase):
             'source_set("test_support") {\n'
             '  public_deps = [ ":api_request_helper" ]\n'
             '  deps = [ ":test_support_data" ]\n'
-            '}\n')
-        update_references(Path('brave/components/api_request_helper/BUILD.gn'),
-                          Path('brave/components/api_foo/BUILD.gn'))
+            '}\n',
+        )
+        update_references(
+            Path('brave/components/api_request_helper/BUILD.gn'),
+            Path('brave/components/api_foo/BUILD.gn'),
+        )
         content = self._read('components/api_foo/BUILD.gn')
         self.assertIn('static_library("api_foo")', content)
         self.assertIn(':api_foo"', content)
@@ -327,21 +370,28 @@ class UpdateGnReferencesTest(unittest.TestCase):
     def test_build_gn_implicit_target_not_renamed_in_other_files(self):
         """An unrelated BUILD.gn that happens to have a target / label ref
         with the same name as the old directory must NOT be touched."""
-        self._write('components/api_foo/BUILD.gn',
-                    'static_library("api_request_helper") {\n'
-                    '}\n')
+        self._write(
+            'components/api_foo/BUILD.gn',
+            'static_library("api_request_helper") {\n}\n',
+        )
         # Unrelated BUILD.gn elsewhere with a same-named target and label.
         self._write(
-            'unrelated/BUILD.gn', 'static_library("api_request_helper") {\n'
+            'unrelated/BUILD.gn',
+            'static_library("api_request_helper") {\n'
             '}\n'
             'group("entry") {\n'
             '  deps = [ ":api_request_helper" ]\n'
-            '}\n')
-        update_references(Path('brave/components/api_request_helper/BUILD.gn'),
-                          Path('brave/components/api_foo/BUILD.gn'))
+            '}\n',
+        )
+        update_references(
+            Path('brave/components/api_request_helper/BUILD.gn'),
+            Path('brave/components/api_foo/BUILD.gn'),
+        )
         # Moved BUILD.gn renamed.
-        self.assertIn('static_library("api_foo")',
-                      self._read('components/api_foo/BUILD.gn'))
+        self.assertIn(
+            'static_library("api_foo")',
+            self._read('components/api_foo/BUILD.gn'),
+        )
         # Unrelated BUILD.gn untouched (both declaration and label ref).
         unrelated = self._read('unrelated/BUILD.gn')
         self.assertIn('static_library("api_request_helper")', unrelated)
@@ -349,43 +399,57 @@ class UpdateGnReferencesTest(unittest.TestCase):
 
     def test_build_gn_implicit_target_no_rewrite_when_basename_unchanged(self):
         """Same-basename move (just reparenting) leaves target name alone."""
-        self._write('apps/api_request_helper/BUILD.gn',
-                    'static_library("api_request_helper") {\n'
-                    '}\n')
-        update_references(Path('brave/components/api_request_helper/BUILD.gn'),
-                          Path('brave/apps/api_request_helper/BUILD.gn'))
-        self.assertIn('static_library("api_request_helper")',
-                      self._read('apps/api_request_helper/BUILD.gn'))
+        self._write(
+            'apps/api_request_helper/BUILD.gn',
+            'static_library("api_request_helper") {\n}\n',
+        )
+        update_references(
+            Path('brave/components/api_request_helper/BUILD.gn'),
+            Path('brave/apps/api_request_helper/BUILD.gn'),
+        )
+        self.assertIn(
+            'static_library("api_request_helper")',
+            self._read('apps/api_request_helper/BUILD.gn'),
+        )
 
     def test_build_gn_internal_target_ref_untouched(self):
         """`":api_request_helper"` (internal target) must NOT be rewritten."""
-        self._write('components/api_request_helper/BUILD.gn',
-                    'public_deps = [ ":api_request_helper" ]\n')
+        self._write(
+            'components/api_request_helper/BUILD.gn',
+            'public_deps = [ ":api_request_helper" ]\n',
+        )
         # Pretend the BUILD.gn is being moved (file already at new location
         # for the test would be more realistic, but token boundary on the
         # leading `"` is what we want to verify).
-        update_references(Path('brave/components/api_request_helper/BUILD.gn'),
-                          Path('brave/components/api_test/BUILD.gn'))
-        self.assertIn('":api_request_helper"',
-                      self._read('components/api_request_helper/BUILD.gn'))
+        update_references(
+            Path('brave/components/api_request_helper/BUILD.gn'),
+            Path('brave/components/api_test/BUILD.gn'),
+        )
+        self.assertIn(
+            '":api_request_helper"',
+            self._read('components/api_request_helper/BUILD.gn'),
+        )
 
     # ----- .gni file move: root reference only -----
 
     def test_gni_root_reference_rewritten(self):
         """`"//tools/grit/repack.gni"` is rewritten when that file moves."""
         self._write('consumer/BUILD.gn', 'import("//tools/grit/repack.gni")\n')
-        update_references(Path('tools/grit/repack.gni'),
-                          Path('tools/grit/new_repack.gni'))
-        self.assertIn('"//tools/grit/new_repack.gni"',
-                      self._read('consumer/BUILD.gn'))
+        update_references(
+            Path('tools/grit/repack.gni'), Path('tools/grit/new_repack.gni')
+        )
+        self.assertIn(
+            '"//tools/grit/new_repack.gni"', self._read('consumer/BUILD.gn')
+        )
 
     def test_gni_relative_reference_not_rewritten(self):
         """A relative .gni reference is NOT rewritten on .gni move."""
         # File is in the same dir as the (hypothetically moved) .gni,
         # so a relative reference would be `"repack.gni"`.
         self._write('tools/grit/BUILD.gn', 'import("repack.gni")\n')
-        update_references(Path('tools/grit/repack.gni'),
-                          Path('tools/grit/new_repack.gni'))
+        update_references(
+            Path('tools/grit/repack.gni'), Path('tools/grit/new_repack.gni')
+        )
         self.assertIn('"repack.gni"', self._read('tools/grit/BUILD.gn'))
 
     # ----- C++ file move: root reference in .gn/.gni only -----
@@ -393,14 +457,19 @@ class UpdateGnReferencesTest(unittest.TestCase):
     def test_cpp_root_reference_in_build_gn_rewritten(self):
         """`"//brave/foo/bar.h"` in BUILD.gn is rewritten when bar.h moves."""
         self._write(
-            'consumer/BUILD.gn', 'sources = [\n'
+            'consumer/BUILD.gn',
+            'sources = [\n'
             '  "//brave/components/api_request_helper/api_request_helper.h"\n'
-            ']\n')
+            ']\n',
+        )
         update_references(
             Path('brave/components/api_request_helper/api_request_helper.h'),
-            Path('brave/components/api_test/api_test.h'))
-        self.assertIn('"//brave/components/api_test/api_test.h"',
-                      self._read('consumer/BUILD.gn'))
+            Path('brave/components/api_test/api_test.h'),
+        )
+        self.assertIn(
+            '"//brave/components/api_test/api_test.h"',
+            self._read('consumer/BUILD.gn'),
+        )
 
     def test_cpp_relative_reference_in_build_gn_not_rewritten(self):
         """A relative C++ source-list ref is NOT touched by the new helper.
@@ -413,23 +482,33 @@ class UpdateGnReferencesTest(unittest.TestCase):
         # since it only walks ancestor dirs.
         self._write(
             'components/ai_chat/BUILD.gn',
-            'sources = [ "../api_request_helper/api_request_helper.h" ]\n')
+            'sources = [ "../api_request_helper/api_request_helper.h" ]\n',
+        )
         update_references(
             Path('brave/components/api_request_helper/api_request_helper.h'),
-            Path('brave/components/api_test/api_test.h'))
-        self.assertIn('"../api_request_helper/api_request_helper.h"',
-                      self._read('components/ai_chat/BUILD.gn'))
+            Path('brave/components/api_test/api_test.h'),
+        )
+        self.assertIn(
+            '"../api_request_helper/api_request_helper.h"',
+            self._read('components/ai_chat/BUILD.gn'),
+        )
 
     # ----- Excluded dirs are skipped -----
 
     def test_excluded_out_dir_skipped(self):
         """A BUILD.gn under out/ is not rewritten."""
-        self._write('out/Default/gen/BUILD.gn',
-                    'deps = [ "//brave/components/api_request_helper" ]\n')
-        update_references(Path('brave/components/api_request_helper/BUILD.gn'),
-                          Path('brave/components/api_test/BUILD.gn'))
-        self.assertIn('"//brave/components/api_request_helper"',
-                      self._read('out/Default/gen/BUILD.gn'))
+        self._write(
+            'out/Default/gen/BUILD.gn',
+            'deps = [ "//brave/components/api_request_helper" ]\n',
+        )
+        update_references(
+            Path('brave/components/api_request_helper/BUILD.gn'),
+            Path('brave/components/api_test/BUILD.gn'),
+        )
+        self.assertIn(
+            '"//brave/components/api_request_helper"',
+            self._read('out/Default/gen/BUILD.gn'),
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -456,10 +535,12 @@ class UpdateShadowIncludeTest(unittest.TestCase):
 
     def test_shadow_include_cc_file_no_pragma(self):
         """Replacing shadow include in .cc file adds no pragma."""
-        self._write('chromium_src/crypto/aead.cc',
-                    '#include <crypto/aead.h>\n')
-        update_shadow_include(self._repo.brave / 'chromium_src/crypto/aead.cc',
-                              Path('crypto/aead.h'), Path('crypto/new_aead.h'))
+        self._write('chromium_src/crypto/aead.cc', '#include <crypto/aead.h>\n')
+        update_shadow_include(
+            self._repo.brave / 'chromium_src/crypto/aead.cc',
+            Path('crypto/aead.h'),
+            Path('crypto/new_aead.h'),
+        )
         content = self._read('chromium_src/crypto/aead.cc')
         self.assertIn('#include <crypto/new_aead.h>', content)
         self.assertNotIn('IWYU pragma', content)
@@ -467,41 +548,56 @@ class UpdateShadowIncludeTest(unittest.TestCase):
     def test_shadow_include_h_file_adds_pragma(self):
         """Replacing shadow include in .h file adds IWYU pragma."""
         self._write('chromium_src/crypto/aead.h', '#include <crypto/aead.h>\n')
-        update_shadow_include(self._repo.brave / 'chromium_src/crypto/aead.h',
-                              Path('crypto/aead.h'), Path('crypto/new_aead.h'))
+        update_shadow_include(
+            self._repo.brave / 'chromium_src/crypto/aead.h',
+            Path('crypto/aead.h'),
+            Path('crypto/new_aead.h'),
+        )
         content = self._read('chromium_src/crypto/aead.h')
-        self.assertIn('#include <crypto/new_aead.h>  // IWYU pragma: export',
-                      content)
+        self.assertIn(
+            '#include <crypto/new_aead.h>  // IWYU pragma: export', content
+        )
 
     def test_shadow_include_h_file_pragma_already_present(self):
         """If pragma already exists, don't duplicate it."""
-        self._write('chromium_src/crypto/aead.h',
-                    '#include <crypto/aead.h>  // IWYU pragma: export\n')
-        update_shadow_include(self._repo.brave / 'chromium_src/crypto/aead.h',
-                              Path('crypto/aead.h'), Path('crypto/new_aead.h'))
+        self._write(
+            'chromium_src/crypto/aead.h',
+            '#include <crypto/aead.h>  // IWYU pragma: export\n',
+        )
+        update_shadow_include(
+            self._repo.brave / 'chromium_src/crypto/aead.h',
+            Path('crypto/aead.h'),
+            Path('crypto/new_aead.h'),
+        )
         content = self._read('chromium_src/crypto/aead.h')
-        self.assertIn('#include <crypto/new_aead.h>  // IWYU pragma: export',
-                      content)
+        self.assertIn(
+            '#include <crypto/new_aead.h>  // IWYU pragma: export', content
+        )
         # Ensure pragma appears exactly once
         self.assertEqual(content.count('IWYU pragma: export'), 1)
 
     def test_shadow_include_hh_file_adds_pragma(self):
         """Replacing shadow include in .hh file doesn't add pragma (.hh is not .h)."""
-        self._write('chromium_src/crypto/aead.hh',
-                    '#include <crypto/aead.hh>\n')
-        update_shadow_include(self._repo.brave / 'chromium_src/crypto/aead.hh',
-                              Path('crypto/aead.hh'),
-                              Path('crypto/new_aead.hh'))
+        self._write(
+            'chromium_src/crypto/aead.hh', '#include <crypto/aead.hh>\n'
+        )
+        update_shadow_include(
+            self._repo.brave / 'chromium_src/crypto/aead.hh',
+            Path('crypto/aead.hh'),
+            Path('crypto/new_aead.hh'),
+        )
         content = self._read('chromium_src/crypto/aead.hh')
         self.assertIn('#include <crypto/new_aead.hh>', content)
         self.assertNotIn('IWYU pragma', content)
 
     def test_shadow_include_mm_file_no_pragma(self):
         """Replacing shadow include in .mm file adds no pragma."""
-        self._write('chromium_src/crypto/aead.mm',
-                    '#include <crypto/aead.h>\n')
-        update_shadow_include(self._repo.brave / 'chromium_src/crypto/aead.mm',
-                              Path('crypto/aead.h'), Path('crypto/new_aead.h'))
+        self._write('chromium_src/crypto/aead.mm', '#include <crypto/aead.h>\n')
+        update_shadow_include(
+            self._repo.brave / 'chromium_src/crypto/aead.mm',
+            Path('crypto/aead.h'),
+            Path('crypto/new_aead.h'),
+        )
         content = self._read('chromium_src/crypto/aead.mm')
         self.assertIn('#include <crypto/new_aead.h>', content)
         self.assertNotIn('IWYU pragma', content)
@@ -509,8 +605,11 @@ class UpdateShadowIncludeTest(unittest.TestCase):
     def test_shadow_include_not_found_no_op(self):
         """If the include line is not found, file is not modified."""
         self._write('chromium_src/crypto/aead.h', '#include <other/path.h>\n')
-        update_shadow_include(self._repo.brave / 'chromium_src/crypto/aead.h',
-                              Path('crypto/aead.h'), Path('crypto/new_aead.h'))
+        update_shadow_include(
+            self._repo.brave / 'chromium_src/crypto/aead.h',
+            Path('crypto/aead.h'),
+            Path('crypto/new_aead.h'),
+        )
         content = self._read('chromium_src/crypto/aead.h')
         self.assertIn('#include <other/path.h>', content)
         self.assertNotIn('crypto/new_aead.h', content)
@@ -518,7 +617,8 @@ class UpdateShadowIncludeTest(unittest.TestCase):
     def test_shadow_include_multiline_with_pragma(self):
         """Shadow include with pragma in a multiline file."""
         self._write(
-            'chromium_src/crypto/aead.h', '// Copyright header\n'
+            'chromium_src/crypto/aead.h',
+            '// Copyright header\n'
             '#ifndef CRYPTO_AEAD_H_\n'
             '#define CRYPTO_AEAD_H_\n'
             '\n'
@@ -526,12 +626,17 @@ class UpdateShadowIncludeTest(unittest.TestCase):
             '\n'
             'namespace crypto {\n'
             '}  // namespace crypto\n'
-            '#endif\n')
-        update_shadow_include(self._repo.brave / 'chromium_src/crypto/aead.h',
-                              Path('crypto/aead.h'), Path('crypto/new_aead.h'))
+            '#endif\n',
+        )
+        update_shadow_include(
+            self._repo.brave / 'chromium_src/crypto/aead.h',
+            Path('crypto/aead.h'),
+            Path('crypto/new_aead.h'),
+        )
         content = self._read('chromium_src/crypto/aead.h')
-        self.assertIn('#include <crypto/new_aead.h>  // IWYU pragma: export',
-                      content)
+        self.assertIn(
+            '#include <crypto/new_aead.h>  // IWYU pragma: export', content
+        )
         # Verify the rest of the file is untouched
         self.assertIn('namespace crypto', content)
 

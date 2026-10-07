@@ -5,13 +5,13 @@
 
 #include "components/sync_preferences/common_syncable_prefs_database.h"
 
-#include <optional>
 #include <string_view>
 
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/map_util.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/traffic_control/buildflags/buildflags.h"
 #include "components/search_engines/search_engines_pref_names.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -20,6 +20,10 @@
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/components/email_aliases/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+#include "brave/components/traffic_control/core/browser/pref_names.h"
 #endif
 
 namespace sync_preferences {
@@ -34,6 +38,9 @@ enum {
 #endif
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   kEmailAliasesNotes = 1003,
+#endif
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+  kTrafficControlList = 1004,
 #endif
 };
 }  // namespace brave_syncable_prefs_ids
@@ -81,6 +88,17 @@ constexpr auto kBraveCommonSyncablePrefsAllowlist = base::MakeFixedFlatMap<
         },
     },
 #endif
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+    {
+        traffic_control::prefs::kTrafficControlList,
+        {
+            brave_syncable_prefs_ids::kTrafficControlList,
+            syncer::PREFERENCES,
+            sync_preferences::PrefSensitivity::kNone,
+            MergeBehavior::kNone,
+        },
+    },
+#endif
     // See //components/sync_preferences/README.md about adding new entries
     // here.
     //
@@ -100,18 +118,18 @@ constexpr auto kBraveCommonSyncablePrefsAllowlist = base::MakeFixedFlatMap<
 
 namespace sync_preferences {
 
-std::optional<SyncablePrefMetadata>
+const SyncablePrefMetadata*
 CommonSyncablePrefsDatabase::GetSyncablePrefMetadata(
     std::string_view pref_name) const {
   const auto* metadata =
       base::FindOrNull(kBraveCommonSyncablePrefsAllowlist, pref_name);
   if (metadata) {
-    return *metadata;
+    return metadata;
   }
   return GetSyncablePrefMetadata_ChromiumOriginalImpl(pref_name);
 }
 
-std::optional<SyncablePrefMetadata>
+const SyncablePrefMetadata*
 CommonSyncablePrefsDatabase::GetSyncablePrefMetadata_ChromiumImpl(
     std::string_view pref_name) const {
   return GetSyncablePrefMetadata(pref_name);

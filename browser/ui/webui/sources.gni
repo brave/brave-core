@@ -10,6 +10,7 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
+import("//brave/components/traffic_control/buildflags/buildflags.gni")
 
 # This is required for chromium_src overrides.
 brave_browser_ui_webui_configs_deps = [
@@ -57,6 +58,15 @@ if (enable_containers) {
     "//brave/components/containers/core/browser",
     "//brave/components/containers/core/common",
     "//brave/components/containers/core/mojom",
+  ]
+}
+
+if (enable_traffic_control) {
+  brave_browser_ui_webui_configs_deps += [
+    "//brave/browser/traffic_control",
+    "//brave/components/traffic_control/core/browser",
+    "//brave/components/traffic_control/core/common",
+    "//brave/components/traffic_control/core/mojom",
   ]
 }
 

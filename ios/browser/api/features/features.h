@@ -36,14 +36,11 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly)
     Feature* kBraveAdblockMobileNotificationsListDefault;
 @property(class, nonatomic, readonly) Feature* kBraveAdblockScriptletDebugLogs;
-@property(class, nonatomic, readonly) Feature* kBraveDarkModeBlock;
 @property(class, nonatomic, readonly) Feature* kBraveDeAMP;
 @property(class, nonatomic, readonly) Feature* kBraveDebounce;
 @property(class, nonatomic, readonly) Feature* kBraveDomainBlock;
 @property(class, nonatomic, readonly) Feature* kBraveDomainBlock1PES;
-@property(class, nonatomic, readonly) Feature* kBraveNTPBrandedWallpaper;
-@property(class, nonatomic, readonly)
-    Feature* kBraveNTPBrandedWallpaperSurveyPanelist;
+@property(class, nonatomic, readonly) Feature* kBraveNTPNewTabTakeoverWallpaper;
 @property(class, nonatomic, readonly) Feature* kBraveNewsCardPeekFeature;
 @property(class, nonatomic, readonly) Feature* kBraveNewsFeedUpdate;
 @property(class, nonatomic, readonly) Feature* kBraveReduceLanguage;
@@ -54,6 +51,8 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kShowUpdatedShieldsPanel;
 @property(class, nonatomic, readonly) Feature* kBraveIOSDebugAdblock;
 @property(class, nonatomic, readonly) Feature* kBraveIOSEnableFarblingPlugins;
+@property(class, nonatomic, readonly)
+    Feature* kTransitionToUpstreamHttpsUpgrades;
 @property(class, nonatomic, readonly)
     Feature* kBraveShowStrictFingerprintingMode;
 @property(class, nonatomic, readonly) Feature* kBraveSync;
@@ -81,13 +80,12 @@ OBJC_EXPORT
     Feature* kShouldCancelRequestsForUserAgentChange;
 @property(class, nonatomic, readonly) Feature* kUseProfileWebViewConfiguration;
 @property(class, nonatomic, readonly) Feature* kBraveAllowExternalPurchaseLinks;
-@property(class, nonatomic, readonly, nullable) Feature* kBraveWalletWebUIIOS;
 @property(class, nonatomic, readonly, nullable)
     Feature* kBraveWalletCardanoDAppSupportIOS;
-@property(class, nonatomic, readonly) Feature* kAIChatWebUIEnabled;
 @property(class, nonatomic, readonly) Feature* kBraveSyncDefaultPasswords;
 @property(class, nonatomic, readonly)
     Feature* kWebKitAdvancedPrivacyProtections;
+@property(class, nonatomic, readonly) Feature* kWebKitGlobalPrivacyControl;
 @property(class, nonatomic, readonly) Feature* kBraveOrigin;
 @property(class, nonatomic, readonly, nullable)
     Feature* kBraveWalletCardanoEnabled;
@@ -97,6 +95,9 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kPlaylist;
 @property(class, nonatomic, readonly) Feature* kPlaylistOfflineCacheEnabled;
 @property(class, nonatomic, readonly) Feature* kPlaylistCacheFirstEnabled;
+@property(class, nonatomic, readonly) Feature* kTopsitesEnabled;
+@property(class, nonatomic, readonly) Feature* kBrowserToolbarRefactorEnabled;
+@property(class, nonatomic, readonly) Feature* kUseChromiumSearchEngines;
 @end
 
 NS_ASSUME_NONNULL_END

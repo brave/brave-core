@@ -8,13 +8,12 @@
 #include <memory>
 #include <string>
 
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/components/line_chart_display/resources/grit/line_chart_display_generated_map.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/webui/webui_util.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -29,10 +28,7 @@ UntrustedLineChartUI::UntrustedLineChartUI(content::WebUI* web_ui)
   auto* untrusted_source = content::WebUIDataSource::CreateAndAdd(
       web_ui->GetWebContents()->GetBrowserContext(), kUntrustedLineChartURL);
 
-  for (const auto& str : brave_wallet::kLocalizedStrings) {
-    std::u16string l10n_str = l10n_util::GetStringUTF16(str.id);
-    untrusted_source->AddString(str.name, l10n_str);
-  }
+  untrusted_source->AddLocalizedStrings(webui::kWalletStrings);
 
   untrusted_source->SetDefaultResource(
       IDR_BRAVE_WALLET_LINE_CHART_DISPLAY_HTML);

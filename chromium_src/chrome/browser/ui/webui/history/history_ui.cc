@@ -3,23 +3,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// Inject two loadTimeData entries (`isHistoryEmbeddingsFeatureEnabled` plus
-// the toggle's localized strings) into the chrome://history WebUI data
-// source. Hooked via macro substitution of the one-and-only
-// ManagedUIHandler::Initialize() call in the upstream constructor — by the
-// time it runs the data source has been created and is in scope. The
-// Mojo interface for write/observer plumbing lives in BraveHistoryUI; this
-// override only augments the data source.
+// Point `enableHistoryEmbeddings` at the setting the embedding services were
+// built with rather than the live pref upstream reads, so the semantic search
+// input shows up only once there is an index behind it. The setting takes
+// effect on relaunch. Hooked via macro substitution of the one-and-only
+// ManagedUIHandler::Initialize() call in the upstream constructor -- by the
+// time it runs the data source has been created and is in scope.
 
-#include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/managed_ui_handler.h"
-#include "chrome/grit/generated_resources.h"
-#include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
-#include "ui/base/webui/web_ui_util.h"
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+// Implemented in //brave/browser/history_embeddings:status. Returns the setting
+// the profile's embedding services were built with. Forward declared to keep
+// this override free of a compile-time dependency on //brave.
+bool BraveHistoryEmbeddingsEnabledAtStartup(Profile* profile);
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 namespace {
 
@@ -29,19 +31,11 @@ class BraveHistoryUIInitializer {
                          content::WebUIDataSource* source) {
     ManagedUIHandler::Initialize(web_ui, source);
 
-    source->AddBoolean("isHistoryEmbeddingsFeatureEnabled",
-                       history_embeddings::IsHistoryEmbeddingsFeatureEnabled());
-
-    static constexpr webui::LocalizedString kBraveHistoryEmbeddingsStrings[] = {
-        {"braveHistoryEmbeddingsToggleLabel",
-         IDS_BRAVE_HISTORY_EMBEDDINGS_TOGGLE_LABEL},
-        {"braveHistoryEmbeddingsToggleDescription",
-         IDS_BRAVE_HISTORY_EMBEDDINGS_TOGGLE_DESCRIPTION},
-        // Reuse the shared settings "Relaunch" button label — chrome://settings
-        // uses this same string for its per-toggle restart buttons.
-        {"braveHistoryEmbeddingsRelaunchButtonLabel", IDS_SETTINGS_RESTART},
-    };
-    source->AddLocalizedStrings(kBraveHistoryEmbeddingsStrings);
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+    source->AddBoolean(
+        "enableHistoryEmbeddings",
+        BraveHistoryEmbeddingsEnabledAtStartup(Profile::FromWebUI(web_ui)));
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
   }
 };
 

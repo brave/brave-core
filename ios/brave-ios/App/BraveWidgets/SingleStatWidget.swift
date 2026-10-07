@@ -78,7 +78,7 @@ private struct StatView: View {
         Spacer()
         Image("brave-icon-no-bg")
           .resizable()
-          .widgetAccentedRenderingModeFullColor()
+          .widgetAccentedRenderingMode(.fullColor)
           .aspectRatio(contentMode: .fit)
           .frame(height: 24)
           .unredacted()
@@ -95,7 +95,7 @@ private struct StatView: View {
         .unredacted()
     }
     .frame(maxWidth: .infinity, alignment: .leading)
-    .widgetBackground { Color(UIColor(braveSystemName: .pageBackground)) }
+    .containerBackground(for: .widget) { Color(UIColor(braveSystemName: .pageBackground)) }
     .foregroundColor(Color(braveSystemName: .textPrimary))
   }
 }

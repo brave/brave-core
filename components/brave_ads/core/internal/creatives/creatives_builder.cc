@@ -9,7 +9,6 @@
 
 #include "base/check.h"
 #include "base/containers/extend.h"
-#include "base/containers/flat_set.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_campaign_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/catalog_creative_set_info.h"
@@ -21,14 +20,15 @@
 #include "brave/components/brave_ads/core/internal/creatives/creatives_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_ads {
 
 namespace {
 
-base::flat_set<std::string> BuildGeoTargets(
+absl::flat_hash_set<std::string> BuildGeoTargets(
     const CatalogCampaignInfo& campaign) {
-  base::flat_set<std::string> geo_targets;
+  absl::flat_hash_set<std::string> geo_targets;
   for (const auto& geo_target : campaign.geo_targets) {
     geo_targets.insert(geo_target.code);
   }
@@ -49,7 +49,7 @@ CreativeDaypartSet BuildDayparts(const CatalogCampaignInfo& campaign) {
 CreativeNotificationAdList BuildNotificationAdsFromCreativeSet(
     const CatalogCreativeSetInfo& creative_set,
     const CatalogCampaignInfo& campaign,
-    const base::flat_set<std::string>& geo_targets,
+    const absl::flat_hash_set<std::string>& geo_targets,
     const CreativeDaypartSet& dayparts) {
   CreativeNotificationAdList notification_ads;
   for (const auto& creative : creative_set.creative_notification_ads) {
@@ -108,7 +108,8 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
   CreativesInfo creatives;
 
   for (const auto& campaign : catalog.campaigns) {
-    const base::flat_set<std::string> geo_targets = BuildGeoTargets(campaign);
+    const absl::flat_hash_set<std::string> geo_targets =
+        BuildGeoTargets(campaign);
     const CreativeDaypartSet dayparts = BuildDayparts(campaign);
 
     for (const auto& creative_set : campaign.creative_sets) {

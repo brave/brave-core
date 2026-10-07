@@ -14,19 +14,21 @@ def main():
     parser = argparse.ArgumentParser(
         description="Creates an asset catalog in the provided output directory"
     )
-    parser.add_argument("-o",
-                        "--output",
-                        required=True,
-                        help="The xcassets file to output")
-    parser.add_argument("-l",
-                        "--leo_sf_symbols_directory",
-                        required=True,
-                        help="Directory of Leo SF symbols")
+    parser.add_argument(
+        "-o", "--output", required=True, help="The xcassets file to output"
+    )
+    parser.add_argument(
+        "-l",
+        "--leo_sf_symbols_directory",
+        required=True,
+        help="Directory of Leo SF symbols",
+    )
     parser.add_argument(
         "-i",
         "--icons",
         required=True,
-        help="Comma-separated list of icons (e.g., icon1,icon2)")
+        help="Comma-separated list of icons (e.g., icon1,icon2)",
+    )
 
     args = parser.parse_args()
     output_directory = args.output
@@ -44,7 +46,9 @@ def main():
 
     # Create the xcassets folder and standard Contents.json
     os.makedirs(output_directory, exist_ok=True)
-    with open(os.path.join(output_directory, "Contents.json"), "w") as f:
+    with open(
+        os.path.join(output_directory, "Contents.json"), "w", encoding='utf-8'
+    ) as f:
         json.dump({"info": {"author": "xcode", "version": 1}}, f)
 
     for icon in icons:
@@ -62,18 +66,16 @@ def main():
         shutil.copyfile(svg_path, os.path.join(symbolset, icon))
 
         # Create Contents.json for the symbolset
-        with open(os.path.join(symbolset, "Contents.json"), "w") as f:
+        with open(
+            os.path.join(symbolset, "Contents.json"), "w", encoding='utf-8'
+        ) as f:
             json.dump(
                 {
-                    "info": {
-                        "author": "xcode",
-                        "version": 1
-                    },
-                    "symbols": [{
-                        "filename": icon,
-                        "idiom": "universal"
-                    }]
-                }, f)
+                    "info": {"author": "xcode", "version": 1},
+                    "symbols": [{"filename": icon, "idiom": "universal"}],
+                },
+                f,
+            )
 
 
 if __name__ == "__main__":

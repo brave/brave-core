@@ -11,10 +11,8 @@
 #include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_rewards/core/pref_names.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -48,17 +46,40 @@ TEST_F(BraveAdsSettingsTest, UserHasJoinedBraveRewardsAndNotConnectedWallet) {
   EXPECT_TRUE(UserHasJoinedBraveRewardsAndNotConnectedWallet());
 }
 
-TEST_F(BraveAdsSettingsTest, UserHasOptedInToNewTabPageAds) {
+TEST_F(BraveAdsSettingsTest, NewTabPageAdsAreEnabledByDefault) {
   // Act & Assert
-  EXPECT_TRUE(UserHasOptedInToNewTabPageAds());
+  EXPECT_TRUE(IsNewTabPageAdsEnabled());
 }
 
-TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToNewTabPageAds) {
+TEST_F(BraveAdsSettingsTest,
+       NewTabPageAdsAreDisabledWhenBackgroundImagesAreDisabled) {
   // Arrange
-  test::OptOutOfNewTabPageAds();
+  test::DisableNewTabPageBackgroundImages();
 
   // Act & Assert
-  EXPECT_FALSE(UserHasOptedInToNewTabPageAds());
+  EXPECT_FALSE(IsNewTabPageAdsEnabled());
+}
+
+TEST_F(BraveAdsSettingsTest,
+       NewTabPageAdsAreDisabledWhenSponsoredAdsAreDisabled) {
+  // Arrange
+  test::DisableSponsoredAds();
+
+  // Act & Assert
+  EXPECT_FALSE(IsNewTabPageAdsEnabled());
+}
+
+TEST_F(BraveAdsSettingsTest, SponsoredAdsAreEnabledByDefault) {
+  // Act & Assert
+  EXPECT_TRUE(IsSponsoredAdsEnabled());
+}
+
+TEST_F(BraveAdsSettingsTest, SponsoredAdsAreDisabled) {
+  // Arrange
+  test::DisableSponsoredAds();
+
+  // Act & Assert
+  EXPECT_FALSE(IsSponsoredAdsEnabled());
 }
 
 TEST_F(BraveAdsSettingsTest, NotificationAdsAreEnabled) {
@@ -94,61 +115,6 @@ TEST_F(BraveAdsSettingsTest, DefaultMaximumNotificationAdsPerHour) {
 
   // Act & Assert
   EXPECT_EQ(2, GetMaximumNotificationAdsPerHour());
-}
-
-TEST_F(BraveAdsSettingsTest, UserHasOptedInToSearchResultAds) {
-  // Act & Assert
-  EXPECT_TRUE(UserHasOptedInToSearchResultAds());
-}
-
-TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToSearchResultAds) {
-  // Arrange
-  test::OptOutOfSearchResultAds();
-
-  // Act & Assert
-  EXPECT_FALSE(UserHasOptedInToSearchResultAds());
-}
-
-TEST_F(BraveAdsSettingsTest, UserHasOptedInToSurveyPanelist) {
-  // Arrange
-  test::SetProfileBooleanPrefValue(
-      ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist,
-      true);
-
-  // Act & Assert
-  EXPECT_TRUE(UserHasOptedInToSurveyPanelist());
-}
-
-TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToSurveyPanelist) {
-  // Arrange
-  test::SetProfileBooleanPrefValue(
-      ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist,
-      false);
-
-  // Act & Assert
-  EXPECT_FALSE(UserHasOptedInToSurveyPanelist());
-}
-
-TEST_F(BraveAdsSettingsTest,
-       UserHasNotOptedInToSurveyPanelistWhenOptedOutOfNewTabPageAds) {
-  // Arrange
-  test::OptOutOfNewTabPageAds();
-
-  // Act & Assert
-  EXPECT_FALSE(UserHasOptedInToSurveyPanelist());
-}
-
-TEST_F(BraveAdsSettingsTest,
-       UserHasNotOptedInToSurveyPanelistWhenRewardsDisabledByPolicy) {
-  // Arrange
-  test::SetProfileBooleanPrefValue(
-      ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist,
-      true);
-  test::SetProfileBooleanPrefValue(brave_rewards::prefs::kDisabledByPolicy,
-                                   true);
-
-  // Act & Assert
-  EXPECT_FALSE(UserHasOptedInToSurveyPanelist());
 }
 
 }  // namespace brave_ads

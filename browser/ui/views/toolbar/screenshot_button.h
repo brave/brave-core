@@ -27,6 +27,13 @@ class ScreenshotButton : public ToolbarButton {
   ScreenshotButton& operator=(const ScreenshotButton&) = delete;
   ~ScreenshotButton() override;
 
+  // Shows (or toggles closed) the screenshot bubble in response to the
+  // Cmd/Ctrl+Shift+S accelerator. If the button is currently hidden (e.g.
+  // the "show screenshot button" pref is off), it is temporarily made
+  // visible for the lifetime of the bubble and hidden again once the bubble
+  // closes.
+  void ShowBubbleAndRevealButtonTemporarily();
+
  private:
   void ButtonPressed();
 
@@ -35,6 +42,8 @@ class ScreenshotButton : public ToolbarButton {
   raw_ptr<BrowserWindowInterface> browser_window_interface_;
 
   std::unique_ptr<views::Widget> bubble_widget_;
+
+  bool hide_after_bubble_closes_ = false;
 
   base::WeakPtrFactory<ScreenshotButton> weak_ptr_factory_{this};
 };

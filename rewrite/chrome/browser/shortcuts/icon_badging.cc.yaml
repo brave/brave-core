@@ -1,0 +1,29 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Badge desktop shortcuts with the Brave product logo.
+
+      Brave builds take the Chromium-branding path of this file, so the badge
+      resources named here resolve to the Chromium logo. Brave's own unscaled
+      logos come from brave_unscaled_resources.grd, which is exported by our
+      chrome/grit/chrome_unscaled_resources.h override, already included here.
+    count: 5 # The 16px logo serves both the 8px and the 16px badge.
+    regex:
+      re_pattern: 'IDR_PRODUCT_LOGO_(\d+)_SHORTCUTS'
+      replace: 'IDR_BRAVE_PRODUCT_LOGO_\1_SHORTCUTS'
+
+  - description: |
+      Stop drawing a white backdrop behind the shortcut badge.
+
+      The white circle exists to keep a dark Chromium logo legible over the
+      site icon. The Brave lion is a solid orange shape that reads on its own,
+      and the circle only surrounds it with a halo. Keeping the circle while
+      making it transparent preserves the padding upstream relies on to inset
+      the badge from the icon's corner.
+    regex:
+      re_pattern: '(CreateImageWithCircleBackground\([^;]*?)SK_ColorWHITE'
+      replace: '\1SK_ColorTRANSPARENT'

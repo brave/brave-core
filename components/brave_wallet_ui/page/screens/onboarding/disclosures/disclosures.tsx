@@ -30,7 +30,7 @@ import {
 } from '../components/onboarding_content_layout/content_layout'
 
 const TermsOfUseText: React.FC<{}> = () => {
-  const text = formatLocale('braveWalletTermsOfServiceCheckboxText', {
+  const text = formatLocale(S.BRAVE_WALLET_TERMS_OF_SERVICE_CHECKBOX_TEXT, {
     $1: (content) => (
       <TermsLink
         href='https://brave.com/terms-of-use/'
@@ -70,8 +70,8 @@ export const OnboardingDisclosures = () => {
   // render
   return (
     <OnboardingContentLayout
-      title={getLocale('braveWalletDisclosuresTitle')}
-      subTitle={getLocale('braveWalletDisclosuresDescription')}
+      title={getLocale(S.BRAVE_WALLET_DISCLOSURES_TITLE)}
+      subTitle={getLocale(S.BRAVE_WALLET_DISCLOSURES_DESCRIPTION)}
       padding='22px 0 36px'
     >
       <Checkbox
@@ -80,7 +80,9 @@ export const OnboardingDisclosures = () => {
         alignItems='flex-start'
       >
         <CheckboxText>
-          <p>{getLocale('braveWalletSelfCustodyDisclosureCheckboxText')}</p>
+          <p>
+            {getLocale(S.BRAVE_WALLET_SELF_CUSTODY_DISCLOSURE_CHECKBOX_TEXT)}
+          </p>
         </CheckboxText>
       </Checkbox>
 
@@ -112,7 +114,7 @@ export const OnboardingDisclosures = () => {
             !(isResponsibilityCheckboxChecked && isTermsCheckboxChecked)
           }
         >
-          {getLocale('braveWalletButtonContinue')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_CONTINUE)}
         </ContinueButton>
       </NextButtonRow>
     </OnboardingContentLayout>

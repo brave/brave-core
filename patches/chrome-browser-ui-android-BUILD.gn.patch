@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/android/BUILD.gn b/chrome/browser/ui/android/BUILD.gn
+index 6e6c6ef911dd139fca86f99bc82b8f37301ca0c9..d471bb5367b820e3fe6f0be1100566720ff2f754 100644
+--- a/chrome/browser/ui/android/BUILD.gn
++++ b/chrome/browser/ui/android/BUILD.gn
+@@ -76,7 +76,7 @@ if (is_android) {
+       "//ui/menus",
+       "//url",
+     ]
+-    if (enable_desktop_android_extensions) {
++    if (enable_extensions_core) {
+       # extension_menu_model_android.h is in the chrome/browser/extensions/
+       # directory; dep on that target to make it accessible.
+       deps += [ "//chrome/browser/extensions" ]

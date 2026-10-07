@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.ntp_customization;
 
 import org.chromium.build.annotations.NullMarked;
-import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.ui.base.WindowAndroid;
 
 /**
@@ -16,14 +15,6 @@ import org.chromium.ui.base.WindowAndroid;
 @NullMarked
 public class BraveNtpCustomizationUtils {
     private static final String TAG = "BraveNtpCustomizationUtils";
-
-    /**
-     * Replace NtpCustomizationUtils.isInNarrowWindowOnLff. Brave returns true for any large form
-     * factor (LFF) device to avoid MVT layout misalignment.
-     */
-    public static boolean isInNarrowWindowOnLff(boolean isLff, UiConfig uiConfig) {
-        return isLff;
-    }
 
     /**
      * Replace NtpCustomizationUtils.isNtpThemeCustomizationEnabled (no-arg). Brave uses its own NTP

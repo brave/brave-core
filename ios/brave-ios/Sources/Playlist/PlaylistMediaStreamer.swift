@@ -11,14 +11,12 @@ import Data
 import Foundation
 import MediaPlayer
 import Shared
-import Storage
 import UserAgent
 import WebKit
 import os.log
 
 public class PlaylistMediaStreamer {
   private weak var playerView: UIView?
-  private weak var certStore: CertStore?
   private var webLoader: (any PlaylistWebLoader)?
   private var webLoaderFactory: any PlaylistWebLoaderFactory
 
@@ -140,8 +138,10 @@ public class PlaylistMediaStreamer {
       }
 
       Task {
-        try await Task.sleep(nanoseconds: NSEC_PER_SEC)
-        PlaylistManager.shared.autoDownload(item: newItem)
+        do {
+          try await Task.sleep(nanoseconds: NSEC_PER_SEC)
+          PlaylistManager.shared.autoDownload(item: newItem)
+        } catch {}
       }
       return item
     } onCancel: {

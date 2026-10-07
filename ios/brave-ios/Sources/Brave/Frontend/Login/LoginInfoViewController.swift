@@ -8,7 +8,6 @@ import BraveUI
 import Combine
 import Foundation
 import Shared
-import Storage
 import UIKit
 import Web
 

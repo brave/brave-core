@@ -9,8 +9,7 @@
 #include <optional>
 #include <string>
 
-#include "base/functional/callback_forward.h"
-#include "base/gtest_prod_util.h"
+#include "base/callback_list.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wayback_machine/wayback_machine_url_fetcher.h"
@@ -18,7 +17,6 @@
 #include "components/prefs/pref_member.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
-#include "ui/gfx/native_ui_types.h"
 
 class PrefService;
 
@@ -29,8 +27,10 @@ class BraveWaybackMachineTabHelper
  public:
   static void CreateIfNeeded(content::WebContents* web_contents);
 
+  using WaybackStateChangedCallbackList =
+      base::RepeatingCallbackList<void(WaybackState state)>;
   using WaybackStateChangedCallback =
-      base::RepeatingCallback<void(WaybackState state)>;
+      WaybackStateChangedCallbackList::CallbackType;
 
   ~BraveWaybackMachineTabHelper() override;
 
@@ -38,20 +38,22 @@ class BraveWaybackMachineTabHelper
   BraveWaybackMachineTabHelper& operator=(
       const BraveWaybackMachineTabHelper&) = delete;
 
-  void SetWaybackStateChangedCallback(WaybackStateChangedCallback callback);
-  void set_active_window(std::optional<gfx::NativeWindow> window) {
-    active_window_ = window;
-  }
-  std::optional<gfx::NativeWindow> active_window() const {
-    return active_window_;
-  }
+  // Registers a callback invoked when the WaybackState changes. Destroying the
+  // returned subscription unregisters the callback.
+  base::CallbackListSubscription RegisterWaybackStateChangedCallback(
+      WaybackStateChangedCallback callback);
+
+  // Returns the current WaybackState.
   WaybackState wayback_state() const { return wayback_state_; }
 
+  // Sets the wayback state directly and notifies registered callbacks,
+  // bypassing navigation and the real wayback-machine lookup.
+  void SetWaybackStateForTesting(WaybackState state) { SetWaybackState(state); }
+
+  // Initiates fetching the latest snapshot URL for the current page.
   void FetchWaybackURL();
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(BraveWaybackMachineTest, BubbleLaunchTest);
-
   explicit BraveWaybackMachineTabHelper(content::WebContents* contents);
 
   // content::WebContentsObserver overrides:
@@ -59,10 +61,10 @@ class BraveWaybackMachineTabHelper
       content::NavigationHandle* navigation_handle) override;
 
   // WaybackMachineURLFetcher::Client overrides:
-  void OnWaybackURLFetched(const GURL& latest_wayback_url) override;
+  void OnWaybackURLFetched(const GURL& latest_wayback_url,
+                           base::Time snapshot_time) override;
 
   void SetWaybackState(WaybackState state);
-  bool ShouldCheckWaybackMachine(int response_code) const;
   void OnWaybackEnabledChanged(const std::string& pref_name);
   void ResetState();
 
@@ -72,10 +74,8 @@ class BraveWaybackMachineTabHelper
   // we should not touch wayback state.
   std::optional<int64_t> wayback_url_navigation_id_;
 
-  // If not null, this tab has active window.
-  std::optional<gfx::NativeWindow> active_window_;
   WaybackState wayback_state_ = WaybackState::kInitial;
-  WaybackStateChangedCallback wayback_state_changed_callback_;
+  WaybackStateChangedCallbackList wayback_state_changed_callbacks_;
   raw_ref<PrefService> pref_service_;
   WaybackMachineURLFetcher wayback_machine_url_fetcher_;
   BooleanPrefMember wayback_enabled_;

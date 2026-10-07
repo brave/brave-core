@@ -19,6 +19,4 @@ export const {
   navigateTo,
   showConnectToSite,
   setHardwareWalletInteractionError,
-  setSelectedTransactionId,
-  setSubmittingTransaction,
 } = PanelSliceActions

@@ -6,9 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_BROWSING_DATA_CHROME_BROWSING_DATA_REMOVER_DELEGATE_FACTORY_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_BROWSING_DATA_CHROME_BROWSING_DATA_REMOVER_DELEGATE_FACTORY_H_
 
-#define ChromeBrowsingDataRemoverDelegate BraveBrowsingDataRemoverDelegate
 #include <chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.h>  // IWYU pragma: export
-#undef ChromeBrowsingDataRemoverDelegate
 
 #include "brave/browser/browsing_data/brave_browsing_data_remover_delegate.h"
 

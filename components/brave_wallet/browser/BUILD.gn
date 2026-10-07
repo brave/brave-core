@@ -286,8 +286,10 @@ static_library("browser") {
     "zcash/zcash_action_context.h",
     "zcash/zcash_block_tracker.cc",
     "zcash/zcash_block_tracker.h",
-    "zcash/zcash_complete_transaction_task.cc",
-    "zcash/zcash_complete_transaction_task.h",
+    "zcash/zcash_complete_transaction_task_v5.cc",
+    "zcash/zcash_complete_transaction_task_v5.h",
+    "zcash/zcash_complete_transaction_task_v6.cc",
+    "zcash/zcash_complete_transaction_task_v6.h",
     "zcash/zcash_create_transparent_transaction_task.cc",
     "zcash/zcash_create_transparent_transaction_task.h",
     "zcash/zcash_discover_next_unused_zcash_address_task.cc",
@@ -337,7 +339,6 @@ static_library("browser") {
     "//brave/components/brave_wallet/browser/cardano:generated_cardano_rpc_blockfrost_api",
     "//brave/components/brave_wallet/browser/internal:cardano_tx_decoder_rs",
     "//brave/components/brave_wallet/browser/internal:hd_key_common",
-    "//brave/components/brave_wallet/browser/internal:polkadot_extrinsic_rs",
     "//brave/components/brave_wallet/browser/polkadot:generated_polkadot_substrate_rpc_responses",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common/buildflags",
@@ -351,6 +352,7 @@ static_library("browser") {
     "//brave/components/services/brave_wallet/public/mojom",
     "//brave/components/services/brave_wallet/public/proto:zcash_proto",
     "//brave/net/base:utils",
+    "//build:blink_buildflags",
     "//components/cbor",
     "//components/component_updater",
     "//components/content_settings/core/browser",
@@ -372,9 +374,14 @@ static_library("browser") {
     "//url",
   ]
 
+  if (use_blink) {
+    deps += [ ":permission_utils" ]
+  }
+
   public_deps = [
     ":utils",
     "//brave/components/api_request_helper",
+    "//brave/components/brave_wallet/browser/internal:polkadot_extrinsic_bindings",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
   ]
@@ -384,8 +391,16 @@ static_library("browser") {
     "zcash/zcash_auto_sync_manager.h",
     "zcash/zcash_blocks_batch_scan_task.cc",
     "zcash/zcash_blocks_batch_scan_task.h",
+    "zcash/zcash_create_ironwood_to_ironwood_transaction_task.cc",
+    "zcash/zcash_create_ironwood_to_ironwood_transaction_task.h",
+    "zcash/zcash_create_ironwood_to_transparent_transaction_task.cc",
+    "zcash/zcash_create_ironwood_to_transparent_transaction_task.h",
+    "zcash/zcash_create_orchard_to_ironwood_transaction_task.cc",
+    "zcash/zcash_create_orchard_to_ironwood_transaction_task.h",
     "zcash/zcash_create_orchard_to_transparent_transaction_task.cc",
     "zcash/zcash_create_orchard_to_transparent_transaction_task.h",
+    "zcash/zcash_create_transparent_to_ironwood_transaction_task.cc",
+    "zcash/zcash_create_transparent_to_ironwood_transaction_task.h",
     "zcash/zcash_get_zcash_chain_tip_status_task.cc",
     "zcash/zcash_get_zcash_chain_tip_status_task.h",
     "zcash/zcash_scan_blocks_task.cc",
@@ -401,6 +416,16 @@ static_library("browser") {
     "//brave/components/brave_wallet/browser/internal/orchard_storage",
     "//sql",
   ]
+
+  if (enable_snap) {
+    sources += [
+      "snap_service.cc",
+      "snap_service.h",
+    ]
+
+    deps +=
+        [ "//brave/components/brave_wallet/browser/snap/execution_environment" ]
+  }
 }
 
 # TODO(https://github.com/brave/brave-browser/issues/47669) this should be
@@ -868,7 +893,7 @@ source_set("unit_tests") {
     "//brave/components/brave_wallet/browser/cardano:generated_cardano_rpc_blockfrost_api",
     "//brave/components/brave_wallet/browser/internal:cardano_tx_decoder_rs",
     "//brave/components/brave_wallet/browser/internal:hd_key",
-    "//brave/components/brave_wallet/browser/internal:polkadot_extrinsic_rs",
+    "//brave/components/brave_wallet/browser/internal:polkadot_extrinsic_bindings",
     "//brave/components/brave_wallet/browser/polkadot:generated_polkadot_substrate_rpc_responses",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:common_constants",
@@ -884,6 +909,7 @@ source_set("unit_tests") {
     "//brave/components/services/brave_wallet/public/cpp/utils",
     "//brave/components/services/brave_wallet/public/mojom",
     "//components/component_updater:test_support",
+    "//components/content_settings/core/browser",
     "//components/prefs",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",
@@ -904,7 +930,12 @@ source_set("unit_tests") {
     "internal/orchard_sync_state_unittest.cc",
     "zcash/zcash_auto_sync_manager_unittest.cc",
     "zcash/zcash_blocks_batch_scan_task_unittest.cc",
+    "zcash/zcash_complete_transaction_task_v6_unittest.cc",
+    "zcash/zcash_create_ironwood_to_ironwood_transaction_task_unittest.cc",
+    "zcash/zcash_create_ironwood_to_transparent_transaction_task_unittest.cc",
+    "zcash/zcash_create_orchard_to_ironwood_transaction_task_unittest.cc",
     "zcash/zcash_create_orchard_to_transparent_transaction_task_unittest.cc",
+    "zcash/zcash_create_transparent_to_ironwood_transaction_task_unittest.cc",
     "zcash/zcash_get_chaintip_status_task_unittest.cc",
     "zcash/zcash_scan_blocks_task_unittest.cc",
     "zcash/zcash_shield_sync_service_unittest.cc",
@@ -923,6 +954,14 @@ source_set("unit_tests") {
       ":permission_utils",
       "//components/permissions",
       "//third_party/blink/public/common",
+    ]
+  }
+
+  if (enable_snap) {
+    sources += [ "snap/execution_environment/wallet_page_snap_host_bridge_controller_unittest.cc" ]
+    deps += [
+      "//brave/components/brave_wallet/browser/snap/execution_environment",
+      "//brave/components/brave_wallet/browser/snap/execution_environment:test_support",
     ]
   }
 

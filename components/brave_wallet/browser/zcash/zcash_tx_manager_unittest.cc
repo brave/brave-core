@@ -33,6 +33,7 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/origin.h"
 
 namespace brave_wallet {
 
@@ -72,7 +73,10 @@ class ZCashTxManagerUnitTest : public testing::Test {
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), nullptr, zcash_wallet_service_.get(), nullptr,
         nullptr, *keyring_service_, &prefs_,
-        CreateTxStorageForTest(temp_dir_.GetPath()));
+        CreateTxStorageForTest(temp_dir_.GetPath()),
+        base::BindRepeating([](const url::Origin&, const mojom::AccountIdPtr&) {
+          return true;
+        }));
 
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
     zcash_account_ = GetAccountUtils().EnsureZecAccount(0);

@@ -216,9 +216,6 @@ TEST(ZCashKeyringUnitTest, GetShieldedAddress) {
   scoped_feature_list.InitWithFeaturesAndParameters(
       {{features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "true"}}},
-#if BUILDFLAG(IS_IOS)
-       {features::kBraveWalletWebUIFeature, {}}
-#endif
       },
       {}  // disabled features
   );
@@ -247,9 +244,6 @@ TEST(ZCashKeyringUnitTest, GetShieldedAddress_Testnet) {
   scoped_feature_list.InitWithFeaturesAndParameters(
       {{features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "true"}}},
-#if BUILDFLAG(IS_IOS)
-       {features::kBraveWalletWebUIFeature, {}}
-#endif
       },
       {}  // disabled features
   );
@@ -276,9 +270,6 @@ TEST(ZCashKeyringUnitTest, GetUnifiedAddress) {
   scoped_feature_list.InitWithFeaturesAndParameters(
       {{features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "true"}}},
-#if BUILDFLAG(IS_IOS)
-       {features::kBraveWalletWebUIFeature, {}}
-#endif
       },
       {}  // disabled features
   );
@@ -363,9 +354,6 @@ TEST(ZCashKeyringUnitTest, GetUnifiedAddress_Testnet) {
   scoped_feature_list.InitWithFeaturesAndParameters(
       {{features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "true"}}},
-#if BUILDFLAG(IS_IOS)
-       {features::kBraveWalletWebUIFeature, {}}
-#endif
       },
       {}  // disabled features
   );

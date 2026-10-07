@@ -186,6 +186,12 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
         l10n_util::GetStringUTF8(IDS_CUSTOMIZE_TOOLBAR_TOGGLE_BOOKMARKS_PANEL);
   }
 
+  if (auto task_manager_it =
+          std::ranges::find(actions, ActionId::kTaskManager, get_action_id);
+      task_manager_it != actions.end()) {
+    (*task_manager_it)->icon_url = get_icon_url(kLeoWindowTaskManagerIcon);
+  }
+
   // 3. Add Brave specific actions.
   // Brave specific actions
   // Navigation

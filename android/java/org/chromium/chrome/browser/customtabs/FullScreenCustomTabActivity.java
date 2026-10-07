@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.customtabs;
 
 import static androidx.browser.customtabs.CustomTabsIntent.COLOR_SCHEME_DARK;
 import static androidx.browser.customtabs.CustomTabsIntent.COLOR_SCHEME_LIGHT;
+import static androidx.browser.customtabs.CustomTabsIntent.COLOR_SCHEME_SYSTEM;
 
 import static org.chromium.chrome.browser.customtabs.CustomTabIntentDataProvider.EXTRA_UI_TYPE;
 
@@ -35,6 +36,8 @@ import org.chromium.chrome.browser.customtabs.content.CustomTabActivityTabContro
 import org.chromium.chrome.browser.customtabs.features.minimizedcustomtab.CustomTabMinimizationManagerHolder;
 import org.chromium.chrome.browser.customtabs.features.toolbar.BrowserServicesThemeColorProvider;
 import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbarCoordinator;
+import org.chromium.chrome.browser.night_mode.NightModeUtils;
+import org.chromium.chrome.browser.night_mode.ThemeType;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.ui.RootUiCoordinator;
@@ -76,6 +79,12 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
         mIsEnterAnimationCompleted = true;
 
         super.performPostInflationStartup();
+
+        // Match the footer's container background - required to ensure nav bar controls are
+        // visible.
+        getEdgeToEdgeManager()
+                .getEdgeToEdgeSystemBarColorHelper()
+                .setNavigationBarColor(ContextCompat.getColor(this, R.color.container_background));
 
         View toolbarContainer = findViewById(R.id.toolbar_container);
         if (toolbarContainer != null) {
@@ -140,12 +149,13 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
         if (requestCode == BravePermissionUtils.NOTIFICATION_PERMISSION_CODE
                 && grantResults.length != 0
                 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            String notificationMessage =
+                    getResources()
+                            .getString(
+                                    R.string.enable_notifications_from_brave_to_earn_brave_rewards);
             Snackbar snackbar =
                     Snackbar.make(
-                                    getResources()
-                                            .getString(
-                                                    R.string
-                                                            .enable_notifications_from_brave_to_earn_brave_rewards),
+                                    notificationMessage,
                                     new SnackbarController() {
                                         @Override
                                         public void onDismissNoAction(Object actionData) {}
@@ -179,7 +189,11 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
         intent.putExtra(CustomTabsIntent.EXTRA_ENABLE_URLBAR_HIDING, false);
         intent.putExtra(
                 CustomTabsIntent.EXTRA_COLOR_SCHEME,
-                ColorUtils.inNightMode(context) ? COLOR_SCHEME_DARK : COLOR_SCHEME_LIGHT);
+                NightModeUtils.getThemeSetting() == ThemeType.SYSTEM_DEFAULT
+                        ? COLOR_SCHEME_SYSTEM
+                        : (ColorUtils.inNightMode(context)
+                                ? COLOR_SCHEME_DARK
+                                : COLOR_SCHEME_LIGHT));
         intent.setData(Uri.parse(url));
         intent.setPackage(context.getPackageName());
         intent.putExtra(
@@ -215,6 +229,7 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                         getActivityResultTracker(),
                         getChromeAndroidTaskSupplier(),
                         getLifecycleDispatcher(),
+                        getMultiWindowModeStateDispatcher(),
                         getLayoutManagerSupplier(),
                         /* menuOrKeyboardActionController= */ this,
                         this::getActivityThemeColor,

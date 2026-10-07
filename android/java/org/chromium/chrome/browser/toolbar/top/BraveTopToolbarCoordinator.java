@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.toolbar.top;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 
@@ -43,6 +44,8 @@ import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.toolbar.top.tab_strip.TabStripTransitionCoordinator.TabStripTransitionDelegate;
 import org.chromium.chrome.browser.toolbar.top.tab_strip.TabStripTransitionCoordinator.TabStripTransitionHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
+import org.chromium.chrome.browser.ui.bottombar.BottomBarConfigUtils;
+import org.chromium.chrome.browser.ui.bottombar.BottomBarUtils;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.signin.SigninAndHistorySyncActivityLauncher;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
@@ -207,6 +210,20 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
 
                 if (!ColorUtils.inNightMode(toolbarContext)) {
                     toolbarPhone.mToolbarBackgroundColorForNtp = toolbarBackgroundColorForNtp;
+                }
+            }
+
+            // Brave's NTP draws a background image rather than upstream's home surface color, so
+            // the toolbar matches the bottom bar instead.
+            Context toolbarContext = mBraveToolbarLayout.getContext();
+            if (BottomBarConfigUtils.isBottomBarEnabled(toolbarContext)) {
+                toolbarPhone.mToolbarBackgroundColorForNtp =
+                        BottomBarUtils.getBottomBarBackgroundColor(
+                                toolbarContext, /* isIncognito= */ false);
+                // The default light location bar color is too close to the bottom bar's.
+                if (!BraveDynamicColors.isDynamicColorsEnabled()
+                        && !ColorUtils.inNightMode(toolbarContext)) {
+                    toolbarPhone.mLocationBarBackgroundColorForNtp = Color.WHITE;
                 }
             }
         }

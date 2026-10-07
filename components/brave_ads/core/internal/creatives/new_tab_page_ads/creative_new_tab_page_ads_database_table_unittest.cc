@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/test/creative_new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_types.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -501,6 +501,39 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   EXPECT_TRUE(success);
   EXPECT_THAT(segments, ::testing::IsEmpty());
   EXPECT_THAT(creative_ads, ::testing::IsEmpty());
+}
+
+TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
+       GetAllIncludesExpiredCampaigns) {
+  // Arrange
+  CreativeNewTabPageAdInfo creative_ad =
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*use_random_uuids=*/true);
+  creative_ad.start_at = test::DistantPast();
+  creative_ad.end_at = test::DistantPast();
+
+  test::SaveCreativeNewTabPageAds({creative_ad});
+
+  // Act & Assert
+  base::test::TestFuture<bool, SegmentList, CreativeNewTabPageAdList>
+      active_test_future;
+  database_table_.GetForActiveCampaigns(
+      active_test_future
+          .GetCallback<bool, const SegmentList&, CreativeNewTabPageAdList>());
+  const auto [active_success, active_segments, active_creative_ads] =
+      active_test_future.Take();
+  EXPECT_TRUE(active_success);
+  EXPECT_THAT(active_creative_ads, ::testing::IsEmpty());
+
+  base::test::TestFuture<bool, SegmentList, CreativeNewTabPageAdList>
+      all_test_future;
+  database_table_.GetAll(
+      all_test_future
+          .GetCallback<bool, const SegmentList&, CreativeNewTabPageAdList>());
+  const auto [all_success, all_segments, all_creative_ads] =
+      all_test_future.Take();
+  EXPECT_TRUE(all_success);
+  EXPECT_THAT(all_creative_ads, ::testing::ElementsAre(creative_ad));
 }
 
 }  // namespace brave_ads

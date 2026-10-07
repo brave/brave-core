@@ -10,6 +10,7 @@ import {
 } from '../stories/mock-data/mock-wallet-accounts'
 import { mockEthToken } from '../stories/mock-data/mock-asset-options'
 import {
+  isPersistableSessionRoute,
   makeAccountRoute,
   makeAccountTransactionRoute,
   makePortfolioNftCollectionRoute,
@@ -82,16 +83,30 @@ describe('makePortfolioNftCollectionRoute', () => {
   })
 })
 
+describe('isPersistableSessionRoute', () => {
+  it('persists Connections only when opened from a popup panel', () => {
+    expect(
+      isPersistableSessionRoute(WalletRoutes.Connections, true, false),
+    ).toBe(true)
+    expect(
+      isPersistableSessionRoute(WalletRoutes.Connections, true, true),
+    ).toBe(false)
+    expect(
+      isPersistableSessionRoute(WalletRoutes.Connections, false, false),
+    ).toBe(false)
+  })
+})
+
 describe('makeSendRoute', () => {
   it('should return a route with chainId and token params', () => {
     expect(makeSendRoute(mockEthToken)).toBe(
-      '/send?chainId=0x1&token=ETH#token',
+      '/crypto/send?chainId=0x1&token=ETH#token',
     )
   })
 
   it('should return a route with chainId, token and account params', () => {
     expect(makeSendRoute(mockEthToken, mockEthAccount)).toBe(
-      '/send?chainId=0x1&token=ETH&account=mockEthAccount_uniqueKey#token',
+      '/crypto/send?chainId=0x1&token=ETH&account=mockEthAccount_uniqueKey#token',
     )
   })
 
@@ -100,7 +115,7 @@ describe('makeSendRoute', () => {
       + 'account and recipient params',
     () => {
       expect(makeSendRoute(mockEthToken, mockEthAccount, '0x1234567890')).toBe(
-        '/send?chainId=0x1&token=ETH&account=mockEthAccount_uniqueKey'
+        '/crypto/send?chainId=0x1&token=ETH&account=mockEthAccount_uniqueKey'
           + '&recipient=0x1234567890#token',
       )
     },
@@ -108,7 +123,7 @@ describe('makeSendRoute', () => {
 
   it('should return a route with chainId, token and recipient params', () => {
     expect(makeSendRoute(mockEthToken, undefined, '0x1234567890')).toBe(
-      '/send?chainId=0x1&token=ETH&recipient=0x1234567890#token',
+      '/crypto/send?chainId=0x1&token=ETH&recipient=0x1234567890#token',
     )
   })
 })

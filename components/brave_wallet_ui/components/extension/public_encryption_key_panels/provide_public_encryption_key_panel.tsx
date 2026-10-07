@@ -57,7 +57,7 @@ export function ProvidePublicEncryptionKeyPanel(props: Props) {
     useProcessPendingGetEncryptionPublicKeyRequestMutation()
 
   const description = formatLocale(
-    'braveWalletProvideEncryptionKeyDescription',
+    S.BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_DESCRIPTION,
     {
       $1: (
         <CreateSiteOrigin
@@ -93,7 +93,7 @@ export function ProvidePublicEncryptionKeyPanel(props: Props) {
       <Column>
         <Row padding='18px'>
           <HeaderText textColor='primary'>
-            {getLocale('braveWalletPublicEncryptionKey')}
+            {getLocale(S.BRAVE_WALLET_PUBLIC_ENCRYPTION_KEY)}
           </HeaderText>
         </Row>
         <Column
@@ -113,7 +113,7 @@ export function ProvidePublicEncryptionKeyPanel(props: Props) {
             </Tooltip>
           </Column>
           <Title textColor='primary'>
-            {getLocale('braveWalletProvideEncryptionKeyTitle')}
+            {getLocale(S.BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_TITLE)}
           </Title>
           <MessageContainer
             fullWidth={true}
@@ -121,7 +121,7 @@ export function ProvidePublicEncryptionKeyPanel(props: Props) {
           >
             <Row padding='8px'>
               <MessageContainerTitle textColor='tertiary'>
-                {getLocale('braveWalletSignTransactionMessageTitle')}
+                {getLocale(S.BRAVE_WALLET_SIGN_TRANSACTION_MESSAGE_TITLE)}
               </MessageContainerTitle>
             </Row>
             <MessageBox
@@ -141,10 +141,10 @@ export function ProvidePublicEncryptionKeyPanel(props: Props) {
           kind='outline'
           onClick={() => onCancel(payload.requestId)}
         >
-          {getLocale('braveWalletButtonCancel')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
         </Button>
         <Button onClick={onProvide}>
-          {getLocale('braveWalletProvideEncryptionKeyButton')}
+          {getLocale(S.BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_BUTTON)}
         </Button>
       </Row>
     </StyledWrapper>

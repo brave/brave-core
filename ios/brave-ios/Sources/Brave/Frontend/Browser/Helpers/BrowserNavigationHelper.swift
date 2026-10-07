@@ -50,6 +50,7 @@ class BrowserNavigationHelper {
     bvc?.present(nav, animated: true)
   }
 
+  @MainActor
   func openBookmarks() {
     guard let bvc = bvc else { return }
     let vc = BookmarksViewController(
@@ -62,6 +63,7 @@ class BrowserNavigationHelper {
     open(vc, doneButton: DoneButton(style: .done, position: .right))
   }
 
+  @MainActor
   func openSyncedTabsList() {
     guard let bvc = bvc else { return }
     let controller = UIHostingController(
@@ -95,6 +97,7 @@ class BrowserNavigationHelper {
     UIApplication.shared.openBraveDownloadsFolder(completion)
   }
 
+  @MainActor
   func openHistory(isModal: Bool = false) {
     guard let bvc = bvc else { return }
     let vc = UIHostingController(

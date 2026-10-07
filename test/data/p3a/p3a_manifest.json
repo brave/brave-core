@@ -14,7 +14,8 @@
         "dtoi"
       ],
       "activation_metric_name": "Brave.Core.LastUsage",
-      "cadence": "express"
+      "cadence": "express",
+      "priority": true
     },
     "Brave.Shields.UsageStatus": {
       "ephemeral": false,

@@ -42,6 +42,10 @@ source_set("search_result_ad") {
     "//ui/base",
     "//url",
   ]
+
+  if (!is_android) {
+    deps += [ "//brave/browser/infobars" ]
+  }
 }
 
 source_set("browser_tests") {
@@ -57,6 +61,8 @@ source_set("browser_tests") {
     "//brave/components/brave_ads/core/public:headers",
     "//chrome/browser/ssl:cert_verifier_test_support",
     "//chrome/browser/ui",
+    "//chrome/test/base:chrome_test_utils",
+    "//components/infobars/content",
     "//net:test_support",
   ]
 

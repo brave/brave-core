@@ -52,7 +52,10 @@ ModelServiceFactory::BuildServiceInstanceForBrowserContext(
           [](content::BrowserContext* context) {
             return context->GetDefaultStoragePartition()->GetNetworkContext();
           },
-          context));
+          context),
+      context->GetDefaultStoragePartition()
+          ->GetURLLoaderFactoryForBrowserProcess(),
+      context->GetPath());
 }
 
 }  // namespace ai_chat

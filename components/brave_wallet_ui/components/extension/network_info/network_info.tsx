@@ -41,7 +41,7 @@ export const NetworkInfo = (props: Props) => {
         justifyContent='flex-start'
       >
         <SectionLabel textColor='tertiary'>
-          {getLocale('braveWalletAllowAddNetworkName')}:
+          {getLocale(S.BRAVE_WALLET_ALLOW_ADD_NETWORK_NAME)}:
         </SectionLabel>
         <SectionDetails textColor='primary'>{network.chainName}</SectionDetails>
       </Column>
@@ -50,7 +50,7 @@ export const NetworkInfo = (props: Props) => {
         justifyContent='flex-start'
       >
         <SectionLabel textColor='tertiary'>
-          {getLocale('braveWalletAllowAddNetworkUrl')}:
+          {getLocale(S.BRAVE_WALLET_ALLOW_ADD_NETWORK_URL)}:
         </SectionLabel>
         <SectionDetails textColor='primary'>
           {network.rpcEndpoints[0].url}
@@ -61,7 +61,7 @@ export const NetworkInfo = (props: Props) => {
         justifyContent='flex-start'
       >
         <SectionLabel textColor='tertiary'>
-          {getLocale('braveWalletChainId')}:
+          {getLocale(S.BRAVE_WALLET_CHAIN_ID)}:
         </SectionLabel>
         <SectionDetails textColor='primary'>{network.chainId}</SectionDetails>
       </Column>
@@ -70,7 +70,7 @@ export const NetworkInfo = (props: Props) => {
         justifyContent='flex-start'
       >
         <SectionLabel textColor='tertiary'>
-          {getLocale('braveWalletAllowAddNetworkCurrencySymbol')}:
+          {getLocale(S.BRAVE_WALLET_ALLOW_ADD_NETWORK_CURRENCY_SYMBOL)}:
         </SectionLabel>
         <SectionDetails textColor='primary'>{network.symbol}</SectionDetails>
       </Column>
@@ -79,7 +79,7 @@ export const NetworkInfo = (props: Props) => {
         justifyContent='flex-start'
       >
         <SectionLabel textColor='tertiary'>
-          {getLocale('braveWalletWatchListTokenDecimals')}:
+          {getLocale(S.BRAVE_WALLET_WATCH_LIST_TOKEN_DECIMALS)}:
         </SectionLabel>
         <SectionDetails textColor='primary'>{network.decimals}</SectionDetails>
       </Column>
@@ -88,7 +88,7 @@ export const NetworkInfo = (props: Props) => {
         justifyContent='flex-start'
       >
         <SectionLabel textColor='tertiary'>
-          {getLocale('braveWalletAllowAddNetworkExplorer')}:
+          {getLocale(S.BRAVE_WALLET_ALLOW_ADD_NETWORK_EXPLORER)}:
         </SectionLabel>
         <SectionDetails textColor='primary'>
           {network.blockExplorerUrls[0]}

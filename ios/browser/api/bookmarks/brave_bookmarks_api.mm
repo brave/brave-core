@@ -5,9 +5,10 @@
 
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api.h"
 
+#include <ranges>
+
 #include "base/check.h"
 #include "base/compiler_specific.h"
-#include "base/containers/adapters.h"
 #include "base/containers/stack.h"
 #include "base/memory/raw_ptr.h"
 #include "base/numerics/safe_conversions.h"
@@ -360,7 +361,8 @@
   std::vector<const bookmarks::BookmarkNode*> bookmarks = {node_};
 
   base::stack<std::pair<const bookmarks::BookmarkNode*, std::int32_t>> stack;
-  for (const bookmarks::BookmarkNode* bookmark : base::Reversed(bookmarks)) {
+  for (const bookmarks::BookmarkNode* bookmark :
+       std::views::reverse(bookmarks)) {
     stack.emplace(bookmark, 0);
   }
 
@@ -392,7 +394,7 @@
       }
     }
 
-    for (const auto* bookmark : base::Reversed(bookmarks)) {
+    for (const auto* bookmark : std::views::reverse(bookmarks)) {
       stack.emplace(bookmark, depth + 1);
     }
   }

@@ -39,6 +39,10 @@ inline constexpr char kDisableEncryptionWin[] = "disable-encryption-win";
 // Allows disabling the machine ID generation on Windows.
 inline constexpr char kDisableMachineId[] = "disable-machine-id";
 
+// Forces the adblock engine to be built with debug info (raw filter text
+// and source location).
+inline constexpr char kEnableAdblockDebugMode[] = "enable-adblock-debug-mode";
+
 // Starts Brave in Tor mode.
 inline constexpr char kTor[] = "tor";
 

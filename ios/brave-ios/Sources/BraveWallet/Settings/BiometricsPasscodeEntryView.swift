@@ -17,8 +17,8 @@ struct BiometricsPasscodeEntryView: View {
       keyringStore: keyringStore,
       title: Strings.Wallet.enterPasswordForBiometricsNavTitle,
       message: Strings.Wallet.enterPasswordForBiometricsTitle,
-      action: { password, completion in
-        keyringStore.validate(password: password) { [weak settingsStore] isValid in
+      action: { [weak settingsStore] password, completion in
+        keyringStore.validate(password: password) { isValid in
           defer {
             settingsStore?.updateBiometricsToggle()
           }

@@ -122,11 +122,12 @@ export const AllowSpendPanel = () => {
       >
         {/* Header */}
         <ConfirmationHeader
-          title={getLocale('braveWalletSpendLimit')}
+          title={getLocale(S.BRAVE_WALLET_SPEND_LIMIT)}
           transactionsQueueLength={transactionsQueueLength}
           queueNextTransaction={queueNextTransaction}
           queuePreviousTransaction={queuePreviousTransaction}
           rejectAllTransactions={rejectAllTransactions}
+          close={onReject}
         />
         <VerticalDivider />
 
@@ -156,7 +157,7 @@ export const AllowSpendPanel = () => {
                 justifyContent='flex-start'
               >
                 <Title>
-                  {formatLocale('braveWalletAllowSpendTitle', {
+                  {formatLocale(S.BRAVE_WALLET_ALLOW_SPEND_TITLE, {
                     $1: (
                       <Row
                         width='unset'
@@ -179,7 +180,7 @@ export const AllowSpendPanel = () => {
                   })}
                 </Title>
                 <Description textColor='tertiary'>
-                  {getLocale('braveWalletAllowSpendDescription').replace(
+                  {getLocale(S.BRAVE_WALLET_ALLOW_SPEND_DESCRIPTION).replace(
                     '$1',
                     erc20ApproveTokenInfo?.symbol ?? '',
                   )}
@@ -190,7 +191,7 @@ export const AllowSpendPanel = () => {
                     size='small'
                     onClick={() => setShowEditSpendLimit(true)}
                   >
-                    {getLocale('braveWalletEditPermissionsTitle')}
+                    {getLocale(S.BRAVE_WALLET_EDIT_PERMISSIONS_TITLE)}
                   </Button>
                 </Row>
 
@@ -237,7 +238,7 @@ export const AllowSpendPanel = () => {
                       textColor='primary'
                       textAlign='left'
                     >
-                      {getLocale('braveWalletApprovalTarget')}
+                      {getLocale(S.BRAVE_WALLET_APPROVAL_TARGET)}
                     </ConfirmationInfoLabel>
                     <Row
                       width='unset'
@@ -263,7 +264,7 @@ export const AllowSpendPanel = () => {
                       textColor='primary'
                       textAlign='left'
                     >
-                      {getLocale('braveWalletCurrentApprovalLimit')}
+                      {getLocale(S.BRAVE_WALLET_CURRENT_APPROVAL_LIMIT)}
                     </ConfirmationInfoLabel>
                     {currentTokenAllowance && (
                       <AmountText
@@ -271,7 +272,9 @@ export const AllowSpendPanel = () => {
                         textAlign='right'
                       >
                         {isCurrentAllowanceUnlimited
-                          ? getLocale('braveWalletTransactionApproveUnlimited')
+                          ? getLocale(
+                              S.BRAVE_WALLET_TRANSACTION_APPROVE_UNLIMITED,
+                            )
                             + ' '
                             + (erc20ApproveTokenInfo?.symbol || '')
                           : new Amount(currentTokenAllowance).formatAsAsset(
@@ -288,14 +291,16 @@ export const AllowSpendPanel = () => {
                       textColor='primary'
                       textAlign='left'
                     >
-                      {getLocale('braveWalletProposedApprovalLimit')}
+                      {getLocale(S.BRAVE_WALLET_PROPOSED_APPROVAL_LIMIT)}
                     </ConfirmationInfoLabel>
                     <AmountText
                       textColor={isApprovalUnlimited ? 'error' : 'primary'}
                       textAlign='right'
                     >
                       {isApprovalUnlimited
-                        ? getLocale('braveWalletTransactionApproveUnlimited')
+                        ? getLocale(
+                            S.BRAVE_WALLET_TRANSACTION_APPROVE_UNLIMITED,
+                          )
                           + ' '
                           + (erc20ApproveTokenInfo?.symbol || '')
                         : new Amount(
@@ -331,7 +336,7 @@ export const AllowSpendPanel = () => {
       {/* Edit spend limit */}
       <BottomSheet
         isOpen={showEditSpendLimit}
-        title={getLocale('braveWalletEditPermissionsTitle')}
+        title={getLocale(S.BRAVE_WALLET_EDIT_PERMISSIONS_TITLE)}
         onClose={() => setShowEditSpendLimit(false)}
       >
         <EditSpendLimit
@@ -347,7 +352,7 @@ export const AllowSpendPanel = () => {
       {/* Transaction details */}
       <BottomSheet
         isOpen={showTransactionDetails}
-        title={getLocale('braveWalletDetails')}
+        title={getLocale(S.BRAVE_WALLET_DETAILS)}
         onClose={() => setShowTransactionDetails(false)}
       >
         <PendingTransactionDetails
@@ -359,7 +364,7 @@ export const AllowSpendPanel = () => {
       {/* Advanced transaction settings */}
       <BottomSheet
         isOpen={showAdvancedTransactionSettings}
-        title={getLocale('braveWalletAdvancedTransactionSettings')}
+        title={getLocale(S.BRAVE_WALLET_ADVANCED_TRANSACTION_SETTINGS)}
         onClose={() => setShowAdvancedTransactionSettings(false)}
       >
         <AdvancedTransactionSettings

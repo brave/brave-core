@@ -26,4 +26,10 @@ bool IsExtensionReplacementEnabled();
 
 }  // namespace extensions_mv2::features
 
+namespace extensions_features {
+
+BASE_DECLARE_FEATURE(kBraveSequentialExtensionsUpdate);
+
+}  // namespace extensions_features
+
 #endif  // BRAVE_CHROMIUM_SRC_EXTENSIONS_COMMON_EXTENSION_FEATURES_H_

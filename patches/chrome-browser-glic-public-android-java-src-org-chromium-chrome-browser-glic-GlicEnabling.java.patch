@@ -1,0 +1,56 @@
+diff --git a/chrome/browser/glic/public/android/java/src/org/chromium/chrome/browser/glic/GlicEnabling.java b/chrome/browser/glic/public/android/java/src/org/chromium/chrome/browser/glic/GlicEnabling.java
+index d88179d7c5ec5ea4b4b0cadd97dacc88fc8f7480..19aeeef23fee841cb907860cfe77c2ece9c18a44 100644
+--- a/chrome/browser/glic/public/android/java/src/org/chromium/chrome/browser/glic/GlicEnabling.java
++++ b/chrome/browser/glic/public/android/java/src/org/chromium/chrome/browser/glic/GlicEnabling.java
+@@ -26,7 +26,7 @@ public class GlicEnabling {
+      */
+     public static boolean isEnabledByFlags() {
+         if (sIsEnabledForTesting != null) return sIsEnabledForTesting;
+-        return GlicEnablingJni.get().isEnabledByFlags();
++        return false;
+     }
+ 
+     /**
+@@ -37,14 +37,14 @@ public class GlicEnabling {
+     public static boolean isProfileEligible(@Nullable Profile profile) {
+         if (profile == null) return false;
+         if (sIsEnabledForTesting != null) return sIsEnabledForTesting;
+-        return GlicEnablingJni.get().isProfileEligible(profile);
++        return false;
+     }
+ 
+     /** Returns true if the given profile has Glic enabled. This value can change at runtime. */
+     public static boolean isEnabledForProfile(@Nullable Profile profile) {
+         if (profile == null) return false;
+         if (sIsEnabledForTesting != null) return sIsEnabledForTesting;
+-        return GlicEnablingJni.get().isEnabledForProfile(profile);
++        return false;
+     }
+ 
+     /** Returns true if the user was previously determined to be ineligible for Glic. */
+@@ -58,14 +58,14 @@ public class GlicEnabling {
+     public static boolean shouldShowSettingsPage(@Nullable Profile profile) {
+         if (profile == null) return false;
+         if (sIsEnabledForTesting != null) return sIsEnabledForTesting;
+-        return GlicEnablingJni.get().shouldShowSettingsPage(profile);
++        return false;
+     }
+ 
+     /** Returns true if the web actuation / auto browse toggle should be shown for the profile. */
+     public static boolean shouldShowWebActuationToggle(@Nullable Profile profile) {
+         if (profile == null) return false;
+         if (sIsEnabledForTesting != null) return sIsEnabledForTesting;
+-        return GlicEnablingJni.get().shouldShowWebActuationToggle(profile);
++        return false;
+     }
+ 
+     /**
+@@ -82,7 +82,7 @@ public class GlicEnabling {
+     public static boolean isReadyForProfile(@Nullable Profile profile) {
+         if (profile == null) return false;
+         if (sIsEnabledForTesting != null) return sIsEnabledForTesting;
+-        return GlicEnablingJni.get().isReadyForProfile(profile);
++        return false;
+     }
+ 
+     /**

@@ -26,7 +26,7 @@ import {
 // components
 import {
   LineChartControls, //
-} from '../../../../../components/desktop/line-chart/line-chart-controls/line-chart-controls'
+} from '$wallet/page/components/line_chart_controls/line_chart_controls'
 
 // style
 import { Column, Row } from '../../../../../components/shared/style'

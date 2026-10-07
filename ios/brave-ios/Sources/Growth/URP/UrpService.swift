@@ -75,7 +75,7 @@ struct UrpService {
       return
     }
 
-    var params = [
+    let params = [
       UrpService.ParamKeys.api: apiKey,
       UrpService.ParamKeys.referralCode: refCode,
       UrpService.ParamKeys.platform: "ios",

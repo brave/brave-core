@@ -42,6 +42,8 @@ const iconMap: { [key: string]: string } = {
     'privacy:code': 'code', // javascript
     'privacy:code-off': 'code-off', // javascript
     'settings:cookie': 'cookie', // cookies
+    'privacy:cookie': 'cookie', // cookies
+    'privacy:lock': 'lock', // security
     'privacy:imagesmode': 'image', // images
     'privacy:hide-image': 'image-off', // images off
     'cr:open-in-new': 'launch', // popups & redirects
@@ -90,7 +92,7 @@ const iconMap: { [key: string]: string } = {
     'settings20:lightbulb-2': 'idea',
     'cr:delete': 'trash', // delete browsing data
     'cr:security': 'lock',
-    'privacy:page-info-old': 'tune', // privacy page additional settings
+    'privacy:page-info': 'tune', // privacy page additional settings
     'cr:fullscreen': 'fullscreen-on', // automatic fullscreen
     'settings:picture-in-picture': 'picture-in-picture', // picture in picture
     'cr:file-download': 'download',

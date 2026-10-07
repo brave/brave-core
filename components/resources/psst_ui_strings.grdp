@@ -21,4 +21,25 @@
     <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_FAILED" formatter_data="webui=Psst" desc="Common failed state text for PSST consent dialog tasks, displayed when the whole operation broken and could not be completed">
         Task completion failed
     </message>
+    <message name="IDS_PSST_REPORT_DIALOG_TITLE" formatter_data="webui=Psst" desc="Title for the screen used to report failed PSST steps to Brave">
+        Report failed steps
+    </message>
+    <message name="IDS_PSST_REPORT_DIALOG_BODY" formatter_data="webui=Psst" desc="Body text for the screen used to report failed PSST steps to Brave">
+        Send a report of the failed steps to the Brave team. This report will contain the information needed for us to fix the issue. <ph name="LINK_BEFORE">$1</ph>Learn more.<ph name="LINK_AFTER">/$1</ph>
+    </message>
+    <message name="IDS_PSST_REPORT_DIALOG_CURRENT_URL_LABEL" formatter_data="webui=Psst" desc="Label for the current site URL shown on the PSST failed steps report screen">
+        Current URL
+    </message>
+    <message name="IDS_PSST_REPORT_DIALOG_FAILED_STEPS_LABEL" formatter_data="webui=Psst" desc="Label for the list of failed steps shown on the PSST failed steps report screen">
+        Failed step(s)
+    </message>
+    <message name="IDS_PSST_REPORT_DIALOG_SEND_BUTTON" formatter_data="webui=Psst" desc="Button text to send the PSST failed steps report to Brave">
+        Send report
+    </message>
+    <message name="IDS_PSST_REPORT_DIALOG_SENT_BUTTON" formatter_data="webui=Psst" desc="Button text shown after the PSST failed steps report has been sent">
+        Report sent
+    </message>
+    <message name="IDS_PSST_REPORT_DIALOG_SENT_MESSAGE" formatter_data="webui=Psst" desc="Confirmation message shown after the PSST failed steps report has been sent">
+        Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!
+    </message>
 </grit-part>

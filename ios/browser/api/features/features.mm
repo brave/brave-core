@@ -26,7 +26,10 @@
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
+#include "brave/ios/browser/most_visited_sites/features.h"
 #include "brave/ios/browser/playlist/features.h"
+#include "brave/ios/browser/search_engines/features.h"
+#include "brave/ios/browser/toolbar/features.h"
 #include "brave/ios/browser/ui/commerce/features.h"
 #include "brave/ios/browser/ui/quick_view/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
@@ -138,11 +141,6 @@
                                               kBraveAdblockScriptletDebugLogs];
 }
 
-+ (Feature*)kBraveDarkModeBlock {
-  return [[Feature alloc]
-      initWithFeature:&brave_shields::features::kBraveDarkModeBlock];
-}
-
 + (Feature*)kBraveDeAMP {
   return [[Feature alloc] initWithFeature:&de_amp::features::kBraveDeAMP];
 }
@@ -161,15 +159,9 @@
       initWithFeature:&brave_shields::features::kBraveDomainBlock1PES];
 }
 
-+ (Feature*)kBraveNTPBrandedWallpaper {
++ (Feature*)kBraveNTPNewTabTakeoverWallpaper {
   return [[Feature alloc] initWithFeature:&ntp_background_images::features::
-                                              kBraveNTPBrandedWallpaper];
-}
-
-+ (Feature*)kBraveNTPBrandedWallpaperSurveyPanelist {
-  return [[Feature alloc]
-      initWithFeature:&ntp_background_images::features::
-                          kBraveNTPBrandedWallpaperSurveyPanelist];
+                                              kBraveNTPNewTabTakeoverWallpaper];
 }
 
 + (Feature*)kBraveNewsCardPeekFeature {
@@ -220,6 +212,12 @@
 + (Feature*)kBraveIOSEnableFarblingPlugins {
   return [[Feature alloc]
       initWithFeature:&brave_shields::features::kBraveIOSEnableFarblingPlugins];
+}
+
++ (Feature*)kTransitionToUpstreamHttpsUpgrades {
+  return
+      [[Feature alloc] initWithFeature:&brave_shields::features::
+                                           kTransitionToUpstreamHttpsUpgrades];
 }
 
 + (Feature*)kBraveShowStrictFingerprintingMode {
@@ -351,28 +349,16 @@
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-+ (Feature*)kBraveWalletWebUIIOS {
-  return [[Feature alloc]
-      initWithFeature:&brave_wallet::features::kBraveWalletWebUIFeature];
-}
 + (Feature*)kBraveWalletCardanoDAppSupportIOS {
   return
       [[Feature alloc] initWithFeature:&brave_wallet::features::
                                            kBraveWalletCardanoDAppSupportIOS];
 }
 #else
-+ (nullable Feature*)kBraveWalletWebUIIOS {
-  return nil;
-}
 + (nullable Feature*)kBraveWalletCardanoDAppSupportIOS {
   return nil;
 }
 #endif
-
-+ (Feature*)kAIChatWebUIEnabled {
-  return
-      [[Feature alloc] initWithFeature:&ai_chat::features::kAIChatWebUIEnabled];
-}
 
 + (Feature*)kBraveSyncDefaultPasswords {
   return [[Feature alloc]
@@ -383,6 +369,11 @@
   return
       [[Feature alloc] initWithFeature:&brave_shields::features::
                                            kWebKitAdvancedPrivacyProtections];
+}
+
++ (Feature*)kWebKitGlobalPrivacyControl {
+  return [[Feature alloc]
+      initWithFeature:&brave_shields::features::kWebKitGlobalPrivacyControl];
 }
 
 + (Feature*)kBraveOrigin {
@@ -415,6 +406,21 @@
 + (Feature*)kPlaylistCacheFirstEnabled {
   return [[Feature alloc]
       initWithFeature:&playlist::features::kPlaylistCacheFirstEnabled];
+}
+
++ (Feature*)kTopsitesEnabled {
+  return
+      [[Feature alloc] initWithFeature:&topsites::features::kTopsitesEnabled];
+}
+
++ (Feature*)kBrowserToolbarRefactorEnabled {
+  return [[Feature alloc]
+      initWithFeature:&brave::features::kBrowserToolbarRefactorEnabled];
+}
+
++ (Feature*)kUseChromiumSearchEngines {
+  return [[Feature alloc]
+      initWithFeature:&brave::features::kUseChromiumSearchEngines];
 }
 
 @end

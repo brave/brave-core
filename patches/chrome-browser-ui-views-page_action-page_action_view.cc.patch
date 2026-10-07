@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_view.cc b/chrome/browser/ui/views/page_action/page_action_view.cc
-index ad5d3f6cc1ff686ba5e1a20af4afbadcd211f671..58946e68b01e7b67e07714d3299c4ffb0959f699 100644
+index 8b1af6fc04522a81fd72398202dcc59d97038eec..a1ed6aba1d700874b742bd26c1421e9d81cd9e79 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.cc
 +++ b/chrome/browser/ui/views/page_action/page_action_view.cc
-@@ -244,7 +244,7 @@ void PageActionView::HandleSlideAndCrossfadeTransition(
+@@ -262,7 +262,7 @@ void PageActionView::HandleSlideAndCrossfadeTransition(
  
  void PageActionView::HandleSuggestionChipTransition(
      const PageActionModelInterface& model) {
@@ -11,7 +11,7 @@ index ad5d3f6cc1ff686ba5e1a20af4afbadcd211f671..58946e68b01e7b67e07714d3299c4ffb
      if (model.GetShouldAnimateChipIn()) {
        AnimateIn(/*string_id=*/std::nullopt);
      } else {
-@@ -316,6 +316,7 @@ void PageActionView::UpdateBorder() {
+@@ -338,6 +338,7 @@ void PageActionView::UpdateBorder() {
        !observation_.GetSource()->GetImage().IsVectorIcon()) {
      border_insets = GetInsetsForNonVectorIcon();
    }
@@ -19,7 +19,7 @@ index ad5d3f6cc1ff686ba5e1a20af4afbadcd211f671..58946e68b01e7b67e07714d3299c4ffb
    SetBorder(views::CreateEmptyBorder(border_insets));
  }
  
-@@ -362,6 +363,9 @@ void PageActionView::NotifyClick(const ui::Event& event) {
+@@ -384,6 +385,9 @@ void PageActionView::NotifyClick(const ui::Event& event) {
      builder = std::move(builder).SetProperty(kSidePanelOpenTriggerKey,
                                               *side_panel_trigger);
    }
@@ -29,7 +29,7 @@ index ad5d3f6cc1ff686ba5e1a20af4afbadcd211f671..58946e68b01e7b67e07714d3299c4ffb
    action_item_->InvokeAction(std::move(builder).Build());
  }
  
-@@ -687,6 +691,9 @@ void PageActionView::MaybeRecordCollapsedMetrics(int label_width) {
+@@ -712,6 +716,9 @@ void PageActionView::MaybeRecordCollapsedMetrics(int label_width) {
  }
  
  SkColor PageActionView::GetBackgroundColor() const {

@@ -8,7 +8,7 @@ import Shared
 import UIKit
 
 /// Structure representing a Favicon
-public class Favicon: Codable {
+public final class Favicon: Codable, Sendable {
   public let image: UIImage?
   public let isMonogramImage: Bool
   public let backgroundColor: UIColor

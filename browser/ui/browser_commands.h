@@ -9,7 +9,6 @@
 #include <optional>
 
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
@@ -39,11 +38,11 @@ class Profile;
 
 namespace brave {
 
-bool HasSelectedURL(Browser* browser);
-void CleanAndCopySelectedURL(Browser* browser);
+bool HasSelectedURL(BrowserWindowInterface* browser);
+void CleanAndCopySelectedURL(BrowserWindowInterface* browser);
 
 #if BUILDFLAG(ENABLE_TOR)
-void NewOffTheRecordWindowTor(Browser* browser);
+void NewOffTheRecordWindowTor(BrowserWindowInterface* browser);
 void NewOffTheRecordWindowTor(Profile* profile);
 void NewTorConnectionForSite(BrowserWindowInterface*);
 #endif
@@ -67,15 +66,18 @@ void ToggleBraveVPNTrayIcon();
 void OpenBraveVPNUrls(Browser* browser, int command_id);
 // Copies an url sanitized by URLSanitizerService.
 void CopySanitizedURL(BrowserWindowInterface* browser, const GURL& url);
-// Copies an url cleared through:
+// Returns |url| cleared through:
 // - Debouncer (potentially debouncing many levels)
 // - Query filter
 // - URLSanitizerService
+GURL GetLinkWithStrictCleaning(Profile* profile, const GURL& url);
+// Copies an url cleared through GetLinkWithStrictCleaning().
 void CopyLinkWithStrictCleaning(BrowserWindowInterface* browser,
                                 const GURL& url);
 
-void ToggleWindowTitleVisibilityForVerticalTabs(Browser* browser);
-void ToggleVerticalTabStrip(Browser* browser);
+void ToggleWindowTitleVisibilityForVerticalTabs(
+    BrowserWindowInterface* browser);
+void ToggleVerticalTabStrip(BrowserWindowInterface* browser);
 void ToggleVerticalTabStripFloatingMode(Browser* browser);
 void ToggleVerticalTabStripExpanded(Browser* browser);
 
@@ -102,10 +104,6 @@ void ToggleCommander(Browser* browser);
 void ShowPlaylistBubble(Browser* browser);
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-void ShowWaybackMachineBubble(Browser* browser);
-#endif
-
 void GroupTabsOnCurrentOrigin(Browser* browser);
 void MoveGroupToNewWindow(Browser* browser);
 
@@ -126,11 +124,11 @@ void CloseUngroupedTabs(Browser* browser);
 void CloseTabsNotInCurrentGroup(Browser* browser);
 void CloseGroup(Browser* browser);
 
-bool CanBringAllTabs(Browser* browser);
-void BringAllTabs(Browser* browser);
+bool CanBringAllTabs(BrowserWindowInterface* browser);
+void BringAllTabs(BrowserWindowInterface* browser);
 
-bool HasDuplicatesOfActiveTab(Browser* browser);
-void CloseDuplicatesOfActiveTab(Browser* browser);
+bool HasDuplicatesOfActiveTab(BrowserWindowInterface* browser);
+void CloseDuplicatesOfActiveTab(BrowserWindowInterface* browser);
 bool HasAnyDuplicateTabs(Browser* browser);
 void CloseAllDuplicateTabs(Browser* browser);
 bool CanCloseTabsToLeft(Browser* browser);
@@ -151,7 +149,7 @@ void ScrollTabToTop(Browser* browser);
 void ScrollTabToBottom(Browser* browser);
 
 void ExportAllBookmarks(Browser* browser);
-void ToggleAllBookmarksButtonVisibility(Browser* browser);
+void ToggleAllBookmarksButtonVisibility(BrowserWindowInterface* browser);
 
 // Split view API with SideBySide.
 // false if active tab is already split tab.
@@ -181,12 +179,12 @@ void ForcePasteInWebContents(content::WebContents* contents);
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 // Creates new tabs with the given tabs' URLs in the specified container.
-void OpenTabUrlsInContainer(BrowserWindowInterface* browser_window,
+void OpenTabUrlsInContainer(BrowserWindowInterface* bwi,
                             const std::vector<tabs::TabHandle>& tabs,
                             const containers::mojom::ContainerPtr& container);
 // Creates a new tab with the specified URL in the given container.
 void OpenUrlInContainer(
-    BrowserWindowInterface* browser_window,
+    BrowserWindowInterface* bwi,
     const GURL& url,
     const containers::mojom::ContainerPtr& container,
     bool is_link = true,
@@ -194,10 +192,10 @@ void OpenUrlInContainer(
     bool started_from_context_menu = false);
 
 // Creates new tabs with the given tabs' URLs without a container.
-void OpenTabUrlsWithoutContainer(BrowserWindowInterface* browser_window,
+void OpenTabUrlsWithoutContainer(BrowserWindowInterface* bwi,
                                  const std::vector<tabs::TabHandle>& tabs);
 void OpenUrlWithoutContainer(
-    BrowserWindowInterface* browser_window,
+    BrowserWindowInterface* bwi,
     const GURL& url,
     bool is_link = true,
     std::optional<url::Origin> initiator_origin = std::nullopt,
@@ -205,11 +203,11 @@ void OpenUrlWithoutContainer(
 
 // Creates a new temporary container and opens the given tabs' URLs in it.
 void CreateTemporaryContainerAndOpenTabUrls(
-    BrowserWindowInterface* browser_window,
+    BrowserWindowInterface* bwi,
     const std::vector<tabs::TabHandle>& tabs);
 // Opens |url| in a new tab in a freshly created temporary container.
 void CreateTemporaryContainerAndOpenUrl(
-    BrowserWindowInterface* browser_window,
+    BrowserWindowInterface* bwi,
     const GURL& url,
     bool is_link = true,
     std::optional<url::Origin> initiator_origin = std::nullopt,
@@ -217,12 +215,12 @@ void CreateTemporaryContainerAndOpenUrl(
 
 // Opens the container menu on the page action view if the active tab is in a
 // container.
-void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser,
+void OpenContainerMenuOnPageActionView(BrowserWindowInterface* bwi,
                                        ::actions::ActionItem* item);
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
-void OpenPsstMenuOnPageActionView(BrowserWindowInterface* browser_window,
+void OpenPsstMenuOnPageActionView(BrowserWindowInterface* bwi,
                                   actions::ActionItem* item,
                                   int event_flags = ui::EF_NONE);
 #endif

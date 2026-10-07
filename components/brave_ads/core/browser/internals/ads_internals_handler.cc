@@ -10,30 +10,89 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
+#include "base/types/to_address.h"
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "components/prefs/pref_service.h"
+#include "components/variations/service/variations_service.h"
 
 namespace {
 constexpr char kDiagnosticIdKey[] = "diagnosticId";
-constexpr char kEntriesKey[] = "entries";
+constexpr char kVariationsCountryCodeKey[] = "variationsCountryCode";
+constexpr char kNtpSponsoredImagesComponentIdKey[] =
+    "ntpSponsoredImagesComponentId";
+constexpr char kCountryResourceComponentIdKey[] = "countryResourceComponentId";
+constexpr char kLanguageResourceComponentIdKey[] =
+    "languageResourceComponentId";
+constexpr char kNtpSponsoredImagesLoadedKey[] = "ntpSponsoredImagesLoaded";
+constexpr char kNtpSponsoredImagesManifestVersionKey[] =
+    "ntpSponsoredImagesManifestVersion";
+constexpr char kIsSponsoredTilesShownKey[] = "isSponsoredTilesShown";
+constexpr char kIsInitializedKey[] = "isInitialized";
 }  // namespace
 
-AdsInternalsHandler::AdsInternalsHandler(brave_ads::AdsService* ads_service,
-                                         PrefService& prefs)
-    : ads_service_(ads_service), prefs_(prefs) {
-  pref_change_registrar_.Init(&*prefs_);
+AdsInternalsHandler::AdsInternalsHandler(
+    brave_ads::AdsService* ads_service,
+    PrefService& prefs,
+    variations::VariationsService* variations_service,
+    GetComponentIdCallback get_ntp_sponsored_images_component_id_callback,
+    GetComponentIdCallback get_country_resource_component_id_callback,
+    GetComponentIdCallback get_language_resource_component_id_callback,
+    GetIsSponsoredImagesLoadedCallback get_is_sponsored_images_loaded_callback,
+    GetComponentIdCallback get_ntp_sponsored_images_manifest_version_callback,
+    GetIsSponsoredTilesShownCallback get_is_sponsored_tiles_shown_callback)
+    : ads_service_(ads_service ? ads_service->GetWeakPtr() : nullptr),
+      prefs_(prefs),
+      variations_service_(variations_service),
+      get_ntp_sponsored_images_component_id_callback_(
+          std::move(get_ntp_sponsored_images_component_id_callback)),
+      get_country_resource_component_id_callback_(
+          std::move(get_country_resource_component_id_callback)),
+      get_language_resource_component_id_callback_(
+          std::move(get_language_resource_component_id_callback)),
+      get_is_sponsored_images_loaded_callback_(
+          std::move(get_is_sponsored_images_loaded_callback)),
+      get_ntp_sponsored_images_manifest_version_callback_(
+          std::move(get_ntp_sponsored_images_manifest_version_callback)),
+      get_is_sponsored_tiles_shown_callback_(
+          std::move(get_is_sponsored_tiles_shown_callback)) {
+  pref_change_registrar_.Init(base::to_address(prefs_));
   pref_change_registrar_.Add(
       brave_rewards::prefs::kEnabled,
       base::BindRepeating(
           &AdsInternalsHandler::OnBraveRewardsEnabledPrefChanged,
           weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kExternalWalletType,
+      base::BindRepeating(
+          &AdsInternalsHandler::OnBraveRewardsWalletConnectedPrefChanged,
+          weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      brave_ads::prefs::kSponsoredEnabled,
+      base::BindRepeating(&AdsInternalsHandler::OnAdFormatSettingsPrefChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      ntp_background_images::prefs::kNewTabPageShowBackgroundImage,
+      base::BindRepeating(&AdsInternalsHandler::OnAdFormatSettingsPrefChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
+
+  if (ads_service_) {
+    ads_service_->AddObserver(this);
+  }
 }
 
-AdsInternalsHandler::~AdsInternalsHandler() = default;
+AdsInternalsHandler::~AdsInternalsHandler() {
+  if (ads_service_) {
+    ads_service_->RemoveObserver(this);
+  }
+}
 
 void AdsInternalsHandler::BindInterface(
     mojo::PendingReceiver<bat_ads::mojom::AdsInternals>
@@ -54,6 +113,7 @@ void AdsInternalsHandler::CreateAdsInternalsPageHandler(
       std::move(ads_internals_page_pending_remote));
 
   UpdateBraveRewardsEnabled();
+  UpdateBraveRewardsWalletConnected();
 }
 
 void AdsInternalsHandler::GetAdsInternals(GetAdsInternalsCallback callback) {
@@ -75,18 +135,41 @@ void AdsInternalsHandler::ClearAdsData(brave_ads::ResultCallback callback) {
 }
 
 void AdsInternalsHandler::GetDiagnostics(GetDiagnosticsCallback callback) {
+  base::DictValue dict = BuildDiagnosticsDict();
+
   if (!ads_service_) {
-    return OnGetDiagnostics(std::move(callback),
-                            /*diagnostic_entries=*/std::nullopt);
+    return WriteDiagnosticsJson(std::move(callback), std::move(dict));
   }
 
-  ads_service_->GetDiagnostics(
-      base::BindOnce(&AdsInternalsHandler::OnGetDiagnostics,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  ads_service_->GetDiagnostics(base::BindOnce(
+      &AdsInternalsHandler::OnGetDiagnostics, weak_ptr_factory_.GetWeakPtr(),
+      std::move(callback), std::move(dict)));
+}
+
+void AdsInternalsHandler::EvaluateConditionMatcher(
+    const std::string& pref_path,
+    const std::string& condition,
+    const std::optional<std::string>& test_value,
+    EvaluateConditionMatcherCallback callback) {
+  if (!ads_service_) {
+    return std::move(callback).Run(/*current_value=*/"Unknown",
+                                   /*matches=*/"N/A");
+  }
+
+  ads_service_->EvaluateConditionMatcher(
+      pref_path, condition, test_value,
+      base::BindOnce(
+          [](EvaluateConditionMatcherCallback callback,
+             const std::string& current_value, const std::string& matches) {
+            std::move(callback).Run(current_value, matches);
+          },
+          std::move(callback)));
 }
 
 void AdsInternalsHandler::SetDiagnosticId(const std::string& diagnostic_id) {
-  if (!base::Uuid::ParseCaseInsensitive(diagnostic_id).is_valid()) {
+  // Empty clears the diagnostic ID; anything else must be a valid UUID.
+  if (!diagnostic_id.empty() &&
+      !base::Uuid::ParseCaseInsensitive(diagnostic_id).is_valid()) {
     return;
   }
 
@@ -105,16 +188,72 @@ void AdsInternalsHandler::GetInternalsCallback(
   std::move(callback).Run(json);
 }
 
-void AdsInternalsHandler::OnGetDiagnostics(
-    GetDiagnosticsCallback callback,
-    std::optional<base::ListValue> diagnostic_entries) {
+base::DictValue AdsInternalsHandler::BuildDiagnosticsDict() const {
   base::DictValue dict;
   dict.Set(kDiagnosticIdKey,
            prefs_->GetString(brave_ads::prefs::kDiagnosticId));
-  if (diagnostic_entries) {
-    dict.Set(kEntriesKey, std::move(*diagnostic_entries));
+  dict.Set(kIsInitializedKey, ads_service_ && ads_service_->IsInitialized());
+  std::string variations_country_code =
+      variations_service_
+          ? base::ToUpperASCII(variations_service_->GetLatestCountry())
+          : std::string();
+  if (variations_country_code.empty()) {
+    // No variations country yet. Fall back to the device's locale-derived
+    // country so the field isn't blank, but flag it as a fallback so it's
+    // not mistaken for a real variations country reading.
+    variations_country_code = base::StrCat(
+        {base::ToUpperASCII(brave_ads::CurrentCountryCode()), " (Fallback)"});
+  }
+  dict.Set(kVariationsCountryCodeKey, variations_country_code);
+  if (get_ntp_sponsored_images_component_id_callback_) {
+    if (const std::optional<std::string> component_id =
+            get_ntp_sponsored_images_component_id_callback_.Run()) {
+      dict.Set(kNtpSponsoredImagesComponentIdKey, *component_id);
+    }
+  }
+  if (get_country_resource_component_id_callback_) {
+    if (const std::optional<std::string> component_id =
+            get_country_resource_component_id_callback_.Run()) {
+      dict.Set(kCountryResourceComponentIdKey, *component_id);
+    }
+  }
+  if (get_language_resource_component_id_callback_) {
+    if (const std::optional<std::string> component_id =
+            get_language_resource_component_id_callback_.Run()) {
+      dict.Set(kLanguageResourceComponentIdKey, *component_id);
+    }
+  }
+  if (get_is_sponsored_images_loaded_callback_) {
+    dict.Set(kNtpSponsoredImagesLoadedKey,
+             get_is_sponsored_images_loaded_callback_.Run());
+  }
+  if (get_ntp_sponsored_images_manifest_version_callback_) {
+    if (const std::optional<std::string> manifest_version =
+            get_ntp_sponsored_images_manifest_version_callback_.Run()) {
+      dict.Set(kNtpSponsoredImagesManifestVersionKey, *manifest_version);
+    }
+  }
+  if (get_is_sponsored_tiles_shown_callback_) {
+    dict.Set(kIsSponsoredTilesShownKey,
+             get_is_sponsored_tiles_shown_callback_.Run());
   }
 
+  return dict;
+}
+
+void AdsInternalsHandler::OnGetDiagnostics(
+    GetDiagnosticsCallback callback,
+    base::DictValue dict,
+    std::optional<base::DictValue> diagnostics) {
+  if (diagnostics) {
+    dict.Merge(std::move(*diagnostics));
+  }
+
+  WriteDiagnosticsJson(std::move(callback), std::move(dict));
+}
+
+void AdsInternalsHandler::WriteDiagnosticsJson(GetDiagnosticsCallback callback,
+                                               base::DictValue dict) {
   std::string json;
   CHECK(base::JSONWriter::Write(dict, &json));
   std::move(callback).Run(json);
@@ -132,4 +271,38 @@ void AdsInternalsHandler::UpdateBraveRewardsEnabled() {
 
   const bool is_enabled = prefs_->GetBoolean(brave_rewards::prefs::kEnabled);
   ads_internals_page_remote_->UpdateBraveRewardsEnabled(is_enabled);
+}
+
+void AdsInternalsHandler::OnBraveRewardsWalletConnectedPrefChanged(
+    const std::string& /*path*/) {
+  UpdateBraveRewardsWalletConnected();
+}
+
+void AdsInternalsHandler::UpdateBraveRewardsWalletConnected() {
+  if (!ads_internals_page_remote_) {
+    return;
+  }
+
+  const bool is_connected =
+      !prefs_->GetString(brave_rewards::prefs::kExternalWalletType).empty();
+  ads_internals_page_remote_->UpdateBraveRewardsWalletConnected(is_connected);
+}
+
+void AdsInternalsHandler::OnAdFormatSettingsPrefChanged(
+    const std::string& /*path*/) {
+  UpdateAdFormatSettings();
+}
+
+void AdsInternalsHandler::UpdateAdFormatSettings() {
+  if (!ads_internals_page_remote_) {
+    return;
+  }
+
+  ads_internals_page_remote_->UpdateAdFormatSettings();
+}
+
+void AdsInternalsHandler::OnDidInitializeAdsService() {
+  if (ads_internals_page_remote_) {
+    ads_internals_page_remote_->UpdateDidInitializeAdsService();
+  }
 }

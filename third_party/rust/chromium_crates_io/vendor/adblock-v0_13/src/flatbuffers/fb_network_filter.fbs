@@ -18,6 +18,11 @@ table NetworkFilter {
   opt_domains: [uint32];
   opt_not_domains: [uint32];
 
+  /// Destination hostname restrictions from `$to=`.
+  /// Storage mirrors |opt_domains| and |opt_not_domains|.
+  opt_to_domains: [uint32];
+  opt_not_to_domains: [uint32];
+
   // A union-like storage for pattern. Prefer |single_pattern| where
   // possible for performance concerns.
   single_pattern: string;
@@ -35,8 +40,13 @@ table NetworkFilter {
 }
 
 table NetworkFilterList {
+  /// Pattern / hostname / catch-all token buckets.
   filter_map_index: [uint32] (required);
   filter_map_values: [NetworkFilter] (required);
+
+  /// `$domain=` / `$from=` token buckets.
+  opt_domains_map_index: [uint32] (required);
+  opt_domains_map_values: [NetworkFilter] (required);
 }
 
 /// A table to store the most host-specific cosmetic rules.

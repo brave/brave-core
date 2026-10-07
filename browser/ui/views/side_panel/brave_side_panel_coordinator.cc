@@ -13,6 +13,7 @@
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/logging.h"
+#include "base/types/to_address.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -23,7 +24,6 @@
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -59,10 +59,10 @@ void BraveSidePanelCoordinator::Show(
 
   // SidebarContainerView does not monitor panel show/hide events, so the
   // coordinator must update the active item state directly here.
-  auto* controller = browser_->GetFeatures().sidebar_controller();
+  auto* controller =
+      sidebar::SidebarController::From(base::to_address(browser_));
   CHECK(controller);
-  controller->UpdateActiveItemState(
-      sidebar::BuiltInItemTypeFromSidePanelId(entry.key.id()));
+  controller->HandleSidePanelOpened(entry.key.id());
 }
 
 void BraveSidePanelCoordinator::Close(SidePanelEntryHideReason hide_reason,
@@ -71,9 +71,10 @@ void BraveSidePanelCoordinator::Close(SidePanelEntryHideReason hide_reason,
   // events, so clear the active item state here.
   // As upstream creates SidePanelCoordinator for all browser type
   // Close() is called when Browser shutdown. When it calls from non-normal
-  // browser, sidebar_controller() is null.
-  if (auto* controller = browser_->GetFeatures().sidebar_controller()) {
-    controller->UpdateActiveItemState();
+  // browser, there is no SidebarController.
+  if (auto* controller =
+          sidebar::SidebarController::From(base::to_address(browser_))) {
+    controller->HandleSidePanelClosed();
   }
 
   SidePanelCoordinator::Close(hide_reason, suppress_animations);

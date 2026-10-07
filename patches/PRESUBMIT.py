@@ -22,50 +22,19 @@ def CheckToModifyInputApi(input_api, _output_api):
 
 def CheckTests(input_api, output_api):
     return input_api.canned_checks.RunUnitTestsInDirectory(
-        input_api, output_api, '.', files_to_check=TEST_FILE_PATTERN)
-
-
-def CheckPatchFile(input_api, output_api):
-    files_to_check = (r'.+\.patch$', )
-    files_to_skip = ()
-
-    file_filter = lambda f: input_api.FilterSourceFile(
-        f, files_to_check=files_to_check, files_to_skip=files_to_skip)
-
-    items = []
-    for f in input_api.AffectedSourceFiles(file_filter):
-        contents = list(f.NewContents())
-        for lineno, line in enumerate(contents, 1):
-            # Only check empty added/removed lines.
-            if line not in ('+', '-'):
-                continue
-
-            # Check if this empty line is part of a diff hunk.
-            is_in_hunk = False
-            if 1 < lineno < len(contents):
-                is_in_hunk = (contents[lineno - 2].startswith(line)
-                              and contents[lineno].startswith(line))
-
-            if not is_in_hunk:
-                items.append(f'{f.LocalPath()}:{lineno} ({line}empty line)')
-
-    if not items:
-        return []
-
-    return [
-        output_api.PresubmitPromptWarning(
-            'Patch should not add or remove empty lines at hunk boundaries',
-            items)
-    ]
+        input_api, output_api, '.', files_to_check=TEST_FILE_PATTERN
+    )
 
 
 def CheckPatchFileSource(input_api, output_api):
     """Checks that the patchfile is patching the expected source."""
-    files_to_check = (r'.+\.patch$', )
+    files_to_check = (r'.+\.patch$',)
     files_to_skip = ()
 
-    file_filter = lambda f: input_api.FilterSourceFile(
-        f, files_to_check=files_to_check, files_to_skip=files_to_skip)
+    def file_filter(f):
+        return input_api.FilterSourceFile(
+            f, files_to_check=files_to_check, files_to_skip=files_to_skip
+        )
 
     items = []
     for f in input_api.AffectedSourceFiles(file_filter):
@@ -79,19 +48,24 @@ def CheckPatchFileSource(input_api, output_api):
             continue
         first_line = contents[0].strip()
         # Expecting: diff --git a/<path> b/<path>
-        if not first_line.startswith(
-                'diff --git a/') or ' b/' not in first_line:
+        if (
+            not first_line.startswith('diff --git a/')
+            or ' b/' not in first_line
+        ):
             items.append(
                 f'{f.LocalPath()}: first line does not contain a valid diff'
                 ' header.\n'
-                f'  Found:    {first_line}')
+                f'  Found:    {first_line}'
+            )
             continue
 
         try:
             a_path = first_line.split('diff --git a/', 1)[1].split(' b/', 1)[0]
         except Exception:
-            items.append(f'{f.LocalPath()}: failed to parse diff header.\n'
-                         f'  Found:    {first_line}')
+            items.append(
+                f'{f.LocalPath()}: failed to parse diff header.\n'
+                f'  Found:    {first_line}'
+            )
             continue
 
         expected_patch_filename = a_path.replace('/', '-') + '.patch'
@@ -100,13 +74,15 @@ def CheckPatchFileSource(input_api, output_api):
                 f'{f.LocalPath()}: patch filename does not match source file in'
                 ' diff header.\n'
                 f'  Expected: {expected_patch_filename}\n'
-                f'  Found:    {patch_filename}')
+                f'  Found:    {patch_filename}'
+            )
 
     if not items:
         return []
     return [
         output_api.PresubmitError(
-            'Patch filename does not match source file in diff header', items)
+            'Patch filename does not match source file in diff header', items
+        )
     ]
 
 
@@ -122,11 +98,13 @@ def CheckPatchFileIndexHeader(input_api, output_api):
         --- a/path/to/file.cc
         +++ b/path/to/file.cc
     """
-    files_to_check = (r'.+\.patch$', )
+    files_to_check = (r'.+\.patch$',)
     files_to_skip = ()
 
-    file_filter = lambda f: input_api.FilterSourceFile(
-        f, files_to_check=files_to_check, files_to_skip=files_to_skip)
+    def file_filter(f):
+        return input_api.FilterSourceFile(
+            f, files_to_check=files_to_check, files_to_skip=files_to_skip
+        )
 
     items = []
     for f in input_api.AffectedSourceFiles(file_filter):
@@ -142,23 +120,25 @@ def CheckPatchFileIndexHeader(input_api, output_api):
                 break
 
         if index_line is None:
-            items.append(
-                f'{f.LocalPath()}: missing index line in patch header')
+            items.append(f'{f.LocalPath()}: missing index line in patch header')
             continue
 
         lineno, line = index_line
         if not _FULL_INDEX_RE.match(line):
-            items.append(f'{f.LocalPath()}:{lineno}: index line must use full'
-                         ' 40-character SHA hashes (generate patches with'
-                         ' `git diff --full-index`).\n'
-                         f'  Found: {line}')
+            items.append(
+                f'{f.LocalPath()}:{lineno}: index line must use full'
+                ' 40-character SHA hashes (generate patches with'
+                ' `git diff --full-index`).\n'
+                f'  Found: {line}'
+            )
 
     if not items:
         return []
 
     return [
         output_api.PresubmitError(
-            'Patch index line does not use full SHA hashes', items)
+            'Patch index line does not use full SHA hashes', items
+        )
     ]
 
 
@@ -169,30 +149,41 @@ def CheckPatchFileSingleSource(input_api, output_api):
     multiple files in one .patch file is not allowed; use one patch file per
     source file instead.
     """
-    files_to_check = (r'.+\.patch$', )
+    files_to_check = (r'.+\.patch$',)
     files_to_skip = ()
 
-    file_filter = lambda f: input_api.FilterSourceFile(
-        f, files_to_check=files_to_check, files_to_skip=files_to_skip)
+    def file_filter(f):
+        return input_api.FilterSourceFile(
+            f, files_to_check=files_to_check, files_to_skip=files_to_skip
+        )
 
     items = []
     for f in input_api.AffectedSourceFiles(file_filter):
         contents = list(f.NewContents())
 
-        diff_headers = [(i + 1, line) for i, line in enumerate(contents)
-                        if line.startswith('diff --git ')]
+        diff_headers = [
+            (i + 1, line)
+            for i, line in enumerate(contents)
+            if line.startswith('diff --git ')
+        ]
 
         if len(diff_headers) != 1:
             count = len(diff_headers)
-            detail = (f'  Found {count} diff --git headers'
-                      if count > 1 else '  No diff --git header found')
-            items.append(f'{f.LocalPath()}: patch must contain exactly one'
-                         f' source file.\n{detail}')
+            detail = (
+                f'  Found {count} diff --git headers'
+                if count > 1
+                else '  No diff --git header found'
+            )
+            items.append(
+                f'{f.LocalPath()}: patch must contain exactly one'
+                f' source file.\n{detail}'
+            )
 
     if not items:
         return []
 
     return [
         output_api.PresubmitError(
-            'Patch file must patch exactly one source file', items)
+            'Patch file must patch exactly one source file', items
+        )
     ]

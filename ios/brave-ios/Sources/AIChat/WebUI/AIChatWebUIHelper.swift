@@ -37,7 +37,7 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler,
     braveTalkJavascript: AIChatBraveTalkJavascript?,
     profileController: BraveProfileController
   ) {
-    if !tab.isChromiumTab || !FeatureList.kAIChatWebUIEnabled.enabled {
+    if !tab.isChromiumTab {
       return nil
     }
     self.tab = tab

@@ -148,6 +148,11 @@ void SequentialUpdateChecker::UpdateResultAvailable(
             error_category, error, retry_after_sec));
 
     remaining_ids_.clear();
+
+    // `update_context_` owns this object via `UpdateContext::update_checker`.
+    // Holding a reference back to it is a cycle that would keep the context
+    // alive forever once the check is done.
+    update_context_.reset();
   } else {
     CheckNext();
   }

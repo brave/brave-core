@@ -13,7 +13,6 @@
 #include "brave/browser/ui/views/brave_actions/brave_shields_toolbar_button.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "chrome/browser/ui/views/extensions/extensions_toolbar_desktop.h"
@@ -45,7 +44,7 @@ void MaybeAddPwaShieldsToolbarButton(WebAppToolbarButtonContainer* container) {
     return;
   }
 
-  Browser* browser = base_browser_view->browser();
+  BrowserWindowInterface* browser = base_browser_view->browser();
   if (!browser) {
     return;
   }
@@ -66,26 +65,13 @@ void MaybeAddPwaShieldsToolbarButton(WebAppToolbarButtonContainer* container) {
       views::AsViewClass<WebAppFrameToolbarView>(container->parent());
   CHECK(frame_toolbar);
 
-  size_t insert_index = 0;
-  if (ExtensionsToolbarDesktop* ext = container->extensions_container()) {
-    for (size_t i = 0; i < container->children().size(); ++i) {
-      if (container->children()[i].get() == ext) {
-        insert_index = i;
-        break;
-      }
-    }
-  } else if (PinnedToolbarActionsContainer* pinned =
-                 container->pinned_toolbar_actions_container()) {
-    for (size_t i = 0; i < container->children().size(); ++i) {
-      if (container->children()[i].get() == pinned) {
-        insert_index = i;
-        break;
-      }
-    }
-  }
+  // Insert right before the menu button.
+  const size_t insert_index =
+      container->GetIndexOf(container->web_app_menu_button())
+          .value_or(container->children().size());
 
   auto button = std::make_unique<BraveShieldsToolbarButton>(
-      static_cast<BrowserWindowInterface*>(browser),
+      browser,
       base::BindRepeating(&WebUIBubbleManager::Create<ShieldsPanelUI>));
   ConfigureWebAppToolbarButton(button.get(), frame_toolbar);
 

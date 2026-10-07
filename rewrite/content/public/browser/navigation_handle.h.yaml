@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# This is necessary because of the use of `CONTENT_EXPORT` in the class
+# declaration.
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |
+      Declare `NavigationHandle::HasBypassRedirectChecksForNextRedirect()`.
+
+      `BraveProxyingURLLoaderFactory` is chained in front of Chromium's
+      WebRequest proxy, so it sees the redirects that proxy synthesizes for
+      extension/DNR rules before `NavigationURLLoaderImpl` does. It has to tell
+      those authorized redirects apart from unsafe ones, without consuming the
+      authorization, which belongs to `NavigationURLLoaderImpl`.
+    add_to_public:
+      class_name: NavigationHandle
+      code: |-
+
+        // Returns true if the next redirect should bypass redirect checks,
+        // leaving the flag set for `ConsumeBypassRedirectChecksForNextRedirect`.
+        static bool HasBypassRedirectChecksForNextRedirect(
+            FrameTreeNodeId frame_tree_node_id,
+            int64_t navigation_id);

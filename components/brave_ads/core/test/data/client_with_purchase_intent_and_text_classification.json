@@ -1,0 +1,24 @@
+{
+  "purchaseIntentSignalHistory": {
+    "technology & computing": [
+      { "created_at": "13303073580000000", "weight": 1 },
+      { "created_at": "13303073680000000", "weight": 2 }
+    ],
+    "travel": [
+      { "created_at": "13303073780000000", "weight": 3 }
+    ]
+  },
+  "textClassificationProbabilitiesHistory": [
+    {
+      "textClassificationProbabilities": [
+        { "segment": "technology & computing", "pageScore": "0.5" },
+        { "segment": "travel", "pageScore": "0.25" }
+      ]
+    },
+    {
+      "textClassificationProbabilities": [
+        { "segment": "travel", "pageScore": "0.75" }
+      ]
+    }
+  ]
+}

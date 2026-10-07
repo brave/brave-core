@@ -53,7 +53,8 @@ class BraveAppMenuModelBrowserTest : public InProcessBrowserTest {
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  void SetPurchasedUserForBraveVPN(Browser* browser, bool purchased) {
+  void SetPurchasedUserForBraveVPN(BrowserWindowInterface* browser,
+                                   bool purchased) {
     auto* service =
         brave_vpn::BraveVpnServiceFactory::GetForProfile(browser->GetProfile());
     ASSERT_TRUE(!!service);
@@ -65,14 +66,15 @@ class BraveAppMenuModelBrowserTest : public InProcessBrowserTest {
     // Call explicitely to update vpn commands status because mojo works in
     // async way.
     static_cast<chrome::BraveBrowserCommandController*>(
-        browser->command_controller())
+        chrome::BrowserCommandController::From(browser))
         ->OnPurchasedStateChanged(target_state, std::nullopt);
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;
 #endif
 
-  void RunCommandFromAppMenuModel(Browser* browser, int command_id) {
+  void RunCommandFromAppMenuModel(BrowserWindowInterface* browser,
+                                  int command_id) {
     auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
     BraveAppMenuModel model(browser_view->toolbar(), browser);
     model.Init();
@@ -89,7 +91,7 @@ void CheckCommandsAreDisabledInMenuModel(
 }
 
 void CheckCommandsAreDisabledInMenuModel(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     const std::vector<int>& disabled_commands) {
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
   BraveAppMenuModel model(browser_view->toolbar(), browser);
@@ -111,7 +113,7 @@ void CheckCommandsAreInOrderInMenuModel(
 }
 
 void CheckCommandsAreInOrderInMenuModel(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     const std::vector<int>& commands_in_order) {
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
   BraveAppMenuModel model(browser_view->toolbar(), browser);
@@ -120,7 +122,7 @@ void CheckCommandsAreInOrderInMenuModel(
 }
 
 void CheckMoreToolsCommandsAreInOrderInMenuModel(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     const std::vector<int>& more_tools_commands_in_order) {
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
   BraveAppMenuModel model(browser_view->toolbar(), browser);
@@ -135,7 +137,7 @@ void CheckMoreToolsCommandsAreInOrderInMenuModel(
 }
 
 void CheckMoreToolsCommandsAreDisabledInMenuModel(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     const std::vector<int>& more_tools_disabled_commands) {
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
   BraveAppMenuModel model(browser_view->toolbar(), browser);
@@ -150,7 +152,7 @@ void CheckMoreToolsCommandsAreDisabledInMenuModel(
 }
 
 void CheckHelpCommandsAreInOrderInMenuModel(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     const std::vector<int>& help_commands_in_order) {
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
   BraveAppMenuModel model(browser_view->toolbar(), browser);
@@ -278,7 +280,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
   ui_test_utils::BrowserCreatedObserver browser_creation_observer;
   profiles::SwitchToGuestProfile(base::DoNothing());
 
-  Browser* guest_browser = browser_creation_observer.Wait();
+  BrowserWindowInterface* guest_browser = browser_creation_observer.Wait();
   DCHECK(guest_browser);
   EXPECT_TRUE(guest_browser->GetProfile()->IsGuestSession());
   std::vector<int> commands_in_order_for_guest_profile = {
@@ -334,7 +336,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
 #if BUILDFLAG(ENABLE_TOR)
   ui_test_utils::BrowserCreatedObserver tor_browser_creation_observer;
   brave::NewOffTheRecordWindowTor(browser());
-  Browser* tor_browser = tor_browser_creation_observer.Wait();
+  BrowserWindowInterface* tor_browser = tor_browser_creation_observer.Wait();
   DCHECK(tor_browser);
   EXPECT_TRUE(tor_browser->GetProfile()->IsTor());
   std::vector<int> commands_in_order_for_tor_profile = {
@@ -403,6 +405,30 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, BraveVPNMenuTest) {
                                       commands_disabled_for_purchased);
 }
 #endif
+
+IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, ShareAndSaveSubmenuTest) {
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  BraveAppMenuModel model(browser_view->toolbar(), browser());
+  model.Init();
+
+  ui::SimpleMenuModel* save_and_share_model =
+      static_cast<ui::SimpleMenuModel*>(model.GetSubmenuModelAt(
+          model
+              .GetIndexOfCommandId(
+                  BraveAppMenuModel::kSaveAndShareMenuPlaceholder)
+              .value()));
+  ASSERT_TRUE(save_and_share_model);
+
+  // Check that the Screenshot menu item is present in the Save and Share
+  // submenu after "Save Page As..." menu item.
+  const auto screenshot_index =
+      save_and_share_model->GetIndexOfCommandId(IDC_SHARING_HUB_SCREENSHOT);
+  const auto save_page_as_index =
+      save_and_share_model->GetIndexOfCommandId(IDC_SAVE_PAGE);
+  ASSERT_TRUE(screenshot_index.has_value());
+  ASSERT_TRUE(save_page_as_index.has_value());
+  EXPECT_EQ(screenshot_index.value(), save_page_as_index.value() + 1);
+}
 
 void CheckMenuIcons(ui::MenuModel* menu,
                     int submenu_depth,

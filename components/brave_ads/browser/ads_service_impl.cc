@@ -14,7 +14,6 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/check_is_test.h"
-#include "base/containers/circular_deque.h"
 #include "base/feature_list.h"
 #include "base/files/file.h"
 #include "base/files/file_util.h"
@@ -38,6 +37,8 @@
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "base/trace_event/trace_event.h"
+#include "base/types/to_address.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/browser/bat_ads_service_factory.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_ads/browser/device_id/device_id.h"
@@ -200,7 +201,11 @@ AdsServiceImpl::AdsServiceImpl(
   if (!http_client_ || !history_service_ || !host_content_settings_map_) {
     CHECK_IS_TEST();
   }
+}
 
+AdsServiceImpl::~AdsServiceImpl() = default;
+
+void AdsServiceImpl::Init() {
   // Must run before the pref change registrars to keep prefs consistent across
   // upgrades regardless of whether the service is eligible to start.
   Migrate();
@@ -218,7 +223,28 @@ AdsServiceImpl::AdsServiceImpl(
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-AdsServiceImpl::~AdsServiceImpl() = default;
+base::WeakPtr<AdsService> AdsServiceImpl::GetWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
+bool AdsServiceImpl::IsIneligibleToStart() const {
+  return is_ineligible_to_start_;
+}
+
+bool AdsServiceImpl::IsInitialized() const {
+  return is_bat_ads_initialized_;
+}
+
+void AdsServiceImpl::Shutdown() {
+  // The profile is being destroyed and the service must never start again, so
+  // this is never reset to false.
+  is_shutting_down_ = true;
+
+  // Detach from PolicyService eagerly rather than waiting for the destructor.
+  policy_initialization_waiter_.reset();
+
+  ShutdownAdsService();
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -272,11 +298,8 @@ bool AdsServiceImpl::UserHasJoinedBraveRewards() const {
   return prefs_->GetBoolean(brave_rewards::prefs::kEnabled);
 }
 
-bool AdsServiceImpl::UserHasOptedInToNewTabPageAds() const {
-  return prefs_->GetBoolean(
-             ntp_background_images::prefs::kNewTabPageShowBackgroundImage) &&
-         prefs_->GetBoolean(ntp_background_images::prefs::
-                                kNewTabPageShowSponsoredImagesBackgroundImage);
+bool AdsServiceImpl::IsSponsoredAdsEnabled() const {
+  return prefs_->GetBoolean(prefs::kSponsoredEnabled);
 }
 
 bool AdsServiceImpl::IsNotificationAdsEnabled() const {
@@ -284,27 +307,23 @@ bool AdsServiceImpl::IsNotificationAdsEnabled() const {
          prefs_->GetBoolean(prefs::kNotificationsEnabled);
 }
 
-bool AdsServiceImpl::UserHasOptedInToSearchResultAds() const {
-  return prefs_->GetBoolean(prefs::kOptedInToSearchResultAds);
-}
-
 bool AdsServiceImpl::CanStartBatAdsService() const {
-  if (!brave_rewards::IsSupported(&*prefs_)) {
+  if (!brave_rewards::IsSupported(base::to_address(prefs_))) {
     // Never start if Rewards is disabled by policy, feature flag, or
-    // unsupported region, regardless of which ad unit the user has opted into.
+    // unsupported region, regardless of which ad units are enabled.
     return false;
   }
 
   if (UserHasJoinedBraveRewards()) {
     // Always start the service to update brave://ads-internals,
     // brave://rewards, and brave://rewards-internals if the user has joined
-    // Brave Rewards, even if all ad units are opted out.
+    // Brave Rewards, even if all ad units are disabled.
     return true;
   }
 
-  // The user has not joined Brave Rewards, so we only start the service if the
-  // user has opted in to new tab takeover, or search result ads.
-  return UserHasOptedInToNewTabPageAds() || UserHasOptedInToSearchResultAds();
+  // The user has not joined Brave Rewards, so we only start the service if
+  // sponsored ads are enabled.
+  return IsSponsoredAdsEnabled();
 }
 
 void AdsServiceImpl::MaybeStartBatAdsService() {
@@ -468,7 +487,8 @@ void AdsServiceImpl::InitializeBatAdsCallback(bool success) {
 
   RegisterResourceComponents();
 
-  resource_component_observation_.Observe(&*resource_component_);
+  resource_component_observation_.Observe(
+      base::to_address(resource_component_));
 
   if (host_content_settings_map_) {
     host_content_settings_map_observation_.Observe(
@@ -491,14 +511,6 @@ void AdsServiceImpl::InitializeBatAdsCallback(bool success) {
   CheckIdleStateAfterDelay();
 
   NotifyDidInitializeAdsService();
-}
-
-bool AdsServiceImpl::IsIneligibleToStart() const {
-  return is_ineligible_to_start_;
-}
-
-bool AdsServiceImpl::IsInitialized() const {
-  return is_bat_ads_initialized_;
 }
 
 void AdsServiceImpl::NotifyAdsServiceIneligibleToStart() {
@@ -570,10 +582,28 @@ void AdsServiceImpl::ClearAllPrefsAndAdsServiceDataAndMaybeRestart(
   }
   VLOG(6) << "Clearing ads data";
 
-  // Clear all ads preferences.
-  prefs_->ClearPrefsWithPrefixSilently("brave.brave_ads");
+  ClearAdsPrefs();
 
   ClearAdsServiceDataAndMaybeRestart(std::move(callback));
+}
+
+void AdsServiceImpl::ClearAdsPrefs() {
+  // Stop observing prefs before they are set below, otherwise the pref change
+  // may trigger an Ads service start or stop before its data is cleared.
+  pref_change_registrar_.RemoveAll();
+
+  std::optional<bool> sponsored_enabled;
+  if (prefs_->HasPrefPath(prefs::kSponsoredEnabled)) {
+    sponsored_enabled = prefs_->GetBoolean(prefs::kSponsoredEnabled);
+  }
+
+  prefs_->ClearPrefsWithPrefixSilently("brave.brave_ads");
+
+  if (sponsored_enabled) {
+    prefs_->SetBoolean(prefs::kSponsoredEnabled, *sponsored_enabled);
+  }
+
+  InitializePrefChangeRegistrar();
 }
 
 void AdsServiceImpl::ClearAdsServiceDataAndMaybeRestart(
@@ -692,7 +722,7 @@ void AdsServiceImpl::CloseAdaptiveCaptcha() {
 }
 
 void AdsServiceImpl::InitializeLocalStatePrefChangeRegistrar() {
-  local_state_pref_change_registrar_.Init(&*local_state_);
+  local_state_pref_change_registrar_.Init(base::to_address(local_state_));
 
   local_state_pref_change_registrar_.Add(
       variations::prefs::kVariationsCountry,
@@ -701,13 +731,13 @@ void AdsServiceImpl::InitializeLocalStatePrefChangeRegistrar() {
 }
 
 void AdsServiceImpl::InitializePrefChangeRegistrar() {
-  pref_change_registrar_.Init(&*prefs_);
+  pref_change_registrar_.Init(base::to_address(prefs_));
 
   InitializeBraveRewardsPrefChangeRegistrar();
   InitializeSubdivisionTargetingPrefChangeRegistrar();
-  InitializeNewTabPageAdsPrefChangeRegistrar();
+  InitializeNewTabPageBackgroundImagePrefChangeRegistrar();
   InitializeNotificationAdsPrefChangeRegistrar();
-  InitializeSearchResultAdsPrefChangeRegistrar();
+  InitializeSponsoredAdsPrefChangeRegistrar();
 }
 
 void AdsServiceImpl::InitializeBraveRewardsPrefChangeRegistrar() {
@@ -718,9 +748,8 @@ void AdsServiceImpl::InitializeBraveRewardsPrefChangeRegistrar() {
 
   pref_change_registrar_.Add(
       brave_rewards::prefs::kEnabled,
-      base::BindRepeating(&AdsServiceImpl::NotifyPrefChanged,
-                          base::Unretained(this),
-                          brave_rewards::prefs::kEnabled));
+      base::BindRepeating(&AdsServiceImpl::OnAdsPrefChanged,
+                          base::Unretained(this)));
 }
 
 void AdsServiceImpl::InitializeSubdivisionTargetingPrefChangeRegistrar() {
@@ -737,20 +766,12 @@ void AdsServiceImpl::InitializeSubdivisionTargetingPrefChangeRegistrar() {
                           prefs::kSubdivisionTargetingAutoDetectedSubdivision));
 }
 
-void AdsServiceImpl::InitializeNewTabPageAdsPrefChangeRegistrar() {
+void AdsServiceImpl::InitializeNewTabPageBackgroundImagePrefChangeRegistrar() {
   pref_change_registrar_.Add(
       ntp_background_images::prefs::kNewTabPageShowBackgroundImage,
       base::BindRepeating(
-          &AdsServiceImpl::OnAdsPrefChanged, base::Unretained(this),
+          &AdsServiceImpl::NotifyPrefChanged, base::Unretained(this),
           ntp_background_images::prefs::kNewTabPageShowBackgroundImage));
-
-  pref_change_registrar_.Add(
-      ntp_background_images::prefs::
-          kNewTabPageShowSponsoredImagesBackgroundImage,
-      base::BindRepeating(&AdsServiceImpl::OnAdsPrefChanged,
-                          base::Unretained(this),
-                          ntp_background_images::prefs::
-                              kNewTabPageShowSponsoredImagesBackgroundImage));
 }
 
 void AdsServiceImpl::InitializeNotificationAdsPrefChangeRegistrar() {
@@ -766,14 +787,40 @@ void AdsServiceImpl::InitializeNotificationAdsPrefChangeRegistrar() {
                           prefs::kMaximumNotificationAdsPerHour));
 }
 
-void AdsServiceImpl::InitializeSearchResultAdsPrefChangeRegistrar() {
+void AdsServiceImpl::InitializeSponsoredAdsPrefChangeRegistrar() {
   pref_change_registrar_.Add(
-      prefs::kOptedInToSearchResultAds,
+      prefs::kSponsoredEnabled,
       base::BindRepeating(&AdsServiceImpl::OnAdsPrefChanged,
                           base::Unretained(this)));
 }
 
+bool AdsServiceImpl::ShouldClearAdsData(const std::string& path) const {
+  // Only clear ads data once neither Sponsored Ads nor Brave Rewards remain
+  // enabled, matching `CanStartBatAdsService`'s eligibility check. Clearing on
+  // either pref alone would wipe data the service is still using for the
+  // other ad unit.
+  return (path == prefs::kSponsoredEnabled ||
+          path == brave_rewards::prefs::kEnabled) &&
+         !IsSponsoredAdsEnabled() && !UserHasJoinedBraveRewards();
+}
+
 void AdsServiceImpl::OnAdsPrefChanged(const std::string& path) {
+  if (ShouldClearAdsData(path)) {
+    // Clear ads data now. Posted because `ClearData` can synchronously reach
+    // `ClearAdsPrefs`, which mutates `pref_change_registrar_` and must not do
+    // so re-entrantly from within this pref's own change notification.
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE,
+        base::BindOnce(&AdsServiceImpl::MaybeClearAdsData,
+                       weak_ptr_factory_.GetWeakPtr(), path));
+  }
+
+  if (path == prefs::kNotificationsEnabled) {
+    // Runs before the eligibility check so notification ads opt-out cleanup
+    // completes even if the service also shuts down.
+    MaybeCloseAllNotificationAds();
+  }
+
   if (!CanStartBatAdsService()) {
     // The pref change made the service ineligible to run, so tear it down and
     // release resource components that are no longer needed.
@@ -794,6 +841,18 @@ void AdsServiceImpl::OnAdsPrefChanged(const std::string& path) {
   MaybeStartBatAdsService();
 
   NotifyPrefChanged(path);
+}
+
+void AdsServiceImpl::MaybeClearAdsData(const std::string& path) {
+  if (!ShouldClearAdsData(path)) {
+    // The triggering pref was toggled back before this posted task ran, so
+    // the data is still relevant and the service may already be running
+    // again. Clearing it now would wipe live data and needlessly restart the
+    // service.
+    return;
+  }
+
+  ClearData(base::DoNothing());
 }
 
 void AdsServiceImpl::OnVariationsCountryPrefChanged() {
@@ -937,10 +996,6 @@ void AdsServiceImpl::NotificationAdTimedOut(const std::string& placement_id) {
 }
 
 void AdsServiceImpl::CloseAllNotificationAds() {
-  if (!IsNotificationAdsEnabled()) {
-    return;
-  }
-
   const auto& list = prefs_->GetList(prefs::kNotificationAds);
   const base::circular_deque<NotificationAdInfo> ads =
       NotificationAdsFromList(list);
@@ -950,6 +1005,12 @@ void AdsServiceImpl::CloseAllNotificationAds() {
   }
 
   prefs_->SetList(prefs::kNotificationAds, {});
+}
+
+void AdsServiceImpl::MaybeCloseAllNotificationAds() {
+  if (!IsNotificationAdsEnabled()) {
+    CloseAllNotificationAds();
+  }
 }
 
 void AdsServiceImpl::RegisterOrUnregisterLanguageResourceComponent() {
@@ -1005,6 +1066,11 @@ void AdsServiceImpl::OpenNewTabWithAdCallback(
   OpenNewTabWithUrl(notification_ad->target_url);
 }
 
+void AdsServiceImpl::RetryOpeningNewTabWithAd(const std::string& placement_id) {
+  VLOG(2) << "Retry opening new tab for ad with placement id " << placement_id;
+  retry_opening_new_tab_for_ad_with_placement_id_ = placement_id;
+}
+
 void AdsServiceImpl::OpenNewTabWithUrl(const GURL& url) {
   if (is_shutting_down_) {
     return;
@@ -1016,11 +1082,6 @@ void AdsServiceImpl::OpenNewTabWithUrl(const GURL& url) {
   }
 
   delegate_->OpenNewTabWithUrl(url);
-}
-
-void AdsServiceImpl::RetryOpeningNewTabWithAd(const std::string& placement_id) {
-  VLOG(2) << "Retry opening new tab for ad with placement id " << placement_id;
-  retry_opening_new_tab_for_ad_with_placement_id_ = placement_id;
 }
 
 void AdsServiceImpl::ShowScheduledCaptchaCallback(
@@ -1064,6 +1125,12 @@ void AdsServiceImpl::ShutdownAdsService() {
   // callback fires against a partially torn-down service.
   bat_ads_service_weak_ptr_factory_.InvalidateWeakPtrs();
 
+  // Supersedes any `Launch` whose delayed bind is still pending on its own
+  // dedicated thread, so it either drops its receiver or closes the service
+  // it already bound, instead of leaving a stale service running after this
+  // shutdown.
+  bat_ads_service_factory_->Invalidate();
+
   bat_ads_client_notifier_remote_.reset();
   bat_ads_client_notifier_pending_receiver_.reset();
   bat_ads_associated_remote_.reset();
@@ -1101,17 +1168,6 @@ void AdsServiceImpl::ShutdownAdsService() {
   }
 
   is_bat_ads_initialized_ = false;
-}
-
-void AdsServiceImpl::Shutdown() {
-  // The profile is being destroyed and the service must never start again, so
-  // this is never reset to false.
-  is_shutting_down_ = true;
-
-  // Detach from PolicyService eagerly rather than waiting for the destructor.
-  policy_initialization_waiter_.reset();
-
-  ShutdownAdsService();
 }
 
 void AdsServiceImpl::AddBatAdsObserver(
@@ -1203,6 +1259,28 @@ void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
           /*diagnostics=*/std::nullopt));
 }
 
+void AdsServiceImpl::EvaluateConditionMatcher(
+    const std::string& pref_path,
+    const std::string& condition,
+    std::optional<std::string> test_value,
+    EvaluateConditionMatcherCallback callback) {
+  if (!bat_ads_associated_remote_.is_bound()) {
+    return std::move(callback).Run(/*current_value=*/"Unknown",
+                                   /*matches=*/"N/A");
+  }
+
+  bat_ads_associated_remote_->EvaluateConditionMatcher(
+      pref_path, condition, std::move(test_value),
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          base::BindOnce(
+              [](EvaluateConditionMatcherCallback callback,
+                 const std::string& current_value, const std::string& matches) {
+                std::move(callback).Run(current_value, matches);
+              },
+              std::move(callback)),
+          /*current_value=*/"Unknown", /*matches=*/"N/A"));
+}
+
 void AdsServiceImpl::GetStatementOfAccounts(
     GetStatementOfAccountsCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
@@ -1274,7 +1352,7 @@ void AdsServiceImpl::TriggerSearchResultAdEvent(
   CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   if (!bat_ads_associated_remote_.is_bound()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   bat_ads_associated_remote_->TriggerSearchResultAdEvent(
@@ -1573,7 +1651,8 @@ void AdsServiceImpl::LoadResourceComponent(
   std::optional<base::FilePath> file_path =
       resource_component_->MaybeGetPath(id, version);
   if (!file_path) {
-    return std::move(callback).Run({});
+    return std::move(callback).Run(/*file=*/{},
+                                   /*exists=*/false);
   }
 
   file_task_runner_->PostTaskAndReplyWithResult(
@@ -1592,7 +1671,8 @@ void AdsServiceImpl::LoadResourceComponent(
           [](LoadResourceComponentCallback callback,
              std::unique_ptr<base::File, base::OnTaskRunnerDeleter> file) {
             CHECK(file);
-            std::move(callback).Run(std::move(*file));
+            std::move(callback).Run(std::move(*file),
+                                    /*exists=*/true);
           },
           std::move(callback)));
 }

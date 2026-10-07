@@ -38,7 +38,6 @@ public class AssetUtils {
             assert chainId != null;
             switch (chainId) {
                 case BraveWalletConstants.FILECOIN_MAINNET:
-                case BraveWalletConstants.LOCALHOST_CHAIN_ID:
                     return KeyringId.FILECOIN;
 
                 case BraveWalletConstants.FILECOIN_TESTNET:

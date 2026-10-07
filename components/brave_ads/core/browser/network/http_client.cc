@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/browser/network/http_client.h"
 
 #include <cstddef>
+#include <string_view>
 #include <utility>
 
 #include "base/check.h"
@@ -20,6 +21,8 @@
 #include "brave/components/brave_ads/core/browser/network/oblivious_http_feature.h"
 #include "brave/components/brave_ads/core/browser/network/oblivious_http_key_config.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
@@ -112,9 +115,31 @@ void ReportError(const GURL& url,
   std::move(callback).Run(std::move(mojom_url_response));
 }
 
+bool HasJoinedBraveRewardsAndConnectedWallet(PrefService& prefs) {
+  return prefs.GetBoolean(brave_rewards::prefs::kEnabled) &&
+         !prefs.GetString(brave_rewards::prefs::kExternalWalletType).empty();
+}
+
+bool AdsEnabled(PrefService& prefs) {
+  return prefs.GetBoolean(brave_ads::prefs::kSponsoredEnabled) ||
+         // Notification ads only require joining Brave Rewards, not a connected
+         // wallet, so they can still produce non-reward confirmations.
+         (prefs.GetBoolean(brave_rewards::prefs::kEnabled) &&
+          prefs.GetBoolean(brave_ads::prefs::kNotificationsEnabled));
+}
+
+bool ShouldFetchOhttpKeyConfig(PrefService& prefs) {
+  // Must track the real eligibility and dispatch conditions exactly, or
+  // this either fetches needlessly or isn't ready when a confirmation needs
+  // it.
+  return kShouldSupportOhttp.Get() && AdsEnabled(prefs) &&
+         !HasJoinedBraveRewardsAndConnectedWallet(prefs);
+}
+
 }  // namespace
 
 HttpClient::HttpClient(
+    PrefService& prefs,
     PrefService& local_state,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     network::NetworkContextGetter network_context_getter,
@@ -129,10 +154,22 @@ HttpClient::HttpClient(
       oblivious_http_relay_url_(ObliviousHttpRelayUrl(use_ohttp_staging)) {
   CHECK(oblivious_http_key_config_);
 
-  // Fetch the OHTTP key config so the client is ready.
-  if (kShouldSupportOhttp.Get()) {
-    oblivious_http_key_config_->MaybeFetch();
+  // `base::Unretained` is safe here: `pref_change_registrar_` is a member of
+  // `this` and stops observing in its own destructor, before `this` is torn
+  // down, so this callback can never fire after destruction. A `WeakPtr` from
+  // `weak_ptr_factory_` would be wrong anyway, since `CancelRequests` also
+  // invalidates that factory and would permanently kill this callback too.
+  pref_change_registrar_.Init(&prefs);
+  for (std::string_view path :
+       {brave_ads::prefs::kSponsoredEnabled,
+        brave_ads::prefs::kNotificationsEnabled, brave_rewards::prefs::kEnabled,
+        brave_rewards::prefs::kExternalWalletType}) {
+    pref_change_registrar_.Add(
+        path, base::BindRepeating(&HttpClient::OnOhttpPrefChanged,
+                                  base::Unretained(this)));
   }
+
+  UpdateOhttpKeyConfigFetching();
 }
 
 HttpClient::~HttpClient() = default;
@@ -263,6 +300,18 @@ void HttpClient::ObliviousHttpRequestCallback(
 
   // Forward the response to the original caller for handling.
   std::move(callback).Run(std::move(mojom_url_response));
+}
+
+void HttpClient::UpdateOhttpKeyConfigFetching() {
+  if (ShouldFetchOhttpKeyConfig(*pref_change_registrar_.prefs())) {
+    oblivious_http_key_config_->MaybeFetch();
+  } else {
+    oblivious_http_key_config_->Stop();
+  }
+}
+
+void HttpClient::OnOhttpPrefChanged() {
+  UpdateOhttpKeyConfigFetching();
 }
 
 }  // namespace brave_ads

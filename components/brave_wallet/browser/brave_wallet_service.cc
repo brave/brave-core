@@ -29,6 +29,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/meld_integration_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
+#include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/simulation_service.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
@@ -44,6 +45,10 @@
 #include "brave/components/brave_wallet/common/solana_address.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
+#include "build/blink_buildflags.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -51,7 +56,13 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/gurl.h"
 #include "url/origin.h"
+#include "url/url_constants.h"
+
+#if BUILDFLAG(ENABLE_SNAP)
+#include "brave/components/brave_wallet/browser/snap_service.h"
+#endif
 
 namespace brave_wallet {
 
@@ -213,32 +224,21 @@ struct PendingGetEncryptPublicKeyRequest {
   base::Value encryption_public_key_id;
 };
 
-struct PendingSignMessageRequest {
-  PendingSignMessageRequest();
-  PendingSignMessageRequest(
-      mojom::SignMessageRequestPtr request,
-      BraveWalletService::SignMessageRequestCallback callback);
-  ~PendingSignMessageRequest();
-  PendingSignMessageRequest(PendingSignMessageRequest&& other);
+template <typename Request, typename Callback>
+struct PendingRequest {
+  PendingRequest(Request request, Callback callback)
+      : request(std::move(request)), callback(std::move(callback)) {}
 
-  mojom::SignMessageRequestPtr request;
-  BraveWalletService::SignMessageRequestCallback callback;
+  Request request;
+  Callback callback;
 };
-
-PendingSignMessageRequest::PendingSignMessageRequest() = default;
-PendingSignMessageRequest::PendingSignMessageRequest(
-    mojom::SignMessageRequestPtr request,
-    BraveWalletService::SignMessageRequestCallback callback)
-    : request(std::move(request)), callback(std::move(callback)) {}
-PendingSignMessageRequest::~PendingSignMessageRequest() = default;
-PendingSignMessageRequest::PendingSignMessageRequest(
-    PendingSignMessageRequest&& other) = default;
 
 BraveWalletService::BraveWalletService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::unique_ptr<BraveWalletServiceDelegate> delegate,
     PrefService* profile_prefs,
-    PrefService* local_state)
+    PrefService* local_state,
+    HostContentSettingsMap* host_content_settings_map)
     : profile_prefs_(profile_prefs),
       delegate_(std::move(delegate)),
       network_manager_(std::make_unique<NetworkManager>(profile_prefs)),
@@ -261,6 +261,7 @@ BraveWalletService::BraveWalletService(
       simulation_service_(
           std::make_unique<SimulationService>(url_loader_factory, this)),
       ipfs_service_(std::make_unique<BraveWalletIpfsService>(profile_prefs)),
+      host_content_settings_map_(host_content_settings_map),
       weak_ptr_factory_(this) {
   CHECK(delegate_);
   keyring_service_->SetDelegate(delegate_.get());
@@ -295,10 +296,18 @@ BraveWalletService::BraveWalletService(
         url_loader_factory);
   }
 
+#if BUILDFLAG(ENABLE_SNAP)
+  if (IsSnapFeatureEnabled()) {
+    snap_service_ = std::make_unique<SnapService>();
+  }
+#endif
+
   tx_service_ = std::make_unique<TxService>(
       json_rpc_service(), GetBitcoinWalletService(), GetZcashWalletService(),
       GetCardanoWalletService(), GetPolkadotWalletService(), *keyring_service(),
-      profile_prefs, CreateTxStorage(*delegate_));
+      profile_prefs, CreateTxStorage(*delegate_),
+      base::BindRepeating(&BraveWalletService::HasPermissionForPendingRequest,
+                          base::Unretained(this)));
 
   simple_hash_client_ = std::make_unique<SimpleHashClient>(url_loader_factory);
   asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(
@@ -306,6 +315,9 @@ BraveWalletService::BraveWalletService(
       *simple_hash_client_, profile_prefs);
 
   delegate_->AddObserver(this);
+  if (host_content_settings_map_) {
+    host_content_settings_map_->AddObserver(this);
+  }
 
   keyring_service_->SetAutolockEnabled(delegate_->IsAutolockEnabled());
   keyring_service_->set_wallet_reset_cb(base::BindRepeating(
@@ -359,7 +371,17 @@ BraveWalletService::BraveWalletService(
 
 BraveWalletService::BraveWalletService() : weak_ptr_factory_(this) {}
 
-BraveWalletService::~BraveWalletService() = default;
+BraveWalletService::~BraveWalletService() {
+  if (host_content_settings_map_) {
+    host_content_settings_map_->RemoveObserver(this);
+  }
+}
+
+void BraveWalletService::Shutdown() {
+  if (host_content_settings_map_) {
+    host_content_settings_map_->RemoveObserver(this);
+  }
+}
 
 // For unit tests
 void BraveWalletService::RemovePrefListenersForTests() {
@@ -996,6 +1018,43 @@ bool BraveWalletService::HasPermissionSync(const url::Origin& origin,
   return true;
 }
 
+bool BraveWalletService::HasPermissionForPendingRequest(
+    const url::Origin& origin,
+    const mojom::AccountIdPtr& account_id) {
+#if !BUILDFLAG(USE_BLINK)
+  // iOS has no wallet site-permission model (no blink permission types) and
+  // never observes content settings, so there is nothing to revoke.
+  return true;
+#else
+  // Coins without a site-permission concept (e.g. BTC, FIL) have nothing to
+  // revoke, so pending requests/transactions for them are never drained.
+  if (!CoinTypeToPermissionType(account_id->coin)) {
+    return true;
+  }
+
+  // Requests initiated by the wallet UI itself have no web origin to
+  // re-check.
+  if (origin.opaque()) {
+    return true;
+  }
+
+  if (origin.scheme() == url::kHttpScheme ||
+      origin.scheme() == url::kHttpsScheme) {
+    return HasPermissionSync(origin, account_id);
+  }
+
+  // Trusted wallet WebUI origins (wallet page, panel/side panel). Anything
+  // else fails closed: no permission can be present, so queued requests are
+  // drained.
+  return origin.IsSameOriginWith(
+             url::Origin::Create(GURL(kBraveUIWalletURL))) ||
+         origin.IsSameOriginWith(
+             url::Origin::Create(GURL(kBraveUIWalletAccountCreationURL))) ||
+         origin.IsSameOriginWith(
+             url::Origin::Create(GURL(kBraveUIWalletPanelURL)));
+#endif
+}
+
 void BraveWalletService::HasPermission(
     std::vector<mojom::AccountIdPtr> accounts,
     HasPermissionCallback callback) {
@@ -1105,50 +1164,22 @@ void BraveWalletService::MigrateAsCustomNetwork(
   prefs->SetBoolean(pref_key, true);
 }
 
-// Migrate dead network to fallback network.
-void BraveWalletService::MigrateDeadNetwork(
-    PrefService* prefs,
-    const std::string& chain_id,
-    const std::string& fallback_chain_id,
-    std::string_view pref_key) {
-  if (prefs->GetBoolean(pref_key)) {
+void BraveWalletService::MaybeMigrateLocalhostNetworks(PrefService* prefs) {
+  constexpr char kLocalhostChainId[] = "0x539";
+
+  if (prefs->GetBoolean(kBraveWalletLocalhostNetworksMigrated)) {
     return;
   }
 
   NetworkManager network_manager(prefs);
+  network_manager.MigrateDeadNetwork(mojom::CoinType::ETH, kLocalhostChainId,
+                                     mojom::kSepoliaChainId);
+  network_manager.MigrateDeadNetwork(mojom::CoinType::SOL, kLocalhostChainId,
+                                     mojom::kSolanaTestnet);
+  network_manager.MigrateDeadNetwork(mojom::CoinType::FIL, kLocalhostChainId,
+                                     mojom::kFilecoinTestnet);
 
-  // Migrate current chain id for default origin
-  if (network_manager.GetCurrentChainId(mojom::CoinType::ETH, std::nullopt) ==
-      chain_id) {
-    network_manager.SetCurrentChainId(mojom::CoinType::ETH, std::nullopt,
-                                      fallback_chain_id);
-  }
-
-  // Migrate current chain id for all origins
-  const auto& selected_networks =
-      prefs->GetDict(kBraveWalletSelectedNetworksPerOrigin);
-
-  const auto* coin_dict =
-      selected_networks.FindDict(GetPrefKeyForCoinType(mojom::CoinType::ETH));
-  if (!coin_dict) {
-    prefs->SetBoolean(pref_key, true);
-    return;
-  }
-
-  for (auto origin : *coin_dict) {
-    const auto* chain_id_each = origin.second.GetIfString();
-    if (!chain_id_each) {
-      continue;
-    }
-
-    if (base::ToLowerASCII(*chain_id_each) == chain_id) {
-      network_manager.SetCurrentChainId(mojom::CoinType::ETH,
-                                        url::Origin::Create(GURL(origin.first)),
-                                        fallback_chain_id);
-    }
-  }
-
-  prefs->SetBoolean(pref_key, true);
+  prefs->SetBoolean(kBraveWalletLocalhostNetworksMigrated, true);
 }
 
 BitcoinWalletService* BraveWalletService::GetBitcoinWalletService() {
@@ -1230,17 +1261,16 @@ void BraveWalletService::NotifySignMessageErrorProcessed(
 
 void BraveWalletService::GetPendingSignSolTransactionsRequests(
     GetPendingSignSolTransactionsRequestsCallback callback) {
+  std::move(callback).Run(GetPendingSignSolTransactionsRequestsSync());
+}
+
+std::vector<mojom::SignSolTransactionsRequestPtr>
+BraveWalletService::GetPendingSignSolTransactionsRequestsSync() const {
   std::vector<mojom::SignSolTransactionsRequestPtr> requests;
-  if (sign_sol_transactions_requests_.empty()) {
-    std::move(callback).Run(std::move(requests));
-    return;
+  for (const auto& pending : sign_sol_transactions_requests_) {
+    requests.push_back(pending.request.Clone());
   }
-
-  for (const auto& request : sign_sol_transactions_requests_) {
-    requests.push_back(request.Clone());
-  }
-
-  std::move(callback).Run(std::move(requests));
+  return requests;
 }
 
 void BraveWalletService::GetPendingSignCardanoTransactionRequests(
@@ -1251,16 +1281,20 @@ void BraveWalletService::GetPendingSignCardanoTransactionRequests(
     return;
   }
 
-  for (const auto& request : sign_cardano_transaction_requests_) {
-    requests.push_back(request.Clone());
+  for (const auto& pending : sign_cardano_transaction_requests_) {
+    requests.push_back(pending.request.Clone());
   }
 
   std::move(callback).Run(std::move(requests));
 }
 
-const base::circular_deque<mojom::SignCardanoTransactionRequestPtr>&
+std::vector<mojom::SignCardanoTransactionRequestPtr>
 BraveWalletService::GetPendingSignCardanoTransactionRequestsSync() const {
-  return sign_cardano_transaction_requests_;
+  std::vector<mojom::SignCardanoTransactionRequestPtr> requests;
+  for (const auto& pending : sign_cardano_transaction_requests_) {
+    requests.push_back(pending.request.Clone());
+  }
+  return requests;
 }
 
 void BraveWalletService::NotifySignSolTransactionsRequestProcessed(
@@ -1269,14 +1303,13 @@ void BraveWalletService::NotifySignSolTransactionsRequestProcessed(
     std::vector<mojom::SolanaSignaturePtr> hw_signatures,
     const std::optional<std::string>& error) {
   if (sign_sol_transactions_requests_.empty() ||
-      sign_sol_transactions_requests_.front()->id != id) {
+      sign_sol_transactions_requests_.front().request->id != id) {
     return;
   }
-  auto callback = std::move(sign_sol_transactions_callbacks_.front());
+  auto pending = std::move(sign_sol_transactions_requests_.front());
   sign_sol_transactions_requests_.pop_front();
-  sign_sol_transactions_callbacks_.pop_front();
 
-  std::move(callback).Run(approved, std::move(hw_signatures), error);
+  std::move(pending.callback).Run(approved, std::move(hw_signatures), error);
 }
 
 void BraveWalletService::NotifySignCardanoTransactionRequestProcessed(
@@ -1284,14 +1317,13 @@ void BraveWalletService::NotifySignCardanoTransactionRequestProcessed(
     int id,
     const std::optional<std::string>& error) {
   if (sign_cardano_transaction_requests_.empty() ||
-      sign_cardano_transaction_requests_.front()->id != id) {
+      sign_cardano_transaction_requests_.front().request->id != id) {
     return;
   }
-  auto callback = std::move(sign_cardano_transaction_callbacks_.front());
+  auto pending = std::move(sign_cardano_transaction_requests_.front());
   sign_cardano_transaction_requests_.pop_front();
-  sign_cardano_transaction_callbacks_.pop_front();
 
-  std::move(callback).Run(approved, error);
+  std::move(pending.callback).Run(approved, error);
 }
 
 void BraveWalletService::AddObserver(
@@ -1309,6 +1341,82 @@ void BraveWalletService::OnActiveOriginChanged(
   for (const auto& observer : observers_) {
     observer->OnActiveOriginChanged(origin_info.Clone());
   }
+}
+
+void BraveWalletService::OnContentSettingChanged(
+    const ContentSettingsPattern& primary_pattern,
+    const ContentSettingsPattern& secondary_pattern,
+    ContentSettingsTypeSet content_type_set) {
+  if (!content_type_set.Contains(ContentSettingsType::BRAVE_ETHEREUM) &&
+      !content_type_set.Contains(ContentSettingsType::BRAVE_SOLANA) &&
+      !content_type_set.Contains(ContentSettingsType::BRAVE_CARDANO)) {
+    return;
+  }
+  tx_service_->RejectUnapprovedTransactionsWithoutPermission();
+  DrainSignMessageRequestsWithoutPermission();
+  DrainSignSolTransactionsRequestsWithoutPermission();
+  DrainSignCardanoTransactionRequestsWithoutPermission();
+}
+
+template <typename PendingDeque, typename GetAccountId, typename DrainCallback>
+void BraveWalletService::DrainPendingRequestsWithoutPermission(
+    PendingDeque& pending_requests,
+    GetAccountId get_account_id,
+    DrainCallback drain_callback) {
+  std::vector<typename PendingDeque::value_type> to_drain;
+  for (auto it = pending_requests.begin(); it != pending_requests.end();) {
+    if (!it->request->origin_info) {
+      ++it;
+      continue;
+    }
+    auto origin =
+        url::Origin::Create(GURL(it->request->origin_info->origin_spec));
+    if (HasPermissionForPendingRequest(origin, get_account_id(*it))) {
+      ++it;
+      continue;
+    }
+    to_drain.push_back(std::move(*it));
+    it = pending_requests.erase(it);
+  }
+  // approved=false so the provider rejects the request as if the user
+  // declined it.
+  for (auto& drained : to_drain) {
+    drain_callback(std::move(drained.callback));
+  }
+}
+
+void BraveWalletService::DrainSignMessageRequestsWithoutPermission() {
+  DrainPendingRequestsWithoutPermission(
+      sign_message_requests_,
+      [](const auto& pending) -> const mojom::AccountIdPtr& {
+        return pending.request->account_id;
+      },
+      [](SignMessageRequestCallback callback) {
+        std::move(callback).Run(false, nullptr, std::nullopt);
+      });
+}
+
+void BraveWalletService::DrainSignSolTransactionsRequestsWithoutPermission() {
+  DrainPendingRequestsWithoutPermission(
+      sign_sol_transactions_requests_,
+      [](const auto& pending) -> const mojom::AccountIdPtr& {
+        return pending.request->from_account_id;
+      },
+      [](SignSolTransactionsRequestCallback callback) {
+        std::move(callback).Run(false, {}, std::nullopt);
+      });
+}
+
+void BraveWalletService::
+    DrainSignCardanoTransactionRequestsWithoutPermission() {
+  DrainPendingRequestsWithoutPermission(
+      sign_cardano_transaction_requests_,
+      [](const auto& pending) -> const mojom::AccountIdPtr& {
+        return pending.request->account_id;
+      },
+      [](SignCardanoTransactionRequestCallback callback) {
+        std::move(callback).Run(false, std::nullopt);
+      });
 }
 
 void BraveWalletService::WalletRestored() {
@@ -1424,8 +1532,8 @@ void BraveWalletService::AddSignSolTransactionsRequest(
   if (request->id < 0) {
     request->id = sign_sol_transactions_id_++;
   }
-  sign_sol_transactions_requests_.push_back(std::move(request));
-  sign_sol_transactions_callbacks_.push_back(std::move(callback));
+  sign_sol_transactions_requests_.emplace_back(std::move(request),
+                                               std::move(callback));
   if (sign_sol_txs_request_added_cb_for_testing_) {
     std::move(sign_sol_txs_request_added_cb_for_testing_).Run();
   }
@@ -1437,17 +1545,17 @@ void BraveWalletService::AddSignCardanoTransactionRequest(
   if (request->id < 0) {
     request->id = sign_cardano_transactions_id_++;
   }
-  sign_cardano_transaction_requests_.push_back(std::move(request));
-  sign_cardano_transaction_callbacks_.push_back(std::move(callback));
+  sign_cardano_transaction_requests_.emplace_back(std::move(request),
+                                                  std::move(callback));
 
   sign_transaction_added_callback_list_for_testing_.Notify();
 }
 
 mojom::SignSolTransactionsRequestPtr
 BraveWalletService::GetPendingSignSolTransactionsRequest(int32_t id) {
-  for (auto& request : sign_sol_transactions_requests_) {
-    if (request->id == id) {
-      return request.Clone();
+  for (auto& pending : sign_sol_transactions_requests_) {
+    if (pending.request->id == id) {
+      return pending.request.Clone();
     }
   }
 
@@ -1900,8 +2008,8 @@ void BraveWalletService::GetSimpleHashSpamNFTs(
     return;
   }
   simple_hash_client_->FetchNFTsFromSimpleHash(
-      wallet_address, chain_ids, cursor, false /* skip_spam */,
-      true /* only_spam */, std::move(callback));
+      wallet_address, chain_ids, cursor, SimpleHashClient::SpamFilter::kOnly,
+      std::move(callback));
 }
 
 void BraveWalletService::CancelAllSuggestedTokenCallbacks() {
@@ -1932,10 +2040,10 @@ void BraveWalletService::CancelAllSignMessageCallbacks() {
 
 void BraveWalletService::CancelAllSignSolTransactionsCallbacks() {
   while (!sign_sol_transactions_requests_.empty()) {
-    auto callback = std::move(sign_sol_transactions_callbacks_.front());
+    auto pending = std::move(sign_sol_transactions_requests_.front());
     sign_sol_transactions_requests_.pop_front();
-    sign_sol_transactions_callbacks_.pop_front();
-    std::move(callback).Run(false, {}, std::nullopt);
+
+    std::move(pending.callback).Run(false, {}, std::nullopt);
   }
 }
 
@@ -2024,16 +2132,6 @@ void BraveWalletService::DiscoverEthAllowances(
       std::move(callback));
 }
 
-void BraveWalletService::GetAnkrSupportedChainIds(
-    GetAnkrSupportedChainIdsCallback callback) {
-  std::vector<std::string> chain_ids;
-  for (const auto& entry : kAnkrBlockchains) {
-    chain_ids.push_back(std::string(entry.first));
-  }
-
-  std::move(callback).Run(std::move(chain_ids));
-}
-
 void BraveWalletService::IsPrivateWindow(IsPrivateWindowCallback callback) {
   std::move(callback).Run(delegate_->IsPrivateWindow());
 }
@@ -2061,6 +2159,9 @@ void BraveWalletService::WriteToClipboard(const std::string& text,
   scw.WriteText(out);
   if (is_sensitive) {
     scw.MarkAsConfidential();
+  } else if (delegate_->IsPrivateWindow()) {
+    // Keep it out of the OS clipboard history and cloud clipboard sync.
+    scw.MarkAsOffTheRecord();
   }
 }
 

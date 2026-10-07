@@ -16,3 +16,6 @@ NSString* const kDefaultSolanaWallet =
 
 NSString* const kDefaultCardanoWallet =
     base::SysUTF8ToNSString(brave_wallet::kDefaultCardanoWallet);
+
+NSString* const kBraveWalletKeyrings =
+    base::SysUTF8ToNSString(brave_wallet::kBraveWalletKeyrings);

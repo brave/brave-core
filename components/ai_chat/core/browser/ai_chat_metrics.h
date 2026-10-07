@@ -88,6 +88,8 @@ inline constexpr char kRateLimitStopsHistogramName[] =
     "Brave.AIChat.RateLimitStops";
 inline constexpr char kContextLimitsHistogramName[] =
     "Brave.AIChat.ContextLimits";
+inline constexpr char kConversationCountHistogramName[] =
+    "Brave.AIChat.ConversationCount";
 
 enum class EntryPoint {
   kOmniboxItem = 0,
@@ -164,6 +166,7 @@ class AIChatMetrics : public mojom::Metrics,
                        mojom::ConversationTurnPtr& entry);
   void RecordConversationUnload(std::string_view conversation_uuid);
   void RecordConversationsCleared();
+  void ReportConversationCount(size_t conversation_count);
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   void RecordOmniboxOpen();

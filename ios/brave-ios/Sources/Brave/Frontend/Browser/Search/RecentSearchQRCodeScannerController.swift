@@ -93,10 +93,6 @@ class RecentSearchQRCodeScannerController: UIViewController {
   }
 
   override func viewDidAppear(_ animated: Bool) {
-    if let orientation = view.window?.windowScene?.interfaceOrientation {
-      scannerView.cameraView.videoPreviewLayer?.connection?.videoOrientation =
-        AVCaptureVideoOrientation(ui: orientation)
-    }
     scannerView.cameraView.startRunning()
   }
 
@@ -109,10 +105,6 @@ class RecentSearchQRCodeScannerController: UIViewController {
     coordinator.animate(alongsideTransition: nil) { [weak self] _ in
       guard let self else { return }
 
-      if let orientation = self.view.window?.windowScene?.interfaceOrientation {
-        self.scannerView.cameraView.videoPreviewLayer?.connection?.videoOrientation =
-          AVCaptureVideoOrientation(ui: orientation)
-      }
       self.scannerView.cameraView.startRunning()
     }
   }
@@ -171,7 +163,7 @@ extension RecentSearchQRCodeScannerController {
             ]
           )
 
-          scannedDisplayButton.titleLabel?.lineBreakMode = truncationMode
+          scannedDisplayButton.configuration?.titleLineBreakMode = truncationMode
           scannedDisplayButton.setAttributedTitle(title, for: .normal)
         } else {
           scannedDisplayButton.setTitle(nil, for: .normal)
@@ -180,9 +172,22 @@ extension RecentSearchQRCodeScannerController {
     }
 
     let scannedDisplayButton = UIButton().then {
-      $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
-      $0.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
-      $0.titleLabel?.lineBreakMode = .byTruncatingTail
+      var configuration = UIButton.Configuration.plain()
+      configuration.baseBackgroundColor = .clear
+      configuration.contentInsets = NSDirectionalEdgeInsets(
+        top: 12,
+        leading: 16,
+        bottom: 12,
+        trailing: 16
+      )
+      configuration.titleLineBreakMode = .byTruncatingTail
+      configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer {
+        incoming in
+        var outgoing = incoming
+        outgoing.font = UIFont.preferredFont(forTextStyle: .body)
+        return outgoing
+      }
+      $0.configuration = configuration
       $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
       $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
       $0.layer.cornerRadius = 10

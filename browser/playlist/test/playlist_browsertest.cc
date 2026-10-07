@@ -15,10 +15,8 @@
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
-#include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/playlist/playlist_add_bubble_view.h"
 #include "brave/browser/ui/views/playlist/playlist_bubble_view.h"
 #include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
@@ -31,14 +29,17 @@
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "brave/components/playlist/core/common/pref_names.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#include "chrome/browser/ui/views/page_action/test_support/page_action_test_support.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/prefs/pref_service.h"
@@ -63,6 +64,14 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
 
   content::WebContents* GetActiveWebContents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
+  views::View* GetPlaylistIcon() {
+    auto* provider = BrowserView::GetBrowserViewForBrowser(browser())
+                         ->toolbar_button_provider();
+    return page_actions::GetIconLabelBubbleViewForTesting(
+        provider->GetPageActionViewInterface(kActionShowPlaylistPageAction),
+        kActionShowPlaylistPageAction);
   }
 
   PlaylistBubbleView* GetBubble() {
@@ -101,10 +110,9 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
   }
 
   void ActivatePlaylistSidePanel() {
-    auto* sidebar_controller = browser()->GetFeatures().sidebar_controller();
-    ASSERT_TRUE(sidebar_controller);
-    sidebar_controller->ActivatePanelItem(
-        sidebar::SidebarItem::BuiltInItemType::kPlaylist);
+    auto* side_panel_ui = SidePanelUI::From(browser());
+    ASSERT_TRUE(side_panel_ui);
+    side_panel_ui->Show(SidePanelEntryId::kPlaylist);
   }
 
   content::WebContents* GetPlaylistWebContents() {
@@ -112,8 +120,7 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
 
     // Wrap routine with lambda as ASSERT_FOO has return type internally.
     ([&]() {
-      auto* coordinator =
-          browser()->GetFeatures().playlist_side_panel_coordinator();
+      auto* coordinator = PlaylistSidePanelCoordinator::From(browser());
       ASSERT_TRUE(coordinator);
 
       auto* contents_wrapper = coordinator->contents_wrapper();
@@ -178,7 +185,7 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
 
 // Check toggling playlist panel while playing doesn't make crash.
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PanelToggleTestWhilePlaying) {
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
 
   // Open playlist panel.
   panel_ui->Show(SidePanelEntryId::kPlaylist);
@@ -187,8 +194,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PanelToggleTestWhilePlaying) {
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
 
-  auto* coordinator =
-      browser()->GetFeatures().playlist_side_panel_coordinator();
+  auto* coordinator = PlaylistSidePanelCoordinator::From(browser());
   ASSERT_TRUE(coordinator);
   coordinator->is_audible_for_testing_ = true;
 
@@ -220,12 +226,11 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
       browser_view->GetLocationBarView());
-  auto* playlist_action_icon_view =
-      location_bar_view->GetPlaylistActionIconView();
-  ASSERT_TRUE(playlist_action_icon_view);
-  // Checks if PageActionIconView shows up on a site with videos.
+  auto* playlist_icon = GetPlaylistIcon();
+  ASSERT_TRUE(playlist_icon);
+  // Checks if the page action icon shows up on a site with videos.
   WaitUntil(base::BindLambdaForTesting(
-      [&]() { return playlist_action_icon_view->GetVisible(); }));
+      [&]() { return playlist_icon->GetVisible(); }));
 
   // The test page is simple video url. So we expect it to be found without
   // necessity of extracting media from background web contents.
@@ -389,13 +394,9 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, UIHiddenWhenDisabled) {
   timer.Start(FROM_HERE, base::Milliseconds(500), run_loop.QuitClosure());
   run_loop.Run();
 
-  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-  auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
-      browser_view->GetLocationBarView());
-  auto* playlist_action_icon_view =
-      location_bar_view->GetPlaylistActionIconView();
-  ASSERT_TRUE(playlist_action_icon_view);
-  EXPECT_FALSE(playlist_action_icon_view->GetVisible());
+  auto* playlist_icon = GetPlaylistIcon();
+  ASSERT_TRUE(playlist_icon);
+  EXPECT_FALSE(playlist_icon->GetVisible());
 
   EXPECT_EQ(playlist_iter, visible_items.end())
       << "Playlist item should not be visible when disabled";
@@ -419,7 +420,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlaylistTabHelper) {
   EXPECT_TRUE(playlist_tab_helper->found_items().empty());
 
   // 'Back' should be observed
-  browser()->command_controller()->ExecuteCommand(IDC_BACK);
+  chrome::BrowserCommandController::From(browser())->ExecuteCommand(IDC_BACK);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return playlist_tab_helper->found_items().size() > 0; }));
 
@@ -438,7 +439,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlaylistTabHelper) {
       [&]() { return playlist_tab_helper->saved_items().size() == 0; }));
 
   // 'Forward' should be observed
-  browser()->command_controller()->ExecuteCommand(IDC_FORWARD);
+  chrome::BrowserCommandController::From(browser())->ExecuteCommand(
+      IDC_FORWARD);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return playlist_tab_helper->found_items().size() == 0; }));
 }
@@ -496,21 +498,20 @@ IN_PROC_BROWSER_TEST_F(
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
       browser_view->GetLocationBarView());
-  auto* playlist_action_icon_view =
-      location_bar_view->GetPlaylistActionIconView();
+  auto* playlist_icon = GetPlaylistIcon();
   auto* playlist_tab_helper =
       playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
 
-  EXPECT_FALSE(playlist_action_icon_view->GetVisible());
+  EXPECT_FALSE(playlist_icon->GetVisible());
   const GURL url = https_server()->GetURL("www.youtube.com", "/watch?v=12345");
   ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(), url));
-  WaitUntil(base::BindLambdaForTesting(
-      [&] { return playlist_action_icon_view->GetVisible(); }));
+  WaitUntil(
+      base::BindLambdaForTesting([&] { return playlist_icon->GetVisible(); }));
 
   EXPECT_EQ(playlist_tab_helper->found_items().size(), 1u);
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
 
-  playlist_action_icon_view->ShowPlaylistBubble();
+  location_bar_view->ShowPlaylistBubble();
   auto* add_bubble = views::AsViewClass<PlaylistAddBubbleView>(GetBubble());
   EXPECT_TRUE(add_bubble);
   add_bubble->Accept();
@@ -545,21 +546,20 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
       browser_view->GetLocationBarView());
-  auto* playlist_action_icon_view =
-      location_bar_view->GetPlaylistActionIconView();
+  auto* playlist_icon = GetPlaylistIcon();
   auto* playlist_tab_helper =
       playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
 
-  EXPECT_FALSE(playlist_action_icon_view->GetVisible());
+  EXPECT_FALSE(playlist_icon->GetVisible());
   const GURL url = https_server()->GetURL("www.youtube.com", "/watch?v=12345");
   ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(), url));
-  WaitUntil(base::BindLambdaForTesting(
-      [&] { return playlist_action_icon_view->GetVisible(); }));
+  WaitUntil(
+      base::BindLambdaForTesting([&] { return playlist_icon->GetVisible(); }));
 
   EXPECT_EQ(playlist_tab_helper->found_items().size(), 1u);
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
 
-  playlist_action_icon_view->ShowPlaylistBubble();
+  location_bar_view->ShowPlaylistBubble();
   auto* add_bubble = views::AsViewClass<PlaylistAddBubbleView>(GetBubble());
   EXPECT_TRUE(add_bubble);
   add_bubble->Accept();
@@ -599,21 +599,20 @@ IN_PROC_BROWSER_TEST_F(
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
       browser_view->GetLocationBarView());
-  auto* playlist_action_icon_view =
-      location_bar_view->GetPlaylistActionIconView();
+  auto* playlist_icon = GetPlaylistIcon();
   auto* playlist_tab_helper =
       playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
 
-  EXPECT_FALSE(playlist_action_icon_view->GetVisible());
+  EXPECT_FALSE(playlist_icon->GetVisible());
   const GURL url = https_server()->GetURL("www.ted.com", "/v12345");
   ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(), url));
-  WaitUntil(base::BindLambdaForTesting(
-      [&] { return playlist_action_icon_view->GetVisible(); }));
+  WaitUntil(
+      base::BindLambdaForTesting([&] { return playlist_icon->GetVisible(); }));
 
   EXPECT_EQ(playlist_tab_helper->found_items().size(), 1u);
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
 
-  playlist_action_icon_view->ShowPlaylistBubble();
+  location_bar_view->ShowPlaylistBubble();
   auto* add_bubble = views::AsViewClass<PlaylistAddBubbleView>(GetBubble());
   EXPECT_TRUE(add_bubble);
   add_bubble->Accept();

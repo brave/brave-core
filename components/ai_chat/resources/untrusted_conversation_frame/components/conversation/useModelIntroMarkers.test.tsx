@@ -198,7 +198,7 @@ describe('useModelIntroMarkers', () => {
     })
 
     await act(async () => {
-      mockRef.current!.api.getConversationHistory.update([
+      mockRef.current!.api.getConversationHistory.update(null, [
         firstTurn,
         secondTurn,
         thirdTurn,
@@ -383,7 +383,7 @@ describe('useModelIntroMarkers', () => {
     })
 
     await act(async () => {
-      mockRef.current!.api.getConversationHistory.update([
+      mockRef.current!.api.getConversationHistory.update(null, [
         firstTurn,
         secondTurn,
         thirdTurn,
@@ -473,7 +473,7 @@ describe('useModelIntroMarkers', () => {
     })
 
     await act(async () => {
-      mockRef.current!.api.getConversationHistory.update([
+      mockRef.current!.api.getConversationHistory.update(null, [
         createConversationTurnWithDefaults({
           uuid: 'turn-1',
           characterType: Mojom.CharacterType.HUMAN,

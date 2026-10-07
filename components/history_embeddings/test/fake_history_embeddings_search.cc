@@ -5,6 +5,7 @@
 
 #include "brave/components/history_embeddings/test/fake_history_embeddings_search.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/functional/bind.h"

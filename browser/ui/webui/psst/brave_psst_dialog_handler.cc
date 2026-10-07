@@ -11,25 +11,24 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "base/notimplemented.h"
 #include "brave/browser/psst/psst_tab_web_contents_observer.h"
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/constrained_window/constrained_window_views.h"
 #include "content/public/browser/web_contents.h"
+#include "mojo/public/cpp/bindings/callback_helpers.h"
 
 namespace psst {
 
 namespace {
 
-base::WeakPtr<psst::PsstTabWebContentsObserver>
-GetActivePsstTabHelperFromContext(content::WebContents* web_contents) {
+base::WeakPtr<psst::PsstTabWebContentsObserver> GetPsstTabHelperForContents(
+    content::WebContents* web_contents) {
   auto* tab_interface = tabs::TabInterface::GetFromContents(web_contents);
   if (!tab_interface) {
     return nullptr;
@@ -67,29 +66,24 @@ base::WeakPtr<PsstUiDelegateImpl> GetPsstUIDelegate(
 }  // namespace
 
 BravePsstDialogHandler::BravePsstDialogHandler(
-    TabStripModel* tab_strip_model,
+    content::WebContents* initiator_web_contents,
     BravePsstDialogUI* dialog_ui,
     mojo::PendingReceiver<psst::mojom::PsstConsentHelper> pending_receiver,
     mojo::PendingRemote<psst::mojom::PsstConsentDialog> client_page,
     psst::mojom::PsstConsentFactory::CreatePsstConsentHandlerCallback callback)
-    : tab_strip_model_(tab_strip_model),
-      dialog_ui_(dialog_ui),
+    : dialog_ui_(dialog_ui),
       receiver_(this, std::move(pending_receiver)),
       client_page_(std::move(client_page)) {
   CHECK(dialog_ui_);
-  CHECK(tab_strip_model_);
-  tab_strip_model_->AddObserver(this);
-  auto* web_contents = tab_strip_model_->GetActiveWebContents();
-  if (!web_contents) {
+  CHECK(initiator_web_contents);
+  callback = mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+      std::move(callback), psst::mojom::SettingCardData::New());
+  psst_tab_helper_ = GetPsstTabHelperForContents(initiator_web_contents);
+  if (!psst_tab_helper_) {
     return;
   }
 
-  active_tab_helper_ = GetActivePsstTabHelperFromContext(web_contents);
-  if (!active_tab_helper_) {
-    return;
-  }
-
-  psst_dialog_delegate_ = GetPsstUIDelegate(active_tab_helper_);
+  psst_dialog_delegate_ = GetPsstUIDelegate(psst_tab_helper_);
   if (!psst_dialog_delegate_) {
     return;
   }
@@ -104,9 +98,6 @@ BravePsstDialogHandler::~BravePsstDialogHandler() {
   if (psst_dialog_delegate_) {
     psst_dialog_delegate_->RemoveObserver(this);
   }
-  if (tab_strip_model_) {
-    tab_strip_model_->RemoveObserver(this);
-  }
 }
 
 void BravePsstDialogHandler::OnSetRequestStatus(
@@ -119,27 +110,12 @@ void BravePsstDialogHandler::OnSetRequestStatus(
   client_page_->OnSetRequestStatus(uid, error);
 }
 
-void BravePsstDialogHandler::OnTabStripModelChanged(
-    TabStripModel* tab_strip_model,
-    const TabStripModelChange& change,
-    const TabStripSelectionChange& selection) {
-  if (selection.active_tab_changed() && psst_dialog_delegate_) {
-    psst_dialog_delegate_->RemoveObserver(this);
+void BravePsstDialogHandler::OnPsstErrorsReportSent() {
+  if (!client_page_ || !client_page_.is_bound() ||
+      !client_page_.is_connected()) {
+    return;
   }
-
-  if (selection.new_contents) {
-    active_tab_helper_ =
-        GetActivePsstTabHelperFromContext(selection.new_contents);
-    if (!active_tab_helper_) {
-      return;
-    }
-
-    psst_dialog_delegate_ = GetPsstUIDelegate(active_tab_helper_);
-    if (!psst_dialog_delegate_) {
-      return;
-    }
-    psst_dialog_delegate_->AddObserver(this);
-  }
+  client_page_->OnPsstErrorsReportSent();
 }
 
 void BravePsstDialogHandler::PerformPrivacyTuning(
@@ -156,8 +132,7 @@ void BravePsstDialogHandler::ReportFailedContent() {
     return;
   }
 
-  // Report Submission Implementation
-  NOTIMPLEMENTED();
+  psst_dialog_delegate_->SubmitPsstErrorsReport();
 }
 
 void BravePsstDialogHandler::CloseDialog() {
@@ -165,6 +140,7 @@ void BravePsstDialogHandler::CloseDialog() {
     return;
   }
 
+  psst_dialog_delegate_->OnDialogClose();
   psst_dialog_delegate_->RemoveObserver(this);
   dialog_ui_->Close();
 }

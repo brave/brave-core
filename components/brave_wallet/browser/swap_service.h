@@ -39,10 +39,6 @@ class SwapService : public mojom::SwapService {
   void GetTransaction(mojom::SwapTransactionParamsUnionPtr params,
                       GetTransactionCallback callback) override;
 
-  // Obtains whether the given chain_id supports swap.
-  void IsSwapSupported(const std::string& chain_id,
-                       IsSwapSupportedCallback callback) override;
-
   void GetStatus(mojom::Gate3SwapStatusParamsPtr params,
                  GetStatusCallback callback) override;
 
@@ -56,6 +52,8 @@ class SwapService : public mojom::SwapService {
   static GURL GetJupiterTransactionURL(const std::string& chain_id);
   static GURL GetGate3QuoteURL(bool is_firm);
   static GURL GetGate3StatusURL();
+
+  static bool IsChainIdSupportedBySwap(const std::string& chain_id);
 
   void OnGetGate3Quote(GetQuoteCallback callback,
                        APIRequestResult api_request_result);

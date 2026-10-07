@@ -29,7 +29,7 @@ public struct FeedChannel: Hashable, Identifiable {
   /// For example, if the `localeIdentiifer` was `en_CA`, this would return `Canada`
   public var localeDescription: String? {
     let locale = Locale(identifier: localeIdentifier)
-    guard let regionCode = locale.regionCode else { return nil }
+    guard let regionCode = locale.region?.identifier else { return nil }
     return Locale.current.localizedString(forRegionCode: regionCode)
   }
 }

@@ -5,16 +5,8 @@
 
 #include "brave/browser/request_otr/request_otr_tab_helper.h"
 
-#include <utility>
-
 #include "base/check.h"
-#include "base/command_line.h"
-#include "base/containers/flat_set.h"
-#include "base/task/sequenced_task_runner.h"
 #include "brave/components/request_otr/browser/request_otr_storage_tab_helper.h"
-#include "components/prefs/pref_service.h"
-#include "components/user_prefs/user_prefs.h"
-#include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 
@@ -26,12 +18,8 @@
 
 using request_otr::RequestOTRStorageTabHelper;
 
-RequestOTRTabHelper::RequestOTRTabHelper(content::WebContents* contents)
-    : WebContentsObserver(contents),
-      content::WebContentsUserData<RequestOTRTabHelper>(*contents),
-      weak_factory_(this) {
-  pref_service_ = user_prefs::UserPrefs::Get(contents->GetBrowserContext());
-}
+RequestOTRTabHelper::RequestOTRTabHelper(tabs::TabInterface& tab)
+    : tabs::ContentsObservingTabFeature(tab) {}
 
 RequestOTRTabHelper::~RequestOTRTabHelper() = default;
 
@@ -60,5 +48,3 @@ void RequestOTRTabHelper::DidFinishNavigation(
       infobars::ContentInfoBarManager::FromWebContents(web_contents()));
 #endif
 }
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(RequestOTRTabHelper);

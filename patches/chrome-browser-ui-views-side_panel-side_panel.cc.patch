@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/side_panel/side_panel.cc b/chrome/browser/ui/views/side_panel/side_panel.cc
-index d53c2f3dfdbdad4f7eac5052cadd1edc4485c223..a61a1548d369d8a7552dedc692e37668da883df3 100644
+index ab8999f84de6992bbf403b92ef5c3a5ad0386390..e1e3c64c58fd7021b748723af39eec359e89b549 100644
 --- a/chrome/browser/ui/views/side_panel/side_panel.cc
 +++ b/chrome/browser/ui/views/side_panel/side_panel.cc
-@@ -222,6 +222,7 @@ class ContentParentView : public views::View, public views::ViewObserver {
+@@ -224,6 +224,7 @@ class ContentParentView : public views::View, public views::ViewObserver {
    }
  
    gfx::RoundedCornersF GetRoundedCorners() {

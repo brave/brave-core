@@ -16,24 +16,20 @@ import {
 
 // utils
 import Amount from './amount'
-import { getRampNetworkPrefix } from './string-utils'
 import { getNetworkLogo, makeNativeAssetLogo } from '../options/asset-options'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 import { getBalance } from './balance-utils'
 
-export const getUniqueAssets = (assets: BraveWallet.BlockchainToken[]) => {
-  return assets.filter((asset, index) => {
-    return (
-      index
-      === assets.findIndex((item) => {
-        return (
-          item.contractAddress.toLowerCase()
-            === asset.contractAddress.toLowerCase()
-          && item.chainId === asset.chainId
-        )
-      })
-    )
-  })
+// `pallet_assets` keys assets by a `u32` id, which we store as its decimal
+// string representation in `contractAddress`.
+const kMaxPolkadotAssetId = 4294967295
+const kPolkadotAssetIdRegexp = /^(0|[1-9]\d*)$/
+
+export const isValidPolkadotAssetId = (assetId: string) => {
+  return (
+    kPolkadotAssetIdRegexp.test(assetId)
+    && Number(assetId) <= kMaxPolkadotAssetId
+  )
 }
 
 export const isSelectedAssetInAssetOptions = (
@@ -50,31 +46,6 @@ export const isSelectedAssetInAssetOptions = (
       )
     }) !== -1
   )
-}
-
-export const getRampAssetSymbol = (
-  asset: BraveWallet.BlockchainToken,
-  isOfframp?: boolean,
-) => {
-  if (
-    asset.symbol.toUpperCase() === 'BAT'
-    && asset.chainId === BraveWallet.MAINNET_CHAIN_ID
-  ) {
-    // BAT is the only token on Ethereum Mainnet with a prefix on Ramp.Network
-    return 'ETH_BAT'
-  }
-
-  if (
-    asset.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID
-    && asset.contractAddress === ''
-  ) {
-    return isOfframp ? 'AVAX_AVAX' : asset.symbol // AVAX native token has no prefix for buy
-  }
-
-  const rampNetworkPrefix = getRampNetworkPrefix(asset.chainId, isOfframp)
-  return rampNetworkPrefix !== ''
-    ? `${rampNetworkPrefix}_${asset.symbol.toUpperCase()}`
-    : asset.symbol
 }
 
 export const addChainIdToToken = (
@@ -150,6 +121,11 @@ export const isShieldedToken = (
 ) =>
   token.zcashTokenType === BraveWallet.ZCashTokenType.kOrchard
   || token.zcashTokenType === BraveWallet.ZCashTokenType.kIronwood
+
+// Orchard (NU5) shielded ZEC is being migrated to Ironwood (NU6.3).
+export const isLegacyShieldedToken = (
+  token: Pick<BraveWallet.BlockchainToken, 'zcashTokenType'>,
+) => token.zcashTokenType === BraveWallet.ZCashTokenType.kOrchard
 
 export type GetBlockchainTokenIdArg = Pick<
   BraveWallet.BlockchainToken,
@@ -581,4 +557,22 @@ export const getDoesCoinSupportSwap = (coin: BraveWallet.CoinType) => {
 
 export const getDoesCoinSupportBridge = (coin: BraveWallet.CoinType) => {
   return SupportedBridgeCoinTypes.includes(coin)
+}
+
+export const getDoesTokenSupportSwap = (
+  token: Pick<BraveWallet.BlockchainToken, 'coin' | 'zcashTokenType'>,
+) => {
+  return getDoesCoinSupportSwap(token.coin) && !isLegacyShieldedToken(token)
+}
+
+export const getDoesTokenSupportBridge = (
+  token: Pick<BraveWallet.BlockchainToken, 'coin' | 'zcashTokenType'>,
+) => {
+  return getDoesCoinSupportBridge(token.coin) && !isLegacyShieldedToken(token)
+}
+
+export const getDoesTokenSupportDeposit = (
+  token: Pick<BraveWallet.BlockchainToken, 'zcashTokenType'>,
+) => {
+  return !isLegacyShieldedToken(token)
 }

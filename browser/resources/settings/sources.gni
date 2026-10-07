@@ -5,28 +5,36 @@
 
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/traffic_control/buildflags/buildflags.gni")
 
 # Provide our file list to chromium's settings page build Since our components
 # start in a different path, we'll do the first step (move them to the generated
 # preprocessed path via preprocess_if_expr, but let chromium handle the rest of
 # the webui build pipeline.
-brave_settings_preprocess_deps =
-    [ "//brave/browser/resources/settings:preprocess" ]
+brave_settings_preprocess_deps = [
+  "//brave/browser/resources/settings:preprocess",
+  "//brave/browser/resources/settings:preprocess_brave_account",
+]
 
 # Preprocessor defines passed to build_webui() so that Chromium-patched
 # TypeScript files can use <if expr="..."> with Brave buildflags.
-brave_settings_preprocessor_defines = [ "enable_ai_chat=$enable_ai_chat" ]
+brave_settings_preprocessor_defines = [
+  "enable_ai_chat=$enable_ai_chat",
+  "enable_brave_ads=$enable_brave_ads",
+  "enable_brave_rewards=$enable_brave_rewards",
+]
 
 brave_settings_web_component_files = [
   "ad_block_only_mode_page/ad_block_only_mode_alert.ts",
   "ad_block_only_mode_page/ad_block_only_mode_page.ts",
-  "brave_appearance_page/bookmark_bar.ts",
   "brave_appearance_page/sidebar.ts",
   "brave_appearance_page/tabs.ts",
   "brave_appearance_page/toolbar.ts",
@@ -53,7 +61,6 @@ brave_settings_web_component_files = [
   "brave_sync_page/brave_sync_setup.ts",
   "brave_sync_page/brave_sync_subpage.ts",
   "brave_system_page/brave_system_page_index.ts",
-  "brave_survey_panelist_page/brave_survey_panelist_page.ts",
   "brave_default_extensions_page/brave_extensions_page_index.ts",
   "default_brave_shields_page/brave_adblock_subpage.ts",
   "default_brave_shields_page/components/brave_adblock_editor.ts",
@@ -76,31 +83,23 @@ brave_settings_ts_files = [
   "ad_block_only_mode_page/ad_block_only_mode_mixin.ts",
   "br/all_sites.ts",
   "br/about_page.ts",
-  "br/autofill_page.ts",
+  "br/autofill_section.ts",
   "br/basic_page.ts",
-  "br/clear_browsing_data_dialog.ts",
-  "br/clear_browsing_data_time_picker.ts",
   "br/config.ts",
+  "br/contact_info_page.ts",
   "br/cookies_page.ts",
   "br/edit_dictionary_page.ts",
   "br/import_data_dialog.ts",
   "br/index.ts",
-  "br/memory_page.ts",
   "br/page_visibility.ts",
   "br/passwords_section.ts",
-  "br/payments_section.ts",
-  "br/people_page.ts",
+  "br/payments_page.ts",
   "br/performance_page.ts",
-  "br/personalization_options.ts",
   "br/printing_page.ts",
   "br/privacy_page.ts",
   "br/privacy_page_index.ts",
   "br/reset_profile_dialog.ts",
-  "br/safety_check.ts",
-  "br/safety_check_passwords_child.ts",
   "br/safety_hub_page.ts",
-  "br/search_page.ts",
-  "br/search_page_index.ts",
   "br/security_page.ts",
   "br/settings_basic_page.ts",
   "br/settings_manage_profile.ts",
@@ -114,11 +113,9 @@ brave_settings_ts_files = [
   "br/site_list.ts",
   "br/add_site_dialog.ts",
   "br/site_settings_page.ts",
-  "br/sync_account_control.ts",
   "br/sync_controls.ts",
-  "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.ts",
+  "br/autofill_page.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_proxy.ts",
-  "brave_autofill_page/brave_autofill_page.ts",
   "brave_add_site_dialog/brave_add_site_dialog.ts",
   "brave_data_collection_page/brave_data_collection_browser_proxy.ts",
   "brave_default_extensions_page/brave_default_extensions_browser_proxy.ts",
@@ -131,20 +128,30 @@ brave_settings_ts_files = [
   "brave_window.ts",
   "default_brave_shields_page/brave_adblock_browser_proxy.ts",
   "default_brave_shields_page/default_brave_shields_browser_proxy.ts",
-  "getting_started_page/brave_account_browser_proxy.ts",
-  "getting_started_page/brave_account_logged_in_row.html.ts",
-  "getting_started_page/brave_account_logged_in_row.ts",
-  "getting_started_page/brave_account_logged_out_row.html.ts",
-  "getting_started_page/brave_account_logged_out_row.ts",
-  "getting_started_page/brave_account_row.html.ts",
-  "getting_started_page/brave_account_row.ts",
-  "getting_started_page/brave_account_row_base.ts",
   "shortcuts_page/shortcuts_page.ts",
 ]
 
-brave_settings_local_css_files = [
-  "getting_started_page/brave_account_logged_in_row.css",
-  "getting_started_page/brave_account_row_common.css",
+brave_settings_local_css_files = []
+
+# Shared with the Brave Account UI, so these are preprocessed by
+# :preprocess_brave_account out of //brave/components/brave_account/resources,
+# not out of this directory like the brave_settings_local_* lists. They land
+# flat in the same preprocessed/ folder, hence no directory prefix.
+brave_account_settings_ts_files = [
+  "brave_account_logged_in_row.html.ts",
+  "brave_account_logged_in_row.ts",
+  "brave_account_logged_out_row.html.ts",
+  "brave_account_logged_out_row.ts",
+  "brave_account_row.html.ts",
+  "brave_account_row.ts",
+  "brave_account_row_base.ts",
+  "brave_account_row_browser_proxy.ts",
+  "brave_account_shared.ts",
+]
+
+brave_account_settings_css_files = [
+  "brave_account_logged_in_row.css",
+  "brave_account_row_common.css",
 ]
 
 if (enable_brave_vpn_wireguard) {
@@ -211,13 +218,15 @@ if (enable_ai_chat) {
 brave_settings_ts_definitions =
     [ "//brave/components/definitions/chrome_brave_theme.d.ts" ]
 
-brave_settings_ts_extra_deps =
-    [ "//brave/browser/resources/settings:preprocess" ]
+brave_settings_ts_extra_deps = [
+  "//brave/browser/resources/settings:preprocess",
+  "//brave/browser/resources/settings:preprocess_brave_account",
+]
 
 brave_settings_mojo_files = [
   "$root_gen_dir/brave/components/brave_account/mojom/brave_account.mojom-webui.ts",
-  "$root_gen_dir/brave/components/brave_account/mojom/brave_account_row.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_account/mojom/change_password.mojom-webui.ts",
+  "$root_gen_dir/brave/components/brave_account/mojom/delete_account.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_account/mojom/get_service_token.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_account/mojom/login.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_account/mojom/register.mojom-webui.ts",
@@ -278,6 +287,7 @@ if (enable_containers) {
     "brave_content_page/containers_icon.ts",
     "brave_content_page/containers.html.ts",
     "brave_content_page/containers.ts",
+    "brave_content_page/drag_reorder_mixin.ts",
   ]
   brave_settings_local_css_files += [
     "brave_content_page/containers_background_chip.css",
@@ -289,6 +299,25 @@ if (enable_containers) {
   brave_settings_mojo_files += [ "$root_gen_dir/brave/components/containers/core/mojom/containers.mojom-webui.ts" ]
 }
 
+if (enable_traffic_control) {
+  assert(enable_containers)
+  brave_settings_ts_files += [
+    "brave_content_page/traffic_control_browser_proxy.ts",
+    "brave_content_page/traffic_control_utils.ts",
+    "brave_content_page/traffic_control_rule_dialog.html.ts",
+    "brave_content_page/traffic_control_rule_dialog.ts",
+    "brave_content_page/traffic_control.html.ts",
+    "brave_content_page/traffic_control.ts",
+  ]
+  brave_settings_local_css_files += [
+    "brave_content_page/traffic_control.css",
+    "brave_content_page/traffic_control_rule_dialog.css",
+  ]
+  brave_settings_mojo_files_deps +=
+      [ "//brave/components/traffic_control/core/mojom:mojom_ts__generator" ]
+  brave_settings_mojo_files += [ "$root_gen_dir/brave/components/traffic_control/core/mojom/traffic_control.mojom-webui.ts" ]
+}
+
 if (enable_speedreader) {
   brave_settings_web_component_files += [ "brave_content_page/speedreader.ts" ]
 }
@@ -298,8 +327,9 @@ if (enable_email_aliases) {
       [ "email_aliases_page/email_aliases_page.ts" ]
 }
 
-# Generate the list for inclusion via preprocess and exclusion for chromium's
-# preprocess
+# Files preprocessed by :preprocess into Chromium's preprocessed/ folder.
+# The Brave Account rows live in a different directory
+# and are preprocessed by :preprocess_brave_account instead.
 brave_settings_local_ts_files =
     brave_settings_web_component_files + brave_settings_ts_files
 
@@ -308,3 +338,16 @@ foreach(component_file, brave_settings_web_component_files) {
   brave_settings_local_html_files +=
       [ string_replace(component_file, ".ts", ".html") ]
 }
+
+brave_settings_ts_files += brave_account_settings_ts_files
+
+brave_settings_css_files =
+    brave_settings_local_css_files + brave_account_settings_css_files
+
+# Everything Chromium's build_webui() must skip preprocessing for,
+# because :preprocess or :preprocess_brave_account has already done it.
+brave_settings_exclude_ts_preprocess_files =
+    brave_settings_local_ts_files + brave_account_settings_ts_files
+
+brave_settings_exclude_html_css_preprocess_files =
+    brave_settings_local_html_files + brave_settings_css_files

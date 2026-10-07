@@ -80,20 +80,28 @@ Follow the instructions for your platform:
 Once you have the prerequisites installed, you can get the code and initialize
 the build environment.
 
+**Clone the repo.** `brave-core` must be checked out into `./src/brave` within a
+pre-existing project folder:
+
 ```bash
 git clone git@github.com:brave/brave-core.git path-to-your-project-folder/src/brave
 cd path-to-your-project-folder/src/brave
-
-# the Chromium source is downloaded, which has a large history (gigabytes of data)
-# this might take really long to finish depending on internet speed
-
-pnpm run init
 ```
 
-brave-core based android builds should use
-`pnpm run init --target_os=android --target_arch=arm` (or whichever CPU type you
-want to build for) brave-core based iOS builds should use
-`pnpm run init --target_os=ios`
+**Initialize the build environment.** This step will download the Chromium
+source, which has a large history (10's of gigabytes of data). This might take a
+really long time to finish depending on internet speed.
+
+```bash
+# Most builds:
+pnpm run init
+
+# Android builds (replace `arm` with whichever CPU type you want to build for):
+pnpm run init --target_os=android --target_arch=arm
+
+# iOS builds:
+pnpm run init --target_os=ios
+```
 
 Additional config needed to build are documented at
 https://github.com/brave/brave-browser/wiki/Build-configuration

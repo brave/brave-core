@@ -715,23 +715,6 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionEmptyLatestBlockhash) {
   run_loop_2.Run();
 }
 
-TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionUnsupportedNetwork) {
-  auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt,
-                                                      mojom::kLocalhostChainId);
-
-  base::MockCallback<mojom::SimulationService::ScanSolanaTransactionCallback>
-      callback;
-  EXPECT_CALL(
-      callback,
-      Run(EqualsMojo(mojom::SolanaSimulationResponsePtr()), "",
-          l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK)));
-
-  ScanSolanaTransaction(std::move(tx_info), "en-US", callback.Get());
-
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
-}
-
 TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionEmptyNetwork) {
   auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt, "");
 

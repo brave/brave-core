@@ -10,7 +10,7 @@ import { getNetworkId } from '../common/slices/entities/network.entity'
 export const AllNetworksOption: BraveWallet.NetworkInfo = {
   blockExplorerUrls: [],
   chainId: 'all',
-  chainName: getLocale('braveWalletNetworkFilterAll'),
+  chainName: getLocale(S.BRAVE_WALLET_NETWORK_FILTER_ALL),
   coin: 0,
   decimals: 0,
   iconUrls: [AllNetworksIcon],

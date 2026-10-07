@@ -7,11 +7,14 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DIAGNOSTICS_DIAGNOSTIC_VALUE_UTIL_H_
 
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_types.h"
 
 namespace brave_ads {
 
-base::ListValue DiagnosticsToList(const DiagnosticMap& diagnostics);
+class DiagnosticEntryInterface;
+
+// Appends `entry`'s name/value to `list`.
+void AppendDiagnosticEntry(base::ListValue& list,
+                           const DiagnosticEntryInterface& entry);
 
 }  // namespace brave_ads
 

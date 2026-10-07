@@ -13,12 +13,17 @@
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/bind.h"
+#include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
+#include "brave/components/constants/network_constants.h"
 #include "brave/components/constants/pref_names.h"
+#include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
+#include "net/http/http_status_code.h"
+#include "services/network/public/cpp/data_element.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -64,6 +69,15 @@ class BraveReferralsServiceTest : public testing::Test {
           } else if (request.url.path() == "/promo/activity") {
             // Respond with a successful finalization check response
             response_body = "{\"finalized\":true}";
+          }
+
+          if (request.url.path() == kBraveConversionPath) {
+            conversion_request_count_++;
+            conversion_request_body_ =
+                std::string(request.request_body->elements()
+                                ->at(0)
+                                .As<network::DataElementBytes>()
+                                .AsStringPiece());
           }
 
           url_loader_factory_.AddResponse(request.url.spec(), response_body);
@@ -131,6 +145,8 @@ class BraveReferralsServiceTest : public testing::Test {
   base::ScopedTempDir temp_dir_;
   std::unique_ptr<BraveReferralsService> referrals_service_;
   size_t request_count_ = 0;
+  size_t conversion_request_count_ = 0;
+  std::string conversion_request_body_;
   bool init_callback_called_ = false;
   std::string received_download_id_;
   BraveReferralsService::ReferralInitializedCallback
@@ -192,6 +208,107 @@ TEST_F(BraveReferralsServiceTest, StatsDisabledAfterInit) {
 
   EXPECT_GE(request_count_, 1u);
 }
+
+#if BUILDFLAG(IS_ANDROID)
+
+namespace {
+constexpr char kTestGbraid[] = "GBRAIDTEST";
+}  // namespace
+
+TEST_F(BraveReferralsServiceTest, AndroidConversionNotSentWithoutGbraid) {
+  CreateReferralsService();
+  referrals_service_->Start();
+
+  task_environment_.FastForwardBy(base::Minutes(1));
+
+  EXPECT_EQ(conversion_request_count_, 0u);
+}
+
+// The run that captures the gbraid must not report: Start() reads the pref
+// before the referrer fetch it kicks off can possibly have written it.
+TEST_F(BraveReferralsServiceTest, AndroidConversionNotSentOnCaptureRun) {
+  CreateReferralsService();
+  referrals_service_->Start();
+
+  // Stands in for the async referrer arriving later in the same run.
+  pref_service_.SetString(kReferralAndroidGbraid, kTestGbraid);
+
+  task_environment_.FastForwardBy(base::Minutes(1));
+
+  EXPECT_EQ(conversion_request_count_, 0u);
+  EXPECT_EQ(pref_service_.GetString(kReferralAndroidGbraid), kTestGbraid);
+}
+
+TEST_F(BraveReferralsServiceTest, AndroidConversionSentOnFollowingRun) {
+  pref_service_.SetString(kReferralAndroidGbraid, kTestGbraid);
+
+  CreateReferralsService();
+  referrals_service_->Start();
+
+  task_environment_.FastForwardBy(base::Minutes(1));
+
+  EXPECT_EQ(conversion_request_count_, 1u);
+  EXPECT_TRUE(pref_service_.GetString(kReferralAndroidGbraid).empty());
+
+  base::DictValue body = base::test::ParseJsonDict(conversion_request_body_);
+  EXPECT_EQ(*body.FindString("app_event_name"), "brave_second_open");
+  EXPECT_EQ(*body.FindString("gbraid"), kTestGbraid);
+  EXPECT_FALSE(body.FindString("app_version")->empty());
+  EXPECT_FALSE(body.FindString("os_version")->empty());
+  EXPECT_FALSE(body.FindString("sdk_version")->empty());
+}
+
+TEST_F(BraveReferralsServiceTest, AndroidConversionSentOnlyOnce) {
+  pref_service_.SetString(kReferralAndroidGbraid, kTestGbraid);
+
+  CreateReferralsService();
+  referrals_service_->Start();
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_EQ(conversion_request_count_, 1u);
+
+  // A subsequent run finds nothing left to report.
+  referrals_service_.reset();
+  CreateReferralsService();
+  referrals_service_->Start();
+  task_environment_.FastForwardBy(base::Minutes(1));
+
+  EXPECT_EQ(conversion_request_count_, 1u);
+}
+
+TEST_F(BraveReferralsServiceTest, AndroidConversionDroppedWhenStatsDisabled) {
+  pref_service_.SetString(kReferralAndroidGbraid, kTestGbraid);
+  pref_service_.SetBoolean(kStatsReportingEnabled, false);
+
+  CreateReferralsService();
+  referrals_service_->Start();
+
+  task_environment_.FastForwardBy(base::Minutes(1));
+
+  EXPECT_EQ(conversion_request_count_, 0u);
+  EXPECT_TRUE(pref_service_.GetString(kReferralAndroidGbraid).empty());
+}
+
+TEST_F(BraveReferralsServiceTest, AndroidConversionDroppedOnRequestFailure) {
+  pref_service_.SetString(kReferralAndroidGbraid, kTestGbraid);
+  url_loader_factory_.SetInterceptor(
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        if (request.url.path() == kBraveConversionPath) {
+          conversion_request_count_++;
+        }
+        url_loader_factory_.AddResponse(request.url.spec(), std::string(),
+                                        net::HTTP_INTERNAL_SERVER_ERROR);
+      }));
+
+  CreateReferralsService();
+  referrals_service_->Start();
+
+  task_environment_.FastForwardBy(base::Minutes(1));
+
+  EXPECT_EQ(conversion_request_count_, 1u);
+  EXPECT_TRUE(pref_service_.GetString(kReferralAndroidGbraid).empty());
+}
+
+#endif  // BUILDFLAG(IS_ANDROID)
 
 // The finalization checks timer interval is drawn from a geometric
 // distribution, which can return 0 or a handful of seconds. Such an interval

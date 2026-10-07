@@ -1,0 +1,47 @@
+[
+  {
+    "cmd": [
+      "echo",
+      "[WORKSPACE]/rc/scratch_tmp_1"
+    ],
+    "name": "mkstemp"
+  },
+  {
+    "cmd": [
+      "echo",
+      "True"
+    ],
+    "name": "scratch is file"
+  },
+  {
+    "cmd": [
+      "echo",
+      "True"
+    ],
+    "name": "scratch dir is dir"
+  },
+  {
+    "cmd": [
+      "echo",
+      "True"
+    ],
+    "name": "copy is file"
+  },
+  {
+    "cmd": [
+      "echo",
+      "False"
+    ],
+    "name": "scratch removed"
+  },
+  {
+    "cmd": [
+      "echo",
+      "True"
+    ],
+    "name": "copy survives removal"
+  },
+  {
+    "name": "$result"
+  }
+]

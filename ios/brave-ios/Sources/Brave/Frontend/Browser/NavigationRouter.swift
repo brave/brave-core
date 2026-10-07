@@ -57,8 +57,9 @@ public enum NavigationPath: Equatable {
     } else if urlString.starts(with: "\(scheme)://open-url") {
       let urlText = components.valueForQuery("url")
       let url = URIFixup.getURL(urlText ?? "") ?? urlText?.asURL
-      let forcedPrivate = Preferences.Privacy.privateBrowsingOnly.value || isPrivateBrowsing
-      let isPrivate = Bool(components.valueForQuery("private") ?? "") ?? forcedPrivate
+      let isPrivate =
+        Preferences.Privacy.privateBrowsingOnly.value
+        ? true : Bool(components.valueForQuery("private") ?? "") ?? isPrivateBrowsing
       self = .url(webURL: url, isPrivate: isPrivate)
     } else if urlString.starts(with: "\(scheme)://open-text") {
       let text = components.valueForQuery("text")
@@ -77,6 +78,7 @@ public enum NavigationPath: Equatable {
     }
   }
 
+  @MainActor
   static func handle(nav: NavigationPath, with bvc: BrowserViewController) {
     switch nav {
     case .deepLink(let link): NavigationPath.handleDeepLink(link, with: bvc)
@@ -147,6 +149,7 @@ public enum NavigationPath: Equatable {
     )
   }
 
+  @MainActor
   static func handleWidgetShortcut(_ path: WidgetShortcut, with bvc: BrowserViewController) {
     switch path {
     case .unknown, .search:
@@ -221,6 +224,10 @@ public enum NavigationPath: Equatable {
     case .braveLeo:
       bvc.popToBVC()
       bvc.openBraveLeo()
+    case .braveLeoVoiceInput:
+      bvc.popToBVC {
+        bvc.presentLeoVoiceInput()
+      }
     case .askBrave:
       guard let url = URL(string: "https://search.brave.com/ask") else { return }
       bvc.popToBVC()

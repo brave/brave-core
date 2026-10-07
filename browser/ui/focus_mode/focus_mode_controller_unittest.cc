@@ -6,6 +6,7 @@
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/unowned_user_data/unowned_user_data_host.h"
 
 namespace {
 
@@ -30,12 +31,14 @@ class TestObserver : public FocusModeController::Observer {
 }  // namespace
 
 TEST(FocusModeControllerTest, DefaultsToDisabled) {
-  FocusModeController controller;
+  ui::UnownedUserDataHost user_data_host;
+  FocusModeController controller(user_data_host);
   EXPECT_FALSE(controller.IsEnabled());
 }
 
 TEST(FocusModeControllerTest, SetEnabledNotifiesObserversOnChange) {
-  FocusModeController controller;
+  ui::UnownedUserDataHost user_data_host;
+  FocusModeController controller(user_data_host);
   TestObserver observer;
   controller.AddObserver(&observer);
 
@@ -55,7 +58,8 @@ TEST(FocusModeControllerTest, SetEnabledNotifiesObserversOnChange) {
 }
 
 TEST(FocusModeControllerTest, SetEnabledIsNoOpWhenUnchanged) {
-  FocusModeController controller;
+  ui::UnownedUserDataHost user_data_host;
+  FocusModeController controller(user_data_host);
   TestObserver observer;
   controller.AddObserver(&observer);
 
@@ -74,7 +78,8 @@ TEST(FocusModeControllerTest, SetEnabledIsNoOpWhenUnchanged) {
 }
 
 TEST(FocusModeControllerTest, ToggleEnabledFlipsStateAndNotifies) {
-  FocusModeController controller;
+  ui::UnownedUserDataHost user_data_host;
+  FocusModeController controller(user_data_host);
   TestObserver observer;
   controller.AddObserver(&observer);
 
@@ -92,7 +97,8 @@ TEST(FocusModeControllerTest, ToggleEnabledFlipsStateAndNotifies) {
 }
 
 TEST(FocusModeControllerTest, RemovedObserverIsNotNotified) {
-  FocusModeController controller;
+  ui::UnownedUserDataHost user_data_host;
+  FocusModeController controller(user_data_host);
   TestObserver observer;
   controller.AddObserver(&observer);
   controller.RemoveObserver(&observer);
@@ -104,7 +110,8 @@ TEST(FocusModeControllerTest, RemovedObserverIsNotNotified) {
 }
 
 TEST(FocusModeControllerTest, NotifiesAllRegisteredObservers) {
-  FocusModeController controller;
+  ui::UnownedUserDataHost user_data_host;
+  FocusModeController controller(user_data_host);
   TestObserver observer_a;
   TestObserver observer_b;
   controller.AddObserver(&observer_a);

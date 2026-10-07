@@ -3,8 +3,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Download upstream Node distributions into version-free platform directories.
-"""
+"""Download upstream Node distributions into version-free platform directories."""
 
 from __future__ import annotations
 
@@ -23,7 +22,7 @@ from pathlib import Path
 
 # The Node version to download. Bump this to roll Node, then re-run this script
 # followed by `package_node.py`. It is the single source of truth for both.
-NODE_VERSION = 'v24.18.0'
+NODE_VERSION = 'v24.20.0'
 
 # Where the official archives and their checksums are published.
 BASE_URL = 'https://nodejs.org/dist'
@@ -34,16 +33,30 @@ _NODE_DIR = Path(__file__).resolve().parent
 # Verify TLS against the system trust store with hostname checking.
 _TLS_CONTEXT = ssl.create_default_context()
 
-PLATFORMS: frozenset[tuple[str, str, str]] = frozenset({
-    (f'node-{NODE_VERSION}-linux-x64.tar.gz',
-     f'node-{NODE_VERSION}-linux-x64.tar.gz', 'node-linux-x64'),
-    (f'node-{NODE_VERSION}-darwin-x64.tar.gz',
-     f'node-{NODE_VERSION}-mac-x64.tar.gz', 'node-mac-x64'),
-    (f'node-{NODE_VERSION}-darwin-arm64.tar.gz',
-     f'node-{NODE_VERSION}-mac-arm64.tar.gz', 'node-mac-arm64'),
-    (f'node-{NODE_VERSION}-win-x64.zip', f'node-{NODE_VERSION}-win-x64.tar.gz',
-     'node-win-x64'),
-})
+PLATFORMS: frozenset[tuple[str, str, str]] = frozenset(
+    {
+        (
+            f'node-{NODE_VERSION}-linux-x64.tar.gz',
+            f'node-{NODE_VERSION}-linux-x64.tar.gz',
+            'node-linux-x64',
+        ),
+        (
+            f'node-{NODE_VERSION}-darwin-x64.tar.gz',
+            f'node-{NODE_VERSION}-mac-x64.tar.gz',
+            'node-mac-x64',
+        ),
+        (
+            f'node-{NODE_VERSION}-darwin-arm64.tar.gz',
+            f'node-{NODE_VERSION}-mac-arm64.tar.gz',
+            'node-mac-arm64',
+        ),
+        (
+            f'node-{NODE_VERSION}-win-x64.zip',
+            f'node-{NODE_VERSION}-win-x64.tar.gz',
+            'node-win-x64',
+        ),
+    }
+)
 
 
 class _HttpsOnlyRedirectHandler(urllib.request.HTTPRedirectHandler):
@@ -52,7 +65,8 @@ class _HttpsOnlyRedirectHandler(urllib.request.HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         if urllib.parse.urlparse(newurl).scheme != 'https':
             raise urllib.error.URLError(
-                f'refusing to follow non-HTTPS redirect to {newurl!r}')
+                f'refusing to follow non-HTTPS redirect to {newurl!r}'
+            )
         return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 
@@ -60,8 +74,8 @@ class _HttpsOnlyRedirectHandler(urllib.request.HTTPRedirectHandler):
 # HTTP handler is registered, so http:// URLs (direct or via redirect) error out
 # instead of being fetched in the clear.
 _OPENER = urllib.request.build_opener(
-    urllib.request.HTTPSHandler(context=_TLS_CONTEXT),
-    _HttpsOnlyRedirectHandler)
+    urllib.request.HTTPSHandler(context=_TLS_CONTEXT), _HttpsOnlyRedirectHandler
+)
 
 
 def urlopen(url: str):
@@ -127,7 +141,8 @@ def deploy(archive: str, deployed_dir: str, shasums: dict[str, str]) -> None:
     expected = shasums.get(archive)
     if expected is None:
         raise RuntimeError(
-            f'{archive} is not listed in SHASUMS256.txt for {NODE_VERSION}')
+            f'{archive} is not listed in SHASUMS256.txt for {NODE_VERSION}'
+        )
 
     # The archive's top-level dir is its name without the extension, e.g.
     # node-v24.17.0-darwin-x64; we rename it to the version-free deployed dir.
@@ -140,9 +155,11 @@ def deploy(archive: str, deployed_dir: str, shasums: dict[str, str]) -> None:
         archive_path = Path(tmp) / archive
         actual = download(url, archive_path)
         if actual != expected:
-            raise RuntimeError(f'SHA256 mismatch for {archive}:\n'
-                               f'  expected {expected}\n'
-                               f'  actual   {actual}')
+            raise RuntimeError(
+                f'SHA256 mismatch for {archive}:\n'
+                f'  expected {expected}\n'
+                f'  actual   {actual}'
+            )
 
         # Clear any prior deployment and any half-extracted versioned tree, then
         # extract into this directory and strip the version from the top-level.
@@ -156,8 +173,7 @@ def deploy(archive: str, deployed_dir: str, shasums: dict[str, str]) -> None:
 
 
 def clear_existing() -> None:
-    """Remove every existing `node-*` path under this directory.
-    """
+    """Remove every existing `node-*` path under this directory."""
     for path in sorted(_NODE_DIR.glob('node-*')):
         print(f'Removing {path.relative_to(_NODE_DIR.parent)}')
         if path.is_dir() and not path.is_symlink():
@@ -169,11 +185,13 @@ def clear_existing() -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(
         description=f'Download Node {NODE_VERSION} into version-free '
-        'directories under third_party/node.')
+        'directories under third_party/node.'
+    )
     parser.add_argument(
         '--clear',
         action='store_true',
-        help='Delete any existing node-* paths under third_party/node first.')
+        help='Delete any existing node-* paths under third_party/node first.',
+    )
     args = parser.parse_args()
 
     if args.clear:

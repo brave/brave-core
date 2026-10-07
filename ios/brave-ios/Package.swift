@@ -25,7 +25,6 @@ var package = Package(
     .library(name: "BraveWallet", targets: ["BraveWallet"]),
     .library(name: "Data", targets: ["Data"]),
     .library(name: "DataImporter", targets: ["DataImporter"]),
-    .library(name: "Storage", targets: ["Storage"]),
     .library(name: "BrowserIntentsModels", targets: ["BrowserIntentsModels"]),
     .library(name: "BraveWidgetsModels", targets: ["BraveWidgetsModels"]),
     .library(name: "Strings", targets: ["Strings"]),
@@ -53,10 +52,8 @@ var package = Package(
     .library(name: "Web", targets: ["Web"]),
     .library(name: "BraveTalk", targets: ["BraveTalk"]),
     .library(name: "Origin", targets: ["Origin"]),
-    .executable(name: "LeoAssetCatalogGenerator", targets: ["LeoAssetCatalogGenerator"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
     .plugin(name: "LoggerPlugin", targets: ["LoggerPlugin"]),
-    .plugin(name: "LeoAssetsPlugin", targets: ["LeoAssetsPlugin"]),
   ],
   dependencies: [
     .package(url: "https://github.com/SnapKit/SnapKit", from: "5.0.1"),
@@ -65,12 +62,8 @@ var package = Package(
     .package(url: "https://github.com/SDWebImage/SDWebImage", exact: "5.10.3"),
     .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI", from: "2.2.0"),
     .package(url: "https://github.com/nmdias/FeedKit", from: "9.1.2"),
-    .package(
-      url: "https://github.com/brave/PanModal",
-      revision: "e67e9eff53c05f19b41bbb2ca7d27ff5859a586c"
-    ),
     .package(url: "https://github.com/apple/swift-collections", from: "1.0.0"),
-    .package(url: "https://github.com/siteline/SwiftUI-Introspect", from: "0.1.3"),
+    .package(url: "https://github.com/siteline/SwiftUI-Introspect", from: "26.0.2"),
     .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
     .package(url: "https://github.com/devxoul/Then", from: "2.7.0"),
     .package(name: "Swift-BigInt", path: "../third_party/swift-bigint"),
@@ -95,7 +88,6 @@ var package = Package(
         "DesignSystem",
         "Data",
         "DataImporter",
-        "Storage",
         "Fuzi",
         "SnapKit",
         "Static",
@@ -150,10 +142,6 @@ var package = Package(
         .copy("Assets/Fonts/FiraSans-Regular.ttf"),
         .copy("Assets/Fonts/FiraSans-SemiBold.ttf"),
         .copy("Assets/Fonts/FiraSans-UltraLight.ttf"),
-        .copy("Assets/Fonts/NewYorkMedium-Bold.otf"),
-        .copy("Assets/Fonts/NewYorkMedium-BoldItalic.otf"),
-        .copy("Assets/Fonts/NewYorkMedium-Regular.otf"),
-        .copy("Assets/Fonts/NewYorkMedium-RegularItalic.otf"),
         .copy("Assets/InterstitialPages/Pages/BlockedDomain.html"),
         .copy("Assets/InterstitialPages/Pages/HTTPBlocked.html"),
         .copy("Assets/InterstitialPages/Pages/Web3Domain.html"),
@@ -168,7 +156,7 @@ var package = Package(
         .copy("Frontend/Reader/Reader.html"),
         .copy("Frontend/Reader/ReaderViewLoading.html"),
         .copy("Frontend/Browser/NewTabPage/Backgrounds/Assets/NTP_Images/corwin-prescott-3.jpg"),
-        .copy("Frontend/Browser/Favorites/Data/top_sites_by_region.json"),
+        .copy("Frontend/Browser/TopSites/Data/top_sites_by_region.json"),
         .copy(
           "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/BraveSearchResultAdScript.js"
         ),
@@ -214,7 +202,7 @@ var package = Package(
           "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/YoutubeQualityScript.js"
         ),
         .copy(
-          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/BraveLeoScript.js"
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/TextContentDistillerScript.js"
         ),
         .copy(
           "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/DarkReaderScript.js"
@@ -292,10 +280,9 @@ var package = Package(
       dependencies: [
         "Strings",
         "DesignSystem",
-        "PanModal",
         "SDWebImage",
         "SnapKit",
-        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+        .product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect"),
         "Then",
         "Static",
         "Preferences",
@@ -307,7 +294,18 @@ var package = Package(
     .testTarget(name: "BraveUITests", dependencies: ["BraveUI"]),
     .target(
       name: "BraveShields",
-      dependencies: ["Strings", "Preferences", "BraveCore", "Web", "Data"],
+      dependencies: [
+        "BraveCore",
+        "BraveShared",
+        "BraveUI",
+        "Data",
+        "DesignSystem",
+        "Favicon",
+        "Preferences",
+        "Shared",
+        "Strings",
+        "Web",
+      ],
       plugins: ["LoggerPlugin"]
     ),
     .testTarget(
@@ -316,8 +314,7 @@ var package = Package(
     ),
     .target(
       name: "DesignSystem",
-      dependencies: ["Then", "NalaAssets"],
-      plugins: ["LeoAssetsPlugin"]
+      dependencies: ["Then", "NalaAssets"]
     ),
     .binaryTarget(name: "NalaAssets", path: "../../../out/ios_current_link/NalaAssets.xcframework"),
     .binaryTarget(
@@ -330,13 +327,8 @@ var package = Package(
       path: "../third_party/GRDWireGuardKit/GRDWireGuardKit.xcframework"
     ),
     .target(
-      name: "Storage",
-      dependencies: ["Shared"],
-      plugins: ["LoggerPlugin"]
-    ),
-    .target(
       name: "Data",
-      dependencies: ["BraveShared", "Storage", "Strings", "Preferences", "Shared"],
+      dependencies: ["BraveShared", "Strings", "Preferences", "Shared"],
       plugins: ["LoggerPlugin"]
     ),
     .target(
@@ -350,7 +342,7 @@ var package = Package(
         "Growth",
         "Strings",
         .product(name: "Collections", package: "swift-collections"),
-        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+        .product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect"),
       ],
       plugins: ["LoggerPlugin"]
     ),
@@ -365,7 +357,6 @@ var package = Package(
         "DesignSystem",
         "Favicon",
         "Strings",
-        "PanModal",
         "SDWebImageSwiftUI",
         "SnapKit",
         "Then",
@@ -375,7 +366,7 @@ var package = Package(
         .product(name: "BigNumber", package: "Swift-BigInt"),
         .product(name: "Algorithms", package: "swift-algorithms"),
         .product(name: "Collections", package: "swift-collections"),
-        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+        .product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect"),
       ],
       plugins: ["LoggerPlugin"]
     ),
@@ -391,6 +382,7 @@ var package = Package(
       sources: [
         "BraveWidgets.intentdefinition", "LockScreenFavoriteIntentHandler.swift",
         "FavoritesWidgetData.swift", "DisabledShortcutsWidgetData.swift",
+        "OpenControlWidgetShortcutIntent.swift",
       ],
       plugins: ["IntentBuilderPlugin", "LoggerPlugin"]
     ),
@@ -427,11 +419,10 @@ var package = Package(
         "Preferences",
         "Shared",
         "SnapKit",
-        "Storage",
         "Strings",
         "Then",
         .product(name: "Collections", package: "swift-collections"),
-        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+        .product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect"),
         .product(name: "Lottie", package: "lottie-spm"),
       ],
       resources: [
@@ -448,26 +439,11 @@ var package = Package(
         "BraveStrings",
         "BraveUI",
         "DesignSystem",
-        "Favicon",
-        "Fuzi",
         "Preferences",
         "Strings",
-        "SpeechRecognition",
         "Web",
-        .product(name: "Collections", package: "swift-collections"),
-        .product(name: "Introspect", package: "SwiftUI-Introspect"),
-        .product(name: "Lottie", package: "lottie-spm"),
-      ],
-      resources: [
-        .copy("Components/Markdown/CodeHighlight/Themes/atom-one-dark.min.css"),
-        .copy("Components/Markdown/CodeHighlight/Themes/atom-one-light.min.css"),
-        .copy("Components/Markdown/CodeHighlight/Scripts/highlight.min.js"),
       ],
       plugins: ["LoggerPlugin"]
-    ),
-    .testTarget(
-      name: "AIChatTests",
-      dependencies: ["AIChat"]
     ),
     .target(
       name: "BraveStore",
@@ -479,7 +455,7 @@ var package = Package(
         "DesignSystem",
         "Preferences",
         .product(name: "Collections", package: "swift-collections"),
-        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+        .product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect"),
       ],
       plugins: ["LoggerPlugin"]
     ),
@@ -497,7 +473,6 @@ var package = Package(
         "Preferences",
         "Shared",
         "SnapKit",
-        "Storage",
       ],
       resources: [
         .copy("LottieAssets/onboarding-rewards.json"),
@@ -555,11 +530,6 @@ var package = Package(
         .product(name: "CustomDump", package: "swift-custom-dump"),
       ]
     ),
-    .testTarget(
-      name: "StorageTests",
-      dependencies: ["Storage", "TestHelpers"],
-      resources: [.copy("fixtures/v33.db"), .copy("testcert1.pem"), .copy("testcert2.pem")]
-    ),
     .testTarget(name: "DataTests", dependencies: ["Data", "TestHelpers", "BraveShields"]),
     .testTarget(
       name: "ClientTests",
@@ -584,7 +554,7 @@ var package = Package(
     .target(
       name: "Playlist",
       dependencies: [
-        "Data", "BraveShared", "Shared", "Storage", "Preferences", "Strings", "CodableHelpers",
+        "Data", "BraveShared", "Shared", "Preferences", "Strings", "CodableHelpers",
         "UserAgent", "Then", "BraveShields",
       ],
       plugins: ["LoggerPlugin"]
@@ -618,7 +588,7 @@ var package = Package(
     .target(
       name: "Web",
       dependencies: [
-        "BraveCore", "FaviconModels", "BraveShared", "Shared", "CertificateUtilities", "Storage",
+        "BraveCore", "FaviconModels", "BraveShared", "Shared", "CertificateUtilities",
         "BraveStrings", "Strings",
         .product(name: "OrderedCollections", package: "swift-collections"),
       ],
@@ -627,11 +597,6 @@ var package = Package(
     .testTarget(name: "BrowserMenuTests", dependencies: ["BrowserMenu"]),
     .plugin(name: "IntentBuilderPlugin", capability: .buildTool()),
     .plugin(name: "LoggerPlugin", capability: .buildTool()),
-    .plugin(
-      name: "LeoAssetsPlugin",
-      capability: .buildTool()
-    ),
-    .executableTarget(name: "LeoAssetCatalogGenerator"),
     .target(
       name: "BraveTalk",
       dependencies: [
@@ -654,7 +619,7 @@ var package = Package(
         "Strings",
         "BraveCore",
         "BraveStore",
-        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+        .product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect"),
       ]
     ),
   ],
@@ -674,9 +639,9 @@ let isStripAbsolutePathsFromDebugSymbolsEnabled = {
   }
 }()
 
-if isStripAbsolutePathsFromDebugSymbolsEnabled {
-  for target in package.targets where target.type == .regular || target.type == .test {
-    var settings = target.swiftSettings ?? []
+for target in package.targets where target.type == .regular || target.type == .test {
+  var settings = target.swiftSettings ?? []
+  if isStripAbsolutePathsFromDebugSymbolsEnabled {
     settings.append(
       .unsafeFlags(
         [
@@ -685,6 +650,14 @@ if isStripAbsolutePathsFromDebugSymbolsEnabled {
         .when(configuration: .debug)
       )
     )
-    target.swiftSettings = settings
   }
+  // Approchable Concurrency feature flags
+  settings.append(contentsOf: [
+    .enableUpcomingFeature("DisableOutwardActorInference"),
+    .enableUpcomingFeature("GlobalActorIsolatedTypesUsability"),
+    .enableUpcomingFeature("InferIsolatedConformances"),
+    .enableUpcomingFeature("InferSendableFromCaptures"),
+    .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+  ])
+  target.swiftSettings = settings
 }

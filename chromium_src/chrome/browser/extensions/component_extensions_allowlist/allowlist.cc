@@ -5,10 +5,14 @@
 
 #include "chrome/browser/extensions/component_extensions_allowlist/allowlist.h"
 
-#include "brave/components/brave_extension/grit/brave_extension.h"
 #include "chrome/common/extensions/extension_constants.h"
 #include "components/grit/brave_components_resources.h"
+#include "extensions/buildflags/buildflags.h"
 #include "extensions/common/constants.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/components/brave_extension/grit/brave_extension.h"
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 namespace extensions {
 
@@ -39,11 +43,13 @@ bool IsComponentExtensionDenylistedBraveImpl(const std::string& extension_id) {
 }
 
 bool IsComponentExtensionAllowlistedBraveImpl(int manifest_resource_id) {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
   switch (manifest_resource_id) {
     // Please keep the list in alphabetical order.
     case IDR_BRAVE_EXTENSION:
       return true;
   }
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
   return false;
 }

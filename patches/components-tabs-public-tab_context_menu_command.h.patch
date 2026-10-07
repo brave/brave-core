@@ -1,0 +1,19 @@
+diff --git a/components/tabs/public/tab_context_menu_command.h b/components/tabs/public/tab_context_menu_command.h
+index 0ed448fdc4af775457097eeec2d12efaee1a5391..c9138a06459b77b8f467f48432143f89b16515ef 100644
+--- a/components/tabs/public/tab_context_menu_command.h
++++ b/components/tabs/public/tab_context_menu_command.h
+@@ -39,6 +39,14 @@ enum TabContextMenuCommand {
+   CommandGlicSwitchToRecentConversation,
+   CommandGlicUnshare,
+   CommandToggleFocusGroup,
++  CommandRestoreTab,
++  CommandBookmarkAllTabs,
++  CommandShowVerticalTabs,
++  CommandToggleTabMuted,
++  CommandBringAllTabsToThisWindow,
++  CommandCloseDuplicateTabs,
++  CommandOpenInContainer,
++  CommandRenameTab,
+ };
+ // LINT.ThenChange(//tools/metrics/histograms/metadata/tab/histograms.xml:TabContextMenuCommand)
+ 

@@ -10,9 +10,12 @@ import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
+import("//brave/components/traffic_control/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
 import("//build/config/features.gni")
 import("//build/config/locales.gni")
+import("//extensions/buildflags/buildflags.gni")
+import("//pdf/features.gni")
 
 action("generate_command_metadata") {
   command_files = [ "//brave/app/brave_command_ids.h" ]
@@ -64,6 +67,7 @@ brave_grit("brave_generated_resources_grit") {
     "enable_request_otr=$enable_request_otr",
     "enable_speedreader=$enable_speedreader",
     "enable_text_recognition=$enable_text_recognition",
+    "enable_traffic_control=$enable_traffic_control",
     "enable_psst=$enable_psst",
   ]
   source = "brave_generated_resources.grd"
@@ -77,8 +81,20 @@ brave_grit("brave_generated_resources_grit") {
     "brave_generated_resources.pak",
   ]
 
+  if (translate_genders) {
+    grit_flags = [ "--translate-genders" ]
+  }
+
+  # grit clones every data_package <output> node per gender, including the
+  # lang-less "brave_generated_resources.pak" above.
+  foreach(gender_suffix, gender_suffixes - [ "" ]) {
+    outputs += [ "brave_generated_resources${gender_suffix}.pak" ]
+  }
+
   foreach(locale, all_chrome_locales) {
-    outputs += [ "brave_generated_resources_$locale.pak" ]
+    foreach(gender_suffix, gender_suffixes) {
+      outputs += [ "brave_generated_resources_${locale}${gender_suffix}.pak" ]
+    }
   }
 }
 
@@ -137,10 +153,10 @@ source_set("unit_tests") {
     "//chrome/browser/media/webrtc",
     "//chrome/browser/policy:policy_util",
     "//chrome/browser/preloading",
+    "//chrome/browser/ttc",
     "//chrome/browser/ui",
     "//chrome/browser/ui:ui_features",
     "//chrome/browser/ui/omnibox",
-    "//components/aggregation_service",
     "//components/attribution_reporting:features",
     "//components/autofill/core/common",
     "//components/browser_actuator/internal:features",
@@ -150,6 +166,7 @@ source_set("unit_tests") {
     "//components/compose/core/browser:features",
     "//components/content_settings/core/common:features",
     "//components/contextual_tasks/public:feature_list",
+    "//components/critical_actions/core/browser",
     "//components/device_signals/core/common:features",
     "//components/embedder_support",
     "//components/enterprise/connectors/core",
@@ -163,33 +180,37 @@ source_set("unit_tests") {
     "//components/manta",
     "//components/metrics",
     "//components/metrics/private_metrics:private_metrics_features",
-    "//components/metrics/private_metrics/private_insights",
     "//components/metrics/structured:structured_metrics_features",
     "//components/multistep_filter/core:features",
     "//components/network_time",
+    "//components/ntp_tiles",
     "//components/omnibox/browser",
     "//components/one_time_tokens/core/common:features",
     "//components/optimization_guide/core",
     "//components/page_image_service",
     "//components/page_info/core",
     "//components/passage_embeddings/core",
+    "//components/password_manager/core/browser/features:password_features",
     "//components/performance_manager",
     "//components/permissions",
     "//components/personal_context/core:features",
-    "//components/plus_addresses/core/common:features",
     "//components/privacy_sandbox",
     "//components/private_ai:features",
+    "//components/private_insights",
     "//components/safe_browsing/core/common",
     "//components/search",
     "//components/segmentation_platform/public",
     "//components/shared_highlighting/core/common",
     "//components/signin/public/base:signin_buildflags",
+    "//components/site_token_provider",
     "//components/skills:features",
     "//components/subresource_filter/core/common",
     "//components/sync/base:features",
     "//components/user_education/common",
     "//components/webapps/browser",
+    "//extensions/buildflags",
     "//gpu/config",
+    "//pdf:buildflags",
     "//services/device/public/cpp:device_features",
     "//services/network/public/cpp",
     "//testing/gtest",
@@ -210,23 +231,24 @@ source_set("unit_tests") {
       "//chrome/app:command_ids",
       "//chrome/browser/sharing_hub",
       "//chrome/browser/ui:accelerator_table",
-      "//chrome/browser/ui/tabs:features",
       "//chrome/browser/ui/toasts",
       "//chrome/browser/ui/views/desktop_capture",
       "//chrome/common:chrome_features",
       "//components/translate/core/common",
-      "//extensions/common",
       "//ui/accessibility:ax_base",
     ]
   }
   if (is_win) {
-    deps += [
-      "//chrome/browser/startup",
-      "//chrome/browser/win:mica_titlebar",
-    ]
+    deps += [ "//chrome/browser/startup" ]
+  }
+  if (enable_extensions_core) {
+    deps += [ "//extensions/common" ]
   }
   if (enable_brave_vpn_v2_apps) {
     deps += [ "//brave/components/brave_vpn/app/v2/shared" ]
+  }
+  if (enable_pdf) {
+    deps += [ "//pdf:features" ]
   }
 }
 

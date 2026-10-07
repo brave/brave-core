@@ -46,7 +46,7 @@ source_set("internal") {
   }
 
   if (toolkit_views) {
-    deps += [ "//brave/browser/ui/sidebar:sidebar_impl" ]
+    deps += [ "//brave/browser/ui/sidebar" ]
   }
 
   if (!is_android) {
@@ -57,6 +57,7 @@ source_set("internal") {
       "//brave/browser/ui/tabs:tabs_public",
       "//brave/browser/ui/tabs:tree_tab_session_manager",
       "//brave/browser/ui/views/page_info",
+      "//brave/browser/ui/views/toolbar:screenshot",
       "//brave/browser/ui/views/workspaces",
       "//chrome/browser/ui/side_panel",
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",

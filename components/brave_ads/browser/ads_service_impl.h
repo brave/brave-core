@@ -132,7 +132,12 @@ class AdsServiceImpl : public AdsService,
 
   ~AdsServiceImpl() override;
 
+  // Runs the migration step for this service, registers the pref change
+  // registrars, and evaluates ads-eligibility to start the `bat_ads` service.
+  void Init();
+
   // AdsService:
+  base::WeakPtr<AdsService> GetWeakPtr() override;
   bool IsIneligibleToStart() const override;
   bool IsInitialized() const override;
 
@@ -151,9 +156,8 @@ class AdsServiceImpl : public AdsService,
   void UnregisterLanguageResourceComponent();
 
   bool UserHasJoinedBraveRewards() const;
-  bool UserHasOptedInToNewTabPageAds() const;
+  bool IsSponsoredAdsEnabled() const;
   bool IsNotificationAdsEnabled() const;
-  bool UserHasOptedInToSearchResultAds() const;
 
   bool CanStartBatAdsService() const;
   void MaybeStartBatAdsService();
@@ -178,11 +182,10 @@ class AdsServiceImpl : public AdsService,
                                                       bool shutdown_succeeded);
   void ClearAllPrefsAndAdsServiceDataAndMaybeRestart(ResultCallback callback,
                                                      bool shutdown_succeeded);
+  void ClearAdsPrefs();
   void ClearAdsServiceDataAndMaybeRestart(ResultCallback callback);
   void ClearAdsServiceDataAndMaybeRestartCallback(ResultCallback callback,
                                                   bool success);
-
-  void OnExternalWalletConnectedCallback(bool success);
 
   void SetSysInfo();
   void SetBuildChannel();
@@ -200,10 +203,12 @@ class AdsServiceImpl : public AdsService,
   void InitializePrefChangeRegistrar();
   void InitializeBraveRewardsPrefChangeRegistrar();
   void InitializeSubdivisionTargetingPrefChangeRegistrar();
-  void InitializeNewTabPageAdsPrefChangeRegistrar();
+  void InitializeNewTabPageBackgroundImagePrefChangeRegistrar();
   void InitializeNotificationAdsPrefChangeRegistrar();
-  void InitializeSearchResultAdsPrefChangeRegistrar();
+  void InitializeSponsoredAdsPrefChangeRegistrar();
   void OnAdsPrefChanged(const std::string& path);
+  bool ShouldClearAdsData(const std::string& path) const;
+  void MaybeClearAdsData(const std::string& path);
   void OnVariationsCountryPrefChanged();
   void NotifyPrefChanged(const std::string& path) const;
 
@@ -226,6 +231,7 @@ class AdsServiceImpl : public AdsService,
   bool StopNotificationAdTimeOutTimer(const std::string& placement_id);
   void NotificationAdTimedOut(const std::string& placement_id);
   void CloseAllNotificationAds();
+  void MaybeCloseAllNotificationAds();
   void RegisterOrUnregisterLanguageResourceComponent();
 
   // TODO(https://github.com/brave/brave-browser/issues/26193) Decouple open
@@ -264,6 +270,12 @@ class AdsServiceImpl : public AdsService,
   void GetInternals(GetInternalsCallback callback) override;
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
+
+  void EvaluateConditionMatcher(
+      const std::string& pref_path,
+      const std::string& condition,
+      std::optional<std::string> test_value,
+      EvaluateConditionMatcherCallback callback) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 

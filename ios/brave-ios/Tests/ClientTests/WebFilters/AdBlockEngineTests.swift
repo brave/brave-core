@@ -17,7 +17,7 @@ final class AdBlockEngineTests: XCTestCase {
 
     // When
     // We create an engine
-    let engine = try AdblockEngine(rules: String(contentsOf: sampleFilterListURL))
+    let engine = try AdblockEngine(rules: String(contentsOf: sampleFilterListURL, encoding: .utf8))
 
     // Then
     // Serialize then deserialize the engine

@@ -1,0 +1,239 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/views/page_action/wayback_machine_bubble_view.h"
+
+#include <memory>
+#include <utility>
+
+#include "base/check.h"
+#include "base/functional/bind.h"
+#include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
+#include "brave/components/brave_wayback_machine/pref_names.h"
+#include "brave/components/vector_icons/vector_icons.h"
+#include "brave/grit/brave_generated_resources.h"
+#include "brave/ui/color/nala/nala_color_id.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/views/chrome_layout_provider.h"
+#include "components/prefs/pref_service.h"
+#include "content/public/browser/web_contents.h"
+#include "ui/actions/actions.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/models/image_model.h"
+#include "ui/base/mojom/dialog_button.mojom.h"
+#include "ui/gfx/geometry/insets.h"
+#include "ui/views/accessibility/view_accessibility.h"
+#include "ui/views/controls/button/md_text_button.h"
+#include "ui/views/controls/image_view.h"
+#include "ui/views/controls/label.h"
+#include "ui/views/controls/throbber.h"
+#include "ui/views/layout/box_layout.h"
+#include "ui/views/layout/box_layout_view.h"
+#include "ui/views/widget/widget.h"
+#include "ui/views/window/dialog_client_view.h"
+
+namespace {
+
+constexpr int kBubbleWidth = 432;
+constexpr int kArchiveIconSize = 56;
+constexpr int kPadding = 24;
+constexpr int kThrobberSize = 24;
+
+BraveWaybackMachineTabHelper* GetTabHelper(content::WebContents* web_contents) {
+  if (!web_contents) {
+    return nullptr;
+  }
+
+  return BraveWaybackMachineTabHelper::FromWebContents(web_contents);
+}
+
+gfx::FontList GetFont(int font_size, gfx::Font::Weight weight) {
+  gfx::FontList font_list;
+  return font_list.DeriveWithSizeDelta(font_size - font_list.GetFontSize())
+      .DeriveWithWeight(weight);
+}
+
+}  // namespace
+
+WaybackMachineBubbleView::WaybackMachineBubbleView(
+    views::BubbleAnchor anchor,
+    content::WebContents* web_contents,
+    actions::ActionItem* item)
+    : LocationBarBubbleDelegateView(anchor, web_contents), item_(item) {
+  if (item_) {
+    item_->SetIsShowingBubble(true);
+  }
+  SetShowCloseButton(true);
+  set_fixed_width(kBubbleWidth);
+  set_should_ignore_snapping(true);
+  set_title_margins(gfx::Insets(kPadding));
+  set_margins(gfx::Insets::TLBR(0, kPadding, kPadding, kPadding));
+
+  SetLayoutManager(std::make_unique<views::BoxLayout>(
+      views::BoxLayout::Orientation::kVertical,
+      /*inside_border_insets*/ gfx::Insets(),
+      /*between_child_spacing*/ kPadding));
+
+  auto* content_row = AddChildView(std::make_unique<views::View>());
+  auto* row_layout =
+      content_row->SetLayoutManager(std::make_unique<views::BoxLayout>(
+          views::BoxLayout::Orientation::kHorizontal, gfx::Insets(), 16));
+  row_layout->set_cross_axis_alignment(
+      views::BoxLayout::CrossAxisAlignment::kStart);
+
+  body_ = content_row->AddChildView(std::make_unique<views::Label>());
+  body_->SetFontList(GetFont(/*font_size*/ 14, gfx::Font::Weight::NORMAL));
+  body_->SetMultiLine(true);
+  body_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
+  row_layout->SetFlexForView(body_, 1);
+
+  auto* icon = content_row->AddChildView(std::make_unique<views::ImageView>());
+  icon->SetImage(ui::ImageModel::FromVectorIcon(
+      kLeoInternetArchiveIcon, nala::kColorIconDefault, kArchiveIconSize));
+
+  auto loading_row = std::make_unique<views::BoxLayoutView>();
+  loading_row->SetMainAxisAlignment(views::BoxLayout::MainAxisAlignment::kEnd);
+  loading_row->SetCrossAxisAlignment(
+      views::BoxLayout::CrossAxisAlignment::kCenter);
+  loading_row->SetVisible(false);
+  throbber_ = loading_row->AddChildView(
+      std::make_unique<views::Throbber>(kThrobberSize));
+  throbber_->SetColorId(nala::kColorIconInteractive);
+  loading_row_ = AddChildView(std::move(loading_row));
+
+  auto dont_ask_again = std::make_unique<views::MdTextButton>(
+      base::BindRepeating(&WaybackMachineBubbleView::OnDontAskAgain,
+                          base::Unretained(this)),
+      l10n_util::GetStringUTF16(
+          IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_DONT_ASK_AGAIN_TEXT));
+  dont_ask_again->SetStyle(ui::ButtonStyle::kText);
+  dont_ask_again_ = SetExtraView(std::move(dont_ask_again));
+
+  SetAcceptCallbackWithClose(base::BindRepeating(
+      &WaybackMachineBubbleView::OnAccepted, base::Unretained(this)));
+
+  auto* tab_helper = GetTabHelper(web_contents);
+  CHECK(tab_helper);
+  CHECK_NE(tab_helper->wayback_state(), WaybackState::kInitial);
+  CHECK_NE(tab_helper->wayback_state(), WaybackState::kLoaded);
+  wayback_state_changed_subscription_ =
+      tab_helper->RegisterWaybackStateChangedCallback(base::BindRepeating(
+          &WaybackMachineBubbleView::UpdateFromState, base::Unretained(this)));
+  UpdateFromState(tab_helper->wayback_state());
+}
+
+WaybackMachineBubbleView::~WaybackMachineBubbleView() {
+  if (item_) {
+    item_->SetIsShowingBubble(false);
+  }
+}
+
+bool WaybackMachineBubbleView::OnAccepted() {
+  if (auto* tab_helper = GetTabHelper(web_contents())) {
+    tab_helper->FetchWaybackURL();
+    // Stay open while the lookup runs. UpdateFromState() closes the bubble if
+    // a snapshot is found, or switches it to the "not available" message.
+    return false;
+  }
+  return true;
+}
+
+void WaybackMachineBubbleView::OnDontAskAgain() {
+  if (web_contents()) {
+    auto* profile =
+        Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+    profile->GetPrefs()->SetBoolean(kBraveWaybackMachineEnabled, false);
+  }
+  if (views::Widget* widget = GetWidget()) {
+    widget->CloseWithReason(views::Widget::ClosedReason::kCancelButtonClicked);
+  }
+}
+
+void WaybackMachineBubbleView::UpdateFromState(WaybackState state) {
+  switch (state) {
+    case WaybackState::kNeedToCheck:
+    case WaybackState::kFetching:
+      SetTitle(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_SORRY_HEADER_TEXT));
+      body_->SetText(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_ASK_ABOUT_CHECK_TEXT));
+      if (state == WaybackState::kFetching) {
+        ShowLoading();
+        break;
+      }
+      HideLoading();
+      SetButtons(static_cast<int>(ui::mojom::DialogButton::kOk) |
+                 static_cast<int>(ui::mojom::DialogButton::kCancel));
+      SetButtonLabel(ui::mojom::DialogButton::kOk,
+                     l10n_util::GetStringUTF16(
+                         IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CHECK_BUTTON_TEXT));
+      SetButtonLabel(ui::mojom::DialogButton::kCancel,
+                     l10n_util::GetStringUTF16(
+                         IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_DISMISS_BUTTON_TEXT));
+      dont_ask_again_->SetVisible(true);
+      break;
+    case WaybackState::kNotAvailable:
+      SetTitle(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CANT_FIND_HEADER_TEXT));
+      body_->SetText(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_NOT_AVAILABLE_TEXT));
+      SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
+      dont_ask_again_->SetVisible(false);
+      HideLoading();
+      break;
+    case WaybackState::kInitial:
+    case WaybackState::kLoaded:
+      if (views::Widget* widget = GetWidget()) {
+        widget->CloseWithReason(views::Widget::ClosedReason::kUnspecified);
+      }
+      return;
+  }
+
+  if (GetWidget()) {
+    SizeToContents();
+  }
+}
+
+void WaybackMachineBubbleView::ShowLoading() {
+  if (loading_row_->GetVisible()) {
+    return;
+  }
+
+  const int height_with_buttons =
+      GetWidget() ? GetDialogClientView()->GetPreferredSize().height() : 0;
+
+  SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
+  dont_ask_again_->SetVisible(false);
+  loading_row_->SetVisible(true);
+  throbber_->Start();
+  throbber_->GetViewAccessibility().AnnouncePolitely(l10n_util::GetStringUTF16(
+      IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CHECKING_ACCESSIBLE_NAME));
+
+  if (!GetWidget()) {
+    return;
+  }
+  // Pad the loading row to fill the space vacated by the button row, so that
+  // the bubble doesn't shrink while the lookup is in progress.
+  const int missing_height =
+      height_with_buttons - GetDialogClientView()->GetPreferredSize().height();
+  if (missing_height > 0) {
+    gfx::Size size = loading_row_->GetPreferredSize();
+    size.Enlarge(0, missing_height);
+    loading_row_->SetPreferredSize(size);
+  }
+}
+
+void WaybackMachineBubbleView::HideLoading() {
+  if (!loading_row_->GetVisible()) {
+    return;
+  }
+  throbber_->Stop();
+  loading_row_->SetVisible(false);
+  loading_row_->SetPreferredSize(std::nullopt);
+}
+
+BEGIN_METADATA(WaybackMachineBubbleView)
+END_METADATA

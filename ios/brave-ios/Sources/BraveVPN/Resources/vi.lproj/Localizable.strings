@@ -227,7 +227,7 @@
 "vpn.serverTitle" = "%ld máy chủ";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Bảo vệ mọi ứng dụng với Brave VPN. Bảo vệ tối đa 10 thiết bị với một gói đăng ký.";
+"vpn.settingHeaderBody" = "Phát nội dung của bạn, theo cách của bạn. Bảo vệ mọi ứng dụng trên 10 thiết bị với 1 gói đăng ký.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Liên hệ hỗ trợ kỹ thuật";

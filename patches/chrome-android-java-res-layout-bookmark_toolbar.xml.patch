@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/res/layout/bookmark_toolbar.xml b/chrome/android/java/res/layout/bookmark_toolbar.xml
-index b45d8811f88453f96a788d23bf1c1fdd61869708..57e09aa918f9002f6376e42b5ed2ece5f059dbc0 100644
+index 6276599f52c5a72970705a0edecfb09150a798af..22613031c5d22bfbbbb81cf0949ec3171a39ff3a 100644
 --- a/chrome/android/java/res/layout/bookmark_toolbar.xml
 +++ b/chrome/android/java/res/layout/bookmark_toolbar.xml
 @@ -5,7 +5,7 @@ Use of this source code is governed by a BSD-style license that can be
@@ -15,6 +15,7 @@ index b45d8811f88453f96a788d23bf1c1fdd61869708..57e09aa918f9002f6376e42b5ed2ece5
      android:layout_height="@dimen/toolbar_height_no_shadow"
      style="@style/ModernToolbar"
      app:popupTheme="@style/ModernToolbarPopupTheme"
--    android:focusable="true" />
+-    android:focusable="false" />
 \ No newline at end of file
 +    />
+\ No newline at end of file

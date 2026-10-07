@@ -64,7 +64,7 @@ using DownloadFeedCallback = base::OnceCallback<void(DirectFeedResponse)>;
 
 // Exposed for testing.
 void ConvertFeedDataToArticles(std::vector<mojom::ArticlePtr>& articles,
-                               FeedData data,
+                               const FeedData& data,
                                const std::string& publisher_id);
 
 class DirectFeedFetcher {

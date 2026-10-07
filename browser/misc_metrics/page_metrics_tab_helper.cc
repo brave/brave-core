@@ -22,10 +22,15 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/media_session.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/reload_type.h"
 #include "content/public/browser/restore_type.h"
+#include "content/public/browser/web_contents.h"
+#include "ui/base/base_window.h"
 #include "ui/base/page_transition_types.h"
+#include "ui/gfx/geometry/point.h"
+#include "ui/gfx/geometry/rect.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/flags/android/chrome_session_state.h"
@@ -41,10 +46,9 @@ constexpr char kYouTubeDomain[] = "youtube.com";
 
 }  // namespace
 
-PageMetricsTabHelper::PageMetricsTabHelper(content::WebContents* web_contents)
-    : WebContentsObserver(web_contents),
-      content::WebContentsUserData<PageMetricsTabHelper>(*web_contents),
-      browser_context_(web_contents->GetBrowserContext()) {
+PageMetricsTabHelper::PageMetricsTabHelper(tabs::TabInterface& tab)
+    : tabs::ContentsObservingTabFeature(tab),
+      browser_context_(tab.GetContents()->GetBrowserContext()) {
   auto* profile = Profile::FromBrowserContext(browser_context_);
   if (!profile) {
     return;
@@ -59,9 +63,28 @@ PageMetricsTabHelper::PageMetricsTabHelper(content::WebContents* web_contents)
   if (auto* process_metrics = g_brave_browser_process->process_misc_metrics()) {
     media_session_metrics_ = process_metrics->media_session_metrics();
   }
+
+  // The contents may already have a media session, e.g. when an existing tab's
+  // contents is moved into a new tab, such as an app window.
+  if (auto* media_session =
+          content::MediaSession::GetIfExists(tab.GetContents())) {
+    MediaSessionCreated(media_session);
+  }
 }
 
-PageMetricsTabHelper::~PageMetricsTabHelper() = default;
+// TabFeatures, and so this helper, are destroyed before the tab's contents.
+PageMetricsTabHelper::~PageMetricsTabHelper() {
+  ReleaseMediaSession();
+}
+
+void PageMetricsTabHelper::OnDiscardContents(
+    tabs::TabInterface* tab,
+    content::WebContents* old_contents,
+    content::WebContents* new_contents) {
+  ReleaseMediaSession();
+  tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
+                                                       new_contents);
+}
 
 void PageMetricsTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
@@ -77,8 +100,17 @@ void PageMetricsTabHelper::DidFinishNavigation(
   if (is_otr) {
     UMA_HISTOGRAM_BOOLEAN("Brave.Core.PrivateWindowUsed", true);
   } else {
-    brave_search::BackupResultsServiceImpl::RecordLastViewSize(
-        g_browser_process->local_state(), web_contents()->GetSize());
+    gfx::Rect window_bounds;
+    auto* browser_window = tab().GetBrowserWindowInterface();
+    if (auto* window = browser_window ? browser_window->GetWindow() : nullptr) {
+      window_bounds = window->GetBounds();
+      gfx::Point origin = window_bounds.origin();
+      origin.SetToMax(gfx::Point());
+      window_bounds.set_origin(origin);
+    }
+    brave_search::BackupResultsServiceImpl::RecordLastViewGeometry(
+        g_browser_process->local_state(), web_contents()->GetSize(),
+        window_bounds);
   }
 
   bool is_reload = false;
@@ -107,7 +139,7 @@ void PageMetricsTabHelper::MediaSessionCreated(
   media_session_metrics_->OnMediaSessionCreated(media_session);
 }
 
-void PageMetricsTabHelper::WebContentsDestroyed() {
+void PageMetricsTabHelper::ReleaseMediaSession() {
   if (!media_session_metrics_ || !media_session_) {
     return;
   }
@@ -133,8 +165,7 @@ void PageMetricsTabHelper::MaybeRecordNavigationSource(
     }
   }
 #endif  // BUILDFLAG(IS_ANDROID)
-  auto* tab = tabs::TabInterface::MaybeGetFromContents(web_contents());
-  auto* browser_window = tab ? tab->GetBrowserWindowInterface() : nullptr;
+  auto* browser_window = tab().GetBrowserWindowInterface();
   if (browser_window &&
       browser_window->GetType() == BrowserWindowInterface::Type::TYPE_APP) {
     nav_source_metrics.RecordPWANavigation();
@@ -182,7 +213,5 @@ bool PageMetricsTabHelper::IsRelevantNavigationEvent(
 bool PageMetricsTabHelper::IsPrivateWindowEvent() {
   return browser_context_ && browser_context_->IsOffTheRecord();
 }
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(PageMetricsTabHelper);
 
 }  // namespace misc_metrics

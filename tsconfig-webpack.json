@@ -7,6 +7,9 @@
     // hiding an error or a timing issue with the dev's
     // current build configuration.
     "paths": {},
+    // ts-loader uses a generated copy of this file under out/.../gen, so
+    // default @types discovery would not find brave/node_modules/@types.
+    "typeRoots": ["./node_modules/@types", "./components/definitions"],
   },
   "include": [
     "./components/definitions/*",

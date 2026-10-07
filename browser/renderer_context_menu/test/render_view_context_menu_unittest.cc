@@ -10,13 +10,14 @@
 #include "base/check.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/query_filter/browser/test_support/query_filter_test_helper.h"
 #include "build/build_config.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/autocomplete/autocomplete_classifier_factory.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/custom_handlers/protocol_handler_registry_factory.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/test/base/test_browser_window.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -71,17 +72,17 @@ class BraveRenderViewContextMenuMock : public RenderViewContextMenu {
 
   void Show() override {}
 
-  void SetBrowser(Browser* browser) { browser_ = browser; }
+  void SetBrowser(BrowserWindowInterface* browser) { browser_ = browser; }
 
-  Browser* GetBrowser() const override {
+  BrowserWindowInterface* GetBrowser() const override {
     if (browser_) {
       return browser_;
     }
-    return RenderViewContextMenu::GetBrowser()->GetBrowserForMigrationOnly();
+    return RenderViewContextMenu::GetBrowser();
   }
 
  private:
-  raw_ptr<Browser> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
 };
 
 class BraveRenderViewContextMenuTest : public testing::Test {
@@ -99,12 +100,14 @@ class BraveRenderViewContextMenuTest : public testing::Test {
         *web_contents->GetPrimaryMainFrame(), params,
         /*is_paste_enabled=*/false, /*is_paste_and_match_style_enabled=*/false);
 
-    Browser::CreateParams create_params(
-        is_pwa_browser ? Browser::Type::TYPE_APP : Browser::Type::TYPE_NORMAL,
+    BrowserWindowCreateParams create_params(
+        is_pwa_browser ? BrowserWindowInterface::Type::TYPE_APP
+                       : BrowserWindowInterface::Type::TYPE_NORMAL,
         profile_.get(), true);
     auto browser_window = std::make_unique<TestBrowserWindow>();
     create_params.window = browser_window.release();
-    browser_ = Browser::DeprecatedCreateOwnedForTesting(create_params);
+    browser_ =
+        DeprecatedCreateOwnedBrowserWindowForTesting(std::move(create_params));
     menu->SetBrowser(browser_.get());
 
     menu->Init();
@@ -151,9 +154,10 @@ class BraveRenderViewContextMenuTest : public testing::Test {
 
  private:
   content::BrowserTaskEnvironment browser_task_environment;
+  query_filter::test::ScopedTestingQueryFilterRules query_filter_rules_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<custom_handlers::ProtocolHandlerRegistry> registry_;
-  std::unique_ptr<Browser> browser_;
+  std::unique_ptr<BrowserWindowInterface> browser_;
   std::unique_ptr<ChromeAutocompleteProviderClient> client_;
   std::unique_ptr<content::WebContents> web_contents_;
 };
@@ -177,15 +181,26 @@ TEST_F(BraveRenderViewContextMenuTest, MenuForSelectedUrl) {
   EXPECT_TRUE(context_menu->IsCommandIdEnabled(IDC_COPY_CLEAN_LINK));
 }
 
-TEST_F(BraveRenderViewContextMenuTest, MenuForLink) {
+TEST_F(BraveRenderViewContextMenuTest, MenuForLinkWithTrackingParams) {
   content::ContextMenuParams params =
-      CreateLinkParams(GURL("https://brave.com"));
+      CreateLinkParams(GURL("https://brave.com/?fbclid=123&foo=bar"));
   auto context_menu = CreateContextMenu(GetWebContents(), params);
   EXPECT_TRUE(context_menu);
   std::optional<size_t> clean_link_index =
       context_menu->menu_model().GetIndexOfCommandId(IDC_COPY_CLEAN_LINK);
   EXPECT_TRUE(clean_link_index.has_value());
   EXPECT_TRUE(context_menu->IsCommandIdEnabled(IDC_COPY_CLEAN_LINK));
+}
+
+TEST_F(BraveRenderViewContextMenuTest, MenuForLink) {
+  // A link which is already clean shouldn't get the "Copy clean link" item.
+  content::ContextMenuParams params =
+      CreateLinkParams(GURL("https://brave.com/?foo=bar"));
+  auto context_menu = CreateContextMenu(GetWebContents(), params);
+  EXPECT_TRUE(context_menu);
+  std::optional<size_t> clean_link_index =
+      context_menu->menu_model().GetIndexOfCommandId(IDC_COPY_CLEAN_LINK);
+  EXPECT_FALSE(clean_link_index.has_value());
 
 #if !BUILDFLAG(IS_ANDROID)
   // Split view item should be last in first section (right before first

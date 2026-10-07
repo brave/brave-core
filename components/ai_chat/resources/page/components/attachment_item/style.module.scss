@@ -17,6 +17,16 @@
   box-sizing: border-box;
 }
 
+.clickable {
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+
+  &:hover {
+    background-color: var(--leo-color-container-highlight);
+  }
+}
+
 .imageButton {
   display: flex;
   padding: 0;

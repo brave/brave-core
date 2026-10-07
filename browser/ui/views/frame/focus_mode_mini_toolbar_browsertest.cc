@@ -13,7 +13,6 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/focus_mode_title_bar_view.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_container_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
@@ -67,7 +66,7 @@ class FocusModeMiniToolbarBrowserTestBase : public InProcessBrowserTest {
   }
 
   void SetFocusModeEnabled(bool enabled) {
-    browser()->GetFeatures().focus_mode_controller()->SetEnabled(enabled);
+    FocusModeController::From(browser())->SetEnabled(enabled);
   }
 
   bool WaitForMiniToolbarVisible(bool visible) {

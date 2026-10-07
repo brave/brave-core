@@ -1,8 +1,8 @@
 diff --git a/tools/perf/benchmarks/system_health.py b/tools/perf/benchmarks/system_health.py
-index 9378d778d75eb91891f9d11551bf2b2a359748fb..1df8373c9cee7e88977ce00ab32b4a2278c160e6 100644
+index bf787c874a3d830c4cd1997db988349923dfc6bd..57ef4838edb3f42540ed8bc6fdaa9c8a2183f3bd 100644
 --- a/tools/perf/benchmarks/system_health.py
 +++ b/tools/perf/benchmarks/system_health.py
-@@ -262,3 +262,4 @@ class WebviewStartupSystemHealthBenchmark(perf_benchmark.PerfBenchmark):
+@@ -295,3 +295,4 @@ class WebviewStartupSystemHealthBenchmark(perf_benchmark.PerfBenchmark):
    @classmethod
    def Name(cls):
      return 'system_health.webview_startup'

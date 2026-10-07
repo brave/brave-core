@@ -95,13 +95,27 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int TWO_ITEMS_SPACE = 2;
     private static final String TAG = "BraveNtpAdapter";
 
-    public BraveNtpAdapter(Activity activity, OnBraveNtpListener onBraveNtpListener,
-            RequestManager glide, CopyOnWriteArrayList<FeedItemsCard> newsItems,
-            BraveNewsController braveNewsController, View mvTilesContainerLayout, NTPImage ntpImage,
-            SponsoredTab sponsoredTab, Wallpaper wallpaper, Bitmap sponsoredLogo,
-            NTPBackgroundImagesBridge nTPBackgroundImagesBridge, boolean isNewsLoading,
-            int recyclerViewHeight, boolean isTopSitesEnabled, boolean isBraveStatsEnabled,
-            boolean isDisplayNewsFeed, boolean isDisplayNewsOptin) {
+    // Matches @dimen/mvt_container_lateral_margin used on the New Tab Page layout.
+    static final int CARD_MARGIN_DP = 16;
+
+    public BraveNtpAdapter(
+            Activity activity,
+            OnBraveNtpListener onBraveNtpListener,
+            RequestManager glide,
+            CopyOnWriteArrayList<FeedItemsCard> newsItems,
+            BraveNewsController braveNewsController,
+            View mvTilesContainerLayout,
+            NTPImage ntpImage,
+            SponsoredTab sponsoredTab,
+            Wallpaper wallpaper,
+            Bitmap sponsoredLogo,
+            NTPBackgroundImagesBridge nTPBackgroundImagesBridge,
+            boolean isNewsLoading,
+            int recyclerViewHeight,
+            boolean isTopSitesEnabled,
+            boolean isBraveStatsEnabled,
+            boolean isDisplayNewsFeed,
+            boolean isDisplayNewsOptin) {
         mActivity = activity;
         mOnBraveNtpListener = onBraveNtpListener;
         mGlide = glide;
@@ -145,7 +159,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT);
-            int margin = dpToPx(mActivity, 16);
+            int margin = dpToPx(mActivity, CARD_MARGIN_DP);
             layoutParams.setMargins(margin, margin, margin, 0);
             statsViewHolder.mNtpStatsLayout.setLayoutParams(layoutParams);
             statsViewHolder.mNtpStatsLayout.setOnClickListener(
@@ -160,7 +174,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT);
-            int margin = dpToPx(mActivity, 16);
+            int margin = dpToPx(mActivity, CARD_MARGIN_DP);
             layoutParams.setMargins(margin, margin, margin, 0);
 
             mMvTilesContainerLayout.setLayoutParams(layoutParams);
@@ -274,7 +288,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 if (isStatsEnabled()) {
                     mTopMarginImageCredit -= mStatsHeight;
                 } else {
-                    mTopMarginImageCredit -= dpToPx(mActivity, 16);
+                    mTopMarginImageCredit -= dpToPx(mActivity, CARD_MARGIN_DP);
                 }
 
                 if (mIsTopSitesEnabled) {
@@ -477,6 +491,10 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return mIsTopSitesEnabled ? 1 : 0;
     }
 
+    public int getTopItemsCount() {
+        return getStatsCount() + getTopSitesCount() + getNewContentCount();
+    }
+
     public void setTopSitesEnabled(boolean isTopSitesEnabled) {
         if (mIsTopSitesEnabled != isTopSitesEnabled) {
             mIsTopSitesEnabled = isTopSitesEnabled;
@@ -485,7 +503,9 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             } else {
                 notifyItemRemoved(getStatsCount());
             }
-            notifyItemRangeChanged(getStatsCount(),
+            // Rebind items shifted by the insert/remove above so they're positioned correctly.
+            notifyItemRangeChanged(
+                    getStatsCount(),
                     getStatsCount() + getTopSitesCount() + getNewContentCount() + ONE_ITEM_SPACE);
         }
     }
@@ -498,6 +518,10 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             } else {
                 notifyItemRemoved(getStatsCount());
             }
+            // Rebind items shifted by the insert/remove above so they're positioned correctly.
+            notifyItemRangeChanged(
+                    getStatsCount(),
+                    getStatsCount() + getTopSitesCount() + getNewContentCount() + ONE_ITEM_SPACE);
         }
     }
 
@@ -509,6 +533,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             } else {
                 notifyItemRangeRemoved(
                         getStatsCount() + getTopSitesCount() + ONE_ITEM_SPACE, mNewsItems.size());
+                notifyItemChanged(getStatsCount() + getTopSitesCount());
             }
         }
     }

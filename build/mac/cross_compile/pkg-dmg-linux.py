@@ -16,16 +16,25 @@ from tempfile import TemporaryDirectory
 import re
 
 CHROMIUM_SRC_DIR = __file__.split('/src/', 1)[0] + '/src'
-DMG_TOOL_PATH = join(CHROMIUM_SRC_DIR, 'brave', 'third_party',
-                     'libdmg-hfsplus', 'build', 'dmg', 'dmg')
+DMG_TOOL_PATH = join(
+    CHROMIUM_SRC_DIR,
+    'brave',
+    'third_party',
+    'libdmg-hfsplus',
+    'build',
+    'dmg',
+    'dmg',
+)
 
 
 def main():
-    assert exists(DMG_TOOL_PATH), DMG_TOOL_PATH + \
-        ' does not exist. Please make sure that checkout_dmg_tool is set to' \
-        ' True in the "custom_vars" section of the "src/brave" section of' \
-        ' your .gclient file, then `pnpm run sync` (without `--target_os=mac`)' \
+    assert exists(DMG_TOOL_PATH), (
+        DMG_TOOL_PATH
+        + ' does not exist. Please make sure that checkout_dmg_tool is set to'
+        ' True in the "custom_vars" section of the "src/brave" section of'
+        ' your .gclient file, then `pnpm run sync` (without `--target_os=mac`)'
         ' to download and build it.'
+    )
     args = parse_args()
     assert not listdir(args.source), 'The --source=... dir must be empty.'
     to_copy = list(map(parse_copy_arg, args.copy))
@@ -33,10 +42,15 @@ def main():
     safe_size_mb = required_size // 2**20 + 25
     with TemporaryDirectory(dir=args.tempdir) as tmp:
         image = join(tmp, 'image.hfs')
-        run_with_output([
-            'dd', 'if=/dev/zero', f'of={image}', 'bs=1M',
-            f'count={safe_size_mb}'
-        ])
+        run_with_output(
+            [
+                'dd',
+                'if=/dev/zero',
+                f'of={image}',
+                'bs=1M',
+                f'count={safe_size_mb}',
+            ]
+        )
         run_with_output(['/usr/sbin/mkfs.hfsplus', '-v', args.volname, image])
         output = run_with_output(['udisksctl', 'loop-setup', '-f', image])
         match = re.search(r'/dev/loop\d+', output)
@@ -47,7 +61,7 @@ def main():
             try:
                 prefix = f'Mounted {loop_device} at '
                 assert output.startswith(prefix), prefix
-                mount_path = output[len(prefix):].rstrip('\n')
+                mount_path = output[len(prefix) :].rstrip('\n')
                 for d in args.mkdir or []:
                     makedirs(join(mount_path, d))
                 for src, dst_rel in to_copy:
@@ -89,7 +103,8 @@ def run_with_output(args):
     if cp.returncode:
         raise RuntimeError(
             f'Command {args} returned error {cp.returncode}. Output:\n\n'
-            f'{cp.stdout}')
+            f'{cp.stdout}'
+        )
     return cp.stdout
 
 
@@ -105,9 +120,7 @@ def parse_args():
     parser.add_argument("--tempdir")
     parser.add_argument("--mkdir", action="append")
     parser.add_argument("--icon", help='Currently ignored.')
-    parser.add_argument("--symlink",
-                        action="append",
-                        help='Currently ignored.')
+    parser.add_argument("--symlink", action="append", help='Currently ignored.')
 
     return parser.parse_args()
 

@@ -229,6 +229,25 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
         }
         ((MediaSessionImpl) mediaSession).removeObserver(mediaSessionObserver);
         return new MediaSessionObserver(mediaSession) {
+            // "Controllable" means Chromium can resume or suspend the session. Remember whether
+            // this document had such a session so stale updates after reload cannot create
+            // controls.
+            private boolean mHasControllableSession;
+
+            // True when Brave kept controls that Chromium would otherwise hide. A new document
+            // must clear these old controls, except for the existing Brave Talk behavior.
+            private boolean mIsPreservingMediaSession;
+
+            @Override
+            public void mediaSessionDocumentChanged() {
+                boolean wasPreservingMediaSession = mIsPreservingMediaSession;
+                mHasControllableSession = false;
+                mIsPreservingMediaSession = false;
+                if (wasPreservingMediaSession && !isBraveTalk(getMediaSessionWebContents())) {
+                    mediaSessionObserver.mediaSessionStateChanged(false, true);
+                }
+            }
+
             @Override
             public void mediaSessionDestroyed() {
                 mediaSessionObserver.mediaSessionDestroyed();
@@ -236,6 +255,8 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
 
             @Override
             public void mediaSessionStateChanged(boolean isControllable, boolean isPaused) {
+                if (isControllable) mHasControllableSession = true;
+                mIsPreservingMediaSession = false;
                 // Keep the Android media controls alive for Brave Talk, background YouTube audio,
                 // and the active Brave-managed YouTube PiP session when the page transiently
                 // reports itself as not controllable. For Brave Talk and background playback the
@@ -245,7 +266,9 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
                 // right command after wake/restore transitions.
                 if (!isControllable) {
                     WebContents webContents = getMediaSessionWebContents();
-                    if (shouldSuppressMediaPause(webContents)) {
+                    if (shouldSuppressMediaPause(webContents)
+                            && (mHasControllableSession || isBraveTalk(webContents))) {
+                        mIsPreservingMediaSession = true;
                         isControllable = true;
                         if (shouldForcePlayingState(webContents)) {
                             isPaused = false;

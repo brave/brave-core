@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -43,7 +44,9 @@ BraveWalletService* BraveWalletServiceFactory::GetServiceForContext(
 BraveWalletServiceFactory::BraveWalletServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "BraveWalletService",
-          BrowserContextDependencyManager::GetInstance()) {}
+          BrowserContextDependencyManager::GetInstance()) {
+  DependsOn(HostContentSettingsMapFactory::GetInstance());
+}
 
 BraveWalletServiceFactory::~BraveWalletServiceFactory() = default;
 
@@ -54,7 +57,8 @@ BraveWalletServiceFactory::BuildServiceInstanceForBrowserContext(
       context->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess(),
       BraveWalletServiceDelegate::Create(context),
-      user_prefs::UserPrefs::Get(context), g_browser_process->local_state());
+      user_prefs::UserPrefs::Get(context), g_browser_process->local_state(),
+      HostContentSettingsMapFactory::GetForProfile(context));
 }
 
 content::BrowserContext* BraveWalletServiceFactory::GetBrowserContextToUse(

@@ -81,6 +81,11 @@ interface ContainersSettingsHandler {
 
   // Removes a container by its ID.
   RemoveContainer(string id) => (ContainerOperationError? error);
+
+  // Reorders containers to match the order of `ordered_ids`. `ordered_ids`
+  // must contain exactly the same set of ids as the current containers list.
+  ReorderContainers(array<string> ordered_ids) =>
+      (ContainerOperationError? error);
 };
 
 // Interface for browser -> settings UI communication. This interface allows the

@@ -1,10 +1,10 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl b/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
-index 5b999adf465730b52db0a5a22814fe6af21046ca..0f349f20a613ccb37397c8db5bb1f3d25f67acbb 100644
+index c894cc0c30501e7a8313932584e2f3fe420e739f..fa57f938fb7061209e0361f76c2827c1814d5540 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
-@@ -42,7 +42,7 @@
-     [RuntimeEnabled=CanvasDrawElement, RaisesException] DOMMatrix getElementTransform((Element or ElementImage) element, DOMMatrix draw_transform);
-     [RuntimeEnabled=CanvasDrawElement, RaisesException] ElementImage captureElementImage(Element element);
+@@ -49,7 +49,7 @@
+     [RuntimeEnabled=CanvasDrawElement, RaisesException] void updateElementGeometry((Element or ElementImage) element, optional UpdateElementGeometryOptions options = {});
+     [RuntimeEnabled=CanvasDrawElement] void clearElementGeometry((Element or ElementImage) element);
  
 -    [MeasureAs=CanvasToDataURL, RaisesException] DOMString toDataURL(optional DOMString type = "image/png", optional any quality);
 +    [CallWith=ScriptState, MeasureAs=CanvasToDataURL, RaisesException] DOMString toDataURL(optional DOMString type = "image/png", optional any quality);

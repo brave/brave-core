@@ -56,7 +56,7 @@ void BraveBrowserFrameViewLinuxNative::PaintRestoredFrameBorder(
   auto* browser = GetBrowserView()->browser();
   CHECK(browser);
 
-  auto* vtc = VerticalTabController::FromBrowser(browser);
+  auto* vtc = VerticalTabController::From(browser);
   if (!vtc->ShouldShowBraveVerticalTabs() ||
       vtc->ShouldShowWindowTitleForVerticalTabs()) {
     BrowserFrameViewLinuxNative::PaintRestoredFrameBorder(canvas);
@@ -84,7 +84,7 @@ void BraveBrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages() {
   auto* browser = GetBrowserView()->browser();
   DCHECK(browser);
 
-  auto* vtc = VerticalTabController::FromBrowser(browser);
+  auto* vtc = VerticalTabController::From(browser);
   if (!vtc->ShouldShowBraveVerticalTabs() ||
       vtc->ShouldShowWindowTitleForVerticalTabs()) {
     BrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages();

@@ -9,10 +9,9 @@ import("//build/config/features.gni")
 
 static_library("browser") {
   sources = [
+    "component_ready_callback.h",
     "features.cc",
     "features.h",
-    "new_tab_takeover_infobar_util.cc",
-    "new_tab_takeover_infobar_util.h",
     "ntp_background_images_component_installer.cc",
     "ntp_background_images_component_installer.h",
     "ntp_background_images_data.cc",
@@ -21,36 +20,42 @@ static_library("browser") {
     "ntp_background_images_service.h",
     "ntp_background_images_update_util.cc",
     "ntp_background_images_update_util.h",
-    "ntp_p3a_util.cc",
-    "ntp_p3a_util.h",
-    "ntp_sponsored_images_data.cc",
-    "ntp_sponsored_images_data.h",
-    "ntp_sponsored_rich_media_ad_event_handler.cc",
-    "ntp_sponsored_rich_media_ad_event_handler.h",
-    "ntp_sponsored_sites_data.cc",
-    "ntp_sponsored_sites_data.h",
-    "ntp_sponsored_source_util.cc",
-    "ntp_sponsored_source_util.h",
-    "sponsored_images_component_data.cc",
-    "sponsored_images_component_data.h",
+    "sponsored_content/new_tab_takeover/dynamic/ntp_dynamic_new_tab_takeover_ad_event_handler.cc",
+    "sponsored_content/new_tab_takeover/dynamic/ntp_dynamic_new_tab_takeover_ad_event_handler.h",
+    "sponsored_content/new_tab_takeover/new_tab_takeover_infobar_util.cc",
+    "sponsored_content/new_tab_takeover/new_tab_takeover_infobar_util.h",
+    "sponsored_content/new_tab_takeover/ntp_sponsored_content_data.cc",
+    "sponsored_content/new_tab_takeover/ntp_sponsored_content_data.h",
+    "sponsored_content/new_tab_takeover/static/sponsored_images_component_data.cc",
+    "sponsored_content/new_tab_takeover/static/sponsored_images_component_data.h",
+    "sponsored_content/ntp_sponsored_content_source_util.cc",
+    "sponsored_content/ntp_sponsored_content_source_util.h",
+    "sponsored_content/ntp_sponsored_images_component_installer.cc",
+    "sponsored_content/ntp_sponsored_images_component_installer.h",
+    "sponsored_content/site/ntp_sponsored_sites_data.cc",
+    "sponsored_content/site/ntp_sponsored_sites_data.h",
     "switches.h",
     "url_constants.h",
     "view_counter_model.cc",
     "view_counter_model.h",
     "view_counter_service.cc",
     "view_counter_service.h",
+    "wallpapers/ntp_wallpaper_provider.h",
+    "wallpapers/ntp_wallpaper_provider_constants.h",
+    "wallpapers/ntp_wallpaper_provider_util.cc",
+    "wallpapers/ntp_wallpaper_provider_util.h",
   ]
 
   if (!is_ios) {
     sources += [
       "ntp_background_images_source.cc",
       "ntp_background_images_source.h",
-      "ntp_sponsored_image_source.cc",
-      "ntp_sponsored_image_source.h",
-      "ntp_sponsored_rich_media_source.cc",
-      "ntp_sponsored_rich_media_source.h",
-      "ntp_sponsored_site_image_source.cc",
-      "ntp_sponsored_site_image_source.h",
+      "sponsored_content/new_tab_takeover/dynamic/ntp_dynamic_new_tab_takeover_source.cc",
+      "sponsored_content/new_tab_takeover/dynamic/ntp_dynamic_new_tab_takeover_source.h",
+      "sponsored_content/new_tab_takeover/static/ntp_static_new_tab_takeover_source.cc",
+      "sponsored_content/new_tab_takeover/static/ntp_static_new_tab_takeover_source.h",
+      "sponsored_content/site/ntp_sponsored_site_image_source.cc",
+      "sponsored_content/site/ntp_sponsored_site_image_source.h",
     ]
   }
 
@@ -65,7 +70,6 @@ static_library("browser") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a_utils",
     "//brave/components/time_period_storage",
-    "//components/component_updater",
     "//components/content_settings/core/browser",
     "//components/content_settings/core/common",
     "//components/keyed_service/core",
@@ -73,13 +77,16 @@ static_library("browser") {
     "//components/prefs",
     "//components/variations",
     "//components/variations/service",
-    "//crypto",
     "//services/network/public/cpp",
     "//ui/gfx/geometry",
     "//url",
   ]
 
-  public_deps = [ "//brave/components/ntp_background_images/browser/mojom" ]
+  public_deps = [
+    "//brave/components/ntp_background_images/browser/mojom",
+    "//components/component_updater",
+    "//crypto",
+  ]
 
   if (is_ios) {
     deps += [ "//brave/extensions:common" ]
@@ -92,6 +99,13 @@ static_library("browser") {
   }
 
   if (enable_brave_ads) {
+    sources += [
+      "ntp_p3a_util.cc",
+      "ntp_p3a_util.h",
+      "wallpapers/ntp_new_tab_takeover_wallpaper_provider.cc",
+      "wallpapers/ntp_new_tab_takeover_wallpaper_provider.h",
+    ]
+
     deps += [ "//brave/components/brave_ads/core" ]
 
     if (!is_ios) {
@@ -105,6 +119,17 @@ static_library("browser") {
       "brave_ntp_custom_background_service.h",
       "ntp_custom_images_source.cc",
       "ntp_custom_images_source.h",
+      "wallpapers/ntp_brave_background_wallpaper_provider.cc",
+      "wallpapers/ntp_brave_background_wallpaper_provider.h",
+      "wallpapers/ntp_custom_background_delegate.h",
+      "wallpapers/ntp_gradient_wallpaper_provider.cc",
+      "wallpapers/ntp_gradient_wallpaper_provider.h",
+      "wallpapers/ntp_solid_color_wallpaper_provider.cc",
+      "wallpapers/ntp_solid_color_wallpaper_provider.h",
+      "wallpapers/ntp_use_your_own_wallpaper_provider.cc",
+      "wallpapers/ntp_use_your_own_wallpaper_provider.h",
+      "wallpapers/ntp_wallpaper_provider_selector.cc",
+      "wallpapers/ntp_wallpaper_provider_selector.h",
     ]
   }
 }
@@ -125,19 +150,27 @@ source_set("test_support") {
     "test/fake_ntp_background_images_service.cc",
     "test/fake_ntp_background_images_service.h",
   ]
+
+  if (enable_custom_background) {
+    sources += [
+      "wallpapers/test/fake_ntp_custom_background_delegate.cc",
+      "wallpapers/test/fake_ntp_custom_background_delegate.h",
+    ]
+  }
 }
 
 source_set("unit_tests") {
   testonly = true
 
   sources = [
-    "new_tab_takeover_infobar_util_unittest.cc",
     "ntp_background_images_service_unittest.cc",
-    "ntp_sponsored_images_data_unittest.cc",
-    "ntp_sponsored_rich_media_data_unittest.cc",
-    "ntp_sponsored_sites_data_unittest.cc",
-    "ntp_sponsored_source_util_unittest.cc",
+    "sponsored_content/new_tab_takeover/new_tab_takeover_infobar_util_unittest.cc",
+    "sponsored_content/new_tab_takeover/ntp_sponsored_content_data_dynamic_unittest.cc",
+    "sponsored_content/new_tab_takeover/ntp_sponsored_content_data_unittest.cc",
+    "sponsored_content/ntp_sponsored_content_source_util_unittest.cc",
+    "sponsored_content/site/ntp_sponsored_sites_data_unittest.cc",
     "view_counter_model_unittest.cc",
+    "wallpapers/ntp_wallpaper_provider_util_unittest.cc",
   ]
 
   # NTPBackgroundImagesSource inherits from content::URLDataSource.
@@ -147,8 +180,19 @@ source_set("unit_tests") {
 
   if (enable_brave_ads) {
     sources += [
-      "ntp_sponsored_rich_media_ad_event_handler_unittest.cc",
+      "sponsored_content/new_tab_takeover/dynamic/ntp_dynamic_new_tab_takeover_ad_event_handler_unittest.cc",
       "view_counter_service_unittest.cc",
+      "wallpapers/ntp_new_tab_takeover_wallpaper_provider_unittest.cc",
+    ]
+  }
+
+  if (enable_custom_background) {
+    sources += [
+      "wallpapers/ntp_brave_background_wallpaper_provider_unittest.cc",
+      "wallpapers/ntp_gradient_wallpaper_provider_unittest.cc",
+      "wallpapers/ntp_solid_color_wallpaper_provider_unittest.cc",
+      "wallpapers/ntp_use_your_own_wallpaper_provider_unittest.cc",
+      "wallpapers/ntp_wallpaper_provider_selector_unittest.cc",
     ]
   }
 

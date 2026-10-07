@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <memory>
 
+#include "base/check_op.h"
 #include "base/command_line.h"
 #include "base/debug/crash_logging.h"
 #include "base/files/file_path.h"
@@ -24,9 +25,10 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_component_installer.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_update_util.h"
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_sites_data.h"
-#include "brave/components/ntp_background_images/browser/sponsored_images_component_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_content_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/static/sponsored_images_component_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/ntp_sponsored_images_component_installer.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/site/ntp_sponsored_sites_data.h"
 #include "brave/components/ntp_background_images/browser/switches.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "components/component_updater/component_updater_service.h"
@@ -205,7 +207,7 @@ void NTPBackgroundImagesService::ScheduleNextSponsoredImagesComponentUpdate() {
   }
 }
 
-void NTPBackgroundImagesService::CheckSponsoredImagesComponentUpdate(
+void NTPBackgroundImagesService::CheckSponsoredContentComponentUpdate(
     const std::string& component_id) {
   last_updated_at_ = base::Time::Now();
 
@@ -214,12 +216,12 @@ void NTPBackgroundImagesService::CheckSponsoredImagesComponentUpdate(
   ScheduleNextSponsoredImagesComponentUpdate();
 }
 
-void NTPBackgroundImagesService::ResetSponsoredImagesData() {
-  sponsored_images_data_.reset();
-  sponsored_images_data_excluding_rich_media_.reset();
+void NTPBackgroundImagesService::ResetSponsoredContentData() {
+  sponsored_content_data_.reset();
+  sponsored_content_data_excluding_dynamic_.reset();
   observers_.Notify(&Observer::OnSponsoredContentDidUpdate,
                     /*data=*/base::DictValue());
-  observers_.Notify(&Observer::OnSponsoredImagesDataDidUpdate,
+  observers_.Notify(&Observer::DeprecatedOnSponsoredContentDidUpdate,
                     /*data=*/nullptr);
 }
 
@@ -247,29 +249,14 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   if (sponsored_images_component_id_ == sponsored_images_component->id) {
     // Component already loaded. Replay the callback so profiles created after
     // the initial load still receive the sponsored images data.
-    if (sponsored_images_installed_dir_) {
-      OnSponsoredComponentReady(*sponsored_images_installed_dir_);
+    if (sponsored_content_installed_dir_) {
+      OnSponsoredComponentReady(*sponsored_content_installed_dir_);
     }
     return;
   }
 
   if (sponsored_images_component_id_) {
-    // Unregister previous component.
-    component_update_service_->UnregisterComponent(
-        *sponsored_images_component_id_);
-
-    // Drop any in-progress callbacks bound to the previous component
-    // registration.
-    sponsored_images_weak_factory_.InvalidateWeakPtrs();
-
-    // Reset the installed directory to prevent replay of the callback for the
-    // previous component.
-    sponsored_images_installed_dir_.reset();
-
-    ResetSponsoredImagesData();
-
-    sponsored_sites_data_.reset();
-    observers_.Notify(&Observer::OnSponsoredSitesDataDidUpdate);
+    UnregisterSponsoredImagesComponent();
   }
   sponsored_images_component_id_ = sponsored_images_component->id;
 
@@ -285,17 +272,63 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
           &NTPBackgroundImagesService::OnSponsoredComponentReady,
           sponsored_images_weak_factory_.GetWeakPtr()));
 
-  // SI component checks update more frequently than other components.
-  // By default, browser check update status every 5 hours.
-  // However, this background interval is too long for SI. Use 15mins interval.
+  // The sponsored content component checks for updates more frequently than
+  // other components. By default, the browser checks update status every 5
+  // hours. However, this interval is too long for sponsored content, so use
+  // a 15 minute interval instead.
   sponsored_images_update_check_callback_ = base::BindRepeating(
-      &NTPBackgroundImagesService::CheckSponsoredImagesComponentUpdate,
+      &NTPBackgroundImagesService::CheckSponsoredContentComponentUpdate,
       sponsored_images_weak_factory_.GetWeakPtr(),
       *sponsored_images_component_id_);
 
   last_updated_at_ = base::Time::Now();
 
   ScheduleNextSponsoredImagesComponentUpdate();
+}
+
+void NTPBackgroundImagesService::UnregisterSponsoredImagesComponent() {
+  if (!sponsored_images_component_id_) {
+    return;
+  }
+
+  VLOG(0) << "Unregistering NTP Sponsored Images component with ID "
+          << *sponsored_images_component_id_;
+  // `component_update_service_` is cleared by `StartTearDown()` before the
+  // profile manager destroys per-profile `ViewCounterService` instances, so
+  // it can be null here during shutdown.
+  if (component_update_service_) {
+    component_update_service_->UnregisterComponent(
+        *sponsored_images_component_id_);
+  }
+  sponsored_images_component_id_.reset();
+
+  // Drop any in-progress callbacks bound to the now-unregistered component.
+  sponsored_images_weak_factory_.InvalidateWeakPtrs();
+  sponsored_content_installed_dir_.reset();
+
+  ResetSponsoredContentData();
+
+  sponsored_sites_data_.reset();
+  observers_.Notify(&Observer::OnSponsoredSitesDataDidUpdate);
+
+  sponsored_images_update_check_callback_.Reset();
+  sponsored_images_update_check_timer_.Stop();
+}
+
+void NTPBackgroundImagesService::AddSponsoredImagesOptedInProfile() {
+  ++sponsored_images_opted_in_profile_count_;
+
+  // Always register, even if already registered by another profile.
+  // `RegisterSponsoredImagesComponent()` replays the ready callback for an
+  // already-loaded component so this profile still receives the data.
+  RegisterSponsoredImagesComponent();
+}
+
+void NTPBackgroundImagesService::RemoveSponsoredImagesOptedInProfile() {
+  CHECK_GT(sponsored_images_opted_in_profile_count_, 0U);
+  if (--sponsored_images_opted_in_profile_count_ == 0U) {
+    UnregisterSponsoredImagesComponent();
+  }
 }
 
 void NTPBackgroundImagesService::OnVariationsCountryPrefChanged() {
@@ -328,16 +361,17 @@ NTPBackgroundImagesData* NTPBackgroundImagesService::GetBackgroundImagesData()
   return nullptr;
 }
 
-NTPSponsoredImagesData* NTPBackgroundImagesService::GetSponsoredImagesData(
-    bool supports_rich_media) const {
-  NTPSponsoredImagesData* const images_data =
-      supports_rich_media ? sponsored_images_data_.get()
-                          : sponsored_images_data_excluding_rich_media_.get();
-  if (!images_data || !images_data->IsValid()) {
+NTPSponsoredContentData* NTPBackgroundImagesService::GetNewTabTakeover(
+    bool supports_dynamic_new_tab_takeover) const {
+  NTPSponsoredContentData* const sponsored_content_data =
+      supports_dynamic_new_tab_takeover
+          ? sponsored_content_data_.get()
+          : sponsored_content_data_excluding_dynamic_.get();
+  if (!sponsored_content_data || !sponsored_content_data->IsValid()) {
     return nullptr;
   }
 
-  return images_data;
+  return sponsored_content_data;
 }
 
 NTPSponsoredSitesData* NTPBackgroundImagesService::GetSponsoredSitesData()
@@ -352,7 +386,7 @@ NTPSponsoredSitesData* NTPBackgroundImagesService::GetSponsoredSitesData()
 std::optional<base::FilePath>
 NTPBackgroundImagesService::MaybeGetSponsoredSiteImageFilePath(
     const base::FilePath& request_path) const {
-  if (!sponsored_images_installed_dir_) {
+  if (!sponsored_content_installed_dir_) {
     return std::nullopt;
   }
 
@@ -393,7 +427,12 @@ NTPBackgroundImagesService::MaybeGetSponsoredSiteImageFilePath(
     return std::nullopt;
   }
 
-  return sponsored_images_installed_dir_->Append(normalized_request_path);
+  return sponsored_content_installed_dir_->Append(normalized_request_path);
+}
+
+const std::optional<std::string>&
+NTPBackgroundImagesService::GetSponsoredImagesComponentId() const {
+  return sponsored_images_component_id_;
 }
 
 void NTPBackgroundImagesService::OnComponentReady(
@@ -448,7 +487,7 @@ NTPBackgroundImagesService::HandleSponsoredComponentData(
 
 void NTPBackgroundImagesService::OnSponsoredComponentReady(
     const base::FilePath& installed_dir) {
-  sponsored_images_installed_dir_ = installed_dir;
+  sponsored_content_installed_dir_ = installed_dir;
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
@@ -469,36 +508,35 @@ void NTPBackgroundImagesService::OnSponsoredComponentReady(
 void NTPBackgroundImagesService::OnHandledSponsoredComponentData(
     std::optional<base::DictValue> dict) {
   if (!dict) {
-    ResetSponsoredImagesData();
+    ResetSponsoredContentData();
     return;
   }
 
-  if (!sponsored_images_installed_dir_) {
+  if (!sponsored_content_installed_dir_) {
     SCOPED_CRASH_KEY_STRING64("Issue55874", "failure_reason",
                               "Installed directory unset");
     DUMP_WILL_BE_NOTREACHED();
-    ResetSponsoredImagesData();
+    ResetSponsoredContentData();
     return;
   }
 
-  sponsored_images_data_ = std::make_unique<NTPSponsoredImagesData>(
-      *dict, *sponsored_images_installed_dir_);
+  sponsored_content_data_ = std::make_unique<NTPSponsoredContentData>(
+      *dict, *sponsored_content_installed_dir_);
 
-  sponsored_images_data_excluding_rich_media_ =
-      std::make_unique<NTPSponsoredImagesData>(*sponsored_images_data_);
-  for (auto& campaign :
-       sponsored_images_data_excluding_rich_media_->campaigns) {
+  sponsored_content_data_excluding_dynamic_ =
+      std::make_unique<NTPSponsoredContentData>(*sponsored_content_data_);
+  for (auto& campaign : sponsored_content_data_excluding_dynamic_->campaigns) {
     std::erase_if(campaign.creatives, [](const auto& creative) {
-      return creative.wallpaper_type == WallpaperType::kRichMedia;
+      return creative.wallpaper_type == WallpaperType::kDynamicNewTabTakeover;
     });
   }
   std::erase_if(
-      sponsored_images_data_excluding_rich_media_->campaigns,
+      sponsored_content_data_excluding_dynamic_->campaigns,
       [](const auto& campaign) { return campaign.creatives.empty(); });
 
   observers_.Notify(&Observer::OnSponsoredContentDidUpdate, *dict);
-  observers_.Notify(&Observer::OnSponsoredImagesDataDidUpdate,
-                    sponsored_images_data_.get());
+  observers_.Notify(&Observer::DeprecatedOnSponsoredContentDidUpdate,
+                    sponsored_content_data_.get());
 }
 
 // static

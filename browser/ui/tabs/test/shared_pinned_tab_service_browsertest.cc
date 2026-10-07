@@ -17,6 +17,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_web_contents_delegate/browser_web_contents_delegate.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
@@ -27,6 +28,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -39,17 +41,16 @@ SharedPinnedTabServiceBrowserTest::SharedPinnedTabServiceBrowserTest()
 SharedPinnedTabServiceBrowserTest::~SharedPinnedTabServiceBrowserTest() =
     default;
 
-Browser* SharedPinnedTabServiceBrowserTest::CreateNewBrowser() {
+BrowserWindowInterface* SharedPinnedTabServiceBrowserTest::CreateNewBrowser() {
   auto* new_browser =
       chrome::OpenEmptyWindow(browser()->GetProfile(),
-                              /*should_trigger_session_restore= */ false)
-          ->GetBrowserForMigrationOnly();
-  browsers_.push_back(new_browser->AsWeakPtr());
+                              /*should_trigger_session_restore= */ false);
+  browsers_.push_back(new_browser->GetWeakPtr());
   return new_browser;
 }
 
 SharedPinnedTabService* SharedPinnedTabServiceBrowserTest::GetForBrowser(
-    Browser* browser) {
+    BrowserWindowInterface* browser) {
   return SharedPinnedTabServiceFactory::GetForProfile(browser->GetProfile());
 }
 
@@ -376,7 +377,8 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, BringAllTabs) {
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return tab_strip_model_2->count() > 1; }));
   ASSERT_TRUE(tab_strip_model_2->IsTabPinned(0));
-  browser_2->ActivateContents(tab_strip_model_2->GetWebContentsAt(0));
+  BrowserWebContentsDelegate::From(browser_2)->ActivateContents(
+      tab_strip_model_2->GetWebContentsAt(0));
   BrowserWindow::FromBrowser(browser_2)->Show();
   WaitUntil(base::BindLambdaForTesting([&]() {
     return shared_pinned_tab_service->IsSharedContents(

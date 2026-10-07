@@ -9,17 +9,20 @@
 #include <memory>
 #include <utility>
 
-#include "base/check.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_handler.h"
 #include "brave/components/psst/resources/grit/brave_psst_dialog_generated_map.h"
 #include "brave/components/psst/resources/grit/brave_psst_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "chrome/browser/ui/webui/favicon_source.h"
+#include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_webui_strings.h"
+#include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "services/network/public/mojom/content_security_policy.mojom.h"
+#include "base/functional/callback.h"
 
 using content::WebUIMessageHandler;
 
@@ -31,6 +34,16 @@ BravePsstDialogUI::BravePsstDialogUI(content::WebUI* web_ui)
                                              kBravePsstDialogGenerated,
                                              IDR_BRAVE_PSST_DIALOG_HTML);
   source->AddLocalizedStrings(webui::kPsstStrings);
+  source->AddString("psstReportDialogLearnMoreUrl",
+                    kPsstReportDialogLearnMoreUrl);
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ImgSrc,
+      "img-src 'self' chrome://resources chrome://favicon2;");
+
+  Profile* profile = Profile::FromWebUI(web_ui);
+  content::URLDataSource::Add(
+      profile, std::make_unique<FaviconSource>(
+                   profile, chrome::FaviconUrlFormat::kFavicon2));
 }
 
 BravePsstDialogUI::~BravePsstDialogUI() = default;
@@ -49,21 +62,19 @@ void BravePsstDialogUI::CreatePsstConsentHandler(
   desktop_dialog_delegate_ =
       PsstUiDesktopPresenter::PsstUiDesktopDelegate::GetDelegateFromWebContents(
           web_ui()->GetWebContents());
-  CHECK(desktop_dialog_delegate_);
+  if (!desktop_dialog_delegate_) {
+    std::move(callback).Run(psst::mojom::SettingCardData::New());
+    return;
+  }
   auto* initiator_contents =
       desktop_dialog_delegate_->GetInitiatorWebContents();
-  CHECK(initiator_contents);
-
-  auto* tab_interface =
-      tabs::TabInterface::MaybeGetFromContents(initiator_contents);
-  CHECK(tab_interface);
-
-  TabStripModel* tab_strip_model =
-      tab_interface->GetBrowserWindowInterface()->GetTabStripModel();
-  CHECK(tab_strip_model);
+  if (!initiator_contents) {
+    std::move(callback).Run(psst::mojom::SettingCardData::New());
+    return;
+  }
 
   psst_consent_handler_ = std::make_unique<BravePsstDialogHandler>(
-      tab_strip_model, this, std::move(psst_consent_helper),
+      initiator_contents, this, std::move(psst_consent_helper),
       std::move(psst_consent_dialog), std::move(callback));
 }
 

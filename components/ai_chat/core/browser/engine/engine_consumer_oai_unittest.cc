@@ -152,7 +152,7 @@ class EngineConsumerOAIUnitTest : public testing::Test {
 };
 
 TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
-  PageContent page_content("Page content", false);
+  PageContent page_content("Page content", mojom::ContentType::PageContent);
   auto* client = GetClient();
 
   base::RunLoop run_loop;
@@ -206,7 +206,8 @@ TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
 }
 
 TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
-  PageContent page_content("This is a test page content", false);
+  PageContent page_content("This is a test page content",
+                           mojom::ContentType::PageContent);
 
   auto* client = GetClient();
   base::RunLoop run_loop;
@@ -274,7 +275,8 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
 }
 
 TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
-  PageContent page_content("This is a test page content", false);
+  PageContent page_content("This is a test page content",
+                           mojom::ContentType::PageContent);
   auto* client = GetClient();
 
   // Test error case: result doesn't have a value
@@ -403,7 +405,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
 
 TEST_F(EngineConsumerOAIUnitTest,
        GenerateAssistantResponseWithDefaultSystemPrompt) {
-  PageContent page_content("Page content 1", false);
+  PageContent page_content("Page content 1", mojom::ContentType::PageContent);
   // Create a set of options WITHOUT a custom system prompt.
   auto options = mojom::CustomModelOptions::New();
   options->endpoint = GURL("https://test.com/");
@@ -496,8 +498,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   // Initiate the test
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, EngineConsumer::ToHistoryView(history),
-      false, {}, std::nullopt, {mojom::ConversationCapability::CHAT},
-      base::DoNothing(),
+      false, {}, std::nullopt, {}, base::DoNothing(),
       base::BindLambdaForTesting([&run_loop, &assistant_response](
                                      EngineConsumer::GenerationResult result) {
         EXPECT_EQ(result.value(),
@@ -576,8 +577,7 @@ TEST_F(EngineConsumerOAIUnitTest,
           });
 
   engine_->GenerateAssistantResponse({}, EngineConsumer::ToHistoryView(history),
-                                     false, {}, std::nullopt,
-                                     {mojom::ConversationCapability::CHAT},
+                                     false, {}, std::nullopt, {},
                                      base::DoNothing(), base::DoNothing());
 
   run_loop->Run();
@@ -663,8 +663,8 @@ TEST_F(EngineConsumerOAIUnitTest,
   }
 
   engine_->GenerateAssistantResponse(
-      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt,
-      {mojom::ConversationCapability::CHAT}, base::DoNothing(),
+      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             EXPECT_EQ(result.value(),
@@ -721,8 +721,7 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {}, EngineConsumer::ToHistoryView(GetHistoryWithModifiedReply()), false,
-      {}, std::nullopt, {mojom::ConversationCapability::CHAT},
-      base::DoNothing(),
+      {}, std::nullopt, {}, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             run_loop->Quit();
@@ -739,8 +738,10 @@ TEST_F(EngineConsumerOAIUnitTest, ShouldCallSanitizeInputOnPageContent) {
     MOCK_METHOD(void, SanitizeInput, (std::string & input), (override));
   };
 
-  PageContent page_content_1("This is a page about The Mandalorian.", false);
-  PageContent page_content_2("This is a video about The Mandalorian.", true);
+  PageContent page_content_1("This is a page about The Mandalorian.",
+                             mojom::ContentType::PageContent);
+  PageContent page_content_2("This is a video about The Mandalorian.",
+                             mojom::ContentType::VideoTranscript);
 
   auto mock_engine_consumer = std::make_unique<MockOAIEngineConsumer>(
       model_->options.Clone(), nullptr, network::NetworkContextGetter(),
@@ -758,9 +759,8 @@ TEST_F(EngineConsumerOAIUnitTest, ShouldCallSanitizeInputOnPageContent) {
     history.push_back(std::move(turn));
     mock_engine_consumer->GenerateAssistantResponse(
         {{{history.back()->uuid.value(), {page_content_1, page_content_2}}}},
-        EngineConsumer::ToHistoryView(history), false, {}, std::nullopt,
-        {mojom::ConversationCapability::CHAT}, base::DoNothing(),
-        base::DoNothing());
+        EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
+        base::DoNothing(), base::DoNothing());
     testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
   }
 
@@ -823,8 +823,8 @@ TEST_F(EngineConsumerOAIUnitTest,
           });
 
   engine_->GenerateAssistantResponse(
-      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt,
-      {mojom::ConversationCapability::CHAT}, base::DoNothing(),
+      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
 
@@ -916,8 +916,8 @@ TEST_F(EngineConsumerOAIUnitTest,
           });
 
   engine_->GenerateAssistantResponse(
-      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt,
-      {mojom::ConversationCapability::CHAT}, base::DoNothing(),
+      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
 
@@ -997,8 +997,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   engine_->GenerateAssistantResponse(
       {}, EngineConsumer::ToHistoryView(history),
       true,  // is_temporary_chat = true
-      {}, std::nullopt, {mojom::ConversationCapability::CHAT},
-      base::DoNothing(),
+      {}, std::nullopt, {}, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
 
@@ -1008,7 +1007,8 @@ TEST_F(EngineConsumerOAIUnitTest,
 
 TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_Success) {
   auto* client = GetClient();
-  PageContent page_content("This is a test page about AI", false);
+  PageContent page_content("This is a test page about AI",
+                           mojom::ContentType::PageContent);
   PageContentsMap page_contents;
   page_contents["turn-1"] = {std::cref(page_content)};
 
@@ -1076,7 +1076,8 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_Success) {
                     std::nullopt)));
           });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents,
+                                     EngineConsumer::ToHistoryView(history),
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -1095,15 +1096,17 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Content 1: Exactly limit-1 chars (1199) - should NOT be truncated
   std::string content_1199(kMaxContextCharsForTitleGeneration - 1, 'a');
-  PageContent page_content1(content_1199, false);
+  PageContent page_content1(content_1199, mojom::ContentType::PageContent);
 
   // Content 2: Exactly limit chars (1200) - should NOT be truncated
   std::string content_1200(kMaxContextCharsForTitleGeneration, 'b');
-  PageContent page_content2(content_1200, false);
+  PageContent page_content2(content_1200, mojom::ContentType::PageContent);
 
   // Content 3: Exactly limit+1 chars (1201) - should be truncated to limit
   std::string content_1201(kMaxContextCharsForTitleGeneration + 1, 'c');
-  PageContent page_content3(content_1201, true);  // video content
+  PageContent page_content3(
+      content_1201,
+      mojom::ContentType::VideoTranscript);  // video content
 
   PageContentsMap page_contents;
   page_contents["turn-1"] = {std::cref(page_content1), std::cref(page_content2),
@@ -1176,7 +1179,8 @@ TEST_F(EngineConsumerOAIUnitTest,
                     std::nullopt)));
           });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents,
+                                     EngineConsumer::ToHistoryView(history),
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -1240,7 +1244,8 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_WithSelectedText) {
                 std::nullopt)));
       });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents,
+                                     EngineConsumer::ToHistoryView(history),
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -1306,7 +1311,8 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_WithUploadedFiles) {
                     std::nullopt)));
           });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents,
+                                     EngineConsumer::ToHistoryView(history),
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -1325,7 +1331,8 @@ TEST_F(EngineConsumerOAIUnitTest,
     EngineConsumer::ConversationHistory history;
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-    engine_->GenerateConversationTitle(page_contents, history,
+    engine_->GenerateConversationTitle(page_contents,
+                                       EngineConsumer::ToHistoryView(history),
                                        future.GetCallback());
 
     auto result = future.Take();
@@ -1344,7 +1351,8 @@ TEST_F(EngineConsumerOAIUnitTest,
         std::vector<std::string>{} /* child_thread_uuids */));
 
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
-    engine_->GenerateConversationTitle(page_contents, history,
+    engine_->GenerateConversationTitle(page_contents,
+                                       EngineConsumer::ToHistoryView(history),
                                        future.GetCallback());
 
     auto result = future.Take();
@@ -1376,7 +1384,8 @@ TEST_F(EngineConsumerOAIUnitTest,
         std::vector<std::string>{} /* child_thread_uuids */));
 
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
-    engine_->GenerateConversationTitle(page_contents, history,
+    engine_->GenerateConversationTitle(page_contents,
+                                       EngineConsumer::ToHistoryView(history),
                                        future.GetCallback());
 
     auto result = future.Take();
@@ -1406,7 +1415,8 @@ TEST_F(EngineConsumerOAIUnitTest,
         std::vector<std::string>{} /* child_thread_uuids */));
 
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
-    engine_->GenerateConversationTitle(page_contents, history,
+    engine_->GenerateConversationTitle(page_contents,
+                                       EngineConsumer::ToHistoryView(history),
                                        future.GetCallback());
 
     auto result = future.Take();
@@ -1431,7 +1441,8 @@ TEST_F(EngineConsumerOAIUnitTest,
         std::vector<std::string>{} /* child_thread_uuids */));
 
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
-    engine_->GenerateConversationTitle(page_contents, history,
+    engine_->GenerateConversationTitle(page_contents,
+                                       EngineConsumer::ToHistoryView(history),
                                        future.GetCallback());
 
     auto result = future.Take();
@@ -1471,7 +1482,8 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_APIError) {
                 .Run(base::unexpected(mojom::APIError::RateLimitReached));
           });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents,
+                                     EngineConsumer::ToHistoryView(history),
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -1514,7 +1526,8 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_TitleTooLong) {
                     std::nullopt)));
           });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents,
+                                     EngineConsumer::ToHistoryView(history),
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -1557,7 +1570,8 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_EmptyResponse) {
                     std::nullopt)));
           });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents,
+                                     EngineConsumer::ToHistoryView(history),
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -1602,7 +1616,8 @@ TEST_F(EngineConsumerOAIUnitTest,
                     std::nullopt)));
           });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents,
+                                     EngineConsumer::ToHistoryView(history),
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -1645,7 +1660,8 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_NullEvent) {
                     nullptr, std::nullopt)));
           });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents,
+                                     EngineConsumer::ToHistoryView(history),
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -1693,7 +1709,8 @@ TEST_F(EngineConsumerOAIUnitTest,
                     std::nullopt)));
           });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents,
+                                     EngineConsumer::ToHistoryView(history),
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -2171,8 +2188,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponse_WithTools) {
 
   engine_->GenerateAssistantResponse(
       {}, EngineConsumer::ToHistoryView(history), false,
-      {mock_tool->GetWeakPtr()}, std::nullopt,
-      {mojom::ConversationCapability::CHAT}, base::DoNothing(),
+      {mock_tool->GetWeakPtr()}, std::nullopt, {}, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
 

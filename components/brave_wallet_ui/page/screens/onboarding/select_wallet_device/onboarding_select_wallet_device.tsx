@@ -41,12 +41,16 @@ export const OnboardingSelectWalletDevice = () => {
   const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery()
 
   // redux
+  const isFilecoinLedgerEnabled = useSafeWalletSelector(
+    WalletSelectors.isFilecoinLedgerEnabled,
+  )
   const isBitcoinLedgerEnabled = useSafeWalletSelector(
     WalletSelectors.isBitcoinLedgerEnabled,
   )
 
   const accountOptions = CreateAccountOptions({
     visibleNetworks,
+    isFilecoinEnabled: isFilecoinLedgerEnabled,
     isBitcoinEnabled: isBitcoinLedgerEnabled,
     isZCashEnabled: false, // No zcash hardware accounts by now.
     isCardanoEnabled: false, // No cardano hardware accounts by now.
@@ -69,8 +73,8 @@ export const OnboardingSelectWalletDevice = () => {
   }
 
   const pageTitle = selectedHardwareWallet
-    ? getLocale('braveWalletAuthorizeHardwareWallet')
-    : getLocale('braveWalletConnectHardwareTitle')
+    ? getLocale(S.BRAVE_WALLET_AUTHORIZE_HARDWARE_WALLET)
+    : getLocale(S.BRAVE_WALLET_CONNECT_HARDWARE_TITLE)
 
   return (
     <OnboardingContentLayout

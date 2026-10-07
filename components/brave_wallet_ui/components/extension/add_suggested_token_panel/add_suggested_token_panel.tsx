@@ -115,7 +115,7 @@ export function AddSuggestedTokenPanel() {
     >
       <Row padding='18px'>
         <HeaderText textColor='primary'>
-          {getLocale('braveWalletAddSuggestedTokenTitle')}
+          {getLocale(S.BRAVE_WALLET_ADD_SUGGESTED_TOKEN_TITLE)}
         </HeaderText>
       </Row>
       <VerticalDivider />
@@ -138,7 +138,7 @@ export function AddSuggestedTokenPanel() {
             justifyContent='flex-start'
           >
             <Description textColor='primary'>
-              {getLocale('braveWalletAddSuggestedTokenDescription')}
+              {getLocale(S.BRAVE_WALLET_ADD_SUGGESTED_TOKEN_DESCRIPTION)}
             </Description>
             <Column>
               {isFetching ? (
@@ -155,11 +155,15 @@ export function AddSuggestedTokenPanel() {
                 <>
                   <TokenName textColor='tertiary'>{token.name ?? ''}</TokenName>
                   <TokenDescription textColor='primary'>
-                    {getLocale('braveWalletPortfolioAssetNetworkDescription')
+                    {getLocale(
+                      S.BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION,
+                    )
                       .replace('$1', token?.symbol ?? '')
                       .replace('$2', tokensNetwork?.chainName ?? '')}
                   </TokenDescription>
-                  <Tooltip text={getLocale('braveWalletTransactionExplorer')}>
+                  <Tooltip
+                    text={getLocale(S.BRAVE_WALLET_TRANSACTION_EXPLORER)}
+                  >
                     <ContractAddress
                       onClick={onClickViewOnBlockExplorer(
                         'token',
@@ -210,7 +214,7 @@ export function AddSuggestedTokenPanel() {
                   slot='icon-before'
                   name='check-normal'
                 />
-                {getLocale('braveWalletAddToken')}
+                {getLocale(S.BRAVE_WALLET_ADD_TOKEN)}
               </Button>
             </Row>
             <Row>
@@ -220,7 +224,7 @@ export function AddSuggestedTokenPanel() {
                 kind='outline'
                 disabled={isFetching}
               >
-                {getLocale('braveWalletButtonCancel')}
+                {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
               </Button>
             </Row>
           </Column>

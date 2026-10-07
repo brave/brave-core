@@ -14,6 +14,8 @@
       "CheckGoogleSupportAnswerUrlOnUpload",
       // Disable check for hardcoded Google API urls.
       "CheckHardcodedGoogleHostsInLowerLayers",
+      // We run our own format check.
+      "CheckPatchFormatted",
     ],
     // Checks defined in depot_tools/presubmit_canned_checks.py.
     "canned": [
@@ -51,6 +53,8 @@
     "canned": [
       "CheckChangeLintsClean",
       "GetPylint",
+      "GetRuff",
+      "GetUnitTests",
     ],
   },
 
@@ -224,11 +228,11 @@
       "chromium_src/components/search_engines/brave_template_url_prepopulate_data_unittest\\.cc",
       "components/brave_shields/browser/ad_block_engine\\.cc",
     ],
-    "/v8::Extension\\(": [
-      "components/safe_builtins/renderer/safe_builtins\\.cc",
-    ],
     "StringFromGUID2": [
       "chromium_src/chrome/install_static/brave_install_util_unittest\\.cc",
+    ],
+    "IS_DESKTOP_ANDROID": [
+      "chromium_src/chrome/browser/ui/webui/favicon_source\\.cc",
     ],
   },
 }

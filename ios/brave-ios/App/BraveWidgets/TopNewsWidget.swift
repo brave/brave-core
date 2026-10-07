@@ -43,6 +43,10 @@ extension WidgetFamily {
       return true
     case .systemSmall, .systemMedium, .systemLarge, .systemExtraLarge:
       return false
+    #if compiler(>=6.4)
+    case .systemExtraLargePortrait:
+      return false
+    #endif
     @unknown default:
       return false
     }
@@ -150,7 +154,7 @@ private struct LockScreenTopNewsView: View {
       .allowsTightening(true)
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
       .widgetURL(topic.url)
-      .widgetBackground { Color.clear }
+      .containerBackground(for: .widget) { Color.clear }
     } else {
       VStack(spacing: 4) {
         if entry.isDisabledByPolicy {
@@ -181,7 +185,7 @@ private struct LockScreenTopNewsView: View {
       }
       .allowsTightening(true)
       .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .widgetBackground { Color.clear }
+      .containerBackground(for: .widget) { Color.clear }
     }
   }
 }
@@ -220,11 +224,11 @@ private struct WidgetTopNewsView: View {
       }
       .padding()
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-      .widgetBackground {
+      .containerBackground(for: .widget) {
         if let image = entry.image {
           Image(uiImage: image)
             .resizable()
-            .widgetAccentedRenderingModeFullColor()
+            .widgetAccentedRenderingMode(.fullColor)
             .aspectRatio(contentMode: .fill)
             .overlay(
               LinearGradient(
@@ -262,7 +266,7 @@ private struct WidgetTopNewsView: View {
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
       .padding()
-      .widgetBackground {
+      .containerBackground(for: .widget) {
         if !entry.isDisabledByPolicy {
           LinearGradient(braveSystemName: .primaryGradient)
             .mask {

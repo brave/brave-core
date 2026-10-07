@@ -29,7 +29,7 @@
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -106,6 +106,12 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
   MOCK_METHOD(void,
               OnAssociatedContentInfoChanged,
               (std::vector<mojom::AssociatedContentPtr>),
+              (override));
+
+  MOCK_METHOD(void,
+              OnContentToolsChanged,
+              (const std::string& content_uuid,
+               std::vector<mojom::ToolInfoPtr> tools),
               (override));
 
   MOCK_METHOD(void, OnConversationDeleted, (), (override));
@@ -244,7 +250,7 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
   }
 
   sidebar::SidebarController* GetSidebarController() {
-    auto* controller = browser()->GetFeatures().sidebar_controller();
+    auto* controller = sidebar::SidebarController::From(browser());
     EXPECT_TRUE(controller);
     return controller;
   }
@@ -350,7 +356,7 @@ IN_PROC_BROWSER_TEST_F(AIChatRenderViewContextMenuBrowserTest, RewriteInPlace) {
   TestRewriteInPlace(contents, "textarea", "OK2", {},
                      base::unexpected(mojom::APIError::ConnectionIssue), "OK2");
   EXPECT_TRUE(IsAIChatSidebarActive());
-  GetSidebarController()->DeactivateCurrentPanel();
+  SidePanelUI::From(browser())->Close();
 
   EXPECT_FALSE(IsAIChatSidebarActive());
   // 2) Get partial streaming responses then error in completed callback.

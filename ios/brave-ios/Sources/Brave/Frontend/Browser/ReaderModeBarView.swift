@@ -31,30 +31,48 @@ class ReaderModeBarView: UIView {
   private var cancellables: Set<AnyCancellable> = []
   private func updateColors() {
     let browserColors = privateBrowsingManager.browserColors
-    backgroundColor = browserColors.chromeBackground
+    if #unavailable(iOS 26) {
+      backgroundView.contentView.backgroundColor = browserColors.chromeBackground
+    }
     settingsButton.tintColor = browserColors.iconDefault
     readerModeButton.setTitleColor(browserColors.textPrimary, for: .normal)
   }
+
+  private let backgroundView = UIVisualEffectView()
 
   init(privateBrowsingManager: PrivateBrowsingManager) {
     self.privateBrowsingManager = privateBrowsingManager
 
     super.init(frame: .zero)
 
-    addSubview(readerModeButton)
+    addSubview(backgroundView)
+    if #available(iOS 26, *) {
+      backgroundView.clipsToBounds = true
+      backgroundView.layer.cornerCurve = .continuous
+      let glass = UIGlassEffect(style: .regular)
+      glass.isInteractive = true
+      backgroundView.effect = glass
+    }
+    backgroundView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+
+    backgroundView.contentView.addSubview(readerModeButton)
     readerModeButton.addTarget(self, action: #selector(tappedSettingsButton), for: .touchUpInside)
     readerModeButton.snp.makeConstraints {
       $0.centerX.centerY.equalToSuperview()
     }
 
-    let borderView = UIView.separatorLine
-    addSubview(borderView)
-    borderView.snp.makeConstraints {
-      $0.top.equalTo(snp.bottom)
-      $0.leading.trailing.equalToSuperview()
+    if #unavailable(iOS 26) {
+      let borderView = UIView.separatorLine
+      addSubview(borderView)
+      borderView.snp.makeConstraints {
+        $0.top.equalTo(snp.bottom)
+        $0.leading.trailing.equalToSuperview()
+      }
     }
 
-    addSubview(settingsButton)
+    backgroundView.contentView.addSubview(settingsButton)
     settingsButton.addTarget(self, action: #selector(tappedSettingsButton), for: .touchUpInside)
     settingsButton.snp.makeConstraints {
       $0.trailing.equalToSuperview().inset(16)
@@ -79,5 +97,12 @@ class ReaderModeBarView: UIView {
 
   @objc func tappedSettingsButton(_ sender: UIButton!) {
     delegate?.readerModeSettingsTapped(sender)
+  }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    if #available(iOS 26, *) {
+      backgroundView.layer.cornerRadius = bounds.height / 2
+    }
   }
 }

@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CLIENT_CLIENT_STATE_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CLIENT_CLIENT_STATE_MANAGER_H_
 
-#include <optional>
+#include <cstddef>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
@@ -30,6 +30,11 @@ class ClientStateManager final {
 
   bool IsInitialized() const { return is_initialized_; }
 
+  // `false` if `client.json` existed but failed to parse, so had to be reset
+  // to the default state; always `true` before `LoadState()` completes or if
+  // the file simply did not exist yet (not corruption, just first run).
+  bool IsValid() const { return is_valid_; }
+
   void LoadState(ResultCallback callback);
 
   void AppendToPurchaseIntentSignalHistoryForSegment(
@@ -43,16 +48,23 @@ class ClientStateManager final {
   GetTextClassificationProbabilitiesHistory() const;
 
  private:
-  void SaveState();
-
-  void LoadCallback(ResultCallback callback,
-                    const std::optional<std::string>& json);
-
-  [[nodiscard]] bool FromJson(const std::string& json);
+  void GetAllPurchaseIntentSignalHistoryCallback(
+      ResultCallback callback,
+      bool success,
+      const PurchaseIntentSignalHistoryMap& purchase_intent_signal_history);
+  void GetAllTextClassificationProbabilitiesCallback(
+      ResultCallback callback,
+      bool success,
+      const TextClassificationProbabilityList&
+          text_classification_probabilities);
+  void SaveTextClassificationProbabilitiesToHistoryCallback(
+      size_t maximum_entries,
+      bool success);
 
   ClientInfo client_;
 
   bool is_initialized_ = false;
+  bool is_valid_ = true;
 
   base::WeakPtrFactory<ClientStateManager> weak_factory_{this};
 };

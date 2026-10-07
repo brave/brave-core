@@ -411,7 +411,7 @@ export function createInterfaceApi<
       type QArgs = ArgsOf<typeof name>
       type QData = DataOf<typeof name>
 
-      if (!queryOptions.staleTime) {
+      if (queryOptions.staleTime === undefined) {
         // The default for staleTime is 0, meaning a result is stale as soon
         // as it is received. That results in every useQuery call causing a
         // re-fetch after returning the stale data.

@@ -80,11 +80,12 @@ export function CancelSpeedupTransaction() {
       >
         {/* Header */}
         <ConfirmationHeader
-          title={getLocale('braveWalletTransactionCancel')}
+          title={getLocale(S.BRAVE_WALLET_TRANSACTION_CANCEL)}
           transactionsQueueLength={transactionsQueueLength}
           queueNextTransaction={queueNextTransaction}
           queuePreviousTransaction={queuePreviousTransaction}
           rejectAllTransactions={rejectAllTransactions}
+          close={onReject}
         />
         <Column
           width='100%'
@@ -98,7 +99,7 @@ export function CancelSpeedupTransaction() {
             account={fromAccount}
           />
           <Title textColor='primary'>
-            {getLocale('braveWalletPanelTitle')}
+            {getLocale(S.BRAVE_WALLET_PANEL_TITLE)}
           </Title>
 
           {/* Transaction details */}
@@ -133,10 +134,10 @@ export function CancelSpeedupTransaction() {
           >
             <Row justifyContent='space-between'>
               <PriorityLabel textColor='primary'>
-                {getLocale('braveWalletSpeedPriority')}
+                {getLocale(S.BRAVE_WALLET_SPEED_PRIORITY)}
               </PriorityLabel>
               <FeeButton onClick={() => setShowEditNetworkFee(true)}>
-                {getLocale('braveWalletAllowSpendEditButton')}
+                {getLocale(S.BRAVE_WALLET_ALLOW_SPEND_EDIT_BUTTON)}
               </FeeButton>
             </Row>
           </Card>
@@ -147,11 +148,11 @@ export function CancelSpeedupTransaction() {
                 maxWidth='300px'
                 slot='content'
               >
-                {getLocale('braveWalletGasFeeTooltipDescription')}
+                {getLocale(S.BRAVE_WALLET_GAS_FEE_TOOLTIP_DESCRIPTION)}
               </Row>
               <Row gap='8px'>
                 <InfoText textColor='tertiary'>
-                  {getLocale('braveWalletGasFeeTooltip')}
+                  {getLocale(S.BRAVE_WALLET_GAS_FEE_TOOLTIP)}
                 </InfoText>
                 <InfoIcon name='info-outline' />
               </Row>

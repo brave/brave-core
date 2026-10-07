@@ -9,33 +9,24 @@
 #include <utility>
 
 #include "base/no_destructor.h"
-#include "content/public/renderer/render_frame.h"
 #include "gin/arguments.h"
 #include "gin/function_template.h"
-#include "third_party/blink/public/common/thread_safe_browser_interface_broker_proxy.h"
-#include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/web/blink.h"
-#include "third_party/blink/public/web/web_local_frame.h"
+#include "third_party/blink/public/web/modules/service_worker/web_service_worker_context_proxy.h"
 #include "third_party/blink/public/web/web_script_source.h"
 
 namespace brave_search {
 
 BraveSearchFallbackJSHandler::BraveSearchFallbackJSHandler(
     v8::Local<v8::Context> v8_context,
-    blink::ThreadSafeBrowserInterfaceBrokerProxy* broker)
-    : broker_(broker),
-      context_(v8::Isolate::GetCurrent(), v8_context),
-      isolate_(v8::Isolate::GetCurrent()) {}
+    blink::WebServiceWorkerContextProxy* context_proxy)
+    : context_(v8::Isolate::GetCurrent(), v8_context),
+      isolate_(v8::Isolate::GetCurrent()) {
+  context_proxy->GetRemoteAssociatedInterface(
+      brave_search_fallback_.BindNewEndpointAndPassReceiver());
+}
 
 BraveSearchFallbackJSHandler::~BraveSearchFallbackJSHandler() = default;
-
-bool BraveSearchFallbackJSHandler::EnsureConnected() {
-  if (!brave_search_fallback_.is_bound() && broker_) {
-    broker_->GetInterface(brave_search_fallback_.BindNewPipeAndPassReceiver());
-  }
-
-  return brave_search_fallback_.is_bound();
-}
 
 v8::Local<v8::Context> BraveSearchFallbackJSHandler::Context() {
   return v8::Local<v8::Context>::New(isolate_, context_);
@@ -102,8 +93,9 @@ v8::Local<v8::Promise> BraveSearchFallbackJSHandler::FetchBackupResults(
     bool filter_explicit_results,
     int page_index,
     const std::string& cookie_header_value) {
-  if (!EnsureConnected())
+  if (!brave_search_fallback_.is_bound()) {
     return v8::Local<v8::Promise>();
+  }
 
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
       v8::Promise::Resolver::New(Context());

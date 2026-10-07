@@ -26,7 +26,7 @@ export const _CustomNetworkFee = {
     return (
       <BottomSheet
         isOpen={true}
-        title={getLocale('braveWalletCustomFeeAmount')}
+        title={getLocale(S.BRAVE_WALLET_CUSTOM_FEE_AMOUNT)}
         onClose={() => alert('Close Clicked')}
       >
         <CustomNetworkFee

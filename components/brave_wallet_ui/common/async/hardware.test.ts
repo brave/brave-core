@@ -51,7 +51,7 @@ const getMockedLedgerEthKeyring = (args: {
       } else {
         return {
           success: false,
-          error: 'braveWalletSignOnDeviceError',
+          error: S.BRAVE_WALLET_HARDWARE_TRANSACTION_DEVICE_ERROR,
           code: undefined,
         }
       }
@@ -79,7 +79,7 @@ const getMockedLedgerFilKeyring = (args: {
       }
       return {
         success: false,
-        error: 'braveWalletSignOnDeviceError',
+        error: S.BRAVE_WALLET_HARDWARE_TRANSACTION_DEVICE_ERROR,
         code: undefined,
       }
     },
@@ -101,7 +101,7 @@ const getMockedLedgerSolKeyring = (args: {
       }
       return {
         success: false,
-        error: 'braveWalletSignOnDeviceError',
+        error: S.BRAVE_WALLET_HARDWARE_TRANSACTION_DEVICE_ERROR,
         code: undefined,
       }
     },
@@ -129,7 +129,7 @@ const getMockedTrezorKeyring = (args: {
       } else {
         return {
           success: false,
-          error: 'braveWalletSignOnDeviceError',
+          error: S.BRAVE_WALLET_HARDWARE_TRANSACTION_DEVICE_ERROR,
           code: undefined,
         }
       }
@@ -373,13 +373,17 @@ test('sign Ledger transaction, approved, no message to sign', () => {
       txInfo.id,
     ),
   ).resolves.toStrictEqual(
-    hardwareTransactionErrorResponse('braveWalletNoMessageToSignError'),
+    hardwareTransactionErrorResponse(
+      S.BRAVE_WALLET_HARDWARE_TRANSACTION_NO_MESSAGE_TO_SIGN_ERROR,
+    ),
   )
 })
 
 test('sign Ledger transaction, approved, device error', () => {
   return expect(signEthTransactionWithLedger()).resolves.toStrictEqual(
-    hardwareTransactionErrorResponseWithCode('braveWalletSignOnDeviceError'),
+    hardwareTransactionErrorResponseWithCode(
+      S.BRAVE_WALLET_HARDWARE_TRANSACTION_DEVICE_ERROR,
+    ),
   )
 })
 
@@ -389,7 +393,9 @@ test('sign Ledger transaction, approved, processing error', () => {
       mockSignature: mockEthereumSignatureVRS,
     }),
   ).resolves.toStrictEqual(
-    hardwareTransactionErrorResponse('braveWalletProcessTransactionError'),
+    hardwareTransactionErrorResponse(
+      S.BRAVE_WALLET_HARDWARE_PROCESS_TRANSACTION_ERROR,
+    ),
   )
 })
 
@@ -408,7 +414,9 @@ test('sign Trezor transaction, approve failed', async () => {
       nonce: '',
     }),
   ).resolves.toStrictEqual(
-    hardwareTransactionErrorResponse('braveWalletApproveTransactionError'),
+    hardwareTransactionErrorResponse(
+      S.BRAVE_WALLET_HARDWARE_APPROVE_TRANSACTION_ERROR,
+    ),
   )
 })
 
@@ -433,12 +441,14 @@ test('sign Trezor transaction, approved, generic device error', () => {
     signTransactionWithTrezor({
       mockHardwareOperationError: {
         success: false,
-        error: 'braveWalletSignOnDeviceError',
+        error: S.BRAVE_WALLET_HARDWARE_TRANSACTION_DEVICE_ERROR,
         code: undefined,
       },
     }),
   ).resolves.toStrictEqual(
-    hardwareTransactionErrorResponse('braveWalletSignOnDeviceError'),
+    hardwareTransactionErrorResponse(
+      S.BRAVE_WALLET_HARDWARE_TRANSACTION_DEVICE_ERROR,
+    ),
   )
 })
 
@@ -449,7 +459,9 @@ test('sign Trezor transaction, approved, processing error', () => {
       processHardwareSignatureResult: false,
     }),
   ).resolves.toStrictEqual(
-    hardwareTransactionErrorResponse('braveWalletProcessTransactionError'),
+    hardwareTransactionErrorResponse(
+      S.BRAVE_WALLET_HARDWARE_PROCESS_TRANSACTION_ERROR,
+    ),
   )
 })
 

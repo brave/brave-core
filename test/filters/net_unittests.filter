@@ -5,6 +5,23 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# These tests fail because Brave's kPartitionConnectionsByNetworkIsolationKey
+# feature being on by default.
+-WebSocketEndToEndTest.HstsHttpsToWebSocket
+-WebSocketEndToEndTest.HstsWebSocketToHttps
+-WebSocketMultiNetworkTest.HTTP2DefaultNetworkIsCorrectlyPropagated
+-WebSocketMultiNetworkTest.HTTP2DifferentTargetNetworksNeverShareConnections
+-WebSocketMultiNetworkTest.HTTP2SameTargetNetworkSharesConnections
+-WebSocketMultiNetworkTest.HTTP2TargetNetworkIsCorrectlyPropagated
+
+# These tests fail because we override ParseHstsJson to ignore the caller's
+# data in favour of Brave's. See rewrite/net/tools/
+# transport_security_state_generator/input_file_parsers.cc.yaml
+-InputFileParsersTest.ParseHstsJson
+-InputFileParsersTest.ParsePkpJson
+-InputFileParsersTest.ParsePkpJsonInvalid
+-InputFileParsersTest.ParsePkpJsonInvalidPinset
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -CanPoolTest.CanNotPoolWithBadPins
 -CanonicalCookieTest.CreateWithExpires
@@ -20,7 +37,6 @@
 -InputFileParsersTest.ParseCertificatesFileInvalidCertificateName
 -InputFileParsersTest.ParseCertificatesFileInvalidName
 -InputFileParsersTest.ParseCertificatesFileInvalidTimestamp
--InputFileParsersTest.ParseJSON
 -ParseProxyListFuzzer.TestOneInput
 -ProofVerifierChromiumTest.IsFatalErrorSetForFatalError
 -ProofVerifierChromiumTest.PKPAndCTBothTested
@@ -58,8 +74,6 @@
 -URLRequestTestHTTP.STSProcessedOnLocalhostWhenFeatureDisabled
 -VersionIncludeStreamDependencySequence/QuicChromiumClientSessionTest.ConnectionNotPooledWithDifferentPin/RFCv1
 -VersionIncludeStreamDependencySequence/QuicChromiumClientSessionTest.ConnectionNotPooledWithDifferentPin/RFCv2
--WebSocketEndToEndTest.HstsHttpsToWebSocket
--WebSocketEndToEndTest.HstsWebSocketToHttps
 -ProxyChainTest.FromSchemeHostAndPort
 -TransportSecurityStateTest.DecodePreloadedMultipleMix
 -TransportSecurityStateTest.DecodePreloadedMultiplePrefix

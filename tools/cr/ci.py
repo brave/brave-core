@@ -52,7 +52,8 @@ _WFAPI_STATUS_TO_STATE = {
 
 # States meaning a pipeline has finished and no longer needs polling.
 _TERMINAL_WATCH_STATES = frozenset(
-    {'SUCCESS', 'FAILURE', 'ABORTED', 'UNSTABLE', 'CANCELLED'})
+    {'SUCCESS', 'FAILURE', 'ABORTED', 'UNSTABLE', 'CANCELLED'}
+)
 
 # Minimalist box for the `--watch` table: column dividers plus a single
 # header rule, no outer frame (paired with `show_edge=False`). Each of the
@@ -60,14 +61,16 @@ _TERMINAL_WATCH_STATES = frozenset(
 # edge -- in the order Rich's `Box` expects (top, head, head-rule, mid, row,
 # foot-rule, foot, bottom). Edge/foot lines are placeholders never drawn once
 # the edge is hidden and the table has no footer.
-_WATCH_TABLE_BOX = Box('    \n'  # top
-                       '  │ \n'  # head
-                       ' -- \n'  # head rule
-                       '  │ \n'  # mid
-                       '  │ \n'  # row
-                       ' -- \n'  # foot rule
-                       '  │ \n'  # foot
-                       '    \n')  # bottom
+_WATCH_TABLE_BOX = Box(
+    '    \n'  # top
+    '  │ \n'  # head
+    ' -- \n'  # head rule
+    '  │ \n'  # mid
+    '  │ \n'  # row
+    ' -- \n'  # foot rule
+    '  │ \n'  # foot
+    '    \n'
+)  # bottom
 
 # Icon + rich style for each watch state, used to render the State column.
 _WATCH_STATE_STYLE = {
@@ -186,14 +189,14 @@ class _ElapsedClock:
         self._anchor = anchor
 
     def __rich__(self) -> Text:
-        elapsed_millis = (self._base_millis +
-                          (time.monotonic() - self._anchor) * 1000)
+        elapsed_millis = (
+            self._base_millis + (time.monotonic() - self._anchor) * 1000
+        )
         return Text(_format_duration(elapsed_millis), justify='right')
 
 
 class JenkinsCi:
-    """Triggers (and optionally watches) Jenkins pipelines.
-    """
+    """Triggers (and optionally watches) Jenkins pipelines."""
 
     def __init__(self, username: str, token: str) -> None:
         # Jenkins credentials, sent as HTTP basic auth on every request.
@@ -206,20 +209,24 @@ class JenkinsCi:
         if not JENKINS_CONFIG_FILE.is_file():
             raise InvalidInputException(
                 f'Jenkins config not found at {JENKINS_CONFIG_FILE}. Create it '
-                'with [bold cyan]username[/] and [bold cyan]token[/] fields.')
+                'with [bold cyan]username[/] and [bold cyan]token[/] fields.'
+            )
 
         try:
             config = json.loads(
-                JENKINS_CONFIG_FILE.read_bytes().decode('utf-8'))
+                JENKINS_CONFIG_FILE.read_bytes().decode('utf-8')
+            )
         except json.JSONDecodeError as e:
             raise InvalidInputException(
-                f'Failed to parse {JENKINS_CONFIG_FILE}: {e}') from e
+                f'Failed to parse {JENKINS_CONFIG_FILE}: {e}'
+            ) from e
 
         missing = [key for key in ('username', 'token') if not config.get(key)]
         if missing:
             raise InvalidInputException(
                 f'{JENKINS_CONFIG_FILE} is missing required field(s): '
-                f'{", ".join(missing)}.')
+                f'{", ".join(missing)}.'
+            )
 
         return cls(config['username'], config['token'])
 
@@ -238,21 +245,24 @@ class JenkinsCi:
         crumb needed" rather than a hard failure.
         """
         try:
-            response = session.get(f'{base_url}/crumbIssuer/api/json',
-                                   timeout=15)
+            response = session.get(
+                f'{base_url}/crumbIssuer/api/json', timeout=15
+            )
             response.raise_for_status()
             data = response.json()
             return {data['crumbRequestField']: data['crumb']}
         except (requests.RequestException, KeyError, ValueError):
             return {}
 
-    def trigger(self,
-                job_urls: tuple[str, ...],
-                *,
-                params: dict[str, str] | None = None,
-                properties: object = None,
-                watch: bool = False,
-                title: str = '') -> bool:
+    def trigger(
+        self,
+        job_urls: tuple[str, ...],
+        *,
+        params: dict[str, str] | None = None,
+        properties: object = None,
+        watch: bool = False,
+        title: str = '',
+    ) -> bool:
         """Triggers one or more pipelines, optionally watching to completion.
 
         Args:
@@ -294,13 +304,18 @@ class JenkinsCi:
             if payload is not None:
                 # Windows agents unwrap PROPERTIES through cmd, which eats bare
                 # double quotes, so escape them for those jobs only.
-                job_params['PROPERTIES'] = (payload.replace('"', '\\"') if
-                                            _is_windows_job(url) else payload)
+                job_params['PROPERTIES'] = (
+                    payload.replace('"', '\\"')
+                    if _is_windows_job(url)
+                    else payload
+                )
             try:
-                response = session.post(f'{url}buildWithParameters',
-                                        params=job_params,
-                                        headers=crumb,
-                                        timeout=30)
+                response = session.post(
+                    f'{url}buildWithParameters',
+                    params=job_params,
+                    headers=crumb,
+                    timeout=30,
+                )
                 response.raise_for_status()
             except requests.RequestException as e:
                 failures.append(url)
@@ -310,8 +325,9 @@ class JenkinsCi:
             # Jenkins' 201 Location header points at the transient queue item,
             # not the build: the build number isn't assigned until an executor
             # picks the job up, and the queue URL only serves JSON.
-            job = _WatchedJob(url=url,
-                              queue_url=response.headers.get('Location', ''))
+            job = _WatchedJob(
+                url=url, queue_url=response.headers.get('Location', '')
+            )
             watched.append(job)
             if not watch:
                 # Link the job page, which always resolves and surfaces the
@@ -320,8 +336,9 @@ class JenkinsCi:
 
         if failures:
             raise BadOutcomeException(
-                'Failed to trigger the following pipelines:\n%s' %
-                '\n'.join(f'    * {url}' for url in failures))
+                'Failed to trigger the following pipelines:\n%s'
+                % '\n'.join(f'    * {url}' for url in failures)
+            )
 
         if watch:
             return self._watch(session, title, watched)
@@ -338,16 +355,18 @@ class JenkinsCi:
         except (requests.RequestException, ValueError):
             return None
 
-    def _resolve_display_name(self, session: requests.Session,
-                              job: _WatchedJob) -> None:
+    def _resolve_display_name(
+        self, session: requests.Session, job: _WatchedJob
+    ) -> None:
         """Records a pipeline's `display-name` for the Bot column, if set.
 
         Jenkins returns the job name as `displayName` when no display name is
         configured, so a value equal to the job name is treated as "unset" and
         left as None. `_WatchedJob.bot` then falls back to the job name.
         """
-        info = self._get_json(session,
-                              f'{job.url}api/json?tree=displayName,name')
+        info = self._get_json(
+            session, f'{job.url}api/json?tree=displayName,name'
+        )
         if info is None:
             return
         display_name = info.get('displayName')
@@ -399,13 +418,15 @@ class JenkinsCi:
         job.elapsed_anchor = time.monotonic()
         job.elapsed = _format_duration(millis)
 
-    def _refresh_build_state(self, session: requests.Session,
-                             job: _WatchedJob) -> None:
+    def _refresh_build_state(
+        self, session: requests.Session, job: _WatchedJob
+    ) -> None:
         """Updates state/stage/elapsed for a job that already has a build."""
         describe = self._get_json(session, f'{job.build_url}wfapi/describe')
         if describe is not None:
-            job.state = _WFAPI_STATUS_TO_STATE.get(describe.get('status', ''),
-                                                   job.state)
+            job.state = _WFAPI_STATUS_TO_STATE.get(
+                describe.get('status', ''), job.state
+            )
             self._record_elapsed(job, describe.get('durationMillis'))
             stages = describe.get('stages') or []
             running = [s for s in stages if s.get('status') == 'IN_PROGRESS']
@@ -451,8 +472,11 @@ class JenkinsCi:
         via `_ElapsedClock`. Every other state shows the static,
         server-accurate value captured at the last poll.
         """
-        if (job.state == 'RUNNING' and job.duration_millis is not None
-                and job.elapsed_anchor is not None):
+        if (
+            job.state == 'RUNNING'
+            and job.duration_millis is not None
+            and job.elapsed_anchor is not None
+        ):
             return _ElapsedClock(job.duration_millis, job.elapsed_anchor)
         return job.elapsed or '—'
 
@@ -479,18 +503,23 @@ class JenkinsCi:
         """
         if not dim:
             return renderable
-        text = renderable if isinstance(renderable, Text) else Text(
-            str(renderable))
+        text = (
+            renderable
+            if isinstance(renderable, Text)
+            else Text(str(renderable))
+        )
         text.stylize('dim')
         return text
 
     def _render_table(self, title: str, jobs: list[_WatchedJob]) -> Table:
         """Builds the per-pipeline progress table rendered in place by Live."""
-        table = Table(title=title,
-                      title_justify='left',
-                      box=_WATCH_TABLE_BOX,
-                      show_edge=False,
-                      expand=True)
+        table = Table(
+            title=title,
+            title_justify='left',
+            box=_WATCH_TABLE_BOX,
+            show_edge=False,
+            expand=True,
+        )
         table.add_column('Bot', no_wrap=True)
         table.add_column('State', no_wrap=True)
         table.add_column('Stage', no_wrap=True)
@@ -501,11 +530,13 @@ class JenkinsCi:
             # which keeps its colour so the outcome still stands out. This keeps
             # attention on the pipelines still in flight.
             dim = job.is_terminal
-            table.add_row(self._dim_cell(job.bot, dim),
-                          self._state_cell(job.state),
-                          self._dim_cell(job.stage or '—', dim),
-                          self._dim_cell(self._elapsed_cell(job), dim),
-                          self._dim_cell(self._link_cell(job.link), dim))
+            table.add_row(
+                self._dim_cell(job.bot, dim),
+                self._state_cell(job.state),
+                self._dim_cell(job.stage or '—', dim),
+                self._dim_cell(self._elapsed_cell(job), dim),
+                self._dim_cell(self._link_cell(job.link), dim),
+            )
         return table
 
     @staticmethod
@@ -528,15 +559,18 @@ class JenkinsCi:
             if status is not None:
                 status.start()
 
-    def _watch(self, session: requests.Session, title: str,
-               jobs: list[_WatchedJob]) -> bool:
+    def _watch(
+        self, session: requests.Session, title: str, jobs: list[_WatchedJob]
+    ) -> bool:
         """Polls the triggered pipelines, updating an in-place table.
 
         Returns whether every pipeline finished with a SUCCESS state. A Ctrl+C
         detach counts as not-all-successful.
         """
-        terminal.log_task('Watching pipelines — press [bold cyan]Ctrl+C[/] to '
-                          'stop watching (builds keep running).')
+        terminal.log_task(
+            'Watching pipelines — press [bold cyan]Ctrl+C[/] to '
+            'stop watching (builds keep running).'
+        )
         # Resolve each pipeline's display name once up front so the Bot column
         # shows it from the very first render.
         for job in jobs:
@@ -546,10 +580,14 @@ class JenkinsCi:
             # (~12.5fps matches the `dots` spinner cadence); the data itself is
             # only re-polled every WATCH_POLL_INTERVAL_SECONDS. Any outer lift
             # spinner is suspended so the two live displays don't clash.
-            with self._suspended_outer_status(), Live(
+            with (
+                self._suspended_outer_status(),
+                Live(
                     self._render_table(title, jobs),
                     console=console,
-                    refresh_per_second=12.5) as live:
+                    refresh_per_second=12.5,
+                ) as live,
+            ):
                 while True:
                     for job in jobs:
                         self._poll_job(session, job)

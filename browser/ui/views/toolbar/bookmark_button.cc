@@ -16,7 +16,17 @@
 #include "components/strings/grit/components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/compositor/layer.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/views/controls/label.h"
+
+namespace brave {
+void RestyleBookmarkLabel(views::Label* label) {
+  label->SetPaintToLayer();
+  label->SetSubpixelRenderingEnabled(false);
+  label->layer()->SetFillsBoundsOpaquely(false);
+}
+}  // namespace brave
 
 BraveBookmarkButton::BraveBookmarkButton(PressedCallback callback)
     : ToolbarButton(std::move(callback)) {

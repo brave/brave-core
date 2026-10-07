@@ -11,6 +11,9 @@ export const style = scoped.css`
   & {
     display: flex;
     flex-direction: column;
+    min-height: 0;
+    border-radius: inherit;
+    overflow: clip;
   }
 
   input {
@@ -44,10 +47,12 @@ export const style = scoped.css`
 
   .results-container {
     display: none;
+    min-height: 0;
+    overflow-y: auto;
   }
 
   &:focus-within .results-container {
-    display: unset;
+    display: block;
   }
 
   .results-container:not(:empty) {

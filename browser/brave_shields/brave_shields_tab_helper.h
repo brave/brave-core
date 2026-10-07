@@ -70,6 +70,7 @@ class BraveShieldsTabHelper
   void SetBraveShieldsAdBlockOnlyModeEnabled(bool is_enabled);
   bool ShouldShowShieldsDisabledAdBlockOnlyModePrompt();
   void SetBraveShieldsAdBlockOnlyModePromptDismissed();
+  void ReloadWebContents();
   GURL GetCurrentSiteURL() const;
   GURL GetFaviconURL(bool refresh);
   const base::flat_set<ContentSettingsType>& GetInvokedWebcompatFeatures();
@@ -79,14 +80,10 @@ class BraveShieldsTabHelper
   mojom::CookieBlockMode GetCookieBlockMode();
   mojom::HttpsUpgradeMode GetHttpsUpgradeMode();
   bool GetNoScriptEnabled();
-  mojom::ContentSettingsOverriddenDataPtr GetJsContentSettingsOverriddenData();
-  bool GetForgetFirstPartyStorageEnabled();
   void SetAdBlockMode(mojom::AdBlockMode mode);
-  void SetFingerprintMode(mojom::FingerprintMode mode);
   void SetCookieBlockMode(mojom::CookieBlockMode mode);
   void SetHttpsUpgradeMode(mojom::HttpsUpgradeMode mode);
   void SetIsNoScriptEnabled(bool is_enabled);
-  void SetForgetFirstPartyStorageEnabled(bool is_enabled);
   void EnforceSiteDataCleanup();
   void AllowScriptsOnce(const std::vector<std::string>& origins);
   void BlockAllowedScripts(const std::vector<std::string>& origins);
@@ -127,7 +124,6 @@ class BraveShieldsTabHelper
                         bool icon_url_changed,
                         const gfx::Image& image) override;
 
-  void ReloadWebContents();
   void MaybeNotifyRepeatedReloads(content::NavigationHandle* navigation_handle);
 
   void OnShieldsAdBlockOnlyModeEnabledChanged();

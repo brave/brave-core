@@ -9,13 +9,13 @@
 #include <memory>
 #include <string>
 
-#include "base/containers/flat_set.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_handler.h"
 #include "brave/components/brave_ads/core/internal/reminders/reminders.h"
 #include "brave/components/brave_ads/core/internal/studies/studies.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_ads {
 
@@ -81,7 +81,7 @@ class AdsCore final {
 
   // Metrics for the given creative instance ID should not be sent
   // if the ID exists in this set.
-  base::flat_set</*creative_instance_id*/ std::string> disable_metrics_;
+  absl::flat_hash_set</*creative_instance_id*/ std::string> disable_metrics_;
 };
 
 }  // namespace brave_ads

@@ -233,6 +233,18 @@
   <message name="IDS_SITE_SETTINGS_TYPE_WINDOW_MANAGEMENT_MID_SENTENCE" desc="The label used for the window management site settings controls when used mid-sentence.">
     window management
   </message>
+  <message name="IDS_SITE_SETTINGS_TYPE_SERIAL_PORTS" desc="The label used for the serial ports site settings controls.">
+    Serial ports
+  </message>
+  <message name="IDS_SITE_SETTINGS_TYPE_SERIAL_PORTS_MID_SENTENCE" desc="The label used for the serial ports site settings controls when used mid-sentence.">
+    serial ports
+  </message>
+  <message name="IDS_SITE_SETTINGS_TYPE_HID_DEVICES" desc="The label used for the HID site settings controls.">
+    HID devices
+  </message>
+  <message name="IDS_SITE_SETTINGS_TYPE_HID_DEVICES_MID_SENTENCE" desc="The label used for the HID site settings controls when used mid-sentence.">
+    HID devices
+  </message>
 
   <!-- Site Settings desktop-only -->
   <if expr="not is_android">
@@ -247,12 +259,6 @@
   </message>
   <message name="IDS_SITE_SETTINGS_TYPE_HANDLERS_MID_SENTENCE" desc="The label used for the protocol handlers (e.g. mailto) site settings controls when used mid-sentence.">
     protocol handlers
-  </message>
-  <message name="IDS_SITE_SETTINGS_TYPE_HID_DEVICES" desc="The label used for the HID site settings controls.">
-    HID devices
-  </message>
-  <message name="IDS_SITE_SETTINGS_TYPE_HID_DEVICES_MID_SENTENCE" desc="The label used for the HID site settings controls when used mid-sentence.">
-    HID devices
   </message>
   <message name="IDS_SITE_SETTINGS_TYPE_IMAGES" desc="The label used for images site settings controls.">
     Images
@@ -286,12 +292,6 @@
   </message>
   <message name="IDS_SITE_SETTINGS_TYPE_POINTER_LOCK_MID_SENTENCE" desc="The label used for the mouse lock (pointer lock) site settings controls when used mid-sentence, e.g. 'Automatically blocked mouse lock and use'.">
     mouse lock and use
-  </message>
-  <message name="IDS_SITE_SETTINGS_TYPE_SERIAL_PORTS" desc="The label used for the serial ports site settings controls.">
-    Serial ports
-  </message>
-  <message name="IDS_SITE_SETTINGS_TYPE_SERIAL_PORTS_MID_SENTENCE" desc="The label used for the serial ports site settings controls when used mid-sentence.">
-    serial ports
   </message>
 <if expr="is_chromeos">
   <message name="IDS_SITE_SETTINGS_TYPE_SMART_CARD_READERS" desc="The label used for the smart card readers site settings controls.">

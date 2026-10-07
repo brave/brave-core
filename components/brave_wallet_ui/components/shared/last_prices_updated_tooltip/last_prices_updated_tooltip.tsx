@@ -30,7 +30,7 @@ export const LastPricesUpdatedTooltip = ({ children }: Props) => {
     )
     if (lastUpdated) {
       setLabel(
-        getLocale('braveWalletLastUpdatedAgo').replace(
+        getLocale(S.BRAVE_WALLET_LAST_UPDATED_AGO).replace(
           '$1',
           formatDateAsRelative(new Date(lastUpdated)),
         ),

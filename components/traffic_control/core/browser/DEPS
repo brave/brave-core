@@ -1,0 +1,9 @@
+include_rules = [
+  "+components/keyed_service/core",
+  "+components/pref_registry",
+  "+components/prefs",
+  "+components/sync_preferences",
+  "+components/url_matcher",
+  "+components/user_prefs",
+  "+mojo/public/cpp/bindings",
+]

@@ -10,11 +10,12 @@
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/synchronization/lock.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "content/common/content_constants_internal.h"
+#include "content/public/browser/frame_accept_header.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -110,8 +111,10 @@ class SignedExchangeRequestBrowserTest : public InProcessBrowserTest {
     const auto accept_header = GetInterceptedAcceptHeader(url);
     ASSERT_TRUE(accept_header);
     EXPECT_EQ(*accept_header,
-              is_navigation ? std::string(content::kFrameAcceptHeaderValue)
-                            : std::string(kDefaultAcceptHeaderValue));
+              is_navigation
+                  ? content::FrameAcceptHeaderValue(
+                        /*allow_sxg_responses=*/false, browser()->GetProfile())
+                  : std::string(kDefaultAcceptHeaderValue));
   }
 
   std::optional<std::string> GetInterceptedAcceptHeader(const GURL& url) const {

@@ -11,8 +11,10 @@
 
 #include "base/check_op.h"
 #include "base/containers/map_util.h"
+#include "base/containers/span.h"
 #include "base/containers/to_vector.h"
 #include "base/no_destructor.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/types/expected.h"
 #include "base/types/optional_util.h"
@@ -23,6 +25,7 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/solana_address.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/string_utils.h"
 #include "components/grit/brave_components_strings.h"
@@ -236,19 +239,18 @@ void SimpleHashClient::FetchNFTsFromSimpleHash(
     const std::string& account_address,
     const std::vector<mojom::ChainIdPtr>& chain_ids,
     const std::optional<std::string>& cursor,
-    bool skip_spam,
-    bool only_spam,
+    SpamFilter spam_filter,
     FetchNFTsFromSimpleHashCallback callback) {
-  GURL url = GetSimpleHashNftsByWalletUrl(account_address, chain_ids, cursor);
+  GURL url = GetSimpleHashNftsByWalletUrl(account_address, chain_ids, cursor,
+                                          spam_filter);
   if (!url.is_valid()) {
     std::move(callback).Run({}, std::nullopt);
     return;
   }
 
-  auto internal_callback =
-      base::BindOnce(&SimpleHashClient::OnFetchNFTsFromSimpleHash,
-                     weak_ptr_factory_.GetWeakPtr(), skip_spam, only_spam,
-                     std::move(callback));
+  auto internal_callback = base::BindOnce(
+      &SimpleHashClient::OnFetchNFTsFromSimpleHash,
+      weak_ptr_factory_.GetWeakPtr(), spam_filter, std::move(callback));
 
   api_request_helper_->Request("GET", url, "", "", std::move(internal_callback),
                                MakeBraveServicesKeyHeaders(),
@@ -256,8 +258,7 @@ void SimpleHashClient::FetchNFTsFromSimpleHash(
 }
 
 void SimpleHashClient::OnFetchNFTsFromSimpleHash(
-    bool skip_spam,
-    bool only_spam,
+    SpamFilter spam_filter,
     FetchNFTsFromSimpleHashCallback callback,
     APIRequestResult api_request_result) {
   std::vector<mojom::BlockchainTokenPtr> nfts;
@@ -275,7 +276,7 @@ void SimpleHashClient::OnFetchNFTsFromSimpleHash(
   std::optional<std::pair<std::optional<std::string>,
                           std::vector<mojom::BlockchainTokenPtr>>>
       result = ParseNFTsFromSimpleHash(
-          api_request_result.value_body().GetDict(), skip_spam, only_spam);
+          api_request_result.value_body().GetDict(), spam_filter);
   if (!result) {
     std::move(callback).Run(std::move(nfts), std::nullopt);
     return;
@@ -299,8 +300,7 @@ void SimpleHashClient::FetchAllNFTsFromSimpleHash(
       account_address, CloneVector(chain_ids), std::move(callback));
 
   FetchNFTsFromSimpleHash(account_address, CloneVector(chain_ids), std::nullopt,
-                          true /* skip_spam*/, false /* only spam */,
-                          std::move(internal_callback));
+                          SpamFilter::kExclude, std::move(internal_callback));
 }
 
 void SimpleHashClient::OnFetchAllNFTsFromSimpleHash(
@@ -323,8 +323,7 @@ void SimpleHashClient::OnFetchAllNFTsFromSimpleHash(
         CloneVector(chain_ids), std::move(callback));
 
     FetchNFTsFromSimpleHash(account_address, CloneVector(chain_ids),
-                            *next_cursor, true /* skip_spam */,
-                            false /* only_spam */,
+                            *next_cursor, SpamFilter::kExclude,
                             std::move(internal_callback));
     return;
   }
@@ -534,9 +533,8 @@ void SimpleHashClient::OnGetNfts(
     return;
   }
 
-  auto result =
-      ParseNFTsFromSimpleHash(api_request_result.value_body().GetDict(),
-                              false /* skip_spam */, false /* only_spam */);
+  auto result = ParseNFTsFromSimpleHash(
+      api_request_result.value_body().GetDict(), SpamFilter::kAll);
 
   // Add the NFT results
   if (result) {
@@ -549,6 +547,11 @@ void SimpleHashClient::OnGetNfts(
   // and make another api request
   if (nft_identifiers.size() > 0) {
     GURL url = SimpleHashClient::GetNftsUrl(nft_identifiers);
+    if (!url.is_valid()) {
+      std::move(callback).Run(std::move(nfts_so_far));
+      return;
+    }
+
     std::vector<mojom::NftIdentifierPtr> nft_identifiers_remaining;
     if (nft_identifiers.size() > kSimpleHashMaxBatchSize) {
       for (size_t i = kSimpleHashMaxBatchSize; i < nft_identifiers.size();
@@ -574,8 +577,7 @@ void SimpleHashClient::OnGetNfts(
 std::optional<std::pair<std::optional<std::string>,
                         std::vector<mojom::BlockchainTokenPtr>>>
 SimpleHashClient::ParseNFTsFromSimpleHash(const base::DictValue& dict,
-                                          bool skip_spam,
-                                          bool only_spam) {
+                                          SpamFilter spam_filter) {
   // Parses responses like this
   // {
   //   "next_cursor": null,
@@ -754,11 +756,6 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::DictValue& dict,
   //     ...
   // }
 
-  // If both skip_spam and only_spam are true, return early.
-  if (skip_spam && only_spam) {
-    return std::nullopt;
-  }
-
   auto* next_cursor_ptr = dict.FindString("next_cursor");
   std::optional<std::string> next_cursor;
   if (next_cursor_ptr) {
@@ -784,11 +781,12 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::DictValue& dict,
     if (!collection) {
       continue;
     }
-    std::optional<int> spam_score = collection->FindInt("spam_score");
-    if (skip_spam && (!spam_score || *spam_score > 0)) {
+    // gate3 already filtered; guard against a stale or partial response.
+    const bool is_spam = collection->FindInt("spam_score").value_or(1) > 0;
+    if (spam_filter == SpamFilter::kExclude && is_spam) {
       continue;
     }
-    if (only_spam && (spam_score && *spam_score <= 0)) {
+    if (spam_filter == SpamFilter::kOnly && !is_spam) {
       continue;
     }
 
@@ -1201,7 +1199,8 @@ SimpleHashClient::ParseMetadatas(const base::DictValue& dict) {
 GURL SimpleHashClient::GetSimpleHashNftsByWalletUrl(
     const std::string& account_address,
     const std::vector<mojom::ChainIdPtr>& chain_ids,
-    const std::optional<std::string>& cursor) {
+    const std::optional<std::string>& cursor,
+    SpamFilter spam_filter) {
   if (chain_ids.empty() || account_address.empty()) {
     return GURL();
   }
@@ -1230,6 +1229,18 @@ GURL SimpleHashClient::GetSimpleHashNftsByWalletUrl(
   url = net::AppendQueryParameter(url, "chains", chain_ids_param);
   url = net::AppendQueryParameter(url, "wallet_addresses", account_address);
 
+  // Filter upstream so discovery skips metadata for NFTs it would drop.
+  switch (spam_filter) {
+    case SpamFilter::kAll:
+      break;
+    case SpamFilter::kExclude:
+      url = net::AppendQueryParameter(url, "spam", "exclude");
+      break;
+    case SpamFilter::kOnly:
+      url = net::AppendQueryParameter(url, "spam", "only");
+      break;
+  }
+
   // If cursor is provided, add it as a query parameter
   if (cursor) {
     url = net::AppendQueryParameter(url, "cursor", *cursor);
@@ -1249,38 +1260,47 @@ GURL SimpleHashClient::GetNftsUrl(
     return GURL();
   }
 
-  std::string query_params;
-  size_t max_items =
-      std::min({nft_identifiers.size(), size_t(kSimpleHashMaxBatchSize)});
-  for (size_t i = 0; i < max_items; i++) {
+  const size_t max_items =
+      std::min(nft_identifiers.size(), kSimpleHashMaxBatchSize);
+  std::vector<std::string> nft_id_params;
+  nft_id_params.reserve(max_items);
+  for (const auto& nft_identifier :
+       base::span(nft_identifiers).first(max_items)) {
     std::optional<std::string> simple_hash_chain_id =
-        ChainIdToSimpleHashChainId(nft_identifiers[i]->chain_id);
+        ChainIdToSimpleHashChainId(nft_identifier->chain_id);
     if (!simple_hash_chain_id) {
       return GURL();
     }
 
     if (*coin == mojom::CoinType::SOL) {
-      query_params +=
-          *simple_hash_chain_id + "." + nft_identifiers[i]->contract_address;
+      // Skip mints that are not base58-encoded pubkeys, so one bad stored NFT
+      // does not fail the whole batch. Callers treat identifiers missing from
+      // the response as balance 0 / no metadata. The ETH branch stays all-or-
+      // nothing: a malformed token id is a caller bug, not stale prefs data.
+      if (!SolanaAddress::FromBase58(nft_identifier->contract_address)) {
+        continue;
+      }
+      nft_id_params.push_back(base::StrCat(
+          {*simple_hash_chain_id, ".", nft_identifier->contract_address}));
     } else {
       DCHECK_EQ(*coin, mojom::CoinType::ETH);
       uint256_t token_id_uint256;
-      if (!HexValueToUint256(nft_identifiers[i]->token_id, &token_id_uint256)) {
+      if (!HexValueToUint256(nft_identifier->token_id, &token_id_uint256)) {
         return GURL();
       }
-      std::string token_id_base10 = Uint256ValueToBase10(token_id_uint256);
-      query_params += *simple_hash_chain_id + "." +
-                      nft_identifiers[i]->contract_address + "." +
-                      token_id_base10;
-    }
-    if (i <
-        max_items - 1) {  // Check to ensure we do not append a comma at the end
-      query_params += ",";
+      nft_id_params.push_back(base::StrCat(
+          {*simple_hash_chain_id, ".", nft_identifier->contract_address, ".",
+           Uint256ValueToBase10(token_id_uint256)}));
     }
   }
 
+  if (nft_id_params.empty()) {
+    return GURL();
+  }
+
   GURL url = GetGate3URL().Resolve("/simplehash/api/v0/nfts/assets");
-  url = net::AppendQueryParameter(url, "nft_ids", query_params);
+  url = net::AppendQueryParameter(url, "nft_ids",
+                                  base::JoinString(nft_id_params, ","));
   return url;
 }
 

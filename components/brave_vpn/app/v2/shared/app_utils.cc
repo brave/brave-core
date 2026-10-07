@@ -35,6 +35,10 @@ void InitLogging(const base::CommandLine& command_line) {
     settings.log_file_path = log_file_path.value().c_str();
   }
   logging::InitLogging(settings);
+  logging::SetLogItems(/*enable_process_id=*/true,
+                       /*enable_thread_id=*/true,
+                       /*enable_timestamp=*/true,
+                       /*enable_tickcount=*/false);
 }
 
 base::FilePath GetUserDataDir(const std::string& product_name,

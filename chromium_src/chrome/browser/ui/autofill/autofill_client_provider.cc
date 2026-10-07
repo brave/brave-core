@@ -18,7 +18,8 @@
 namespace autofill {
 namespace {
 // Dummy usage to avoid -Wunused-function for the original JNI function that
-// gets replaced by our #define redirect below.
+// gets replaced by the plaster rewrite (see
+// rewrite/chrome/browser/ui/autofill/autofill_client_provider.cc.yaml).
 bool DummyAutofillClientProviderUtilsUsage() {
   if (Java_AutofillClientProviderUtils_getAndroidAutofillFrameworkAvailability(
           nullptr, nullptr)) {
@@ -29,13 +30,6 @@ bool DummyAutofillClientProviderUtilsUsage() {
 }  // namespace
 }  // namespace autofill
 
-// Redirect all subsequent call sites to our Brave version.
-#define Java_AutofillClientProviderUtils_getAndroidAutofillFrameworkAvailability \
-  Java_BraveAutofillClientProviderUtils_getAndroidAutofillFrameworkAvailability
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #include <chrome/browser/ui/autofill/autofill_client_provider.cc>
-
-#if BUILDFLAG(IS_ANDROID)
-#undef Java_AutofillClientProviderUtils_getAndroidAutofillFrameworkAvailability
-#endif  // BUILDFLAG(IS_ANDROID)

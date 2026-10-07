@@ -262,7 +262,7 @@ function SwapAsset(props: SwapAssetProps) {
 
   // computed
   const networkDescription = network
-    ? getLocale('braveWalletPortfolioAssetNetworkDescription')
+    ? getLocale(S.BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION)
         .replace('$1', '')
         .replace('$2', network.chainName ?? '')
         .trim()
@@ -276,8 +276,8 @@ function SwapAsset(props: SwapAssetProps) {
           variant='small.regular'
         >
           {type === 'sell'
-            ? getLocale('braveWalletSwapReviewSpend')
-            : getLocale('braveWalletSwapReviewReceive')}
+            ? getLocale(S.BRAVE_WALLET_SWAP_REVIEW_SPEND)
+            : getLocale(S.BRAVE_WALLET_SWAP_REVIEW_RECEIVE)}
         </Text>
         {expectAddress && (
           <SwapAssetAddress>
@@ -315,7 +315,7 @@ function SwapAsset(props: SwapAssetProps) {
             variant='heading.h2'
             textColor='success'
           >
-            {getLocale('braveWalletOnNetwork').replace(
+            {getLocale(S.BRAVE_WALLET_ON_NETWORK).replace(
               '$1',
               network?.chainName ?? '',
             )}

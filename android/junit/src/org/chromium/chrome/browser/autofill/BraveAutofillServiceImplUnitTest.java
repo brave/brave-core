@@ -7,6 +7,11 @@ package org.chromium.chrome.browser.autofill;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+
+import android.view.View;
+import android.view.autofill.AutofillId;
 
 import androidx.test.filters.SmallTest;
 
@@ -15,6 +20,9 @@ import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
 
 import org.chromium.base.test.BaseRobolectricTestRunner;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /** Unit tests for pure utility methods in {@link BraveAutofillServiceImpl}. */
 @RunWith(BaseRobolectricTestRunner.class)
@@ -214,5 +222,51 @@ public class BraveAutofillServiceImplUnitTest {
         // "California" does not exact-match either, does not prefix-match either,
         // but starts with "CALIF" (pass 3).
         assertEquals(1, BraveAutofillServiceImpl.matchListOption(options, "California"));
+    }
+
+    // --- pickRequiredSaveField ---
+
+    private static Map<String, AutofillId> mapWithKeys(String... keys) {
+        Map<String, AutofillId> map = new HashMap<>();
+        for (int i = 0; i < keys.length; i++) {
+            map.put(keys[i], new AutofillId(i + 1));
+        }
+        return map;
+    }
+
+    @Test
+    @SmallTest
+    public void pickRequiredSaveField_noAddressComponent_returnsNull() {
+        // The system prompt reads "Save address to Brave?" and Android shows it when the
+        // activity finishes, so a form with no address component must not arm it at all.
+        assertNull(
+                BraveAutofillServiceImpl.pickRequiredSaveField(
+                        mapWithKeys(
+                                View.AUTOFILL_HINT_NAME,
+                                View.AUTOFILL_HINT_EMAIL_ADDRESS,
+                                View.AUTOFILL_HINT_PHONE)));
+    }
+
+    @Test
+    @SmallTest
+    public void pickRequiredSaveField_prefersStreetAddress() {
+        Map<String, AutofillId> fields =
+                mapWithKeys(
+                        View.AUTOFILL_HINT_POSTAL_ADDRESS,
+                        View.AUTOFILL_HINT_POSTAL_CODE,
+                        View.AUTOFILL_HINT_NAME);
+        assertSame(
+                fields.get(View.AUTOFILL_HINT_POSTAL_ADDRESS),
+                BraveAutofillServiceImpl.pickRequiredSaveField(fields));
+    }
+
+    @Test
+    @SmallTest
+    public void pickRequiredSaveField_postalCodeOnly_returnsPostalCode() {
+        Map<String, AutofillId> fields =
+                mapWithKeys(View.AUTOFILL_HINT_POSTAL_CODE, View.AUTOFILL_HINT_NAME);
+        assertSame(
+                fields.get(View.AUTOFILL_HINT_POSTAL_CODE),
+                BraveAutofillServiceImpl.pickRequiredSaveField(fields));
     }
 }

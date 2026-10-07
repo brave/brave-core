@@ -1,8 +1,8 @@
 diff --git a/ios/web/js_messaging/origin_filter.mm b/ios/web/js_messaging/origin_filter.mm
-index b2a36ff4f27860e3f5866a0f36c796b4e809267e..b85d2f248fded7e7718fd8748fcce52c1e4c7faa 100644
+index b2a36ff4f27860e3f5866a0f36c796b4e809267e..c53a346ab9d8ae8f3eac607fd7c30b3e83123d84 100644
 --- a/ios/web/js_messaging/origin_filter.mm
 +++ b/ios/web/js_messaging/origin_filter.mm
-@@ -18,6 +18,34 @@ NSArray<NSString*>* GetOriginList(web::OriginFilter filter) {
+@@ -18,6 +18,36 @@ NSArray<NSString*>* GetOriginList(web::OriginFilter filter) {
        return web::provider::GetCobaltOriginList();
      case web::OriginFilter::kGoogleSearch:
        return @[ @"https://www.google.com" ];
@@ -27,6 +27,8 @@ index b2a36ff4f27860e3f5866a0f36c796b4e809267e..b85d2f248fded7e7718fd8748fcce52c
 +        @"https://talk.brave.com",
 +        @"https://talk.bravesoftware.com",
 +        @"https://talk.brave.software",
++        @"https://dev2.talk.brave.software",
++        @"https://dev3.talk.brave.software",
 +      ];
 +    case web::OriginFilter::kBraveAccount:
 +      return @[

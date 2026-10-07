@@ -23,6 +23,7 @@
 #include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
 #include "brave/ios/web/webui/brave_webui_utils.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/web_state.h"
 
@@ -48,7 +49,7 @@ WalletPageUI::WalletPageUI(web::WebUIIOS* web_ui, const GURL& url)
   BraveWebUIIOSDataSource* source = brave::CreateAndAddWebUIDataSource(
       web_ui, url.host(), kBraveWalletPageGenerated, IDR_WALLET_PAGE_HTML);
 
-  source->AddLocalizedStrings(brave_wallet::kLocalizedStrings);
+  source->AddLocalizedStrings(webui::kWalletStrings);
 
   source->AddBoolean("isMobile", true);
   source->AddBoolean("isIOS", true);

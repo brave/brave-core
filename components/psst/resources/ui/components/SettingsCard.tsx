@@ -41,6 +41,11 @@ const SettingsGridBoldText = styled.div`
   font: ${font.default.semibold};
 `
 
+const SettingsGridUrlText = styled.div`
+  color: ${color.text.tertiary};
+  font: ${font.small.regular};
+`
+
 const SettingProgressRing = styled(Ring)`
   --leo-progressring-size: ${spacing.xl};
   padding-right: ${spacing.l};
@@ -68,7 +73,7 @@ const SettingErrorText = styled(SettingText)`
   color: ${color.systemfeedback.errorText};
 `
 
-const DummyIconContainer = styled.div`
+const FaviconContainer = styled.div`
   width: ${spacing['3Xl']};
   height: ${spacing['3Xl']};
   border-radius: ${radius.m};
@@ -78,28 +83,44 @@ const DummyIconContainer = styled.div`
   align-items: center;
   margin-right: ${spacing.l};
 `
+
+const Favicon = styled.img`
+  width: ${spacing.xl};
+  height: ${spacing.xl};
+`
 interface PsstProgressModalState {
   siteName: string
   optionsStatuses: OptionStatus[] | undefined
 }
 
 export interface Props {
-  title: string
+  url: string
   progressModelState: PsstProgressModalState | undefined
   onItemChecked: (uid: string, checked: boolean) => void
 }
 
+const getFaviconSrc = (url: string) => {
+  return `chrome://favicon2?size=64&pageUrl=${encodeURIComponent(url)}&allowGoogleServerFallback=0`
+}
+
 const SettingsCard: React.FC<Props> = ({
-  title,
+  url,
   progressModelState,
   onItemChecked,
 }) => {
   return (
     <SettingGrid>
       <SettingGridHeaderRow>
-        <DummyIconContainer />
+        <FaviconContainer>
+          <Favicon src={getFaviconSrc(url)} />
+        </FaviconContainer>
         <div>
-          <SettingsGridBoldText>{title}</SettingsGridBoldText>
+          <SettingsGridBoldText>
+            {progressModelState?.siteName || url}
+          </SettingsGridBoldText>
+          {progressModelState?.siteName && (
+            <SettingsGridUrlText>{url}</SettingsGridUrlText>
+          )}
         </div>
       </SettingGridHeaderRow>
       {progressModelState

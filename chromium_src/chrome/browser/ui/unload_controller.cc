@@ -9,7 +9,6 @@
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "components/prefs/pref_service.h"
 
@@ -17,7 +16,7 @@ namespace {
 
 // SharedPinnedTabService must get a chance to detach/cache shared pinned tabs
 // before CloseAllTabs() runs, otherwise they close like ordinary tabs.
-bool MaybeHandleSharedPinnedTabsClosing(Browser* browser) {
+bool MaybeHandleSharedPinnedTabsClosing(BrowserWindowInterface* browser) {
   if (!base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs)) {
     return false;
   }

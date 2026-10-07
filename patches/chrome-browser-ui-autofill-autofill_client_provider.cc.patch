@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/autofill/autofill_client_provider.cc b/chrome/browser/ui/autofill/autofill_client_provider.cc
+index bc0114c150bc7ecc3e61786d7ed5fca39ddfa8de..b74ee2c259e847771864a3c4158fea987ca6616a 100644
+--- a/chrome/browser/ui/autofill/autofill_client_provider.cc
++++ b/chrome/browser/ui/autofill/autofill_client_provider.cc
+@@ -51,7 +51,7 @@ void SetSharedPrefForSettingsContentProvider(bool uses_platform_autofill) {
+ AndroidAutofillAvailabilityStatus GetAndroidAutofillAvailabilityStatus(
+     PrefService& prefs) {
+   return static_cast<AndroidAutofillAvailabilityStatus>(
+-      Java_AutofillClientProviderUtils_getAndroidAutofillFrameworkAvailability(
++      Java_BraveAutofillClientProviderUtils_getAndroidAutofillFrameworkAvailability(
+           base::android::AttachCurrentThread(), &prefs));
+ }
+ #endif  // BUILDFLAG(IS_ANDROID)

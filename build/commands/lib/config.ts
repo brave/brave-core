@@ -30,6 +30,7 @@ type UpdateOptions = buildOptions.BuildDirOptions
   & buildOptions.NinjaOptions & {
     build_config?: string | undefined
     gclient_verbose?: boolean | undefined
+    lean_sync?: boolean | undefined
   }
 
 const validTargetOSValues = ['android', 'ios', 'linux', 'mac', 'win'] as const
@@ -59,6 +60,9 @@ export class Config {
   gclientFile: string
   gclientVerbose: boolean
   disableGclientConfigUpdate: boolean
+  gerritMirrorsUser: string | undefined
+  gerritMirrorGitConfig: string
+  leanSync: boolean
   gclientGlobalVars: Record<string, any>
   targetArch: string
   targetEnvironment: string | undefined
@@ -82,7 +86,6 @@ export class Config {
   rbeService: string
   rbeTlsClientAuthCert: string | undefined
   rbeTlsClientAuthKey: string | undefined
-  realRewrapperDir: string
   ignore_compile_failure: boolean
   enable_hangout_services_extension: boolean
   sign_widevine_cert: string
@@ -103,10 +106,7 @@ export class Config {
   braveAndroidKeyPassword: string | undefined
   braveAndroidPkcs11Provider: string
   braveAndroidPkcs11Alias: string
-  nativeRedirectCCDir: string
   useRemoteExec: boolean
-  useSiso: boolean
-  useReclient: boolean
   offline: boolean
   readonly rbeReadOnly: boolean
   use_libfuzzer: boolean
@@ -173,6 +173,13 @@ export class Config {
       ['disable_gclient_config_update'],
       false,
     )
+    this.gerritMirrorsUser =
+      process.env.BRAVE_USE_GERRIT_MIRRORS_USER || undefined
+    this.gerritMirrorGitConfig = path.join(
+      this.braveCoreDir,
+      '.gitconfig_gerrit_mirror_redirect',
+    )
+    this.leanSync = envConfig.getBoolean(['lean_sync'], false)
     this.gclientGlobalVars = envConfig.getMergedObject([
       'gclient',
       'global_vars',
@@ -220,8 +227,6 @@ export class Config {
     this.rbeService = envConfig.getString(['rbe_service'], '')
     this.rbeTlsClientAuthCert = envConfig.getPath(['rbe_tls_client_auth_cert'])
     this.rbeTlsClientAuthKey = envConfig.getPath(['rbe_tls_client_auth_key'])
-    this.realRewrapperDir =
-      process.env.RBE_DIR || path.join(this.srcDir, 'buildtools', 'reclient')
     this.ignore_compile_failure = false
     this.enable_hangout_services_extension = false
     this.sign_widevine_cert = process.env.SIGN_WIDEVINE_CERT || ''
@@ -262,13 +267,7 @@ export class Config {
     ])
     this.braveAndroidPkcs11Provider = ''
     this.braveAndroidPkcs11Alias = ''
-    this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
     this.useRemoteExec = envConfig.getBoolean(['use_remoteexec'], false)
-    this.useSiso = envConfig.getBoolean(['use_siso'], true)
-    this.useReclient = envConfig.getBoolean(
-      ['use_reclient'],
-      this.useRemoteExec && !this.useSiso,
-    )
     this.offline = envConfig.getBoolean(['offline'], false)
     this.rbeReadOnly = envConfig.getBoolean(['rbe_readonly'], false)
     this.use_libfuzzer = false
@@ -299,6 +298,7 @@ export class Config {
             'reapi_instance': 'default',
           }
         : {}),
+      ...(this.is_msan ? { 'checkout_instrumented_libraries': true } : {}),
       ...envConfig.getMergedObject(['projects', 'chrome', 'custom_vars']),
     }
 
@@ -621,6 +621,10 @@ export class Config {
       this.gclientVerbose = options.gclient_verbose
     }
 
+    if (options.lean_sync) {
+      this.leanSync = options.lean_sync
+    }
+
     if (options.ignore_compile_failure) {
       this.ignore_compile_failure = true
     }
@@ -651,7 +655,7 @@ export class Config {
         this.extraNinjaOpts,
         (opts, key, value) => {
           // Workaround siso unable to handle -j if REAPI is not configured.
-          if (key === 'j' && this.useSiso) {
+          if (key === 'j') {
             this.sisoJobsLimit = parseInt(value)
             return
           }
@@ -695,6 +699,14 @@ export class Config {
     gnArgs.target_arch = gnArgs.target_cpu
     this.updateInternal(Object.assign({}, gnArgs, options))
     assert(!isCI)
+  }
+
+  // Points GIT_CONFIG_GLOBAL at the generated mirror git config, so every
+  // process spawned from here on fetches through our Gerrit mirrors. Only
+  // called by sync after generating the file, so the generator never runs with
+  // GIT_CONFIG_GLOBAL pointing at its own output.
+  applyGerritMirrorsGitConfig() {
+    process.env.GIT_CONFIG_GLOBAL = this.gerritMirrorGitConfig
   }
 
   update(options: UpdateOptions) {
@@ -768,8 +780,6 @@ export class Config {
       ['brave', 'script'],
       ['tools', 'grit', 'grit', 'extern'],
       ['brave', 'vendor', 'requests'],
-      ['brave', 'third_party', 'cryptography'],
-      ['brave', 'third_party', 'macholib'],
       ['build'],
       ['third_party', 'depot_tools'],
     ]
@@ -803,7 +813,7 @@ export class Config {
       // Use hermetic toolchain only internally.
       env.USE_BRAVE_HERMETIC_TOOLCHAIN = '1'
       env.DEPOT_TOOLS_WIN_TOOLCHAIN = '1'
-      env.GYP_MSVS_HASH_e66617bc68 = 'e66617bc68'
+      env.GYP_MSVS_HASH_3bfcb536c8 = '3dce9a2ec1'
       env.DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL = `${this.internalDepsUrl}/windows-hermetic-toolchain/`
     }
 
@@ -850,7 +860,6 @@ export class Config {
       const defaultSisoLimits = {
         local: this.sisoJobsLimit,
         remote: this.sisoJobsLimit || kRemoteLimit,
-        rewrap: this.sisoJobsLimit || kRemoteLimit,
         ...this.sisoLimits,
       }
       // Parse SISO_LIMITS from env if set (comma-separated key=value pairs).

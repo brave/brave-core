@@ -23,7 +23,6 @@ void ShowWebcompatReporter(BrowserWindowInterface* browser);
 void ShowBraveRewards(BrowserWindowInterface* browser);
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 void ShowBraveWallet(BrowserWindowInterface* browser);
-void ShowBraveWalletOnboarding(BrowserWindowInterface* browser);
 void ShowBraveWalletTxNotificationUrl(BrowserWindowInterface* browser,
                                       GURL url);
 void ShowBraveWalletAccountCreation(BrowserWindowInterface* browser,

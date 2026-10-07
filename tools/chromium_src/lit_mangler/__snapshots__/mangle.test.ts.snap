@@ -8,12 +8,12 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
    return html\`<!--_html_template_start_-->
  <div class="container">
    <img src="chrome://resources/images/apps_home_empty_238x170.svg">
-     <p>$i18n{appAppearanceLabel}</p>
--    <a href="https://support.google.com/chrome?p=install_web_apps"
--        target="_blank">
-+    <a href="https://support.brave.app/hc/en-us/articles/39077114659597" target="_blank">
-       <cr-button>$i18n{learnToInstall}</cr-button>
-     </a>
+   <p>$i18n{appAppearanceLabel}</p>
+-  <a href="https://support.google.com/chrome?p=install_web_apps"
+-      target="_blank">
++  <a href="https://support.brave.app/hc/en-us/articles/39077114659597" target="_blank">
+     <cr-button>$i18n{learnToInstall}</cr-button>
+   </a>
  </div>
  <!--_html_template_end_-->\`;
 "
@@ -23,14 +23,12 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/app_settings/window_mode_item.html.ts
 +++ gen/chrome/browser/resources/app_settings/preprocessed/window_mode_item.html.ts
-@@ -3,11 +3,16 @@
+@@ -3,9 +3,16 @@
  import type {WindowModeItemElement} from './window_mode_item.js';
  
  export function getHtml(this: WindowModeItemElement) {
    return html\`<!--_html_template_start_-->
--<app-management-toggle-row
--    id="toggle-row"
--    label="\${this.windowModeLabel}"
+-<app-management-toggle-row id="toggle-row" label="\${this.windowModeLabel}"
 -    ?value="\${this.getValue_()}">
 -</app-management-toggle-row>
 +<div ?hidden="\${this.app.hideWindowMode}">
@@ -52,10 +50,10 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/extensions/detail_view.html.ts
 +++ gen/chrome/browser/resources/extensions/preprocessed/detail_view.html.ts
-@@ -345,16 +345,13 @@
-               @change="\${this.onPinnedToToolbarChange_}">
+@@ -368,16 +368,13 @@
              <span>$i18n{itemPinToToolbar}</span>
-           </extensions-toggle-row>\` : ''}
+           </extensions-toggle-row>
+         \` : ''}
          \${this.shouldShowIncognitoOption_() ? html\`
 -          <extensions-toggle-row id="allow-incognito"
 -              ?checked="\${this.data.incognitoAccess.isActive}" class="hr"
@@ -71,7 +69,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
                  $i18n{pendingChangeWarning}
                </div>
              </div>
-           </extensions-toggle-row>\` : ''}
+           </extensions-toggle-row>
 "
 `;
 
@@ -91,7 +89,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
          <div id="source-indicator">
            <div class="source-icon-wrapper" role="img"
                aria-describedby="a11yAssociation"
-@@ -38,20 +37,19 @@
+@@ -39,20 +38,19 @@
        <!--Note: We wrap inspect-views in a div so that the outer div
            doesn't shrink (because it's not display: flex).-->
        <div>
@@ -118,7 +116,22 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        </div>
        \${this.showSevereWarnings() ? html\`
          <div id="warnings">
-@@ -134,15 +132,12 @@
+@@ -141,28 +139,22 @@
+             </div>
+           </div>
+         \` : ''}
+       \` : ''}
+-      <div id="rate-link-container"
+-          ?hidden="\${!this.showOpenReviewPageLink_()}">
+-        <a id="rate-link" is="action-link"
+-            @click="\${this.onOpenReviewPageClick_}"
+-            aria-describedby="a11yAssociation">
++      <div id="rate-link-container" ?hidden="\${!this.showOpenReviewPageLink_()}">
++        <a id="rate-link" is="action-link" @click="\${this.onOpenReviewPageClick_}" aria-describedby="a11yAssociation">
+           $i18n{itemRateExtension}
+           <cr-icon icon="cr:open-in-new"></cr-icon>
+         </a>
+       </div>
      </div>
    </div>
    <div id="button-strip" class="layout-horizontal-center cr-secondary-text">
@@ -136,22 +149,22 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        </cr-button>
        \${this.shouldShowErrorsButton_() ? html\`
          <cr-button id="errors-button"
-@@ -176,20 +171,11 @@
-       <cr-button id="terminated-reload-button" @click="\${this.onReloadClick_}"
+@@ -200,20 +192,11 @@
            aria-describedby="a11yAssociation" class="action-button">
          $i18n{itemReload}
-       </cr-button>\` : ''}
+       </cr-button>
+     \` : ''}
 -    <cr-tooltip-icon id="parentDisabledPermissionsToolTip"
 -        ?hidden="\${!this.data.disableReasons.parentDisabledPermissions}"
 -        tooltip-text="$i18n{parentDisabledPermissions}"
--        icon-class="cr20:kite"
+-        icon-class="cr20:family-link"
 -        icon-aria-label="$i18n{parentDisabledPermissions}">
-+    <cr-tooltip-icon id="parentDisabledPermissionsToolTip" ?hidden="\${!this.data.disableReasons.parentDisabledPermissions}" tooltip-text="$i18n{parentDisabledPermissions}" icon-class="cr20:kite" icon-aria-label="$i18n{parentDisabledPermissions}">
++    <cr-tooltip-icon id="parentDisabledPermissionsToolTip" ?hidden="\${!this.data.disableReasons.parentDisabledPermissions}" tooltip-text="$i18n{parentDisabledPermissions}" icon-class="cr20:family-link" icon-aria-label="$i18n{parentDisabledPermissions}">
      </cr-tooltip-icon>
 -    <cr-toggle id="enableToggle"
 -        aria-label="\${this.getEnableToggleAriaLabel_()}"
--        aria-describedby="a11yAssociation"
--        ?checked="\${this.isEnabled_()}" @change="\${this.onEnableToggleChange_}"
+-        aria-describedby="a11yAssociation" ?checked="\${this.isEnabled_()}"
+-        @change="\${this.onEnableToggleChange_}"
 -        ?disabled="\${!this.isEnableToggleEnabled_()}"
 -        ?hidden="\${!this.showEnableToggle_()}">
 +    <cr-toggle id="enableToggle" aria-label="\${this.getEnableToggleAriaLabel_()}" aria-describedby="a11yAssociation" ?checked="\${this.isEnabled_()}" @change="\${this.onEnableToggleChange_}" ?disabled="\${!this.isEnableToggleEnabled_()}" ?hidden="\${!this.showEnableToggle_()}">
@@ -162,88 +175,13 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
-exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/history/side_bar.html.ts.lit_mangler.ts should match snapshot 1`] = `
-"===================================================================
---- ../chrome/browser/resources/history/side_bar.html.ts
-+++ gen/chrome/browser/resources/history/preprocessed/side_bar.html.ts
-@@ -4,47 +4,46 @@
- 
- export function getHtml(this: HistorySideBarElement) {
-   // clang-format off
-   return html\`<!--_html_template_start_-->
--<cr-menu-selector id="menu" selected="\${this.selectedPage}"
--    @selected-changed="\${this.onSelectorSelectedChanged_}"
--    selectable=".page-item" attr-for-selected="path"
--    @iron-activate="\${this.onMenuIronActivate_}"
--    selected-attribute="selected">
--  <a id="history" role="menuitem" class="page-item cr-nav-menu-item"
--      href="\${this.getHistoryItemHref_()}"
--      path="\${this.getHistoryItemPath_()}"
--      @click="\${this.onItemClick_}">
-+<cr-menu-selector id="menu" selected="\${this.selectedPage}" @selected-changed="\${this.onSelectorSelectedChanged_}" selectable=".page-item" attr-for-selected="path" @iron-activate="\${this.onMenuIronActivate_}" selected-attribute="selected">
-+  <a id="history" role="menuitem" class="page-item cr-nav-menu-item" href="\${this.getHistoryItemHref_()}" path="\${this.getHistoryItemPath_()}" @click="\${this.onItemClick_}">
-     <cr-icon icon="cr:history"></cr-icon>
-     $i18n{historyMenuItem}
-     <cr-ripple></cr-ripple>
-   </a>
--  <a id="syncedTabs" role="menuitem" href="/syncedTabs"
--      class="page-item cr-nav-menu-item"
--      path="syncedTabs" @click="\${this.onItemClick_}">
-+  <a id="syncedTabs" role="menuitem" href="/syncedTabs" class="page-item cr-nav-menu-item" path="syncedTabs" @click="\${this.onItemClick_}">
-     <cr-icon icon="cr:phonelink"></cr-icon>
-     $i18n{openTabsMenuItem}
-     <cr-ripple></cr-ripple>
-   </a>
--  <a role="menuitem" id="clear-browsing-data"
--      class="cr-nav-menu-item"
--      href="chrome://settings/clearBrowserData"
--      @click="\${this.onClearBrowsingDataClick_}"
--      ?disabled="\${this.guestSession_}"
--      title="$i18n{clearBrowsingDataLinkTooltip}">
-+  <a role="menuitem" id="clear-browsing-data" class="cr-nav-menu-item" href="chrome://settings/clearBrowserData" @click="\${this.onClearBrowsingDataClick_}" ?disabled="\${this.guestSession_}" title="$i18n{clearBrowsingDataLinkTooltip}">
-     <cr-icon icon="cr:delete"></cr-icon>
-     $i18n{clearBrowsingData}
-     <div class="cr-icon icon-external"></div>
-     <cr-ripple></cr-ripple>
-   </a>
- </cr-menu-selector>
--<div id="spacer"></div>
-+<div id="brave-history-embeddings-toggle" ?hidden="\${!this.braveHistoryEmbeddingsFeatureEnabled}">
-+         <div class="text">
-+           <div class="label">$i18n{braveHistoryEmbeddingsToggleLabel}</div>
-+           <div class="description">
-+             $i18n{braveHistoryEmbeddingsToggleDescription}
-+           </div>
-+         </div>
-+         <cr-toggle ?checked="\${this.braveHistoryEmbeddingsEnabled}" @change="\${this.onBraveHistoryEmbeddingsToggleChange}">
-+         </cr-toggle>
-+       </div>
-+       <div id="brave-history-embeddings-restart" ?hidden="\${!this.braveHistoryEmbeddingsFeatureEnabled ||
-+                       !this.braveHistoryEmbeddingsNeedsRestart}">
-+         <cr-button @click="\${this.onBraveHistoryEmbeddingsRelaunchClick}">
-+           $i18n{braveHistoryEmbeddingsRelaunchButtonLabel}
-+         </cr-button>
-+       </div><div id="spacer"></div>
- <div id="footer" ?hidden="\${!this.showFooter_}">
-   <div class="separator"></div>
-   <managed-footnote></managed-footnote>
--  <div id="google-account-footer"
--      ?hidden="\${!this.showGoogleAccountFooter_}"
--      @click="\${this.onGoogleAccountFooterClick_}">
-+  <div id="google-account-footer" ?hidden="\${!this.showGoogleAccountFooter_}" @click="\${this.onGoogleAccountFooterClick_}">
-     <cr-icon icon="cr:info-outline"></cr-icon>
-     <div ?hidden="\${!this.showGMAOnly_}">$i18nRaw{sidebarFooterGMAOnly}</div>
-     <div ?hidden="\${!this.showGAAOnly_}">$i18nRaw{sidebarFooterGAAOnly}</div>
-     <div ?hidden="\${!this.showGMAAndGAA_}">$i18nRaw{sidebarFooterGMAAndGAA}</div>
-"
-`;
-
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/history/synced_device_manager.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/history/synced_device_manager.html.ts
 +++ gen/chrome/browser/resources/history/preprocessed/synced_device_manager.html.ts
-@@ -1,16 +1,15 @@
+@@ -1,17 +1,16 @@
  import {html} from '//resources/lit/v3_0/lit.rollup.js';
+ 
 -// <if expr="not is_chromeos">
 +// 
  import {HistorySignInState} from './constants.js';
@@ -259,11 +197,11 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -    ?hidden="\${!this.syncedDevices_.length}">
 +<div id="synced-device-list" class="history-cards" ?hidden="\${!this.syncedDevices_.length}">
    \${this.syncedDevices_.map((syncedDevice, index) => html\`
-     <history-synced-device-card
-         .device="\${syncedDevice.device}"
+     <history-synced-device-card .device="\${syncedDevice.device}"
          .lastUpdateTime="\${syncedDevice.lastUpdateTime}"
-@@ -23,26 +22,23 @@
-         data-index="\${index}">
+         .tabs="\${syncedDevice.tabs}"
+@@ -21,26 +20,23 @@
+         @opened-changed="\${this.onCardOpenedChanged_}" data-index="\${index}">
      </history-synced-device-card>
    \`)}
  </div>
@@ -274,10 +212,10 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  </div>
  
 -<div id="signInGuide"
--    ?hidden="\${!this.showSignInGuide_()
--      || this.replaceSyncPromosWithSignInPromos_}">
-+<div id="signInGuide" ?hidden="\${!this.showSignInGuide_()
-+      || this.replaceSyncPromosWithSignInPromos_}" style="display: none">
+-    ?hidden="\${
+-        !this.showSignInGuide_() || this.replaceSyncPromosWithSignInPromos_}">
++<div id="signInGuide" ?hidden="\${
++        !this.showSignInGuide_() || this.replaceSyncPromosWithSignInPromos_}" style="display: none">
    <div id="sync-promo-illustration"></div>
    <div id="turn-on-sync-promo">$i18n{turnOnSyncPromo}</div>
    <div id="turn-on-sync-promo-desc">$i18n{turnOnSyncPromoDesc}</div>
@@ -290,35 +228,25 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  
 -<if expr="not is_chromeos">
 +
-   \${this.shouldShowHistorySyncOptIn_() ? html\`
-     <div id="history-sync-optin" class="history-sync-optin">
-       \${this.isSignInState_(HistorySignInState.SIGNED_OUT)
-         || this.isSignInState_(HistorySignInState.WEB_ONLY_SIGNED_IN) ? html\`
-@@ -120,11 +116,11 @@
-             $i18n{turnOnSyncHistoryButton}
-           </cr-button>\`}
-     </div>
-   \` : ''}
+ \${this.shouldShowHistorySyncOptIn_() ? html\`
+   <div id="history-sync-optin" class="history-sync-optin">
+     \${this.isSignInState_(HistorySignInState.SIGNED_OUT) ||
+             this.isSignInState_(HistorySignInState.WEB_ONLY_SIGNED_IN) ?
+@@ -124,12 +120,11 @@
+       </cr-button>
+     \`}
+   </div>
+ \` : ''}
 -</if>
  
--<cr-lazy-render-lit id="menu" .template='\${() => html\`
+-<cr-lazy-render-lit id="menu"
+-    .template="\${() => html\`
 +
 +<cr-lazy-render-lit id="menu" .template="\${() => html\`
-   <cr-action-menu role-description="$i18n{menu}">
-     <button id="menuOpenButton" class="dropdown-item"
-         @click="\${this.onOpenAllClick_}">
-       $i18n{openAll}
-@@ -133,9 +129,9 @@
-         @click="\${this.onDeleteSessionClick_}">
-       $i18n{deleteSession}
-     </button>
-   </cr-action-menu>
--\`}'>
-+\`}">
- </cr-lazy-render-lit>
- <!--_html_template_end_-->\`;
-   // clang-format on
- }
+       <cr-action-menu role-description="$i18n{menu}">
+         <button id="menuOpenButton" class="dropdown-item"
+             @click="\${this.onOpenAllClick_}">
+           $i18n{openAll}
 "
 `;
 
@@ -854,6 +782,135 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/clear_browsing_data_dialog/clear_browsing_data_dialog.html.ts
+@@ -3,18 +3,18 @@
+ import type {SettingsClearBrowsingDataDialogElement} from './clear_browsing_data_dialog.js';
+ 
+ export function getHtml(this: SettingsClearBrowsingDataDialogElement) {
+   return html\`<!--_html_template_start_-->
+-<cr-dialog id="deleteBrowsingDataDialog" close-text="$i18n{close}"
+-    show-on-attach ignore-popstate ignore-enter-key
+-    ?hidden="\${this.showOtherGoogleDataDialog_}">
+-  <div slot="title" class="dialog-title">$i18n{clearBrowsingData}</div>
+-  <div slot="header">
+-    <settings-clear-browsing-data-time-picker id="timePicker"
+-        @selected-time-period-change="\${this.onSelectedTimePeriodChange_}">
++<cr-dialog id="deleteBrowsingDataDialog" close-text="$i18n{close}" show-on-attach="" ignore-popstate="" ignore-enter-key="" ?hidden="\${this.showOtherGoogleDataDialog_}">
++  <div slot="title" class="dialog-title" hidden="">$i18n{clearBrowsingData}</div><div slot="header">
++       \${this.renderBraveTabs_()}
++       <div id="tabsDivider"></div>
++     </div>
++  <div ?hidden="\${!(this.isDeleteNowTabSelected_())}" slot="header">
++    <settings-clear-browsing-data-time-picker id="timePicker" @selected-time-period-change="\${this.onSelectedTimePeriodChange_}">
+     </settings-clear-browsing-data-time-picker>
+   </div>
+-  <div slot="body">
++  <div ?hidden="\${!(this.isDeleteNowTabSelected_())}" slot="body">
+     <div id="checkboxContainer">
+       \${this.expandedBrowsingDataTypeOptionsList_.map(item => html\`
+         <settings-checkbox pref-key="\${item.prefKey}" no-set-pref
+             .subLabelHtml="\${item.subLabel || ''}"
+@@ -35,39 +35,39 @@
+           \`)}
+         \` : ''}
+       </div>
+     </div>
+-    <cr-button id="showMoreButton" @click="\${this.onShowMoreClick_}"
+-        ?hidden="\${this.shouldHideShowMoreButton_()}">
+-      $i18n{clearBrowsingDataShowMore}
+-      <cr-icon icon="cr:keyboard-arrow-down" aria-hidden="true"
+-          role="presentation">
+-      </cr-icon>
+-    </cr-button>
+-    <cr-link-row id="manageOtherGoogleDataRow"
+-        label="\${this.computeOtherGoogleDataRowLabel_()}"
+-        sub-label="\${this.computeOtherGoogleDataRowSubLabel_()}"
+-        @click="\${this.onManageOtherGoogleDataRowClick_}"
+-        role-description="$i18n{subpageArrowRoleDescription}">
+-    </cr-link-row>
+-  </div>
+-  <div slot="button-container" class="row-aligned">
+-<if expr="not is_chromeos">
++    
++    
++  </div><div slot="body" id="onExitBody" ?hidden="\${!this.isOnExitTabSelected_()}">
++       <settings-brave-clear-browsing-data-on-exit-page id="onExitTab" @clear-data-on-exit-page-change="\${this.onClearDataOnExitPageChange_}">
++       </settings-brave-clear-browsing-data-on-exit-page>
++     </div>
++  \${this.showBraveDataOptions_ ? html\`
++       <div slot="body" id="braveDataOptions">
++         <a id="clearBraveAdsData" href="chrome://settings/privacy" ?hidden="\${this.braveRewardsEnabled_}" @click="\${this.onClearBraveAdsDataClick_}">
++           <span id="clearBraveAdsDataLabel">$i18n{clearBraveAdsData}</span>
++         </a>
++         <a id="resetBraveRewardsData" href="chrome://rewards/#reset" ?hidden="\${!this.braveRewardsEnabled_}">
++           <leo-icon name="product-bat-outline"></leo-icon>
++           <span id="resetBraveRewardsDataLabel">$i18n{resetRewardsData}</span>
++           <leo-icon name="launch"></leo-icon>
++         </a>
++       </div>
++     \` : ''}<div slot="button-container" class="row-aligned">
++
+     <settings-clear-browsing-data-account-indicator>
+     </settings-clear-browsing-data-account-indicator>
+-</if>
+-    <div id="spinner" class="spinner"
+-        ?hidden="\${!this.isDeletionInProgress_}"></div>
+-    <cr-button id="cancelButton" class="cancel-button"
+-        @click="\${this.onCancelClick_}"
+-        ?disabled="\${this.isDeletionInProgress_}" autofocus>
++
++    <div id="spinner" class="spinner" ?hidden="\${!this.isDeletionInProgress_}"></div>
++    <cr-button id="cancelButton" class="cancel-button" @click="\${this.onCancelClick_}" ?disabled="\${this.isDeletionInProgress_}" autofocus="">
+       $i18n{cancel}
+     </cr-button>
+-    <cr-button id="deleteButton" class="action-button"
+-        @click="\${this.onDeleteBrowsingDataClick_}"
+-        ?disabled="\${this.shouldDisableDeleteButton_()}">
++    <cr-button ?hidden="\${!(this.isDeleteNowTabSelected_())}" id="deleteButton" class="action-button" @click="\${this.onDeleteBrowsingDataClick_}" ?disabled="\${this.shouldDisableDeleteButton_()}">
+       \${this.computeDeleteButtonLabel_()}
+-    </cr-button>
++    </cr-button><cr-button id="saveOnExitSettingsConfirm" class="action-button" ?hidden="\${!this.isOnExitTabSelected_()}" ?disabled="\${!this.onExitSettingsModified_}" @click="\${this.onSaveOnExitSettingsClick_}">
++       $i18n{save}
++     </cr-button>
+     <!-- The alert must be inside the dialog for it to be read while the
+          dialog is open. -->
+     <div id="deletingDataAlert" role="alert">
+       \${this.deletingDataAlertString_}
+"
+`;
+
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_time_picker.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_time_picker.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/clear_browsing_data_dialog/clear_browsing_data_time_picker.html.ts
+@@ -5,17 +5,13 @@
+ export function getHtml(this: SettingsClearBrowsingDataTimePickerElement) {
+   return html\`<!--_html_template_start_-->
+ <div class="row" id="timePicker">
+   \${this.expandedOptionList_.map(item => html\`
+-    <cr-chip class="time-period-chip"
+-        ?selected="\${this.isTimePeriodSelected_(item.value)}"
+-        data-time-period="\${item.value}"
+-        @click="\${this.onTimePeriodClick_}">
+-      <cr-icon icon="cr:check"
+-          ?hidden="\${!this.isTimePeriodSelected_(item.value)}">
+-      </cr-icon>
++    <cr-chip class="time-period-chip" ?selected="\${this.isTimePeriodSelected_(item.value)}" data-time-period="\${item.value}" @click="\${this.onTimePeriodClick_}">
++      
+       \${item.label}
+-    </cr-chip>
++    <cr-icon icon="check-circle-outline" ?hidden="\${!this.isTimePeriodSelected_(item.value)}">
++      </cr-icon></cr-chip>
+   \`)}
+   <cr-chip id="moreButton" ?hidden="\${!this.moreOptionList_.length}"
+       @click="\${this.onMoreTimePeriodsButtonClick_}">
+     $i18n{clearBrowsingDataMore}
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/default_browser_page/default_browser_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/settings/default_browser_page/default_browser_page.html.ts
@@ -917,6 +974,345 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  <!--_html_template_end_-->\`;
    // clang-format on
  }
+"
+`;
+
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/people_page/people_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/people_page/people_page.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/people_page/people_page.html.ts
+@@ -5,120 +5,39 @@
+ import type {SettingsPeoplePageElement} from './people_page.js';
+ 
+ export function getHtml(this: SettingsPeoplePageElement) {
+   return html\`<!--_html_template_start_-->
+-<settings-section page-title="$i18n{peoplePageTitle}">
++
+       <div>
+ 
+-<if expr="not is_chromeos">
++
+         \${this.shouldShowSyncAccountControl_() ? html\`
+-          <settings-sync-account-control
+-              .syncStatus="\${this.syncStatus!}"
+-              promo-label-with-account="$i18n{peopleSignInPrompt}"
+-              promo-label-with-no-account="$i18n{peopleSignInPrompt}"
+-              promo-secondary-label-with-account=
+-                  "$i18n{peopleSignInPromptSecondaryWithAccount}"
+-              promo-secondary-label-with-no-account=
+-                  "$i18n{peopleSignInPromptSecondaryWithNoAccount}"
+-              .accessPoint="\${ChromeSigninAccessPoint.SETTINGS}">
+-          </settings-sync-account-control>
++          
+         \` : ''}
+ 
+         \${this.shouldLinkToProfileRow_() ? html\`
+-          <div id="profile-row" class="cr-row first two-line"
+-              ?actionable="\${this.isProfileActionable_}"
+-              @click="\${this.onProfileClick_}">
+-            \${this.syncStatus ? html\`
+-              <div id="profile-icon"
+-                  style="background-image: \${this.getIconImageSet_(
+-                      this.profileIconUrl_)}">
+-              </div>
+-              <div class="flex cr-row-gap cr-padded-text text-elide">
+-                <span id="profile-name">\${this.profileName_}</span>
+-              </div>
+-              <cr-icon-button class="subpage-arrow"
+-                  aria-label="$i18n{editPerson}"
+-                  aria-describedby="profile-name"
+-                  aria-roledescription="$i18n{subpageArrowRoleDescription}">
+-              </cr-icon-button>
+-            \` : ''}
+-          </div>
++          
+         \` : ''}
+-</if>
+ 
+-<if expr="is_chromeos">
+-        \${!this.shouldLinkToAccountSettingsPage_() ? html\`
+-          <div id="profile-row" class="cr-row first two-line"
+-              ?actionable="\${this.isProfileActionable_}"
+-              @click="\${this.onProfileClick_}">
+-            \${this.syncStatus ? html\`
+-              <div id="profile-icon"
+-                  style="background-image: \${this.getIconImageSet_(
+-                      this.profileIconUrl_)}">
+-              </div>
+-              <div class="flex cr-row-gap cr-padded-text text-elide">
+-                <span id="profile-name">\${this.profileName_}</span>
+-                <div class="secondary" ?hidden="\${!this.isSyncing_()}">
+-                  \${this.syncStatus.signedInUsername}
+-                </div>
+-              </div>
+-              <cr-icon-button class="icon-external"
+-                  id="profile-subpage-arrow"
+-                  ?hidden="\${!this.isProfileActionable_}"
+-                  aria-label="$i18n{accountManagerSubMenuLabel}"
+-                  aria-describedby="profile-name">
+-              </cr-icon-button>
+-            \` : ''}
+-          </div>
+-        \` : ''}
+-</if>
+ 
++
++
+         <!-- Shared Elements -->
+-        <cr-link-row id="account-subpage-row" class="cr-row first"
+-            @click="\${this.onAccountClick_}"
+-            .label="\${this.primaryAccountName_}"
+-            .subLabel="\${this.getAccountRowSubtitle_()}"
+-            role-description="$i18n{subpageArrowRoleDescription}"
+-            button-aria-description="$i18n{accountPageTitle}"
+-            ?hidden="\${!this.shouldLinkToAccountSettingsPage_()}">
+-          <div id="profile-icon"
+-              style="background-image: \${this.getIconImageSet_(
+-                  this.primaryAccountIconUrl_)}">
+-          </div>
+-        </cr-link-row>
++        
+ 
+-        <cr-link-row id="sync-setup"
+-            label="$i18n{syncAndNonPersonalizedServices}"
+-            .subLabel="\${this.getSyncAndNonPersonalizedServicesSubtext_()}"
+-            @click="\${this.onSyncClick_}"
+-            role-description="$i18n{subpageArrowRoleDescription}"
+-            ?hidden="\${this.shouldHideSyncSetupLinkRow_()}">
+-        </cr-link-row>
++        
+ 
+-        <cr-link-row id="google-services"
+-            label="$i18n{googleServicesPageTitle}"
+-            @click="\${this.onGoogleServicesClick_}"
+-            role-description="$i18n{subpageArrowRoleDescription}"
+-            ?hidden="\${!this.shouldHideSyncSetupLinkRow_()}">
+-        </cr-link-row>
++        
+ 
+-<if expr="not is_chromeos">
++
+         \${this.signinAllowed_ ? html\`
+-          <cr-link-row id="manage-google-account"
+-              label="$i18n{manageGoogleAccount}"
+-              ?hidden="\${!this.shouldShowGoogleAccount_}"
+-              @click="\${this.onGoogleAccountClick_}" external>
+-          </cr-link-row>
++          
+ 
+-          <cr-link-row id="edit-profile"
+-              label="$i18n{profileNameAndPicture}"
+-              @click="\${this.onProfileClick_}">
++          <cr-link-row id="edit-profile" label="$i18n{profileNameAndPicture}" @click="\${this.onProfileClick_}" class="first">
+           </cr-link-row>
+         \` : ''}
+ 
+-        <cr-link-row id="importDataDialogTrigger"
+-            label="$i18n{importTitle}"
+-            @click="\${this.onImportDataClick_}">
++        <cr-link-row id="importDataDialogTrigger" label="$i18n{importTitle}" @click="\${this.onImportDataClick_}">
+         </cr-link-row>
+ 
+         \${this.isDasherlessProfile_ ? html\`
+           <div id="sync-not-allowed" class="cr-row continuation">
+@@ -127,14 +46,14 @@
+               $i18n{syncUnavailableForNonGoogleAccount}
+             </div>
+           </div>
+         \` : ''}
+-</if>
+ 
++
+       </div>
+-    </settings-section>
++    
+ 
+-<if expr="not is_chromeos">
++
+     \${this.showSignoutDialog_ ? html\`
+       <settings-signout-dialog .syncStatus="\${this.syncStatus}"
+           @close="\${this.onDisconnectDialogClose_}">
+       </settings-signout-dialog>
+@@ -144,9 +63,9 @@
+       <settings-import-data-dialog
+           @close="\${this.onImportDataDialogClose_}">
+       </settings-import-data-dialog>
+     \` : ''}
+-</if>
++
+     <cr-toast duration="3000" id="toast">
+       <span>$i18n{syncSettingsSavedToast}</span>
+     </cr-toast>
+ <!--_html_template_end_-->\`;
+"
+`;
+
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/performance_page/memory_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/performance_page/memory_page.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/performance_page/memory_page.html.ts
+@@ -3,47 +3,27 @@
+ import {MemorySaverModeAggressiveness} from './performance_metrics_proxy.js';
+ 
+ export function getHtml(this: SettingsMemoryPageElement) {
+   return html\`<!--_html_template_start_-->
+-<settings-section
+-    ?show-send-feedback-button="\${this.showSendFeedbackButton_()}"
+-    @send-feedback="\${this.onSendFeedback_}"
+-    page-title="$i18n{memoryPageTitle}">
+-  <settings-toggle-button id="toggleButton" @change="\${this.onMemorySaverModeChange_}"
+-      pref-key="performance_tuning.high_efficiency_mode.state"
+-      label="$i18n{memorySaverModeLabel}"
+-      sub-label-with-link="$i18n{memorySaverModeDescription}"
+-      @sub-label-link-clicked="\${this.onMemorySaverSubLabelLinkClicked_}"
+-      .numericUncheckedValues="\${this.numericUncheckedValues_}"
+-      .numericCheckedValue="\${this.numericCheckedValue_}">
++<settings-section ?show-send-feedback-button="\${this.showSendFeedbackButton_()}" @send-feedback="\${this.onSendFeedback_}" page-title="$i18n{memoryPageTitle}"><tab-discard-exception-list id="exceptionList">
++     </tab-discard-exception-list>
++     <div class="hr"></div>
++  <settings-toggle-button id="toggleButton" @change="\${this.onMemorySaverModeChange_}" pref-key="performance_tuning.high_efficiency_mode.state" label="$i18n{memorySaverModeLabel}" sub-label-with-link="$i18n{memorySaverModeDescription}" @sub-label-link-clicked="\${this.onMemorySaverSubLabelLinkClicked_}" .numericUncheckedValues="\${this.numericUncheckedValues_}" .numericCheckedValue="\${this.numericCheckedValue_}">
+   </settings-toggle-button>
+-  <cr-collapse id="radioGroupCollapse"
+-      ?opened="\${this.isMemorySaverModeEnabled_()}">
++  <cr-collapse id="radioGroupCollapse" ?opened="\${this.isMemorySaverModeEnabled_()}">
+     <div class="cr-row continuation memory-saver-radio-group">
+-      <settings-radio-group id="radioGroup"
+-          @change="\${this.onMemorySaverModeAggressivenessChange_}"
+-          pref-key="performance_tuning.high_efficiency_mode.aggressiveness"
+-          group-aria-label="$i18n{memorySaverModeRadioGroupAriaLabel}">
+-        <controlled-radio-button id="conservativeButton"
+-            label="$i18n{memorySaverModeConservativeLabel}"
+-            name="\${MemorySaverModeAggressiveness.CONSERVATIVE}"
+-            pref-key="performance_tuning.high_efficiency_mode.aggressiveness">
++      <settings-radio-group id="radioGroup" @change="\${this.onMemorySaverModeAggressivenessChange_}" pref-key="performance_tuning.high_efficiency_mode.aggressiveness" group-aria-label="$i18n{memorySaverModeRadioGroupAriaLabel}">
++        <controlled-radio-button id="conservativeButton" label="$i18n{memorySaverModeConservativeLabel}" name="\${MemorySaverModeAggressiveness.CONSERVATIVE}" pref-key="performance_tuning.high_efficiency_mode.aggressiveness">
+           <div class="cr-secondary-text">
+             $i18n{memorySaverModeConservativeDescription}
+           </div>
+         </controlled-radio-button>
+-        <controlled-radio-button id="mediumButton"
+-            label="$i18n{memorySaverModeMediumLabel}"
+-            name="\${MemorySaverModeAggressiveness.MEDIUM}"
+-            pref-key="performance_tuning.high_efficiency_mode.aggressiveness">
++        <controlled-radio-button id="mediumButton" label="$i18n{memorySaverModeMediumLabel}" name="\${MemorySaverModeAggressiveness.MEDIUM}" pref-key="performance_tuning.high_efficiency_mode.aggressiveness">
+           <div class="cr-secondary-text">
+             $i18n{memorySaverModeMediumDescription}
+           </div>
+         </controlled-radio-button>
+-        <controlled-radio-button id="aggressiveButton"
+-            label="$i18n{memorySaverModeAggressiveLabel}"
+-            name="\${MemorySaverModeAggressiveness.AGGRESSIVE}"
+-            pref-key="performance_tuning.high_efficiency_mode.aggressiveness">
++        <controlled-radio-button id="aggressiveButton" label="$i18n{memorySaverModeAggressiveLabel}" name="\${MemorySaverModeAggressiveness.AGGRESSIVE}" pref-key="performance_tuning.high_efficiency_mode.aggressiveness">
+           <div class="cr-secondary-text">
+             $i18n{memorySaverModeAggressiveDescription}
+           </div>
+         </controlled-radio-button>
+"
+`;
+
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/safety_hub/safety_hub_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/safety_hub/safety_hub_page.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/safety_hub/safety_hub_page.html.ts
+@@ -46,29 +46,20 @@
+     <settings-safety-hub-extensions-module class="module box">
+     </settings-safety-hub-extensions-module>
+   \` : ''}
+   \${this.shouldShowNoRecommendationsState_() ? html\`
+-    <settings-safety-hub-module id="emptyStateModule" class="module box"
+-        header="$i18n{safetyHubEmptyStateModuleHeader}"
+-        subheader="$i18n{safetyHubEmptyStateModuleSubheader}"
+-        header-icon="cr:check">
++    <settings-safety-hub-module id="emptyStateModule" class="module box" header="$i18n{safetyHubEmptyStateModuleHeader}" subheader="$i18n{safetyHubEmptyStateModuleSubheader}" header-icon="shield-done-filled">
+     </settings-safety-hub-module>
+-    <settings-safety-hub-module
+-        id="userEducationModule"
+-        @sh-module-item-link-click="\${this.onShModuleItemLinkClick_}"
+-        class="module box"
+-        header="$i18n{safetyHubUserEduModuleHeader}"
+-        header-icon="settings20:lightbulb-2"
+-        .sites="\${this.userEducationItemList_}">
++    <settings-safety-hub-module id="userEducationModule" @sh-module-item-link-click="\${this.onShModuleItemLinkClick_}" class="module box" header="$i18n{safetyHubUserEduModuleHeader}" header-icon="settings20:lightbulb-2" .sites="\${this.userEducationItemList_}">
+     </settings-safety-hub-module>
+   \` : ''}
+-<if expr="not is_chromeos">
++
+   \${this.shouldShowRelaunchDialog ? html\`
+     <relaunch-confirmation-dialog
+         .restartType="\${RestartType.RELAUNCH}"
+         @close="\${this.onRelaunchDialogClose}" is-version-update>
+     </relaunch-confirmation-dialog>
+   \` : ''}
+-</if>
++
+ </settings-subpage>
+ <!--_html_template_end_-->\`;
+ }
+"
+`;
+
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/search_page/search_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/search_page/search_page.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/search_page/search_page.html.ts
+@@ -7,16 +7,11 @@
+ <settings-section page-title="\${this.searchPageTitle_}">
+   <div route-path="default">
+     <!-- Omnibox search engine -->
+     <div class="cr-row first">
+-      <div class="default-search-engine flex">
+-        \${this.searchPageTitle_}
+-        <div class="secondary">
++      <div class="default-search-engine flex">$i18n{normalSearchEnginesSiteSearchEngineHeading}<div class="secondary">
+           $i18n{searchEngineChoiceEntryPointSubtitle}
+-          <a href="$i18n{searchExplanationLearnMoreURL}"
+-              aria-description="$i18n{opensInNewTab}"
+-              aria-label="$i18n{searchExplanationLearnMoreA11yLabel}"
+-              target="_blank">
++          <a href="$i18n{searchExplanationLearnMoreURL}" aria-description="$i18n{opensInNewTab}" aria-label="$i18n{searchExplanationLearnMoreA11yLabel}" target="_blank">
+             $i18n{learnMore}
+           </a>
+         </div>
+         <div class="cr-row first">
+@@ -27,21 +22,15 @@
+             <cr-policy-pref-indicator
+                 .pref="\${this.defaultSearchProviderDataPref_}">
+             </cr-policy-pref-indicator>
+           \` : ''}
+-          <cr-button id="openDialogButton"
+-              @click="\${this.onOpenDialogButtonClick_}"
+-              ?disabled="\${this.isDefaultSearchEngineEnforced_()}">
++          <cr-button id="openDialogButton" @click="\${this.onOpenDialogButtonClick_}" ?disabled="\${this.isDefaultSearchEngineEnforced_()}">
+             $i18n{searchEnginesChange}
+           </cr-button>
+         </div>
+       </div>
+       \${this.showSearchEngineListDialog_ ? html\`
+-        <settings-search-engine-list-dialog
+-            .searchEngines="\${this.searchEngines_}"
+-            @close="\${this.onSearchEngineListDialogClose_}"
+-            @search-engine-changed="\${this.onSearchEngineChanged_}">
+-        </settings-search-engine-list-dialog>
++        <settings-normal-search-engine-list-dialog .searchEngines="\${this.searchEngines_}" @close="\${this.onSearchEngineListDialogClose_}" @search-engine-changed="\${this.onSearchEngineChanged_}"></settings-normal-search-engine-list-dialog>
+       \` : ''}
+       <cr-toast id="confirmationToast" duration="10000">
+         <div>\${this.confirmationToastLabel_}</div>
+       </cr-toast>
+@@ -75,12 +64,9 @@
+     \` : ''}
+ 
+     \${!this.searchSettingsUpdateEnabled_ ? html\`
+       <!-- Manage search engines -->
+-      <cr-link-row class="hr" id="enginesSubpageTrigger"
+-          label="$i18n{searchEnginesManageSiteSearch}"
+-          @click="\${this.onManageSearchEnginesClick_}"
+-          role-description="$i18n{subpageArrowRoleDescription}"></cr-link-row>
++      \${this.bravePrefs_ ? html\`<settings-brave-search-page .prefs="\${this.bravePrefs_}" @prefs-changed="\${this.onBravePrefsChanged_}"></settings-brave-search-page>\` : ''}<cr-link-row class="hr" id="enginesSubpageTrigger" label="$i18n{searchEnginesManageSiteSearch}" @click="\${this.onManageSearchEnginesClick_}" role-description="$i18n{subpageArrowRoleDescription}"></cr-link-row>
+     \` : ''}
+   </div>
+ </settings-section>
+ <!--_html_template_end_-->\`;
 "
 `;
 
@@ -1277,15 +1673,17 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/side_panel/customize_chrome/appearance.html.ts
 +++ gen/chrome/browser/resources/side_panel/customize_chrome/preprocessed/appearance.html.ts
-@@ -4,80 +4,52 @@
+@@ -4,82 +4,52 @@
  
  export function getHtml(this: AppearanceElement) {
    // clang-format off
    return html\`<!--_html_template_start_-->
 -<customize-chrome-theme-snapshot id="themeSnapshot"
+-    role="button" tabindex="0"
+-    @keydown="\${this.onThemeSnapshotKeydown_}"
 -    @edit-theme-click="\${this.onEditThemeClick_}"
 -    ?hidden="\${!this.showThemeSnapshot_}">
-+<customize-chrome-theme-snapshot id="themeSnapshot" @edit-theme-click="\${this.onEditThemeClick_}" ?hidden="\${!this.showThemeSnapshot_}" style="display: none">
++<customize-chrome-theme-snapshot id="themeSnapshot" role="button" tabindex="0" @keydown="\${this.onThemeSnapshotKeydown_}" @edit-theme-click="\${this.onEditThemeClick_}" ?hidden="\${!this.showThemeSnapshot_}" style="display: none">
  </customize-chrome-theme-snapshot>
 -<customize-chrome-hover-button id="thirdPartyThemeLinkButton"
 -    class="link-out-button theme-button"
@@ -1448,6 +1846,49 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 +
  <!--_html_template_end_-->\`;
  }
+"
+`;
+
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/signin/profile_customization/profile_customization_app.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/signin/profile_customization/profile_customization_app.html.ts
++++ gen/chrome/browser/resources/signin/preprocessed/profile_customization/profile_customization_app.html.ts
+@@ -86,27 +86,25 @@
+ 
+   \${this.isLocalProfileCreation_ ? html\`
+     <div id="selectAvatarDialog" slot="view">
+       <div class="select-avatar-header">
+-        <cr-icon-button iron-icon="cr:arrow-back" id="selectAvatarBackButton"
+-            title="$i18n{profileCustomizationAvatarSelectionBackButtonLabel}"
+-            aria-label="$i18n{profileCustomizationAvatarSelectionBackButtonLabel}"
+-            @click="\${this.onSelectAvatarBackClick_}">
++        <cr-icon-button iron-icon="cr:arrow-back" id="selectAvatarBackButton" title="$i18n{profileCustomizationAvatarSelectionBackButtonLabel}" aria-label="$i18n{profileCustomizationAvatarSelectionBackButtonLabel}" @click="\${this.onSelectAvatarBackClick_}">
+         </cr-icon-button>
+         <div class="select-avatar-title">
+           $i18n{profileCustomizationAvatarSelectionTitle}
+         </div>
+       </div>
+       <div id="selectAvatarWrapper" class="custom-scrollbar">
+-        <cr-profile-avatar-selector .avatars="\${this.availableIcons_}"
+-            .selectedAvatar="\${this.selectedAvatar_}"
+-            @selected-avatar-changed="\${this.onSelectedAvatarChanged_}"
+-            columns="5">
++        
++      \${this.isCustomProfileImageEnabled_() ? html\`
++        <br-custom-profile-image-row hide-title="">
++        </br-custom-profile-image-row>
++      \` : nothing}
++    <cr-profile-avatar-selector .avatars="\${this.availableIcons_}" .selectedAvatar="\${this.selectedAvatar_}" @selected-avatar-changed="\${this.onSelectedAvatarChanged_}" columns="5">
+         </cr-profile-avatar-selector>
+       </div>
+       <div class="action-container">
+-        <cr-button id="selectAvatarConfirmButton" class="action-button"
+-            @click="\${this.onSelectAvatarConfirmClick_}">
++        <cr-button id="selectAvatarConfirmButton" class="action-button" @click="\${this.onSelectAvatarConfirmClick_}">
+           $i18n{profileCustomizationDoneLabel}
+         </cr-button>
+       </div>
+     </div>
 "
 `;
 

@@ -227,7 +227,7 @@
 "vpn.serverTitle" = "%ld개의 서버";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Brave VPN으로 모든 앱을 보호하세요. 하나의 요금제로 최대 장치 10대를 보호하세요.";
+"vpn.settingHeaderBody" = "콘텐츠를 원하는 방식으로 스트리밍하세요. 1개의 구독으로 10개 기기의 모든 앱을 보호하세요.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "기술 지원팀에 문의";

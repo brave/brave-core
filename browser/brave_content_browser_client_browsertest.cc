@@ -258,7 +258,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteAdblock) {
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
   net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
   tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
-  Browser* tor_browser =
+  BrowserWindowInterface* tor_browser =
       TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
 
   const GURL onion_url =
@@ -476,7 +476,7 @@ class WinBraveContentBrowserClientTest
   WinBraveContentBrowserClientTest() = default;
   ~WinBraveContentBrowserClientTest() override = default;
 
-  bool GetShouldDoLearning(Browser* browser) {
+  bool GetShouldDoLearning(BrowserWindowInterface* browser) {
     return browser->tab_strip_model()
         ->GetActiveWebContents()
         ->GetShouldDoLearningForTesting();
@@ -512,7 +512,8 @@ IN_PROC_BROWSER_TEST_P(WinBraveContentBrowserClientTest, PRE_WindowsRecall) {
   }
 
   // incognito behavior is unchanged from upstream (always false)
-  Browser* incognito = CreateIncognitoBrowser(browser()->GetProfile());
+  BrowserWindowInterface* incognito =
+      CreateIncognitoBrowser(browser()->GetProfile());
   EXPECT_FALSE(GetShouldDoLearning(incognito));
 }
 
@@ -531,7 +532,8 @@ IN_PROC_BROWSER_TEST_P(WinBraveContentBrowserClientTest, WindowsRecall) {
   }
 
   // incognito behavior is unchanged from upstream (always false)
-  Browser* incognito = CreateIncognitoBrowser(browser()->GetProfile());
+  BrowserWindowInterface* incognito =
+      CreateIncognitoBrowser(browser()->GetProfile());
   EXPECT_FALSE(GetShouldDoLearning(incognito));
 }
 

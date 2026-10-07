@@ -40,14 +40,15 @@ import {
 import { networkSupportsAccount } from '../../../utils/network-utils'
 import {
   getAssetIdKey,
-  getDoesCoinSupportSwap,
-  getDoesCoinSupportBridge,
+  getDoesTokenSupportSwap,
+  getDoesTokenSupportBridge,
+  getDoesTokenSupportDeposit,
 } from '../../../utils/asset-utils'
 import { getLocale } from '../../../../common/locale'
 import { isRewardsAssetId } from '../../../utils/rewards_utils'
 import {
-  makeDepositFundsRoute,
-  makeFundWalletRoute,
+  makeDepositRoute,
+  makeBuyRoute,
   makeSendRoute,
   makeSwapOrBridgeRoute,
 } from '../../../utils/routes-utils'
@@ -64,7 +65,7 @@ import {
 // Components
 import {
   LineChartControls, //
-} from '../../../components/desktop/line-chart/line-chart-controls/line-chart-controls'
+} from '$wallet/page/components/line_chart_controls/line_chart_controls'
 import {
   AccountsAndTransactionsList, //
 } from './components/accounts_and_transactions_list/accounts_and_transactions_list'
@@ -79,10 +80,10 @@ import {
 } from '../../../components/desktop/popup-modals/hide_token_modal/hide_token_modal'
 import {
   WalletPageWrapper, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   AssetDetailsHeader, //
-} from '../../../components/desktop/card-headers/asset-details-header'
+} from '$wallet/page/components/card_headers/asset_details_header'
 import {
   TokenDetailsModal, //
 } from '../../../components/desktop/popup-modals/token_details_modal/token_details_modal'
@@ -290,11 +291,12 @@ export const FungibleAssetDetails = () => {
     querySubscriptionOptions60s,
   )
 
-  const selectedCoin = selectedAssetFromParams?.coin
   const isSwapSupported =
-    selectedCoin !== undefined && getDoesCoinSupportSwap(selectedCoin)
+    selectedAssetFromParams !== undefined
+    && getDoesTokenSupportSwap(selectedAssetFromParams)
   const isBridgeSupported =
-    selectedCoin !== undefined && getDoesCoinSupportBridge(selectedCoin)
+    selectedAssetFromParams !== undefined
+    && getDoesTokenSupportBridge(selectedAssetFromParams)
 
   const selectedAssetTransactions = React.useMemo(() => {
     if (selectedAssetFromParams && tokensList && networksRegistry) {
@@ -352,7 +354,7 @@ export const FungibleAssetDetails = () => {
       selectedAssetFromParams && fullAssetBalance
         ? new Amount(fullAssetBalance)
             .divideByDecimals(selectedAssetFromParams.decimals)
-            .formatAsAsset(6, selectedAssetFromParams.symbol)
+            .compactAsAsset(6, selectedAssetFromParams.symbol)
         : '',
     [selectedAssetFromParams, fullAssetBalance],
   )
@@ -362,13 +364,15 @@ export const FungibleAssetDetails = () => {
       selectedAssetFromParams && fullAssetBalance
         ? new Amount(fullAssetBalance)
             .divideByDecimals(selectedAssetFromParams.decimals)
-            .formatAsAsset(8)
+            .compactAsAsset(8)
         : '',
     [selectedAssetFromParams, fullAssetBalance],
   )
 
   const isSelectedAssetDepositSupported =
-    !isRewardsToken && Boolean(selectedAssetFromParams)
+    selectedAssetFromParams !== undefined
+    && !isRewardsToken
+    && getDoesTokenSupportDeposit(selectedAssetFromParams)
 
   const goBack = React.useCallback(() => {
     dispatch(WalletPageActions.updateNFTMetadata(undefined))
@@ -407,15 +411,13 @@ export const FungibleAssetDetails = () => {
 
   const onClickBuy = React.useCallback(() => {
     if (foundMeldBuyToken) {
-      openOrPushRoute(makeFundWalletRoute(foundMeldBuyToken))
+      openOrPushRoute(makeBuyRoute(foundMeldBuyToken))
     }
   }, [openOrPushRoute, foundMeldBuyToken])
 
   const onClickDeposit = React.useCallback(() => {
     if (selectedAssetFromParams) {
-      openOrPushRoute(
-        makeDepositFundsRoute(getAssetIdKey(selectedAssetFromParams)),
-      )
+      openOrPushRoute(makeDepositRoute(getAssetIdKey(selectedAssetFromParams)))
     }
   }, [openOrPushRoute, selectedAssetFromParams])
 
@@ -500,33 +502,33 @@ export const FungibleAssetDetails = () => {
           <ButtonRow>
             {foundMeldBuyToken && !isRewardsToken && (
               <FungibleAssetActionButton
-                text={getLocale('braveWalletBuy')}
+                text={getLocale(S.BRAVE_WALLET_BUY)}
                 icon='coins-alt1'
                 onClick={onClickBuy}
               />
             )}
             <FungibleAssetActionButton
-              text={getLocale('braveWalletSend')}
+              text={getLocale(S.BRAVE_WALLET_SEND)}
               icon='send'
               onClick={onClickSend}
             />
             {isSwapSupported && (
               <FungibleAssetActionButton
-                text={getLocale('braveWalletSwap')}
+                text={getLocale(S.BRAVE_WALLET_SWAP)}
                 icon='currency-exchange'
                 onClick={() => onClickSwapOrBridge('swap')}
               />
             )}
             {!isIOS && isBridgeSupported && (
               <FungibleAssetActionButton
-                text={getLocale('braveWalletBridge')}
+                text={getLocale(S.BRAVE_WALLET_BRIDGE)}
                 icon='web3-bridge'
                 onClick={() => onClickSwapOrBridge('bridge')}
               />
             )}
             {isSelectedAssetDepositSupported && (
               <FungibleAssetActionButton
-                text={getLocale('braveWalletAccountsDeposit')}
+                text={getLocale(S.BRAVE_WALLET_ACCOUNTS_DEPOSIT)}
                 icon='money-bag-coins'
                 onClick={onClickDeposit}
               />
@@ -542,7 +544,7 @@ export const FungibleAssetDetails = () => {
               selectedAsset={selectedAssetFromParams}
               selectedAssetNetwork={selectedAssetsNetwork}
               assetBalance={formattedAssetBalance}
-              formattedFiatBalance={fullAssetFiatBalance.formatAsFiat(
+              formattedFiatBalance={fullAssetFiatBalance.compactAsFiat(
                 defaultFiat,
               )}
               onShowHideTokenModal={() => setShowHideTokenModal(true)}

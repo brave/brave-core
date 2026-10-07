@@ -5,7 +5,6 @@
 
 source_set("browser") {
   sources = [
-    "ai_chat+private.h",
     "ai_chat.h",
     "ai_chat.mm",
     "ai_chat_associated_content_page_fetcher.h",
@@ -14,8 +13,6 @@ source_set("browser") {
     "ai_chat_tab_helper.mm",
     "associated_content_driver_ios.h",
     "associated_content_driver_ios.mm",
-    "conversation_client.h",
-    "conversation_client.mm",
   ]
   deps = [
     "//base",

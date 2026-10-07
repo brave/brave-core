@@ -25,8 +25,8 @@ constexpr char kTableName[] = "dayparts";
 
 size_t BindColumns(
     const mojom::DBActionInfoPtr& mojom_db_action,
-    const std::map</*campaign_id*/ std::string,
-                   base::flat_set<CreativeDaypartInfo>>& dayparts) {
+    const absl::flat_hash_map</*campaign_id*/ std::string,
+                              base::flat_set<CreativeDaypartInfo>>& dayparts) {
   CHECK(mojom_db_action);
   CHECK(!dayparts.empty());
 
@@ -49,8 +49,8 @@ size_t BindColumns(
 
 std::string BuildInsertSql(
     const mojom::DBActionInfoPtr& mojom_db_action,
-    const std::map</*campaign_id*/ std::string,
-                   base::flat_set<CreativeDaypartInfo>>& dayparts) {
+    const absl::flat_hash_map</*campaign_id*/ std::string,
+                              base::flat_set<CreativeDaypartInfo>>& dayparts) {
   CHECK(mojom_db_action);
   CHECK(!dayparts.empty());
 
@@ -72,8 +72,8 @@ std::string BuildInsertSql(
 
 void InsertDayparts(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-    const std::map</*campaign_id*/ std::string,
-                   base::flat_set<CreativeDaypartInfo>>& dayparts) {
+    const absl::flat_hash_map</*campaign_id*/ std::string,
+                              base::flat_set<CreativeDaypartInfo>>& dayparts) {
   CHECK(mojom_db_transaction);
 
   if (dayparts.empty()) {

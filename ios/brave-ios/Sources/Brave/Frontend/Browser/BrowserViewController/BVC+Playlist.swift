@@ -39,7 +39,7 @@ extension BrowserViewController: PlaylistTabHelperDelegate {
         self.dismiss(animated: true) {
           switch action {
           case .openPlaylist:
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [self] in
               if let tab, let playlist = tab.playlist {
                 playlist.getCurrentTime(nodeTag: item.tagId) {
                   [weak self] currentTime in
@@ -77,6 +77,7 @@ extension BrowserViewController: PlaylistTabHelperDelegate {
 
       let shouldShowPlaylistURLBarButton =
         tab.visibleURL?.isPlaylistSupportedSiteURL == true
+        && tab.playlist?.isPlaylistBlocked(tab.visibleURL) == false
         && Preferences.Playlist.enablePlaylistURLBarButton.value
 
       let browsers = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene })
@@ -90,15 +91,13 @@ extension BrowserViewController: PlaylistTabHelperDelegate {
 
         switch state {
         case .none:
-          browser.topToolbar.updatePlaylistButtonState(.none)
+          browser.toolbarState.playlistButtonState = .none
         case .newItem:
-          browser.topToolbar.updatePlaylistButtonState(
+          browser.toolbarState.playlistButtonState =
             shouldShowPlaylistURLBarButton ? .addToPlaylist : .none
-          )
         case .existingItem:
-          browser.topToolbar.updatePlaylistButtonState(
+          browser.toolbarState.playlistButtonState =
             shouldShowPlaylistURLBarButton ? .addedToPlaylist(item) : .none
-          )
         }
       }
     }
@@ -117,7 +116,7 @@ extension BrowserViewController: PlaylistTabHelperDelegate {
       UIAlertAction(
         title: Strings.PlayList.addToPlayListAlertTitle,
         style: .default,
-        handler: { _ in
+        handler: { [unowned self] _ in
           // Update playlist with new items..
 
           guard let item = item else { return }
@@ -153,7 +152,9 @@ extension BrowserViewController: PlaylistTabHelperDelegate {
       return
     }
 
-    let shouldShowOnboarding = tab?.visibleURL?.isPlaylistSupportedSiteURL == true
+    let shouldShowOnboarding =
+      tab?.visibleURL?.isPlaylistSupportedSiteURL == true
+      && tab?.playlist?.isPlaylistBlocked(tab?.visibleURL) == false
 
     if shouldShowOnboarding {
       if Preferences.Playlist.addToPlaylistURLBarOnboardingCount.value < 2,
@@ -168,12 +169,12 @@ extension BrowserViewController: PlaylistTabHelperDelegate {
         // Ensure url bar is expanded before presenting a popover on it
         toolbarVisibilityViewModel.toolbarState = .expanded
 
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [self, weak tab] in
           let model = OnboardingPlaylistModel()
           let popover = PopoverController(content: OnboardingPlaylistView(model: model))
           popover.previewForOrigin = .init(
             view: self.topToolbar.locationView.playlistButton,
-            action: { [weak tab] popover in
+            action: { popover in
               guard let item = tab?.playlistItem else {
                 popover.dismissPopover()
                 return
@@ -187,7 +188,7 @@ extension BrowserViewController: PlaylistTabHelperDelegate {
           )
           popover.present(from: self.topToolbar.locationView.playlistButton, on: self)
 
-          model.onboardingCompleted = { [weak tab, weak popover] in
+          model.onboardingCompleted = { [weak popover] in
             popover?.dismissPopover()
             self.openPlaylist(tab: tab, item: tab?.playlistItem)
           }
@@ -278,7 +279,7 @@ extension BrowserViewController: PlaylistTabHelperDelegate {
 
         if let url = URL(string: item.src), url.scheme == "blob" {
           // Spawn a WebView to load the non-blob asset
-          Task { @MainActor in
+          Task { @MainActor [self] in
             let mediaStreamer = PlaylistMediaStreamer(
               playerView: self.view,
               webLoaderFactory: LivePlaylistWebLoaderFactory(
@@ -286,8 +287,10 @@ extension BrowserViewController: PlaylistTabHelperDelegate {
               )
             )
 
-            let newItem = try await mediaStreamer.loadMediaStreamingAsset(item)
-            PlaylistManager.shared.autoDownload(item: newItem)
+            do {
+              let newItem = try await mediaStreamer.loadMediaStreamingAsset(item)
+              PlaylistManager.shared.autoDownload(item: newItem)
+            } catch {}
           }
         } else {
           PlaylistManager.shared.autoDownload(item: item)
@@ -302,50 +305,54 @@ extension BrowserViewController: PlaylistTabHelperDelegate {
       }
     }
 
-    if PlaylistManager.shared.isDiskSpaceEncumbered()
-      && !BrowserViewController.didShowStorageFullWarning
-    {
-      BrowserViewController.didShowStorageFullWarning = true
-      let alert = UIAlertController(
-        title: Strings.PlayList.playlistDiskSpaceWarningTitle,
-        message: Strings.PlayList.playlistDiskSpaceWarningMessage,
-        preferredStyle: .alert
-      )
+    Task { @MainActor [self] in
+      let shouldWarnAboutStorage =
+        await PlaylistManager.shared.isDiskSpaceEncumberedAfterReclamation()
+        && !BrowserViewController.didShowStorageFullWarning
 
-      alert.addAction(
-        UIAlertAction(
-          title: Strings.PlayList.playlistDiskSpaceAddAnywayButtonTitle,
-          style: .default,
-          handler: { [weak self] _ in
-            guard let self = self else { return }
-            self.openInPlaylistActivityItem = (enabled: true, item: item)
-            self.addToPlayListActivityItem = nil
-
-            AppReviewManager.shared.processSubCriteria(for: .numberOfPlaylistItems)
-            addItemToPlaylist(item, folderUUID, completion)
-          }
+      if shouldWarnAboutStorage, self.view.window != nil {
+        BrowserViewController.didShowStorageFullWarning = true
+        let alert = UIAlertController(
+          title: Strings.PlayList.playlistDiskSpaceWarningTitle,
+          message: Strings.PlayList.playlistDiskSpaceWarningMessage,
+          preferredStyle: .alert
         )
-      )
 
-      alert.addAction(
-        UIAlertAction(
-          title: Strings.cancelButtonTitle,
-          style: .cancel,
-          handler: { _ in
-            completion?(false)
-          }
+        alert.addAction(
+          UIAlertAction(
+            title: Strings.PlayList.playlistDiskSpaceAddAnywayButtonTitle,
+            style: .default,
+            handler: { [weak self] _ in
+              guard let self = self else { return }
+              self.openInPlaylistActivityItem = (enabled: true, item: item)
+              self.addToPlayListActivityItem = nil
+
+              AppReviewManager.shared.processSubCriteria(for: .numberOfPlaylistItems)
+              addItemToPlaylist(item, folderUUID, completion)
+            }
+          )
         )
-      )
 
-      // Sometimes the MENU controller is being displayed and cannot present the alert
-      // So we need to ask it to present the alert
-      (presentedViewController ?? self).present(alert, animated: true, completion: nil)
-    } else {
-      openInPlaylistActivityItem = (enabled: true, item: item)
-      addToPlayListActivityItem = nil
+        alert.addAction(
+          UIAlertAction(
+            title: Strings.cancelButtonTitle,
+            style: .cancel,
+            handler: { _ in
+              completion?(false)
+            }
+          )
+        )
 
-      AppReviewManager.shared.processSubCriteria(for: .numberOfPlaylistItems)
-      addItemToPlaylist(item, folderUUID, completion)
+        // Sometimes the MENU controller is being displayed and cannot present the alert
+        // So we need to ask it to present the alert
+        (presentedViewController ?? self).present(alert, animated: true, completion: nil)
+      } else {
+        openInPlaylistActivityItem = (enabled: true, item: item)
+        addToPlayListActivityItem = nil
+
+        AppReviewManager.shared.processSubCriteria(for: .numberOfPlaylistItems)
+        addItemToPlaylist(item, folderUUID, completion)
+      }
     }
   }
 }

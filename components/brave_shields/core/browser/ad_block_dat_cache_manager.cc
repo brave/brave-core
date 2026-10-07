@@ -73,6 +73,15 @@ void AdBlockDATCacheManager::WriteDATFile(bool is_default_engine,
                                                    : kAdBlockEngine1DATCache)));
 }
 
+void AdBlockDATCacheManager::DropDATCache() {
+  task_runner_->PostTask(FROM_HERE,
+                         base::BindOnce(
+                             [](base::FilePath cache_dir) {
+                               base::DeletePathRecursively(cache_dir);
+                             },
+                             cache_dir_));
+}
+
 void AdBlockDATCacheManager::MaybeReadCachedDATFiles(
     base::OnceCallback<void(std::optional<DATFileDataBuffer>,
                             std::optional<DATFileDataBuffer>)> on_complete) {

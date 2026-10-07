@@ -51,7 +51,7 @@ export const ChangeNetworkButton = (props: Props) => {
         </NetworkName>
       </Row>
       {isActiveNetwork && (
-        <ActiveIndicator>{getLocale('braveWalletActive')}</ActiveIndicator>
+        <ActiveIndicator>{getLocale(S.BRAVE_WALLET_ACTIVE)}</ActiveIndicator>
       )}
     </NetworkButton>
   )

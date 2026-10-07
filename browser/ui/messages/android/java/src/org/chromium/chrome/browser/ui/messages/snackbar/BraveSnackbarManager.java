@@ -24,6 +24,22 @@ public class BraveSnackbarManager extends SnackbarManager {
     @SuppressWarnings({"UnusedVariable", "HidingField"})
     protected @Nullable SnackbarView mView;
 
+    // Customizations requested for a snackbar, replayed onto whichever view ends up showing it
+    // (see applyCustomizations). They are held here rather than in the view because the view does
+    // not survive: SnackbarManager rebuilds it when a snackbar is swiped away, and callers rebuild
+    // it by dismissing and re-showing a snackbar to update it. Each slot holds the last requester
+    // of that kind, and is keyed by the snackbar so it can never be applied to an unrelated one.
+    private @Nullable Snackbar mCustomTextSnackbar;
+    private String mCustomTextTitle = "";
+    private String mCustomTextPageTitle = "";
+    private String mCustomTextUrl = "";
+
+    private @Nullable Snackbar mActionBelowSnackbar;
+    private int mActionBelowCloseIconResId;
+    private @Nullable String mActionBelowCloseContentDescription;
+    private @Nullable Runnable mActionBelowCloseCallback;
+
+    private @Nullable Snackbar mClickableSnackbar;
     private @Nullable Runnable mPendingClickCallback;
 
     // The single New Tab Takeover notice currently outstanding in this (window-scoped) manager, or
@@ -65,11 +81,35 @@ public class BraveSnackbarManager extends SnackbarManager {
                 persistentFullscreenModeSupplier);
     }
 
-    @Override
-    public void showSnackbar(Snackbar snackbar) {
-        super.showSnackbar(snackbar);
+    /**
+     * Applies to {@code view} everything requested for {@code snackbar}, which must be the snackbar
+     * the view is showing. Called by {@link BraveSnackbarView} whenever it is built or updated for
+     * a snackbar, so a request made while the snackbar was still queued is honoured as soon as it
+     * reaches the screen, in whichever view shows it.
+     */
+    void applyCustomizations(BraveSnackbarView view, Snackbar snackbar) {
+        if (snackbar == mCustomTextSnackbar) {
+            view.setCustomText(snackbar, mCustomTextTitle, mCustomTextPageTitle, mCustomTextUrl);
+        }
 
-        tryMakeSnackbarClickable();
+        if (snackbar == mActionBelowSnackbar) {
+            view.setActionBelowMessage(
+                    snackbar,
+                    mActionBelowCloseIconResId,
+                    mActionBelowCloseContentDescription,
+                    mActionBelowCloseCallback);
+        }
+
+        if (snackbar == mClickableSnackbar && mPendingClickCallback != null) {
+            view.makeClickable(snackbar, mPendingClickCallback);
+        }
+    }
+
+    /** Applies the customizations requested for {@code snackbar} to the view showing it, if any. */
+    private void applyCustomizations(Snackbar snackbar) {
+        if (mView instanceof BraveSnackbarView) {
+            applyCustomizations((BraveSnackbarView) mView, snackbar);
+        }
     }
 
     /** Returns whether a New Tab Takeover notice is currently outstanding (showing or queued). */
@@ -93,52 +133,47 @@ public class BraveSnackbarManager extends SnackbarManager {
     }
 
     /**
-     * Stores the callback to be executed when the snackbar is clicked.
+     * Makes the given snackbar clickable as a whole. The callback runs when that snackbar is
+     * tapped, and only while it is the snackbar being shown.
      *
-     * @param clickCallback Callback to execute when the snackbar is clicked.
+     * @param snackbar The snackbar the callback belongs to.
+     * @param clickCallback Callback to execute when the snackbar is tapped.
      */
-    public void makeSnackbarClickable(Runnable clickCallback) {
+    public void makeSnackbarClickable(Snackbar snackbar, Runnable clickCallback) {
         if (clickCallback == null) {
             Log.e(TAG, "makeSnackbarClickable: clickCallback is null");
             return;
         }
 
+        mClickableSnackbar = snackbar;
         mPendingClickCallback = clickCallback;
-    }
-
-    private void tryMakeSnackbarClickable() {
-        if (!isShowing()) {
-            return;
-        }
-
-        if (mView instanceof BraveSnackbarView) {
-            ((BraveSnackbarView) mView).makeClickable(mPendingClickCallback);
-        }
+        applyCustomizations(snackbar);
     }
 
     /**
-     * Sets custom text on the snackbar with title, page title, and URL.
+     * Sets custom text on the given snackbar, with title, page title, and URL.
      *
+     * @param snackbar The snackbar the text belongs to.
      * @param title The title text (e.g., "Get back to your most recent tab")
      * @param pageTitle The page title
      * @param url The URL to display
      */
-    public void setCustomText(String title, String pageTitle, String url) {
-        if (!isShowing()) {
-            return;
-        }
-
-        if (mView instanceof BraveSnackbarView) {
-            ((BraveSnackbarView) mView).setCustomText(title, pageTitle, url);
-        }
+    public void setCustomText(Snackbar snackbar, String title, String pageTitle, String url) {
+        mCustomTextSnackbar = snackbar;
+        mCustomTextTitle = title;
+        mCustomTextPageTitle = pageTitle;
+        mCustomTextUrl = url;
+        applyCustomizations(snackbar);
     }
 
     /**
-     * Switches the currently showing snackbar to a layout where the action button sits on its own
-     * line below the message, optionally with a trailing close button (see {@link
-     * BraveSnackbarView#setActionBelowMessage(int, String, Runnable)}). Must be called after {@link
-     * #showSnackbar(Snackbar)}.
+     * Switches the given snackbar to a layout where the action button sits on its own line below
+     * the message, optionally with a trailing close button (see {@link
+     * BraveSnackbarView#setActionBelowMessage(Snackbar, int, String, Runnable)}). Must be called
+     * after {@link #showSnackbar(Snackbar)}. The layout is applied when that snackbar is the one
+     * being shown, so a snackbar queued behind a higher priority one does not restyle it.
      *
+     * @param snackbar The snackbar the layout belongs to.
      * @param closeIconResId Drawable resource for the close button. Ignored when {@code
      *     onCloseCallback} is null.
      * @param closeContentDescription Accessibility label for the close button, or null.
@@ -146,17 +181,14 @@ public class BraveSnackbarManager extends SnackbarManager {
      *     added.
      */
     public void setActionBelowMessage(
+            Snackbar snackbar,
             int closeIconResId,
             @Nullable String closeContentDescription,
             @Nullable Runnable onCloseCallback) {
-        if (!isShowing()) {
-            return;
-        }
-
-        if (mView instanceof BraveSnackbarView) {
-            ((BraveSnackbarView) mView)
-                    .setActionBelowMessage(
-                            closeIconResId, closeContentDescription, onCloseCallback);
-        }
+        mActionBelowSnackbar = snackbar;
+        mActionBelowCloseIconResId = closeIconResId;
+        mActionBelowCloseContentDescription = closeContentDescription;
+        mActionBelowCloseCallback = onCloseCallback;
+        applyCustomizations(snackbar);
     }
 }

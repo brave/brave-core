@@ -4,10 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import BraveShields
 import Foundation
 import OSLog
 import Preferences
+import Shared
 @_spi(ChromiumWebViewAccess) import Web
 
 extension TabDataValues {
@@ -34,6 +36,12 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
   var presentSearchResultClickedInfoBar: (() -> Void)?
 
   var presentInQuickView: ((URL, any TabState) -> Void)?
+
+  /// A link click on Brave Search's `/ask` page that `HttpsUpgradeTabHelper` upgraded to
+  /// `https` before we could route it into QuickView. We let it load for real in this tab
+  /// and only open QuickView once `tabDidFinishNavigation` confirms it actually landed on
+  /// the upgraded page rather than a failure/interstitial.
+  private var pendingQuickViewUpgradeURL: URL?
 
   init(tab: some TabState, rewards: BraveRewards, searchEngines: SearchEngines) {
     self.tab = tab
@@ -141,11 +149,39 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
       // The website waits on us until this is called with either results or null.
       injectResults(into: tab)
     }
+
+    resolvePendingQuickViewUpgrade(tab: tab)
   }
 
   func tabWillBeDestroyed(_ tab: some TabState) {
+    pendingQuickViewUpgradeURL = nil
     tab.removeObserver(self)
     tab.removePolicyDecider(self)
+  }
+
+  /// Checks whether a navigation we deferred a QuickView decision on (see
+  /// `shouldAllowRequest`) actually landed on the expected upgraded page, and if so, opens
+  /// QuickView now. Otherwise leaves the tab exactly as `HttpsUpgradeTabHelper` left it
+  private func resolvePendingQuickViewUpgrade(tab: some TabState) {
+    guard let pendingUpgradeURL = pendingQuickViewUpgradeURL else { return }
+    pendingQuickViewUpgradeURL = nil
+    guard let committedURL = tab.lastCommittedURL,
+      committedURL.baseDomain == pendingUpgradeURL.baseDomain,
+      InternalURL(committedURL) == nil
+    else {
+      return
+    }
+    // The upgrade succeeded, but it actually navigated this (real, visible) tab away from
+    // `/ask` to get there. Restore `/ask` before handing off to QuickView, which does its
+    // own fresh load of the same (now known-good) URL in a separate, throwaway tab.
+    if tab.backForwardList?.backList.isEmpty == false {
+      tab.goBack()
+    }
+    // Use the URL that actually finished loading, not the originally-expected `https` one:
+    // standard mode's silent fallback lands on plain `http` (already allow-listed by
+    // `HttpsUpgradeTabHelper` at this point), and re-requesting `https` here would just
+    // repeat the same failure inside QuickView's own tab instead of showing the working page.
+    presentInQuickView?(committedURL, tab)
   }
 
   // MARK: - TabPolicyDecider
@@ -191,22 +227,6 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
           }
         )
       } else {
-        // The Brave-Search-Ads header should be added with a negative value when all
-        // of the following conditions are met:
-        //   - The current tab is not a Private tab
-        //   - Brave Rewards is enabled.
-        //   - The "Search Ads" is opted-out.
-        //   - The requested URL host is one of the Brave Search domains.
-        if !tab.isPrivate && rewards.isEnabled
-          && !rewards.ads.isOptedInToSearchResultAds()
-          && request.allHTTPHeaderFields?["Brave-Search-Ads"] == nil
-        {
-          var modifiedRequest = URLRequest(url: requestURL)
-          modifiedRequest.setValue("?0", forHTTPHeaderField: "Brave-Search-Ads")
-          tab.loadRequest(modifiedRequest)
-          return .cancel
-        }
-
         braveSearchResultAdManager = BraveSearchResultAdManager(
           url: requestURL,
           rewards: rewards,
@@ -217,7 +237,7 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
 
       if let braveSearchManager = braveSearchManager {
         braveSearchManager.fallbackQueryResultsPending = true
-        braveSearchManager.shouldUseFallback { backupQuery in
+        braveSearchManager.shouldUseFallback { [weak self] backupQuery in
           guard let query = backupQuery else {
             braveSearchManager.fallbackQueryResultsPending = false
             return
@@ -226,10 +246,10 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
           if query.found {
             braveSearchManager.fallbackQueryResultsPending = false
           } else {
-            braveSearchManager.backupSearch(with: query) { [weak self] completion in
+            braveSearchManager.backupSearch(with: query) { completion in
               guard let self, let tab = self.tab else { return }
               braveSearchManager.fallbackQueryResultsPending = false
-              injectResults(into: tab)
+              self.injectResults(into: tab)
             }
           }
         }
@@ -239,12 +259,39 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
       braveSearchResultAdManager = nil
     }
 
-    if FeatureList.kQuickViewEnabled.enabled,
-      Preferences.General.openLinkInQuickViewMode.value,
-      shouldOpenInQuickView(requestURL: requestURL, requestInfo: requestInfo, tab: tab)
-    {
+    guard FeatureList.kQuickViewEnabled.enabled, Preferences.General.openLinkInQuickViewMode.value
+    else {
+      return .allow
+    }
+
+    if await shouldOpenInQuickView(
+      requestURL: requestURL,
+      isMainFrame: requestInfo.isMainFrame,
+      navigationType: requestInfo.navigationType,
+      isUserInitiated: requestInfo.isUserInitiated,
+      tab: tab
+    ) {
       presentInQuickView?(requestURL, tab)
       return .cancel
+    }
+
+    // `HttpsUpgradeTabHelper` runs before us and may have already cancelled the original
+    // click and reissued it as this `https` request, so `requestInfo` here just describes a
+    // programmatic reload, not the real click. Recover the real click's info from the
+    // upgrade it's continuing, and if it would have qualified for QuickView, let the
+    // navigation actually load (`HttpsUpgradeTabHelper` owns its outcome from here) and
+    // decide whether to open QuickView once it finishes — see `resolvePendingQuickViewUpgrade`.
+    if let pending = tab.httpsUpgradeHelper?.pendingUpgrade,
+      pending.upgradedURL == requestURL,
+      await shouldOpenInQuickView(
+        requestURL: requestURL,
+        isMainFrame: requestInfo.isMainFrame,
+        navigationType: pending.originalRequestInfo.navigationType,
+        isUserInitiated: pending.originalRequestInfo.isUserInitiated,
+        tab: tab
+      )
+    {
+      pendingQuickViewUpgradeURL = requestURL
     }
 
     return .allow
@@ -348,21 +395,25 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
     }
   }
 
+  @MainActor
   private func shouldOpenInQuickView(
     requestURL: URL,
-    requestInfo: WebRequestInfo,
+    isMainFrame: Bool,
+    navigationType: WebNavigationType,
+    isUserInitiated: Bool,
     tab: some TabState
-  ) -> Bool {
-    guard requestInfo.isMainFrame,
-      requestInfo.navigationType == .linkActivated,
-      requestInfo.isUserInitiated,
+  ) async -> Bool {
+    guard isMainFrame,
+      navigationType == .linkActivated,
+      isUserInitiated,
       let sourceURL = tab.lastCommittedURL,
       BraveSearchManager.isValidURL(sourceURL),  // sourceURL needs to be valid brave search url
-      sourceURL.path == "/search" || sourceURL.path == "/ask",
+      sourceURL.path == "/ask",
       !BraveSearchManager.isValidURL(requestURL),  // don't intercept same-domain nav
       requestURL.isWebPage(includeDataURIs: false)
     else { return false }
-    return true
+
+    return await !BlockedDomainTabHelper.isDomainBlocked(requestURL, tab: tab)
   }
 }
 

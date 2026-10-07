@@ -50,8 +50,7 @@ class _FakeResponse:
 
 
 def _encoded(text: str) -> bytes:
-    """Base64-encode *text*, mirroring gitiles' `?format=TEXT` response body.
-    """
+    """Base64-encode *text*, mirroring gitiles' `?format=TEXT` response body."""
     return base64.b64encode(text.encode('utf-8'))
 
 
@@ -65,13 +64,15 @@ class FetchRawTest(unittest.TestCase):
         patcher.start()
 
     def test_success_decodes_base64_body_on_first_attempt(self):
-        with mock.patch('urllib.request.urlopen',
-                        return_value=_FakeResponse(
-                            _encoded('hello world'))) as urlopen:
+        with mock.patch(
+            'urllib.request.urlopen',
+            return_value=_FakeResponse(_encoded('hello world')),
+        ) as urlopen:
             result = m.fetch_raw('https://example.invalid/x')
         self.assertEqual(result, 'hello world')
-        urlopen.assert_called_once_with('https://example.invalid/x',
-                                        timeout=m.HTTP_FETCH_TIMEOUT_SECS)
+        urlopen.assert_called_once_with(
+            'https://example.invalid/x', timeout=m.HTTP_FETCH_TIMEOUT_SECS
+        )
 
     def test_retries_then_succeeds_after_transient_network_error(self):
         responses = [
@@ -83,16 +84,21 @@ class FetchRawTest(unittest.TestCase):
         self.assertEqual(result, 'recovered')
 
     def test_gives_up_after_max_attempts_on_http_error(self):
-        error = urllib.error.HTTPError('https://example.invalid/x', 500,
-                                       'Internal Server Error', {},
-                                       io.BytesIO(b'boom'))
+        error = urllib.error.HTTPError(
+            'https://example.invalid/x',
+            500,
+            'Internal Server Error',
+            {},
+            io.BytesIO(b'boom'),
+        )
         with mock.patch('urllib.request.urlopen', side_effect=error):
             with self.assertRaises(urllib.error.HTTPError):
                 m.fetch_raw('https://example.invalid/x')
 
     def test_gives_up_after_max_attempts_on_url_error(self):
-        with mock.patch('urllib.request.urlopen',
-                        side_effect=urllib.error.URLError('nope')):
+        with mock.patch(
+            'urllib.request.urlopen', side_effect=urllib.error.URLError('nope')
+        ):
             with self.assertRaises(urllib.error.URLError):
                 m.fetch_raw('https://example.invalid/x')
 
@@ -103,14 +109,17 @@ class FetchRawTest(unittest.TestCase):
 
     def test_gives_up_on_undecodable_body(self):
         # Not valid base64: decoding fails on every attempt.
-        with mock.patch('urllib.request.urlopen',
-                        return_value=_FakeResponse(b'!!!not-base64!!!')):
+        with mock.patch(
+            'urllib.request.urlopen',
+            return_value=_FakeResponse(b'!!!not-base64!!!'),
+        ):
             with self.assertRaises(ValueError):
                 m.fetch_raw('https://example.invalid/x')
 
     def test_retries_exactly_max_attempts_times_before_giving_up(self):
-        with mock.patch('urllib.request.urlopen',
-                        side_effect=urllib.error.URLError('nope')) as urlopen:
+        with mock.patch(
+            'urllib.request.urlopen', side_effect=urllib.error.URLError('nope')
+        ) as urlopen:
             with self.assertRaises(urllib.error.URLError):
                 m.fetch_raw('https://example.invalid/x')
         self.assertEqual(urlopen.call_count, m.GITILES_FETCH_MAX_ATTEMPTS)
@@ -120,14 +129,17 @@ class FetchChromiumFileTest(unittest.TestCase):
     """Tests for `fetch_chromium_file`."""
 
     def test_builds_gitiles_tag_url_and_delegates_to_fetch_raw(self):
-        with mock.patch.object(m, 'fetch_raw',
-                               return_value='file contents') as fetch_raw:
-            result = m.fetch_chromium_file('150.0.7841.1',
-                                           'build/vs_toolchain.py')
+        with mock.patch.object(
+            m, 'fetch_raw', return_value='file contents'
+        ) as fetch_raw:
+            result = m.fetch_chromium_file(
+                '150.0.7841.1', 'build/vs_toolchain.py'
+            )
         self.assertEqual(result, 'file contents')
         fetch_raw.assert_called_once_with(
             'https://chromium.googlesource.com/chromium/src/+/refs/tags/'
-            '150.0.7841.1/build/vs_toolchain.py?format=TEXT')
+            '150.0.7841.1/build/vs_toolchain.py?format=TEXT'
+        )
 
 
 if __name__ == '__main__':

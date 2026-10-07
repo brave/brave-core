@@ -41,11 +41,4 @@ void ProcessBraveTypes(Iterator&& iterate_content_settings_list,
 
 }  // namespace
 
-#define ReportResult(...)                                      \
-  ProcessBraveTypes(iterate_content_settings_list, map_.get(), \
-                    empty_host_pattern);                       \
-  ReportResult(__VA_ARGS__);
-
 #include <chrome/browser/browsing_data/counters/site_settings_counter.cc>
-
-#undef ReportResult

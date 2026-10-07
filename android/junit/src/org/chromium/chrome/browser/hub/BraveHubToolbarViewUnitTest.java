@@ -12,6 +12,7 @@ import static org.mockito.Mockito.when;
 
 import static org.chromium.chrome.browser.hub.HubColorMixer.COLOR_MIXER;
 import static org.chromium.chrome.browser.hub.HubToolbarProperties.IS_INCOGNITO;
+import static org.chromium.chrome.browser.hub.HubToolbarProperties.PANE_SWITCHER_BUTTON_DATA;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.annotation.Config;
 
+import org.chromium.base.BaseSwitches;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
@@ -40,15 +42,18 @@ import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerInterface;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
+import org.chromium.chrome.browser.ui.actions.button.FullButtonData;
 import org.chromium.ui.modelutil.PropertyModel;
 import org.chromium.ui.modelutil.PropertyModelChangeProcessor;
+
+import java.util.List;
 
 /** Unit tests for {@link BraveHubToolbarView}. */
 @RunWith(BaseRobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
 @CommandLineFlags.Add({
     ChromeSwitches.DISABLE_FIRST_RUN_EXPERIENCE,
-    ChromeSwitches.DISABLE_NATIVE_INITIALIZATION
+    BaseSwitches.DISABLE_NATIVE_INITIALIZATION
 })
 public class BraveHubToolbarViewUnitTest {
     @Rule
@@ -93,7 +98,10 @@ public class BraveHubToolbarViewUnitTest {
         mColorMixer =
                 spy(
                         new HubColorMixerImpl(
-                                mActivity, ObservableSuppliers.alwaysTrue(), mFocusedPaneSupplier));
+                                mActivity,
+                                ObservableSuppliers.alwaysTrue(),
+                                mFocusedPaneSupplier,
+                                ObservableSuppliers.alwaysNull()));
         mPropertyModel =
                 new PropertyModel.Builder(HubToolbarProperties.ALL_KEYS)
                         .with(COLOR_MIXER, mColorMixer)
@@ -132,5 +140,23 @@ public class BraveHubToolbarViewUnitTest {
         when(mActivity.isShredButtonVisible()).thenReturn(true);
         mPropertyModel.set(IS_INCOGNITO, false);
         assertEquals(View.INVISIBLE, mShredButton.getVisibility());
+    }
+
+    @Test
+    @DisableFeatures({BraveFeatureList.BRAVE_SHRED})
+    public void testPaneSwitcherCardHiddenWhenSwitcherIsHidden() {
+        View paneSwitcherCard = mToolbarContainer.findViewById(R.id.pane_switcher_card);
+
+        mPropertyModel.set(
+                PANE_SWITCHER_BUTTON_DATA,
+                List.of(mock(FullButtonData.class), mock(FullButtonData.class)));
+        assertEquals(View.VISIBLE, paneSwitcherCard.getVisibility());
+
+        // A single pane hides the switcher upstream, the card has to follow.
+        mPropertyModel.set(PANE_SWITCHER_BUTTON_DATA, List.of(mock(FullButtonData.class)));
+        assertEquals(View.GONE, paneSwitcherCard.getVisibility());
+
+        mPropertyModel.set(PANE_SWITCHER_BUTTON_DATA, null);
+        assertEquals(View.GONE, paneSwitcherCard.getVisibility());
     }
 }

@@ -52,7 +52,7 @@ UntrustedLedgerUI::UntrustedLedgerUI(content::WebUI* web_ui)
   untrusted_source->AddString("braveWalletLedgerBridgeUrl",
                               kUntrustedLedgerURL);
   untrusted_source->AddBoolean("isLedgerMojoBridgeEnabled",
-                               brave_wallet::IsMojoForHardwareWalletEnabled());
+                               brave_wallet::IsMojoForLedgerEnabled());
 }
 
 UntrustedLedgerUI::~UntrustedLedgerUI() = default;

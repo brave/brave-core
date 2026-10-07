@@ -15,8 +15,6 @@ source_set("speedreader") {
     "reader_mode_bubble.h",
     "reader_mode_toolbar_view.cc",
     "reader_mode_toolbar_view.h",
-    "speedreader_icon_view.cc",
-    "speedreader_icon_view.h",
   ]
 
   deps = [

@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 #include <tuple>
+#include <vector>
 
 #include "base/functional/callback.h"
 
@@ -25,9 +26,24 @@ std::optional<std::string> CreateWireguardConfig(
     const std::string& client_private_key,
     const std::string& server_public_key,
     const std::string& vpn_server_hostname,
-    const std::string& mapped_ipv4_address);
+    const std::string& mapped_ipv4_address,
+    bool allow_lan_traffic);
 
 WireguardKeyPair GenerateNewX25519Keypair();
+
+std::vector<std::string> ParseAllowedIPs(const std::string& config);
+
+// Rewrites the AllowedIPs line of an existing config so it matches
+// |allow_lan_traffic|, leaving the rest of the config untouched. Used to
+// refresh a persisted config whose server details we can no longer reproduce.
+// Returns nullopt when the config has no AllowedIPs line.
+std::optional<std::string> UpdateAllowedIPs(const std::string& config,
+                                            bool allow_lan_traffic);
+
+// Returns true when AllowedIPs uses literal /0 prefixes (full tunnel
+// routing), meaning tunnel.dll will install its own blockAll/blockDNS WFP
+// filters.
+bool ConfigUsesFullTunnelRoutes(const std::string& config);
 
 std::optional<std::string> ValidateKey(const std::string& key,
                                        const std::string& field_name);

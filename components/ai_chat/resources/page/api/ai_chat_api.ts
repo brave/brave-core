@@ -69,6 +69,18 @@ export default function createAIChatApi(
           prefetchWithArgs: [],
           placeholderData: [] as Mojom.Skill[],
         },
+        // Not prefetched - only the shared conversations dialog needs this, and
+        // it fetches when it opens.
+        getConversationShares: {
+          response: (result) => result.shares,
+          placeholderData: [] as Mojom.ConversationShare[],
+        },
+        deleteConversationShare: {
+          mutationResponse: (result) => result.success,
+          onSuccess: () => {
+            api.getConversationShares.invalidate()
+          },
+        },
         getPremiumStatus: {
           response: (result) => ({
             /**
@@ -162,6 +174,7 @@ export default function createAIChatApi(
         | `processTextFile`
         | `processImageFile`
         | `processPdfFile`
+        | `showWorkspaceFolderPicker`
       >,
       metrics: metrics as Pick<
         Mojom.MetricsInterface,
@@ -222,6 +235,7 @@ export default function createAIChatApi(
           // </if>
           showSkillDialog(prompt) {},
           showImageLightbox(file) {},
+          showWorkspaceFileLightbox(filePath: string) {},
           requestNewConversation() {},
           handleResetError() {},
         },

@@ -9,7 +9,7 @@ import Shared
 import WidgetKit
 import os.log
 
-public struct WidgetFavorite: Codable {
+public struct WidgetFavorite: Codable, Sendable {
   public var url: URL
   public var title: String?
   public var favicon: Favicon?
@@ -37,7 +37,7 @@ public class FavoritesWidgetData {
     return FileManager.default.fileExists(atPath: url.path)
   }
 
-  public static func loadWidgetData() async -> [WidgetFavorite]? {
+  @concurrent public static func loadWidgetData() async -> [WidgetFavorite]? {
     guard let dataPath = widgetDataPath else { return nil }
     do {
       let jsonData = try Data(contentsOf: dataPath)
@@ -48,7 +48,7 @@ public class FavoritesWidgetData {
     }
   }
 
-  public static func updateWidgetData(_ favs: [WidgetFavorite]) async {
+  @concurrent public static func updateWidgetData(_ favs: [WidgetFavorite]) async {
     guard let rootPath = widgetDataRoot, let dataPath = widgetDataPath else { return }
     do {
       let widgetData = try JSONEncoder().encode(favs)

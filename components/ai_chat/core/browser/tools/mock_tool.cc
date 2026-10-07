@@ -31,6 +31,11 @@ MockTool::MockTool(std::string_view name,
       .WillByDefault([&](const mojom::ToolUseEvent& tool_use) {
         return requires_user_interaction_before_handling_;
       });
+
+  // Matches Tool's default: no description to add.
+  ON_CALL(*this, GetPermissionChallengeDescription)
+      .WillByDefault(
+          [](const mojom::ToolUseEvent& tool_use) { return std::nullopt; });
 }
 
 MockTool::~MockTool() = default;

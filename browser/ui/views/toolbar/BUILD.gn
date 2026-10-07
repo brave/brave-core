@@ -9,12 +9,19 @@ source_set("screenshot") {
     "screenshot_bubble_view.h",
     "screenshot_button.cc",
     "screenshot_button.h",
+    "screenshot_preview_dialog.cc",
+    "screenshot_preview_dialog.h",
   ]
 
   deps = [
     "//brave/app:brave_generated_resources_grit_grit",
     "//brave/browser/ui/screenshot",
     "//brave/components/vector_icons",
+    "//chrome/browser:primitives",
     "//chrome/browser/ui/views/toolbar",
+    "//skia",
+    "//ui/base",
+    "//ui/gfx/codec",
+    "//ui/views",
   ]
 }

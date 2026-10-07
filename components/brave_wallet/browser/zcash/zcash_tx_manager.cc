@@ -85,6 +85,7 @@ void ZCashTxManager::AddUnapprovedZCashTransaction(
                            std::move(params->swap_info), std::move(callback)));
         return;
       case mojom::ZCashTxType::kOrchardToIronwood:
+      case mojom::ZCashTxType::kMigratingIronwood:
         zcash_wallet_service_->CreateOrchardToIronwoodTransaction(
             from->Clone(), params->to, amount, memo,
             base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,

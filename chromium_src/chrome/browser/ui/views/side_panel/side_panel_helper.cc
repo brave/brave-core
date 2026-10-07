@@ -42,7 +42,7 @@ void SidePanelHelper::PopulateGlobalEntries(
   // the playlist coordinator is not created for popup windows, or for
   // desktop PWAs.
   if (auto* playlist_coordinator =
-          browser->GetFeatures().playlist_side_panel_coordinator()) {
+          PlaylistSidePanelCoordinator::From(browser)) {
     playlist_coordinator->CreateAndRegisterEntry(global_registry);
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)

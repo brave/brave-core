@@ -20,6 +20,7 @@
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
+#include "ui/views/controls/button/menu_button.h"
 #include "ui/views/view_observer.h"
 #include "url/gurl.h"
 

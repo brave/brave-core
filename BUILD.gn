@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
-import("//brave/build/redirect_cc.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/tools/crates/build_crate.gni")
@@ -35,6 +34,7 @@ if (!is_ios) {
 if (is_mac) {
   import("//brave/build/mac/tweak_info_plist.gni")
   import("//build/config/mac/rules.gni")
+  import("//chrome/updater/branding.gni")
 }
 
 if (is_win) {
@@ -114,12 +114,26 @@ group("brave_all_unit_tests") {
              "json")
 }
 
+brave_network_tests_deps = [ "//brave/net:brave_cert_pinning_tests" ]
+if (!is_android && !is_ios) {
+  brave_network_tests_deps += [ "//brave/test:brave_network_audit_tests" ]
+}
+
+group("brave_network_tests") {
+  testonly = true
+  data_deps = brave_network_tests_deps
+  write_file("$root_out_dir/brave_network_tests.json",
+             brave_network_tests_deps,
+             "json")
+}
+
 # This target serves as a canonical place to define all code that has to be
 # buildable in all platforms in a single build run.
 group("all") {
   testonly = true
   deps = [
     ":brave_all_unit_tests",
+    ":brave_network_tests",
     ":chromium_unit_tests",
     "//brave",
   ]
@@ -766,7 +780,10 @@ if (is_mac) {
     }
 
     if (enable_updater) {
-      args += [ "--enable_updater" ]
+      args += [
+        "--enable_updater",
+        "--update_check_url=$update_check_url",
+      ]
     }
 
     deps = [ "//chrome:chrome_app_plist" ]
@@ -808,11 +825,6 @@ if (current_toolchain == host_toolchain) {
   }
 }
 
-if (is_redirect_cc_build) {
-  group("redirect_cc") {
-    deps = [ "//brave/tools/redirect_cc" ]
-  }
-}
 if (is_win && enable_resource_allowlist_generation) {
   # Merge chrome_resource_allowlist and wireguard resources allowlist to keep
   # wireguard resources in pak files. When VPN is disabled, just copy the chrome

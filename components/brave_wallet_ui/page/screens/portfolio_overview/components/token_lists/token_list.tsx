@@ -46,10 +46,8 @@ import {
 // Utils
 import Amount from '../../../../../utils/amount'
 import { getLocale } from '../../../../../../common/locale'
-import {
-  networkEntityAdapter, //
-} from '../../../../../common/slices/entities/network.entity'
 import { computeFiatAmount } from '../../../../../utils/pricing-utils'
+import { getNetworkId } from '../../../../../common/slices/entities/network.entity'
 import {
   emptyNetwork,
   networkSupportsAccount,
@@ -68,13 +66,13 @@ import {
 import SearchBar from '../../../../../components/shared/search-bar/index'
 import {
   PortfolioAssetItemLoadingSkeleton, //
-} from '../../../../../components/desktop/portfolio-asset-item/portfolio-asset-item-loading-skeleton'
+} from '$wallet/page/components/portfolio_asset_item/portfolio_asset_item_loading_skeleton'
 import {
   AssetGroupContainer, //
-} from '../../../../../components/desktop/asset-group-container/asset-group-container'
+} from '../asset_group_container/asset_group_container'
 import {
   EmptyTokenListState, //
-} from '../../../../../components/desktop/empty_token_list_state/empty_token_list_state'
+} from '$wallet/page/components/empty_token_list_state/empty_token_list_state'
 
 // Queries
 import {
@@ -259,13 +257,7 @@ export const TokenLists = ({
   const getAssetsByNetwork = React.useCallback(
     (network: BraveWallet.NetworkInfo) => {
       return getSortedFungibleTokensList(filteredAssetList).filter(
-        (asset) =>
-          networkEntityAdapter
-            .selectId({
-              chainId: asset.asset.chainId,
-              coin: asset.asset.coin,
-            })
-            .toString() === networkEntityAdapter.selectId(network).toString(),
+        (asset) => asset.asset.chainId === network.chainId,
       )
     },
     [filteredAssetList, getSortedFungibleTokensList],
@@ -487,11 +479,11 @@ export const TokenLists = ({
       const networksAssets = getAssetsByNetwork(network)
       return (
         <AssetGroupContainer
-          key={networkEntityAdapter.selectId(network).toString()}
+          key={getNetworkId(network)}
           balance={
             networksFiatValue.isUndefined()
               ? ''
-              : networksFiatValue.formatAsFiat(defaultFiatCurrency)
+              : networksFiatValue.compactAsFiat(defaultFiatCurrency)
           }
           network={network}
           isDisabled={networksAssets.length === 0}
@@ -573,7 +565,7 @@ export const TokenLists = ({
           balance={
             accountsFiatValue.isUndefined()
               ? ''
-              : accountsFiatValue.formatAsFiat(defaultFiatCurrency)
+              : accountsFiatValue.compactAsFiat(defaultFiatCurrency)
           }
           account={account}
           isDisabled={accountsAssets.length === 0}
@@ -649,7 +641,7 @@ export const TokenLists = ({
             textSize='16px'
             isBold={true}
           >
-            {getLocale('braveWalletAccountsAssets')}
+            {getLocale(S.BRAVE_WALLET_ACCOUNTS_ASSETS)}
           </Text>
         )}
         <Row width={showSearchBar ? '100%' : 'unset'}>
@@ -659,7 +651,7 @@ export const TokenLists = ({
               showSearchBar={showSearchBar}
             >
               <SearchBar
-                placeholder={getLocale('braveWalletSearchText')}
+                placeholder={getLocale(S.BRAVE_WALLET_SEARCH_TEXT)}
                 action={onSearchValueChange}
                 value={searchValue}
                 isV2={true}

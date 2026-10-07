@@ -39,8 +39,9 @@ class TerminalStdinTest(unittest.TestCase):
         # the source's, regardless of the host platform's line separator.
         source = 'a\nb\nc\n'
         result = terminal.run(['wc', '-c'], stdin=source)
-        self.assertEqual(result.stdout.strip(),
-                         str(len(source.encode('utf-8'))))
+        self.assertEqual(
+            result.stdout.strip(), str(len(source.encode('utf-8')))
+        )
 
     def test_bytes_stdin_is_sent_as_is(self):
         result = terminal.run(['cat'], stdin=b'raw\r\nbytes\n')

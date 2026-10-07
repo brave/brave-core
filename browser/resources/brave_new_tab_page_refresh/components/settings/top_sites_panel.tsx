@@ -15,6 +15,7 @@ import {
   useTopSitesState,
   useTopSitesActions,
 } from '../../context/top_sites_context'
+import { useRewardsState } from '../../context/rewards_context'
 import { getString } from '../../lib/strings'
 import { SettingsPanel } from './settings_panel'
 import { formatString } from '$web-common/formatString'
@@ -29,6 +30,8 @@ export function TopSitesPanel() {
   const showTopSites = useTopSitesState((s) => s.showTopSites)
   const showSponsoredSites = useTopSitesState((s) => s.showSponsoredSites)
   const listKind = useTopSitesState((s) => s.topSitesListKind)
+  const rewardsFeatureEnabled = useRewardsState((s) => s.rewardsFeatureEnabled)
+  const rewardsExternalWallet = useRewardsState((s) => s.rewardsExternalWallet)
 
   function renderSelectedMarker(kind: TopSitesListKind) {
     if (kind === listKind) {
@@ -58,7 +61,7 @@ export function TopSitesPanel() {
           {getString(S.NEW_TAB_SHOW_TOP_SITES_LABEL)}
         </span>
       </Toggle>
-      {showTopSites && (
+      {showTopSites && rewardsFeatureEnabled && !rewardsExternalWallet && (
         <Toggle
           className='toggle-row'
           size='small'

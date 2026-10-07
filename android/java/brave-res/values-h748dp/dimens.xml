@@ -15,5 +15,4 @@
     <dimen name="onboarding_illustration_padding">24dp</dimen>
     <dimen name="onboarding_title_margin_top">24dp</dimen>
     <dimen name="onboarding_subtitle_margin_top">16dp</dimen>
-    <item name="onboarding_image_top_guide_percent" format="float" type="dimen">0.20</item>
 </resources>

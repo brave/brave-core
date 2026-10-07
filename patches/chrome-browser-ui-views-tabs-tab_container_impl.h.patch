@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_container_impl.h b/chrome/browser/ui/views/tabs/tab_container_impl.h
-index 601cf56eefaf90aaf82064e64751d58593b29893..3371dcc6e23888f4ced7cd6aa1802de2acc521fb 100644
+index 4da1a6bcfb9e351349449d018c1226f117561b54..2de0fa709a43e3834c577e1b7f3e7291bd24e06a 100644
 --- a/chrome/browser/ui/views/tabs/tab_container_impl.h
 +++ b/chrome/browser/ui/views/tabs/tab_container_impl.h
-@@ -171,6 +171,7 @@ class TabContainerImpl : public TabContainer,
+@@ -173,6 +173,7 @@ class TabContainerImpl : public TabContainer,
    void UpdateZOrderCacheForTesting();
  
   private:
 +  friend class BraveTabContainer;
-   class RemoveTabDelegate;
-   views::ViewModelT<Tab>* GetTabsViewModel();
- 
-@@ -189,7 +190,7 @@ class TabContainerImpl : public TabContainer,
+   FRIEND_TEST_ALL_PREFIXES(TabContainerTest, GetChildIndexForSlotView);
+   FRIEND_TEST_ALL_PREFIXES(TabContainerTest,
+                            GetChildIndexForSlotViewWithGroups);
+@@ -195,7 +196,7 @@ class TabContainerImpl : public TabContainer,
    // Generates and sets the ideal bounds for each of the tabs. Note: Does not
    // animate the tabs to those bounds so callers can use this information for
    // other purposes - see AnimateToIdealBounds.
@@ -19,7 +19,7 @@ index 601cf56eefaf90aaf82064e64751d58593b29893..3371dcc6e23888f4ced7cd6aa1802de2
  
    // Teleports the tabs to their ideal bounds.
    // NOTE: this does *not* invoke UpdateIdealBounds, it uses the bounds
-@@ -202,12 +203,12 @@ class TabContainerImpl : public TabContainer,
+@@ -208,12 +209,12 @@ class TabContainerImpl : public TabContainer,
    int CalculateAvailableWidthForTabs() const;
  
    // Invoked from `AddTab` after the newly created tab has been inserted.
@@ -34,16 +34,16 @@ index 601cf56eefaf90aaf82064e64751d58593b29893..3371dcc6e23888f4ced7cd6aa1802de2
                                           int former_model_index) const;
  
    // Returns the largest x-value this TabContainer should contain, based on the
-@@ -225,7 +226,7 @@ class TabContainerImpl : public TabContainer,
+@@ -231,7 +232,7 @@ class TabContainerImpl : public TabContainer,
  
    // Updates `override_available_width_for_tabs_`, if necessary, to account for
    // the removal of the tab at `model_index`.
 -  void UpdateClosingModeOnRemovedTab(int model_index, bool was_active);
 +  virtual void UpdateClosingModeOnRemovedTab(int model_index, bool was_active);
  
-   // Perform an animated resize-relayout of the TabContainer immediately.
-   void ResizeLayoutTabs();
-@@ -251,7 +252,7 @@ class TabContainerImpl : public TabContainer,
+   // Returns whether `tab` is visible, accounting for tab group focusing and
+   // collapsed groups.
+@@ -274,7 +275,7 @@ class TabContainerImpl : public TabContainer,
  
    // Returns true if the specified point in TabStrip coords is within the
    // hit-test region of the specified Tab.
@@ -52,7 +52,7 @@ index 601cf56eefaf90aaf82064e64751d58593b29893..3371dcc6e23888f4ced7cd6aa1802de2
  
    // For a given point, finds a tab that is hit by the point. If the point hits
    // an area on which two tabs are overlapping, the tab is selected as follows:
-@@ -265,7 +266,7 @@ class TabContainerImpl : public TabContainer,
+@@ -288,7 +289,7 @@ class TabContainerImpl : public TabContainer,
    // (for example, if currently the strip has the last tab selected, and
    // changing that to the first tab would cause `tab` to be pushed over enough
    // to clip).

@@ -46,7 +46,8 @@ struct BraveTalkLogsView: View {
     return logFileURL
   }
 
-  private func getLogs() async -> String {
+  // @concurrent: scans the OSLog store synchronously
+  @concurrent private func getLogs() async -> String {
     do {
       let store = try OSLogStore(scope: .currentProcessIdentifier)
 

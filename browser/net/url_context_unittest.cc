@@ -156,5 +156,23 @@ TEST_F(BraveRequestInfoTest,
   EXPECT_TRUE(ctx->network_anonymization_key().IsEmpty());
 }
 
+TEST_F(BraveRequestInfoTest, WorkerWebSocketFallsBackToInitiatorTabOrigin) {
+  TestingProfile profile;
+  const url::Origin initiator =
+      url::Origin::Create(GURL("https://worker-initiator.example"));
+  network::ResourceRequest request;
+  request.url = GURL("wss://tracker.example/socket");
+  request.request_initiator = initiator;
+  ASSERT_FALSE(request.trusted_params);
+
+  auto ctx = BraveRequestInfo::MakeCTX(
+      request, content::GlobalRenderFrameHostToken(), 1, &profile,
+      /*old_ctx=*/nullptr);
+
+  ASSERT_TRUE(ctx->request_initiator());
+  EXPECT_EQ(initiator, *ctx->request_initiator());
+  EXPECT_EQ(initiator.GetURL(), ctx->tab_origin());
+}
+
 }  // namespace
 }  // namespace brave

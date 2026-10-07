@@ -109,4 +109,9 @@
          cap that Widget.MaterialComponents.BottomSheet adds, so sheets that want it set it
          explicitly on their BottomSheetBehavior. -->
     <dimen name="bottom_sheet_max_width">640dp</dimen>
+
+    <!-- Upstream sizes menus to their items instead of the fixed menu_width they used to have,
+         which leaves the app menu too narrow for the five buttons of Brave's icon row footer.
+         Keep the previous width as the minimum. -->
+    <dimen name="menu_width_min">@dimen/menu_width</dimen>
 </resources>

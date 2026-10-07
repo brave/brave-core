@@ -11,7 +11,7 @@
 
     <ImageButton android:id="@+id/brave_shields_button"
         style="@style/ToolbarButton"
-        android:src="@drawable/btn_brave"
+        android:src="@drawable/ic_social_brave_release_favicon_fullheight_color"
         android:layout_marginEnd="42dp"
         android:layout_gravity="center_vertical|end"
         android:contentDescription="@string/accessibility_toolbar_btn_brave_shields" />

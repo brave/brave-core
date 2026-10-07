@@ -3,15 +3,6 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-#
-# [VPYTHON:BEGIN]
-# python_version: "3.11"
-#
-# wheel: <
-#   name: "infra/python/wheels/pyyaml-py3"
-#   version: "version:6.0.1"
-# >
-# [VPYTHON:END]
 """Build a hermetic, reproducible Windows toolchain archive for Chromium.
 
 Windows-only: it installs the Visual Studio + Windows SDK that Chromium pins in
@@ -83,7 +74,8 @@ TOOLCHAIN_BUCKET = 'brave-build-deps-internal'
 TOOLCHAIN_BUCKET_PREFIX = 'windows-hermetic-toolchain'
 PACKAGE_DOWNLOAD_URL_BASE = (
     'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws/'
-    'windows-hermetic-toolchain/')
+    'windows-hermetic-toolchain/'
+)
 
 # A single-quoted string value as it appears in `build/vs_toolchain.py`, e.g.
 # the `'10.0.26100.0'` in `SDK_VERSION = '10.0.26100.0'`.
@@ -99,13 +91,17 @@ SDK_VERSION_IN_COMMENT = r'# VS .* with ([\d.]+) SDK'
 # `MSVS_VERSIONS`, e.g. `('2026', '18.0')`. The first entry is the one Chromium
 # packages; upstream flags it with the trailing comment we anchor on. Group 1
 # is the marketing year (`2026`), group 2 the version (`18.0`).
-PACKAGED_VS_VERSION = (r"\('(\d+)', '([\d.]+)'\),\s*"
-                       r"# The VS version in our packaged toolchain")
+PACKAGED_VS_VERSION = (
+    r"\('(\d+)', '([\d.]+)'\),\s*"
+    r"# The VS version in our packaged toolchain"
+)
 
 VS_BOOTSTRAPPER_URL_TEMPLATE = (
-    'https://aka.ms/vs/{major}/stable/vs_professional.exe')
+    'https://aka.ms/vs/{major}/stable/vs_professional.exe'
+)
 WINDOWS_SDK_DOWNLOADS_URL = (
-    'https://learn.microsoft.com/en-us/windows/apps/windows-sdk/downloads')
+    'https://learn.microsoft.com/en-us/windows/apps/windows-sdk/downloads'
+)
 
 # Read timeout for an installer (bootstrapper) download. The bootstrappers
 # themselves are small; the bulk of each install is pulled by the installer.
@@ -124,11 +120,14 @@ VS_COMPONENTS = [
 # Standard install location of `vswhere.exe`, used to read the installed VS
 # instance recorded in the toolchain index.
 VSWHERE_PATH = Path(
-    r'C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe')
+    r'C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe'
+)
 
 DEPOT_TOOLS_PYTHON3 = 'vpython3.bat'
-PACKAGE_FROM_INSTALLED_RELPATH = (Path('win_toolchain') /
-                                  'package_from_installed.py')
+PACKAGE_FROM_INSTALLED_RELPATH = (
+    Path('win_toolchain') / 'package_from_installed.py'
+)
+
 
 def _resolve_windows_sdk_installer_url(build: str) -> str:
     """Resolve the standalone installer URL for an exact Windows SDK *build*.
@@ -146,20 +145,23 @@ def _resolve_windows_sdk_installer_url(build: str) -> str:
     listed on the page.
     """
     with urllib.request.urlopen(
-            WINDOWS_SDK_DOWNLOADS_URL,
-            timeout=gitiles.HTTP_FETCH_TIMEOUT_SECS) as response:
+        WINDOWS_SDK_DOWNLOADS_URL, timeout=gitiles.HTTP_FETCH_TIMEOUT_SECS
+    ) as response:
         html = response.read().decode('utf-8')
 
     # From the parenthesized build, the next anchor labeled `Installer` is the
     # one for that row (the intervening `Release notes` anchor is skipped since
     # its link text differs).
     match = re.search(
-        re.escape(f'({build})') + r'.*?href="([^"]+)"[^>]*>\s*Installer', html,
-        re.DOTALL)
+        re.escape(f'({build})') + r'.*?href="([^"]+)"[^>]*>\s*Installer',
+        html,
+        re.DOTALL,
+    )
     if not match:
         raise RuntimeError(
             f'No Windows SDK installer for build {build} found on '
-            f'{WINDOWS_SDK_DOWNLOADS_URL}')
+            f'{WINDOWS_SDK_DOWNLOADS_URL}'
+        )
 
     url = match.group(1)
     # A few entries use protocol-relative `//go.microsoft.com/...` links.
@@ -167,8 +169,7 @@ def _resolve_windows_sdk_installer_url(build: str) -> str:
 
 
 def _rmtree(path: Path) -> None:
-    """Recursively remove *path*, clearing the read-only bit first.
-    """
+    """Recursively remove *path*, clearing the read-only bit first."""
     if not path.exists():
         return
 
@@ -180,19 +181,20 @@ def _rmtree(path: Path) -> None:
 
 
 def _download_to_file(url: str, dest: Path) -> None:
-    """Stream the response body from *url* into *dest*.
-    """
+    """Stream the response body from *url* into *dest*."""
     logging.info('Downloading %s -> %s', url, dest)
-    with urllib.request.urlopen(
-            url, timeout=INSTALLER_DOWNLOAD_TIMEOUT_SECS) as response, \
-         dest.open('wb') as out:
+    with (
+        urllib.request.urlopen(
+            url, timeout=INSTALLER_DOWNLOAD_TIMEOUT_SECS
+        ) as response,
+        dest.open('wb') as out,
+    ):
         shutil.copyfileobj(response, out)
 
 
 @dataclasses.dataclass(frozen=True)
 class WinSdkInfo:
-    """Windows toolchain identity pinned by Chromium in `build/vs_toolchain.py`.
-    """
+    """Windows toolchain identity pinned by Chromium in `build/vs_toolchain.py`."""
 
     # Windows SDK version, e.g. `10.0.26100.0` (the `SDK_VERSION` pin).
     sdk_version: str
@@ -215,8 +217,7 @@ class WinSdkInfo:
 
     @property
     def vs_major_version(self) -> str:
-        """Major component of `vs_version`, e.g. `18` -- the `aka.ms` selector.
-        """
+        """Major component of `vs_version`, e.g. `18` -- the `aka.ms` selector."""
         return self.vs_version.split('.')[0]
 
     @classmethod
@@ -231,7 +232,8 @@ class WinSdkInfo:
             match = re.search(pattern, text)
             if not match:
                 raise RuntimeError(
-                    f'Could not find {description} in build/vs_toolchain.py.')
+                    f'Could not find {description} in build/vs_toolchain.py.'
+                )
             return match.group(1)
 
         packaged_vs = re.search(PACKAGED_VS_VERSION, text)
@@ -239,15 +241,19 @@ class WinSdkInfo:
             raise RuntimeError(
                 'Could not find the packaged Visual Studio version in '
                 'build/vs_toolchain.py (the MSVS_VERSIONS entry tagged '
-                '"# The VS version in our packaged toolchain").')
-        return cls(sdk_version=value(f'SDK_VERSION = {QUOTED_VALUE}',
-                                     'SDK_VERSION'),
-                   toolchain_hash=value(f'TOOLCHAIN_HASH = {QUOTED_VALUE}',
-                                        'TOOLCHAIN_HASH'),
-                   sdk_version_in_comment=value(SDK_VERSION_IN_COMMENT,
-                                                'the full SDK build comment'),
-                   vs_year=packaged_vs.group(1),
-                   vs_version=packaged_vs.group(2))
+                '"# The VS version in our packaged toolchain").'
+            )
+        return cls(
+            sdk_version=value(f'SDK_VERSION = {QUOTED_VALUE}', 'SDK_VERSION'),
+            toolchain_hash=value(
+                f'TOOLCHAIN_HASH = {QUOTED_VALUE}', 'TOOLCHAIN_HASH'
+            ),
+            sdk_version_in_comment=value(
+                SDK_VERSION_IN_COMMENT, 'the full SDK build comment'
+            ),
+            vs_year=packaged_vs.group(1),
+            vs_version=packaged_vs.group(2),
+        )
 
 
 def toolchain_index_name(sdk_info: WinSdkInfo) -> str:
@@ -271,8 +277,9 @@ def fetch_published_index(sdk_info: WinSdkInfo) -> dict:
         RuntimeError: if the index cannot be fetched.
     """
     index_url = PACKAGE_DOWNLOAD_URL_BASE + toolchain_index_name(sdk_info)
-    return toolchain_publish.fetch_index(index_url,
-                                         'hermetic Windows toolchain')
+    return toolchain_publish.fetch_index(
+        index_url, 'hermetic Windows toolchain'
+    )
 
 
 class ToolchainBuilder:
@@ -291,10 +298,9 @@ class ToolchainBuilder:
     3. **Package** (`_build_archive`): runs depot_tools'
        `win_toolchain/package_from_installed.py` to produce a content-hash-named
        `<toolchain_hash>.zip`.
-    4. **Index** (`_precheck_publishable` / `_write_index`): refuses (early) to
-       clobber an already-published toolchain, then writes Brave's sibling
-       YAML index, named after the upstream `TOOLCHAIN_HASH` pin so it is
-       queryable by what `build/vs_toolchain.py` pins.
+    4. **Index** (`_write_index`): writes Brave's sibling YAML index, named
+       after the upstream `TOOLCHAIN_HASH` pin so it is queryable by what
+       `build/vs_toolchain.py` pins.
     """
 
     def __init__(self, chromium_tag: str, out_dir: Path):
@@ -321,7 +327,8 @@ class ToolchainBuilder:
         """Path of Brave's sibling YAML index. See `toolchain_index_name`."""
         if self._upstream_sdk_info is None:
             raise RuntimeError(
-                '_load_upstream_sdk_info() must run before _index_path')
+                '_load_upstream_sdk_info() must run before _index_path'
+            )
         return self._out_dir / toolchain_index_name(self._upstream_sdk_info)
 
     def _depot_tools_dir(self) -> Path:
@@ -336,7 +343,8 @@ class ToolchainBuilder:
             raise RuntimeError(
                 'depot_tools not found on PATH: `gclient` is not resolvable. '
                 'This script expects depot_tools to already be deployed '
-                'before it runs.')
+                'before it runs.'
+            )
         return Path(gclient).resolve().parent
 
     def _load_upstream_sdk_info(self) -> None:
@@ -345,16 +353,19 @@ class ToolchainBuilder:
         Fetches the file from gitiles at `self._chromium_tag` and stores the
         parsed pins on `self._upstream_sdk_info`.
         """
-        text = gitiles.fetch_chromium_file(self._chromium_tag,
-                                           'build/vs_toolchain.py')
+        text = gitiles.fetch_chromium_file(
+            self._chromium_tag, 'build/vs_toolchain.py'
+        )
         self._upstream_sdk_info = WinSdkInfo.from_vs_toolchain_py(text)
         logging.info(
             'Upstream Windows toolchain: VS %s (%s), SDK %s (full build %s), '
-            'toolchain hash %s', self._upstream_sdk_info.vs_year,
+            'toolchain hash %s',
+            self._upstream_sdk_info.vs_year,
             self._upstream_sdk_info.vs_version,
             self._upstream_sdk_info.sdk_version,
             self._upstream_sdk_info.sdk_version_in_comment,
-            self._upstream_sdk_info.toolchain_hash)
+            self._upstream_sdk_info.toolchain_hash,
+        )
 
     def _install_visual_studio(self) -> None:
         """Download the VS Professional bootstrapper and install it silently.
@@ -367,12 +378,16 @@ class ToolchainBuilder:
         """
         assert self._upstream_sdk_info is not None
         url = VS_BOOTSTRAPPER_URL_TEMPLATE.format(
-            major=self._upstream_sdk_info.vs_major_version)
+            major=self._upstream_sdk_info.vs_major_version
+        )
 
         bootstrapper = self._out_dir / 'vs_professional.exe'
-        logging.info('Installing Visual Studio %s (%s) from %s',
-                     self._upstream_sdk_info.vs_year,
-                     self._upstream_sdk_info.vs_version, url)
+        logging.info(
+            'Installing Visual Studio %s (%s) from %s',
+            self._upstream_sdk_info.vs_year,
+            self._upstream_sdk_info.vs_version,
+            url,
+        )
         _download_to_file(url, bootstrapper)
 
         # `--passive --wait --norestart` run a non-interactive install (progress
@@ -382,8 +397,16 @@ class ToolchainBuilder:
         # the install language stable; each `--add` selects a workload/component
         # from `VS_COMPONENTS`.
         add_flags = [arg for c in VS_COMPONENTS for arg in ('--add', c)]
-        _check_call(str(bootstrapper), '--passive', '--wait', '--norestart',
-                    '--locale', 'en-US', '--includeRecommended', *add_flags)
+        _check_call(
+            str(bootstrapper),
+            '--passive',
+            '--wait',
+            '--norestart',
+            '--locale',
+            'en-US',
+            '--includeRecommended',
+            *add_flags,
+        )
 
     def _install_windows_sdk(self) -> None:
         """Download and install the exact Windows SDK build Chromium pins.
@@ -405,8 +428,17 @@ class ToolchainBuilder:
         # non-interactive install without rebooting; `/ceip off` opts out of
         # telemetry; `/log` captures a log for diagnosing headless failures.
         log_path = self._out_dir / 'winsdksetup.log'
-        _check_call(str(installer), '/features', '+', '/quiet', '/norestart',
-                    '/ceip', 'off', '/log', str(log_path))
+        _check_call(
+            str(installer),
+            '/features',
+            '+',
+            '/quiet',
+            '/norestart',
+            '/ceip',
+            'off',
+            '/log',
+            str(log_path),
+        )
 
     @staticmethod
     def _installed_sdk_root() -> Path:
@@ -422,13 +454,15 @@ class ToolchainBuilder:
             r'HKLM\SOFTWARE\Microsoft\Windows Kits\Installed Roots',
             '/v',
             'KitsRoot10',
-            capture_output=True).stdout
+            capture_output=True,
+        ).stdout
         match = re.search(r'KitsRoot10\s+REG_SZ\s+(.+)', output)
         if not match:
             raise RuntimeError(
                 'Could not resolve the installed Windows SDK root from the '
                 r'registry (KitsRoot10 under HKLM\SOFTWARE\Microsoft\Windows '
-                r'Kits\Installed Roots).')
+                r'Kits\Installed Roots).'
+            )
         return Path(match.group(1).strip().rstrip('\\'))
 
     @staticmethod
@@ -453,26 +487,29 @@ class ToolchainBuilder:
         builds = []
         for uninstall_key in uninstall_keys:
             try:
-                subkeys = _check_call('reg',
-                                      'query',
-                                      uninstall_key,
-                                      capture_output=True).stdout
+                subkeys = _check_call(
+                    'reg', 'query', uninstall_key, capture_output=True
+                ).stdout
             except subprocess.CalledProcessError:
                 continue
             for line in subkeys.splitlines():
                 subkey = line.strip()
                 if not subkey.startswith('HKEY_'):
                     continue
-                entry = _check_call('reg',
-                                    'query',
-                                    subkey,
-                                    '/v',
-                                    'DisplayName',
-                                    capture_output=True,
-                                    check=False).stdout
+                entry = _check_call(
+                    'reg',
+                    'query',
+                    subkey,
+                    '/v',
+                    'DisplayName',
+                    capture_output=True,
+                    check=False,
+                ).stdout
                 match = re.search(
                     r'Windows Software Development Kit.*?'
-                    r'(\d+\.\d+\.\d+\.\d+)', entry)
+                    r'(\d+\.\d+\.\d+\.\d+)',
+                    entry,
+                )
                 if match:
                     builds.append(match.group(1))
         return builds
@@ -497,18 +534,22 @@ class ToolchainBuilder:
         assert self._upstream_sdk_info is not None
         sdk_info = self._upstream_sdk_info
 
-        include_dir = (self._installed_sdk_root() / 'Include' /
-                       sdk_info.sdk_version)
+        include_dir = (
+            self._installed_sdk_root() / 'Include' / sdk_info.sdk_version
+        )
         if not include_dir.is_dir():
             raise RuntimeError(
                 f'Expected Windows SDK {sdk_info.sdk_version} headers at '
                 f'{include_dir}, but that directory does not exist. '
                 'package_from_installed.py would silently produce an '
-                'incomplete Windows Kits payload for this SDK version.')
+                'incomplete Windows Kits payload for this SDK version.'
+            )
 
         installed_builds = self._installed_sdk_builds()
-        logging.info('Installed Windows SDK builds found: %s', installed_builds
-                     or '(none)')
+        logging.info(
+            'Installed Windows SDK builds found: %s',
+            installed_builds or '(none)',
+        )
         if sdk_info.sdk_version_in_comment not in installed_builds:
             raise RuntimeError(
                 f'Pinned Windows SDK build '
@@ -516,11 +557,11 @@ class ToolchainBuilder:
                 'build/vs_toolchain.py was not found among the installed SDK '
                 f'builds recorded in Add/Remove Programs: {installed_builds}. '
                 'Refusing to package a toolchain that may not match what was '
-                'requested.')
+                'requested.'
+            )
 
     def _build_archive(self) -> Path:
-        """Package the installed toolchain with depot_tools; return the `.zip`.
-        """
+        """Package the installed toolchain with depot_tools; return the `.zip`."""
         assert self._upstream_sdk_info is not None
         depot_tools = self._depot_tools_dir()
         python3 = depot_tools / DEPOT_TOOLS_PYTHON3
@@ -533,52 +574,46 @@ class ToolchainBuilder:
         _rmtree(toolchain_dir)
         toolchain_dir.mkdir(parents=True)
 
-        _check_call(str(python3),
-                    str(package_script),
-                    self._upstream_sdk_info.vs_year,
-                    '-w',
-                    self._upstream_sdk_info.sdk_version,
-                    '--allow_multiple_vs_installs',
-                    cwd=toolchain_dir)
+        _check_call(
+            str(python3),
+            str(package_script),
+            self._upstream_sdk_info.vs_year,
+            '-w',
+            self._upstream_sdk_info.sdk_version,
+            '--allow_multiple_vs_installs',
+            cwd=toolchain_dir,
+        )
 
         zips = list(toolchain_dir.glob('*.zip'))
         if len(zips) != 1:
             raise RuntimeError(
                 f'expected exactly one toolchain .zip in {toolchain_dir}, '
-                f'found {len(zips)}: {zips}')
+                f'found {len(zips)}: {zips}'
+            )
         logging.info('Packaged toolchain archive: %s', zips[0])
         return zips[0]
 
     @staticmethod
     def _installed_vs_instance() -> dict:
-        """Return the active `vswhere -latest` instance as a dict.
-        """
+        """Return the active `vswhere -latest` instance as a dict."""
         return json.loads(
-            _check_call(str(VSWHERE_PATH),
-                        '-latest',
-                        '-format',
-                        'json',
-                        capture_output=True).stdout)[0]
-
-    def _precheck_publishable(self) -> None:
-        """Fail fast if an index for this upstream toolchain hash is published.
-        """
-        assert self._upstream_sdk_info is not None
-        index_url = PACKAGE_DOWNLOAD_URL_BASE + self._index_path.name
-        if toolchain_publish.remote_url_exists(index_url):
-            raise RuntimeError(
-                f'{index_url} already exists; a toolchain for upstream hash '
-                f'{self._upstream_sdk_info.toolchain_hash} is already '
-                'published.')
+            _check_call(
+                str(VSWHERE_PATH),
+                '-latest',
+                '-format',
+                'json',
+                capture_output=True,
+            ).stdout
+        )[0]
 
     def _write_index(self, archive: Path) -> None:
-        """Write Brave's sibling `<toolchain_hash>.yaml` bucket index.
-        """
+        """Write Brave's sibling `<toolchain_hash>.yaml` bucket index."""
         assert self._upstream_sdk_info is not None
         sdk_info = self._upstream_sdk_info
         vswhere_instance = self._installed_vs_instance()
         installed_vs_version = vswhere_instance['catalog'][
-            'productDisplayVersion']
+            'productDisplayVersion'
+        ]
 
         index = {
             'url': PACKAGE_DOWNLOAD_URL_BASE + archive.name,
@@ -598,11 +633,12 @@ class ToolchainBuilder:
         toolchain_publish.write_index_file(self._index_path, index)
 
     def _upload(self, archive: Path) -> None:
-        """Upload the archive and its sibling index to the internal bucket.
-        """
-        toolchain_publish.upload_files(TOOLCHAIN_BUCKET,
-                                       TOOLCHAIN_BUCKET_PREFIX,
-                                       (archive, self._index_path))
+        """Upload the archive and its sibling index to the internal bucket."""
+        toolchain_publish.upload_files(
+            TOOLCHAIN_BUCKET,
+            TOOLCHAIN_BUCKET_PREFIX,
+            (archive, self._index_path),
+        )
 
     def run(self, clear: bool = False, upload: bool = False) -> None:
         """Execute the full inspect-install-pack-index-upload pipeline.
@@ -616,9 +652,8 @@ class ToolchainBuilder:
 
         Raises:
             RuntimeError: If not running elevated, if `depot_tools` is not on
-                PATH, if a published index already exists for this toolchain,
-                if the installed Windows SDK doesn't match the upstream pin
-                (see `_verify_installed_sdk`), or if
+                PATH, if the installed Windows SDK doesn't match the upstream
+                pin (see `_verify_installed_sdk`), or if
                 `package_from_installed.py` did not produce exactly one
                 `.zip`.
             urllib.error.HTTPError: If a gitiles fetch fails (typically a bad
@@ -633,7 +668,8 @@ class ToolchainBuilder:
         if ctypes.windll.shell32.IsUserAnAdmin() == 0:
             raise RuntimeError(
                 'Please run as Administrator. Write access to Program Files is '
-                'required.')
+                'required.'
+            )
 
         if clear:
             logging.info('Clearing contents of %s', self._out_dir)
@@ -642,7 +678,6 @@ class ToolchainBuilder:
 
         self._depot_tools_dir()
         self._load_upstream_sdk_info()
-        self._precheck_publishable()
         self._install_visual_studio()
         self._install_windows_sdk()
         self._verify_installed_sdk()
@@ -650,44 +685,56 @@ class ToolchainBuilder:
         self._write_index(archive)
         if upload:
             self._upload(archive)
-        logging.info('Toolchain download URL (once published): %s',
-                     PACKAGE_DOWNLOAD_URL_BASE + archive.name)
+        logging.info(
+            'Toolchain download URL (once published): %s',
+            PACKAGE_DOWNLOAD_URL_BASE + archive.name,
+        )
 
 
 def main(argv: list[str] | None = None) -> int:
     """Parse CLI arguments and pack the toolchain."""
-    parser = argparse.ArgumentParser(description=(
-        'Builds an archive of a hermetic Windows (MSVC + SDK) toolchain.'))
+    parser = argparse.ArgumentParser(
+        description=(
+            'Builds an archive of a hermetic Windows (MSVC + SDK) toolchain.'
+        )
+    )
     parser.add_argument(
         '--out-dir',
         required=True,
         type=Path,
         help='Directory used to build the toolchain and produce the resulting '
-        'archive.')
+        'archive.',
+    )
     parser.add_argument(
         '--chromium-tag',
         required=True,
         help='Chromium release tag (e.g. 150.0.7841.1) used to read the pinned '
-        'Windows SDK version / toolchain hash.')
+        'Windows SDK version / toolchain hash.',
+    )
     parser.add_argument(
         '--clear',
         action='store_true',
-        help='Makes sure the output directory is empty before building.')
+        help='Makes sure the output directory is empty before building.',
+    )
     parser.add_argument(
         '--upload',
         action='store_true',
         help=f'Upload the archive and its sibling index to the internal '
-        f'build-deps bucket ({TOOLCHAIN_BUCKET}) after building.')
-    parser.add_argument('--verbose',
-                        action='store_true',
-                        help='Enable verbose (debug) logging.')
+        f'build-deps bucket ({TOOLCHAIN_BUCKET}) after building.',
+    )
+    parser.add_argument(
+        '--verbose', action='store_true', help='Enable verbose (debug) logging.'
+    )
     args = parser.parse_args(argv)
 
-    logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO,
-                        format='%(message)s')
+    logging.basicConfig(
+        level=logging.DEBUG if args.verbose else logging.INFO,
+        format='%(message)s',
+    )
 
-    ToolchainBuilder(args.chromium_tag, args.out_dir).run(clear=args.clear,
-                                                          upload=args.upload)
+    ToolchainBuilder(args.chromium_tag, args.out_dir).run(
+        clear=args.clear, upload=args.upload
+    )
     return 0
 
 

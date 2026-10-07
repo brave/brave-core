@@ -50,7 +50,7 @@ void BraveThemeService::OnDarkerThemePrefChanged() {
 
 void BraveThemeService::MigrateBrowserColorSchemeFromBraveDarkModePrefs(
     Profile* profile) {
-  if (!g_browser_process || !g_browser_process->local_state()) {
+  if (!g_browser_process) {
     CHECK_IS_TEST();
     return;
   }

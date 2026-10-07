@@ -125,7 +125,9 @@ export const PendingTransactionNetworkFeeAndSettings: React.FC<Props> = ({
   return (
     <NetworkFeeAndSettingsContainer>
       <NetworkFeeContainer>
-        <NetworkFeeTitle>{getLocale('braveWalletNetworkFees')}</NetworkFeeTitle>
+        <NetworkFeeTitle>
+          {getLocale(S.BRAVE_WALLET_NETWORK_FEES)}
+        </NetworkFeeTitle>
         <NetworkFeeValue>
           {showNetworkLogo ? (
             <CreateNetworkIcon
@@ -148,7 +150,7 @@ export const PendingTransactionNetworkFeeAndSettings: React.FC<Props> = ({
           )}
           {showEditGas && (
             <EditButton onClick={onToggleEditGas}>
-              {getLocale('braveWalletAllowSpendEditButton')}
+              {getLocale(S.BRAVE_WALLET_ALLOW_SPEND_EDIT_BUTTON)}
             </EditButton>
           )}
         </NetworkFeeValue>

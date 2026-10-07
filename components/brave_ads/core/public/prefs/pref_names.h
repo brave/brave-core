@@ -13,7 +13,8 @@ static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
 namespace brave_ads::prefs {
 
 // IMPORTANT: Prefs that need clearing should be prefixed with
-// `brave.brave_ads`.
+// `brave.brave_ads`. `kSponsoredEnabled` is the exception; it records a user
+// choice that must outlive ads data, so `ClearAdsPrefs` restores it.
 
 // Ads prefs.
 inline constexpr char kFirstRunAt[] = "brave.brave_ads.first_run_at";
@@ -27,8 +28,7 @@ inline constexpr char kNotificationsEnabled[] =
 inline constexpr char kMaximumNotificationAdsPerHour[] =
     "brave.brave_ads.ads_per_hour";
 
-inline constexpr char kOptedInToSearchResultAds[] =
-    "brave.brave_ads.opted_in_to_search_result_ads";
+inline constexpr char kSponsoredEnabled[] = "brave.brave_ads.sponsored.enabled";
 
 inline constexpr char kShouldAllowSubdivisionTargeting[] =
     "brave.brave_ads.should_allow_ads_subdivision_targeting";

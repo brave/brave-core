@@ -156,6 +156,10 @@ export const style = scoped.css`
 
   .sponsored-site-tooltip {
     max-width: 320px;
+
+    a {
+      color: inherit;
+    }
   }
 
   /* Collapses the tooltip's shadow-DOM bubble, which stays visible even
@@ -177,13 +181,12 @@ export const style = scoped.css`
     align-self: stretch;
     color: ${color.white};
     text-align: center;
-    text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.20);
+    text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.40);
     font-size: 10px;
     font-style: normal;
     font-weight: 400;
     line-height: 100%;
     letter-spacing: -0.08px;
-    opacity: 0.6;
     margin-top: -6px;
   }
 

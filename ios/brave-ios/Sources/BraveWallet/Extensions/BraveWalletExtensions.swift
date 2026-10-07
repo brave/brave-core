@@ -523,13 +523,6 @@ extension BraveWallet.BlockchainToken {
     contractAddress + symbol + chainId + tokenId
   }
 
-  var isAuroraSupportedToken: Bool {
-    let isSupportedContractAddress = WalletConstants.supportedAuroraBridgeTokensContractAddresses
-      .contains(where: { $0.caseInsensitiveCompare(contractAddress) == .orderedSame })
-    return (contractAddress.isEmpty || isSupportedContractAddress)
-      && chainId == BraveWallet.MainnetChainId
-  }
-
   var nftTokenTitle: String {
     if isErc721, let tokenId = Int(tokenId.removingHexPrefix, radix: 16) {
       return "\(name) #\(tokenId)"
@@ -774,7 +767,7 @@ extension BraveWallet.ZCashAddressError {
       return Strings.Wallet.sendErrorZecAddressOrchardPartMissing
     case .invalidAddressNetworkMismatch:
       return Strings.Wallet.sendErrorZecAddressNetworkMissmatch
-    case .notZCashAccount, .invalidSenderType:
+    case .notZCashAccount, .invalidSenderType, .invalidRecipientType:
       fallthrough
     @unknown default:
       return Strings.Wallet.unknownError

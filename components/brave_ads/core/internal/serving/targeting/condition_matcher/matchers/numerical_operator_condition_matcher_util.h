@@ -38,10 +38,12 @@ std::optional<double> MaybeResolveNumericalOperand(
 // Matches a value against a numerical condition using equality, greater than,
 // greater than or equal, less than, less than or equal, and not equal. The >=
 // and <= checks use a small absolute epsilon. This is acceptable here because
-// operands are parsed from numeric strings.
-bool MatchNumericalOperator(std::string_view value,
-                            ConditionMatcherOperatorType operator_type,
-                            double operand);
+// operands are parsed from numeric strings. Returns
+// `ConditionMatchResult::kInvalid` if `value` is not a number.
+ConditionMatchResult MatchNumericalOperator(
+    std::string_view value,
+    ConditionMatcherOperatorType operator_type,
+    double operand);
 
 }  // namespace brave_ads
 

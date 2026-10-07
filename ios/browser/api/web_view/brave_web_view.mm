@@ -13,13 +13,11 @@
 #include "base/functional/bind.h"
 #include "base/notreached.h"
 #include "base/strings/sys_string_conversions.h"
-#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat_associated_content_page_fetcher.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat_tab_helper.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
-#include "brave/ios/browser/ai_chat/ai_chat_distiller_javascript_feature.h"
 #include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge_holder.h"
 #include "brave/ios/browser/ai_chat/tab_data_web_state_observer.h"
 #include "brave/ios/browser/ai_chat/tab_tracker_service_factory.h"
@@ -27,13 +25,18 @@
 #include "brave/ios/browser/api/web_view/autofill/brave_web_view_autofill_client.h"
 #include "brave/ios/browser/api/web_view/brave_web_frame_internal.h"
 #include "brave/ios/browser/api/web_view/passwords/brave_web_view_password_manager_client.h"
+#include "brave/ios/browser/brave_account/brave_account_dialog_mode_holder.h"
+#include "brave/ios/browser/brave_account/brave_account_dialog_opener_bridge.h"
+#include "brave/ios/browser/brave_account/brave_account_dialog_opener_bridge_holder.h"
 #include "brave/ios/browser/brave_ads/ads_tab_helper.h"
 #include "brave/ios/browser/brave_search/brave_search_ad_results_javascript_feature.h"
 #include "brave/ios/browser/brave_search/brave_search_make_default_tab_helper.h"
 #include "brave/ios/browser/brave_search/brave_search_make_default_tab_helper_bridge.h"
+#include "brave/ios/browser/brave_shields/cosmetic_filtering/cosmetic_filtering_tab_helper.h"
 #include "brave/ios/browser/brave_shields/protection_stats_tab_helper.h"
 #include "brave/ios/browser/brave_shields/protection_stats_tab_helper_bridge.h"
 #include "brave/ios/browser/brave_shields/request_blocking/request_blocking_tab_helper.h"
+#include "brave/ios/browser/brave_shields/scriptlets/scriptlets_tab_helper.h"
 #include "brave/ios/browser/brave_talk/brave_talk_tab_helper_bridge.h"
 #include "brave/ios/browser/brave_wallet/cardano_provider_tab_helper.h"
 #include "brave/ios/browser/brave_wallet/ethereum_provider_tab_helper.h"
@@ -47,6 +50,7 @@
 #include "brave/ios/browser/web/logins/logins_tab_helper_bridge.h"
 #include "brave/ios/browser/web/page_metadata/page_metadata_javascript_feature.h"
 #include "brave/ios/browser/web/reader_mode/reader_mode_javascript_feature.h"
+#include "brave/ios/browser/web/text_content_distiller/text_content_distiller_javascript_feature.h"
 #include "brave/ios/browser/youtube/youtube_network_change_observer.h"
 #include "components/autofill/core/browser/logging/log_manager.h"
 #include "components/autofill/core/browser/logging/log_router.h"
@@ -84,6 +88,7 @@
 #include "ios/web/public/js_messaging/content_world.h"
 #include "ios/web/public/js_messaging/web_frames_manager_observer_bridge.h"
 #include "ios/web/public/navigation/navigation_context.h"
+#include "ios/web/public/navigation/navigation_manager.h"
 #include "ios/web/public/navigation/web_state_policy_decider.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/web_state_user_data.h"
@@ -134,9 +139,10 @@ class BraveWebViewWebStatePolicyDecider : public web::WebStatePolicyDecider {
       web::WebStatePolicyDecider::RequestInfo request_info,
       web::WebStatePolicyDecider::PolicyDecisionCallback callback) override {
     id<BraveWebViewNavigationDelegate> delegate = web_view_.navigationDelegate;
-    if ([delegate respondsToSelector:@selector
-                  (webView:
-                      decidePolicyForBraveNavigationAction:decisionHandler:)]) {
+    if ([delegate
+            respondsToSelector:@selector(
+                                   webView:decidePolicyForBraveNavigationAction:
+                                   decisionHandler:)]) {
       BraveNavigationAction* navigationAction =
           [[BraveNavigationAction alloc] initWithRequest:request
                                              requestInfo:request_info];
@@ -271,6 +277,9 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 @property(nonatomic, weak)
     id<AIChatUIHandlerBridge, AIChatAssociatedContentPageFetcher>
         aiChatUIHandler;
+@property(nonatomic) BraveAccountDialogMode braveAccountDialogMode;
+@property(nonatomic, weak) id<BraveAccountDialogOpenerBridge>
+    braveAccountDialogOpener;
 @property(nonatomic, weak) id<WalletPageHandlerBridge> walletPageHandler;
 @property(nonatomic, weak) id<LoginsTabHelperBridge> loginsHelper;
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
@@ -287,6 +296,10 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 @property(nonatomic, weak) id<PrintHandler> printHandler;
 @property(nonatomic, weak) id<RequestBlockingTabHelperBridge>
     requestBlockingTabHelperBridge;
+@property(nonatomic, weak) id<CosmeticFilteringTabHelperBridge>
+    cosmeticFilteringTabHelperBridge;
+@property(nonatomic, weak) id<ScriptletsTabHelperBridge>
+    scriptletsTabHelperBridge;
 @property(nonatomic, weak) id<BraveWalletProviderDelegate>
     walletProviderDelegate;
 @end
@@ -384,14 +397,24 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   [super attachSecurityInterstitialHelpersToWebStateIfNecessary];
   AttachTabHelpers(self.webState);
 
-  if (ai_chat::features::IsAIChatWebUIEnabled()) {
-    ai_chat::UIHandlerBridgeHolder::CreateForWebState(self.webState);
-    ai_chat::UIHandlerBridgeHolder::FromWebState(self.webState)
-        ->SetBridge(self.aiChatUIHandler);
-    ai_chat::AIChatTabHelper::CreateForWebState(self.webState);
-    ai_chat::AIChatTabHelper::FromWebState(self.webState)
-        ->SetPageFetcher(self.aiChatUIHandler);
-  }
+  ai_chat::UIHandlerBridgeHolder::CreateForWebState(self.webState);
+  ai_chat::UIHandlerBridgeHolder::FromWebState(self.webState)
+      ->SetBridge(self.aiChatUIHandler);
+  ai_chat::AIChatTabHelper::CreateForWebState(self.webState);
+  ai_chat::AIChatTabHelper::FromWebState(self.webState)
+      ->SetPageFetcher(self.aiChatUIHandler);
+
+  brave_account::BraveAccountDialogModeHolder::CreateForWebState(self.webState);
+  brave_account::BraveAccountDialogModeHolder::FromWebState(self.webState)
+      ->SetDialogMode(static_cast<brave_account::mojom::DialogMode>(
+          self.braveAccountDialogMode));
+
+  brave_account::BraveAccountDialogOpenerBridgeHolder::CreateForWebState(
+      self.webState);
+  brave_account::BraveAccountDialogOpenerBridgeHolder::FromWebState(
+      self.webState)
+      ->SetBridge(self.braveAccountDialogOpener);
+
   brave_wallet::PageHandlerBridgeHolder::CreateForWebState(self.webState);
   brave_wallet::PageHandlerBridgeHolder::FromWebState(self.webState)
       ->SetBridge(self.walletPageHandler);
@@ -463,6 +486,14 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
     RequestBlockingTabHelper::CreateForWebState(self.webState);
     RequestBlockingTabHelper::FromWebState(self.webState)
         ->SetBridge(self.requestBlockingTabHelperBridge);
+
+    CosmeticFilteringTabHelper::CreateForWebState(self.webState);
+    CosmeticFilteringTabHelper::FromWebState(self.webState)
+        ->SetBridge(self.cosmeticFilteringTabHelperBridge);
+
+    ScriptletsTabHelper::CreateForWebState(self.webState);
+    ScriptletsTabHelper::FromWebState(self.webState)
+        ->SetBridge(self.scriptletsTabHelperBridge);
   }
 }
 
@@ -568,9 +599,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
                       proposedCredential:(NSURLCredential*)proposedCredential
                        completionHandler:(void (^)(NSString* username,
                                                    NSString* password))handler {
-  SEL selector = @selector(webView:
-      didRequestHTTPAuthForProtectionSpace:proposedCredential:completionHandler
-                                          :);
+  SEL selector = @selector(webView:didRequestHTTPAuthForProtectionSpace:
+                           proposedCredential:completionHandler:);
   if ([self.navigationDelegate respondsToSelector:selector]) {
     [self.navigationDelegate webView:self
         didRequestHTTPAuthForProtectionSpace:protectionSpace
@@ -586,6 +616,37 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   if ([self.UIDelegate respondsToSelector:selector]) {
     [self.UIDelegate webViewDidCreateNewWebView:self];
   }
+}
+
+- (web::WebState*)webState:(web::WebState*)webState
+         openURLWithParams:(const web::WebState::OpenURLParams&)params {
+  // `CWVWebView` loads every URL in the current web view regardless of the
+  // requested disposition, so handle the new tab dispositions here to match
+  // Chrome.
+  const bool inBackground =
+      params.disposition == WindowOpenDisposition::NEW_BACKGROUND_TAB;
+  if ((params.disposition == WindowOpenDisposition::NEW_FOREGROUND_TAB ||
+       inBackground) &&
+      [self.UIDelegate
+          respondsToSelector:
+              @selector(webView:createWebViewForOpeningURL:inBackground:)]) {
+    CWVWebView* newWebView =
+        [self.UIDelegate webView:self
+            createWebViewForOpeningURL:net::NSURLWithGURL(params.url)
+                          inBackground:inBackground];
+    web::WebState* newWebState = newWebView.webState;
+    if (!newWebState) {
+      return nullptr;
+    }
+    web::NavigationManager::WebLoadParams loadParams(params.url);
+    loadParams.referrer = params.referrer;
+    loadParams.transition_type = params.transition;
+    loadParams.is_renderer_initiated = params.is_renderer_initiated;
+    loadParams.virtual_url = params.virtual_url;
+    newWebState->GetNavigationManager()->LoadURLWithParams(loadParams);
+    return newWebState;
+  }
+  return [super webState:webState openURLWithParams:params];
 }
 
 #pragma mark - CRWWebStateObserver
@@ -605,8 +666,9 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 
   if (navigation->HasCommitted() && navigation->IsSameDocument() &&
       !navigation->GetError() &&
-      [self.navigationDelegate respondsToSelector:@selector
-                               (webViewDidCommitSameDocumentNavigation:)]) {
+      [self.navigationDelegate
+          respondsToSelector:@selector(
+                                 webViewDidCommitSameDocumentNavigation:)]) {
     [self.navigationDelegate webViewDidCommitSameDocumentNavigation:self];
   }
 }
@@ -614,8 +676,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 #pragma mark - FaviconDriverObserverBridge
 
 - (void)faviconDriverDidUpdateFavicon:(favicon::FaviconDriver*)driver {
-  if ([self.UIDelegate respondsToSelector:@selector(webView:
-                                              didUpdateFaviconStatus:)]) {
+  if ([self.UIDelegate
+          respondsToSelector:@selector(webView:didUpdateFaviconStatus:)]) {
     [self.UIDelegate webView:self didUpdateFaviconStatus:self.faviconStatus];
   }
 }
@@ -656,7 +718,7 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 @implementation BraveWebView (AIChatDistiller)
 
 - (void)fetchMainArticle:(void (^)(NSString* text))completionHandler {
-  AIChatDistillerJavaScriptFeature::GetInstance()->GetMainArticle(
+  TextContentDistillerJavaScriptFeature::GetInstance()->GetTextContent(
       self.webState, base::BindOnce(^(std::string text) {
         completionHandler(base::SysUTF8ToNSString(text));
       }));
@@ -669,14 +731,35 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 - (void)setAiChatUIHandler:
     (id<AIChatUIHandlerBridge, AIChatAssociatedContentPageFetcher>)bridge {
   _aiChatUIHandler = bridge;
-  if (ai_chat::features::IsAIChatWebUIEnabled()) {
-    ai_chat::UIHandlerBridgeHolder::CreateForWebState(self.webState);
-    ai_chat::UIHandlerBridgeHolder::FromWebState(self.webState)
-        ->SetBridge(bridge);
-    ai_chat::AIChatTabHelper::CreateForWebState(self.webState);
-    ai_chat::AIChatTabHelper::FromWebState(self.webState)
-        ->SetPageFetcher(self.aiChatUIHandler);
-  }
+
+  ai_chat::UIHandlerBridgeHolder::CreateForWebState(self.webState);
+  ai_chat::UIHandlerBridgeHolder::FromWebState(self.webState)
+      ->SetBridge(bridge);
+  ai_chat::AIChatTabHelper::CreateForWebState(self.webState);
+  ai_chat::AIChatTabHelper::FromWebState(self.webState)
+      ->SetPageFetcher(self.aiChatUIHandler);
+}
+
+@end
+
+@implementation BraveWebView (BraveAccountWebUI)
+
+- (void)setBraveAccountDialogMode:(BraveAccountDialogMode)dialogMode {
+  _braveAccountDialogMode = dialogMode;
+  brave_account::BraveAccountDialogModeHolder::CreateForWebState(self.webState);
+  brave_account::BraveAccountDialogModeHolder::FromWebState(self.webState)
+      ->SetDialogMode(
+          static_cast<brave_account::mojom::DialogMode>(dialogMode));
+}
+
+- (void)setBraveAccountDialogOpener:
+    (id<BraveAccountDialogOpenerBridge>)braveAccountDialogOpener {
+  _braveAccountDialogOpener = braveAccountDialogOpener;
+  brave_account::BraveAccountDialogOpenerBridgeHolder::CreateForWebState(
+      self.webState);
+  brave_account::BraveAccountDialogOpenerBridgeHolder::FromWebState(
+      self.webState)
+      ->SetBridge(braveAccountDialogOpener);
 }
 
 @end
@@ -903,6 +986,31 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   _requestBlockingTabHelperBridge = bridge;
   if (RequestBlockingTabHelper* tab_helper =
           RequestBlockingTabHelper::FromWebState(self.webState)) {
+    tab_helper->SetBridge(bridge);
+  }
+}
+
+@end
+
+@implementation BraveWebView (CosmeticFiltering)
+
+- (void)setCosmeticFilteringTabHelperBridge:
+    (id<CosmeticFilteringTabHelperBridge>)bridge {
+  _cosmeticFilteringTabHelperBridge = bridge;
+  if (CosmeticFilteringTabHelper* tab_helper =
+          CosmeticFilteringTabHelper::FromWebState(self.webState)) {
+    tab_helper->SetBridge(bridge);
+  }
+}
+
+@end
+
+@implementation BraveWebView (Scriptlets)
+
+- (void)setScriptletsTabHelperBridge:(id<ScriptletsTabHelperBridge>)bridge {
+  _scriptletsTabHelperBridge = bridge;
+  if (ScriptletsTabHelper* tab_helper =
+          ScriptletsTabHelper::FromWebState(self.webState)) {
     tab_helper->SetBridge(bridge);
   }
 }

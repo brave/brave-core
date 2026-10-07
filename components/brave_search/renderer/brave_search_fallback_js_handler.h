@@ -12,11 +12,11 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_search/common/brave_search_fallback.mojom.h"
-#include "mojo/public/cpp/bindings/remote.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
 #include "v8/include/v8.h"
 
 namespace blink {
-class ThreadSafeBrowserInterfaceBrokerProxy;
+class WebServiceWorkerContextProxy;
 }
 
 namespace brave_search {
@@ -26,7 +26,7 @@ class BraveSearchFallbackJSHandler {
  public:
   BraveSearchFallbackJSHandler(
       v8::Local<v8::Context> v8_context,
-      blink::ThreadSafeBrowserInterfaceBrokerProxy* broker);
+      blink::WebServiceWorkerContextProxy* context_proxy);
   BraveSearchFallbackJSHandler(const BraveSearchFallbackJSHandler&) = delete;
   BraveSearchFallbackJSHandler& operator=(const BraveSearchFallbackJSHandler&) =
       delete;
@@ -44,7 +44,6 @@ class BraveSearchFallbackJSHandler {
                             const std::string& name,
                             const base::RepeatingCallback<Sig>& callback);
   void BindFunctionsToObject();
-  bool EnsureConnected();
 
   // A function to be called from JS
   v8::Local<v8::Promise> FetchBackupResults(
@@ -59,9 +58,8 @@ class BraveSearchFallbackJSHandler {
       std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
       const std::string& response);
 
-  raw_ptr<blink::ThreadSafeBrowserInterfaceBrokerProxy> broker_ =
-      nullptr;  // not owned
-  mojo::Remote<brave_search::mojom::BraveSearchFallback> brave_search_fallback_;
+  mojo::AssociatedRemote<brave_search::mojom::BraveSearchFallback>
+      brave_search_fallback_;
   v8::Global<v8::Context> context_;
   raw_ptr<v8::Isolate> isolate_ = nullptr;
 };

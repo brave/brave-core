@@ -1,0 +1,12 @@
+diff --git a/components/omnibox/resources/BUILD.gn b/components/omnibox/resources/BUILD.gn
+index 8cb7892830cdb9a86a0aa8c026f7946399099080..3707a9879ea5ed6a4e3933d80ffbc96fabfa02b9 100644
+--- a/components/omnibox/resources/BUILD.gn
++++ b/components/omnibox/resources/BUILD.gn
+@@ -27,6 +27,7 @@ grit_strings("omnibox_pedal_synonyms") {
+       "pt-BR",
+     ]
+   }
++  _locales -= brave_extended_locales_exclusions
+   inputs = process_file_template(
+           _locales,
+           [ "translations/omnibox_pedal_synonyms_{{source_name_part}}.xtb" ])

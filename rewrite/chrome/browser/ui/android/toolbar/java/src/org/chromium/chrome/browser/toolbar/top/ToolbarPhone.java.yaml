@@ -5,18 +5,16 @@
 
 substitutions:
   - description: |
-      Update Brave's modern location bar color after Chromium updates it.
+      Refresh the Brave toolbar button tint before Chromium's cached-color early return.
 
-      Run Brave's color update after the Chromium location bar and optional
-      button backgrounds use the new color.
+      A private-to-standard tab switch can replace Brave button backgrounds. Refreshing the color
+      at the start of the method ensures the toolbar displays correctly, and this refresh call
+      is not ignored by upstream's early-exit due to the cached color being unchanged.
     regex:
-      re_pattern:
-        '(private\s+void\s+updateModernLocationBarColor\([^)]*\)\s*\{.*?mOptionalButtonCoordinator\.setBackgroundColorFilter\(color\);\s*\}\n)([
-        \t]*)(\})'
-      re_flags: [DOTALL]
+      re_pattern: '(private void updateModernLocationBarColor\([^)]*\)\s*\{)'
       replace: |-
-        \1        BraveToolbarLayout.class.cast(this).updateModernLocationBarColorImpl(color);
-        \2\3
+        \1
+                BraveToolbarLayout.class.cast(this).updateModernLocationBarColorImpl(color);
   - description: |
       Skip location bar layout when the Brave location bar is unavailable.
 
@@ -26,6 +24,19 @@ substitutions:
       replace: |-
         \1
                 if (!BraveToolbarLayout.class.cast(this).isLocationBarValid(mLocationBar)) return;
+  - description: |
+      Require omnibox focus for the DSE icon focus-animation offset.
+
+      Upstream moves focus to a 1px thief view inside the location bar when an
+      omnibox session ends, so the View#hasFocus() this is called with stays
+      true once unfocused and the offset that makes room for the DSE icon is
+      never undone. Brave keeps the real omnibox visible on the NTP, where that
+      leaves the status icon shifted out of the location bar background.
+    regex:
+      re_pattern: '(int\s+getLocationBarOffsetForFocusAnimation\([^)]*\)\s*\{)'
+      replace: |-
+        \1
+                if (!urlHasFocus()) return 0;
   - description: |
       Draw Brave's toolbar animation overlay with the Chromium toolbar buttons.
 

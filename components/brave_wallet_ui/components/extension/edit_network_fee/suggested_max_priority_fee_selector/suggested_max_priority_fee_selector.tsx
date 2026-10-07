@@ -51,9 +51,9 @@ import {
 } from './suggested_max_priority_fee_selector.styles'
 
 const MAX_PRIORITY_FEE_LABEL_MAP = {
-  slow: 'braveSwapSlow',
-  average: 'braveSwapAverage',
-  fast: 'braveSwapFast',
+  slow: S.BRAVE_SWAP_SLOW,
+  average: S.BRAVE_SWAP_AVERAGE,
+  fast: S.BRAVE_SWAP_FAST,
 }
 
 interface Props {
@@ -171,11 +171,11 @@ export function SuggestedMaxPriorityFeeSelector(props: Props) {
         size='tiny'
         onClick={onClickCustom}
       >
-        {getLocale('braveWalletCustom')}
+        {getLocale(S.BRAVE_WALLET_CUSTOM)}
       </Button>
       <Row>
         <Button onClick={onUpdateMaxPriorityFee}>
-          {getLocale('braveWalletUpdate')}
+          {getLocale(S.BRAVE_WALLET_REVIEW_UPDATE)}
         </Button>
       </Row>
     </StyledWrapper>

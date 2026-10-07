@@ -114,7 +114,8 @@ def get_images_with_pdbs(args):
     # Sanity check to ensure we're not missing chrome.dll.pdb.
     assert any(
         images_with_pdb.endswith('chrome.dll')
-        for images_with_pdb in images_with_pdbs), "chrome.dll.pdb not found"
+        for images_with_pdb in images_with_pdbs
+    ), "chrome.dll.pdb not found"
 
     return images_with_pdbs
 
@@ -136,49 +137,62 @@ async def process_image(args, image_path):
         raise RuntimeError(
             f"Image PDB fingerprint doesn't match PDB fingerprint:\n"
             f"{image_pdb_fingerprint} : {image_path}\n"
-            f"{pdb_fingerprint} : {pdb_path}")
+            f"{pdb_fingerprint} : {pdb_path}"
+        )
 
     await copy_symbol(image_path, image_fingerprint, args.symbols_dir)
-    copied_pdb_path = await copy_symbol(pdb_path, pdb_fingerprint,
-                                        args.symbols_dir)
+    copied_pdb_path = await copy_symbol(
+        pdb_path, pdb_fingerprint, args.symbols_dir
+    )
 
     if args.run_source_index:
         run_source_index_result = await run_source_index(args, copied_pdb_path)
         output += '\n' + run_source_index_result.strip()
 
     elapsed = datetime.utcnow() - start_time
-    output += (f'\nCompleted. Elapsed time {elapsed.total_seconds()} seconds')
+    output += f'\nCompleted. Elapsed time {elapsed.total_seconds()} seconds'
     return output
 
 
 async def get_img_fingerprint(image_path):
-    output = await check_output([
-        'python3.bat',
-        os.path.join(ROOT_DIR, 'tools', 'symsrc', 'img_fingerprint.py'),
-        image_path,
-    ])
+    output = await check_output(
+        [
+            'python3.bat',
+            os.path.join(ROOT_DIR, 'tools', 'symsrc', 'img_fingerprint.py'),
+            image_path,
+        ]
+    )
     return output.strip()
 
 
 async def get_pdb_info_from_img(image_path):
-    output = await check_output([
-        'python3.bat',
-        os.path.join(ROOT_DIR, 'tools', 'symsrc',
-                     'pdb_fingerprint_from_img.py'),
-        image_path,
-    ])
+    output = await check_output(
+        [
+            'python3.bat',
+            os.path.join(
+                ROOT_DIR, 'tools', 'symsrc', 'pdb_fingerprint_from_img.py'
+            ),
+            image_path,
+        ]
+    )
     fingerprint, filename = output.strip().split(' ', 1)
     return fingerprint, filename
 
 
 async def get_pdb_fingerprint(pdb_path):
-    llvm_pdbutil_path = os.path.join(ROOT_DIR, 'third_party', 'llvm-build',
-                                     'Release+Asserts', 'bin',
-                                     'llvm-pdbutil.exe')
+    llvm_pdbutil_path = os.path.join(
+        ROOT_DIR,
+        'third_party',
+        'llvm-build',
+        'Release+Asserts',
+        'bin',
+        'llvm-pdbutil.exe',
+    )
     assert os.path.exists(llvm_pdbutil_path)
 
     stdout = await check_output(
-        [llvm_pdbutil_path, 'dump', '--summary', pdb_path])
+        [llvm_pdbutil_path, 'dump', '--summary', pdb_path]
+    )
 
     guid_match = None
     for line in stdout.splitlines():
@@ -190,7 +204,8 @@ async def get_pdb_fingerprint(pdb_path):
     if not guid_match:
         raise RuntimeError(
             f'GUID is not found in llvm-pdbutil output for {pdb_path}:\n'
-            f'{stdout}')
+            f'{stdout}'
+        )
 
     # DBI stream age is always `1` for non-incremental builds.
     dbi_age = '1'
@@ -201,8 +216,9 @@ async def get_pdb_fingerprint(pdb_path):
 
 async def copy_symbol(symbol_path, symbol_fingerprint, dest_symbols_dir):
     symbol_name = os.path.basename(symbol_path)
-    dest_symbol_dir = os.path.join(dest_symbols_dir, symbol_name,
-                                   symbol_fingerprint)
+    dest_symbol_dir = os.path.join(
+        dest_symbols_dir, symbol_name, symbol_fingerprint
+    )
     os.makedirs(dest_symbol_dir, exist_ok=True)
     dest_symbol_path = os.path.join(dest_symbol_dir, symbol_name)
     await run_on_thread_pool(shutil.copy, symbol_path, dest_symbol_path)
@@ -228,24 +244,26 @@ async def run_source_index(args, pdb_path):
         # randomization to keep the file order stable between runs.
         'PYTHONHASHSEED': '0',
     }
-    result = await check_output([
-        'vpython3.bat',
-        os.path.join(ROOT_DIR, 'tools', 'symsrc', 'source_index.py'),
-        '--build-dir',
-        args.build_dir,
-        '--toolchain-dir',
-        args.toolchain_dir,
-        pdb_path,
-    ],
-                                env=source_index_env)
+    result = await check_output(
+        [
+            'vpython3.bat',
+            os.path.join(ROOT_DIR, 'tools', 'symsrc', 'source_index.py'),
+            '--build-dir',
+            args.build_dir,
+            '--toolchain-dir',
+            args.toolchain_dir,
+            pdb_path,
+        ],
+        env=source_index_env,
+    )
     return result.strip()
 
 
 async def run_with_semaphore(coro):
     if not hasattr(run_with_semaphore, 'semaphore'):
         run_with_semaphore.semaphore = asyncio.Semaphore(
-            max(1,
-                os.cpu_count() / 2))
+            max(1, os.cpu_count() / 2)
+        )
     async with run_with_semaphore.semaphore:
         return await coro
 
@@ -254,7 +272,8 @@ async def run_on_thread_pool(*args, **kwargs):
     if not hasattr(run_on_thread_pool, 'instance'):
         run_on_thread_pool.instance = concurrent.futures.ThreadPoolExecutor()
     return await asyncio.wrap_future(
-        run_on_thread_pool.instance.submit(*args, **kwargs))
+        run_on_thread_pool.instance.submit(*args, **kwargs)
+    )
 
 
 async def check_output(args, encoding='oem', **kwargs):
@@ -268,10 +287,9 @@ async def check_output(args, encoding='oem', **kwargs):
     stdout = stdout.decode(encoding)
     stderr = stderr.decode(encoding)
     if proc.returncode:
-        raise subprocess.CalledProcessError(proc.returncode,
-                                            args,
-                                            output=stdout,
-                                            stderr=stderr)
+        raise subprocess.CalledProcessError(
+            proc.returncode, args, output=stdout, stderr=stderr
+        )
     return stdout
 
 

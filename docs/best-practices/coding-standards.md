@@ -197,9 +197,16 @@ copy-paste old copyright years from other files.
 
 ## ❌ Don't Define Methods in Headers
 
-**Move method definitions to .cc files.** Headers should only contain
-declarations. Keep headers minimal - only include what's strictly required for
-the declarations.
+**Move method definitions to .cc files.** Keep headers minimal - only include
+what's strictly required for the declarations.
+
+**Exception — simple accessors.** Per the
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md),
+simple accessors should generally be the only inline functions. Name them
+`snake_case()`, and never declare a `virtual` function inline. Test accessors
+(see [TI-011](testing-isolation.md#TI-011)) and `constexpr` constants (see
+[CS-063](#CS-063), [CSA-025](coding-standards-apis.md#CSA-025)) also belong in
+headers.
 
 ```cpp
 // ❌ WRONG - method body in header
@@ -207,6 +214,11 @@ class RewardsProtocolHandler {
   static bool HandleURL(const GURL& url) {
     return url.scheme() == "rewards";
   }
+};
+
+// ❌ WRONG - virtual function declared inline
+class Handler {
+  virtual bool IsEnabled() const { return enabled_; }
 };
 
 // ✅ CORRECT - declaration in header, definition in .cc
@@ -217,10 +229,20 @@ bool HandleRewardsProtocol(const GURL& url);
 bool HandleRewardsProtocol(const GURL& url) {
   return url.scheme() == "rewards";
 }
+
+// ✅ CORRECT - simple accessor stays inline in the header
+class RewardsService {
+ public:
+  bool is_enabled() const { return is_enabled_; }
+
+ private:
+  bool is_enabled_ = false;
+};
 ```
 
-Also: `static` has no meaning for free functions in C++ (it's a C holdover). Use
-anonymous namespaces instead.
+Also: prefer an anonymous namespace over `static` for free functions local to a
+`.cc` file. Both give internal linkage, but Chromium style is to wrap everything
+local to a `.cc` file in an unnamed namespace (see [CS-016](#CS-016)).
 
 ---
 
@@ -329,6 +351,23 @@ constexpr int kMaxRetries = 3;
 
 **Function definitions in `.cc` files should appear in the same order as their
 declarations in the corresponding `.h` file.**
+
+**In the header, group function overrides together within each access control
+section, with one labeled group per parent class.** See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+
+```cpp
+// ✅ CORRECT - one labeled group per parent class
+class BraveAdsService : public KeyedService,
+                        public PrefObserver {
+ public:
+  // KeyedService:
+  void Shutdown() override;
+
+  // PrefObserver:
+  void OnPrefChanged(const std::string& path) override;
+};
+```
 
 ---
 
@@ -514,12 +553,16 @@ unnecessary because the browser wouldn't even be running without it.
 
 <a id="CS-026"></a>
 
-## ✅ `NOTREACHED`/`CHECK(false)` Only for Security-Critical Invariants
+## ✅ `NOTREACHED`/`CHECK(false)` Only to ensure invariants hold
 
-**`NOTREACHED`/`CHECK(false)` should only crash the browser for
-security-critical invariants.** For non-security cases (like invalid enum values
-from data processing), prefer returning `std::optional`/`std::nullopt` or a
-default value.
+See first the Chromimum guide on this
+[CHECK(), DCHECK() and NOTREACHED()](https://chromium.googlesource.com/chromium/src/+/main/styleguide/c++/checks.md)
+which outlines best practices around them. It also list helpful examples around
+the usage.
+
+**`NOTREACHED`/`CHECK(false)` should only crash the browser for invariants.**
+For other cases (like invalid enum values from data processing), prefer
+returning `std::optional`/`std::nullopt` or a default value.
 
 **Important:** `NOTREACHED()` is now fatal in all builds and terminates control
 flow. The compiler treats code after `NOTREACHED()` as dead code. Do not place
@@ -664,7 +707,30 @@ void RewardsService::SavePendingContribution(...) {
 
 **When a method's implementation is completely different on a platform, split it
 into a separate file** like `my_class_android.cc` rather than filling the main
-file with `#if defined(OS_ANDROID)` blocks.
+file with `#if BUILDFLAG(IS_ANDROID)` blocks.
+
+**Always use the buildflags from `build/build_config.h`** — `BUILDFLAG(IS_WIN)`,
+`BUILDFLAG(IS_ANDROID)`, `BUILDFLAG(IS_MAC)`, etc. Never test compiler-provided
+macros like `WIN32`, `__APPLE__`, or `__linux__`, and never the long-removed
+`defined(OS_*)` form. See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+
+```cpp
+// ❌ WRONG - compiler macro
+#if defined(WIN32)
+
+// ❌ WRONG - `OS_ANDROID` was replaced by the BUILDFLAG form
+#if defined(OS_ANDROID)
+
+// ✅ CORRECT
+#include "build/build_config.h"
+#if BUILDFLAG(IS_ANDROID)
+```
+
+Put platform-specific `#include`s in their own section below the standard
+includes, repeating the normal include order within that section. Ordering is
+formatting, not review material — per [CS-010](#CS-010), leave it to
+`clang-format` and lint and don't flag it in review.
 
 ---
 
@@ -677,7 +743,7 @@ feature-dependent, not platform-dependent.**
 
 ```cpp
 // ❌ WRONG - platform check for feature behavior
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   // Don't show notifications
 #endif
 
@@ -1342,5 +1408,176 @@ void RegisterProfilePrefs(
 This is a mojom-specific application of [CS-014](#CS-014). The
 `*.mojom-forward.h` is auto-generated alongside the full bindings — every mojom
 target produces it.
+
+---
+
+<a id="CS-071"></a>
+
+## ✅ Use Security Origins (Not URLs) for Security Decisions on Sites
+
+**When extending or limiting capabilities for a site, decide from `url::Origin`
+/ `SecurityOrigin` — never from a raw `GURL`.** Tie the decision to the exact
+`RenderFrameHost` under consideration, and read its origin with
+`GetLastCommittedOrigin()`:
+
+```cpp
+// ✅ CORRECT - origin of the frame you are deciding about
+const url::Origin& origin = render_frame_host->GetLastCommittedOrigin();
+```
+
+Converting a `GURL` to an origin is often **not** the origin you expect. See
+Chromium's
+[origin-vs-url guide](https://chromium.googlesource.com/chromium/src/+/HEAD/docs/security/origin-vs-url.md)
+for the gotchas.
+
+```cpp
+// ⚠️ DANGEROUS - GURL → origin is frequently the wrong origin
+url::Origin::Create(url);
+url::SchemeHostPort(url);
+```
+
+If not always, a decision is made on the render frame or the render process (if
+the render frame is null; possible for `WebSockets`, `WebTransport`) which is
+either making a n/w request or a request to access some browser functionality.
+There are generally three scenarios to keep in mind. Starting from
+`GetLastCommittedOrigin()` or the `SecurityOrigin`, then apply the extra rules
+for these scenarios.
+
+### Frames with non-opaque origins
+
+The usual case: the frame has a tuple origin such as
+`https://www.example.com:8080`. Use that origin (or `SecurityOrigin`) directly.
+
+### Frames with opaque origins
+
+Assigned to `file://`, `data:`, and sandboxed frames (`<iframe sandbox>`).
+Querying can yield a **null** origin, so there is often little to key a policy
+on. A frame with an opaque origin could have both a `null` security origin, and
+a "tuple origin" (e.g., https://www.example.com:8080).
+
+These frames already run with limited capabilities — **default to restricted**.
+If a decision is still required:
+
+- **Network request:** use the request's `initiator_origin`. See this
+  [example change](https://github.com/brave/brave-core/pull/38539/changes#diff-6b02a30e91fdb3e3be80924c66018e9e434a29122f9f6846e2d6f043a05a9c69R84).
+- **Otherwise:** If applicable, walk up to the nearest ancestor frame with a
+  non-opaque origin and use that. **Important!** Always verify whether that
+  non-opaque origin is what was reuqired to base the decisions on.
+
+### Frames with inherited origins
+
+`blob:`, `about:blank`, and `about:srcdoc` **inherit** the embedder frame's
+origin. `GetLastCommittedOrigin()` on that `RenderFrameHost` therefore returns
+the embedder's origin — which is the origin you should use.
+
+[brave-browser#56048](https://github.com/brave/brave-browser/issues/56048) is an
+example of getting this wrong: any embedder of a `blob:` URL could bypass
+farbling because the decision was not based on the embedder's origin.
+
+`about:blank` and `about:srcdoc` can themselves be opaque if they were embedded
+in an opaque-origin context.
+
+---
+
+<a id="CS-072"></a>
+
+## ❌ Don't Use `#pragma once` — Use `#include` Guards
+
+**Every header needs a standard `#include` guard; `#pragma once` is not
+allowed.** It was historically unsupported on some platforms and doesn't
+outperform guards. The guard name is the full path from the source root,
+uppercased with `/` and `.` replaced by `_`, plus a trailing `_`. See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+
+```cpp
+// ❌ WRONG
+#pragma once
+
+// ✅ CORRECT - brave/components/foo/bar.h
+#ifndef BRAVE_COMPONENTS_FOO_BAR_H_
+#define BRAVE_COMPONENTS_FOO_BAR_H_
+
+...
+
+#endif  // BRAVE_COMPONENTS_FOO_BAR_H_
+```
+
+---
+
+<a id="CS-073"></a>
+
+## ✅ Use Braces on All Conditionals and Loops
+
+**Always brace the body of an `if`/`else`/`for`/`while`, even a single
+statement.** Braces keep a later added statement from silently falling outside
+the conditional. Chromium's `clang-format` configuration inserts them for the
+cases below, so writing them yourself leaves the formatter with nothing to do.
+See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+
+```cpp
+// ❌ WRONG - unbraced body; clang-format rewrites this
+if (!service)
+  return;
+
+for (const auto& url : urls)
+  Prefetch(url);
+
+// ✅ CORRECT
+if (!service) {
+  return;
+}
+
+for (const auto& url : urls) {
+  Prefetch(url);
+}
+```
+
+**Do NOT flag missing braces in review** — like include order
+([CS-010](#CS-010)), it is handled by tooling.
+
+Also prefer `(foo == 0)` over `(0 == foo)`.
+
+---
+
+<a id="CS-074"></a>
+
+## ✅ Use the Right Crash/Diagnostic Primitive
+
+**`CHECK`/`NOTREACHED` are for invariants. Reach for a different primitive when
+that isn't what you mean.** See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md)
+and [CS-026](#CS-026)/[CS-027](#CS-027).
+
+| Primitive                            | Behavior                         | Use for                                             |
+| ------------------------------------ | -------------------------------- | --------------------------------------------------- |
+| `CHECK(cond)`                        | Crashes in all builds            | Invariants within the code's control                |
+| `DCHECK(cond)`                       | Debug-only                       | Invariants too expensive to verify in production    |
+| `NOTREACHED()`                       | Crashes; terminates control flow | Genuinely unreachable code                          |
+| `base::ImmediateCrash()`             | Terminates immediately           | Process must die for reasons outside its control    |
+| `base::debug::DumpWithoutCrashing()` | Uploads a report, keeps running  | Investigating a failure without killing the browser |
+| `ADD_FAILURE()`                      | Fails the current test           | Test code — never `CHECK` a test expectation        |
+
+**Prefer an unconditional `CHECK()` over an `if` that conditionally hits
+`NOTREACHED()`** — it's shorter and states the invariant directly.
+
+```cpp
+// ❌ WRONG - conditional NOTREACHED
+if (!profile) {
+  NOTREACHED();
+}
+
+// ❌ WRONG - crashing the browser to report a condition you're still diagnosing
+CHECK(entry_was_found);
+
+// ✅ CORRECT - unconditional CHECK
+CHECK(profile);
+
+// ✅ CORRECT - report and keep running while investigating
+if (!entry_was_found) {
+  base::debug::DumpWithoutCrashing();
+  return std::nullopt;
+}
+```
 
 ---

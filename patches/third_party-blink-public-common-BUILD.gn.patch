@@ -1,12 +1,20 @@
 diff --git a/third_party/blink/public/common/BUILD.gn b/third_party/blink/public/common/BUILD.gn
-index 71de61276d9ea92c8507f6e171a2edf0e82b4f92..9c95e85063041b80eb515d2a6e972080804e7627 100644
+index 5a5d9a64a4b70f09447022021d03f95f69f2fbb2..b518a40cf23b4005b9e656fced42410160be68dc 100644
 --- a/third_party/blink/public/common/BUILD.gn
 +++ b/third_party/blink/public/common/BUILD.gn
-@@ -380,6 +380,7 @@ source_set("headers") {
-   if (is_mac) {
-     sources += [ "sandbox_support/sandbox_support_mac.h" ]
-   }
-+  import("//brave/components/brave_wallet/sources.gni") deps += brave_blink_public_common_deps
- }
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
- if (is_android || is_win) {
++import("//brave/third_party/blink/public/common/sources.gni")
+ import("//build/buildflag_header.gni")
+ import("//build/config/compiler/compiler.gni")
+ import("//build/config/features.gni")
+@@ -358,6 +359,7 @@ source_set("headers") {
+     "//net",
+     "//ui/base",
+   ]
++  deps += brave_blink_public_common_deps
+ 
+   # Chromium without blink doesn't use and must not depend on //media
+   if (use_blink) {

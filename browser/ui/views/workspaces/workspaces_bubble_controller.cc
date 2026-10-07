@@ -14,14 +14,25 @@
 #include "base/task/single_thread_task_runner.h"
 #include "brave/browser/ui/views/workspaces/save_workspace_dialog.h"
 #include "brave/browser/ui/views/workspaces/workspaces_bubble_view.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "components/constrained_window/constrained_window_views.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/view.h"
 #include "ui/views/widget/widget.h"
 
-WorkspacesBubbleController::WorkspacesBubbleController() = default;
+DEFINE_USER_DATA(WorkspacesBubbleController);
+
+WorkspacesBubbleController::WorkspacesBubbleController(
+    ui::UnownedUserDataHost& host)
+    : scoped_unowned_user_data_(host, *this) {}
 
 WorkspacesBubbleController::~WorkspacesBubbleController() = default;
+
+// static
+WorkspacesBubbleController* WorkspacesBubbleController::From(
+    BrowserWindowInterface* browser) {
+  return Get(browser->GetUnownedUserDataHost());
+}
 
 void WorkspacesBubbleController::ShowBubble(views::View* anchor_view,
                                             Profile* profile) {

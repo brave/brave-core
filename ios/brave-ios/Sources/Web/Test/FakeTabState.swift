@@ -64,7 +64,6 @@ public final class FakeTabState: TabState {
   public var canGoBack: Bool { false }
   public var canGoForward: Bool { false }
   public var backForwardList: (any BackForwardListProxy)? { nil }
-  public var redirectChain: [URL] = []
   public var currentInitialURL: URL? { nil }
   public var currentUserAgentType: UserAgentType { .automatic }
 

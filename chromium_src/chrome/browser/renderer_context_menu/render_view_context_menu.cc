@@ -34,7 +34,6 @@
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/common/channel_info.h"
 #include "components/grit/brave_components_strings.h"
@@ -333,7 +332,7 @@ email_aliases::EmailAliasesController* GetEmailAliasesController(
   if (!browser) {
     return nullptr;
   }
-  return browser->GetFeatures().email_aliases_controller();
+  return email_aliases::EmailAliasesController::From(browser);
 }
 #endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)
 
@@ -898,7 +897,10 @@ void RenderViewContextMenu::InitMenu() {
                : IDS_CONTENT_CONTEXT_OPENLINKTOR);
   }
 #endif
-  if (!params_.link_url.is_empty() && params_.link_url.SchemeIsHTTPOrHTTPS()) {
+  // Only offer "Copy clean link" when cleaning would actually change the link.
+  if (!params_.link_url.is_empty() && params_.link_url.SchemeIsHTTPOrHTTPS() &&
+      brave::GetLinkWithStrictCleaning(GetProfile(), params_.link_url) !=
+          params_.link_url) {
     std::optional<size_t> link_index =
         menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_COPYLINKLOCATION);
     if (link_index.has_value()) {

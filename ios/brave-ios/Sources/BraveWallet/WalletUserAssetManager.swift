@@ -718,14 +718,6 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
         }
       )
     }
-    // nonSelectedAccountsFilter
-    var newAddresses: [String] = []
-    for address in Preferences.Wallet.nonSelectedAccountsFilter.value {
-      if let account = allAccounts.first(where: { $0.address == address }) {
-        newAddresses.append(account.id)
-      }
-    }
-    Preferences.Wallet.nonSelectedAccountsFilter.value = newAddresses
 
     Preferences.Wallet.migrateCacheKeyCompleted.value = true
   }

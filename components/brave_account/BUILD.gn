@@ -6,9 +6,14 @@
 import("//brave/build/config.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
 
+# Header-only, so that users needing just the constants do not pull in the
+# service.
+source_set("constants") {
+  sources = [ "brave_account_constants.h" ]
+}
+
 source_set("brave_account") {
   sources = [
-    "brave_account_constants.h",
     "brave_account_encryption.cc",
     "brave_account_encryption.h",
     "brave_account_service.cc",
@@ -19,12 +24,17 @@ source_set("brave_account") {
     "flows/cancel_verification.h",
     "flows/change_password.cc",
     "flows/change_password.h",
+    "flows/delete_account.cc",
+    "flows/delete_account.h",
+    "flows/flow_base.cc",
+    "flows/flow_base.h",
     "flows/get_service_token.cc",
     "flows/get_service_token.h",
     "flows/log_out.cc",
     "flows/log_out.h",
     "flows/login.cc",
     "flows/login.h",
+    "flows/make_request.h",
     "flows/register.cc",
     "flows/register.h",
     "flows/resend_verification_email.cc",
@@ -43,6 +53,9 @@ source_set("brave_account") {
     "state_base.h",
     "state_internal.h",
   ]
+
+  # brave_account_ui_base.h includes brave_account_constants.h.
+  public_deps = [ "//brave/components/brave_account:constants" ]
 
   deps = [
     "//base",
@@ -136,6 +149,8 @@ source_set("unit_tests") {
     "brave_account_service_unittest.cc",
     "flows/cancel_verification_unittest.cc",
     "flows/change_password_unittest.cc",
+    "flows/delete_account_unittest.cc",
+    "flows/flow_base_unittest.cc",
     "flows/get_service_token_unittest.cc",
     "flows/log_out_unittest.cc",
     "flows/login_unittest.cc",
@@ -144,7 +159,6 @@ source_set("unit_tests") {
     "flows/reset_password_unittest.cc",
     "flows/update_email_unittest.cc",
     "prefs_unittest.cc",
-    "state_base_unittest.cc",
   ]
 
   deps = [

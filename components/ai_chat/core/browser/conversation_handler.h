@@ -14,6 +14,7 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include "base/functional/callback.h"
@@ -42,10 +43,12 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 class AIChatUIBrowserTest;
 namespace mojo {
+class MessageFilter;
 template <typename Interface>
 class PendingRemote;
 template <typename T>
@@ -70,6 +73,7 @@ class AssociatedContentManager;
 // the in-memory conversation history.
 class ConversationHandler : public mojom::ConversationHandler,
                             public mojom::UntrustedConversationHandler,
+                            public mojom::UntrustedConversationUserActions,
                             public ModelService::Observer,
                             public ToolProvider::Observer,
                             public ConversationHandlerForMetrics {
@@ -153,6 +157,12 @@ class ConversationHandler : public mojom::ConversationHandler,
             mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler);
   void Bind(
       mojo::PendingReceiver<mojom::UntrustedConversationHandler> receiver);
+  // |gesture_filter| rejects messages which the untrusted frame sent without a
+  // user gesture, closing the pipe. Supplied by the platform layer that owns
+  // the frame; null where the platform cannot tell (iOS).
+  void BindUserActions(
+      mojo::PendingReceiver<mojom::UntrustedConversationUserActions> receiver,
+      std::unique_ptr<mojo::MessageFilter> gesture_filter);
   void BindUntrustedConversationUI(
       mojo::PendingRemote<mojom::UntrustedConversationUI>
           untrusted_conversation_ui_handler,
@@ -175,13 +185,21 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   // mojom::ConversationHandler
   void GetState(GetStateCallback callback) override;
-  void GetConversationHistory(GetConversationHistoryCallback callback) override;
+  void GetConversationHistory(
+      mojom::ConversationHandler::GetConversationHistoryCallback callback)
+      override;
+  void GetConversationThreads(GetConversationThreadsCallback callback) override;
   void SetTemporary(bool temporary) override;
   void PauseTask() override;
   void ResumeTask() override;
   void StopTask() override;
   void SetToolsAttached(mojom::AssociatedContentPtr content,
                         bool tools_attached) override;
+  void GetContentTools(const std::string& content_uuid,
+                       GetContentToolsCallback callback) override;
+  void SetContentToolPermission(const std::string& content_uuid,
+                                const std::string& tool_name,
+                                mojom::ToolPermission permission) override;
   void RateMessage(bool is_liked,
                    const std::string& turn_uuid,
                    RateMessageCallback callback) override;
@@ -196,31 +214,23 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GetIsRequestInProgress(GetIsRequestInProgressCallback callback) override;
   void SubmitHumanConversationEntry(
       const std::string& input,
-      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files)
-      override;
+      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files,
+      const std::optional<std::string>& thread_uuid = std::nullopt) override;
   void SubmitHumanConversationEntry(mojom::ConversationTurnPtr turn);
   void SubmitHumanConversationEntryWithAction(
       const std::string& input,
-      mojom::ActionType action_type) override;
+      mojom::ActionType action_type,
+      const std::optional<std::string>& thread_uuid = std::nullopt) override;
   void SubmitHumanConversationEntryWithSkill(
       const std::string& input,
       const std::string& skill_id,
-      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files)
-      override;
-  void ModifyConversation(
-      const std::string& entry_uuid,
-      const std::string& new_text,
-      const std::optional<std::string>& skill_shortcut) override;
-  void RegenerateAnswer(const std::string& turn_uuid,
-                        const std::string& model_key) override;
+      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files,
+      const std::optional<std::string>& thread_uuid = std::nullopt) override;
   void SubmitSummarizationRequest();
-  void SubmitSuggestion(const std::string& suggestion_title) override;
   const std::vector<Suggestion>& GetSuggestedQuestionsForTest() const;
   void SetSuggestedQuestionForTest(std::string title, std::string prompt);
-  void GenerateQuestions() override;
   void GetAssociatedContentInfo(
       GetAssociatedContentInfoCallback callback) override;
-  void RetryAPIRequest() override;
   void ClearErrorAndGetFailedMessage(
       ClearErrorAndGetFailedMessageCallback callback) override;
   void StopGenerationAndMaybeGetHumanEntry(
@@ -237,19 +247,40 @@ class ConversationHandler : public mojom::ConversationHandler,
                                   mojom::ActionType action_type,
                                   mojom::APIError error);
   void OnAssociatedContentUpdated();
+  void OnContentToolsChanged(const std::string& content_uuid,
+                             std::vector<mojom::ToolInfoPtr> tools);
 
   void OnUserOptedIn();
   size_t GetConversationHistorySize() override;
   void GetScreenshots(GetScreenshotsCallback callback) override;
 
   // mojom::UntrustedConversationHandler
+  void GetConversationHistory(
+      const std::optional<std::string>& thread_uuid,
+      mojom::UntrustedConversationHandler::GetConversationHistoryCallback
+          callback) override;
   void SwitchToNonPremiumModel() override;
+  void RegenerateAnswer(const std::string& turn_uuid,
+                        const std::string& model_key) override;
+  void GenerateQuestions() override;
+  void RetryAPIRequest() override;
+  void CreateConversationThread(
+      const std::string& origin_entry_uuid,
+      CreateConversationThreadCallback callback) override;
+
+  // mojom::UntrustedConversationUserActions
+  void ModifyConversation(
+      const std::string& entry_uuid,
+      const std::string& new_text,
+      const std::optional<std::string>& skill_shortcut) override;
   void RespondToToolUseRequest(
       const std::string& tool_id,
       std::vector<mojom::ContentBlockPtr> output_json,
       std::vector<mojom::ToolArtifactPtr> artifacts) override;
-  void ProcessPermissionChallenge(const std::string& tool_use_id,
-                                  bool user_result) override;
+  void ProcessPermissionChallenge(
+      const std::string& tool_use_id,
+      mojom::PermissionChallengeDecision decision) override;
+  void SubmitSuggestion(const std::string& suggestion_title) override;
 
   // Some associated content may provide some conversation that the user wants
   // to continue, e.g. Brave Search.
@@ -273,6 +304,17 @@ class ConversationHandler : public mojom::ConversationHandler,
     engine_ = std::move(engine_for_testing);
   }
   EngineConsumer* GetEngineForTesting() { return engine_.get(); }
+
+  // Sets |model_key_| directly, without validation.
+  void SetModelKeyForTesting(std::string model_key) {
+    model_key_ = std::move(model_key);
+  }
+
+  // Adds tool providers for this conversation, for providers that need the
+  // conversation, so can't be passed to the constructor. They're listed before
+  // any that were (including the AssociatedContentManager), so built-in tools
+  // come before content tools.
+  void AddToolProviders(std::vector<std::unique_ptr<ToolProvider>> providers);
 
   ToolProvider* GetFirstToolProviderForTesting() {
     if (tool_providers_.empty()) {
@@ -305,6 +347,8 @@ class ConversationHandler : public mojom::ConversationHandler,
     return associated_content_manager_.get();
   }
 
+  AIChatService* ai_chat_service() { return ai_chat_service_; }
+
   void SetRequestInProgressForTesting(bool in_progress) {
     is_request_in_progress_ = in_progress;
   }
@@ -318,6 +362,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   mojom::ConversationEntriesStatePtr
   GetStateForConversationEntriesForTesting() {
     return GetStateForConversationEntries();
+  }
+
+  // Lets a test observe the gesture filter closing the pipe.
+  size_t GetUserActionReceiverCountForTesting() const {
+    return user_action_receivers_.size();
   }
 
  protected:
@@ -375,6 +424,22 @@ class ConversationHandler : public mojom::ConversationHandler,
   FRIEND_TEST_ALL_PREFIXES(
       ConversationHandlerUnitTest,
       GetTools_MemoryToolFilteredForTemporaryConversations);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest, ThreadHistory);
+
+  struct ThreadContainer {
+    explicit ThreadContainer(mojom::ThreadPtr thread);
+    ThreadContainer(ThreadContainer&&);
+    ThreadContainer& operator=(ThreadContainer&&);
+    ThreadContainer(const ThreadContainer&) = delete;
+    ThreadContainer& operator=(const ThreadContainer&) = delete;
+    ~ThreadContainer();
+
+    mojom::ThreadPtr thread;
+    // Only contains entries belonging to this thread; entries from the
+    // main/parent conversation are not included.
+    std::vector<mojom::ConversationTurnPtr> entries;
+  };
+
   void InitEngine();
 
   void BuildCapabilitiesSet();
@@ -388,6 +453,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   void PerformAssistantGenerationWithPossibleContent();
 
   void PerformAssistantGeneration();
+  // Returns the entry list that entries for the given thread (or the root
+  // conversation, if |thread_uuid| is nullopt) should be read from/appended
+  // to.
+  std::vector<mojom::ConversationTurnPtr>& GetMutableConversationHistory(
+      std::optional<std::string_view> thread_uuid);
 
   // When the current batch of tool use requests has been completed, we can
   // send the results to the engine and wait for the next response for the loop.
@@ -396,6 +466,14 @@ class ConversationHandler : public mojom::ConversationHandler,
   void SetAPIError(EngineConsumer::Error error);
   void UpdateOrCreateLastAssistantEntry(
       EngineConsumer::GenerationResultData result);
+
+  // Moves any follow-up suggestions the assistant offered via a tool use
+  // request into the conversation's suggestions, removing the tool use request
+  // from the entry. They mark the end of the assistant's turn rather than
+  // something it is waiting on, so leaving the request in place would keep the
+  // tool loop waiting for output that may never come.
+  void TakeFollowUpSuggestionsFromLastEntry();
+
   void MaybeSeedOrClearSuggestions();
   void PerformQuestionGeneration();
 
@@ -419,6 +497,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   void CompleteGeneration(bool success);
   void OnSuggestedQuestionsResponse(
       EngineConsumer::SuggestedQuestionResult result);
+  void OnConversationThreadHistoryReceived(
+      std::string thread_uuid,
+      GetConversationHistoryCallback callback,
+      std::vector<mojom::ConversationTurnPtr> entries);
 
   void OnModelDataChanged();
   void OnConversationDeleted();
@@ -467,6 +549,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Chat conversation entries
   std::vector<mojom::ConversationTurnPtr> chat_history_;
   mojom::ConversationTurnPtr pending_conversation_entry_;
+
+  // Thread metadata map. Entries within each container are lazily loaded
+  // by GetConversationHistory when a |thread_uuid| is provided.
+  absl::flat_hash_map<std::string, ThreadContainer> threads_;
   // Any previously-generated suggested questions
   std::vector<Suggestion> suggestions_;
 
@@ -544,6 +630,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   base::ObserverList<Observer> observers_;
   mojo::ReceiverSet<mojom::ConversationHandler> receivers_;
   mojo::ReceiverSet<mojom::UntrustedConversationHandler> untrusted_receivers_;
+  // std::monostate because ReceiverSet's MessageFilter overload of Add()
+  // requires a non-void context type.
+  mojo::ReceiverSet<mojom::UntrustedConversationUserActions, std::monostate>
+      user_action_receivers_;
   mojo::RemoteSet<mojom::ConversationUI> conversation_ui_handlers_;
   mojo::RemoteSet<mojom::UntrustedConversationUI>
       untrusted_conversation_ui_handlers_;

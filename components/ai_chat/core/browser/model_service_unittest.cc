@@ -23,6 +23,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -33,6 +34,7 @@
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/prefs/testing_pref_service.h"
 #include "services/network/public/cpp/network_context_getter.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -86,6 +88,54 @@ class ScopedModelListReadyObserver : public ModelService::Observer {
   base::OnceClosure quit_;
 };
 
+// Records whether GetModel(new_key) resolves *during* the
+// OnDefaultModelChanged callback itself, to catch the model list not yet
+// being rebuilt at notification time.
+class DefaultModelResolvedDuringNotificationObserver
+    : public ModelService::Observer {
+ public:
+  explicit DefaultModelResolvedDuringNotificationObserver(ModelService& service)
+      : service_(service) {
+    service_->AddObserver(this);
+  }
+  ~DefaultModelResolvedDuringNotificationObserver() override {
+    service_->RemoveObserver(this);
+  }
+
+  void OnDefaultModelChanged(const std::string& old_key,
+                             const std::string& new_key) override {
+    new_model_was_resolvable_ = service_->GetModel(new_key) != nullptr;
+  }
+
+  std::optional<bool> new_model_was_resolvable() const {
+    return new_model_was_resolvable_;
+  }
+
+ private:
+  const raw_ref<ModelService> service_;
+  std::optional<bool> new_model_was_resolvable_;
+};
+
+mojom::ModelPtr MakeRemoteTestModel(const std::string& key) {
+  auto leo_opts = mojom::LeoModelOptions::New();
+  leo_opts->name = key + "-model";
+  leo_opts->display_maker = "Test Corp";
+  leo_opts->description = "A test model";
+  leo_opts->category = mojom::ModelCategory::CHAT;
+  leo_opts->access = mojom::ModelAccess::BASIC;
+  leo_opts->max_associated_content_length = 100000;
+  leo_opts->long_conversation_warning_character_limit = 200000;
+
+  auto model = mojom::Model::New();
+  model->key = key;
+  model->display_name = key + " Display";
+  model->is_suggested_model = false;
+  model->is_near_model = false;
+  model->supported_capabilities = {};
+  model->options = mojom::ModelOptions::NewLeoModelOptions(std::move(leo_opts));
+  return model;
+}
+
 }  // namespace
 
 class ModelServiceTest : public ::testing::Test {
@@ -99,9 +149,10 @@ class ModelServiceTest : public ::testing::Test {
 
   ModelService* GetService() {
     if (!service_) {
-      service_ =
-          std::make_unique<ModelService>(&pref_service_, os_crypt_async_.get(),
-                                         network::NetworkContextGetter());
+      service_ = std::make_unique<ModelService>(
+          &pref_service_, os_crypt_async_.get(),
+          network::NetworkContextGetter(), /*url_loader_factory=*/nullptr,
+          base::FilePath());
       observer_->Observe(service_.get());
     }
     return service_.get();
@@ -150,6 +201,21 @@ class ModelServiceTestWithSamePremiumModel : public ModelServiceTest {
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
+// Configures the default model key to one that only exists once a remote
+// fetch introduces it, so a test can retire the previous default and
+// observe whether the new one resolves immediately.
+class ModelServiceTestWithRemoteOnlyDefaultModel : public ModelServiceTest {
+ public:
+  ModelServiceTestWithRemoteOnlyDefaultModel() {
+    scoped_feature_list_.InitAndEnableFeatureWithParameters(
+        features::kAIChat,
+        {{features::kAIModelsDefaultKey.name, "remote-model-1"}});
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
 TEST_F(ModelServiceTest, MigrateOldClaudeDefaultModelKey) {
   // Set default to the old key for claude
   pref_service_.SetString("brave.ai_chat.default_model_key",
@@ -159,13 +225,9 @@ TEST_F(ModelServiceTest, MigrateOldClaudeDefaultModelKey) {
   // new claude.
   ModelService::MigrateProfilePrefs(&pref_service_);
   // Verify uses non-premium version
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-haiku");
-  // Verify uses premium version
-  EXPECT_CALL(*observer_,
-              OnDefaultModelChanged("chat-claude-haiku", "chat-claude-sonnet"))
-      .Times(1);
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), kChatAutomaticModelKey);
   GetService()->OnPremiumStatus(mojom::PremiumStatus::Active);
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-sonnet");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), kChatAutomaticModelKey);
 }
 
 TEST_F(ModelServiceTest, MigrateOldClaudeDefaultModelKey_OnlyOnce) {
@@ -177,13 +239,13 @@ TEST_F(ModelServiceTest, MigrateOldClaudeDefaultModelKey_OnlyOnce) {
   // new claude.
   ModelService::MigrateProfilePrefs(&pref_service_);
   // Verify uses non-premium version
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-haiku");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), kChatAutomaticModelKey);
   EXPECT_CALL(*observer_, OnDefaultModelChanged(_, _)).Times(0);
   // Verify keeps non-premium version
   GetService()->OnPremiumStatus(mojom::PremiumStatus::Inactive);
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-haiku");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), kChatAutomaticModelKey);
   GetService()->OnPremiumStatus(mojom::PremiumStatus::Active);
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-haiku");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), kChatAutomaticModelKey);
   testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
 
@@ -202,13 +264,13 @@ TEST_F(ModelServiceTestWithDifferentPremiumModel,
        MigrateToPremiumDefaultModel_UserModified) {
   EXPECT_EQ(GetService()->GetDefaultModelKey(), kChatAutomaticModelKey);
   EXPECT_CALL(*observer_, OnDefaultModelChanged(kChatAutomaticModelKey,
-                                                "chat-claude-haiku"))
+                                                "chat-claude-sonnet"))
       .Times(1);
-  GetService()->SetDefaultModelKey("chat-claude-haiku");
+  GetService()->SetDefaultModelKey("chat-claude-sonnet");
   testing::Mock::VerifyAndClearExpectations(observer_.get());
   EXPECT_CALL(*observer_, OnDefaultModelChanged(_, _)).Times(0);
   GetService()->OnPremiumStatus(mojom::PremiumStatus::Active);
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-haiku");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-sonnet");
   testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
 
@@ -272,10 +334,10 @@ TEST_F(ModelServiceTest, ChangeDefaultModelKey_GoodKey) {
   GetService()->SetDefaultModelKey(kChatAutomaticModelKey);
   EXPECT_EQ(GetService()->GetDefaultModelKey(), kChatAutomaticModelKey);
   EXPECT_CALL(*observer_, OnDefaultModelChanged(kChatAutomaticModelKey,
-                                                "chat-claude-haiku"))
+                                                "chat-claude-sonnet"))
       .Times(1);
-  GetService()->SetDefaultModelKey("chat-claude-haiku");
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-haiku");
+  GetService()->SetDefaultModelKey("chat-claude-sonnet");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-sonnet");
   testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
 
@@ -420,6 +482,33 @@ TEST_F(ModelServiceTest, GetLeoModelKeyByName_And_GetLeoModelNameByKey) {
   EXPECT_FALSE(key.has_value());
   auto name = GetService()->GetLeoModelNameByKey("nonexistent-key");
   EXPECT_FALSE(name.has_value());
+}
+
+TEST_F(ModelServiceTest, GetEngineForModelFallsBackToAutomaticForUnknownKey) {
+  // APIRequestHelper posts to the thread pool at construction time.
+  base::test::TaskEnvironment task_environment;
+  auto engine = GetService()->GetEngineForModel("this-model-key-does-not-exist",
+                                                /*url_loader_factory=*/nullptr,
+                                                /*credential_manager=*/nullptr);
+  ASSERT_TRUE(engine);
+  EXPECT_EQ(engine->GetModelName(), "automatic");
+}
+
+TEST_F(ModelServiceTest,
+       GetEngineForModelFallsBackToAutomaticWhenConfiguredDefaultAlsoMissing) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChat,
+      {{features::kAIModelsDefaultKey.name, "this-default-does-not-exist"}});
+
+  // APIRequestHelper posts to the thread pool at construction time.
+  base::test::TaskEnvironment task_environment;
+  auto engine = GetService()->GetEngineForModel("this-model-key-does-not-exist",
+                                                /*url_loader_factory=*/nullptr,
+                                                /*credential_manager=*/nullptr);
+  ASSERT_TRUE(engine);
+  // The automatic model's hardcoded `LeoModelOptions::name` is "automatic".
+  EXPECT_EQ(engine->GetModelName(), "automatic");
 }
 
 TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint) {
@@ -580,6 +669,24 @@ TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint_WithDefaultModel) {
   EXPECT_EQ(GetService()->GetDefaultModelKey(), expected_default);
 }
 
+TEST_F(ModelServiceTest, AutomaticModelSupportsVision) {
+  EXPECT_EQ(features::kAIModelsVisionDefaultKey.Get(), kChatAutomaticModelKey);
+  const mojom::Model* model =
+      ModelService::GetModelForTesting(kChatAutomaticModelKey);
+  ASSERT_TRUE(model);
+  EXPECT_TRUE(model->vision_support);
+}
+
+TEST_F(ModelServiceTest, LeoModelsHaveThreeSuggestedModels) {
+  size_t suggested_count = 0;
+  for (const auto& model : GetService()->GetModels()) {
+    if (model->is_suggested_model) {
+      ++suggested_count;
+    }
+  }
+  EXPECT_EQ(suggested_count, 3u);
+}
+
 TEST_F(ModelServiceTest, LeoModelsHaveWebUIStrings) {
   for (const auto& model : GetService()->GetModels()) {
     if (!model->options->is_leo_model_options()) {
@@ -646,7 +753,8 @@ class ModelServiceAsyncEncryptorTest : public ::testing::Test {
   void PreloadCustomModelsInPrefs(
       const std::vector<std::pair<std::string, std::string>>& models) {
     auto service = std::make_unique<ModelService>(
-        &pref_service_, os_crypt_async_.get(), network::NetworkContextGetter());
+        &pref_service_, os_crypt_async_.get(), network::NetworkContextGetter(),
+        /*url_loader_factory=*/nullptr, base::FilePath());
     // Wait for `OnModelListUpdated()` so the encryptor is ready before we
     // call `AddCustomModel()` — otherwise `EncryptAPIKey()` would persist
     // empty strings and the test subject would never see the real keys.
@@ -688,7 +796,8 @@ TEST_F(ModelServiceAsyncEncryptorTest,
   });
 
   auto service = std::make_unique<ModelService>(
-      &pref_service_, os_crypt_async_.get(), network::NetworkContextGetter());
+      &pref_service_, os_crypt_async_.get(), network::NetworkContextGetter(),
+      /*url_loader_factory=*/nullptr, base::FilePath());
 
   // Pre-encryptor: all three are present with empty api_keys.
   auto before = service->GetCustomModels();
@@ -705,7 +814,7 @@ TEST_F(ModelServiceAsyncEncryptorTest,
   run_loop.Run();
 
   // Post-encryptor: each model's api_key matches expectation. Order matches
-  // insertion order in both prefs and `models_`.
+  // insertion order in both prefs and `all_models_`.
   auto after = service->GetCustomModels();
   ASSERT_EQ(after.size(), 3u);
   ASSERT_TRUE(after[0]->options->is_custom_model_options());
@@ -722,6 +831,155 @@ TEST_F(ModelServiceAsyncEncryptorTest,
             "model-gamma");
   EXPECT_EQ(after[2]->options->get_custom_model_options()->api_key,
             "key-gamma");
+}
+
+TEST_F(ModelServiceTest, RemoteModelsProviderNotBuiltWhenFeatureDisabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndDisableFeature(features::kAIChatRemoteModelsConfig);
+
+  EXPECT_EQ(GetService()->GetRemoteModelsProviderForTesting(), nullptr);
+}
+
+TEST_F(ModelServiceTest, RemoteModelsProviderBuiltWhenFeatureEnabled) {
+  // ScopedFeatureList must be initialized before TaskEnvironment starts the
+  // thread pool (base/test/scoped_feature_list.h).
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(features::kAIChatRemoteModelsConfig);
+
+  // APIRequestHelper posts to the thread pool at construction time, and
+  // ModelService's teardown (RemoteModelsProvider -> RemoteModelsFetcher ->
+  // APIRequestHelper) must run before task_environment is torn down, so a
+  // local instance is used here instead of the shared fixture's GetService()
+  // (whose lifetime outlives this test body's locals).
+  base::test::TaskEnvironment task_environment;
+  ModelService service(&pref_service_, os_crypt_async_.get(),
+                       network::NetworkContextGetter(),
+                       /*url_loader_factory=*/nullptr, base::FilePath());
+
+  EXPECT_NE(service.GetRemoteModelsProviderForTesting(), nullptr);
+}
+
+TEST_F(ModelServiceTest, OnRemoteModelsReadyEmptyResultIsNoOp) {
+  auto* service = GetService();
+  auto before = service->GetModelsWithSubtitles();
+
+  EXPECT_CALL(*observer_, OnModelListUpdated()).Times(0);
+  EXPECT_CALL(*observer_, OnModelRemoved(_)).Times(0);
+  EXPECT_CALL(*observer_, OnDefaultModelChanged(_, _)).Times(0);
+
+  service->OnRemoteModelsReadyForTesting({});
+
+  EXPECT_EQ(service->GetModelsWithSubtitles().size(), before.size());
+  testing::Mock::VerifyAndClearExpectations(observer_.get());
+}
+
+TEST_F(ModelServiceTest, OnRemoteModelsReadyPreservesAutomaticModelByDefault) {
+  auto* service = GetService();
+  const mojom::Model* automatic_before =
+      service->GetModel(kChatAutomaticModelKey);
+  ASSERT_TRUE(automatic_before);
+  const std::string original_name =
+      automatic_before->options->get_leo_model_options()->name;
+
+  std::vector<mojom::ModelPtr> fetched;
+  fetched.push_back(MakeRemoteTestModel("remote-model-1"));
+
+  EXPECT_CALL(*observer_, OnModelListUpdated()).Times(1);
+  service->OnRemoteModelsReadyForTesting(std::move(fetched));
+
+  const mojom::Model* automatic_after =
+      service->GetModel(kChatAutomaticModelKey);
+  ASSERT_TRUE(automatic_after);
+  EXPECT_EQ(automatic_after->options->get_leo_model_options()->name,
+            original_name);
+  EXPECT_TRUE(service->GetModel("remote-model-1"));
+}
+
+TEST_F(ModelServiceTest,
+       OnRemoteModelsReadyOverridesAutomaticIfFetchedIncludesIt) {
+  auto* service = GetService();
+
+  std::vector<mojom::ModelPtr> fetched;
+  fetched.push_back(MakeRemoteTestModel(kChatAutomaticModelKey));
+
+  service->OnRemoteModelsReadyForTesting(std::move(fetched));
+
+  const mojom::Model* automatic_after =
+      service->GetModel(kChatAutomaticModelKey);
+  ASSERT_TRUE(automatic_after);
+  EXPECT_EQ(automatic_after->options->get_leo_model_options()->name,
+            std::string(kChatAutomaticModelKey) + "-model");
+}
+
+TEST_F(ModelServiceTest, OnRemoteModelsReadyDropsModelsMissingFromFetchedList) {
+  auto* service = GetService();
+  ASSERT_TRUE(service->GetModel(kClaudeSonnetModelKey));
+
+  std::vector<mojom::ModelPtr> fetched;
+  fetched.push_back(MakeRemoteTestModel("remote-model-1"));
+  service->OnRemoteModelsReadyForTesting(std::move(fetched));
+
+  EXPECT_FALSE(service->GetModel(kClaudeSonnetModelKey));
+  EXPECT_TRUE(service->GetModel(kChatAutomaticModelKey));
+  EXPECT_TRUE(service->GetModel("remote-model-1"));
+}
+
+TEST_F(ModelServiceTest,
+       OnRemoteModelsReadyNotifiesRemovalAndResetsRetiredDefault) {
+  auto* service = GetService();
+  service->SetDefaultModelKey(kClaudeSonnetModelKey);
+  ASSERT_EQ(service->GetDefaultModelKey(), kClaudeSonnetModelKey);
+
+  std::vector<mojom::ModelPtr> fetched;
+  fetched.push_back(MakeRemoteTestModel("remote-model-1"));
+
+  EXPECT_CALL(*observer_, OnModelRemoved(_)).Times(testing::AnyNumber());
+  EXPECT_CALL(*observer_,
+              OnDefaultModelChanged(kClaudeSonnetModelKey,
+                                    features::kAIModelsDefaultKey.Get()))
+      .Times(1);
+  EXPECT_CALL(*observer_, OnModelRemoved(std::string(kClaudeSonnetModelKey)))
+      .Times(1);
+
+  service->OnRemoteModelsReadyForTesting(std::move(fetched));
+
+  EXPECT_EQ(service->GetDefaultModelKey(), features::kAIModelsDefaultKey.Get());
+  testing::Mock::VerifyAndClearExpectations(observer_.get());
+}
+
+TEST_F(ModelServiceTestWithRemoteOnlyDefaultModel,
+       OnDefaultModelChangedObserverCanResolveNewDefaultImmediately) {
+  auto* service = GetService();
+  service->SetDefaultModelKey(kClaudeSonnetModelKey);
+  ASSERT_EQ(service->GetDefaultModelKey(), kClaudeSonnetModelKey);
+
+  DefaultModelResolvedDuringNotificationObserver resolve_observer(*service);
+
+  std::vector<mojom::ModelPtr> fetched;
+  fetched.push_back(MakeRemoteTestModel("remote-model-1"));
+  service->OnRemoteModelsReadyForTesting(std::move(fetched));
+
+  ASSERT_EQ(service->GetDefaultModelKey(), "remote-model-1");
+  ASSERT_TRUE(resolve_observer.new_model_was_resolvable().has_value());
+  EXPECT_TRUE(*resolve_observer.new_model_was_resolvable());
+}
+
+TEST_F(ModelServiceTest, GetLeoModelKeyAndNameByKeyReflectMergedList) {
+  auto* service = GetService();
+  auto sonnet_name = service->GetLeoModelNameByKey(kClaudeSonnetModelKey);
+  ASSERT_TRUE(sonnet_name.has_value());
+
+  std::vector<mojom::ModelPtr> fetched;
+  fetched.push_back(MakeRemoteTestModel("remote-model-1"));
+  service->OnRemoteModelsReadyForTesting(std::move(fetched));
+
+  EXPECT_EQ(service->GetLeoModelNameByKey("remote-model-1"),
+            "remote-model-1-model");
+  EXPECT_EQ(service->GetLeoModelKeyByName("remote-model-1-model"),
+            "remote-model-1");
+  EXPECT_FALSE(
+      service->GetLeoModelNameByKey(kClaudeSonnetModelKey).has_value());
+  EXPECT_FALSE(service->GetLeoModelKeyByName(*sonnet_name).has_value());
 }
 
 }  // namespace ai_chat

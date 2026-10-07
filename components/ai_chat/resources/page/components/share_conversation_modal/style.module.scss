@@ -48,3 +48,18 @@
   --leo-color-button-background: var(--leo-color-button-success-background);
   --leo-color-schemes-on-primary: var(--leo-color-button-success-text);
 }
+
+.manageShares {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+}
+
+.manageSharesLink {
+  // Looks like a link but performs an in-page action, so it must be a button
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  text-decoration: underline;
+  color: var(--leo-color-text-interactive);
+}

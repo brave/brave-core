@@ -85,7 +85,10 @@
       "$web-common/*": ["components/common/*"],
       "$wallet/*": ["components/brave_wallet_ui/*"],
     },
-    "typeRoots": ["./node_modules/@types", "./components/definitions"],
+    // Do not set typeRoots here: nested tsconfigs extend this file, and a
+    // relative typeRoots path is resolved against those configs (hiding
+    // @types/jest in the IDE). Webpack and Storybook keep typeRoots on their
+    // own configs because generated copies live under out/.../gen.
     // optional
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,

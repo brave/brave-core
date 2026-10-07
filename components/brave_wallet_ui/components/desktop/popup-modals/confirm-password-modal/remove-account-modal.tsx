@@ -129,7 +129,7 @@ export const RemoveAccountModal = () => {
   // render
   return (
     <PopupModal
-      title={getLocale('braveWalletAccountSettingsRemove')}
+      title={getLocale(S.BRAVE_WALLET_ACCOUNT_SETTINGS_REMOVE)}
       onClose={() => dispatch(AccountsTabActions.setAccountToRemove(undefined))}
       width={modalWidth}
       headerPaddingHorizontal={leo.spacing['3Xl']}
@@ -150,7 +150,7 @@ export const RemoveAccountModal = () => {
                 textSize='16px'
                 textAlign='left'
               >
-                {getLocale('braveWalletRemoveAccountModalTitle').replace(
+                {getLocale(S.BRAVE_WALLET_REMOVE_ACCOUNT_MODAL_TITLE).replace(
                   '$1',
                   accountToRemove.name ?? accountToRemove.accountId.address,
                 )}
@@ -160,7 +160,9 @@ export const RemoveAccountModal = () => {
                 textSize='16px'
                 textColor={'tertiary'}
               >
-                {getLocale('braveWalletPasswordIsRequiredToTakeThisAction')}
+                {getLocale(
+                  S.BRAVE_WALLET_PASSWORD_IS_REQUIRED_TO_TAKE_THIS_ACTION,
+                )}
               </Text>
             </Column>
           )}
@@ -187,7 +189,7 @@ export const RemoveAccountModal = () => {
               }
               kind='plain-faint'
             >
-              {getLocale('braveWalletButtonCancel')}
+              {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
             </Button>
 
             <Button
@@ -195,7 +197,7 @@ export const RemoveAccountModal = () => {
               kind='filled'
               isDisabled={password ? !isCorrectPassword : true}
             >
-              {getLocale('braveWalletAccountsRemove')}
+              {getLocale(S.BRAVE_WALLET_ACCOUNTS_REMOVE)}
             </Button>
           </Row>
         ) : (
@@ -210,7 +212,7 @@ export const RemoveAccountModal = () => {
                 }
                 kind='plain-faint'
               >
-                {getLocale('braveWalletButtonCancel')}
+                {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
               </Button>
             </div>
 
@@ -220,7 +222,7 @@ export const RemoveAccountModal = () => {
                 kind='filled'
                 isDisabled={password ? !isCorrectPassword : true}
               >
-                {getLocale('braveWalletAccountsRemove')}
+                {getLocale(S.BRAVE_WALLET_ACCOUNTS_REMOVE)}
               </Button>
             </div>
           </Row>

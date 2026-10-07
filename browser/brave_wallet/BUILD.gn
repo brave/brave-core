@@ -30,6 +30,7 @@ source_set("brave_wallet") {
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/common/buildflags",
     "//chrome/browser:browser_process",
+    "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/profiles",
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/content",
@@ -253,6 +254,7 @@ source_set("browser_tests") {
       "//brave/browser/ui/sidebar:sidebar_impl",
       "//brave/components/brave_wallet/browser",
       "//brave/components/brave_wallet/browser:pref_names",
+      "//brave/components/brave_wallet/browser:test_support",
       "//brave/components/brave_wallet/browser:utils",
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:common_constants",
@@ -276,5 +278,10 @@ source_set("browser_tests") {
       "//url",
     ]
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+    if (enable_snap) {
+      sources += [ "snap_service_browsertest.cc" ]
+      deps += [ "//chrome/browser/profiles:profile" ]
+    }
   }
 }  # source_set("browser_tests")

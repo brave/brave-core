@@ -180,6 +180,9 @@
       <!-- Brave App Management strings -->
       <part file="brave_app_management.grdp" />
 
+      <!-- Custom profile image strings -->
+      <part file="custom_profile_image_strings.grdp" />
+
       <!--Add new items to the appropriate sections below -->
 
       <!-- Profile menu -->
@@ -190,12 +193,6 @@
       <!-- App Menu -->
       <message name="IDS_SHOW_BRAVE_REWARDS" desc="The show Brave Rewards menu in the app menu">
         Brave Rewards
-      </message>
-      <message name="IDS_BOOKMAR_BAR_MENU_SHOW_ALWAYS" desc="The name of the context menu item to always show bookmark bar">
-        Always
-      </message>
-      <message name="IDS_BOOKMAR_BAR_MENU_SHOW_NEVER" desc="The name of the context menu item to never show bookmark bar">
-        Never
       </message>
       <if expr="use_titlecase">
         <message name="IDS_SHOW_ALL_BOOKMARKS_BUTTON" desc="The name of an checked menu item to toggle visibility of All Bookmarks button on the bookmarks bar">
@@ -220,9 +217,6 @@
         <message name="IDS_COPY_CLEAN_LINK" desc="The name of the context menu item to copy clean link">
           Copy Clean Link
         </message>
-        <message name="IDS_BOOKMAR_BAR_MENU_SHOW_NTP" desc="The name of the context menu item to show bookmark bar on ntp only">
-          Only On the New Tab Page
-        </message>
       </if>
       <if expr="not use_titlecase">
         <message name="IDS_BRAVE_NEW_INCOGNITO_WINDOW" desc="The text label of a menu item for opening a new Private window">
@@ -233,9 +227,6 @@
         </message>
         <message name="IDS_COPY_CLEAN_LINK" desc="The name of the context menu item to copy clean link">
           Copy clean link
-        </message>
-        <message name="IDS_BOOKMAR_BAR_MENU_SHOW_NTP" desc="The name of the context menu item to show bookmark bar on ntp only">
-           Only on the new tab page
         </message>
       </if>
       <message name="IDS_SHOW_BRAVE_SYNC" desc="The show brave sync menu in the app menu">
@@ -629,6 +620,15 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_SCREENSHOT_SELECTED_AREA" desc="Label for the screenshot action that lets the user drag to select a region of the page">
         Selected area
       </message>
+      <message name="IDS_BRAVE_SCREENSHOT_PREVIEW_DIALOG_TITLE" desc="Title of the dialog that previews a captured screenshot before it is saved">
+        Screenshot preview
+      </message>
+      <message name="IDS_BRAVE_SCREENSHOT_PREVIEW_DIALOG_DOWNLOAD_BUTTON" desc="Label of the button in the screenshot preview dialog that proceeds to save the screenshot">
+        Download
+      </message>
+      <message name="IDS_BRAVE_SCREENSHOT_PREVIEW_DIALOG_COPY_BUTTON" desc="Label of the button in the screenshot preview dialog that copies the screenshot to clipboard">
+        Copy to clipboard
+      </message>
 
       <!-- Extensions page strings -->
       <message name="IDS_EXTENSIONS_BRAVE_ITEM_SOURCE_WEBSTORE" desc="The text to indicate that an extension is from the Web Extensions Store.">
@@ -1021,23 +1021,32 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Web3 Domains
       </message>
       <!-- Brave Wayback Machine -->
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_SORRY_HEADER_TEXT" desc="The label for sorry message when page is not available on bubble">
-        Sorry, that page is missing.
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_ICON_TOOLTIP" desc="Tooltip and accessible name for the Wayback Machine page action icon">
+        Wayback Machine
       </message>
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CANT_FIND_HEADER_TEXT" desc="The label for sorry message when page is not available on bubble">
-        Couldn't load saved version
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_SORRY_HEADER_TEXT" desc="Title on the Wayback Machine bubble when the page returned an error">
+        The page is missing
       </message>
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_ASK_ABOUT_CHECK_TEXT" desc="The label for asking to check from wayback machine">
-        Do you want to check if a saved version is available on the Wayback Machine?
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CANT_FIND_HEADER_TEXT" desc="Title on the Wayback Machine bubble when no archived version exists">
+        No archived version is available
       </message>
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_NOT_AVAILABLE_TEXT" desc="The label for wayback machine doesn't have saved version">
-        Wayback Machine couldn't find a saved version of this site.
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_ASK_ABOUT_CHECK_TEXT" desc="Body text on the Wayback Machine bubble asking whether to search the Internet Archive">
+        The Internet Archive saves past versions of many web pages. Do you want to look for this page in the Archive?
       </message>
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CHECK_BUTTON_TEXT" desc="The label for check button on wayback infobar">
-        Check saved version
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_NOT_AVAILABLE_TEXT" desc="Body text on the Wayback Machine bubble when the Internet Archive has no copy of this page">
+        Sorry, we checked the Internet Archive and it doesn't have an archived version of this page.
       </message>
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_DISMISS_BUTTON_TEXT" desc="Text to show for the no thanks button.">
-        Dismiss
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CHECK_BUTTON_TEXT" desc="Button label that searches the Internet Archive for a saved copy of the page">
+        Look in the Archive
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_DISMISS_BUTTON_TEXT" desc="Button label that closes the Wayback Machine bubble without searching">
+        Cancel
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_DONT_ASK_AGAIN_TEXT" desc="Button label that disables the Wayback Machine feature and closes the bubble">
+        Don't ask again
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CHECKING_ACCESSIBLE_NAME" desc="Screen reader announcement while the Wayback Machine bubble is searching the Internet Archive">
+        Looking in the Archive
       </message>
 
       <!-- Brave's copyright statement -->
@@ -1076,7 +1085,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Close duplicate tabs
         </message>
         <if expr="enable_containers">
-          <message name="IDS_CXMENU_NO_CONTAINER" desc="The label of the 'No container' context menu item, indicating that the tab is not in any container">
+          <message name="IDS_CXMENU_NO_CONTAINER" desc="The label of the 'No container' context menu item, indicating that the tab is not in any container" formatter_data="webui=Containers">
             No container
           </message>
           <message name="IDS_CXMENU_OPEN_IN_CONTAINER" desc="The label of the 'Open in Container' context menu item">
@@ -1088,7 +1097,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           <message name="IDS_CXMENU_OPEN_CONTAINERS_SETTINGS" desc="The label of the context menu item for opening the Containers settings page.">
             Manage containers
           </message>
-          <message name="IDS_CXMENU_NEW_TEMPORARY_CONTAINER" desc="Creates a new local-only temporary container and opens the URL in it.">
+          <message name="IDS_CXMENU_NEW_TEMPORARY_CONTAINER" desc="Creates a new local-only temporary container and opens the URL in it." formatter_data="webui=Containers">
             New temporary container
           </message>
         </if>
@@ -1122,7 +1131,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Close Duplicate Tabs
         </message>
         <if expr="enable_containers">
-          <message name="IDS_CXMENU_NO_CONTAINER" desc="The label of the 'No container' context menu item, indicating that the tab is not in any container">
+          <message name="IDS_CXMENU_NO_CONTAINER" desc="The label of the 'No container' context menu item, indicating that the tab is not in any container" formatter_data="webui=Containers">
             No Container
           </message>
           <message name="IDS_CXMENU_OPEN_IN_CONTAINER" desc="The label of the 'Open in Container' context menu item">
@@ -1134,7 +1143,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           <message name="IDS_CXMENU_OPEN_CONTAINERS_SETTINGS" desc="The label of the tab context menu item for opening the Containers settings page.">
             Manage Containers
           </message>
-          <message name="IDS_CXMENU_NEW_TEMPORARY_CONTAINER" desc="Creates a new local-only temporary container and opens the URL in it.">
+          <message name="IDS_CXMENU_NEW_TEMPORARY_CONTAINER" desc="Creates a new local-only temporary container and opens the URL in it." formatter_data="webui=Containers">
             New Temporary Container
           </message>
         </if>
@@ -1573,6 +1582,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_ORGANIZE_TAB_WINDOW_CREATED_MESSAGE" desc="Message shown when a new window is created">
         New window created for <ph name="TOPIC">$1<ex>Social media</ex></ph>
       </message>
+      <message name="IDS_BRAVE_ORGANIZE_TAB_NO_MATCHING_TABS_MESSAGE" desc="Message shown when no open tab matches the topic the user asked for">
+        No tabs matched that topic. Try describing it differently.
+      </message>
       <message name="IDS_BRAVE_ORGANIZE_TAB_SEND_TAB_DATA_MESSAGE" desc="Description of how tab data is shared with Leo">
         This feature sends data about your open tabs to Leo, Brave's AI-powered browser assistant.
       </message>
@@ -1586,7 +1598,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Dismiss
       </message>
       <message name="IDS_BRAVE_ORGANIZE_TAB_PRIVACY_DISCLAIMER" desc="Disclaimer text for enabling the tab focus feature">
-        When opened, this will automatically send the titles and origin of all non-private tabs to Leo to classify them.
+        When opened, this will automatically send the titles and origin of all non-private tabs to Leo to classify them. If you also turn on sending page content, short excerpts of the text of each tab are sent too.
       </message>
       <message name="IDS_BRAVE_ORGANIZE_TAB_ENABLE_BUTTON_LABEL" desc="Text of enable tab focus button">
         Enable
@@ -1643,14 +1655,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
            string and swap the IDS in chromium_src overrides. -->
       <message name="IDS_BRAVE_HISTORY_EMBEDDINGS_DISCLAIMER" desc="Disclaimer shown on chrome://history and in the history search IPH promo, indicating that history semantic search runs entirely on-device.">
         Your searches and page contents are processed on this device. Nothing is sent to Brave or seen by human reviewers.
-      </message>
-
-      <!-- Semantic History Search toggle in the chrome://history side bar. -->
-      <message name="IDS_BRAVE_HISTORY_EMBEDDINGS_TOGGLE_LABEL" desc="Label for the toggle on chrome://history that turns Semantic History Search on or off.">
-        Semantic History Search
-      </message>
-      <message name="IDS_BRAVE_HISTORY_EMBEDDINGS_TOGGLE_DESCRIPTION" desc="One-line explainer below the Semantic History Search toggle on chrome://history.">
-        Index pages you visit locally so you can search your history by meaning. All processing stays on this device.
       </message>
       <!--Add new items to the appropriate sections above -->
     </messages>

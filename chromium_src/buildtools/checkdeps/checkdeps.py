@@ -11,25 +11,29 @@ from builddeps import NormalizePath
 
 class BraveDepsChecker(DepsChecker):
     def _ApplyDirectoryRules(self, existing_rules, dir_path_local_abs):
-        directory_rules, excluded_subdirs = super(DepsChecker,
-                                                  self)._ApplyDirectoryRules(
-                                                      existing_rules,
-                                                      dir_path_local_abs)
+        directory_rules, excluded_subdirs = super(
+            DepsChecker, self
+        )._ApplyDirectoryRules(existing_rules, dir_path_local_abs)
 
         dir_path_norm = NormalizePath(dir_path_local_abs)
         if '/brave/chromium_src' in dir_path_norm:
             # Append rules from the original `src/...` dir.
             root_src_dir_path_norm = dir_path_norm.replace(
-                '/brave/chromium_src', '', 1)
+                '/brave/chromium_src', '', 1
+            )
             directory_rules, _ = super(DepsChecker, self)._ApplyDirectoryRules(
-                directory_rules, root_src_dir_path_norm)
+                directory_rules, root_src_dir_path_norm
+            )
 
             # Add `+../gen/...` rule.
             root_src_relative_dir = '../gen/' + posixpath.relpath(
-                root_src_dir_path_norm, NormalizePath(self.base_directory))
-            directory_rules.AddRule('+' + root_src_relative_dir,
-                                    root_src_relative_dir,
-                                    'Gen rule for ' + root_src_relative_dir)
+                root_src_dir_path_norm, NormalizePath(self.base_directory)
+            )
+            directory_rules.AddRule(
+                '+' + root_src_relative_dir,
+                root_src_relative_dir,
+                'Gen rule for ' + root_src_relative_dir,
+            )
 
         return directory_rules, excluded_subdirs
 

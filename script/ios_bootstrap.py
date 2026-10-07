@@ -18,6 +18,7 @@ from pathlib import Path
 with sys_path("//third_party/node"):
     import node
 
+
 def main():
     if PLATFORM != 'darwin':
         # Only applicable to macOS
@@ -32,14 +33,18 @@ def main():
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Bootstrap the iOS project')
-    parser.add_argument('-v',
-                        '--verbose',
-                        action='store_true',
-                        help='Prints the output of the subprocesses')
-    parser.add_argument('-f',
-                        '--force',
-                        action='store_true',
-                        help='Always rewrite the symlink/directory entirely')
+    parser.add_argument(
+        '-v',
+        '--verbose',
+        action='store_true',
+        help='Prints the output of the subprocesses',
+    )
+    parser.add_argument(
+        '-f',
+        '--force',
+        action='store_true',
+        help='Always rewrite the symlink/directory entirely',
+    )
     return parser.parse_args()
 
 
@@ -50,6 +55,7 @@ def pack_javascript():
     stdout = node.RunNode([webpack_cli, '--config', webpack_config])
     if is_verbose_mode():
         print(stdout)
+
 
 def create_required_spm_resources(force=False):
     # Runs webpack on the JS files that are generated in iOS. This is so that
@@ -82,8 +88,9 @@ def create_required_spm_resources(force=False):
             info_plist = wspath(
                 "//brave/ios/brave-ios/BraveCore/placeholders/xcframework.plist"
             )
-            shutil.copyfile(info_plist, os.path.join(framework_dir,
-                                                     'Info.plist'))
+            shutil.copyfile(
+                info_plist, os.path.join(framework_dir, 'Info.plist')
+            )
     # Creates an empty args.xcconfig due to a race in Xcode which seems to fail
     # to find the xcconfig after its generated during the build preaction script
     args_config_path = os.path.join(ios_current_link, 'args.xcconfig')
@@ -101,7 +108,7 @@ def generate_lldbinit(force=False):
     """)
     lldbinit_file = wspath("//brave/ios/brave-ios/App/Configuration/LLDBInit")
     if force or not os.path.exists(lldbinit_file):
-        with open(lldbinit_file, 'w') as f:
+        with open(lldbinit_file, 'w', encoding='utf-8') as f:
             f.write(contents)
 
 

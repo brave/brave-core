@@ -24,7 +24,7 @@
 
 bool SystemMenuModelDelegate::IsCommandIdChecked(int command_id) const {
   if (command_id == IDC_TOGGLE_VERTICAL_TABS) {
-    auto* vtc = VerticalTabController::FromBrowser(browser_);
+    auto* vtc = VerticalTabController::From(browser_);
     return vtc && vtc->ShouldShowBraveVerticalTabs();
   }
   if (command_id == IDC_TOGGLE_FOCUS_MODE) {

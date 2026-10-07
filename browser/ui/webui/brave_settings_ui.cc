@@ -21,7 +21,7 @@
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_info/features.h"
-#include "brave/browser/ui/webui/settings/brave_account/brave_account_row_handler.h"
+#include "brave/browser/ui/webui/settings/brave_account/brave_account_dialog_opener.h"
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
@@ -46,7 +46,6 @@
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
-#include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
@@ -59,6 +58,7 @@
 #include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
+#include "components/policy/policy_constants.h"
 #include "components/regional_capabilities/regional_capabilities_country_id.h"
 #include "components/regional_capabilities/regional_capabilities_service.h"
 #include "components/sync/base/command_line_switches.h"
@@ -123,6 +123,10 @@
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/core/browser/containers_settings_handler.h"
 #include "brave/components/containers/core/common/features.h"
+#endif
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+#include "brave/components/traffic_control/core/browser/traffic_control_settings_handler.h"
+#include "brave/components/traffic_control/core/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -270,16 +274,13 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 #endif
 
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
-  // Survey Panelist is tied to Brave Rewards, which is compiled out of Brave
+  // Sponsored Ads is tied to Brave Rewards, which is compiled out of Brave
   // Origin branded builds, so the setting is never available there.
-  html_source->AddBoolean("isSurveyPanelistAllowed", false);
+  html_source->AddBoolean("isSponsoredAdsAllowed", false);
 #else
-  html_source->AddBoolean("isSurveyPanelistAllowed",
-                          base::FeatureList::IsEnabled(
-                              ntp_background_images::features::
-                                  kBraveNTPBrandedWallpaperSurveyPanelist) &&
-                              !profile->GetPrefs()->GetBoolean(
-                                  brave_rewards::prefs::kDisabledByPolicy));
+  html_source->AddBoolean("isSponsoredAdsAllowed",
+                          !profile->GetPrefs()->GetBoolean(
+                              brave_rewards::prefs::kDisabledByPolicy));
 #endif
 #if BUILDFLAG(ENABLE_PLAYLIST)
   html_source->AddBoolean(
@@ -309,13 +310,28 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
               profile));
 #endif
 #if BUILDFLAG(ENABLE_PSST)
+  auto* brave_origin_service =
+      brave_origin::BraveOriginServiceFactory::GetForProfile(profile);
+  bool is_managed_by_brave_origin = false;
+  if (brave_origin_service) {
+    is_managed_by_brave_origin =
+        brave_origin_service->IsPolicyControlledByBraveOrigin(
+            policy::key::kPsstEnabled);
+  }
+
   html_source->AddBoolean("isPsstEnabled", base::FeatureList::IsEnabled(
-                                               psst::features::kEnablePsst));
+                                               psst::features::kEnablePsst) &&
+                                               is_managed_by_brave_origin);
 #endif
 #if BUILDFLAG(ENABLE_CONTAINERS)
   html_source->AddBoolean(
       "isContainersEnabled",
       base::FeatureList::IsEnabled(containers::features::kContainers));
+#endif
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+  html_source->AddBoolean(
+      "isTrafficControlEnabled",
+      base::FeatureList::IsEnabled(traffic_control::features::kTrafficControl));
 #endif
   html_source->AddBoolean(
       "isBraveAccountEnabled",
@@ -356,6 +372,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isShowBraveShieldsInPageInfoEnabled",
       page_info::features::IsShowBraveShieldsInPageInfoEnabled());
+  html_source->AddBoolean("isUpstreamVerticalTabsFeatureEnabled",
+                          tabs::IsUpstreamVerticalTabsForceEnabled());
 }
 
 // static
@@ -409,10 +427,11 @@ void BraveSettingsUI::BindInterface(
 }
 
 void BraveSettingsUI::BindInterface(
-    mojo::PendingReceiver<brave_account::mojom::RowHandler> pending_receiver) {
-  MakeOwnedReceiver(
-      std::make_unique<brave_account::BraveAccountRowHandler>(web_ui()),
-      std::move(pending_receiver));
+    mojo::PendingReceiver<brave_account::mojom::DialogOpener>
+        pending_receiver) {
+  MakeOwnedReceiver(std::make_unique<brave_account::BraveAccountDialogOpener>(
+                        CHECK_DEREF(web_ui())),
+                    std::move(pending_receiver));
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -428,6 +447,22 @@ void BraveSettingsUI::BindInterface(
   MakeOwnedReceiver(std::move(handler), std::move(pending_receiver));
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<traffic_control::mojom::TrafficControlSettingsHandler>
+        pending_receiver) {
+  if (!base::FeatureList::IsEnabled(
+          traffic_control::features::kTrafficControl)) {
+    return;
+  }
+  auto handler =
+      std::make_unique<traffic_control::TrafficControlSettingsHandler>(
+          user_prefs::UserPrefs::Get(
+              web_ui()->GetWebContents()->GetBrowserContext()));
+  MakeOwnedReceiver(std::move(handler), std::move(pending_receiver));
+}
+#endif  // BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 void BraveSettingsUI::BindInterface(

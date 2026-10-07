@@ -273,6 +273,17 @@ void SidebarModel::OnGetLocalFaviconImage(
 }
 
 void SidebarModel::FetchFaviconFromNetwork(const sidebar::SidebarItem& item) {
+  // Sidebar can be used in private contexts, including with Tor windows.
+  // For those, we should skip the favicon fetch. The ImageFetcherService sends
+  // its requests through the browser-wide system network context, not through
+  // the profile's own network context. For an off-the-record profile this
+  // request would leave the profile's network partition, and in a Tor window it
+  // would bypass the Tor proxy. Skipping will force a default favicon (ex:
+  // first letter of hostname)
+  if (profile_->IsOffTheRecord()) {
+    return;
+  }
+
   auto* service =
       ImageFetcherServiceFactory::GetForKey(profile_->GetProfileKey());
   DCHECK(service);

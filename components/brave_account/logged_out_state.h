@@ -10,8 +10,10 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_account/brave_account_state_prefs.h"
+#include "brave/components/brave_account/flows/cancel_verification.h"
 #include "brave/components/brave_account/flows/login.h"
 #include "brave/components/brave_account/flows/register.h"
+#include "brave/components/brave_account/flows/resend_verification_email.h"
 #include "brave/components/brave_account/flows/reset_password.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/state_base.h"
@@ -26,9 +28,9 @@ namespace brave_account {
 // `mojom::Authentication` surface available before login:
 // the login, registration, and password-reset steps,
 // which are delegated to the `login_`, `register_`, and
-// `reset_password_` helpers.
-// `ResendVerificationEmail()` and `CancelVerification()` are fully
-// handled by `StateBase` for both states.
+// `reset_password_` helpers. `ResendVerificationEmail()` and
+// `CancelVerification()` are valid in both states, so this state owns its own
+// `resend_verification_email_` and `cancel_verification_` helpers.
 // All other methods inherit `StateBase`'s wrong-state default.
 class LoggedOutState : public StateBase {
  public:
@@ -44,6 +46,8 @@ class LoggedOutState : public StateBase {
   ~LoggedOutState() override;
 
  private:
+  void CancelVerification(mojom::VerificationIntentPtr intent) override;
+
   void LoginStep1(mojom::Service initiating_service,
                   const std::string& email,
                   const std::string& serialized_ke1,
@@ -65,6 +69,10 @@ class LoggedOutState : public StateBase {
   void RegisterStep3(const std::string& code,
                      RegisterStep3Callback callback) override;
 
+  void ResendVerificationEmail(
+      mojom::VerificationIntentPtr intent,
+      ResendVerificationEmailCallback callback) override;
+
   void ResetPasswordStep1(const std::string& email,
                           ResetPasswordStep1Callback callback) override;
 
@@ -78,9 +86,11 @@ class LoggedOutState : public StateBase {
                           const std::string& email,
                           ResetPasswordStep4Callback callback) override;
 
-  Login login_{*this};
-  Register register_{*this};
-  ResetPassword reset_password_{*this};
+  class CancelVerification cancel_verification_;
+  Login login_;
+  Register register_;
+  class ResendVerificationEmail resend_verification_email_;
+  ResetPassword reset_password_;
 };
 
 }  // namespace brave_account

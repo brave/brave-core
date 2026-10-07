@@ -5,14 +5,13 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 
-#include "base/test/run_until.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "net/http/http_status_code.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -36,17 +35,12 @@ TEST_F(BraveAdsConversionsDatabaseTableIntegrationTest,
   const database::table::CreativeSetConversions database_table;
 
   // Act & Assert
-  ASSERT_TRUE(base::test::RunUntil([&] {
-    base::test::TestFuture<bool, CreativeSetConversionList> test_future;
-    database_table.GetUnexpired(
-        test_future.GetCallback<bool, const CreativeSetConversionList&>());
-    const auto [success, creative_set_conversions] = test_future.Take();
-    if (!success || creative_set_conversions.empty()) {
-      return false;
-    }
-    EXPECT_THAT(creative_set_conversions, ::testing::SizeIs(2));
-    return true;
-  }));
+  base::test::TestFuture<bool, CreativeSetConversionList> test_future;
+  database_table.GetUnexpired(
+      test_future.GetCallback<bool, const CreativeSetConversionList&>());
+  const auto [success, creative_set_conversions] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(creative_set_conversions, ::testing::SizeIs(2));
 }
 
 }  // namespace brave_ads

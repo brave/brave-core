@@ -5,7 +5,6 @@
 
 import Favicon
 import Shared
-import Storage
 import UIKit
 import Web
 import WebKit

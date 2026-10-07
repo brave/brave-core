@@ -7,7 +7,11 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_TARGETING_CONDITION_MATCHER_CONDITION_MATCHER_UTIL_H_
 
 #include <map>
+#include <optional>
 #include <string>
+#include <string_view>
+
+#include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/condition_matcher_operator_type.h"
 
 namespace base {
 class DictValue;
@@ -283,9 +287,32 @@ namespace brave_ads {
 using ConditionMatcherMap =
     std::multimap</*pref_path*/ std::string, /*condition*/ std::string>;
 
+// Returns `true` if `pref_path` uses the "[pref path operator]" `[!]:` (does
+// not exist) matcher, the only matcher with no condition (see the class
+// comment above).
+bool HasNotOperator(std::string_view pref_path);
+
+// Returns whether a single `pref_path`/`condition` pair matches, does not
+// match, or is invalid (e.g. a malformed condition or an unresolvable
+// numerical operand). Exposed for diagnostics reporting, which needs the
+// distinction; ad serving only needs the fold in `MatchConditions` below.
+ConditionMatchResult MatchCondition(const base::DictValue& virtual_prefs,
+                                    std::string_view pref_path,
+                                    std::string_view condition);
+
+// Same as above, but `test_value` is matched against instead of the
+// real value resolved from `pref_path`. Used only by the
+// brave://ads-internals test tool to check a hypothetical value without
+// needing a device that's actually in that state. Ad serving never calls
+// this overload.
+ConditionMatchResult MatchCondition(const base::DictValue& virtual_prefs,
+                                    std::string_view pref_path,
+                                    std::string_view condition,
+                                    std::optional<std::string> test_value);
+
 // Returns `true` if all conditions in `condition_matchers` match their
-// respective pref values, or `false` if any condition fails or a pref path is
-// malformed or unknown.
+// respective pref values, or `false` if any condition fails, is invalid, or a
+// pref path is malformed or unknown.
 bool MatchConditions(const base::DictValue& virtual_prefs,
                      const ConditionMatcherMap& condition_matchers);
 

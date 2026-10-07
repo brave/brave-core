@@ -4,9 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/v2/branding.gni")
+
 if (is_mac) {
   import("//build/config/mac/rules.gni")
-  import("//build/util/branding.gni")
   import("//build/util/process_version.gni")
 }
 if (is_win) {
@@ -23,6 +24,8 @@ source_set("core") {
     "browser_host_impl.h",
     "browser_host_provider_impl.cc",
     "browser_host_provider_impl.h",
+    "browser_identity.cc",
+    "browser_identity.h",
     "browser_registry.cc",
     "browser_registry.h",
     "shutdown_handlers.cc",
@@ -32,6 +35,7 @@ source_set("core") {
 
   if (is_win) {
     sources += [
+      "win/browser_identity_win.cc",
       "win/shutdown_handlers_win.cc",
       "win/single_instance_win.cc",
     ]
@@ -42,6 +46,19 @@ source_set("core") {
       "posix/shutdown_handlers_posix.cc",
       "posix/single_instance_posix.cc",
     ]
+  }
+
+  if (is_linux) {
+    sources += [
+      "linux/browser_identity_linux.cc",
+      "linux/browser_identity_linux_internal.cc",
+      "linux/browser_identity_linux_internal.h",
+    ]
+  }
+
+  if (is_mac) {
+    sources += [ "mac/browser_identity_mac.cc" ]
+    libs = [ "bsm" ]
   }
 
   public_deps = [
@@ -61,12 +78,12 @@ source_set("core") {
 if (is_win) {
   process_version_rc_template("version_resources") {
     sources = [ "win/agent.ver" ]
-    output = "$target_gen_dir/brave_vpn_agent_app.rc"
+    output = "$target_gen_dir/$vpn_agent_executable_name.rc"
   }
 }
 
 executable("agent") {
-  output_name = "brave_vpn_agent_app"
+  output_name = vpn_agent_executable_name
 
   configs += [ "//build/config/compiler:wexit_time_destructors" ]
   sources = [ "main.cc" ]
@@ -94,9 +111,6 @@ executable("agent") {
 }
 
 if (is_mac) {
-  vpn_agent_product_full_name = "$chrome_product_full_name VPN Agent"
-  vpn_agent_bundle_id = "$chrome_mac_bundle_id.vpn.agent"
-
   # Assembles the agent executable and Info.plist into an app bundle.
   mac_app_bundle("brave_vpn_agent_bundle") {
     info_plist = "mac/Info.plist"
@@ -164,9 +178,12 @@ source_set("test_support") {
     "test/fake_browser.h",
     "test/fake_browser_endpoint.cc",
     "test/fake_browser_endpoint.h",
+    "test/fake_browser_identity.cc",
+    "test/fake_browser_identity.h",
   ]
 
   public_deps = [
+    ":core",
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_vpn/common/mojom:agent",
@@ -180,10 +197,15 @@ source_set("unit_tests") {
     "agent_app_unittest.cc",
     "browser_host_impl_unittest.cc",
     "browser_host_provider_impl_unittest.cc",
+    "browser_identity_unittest.cc",
     "browser_registry_unittest.cc",
     "shutdown_handlers_unittest.cc",
     "single_instance_unittest.cc",
   ]
+
+  if (is_linux) {
+    sources += [ "linux/browser_identity_linux_internal_unittest.cc" ]
+  }
 
   deps = [
     ":core",

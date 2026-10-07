@@ -116,11 +116,12 @@ void ShieldsPanelUI::CreatePanelHandler(
   CHECK(browser);
   auto* favicon_service = FaviconServiceFactory::GetForProfile(
       profile, ServiceAccessType::EXPLICIT_ACCESS);
-  auto* brave_shield_settings_service =
+  auto* brave_shields_settings =
       BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  CHECK(brave_shields_settings);
   data_handler_ = std::make_unique<ShieldsPanelDataHandler>(
       std::move(data_handler_receiver), this, browser->GetTabStripModel(),
-      favicon_service, brave_shield_settings_service);
+      favicon_service, *brave_shields_settings);
 }
 
 ShieldsPanelUIConfig::ShieldsPanelUIConfig()

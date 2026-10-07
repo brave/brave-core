@@ -14,7 +14,7 @@ import os.log
 extension ContentBlockerHelper: TabContentScript {
   private struct ContentBlockerDTO: Decodable {
     struct ContentblockerDTOData: Decodable {
-      let resourceType: AdblockEngine.ResourceType
+      let resourceType: AdblockResourceType
       let resourceURL: String
     }
 

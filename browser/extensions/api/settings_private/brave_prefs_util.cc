@@ -8,6 +8,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
@@ -21,6 +22,7 @@
 #include "brave/components/debounce/core/common/pref_names.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
@@ -28,6 +30,7 @@
 #include "brave/components/request_otr/common/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/traffic_control/buildflags/buildflags.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "brave/components/webcompat_reporter/common/pref_names.h"
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
@@ -39,6 +42,10 @@
 #include "components/history/core/common/pref_names.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
 #include "extensions/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 #include "brave/components/brave_talk/pref_names.h"
@@ -54,6 +61,10 @@
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/core/browser/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/local_ai/core/pref_names.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -92,11 +103,13 @@
 #include "brave/components/email_aliases/pref_names.h"
 #endif
 
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+#include "brave/components/traffic_control/core/browser/pref_names.h"
+#endif
+
 namespace extensions {
 
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
-using ntp_background_images::prefs::
-    kNewTabPageShowSponsoredImagesBackgroundImage;
 
 namespace settings_api = api::settings_private;
 
@@ -205,8 +218,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[debounce::prefs::kDebounceEnabled] =
       settings_api::PrefType::kBoolean;
   // new tab prefs
-  (*s_brave_allowlist)[kNewTabPageShowSponsoredImagesBackgroundImage] =
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  (*s_brave_allowlist)[brave_ads::prefs::kSponsoredEnabled] =
       settings_api::PrefType::kBoolean;
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   (*s_brave_allowlist)[kNewTabPageShowBackgroundImage] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kNewTabPageShowClock] = settings_api::PrefType::kBoolean;
@@ -246,11 +261,11 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[browsing_data::prefs::kDeleteBraveLeoHistoryOnExit] =
       settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP] =
-      settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kMRUCyclingEnabled] = settings_api::PrefType::kBoolean;
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   (*s_brave_allowlist)[kBraveWaybackMachineEnabled] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[kBraveWaybackMachineAutoCheckEnabled] =
       settings_api::PrefType::kBoolean;
 #endif
   (*s_brave_allowlist)[kEnableWindowClosingConfirm] =
@@ -302,6 +317,15 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatTabOrganizationEnabled] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)
+      [ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent] =
+          settings_api::PrefType::kBoolean;
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // Owned by the chrome://history toggle; the Leo settings page reads it to
+  // disable the send-page-content sub-option.
+  (*s_brave_allowlist)[local_ai::prefs::kBraveHistoryEmbeddingsEnabled] =
+      settings_api::PrefType::kBoolean;
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
   (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatTabOrganizationModelKey] =
       settings_api::PrefType::kString;
   (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatUserCustomizationEnabled] =
@@ -311,10 +335,11 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatOllamaFetchEnabled] =
       settings_api::PrefType::kBoolean;
 
-  // Survey Panelist pref
-  (*s_brave_allowlist)
-      [ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist] =
-          settings_api::PrefType::kBoolean;
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // On-device AI pref
+  (*s_brave_allowlist)[local_ai::prefs::kBraveHistoryEmbeddingsEnabled] =
+      settings_api::PrefType::kBoolean;
+#endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   // Push Messaging Pref
@@ -417,6 +442,11 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   (*s_brave_allowlist)[containers::prefs::kContainersEnabled] =
+      settings_api::PrefType::kBoolean;
+#endif
+
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+  (*s_brave_allowlist)[traffic_control::prefs::kTrafficControlEnabled] =
       settings_api::PrefType::kBoolean;
 #endif
 

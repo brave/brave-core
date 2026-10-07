@@ -1,5 +1,5 @@
 diff --git a/third_party/expat/BUILD.gn b/third_party/expat/BUILD.gn
-index 9ad36d41f159d817fa932e632f23205709265e37..20dbea256c6a1f96d4148d0041b9246548e57483 100644
+index f226c3eea0b7c8b68c715e11e2a56e59d03533d0..ea40a10fb29da1eac767259b616782a525695d87 100644
 --- a/third_party/expat/BUILD.gn
 +++ b/third_party/expat/BUILD.gn
 @@ -13,6 +13,9 @@ expat_visibility = [

@@ -8,19 +8,23 @@
 #include <string>
 #include <string_view>
 
+#include "base/strings/utf_string_conversions.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/focus_mode/focus_mode_features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
+#include "net/test/embedded_test_server/default_handlers.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/window_open_disposition.h"
@@ -36,12 +40,16 @@ class FocusModeTitleBarViewBrowserTest : public InProcessBrowserTest {
  protected:
   FocusModeTitleBarViewBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    feature_list_.InitAndEnableFeature(features::kBraveFocusMode);
+    feature_list_.InitAndEnableFeatureWithParameters(
+        features::kBraveFocusMode, {{"FocusModeUrlDisplay", "title-bar"}});
   }
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
+    // Registers /server-redirect?<url> and /client-redirect?<url> used by the
+    // redirect tests below.
+    net::test_server::RegisterDefaultHandlers(&https_server_);
     // CERT_TEST_NAMES is valid for a.test/b.test, which are used below to give
     // each tab a distinct, secure host.
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
@@ -69,6 +77,11 @@ class FocusModeTitleBarViewBrowserTest : public InProcessBrowserTest {
     });
   }
 
+  void EnableFocusMode() {
+    FocusModeController::From(browser())->SetEnabled(true);
+    views::test::RunScheduledLayout(browser_view());
+  }
+
   net::EmbeddedTestServer https_server_;
 
  private:
@@ -88,7 +101,7 @@ IN_PROC_BROWSER_TEST_F(FocusModeTitleBarViewBrowserTest, TitleBarWiring) {
       browser(), https_server_.GetURL("a.test", "/empty.html")));
 
   // Enabling Focus Mode shows the title bar and points it at the active tab.
-  browser()->GetFeatures().focus_mode_controller()->SetEnabled(true);
+  FocusModeController::From(browser())->SetEnabled(true);
   views::test::RunScheduledLayout(browser_view());
   ASSERT_TRUE(title_bar()->GetVisible());
   ASSERT_TRUE(WaitForDomainToContain(u"a.test"));
@@ -116,6 +129,71 @@ IN_PROC_BROWSER_TEST_F(FocusModeTitleBarViewBrowserTest, TitleBarWiring) {
   EXPECT_TRUE(WaitForDomainToContain(u"a.test"));
 
   // Disabling Focus Mode hides the title bar again.
-  browser()->GetFeatures().focus_mode_controller()->SetEnabled(false);
+  FocusModeController::From(browser())->SetEnabled(false);
   EXPECT_FALSE(title_bar()->GetVisible());
+}
+
+// The title bar shows the origin of the active page, so the domain label must
+// keep tracking navigations: a stale host would misrepresent the page being
+// shown. The tests below drive the navigation types where that could regress.
+
+// A client-side redirect must not leave the label on the original host.
+IN_PROC_BROWSER_TEST_F(FocusModeTitleBarViewBrowserTest,
+                       ClientRedirectUpdatesDomain) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("a.test", "/empty.html")));
+  EnableFocusMode();
+  ASSERT_TRUE(WaitForDomainToContain(u"a.test"))
+      << base::UTF16ToUTF8(domain_text());
+
+  // /client-redirect?<url> returns an HTML page that meta-refreshes to <url>.
+  const GURL redirect_url = https_server_.GetURL(
+      "a.test", "/client-redirect?" +
+                    https_server_.GetURL("b.test", "/empty.html").spec());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), redirect_url));
+
+  EXPECT_TRUE(WaitForDomainToContain(u"b.test"))
+      << base::UTF16ToUTF8(domain_text());
+}
+
+// A server-side redirect must update the label to the destination host.
+IN_PROC_BROWSER_TEST_F(FocusModeTitleBarViewBrowserTest,
+                       ServerRedirectUpdatesDomain) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("a.test", "/empty.html")));
+  EnableFocusMode();
+  ASSERT_TRUE(WaitForDomainToContain(u"a.test"))
+      << base::UTF16ToUTF8(domain_text());
+
+  // /server-redirect?<url> responds with HTTP MOVED PERMANENTLY to <url>.
+  const GURL redirect_url = https_server_.GetURL(
+      "a.test", "/server-redirect?" +
+                    https_server_.GetURL("b.test", "/empty.html").spec());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), redirect_url));
+
+  EXPECT_TRUE(WaitForDomainToContain(u"b.test"))
+      << base::UTF16ToUTF8(domain_text());
+}
+
+// Navigating back must restore the previous page's host in the label.
+IN_PROC_BROWSER_TEST_F(FocusModeTitleBarViewBrowserTest,
+                       BackNavigationUpdatesDomain) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("a.test", "/empty.html")));
+  EnableFocusMode();
+  ASSERT_TRUE(WaitForDomainToContain(u"a.test"))
+      << base::UTF16ToUTF8(domain_text());
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("b.test", "/empty.html")));
+  ASSERT_TRUE(WaitForDomainToContain(u"b.test"))
+      << base::UTF16ToUTF8(domain_text());
+
+  content::WebContents* const web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  web_contents->GetController().GoBack();
+  ASSERT_TRUE(content::WaitForLoadStop(web_contents));
+
+  EXPECT_TRUE(WaitForDomainToContain(u"a.test"))
+      << base::UTF16ToUTF8(domain_text());
 }

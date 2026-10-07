@@ -19,6 +19,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kNewTabPageShowToday,
                                 IsUserInDefaultEnabledLocale());
   registry->RegisterBooleanPref(kBraveNewsOptedIn, false);
+  registry->RegisterBooleanPref(kBraveNewsOptInTrial, false);
   registry->RegisterDictionaryPref(kBraveNewsSources);
   registry->RegisterDictionaryPref(kBraveNewsChannels);
   registry->RegisterDictionaryPref(kBraveNewsDirectFeeds);

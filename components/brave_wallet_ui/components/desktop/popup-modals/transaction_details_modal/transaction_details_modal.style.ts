@@ -15,7 +15,7 @@ import Lines from '../../../../assets/svg-icons/tx_details_lines.svg'
 import { BraveWallet } from '../../../../constants/types'
 
 // Constants
-import { layoutPanelWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
+import { layoutPanelWidth } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 // Shared Styles
 import {

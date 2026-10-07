@@ -64,7 +64,7 @@ export const SelectAccountType = ({
       alignItems='flex-start'
     >
       <SelectAccountTitle textColor='primary'>
-        {getLocale('braveWalletCreateAccountTitle')}
+        {getLocale(S.BRAVE_WALLET_CREATE_ACCOUNT_TITLE)}
       </SelectAccountTitle>
 
       <SectionWrapper width='100%'>
@@ -89,7 +89,7 @@ export const SelectAccountType = ({
             isOpen={showTestnetAccounts}
             onClick={() => setShowTestnetAccounts(!showTestnetAccounts)}
           >
-            {getLocale('braveWalletLookingForTestnetAccounts')}
+            {getLocale(S.BRAVE_WALLET_LOOKING_FOR_TESTNET_ACCOUNTS)}
             <Icon name={showTestnetAccounts ? 'carat-up' : 'carat-down'} />
           </TestAccountsButton>
           {showTestnetAccounts

@@ -86,9 +86,9 @@ export const TransactionSubmittedOrSigned = (props: Props) => {
       return undefined
     }
     if (swapStatus.status === BraveWallet.Gate3SwapStatusCode.kProcessing) {
-      return getLocale('braveWalletSwapProcessing')
+      return getLocale(S.BRAVE_WALLET_SWAP_PROCESSING)
     }
-    return getLocale('braveWalletSwapPending')
+    return getLocale(S.BRAVE_WALLET_SWAP_PENDING)
   }, [isSwapOrBridge, swapStatus])
 
   React.useEffect(() => {
@@ -125,8 +125,8 @@ export const TransactionSubmittedOrSigned = (props: Props) => {
             {swapTitle
               ?? (transaction.txStatus
               === BraveWallet.TransactionStatus.Submitted
-                ? getLocale('braveWalletTransactionSubmittedTitle')
-                : getLocale('braveWalletTransactionSignedTitle'))}
+                ? getLocale(S.BRAVE_WALLET_TRANSACTION_SUBMITTED_TITLE)
+                : getLocale(S.BRAVE_WALLET_TRANSACTION_SIGNED_TITLE))}
           </Title>
           <TransactionIntent
             transaction={transaction}
@@ -147,17 +147,17 @@ export const TransactionSubmittedOrSigned = (props: Props) => {
           textColor='tertiary'
           isBold={false}
         >
-          {getLocale('braveWalletSafelyDismissWindow')}
+          {getLocale(S.BRAVE_WALLET_SAFELY_DISMISS_WINDOW)}
         </Text>
         <Row gap='8px'>
           <LeoButton
             kind='plain'
             onClick={onShowCancelTransaction}
           >
-            {getLocale('braveWalletTransactionCancel')}
+            {getLocale(S.BRAVE_WALLET_TRANSACTION_CANCEL)}
           </LeoButton>
           <LeoButton onClick={onClickViewInActivity}>
-            {getLocale('braveWalletViewInActivity')}
+            {getLocale(S.BRAVE_WALLET_VIEW_IN_ACTIVITY)}
           </LeoButton>
         </Row>
       </Column>

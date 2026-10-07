@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Let the settings and Brave WebUI resources use lit.
+    insert_into_list:
+      target: build_ts
+      list_name: visibility
+      values:
+        - //brave/ui/webui/resources:build_ts
+        - //chrome/browser/resources/settings:build_ts
+
+  - description: Let the other Brave WebUI targets use lit.
+    add_literal_to_list:
+      target: build_ts
+      list_name: visibility
+      literal: brave_lit_build_ts_visibility
+      import: //brave/third_party/lit/v3_0/sources.gni

@@ -47,11 +47,24 @@ public class BraveNewsOptInView: UIView, FeedCardContent {
   }
 
   public let turnOnBraveNewsButton = ActionButton().then {
+    var configuration = UIButton.Configuration.plain()
+    configuration.baseBackgroundColor = .clear
+    configuration.contentInsets = NSDirectionalEdgeInsets(
+      top: 10,
+      leading: 20,
+      bottom: 10,
+      trailing: 20
+    )
+    configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer {
+      incoming in
+      var outgoing = incoming
+      outgoing.font = .systemFont(ofSize: 16.0, weight: .semibold)
+      return outgoing
+    }
+    $0.configuration = configuration
     $0.layer.borderWidth = 0
-    $0.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .semibold)
     $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
     $0.setTitle(Strings.BraveNews.turnOnBraveNews, for: .normal)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
     $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
     $0.loaderView = LoaderView(size: .small).then {
       $0.tintColor = .white
@@ -62,12 +75,10 @@ public class BraveNewsOptInView: UIView, FeedCardContent {
     $0.setTitle(Strings.BraveNews.learnMoreTitle, for: .normal)
     $0.titleLabel?.font = .systemFont(ofSize: 15.0, weight: .semibold)
     $0.setTitleColor(.white, for: .normal)
-    if #available(iOS 17.0, *) {
-      $0.hoverStyle = .init(
-        effect: .highlight,
-        shape: .capsule.inset(by: .init(top: 0, left: -8, bottom: 0, right: -8))
-      )
-    }
+    $0.hoverStyle = .init(
+      effect: .highlight,
+      shape: .capsule.inset(by: .init(top: 0, left: -8, bottom: 0, right: -8))
+    )
   }
 
   public required init() {

@@ -183,8 +183,10 @@ public class BraveAutofillServiceImpl extends SplitCompatAutofillService.Impl {
      * etc.). Each field in the dataset gets an appropriate {@link AutofillValue}: {@code forText()}
      * for text inputs or {@code forList(index)} for dropdowns/selects.
      *
-     * <p>The response also includes {@link SaveInfo} so the system prompts "Save to Brave?" when
-     * the user fills a form manually — even if we had no profiles to suggest.
+     * <p>The response also includes {@link SaveInfo} so the system prompts "Save address to Brave?"
+     * when the user fills a form manually — but only for forms that look like a real address form,
+     * and only keyed on a field that has to hold an address for the prompt to make sense. See
+     * {@link BraveAutofillViewStructureParser#isSaveableAddressForm}.
      *
      * @param fields Map of hint key → AutofillId from the view structure parser.
      * @param nodesMap Map of AutofillId → ViewNode for determining field types.
@@ -210,6 +212,7 @@ public class BraveAutofillServiceImpl extends SplitCompatAutofillService.Impl {
 
         // Build one Dataset per saved profile. Each dataset fills all matching fields at once
         // when the user taps the suggestion.
+        boolean addedDataset = false;
         for (AutofillProfile profile : profileList) {
             // Map detected field hints to profile data values. Only fields that exist in
             // both the form and the profile (non-empty) get included.
@@ -334,30 +337,40 @@ public class BraveAutofillServiceImpl extends SplitCompatAutofillService.Impl {
                 // matched fields are dropdowns with no matching option).
                 if (hasValues) {
                     fillResponse.addDataset(dataset.build());
+                    addedDataset = true;
                 }
             }
         }
 
         try {
-            // Set up SaveInfo so Android shows "Save to Brave?" after form submission.
-            // We require just one key field (name, email, etc.) to be filled — the rest are
-            // optional. This way the save prompt appears even if the user skips some fields.
-            AutofillId requiredId = pickRequiredSaveField(fields);
-            SaveInfo.Builder saveInfoBuilder =
-                    new SaveInfo.Builder(
-                            SaveInfo.SAVE_DATA_TYPE_ADDRESS, new AutofillId[] {requiredId});
-            List<AutofillId> optionalIds = new ArrayList<>();
-            for (AutofillId id : fields.values()) {
-                if (!id.equals(requiredId)) {
-                    optionalIds.add(id);
+            // Arm the system "Save address to Brave?" prompt only for forms that actually look
+            // like an address form, and only on a field that must hold an address for the prompt
+            // to be correct — Android shows it when the activity finishes, not on submit, so a
+            // required field like "email" produces address prompts for forms with no address.
+            AutofillId requiredId =
+                    BraveAutofillViewStructureParser.isSaveableAddressForm(fields)
+                            ? pickRequiredSaveField(fields)
+                            : null;
+            if (requiredId != null) {
+                SaveInfo.Builder saveInfoBuilder =
+                        new SaveInfo.Builder(
+                                SaveInfo.SAVE_DATA_TYPE_ADDRESS, new AutofillId[] {requiredId});
+                List<AutofillId> optionalIds = new ArrayList<>();
+                for (AutofillId id : fields.values()) {
+                    if (!id.equals(requiredId)) {
+                        optionalIds.add(id);
+                    }
                 }
+                if (!optionalIds.isEmpty()) {
+                    saveInfoBuilder.setOptionalIds(optionalIds.toArray(new AutofillId[0]));
+                }
+                fillResponse.setSaveInfo(saveInfoBuilder.build());
+            } else if (!addedDataset) {
+                // Builder.build() throws unless the response offers a dataset or save info.
+                callback.onSuccess(null);
+                return;
             }
-            if (!optionalIds.isEmpty()) {
-                saveInfoBuilder.setOptionalIds(optionalIds.toArray(new AutofillId[0]));
-            }
-            fillResponse.setSaveInfo(saveInfoBuilder.build());
-            FillResponse response = fillResponse.build();
-            callback.onSuccess(response);
+            callback.onSuccess(fillResponse.build());
         } catch (Exception e) {
             Log.e(TAG, "Error sending FillResponse", e);
             callback.onSuccess(null);
@@ -425,24 +438,31 @@ public class BraveAutofillServiceImpl extends SplitCompatAutofillService.Impl {
     }
 
     /**
-     * Picks the most likely-to-be-filled field as the single required {@link SaveInfo} field.
-     * Android only shows the "Save?" prompt if ALL required fields are filled, so we require just
-     * one common field and make everything else optional.
+     * Picks the single required {@link SaveInfo} field. Android only shows the save prompt when
+     * every required field has a value, so this must be a field whose value makes the form an
+     * address: requiring a name or an email prompts for forms that contain no address at all.
+     *
+     * <p>Country is excluded because it is usually a dropdown with a preselected value, which would
+     * satisfy the requirement without the user entering anything, and address line 2 is excluded
+     * because it is routinely left empty on genuine address forms.
+     *
+     * @return The field to require, or null if the form has no address component — in which case no
+     *     save info should be attached at all.
      */
-    private static AutofillId pickRequiredSaveField(Map<String, AutofillId> fields) {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    static @Nullable AutofillId pickRequiredSaveField(Map<String, AutofillId> fields) {
         String[] preferred = {
-            View.AUTOFILL_HINT_NAME,
-            BraveAutofillViewStructureParser.HINT_FIRST_NAME,
-            View.AUTOFILL_HINT_EMAIL_ADDRESS,
             View.AUTOFILL_HINT_POSTAL_ADDRESS,
-            View.AUTOFILL_HINT_PHONE,
+            View.AUTOFILL_HINT_POSTAL_CODE,
+            BraveAutofillViewStructureParser.HINT_CITY,
+            BraveAutofillViewStructureParser.HINT_STATE,
         };
         for (String key : preferred) {
             if (fields.containsKey(key)) {
                 return fields.get(key);
             }
         }
-        return fields.values().iterator().next();
+        return null;
     }
 
     /**

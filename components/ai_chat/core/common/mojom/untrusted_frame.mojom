@@ -6,6 +6,7 @@
 module ai_chat.mojom;
 
 import "brave/components/ai_chat/core/common/mojom/common.mojom";
+import "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom";
 import "url/mojom/url.mojom";
 
 // Interfaces for communication between the untrusted content frame and both
@@ -42,6 +43,11 @@ interface ParentUIFrame {
   // backdrop is not clipped by the untrusted iframe.
   ShowImageLightbox(UploadedFile file);
 
+  // Show workspace file lightbox in the parent trusted UI. The lightbox
+  // displays the file in an iframe pointed at the workspace origin.
+  // |file_path| is the relative path to the file within the workspace.
+  ShowWorkspaceFileLightbox(string file_path);
+
   // Request the parent frame to create a new conversation
   RequestNewConversation();
 
@@ -57,29 +63,19 @@ interface UntrustedConversationHandler {
       pending_remote<UntrustedConversationUI> untrusted_ui)
           => (ConversationEntriesState conversation_entries_state);
 
-  // Get all visible history entries, including in-progress responses
-  GetConversationHistory() => (array<ConversationTurn> conversation_history);
+  // Get all visible history entries, including in-progress responses.
+  GetConversationHistory(string? thread_uuid) =>
+      (array<ConversationTurn> conversation_history);
+
+  // Returns thread metadata for this conversation. Entries are not loaded.
+  GetConversationThreads() => (array<Thread> threads);
 
   // If the current model is premium or freemium, switch to a free model to
   // e.g. reduce rate limiting.
   SwitchToNonPremiumModel();
 
-  ModifyConversation(string entry_uuid, string new_text, string? skill_shortcut);
-
-  // Allows a client to provide an answer to a tool use request
-  // as a result of a user action.
-  RespondToToolUseRequest(string tool_id, array<ContentBlock> output_json, array<ToolArtifact> artifacts);
-
-  // Called when user responds to a permission challenge.
-  // user_result: true if user approved, false if denied.
-  ProcessPermissionChallenge(string tool_use_id, bool user_result);
-
   // Regenerate answer using specified model.
   RegenerateAnswer(string turn_uuid, string model_key);
-
-  // Submit one of the generated suggested questions for response from
-  // the assistant.
-  SubmitSuggestion(string question);
 
   // The browser should generate some questions and fire an event when they
   // are ready.
@@ -87,6 +83,39 @@ interface UntrustedConversationHandler {
 
   // Retry the last failed API request.
   RetryAPIRequest();
+
+  // Creates a new thread originating from the conversation entry with the
+  // given uuid, and returns its uuid. Does not persist anything until a turn is
+  // submitted to the thread. Returns null (a no-op) if the entry already has an
+  // empty thread, so duplicate empty threads aren't created, or if the origin entry
+  // is not an assistant response.
+  CreateConversationThread(string origin_entry_uuid) => (string? thread_uuid);
+};
+
+// Browser-side handler for the subset of a Conversation's actions that must
+// have been initiated by the user. Every method on this pipe is rejected
+// unless the untrusted frame had transient user activation when it sent the
+// message, and rejection closes the pipe. Anything the UI must be able to call
+// without a user gesture belongs on UntrustedConversationHandler instead.
+interface UntrustedConversationUserActions {
+  ModifyConversation(string entry_uuid,
+                     string new_text,
+                     string? skill_shortcut);
+
+  // Allows a client to provide an answer to a tool use request
+  // as a result of a user action.
+  RespondToToolUseRequest(string tool_id,
+                          array<ContentBlock> output_json,
+                          array<ToolArtifact> artifacts);
+
+  // Called when user responds to a permission challenge. kAllowSession is only
+  // honoured for challenges which reported |supports_allow_session|.
+  ProcessPermissionChallenge(string tool_use_id,
+                             PermissionChallengeDecision decision);
+
+  // Submit one of the generated suggested questions for response from
+  // the assistant.
+  SubmitSuggestion(string question);
 };
 
 // Untrusted-UI-side handler for a Conversation, responsible for displaying
@@ -95,6 +124,9 @@ interface UntrustedConversationUI {
   OnConversationHistoryUpdate(ConversationTurn? entry);
   OnToolUseEventOutput(string entry_uuid, ToolUseEvent tool_use);
   OnEntriesUIStateChanged(ConversationEntriesState state);
+
+  // Called when a thread's metadata is created or updated.
+  OnConversationThreadUpdate(Thread thread);
 
   // Called when the associated content is changed - called when the untrusted
   // conversation frame is attached and when the content is changed.
@@ -118,10 +150,12 @@ interface UntrustedUI {
 // Browser-side handler for untrusted frame that handles rendering of
 // conversation entries.
 interface UntrustedUIHandler {
-  // Bind the conversation handler
+  // Bind the conversation handler. |user_actions| is a second pipe to the same
+  // conversation, which the browser gates on user gesture.
   BindConversationHandler(
     string conversation_id,
-    pending_receiver<UntrustedConversationHandler> conversation_handler
+    pending_receiver<UntrustedConversationHandler> conversation_handler,
+    pending_receiver<UntrustedConversationUserActions> user_actions
   );
 
   // Bind UntrustedUI for callbacks
@@ -138,6 +172,16 @@ interface UntrustedUIHandler {
 
   // Open AI Chat customization settings page
   OpenAIChatCustomizationSettings();
+
+  // Semantically searches the user's open tabs by page content, on device.
+  // Null where on-device tab search is unavailable (non-desktop); empty when
+  // no open tab matched. `TabData::title` falls back to the URL's host when
+  // the tab has no title.
+  SearchForTabs(string query) => (array<TabData>? tabs);
+
+  // Activate the open tab with the given handle. Used by the cards rendered
+  // for the `tabSearch` markdown directive.
+  SwitchToTab(int32 tab_id);
 
   // Registers a tab to receive thumbnail updates for. Also immediately requests
   // the current thumbnail.

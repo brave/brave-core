@@ -1,0 +1,14 @@
+diff --git a/content/browser/service_worker/service_worker_content_settings_proxy_impl.h b/content/browser/service_worker/service_worker_content_settings_proxy_impl.h
+index 7d85e7775efcef45aebe1f05d9408947fc91be40..e1dac7f497999a530b8458766a5557d76075a2ef 100644
+--- a/content/browser/service_worker/service_worker_content_settings_proxy_impl.h
++++ b/content/browser/service_worker/service_worker_content_settings_proxy_impl.h
+@@ -40,6 +40,9 @@ class ServiceWorkerContentSettingsProxyImpl final
+   void AllowWebLocks(AllowCacheStorageCallback callback) override;
+   void AllowFileSystem(AllowFileSystemCallback callback) override;
+ 
++  void GetBraveShieldsSettings(
++      GetBraveShieldsSettingsCallback callback) override;
++
+  private:
+   const url::Origin origin_;
+   scoped_refptr<ServiceWorkerContextWrapper> context_wrapper_;

@@ -5,36 +5,27 @@
 
 #include "brave/components/brave_ads/core/internal/common/test/internal/profile_pref_storage_test_util_internal.h"
 
-#include "base/containers/flat_map.h"
-#include "base/no_destructor.h"
-#include "brave/components/brave_ads/core/internal/common/test/internal/current_test_util_internal.h"
-#include "brave/components/brave_ads/core/internal/common/test/internal/pref_value_test_info.h"
+#include "base/check.h"
+#include "components/prefs/testing_pref_service.h"
 
 namespace brave_ads::test {
 
 namespace {
-
-base::flat_map</*uuid=*/std::string, PrefValueInfo>& ProfilePrefStorage() {
-  static base::NoDestructor<base::flat_map<std::string, PrefValueInfo>> prefs;
-  return *prefs;
-}
-
+TestingPrefServiceSimple* g_profile_prefs = nullptr;
 }  // namespace
 
-bool FindProfilePref(const std::string& path) {
-  return ProfilePrefStorage().contains(GetUuidForCurrentTestAndValue(path));
+void SetProfilePrefServiceForTesting(TestingPrefServiceSimple& prefs) {
+  g_profile_prefs = &prefs;
 }
 
-PrefValueInfo& ProfilePref(const std::string& path) {
-  const std::string uuid = GetUuidForCurrentTestAndValue(path);
-  return ProfilePrefStorage()[uuid];
+void ResetProfilePrefServiceForTesting() {
+  g_profile_prefs = nullptr;
 }
 
-bool HasProfilePref(const std::string& path) {
-  // Intentionally identical to `FindProfilePref`: the test double uses a
-  // single map for both registration and storage, so both checks reduce to
-  // the same `contains` lookup.
-  return ProfilePrefStorage().contains(GetUuidForCurrentTestAndValue(path));
+TestingPrefServiceSimple& GetProfilePrefServiceForTesting() {
+  CHECK(g_profile_prefs) << "TestBase::SetUp has not been called";
+
+  return *g_profile_prefs;
 }
 
 }  // namespace brave_ads::test

@@ -57,7 +57,7 @@ export const SelectAddressButton = (props: Props) => {
         >
           {toAddressOrUrl !== ''
             ? toAddressOrUrl
-            : getLocale('braveWalletChooseRecipient')}
+            : getLocale(S.BRAVE_WALLET_CHOOSE_RECIPIENT)}
         </ButtonText>
       </Row>
       <CaratIcon />

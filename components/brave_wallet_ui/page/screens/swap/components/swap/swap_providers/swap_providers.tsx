@@ -76,12 +76,12 @@ export const SwapProviders = (props: Props) => {
           isBold={true}
           textColor='primary'
         >
-          {getLocale('braveWalletChooseQuoteProvider')}
+          {getLocale(S.BRAVE_WALLET_CHOOSE_QUOTE_PROVIDER)}
         </Text>
         <HorizontalSpace space='8px' />
         <InfoIconTooltip
           placement='bottom'
-          text={getLocale('braveWalletQuoteProviderInfo')}
+          text={getLocale(S.BRAVE_WALLET_QUOTE_PROVIDER_INFO)}
         />
       </Row>
       <Column
@@ -123,7 +123,7 @@ export const SwapProviders = (props: Props) => {
                     isBold={false}
                     textColor='disabled'
                   >
-                    {getLocale('braveWalletNotAvailable')}
+                    {getLocale(S.BRAVE_WALLET_REVIEW_NOT_AVAILABLE)}
                   </Text>
                 )}
               </Row>
@@ -137,7 +137,7 @@ export const SwapProviders = (props: Props) => {
           size='large'
           isDisabled={userSelectedSwapProvider === selectedProvider}
         >
-          {getLocale('braveWalletUpdate')}
+          {getLocale(S.BRAVE_WALLET_REVIEW_UPDATE)}
         </Button>
       </Row>
     </Column>

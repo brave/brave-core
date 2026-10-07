@@ -139,6 +139,10 @@ export const ContinueButton = styled(Button)`
   min-height: 44px;
 `
 
+export const SkipButton = styled(Button)`
+  --leo-button-color: ${leo.color.text.secondary};
+`
+
 export const AlertWrapper = styled.div`
   width: 100%;
 

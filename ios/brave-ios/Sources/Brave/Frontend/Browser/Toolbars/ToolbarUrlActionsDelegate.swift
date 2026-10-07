@@ -3,7 +3,6 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
-import Storage
 
 protocol ToolbarUrlActionsDelegate: AnyObject {
   func openInNewTab(_ url: URL, isPrivate: Bool)

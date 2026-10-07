@@ -224,6 +224,7 @@ pub enum CbRuleCreationFailure {
     /// Valid content blocking rules can only include ASCII characters.
     RuleContainsNonASCII,
     /// `from` as a `domain` alias is not currently supported in content blocking syntax.
+    /// `to` is similarly not supported.
     FromNotSupported,
     /// Content blocking rules cannot support procedural cosmetic filter operators.
     ProceduralCosmeticFiltersUnsupported,
@@ -241,11 +242,7 @@ impl TryFrom<ParsedLine<'_>> for CbRuleEquivalent {
 }
 
 fn non_empty(v: Vec<String>) -> Option<Vec<String>> {
-    if !v.is_empty() {
-        Some(v)
-    } else {
-        None
-    }
+    if !v.is_empty() { Some(v) } else { None }
 }
 
 /// Some adblock rules cannot be directly represented by a single content blocking rule. This enum
@@ -348,7 +345,7 @@ impl TryFrom<NetworkFilter<'_>> for CbRuleEquivalent {
 
             let url_filter = match (v.filter, v.hostname) {
                 (crate::filters::network::FilterPart::AnyOf(_), _) => {
-                    return Err(CbRuleCreationFailure::OptimizedRulesUnsupported)
+                    return Err(CbRuleCreationFailure::OptimizedRulesUnsupported);
                 }
                 (crate::filters::network::FilterPart::Simple(part), Some(hostname)) => {
                     let without_trailing_separator = TRAILING_SEPARATOR.replace_all(&part, "");
@@ -428,6 +425,10 @@ impl TryFrom<NetworkFilter<'_>> for CbRuleEquivalent {
                 .to_string(),
             };
 
+            if v.opt_to_domains.is_some() || v.opt_not_to_domains.is_some() {
+                return Err(CbRuleCreationFailure::FromNotSupported);
+            }
+
             let (if_domain, unless_domain) = if v.opt_domains.is_some()
                 || v.opt_not_domains.is_some()
             {
@@ -451,6 +452,8 @@ impl TryFrom<NetworkFilter<'_>> for CbRuleEquivalent {
                 }
                 .split('|');
 
+                let mut any_invalid = false;
+
                 domains.for_each(|domain| {
                     let (collection, domain) =
                         if let Some(domain_stripped) = domain.strip_prefix('~') {
@@ -458,6 +461,12 @@ impl TryFrom<NetworkFilter<'_>> for CbRuleEquivalent {
                         } else {
                             (&mut if_domain, domain)
                         };
+
+                    // $domain=/<regex>/ unsupported for now
+                    if domain.starts_with("/") {
+                        any_invalid = true;
+                        return;
+                    }
 
                     let lowercase = domain.to_lowercase();
                     let normalized_domain = if lowercase.is_ascii() {
@@ -470,6 +479,11 @@ impl TryFrom<NetworkFilter<'_>> for CbRuleEquivalent {
 
                     collection.push(format!("*{normalized_domain}"));
                 });
+
+                if any_invalid && if_domain.len() == 0 && unless_domain.len() == 0 {
+                    // TODO create a NoSupportedDomains error type and change this
+                    return Err(CbRuleCreationFailure::FromNotSupported);
+                }
 
                 (non_empty(if_domain), non_empty(unless_domain))
             } else {
@@ -551,34 +565,33 @@ impl TryFrom<NetworkFilter<'_>> for CbRuleEquivalent {
                 return Err(CbRuleCreationFailure::RuleContainsNonASCII);
             }
 
-            if let Some(resource_types) = &single_rule.trigger.resource_type {
-                if resource_types.len() > 1
-                    && resource_types.contains(&CbResourceType::Document)
-                    && single_rule.trigger.load_type.is_empty()
-                {
-                    let mut non_doc_types = resource_types.clone();
-                    non_doc_types.remove(&CbResourceType::Document);
-                    let rule_clone = single_rule.clone();
-                    let non_doc_rule = CbRule {
-                        trigger: CbTrigger {
-                            resource_type: Some(non_doc_types),
-                            ..rule_clone.trigger
-                        },
-                        ..rule_clone
-                    };
-                    let mut doc_type = HashSet::new();
-                    doc_type.insert(CbResourceType::Document);
-                    let just_doc_rule = CbRule {
-                        trigger: CbTrigger {
-                            resource_type: Some(doc_type),
-                            load_type: vec![CbLoadType::ThirdParty],
-                            ..single_rule.trigger
-                        },
-                        ..single_rule
-                    };
+            if let Some(resource_types) = &single_rule.trigger.resource_type
+                && resource_types.len() > 1
+                && resource_types.contains(&CbResourceType::Document)
+                && single_rule.trigger.load_type.is_empty()
+            {
+                let mut non_doc_types = resource_types.clone();
+                non_doc_types.remove(&CbResourceType::Document);
+                let rule_clone = single_rule.clone();
+                let non_doc_rule = CbRule {
+                    trigger: CbTrigger {
+                        resource_type: Some(non_doc_types),
+                        ..rule_clone.trigger
+                    },
+                    ..rule_clone
+                };
+                let mut doc_type = HashSet::new();
+                doc_type.insert(CbResourceType::Document);
+                let just_doc_rule = CbRule {
+                    trigger: CbTrigger {
+                        resource_type: Some(doc_type),
+                        load_type: vec![CbLoadType::ThirdParty],
+                        ..single_rule.trigger
+                    },
+                    ..single_rule
+                };
 
-                    return Ok(Self::SplitDocument(non_doc_rule, just_doc_rule));
-                }
+                return Ok(Self::SplitDocument(non_doc_rule, just_doc_rule));
             }
 
             Ok(Self::SingleRule(single_rule))

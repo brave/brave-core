@@ -5,12 +5,16 @@
 
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 
+#include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
+#include "brave/browser/misc_metrics/captcha_metrics.h"
 #include "brave/browser/misc_metrics/doh_metrics.h"
 #include "brave/browser/misc_metrics/media_session_metrics_impl.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
+#include "brave/browser/serp_metrics/serp_metrics_p3a.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/default_browser_monitor.h"
+#include "brave/components/misc_metrics/features.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -48,10 +52,15 @@ ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state)
   privacy_hub_metrics_ = std::make_unique<PrivacyHubMetrics>(local_state);
   tab_metrics_ = std::make_unique<TabMetrics>(local_state);
 #endif
+  if (base::FeatureList::IsEnabled(features::kCaptchaMetricsCollection)) {
+    captcha_metrics_ = std::make_unique<CaptchaMetrics>(local_state);
+  }
   doh_metrics_ = std::make_unique<DohMetrics>(local_state);
   uptime_monitor_ = std::make_unique<UptimeMonitorImpl>(local_state);
   media_session_metrics_ = std::make_unique<MediaSessionMetricsImpl>(
       local_state, uptime_monitor_.get());
+  serp_metrics_p3a_ =
+      std::make_unique<serp_metrics::SerpMetricsP3A>(*local_state);
 
   ReportSimpleMetrics();
 }
@@ -96,6 +105,14 @@ MediaSessionMetricsImpl* ProcessMiscMetrics::media_session_metrics() {
   return media_session_metrics_.get();
 }
 
+CaptchaMetrics* ProcessMiscMetrics::captcha_metrics() {
+  return captcha_metrics_.get();
+}
+
+serp_metrics::SerpMetricsP3A* ProcessMiscMetrics::serp_metrics_p3a() {
+  return serp_metrics_p3a_.get();
+}
+
 Web3Metrics& ProcessMiscMetrics::web3_metrics() {
   return web3_metrics_;
 }
@@ -115,9 +132,11 @@ void ProcessMiscMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   PrivacyHubMetrics::RegisterPrefs(registry);
   TabMetrics::RegisterPrefs(registry);
 #endif
+  CaptchaMetrics::RegisterPrefs(registry);
   DohMetrics::RegisterPrefs(registry);
   MediaSessionMetricsImpl::RegisterPrefs(registry);
   UptimeMonitorImpl::RegisterPrefs(registry);
+  serp_metrics::SerpMetricsP3A::RegisterPrefs(registry);
 }
 
 }  // namespace misc_metrics

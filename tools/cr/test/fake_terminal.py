@@ -10,10 +10,10 @@ against a `FakeChromiumRepo`:
 * `FakeTerminal` replaces `terminal.run` with a router. Every `git` invocation
   is passed through to the real implementation, so all repository work in a
   test is genuine git against the fake checkout. The commands a fake checkout
-  cannot possibly serve -- the `npm`/`pnpm` build commands, `gh`, and the
-  `vpython3` helper scripts -- are emulated over the same fake repository, and
-  anything unrecognised raises, so a command growing a new dependency cannot
-  silently reach the network or the developer's machine.
+  cannot possibly serve -- the `pnpm` build commands, `gh`, and the `vpython3`
+  helper scripts -- are emulated over the same fake repository, and anything
+  unrecognised raises, so a command growing a new dependency cannot silently
+  reach the network or the developer's machine.
 
 * `ConsoleCapture` swaps the rich console every tools/cr module prints through
   for one writing to a buffer, which is how tests assert on what the user is
@@ -39,7 +39,7 @@ from test.fake_chromium_repo import FakeChromiumRepo
 from test.fake_gh import FakeGh
 
 # Emulated commands, used to key the injected failures in
-# `FakeTerminal.fail`. The `npm run <name>` ones are named after the script
+# `FakeTerminal.fail`. The `pnpm run <name>` ones are named after the script
 # they run.
 INIT = 'init'
 APPLY_PATCHES = 'apply_patches'
@@ -48,8 +48,8 @@ CHROMIUM_REBASE_L10N = 'chromium_rebase_l10n'
 PLASTER = 'plaster'
 GNRT = 'gnrt'
 
-# The stderr line `npm run init` ends with when a patch fails to apply, and the
-# stdout header that precedes the JSON breakdown of the failures. Both are
+# The stderr line `pnpm run init` ends with when a patch fails to apply, and
+# the stdout header that precedes the JSON breakdown of the failures. Both are
 # matched by brockit, so they are reproduced verbatim from
 # `build/commands/lib/util.js` and `build/commands/lib/gitPatcherLog.ts`.
 PATCH_FAILURE_STDERR_LINE = 'Exiting as not all patches were successful!'
@@ -63,10 +63,9 @@ class FakeTerminal:
     the command under test ran.
     """
 
-    def __init__(self,
-                 repo: FakeChromiumRepo,
-                 *,
-                 gh: FakeGh | None = None) -> None:
+    def __init__(
+        self, repo: FakeChromiumRepo, *, gh: FakeGh | None = None
+    ) -> None:
         self._repo = repo
 
         # The `gh` CLI double every `gh` invocation is answered by.
@@ -78,7 +77,7 @@ class FakeTerminal:
         # Injected failures, keyed by emulated command (see `fail`).
         self._failures: dict[str, str] = {}
 
-        # Extra stderr prepended to the `npm run init` failure output. Used to
+        # Extra stderr prepended to the `pnpm run init` failure output. Used to
         # reproduce warnings the real command mixes into its own failures.
         self.init_extra_stderr: str = ''
 
@@ -124,24 +123,23 @@ class FakeTerminal:
         """Raises the injected failure for `command`, when there is one."""
         stderr = self._failures.get(command)
         if stderr is not None:
-            raise subprocess.CalledProcessError(1,
-                                                cmd,
-                                                output='',
-                                                stderr=stderr)
+            raise subprocess.CalledProcessError(
+                1, cmd, output='', stderr=stderr
+            )
 
     # -- inspection ---------------------------------------------------------
 
-    def npm_runs(self) -> list[str]:
-        """The name of every `npm run <name>` routed, in order."""
+    def pnpm_runs(self) -> list[str]:
+        """The name of every `pnpm run <name>` routed, in order."""
         return [
-            cmd[2] for cmd in self.calls
-            if len(cmd) > 2 and Path(cmd[0]).stem in (
-                'npm', 'pnpm') and cmd[1] == 'run'
+            cmd[2]
+            for cmd in self.calls
+            if len(cmd) > 2 and Path(cmd[0]).stem == 'pnpm' and cmd[1] == 'run'
         ]
 
     def ran(self, *prefix: str) -> bool:
         """Whether any routed command starts with `prefix`."""
-        return any(cmd[:len(prefix)] == list(prefix) for cmd in self.calls)
+        return any(cmd[: len(prefix)] == list(prefix) for cmd in self.calls)
 
     # -- routing ------------------------------------------------------------
 
@@ -152,23 +150,24 @@ class FakeTerminal:
         program = Path(cmd[0]).stem
         if program == 'git':
             return self._run_git(cmd, **kwargs)
-        if program in ('npm', 'pnpm'):
-            return self._run_npm(cmd, **kwargs)
+        if program == 'pnpm':
+            return self._run_pnpm(cmd, **kwargs)
         if program == 'gh':
             return self.gh(cmd, **kwargs)
         if program.startswith('vpython3'):
             return self._run_vpython(cmd, **kwargs)
         raise AssertionError(
-            f'FakeTerminal has no route for this command: {cmd}')
+            f'FakeTerminal has no route for this command: {cmd}'
+        )
 
     @staticmethod
-    def _completed(cmd: list[str],
-                   stdout: str = '') -> subprocess.CompletedProcess:
+    def _completed(
+        cmd: list[str], stdout: str = ''
+    ) -> subprocess.CompletedProcess:
         """A successful result shaped like the one `terminal.run` returns."""
         return subprocess.CompletedProcess(cmd, 0, stdout=stdout, stderr='')
 
-    def _run_git(self, cmd: list[str],
-                 **kwargs) -> subprocess.CompletedProcess:
+    def _run_git(self, cmd: list[str], **kwargs) -> subprocess.CompletedProcess:
         """Passes a git command through to the real implementation.
 
         Anything addressing a remote over the network is rejected instead: a
@@ -179,12 +178,14 @@ class FakeTerminal:
         if remote is not None:
             raise AssertionError(
                 f'A test tried to reach {remote} with: {" ".join(cmd)}. Set '
-                'the fake repository up so the command resolves locally.')
+                'the fake repository up so the command resolves locally.'
+            )
         return self._real_run(cmd, **kwargs)
 
-    def _run_npm(self, cmd: list[str],
-                 **kwargs) -> subprocess.CompletedProcess:
-        """Emulates the `npm run <name>` build commands over the fake repo."""
+    def _run_pnpm(
+        self, cmd: list[str], **kwargs
+    ) -> subprocess.CompletedProcess:
+        """Emulates the `pnpm run <name>` build commands over the fake repo."""
         del kwargs  # The build commands are always run from the brave root.
         if cmd[1] != 'run':
             raise AssertionError(f'Unexpected package manager call: {cmd}')
@@ -201,10 +202,10 @@ class FakeTerminal:
             self._check_failure(CHROMIUM_REBASE_L10N, cmd)
             files = self._repo.run_chromium_rebase_l10n()
             return self._completed(cmd, '\n'.join(files))
-        raise AssertionError(f'FakeTerminal cannot emulate `npm run {name}`.')
+        raise AssertionError(f'FakeTerminal cannot emulate `pnpm run {name}`.')
 
     def _run_init(self, cmd: list[str]) -> subprocess.CompletedProcess:
-        """Emulates `npm run init`: sync the checkout, then apply patches.
+        """Emulates `pnpm run init`: sync the checkout, then apply patches.
 
         A failure to apply is reported the way the real command reports it: the
         JSON breakdown is left out (only `apply_patches` is asked for it) and
@@ -220,11 +221,11 @@ class FakeTerminal:
             1,
             cmd,
             output=f'{len(failures)} patches failed to apply.\n',
-            stderr=f'{self.init_extra_stderr}{PATCH_FAILURE_STDERR_LINE}')
+            stderr=f'{self.init_extra_stderr}{PATCH_FAILURE_STDERR_LINE}',
+        )
 
-    def _run_apply_patches(self,
-                           cmd: list[str]) -> subprocess.CompletedProcess:
-        """Emulates `npm run apply_patches`.
+    def _run_apply_patches(self, cmd: list[str]) -> subprocess.CompletedProcess:
+        """Emulates `pnpm run apply_patches`.
 
         With `--print-patch-failures-in-json` the failures are printed to
         stdout as the JSON breakdown brockit parses out of the failed run.
@@ -236,15 +237,17 @@ class FakeTerminal:
 
         stdout = ''
         if '--print-patch-failures-in-json' in cmd:
-            stdout = '%s\n%s\n' % (PATCH_FAILURE_JSON_HEADER.format(
-                count=len(failures)), json.dumps(failures))
-        raise subprocess.CalledProcessError(1,
-                                            cmd,
-                                            output=stdout,
-                                            stderr=PATCH_FAILURE_STDERR_LINE)
+            stdout = '%s\n%s\n' % (
+                PATCH_FAILURE_JSON_HEADER.format(count=len(failures)),
+                json.dumps(failures),
+            )
+        raise subprocess.CalledProcessError(
+            1, cmd, output=stdout, stderr=PATCH_FAILURE_STDERR_LINE
+        )
 
-    def _run_vpython(self, cmd: list[str],
-                     **kwargs) -> subprocess.CompletedProcess:
+    def _run_vpython(
+        self, cmd: list[str], **kwargs
+    ) -> subprocess.CompletedProcess:
         """Emulates the `vpython3` helper scripts a command shells out to."""
         del kwargs  # The scripts below are unaffected by cwd or env.
         script = Path(cmd[1]).name
@@ -278,13 +281,15 @@ class ConsoleCapture:
         # with no file of its own writes to whatever `sys.stdout` is at print
         # time, and unittest's own output would end up in the capture.
         self._buffer = io.StringIO()
-        self._console = Console(file=self._buffer,
-                                width=width,
-                                log_time=False,
-                                log_path=False,
-                                force_terminal=False,
-                                no_color=True,
-                                highlight=False)
+        self._console = Console(
+            file=self._buffer,
+            width=width,
+            log_time=False,
+            log_path=False,
+            force_terminal=False,
+            no_color=True,
+            highlight=False,
+        )
         self._patchers: list = []
 
     def install(self) -> ConsoleCapture:
@@ -320,7 +325,8 @@ class ConsoleCapture:
         """
         return '\n'.join(
             line.rstrip()
-            for line in self._buffer.getvalue()[mark:].splitlines())
+            for line in self._buffer.getvalue()[mark:].splitlines()
+        )
 
     @property
     def text(self) -> str:

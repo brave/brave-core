@@ -154,22 +154,18 @@ TEST_F(MemoryStorageToolTest, UseTool_TooLongMemory) {
 
 TEST_F(MemoryStorageToolTest, SupportsConversation_NonTemporary) {
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
-  EXPECT_FALSE(memory_tool_->SupportsConversation(
-      false, false, {mojom::ConversationCapability::CHAT}));
+  EXPECT_FALSE(memory_tool_->SupportsConversation(false, false, {}));
 #else
-  EXPECT_TRUE(memory_tool_->SupportsConversation(
-      false, false, {mojom::ConversationCapability::CHAT}));
+  EXPECT_TRUE(memory_tool_->SupportsConversation(false, false, {}));
 #endif
 }
 
 TEST_F(MemoryStorageToolTest, SupportsConversation_Temporary) {
-  EXPECT_FALSE(memory_tool_->SupportsConversation(
-      true, false, {mojom::ConversationCapability::CHAT}));
+  EXPECT_FALSE(memory_tool_->SupportsConversation(true, false, {}));
 }
 
 TEST_F(MemoryStorageToolTest, SupportsConversation_UntrustedContent) {
-  EXPECT_FALSE(memory_tool_->SupportsConversation(
-      false, true, {mojom::ConversationCapability::CHAT}));
+  EXPECT_FALSE(memory_tool_->SupportsConversation(false, true, {}));
 }
 
 }  // namespace ai_chat

@@ -693,7 +693,11 @@ SidebarItem SidebarService::GetBuiltInItemForType(
       if (brave_wallet::IsAllowed(prefs_)) {
         if (base::FeatureList::IsEnabled(
                 brave_wallet::features::kBraveWalletSidePanel)) {
+          // Keep the wallet page URL so IsURLAlreadyAddedToSidebar() /
+          // HiddenDefaultSidebarItemsContains() match brave://wallet and the
+          // + bubble does not offer a duplicate web-type shortcut.
           return SidebarItem::Create(
+              GURL(kBraveUIWalletPageURL),
               l10n_util::GetStringUTF16(IDS_SIDEBAR_WALLET_ITEM_TITLE),
               SidebarItem::Type::kTypeBuiltIn,
               SidebarItem::BuiltInItemType::kWallet,

@@ -13,6 +13,7 @@
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_contents_wrapper.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 #include "ui/views/view.h"
 #include "ui/views/view_observer.h"
 
@@ -25,10 +26,6 @@ class BrowserWindowInterface;
 class SidePanelRegistry;
 class SidePanelEntryScope;
 class SidePanelWebUIView;
-
-namespace sidebar {
-class SidebarController;
-}  // namespace sidebar
 
 class PlaylistSidePanelCoordinator : public views::ViewObserver {
  public:
@@ -49,13 +46,19 @@ class PlaylistSidePanelCoordinator : public views::ViewObserver {
     WEB_CONTENTS_USER_DATA_KEY_DECL();
   };
 
+  DECLARE_USER_DATA(PlaylistSidePanelCoordinator);
+
   PlaylistSidePanelCoordinator(BrowserWindowInterface* browser,
-                               sidebar::SidebarController* sidebar_controller,
                                Profile* profile);
   PlaylistSidePanelCoordinator(const PlaylistSidePanelCoordinator&) = delete;
   PlaylistSidePanelCoordinator& operator=(const PlaylistSidePanelCoordinator&) =
       delete;
   ~PlaylistSidePanelCoordinator() override;
+
+  // Returns the instance attached to `browser`, or nullptr. Null for windows
+  // that cannot use the sidebar, such as popups and desktop PWAs, or when
+  // Playlist is not allowed for the profile.
+  static PlaylistSidePanelCoordinator* From(BrowserWindowInterface* browser);
 
   void CreateAndRegisterEntry(SidePanelRegistry* global_registry);
 
@@ -80,7 +83,6 @@ class PlaylistSidePanelCoordinator : public views::ViewObserver {
   std::unique_ptr<views::View> CreateWebView(SidePanelEntryScope& scope);
 
   const raw_ptr<BrowserWindowInterface> browser_;
-  const raw_ptr<sidebar::SidebarController> sidebar_controller_;
   const raw_ptr<Profile> profile_;
 
   bool is_audible_for_testing_ = false;
@@ -90,6 +92,9 @@ class PlaylistSidePanelCoordinator : public views::ViewObserver {
 
   base::ScopedObservation<views::View, views::ViewObserver> view_observation_{
       this};
+
+  ui::ScopedUnownedUserData<PlaylistSidePanelCoordinator>
+      scoped_unowned_user_data_;
 
   base::WeakPtrFactory<PlaylistSidePanelCoordinator> weak_ptr_factory_{this};
 };

@@ -21,7 +21,7 @@ class BottomToolbarView: UIView, ToolbarProtocol {
   let searchButton = ToolbarButton().then {
     $0.isHidden = true
   }
-  let menuButton = MenuButton()
+  let menuButton = ToolbarButton()
   let actionButtons: [UIButton]
 
   var helper: ToolbarHelper?
@@ -29,9 +29,11 @@ class BottomToolbarView: UIView, ToolbarProtocol {
   private var cancellables: Set<AnyCancellable> = []
   let line = UIView.separatorLine
   private let privateBrowsingManager: PrivateBrowsingManager
+  private let toolbarState: BrowserToolbarState
 
-  init(privateBrowsingManager: PrivateBrowsingManager) {
+  init(privateBrowsingManager: PrivateBrowsingManager, toolbarState: BrowserToolbarState) {
     self.privateBrowsingManager = privateBrowsingManager
+    self.toolbarState = toolbarState
     actionButtons = [
       backButton, shareButton, forwardButton, addTabButton, searchButton, tabsButton, menuButton,
     ]
@@ -46,10 +48,6 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     addButtons(actionButtons)
     contentView.axis = .horizontal
     contentView.distribution = .fillEqually
-
-    addGestureRecognizer(
-      UIPanGestureRecognizer(target: self, action: #selector(didSwipeToolbar(_:)))
-    )
 
     line.snp.makeConstraints {
       $0.bottom.equalTo(self.snp.top)
@@ -77,6 +75,19 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     )
 
     updateColors()
+    configureToolbarMenus(state: toolbarState)
+
+    if #unavailable(iOS 26.0) {
+      startObservingProperties()
+    }
+
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      self.helper?.updateForTraitCollection(
+        self.traitCollection,
+        browserColors: self.privateBrowsingManager.browserColors,
+        isBottomToolbar: true
+      )
+    }
   }
 
   private var privateModeCancellable: AnyCancellable?
@@ -84,18 +95,38 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     backgroundColor = privateBrowsingManager.browserColors.chromeBackground
   }
 
-  private var isSearchButtonEnabled: Bool = false {
-    didSet {
-      addTabButton.isHidden = isSearchButtonEnabled
-      searchButton.isHidden = !addTabButton.isHidden
-    }
+  @available(iOS 26.0, *)
+  override func updateProperties() {
+    super.updateProperties()
+    updateObservedProperties()
   }
 
-  func setSearchButtonState(url: URL?) {
-    if let url = url {
-      isSearchButtonEnabled = url.isNewTabURL
-    } else {
-      isSearchButtonEnabled = false
+  func updateObservedProperties() {
+    backButton.isEnabled = toolbarState.canGoBack
+    shareButton.isEnabled = toolbarState.isWebPage
+    tabsButton.updateTabCount(toolbarState.tabCount)
+
+    // The forward button replaces the share button when available
+    let canGoForward = toolbarState.canGoForward
+    forwardButton.stackViewAnimationSafeIsHidden = !canGoForward
+    shareButton.stackViewAnimationSafeIsHidden = canGoForward
+
+    // The search button replaces the add tab button on the new tab page
+    let isNewTabPage = toolbarState.isNewTabPage
+    addTabButton.stackViewAnimationSafeIsHidden = isNewTabPage
+    searchButton.stackViewAnimationSafeIsHidden = !isNewTabPage
+  }
+
+  @available(iOS, introduced: 18, obsoleted: 26, message: "Use updateProperties directly")
+  private func startObservingProperties() {
+    withObservationTracking {
+      updateObservedProperties()
+    } onChange: { [weak self] in
+      DispatchQueue.main.async {
+        MainActor.assumeIsolated {
+          self?.startObservingProperties()
+        }
+      }
     }
   }
 
@@ -106,15 +137,6 @@ class BottomToolbarView: UIView, ToolbarProtocol {
       make.height.equalTo(UIConstants.toolbarHeight)
     }
     super.updateConstraints()
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    helper?.updateForTraitCollection(
-      traitCollection,
-      browserColors: privateBrowsingManager.browserColors,
-      isBottomToolbar: true
-    )
   }
 
   private func setupAccessibility() {
@@ -134,35 +156,5 @@ class BottomToolbarView: UIView, ToolbarProtocol {
 
   func addButtons(_ buttons: [UIButton]) {
     buttons.forEach { contentView.addArrangedSubview($0) }
-  }
-
-  private var previousX: CGFloat = 0.0
-  @objc private func didSwipeToolbar(_ pan: UIPanGestureRecognizer) {
-    switch pan.state {
-    case .began:
-      let velocity = pan.velocity(in: self)
-      if velocity.x > 100 {
-        tabToolbarDelegate?.tabToolbarDidSwipeToChangeTabs(self, direction: .right)
-      } else if velocity.x < -100 {
-        tabToolbarDelegate?.tabToolbarDidSwipeToChangeTabs(self, direction: .left)
-      }
-      previousX = pan.translation(in: self).x
-    case .changed:
-      let point = pan.translation(in: self)
-      if point.x > previousX + 50 {
-        tabToolbarDelegate?.tabToolbarDidSwipeToChangeTabs(self, direction: .right)
-        previousX = point.x
-      } else if point.x < previousX - 50 {
-        tabToolbarDelegate?.tabToolbarDidSwipeToChangeTabs(self, direction: .left)
-        previousX = point.x
-      }
-    default:
-      break
-    }
-  }
-
-  func updateForwardStatus(_ canGoForward: Bool) {
-    forwardButton.isHidden = !canGoForward
-    shareButton.isHidden = canGoForward
   }
 }

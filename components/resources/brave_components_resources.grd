@@ -54,14 +54,8 @@
           <include name="IDR_WALLET_PANEL_HTML" file="../brave_wallet_ui/panel/wallet_panel.html" type="BINDATA" />
           <include name="IDR_BRAVE_WALLET_LEDGER_BRIDGE_HTML" file="../brave_wallet_ui/ledger/ledger.html" type="BINDATA" />
           <include name="IDR_BRAVE_WALLET_TREZOR_BRIDGE_HTML" file="../brave_wallet_ui/trezor/trezor.html" type="BINDATA" />
-        </if>
-
-        <!-- WebUI swap, send, and deposit page resources for Android -->
-        <if expr="is_android">
-          <include name="IDR_BRAVE_WALLET_SWAP_PAGE_HTML" file="../brave_wallet_ui/page/screens/swap/android/swap.html" type="BINDATA" />
-          <include name="IDR_BRAVE_WALLET_SEND_PAGE_HTML" file="../brave_wallet_ui/page/screens/send/android/send.html" type="BINDATA" />
-          <include name="IDR_BRAVE_WALLET_DEPOSIT_PAGE_HTML" file="../brave_wallet_ui/page/screens/fund-wallet/android/deposit-funds.html" type="BINDATA" />
-          <include name="IDR_BRAVE_WALLET_FUND_WALLET_PAGE_HTML" file="../brave_wallet_ui/page/screens/android-buy/android/fund-wallet.html" type="BINDATA" />
+          <include name="IDR_BRAVE_WALLET_SNAP_HOST_HTML" file="../brave_wallet_ui/snap_host/snap_host.html" type="BINDATA" />
+          <include name="IDR_BRAVE_WALLET_SNAPS_CONTAINER_HTML" file="../brave_wallet_ui/snaps_container/snaps_container.html" type="BINDATA" />
         </if>
       </if>
       <!-- WebUI vpn resources -->

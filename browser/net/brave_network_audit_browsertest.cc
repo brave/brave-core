@@ -23,11 +23,11 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/password_manager/core/browser/password_store/password_form_converters.h"
+#include "components/password_manager/core/browser/password_string.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/template_url_service.h"
 #include "content/public/test/browser_test.h"
@@ -38,7 +38,10 @@
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
@@ -48,21 +51,28 @@
 namespace brave {
 namespace {
 
-// Max amount of time to wait after getting an URL loaded, in milliseconds. Note
-// that the value passed to --ui-test-action-timeout in //brave/package.json, as
-// part of the 'network-audit' script, must be big enough to accomodate this.
+// Max amount of time to wait after getting an URL loaded. Note that the value
+// passed to --ui-test-action-timeout in //brave/package.json, as part of the
+// 'network-audit' script, must be big enough to accomodate this.
 //
 // In particular:
 //   --ui-test-action-timeout: should be greater than |kMaxTimeoutPerLoadedURL|.
 //   --test-launcher-timeout: should be able to fit the total sum of timeouts.
-constexpr int kMaxTimeoutPerLoadedURL = 30;
+constexpr base::TimeDelta kMaxTimeoutPerLoadedURL = base::Seconds(30);
 
-void WaitForTimeout(int timeout) {
+#if defined(TOOLKIT_VIEWS)
+// The Leo panel crashes the renderer a few seconds after loading. Audit it with
+// a shorter window rather than skipping it entirely, so its requests are still
+// captured.
+constexpr base::TimeDelta kTimeoutForLeoPanel = base::Seconds(1);
+#endif
+
+void WaitForTimeout(base::TimeDelta timeout) {
   base::test::ScopedRunLoopTimeout file_download_timeout(
-      FROM_HERE, base::Seconds(kMaxTimeoutPerLoadedURL + 1));
+      FROM_HERE, kMaxTimeoutPerLoadedURL + base::Seconds(1));
   base::RunLoop run_loop;
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE, run_loop.QuitClosure(), base::Seconds(timeout));
+      FROM_HERE, run_loop.QuitClosure(), timeout);
   run_loop.Run();
 }
 
@@ -142,7 +152,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
   signin_form.url = GURL("https://www.facebook.com/");
   signin_form.action = GURL("https://www.facebook.com/");
   signin_form.username_value = u"john";
-  signin_form.password_value = u"password1";
+  signin_form.password_value = password_manager::PasswordString(u"password1");
   password_store->AddLogin(password_manager::FromPasswordForm(signin_form));
 
   // Load the NTP to check requests made from the JS widgets.
@@ -158,17 +168,22 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
   WaitForTimeout(kMaxTimeoutPerLoadedURL);
 
 #if defined(TOOLKIT_VIEWS)
-  auto* sidebar_controller = browser()->GetFeatures().sidebar_controller();
-  auto* sidebar_model = sidebar_controller->model();
-  const auto& all_items = sidebar_model->GetAllSidebarItems();
-  const int item_num = all_items.size();
-  for (int i = 0; i < item_num; ++i) {
-    auto item = all_items[i];
-    // Load all builtin panel items.
+  // Collet our default builtin panel ids.
+  auto* sidebar_model = sidebar::SidebarController::From(browser())->model();
+  std::vector<SidePanelEntryId> panel_ids;
+  for (const auto& item : sidebar_model->GetAllSidebarItems()) {
     if (item.is_built_in_type() && item.open_in_panel) {
-      sidebar_controller->ActivateItemAt(i);
-      WaitForTimeout(kMaxTimeoutPerLoadedURL);
+      panel_ids.push_back(sidebar::SidePanelIdFromSideBarItem(item));
     }
+  }
+
+  // Load all builtin panel items.
+  auto* side_panel_ui = SidePanelUI::From(browser());
+  ASSERT_TRUE(side_panel_ui);
+  for (const auto id : panel_ids) {
+    side_panel_ui->Show(id);
+    WaitForTimeout(id == SidePanelEntryId::kChatUI ? kTimeoutForLeoPanel
+                                                   : kMaxTimeoutPerLoadedURL);
   }
 #endif
 }

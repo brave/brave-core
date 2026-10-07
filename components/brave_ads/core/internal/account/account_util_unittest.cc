@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 
@@ -46,11 +46,28 @@ TEST_F(BraveAdsAccountUtilTest, AllowNewTabPageAdDepositsForNonRewardsUser) {
 
 TEST_F(
     BraveAdsAccountUtilTest,
-    DoNotAllowNewTabPageAdDepositsForNonRewardsUserIfOptedOutOfNewTabPageAds) {
+    DoNotAllowNewTabPageAdDepositsForNonRewardsUserIfNewTabPageBackgroundImagesAreDisabled) {
   // Arrange
   test::DisableBraveRewards();
 
-  test::OptOutOfNewTabPageAds();
+  test::DisableNewTabPageBackgroundImages();
+
+  // Act & Assert
+  for (size_t i = 0;
+       i < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++i) {
+    EXPECT_FALSE(IsAllowedToDeposit(test::kCreativeInstanceId,
+                                    mojom::AdType::kNewTabPageAd,
+                                    static_cast<mojom::ConfirmationType>(i)));
+  }
+}
+
+TEST_F(
+    BraveAdsAccountUtilTest,
+    DoNotAllowNewTabPageAdDepositsForNonRewardsUserIfSponsoredAdsAreDisabled) {
+  // Arrange
+  test::DisableBraveRewards();
+
+  test::DisableSponsoredAds();
 
   // Act & Assert
   for (size_t i = 0;

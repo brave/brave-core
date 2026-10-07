@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds.*
+// pnpm test brave_unit_tests --filter=BraveAds.*
 
 namespace brave_ads {
 
@@ -35,7 +35,7 @@ TEST_F(BraveAdsCatalogIdDiagnosticEntryTest, EmptyCatalogId) {
   // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kCatalogId, diagnostic_entry.GetType());
   EXPECT_EQ("Catalog ID", diagnostic_entry.GetName());
-  EXPECT_THAT(diagnostic_entry.GetValue(), ::testing::IsEmpty());
+  EXPECT_EQ("N/A", diagnostic_entry.GetValue());
 }
 
 }  // namespace brave_ads

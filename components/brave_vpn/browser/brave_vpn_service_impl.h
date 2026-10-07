@@ -104,6 +104,8 @@ class BraveVpnServiceImpl : public BraveVpnService,
   void EnableSmartProxyRouting(bool enable) override;
   void GetSmartProxyRoutingState(
       GetSmartProxyRoutingStateCallback callback) override;
+  void AllowLanTraffic(bool allow) override;
+  void GetAllowLanTraffic(GetAllowLanTrafficCallback callback) override;
 #else   // !BUILDFLAG(IS_ANDROID)
   void GetPurchaseToken(GetPurchaseTokenCallback callback) override;
 #endif  // !BUILDFLAG(IS_ANDROID)
@@ -120,9 +122,9 @@ class BraveVpnServiceImpl : public BraveVpnService,
   void GetHostnamesForRegion(ResponseCallback callback,
                              const std::string& region,
                              const std::string& region_precision) override;
-  void GetProfileCredentials(ResponseCallback callback,
-                             const std::string& subscriber_credential,
-                             const std::string& hostname) override;
+  void GetIKEv2ProfileCredentials(ResponseCallback callback,
+                                  const std::string& subscriber_credential,
+                                  const std::string& hostname) override;
   void GetWireguardProfileCredentials(ResponseCallback callback,
                                       const std::string& subscriber_credential,
                                       const std::string& public_key,

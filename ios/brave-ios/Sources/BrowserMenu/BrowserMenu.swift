@@ -49,31 +49,11 @@ public struct BrowserMenu: View {
   }
 
   private var quickActions: Binding<[Action]> {
-    Binding(
-      get: { Array(model.visibleActions.prefix(numberOfQuickActions.value)) },
-      set: {
-        model.visibleActions.replaceSubrange(
-          0..<min(numberOfQuickActions.value, model.visibleActions.count),
-          with: $0
-        )
-      }
-    )
+    $model.visibleActions[prefix: numberOfQuickActions.value]
   }
 
   private var listedActions: Binding<[Action]> {
-    Binding(
-      get: {
-        if model.visibleActions.count < numberOfQuickActions.value {
-          return []
-        }
-        return Array(model.visibleActions[numberOfQuickActions.value...])
-      },
-      set: {
-        if model.visibleActions.count > numberOfQuickActions.value {
-          model.visibleActions.replaceSubrange(numberOfQuickActions.value..., with: $0)
-        }
-      }
-    )
+    $model.visibleActions[droppingPrefix: numberOfQuickActions.value]
   }
 
   public var body: some View {
@@ -139,7 +119,7 @@ public struct BrowserMenu: View {
           .buttonStyle(MenuRowButtonStyle())
           .background(Color(braveSystemName: .schemesSurfaceBright))
           .clipShape(.rect(cornerRadius: 14, style: .continuous))
-          .transition(.blurReplace())
+          .transition(.blurReplace)
         }
         Button {
           handlePresentation(.settings)
@@ -207,7 +187,7 @@ private struct QuickActionsView: View {
         }
         .buttonStyle(QuickActionButtonStyle(state: action.state, traits: action.traits))
         .disabled(action.attributes.contains(.disabled))
-        .transition(.blurReplace())
+        .transition(.blurReplace)
         .id(action)
       }
     }
@@ -318,7 +298,7 @@ private struct ActionButton: View {
     }
     .buttonStyle(MenuRowButtonStyle())
     .disabled(action.attributes.contains(.disabled))
-    .transition(.blurReplace())
+    .transition(.blurReplace)
     .id(action)
   }
 }
@@ -461,6 +441,29 @@ private struct MenuRowButtonStyle: ButtonStyle {
       }
       .padding(.vertical, 12)
       .opacity(isEnabled ? 1 : 0.7)
+    }
+  }
+}
+
+extension Array {
+  /// The first `count` elements of the array.
+  ///
+  /// Setting this replaces those elements.
+  fileprivate subscript(prefix count: Int) -> [Element] {
+    get { Array(prefix(count)) }
+    set { replaceSubrange(0..<Swift.min(count, self.count), with: newValue) }
+  }
+
+  /// The elements of the array after the first `count` elements.
+  ///
+  /// Setting this replaces those elements, but has no effect if the array has `count` elements or
+  /// fewer.
+  fileprivate subscript(droppingPrefix count: Int) -> [Element] {
+    get { self.count < count ? [] : Array(self[count...]) }
+    set {
+      if self.count > count {
+        replaceSubrange(count..., with: newValue)
+      }
     }
   }
 }

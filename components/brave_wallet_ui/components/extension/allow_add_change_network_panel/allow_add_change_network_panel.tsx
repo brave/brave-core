@@ -157,8 +157,8 @@ export function AllowAddChangeNetworkPanel(props: Props) {
       <Row padding='18px'>
         <HeaderText textColor='primary'>
           {switchChainRequest
-            ? getLocale('braveWalletAllowChangeNetworkButton')
-            : getLocale('braveWalletAddNetwork')}
+            ? getLocale(S.BRAVE_WALLET_ALLOW_CHANGE_NETWORK_BUTTON)
+            : getLocale(S.BRAVE_WALLET_ADD_NETWORK)}
         </HeaderText>
       </Row>
       <VerticalDivider />
@@ -179,16 +179,18 @@ export function AllowAddChangeNetworkPanel(props: Props) {
           >
             <Title textColor='primary'>
               {switchChainRequest
-                ? getLocale('braveWalletAllowChangeNetworkTitle')
-                : getLocale('braveWalletAllowAddNetworkTitle')}
+                ? getLocale(S.BRAVE_WALLET_ALLOW_CHANGE_NETWORK_TITLE)
+                : getLocale(S.BRAVE_WALLET_ALLOW_ADD_NETWORK_TITLE)}
             </Title>
             <Description textColor='tertiary'>
               {switchChainRequest
-                ? getLocale('braveWalletAllowChangeNetworkDescription')
-                : getLocale('braveWalletAllowAddNetworkDescription')}{' '}
+                ? getLocale(S.BRAVE_WALLET_ALLOW_CHANGE_NETWORK_DESCRIPTION)
+                : getLocale(S.BRAVE_WALLET_ALLOW_ADD_NETWORK_DESCRIPTION)}{' '}
               {addChainRequest && (
                 <LearnMoreButton onClick={onLearnMore}>
-                  {getLocale('braveWalletAllowAddNetworkLearnMoreButton')}
+                  {getLocale(
+                    S.BRAVE_WALLET_ALLOW_ADD_NETWORK_LEARN_MORE_BUTTON,
+                  )}
                 </LearnMoreButton>
               )}
             </Description>
@@ -211,7 +213,7 @@ export function AllowAddChangeNetworkPanel(props: Props) {
                   justifyContent='flex-start'
                 >
                   <NetworkInfoLabel textColor='secondary'>
-                    {getLocale('braveWalletFrom')}:
+                    {getLocale(S.BRAVE_WALLET_FROM)}:
                   </NetworkInfoLabel>
                   <Row
                     gap='8px'
@@ -254,7 +256,7 @@ export function AllowAddChangeNetworkPanel(props: Props) {
                   width='100%'
                 >
                   <NetworkInfoLabel textColor='secondary'>
-                    {getLocale('braveWalletSwapTo')}:
+                    {getLocale(S.BRAVE_WALLET_SWAP_TO)}:
                   </NetworkInfoLabel>
                   <Row
                     gap='8px'
@@ -282,7 +284,7 @@ export function AllowAddChangeNetworkPanel(props: Props) {
                         <DetailsButton
                           onClick={() => setShowNetworkDetails(true)}
                         >
-                          {getLocale('braveWalletDetails')}
+                          {getLocale(S.BRAVE_WALLET_DETAILS)}
                         </DetailsButton>
                       </Row>
                       <NetworkInfoLabel
@@ -311,7 +313,7 @@ export function AllowAddChangeNetworkPanel(props: Props) {
                   justifyContent='flex-start'
                 >
                   <NetworkInfoLabel textColor='secondary'>
-                    {getLocale('braveWalletAllowAddNetworkName')}
+                    {getLocale(S.BRAVE_WALLET_ALLOW_ADD_NETWORK_NAME)}
                   </NetworkInfoLabel>
                   <NetworkInfoText textColor='primary'>
                     {addChainRequestNetwork?.chainName ?? ''}
@@ -323,7 +325,7 @@ export function AllowAddChangeNetworkPanel(props: Props) {
                   justifyContent='flex-start'
                 >
                   <NetworkInfoLabel textColor='secondary'>
-                    {getLocale('braveWalletAllowAddNetworkUrl')}
+                    {getLocale(S.BRAVE_WALLET_ALLOW_ADD_NETWORK_URL)}
                   </NetworkInfoLabel>
                   <NetworkInfoText textColor='primary'>
                     {addChainRequestNetwork?.rpcEndpoints[
@@ -339,7 +341,7 @@ export function AllowAddChangeNetworkPanel(props: Props) {
                 size='medium'
                 onClick={() => setShowNetworkDetails(true)}
               >
-                {getLocale('braveWalletAllowAddNetworkDetailsButton')}
+                {getLocale(S.BRAVE_WALLET_ALLOW_ADD_NETWORK_DETAILS_BUTTON)}
               </Button>
             )}
           </Column>
@@ -354,7 +356,7 @@ export function AllowAddChangeNetworkPanel(props: Props) {
                 addChainRequest ? onCancelAddNetwork : onCancelChangeNetwork
               }
             >
-              {getLocale('braveWalletButtonCancel')}
+              {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
             </Button>
             <Button
               kind='filled'
@@ -364,8 +366,8 @@ export function AllowAddChangeNetworkPanel(props: Props) {
               }
             >
               {switchChainRequest
-                ? getLocale('braveWalletAllowChangeNetworkButton')
-                : getLocale('braveWalletAllowAddNetworkButton')}
+                ? getLocale(S.BRAVE_WALLET_ALLOW_CHANGE_NETWORK_BUTTON)
+                : getLocale(S.BRAVE_WALLET_ALLOW_ADD_NETWORK_BUTTON)}
             </Button>
           </Row>
         </Card>

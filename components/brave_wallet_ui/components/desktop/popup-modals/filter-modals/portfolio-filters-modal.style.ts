@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 
 // Constants
-import { layoutPanelWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
+import { layoutPanelWidth } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 // Shared Styles
 import { Column, Row } from '../../../shared/style'

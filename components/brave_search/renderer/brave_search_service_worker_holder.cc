@@ -116,15 +116,9 @@ void JsHandlersForCurrentThread::WillStopCurrentWorkerThread() {
 
 }  // namespace
 
-BraveSearchServiceWorkerHolder::BraveSearchServiceWorkerHolder()
-    : broker_(nullptr) {}
+BraveSearchServiceWorkerHolder::BraveSearchServiceWorkerHolder() = default;
 
 BraveSearchServiceWorkerHolder::~BraveSearchServiceWorkerHolder() = default;
-
-void BraveSearchServiceWorkerHolder::SetBrowserInterfaceBrokerProxy(
-    blink::ThreadSafeBrowserInterfaceBrokerProxy* broker) {
-  broker_ = broker;
-}
 
 void BraveSearchServiceWorkerHolder::WillEvaluateServiceWorkerOnWorkerThread(
     blink::WebServiceWorkerContextProxy* context_proxy,
@@ -132,14 +126,14 @@ void BraveSearchServiceWorkerHolder::WillEvaluateServiceWorkerOnWorkerThread(
     int64_t service_worker_version_id,
     const GURL& service_worker_scope,
     const GURL& script_url) {
-  DCHECK(broker_);
+  CHECK(context_proxy);
   if (!service_worker_scope.is_valid() ||
       !service_worker_scope.SchemeIsHTTPOrHTTPS() ||
       !IsAllowedHost(service_worker_scope))
     return;
 
   std::unique_ptr<BraveSearchFallbackJSHandler> js_handler(
-      new BraveSearchFallbackJSHandler(v8_context, broker_));
+      new BraveSearchFallbackJSHandler(v8_context, context_proxy));
   js_handler->AddJavaScriptObject();
 
   JsHandlersForCurrentThread::Get()->AddJsHandler(std::move(js_handler));

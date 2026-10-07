@@ -75,6 +75,7 @@ source_set("brave_new_tab_page_refresh") {
     "//brave/components/brave_perf_predictor/common",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core/mojom:webui",
+    "//brave/components/brave_search/common",
     "//brave/components/brave_search_conversion",
     "//brave/components/brave_talk/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
@@ -84,9 +85,11 @@ source_set("brave_new_tab_page_refresh") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/resources:static_resources",
     "//brave/components/resources:strings",
+    "//brave/components/search_engines",
     "//chrome/app:generated_resources",
     "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/autocomplete",
     "//chrome/browser/bookmarks",
     "//chrome/browser/contextual_search",
     "//chrome/browser/history",
@@ -101,9 +104,12 @@ source_set("brave_new_tab_page_refresh") {
     "//chrome/browser/ui/webui:webui_util",
     "//chrome/browser/ui/webui/searchbox",
     "//components/contextual_search:public",
+    "//components/omnibox/browser",
     "//components/prefs",
     "//components/regional_capabilities",
     "//components/strings:components_strings",
+    "//content/public/browser",
+    "//third_party/metrics_proto",
     "//ui/base",
     "//ui/shell_dialogs",
     "//ui/webui",
@@ -183,6 +189,7 @@ source_set("browser_tests") {
 
     deps += [
       "//brave/components/ai_chat/core/common",
+      "//brave/components/brave_search/common",
       "//brave/components/brave_search_conversion",
       "//chrome/browser/profiles:profile",
       "//components/prefs",
@@ -211,13 +218,18 @@ source_set("browser_tests") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "sponsored_sites_facade_unittest.cc" ]
+  sources = []
+
+  if (enable_brave_ads) {
+    sources += [ "sponsored_sites_facade_unittest.cc" ]
+  }
 
   deps = [
     ":brave_new_tab_page_refresh",
     ":mojom",
     "//base",
     "//base/test:test_support",
+    "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/constants",
@@ -232,4 +244,8 @@ source_set("unit_tests") {
     "//testing/gtest",
     "//url",
   ]
+
+  if (enable_brave_ads) {
+    deps += [ "//brave/components/brave_ads/core" ]
+  }
 }

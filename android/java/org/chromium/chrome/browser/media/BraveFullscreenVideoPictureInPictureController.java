@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.PictureInPictureParams;
 import android.graphics.Rect;
 
+import org.chromium.base.CommandLine;
 import org.chromium.base.Log;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -29,6 +30,9 @@ public class BraveFullscreenVideoPictureInPictureController {
      * attemptPictureInPicture, so we can notify it if entry fails.
      */
     @Nullable private BraveActivity mPendingBraveActivityForPiP;
+
+    // Records a screen-lock stop so onResume() can keep the PiP window open.
+    private boolean mStoppedForScreenLock;
 
     /**
      * Performs the YouTube PiP entry that upstream's attemptPictureInPicture delegates to once the
@@ -100,6 +104,30 @@ public class BraveFullscreenVideoPictureInPictureController {
             return null;
         }
         return braveActivity;
+    }
+
+    public static boolean shouldPreservePlaybackOnScreenLock() {
+        // Chromium 153 added media suspension when the PiP activity stops.
+        // Allow playback through screen lock when Background play is enabled.
+        return BraveYouTubePictureInPictureController.isScreenOffOrLocked()
+                && CommandLine.getInstance().hasSwitch("disable-background-media-suspend");
+    }
+
+    protected boolean maybeHandleStopForScreenLock(boolean shouldSuspendMediaOnStop) {
+        if (!shouldSuspendMediaOnStop) return false;
+
+        // Skip suspension on screen lock without clearing the upstream stop flag.
+        // Closing PiP after unlocking must still suspend playback.
+        mStoppedForScreenLock = shouldPreservePlaybackOnScreenLock();
+        return mStoppedForScreenLock;
+    }
+
+    protected boolean maybeHandleResumeAfterScreenLock(Activity activity) {
+        // Normal onResume() dismisses PiP and clears the upstream stop flag.
+        // Skip that cleanup when unlocking leaves the activity in PiP.
+        boolean wasStoppedForScreenLock = mStoppedForScreenLock;
+        mStoppedForScreenLock = false;
+        return wasStoppedForScreenLock && activity.isInPictureInPictureMode();
     }
 
     protected boolean maybeHandleDismissActivityForYouTubePictureInPicture(

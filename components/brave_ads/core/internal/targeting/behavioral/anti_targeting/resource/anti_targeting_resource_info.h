@@ -6,20 +6,20 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_ANTI_TARGETING_RESOURCE_ANTI_TARGETING_RESOURCE_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_ANTI_TARGETING_RESOURCE_ANTI_TARGETING_RESOURCE_INFO_H_
 
-#include <map>
 #include <optional>
-#include <set>
 #include <string>
 
 #include "base/values.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 class GURL;
 
 namespace brave_ads {
 
-using AntiTargetingSiteList = std::set<GURL>;
+using AntiTargetingSiteList = absl::flat_hash_set<GURL>;
 using AntiTargetingCreativeSetMap =
-    std::map</*creative_set_id*/ std::string, AntiTargetingSiteList>;
+    absl::flat_hash_map</*creative_set_id*/ std::string, AntiTargetingSiteList>;
 
 struct AntiTargetingResourceInfo final {
   AntiTargetingResourceInfo();

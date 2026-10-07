@@ -56,6 +56,8 @@ class NewTabPageInitializer {
   void AddFaviconDataSource();
   void AddCustomImageDataSource();
   void AddSanitizedImageDataSource();
+  void AddBackgroundImageDataSource();
+  void AddSponsoredContentDataSources();
 
   raw_ref<content::WebUI> web_ui_;
   raw_ptr<content::WebUIDataSource> source_ = nullptr;

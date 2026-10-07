@@ -10,6 +10,7 @@
 
 namespace base {
 class Time;
+class TimeDelta;
 }  // namespace base
 
 namespace brave_ads {
@@ -30,6 +31,10 @@ std::string FriendlyDateAndTime(base::Time time,
 // "2020-12-31T23:00:00.000Z", with fixed values for minutes, seconds,
 // milliseconds, and time zone.
 std::string TimeToPrivacyPreservingIso8601(base::Time time);
+
+// Returns the single largest applicable unit of `delta`, e.g., "3 days",
+// "1 hour", "5 minutes", or "less than a minute".
+std::string FormatApproximateDuration(base::TimeDelta delta);
 
 }  // namespace brave_ads
 

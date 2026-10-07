@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_strip_view.cc b/chrome/browser/ui/views/tabs/common/tab_strip_view.cc
-index 3e4a21b0342f860bd31a23cd5d0985a7d18a705c..4d5019107d66053aee5c5d7f34f3e13cbabc2b05 100644
+index 8335082023ecec902bf3f8182ba192e59ac5ef08..180dbd012bd85e8ab8e2a7749876e4da617c7623 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_strip_view.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_strip_view.cc
-@@ -273,6 +273,8 @@ void TabStripView::OnChildMoved(TabCollectionNode* moved_node) {
+@@ -310,6 +310,8 @@ void TabStripView::OnChildMoved(TabCollectionNode* moved_node) {
  
    if (is_active_tab || has_focus) {
      switch (moved_node->type()) {
@@ -10,4 +10,4 @@ index 3e4a21b0342f860bd31a23cd5d0985a7d18a705c..4d5019107d66053aee5c5d7f34f3e13c
 +        break;
        case TabCollectionNode::Type::TAB: {
          const tabs::TabInterface* tab =
-             std::get<const tabs::TabInterface*>(moved_node->GetNodeData());
+             std::get<tabs::ConstDanglingUntriagedTabInterface>(

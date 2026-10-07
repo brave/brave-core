@@ -58,18 +58,18 @@ export const AdvancedTransactionSettings = (props: Props) => {
         justifyContent='flex-start'
       >
         <LabelText textColor='primary'>
-          {getLocale('braveWalletEditNonce')}
+          {getLocale(S.BRAVE_WALLET_EDIT_NONCE)}
         </LabelText>
         <Input
           placeholder={getLocale(
-            'braveWalletAdvancedTransactionSettingsPlaceholder',
+            S.BRAVE_WALLET_ADVANCED_TRANSACTION_SETTINGS_PLACEHOLDER,
           )}
           type='number'
           value={customNonce}
           onChange={handleNonceInputChanged}
         />
         <DescriptionText textColor='tertiary'>
-          {getLocale('braveWalletEditGasZeroGasPriceWarning')}
+          {getLocale(S.BRAVE_WALLET_EDIT_GAS_ZERO_GAS_PRICE_WARNING)}
         </DescriptionText>
       </Column>
       <Row gap='16px'>
@@ -78,14 +78,16 @@ export const AdvancedTransactionSettings = (props: Props) => {
           size='medium'
           onClick={onCancel}
         >
-          <ButtonText>{getLocale('braveWalletButtonCancel')}</ButtonText>
+          <ButtonText>{getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}</ButtonText>
         </Button>
         <Button
           size='medium'
           onClick={onClickSave}
           isDisabled={customNonce === nonce || customNonce === ''}
         >
-          <ButtonText>{getLocale('braveWalletAccountSettingsSave')}</ButtonText>
+          <ButtonText>
+            {getLocale(S.BRAVE_WALLET_ACCOUNT_SETTINGS_SAVE)}
+          </ButtonText>
         </Button>
       </Row>
     </StyledWrapper>

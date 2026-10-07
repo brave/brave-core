@@ -85,6 +85,10 @@ interface BraveNewsContextProviderProps {
   // subtree. Used by surfaces like the sidebar, where articles must always open
   // in the main browser tab regardless of the configured preference.
   openArticlesInNewTab?: boolean
+  // Set by surfaces where the feed is on screen as soon as it mounts (e.g. the
+  // sidebar). The NTP defers images until the first scroll because its feed
+  // starts below the fold, but that scroll never comes on these surfaces.
+  renderImagesImmediately?: boolean
 }
 
 export function BraveNewsContextProvider(props: BraveNewsContextProviderProps) {
@@ -108,7 +112,8 @@ export function BraveNewsContextProvider(props: BraveNewsContextProviderProps) {
   const [channels, setChannels] = useState<Channels>({})
   const [publishers, setPublishers] = useState<Publishers>({})
   const [suggestedPublisherIds, setSuggestedPublisherIds] = useState<string[]>([])
-  const [shouldRenderImages, setShouldRenderImages] = useState(false)
+  const [hasScrolled, setHasScrolled] = useState(false)
+  const shouldRenderImages = props.renderImagesImmediately || hasScrolled
 
   // Get the default locale on load.
   useEffect(() => {
@@ -139,10 +144,11 @@ export function BraveNewsContextProvider(props: BraveNewsContextProviderProps) {
   }, [])
 
   React.useEffect(() => {
-    const handleScroll = () => setShouldRenderImages(true)
+    if (props.renderImagesImmediately) return
+    const handleScroll = () => setHasScrolled(true)
     document.addEventListener('scroll', handleScroll, { once: true })
     return () => document.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [props.renderImagesImmediately])
 
   const sortedPublishers = useMemo(() =>
     Object.values(publishers)

@@ -29,7 +29,6 @@ class BraveWalletProviderDelegateBridge
   bool IsTabVisible() override;
   void ShowPanel(const url::Origin& origin) override;
   void WalletInteractionDetected() override;
-  void ShowWalletOnboarding(const url::Origin& origin) override;
   void ShowWalletBackup() override;
   void UnlockWallet() override;
   void ShowAccountCreation(mojom::CoinType type,

@@ -19,7 +19,7 @@ class OPMLParsingTests: XCTestCase {
 
   func testBasicParsing() throws {
     let data = loadTestData(named: "subscriptionList")
-    let opml = try XCTUnwrap(OPMLParser.parse(data: data))
+    let opml = try XCTUnwrap(OPMLParser.parseSynchronously(data: data))
     XCTAssertEqual(opml.title, "mySubscriptions.opml")
     // Test parse all outlines
     XCTAssertEqual(opml.outlines.count, 13)
@@ -42,16 +42,16 @@ class OPMLParsingTests: XCTestCase {
 
   func testNoFeedsFound() throws {
     let data = loadTestData(named: "states")
-    let opml = try XCTUnwrap(OPMLParser.parse(data: data))
+    let opml = try XCTUnwrap(OPMLParser.parseSynchronously(data: data))
     XCTAssertEqual(opml.outlines.count, 0)
   }
 
   func testParseInvalidData() throws {
     let json = try XCTUnwrap(#"{"data": "This isn't XML or OPML"}"#.data(using: .utf8))
-    XCTAssertNil(OPMLParser.parse(data: json))
+    XCTAssertNil(OPMLParser.parseSynchronously(data: json))
     let html = try XCTUnwrap(
       #"<html><head><title>This isn't OPML</title></head><body></body></html>"#.data(using: .utf8)
     )
-    XCTAssertNil(OPMLParser.parse(data: html))
+    XCTAssertNil(OPMLParser.parseSynchronously(data: html))
   }
 }

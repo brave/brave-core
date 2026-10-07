@@ -6,32 +6,21 @@
 import styled from 'styled-components'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-import sellGraphicUrl from '../../assets/svg-icons/sell-graphic.svg'
 import guardianLogoUrl from '../../assets/svg-icons/guardian-logo.svg'
-import { color, font, gradient, icon, spacing } from '@brave/leo/tokens/css/variables'
+import { color, effect, font, gradient, icon, radius, spacing } from '@brave/leo/tokens/css/variables'
 
 export const Box = styled.div`
   width: 100%;
   height: 100%;
-  background: #0F0663;
-  position: relative;
+  background: linear-gradient(
+    180deg,
+    ${color.primitive.neutral[15]} 0%,
+    ${color.primitive.neutral[5]} 100%
+  );
+  border-radius: ${radius.xl};
+  box-shadow: ${effect.elevation['02']};
+  overflow: hidden;
   font: ${font.default.regular};
-`
-
-export const ProductTitle = styled.h3`
-  color: #FFF;
-  font: ${font.heading.h3};
-  margin: 0 0 ${spacing.xl} 0;
-`
-
-export const PoweredBy = styled.div`
-  display: flex;
-  align-items: center;
-
-  span {
-    color: #FFF;
-    text-align: center;
-  }
 `
 
 export const PanelContent = styled.section`
@@ -45,27 +34,33 @@ export const PanelContent = styled.section`
 `
 
 export const PanelHeader = styled.section`
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
+  gap: ${spacing.m};
 `
 
-export const SellGraphic = styled.div`
-  width: 336px;
-  height: 132px;
-  background-image: url(${sellGraphicUrl});
-  position: absolute;
-  top: 0;
-  left: 0px;
-  user-select: none;
-  pointer-events: none;
+export const ProductTitle = styled.h2`
+  color: ${color.white};
+  font: ${font.heading.h2};
+  margin: ${spacing.none};
+`
+
+export const PoweredBy = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${spacing.m};
+
+  span {
+    color: ${color.white};
+    text-align: center;
+  }
 `
 
 export const MainLogo = styled(Icon)`
-  --leo-icon-size: 48px;
-  --leo-icon-color: ${gradient.iconsActive};
+  --leo-icon-size: 40px;
+  --leo-icon-color: ${gradient.hero};
 `
 
 export const GuardianLogo = styled.i`
@@ -75,39 +70,37 @@ export const GuardianLogo = styled.i`
   user-select: none;
   pointer-events: none;
   display: inline-block;
-  margin-left: 8px;
 `
 
 export const SellingPoints = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: ${spacing.m};
   align-self: stretch;
+  text-wrap: pretty;
 `
 
 export const SellingPoint = styled.div`
   display: flex;
   align-items: center;
   gap: ${spacing.m};
+  padding: ${spacing.s} ${spacing.none};
   align-self: stretch;
 `
 
 export const SellingPointIcon = styled(Icon)`
-  align-self: start;
-  margin: 1px;
-  --leo-icon-size: ${icon.m};
-  --leo-icon-color: ${gradient.toolbarBackground};
+  --leo-icon-size: ${icon.s};
+  --leo-icon-color: ${color.primitive.neutral[70]};
 `
 
 export const SellingPointLabel = styled.span`
-  color: #FFF;
+  flex: 1;
+  color: ${color.primitive.neutral[95]};
   font: ${font.default.regular};
 `
 
 export const ActionArea = styled.div`
   display: flex;
-  padding: 0px;
   flex-direction: column;
   align-items: center;
   gap: ${spacing.xl};
@@ -115,16 +108,16 @@ export const ActionArea = styled.div`
 `
 
 export const ActionButton = styled(Button)`
-  --leo-button-color: rgba(255, 255, 255, 0.20);
   align-self: stretch;
 `
 
 export const ActionLink = styled.a`
-  color: #FFF;
+  color: ${color.white};
   font: ${font.small.link};
   text-decoration-line: underline;
 
   &:focus-visible {
-    outline: 1.5px solid ${color.primary[40]};
+    outline: none;
+    box-shadow: ${effect.focusState};
   }
 `

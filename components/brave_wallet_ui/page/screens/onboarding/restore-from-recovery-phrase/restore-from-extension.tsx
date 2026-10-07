@@ -158,16 +158,16 @@ export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
     switch (currentStep) {
       case 'currentPassword':
         return {
-          title: getLocale('braveWalletMetaMaskExtensionDetected'),
+          title: getLocale(S.BRAVE_WALLET_METAMASK_EXTENSION_DETECTED),
           description: getLocale(
-            'braveWalletMetaMaskExtensionImportDescription',
+            S.BRAVE_WALLET_METAMASK_EXTENSION_IMPORT_DESCRIPTION,
           ),
         }
 
       case 'newPassword':
         return {
-          title: getLocale('braveWalletCreatePasswordTitle'),
-          description: getLocale('braveWalletCreatePasswordDescription'),
+          title: getLocale(S.BRAVE_WALLET_CREATE_PASSWORD_TITLE),
+          description: getLocale(S.BRAVE_WALLET_CREATE_PASSWORD_DESCRIPTION),
         }
 
       default:
@@ -206,7 +206,7 @@ export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
               textSize='12px'
               isBold={true}
             >
-              {getLocale('braveWalletInputLabelPassword')}
+              {getLocale(S.BRAVE_WALLET_INPUT_LABEL_PASSWORD)}
             </InputLabel>
           </Row>
           <PasswordInput
@@ -220,7 +220,7 @@ export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
             hasError={!!importWalletError}
             onKeyDown={handleKeyDown}
             placeholder={getLocale(
-              'braveWalletMetaMaskPasswordInputPlaceholder',
+              S.BRAVE_WALLET_METAMASK_PASSWORD_INPUT_PLACEHOLDER,
             )}
             name='extensionPassword'
           />
@@ -230,7 +230,7 @@ export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
             kind='plain'
             onClick={() => history.push(WalletRoutes.OnboardingRestoreWallet)}
           >
-            {getLocale('braveWalletImportWithRecoveryPhrase')}
+            {getLocale(S.BRAVE_WALLET_IMPORT_WITH_RECOVERY_PHRASE)}
           </Button>
           <VerticalSpace space='85px' />
         </>
@@ -258,7 +258,7 @@ export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
             }
             isLoading={isCheckingImportPassword}
           >
-            {getLocale('braveWalletButtonContinue')}
+            {getLocale(S.BRAVE_WALLET_BUTTON_CONTINUE)}
           </ContinueButton>
         </NextButtonRow>
       )}

@@ -12,9 +12,15 @@ import {
   isValidIconExtension,
   sanitizeImageURL,
   formatAsDouble,
+  formatSignMessageForDisplay,
+  formatTypedDataForDisplay,
+  getHiddenSignMessageCharacters,
+  getTypedDataHiddenSignMessageCharacters,
+  hasUnexpectedSignMessageCharacters,
   hasUnicode,
   padWithLeadingZeros,
   unicodeCharEscape,
+  unicodeEscape,
   removeDoubleSpaces,
   getIsBraveWalletOrigin,
   reduceInt,
@@ -107,8 +113,172 @@ describe('hasUnicode', () => {
     expect(hasUnicode('Sign into \u202E EVIL')).toBe(true)
   })
 
+  it('returns "true" when a null byte is detected', () => {
+    expect(hasUnicode('hello\0world')).toBe(true)
+  })
+
+  it('returns "true" when a newline byte is detected', () => {
+    expect(hasUnicode('hello\nworld')).toBe(true)
+  })
+
+  it('returns "true" when a carriage return or other control is detected', () => {
+    expect(hasUnicode('hello\rworld')).toBe(true)
+    expect(hasUnicode('hello\tworld')).toBe(true)
+    expect(hasUnicode('hello\x7fworld')).toBe(true)
+  })
+
   it('returns "false" when Non-ASCII characters are not detected', () => {
     expect(hasUnicode('Sign into LIVE')).toBe(false)
+  })
+})
+
+describe('getHiddenSignMessageCharacters', () => {
+  it('names each kind of hidden character that is present', () => {
+    expect(getHiddenSignMessageCharacters('plain')).toEqual([])
+    expect(getHiddenSignMessageCharacters('a\0b')).toEqual(['nullByte'])
+    expect(getHiddenSignMessageCharacters('a\nb')).toEqual(['newline'])
+    expect(getHiddenSignMessageCharacters('a\u202Eb')).toEqual(['nonAscii'])
+    expect(getHiddenSignMessageCharacters('a\rb')).toEqual(['newline'])
+    expect(getHiddenSignMessageCharacters('a\x0bb')).toEqual(['newline'])
+    expect(getHiddenSignMessageCharacters('a\x0cb')).toEqual(['newline'])
+    expect(getHiddenSignMessageCharacters('a\tb')).toEqual(['controlCharacter'])
+    expect(getHiddenSignMessageCharacters('a\x1bb')).toEqual([
+      'controlCharacter',
+    ])
+    expect(getHiddenSignMessageCharacters('a\x7fb')).toEqual([
+      'controlCharacter',
+    ])
+    expect(getHiddenSignMessageCharacters('a\0\nb\u202E\t')).toEqual([
+      'nullByte',
+      'newline',
+      'nonAscii',
+      'controlCharacter',
+    ])
+  })
+
+  it('unions characters across every provided string', () => {
+    expect(
+      getHiddenSignMessageCharacters('domain\0', undefined, 'message\n\u00ff'),
+    ).toEqual(['nullByte', 'newline', 'nonAscii'])
+  })
+})
+
+describe('getTypedDataHiddenSignMessageCharacters', () => {
+  it('detects null and newline escapes inside typed-data JSON', () => {
+    expect(
+      getTypedDataHiddenSignMessageCharacters(
+        '{"name":"Example\\u0000 domain"}',
+      ),
+    ).toEqual(['nullByte'])
+    expect(
+      getTypedDataHiddenSignMessageCharacters('{"contents":"Hello\\nworld"}'),
+    ).toEqual(['newline'])
+    expect(
+      getTypedDataHiddenSignMessageCharacters(
+        '{"name":"Example\\u0000 domain"}',
+        '{"contents":"Sign into \\u202E EVIL"}',
+      ),
+    ).toEqual(['nullByte', 'nonAscii'])
+  })
+
+  it('detects carriage returns and other controls inside typed-data JSON', () => {
+    expect(
+      getTypedDataHiddenSignMessageCharacters('{"contents":"Hello\\rworld"}'),
+    ).toEqual(['newline'])
+    expect(
+      getTypedDataHiddenSignMessageCharacters('{"contents":"Hello\\tworld"}'),
+    ).toEqual(['controlCharacter'])
+  })
+
+  it('still detects raw characters in the JSON text', () => {
+    expect(
+      getTypedDataHiddenSignMessageCharacters(
+        '{"name":"Sign into \u202E EVIL"}',
+      ),
+    ).toEqual(['nonAscii'])
+  })
+})
+
+describe('hasUnexpectedSignMessageCharacters', () => {
+  it('is true for any hidden character and false for plain text', () => {
+    expect(hasUnexpectedSignMessageCharacters(['plain'])).toBe(false)
+    expect(hasUnexpectedSignMessageCharacters(['a\0b'])).toBe(true)
+    expect(hasUnexpectedSignMessageCharacters(['a\nb'])).toBe(true)
+    expect(hasUnexpectedSignMessageCharacters(['a\u202Eb'])).toBe(true)
+    expect(hasUnexpectedSignMessageCharacters(['a\tb'])).toBe(true)
+    expect(hasUnexpectedSignMessageCharacters([undefined, ''])).toBe(false)
+  })
+
+  it('decodes typed-data JSON when asked', () => {
+    expect(
+      hasUnexpectedSignMessageCharacters(
+        ['{"name":"Example\\u0000 domain"}'],
+        true,
+      ),
+    ).toBe(true)
+    expect(
+      hasUnexpectedSignMessageCharacters(['{"name":"Example domain"}'], true),
+    ).toBe(false)
+  })
+})
+
+describe('unicodeEscape', () => {
+  it('escapes non-ASCII characters', () => {
+    expect(unicodeEscape('Sign into \u202E EVIL')).toBe(
+      'Sign into \\u202e EVIL',
+    )
+  })
+
+  it('renders null bytes and marks newline bytes without dropping the break', () => {
+    expect(unicodeEscape('hello\0world')).toBe('hello\\0world')
+    expect(unicodeEscape('hello\nworld')).toBe('hello\\n\nworld')
+    expect(unicodeEscape('a\0b\n\u00ff')).toBe('a\\0b\\n\n\\u00ff')
+  })
+
+  it('renders other non-printable ASCII and doubles a literal backslash', () => {
+    expect(unicodeEscape('hello\rworld')).toBe('hello\\r\nworld')
+    expect(unicodeEscape('hello\tworld')).toBe('hello\\u0009world')
+    expect(unicodeEscape('hello\x7fworld')).toBe('hello\\u007fworld')
+    expect(unicodeEscape('hello\\0world')).toBe('hello\\\\0world')
+  })
+
+  it('leaves plain text unchanged', () => {
+    expect(unicodeEscape('Sign into LIVE')).toBe('Sign into LIVE')
+  })
+})
+
+describe('formatSignMessageForDisplay', () => {
+  it('shows the escaped message only in the formatted view', () => {
+    const message = 'hello\0\n\u202E'
+    expect(formatSignMessageForDisplay(message, true)).toBe(
+      'hello\\0\\n\n\\u202e',
+    )
+    expect(formatSignMessageForDisplay(message, false)).toBe(message)
+  })
+})
+
+describe('formatTypedDataForDisplay', () => {
+  it('turns JSON null and newline escapes into the ASCII markers', () => {
+    const domain = '{"name":"Example\\u0000 domain"}'
+    const message = '{"contents":"Hello\\nworld"}'
+    expect(formatTypedDataForDisplay(domain, false)).toBe(domain)
+    expect(formatTypedDataForDisplay(message, false)).toBe(message)
+    expect(formatTypedDataForDisplay(domain, true)).toBe(
+      '{"name":"Example\\0 domain"}',
+    )
+    expect(formatTypedDataForDisplay(message, true)).toBe(
+      '{"contents":"Hello\\n\nworld"}',
+    )
+  })
+
+  it('escapes raw non-ASCII characters inside JSON strings', () => {
+    expect(
+      formatTypedDataForDisplay('{"name":"Sign into \u202E EVIL"}', true),
+    ).toBe('{"name":"Sign into \\u202e EVIL"}')
+  })
+
+  it('falls back to a raw scan when the text is not JSON', () => {
+    expect(formatTypedDataForDisplay('domain\0', true)).toBe('domain\\0')
   })
 })
 

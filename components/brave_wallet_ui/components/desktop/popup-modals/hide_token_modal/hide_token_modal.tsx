@@ -43,7 +43,7 @@ export const HideTokenModal = (props: Props) => {
   return (
     <PopupModal
       onClose={onClose}
-      title={getLocale('braveWalletHideTokenModalTitle')}
+      title={getLocale(S.BRAVE_WALLET_HIDE_TOKEN_MODAL_TITLE)}
       width={hideTokenModalWidth}
     >
       <StyledWrapper>
@@ -52,14 +52,14 @@ export const HideTokenModal = (props: Props) => {
         </IconWrapper>
         <TokenSymbol>{selectedAsset.symbol}</TokenSymbol>
         <Instructions>
-          {getLocale('braveWalletMakeTokenVisibleInstructions')}
+          {getLocale(S.BRAVE_WALLET_MAKE_TOKEN_VISIBLE_INSTRUCTIONS)}
         </Instructions>
         <ButtonRow>
           <CancelButton onClick={onClose}>
-            {getLocale('braveWalletCancelHidingToken')}
+            {getLocale(S.BRAVE_WALLET_CANCEL_HIDING_TOKEN)}
           </CancelButton>
           <OkButton onClick={onHideAsset}>
-            {getLocale('braveWalletConfirmHidingToken')}
+            {getLocale(S.BRAVE_WALLET_CONFIRM_HIDING_TOKEN)}
           </OkButton>
         </ButtonRow>
       </StyledWrapper>

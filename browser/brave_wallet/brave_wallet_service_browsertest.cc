@@ -24,6 +24,7 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/ui/base/clipboard/test/privacy_capturing_test_clipboard.h"
 #include "chrome/browser/notifications/notification_display_service_tester.h"
 #include "chrome/browser/notifications/notification_handler.h"
 #include "chrome/browser/profiles/profile.h"
@@ -40,6 +41,7 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "ui/base/clipboard/clipboard.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/message_center/public/cpp/notification.h"
 #include "url/origin.h"
@@ -170,7 +172,7 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<NotificationDisplayServiceTester> notification_tester_;
-  raw_ptr<Browser> incognito_browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> incognito_browser_ = nullptr;
   net::EmbeddedTestServer https_server_;
 };
 
@@ -231,6 +233,31 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, IsPrivateWindow) {
   TestIsPrivateWindow(wallet_service(), false);
 }
 
+IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, WriteToClipboardPrivacyTypes) {
+  brave::ScopedPrivacyCapturingTestClipboard fake_clipboard;
+
+  // Sensitive text is concealed everywhere.
+  wallet_service()->WriteToClipboard("secret", /*is_sensitive=*/true);
+  EXPECT_EQ(static_cast<uint32_t>(ui::Clipboard::kNoDisplay |
+                                  ui::Clipboard::kNoLocalClipboardHistory |
+                                  ui::Clipboard::kNoCloudClipboard),
+            fake_clipboard.last_privacy_types());
+
+  // Non-sensitive text from a normal window stays eligible for OS clipboard
+  // history and cloud clipboard sync.
+  wallet_service()->WriteToClipboard("0xdeadbeef", /*is_sensitive=*/false);
+  EXPECT_EQ(static_cast<uint32_t>(ui::Clipboard::kNone),
+            fake_clipboard.last_privacy_types());
+
+  // Non-sensitive text from a private window does not.
+  wallet_service()->SetPrivateWindowsEnabled(true);
+  incognito_wallet_service()->WriteToClipboard("0xdeadbeef",
+                                               /*is_sensitive=*/false);
+  EXPECT_EQ(static_cast<uint32_t>(ui::Clipboard::kNoLocalClipboardHistory |
+                                  ui::Clipboard::kNoCloudClipboard),
+            fake_clipboard.last_privacy_types());
+}
+
 IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, DisplayTxNotification) {
   AccountUtils account_utils(wallet_service()->keyring_service());
   account_utils.CreateWallet(kMnemonicDripCaution, kTestWalletPassword);
@@ -244,13 +271,13 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, DisplayTxNotification) {
   auto tx_info = mojom::TransactionInfo::New(
       tx_meta_id, account->account_id.Clone(), "",
       mojom::TxDataUnion::NewEthTxData(
-          mojom::TxData::New(mojom::kLocalhostChainId, "0x0", "0x1", "0x5208",
+          mojom::TxData::New(mojom::kMainnetChainId, "0x0", "0x1", "0x5208",
                              "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                              "0x0", std::vector<uint8_t>())),
       mojom::TransactionStatus::Confirmed, mojom::TransactionType::ETHSend,
       std::vector<std::string>(), std::vector<std::string>(),
       base::Milliseconds(0), base::Milliseconds(0), base::Milliseconds(0),
-      nullptr, mojom::kLocalhostChainId, std::nullopt, false, nullptr, nullptr);
+      nullptr, mojom::kMainnetChainId, std::nullopt, false, nullptr, nullptr);
   tx_service()->OnTransactionStatusChanged(std::move(tx_info));
 
   ASSERT_TRUE(base::test::RunUntil(

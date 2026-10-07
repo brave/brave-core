@@ -1,0 +1,12 @@
+diff --git a/components/browser_ui/media/android/java/src/org/chromium/components/browser_ui/media/MediaSessionHelper.java b/components/browser_ui/media/android/java/src/org/chromium/components/browser_ui/media/MediaSessionHelper.java
+index aeae75a0dc0039118f49b87e68cff98d14fa36ed..b5db7b6fbd2fdbf101da6aa860bebfb809c46a1e 100644
+--- a/components/browser_ui/media/android/java/src/org/chromium/components/browser_ui/media/MediaSessionHelper.java
++++ b/components/browser_ui/media/android/java/src/org/chromium/components/browser_ui/media/MediaSessionHelper.java
+@@ -447,6 +447,7 @@ public class MediaSessionHelper implements MediaImageCallback {
+                 new WebContentsObserver(webContents) {
+                     @Override
+                     public void didFinishNavigationInPrimaryMainFrame(NavigationHandle navigation) {
++                        if (navigation.hasCommitted() && !navigation.isSameDocument() && mMediaSessionObserver != null) mMediaSessionObserver.mediaSessionDocumentChanged();
+                         if (!navigation.hasCommitted() || navigation.isSameDocument()) {
+                             return;
+                         }

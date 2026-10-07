@@ -75,7 +75,7 @@ public class URIFixup {
       return url as URL
     }
 
-    guard let escaped = trimmed.addingPercentEncoding(withAllowedCharacters: .urlAllowed) else {
+    guard trimmed.addingPercentEncoding(withAllowedCharacters: .urlAllowed) != nil else {
       return nil
     }
 

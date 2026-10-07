@@ -103,10 +103,17 @@ export const style = scoped.css`
   .results-container {
     position: fixed;
     position-anchor: --search-input-container;
-    position-area: bottom center;
-
+    inset-block-start: anchor(bottom);
+    inset-block-end: 24px;
+    inset-inline-start: anchor(start);
     width: anchor-size(width);
-    margin: 12px 0;
+    margin-block-start: 12px;
+
+    height: auto;
+    max-height: max-content;
+    min-height: 0;
+    overflow: clip;
+
     display: flex;
     flex-direction: column;
     visibility: hidden;
@@ -114,7 +121,6 @@ export const style = scoped.css`
 
     border-radius: 16px;
     background: ${color.container.background};
-    overflow: clip;
     box-shadow: ${effect.elevation['01']};
 
     transition: opacity var(--self-transition-duration);
@@ -125,4 +131,13 @@ export const style = scoped.css`
     opacity: 1;
   }
 
+`
+
+style.passthrough.css`
+  .results-container > * {
+    min-height: 0;
+    max-height: 100%;
+    flex: 1 1 auto;
+    overflow-y: auto;
+  }
 `

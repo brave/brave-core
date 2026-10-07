@@ -12,7 +12,6 @@
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "chrome/browser/devtools/devtools_ui_controller.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
@@ -84,14 +83,19 @@ void BraveMultiContentsView::UseContentsContainerViewForWebPanel() {
         AddChildView(std::make_unique<BraveContentsContainerView>(
             browser_view_, /*for_web_panel*/ true));
     contents_container_view_for_web_panel_->SetVisible(false);
+
+    auto& view_map =
+        container_focusable_map_[contents_container_view_for_web_panel_];
+    auto* contents_view =
+        contents_container_view_for_web_panel_->contents_view();
+    view_map[contents_view->GetClassName()] = contents_view;
+
     contents_focused_subscriptions_.push_back(
         contents_container_view_for_web_panel_->contents_view()
             ->AddWebContentsFocusedCallback(base::BindRepeating(
                 &BraveMultiContentsView::OnWebContentsFocused,
                 base::Unretained(this))));
-    browser_view_->browser()
-        ->GetFeatures()
-        .devtools_ui_controller()
+    DevtoolsUIController::From(browser_view_->browser())
         ->MakeSureControllerExists(contents_container_view_for_web_panel_);
   }
 }
@@ -108,6 +112,14 @@ void BraveMultiContentsView::SetWebPanelContents(
 bool BraveMultiContentsView::IsWebPanelVisible() const {
   CHECK(contents_container_view_for_web_panel_);
   return contents_container_view_for_web_panel_->GetVisible();
+}
+
+views::View*
+BraveMultiContentsView::GetWebPanelContentsViewForTesting()  // IN-TEST
+    const {
+  return contents_container_view_for_web_panel_
+             ? contents_container_view_for_web_panel_->contents_view()
+             : nullptr;
 }
 
 void BraveMultiContentsView::SetWebPanelWidth(int width) {

@@ -36,15 +36,6 @@ class AssetRatioService : public mojom::AssetRatioService {
 
   void Bind(mojo::PendingReceiver<mojom::AssetRatioService> receiver);
 
-  // Get buy URL for on-ramps
-  void GetBuyUrlV1(mojom::OnRampProvider provider,
-                   const std::string& chain_id,
-                   const std::string& address,
-                   const std::string& symbol,
-                   const std::string& amount,
-                   const std::string& currency_code,
-                   GetBuyUrlV1Callback callback) override;
-
   // Get sell URL for off-ramps
   void GetSellUrl(mojom::OffRampProvider provider,
                   const std::string& chain_id,
@@ -80,17 +71,6 @@ class AssetRatioService : public mojom::AssetRatioService {
 
  private:
   friend class AssetRatioServiceUnitTest;
-  FRIEND_TEST_ALL_PREFIXES(AssetRatioServiceUnitTest, GetStripeBuyURL);
-
-  void GetStripeBuyURL(GetBuyUrlV1Callback callback,
-                       const std::string& address,
-                       const std::string& source_currency,
-                       const std::string& source_exchange_amount,
-                       const std::string& chain_id,
-                       const std::string& destination_currency);
-
-  void OnGetStripeBuyURL(GetBuyUrlV1Callback callback,
-                         APIRequestResult api_request_result);
 
   void OnGetPrice(GetPriceCallback callback,
                   APIRequestResult api_request_result);

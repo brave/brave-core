@@ -24,6 +24,7 @@ class QuickViewController: UIViewController {
   private let syncAPI: BraveSyncAPI
   private let sendTabAPI: BraveSendTabAPI
   private let historyAPI: BraveHistoryAPI
+  private let httpsUpgradeExceptionsService: HTTPSUpgradeExceptionsService
   private let toolbarViewModel: QuickViewToolbarModel
   private lazy var toolbarHostingController = UIHostingController(
     rootView: QuickViewToolbarView(viewModel: toolbarViewModel)
@@ -41,6 +42,7 @@ class QuickViewController: UIViewController {
   private let onOpenInNewTab: ((URLRequest, Bool) -> Void)?
   private let onOpenInNewWindow: ((URL, Bool) -> Void)?
   private let onAttachTab: ((any TabState) -> Void)?
+  private let onShowConfirmationAlert: (() -> Void)?
 
   private var preKeyboardToolbarState: ToolbarVisibilityViewModel.ToolbarState?
   private var toolbarHeightConstraint: Constraint?
@@ -62,15 +64,18 @@ class QuickViewController: UIViewController {
     syncAPI: BraveSyncAPI,
     sendTabAPI: BraveSendTabAPI,
     historyAPI: BraveHistoryAPI,
+    httpsUpgradeExceptionsService: HTTPSUpgradeExceptionsService,
     onOpenInNewTab: ((URLRequest, Bool) -> Void)?,
     onOpenInNewWindow: ((URL, Bool) -> Void)?,
-    onAttachTab: ((any TabState) -> Void)?
+    onAttachTab: ((any TabState) -> Void)?,
+    onShowConfirmationAlert: (() -> Void)?
   ) {
     self.url = url
     self.profile = profile
     self.syncAPI = syncAPI
     self.sendTabAPI = sendTabAPI
     self.historyAPI = historyAPI
+    self.httpsUpgradeExceptionsService = httpsUpgradeExceptionsService
     self.toolbarViewModel = QuickViewToolbarModel(
       url: url,
       isPrivate: profile.isOffTheRecord
@@ -78,12 +83,21 @@ class QuickViewController: UIViewController {
     self.onOpenInNewTab = onOpenInNewTab
     self.onOpenInNewWindow = onOpenInNewWindow
     self.onAttachTab = onAttachTab
+    self.onShowConfirmationAlert = onShowConfirmationAlert
     super.init(nibName: nil, bundle: nil)
     modalPresentationStyle = .pageSheet
   }
 
   @available(*, unavailable)
   required init?(coder aDecoder: NSCoder) { fatalError() }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    if !Preferences.General.openLinkInQuickViewModeConfirmationShown.value {
+      Preferences.General.openLinkInQuickViewModeConfirmationShown.value = true
+      onShowConfirmationAlert?()
+    }
+  }
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
@@ -128,6 +142,14 @@ class QuickViewController: UIViewController {
       tab.addPolicyDecider(braveShieldsHelper)
       tab.requestBlockingTabHelper = .init(tab: tab)
       tab.cosmeticFilteringTabHelper = .init(tab: tab)
+      tab.scriptletsTabHelper = .init(tab: tab)
+      tab.blockedDomainTabHelper = .init(tab: tab)
+      if FeatureList.kBraveHttpsByDefault.enabled {
+        tab.httpsUpgradeHelper = .init(
+          tab: tab,
+          httpsUpgradeExceptionsService: httpsUpgradeExceptionsService
+        )
+      }
     }
     tab.protectionStats = .init(tab: tab)
     tab.readerMode = .init(tab: tab, readerModeCache: ReaderModeScriptHandler.cache(for: tab))
@@ -138,8 +160,10 @@ class QuickViewController: UIViewController {
       self?.showReaderModeBar()
     }
     tab.historyTabHelper = .init(tab: tab, historyAPI: historyAPI)
+    tab.addPolicyDecider(self)
     tab.createWebView()
     tab.delegate = self
+    tab.downloadDelegate = self
     tab.webViewProxy?.scrollView?.layer.masksToBounds = true
     tab.isVisible = true
     self.currentTab = tab
@@ -182,11 +206,7 @@ class QuickViewController: UIViewController {
         currentTab.reload()
       case .openTab:
         self?.dismiss(animated: true) {
-          guard let self, let currentTab = self.currentTab else { return }
-          currentTab.removeObserver(self.toolbarViewModel)
-          currentTab.removeObserver(self)
-          currentTab.historyTabHelper = nil
-          self.onAttachTab?(currentTab)
+          self?.promoteCurrentTabToBrowserTab()
         }
       case .share:
         guard let self, let visibleURL = self.currentTab?.visibleURL
@@ -291,48 +311,93 @@ class QuickViewController: UIViewController {
       return
     }
 
-    weak var weakPopover: PopoverController?
-    let popover = PopoverController(
-      contentController: PopoverNavigationController(
-        rootViewController: ShieldsPanelViewController(
-          url: url,
-          tab: tab,
-          domain: Domain.getOrCreate(forUrl: url, persistent: !tab.isPrivate),
-          isAdvancedControlsEnabled: false
-        ) { [weak self] action in
-          guard let self else { return }
-          switch action {
-          case .navigate(let target, _):
-            switch target {
-            case .reportBrokenSite:
-              weakPopover?.dismiss(animated: true) {
-                self.showSubmitReportView(for: url)
-              }
-            case .shareStats:
-              weakPopover?.dismiss(animated: true) {
-                let activityController =
-                  ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController(
-                    isPrivateBrowsing: tab.isPrivate
-                  )
-                self.present(activityController, animated: true, completion: nil)
-              }
-            case .globalShields:  // not available in quickview mode
-              break
-            }
-          case .changedShieldSettings:
-            self.changedShieldSettings()
-          case .shredSiteData:  // not available in quickview mode
-            break
+    weak var weakShieldsPanelVC: UIViewController?
+    let shieldsPanelActionHandler: (ShieldsPanelAction) -> Void = { [weak self] action in
+      guard let self else { return }
+      switch action {
+      case .navigate(let target, _):
+        switch target {
+        case .reportBrokenSite:
+          weakShieldsPanelVC?.dismiss(animated: true) {
+            self.showSubmitReportView(for: url)
           }
+        case .shareStats:
+          weakShieldsPanelVC?.dismiss(animated: true) {
+            let activityController =
+              ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController(
+                isPrivateBrowsing: tab.isPrivate
+              )
+            self.present(activityController, animated: true, completion: nil)
+          }
+        case .globalShields:  // not available in quickview mode
+          break
         }
-      ),
-      contentSizeBehavior: .preferredContentSize
-    )
-    weakPopover = popover
-    popover.present(
-      from: toolbarHostingController.rootView.shieldBackgroundView.uiView,
-      on: self
-    )
+      case .changedShieldSettings:
+        self.changedShieldSettings()
+      case .shredSiteData:  // not available in quickview mode
+        break
+      case .openURLInNewTab(let url):
+        self.openNewTab(with: URLRequest(url: url), inPrivateMode: currentTab?.isPrivate ?? false)
+      }
+    }
+    if FeatureList.kShowUpdatedShieldsPanel.enabled {
+      let shieldsPanelViewController = ShieldsPanelViewController(
+        url: url,
+        viewModel: ShieldsPanelViewModel(
+          tab: tab,
+          stats: tab.contentBlocker?.$stats.eraseToAnyPublisher()
+            ?? Just(.init()).eraseToAnyPublisher(),
+          blockedRequests: tab.contentBlocker?.$blockedRequests.map(Array.init)
+            .eraseToAnyPublisher() ?? Just([]).eraseToAnyPublisher(),
+          isAdvancedControlsEnabled: false,
+          isShredEnabled: false
+        ),
+        action: shieldsPanelActionHandler
+      )
+      weakShieldsPanelVC = shieldsPanelViewController
+      if UIDevice.current.userInterfaceIdiom == .pad {
+        shieldsPanelViewController.modalPresentationStyle = .popover
+      } else {
+        // A sheet stacked on top of this one only nests behind it at the `.large` detent, otherwise
+        // UIKit slides this one out of view for the duration of the presentation.
+        expandToLargeDetentForStackedSheet()
+      }
+      shieldsPanelViewController.popoverPresentationController?.sourceView =
+        toolbarHostingController.rootView.shieldBackgroundView.uiView
+      shieldsPanelViewController.popoverPresentationController?.sourceRect =
+        toolbarHostingController.rootView.shieldBackgroundView.uiView.bounds
+      shieldsPanelViewController.popoverPresentationController?.popoverLayoutMargins = .init(
+        equalInset: 4
+      )
+      shieldsPanelViewController.popoverPresentationController?.permittedArrowDirections = [
+        .up, .down,
+      ]
+      self.present(shieldsPanelViewController, animated: true)
+    } else {
+      let popover = PopoverController(
+        contentController: PopoverNavigationController(
+          rootViewController: LegacyShieldsPanelViewController(
+            url: url,
+            tab: tab,
+            domain: Domain.getOrCreate(forUrl: url, persistent: !tab.isPrivate),
+            callback: shieldsPanelActionHandler
+          )
+        ),
+        contentSizeBehavior: .preferredContentSize
+      )
+      weakShieldsPanelVC = popover
+      popover.present(from: toolbarHostingController.rootView.shieldBackgroundView.uiView, on: self)
+    }
+  }
+
+  /// Moves this sheet to the `.large` detent so a sheet presented on top of it nests behind it
+  /// rather than pushing it out of view.
+  private func expandToLargeDetentForStackedSheet() {
+    guard let sheet = sheetPresentationController, sheet.selectedDetentIdentifier != .large
+    else { return }
+    sheet.animateChanges {
+      sheet.selectedDetentIdentifier = .large
+    }
   }
 
   private func presentSSLStatusView() {
@@ -400,12 +465,16 @@ class QuickViewController: UIViewController {
     var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
     components?.fragment = nil
     components?.queryItems = nil
-    guard let cleanedURL = components?.url else { return }
+    guard let cleanedURL = components?.url,
+      let webcompatReporter = WebcompatReporter.ServiceFactory.get(
+        profile: currentTab.profile
+      )
+    else { return }
 
     let viewController = UIHostingController(
       rootView: SubmitReportView(
         url: cleanedURL,
-        isPrivateBrowsing: profile.isOffTheRecord,
+        webcompatReporter: webcompatReporter,
         tab: currentTab
       )
     )
@@ -422,6 +491,9 @@ class QuickViewController: UIViewController {
       sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
       sheet.detents = [.medium(), .large()]
       sheet.prefersGrabberVisible = true
+    }
+    if UIDevice.current.userInterfaceIdiom != .pad {
+      expandToLargeDetentForStackedSheet()
     }
     present(viewController, animated: true)
   }
@@ -547,6 +619,14 @@ class QuickViewController: UIViewController {
       NSLayoutConstraint.activate(keyboardGuideHiddenConstraints)
     }
   }
+
+  private func promoteCurrentTabToBrowserTab() {
+    guard let currentTab else { return }
+    currentTab.removeObserver(toolbarViewModel)
+    currentTab.removeObserver(self)
+    currentTab.historyTabHelper = nil
+    onAttachTab?(currentTab)
+  }
 }
 
 // MARK: - TabDelegate
@@ -567,7 +647,7 @@ extension QuickViewController: TabDelegate {
     }
     return nil
   }
-
+  @MainActor
   func tab(
     _ tab: some TabState,
     contextMenuConfigurationForLinkURL linkURL: URL?
@@ -754,6 +834,13 @@ extension QuickViewController: TabObserver {
       let detachedTabPrivacyHelper = DetachedTabPrivacyHelper(tab: tab)
     {
       tab.detachedPrivacyHelper = detachedTabPrivacyHelper
+      tab.blockedDomainTabHelper = .init(tab: tab)
+      if FeatureList.kBraveHttpsByDefault.enabled {
+        tab.httpsUpgradeHelper = .init(
+          tab: tab,
+          httpsUpgradeExceptionsService: httpsUpgradeExceptionsService
+        )
+      }
     }
   }
 
@@ -922,5 +1009,42 @@ extension QuickViewController: KeyboardHelperDelegate {
     }
     animator.addCompletion { _ in self.toolbarVisibilityViewModel.isEnabled = true }
     animator.startAnimation()
+  }
+}
+
+extension QuickViewController: TabPolicyDecider {
+  @MainActor
+  func tab(
+    _ tab: some TabState,
+    shouldAllowRequest request: URLRequest,
+    requestInfo: WebRequestInfo
+  ) async -> WebPolicyDecision {
+    guard let url = request.url else { return .allow }
+    if let internalURL = InternalURL(url), !internalURL.isReaderModePage {
+      handleUnsupportedRequest(request, tab.isPrivate)
+      return .cancel
+    }
+
+    return .allow
+  }
+
+  private func handleUnsupportedRequest(_ request: URLRequest, _ isPrivate: Bool) {
+    dismiss(animated: true) {
+      self.onOpenInNewTab?(request, isPrivate)
+    }
+  }
+}
+
+extension QuickViewController: TabDownloadDelegate {
+  func tab(_ tab: some Web.TabState, didCreateDownload download: Web.Download) {
+    dismiss(animated: true) { [weak self] in
+      self?.promoteCurrentTabToBrowserTab()
+      tab.downloadDelegate?.tab(tab, didCreateDownload: download)
+    }
+  }
+
+  func tab(_ tab: some Web.TabState, didFinishDownload download: Web.Download, error: (any Error)?)
+  {
+    // no-op. download will be redirect to a regular tab
   }
 }

@@ -46,7 +46,7 @@ const onClickTermsOfUse = () => {
   window.open(MELD_TERMS_OF_USE_URL, '_blank', 'noopener noreferrer')
 }
 
-const meldTermsOfUse = formatLocale('braveWalletMeldTermsOfUse', {
+const meldTermsOfUse = formatLocale(S.BRAVE_WALLET_MELD_TERMS_OF_USE, {
   $1: (content) => (
     <TermsButton onClick={onClickTermsOfUse}>{content}</TermsButton>
   ),
@@ -74,11 +74,15 @@ export function PartnersConsentModal(
       onClose={onClose}
       showClose
     >
-      <Title slot='title'>{getLocale('braveWalletTransactionsPartner')}</Title>
+      <Title slot='title'>
+        {getLocale(S.BRAVE_WALLET_TRANSACTIONS_PARTNER)}
+      </Title>
       <Row justifyContent='center'>
         <Graphic src={PageTermsGraphic} />
       </Row>
-      <TermsText>{getLocale('braveWalletTransactionPartnerConsent')}</TermsText>
+      <TermsText>
+        {getLocale(S.BRAVE_WALLET_TRANSACTION_PARTNER_CONSENT)}
+      </TermsText>
       <Checkbox
         checked={termsAccepted}
         onChange={(e) => setTermsAccepted(e.checked)}
@@ -94,13 +98,13 @@ export function PartnersConsentModal(
           kind='outline'
           onClick={onClose}
         >
-          {getLocale('braveWalletButtonCancel')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
         </Button>
         <Button
           isDisabled={!termsAccepted}
           onClick={onContinue}
         >
-          {getLocale('braveWalletButtonContinue')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_CONTINUE)}
         </Button>
       </Row>
     </TermsDialog>

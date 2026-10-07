@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_op.h"
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_movable_side_panel_web_view.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
@@ -20,6 +21,7 @@
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_animation_content_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "chrome/browser/ui/webui/webui_embedding_context.h"
 #include "components/tabs/public/tab_interface.h"
@@ -59,15 +61,39 @@ AIChatUI* GetAIChatUIWebUI(content::WebContents* web_contents) {
   return controller->GetAs<AIChatUI>();
 }
 
+// The page handler is created only when the frontend binds. A transfer can
+// happen before that (e.g. tests, or a very fast open-full-page), and a later
+// bind will pick up the correct standalone/side-panel mode from the new host.
+void NotifyDisplayModeChanged(content::WebContents* web_contents,
+                              bool is_standalone) {
+  AIChatUI* ai_chat_ui = GetAIChatUIWebUI(web_contents);
+  if (!ai_chat_ui) {
+    DVLOG(1) << "No AIChatUI found for the transferred WebContents";
+    return;
+  }
+  if (ai_chat::AIChatUIPageHandler* page_handler = ai_chat_ui->page_handler()) {
+    page_handler->SetDisplayMode(is_standalone);
+  }
+}
+
 }  // namespace
+
+DEFINE_USER_DATA(AIChatSidePanelTabTransferBridge);
 
 AIChatSidePanelTabTransferBridge::AIChatSidePanelTabTransferBridge(
     BrowserWindowInterface* browser)
-    : browser_(browser) {
+    : browser_(browser),
+      scoped_unowned_user_data_(browser->GetUnownedUserDataHost(), *this) {
   CHECK(browser_);
 }
 
 AIChatSidePanelTabTransferBridge::~AIChatSidePanelTabTransferBridge() = default;
+
+// static
+AIChatSidePanelTabTransferBridge* AIChatSidePanelTabTransferBridge::From(
+    BrowserWindowInterface* browser) {
+  return Get(browser->GetUnownedUserDataHost());
+}
 
 void AIChatSidePanelTabTransferBridge::TransferFullPageContentsToSidePanel(
     std::unique_ptr<content::WebContents> web_contents,
@@ -101,12 +127,8 @@ void AIChatSidePanelTabTransferBridge::TransferFullPageContentsToSidePanel(
   ClearChatEntryCache();
 
   // Notify the page that it's now in a Side Panel
-  AIChatUI* ai_chat_ui = GetAIChatUIWebUI(pending_web_contents_.get());
-  if (ai_chat_ui) {
-    ai_chat_ui->page_handler()->SetDisplayMode(false);
-  } else {
-    DVLOG(1) << "No AIChatUI found for the transferred WebContents";
-  }
+  NotifyDisplayModeChanged(pending_web_contents_.get(),
+                           /*is_standalone=*/false);
 
   // Animate the conversation into the panel from where the full page currently
   // sits (flash-free). When the caller could not capture a starting rect (e.g.
@@ -153,9 +175,12 @@ bool AIChatSidePanelTabTransferBridge::MoveSidePanelContentsToTab(
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
   // If the Side Panel is still animating in then it won't yet be parented to
   // the SidePanel and we need to find it on the BrowserView instead.
-  AIChatMovableSidePanelWebView* chat_view =
-      views::AsViewClass<AIChatMovableSidePanelWebView>(
-          browser_view->GetSidePanelAnimationContent());
+  AIChatMovableSidePanelWebView* chat_view = nullptr;
+  if (auto* anim_view = browser_view->GetSidePanelAnimationContent()) {
+    CHECK_EQ(anim_view->children().size(), 1u);
+    chat_view = views::AsViewClass<AIChatMovableSidePanelWebView>(
+        anim_view->children()[0]);
+  }
 
   if (!chat_view) {
     chat_view = views::AsViewClass<AIChatMovableSidePanelWebView>(
@@ -209,12 +234,7 @@ bool AIChatSidePanelTabTransferBridge::MoveSidePanelContentsToTab(
   Navigate(&params);
 
   // Notify the page that it's now in a full-page tab
-  AIChatUI* ai_chat_ui = GetAIChatUIWebUI(side_panel_contents);
-  if (ai_chat_ui) {
-    ai_chat_ui->page_handler()->SetDisplayMode(true);
-  } else {
-    DVLOG(1) << "No AIChatUI found for the transferred WebContents";
-  }
+  NotifyDisplayModeChanged(side_panel_contents, /*is_standalone=*/true);
   // The conversation now lives in a tab; close the (now-empty) panel. Its view
   // is torn down on close, but its owned contents was already released.
   side_panel_ui->Close();

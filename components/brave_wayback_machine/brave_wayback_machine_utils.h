@@ -12,6 +12,6 @@ class PrefService;
 bool IsWaybackMachineEnabledFor(const GURL& url);
 bool IsWaybackMachineEnabled(PrefService* prefs);
 GURL FixupWaybackQueryURL(const GURL& url);
-
+bool ShouldCheckWaybackMachine(int response_code);
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_BRAVE_WAYBACK_MACHINE_UTILS_H_

@@ -32,7 +32,6 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
@@ -202,7 +201,7 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
   void OpenRewardsPanel() {
     content::CreateAndLoadWebContentsObserver popup_observer;
 
-    auto* coordinator = browser()->GetFeatures().rewards_panel_coordinator();
+    auto* coordinator = brave_rewards::RewardsPanelCoordinator::From(browser());
     ASSERT_TRUE(coordinator);
     ASSERT_TRUE(coordinator->OpenRewardsPanel());
 

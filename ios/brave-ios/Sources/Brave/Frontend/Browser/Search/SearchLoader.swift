@@ -6,11 +6,11 @@ import BraveCore
 import Data
 import Preferences
 import Shared
-import Storage
 import Web
 
 /// Shared data source for the SearchViewController and the URLBar domain completion.
 /// Since both of these use the same query, we can perform the query once and dispatch the results.
+@MainActor
 class SearchLoader: Loader<[Site], SearchViewController> {
   private let frequencyQuery: FrequencyQuery
 
@@ -39,7 +39,7 @@ class SearchLoader: Loader<[Site], SearchViewController> {
         return
       }
 
-      frequencyQuery.sitesByFrequency(containing: query) { [weak self] result in
+      frequencyQuery.sitesByFrequency(containing: query) { @MainActor [weak self] result in
         guard let self = self else { return }
 
         self.load(Array(result))

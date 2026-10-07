@@ -85,7 +85,7 @@ public actor AppStoreReceipt {
   /// When using StoreKit 2, receipts are no longer stored in the Application
   /// This function forces the AppStore to place it in the bundle. Once back-end services update to use Transactions API
   /// this function will be obsolete
-  static func sync() async throws {
+  public static func sync() async throws {
     Logger.module.info("[AppStoreReceipt] - Refreshing Receipt")
 
     let fetcher = AppStoreReceiptRefresher()
@@ -150,102 +150,6 @@ public actor AppStoreReceipt {
       self.onRefreshComplete = nil
       self.request.delegate = nil
       self.request.cancel()  // StoreKit background task leak fix
-    }
-  }
-
-  /// Forces the AppStore to add receipts to the Application Bundle, and also to restore In-App Transactions
-  private class AppStoreTransactionRestorer: NSObject, SKPaymentTransactionObserver {
-    private let queue = SKPaymentQueue()
-    private var onRefreshComplete: ((Error?) -> Void)?
-
-    override init() {
-      super.init()
-      self.queue.add(self)
-    }
-
-    /// Restores completed transactions which triggers an AppStore receipt refresh
-    func restoreTransactions(with listener: @escaping (Error?) -> Void) {
-      if onRefreshComplete == nil {
-        self.onRefreshComplete = listener
-        self.queue.restoreCompletedTransactions()
-      }
-    }
-
-    func paymentQueue(
-      _ queue: SKPaymentQueue,
-      updatedTransactions transactions: [SKPaymentTransaction]
-    ) {
-      // No transactions to restore, so the receipt can be empty
-      if transactions.isEmpty {
-        onRefreshComplete?(SKError(.storeProductNotAvailable))
-        onRefreshComplete = nil
-        return
-      }
-
-      var completion: (() -> Void)?
-
-      // Sort the transactions and restore the receipt
-      transactions
-        .sorted(using: KeyPathComparator(\.transactionDate, order: .reverse))
-        .forEach { transaction in
-          switch transaction.transactionState {
-          case .purchased:
-            if completion == nil {
-              completion = { [weak self] in
-                guard let self = self else { return }
-                self.onRefreshComplete?(nil)
-                self.onRefreshComplete = nil
-              }
-            }
-
-            // Apple states that all processes transactions must be marked finish after processing
-            self.queue.finishTransaction(transaction)
-
-          case .restored:
-            if completion == nil {
-              completion = { [weak self] in
-                guard let self = self else { return }
-                self.onRefreshComplete?(nil)
-                self.onRefreshComplete = nil
-              }
-            }
-
-            // Apple states that all processes transactions must be marked finish after processing
-            self.queue.finishTransaction(transaction)
-
-          case .purchasing, .deferred:
-            break
-
-          case .failed:
-            if completion == nil {
-              completion = { [weak self] in
-                guard let self = self else { return }
-                self.onRefreshComplete?(SKError(.storeProductNotAvailable))
-                self.onRefreshComplete = nil
-              }
-            }
-
-            // Apple states that all processes transactions must be marked finish after processing
-            self.queue.finishTransaction(transaction)
-
-          @unknown default:
-            break
-          }
-        }
-
-      // Finished restoring the receipt
-      self.queue.remove(self)
-      completion?()
-    }
-
-    func paymentQueue(
-      _ queue: SKPaymentQueue,
-      restoreCompletedTransactionsFailedWithError error: Error
-    ) {
-      // Restoring the receipt failed
-      self.onRefreshComplete?(error)
-      self.onRefreshComplete = nil
-      self.queue.remove(self)
     }
   }
 }

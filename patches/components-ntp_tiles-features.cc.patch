@@ -1,0 +1,22 @@
+diff --git a/components/ntp_tiles/features.cc b/components/ntp_tiles/features.cc
+index 5885dde354d76e56db14ccbb49e7a55029e54f84..780b68504de05433b65eb1011889f451defe8115 100644
+--- a/components/ntp_tiles/features.cc
++++ b/components/ntp_tiles/features.cc
+@@ -13,13 +13,13 @@ namespace ntp_tiles {
+ 
+ const char kPopularSitesFieldTrialName[] = "NTPPopularSites";
+ 
+-BASE_FEATURE(kPopularSitesBakedInContentFeature,
++BASE_OVERRIDDEN_FEATURE(kPopularSitesBakedInContentFeature,
+              "NTPPopularSitesBakedInContent",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kNtpMostLikelyFaviconsFromServerFeature,
++BASE_OVERRIDDEN_FEATURE(kNtpMostLikelyFaviconsFromServerFeature,
+              "NTPMostLikelyFaviconsFromServer",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kPopularSitesRefreshUs, base::FEATURE_DISABLED_BY_DEFAULT);
+ 

@@ -10,8 +10,10 @@ import sys
 
 def GetSrcDir() -> str:
   return os.path.abspath(
-      os.path.join(os.path.dirname(__file__), os.pardir, os.pardir, os.pardir,
-                   os.pardir))
+    os.path.join(
+      os.path.dirname(__file__), os.pardir, os.pardir, os.pardir, os.pardir
+    )
+  )
 
 
 def GetBraveDir() -> str:
@@ -57,6 +59,7 @@ def GetCatapultDir() -> str:
 def GetWprGoDir() -> str:
   return os.path.join(GetSrcDir(), 'third_party', 'webpagereplay')
 
+
 def GetTelemetryDir() -> str:
   return os.path.join(GetCatapultDir(), 'telemetry')
 
@@ -66,8 +69,9 @@ def GetGoogleAuthDir() -> str:
 
 
 def GetAdbPath() -> str:
-  return os.path.join(GetSrcDir(), 'third_party', 'android_sdk', 'public',
-                      'platform-tools', 'adb')
+  return os.path.join(
+    GetSrcDir(), 'third_party', 'android_sdk', 'public', 'platform-tools', 'adb'
+  )
 
 
 def GetPageSetsDataPath(filename: str) -> str:

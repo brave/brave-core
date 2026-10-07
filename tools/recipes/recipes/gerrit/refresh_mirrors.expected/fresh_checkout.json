@@ -41,19 +41,47 @@
     "cmd": [
       "git",
       "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "git cache populate exists (before)"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
       "populate",
       "--cache-dir",
       "/b/cache",
       "https://chromium.googlesource.com/chromium/src.git",
       "--reset-fetch-config",
-      "--no-fetch-tags",
-      "--ref",
-      "main"
+      "--no-fetch-tags"
     ],
     "env": {
       "CHROME_HEADLESS": "1"
     },
     "name": "git cache populate"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "git cache populate exists (after)"
   },
   {
     "cmd": [
@@ -96,7 +124,7 @@
     "env": {
       "CHROME_HEADLESS": "1"
     },
-    "name": "git config gc.auto=0"
+    "name": "disable auto-gc: gc.auto=0"
   },
   {
     "cmd": [
@@ -109,7 +137,7 @@
     "env": {
       "CHROME_HEADLESS": "1"
     },
-    "name": "git config gc.autodetach=0"
+    "name": "disable auto-gc: gc.autodetach=0"
   },
   {
     "cmd": [
@@ -122,14 +150,40 @@
     "env": {
       "CHROME_HEADLESS": "1"
     },
-    "name": "git config gc.autopacklimit=0"
+    "name": "disable auto-gc: gc.autopacklimit=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.gc.enabled",
+      "false"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "disable auto-gc: maintenance.gc.enabled=false"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.auto",
+      "false"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "disable auto-gc: maintenance.auto=false"
   },
   {
     "cmd": [
       "git",
       "checkout",
       "--force",
-      "main",
+      "origin/main",
       "--"
     ],
     "cwd": "[WORKSPACE]/b/src",
@@ -158,7 +212,10 @@
       "gclient",
       "sync",
       "--force",
-      "-D"
+      "-D",
+      "--nohooks",
+      "--ignore-dep-type=gcs",
+      "--ignore-dep-type=cipd"
     ],
     "cwd": "[WORKSPACE]/b/src",
     "env": {
@@ -169,17 +226,83 @@
   {
     "cmd": [
       "git",
-      "fetch",
-      "--tags",
-      "origin"
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
     ],
-    "cwd": "[WORKSPACE]/b/src",
+    "name": "fetch tags exists (before)"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.auto",
+      "0"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "name": "fetch tags disable (before): gc.auto=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autodetach",
+      "0"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "name": "fetch tags disable (before): gc.autodetach=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autopacklimit",
+      "0"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "name": "fetch tags disable (before): gc.autopacklimit=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.gc.enabled",
+      "false"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "name": "fetch tags disable (before): maintenance.gc.enabled=false"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.auto",
+      "false"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "name": "fetch tags disable (before): maintenance.auto=false"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "populate",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git",
+      "--reset-fetch-config",
+      "--ref",
+      "refs/tags/*"
+    ],
     "name": "fetch tags"
   },
   {
     "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
-      "[RECIPES_ROOT]/recipes/gerrit/refresh_mirrors.resources/refresh_mirrors.py",
+      "RECIPE[gerrit/refresh_mirrors].resources/refresh_mirrors.py",
       "--user",
       "chromium-mirror-bot",
       "--git-cache-path",

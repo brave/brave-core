@@ -5,13 +5,25 @@
 
 #include "brave/components/brave_search/common/brave_search_utils.h"
 
+#include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/feature_list.h"
+#include "base/strings/strcat.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_search/common/features.h"
+#include "brave/components/brave_search/common/pref_names.h"
+#include "components/prefs/pref_service.h"
+#include "net/base/url_util.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 #include "url/url_constants.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
 
 namespace {
 
@@ -47,6 +59,25 @@ bool IsAllowedHost(const GURL& origin) {
 bool IsDefaultAPIEnabled() {
   return base::FeatureList::IsEnabled(
       brave_search::features::kBraveSearchDefaultAPIFeature);
+}
+
+GURL OverrideWithNewTabSource(GURL url,
+                              PrefService* local_state,
+                              bool is_first_run) {
+  std::string source = "newtab";
+  if (features::IsSearchNewTabV1SourceEnabled(local_state, is_first_run)) {
+    source = base::StrCat(
+        {"newtab_v1", local_state->GetString(prefs::kNewTabV1SourceSuffix)});
+  }
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled(local_state,
+                                                              is_first_run)) {
+    source = base::StrCat(
+        {"newtab_v2",
+         local_state->GetString(ai_chat::prefs::kNtpInputSourceSuffix)});
+  }
+#endif
+  return net::AppendOrReplaceQueryParameter(url, "source", source);
 }
 
 }  // namespace brave_search

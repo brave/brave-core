@@ -3,3 +3,14 @@ include_rules = [
   "+components/history_embeddings",
   "+components/page_content_annotations/core",
 ]
+
+specific_include_rules = {
+  ".*_unittest\.cc": [
+    "+components/feature_engagement/test",
+    "+components/history/core/test",
+    "+components/optimization_guide/core",
+    "+components/os_crypt/async/browser",
+    "+components/page_content_annotations/content",
+    "+components/passage_embeddings/core",
+  ],
+}

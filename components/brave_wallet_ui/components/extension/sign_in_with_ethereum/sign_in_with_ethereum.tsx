@@ -61,8 +61,8 @@ import {
 
 // Helpers
 export const getKeyLocale = (key: string) => {
-  const capitalized = key.charAt(0).toUpperCase() + key.slice(1)
-  const localeString = `braveWallet${capitalized}`
+  const snakeCaseKey = key.replace(/([A-Z])/g, '_$1').toUpperCase()
+  const localeString = `BRAVE_WALLET_${snakeCaseKey}`
   return getLocale(localeString) === localeString
     ? key
     : getLocale(localeString)
@@ -162,7 +162,7 @@ export const SignInWithEthereum = (props: Props) => {
           justifyContent='space-between'
         >
           <DetailsTitle textColor='primary'>
-            {getLocale('braveWalletSeeDetails')}
+            {getLocale(S.BRAVE_WALLET_SEE_DETAILS)}
           </DetailsTitle>
           <IconButton onClick={() => setShowDetails(false)}>
             <CloseIcon />
@@ -212,7 +212,7 @@ export const SignInWithEthereum = (props: Props) => {
           marginBottom='16px'
         >
           <HeaderText textColor='primary'>
-            {getLocale('braveWalletSignInWithBraveWallet')}
+            {getLocale(S.BRAVE_WALLET_SIGN_IN_WITH_BRAVE_WALLET)}
           </HeaderText>
         </Row>
 
@@ -265,10 +265,9 @@ export const SignInWithEthereum = (props: Props) => {
               </Column>
             )}
             <MessageText textColor='primary'>
-              {getLocale('braveWalletSignInWithBraveWalletMessage').replaceAll(
-                '$1',
-                data.originInfo.eTldPlusOne,
-              )}
+              {getLocale(
+                S.BRAVE_WALLET_SIGN_IN_WITH_BRAVE_WALLET_MESSAGE,
+              ).replaceAll('$1', data.originInfo.eTldPlusOne)}
             </MessageText>
             {hasMessageAndResource && (
               <Column
@@ -278,7 +277,7 @@ export const SignInWithEthereum = (props: Props) => {
                 <VerticalDivider />
                 <VerticalSpace space='16px' />
                 <SectionTitle textColor='primary'>
-                  {getLocale('braveWalletSignTransactionMessageTitle')}:
+                  {getLocale(S.BRAVE_WALLET_SIGN_TRANSACTION_MESSAGE_TITLE)}:
                 </SectionTitle>
                 <VerticalSpace space='4px' />
                 <MessageText textColor='primary'>
@@ -286,7 +285,7 @@ export const SignInWithEthereum = (props: Props) => {
                 </MessageText>
                 <VerticalSpace space='16px' />
                 <SectionTitle textColor='primary'>
-                  {getLocale('braveWalletResources')}:
+                  {getLocale(S.BRAVE_WALLET_RESOURCES)}:
                 </SectionTitle>
                 <VerticalSpace space='4px' />
                 {data.signData.ethSiweData?.resources?.map((resource) => (
@@ -303,7 +302,7 @@ export const SignInWithEthereum = (props: Props) => {
               kind='plain'
               onClick={() => setShowDetails(true)}
             >
-              {getLocale('braveWalletSeeDetails')}
+              {getLocale(S.BRAVE_WALLET_SEE_DETAILS)}
             </Button>
           </Row>
         </Column>
@@ -313,10 +312,10 @@ export const SignInWithEthereum = (props: Props) => {
           kind='outline'
           onClick={onCancel}
         >
-          {getLocale('braveWalletButtonCancel')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
         </Button>
         <HorizontalSpace space='16px' />
-        <Button onClick={onSignIn}>{getLocale('braveWalletSignIn')}</Button>
+        <Button onClick={onSignIn}>{getLocale(S.BRAVE_WALLET_SIGN_IN)}</Button>
       </Row>
     </StyledWrapper>
   )

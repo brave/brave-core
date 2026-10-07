@@ -28,10 +28,10 @@ import { getLocale } from '$web-common/locale'
 // Components
 import {
   WalletPageWrapper, //
-} from '../../desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   DefaultPanelHeader, //
-} from '../../desktop/card-headers/default-panel-header'
+} from '$wallet/page/components/card_headers/default_panel_header'
 import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
 import {
   ConnectionSection, //
@@ -63,7 +63,7 @@ export const Connections = () => {
       useDarkBackground={true}
       isConnection={true}
       cardHeader={
-        <DefaultPanelHeader title={getLocale('braveWalletConnections')} />
+        <DefaultPanelHeader title={getLocale(S.BRAVE_WALLET_CONNECTIONS)} />
       }
     >
       <Column

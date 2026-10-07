@@ -13,6 +13,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/constants/brave_paths.h"
@@ -143,6 +144,14 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
         ->keyring_service();
   }
 
+  // Providers are only injected once a wallet exists, so most tests here need
+  // one before they navigate.
+  void RestoreWallet() {
+    ASSERT_TRUE(GetKeyringService()->RestoreWalletSync(
+        brave_wallet::kMnemonicScarePiece, brave_wallet::kTestWalletPassword,
+        false));
+  }
+
  protected:
   net::test_server::EmbeddedTestServerHandle test_server_handle_;
   content::ContentMockCertVerifier mock_cert_verifier_;
@@ -150,6 +159,7 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
+  RestoreWallet();
   brave_wallet::SetDefaultEthereumWallet(
       browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::None);
@@ -248,17 +258,14 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
   const GURL url = https_server_.GetURL("/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  {
-    std::string command = "window.ethereum.isBraveWallet";
+  // Neither the prefixed nor the unprefixed provider is injected before the
+  // user has created a wallet.
+  for (const char* command : {"window.ethereum.isBraveWallet",
+                              "window.braveEthereum.isBraveWallet"}) {
+    SCOPED_TRACE(command);
     EXPECT_THAT(content::EvalJs(primary_main_frame(), command),
                 content::EvalJsResult::ErrorIs(
                     testing::HasSubstr("Cannot read properties of undefined")));
-  }
-
-  {
-    std::string command = "window.braveEthereum.isBraveWallet";
-    EXPECT_EQ(base::Value(true),
-              content::EvalJs(primary_main_frame(), command));
   }
 
   EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
@@ -401,6 +408,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonWritable) {
+  RestoreWallet();
   const GURL url = https_server_.GetURL("/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
@@ -453,6 +461,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonWritable) {
 
 // See https://github.com/brave/brave-browser/issues/22213 for details
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, IsMetaMaskWritable) {
+  RestoreWallet();
   const GURL url = https_server_.GetURL("/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
@@ -463,6 +472,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, IsMetaMaskWritable) {
 }
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonConfigurable) {
+  RestoreWallet();
   brave_wallet::SetDefaultEthereumWallet(
       browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
@@ -482,6 +492,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonConfigurable) {
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                        BraveEthereum_NonConfigurable) {
+  RestoreWallet();
   brave_wallet::mojom::DefaultWallet non_configurable_states[] = {
       brave_wallet::mojom::DefaultWallet::BraveWallet,
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension};
@@ -504,6 +515,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, OnlyWriteOwnProperty) {
+  RestoreWallet();
   brave_wallet::SetDefaultEthereumWallet(
       browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
@@ -541,6 +553,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, OnlyWriteOwnProperty) {
 }
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, Iframe3P) {
+  RestoreWallet();
   constexpr char kEvalEthereumUndefined[] =
       R"(typeof window.ethereum === 'undefined')";
 
@@ -678,6 +691,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, Iframe3P) {
 }
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, SecureContextOnly) {
+  RestoreWallet();
   // Secure context HTTPS server
   GURL url = https_server_.GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));

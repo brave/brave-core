@@ -164,13 +164,6 @@ class SwapServiceUnitTest : public testing::Test {
         }));
   }
 
-  void IsSwapSupported(const std::string& chain_id, bool expected_response) {
-    base::MockCallback<mojom::SwapService::IsSwapSupportedCallback> callback;
-    EXPECT_CALL(callback, Run(IsTruthy(expected_response)));
-    swap_service_->IsSwapSupported(chain_id, callback.Get());
-    task_environment_.RunUntilIdle();
-  }
-
   void TestGetQuoteCase(const std::string& json,
                         mojom::CoinType from_coin,
                         const std::string& from_chain_id,
@@ -727,13 +720,13 @@ TEST_F(SwapServiceUnitTest, IsSwapSupported) {
 
   for (auto& chain_id : supported_chain_ids) {
     SCOPED_TRACE(testing::Message() << "chain_id: " << chain_id);
-    IsSwapSupported(chain_id, true);
+    EXPECT_TRUE(SwapService::IsChainIdSupportedBySwap(chain_id));
   }
 
-  IsSwapSupported("0x4", false);
-  IsSwapSupported("0x3", false);
-  IsSwapSupported("", false);
-  IsSwapSupported("invalid chain_id", false);
+  EXPECT_FALSE(SwapService::IsChainIdSupportedBySwap("0x4"));
+  EXPECT_FALSE(SwapService::IsChainIdSupportedBySwap("0x3"));
+  EXPECT_FALSE(SwapService::IsChainIdSupportedBySwap(""));
+  EXPECT_FALSE(SwapService::IsChainIdSupportedBySwap("invalid chain_id"));
 }
 
 TEST_F(SwapServiceUnitTest, GetJupiterQuoteURL) {

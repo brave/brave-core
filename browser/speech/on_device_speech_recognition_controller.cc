@@ -180,9 +180,7 @@ void OnDeviceSpeechRecognitionController::Start(
   // renderer just to discover the files are missing in OnOrtFilesRead.
   // Dropping the stream/responder pipes here surfaces to the engine as a
   // recognition failure, the same outcome as a failed load.
-  if (local_ai::OnDeviceSpeechModelsState::GetInstance()
-          ->GetModelDir()
-          .empty()) {
+  if (!local_ai::OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled()) {
     return;
   }
 

@@ -137,6 +137,65 @@
     <message name="IDS_SETTINGS_CONTAINERS_ERROR_NOT_FOUND" desc="The error if container is not found" formatter_data="webui=Containers">
       Container is not found
     </message>
+    <message name="IDS_SETTINGS_DRAG_TO_REORDER_LABEL" desc="Accessible label for a list item reorder handle that supports arrow-key movement" formatter_data="webui=Containers">
+      Reorder item. Use arrow keys to move.
+    </message>
+  </if>
+  <if expr="enable_traffic_control">
+    <message name="IDS_SETTINGS_TRAFFIC_CONTROL_SECTION_LABEL" desc="The label for section containing Traffic Control settings" formatter_data="webui=TrafficControl">
+      Traffic Control
+    </message>
+    <message name="IDS_SETTINGS_TRAFFIC_CONTROL_SECTION_DESCRIPTION" desc="Description for Traffic Control settings" formatter_data="webui=TrafficControl">
+      Configure specific sites to automatically open in a particular context, creating separation between your browsing sessions. <ph name="BEGIN_LINK">&lt;a target="_blank" href="#"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+    </message>
+    <message name="IDS_SETTINGS_TRAFFIC_CONTROL_ENABLED_LABEL" desc="Toggle label enabling Traffic Control" formatter_data="webui=TrafficControl">
+      Enable Traffic Control
+    </message>
+    <message name="IDS_SETTINGS_TRAFFIC_CONTROL_ADD_RULE_LABEL" desc="Button to add a traffic rule" formatter_data="webui=TrafficControl">
+      Add new rule
+    </message>
+    <message name="IDS_SETTINGS_TRAFFIC_CONTROL_NEW_RULE_DIALOG_TITLE" desc="Dialog title for creating a traffic rule" formatter_data="webui=TrafficControl">
+      New traffic control rule
+    </message>
+    <message name="IDS_SETTINGS_TRAFFIC_CONTROL_EDIT_RULE_LABEL" desc="Dialog title for editing a traffic rule" formatter_data="webui=TrafficControl">
+      Edit traffic control rule
+    </message>
+    <message name="IDS_SETTINGS_TRAFFIC_CONTROL_CREATE_RULE_LABEL" desc="Primary button to create a traffic rule" formatter_data="webui=TrafficControl">
+      Create rule
+    </message>
+    <message name="IDS_SETTINGS_TRAFFIC_CONTROL_SAVE_CHANGES_LABEL" desc="Primary button to save a traffic rule" formatter_data="webui=TrafficControl">
+      Save changes
+    </message>
+    <message name="IDS_SETTINGS_TRAFFIC_CONTROL_DELETE_RULE_LABEL" desc="Dialog title for deleting a traffic rule" formatter_data="webui=TrafficControl">
+      Delete rule
+    </message>
+    <message name="IDS_SETTINGS_TRAFFIC_CONTROL_DELETE_RULE_DESCRIPTION" desc="Confirmation text when deleting a traffic rule. RULE_LABEL is the same compact label shown in the rules list (leading comment or first URL)." formatter_data="webui=TrafficControl">
+      Are you sure you want to delete the rule <ph name="RULE_LABEL">"$1"<ex>"Work sites"</ex></ph>?
+    </message>
+    <message name="IDS_SETTINGS_TRAFFIC_CONTROL_RULE_DIALOG_DESCRIPTION" desc="Description shown at the top of the add or edit traffic rule dialog" formatter_data="webui=TrafficControl">
+      Enter URLs to manage and always open in a specific browsing context.
+    </message>
+    <message name="IDS_SETTINGS_TRAFFIC_CONTROL_URL_FILTER_LABEL" desc="Label for URL filter field" formatter_data="webui=TrafficControl">
+      URLs to manage
+    </message>
+    <message name="IDS_SETTINGS_TRAFFIC_CONTROL_URL_FILTER_PLACEHOLDER" desc="Placeholder for URL filter field" formatter_data="webui=TrafficControl">
+      Enter URLs to manage with traffic control
+    </message>
+    <message name="IDS_SETTINGS_TRAFFIC_CONTROL_URL_FILTER_HINT" desc="Help text for URL filter syntax. FILTER_EXAMPLE spans wrap literal filter patterns and should not be translated." formatter_data="webui=TrafficControl">
+      <ph name="BEGIN_FILTER_EXAMPLE">&lt;span class="filter-example"&gt;</ph>example.com<ph name="END_FILTER_EXAMPLE">&lt;/span&gt;</ph> matches the site and its subdomains; <ph name="BEGIN_FILTER_EXAMPLE2">&lt;span class="filter-example"&gt;</ph>.example.com<ph name="END_FILTER_EXAMPLE2">&lt;/span&gt;</ph> matches the exact site; <ph name="BEGIN_FILTER_EXAMPLE3">&lt;span class="filter-example"&gt;</ph>*<ph name="END_FILTER_EXAMPLE3">&lt;/span&gt;</ph> matches all sites; <ph name="BEGIN_FILTER_EXAMPLE4">&lt;span class="filter-example"&gt;</ph>#<ph name="END_FILTER_EXAMPLE4">&lt;/span&gt;</ph> is a comment.
+    </message>
+    <message name="IDS_SETTINGS_TRAFFIC_CONTROL_URL_FILTER_AND_MORE" desc="Compact rules-list label when a traffic rule has multiple URL patterns. FIRST_URL is the first pattern; COUNT is how many additional patterns remain." formatter_data="webui=TrafficControl">
+      <ph name="FIRST_URL">$1<ex>example.com</ex></ph> (and <ph name="COUNT">$2<ex>3</ex></ph> more URLs)
+    </message>
+    <message name="IDS_SETTINGS_TRAFFIC_CONTROL_CONTAINER_LABEL" desc="Label for container destination selector" formatter_data="webui=TrafficControl">
+      Open in Container
+    </message>
+    <message name="IDS_SETTINGS_TRAFFIC_CONTROL_RULE_ENABLED_LABEL" desc="Toggle label enabling a single traffic rule" formatter_data="webui=TrafficControl">
+      Enable rule
+    </message>
+    <message name="IDS_SETTINGS_TRAFFIC_CONTROL_ERROR_INVALID_URL_FILTER" desc="Error when URL filter is invalid" formatter_data="webui=TrafficControl">
+      Invalid URL filter
+    </message>
   </if>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_SHOW_VERTICAL_TABS" desc="The label for showing tabs vertically">
     Use vertical tabs
@@ -248,27 +307,6 @@
   </message>
   <message name="IDS_SETTINGS_SHOW_LEO_BUTTON_LABEL" desc="The label for the settings switch controlling whether the Leo button is shown in the toolbar">
     Show Leo AI button
-  </message>
-  <message name="IDS_SETTINGS_SHOW_BOOKMARK_BAR" desc="The label for settings switch controlling the permanent visibility of bookmarks bar">
-    Show bookmarks bar
-  </message>
-  <message name="IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ALWAYS" desc="The label for settings switch controlling the permanent visibility of bookmarks bar">
-    Always
-  </message>
-  <message name="IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ALWAYS_DESC" desc="The label for settings switch controlling the permanent visibility of bookmarks bar">
-    Bookmarks bar is visible on all pages
-  </message>
-  <message name="IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ON_NTP" desc="The label for settings switch controlling the visibility of bookmarks bar on NTP">
-    Only on the new tab page
-  </message>
-  <message name="IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ON_NTP_DESC" desc="The label for settings switch controlling the visibility of bookmarks bar on NTP description">
-    Bookmarks bar is hidden on all pages except the new tab page
-  </message>
-  <message name="IDS_SETTINGS_NEVER_SHOW_BOOKMARK_BAR" desc="The label for settings switch controlling the visibility of bookmarks bar">
-    Never
-  </message>
-  <message name="IDS_SETTINGS_NEVER_SHOW_BOOKMARK_BAR_DESC" desc="The label for settings switch controlling the visibility of bookmarks bar description">
-    Bookmarks bar is hidden on all pages
   </message>
   <message name="IDS_SETTINGS_ALWAYS_SHOW_FULL_URLS" desc="The label for a setting to show full URLs on omnibox">
     Always show full URLs
@@ -791,6 +829,13 @@
   <message name="IDS_SETTINGS_PUSH_MESSAGING" desc="Select value">
     Use Google services for push messaging
   </message>
+  <!-- Semantic history search -->
+  <message name="IDS_SETTINGS_SEMANTIC_HISTORY_SEARCH_LABEL" desc="Label for the setting that turns on indexing of visited pages so they can be found by meaning">
+    Semantic history search
+  </message>
+  <message name="IDS_SETTINGS_SEMANTIC_HISTORY_SEARCH_SUB_LABEL" desc="Description for the setting that turns on indexing of visited pages so they can be found by meaning">
+    Index pages you visit so you can find them easily in history, open tabs and Leo.
+  </message>
   <!-- History retention -->
   <message name="IDS_SETTINGS_HISTORY_RETENTION_LABEL" desc="Label for the setting that controls how long browsing history is retained">
     Local history retention
@@ -869,6 +914,12 @@
   <!-- Data collection -->
   <message name="IDS_BRAVE_DATA_COLLECTION_SETTINGS_SECTION" desc="Open Data collection settings section">
     Data collection
+  </message>
+  <message name="IDS_BRAVE_SETTINGS_SPONSORED_ADS_ENABLED_TITLE" desc="Title of the settings toggle that enables Sponsored Ads">
+    Enable Sponsored Ads
+  </message>
+  <message name="IDS_BRAVE_SETTINGS_SPONSORED_ADS_ENABLED_DESC" desc="Description under the settings toggle that enables Sponsored Ads">
+    Help support Brave's mission to build an independent, user-first Web with Sponsored Ads. We measure ad performance privately, without identifying you.
   </message>
 
   <!-- Settings / Privacy and security / Clear Browsing Data dialog -->
@@ -1664,6 +1715,9 @@
   <message name="IDS_SETTINGS_SHOW_BRAVE_WAYBACK_MACHINE_PROMPT" desc="The label describing the 'wayback machine' toggle option">
     Show Wayback Machine prompt on 404 pages
   </message>
+  <message name="IDS_SETTINGS_BRAVE_WAYBACK_MACHINE_AUTO_CHECK" desc="The label for the toggle that allows automatically checking the 'wayback machine' for an archived version of a missing page">
+    Automatically load saved versions from Wayback Machine on 404 pages
+  </message>
 
   <!-- Settings / System -->
   <message name="IDS_SETTINGS_WINDOW_CLOSING_CONFIRM_OPTION_LABEL" desc="The text for settings option">
@@ -1694,6 +1748,12 @@
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_DESC" desc="The description for settings option to enable tab focus mode">
     Enable tab organization in Tab Search page. When opened, this will automatically send the titles and origins of all non-private tabs to Leo to classify them. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_SEND_PAGE_CONTENT_LABEL" desc="Label for the toggle, nested under the Tab Focus Mode toggle, that lets tab focus send excerpts of page text to the model that organizes the tabs">
+    Send page content for tab focus
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_SEND_PAGE_CONTENT_DESC" desc="Description below the toggle that lets tab focus send excerpts of page text to the model that organizes the tabs. That model is Leo by default, or the user's own model if they picked one in the 'Default model for tab focus' dropdown. The link text is the name of the Semantic history search toggle, and the link opens the privacy settings page where it lives.">
+    Also send short excerpts of the text of each tab, so tabs are grouped by what a page is about instead of its title. Excerpts go to Leo, or to your own model if you chose one for tab focus. This needs <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph><ph name="SEMANTIC_HISTORY_SEARCH">$2<ex>Semantic history search</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>, which builds the excerpts on your device.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_MODEL_LABEL" desc="The label for the tab organization model selection dropdown">
     Default model for tab focus
@@ -1952,17 +2012,6 @@
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_OLLAMA_SYNC_LABEL" desc="The label for the Ollama sync toggle button">
     Sync your Ollama local models
-  </message>
-
-  <!-- Settings / Survey Panelist -->
-  <message name="IDS_SETTINGS_SURVEY_PANELIST" desc="Title for an item in the 'Survey Panelist' section of Brave Settings">
-    Survey Panelist
-  </message>
-  <message name="IDS_SETTINGS_SURVEY_PANELIST_LABEL" desc="The text for settings option to enable survey panelist">
-    Allow Brave surveys
-  </message>
-  <message name="IDS_SETTINGS_SURVEY_PANELIST_DESC" desc="The description for settings option to enable survey panelist">
-    Allows Brave to show links to private surveys in the new tab page. Surveys help us build better features and measure the effectiveness of browser-based ad campaigns. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
 
   <!-- Settings / Playlist -->

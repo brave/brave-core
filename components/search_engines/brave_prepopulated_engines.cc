@@ -5,6 +5,9 @@
 
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 
+#include <optional>
+
+#include "base/containers/span.h"
 #include "build/build_config.h"
 #include "components/search_engines/search_engine_type.h"
 #include "third_party/search_engines_data/resources/definitions/prepopulated_engines.h"
@@ -58,13 +61,16 @@ PrepopulatedEngine MakeBravePrepopulatedEngine(
           /*regulatory_extensions=*/{}};
 }
 
-PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
-                                      const char16_t* const name,
-                                      const char16_t* const keyword,
-                                      const char* const search_url,
-                                      const char* const suggest_url,
-                                      const char* const image_url,
-                                      int id) {
+PrepopulatedEngine ModifyEngineParams(
+    const PrepopulatedEngine& engine,
+    const char16_t* const name,
+    const char16_t* const keyword,
+    const char* const search_url,
+    const char* const suggest_url,
+    const char* const image_url,
+    int id,
+    std::optional<base::span<const RegulatoryExtension>> regulatory_extensions =
+        std::nullopt) {
   return {name ? name : engine.name,
           keyword ? keyword : engine.keyword,
           engine.favicon_url,
@@ -89,7 +95,10 @@ PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
           engine.type,
           engine.preconnect_to_search_url,
           engine.prefetch_likely_navigations,
-          id > 0 ? id : engine.id};
+          id > 0 ? id : engine.id,
+          engine.migrate_to_id,
+          engine.send_x_geo_header,
+          regulatory_extensions.value_or(engine.regulatory_extensions)};
 }
 
 }  // namespace
@@ -152,6 +161,8 @@ const PrepopulatedEngine brave_ecosia =
                        "https://www.ecosia.org/search?tt="
 #if BUILDFLAG(IS_ANDROID)
                        "42b8ae98"
+#elif BUILDFLAG(IS_IOS)
+                       "d188c5da"
 #else
                        "e8eb07a6"
 #endif
@@ -193,7 +204,7 @@ const PrepopulatedEngine brave_yandex =
                        u"Yandex",
                        nullptr,
                        "https://yandex.ru/search/?clid="
-#if BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
                        "2423859"
 #else
                        "2353835"
@@ -214,6 +225,8 @@ const PrepopulatedEngine brave_search = MakeBravePrepopulatedEngine(
     "https://search.brave.com/search?q={searchTerms}&source="
 #if BUILDFLAG(IS_ANDROID)
     "android",
+#elif BUILDFLAG(IS_IOS)
+    "ios",
 #else
     "desktop",
 #endif
@@ -222,6 +235,8 @@ const PrepopulatedEngine brave_search = MakeBravePrepopulatedEngine(
     "suggest?q={searchTerms}&rich=true&rich_verticals=true&source="
 #if BUILDFLAG(IS_ANDROID)
     "android",
+#elif BUILDFLAG(IS_IOS)
+    "ios",
 #else
     "desktop",
 #endif
@@ -262,7 +277,7 @@ const PrepopulatedEngine brave_yahoo_jp = ModifyEngineParams(
     nullptr,  // keyword
     // search url
     "https://search.yahoo.co.jp/search?p={searchTerms}&ei={inputEncoding}&fr="
-#if BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
     "brave-mobile_ext",
 #else
     "brave-desktop_ext",
@@ -272,7 +287,7 @@ const PrepopulatedEngine brave_yahoo_jp = ModifyEngineParams(
     "webassistSearch?p={searchTerms}&appid="
     "dj00aiZpPXVyZmc2WDgzWnA5SSZzPWNvbnN1bWVyc2VjcmV0Jng9MTE-"
     "&output=fxjson&fr="
-#if BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
     "brave-mobile_ext",
 #else
     "brave-desktop_ext",
@@ -280,12 +295,16 @@ const PrepopulatedEngine brave_yahoo_jp = ModifyEngineParams(
     // image url
     "https://search.yahoo.co.jp/image/"
     "search?p={searchTerms}&ei={inputEncoding}&fr="
-#if BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
     "brave-mobile_ext",
 #else
     "brave-desktop_ext",
 #endif
-    PREPOPULATED_ENGINE_ID_YAHOO_JP);
+    PREPOPULATED_ENGINE_ID_YAHOO_JP,
+    // Override the inherited regulatory extension with an empty one: the
+    // search, suggest, and image URLs passed here already set their own
+    // fr= param, so we don't want Chromium appending a conflicting one.
+    base::span<const RegulatoryExtension>());
 // LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
 
 // LINT.IfChange

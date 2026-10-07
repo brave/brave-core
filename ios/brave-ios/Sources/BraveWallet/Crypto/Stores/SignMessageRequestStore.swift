@@ -6,9 +6,16 @@
 import BraveCore
 import SwiftUI
 
+struct SignMessageRequestItem: Identifiable, Equatable {
+  let request: BraveWallet.SignMessageRequest
+  let account: BraveWallet.AccountInfo
+
+  var id: Int32 { request.id }
+}
+
 class SignMessageRequestStore: ObservableObject {
 
-  @Published var requests: [BraveWallet.SignMessageRequest] {
+  @Published var requests: [SignMessageRequestItem] {
     didSet {
       guard requests != oldValue else { return }
       update()
@@ -16,7 +23,7 @@ class SignMessageRequestStore: ObservableObject {
   }
 
   /// The current request on display
-  var currentRequest: BraveWallet.SignMessageRequest {
+  var currentRequest: SignMessageRequestItem {
     requests[requestIndex]
   }
 
@@ -44,7 +51,7 @@ class SignMessageRequestStore: ObservableObject {
   private var tokenInfoCache: [BraveWallet.BlockchainToken] = []
 
   init(
-    requests: [BraveWallet.SignMessageRequest],
+    requests: [SignMessageRequestItem],
     keyringService: BraveWalletKeyringService,
     rpcService: BraveWalletJsonRpcService,
     assetRatioService: BraveWalletAssetRatioService,
@@ -74,11 +81,12 @@ class SignMessageRequestStore: ObservableObject {
 
       let cowSwapRequests: [(id: Int32, cowSwapOrder: BraveWallet.CowSwapOrder, chainId: String)] =
         self.requests
-        .compactMap { request in
-          guard let cowSwapOrder = request.signData.ethSignTypedData?.meta?.cowSwapOrder else {
+        .compactMap { item in
+          guard let cowSwapOrder = item.request.signData.ethSignTypedData?.meta?.cowSwapOrder
+          else {
             return nil
           }
-          return (request.id, cowSwapOrder, request.chainId)
+          return (item.request.id, cowSwapOrder, item.request.chainId)
         }
       guard !cowSwapRequests.isEmpty else { return }
 

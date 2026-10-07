@@ -77,7 +77,7 @@ class BraveVerticalTabStripRegionView : public views::View,
   }
   TabStrip* tab_strip() { return original_region_view_->tab_strip_; }
 
-  const Browser* browser() const { return browser_; }
+  const BrowserWindowInterface* browser() const { return browser_; }
 
   void ToggleState();
 
@@ -116,6 +116,8 @@ class BraveVerticalTabStripRegionView : public views::View,
       const views::SizeBounds& available_size) const override;
   gfx::Size GetMinimumSize() const override;
   void Layout(PassKey) override;
+  void AddedToWidget() override;
+  void RemovedFromWidget() override;
   void OnThemeChanged() override;
   void OnMouseExited(const ui::MouseEvent& event) override;
   void OnMouseEntered(const ui::MouseEvent& event) override;
@@ -215,7 +217,7 @@ class BraveVerticalTabStripRegionView : public views::View,
   void OnCollapseAnimationEnded();
 
   raw_ptr<BrowserView> browser_view_ = nullptr;
-  raw_ptr<Browser> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   raw_ptr<HorizontalTabStripRegionView> original_region_view_ = nullptr;
 
   // Reportedly, when we add the TabStripRegionView to

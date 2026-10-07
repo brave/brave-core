@@ -219,7 +219,7 @@ public class LanguageMetrics {
 
   public static func recordPrimaryLanguageP3A() {
     let primaryLanguageHistogramName = "Brave.Core.PrimaryLang"
-    let answer = answerForLangaugeCode(Locale.current.languageCode)
+    let answer = answerForLangaugeCode(Locale.current.language.languageCode?.identifier)
     UmaHistogramExactLinear(primaryLanguageHistogramName, answer, acceptedLanguages.count)
   }
 }

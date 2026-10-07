@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/net/proxy_config_monitor.cc b/chrome/browser/net/proxy_config_monitor.cc
-index 69118955433de89b65981275202874c08f59c358..5833ff1671f03bfeddc45a1d979178455a1cf295 100644
+index 0874f5e29440471706f847a9212cdfa2b2eba2a3..528a76674b95355fff02c6bc5f4430ee90254bce 100644
 --- a/chrome/browser/net/proxy_config_monitor.cc
 +++ b/chrome/browser/net/proxy_config_monitor.cc
-@@ -54,6 +54,11 @@ ProxyConfigMonitor::ProxyConfigMonitor(Profile* profile) {
-             profile->GetProfilePolicyConnector()->policy_service());
+@@ -66,6 +66,11 @@ ProxyConfigMonitor::ProxyConfigMonitor(Profile* profile) {
+             enterprise_proxy_service);
    }
  
 +#if BUILDFLAG(ENABLE_TOR)

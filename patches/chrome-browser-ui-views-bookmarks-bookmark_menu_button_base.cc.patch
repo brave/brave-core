@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/bookmarks/bookmark_menu_button_base.cc b/chrome/browser/ui/views/bookmarks/bookmark_menu_button_base.cc
+index 7526d1f1279ec64d558a089f0660a9e214989bd0..9b9d38543aa9db6742465eb6678ab277dd6f26cc 100644
+--- a/chrome/browser/ui/views/bookmarks/bookmark_menu_button_base.cc
++++ b/chrome/browser/ui/views/bookmarks/bookmark_menu_button_base.cc
+@@ -59,7 +59,7 @@ BookmarkMenuButtonBase::BookmarkMenuButtonBase(
+   ConfigureInkDrop(this);
+   SetImageLabelSpacing(ChromeLayoutProvider::Get()->GetDistanceMetric(
+       DISTANCE_RELATED_LABEL_HORIZONTAL_LIST));
+-  views::InstallPillHighlightPathGenerator(this);
++  brave::RestyleBookmarkLabel(label());
+ 
+   SetMenuButtonController(std::make_unique<views::MenuButtonController>(
+       this, std::move(callback),

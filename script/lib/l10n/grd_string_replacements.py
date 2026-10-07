@@ -9,10 +9,14 @@
 # Strings we want to replace but that we also replace automatically
 # for XTB files
 branding_replacements = [
-    (r'The\sChromium\sAuthors.\sAll\srights\sreserved.',
-     r'The Brave Authors. All rights reserved.'),
-    (r'Google\sLLC.\sAll\srights\sreserved.',
-     r'The Brave Authors. All rights reserved.'),
+    (
+        r'The\sChromium\sAuthors.\sAll\srights\sreserved.',
+        r'The Brave Authors. All rights reserved.',
+    ),
+    (
+        r'Google\sLLC.\sAll\srights\sreserved.',
+        r'The Brave Authors. All rights reserved.',
+    ),
     (r'The\sChromium\sAuthors', r'Brave Software Inc'),
     (r'Google\sChrome', r'Brave'),
     (r'(Google)(?!\sPlay)', r'Brave'),
@@ -44,11 +48,14 @@ fixup_replacements = [
     (r'Brave OS', r'Chrome OS'),
     (r'BraveOS', r'ChromeOS'),
     (r'Brave Safe Browsing', r'Google Safe Browsing'),
-    (r'Safe Browsing \(protects you and your device from dangerous sites\)',
-     r'Google Safe Browsing (protects you and your device from dangerous sites)'
-     ),
-    (r'Sends URLs of some pages you visit to Brave',
-     r'Sends URLs of some pages you visit to Google'),
+    (
+        r'Safe Browsing \(protects you and your device from dangerous sites\)',
+        r'Google Safe Browsing (protects you and your device from dangerous sites)',
+    ),
+    (
+        r'Sends URLs of some pages you visit to Brave',
+        r'Sends URLs of some pages you visit to Google',
+    ),
     (r'Google Google', r'Google'),
     (r'Brave Account', r'Brave sync chain'),
     (r'Brave Lens', r'Google Lens'),
@@ -60,9 +67,12 @@ fixup_replacements = [
     (r'Brave Projects', r'Chromium Projects'),
     (r'Brave Root Program', r'Chrome Root Program'),
     (r'BraveVox', r'ChromeVox'),
+    (r'Brave Wallet', r'Google Wallet'),
     (r'powered by Brave AI', r'powered by Google AI'),
-    (r'Brave Extension developer documentation',
-     r'Google Extension developer documentation'),
+    (
+        r'Brave Extension developer documentation',
+        r'Google Extension developer documentation',
+    ),
 ]
 
 
@@ -77,7 +87,10 @@ main_text_only_replacements = [
 # Replacements for strings in brave_strings.grd for situations where using a
 # different GRD would be impractical. These need to be translated in Crowdin.
 brave_strings_grd_replacements = [
-    ('IDS_LOCAL_NETWORK_ACCESS_PERMISSION_DESC', r'''
+    (
+        'IDS_LOCAL_NETWORK_ACCESS_PERMISSION_DESC',
+        r'''
           This will allow you to share content from Brave to your local devices, such as a TV or speaker.
-        '''),
+        ''',
+    ),
 ]

@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { assertNotReached } from 'chrome://resources/js/assert.js'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import Input, { InputEventDetail } from '@brave/leo/react/input'
 import Alert from '@brave/leo/react/alert'
@@ -13,15 +14,16 @@ import Button from '@brave/leo/react/button'
 import { BraveWallet } from '../../../constants/types'
 import Amount from '../../../utils/amount'
 import { getLocale } from '$web-common/locale'
-import {
-  networkEntityAdapter,
-  emptyNetworksRegistry,
-} from '../../../common/slices/entities/network.entity'
+import { networkSelectors } from '../../../common/slices/entities/network.entity'
 import withPlaceholderIcon from '../create-placeholder-icon'
 import {
   getAssetIdKey,
   type GetBlockchainTokenIdArg,
 } from '../../../utils/asset-utils'
+import {
+  isValidEVMAddress,
+  isValidSolanaAddress,
+} from '../../../utils/address-utils'
 
 // hooks
 import useGetTokenInfo from '../../../common/hooks/use-get-token-info'
@@ -33,7 +35,7 @@ import {
   useUpdateUserTokenMutation,
 } from '../../../common/slices/api.slice'
 import {
-  useGetCustomAssetSupportedNetworks, //
+  useGetCustomNftSupportedNetworks, //
 } from '../../../common/hooks/use_get_custom_asset_supported_networks'
 
 // components
@@ -41,6 +43,7 @@ import { NetworksDropdown } from '../dropdowns/networks_dropdown'
 import { FormErrorsList } from './form-errors-list'
 import { NftIcon } from '../nft-icon/nft-icon'
 import { InfoIconTooltip } from '../info_icon_tooltip/info_icon_tooltip'
+import { NumberInput } from '../number_input/number_input'
 
 // styles
 import {
@@ -67,6 +70,24 @@ const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, {
   marginRight: 0,
 })
 
+function isValidContractAddressForCoin(
+  coin: BraveWallet.CoinType | undefined,
+  address: string,
+): boolean {
+  switch (coin) {
+    case undefined:
+      return false
+    case BraveWallet.CoinType.SOL:
+      return isValidSolanaAddress(address)
+    case BraveWallet.CoinType.ETH:
+      return isValidEVMAddress(address)
+    default:
+      // Networks are limited to CustomAssetSupportedCoinTypes, so a new NFT
+      // coin must be handled above rather than silently validated as EVM.
+      assertNotReached(`Unsupported custom NFT coin ${coin}`)
+  }
+}
+
 interface Props {
   selectedAsset?: BraveWallet.BlockchainToken
   contractAddress: string
@@ -82,10 +103,9 @@ export const AddNftForm = (props: Props) => {
     onChangeContractAddress,
   } = props
 
-  const { data: networksRegistry = emptyNetworksRegistry } =
-    useGetNetworksRegistryQuery()
+  const { data: networksRegistry } = useGetNetworksRegistryQuery()
   const selectedAssetNetwork = selectedAsset
-    ? networksRegistry.entities[networkEntityAdapter.selectId(selectedAsset)]
+    ? networkSelectors.selectById(networksRegistry, selectedAsset.chainId)
     : undefined
 
   // state
@@ -107,6 +127,15 @@ export const AddNftForm = (props: Props) => {
     BraveWallet.NetworkInfo | undefined
   >(selectedAssetNetwork)
 
+  // Gate every lookup on a syntactically valid address so partial or wrong-
+  // coin input never reaches the RPC / gate3 (brave/brave-browser#58531).
+  // Deliberately an approximate sync check so the form stays keystroke-
+  // responsive; SimpleHashClient::GetNftsUrl is the authoritative validator.
+  const isContractAddressValid = isValidContractAddressForCoin(
+    customAssetsNetwork?.coin,
+    tokenContractAddress,
+  )
+
   // mutations
   const [addUserToken] = useAddUserTokenMutation()
   const [updateUserToken] = useUpdateUserTokenMutation()
@@ -118,7 +147,7 @@ export const AddNftForm = (props: Props) => {
     isError: hasGetTokenInfoError,
   } = useGetTokenInfo(
     customAssetsNetwork
-      && tokenContractAddress
+      && isContractAddressValid
       && (customAssetsNetwork.coin === BraveWallet.CoinType.ETH
         ? !!customTokenID
         : true)
@@ -133,11 +162,11 @@ export const AddNftForm = (props: Props) => {
       : skipToken,
   )
 
-  const networkList = useGetCustomAssetSupportedNetworks()
+  const networkList = useGetCustomNftSupportedNetworks()
 
   const metadataLookupArg: GetBlockchainTokenIdArg | undefined =
     React.useMemo(() => {
-      if (!customAssetsNetwork || !tokenContractAddress) {
+      if (!customAssetsNetwork || !isContractAddressValid) {
         return undefined
       }
 
@@ -155,7 +184,12 @@ export const AddNftForm = (props: Props) => {
         isNft: true,
         zcashTokenType: BraveWallet.ZCashTokenType.kNone,
       }
-    }, [customAssetsNetwork, tokenContractAddress, customTokenID])
+    }, [
+      customAssetsNetwork,
+      isContractAddressValid,
+      tokenContractAddress,
+      customTokenID,
+    ])
 
   // TODO: need symbol in response in order to simplify adding SOL NFTs
   const {
@@ -179,10 +213,13 @@ export const AddNftForm = (props: Props) => {
   const tokenSymbolError = !customTokenSymbol
   const tokenIdError =
     selectedAssetNetwork?.coin === BraveWallet.CoinType.ETH && !customTokenID
-  const tokenContractAddressError =
-    tokenContractAddress === ''
-    || (customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL
-      && !tokenContractAddress.toLowerCase().startsWith('0x'))
+  const tokenContractAddressError = !isContractAddressValid
+  // Hold the inline error back until a network is picked and something has
+  // been typed, so an untouched form is not pre-filled with red.
+  const showContractAddressError =
+    !!customAssetsNetwork
+    && tokenContractAddress !== ''
+    && !isContractAddressValid
 
   const buttonDisabled =
     isTokenInfoLoading
@@ -195,12 +232,13 @@ export const AddNftForm = (props: Props) => {
   const formErrors = React.useMemo(() => {
     return [
       tokenContractAddressError
-        && getLocale('braveWalletInvalidTokenContractAddressError'),
+        && getLocale(S.BRAVE_WALLET_INVALID_TOKEN_CONTRACT_ADDRESS_ERROR),
       customAssetsNetworkError
-        && getLocale('braveWalletNetworkIsRequiredError'),
-      tokenNameError && getLocale('braveWalletTokenNameIsRequiredError'),
-      tokenSymbolError && getLocale('braveWalletTokenSymbolIsRequiredError'),
-      tokenIdError && getLocale('braveWalletWatchListTokenIdError'),
+        && getLocale(S.BRAVE_WALLET_NETWORK_IS_REQUIRED_ERROR),
+      tokenNameError && getLocale(S.BRAVE_WALLET_TOKEN_NAME_IS_REQUIRED_ERROR),
+      tokenSymbolError
+        && getLocale(S.BRAVE_WALLET_TOKEN_SYMBOL_IS_REQUIRED_ERROR),
+      tokenIdError && getLocale(S.BRAVE_WALLET_WATCH_LIST_TOKEN_ID_ERROR),
     ]
   }, [
     tokenContractAddressError,
@@ -395,20 +433,22 @@ export const AddNftForm = (props: Props) => {
         {!selectedAsset && (
           <FullWidthFormColumn>
             <DescriptionRow>
-              {getLocale('braveWalletAddNftModalDescription')}
+              {getLocale(S.BRAVE_WALLET_ADD_NFT_MODAL_DESCRIPTION)}
             </DescriptionRow>
           </FullWidthFormColumn>
         )}
 
         <FullWidthFormColumn>
           <NetworksDropdown
-            placeholder={getLocale('braveWalletSelectNetwork')}
+            placeholder={getLocale(S.BRAVE_WALLET_SELECT_NETWORK)}
             networks={networkList}
             onSelectNetwork={onSelectCustomNetwork}
             selectedNetwork={customAssetsNetwork}
             showAllNetworksOption={false}
             label={
-              <InputLabel>{getLocale('braveWalletSelectNetwork')}</InputLabel>
+              <InputLabel>
+                {getLocale(S.BRAVE_WALLET_SELECT_NETWORK)}
+              </InputLabel>
             }
           />
         </FullWidthFormColumn>
@@ -417,7 +457,8 @@ export const AddNftForm = (props: Props) => {
           <Input
             value={tokenContractAddress}
             onInput={handleTokenAddressChanged}
-            placeholder={getLocale('braveWalletExempliGratia').replace(
+            showErrors={showContractAddressError}
+            placeholder={getLocale(S.BRAVE_WALLET_EXEMPLI_GRATIA).replace(
               '$1',
               '0xbd3531da5cf5857e7cfaa92426877b022e612cf8',
             )}
@@ -428,29 +469,37 @@ export const AddNftForm = (props: Props) => {
             >
               <InputLabel>
                 {customAssetsNetwork?.coin === BraveWallet.CoinType.SOL
-                  ? getLocale('braveWalletTokenMintAddress')
-                  : getLocale('braveWalletNFTDetailContractAddress')}
+                  ? getLocale(S.BRAVE_WALLET_TOKEN_MINT_ADDRESS)
+                  : getLocale(S.BRAVE_WALLET_NFT_DETAIL_CONTRACT_ADDRESS)}
               </InputLabel>
               <InfoIconTooltip
                 placement='bottom'
-                text={getLocale('braveWalletWhatIsAnNftContractAddress')}
+                text={getLocale(S.BRAVE_WALLET_WHAT_IS_AN_NFT_CONTRACT_ADDRESS)}
               />
             </Row>
+
+            <ErrorText
+              slot='errors'
+              textColor='error'
+              textAlign='left'
+              variant='small.regular'
+            >
+              {getLocale(S.BRAVE_WALLET_INVALID_TOKEN_CONTRACT_ADDRESS_ERROR)}
+            </ErrorText>
           </Input>
         </FullWidthFormColumn>
 
         {customAssetsNetwork
           && customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL && (
             <FullWidthFormColumn>
-              <Input
+              <NumberInput
                 value={
                   customTokenID
                     ? new Amount(customTokenID).format(undefined, false)
                     : ''
                 }
                 onInput={handleTokenIDChanged}
-                type='number'
-                placeholder={getLocale('braveWalletExempliGratia').replace(
+                placeholder={getLocale(S.BRAVE_WALLET_EXEMPLI_GRATIA).replace(
                   '$1',
                   '1234',
                 )}
@@ -460,14 +509,14 @@ export const AddNftForm = (props: Props) => {
                   justifyContent='flex-start'
                 >
                   <InputLabel>
-                    {getLocale('braveWalletNFTDetailTokenID')}
+                    {getLocale(S.BRAVE_WALLET_NFT_DETAIL_TOKEN_ID)}
                   </InputLabel>
                   <InfoIconTooltip
                     placement='bottom'
-                    text={getLocale('braveWalletWhatIsAnNftTokenId')}
+                    text={getLocale(S.BRAVE_WALLET_WHAT_IS_AN_NFT_TOKEN_ID)}
                   />
                 </Row>
-              </Input>
+              </NumberInput>
             </FullWidthFormColumn>
           )}
 
@@ -476,7 +525,7 @@ export const AddNftForm = (props: Props) => {
             value={customTokenName}
             onInput={handleTokenNameChanged}
             type='text'
-            placeholder={getLocale('braveWalletExempliGratia').replace(
+            placeholder={getLocale(S.BRAVE_WALLET_EXEMPLI_GRATIA).replace(
               '$1',
               'Pudgy Penguin #1234',
             )}
@@ -486,11 +535,11 @@ export const AddNftForm = (props: Props) => {
               justifyContent='flex-start'
             >
               <InputLabel>
-                {getLocale('braveWalletWatchListTokenName')}
+                {getLocale(S.BRAVE_WALLET_WATCH_LIST_TOKEN_NAME)}
               </InputLabel>
               <InfoIconTooltip
                 placement='bottom'
-                text={getLocale('braveWalletNftNameFieldExplanation')}
+                text={getLocale(S.BRAVE_WALLET_NFT_NAME_FIELD_EXPLANATION)}
               />
             </Row>
 
@@ -511,7 +560,7 @@ export const AddNftForm = (props: Props) => {
               !hasGetTokenInfoError && !!matchedTokenInfo?.symbol
             }
             type='text'
-            placeholder={getLocale('braveWalletExempliGratia').replace(
+            placeholder={getLocale(S.BRAVE_WALLET_EXEMPLI_GRATIA).replace(
               '$1',
               'PPG',
             )}
@@ -521,11 +570,11 @@ export const AddNftForm = (props: Props) => {
               justifyContent='flex-start'
             >
               <InputLabel>
-                {getLocale('braveWalletWatchListTokenSymbol')}
+                {getLocale(S.BRAVE_WALLET_WATCH_LIST_TOKEN_SYMBOL)}
               </InputLabel>
               <InfoIconTooltip
                 placement='bottom'
-                text={getLocale('braveWalletNftSymbolFieldExplanation')}
+                text={getLocale(S.BRAVE_WALLET_NFT_SYMBOL_FIELD_EXPLANATION)}
               />
             </Row>
             <div slot='left-icon'>
@@ -543,7 +592,7 @@ export const AddNftForm = (props: Props) => {
               textAlign='left'
               variant='small.regular'
             >
-              {getLocale('braveWalletWatchListTokenIdError')}
+              {getLocale(S.BRAVE_WALLET_WATCH_LIST_TOKEN_ID_ERROR)}
             </ErrorText>
           )}
 
@@ -553,7 +602,7 @@ export const AddNftForm = (props: Props) => {
             textAlign='left'
             variant='small.regular'
           >
-            {getLocale('braveWalletWatchListError')}
+            {getLocale(S.BRAVE_WALLET_WATCH_LIST_ERROR)}
           </ErrorText>
         ) : (
           <Column
@@ -594,7 +643,7 @@ export const AddNftForm = (props: Props) => {
                       variant='small.regular'
                       textAlign='left'
                     >
-                      {getLocale('braveWalletFetchNftMetadataError')}
+                      {getLocale(S.BRAVE_WALLET_FETCH_NFT_METADATA_ERROR)}
                     </ErrorText>
                   </Column>
                 ) : (
@@ -653,7 +702,7 @@ export const AddNftForm = (props: Props) => {
 
                         {!userOwnsNft && (
                           <Alert type='info'>
-                            {getLocale('braveWalletUnownedNftAlert')}
+                            {getLocale(S.BRAVE_WALLET_UNOWNED_NFT_ALERT)}
                           </Alert>
                         )}
                       </Column>
@@ -673,7 +722,7 @@ export const AddNftForm = (props: Props) => {
           onClick={onClickCancel}
           kind='plain-faint'
         >
-          {getLocale('braveWalletButtonCancel')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
         </Button>
 
         <Tooltip
@@ -693,10 +742,10 @@ export const AddNftForm = (props: Props) => {
               }
             >
               {!userOwnsNft
-                ? getLocale('braveWalletWatchThisNft')
+                ? getLocale(S.BRAVE_WALLET_WATCH_THIS_NFT)
                 : selectedAsset
-                  ? getLocale('braveWalletButtonSaveChanges')
-                  : getLocale('braveWalletWatchListAdd')}
+                  ? getLocale(S.BRAVE_WALLET_BUTTON_SAVE_CHANGES)
+                  : getLocale(S.BRAVE_WALLET_WATCH_LIST_ADD)}
             </Button>
           </Row>
         </Tooltip>

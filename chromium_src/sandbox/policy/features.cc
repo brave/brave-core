@@ -7,7 +7,6 @@
 
 namespace sandbox::policy::features {
 
-BASE_FEATURE(kModuleFileNamePatch,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kModuleFileNamePatch, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace sandbox::policy::features

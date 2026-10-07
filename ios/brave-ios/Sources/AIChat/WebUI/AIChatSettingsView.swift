@@ -290,6 +290,7 @@ public struct AIChatSettingsView: View {
           .buttonStyle(.plain)
           .sheet(isPresented: $isPaywallPresented) {
             AIChatPaywallView(
+              storeSDK: viewModel.storeSDK,
               premiumUpgrageSuccessful: { _ in
                 Task {
                   await viewModel.updatePremiumStatus()

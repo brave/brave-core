@@ -207,7 +207,7 @@ export const MarketGrid = ({
               isBold={true}
               textSize='14px'
             >
-              {getLocale('braveWalletMarketDataNoAssetsFound')}
+              {getLocale(S.BRAVE_WALLET_MARKET_DATA_NO_ASSETS_FOUND)}
             </EmptyStateText>
           </Row>
         ) : (
@@ -227,7 +227,7 @@ export const MarketGrid = ({
         textColor='secondary'
         variant='xSmall.regular'
       >
-        {getLocale('braveWalletPoweredByCoinGecko')}
+        {getLocale(S.BRAVE_WALLET_POWERED_BY_COIN_GECKO)}
       </CoinGeckoText>
     </StyledWrapper>
   )

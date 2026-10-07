@@ -36,8 +36,10 @@ struct OptInView: View {
         Button {
           isLoading = true
           Task {
-            try await tappedTurnOn()
-            isLoading = false
+            do {
+              try await tappedTurnOn()
+              isLoading = false
+            } catch {}
           }
         } label: {
           Text(Strings.BraveNews.turnOnBraveNews)

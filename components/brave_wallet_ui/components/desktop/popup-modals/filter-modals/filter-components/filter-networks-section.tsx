@@ -27,9 +27,7 @@ import {
 } from '../../../../../options/network-filter-options'
 
 // Utils
-import {
-  networkEntityAdapter, //
-} from '../../../../../common/slices/entities/network.entity'
+import { getNetworkId } from '../../../../../common/slices/entities/network.entity'
 import { getLocale } from '../../../../../../common/locale'
 
 // Components
@@ -84,9 +82,7 @@ export const FilterNetworksSection = ({
     return (
       filteredOutNetworkKeys.length > 0
       && networks.some((network) =>
-        filteredOutNetworkKeys.includes(
-          networkEntityAdapter.selectId(network).toString(),
-        ),
+        filteredOutNetworkKeys.includes(getNetworkId(network)),
       )
     )
   }, [networks, filteredOutNetworkKeys])
@@ -116,11 +112,7 @@ export const FilterNetworksSection = ({
       setFilteredOutNetworkKeys([])
       return
     }
-    setFilteredOutNetworkKeys(
-      networks.map((network) =>
-        networkEntityAdapter.selectId(network).toString(),
-      ),
-    )
+    setFilteredOutNetworkKeys(networks.map((network) => getNetworkId(network)))
   }, [networks, setFilteredOutNetworkKeys, isSelectAll])
 
   return (
@@ -133,12 +125,12 @@ export const FilterNetworksSection = ({
           textSize='16px'
           isBold={true}
         >
-          {getLocale('braveWalletSelectNetworks')}
+          {getLocale(S.BRAVE_WALLET_SELECT_NETWORKS)}
         </Title>
         <SelectAllButton onClick={onSelectOrDeselectAllNetworks}>
           {isSelectAll
-            ? getLocale('braveWalletSelectAll')
-            : getLocale('braveWalletDeselectAll')}
+            ? getLocale(S.BRAVE_WALLET_SELECT_ALL)
+            : getLocale(S.BRAVE_WALLET_DESELECT_ALL)}
         </SelectAllButton>
       </Row>
 
@@ -148,7 +140,7 @@ export const FilterNetworksSection = ({
           isNetworkFilteredOut={isNetworkFilteredOut}
           onCheckNetwork={onCheckNetwork}
           networks={primaryNetworks}
-          title={getLocale('braveWalletPrimaryNetworks')}
+          title={getLocale(S.BRAVE_WALLET_PRIMARY_NETWORKS)}
           marginBottom={8}
         />
       )}
@@ -159,7 +151,7 @@ export const FilterNetworksSection = ({
           isNetworkFilteredOut={isNetworkFilteredOut}
           onCheckNetwork={onCheckNetwork}
           networks={secondaryNetworks}
-          title={getLocale('braveWalletNetworkFilterSecondary')}
+          title={getLocale(S.BRAVE_WALLET_NETWORK_FILTER_SECONDARY)}
           marginBottom={8}
         />
       )}
@@ -170,7 +162,7 @@ export const FilterNetworksSection = ({
           isNetworkFilteredOut={isNetworkFilteredOut}
           onCheckNetwork={onCheckNetwork}
           networks={testNetworks}
-          title={getLocale('braveWalletNetworkFilterTestNetworks')}
+          title={getLocale(S.BRAVE_WALLET_NETWORK_FILTER_TEST_NETWORKS)}
           marginBottom={8}
         />
       )}
@@ -181,7 +173,7 @@ export const FilterNetworksSection = ({
           isNetworkFilteredOut={isNetworkFilteredOut}
           onCheckNetwork={onCheckNetwork}
           networks={[providerNetwork]}
-          title={getLocale('braveWalletPlatforms')}
+          title={getLocale(S.BRAVE_WALLET_PLATFORMS)}
           marginBottom={0}
         />
       )}

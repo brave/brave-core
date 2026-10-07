@@ -87,8 +87,7 @@ bool NotificationHelperImplAndroid::CanShowNotifications() {
 
 bool NotificationHelperImplAndroid::
     CanShowSystemNotificationsWhileBrowserIsBackgrounded() const {
-  JNIEnv* env = jni_zero::AttachCurrentThread();
-  return Java_BraveAdsSignupDialog_showAdsInBackground(env);
+  return false;
 }
 
 bool NotificationHelperImplAndroid::ShowOnboardingNotification() {

@@ -17,7 +17,7 @@ import { getLocale } from '../../../../common/locale'
 // Components
 import {
   WalletPageWrapper, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 
 // Styled Components
 import {
@@ -52,14 +52,14 @@ export const PageNotFound = () => {
               textColor='primary'
               isBold={true}
             >
-              {getLocale('braveWalletPageNotFoundTitle')}
+              {getLocale(S.BRAVE_WALLET_PAGE_NOT_FOUND_TITLE)}
             </Title>
             <Text
               textColor='tertiary'
               textSize='14px'
               isBold={false}
             >
-              {getLocale('braveWalletPageNotFoundDescription')}
+              {getLocale(S.BRAVE_WALLET_PAGE_NOT_FOUND_DESCRIPTION)}
             </Text>
           </Column>
           <div>
@@ -67,7 +67,7 @@ export const PageNotFound = () => {
               size='medium'
               onClick={() => history.push(WalletRoutes.Portfolio)}
             >
-              {getLocale('braveWalletGoToPortfolio')}
+              {getLocale(S.BRAVE_WALLET_GO_TO_PORTFOLIO)}
             </Button>
           </div>
         </ContentWrapper>

@@ -40,7 +40,7 @@ BraveOpaqueBrowserFrameView::BraveOpaqueBrowserFrameView(
   frame_graphic_ =
       std::make_unique<BraveWindowFrameGraphic>(browser->GetProfile());
 
-  if (auto* controller = browser->GetFeatures().focus_mode_controller()) {
+  if (auto* controller = FocusModeController::From(browser)) {
     focus_mode_observation_.Observe(controller);
     if (auto* overlay =
             BraveBrowserView::From(browser_view)->focus_mode_top_overlay()) {
@@ -80,7 +80,7 @@ int BraveOpaqueBrowserFrameView::NonClientHitTest(const gfx::Point& point) {
     captions_fully_revealed = overlay->is_fully_revealed();
   }
 
-  if (auto* vtc = VerticalTabController::FromBrowser(browser_view->browser());
+  if (auto* vtc = VerticalTabController::From(browser_view->browser());
       vtc && vtc->ShouldShowBraveVerticalTabs() && captions_fully_revealed) {
     auto hit_test_caption_button = [](views::Button* button,
                                       const gfx::Point& point) {
@@ -102,9 +102,7 @@ int BraveOpaqueBrowserFrameView::NonClientHitTest(const gfx::Point& point) {
     }
   }
 
-  if (auto res = browser_view->browser()
-                     ->browser_window_features()
-                     ->brave_non_client_hit_test_helper()
+  if (auto res = BraveNonClientHitTestHelper::From(browser_view->browser())
                      ->NonClientHitTest(GetBrowserView(), point);
       res != HTNOWHERE) {
     return res;
@@ -182,7 +180,7 @@ bool BraveOpaqueBrowserFrameView::ShouldShowVerticalTabs() const {
   DCHECK(GetBrowserView());
   auto* browser = GetBrowserView()->browser();
   DCHECK(browser);
-  auto* vtc = VerticalTabController::FromBrowser(browser);
+  auto* vtc = VerticalTabController::From(browser);
   CHECK(vtc);
   return vtc->ShouldShowBraveVerticalTabs();
 }
@@ -196,7 +194,7 @@ bool BraveOpaqueBrowserFrameView::ShouldCaptionButtonsPaintToLayer() const {
     return true;
   }
 
-  auto* vtc = VerticalTabController::FromBrowser(browser);
+  auto* vtc = VerticalTabController::From(browser);
   CHECK(vtc);
 
   return vtc->ShouldShowBraveVerticalTabs() &&

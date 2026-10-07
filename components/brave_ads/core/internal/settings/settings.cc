@@ -35,14 +35,6 @@ bool UserHasJoinedBraveRewardsAndConnectedWallet() {
   return UserHasJoinedBraveRewards() && HasConnectedWallet();
 }
 
-bool UserHasOptedInToNewTabPageAds() {
-  return GetProfileBooleanPref(
-             ntp_background_images::prefs::kNewTabPageShowBackgroundImage) &&
-         GetProfileBooleanPref(
-             ntp_background_images::prefs::
-                 kNewTabPageShowSponsoredImagesBackgroundImage);
-}
-
 bool IsNotificationAdsEnabled() {
   return UserHasJoinedBraveRewards() &&
          GetProfileBooleanPref(prefs::kNotificationsEnabled);
@@ -55,21 +47,14 @@ int GetMaximumNotificationAdsPerHour() {
   return ads_per_hour > 0 ? ads_per_hour : kDefaultNotificationAdsPerHour.Get();
 }
 
-bool UserHasOptedInToSearchResultAds() {
-  return GetProfileBooleanPref(prefs::kOptedInToSearchResultAds);
+bool IsSponsoredAdsEnabled() {
+  return GetProfileBooleanPref(prefs::kSponsoredEnabled);
 }
 
-bool UserHasOptedInToSurveyPanelist() {
-  if (GetProfileBooleanPref(brave_rewards::prefs::kDisabledByPolicy)) {
-    return false;
-  }
-
-  if (!UserHasOptedInToNewTabPageAds()) {
-    return false;
-  }
-
+bool IsNewTabPageAdsEnabled() {
   return GetProfileBooleanPref(
-      ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist);
+             ntp_background_images::prefs::kNewTabPageShowBackgroundImage) &&
+         IsSponsoredAdsEnabled();
 }
 
 }  // namespace brave_ads

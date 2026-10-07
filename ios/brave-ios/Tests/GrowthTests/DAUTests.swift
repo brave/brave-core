@@ -520,7 +520,7 @@ class DAUTests: XCTestCase {
     for (storedValue, fixedValue) in testValues {
       Preferences.DAU.weekOfInstallation.value = storedValue
       // Fetching params will trigger migration
-      let params = dau.paramsAndPrefsSetup(for: Date(), lastPingDate: nil)
+      _ = dau.paramsAndPrefsSetup(for: Date(), lastPingDate: nil)
       XCTAssertEqual(try XCTUnwrap(Preferences.DAU.weekOfInstallation.value), fixedValue)
       Preferences.DAU.weekOfInstallation.reset()
     }
@@ -693,5 +693,11 @@ class DAUTests: XCTestCase {
       [.day, .month, .year, .weekday],
       from: date
     )
+  }
+}
+
+extension String {
+  fileprivate func truncate(length: Int, trailing: String = "…") -> String {
+    return (self.count > length) ? self.prefix(length) + trailing : self
   }
 }

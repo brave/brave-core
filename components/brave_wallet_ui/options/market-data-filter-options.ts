@@ -9,10 +9,10 @@ import { getLocale } from '$web-common/locale'
 export const AssetFilterOptions: AssetFilter[] = [
   {
     value: 'all',
-    label: getLocale('braveWalletMarketDataAllAssetsFilter'),
+    label: getLocale(S.BRAVE_WALLET_MARKET_DATA_ALL_ASSETS_FILTER),
   },
   {
     value: 'tradable',
-    label: getLocale('braveWalletMarketDataTradableFilter'),
+    label: getLocale(S.BRAVE_WALLET_MARKET_DATA_TRADABLE_FILTER),
   },
 ]

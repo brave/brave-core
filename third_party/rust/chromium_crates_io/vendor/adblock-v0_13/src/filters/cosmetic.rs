@@ -1023,7 +1023,7 @@ mod css_validation {
                 | "remove-attr" | "remove-class" => {
                     return Err(arguments.new_custom_error(
                         SelectorParseErrorKind::UnsupportedPseudoClassOrElement(name),
-                    ))
+                    ));
                 }
                 _ => (),
             }

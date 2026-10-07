@@ -90,6 +90,13 @@ public final class WalletConstants {
                     TransactionType.SOLANA_DAPP_SIGN_AND_SEND_TRANSACTION,
                     TransactionType.SOLANA_SWAP);
 
+    /** Solana transfers of an SPL token, with or without the associated account creation. */
+    public static List<Integer> SOLANA_SPL_TRANSACTION_TYPES =
+            Arrays.asList(
+                    TransactionType.SOLANA_SPL_TOKEN_TRANSFER,
+                    TransactionType
+                            .SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION);
+
     public static List<Integer> SOLANA_DAPPS_TRANSACTION_TYPES =
             Arrays.asList(
                     TransactionType.SOLANA_DAPP_SIGN_TRANSACTION,
@@ -108,7 +115,6 @@ public final class WalletConstants {
     public static final Map<String, Integer> KNOWN_TEST_CHAINS_MAP =
             Map.of(
                     BraveWalletConstants.SEPOLIA_CHAIN_ID, CoinType.ETH, //
-                    BraveWalletConstants.LOCALHOST_CHAIN_ID, CoinType.ETH, //
                     BraveWalletConstants.SOLANA_TESTNET, CoinType.SOL, //
                     BraveWalletConstants.SOLANA_DEVNET, CoinType.SOL, //
                     BraveWalletConstants.FILECOIN_TESTNET, CoinType.FIL, //

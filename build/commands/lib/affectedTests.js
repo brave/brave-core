@@ -15,9 +15,13 @@ import {
   getApplicableFilters,
   getTestsToRun,
   gnTargetToExecutableName,
-} from './testUtils.js'
+} from './testUtils.ts'
 
 const exec = promisify(child_process.execFile)
+
+// Turns an absolute path into the source-absolute label GN reports.
+const toGnPath = (absolutePath) =>
+  '//' + path.relative(config.srcDir, absolutePath).replaceAll(path.sep, '/')
 
 const getTestTargets = (outDir, filters = ['//*']) => {
   const { env } = config.defaultOptions
@@ -159,11 +163,11 @@ async function getAffectedTests(args = {}) {
   // Changes in GTestFilters are currently not tracked by GN
   const testAffectedDueModifiedFilterFiles = allTestExecutablesToConsider
     .flatMap((test) =>
-      getApplicableFilters(config, test).map((filter) => ({ test, filter })),
+      getApplicableFilters(config, test, { includeMissing: true }).map(
+        (filter) => ({ test, filter }),
+      ),
     )
-    .filter(({ filter }) =>
-      modified.has('//brave/' + path.relative(config.srcDir, filter)),
-    )
+    .filter(({ filter }) => modified.has(toGnPath(filter)))
     .map(({ test }) => test)
 
   return [...new Set([...affectedTests, ...testAffectedDueModifiedFilterFiles])]

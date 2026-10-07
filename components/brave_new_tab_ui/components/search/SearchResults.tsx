@@ -35,7 +35,7 @@ const Container = styled.div`
 
 // Handles opening an autocomplete match, which may or may not be part of an
 // autocomplete result.
-const openMatch = (match: AutocompleteMatch, line: number, event: React.MouseEvent | KeyboardEvent, searchEngine?: SearchEngineInfo) => {
+const openMatch = (resultSequenceId: number, match: AutocompleteMatch, line: number, event: React.MouseEvent | KeyboardEvent, searchEngine?: SearchEngineInfo) => {
   if (line === -1) {
     handleOpenURLClick(match.destinationUrl, event)
     return
@@ -45,7 +45,7 @@ const openMatch = (match: AutocompleteMatch, line: number, event: React.MouseEve
   if (searchEngine) {
     getNTPBrowserAPI().newTabMetrics.reportNTPSearchUsage(searchEngine.prepopulateId)
   }
-  omniboxController.openAutocompleteMatch(line, match.destinationUrl, true, button, {
+  omniboxController.openAutocompleteMatch(resultSequenceId, line, match.destinationUrl, true, button, {
     altKey: event.altKey,
     ctrlKey: event.ctrlKey,
     metaKey: event.metaKey,
@@ -168,7 +168,7 @@ export default function SearchResults() {
         return;
       }
 
-      openMatch(match, result?.matches.indexOf(match) ?? -1, e, searchEngine)
+      openMatch(result?.sequenceId ?? 0, match, result?.matches.indexOf(match) ?? -1, e, searchEngine)
     }
     document.addEventListener('keydown', handler)
     return () => {
@@ -178,7 +178,7 @@ export default function SearchResults() {
 
   const onSearchResultClick = (match: AutocompleteMatch) => {
     const line = result?.matches.indexOf(match) ?? -1
-    return (e: React.MouseEvent) => openMatch(match, line, e, searchEngine)
+    return (e: React.MouseEvent) => openMatch(result?.sequenceId ?? 0, match, line, e, searchEngine)
   }
 
   return matches.length ? <Container className='search-results'>

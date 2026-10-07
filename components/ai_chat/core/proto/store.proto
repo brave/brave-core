@@ -79,3 +79,23 @@ message SkillEntryProto {
   string shortcut = 1;
   string prompt = 2;
 }
+
+// One share of a conversation, as recorded locally. Stored
+// OSCrypt-encrypted in the brave.ai_chat.conversation_shares pref, rather than
+// in SQL, because `url` carries the conversation's decryption key and sharing
+// works whether or not conversation history is stored on disk.
+//
+// Every field but the title has to hold a value for the record to be of any
+// use, and a record which doesn't is discarded when read.
+message ConversationShareProto {
+  string share_id = 1;
+  string deletion_id = 2;
+  string conversation_uuid = 3;
+  string conversation_title = 4;
+  string url = 5;
+  int64 created_time_windows_epoch_micros = 6;
+}
+
+message ConversationSharesProto {
+  repeated ConversationShareProto shares = 1;
+}

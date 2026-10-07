@@ -49,6 +49,12 @@ class CreativeNewTabPageAds final : public TableInterface {
 
   void GetForActiveCampaigns(GetCreativeNewTabPageAdsCallback callback) const;
 
+  // Returns every creative, regardless of whether its campaign is currently
+  // active or region-targeted. Used to diagnose condition matchers on
+  // `brave://ads-internals` for creatives that aren't necessarily eligible
+  // right now.
+  void GetAll(GetCreativeNewTabPageAdsCallback callback) const;
+
   void SetBatchSize(int batch_size) {
     CHECK_GT(batch_size, 0);
 

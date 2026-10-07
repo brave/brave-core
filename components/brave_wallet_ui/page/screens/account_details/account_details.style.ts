@@ -9,7 +9,7 @@ import Alert from '@brave/leo/react/alert'
 import { Column, Row } from '../../../components/shared/style'
 import {
   layoutPanelWidth, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const ControlsWrapper = styled(Column)`
   padding: 0px 32px;
@@ -52,6 +52,13 @@ export const SyncAlertWrapper = styled(Row)`
   @media screen and (max-width: ${layoutPanelWidth}px) {
     padding: 16px 16px 0px 16px;
     margin: 0px;
+  }
+`
+
+export const ZCashMigrationBannerWrapper = styled(Column)`
+  padding: 0px 32px 16px 32px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    padding: 16px 16px 0px 16px;
   }
 `
 

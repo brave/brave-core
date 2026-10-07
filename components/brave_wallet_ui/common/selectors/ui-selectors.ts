@@ -24,3 +24,11 @@ export const transactionProviderErrorRegistry = createSelector(
   [selectUIState],
   (ui) => ui.transactionProviderErrorRegistry,
 )
+export const selectedTransactionId = createSelector(
+  [selectUIState],
+  (ui) => ui.selectedTransactionId,
+)
+export const submittingTransaction = createSelector(
+  [selectUIState],
+  (ui) => ui.submittingTransaction,
+)

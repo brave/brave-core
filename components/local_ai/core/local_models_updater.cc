@@ -14,19 +14,18 @@
 
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
-#include "base/files/file_util.h"
 #include "base/functional/bind.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/no_destructor.h"
-#include "base/path_service.h"
 #include "base/values.h"
 #include "base/version.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "components/component_updater/component_installer.h"
-#include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/history_embeddings/core/history_embeddings_features.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/update_client/update_client.h"
 #include "crypto/sha2.h"
@@ -45,21 +44,123 @@ constexpr uint8_t kPublicKeySHA256[32] = {
 static_assert(std::size(kPublicKeySHA256) == crypto::kSHA256Length,
               "Wrong hash length");
 
-base::FilePath GetComponentDir() {
-  base::FilePath components_dir =
-      base::PathService::CheckedGet(component_updater::DIR_COMPONENT_USER);
+// Keeps the component registration in sync with the `kBraveLocalAIEnabled`
+// master switch, which Brave Origin can flip long after startup.
+class LocalModelsComponentRegistrar {
+ public:
+  static LocalModelsComponentRegistrar* GetInstance() {
+    static base::NoDestructor<LocalModelsComponentRegistrar> instance;
+    return instance.get();
+  }
 
-  return components_dir.Append(kComponentInstallDir);
-}
+  LocalModelsComponentRegistrar(const LocalModelsComponentRegistrar&) = delete;
+  LocalModelsComponentRegistrar& operator=(
+      const LocalModelsComponentRegistrar&) = delete;
 
-void DeleteComponentDirectory() {
-  base::DeletePathRecursively(GetComponentDir());
-}
+  // Once per process, or once per Shutdown().
+  void Start(component_updater::ComponentUpdateService* cus,
+             PrefService* local_state) {
+    CHECK(pref_change_registrar_.IsEmpty() && !cus_);
+    cus_ = cus;
+    if (local_state) {
+      pref_change_registrar_.Init(local_state);
+      pref_change_registrar_.Add(
+          prefs::kBraveLocalAIEnabled,
+          base::BindRepeating(&LocalModelsComponentRegistrar::Sync,
+                              base::Unretained(this)));
+    }
+    Sync();
+  }
+
+  void Shutdown() {
+    pref_change_registrar_.Reset();
+    cus_ = nullptr;
+    installer_.reset();
+    registration_pending_ = false;
+  }
+
+ private:
+  friend base::NoDestructor<LocalModelsComponentRegistrar>;
+
+  LocalModelsComponentRegistrar() = default;
+  ~LocalModelsComponentRegistrar() = default;
+
+  bool IsEnabled() const {
+    const PrefService* local_state = pref_change_registrar_.prefs();
+    return cus_ && local_state &&
+           local_state->GetBoolean(prefs::kBraveLocalAIEnabled) &&
+           base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings);
+  }
+
+  void Sync() {
+    if (!IsEnabled()) {
+      Unregister();
+      return;
+    }
+    Register();
+  }
+
+  void Register() {
+    if (registration_pending_) {
+      return;
+    }
+    registration_pending_ = true;
+    EnsureInstaller();
+    installer_->Register(
+        cus_, base::BindOnce(&LocalModelsComponentRegistrar::OnRegistered,
+                             base::Unretained(this)));
+  }
+
+  // The switch can have turned off while the registration was in flight.
+  void OnRegistered() {
+    registration_pending_ = false;
+    if (!cus_) {
+      return;
+    }
+    if (!IsEnabled()) {
+      Unregister();
+      return;
+    }
+    brave_component_updater::BraveOnDemandUpdater::GetInstance()
+        ->EnsureInstalled(kComponentId);
+  }
+
+  void Unregister() {
+    // Only remove it ourselves when the service did not (it uninstalls what it
+    // had registered) and no registration in flight may still publish it.
+    const bool was_registered = cus_ && cus_->UnregisterComponent(kComponentId);
+    LocalModelsUpdaterState::GetInstance()->SetInstallDir(base::FilePath());
+    if (!was_registered && !registration_pending_) {
+      EnsureInstaller();
+      installer_->Uninstall();
+    }
+  }
+
+  void EnsureInstaller() {
+    if (!installer_) {
+      installer_ = base::MakeRefCounted<component_updater::ComponentInstaller>(
+          std::make_unique<LocalModelsComponentInstallerPolicy>(
+              pref_change_registrar_.prefs()));
+    }
+  }
+
+  raw_ptr<component_updater::ComponentUpdateService> cus_ = nullptr;
+  PrefChangeRegistrar pref_change_registrar_;
+  // True from Register() until OnRegistered(). The component is absent from
+  // the service for that whole window, so a second Register() would register
+  // it twice and an Unregister() would find nothing to unregister.
+  bool registration_pending_ = false;
+  // Reused: registration and uninstall share the installer's task runner, so a
+  // per-registration instance would let an uninstall delete what the next
+  // registration installed.
+  scoped_refptr<component_updater::ComponentInstaller> installer_;
+};
 
 }  // namespace
 
-LocalModelsComponentInstallerPolicy::LocalModelsComponentInstallerPolicy() =
-    default;
+LocalModelsComponentInstallerPolicy::LocalModelsComponentInstallerPolicy(
+    PrefService* local_state)
+    : local_state_(local_state) {}
 LocalModelsComponentInstallerPolicy::~LocalModelsComponentInstallerPolicy() =
     default;
 
@@ -92,6 +193,11 @@ void LocalModelsComponentInstallerPolicy::ComponentReady(
     const base::FilePath& install_dir,
     base::DictValue manifest) {
   if (install_dir.empty()) {
+    return;
+  }
+  // Unregistration is deferred behind an in-flight update, so this still fires
+  // for a download that started before the switch turned off.
+  if (local_state_ && !local_state_->GetBoolean(prefs::kBraveLocalAIEnabled)) {
     return;
   }
   LocalModelsUpdaterState::GetInstance()->SetInstallDir(install_dir);
@@ -148,6 +254,7 @@ void LocalModelsUpdaterState::SetInstallDir(const base::FilePath& install_dir) {
   install_dir_ = install_dir;
   if (install_dir.empty()) {
     embeddinggemma_litert_dir_ = base::FilePath();
+    observers_.Notify(&Observer::OnLocalModelsUnavailable);
     return;
   }
   embeddinggemma_litert_dir_ = install_dir_.AppendASCII(kEmbeddingGemmaModelDir)
@@ -171,23 +278,11 @@ LocalModelsUpdaterState::~LocalModelsUpdaterState() = default;
 void ManageLocalModelsComponentRegistration(
     component_updater::ComponentUpdateService* cus,
     PrefService* local_state) {
-  const bool local_ai_enabled =
-      local_state &&
-      local_state->GetBoolean(local_ai::prefs::kBraveLocalAIEnabled);
-  if (!local_ai_enabled || !cus ||
-      !base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
-    DeleteComponentDirectory();
-    return;
-  }
+  LocalModelsComponentRegistrar::GetInstance()->Start(cus, local_state);
+}
 
-  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<LocalModelsComponentInstallerPolicy>());
-  installer->Register(
-      // After Register, run the callback with component id.
-      cus, base::BindOnce([]() {
-        brave_component_updater::BraveOnDemandUpdater::GetInstance()
-            ->EnsureInstalled(kComponentId);
-      }));
+void ShutdownLocalModelsComponentRegistration() {
+  LocalModelsComponentRegistrar::GetInstance()->Shutdown();
 }
 
 }  // namespace local_ai

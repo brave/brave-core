@@ -14,8 +14,7 @@ from collections import OrderedDict
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # pylint: disable=wrong-import-position
-from check import (Checker, CheckFrame, PostProcessError, VerifySubset,
-                   render_re)
+from check import Checker, CheckFrame, PostProcessError, VerifySubset, render_re
 from recipe_test_api import PostprocessHookContext
 
 
@@ -24,7 +23,7 @@ def _noop(check, steps):
 
 
 # A hook context standing in for an `api.post_process(...)` registration site.
-HOOK = PostprocessHookContext(_noop, ('arg', ), {'k': 'v'}, '<caller>', 7)
+HOOK = PostprocessHookContext(_noop, ('arg',), {'k': 'v'}, '<caller>', 7)
 
 
 class CheckerTest(unittest.TestCase):
@@ -48,6 +47,8 @@ class CheckerTest(unittest.TestCase):
 
         def body(check):
             check(True)
+            # The literal comparison is the fixture under test.
+            # pylint: disable-next=comparison-of-constants
             check('hint', 1 < 2)
 
         body(checker)
@@ -57,6 +58,8 @@ class CheckerTest(unittest.TestCase):
         checker = Checker(HOOK)
 
         def body(check):
+            # The literal comparison is the fixture under test.
+            # pylint: disable-next=comparison-of-constants
             check(1 == 2)
 
         body(checker)
@@ -64,11 +67,14 @@ class CheckerTest(unittest.TestCase):
         frame = checker.failed_checks[0].frames[-1]
         self.assertEqual(
             self._sanitize(frame),
-            CheckFrame(fname='',
-                       line=0,
-                       function='body',
-                       code='check(1 == 2)',
-                       varmap={}))
+            CheckFrame(
+                fname='',
+                line=0,
+                function='body',
+                code='check(1 == 2)',
+                varmap={},
+            ),
+        )
 
     def test_hint_is_recorded_as_name(self):
         checker = Checker(HOOK)
@@ -135,14 +141,14 @@ class VerifySubsetTest(unittest.TestCase):
         self.assertIsNone(VerifySubset({'a': 1}, {'a': 1, 'b': 2}))
 
     def test_added_key(self):
-        self.assertEqual(VerifySubset({
-            'a': 1,
-            'c': 3
-        }, {'a': 1}), ": added key 'c'")
+        self.assertEqual(
+            VerifySubset({'a': 1, 'c': 3}, {'a': 1}), ": added key 'c'"
+        )
 
     def test_value_mismatch(self):
-        self.assertEqual(VerifySubset({'a': 'x'}, {'a': 'y'}),
-                         "['a']: 'x' != 'y'")
+        self.assertEqual(
+            VerifySubset({'a': 'x'}, {'a': 'y'}), "['a']: 'x' != 'y'"
+        )
 
     def test_type_mismatch(self):
         self.assertIn('type mismatch', VerifySubset({'a': 1}, {'a': [1]}))
@@ -160,16 +166,15 @@ class VerifySubsetTest(unittest.TestCase):
 
 
 class RenderReTest(unittest.TestCase):
-
     def test_plain_and_flagged(self):
         # Python's `re` carries the UNICODE flag by default on str patterns.
-        self.assertEqual(render_re(re.compile('foo')),
-                         "re.compile('foo', UNICODE)")
+        self.assertEqual(
+            render_re(re.compile('foo')), "re.compile('foo', UNICODE)"
+        )
         self.assertIn('IGNORECASE', render_re(re.compile('foo', re.I)))
 
 
 class PostProcessErrorTest(unittest.TestCase):
-
     def test_is_value_error(self):
         self.assertTrue(issubclass(PostProcessError, ValueError))
 

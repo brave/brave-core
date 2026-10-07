@@ -4,4 +4,15 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """`proto` module: produce and consume protobuf data to and from steps."""
 
-DEPS = ['raw_io']
+from dataclasses import dataclass
+
+from recipe_api import RecipeScriptApi
+from recipe_modules import raw_io
+
+from .api import ProtoApi as API
+from .test_api import ProtoTestApi as TEST_API
+
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    raw_io: raw_io.API

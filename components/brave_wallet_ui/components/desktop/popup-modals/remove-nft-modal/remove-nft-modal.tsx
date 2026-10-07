@@ -39,19 +39,19 @@ export const RemoveNftModal = ({ onConfirm, onCancel }: Props) => {
       onClose={onCancel}
     >
       <StyledWrapper>
-        <Header>{getLocale('braveWalletRemoveNftModalHeader')}</Header>
+        <Header>{getLocale(S.BRAVE_WALLET_REMOVE_NFT_MODAL_HEADER)}</Header>
         <Description>
-          {getLocale('braveWalletRemoveNftModalDescription')}
+          {getLocale(S.BRAVE_WALLET_REMOVE_NFT_MODAL_DESCRIPTION)}
         </Description>
         <ButtonRow>
           <Button
             onClick={onCancel}
             kind='outline'
           >
-            {getLocale('braveWalletRemoveNftModalCancel')}
+            {getLocale(S.BRAVE_WALLET_REMOVE_NFT_MODAL_CANCEL)}
           </Button>
           <Button onClick={onConfirm}>
-            {getLocale('braveWalletRemoveNftModalConfirm')}
+            {getLocale(S.BRAVE_WALLET_REMOVE_NFT_MODAL_CONFIRM)}
           </Button>
         </ButtonRow>
       </StyledWrapper>

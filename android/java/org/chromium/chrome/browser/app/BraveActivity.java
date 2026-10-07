@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.app;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PictureInPictureParams;
@@ -112,6 +113,7 @@ import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.OpenYtInBraveDialogFragment;
 import org.chromium.chrome.browser.app.domain.WalletModel;
+import org.chromium.chrome.browser.app.tabwindow.TabWindowManagerSingleton;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.billing.PurchaseModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
@@ -143,6 +145,7 @@ import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
+import org.chromium.chrome.browser.day_zero.DayZeroHelper;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
@@ -190,8 +193,6 @@ import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.chrome.browser.settings.developer.BraveQAPreferences;
-import org.chromium.chrome.browser.share.ShareDelegate;
-import org.chromium.chrome.browser.share.ShareDelegate.ShareOrigin;
 import org.chromium.chrome.browser.shields.ContentFilteringFragment;
 import org.chromium.chrome.browser.shields.CreateCustomFiltersFragment;
 import org.chromium.chrome.browser.site_settings.BraveWalletEthereumConnectedSites;
@@ -203,6 +204,7 @@ import org.chromium.chrome.browser.tabmodel.TabClosureParams;
 import org.chromium.chrome.browser.tabmodel.TabList;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
+import org.chromium.chrome.browser.tabwindow.TabWindowManager;
 import org.chromium.chrome.browser.toolbar.BraveToolbarManager;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
@@ -275,10 +277,6 @@ public abstract class BraveActivity extends ChromeActivity
     public static final String BRAVE_WALLET_HOST = "wallet";
     public static final String BRAVE_WALLET_ORIGIN = "brave://wallet/";
     public static final String BRAVE_WALLET_URL = "brave://wallet/crypto/portfolio/assets";
-    public static final String BRAVE_BUY_URL = "brave://wallet/crypto/fund-wallet";
-    public static final String BRAVE_SEND_URL = "brave://wallet/send";
-    public static final String BRAVE_SWAP_URL = "brave://wallet/swap";
-    public static final String BRAVE_DEPOSIT_URL = "brave://wallet/crypto/deposit-funds";
     public static final String BRAVE_REWARDS_SETTINGS_URL = "brave://rewards/";
     public static final String BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL =
             "brave://rewards/#verify";
@@ -367,6 +365,9 @@ public abstract class BraveActivity extends ChromeActivity
     private boolean mIsColdStart;
     // One-shot guard so the app-close shred notification fires at most once per cold start.
     private boolean mAppCloseShredTriggered;
+
+    // Day Zero experiment variant, read in finishNativeInitialization().
+    private String mDayZeroVariant;
 
     /** Serves as a general exception for failed attempts to get BraveActivity. */
     public static class BraveActivityNotFoundException extends Exception {
@@ -481,11 +482,7 @@ public abstract class BraveActivity extends ChromeActivity
             @Nullable MotionEventInfo triggeringMotion) {
         final Tab currentTab = getActivityTab();
         // Handle items replaced by Brave.
-        if (id == R.id.info_menu_id && currentTab != null) {
-            ShareDelegate shareDelegate = (ShareDelegate) getShareDelegateSupplier().get();
-            shareDelegate.share(currentTab, false, ShareOrigin.OVERFLOW_MENU);
-            return true;
-        } else if (id == R.id.reload_menu_id) {
+        if (id == R.id.reload_menu_id) {
             setComesFromNewTab(true);
         } else if (id == R.id.preferences_id) {
             final AppMenuPropertiesDelegate delegate = createAppMenuPropertiesDelegate();
@@ -516,8 +513,6 @@ public abstract class BraveActivity extends ChromeActivity
             return false;
         } else if (id == R.id.exit_id) {
             exitBrave();
-        } else if (id == R.id.set_default_browser) {
-            BraveSetDefaultBrowserUtils.openDefaultAppsSettings(BraveActivity.this);
         } else if (id == R.id.brave_rewards_id) {
             showRewardsPage();
         } else if (id == R.id.brave_wallet_id) {
@@ -630,6 +625,77 @@ public abstract class BraveActivity extends ChromeActivity
             return;
         }
         super.onNightModeStateChanged();
+    }
+
+    @Override
+    protected boolean isStartedUpCorrectly(Intent intent) {
+        if (maybeRedirectLaunchToYouTubePictureInPictureWindow(intent)) {
+            return false;
+        }
+        return super.isStartedUpCorrectly(intent);
+    }
+
+    /**
+     * Hands a launcher tap to the window that owns a Brave YouTube Picture-in-Picture session,
+     * rather than letting it open a second window holding someone else's tabs.
+     *
+     * <p>PiP pins the browser task, leaving the launcher nothing to resume. Where the OS reads
+     * ChromeTabbedActivity as {@code singleInstancePerTask} (Samsung, via the {@code
+     * android.activity.launch_mode} meta-data) it answers by creating a second task, and {@code
+     * MultiInstanceManagerApi31#allocInstanceId} gives that unmapped task a different window id: a
+     * stale or empty set of tabs, while the real session sits behind the PiP window.
+     *
+     * <p>Fronting the PiP window unpins it, and aborting this activity drops the task it would have
+     * used.
+     *
+     * @return true if the launch was handed over and this activity should not start.
+     */
+    private boolean maybeRedirectLaunchToYouTubePictureInPictureWindow(Intent intent) {
+        // Launcher taps only. Upstream already routes stray VIEW intents to an existing window
+        // from maybeDispatchIntentInExistingActivity, and its own new window intents carry no
+        // action at all (MultiWindowUtils#createNewWindowIntent), so neither reaches this.
+        if (!Intent.ACTION_MAIN.equals(intent.getAction())
+                || !intent.hasCategory(Intent.CATEGORY_LAUNCHER)) {
+            return false;
+        }
+
+        // The bytecode rewrite re-parents only ChromeTabbedActivity onto BraveActivity, so this
+        // instanceof picks out exactly the browser windows. isInPictureInPictureMode() goes first
+        // because it just reads a field; the other call would build a controller for every window.
+        BraveActivity pictureInPictureActivity = null;
+        for (Activity activity : ApplicationStatus.getRunningActivities()) {
+            if (activity == this || !(activity instanceof BraveActivity braveActivity)) {
+                continue;
+            }
+            if (!braveActivity.isInPictureInPictureMode()
+                    || !braveActivity.isYouTubePictureInPictureActive()) {
+                // An ordinary window is still alive, so the launcher had something to resume
+                // and this launch really is a request for another one.
+                return false;
+            }
+            pictureInPictureActivity = braveActivity;
+        }
+        if (pictureInPictureActivity == null) {
+            return false;
+        }
+
+        // Last, because it copies the whole shared-preference map. Only a task that never hosted
+        // a window can be the one Android just made for this launch. A window being recreated or
+        // restored reuses its own task and reaches here looking like a launcher tap too, since
+        // IntentHandler#rewriteFromHistoryIntent swaps in a synthetic MAIN/LAUNCHER intent;
+        // redirecting that would strand the user and remove the restored window's task.
+        if (BraveMultiWindowUtils.isTaskMappedToInstance(ApplicationStatus.getTaskId(this))) {
+            return false;
+        }
+
+        // Cannot select ourselves: this activity has no tab model selector yet, so it resolves
+        // to no window id.
+        final int windowId =
+                TabWindowManagerSingleton.getInstance().getIdForWindow(pictureInPictureActivity);
+        if (windowId == TabWindowManager.INVALID_WINDOW_ID) {
+            return false;
+        }
+        return MultiWindowUtils.launchIntentInInstance(intent, windowId);
     }
 
     @Override
@@ -851,15 +917,6 @@ public abstract class BraveActivity extends ChromeActivity
                                 maybeShowSignSolTransactionsRequestLayout(openWalletPanelRunnable);
                             });
                 });
-    }
-
-    public void showWalletOnboarding() {
-        BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-        layout.showWalletIcon(true);
-        if (!BraveWalletPreferences.getPrefWeb3NotificationsEnabled()) {
-            return;
-        }
-        layout.showWalletPanel();
     }
 
     public void walletInteractionDetected(WebContents webContents) {
@@ -1303,6 +1360,7 @@ public abstract class BraveActivity extends ChromeActivity
 
         initMiscAndroidMetrics();
         checkForNotificationData();
+        mDayZeroVariant = getDayZeroVariant();
 
         if (RateUtils.getInstance().isLastSessionShown()) {
             RateUtils.getInstance().setPrefNextRateDate();
@@ -1397,7 +1455,10 @@ public abstract class BraveActivity extends ChromeActivity
             BraveOriginSubscriptionPrefs.requestCredentialSummary(
                     profile,
                     (isActive) -> {
-                        if (!BraveOriginSubscriptionPrefs.getIsSubscriptionActive(profile)
+                        // The summary request is asynchronous, so the profile captured above may
+                        // already be destroyed by the time this runs.
+                        if (BraveOriginSubscriptionPrefs.isProfileUsable(profile)
+                                && !BraveOriginSubscriptionPrefs.getIsSubscriptionActive(profile)
                                 && !isActive) {
                             BraveOriginSubscriptionPrefs.verifyPurchase(profile);
                         }
@@ -1567,6 +1628,21 @@ public abstract class BraveActivity extends ChromeActivity
                                                         this, dataTypesArray, TimePeriod.ALL_TIME));
                     });
         }
+    }
+
+    /**
+     * Returns the active Day Zero experiment variant, or {@link
+     * DayZeroHelper#DAY_ZERO_DEFAULT_VARIANT} when the stored one is unset or unknown to this
+     * build.
+     */
+    private String getDayZeroVariant() {
+        final String variant = DayZeroHelper.getDayZeroVariant();
+        // Filter out day zero variants different from A and B.
+        if (DayZeroHelper.DAY_ZERO_VARIANT_A.equals(variant)
+                || DayZeroHelper.DAY_ZERO_VARIANT_B.equals(variant)) {
+            return variant;
+        }
+        return DayZeroHelper.DAY_ZERO_DEFAULT_VARIANT;
     }
 
     private void applyChangesForYahooJp() {
@@ -2887,6 +2963,26 @@ public abstract class BraveActivity extends ChromeActivity
                         ChromeTabbedActivity.class, "mMultiInstanceManager", this);
     }
 
+    /**
+     * Removes the browser's tasks from the Recents screen. Terminating only finishes the activities
+     * and kills the process, which leaves the task behind, so Brave still looks like it is running
+     * after the user chose to exit.
+     */
+    private void removeTasksFromRecents() {
+        // Activity#finishAndRemoveTask() is preferred for this instance because it sets
+        // isFinishing() synchronously, see MultiInstanceManagerApi31#closeInstance. AppTask covers
+        // the remaining windows, including those whose activity is no longer loaded.
+        finishAndRemoveTask();
+        final ActivityManager activityManager =
+                (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        if (activityManager == null) {
+            return;
+        }
+        for (ActivityManager.AppTask task : activityManager.getAppTasks()) {
+            task.finishAndRemoveTask();
+        }
+    }
+
     private void exitBrave() {
         LayoutInflater inflater =
                 (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -2894,6 +2990,7 @@ public abstract class BraveActivity extends ChromeActivity
         DialogInterface.OnClickListener onClickListener =
                 (dialog, button) -> {
                     if (button == AlertDialog.BUTTON_POSITIVE) {
+                        removeTasksFromRecents();
                         ApplicationLifetime.terminate(false);
                     } else {
                         dialog.dismiss();
@@ -3055,7 +3152,7 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         QuickSearchEnginesViewAdapter adapter =
-                new QuickSearchEnginesViewAdapter(BraveActivity.this, searchEngines, this);
+                new QuickSearchEnginesViewAdapter(searchEngines, this);
         recyclerView.setAdapter(adapter);
         if (mQuickSearchEnginesView.getParent() == null) {
             WindowManager.LayoutParams params =
@@ -3122,12 +3219,31 @@ public abstract class BraveActivity extends ChromeActivity
                     GOOGLE_SEARCH_ENGINE_KEYWORD.equals(quickSearchEnginesModel.getKeyword())
                             ? QuickSearchEnginesUtil.GOOGLE_SEARCH_ENGINE_URL
                             : quickSearchEnginesModel.getUrl();
-            LoadUrlParams loadUrlParams =
-                    new LoadUrlParams(
-                            quickSearchEngineUrl
-                                    .replace("{searchTerms}", query)
-                                    .replace("{inputEncoding}", "UTF-8"));
-            getActivityTab().loadUrl(loadUrlParams);
+            String searchUrl =
+                    quickSearchEngineUrl
+                            .replace("{searchTerms}", query)
+                            .replace("{inputEncoding}", "UTF-8");
+
+            final String quickSearchVariation;
+            if (mDayZeroVariant != null
+                    && mDayZeroVariant.equals(DayZeroHelper.DAY_ZERO_VARIANT_A)) {
+                // Control variant.
+                quickSearchVariation = "-c";
+            } else if (mDayZeroVariant != null
+                    && mDayZeroVariant.equals(DayZeroHelper.DAY_ZERO_VARIANT_B)) {
+                // Test variant.
+                quickSearchVariation = "-t";
+            } else {
+                // Default.
+                quickSearchVariation = "";
+            }
+            // Tells the Brave search backend the query started from the quick search bar.
+            // Leaves any other engine's URL untouched.
+            searchUrl =
+                    BraveIntentHandler.maybeReplaceBraveSearchSource(
+                            searchUrl,
+                            BraveIntentHandler.ANDROID_QUICK_SEARCH + quickSearchVariation);
+            getActivityTab().loadUrl(new LoadUrlParams(searchUrl));
         }
         getBraveToolbarLayout().clearOmniboxFocus();
     }
@@ -3163,6 +3279,9 @@ public abstract class BraveActivity extends ChromeActivity
     public void onSharedPreferenceChanged(
             SharedPreferences sharedPreferences, @Nullable String key) {
         if (ChromePreferenceKeys.TOOLBAR_TOP_ANCHORED.equals(key)) {
+            // Upstream moves the address bar live. Only Brave's bottom controls, which the bottom
+            // bar replaces, are built once per run.
+            if (BottomToolbarConfiguration.isAndroidBottomBarEnabled()) return;
             Activity currentActivity = ApplicationStatus.getLastTrackedFocusedActivity();
             if (currentActivity == null) {
                 currentActivity = this;

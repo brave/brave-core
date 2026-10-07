@@ -27,7 +27,6 @@
 #include "brave/components/brave_rewards/core/rewards_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -65,10 +64,8 @@ class RewardsPageHandler::UpdateObserver
       : update_callback_(std::move(update_callback)) {
     rewards_observation_.Observe(rewards_service);
     pref_change_registrar_.Init(pref_service);
-    AddPrefListener(ntp_background_images::prefs::
-                        kNewTabPageShowSponsoredImagesBackgroundImage,
-                    UpdateSource::kAds);
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
+    AddPrefListener(brave_ads::prefs::kSponsoredEnabled, UpdateSource::kAds);
     AddPrefListener(brave_ads::prefs::kNotificationsEnabled,
                     UpdateSource::kAds);
     AddPrefListener(brave_ads::prefs::kMaximumNotificationAdsPerHour,
@@ -414,8 +411,7 @@ void RewardsPageHandler::GetAdsSettings(GetAdsSettingsCallback callback) {
       ads_service_->IsBrowserUpgradeRequiredToServeAds();
   settings->is_supported_region = brave_ads::IsSupportedRegion();
   settings->new_tab_page_ads_enabled =
-      prefs_->GetBoolean(ntp_background_images::prefs::
-                             kNewTabPageShowSponsoredImagesBackgroundImage);
+      prefs_->GetBoolean(brave_ads::prefs::kSponsoredEnabled);
   settings->notification_ads_enabled =
       prefs_->GetBoolean(brave_ads::prefs::kNotificationsEnabled);
 
@@ -505,9 +501,7 @@ void RewardsPageHandler::SetAdTypeEnabled(brave_ads::mojom::AdType ad_type,
   using AdType = brave_ads::mojom::AdType;
   switch (ad_type) {
     case AdType::kNewTabPageAd:
-      prefs_->SetBoolean(ntp_background_images::prefs::
-                             kNewTabPageShowSponsoredImagesBackgroundImage,
-                         enabled);
+      prefs_->SetBoolean(brave_ads::prefs::kSponsoredEnabled, enabled);
       break;
     case AdType::kNotificationAd:
       prefs_->SetBoolean(brave_ads::prefs::kNotificationsEnabled, enabled);

@@ -6,11 +6,9 @@
 #ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_VIEW_COUNTER_MODEL_H_
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_VIEW_COUNTER_MODEL_H_
 
-#include <tuple>
 #include <vector>
 
 #include "base/functional/callback.h"
-#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/timer/wall_clock_timer.h"
 
@@ -26,12 +24,8 @@ class ViewCounterModel {
   ViewCounterModel(const ViewCounterModel&) = delete;
   ViewCounterModel& operator=(const ViewCounterModel&) = delete;
 
-  // Set each campaigns total image count.
-  void SetCampaignsTotalBrandedImageCount(
-      const std::vector<size_t>& campaigns_total_image_count);
-
-  // Returns current campaign index and its bg index.
-  std::tuple<size_t, size_t> GetCurrentBrandedImageIndex() const;
+  void SetCampaignsTotalNewTabTakeoverCreativeCount(
+      const std::vector<size_t>& campaigns_total_creative_count);
 
   int current_wallpaper_image_index() const {
     return current_wallpaper_image_index_;
@@ -39,13 +33,14 @@ class ViewCounterModel {
 
   void set_total_image_count(int count) { total_image_count_ = count; }
 
-  void set_show_branded_wallpaper(bool show) { show_branded_wallpaper_ = show; }
+  void set_show_new_tab_takeover_wallpaper(bool show) {
+    show_new_tab_takeover_wallpaper_ = show;
+  }
   void set_show_wallpaper(bool show) { show_wallpaper_ = show; }
 
-  bool ShouldShowSponsoredImages() const;
+  bool ShouldShowNewTabTakeover() const;
   void RegisterPageView();
-  void MaybeResetBrandedWallpaperCount();
-  void NextBrandedImage();
+  void MaybeResetNewTabTakeoverCount();
   void Reset();
   void RotateBackgroundWallpaperImageIndex();
 
@@ -56,45 +51,33 @@ class ViewCounterModel {
     rand_int_inclusive_callback_ = std::move(callback);
   }
 
- private:
-  friend class ViewCounterServiceTest;
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPSponsoredImagesTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
-                           NTPSponsoredImagesCountResetTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
-                           NTPSponsoredImagesCountResetMinTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
-                           NTPSponsoredImagesCountResetTimerTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
-                           NTPSponsoredImagesCountToBrandedWallpaperTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPBackgroundImagesTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
-                           NTPBackgroundImagesWithSIDisabledTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
-                           NTPBackgroundImagesWithEmptyCampaignTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
-                           NTPFailedToLoadSponsoredImagesTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, ModelTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, PrefsWithModelTest);
+  int count_to_new_tab_takeover_wallpaper_for_testing() const {
+    return count_to_new_tab_takeover_wallpaper_;
+  }
+  void set_count_to_new_tab_takeover_wallpaper_for_testing(int count) {
+    count_to_new_tab_takeover_wallpaper_ = count;
+  }
+  bool show_wallpaper_for_testing() const { return show_wallpaper_; }
+  bool show_new_tab_takeover_wallpaper_for_testing() const {
+    return show_new_tab_takeover_wallpaper_;
+  }
 
-  void RegisterPageViewForBrandedImages();
+ private:
+  void RegisterPageViewForNewTabTakeoverCreatives();
 
   void RegisterPageViewForBackgroundImages();
 
-  void ScheduleNextBrandedWallpaperCountReset();
-  void ResetBrandedWallpaperCountAndScheduleNextCountReset();
+  void ScheduleNextNewTabTakeoverCountReset();
+  void ResetNewTabTakeoverCountAndScheduleNextCountReset();
 
-  // For NTP SI.
+  // For sponsored content.
   raw_ptr<PrefService> prefs_ = nullptr;
-  int count_to_branded_wallpaper_ = 0;
-  bool show_branded_wallpaper_ = true;
-  size_t current_campaign_index_ = 0;
+  int count_to_new_tab_takeover_wallpaper_ = 0;
+  bool show_new_tab_takeover_wallpaper_ = true;
   size_t total_campaign_count_ = 0;
-  std::vector<size_t> campaigns_total_branded_image_count_;
-  std::vector<size_t> campaigns_current_branded_image_index_;
   base::WallClockTimer counts_reset_timer_;
 
-  // For NTP BI.
+  // For sponsored backgrounds.
   int current_wallpaper_image_index_ = 0;
   int total_image_count_ = 0;
   bool show_wallpaper_ = true;

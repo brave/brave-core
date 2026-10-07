@@ -91,6 +91,10 @@ class EmailAliasesService : public KeyedService,
   // Marks the promo as shown to the user.
   void MarkPromoShown();
 
+  const std::vector<email_aliases::mojom::AliasPtr>& aliases() const {
+    return aliases_;
+  }
+
  private:
   using TokenResult =
       base::expected<brave_account::mojom::GetServiceTokenResultPtr,
@@ -141,6 +145,8 @@ class EmailAliasesService : public KeyedService,
   const raw_ref<PrefService> pref_service_;
 
   EmailAliasesMetrics metrics_;
+
+  std::vector<email_aliases::mojom::AliasPtr> aliases_;
 
   // WeakPtrFactory to safely bind callbacks across async network operations.
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};

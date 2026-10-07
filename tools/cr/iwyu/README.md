@@ -49,7 +49,7 @@ flags and generated headers, **and** several GN args have to be flipped —
 without them IWYU crashes during analysis:
 
 ```sh
-npm run build -- Static \
+pnpm run build Static \
   --target_os=android \
   --ignore_compile_failure \
   --target=brave:all \
@@ -83,7 +83,7 @@ This:
    (`brave/build/include_what_you_use_mappings.json5`).
 3. Applies suggestions in place via `fix_includes.py`.
 4. Strips blackholed includes (e.g. `<new>`) from modified files.
-5. Runs `npm run format` so the resulting diff matches Brave's style.
+5. Runs `pnpm run format` so the resulting diff matches Brave's style.
 
 Artifacts written next to the build:
 

@@ -25,6 +25,7 @@ function runGit(repoPath, args) {
 async function writePatchAsPlaster(repoPath, patchDirPath, repoRelativePath) {
   const patchContents = await runGit(repoPath, [
     'diff',
+    '--no-ext-diff',
     '--src-prefix=a/',
     '--dst-prefix=b/',
     '--default-prefix',
@@ -132,5 +133,89 @@ describe('updatePatches plaster detection', function () {
     expect(
       await fs.pathExists(path.join(patchPath, sourceName + '.patch')),
     ).toBe(false)
+  })
+})
+
+describe('updatePatches diff pins', function () {
+  let repoPath, patchPath
+
+  beforeEach(async function () {
+    patchPath = await fs.mkdtemp(
+      path.join(os.tmpdir(), dirPrefixTmp + 'pins-patches-'),
+    )
+    repoPath = await fs.mkdtemp(
+      path.join(os.tmpdir(), dirPrefixTmp + 'pins-repo-'),
+    )
+
+    await runGit(repoPath, ['init'])
+    await runGit(repoPath, ['config', 'user.email', 'unittests@local'])
+    await runGit(repoPath, ['config', 'user.name', 'Unit Tests'])
+    await runGit(repoPath, ['config', 'commit.gpgsign', 'false'])
+  })
+
+  afterEach(async function () {
+    jest.restoreAllMocks()
+    await fs.remove(repoPath).catch(() => {})
+    await fs.remove(patchPath).catch(() => {})
+  })
+
+  // The args a single-file `git diff` call passes to `util.runAsync`, i.e. a
+  // call whose args start with the pinning `-c` options and end in 'diff'.
+  function findSingleDiffCallArgs(spy) {
+    return spy.mock.calls
+      .map(([, args]) => args)
+      .find((args) => args.includes('diff') && args.includes('--full-index'))
+  }
+
+  // The options object (including `env`) for that same call.
+  function findSingleDiffCallOptions(spy) {
+    return spy.mock.calls.find(
+      ([, args]) => args.includes('diff') && args.includes('--full-index'),
+    )[2]
+  }
+
+  test('pins diff.algorithm and core.attributesFile for a text file', async () => {
+    const textPath = path.join(repoPath, 'source.cc')
+    await fs.writeFile(textPath, 'line one\nline two\n')
+    await runGit(repoPath, ['add', '.'])
+    await runGit(repoPath, ['commit', '-m', 'initial'])
+    await fs.writeFile(textPath, 'line one\nline two modified\n')
+
+    const spy = jest.spyOn(util, 'runAsync')
+    await updatePatches(repoPath, patchPath, [])
+
+    const diffArgs = findSingleDiffCallArgs(spy)
+    expect(diffArgs).toContain('diff.algorithm=histogram')
+    expect(diffArgs.some((arg) => arg.startsWith('core.attributesFile='))).toBe(
+      true,
+    )
+
+    const diffOptions = findSingleDiffCallOptions(spy)
+    expect(diffOptions.env.GIT_ATTR_NOSYSTEM).toBe('1')
+    expect(diffOptions.env.GIT_CONFIG_GLOBAL).toBe('/dev/null')
+    expect(diffOptions.env.GIT_CONFIG_NOSYSTEM).toBe('1')
+  })
+
+  test('skips the attributesFile pin for a binary file, keeping it a binary diff', async () => {
+    const binaryPath = path.join(repoPath, 'image.bin')
+    await fs.writeFile(binaryPath, Buffer.from([0, 1, 2, 0, 3, 4]))
+    await runGit(repoPath, ['add', '.'])
+    await runGit(repoPath, ['commit', '-m', 'initial'])
+    await fs.writeFile(binaryPath, Buffer.from([0, 1, 2, 0, 3, 4, 5, 6]))
+
+    const spy = jest.spyOn(util, 'runAsync')
+    await updatePatches(repoPath, patchPath, [])
+
+    const diffArgs = findSingleDiffCallArgs(spy)
+    expect(diffArgs).toContain('diff.algorithm=histogram')
+    expect(diffArgs.some((arg) => arg.startsWith('core.attributesFile='))).toBe(
+      false,
+    )
+
+    const patchContents = await fs.readFile(
+      path.join(patchPath, 'image.bin.patch'),
+      'utf-8',
+    )
+    expect(patchContents).toContain('Binary files')
   })
 })

@@ -75,6 +75,8 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
 
     @MonotonicNonNull private TransactionListener mTransactionListener;
     @MonotonicNonNull private Button mRejectAllTx;
+    @MonotonicNonNull private Button mApprove;
+    @MonotonicNonNull private TextView mInsufficientBalanceError;
 
     @Nullable private TransactionInfo mTxInfo;
 
@@ -141,6 +143,8 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRejectAllTx = view.findViewById(R.id.btn_reject_transactions);
+        mApprove = view.findViewById(R.id.approve);
+        mInsufficientBalanceError = view.findViewById(R.id.insufficient_balance_error);
 
         if (mTxInfo == null) {
             return;
@@ -250,8 +254,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
                         });
         Button reject = view.findViewById(R.id.reject);
         reject.setOnClickListener(v -> rejectTransaction());
-        Button approve = view.findViewById(R.id.approve);
-        approve.setOnClickListener(v -> approveTransaction());
+        mApprove.setOnClickListener(v -> approveTransaction());
         if (mPendingTransactions.size() > 1) {
             // TODO: next button is not functional. Update next button text based on position in
             //  mTransactionInfos list.
@@ -311,16 +314,97 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
                 false,
                 (assetPrices, fullTokenList, nativeAssetsBalances, blockchainTokensBalances) -> {
                     if (!canUpdateUi() || mTxInfo == null) return;
-                    fillAssetDependentControls(
+                    ParsedTransaction parsedTx =
+                            fillAssetDependentControls(
+                                    mTxInfo,
+                                    view,
+                                    txNetwork,
+                                    txAccountInfo,
+                                    accounts,
+                                    assetPrices,
+                                    fullTokenList,
+                                    mSolanaEstimatedTxFee);
+                    updateInsufficientBalanceUi(
                             mTxInfo,
-                            view,
+                            parsedTx,
                             txNetwork,
                             txAccountInfo,
-                            accounts,
-                            assetPrices,
-                            fullTokenList,
-                            mSolanaEstimatedTxFee);
+                            nativeAssetsBalances,
+                            blockchainTokensBalances);
                 });
+    }
+
+    /**
+     * Blocks the approval when the sending account cannot cover the transaction. Approving it would
+     * broadcast a transaction that fails on chain and still costs the network fee, which is what
+     * happens when the whole balance of the asset that also pays the fee is sent.
+     *
+     * <p>The approve button starts disabled in the layout and is enabled here, once the balances
+     * are known, so it never flips from enabled to disabled while they load.
+     */
+    private void updateInsufficientBalanceUi(
+            final TransactionInfo txInfo,
+            final ParsedTransaction parsedTx,
+            final NetworkInfo txNetwork,
+            final AccountInfo txAccountInfo,
+            final HashMap<String, Double> nativeAssetsBalances,
+            final HashMap<String, HashMap<String, Double>> blockchainTokensBalances) {
+        if (mApprove == null || mInsufficientBalanceError == null) {
+            return;
+        }
+        // Balances are keyed by lower case account address, see BalanceHelper.
+        final String accountAddress = txAccountInfo.address.toLowerCase(Locale.ENGLISH);
+        final Double nativeBalance = knownBalance(nativeAssetsBalances.get(accountAddress));
+        final BlockchainToken token =
+                parsedTx.getIsSwap() ? parsedTx.getSellToken() : parsedTx.getToken();
+        Double tokenBalance = null;
+        if (token != null && !Utils.isNativeToken(txNetwork, token)) {
+            final HashMap<String, Double> accountTokensBalances =
+                    blockchainTokensBalances.get(accountAddress);
+            if (accountTokensBalances != null) {
+                tokenBalance = knownBalance(accountTokensBalances.get(Utils.tokenToString(token)));
+            }
+        }
+
+        final boolean hasError =
+                setInsufficientBalanceError(
+                        mInsufficientBalanceError, txInfo, parsedTx, nativeBalance, tokenBalance);
+        mInsufficientBalanceError.setVisibility(hasError ? View.VISIBLE : View.GONE);
+        mApprove.setEnabled(!hasError);
+    }
+
+    /**
+     * Sets on {@code errorView} the error describing why the balance of the sending account does
+     * not cover the transaction. The view is left untouched when the balance covers it.
+     *
+     * @return {@code true} when an error was set.
+     */
+    private static boolean setInsufficientBalanceError(
+            final TextView errorView,
+            final TransactionInfo txInfo,
+            final ParsedTransaction parsedTx,
+            @Nullable final Double nativeBalance,
+            @Nullable final Double tokenBalance) {
+        if (TransactionUtils.hasInsufficientBalanceForGas(txInfo, parsedTx, nativeBalance)) {
+            errorView.setText(R.string.brave_wallet_insufficient_funds_for_gas);
+            return true;
+        }
+        if (TransactionUtils.hasInsufficientBalance(
+                txInfo, parsedTx, nativeBalance, tokenBalance)) {
+            errorView.setText(R.string.brave_wallet_insufficient_balance);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * A balance that failed to load is reported as zero, so a zero balance is treated as unknown.
+     * It keeps a transaction the account can actually cover from being blocked when a balance
+     * lookup fails.
+     */
+    @Nullable
+    private static Double knownBalance(@Nullable final Double balance) {
+        return balance != null && balance > 0d ? balance : null;
     }
 
     private void refreshListContentUi() {

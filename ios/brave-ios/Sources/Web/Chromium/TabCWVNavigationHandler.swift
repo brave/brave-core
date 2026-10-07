@@ -59,13 +59,6 @@ class TabCWVNavigationHandler: NSObject, BraveWebViewNavigationDelegate {
 
   public func webViewDidStartNavigation(_ webView: CWVWebView) {
     guard let tab else { return }
-
-    // Reset redirect chain
-    tab.redirectChain = []
-    if let url = webView.visibleURL {
-      tab.redirectChain.append(url)
-    }
-
     tab.didStartNavigation()
   }
 
@@ -127,9 +120,6 @@ class TabCWVNavigationHandler: NSObject, BraveWebViewNavigationDelegate {
 
   public func webViewDidRedirectNavigation(_ webView: CWVWebView) {
     guard let tab else { return }
-    if let url = webView.visibleURL {
-      tab.redirectChain.append(url)
-    }
     tab.didRedirectNavigation()
   }
 

@@ -167,7 +167,7 @@ struct EditPermissionsView: View {
 #if DEBUG
 struct EditPermissionsView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
+    NavigationStack {
       EditPermissionsView(
         proposedAllowance: WalletConstants.maxUInt256,
         confirmationStore: .previewStore,

@@ -16,7 +16,7 @@ declare_args() {
 }
 
 java_cpp_enum("brave_android_java_enums_srcjar") {
-  sources = [ "//brave/chromium_src/chrome/browser/notifications/notification_handler_impl.h" ]
+  sources = []
 
   if (enable_brave_wallet) {
     sources += [ "//brave/components/decentralized_dns/core/constants.h" ]
@@ -80,6 +80,13 @@ android_library("qrreader_java") {
   ]
 }
 
+android_library("settings_insets_java") {
+  sources = [
+    "java/org/chromium/chrome/browser/settings/BottomInsetViewProvider.java",
+  ]
+  deps = [ "//build/android:build_java" ]
+}
+
 # Brave-specific resources.
 android_resources("java_resources") {
   sources = [
@@ -102,11 +109,8 @@ android_resources("java_resources") {
     "java/brave-res/color/wallet_onboarding_network_item_stroke_selector.xml",
     "java/brave-res/drawable-hdpi/brave_ads_launch_graphic.png",
     "java/brave-res/drawable-hdpi/brave_sync_btn_laptop.png",
-    "java/brave-res/drawable-hdpi/btn_bat.png",
     "java/brave-res/drawable-hdpi/btn_bookmark.png",
     "java/brave-res/drawable-hdpi/btn_bookmark_fill.png",
-    "java/brave-res/drawable-hdpi/btn_brave.png",
-    "java/brave-res/drawable-hdpi/btn_brave_off.png",
     "java/brave-res/drawable-hdpi/btn_mic.png",
     "java/brave-res/drawable-hdpi/camera.png",
     "java/brave-res/drawable-hdpi/check.png",
@@ -119,11 +123,8 @@ android_resources("java_resources") {
     "java/brave-res/drawable-ldrtl/modern_toolbar_background_grey_end_segment.xml",
     "java/brave-res/drawable-mdpi/brave_ads_launch_graphic.png",
     "java/brave-res/drawable-mdpi/brave_sync_btn_laptop.png",
-    "java/brave-res/drawable-mdpi/btn_bat.png",
     "java/brave-res/drawable-mdpi/btn_bookmark.png",
     "java/brave-res/drawable-mdpi/btn_bookmark_fill.png",
-    "java/brave-res/drawable-mdpi/btn_brave.png",
-    "java/brave-res/drawable-mdpi/btn_brave_off.png",
     "java/brave-res/drawable-mdpi/btn_mic.png",
     "java/brave-res/drawable-mdpi/camera.png",
     "java/brave-res/drawable-mdpi/check.png",
@@ -152,11 +153,8 @@ android_resources("java_resources") {
     "java/brave-res/drawable-nodpi/ic_quick_action_search_and_bookmark_widget_preview.png",
     "java/brave-res/drawable-xhdpi/brave_ads_launch_graphic.png",
     "java/brave-res/drawable-xhdpi/brave_sync_btn_laptop.png",
-    "java/brave-res/drawable-xhdpi/btn_bat.png",
     "java/brave-res/drawable-xhdpi/btn_bookmark.png",
     "java/brave-res/drawable-xhdpi/btn_bookmark_fill.png",
-    "java/brave-res/drawable-xhdpi/btn_brave.png",
-    "java/brave-res/drawable-xhdpi/btn_brave_off.png",
     "java/brave-res/drawable-xhdpi/btn_mic.png",
     "java/brave-res/drawable-xhdpi/camera.png",
     "java/brave-res/drawable-xhdpi/check.png",
@@ -166,11 +164,8 @@ android_resources("java_resources") {
     "java/brave-res/drawable-xhdpi/vpn_install_bg.png",
     "java/brave-res/drawable-xxhdpi/brave_ads_launch_graphic.png",
     "java/brave-res/drawable-xxhdpi/brave_sync_btn_laptop.png",
-    "java/brave-res/drawable-xxhdpi/btn_bat.png",
     "java/brave-res/drawable-xxhdpi/btn_bookmark.png",
     "java/brave-res/drawable-xxhdpi/btn_bookmark_fill.png",
-    "java/brave-res/drawable-xxhdpi/btn_brave.png",
-    "java/brave-res/drawable-xxhdpi/btn_brave_off.png",
     "java/brave-res/drawable-xxhdpi/btn_mic.png",
     "java/brave-res/drawable-xxhdpi/camera.png",
     "java/brave-res/drawable-xxhdpi/check.png",
@@ -180,11 +175,8 @@ android_resources("java_resources") {
     "java/brave-res/drawable-xxhdpi/vpn_install_bg.png",
     "java/brave-res/drawable-xxxhdpi/brave_ads_launch_graphic.png",
     "java/brave-res/drawable-xxxhdpi/brave_sync_btn_laptop.png",
-    "java/brave-res/drawable-xxxhdpi/btn_bat.png",
     "java/brave-res/drawable-xxxhdpi/btn_bookmark.png",
     "java/brave-res/drawable-xxxhdpi/btn_bookmark_fill.png",
-    "java/brave-res/drawable-xxxhdpi/btn_brave.png",
-    "java/brave-res/drawable-xxxhdpi/btn_brave_off.png",
     "java/brave-res/drawable-xxxhdpi/btn_mic.png",
     "java/brave-res/drawable-xxxhdpi/camera.png",
     "java/brave-res/drawable-xxxhdpi/check.png",
@@ -205,16 +197,7 @@ android_resources("java_resources") {
     "java/brave-res/drawable/bookmark_menu_bg.xml",
     "java/brave-res/drawable/brave_checkbox.xml",
     "java/brave-res/drawable/brave_icon_search.xml",
-    "java/brave-res/drawable/brave_menu_bookmarks.xml",
-    "java/brave-res/drawable/brave_menu_downloads.xml",
-    "java/brave-res/drawable/brave_menu_exit.xml",
-    "java/brave-res/drawable/brave_menu_history.xml",
     "java/brave-res/drawable/brave_menu_new_private_tab.xml",
-    "java/brave-res/drawable/brave_menu_recent_tabs.xml",
-    "java/brave-res/drawable/brave_menu_rewards.xml",
-    "java/brave-res/drawable/brave_menu_set_as_default.xml",
-    "java/brave-res/drawable/brave_menu_settings.xml",
-    "java/brave-res/drawable/brave_modern_toolbar_text_box_background.xml",
     "java/brave-res/drawable/brave_new_group_tab.xml",
     "java/brave-res/drawable/brave_news_settings_list_divider.xml",
     "java/brave-res/drawable/brave_news_settings_publisher_bg.xml",
@@ -244,8 +227,6 @@ android_resources("java_resources") {
     "java/brave-res/drawable/brave_sync_tab_layout_bg.xml",
     "java/brave-res/drawable/brave_sync_top_rounded.xml",
     "java/brave-res/drawable/brave_sync_top_rounded_light.xml",
-    "java/brave-res/drawable/browser_group.xml",
-    "java/brave-res/drawable/btn_right_tablet.xml",
     "java/brave-res/drawable/button_full.xml",
     "java/brave-res/drawable/button_outline.xml",
     "java/brave-res/drawable/button_transparent.xml",
@@ -291,7 +272,6 @@ android_resources("java_resources") {
     "java/brave-res/drawable/ic_brave_mobiledata.xml",
     "java/brave-res/drawable/ic_brave_news_no_source.xml",
     "java/brave-res/drawable/ic_brave_notification.xml",
-    "java/brave-res/drawable/ic_brave_shred.xml",
     "java/brave-res/drawable/ic_brave_vpn_graphic.xml",
     "java/brave-res/drawable/ic_btc_color.xml",
     "java/brave-res/drawable/ic_cancel_filled.xml",
@@ -335,7 +315,6 @@ android_resources("java_resources") {
     "java/brave-res/drawable/ic_coinbase.xml",
     "java/brave-res/drawable/ic_disabled.xml",
     "java/brave-res/drawable/ic_discount.xml",
-    "java/brave-res/drawable/ic_drag.xml",
     "java/brave-res/drawable/ic_eth.xml",
     "java/brave-res/drawable/ic_eth_24.xml",
     "java/brave-res/drawable/ic_eth_color.xml",
@@ -362,14 +341,10 @@ android_resources("java_resources") {
     "java/brave-res/drawable/ic_op_color.xml",
     "java/brave-res/drawable/ic_pause_filled.xml",
     "java/brave-res/drawable/ic_phantom.xml",
-    "java/brave-res/drawable/ic_picture_in_picture.xml",
     "java/brave-res/drawable/ic_plans.xml",
     "java/brave-res/drawable/ic_popular_sources.xml",
-    "java/brave-res/drawable/ic_qr_code.xml",
-    "java/brave-res/drawable/ic_qr_code_18.xml",
     "java/brave-res/drawable/ic_rocket.xml",
     "java/brave-res/drawable/ic_search_21dp.xml",
-    "java/brave-res/drawable/ic_settings.xml",
     "java/brave-res/drawable/ic_settings_dapps.xml",
     "java/brave-res/drawable/ic_shield_done_filled.xml",
     "java/brave-res/drawable/ic_smartphone.xml",
@@ -492,7 +467,6 @@ android_resources("java_resources") {
     "java/brave-res/layout-sw600dp-land/fragment_sign_tx_message.xml",
     "java/brave-res/layout-sw600dp-land/fragment_siwe.xml",
     "java/brave-res/layout-sw600dp-land/fragment_unlock_wallet.xml",
-    "java/brave-res/layout-sw600dp/activity_welcome_onboarding.xml",
     "java/brave-res/layout/activity_account_selector.xml",
     "java/brave-res/layout/activity_add_account.xml",
     "java/brave-res/layout/activity_advance_tx_setting.xml",
@@ -510,6 +484,7 @@ android_resources("java_resources") {
     "java/brave-res/layout/activity_vpn_server.xml",
     "java/brave-res/layout/activity_vpn_server_selection.xml",
     "java/brave-res/layout/activity_welcome_onboarding.xml",
+    "java/brave-res/layout/activity_welcome_onboarding_wide.xml",
     "java/brave-res/layout/application_item_layout.xml",
     "java/brave-res/layout/approve_tx_actions.xml",
     "java/brave-res/layout/approve_tx_bottom_sheet.xml",
@@ -519,7 +494,6 @@ android_resources("java_resources") {
     "java/brave-res/layout/bottom_toolbar_browsing.xml",
     "java/brave-res/layout/bottom_toolbar_menu_button.xml",
     "java/brave-res/layout/bottom_toolbar_tab_switcher.xml",
-    "java/brave-res/layout/brave_account_alert_dialog.xml",
     "java/brave-res/layout/brave_ads_existing_user_dialog_layout.xml",
     "java/brave-res/layout/brave_ads_new_user_dialog_layout.xml",
     "java/brave-res/layout/brave_ask_play_store_rating_dialog.xml",
@@ -702,8 +676,10 @@ android_resources("java_resources") {
     "java/brave-res/values-h748dp/dimens.xml",
     "java/brave-res/values-h765dp/dimens.xml",
     "java/brave-res/values-h820dp/dimens.xml",
+    "java/brave-res/values-land/refs.xml",
     "java/brave-res/values-sw600dp/brave_styles.xml",
     "java/brave-res/values-sw600dp/dimens.xml",
+    "java/brave-res/values-sw600dp/refs.xml",
     "java/brave-res/values-v21/brave_styles.xml",
     "java/brave-res/values/array.xml",
     "java/brave-res/values/brave_attrs.xml",

@@ -28,7 +28,7 @@ class ChromiumToJUnitConverter:
             'CRASH': 'error',
             'TIMEOUT': 'error',
             'ABORT': 'error',
-            'SKIP': 'skipped'
+            'SKIP': 'skipped',
         }
 
     def convert_from_summary_json(self, json_data: Dict) -> str:
@@ -53,8 +53,9 @@ class ChromiumToJUnitConverter:
         total_passed = len(passed_tests)
         total_failed = len(failed_tests)
         has_execution_error = bool(step_text)
-        total_tests = total_passed + total_failed + (1 if has_execution_error
-                                                     else 0)
+        total_tests = (
+            total_passed + total_failed + (1 if has_execution_error else 0)
+        )
 
         # Create XML structure
         testsuite = ET.Element('testsuite')
@@ -123,9 +124,11 @@ class ChromiumToJUnitConverter:
         # Calculate totals
         total_tests = sum(num_failures_by_type.values())
         failures = num_failures_by_type.get('FAIL', 0)
-        errors = (num_failures_by_type.get('CRASH', 0) +
-                  num_failures_by_type.get('TIMEOUT', 0) +
-                  num_failures_by_type.get('ABORT', 0))
+        errors = (
+            num_failures_by_type.get('CRASH', 0)
+            + num_failures_by_type.get('TIMEOUT', 0)
+            + num_failures_by_type.get('ABORT', 0)
+        )
         skipped = num_failures_by_type.get('SKIP', 0)
 
         # Create XML structure
@@ -164,13 +167,15 @@ class ChromiumToJUnitConverter:
                 error.set('type', final_result)
                 error.set(
                     'message',
-                    f'Test {final_result.lower()} (expected: {expected})')
+                    f'Test {final_result.lower()} (expected: {expected})',
+                )
                 if len(actual_results) > 1:
                     error.text = f'Test results: {" ".join(actual_results)}'
             elif final_result == 'SKIP':
                 skipped_elem = ET.SubElement(testcase, 'skipped')
-                skipped_elem.set('message',
-                                 f'Test skipped (expected: {expected})')
+                skipped_elem.set(
+                    'message', f'Test skipped (expected: {expected})'
+                )
 
             # Mark flaky tests
             if test_data.get('is_flaky', False):
@@ -220,21 +225,25 @@ class ChromiumToJUnitConverter:
 def main():
     """Main function for command-line usage."""
     parser = argparse.ArgumentParser(
-        description='Convert Chromium/iOS test results to JUnit XML format')
-    parser.add_argument('input_file',
-                        help='Input JSON file containing test results')
-    parser.add_argument('-o',
-                        '--output',
-                        help='Output XML file (default: stdout)')
-    parser.add_argument('--format',
-                        choices=['auto', 'standard', 'summary'],
-                        default='auto',
-                        help='Input file format (default: auto-detect)')
+        description='Convert Chromium/iOS test results to JUnit XML format'
+    )
+    parser.add_argument(
+        'input_file', help='Input JSON file containing test results'
+    )
+    parser.add_argument(
+        '-o', '--output', help='Output XML file (default: stdout)'
+    )
+    parser.add_argument(
+        '--format',
+        choices=['auto', 'standard', 'summary'],
+        default='auto',
+        help='Input file format (default: auto-detect)',
+    )
     args = parser.parse_args()
 
     # Read input file
     try:
-        with open(args.input_file, 'r') as f:
+        with open(args.input_file, 'r', encoding='utf-8') as f:
             data = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError) as e:
         print(f"Error reading input file: {e}", file=sys.stderr)
@@ -260,7 +269,7 @@ def main():
     # Write output
     if args.output:
         try:
-            with open(args.output, 'w') as f:
+            with open(args.output, 'w', encoding='utf-8') as f:
                 f.write(xml_output)
             print(f"JUnit XML written to {args.output}")
         except IOError as e:

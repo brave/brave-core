@@ -176,13 +176,26 @@ private func detailLinkLabel(with text: String) -> LinkLabel {
 
 private func secondaryButton(title: String?) -> UIButton {
   UIButton().then {
+    var configuration = UIButton.Configuration.plain()
+    configuration.baseBackgroundColor = .clear
+    configuration.contentInsets = NSDirectionalEdgeInsets(
+      top: 0,
+      leading: 32,
+      bottom: 0,
+      trailing: 32
+    )
+    configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer {
+      incoming in
+      var outgoing = incoming
+      outgoing.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+      return outgoing
+    }
+    $0.configuration = configuration
     if let title = title {
       $0.setTitle(title, for: .normal)
     }
     $0.setTitleColor(.black, for: .normal)
     $0.contentHorizontalAlignment = .left
-    $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 32)
-    $0.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
     $0.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
     $0.titleLabel?.adjustsFontSizeToFitWidth = true
   }

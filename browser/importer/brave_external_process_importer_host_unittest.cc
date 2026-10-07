@@ -230,7 +230,7 @@ class BraveExternalProcessImporterHostUnitTest : public testing::Test {
     cred.url = GURL("https://example.com/");
     cred.signon_realm = "https://example.com/";
     cred.username_value = u"alice";
-    cred.password_value = u"secret";
+    cred.password_value = password_manager::PasswordString(u"secret");
     cred.in_store = password_manager::PasswordForm::Store::kProfileStore;
     ASSERT_FALSE(database.AddLogin(std::move(cred)).empty());
   }

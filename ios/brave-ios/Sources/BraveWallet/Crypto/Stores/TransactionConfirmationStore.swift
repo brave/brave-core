@@ -452,6 +452,19 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     self.activeTxStatusStore = nil
   }
 
+  /// Whether or not there is an active transaction status to display.
+  ///
+  /// Setting this to `false` closes the active transaction status store. Setting it to `true` has no
+  /// effect.
+  var isShowingTxStatus: Bool {
+    get { activeTxStatusStore != nil }
+    set {
+      if !newValue {
+        closeTxStatusStore()
+      }
+    }
+  }
+
   func updateAllTx(with txId: String) async -> Bool {
     // cancel or speed up only supported for .eth
     guard let txInfo = await txService.transactionInfo(coinType: .eth, txMetaId: txId),
@@ -634,7 +647,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     let ethTransactions = transactions.filter { $0.coin == .eth }
     guard !ethTransactions.isEmpty else { return }  // we can only fetch unknown Ethereum tokens
     let coin: BraveWallet.CoinType = .eth
-    let allNetworks = await rpcService.allNetworks().filter({ $0.coin == coin })
+    let allNetworks = await rpcService.allNetworks().networks.filter({ $0.coin == coin })
     let userAssets = await assetManager.getAllUserAssetsInNetworkAssets(
       networks: allNetworks,
       includingUserDeleted: true
@@ -1065,7 +1078,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     let allAccounts = await keyringService.allAccounts().accounts
     var allNetworksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [:]
     for coin in WalletConstants.supportedCoinTypes() {
-      let allNetworks = await rpcService.allNetworks().filter({ $0.coin == coin })
+      let allNetworks = await rpcService.allNetworks().networks.filter({ $0.coin == coin })
       allNetworksForCoin[coin] = allNetworks
     }
     return await txService.allTransactions(

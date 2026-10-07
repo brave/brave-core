@@ -44,27 +44,34 @@ def cmd_mv(args: list[str]) -> int:
     """Parse mv arguments and perform the file move with all repair steps."""
     parser = argparse.ArgumentParser(
         prog='git cr mv',
-        description=
-        'Move a file or directory inside brave-core and repair artefacts.',
+        description='Move a file or directory inside brave-core and repair artefacts.',
     )
-    parser.add_argument('--mkdir',
-                        action='store_true',
-                        help='Create destination parent directory if missing')
-    parser.add_argument('--no-git',
-                        action='store_true',
-                        dest='no_git',
-                        help='Use filesystem rename instead of git mv')
-    parser.add_argument('--no-run-plaster',
-                        action='store_true',
-                        dest='no_run_plaster',
-                        help='Skip running plaster after moving plaster files')
-    parser.add_argument('--no-format',
-                        action='store_true',
-                        dest='no_format',
-                        help='Skip running `npm run format` after the move')
-    parser.add_argument('--verbose',
-                        action='store_true',
-                        help='Enable verbose logging')
+    parser.add_argument(
+        '--mkdir',
+        action='store_true',
+        help='Create destination parent directory if missing',
+    )
+    parser.add_argument(
+        '--no-git',
+        action='store_true',
+        dest='no_git',
+        help='Use filesystem rename instead of git mv',
+    )
+    parser.add_argument(
+        '--no-run-plaster',
+        action='store_true',
+        dest='no_run_plaster',
+        help='Skip running plaster after moving plaster files',
+    )
+    parser.add_argument(
+        '--no-format',
+        action='store_true',
+        dest='no_format',
+        help='Skip running `pnpm run format` after the move',
+    )
+    parser.add_argument(
+        '--verbose', action='store_true', help='Enable verbose logging'
+    )
     parser.add_argument('source', help='Source file or directory')
     parser.add_argument('destination', help='Destination path')
     parsed = parser.parse_args(args)
@@ -75,7 +82,8 @@ def cmd_mv(args: list[str]) -> int:
     except ValueError:
         raise UserValidationError(
             'git cr mv: must be run from within the brave-core tree '
-            f'({repository.brave.root})') from None
+            f'({repository.brave.root})'
+        ) from None
 
     src = (cwd / parsed.source).resolve()
     dest = (cwd / parsed.destination).resolve()
@@ -100,19 +108,20 @@ def cmd_mv(args: list[str]) -> int:
 
 
 def _run_format() -> None:
-    """Runs `npm run format` to clean up files touched by the move.
+    """Runs `pnpm run format` to clean up files touched by the move.
 
     Failures are downgraded to warnings: format must not block a successful
     move.
     """
     try:
-        terminal.run_npm_command('format')
+        terminal.run_pnpm_command('format')
     except (subprocess.CalledProcessError, FileNotFoundError) as e:
-        logging.warning('npm run format failed: %s', e)
+        logging.warning('pnpm run format failed: %s', e)
 
 
-def _step1_move(src: Path, dest: Path, mkdir: bool,
-                no_git: bool) -> list[_FilePair]:
+def _step1_move(
+    src: Path, dest: Path, mkdir: bool, no_git: bool
+) -> list[_FilePair]:
     """Validates paths and performs the move.
 
     Returns a list of (old_abs, new_abs) pairs for every file moved.
@@ -126,24 +135,31 @@ def _step1_move(src: Path, dest: Path, mkdir: bool,
 
     if dest.is_file():
         raise UserValidationError(
-            f'git cr mv: destination already exists: {dest}')
+            f'git cr mv: destination already exists: {dest}'
+        )
 
     if not dest.parent.exists():
         if not mkdir:
             raise UserValidationError(
                 f'git cr mv: destination parent does not exist: {dest.parent}\n'
-                'Pass --mkdir to create it automatically.')
+                'Pass --mkdir to create it automatically.'
+            )
         dest.parent.mkdir(parents=True, exist_ok=True)
 
-    if (src.is_relative_to(rewrite_path)
-            and not dest.is_relative_to(rewrite_path)):
+    if src.is_relative_to(rewrite_path) and not dest.is_relative_to(
+        rewrite_path
+    ):
         raise UserValidationError(
             'git cr mv: cannot move a rewrite/ path to a destination outside '
-            f'rewrite/ ({rewrite_path})')
+            f'rewrite/ ({rewrite_path})'
+        )
 
     if src.is_dir():
-        file_pairs: list[_FilePair] = [(f, dest / f.relative_to(src))
-                                       for f in src.rglob('*') if f.is_file()]
+        file_pairs: list[_FilePair] = [
+            (f, dest / f.relative_to(src))
+            for f in src.rglob('*')
+            if f.is_file()
+        ]
     else:
         file_pairs = [(src, dest)]
 
@@ -161,7 +177,8 @@ def _step2_guards(file_pairs: list[_FilePair]) -> None:
         if new_file.suffix not in _HEADER_EXTENSIONS:
             continue
         new_guard = compute_guard(
-            repository.chromium.to_repo_relative(new_file))
+            repository.chromium.to_repo_relative(new_file)
+        )
         content = new_file.read_bytes().decode('utf-8')
         old_guard = find_guard(content)
         if old_guard:
@@ -183,8 +200,9 @@ def _step3_shadow_includes(file_pairs: list[_FilePair]) -> None:
         update_shadow_include(new_file, old_chromium, new_chromium)
 
 
-def _step5_plaster(file_pairs: list[_FilePair], no_git: bool,
-                   run_plaster: bool) -> None:
+def _step5_plaster(
+    file_pairs: list[_FilePair], no_git: bool, run_plaster: bool
+) -> None:
     """Deletes stale patch files and optionally re-runs plaster for moved
     plaster files (.yaml)."""
     rewrite_path = plaster.PLASTER_FILES_PATH.resolve()
@@ -200,7 +218,8 @@ def _step5_plaster(file_pairs: list[_FilePair], no_git: bool,
         if not patch_file.exists():
             logging.warning(
                 'Expected patch file not found: %s; skipping deletion.',
-                patch_file)
+                patch_file,
+            )
         else:
             if no_git:
                 patch_file.unlink()
@@ -216,13 +235,14 @@ def _step5_plaster(file_pairs: list[_FilePair], no_git: bool,
                 # cwd-relative form (brave-relative path prefixed with brave
                 # root) so it works regardless of cwd's depth in the tree.
                 PlasterFile(
-                    repository.brave.root /
-                    repository.brave.to_repo_relative(new_file)).apply()
+                    repository.brave.root
+                    / repository.brave.to_repo_relative(new_file)
+                ).apply()
                 if not no_git:
                     new_chromium_path = new_file.relative_to(
-                        rewrite_path).with_suffix('')
-                    new_patch = patches_path / patch_name_for(
-                        new_chromium_path)
+                        rewrite_path
+                    ).with_suffix('')
+                    new_patch = patches_path / patch_name_for(new_chromium_path)
                     if new_patch.exists():
                         terminal.run_git('add', str(new_patch))
             # TODO(https://github.com/brave/brave-browser/issues/55370): Eventually

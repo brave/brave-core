@@ -4,7 +4,9 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveUI
 import SwiftUI
+@_spi(Advanced) import SwiftUIIntrospect
 import UIKit
 
 extension View {
@@ -23,7 +25,7 @@ extension View {
     backButtonTitle: String? = nil,
     backButtonDisplayMode: UINavigationItem.BackButtonDisplayMode = .default
   ) -> some View {
-    self.introspectViewController { vc in
+    self.introspect(.viewController, on: .iOS(.v18...)) { vc in
       let appearance = UINavigationBarAppearance()
       appearance.configureWithTransparentBackground()
       vc.navigationItem.compactAppearance = appearance
@@ -32,65 +34,6 @@ extension View {
       vc.navigationItem.backButtonTitle = backButtonTitle
       vc.navigationItem.backButtonDisplayMode = backButtonDisplayMode
     }
-  }
-
-  func applyRegularNavigationAppearance() -> some View {
-    introspectViewController(customize: { vc in
-      vc.navigationItem.do {
-        let appearance: UINavigationBarAppearance = {
-          let appearance = UINavigationBarAppearance()
-          appearance.configureWithOpaqueBackground()
-          appearance.titleTextAttributes = [
-            .foregroundColor: UIColor(braveSystemName: .textPrimary)
-          ]
-          appearance.largeTitleTextAttributes = [
-            .foregroundColor: UIColor(braveSystemName: .textPrimary)
-          ]
-          appearance.backgroundColor = UIColor(braveSystemName: .containerBackground)
-          return appearance
-        }()
-        $0.standardAppearance = appearance
-        $0.compactAppearance = appearance
-        $0.scrollEdgeAppearance = appearance
-      }
-    })
-  }
-
-  func transparentUnlessScrolledNavigationAppearance() -> some View {
-    introspectViewController(customize: { vc in
-      vc.navigationItem.do {
-        // no shadow when content is at top.
-        let noShadowAppearance: UINavigationBarAppearance = {
-          let appearance = UINavigationBarAppearance()
-          appearance.configureWithTransparentBackground()
-          appearance.titleTextAttributes = [
-            .foregroundColor: UIColor(braveSystemName: .textPrimary)
-          ]
-          appearance.largeTitleTextAttributes = [
-            .foregroundColor: UIColor(braveSystemName: .textPrimary)
-          ]
-          appearance.backgroundColor = .clear
-          appearance.shadowColor = .clear
-          return appearance
-        }()
-        $0.scrollEdgeAppearance = noShadowAppearance
-        $0.compactScrollEdgeAppearance = noShadowAppearance
-        // shadow when content is scrolled behind navigation bar.
-        let shadowAppearance: UINavigationBarAppearance = {
-          let appearance = UINavigationBarAppearance()
-          appearance.configureWithOpaqueBackground()
-          appearance.titleTextAttributes = [
-            .foregroundColor: UIColor(braveSystemName: .textPrimary)
-          ]
-          appearance.largeTitleTextAttributes = [
-            .foregroundColor: UIColor(braveSystemName: .textPrimary)
-          ]
-          return appearance
-        }()
-        $0.standardAppearance = shadowAppearance
-        $0.compactAppearance = shadowAppearance
-      }
-    })
   }
 
   func addAccount(
@@ -135,7 +78,7 @@ extension View {
         .sheet(
           isPresented: isShowingAddAccount
         ) {
-          NavigationView {
+          NavigationStack {
             AddAccountView(
               keyringStore: keyringStore,
               networkStore: networkStore,
@@ -143,7 +86,6 @@ extension View {
               preSelectedAccountNetwork: preselectedAccountNetwork
             )
           }
-          .navigationViewStyle(.stack)
           .onDisappear { onAddAccountDismissed() }
         }
     )
@@ -151,12 +93,7 @@ extension View {
 
   func errorAlert(errorMessage: Binding<String?>) -> some View {
     alert(
-      isPresented: Binding(
-        get: { errorMessage.wrappedValue != nil },
-        set: { _, _ in
-          errorMessage.wrappedValue = nil
-        }
-      )
+      isPresented: errorMessage.isPresented
     ) {
       Alert(
         title: Text(Strings.Wallet.errorAlertTitle),

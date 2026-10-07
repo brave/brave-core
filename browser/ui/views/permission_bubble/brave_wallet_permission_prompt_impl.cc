@@ -58,11 +58,6 @@ BraveWalletPermissionPromptImpl::GetViewBoundsInScreen() const {
   return std::nullopt;
 }
 
-bool BraveWalletPermissionPromptImpl::ShouldFinalizeRequestAfterDecided()
-    const {
-  return true;
-}
-
 std::vector<permissions::ElementAnchoredBubbleVariant>
 BraveWalletPermissionPromptImpl::GetPromptVariants() const {
   return {};

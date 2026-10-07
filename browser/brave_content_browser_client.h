@@ -13,6 +13,7 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/net/resource_context_data.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "content/public/browser/browser_thread.h"
@@ -20,6 +21,7 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/metrics/public/cpp/ukm_source_id.h"
 #include "third_party/blink/public/mojom/loader/referrer.mojom.h"
+#include "url/origin.h"
 
 class BraveBluetoothDelegate;
 class PrefChangeRegistrar;
@@ -95,6 +97,13 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       content::BrowserContext* browser_context,
       const content::StoragePartitionConfig* storage_partition_config) override;
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  mojo::PendingRemote<local_ai::mojom::AsrSession> GetAsrSession() override;
+#endif
+
+  std::unique_ptr<optimization_guide::ModelBrokerClient>
+  CreateModelBrokerClient(content::BrowserContext* browser_context) override;
+
   void RegisterBrowserInterfaceBindersForFrame(
       content::RenderFrameHost* render_frame_host,
       mojo::BinderMapWithContext<content::RenderFrameHost*>* map) override;
@@ -129,11 +138,26 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       bool* bypass_redirect_checks,
       bool* disable_secure_dns,
       network::mojom::URLLoaderFactoryOverridePtr* factory_override,
-      scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner)
-      override;
+      scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner,
+      bool is_for_network_service) override;
 
   bool WillInterceptWebSocket(content::RenderFrameHost* frame) override;
-  void CreateWebSocket(
+
+  void WillCreateWebTransport(
+      int process_id,
+      int frame_routing_id,
+      const GURL& url,
+      const url::Origin& initiator_origin,
+      mojo::PendingRemote<network::mojom::WebTransportHandshakeClient>
+          handshake_client,
+      WillCreateWebTransportCallback callback) override;
+
+  // Brave-only CreateWebSocket sibling injected via chromium_src. Unlike
+  // upstream CreateWebSocket, it also receives the initiator renderer's
+  // `process_id` and `initiator_origin` so frameless SharedWorker and
+  // ServiceWorker handshakes (crbug.com/40195467) can still resolve the
+  // BrowserContext and per-site Shields settings.
+  void CreateWebSocketWithFrameId(
       content::RenderFrameHost* frame,
       content::ContentBrowserClient::WebSocketFactory factory,
       const GURL& url,
@@ -141,7 +165,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const std::optional<std::string>& user_agent,
       mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
           handshake_client,
-      content::ContentBrowserClient::WebSocketOptions options) override;
+      content::ContentBrowserClient::WebSocketOptions options,
+      int process_id,
+      const url::Origin& initiator_origin) override;
 
   void MaybeHideReferrer(content::BrowserContext* browser_context,
                          const GURL& request_url,
@@ -171,10 +197,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
                        bool opener_suppressed,
                        bool* no_javascript_access) override;
 
-  void ExposeInterfacesToRenderer(
-      service_manager::BinderRegistry* registry,
-      blink::AssociatedInterfaceRegistry* associated_registry,
-      content::RenderProcessHost* render_process_host) override;
+  void RegisterAssociatedInterfaceBindersForServiceWorker(
+      const content::ServiceWorkerVersionBaseInfo& service_worker_version_info,
+      blink::AssociatedInterfaceRegistry& associated_registry) override;
 
   bool OverrideWebPreferencesAfterNavigation(
       content::WebContents* web_contents,

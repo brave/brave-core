@@ -9,7 +9,7 @@ import * as React from 'react'
 import { useArgs } from '@storybook/preview-api'
 import { Meta, StoryObj } from '@storybook/react'
 import '@brave/leo/tokens/css/variables.css'
-import { getKeysForMojomEnum } from '$web-common/mojomUtils'
+import { getKeysForMojomEnum, jsDateToMojoTime } from '$web-common/mojomUtils'
 import { InferControlsFromArgs } from '$storybook/utils'
 import {
   ConversationDataJson,
@@ -75,7 +75,7 @@ const MODELS: Mojom.Model[] = [
     audioSupport: false,
     videoSupport: false,
     supportsTools: false,
-    supportedCapabilities: [Mojom.ConversationCapability.CHAT],
+    supportedCapabilities: [],
     isSuggestedModel: true,
     isNearModel: false,
     supportsPrivateInference: false,
@@ -99,10 +99,7 @@ const MODELS: Mojom.Model[] = [
     audioSupport: false,
     videoSupport: false,
     supportsTools: true,
-    supportedCapabilities: [
-      Mojom.ConversationCapability.CHAT,
-      Mojom.ConversationCapability.CONTENT_AGENT,
-    ],
+    supportedCapabilities: [Mojom.ConversationCapability.CONTENT_AGENT],
     isSuggestedModel: true,
     isNearModel: false,
     supportsPrivateInference: false,
@@ -126,7 +123,7 @@ const MODELS: Mojom.Model[] = [
     audioSupport: false,
     videoSupport: false,
     supportsTools: false,
-    supportedCapabilities: [Mojom.ConversationCapability.CHAT],
+    supportedCapabilities: [],
     isSuggestedModel: false,
     isNearModel: false,
     supportsPrivateInference: false,
@@ -150,7 +147,7 @@ const MODELS: Mojom.Model[] = [
     audioSupport: false,
     videoSupport: false,
     supportsTools: true,
-    supportedCapabilities: [Mojom.ConversationCapability.CHAT],
+    supportedCapabilities: [],
     isSuggestedModel: false,
     isNearModel: false,
     supportsPrivateInference: false,
@@ -207,12 +204,40 @@ const ASSOCIATED_CONTENT_WITH_TOOLS: Mojom.AssociatedContent = {
   toolsAttached: true,
 }
 
+// Shown in the dialog opened from the "Tools" pill. The first description is
+// long enough to be clamped, so expand/collapse is exercised.
+const SAMPLE_CONTENT_TOOLS: Mojom.ToolInfo[] = [
+  {
+    name: 'browse_invoices',
+    description:
+      'Browse OR navigate to invoices. Set navigate=true whenever the user'
+      + ' wants to be taken to an invoice page in the browser (triggers:'
+      + ' "browse to", "go to", "show me", "open", "take me to", "navigate to"'
+      + ' an invoice). With navigate=false (default), returns invoice data'
+      + ' without changing the page — use this only when the user is asking a'
+      + ' question about their invoices, not asking to view one.',
+    permission: Mojom.ToolPermission.kAsk,
+  },
+  {
+    name: 'create_invoice',
+    description: 'Create a new draft invoice for a given customer and amount.',
+    permission: Mojom.ToolPermission.kAllowSession,
+  },
+  {
+    name: 'send_invoice',
+    description:
+      'Email an existing draft invoice to its customer. Verifies the invoice'
+      + ' has a customer and at least one line item first.',
+    permission: Mojom.ToolPermission.kNeverAllow,
+  },
+]
+
 const SAMPLE_SKILLS: Mojom.Skill[] = [
   {
     id: 'translate-mode',
     shortcut: 'translate',
     prompt: 'Translate the following text to English',
-    model: 'claude-3-haiku',
+    model: 'automatic',
     createdTime: { internalValue: BigInt(Date.now() * 1000) },
     lastUsed: { internalValue: BigInt(Date.now() * 1000) },
   },
@@ -231,6 +256,21 @@ const SAMPLE_SKILLS: Mojom.Skill[] = [
     model: undefined,
     createdTime: { internalValue: BigInt(Date.now() * 1000) },
     lastUsed: { internalValue: BigInt((Date.now() - 3600000) * 1000) },
+  },
+]
+
+const SAMPLE_CONVERSATION_SHARES: Mojom.ConversationShare[] = [
+  {
+    shareId: 'a1b2c3d4e5f6',
+    conversationUuid: '1',
+    conversationTitle: 'What is the best way to make a cup of tea?',
+    createdTime: jsDateToMojoTime(new Date(Date.now() - 3600000)),
+  },
+  {
+    shareId: 'f6e5d4c3b2a1',
+    conversationUuid: '2',
+    conversationTitle: 'Summarize the latest news about space exploration',
+    createdTime: jsDateToMojoTime(new Date(Date.now() - 3 * 86400000)),
   },
 ]
 
@@ -353,7 +393,7 @@ const args: CustomArgs = {
   inputText: [
     `Write a Star Trek poem about Data's life on board the Enterprise`,
   ],
-  capabilitiesEnabled: ['CHAT'],
+  capabilitiesEnabled: [],
   conversationListCount: CONVERSATIONS.length,
   hasSuggestedQuestions: true,
   hasAssociatedContent: true,
@@ -573,6 +613,8 @@ function StoryContext(
               : Mojom.PremiumStatus.Inactive,
             info: null,
           }),
+        getConversationShares: () =>
+          Promise.resolve({ shares: SAMPLE_CONVERSATION_SHARES }),
       }}
       bookmarksService={{
         getBookmarks: () => Promise.resolve({ bookmarks: SAMPLE_BOOKMARKS }),
@@ -609,15 +651,6 @@ function StoryContext(
               currentModelKey: currentModel.key,
               defaultModelKey: MODELS[0].key,
               allModels: MODELS,
-              suggestedQuestions: argsRef.current.hasSuggestedQuestions
-                ? SAMPLE_QUESTIONS
-                : argsRef.current.hasAssociatedContent
-                  ? [SAMPLE_QUESTIONS[0]]
-                  : [],
-              suggestionStatus:
-                Mojom.SuggestionGenerationStatus[
-                  argsRef.current.suggestionStatus
-                ],
               associatedContent: getAssociatedContent(),
               error: currentError,
               errorDetails: undefined,
@@ -633,6 +666,7 @@ function StoryContext(
         getConversationHistory: async () => ({
           conversationHistory: await getConversationHistory(),
         }),
+        getContentTools: () => Promise.resolve({ tools: SAMPLE_CONTENT_TOOLS }),
       }}
       conversationProps={{
         selectedConversationId: activeChatContext.selectedConversationId,
@@ -697,11 +731,26 @@ function StoryContext(
               totalTokens: BigInt(args.totalTokens),
               trimmedTokens: BigInt(args.trimmedTokens),
               canSubmitUserEntries: currentError === Mojom.APIError.None,
+              suggestedQuestions: argsRef.current.hasSuggestedQuestions
+                ? SAMPLE_QUESTIONS
+                : argsRef.current.hasAssociatedContent
+                  ? [SAMPLE_QUESTIONS[0]]
+                  : [],
+              suggestionStatus:
+                Mojom.SuggestionGenerationStatus[
+                  argsRef.current.suggestionStatus
+                ],
               allModels: MODELS,
               currentModelKey: currentModel?.key ?? '',
               conversationCapabilities: args.capabilitiesEnabled.map(
                 (value) => Mojom.ConversationCapability[value],
               ),
+            },
+            serviceState: {
+              hasAcceptedAgreement: args.hasAcceptedAgreement,
+              isStoragePrefEnabled: args.isStoragePrefEnabled,
+              isStorageNoticeDismissed: args.isStorageNoticeDismissed,
+              canShowPremiumPrompt: args.canShowPremiumPrompt,
             },
           }}
           overrides={{

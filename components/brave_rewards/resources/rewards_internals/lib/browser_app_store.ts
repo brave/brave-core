@@ -160,27 +160,6 @@ export function createAppStore(): AppStore {
         })
       },
 
-      adDiagnostics(info: any) {
-        if (!info) {
-          return
-        }
-        store.update({
-          adDiagnosticId: String(info.diagnosticId || ''),
-        })
-        const { entries } = info
-        if (!Array.isArray(entries)) {
-          return
-        }
-        store.update({
-          adDiagnosticEntries: entries
-            .filter((item) => Boolean(item))
-            .map((item) => ({
-              name: String(item.name || ''),
-              value: String(item.value || ''),
-            })),
-        })
-      },
-
       environment(environment: any) {
         store.update({
           environment: parseEnvironment(environment),
@@ -196,7 +175,6 @@ export function createAppStore(): AppStore {
     chrome.send('brave_rewards_internals.getRewardsInternalsInfo')
     chrome.send('brave_rewards_internals.getBalance')
     chrome.send('brave_rewards_internals.getExternalWallet')
-    chrome.send('brave_rewards_internals.getAdDiagnostics')
     chrome.send('brave_rewards_internals.getEnvironment')
   }
 
@@ -206,11 +184,6 @@ export function createAppStore(): AppStore {
     actions: {
       getString(key) {
         return loadTimeData.getString(key)
-      },
-
-      setAdDiagnosticId(diagnosticId) {
-        chrome.send('brave_rewards_internals.setAdDiagnosticId', [diagnosticId])
-        store.update({ adDiagnosticId: diagnosticId })
       },
 
       clearRewardsLog() {

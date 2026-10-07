@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">Ohodnotiť Brave</translation>
 <translation id="4104400246019119780">Ďakujeme!</translation>
 <translation id="5202255382948179481">Pridajte vlastné návrhy</translation>
-<translation id="7759809451544302770">Voliteľné</translation>
 <translation id="4748689412569009273">Akým emotikonom by ste vyjadrili svoju skúsenosť s prehliadačom Brave?</translation>
 <translation id="7335142069363686805">Ohodnoťte ho</translation>
 <translation id="6681362094306959654">Páči sa vám prehliadač Brave?</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">Smutný</translation>
 <translation id="5488843227043643519">Zanecháte hodnotenie v Obchode Play?</translation>
 <translation id="5867854497245948308">Ďakujeme za spätnú väzbu!</translation>
-<translation id="4935400164159327304">Povedzte nám, ako môžeme zlepšiť prehliadač Brave.</translation>
+<translation id="5578122562331038807">Povedzte nám, ako môžeme zlepšiť prehliadač Brave</translation>
+<translation id="1483493594462132177">Odoslať</translation>
+<translation id="3889034478061064651">Pridajte vlastné návrhy (voliteľné)</translation>
+<translation id="1769154760586570836">Spätná väzba bola odoslaná. Ďakujeme!</translation>
+<translation id="4450893287417543264">Už nezobrazovať</translation>
 <translation id="8966035543003363155">Upozornenia Brave uľahčujú prácu</translation>
 <translation id="7662771815233894695">Spravujte sťahovanie, získavajte tokeny, zobrazujte týždenné štatistiky používania a využívajte ďalšie funkcie.</translation>
 <translation id="4265429476391459783">Nezískavate odmeny ani nedostávate správy o ochrane osobných údajov</translation>
@@ -107,9 +110,9 @@
 <translation id="4176463684765177261">Deaktivované</translation>
 <translation id="59174027418879706">Aktivovaný</translation>
 <translation id="6920492760024499150">Výber dnešných najlepších príbehov v súkromnom informačnom kanáli – iba pre vás.</translation>
-<translation id="8300751939969131609">Zapnite si Brave News, aby vám nikdy nič neuniklo</translation>
+<translation id="3803728444598576153">Zapnite si Brave News, aby vám nikdy nič neuniklo</translation>
 <translation id="7627131190984957214">Novinky Brave sú podporované súkromnými a anonymizovanými reklamami zhodných s vaším zariadením.</translation>
-<translation id="7699565323725789472">Sledujte svoje obľúbené zdroje v jednom kanáli. Stačí otvoriť kartu v prehliadači Brave, posunúť zobrazenie nadol a… hotovo!\nSlužba Brave News je podporovaná pomocou súkromných anonymných reklám.</translation>
+<translation id="7897050360583141319">Sledujte svoje obľúbené zdroje v jednom kanáli. Stačí otvoriť kartu v prehliadači Brave, posunúť zobrazenie nadol a… hotovo!</translation>
 <translation id="1765217911817124376">Zapnúť novinky Brave</translation>
 <translation id="8981973962043893066">Vyhľadávanie stránok, tém alebo kanálov RSS</translation>
 <translation id="3225021799163709119">Populárne</translation>
@@ -187,6 +190,9 @@
 <translation id="5987838417172370108">Pomôžte zlepšiť stabilitu produktu Brave automatickým odosielaním diagnostických správ, keď prehliadač Brave spadne alebo zamrzne.</translation>
 <translation id="7977176350719484850">Odhad. dáta\nUšetrené</translation>
 <translation id="9008534313521214777">Približný ušetrený\nčas</translation>
+<translation id="5668852698659986622">Povoliť sponzorované reklamy</translation>
+<translation id="431194936581466649">Pomôžte podporiť misiu Brave vybudovať nezávislý web zameraný na používateľa pomocou sponzorovaných reklám. Výkonnosť reklám meriame súkromne, bez toho, aby sme vás identifikovali.</translation>
+<translation id="1939813747486101115">Ďalšie informácie o sponzorovaných reklamách</translation>
 <translation id="8347743943525229984">Povoliť prieskumy od Brave</translation>
 <translation id="6022939994702081659">Umožňuje spoločnosti Brave zobrazovať odkazy na súkromné prieskumy na stránke novej karty. Prieskumy nám pomáhajú vytvárať lepšie funkcie a merať účinnosť reklamných kampaní v prehliadači.</translation>
 <translation id="7746496306508543965">Viac informácií o prieskumoch Brave</translation>
@@ -202,6 +208,7 @@
 <translation id="8026334261755873520">Vymazať dáta prehliadania</translation>
 <translation id="1690924763769415936">Prehrávanie na pozadí</translation>
 <translation id="6332924730165919598">Zatvorením všetkých kariet sa zavrie prehliadač Brave</translation>
+<translation id="2557725907027944082">Skupiny</translation>
 <translation id="8308305244351876417">Umožňuje prehrávať zvuk, keď prepnete na inú kartu v prehliadači Brave, keď prepnete na inú aplikáciu alebo keď je obrazovka zariadenia vypnutá.</translation>
 <translation id="49147335255967913">Otvoriť odkazy na YouTube v prehliadači Brave</translation>
 <translation id="4150201353443180367">Displej</translation>
@@ -212,9 +219,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Získajte viac informácií o Widevine<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Povoliť (spustiť ešte raz)</translation>
 <translation id="2433507940547922241">Vzhľad</translation>
+<translation id="316542773973815724">Navigácia</translation>
 <translation id="9040069796107003510">Ikona Brave Rewards</translation>
 <translation id="6333347122924254968">Zobraziť ikonu odmien Brave v paneli s adresou</translation>
-<translation id="1215433243238902715">Povoliť spodný navigačný panel</translation>
+<translation id="4393974575368329991">Spodný navigačný panel</translation>
+<translation id="1834226716203076292">Zobraziť spodný panel pre rýchly prístup k domovskej stránke, záložkám a vyhľadávaniu</translation>
 <translation id="1422686363939271829">Toto nastavenie je vypnuté, keď je vybratá spodná pozícia adresného riadka</translation>
 <translation id="6587448235155023666">Zmeny vašich nastavení sa prejavia pri ďalšom spustení prehliadača Brave</translation>
 <translation id="8701563696941209024">SPUSTIŤ ZNOVA TERAZ</translation>
@@ -234,8 +243,7 @@
 <translation id="6188781052835527980">Odošlite anonymné diagnostické správy, ak dôjde k zlyhaniu alebo zamrznutiu.</translation>
 <translation id="4780647518983772446">Zdieľajte súkromné a anonymné informácie o produktoch, ktoré používatelia Brave používajú.</translation>
 <translation id="5109496672133133896">Súkromné informácie o produktoch</translation>
-<translation id="3545804467215833536">Ťuknutím zobrazíte Brave Shields</translation>
-<translation id="1724327820822194498">Pozrite si všetky obťažujúce prvky, ktoré prehliadač Brave zablokoval na jednotlivých stránkach pomocou funkcie Shields.</translation>
+<translation id="4340039903315468568">Pozrite si všetky obťažujúce prvky, ktoré prehliadač Brave zablokoval na každej stránke pomocou funkcie Štíty. Ťuknutím zobrazíte</translation>
 <translation id="3092683655478890840">Počet zablokovaných reklám a sledovacích nástrojov: <ph name="TRACKER_COUNT"/></translation>
 <translation id="8281886186245836920">Preskočiť</translation>
 <translation id="5806601733251372221">Brave štíty</translation>
@@ -245,7 +253,6 @@
 <translation id="6213254277250932867">Mám 12-slovnú frázu obnovenia</translation>
 <translation id="4225265925807365011">Mám 24-slovnú frázu obnovenia</translation>
 <translation id="3570367516044491911">Nastaviť ako predvolený prehliadač</translation>
-<translation id="6800338374677644736">Nastaviť ako predvolený prehliadač</translation>
 <translation id="1545749641540134597">Skenovať QR kód</translation>
 <translation id="5317781812114905957">Pokyny</translation>
 <translation id="8515319483805157233">Ak chcete vyhľadávať podľa kódu QR, zarovnajte kód QR do stredu rámika.</translation>
@@ -277,8 +284,6 @@
 <translation id="5582839680698949063">Hlavná ponuka</translation>
 <translation id="7002271985859760052">Akcie stránky</translation>
 <translation id="7104487676473617844">Nasledujúce položky sa zobrazia v ponuke len vtedy, ak ich podporuje aktuálne otvorená webová stránka.</translation>
-<translation id="4159764849281393303">Webová aplikácia</translation>
-<translation id="8428213095426709021">Nastavení</translation>
 <translation id="8038539967102225446">Brave reklamy sú tu!</translation>
 <translation id="222883304157347087">(toto zariadenie)</translation>
 <translation id="4157741509680155021">ZARIADENIA V REŤAZCI SYNC</translation>
@@ -443,6 +448,7 @@ Naozaj chcete pokračovať?</translation>
 <translation id="7141438739990875547">Siete Bitcoin</translation>
 <translation id="9055546041146396417">Ak sa táto stránka javí ako poškodená, skúste štíty nadol.</translation>
 <translation id="7898672232170410330">Blokovať prvok</translation>
+<translation id="7205939464631857223">Vymazať všetky blokované prvky</translation>
 <translation id="7961015016161918242">Nikdy</translation>
 <translation id="3200744626782631683">Údaje o prehliadaní sa nikdy automaticky nemazajú</translation>
 <translation id="1991004083507807299">Karta stránky zatvorená</translation>
@@ -505,7 +511,10 @@ Naozaj chcete pokračovať?</translation>
 <translation id="3980704343258720102">Vymaže všetky údaje o prehliadaní</translation>
 <translation id="8089997572759938512">Vynulovať vaše hlásenia o súkromí</translation>
 <translation id="2718046830255553131">Údaje o Hláseniach o súkromí boli vymazané.</translation>
-<translation id="8376263745431603066">Povoliť Nočný režim (experimentálne)</translation>
+<translation id="3623948252408240879">Nočný režim</translation>
+<translation id="1257950165130031194">Vynútiť tmavý režim pre webový obsah</translation>
+<translation id="8710601165725654801">Dynamické farby</translation>
+<translation id="7865194971711852999">Motív aplikácie zodpovedá farbám tapety</translation>
 <translation id="1383876407941801731">Vyhľadať</translation>
 <translation id="13296465911709339">Váš text bol skopírovaný.</translation>
 <translation id="2735834606413553397">Verejná adresa bola skopírovaná do schránky.</translation>
@@ -529,7 +538,6 @@ Naozaj chcete pokračovať?</translation>
 <translation id="1822560017823072927">Štandardné verejné a súkromné rozhrania</translation>
 <translation id="5825943197137337319">Iba štandardné verejné rozhranie</translation>
 <translation id="1689062823386843231">Deaktivovať nezastupované UDP</translation>
-<translation id="1483493594462132177">Odeslat</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="4556086616242530072">Vlastný prehliadač.\nVlastná úschova.\nA viacreťazcový.</translation>
 <translation id="7909462264772842773">Prevezmite kontrolu nad svojimi kryptomenami a NFT. Brave Wallet podporuje Ethereum, reťazce EVM, Solana, Filecoin a ďalšie.</translation>
@@ -605,7 +613,6 @@ Naozaj chcete pokračovať?</translation>
 <translation id="569068482611873351">Import...</translation>
 <translation id="4522570452068850558">Detaily</translation>
 <translation id="3114681061018999547">Ochraňuje sa</translation>
-<translation id="3784455785234192852">Uzamknúť</translation>
 <translation id="4412698727486357573">Centrum pomoci</translation>
 <translation id="8239147115686034860">Automaticky uzamknúť peňaženku Brave</translation>
 <translation id="414639769490080648">Počet minút čakania do automatického uzamknutia peňaženky Brave</translation>
@@ -717,6 +724,8 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="1634828734222219955">Celkem</translation>
 <translation id="7995708795274219641">Částka + palivo</translation>
 <translation id="2186011161688824046">Čiastka + poplatok</translation>
+<translation id="1118876217803190221">Nedostatočný zostatok</translation>
+<translation id="275990379543116961">Nedostatočné prostriedky na palivo</translation>
 <translation id="1950052789869821983">Transakcia</translation>
 <translation id="2304783958703511257">Rozšírené nastavenia</translation>
 <translation id="4220062530885628403">Nonce</translation>
@@ -725,7 +734,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="4979796155378508955">Transakcia sa nemusí šíriť do siete, ak vlastná hodnota nonce nie je sekvenčná alebo obsahuje iné chyby.</translation>
 <translation id="750843150060816463">Cena paliva (Gwei)</translation>
 <translation id="1426320910664514906">Limit paliva</translation>
-<translation id="6389441740143786465">Zakázať centrum zdieľania</translation>
+<translation id="1784950057929740513">Centrum zdieľania</translation>
 <translation id="473775607612524610">Aktualizovať</translation>
 <translation id="479795390141144417">Aktualizácia účtu zlyhala.</translation>
 <translation id="8084782383392198011">Názov účtu nesmie byť prázdny.</translation>
@@ -800,10 +809,19 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="1060221736464994328">Umožniť tejto lokalite prepnutie siete?</translation>
 <translation id="2478788592457735063">Týmto sa prepne sieť na predchádzajúcu pridanú sieť.</translation>
 <translation id="8756686998207163764">Prepnúť sieť</translation>
+<translation id="8905793906896555159">Povoliť skupiny kariet</translation>
+<translation id="6735749683447943955">Zakázať skupiny kariet?</translation>
+<translation id="4616687974503500682">Všetky existujúce skupiny budú odstránené a karty v týchto skupinách sa stanú otvorenými, nezoskupenými kartami v okne prehliadača. Naozaj chcete pokračovať?</translation>
+<translation id="4394049700291259645">Zakázať</translation>
+<translation id="3859027502409073633">Zobraziť synchronizované skupiny kariet</translation>
+<translation id="7632160823264702523">Panel skupín kariet</translation>
+<translation id="2477807195394450274">Zobraziť spodný panel pre rýchly prístup ku kartám v aktuálne otvorenej skupine kariet</translation>
+<translation id="8374720587111523381">Otvárať prepojenia v aktuálnej skupine kariet</translation>
 <translation id="5324095733417835490">Otvárať iba prepojenia v aktuálnej skupine kariet</translation>
-<translation id="2620277345862119868">Automaticky otvárať všetky prepojenia v aktuálnej skupine kariet</translation>
+<translation id="1227658541937938697">Automaticky otvárať všetky prepojenia v aktuálnej skupine kariet</translation>
 <translation id="5242300593039211344">Zámok peňaženky</translation>
 <translation id="1108298724135935307">Prepojené stránky</translation>
+<translation id="8428213095426709021">Nastavení</translation>
 <translation id="4255623233927788178">Zobraziť v blokovom prieskumníkovi</translation>
 <translation id="8274201358637112807">Táto stránka chce spolupracovať s peňaženkou Brave</translation>
 <translation id="3355936511340229503">Chyba pripojenia</translation>
@@ -845,7 +863,6 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="6458565248779152483">Zakázať Brave VPN</translation>
 <translation id="9080536793704001825">Pozastaviť na 15 minút</translation>
 <translation id="803706420145725977">Pozastaviť na 1 hodinu</translation>
-<translation id="4394049700291259645">Zakázať</translation>
 <translation id="7733890291091968191">Zobrazenie upozornení Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Prehliadač Brave vás nesleduje ani nevie, ako používate našu aplikáciu, takže nevieme, ako ste si nastavili sieť VPN. Zdieľajte informácie o probléme, ktorý máte, a my urobíme všetko pre to, aby sme ho čo najskôr vyriešili. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nNázov hostiteľa siete VPN\n <ph name="VALUE"/></translation>
@@ -1083,7 +1100,7 @@ Leo AI. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="6393423486818299209">Použite svojho súčasného poskytovateľa služieb alebo Wikimedia DNS</translation>
 <translation id="3401384982562827787">Použite svojho súčasného poskytovateľa služieb alebo Cloudflare</translation>
 <translation id="8812367543786936496">Ak váš súčasný poskytovateľ služieb nie je zabezpečený, Brave používa zabezpečeného alternatívneho poskytovateľa DNS</translation>
-<translation id="1381108437654541567">Povoliť viacero okien</translation>
+<translation id="750538469281113679">Viacero okien</translation>
 <translation id="6167344249617630304">Otvorte až 5 okien naraz a presúvajte karty z jedného okna do druhého</translation>
 <translation id="1063948063403254568">Zistilo sa viacero okien</translation>
 <translation id="4661882208707630158">Pred vypnutím funkcie viacerých okien zlúčte karty do iného okna Brave alebo zatvorte ostatné okná Brave.</translation>

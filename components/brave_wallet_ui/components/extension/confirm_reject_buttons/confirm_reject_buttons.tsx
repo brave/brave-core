@@ -7,8 +7,8 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 
 // Hooks
-import { useUnsafePanelSelector } from '../../../common/hooks/use-safe-selector'
-import { PanelSelectors } from '../../../panel/selectors'
+import { useUnsafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -23,6 +23,7 @@ export interface Props {
   isAccountSyncing?: boolean
   isShieldingFunds?: boolean
   isUnshieldingFunds?: boolean
+  isMigratingFunds?: boolean
 }
 
 export const ConfirmRejectButtons = (props: Props) => {
@@ -33,11 +34,12 @@ export const ConfirmRejectButtons = (props: Props) => {
     isAccountSyncing,
     isShieldingFunds,
     isUnshieldingFunds,
+    isMigratingFunds,
   } = props
 
   // selectors
-  const submittingTransaction = useUnsafePanelSelector(
-    PanelSelectors.submittingTransaction,
+  const submittingTransaction = useUnsafeUISelector(
+    UISelectors.submittingTransaction,
   )
 
   // State
@@ -68,7 +70,7 @@ export const ConfirmRejectButtons = (props: Props) => {
         disabled={isTransactionConfirmedOrSubmitting}
         isDisabled={isTransactionConfirmedOrSubmitting}
       >
-        {getLocale('braveWalletAllowSpendRejectButton')}
+        {getLocale(S.BRAVE_WALLET_ALLOW_SPEND_REJECT_BUTTON)}
       </Button>
       <Button
         kind='filled'
@@ -79,12 +81,14 @@ export const ConfirmRejectButtons = (props: Props) => {
         isLoading={isTransactionConfirmedOrSubmitting}
       >
         {isAccountSyncing
-          ? getLocale('braveWalletSyncing')
+          ? getLocale(S.BRAVE_WALLET_SYNCING)
           : isShieldingFunds
-            ? getLocale('braveWalletShieldZEC')
+            ? getLocale(S.BRAVE_WALLET_SHIELD_ZEC)
             : isUnshieldingFunds
-              ? getLocale('braveWalletUnshieldZEC')
-              : getLocale('braveWalletAllowSpendConfirmButton')}
+              ? getLocale(S.BRAVE_WALLET_UNSHIELD_ZEC)
+              : isMigratingFunds
+                ? getLocale(S.BRAVE_WALLET_MIGRATE_ZEC)
+                : getLocale(S.BRAVE_WALLET_ALLOW_SPEND_CONFIRM_BUTTON)}
       </Button>
     </Row>
   )

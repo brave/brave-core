@@ -136,7 +136,7 @@ class EngineConsumer {
   // contain the first turn and completed assistant response.
   virtual void GenerateConversationTitle(
       const PageContentsMap& page_contents,
-      const ConversationHistory& conversation_history,
+      const ConversationHistoryView& conversation_history,
       GenerationCompletedCallback completed_callback) {}
 
   // Prevent indirect prompt injections being sent to the AI model.
@@ -178,10 +178,17 @@ class EngineConsumer {
   static std::string BuildSkillDefinitionMessage(
       const mojom::SkillEntryPtr& skill);
 
+  // Whether an empty array is a meaningful answer or a failure. Filtering
+  // tabs by topic can legitimately match nothing, whereas suggesting topics
+  // for a non-empty tab list should always produce something.
+  enum class EmptyResult { kIsError, kIsValid };
+
   // A helper function to extract vector of strings from tab organization
   // related responses (e.g. GetSuggestedTopics and GetFocusTabs).
   static base::expected<std::vector<std::string>, mojom::APIError>
-  GetStrArrFromTabOrganizationResponses(std::vector<GenerationResult>& results);
+  GetStrArrFromTabOrganizationResponses(
+      std::vector<GenerationResult>& results,
+      EmptyResult empty_result = EmptyResult::kIsError);
 
  protected:
   // Check if we should call GenerationCompletedCallback early based on the

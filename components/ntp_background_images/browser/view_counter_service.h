@@ -38,7 +38,7 @@ namespace ntp_background_images {
 class BraveNTPCustomBackgroundService;
 
 struct NTPBackgroundImagesData;
-struct NTPSponsoredImagesData;
+struct NTPSponsoredContentData;
 
 inline constexpr char kNewTabsCreatedDailyHistogramName[] =
     "Brave.NTP.NewTabsCreatedDaily";
@@ -78,20 +78,19 @@ class ViewCounterService : public KeyedService,
   std::optional<base::DictValue> GetNextWallpaperForDisplay();
   void GetCurrentWallpaperForDisplay(
       base::OnceCallback<void(std::optional<base::DictValue>)> callback,
-      bool allow_sponsored_image = true);
+      bool allow_sponsored_content = true);
   std::optional<base::DictValue> GetCurrentWallpaper() const;
-  void GetCurrentBrandedWallpaper(
+  void GetNewTabTakeoverWallpaper(
       base::OnceCallback<void(std::optional<base::DictValue>)> callback);
-  void GetCurrentBrandedWallpaperFromAdsService(
+  void GetNewTabTakeoverWallpaperFromAdsService(
       base::OnceCallback<void(std::optional<base::DictValue>)> callback);
-  std::optional<base::DictValue> GetCurrentBrandedWallpaperFromModel() const;
 
-  NTPSponsoredImagesData* GetSponsoredImagesData() const;
+  NTPSponsoredContentData* GetNewTabTakeover() const;
 
  private:
   friend class ViewCounterServiceTest;
   friend class NTPBackgroundImagesServiceTest;
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, CanShowSponsoredImages);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, CanShowNewTabTakeover);
   FRIEND_TEST_ALL_PREFIXES(
       ViewCounterServiceTest,
       AllowNewTabTakeoverWithRichMediaIfJavaScriptContentSettingIsSetToAllowed);
@@ -105,11 +104,11 @@ class ViewCounterService : public KeyedService,
       ViewCounterServiceTest,
       AllowNewTabTakeoverWithImageIfJavaScriptContentSettingIsSetToBlocked);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
-                           CannotShowSponsoredImagesIfUninitialized);
+                           CannotShowSponsoredContentIfUninitialized);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
-                           CannotShowSponsoredImagesIfMalformed);
+                           CannotShowSponsoredContentIfMalformed);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
-                           CannotShowSponsoredImagesIfOptedOut);
+                           CannotShowSponsoredContentIfOptedOut);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, IsActiveOptedIn);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, ActiveInitiallyOptedIn);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
@@ -143,21 +142,28 @@ class ViewCounterService : public KeyedService,
 
   // NTPBackgroundImagesService::Observer:
   void OnBackgroundImagesDataDidUpdate(NTPBackgroundImagesData* data) override;
-  void OnSponsoredImagesDataDidUpdate(NTPSponsoredImagesData* data) override;
+  void DeprecatedOnSponsoredContentDidUpdate(
+      NTPSponsoredContentData* data) override;
   void OnSponsoredContentDidUpdate(const base::DictValue& data) override;
 
   void ParseAndSaveNewTabPageAdsCallback(bool success);
 
   void ResetNotificationState();
   bool IsShowBackgroundImageOptedIn() const;
-  bool IsSponsoredImagesWallpaperOptedIn() const;
+  bool CanShowNewTabTakeoverWallpaper() const;
+
+  // Registers or unregisters this profile's interest in the Sponsored Images
+  // component with `background_images_service_` based on the current opt-in
+  // prefs, tracking `is_sponsored_images_component_registered_` so the
+  // registration count stays balanced.
+  void UpdateSponsoredImagesComponentRegistration();
 
   // Do we have a sponsored or referral wallpaper to show and has the user
   // opted-in to showing it at some time.
-  bool CanShowSponsoredImages() const;
+  bool CanShowNewTabTakeover() const;
   // Should we show the branded wallpaper right now, in addition to the result
-  // from `CanShowSponsoredImages()`.
-  bool ShouldShowSponsoredImages() const;
+  // from `CanShowNewTabTakeover()`.
+  bool ShouldShowNewTabTakeover() const;
 
   bool CanShowBackgroundImages() const;
 
@@ -165,17 +171,17 @@ class ViewCounterService : public KeyedService,
 
   void ResetModel();
 
-  void OnGetCurrentBrandedWallpaper(
+  void OnGetNewTabTakeoverWallpaper(
       base::OnceCallback<void(std::optional<base::DictValue>)> callback,
-      std::optional<base::DictValue> branded_wallpaper);
-  void CheckBrandedWallpaperCreativeFileExists(
+      std::optional<base::DictValue> new_tab_takeover_wallpaper);
+  void CheckNewTabTakeoverCreativeFileExists(
       base::OnceCallback<void(std::optional<base::DictValue>)> callback,
-      base::DictValue branded_wallpaper);
-  void OnCheckBrandedWallpaperCreativeFileExists(
+      base::DictValue new_tab_takeover_wallpaper);
+  void OnCheckNewTabTakeoverCreativeFileExists(
       base::OnceCallback<void(std::optional<base::DictValue>)> callback,
-      base::DictValue branded_wallpaper,
+      base::DictValue new_tab_takeover_wallpaper,
       bool file_exists);
-  void GetCurrentBrandedWallpaperFromAdsServiceCallback(
+  void GetNewTabTakeoverWallpaperFromAdsServiceCallback(
       base::OnceCallback<void(std::optional<base::DictValue>)> callback,
       brave_ads::mojom::NewTabPageAdInfoPtr ad);
 
@@ -193,6 +199,7 @@ class ViewCounterService : public KeyedService,
   const raw_ptr<PrefService> prefs_ = nullptr;
   const raw_ptr<PrefService> local_state_ = nullptr;
   bool is_supported_locale_ = false;
+  bool is_sponsored_images_component_registered_ = false;
   PrefChangeRegistrar pref_change_registrar_;
   ViewCounterModel model_;
   base::WallClockTimer p3a_update_timer_;
@@ -202,10 +209,10 @@ class ViewCounterService : public KeyedService,
       nullptr;
 
   // If P3A is enabled, these will track number of tabs created
-  // and the ratio of those which are branded images.
+  // and the ratio of those which are New Tab Takeover ads.
   std::unique_ptr<WeeklyStorage> new_tab_count_state_;
   std::unique_ptr<DailyStorage> new_tab_count_daily_state_;
-  std::unique_ptr<WeeklyStorage> branded_new_tab_count_state_;
+  std::unique_ptr<WeeklyStorage> new_tab_takeover_count_state_;
 
   base::ScopedObservation<brave_ads::AdsService, brave_ads::AdsServiceObserver>
       ads_service_observation_{this};

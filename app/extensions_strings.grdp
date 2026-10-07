@@ -275,6 +275,15 @@
   <message name="IDS_EXTENSIONS_ITEM_DETAILS" desc="The text on the button to show more details for a given extension.">
     Details
   </message>
+  <message name="IDS_EXTENSIONS_ITEM_RATE_IT" desc="The text on the link allowing the user to rate an extension on the Web Store.">
+    Rate it
+  </message>
+  <message name="IDS_EXTENSIONS_ITEM_DISABLED_BY_EXTENSION" desc="The text to indicate that an extension was disabled by another, known extension.">
+    Extension disabled by <ph name="EXTENSION_NAME">$1<ex>AdBlock</ex></ph>
+  </message>
+  <message name="IDS_EXTENSIONS_ITEM_DISABLED_BY_EXTENSION_GENERIC" desc="The text to indicate that an extension was disabled by another extension, but that specific extension is not known.">
+    Extension disabled by another extension
+  </message>
   <message name="IDS_EXTENSIONS_DETAILS_BACK_BUTTON_ARIA_LABEL" desc="Text read by screen readers when focusing on the back button on details page. If the back button is activated, it will navigate to the previous page. This text will only be announced by screen readers and will not be visible in the UI." is_accessibility_with_no_ui="true">
     <ph name="SUBPAGE_TITLE">$1<ex>Google Docs</ex></ph> details page back button
   </message>
@@ -512,6 +521,12 @@
   <message name="IDS_EXTENSIONS_SHORTCUT_SCOPE_GLOBAL" desc="The label to indicate that a shortcut will be triggerable globally (including outside of the Brave application).">
     Global
   </message>
+  <message name="IDS_EXTENSIONS_SHORTCUT_INPUT_LABEL" desc="The visual text label above the shortcut input field.">
+    Type a shortcut
+  </message>
+  <message name="IDS_EXTENSIONS_SHORTCUT_SCOPE" desc="The visual text label above the shortcut scope dropdown.">
+    Scope
+  </message>
   <message name="IDS_EXTENSIONS_APPS_TITLE" desc="The text displayed in the sidebar to go to the apps section of the page.">
     Brave Apps
   </message>
@@ -570,7 +585,7 @@
     All Extensions
   </message>
   <message name="IDS_EXTENSIONS_PIN_NEW_EXTENSIONS" desc="The label for the toggle to pin new extensions in chrome://extensions.">
-    Pin new extensions
+    Pin new extensions to Toolbar
   </message>
   <!-- Extension Safety Check Review Panel strings -->
   <message name="IDS_EXTENSIONS_SAFETY_HUB_HEADER" desc="Name of a section in chrome://extensions that gives users an overview over their safety status and where users can take action to improve their safety.">

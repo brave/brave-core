@@ -8,7 +8,7 @@ import { html } from '//resources/lit/v3_0/lit.rollup.js'
 import type { BraveTabSearchAppElement } from './brave_tab_search_app.js'
 
 export function getHtml(this: BraveTabSearchAppElement) {
-  return !this.tabOrganizationEnabled_
+  return html`${!this.tabOrganizationEnabled_
     ? html` <brave-tab-search-page available-height="${this.availableHeight}">
       </brave-tab-search-page>`
     : html` <cr-tabs
@@ -25,5 +25,5 @@ export function getHtml(this: BraveTabSearchAppElement) {
           : html`
               <tab-focus-page available-height="${this.availableHeight}">
               </tab-focus-page>
-            `}`
+            `}`}`
 }

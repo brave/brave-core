@@ -23,6 +23,7 @@ constexpr wchar_t kBraveWireguardConfigKeyName[] = L"ConfigPath";
 constexpr wchar_t kBraveWireguardEnableTrayIconKeyName[] = L"EnableTrayIcon";
 constexpr wchar_t kBraveWireguardActiveKeyName[] = L"WireGuardActive";
 constexpr wchar_t kBraveWireguardConnectionStateName[] = L"ConnectionState";
+constexpr wchar_t kBraveWireguardAllowLanTrafficKeyName[] = L"AllowLanTraffic";
 constexpr uint16_t kBraveVpnWireguardMaxFailedAttempts = 3;
 
 std::optional<base::win::RegKey> GetStorageKey(HKEY root_key, REGSAM access) {
@@ -136,6 +137,34 @@ bool IsWireguardActive() {
 
   DWORD value = 1;
   if (storage->ReadValueDW(kBraveWireguardActiveKeyName, &value) !=
+      ERROR_SUCCESS) {
+    return true;
+  }
+  return value == 1;
+}
+
+// Mirrors prefs::kBraveVPNWireguardAllowLanTraffic so the status tray process,
+// which has no PrefService, can pass it when reconnecting.
+void SetAllowLanTraffic(bool value) {
+  auto storage = GetStorageKey(HKEY_CURRENT_USER, KEY_SET_VALUE);
+  if (!storage.has_value()) {
+    return;
+  }
+
+  if (storage->WriteValue(kBraveWireguardAllowLanTrafficKeyName,
+                          DWORD(value)) != ERROR_SUCCESS) {
+    VLOG(1) << "False to write registry value";
+  }
+}
+
+bool IsLanTrafficAllowed() {
+  auto storage = GetStorageKey(HKEY_CURRENT_USER, KEY_QUERY_VALUE);
+  if (!storage.has_value()) {
+    return true;
+  }
+
+  DWORD value = 1;
+  if (storage->ReadValueDW(kBraveWireguardAllowLanTrafficKeyName, &value) !=
       ERROR_SUCCESS) {
     return true;
   }

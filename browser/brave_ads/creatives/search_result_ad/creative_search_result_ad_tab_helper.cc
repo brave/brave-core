@@ -206,10 +206,6 @@ void CreativeSearchResultAdTabHelper::MaybeHandleCreativeAdClickedEvent(
 
 void CreativeSearchResultAdTabHelper::MaybeHandleCreativeAdClickedEventCallback(
     mojom::CreativeSearchResultAdInfoPtr creative_search_result_ad) {
-  if (!creative_search_result_ad) {
-    return;
-  }
-
   AdsService* ads_service = GetAdsService();
   if (!ads_service) {
     return;

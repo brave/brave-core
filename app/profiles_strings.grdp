@@ -27,6 +27,24 @@
   <message name="IDS_AVATAR_BUTTON_INCOGNITO_TOOLTIP" desc="Tooltip for the avatar button when the user is in Private mode.">
     You're Private
   </message>
+  <message name="IDS_ISOLATED_MODE_BUBBLE_ACCESSIBLE_TITLE" is_accessibility_with_no_ui="true" desc="Accessible title of the avatar menu, opened in Isolated Mode. The message also shows the number of open Isolated Mode windows if they are more than one. [ICU Syntax]">
+      {0, plural,
+        =1 {Isolated Mode}
+        other {# open Isolated Mode windows}
+      }
+  </message>
+  <message name="IDS_AVATAR_BUTTON_ISOLATED_MODE" desc="Short label for the avatar button when the user is in Isolated Mode and the number of open Isolated Mode windows if there are more than one Isolated Mode window open. [ICU Syntax]" meaning="This window is browsing in Isolated Mode and there are more than one Isolated Mode windows open. The counter is not shown when there is only one Isolated Mode window open.">
+    {0, plural,
+      =1 {Isolated}
+      other {Isolated (#)}
+    }
+  </message>
+  <message name="IDS_AVATAR_BUTTON_ISOLATED_MODE_TOOLTIP" desc="Tooltip for the avatar button when the user is in Isolated Mode.">
+    You're in an Isolated Window
+  </message>
+  <message name="IDS_ISOLATED_MODE_SESSION_TITLE" desc="Label for an isolated mode session.">
+    Isolated session
+  </message>
   <message name="IDS_AVATAR_BUTTON_SYNC_ERROR" desc="Short label for the avatar button when there are sync errors for the current profile." meaning="An error has occurred during sync">
     Error
   </message>
@@ -168,6 +186,20 @@
     You can keep chatting with AI Mode without switching tabs. To get started, verify it's you. You'll also get your passwords and more on all your devices.
   </message>
 
+  <!-- Signin Composebox Drive context menu option promo. -->
+  <message name="IDS_COMPOSEBOX_DRIVE_CONTEXT_MENU_OPTION_SIGNIN_PROMO_TITLE" desc="The title in the sign-in promo bubble shown to users when interacting with the Google Drive context menu option in the composebox while not signed in.">
+    Sign in to Brave
+  </message>
+  <message name="IDS_COMPOSEBOX_DRIVE_CONTEXT_MENU_OPTION_VERIFY_PROMO_TITLE" desc="The title in the sign-in promo bubble shown to users when interacting with the Google Drive context menu option in the composebox while sign-in credentials have expired.">
+    Verify it's you
+  </message>
+  <message name="IDS_COMPOSEBOX_DRIVE_CONTEXT_MENU_OPTION_SIGNIN_PROMO_SUBTITLE" desc="The message shown in a sign-in promo bubble shown to users when interacting with the Google Drive context menu option in the composebox while not signed in.">
+    Sign in to easily add files from Drive to your AI Mode threads. You'll also get your passwords and more on all your devices.
+  </message>
+  <message name="IDS_COMPOSEBOX_DRIVE_CONTEXT_MENU_OPTION_VERIFY_PROMO_SUBTITLE" desc="The message shown in a sign-in promo bubble shown to users when interacting with the Google Drive context menu option in the composebox while sign-in credentials have expired.">
+    To easily add files from Drive to your AI Mode threads, verify it's you. You'll also get your passwords and more on all your devices.
+  </message>
+
   <if expr="use_titlecase">
       <message name="IDS_PROFILES_VERIFY_ACCOUNT_BUTTON" desc="The label of the button that is shown when the user is in a Signin paused state. When the user clicks this button, they will be prompted to enter their Brave sync chain credentials.">
         Verify It's You
@@ -187,11 +219,11 @@
   <message name="IDS_PROFILE_MENU_PROFILE_IDENTIFIER_WITH_SEPARATOR" desc="The user name and profile name are separated by a symbol, in this case bullet •, with a white space before it and a white space after it. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
     <ph name="USER_NAME">$1<ex>John</ex></ph> • <ph name="PROFILE_NAME">$2<ex>Work</ex></ph>
   </message>
-  <message name="IDS_PROFILE_MENU_PROFILE_IDENTIFIER_WITH_NAME_AND_TIER" is_accessibility_with_no_ui="true" desc="The user name, profile name, and the Brave membership tier are separated by a symbol, in this case bullet •, with a white space before it and a white space after it. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
-    <ph name="USER_NAME">$1<ex>John</ex></ph> • <ph name="PROFILE_NAME">$2<ex>Work</ex></ph> • <ph name="TIER_NAME">$3<ex>Brave Subscription</ex></ph>
-  </message>
   <message name="IDS_PROFILE_AVATAR_NAME_WITH_AI_MEMBERSHIP" desc="Label indicating that the profile has a Brave membership associated with the AI avatar ring, preceded by the profile name or details.">
     <ph name="PROFILE_NAME">$1<ex>Alice</ex></ph>. Brave membership
+  </message>
+  <message name="IDS_PROFILE_AVATAR_AI_MEMBERSHIP" is_accessibility_with_no_ui="true" desc="Label indicating that the profile has a Brave membership associated with the AI avatar ring.">
+    Brave membership
   </message>
   <message name="IDS_PROFILE_MENU_PROFILE_IDENTIFIER_WITH_TIER" is_accessibility_with_no_ui="true" desc="Label indicating that the profile has a Brave membership tier associated with the AI avatar ring, preceded by the profile name. The profile name and the tier name are separated by a symbol, in this case bullet •, with a white space before it and a white space after it. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
     <ph name="PROFILE_NAME">$1<ex>Alice</ex></ph> • <ph name="TIER_NAME">$2<ex>Brave Subscription</ex></ph>
@@ -209,6 +241,12 @@
     {0, plural,
       =1 {Close Private}
       other {Close Private (# windows)}
+    }
+  </message>
+  <message name="IDS_ISOLATED_MODE_PROFILE_MENU_CLOSE_BUTTON" desc="The text of the button offering to close all Isolated Mode windows.">
+    {0, plural,
+      =1 {Close Isolated window}
+      other {Close Isolated (# windows)}
     }
   </message>
   <if expr="not use_titlecase">
@@ -1142,6 +1180,10 @@
     </message>
 
     <!-- First Run Experience strings -->
+    <message name="IDS_FRE_WELCOME_TITLE" desc="This string is the main headline of the first onboarding screen intended to introduce users to Brave. It highlights productivity as a core value proposition. The tone should be motivating and professional. (CHAR LIMIT = 45)">
+      The browser that gets more done
+    </message>
+
     <message name="IDS_FRE_SIGN_IN_SUBTITLE_0" desc="This is the subtitle on a full-page screen that asks the user to sign in to Brave with their Brave sync chain. It appears when the user launches Brave for the first time. When they sign in, they can personalize and customize Brave and remember their settings in their Brave sync chain. These features are also described in the cards below as 'All your devices', 'Stronger security', and 'Back up data'. The tone should be inviting and alluring.">
       Get additional features
     </message>
@@ -1256,30 +1298,29 @@
     </message>
 
     <!-- Feature Showcase - Gemini -->
-    <message name="IDS_FEATURE_SHOWCASE_GEMINI_SUBTITLE" desc="This is a subtitle explaining a specific feature of the AI assistant: using active page content to provide better context. (CHAR LIMIT = 60)">
-      Get more relevant answers by sharing your tabs
+    <message name="IDS_FEATURE_SHOWCASE_GEMINI_SUBTITLE" desc="This is a subtitle explaining a specific feature of the AI assistant: using active page content to provide better context. Moreover, it explains the technical data flow (content and URLs) to Brave for AI processing. The tone should be transparent and cautionary.">
+      For more relevant answers, Brave uses the content and the URL of shared tabs. Your current tab is shared in new chats. You can change this setting anytime.
     </message>
-    <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_1_ROW" desc="This is the body text of a consent dialog. It explains the technical data flow (content and URLs) to Brave for AI processing. The tone should be transparent and cautionary.">
-      Brave uses the content and URL of shared tabs. Your current tab is shared in new chats. You can change this setting anytime.
-    </message>
-    <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_2_ROW" desc="This is a disclosure regarding human review and data usage for model training. 'Learn more' links to privacy choices. It is a critical privacy notice. This string includes legal disclaimers and a quality warning about AI 'hallucinations.' The tone should be cautionary.">
+
+    <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_1_ROW" desc="This is a disclosure regarding human review and data usage for model training. 'Learn more' links to privacy choices. It is a critical privacy notice. This string includes legal disclaimers and a quality warning about AI 'hallucinations.' The tone should be cautionary.">
       Chats are reviewed and used to improve Brave AI. Gemini is AI and can make mistakes. You can <ph name="BEGIN_LINK_MANAGE_ACTIVITY">&lt;a href="$1" target="_blank"&gt;</ph>manage your activity<ph name="END_LINK_MANAGE_ACTIVITY">&lt;/a&gt;</ph>, including info about your location. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a href="$2" target="_blank"&gt;</ph>Learn more about your choices<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
     </message>
-    <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_2_US" desc="This is a disclosure regarding human review and data usage for model training. 'Learn more' links to privacy choices. It is a critical privacy notice. This string includes legal disclaimers and a quality warning about AI 'hallucinations.' The tone should be cautionary.">
+    <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_1_US" desc="This is a disclosure regarding human review and data usage for model training. 'Learn more' links to privacy choices. It is a critical privacy notice. This string includes legal disclaimers and a quality warning about AI 'hallucinations.' The tone should be cautionary.">
       Chats are reviewed and used to improve Brave AI. Gemini is AI and can make mistakes. Some content may not be suitable for everyone. You can <ph name="BEGIN_LINK_MANAGE_ACTIVITY">&lt;a href="$1" target="_blank"&gt;</ph>manage your activity<ph name="END_LINK_MANAGE_ACTIVITY">&lt;/a&gt;</ph>, including info about your location. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a href="$2" target="_blank"&gt;</ph>Learn more about your choices<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
     </message>
-    <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_2_ENTERPRISE_ROW" desc="This string includes legal disclaimers and a quality warning about AI 'hallucinations.' The tone should be cautionary.">
-      Neither your conversations with Gemini nor your Brave Workspace data will be reviewed or used to improve generative AI models. Gemini is AI and can make mistakes.
+    <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_1_ENTERPRISE_ROW" desc="This string includes legal disclaimers and a quality warning about AI 'hallucinations.' The tone should be cautionary.">
+      Neither your conversations with Gemini nor your <ph name="BEGIN_LINK_WORKSPACE_DATA_PRIVACY">&lt;a href="$1" target="_blank"&gt;</ph>Brave Workspace data<ph name="END_LINK_WORKSPACE_DATA_PRIVACY">&lt;/a&gt;</ph> will be reviewed or used to improve generative AI models. Gemini is AI and can make mistakes.
     </message>
-    <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_2_ENTERPRISE_US" desc="This string includes legal disclaimers and a quality warning about AI 'hallucinations.' The tone should be cautionary.">
-      Neither your conversations with Gemini nor your Brave Workspace data will be reviewed or used to improve generative AI models. Gemini is AI and can make mistakes. Some content may not be suitable for everyone.
+    <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_1_ENTERPRISE_US" desc="This string includes legal disclaimers and a quality warning about AI 'hallucinations.' The tone should be cautionary.">
+      Neither your conversations with Gemini nor your <ph name="BEGIN_LINK_WORKSPACE_DATA_PRIVACY">&lt;a href="$1" target="_blank"&gt;</ph>Brave Workspace data<ph name="END_LINK_WORKSPACE_DATA_PRIVACY">&lt;/a&gt;</ph> will be reviewed or used to improve generative AI models. Gemini is AI and can make mistakes. Some content may not be suitable for everyone.
     </message>
-    <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_3_ROW" desc="">
-      <ph name="BEGIN_LINK_TERMS">&lt;a href="$1" target="_blank"&gt;</ph>Brave Terms<ph name="END_LINK_TERMS">&lt;/a&gt;</ph> and the <ph name="BEGIN_LINK_PRIVACY">&lt;a href="$2" target="_blank"&gt;</ph>Gemini Apps Privacy Notice<ph name="END_LINK_PRIVACY">&lt;/a&gt;</ph> apply
-    </message>
-    <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_3_KR" desc="">
+    <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_2_KR" desc="">
       Our <ph name="BEGIN_LINK_TERMS">&lt;a href="$1" target="_blank"&gt;</ph>Terms<ph name="END_LINK_TERMS">&lt;/a&gt;</ph>, <ph name="BEGIN_LINK_LOCATION_TERMS">&lt;a href="$2" target="_blank"&gt;</ph>Korean Location Terms<ph name="END_LINK_LOCATION_TERMS">&lt;/a&gt;</ph>, and <ph name="BEGIN_LINK_PRIVACY">&lt;a href="$3" target="_blank"&gt;</ph>Privacy Notice<ph name="END_LINK_PRIVACY">&lt;/a&gt;</ph> apply.
     </message>
+    <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_2_ROW" desc="">
+      <ph name="BEGIN_LINK_TERMS">&lt;a href="$1" target="_blank"&gt;</ph>Brave Terms<ph name="END_LINK_TERMS">&lt;/a&gt;</ph> and the <ph name="BEGIN_LINK_PRIVACY">&lt;a href="$2" target="_blank"&gt;</ph>Gemini Apps Privacy Notice<ph name="END_LINK_PRIVACY">&lt;/a&gt;</ph> apply
+    </message>
+
     <message name="IDS_FEATURE_SHOWCASE_GEMINI_NOT_NOW" desc="This is the button to decline the AI feature consent. (CHAR LIMIT = 15)">
       Not now
     </message>

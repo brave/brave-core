@@ -6,11 +6,34 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
 from PB.recipe_modules.brave.chromium_checkout.examples.full import (
-    InputProperties)
+    InputProperties,
+)
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    chromium_checkout,
+    env,
+    platform,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['chromium_checkout', 'env', 'platform', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    chromium_checkout: chromium_checkout.API
+    env: env.API
+    step: step.API
+
+
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    chromium_checkout: chromium_checkout.TEST_API
+    platform: platform.TEST_API
+
 
 PROPERTIES = InputProperties
 
@@ -24,8 +47,10 @@ _TEST_TOOLCHAIN_HASH = 'deadbeef00'
 _TEST_COMMIT_HASH = 'ef35003457e93c278f911a334b06e4a5f8967e06'
 
 
-def RunSteps(api, properties):
-    api.chromium_checkout.ensure_checkout(ref=properties.chromium_ref)
+def RunSteps(api: DEPS, properties):
+    api.chromium_checkout.ensure_checkout(
+        ref=properties.chromium_ref, run_sync=not properties.skip_sync
+    )
     # Surface otherwise-internal hermetic-toolchain env as steps so a test can
     # assert `checkout_ref` set them on Windows.
     toolchain = api.env.get('DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL')
@@ -36,7 +61,7 @@ def RunSteps(api, properties):
         api.step('win toolchain hash env', ['echo', gyp_hash])
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     # No existing checkout -> clone via a shared git-cache mirror (populated
     # with the release tag up front) straight onto the tag, skipping a
     # separate `origin/HEAD` checkout and re-fetch.
@@ -44,21 +69,25 @@ def GenTests(api):
         'fresh tag',
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.git_cache_populated(),
-        api.properties(chromium_ref='151.0.7917.1'),
+        api.properties(chromium_ref='refs/tags/151.0.7917.1'),
         api.post_process(post_process.MustRun, 'gclient config'),
         api.post_process(post_process.MustRun, 'git cache populate'),
         api.post_process(post_process.MustRun, 'clone from git cache'),
         api.post_process(post_process.MustRun, 'checkout tag'),
         api.post_process(post_process.DoesNotRun, 'checkout origin/HEAD'),
-        api.post_process(post_process.DoesNotRun,
-                         'git cache populate for ref'),
+        api.post_process(post_process.DoesNotRun, 'git cache populate for ref'),
         api.post_process(post_process.DoesNotRun, 'fetch tag'),
         api.post_process(post_process.MustRun, 'gclient sync'),
-        api.post_process(post_process.StepCommandContains,
-                         'git cache populate',
-                         ['--ref', 'refs/tags/151.0.7917.1']),
-        api.post_process(post_process.StepCommandContains, 'checkout tag',
-                         ['refs/tags/151.0.7917.1']),
+        api.post_process(
+            post_process.StepCommandContains,
+            'git cache populate',
+            ['--ref', 'refs/tags/151.0.7917.1'],
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'checkout tag',
+            ['refs/tags/151.0.7917.1'],
+        ),
         api.post_process(post_process.StatusSuccess),
     )
     # No existing checkout + a fully-qualified ref outside `refs/heads/*` --
@@ -76,13 +105,19 @@ def GenTests(api):
         api.post_process(post_process.MustRun, 'fetch ref'),
         api.post_process(post_process.MustRun, 'checkout ref'),
         api.post_process(post_process.MustRun, 'gclient sync'),
-        api.post_process(post_process.StepCommandContains,
-                         'git cache populate',
-                         ['--ref', 'refs/branch-heads/6834']),
-        api.post_process(post_process.StepCommandContains, 'fetch ref',
-                         ['refs/branch-heads/6834']),
-        api.post_process(post_process.StepCommandContains, 'checkout ref',
-                         ['FETCH_HEAD']),
+        api.post_process(
+            post_process.StepCommandContains,
+            'git cache populate',
+            ['--ref', 'refs/branch-heads/6834'],
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'fetch ref',
+            ['refs/branch-heads/6834'],
+        ),
+        api.post_process(
+            post_process.StepCommandContains, 'checkout ref', ['FETCH_HEAD']
+        ),
         api.post_process(post_process.StatusSuccess),
     )
     # Existing checkout (chrome/VERSION present) + a branch ref -> no clone,
@@ -92,14 +127,15 @@ def GenTests(api):
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.existing_checkout(),
         api.chromium_checkout.git_cache_populated(),
-        api.properties(chromium_ref='main'),
+        api.properties(chromium_ref='refs/heads/main'),
         api.post_process(post_process.MustRun, 'check chrome/VERSION'),
         api.post_process(post_process.DoesNotRun, 'gclient config'),
         api.post_process(post_process.DoesNotRun, 'clone from git cache'),
         api.post_process(post_process.MustRun, 'point origin at git cache'),
         api.post_process(post_process.MustRun, 'fetch ref'),
-        api.post_process(post_process.StepCommandContains,
-                         'git cache populate for ref', ['--ref', 'main']),
+        api.post_process(
+            post_process.StepCommandContains, 'fetch ref', ['refs/heads/main']
+        ),
         api.post_process(post_process.StatusSuccess),
     )
     # Existing checkout + a release tag -> re-fetches the tag into the mirror
@@ -111,11 +147,21 @@ def GenTests(api):
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.existing_checkout(),
         api.chromium_checkout.git_cache_populated(),
-        api.properties(chromium_ref='151.0.7917.1'),
+        api.properties(chromium_ref='refs/tags/151.0.7917.1'),
         api.post_process(post_process.DoesNotRun, 'clone from git cache'),
         api.post_process(post_process.MustRun, 'point origin at git cache'),
         api.post_process(post_process.MustRun, 'fetch tag'),
         api.post_process(post_process.MustRun, 'gclient sync'),
+        api.post_process(post_process.StatusSuccess),
+    )
+    # `run_sync=False` leaves `gclient sync` to the caller, even with a ref.
+    yield api.test(
+        'fresh tag no sync',
+        api.chromium_checkout.with_git_cache(),
+        api.chromium_checkout.git_cache_populated(),
+        api.properties(chromium_ref='refs/tags/151.0.7917.1', skip_sync=True),
+        api.post_process(post_process.MustRun, 'checkout tag'),
+        api.post_process(post_process.DoesNotRun, 'gclient sync'),
         api.post_process(post_process.StatusSuccess),
     )
     # No `ref` requested on a fresh checkout -> clone straight onto
@@ -144,11 +190,16 @@ def GenTests(api):
         api.post_process(post_process.MustRun, 'checkout commit'),
         api.post_process(post_process.DoesNotRun, 'checkout tag'),
         api.post_process(post_process.MustRun, 'gclient sync'),
-        api.post_process(post_process.StepCommandContains,
-                         'git cache populate',
-                         ['--commit', _TEST_COMMIT_HASH]),
-        api.post_process(post_process.StepCommandContains, 'checkout commit',
-                         [_TEST_COMMIT_HASH]),
+        api.post_process(
+            post_process.StepCommandContains,
+            'git cache populate',
+            ['--commit', _TEST_COMMIT_HASH],
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'checkout commit',
+            [_TEST_COMMIT_HASH],
+        ),
         api.post_process(post_process.StatusSuccess),
     )
     # Existing checkout + a bare commit hash -> re-fetches it into the
@@ -165,9 +216,11 @@ def GenTests(api):
         api.post_process(post_process.MustRun, 'fetch commit'),
         api.post_process(post_process.DoesNotRun, 'fetch ref'),
         api.post_process(post_process.MustRun, 'gclient sync'),
-        api.post_process(post_process.StepCommandContains,
-                         'git cache populate for ref',
-                         ['--commit', _TEST_COMMIT_HASH]),
+        api.post_process(
+            post_process.StepCommandContains,
+            'git cache populate for ref',
+            ['--commit', _TEST_COMMIT_HASH],
+        ),
         api.post_process(post_process.StatusSuccess),
     )
     # Existing checkout + no `ref` requested -> nothing to do at all: no
@@ -185,7 +238,7 @@ def GenTests(api):
     # No git cache configured -> git_cache.validate() raises.
     yield api.test(
         'missing git cache',
-        api.properties(chromium_ref='main'),
+        api.properties(chromium_ref='refs/heads/main'),
         api.post_process(post_process.StatusException),
         api.post_process(post_process.DropExpectation),
         status='EXCEPTION',
@@ -200,13 +253,16 @@ def GenTests(api):
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.existing_checkout(),
         api.chromium_checkout.git_cache_populated(),
-        api.properties(chromium_ref='main'),
+        api.properties(chromium_ref='refs/heads/main'),
         api.post_process(post_process.MustRun, 'win toolchain env'),
         api.post_process(
-            post_process.StepCommandContains, 'win toolchain env', [
+            post_process.StepCommandContains,
+            'win toolchain env',
+            [
                 'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-'
                 '2.on.aws/windows-hermetic-toolchain/'
-            ]),
+            ],
+        ),
         api.post_process(post_process.MustRun, 'resolve win toolchain hash'),
         api.post_process(post_process.DoesNotRun, 'win toolchain hash env'),
         api.post_process(post_process.StatusSuccess),
@@ -219,11 +275,15 @@ def GenTests(api):
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.existing_checkout(),
         api.chromium_checkout.git_cache_populated(),
-        api.chromium_checkout.win_toolchain_published(_TEST_TOOLCHAIN_HASH,
-                                                      'cafef00dcafe'),
-        api.properties(chromium_ref='main'),
+        api.chromium_checkout.win_toolchain_published(
+            _TEST_TOOLCHAIN_HASH, 'cafef00dcafe'
+        ),
+        api.properties(chromium_ref='refs/heads/main'),
         api.post_process(post_process.MustRun, 'win toolchain hash env'),
-        api.post_process(post_process.StepCommandContains,
-                         'win toolchain hash env', ['cafef00dcafe']),
+        api.post_process(
+            post_process.StepCommandContains,
+            'win toolchain hash env',
+            ['cafef00dcafe'],
+        ),
         api.post_process(post_process.StatusSuccess),
     )

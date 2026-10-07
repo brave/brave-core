@@ -94,9 +94,9 @@ describe('SuggestedMaxPriorityFeeSelector', () => {
 
     await waitFor(() => {
       // Check if all fee options are rendered
-      expect(screen.getByText('braveSwapSlow')).toBeInTheDocument()
-      expect(screen.getByText('braveSwapAverage')).toBeInTheDocument()
-      expect(screen.getByText('braveSwapFast')).toBeInTheDocument()
+      expect(screen.getByText(S.BRAVE_SWAP_SLOW)).toBeInTheDocument()
+      expect(screen.getByText(S.BRAVE_SWAP_AVERAGE)).toBeInTheDocument()
+      expect(screen.getByText(S.BRAVE_SWAP_FAST)).toBeInTheDocument()
 
       // Check if durations are displayed
       expect(screen.getByText('28 min')).toBeInTheDocument()
@@ -115,10 +115,10 @@ describe('SuggestedMaxPriorityFeeSelector', () => {
       ).toBeInTheDocument()
 
       // Check if custom button is rendered
-      expect(screen.getByText('braveWalletCustom')).toBeInTheDocument()
+      expect(screen.getByText(S.BRAVE_WALLET_CUSTOM)).toBeInTheDocument()
 
       // Check if Update button is rendered
-      expect(screen.getByText('braveWalletUpdate')).toBeInTheDocument()
+      expect(screen.getByText(S.BRAVE_WALLET_REVIEW_UPDATE)).toBeInTheDocument()
     })
   })
 })

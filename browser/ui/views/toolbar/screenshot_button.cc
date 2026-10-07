@@ -7,10 +7,10 @@
 
 #include "base/functional/bind.h"
 #include "base/task/single_thread_task_runner.h"
+#include "brave/browser/ui/screenshot/screenshot_controller.h"
 #include "brave/browser/ui/views/toolbar/screenshot_bubble_view.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "components/tabs/public/tab_interface.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -33,6 +33,14 @@ ScreenshotButton::~ScreenshotButton() {
   SetCallback(PressedCallback());
 }
 
+void ScreenshotButton::ShowBubbleAndRevealButtonTemporarily() {
+  if (!GetVisible()) {
+    SetVisible(true);
+    hide_after_bubble_closes_ = true;
+  }
+  ButtonPressed();
+}
+
 void ScreenshotButton::ButtonPressed() {
   if (bubble_widget_) {
     bubble_widget_->CloseWithReason(views::Widget::ClosedReason::kUnspecified);
@@ -40,7 +48,7 @@ void ScreenshotButton::ButtonPressed() {
   }
 
   auto* controller =
-      browser_window_interface_->GetFeatures().screenshot_controller();
+      screenshot::ScreenshotController::From(browser_window_interface_);
   auto host = screenshot::ShowScreenshotBubble(
       browser_window_interface_->GetActiveTabInterface()->GetContents(), this,
       controller);
@@ -52,6 +60,10 @@ void ScreenshotButton::ButtonPressed() {
 }
 
 void ScreenshotButton::OnBubbleClosing(views::Widget::ClosedReason reason) {
+  if (hide_after_bubble_closes_) {
+    hide_after_bubble_closes_ = false;
+    SetVisible(false);
+  }
   base::SingleThreadTaskRunner::GetCurrentDefault()->DeleteSoon(
       FROM_HERE, bubble_widget_.release());
 }

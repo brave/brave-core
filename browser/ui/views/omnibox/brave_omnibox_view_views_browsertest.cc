@@ -10,6 +10,7 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
+#include "brave/ui/base/clipboard/test/privacy_capturing_test_clipboard.h"
 #include "build/build_config.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
@@ -144,7 +145,7 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, PasteAndSearchTest) {
             GURL(service->GetDefaultSearchProvider()->url()).host());
 
   // Create private window.
-  Browser* private_browser = CreateIncognitoBrowser();
+  BrowserWindowInterface* private_browser = CreateIncognitoBrowser();
   auto* private_service =
       TemplateURLServiceFactory::GetForProfile(private_browser->GetProfile());
   EXPECT_TRUE(VerifyTemplateURLServiceLoad(private_service));
@@ -230,6 +231,42 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CopyCleanURLToClipboardTest) {
             "https://dev-pages.bravesoftware.com/clean-urls/"
             "?brave_testing1=foo&brave_testing2=bar&brave_testing3=keep&&;b&d&"
             "e=&f=g&=end");
+}
+
+// A clean link copied from a private window must not leak into the OS clipboard
+// history or cloud clipboard sync.
+IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest,
+                       CopyCleanURLToClipboardOffTheRecordTest) {
+  brave::ScopedPrivacyCapturingTestClipboard fake_clipboard;
+
+  // The sanitizer service is shared with the original profile, so setting the
+  // rules on the normal profile also covers the private window.
+  SetSanitizerRules(R"([
+    { "include": [ "*://*/*"], "params": ["utm_content"] }
+  ])");
+
+  BrowserWindowInterface* private_browser = CreateIncognitoBrowser();
+  ASSERT_TRUE(private_browser->GetProfile()->IsOffTheRecord());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      private_browser, GURL("https://dev-pages.bravesoftware.com/clean-urls/"
+                            "?brave_testing1=foo&utm_content=removethis")));
+
+  auto* private_omnibox_view =
+      BrowserView::GetBrowserViewForBrowser(private_browser)
+          ->toolbar()
+          ->location_bar_view()
+          ->omnibox_view();
+  private_omnibox_view->SelectAll(true);
+  private_omnibox_view->ExecuteCommand(IDC_COPY_CLEAN_LINK, 0);
+
+  EXPECT_EQ(
+      "https://dev-pages.bravesoftware.com/clean-urls/?brave_testing1=foo",
+      ui::clipboard_test_util::ReadAsciiText(
+          ui::Clipboard::GetForCurrentThread(), ui::ClipboardBuffer::kCopyPaste,
+          /*data_dst=*/nullptr));
+  EXPECT_EQ(static_cast<uint32_t>(ui::Clipboard::kNoLocalClipboardHistory |
+                                  ui::Clipboard::kNoCloudClipboard),
+            fake_clipboard.last_privacy_types());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CopyURLToClipboardTest) {

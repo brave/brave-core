@@ -5,22 +5,13 @@
 
 #include "chrome/browser/ui/webui/cr_components/searchbox/searchbox_omnibox_client.h"
 
-#include <string_view>
-
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_search/common/features.h"
+#include "brave/browser/brave_stats/first_run_util.h"
+#include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
-#include "components/omnibox/browser/autocomplete_input.h"
+#include "chrome/browser/browser_process.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/search_engines/template_url_service.h"
 #include "content/public/browser/page_navigator.h"
-#include "net/base/url_util.h"
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/browser/brave_stats/first_run_util.h"
-#include "brave/components/ai_chat/core/common/features.h"
-#include "chrome/browser/browser_process.h"
-#endif
 
 namespace {
 
@@ -43,21 +34,10 @@ content::OpenURLParams MaybeOverrideURLParams(
   if (template_url &&
       template_url->prepopulate_id() ==
           TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE) {
-    std::string_view source = "newtab";
-    if (brave_search::features::IsSearchNewTabV1SourceEnabled()) {
-      source = "newtab_v1";
-    }
-#if BUILDFLAG(ENABLE_AI_CHAT)
     auto* local_state = g_browser_process->local_state();
-    if (ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled(
-            local_state, brave_stats::IsFirstRun(local_state))) {
-      source = "newtab_v2";
-    }
-#endif
-    params.url =
-        net::AppendOrReplaceQueryParameter(params.url, "source", source);
+    params.url = brave_search::OverrideWithNewTabSource(
+        params.url, local_state, brave_stats::IsFirstRun(local_state));
   }
-
   return params;
 }
 

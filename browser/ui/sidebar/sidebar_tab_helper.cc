@@ -11,14 +11,13 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "components/google/core/common/google_util.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/template_url_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
@@ -32,40 +31,38 @@ bool IsLeoPanelAlreadyOpened(content::WebContents* contents) {
 }
 
 // static
-void SidebarTabHelper::MaybeCreateForWebContents(
-    content::WebContents* contents) {
+std::unique_ptr<SidebarTabHelper> SidebarTabHelper::MaybeCreate(
+    tabs::TabInterface& tab) {
   // For now only used for one shot Leo panel open.
   if (!g_browser_process || !g_browser_process->local_state()) {
-    return;
+    return nullptr;
   }
 
   if (!g_browser_process->local_state()->GetBoolean(
           kTargetUserForSidebarEnabledTest)) {
-    return;
+    return nullptr;
   }
 
   if (!sidebar::features::kOpenOneShotLeoPanel.Get()) {
-    return;
+    return nullptr;
   }
 
   // For now, we only support Leo panel for regular profile.
+  content::WebContents* contents = tab.GetContents();
   auto* context = contents->GetBrowserContext();
   if (!Profile::FromBrowserContext(context)->IsRegularProfile()) {
-    return;
+    return nullptr;
   }
 
   if (IsLeoPanelAlreadyOpened(contents)) {
-    return;
+    return nullptr;
   }
 
-  content::WebContentsUserData<SidebarTabHelper>::CreateForWebContents(
-      contents);
+  return std::make_unique<SidebarTabHelper>(tab);
 }
 
-SidebarTabHelper::SidebarTabHelper(content::WebContents* contents)
-    : WebContentsUserData(*contents) {
-  Observe(contents);
-}
+SidebarTabHelper::SidebarTabHelper(tabs::TabInterface& tab)
+    : tabs::ContentsObservingTabFeature(tab) {}
 
 SidebarTabHelper::~SidebarTabHelper() = default;
 
@@ -84,9 +81,7 @@ void SidebarTabHelper::PrimaryPageChanged(content::Page& page) {
     return;
   }
 
-  BrowserWindowInterface* browser =
-      GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(
-          web_contents());
+  BrowserWindowInterface* browser = tab().GetBrowserWindowInterface();
   if (!browser) {
     return;
   }
@@ -98,7 +93,7 @@ void SidebarTabHelper::PrimaryPageChanged(content::Page& page) {
     return;
   }
 
-  auto* side_panel_ui = browser->GetFeatures().side_panel_ui();
+  auto* side_panel_ui = SidePanelUI::From(browser);
   if (!side_panel_ui) {
     return;
   }
@@ -129,7 +124,5 @@ void SidebarTabHelper::PrimaryPageChanged(content::Page& page) {
 
   side_panel_ui->Show(SidePanelEntryId::kChatUI);
 }
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(SidebarTabHelper);
 
 }  // namespace sidebar

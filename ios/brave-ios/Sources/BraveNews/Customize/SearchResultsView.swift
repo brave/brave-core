@@ -34,7 +34,7 @@ struct SearchResultsView: View {
             ChannelLabel(
               title: channel.name,
               subtitle: shouldShowRegionSubtitle ? channel.localeDescription : nil,
-              isFollowing: dataSource.isFollowingChannelBinding(channel: channel)
+              isFollowing: $dataSource[isFollowing: channel]
             )
           }
         } header: {
@@ -46,7 +46,7 @@ struct SearchResultsView: View {
           ForEach(results.sources) { source in
             SourceLabel(
               source: source,
-              isFollowing: dataSource.isFollowingSourceBinding(source: source)
+              isFollowing: $dataSource[isFollowing: source]
             )
           }
         } header: {
@@ -56,7 +56,7 @@ struct SearchResultsView: View {
       if !results.rssFeeds.isEmpty {
         Section {
           ForEach(results.rssFeeds) { feed in
-            RSSFeedLabel(feed: feed, isFollowing: dataSource.isFollowingRSSFeedBinding(feed: feed))
+            RSSFeedLabel(feed: feed, isFollowing: $dataSource[isFollowing: feed])
           }
         } header: {
           Text(Strings.BraveNews.userSourcesHeaderTitle)
@@ -161,7 +161,7 @@ struct SearchResultsView: View {
       }
 
       // Check if `data` is actually an OPML list
-      if let opml = OPMLParser.parse(data: data), !opml.outlines.isEmpty {
+      if let opml = OPMLParser.parseSynchronously(data: data), !opml.outlines.isEmpty {
         let locations = opml.outlines.compactMap(self.rssLocationFromOPMLOutline)
         completion(locations.isEmpty ? .failure(.noFeedsFound) : .success(locations))
         return

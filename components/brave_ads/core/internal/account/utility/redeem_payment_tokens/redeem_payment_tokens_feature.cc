@@ -7,8 +7,6 @@
 
 namespace brave_ads {
 
-BASE_FEATURE(kRedeemPaymentTokensFeature,
-             "RedeemPaymentTokens",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kRedeemPaymentTokensFeature, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace brave_ads

@@ -9,7 +9,7 @@
 #include "base/metrics/histogram_functions.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/time/time.h"
-#include "brave/components/ai_chat/core/common/constants.h"
+#include "brave/components/ai_chat/core/common/leo_workspace_util.h"
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/web/web_script_tool_types.h"
 #include "third_party/blink/renderer/bindings/core/v8/capture_source_location.h"
@@ -21,6 +21,7 @@
 #include "third_party/blink/renderer/bindings/core/v8/v8_script_runner.h"
 #include "third_party/blink/renderer/bindings/core/v8/v8_tool_annotations.h"
 #include "third_party/blink/renderer/core/dom/abort_signal.h"
+#include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
 #include "third_party/blink/renderer/core/dom/scoped_abort_state.h"
 #include "third_party/blink/renderer/core/event_type_names.h"
@@ -29,6 +30,7 @@
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
+#include "third_party/blink/renderer/core/frame/web_local_frame_impl.h"
 #include "third_party/blink/renderer/core/html/html_script_element.h"
 #include "third_party/blink/renderer/core/inspector/console_message.h"
 #include "third_party/blink/renderer/core/probe/core_probes.h"
@@ -46,5 +48,27 @@
 #include "third_party/blink/renderer/platform/wtf/text/ascii_ctype.h"
 #include "third_party/blink/renderer/platform/wtf/text/strcat.h"
 #include "url/url_constants.h"
+
+namespace blink {
+namespace {
+
+// Whether `document` is a Leo "workspace": a hidden
+// chrome-untrusted://<uuid>.leo-workspace page whose tools register themselves
+// via navigator.modelContext. Each workspace has its own subdomain, so this
+// tests the shape of the host rather than a fixed host, and excludes the
+// workspace's viewer document at chrome-untrusted://view.<uuid>.leo-workspace,
+// which has no tools of its own.
+//
+// This document can only exist when the kAIChatWorkspaceTools feature is
+// enabled, as checked by LeoWorkspaceUIConfig::IsWebUIEnabled().
+bool IsAIChatLeoWorkspaceDocument(const Document& document) {
+  const SecurityOrigin* origin =
+      document.GetExecutionContext()->GetSecurityOrigin();
+  return origin->Protocol() == "chrome-untrusted" &&
+         ai_chat::IsAIChatLeoWorkspaceHost(origin->Host().Utf8());
+}
+
+}  // namespace
+}  // namespace blink
 
 #include <third_party/blink/renderer/core/script_tools/model_context.cc>

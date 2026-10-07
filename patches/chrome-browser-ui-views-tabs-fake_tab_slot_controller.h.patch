@@ -1,0 +1,53 @@
+diff --git a/chrome/browser/ui/views/tabs/fake_tab_slot_controller.h b/chrome/browser/ui/views/tabs/fake_tab_slot_controller.h
+index a5f90597a4d4688bf22a70b65eac68f64ad166db..9cace58f373636ecf68d6086673226d3990d6eca 100644
+--- a/chrome/browser/ui/views/tabs/fake_tab_slot_controller.h
++++ b/chrome/browser/ui/views/tabs/fake_tab_slot_controller.h
+@@ -100,6 +100,48 @@ class FakeTabSlotController : public TabSlotController {
+   BrowserWindowInterface* GetBrowserWindowInterface() override;
+   TabGroup* GetTabGroup(const tab_groups::TabGroupId& group_id) const override;
+ 
++  void set_should_always_hide_close_button(bool hide) {
++    should_always_hide_close_button_ = hide;
++  }
++  void set_can_close_tab_via_middle_button_click(bool enabled) {
++    can_close_tab_via_middle_button_click_ = enabled;
++  }
++  bool ShouldAlwaysHideCloseButton() const override;
++
++  bool IsVerticalTabsFloating() const override;
++  bool IsVerticalTabsAnimatingButNotFinalState() const override;
++
++  bool ShouldPaintTabAccent(const Tab* tab) const override;
++  std::optional<TabAccentColors> GetTabAccentColors(
++      const Tab* tab) const override;
++  ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;
++  bool ShouldAlwaysShowMiniTabAccent() const override;
++  bool CanCloseTabViaMiddleButtonClick() const override;
++
++  int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const override;
++  const tabs::TreeTabNode* GetTreeTabNode(
++      const tree_tab::TreeTabNodeId& id) const override;
++  void SetTreeTabNodeCollapsed(const tree_tab::TreeTabNodeId& id,
++                               bool collapsed) override;
++  bool IsInCollapsedTreeTabNode(
++      const tree_tab::TreeTabNodeId& id) const override;
++
++  void set_tab_min_width_mode(brave_tabs::TabMinWidthMode mode) {
++    tab_min_width_mode_ = mode;
++  }
++  void set_horizontal_scrolling_enabled(bool enabled) {
++    horizontal_scrolling_enabled_ = enabled;
++  }
++  brave_tabs::TabMinWidthMode GetTabMinWidthMode() const override;
++  bool IsHorizontalScrollingEnabled() const override;
++
++ protected:
++  bool should_always_hide_close_button_ = false;
++  bool can_close_tab_via_middle_button_click_ = true;
++  brave_tabs::TabMinWidthMode tab_min_width_mode_ =
++      brave_tabs::TabMinWidthMode::kDefault;
++  bool horizontal_scrolling_enabled_ = false;
++
+  private:
+   raw_ptr<TabStripController> tab_strip_controller_;
+   raw_ptr<TabContainer, DanglingUntriaged> tab_container_;

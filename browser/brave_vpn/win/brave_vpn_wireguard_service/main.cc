@@ -69,6 +69,7 @@ std::optional<int> ProcessUserLevelCommands(
             IDS_BRAVE_VPN_WIREGUARD_TRAY_NOTIFICATION_DISCONNECTED)));
     return 0;
   }
+
   return std::nullopt;
 }
 

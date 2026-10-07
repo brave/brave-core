@@ -100,6 +100,12 @@ inline constexpr char16_t kIsolatedAppSchemeUtf16[] = u"isolated-app";
 // widgets instead of using HTML.
 inline constexpr char kChromeNativeScheme[] = "chrome-native";
 
+// The chrome-experimental-site-token-provider: scheme is used to retrieve
+// site-specific tokens.
+inline constexpr char kChromeExperimentalSiteTokenProviderScheme[] =
+    "chrome-experimental-site-token-provider";
+inline constexpr char kChromeExperimentalSiteTokenHost[] = "token";
+
 // The URL of safe section in Chrome page.
 inline constexpr char16_t kChromeSafePageURL[] = u"https://support.brave.app/";
 
@@ -177,6 +183,11 @@ inline constexpr char16_t kDiscardRingTreatmentLearnMoreUrl[] =
 inline constexpr char16_t kDoNotTrackLearnMoreURL[] =
     u"https://support.brave.app/hc/en-us/articles/"
     u"360017905612-How-do-I-turn-Do-Not-Track-on-or-off-";
+
+// "Learn more" URL for Universal Opt-Out.
+inline constexpr char16_t kUniversalOptOutLearnMoreURL[] =
+    u"https://support.brave.app/hc/en-us/articles/"
+    u"360017905612-How-do-I-turn-Do-Not-Track-on-or-off";
 
 // The URL for the "Learn more" page for interrupted downloads.
 inline constexpr char kDownloadInterruptedLearnMoreURL[] =
@@ -409,6 +420,13 @@ inline constexpr char16_t kCardBenefitsLearnMoreURL[] =
 inline constexpr char16_t kGmailOtpFillingLearnMoreURL[] =
     u"https://support.brave.app";
 
+// URL for Gmail general settings.
+inline constexpr char16_t kGmailSettingsURL[] = u"https://support.brave.app";
+
+// URL for Gmail smart features settings.
+inline constexpr char16_t kGmailSmartFeaturesURL[] =
+    u"https://support.brave.app";
+
 // "Learn more" URL for the performance intervention notification setting.
 inline constexpr char16_t kPerformanceInterventionLearnMoreUrl[] =
     u"https://support.brave.app";
@@ -434,6 +452,11 @@ inline constexpr char kResetProfileSettingsLearnMoreURL[] =
 
 // "Learn more" URL for Safebrowsing
 inline constexpr char kSafeBrowsingHelpCenterURL[] =
+    "https://support.brave.app/hc/en-us/articles/"
+    "15222663599629-Safe-Browsing-in-Brave";
+
+// "Learn more" URL for unsafe site warnings.
+inline constexpr char kUnsafeSiteWarningHelpCenterURL[] =
     "https://support.brave.app/hc/en-us/articles/"
     "15222663599629-Safe-Browsing-in-Brave";
 

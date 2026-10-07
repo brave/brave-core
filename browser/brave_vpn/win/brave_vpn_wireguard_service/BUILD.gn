@@ -96,6 +96,7 @@ group("unit_tests") {
   testonly = true
   deps = [
     "resources:unit_tests",
+    "service:unit_tests",
     "status_tray:unit_tests",
   ]
 }

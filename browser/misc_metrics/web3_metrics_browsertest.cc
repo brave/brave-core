@@ -8,7 +8,12 @@
 #include "base/path_service.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/run_until.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/constants/brave_paths.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "content/public/browser/render_frame_host.h"
@@ -45,6 +50,16 @@ class Web3MetricsBrowserTest : public PlatformBrowserTest {
 
   void SetUpOnMainThread() override {
     PlatformBrowserTest::SetUpOnMainThread();
+
+    // The proxy is only injected while a wallet provider is installed, which
+    // itself requires a created wallet.
+    auto* keyring_service =
+        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+            chrome_test_utils::GetProfile(this))
+            ->keyring_service();
+    ASSERT_TRUE(keyring_service->RestoreWalletSync(
+        brave_wallet::kMnemonicScarePiece, brave_wallet::kTestWalletPassword,
+        false));
 
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
@@ -104,6 +119,27 @@ IN_PROC_BROWSER_TEST_F(Web3MetricsBrowserTest, ProviderAccessReported) {
                               "window.ethereum.request();"));
 
   WaitForDappVisits(2);
+}
+
+// With no wallet the proxy isn't installed, so the page keeps a plain
+// assignable `window.ethereum`.
+IN_PROC_BROWSER_TEST_F(Web3MetricsBrowserTest, NoWalletNotInstrumented) {
+  auto* keyring_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+          chrome_test_utils::GetProfile(this))
+          ->keyring_service();
+  keyring_service->Reset(false);
+
+  ASSERT_TRUE(content::NavigateToURL(web_contents(),
+                                     https_server_.GetURL("/simple.html")));
+
+  // The property is a plain own data property, not the proxy's accessor.
+  EXPECT_TRUE(content::EvalJs(primary_main_frame(),
+                              "window.ethereum = { request: () => 42 };"
+                              "window.ethereum.request();"
+                              "!Object.getOwnPropertyDescriptor("
+                              "    window, 'ethereum').get")
+                  .ExtractBool());
 }
 
 // Pages that never touch a web3 provider record nothing.

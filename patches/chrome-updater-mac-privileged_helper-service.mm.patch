@@ -1,5 +1,5 @@
 diff --git a/chrome/updater/mac/privileged_helper/service.mm b/chrome/updater/mac/privileged_helper/service.mm
-index bb17d2b9f91664e303037ccbcfaeb5c6747bf5b3..dc1784b40e5f856d7719aa20139f44fd7403fceb 100644
+index 71c5ff06a13cafd56c98ac9a3ccb816723291ed8..6c3927938e8001de9fa2cf4e0acf6acbd21e3806 100644
 --- a/chrome/updater/mac/privileged_helper/service.mm
 +++ b/chrome/updater/mac/privileged_helper/service.mm
 @@ -116,7 +116,7 @@

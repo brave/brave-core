@@ -16,13 +16,15 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
-#include "chrome/browser/ui/views/tabs/tab_group_style.h"
+#include "chrome/browser/ui/views/tabs/common/tab_group_style.h"
+#include "chrome/browser/ui/views/tabs/tab_group_style_views.h"
 #include "chrome/browser/ui/views/tabs/tab_group_underline.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/color_utils.h"
 #include "ui/views/background.h"
+#include "ui/views/bubble/bubble_border.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/widget/widget.h"
@@ -69,7 +71,7 @@ void BraveTabGroupHeader::VisualsChanged() {
 
   if (auto chip_background_color = GetChipBackgroundColor()) {
     title_chip_->SetBackground(views::CreateRoundedRectBackground(
-        *chip_background_color, group_style_->GetChipCornerRadius()));
+        *chip_background_color, TabGroupStyle::GetChipCornerRadius()));
   } else {
     title_chip_->SetBackground(nullptr);
   }
@@ -106,7 +108,7 @@ void BraveTabGroupHeader::Layout(PassKey) {
 }
 
 bool BraveTabGroupHeader::ShouldShowVerticalTabs() const {
-  auto* vtc = VerticalTabController::FromBrowser(
+  auto* vtc = VerticalTabController::From(
       tab_slot_controller_->GetBrowserWindowInterface());
   return vtc && vtc->ShouldShowBraveVerticalTabs();
 }
@@ -170,6 +172,14 @@ TabNestingInfo BraveTabGroupHeader::GetTabNestingInfo() const {
   return {
       .tree_height = tab_slot_controller_->GetTreeHeight(*tree_tab_node()),
       .level = tab_slot_controller_->GetTreeTabNode(*tree_tab_node())->level()};
+}
+
+views::BubbleBorder::Arrow BraveTabGroupHeader::GetAnchorPosition() const {
+  if (ShouldShowVerticalTabs()) {
+    return views::BubbleBorder::Arrow::LEFT_TOP;
+  }
+
+  return TabGroupHeader::GetAnchorPosition();
 }
 
 BEGIN_METADATA(BraveTabGroupHeader)

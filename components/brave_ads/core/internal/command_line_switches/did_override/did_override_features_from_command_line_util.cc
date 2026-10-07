@@ -13,6 +13,7 @@
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/containers/flat_set.h"
+#include "base/feature_list.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_feature.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_feature.h"

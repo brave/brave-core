@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_WIREGUARD_SERVICE_SERVICE_WIREGUARD_TUNNEL_SERVICE_H_
 #define BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_WIREGUARD_SERVICE_SERVICE_WIREGUARD_TUNNEL_SERVICE_H_
 
+#include <optional>
 #include <string>
 
 namespace base {
@@ -15,6 +16,12 @@ class FilePath;
 namespace brave_vpn {
 
 namespace wireguard {
+
+// Returns the last known good config with its AllowedIPs rewritten for
+// |allow_lan_traffic|. nullopt when there is no readable last used config or it
+// already matches, in which case the persisted file can be reused as is.
+std::optional<std::string> GetLastUsedConfigIfLanTrafficChanged(
+    bool allow_lan_traffic);
 
 // Functions used from BraveWireguardManager to create and launch a new service.
 bool LaunchWireguardService(const std::wstring& config);

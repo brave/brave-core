@@ -202,8 +202,11 @@ void WalletDataFilesInstaller::MaybeRegisterWalletDataFilesComponent(
 
 void WalletDataFilesInstaller::MaybeRegisterWalletDataFilesComponentOnDemand(
     InstallCallback install_callback) {
+  // Create/restore/import need the lists now
+  parsing_allowed_ = true;
+
   if (registered_ || !delegate_) {  // delegate_ can be nullptr in tests.
-    std::move(install_callback).Run();
+    MaybeParseLists(std::move(install_callback));
     return;
   }
 
@@ -220,9 +223,30 @@ void WalletDataFilesInstaller::MaybeRegisterWalletDataFilesComponentOnDemand(
 }
 
 void WalletDataFilesInstaller::OnComponentReady(const base::FilePath& path) {
-  auto callback =
-      install_callback_ ? std::move(install_callback_) : base::DoNothing();
+  install_dir_ = path;
+  MaybeParseLists(TakeInstallCallback());
+}
+
+void WalletDataFilesInstaller::OnWalletUnlocked() {
+  parsing_allowed_ = true;
+  MaybeParseLists(TakeInstallCallback());
+}
+
+void WalletDataFilesInstaller::MaybeParseLists(InstallCallback callback) {
+  if (!parsing_allowed_ || !install_dir_.has_value()) {
+    std::move(callback).Run();
+    return;
+  }
+
+  const base::FilePath path = std::move(*install_dir_);
+  install_dir_.reset();
+
   BlockchainRegistry::GetInstance()->ParseLists(path, std::move(callback));
+}
+
+WalletDataFilesInstaller::InstallCallback
+WalletDataFilesInstaller::TakeInstallCallback() {
+  return install_callback_ ? std::move(install_callback_) : base::DoNothing();
 }
 
 void WalletDataFilesInstaller::OnEvent(
@@ -232,9 +256,7 @@ void WalletDataFilesInstaller::OnEvent(
   }
 
   if (item.state == update_client::ComponentState::kUpdateError) {
-    if (install_callback_) {
-      std::move(install_callback_).Run();
-    }
+    TakeInstallCallback().Run();
   }
 }
 
@@ -242,6 +264,8 @@ void WalletDataFilesInstaller::Reset() {
   component_updater_observation_.Reset();
   delegate_.reset();
   registered_ = false;
+  parsing_allowed_ = false;
+  install_dir_.reset();
   install_callback_.Reset();
 }
 

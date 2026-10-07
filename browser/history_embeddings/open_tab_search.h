@@ -11,6 +11,8 @@
 #include <vector>
 
 #include "base/functional/callback_forward.h"
+#include "base/memory/weak_ptr.h"
+#include "url/gurl.h"
 
 namespace base {
 class CancelableTaskTracker;
@@ -26,24 +28,40 @@ namespace history_embeddings {
 
 class HistoryEmbeddingsSearch;
 
-// Callback signature that matches the mojom-generated
-// `TabSearchPageHandler::SearchTabsByContentCallback`: receives the tab_ids
-// of matched open tabs in ranked order (best first).
-using RankedTabIdsCallback =
-    base::OnceCallback<void(const std::vector<int32_t>&)>;
+// Descriptor of a matched open tab returned by `SearchOpenTabsByContent`.
+struct OpenTabInfo {
+  int32_t tab_id = 0;
+  // Unique ID of the last committed navigation entry, matching
+  // `mojom::TabData::content_id`, so consumers can relate a tab to content
+  // already associated with a conversation.
+  int32_t content_id = 0;
+  // Tab title. Falls back to `url.host()` when the tab has no title yet
+  // (still loading or a page that never set one) so downstream consumers
+  // that display the tab always have something readable.
+  std::string title;
+  GURL url;
+};
+
+// Callback receiving the matched open tabs in ranked order (best first).
+using RankedOpenTabsCallback =
+    base::OnceCallback<void(std::vector<OpenTabInfo>)>;
 
 // Snapshots `profile`'s open HTTP(S) tabs from regular-type windows tracked
 // by the tab_search feature, resolves their URLs to URLIDs via
 // `history_service`, ranks them against `query` with
 // `HistoryEmbeddingsSearch::Search` (`skip_answering=true`), and dispatches
-// the matched tab_ids (best first) to `callback`. Dispatches an empty list
-// when there are no such tabs or none of them match.
-void SearchOpenTabsByContent(Profile* profile,
-                             history::HistoryService* history_service,
-                             HistoryEmbeddingsSearch* embeddings_search,
-                             std::string query,
-                             RankedTabIdsCallback callback,
-                             base::CancelableTaskTracker* task_tracker);
+// the matched tabs (best first) to `callback`. Dispatches an empty list when
+// there are no such tabs or none of them match.
+// `embeddings_search` is weak because the URL lookup is asynchronous and the
+// service releases its storage in Shutdown(); an invalidated pointer yields
+// no matches, so `callback` always runs.
+void SearchOpenTabsByContent(
+    Profile* profile,
+    history::HistoryService* history_service,
+    base::WeakPtr<HistoryEmbeddingsSearch> embeddings_search,
+    std::string query,
+    RankedOpenTabsCallback callback,
+    base::CancelableTaskTracker* task_tracker);
 
 }  // namespace history_embeddings
 

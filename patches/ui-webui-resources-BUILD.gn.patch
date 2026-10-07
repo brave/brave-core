@@ -1,12 +1,28 @@
 diff --git a/ui/webui/resources/BUILD.gn b/ui/webui/resources/BUILD.gn
-index c42f55eaef4640eeeb03fb5d643f51114821507e..fad2ec9f06dff5c7810b605d6fafcfdd6177c3c3 100644
+index 44b39cda6816b726d1414fb0c5490956f7a78909..7171d4ada39207f15906ddce1e72d5e5e759d6d3 100644
 --- a/ui/webui/resources/BUILD.gn
 +++ b/ui/webui/resources/BUILD.gn
-@@ -120,6 +120,7 @@ generate_grd("build_grd") {
-     public_deps += [ ":build_cros_styles_grdp" ]
-     grdp_files += [ "$target_gen_dir/cros_styles_resources.grdp" ]
-   }
-+  import("//brave/ui/webui/resources/sources.gni") grdp_files += brave_resources_extra_grdps public_deps += brave_resources_extra_grdps_deps
- }
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
- if (is_chromeos) {
++import("//brave/ui/webui/resources/sources.gni")
+ import("//components/signin/features.gni")
+ import("//crypto/features.gni")
+ import("//tools/grit/grit_rule.gni")
+@@ -41,6 +42,7 @@ generate_grd("build_grd") {
+     "mojo:build_grdp",
+     "//third_party/lit/v3_0:build_grdp",
+   ]
++  public_deps += brave_resources_extra_grdps_deps
+   grdp_files = [
+     "$root_gen_dir/third_party/lit/v3_0/resources.grdp",
+     "$target_gen_dir/cr_components/commerce/resources.grdp",
+@@ -50,6 +52,7 @@ generate_grd("build_grd") {
+     "$target_gen_dir/js/resources.grdp",
+     "$target_gen_dir/mojo/resources.grdp",
+   ]
++  grdp_files += brave_resources_extra_grdps
+ 
+   if ((!is_android && !is_ios) || is_desktop_android) {
+     public_deps += [

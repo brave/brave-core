@@ -5,9 +5,12 @@
 
 #include <memory>
 #include <optional>
+#include <utility>
 
 #include "base/files/file_path.h"
+#include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
@@ -27,7 +30,6 @@
 #include "chrome/browser/pdf/pdf_extension_test_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -164,7 +166,7 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
   }
 
   void OpenAIChatSidePanel() {
-    auto* side_panel_ui = browser()->GetFeatures().side_panel_ui();
+    auto* side_panel_ui = SidePanelUI::From(browser());
     side_panel_ui->Show(SidePanelEntryId::kChatUI);
     auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
     auto* side_panel = browser_view->side_panel();
@@ -186,7 +188,8 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
         base::BindLambdaForTesting(
             [&run_loop, expected_text,
              wait_for_callback](ai_chat::PageContent content) {
-              EXPECT_FALSE(content.is_video);
+              EXPECT_EQ(content.content_type,
+                        ai_chat::mojom::ContentType::PageContent);
               EXPECT_EQ(content.content, expected_text);
               if (wait_for_callback) {
                 run_loop.Quit();
@@ -353,7 +356,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PdfScreenshot) {
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, WebContentsShouldBeFocused) {
-  auto* side_panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* side_panel_ui = SidePanelUI::From(browser());
   side_panel_ui->Show(SidePanelEntryId::kChatUI);
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* side_panel = browser_view->side_panel();
@@ -435,11 +438,12 @@ class AIChatPDFOCRBrowserTest : public InProcessBrowserTest {
   }
 
   void TearDownOnMainThread() override {
+    weak_ptr_factory_.InvalidateWeakPtrs();
     chat_tab_helper_ = nullptr;
     InProcessBrowserTest::TearDownOnMainThread();
   }
 
-  // Polls GetContent() until non-empty text is returned (OCR may be slow).
+  // Polls GetContent() until `expected_text` is returned (OCR may be slow).
   // Uses async callbacks delivered by RunUntil's message loop to avoid
   // nested RunLoop DCHECKs.
   void FetchPageContentWaitForOCR(const base::Location& location,
@@ -448,30 +452,26 @@ class AIChatPDFOCRBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(
         pdf_extension_test_util::EnsurePDFHasLoaded(GetActiveWebContents()));
 
-    std::string result;
-    bool got_result = false;
+    // Drop state left over from an earlier call. Without this, a reply to a
+    // fetch that already timed out could land in the middle of this one,
+    // clearing `fetch_in_flight_` and reporting stale content as this call's
+    // result.
+    weak_ptr_factory_.InvalidateWeakPtrs();
+    page_content_.reset();
 
-    auto fetch = [&]() {
-      chat_tab_helper_->web_contents_content().GetContent(
-          base::BindLambdaForTesting([&](ai_chat::PageContent content) {
-            result = content.content;
-            got_result = true;
-          }));
-    };
-
-    fetch();
+    FetchPageContent();
     ASSERT_TRUE(base::test::RunUntil([&]() {
-      if (!got_result) {
+      if (fetch_in_flight_) {
         return false;
       }
-      if (result == expected_text) {
+      if (page_content_ == expected_text) {
         return true;
       }
       // OCR may not be done for all pages yet, retry.
-      got_result = false;
-      fetch();
+      FetchPageContent();
       return false;
-    }));
+    })) << "Timed out waiting for OCR text, last page content: "
+        << page_content_.value_or("<none>");
   }
 
  protected:
@@ -480,7 +480,33 @@ class AIChatPDFOCRBrowserTest : public InProcessBrowserTest {
   raw_ptr<ai_chat::AIChatTabHelper> chat_tab_helper_ = nullptr;
 
  private:
+  // Starts a GetContent() fetch. The reply is bound weakly, so a reply to a
+  // fetch this helper already abandoned is dropped instead of clearing
+  // `fetch_in_flight_` and reporting stale content.
+  void FetchPageContent() {
+    fetch_in_flight_ = true;
+    chat_tab_helper_->web_contents_content().GetContent(
+        base::BindOnce(&AIChatPDFOCRBrowserTest::OnPageContent,
+                       weak_ptr_factory_.GetWeakPtr()));
+  }
+
+  void OnPageContent(ai_chat::PageContent content) {
+    page_content_.emplace(std::move(content.content));
+    fetch_in_flight_ = false;
+  }
+
   content::ContentMockCertVerifier mock_cert_verifier_;
+
+  // Whether a GetContent() reply is still outstanding. Tracked separately from
+  // `page_content_` so that the last content stays available for the timeout
+  // message instead of being cleared by the retry that precedes it.
+  bool fetch_in_flight_ = false;
+
+  // Content of the last completed GetContent() call, unset until the first one
+  // completes.
+  std::optional<std::string> page_content_;
+
+  base::WeakPtrFactory<AIChatPDFOCRBrowserTest> weak_ptr_factory_{this};
 };
 
 // Disabled on Mac due to upstream searchify issue (crbug.com/406839385).

@@ -51,6 +51,9 @@ class WalletDataFilesInstaller
 
   void OnComponentReady(const base::FilePath& path);
 
+  // Parses installed wallet data lists if available.
+  void OnWalletUnlocked();
+
   // component_updater::ComponentUpdateService::Observer:
   void OnEvent(const update_client::CrxUpdateItem& item) override;
 
@@ -63,6 +66,8 @@ class WalletDataFilesInstaller
 
   void RegisterWalletDataFilesComponentInternal(
       component_updater::ComponentUpdateService* cus);
+  void MaybeParseLists(InstallCallback callback);
+  InstallCallback TakeInstallCallback();
 
   base::ScopedObservation<component_updater::ComponentUpdateService,
                           component_updater::ComponentUpdateService::Observer>
@@ -70,6 +75,8 @@ class WalletDataFilesInstaller
 
   std::unique_ptr<WalletDataFilesInstallerDelegate> delegate_;
   bool registered_ = false;
+  bool parsing_allowed_ = false;
+  std::optional<base::FilePath> install_dir_;
   InstallCallback install_callback_;
 };
 

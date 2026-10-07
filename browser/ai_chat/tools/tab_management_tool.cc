@@ -8,12 +8,12 @@
 #include <algorithm>
 #include <memory>
 #include <optional>
+#include <ranges>
 #include <string>
 #include <string_view>
 #include <utility>
 #include <vector>
 
-#include "base/containers/adapters.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
@@ -43,6 +43,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
@@ -547,7 +548,8 @@ TabManagementTool::RequiresUserInteractionBeforeHandling(
     return false;
   }
 
-  return mojom::PermissionChallenge::New(std::nullopt, *plan);
+  return mojom::PermissionChallenge::New(std::nullopt, *plan, std::nullopt,
+                                         /*supports_allow_session=*/false);
 }
 
 void TabManagementTool::UserPermissionGranted(const std::string& tool_use_id) {
@@ -863,8 +865,9 @@ BrowserWindowInterface* TabManagementTool::FindOrCreateTargetWindow(
 
   if (*window_id == -1) {
     // Create a new window
-    Browser::CreateParams create_params(profile_, true);
-    BrowserWindowInterface* target_browser = Browser::Create(create_params);
+    BrowserWindowCreateParams create_params(profile_, true);
+    BrowserWindowInterface* target_browser =
+        CreateBrowserWindow(std::move(create_params));
     if (!target_browser) {
       *error_out = "Failed to create new browser window";
       return nullptr;
@@ -1206,7 +1209,7 @@ void TabManagementTool::HandleCreateGroup(UseToolCallback callback,
       }
 
       // Reverse the indices to avoid index shifting
-      for (int index : base::Reversed(valid_indices)) {
+      for (int index : std::views::reverse(valid_indices)) {
         tabs_moved_models.push_back(tab_strip->DetachTabAtForInsertion(index));
       }
     }

@@ -12,5 +12,5 @@ def SetDefines(self, _orig_method, _defines):
         'build': 'brave',
         'app_name': 'Brave',
         'frame_name': 'Brave Frame',
-        'os_name': 'Google Chrome OS'
+        'os_name': 'Google Chrome OS',
     }

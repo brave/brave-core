@@ -1016,6 +1016,7 @@ struct WalletInfo {
   bool is_wallet_created;
   bool is_wallet_locked;
   bool is_wallet_backed_up;
+  bool is_filecoin_ledger_enabled;
   bool is_bitcoin_enabled;
   bool is_bitcoin_import_enabled;
   bool is_bitcoin_ledger_enabled;
@@ -1023,6 +1024,7 @@ struct WalletInfo {
   bool is_ankr_balances_feature_enabled;
   bool is_transaction_simulations_feature_enabled;
   bool is_z_cash_shielded_transactions_enabled;
+  bool is_z_cash_ironwood_enabled;
   bool is_cardano_enabled;
   array<CoinType> enabled_coins;
   bool is_cardano_dapp_support_enabled;
@@ -1164,7 +1166,7 @@ interface BlockchainRegistry {
       => (array<BlockchainToken> tokens);
 
   // Obtains all tokens for the Sell UI
-  GetSellTokens(OffRampProvider provider, string chain_id)
+  GetSellTokens(OffRampProvider provider, array<string> chain_ids)
       => (array<BlockchainToken> tokens);
 
   // Get currencies list
@@ -1342,14 +1344,6 @@ interface KeyringService {
 
 // Used for cryptocurrency prices over time.
 interface AssetRatioService {
-  // Obtains the URL for buying assets specifying currency
-  GetBuyUrlV1(OnRampProvider provider,
-              string chain_id,
-              string address,
-              string symbol,
-              string amount,
-              string currencyCode) => (string url, string? error);
-
   // Obtains the URL for selling assets specifying currency
   GetSellUrl(OffRampProvider provider,
              string chain_id,
@@ -1373,10 +1367,8 @@ interface AssetRatioService {
 
 interface MeldIntegrationService {
   // Obtains the list of Service Providers
-  // All parameters are optional
-  GetServiceProviders(MeldFilter filter)
-      => (array<MeldServiceProvider>? service_providers,
-          array<string>? error);
+  GetServiceProviders() => (array<MeldServiceProvider>? service_providers,
+                            array<string>? error);
 
   // Obtains the crypto quotes
   // Note that next parameters are mandatory:
@@ -1390,24 +1382,19 @@ interface MeldIntegrationService {
       => (array<MeldCryptoQuote>? crypto_quotes, array<string>? error);
 
   // Obtains the list of payment methods
-  // All parameters are optional
-  GetPaymentMethods(MeldFilter filter)
+  GetPaymentMethods(string country, string source_currency_code)
       => (array<MeldPaymentMethod>? payment_methods, array<string>? error);
 
   // Obtains the list of fiat currencies
-  // All parameters are optional
-  GetFiatCurrencies(MeldFilter filter)
+  GetFiatCurrencies()
       => (array<MeldFiatCurrency>? fiat_currencies, array<string>? error);
 
   // Obtains the list of crypto currencies
-  // All parameters are optional
-  GetCryptoCurrencies(MeldFilter filter)
+  GetCryptoCurrencies()
       => (array<MeldCryptoCurrency>? fiat_currencies, array<string>? error);
 
   // Obtains the list of countries
-  // All parameters are optional
-  GetCountries(MeldFilter filter)
-      => (array<MeldCountry>? countries, array<string>? error);
+  GetCountries() => (array<MeldCountry>? countries, array<string>? error);
 
   CryptoBuyWidgetCreate(CryptoBuySessionData session_data,
                         CryptoWidgetCustomerData? customer_data)
@@ -1433,9 +1420,6 @@ interface SwapService {
       => (SwapTransactionUnion? response,
           SwapErrorUnion? error,
           string error_string);
-
-  // Obtains whether the given chain id supports swap
-  IsSwapSupported(string chain_id) => (bool result);
 
   GetStatus(Gate3SwapStatusParams params) => (Gate3SwapStatus? response,
                                               Gate3SwapError? error,
@@ -1531,8 +1515,6 @@ const string kSolanaComputeBudgetProgramId =
 const string kMainnetChainId = "0x1";
 
 const string kSepoliaChainId = "0xaa36a7";
-
-const string kLocalhostChainId = "0x539";
 
 const string kPolygonMainnetChainId = "0x89";
 
@@ -1826,6 +1808,15 @@ struct NftIdentifier {
   string token_id;
 };
 
+struct AllNetworks {
+  array<NetworkInfo> networks;
+  array<string> custom_chain_ids;
+  array<string> hidden_chain_ids;
+  array<string> ankr_chain_ids;
+  array<string> swap_chain_ids;
+  array<string> off_ramp_chain_ids;
+};
+
 // Deals with the ETH JSON RPC API, as well as things like the user's current
 // network.
 interface JsonRpcService {
@@ -1851,13 +1842,7 @@ interface JsonRpcService {
   GetNetwork(CoinType coin, url.mojom.Origin? origin)
       => (NetworkInfo network);
 
-  GetAllNetworks() => (array<NetworkInfo> networks);
-
-  GetCustomNetworks(CoinType coin) => (array<string> chain_ids);
-
-  GetKnownNetworks(CoinType coin) => (array<string> chain_ids);
-
-  GetHiddenNetworks(CoinType coin) => (array<string> chain_ids);
+  GetAllNetworks() => (AllNetworks all_networks);
 
   AddHiddenNetwork(CoinType coin, string chain_id) => (bool success);
 
@@ -2151,13 +2136,16 @@ struct ZCashAccountInfo {
   ZCashAddress next_transparent_receive_address;
   ZCashAddress next_transparent_change_address;
   ZCashAccountShieldBirthday? account_shield_birthday;
-  // Address that contains both transparent and orchard part
+  // Address that contains both transparent
+  // and orchard part/ironwood part
   // Could be null if orchard is not enabled.
   string? unified_address;
   // Address that contains orchard part only
   // Could be null if orchard is not enabled.
+  // Address is the same across orchard and ironwood pool.
   string? orchard_address;
   // Address can be used to shield funds internally.
+  // Address is the same across orchard and ironwood pool.
   string? orchard_internal_address;
 };
 
@@ -2177,6 +2165,8 @@ enum ZCashTxType {
   // Internal transfer to a same-keyring account's transparent address
   // (from Ironwood)
   kUnshieldingIronwood = 11,
+  // Transfer from orchard to ironwood internal account
+  kMigratingIronwood = 12,
 };
 
 enum ZCashAddressError {
@@ -2267,6 +2257,11 @@ interface ZCashWalletService {
 
   // `account_birthday_block` is 0 if account birthday shouldn't be changed.
   ResetSyncState(AccountId account_id, uint32 account_birthday_block)
+      => (string? error_message);
+
+  // Rewinds sync state to immediately before Ironwood activation so the
+  // activation block is rescanned. Does not change account birthday.
+  ResetSyncStateToIronwoodActivation(AccountId account_id)
       => (string? error_message);
 
   GetChainTipStatus(AccountId account_id)
@@ -3207,8 +3202,6 @@ interface BraveWalletService {
   GenerateReceiveAddress(AccountId account_id)
       => (string? address, string? error_message);
 
-  GetAnkrSupportedChainIds() => (array<string> chain_ids);
-
   IsPrivateWindow() => (bool is_private_window);
 
   GetTransactionSimulationOptInStatus() => (BlowfishOptInStatus status);
@@ -3913,4 +3906,26 @@ interface SimulationService {
       => (SolanaSimulationResponse? response,
           string error_response,
           string error_string);
+};
+
+// Browser-side service exposing snap load to the wallet UI.
+interface SnapService {
+  // Load the snap's bundle through the snap host page.
+  // On success, |result| contains the exported value when it is a string.
+  LoadSnap(string snap_id) => (bool success, string? error, string? result);
+
+  // The page passes the remote end of its SnapHostBridge (last-wins).
+  BindSnapHostBridge(pending_remote<SnapHostBridge> bridge);
+};
+
+// Implemented by the snap host page TypeScript (SnapHostBridge).
+// Called from the browser to manage snap iframes.
+interface SnapHostBridge {
+  // Ensure the snap has an iframe and evaluate |source_code| in it.
+  // On success, |result| contains the exported value when it is a string.
+  LoadSnap(string snap_id, string source_code)
+      => (bool success, string? error, string? result);
+
+  // Tear down the iframe for |snap_id|.
+  UnloadSnap(string snap_id);
 };

@@ -14,6 +14,7 @@ import * as Mojom from '../../../common/mojom'
 import { AIChatContext, useAIChat } from '../../state/ai_chat_context'
 import {
   ConversationContext,
+  useConversation,
   useConversationState,
 } from '../../state/conversation_context'
 import styles from './style.module.scss'
@@ -192,6 +193,7 @@ function AttachmentChips(props: {
 const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
   function InputBox(props, ref) {
     const aiChatContext = useAIChat()
+    const conversationContext = useConversation()
     const conversationState = useConversationState()
     const querySubmitted = React.useRef(false)
     const editableElementRef = React.useRef<HTMLElement | null>(null)
@@ -274,10 +276,13 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
       (c) => !c.conversationTurnUuid,
     )
     // Tools chips are shown for any content with tools attached, even content
-    // that has already been committed to a conversation turn.
-    const toolsContent = props.context.associatedContentInfo.filter(
-      (c) => c.toolsAttached,
-    )
+    // that has already been committed to a conversation turn. Hide entirely if
+    // the current model doesn't support tools.
+    const modelSupportsTools =
+      conversationContext.currentModel?.supportsTools ?? false
+    const toolsContent = modelSupportsTools
+      ? props.context.associatedContentInfo.filter((c) => c.toolsAttached)
+      : []
     const showTaskStateActions =
       conversationState.capabilitiesEnabled.includes(
         Mojom.ConversationCapability.CONTENT_AGENT,
@@ -451,6 +456,26 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
                 unassociatedTabs={props.context.unassociatedTabs}
                 setAttachmentsDialog={props.context.setAttachmentsDialog}
                 focusInput={props.context.focusInput}
+                onSelectWorkspaceFolder={
+                  aiChatContext.isWorkspaceToolsEnabled
+                  && modelSupportsTools
+                  && conversationState.conversationUuid
+                    ? () => {
+                        aiChatContext.api.uiHandler
+                          .showWorkspaceFolderPicker(
+                            conversationState.conversationUuid!,
+                          )
+                          .then(({ selectedPath }) => {
+                            if (selectedPath) {
+                              console.info(
+                                'Leo workspace folder set:',
+                                selectedPath,
+                              )
+                            }
+                          })
+                      }
+                    : undefined
+                }
               />
               {props.context.isAIChatAgentProfileFeatureEnabled
                 && !props.context.isAIChatAgentProfile && (

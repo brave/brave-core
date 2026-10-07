@@ -80,13 +80,13 @@ describe('ConfirmSendTransactionInternal', () => {
     await waitForLoadingToComplete()
 
     // Verify origin info is not rendered for internal transactions
-    expect(screen.getByText('braveWalletPanelTitle')).toBeInTheDocument()
+    expect(screen.getByText(S.BRAVE_WALLET_PANEL_TITLE)).toBeInTheDocument()
     expect(screen.queryByTestId('origin-info-card')).toBeNull()
 
     // Verify strings are rendered
-    expect(screen.getByText('braveWalletConfirmSend')).toBeInTheDocument()
-    expect(screen.getByText('braveWalletSend')).toBeInTheDocument()
-    expect(screen.getByText('braveWalletSwapTo')).toBeInTheDocument()
+    expect(screen.getByText(S.BRAVE_WALLET_CONFIRM_SEND)).toBeInTheDocument()
+    expect(screen.getByText(S.BRAVE_WALLET_SEND)).toBeInTheDocument()
+    expect(screen.getByText(S.BRAVE_WALLET_SWAP_TO)).toBeInTheDocument()
 
     // Verify amount is rendered
     expect(screen.getByText('12.5 ETH')).toBeInTheDocument()

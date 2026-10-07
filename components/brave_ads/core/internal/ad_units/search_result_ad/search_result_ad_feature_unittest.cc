@@ -5,9 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_feature.h"
 
+#include "base/feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 

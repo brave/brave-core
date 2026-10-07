@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/extensions/api/api_browser_context_keyed_service_factories.cc b/chrome/browser/extensions/api/api_browser_context_keyed_service_factories.cc
+index 6f4953f01d03e7ad741c9371ffa89a129a25b320..fe9fd4265fec07e6fd99c6c1a534686437ed6c32 100644
+--- a/chrome/browser/extensions/api/api_browser_context_keyed_service_factories.cc
++++ b/chrome/browser/extensions/api/api_browser_context_keyed_service_factories.cc
+@@ -69,7 +69,8 @@
+ #include "extensions/browser/api/bluetooth_low_energy/bluetooth_low_energy_api.h"
+ #endif
+ 
+-#if BUILDFLAG(ENABLE_SERVICE_DISCOVERY)
++#if BUILDFLAG(ENABLE_SERVICE_DISCOVERY) && \
++    (!BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_DESKTOP_ANDROID))
+ #include "chrome/browser/extensions/api/mdns/mdns_api.h"
+ #endif
+ 
+@@ -93,7 +94,8 @@ void EnsureApiBrowserContextKeyedServiceFactoriesBuilt() {
+   extensions::HistoryAPI::GetFactoryInstance();
+   extensions::IdentityAPI::GetFactoryInstance();
+   extensions::IncognitoConnectability::EnsureFactoryBuilt();
+-#if BUILDFLAG(ENABLE_SERVICE_DISCOVERY)
++#if BUILDFLAG(ENABLE_SERVICE_DISCOVERY) && \
++    (!BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_DESKTOP_ANDROID))
+   extensions::MDnsAPI::GetFactoryInstance();
+ #endif
+   extensions::OmniboxAPI::GetFactoryInstance();

@@ -175,14 +175,14 @@ void AdEvents::IsFirstTime(const std::string& campaign_id,
                 FROM
                   $1
                 WHERE
-                  campaign_id = '$3'
+                  campaign_id = ?
                   AND confirmation_type = '$2'
                 LIMIT 2) = 1
               THEN 1
               ELSE 0
             END AS is_first_time;)",
-      {kTableName, std::string(ToString(confirmation_type)), campaign_id},
-      nullptr);
+      {kTableName, std::string(ToString(confirmation_type))}, nullptr);
+  BindColumnString(mojom_db_action, 0, campaign_id);
   mojom_db_action->bind_column_types = {
       mojom::DBBindColumnType::kBool  // is_first_time
   };
@@ -210,34 +210,6 @@ void AdEvents::IsFirstTime(const std::string& campaign_id,
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(result_callback));
-}
-
-void AdEvents::GetAll(GetAdEventsCallback callback) const {
-  mojom::DBTransactionInfoPtr mojom_db_transaction =
-      mojom::DBTransactionInfo::New();
-  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
-  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteQueryWithBindings;
-  mojom_db_action->sql = base::ReplaceStringPlaceholders(
-      R"(
-          SELECT
-            placement_id,
-            type,
-            confirmation_type,
-            campaign_id,
-            creative_set_id,
-            creative_instance_id,
-            advertiser_id,
-            segment,
-            target_url,
-            created_at
-          FROM
-            $1)",
-      {kTableName}, nullptr);
-  BindColumnTypes(mojom_db_action);
-  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
-
-  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                 base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void AdEvents::Get(mojom::AdType mojom_ad_type,
@@ -467,8 +439,7 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
   const std::string non_new_tab_page_ad_cutoff = TimeToSqlValueAsString(
       base::Time::Now() - base::Days(non_new_tab_page_ad_days));
 
-  const size_t new_tab_page_ad_days =
-      UserHasJoinedBraveRewards() || UserHasOptedInToSurveyPanelist() ? 90 : 2;
+  const size_t new_tab_page_ad_days = UserHasJoinedBraveRewards() ? 90 : 2;
   const std::string new_tab_page_ad_cutoff = TimeToSqlValueAsString(
       base::Time::Now() - base::Days(new_tab_page_ad_days));
 

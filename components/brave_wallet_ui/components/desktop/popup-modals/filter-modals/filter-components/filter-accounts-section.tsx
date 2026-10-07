@@ -89,12 +89,12 @@ export const FilterAccountsSection = (props: Props) => {
           textSize='16px'
           isBold={true}
         >
-          {getLocale('braveWalletSelectAccounts')}
+          {getLocale(S.BRAVE_WALLET_SELECT_ACCOUNTS)}
         </Title>
         <SelectAllButton onClick={onSelectOrDeselectAllAccounts}>
           {filteredOutAccountIds.length > 0
-            ? getLocale('braveWalletSelectAll')
-            : getLocale('braveWalletDeselectAll')}
+            ? getLocale(S.BRAVE_WALLET_SELECT_ALL)
+            : getLocale(S.BRAVE_WALLET_DESELECT_ALL)}
         </SelectAllButton>
       </Row>
       <Column

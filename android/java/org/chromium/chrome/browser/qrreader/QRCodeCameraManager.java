@@ -214,10 +214,19 @@ public class QRCodeCameraManager
         try {
             mCameraSourcePreview.start(mCameraSource);
             return true;
-        } catch (IOException e) {
+        } catch (SecurityException e) {
+            // A SecurityException is a RuntimeException, so it has to be picked out before the
+            // catch below swallows it. Camera permission belongs to the host, which asks for it,
+            // so this one keeps travelling.
+            throw e;
+        } catch (IOException | RuntimeException e) {
+            // Opening the camera throws a plain RuntimeException when the device has no camera
+            // which satisfies the request. This runs on the window focus and rotation paths too,
+            // where an escaping exception brings the browser down.
             Log.e(TAG, "Unable to start camera source.", e);
             mCameraSource.release();
             mCameraSource = null;
+            mCameraSourcePreview.mCameraExist = false;
             return false;
         }
     }

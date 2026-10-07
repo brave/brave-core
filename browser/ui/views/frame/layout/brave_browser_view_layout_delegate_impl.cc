@@ -22,7 +22,7 @@ BrowserLayoutParams BraveBrowserViewLayoutDelegateImpl::GetBrowserLayoutParams(
     }
 
     if (ShouldShowVerticalTabs() &&
-        VerticalTabController::FromBrowser(browser_view().browser())
+        VerticalTabController::From(browser_view().browser())
             ->ShouldShowWindowTitleForVerticalTabs() &&
         !IsFullscreen() &&
         !params.visual_client_area.Contains(browser_view().bounds())) {

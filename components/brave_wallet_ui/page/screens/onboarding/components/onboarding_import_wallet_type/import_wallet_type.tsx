@@ -34,7 +34,7 @@ export const OnboardingImportWalletType = () => {
   const history = useHistory()
   return (
     <OnboardingContentLayout
-      title={getLocale('braveWalletImportWalletTypeTitle')}
+      title={getLocale(S.BRAVE_WALLET_IMPORT_WALLET_TYPE_TITLE)}
     >
       <Column
         width='100%'
@@ -43,18 +43,20 @@ export const OnboardingImportWalletType = () => {
         margin='92px 0 165px 0'
       >
         <ImportTypeAction
-          title={getLocale('braveWalletImportWalletTypeHotWalletTitle')}
+          title={getLocale(S.BRAVE_WALLET_IMPORT_WALLET_TYPE_HOT_WALLET_TITLE)}
           description={getLocale(
-            'braveWalletImportWalletTypeHotWalletDescription',
+            S.BRAVE_WALLET_IMPORT_WALLET_TYPE_HOT_WALLET_DESCRIPTION,
           )}
           icons={softwareWalletIcons}
           onClick={() => history.push(WalletRoutes.OnboardingImportTerms)}
         />
         <VerticalDivider margin='8px 0' />
         <ImportTypeAction
-          title={getLocale('braveWalletImportWalletTypeHardwareWalletTitle')}
+          title={getLocale(
+            S.BRAVE_WALLET_IMPORT_WALLET_TYPE_HARDWARE_WALLET_TITLE,
+          )}
           description={getLocale(
-            'braveWalletImportWalletTypeHardwareWalletDescription',
+            S.BRAVE_WALLET_IMPORT_WALLET_TYPE_HARDWARE_WALLET_DESCRIPTION,
           )}
           icons={hardwareWalletIcons}
           onClick={() =>

@@ -1,13 +1,12 @@
 diff --git a/components/attribution_reporting/features.cc b/components/attribution_reporting/features.cc
-index b199e7682ad3396b6e66e62dd927b9e81e157382..d1a0acd91b6546416d1b524aa2e0544b7c8982f6 100644
+index b199e7682ad3396b6e66e62dd927b9e81e157382..c0cb1d3e209a35d7e9a626605aef32a3f820a8af 100644
 --- a/components/attribution_reporting/features.cc
 +++ b/components/attribution_reporting/features.cc
-@@ -9,6 +9,7 @@
+@@ -9,6 +9,6 @@
  namespace attribution_reporting::features {
  
  // Controls whether the Conversion Measurement API infrastructure is enabled.
 -BASE_FEATURE(kConversionMeasurement, base::FEATURE_ENABLED_BY_DEFAULT);
-+// kConversionMeasurement feature state is enforced via plaster rewrite.
-+BASE_FEATURE(kConversionMeasurement, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kConversionMeasurement, base::FEATURE_DISABLED_BY_DEFAULT);
  
  }  // namespace attribution_reporting::features

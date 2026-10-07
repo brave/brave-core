@@ -342,6 +342,10 @@ bool RemoveFbmd(std::vector<uint8_t>& jpeg) {
 
 }  // namespace
 
+bool ContainsFbmdIptcMetadata(std::vector<uint8_t>& jpeg) {
+  return IsFbmdPresent(jpeg);
+}
+
 FbmdStripResult RemoveFbmdIptcMetadata(std::vector<uint8_t>& jpeg) {
   if (!IsFbmdPresent(jpeg)) {
     return FbmdStripResult::kNotFound;

@@ -30,11 +30,13 @@ def GetDashboardToken(file: Optional[io.TextIOWrapper]) -> str:
     key_path = os.environ.get(SERVICE_ACCOUNT_FILE_ENV_NAME)
     if key_path is None:
       raise RuntimeError(
-          f'Can\'t get the token, set ENV {SERVICE_ACCOUNT_FILE_ENV_NAME}')
-    with open(key_path, 'r') as f:
+        f'Can\'t get the token, set ENV {SERVICE_ACCOUNT_FILE_ENV_NAME}'
+      )
+    with open(key_path, 'r', encoding='utf-8') as f:
       service_account_info = json.load(f)
   credentials = service_account.Credentials.from_service_account_info(
-      service_account_info, scopes=SCOPES)
+    service_account_info, scopes=SCOPES
+  )
   if credentials is None:
     raise RuntimeError('Error reading authentication token')
   credentials.refresh(Request())
@@ -48,9 +50,11 @@ def main():
   log_format = '%(asctime)s: %(message)s'
   logging.basicConfig(level=log_level, format=log_format)
   parser = argparse.ArgumentParser()
-  parser.add_argument('--service_account_json_file',
-                      type=argparse.FileType('r'),
-                      help='json file with a service account private key')
+  parser.add_argument(
+    '--service_account_json_file',
+    type=argparse.FileType('r'),
+    help='json file with a service account private key',
+  )
   args = parser.parse_args()
 
   token = GetDashboardToken(args.service_account_json_file)

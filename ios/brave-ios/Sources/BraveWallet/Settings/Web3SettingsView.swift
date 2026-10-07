@@ -262,7 +262,7 @@ private struct WalletSettingsView: View {
 #if DEBUG
 struct WalletSettingsView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
+    NavigationStack {
       WalletSettingsView(
         settingsStore: .previewStore,
         networkStore: .previewStore,

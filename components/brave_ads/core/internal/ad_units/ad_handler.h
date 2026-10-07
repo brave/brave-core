@@ -64,6 +64,22 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
       mojom::SearchResultAdEventType mojom_ad_event_type,
       ResultCallback callback);
 
+  const SubdivisionTargeting& GetSubdivisionTargeting() const {
+    return subdivision_targeting_;
+  }
+
+  const TextClassificationResource& GetTextClassificationResource() const {
+    return text_classification_resource_;
+  }
+
+  const PurchaseIntentResource& GetPurchaseIntentResource() const {
+    return purchase_intent_resource_;
+  }
+
+  const AntiTargetingResource& GetAntiTargetingResource() const {
+    return anti_targeting_resource_;
+  }
+
  private:
   // ConversionsObserver:
   void OnDidConvertAd(const ConversionInfo& conversion) override;

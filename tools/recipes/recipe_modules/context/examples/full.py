@@ -6,12 +6,31 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    context,
+    path,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['context', 'path', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    context: context.API
+    path: path.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    pass
+
+
+def RunSteps(api: DEPS):
     node_bin = api.path.workspace / 'node' / 'bin'
 
     # Prepend a dir to PATH and override a var for steps in this scope.
@@ -20,16 +39,18 @@ def RunSteps(api):
 
         # Nested contexts compose: a second PATH prefix stacks in front, and
         # cwd applies only within the inner block.
-        with api.context(env_prefixes={'PATH': ['/opt/extra']},
-                         env_suffixes={'LD_LIBRARY_PATH': ['/opt/lib']},
-                         cwd=api.path.out):
+        with api.context(
+            env_prefixes={'PATH': ['/opt/extra']},
+            env_suffixes={'LD_LIBRARY_PATH': ['/opt/lib']},
+            cwd=api.path.out,
+        ):
             api.step('nested context', ['node', 'build.js'])
 
     # Back outside every `with`: the ambient environment is restored.
     api.step('outside context', ['node', '--version'])
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'basic',
         # The PATH prefix and env override are recorded on the scoped step.

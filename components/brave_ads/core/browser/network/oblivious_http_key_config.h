@@ -59,6 +59,11 @@ class ObliviousHttpKeyConfig final {
   // fetch is cancelled to prevent a stale response from overwriting the config.
   void Refetch();
 
+  // Cancels any pending or in-flight fetch and stops periodic refreshes. The
+  // cached key config, if any, is left in place since it is stored in local
+  // state and so may still be relied on by another profile.
+  void Stop();
+
  private:
   base::TimeDelta ExpiresAfter() const;
   bool HasExpired() const;

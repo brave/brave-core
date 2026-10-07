@@ -47,7 +47,7 @@ void BrowserFrameViewLayoutLinux::SetBoundsForButton(
   auto* browser = view_->GetBrowserView()->browser();
   DCHECK(browser);
 
-  auto* vtc = VerticalTabController::FromBrowser(browser);
+  auto* vtc = VerticalTabController::From(browser);
   const bool should_window_caption_buttons_overlap_toolbar =
       vtc && vtc->ShouldShowBraveVerticalTabs() &&
       !vtc->ShouldShowWindowTitleForVerticalTabs();

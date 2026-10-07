@@ -13,13 +13,13 @@
 #include "base/functional/callback_helpers.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
-#include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
+#include "brave/components/ntp_background_images/browser/wallpapers/ntp_custom_background_delegate.h"
 
 class CustomBackgroundFileManager;
 class Profile;
 
 class BraveNTPCustomBackgroundServiceDelegate
-    : public ntp_background_images::BraveNTPCustomBackgroundService::Delegate {
+    : public ntp_background_images::NTPCustomBackgroundDelegate {
  public:
   explicit BraveNTPCustomBackgroundServiceDelegate(Profile* profile);
   ~BraveNTPCustomBackgroundServiceDelegate() override;
@@ -38,7 +38,7 @@ class BraveNTPCustomBackgroundServiceDelegate
   void MigrateCustomImage(
       base::OnceCallback<void(bool)> callback = base::DoNothing());
 
-  // BraveNTPCustomBackgroundService::Delegate overrides:
+  // NTPCustomBackgroundDelegate overrides:
   bool IsCustomImageBackgroundEnabled() const override;
   base::FilePath GetCustomBackgroundImageLocalFilePath(
       const GURL& url) const override;

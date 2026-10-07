@@ -225,8 +225,8 @@ public class CameraSource {
             // Restrict the requested range to something within the realm of possibility.  The
             // choice of 1000000 is a bit arbitrary -- intended to be well beyond resolutions that
             // devices can support.  We bound this to avoid int overflow in the code later.
-            final int MAX = 1000000;
-            if ((width <= 0) || (width > MAX) || (height <= 0) || (height > MAX)) {
+            final int maxSize = 1000000;
+            if ((width <= 0) || (width > maxSize) || (height <= 0) || (height > maxSize)) {
                 throw new IllegalArgumentException("Invalid preview size: " + width + "x" + height);
             }
             mCameraSource.mRequestedPreviewWidth = width;
@@ -418,9 +418,10 @@ public class CameraSource {
                 mCamera.setPreviewCallbackWithBuffer(null);
                 try {
                     // We want to be compatible back to Gingerbread, but SurfaceTexture
-                    // wasn't introduced until Honeycomb.  Since the interface cannot use a SurfaceTexture, if the
-                    // developer wants to display a preview we must use a SurfaceHolder.  If the developer doesn't
-                    // want to display a preview we use a SurfaceTexture if we are running at least Honeycomb.
+                    // wasn't introduced until Honeycomb.  Since the interface cannot use a
+                    // SurfaceTexture, if the developer wants to display a preview we must use a
+                    // SurfaceHolder.  If the developer doesn't want to display a preview we use a
+                    // SurfaceTexture if we are running at least Honeycomb.
                     mCamera.setPreviewTexture(null);
                 } catch (Exception e) {
                     Log.e(TAG, "Failed to clear camera preview: " + e);
@@ -503,9 +504,9 @@ public class CameraSource {
     /**
      * Gets the current focus mode setting.
      *
-     * @return current focus mode. This value is null if the camera is not yet created. Applications should call {@link
-     * #autoFocus(AutoFocusCallback)} to start the focus if focus
-     * mode is FOCUS_MODE_AUTO or FOCUS_MODE_MACRO.
+     * @return current focus mode. This value is null if the camera is not yet created. Applications
+     *     should call {@link #autoFocus(AutoFocusCallback)} to start the focus if focus mode is
+     *     FOCUS_MODE_AUTO or FOCUS_MODE_MACRO.
      * @see Camera.Parameters#FOCUS_MODE_AUTO
      * @see Camera.Parameters#FOCUS_MODE_INFINITY
      * @see Camera.Parameters#FOCUS_MODE_MACRO
@@ -584,19 +585,16 @@ public class CameraSource {
     }
 
     /**
-     * Starts camera auto-focus and registers a callback function to run when
-     * the camera is focused.  This method is only valid when preview is active
-     * (between {@link #start()} or {@link #start(SurfaceHolder)} and before {@link #stop()} or {@link #release()}).
-     * <p/>
-     * <p>Callers should check
-     * {@link #getFocusMode()} to determine if
-     * this method should be called. If the camera does not support auto-focus,
-     * it is a no-op and {@link AutoFocusCallback#onAutoFocus(boolean)}
-     * callback will be called immediately.
-     * <p/>
-     * <p>If the current flash mode is not
-     * {@link Camera.Parameters#FLASH_MODE_OFF}, flash may be
-     * fired during auto-focus, depending on the driver and camera hardware.<p>
+     * Starts camera auto-focus and registers a callback function to run when the camera is focused.
+     * This method is only valid when preview is active (between {@link #start()} or {@link
+     * #start(SurfaceHolder)} and before {@link #stop()} or {@link #release()}).
+     *
+     * <p>Callers should check {@link #getFocusMode()} to determine if this method should be called.
+     * If the camera does not support auto-focus, it is a no-op and {@link
+     * AutoFocusCallback#onAutoFocus(boolean)} callback will be called immediately.
+     *
+     * <p>If the current flash mode is not {@link Camera.Parameters#FLASH_MODE_OFF}, flash may be
+     * fired during auto-focus, depending on the driver and camera hardware.
      *
      * @param cb the callback to run
      * @see #cancelAutoFocus()
@@ -653,9 +651,9 @@ public class CameraSource {
         return true;
     }
 
-    // ==============================================================================================
+    // ============================================================================================
     // Private
-    // ==============================================================================================
+    // ============================================================================================
 
     /** Only allow creation via the builder class. */
     private CameraSource() {}
@@ -726,7 +724,16 @@ public class CameraSource {
     private Camera createCamera() {
         int requestedCameraId = getIdForRequestedCamera(mFacing);
         if (requestedCameraId == -1) {
-            throw new RuntimeException("Could not find requested camera.");
+            // Devices without a back facing camera, such as Chromebooks and front camera only
+            // tablets, can still scan with the camera they do have.
+            int fallbackFacing =
+                    mFacing == CAMERA_FACING_BACK ? CAMERA_FACING_FRONT : CAMERA_FACING_BACK;
+            requestedCameraId = getIdForRequestedCamera(fallbackFacing);
+            if (requestedCameraId == -1) {
+                throw new RuntimeException("Could not find requested camera.");
+            }
+            Log.i(TAG, "Requested camera is not available, falling back to " + fallbackFacing);
+            mFacing = fallbackFacing;
         }
         Camera camera = Camera.open(requestedCameraId);
 

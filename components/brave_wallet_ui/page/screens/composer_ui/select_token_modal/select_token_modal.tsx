@@ -42,7 +42,11 @@ import {
   getTokenPriceFromRegistry,
   getPriceRequestsForTokens,
 } from '../../../../utils/pricing-utils'
-import { getAssetIdKey, isNativeAsset } from '../../../../utils/asset-utils'
+import {
+  getAssetIdKey,
+  isLegacyShieldedToken,
+  isNativeAsset,
+} from '../../../../utils/asset-utils'
 import {
   getEntitiesListFromEntityState, //
 } from '../../../../utils/entities.utils'
@@ -305,8 +309,10 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     const tokensBySelectedComposerOption = React.useMemo(() => {
       if (modalType === 'swap' || modalType === 'bridge') {
-        return fullVisibleFungibleTokensList.filter((token) =>
-          swapNetworks.some(({ chainId }) => chainId === token.chainId),
+        return fullVisibleFungibleTokensList.filter(
+          (token) =>
+            swapNetworks.some(({ chainId }) => chainId === token.chainId)
+            && !isLegacyShieldedToken(token),
         )
       }
 
@@ -675,7 +681,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
             textSize='14px'
             isBold={false}
           >
-            {getLocale('braveWalletNoAvailableTokens')}
+            {getLocale(S.BRAVE_WALLET_NO_AVAILIBLE_TOKENS)}
           </NoAssetsText>
         )
       }
@@ -769,10 +775,10 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
           onClose={handleOnClose}
           title={getLocale(
             modalType === 'swap'
-              ? 'braveWalletChooseAssetToSwap'
+              ? S.BRAVE_WALLET_CHOOSE_ASSET_TO_SWAP
               : modalType === 'bridge'
-                ? 'braveWalletChooseAssetToBridge'
-                : 'braveWalletChooseAssetToSend',
+                ? S.BRAVE_WALLET_CHOOSE_ASSET_TO_BRIDGE
+                : S.BRAVE_WALLET_CHOOSE_ASSET_TO_SEND,
           )}
           width='560px'
           height='90vh'
@@ -799,8 +805,8 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
               onInput={(e) => setSearchValue(e.value)}
               placeholder={
                 selectedSendOption === SendPageTabHashes.nft
-                  ? getLocale('braveWalletSearchNFTs')
-                  : getLocale('braveWalletSearchTokens')
+                  ? getLocale(S.BRAVE_WALLET_SEARCH_NFTS)
+                  : getLocale(S.BRAVE_WALLET_SEARCH_TOKENS)
               }
               type='text'
             >

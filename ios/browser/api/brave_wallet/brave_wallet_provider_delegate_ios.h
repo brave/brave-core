@@ -22,7 +22,6 @@ OBJC_EXPORT
 - (bool)isTabVisible;
 - (void)showPanelWithOrigin:(URLOriginIOS*)origin;
 - (void)walletInteractionDetected;
-- (void)showWalletOnboardingWithOrigin:(URLOriginIOS*)origin;
 - (void)showWalletBackup;
 - (void)unlockWallet;
 - (void)showAccountCreation:(BraveWalletCoinType)type

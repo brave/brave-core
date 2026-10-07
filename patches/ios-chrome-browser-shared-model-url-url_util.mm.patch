@@ -1,0 +1,13 @@
+diff --git a/ios/chrome/browser/shared/model/url/url_util.mm b/ios/chrome/browser/shared/model/url/url_util.mm
+index fa16702ba47909095f118ceaa9bafbffc37b2a60..d52469a41c017804466246e46e814ae83618251f 100644
+--- a/ios/chrome/browser/shared/model/url/url_util.mm
++++ b/ios/chrome/browser/shared/model/url/url_util.mm
+@@ -124,7 +124,7 @@ NSSet<NSString*>* GetItmsSchemes() {
+                        // There's no evidence that itms-bookss is actually
+                        // supported, but over-inclusion costs less than
+                        // under-inclusion.
+-                       @"itms-books", @"itms-bookss", @"itms-services",
++                       @"itms-books", @"itms-bookss",
+                        @"itms-beta", @"itms-betas", @"itms-watch",
+                        @"itms-watchs", @"itms-podcasts", @"itms-podcastss",
+                        nil];

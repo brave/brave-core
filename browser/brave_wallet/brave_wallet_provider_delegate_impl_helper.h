@@ -31,9 +31,6 @@ void ShowWalletBackup();
 // Show native Brave Wallet unlock screen - Used only by Android.
 void UnlockWallet();
 
-// Show wallet onboarding page.
-void ShowWalletOnboarding(content::WebContents* web_contents);
-
 // Show account creation page for keyring id
 void ShowAccountCreation(content::WebContents* web_contents,
                          brave_wallet::mojom::CoinType coin_type);
@@ -49,9 +46,6 @@ bool IsWeb3NotificationAllowed();
 // scope managers in
 // `brave_wallet_provider_delegate_impl_helper_test_util.h` rather than these
 // functions directly.
-[[nodiscard]] base::AutoReset<base::OnceCallback<void()>*>
-SetNewSetupNeededCallbackForTesting(base::OnceCallback<void()>* callback);
-
 [[nodiscard]] base::AutoReset<base::OnceCallback<void(std::string_view)>*>
 SetAccountCreationCallbackForTesting(
     base::OnceCallback<void(std::string_view)>* callback);

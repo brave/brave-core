@@ -26,8 +26,12 @@
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/misc_metrics/new_tab_metrics.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_dynamic_new_tab_takeover_ad_event_handler.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_dynamic_new_tab_takeover_source.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/static/ntp_static_new_tab_takeover_source.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/site/ntp_sponsored_site_image_source.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/url_constants.h"
 #include "chrome/browser/contextual_search/contextual_search_service_factory.h"
@@ -165,14 +169,41 @@ BraveNewTabUI::BraveNewTabUI(
                                     ntp_custom_background_images_service));
   }
 
+  auto* background_images_service =
+      g_brave_browser_process->ntp_background_images_service();
+  if (!background_images_service) {
+    CHECK_IS_TEST();
+  } else {
+    // Background wallpaper (not sponsored).
+    content::URLDataSource::Add(
+        profile,
+        std::make_unique<ntp_background_images::NTPBackgroundImagesSource>(
+            background_images_service));
+
+    // Sponsored new tab takeover and sponsored site image.
+    content::URLDataSource::Add(
+        profile,
+        std::make_unique<ntp_background_images::NTPStaticNewTabTakeoverSource>(
+            background_images_service));
+    content::URLDataSource::Add(
+        profile,
+        std::make_unique<ntp_background_images::NTPDynamicNewTabTakeoverSource>(
+            background_images_service));
+    content::URLDataSource::Add(
+        profile,
+        std::make_unique<ntp_background_images::NTPSponsoredSiteImageSource>(
+            background_images_service));
+  }
+
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      absl::StrFormat("frame-src %s;", kNTPNewTabTakeoverRichMediaUrl));
-  source->AddString("ntpNewTabTakeoverRichMediaUrl",
-                    kNTPNewTabTakeoverRichMediaUrl);
+      absl::StrFormat("frame-src %s;", kNTPDynamicNewTabTakeoverUrl));
+  source->AddString("ntpNewTabTakeoverDynamicContentUrl",
+                    kNTPDynamicNewTabTakeoverUrl);
 
-  rich_media_ad_event_handler_ = std::make_unique<
-      ntp_background_images::NTPSponsoredRichMediaAdEventHandler>(ads_service);
+  sponsored_content_ad_event_handler_ = std::make_unique<
+      ntp_background_images::NTPDynamicNewTabTakeoverAdEventHandler>(
+      ads_service);
 
   source->AddLocalizedStrings(webui::kBraveNewsStrings);
 
@@ -266,8 +297,8 @@ void BraveNewTabUI::CreatePageHandler(
     mojo::PendingReceiver<brave_new_tab_page::mojom::NewTabMetrics>
         pending_new_tab_metrics,
     mojo::PendingReceiver<
-        ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>
-        pending_rich_media_ad_event_handler) {
+        ntp_background_images::mojom::SponsoredContentAdEventHandler>
+        pending_sponsored_content_ad_event_handler) {
   DCHECK(pending_page.is_valid());
   Profile* profile = Profile::FromWebUI(web_ui());
   page_handler_ = std::make_unique<BraveNewTabPageHandler>(
@@ -275,8 +306,8 @@ void BraveNewTabUI::CreatePageHandler(
       web_ui()->GetWebContents());
   g_brave_browser_process->process_misc_metrics()->new_tab_metrics()->Bind(
       std::move(pending_new_tab_metrics));
-  rich_media_ad_event_handler_->Bind(
-      std::move(pending_rich_media_ad_event_handler));
+  sponsored_content_ad_event_handler_->Bind(
+      std::move(pending_sponsored_content_ad_event_handler));
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveNewTabUI)

@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/extensions/extension_management.h b/chrome/browser/extensions/extension_management.h
-index 457ac3b12c28e9646d1a07fcc0e677e23300d29d..7295bf70056cced59a583b973c412c4d1f7ad393 100644
+index 096375cc675a490735bd71a093a2a67662dfd7f4..9d1d52defd23d10c5e0c06740f2b512a6aa9a251 100644
 --- a/chrome/browser/extensions/extension_management.h
 +++ b/chrome/browser/extensions/extension_management.h
-@@ -207,6 +207,7 @@ class ExtensionManagement : public KeyedService,
-       const ExtensionId& extension_id);
+@@ -222,6 +222,7 @@ class ExtensionManagement : public KeyedService,
+   }
  
   private:
 +  friend class BraveExtensionManagement;

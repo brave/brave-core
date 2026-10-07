@@ -42,8 +42,7 @@ void AppendCurrentFeatureStateIfDefault(
                                              : kGenericExperimentChoiceDisabled;
 
   const bool is_feature_enabled_by_default =
-      base::FeatureList::GetCompileTimeFeatureState(feature) ==
-      base::FeatureState::FEATURE_ENABLED_BY_DEFAULT;
+      feature.default_state == base::FeatureState::FEATURE_ENABLED_BY_DEFAULT;
   const std::string_view current_state_flag =
       is_feature_enabled_now != is_feature_enabled_by_default ? "*" : "";
 

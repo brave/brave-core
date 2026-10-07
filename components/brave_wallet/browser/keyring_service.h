@@ -274,6 +274,9 @@ class KeyringService : public mojom::KeyringService {
   bool SetZCashAccountBirthday(
       const mojom::AccountIdPtr& account_id,
       mojom::ZCashAccountShieldBirthdayPtr account_birthday);
+  bool GetZCashIronwoodSyncStateReset(const mojom::AccountIdPtr& account_id);
+  bool SetZCashIronwoodSyncStateReset(const mojom::AccountIdPtr& account_id,
+                                      bool value);
   void UpdateNextUnusedAddressForZCashAccount(
       const mojom::AccountIdPtr& account_id,
       std::optional<uint32_t> next_receive_index,
@@ -426,6 +429,8 @@ class KeyringService : public mojom::KeyringService {
                                       const std::string& name);
 
   void OnAutoLockFired();
+
+  void ReportUsageMetrics();
 
   template <typename T>
   T* GetKeyring(mojom::KeyringId keyring_id) const;

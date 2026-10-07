@@ -28,6 +28,10 @@ extern const base::FeatureParam<bool> kZCashShieldedTransactionsEnabled;
 extern const base::FeatureParam<bool> kZCashIronwoodEnabled;
 
 BASE_DECLARE_FEATURE(kBraveWalletPolkadotFeature);
+// Discovers pallet_assets tokens held by Polkadot accounts.
+extern const base::FeatureParam<bool> kPolkadotAssetDiscovery;
+// Injects `window.injectedWeb3['brave-wallet']` for Polkadot dApps.
+extern const base::FeatureParam<bool> kPolkadotDAppSupport;
 
 #if !defined(OFFICIAL_BUILD)
 BASE_DECLARE_FEATURE(kBraveWalletDebugFeature);
@@ -41,15 +45,15 @@ BASE_DECLARE_FEATURE(kBraveWalletAnkrBalancesFeature);
 BASE_DECLARE_FEATURE(kBraveWalletTransactionSimulationsFeature);
 BASE_DECLARE_FEATURE(kBraveWalletAccountHidingFeature);
 
-BASE_DECLARE_FEATURE(kBraveWalletSnapsFeature);
+#if BUILDFLAG(ENABLE_SNAP)
+BASE_DECLARE_FEATURE(kBraveWalletSnapFeature);
+#endif
 
 BASE_DECLARE_FEATURE(kBraveWalletSidePanel);
 
-BASE_DECLARE_FEATURE(kBraveWalletMojoForHardwareWalletFeature);
+BASE_DECLARE_FEATURE(kBraveWalletMojoForLedgerFeature);
 
-#if BUILDFLAG(IS_IOS)
-BASE_DECLARE_FEATURE(kBraveWalletWebUIFeature);
-#endif
+BASE_DECLARE_FEATURE(kBraveWalletFilecoinLedger);
 
 }  // namespace brave_wallet::features
 

@@ -4,7 +4,7 @@ Python tooling maintained by the Chromium Rebase team to support upgrading
 `brave-core` to new Chromium versions and to manage the patches and shadow files
 that live on top of upstream.
 
-All scripts here are intended to run via `vpython3`; the `.vpython3` spec in
+All scripts here are intended to run via `vpython3`; the `vpython.toml` spec in
 this directory pulls in `rich`, `requests`, and the other wheels they need. Most
 scripts accept `--verbose` to switch logging to `DEBUG`.
 
@@ -22,7 +22,7 @@ These are the user-facing scripts in this directory:
 - **🩹Plaster** — Applies and regenerates "plaster" files: semantic patches
   against upstream Chromium sources.
 - `post_presubmit.py` — Posts and refreshes GitHub PR comments from a
-  `npm run presubmit` JSON dump.
+  `pnpm run presubmit` JSON dump.
 - `find_rebase_commits.py` — Resolves a Chromium rebase tag (e.g. `cr148`) to an
   `oldest..newest` git commit range.
 - `prune_test_filters.py` — Detects and (optionally) removes obsolete entries
@@ -110,7 +110,7 @@ Shared abstractions used by the entry points and tests:
   user's PATH.
 - `test/` — Shared test fixtures:
   - `fake_chromium_repo.py` — `FakeChromiumRepo`, a real git checkout shaped
-    like `src/` with brave inside it, plus an emulation of the `npm run` build
+    like `src/` with brave inside it, plus an emulation of the `pnpm run` build
     commands (`init`, `apply_patches`, `update_patches`, `chromium_rebase_l10n`,
     `gnrt`) over it.
   - `fake_terminal.py` — `FakeTerminal`, which routes `terminal.run` so that git

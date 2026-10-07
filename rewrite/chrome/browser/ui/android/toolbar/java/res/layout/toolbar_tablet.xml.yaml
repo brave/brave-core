@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Nest the Brave toolbar buttons inside the tablet location bar.
+
+      The location bar paints the text box and the focus ring around it, so the
+      shields and rewards buttons have to be its children to sit inside that
+      outline. BraveToolbarLayoutImpl constrains the row once inflated.
+    regex:
+      re_pattern: |-
+        ( *)<(org\.chromium\.chrome\.browser\.omnibox\.LocationBarTablet)([^>]*?)/>
+      replace: |-
+        \1<\2\3>
+        \1  <include layout="@layout/brave_toolbar" android:layout_height="@dimen/modern_toolbar_background_size" android:layout_width="wrap_content" />
+        \1</\2>

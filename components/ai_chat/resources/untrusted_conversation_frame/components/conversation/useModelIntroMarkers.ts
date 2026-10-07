@@ -51,7 +51,7 @@ function createModelIntroMarker(
 export function useModelIntroMarkers(): ModelIntroMarker[] {
   const context = useUntrustedConversationContext()
   const state = context.api.useState().data
-  const conversationHistory = context.api.useGetConversationHistoryData()
+  const conversationHistory = context.api.useGetConversationHistoryData(null)
 
   const [modelIntroMarkers, setModelIntroMarkers] = React.useState<
     ModelIntroMarker[]

@@ -37,14 +37,11 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.ui.KeyboardVisibilityDelegate;
 
-/**
- * The preference used to reset Brave Wallet.
- */
-public class BraveWalletResetPreference
-        extends Preference implements Preference.OnPreferenceClickListener {
+/** The preference used to reset Brave Wallet. */
+public class BraveWalletResetPreference extends Preference
+        implements Preference.OnPreferenceClickListener {
     private static final String TAG = "BraveWalletResetPref";
 
-    private final int mPrefAccentColor;
     private final String mConfirmationPhrase;
     private Profile mProfile;
 
@@ -53,7 +50,6 @@ public class BraveWalletResetPreference
         super(context, attrs);
 
         Resources resources = getContext().getResources();
-        mPrefAccentColor = getContext().getColor(R.color.wallet_error_text_color);
         mConfirmationPhrase =
                 resources.getString(R.string.brave_wallet_reset_settings_confirmation_phrase);
         setOnPreferenceClickListener(this);
@@ -63,7 +59,7 @@ public class BraveWalletResetPreference
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
         TextView titleView = (TextView) holder.findViewById(android.R.id.title);
-        titleView.setTextColor(mPrefAccentColor);
+        titleView.setTextAppearance(R.style.TextAppearance_Brave_PreferenceTitle_DestructiveAction);
     }
 
     @Override

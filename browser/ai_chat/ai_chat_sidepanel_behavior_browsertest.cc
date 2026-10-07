@@ -25,8 +25,8 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/animation/browser_animation_controller.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/animations/side_panel_animations.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -86,7 +86,7 @@ class AIChatGlobalSidePanelBrowserTest
   bool IsMoveToSidePanelEnabled() const { return std::get<1>(GetParam()); }
 
  protected:
-  void OpenSidePanelAndVerify(Browser* browser) {
+  void OpenSidePanelAndVerify(BrowserWindowInterface* browser) {
     auto* side_panel_coordinator = SidePanelCoordinator::From(browser);
     ASSERT_TRUE(side_panel_coordinator);
 
@@ -100,7 +100,7 @@ class AIChatGlobalSidePanelBrowserTest
     content::WaitForLoadStop(side_panel_web_contents);
   }
 
-  bool IsSidePanelOpen(Browser* browser) {
+  bool IsSidePanelOpen(BrowserWindowInterface* browser) {
     auto* side_panel_coordinator = SidePanelCoordinator::From(browser);
     if (!side_panel_coordinator) {
       return false;
@@ -111,7 +111,7 @@ class AIChatGlobalSidePanelBrowserTest
                SidePanelEntry::Id::kChatUI;
   }
 
-  bool IsGlobalSidePanel(Browser* browser) {
+  bool IsGlobalSidePanel(BrowserWindowInterface* browser) {
     // Test global behavior by checking if sidepanel stays open when switching
     // tabs
     auto* side_panel_coordinator = SidePanelCoordinator::From(browser);
@@ -152,7 +152,7 @@ class AIChatGlobalSidePanelBrowserTest
   // Creates a fresh, empty conversation via the AIChatService for `browser`'s
   // profile. Returns the conversation uuid (empty only if a precondition EXPECT
   // failed, in which case the test is already failing).
-  std::string CreateConversation(Browser* browser) {
+  std::string CreateConversation(BrowserWindowInterface* browser) {
     ai_chat::AIChatService* service =
         ai_chat::AIChatServiceFactory::GetForBrowserContext(
             browser->GetProfile());
@@ -181,10 +181,10 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
 
   // Regardless of feature flag, AI Chat agent profile browser should always
   // have global sidepanel behavior.
-  base::test::TestFuture<Browser*> ai_chat_browser_future;
+  base::test::TestFuture<BrowserWindowInterface*> ai_chat_browser_future;
   ai_chat::OpenBrowserWindowForAIChatAgentProfileForTesting(
       *browser()->GetProfile(), ai_chat_browser_future.GetCallback());
-  Browser* ai_chat_browser = ai_chat_browser_future.Get();
+  BrowserWindowInterface* ai_chat_browser = ai_chat_browser_future.Get();
   ASSERT_TRUE(ai_chat_browser);
   ASSERT_TRUE(ai_chat_browser->GetProfile()->IsAIChatAgent());
 
@@ -617,13 +617,24 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   ASSERT_TRUE(coordinator);
   coordinator->Show(SidePanelEntry::Id::kChatUI);
 
+  // `Show` creates the panel's WebContents and navigates it to the AI Chat
+  // WebUI asynchronously, so wait for that navigation to commit and finish
+  // before running any script in the panel. Script evaluated in the initial
+  // empty document is lost when the WebUI navigation replaces it: the pending
+  // promise `VerifyElementState` waits on is destroyed with the document, so
+  // `EvalJs` returns an error instead of a value. `IsLoading` is what makes
+  // this a post-commit wait (it stays true from navigation start until after
+  // commit); `GetWebUI` alone can already be set while the navigation is only
+  // starting.
   content::WebContents* panel_contents = nullptr;
   ASSERT_TRUE(base::test::RunUntil([&]() {
     panel_contents = ai_chat::GetSidePanelWebContents(browser());
     return IsSidePanelOpen(browser()) && panel_contents != nullptr &&
-           VerifyElementState("sidepanel-main", true,
-                              panel_contents->GetPrimaryMainFrame(), FROM_HERE);
+           panel_contents->GetWebUI() != nullptr &&
+           !panel_contents->IsLoading();
   }));
+  ASSERT_TRUE(VerifyElementState("sidepanel-main", /*expect_exist=*/true,
+                                 panel_contents->GetPrimaryMainFrame()));
 
   auto* tab_strip = browser()->tab_strip_model();
   const int initial_tab_count = tab_strip->count();
@@ -665,6 +676,11 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
             TabStripModel::kNoTab);
 
   // The side panel has closed to avoid showing the same conversation twice.
+  // Unlike the wait above, the element check belongs inside the poll here: the
+  // conversation's contents is not renavigated by the move, it only swaps the
+  // `data-testid` on its existing root element, and `VerifyElementState`
+  // observes childList mutations rather than attribute changes. Re-running it
+  // is what re-queries for the new id.
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return !IsSidePanelOpen(browser()) &&
            VerifyElementState("standalone-main", true,

@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import { useHistory, useLocation } from 'react-router'
-import Button from '@brave/leo/react/button'
 
 // redux
 import { useAppDispatch } from '../../../../common/hooks/use-redux'
@@ -27,7 +26,7 @@ import { WalletRoutes } from '../../../../constants/types'
 import { SkipWarningDialog } from './skip_warning_dialog'
 
 // style
-import { ContinueButton } from '../../onboarding/onboarding.style'
+import { ContinueButton, SkipButton } from '../../onboarding/onboarding.style'
 import {
   Subtitle,
   BackupInstructions,
@@ -80,32 +79,34 @@ export const RecoveryPhraseExplainer = () => {
         onSkip={skipBackup}
       />
       <OnboardingContentLayout
-        title={getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroTitle')}
+        title={getLocale(
+          S.BRAVE_WALLET_ONBOARDING_RECOVERY_PHRASE_BACKUP_INTRO_TITLE,
+        )}
         subTitle=''
         showBackButton={!isOnboarding}
       >
         <Subtitle>
           {getLocale(
-            'braveWalletOnboardingRecoveryPhraseBackupIntroDescription',
+            S.BRAVE_WALLET_ONBOARDING_RECOVERY_PHRASE_BACKUP_INTRO_DESCRIPTION,
           )}
         </Subtitle>
         <VerticalSpace space='14px' />
         <BackupInstructions>
-          {getLocale('braveWalletRecoveryPhraseBackupWarningImportant')}
+          {getLocale(S.BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_WARNING_IMPORTANT)}
         </BackupInstructions>
         <ExampleRecoveryPhrase
           src={isDarkMode ? ExamplePhraseDark : ExamplePhraseLight}
         />
         <Column gap='24px'>
           <ContinueButton onClick={onContinue}>
-            {getLocale('braveWalletButtonVerifyPhrase')}
+            {getLocale(S.BRAVE_WALLET_BUTTON_GOT_IT)}
           </ContinueButton>
-          <Button
+          <SkipButton
             kind='plain-faint'
             onClick={() => setIsSkipWarningOpen(true)}
           >
-            {getLocale('braveWalletButtonSkip')}
-          </Button>
+            {getLocale(S.BRAVE_WALLET_BUTTON_SKIP)}
+          </SkipButton>
         </Column>
       </OnboardingContentLayout>
     </>

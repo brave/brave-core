@@ -94,7 +94,7 @@ void NewTabPageAdEventHandler::GetAdEventsCallback(
     bool success,
     const AdEventList& ad_events) {
   if (!success) {
-    BLOG(1, "New tab page ad: Failed to get ad events");
+    BLOG(0, "New tab page ad: Failed to get ad events");
     return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
                              mojom_ad_event_type, std::move(callback));
   }

@@ -4,4 +4,15 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Core `path` module: engine-provided, workspace-relative job paths."""
 
-DEPS = []
+from dataclasses import dataclass
+
+from recipe_api import RecipeScriptApi
+from recipe_modules import context
+
+from .api import PathApi as API
+from .test_api import PathTestApi as TEST_API
+
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    context: context.API

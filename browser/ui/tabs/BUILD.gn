@@ -4,8 +4,13 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
+import("//brave/components/request_otr/common/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
 
 assert(is_win || is_mac || is_linux || is_chromeos || is_android)
 
@@ -23,9 +28,17 @@ source_set("tabs_public") {
     "//brave/components/psst/buildflags",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/tabs:tabs_public",
+    "//ui/base/unowned_user_data",
   ]
 
-  deps = [ "//brave/components/containers/buildflags" ]
+  deps = [
+    "//brave/components/brave_news/common/buildflags",
+    "//brave/components/brave_wayback_machine/buildflags",
+    "//brave/components/containers/buildflags",
+    "//brave/components/playlist/core/common/buildflags",
+    "//brave/components/speedreader/common/buildflags",
+    "//brave/components/tor/buildflags",
+  ]
 }
 
 if (!is_android) {
@@ -39,9 +52,16 @@ if (!is_android) {
 
     deps = [
       ":tabs_public",
+      "//brave/browser/drag_drop",
+      "//brave/browser/misc_metrics:misc_metrics_impl",
+      "//brave/browser/ui:ui_features",
       "//brave/browser/ui/focus_mode",
       "//brave/browser/ui/side_panel",
+      "//brave/browser/ui/sidebar",
       "//brave/browser/ui/views/page_action",
+      "//brave/components/image_metadata_stripper/common",
+      "//brave/components/misc_metrics",
+      "//brave/components/request_otr/common/buildflags",
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/profiles",
       "//chrome/browser/ui:ui_features",
@@ -49,10 +69,22 @@ if (!is_android) {
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
       "//chrome/browser/ui/tabs",
       "//chrome/browser/ui/tabs:impl",
+      "//chrome/browser/ui/thumbnails",
     ]
+
+    if (is_win) {
+      deps += [ "//brave/browser/new_tab:background_color_tab_helper" ]
+    }
 
     if (enable_ai_chat) {
       deps += [ "//brave/browser/ai_chat" ]
+    }
+
+    if (enable_request_otr) {
+      deps += [
+        "//brave/browser/request_otr",
+        "//brave/components/request_otr/common",
+      ]
     }
 
     if (enable_containers) {
@@ -68,6 +100,23 @@ if (!is_android) {
         "//brave/browser/psst",
         "//brave/components/psst/core/common",
       ]
+    }
+
+    if (enable_speedreader) {
+      deps += [ "//brave/components/speedreader/common" ]
+    }
+
+    if (enable_brave_wayback_machine) {
+      deps += [ "//brave/components/brave_wayback_machine" ]
+    }
+
+    if (enable_playlist_webui) {
+      # This is necessary for the time being, because
+      # PlaylistPageActionController lives in //brave/browser/ui as it needs
+      # PlaylistBubblesController dependency (and the rest of the Playlist
+      # bubble UI). A leaf node dependency will be added in the future to avoid
+      # this.
+      deps += [ "//brave/browser/ui" ]
     }
   }
 
@@ -91,10 +140,7 @@ if (!is_android) {
   }
 
   source_set("tab_menu") {
-    sources = [
-      "brave_tab_menu_model_factory.cc",
-      "brave_tab_menu_model_factory.h",
-    ]
+    sources = []
 
     deps = [
       "//base",
@@ -160,12 +206,15 @@ if (!is_android) {
       "tree_tab_session_manager.h",
     ]
 
+    public_deps = [ "//ui/base/unowned_user_data" ]
+
     deps = [
       "//base",
       "//brave/browser/sessions",
       "//brave/browser/ui/tabs:tab_strip",
       "//brave/components/tabs",
       "//chrome/browser/sessions",
+      "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/tabs:features",
       "//chrome/browser/ui/tabs:tab_strip",
       "//components/sessions",
@@ -183,6 +232,7 @@ source_set("browser_tests") {
   sources = [ "brave_tab_menu_browsertest.cc" ]
 
   deps = [
+    "//brave/browser/ui/tabs:tabs_public",
     "//brave/components/containers/buildflags",
     "//brave/components/resources:strings_grit",
     "//chrome/browser/ui",
@@ -206,6 +256,11 @@ source_set("browser_tests") {
     deps += [
       ":tab_menu",
       ":tab_model",
+      "//chrome/browser/ui/tabs:tab_menu",
     ]
+  }
+
+  if (toolkit_views) {
+    deps += [ "//chrome/browser/ui/views/tabs/tab" ]
   }
 }

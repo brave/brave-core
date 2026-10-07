@@ -11,6 +11,7 @@ operations are exercised end-to-end. The Gerrit instance is replaced by a
 pushes are real git operations against the filesystem rather than network calls.
 """
 
+import contextlib
 import shutil
 import subprocess
 import tempfile
@@ -24,11 +25,9 @@ from refresh_mirrors import Repo, discover_cache_repos, project_name_for
 
 def _git(*cmd: str, cwd: Path) -> str:
     """Run a git command and return stripped stdout, raising on failure."""
-    return subprocess.run(['git', *cmd],
-                          cwd=cwd,
-                          capture_output=True,
-                          text=True,
-                          check=True).stdout.strip()
+    return subprocess.run(
+        ['git', *cmd], cwd=cwd, capture_output=True, text=True, check=True
+    ).stdout.strip()
 
 
 def _make_cache_repo(path: Path, upstream_url: str) -> tuple[str, str]:
@@ -38,9 +37,9 @@ def _make_cache_repo(path: Path, upstream_url: str) -> tuple[str, str]:
     is the upstream the mirror is derived from. Returns (branch, head_sha).
     """
     work = path.parent / f'{path.name}.work'
-    subprocess.run(['git', 'init', '-q', str(work)],
-                   check=True,
-                   capture_output=True)
+    subprocess.run(
+        ['git', 'init', '-q', str(work)], check=True, capture_output=True
+    )
     _git('config', 'user.email', 'test@example.com', cwd=work)
     _git('config', 'user.name', 'Test', cwd=work)
     (work / 'README').write_text('hello')
@@ -50,10 +49,10 @@ def _make_cache_repo(path: Path, upstream_url: str) -> tuple[str, str]:
     head = _git('rev-parse', 'HEAD', cwd=work)
 
     subprocess.run(
-        ['git', 'clone', '-q', '--bare',
-         str(work), str(path)],
+        ['git', 'clone', '-q', '--bare', str(work), str(path)],
         check=True,
-        capture_output=True)
+        capture_output=True,
+    )
     _git('config', 'remote.origin.url', upstream_url, cwd=path)
     return branch, head
 
@@ -67,10 +66,10 @@ def _add_commits(bare_repo: Path, count: int) -> None:
     work = Path(tempfile.mkdtemp())
     try:
         subprocess.run(
-            ['git', 'clone', '-q',
-             str(bare_repo), str(work)],
+            ['git', 'clone', '-q', str(bare_repo), str(work)],
             check=True,
-            capture_output=True)
+            capture_output=True,
+        )
         _git('config', 'user.email', 'test@example.com', cwd=work)
         _git('config', 'user.name', 'Test', cwd=work)
         # Unique filenames per call so repeated _add_commits don't collide.
@@ -97,13 +96,21 @@ def _make_shallow_clone(path: Path, source: Path, upstream_url: str) -> None:
     # `--no-local` is required for `--depth` to actually take effect: git
     # silently ignores `--depth` for the default local (hardlinking) clone
     # transport, only applying it over a real (or forced) network protocol.
-    subprocess.run([
-        'git', 'clone', '-q', '--bare', '--no-local', '--depth', '1',
-        str(source),
-        str(path)
-    ],
-                   check=True,
-                   capture_output=True)
+    subprocess.run(
+        [
+            'git',
+            'clone',
+            '-q',
+            '--bare',
+            '--no-local',
+            '--depth',
+            '1',
+            str(source),
+            str(path),
+        ],
+        check=True,
+        capture_output=True,
+    )
     _git('config', 'remote.origin.url', upstream_url, cwd=path)
     _git('config', f'url.{source}.insteadOf', upstream_url, cwd=path)
 
@@ -128,10 +135,11 @@ class FakeGerrit:
             return
         path = self._root / project
         path.mkdir(parents=True)
-        subprocess.run(['git', 'init', '-q', '--bare',
-                        str(path)],
-                       check=True,
-                       capture_output=True)
+        subprocess.run(
+            ['git', 'init', '-q', '--bare', str(path)],
+            check=True,
+            capture_output=True,
+        )
         # A real Gerrit advertises push options; enable it so pushes carrying
         # `-o skip-validation` are accepted instead of rejected outright.
         _git('config', 'receive.advertisePushOptions', 'true', cwd=path)
@@ -145,19 +153,23 @@ class TestProjectName(unittest.TestCase):
     def test_keeps_host_and_strips_git_suffix(self):
         self.assertEqual(
             project_name_for('https://aomedia.googlesource.com/aom.git'),
-            'mirror/aomedia.googlesource.com/aom')
+            'mirror/aomedia.googlesource.com/aom',
+        )
 
     def test_nested_path(self):
         self.assertEqual(
             project_name_for(
                 'https://chromium.googlesource.com/chromium/dom-distiller/'
-                'dist.git'),
-            'mirror/chromium.googlesource.com/chromium/dom-distiller/dist')
+                'dist.git'
+            ),
+            'mirror/chromium.googlesource.com/chromium/dom-distiller/dist',
+        )
 
     def test_without_git_suffix(self):
         self.assertEqual(
             project_name_for('https://chromium.googlesource.com/chromium/src'),
-            'mirror/chromium.googlesource.com/chromium/src')
+            'mirror/chromium.googlesource.com/chromium/src',
+        )
 
     def test_empty_path_raises(self):
         with self.assertRaises(ValueError):
@@ -168,21 +180,21 @@ class TestCacheDiscovery(unittest.TestCase):
     """Tests for finding bare cache repos and skipping non-repos."""
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.cache = Path(self._tmp.name)
-
-    def tearDown(self):
-        self._tmp.cleanup()
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.cache = Path(stack.enter_context(tempfile.TemporaryDirectory()))
 
     def test_finds_bare_repo(self):
-        _make_cache_repo(self.cache / 'example.com-foo',
-                         'https://example.com/foo.git')
+        _make_cache_repo(
+            self.cache / 'example.com-foo', 'https://example.com/foo.git'
+        )
         repos = discover_cache_repos(self.cache)
         self.assertIn('example.com-foo', [r.name for r in repos])
 
     def test_returns_repo_instances(self):
-        _make_cache_repo(self.cache / 'example.com-foo',
-                         'https://example.com/foo.git')
+        _make_cache_repo(
+            self.cache / 'example.com-foo', 'https://example.com/foo.git'
+        )
         repos = discover_cache_repos(self.cache)
         self.assertEqual(len(repos), 1)
         self.assertIsInstance(repos[0], Repo)
@@ -208,93 +220,100 @@ class TestEnsureGerritRemote(unittest.TestCase):
     """Tests for adding/updating the `gerrit` remote on a cache repo."""
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.tmp = Path(self._tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.tmp = Path(stack.enter_context(tempfile.TemporaryDirectory()))
         self.repo = Repo(self.tmp / 'repo')
         _make_cache_repo(self.repo.path, 'https://example.com/foo.git')
-
-    def tearDown(self):
-        self._tmp.cleanup()
 
     def test_adds_remote_when_absent(self):
         self.repo.ensure_gerrit_remote('ssh://host/foo')
         self.assertEqual(
             _git('remote', 'get-url', 'gerrit', cwd=self.repo.path),
-            'ssh://host/foo')
+            'ssh://host/foo',
+        )
 
     def test_updates_stale_remote(self):
         self.repo.ensure_gerrit_remote('ssh://host/old')
         self.repo.ensure_gerrit_remote('ssh://host/new')
         self.assertEqual(
             _git('remote', 'get-url', 'gerrit', cwd=self.repo.path),
-            'ssh://host/new')
+            'ssh://host/new',
+        )
 
 
 class TestRefreshRepo(unittest.TestCase):
     """End-to-end tests for mirroring one cache repo into a (fake) Gerrit."""
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.tmp = Path(self._tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.tmp = Path(stack.enter_context(tempfile.TemporaryDirectory()))
         cache_repo_path = self.tmp / 'cache' / 'example.com-foo'
         cache_repo_path.parent.mkdir()
         self.branch, self.head = _make_cache_repo(
-            cache_repo_path, 'https://example.com/group/foo.git')
+            cache_repo_path, 'https://example.com/group/foo.git'
+        )
         self.repo = Repo(cache_repo_path)
         self.gerrit = FakeGerrit(self.tmp / 'gerrit')
 
-    def tearDown(self):
-        self._tmp.cleanup()
-
     def _mirror_head(self, project: str) -> str:
-        return _git('rev-parse',
-                    f'refs/heads/{self.branch}',
-                    cwd=self.tmp / 'gerrit' / project)
+        return _git(
+            'rev-parse',
+            f'refs/heads/{self.branch}',
+            cwd=self.tmp / 'gerrit' / project,
+        )
 
     def test_creates_project_and_pushes(self):
         self.repo.refresh(self.gerrit)
         self.assertEqual(self.gerrit.created, ['mirror/example.com/group/foo'])
-        self.assertEqual(self._mirror_head('mirror/example.com/group/foo'),
-                         self.head)
+        self.assertEqual(
+            self._mirror_head('mirror/example.com/group/foo'), self.head
+        )
 
     def test_existing_project_not_recreated(self):
         self.gerrit.create_project('mirror/example.com/group/foo')
         self.gerrit.created.clear()
         self.repo.refresh(self.gerrit)
         self.assertEqual(self.gerrit.created, [])
-        self.assertEqual(self._mirror_head('mirror/example.com/group/foo'),
-                         self.head)
+        self.assertEqual(
+            self._mirror_head('mirror/example.com/group/foo'), self.head
+        )
 
     def test_force_push_after_history_rewrite(self):
         self.repo.refresh(self.gerrit)
         # Rewrite the cache branch to an unrelated commit (non-fast-forward).
         work = self.tmp / 'rewrite'
-        subprocess.run(['git', 'init', '-q', str(work)],
-                       check=True,
-                       capture_output=True)
+        subprocess.run(
+            ['git', 'init', '-q', str(work)], check=True, capture_output=True
+        )
         _git('config', 'user.email', 'test@example.com', cwd=work)
         _git('config', 'user.name', 'Test', cwd=work)
         (work / 'OTHER').write_text('different')
         _git('add', '.', cwd=work)
         _git('commit', '-q', '-m', 'rewrite', cwd=work)
         rewritten = _git('rev-parse', 'HEAD', cwd=work)
-        _git('push',
-             '-q',
-             '--force',
-             str(self.repo.path),
-             f'HEAD:refs/heads/{self.branch}',
-             cwd=work)
+        _git(
+            'push',
+            '-q',
+            '--force',
+            str(self.repo.path),
+            f'HEAD:refs/heads/{self.branch}',
+            cwd=work,
+        )
 
         self.repo.refresh(self.gerrit)
-        self.assertEqual(self._mirror_head('mirror/example.com/group/foo'),
-                         rewritten)
+        self.assertEqual(
+            self._mirror_head('mirror/example.com/group/foo'), rewritten
+        )
 
     def test_dry_run_creates_and_pushes_nothing(self):
         self.gerrit.dry_run = True
         self.repo.refresh(self.gerrit)
         self.assertEqual(self.gerrit.created, [])
         self.assertFalse(
-            (self.tmp / 'gerrit' / 'mirror/example.com/group/foo').exists())
+            (self.tmp / 'gerrit' / 'mirror/example.com/group/foo').exists()
+        )
 
     def test_pushes_only_the_default_branch(self):
         # An extra branch in the cache must not reach the mirror: only the ref
@@ -324,8 +343,8 @@ class TestRefreshRepo(unittest.TestCase):
         self.assertEqual(self.gerrit.created, ['mirror/example.com/group/foo'])
         mirror = self.tmp / 'gerrit' / 'mirror/example.com/group/foo'
         self.assertEqual(
-            _git('rev-parse', 'refs/heads/upstream/main', cwd=mirror),
-            self.head)
+            _git('rev-parse', 'refs/heads/upstream/main', cwd=mirror), self.head
+        )
 
     def test_dangling_head_pushes_all_branches_in_batches(self):
         # Many branches + dangling HEAD (e.g. LiteRT's 2000+ chromium/* branches)
@@ -333,36 +352,40 @@ class TestRefreshRepo(unittest.TestCase):
         names = ['upstream/main', 'chromium/1', 'chromium/2', 'chromium/3']
         for name in names:
             _git('branch', name, self.head, cwd=self.repo.path)
-        _git('symbolic-ref',
-             'HEAD',
-             'refs/heads/nonexistent',
-             cwd=self.repo.path)
-        with mock.patch.object(refresh_mirrors, 'MIRROR_REFS_PER_PUSH', 2), \
-             mock.patch.object(refresh_mirrors, '_run',
-                               wraps=refresh_mirrors._run) as run:
+        _git(
+            'symbolic-ref', 'HEAD', 'refs/heads/nonexistent', cwd=self.repo.path
+        )
+        with (
+            mock.patch.object(refresh_mirrors, 'MIRROR_REFS_PER_PUSH', 2),
+            mock.patch.object(
+                refresh_mirrors, '_run', wraps=refresh_mirrors._run
+            ) as run,
+        ):
             self.repo.refresh(self.gerrit)
         pushes = [c.args for c in run.call_args_list if 'push' in c.args]
         # 5 branches (original + 4) at 2 per push -> 3 batched pushes.
         self.assertEqual(len(pushes), 3)
         mirror = self.tmp / 'gerrit' / 'mirror/example.com/group/foo'
-        mirrored = _git('for-each-ref',
-                        '--format=%(refname)',
-                        'refs/heads/',
-                        cwd=mirror).splitlines()
+        mirrored = _git(
+            'for-each-ref', '--format=%(refname)', 'refs/heads/', cwd=mirror
+        ).splitlines()
         for name in names + [f'{self.branch}']:
             self.assertIn(f'refs/heads/{name}', mirrored)
 
     def test_repo_without_any_branch_is_skipped(self):
         # Dangling HEAD *and* no branches at all -> nothing to mirror.
         empty = self.tmp / 'cache' / 'empty'
-        subprocess.run(['git', 'init', '-q', '--bare',
-                        str(empty)],
-                       check=True,
-                       capture_output=True)
-        _git('config',
-             'remote.origin.url',
-             'https://example.com/empty.git',
-             cwd=empty)
+        subprocess.run(
+            ['git', 'init', '-q', '--bare', str(empty)],
+            check=True,
+            capture_output=True,
+        )
+        _git(
+            'config',
+            'remote.origin.url',
+            'https://example.com/empty.git',
+            cwd=empty,
+        )
         Repo(empty).refresh(self.gerrit)
         self.assertEqual(self.gerrit.created, [])
 
@@ -382,33 +405,36 @@ class TestShallowCache(unittest.TestCase):
     """
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.tmp = Path(self._tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.tmp = Path(stack.enter_context(tempfile.TemporaryDirectory()))
         self.source = self.tmp / 'source'
         self.branch, self.head = _make_cache_repo(
-            self.source, 'https://example.com/group/foo.git')
+            self.source, 'https://example.com/group/foo.git'
+        )
         # Two more commits, so the depth=1 shallow clone below is missing real
         # history (not just coincidentally identical to the full repo).
         _add_commits(self.source, 2)
-        self.full_head = _git('rev-parse',
-                              f'refs/heads/{self.branch}',
-                              cwd=self.source)
+        self.full_head = _git(
+            'rev-parse', f'refs/heads/{self.branch}', cwd=self.source
+        )
 
         cache_repo_path = self.tmp / 'cache' / 'example.com-foo'
         cache_repo_path.parent.mkdir()
-        _make_shallow_clone(cache_repo_path, self.source,
-                            'https://example.com/group/foo.git')
+        _make_shallow_clone(
+            cache_repo_path, self.source, 'https://example.com/group/foo.git'
+        )
         self.repo = Repo(cache_repo_path)
         self.gerrit = FakeGerrit(self.tmp / 'gerrit')
 
-    def tearDown(self):
-        self._tmp.cleanup()
-
-    def _mirror_head(self,
-                     project: str = 'mirror/example.com/group/foo') -> str:
-        return _git('rev-parse',
-                    f'refs/heads/{self.branch}',
-                    cwd=self.tmp / 'gerrit' / project)
+    def _mirror_head(
+        self, project: str = 'mirror/example.com/group/foo'
+    ) -> str:
+        return _git(
+            'rev-parse',
+            f'refs/heads/{self.branch}',
+            cwd=self.tmp / 'gerrit' / project,
+        )
 
     def test_is_shallow_detects_shallow_clone(self):
         self.assertTrue(self.repo.is_shallow())
@@ -422,21 +448,27 @@ class TestShallowCache(unittest.TestCase):
         # The full history -- not just the depth=1 slice -- reached the mirror.
         self.assertEqual(self._mirror_head(), self.full_head)
         self.assertEqual(
-            _git('rev-list',
-                 '--count',
-                 f'refs/heads/{self.branch}',
-                 cwd=self.tmp / 'gerrit' / 'mirror/example.com/group/foo'),
-            _git('rev-list',
-                 '--count',
-                 f'refs/heads/{self.branch}',
-                 cwd=self.source))
+            _git(
+                'rev-list',
+                '--count',
+                f'refs/heads/{self.branch}',
+                cwd=self.tmp / 'gerrit' / 'mirror/example.com/group/foo',
+            ),
+            _git(
+                'rev-list',
+                '--count',
+                f'refs/heads/{self.branch}',
+                cwd=self.source,
+            ),
+        )
 
     def test_refresh_repo_skips_unshallow_for_full_clone(self):
         full_cache_repo = self.tmp / 'cache' / 'example.com-full'
         full_cache_repo.parent.mkdir(exist_ok=True)
         _make_cache_repo(full_cache_repo, 'https://example.com/other.git')
-        with mock.patch.object(refresh_mirrors.Repo,
-                               'ensure_full_history') as ensure:
+        with mock.patch.object(
+            refresh_mirrors.Repo, 'ensure_full_history'
+        ) as ensure:
             Repo(full_cache_repo).refresh(self.gerrit)
         ensure.assert_not_called()
 
@@ -449,20 +481,24 @@ class TestLargeRepoSeeding(unittest.TestCase):
     CHUNK = 2
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.tmp = Path(self._tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.tmp = Path(stack.enter_context(tempfile.TemporaryDirectory()))
         cache_repo_path = self.tmp / 'cache' / 'example.com-foo'
         cache_repo_path.parent.mkdir()
-        self.branch, _ = _make_cache_repo(cache_repo_path,
-                                          'https://example.com/group/foo.git')
+        self.branch, _ = _make_cache_repo(
+            cache_repo_path, 'https://example.com/group/foo.git'
+        )
         _add_commits(cache_repo_path, 5)
         self.repo = Repo(cache_repo_path)
         self.gerrit = FakeGerrit(self.tmp / 'gerrit')
         self._patches = [
-            mock.patch.object(refresh_mirrors, 'LARGE_REPOS',
-                              frozenset({self.PROJECT})),
-            mock.patch.object(refresh_mirrors, 'LARGE_REPO_COMMIT_CHUNK',
-                              self.CHUNK),
+            mock.patch.object(
+                refresh_mirrors, 'LARGE_REPOS', frozenset({self.PROJECT})
+            ),
+            mock.patch.object(
+                refresh_mirrors, 'LARGE_REPO_COMMIT_CHUNK', self.CHUNK
+            ),
         ]
         for p in self._patches:
             p.start()
@@ -470,34 +506,37 @@ class TestLargeRepoSeeding(unittest.TestCase):
     def tearDown(self):
         for p in self._patches:
             p.stop()
-        self._tmp.cleanup()
 
     def _cache_head(self) -> str:
-        return _git('rev-parse',
-                    f'refs/heads/{self.branch}',
-                    cwd=self.repo.path)
+        return _git(
+            'rev-parse', f'refs/heads/{self.branch}', cwd=self.repo.path
+        )
 
     def _mirror_head(self) -> str:
-        return _git('rev-parse',
-                    f'refs/heads/{self.branch}',
-                    cwd=self.tmp / 'gerrit' / self.PROJECT)
+        return _git(
+            'rev-parse',
+            f'refs/heads/{self.branch}',
+            cwd=self.tmp / 'gerrit' / self.PROJECT,
+        )
 
     def _push_count(self) -> int:
-        with mock.patch.object(refresh_mirrors,
-                               '_run',
-                               wraps=refresh_mirrors._run) as run:
+        with mock.patch.object(
+            refresh_mirrors, '_run', wraps=refresh_mirrors._run
+        ) as run:
             self.repo.refresh(self.gerrit)
         return len([c.args for c in run.call_args_list if 'push' in c.args])
 
     def test_checkpoints_advance_and_end_at_tip(self):
-        cps = self.repo.commit_checkpoints(f'refs/heads/{self.branch}',
-                                           self.CHUNK)
+        cps = self.repo.commit_checkpoints(
+            f'refs/heads/{self.branch}', self.CHUNK
+        )
         self.assertGreater(len(cps), 1)  # split, not a single checkpoint
         self.assertEqual(cps[-1], self._cache_head())
         # Each checkpoint is an ancestor of the next (fast-forwarding order).
         for older, newer in zip(cps, cps[1:]):
             self.assertEqual(
-                _git('merge-base', older, newer, cwd=self.repo.path), older)
+                _git('merge-base', older, newer, cwd=self.repo.path), older
+            )
 
     def test_seeds_in_chunks_and_reaches_tip(self):
         self.assertGreater(self._push_count(), 1)  # chunked, not a single push
@@ -513,7 +552,8 @@ class TestLargeRepoSeeding(unittest.TestCase):
         # Resume start is the already-mirrored tip, so only the new commits ship.
         self.assertEqual(
             self.repo.remote_branch_sha(f'refs/heads/{self.branch}'),
-            self._mirror_head())
+            self._mirror_head(),
+        )
         self.repo.refresh(self.gerrit)
         self.assertEqual(self._mirror_head(), new_head)
 
@@ -524,10 +564,12 @@ class TestLargeRepoSeeding(unittest.TestCase):
         self.assertEqual(self._push_count(), 0)
 
     def _mirror_tags(self) -> list[str]:
-        return _git('for-each-ref',
-                    '--format=%(refname)',
-                    'refs/tags/',
-                    cwd=self.tmp / 'gerrit' / self.PROJECT).splitlines()
+        return _git(
+            'for-each-ref',
+            '--format=%(refname)',
+            'refs/tags/',
+            cwd=self.tmp / 'gerrit' / self.PROJECT,
+        ).splitlines()
 
     def test_pushes_tags(self):
         _git('tag', 'v1', self._cache_head(), cwd=self.repo.path)
@@ -541,9 +583,9 @@ class TestLargeRepoSeeding(unittest.TestCase):
         _git('tag', 'v1', self._cache_head(), cwd=self.repo.path)
         self.repo.refresh(self.gerrit)  # seeds + pushes v1
         _git('tag', 'v2', self._cache_head(), cwd=self.repo.path)
-        with mock.patch.object(refresh_mirrors,
-                               '_run',
-                               wraps=refresh_mirrors._run) as run:
+        with mock.patch.object(
+            refresh_mirrors, '_run', wraps=refresh_mirrors._run
+        ) as run:
             self.repo.refresh(self.gerrit)
         pushed = [a for c in run.call_args_list for a in c.args]
         self.assertTrue(any('refs/tags/v2' in a for a in pushed))
@@ -555,8 +597,9 @@ class TestPushNewTags(unittest.TestCase):
     """New and changed tags are pushed; tags already identical are skipped."""
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.tmp = Path(self._tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.tmp = Path(stack.enter_context(tempfile.TemporaryDirectory()))
         repo_path = self.tmp / 'repo'
         _, self.head = _make_cache_repo(repo_path, 'https://example.com/r.git')
         self.repo = Repo(repo_path)
@@ -565,57 +608,63 @@ class TestPushNewTags(unittest.TestCase):
         _git('tag', 'fresh', self.head, cwd=repo_path)  # not on server
 
         self.server = self.tmp / 'server'
-        subprocess.run(['git', 'init', '-q', '--bare',
-                        str(self.server)],
-                       check=True,
-                       capture_output=True)
+        subprocess.run(
+            ['git', 'init', '-q', '--bare', str(self.server)],
+            check=True,
+            capture_output=True,
+        )
         _git('config', 'receive.advertisePushOptions', 'true', cwd=self.server)
         # Server: `same` at the same object, `changed` at a different one.
-        _git('push',
-             str(self.server),
-             f'+{self.head}:refs/tags/same',
-             cwd=repo_path)
+        _git(
+            'push',
+            str(self.server),
+            f'+{self.head}:refs/tags/same',
+            cwd=repo_path,
+        )
         other = self.tmp / 'other'
         _make_cache_repo(other, 'https://example.com/o.git')
         _add_commits(other, 1)  # a genuinely distinct commit
         other_head = _git('rev-parse', 'HEAD', cwd=other)
         self.assertNotEqual(other_head, self.head)
-        _git('push',
-             str(self.server),
-             f'+{other_head}:refs/tags/changed',
-             cwd=other)
+        _git(
+            'push',
+            str(self.server),
+            f'+{other_head}:refs/tags/changed',
+            cwd=other,
+        )
         _git('remote', 'add', 'gerrit', str(self.server), cwd=repo_path)
-
-    def tearDown(self):
-        self._tmp.cleanup()
 
     def _pushed_refspecs(self, run) -> list[str]:
         return [a for c in run.call_args_list for a in c.args]
 
     def test_pushes_new_and_changed_only(self):
-        with mock.patch.object(refresh_mirrors,
-                               '_run',
-                               wraps=refresh_mirrors._run) as run:
+        with mock.patch.object(
+            refresh_mirrors, '_run', wraps=refresh_mirrors._run
+        ) as run:
             self.repo.push_new_tags()
         pushed = self._pushed_refspecs(run)
         self.assertTrue(any('refs/tags/fresh' in a for a in pushed))  # new
         self.assertTrue(any('refs/tags/changed' in a for a in pushed))  # moved
-        self.assertFalse(any('refs/tags/same' in a
-                             for a in pushed))  # identical
+        self.assertFalse(
+            any('refs/tags/same' in a for a in pushed)
+        )  # identical
 
     def test_no_push_when_identical(self):
         # Sync the server to match every local tag; a rerun pushes nothing.
-        _git('push',
-             str(self.server),
-             '+refs/tags/fresh:refs/tags/fresh',
-             '+refs/tags/changed:refs/tags/changed',
-             cwd=self.repo.path)
-        with mock.patch.object(refresh_mirrors,
-                               '_run',
-                               wraps=refresh_mirrors._run) as run:
+        _git(
+            'push',
+            str(self.server),
+            '+refs/tags/fresh:refs/tags/fresh',
+            '+refs/tags/changed:refs/tags/changed',
+            cwd=self.repo.path,
+        )
+        with mock.patch.object(
+            refresh_mirrors, '_run', wraps=refresh_mirrors._run
+        ) as run:
             self.repo.push_new_tags()
         self.assertEqual(
-            [c.args for c in run.call_args_list if 'push' in c.args], [])
+            [c.args for c in run.call_args_list if 'push' in c.args], []
+        )
 
 
 class TestRefreshMirrorsSummary(unittest.TestCase):
@@ -625,16 +674,20 @@ class TestRefreshMirrorsSummary(unittest.TestCase):
         repos = [
             Repo(Path('/cache/aaa')),
             Repo(Path('/cache/bbb')),
-            Repo(Path('/cache/ccc'))
+            Repo(Path('/cache/ccc')),
         ]
-        with mock.patch.object(refresh_mirrors, 'discover_cache_repos',
-                               return_value=repos), \
-             mock.patch.object(refresh_mirrors.Repo, 'refresh') as refresh, \
-             self.assertLogs(level='INFO') as logs:
+        with (
+            mock.patch.object(
+                refresh_mirrors, 'discover_cache_repos', return_value=repos
+            ),
+            mock.patch.object(refresh_mirrors.Repo, 'refresh') as refresh,
+            self.assertLogs(level='INFO') as logs,
+        ):
             # aaa updated, bbb skipped, ccc failed.
             refresh.side_effect = [
-                True, False,
-                subprocess.CalledProcessError(1, ['git', 'push'])
+                True,
+                False,
+                subprocess.CalledProcessError(1, ['git', 'push']),
             ]
             summary = refresh_mirrors.MirrorSummary()
             summary.run(Path('/cache'), gerrit=object())
@@ -676,25 +729,33 @@ class TestGerritCli(unittest.TestCase):
         self.gerrit = refresh_mirrors.Gerrit(user='bot')
 
     def test_project_url(self):
-        self.assertEqual(self.gerrit.project_url('mirror/foo'),
-                         'ssh://bot@gerrit-ssh.brave.com:29418/mirror/foo')
+        self.assertEqual(
+            self.gerrit.project_url('mirror/foo'),
+            'ssh://bot@gerrit-ssh.brave.com:29418/mirror/foo',
+        )
 
     def test_project_exists_exact_match(self):
         # ls-projects --prefix returns every project sharing the prefix; only an
         # exact match counts as the project existing.
         out = 'mirror/foo\nmirror/foobar\n'
-        with mock.patch.object(refresh_mirrors,
-                               '_query',
-                               return_value=subprocess.CompletedProcess(
-                                   [], 0, stdout=out, stderr='')):
+        with mock.patch.object(
+            refresh_mirrors,
+            '_query',
+            return_value=subprocess.CompletedProcess(
+                [], 0, stdout=out, stderr=''
+            ),
+        ):
             self.assertTrue(self.gerrit.project_exists('mirror/foo'))
             self.assertFalse(self.gerrit.project_exists('mirror/fo'))
 
     def test_project_exists_raises_on_query_failure(self):
-        with mock.patch.object(refresh_mirrors,
-                               '_query',
-                               return_value=subprocess.CompletedProcess(
-                                   [], 255, stdout='', stderr='denied')):
+        with mock.patch.object(
+            refresh_mirrors,
+            '_query',
+            return_value=subprocess.CompletedProcess(
+                [], 255, stdout='', stderr='denied'
+            ),
+        ):
             with self.assertRaises(RuntimeError):
                 self.gerrit.project_exists('mirror/foo')
 

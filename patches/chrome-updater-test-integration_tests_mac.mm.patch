@@ -1,0 +1,13 @@
+diff --git a/chrome/updater/test/integration_tests_mac.mm b/chrome/updater/test/integration_tests_mac.mm
+index ff66bbbf033eadb33b29006f37a435bc6ca64637..5298f9abd1073e40e7011ab78ca567651c29eec5 100644
+--- a/chrome/updater/test/integration_tests_mac.mm
++++ b/chrome/updater/test/integration_tests_mac.mm
+@@ -83,7 +83,7 @@ std::optional<base::FilePath> GetActiveFile(UpdaterScope /*scope*/,
+   }
+ 
+   return path->Append(COMPANY_SHORTNAME_STRING)
+-      .Append(COMPANY_SHORTNAME_STRING "SoftwareUpdate")
++      .Append(KEYSTONE_NAME)
+       .Append("Actives")
+       .Append(id);
+ }

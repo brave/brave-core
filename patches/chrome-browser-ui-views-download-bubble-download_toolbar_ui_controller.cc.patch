@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc b/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc
-index 8683ba5990686d75dc2d8d8cb86976074cea854f..a4cd06d587a79217eaddd2a33d4958f16c71ae4b 100644
+index 68ff79372263e666d408619a49e71e0a7a08be05..baa59f3a87708b8ac2ac151cf597e9304dd16b14 100644
 --- a/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc
 +++ b/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc
-@@ -722,6 +722,7 @@ void DownloadToolbarUIController::UpdateIcon() {
+@@ -734,6 +734,7 @@ void DownloadToolbarUIController::UpdateIcon() {
    GetImageBadge(browser_view_)
        ->UpdateImage(is_active, progress_download_count, progress_color,
                      badge_background_color);

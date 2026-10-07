@@ -1,9 +1,9 @@
 diff --git a/tools/perf/page_sets/system_health/story_tags.py b/tools/perf/page_sets/system_health/story_tags.py
-index b6ae8fdc9d6916222031697f0292e1def36b95ee..989e918107caa2f16ab66498bb823aed5ea9f774 100644
+index abf3c2f6e805cd6ddee70b1f964a22cfd0cd8480..c81ad29886b6a27f6754fe53f86bfdb10c80dac6 100644
 --- a/tools/perf/page_sets/system_health/story_tags.py
 +++ b/tools/perf/page_sets/system_health/story_tags.py
-@@ -57,6 +57,7 @@ WEB_STORAGE = Tag(
-     'web_storage', 'Story has sites with heavy uses of Web storage.')
+@@ -63,6 +63,7 @@ WEB_STORAGE = Tag(
+ )
  
  # Tags by year.
 +YEAR_2024 = Tag('2024', 'Story was created or updated in 2024.')

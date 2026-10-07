@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">Betygsätt Brave</translation>
 <translation id="4104400246019119780">Tack!</translation>
 <translation id="5202255382948179481">Lägg till dina förslag</translation>
-<translation id="7759809451544302770">Valfritt</translation>
 <translation id="4748689412569009273">Hur betygsätter du din upplevelse av Brave med en emoji?</translation>
 <translation id="7335142069363686805">Betygsätt nu</translation>
 <translation id="6681362094306959654">Gillar du Brave?</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">Ledsen</translation>
 <translation id="5488843227043643519">Vill du ge ett betyg i Play Butik?</translation>
 <translation id="5867854497245948308">Tack för din feedback!</translation>
-<translation id="4935400164159327304">Berätta hur vi kan förbättra Brave.</translation>
+<translation id="5578122562331038807">Berätta hur vi kan förbättra Brave</translation>
+<translation id="1483493594462132177">Skicka</translation>
+<translation id="3889034478061064651">Lägg till dina förslag (valfritt)</translation>
+<translation id="1769154760586570836">Feedback skickad. Tack!</translation>
+<translation id="4450893287417543264">Visa inte igen.</translation>
 <translation id="8966035543003363155">Brave-aviseringar gör allt enklare</translation>
 <translation id="7662771815233894695">Hantera nedladdningar, tjäna tokens, se veckovis användarstatistik med mera.</translation>
 <translation id="4265429476391459783">Du tjänar inte belöningar eller får integritetsrapporter</translation>
@@ -107,9 +110,9 @@
 <translation id="4176463684765177261">Inaktiverad</translation>
 <translation id="59174027418879706">Aktiverat</translation>
 <translation id="6920492760024499150">Dagens toppnyheter i ett privat flöde, bara för dig.</translation>
-<translation id="8300751939969131609">Aktivera Brave News så missar du inga nyheter</translation>
+<translation id="3803728444598576153">Aktivera Brave Nyheter så missar du inga nyheter</translation>
 <translation id="7627131190984957214">Brave Nyheter visar annonser som är helt privata och anonymt matchade på din enhet.</translation>
-<translation id="7699565323725789472">Följ dina favoritkällor i ett enda flöde. Öppna bara en flik i Brave, bläddra ner och … voila!\nBrave News stöds av annonser med helt privata och anonymiserade annonser.</translation>
+<translation id="7897050360583141319">Följ dina favoritkällor i ett enda flöde. Öppna bara en flik i Brave, bläddra ner och … voila!</translation>
 <translation id="1765217911817124376">Aktivera Brave News</translation>
 <translation id="8981973962043893066">Sök efter webbplats, ämne eller RSS-feed</translation>
 <translation id="3225021799163709119">Populära</translation>
@@ -187,6 +190,9 @@
 <translation id="5987838417172370108">Hjälp till att förbättra Braves produktstabilitet genom att automatiskt skicka diagnostikrapporter när Brave Browser kraschar eller fryser.</translation>
 <translation id="7977176350719484850">Uppsk. data\nsparade</translation>
 <translation id="9008534313521214777">Ber. tid\nsparad</translation>
+<translation id="5668852698659986622">Aktivera Sponsrade annonser</translation>
+<translation id="431194936581466649">Hjälp till att stödja Braves uppdrag att bygga en oberoende, användarfokuserad webb med Sponsrade annonser. Vi mäter annonsprestanda privat, utan att identifiera dig.</translation>
+<translation id="1939813747486101115">Läs mer om Sponsrade annonser</translation>
 <translation id="8347743943525229984">Tillåt Brave-undersökningar</translation>
 <translation id="6022939994702081659">Tillåter Brave att visa länkar till privata undersökningar i den nya fliken. Undersökningar hjälper oss att bygga bättre funktioner och mäta effektiviteten i webbläsarbaserade annonskampanjer.</translation>
 <translation id="7746496306508543965">Läs mer om Brave-undersökningar</translation>
@@ -202,6 +208,7 @@
 <translation id="8026334261755873520">Rensa webbinformation</translation>
 <translation id="1690924763769415936">Uppspelning i bakgrunden</translation>
 <translation id="6332924730165919598">Att stänga alla flikar stänger Brave</translation>
+<translation id="2557725907027944082">Grupper</translation>
 <translation id="8308305244351876417">Tillåter att ljud spelas upp när du växlar till en annan flik i Brave, en annan app eller enhetens skärm är avstängd.</translation>
 <translation id="49147335255967913">Öppna YouTube-länkar i Brave</translation>
 <translation id="4150201353443180367">Skärm</translation>
@@ -212,9 +219,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Läs mer om Widevine<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Tillåt (Starta om nu)</translation>
 <translation id="2433507940547922241">Utseende</translation>
+<translation id="316542773973815724">Navigering</translation>
 <translation id="9040069796107003510">Brave Rewards-ikon</translation>
 <translation id="6333347122924254968">Visa ikonen Brave-belöningar i adressfältet</translation>
-<translation id="1215433243238902715">Aktivera det nedre navigeringsfältet</translation>
+<translation id="4393974575368329991">Nedre navigeringsfält</translation>
+<translation id="1834226716203076292">Visa ett nedre fält för snabb åtkomst till hem, bokmärken och sökning</translation>
 <translation id="1422686363939271829">Denna inställning är inaktiverad när den nedre adressfältspositionen är vald</translation>
 <translation id="6587448235155023666">Dina ändringar träder i kraft nästa gång du startar om Brave</translation>
 <translation id="8701563696941209024">STARTA OM NU</translation>
@@ -234,8 +243,7 @@
 <translation id="6188781052835527980">Skicka anonyma diagnostikrapporter om du upplever en krasch eller frysning.</translation>
 <translation id="4780647518983772446">Dela anonyma produktinsikter om vilka Brave-funktioner som används.</translation>
 <translation id="5109496672133133896">Privata produktinsikter</translation>
-<translation id="3545804467215833536">Tryck för att visa Brave Shields</translation>
-<translation id="1724327820822194498">Se alla dåliga saker som Brave har blockerat, på varje sida, med Shields.</translation>
+<translation id="4340039903315468568">Se alla dåliga saker som Brave har blockerat på varje sida med Skydd. Tryck för att visa</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> annonser och spårare har blockerats</translation>
 <translation id="8281886186245836920">Hoppa över</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
@@ -245,7 +253,6 @@
 <translation id="6213254277250932867">Jag har en återställningsfras med 12 ord</translation>
 <translation id="4225265925807365011">Jag har en återställningsfras med 24 ord</translation>
 <translation id="3570367516044491911">Ställ in som standardwebbläsare</translation>
-<translation id="6800338374677644736">Ställ in som standardwebbläsare</translation>
 <translation id="1545749641540134597">Skanna QR-koden</translation>
 <translation id="5317781812114905957">Instruktioner</translation>
 <translation id="8515319483805157233">Om du vill söka med en QR-kod ska du placera QR-koden inom ramen.</translation>
@@ -277,8 +284,6 @@
 <translation id="5582839680698949063">Huvudmeny</translation>
 <translation id="7002271985859760052">Sidåtgärder</translation>
 <translation id="7104487676473617844">Följande objekt visas endast i menyn när de stöds av den aktuella öppna webbsidan.</translation>
-<translation id="4159764849281393303">WebApp</translation>
-<translation id="8428213095426709021">Inställningar</translation>
 <translation id="8038539967102225446">Brave Ads är här!</translation>
 <translation id="222883304157347087">(denna enhet)</translation>
 <translation id="4157741509680155021">ENHETER PÅ SYNKRONISERINGSKEDJAN</translation>
@@ -440,6 +445,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="7141438739990875547">Bitcoin-nätverk</translation>
 <translation id="9055546041146396417">Prova att ha Shields nere om det verkar vara fel på sajten.</translation>
 <translation id="7898672232170410330">Blockera element</translation>
+<translation id="7205939464631857223">Rensa alla blockerade element</translation>
 <translation id="7961015016161918242">Aldrig</translation>
 <translation id="3200744626782631683">Webbläsardata raderas aldrig automatiskt</translation>
 <translation id="1991004083507807299">Webbplatsflikar stängda</translation>
@@ -502,7 +508,10 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="3980704343258720102">Rensar alla webbläsardata</translation>
 <translation id="8089997572759938512">Återställer dina integritetsrapporter till noll</translation>
 <translation id="2718046830255553131">Data för integritetsrapporter har rensats.</translation>
-<translation id="8376263745431603066">Aktivera "Nattläge" (experimentellt)</translation>
+<translation id="3623948252408240879">Nattläge</translation>
+<translation id="1257950165130031194">Tvinga fram mörkt läge för webbinnehåll</translation>
+<translation id="8710601165725654801">Dynamiska färger</translation>
+<translation id="7865194971711852999">Apptemat matchar bakgrundsbildens färger</translation>
 <translation id="1383876407941801731">Sök</translation>
 <translation id="13296465911709339">Din text har kopierats till urklipp.</translation>
 <translation id="2735834606413553397">Den offentliga adressen har kopierats till urklipp.</translation>
@@ -526,7 +535,6 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="1822560017823072927">Offentliga och privata standardgränssnitt</translation>
 <translation id="5825943197137337319">Endast offentligt standardgränssnitt</translation>
 <translation id="1689062823386843231">Inaktivera icke-proxad UDP</translation>
-<translation id="1483493594462132177">Skicka</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="4556086616242530072">Inbyggd webbläsare.\nSjälvförvaring.\nOch flera kedjor.</translation>
 <translation id="7909462264772842773">Ta kontroll över din krypto och NFT:er. Brave Wallet stöder Ethereum, EVM-kedjor, Solana, Filecoin med flera.</translation>
@@ -602,7 +610,6 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="569068482611873351">Importera ...</translation>
 <translation id="4522570452068850558">Detaljer</translation>
 <translation id="3114681061018999547">Skyddar</translation>
-<translation id="3784455785234192852">Lås</translation>
 <translation id="4412698727486357573">Hjälpcenter</translation>
 <translation id="8239147115686034860">Lås automatiskt Brave Wallet</translation>
 <translation id="414639769490080648">Antalet minuter att vänta tills Brave Wallet automatiskt låses</translation>
@@ -714,6 +721,8 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="1634828734222219955">Total</translation>
 <translation id="7995708795274219641">Belopp + bränsle</translation>
 <translation id="2186011161688824046">Belopp + avgift</translation>
+<translation id="1118876217803190221">Otillräcklig balans</translation>
+<translation id="275990379543116961">Otillräckliga medel för gas</translation>
 <translation id="1950052789869821983">Transaktion</translation>
 <translation id="2304783958703511257">Avancerade inställningar</translation>
 <translation id="4220062530885628403">Nonce</translation>
@@ -722,7 +731,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="4979796155378508955">Transaktionen får inte spridas i nätverket om det anpassade nonce-värdet inte är sekventiellt eller har andra fel.</translation>
 <translation id="750843150060816463">Bränslepris (Gwei)</translation>
 <translation id="1426320910664514906">Gasgräns</translation>
-<translation id="6389441740143786465">Inaktivera Sharing Hub</translation>
+<translation id="1784950057929740513">Delningshubb</translation>
 <translation id="473775607612524610">Uppdatera</translation>
 <translation id="479795390141144417">Kontouppdatering misslyckades.</translation>
 <translation id="8084782383392198011">Kontonamnet får inte vara tomt.</translation>
@@ -797,10 +806,19 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="1060221736464994328">Tillåt denna webbplats att byta nätverket?</translation>
 <translation id="2478788592457735063">Detta byter nätverket till ett som har lagts till tidigare.</translation>
 <translation id="8756686998207163764">Byta nätverk</translation>
+<translation id="8905793906896555159">Aktivera flikgrupper</translation>
+<translation id="6735749683447943955">Inaktivera flikgrupper?</translation>
+<translation id="4616687974503500682">Alla befintliga grupper raderas, och flikarna i de grupperna blir öppna, ogrupperade flikar i ditt webbläsarfönster. Är du säker på att du vill fortsätta?</translation>
+<translation id="4394049700291259645">Inaktivera</translation>
+<translation id="3859027502409073633">Visa synkroniserade flikgrupper</translation>
+<translation id="7632160823264702523">Flikgruppsfält</translation>
+<translation id="2477807195394450274">Visa ett nedre fält för snabb åtkomst till flikar i den för närvarande öppna flikgruppen</translation>
+<translation id="8374720587111523381">Öppna länkar i aktuell flikgrupp</translation>
 <translation id="5324095733417835490">Öppna endast länkar i aktuell flikgrupp</translation>
-<translation id="2620277345862119868">Öppnar automatiskt alla länkar i den aktuella flikgruppen</translation>
+<translation id="1227658541937938697">Öppnar automatiskt alla länkar i den aktuella flikgruppen</translation>
 <translation id="5242300593039211344">Lås plånbok</translation>
 <translation id="1108298724135935307">Anslutna webbplatser</translation>
+<translation id="8428213095426709021">Inställningar</translation>
 <translation id="4255623233927788178">Visa på block explorer</translation>
 <translation id="8274201358637112807">Den här sidan vill interagera med Brave Wallet</translation>
 <translation id="3355936511340229503">Anslutningsfel</translation>
@@ -842,7 +860,6 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="6458565248779152483">Inaktivera Brave VPN</translation>
 <translation id="9080536793704001825">Pausa i 15 minuter</translation>
 <translation id="803706420145725977">Pausa i 1 timme</translation>
-<translation id="4394049700291259645">Inaktivera</translation>
 <translation id="7733890291091968191">Visa web3-notiser</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave spårar inte dig och vet inte hur du använder appen, så vi kan inte se hur du har konfigurerat VPN. Berätta mer om problemet så ska vi göra vårt bästa för att hjälpa dig så fort som möjligt. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN-värdnamn\n <ph name="VALUE"/></translation>
@@ -1077,7 +1094,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="6393423486818299209">Använd din nuvarande tjänsteleverantör eller Wikimedia DNS</translation>
 <translation id="3401384982562827787">Använd din nuvarande tjänsteleverantör eller Cloudflare</translation>
 <translation id="8812367543786936496">Om din nuvarande tjänsteleverantör är osäker använder Brave en säker, alternativ DNS-leverantör</translation>
-<translation id="1381108437654541567">Aktivera flera fönster</translation>
+<translation id="750538469281113679">Flera fönster</translation>
 <translation id="6167344249617630304">Öppna upp till fem fönster samtidigt och flytta flikar från ett fönster till ett annat</translation>
 <translation id="1063948063403254568">Flera fönster har identifierats</translation>
 <translation id="4661882208707630158">Slå samman flikar till ett annat Brave-fönster eller stäng andra Brave-fönster innan du inaktiverar funktionen för flera fönster.</translation>

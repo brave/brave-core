@@ -227,7 +227,7 @@
 "vpn.serverTitle" = "%ld Διακομιστής";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Προστατέψτε όλες τις εφαρμογές σας με το Brave VPN. Προστατέψτε έως και 10 συσκευές με ένα πρόγραμμα.";
+"vpn.settingHeaderBody" = "Απολαύστε ροή του περιεχομένου σας, με τον δικό σας τρόπο. Προστατέψτε κάθε εφαρμογή σε 10 συσκευές με 1 συνδρομή.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Επικοινωνία με την τεχνική υποστήριξη";

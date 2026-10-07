@@ -11,23 +11,6 @@
 #include "chrome/browser/extensions/api/identity/identity_token_cache.h"
 #include "google_apis/google_api_keys.h"
 
-// Use the embedded Google OAuth flow only if Google Chrome API key is used.
-// Otherwise, fallback to the web OAuth flow.
-#define BRAVE_RUN                                                           \
-  if (!google_apis::IsGoogleChromeAPIKeyUsed()) {                           \
-    StartMintTokenFlow(IdentityMintRequestQueue::MINT_TYPE_NONINTERACTIVE); \
-    return RespondLater();                                                  \
-  }
-
-// clang-format off
-#define BRAVE_START_MINT_TOKEN_FLOW_IF \
-  if (google_apis::IsGoogleChromeAPIKeyUsed()) {
-#define BRAVE_START_MINT_TOKEN_FLOW_ELSE       \
-  } else {                                     \
-    DCHECK(token_key_.account_info.IsEmpty()); \
-  }
-// clang-format on
-
 #define CacheValueStatus                                                       \
   CreateRemoteConsentApproved("placeholder");                                  \
   if (cache_entry.status() ==                                                  \
@@ -68,6 +51,3 @@
   IdentityTokenCacheValue::CacheValueStatus
 #include <chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc>
 #undef CacheValueStatus
-#undef BRAVE_START_MINT_TOKEN_FLOW_ELSE
-#undef BRAVE_START_MINT_TOKEN_FLOW_IF
-#undef BRAVE_RUN

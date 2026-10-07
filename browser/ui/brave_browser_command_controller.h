@@ -13,7 +13,9 @@
 
 #include "base/memory/raw_ref.h"
 #include "base/scoped_observation.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
@@ -26,6 +28,7 @@
 class BraveAppMenuBrowserTest;
 class BraveAppMenuModelBrowserTest;
 class BraveBrowserCommandControllerTest;
+class Browser;
 enum class TabChangeType;
 
 namespace content {
@@ -54,7 +57,6 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
 
  protected:
   void OnTabChangedAt(tabs::TabInterface* tab,
-                      int index,
                       TabChangeType change_type) override;
   void OnTabPinnedStateChanged(tabs::TabInterface* tab, int index) override;
   void OnTabStripModelChanged(
@@ -73,11 +75,11 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   // Overriden from CommandUpdater:
   bool SupportsCommand(int id) const override;
   bool IsCommandEnabled(int id) const override;
-  bool ExecuteCommandWithDispositionImpl(
+  bool ExecuteCommandWithDispositionAndContext(
       int id,
       WindowOpenDisposition disposition,
-      base::TimeTicks time_stamp,
-      std::optional<actions::ActionInvocationContext> context) override;
+      std::optional<actions::ActionInvocationContext> context,
+      base::TimeTicks time_stamp) override;
   void AddCommandObserver(int id, CommandObserver* observer) override;
   void RemoveCommandObserver(int id, CommandObserver* observer) override;
   void RemoveCommandObserver(CommandObserver* observer) override;
@@ -91,10 +93,14 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
 #endif
 
   void InitBraveCommandState();
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   void UpdateCommandForBraveRewards();
+#endif
   void UpdateCommandForWebcompatReporter();
   void UpdateCommandForBraveSync();
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   void UpdateCommandForBraveWallet();
+#endif
   void UpdateCommandForSidebar();
   void UpdateCommandForAIChat();
   void UpdateCommandForBraveVPN();

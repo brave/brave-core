@@ -7,50 +7,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orderingFromXml="false">
-    <PreferenceCategory
-        android:key="brave_account_section"
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:key="brave_account"
         android:order="1"
-        android:title="@string/brave_account_title"/>
-    <org.chromium.chrome.browser.settings.BraveAccountPreference
-        android:key="user_info"
-        android:order="1"
-        app:title_truncate_middle="true"
-        android:selectable="false"/>
-    <org.chromium.chrome.browser.settings.BraveAccountPreference
-        android:key="change_password"
-        android:order="2"
-        android:title="@string/settings_brave_account_change_password_button_label"
-        app:title_text_appearance="@style/TextAppearance.Brave.PreferenceTitle.TextButton"/>
-    <org.chromium.chrome.browser.settings.BraveAccountPreference
-        android:key="sign_out"
-        android:order="3"
-        android:icon="@drawable/ic_outside"
-        android:title="@string/settings_brave_account_log_out_button_label"
-        app:iconTint="?attr/globalTextButtonTextColor"
-        app:title_text_appearance="@style/TextAppearance.Brave.PreferenceTitle.TextButton"/>
-    <org.chromium.chrome.browser.settings.BraveAccountPreference
-        android:key="almost_there"
-        android:order="4"
-        android:selectable="false"/>
-    <org.chromium.chrome.browser.settings.BraveAccountPreference
-        android:key="enter_verification_code"
-        android:order="5"
-        app:title_text_appearance="@style/TextAppearance.Brave.PreferenceTitle.TextButton"/>
-    <org.chromium.chrome.browser.settings.BraveAccountPreference
-        android:key="resend_confirmation_email"
-        android:order="6"
-        android:title="@string/settings_brave_account_resend_confirmation_email_button_label"
-        app:title_text_appearance="@style/TextAppearance.Brave.PreferenceTitle.TextButton"
-        android:summary="@string/settings_brave_account_verification_row_description_3"/>
-    <org.chromium.chrome.browser.settings.BraveAccountPreference
-        android:key="cancel_verification"
-        android:order="7"
-        app:title_text_appearance="@style/TextAppearance.Brave.PreferenceTitle.DestructiveAction"/>
-    <org.chromium.chrome.browser.settings.BraveAccountPreference
-        android:key="get_started"
-        android:order="8"
         android:icon="@drawable/ic_social_brave_release_favicon_fullheight_color"
-        android:title="@string/settings_brave_account_get_started_button_label"/>
+        android:title="@string/settings_brave_account_row_title"/>
     <PreferenceCategory
         android:key="features_section"
         android:order="2"

@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/renderer_context_menu/brave_render_view_context_menu_views.h"
 
+#include "base/memory/ptr_util.h"
+
 BraveRenderViewContextMenuViews::BraveRenderViewContextMenuViews(
     content::RenderFrameHost& render_frame_host,
     const content::ContextMenuParams& params,
@@ -18,14 +20,16 @@ BraveRenderViewContextMenuViews::BraveRenderViewContextMenuViews(
 BraveRenderViewContextMenuViews::~BraveRenderViewContextMenuViews() = default;
 
 // static
-RenderViewContextMenuViews* BraveRenderViewContextMenuViews::Create(
+std::unique_ptr<RenderViewContextMenuViews>
+BraveRenderViewContextMenuViews::Create(
     content::RenderFrameHost& render_frame_host,
     const content::ContextMenuParams& params,
     bool is_paste_enabled,
     bool is_paste_and_match_style_enabled) {
-  return new BraveRenderViewContextMenuViews(render_frame_host, params,
-                                             is_paste_enabled,
-                                             is_paste_and_match_style_enabled);
+  // Protected ctor.
+  return base::WrapUnique(new BraveRenderViewContextMenuViews(
+      render_frame_host, params, is_paste_enabled,
+      is_paste_and_match_style_enabled));
 }
 
 void BraveRenderViewContextMenuViews::Show() {

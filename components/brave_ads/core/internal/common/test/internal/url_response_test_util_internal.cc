@@ -22,14 +22,15 @@
 #include "brave/components/brave_ads/core/internal/common/test/internal/current_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/tag_parser_test_util_internal.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 #include "url/gurl.h"
 
 namespace brave_ads::test {
 
 namespace {
 
-base::flat_map<std::string, size_t>& UrlResponseIndexes() {
-  static base::NoDestructor<base::flat_map<std::string, size_t>> indexes;
+absl::flat_hash_map<std::string, size_t>& UrlResponseIndexes() {
+  static base::NoDestructor<absl::flat_hash_map<std::string, size_t>> indexes;
   return *indexes;
 }
 

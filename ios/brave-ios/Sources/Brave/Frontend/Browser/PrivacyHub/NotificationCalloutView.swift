@@ -61,10 +61,7 @@ extension PrivacyReportsView {
           .font(.callout)
           .padding(.vertical, 12)
           .frame(maxWidth: .infinity)
-          .background(
-            VisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterial))
-              .edgesIgnoringSafeArea(.all)
-          )
+          .background(.ultraThinMaterial)
           .clipShape(Capsule())
           .fixedSize(horizontal: false, vertical: true)
         }

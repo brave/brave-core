@@ -6,6 +6,7 @@ import BraveWidgetsModels
 import Foundation
 import Preferences
 import Shared
+import Strings
 import UIKit
 import Web
 
@@ -15,14 +16,26 @@ enum TabBarVisibility: Int, CaseIterable {
   case landscapeOnly
 }
 
-enum BackgroundMediaType: Int, CaseIterable {
-  case defaultImages
-  case sponsoredImages
+public enum TopSitesMode: Int, CaseIterable, Identifiable {
+  case none
+  case mostVisited
+  case favourite
 
-  public var isSponsored: Bool {
+  public var id: Self { self }
+
+  /// Whether or not top sites are shown at all.
+  ///
+  /// Enabling sets the mode to `favourite`.
+  public var isEnabled: Bool {
+    get { self != .none }
+    set { self = newValue ? .favourite : .none }
+  }
+
+  public var title: String {
     switch self {
-    case .sponsoredImages: return true
-    case .defaultImages: return false
+    case .none: return Strings.NTP.topsitesTypeNone
+    case .mostVisited: return Strings.NTP.topsitesTypeMostVisited
+    case .favourite: return Strings.NTP.topsitesTypeFavorites
     }
   }
 }
@@ -145,6 +158,11 @@ extension Preferences {
     public static let openLinkInQuickViewMode: Option<Bool> = .init(
       key: "general.open-link-in-quickview-mode",
       default: true
+    )
+    /// Whether or not brave has shown a prompt to users to confirm later continue opening links in QuickView
+    public static let openLinkInQuickViewModeConfirmationShown: Option<Bool> = .init(
+      key: "general.open-link-in-quickview-mode-confirmation-shown",
+      default: false
     )
     /// Whether or not the crash reporting alert has been shown at least once
     public static let crashReportingOptInShown: Option<Bool> = .init(
@@ -271,22 +289,6 @@ extension Preferences {
     /// Whether bookmark image are enabled / shown
     static let backgroundImages = Option<Bool>(key: "newtabpage.background-images", default: true)
 
-    /// Determines the type of sponsored media to include in the background image rotation
-    /// - Warning: You should not access this directly but  through ``backgroundMediaType``
-    static let backgroundMediaTypeRaw = Option<Int>(
-      key: "newtabpage.background-media-type",
-      default: BackgroundMediaType.sponsoredImages.rawValue
-    )
-
-    /// A  variable to access the ``backgroundMediaTypeRaw`` preference value
-    static var backgroundMediaType: BackgroundMediaType {
-      get {
-        BackgroundMediaType(rawValue: backgroundMediaTypeRaw.value)
-          ?? BackgroundMediaType.sponsoredImages
-      }
-      set { backgroundMediaTypeRaw.value = newValue.rawValue }
-    }
-
     /// The counter that indicates what background should be shown, this is used to determine when a new
     ///     sponsored image should be shown. (`1` means, first image in cycle N, should be shown).
     /// One example, if rotation is every 4 images, but sponsored image should be shown as 2nd image, then this will
@@ -335,6 +337,15 @@ extension Preferences {
     /// Tells the app whether we should show Favourites in new tab page view controller
     public static let showNewTabFavourites =
       Option<Bool>(key: "newtabpage.show-newtab-favourites", default: true)
+
+    /// Mode to display NTP tiles in NTP
+    ///
+    /// Defaults to favourites so the mode matches what the NTP renders for users who never picked
+    /// one. Most visited is an explicit choice until the NTP reads the mode itself.
+    public static let topSitesMode = Option<TopSitesMode>(
+      key: "newtabpage.topsites-mode",
+      default: .favourite
+    )
   }
 
   final public class AdblockDebug {

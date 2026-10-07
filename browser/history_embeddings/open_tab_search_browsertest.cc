@@ -6,6 +6,7 @@
 #include "brave/browser/history_embeddings/open_tab_search.h"
 
 #include <cstdint>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -77,7 +78,9 @@ class OpenTabSearchBrowserTest : public InProcessBrowserTest {
     return https_server_.GetURL(host, path);
   }
 
-  void AppendTab(Browser* target, const GURL& url, const std::string& title) {
+  void AppendTab(BrowserWindowInterface* target,
+                 const GURL& url,
+                 const std::string& title) {
     ui_test_utils::NavigateToURLWithDisposition(
         target, url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
@@ -88,7 +91,7 @@ class OpenTabSearchBrowserTest : public InProcessBrowserTest {
         base::UTF8ToUTF16(title));
   }
 
-  int TabIdAt(Browser* target, int index) {
+  int TabIdAt(BrowserWindowInterface* target, int index) {
     return target->tab_strip_model()
         ->GetTabAtIndex(index)
         ->GetHandle()
@@ -123,6 +126,43 @@ class OpenTabSearchBrowserTest : public InProcessBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
 };
 
+// With no tracked HTTP(S) tabs there is nothing to rank, and the result still
+// arrives asynchronously.
+IN_PROC_BROWSER_TEST_F(OpenTabSearchBrowserTest, NoTabsAnswersAsynchronously) {
+  ai_chat::FakeHistoryEmbeddingsSearch fake;
+
+  base::test::TestFuture<std::vector<OpenTabInfo>> future;
+  SearchOpenTabsByContent(profile(), history_service(), fake.GetWeakPtr(),
+                          "query", future.GetCallback(), &tracker_);
+
+  EXPECT_FALSE(future.IsReady());
+  EXPECT_TRUE(future.Take().empty());
+}
+
+// The URL lookup is asynchronous, so the search can stop resolving before it
+// returns. The result is then empty and the caller still hears back.
+IN_PROC_BROWSER_TEST_F(OpenTabSearchBrowserTest, SearchGoneDuringUrlLookup) {
+  const GURL foo_url = GetURL("foo.com", "/empty.html");
+  AppendTab(browser(), foo_url, "Foo");
+  AddToHistory(foo_url);
+  const history::URLID foo_url_id = QueryUrlId(foo_url);
+  ASSERT_NE(foo_url_id, 0);
+
+  ai_chat::FakeHistoryEmbeddingsSearch fake;
+  fake.SetScoredRows({ai_chat::FakeHistoryEmbeddingsSearch::MakeRow(
+      foo_url_id, foo_url, u"Foo", base::Time::Now(), /*score=*/1.0)});
+
+  base::test::TestFuture<std::vector<OpenTabInfo>> future;
+  SearchOpenTabsByContent(profile(), history_service(), fake.GetWeakPtr(),
+                          "query", future.GetCallback(), &tracker_);
+
+  // Still in the URL lookup. Dereferencing the search after this would CHECK,
+  // so a result at all means it was skipped rather than read through.
+  fake.InvalidateWeakPtrs();
+
+  EXPECT_TRUE(future.Take().empty());
+}
+
 // Results follow the scored-row order (best first), and open tabs whose URL
 // isn't among the scored rows are dropped.
 IN_PROC_BROWSER_TEST_F(OpenTabSearchBrowserTest, RanksAndDropsUnmatchedTabs) {
@@ -155,10 +195,10 @@ IN_PROC_BROWSER_TEST_F(OpenTabSearchBrowserTest, RanksAndDropsUnmatchedTabs) {
           foo_url_id, foo_url, u"Foo", base::Time::Now(), /*score=*/0.7f),
   });
 
-  base::test::TestFuture<const std::vector<int32_t>&> future;
-  SearchOpenTabsByContent(profile(), history_service(), &fake, "query",
-                          future.GetCallback(), &tracker_);
-  const std::vector<int32_t> tab_ids = future.Take();
+  base::test::TestFuture<std::vector<OpenTabInfo>> future;
+  SearchOpenTabsByContent(profile(), history_service(), fake.GetWeakPtr(),
+                          "query", future.GetCallback(), &tracker_);
+  const std::vector<OpenTabInfo> ranked = future.Take();
 
   // Every eligible open tab is offered to `Search()` for scoring...
   EXPECT_TRUE(fake.last_skip_answering());
@@ -166,6 +206,10 @@ IN_PROC_BROWSER_TEST_F(OpenTabSearchBrowserTest, RanksAndDropsUnmatchedTabs) {
       fake.last_url_id_filter(),
       testing::UnorderedElementsAre(foo_url_id, bar_url_id, baz_url_id));
   // ...but only the scored ones come back, best first; baz is dropped.
+  std::vector<int32_t> tab_ids;
+  for (const auto& tab : ranked) {
+    tab_ids.push_back(tab.tab_id);
+  }
   EXPECT_THAT(tab_ids, testing::ElementsAre(bar_tab_id, foo_tab_id));
 }
 
@@ -175,7 +219,7 @@ IN_PROC_BROWSER_TEST_F(OpenTabSearchBrowserTest, ExcludesOtherProfileTabs) {
   const GURL foo_url = GetURL("foo.com", "/empty.html");
   const GURL bar_url = GetURL("bar.com", "/empty.html");
   AppendTab(browser(), foo_url, "Foo");
-  Browser* incognito = CreateIncognitoBrowser();
+  BrowserWindowInterface* incognito = CreateIncognitoBrowser();
   AppendTab(incognito, bar_url, "Bar (incognito)");
 
   const int foo_tab_id = TabIdAt(browser(), 1);
@@ -198,14 +242,50 @@ IN_PROC_BROWSER_TEST_F(OpenTabSearchBrowserTest, ExcludesOtherProfileTabs) {
           bar_url_id, bar_url, u"Bar", base::Time::Now(), /*score=*/0.8f),
   });
 
-  base::test::TestFuture<const std::vector<int32_t>&> future;
-  SearchOpenTabsByContent(profile(), history_service(), &fake, "query",
-                          future.GetCallback(), &tracker_);
-  const std::vector<int32_t> tab_ids = future.Take();
+  base::test::TestFuture<std::vector<OpenTabInfo>> future;
+  SearchOpenTabsByContent(profile(), history_service(), fake.GetWeakPtr(),
+                          "query", future.GetCallback(), &tracker_);
+  const std::vector<OpenTabInfo> ranked = future.Take();
 
   // Only the regular-profile tab reaches the URL-id filter and the results.
   EXPECT_THAT(fake.last_url_id_filter(), testing::ElementsAre(foo_url_id));
-  EXPECT_THAT(tab_ids, testing::ElementsAre(foo_tab_id));
+  ASSERT_EQ(ranked.size(), 1u);
+  EXPECT_EQ(ranked[0].tab_id, foo_tab_id);
+  EXPECT_EQ(ranked[0].url, foo_url);
+}
+
+// Two open tabs pointing at the same URL share a single URLID. The filter
+// forwarded to `Search()` carries that id once, and both tabs come back so
+// the caller can act on either.
+IN_PROC_BROWSER_TEST_F(OpenTabSearchBrowserTest, SameUrlYieldsEveryTab) {
+  const GURL url = GetURL("foo.com", "/empty.html");
+  AppendTab(browser(), url, "Shared Tab A");
+  AppendTab(browser(), url, "Shared Tab B");
+
+  const int tab_id_a = TabIdAt(browser(), 1);
+  const int tab_id_b = TabIdAt(browser(), 2);
+
+  AddToHistory(url);
+  const history::URLID url_id = QueryUrlId(url);
+  ASSERT_NE(url_id, 0);
+
+  ai_chat::FakeHistoryEmbeddingsSearch fake;
+  fake.SetScoredRows({ai_chat::FakeHistoryEmbeddingsSearch::MakeRow(
+      url_id, url, u"Shared", base::Time::Now(), /*score=*/0.9f)});
+
+  base::test::TestFuture<std::vector<OpenTabInfo>> future;
+  SearchOpenTabsByContent(profile(), history_service(), fake.GetWeakPtr(),
+                          "query", future.GetCallback(), &tracker_);
+  const std::vector<OpenTabInfo> ranked = future.Take();
+
+  EXPECT_THAT(fake.last_url_id_filter(), testing::ElementsAre(url_id));
+  ASSERT_EQ(ranked.size(), 2u);
+  std::vector<int32_t> tab_ids;
+  for (const auto& tab : ranked) {
+    EXPECT_EQ(tab.url, url);
+    tab_ids.push_back(tab.tab_id);
+  }
+  EXPECT_THAT(tab_ids, testing::UnorderedElementsAre(tab_id_a, tab_id_b));
 }
 
 }  // namespace history_embeddings

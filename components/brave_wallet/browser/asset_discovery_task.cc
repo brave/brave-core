@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/asset_discovery_task.h"
 
+#include <algorithm>
 #include <map>
 #include <optional>
 #include <string_view>
@@ -14,11 +15,15 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/containers/span_reader.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -39,6 +44,18 @@ std::pair<std::vector<T>, std::vector<T>> SplitByCoin(
     }
     if (item->coin == mojom::CoinType::SOL) {
       result.second.push_back(item.Clone());
+    }
+  }
+
+  return result;
+}
+
+template <class T>
+std::vector<T> FilterByCoin(const std::vector<T>& items, mojom::CoinType coin) {
+  std::vector<T> result;
+  for (const auto& item : items) {
+    if (item->coin == coin) {
+      result.push_back(item.Clone());
     }
   }
 
@@ -102,12 +119,21 @@ void AssetDiscoveryTask::DiscoverAssets(
 
   bool use_ankr_discovery =
       IsAnkrBalancesEnabled() && !ankr_evm_chain_ids.empty();
+  bool discover_polkadot_assets = IsPolkadotAssetDiscoveryEnabled();
 
-  // Concurrently discover ETH ERC20s on our registry, Solana tokens on our
-  // Registry and NFTs on both platforms, then merge the results
+  // Concurrently discover ETH ERC20s on our registry, Solana tokens and
+  // Polkadot assets on our registry, and NFTs on both platforms, then merge
+  // the results
+  size_t discovery_count = 3;  // SPL tokens, EVM registry tokens and NFTs.
+  if (use_ankr_discovery) {
+    ++discovery_count;
+  }
+  if (discover_polkadot_assets) {
+    ++discovery_count;
+  }
   const auto barrier_callback =
       base::BarrierCallback<std::vector<mojom::BlockchainTokenPtr>>(
-          use_ankr_discovery ? 4 : 3,
+          discovery_count,
           base::BindOnce(&AssetDiscoveryTask::MergeDiscoveredAssets,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   // Currently SPL tokens are only discovered on Solana Mainnet.
@@ -120,6 +146,13 @@ void AssetDiscoveryTask::DiscoverAssets(
                                barrier_callback);
   } else {
     DiscoverERC20sFromRegistry(eth_accounts, evm_chain_ids, barrier_callback);
+  }
+
+  if (discover_polkadot_assets) {
+    DiscoverPolkadotAssetsFromRegistry(
+        FilterByCoin(accounts, mojom::CoinType::DOT),
+        FilterByCoin(fungible_chain_ids, mojom::CoinType::DOT),
+        barrier_callback);
   }
 
   DiscoverNFTs(accounts, non_fungible_chain_ids, barrier_callback);
@@ -451,6 +484,146 @@ void AssetDiscoveryTask::OnGetSolanaTokenRegistry(
   for (const auto& token : sol_token_registry) {
     if (discovered_mint_addresses.contains(token->contract_address)) {
       DCHECK(token->visible);
+      if (!AddUserAsset(prefs_, token.Clone())) {
+        continue;
+      }
+      discovered_tokens.push_back(token.Clone());
+    }
+  }
+
+  std::move(callback).Run(std::move(discovered_tokens));
+}
+
+void AssetDiscoveryTask::DiscoverPolkadotAssetsFromRegistry(
+    base::span<const mojom::AccountIdPtr> accounts,
+    base::span<const mojom::ChainIdPtr> chain_ids,
+    DiscoverAssetsCompletedCallback callback) {
+  if (accounts.empty() || chain_ids.empty() ||
+      !wallet_service_->GetPolkadotWalletService()) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  // Polkadot keyrings are chain scoped, so a testnet account has nothing to
+  // find on mainnet Asset Hub and vice versa.
+  size_t balance_query_count = 0;
+  std::vector<std::pair<std::string, std::vector<mojom::AccountIdPtr>>>
+      accounts_per_chain;
+  for (const auto& chain_id : chain_ids) {
+    auto network = wallet_service_->network_manager()->GetChain(
+        chain_id->chain_id, mojom::CoinType::DOT);
+    if (!network) {
+      continue;
+    }
+
+    std::vector<mojom::AccountIdPtr> chain_accounts;
+    for (const auto& account_id : accounts) {
+      if (std::ranges::contains(network->supported_keyrings,
+                                account_id->keyring_id)) {
+        chain_accounts.push_back(account_id.Clone());
+      }
+    }
+
+    if (chain_accounts.empty()) {
+      continue;
+    }
+
+    // We performa a balance query per account.
+    balance_query_count += chain_accounts.size();
+    accounts_per_chain.emplace_back(chain_id->chain_id,
+                                    std::move(chain_accounts));
+  }
+
+  if (balance_query_count == 0) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  // Each chain fans out into one balance query per account on that chain.
+  const auto barrier_callback =
+      base::BarrierCallback<std::vector<mojom::BlockchainTokenPtr>>(
+          balance_query_count,
+          base::BindOnce(&AssetDiscoveryTask::MergeDiscoveredPolkadotAssets,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+
+  for (auto& [chain_id, chain_accounts] : accounts_per_chain) {
+    BlockchainRegistry::GetInstance()->GetAllTokens(
+        chain_id, mojom::CoinType::DOT,
+        base::BindOnce(&AssetDiscoveryTask::OnGetPolkadotTokenRegistry,
+                       weak_ptr_factory_.GetWeakPtr(), barrier_callback,
+                       std::move(chain_accounts), chain_id));
+  }
+}
+
+void AssetDiscoveryTask::OnGetPolkadotTokenRegistry(
+    base::RepeatingCallback<void(std::vector<mojom::BlockchainTokenPtr>)>
+        barrier_callback,
+    std::vector<mojom::AccountIdPtr> accounts,
+    const std::string& chain_id,
+    std::vector<mojom::BlockchainTokenPtr> registry_tokens) {
+  // The registry carries the pallet_assets asset id as the contract address.
+  // `candidates` is kept positionally aligned with `asset_ids` so the balances
+  // can be zipped back onto the tokens they belong to.
+  std::vector<mojom::BlockchainTokenPtr> candidates;
+  std::vector<uint32_t> asset_ids;
+  for (auto& token : registry_tokens) {
+    uint32_t asset_id = 0;
+    if (!base::StringToUint(token->contract_address, &asset_id)) {
+      continue;
+    }
+    asset_ids.push_back(asset_id);
+    candidates.push_back(std::move(token));
+  }
+
+  auto* polkadot_wallet_service = wallet_service_->GetPolkadotWalletService();
+  if (asset_ids.empty() || !polkadot_wallet_service) {
+    for (size_t i = 0; i < accounts.size(); ++i) {
+      barrier_callback.Run({});
+    }
+    return;
+  }
+
+  for (const auto& account_id : accounts) {
+    polkadot_wallet_service->GetAssetAccountBalances(
+        account_id.Clone(), asset_ids, chain_id,
+        base::BindOnce(&AssetDiscoveryTask::OnGetPolkadotAssetAccountBalances,
+                       weak_ptr_factory_.GetWeakPtr(), barrier_callback,
+                       CloneVector(candidates)));
+  }
+}
+
+void AssetDiscoveryTask::OnGetPolkadotAssetAccountBalances(
+    base::OnceCallback<void(std::vector<mojom::BlockchainTokenPtr>)>
+        barrier_callback,
+    std::vector<mojom::BlockchainTokenPtr> candidates,
+    std::vector<mojom::PolkadotAssetAccountInfoPtr> asset_accounts,
+    const std::optional<std::string>& error_message) {
+  // Balances are returned positionally zipped with the asset ids we asked for,
+  // so a size mismatch leaves us unable to tell which asset a balance is for.
+  if (error_message || asset_accounts.size() != candidates.size()) {
+    std::move(barrier_callback).Run({});
+    return;
+  }
+
+  std::vector<mojom::BlockchainTokenPtr> discovered_tokens;
+  for (size_t i = 0; i < asset_accounts.size(); ++i) {
+    if (MojomToUint128(asset_accounts[i]->balance) == 0) {
+      continue;
+    }
+    discovered_tokens.push_back(std::move(candidates[i]));
+  }
+
+  std::move(barrier_callback).Run(std::move(discovered_tokens));
+}
+
+void AssetDiscoveryTask::MergeDiscoveredPolkadotAssets(
+    DiscoverAssetsCompletedCallback callback,
+    const std::vector<std::vector<mojom::BlockchainTokenPtr>>&
+        discovered_assets) {
+  std::vector<mojom::BlockchainTokenPtr> discovered_tokens;
+  for (const auto& tokens : discovered_assets) {
+    for (const auto& token : tokens) {
+      // Several accounts can hold the same asset; AddUserAsset deduplicates.
       if (!AddUserAsset(prefs_, token.Clone())) {
         continue;
       }

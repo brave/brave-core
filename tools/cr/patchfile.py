@@ -12,9 +12,23 @@ from pathlib import Path
 import re
 import subprocess
 
-from plaster import PlasterFile, PLASTER_FILES_PATH
+from plaster import PlasterFile, plaster_for_patch
 from repository import Repository
 import repository
+
+
+def _plaster_path_for_patch(patch_path: Path) -> Path | None:
+    """Returns the path for a plaster file from a patch file path.
+
+    Return None if no file is found.
+    """
+    candidate = plaster_for_patch(patch_path)
+    return candidate if candidate is not None and candidate.exists() else None
+
+
+def patch_has_plaster(patch_path: Path) -> bool:
+    """Indicates whether a particular patch has a plaster file."""
+    return _plaster_path_for_patch(patch_path) is not None
 
 
 @dataclass(frozen=True)
@@ -43,41 +57,41 @@ class Patchfile:
     plaster: Path | None = field(init=False)
 
     def __post_init__(self):
-        object.__setattr__(self, 'repository',
-                           self.get_repository_from_patch_name())
+        object.__setattr__(
+            self, 'repository', self.get_repository_from_patch_name()
+        )
 
         sources = self.repository.get_patch_stats(self.path_from_repo())
         if len(sources) != 1:
             raise ValueError(
-                f'Expected exactly one source for {self.path}, got {sources}.')
+                f'Expected exactly one source for {self.path}, got {sources}.'
+            )
         object.__setattr__(self, 'source', sources[0])
 
-        plaster = None
-        if self.repository.is_chromium:
-            plaster_dir = PLASTER_FILES_PATH / self.source.parent
-            candidate = plaster_dir / (self.source.name + '.yaml')
-            if candidate.exists():
-                plaster = candidate
-        object.__setattr__(self, 'plaster', plaster)
+        object.__setattr__(self, 'plaster', _plaster_path_for_patch(self.path))
 
     def get_repository_from_patch_name(self) -> Repository:
-        """Gets the repository for the patch file.
-        """
+        """Gets the repository for the patch file."""
         if self.path.suffix != '.patch':
             raise ValueError(
-                f'Patch file name should end with `.patch`. {self.path}')
-        if (self.path.is_absolute() or len(self.path.parents) < 2
-                or self.path.parents[-2].stem != "patches"):
+                f'Patch file name should end with `.patch`. {self.path}'
+            )
+        if (
+            self.path.is_absolute()
+            or len(self.path.parents) < 2
+            or self.path.parents[-2].stem != "patches"
+        ):
             raise ValueError(
-                f'Patch file name should start with `patches/`. {self.path}')
+                f'Patch file name should start with `patches/`. {self.path}'
+            )
 
         # Drops `patches/` at the beginning and the filename at the end.
         return Repository(
-            repository.chromium.root.joinpath(*self.path.parts[1:-1]))
+            repository.chromium.root.joinpath(*self.path.parts[1:-1])
+        )
 
     class ApplyStatus(Enum):
-        """The result of applying the patch.
-        """
+        """The result of applying the patch."""
 
         # The patch was applied successfully.
         CLEAN = auto()
@@ -99,8 +113,7 @@ class Patchfile:
 
     @dataclass
     class SourceStatus:
-        """The status of the source file in a given commit.
-        """
+        """The status of the source file in a given commit."""
 
         # A code for the status of the source file. (e.g 'R', 'M', 'D')
         status: str
@@ -127,25 +140,26 @@ class Patchfile:
         e.g. "patches/build-android-gyp-dex.py.patch" ->
              "brave/build/android/gyp/dex.py"
         """
-        return self.path.name[:-len(".patch")].replace('-', '/')
+        return self.path.name[: -len(".patch")].replace('-', '/')
 
     def source_from_brave(self) -> Path:
-        """The source file path relative to the `brave/` directory.
-        """
+        """The source file path relative to the `brave/` directory."""
         return self.repository.from_brave() / self.source
 
     def path_from_repo(self) -> Path:
-        """The patch path relative to the repository source belongs.
-        """
+        """The patch path relative to the repository source belongs."""
         return self.repository.to_brave() / self.path
 
     def apply(self) -> ApplyStatus:
-        """Applies the patch file with `git apply --3way`.
-        """
+        """Applies the patch file with `git apply --3way`."""
         try:
-            self.repository.run_git('apply', '--3way', '--ignore-space-change',
-                                    '--ignore-whitespace',
-                                    self.path_from_repo().as_posix())
+            self.repository.run_git(
+                'apply',
+                '--3way',
+                '--ignore-space-change',
+                '--ignore-whitespace',
+                self.path_from_repo().as_posix(),
+            )
             return self.ApplyStatus.CLEAN
         except subprocess.CalledProcessError as e:
             if 'with conflicts' in e.stderr:
@@ -154,34 +168,42 @@ class Patchfile:
                 return self.ApplyStatus.CONFLICT
             error_line = next(
                 (l for l in e.stderr.splitlines() if l.startswith('error:')),
-                None)
+                None,
+            )
             if error_line is not None:
                 [_, reason] = error_line.strip().split(': ', 1)
 
                 if 'does not exist in index' in reason:
                     # This type of detection could occur in certain cases when
-                    # `npm run init` or `sync` were not run for the working
+                    # `pnpm run init` or `sync` were not run for the working
                     # branch. It may be useful to warn.
                     #
                     # It is also of notice that this error can also occur when
                     # `apply` is run twice for the same patch with conflicts.
                     return self.ApplyStatus.DELETED
-                if ('No such file or directory' in reason
-                        and self.path.as_posix() in reason):
+                if (
+                    'No such file or directory' in reason
+                    and self.path.as_posix() in reason
+                ):
                     # This should never occur as it indicates that the patch
                     # file itself is missing, which is sign something is wrong
                     # with path resolution.
                     raise e
 
                 # All other errors are considered broken patches.
-                if ('patch with only garbage' not in reason
-                        and 'corrupt patch at line' not in reason):
+                if (
+                    'patch with only garbage' not in reason
+                    and 'corrupt patch at line' not in reason
+                ):
                     # Not clear if we could have other reasons for broken
                     # patches, but it is better to flag it to keep an eye out
                     # for it.
                     logging.warning(
                         'Patch being flagged as broken, but with unexpected '
-                        'reason: %s %s', self.path, reason)
+                        'reason: %s %s',
+                        self.path,
+                        reason,
+                    )
 
                 if self.has_plaster:
                     return self.plaster_apply()
@@ -204,8 +226,9 @@ class Patchfile:
             # in the index, which causes `git diff` inside PlasterFile.apply()
             # to produce a combined diff --cc instead of a normal unified diff.
             # Checking out HEAD resolves the index conflict first.
-            self.repository.run_git('checkout', 'HEAD', '--',
-                                    self.source.as_posix())
+            self.repository.run_git(
+                'checkout', 'HEAD', '--', self.source.as_posix()
+            )
             PlasterFile(self.plaster).apply()
             return self.ApplyStatus.PLASTER_FIXED
         # TODO(https://github.com/brave/brave-browser/issues/55370): Eventually
@@ -223,8 +246,14 @@ class Patchfile:
         Returns:
             The commit hash with the last mention for the source.
         """
-        return self.repository.run_git('log', '--full-history', '--pretty=%h',
-                                       '-1', '--', self.source.as_posix())
+        return self.repository.run_git(
+            'log',
+            '--full-history',
+            '--pretty=%h',
+            '-1',
+            '--',
+            self.source.as_posix(),
+        )
 
     def get_source_removal_status(self, commit: str) -> SourceStatus:
         """Gets the status of the source file in a given commit.
@@ -255,28 +284,32 @@ class Patchfile:
         #
         # So the output is read and split from the moment a line starts with
         # `commit`.
-        change = self.repository.run_git('show', '--name-status',
-                                         '--no-commit-id', commit)
-        [all_status, commit_details] = re.split(r'(?=^commit\s)',
-                                                change,
-                                                flags=re.MULTILINE)
+        change = self.repository.run_git(
+            'show', '--name-status', '--no-commit-id', commit
+        )
+        [all_status, commit_details] = re.split(
+            r'(?=^commit\s)', change, flags=re.MULTILINE
+        )
 
         # let's look for the line about the source we care about.
         status_line = next(
-            (s
-             for s in all_status.splitlines() if self.source.as_posix() in s),
-            None)
+            (s for s in all_status.splitlines() if self.source.as_posix() in s),
+            None,
+        )
         status_code = status_line[0]
 
         if status_code == 'D':
-            return self.SourceStatus(status=status_code,
-                                     commit_details=commit_details)
+            return self.SourceStatus(
+                status=status_code, commit_details=commit_details
+            )
         if status_code == 'R':
             # For renames the output looks something like:
             # R100       base/some_file.cc       base/renamed_to_file.cc
-            return self.SourceStatus(status=status_code,
-                                     commit_details=commit_details,
-                                     renamed_to=status_line.split()[-1])
+            return self.SourceStatus(
+                status=status_code,
+                commit_details=commit_details,
+                renamed_to=status_line.split()[-1],
+            )
 
         # This could change in the future, but for now it only makes sense to
         # use this function for deleted or renamed files.

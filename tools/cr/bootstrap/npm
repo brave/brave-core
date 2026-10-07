@@ -7,4 +7,6 @@
 # Runs the npm delivered into third_party/node for the brave-core checkout the
 # current directory is in, falling back to the system npm when there is none.
 # See launcher.py for the resolution logic.
-exec python3 "$(dirname "$0")/launcher.py" --allow-fallback npm "$@"
+dir="$(dirname "$0")"
+python="$(python3 "$dir/runner.py")" || exit
+exec "$python" "$dir/launcher.py" --allow-fallback npm "$@"

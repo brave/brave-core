@@ -122,12 +122,10 @@
 }
 
 -keep class org.chromium.chrome.browser.ntp_customization.NtpCustomizationUtils {
-    *** isInNarrowWindowOnLff(...);
     *** isNtpThemeCustomizationEnabled(...);
 }
 
 -keep class org.chromium.chrome.browser.ntp_customization.BraveNtpCustomizationUtils {
-    *** isInNarrowWindowOnLff(...);
     *** isNtpThemeCustomizationEnabled(...);
 }
 
@@ -310,6 +308,8 @@
 
 -keep class org.chromium.chrome.browser.ui.messages.snackbar.SnackbarView {
     *** mContainerView;
+    *** mSnackbarSwipeHandler;
+    *** mIsAnimating;
 }
 
 -keep class org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager {
@@ -600,7 +600,6 @@
 
 -keep class org.chromium.chrome.browser.omnibox.LocationBarCoordinator {
     *** mLocationBarMediator;
-    *** mUrlBar;
     public <init>(...);
 }
 
@@ -713,7 +712,6 @@
 
 -keep class org.chromium.chrome.browser.IntentHandler {
     public <init>(...);
-    *** getUrlForCustomTab(...);
     *** getUrlForWebapp(...);
     *** extractUrlFromIntent(...);
     *** isUrlUnsafe(...);
@@ -852,12 +850,8 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.firstrun.BraveFreIntentCreator {
-    public <init>(...);
-}
-
 -keep class org.chromium.chrome.browser.firstrun.FreIntentCreator {
-    public <init>(...);
+    *** createInternal(...);
 }
 
 -keep class org.chromium.chrome.browser.feedback.BraveHelpAndFeedbackLauncherImpl {

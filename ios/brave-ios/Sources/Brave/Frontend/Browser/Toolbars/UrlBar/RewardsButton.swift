@@ -30,7 +30,10 @@ class RewardsButton: UIButton {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    adjustsImageWhenHighlighted = false
+    var configuration = UIButton.Configuration.plain()
+    configuration.baseBackgroundColor = .clear
+    configuration.contentInsets = .zero
+    self.configuration = configuration
     imageView?.contentMode = .scaleAspectFit
     contentHorizontalAlignment = .fill
     contentVerticalAlignment = .fill
@@ -44,8 +47,8 @@ class RewardsButton: UIButton {
     updateView()
 
     lookAtMeBadge.snp.makeConstraints {
-      $0.centerY.equalTo(imageView!.snp.centerY).offset(-8)
-      $0.leading.equalTo(imageView!.snp.centerX)
+      $0.centerY.equalTo(self.snp.centerY).offset(-8)
+      $0.leading.equalTo(self.snp.centerX)
       $0.size.equalTo(16)
     }
   }

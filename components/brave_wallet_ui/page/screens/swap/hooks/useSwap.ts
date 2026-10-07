@@ -33,7 +33,11 @@ import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 import { getLocale } from '$web-common/locale'
 import Amount from '../../../../utils/amount'
 // FIXME(onyb): move makeNetworkAsset to utils/assets-utils
-import { isNativeAsset, isShieldedToken } from '../../../../utils/asset-utils'
+import {
+  isLegacyShieldedToken,
+  isNativeAsset,
+  isShieldedToken,
+} from '../../../../utils/asset-utils'
 import { makeNetworkAsset } from '../../../../options/asset-options'
 import {
   getPriceRequestsForTokens,
@@ -92,7 +96,7 @@ const getTokenFromParam = (
   tokenList: BraveWallet.BlockchainToken[],
   zcashTokenType: BraveWallet.ZCashTokenType,
 ) => {
-  return tokenList.find(
+  const token = tokenList.find(
     (token) =>
       (token.chainId === network.chainId
         && token.coin === network.coin
@@ -105,6 +109,10 @@ const getTokenFromParam = (
         && token.symbol.toLowerCase() === contractOrSymbol.toLowerCase()
         && token.zcashTokenType === zcashTokenType),
   )
+  if (token && isLegacyShieldedToken(token)) {
+    return undefined
+  }
+  return token
 }
 
 const getAssetBalance = (
@@ -739,6 +747,9 @@ export const useSwap = () => {
   //  - Refresh quotes based on the new fromAmount, with debouncing.
   const handleOnSetFromAmount = useCallback(
     async (value: string) => {
+      if (Amount.isNegativeOrPaddedZeroAmount(value)) {
+        return
+      }
       setFromAmount(value)
       setEditingFromOrToAmount('from')
       if (!value) {
@@ -759,6 +770,9 @@ export const useSwap = () => {
   //  - Refresh quotes based on the new toAmount, with debouncing.
   const handleOnSetToAmount = useCallback(
     async (value: string) => {
+      if (Amount.isNegativeOrPaddedZeroAmount(value)) {
+        return
+      }
       setToAmount(value)
       setEditingFromOrToAmount('to')
       if (!value) {
@@ -1221,26 +1235,26 @@ export const useSwap = () => {
 
   const submitButtonText = useMemo(() => {
     if (isFetchingQuote) {
-      return getLocale('braveWalletFetchingQuote')
+      return getLocale(S.BRAVE_WALLET_FETCHING_QUOTE)
     }
 
     const defaultText = isBridge
-      ? getLocale('braveWalletReviewBridge')
-      : getLocale('braveWalletReviewSwap')
+      ? getLocale(S.BRAVE_WALLET_REVIEW_BRIDGE)
+      : getLocale(S.BRAVE_WALLET_REVIEW_SWAP)
 
     if (!fromToken || !fromNetwork) {
       return defaultText
     }
 
     if (swapValidationError === 'insufficientBalance') {
-      return getLocale('braveSwapInsufficientBalance').replace(
+      return getLocale(S.BRAVE_SWAP_INSUFFICIENT_BALANCE).replace(
         '$1',
         fromToken.symbol,
       )
     }
 
     if (swapValidationError === 'insufficientFundsForGas') {
-      return getLocale('braveSwapInsufficientBalance').replace(
+      return getLocale(S.BRAVE_SWAP_INSUFFICIENT_BALANCE).replace(
         '$1',
         fromNetwork.symbol,
       )
@@ -1250,31 +1264,34 @@ export const useSwap = () => {
       fromNetwork.coin === BraveWallet.CoinType.ETH
       && swapValidationError === 'insufficientAllowance'
     ) {
-      return getLocale('braveSwapApproveToken').replace('$1', fromToken.symbol)
+      return getLocale(S.BRAVE_SWAP_APPROVE_TOKEN).replace(
+        '$1',
+        fromToken.symbol,
+      )
     }
 
     if (swapValidationError === 'insufficientLiquidity') {
-      return getLocale('braveSwapInsufficientLiquidity')
+      return getLocale(S.BRAVE_SWAP_INSUFFICIENT_LIQUIDITY)
     }
 
     if (swapValidationError === 'amountTooLow') {
-      return getLocale('braveSwapAmountTooLow')
+      return getLocale(S.BRAVE_SWAP_AMOUNT_TOO_LOW)
     }
 
     if (swapValidationError === 'unsupportedNetwork') {
-      return getLocale('braveSwapUnsupportedNetwork')
+      return getLocale(S.BRAVE_SWAP_UNSUPPORTED_NETWORK)
     }
 
     if (swapValidationError === 'unsupportedTokens') {
-      return getLocale('braveSwapUnsupportedTokens')
+      return getLocale(S.BRAVE_SWAP_UNSUPPORTED_TOKENS)
     }
 
     if (swapValidationError === 'invalidRequest') {
-      return getLocale('braveSwapInvalidRequest')
+      return getLocale(S.BRAVE_SWAP_INVALID_REQUEST)
     }
 
     if (swapValidationError === 'unknownError') {
-      return getLocale('braveWalletSwapUnknownError')
+      return getLocale(S.BRAVE_WALLET_SWAP_UNKNOWN_ERROR)
     }
 
     return defaultText

@@ -12,7 +12,9 @@
 #include <vector>
 
 #include "base/callback_list.h"
+#include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
+#include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
 #include "chrome/browser/ui/views/tabs/tab_container_impl.h"
@@ -161,6 +163,8 @@ class BraveTabContainer : public TabContainerImpl,
                            ScrollBarVisibilityWithManyTabs);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            RichAnimationIsDisabled);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           ScrollFastPathMatchesFullLayout);
 
   class DropArrow {
    public:
@@ -230,6 +234,12 @@ class BraveTabContainer : public TabContainerImpl,
   // a layout.
   void SetScrollOffset(int offset);
 
+  // Applies a scroll of |delta| to a settled vertical strip by shifting the
+  // existing ideal bounds and re-snapping the slot views, instead of running
+  // the full layout pipeline. Returns false when the strip is not in a state
+  // where that is safe; the caller then runs the full layout.
+  bool ScrollByDelta(int delta);
+
   // Returns the maximum scroll offset for unpinned tabs.
   int GetMaxScrollOffset() const;
 
@@ -298,6 +308,14 @@ class BraveTabContainer : public TabContainerImpl,
   bool ShouldShowVerticalTabs() const;
   bool IsPinned(const Tab* tab) const;
 
+  // Returns the view model index of |tab|, served from
+  // |visibility_pass_cache_| during a visibility pass.
+  std::optional<size_t> GetTabIndex(const Tab* tab) const;
+
+  // Returns true while this container's profile is having its session
+  // restored.
+  bool IsSessionRestoreInProgress() const;
+
   // Called when the tree tabs enabled state changes.
   void OnTreeTabsEnabledChanged();
 
@@ -332,6 +350,19 @@ class BraveTabContainer : public TabContainerImpl,
 
   bool layout_locked_ = false;
 
+  // Per-pass cache for SetTabSlotVisibility(): the superclass queries
+  // ShouldTabBeVisible()/IsPinned() once per tab, and each query performs
+  // linear scans (GetIndexOfView, GetPinnedTabCount), making one visibility
+  // pass O(n^2) with large tab counts. Populated only for the duration of
+  // one SetTabSlotVisibility() call.
+  struct VisibilityPassCache {
+    size_t pinned_tab_count = 0;
+    int pinned_tabs_area_bottom = 0;
+    int pinned_tabs_area_boundary = 0;
+    base::flat_map<const Tab*, size_t> tab_indices;
+  };
+  std::optional<VisibilityPassCache> visibility_pass_cache_;
+
   // Size we last laid out at.
   std::optional<gfx::Size> last_layout_size_;
 
@@ -344,6 +375,8 @@ class BraveTabContainer : public TabContainerImpl,
 
   // Separator view between pinned and unpinned tabs
   raw_ptr<views::View> separator_ = nullptr;
+
+  base::WeakPtrFactory<BraveTabContainer> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_

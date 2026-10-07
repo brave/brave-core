@@ -33,8 +33,10 @@ def _ParseProfileRebaseType(rebase_type: str) -> ProfileRebaseType:
     return ProfileRebaseType.ONLINE
   raise RuntimeError(f'Unknown ProfileRebaseType {rebase_type}')
 
+
 class RunnerConfig:
   """A description of a browser configuration that is able to run tests."""
+
   version: Optional[BraveVersion] = None
   location: Optional[str] = None
   label: Optional[str] = None
@@ -101,8 +103,9 @@ def ParseTarget(target: str) -> Tuple[Optional[BraveVersion], str]:
     return None, target
   version = BraveVersion(m.group(1))
   location = m.group(2)
-  logging.debug('Parsed version: %s, location : %s', version.to_string(),
-                location)
+  logging.debug(
+    'Parsed version: %s, location : %s', version.to_string(), location
+  )
   if location is not None:
     if not location.startswith('https://') and not os.path.exists(location):
       raise RuntimeError(f'Bad location {location} in target {target}')
@@ -110,8 +113,8 @@ def ParseTarget(target: str) -> Tuple[Optional[BraveVersion], str]:
 
 
 class BenchmarkConfig:
-  """A description of one benchmark that can be launched on some RunnerConfigs.
-  """
+  """A description of one benchmark that can be launched on some RunnerConfigs."""
+
   name: str
   pageset_repeat: int = 1
   stories: List[str]
@@ -138,6 +141,7 @@ class PerfConfig:
   Each benchmark is launched on each configuration.
   The class has 1-1 match to .json5 files used to setup tests.
   """
+
   runners: List[RunnerConfig]
   benchmarks: List[BenchmarkConfig]
 

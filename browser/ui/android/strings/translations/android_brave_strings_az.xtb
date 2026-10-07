@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">Brave-i qiymətləndirin</translation>
 <translation id="4104400246019119780">Təşəkkürlər!</translation>
 <translation id="5202255382948179481">Təkliflərinizi əlavə edin</translation>
-<translation id="7759809451544302770">İstəyə görə</translation>
 <translation id="4748689412569009273">Brave təcrübənizi bir emoji ilə ifadə etsəniz hansı olurdu?</translation>
 <translation id="7335142069363686805">İndi qiymətləndir</translation>
 <translation id="6681362094306959654">Brave-i sevdiniz?</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">Kədərli</translation>
 <translation id="5488843227043643519">Play Store-da qiymətləndirmək istəyirsiniz?</translation>
 <translation id="5867854497245948308">Geri dönüşünüz üçün təşəkkürlər!</translation>
-<translation id="4935400164159327304">Brave-i necə yaxşılaşdıra biləcəyimizi bizə bildirin.</translation>
+<translation id="5578122562331038807">Brave-i necə yaxşılaşdıra biləcəyimizi bizə bildirin</translation>
+<translation id="1483493594462132177">Göndər</translation>
+<translation id="3889034478061064651">Təkliflərinizi əlavə edin (İstəyə bağlı)</translation>
+<translation id="1769154760586570836">Rəy göndərildi. Təşəkkür edirik!</translation>
+<translation id="4450893287417543264">Yenidən göstərmə</translation>
 <translation id="8966035543003363155">Brave bildirişləri onu istifadəsi asan edəcək</translation>
 <translation id="7662771815233894695">Yükləmələri idarə edin, token qazanın, həftəlik istifadə statistikasına baxın və daha çox.</translation>
 <translation id="4265429476391459783">Mükafat qazanmırsınız və Məxfilik Hesabatlarını almırsınız</translation>
@@ -109,9 +112,9 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="4176463684765177261">Deaktivdir</translation>
 <translation id="59174027418879706">Aktivdir</translation>
 <translation id="6920492760024499150">Bu günün ən populyar hekayələri məxfi lentdə və sadəcə sizin üçün.</translation>
-<translation id="8300751939969131609">Brave News-u aktiv edin və heç bir xəbəri qaçırmayın</translation>
+<translation id="3803728444598576153">Brave Xəbərlər-i aktiv edin və heç bir xəbəri qaçırmayın</translation>
 <translation id="7627131190984957214">Brave Xəbərlər cihazınızla uyğunlaşan məxfi və anonimləşdirilmiş reklam dəstəkli məzmunlardır.</translation>
-<translation id="7699565323725789472">Sevdiyiniz mənbələri tək bir lentdə izləyin. Sadəcə Brave-də bir nişan açın, aşağıya fırladın və... voila!\nBrave Xəbərlər şəxsi və anonim reklamlarla dəstəklənir.</translation>
+<translation id="7897050360583141319">Sevimli mənbələrinizi bir yerdə izləyin. Sadəcə olaraq Brave-də tab açın, aşağı fırladın və… voila!</translation>
 <translation id="1765217911817124376">Brave News-u aktiv et</translation>
 <translation id="8981973962043893066">Sayt, mövzu və ya RSS lentinə görə axtarın</translation>
 <translation id="3225021799163709119">Populyar</translation>
@@ -189,6 +192,9 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="5987838417172370108">Brave brauzeri çökəndə və ya donanda avtomatik olaraq diaqnostika hesabatları göndərərək Brave-nin məhsul sabitliyinə kömək edin.</translation>
 <translation id="7977176350719484850">Qənaət edilmiş\ntəxmini verilənlər</translation>
 <translation id="9008534313521214777">Qənaət edilmiş\ntəxmini vaxt</translation>
+<translation id="5668852698659986622">Sponsorlu Reklamları aktivləşdir</translation>
+<translation id="431194936581466649">Sponsorlu Reklamlar ilə Brave-in müstəqil, istifadəçi-birinci Veb qurma missiyasını dəstəkləyin. Biz reklamların performansını sizi tanımadan, məxfi şəkildə ölçürük.</translation>
+<translation id="1939813747486101115">Sponsorlaşdırılmış Reklamlar haqqında ətraflı məlumat</translation>
 <translation id="8347743943525229984">Brave sorğularına icazə ver</translation>
 <translation id="6022939994702081659">Brave-ə keçidləri yeni tab-vərəqə səhifəsində məxfi sorğulara göstərməyə icazə verir. Sorğular daha yaxşı xüsusiyyətlər yaratmağımıza və brauzer əsaslı reklam kampaniyalarının effektivliyini ölçməyimizə kömək edir.</translation>
 <translation id="7746496306508543965">Brave sorğuları haqqında ətraflı məlumat</translation>
@@ -204,6 +210,7 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="8026334261755873520">Gözatma məlumatlarını təmizlə</translation>
 <translation id="1690924763769415936">Arxa fonda aç</translation>
 <translation id="6332924730165919598">Bütün tabulyasiyalar bağlandıqda Brave də bağlanır</translation>
+<translation id="2557725907027944082">Qruplar</translation>
 <translation id="8308305244351876417">Brave-də və ya digər bir tətbiqdə yeni bir tab-vərəqəyə keçdikdə, yaxud da cihaz ekranı sönülü olduqda audionun açıq qalmasını təmin edir.</translation>
 <translation id="49147335255967913">YouTube bağlantılarını Brave-də aç</translation>
 <translation id="4150201353443180367">Göstər</translation>
@@ -214,9 +221,11 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Widevine haqqında daha çox öyrənin<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">İcazə verin (İndi Yenidən başladın)</translation>
 <translation id="2433507940547922241">Görünüş</translation>
+<translation id="316542773973815724">Naviqasiya</translation>
 <translation id="9040069796107003510">Brave Mükafatlarının ikonu</translation>
 <translation id="6333347122924254968">Ünvan çubuğunda Brave Mükafatlarının ikonunu göstərin</translation>
-<translation id="1215433243238902715">Alt naviqasiya alət çubuğunu aktiv edin</translation>
+<translation id="4393974575368329991">Alt naviqasiya alət çubuğu</translation>
+<translation id="1834226716203076292">Ana səhifə, əlfəcinlər və axtarışa cəld giriş üçün alt çubuğu göstərin</translation>
 <translation id="1422686363939271829">Alt ünvan çubuğu mövqesi seçildiyində bu parametr deaktiv ediləcək</translation>
 <translation id="6587448235155023666">Dəyişiklikləriniz növbəti dəfə Brave-ni yenidən başlatdığınız zaman qüvvəyə minəcək.</translation>
 <translation id="8701563696941209024">İNDİNDƏN TƏKRAR YÜKLƏ</translation>
@@ -236,8 +245,7 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="6188781052835527980">Sistem qəzası və ya donmasına məruz qaldıqda diaqnostika hesabatları göndərin.</translation>
 <translation id="4780647518983772446">Brave funksiyalarının istifadəsi haqqında məxfi və anonim məhsul məlumatları paylaşın.</translation>
 <translation id="5109496672133133896">Məxfi məhsul məlumatları</translation>
-<translation id="3545804467215833536">Brave Təhlükəsizlik Qalxanlarına baxmaq üçün toxunun</translation>
-<translation id="1724327820822194498">Hər bir səhifədə Brave Təhlükəsizlik Qalxanları ilə Brave-in blokladığı bütün zərərli şeyləri görün.</translation>
+<translation id="4340039903315468568">Hər bir səhifədə Brave Təhlükəsizlik Qalxanları ilə Brave-in blokladığı bütün zərərli şeyləri görün. Baxmaq üçün toxunun</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> reklamlar &amp; izləyicilər bloklandı</translation>
 <translation id="8281886186245836920">Keç</translation>
 <translation id="5806601733251372221">Brave Qalxanları</translation>
@@ -247,7 +255,6 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="6213254277250932867">12 sözlü bərpa ifadəm var</translation>
 <translation id="4225265925807365011">24 sözlü bərpa ifadəm var</translation>
 <translation id="3570367516044491911">Standart brauzer kimi təyin et</translation>
-<translation id="6800338374677644736">Əsas Brauzer olaraq təyin edin</translation>
 <translation id="1545749641540134597">QR Kodu skan edin</translation>
 <translation id="5317781812114905957">Təlimatlar</translation>
 <translation id="8515319483805157233">QR Kod ilə axtarış üçün, QR Kodu çərçivənin ortasına yerləşdirin.</translation>
@@ -279,8 +286,6 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="5582839680698949063">Əsas menyu</translation>
 <translation id="7002271985859760052">Səhifə əməliyyatları</translation>
 <translation id="7104487676473617844">Aşağıdakı elementlər yalnız cari açıq veb səhifə tərəfindən dəstəklənərsə menyuda görünəcək.</translation>
-<translation id="4159764849281393303">VebTətbiq</translation>
-<translation id="8428213095426709021">Parametrlər</translation>
 <translation id="8038539967102225446">Brave Reklamlar burada!</translation>
 <translation id="222883304157347087">(bu cihaz)</translation>
 <translation id="4157741509680155021">SYNC ZƏNCİRİNDƏKI CİHAZLAR</translation>
@@ -438,6 +443,7 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="7141438739990875547">Bitcoin şəbəkələri</translation>
 <translation id="9055546041146396417">Bu saytda nasazlıq varsa Qalxanlardan istifadə edin.</translation>
 <translation id="7898672232170410330">Elementi blokla</translation>
+<translation id="7205939464631857223">Bloklanan bütün elementləri təmizlə</translation>
 <translation id="7961015016161918242">Heç vaxt</translation>
 <translation id="3200744626782631683">Gözətləmə məlumatları heç vaxt avtomatik olaraq silinmir</translation>
 <translation id="1991004083507807299">Sayt vərəqəsi bağlandı</translation>
@@ -500,7 +506,10 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="3980704343258720102">Bütün göz atma məlumatlarını təmizləyir</translation>
 <translation id="8089997572759938512">Məxfilik hesabatlarınızı sıfıra endirir</translation>
 <translation id="2718046830255553131">Məxfilik hesabatları məlumatları təmizlənib.</translation>
-<translation id="8376263745431603066">"Gecə Rejimi"ni Enable edin (Eksperimental)</translation>
+<translation id="3623948252408240879">Gecə Rejimi</translation>
+<translation id="1257950165130031194">Veb kontent üçün qaranlıq rejimi məcbur edin</translation>
+<translation id="8710601165725654801">Dinamik rənglər</translation>
+<translation id="7865194971711852999">Tətbiq mövzusu divar kağızı rənglərinə uyğunlaşır</translation>
 <translation id="1383876407941801731">Axtar</translation>
 <translation id="13296465911709339">Mətniniz mübütünlən ixtisara salındı</translation>
 <translation id="2735834606413553397">Ünvanınız buferə kopyalanıb.</translation>
@@ -524,7 +533,6 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="1822560017823072927">Standart ictimai və şəxsi interfeyslər</translation>
 <translation id="5825943197137337319">Yalnız standart ictimai interfeys</translation>
 <translation id="1689062823386843231">Proksi edilməyən UDP-ni deaktiv et</translation>
-<translation id="1483493594462132177">Göndər</translation>
 <translation id="538450413584738399">Dəyişdir</translation>
 <translation id="4556086616242530072">Brauzerə məxsus.\nÖzünə nəzarət.\nVə çox şəbəkəli.</translation>
 <translation id="7909462264772842773">Kriptonuzu və NFT-lərinizi idarə edin. Brave Wallet Ethereum, EVM şəbəkələri, Solana, Filecoin və daha çoxunu dəstəkləyir.</translation>
@@ -600,7 +608,6 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="569068482611873351">İdxal...</translation>
 <translation id="4522570452068850558">Təfərrüatlar</translation>
 <translation id="3114681061018999547">Qoruma</translation>
-<translation id="3784455785234192852">Kilidlə</translation>
 <translation id="4412698727486357573">Kömək mərkəzi</translation>
 <translation id="8239147115686034860">Brave Wallet-i avtomatik olaraq kilidlə</translation>
 <translation id="414639769490080648">Brave Wallet avtomatik kilidlənənə qədər gözləmə dəqiqələrinin sayı</translation>
@@ -716,6 +723,8 @@ Lütfən, bizimlə bölüşməyə rahat olduğunuz məlumatları seçin.
 <translation id="1634828734222219955">Ümumi</translation>
 <translation id="7995708795274219641">Məbləğ + Qazanc</translation>
 <translation id="2186011161688824046">Məbləğ + komissiya</translation>
+<translation id="1118876217803190221">Balans kifayət deyil</translation>
+<translation id="275990379543116961">Gas üçün kifayət qədər vəsait yoxdur</translation>
 <translation id="1950052789869821983">Əməliyyat</translation>
 <translation id="2304783958703511257">Təkmil parametrlər</translation>
 <translation id="4220062530885628403">Nonce</translation>
@@ -724,7 +733,7 @@ Lütfən, bizimlə bölüşməyə rahat olduğunuz məlumatları seçin.
 <translation id="4979796155378508955">Əməliyyat, aşağı qaz və ya qeyri-dəqiq nonce və s. ilə bağlı xəbərdarlıq.</translation>
 <translation id="750843150060816463">Qazanc Qiyməti (Gwei)</translation>
 <translation id="1426320910664514906">Gas Limiti</translation>
-<translation id="6389441740143786465">Paylaşım Hub-ını deaktiv edin</translation>
+<translation id="1784950057929740513">Paylaşım Mərkəzi</translation>
 <translation id="473775607612524610">Güncəlləşdirin</translation>
 <translation id="479795390141144417">Hesab yeniləməsi uğursuz oldu.</translation>
 <translation id="8084782383392198011">Hesab adı boş ola bilməz.</translation>
@@ -799,10 +808,19 @@ Lütfən, bizimlə bölüşməyə rahat olduğunuz məlumatları seçin.
 <translation id="1060221736464994328">Bu sayta şəbəkəni dəyişdirməyə icazə verilsin?</translation>
 <translation id="2478788592457735063">Bu, şəbəkəni əvvəlcədən əlavə edilmiş şəbəkəyə dəyişəcək.</translation>
 <translation id="8756686998207163764">Şəbəkəni dəyiş</translation>
+<translation id="8905793906896555159">Tab qruplarını aktiv edin</translation>
+<translation id="6735749683447943955">Tab qruplarını deaktiv edin?</translation>
+<translation id="4616687974503500682">Mövcud olan hər hansı qruplar silinəcək və həmin qruplardakı tablar brauzer pəncərənizdə açıq, qruplaşdırılmamış tablara çevriləcək. Davam etmək istədiyinizə əminsiniz?</translation>
+<translation id="4394049700291259645">Deaktiv et</translation>
+<translation id="3859027502409073633">Sinxronlaşdırılmış tab qruplarını göstərin</translation>
+<translation id="7632160823264702523">Tab qrupları çubuğu</translation>
+<translation id="2477807195394450274">Hazırda açıq olan tab qrupundakı tablara cəld giriş üçün alt çubuğu göstərin</translation>
+<translation id="8374720587111523381">Cari tab qrupunda linkləri aç</translation>
 <translation id="5324095733417835490">Cari tab qrupunda yalnız linkləri aç</translation>
-<translation id="2620277345862119868">Cari tab qrupunda bütün linkləri avtomatik açır</translation>
+<translation id="1227658541937938697">Cari tab qrupunda bütün linkləri avtomatik açın</translation>
 <translation id="5242300593039211344">Hesabı Bloklayın</translation>
 <translation id="1108298724135935307">Qoşulmuş saytlar</translation>
+<translation id="8428213095426709021">Parametrlər</translation>
 <translation id="4255623233927788178">Blok tədqiqatçısında bax</translation>
 <translation id="8274201358637112807">Bu səhifə Brave Wallet ilə qarşılıqlı əlaqədə olmaq istəyir</translation>
 <translation id="3355936511340229503">Bağlantı xətası</translation>
@@ -844,7 +862,6 @@ Lütfən, bizimlə bölüşməyə rahat olduğunuz məlumatları seçin.
 <translation id="6458565248779152483">Brave VPN -i deaktiv edin</translation>
 <translation id="9080536793704001825">15 dəqiqə dayan</translation>
 <translation id="803706420145725977">1 saat dayan</translation>
-<translation id="4394049700291259645">Deaktiv et</translation>
 <translation id="7733890291091968191">Web3 bildirişlərini göstərin</translation>
 <translation id="1371627247679035769">#### Brave tətbiqindən necə istifadə etdiyinizi təqib etmir və bilməz, bu səbəbdən VPN-i necə quraşdırdığınızı bilmirik. Yaşadığınız problemi paylaşaraq, həll etmək üçün çalışacağıq. ####</translation>
 <translation id="3367162038532116157">\n\nVPN Hostları\n <ph name="VALUE"/></translation>
@@ -1079,7 +1096,7 @@ Lütfən, bizimlə bölüşməyə rahat olduğunuz məlumatları seçin.
 <translation id="6393423486818299209">Cari xidmət təminatçınız və ya Wikimedia DNS istifadə edin</translation>
 <translation id="3401384982562827787">Cari xidmət təminatçınız və ya Cloudflare istifadə edin</translation>
 <translation id="8812367543786936496">Cari xidmət təminatçınız təhlükəsiz deyilsə, Brave təhlükəsiz alternativa DNS təminatçısından istifadə edəcək</translation>
-<translation id="1381108437654541567">Çoxlu pəncərələri aktiv edin</translation>
+<translation id="750538469281113679">Çoxlu pəncərələr</translation>
 <translation id="6167344249617630304">Bir anda 5 pəncərə açın və tabları bir pəncərədən digərinə keçirin</translation>
 <translation id="1063948063403254568">Birdən çox pəncərə aşkarlandı</translation>
 <translation id="4661882208707630158">Vahid pəncərə rejimini söndürməzdən əvvəl, əlavələri digər Brave pəncərəsinə birləşdirin və ya digər Brave pəncərələrini bağlayın.</translation>

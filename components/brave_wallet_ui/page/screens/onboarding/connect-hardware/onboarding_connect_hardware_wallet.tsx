@@ -39,6 +39,9 @@ export const OnboardingConnectHardwareWallet = () => {
   const history = useHistory()
 
   // redux
+  const isFilecoinLedgerEnabled = useSafeWalletSelector(
+    WalletSelectors.isFilecoinLedgerEnabled,
+  )
   const isBitcoinLedgerEnabled = useSafeWalletSelector(
     WalletSelectors.isBitcoinLedgerEnabled,
   )
@@ -48,6 +51,7 @@ export const OnboardingConnectHardwareWallet = () => {
 
   const accountOptions = CreateAccountOptions({
     visibleNetworks,
+    isFilecoinEnabled: isFilecoinLedgerEnabled,
     isBitcoinEnabled: isBitcoinLedgerEnabled,
     isZCashEnabled: false, // No zcash hardware accounts by now.
     isCardanoEnabled: false, // No cardano hardware accounts by now.
@@ -69,7 +73,9 @@ export const OnboardingConnectHardwareWallet = () => {
 
   return (
     <OnboardingContentLayout
-      title={getLocale('braveWalletConnectHardwareWalletSelectBlockchain')}
+      title={getLocale(
+        S.BRAVE_WALLET_CONNECT_HARDWARE_WALLET_SELECT_BLOCKCHAIN,
+      )}
       padding='56px 0 0'
       showBackButton={false}
     >

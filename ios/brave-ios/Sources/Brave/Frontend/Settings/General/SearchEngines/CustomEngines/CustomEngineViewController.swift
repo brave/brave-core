@@ -11,7 +11,6 @@ import Fuzi
 import Shared
 import SnapKit
 import Static
-import Storage
 import WebKit
 import os.log
 
@@ -77,7 +76,7 @@ class CustomEngineViewController: UIViewController {
       if doneButtonStatus == .disabled {
         isAutoAddEnabled = false
       }
-      ensureMainThread {
+      DispatchQueue.main.async {
         self.tableView.reloadRows(
           at: [IndexPath(row: 0, section: Section.button.rawValue)],
           with: .none
@@ -149,11 +148,10 @@ class CustomEngineViewController: UIViewController {
     doLayout()
 
     doneButtonStatus = customEngineActionType == .add ? .enabled : .disabled
-  }
 
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    setTheme()
+    registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _) in
+      self.setTheme()
+    }
   }
 
   // MARK: Internal

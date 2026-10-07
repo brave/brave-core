@@ -50,5 +50,6 @@ public struct FormPicker<Label: View, SelectionValue: Hashable, Content: View>: 
         .accessibilityHidden(false)
     }
     .labelsHidden()
+    .layoutPriority(1)
   }
 }

@@ -7,7 +7,6 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <map>
 #include <string>
 #include <utility>
 
@@ -18,6 +17,7 @@
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_deposit_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_ads::database::table {
 
@@ -25,9 +25,10 @@ namespace {
 
 constexpr char kTableName[] = "deposits";
 
-size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
-                   const std::map</*creative_instance_id*/ std::string,
-                                  CreativeDepositInfo>& deposits) {
+size_t BindColumns(
+    const mojom::DBActionInfoPtr& mojom_db_action,
+    const absl::flat_hash_map</*creative_instance_id*/ std::string,
+                              CreativeDepositInfo>& deposits) {
   CHECK(mojom_db_action);
   CHECK(!deposits.empty());
 
@@ -45,9 +46,10 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
   return row_count;
 }
 
-std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
-                           const std::map</*creative_instance_id*/ std::string,
-                                          CreativeDepositInfo>& deposits) {
+std::string BuildInsertSql(
+    const mojom::DBActionInfoPtr& mojom_db_action,
+    const absl::flat_hash_map</*creative_instance_id*/ std::string,
+                              CreativeDepositInfo>& deposits) {
   CHECK(mojom_db_action);
   CHECK(!deposits.empty());
 
@@ -82,9 +84,10 @@ DepositInfo DepositFromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row) {
   return deposit;
 }
 
-void InsertDeposits(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-                    const std::map</*creative_instance_id*/ std::string,
-                                   CreativeDepositInfo>& deposits) {
+void InsertDeposits(
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+    const absl::flat_hash_map</*creative_instance_id*/ std::string,
+                              CreativeDepositInfo>& deposits) {
   CHECK(mojom_db_transaction);
 
   if (deposits.empty()) {

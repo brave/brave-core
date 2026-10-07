@@ -30,10 +30,10 @@ import { ContinueButton } from '../onboarding.style'
 import { Column, VerticalSpace } from '../../../../components/shared/style'
 
 const walletHardwareDescription = formatLocale(
-  'braveWalletConnectHardwareDescription',
+  S.BRAVE_WALLET_CONNECT_HARDWARE_WALLET_DESCRIPTION,
   {
-    $1: <Bold>{getLocale('braveWalletConnectHardwareLedger')}</Bold>,
-    $2: <Bold>{getLocale('braveWalletConnectHardwareTrezor')}</Bold>,
+    $1: <Bold>{getLocale(S.BRAVE_WALLET_CONNECT_HARDWARE_LEDGER)}</Bold>,
+    $2: <Bold>{getLocale(S.BRAVE_WALLET_CONNECT_HARDWARE_TREZOR)}</Bold>,
   },
 )
 
@@ -49,19 +49,19 @@ export const OnboardingImportHardwareWalletWelcome = () => {
 
   return (
     <OnboardingContentLayout
-      title={getLocale('braveWalletConnectHardwareWallet')}
+      title={getLocale(S.BRAVE_WALLET_CONNECT_HARDWARE_WALLET)}
     >
       <HardwareGraphic
         src={isDarkMode ? HardwareGraphicDarkSvg : HardwareGraphicLightSvg}
       />
       <Description>
-        {getLocale('braveWalletImportHardwareWalletDescription')}
+        {getLocale(S.BRAVE_WALLET_IMPORT_HARDWARE_WALLET_DESCRIPTION)}
       </Description>
       <VerticalSpace space='28px' />
       <Description>{walletHardwareDescription}</Description>
       <Column margin='117px 0 88px 0'>
         <ContinueButton onClick={onClickContinue}>
-          {getLocale('braveWalletButtonContinue')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_CONTINUE)}
         </ContinueButton>
       </Column>
     </OnboardingContentLayout>

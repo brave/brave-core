@@ -37,7 +37,6 @@
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -481,8 +480,7 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorized) {
   InjectHelpers(ActiveWebContents());
 
   EmailAliasesController::DisableAutoCloseBubbleForTesting(true);
-  auto* email_aliases_controller =
-      browser()->GetFeatures().email_aliases_controller();
+  auto* email_aliases_controller = EmailAliasesController::From(browser());
 
   EXPECT_EQ("", GetText("#type-email"));
 
@@ -516,8 +514,7 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedManage) {
   waiter.StartWatchingNewWebContents();
 
   EmailAliasesController::DisableAutoCloseBubbleForTesting(true);
-  auto* email_aliases_controller =
-      browser()->GetFeatures().email_aliases_controller();
+  auto* email_aliases_controller = EmailAliasesController::From(browser());
 
   ContextMenuWaiter menu_waiter(IDC_NEW_EMAIL_ALIAS);
   RunContextMenuOn("type-email");
@@ -543,8 +540,7 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedCancel) {
   InjectHelpers(ActiveWebContents());
 
   EmailAliasesController::DisableAutoCloseBubbleForTesting(true);
-  auto* email_aliases_controller =
-      browser()->GetFeatures().email_aliases_controller();
+  auto* email_aliases_controller = EmailAliasesController::From(browser());
 
   ContextMenuWaiter menu_waiter(IDC_NEW_EMAIL_ALIAS);
   RunContextMenuOn("type-email");
@@ -565,15 +561,26 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedCancel) {
   EXPECT_TRUE(AwaitText("#type-email", ""));  // text not changed
 }
 IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, LogInLogOut) {
+  browser()->GetProfile()->GetPrefs()->SetBoolean(prefs::kPromoShown, false);
+
   SetBraveAccountLoggedIn();
+
+  // Login stops promo showing.
+  EXPECT_TRUE(
+      browser()->GetProfile()->GetPrefs()->GetBoolean(prefs::kPromoShown));
 
   // Settings in logged-in state
   Navigate(GURL("chrome://settings/email-aliases"));
   InjectHelpers(ActiveWebContents());
   Wait("#create-new-item-button");
+  Wait("settings-toggle-button[icon='email-shield']");
 
   SetBraveAccountLoggedOut();
   WaitDisappear("#create-new-item-button");  // Settings in sing-in state.
+  // Still showing the toggle.
+  Wait("settings-toggle-button[icon='email-shield']");
+  EXPECT_TRUE(
+      browser()->GetProfile()->GetPrefs()->GetBoolean(prefs::kPromoShown));
 
   SetBraveAccountLoggedIn();
   Wait("#create-new-item-button");  // Logged-in state.

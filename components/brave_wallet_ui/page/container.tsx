@@ -51,25 +51,26 @@ import { FullScreenWrapper, AlertCenter } from './screens/page-screen.styles'
 import { UnlockWallet } from './screens/unlock_wallet/unlock_wallet'
 import {
   WalletPageLayout, //
-} from '../components/desktop/wallet-page-layout/index'
+} from './components/wallet_page_layout/wallet_page_layout'
 import { OnboardingRoutes } from './screens/onboarding/onboarding.routes'
 import { DevBitcoin } from './screens/dev-bitcoin/dev-bitcoin'
 import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
 import {
   WalletPageWrapper, //
-} from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from './components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   ProtectedRoute, //
 } from '../components/shared/protected-routing/protected-route'
 import { UnlockedWalletRoutes } from './router/unlocked_wallet_routes'
-import { Swap } from './screens/swap/swap'
-import { SendScreen } from './screens/send/send_screen/send_screen'
 import { DevZCash } from './screens/dev-zcash/dev-zcash'
 import {
   PartnersConsentModal, //
 } from '../components/desktop/popup-modals/partners_consent_modal/partners_consent_modal'
 import { Connections } from '../components/extension/connections/connections'
 import { PageNotFound } from './screens/page_not_found/page_not_found'
+import {
+  DesktopTransactionConfirmation, //
+} from './components/desktop_transaction_confirmation/desktop_transaction_confirmation'
 
 export const Container = () => {
   // routing — persist search + hash so e.g. (Buy, Send, Swap and Bridge) query params survive lock/unlock
@@ -98,6 +99,7 @@ export const Container = () => {
   // ui selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isSidePanel = useSafeUISelector(UISelectors.isSidePanel)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
 
   const initialSessionRoute = getInitialSessionRoute(isPanel, isSidePanel)
 
@@ -120,6 +122,11 @@ export const Container = () => {
       ? WalletRoutes.Unlock
       : sessionRoute || WalletRoutes.PortfolioAssets
 
+  const isSendSwapOrBridgePage =
+    pathname.includes(WalletRoutes.Send)
+    || pathname.includes(WalletRoutes.Swap)
+    || pathname.includes(WalletRoutes.Bridge)
+
   // Methods
   const handleAcceptPartnerConsent = () => {
     setAcceptedPartnerConsentTerms(true)
@@ -129,7 +136,7 @@ export const Container = () => {
   const handleDeclinePartnerConsent = () => {
     setShowPartnerConsentModal(false)
     // Not able to use history.goBack() in this instance
-    // since users could manually navigate to brave://wallet/crypto/fund-wallet
+    // since users could manually navigate to brave://wallet/crypto/buy
     // in a new tab and there would be no history to go back to.
     history.push(WalletRoutes.Portfolio)
   }
@@ -193,7 +200,7 @@ export const Container = () => {
   React.useEffect(() => {
     if (
       !acceptedPartnerConsentTerms
-      && pathname.includes(WalletRoutes.FundWalletPageStart)
+      && pathname.includes(WalletRoutes.BuyPageStart)
       && !walletNotYetCreated
     ) {
       setShowPartnerConsentModal(true)
@@ -251,40 +258,17 @@ export const Container = () => {
           </WalletPageWrapper>
         </ProtectedRoute>
 
+        {/* Keep this route in the page container so panels can use it, but
+            redirect if opened from the full wallet page. */}
         <ProtectedRoute
           path={WalletRoutes.Connections}
-          requirement={!isWalletLocked && !walletNotYetCreated}
+          requirement={
+            !isWalletLocked && !walletNotYetCreated && isPanel && !isSidePanel
+          }
           redirectRoute={defaultRedirect}
           exact={true}
         >
           <Connections />
-        </ProtectedRoute>
-
-        <ProtectedRoute
-          path={WalletRoutes.Swap}
-          requirement={!isWalletLocked && !walletNotYetCreated}
-          redirectRoute={defaultRedirect}
-          exact={true}
-        >
-          <Swap key='swap' />
-        </ProtectedRoute>
-
-        <ProtectedRoute
-          path={WalletRoutes.Bridge}
-          requirement={!isWalletLocked && !walletNotYetCreated}
-          redirectRoute={defaultRedirect}
-          exact={true}
-        >
-          <Swap key='bridge' />
-        </ProtectedRoute>
-
-        <ProtectedRoute
-          path={WalletRoutes.Send}
-          requirement={!isWalletLocked && !walletNotYetCreated}
-          redirectRoute={defaultRedirect}
-          exact={true}
-        >
-          <SendScreen key='send' />
         </ProtectedRoute>
 
         <ProtectedRoute
@@ -316,6 +300,19 @@ export const Container = () => {
         >
           <DevZCash />
         </ProtectedRoute>
+
+        {/* Deprecated routes, kept for redirecting to the new routes */}
+        <Route path={WalletRoutes.SwapDeprecated}>
+          <Redirect to={WalletRoutes.Swap} />
+        </Route>
+
+        <Route path={WalletRoutes.SendDeprecated}>
+          <Redirect to={WalletRoutes.Send} />
+        </Route>
+
+        <Route path={WalletRoutes.BridgeDeprecated}>
+          <Redirect to={WalletRoutes.Bridge} />
+        </Route>
 
         {/* Insures that we redirect to the default route if the user
             manually navigates to the root url. */}
@@ -349,6 +346,9 @@ export const Container = () => {
         onClose={handleDeclinePartnerConsent}
         onContinue={handleAcceptPartnerConsent}
       />
+      {!isWalletLocked && !isMobile && isSendSwapOrBridgePage && (
+        <DesktopTransactionConfirmation />
+      )}
     </>
   )
 }

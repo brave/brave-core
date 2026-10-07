@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_PURCHASE_INTENT_RESOURCE_PURCHASE_INTENT_FUNNEL_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_PURCHASE_INTENT_RESOURCE_PURCHASE_INTENT_FUNNEL_INFO_H_
 
-#include <map>
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/segments/segment_types.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_ads {
 
@@ -32,7 +32,7 @@ struct PurchaseIntentFunnelInfo final {
 };
 
 using PurchaseIntentFunnelSiteMap =
-    std::map</*url*/ std::string, PurchaseIntentFunnelInfo>;
+    absl::flat_hash_map</*url*/ std::string, PurchaseIntentFunnelInfo>;
 
 }  // namespace brave_ads
 

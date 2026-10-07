@@ -13,7 +13,6 @@ import {
   BraveWallet,
   MeldCryptoCurrency,
   MeldFiatCurrency,
-  MeldFilter,
 } from '../../../constants/types'
 import { WalletActions } from '../../actions'
 import type WalletApiProxy from '../../wallet_api_proxy'
@@ -33,7 +32,6 @@ import {
   mockEthAccount,
   mockFilecoinAccount,
   mockFilecoinMainnetNetwork,
-  mockOnRampCurrencies,
   mockSolanaAccount,
   mockSolanaMainnetNetwork,
 } from '../../constants/mocks'
@@ -82,6 +80,7 @@ import {
   getBalanceFromRegistry,
 } from '../../../utils/balance-utils'
 import { unbiasedRandom } from '../../../utils/random-utils'
+import { bigIntToUint128 } from '../../../utils/polkadot-utils'
 
 export class MockedWalletApiProxy {
   /** used for simulating fired observers */
@@ -260,18 +259,6 @@ export class MockedWalletApiProxy {
       }
     },
 
-    getBuyTokens: async (provider, chainId) => {
-      return {
-        tokens: this.blockchainTokens.filter((t) => t.chainId === chainId),
-      }
-    },
-
-    getOnRampCurrencies: async () => {
-      return {
-        currencies: mockOnRampCurrencies,
-      }
-    },
-
     getTokenByAddress: async (
       chainId: string,
       coin: BraveWallet.CoinType,
@@ -436,26 +423,6 @@ export class MockedWalletApiProxy {
         errors: [mockSignMessageError],
       }
     },
-    getAnkrSupportedChainIds: async () => {
-      return {
-        chainIds: [
-          BraveWallet.ARBITRUM_MAINNET_CHAIN_ID,
-          BraveWallet.AVALANCHE_MAINNET_CHAIN_ID,
-          BraveWallet.BASE_MAINNET_CHAIN_ID,
-          BraveWallet.BNB_SMART_CHAIN_MAINNET_CHAIN_ID,
-          BraveWallet.MAINNET_CHAIN_ID,
-          BraveWallet.FANTOM_MAINNET_CHAIN_ID,
-          BraveWallet.FLARE_MAINNET_CHAIN_ID,
-          BraveWallet.GNOSIS_CHAIN_ID,
-          BraveWallet.OPTIMISM_MAINNET_CHAIN_ID,
-          BraveWallet.POLYGON_MAINNET_CHAIN_ID,
-          BraveWallet.POLYGON_ZKEVM_CHAIN_ID,
-          BraveWallet.ROLLUX_MAINNET_CHAIN_ID,
-          BraveWallet.SYSCOIN_MAINNET_CHAIN_ID,
-          BraveWallet.ZK_SYNC_ERA_CHAIN_ID,
-        ],
-      }
-    },
     getNetworkForAccountOnActiveOrigin: async (
       account: BraveWallet.AccountId,
     ) => {
@@ -535,9 +502,7 @@ export class MockedWalletApiProxy {
   meldIntegrationService: Partial<
     InstanceType<typeof BraveWallet.MeldIntegrationServiceInterface>
   > = {
-    getFiatCurrencies: async (
-      filter: MeldFilter,
-    ): Promise<{
+    getFiatCurrencies: async (): Promise<{
       fiatCurrencies: MeldFiatCurrency[] | null
       error: string[] | null
     }> => ({
@@ -550,9 +515,7 @@ export class MockedWalletApiProxy {
       ],
       error: null,
     }),
-    getCryptoCurrencies: async (
-      filter: MeldFilter,
-    ): Promise<{
+    getCryptoCurrencies: async (): Promise<{
       fiatCurrencies: MeldCryptoCurrency[] | null
       error: string[] | null
     }> => ({
@@ -770,10 +733,16 @@ export class MockedWalletApiProxy {
       return { success: true }
     },
     getAllNetworks: async () => {
-      return { networks: this.networks }
-    },
-    getHiddenNetworks: async () => {
-      return { chainIds: [] }
+      return {
+        allNetworks: {
+          networks: this.networks,
+          customChainIds: [],
+          hiddenChainIds: [],
+          ankrChainIds: [],
+          swapChainIds: [],
+          offRampChainIds: [],
+        },
+      }
     },
     getDefaultChainId: async (coin) => {
       return { chainId: this.chainIdsForCoins[coin] }
@@ -1324,6 +1293,7 @@ export class MockedWalletApiProxy {
     }> => {
       return {
         walletInfo: {
+          isFilecoinLedgerEnabled: true,
           isBitcoinEnabled: true,
           isBitcoinImportEnabled: true,
           isBitcoinLedgerEnabled: true,
@@ -1336,6 +1306,7 @@ export class MockedWalletApiProxy {
           isAnkrBalancesFeatureEnabled: false,
           isTransactionSimulationsFeatureEnabled: true,
           isZCashShieldedTransactionsEnabled: false,
+          isZCashIronwoodEnabled: false,
           enabledCoins: [
             BraveWallet.CoinType.BTC,
             BraveWallet.CoinType.ZEC,
@@ -1465,6 +1436,70 @@ export class MockedWalletApiProxy {
 
       return { address: account.address, errorMessage: null }
     },
+    getAccountBalance: async (accountId, chainId) => {
+      const account = this.accountInfos.find(
+        (item) => item.accountId.uniqueKey === accountId.uniqueKey,
+      )
+      if (!account || account.accountId.coin !== BraveWallet.CoinType.DOT) {
+        return { account: null, errorMessage: 'invalid account' }
+      }
+
+      const free = bigIntToUint128(
+        BigInt(
+          getBalanceFromRegistry({
+            accountUniqueId: accountId.uniqueKey,
+            chainId,
+            contractAddress: '',
+            registry: this.tokenBalancesRegistry,
+            tokenId: '',
+            coin: BraveWallet.CoinType.DOT,
+            zcashTokenType: BraveWallet.ZCashTokenType.kNone,
+          }),
+        ),
+      )
+
+      const zero = bigIntToUint128(BigInt(0))
+
+      return {
+        account: {
+          nonce: 0,
+          consumers: 0,
+          providers: 1,
+          sufficients: 0,
+          data: { free, reserved: zero, frozen: zero, flags: zero },
+        },
+        errorMessage: null,
+      }
+    },
+    // Returns one balance per requested asset id, in the requested order.
+    getAssetAccountBalances: async (accountId, assetIds, chainId) => {
+      const account = this.accountInfos.find(
+        (item) => item.accountId.uniqueKey === accountId.uniqueKey,
+      )
+      if (!account || account.accountId.coin !== BraveWallet.CoinType.DOT) {
+        return { assetAccounts: [], errorMessage: 'invalid account' }
+      }
+
+      return {
+        assetAccounts: assetIds.map((assetId) => ({
+          balance: bigIntToUint128(
+            BigInt(
+              getBalanceFromRegistry({
+                accountUniqueId: accountId.uniqueKey,
+                chainId,
+                // DOT asset tokens are keyed by their (decimal) asset id.
+                contractAddress: String(assetId),
+                registry: this.tokenBalancesRegistry,
+                tokenId: '',
+                coin: BraveWallet.CoinType.DOT,
+                zcashTokenType: BraveWallet.ZCashTokenType.kNone,
+              }),
+            ),
+          ),
+        })),
+        errorMessage: null,
+      }
+    },
   }
 
   zcashWalletService: Partial<
@@ -1517,6 +1552,11 @@ export class MockedWalletApiProxy {
       }
     },
     resetSyncState: async (_accountId) => {
+      return {
+        errorMessage: null,
+      }
+    },
+    resetSyncStateToIronwoodActivation: async (_accountId) => {
       return {
         errorMessage: null,
       }

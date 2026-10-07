@@ -7,7 +7,7 @@
 #
 # Used as part of chromium src/tools/perf/page_sets/
 # Uses the the same code conventions (including pylint).
-# pylint: disable=import-error, no-self-use
+# pylint: disable=import-error
 # pylint: disable=no-name-in-module, too-few-public-methods
 # pytype: disable=import-error
 
@@ -25,8 +25,9 @@ from telemetry.core import android_platform
 
 from components.path_util import GetPageSetsDataPath
 
+
 class _UpdateProfileSharedPageState(shared_page_state.SharedPageState):
-  """ A special utility state to update a source profile.
+  """A special utility state to update a source profile.
 
   It stores the result profile as the source after the test is finished.
   It actually modifies the behavior of SharedPageState, so it uses
@@ -83,8 +84,11 @@ class _UpdateProfileSharedPageState(shared_page_state.SharedPageState):
     # Remove the current profile
     shutil.rmtree(dest_profile)
 
-    logging.info('Pull updated profile from %s to %s',
-                 possible_browser.profile_directory, dest_profile)
+    logging.info(
+      'Pull updated profile from %s to %s',
+      possible_browser.profile_directory,
+      dest_profile,
+    )
     device.PullFile(possible_browser.profile_directory, dest_profile, True)
 
     # Recursively removes empty directories
@@ -102,6 +106,7 @@ class _UpdateProfileSharedPageState(shared_page_state.SharedPageState):
     # Remove empty directories in `dest_profile`:
     remove_empty_dirs(dest_profile)
 
+
 class _UpdateProfilePage(page_module.Page):
   _delay: int
   _force_update_componets: bool
@@ -110,11 +115,13 @@ class _UpdateProfilePage(page_module.Page):
     EXTRA_BROWSER_ARGUMENTS = ['--enable-brave-features-for-perf-testing']
     self._delay = delay
     self._force_update_componets = force_update_componets
-    super().__init__(url='https://example.com',
-                     page_set=page_set,
-                     shared_page_state_class=_UpdateProfileSharedPageState,
-                     name='UpdateProfile',
-                     extra_browser_args=EXTRA_BROWSER_ARGUMENTS)
+    super().__init__(
+      url='https://example.com',
+      page_set=page_set,
+      shared_page_state_class=_UpdateProfileSharedPageState,
+      name='UpdateProfile',
+      extra_browser_args=EXTRA_BROWSER_ARGUMENTS,
+    )
 
   def RunPageInteractions(self, action_runner):
     if self._force_update_componets:
@@ -136,16 +143,19 @@ class _UpdateProfilePage(page_module.Page):
       t.Navigate('chrome://settings')
       t.WaitForDocumentReadyStateToBeInteractiveOrBetter()
       t.EvaluateJavaScript(
-          'chrome.settingsPrivate.setPref("session.restore_on_startup", 5)')
+        'chrome.settingsPrivate.setPref("session.restore_on_startup", 5)'
+      )
       t.EvaluateJavaScript(
-          'chrome.settingsPrivate.setPref("intl.accept_languages", "en-US")')
+        'chrome.settingsPrivate.setPref("intl.accept_languages", "en-US")'
+      )
       t.EvaluateJavaScript(
-          'chrome.settingsPrivate.setPref("intl.selected_languages", "en-US")')
+        'chrome.settingsPrivate.setPref("intl.selected_languages", "en-US")'
+      )
       action_runner.Wait(2)
 
 
 class BravePerfUtilsStorySet(story.StorySet):
-  """ Brave version of LoadingDesktopStorySet.
+  """Brave version of LoadingDesktopStorySet.
 
   See loading_desktop.py for details.
   """
@@ -153,6 +163,7 @@ class BravePerfUtilsStorySet(story.StorySet):
   def __init__(self, delay: int, force_update_componets: bool, options):
     platform = 'mobile' if options.os_name == 'android' else 'desktop'
     archive_data_file = GetPageSetsDataPath('system_health_%s.json' % platform)
-    super().__init__(archive_data_file,
-                     cloud_storage_bucket=story.PARTNER_BUCKET)
+    super().__init__(
+      archive_data_file, cloud_storage_bucket=story.PARTNER_BUCKET
+    )
     self.AddStory(_UpdateProfilePage(self, delay, force_update_componets))

@@ -97,7 +97,7 @@ public struct BraveVPNPaywallView: View {
       if case .failure(let error) = status {
         resetTheRestoreTimerIfNecessary()
 
-        if case .transactionError(let err) = error, err?.code == SKError.paymentCancelled {
+        if error == .cancelled {
           return
         }
 
@@ -361,7 +361,7 @@ public struct BraveVPNPaywallView: View {
   private func addPaymentForSubcription(type: BraveVPNSubscriptionTier) {
     iapObserverManager.paymentStatus = .ongoing
 
-    var subscriptionProduct: SKProduct?
+    var subscriptionProduct: Product?
     switch type {
     case .yearly:
       subscriptionProduct = BraveVPNProductInfo.yearlySubProduct
@@ -375,14 +375,17 @@ public struct BraveVPNPaywallView: View {
       return
     }
 
-    let payment = SKPayment(product: subscriptionProduct)
-    SKPaymentQueue.default().add(payment)
+    Task {
+      await BraveVPN.iapObserver.purchase(product: subscriptionProduct)
+    }
   }
 
   public func restorePurchase() {
     iapObserverManager.paymentStatus = .ongoing
 
-    SKPaymentQueue.default().restoreCompletedTransactions()
+    Task {
+      await BraveVPN.iapObserver.restorePurchases()
+    }
 
     if iapRestoreTimer != nil {
       iapRestoreTimer?.cancel()
@@ -414,7 +417,9 @@ public struct BraveVPNPaywallView: View {
 
   private func redeemPromoCode() {
     // Open the redeem code sheet
-    SKPaymentQueue.default().presentCodeRedemptionSheet()
+    Task {
+      await BraveVPN.presentOfferCodeRedeemSheet()
+    }
   }
 }
 

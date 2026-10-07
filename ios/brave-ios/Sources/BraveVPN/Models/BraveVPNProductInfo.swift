@@ -9,11 +9,11 @@ import Shared
 import StoreKit
 import os.log
 
-public class BraveVPNProductInfo: NSObject {
+public class BraveVPNProductInfo {
   // Prices are fetched once per launch and kept in memory.
   // If the prices could not be fetched, we retry after user tries to go to buy-vpn screen.
-  static var monthlySubProduct: SKProduct?
-  static var yearlySubProduct: SKProduct?
+  static var monthlySubProduct: Product?
+  static var yearlySubProduct: Product?
 
   /// Whether we have enough product info to present to the user.
   /// If the user has bought the vpn already, it returns `true` since we do not need price details anymore.
@@ -27,43 +27,33 @@ public class BraveVPNProductInfo: NSObject {
       }
 
       // Make sure the price can be displayed correctly.
-      return monthlyPlan.price.frontSymbolCurrencyFormatted(with: monthlyPlan.priceLocale) != nil
-        && yearlyPlan.price.frontSymbolCurrencyFormatted(with: yearlyPlan.priceLocale) != nil
+      return !monthlyPlan.displayPrice.isEmpty && !yearlyPlan.displayPrice.isEmpty
     }
   }
 
-  private let productRequest: SKProductsRequest
-
-  public override init() {
-    productRequest = SKProductsRequest(productIdentifiers: [
-      BraveStoreProduct.vpnMonthly.rawValue,
-      BraveStoreProduct.vpnYearly.rawValue,
-    ])
-    super.init()
-    productRequest.delegate = self
-  }
+  public init() {}
 
   public func load() {
-    productRequest.start()
-  }
-}
+    Task {
+      do {
+        let products = try await Product.products(for: [
+          BraveStoreProduct.vpnMonthly.rawValue,
+          BraveStoreProduct.vpnYearly.rawValue,
+        ])
 
-extension BraveVPNProductInfo: SKProductsRequestDelegate {
-  public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse)
-  {
-    response.products.forEach {
-      switch $0.productIdentifier {
-      case BraveStoreProduct.vpnMonthly.rawValue:
-        BraveVPNProductInfo.monthlySubProduct = $0
-      case BraveStoreProduct.vpnYearly.rawValue:
-        BraveVPNProductInfo.yearlySubProduct = $0
-      default:
-        assertionFailure("Found product identifier that doesn't match")
+        for product in products {
+          switch product.id {
+          case BraveStoreProduct.vpnMonthly.rawValue:
+            BraveVPNProductInfo.monthlySubProduct = product
+          case BraveStoreProduct.vpnYearly.rawValue:
+            BraveVPNProductInfo.yearlySubProduct = product
+          default:
+            assertionFailure("Found product identifier that doesn't match")
+          }
+        }
+      } catch {
+        Logger.module.error("Failed to fetch VPN AppStore products: \(error.localizedDescription)")
       }
     }
-  }
-
-  public func request(_ request: SKRequest, didFailWithError error: Error) {
-    Logger.module.error("SKProductsRequestDelegate error: \(error.localizedDescription)")
   }
 }

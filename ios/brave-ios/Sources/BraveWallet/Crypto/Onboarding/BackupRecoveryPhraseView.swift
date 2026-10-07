@@ -119,10 +119,20 @@ struct BackupRecoveryPhraseView: View {
       }
       .padding()
     }
-    .transparentNavigationBar(
-      backButtonTitle: Strings.Wallet.backupRecoveryPhraseBackButtonTitle,
-      backButtonDisplayMode: .generic
-    )
+    .toolbar {
+      if keyringStore.isOnboardingVisible {
+        ToolbarItemGroup(placement: .cancellationAction) {
+          Button {
+            isShowingSkipWarning = true
+          } label: {
+            Image("wallet-dismiss", bundle: .module)
+              .renderingMode(.template)
+              .foregroundColor(Color(braveSystemName: .iconInteractive))
+              .accessibilityLabel(Strings.cancelButtonTitle)
+          }
+        }
+      }
+    }
     .background(Color(braveSystemName: .containerBackground).edgesIgnoringSafeArea(.all))
     .alertOnScreenshot {
       Alert(
@@ -131,26 +141,16 @@ struct BackupRecoveryPhraseView: View {
         dismissButton: .cancel(Text(Strings.OKString))
       )
     }
-    .background(
-      NavigationLink(
-        isActive: Binding(
-          get: { verifyRecoveryWordIndexes != nil },
-          set: { if !$0 { verifyRecoveryWordIndexes = nil } }
-        ),
-        destination: {
-          if let verifyRecoveryWordIndexes {
-            VerifyRecoveryPhraseView(
-              keyringStore: keyringStore,
-              recoveryWords: recoveryWords,
-              targetedRecoveryWordIndexes: verifyRecoveryWordIndexes,
-              password: password
-            )
-          }
-        },
-        label: {
-          EmptyView()
-        }
-      )
+    .navigationDestination(
+      item: $verifyRecoveryWordIndexes,
+      destination: { verifyRecoveryWordIndexes in
+        VerifyRecoveryPhraseView(
+          keyringStore: keyringStore,
+          recoveryWords: recoveryWords,
+          targetedRecoveryWordIndexes: verifyRecoveryWordIndexes,
+          password: password
+        )
+      }
     )
     .background(
       WalletPromptView(
@@ -199,7 +199,7 @@ struct BackupRecoveryPhraseView: View {
 #if DEBUG
 struct BackupRecoveryPhraseView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
+    NavigationStack {
       BackupRecoveryPhraseView(
         password: "",
         keyringStore: .previewStore

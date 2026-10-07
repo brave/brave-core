@@ -60,29 +60,12 @@ extension TabStateImpl {
     for policyDeciders: OrderedSet<AnyTabPolicyDecider>,
     task: @escaping (AnyTabPolicyDecider) async -> WebPolicyDecision
   ) async -> WebPolicyDecision {
-    let result = await withTaskGroup(of: WebPolicyDecision.self, returning: WebPolicyDecision.self)
-    { group in
-      for policyDecider in policyDeciders {
-        group.addTask { @MainActor in
-          if Task.isCancelled {
-            return .cancel
-          }
-          let decision = await task(policyDecider)
-          if decision == .cancel {
-            return .cancel
-          }
-          return .allow
-        }
+    for policyDecider in policyDeciders {
+      if await task(policyDecider) == .cancel {
+        return .cancel
       }
-      for await result in group {
-        if result == .cancel {
-          group.cancelAll()
-          return .cancel
-        }
-      }
-      return .allow
     }
-    return result
+    return .allow
   }
 
   func shouldAllowRequest(

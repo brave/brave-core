@@ -178,7 +178,7 @@ void EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse(
 
 void EngineConsumerOAIRemote::GenerateConversationTitle(
     const PageContentsMap& page_contents,
-    const ConversationHistory& conversation_history,
+    const ConversationHistoryView& conversation_history,
     GenerationCompletedCallback completed_callback) {
   auto messages = BuildOAIGenerateConversationTitleMessages(
       page_contents, conversation_history, max_associated_content_length_,
@@ -301,7 +301,8 @@ void EngineConsumerOAIRemote::DedupeTopics(
 void EngineConsumerOAIRemote::GetSuggestedTopics(
     const std::vector<Tab>& tabs,
     GetSuggestedTopicsCallback callback) {
-  auto chunked_messages = BuildChunkedTabFocusMessages(tabs, "");
+  auto chunked_messages =
+      BuildChunkedTabFocusMessages(tabs, "", /*sanitize_passages=*/true);
   if (chunked_messages.empty()) {
     std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
     return;
@@ -321,7 +322,8 @@ void EngineConsumerOAIRemote::GetSuggestedTopics(
 void EngineConsumerOAIRemote::GetFocusTabs(const std::vector<Tab>& tabs,
                                            const std::string& topic,
                                            GetFocusTabsCallback callback) {
-  auto chunked_messages = BuildChunkedTabFocusMessages(tabs, topic);
+  auto chunked_messages =
+      BuildChunkedTabFocusMessages(tabs, topic, /*sanitize_passages=*/true);
   if (chunked_messages.empty()) {
     std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
     return;
@@ -333,8 +335,10 @@ void EngineConsumerOAIRemote::GetFocusTabs(const std::vector<Tab>& tabs,
           [](GetFocusTabsCallback callback,
              std::vector<GenerationResult> results) {
             // Merge the results and call callback with tab IDs or error.
+            // No tab matching the topic is a valid answer, not a failure.
             std::move(callback).Run(
-                EngineConsumer::GetStrArrFromTabOrganizationResponses(results));
+                EngineConsumer::GetStrArrFromTabOrganizationResponses(
+                    results, EmptyResult::kIsValid));
           },
           std::move(callback)));
 

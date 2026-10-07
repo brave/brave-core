@@ -23,6 +23,7 @@ import createUntrustedConversationApi, {
 import {
   createMockParentUIFrame,
   createMockUntrustedConversationHandler,
+  createMockUntrustedConversationUserActions,
   createMockUntrustedService,
   createMockUntrustedUIHandler,
 } from '../untrusted_conversation_frame/api/mock_interfaces'
@@ -49,12 +50,14 @@ type RenderConversationResult = {
  */
 function createLocalConversationApi(): UntrustedConversationAPI {
   const conversationHandler = createMockUntrustedConversationHandler()
+  const userActions = createMockUntrustedConversationUserActions()
   const uiHandler = createMockUntrustedUIHandler()
   const parentUIFrame = createMockParentUIFrame()
   const service = createMockUntrustedService()
 
   return createUntrustedConversationApi(
     conversationHandler,
+    userActions,
     uiHandler,
     parentUIFrame,
     service,
@@ -85,7 +88,7 @@ export function renderConversation(
     }
   }
 
-  api.getConversationHistory.update(conversation.messages)
+  api.getConversationHistory.update(null, conversation.messages)
   // Conversations shared before associated content was included in the payload
   // don't have the property.
   api.associatedContent.update(conversation.associatedContent ?? [])

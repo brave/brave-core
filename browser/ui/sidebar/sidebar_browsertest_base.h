@@ -14,11 +14,11 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "ui/gfx/animation/animation_test_api.h"
 
 class BraveBrowserView;
+class BraveMultiContentsView;
 class SidebarContainerView;
 class SidebarControlView;
 class SidebarItemsContentsView;
@@ -66,7 +66,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
   TabStripModel* tab_model() const { return browser()->tab_strip_model(); }
 
   SidebarController* controller() const {
-    return browser()->GetFeatures().sidebar_controller();
+    return sidebar::SidebarController::From(browser());
   }
 
   SidePanelButton* GetSidePanelToolbarButton() const;
@@ -114,6 +114,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
 
   int GetFirstPanelItemIndex();
   int GetFirstWebItemIndex();
+  BraveMultiContentsView* GetBraveMultiContentsView();
 
   BraveBrowserView* browser_view();
 

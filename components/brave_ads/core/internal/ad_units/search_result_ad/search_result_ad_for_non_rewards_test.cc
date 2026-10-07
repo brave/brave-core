@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -74,6 +74,14 @@ TEST_F(BraveAdsSearchResultAdForNonRewardsIntegrationTest,
       /*should_fire_event=*/false);
 
   SearchResultAdHandler::TriggerDeferredAdViewedEventForTesting();
+}
+
+TEST_F(BraveAdsSearchResultAdForNonRewardsIntegrationTest,
+       DoNotTriggerEventForMissingCreativeAd) {
+  // Act & Assert
+  TriggerSearchResultAdEventAndVerifyExpectations(
+      /*mojom_creative_ad=*/nullptr, mojom::SearchResultAdEventType::kClicked,
+      /*should_fire_event=*/false);
 }
 
 TEST_F(BraveAdsSearchResultAdForNonRewardsIntegrationTest,

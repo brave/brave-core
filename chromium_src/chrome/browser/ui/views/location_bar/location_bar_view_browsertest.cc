@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "chrome/browser/ssl/chrome_security_state_util.h"
 #include "chrome/browser/ui/omnibox/omnibox_controller.h"
 #include "chrome/browser/ui/omnibox/omnibox_edit_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -14,7 +15,6 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/omnibox/browser/location_bar_model_impl.h"
-#include "components/security_state/content/security_state_tab_helper.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/url_loader_interceptor.h"
 #include "mojo/public/cpp/system/data_pipe.h"
@@ -104,15 +104,13 @@ IN_PROC_BROWSER_TEST_P(SecurityIndicatorTest, CheckIndicatorText) {
   content::WebContents* tab =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(tab);
-  SecurityStateTabHelper* helper = SecurityStateTabHelper::FromWebContents(tab);
-  ASSERT_TRUE(helper);
   LocationBarView* location_bar_view = GetLocationBarView();
 
   auto c = GetParam();
   SetUpInterceptor(c.cert_status);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), c.use_secure_url ? kMockSecureURL : kMockNonsecureURL));
-  EXPECT_EQ(c.security_level, helper->GetSecurityLevel());
+  EXPECT_EQ(c.security_level, chrome_security_state::GetSecurityLevel(tab));
   EXPECT_EQ(c.should_show_text,
             location_bar_view->location_icon_view()->ShouldShowLabel());
   EXPECT_EQ(c.indicator_text,

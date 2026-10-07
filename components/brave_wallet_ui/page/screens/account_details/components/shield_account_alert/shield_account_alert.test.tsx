@@ -32,16 +32,16 @@ describe('ShieldAccountAlert', () => {
 
     // Check if the shield account alert is rendered
     expect(container).toBeInTheDocument()
-    expect(container).toHaveTextContent('braveWalletShieldAccount')
+    expect(container).toHaveTextContent(S.BRAVE_WALLET_SHIELD_ACCOUNT)
     expect(container).toHaveTextContent(
-      'braveWalletShieldAccountAlertDescription',
+      S.BRAVE_WALLET_SHIELD_ACCOUNT_ALERT_DESCRIPTION,
     )
 
     // Check if the shield account alert button is rendered
     const shieldAccountAlertButton: any = document.querySelector('leo-button')
     expect(shieldAccountAlertButton).toBeInTheDocument()
     expect(shieldAccountAlertButton?.textContent).toBe(
-      'braveWalletShieldAccount',
+      S.BRAVE_WALLET_SHIELD_ACCOUNT,
     )
 
     // Check if the shield account alert button is clickable and opens the modal
@@ -50,17 +50,19 @@ describe('ShieldAccountAlert', () => {
     })
 
     await waitFor(() => {
-      expect(container).toHaveTextContent('braveWalletSwitchToShieldedAccount')
       expect(container).toHaveTextContent(
-        'braveWalletAccountNotShieldedDescription',
+        S.BRAVE_WALLET_SWITCH_TO_SHIELDED_ACCOUNT,
       )
       expect(container).toHaveTextContent(
-        'braveWalletAccountShieldedDescription',
+        S.BRAVE_WALLET_ACCOUNT_NOT_SHIELDED_DESCRIPTION,
       )
       expect(container).toHaveTextContent(
-        'braveWalletAdvancedTransactionSettings',
+        S.BRAVE_WALLET_ACCOUNT_SHIELDED_DESCRIPTION,
       )
-      expect(container).toHaveTextContent('braveWalletShieldAccount')
+      expect(container).toHaveTextContent(
+        S.BRAVE_WALLET_ADVANCED_TRANSACTION_SETTINGS,
+      )
+      expect(container).toHaveTextContent(S.BRAVE_WALLET_SHIELD_ACCOUNT)
     })
   })
 })

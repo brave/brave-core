@@ -16,7 +16,7 @@ export const ShieldedLabel = () => {
       <div slot='icon-before'>
         <Icon name='shield-done' />
       </div>
-      {getLocale('braveWalletShielded')}
+      {getLocale(S.BRAVE_WALLET_SHIELDED)}
     </Label>
   )
 }

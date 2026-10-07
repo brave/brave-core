@@ -299,7 +299,7 @@ const conversation: ConversationDataJson = {
         },
       },
       'fromBraveSearchSERP': false,
-      'modelKey': 'chat-qwen-3-235b',
+      'modelKey': 'chat-qwen-3-8-flash-next',
       'actionType': 1,
       'characterType': 1,
       'text':

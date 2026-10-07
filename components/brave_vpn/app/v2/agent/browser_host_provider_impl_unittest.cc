@@ -25,6 +25,7 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "mojo/public/cpp/platform/platform_handle.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_vpn::v2 {
@@ -37,15 +38,20 @@ class FakeBrowserHost : public mojom::BrowserHost {
   ~FakeBrowserHost() override = default;
 };
 
-// Records what the provider forwards, then answers from a separate task,
-// mirroring the asynchronous verification hop BrowserRegistry takes. Replying
-// out of band is what lets every test wait on the client's reply rather than
+// Records what the provider forwards, then answers from a separate task. For
+// Initialize() that mirrors the verification hop BrowserRegistry takes before
+// it replies; BindBrowserHost() has no such hop in the registry, but posting
+// its reply too is what lets every test wait on the client's reply rather than
 // draining the sequence.
 class FakeBrowserHostProviderImplDelegate
     : public BrowserHostProviderImpl::Delegate {
  public:
-  struct Call {
+  struct InitializeCall {
     uint32_t protocol_version = 0;
+    mojo::PlatformHandle identity_channel;
+  };
+
+  struct BindBrowserHostCall {
     mojo::PendingRemote<mojom::BrowserEndpoint> browser_endpoint;
     mojo::PendingReceiver<mojom::BrowserHost> host;
   };
@@ -53,45 +59,75 @@ class FakeBrowserHostProviderImplDelegate
   FakeBrowserHostProviderImplDelegate() = default;
   ~FakeBrowserHostProviderImplDelegate() override = default;
 
-  void SetResult(mojom::BrowserAuthResult result) { default_result_ = result; }
-
-  // Lets a test tell two in-flight calls apart by what they asked for.
-  void SetResultForVersion(uint32_t protocol_version,
-                           mojom::BrowserAuthResult result) {
-    results_.insert_or_assign(protocol_version, result);
+  void SetInitializeResult(mojom::InitializeResult result) {
+    default_initialize_result_ = result;
   }
 
-  std::vector<Call>& calls() { return calls_; }
+  // Lets a test tell two in-flight calls apart by the version they carried.
+  void SetInitializeResultForVersion(uint32_t protocol_version,
+                                     mojom::InitializeResult result) {
+    initialize_results_.insert_or_assign(protocol_version, result);
+  }
+
+  void SetBindBrowserHostResult(mojom::BindBrowserHostResult result) {
+    default_bind_browser_host_result_ = result;
+  }
+
+  std::vector<InitializeCall>& initialize_calls() { return initialize_calls_; }
+  std::vector<BindBrowserHostCall>& bind_browser_host_calls() {
+    return bind_browser_host_calls_;
+  }
 
  private:
   // BrowserHostProviderImpl::Delegate:
-  void Authenticate(
+  void InitializeBrowser(
       uint32_t protocol_version,
+      mojo::PlatformHandle identity_channel,
+      base::OnceCallback<void(mojom::InitializeResult)> callback) override {
+    initialize_calls_.push_back(
+        InitializeCall{.protocol_version = protocol_version,
+                       .identity_channel = std::move(identity_channel)});
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback),
+                                  InitializeResultFor(protocol_version)));
+  }
+
+  void BindBrowserHost(
       mojo::PendingRemote<mojom::BrowserEndpoint> browser_endpoint,
       mojo::PendingReceiver<mojom::BrowserHost> host,
-      base::OnceCallback<void(mojom::BrowserAuthResult)> callback) override {
-    calls_.push_back(Call{.protocol_version = protocol_version,
-                          .browser_endpoint = std::move(browser_endpoint),
-                          .host = std::move(host)});
+      base::OnceCallback<void(mojom::BindBrowserHostResult)> callback)
+      override {
+    bind_browser_host_calls_.push_back(
+        BindBrowserHostCall{.browser_endpoint = std::move(browser_endpoint),
+                            .host = std::move(host)});
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE,
-        base::BindOnce(std::move(callback), ResultFor(protocol_version)));
+        base::BindOnce(std::move(callback), default_bind_browser_host_result_));
   }
 
-  mojom::BrowserAuthResult ResultFor(uint32_t protocol_version) const {
-    const auto it = results_.find(protocol_version);
-    return it == results_.end() ? default_result_ : it->second;
+  mojom::InitializeResult InitializeResultFor(uint32_t protocol_version) const {
+    const auto it = initialize_results_.find(protocol_version);
+    return it == initialize_results_.end() ? default_initialize_result_
+                                           : it->second;
   }
 
-  mojom::BrowserAuthResult default_result_ =
-      mojom::BrowserAuthResult::kAccepted;
-  base::flat_map<uint32_t, mojom::BrowserAuthResult> results_;
-  std::vector<Call> calls_;
+  mojom::InitializeResult default_initialize_result_ =
+      mojom::InitializeResult::kSuccess;
+  mojom::BindBrowserHostResult default_bind_browser_host_result_ =
+      mojom::BindBrowserHostResult::kSuccess;
+  base::flat_map<uint32_t, mojom::InitializeResult> initialize_results_;
+  std::vector<InitializeCall> initialize_calls_;
+  std::vector<BindBrowserHostCall> bind_browser_host_calls_;
 };
 
-// Parameter for parameterized tests.
-struct BrowserAuthResultParam {
-  mojom::BrowserAuthResult result;
+// Parameters for parameterized tests.
+struct InitializeResultParam {
+  mojom::InitializeResult result;
+  const char* name;
+};
+
+struct BindBrowserHostResultParam {
+  mojom::BindBrowserHostResult result;
   const char* name;
 };
 
@@ -112,20 +148,49 @@ class BrowserHostProviderImplTest : public testing::Test {
   mojo::ReceiverSet<mojom::BrowserHostProvider> receivers_;
 };
 
-TEST_F(BrowserHostProviderImplTest, ForwardsCallToDelegate) {
+TEST_F(BrowserHostProviderImplTest, ForwardsInitializeToDelegate) {
   constexpr uint32_t kProtocolVersion = 1;
 
   mojo::Remote<mojom::BrowserHostProvider> client = ConnectClient();
   FakeBrowser browser;
-  client->BindBrowserHost(kProtocolVersion, browser.BindEndpoint(),
-                          browser.BindHost(), browser.GetReplyCallback());
+  client->Initialize(kProtocolVersion, browser.BindIdentityChannel(),
+                     browser.GetInitializeReplyCallback());
 
   // The reply only arrives after the delegate has been called, so waiting for
   // it is also how the test waits for the forwarded arguments.
-  EXPECT_EQ(mojom::BrowserAuthResult::kAccepted, browser.WaitForReply());
-  ASSERT_EQ(1u, delegate_.calls().size());
-  FakeBrowserHostProviderImplDelegate::Call& call = delegate_.calls()[0];
-  EXPECT_EQ(kProtocolVersion, call.protocol_version);
+  EXPECT_EQ(mojom::InitializeResult::kSuccess,
+            browser.WaitForInitializeReply());
+  ASSERT_EQ(1u, delegate_.initialize_calls().size());
+  EXPECT_EQ(kProtocolVersion, delegate_.initialize_calls()[0].protocol_version);
+  EXPECT_TRUE(delegate_.initialize_calls()[0].identity_channel.is_valid());
+}
+
+// The argument is optional, and a null handle is what the browser sends on
+// Windows and Linux. It must arrive as a null handle rather than failing the
+// call.
+TEST_F(BrowserHostProviderImplTest, ForwardsNullIdentityChannelToDelegate) {
+  mojo::Remote<mojom::BrowserHostProvider> client = ConnectClient();
+  FakeBrowser browser;
+  client->Initialize(mojom::kProtocolVersion, mojo::PlatformHandle(),
+                     browser.GetInitializeReplyCallback());
+
+  EXPECT_EQ(mojom::InitializeResult::kSuccess,
+            browser.WaitForInitializeReply());
+  ASSERT_EQ(1u, delegate_.initialize_calls().size());
+  EXPECT_FALSE(delegate_.initialize_calls()[0].identity_channel.is_valid());
+}
+
+TEST_F(BrowserHostProviderImplTest, ForwardsBindBrowserHostToDelegate) {
+  mojo::Remote<mojom::BrowserHostProvider> client = ConnectClient();
+  FakeBrowser browser;
+  client->BindBrowserHost(browser.BindEndpoint(), browser.BindHost(),
+                          browser.GetBindBrowserHostReplyCallback());
+
+  EXPECT_EQ(mojom::BindBrowserHostResult::kSuccess,
+            browser.WaitForBindBrowserHostReply());
+  ASSERT_EQ(1u, delegate_.bind_browser_host_calls().size());
+  FakeBrowserHostProviderImplDelegate::BindBrowserHostCall& call =
+      delegate_.bind_browser_host_calls()[0];
 
   // Both handles must arrive usable rather than merely non-empty. A round trip
   // in each direction proves the pipe survived forwarding; a handle dropped
@@ -144,60 +209,151 @@ TEST_F(BrowserHostProviderImplTest, ForwardsCallToDelegate) {
 
 // The provider is shared by every connection, so it must hold no per-connection
 // state: two clients in flight at once each get their own reply.
-TEST_F(BrowserHostProviderImplTest, ServesConcurrentClients) {
+TEST_F(BrowserHostProviderImplTest, ServesConcurrentInitializeCalls) {
   constexpr uint32_t kFirstVersion = 1;
   constexpr uint32_t kSecondVersion = 2;
 
-  delegate_.SetResultForVersion(kFirstVersion,
-                                mojom::BrowserAuthResult::kAccepted);
-  delegate_.SetResultForVersion(kSecondVersion,
-                                mojom::BrowserAuthResult::kRejected);
+  delegate_.SetInitializeResultForVersion(kFirstVersion,
+                                          mojom::InitializeResult::kSuccess);
+  delegate_.SetInitializeResultForVersion(
+      kSecondVersion, mojom::InitializeResult::kVersionMismatch);
 
   mojo::Remote<mojom::BrowserHostProvider> first_client = ConnectClient();
   mojo::Remote<mojom::BrowserHostProvider> second_client = ConnectClient();
   FakeBrowser first_browser;
   FakeBrowser second_browser;
 
-  first_client->BindBrowserHost(kFirstVersion, first_browser.BindEndpoint(),
-                                first_browser.BindHost(),
-                                first_browser.GetReplyCallback());
-  second_client->BindBrowserHost(kSecondVersion, second_browser.BindEndpoint(),
-                                 second_browser.BindHost(),
-                                 second_browser.GetReplyCallback());
+  first_client->Initialize(kFirstVersion, mojo::PlatformHandle(),
+                           first_browser.GetInitializeReplyCallback());
+  second_client->Initialize(kSecondVersion, mojo::PlatformHandle(),
+                            second_browser.GetInitializeReplyCallback());
 
-  EXPECT_EQ(mojom::BrowserAuthResult::kAccepted, first_browser.WaitForReply());
-  EXPECT_EQ(mojom::BrowserAuthResult::kRejected, second_browser.WaitForReply());
-  EXPECT_EQ(2u, delegate_.calls().size());
+  EXPECT_EQ(mojom::InitializeResult::kSuccess,
+            first_browser.WaitForInitializeReply());
+  EXPECT_EQ(mojom::InitializeResult::kVersionMismatch,
+            second_browser.WaitForInitializeReply());
+  EXPECT_EQ(2u, delegate_.initialize_calls().size());
 }
 
-class BrowserHostProviderImplResultTest
+// Two BindBrowserHost() requests in flight at once must each get their own
+// reply and their own handles, with nothing carried between them by the shared
+// provider instance.
+TEST_F(BrowserHostProviderImplTest, ServesConcurrentBindBrowserHostCalls) {
+  mojo::Remote<mojom::BrowserHostProvider> first_client = ConnectClient();
+  mojo::Remote<mojom::BrowserHostProvider> second_client = ConnectClient();
+  FakeBrowser first_browser;
+  FakeBrowser second_browser;
+
+  first_client->BindBrowserHost(
+      first_browser.BindEndpoint(), first_browser.BindHost(),
+      first_browser.GetBindBrowserHostReplyCallback());
+  second_client->BindBrowserHost(
+      second_browser.BindEndpoint(), second_browser.BindHost(),
+      second_browser.GetBindBrowserHostReplyCallback());
+
+  // One reply per call, whichever order they were dispatched in.
+  EXPECT_EQ(mojom::BindBrowserHostResult::kSuccess,
+            first_browser.WaitForBindBrowserHostReply());
+  EXPECT_EQ(mojom::BindBrowserHostResult::kSuccess,
+            second_browser.WaitForBindBrowserHostReply());
+  ASSERT_EQ(2u, delegate_.bind_browser_host_calls().size());
+
+  first_browser.WatchHost();
+  second_browser.WatchHost();
+
+  // Binding both forwarded host receivers must connect both browsers' remotes
+  // and close neither. Handles crossed between the calls, or a handle dropped
+  // on the way, would leave one of the two unaffected either way round.
+  FakeBrowserHost first_host_impl;
+  FakeBrowserHost second_host_impl;
+  mojo::Receiver<mojom::BrowserHost> first_host_receiver(
+      &first_host_impl, std::move(delegate_.bind_browser_host_calls()[0].host));
+  mojo::Receiver<mojom::BrowserHost> second_host_receiver(
+      &second_host_impl,
+      std::move(delegate_.bind_browser_host_calls()[1].host));
+  first_browser.FlushHost();
+  second_browser.FlushHost();
+
+  EXPECT_TRUE(first_browser.host_connected());
+  EXPECT_TRUE(second_browser.host_connected());
+  EXPECT_FALSE(first_browser.host_closed());
+  EXPECT_FALSE(second_browser.host_closed());
+
+  // Same for the endpoints, in the other direction.
+  mojo::Remote<mojom::BrowserEndpoint> first_endpoint(
+      std::move(delegate_.bind_browser_host_calls()[0].browser_endpoint));
+  mojo::Remote<mojom::BrowserEndpoint> second_endpoint(
+      std::move(delegate_.bind_browser_host_calls()[1].browser_endpoint));
+  first_endpoint.FlushForTesting();
+  second_endpoint.FlushForTesting();
+
+  EXPECT_TRUE(first_endpoint.is_connected());
+  EXPECT_TRUE(second_endpoint.is_connected());
+}
+
+class BrowserHostProviderImplInitializeResultTest
     : public BrowserHostProviderImplTest,
-      public testing::WithParamInterface<BrowserAuthResultParam> {};
+      public testing::WithParamInterface<InitializeResultParam> {};
 
 INSTANTIATE_TEST_SUITE_P(
     ,
-    BrowserHostProviderImplResultTest,
+    BrowserHostProviderImplInitializeResultTest,
     testing::Values(
-        BrowserAuthResultParam{mojom::BrowserAuthResult::kAccepted, "Accepted"},
-        BrowserAuthResultParam{mojom::BrowserAuthResult::kRejected, "Rejected"},
-        BrowserAuthResultParam{mojom::BrowserAuthResult::kVersionMismatch,
-                               "VersionMismatch"},
-        BrowserAuthResultParam{mojom::BrowserAuthResult::kHostAlreadyRequested,
-                               "HostAlreadyRequested"}),
-    [](const testing::TestParamInfo<BrowserAuthResultParam>& info) {
+        InitializeResultParam{mojom::InitializeResult::kSuccess, "Success"},
+        InitializeResultParam{mojom::InitializeResult::kVersionMismatch,
+                              "VersionMismatch"},
+        InitializeResultParam{mojom::InitializeResult::kNotIdentified,
+                              "NotIdentified"},
+        InitializeResultParam{mojom::InitializeResult::kRejected, "Rejected"},
+        InitializeResultParam{mojom::InitializeResult::kInconclusive,
+                              "Inconclusive"},
+        InitializeResultParam{mojom::InitializeResult::kInvalidRequest,
+                              "InvalidRequest"}),
+    [](const testing::TestParamInfo<InitializeResultParam>& info) {
       return std::string(info.param.name);
     });
 
 // Every outcome the delegate can produce must reach the browser unchanged.
-TEST_P(BrowserHostProviderImplResultTest, RelaysDelegateResultToClient) {
-  delegate_.SetResult(GetParam().result);
+TEST_P(BrowserHostProviderImplInitializeResultTest,
+       RelaysDelegateResultToClient) {
+  delegate_.SetInitializeResult(GetParam().result);
 
   mojo::Remote<mojom::BrowserHostProvider> client = ConnectClient();
   FakeBrowser browser;
-  client->BindBrowserHost(mojom::kProtocolVersion, browser.BindEndpoint(),
-                          browser.BindHost(), browser.GetReplyCallback());
+  client->Initialize(mojom::kProtocolVersion, mojo::PlatformHandle(),
+                     browser.GetInitializeReplyCallback());
 
-  EXPECT_EQ(GetParam().result, browser.WaitForReply());
+  EXPECT_EQ(GetParam().result, browser.WaitForInitializeReply());
+}
+
+class BrowserHostProviderImplBindBrowserHostResultTest
+    : public BrowserHostProviderImplTest,
+      public testing::WithParamInterface<BindBrowserHostResultParam> {};
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    BrowserHostProviderImplBindBrowserHostResultTest,
+    testing::Values(
+        BindBrowserHostResultParam{mojom::BindBrowserHostResult::kSuccess,
+                                   "Success"},
+        BindBrowserHostResultParam{mojom::BindBrowserHostResult::kUninitialized,
+                                   "Uninitialized"},
+        BindBrowserHostResultParam{mojom::BindBrowserHostResult::kAlreadyBound,
+                                   "AlreadyBound"}),
+    [](const testing::TestParamInfo<BindBrowserHostResultParam>& info) {
+      return std::string(info.param.name);
+    });
+
+TEST_P(BrowserHostProviderImplBindBrowserHostResultTest,
+       RelaysDelegateResultToClient) {
+  delegate_.SetBindBrowserHostResult(GetParam().result);
+
+  mojo::Remote<mojom::BrowserHostProvider> client = ConnectClient();
+  FakeBrowser browser;
+  client->BindBrowserHost(browser.BindEndpoint(), browser.BindHost(),
+                          browser.GetBindBrowserHostReplyCallback());
+
+  EXPECT_EQ(GetParam().result, browser.WaitForBindBrowserHostReply());
 }
 
 TEST(BrowserHostProviderImplDeathTest, NullDelegateChecks) {

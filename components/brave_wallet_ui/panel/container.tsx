@@ -30,7 +30,6 @@ import {
 import {
   DecryptMessageRequestPanel, //
 } from '../components/extension/public_encryption_key_panels/decrypt_message_request_panel'
-import { ConfirmationPopup } from '../components/extension/confirmation_popup/confirmation_popup'
 import { ConnectWithSiteWrapper } from '../stories/style'
 import { PanelWrapper } from './panel_wrapper/panel_wrapper'
 import { FullScreenWrapper } from '../page/screens/page-screen.styles'
@@ -41,6 +40,7 @@ import {
   useSafeUISelector,
   useSafeWalletSelector,
   useUnsafePanelSelector,
+  useUnsafeUISelector,
 } from '../common/hooks/use-safe-selector'
 import { UISelectors, WalletSelectors } from '../common/selectors'
 import { PanelSelectors } from './selectors'
@@ -95,17 +95,19 @@ function Container() {
   )
 
   // panel selectors (unsafe)
-  const selectedTransactionId = useUnsafePanelSelector(
-    PanelSelectors.selectedTransactionId,
-  )
-  const submittingTransaction = useUnsafePanelSelector(
-    PanelSelectors.submittingTransaction,
-  )
   const connectToSiteOrigin = useUnsafePanelSelector(
     PanelSelectors.connectToSiteOrigin,
   )
   const connectingAccounts = useUnsafePanelSelector(
     PanelSelectors.connectingAccounts,
+  )
+
+  // ui selectors (unsafe) — shared confirm/status state with Desktop page
+  const selectedTransactionId = useUnsafeUISelector(
+    UISelectors.selectedTransactionId,
+  )
+  const submittingTransaction = useUnsafeUISelector(
+    UISelectors.submittingTransaction,
   )
 
   // queries
@@ -151,36 +153,6 @@ function Container() {
   const pendingOrConfirmingTransaction =
     selectedPendingTransaction ?? submittingTransaction
 
-  const sidePanelConfirmations = React.useMemo(() => {
-    if (
-      selectedPanel === 'transactionStatus'
-      && selectedTransactionId
-      && !submittingTransaction
-    ) {
-      return (
-        <ConfirmationPopup>
-          <TransactionStatus transactionLookup={selectedTransactionId} />
-        </ConfirmationPopup>
-      )
-    }
-    if (pendingOrConfirmingTransaction) {
-      return (
-        <ConfirmationPopup isLoading={isLoadingPendingActions}>
-          <PendingTransactionPanel
-            selectedPendingTransaction={pendingOrConfirmingTransaction}
-          />
-        </ConfirmationPopup>
-      )
-    }
-    return null
-  }, [
-    selectedPanel,
-    selectedTransactionId,
-    submittingTransaction,
-    pendingOrConfirmingTransaction,
-    isLoadingPendingActions,
-  ])
-
   // render
   if (!hasInitialized || (isLoadingPendingActions && !isSidePanel)) {
     return (
@@ -208,152 +180,153 @@ function Container() {
     )
   }
 
-  if (selectedPanel === 'connectWithSite') {
-    const accountsToConnect = accounts.filter((account) => {
-      if (account.accountId.coin === BraveWallet.CoinType.ADA) {
-        return connectingAccounts.includes(account.accountId.uniqueKey)
-      } else {
-        return connectingAccounts.includes(account.address.toLowerCase())
-      }
-    })
-    return (
-      <PanelWrapper>
-        <ConnectWithSiteWrapper>
-          <ConnectWithSite
-            originInfo={connectToSiteOrigin}
-            accountsToConnect={accountsToConnect}
+  // Sidebar does not support DApp interaction UI yet.
+  if (!isSidePanel) {
+    if (selectedPanel === 'connectWithSite') {
+      const accountsToConnect = accounts.filter((account) => {
+        if (account.accountId.coin === BraveWallet.CoinType.ADA) {
+          return connectingAccounts.includes(account.accountId.uniqueKey)
+        } else {
+          return connectingAccounts.includes(account.address.toLowerCase())
+        }
+      })
+      return (
+        <PanelWrapper>
+          <ConnectWithSiteWrapper>
+            <ConnectWithSite
+              originInfo={connectToSiteOrigin}
+              accountsToConnect={accountsToConnect}
+            />
+          </ConnectWithSiteWrapper>
+        </PanelWrapper>
+      )
+    }
+
+    if (
+      selectedPanel === 'connectHardwareWallet'
+      && (selectedPendingTransaction
+        || signMessageData?.length
+        || signSolTransactionsRequests?.length)
+    ) {
+      return (
+        <PanelWrapper>
+          <ConnectHardwareWalletPanel hardwareWalletCode={hardwareWalletCode} />
+        </PanelWrapper>
+      )
+    }
+
+    if (addChainRequest) {
+      return (
+        <PanelWrapper>
+          <AllowAddChangeNetworkPanel addChainRequest={addChainRequest} />
+        </PanelWrapper>
+      )
+    }
+
+    if (switchChainRequest) {
+      return (
+        <PanelWrapper>
+          <AllowAddChangeNetworkPanel switchChainRequest={switchChainRequest} />
+        </PanelWrapper>
+      )
+    }
+
+    if (signMessageErrorData?.length) {
+      return (
+        <PanelWrapper>
+          <SignInWithEthereumError />
+        </PanelWrapper>
+      )
+    }
+
+    if (signMessageData?.length && signMessageData[0].signData.ethSiweData) {
+      return (
+        <PanelWrapper>
+          <SignInWithEthereum data={signMessageData[0]} />
+        </PanelWrapper>
+      )
+    }
+
+    if (getEncryptionPublicKeyRequest) {
+      return (
+        <PanelWrapper>
+          <ProvidePublicEncryptionKeyPanel
+            payload={getEncryptionPublicKeyRequest}
           />
-        </ConnectWithSiteWrapper>
-      </PanelWrapper>
-    )
-  }
+        </PanelWrapper>
+      )
+    }
 
-  if (
-    selectedPanel === 'connectHardwareWallet'
-    && (selectedPendingTransaction
-      || signMessageData?.length
-      || signSolTransactionsRequests?.length)
-  ) {
-    return (
-      <PanelWrapper>
-        <ConnectHardwareWalletPanel hardwareWalletCode={hardwareWalletCode} />
-      </PanelWrapper>
-    )
-  }
+    if (decryptRequest) {
+      return (
+        <PanelWrapper>
+          <DecryptMessageRequestPanel payload={decryptRequest} />
+        </PanelWrapper>
+      )
+    }
 
-  if (addChainRequest) {
-    return (
-      <PanelWrapper>
-        <AllowAddChangeNetworkPanel addChainRequest={addChainRequest} />
-      </PanelWrapper>
-    )
-  }
+    if (signMessageData?.length) {
+      return (
+        <PanelWrapper>
+          <SignPanel
+            signMessageData={signMessageData}
+            // Pass a boolean here if the signing method is risky
+            showWarning={false}
+          />
+        </PanelWrapper>
+      )
+    }
 
-  if (switchChainRequest) {
-    return (
-      <PanelWrapper>
-        <AllowAddChangeNetworkPanel switchChainRequest={switchChainRequest} />
-      </PanelWrapper>
-    )
-  }
+    if (addTokenRequests.length) {
+      return (
+        <PanelWrapper>
+          <AddSuggestedTokenPanel />
+        </PanelWrapper>
+      )
+    }
 
-  if (signMessageErrorData?.length) {
-    return (
-      <PanelWrapper>
-        <SignInWithEthereumError />
-      </PanelWrapper>
-    )
-  }
+    if (
+      selectedPanel === 'transactionStatus'
+      && selectedTransactionId
+      && !submittingTransaction
+    ) {
+      return (
+        <PanelWrapper>
+          <TransactionStatus transactionLookup={selectedTransactionId} />
+        </PanelWrapper>
+      )
+    }
 
-  if (signMessageData?.length && signMessageData[0].signData.ethSiweData) {
-    return (
-      <PanelWrapper>
-        <SignInWithEthereum data={signMessageData[0]} />
-      </PanelWrapper>
-    )
-  }
+    if (pendingOrConfirmingTransaction) {
+      return (
+        <PanelWrapper>
+          <PendingTransactionPanel
+            selectedPendingTransaction={pendingOrConfirmingTransaction}
+          />
+        </PanelWrapper>
+      )
+    }
 
-  if (getEncryptionPublicKeyRequest) {
-    return (
-      <PanelWrapper>
-        <ProvidePublicEncryptionKeyPanel
-          payload={getEncryptionPublicKeyRequest}
-        />
-      </PanelWrapper>
-    )
-  }
+    if (signSolTransactionsRequests?.length) {
+      return (
+        <PanelWrapper>
+          <PendingSignSolanaTransactionsRequestsPanel />
+        </PanelWrapper>
+      )
+    }
 
-  if (decryptRequest) {
-    return (
-      <PanelWrapper>
-        <DecryptMessageRequestPanel payload={decryptRequest} />
-      </PanelWrapper>
-    )
-  }
-
-  if (signMessageData?.length) {
-    return (
-      <PanelWrapper>
-        <SignPanel
-          signMessageData={signMessageData}
-          // Pass a boolean here if the signing method is risky
-          showWarning={false}
-        />
-      </PanelWrapper>
-    )
-  }
-
-  if (addTokenRequests.length) {
-    return (
-      <PanelWrapper>
-        <AddSuggestedTokenPanel />
-      </PanelWrapper>
-    )
-  }
-
-  if (
-    selectedPanel === 'transactionStatus'
-    && selectedTransactionId
-    && !submittingTransaction
-    && !isSidePanel
-  ) {
-    return (
-      <PanelWrapper>
-        <TransactionStatus transactionLookup={selectedTransactionId} />
-      </PanelWrapper>
-    )
-  }
-
-  if (pendingOrConfirmingTransaction && !isSidePanel) {
-    return (
-      <PanelWrapper>
-        <PendingTransactionPanel
-          selectedPendingTransaction={pendingOrConfirmingTransaction}
-        />
-      </PanelWrapper>
-    )
-  }
-
-  if (signSolTransactionsRequests?.length) {
-    return (
-      <PanelWrapper>
-        <PendingSignSolanaTransactionsRequestsPanel />
-      </PanelWrapper>
-    )
-  }
-
-  if (signCardanoTransactionRequests?.length) {
-    return (
-      <PanelWrapper>
-        <PendingSignCardanoTransactionRequestsPanel />
-      </PanelWrapper>
-    )
+    if (signCardanoTransactionRequests?.length) {
+      return (
+        <PanelWrapper>
+          <PendingSignCardanoTransactionRequestsPanel />
+        </PanelWrapper>
+      )
+    }
   }
 
   return (
     <PanelWrapper>
       <PageContainer />
-      {isSidePanel && sidePanelConfirmations}
     </PanelWrapper>
   )
 }

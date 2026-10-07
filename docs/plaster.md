@@ -30,16 +30,12 @@ well as audited as patch files.
 ## How does it work
 
 _Plaster_ files are placed under `rewrite/`, using a `.yaml` extension, and they
-are supposed to match the path for the file being plastered. A deprecated
-`.toml` form is also accepted while existing plasters are being migrated — see
-[Legacy TOML format (deprecated)](#legacy-toml-format-deprecated) at the end of
-this document.
+are supposed to match the path for the file being plastered.
 
-> [!WARNING]
+> [!NOTE]
 >
-> At the moment, Chromium's `src` repo can be patched with plaster. Support for
-> more repos may be considered in the future, but it is not a priority at the
-> moment.
+> Repositories other than Chromium's `src` are supported if they are listed in
+> `patches/.repositories.cfg`.
 
 Each plaster file will be used to apply changes into a given source, and then
 generate a patch for the effected changes.
@@ -136,25 +132,41 @@ YAML).
 The keyed rewrite (`regex:` above) is a **rewriter**. There is on-going work to
 introduce more rewriters. These are the ones we have supported for now.
 
-| Rewriter                         | Kind  | Description                                       |
-| -------------------------------- | ----- | ------------------------------------------------- |
-| `regex`                          | text  | A Python `re.subn` substitution (the default).    |
-| `make_virtual`                   | AST   | Prepends `virtual ` to a C++ method declaration.  |
-| `add_friend`                     | AST   | Adds a `friend` declaration to a private section. |
-| `drop_final`                     | AST   | Removes `final` from a C++ class declaration.     |
-| `preempt_function_impl`          | AST   | Inserts at the top of a C++ function body.        |
-| `after_function_impl`            | AST   | Wraps a C++ function body and runs code after.    |
-| `rename_class`                   | AST   | Renames a C++ class.                              |
-| `add_to_protected`               | AST   | Adds a member to a class `protected:` section.    |
-| `add_to_public`                  | AST   | Appends a member to a class `public:` section.    |
-| `add_enum_entries`               | AST   | Appends entries to the end of a C++ enum.         |
-| `set_feature_flag_default_state` | macro | Sets a `BASE_FEATURE`'s default state.            |
+| Rewriter                                  | Namespace | Kind  | Description                                           |
+| ----------------------------------------- | --------- | ----- | ----------------------------------------------------- |
+| `regex`                                   | `all`     | text  | A Python `re.subn` substitution (the default).        |
+| `add_after_line`                          | `all`     | macro | Inserts code after a given line.                      |
+| `add_before_line`                         | `all`     | macro | Inserts code before a given line.                     |
+| `add_after_copyright_notice`              | `all`     | macro | Inserts code after the copyright notice.              |
+| `add_at_end_of_the_file`                  | `all`     | macro | Appends code at the end of a file.                    |
+| `make_virtual`                            | `cxx`     | AST   | Prepends `virtual ` to a C++ method declaration.      |
+| `add_friend`                              | `cxx`     | AST   | Adds a `friend` declaration to a private section.     |
+| `drop_final`                              | `cxx`     | AST   | Removes `final` from a C++ class declaration.         |
+| `preempt_function_impl`                   | `cxx`     | AST   | Inserts at the top of a C++ function body.            |
+| `after_function_impl`                     | `cxx`     | AST   | Wraps a C++ function body and runs code after.        |
+| `rename_class`                            | `cxx`     | AST   | Renames a C++ class.                                  |
+| `add_to_protected`                        | `cxx`     | AST   | Adds a member to a class `protected:` section.        |
+| `add_to_public`                           | `cxx`     | AST   | Appends a member to a class `public:` section.        |
+| `add_enum_entries`                        | `cxx`     | AST   | Appends entries to the end of a C++ enum.             |
+| `set_feature_flag_default_state`          | `cxx`     | macro | Sets a `BASE_FEATURE`'s default state.                |
+| `insert_into_list`                        | `gn`      | gn    | Inserts value(s) into a target's list attribute.      |
+| `set_attribute`                           | `gn`      | gn    | Sets a target's attribute, creating it if absent.     |
+| `remove_attribute`                        | `gn`      | gn    | Removes an attribute from a target.                   |
+| `add_literal_to_list`                     | `gn`      | AST   | Adds a literal to a target's list attribute.          |
+| `append_to_target`                        | `gn`      | AST   | Appends code to the end of a target's body.           |
+| `add_import`                              | `gn`      | AST   | Adds an `import()` to the top of a gn file.           |
+| `add_literal_to_variable`                 | `gn`      | AST   | Appends a literal to a file-scope list variable.      |
+| `subtract_literal_from_variable`          | `gn`      | AST   | Subtracts a literal from a file-scope list variable.  |
+| `set_blink_runtime_enabled_feature_state` | `js`      | AST   | Sets a Blink runtime feature's `base_feature_status`. |
+| `add_import`                              | `ts`      | AST   | Adds an import to the top of a .ts file.              |
+| `drop_custom_element_registration`        | `ts`      | AST   | Removes a WebUI element's `customElements.define`.    |
 
 Use `plaster --help` to discover rewriters and read their full docs:
 
 ```sh
-tools/cr/plaster.py --help                # overview of commands and rewriters
-tools/cr/plaster.py --help make_virtual   # full docs for a specific rewriter
+tools/cr/plaster.py --help                    # overview of commands and rewriters
+tools/cr/plaster.py --help make_virtual       # docs for every namespace it is in
+tools/cr/plaster.py --help cxx.make_virtual   # narrowed to the `cxx` namespace
 ```
 
 ### File-wide options

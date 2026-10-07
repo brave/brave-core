@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc b/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
-index 9b892ae0a0de5597d69d10c83486171e9759521e..d31856eee73b02036add6845f4aa442d61e24b12 100644
+index cb94703264e51bcd4ad0be7d2df68a1000ebb427..ab70458aac12fdbe4b3bc8b510064113c93d9921 100644
 --- a/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
 +++ b/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
-@@ -74,7 +74,7 @@ content::WebUIDataSource* CreateAndAddBookmarksUIHTMLSource(Profile* profile) {
+@@ -81,7 +81,7 @@ content::WebUIDataSource* CreateAndAddBookmarksUIHTMLSource(Profile* profile) {
        {"editDialogInvalidUrl", IDS_BOOKMARK_MANAGER_INVALID_URL},
        {"editDialogNameInput", IDS_BOOKMARK_MANAGER_NAME_INPUT_PLACE_HOLDER},
        {"editDialogUrlInput", IDS_BOOKMARK_MANAGER_URL_INPUT_PLACE_HOLDER},

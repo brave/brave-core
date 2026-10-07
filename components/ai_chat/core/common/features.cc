@@ -25,7 +25,7 @@ const base::FeatureParam<std::string> kAIModelsDefaultKey{
 const base::FeatureParam<std::string> kAIModelsPremiumDefaultKey{
     &kAIChat, "default_premium_model", kChatAutomaticModelKey};
 const base::FeatureParam<std::string> kAIModelsVisionDefaultKey{
-    &kAIChat, "default_vision_model", kClaudeHaikuModelKey};
+    &kAIChat, "default_vision_model", kChatAutomaticModelKey};
 const base::FeatureParam<std::string> kAIModelsPremiumVisionDefaultKey{
     &kAIChat, "default_vision_model", kClaudeSonnetModelKey};
 const base::FeatureParam<bool> kFreemiumAvailable(&kAIChat,
@@ -75,7 +75,7 @@ bool IsAIChatFirstEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatFirst);
 }
 
-BASE_FEATURE(kAIChatUserChoiceTool, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kAIChatUserChoiceTool, base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables experimental "workspace" local coding-agent tools that let Leo view,
 // search, and edit files within a user-selected local folder.
@@ -195,14 +195,6 @@ bool IsCodeExecutionToolEnabled() {
   return base::FeatureList::IsEnabled(features::kCodeExecutionTool);
 }
 
-#if BUILDFLAG(IS_IOS)
-BASE_FEATURE(kAIChatWebUIEnabled, base::FEATURE_ENABLED_BY_DEFAULT);
-
-bool IsAIChatWebUIEnabled() {
-  return base::FeatureList::IsEnabled(kAIChatWebUIEnabled);
-}
-#endif
-
 BASE_FEATURE(kShowAIChatInputOnNewTabPage, base::FEATURE_DISABLED_BY_DEFAULT);
 
 const base::FeatureParam<bool> kShowAIChatInputOnNewTabPageDayZero{
@@ -211,6 +203,10 @@ const base::FeatureParam<bool> kShowAIChatInputOnNewTabPageDayZero{
 bool IsShowAIChatInputOnNewTabPageEnabled(PrefService* local_state,
                                           bool is_first_run) {
   CHECK(local_state);
+  if (local_state->GetString(ai_chat::prefs::kNtpInputSourceSuffix).empty()) {
+    local_state->SetString(ai_chat::prefs::kNtpInputSourceSuffix,
+                           is_first_run ? "c" : "b");
+  }
   // If feature was enabled via day zero experiment at install time, leave
   // the feature enabled forever.
   if (local_state->GetBoolean(ai_chat::prefs::kNtpInputDayZeroEnabled)) {
@@ -243,12 +239,19 @@ bool IsBraveSyncAIChatEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveSyncAIChat);
 }
 
+BASE_FEATURE(kAIChatThreads, base::FEATURE_DISABLED_BY_DEFAULT);
+
 BASE_FEATURE(kAIChatConversationShare, base::FEATURE_ENABLED_BY_DEFAULT);
 
 const base::FeatureParam<std::string> kAIChatConversationShareBaseUrl{
     &kAIChatConversationShare, "viewer_base_url",
     "https://leo-ai.brave.app/shared/"};
 
+const base::FeatureParam<int> kAIChatConversationShareExpiryDays{
+    &kAIChatConversationShare, "expiry_days", 7};
+
 BASE_FEATURE(kAIChatExportJSON, base::FEATURE_DISABLED_BY_DEFAULT);
+
+BASE_FEATURE(kAIChatMathRendering, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace ai_chat::features

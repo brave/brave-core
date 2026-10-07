@@ -426,16 +426,18 @@ class TabLocationView: UIView {
 
     updateForTraitCollection()
     updateColors()
+
+    registerForTraitChanges([
+      UITraitPreferredContentSizeCategory.self,
+      UITraitUserInterfaceStyle.self,
+    ]) { (self: Self, _) in
+      self.updateForTraitCollection()
+      self.updateColors()
+    }
   }
 
   required init(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    updateForTraitCollection()
-    updateColors()
   }
 
   override var accessibilityElements: [Any]? {

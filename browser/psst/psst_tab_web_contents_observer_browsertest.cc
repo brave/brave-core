@@ -5,6 +5,7 @@
 
 #include "brave/browser/psst/psst_tab_web_contents_observer.h"
 
+#include <algorithm>
 #include <string>
 #include <vector>
 
@@ -15,10 +16,11 @@
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
-#include "base/test/test_future.h"
+#include "base/values.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
 #include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/psst/core/browser/pref_names.h"
@@ -29,10 +31,16 @@
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/themes/theme_service.h"
+#include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#include "chrome/browser/ui/views/infobars/confirm_infobar.h"
+#include "chrome/browser/ui/views/infobars/infobar_view.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
 #include "chrome/browser/ui/views/page_action/test_support/page_action_test_support.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -40,19 +48,24 @@
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/confirm_infobar_delegate.h"
 #include "components/infobars/core/infobar.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/skia/include/core/SkColor.h"
 #include "ui/actions/actions.h"
+#include "ui/color/color_id.h"
+#include "ui/color/color_provider.h"
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event.h"
 #include "ui/events/event_constants.h"
 #include "ui/events/keycodes/keyboard_codes.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/views/controls/button/button.h"
+#include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/controls/menu/menu_controller.h"
 #include "ui/views/controls/menu/menu_item_view.h"
 #include "ui/views/test/button_test_api.h"
@@ -66,16 +79,30 @@ constexpr char kExpectedSchema[] = "chrome";
 constexpr char kExpectedHost[] = "psst";
 
 constexpr char kASiteSignedInUserId[] = "a_test_user";
+constexpr char kBSiteSignedInUserId[] = "b_test_user";
 
 constexpr char16_t kUserScriptLogPrefix[] = u"[PSST USER SCRIPT] Current URL: ";
 constexpr char16_t kPolicyScriptLogPrefix[] =
     u"[PSST POLICY SCRIPT] Current URL: ";
 
+// Two independent rules (sites "a" and "b") so tests can exercise PSST flows
+// running in separate tabs at the same time.
 constexpr char kPsstJson[] = R"([
     {
         "name": "a",
         "include": [
             "https://a.test/*"
+        ],
+        "exclude": [
+        ],
+        "version": 1,
+        "user_script": "user.js",
+        "policy_script": "policy.js"
+    },
+    {
+        "name": "b",
+        "include": [
+            "https://b.test/*"
         ],
         "exclude": [
         ],
@@ -100,6 +127,9 @@ constexpr char kPsstCrxManifest[] = R"(
   "version": "1.0.0"
 })";
 
+// Placeholders: $1 = server port, $2 = host (e.g. "a.test"), $3 = test data
+// file prefix (e.g. "a_test"), so the same template can be instantiated for
+// multiple independent PSST-supported sites.
 constexpr char kPsstCrxUserScriptTemplate[] = R"(
 (() => {
   const getUserId = () => {
@@ -107,22 +137,32 @@ constexpr char kPsstCrxUserScriptTemplate[] = R"(
   }
   const curUrl = window.location.href
   console.log("[PSST USER SCRIPT] Current URL: " + curUrl);
+
+  // Mirrors real per-site scripts (e.g. linkedin/user.js): initial_execution
+  // is true whenever the flow has no saved state yet - the very first
+  // execution, and again after the completing task removes the psst key and
+  // returns next_url = start_url. It is false while a flow is in progress and
+  // state is present. So when the tab navigates back to start_url, the user
+  // script sees getItem('psst') === null → initial_execution = true.
+  const initial_execution = sessionStorage.getItem('psst') === null;
+
   return {
     user_id: getUserId(),
-    share_experience_link: "https://a.test:$1/",
-    site_name: 'a.test',
+    initial_execution,
+    share_experience_link: "https://$2:$1/",
+    site_name: '$2',
     tasks: [
       {
         uid: '1',
-        url: 'https://a.test:$1/a_test_1.html',
-        description: 'a_test_1.html',
+        url: 'https://$2:$1/$3_1.html',
+        description: '$3_1.html',
         selector: '#test1Checkbox',
         turn_off: false,
       },
       {
         uid: '2',
-        url: 'https://a.test:$1/a_test_2.html',
-        description: 'a_test_2.html',
+        url: 'https://$2:$1/$3_2.html',
+        description: '$3_2.html',
         selector: '#test2Checkbox',
         turn_off: false,
       }
@@ -149,7 +189,7 @@ const PSST_INITIAL_EXECUTION_FLAG =
 const PSST_CHECK_SETTINGS_LOADED =
   window.__bravePsstParams.psst_settings_status ?? null;
 
-const PSST_LOCALSTORAGE_KEY = 'psst';
+const PSST_STORAGE_KEY = 'psst';
 
 // State of operations
 const psstState = {
@@ -218,6 +258,12 @@ const calculateProgress = (psstObj) => {
   return total === 0 ? 0 : Math.round((processed / total) * 100);
 };
 
+const cleanPsstDataStorage = () => {
+  try {
+    sessionStorage.removeItem(PSST_STORAGE_KEY);
+  } catch (error) {}
+}
+
 const getResult = (psst, nextUrl) => {
   const result_value = {
     psst: psst,
@@ -243,9 +289,9 @@ const createInitData = () => {
 };
 
 const savePsstData = (psst) => {
-  // Save the psst object to local storage.
-  globalThis.parent.localStorage.setItem(
-    PSST_LOCALSTORAGE_KEY,
+  // Save the psst object to session storage.
+  globalThis.parent.sessionStorage.setItem(
+    PSST_STORAGE_KEY,
     JSON.stringify(psst)
   );
 };
@@ -271,16 +317,12 @@ const moveCurrentTask = (psstObj, errorMessage) => {
 
 (async () => {
   const psstObj = JSON.parse(
-    globalThis.parent.localStorage.getItem(PSST_LOCALSTORAGE_KEY)
+    globalThis.parent.sessionStorage.getItem(PSST_STORAGE_KEY)
   );
   if (!psstObj || PSST_INITIAL_EXECUTION_FLAG) {
     const [psstObj, nextUrl] = createInitData()
     savePsstData(psstObj)
     return getResult(psstObj, nextUrl)
-  }
-
-  if (psstObj.state === psstState.COMPLETED) {
-    return getResult(psstObj, null)
   }
 
   try {
@@ -304,11 +346,22 @@ const moveCurrentTask = (psstObj, errorMessage) => {
   const nextUrl = hasMoreTasks ? next_task.url : psstObj.start_url;
   psstObj.progress = calculateProgress(psstObj)
 
-  savePsstData(psstObj)
+  if (psstObj.state === psstState.COMPLETED) {
+    // Clean up storage on finish
+    cleanPsstDataStorage();
+  } else {
+    savePsstData(psstObj)
+  }
+
   return getResult(psstObj, nextUrl)
 })();
 )";
 
+// Tracks whether the infobar with `identifier` is currently present in the
+// observed manager. The PSST flow shows and hides its infobar more than once
+// per test (e.g. the infobar is shown again when the flow returns to the page
+// it started on), so waiting is state-based: each Wait*() call returns as soon
+// as the infobar is in the requested state.
 class InfobarObserver : public infobars::InfoBarManager::Observer {
  public:
   InfobarObserver(infobars::InfoBarManager* manager,
@@ -317,61 +370,59 @@ class InfobarObserver : public infobars::InfoBarManager::Observer {
     if (manager) {
       infobar_observation_.Observe(manager);
       // Check if the target infobar already exists
-      CheckForExistingInfobar(manager);
+      infobar_present_ = HasTargetInfobar(*manager);
     }
   }
   ~InfobarObserver() override = default;
 
-  bool WaitForInfobarAdded() {
-    if (!infobar_observation_.IsObserving()) {
-      return false;  // Manager is destroyed
-    }
+  bool WaitForInfobarAdded() { return WaitForInfobarPresent(true); }
 
-    return infobar_added_future_.Get();
-  }
-
-  bool WaitForInfobarRemoved() {
-    if (!infobar_observation_.IsObserving()) {
-      return false;  // Manager is destroyed
-    }
-
-    return infobar_removed_future_.Get();
-  }
+  bool WaitForInfobarRemoved() { return WaitForInfobarPresent(false); }
 
   void OnInfoBarAdded(infobars::InfoBar* infobar) override {
-    if (infobar && infobar->delegate() &&
-        infobar->delegate()->GetIdentifier() == identifier_) {
-      infobar_added_future_.SetValue(true);
+    if (IsTargetInfobar(infobar)) {
+      infobar_present_ = true;
     }
   }
 
   void OnInfoBarRemoved(infobars::InfoBar* infobar, bool animate) override {
-    if (infobar && infobar->delegate() &&
-        infobar->delegate()->GetIdentifier() == identifier_) {
-      infobar_removed_future_.SetValue(true);
+    if (IsTargetInfobar(infobar)) {
+      infobar_present_ = false;
     }
   }
 
   void OnManagerWillBeDestroyed(infobars::InfoBarManager* manager) override {
     // Quit any pending waits since the manager is being destroyed
-    infobar_added_future_.SetValue(false);
-    infobar_removed_future_.SetValue(false);
     infobar_observation_.Reset();
   }
 
  private:
-  void CheckForExistingInfobar(infobars::InfoBarManager* manager) {
-    for (infobars::InfoBar* infobar : manager->infobars()) {
-      if (infobar && infobar->delegate() &&
-          infobar->delegate()->GetIdentifier() == identifier_) {
-        infobar_added_future_.SetValue(true);
-        break;
-      }
-    }
+  bool IsTargetInfobar(infobars::InfoBar* infobar) const {
+    return infobar && infobar->delegate() &&
+           infobar->delegate()->GetIdentifier() == identifier_;
   }
 
-  base::test::TestFuture<bool> infobar_added_future_;
-  base::test::TestFuture<bool> infobar_removed_future_;
+  bool HasTargetInfobar(infobars::InfoBarManager& manager) const {
+    return std::ranges::any_of(manager.infobars(),
+                               [this](infobars::InfoBar* infobar) {
+                                 return IsTargetInfobar(infobar);
+                               });
+  }
+
+  // Returns false if the manager is destroyed or the wait times out.
+  bool WaitForInfobarPresent(bool present) {
+    if (!infobar_observation_.IsObserving()) {
+      return false;  // Manager is destroyed
+    }
+
+    return base::test::RunUntil([&]() {
+             return infobar_present_ == present ||
+                    !infobar_observation_.IsObserving();
+           }) &&
+           infobar_present_ == present;
+  }
+
+  bool infobar_present_ = false;
   const infobars::InfoBarDelegate::InfoBarIdentifier identifier_;
   base::ScopedObservation<infobars::InfoBarManager,
                           infobars::InfoBarManager::Observer>
@@ -444,8 +495,32 @@ class DialogCloseObserver : public content::WebContentsObserver {
 };
 
 std::string CreateTestURL(net::EmbeddedTestServer& https_server,
+                          const std::string_view host,
                           const std::string_view path) {
-  return https_server.GetURL("a.test", path).spec();
+  return https_server.GetURL(host, path).spec();
+}
+
+std::string CreateTestURL(net::EmbeddedTestServer& https_server,
+                          const std::string_view path) {
+  return CreateTestURL(https_server, "a.test", path);
+}
+
+// Returns the consent dialog's rendered `document.body` background color, as
+// applied by the `--leo-color-container-background` CSS variable.
+SkColor GetDialogBodyBackgroundColor(content::WebContents* dialog_wc) {
+  const content::EvalJsResult result =
+      content::EvalJs(dialog_wc,
+                      "getComputedStyle(document.body).backgroundColor"
+                      ".match(/\\d+(\\.\\d+)?/g).slice(0, 3).map(Number)");
+  const base::ListValue& channels = result.ExtractList();
+  return SkColorSetRGB(channels[0].GetInt(), channels[1].GetInt(),
+                       channels[2].GetInt());
+}
+
+std::u16string CreateTestUtf16URL(net::EmbeddedTestServer& https_server,
+                                  const std::string_view host,
+                                  const std::string_view path) {
+  return base::UTF8ToUTF16(CreateTestURL(https_server, host, path));
 }
 
 std::u16string CreateTestUtf16URL(net::EmbeddedTestServer& https_server,
@@ -516,18 +591,10 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     ASSERT_TRUE(base::WriteFile(
         crx_path.Append(FILE_PATH_LITERAL("manifest.json")), kPsstCrxManifest));
 
-    const base::FilePath script_path =
-        crx_path.Append(FILE_PATH_LITERAL("scripts"))
-            .Append(FILE_PATH_LITERAL("a"));
-    ASSERT_TRUE(base::CreateDirectory(script_path));
-    ASSERT_TRUE(base::WriteFile(
-        script_path.Append(FILE_PATH_LITERAL("user.js")),
-        base::ReplaceStringPlaceholders(
-            kPsstCrxUserScriptTemplate,
-            {base::NumberToString(https_server_.port())}, nullptr)));
-    ASSERT_TRUE(
-        base::WriteFile(script_path.Append(FILE_PATH_LITERAL("policy.js")),
-                        kPsstCrxPolicyScriptTemplate));
+    ASSERT_NO_FATAL_FAILURE(
+        WritePsstSiteScripts(crx_path, "a", "a.test", "a_test"));
+    ASSERT_NO_FATAL_FAILURE(
+        WritePsstSiteScripts(crx_path, "b", "b.test", "b_test"));
 
     base::RunLoop run_loop;
     PsstRuleRegistry::GetInstance()->LoadRules(
@@ -537,6 +604,28 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
                         run_loop.Quit();
                       }));
     run_loop.Run();
+  }
+
+  // Writes the user/policy scripts for a PSST rule named `site_name` (e.g.
+  // "a"), matching pages on `host` (e.g. "a.test") whose test data files are
+  // named "`file_prefix`_0.html", "`file_prefix`_1.html", etc.
+  void WritePsstSiteScripts(const base::FilePath& crx_path,
+                            const std::string& site_name,
+                            const std::string& host,
+                            const std::string& file_prefix) {
+    const base::FilePath script_path =
+        crx_path.Append(FILE_PATH_LITERAL("scripts"))
+            .AppendASCII(site_name);
+    ASSERT_TRUE(base::CreateDirectory(script_path));
+    ASSERT_TRUE(base::WriteFile(
+        script_path.Append(FILE_PATH_LITERAL("user.js")),
+        base::ReplaceStringPlaceholders(
+            kPsstCrxUserScriptTemplate,
+            {base::NumberToString(https_server_.port()), host, file_prefix},
+            nullptr)));
+    ASSERT_TRUE(
+        base::WriteFile(script_path.Append(FILE_PATH_LITERAL("policy.js")),
+                        kPsstCrxPolicyScriptTemplate));
   }
 
   void TearDownOnMainThread() override {
@@ -610,11 +699,39 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     return true;
   }
 
+  // Simulates clicking the Cancel button in the consent/progress dialog by
+  // invoking the same mojo call the WebUI's `api.closeDialog` triggers.
+  bool CancelModalDialog(content::WebContents* dialog_wc) {
+    if (!dialog_wc) {
+      return false;
+    }
+
+    auto* dialog_ui =
+        dialog_wc->GetWebUI()->GetController()->GetAs<BravePsstDialogUI>();
+    if (!dialog_ui) {
+      return false;
+    }
+
+    if (dialog_ui->psst_consent_handler_) {
+      dialog_ui->psst_consent_handler_->CloseDialog();
+      return true;
+    }
+
+    return false;
+  }
+
   // Returns the PSST location bar page action icon view for the active browser
   // window, or nullptr if it can't be resolved.
   IconLabelBubbleView* GetPsstPageActionView() {
+    return GetPsstPageActionViewForBrowser(browser());
+  }
+
+  // Returns the PSST location bar page action icon view for `target_browser`,
+  // or nullptr if it can't be resolved.
+  IconLabelBubbleView* GetPsstPageActionViewForBrowser(
+      BrowserWindowInterface* target_browser) {
     BrowserView* const browser_view =
-        BrowserView::GetBrowserViewForBrowser(browser());
+        BrowserView::GetBrowserViewForBrowser(target_browser);
     if (!browser_view || !browser_view->toolbar_button_provider()) {
       return nullptr;
     }
@@ -622,6 +739,39 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
         browser_view->toolbar_button_provider()->GetPageActionViewInterface(
             kActionShowPsstIcon),
         kActionShowPsstIcon);
+  }
+
+  // Navigates `otr_browser`'s active tab to a PSST-matching URL and verifies
+  // that PSST is entirely absent: no tab helper, no infobar and no location bar
+  // page action.
+  void ExpectPsstUnavailableInOffTheRecordBrowser(
+      BrowserWindowInterface* otr_browser) {
+    ASSERT_TRUE(otr_browser);
+    ASSERT_TRUE(otr_browser->GetProfile()->IsOffTheRecord());
+
+    content::WebContents* const otr_web_contents =
+        otr_browser->tab_strip_model()->GetActiveWebContents();
+    ASSERT_TRUE(otr_web_contents);
+
+    const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+    ASSERT_TRUE(content::NavigateToURL(otr_web_contents, url));
+
+    auto* const tab_interface =
+        tabs::TabInterface::GetFromContents(otr_web_contents);
+    ASSERT_TRUE(tab_interface);
+    auto* const brave_tab_features = tabs::BraveTabFeatures::FromTabFeatures(
+        tab_interface->GetTabFeatures());
+    ASSERT_TRUE(brave_tab_features);
+    EXPECT_FALSE(brave_tab_features->psst_web_contents_observer());
+
+    auto* const otr_infobar_manager =
+        infobars::ContentInfoBarManager::FromWebContents(otr_web_contents);
+    ASSERT_TRUE(otr_infobar_manager);
+    EXPECT_FALSE(GetPsstInfobar(otr_infobar_manager));
+
+    // The PSST action item isn't registered for off-the-record windows, so the
+    // location bar has no view for it at all, not even a hidden one.
+    EXPECT_FALSE(GetPsstPageActionViewForBrowser(otr_browser));
   }
 
   // Navigates to `url` and waits for the PSST icon to appear in the location
@@ -646,10 +796,12 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   // and waits for the menu to appear, or opens the consent dialog and waits
   // for it to appear. For a left-click, the opened consent dialog's WebContents
   // is returned via `dialog_wc_out` when provided.
+  // Passing `infobar_observer` makes it wait for infobar appearing
   void NavigateAndClickOnPsstLocationBarIcon(
       const GURL& url,
       ui::EventFlags event_flags,
-      content::WebContents** dialog_wc_out = nullptr) {
+      content::WebContents** dialog_wc_out = nullptr,
+      InfobarObserver* infobar_observer = nullptr) {
     ASSERT_TRUE(event_flags == ui::EF_RIGHT_MOUSE_BUTTON ||
                 event_flags == ui::EF_LEFT_MOUSE_BUTTON);
 
@@ -658,6 +810,9 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     ASSERT_TRUE(action);
 
     ASSERT_NO_FATAL_FAILURE(NavigateAndWaitForPsstIconVisible(url));
+    if (infobar_observer) {
+      infobar_observer->WaitForInfobarAdded();
+    }
 
     IconLabelBubbleView* const psst_view = GetPsstPageActionView();
     ASSERT_TRUE(psst_view);
@@ -691,6 +846,36 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     }
   }
 
+  // Right-clicks the already-visible PSST location bar icon to open its
+  // context menu, without performing any navigation, and waits for the menu
+  // to appear. Returns the context menu's root MenuItemView, or nullptr on
+  // failure.
+  views::MenuItemView* RightClickPsstLocationBarIconAndWaitForMenu() {
+    actions::ActionItem* const action =
+        actions::ActionManager::Get().FindAction(kActionShowPsstIcon);
+    if (!action) {
+      return nullptr;
+    }
+
+    IconLabelBubbleView* const psst_view = GetPsstPageActionView();
+    if (!psst_view) {
+      return nullptr;
+    }
+
+    const gfx::Point click_location = psst_view->GetLocalBounds().CenterPoint();
+    const ui::MouseEvent click_event(
+        ui::EventType::kMousePressed, click_location, click_location,
+        ui::EventTimeForNow(), ui::EF_RIGHT_MOUSE_BUTTON,
+        ui::EF_RIGHT_MOUSE_BUTTON);
+    views::test::ButtonTestApi(views::Button::AsButton(psst_view))
+        .NotifyClick(click_event);
+    if (!base::test::RunUntil([&]() { return action->GetIsShowingBubble(); })) {
+      return nullptr;
+    }
+
+    return GetActiveContextMenuRoot();
+  }
+
   // Waits for the PSST context menu to close.
   void WaitForPsstContextMenuClosed() {
     actions::ActionItem* const action =
@@ -719,6 +904,31 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     // the WebUI JavaScript to complete before interacting with the handler.
     ASSERT_TRUE(base::test::RunUntil(
         [dialog_ui]() { return dialog_ui->psst_consent_handler_ != nullptr; }));
+  }
+
+  // Clicks the OK button to accept `infobar` and continue the flow, so that
+  // ConfirmInfoBar::OkButtonPressed() closes the infobar as it would in
+  // production.
+  void ClickInfobarOkButton(infobars::InfoBar* infobar) {
+    views::test::ButtonTestApi(
+        static_cast<ConfirmInfoBar*>(infobar)->ok_button_for_testing())
+        .NotifyClick(ui::MouseEvent(ui::EventType::kMousePressed, gfx::Point(),
+                                    gfx::Point(), base::TimeTicks(),
+                                    ui::EF_LEFT_MOUSE_BUTTON,
+                                    ui::EF_LEFT_MOUSE_BUTTON));
+  }
+
+  // Clicks the close ("x") button on `infobar`, so that
+  // InfoBarView::CloseButtonPressed() calls delegate()->InfoBarDismissed() and
+  // removes the infobar as it would in production.
+  void ClickInfobarCloseButton(infobars::InfoBar* infobar) {
+    views::test::ButtonTestApi(
+        views::Button::AsButton(
+            static_cast<InfoBarView*>(infobar)->close_button()))
+        .NotifyClick(ui::MouseEvent(ui::EventType::kMousePressed, gfx::Point(),
+                                    gfx::Point(), base::TimeTicks(),
+                                    ui::EF_LEFT_MOUSE_BUTTON,
+                                    ui::EF_LEFT_MOUSE_BUTTON));
   }
 
  protected:
@@ -774,8 +984,8 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   EXPECT_EQ(confirm_delegate->GetIdentifier(),
             infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
 
-  // Accept the infobar to continue the flow
-  confirm_delegate->Accept();
+  ClickInfobarOkButton(*infobar);
+  ASSERT_TRUE(infobar_observer.WaitForInfobarRemoved());
 
   auto* dialog_wc = WaitForAndGetDialogWebContents(new_web_contents_observer);
   ASSERT_TRUE(dialog_wc);
@@ -826,14 +1036,14 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   EXPECT_EQ(confirm_delegate->GetIdentifier(),
             infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
   // Dismissing the infobar disables PSST, which in turn removes the infobar.
-  confirm_delegate->InfoBarDismissed();
+  ClickInfobarCloseButton(psst_infobar);
   ASSERT_TRUE(infobar_observer.WaitForInfobarRemoved());
   EXPECT_FALSE(GetPsstInfobar(manager));
 
   // Wait for console message only from user script
   ASSERT_TRUE(console_observer.Wait());
   EXPECT_TRUE(console_observer.CheckMessages());
-  EXPECT_FALSE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+  EXPECT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
 }
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
@@ -876,7 +1086,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   EXPECT_EQ(confirm_delegate->GetIdentifier(),
             infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
 
-  confirm_delegate->Accept();
+  ClickInfobarOkButton(*infobar);
 
   auto* dialog_wc = WaitForAndGetDialogWebContents(new_web_contents_observer);
   ASSERT_TRUE(dialog_wc);
@@ -982,6 +1192,26 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   ASSERT_NO_FATAL_FAILURE(WaitForPsstIconHidden());
 }
 
+// Regression test for https://github.com/brave/brave-browser/issues/59666:
+// the PSST icon must be hidden after the tab navigates to a site with no
+// matching PSST rule. No PSST script runs on such a page, so the navigation
+// itself has to reset the icon.
+IN_PROC_BROWSER_TEST_F(
+    PsstTabWebContentsObserverBrowserTest,
+    LocationBarIconHiddenWhenNavigatingAwayFromApplicableSite) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+  ASSERT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+  ASSERT_NO_FATAL_FAILURE(NavigateAndWaitForPsstIconVisible(url));
+
+  const GURL unrelated_url =
+      GetEmbeddedTestServer().GetURL("c.test", "/title1.html");
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), unrelated_url));
+
+  ASSERT_NO_FATAL_FAILURE(WaitForPsstIconHidden());
+}
+
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        LocationBarIconLeftClickShowsConsentDialog) {
   GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
@@ -993,9 +1223,9 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 }
 
 // After navigating to the initial page and left-clicking the PSST location bar
-// icon, accepting the consent dialog runs both scripts across all task pages,
-// applies the PSST settings, and navigates the tab back to the initial page
-// where tuning started.
+// icon, hiding the opened infobar, accepting the consent dialog runs both
+// scripts across all task pages, applies the PSST settings, and navigates the
+// tab back to the initial page where tuning started.
 IN_PROC_BROWSER_TEST_F(
     PsstTabWebContentsObserverBrowserTest,
     LocationBarIconLeftClickAppliesSettingsAndReturnsToPage) {
@@ -1003,6 +1233,8 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
 
   const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+  infobars::ContentInfoBarManager* manager =
+      infobars::ContentInfoBarManager::FromWebContents(web_contents());
 
   // Observe both scripts running across the initial page and each task page.
   PsstWebContentsConsoleObserver console_observer(
@@ -1020,10 +1252,14 @@ IN_PROC_BROWSER_TEST_F(
        base::StrCat({kPolicyScriptLogPrefix,
                      CreateTestUtf16URL(https_server_, "/a_test_2.html")})});
 
+  InfobarObserver infobar_observer(
+      manager, infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
   content::WebContents* dialog_wc = nullptr;
   ASSERT_NO_FATAL_FAILURE(NavigateAndClickOnPsstLocationBarIcon(
-      url, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc));
+      url, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc, &infobar_observer));
   ASSERT_TRUE(dialog_wc);
+  // Ensure the infobar is dismissed when the omnibar icon is left-clicked.
+  infobar_observer.WaitForInfobarRemoved();
 
   const std::vector<std::string> perform_uids = {"1", "2"};
   ASSERT_TRUE(AcceptModalDialog(
@@ -1046,6 +1282,340 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_EQ(psst_website_settings->uids_to_perform, perform_uids);
 
   ASSERT_TRUE(CloseModalDialog(dialog_wc));
+}
+
+// Regression test for https://github.com/brave/brave-browser/issues/59223:
+// clicking Cancel after starting the PSST flow must stop the flow and close
+// the consent dialog, instead of leaving the flow running.
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       LocationBarIconLeftClickCancelDuringFlowStopsFlow) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+  ASSERT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+
+  content::WebContents* dialog_wc = nullptr;
+  ASSERT_NO_FATAL_FAILURE(NavigateAndClickOnPsstLocationBarIcon(
+      url, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc));
+  ASSERT_TRUE(dialog_wc);
+
+  DialogCloseObserver dialog_close_observer(dialog_wc);
+
+  // Click Apply to start the flow, then immediately click Cancel, before
+  // pumping the message loop again, so the cancellation is guaranteed to run
+  // ahead of any in-flight script response that could otherwise navigate the
+  // tab to the next task page.
+  const std::vector<std::string> perform_uids = {"1", "2"};
+  ASSERT_TRUE(AcceptModalDialog(
+      dialog_wc, url::Origin::Create(url).GetURL().spec(), perform_uids));
+  ASSERT_TRUE(CancelModalDialog(dialog_wc));
+
+  // The dialog closes and the location bar icon hides as part of the same
+  // cancellation.
+  dialog_close_observer.Wait();
+  ASSERT_NO_FATAL_FAILURE(WaitForPsstIconHidden());
+
+  // The flow was cancelled before the tab could navigate to any task page.
+  EXPECT_EQ(web_contents()->GetLastCommittedURL(), url);
+}
+
+// Regression test for https://github.com/brave/brave-browser/issues/59223:
+// selecting "Don't show for this site" from the context menu after starting
+// the PSST flow must stop the flow and close the consent dialog, instead of
+// leaving the flow running and letting it navigate to a task page.
+IN_PROC_BROWSER_TEST_F(
+    PsstTabWebContentsObserverBrowserTest,
+    LocationBarIconContextMenuDontShowForThisSiteDuringFlowStopsFlow) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+
+  content::WebContents* dialog_wc = nullptr;
+  ASSERT_NO_FATAL_FAILURE(NavigateAndClickOnPsstLocationBarIcon(
+      url, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc));
+  ASSERT_TRUE(dialog_wc);
+
+  DialogCloseObserver dialog_close_observer(dialog_wc);
+
+  // Open the context menu before starting the flow, so the item can be
+  // selected synchronously as soon as the flow starts.
+  views::MenuItemView* const root =
+      RightClickPsstLocationBarIconAndWaitForMenu();
+  ASSERT_TRUE(root);
+  views::MenuItemView* const dont_show_item =
+      root->GetMenuItemByID(IDC_PSST_DONT_SHOW_FOR_THIS_SITE);
+  ASSERT_TRUE(dont_show_item);
+
+  // Click Apply to start the flow, then immediately select the context menu
+  // item, before pumping the message loop again, so the cancellation is
+  // guaranteed to run ahead of any in-flight policy script response that
+  // could otherwise navigate the tab to the next task page.
+  const std::vector<std::string> perform_uids = {"1", "2"};
+  ASSERT_TRUE(AcceptModalDialog(
+      dialog_wc, url::Origin::Create(url).GetURL().spec(), perform_uids));
+  ASSERT_NO_FATAL_FAILURE(AcceptContextMenuItem(dont_show_item));
+
+  // The dialog closes and the location bar icon hides as part of the same
+  // cancellation.
+  dialog_close_observer.Wait();
+  ASSERT_NO_FATAL_FAILURE(WaitForPsstIconHidden());
+
+  // The flow was cancelled before the tab could navigate to any task page.
+  EXPECT_EQ(web_contents()->GetLastCommittedURL(), url);
+
+  // PSST is blocked for this origin.
+  auto psst_website_settings = GetPsstSettingsService()->GetPsstWebsiteSettings(
+      url::Origin::Create(url), kASiteSignedInUserId);
+  ASSERT_TRUE(psst_website_settings);
+  EXPECT_EQ(psst_website_settings->consent_status, ConsentStatus::kBlock);
+}
+
+// Regression test for https://github.com/brave/brave-browser/issues/59223:
+// selecting "Disable privacy settings tuning" from the context menu after
+// starting the PSST flow must stop the flow and close the consent dialog,
+// instead of leaving the flow running and letting it navigate to a task page.
+IN_PROC_BROWSER_TEST_F(
+    PsstTabWebContentsObserverBrowserTest,
+    LocationBarIconContextMenuDisablePrivacySettingsTuningDuringFlowStopsFlow) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+
+  content::WebContents* dialog_wc = nullptr;
+  ASSERT_NO_FATAL_FAILURE(NavigateAndClickOnPsstLocationBarIcon(
+      url, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc));
+  ASSERT_TRUE(dialog_wc);
+
+  DialogCloseObserver dialog_close_observer(dialog_wc);
+
+  // Open the context menu before starting the flow, so the item can be
+  // selected synchronously as soon as the flow starts.
+  views::MenuItemView* const root =
+      RightClickPsstLocationBarIconAndWaitForMenu();
+  ASSERT_TRUE(root);
+  views::MenuItemView* const disable_item =
+      root->GetMenuItemByID(IDC_PSST_DISABLE_PRIVACY_SETTINGS_TUNING);
+  ASSERT_TRUE(disable_item);
+
+  // Click Apply to start the flow, then immediately select the context menu
+  // item, before pumping the message loop again, so the cancellation is
+  // guaranteed to run ahead of any in-flight policy script response that
+  // could otherwise navigate the tab to the next task page.
+  const std::vector<std::string> perform_uids = {"1", "2"};
+  ASSERT_TRUE(AcceptModalDialog(
+      dialog_wc, url::Origin::Create(url).GetURL().spec(), perform_uids));
+  ASSERT_NO_FATAL_FAILURE(AcceptContextMenuItem(disable_item));
+
+  // The dialog closes and the location bar icon hides as part of the same
+  // cancellation.
+  dialog_close_observer.Wait();
+  ASSERT_NO_FATAL_FAILURE(WaitForPsstIconHidden());
+
+  // The flow was cancelled before the tab could navigate to any task page.
+  EXPECT_EQ(web_contents()->GetLastCommittedURL(), url);
+
+  // PSST is disabled globally.
+  EXPECT_FALSE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+}
+
+// Regression test for https://github.com/brave/brave-browser/issues/58296:
+// the consent dialog's background should track the browser's color mode
+// instead of staying fixed.
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       ConsentDialogBackgroundFollowsColorMode) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+  auto* theme_service = ThemeServiceFactory::GetForProfile(profile_);
+  ASSERT_TRUE(theme_service);
+
+  // Opens the consent dialog under the given color scheme and sets both
+  // the background color the dialog should be using (per the WebContents'
+  // own color provider) and the color it actually rendered.
+  auto open_dialog_and_get_colors =
+      [&](ThemeService::BrowserColorScheme color_scheme,
+          SkColor* expected_color_out, SkColor* actual_color_out) {
+        theme_service->SetBrowserColorScheme(color_scheme);
+        chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
+
+        content::WebContents* dialog_wc = nullptr;
+        ASSERT_NO_FATAL_FAILURE(NavigateAndClickOnPsstLocationBarIcon(
+            url, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc));
+        ASSERT_TRUE(dialog_wc);
+
+        *expected_color_out = dialog_wc->GetColorProvider().GetColor(
+            color_scheme == ThemeService::BrowserColorScheme::kDark
+                ? ui::kColorRefNeutral10
+                : ui::kColorRefNeutral100);
+        *actual_color_out = GetDialogBodyBackgroundColor(dialog_wc);
+
+        DialogCloseObserver dialog_close_observer(dialog_wc);
+        EXPECT_TRUE(CloseModalDialog(dialog_wc));
+        dialog_close_observer.Wait();
+      };
+
+  SkColor light_expected;
+  SkColor light_actual;
+  SkColor dark_expected;
+  SkColor dark_actual;
+  ASSERT_NO_FATAL_FAILURE(
+      open_dialog_and_get_colors(ThemeService::BrowserColorScheme::kLight,
+                                 &light_expected, &light_actual));
+  ASSERT_NO_FATAL_FAILURE(open_dialog_and_get_colors(
+      ThemeService::BrowserColorScheme::kDark, &dark_expected, &dark_actual));
+
+  EXPECT_EQ(light_actual, light_expected);
+  EXPECT_EQ(dark_actual, dark_expected);
+
+  // The background must actually change between color modes rather than
+  // staying fixed.
+  EXPECT_NE(light_actual, dark_actual);
+}
+
+// PSST is unavailable off-the-record, so opening a guest window must neither
+// show any PSST UI nor crash while setting up the tab's features.
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       NotAvailableInGuestProfile) {
+  BrowserWindowInterface* const guest_browser = CreateGuestBrowser();
+  ASSERT_TRUE(guest_browser);
+  // The pref is on by default even where the feature can't run, so the profile
+  // type is what has to be checked.
+  EXPECT_TRUE(
+      guest_browser->GetProfile()->GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+
+  ASSERT_NO_FATAL_FAILURE(
+      ExpectPsstUnavailableInOffTheRecordBrowser(guest_browser));
+}
+
+// Same as above for incognito, which is the off-the-record profile of a regular
+// profile rather than its own profile type.
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       NotAvailableInIncognitoProfile) {
+  ASSERT_NO_FATAL_FAILURE(
+      ExpectPsstUnavailableInOffTheRecordBrowser(CreateIncognitoBrowser()));
+}
+
+// Regression test for https://github.com/brave/brave-browser/issues/59233
+// (multi-tab PSST execution fix): the consent dialog's Mojo handler must stay
+// bound to the tab that opened it (its initiator WebContents) rather than to
+// whichever tab happens to be active in the browser.
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       ParallelPsstFlowsAcrossTabsRunIndependently) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+
+  const GURL url_a = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+  const GURL url_b = GetEmbeddedTestServer().GetURL("b.test", "/b_test_0.html");
+
+  PsstWebContentsConsoleObserver console_observer_a(
+      web_contents(),
+      {base::StrCat({kUserScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "a.test",
+                                        "/a_test_0.html")}),
+       base::StrCat({kUserScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "a.test",
+                                        "/a_test_1.html")}),
+       base::StrCat({kUserScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "a.test",
+                                        "/a_test_2.html")})},
+      {base::StrCat({kPolicyScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "a.test",
+                                        "/a_test_0.html")}),
+       base::StrCat({kPolicyScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "a.test",
+                                        "/a_test_1.html")}),
+       base::StrCat({kPolicyScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "a.test",
+                                        "/a_test_2.html")})});
+
+  // Tab 1: navigate to site a and open its consent dialog, but don't accept
+  // it yet.
+  content::WebContents* dialog_wc_a = nullptr;
+  ASSERT_NO_FATAL_FAILURE(NavigateAndClickOnPsstLocationBarIcon(
+      url_a, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc_a));
+  ASSERT_TRUE(dialog_wc_a);
+  content::WebContents* const tab_a_contents = web_contents();
+
+  // Tab 2: while tab 1's dialog is still open and unaccepted, open a second
+  // tab on a different PSST-supported site and open its consent dialog too.
+  content::WebContents& tab_b_contents_ref =
+      chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
+  content::WebContents* const tab_b_contents = &tab_b_contents_ref;
+  ASSERT_EQ(2, browser()->tab_strip_model()->count());
+
+  // Only uid "1" is accepted for site b below, so task "2" is filtered out
+  // entirely and b_test_2.html is never visited (see
+  // StartScriptHandlerBothScriptsExecuted_SkipOneTarget for the same
+  // behavior on site a).
+  PsstWebContentsConsoleObserver console_observer_b(
+      tab_b_contents,
+      {base::StrCat({kUserScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "b.test",
+                                        "/b_test_0.html")}),
+       base::StrCat({kUserScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "b.test",
+                                        "/b_test_1.html")})},
+      {base::StrCat({kPolicyScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "b.test",
+                                        "/b_test_0.html")}),
+       base::StrCat({kPolicyScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "b.test",
+                                        "/b_test_1.html")})});
+
+  content::WebContents* dialog_wc_b = nullptr;
+  ASSERT_NO_FATAL_FAILURE(NavigateAndClickOnPsstLocationBarIcon(
+      url_b, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc_b));
+  ASSERT_TRUE(dialog_wc_b);
+
+  // Switch the active tab back and forth between the two tabs while both
+  // dialogs remain open, then accept each dialog while the *other* tab is
+  // active. If a dialog's handler followed the active tab instead of its own
+  // initiator tab, this would apply the wrong site's consent to the wrong tab.
+  browser()->tab_strip_model()->ActivateTabAt(1);
+  ASSERT_EQ(tab_b_contents, web_contents());
+
+  const std::vector<std::string> perform_uids_a = {"1", "2"};
+  ASSERT_TRUE(AcceptModalDialog(
+      dialog_wc_a, url::Origin::Create(url_a).GetURL().spec(),
+      perform_uids_a));
+
+  browser()->tab_strip_model()->ActivateTabAt(0);
+  ASSERT_EQ(tab_a_contents, web_contents());
+
+  const std::vector<std::string> perform_uids_b = {"1"};
+  ASSERT_TRUE(AcceptModalDialog(
+      dialog_wc_b, url::Origin::Create(url_b).GetURL().spec(),
+      perform_uids_b));
+
+  // Both flows should run to completion in parallel without interfering with
+  // each other.
+  ASSERT_TRUE(console_observer_a.Wait());
+  EXPECT_TRUE(console_observer_a.CheckMessages());
+  ASSERT_TRUE(console_observer_b.Wait());
+  EXPECT_TRUE(console_observer_b.CheckMessages());
+
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return tab_a_contents->GetLastCommittedURL() == url_a; }));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return tab_b_contents->GetLastCommittedURL() == url_b; }));
+
+  // Each site's PSST settings must reflect what was accepted for that site,
+  // not the other tab's choice.
+  auto psst_settings_a = GetPsstSettingsService()->GetPsstWebsiteSettings(
+      url::Origin::Create(url_a), kASiteSignedInUserId);
+  ASSERT_TRUE(psst_settings_a);
+  EXPECT_EQ(psst_settings_a->consent_status, ConsentStatus::kAllow);
+  EXPECT_EQ(psst_settings_a->user_id, kASiteSignedInUserId);
+  EXPECT_EQ(psst_settings_a->uids_to_perform, perform_uids_a);
+
+  auto psst_settings_b = GetPsstSettingsService()->GetPsstWebsiteSettings(
+      url::Origin::Create(url_b), kBSiteSignedInUserId);
+  ASSERT_TRUE(psst_settings_b);
+  EXPECT_EQ(psst_settings_b->consent_status, ConsentStatus::kAllow);
+  EXPECT_EQ(psst_settings_b->user_id, kBSiteSignedInUserId);
+  EXPECT_EQ(psst_settings_b->uids_to_perform, perform_uids_b);
+
+  ASSERT_TRUE(CloseModalDialog(dialog_wc_a));
+  ASSERT_TRUE(CloseModalDialog(dialog_wc_b));
 }
 
 }  // namespace psst

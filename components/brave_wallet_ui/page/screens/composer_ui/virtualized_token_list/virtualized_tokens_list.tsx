@@ -84,13 +84,13 @@ const ListItem = React.memo((props: ListItemProps) => {
       && selectedFromToken?.coin === token.coin
       && selectedFromToken?.chainId === token.chainId
     ) {
-      return 'braveWalletFromToken'
+      return S.BRAVE_WALLET_FROM_TOKEN
     }
     return selectingFromOrTo === 'from'
       && selectedToToken?.contractAddress === token.contractAddress
       && selectedToToken?.coin === token.coin
       && selectedToToken?.chainId === token.chainId
-      ? 'braveWalletToToken'
+      ? S.BRAVE_WALLET_TO_TOKEN
       : undefined
   }, [selectedFromToken, selectedToToken, token, selectingFromOrTo])
 

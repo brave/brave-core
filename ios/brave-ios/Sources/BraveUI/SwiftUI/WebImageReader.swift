@@ -36,7 +36,8 @@ extension SDWebImageManager: WebImageDownloaderType {
     }
   }
 
-  public func imageFromData(data: Data) async -> UIImage? {
+  // @concurrent: decodes image data synchronously
+  @concurrent public func imageFromData(data: Data) async -> UIImage? {
     SDImageCodersManager.shared.decodedImage(with: data)
   }
 }

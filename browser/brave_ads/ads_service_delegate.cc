@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_ads/ads_service_delegate.h"
 
+#include "base/types/to_address.h"
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "build/build_config.h"
@@ -28,6 +29,7 @@
 #include "chrome/browser/fullscreen.h"
 #include "chrome/browser/lifetime/browser_shutdown.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #endif
@@ -57,7 +59,8 @@ void AdsServiceDelegate::OpenNewTabWithUrl(const GURL& url) {
                                       WindowOpenDisposition::NEW_FOREGROUND_TAB,
                                       ui::PAGE_TRANSITION_LINK, true);
   ServiceTabLauncher::GetInstance()->LaunchTab(
-      &*profile_, params, base::BindOnce([](content::WebContents*) {}));
+      base::to_address(profile_), params,
+      base::BindOnce([](content::WebContents*) {}));
 #else
   if (browser_shutdown::HasShutdownStarted()) {
     // The last browser window can close, and `browser_shutdown` can start,
@@ -67,11 +70,12 @@ void AdsServiceDelegate::OpenNewTabWithUrl(const GURL& url) {
     return;
   }
 
-  auto* browser = ProfileBrowserCollection::GetForProfile(&*profile_)
-                      ->FindTabbedBrowser()
-                      ->GetBrowserForMigrationOnly();
+  auto* browser =
+      ProfileBrowserCollection::GetForProfile(base::to_address(profile_))
+          ->FindTabbedBrowser();
   if (!browser) {
-    browser = Browser::Create(Browser::CreateParams(&*profile_, true));
+    browser = CreateBrowserWindow(
+        BrowserWindowCreateParams(base::to_address(profile_), true));
   }
   NavigateParams nav_params(browser, url, ui::PAGE_TRANSITION_LINK);
   nav_params.disposition = WindowOpenDisposition::SINGLETON_TAB;
@@ -82,7 +86,7 @@ void AdsServiceDelegate::OpenNewTabWithUrl(const GURL& url) {
 }
 
 void AdsServiceDelegate::MaybeInitNotificationHelper() {
-  notification_helper_->MaybeInitForProfile(&*profile_);
+  notification_helper_->MaybeInitForProfile(base::to_address(profile_));
 }
 
 bool AdsServiceDelegate::
@@ -199,7 +203,8 @@ std::string AdsServiceDelegate::GetVariationsCountryCode() {
 
 NotificationDisplayService*
 AdsServiceDelegate::GetNotificationDisplayService() {
-  return NotificationDisplayServiceFactory::GetForProfile(&*profile_);
+  return NotificationDisplayServiceFactory::GetForProfile(
+      base::to_address(profile_));
 }
 
 }  // namespace brave_ads

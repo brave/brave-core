@@ -79,5 +79,8 @@ ios_objc_mojom_wrappers("wallet_mojom_wrappers") {
   exclude_types = [
     "PageHandlerFactory",
     "PanelHandlerFactory",
+    # Desktop WebUI-only; `enable_snap` is false on iOS.
+    "SnapService",
+    "SnapHostBridge",
   ]
 }

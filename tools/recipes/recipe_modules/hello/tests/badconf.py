@@ -6,17 +6,30 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 from post_process import DropExpectation, StatusException
+from recipe_api import RecipeScriptApi
+from recipe_modules import hello
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['hello']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    hello: hello.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    pass
+
+
+def RunSteps(api: DEPS):
     # super_tool only accepts TARGET 'Charlie'; anything else raises BadConf.
     api.hello.set_config('super_tool', TARGET='Not Charlie')
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'badconf',
         api.post_process(StatusException),

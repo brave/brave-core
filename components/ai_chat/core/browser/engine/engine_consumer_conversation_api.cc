@@ -139,7 +139,7 @@ bool EngineConsumerConversationAPI::RequiresClientSideTitleGeneration() const {
 
 void EngineConsumerConversationAPI::GenerateConversationTitle(
     const PageContentsMap& page_contents,
-    const ConversationHistory& conversation_history,
+    const ConversationHistoryView& conversation_history,
     GenerationCompletedCallback completed_callback) {
   auto messages = BuildOAIGenerateConversationTitleMessages(
       page_contents, conversation_history, max_associated_content_length_,
@@ -221,8 +221,10 @@ void EngineConsumerConversationAPI::GetFocusTabs(
           [](EngineConsumer::GetFocusTabsCallback callback,
              std::vector<GenerationResult> results) {
             // Merge the results and call callback with tab IDs or error.
+            // No tab matching the topic is a valid answer, not a failure.
             std::move(callback).Run(
-                EngineConsumer::GetStrArrFromTabOrganizationResponses(results));
+                EngineConsumer::GetStrArrFromTabOrganizationResponses(
+                    results, EmptyResult::kIsValid));
           },
           std::move(callback)));
 

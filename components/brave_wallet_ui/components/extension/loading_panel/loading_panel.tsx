@@ -4,9 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-
-// Components
-import { ConfirmationPopup } from '../confirmation_popup/confirmation_popup'
+import ProgressRing from '@brave/leo/react/progressRing'
 
 // Selectors
 import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
@@ -27,10 +25,21 @@ interface Props {
 }
 
 export const LoadingPanel: React.FC<Props> = ({ message }) => {
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isSidePanel = useSafeUISelector(UISelectors.isSidePanel)
+  const isOnlyPanel = isPanel && !isSidePanel
 
-  if (isSidePanel) {
-    return <ConfirmationPopup isLoading={true} />
+  if (!isOnlyPanel) {
+    return (
+      <Column
+        alignItems='center'
+        justifyContent='center'
+        fullWidth
+        fullHeight
+      >
+        <ProgressRing mode='indeterminate' />
+      </Column>
+    )
   }
 
   return (

@@ -1,16 +1,48 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 4ecd2c257938e9bf2bc270da28f5fcee68617fe6..9d1c4e1b8817e24db5e3c16e93131e9a84377a0b 100644
+index 82f397571fefaff0096247d0e98c28c20db709bd..57954585dbb821f98bf9ceabee5dd28971042c36 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -1366,6 +1366,7 @@ static_library("ui") {
-     # split out yet.
-     "//chrome/browser/webauthn:impl",
-   ]
-+  import("//brave/browser/sources.gni") public_deps += [ "//brave/browser/ui" ] deps += brave_chrome_browser_ui_allow_circular_includes_from + brave_chrome_browser_ui_deps allow_circular_includes_from += brave_chrome_browser_ui_allow_circular_includes_from
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
-   if (enable_vr && is_win) {
-     deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -5269,6 +5270,7 @@ group("ui_public_dependencies") {
++import("//brave/browser/sources.gni")
+ import("//build/config/buildflags_paint_preview.gni")
+ import("//build/config/chrome_build.gni")
+ import("//build/config/compiler/compiler.gni")
+@@ -811,6 +812,7 @@ static_library("ui") {
+     ":simple_message_box_headers",
+     ":tab_dialogs",
+     ":tab_modal_confirm_dialog",
++    "//brave/browser/ui",
+     "//chrome/browser:browser_public_dependencies",
+     "//chrome/browser/feedback",
+     "//chrome/browser/headless",
+@@ -1087,6 +1089,8 @@ static_library("ui") {
+     "//ui/strings",
+     "//ui/webui",
+   ]
++  deps += brave_chrome_browser_ui_allow_circular_includes_from
++  deps += brave_chrome_browser_ui_deps
+ 
+   allow_circular_includes_from = [
+     # page_load_metrics's :impl includes headers from //chrome/browser/ui that
+@@ -1110,6 +1114,8 @@ static_library("ui") {
+     # - c/b/ui/views/frame/browser_view.h
+     "//chrome/browser/ui/views/file_system_access:impl",
+   ]
++  allow_circular_includes_from +=
++      brave_chrome_browser_ui_allow_circular_includes_from
+ 
+   # Desktop-Android-only dependencies.
+   if (is_desktop_android) {
+@@ -3802,11 +3808,13 @@ static_library("ui") {
+ group("ui_public_dependencies") {
+   visibility = [ "//chrome/browser:browser_public_dependencies" ]
+   public_deps = [
++    "//brave/browser/ui:ui_public_dependencies",
+     "//components/cross_device/logging",
+     "//components/dom_distiller/core",
      "//components/enterprise/buildflags",
      "//components/paint_preview/buildflags",
      "//components/safe_browsing:buildflags",
@@ -18,11 +50,3 @@ index 4ecd2c257938e9bf2bc270da28f5fcee68617fe6..9d1c4e1b8817e24db5e3c16e93131e9a
      "//components/segmentation_platform/public",
      "//components/sync",
      "//components/sync_user_events",
-@@ -5281,6 +5283,7 @@ group("ui_public_dependencies") {
-   if (enable_extensions_core) {
-     public_deps += [ "//extensions/browser" ]
-   }
-+  public_deps += [ "//brave/browser/ui:ui_public_dependencies" ]
-   if (!is_android) {
-     public_deps += [
-       "//build:branding_buildflags",

@@ -11,14 +11,38 @@ namespace brave_ads {
 // Diagnostic entries should be visually sorted based on the enum order.
 enum class DiagnosticEntryType {
   kDeviceId,
-  kOptedInToNewTabPageAds,
   kNotificationAdsEnabled,
-  kOptedInToSearchResultAds,
+  kSponsoredAdsEnabled,
+  kNewTabPageAdsShown,
   kLanguage,
   kCountry,
+  kSubdivisionCode,
+  kSchemaVersion,
+  kLastDatabaseMigrationFailureReason,
+  kWalletValid,
+  kWalletConnected,
+  kIssuersValid,
+  kConfirmationTokensRemaining,
   kCatalogId,
+  kCatalogVersion,
   kCatalogLastUpdated,
-  kLastUnIdleTime
+  kLastUnIdleTime,
+  kNewTabPageAdsSchemaVersion,
+  kCatalogNextUpdate,
+  kCatalogPermission,
+  kNetworkConnectionPermission,
+  kBrowserIsActivePermission,
+  kFullScreenModePermission,
+  kMediaPermission,
+  kDoNotDisturbPermission,
+  kIssuersPermission,
+  kConfirmationTokensPermission,
+  kUserActivityPermission,
+  kCommandLinePermission,
+  kCanShowNotificationsPermission,
+  kTextClassificationResource,
+  kPurchaseIntentResource,
+  kAntiTargetingResource
 };
 
 }  // namespace brave_ads

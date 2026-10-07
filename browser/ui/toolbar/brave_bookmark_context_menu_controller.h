@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/browser/ui/toolbar/bookmark_bar_sub_menu_model.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/ui/bookmarks/bookmark_context_menu_controller.h"
 #include "ui/gfx/native_ui_types.h"
@@ -19,7 +18,7 @@
 #include "brave/browser/ui/containers/containers_bookmark_menu_model_delegate.h"
 #endif
 
-class Browser;
+class BrowserWindowInterface;
 class Profile;
 class PrefService;
 
@@ -37,7 +36,7 @@ class BraveBookmarkContextMenuController
   BraveBookmarkContextMenuController(
       gfx::NativeWindow parent_window,
       BookmarkContextMenuControllerDelegate* delegate,
-      Browser* browser,
+      BrowserWindowInterface* browser,
       Profile* profile,
       BookmarkLaunchLocation opened_from,
       const std::vector<raw_ptr<const bookmarks::BookmarkNode,
@@ -50,8 +49,6 @@ class BraveBookmarkContextMenuController
       const BraveBookmarkContextMenuController&) = delete;
 
   ~BraveBookmarkContextMenuController() override;
-
-  BookmarkBarSubMenuModel* GetBookmarkSubmenuModel();
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   // Non-null when `MaybeAddContainersBookmarkSubmenu` added the submenu; used
@@ -73,7 +70,6 @@ class BraveBookmarkContextMenuController
   FRIEND_TEST_ALL_PREFIXES(BraveBookmarkContextMenuControllerTest,
                            ShowAllBookmarksButtonMenuCheckedState);
 
-  void AddBraveBookmarksSubmenu(Profile* profile);
   void AddShowAllBookmarksButtonMenu();
 #if BUILDFLAG(ENABLE_CONTAINERS)
   void MaybeAddContainersBookmarkSubmenu(Profile* profile, const GURL& url);
@@ -81,10 +77,9 @@ class BraveBookmarkContextMenuController
 
   void SetPrefsForTesting(PrefService* prefs);
 
-  raw_ptr<Browser> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   raw_ptr<PrefService> prefs_ = nullptr;
   raw_ptr<bookmarks::BookmarkModel> bookmark_model_ = nullptr;
-  std::unique_ptr<BookmarkBarSubMenuModel> brave_bookmarks_submenu_model_;
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   std::unique_ptr<containers::ContainersBookmarkMenuModelDelegate>

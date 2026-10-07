@@ -60,9 +60,9 @@ export interface Props {
 const vendorName = (vendor: BraveWallet.HardwareVendor) => {
   switch (vendor) {
     case BraveWallet.HardwareVendor.kLedger:
-      return getLocale('braveWalletConnectHardwareLedger')
+      return getLocale(S.BRAVE_WALLET_CONNECT_HARDWARE_LEDGER)
     case BraveWallet.HardwareVendor.kTrezor:
-      return getLocale('braveWalletConnectHardwareTrezor')
+      return getLocale(S.BRAVE_WALLET_CONNECT_HARDWARE_TREZOR)
     default:
       assertNotReached(`Unknown vendor ${vendor}`)
   }
@@ -78,7 +78,10 @@ const getErrorMessage = (
   accountTypeName: string,
 ): ErrorMessage => {
   if (typeof error === 'undefined') {
-    return { error: getLocale('braveWalletUnknownInternalError'), userHint: '' }
+    return {
+      error: getLocale(S.BRAVE_WALLET_UNKNOWN_INTERNAL_ERROR),
+      userHint: '',
+    }
   }
 
   if (typeof error === 'string') {
@@ -89,7 +92,7 @@ const getErrorMessage = (
   if (error.code && (error.code === 27404 || error.code === 21781)) {
     // Unknown Error
     return {
-      error: getLocale('braveWalletConnectHardwareInfo2').replace(
+      error: getLocale(S.BRAVE_WALLET_CONNECT_HARDWARE_INFO2).replace(
         '$1',
         accountTypeName,
       ),
@@ -100,7 +103,10 @@ const getErrorMessage = (
   const ledgerError: LedgerError = error
 
   if (!ledgerError.error) {
-    return { error: getLocale('braveWalletUnknownInternalError'), userHint: '' }
+    return {
+      error: getLocale(S.BRAVE_WALLET_UNKNOWN_INTERNAL_ERROR),
+      userHint: '',
+    }
   }
 
   if (
@@ -110,7 +116,9 @@ const getErrorMessage = (
     // INCORRECT_LENGTH or INS_NOT_SUPPORTED
     return {
       error: ledgerError.error,
-      userHint: getLocale('braveWalletConnectHardwareWrongApplicationUserHint'),
+      userHint: getLocale(
+        S.BRAVE_WALLET_CONNECT_HARDWARE_WRONG_APPLICATION_USER_HINT,
+      ),
     }
   }
 
@@ -315,7 +323,7 @@ export const HardwareWalletConnect = ({
 
       const successMessage =
         await PluralStringProxyImpl.getInstance().getPluralString(
-          'braveWalletHardwareWalletAccountConnectedSuccessfully',
+          S.BRAVE_WALLET_HARDWARE_WALLET_ACCOUNT_CONNECTED_SUCCESSFULLY,
           hwAccounts.length,
         )
 
@@ -377,20 +385,23 @@ export const HardwareWalletConnect = ({
     return (
       <>
         <HardwareButton
-          title={getLocale('braveWalletConnectHardwareLedger')}
+          title={getLocale(S.BRAVE_WALLET_CONNECT_HARDWARE_LEDGER)}
           description={getLocale(
-            'braveWalletConnectHardwareDeviceDescription',
-          ).replace('$1', getLocale('braveWalletConnectHardwareLedger'))}
+            S.BRAVE_WALLET_CONNECT_HARDWARE_DEVICE_DESCRIPTION,
+          ).replace('$1', getLocale(S.BRAVE_WALLET_CONNECT_HARDWARE_LEDGER))}
           onClick={onSelectLedger}
         />
         {trezorEnabled && (
           <>
             <Divider />
             <HardwareButton
-              title={getLocale('braveWalletConnectHardwareTrezor')}
+              title={getLocale(S.BRAVE_WALLET_CONNECT_HARDWARE_TREZOR)}
               description={getLocale(
-                'braveWalletConnectHardwareDeviceDescription',
-              ).replace('$1', getLocale('braveWalletConnectHardwareTrezor'))}
+                S.BRAVE_WALLET_CONNECT_HARDWARE_DEVICE_DESCRIPTION,
+              ).replace(
+                '$1',
+                getLocale(S.BRAVE_WALLET_CONNECT_HARDWARE_TREZOR),
+              )}
               onClick={onSelectTrezor}
             />
           </>
@@ -421,10 +432,9 @@ export const HardwareWalletConnect = ({
       <Instructions mode={connectionError ? 'error' : 'info'}>
         {connectionError
           ? `${connectionError.error} ${connectionError?.userHint}`
-          : getLocale('braveWalletConnectHardwareAuthorizationNeeded').replace(
-              '$1',
-              vendorName(selectedHardwareVendor),
-            )}
+          : getLocale(
+              S.BRAVE_WALLET_CONNECT_HARDWARE_AUTHORIZATION_NEEDED,
+            ).replace('$1', vendorName(selectedHardwareVendor))}
       </Instructions>
       <VerticalSpace space='100px' />
       <ContinueButton
@@ -432,9 +442,9 @@ export const HardwareWalletConnect = ({
         isLoading={isLoadingAccounts}
       >
         <div slot='loading'>
-          {getLocale('braveWalletConnectingHardwareWallet')}
+          {getLocale(S.BRAVE_WALLET_CONNECTING_HARDWARE_WALLET)}
         </div>
-        {!isLoadingAccounts && getLocale('braveWalletAddAccountConnect')}
+        {!isLoadingAccounts && getLocale(S.BRAVE_WALLET_ADD_ACCOUNT_CONNECT)}
       </ContinueButton>
     </Column>
   )

@@ -21,6 +21,10 @@ inline constexpr char kManageUrlDev[] =
 inline constexpr char kFeedbackUrl[] = "https://support.brave.app/";
 inline constexpr char kAboutUrl[] = "https://brave.com/firewall-vpn/";
 
+// TODO(https://github.com/brave/brave-browser/issues/54596)
+// Remove everything under v1::endpoints namespace, as this is now deprecated
+// and only used in BraveVPN V1 code.
+namespace v1::endpoints {
 inline constexpr char kRegionNameKey[] = "name";
 inline constexpr char kRegionNamePrettyKey[] = "name-pretty";
 inline constexpr char kRegionCountryKey[] = "country";
@@ -58,6 +62,8 @@ inline constexpr char kVerifyPurchaseToken[] = "api/v1.1/verify-purchase-token";
 inline constexpr char kCreateSubscriberCredentialV12[] =
     "api/v1.2/subscriber-credential/create";
 inline constexpr char kServerStatus[] = "api/v1.3/server-status";
+}  // namespace v1::endpoints
+
 inline constexpr int kP3AIntervalHours = 24;
 
 inline constexpr char kSubscriberCredentialKey[] = "credential";

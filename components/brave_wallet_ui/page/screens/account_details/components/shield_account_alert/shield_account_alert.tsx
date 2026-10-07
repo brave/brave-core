@@ -55,9 +55,9 @@ export function ShieldAccountAlert(props: Props) {
                 isBold={true}
                 textSize='16px'
               >
-                {getLocale('braveWalletShieldAccount')}
+                {getLocale(S.BRAVE_WALLET_SHIELD_ACCOUNT)}
               </Text>
-              {getLocale('braveWalletShieldAccountAlertDescription')}
+              {getLocale(S.BRAVE_WALLET_SHIELD_ACCOUNT_ALERT_DESCRIPTION)}
             </Column>
             {!isMobileOrPanel && (
               <div>
@@ -70,7 +70,7 @@ export function ShieldAccountAlert(props: Props) {
                     name='shield-done'
                     slot='icon-before'
                   />
-                  {getLocale('braveWalletShieldAccount')}
+                  {getLocale(S.BRAVE_WALLET_SHIELD_ACCOUNT)}
                 </Button>
               </div>
             )}
@@ -87,7 +87,7 @@ export function ShieldAccountAlert(props: Props) {
                   name='shield-done'
                   slot='icon-before'
                 />
-                {getLocale('braveWalletShieldAccount')}
+                {getLocale(S.BRAVE_WALLET_SHIELD_ACCOUNT)}
               </Button>
             </div>
           )}

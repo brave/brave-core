@@ -8,7 +8,7 @@
 <!-- Vertical Tab strip -->
 <settings-toggle-button
   class="cr-row first"
-  pref-key="brave.tabs.vertical_tabs_enabled"
+  pref-key="[[verticalTabsEnabledPrefKey_]]"
   label="$i18n{appearanceSettingsTabsUseVerticalTabs}"
   disabled="[[!verticalTabsToggleEnabled_]]">
 </settings-toggle-button>
@@ -43,8 +43,15 @@
     <template is="dom-if" if="[[!shouldForceFloatOnMouseOver_(verticalTabsHideCompletelyWhenCollapsedPref_.value, verticalTabsShowToggleButtonPref_.value)]]">
       <settings-checkbox
         class="list-item"
-        pref-key="brave.tabs.vertical_tabs_floating_enabled"
+        pref-key="[[floatingModePrefKey_]]"
         label="$i18n{appearanceSettingsTabsFloatOnMouseOver}">
+      </settings-checkbox>
+    </template>
+    <template is="dom-if" if="[[showEverythingMenuToggle_()]]">
+      <settings-checkbox
+        class="list-item"
+        pref-key="everything_menu.pinned_to_tabstrip"
+        label="$i18n{showEverythingMenuButton}">
       </settings-checkbox>
     </template>
     <settings-checkbox

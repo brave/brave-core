@@ -7,6 +7,7 @@ import * as React from 'react'
 import { Meta } from '@storybook/react'
 import * as Mojom from '../../../common/mojom'
 import { InferControlsFromArgs } from '$storybook/utils'
+import { jsDateToMojoTime } from '$web-common/mojomUtils'
 import UntrustedMockContext from '../../mock_untrusted_conversation_context'
 import ErrorConnection from './error_connection'
 import ErrorConversationEnd from './error_conversation_end'
@@ -30,6 +31,14 @@ const MOCK_ERROR_DETAILS: Mojom.APIErrorDetails = {
   statusCode: 429,
   errorType: '42901',
   innerStatusCode: 0,
+  rateLimitExpiresAt: undefined,
+}
+
+const MOCK_MODEL_RATE_LIMIT_ERROR_DETAILS: Mojom.APIErrorDetails = {
+  statusCode: 429,
+  errorType: '42904',
+  innerStatusCode: 0,
+  rateLimitExpiresAt: undefined,
 }
 
 export default {
@@ -51,7 +60,35 @@ export const _Alerts = {
           <ErrorConversationEnd />
           <ErrorInvalidAPIKey />
           <ErrorInvalidEndpointURL />
-          <ErrorRateLimit />
+          <ErrorRateLimit apiError={Mojom.APIError.RateLimitReached} />
+          <UntrustedMockContext
+            service={{
+              getPremiumStatus: () =>
+                Promise.resolve({
+                  status: Mojom.PremiumStatus.Active,
+                  info: null,
+                }),
+            }}
+          >
+            <ErrorRateLimit
+              apiError={Mojom.APIError.ModelRateLimitReached}
+              errorDetails={{
+                ...MOCK_MODEL_RATE_LIMIT_ERROR_DETAILS,
+                rateLimitExpiresAt: jsDateToMojoTime(
+                  new Date(Date.now() + (2 * 60 + 15) * 60 * 1000),
+                ),
+              }}
+            />
+            <ErrorRateLimit
+              apiError={Mojom.APIError.ModelRateLimitReached}
+              errorDetails={{
+                ...MOCK_MODEL_RATE_LIMIT_ERROR_DETAILS,
+                rateLimitExpiresAt: jsDateToMojoTime(
+                  new Date(Date.now() + 32 * 60 * 1000),
+                ),
+              }}
+            />
+          </UntrustedMockContext>
           <ErrorServiceOverloaded />
           <LongConversationInfo />
           <WarningPremiumDisconnected />

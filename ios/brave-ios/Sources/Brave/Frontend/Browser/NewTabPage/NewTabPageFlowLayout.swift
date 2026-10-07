@@ -43,7 +43,9 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
         at: IndexPath(item: 0, section: braveNewsSection)
       )
     {
-      let diff = collectionView.frame.height - attribute.frame.minY
+      let diff =
+        collectionView.frame.height - collectionView.adjustedContentInset.top
+        - collectionView.adjustedContentInset.bottom - attribute.frame.minY
       gapLength = diff - gapPadding
 
       // Obtain the total height of the Brave News section to calculate any extra height to be added
@@ -53,11 +55,12 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
       if let lastItemAttribute = super.layoutAttributesForItem(
         at: IndexPath(item: numberOfItems - 1, section: braveNewsSection)
       ) {
-        if lastItemAttribute.frame.maxY - attribute.frame.minY < collectionView.bounds.height
-          - gapPadding
-        {
+        let visibleHeight =
+          collectionView.bounds.height - collectionView.adjustedContentInset.top
+          - collectionView.adjustedContentInset.bottom
+        if lastItemAttribute.frame.maxY - attribute.frame.minY < visibleHeight - gapPadding {
           extraHeight =
-            (collectionView.bounds.height - gapPadding)
+            (visibleHeight - gapPadding)
             - (lastItemAttribute.frame.maxY - attribute.frame.minY)
         }
       }
@@ -164,19 +167,22 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
     withScrollingVelocity velocity: CGPoint
   ) -> CGPoint {
     guard let section = braveNewsSection,
-      collectionView?.numberOfItems(inSection: section) != 0,
+      let collectionView,
+      collectionView.numberOfItems(inSection: section) != 0,
       let item = layoutAttributesForItem(at: IndexPath(item: 0, section: section))
     else {
       return proposedContentOffset
     }
     var offset = proposedContentOffset
+    let contentY = offset.y + collectionView.adjustedContentInset.top
     let flicked = abs(velocity.y) > 0.3
-    if (offset.y > item.frame.minY / 2 && offset.y < item.frame.minY)
-      || (flicked && velocity.y > 0 && offset.y < item.frame.minY)
+    if (contentY > item.frame.minY / 2 && contentY < item.frame.minY)
+      || (flicked && velocity.y > 0 && contentY < item.frame.minY)
     {
-      offset.y = item.frame.minY - 56  // FIXME: Use size of header + padding
-    } else if offset.y < item.frame.minY {
-      offset.y = 0
+      // FIXME: Use size of header + padding
+      offset.y = item.frame.minY - collectionView.adjustedContentInset.top - 56
+    } else if contentY < item.frame.minY {
+      offset.y = -collectionView.adjustedContentInset.top
     }
     return offset
   }
@@ -223,7 +229,9 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
     // smooth scrolling.
     let currentElementY = originalAttributes.frame.minY
     let isScrolling = collectionView.isDragging || collectionView.isDecelerating
-    let isSizingElementAboveTopEdge = originalAttributes.frame.minY < collectionView.contentOffset.y
+    let isSizingElementAboveTopEdge =
+      originalAttributes.frame.minY
+      < collectionView.contentOffset.y + collectionView.adjustedContentInset.top
 
     if isScrolling && isSizingElementAboveTopEdge {
       let isSameRowAsLastSizedElement = lastSizedElementMinY == currentElementY

@@ -34,14 +34,12 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/utils.h"
-#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/line_chart_ui.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/market_ui.h"
@@ -120,21 +118,18 @@ WebUIIOSFactoryFunction GetUntrustedWebUIIOSFactoryFunction(const GURL& url) {
   [[maybe_unused]] const std::string_view url_host = url.host();
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (url_host == kAIChatUntrustedConversationUIHost &&
-      ai_chat::features::IsAIChatWebUIEnabled()) {
+  if (url_host == kAIChatUntrustedConversationUIHost) {
     return &NewRegularProfileOnlyWebUIIOS<AIChatUntrustedConversationUI>;
   }
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  if (brave_wallet::IsWalletWebUIEnabled()) {
-    if (url_host == kUntrustedNftHost) {
-      return &NewRegularProfileOnlyWebUIIOS<nft::UntrustedNftUI>;
-    } else if (url_host == kUntrustedMarketHost) {
-      return &NewRegularProfileOnlyWebUIIOS<market::UntrustedMarketUI>;
-    } else if (url_host == kUntrustedLineChartHost) {
-      return &NewRegularProfileOnlyWebUIIOS<line_chart::UntrustedLineChartUI>;
-    }
+  if (url_host == kUntrustedNftHost) {
+    return &NewRegularProfileOnlyWebUIIOS<nft::UntrustedNftUI>;
+  } else if (url_host == kUntrustedMarketHost) {
+    return &NewRegularProfileOnlyWebUIIOS<market::UntrustedMarketUI>;
+  } else if (url_host == kUntrustedLineChartHost) {
+    return &NewRegularProfileOnlyWebUIIOS<line_chart::UntrustedLineChartUI>;
   }
 #endif
 
@@ -167,13 +162,11 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
   } else if (url_host == kSkusInternalsHost) {
     return &NewWebUIIOS<SkusInternalsUI>;
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  } else if (url_host == kAIChatUIHost &&
-             ai_chat::features::IsAIChatWebUIEnabled()) {
+  } else if (url_host == kAIChatUIHost) {
     return &NewWebUIIOS<AIChatUI>;
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  } else if (url_host == kWalletPageHost &&
-             brave_wallet::IsWalletWebUIEnabled()) {
+  } else if (url_host == kWalletPageHost) {
     return &NewWebUIIOS<WalletPageUI>;
 #endif
   }

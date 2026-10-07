@@ -169,7 +169,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
       audioSupport: false,
       videoSupport: false,
       supportsTools: this.supportsTools,
-      supportedCapabilities: [mojom.ConversationCapability.CHAT],
+      supportedCapabilities: [],
       isSuggestedModel: false,
       isNearModel: false,
       supportsPrivateInference: false,

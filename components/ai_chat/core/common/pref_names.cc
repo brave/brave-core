@@ -17,12 +17,7 @@ namespace ai_chat::prefs {
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   if (ai_chat::features::IsAIChatEnabled()) {
     registry->RegisterTimePref(kLastAcceptedDisclaimer, {});
-#if BUILDFLAG(IS_IOS)
-    registry->RegisterBooleanPref(kBraveChatStorageEnabled,
-                                  ai_chat::features::IsAIChatWebUIEnabled());
-#else
     registry->RegisterBooleanPref(kBraveChatStorageEnabled, true);
-#endif
     registry->RegisterBooleanPref(kBraveChatAutocompleteProviderEnabled, true);
     registry->RegisterBooleanPref(kUserDismissedPremiumPrompt, false);
     registry->RegisterBooleanPref(kUserDismissedStorageNotice, false);
@@ -42,12 +37,16 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
     registry->RegisterBooleanPref(kBraveAIChatTabOrganizationEnabled, true);
     registry->RegisterStringPref(kBraveAIChatTabOrganizationModelKey,
                                  kChatAutomaticModelKey);
+    // Off by default: this uploads page content, so it needs its own opt-in.
+    registry->RegisterBooleanPref(kBraveAIChatTabOrganizationSendPageContent,
+                                  false);
     registry->RegisterBooleanPref(kBraveAIChatUserCustomizationEnabled, true);
     registry->RegisterBooleanPref(kBraveAIChatUserMemoryEnabled, true);
     registry->RegisterDictionaryPref(kBraveAIChatUserCustomizations);
     registry->RegisterListPref(kBraveAIChatUserMemories);
     registry->RegisterDictionaryPref(kBraveAIChatSkills);
     registry->RegisterBooleanPref(kBraveAIChatOllamaFetchEnabled, false);
+    registry->RegisterStringPref(kBraveAIChatConversationShares, "");
     registry->RegisterDictionaryPref(kAIChatObliviousHttpKeyConfigs);
     registry->RegisterTimePref(kRemoteModelsCachedAt, {});
   }
@@ -65,6 +64,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   // Added 11/2023
   registry->RegisterDictionaryPref(kBraveChatPremiumCredentialCache);
   registry->RegisterBooleanPref(kNtpInputDayZeroEnabled, false);
+  registry->RegisterStringPref(kNtpInputSourceSuffix, "");
 }
 
 }  // namespace ai_chat::prefs

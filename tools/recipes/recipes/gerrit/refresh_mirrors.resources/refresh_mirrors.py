@@ -3,8 +3,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Publish the local git cache into our Gerrit mirror instance.
-"""
+"""Publish the local git cache into our Gerrit mirror instance."""
 
 from __future__ import annotations
 
@@ -29,12 +28,16 @@ UPSTREAM_REMOTE = 'origin'
 GERRIT_REMOTE = 'gerrit'
 
 # Projects whose history is too large for Gerrit to accept in a single push.
-LARGE_REPOS = frozenset({
-    'mirror/chromium.googlesource.com/chromium/src',
-})
+LARGE_REPOS = frozenset(
+    {
+        'mirror/chromium.googlesource.com/chromium/src',
+    }
+)
+
 
 # Max refs to push per `git push` when mirroring many refs at once.
 MIRROR_REFS_PER_PUSH = 200
+
 
 # Commits to advance a large repo's default branch per push. A single push of
 # all chromium/src history (~600k objects / 1 GiB) OOMs Gerrit's JGit unpacker,
@@ -46,19 +49,18 @@ LARGE_REPO_COMMIT_CHUNK = 5000
 LOCK_DIR_SUFFIX = '.locked'
 
 
-def _query(*command: str,
-           cwd: Path | None = None) -> subprocess.CompletedProcess[str]:
+def _query(
+    *command: str, cwd: Path | None = None
+) -> subprocess.CompletedProcess[str]:
     """Run *command*, capturing output and never raising on a non-zero exit.
 
     Use this for read-only queries where a non-zero exit is an expected,
     handled condition (e.g. asking Gerrit whether a project exists).
     """
     logging.debug('>>> %s', ' '.join(command))
-    return subprocess.run(list(command),
-                          cwd=cwd,
-                          capture_output=True,
-                          text=True,
-                          check=False)
+    return subprocess.run(
+        list(command), cwd=cwd, capture_output=True, text=True, check=False
+    )
 
 
 def _run(*command: str, cwd: Path | None = None) -> None:
@@ -88,11 +90,12 @@ def project_name_for(upstream_url: str) -> str:
     host = parts.hostname or ''
     path = parts.path.strip('/')
     if path.endswith('.git'):
-        path = path[:-len('.git')]
+        path = path[: -len('.git')]
     path = path.strip('/')
     if not host or not path:
-        raise ValueError(f'cannot derive a project name from URL: '
-                         f'{upstream_url!r}')
+        raise ValueError(
+            f'cannot derive a project name from URL: {upstream_url!r}'
+        )
     return f'{MIRROR_PARENT}/{host}/{path}'
 
 
@@ -110,14 +113,17 @@ class Gerrit:
 
     def _ssh_prefix(self) -> list[str]:
         return [
-            'ssh', '-p',
-            str(GERRIT_SSH_PORT), f'{self.user}@{GERRIT_SSH_HOST}'
+            'ssh',
+            '-p',
+            str(GERRIT_SSH_PORT),
+            f'{self.user}@{GERRIT_SSH_HOST}',
         ]
 
     def project_url(self, project: str) -> str:
         """Return the SSH git URL for *project*."""
-        return (f'ssh://{self.user}@{GERRIT_SSH_HOST}:{GERRIT_SSH_PORT}/'
-                f'{project}')
+        return (
+            f'ssh://{self.user}@{GERRIT_SSH_HOST}:{GERRIT_SSH_PORT}/{project}'
+        )
 
     def project_exists(self, project: str) -> bool:
         """Return whether *project* already exists on the Gerrit instance.
@@ -125,13 +131,16 @@ class Gerrit:
         Uses `gerrit ls-projects --prefix`, which returns every project whose
         name starts with the prefix; an exact match in that set is the answer.
         """
-        result = _query(*self._ssh_prefix(), 'gerrit', 'ls-projects',
-                        '--prefix', project)
+        result = _query(
+            *self._ssh_prefix(), 'gerrit', 'ls-projects', '--prefix', project
+        )
         if result.returncode != 0:
             # A query failure (auth, connectivity) is not "absent"; surface it
             # rather than silently trying to create a project that may exist.
-            raise RuntimeError(f'gerrit ls-projects failed for {project!r}: '
-                               f'{result.stderr.strip()}')
+            raise RuntimeError(
+                f'gerrit ls-projects failed for {project!r}: '
+                f'{result.stderr.strip()}'
+            )
         return project in result.stdout.split()
 
     def create_project(self, project: str) -> None:
@@ -144,16 +153,28 @@ class Gerrit:
         if self.dry_run:
             logging.info('[dry-run] would create project %s', project)
             return
-        _run(*self._ssh_prefix(), 'gerrit', 'create-project', project,
-             '--owner', MIRROR_OWNER_GROUP, '--parent', MIRROR_PARENT)
+        _run(
+            *self._ssh_prefix(),
+            'gerrit',
+            'create-project',
+            project,
+            '--owner',
+            MIRROR_OWNER_GROUP,
+            '--parent',
+            MIRROR_PARENT,
+        )
 
 
 def _is_bare_repo(path: Path) -> bool:
     """Return whether *path* is an existing, valid bare git repository."""
     if not (path / 'config').is_file():
         return False
-    return _query('git', '-C', str(path), 'rev-parse',
-                  '--is-bare-repository').stdout.strip() == 'true'
+    return (
+        _query(
+            'git', '-C', str(path), 'rev-parse', '--is-bare-repository'
+        ).stdout.strip()
+        == 'true'
+    )
 
 
 class Repo:
@@ -188,8 +209,14 @@ class Repo:
 
     def upstream_url(self) -> str | None:
         """Return this repo's upstream remote URL, or None if it has none."""
-        result = _query('git', '-C', str(self.path), 'config', '--get',
-                        f'remote.{UPSTREAM_REMOTE}.url')
+        result = _query(
+            'git',
+            '-C',
+            str(self.path),
+            'config',
+            '--get',
+            f'remote.{UPSTREAM_REMOTE}.url',
+        )
         return result.stdout.strip() or None
 
     def head_ref(self) -> str | None:
@@ -203,19 +230,37 @@ class Repo:
         while the real branches live under `refs/heads/upstream/*`; the caller
         then mirrors all heads instead.
         """
-        ref = _query('git', '-C', str(self.path), 'symbolic-ref', '--quiet',
-                     'HEAD').stdout.strip()
+        ref = _query(
+            'git', '-C', str(self.path), 'symbolic-ref', '--quiet', 'HEAD'
+        ).stdout.strip()
         if not ref:
             return None
-        resolves = _query('git', '-C', str(self.path), 'rev-parse', '--verify',
-                          '--quiet', f'{ref}^{{commit}}').returncode == 0
+        resolves = (
+            _query(
+                'git',
+                '-C',
+                str(self.path),
+                'rev-parse',
+                '--verify',
+                '--quiet',
+                f'{ref}^{{commit}}',
+            ).returncode
+            == 0
+        )
         return ref if resolves else None
 
     def has_local_heads(self) -> bool:
         """Return whether this repo has any local branch under refs/heads/."""
         return bool(
-            _query('git', '-C', str(self.path), 'for-each-ref', '--count=1',
-                   'refs/heads/').stdout.strip())
+            _query(
+                'git',
+                '-C',
+                str(self.path),
+                'for-each-ref',
+                '--count=1',
+                'refs/heads/',
+            ).stdout.strip()
+        )
 
     def push_refs_in_batches(self, refs: list[str], label: str) -> None:
         """Force-push *refs* (full refnames) to the `gerrit` remote, in batches.
@@ -228,15 +273,25 @@ class Repo:
             subprocess.CalledProcessError: If a batch push fails.
         """
         total = len(refs)
-        logging.info('Pushing %d %s in batches of %d', total, label,
-                     MIRROR_REFS_PER_PUSH)
+        logging.info(
+            'Pushing %d %s in batches of %d', total, label, MIRROR_REFS_PER_PUSH
+        )
         for start in range(0, total, MIRROR_REFS_PER_PUSH):
-            batch = refs[start:start + MIRROR_REFS_PER_PUSH]
-            logging.info('  %s %d-%d/%d', label, start + 1, start + len(batch),
-                         total)
+            batch = refs[start : start + MIRROR_REFS_PER_PUSH]
+            logging.info(
+                '  %s %d-%d/%d', label, start + 1, start + len(batch), total
+            )
             refspecs = [f'+{ref}:{ref}' for ref in batch]
-            _run('git', '-C', str(self.path), 'push', '-o', 'skip-validation',
-                 GERRIT_REMOTE, *refspecs)
+            _run(
+                'git',
+                '-C',
+                str(self.path),
+                'push',
+                '-o',
+                'skip-validation',
+                GERRIT_REMOTE,
+                *refspecs,
+            )
 
     def mirror_all_heads(self) -> None:
         """Force-push every local branch to the `gerrit` remote, in batches.
@@ -244,14 +299,26 @@ class Repo:
         Used for repos whose HEAD doesn't resolve to a single default branch
         (e.g. Chromium external mirrors), whose branches must all be mirrored.
         """
-        refs = _query('git', '-C', str(self.path), 'for-each-ref',
-                      '--format=%(refname)', 'refs/heads/').stdout.split()
+        refs = _query(
+            'git',
+            '-C',
+            str(self.path),
+            'for-each-ref',
+            '--format=%(refname)',
+            'refs/heads/',
+        ).stdout.split()
         self.push_refs_in_batches(refs, 'branch(es)')
 
     def local_tags(self) -> dict[str, str]:
         """Return this repo's local tags as {refname: object sha}."""
-        out = _query('git', '-C', str(self.path), 'for-each-ref',
-                     '--format=%(refname) %(objectname)', 'refs/tags/').stdout
+        out = _query(
+            'git',
+            '-C',
+            str(self.path),
+            'for-each-ref',
+            '--format=%(refname) %(objectname)',
+            'refs/tags/',
+        ).stdout
         tags = {}
         for line in out.splitlines():
             name, _, sha = line.partition(' ')
@@ -261,8 +328,9 @@ class Repo:
 
     def remote_tags(self) -> dict[str, str]:
         """Return the `gerrit` remote's tags as {refname: object sha}."""
-        out = _query('git', '-C', str(self.path), 'ls-remote', '--tags',
-                     GERRIT_REMOTE).stdout
+        out = _query(
+            'git', '-C', str(self.path), 'ls-remote', '--tags', GERRIT_REMOTE
+        ).stdout
         tags = {}
         for line in out.splitlines():
             sha, tab, ref = line.partition('\t')
@@ -283,8 +351,9 @@ class Repo:
         if not local:
             return
         remote = self.remote_tags()
-        to_push = sorted(name for name, sha in local.items()
-                         if remote.get(name) != sha)
+        to_push = sorted(
+            name for name, sha in local.items() if remote.get(name) != sha
+        )
         if not to_push:
             logging.info('Tags already up to date (%d tag(s)).', len(local))
             return
@@ -292,19 +361,36 @@ class Repo:
 
     def ensure_gerrit_remote(self, url: str) -> None:
         """Point this repo's `gerrit` remote at *url*, adding or updating it."""
-        current = _query('git', '-C', str(self.path), 'remote', 'get-url',
-                         GERRIT_REMOTE)
+        current = _query(
+            'git', '-C', str(self.path), 'remote', 'get-url', GERRIT_REMOTE
+        )
         if current.returncode != 0:
-            _run('git', '-C', str(self.path), 'remote', 'add', GERRIT_REMOTE,
-                 url)
+            _run(
+                'git', '-C', str(self.path), 'remote', 'add', GERRIT_REMOTE, url
+            )
         elif current.stdout.strip() != url:
-            _run('git', '-C', str(self.path), 'remote', 'set-url',
-                 GERRIT_REMOTE, url)
+            _run(
+                'git',
+                '-C',
+                str(self.path),
+                'remote',
+                'set-url',
+                GERRIT_REMOTE,
+                url,
+            )
 
     def is_shallow(self) -> bool:
         """Return whether this repo has a truncated (shallow) history."""
-        return _query('git', '-C', str(self.path), 'rev-parse',
-                      '--is-shallow-repository').stdout.strip() == 'true'
+        return (
+            _query(
+                'git',
+                '-C',
+                str(self.path),
+                'rev-parse',
+                '--is-shallow-repository',
+            ).stdout.strip()
+            == 'true'
+        )
 
     def ensure_full_history(self) -> None:
         """Deepen a shallow repo to its full history before it is ever pushed.
@@ -317,8 +403,7 @@ class Repo:
         <parent>" unpack error instead -- so a shallow cache repo is deepened
         here, unconditionally, rather than ever letting that push be attempted.
 
-        A cache repo can end up shallow if something else (e.g. a recipe using
-        `chromium_checkout.ensure_checkout(depth=...)`) populated this same
+        A cache repo can end up shallow if something else populated this same
         `GIT_CACHE_PATH` with a depth-limited fetch before a full mirror pass
         ever ran; a plain fetch afterwards only extends history forward from
         that boundary; it never backfills it.
@@ -328,21 +413,29 @@ class Repo:
         """
         logging.info(
             '%s is a shallow clone; fetching full history before mirroring...',
-            self.name)
-        _run('git', '-C', str(self.path), 'fetch', '--unshallow',
-             UPSTREAM_REMOTE)
+            self.name,
+        )
+        _run(
+            'git', '-C', str(self.path), 'fetch', '--unshallow', UPSTREAM_REMOTE
+        )
 
     def remote_branch_sha(self, head_ref: str) -> str | None:
         """Return the `gerrit` remote's current tip for *head_ref*, or None."""
-        result = _query('git', '-C', str(self.path), 'ls-remote', '--heads',
-                        GERRIT_REMOTE, head_ref)
+        result = _query(
+            'git',
+            '-C',
+            str(self.path),
+            'ls-remote',
+            '--heads',
+            GERRIT_REMOTE,
+            head_ref,
+        )
         line = result.stdout.strip()
         return line.split()[0] if line else None
 
-    def commit_checkpoints(self,
-                           head_ref: str,
-                           chunk_size: int,
-                           start: str | None = None) -> list[str]:
+    def commit_checkpoints(
+        self, head_ref: str, chunk_size: int, start: str | None = None
+    ) -> list[str]:
         """Return ancestor checkpoints of *head_ref* to push, oldest first.
 
         Lists first-parent history from *start* (exclusive; the root when
@@ -354,12 +447,19 @@ class Repo:
         million-commit histories. Empty means nothing to push.
         """
         rev_range = head_ref if start is None else f'{start}..{head_ref}'
-        commits = _query('git', '-C', str(self.path), 'rev-list', '--reverse',
-                         '--first-parent', rev_range).stdout.split()
+        commits = _query(
+            'git',
+            '-C',
+            str(self.path),
+            'rev-list',
+            '--reverse',
+            '--first-parent',
+            rev_range,
+        ).stdout.split()
         if not commits:
             return []
 
-        checkpoints = commits[chunk_size - 1::chunk_size]
+        checkpoints = commits[chunk_size - 1 :: chunk_size]
         # Always finish exactly at the tip.
         if not checkpoints or checkpoints[-1] != commits[-1]:
             checkpoints.append(commits[-1])
@@ -374,18 +474,32 @@ class Repo:
         """
         start = self.remote_branch_sha(branch_ref)
         logging.info('Computing seed checkpoints for %s...', branch_ref)
-        checkpoints = self.commit_checkpoints(branch_ref,
-                                              LARGE_REPO_COMMIT_CHUNK, start)
+        checkpoints = self.commit_checkpoints(
+            branch_ref, LARGE_REPO_COMMIT_CHUNK, start
+        )
         if not checkpoints:
             logging.info('%s already up to date.', branch_ref)
             return
-        logging.info('Seeding %s in %d push(es) of up to %d commits each',
-                     branch_ref, len(checkpoints), LARGE_REPO_COMMIT_CHUNK)
+        logging.info(
+            'Seeding %s in %d push(es) of up to %d commits each',
+            branch_ref,
+            len(checkpoints),
+            LARGE_REPO_COMMIT_CHUNK,
+        )
         for index, sha in enumerate(checkpoints, start=1):
-            logging.info('  push %d/%d -> %s', index, len(checkpoints),
-                         sha[:12])
-            _run('git', '-C', str(self.path), 'push', '-o', 'skip-validation',
-                 GERRIT_REMOTE, f'+{sha}:{branch_ref}')
+            logging.info(
+                '  push %d/%d -> %s', index, len(checkpoints), sha[:12]
+            )
+            _run(
+                'git',
+                '-C',
+                str(self.path),
+                'push',
+                '-o',
+                'skip-validation',
+                GERRIT_REMOTE,
+                f'+{sha}:{branch_ref}',
+            )
 
     def refresh(self, gerrit: Gerrit) -> bool:
         """Mirror this cache repo into Gerrit.
@@ -411,8 +525,9 @@ class Repo:
         """
         upstream = self.upstream_url()
         if upstream is None:
-            logging.warning('%s has no %s remote URL; skipping.', self.name,
-                            UPSTREAM_REMOTE)
+            logging.warning(
+                '%s has no %s remote URL; skipping.', self.name, UPSTREAM_REMOTE
+            )
             return False
 
         # The default branch HEAD points at, when it resolves. When it
@@ -436,10 +551,17 @@ class Repo:
             logging.info('Project %s already exists.', project)
 
         if gerrit.dry_run:
-            seeded = ' (seeded in chunks)' if project in LARGE_REPOS \
-                and head_ref else ''
-            logging.info('[dry-run] would push %s to %s%s', target,
-                         gerrit.project_url(project), seeded)
+            seeded = (
+                ' (seeded in chunks)'
+                if project in LARGE_REPOS and head_ref
+                else ''
+            )
+            logging.info(
+                '[dry-run] would push %s to %s%s',
+                target,
+                gerrit.project_url(project),
+                seeded,
+            )
             return True
 
         self.ensure_gerrit_remote(gerrit.project_url(project))
@@ -456,7 +578,9 @@ class Repo:
             if head_ref is None:
                 logging.warning(
                     '%s is large but HEAD does not resolve; skipping to '
-                    'avoid a bulk push.', project)
+                    'avoid a bulk push.',
+                    project,
+                )
                 return False
             self.seed_branch(head_ref)
             # Publish tags too (release tags point off the default branch);
@@ -468,8 +592,16 @@ class Repo:
         # branch (batched) so a dangling-HEAD repo isn't lost. Forced, so the
         # mirror tracks upstream even across a history rewrite.
         if head_ref is not None:
-            _run('git', '-C', str(self.path), 'push', '-o', 'skip-validation',
-                 GERRIT_REMOTE, f'+{head_ref}:{head_ref}')
+            _run(
+                'git',
+                '-C',
+                str(self.path),
+                'push',
+                '-o',
+                'skip-validation',
+                GERRIT_REMOTE,
+                f'+{head_ref}:{head_ref}',
+            )
         else:
             self.mirror_all_heads()
         return True
@@ -479,7 +611,8 @@ def discover_cache_repos(git_cache_path: Path) -> list[Repo]:
     """Return the bare cache repos directly under *git_cache_path*, sorted."""
     return sorted(
         (Repo(p) for p in git_cache_path.iterdir() if Repo.is_cache_repo(p)),
-        key=lambda repo: repo.path)
+        key=lambda repo: repo.path,
+    )
 
 
 @dataclass
@@ -499,16 +632,20 @@ class MirrorSummary:
         which repos were updated, skipped, and failed -- is printed at the end.
         """
         repos = discover_cache_repos(git_cache_path)
-        logging.info('Found %d cache repo(s) under %s', len(repos),
-                     git_cache_path)
+        logging.info(
+            'Found %d cache repo(s) under %s', len(repos), git_cache_path
+        )
         for repo in repos:
             try:
                 if repo.refresh(gerrit):
                     self.record_updated(repo.name)
                 else:
                     self.record_skipped(repo.name)
-            except (subprocess.CalledProcessError, RuntimeError,
-                    ValueError) as e:
+            except (
+                subprocess.CalledProcessError,
+                RuntimeError,
+                ValueError,
+            ) as e:
                 self.record_failed(repo.name)
                 logging.error('Failed to mirror %s: %s', repo.name, e)
 
@@ -531,8 +668,12 @@ class MirrorSummary:
         """Print a final tally of the run, listing updated and failed repos."""
         logging.info('')
         logging.info('==== Mirror refresh summary ====')
-        logging.info('updated: %d  skipped: %d  failed: %d', len(self.updated),
-                     len(self.skipped), len(self.failed))
+        logging.info(
+            'updated: %d  skipped: %d  failed: %d',
+            len(self.updated),
+            len(self.skipped),
+            len(self.failed),
+        )
         if self.updated:
             logging.info('Updated:')
             for name in self.updated:
@@ -552,23 +693,28 @@ class MirrorSummary:
 def main() -> int:
     """Parse arguments and refresh every mirror under `GIT_CACHE_PATH`."""
     parser = argparse.ArgumentParser(
-        description='Publish the local git cache into the Gerrit mirrors.')
+        description='Publish the local git cache into the Gerrit mirrors.'
+    )
     parser.add_argument(
         '--git-cache-path',
         default=os.environ.get('GIT_CACHE_PATH'),
-        help='Root of the git cache (defaults to $GIT_CACHE_PATH).')
+        help='Root of the git cache (defaults to $GIT_CACHE_PATH).',
+    )
     parser.add_argument('--user', required=True, help='Gerrit username.')
     parser.add_argument(
         '--dry-run',
         action='store_true',
-        help='Log the project creates and pushes without performing them.')
-    parser.add_argument('--verbose',
-                        action='store_true',
-                        help='Enable debug logging.')
+        help='Log the project creates and pushes without performing them.',
+    )
+    parser.add_argument(
+        '--verbose', action='store_true', help='Enable debug logging.'
+    )
     args = parser.parse_args()
 
-    logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO,
-                        format='%(message)s')
+    logging.basicConfig(
+        level=logging.DEBUG if args.verbose else logging.INFO,
+        format='%(message)s',
+    )
 
     if not args.git_cache_path:
         parser.error('GIT_CACHE_PATH is not set; pass --git-cache-path.')

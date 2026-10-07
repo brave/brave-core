@@ -177,6 +177,10 @@ interface NewTabPageHandler {
   // Opens a URL from the search box.
   OpenURLFromSearch(string url, EventDetails details) => ();
 
+  // If the Omnibox would treat `input` as a URL, returns the canonical URL to
+  // navigate to. Otherwise returns null (the input should be searched).
+  GetUrlFromSearchInput(string input) => (string? url);
+
   // Sets Brave Search as the user's default search engine.
   SetDefaultSearchEngineAsBraveSearch() => ();
 

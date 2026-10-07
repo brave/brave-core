@@ -510,7 +510,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
     return (
       <PopupModal
         onClose={onClose}
-        title={getLocale('braveWalletChooseRecipient')}
+        title={getLocale(S.BRAVE_WALLET_CHOOSE_RECIPIENT)}
         width='560px'
         height='90vh'
         ref={forwardedRef}
@@ -534,18 +534,20 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
                 textSize='12px'
                 isBold={true}
               >
-                {getLocale('braveWalletSendTo')}
+                {getLocale(S.BRAVE_WALLET_SEND_TO)}
               </LabelText>
             </Row>
             <AddressInput
               value={searchValue}
               onInput={(e) => setSearchValue(e.value)}
-              placeholder={getLocale('braveWalletAddressOrDomainPlaceholder')}
+              placeholder={getLocale(
+                S.BRAVE_WALLET_ADDRESS_OR_DOMAIN_PLACEHOLDER,
+              )}
               type='text'
               disabled={isGeneratingAddress}
             >
               <Row slot='right-icon'>
-                <Tooltip text={getLocale('braveWalletPasteFromClipboard')}>
+                <Tooltip text={getLocale(S.BRAVE_WALLET_PASTE_FROM_CLIPBOARD)}>
                   <PasteButton onClick={onPaste}>
                     <Icon name='copy-plain-text' />
                   </PasteButton>
@@ -582,7 +584,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
                       textSize='12px'
                       isBold={true}
                     >
-                      {getLocale('braveWalletMyAddresses')}
+                      {getLocale(S.BRAVE_WALLET_MY_ADDRESSES)}
                     </LabelText>
                   </Row>
                   {filteredAccounts.map((account) => (
@@ -612,7 +614,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
                     isBold={false}
                     textColor='secondary'
                   >
-                    {getLocale('braveWalletSearchingForDomain')}
+                    {getLocale(S.BRAVE_WALLET_SEARCHING_FOR_DOMAIN)}
                   </Text>
                 </Row>
               )}
@@ -700,6 +702,9 @@ export const AccountGroupItem = (props: AccountsListProps) => {
   const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
     WalletSelectors.isZCashShieldedTransactionsEnabled,
   )
+  const isZCashIronwoodEnabled = useSafeWalletSelector(
+    WalletSelectors.isZCashIronwoodEnabled,
+  )
 
   // Queries
   const { data: zcashAccountInfo } = useGetZCashAccountInfoQuery(
@@ -714,19 +719,30 @@ export const AccountGroupItem = (props: AccountsListProps) => {
     isZCashShieldedTransactionsEnabled
     && !!zcashAccountInfo
     && !!zcashAccountInfo.accountShieldBirthday
+  const isFromAccount = account.accountId.uniqueKey === fromAccountId?.uniqueKey
+  const isOrchardToken =
+    selectedAsset?.zcashTokenType === BraveWallet.ZCashTokenType.kOrchard
+  const isIronwoodToken =
+    selectedAsset?.zcashTokenType === BraveWallet.ZCashTokenType.kIronwood
+  // Orchard -> ironwood migration is only possible when the ironwood feature is
+  // enabled, so the shielded address is offered for orchard funds only then.
+  const canMigrateOrchardToIronwood = isOrchardToken && isZCashIronwoodEnabled
 
+  // The from-account is a recipient when sending between pools:
+  // - transparent address: orchard or ironwood (unshield)
+  // - shielded address: transparent (shield) or orchard (migrate, ironwood only)
+  // Sending ironwood to the from-account's own shielded address is a no-op, so
+  // that combination is disabled below. Other accounts keep accepting ironwood
+  // (ironwood -> ironwood), but never orchard (no cross-account migration).
   return (
     <>
       <AccountListItem
         account={account}
         onClick={() => onSelectAccount(account)}
         isDisabled={
-          // Show transparent address of the selected account
-          // if shielded asset chosen.
-          !(selectedAsset && isShieldedToken(selectedAsset))
-          && account.accountId.uniqueKey === fromAccountId?.uniqueKey
+          !(selectedAsset && isShieldedToken(selectedAsset)) && isFromAccount
         }
-        isSelected={account.accountId.uniqueKey === fromAccountId?.uniqueKey}
+        isSelected={isFromAccount}
         addressOverride={
           account.accountId.coin === BraveWallet.CoinType.ZEC
           && zcashAccountInfo
@@ -741,11 +757,12 @@ export const AccountGroupItem = (props: AccountsListProps) => {
           onClick={() =>
             onSelectAccount(account, zcashAccountInfo.orchardInternalAddress)
           }
-          isDisabled={!!(selectedAsset && isShieldedToken(selectedAsset))}
-          isSelected={
-            !!(selectedAsset && isShieldedToken(selectedAsset))
-            && account.accountId.uniqueKey === fromAccountId?.uniqueKey
+          isDisabled={
+            isFromAccount
+              ? isIronwoodToken || (isOrchardToken && !isZCashIronwoodEnabled)
+              : isOrchardToken
           }
+          isSelected={canMigrateOrchardToIronwood && isFromAccount}
           isShielded={true}
           addressOverride={
             account.accountId.coin === BraveWallet.CoinType.ZEC

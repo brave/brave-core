@@ -56,11 +56,12 @@ static void JNI_ConnectAccountFragment_ConnectAccount(
   std::string account_address =
       base::android::ConvertJavaStringToUTF8(java_account_address);
 
-  content::RenderFrameHost* rfh = web_contents->GetFocusedFrame();
-  if (rfh == nullptr) {
-    PlainCallConnectAccountCallback(env, java_callback, false);
-    return;
-  }
+  // ConnectAccountFragment names the primary main frame's origin (see
+  // BraveWalletServiceDelegateImpl::GetActiveOrigin), and so do its connected
+  // accounts list and Disconnect. Grant to that same frame: using the focused
+  // frame would let a cross-origin subframe holding focus receive a durable
+  // permission the user was never shown and cannot revoke from that screen.
+  content::RenderFrameHost* rfh = web_contents->GetPrimaryMainFrame();
 
   brave_wallet::mojom::CoinType coin =
       static_cast<brave_wallet::mojom::CoinType>(account_id_coin);

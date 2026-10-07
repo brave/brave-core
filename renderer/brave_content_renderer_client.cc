@@ -6,6 +6,7 @@
 #include "brave/renderer/brave_content_renderer_client.h"
 
 #include <algorithm>
+#include <memory>
 #include <utility>
 
 #include "base/feature_list.h"
@@ -18,7 +19,6 @@
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
 #include "brave/components/misc_metrics/renderer/web3_metrics_render_frame_observer.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
-#include "brave/components/safe_builtins/renderer/safe_builtins.h"
 #include "brave/components/script_injector/renderer/script_injector_render_frame_observer.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/renderer/skus_render_frame_observer.h"
@@ -35,7 +35,6 @@
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/platform/web_runtime_features.h"
 #include "third_party/blink/public/web/modules/service_worker/web_service_worker_context_proxy.h"
-#include "third_party/blink/public/web/web_script_controller.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "url/gurl.h"
 
@@ -95,6 +94,26 @@ void MaybeRemoveWidevineSupport(media::GetSupportedKeySystemsCB cb,
   cb.Run(std::move(key_systems));
 }
 
+class Web3MetricsDelegate
+    : public misc_metrics::Web3MetricsRenderFrameObserver::Delegate {
+ public:
+  ~Web3MetricsDelegate() override = default;
+
+  // Whether any wallet provider object is being installed into pages. The web3
+  // metrics proxy has nothing to observe until one is.
+  bool IsWeb3Enabled() override {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    const auto& dynamic_params = BraveRenderThreadObserver::GetDynamicParams();
+    return dynamic_params.install_window_brave_ethereum_provider ||
+           dynamic_params.install_window_ethereum_provider ||
+           dynamic_params.install_window_brave_cardano_provider ||
+           dynamic_params.brave_use_native_solana_wallet;
+#else
+    return false;
+#endif
+  }
+};
+
 }  // namespace
 
 BraveContentRendererClient::BraveContentRendererClient() = default;
@@ -105,11 +124,22 @@ void BraveContentRendererClient::
       SetRuntimeFeaturesDefaultsBeforeBlinkInitialization();
 
   blink::WebRuntimeFeatures::EnableFledge(false);
+  // Disable the fenced frames API; kFencedFrames is disabled browser-side.
+  blink::WebRuntimeFeatures::EnableFencedFrames(false);
   // Disable topics APIs because kBrowsingTopics feature is disabled
   blink::WebRuntimeFeatures::EnableTopicsAPI(false);
-  blink::WebRuntimeFeatures::EnableTopicsDocumentAPI(false);
   blink::WebRuntimeFeatures::EnableWebGPUExperimentalFeatures(false);
   blink::WebRuntimeFeatures::EnableWebNFC(false);
+
+  // Disable the WebOTP API; kWebOTP is disabled browser-side, and
+  // content/child/runtime_features.cc forwards that state to Blink only when
+  // the feature is overridden by a field trial or the command line - a
+  // plastered default is not an override. Without this the renderer requests
+  // blink.mojom.WebOTPService, whose binder is registered only while the
+  // feature is on, and the missing binder is a bad message that kills the
+  // renderer. Upstream syncs UserMediaElement the same way; see
+  // runtime_features.cc.
+  blink::WebRuntimeFeatures::EnableWebOTP(false);
 
   // These features don't have dedicated WebRuntimeFeatures wrappers.
   blink::WebRuntimeFeatures::EnableFeatureFromString("AdTagging", false);
@@ -144,11 +174,6 @@ void BraveContentRendererClient::RenderThreadStarted() {
 
   brave_observer_ = std::make_unique<BraveRenderThreadObserver>();
   content::RenderThread::Get()->AddObserver(brave_observer_.get());
-  brave_search_service_worker_holder_.SetBrowserInterfaceBrokerProxy(
-      browser_interface_broker_.get());
-
-  blink::WebScriptController::RegisterExtension(
-      brave::SafeBuiltins::CreateV8Extension());
 }
 
 void BraveContentRendererClient::RenderFrameCreated(
@@ -174,7 +199,8 @@ void BraveContentRendererClient::RenderFrameCreated(
         render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL, dynamic_params_closure);
   }
 
-  new misc_metrics::Web3MetricsRenderFrameObserver(render_frame);
+  new misc_metrics::Web3MetricsRenderFrameObserver(
+      render_frame, std::make_unique<Web3MetricsDelegate>());
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (IsBraveWalletAvailable()) {

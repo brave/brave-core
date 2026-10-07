@@ -73,9 +73,6 @@ inline constexpr char kNewTabPageClockFormat[] =
 inline constexpr char kNewTabPageShowStats[] = "brave.new_tab_page.show_stats";
 inline constexpr char kNewTabPageShowRewards[] =
     "brave.new_tab_page.show_rewards";
-inline constexpr char kNewTabPageShowSponsoredSites[] =
-    "brave.new_tab_page.show_sponsored_sites";
-
 inline constexpr char kNewTabPageShowBraveVPN[] =
     "brave.new_tab_page.show_brave_vpn";
 inline constexpr char kNewTabPageHideAllWidgets[] =
@@ -120,6 +117,9 @@ inline constexpr char kBackgroundVideoPlaybackEnabled[] =
     "brave.background_video_playback";
 inline constexpr char kSafetynetCheckFailed[] = "safetynetcheck.failed";
 inline constexpr char kSafetynetStatus[] = "safetynet.status";
+// Google Ads click id from the Play Store install referrer.
+inline constexpr char kReferralAndroidGbraid[] =
+    "brave.referral.android_gbraid";
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)

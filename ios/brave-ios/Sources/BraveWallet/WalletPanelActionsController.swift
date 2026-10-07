@@ -10,17 +10,12 @@ import UIKit
 
 class WalletPanelActionsController: UIHostingController<WalletActionsView> {
   init(
-    handlePanelActionInWebUI: @escaping (WalletActionDestination) -> Void,
-    handlePanelActionInNativeUI: @escaping (WalletActionDestination) -> Void
+    handlePanelActionInWebUI: @escaping (WalletActionDestination) -> Void
   ) {
     super.init(
       rootView: WalletActionsView(
         action: { destination in
-          if FeatureList.kBraveWalletWebUIIOS?.enabled == true {
-            handlePanelActionInWebUI(destination)
-          } else {
-            handlePanelActionInNativeUI(destination)
-          }
+          handlePanelActionInWebUI(destination)
         }
       )
     )

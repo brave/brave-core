@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">SI Leo</translation>
 <translation id="8275068909952022340">Więcej…</translation>
 <translation id="71316462802471551">Aliasy e-mail</translation>
-<translation id="209130971304928953">Zapisz karty jako obszar roboczy…</translation>
-<translation id="877984331511007834">Otwórz obszar roboczy…</translation>
-<translation id="1310182651927031327">Zapisz karty jako przestrzeń roboczą…</translation>
-<translation id="3588277741646479444">Otwórz przestrzeń roboczą…</translation>
+<translation id="8350985546648269694">Zapisz bieżące okna i karty jako przestrzeń</translation>
+<translation id="5327248766486351172">Nazwa</translation>
+<translation id="6379791766023874417">Wprowadź nazwę przestrzeni</translation>
+<translation id="9174724474418499472">Moja przestrzeń</translation>
+<translation id="5317780077021120954">Zapisz</translation>
+<translation id="7658239707568436148">Anuluj</translation>
+<translation id="196342407904926436">Opcje przestrzeni</translation>
+<translation id="2806407377752719586">Usuń przestrzeń</translation>
+<translation id="1844931500883490339">Czy na pewno chcesz usunąć tę przestrzeń? Zapisana przestrzeń zostanie trwale usunięta. Tego działania nie można cofnąć.</translation>
+<translation id="8261506727792406068">Usuń</translation>
+<translation id="8428213095426709021">Ustawienia</translation>
+<translation id="1212321046099128987">Nie utworzono żadnych przestrzeni</translation>
+<translation id="3524567389166933243">Utwórz swoją pierwszą przestrzeń, klikając przycisk Zapisz poniżej.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 zakładka} other {# zakładek}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> okien</translation>
+<translation id="1680377529024357662">Zapisz bieżące okna i karty jako przestrzeń</translation>
+<translation id="5561829325295347472">Wprowadź nazwę przestrzeni</translation>
+<translation id="2028520494010039812">Opcje przestrzeni</translation>
+<translation id="1580775521202322063">Usuń przestrzeń</translation>
+<translation id="3004759399777164093">Czy na pewno chcesz usunąć tę przestrzeń? Zapisana przestrzeń zostanie trwale usunięta. Tego działania nie można cofnąć.</translation>
+<translation id="7563692436589408797">Nie utworzono żadnych przestrzeni</translation>
+<translation id="3945077125173636695">Utwórz swoją pierwszą przestrzeń, klikając przycisk Zapisz poniżej.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 zakładka} other {# zakładek}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> okien</translation>
+<translation id="3326655241685890930">Przestrzenie</translation>
 <translation id="1990886731975529483">Zainstaluj i uruchom Google Widevine</translation>
 <translation id="8926389886865778422">Nie pytaj ponownie</translation>
 <translation id="4900351245762303149">Zainstaluj Google Widevine</translation>
@@ -37,7 +58,7 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3218385319396786393">Zablokowano automatyczne odtwarzanie na tej stronie</translation>
 <translation id="4988333904713528597">Zawsze zezwalaj na automatyczne odtwarzanie na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Kontynuuj blokowanie automatycznego odtwarzania</translation>
-<translation id="3477357195688115718">Brave nie dokonuje przeglądu rozszerzeń pod kątem bezpieczeństwa. Zainstaluj to rozszerzenie tylko wtedy, gdy ufasz jego twórcy.</translation>
+<translation id="2201935460386712655">Brave nie dokonuje przeglądu rozszerzeń pod kątem bezpieczeństwa. Zainstaluj „<ph name="EXTENSION_NAME"/>” tylko wtedy, gdy ufasz jego twórcy.</translation>
 <translation id="2928844661231356557">Przyznanie dostępu urządzeniu Bluetooth pozwoli stronie odczytywać informacje umożliwiające identyfikacje i potencjalnie wrażliwe dane na Twój temat. Zezwalaj na dostęp do urządzeń Bluetooth tylko stronom, którym ufasz. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Okna w Tor</translation>
 <translation id="7965178729203412357">Nowa tożsamość Tor</translation>
@@ -63,7 +84,6 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3211174446914979436">Zarządzaj filtrami</translation>
 <translation id="3108584651298176909">Pokaż reguły</translation>
 <translation id="5156986655891520787">Ukryj reguły</translation>
-<translation id="7658239707568436148">Anuluj</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Otwórz za pomocą adresu .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Wymuś wklejenie</translation>
@@ -91,6 +111,10 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="191886777375280620">Przechwyć zrzut ekranu</translation>
 <translation id="3114478090884951591">Widoczny obszar</translation>
 <translation id="2026367923222947564">Cała strona</translation>
+<translation id="4218885227032158909">Wybrany obszar</translation>
+<translation id="2586386106930448447">Podgląd zrzutu ekranu</translation>
+<translation id="7514365320538308">Pobierz</translation>
+<translation id="2743387203779672305">Skopiuj do schowka</translation>
 <translation id="4928988318462976765">Sklep z rozszerzeniami sieciowymi</translation>
 <translation id="9181207987584064303">Zobacz w sklepie z rozszerzeniami sieciowymi</translation>
 <translation id="3161744659507801211">Ostrzeżenie: Brave nie może powstrzymać rozszerzeń od śledzenia historii Twoich wyszukiwań.</translation>
@@ -191,11 +215,12 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8707615221880318679">Te całkowicie prywatne odpowiedzi pomagają Brave oszacować ogólny poziom korzystania z niektórych funkcji i ulepszyć je dla Ciebie</translation>
 <translation id="193368604235852218">Sieć Web3</translation>
 <translation id="4738583579791001083">Domeny sieci Web3</translation>
-<translation id="4552520379838695057">Przepraszamy, nie znaleziono tej strony.</translation>
-<translation id="7299769530898469069">Nie można wczytać zapisanej wersji</translation>
-<translation id="2609895996619941644">Czy chcesz sprawdzić, czy zapisana wersja jest dostępna na Wayback Machine?</translation>
-<translation id="8010675257566903381">Wayback Machine nie może znaleźć zapisanej wersji tej strony.</translation>
-<translation id="1207694258341311738">Sprawdź zapisaną wersję</translation>
+<translation id="1458638489455808030">Wayback Machine</translation>
+<translation id="8039999492770627305">Brakuje strony</translation>
+<translation id="208311458690012764">Brak dostępnej zarchiwizowanej wersji</translation>
+<translation id="4515057635283480525">Internet Archive zapisuje poprzednie wersje wielu stron internetowych. Czy chcesz poszukać tej strony w archiwum?</translation>
+<translation id="8252977752585110703">Przepraszamy, sprawdziliśmy Internet Archive i nie ma tam zarchiwizowanej wersji tej strony.</translation>
+<translation id="8748778103033196270">Poszukaj w archiwum</translation>
 <translation id="191143826155037518">Przeglądarka Brave powstała na podstawie licencji <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) i zawiera <ph name="BEGIN_LINK_OSS"/>oprogramowanie open source<ph name="END_LINK_OSS"/> na podstawie różnych licencji. Możesz przeczytać <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instrukcję jak pobrać i skompilować<ph name="END_LINK_BUILD_INSTRUCTIONS"/> określony <ph name="BEGIN_LINK_SOURCE_CODE"/>kod źródłowy, aby utworzyć własną kopię kompilacji<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Dodaj wszystkie karty do zakładek...</translation>
 <translation id="3987546108749866209">Używaj kart pionowych</translation>
@@ -225,6 +250,7 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1185644444415356776">Otwórz odnośnik w polu</translation>
 <translation id="6745991613881384719">Zarządzaj kontenerami</translation>
 <translation id="8523788649219117880">Nowy kontener tymczasowy</translation>
+<translation id="6738770788727894934"><ph name="TOOLTIP"/> - kontener <ph name="CONTAINER_NAME"/></translation>
 <translation id="3704707436873245822">Kopiuj tekst z obrazka</translation>
 <translation id="5268098808165185458">Kopiowanie tekstu z obrazka…</translation>
 <translation id="4046485130884276245">Skopiowano tekst z obrazka</translation>
@@ -288,14 +314,12 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="55252794453047936">Przenieś media</translation>
 <translation id="4418985925423678811">Nowa lista odtwarzania</translation>
 <translation id="385051799172605136">Wstecz</translation>
-<translation id="5317780077021120954">Zapisz</translation>
 <translation id="7930125899031086027">Utwórz i przenieś</translation>
 <translation id="2860159216666546928">Wybierz folder do przeniesienia tych mediów</translation>
 <translation id="9130105487623071247">Nazwa listy odtwarzania</translation>
 <translation id="1857042171340443373">Wybrano elementów: <ph name="NUM_ITEMS"/></translation>
 <translation id="3596306474342941843">Usuń listę odtwarzania</translation>
 <translation id="7110726588168439924">Czy na pewno chcesz usunąć tę listę odtwarzania i całą jej zawartość? Tego działania nie można cofnąć.</translation>
-<translation id="8261506727792406068">Usuń</translation>
 <translation id="8152485753254079984">Nowa lista odtwarzania</translation>
 <translation id="5397019762993984652">Dodaj z folderu Odtwórz później</translation>
 <translation id="7525067979554623046">Utwórz</translation>
@@ -342,6 +366,7 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6847541693235449912">Otwórz</translation>
 <translation id="2079545284768500474">Cofnij</translation>
 <translation id="1533980864758658574">Nowe okno stworzone dla tematu <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">Żadna karta nie pasowała do tego tematu. Spróbuj opisać go inaczej.</translation>
 <translation id="7985042437720138349">Ta funkcja wysyła dane o otwartych zakładkach do Leo, asystenta opartego na SI.</translation>
 <translation id="6165508094623778733">Więcej informacji</translation>
 <translation id="7557539689487606886">Przejdź na wersję Premium</translation>
@@ -358,6 +383,7 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6724227215236550330">Zapisane hasła pojawią się tutaj. Aby zaimportować hasła do <ph name="BRAND"/> na tym urządzeniu, wybierz <ph name="BEGIN_LINK"/>plik CSV<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">Aby zaimportować hasła do <ph name="BRAND"/> na tym urządzeniu, wybierz plik CSV</translation>
 <translation id="8570228839666486945">AI na urządzeniu</translation>
+<translation id="7447041379556102185">Rozpoznawanie mowy na urządzeniu</translation>
 <translation id="3456536577668402695">Twoje wyszukiwania i zawartość stron są przetwarzane na tym urządzeniu. Nic nie jest wysyłane do Brave ani widoczne dla recenzentów.</translation>
 <translation id="4751537843966994505">Wyszukiwanie semantyczne historii</translation>
 <translation id="6175973371938222040">Indeksuj lokalnie odwiedzane strony, aby móc przeszukiwać historię według znaczenia. Całe przetwarzanie odbywa się na tym urządzeniu.</translation>
@@ -388,16 +414,33 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6017560037265964523">Kontenery</translation>
 <translation id="3718176486689879621">Kontenery to oznaczone kolorami karty przeglądarki, które izolują dane przeglądania, takie jak pliki cookie, pamięć podręczna i pamięć witryn, w osobnych kontekstach. <ph name="BEGIN_LINK"/>Dowiedz się więcej<ph name="END_LINK"/></translation>
 <translation id="3721778624267551248">Włącz kontenery</translation>
+<translation id="4858772568604670131">Zawsze używaj mini ikony dla kontenerów</translation>
 <translation id="7773735778926921278">Dodaj nowy kontener</translation>
 <translation id="8900907990448657776">Edytuj kontener</translation>
 <translation id="7900511996284443779">Usuń kontener</translation>
 <translation id="2738687336989232152">Czy na pewno chcesz usunąć kontener <ph name="CONTAINER_NAME"/>? To usunie wszystkie dane z nim związane.</translation>
-<translation id="5327248766486351172">Nazwa</translation>
 <translation id="104766043551382253">Ikona</translation>
 <translation id="5431318178759467895">Kolor</translation>
 <translation id="4328541188421002379">Nadaj swojemu kontenerowi nazwę, np. Praca lub Osobiste</translation>
 <translation id="4976989127264491396">Błąd: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Kontener nie został znaleziony</translation>
+<translation id="6055154402239241620">Kontrola ruchu</translation>
+<translation id="8134521925475508805">Skonfiguruj określone witryny, aby automatycznie otwierały się w danym kontekście, tworząc separację między sesjami przeglądania. <ph name="BEGIN_LINK"/>Dowiedz się więcej<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Włącz kontrolę ruchu</translation>
+<translation id="1358255827354528344">Dodaj nową regułę</translation>
+<translation id="7183128985801806752">Nowa reguła kontroli ruchu</translation>
+<translation id="2474694032500407328">Edytuj regułę kontroli ruchu</translation>
+<translation id="5543417389274097206">Utwórz regułę</translation>
+<translation id="6532106788206463496">Zapisz zmiany</translation>
+<translation id="1172800769374812685">Usuń regułę</translation>
+<translation id="2389682807835777591">Czy na pewno chcesz usunąć regułę <ph name="RULE_LABEL"/>?</translation>
+<translation id="4853129331778360252">Wprowadź adresy URL do zarządzania i zawsze otwierania w określonym kontekście przeglądania.</translation>
+<translation id="1173480005453148926">Adresy URL do zarządzania</translation>
+<translation id="6217532416180299470">Wprowadź adresy URL do zarządzania z kontrolą ruchu</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> dopasowuje witrynę i jej subdomeny; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> dopasowuje dokładną witrynę; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> dopasowuje wszystkie witryny; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> to komentarz.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (i <ph name="COUNT"/> więcej adresów URL)</translation>
+<translation id="3700798663085748181">Włącz regułę</translation>
+<translation id="2967480878853054068">Nieprawidłowy filtr adresów URL</translation>
 <translation id="2263346047290834619">Używaj drzewka kart</translation>
 <translation id="5860254591544742609">Pokaż pasek tytułu</translation>
 <translation id="4691131445504068802">Ukryj całkowicie po zminimalizowaniu</translation>
@@ -505,7 +548,6 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6745592621698551453">Aktualizuj teraz</translation>
 <translation id="5334844597069022743">Pokaż źródło</translation>
 <translation id="4720556299488643018">Cofnij subskrypcję</translation>
-<translation id="6532106788206463496">Zapisz zmiany</translation>
 <translation id="4516904298421534459">Listy filtrów</translation>
 <translation id="4435215931544457255">Dodatkowe, popularne listy społeczności. Pamiętaj, że włącznie zbyt dużej liczby filtrów spowolni prędkość przeglądania.</translation>
 <translation id="802154636333426148">Nie udało się pobrać</translation>
@@ -537,7 +579,6 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1799030480311994998">Funkcje</translation>
 <translation id="6709133671862442373">Aktualności</translation>
 <translation id="6297791103122079275">Talk</translation>
-<translation id="1458638489455808030">Wayback Machine</translation>
 <translation id="4590997608186539865">Lista odtwarzania</translation>
 <translation id="1199170151481311646">Analityka chroniąca prywatność</translation>
 <translation id="5990642573624858459">Raportowanie statystyk</translation>
@@ -546,6 +587,7 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2587535830241068901">Dostosować przeglądarkę, jednocześnie wspierając Brave</translation>
 <translation id="123297831435065577">Brave Origin to płatna wersja przeglądarki dla użytkowników, którzy nie potrzebują wszystkich funkcji wspierających Brave jako biznes, ale nadal chcą prywatności, którą oferuje tylko Brave. Użytkownicy Origin będą nadal korzystać z naszych wiodących w branży funkcji prywatności, blokowania reklam i szybkości (za pośrednictwem Tarcz), a także regularnych aktualizacji oprogramowania, aktualizacji Chromium oraz ulepszeń bezpieczeństwa i prywatności.</translation>
 <translation id="7984508421152399880">Kup teraz</translation>
+<translation id="1882724423074862793">Przywróć zakup</translation>
 <translation id="5567412479632285879">Nagrody Brave są wyłączone</translation>
 <translation id="413570371620795359">Otwórz panel z nagrodami i zacznij</translation>
 <translation id="1051600834033686945">Otwórz pełne ustawienia nagród Brave</translation>
@@ -582,11 +624,18 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="933652931229970927">Automatycznie wysyłaj raporty diagnostyczne</translation>
 <translation id="8868426106596092089">Pomóż poprawić stabilność produktu Brave, automatycznie przesyłając raporty diagnostyczne po awarii lub zacięciu przeglądarki Brave</translation>
 <translation id="4891600875049212418">Odwiedzaj strony z wrażliwymi danymi bez zapisywania danych</translation>
+<translation id="1022603984240541480">Pokazuj powiadomienie o dostrajaniu ustawień prywatności na zgodnych witrynach</translation>
+<translation id="3528176629974273019">Umożliwia Brave automatyczne sugerowanie (i dostosowywanie) ustawień prywatności specyficznych dla witryny.</translation>
+<translation id="2740687181110647855">Narzędzie do dostrajania ustawień prywatności</translation>
 <translation id="509873765238158442">Blokuj Przypomnienie Microsoft</translation>
 <translation id="4763421121695677716">Uniemożliw funkcji Przypomnienie (Recall) na komputerach z systemem Microsoft Windows automatyczne wykonywanie zrzutów ekranu otwartych kart Brave.</translation>
 <translation id="1968895725257436430">Gromadzenie danych</translation>
+<translation id="5668852698659986622">Włącz reklamy sponsorowane</translation>
+<translation id="431194936581466649">Wesprzyj misję Brave, aby zbudować niezależny, stawiający użytkownika na pierwszym miejscu Web, dzięki reklamom sponsorowanym. Mierzymy skuteczność reklam w sposób prywatny, bez identyfikowania Ciebie.</translation>
 <translation id="1700052872056357670">Wyczyść dane przy wyjściu</translation>
 <translation id="216468847346280584">Wyczyść dane platformy Brave Ads...</translation>
+<translation id="96212973142796240">Dane Brave Ads wyczyszczone</translation>
+<translation id="6665923829462527507">Nie można wyczyścić danych Brave Ads. Spróbuj ponownie.</translation>
 <translation id="2808630562319398131">Zresetuj dane nagród przeglądarki Brave...</translation>
 <translation id="6438096877646138757">Strony, które po zamknięciu czyszczą pliki cookie</translation>
 <translation id="2988792685798128092">Wyczyść przy zamknięciu strony</translation>
@@ -737,6 +786,7 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4425607417590286548">Zatwierdź zmiany</translation>
 <translation id="2128143836897950793">Kliknij „Poproś o nowy most…”, aby uzyskać mosty</translation>
 <translation id="3314921753580327793">Wpisz adres:port (jeden na wiersz)</translation>
+<translation id="7002083631026466886">Tor nie może użyć tego mostka. Porównaj go z otrzymanym mostkiem, a następnie spróbuj ponownie:</translation>
 <translation id="3755189300481406891">Poproś o most</translation>
 <translation id="6924425739431382319">Nawiązywanie kontaktu z BridgeDB. Czekaj.</translation>
 <translation id="811745063252080651">Rozwiąż CAPTCHA, aby poprosić o most.</translation>
@@ -853,6 +903,7 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8631951653187535788">Czy na pewno chcesz usunąć ten model? Jeśli ten model jest używany w jakiejkolwiek aktywnej rozmowie, wtedy zostanie w niej wykorzystany domyślny model Leo.</translation>
 <translation id="1907126221851170941">Dodaj model</translation>
 <translation id="8346224718149026088">Edytuj model</translation>
+<translation id="3914173277599553213">Wymagane</translation>
 <translation id="3468298837301810372">Etykieta</translation>
 <translation id="3553035516792776805">Nazwa prośby modelu</translation>
 <translation id="7634775528597575156">Punkt końcowy serwera</translation>
@@ -914,7 +965,6 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1838374766361614909">Wyczyść wyszukiwanie</translation>
 <translation id="5126255551970171328">Szukaj pamięci</translation>
 <translation id="7402116145895962069">Synchronizuj swoje lokalne modele Ollama</translation>
-<translation id="4835154437390745810">Zarządzane przez Ollama</translation>
 <translation id="5985516785067818307">Uczestnik ankiet</translation>
 <translation id="8347743943525229984">Zezwalaj na ankiety Brave</translation>
 <translation id="3204080538332044581">Umożliwia Brave wyświetlanie linków do prywatnych ankiet na stronie nowej karty. Ankiety pomagają nam tworzyć lepsze funkcje i mierzyć skuteczność kampanii reklamowych w przeglądarce. <ph name="BEGIN_LINK"/>Dowiedz się więcej<ph name="END_LINK"/></translation>
@@ -962,4 +1012,12 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="154702742922788359">Tryb otwarcia</translation>
 <translation id="2249111429176737533">Otwórz jako okno z zakładkami</translation>
 <translation id="7022756207310403729">Otwórz w przeglądarce</translation>
+<translation id="1916785651473363467">Niestandardowy obraz profilu</translation>
+<translation id="5336092064678832560">Prześlij niestandardowy obraz</translation>
+<translation id="1062407476771304334">Zamień</translation>
+<translation id="1428299461403073820">Zamień niestandardowy obraz profilu</translation>
+<translation id="7994453838803296517">Podgląd niestandardowego obrazu profilu, zaznaczony</translation>
+<translation id="6578040791557152233">Prześlij niestandardowy obraz profilu</translation>
+<translation id="9222124079546967592">Usuń niestandardowy obraz profilu</translation>
+<translation id="6058660912941570282">Brave nie może użyć tego pliku. Wybierz inny obraz i spróbuj ponownie.</translation>
 </translationbundle>

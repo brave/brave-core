@@ -16,12 +16,13 @@
 #include "base/memory/weak_ptr.h"
 #include "base/test/scoped_command_line.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_ads/core/internal/ads_client/test/ads_client_mock.h"
 #include "brave/components/brave_ads/core/internal/application_state/test/fake_browser_version.h"
 #include "brave/components/brave_ads/core/internal/common/locale/test/fake_locale.h"
 #include "brave/components/brave_ads/core/internal/common/operating_system/test/fake_operating_system.h"
 #include "brave/components/brave_ads/core/internal/common/test/tab_test_helper.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
+#include "brave/components/brave_ads/core/public/test/ads_client_mock.h"
+#include "components/prefs/testing_pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -143,6 +144,9 @@ class TestBase : public ::testing::Test {
   FakeBrowserVersion fake_browser_version_;
   FakeLocale fake_locale_;
   FakeOperatingSystem fake_operating_system_;
+
+  TestingPrefServiceSimple profile_prefs_;
+  TestingPrefServiceSimple local_state_;
 
   ::testing::NiceMock<AdsClientMock> ads_client_mock_;
   AdsClientNotifier ads_client_notifier_;

@@ -35,6 +35,7 @@
 #include "brave/components/playlist/core/common/pref_names.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/ios/browser/brave_stats/brave_stats_prefs.h"
+#include "brave/ios/browser/search_engines/template_url_service_prefs.h"
 #include "brave/ios/browser/shared/prefs/pref_names.h"
 #include "brave/ios/browser/youtube/pref_names.h"
 #include "components/metrics/metrics_pref_names.h"
@@ -88,6 +89,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #endif
   de_amp::RegisterProfilePrefs(registry);
   debounce::DebounceService::RegisterProfilePrefs(registry);
+  search_engines::RegisterProfilePrefs(registry);
   ai_chat::prefs::RegisterProfilePrefs(registry);
   ai_chat::ModelService::RegisterProfilePrefs(registry);
   brave_account::prefs::RegisterPrefs(registry);

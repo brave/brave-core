@@ -7,6 +7,7 @@
 <translation id="1046742265332833834">Temă albastră</translation>
 <translation id="1070329623210597193">Fișierele pe care le poate vedea sau modifica acest site</translation>
 <translation id="1074758928858737435">Poți solicita să vezi versiunea pentru computer a site-urilor</translation>
+<translation id="1760197532822135980">Primește sugestii Brave în alte aplicații</translation>
 <translation id="1109482864356262001">Funcțiile care au nevoie de senzori de mișcare sau de lumină nu vor funcționa.</translation>
 <translation id="6670155282615872564">Finalizează mai jos aceste acțiuni sugerate, pentru a profita din plin de Brave</translation>
 <translation id="113098737392899175">Navighează în pagini folosind cursorul pentru text când este conectată o tastatură</translation>
@@ -31,7 +32,6 @@
 <translation id="1321110954513621549">Permisă • Aproximativă</translation>
 <translation id="1323433172918577554">Afișează mai multe</translation>
 <translation id="1333965224356556482">Nu permite site-urilor să-ți vadă locația</translation>
-<translation id="1343356790768851700">Acest site stabilește lucrurile care te interesează, apoi sugerează anunțuri altor site-uri</translation>
 <translation id="1369915414381695676">Site-ul <ph name="SITE_NAME"/> a fost adăugat</translation>
 <translation id="1371239764779356792">Permite unui site să salveze date pe dispozitiv</translation>
 <translation id="1383876407941801731">Caută</translation>
@@ -84,6 +84,7 @@
 <translation id="1818308510395330587">Pentru a permite aplicației <ph name="APP_NAME"/> să folosească RA, activează camera foto și în <ph name="BEGIN_LINK"/>Setările Android<ph name="END_LINK"/>.</translation>
 <translation id="1822318649925991542">Schimbă poziția pentru a-ți personaliza experiența de navigare.</translation>
 <translation id="1848033246551405023">Font Sans Serif</translation>
+<translation id="1861244985839668297">Când opțiunea este activată, site-urile pot solicita permisiunea de a folosi dispozitive HID. Când opțiunea este dezactivată, site-urile nu pot folosi dispozitive HID.</translation>
 <translation id="1861262398884155592">Acest dosar este gol</translation>
 <translation id="1881806992065048905">Foaia din partea de jos cu aspectul paginii Filă nouă</translation>
 <translation id="1887786770086287077">Accesul la locație este dezactivat pentru acest dispozitiv. Activează-l în <ph name="BEGIN_LINK"/>Setări Android<ph name="END_LINK"/>.</translation>
@@ -192,8 +193,10 @@
 <translation id="2850913818900871965">Solicită afișarea pe mobil</translation>
 <translation id="2870560284913253234">Site</translation>
 <translation id="2874939134665556319">Melodia anterioară</translation>
+<translation id="258271431472168668">Prestabilită pentru Brave</translation>
 <translation id="2891975107962658722">Nu permite unui site să salveze date pe dispozitiv</translation>
 <translation id="2903493209154104877">Adrese</translation>
+<translation id="2903764741244499151">Site-urile pot intra automat în modul picture-in-picture. Astfel, poți să continui vizionarea unui videoclip și să eliberezi spațiu pe ecran pentru alte activități.</translation>
 <translation id="2918484639460781603">Accesați setările</translation>
 <translation id="2932883381142163287">Raportează un abuz</translation>
 <translation id="2939338015096024043">Când opțiunea este activată, site-urile pot solicita permisiunea de a urmări poziția camerei și de a afla informații despre împrejurimile tale. Când opțiunea este dezactivată, site-urile nu pot să urmărească poziția camerei sau să afle informații despre împrejurimile tale.</translation>
@@ -277,7 +280,6 @@
 <translation id="3779154269823594982">Schimbă parolele</translation>
 <translation id="3797520601150691162">Nu aplica tema întunecată pentru un anumit site</translation>
 <translation id="3803367742635802571">Este posibil ca site-urile pe care le accesezi să nu mai funcționeze așa cum au fost proiectate</translation>
-<translation id="8338457030135232378">Culori Brave</translation>
 <translation id="381841723434055211">Numere de telefon</translation>
 <translation id="3823453485268218808">Font Mono</translation>
 <translation id="3826050100957962900">Conectarea prin terță parte</translation>
@@ -370,6 +372,7 @@
 <translation id="4676059169848868271">Pentru a permite aplicației <ph name="APP_NAME"/> să folosească urmărirea mâinilor, activează urmărirea mâinilor și în <ph name="BEGIN_LINK"/>setările de sistem<ph name="END_LINK"/>.</translation>
 <translation id="4688045258817337666">Gestionează-ți cardurile</translation>
 <translation id="4722332387043141878">Site-urile folosesc de obicei senzorii de mișcare și de lumină ai dispozitivului pentru funcții cum ar fi realitatea virtuală sau monitorizarea activității de fitness.</translation>
+<translation id="4748783296226936791">Site-urile se conectează de obicei la dispozitive HID pentru funcții care folosesc tastaturi, controlere de joc și alte dispozitive care nu sunt utilizate frecvent</translation>
 <translation id="4755971844837804407">Când opțiunea este activată, site-urile îți pot afișa orice anunț. Când opțiunea este dezactivată, site-urile nu pot afișa anunțuri deranjante sau înșelătoare.</translation>
 <translation id="4779083564647765204">Zoom</translation>
 <translation id="4807122856660838973">Activează Navigarea sigură</translation>
@@ -424,7 +427,6 @@
 <translation id="5317780077021120954">Salvează</translation>
 <translation id="5335288049665977812">Permite site-urilor să ruleze JavaScript (recomandat)</translation>
 <translation id="534295439873310000">Dispozitive NFC</translation>
-<translation id="5344522958567249764">Gestionează confidențialitatea anunțurilor</translation>
 <translation id="5373874281522292782">Grupurile de file se salvează</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(+ încă 1)}few{(+ încă #)}other{(+ încă #)}}</translation>
 <translation id="5403592356182871684">Nume</translation>
@@ -448,11 +450,13 @@
 <translation id="5668404140385795438">Ignoră solicitarea unui site de a împiedica mărirea</translation>
 <translation id="5668843533782548925">Site-urile sunt mai lente, dar mai sigure</translation>
 <translation id="5677928146339483299">Blocat</translation>
+<translation id="98560749650104566">De acum, Brave îți poate afișa sugestii în alte aplicații pe baza datelor de navigare, cum ar fi istoricul de navigare recent. Aceste date sunt prelucrate în siguranță pe dispozitivul tău. Poți dezactiva oricând această opțiune din setările Brave.</translation>
 <translation id="5689516760719285838">Locație</translation>
 <translation id="5690795753582697420">Camera foto este dezactivată în setările Android</translation>
 <translation id="5700761515355162635">Sunt permise cookie-urile terță parte</translation>
 <translation id="5706552988683188916">Astfel, se șterg cookie-urile și alte date privind site-urile pentru <ph name="WEBSITE"/></translation>
 <translation id="571222594670061844">Site-urile pot afișa solicitări de conectare de la servicii de identitate</translation>
+<translation id="5719854774000914513">Site-urile pot solicita permisiunea de a se conecta la dispozitive HID</translation>
 <translation id="5740126560802162366">Site-urile pot salva date pe dispozitiv</translation>
 <translation id="5743425052258407233">Istoricul apare pe toate dispozitivele tale. Astfel, poți continua ceea ce făceai.</translation>
 <translation id="5749158352074143502">Continuă cu această filă</translation>
@@ -501,6 +505,7 @@
 <translation id="6085954183010297841">Elimini permisiunea de editare a fișierului? <ph name="FILE"/></translation>
 <translation id="6104860901391833523">Când opțiunea este activată, site-urile pot intra automat în modul picture-in-picture. Când opțiunea este dezactivată, site-urile nu pot intra automat în modul picture-in-picture.</translation>
 <translation id="6120483543004435978">Când opțiunea este activată, site-urile pot solicita permisiunea de a afla când folosești activ dispozitivul. Când opțiunea este dezactivată, site-urile nu pot afla când folosești activ dispozitivul.</translation>
+<translation id="5773142757282836623">Ascunde sugestiile de descărcare a browserului Brave în alte aplicații</translation>
 <translation id="4852158809106762963">Brave îți va oferi salvarea parolei</translation>
 <translation id="615886654739818377">Nu permite site-urilor să gestioneze ferestre de pe toate ecranele</translation>
 <translation id="6165508094623778733">Află mai multe</translation>
@@ -509,7 +514,6 @@
 <translation id="6181444274883918285">Adaugă o excepție privind site-urile</translation>
 <translation id="7938602278189860250">{DAYS,plural, =1{Brave va bloca din nou cookie-urile mâine}few{# zile până când cookie-urile vor fi blocate din nou}other{# de zile până când cookie-urile vor fi blocate din nou}}</translation>
 <translation id="6196640612572343990">Blochează cookie-urile terță parte</translation>
-<translation id="6205314730813004066">Confidențialitatea anunțurilor</translation>
 <translation id="6207207788774442484">Șterge datele și resetează permisiunile</translation>
 <translation id="6211409961905616543">Site-urile pot folosi senzorii de mișcare și de lumină</translation>
 <translation id="6218508144653756827">Temă fucsia</translation>
@@ -525,7 +529,6 @@
 <translation id="6398765197997659313">Ieși din ecranul complet</translation>
 <translation id="640163077447496506">Expiră astăzi</translation>
 <translation id="6405650995156823521"><ph name="FIRST_PART"/> • <ph name="SECOND_PART"/></translation>
-<translation id="6413980879783180524">Colecții tematice</translation>
 <translation id="6439114592976064011">Împiedică site-urile să folosească dispozitivul de realitate virtuală și datele conexe</translation>
 <translation id="6447842834002726250">Cookie-uri</translation>
 <translation id="6452138246455930388">Scădere de preț în fila deschisă, de la <ph name="OLD_PRICE"/> la <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
@@ -574,6 +577,7 @@
 <translation id="6950072572526089586">Un site pe care îl accesezi poate salva informații despre ce faci, astfel încât să funcționeze conform așteptărilor, de exemplu, pentru a te menține conectat(ă) la un site sau pentru a salva articole în coșul de cumpărături. Adesea, site-urile salvează temporar aceste informații pe dispozitiv.</translation>
 <translation id="6964291282260073066">WebGPU este dezactivat.</translation>
 <translation id="6965382102122355670">OK</translation>
+<translation id="6972629891077993081">Dispozitive HID</translation>
 <translation id="6980507581230208647">Temă roz</translation>
 <translation id="6980861169612950611">Ștergi datele privind site-ul? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Accesibilitate</translation>
@@ -581,13 +585,11 @@
 <translation id="6992014788289743568">Optimizează-ți securitatea și protejează-ți datele verificând parolele</translation>
 <translation id="6992289844737586249">Întreabă înainte de a permite site-urilor să folosească microfonul (recomandat)</translation>
 <translation id="7000754031042624318">Dezactivată din setările Android</translation>
-<translation id="8683151724374457021">Acest site stabilește lucrurile care te interesează, apoi sugerează anunțuri altor site-uri. În plus, site-ul preia subiectele anunțurilor din Brave pentru a-ți afișa anunțuri mai relevante.</translation>
 <translation id="7036823721811529709">Ascultă în fundal</translation>
 <translation id="7044081119134178347">Camera foto este permisă de data aceasta</translation>
 <translation id="7053983685419859001">Blochează</translation>
 <translation id="7055552182600664515">Pentru a reda conținut protejat prin drepturi de autor, poate fi necesar ca site-urile să folosească un serviciu pentru protejarea conținutului. <ph name="BEGIN_LINK"/>Află mai multe<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 selectat}few{# selectate}other{# selectate}}</translation>
-<translation id="708014373017851679">Aplicația <ph name="APP_NAME"/> este învechită. Actualizeaz-o.</translation>
 <translation id="7084115944294706056">Alege poziția barei de adrese</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> selectate.  Opțiunile sunt disponibile în partea de sus a ecranului</translation>
 <translation id="7141896414559753902">Împiedică site-urile să afișeze ferestre pop-up și redirecționări (recomandat)</translation>
@@ -620,6 +622,7 @@ Protecția avansată gestionează următoarele setări Brave:</translation>
 <translation id="7423098979219808738">Mai întâi întreabă</translation>
 <translation id="7423538860840206698">Citirea clipboardului este blocată</translation>
 <translation id="7425915948813553151">Tema întunecată pentru site-uri</translation>
+<translation id="2044383478723007273">Culori Brave</translation>
 <translation id="746412105358554870">Optimizare și securitate JavaScript</translation>
 <translation id="7478658909253570368">Nu permite site-urilor să se conecteze la porturi seriale</translation>
 <translation id="7488573225650545859">Ascunde filele Afișare din lista de aplicații</translation>
@@ -671,7 +674,6 @@ Protecția avansată gestionează următoarele setări Brave:</translation>
 <translation id="802154636333426148">Descărcarea nu a reușit</translation>
 <translation id="8033047164036749181">Abonează-te pentru a primi notificări de la acest site</translation>
 <translation id="8051193500142930381">Funcțiile care au nevoie de cameră nu vor funcționa</translation>
-<translation id="2495032782748793764">Tema Brave prestabilită</translation>
 <translation id="8067883171444229417">Redă videoclipul</translation>
 <translation id="8068648041423924542">Certificatul nu poate fi selectat.</translation>
 <translation id="8077120325605624147">Orice site pe care îl accesezi îți poate afișa orice anunț</translation>
@@ -686,7 +688,6 @@ Protecția avansată gestionează următoarele setări Brave:</translation>
 <translation id="8163152278172770963">Nu permite site-urilor să intre automat în modul picture-in-picture</translation>
 <translation id="8168435359814927499">Conținut</translation>
 <translation id="818487310457576362">Trage dintr-o parte a ecranului pentru a ieși din ecranul complet.</translation>
-<translation id="8186479265534291036">Site-ul nu funcționează? Cookie-urile terță parte au fost blocate</translation>
 <translation id="8197286292360124385">Se permite <ph name="PERMISSION_1"/></translation>
 <translation id="8200772114523450471">Reia</translation>
 <translation id="8211406090763984747">Conexiunea este securizată</translation>
@@ -726,7 +727,6 @@ Protecția avansată gestionează următoarele setări Brave:</translation>
 <translation id="8514955299594277296">Nu permite site-urilor să salveze date pe dispozitiv (nu se recomandă)</translation>
 <translation id="851751545965956758">Blochează conectarea site-urilor la dispozitive</translation>
 <translation id="8525306231823319788">Ecran complet</translation>
-<translation id="3275395224965468352">Site-ul preia subiectele anunțurilor din Brave pentru a-ți afișa anunțuri mai relevante</translation>
 <translation id="854876774113449365">Site-urile pe care le accesezi pot încorpora conținut de pe alte site-uri, de exemplu, imagini, anunțuri și text. Aceste site-uri pot solicita permisiunea de a folosi informațiile pe care le-au salvat despre tine în timp ce navighezi pe site. <ph name="BEGIN_LINK"/>Află mai multe despre conținutul încorporat<ph name="END_LINK"/></translation>
 <translation id="8549127125482561383">Cum să afișezi solicitări</translation>
 <translation id="4273503381657013953">Acum poți folosi Brave oricând navighezi sau atingi linkuri în mesaje, documente și alte aplicații.</translation>
@@ -734,6 +734,7 @@ Protecția avansată gestionează următoarele setări Brave:</translation>
 <translation id="8593422116412089302">Când opțiunea este activată, site-urile pot solicita să folosească informațiile pe care le-au salvat despre tine. Când opțiunea este dezactivată, site-urile nu îți pot solicita să folosească informațiile pe care le-au salvat despre tine.</translation>
 <translation id="8609465669617005112">Mutați mai sus</translation>
 <translation id="8617611086246832542">Când opțiunea este activată, apare afișarea pe desktop a site-urilor. Când opțiunea este dezactivată, apare afișarea pe mobil a site-urilor.</translation>
+<translation id="8625916342247441948">Nu permite site-urilor să se conecteze la dispozitive HID</translation>
 <translation id="8670078035093027626">Foaia din partea de jos a browserului prestabilit, deschisă la înălțime completă</translation>
 <translation id="8676316391139423634">Când opțiunea este activată, site-urile pot solicita permisiunea de a-ți urmări mâinile. Când opțiunea este dezactivată, site-urile nu îți pot urmări mâinile.</translation>
 <translation id="8676374126336081632">Șterge textul introdus</translation>
@@ -757,7 +758,6 @@ Protecția avansată gestionează următoarele setări Brave:</translation>
 <translation id="8805385115381080995">Navigarea este mai rapidă deoarece este mai puțin probabil ca un site să îți solicite să confirmi că ești o persoană reală</translation>
 <translation id="881644524232657178">Când opțiunea este activată, site-urile pot folosi senzorii de mișcare și de lumină ai dispozitivului. Când opțiunea este dezactivată, site-urile nu pot folosi senzorii.</translation>
 <translation id="8847988622838149491">USB</translation>
-<translation id="8874790741333031443">Încearcă să permiți temporar cookie-urile terță parte, ceea ce înseamnă mai puțină protecție pentru navigare, dar există șanse mai mari ca funcțiile site-urilor să funcționeze conform așteptărilor.</translation>
 <translation id="7532165358672313130">În timp ce navighezi, site-urile pot să solicite informații de la Brave și să confirme cu ajutorul unui site pe care l-ai accesat anterior că ești o persoană reală</translation>
 <translation id="8899807382908246773">Anunțuri deranjante</translation>
 <translation id="8903921497873541725">Mărește</translation>
@@ -783,7 +783,6 @@ Protecția avansată gestionează următoarele setări Brave:</translation>
 <translation id="913657688200966289">Activează permisiunile pentru <ph name="APP_NAME"/> din <ph name="BEGIN_LINK"/>Setări Android<ph name="END_LINK"/>.</translation>
 <translation id="9138037198177304356">Notificările sunt permise</translation>
 <translation id="9138217887606523162">Nivelul de zoom actual este <ph name="ZOOM_LEVEL"/> %%</translation>
-<translation id="915112772806845021">Site-urile folosesc această funcție pentru a intra automat în modul picture-in-picture. Astfel, poți să continui vizionarea unui videoclip și să eliberezi spațiu pe ecran pentru alte activități.</translation>
 <translation id="7359422048569205930">Permite ca Brave să-ți afișeze filele recente în lista de aplicații și în rezultatele căutării de pe dispozitiv. Poți dezactiva oricând această opțiune din setările Brave.</translation>
 <translation id="9162462602695099906">Pagina este periculoasă</translation>
 <translation id="9182556968660520230">Nu permite site-urilor să redea conținut protejat</translation>

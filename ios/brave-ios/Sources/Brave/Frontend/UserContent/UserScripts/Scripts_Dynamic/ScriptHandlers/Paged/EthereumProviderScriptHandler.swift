@@ -107,9 +107,7 @@ class EthereumProviderScriptHandler: TabContentScript {
     // The web page has communicated with `window.ethereum`, so we should show the wallet icon
     tab.wallet?.isWalletIconVisible = true
 
-    func handleResponse(
-      response: BraveWallet.EthereumProviderResponse
-    ) {
+    let handleResponse: (BraveWallet.EthereumProviderResponse) -> Void = { response in
       Task { @MainActor in
         if response.updateBindJsProperties {
           await tab.wallet?.updateEthereumProperties()

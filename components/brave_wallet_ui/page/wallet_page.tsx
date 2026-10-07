@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import '../common/strings'
+
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
@@ -22,6 +24,7 @@ import {
 // redux
 import * as WalletActions from '../common/actions/wallet_actions'
 import { store } from './store'
+import { ensureSnapHostFrame } from '../common/snap/snap_host_frame'
 
 // components
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
@@ -74,6 +77,10 @@ function initialize() {
     </StyledComponentsProvider>,
   )
   store.dispatch(WalletActions.initialize())
+
+  if (loadTimeData.getBoolean('isSnapEnabled')) {
+    ensureSnapHostFrame()
+  }
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

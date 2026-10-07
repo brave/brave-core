@@ -7,11 +7,11 @@
 
 #include <algorithm>
 #include <iterator>
+#include <ranges>
 #include <string>
 #include <utility>
 #include <vector>
 
-#include "base/containers/adapters.h"
 #include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_neural_model_generated.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 
@@ -130,7 +130,7 @@ std::optional<PredictionMap> NeuralModel::GetTopCountPredictionsImpl(
   for (const auto& [segment, probability] : *predictions) {
     prediction_order.emplace_back(probability, segment);
   }
-  std::ranges::sort(base::Reversed(prediction_order));
+  std::ranges::sort(std::views::reverse(prediction_order));
 
   PredictionMap top_predictions;
   if (top_count < prediction_order.size()) {

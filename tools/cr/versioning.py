@@ -20,7 +20,8 @@ GOOGLESOURCE_LINK = 'https://chromium.googlesource.com/chromium/src'
 # Link with the log of changes between two versions.
 GOOGLESOURCE_LOG_LINK = (
     f'{GOOGLESOURCE_LINK}'
-    '/+log/{from_version}..{to_version}?pretty=fuller&n=10000')
+    '/+log/{from_version}..{to_version}?pretty=fuller&n=10000'
+)
 
 # The file in Chromium with the version written in it.
 CHROMIUM_VERSION_FILE = 'chrome/VERSION'
@@ -29,10 +30,10 @@ CHROMIUM_VERSION_FILE = 'chrome/VERSION'
 def load_package_file(branch):
     """Retrieves the json content of package.json for a given revision
 
-  Args:
-    branch:
-      A branch or hash to load the file from.
-  """
+    Args:
+      branch:
+        A branch or hash to load the file from.
+    """
     package = repository.brave.read_file(PACKAGE_FILE, commit=branch)
     return json.loads(package)
 
@@ -52,8 +53,7 @@ def read_chromium_version_file():
 
 
 def get_uplift_branch_name_from_package() -> str:
-    """Generates the name of the uplift branch from `package.json`.
-    """
+    """Generates the name of the uplift branch from `package.json`."""
     version = load_package_file('HEAD')['version'].split('.')
     return f'{version[0]}.{version[1]}.x'
 
@@ -61,8 +61,7 @@ def get_uplift_branch_name_from_package() -> str:
 @total_ordering
 @dataclass(frozen=True)
 class Version:
-    """A class to hold the version information.
-    """
+    """A class to hold the version information."""
 
     # The version data in the format of 'MAJOR.MINOR.BUILD.PATCH'
     value: str
@@ -71,7 +70,8 @@ class Version:
         if len(self.parts) != 4:
             raise ValueError(
                 'Version required format: MAJOR.MINOR.BUILD.PATCH. '
-                f'version={self.value}')
+                f'version={self.value}'
+            )
 
     def __str__(self):
         return self.value
@@ -83,8 +83,7 @@ class Version:
 
     @property
     def major(self) -> int:
-        """The major version part.
-        """
+        """The major version part."""
         return self.parts[0]
 
     @classmethod
@@ -97,19 +96,25 @@ class Version:
 
     @classmethod
     def from_git(cls, branch: str) -> "Version":
-        """Retrieves the version from the git repository.
-        """
+        """Retrieves the version from the git repository."""
         return cls(
-            load_package_file(branch).get('config').get('projects').get(
-                'chrome').get('tag'))
+            load_package_file(branch)
+            .get('config')
+            .get('projects')
+            .get('chrome')
+            .get('tag')
+        )
 
     @classmethod
-    def get_latest_googlesource_tag_version(cls,
-                                            major: int | None = None
-                                            ) -> "Version" | None:
+    def get_latest_googlesource_tag_version(
+        cls, major: int | None = None
+    ) -> "Version" | None:
         args = [
-            'ls-remote', '--tags', '--refs', '--sort=-v:refname',
-            GOOGLESOURCE_LINK
+            'ls-remote',
+            '--tags',
+            '--refs',
+            '--sort=-v:refname',
+            GOOGLESOURCE_LINK,
         ]
         if major is not None:
             args.append(f'refs/tags/{major}.*')
@@ -139,7 +144,7 @@ class Version:
         return self.parts < other.parts
 
     def get_googlesource_diff_link(self, from_version: "Version") -> str:
-        """Generates a link to the diff of the upgrade.
-        """
-        return GOOGLESOURCE_LOG_LINK.format(from_version=from_version,
-                                            to_version=self)
+        """Generates a link to the diff of the upgrade."""
+        return GOOGLESOURCE_LOG_LINK.format(
+            from_version=from_version, to_version=self
+        )

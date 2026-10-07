@@ -46,6 +46,7 @@ import org.chromium.chrome.browser.toolbar.adaptive.BraveAdaptiveToolbarPrefs;
 import org.chromium.chrome.browser.toolbar.adaptive.settings.BraveRadioButtonGroupAdaptiveToolbarPreference;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.settings.AddressBarSettingsFragment;
+import org.chromium.chrome.browser.ui.bottombar.BraveBottomBarUserPrefs;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.search.PreferenceParser;
@@ -61,7 +62,6 @@ public class AppearancePreferences extends AppearanceSettingsFragment
     /* package */ static final String PREF_GENERAL_SECTION = "general_section";
     public static final String PREF_SHOW_BRAVE_REWARDS_ICON = "show_brave_rewards_icon";
     public static final String PREF_ADDRESS_BAR = "address_bar";
-    /* package */ static final String PREF_ADS_SWITCH = "ads_switch";
     /* package */ static final String PREF_BRAVE_NIGHT_MODE_ENABLED =
             "brave_night_mode_enabled_key";
     /* package */ static final String PREF_BRAVE_DISABLE_SHARING_HUB = "brave_disable_sharing_hub";
@@ -92,8 +92,15 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         boolean isTablet =
                 DeviceFormFactor.isNonMultiDisplayContextOnTablet(
                         ContextUtils.getApplicationContext());
-        if (isTablet) {
+        // The bottom navigation toolbar is not available on tablets. Off tablets it has two
+        // implementations with a switch each - Brave's own bottom controls, and upstream's bottom
+        // bar - so only the switch for the one the flag selects is kept.
+        boolean isAndroidBottomBarEnabled = BottomToolbarConfiguration.isAndroidBottomBarEnabled();
+        if (isTablet || isAndroidBottomBarEnabled) {
             removePreferenceIfPresent(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
+        }
+        if (isTablet || !isAndroidBottomBarEnabled) {
+            removePreferenceIfPresent(BravePreferenceKeys.BRAVE_ENABLE_BOTTOM_BAR);
         }
 
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
@@ -158,13 +165,6 @@ public class AppearancePreferences extends AppearanceSettingsFragment
             showBraveRewardsIconPref.setOnPreferenceChangeListener(this);
         }
 
-        ChromeSwitchPreference adsSwitchPref =
-                (ChromeSwitchPreference) findPreference(PREF_ADS_SWITCH);
-        if (adsSwitchPref != null) {
-            adsSwitchPref.setChecked(getPrefAdsInBackgroundEnabled());
-            adsSwitchPref.setOnPreferenceChangeListener(this);
-        }
-
         Preference nightModeEnabled = findPreference(PREF_BRAVE_NIGHT_MODE_ENABLED);
         nightModeEnabled.setOnPreferenceChangeListener(this);
         if (nightModeEnabled instanceof ChromeSwitchPreference) {
@@ -177,6 +177,11 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                 findPreference(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
         if (enableBottomToolbar != null) {
             enableBottomToolbar.setOnPreferenceChangeListener(this);
+        }
+
+        Preference enableBottomBar = findPreference(BravePreferenceKeys.BRAVE_ENABLE_BOTTOM_BAR);
+        if (enableBottomBar != null) {
+            enableBottomBar.setOnPreferenceChangeListener(this);
         }
 
         ChromeSwitchPreference dynamicColorsPref =
@@ -274,6 +279,14 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                     .setEnabled(BottomToolbarConfiguration.isToolbarTopAnchored());
         }
 
+        Preference enableBottomBar = findPreference(BravePreferenceKeys.BRAVE_ENABLE_BOTTOM_BAR);
+        if (enableBottomBar instanceof ChromeSwitchPreference) {
+            // The bottom bar is shown with the address bar in either position, so unlike the
+            // switch above this one has nothing to disable it for.
+            ((ChromeSwitchPreference) enableBottomBar)
+                    .setChecked(BraveBottomBarUserPrefs.isBottomBarSettingEnabled());
+        }
+
         updatePreferenceIcon(
                 AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT,
                 R.drawable.ic_browser_customizable_shortcut);
@@ -303,12 +316,14 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                     .writeBoolean(
                             BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, !originalStatus);
             shouldRelaunch = true;
+        } else if (BravePreferenceKeys.BRAVE_ENABLE_BOTTOM_BAR.equals(key)) {
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(BravePreferenceKeys.BRAVE_ENABLE_BOTTOM_BAR, (boolean) newValue);
+            shouldRelaunch = true;
         } else if (PREF_SHOW_BRAVE_REWARDS_ICON.equals(key)) {
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(PREF_SHOW_BRAVE_REWARDS_ICON, !(boolean) newValue);
             shouldRelaunch = true;
-        } else if (PREF_ADS_SWITCH.equals(key)) {
-            setPrefAdsInBackgroundEnabled((boolean) newValue);
         } else if (PREF_BRAVE_NIGHT_MODE_ENABLED.equals(key)) {
             BraveFeatureUtil.enableFeature(
                     BraveFeatureList.ENABLE_FORCE_DARK, (boolean) newValue, true);
@@ -362,16 +377,6 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         return true;
     }
 
-    /** Returns the user preference for whether the brave ads in background is enabled. */
-    public static boolean getPrefAdsInBackgroundEnabled() {
-        return ChromeSharedPreferences.getInstance().readBoolean(PREF_ADS_SWITCH, false);
-    }
-
-    /** Sets the user preference for whether the brave ads in background is enabled. */
-    public void setPrefAdsInBackgroundEnabled(boolean enabled) {
-        ChromeSharedPreferences.getInstance().writeBoolean(PREF_ADS_SWITCH, enabled);
-    }
-
     private static boolean isSharingHubEnabled() {
         return !ChromeSharedPreferences.getInstance()
                 .readBoolean(BravePreferenceKeys.BRAVE_DISABLE_SHARING_HUB, false);
@@ -418,16 +423,17 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         setPreferenceOrder(PREF_BRAVE_CUSTOMIZE_MENU, 3);
         setPreferenceOrder(AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT, 4);
         setPreferenceOrder(PREF_ADDRESS_BAR, 5);
+        // Only one of the two bottom navigation toolbar switches is present, so they share a slot.
         setPreferenceOrder(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, 6);
+        setPreferenceOrder(BravePreferenceKeys.BRAVE_ENABLE_BOTTOM_BAR, 6);
         setPreferenceOrder(PREF_ENABLE_MULTI_WINDOWS, 7);
         setPreferenceOrder(PREF_GENERAL_SECTION, 8);
         setPreferenceOrder(PREF_BRAVE_NIGHT_MODE_ENABLED, 9);
         setPreferenceOrder(PREF_BRAVE_DISABLE_SHARING_HUB, 10);
         setPreferenceOrder(PREF_SHOW_BRAVE_REWARDS_ICON, 11);
-        setPreferenceOrder(PREF_ADS_SWITCH, 12);
-        setPreferenceOrder(AppearanceSettingsFragment.PREF_BOOKMARK_BAR, 13);
-        setPreferenceOrder(PREF_BRAVE_ENABLE_TAB_GROUPS, 14);
-        setPreferenceOrder(PREF_SHOW_UNDO_WHEN_TABS_CLOSED, 15);
+        setPreferenceOrder(AppearanceSettingsFragment.PREF_BOOKMARK_BAR, 12);
+        setPreferenceOrder(PREF_BRAVE_ENABLE_TAB_GROUPS, 13);
+        setPreferenceOrder(PREF_SHOW_UNDO_WHEN_TABS_CLOSED, 14);
     }
 
     private void setPreferenceOrder(String key, int order) {
@@ -446,7 +452,6 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         if (BraveRewardsPolicy.isDisabledByPolicy(getProfile())) {
             // Policy disables Brave Rewards - remove rewards-related preferences
             removePreferenceIfPresent(PREF_SHOW_BRAVE_REWARDS_ICON);
-            removePreferenceIfPresent(PREF_ADS_SWITCH);
         }
     }
 
@@ -513,7 +518,6 @@ public class AppearancePreferences extends AppearanceSettingsFragment
 
                     if (BraveRewardsPolicy.isDisabledByPolicy(profile)) {
                         indexData.removeEntryForKey(frag, PREF_SHOW_BRAVE_REWARDS_ICON);
-                        indexData.removeEntryForKey(frag, PREF_ADS_SWITCH);
                     }
 
                     if (!shouldShowSharingHubPreference()) {

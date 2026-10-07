@@ -41,6 +41,11 @@ class Tool {
   // Description for the Assistant to understand the purpose of the tool
   virtual std::string_view Description() const = 0;
 
+  // What to show the user. Default to Name()/Description(), which tools should
+  // override if those are mangled or augmented for the Assistant's benefit.
+  virtual std::string_view DisplayName() const;
+  virtual std::string_view DisplayDescription() const;
+
   // Type of the tool, usually left as default "function"
   virtual std::string_view Type() const;
 
@@ -93,6 +98,25 @@ class Tool {
   // PermissionChallenge. Tools can override to perform any setup needed
   // before UseTool is called.
   virtual void UserPermissionGranted(const std::string& tool_use_id);
+
+  // A decision the user has already made about this tool, so that
+  // RequiresUserInteractionBeforeHandling() can skip the challenge it would
+  // otherwise raise. kNeverAllow tools are withheld from the model by whoever
+  // provides them, so implementors only need to handle kAsk and kAllowSession.
+  virtual void SetUserPermissionStrategy(mojom::ToolPermission permission);
+
+  // Returns a human-readable, markdown-formatted description of what this
+  // tool use is asking permission for (e.g. naming a site-registered WebMCP
+  // tool and its origin instead of a mangled, model-facing tool name).
+  // Unlike RequiresUserInteractionBeforeHandling(), this has no side effects
+  // and doesn't depend on whether this Tool is the source of the
+  // PermissionChallenge being shown - it's also used to decorate a
+  // PermissionChallenge created elsewhere (e.g. by the server's alignment
+  // check, which only knows the raw tool name) with a nicer description.
+  // Returns nullopt if this tool has nothing more descriptive to add than
+  // the default fallback (the raw tool name).
+  virtual std::optional<std::string> GetPermissionChallengeDescription(
+      const mojom::ToolUseEvent& tool_use) const;
 
   // Whether this tool supports the given conversation. Can be used to filter
   // tools based on conversation properties like temporary status.

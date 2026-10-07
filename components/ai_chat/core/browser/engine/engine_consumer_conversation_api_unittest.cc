@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/files/file_path.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
@@ -80,9 +81,8 @@ class MockConversationAPIClient : public ConversationAPIClient {
               (override));
 
   std::string GetMessagesJson(std::vector<OAIMessage> messages) {
-    auto body = CreateJSONRequestBody(
-        std::move(messages), std::nullopt, std::nullopt,
-        {mojom::ConversationCapability::CHAT}, std::nullopt, true);
+    auto body = CreateJSONRequestBody(std::move(messages), std::nullopt,
+                                      std::nullopt, {}, std::nullopt, true);
     auto dict = base::test::ParseJsonDict(body);
     base::ListValue* messages_list = dict.FindList("messages");
     EXPECT_TRUE(messages_list);
@@ -102,7 +102,8 @@ class EngineConsumerConversationAPIUnitTest : public testing::Test {
     prefs::RegisterProfilePrefs(prefs_.registry());
     ModelService::RegisterProfilePrefs(prefs_.registry());
     model_service_ = std::make_unique<ModelService>(
-        &prefs_, os_crypt_async_.get(), network::NetworkContextGetter());
+        &prefs_, os_crypt_async_.get(), network::NetworkContextGetter(),
+        /*url_loader_factory=*/nullptr, base::FilePath());
 
     auto options = mojom::LeoModelOptions::New();
     options->display_maker = "Test Maker";
@@ -161,7 +162,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   // here but more exhaustive tests of ConversationAPIClient are performed in
   // its own unit test suite.
   PageContent page_content(
-      std::string(kTestingMaxAssociatedContentLength + 1, 'a'), false);
+      std::string(kTestingMaxAssociatedContentLength + 1, 'a'),
+      mojom::ContentType::PageContent);
   std::string expected_page_content(kTestingMaxAssociatedContentLength, 'a');
   std::string expected_user_message_content =
       "Tell the user which show is this about?";
@@ -224,8 +226,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, EngineConsumer::ToHistoryView(history),
-      false, {}, std::nullopt, {mojom::ConversationCapability::CHAT},
-      base::DoNothing(),
+      false, {}, std::nullopt, {}, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -235,8 +236,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateAssistantResponse_BasicMessage_MultiAssociatedTruncates) {
   size_t content_length = kTestingMaxAssociatedContentLength / 2 + 10;
-  PageContent page_content_1(std::string(content_length, 'a'), false);
-  PageContent page_content_2(std::string(content_length, 'b'), false);
+  PageContent page_content_1(std::string(content_length, 'a'),
+                             mojom::ContentType::PageContent);
+  PageContent page_content_2(std::string(content_length, 'b'),
+                             mojom::ContentType::PageContent);
   // First content should be truncated to remaining available space (as we
   // truncate the oldest page content first).
   std::string expected_page_content_1(
@@ -308,8 +311,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content_1, page_content_2}}}},
-      EngineConsumer::ToHistoryView(history), false, {}, std::nullopt,
-      {mojom::ConversationCapability::CHAT}, base::DoNothing(),
+      EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -318,7 +321,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateAssistantResponse_WithSelectedText) {
-  PageContent page_content("This is a page about The Mandalorian.", false);
+  PageContent page_content("This is a page about The Mandalorian.",
+                           mojom::ContentType::PageContent);
 
   // Build expected JSON format
   std::string expected_messages = R"([
@@ -381,8 +385,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, EngineConsumer::ToHistoryView(history),
-      false, {}, std::nullopt, {mojom::ConversationCapability::CHAT},
-      base::DoNothing(),
+      false, {}, std::nullopt, {}, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -391,7 +394,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateAssistantResponse_HistoryWithSelectedText) {
-  PageContent page_content("This is my page. I have spoken.", false);
+  PageContent page_content("This is my page. I have spoken.",
+                           mojom::ContentType::PageContent);
   // Tests messages building from history with selected text and new query
   // without selected text but with page association.
   EngineConsumer::ConversationHistory history;
@@ -489,8 +493,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, EngineConsumer::ToHistoryView(history),
-      false, {}, std::nullopt, {mojom::ConversationCapability::CHAT},
-      base::DoNothing(),
+      false, {}, std::nullopt, {}, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -501,7 +504,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateAssistantResponse_ModifyReply) {
   // Tests messages building from history with modified agent reply.
   EngineConsumer::ConversationHistory history;
-  PageContent page_content("I have spoken.", false);
+  PageContent page_content("I have spoken.", mojom::ContentType::PageContent);
   history.push_back(mojom::ConversationTurn::New(
       "turn-1", std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
       mojom::ActionType::QUERY, "Which show is 'This is the way' from?",
@@ -617,8 +620,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, EngineConsumer::ToHistoryView(history),
-      false, {}, std::nullopt, {mojom::ConversationCapability::CHAT},
-      base::DoNothing(),
+      false, {}, std::nullopt, {}, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -681,12 +683,12 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   // This text should be ignored
   turn->text = "Summarize the content of this page.";
   history.push_back(std::move(turn));
-  PageContent page_content("This is a sample page content.", false);
+  PageContent page_content("This is a sample page content.",
+                           mojom::ContentType::PageContent);
 
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, EngineConsumer::ToHistoryView(history),
-      false, {}, std::nullopt, {mojom::ConversationCapability::CHAT},
-      base::DoNothing(),
+      false, {}, std::nullopt, {}, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -776,11 +778,11 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     history.push_back(std::move(turn));
 
     base::RunLoop run_loop;
-    PageContent page_content("This is a test page content.", false);
+    PageContent page_content("This is a test page content.",
+                             mojom::ContentType::PageContent);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, EngineConsumer::ToHistoryView(history),
-        false, {}, std::nullopt, {mojom::ConversationCapability::CHAT},
-        base::DoNothing(),
+        false, {}, std::nullopt, {}, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
               run_loop.Quit();
@@ -862,11 +864,11 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     history.push_back(std::move(turn));
 
     base::RunLoop run_loop;
-    PageContent page_content("This is a test page content.", false);
+    PageContent page_content("This is a test page content.",
+                             mojom::ContentType::PageContent);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, EngineConsumer::ToHistoryView(history),
-        false, {}, std::nullopt, {mojom::ConversationCapability::CHAT},
-        base::DoNothing(),
+        false, {}, std::nullopt, {}, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
               run_loop.Quit();
@@ -951,11 +953,11 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     history.push_back(std::move(turn));
 
     base::RunLoop run_loop;
-    PageContent page_content("This is a test page content.", false);
+    PageContent page_content("This is a test page content.",
+                             mojom::ContentType::PageContent);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, EngineConsumer::ToHistoryView(history),
-        false, {}, std::nullopt, {mojom::ConversationCapability::CHAT},
-        base::DoNothing(),
+        false, {}, std::nullopt, {}, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
               run_loop.Quit();
@@ -1017,11 +1019,11 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     history.push_back(std::move(turn));
 
     base::RunLoop run_loop;
-    PageContent page_content("This is a test page content.", false);
+    PageContent page_content("This is a test page content.",
+                             mojom::ContentType::PageContent);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, EngineConsumer::ToHistoryView(history),
-        false, {}, std::nullopt, {mojom::ConversationCapability::CHAT},
-        base::DoNothing(),
+        false, {}, std::nullopt, {}, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
               run_loop.Quit();
@@ -1088,11 +1090,11 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     history.push_back(std::move(turn));
 
     base::RunLoop run_loop;
-    PageContent page_content("This is a test page content.", false);
+    PageContent page_content("This is a test page content.",
+                             mojom::ContentType::PageContent);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, EngineConsumer::ToHistoryView(history),
-        false, {}, std::nullopt, {mojom::ConversationCapability::CHAT},
-        base::DoNothing(),
+        false, {}, std::nullopt, {}, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
               run_loop.Quit();
@@ -1158,11 +1160,11 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     history.push_back(std::move(turn));
 
     base::RunLoop run_loop;
-    PageContent page_content("This is a test page content.", false);
+    PageContent page_content("This is a test page content.",
+                             mojom::ContentType::PageContent);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, EngineConsumer::ToHistoryView(history),
-        false, {}, std::nullopt, {mojom::ConversationCapability::CHAT},
-        base::DoNothing(),
+        false, {}, std::nullopt, {}, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
               run_loop.Quit();
@@ -1239,12 +1241,12 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   history.push_back(std::move(turn));
 
   base::RunLoop run_loop;
-  PageContent page_content("This is a test page content.", false);
+  PageContent page_content("This is a test page content.",
+                           mojom::ContentType::PageContent);
   engine_->GenerateAssistantResponse(
       {{"turn-1", {page_content}}}, EngineConsumer::ToHistoryView(history),
       true,  // is_temporary_chat = true
-      {}, std::nullopt, {mojom::ConversationCapability::CHAT},
-      base::DoNothing(),
+      {}, std::nullopt, {}, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -1284,13 +1286,13 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   history.push_back(std::move(turn));
 
   base::RunLoop run_loop;
-  PageContent page_content("This is a test page content.", false);
+  PageContent page_content("This is a test page content.",
+                           mojom::ContentType::PageContent);
   PageContentsMap page_contents{{"turn-1", {page_content}}};
 
   engine_->GenerateAssistantResponse(
       std::move(page_contents), EngineConsumer::ToHistoryView(history), false,
-      {}, std::nullopt, {mojom::ConversationCapability::CHAT},
-      base::DoNothing(),
+      {}, std::nullopt, {}, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -1310,8 +1312,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   auto history = CreateSampleChatHistory(2);
 
   engine_->GenerateAssistantResponse(
-      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt,
-      {mojom::ConversationCapability::CHAT}, base::DoNothing(),
+      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -1367,8 +1369,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {}, EngineConsumer::ToHistoryView(history), false,
-      {mock_tool->GetWeakPtr()}, std::nullopt,
-      {mojom::ConversationCapability::CHAT}, base::DoNothing(),
+      {mock_tool->GetWeakPtr()}, std::nullopt, {}, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -1386,8 +1387,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     MOCK_METHOD(void, SanitizeInput, (std::string & input), (override));
   };
 
-  PageContent page_content_1("This is a page about The Mandalorian.", false);
-  PageContent page_content_2("This is a video about The Mandalorian.", true);
+  PageContent page_content_1("This is a page about The Mandalorian.",
+                             mojom::ContentType::PageContent);
+  PageContent page_content_2("This is a video about The Mandalorian.",
+                             mojom::ContentType::VideoTranscript);
 
   auto mock_engine_consumer =
       std::make_unique<MockConversationAPIEngineConsumer>(
@@ -1408,9 +1411,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     history.push_back(std::move(turn));
     mock_engine_consumer->GenerateAssistantResponse(
         {{{"turn-1", {page_content_1, page_content_2}}}},
-        EngineConsumer::ToHistoryView(history), false, {}, std::nullopt,
-        {mojom::ConversationCapability::CHAT}, base::DoNothing(),
-        base::DoNothing());
+        EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
+        base::DoNothing(), base::DoNothing());
     testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
   }
 
@@ -1459,7 +1461,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         run_loop.Quit();
       });
 
-  PageContent page_content("Test page content", false);
+  PageContent page_content("Test page content",
+                           mojom::ContentType::PageContent);
 
   std::vector<mojom::ConversationTurnPtr> history;
   auto turn = mojom::ConversationTurn::New(
@@ -1472,8 +1475,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{"turn-1", {page_content}}}, EngineConsumer::ToHistoryView(history),
-      false, {}, std::nullopt, {mojom::ConversationCapability::CHAT},
-      base::DoNothing(),
+      false, {}, std::nullopt, {}, base::DoNothing(),
       base::BindLambdaForTesting(
           [&](EngineConsumer::GenerationResult) { /* handled above */ }));
 
@@ -1511,7 +1513,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   // Create page content for a turn UUID that doesn't exist in conversation
   // history
-  PageContent page_content("Content for missing turn", false);
+  PageContent page_content("Content for missing turn",
+                           mojom::ContentType::PageContent);
 
   std::vector<mojom::ConversationTurnPtr> history;
   auto turn = mojom::ConversationTurn::New(
@@ -1524,8 +1527,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{"missing-turn", {page_content}}},
-      EngineConsumer::ToHistoryView(history), false, {}, std::nullopt,
-      {mojom::ConversationCapability::CHAT}, base::DoNothing(),
+      EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&](EngineConsumer::GenerationResult) { /* handled above */ }));
 
@@ -1570,8 +1573,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         run_loop.Quit();
       });
 
-  PageContent page_content1("First page content", false);
-  PageContent video_content("Video content", true);
+  PageContent page_content1("First page content",
+                            mojom::ContentType::PageContent);
+  PageContent video_content("Video content",
+                            mojom::ContentType::VideoTranscript);
 
   std::vector<mojom::ConversationTurnPtr> history;
   auto turn = mojom::ConversationTurn::New(
@@ -1584,8 +1589,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{"turn-1", {page_content1, video_content}}},
-      EngineConsumer::ToHistoryView(history), false, {}, std::nullopt,
-      {mojom::ConversationCapability::CHAT}, base::DoNothing(),
+      EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&](EngineConsumer::GenerationResult) { /* handled above */ }));
 
@@ -1639,8 +1644,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         run_loop.Quit();
       });
 
-  PageContent page_content1("Content for first turn", false);
-  PageContent page_content2("Content for second turn", false);
+  PageContent page_content1("Content for first turn",
+                            mojom::ContentType::PageContent);
+  PageContent page_content2("Content for second turn",
+                            mojom::ContentType::PageContent);
 
   std::vector<mojom::ConversationTurnPtr> history;
 
@@ -1673,8 +1680,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{"turn-1", {page_content1}}, {"turn-2", {page_content2}}},
-      EngineConsumer::ToHistoryView(history), false, {}, std::nullopt,
-      {mojom::ConversationCapability::CHAT}, base::DoNothing(),
+      EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&](EngineConsumer::GenerationResult) { /* handled above */ }));
 
@@ -1686,9 +1693,12 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateAssistantResponse_MultiplePageContents_MultipleTurns_TooLong) {
   // Create page contents with specific lengths for truncation testing
   // Using lengths that will trigger truncation behavior similar to the OAI test
-  PageContent page_content_1(std::string(35, '1'), false);
-  PageContent page_content_2(std::string(35, '2'), false);
-  PageContent page_content_3(std::string(35, '3'), false);
+  PageContent page_content_1(std::string(35, '1'),
+                             mojom::ContentType::PageContent);
+  PageContent page_content_2(std::string(35, '2'),
+                             mojom::ContentType::PageContent);
+  PageContent page_content_3(std::string(35, '3'),
+                             mojom::ContentType::PageContent);
 
   // Create conversation history with multiple turns
   std::vector<mojom::ConversationTurnPtr> history;
@@ -1765,9 +1775,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         engine_->GenerateAssistantResponse(
             {{"turn-1", {page_content_1, page_content_2}},
              {"turn-2", {page_content_3}}},
-            EngineConsumer::ToHistoryView(history), false, {}, std::nullopt,
-            {mojom::ConversationCapability::CHAT}, base::DoNothing(),
-            base::DoNothing());
+            EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
+            base::DoNothing(), base::DoNothing());
         run_loop.Run();
         testing::Mock::VerifyAndClearExpectations(mock_api_client);
       };
@@ -1936,8 +1945,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
   engine_->GenerateAssistantResponse({}, EngineConsumer::ToHistoryView(history),
-                                     false, {}, std::nullopt,
-                                     {mojom::ConversationCapability::CHAT},
+                                     false, {}, std::nullopt, {},
                                      base::DoNothing(), future.GetCallback());
   EXPECT_EQ(future.Take(),
             EngineConsumer::GenerationResultData(
@@ -1949,7 +1957,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateAssistantResponse_WithUploadedPdfFiles) {
-  PageContent page_content("This is a page about The Mandalorian.", false);
+  PageContent page_content("This is a page about The Mandalorian.",
+                           mojom::ContentType::PageContent);
 
   // Create test uploaded PDF files
   auto uploaded_files =
@@ -2037,15 +2046,15 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
   engine_->GenerateAssistantResponse(
       {{"turn-1", {page_content}}}, EngineConsumer::ToHistoryView(history),
-      false, {}, std::nullopt, {mojom::ConversationCapability::CHAT},
-      base::DoNothing(), future.GetCallback());
+      false, {}, std::nullopt, {}, base::DoNothing(), future.GetCallback());
   EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateAssistantResponse_WithMixedUploadedFiles) {
-  PageContent page_content("This is a page about The Mandalorian.", false);
+  PageContent page_content("This is a page about The Mandalorian.",
+                           mojom::ContentType::PageContent);
 
   // Create test uploaded files of different types
   auto uploaded_files = std::vector<mojom::UploadedFilePtr>();
@@ -2180,8 +2189,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
   engine_->GenerateAssistantResponse(
       {{"turn-1", {page_content}}}, EngineConsumer::ToHistoryView(history),
-      false, {}, std::nullopt, {mojom::ConversationCapability::CHAT},
-      base::DoNothing(), future.GetCallback());
+      false, {}, std::nullopt, {}, base::DoNothing(), future.GetCallback());
   EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
@@ -2259,8 +2267,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
   engine_->GenerateAssistantResponse({}, EngineConsumer::ToHistoryView(history),
-                                     false, {}, std::nullopt,
-                                     {mojom::ConversationCapability::CHAT},
+                                     false, {}, std::nullopt, {},
                                      base::DoNothing(), future.GetCallback());
   EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
@@ -2269,7 +2276,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateAssistantResponse_WithMultiplePdfFiles) {
   constexpr char kTestPrompt[] = "Can you compare these three PDFs?";
-  PageContent page_content("This is a page about The Mandalorian.", false);
+  PageContent page_content("This is a page about The Mandalorian.",
+                           mojom::ContentType::PageContent);
 
   // Create multiple PDF files
   auto uploaded_files =
@@ -2357,8 +2365,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{"turn-1", {page_content}}}, EngineConsumer::ToHistoryView(history),
-      false, {}, std::nullopt, {mojom::ConversationCapability::CHAT},
-      base::DoNothing(), future.GetCallback());
+      false, {}, std::nullopt, {}, base::DoNothing(), future.GetCallback());
   EXPECT_TRUE(future.Wait());
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
@@ -2419,7 +2426,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {}, EngineConsumer::ToHistoryView(conversation_history), false, {},
-      std::nullopt, {mojom::ConversationCapability::CHAT},
+      std::nullopt, {},
       base::BindRepeating([](EngineConsumer::GenerationResultData) {}),
       future.GetCallback());
 
@@ -2523,8 +2530,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       });
 
   engine_->GenerateAssistantResponse(
-      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt,
-      {mojom::ConversationCapability::CHAT}, base::DoNothing(),
+      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -2656,8 +2663,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       });
 
   engine_->GenerateAssistantResponse(
-      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt,
-      {mojom::ConversationCapability::CHAT}, base::DoNothing(),
+      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -2891,8 +2898,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       });
 
   engine_->GenerateAssistantResponse(
-      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt,
-      {mojom::ConversationCapability::CHAT}, base::DoNothing(),
+      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -2971,8 +2978,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       });
 
   engine_->GenerateAssistantResponse(
-      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt,
-      {mojom::ConversationCapability::CHAT}, base::DoNothing(),
+      {}, EngineConsumer::ToHistoryView(history), false, {}, std::nullopt, {},
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -2980,8 +2987,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
-  PageContent page_content("Sample page content.", false);
-  PageContent video_content("Sample video content.", true);
+  PageContent page_content("Sample page content.",
+                           mojom::ContentType::PageContent);
+  PageContent video_content("Sample video content.",
+                            mojom::ContentType::VideoTranscript);
   PageContents page_contents{page_content, video_content};
 
   std::string expected_messages = R"([
@@ -3077,20 +3086,21 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
   // Test empty completion event
   {
     EXPECT_CALL(*mock_api_client, PerformRequest)
-        .WillOnce([&](std::vector<OAIMessage> messages,
-                      std::optional<base::ListValue> oai_tool_definitions,
-                      const std::optional<std::string>& preferred_tool_name,
-                      const ConversationCapabilitySet&
-                          conversation_capabilities,
-                      EngineConsumer::GenerationDataCallback data_callback,
-                      EngineConsumer::GenerationCompletedCallback callback,
-                      const std::optional<std::string>& model_name) {
-          auto completion_event =
-              mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New(""));
-          std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-              std::move(completion_event), std::nullopt)));
-        });
+        .WillOnce(
+            [&](std::vector<OAIMessage> messages,
+                std::optional<base::ListValue> oai_tool_definitions,
+                const std::optional<std::string>& preferred_tool_name,
+                const ConversationCapabilitySet& conversation_capabilities,
+                EngineConsumer::GenerationDataCallback data_callback,
+                EngineConsumer::GenerationCompletedCallback callback,
+                const std::optional<std::string>& model_name) {
+              auto completion_event =
+                  mojom::ConversationEntryEvent::NewCompletionEvent(
+                      mojom::CompletionEvent::New(""));
+              std::move(callback).Run(
+                  base::ok(EngineConsumer::GenerationResultData(
+                      std::move(completion_event), std::nullopt)));
+            });
 
     engine_->GenerateQuestionSuggestions(
         page_contents,
@@ -3334,7 +3344,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
             std::nullopt)));
       });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents,
+                                     EngineConsumer::ToHistoryView(history),
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -3364,7 +3375,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   EXPECT_CALL(*mock_api_client, PerformRequest).Times(0);
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents,
+                                     EngineConsumer::ToHistoryView(history),
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -3391,7 +3403,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
             base::unexpected(mojom::APIError::RateLimitReached));
       });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents,
+                                     EngineConsumer::ToHistoryView(history),
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -3420,7 +3433,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
             std::nullopt)));
       });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents,
+                                     EngineConsumer::ToHistoryView(history),
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -3450,7 +3464,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
             std::nullopt)));
       });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents,
+                                     EngineConsumer::ToHistoryView(history),
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -4223,7 +4238,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {}, EngineConsumer::ToHistoryView(conversation_history), false, {},
-      std::nullopt, {mojom::ConversationCapability::CHAT},
+      std::nullopt, {},
       base::BindRepeating([](EngineConsumer::GenerationResultData) {}),
       future.GetCallback());
 
@@ -4268,7 +4283,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {}, EngineConsumer::ToHistoryView(conversation_history), false, {},
-      std::nullopt, {mojom::ConversationCapability::CHAT},
+      std::nullopt, {},
       base::BindRepeating([](EngineConsumer::GenerationResultData) {}),
       future.GetCallback());
 

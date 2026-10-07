@@ -182,10 +182,10 @@ extension WalletTabHelper: BraveWalletProviderDelegate {
     completion: @escaping RequestPermissionsCallback
   ) {
     guard let tab else { return }
-    Task { @MainActor in
+    Task { @MainActor [self] in
       let permissionRequestManager = WalletProviderPermissionRequestsManager.shared
 
-      if permissionRequestManager.hasPendingRequest(for: origin, coinType: coinType) {
+      if permissionRequestManager.hasPendingRequest(for: origin, coinTypes: [coinType]) {
         completion(.requestInProgress, nil)
         return
       }
@@ -260,6 +260,7 @@ extension WalletTabHelper: BraveWalletProviderDelegate {
 
       tabDappStore.latestPendingPermissionRequest = request
       delegate?.showWalletNotification(tab, origin: origin)
+      delegate?.updateURLBarWalletButton()
     }
   }
 
@@ -313,10 +314,6 @@ extension WalletTabHelper: BraveWalletProviderDelegate {
     // No usage for iOS
   }
 
-  func showWalletOnboarding(withOrigin origin: URLOrigin) {
-    showPanel(withOrigin: origin)
-  }
-
   func isTabVisible() -> Bool {
     guard let tab else { return false }
     return tab.isVisible
@@ -344,7 +341,7 @@ extension WalletTabHelper: BraveWalletProviderDelegate {
     else {
       return
     }
-    Task { @MainActor in
+    Task { @MainActor [self] in
       // check if we receive account creation request without a wallet setup
       let isWalletCreated = await keyringService.isWalletCreated()
       if !isWalletCreated {
@@ -365,6 +362,8 @@ extension WalletTabHelper: BraveWalletProviderDelegate {
       }
       // show wallet notification
       delegate?.showWalletNotification(tab, origin: origin)
+      // update wallet button in url bar
+      delegate?.updateURLBarWalletButton()
     }
   }
 
@@ -562,7 +561,7 @@ extension WalletTabHelper: BraveWalletSolanaEventsListener {
     else {
       return
     }
-    Task {
+    _ = Task {
       var arguments: [Any] = [event.name]
       if let eventArgs = event.arguments {
         arguments.append(eventArgs)
@@ -643,7 +642,7 @@ extension WalletTabHelper: BraveWalletKeyringServiceObserver {
       let allAccounts = await keyringService.allAccounts().accounts
       for coin in WalletConstants.supportedCoinTypes(.dapps) {
         let allAccountsForCoin = allAccounts.filter { $0.coin == coin }
-        if permissionRequestManager.hasPendingRequest(for: origin, coinType: coin) {
+        if permissionRequestManager.hasPendingRequest(for: origin, coinTypes: [coin]) {
           let pendingRequests = permissionRequestManager.pendingRequests(
             for: origin,
             coinType: coin

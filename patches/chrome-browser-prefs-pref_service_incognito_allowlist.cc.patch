@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/prefs/pref_service_incognito_allowlist.cc b/chrome/browser/prefs/pref_service_incognito_allowlist.cc
+index db262016de186c9deb760feea11c7a8b1bf97163..cf848b8e1e1732bfaee6c9d970fd4e3eabf565e3 100644
+--- a/chrome/browser/prefs/pref_service_incognito_allowlist.cc
++++ b/chrome/browser/prefs/pref_service_incognito_allowlist.cc
+@@ -227,10 +227,16 @@ const char* const kPersistentPrefNames[] = {
+ namespace prefs {
+ 
+ std::vector<const char*> GetIncognitoPersistentPrefsAllowlist() {
++  std::vector<const char*> result = [&]() -> std::vector<const char*> {
+   std::vector<const char*> allowlist;
+   allowlist.insert(allowlist.end(), std::begin(kPersistentPrefNames),
+                    std::end(kPersistentPrefNames));
+   return allowlist;
++  }();
++  for (auto pref : brave::GetBravePersistentPrefNames()) {
++    result.push_back(pref.data());
++  }
++  return result;
+ }
+ 
+ }  // namespace prefs

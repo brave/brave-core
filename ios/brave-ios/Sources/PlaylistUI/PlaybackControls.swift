@@ -21,25 +21,17 @@ struct PlaybackSpeedPicker: View {
   }
 
   var body: some View {
-    if #available(iOS 17.0, *) {
-      Menu {
-        Picker("", selection: $playbackSpeed) {
-          ForEach(PlayerModel.PlaybackSpeed.supportedSpeeds) { speed in
-            Text(verbatim: "\(speed.rate.formatted())×")
-              .tag(speed)
-          }
+    Menu {
+      Picker("", selection: $playbackSpeed) {
+        ForEach(PlayerModel.PlaybackSpeed.supportedSpeeds) { speed in
+          Text(verbatim: "\(speed.rate.formatted())×")
+            .tag(speed)
         }
-      } label: {
-        label
-      } primaryAction: {
-        playbackSpeed.cycle()
       }
-    } else {
-      Button {
-        playbackSpeed.cycle()
-      } label: {
-        label
-      }
+    } label: {
+      label
+    } primaryAction: {
+      playbackSpeed.cycle()
     }
   }
 }
@@ -64,27 +56,19 @@ struct RepeatModePicker: View {
   }
 
   var body: some View {
-    if #available(iOS 17.0, *) {
-      Menu {
-        Picker("", selection: $repeatMode) {
-          Label(Strings.Playlist.repeatModeOptionNone, braveSystemImage: "leo.loop.off")
-            .tag(PlayerModel.RepeatMode.none)
-          Label(Strings.Playlist.repeatModeOptionOne, braveSystemImage: "leo.loop.1")
-            .tag(PlayerModel.RepeatMode.one)
-          Label(Strings.Playlist.repeatModeOptionAll, braveSystemImage: "leo.loop.all")
-            .tag(PlayerModel.RepeatMode.all)
-        }
-      } label: {
-        label
-      } primaryAction: {
-        repeatMode.cycle()
+    Menu {
+      Picker("", selection: $repeatMode) {
+        Label(Strings.Playlist.repeatModeOptionNone, braveSystemImage: "leo.loop.off")
+          .tag(PlayerModel.RepeatMode.none)
+        Label(Strings.Playlist.repeatModeOptionOne, braveSystemImage: "leo.loop.1")
+          .tag(PlayerModel.RepeatMode.one)
+        Label(Strings.Playlist.repeatModeOptionAll, braveSystemImage: "leo.loop.all")
+          .tag(PlayerModel.RepeatMode.all)
       }
-    } else {
-      Button {
-        repeatMode.cycle()
-      } label: {
-        label
-      }
+    } label: {
+      label
+    } primaryAction: {
+      repeatMode.cycle()
     }
   }
 }

@@ -25,7 +25,6 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -224,7 +223,7 @@ BraveRewardsActionView::BraveRewardsActionView(
   }
 
   panel_coordinator_ =
-      browser_window_interface_->GetFeatures().rewards_panel_coordinator();
+      brave_rewards::RewardsPanelCoordinator::From(browser_window_interface_);
   if (panel_coordinator_) {
     panel_observation_.Observe(panel_coordinator_);
   }
@@ -265,8 +264,8 @@ gfx::Rect BraveRewardsActionView::GetAnchorBoundsInScreen() const {
   if (!GetVisible()) {
     // If the button is currently hidden, then anchor the bubble to the
     // location bar instead.
-    auto* browser_view = BrowserView::GetBrowserViewForBrowser(
-        browser_window_interface_->GetBrowserForMigrationOnly());
+    auto* browser_view =
+        BrowserView::GetBrowserViewForBrowser(browser_window_interface_);
     DCHECK(browser_view);
     return browser_view->GetLocationBarView()->GetAnchorBoundsInScreen();
   }

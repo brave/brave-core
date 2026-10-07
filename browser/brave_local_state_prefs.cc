@@ -12,6 +12,7 @@
 #include "brave/browser/brave_stats/buildflags.h"
 #include "brave/browser/metrics/buildflags/buildflags.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
+#include "brave/browser/misc_metrics/fingerprint_frequency_metrics.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
@@ -21,6 +22,7 @@
 #include "brave/components/brave_origin/brave_origin_prefs.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_search/browser/backup_results_metrics.h"
+#include "brave/components/brave_search/common/pref_names.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
@@ -238,6 +240,9 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
   brave_search_conversion::p3a::RegisterLocalStatePrefs(registry);
   SearchEngineTrackerFactory::RegisterLocalStatePrefs(registry);
+  registry->RegisterBooleanPref(
+      brave_search::prefs::kNewTabV1SourceEnabledAtFirstRun, false);
+  registry->RegisterStringPref(brave_search::prefs::kNewTabV1SourceSuffix, "");
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::RegisterLocalStatePrefs(registry);
@@ -261,6 +266,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
   misc_metrics::ProcessMiscMetrics::RegisterPrefs(registry);
   misc_metrics::PageMetrics::RegisterPrefs(registry);
+  misc_metrics::FingerprintFrequencyMetrics::RegisterPrefs(registry);
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat::AIChatMetrics::RegisterPrefs(registry);
 #endif

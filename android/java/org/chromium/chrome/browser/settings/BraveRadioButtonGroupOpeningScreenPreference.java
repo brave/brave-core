@@ -28,7 +28,7 @@ public class BraveRadioButtonGroupOpeningScreenPreference extends Preference
 
     // Inactivity threshold shown in the option label, matching
     // BraveReturnToChromeUtil.INACTIVITY_THRESHOLD_MS.
-    private static final int INACTIVITY_HOURS = 1;
+    private static final int INACTIVITY_HOURS = 12;
 
     private int mSetting;
     @Nullable private RadioButtonWithDescription mSettingRadioButton;

@@ -10,6 +10,7 @@ load("@builtin//lib/gn.star", "gn")
 load("@builtin//path.star", "path")
 load("@builtin//runtime.star", "runtime")
 load("@builtin//struct.star", "module", "struct")
+load("./platform.star", "platform")
 load("./tsc.star", "tsc")
 
 __HOST_OS_IS_LINUX = runtime.os == "linux"
@@ -513,9 +514,10 @@ def __is_remote_disabled(rule):
 def __is_python_rule(rule):
     rule_command_prefix = rule.get("command_prefix")
     rule_remote_command = rule.get("remote_command")
-    return (rule_command_prefix and rule_command_prefix.startswith("python3")
+    return (rule_command_prefix
+            and rule_command_prefix.startswith(platform.python_bin)
             ) or (rule_remote_command
-                  and rule_remote_command.startswith("python3"))
+                  and rule_remote_command.startswith(platform.remote_python_bin))
 
 
 # Converts a path to the linux version of the llvm-build path.

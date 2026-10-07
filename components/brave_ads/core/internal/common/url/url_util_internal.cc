@@ -26,8 +26,6 @@ constexpr auto kAllowedInternalRootHosts =
 
 constexpr std::string_view kInternalSettingsHost = "settings";
 
-constexpr std::string_view kSurveyPanelistPath = "/surveyPanelist";
-
 constexpr std::string_view kSearchEnginesPath = "/searchEngines";
 constexpr std::string_view kSearchPath = "/search";
 constexpr std::string_view kDefaultSearchPath = "/search/defaultSearch";
@@ -69,11 +67,6 @@ bool ShouldSupportInternalUrl(const GURL& url) {
   if (url_host != kInternalSettingsHost) {
     // Do not support hosts other than chrome://settings.
     return false;
-  }
-
-  if (url_path == kSurveyPanelistPath) {
-    // Support chrome://settings/surveyPanelist.
-    return true;
   }
 
   if (url_path == kSearchEnginesPath || url_path == kSearchPath ||

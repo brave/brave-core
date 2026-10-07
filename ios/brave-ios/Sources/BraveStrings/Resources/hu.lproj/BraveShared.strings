@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "Névjegy";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "Bővebben a Brave Shieldsről";
-
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "A webhelyek gyakran tartalmaznak cookie-kat és szkripteket, amelyek megpróbálják azonosítani Önt és eszközét. Ki akarják deríteni, hogy Ön kicsoda, és követni akarják Önt az interneten – minden webhelyen nyomon követik, mit csinál.\n\nA Brave letiltja ezeket a dolgokat, így anélkül böngészhet, hogy követnék.";
-
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "Ez lehetővé teszi a kép elmentését a kamerafotók közé.";
 
@@ -36,9 +30,6 @@
 
 /* Text for the toggle switch to clear 'Brave Ads' data in settings */
 "ads.braveAdsDataToggleOption" = "Brave hirdetések adatai";
-
-/* individual blocking statistic title */
-"AdsAndTrackers" = "Hirdetések és követők";
 
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "Mindig kérjen asztali webhelyet";
@@ -91,6 +82,9 @@
 /* Label for the button used to delete the current login. */
 "autofill.managePasswords.deleteManagePasswordButtonTitle" = "Törlés";
 
+/* Label for the button used to confirm delete action for the current password. */
+"autofill.managePasswords.deleteManagePasswordConfrimButtonTitle" = "Jelszó törlése";
+
 /* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
 "autofill.managePasswords.headerTitle" = "Mentve";
 
@@ -102,6 +96,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "Jelszavak mentésének felajánlása";
+
+/* Navigation title when creating a new saved login from password management */
+"autofill.managePasswords.passwordDetail.addCredentialTitle" = "Jelszó hozzáadása";
+
+/* Alert message warning the user that deleting the password will remove it from their sync chain and device */
+"autofill.managePasswords.passwordDetail.deleteConfirmMessage" = "Ez a jelszó eltávolításra kerül a szinkronizált blokkláncból és az eszközéről.";
 
 /* Placeholder for the password field when adding or editing a login */
 "autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "Add meg a jelszót";
@@ -121,18 +121,6 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "Automatikus kitöltés";
 
-/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
-"AutoRedirectAMPPages" = "AMP-oldalak automatikus átirányítása";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
-"AutoRedirectAMPPagesDescription" = "A weblapok eredeti (nem AMP) URL-címeinek felkeresése minden esetben, a Google gyorsított mobilweblap (AMP) változatai helyett";
-
-/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
-"AutoRedirectTrackingURLs" = "Követő URL-ek automatikus átirányítása";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "Engedélyezi a felső szintű átirányításkövető URL-ek megkerülésének támogatását.";
-
 /* cookie settings option */
 "Block3rdPartyCookies" = "Harmadik fél sütijeinek blokkolása";
 
@@ -151,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Nem sikerült beállítani a preferenciát. Próbálja újra.";
 
-/* A title for a setting that enables cookie consent notices */
-"BlockCookieConsentNotices" = "Cookie-kkal kapcsolatos hozzájárulási értesítések letiltása";
-
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Blokkolásfigyelő";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Előugró ablakok blokkolása";
-
-/* No comment provided by engineer. */
-"BlockScripts" = "Szkriptek letiltása";
-
-/* No comment provided by engineer. */
-"BlockScriptsDescription" = "Blokkolja a JavaScriptet (megtörheti a webhelyeket).";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "Könyvjelző hozzáadása a(z) %lld lapoknál";
@@ -230,46 +209,10 @@
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Elvetés";
 
 /* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "Speciális vezérlők";
-
-/* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave Shields és adatvédelem";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Shields és adatvédelem";
-
-/* The number of ads and trackers blocked will be next to this */
-"BraveShieldsBlockedCountLabel" = "Blokkoltuk a hirdetéseket és más bizarr dolgokat";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Tudj meg többet";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "A Pajzsok globális alapértelmezéseinek módosítása";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalControls" = "Globális vezérlők";
-
-/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "Tárolja a kapcsolattartási adatokat a jövőbeli hibás weboldal-jelentésekhez";
-
-/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "Ha megadja az elérhetőségi adatokat, azokat a jövőbeli jelentésekhez tároljuk.";
-
-/* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "Ha ez a webhely hibásnak tűnik, próbálja ki a Pajzsok funkciót";
-
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave védelem";
-
-/* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "Lefelé";
-
-/* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "Fel";
-
-/* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "Koppintson duplán a Brave pajzsok átkapcsolásához";
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
@@ -727,6 +670,18 @@
 /* Accessibility Title for the button that edits the quick-search engines list. */
 "EditQuickSearchEnginesAccessibilityTitle" = "Gyorskeresőmotorok szerkesztése";
 
+/* The message on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertMessage" = "Ha összeomlást vagy lefagyást tapasztal, a Brave automatikusan küldhet névtelen diagnosztikai jelentéseket a probléma megoldása érdekében. Ezt bármikor kikapcsolhatja később a Beállításokban.";
+
+/* The title on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertTitle" = "Automatikus összeomlási jelentések engedélyezése";
+
+/* The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting */
+"EnableCrashReporterConfirmButtonTitle" = "Engedélyezés";
+
+/* The button title on an alert presented to the user after the app crashes that ignores the alert */
+"EnableCrashReporterDenyButtonTitle" = "Ne most";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Lefelé húzva frissítés engedélyezése";
 
@@ -823,15 +778,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findPreviousTitle" = "Előző megkeresése";
 
-/* individual blocking statistic title */
-"FingerprintingMethods" = "Ujjlenyomat-vételi módszerek";
-
-/* No comment provided by engineer. */
-"FingerprintingProtection" = "Lenyomatkészítés blokkolása";
-
-/* No comment provided by engineer. */
-"FingerprintingProtectionDescription" = "Megnehezíti a webhelyek számára az eszköz jellegzetes ismertetőjegyeinek felismerését. ";
-
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Az univerzális hivatkozások megnyitásának engedélyezése külső alkalmazásokban";
 
@@ -898,15 +844,6 @@
 /* No comment provided by engineer. */
 "Home" = "Főoldal";
 
-/* No comment provided by engineer. */
-"HTTPSEverywhere" = "Kapcsolatok bővítése HTTPS-re";
-
-/* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Ha lehetséges, a weboldalakat HTTP helyett biztonságos HTTPS használatával nyitja meg.";
-
-/* individual blocking statistic title */
-"HTTPSUpgrades" = "HTTPS frissítések";
-
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Böngészési adatok importálása";
 
@@ -927,6 +864,9 @@
 
 /* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
+
+/* Title for Brave Leo voice input menu item. Brave Leo is the name of a product and should not be translated */
+"LeoVoiceInputMenuItem" = "Leo Hangbemenet";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "A mentett bejelentkezés véglegesen törlődik.";
@@ -1095,9 +1035,6 @@
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Alapértelmezett képek";
-
-/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "Szponzorált képek& videók";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "Szponzorált képek";
@@ -1648,9 +1585,6 @@
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Cím nélküli lejátszási lista";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
-"PopoverShieldsMenuClose" = "Pajzsok menü bezárása";
-
 /* Settings privacy section title */
 "Privacy" = "Adatvédelem";
 
@@ -1999,41 +1933,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "Kedvenc eltávolítása";
 
-/* No comment provided by engineer. */
-"ReportABrokenSite" = "Nem működő oldal jelentése";
-
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "Hiba bejelentése";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"ReportBrokenAdditionalDetails" = "További részletek (opcionális)";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"reportBrokenAdditionalDetailsRequired" = "További részletek";
-
-/* A label for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "Mi a fő probléma, amit lát?";
-
-/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
-"ReportBrokenContactMe" = "Kapcsolatba léphetnek velem itt: (opcionális)";
-
-/* Contact info storing description */
-"ReportBrokenContactMeDescription" = "Ha megadja az elérhetőségi adatokat, azokat tárolni fogjuk, hogy a jövőben jelenthessük a hibás oldalakat.";
-
-/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
-"ReportBrokenContactMeSuggestions" = "E-mailben, Twitteren stb.";
-
-/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"ReportBrokenPlaceholder" = "Válasszon ki egy lehetőséget";
-
-/* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Jelezze a Brave fejlesztőinek, ha ez a webhely nem működik megfelelően:";
-
-/* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Megjegyzés: A Brave szerverekre küldött jelentés tartalmazza a webhely címét, a Brave verziószámát, a Shields beállításokat, a VPN állapotát és a nyelvi beállításokat.";
-
-/* No comment provided by engineer. */
-"ReportBrokenSubmitButtonTitle" = "Elküldés";
 
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraAndMicrophonePermissionPrompt" = "A(z) „%@” szeretne hozzáférni a kamerához és a mikrofonhoz";
@@ -2079,6 +1980,15 @@
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Köszönjük, hogy segít támogatni a Brave-et és a BAT közösséget!";
+
+/* Message of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationMessage" = "A visszaállítással a jelenlegi Brave jutalmak profilja törlődik, és a Brave jutalmak többé nem lesznek engedélyezve.";
+
+/* Title of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationTitle" = "Brave Rewards újraállítása";
+
+/* Title of a button that resets the user's Brave Rewards profile */
+"rewards.settingsResetTitle" = "Alapállapot";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Segítsen támogatni a Brave-et és a BAT közösséget a Brave-jutalmak engedélyezése és a Brave hirdetések megtekintése révén.";
@@ -2302,9 +2212,6 @@
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Bejelentkezések mentése";
 
-/* individual blocking statistic title */
-"ScriptsBlocked" = "Scriptek blokkolva";
-
 /* The placeholder text for bookmark search */
 "searchBookmarksTitle" = "Keresés a könyvjelzők között";
 
@@ -2461,17 +2368,17 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Minőségi beállítások";
 
+/* Description to explain the send crash reports toggle */
+"settings.sendCrashReportsDescription" = "Küldjön anonim diagnosztikai jelentéseket, amikor a rendszer összeomlik vagy lefagy.";
+
+/* Title to explain the send crash reports toggle */
+"settings.sendCrashReportsTitle" = "Összeomlási jelentések küldése";
+
 /* Description to explain the daily usage ping toggle */
 "settings.sendUsagePingDescription" = "Ez a privát értesítés lehetővé teszi a Brave számára, hogy megbecsülje az aktív felhasználók számát.";
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Napi használatról szóló értesítések automatikus küldése a Brave-be";
-
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "Engedélyezi, hogy a Brave privát kérdőívekre mutató linkeket jelenítsen meg az új lapon. Ezek segítenek a funkciók fejlesztésében és a hirdetések hatékonyságának mérésében. [Tudjon meg többet](%@)";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "Brave felmérések engedélyezése";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -2544,21 +2451,6 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "A reklámok blokkolva vannak, míg videót nézel ezen az oldalon.";
-
-/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Brave pajzsok globális alapbeállításai";
-
-/* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "Ezek az alapértelmezett Shields beállítások új oldalak esetén. Ezek módosítása nem lesz hatással a meglévő oldalankénti beállításokra.";
-
-/* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "A Brave adatvédelmi rendszere nélkül böngészel. Nem működik megfelelően ha be van kapcsolva Shields?";
-
-/* shields overview message */
-"ShieldsOverview" = "A Webhelyvédelem segítségével szabályozhatja, hogy a hirdetések és a nyomkövetők blokkolva legyenek-e az egyes felkeresett webhelyeken. Ha egy adott webhelyen szeretne hirdetéseket látni, itt engedélyezheti őket.";
-
-/* shields overview footer message */
-"ShieldsOverviewFooter" = "Megjegyzés: Egyes webhelyeken szükség lehet a szkriptekre a megfelelő működéshez, ezért ez a védelem alapértelmezés szerint ki van kapcsolva.";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Új privát lap";
@@ -2745,15 +2637,6 @@
 
 /* Settings item for clearing site-specific settings and shields settings. */
 "SiteAndShieldsSettings" = "Webhely és pajzsok beállításai";
-
-/* No comment provided by engineer. */
-"SiteReportedBody" = "Köszönjük, hogy értesítette a Brave fejlesztőit arról, hogy valami hiba van az oldalon. Mindent megteszünk, hogy kijavítsuk!";
-
-/* No comment provided by engineer. */
-"SiteReportedTitle" = "Köszönjük";
-
-/* Brave panel topmost title */
-"SiteShieldSettings" = "Védelmek";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Minden nap spórolok az adatforgalmon, amikor a Brave-vel böngészek az interneten.";
@@ -2945,7 +2828,7 @@
 "sync.maximumDeviceReachedErrorTitle" = "Eszközkorlát";
 
 /* New sync code button title */
-"sync.newSyncCode" = "Új szinkronlác indítása";
+"sync.newSyncCode" = "Új szinkronizálási lánc";
 
 /* No internet connection alert body. */
 "sync.noConnectionBody" = "Ellenőrizze az internetkapcsolatot, és próbálja újra.";
@@ -3115,6 +2998,9 @@
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Privát böngészés";
 
+/* A label in the tab tray mode switcher for private browsing mode */
+"tabGrid.privateBrowsingModeTitle" = "Privát";
+
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Privát lapok beállítása";
 
@@ -3139,11 +3025,23 @@
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Lapok törlése";
 
+/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
+"tabGrid.tabsCountFormatPlural" = "%lld Fülök";
+
+/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
+"tabGrid.tabsCountFormatSingular" = "%lld Fül";
+
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "Előzmények megtekintése";
 
+/* Label for history menu item button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryMenuItemLabel" = "Előzmények";
+
 /* Accessibility label for a button that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsAccessibilityLabel" = "Szinkronizált lapok megtekintése";
+
+/* Label for synced tabs menu item that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsMenuItemLabel" = "Szinkronizálás";
 
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "A privát mód be- vagy kikapcsolása";
@@ -3516,9 +3414,6 @@
 
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "Felhasználó törölve";
-
-/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
-"UseRegionalAdblock" = "Regionális hirdetésblokkoló használata";
 
 /* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "Bezárás";

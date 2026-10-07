@@ -9,18 +9,37 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/feature_list.h"
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
+#include "brave/browser/drag_drop/brave_drag_drop_image_metadata_stripper.h"
+#include "brave/browser/misc_metrics/captcha_metrics.h"
+#include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
+#include "brave/browser/ui/sidebar/sidebar_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/image_metadata_stripper/common/features.h"
+#include "brave/components/misc_metrics/features.h"
+#include "brave/components/request_otr/common/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/page_action/action_ids.h"
 #include "chrome/browser/ui/page_action/page_action_controller.h"
 #include "chrome/browser/ui/side_panel/side_panel_registry.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
-#include "chrome/browser/ui/ui_features.h"
+#include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/tabs/public/tab_interface.h"
+
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+#include "brave/browser/request_otr/request_otr_tab_helper.h"
+#include "brave/components/request_otr/common/features.h"
+#endif
+
+#if BUILDFLAG(IS_WIN)
+#include "brave/browser/new_tab/background_color_tab_helper.h"
+#include "brave/browser/ui/brave_ui_features.h"
+#endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/container_tab_tracker.h"
@@ -35,6 +54,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/psst/psst_reporter_service_factory.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
 #include "brave/browser/psst/psst_tab_web_contents_observer.h"
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
@@ -42,6 +62,18 @@
 #include "brave/components/psst/core/common/features.h"
 #include "chrome/browser/browser_process.h"
 #include "components/variations/service/variations_service.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/ui/views/page_action/onion_location_page_action_controller.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/ui/views/page_action/brave_news_page_action_controller.h"
 #endif
 
 namespace tabs {
@@ -62,23 +94,30 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   CHECK(side_panel_registry);
   brave::RegisterContextualSidePanel(side_panel_registry, tab.GetContents());
 
+  // `thumbnail_tab_helper_` is not instantiated because we disable
+  // `kTabHoverCardImages`, however we do want `thumbnail_tab_helper_` to be
+  // a valid instance, so we can switch hover modes via settings.
+  if (!thumbnail_tab_helper_) {
+    thumbnail_tab_helper_ =
+        GetUserDataFactory().CreateInstance<ThumbnailTabHelper>(
+            tab, tab, tab.GetContents());
+  }
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::IsAllowedForContext(profile)) {
     tab_data_observer_ = std::make_unique<ai_chat::TabDataWebContentsObserver>(
-        tab.GetHandle().raw_value(), tab.GetContents());
+        tab.GetHandle().raw_value(), tab);
     // Injects Brave-provided WebMCP tools into matching pages; see
     // WebMcpInjector. Null when WebMCP is disabled or has no rules.
-    web_mcp_injector_ = ai_chat::WebMcpInjector::MaybeCreate(tab.GetContents());
+    web_mcp_injector_ = ai_chat::WebMcpInjector::MaybeCreate(tab);
   }
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
-  // The page action controller can be null when features::kPageActionsMigration
-  // is disabled, and the PSST page action may be absent even when it exists
-  // (e.g. in unit tests that don't register the browser's action items), so
-  // guard on ActionExists() to avoid operating on an unregistered page action
-  // model.
-  if (base::FeatureList::IsEnabled(features::kPageActionsMigration) &&
+  // The PSST page action may be absent even when it exists (e.g. in unit
+  // tests that don't register the browser's action items), so guard on
+  // ActionExists() to avoid operating on an unregistered page action model.
+  if (!profile->IsOffTheRecord() &&
       base::FeatureList::IsEnabled(psst::features::kEnablePsst) &&
       page_action_controller()->ActionExists(kActionShowPsstIcon)) {
     psst_action_controller_ =
@@ -87,36 +126,112 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
     auto* psst_settings_service =
         PsstSettingsServiceFactory::GetForProfile(profile);
     auto* variations_service = g_browser_process->variations_service();
-    psst_web_contents_observer_ =
-        psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
-            tab, profile,
-            std::make_unique<psst::PsstUiDelegateImpl>(
-                psst_settings_service, profile->GetPrefs(),
-                std::make_unique<psst::PsstUiDesktopPresenter>(
-                    tab.GetContents()->GetWeakPtr(),
-                    psst_action_controller_->AsWeakPtr())),
-            psst_settings_service, variations_service,
-            ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+    psst_web_contents_observer_ = psst::PsstTabWebContentsObserver::MaybeCreate(
+        tab, profile,
+        std::make_unique<psst::PsstUiDelegateImpl>(
+            psst_settings_service,
+            PsstReporterServiceFactory::GetForProfile(profile),
+            profile->GetPrefs(),
+            std::make_unique<psst::PsstUiDesktopPresenter>(
+                tab, psst_action_controller_->AsWeakPtr())),
+        psst_settings_service, variations_service,
+        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
     container_tab_tracker_ = containers::ContainerTabTracker::MaybeCreate(tab);
-    // In case of features::kPageActionsMigration is disabled, this controller
-    // can be null. The feature is enabled by default. So note that we don't
-    // show the partitioned storage page action when the features is disabled
-    // by users. The page action itself may also be absent even when the
-    // controller exists (e.g. in unit tests that don't register the browser's
-    // action items), so guard on ActionExists() to avoid creating a controller
-    // that would operate on an unregistered page action model.
-    if (base::FeatureList::IsEnabled(features::kPageActionsMigration) &&
-        page_action_controller()->ActionExists(kActionShowPartitionedStorage)) {
+    // The page action may be absent even when the controller exists (e.g. in
+    // unit tests that don't register the browser's action items), so guard on
+    // ActionExists() to avoid creating a controller that would operate on an
+    // unregistered page action model.
+    if (page_action_controller()->ActionExists(kActionShowPartitionedStorage)) {
       partitioned_storage_page_action_controller_ = std::make_unique<
           page_actions::PartitionedStoragePageActionController>(
           tab, *page_action_controller());
       partitioned_storage_page_action_controller_->Init();
     }
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  if (base::FeatureList::IsEnabled(
+          speedreader::features::kSpeedreaderFeature) &&
+      page_action_controller()->ActionExists(kActionShowSpeedreader)) {
+    speedreader_page_action_controller_ =
+        std::make_unique<page_actions::SpeedreaderPageActionController>(
+            tab, *page_action_controller());
+    speedreader_page_action_controller_->Init();
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  if (page_action_controller()->ActionExists(kActionShowWaybackMachine)) {
+    wayback_machine_page_action_controller_ =
+        std::make_unique<page_actions::WaybackMachinePageActionController>(
+            tab, *page_action_controller());
+    wayback_machine_page_action_controller_->Init();
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  if (page_action_controller()->ActionExists(kActionShowPlaylistPageAction)) {
+    playlist_page_action_controller_ =
+        std::make_unique<page_actions::PlaylistPageActionController>(
+            tab, *page_action_controller());
+    playlist_page_action_controller_->Init();
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+  if (page_action_controller()->ActionExists(kActionShowOnionLocation)) {
+    onion_location_page_action_controller_ =
+        std::make_unique<page_actions::OnionLocationPageActionController>(
+            tab, *page_action_controller());
+    onion_location_page_action_controller_->Init();
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  if (!profile->IsOffTheRecord() &&
+      page_action_controller()->ActionExists(kActionShowBraveNews)) {
+    brave_news_page_action_controller_ =
+        std::make_unique<page_actions::BraveNewsPageActionController>(
+            tab, *page_action_controller());
+    brave_news_page_action_controller_->Init();
+  }
+#endif
+
+  if (base::FeatureList::IsEnabled(
+          image_metadata_stripper::features::kStripImageMetadataV1)) {
+    drop_strip_temp_dirs_ =
+        GetUserDataFactory().CreateInstance<brave::DropStripTempDirs>(tab, tab);
+  }
+
+  if (base::FeatureList::IsEnabled(
+          misc_metrics::features::kCaptchaMetricsCollection)) {
+    cloudflare_js_detection_tab_helper_ = misc_metrics::CaptchaMetrics::
+        CloudflareJsDetectionTabHelper::MaybeCreate(tab);
+  }
+
+  page_metrics_tab_helper_ =
+      std::make_unique<misc_metrics::PageMetricsTabHelper>(tab);
+
+  sidebar_tab_helper_ = sidebar::SidebarTabHelper::MaybeCreate(tab);
+
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+  if (!profile->IsOffTheRecord() &&
+      base::FeatureList::IsEnabled(
+          request_otr::features::kBraveRequestOTRTab)) {
+    request_otr_tab_helper_ = std::make_unique<RequestOTRTabHelper>(tab);
+  }
+#endif
+
+#if BUILDFLAG(IS_WIN)
+  if (base::FeatureList::IsEnabled(features::kBraveWorkaroundNewWindowFlash)) {
+    background_color_tab_helper_ =
+        std::make_unique<BackgroundColorTabHelper>(tab);
   }
 #endif
 }

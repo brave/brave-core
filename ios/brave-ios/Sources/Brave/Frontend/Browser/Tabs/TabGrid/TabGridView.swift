@@ -196,10 +196,10 @@ struct TabGridView: View {
       VStack(spacing: 12) {
         if editMode == .active {
           editModeHeaderBar
-            .transition(.blurReplace())
+            .transition(.blurReplace)
         } else {
           headerBar
-            .transition(.blurReplace().animation(.default))
+            .transition(.blurReplace.animation(.default))
         }
       }
       .padding(.horizontal, 16)
@@ -220,7 +220,7 @@ struct TabGridView: View {
             footerBar
           }
         }
-        .transition(.blurReplace())
+        .transition(.blurReplace)
       }
       .onGeometryChange(for: CGFloat.self, of: \.size.height) {
         insets.bottom = $0
@@ -385,7 +385,7 @@ struct TabGridView: View {
     HStack(spacing: 12) {
       if !viewModel.isSearching {
         moreMenu
-          .transition(.blurReplace())
+          .transition(.blurReplace)
       }
       if !isSearchBarHidden {
         TabGridSearchBar(
@@ -399,7 +399,7 @@ struct TabGridView: View {
       }
       if !viewModel.isSearching, !viewModel.tabs.isEmpty {
         shredMenu
-          .transition(.blurReplace())
+          .transition(.blurReplace)
       }
     }
     .animation(.toolbarsSizeAnimation, value: viewModel.isSearching)

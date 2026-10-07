@@ -7,8 +7,11 @@
 import unittest
 from unittest.mock import patch
 
-from versioning import (load_package_file, read_chromium_version_file,
-                        get_uplift_branch_name_from_package)
+from versioning import (
+    load_package_file,
+    read_chromium_version_file,
+    get_uplift_branch_name_from_package,
+)
 from versioning import Version
 
 from test.fake_chromium_repo import FakeChromiumRepo
@@ -16,7 +19,6 @@ import json
 
 
 class VersioningTest(unittest.TestCase):
-
     def setUp(self):
         """Set up a fake Chromium repository for testing."""
         self.fake_chromium_src = FakeChromiumRepo()
@@ -34,8 +36,10 @@ class VersioningTest(unittest.TestCase):
 
         # Assert that the loaded version matches the first updated version
         self.assertEqual(
-            loaded_package_1.get("config").get("projects").get("chrome").get(
-                "tag"),
+            loaded_package_1.get("config")
+            .get("projects")
+            .get("chrome")
+            .get("tag"),
             test_version_1,
         )
 
@@ -45,8 +49,10 @@ class VersioningTest(unittest.TestCase):
 
         loaded_package_2 = load_package_file("HEAD")
         self.assertEqual(
-            loaded_package_2.get("config").get("projects").get("chrome").get(
-                "tag"),
+            loaded_package_2.get("config")
+            .get("projects")
+            .get("chrome")
+            .get("tag"),
             test_version_2,
         )
 
@@ -112,7 +118,8 @@ class VersioningTest(unittest.TestCase):
         # Update the package.json file with a specific version
         test_version_1 = "3.4.5.6"
         commit_hash_1 = self.fake_chromium_src.update_brave_version(
-            test_version_1)
+            test_version_1
+        )
 
         # Retrieve the version using Version.from_git with HEAD
         version_1 = Version.from_git("HEAD")
@@ -122,7 +129,8 @@ class VersioningTest(unittest.TestCase):
         # Update the package.json file with another version
         test_version_2 = "4.5.6.7"
         commit_hash_2 = self.fake_chromium_src.update_brave_version(
-            test_version_2)
+            test_version_2
+        )
 
         # Retrieve the version using Version.from_git with HEAD
         version_2 = Version.from_git("HEAD")
@@ -144,11 +152,14 @@ class VersioningTest(unittest.TestCase):
         version_1 = Version("1.2.3.4")
         version_2 = Version("2.3.4.5")
 
-        expected_link = ("https://chromium.googlesource.com/chromium/src"
-                         "/+log/1.2.3.4..2.3.4.5?pretty=fuller&n=10000")
+        expected_link = (
+            "https://chromium.googlesource.com/chromium/src"
+            "/+log/1.2.3.4..2.3.4.5?pretty=fuller&n=10000"
+        )
 
-        self.assertEqual(version_2.get_googlesource_diff_link(version_1),
-                         expected_link)
+        self.assertEqual(
+            version_2.get_googlesource_diff_link(version_1), expected_link
+        )
 
     def test_read_chromium_version_file(self):
         """Test the result of read_chromium_version_file."""
@@ -175,10 +186,13 @@ class VersioningTest(unittest.TestCase):
         # Update the package.json file with a specific version
         test_version = '1.2.3'
         self.fake_chromium_src.write_and_stage_file(
-            'package.json', json.dumps({'version': test_version}),
-            self.fake_chromium_src.brave)
-        self.fake_chromium_src.commit('Update package.json',
-                                      self.fake_chromium_src.brave)
+            'package.json',
+            json.dumps({'version': test_version}),
+            self.fake_chromium_src.brave,
+        )
+        self.fake_chromium_src.commit(
+            'Update package.json', self.fake_chromium_src.brave
+        )
 
         # Assert the uplift branch name is generated correctly
         uplift_branch_name = get_uplift_branch_name_from_package()

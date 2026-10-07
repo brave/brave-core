@@ -61,12 +61,13 @@ class SettingsEmailAliasesPageElement extends PrefsMixin(PolymerElement) {
   override ready() {
     super.ready();
 
-    customElements.whenDefined('settings-brave-account-row').then(() => {
+    customElements.whenDefined('brave-account-row').then(() => {
       const bundlePath = '/email_aliases.bundle.js'
       import(bundlePath).then(({mount}) => {
         mount(this.$.signInRoot, this.$.manageSection, {
-          onLoggedInChange: (loggedIn: boolean) => {
-            this.showEmailAliasesSettings_ = loggedIn;
+          onLoggedInChange: (_: boolean) => {
+            // Show even if not logged-in.
+            this.showEmailAliasesSettings_ = true;
           },
         });
       });

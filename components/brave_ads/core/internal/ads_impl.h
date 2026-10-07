@@ -55,9 +55,13 @@ class AdsImpl final : public Ads {
 
   void GetInternals(GetInternalsCallback callback) override;
 
-  // TODO(https://github.com/brave/brave-browser/issues/42034): Transition
-  // diagnostics from brave://rewards-internals to brave://ads-internals.
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
+
+  void EvaluateConditionMatcher(
+      const std::string& pref_path,
+      const std::string& condition,
+      std::optional<std::string> test_value,
+      EvaluateConditionMatcherCallback callback) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 

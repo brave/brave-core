@@ -24,6 +24,9 @@ inline constexpr char kBraveNewsDirectFeeds[] = "brave.today.userfeeds";
 inline constexpr char kBraveNewsIntroDismissed[] =
     "brave.today.intro_dismissed";
 inline constexpr char kBraveNewsOptedIn[] = "brave.today.opted_in";
+// Set when a user is automatically opted in by the kBraveNewsNewUserOptIn
+// feature. Cleared 30 days post-install.
+inline constexpr char kBraveNewsOptInTrial[] = "brave.news.opt_in_trial";
 inline constexpr char kShouldShowToolbarButton[] =
     "brave.today.should_show_toolbar_button";
 inline constexpr char kBraveNewsOpenArticlesInNewTab[] =

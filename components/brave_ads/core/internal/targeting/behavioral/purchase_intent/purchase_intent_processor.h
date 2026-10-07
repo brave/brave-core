@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_PROCESSOR_H_
 
 #include <cstdint>
-#include <map>
 #include <optional>
 #include <string>
 
@@ -16,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_types.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/keyphrase/purchase_intent_keyphrase_types.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 class GURL;
 
@@ -64,7 +64,7 @@ class PurchaseIntentProcessor final : public TabManagerObserver {
   base::ScopedObservation<TabManager, TabManagerObserver>
       tab_manager_observation_{this};
 
-  std::map</*tab_id*/ int32_t, GURL> tabs_;
+  absl::flat_hash_map</*tab_id*/ int32_t, GURL> tabs_;
 
   const raw_ref<PurchaseIntentResource> resource_;
 };

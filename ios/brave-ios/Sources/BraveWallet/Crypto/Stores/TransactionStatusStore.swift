@@ -108,7 +108,7 @@ public class TransactionStatusStore: ObservableObject, WalletObserverStore {
 
   @MainActor func explorerLink() async -> URL? {
     guard
-      let txNetwork = await rpcService.allNetworks()
+      let txNetwork = await rpcService.allNetworks().networks
         .first(where: {
           $0.chainId == activeParsedTx.transaction.chainId
         })

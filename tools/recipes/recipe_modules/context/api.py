@@ -30,18 +30,24 @@ from collections.abc import Mapping, Sequence
 import contextlib
 from pathlib import Path
 from types import MappingProxyType
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
+import config_types
 from engine_types import PerGreenletState
 from recipe_api import RecipeApi
 
+if TYPE_CHECKING:
+    from recipe_modules import context
 
-def _check_type(name: str, var: object,
-                expect: type | tuple[type, ...]) -> None:
+
+def _check_type(
+    name: str, var: object, expect: type | tuple[type, ...]
+) -> None:
     if not isinstance(var, expect):
         expected = getattr(expect, '__name__', str(expect))
         raise TypeError(
-            f'{name} is not {expected}: {var!r} ({type(var).__name__})')
+            f'{name} is not {expected}: {var!r} ({type(var).__name__})'
+        )
 
 
 class _State(PerGreenletState):
@@ -57,7 +63,7 @@ class _State(PerGreenletState):
 
     # Defaults are immutable, to prevent them becoming shared global state if
     # something ever mutates in place rather than replacing wholesale.
-    cwd: Path | None = None
+    cwd: Path | config_types.Path | None = None
     env: Mapping[str, str | None] = MappingProxyType({})
     env_prefixes: Mapping[str, tuple[str, ...]] = MappingProxyType({})
     env_suffixes: Mapping[str, tuple[str, ...]] = MappingProxyType({})
@@ -88,6 +94,8 @@ class ContextApi(RecipeApi):
     each see their own; see `_State`.
     """
 
+    m: context.DEPS
+
     def __init__(self) -> None:
         super().__init__()
         # Current scope. Replaced wholesale (never mutated in place) by
@@ -97,7 +105,7 @@ class ContextApi(RecipeApi):
     @contextlib.contextmanager
     def __call__(
         self,
-        cwd: str | Path | None = None,
+        cwd: str | Path | config_types.Path | None = None,
         env_prefixes: Mapping[str, Sequence[str | Path]] | None = None,
         env_suffixes: Mapping[str, Sequence[str | Path]] | None = None,
         env: Mapping[str, str | None] | None = None,
@@ -149,13 +157,21 @@ class ContextApi(RecipeApi):
                 except Exception as exc:
                     raise ValueError(
                         'invalid %-format in env value, only %(VAR)s allowed: '
-                        f'{val!r}') from exc
+                        f'{val!r}'
+                    ) from exc
             new[key] = val
 
         try:
             if cwd is not None:
-                _check_type('cwd', cwd, (str, Path))
-                _push('cwd', Path(cwd))
+                _check_type('cwd', cwd, (str, Path, config_types.Path))
+                # A `config_types.Path` (simulated) is already the value we
+                # want; only a plain str/real Path needs wrapping.
+                _push(
+                    'cwd',
+                    cwd
+                    if isinstance(cwd, (Path, config_types.Path))
+                    else Path(cwd),
+                )
             _add('env_prefixes', env_prefixes, _as_prefixes)
             _add('env_suffixes', env_suffixes, _as_suffixes)
             _add('env', env, _as_env)
@@ -165,7 +181,7 @@ class ContextApi(RecipeApi):
                 setattr(self._state, member, val)
 
     @property
-    def cwd(self) -> Path | None:
+    def cwd(self) -> Path | config_types.Path | None:
         """The cwd steps run in, or `None` to inherit the engine's cwd."""
         return self._state.cwd
 

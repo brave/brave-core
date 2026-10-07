@@ -55,6 +55,7 @@ source_set("brave_welcome_page") {
     "//chrome/browser/metrics",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/search/background",
+    "//chrome/browser/ui/webui:theme_source",
     "//chrome/browser/ui/webui:webui_util",
     "//chrome/browser/ui/webui/cr_components/theme_color_picker:impl",
     "//chrome/browser/ui/webui/settings",

@@ -13,6 +13,9 @@ extension BrowserViewController: KeyboardHelperDelegate {
     keyboardWillShowWithState state: KeyboardState
   ) {
     keyboardState = state
+    if #available(iOS 26.0, *) {
+      updateWebViewObscuredInsets()
+    }
     // Only collapse the url bar take control of the toolbar if the reason why the keyboard will
     // show is because the active web content presented it.
     let isKeyboardActiveForWebContent =
@@ -55,6 +58,9 @@ extension BrowserViewController: KeyboardHelperDelegate {
     keyboardWillHideWithState state: KeyboardState
   ) {
     keyboardState = nil
+    if #available(iOS 26.0, *) {
+      updateWebViewObscuredInsets()
+    }
     isBrowserContentKeyboardActive = false
     // Always reset things after orientation change that may change bottom bar
     if isUsingBottomBar, !toolbarVisibilityViewModel.isEnabled {

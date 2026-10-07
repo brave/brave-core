@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/views/permissions/chooser_bubble_ui.cc b/chrome/browser/ui/views/permissions/chooser_bubble_ui.cc
+index 31ff36d2552acda446c7e178b6850eeac4780ccb..605b9a82bc5c07bbd38fe7553c523c268bcc4540 100644
+--- a/chrome/browser/ui/views/permissions/chooser_bubble_ui.cc
++++ b/chrome/browser/ui/views/permissions/chooser_bubble_ui.cc
+@@ -120,6 +120,7 @@ ChooserBubbleUiViewDelegate::ChooserBubbleUiViewDelegate(
+           GetChooserAnchorConfiguration(browser).anchor,
+           contents),
+       fullscreen_blocker_(std::move(fullscreen_blocker)) {
++  [&]() -> void {
+   // ------------------------------------
+   // | Chooser bubble title             |
+   // | -------------------------------- |
+@@ -156,6 +157,8 @@ ChooserBubbleUiViewDelegate::ChooserBubbleUiViewDelegate(
+   SetCloseCallback(
+       base::BindOnce(&DeviceChooserContentView::Close,
+                      base::Unretained(device_chooser_content_view_)));
++  }();
++  SetFootnoteView(device_chooser_content_view_->CreateFootnoteView(browser));
+ }
+ 
+ ChooserBubbleUiViewDelegate::~ChooserBubbleUiViewDelegate() = default;

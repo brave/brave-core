@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/component_updater/widevine_cdm_component_installer.h b/chrome/browser/component_updater/widevine_cdm_component_installer.h
+index 232974f89901661b996475e33e8afa41318a8eeb..ac4328323b3ccce27f5fd9813a349381ee3663dc 100644
+--- a/chrome/browser/component_updater/widevine_cdm_component_installer.h
++++ b/chrome/browser/component_updater/widevine_cdm_component_installer.h
+@@ -16,7 +16,7 @@ class ComponentUpdateService;
+ // 3) Copy the Widevine CDM adapter bundled with chrome to the install path.
+ // 4) Register the Widevine CDM (via the adapter) with Chrome.
+ // The first part is IO intensive so we do it asynchronously in the file thread.
+-void RegisterWidevineCdmComponent(ComponentUpdateService* cus);
++void RegisterWidevineCdmComponent(ComponentUpdateService* cus, base::OnceClosure callback = base::OnceClosure());
+ 
+ }  // namespace component_updater
+ 

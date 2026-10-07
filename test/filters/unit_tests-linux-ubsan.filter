@@ -9,3 +9,61 @@
 ## When adding a new filter to this list, please include a short description of
 ## why the filter is required and create an associated tracking issue.
 ##
+
+# These upstream Chromium tests abort in ~BrowserTaskEnvironment with
+# "Check failed: MainThreadIsIdle()" and a single pending UI task posted from
+# dbus::ObjectProxy::OnPendingCallIsComplete; the test bodies themselves pass.
+# A shared D-Bus bus is a process-wide lazy singleton
+# (components/dbus/thread_linux/dbus_thread_linux.cc) that captures
+# SequencedTaskRunner::GetCurrentDefault() as its origin task runner when it is
+# first constructed (dbus/bus.cc:186), so replies go to the task runner of
+# whichever test first created the bus, i.e. to that test's own
+# BrowserTaskEnvironment queue. ~BrowserTaskEnvironment runs RunUntilIdle()
+# before the CHECK at content/public/test/browser_task_environment.cc:151 (the
+# line named in every crash log), so this is not a merely undrained queue: the
+# reply comes from the D-Bus thread and can land after that drain. That is why
+# the abort is intermittent and depends on test ordering.
+# No test body is implicated: the five reported methods are the four
+# GetExpirationDescription* tests, which only format a timestamp, plus
+# CreateChooserExceptionObject, which shares nothing with them, and all five
+# abort identically at teardown with the same single pending task. The D-Bus
+# caller was not identified - neither BrowserTaskEnvironment nor
+# SetUpGlobalFeaturesForTesting issues a D-Bus call itself - so the shared bus
+# is reached from elsewhere in the unit_tests process. Every method of the
+# fixture is therefore equally exposed, which is why the whole fixture is
+# filtered instead of just the methods reported so far: for example
+# GetExpirationDescription_Tomorrow_LessThan24_AfterMidnight differs from the
+# reported _BeforeMidnight sibling only by the offset it passes in and the
+# plural count it expects.
+# Every report comes from brave-browser-build-linux-x64-ubsan and none from any
+# other builder, hence the ubsan-only filter; the fixture stays enabled
+# everywhere else.
+# Upstream flake data: LUCI Analysis reports STABLE UPSTREAM at a flake rate of
+# 0.1% or less over a 60 day lookback for the SiteSettingsHelperTest methods,
+# queried one at a time because script/check-upstream-flake.py truncates a
+# suite-wide query to five test IDs. That is expected for an abort that depends
+# on which test runs first in a test launcher batch rather than on the test
+# body.
+# Brave code is not implicated in the D-Bus call: no code under src/brave
+# constructs a dbus::Bus or calls dbus_thread_linux::GetSharedSessionBus(), and
+# the two Brave changes that do sit in session bus code paths cannot post this
+# task - patches/components-os_crypt-async-browser-freedesktop_secret_key_
+# provider.h.patch only renames string constants, and
+# chromium_src/services/device/geolocation/location_provider_linux_portal.cc
+# removes a session bus user by returning nullptr from
+# NewSystemLocationProvider(). patches/chrome-browser-global_features.cc.patch
+# does route GlobalFeatures::CreateGlobalFeatures() through BraveGlobalFeatures,
+# but that constructor only creates ExtensionMalwareBlocklist behind the
+# disabled-by-default kExtensionMalwareBlocklist feature. Finally
+# patches/chrome-browser-ui-webui-settings-site_settings_helper.cc.patch, the
+# matching .h patch and
+# chromium_src/chrome/browser/ui/webui/settings/site_settings_helper.cc only
+# add Brave content settings types, an "autoplay" group name special case, a
+# Brave cookie type field, a SiteSettingSource value and _ChromiumImpl renames
+# of three functions - all synchronous, none of it posts tasks.
+# https://github.com/brave/brave-browser/issues/58316
+# https://github.com/brave/brave-browser/issues/58352
+# https://github.com/brave/brave-browser/issues/58367
+# https://github.com/brave/brave-browser/issues/58465
+# https://github.com/brave/brave-browser/issues/58538
+-SiteSettingsHelperTest.*

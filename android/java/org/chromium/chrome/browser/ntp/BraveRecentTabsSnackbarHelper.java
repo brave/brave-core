@@ -21,7 +21,6 @@ import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.tab.EmptyTabObserver;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObserver;
 import org.chromium.chrome.browser.tab.TabSelectionType;
@@ -45,7 +44,8 @@ import java.lang.ref.WeakReference;
 @NullMarked
 public class BraveRecentTabsSnackbarHelper {
     private static final String TAG = "RecentTabsSnackbar";
-    private static final int SNACKBAR_DISMISS_DELAY_MS = 8000; // 8 seconds
+    // Effectively no auto-close: the snackbar is dismissed by tap, swipe, or leaving the NTP.
+    private static final int SNACKBAR_DISMISS_DELAY_MS = Integer.MAX_VALUE;
     private static final int SNACKBAR_SHOW_DELAY_MS = 500; // Wait for view hierarchy to settle
 
     private @Nullable Tab mLastTab;
@@ -224,10 +224,11 @@ public class BraveRecentTabsSnackbarHelper {
 
                         // Set custom formatted text with title, page title, and URL
                         mSnackbarManager.setCustomText(
-                                mSnackbarTitle, mSnackbarPageTitle, mSnackbarUrl);
+                                mCurrentSnackbar, mSnackbarTitle, mSnackbarPageTitle, mSnackbarUrl);
 
                         // Make entire snackbar clickable
                         mSnackbarManager.makeSnackbarClickable(
+                                mCurrentSnackbar,
                                 () -> {
                                     if (!mUserClickedSnackbar && mSnackbarController != null) {
                                         mUserClickedSnackbar = true;
@@ -259,7 +260,7 @@ public class BraveRecentTabsSnackbarHelper {
         // Observer to detect navigation on the NTP tab (e.g., clicking a favorite)
         if (mNtpTab != null) {
             mTabObserver =
-                    new EmptyTabObserver() {
+                    new TabObserver() {
                         @Override
                         public void onPageLoadStarted(Tab tab, GURL url) {
                             if (mDestroyed) {
@@ -391,7 +392,8 @@ public class BraveRecentTabsSnackbarHelper {
             mSnackbarManager.showSnackbar(mCurrentSnackbar);
             // Restore custom text after re-showing
             if (!mSnackbarTitle.isEmpty()) {
-                mSnackbarManager.setCustomText(mSnackbarTitle, mSnackbarPageTitle, mSnackbarUrl);
+                mSnackbarManager.setCustomText(
+                        mCurrentSnackbar, mSnackbarTitle, mSnackbarPageTitle, mSnackbarUrl);
             }
         } finally {
             mIsUpdatingSnackbar = false;

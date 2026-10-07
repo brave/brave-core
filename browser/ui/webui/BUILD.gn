@@ -6,6 +6,7 @@
 import("//brave/browser/updater/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
 
 source_set("browser_tests") {
   testonly = true
@@ -32,6 +33,7 @@ source_set("browser_tests") {
     sources += [
       "brave_settings_ui_browsertest.cc",
       "searchbox/brave_realbox_handler_browsertest.cc",
+      "webui_service_worker_browsertest.cc",
     ]
 
     deps += [
@@ -39,11 +41,19 @@ source_set("browser_tests") {
       "//brave/components/brave_search/common",
       "//chrome/browser/ui/webui/searchbox",
       "//chrome/browser/ui/webui/searchbox:searchbox_test_utils",
+      "//content/public/browser",
+      "//third_party/blink/public/common",
+      "//ui/webui",
+      "//ui/webui:test_support",
     ]
 
     if (enable_ai_chat) {
       deps += [ "//brave/components/ai_chat/core/common" ]
     }
+  }
+
+  if (enable_brave_custom_profile_image_webui) {
+    deps += [ "//brave/browser/ui/webui/signin:browser_tests" ]
   }
 }
 

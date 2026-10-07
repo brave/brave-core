@@ -12,14 +12,10 @@ private let _isiOSAppOnVisionOS: Bool = {
     "RealityDevice"
   ) ?? false
   #else
-  if #available(iOS 17.0, *) {
-    // Vision Pro ships with iOS 17.0 so this will always execute
-    let authContext = LAContext()
-    _ = authContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
-    return authContext.biometryType == .opticID
-      || NSClassFromString("UIWindowSceneGeometryPreferencesVision") != nil
-  }
-  return false
+  let authContext = LAContext()
+  _ = authContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+  return authContext.biometryType == .opticID
+    || NSClassFromString("UIWindowSceneGeometryPreferencesVision") != nil
   #endif
 }()
 

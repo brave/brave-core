@@ -12,7 +12,6 @@ import { BraveWallet } from '../../../../constants/types'
 // Utils
 import { getLocale } from '../../../../../common/locale'
 import Amount from '../../../../utils/amount'
-import { formatTokenBalanceWithSymbol } from '../../../../utils/balance-utils'
 import { isShieldedToken } from '../../../../utils/asset-utils'
 import {
   useGetDefaultFiatCurrencyQuery,
@@ -118,14 +117,24 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
       }
       if (isShieldedToken(token)) {
         return token.zcashTokenType === BraveWallet.ZCashTokenType.kIronwood
-          ? 'Zcash (Ironwood)'
-          : 'Zcash'
+          ? 'Zcash (Shielded)'
+          : 'Zcash (Shielded Legacy)'
       }
       return token.name || token.symbol
     }, [token])
 
     // Computed
-    const formattedFiatBalance = fiatBalance.formatAsFiat(defaultFiatCurrency)
+    const formattedFiatBalance = fiatBalance.compactAsFiat(defaultFiatCurrency)
+
+    const formattedTokenBalance = React.useMemo(() => {
+      if (!balance) {
+        return ''
+      }
+
+      return new Amount(balance)
+        .divideByDecimals(token.decimals)
+        .compactAsAsset(6, token.symbol)
+    }, [balance, token.decimals, token.symbol])
 
     const tokenHasBalance = balance && new Amount(balance).gt(0)
 
@@ -150,14 +159,14 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                 isBold={false}
                 textColor='secondary'
               >
-                {getLocale('braveWalletOwned')}
+                {getLocale(S.BRAVE_WALLET_OWNED)}
               </Text>
               <Text
                 textSize='12px'
                 isBold={false}
                 textColor='secondary'
               >
-                {getLocale('braveWalletAmount24H')}
+                {getLocale(S.BRAVE_WALLET_AMOUNT_24H)}
               </Text>
             </Row>
           ) : (
@@ -170,7 +179,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                 isBold={false}
                 textColor='secondary'
               >
-                {getLocale('braveWalletNotOwned')}
+                {getLocale(S.BRAVE_WALLET_NOT_OWNED)}
               </Text>
             </Row>
           ))}
@@ -225,11 +234,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                   textAlign='left'
                   textColor='secondary'
                 >
-                  {formatTokenBalanceWithSymbol(
-                    balance ?? '',
-                    token.decimals,
-                    token.symbol,
-                  )}
+                  {formattedTokenBalance}
                 </TokenBalanceText>
               </NameAndBalanceColumn>
             </LeftSide>

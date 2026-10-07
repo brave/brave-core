@@ -81,12 +81,12 @@ export const AddressMessage = (props: Props) => {
                     target='_blank'
                     rel='noopener noreferrer'
                   >
-                    {getLocale('braveWalletLearnMore')}
+                    {getLocale(S.BRAVE_WALLET_LEARN_MORE)}
                   </LearnMoreLink>
                 )}
                 {onClickHowToSolve && (
                   <HowToSolveButton onClick={onClickHowToSolve}>
-                    {getLocale('braveWalletHowToSolve')}
+                    {getLocale(S.BRAVE_WALLET_HOW_TO_SOLVE)}
                   </HowToSolveButton>
                 )}
               </Text>
@@ -101,7 +101,7 @@ export const AddressMessage = (props: Props) => {
             width='unset'
           >
             <Button onClick={onClickEnableENSOffchain}>
-              {getLocale('braveWalletEnsOffChainButton')}
+              {getLocale(S.BRAVE_WALLET_ENS_OFF_CHAIN_BUTTON)}
             </Button>
           </Row>
         )}

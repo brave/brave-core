@@ -47,7 +47,7 @@ public class BraveLeoResetPreference
         super.onBindViewHolder(holder);
         TextView titleView = (TextView) holder.findViewById(android.R.id.title);
         assert titleView != null;
-        titleView.setTextAppearance(R.style.BraveLeoResetTextColor);
+        titleView.setTextAppearance(R.style.TextAppearance_Brave_PreferenceTitle_DestructiveAction);
     }
 
     @Override

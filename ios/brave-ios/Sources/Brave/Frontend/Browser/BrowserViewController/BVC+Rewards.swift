@@ -11,7 +11,6 @@ import Foundation
 import Onboarding
 import Preferences
 import Shared
-import Storage
 import WebKit
 import os.log
 
@@ -81,11 +80,6 @@ extension BrowserViewController {
     popover.present(from: topToolbar.rewardsButton, on: self)
   }
 
-  @objc func resetNTPNotification() {
-    Preferences.NewTabPage.brandedImageShowed.value = false
-    Preferences.NewTabPage.atleastOneNTPNotificationWasShowed.value = false
-  }
-
   private func loadNewTabWithRewardsURL(_ url: URL) {
     self.presentedViewController?.dismiss(animated: true)
 
@@ -144,8 +138,8 @@ extension BrowserViewController {
 }
 
 extension TabBrowserData {
-  func reportPageLoad(to rewards: BraveRewards, redirectChain: [URL]) {
-    guard let tab, let url = redirectChain.last, !url.isLocal, !tab.isPrivate
+  func reportPageLoad(to rewards: BraveRewards) {
+    guard let tab, let url = tab.visibleURL, !url.isLocal, !tab.isPrivate
     else {
       return
     }

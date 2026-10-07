@@ -3,7 +3,7 @@ default: null
 desc: |-
   Master switch for Brave's local AI features (history embeddings and any future on-device AI surfaces).
 
-  When this policy is set to true, the local AI feature surfaces (the chrome://history side bar toggle, the brave-history-embeddings chrome://flags entry, the EmbeddingGemma model component install, etc.) become available to the user.
+  When this policy is set to true, the local AI feature surfaces (the Semantic history search toggle in brave://settings/privacy, the brave-history-embeddings chrome://flags entry, the EmbeddingGemma model component install, etc.) become available to the user.
 
   When this policy is set to false, every local AI surface is hidden and the on-device AI components are not installed.
 

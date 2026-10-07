@@ -5,11 +5,16 @@
 
 #include "brave/browser/android/brave_tab_features.h"
 
+#include "base/feature_list.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
 #include "brave/browser/ai_chat/web_mcp_injection/web_mcp_injector.h"
+#include "brave/browser/misc_metrics/captcha_metrics.h"
+#include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
+#include "brave/components/misc_metrics/features.h"
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 
 namespace tabs {
@@ -17,14 +22,27 @@ namespace tabs {
 BraveTabFeatures::BraveTabFeatures(content::WebContents* web_contents,
                                    Profile* profile)
     : TabFeatures_Chromium(web_contents, profile) {
+  // Clients should rely on this for observing web contents based changes.
+  tabs::TabInterface& tab_interface =
+      *TabInterface::GetFromContents(web_contents);
+
   if (ai_chat::IsAllowedForContext(profile)) {
     tab_data_observer_ = std::make_unique<ai_chat::TabDataWebContentsObserver>(
         TabAndroid::FromWebContents(web_contents)->GetAndroidId(),
-        web_contents);
+        tab_interface);
     // Injects Brave-provided WebMCP tools into matching pages; see
     // WebMcpInjector. Null when WebMCP is disabled or has no rules.
-    web_mcp_injector_ = ai_chat::WebMcpInjector::MaybeCreate(web_contents);
+    web_mcp_injector_ = ai_chat::WebMcpInjector::MaybeCreate(tab_interface);
   }
+
+  if (base::FeatureList::IsEnabled(
+          misc_metrics::features::kCaptchaMetricsCollection)) {
+    cloudflare_js_detection_tab_helper_ = misc_metrics::CaptchaMetrics::
+        CloudflareJsDetectionTabHelper::MaybeCreate(tab_interface);
+  }
+
+  page_metrics_tab_helper_ =
+      std::make_unique<misc_metrics::PageMetricsTabHelper>(tab_interface);
 }
 
 BraveTabFeatures::~BraveTabFeatures() = default;

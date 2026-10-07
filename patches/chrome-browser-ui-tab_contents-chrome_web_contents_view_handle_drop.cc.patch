@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/tab_contents/chrome_web_contents_view_handle_drop.cc b/chrome/browser/ui/tab_contents/chrome_web_contents_view_handle_drop.cc
+index 371dda0a45c779bf905f43fea5b32e82d1173268..68a875df5e07a0bf63d984dc8d80e9f8b7a7d83d 100644
+--- a/chrome/browser/ui/tab_contents/chrome_web_contents_view_handle_drop.cc
++++ b/chrome/browser/ui/tab_contents/chrome_web_contents_view_handle_drop.cc
+@@ -244,6 +244,8 @@ void HandleOnPerformingDrop(
+     content::WebContents* web_contents,
+     content::DropData drop_data,
+     content::WebContentsViewDelegate::DropCompletionCallback callback) {
++  callback = brave::MaybeStripImageMetadataForDrop(web_contents,
++                                                   std::move(callback));
+   CHECK(callback);
+ 
+   content::WebContents* scan_target =

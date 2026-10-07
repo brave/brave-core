@@ -6,6 +6,7 @@
 // This file is included into //ios/chrome/browser/flags/about_flags.mm
 
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_rewards/core/features.h"
@@ -18,7 +19,10 @@
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
+#include "brave/ios/browser/most_visited_sites/features.h"
 #include "brave/ios/browser/playlist/features.h"
+#include "brave/ios/browser/search_engines/features.h"
+#include "brave/ios/browser/toolbar/features.h"
 #include "brave/ios/browser/ui/quick_view/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "build/build_config.h"
@@ -26,6 +30,10 @@
 #include "components/webui/flags/feature_entry_macros.h"
 #include "components/webui/flags/flags_state.h"
 #include "net/base/features.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/ads_internals/ads_internals_verbose_mode_feature.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/common/features.h"
@@ -40,11 +48,15 @@ const flags_ui::FeatureEntry::FeatureParam
         {"zcash_shielded_transactions_enabled", "false"}};
 const flags_ui::FeatureEntry::FeatureParam kZCashShieldedTransactionsEnabled[] =
     {{"zcash_shielded_transactions_enabled", "true"}};
+const flags_ui::FeatureEntry::FeatureParam kZCashIronwoodEnabled[] = {
+    {"zcash_ironwood_enabled", "true"},
+    {"zcash_shielded_transactions_enabled", "true"}};
 const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
     {"- Shielded support disabled", kZCashShieldedTransactionsDisabled,
      nullptr},
     {"- Shielded support enabled (WebUI Only)",
-     kZCashShieldedTransactionsEnabled, nullptr}};
+     kZCashShieldedTransactionsEnabled, nullptr},
+    {"- Ironwood support enabled", kZCashIronwoodEnabled, nullptr}};
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 const flags_ui::FeatureEntry::FeatureParam kBraveIOSUserAgentVersion[] = {
@@ -188,6 +200,24 @@ const flags_ui::FeatureEntry::FeatureVariation
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(                                                  \
               brave_shields::features::kWebKitAdvancedPrivacyProtections),     \
+      },                                                                       \
+      {                                                                        \
+          "ios-webkit-global-privacy-control",                                 \
+          "Enable WebKit Global Privacy Control",                              \
+          "Attach the Global Privacy Control signal to navigation request "    \
+          "headers",                                                           \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kWebKitGlobalPrivacyControl),           \
+      },                                                                       \
+      {                                                                        \
+          "transition-to-upstream-https-upgrades",                             \
+          "Transition to use upstream HTTPS upgrades",                         \
+          "Transition to upstream HTTPS upgrade implementation instead of "    \
+          "Brave's own.",                                                      \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kTransitionToUpstreamHttpsUpgrades),    \
       })
 
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES                                       \
@@ -205,13 +235,6 @@ const flags_ui::FeatureEntry::FeatureVariation
           "Enables AI Chat History persistence and management",             \
           flags_ui::kOsIos,                                                 \
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),            \
-      },                                                                    \
-      {                                                                     \
-          "brave-ai-chat-webui",                                            \
-          "Brave AI Chat WebUI",                                            \
-          "Enables the use of Leo via WebUI",                               \
-          flags_ui::kOsIos,                                                 \
-          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatWebUIEnabled),       \
       },                                                                    \
       {                                                                     \
           "brave-ai-chat-allow-private-ips",                                \
@@ -239,14 +262,6 @@ const flags_ui::FeatureEntry::FeatureVariation
 #define BRAVE_WALLET_FEATURE_ENTRIES                                      \
   EXPAND_FEATURE_ENTRIES(                                                 \
       {                                                                   \
-          "brave-wallet-webui-ios",                                       \
-          "Enable WebUI for Brave Wallet iOS",                            \
-          "Enables WebUI for Brave Wallet",                               \
-          flags_ui::kOsIos,                                               \
-          FEATURE_VALUE_TYPE(                                             \
-              brave_wallet::features::kBraveWalletWebUIFeature),          \
-      },                                                                  \
-      {                                                                   \
           "brave-wallet-cardano-dapp-support-ios",                        \
           "Enable Cardano dApp Support for Brave Wallet(WebUI) iOS",      \
           "Enables Cardano dApp Support for Brave Wallet(WebUI)",         \
@@ -259,6 +274,19 @@ const flags_ui::FeatureEntry::FeatureVariation
 #define BRAVE_WALLET_FEATURE_ENTRIES
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#define ADS_INTERNALS_VERBOSE_MODE_FEATURE_ENTRIES                      \
+  EXPAND_FEATURE_ENTRIES({                                              \
+      "ads-internals-verbose-mode",                                     \
+      "Enable brave://ads-internals verbose mode",                      \
+      "Shows extra debugging tabs and tools on brave://ads-internals.", \
+      flags_ui::kOsIos,                                                 \
+      FEATURE_VALUE_TYPE(brave_ads::kAdsInternalsVerboseModeFeature),   \
+  })
+#else
+#define ADS_INTERNALS_VERBOSE_MODE_FEATURE_ENTRIES
+#endif
+
 #define BRAVE_PLAYLIST_FEATURE_ENTRIES                   \
   EXPAND_FEATURE_ENTRIES({                               \
       "brave-playlist",                                  \
@@ -268,6 +296,14 @@ const flags_ui::FeatureEntry::FeatureVariation
       FEATURE_VALUE_TYPE(playlist::features::kPlaylist), \
   })
 
+#define TOPSITES_FEATURE_ENTRIES                                \
+  EXPAND_FEATURE_ENTRIES({                                      \
+      "topsites",                                               \
+      "Enable Top Sites",                                       \
+      "Enables Top Sites Feature",                              \
+      flags_ui::kOsIos,                                         \
+      FEATURE_VALUE_TYPE(topsites::features::kTopsitesEnabled), \
+  })
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
@@ -377,6 +413,20 @@ const flags_ui::FeatureEntry::FeatureVariation
           FEATURE_VALUE_TYPE(brave::features::kQuickViewEnabled),              \
       },                                                                       \
       {                                                                        \
+          "brave-browser-toolbar-refactor",                                    \
+          "Enable browser toolbar refactor",                                   \
+          "Enables the refactored browser toolbar hierarchy",                  \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave::features::kBrowserToolbarRefactorEnabled), \
+      },                                                                       \
+      {                                                                        \
+          "brave-use-chromium-search-engines",                                 \
+          "Use Chromium search engines",                                       \
+          "Manage search engines using Chromium's TemplateURLService",         \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave::features::kUseChromiumSearchEngines),      \
+      },                                                                       \
+      {                                                                        \
           "brave-origin",                                                      \
           "Enable Brave Origin",                                               \
           "Enables Brave Origin features and settings.",                       \
@@ -384,9 +434,11 @@ const flags_ui::FeatureEntry::FeatureVariation
           FEATURE_VALUE_TYPE(brave_origin::features::kBraveOrigin),            \
       })                                                                       \
   BRAVE_SHIELDS_FEATURE_ENTRIES                                                \
+  ADS_INTERNALS_VERBOSE_MODE_FEATURE_ENTRIES                                   \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_SKU_SDK_FEATURE_ENTRIES                                                \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_WALLET_FEATURE_ENTRIES                                                 \
   BRAVE_PLAYLIST_FEATURE_ENTRIES                                               \
+  TOPSITES_FEATURE_ENTRIES                                                     \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.

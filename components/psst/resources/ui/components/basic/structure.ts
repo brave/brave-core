@@ -11,9 +11,15 @@ export const Container = styled.div`
 `
 export const RightAlignedItem = styled.div`
   margin-left: auto;
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  > * {
+    flex-grow: 0;
+  }
 `
 export const PsstDlgButton = styled(Button)<{}>`
-  padding: 12px;
+  padding-left: var(--leo-spacing-m);
   min-height: 44px;
 `

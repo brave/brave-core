@@ -117,7 +117,8 @@ class HistorySearchToolBrowserTest
       }
       return false;
     }));
-    conversation_handler_->ProcessPermissionChallenge(tool_id, true);
+    conversation_handler_->ProcessPermissionChallenge(
+        tool_id, mojom::PermissionChallengeDecision::kAllowOnce);
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;

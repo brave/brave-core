@@ -541,7 +541,7 @@ TEST(CommonUtils, GetEnabledKeyrings) {
     EXPECT_EQ(last_pos, keyrings.size());
   }
 
-  static_assert(AllKeyringsTested<14>());
+  static_assert(AllKeyringsTested<18>());
 }
 
 TEST(CommonUtils, GetPolkadotKeyrings) {
@@ -642,7 +642,7 @@ TEST(CommonUtils, GetSupportedKeyringsForKnownNetwork) {
 
   static_assert(AllCoinsTested<7>());
 
-  static_assert(AllKeyringsTested<14>());
+  static_assert(AllKeyringsTested<18>());
 }
 
 TEST(CommonUtils, MakeAccountId) {
@@ -730,7 +730,7 @@ TEST(CommonUtils, MakeAccountId) {
                                     mojom::AccountKind::kDerived, "0xabc"));
   static_assert(AllCoinsTested<7>());
 
-  static_assert(AllKeyringsTested<14>());
+  static_assert(AllKeyringsTested<18>());
 }
 
 TEST(CommonUtils, MakeIndexBasedAccountId) {
@@ -800,7 +800,7 @@ TEST(CommonUtils, MakeIndexBasedAccountId_BTC) {
                                       mojom::AccountKind::kHardware, 123));
   static_assert(AllCoinsTested<7>());
 
-  static_assert(AllKeyringsTested<14>());
+  static_assert(AllKeyringsTested<18>());
 }
 
 TEST(CommonUtils, MakeIndexBasedAccountId_ZEC) {
@@ -941,20 +941,20 @@ TEST(CommonUtils, GetNetworkForBitcoinAccount) {
                 mojom::AccountKind::kDerived, 123)));
 }
 
-TEST(CommonUtils, IsSnapsFeatureEnabled) {
-#if BUILDFLAG(ENABLE_SNAPS)
+TEST(CommonUtils, IsSnapFeatureEnabled) {
+#if BUILDFLAG(ENABLE_SNAP)
   {
     base::test::ScopedFeatureList enabled;
-    enabled.InitAndEnableFeature(features::kBraveWalletSnapsFeature);
-    EXPECT_TRUE(IsSnapsFeatureEnabled());
+    enabled.InitAndEnableFeature(features::kBraveWalletSnapFeature);
+    EXPECT_TRUE(IsSnapFeatureEnabled());
   }
   {
     base::test::ScopedFeatureList disabled;
-    disabled.InitAndDisableFeature(features::kBraveWalletSnapsFeature);
-    EXPECT_FALSE(IsSnapsFeatureEnabled());
+    disabled.InitAndDisableFeature(features::kBraveWalletSnapFeature);
+    EXPECT_FALSE(IsSnapFeatureEnabled());
   }
 #else
-  EXPECT_FALSE(IsSnapsFeatureEnabled());
+  EXPECT_FALSE(IsSnapFeatureEnabled());
 #endif
 }
 

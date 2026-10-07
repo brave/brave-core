@@ -5,6 +5,7 @@
 
 import chalk from 'chalk'
 import config from './config.ts'
+import { checkoutChromiumRef } from './chromiumFetch.ts'
 import { isCI } from './ciDetect.ts'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -202,19 +203,46 @@ function shouldUpdateChromium(latestSyncInfo, expectedSyncInfo) {
   return needsUpdate
 }
 
+// Generates the git config that includes the global one plus redirects of
+// upstream fetches to our Gerrit mirrors, then points GIT_CONFIG_GLOBAL at it.
+// Fetches authenticate as BRAVE_USE_GERRIT_MIRRORS_USER. An existing file is
+// only regenerated when `update` is set. No-op unless that user is set. The
+// file is inert without GIT_CONFIG_GLOBAL being set.
+/** @param {boolean} update */
+function configureGerritMirrors(update) {
+  if (!config.gerritMirrorsUser) {
+    return
+  }
+
+  const args = [
+    path.join(
+      config.braveCoreDir,
+      'tools',
+      'recipes',
+      'recipe_modules',
+      'brave_core_checkout',
+      'resources',
+      'mirror_git_config.py',
+    ),
+    'install',
+    '--user',
+    config.gerritMirrorsUser,
+  ]
+  if (update) {
+    args.push('--update')
+  }
+  util.run('vpython3', args, config.defaultOptions)
+  config.applyGerritMirrorsGitConfig()
+}
+
 function syncChromium(program) {
   const syncWithForce = program.init || program.force
   const syncChromiumValue = program.sync_chromium
   const deleteUnusedDeps = program.delete_unused_deps
-  const gclientWithoutRevision = program.with_issue_44921
+  let tryLeanCheckout = config.leanSync
 
   const requiredChromiumRef = config.getProjectRef('chrome')
   let args = ['sync', '--nohooks', '--reset', '--upstream']
-
-  if (!gclientWithoutRevision) {
-    args.push('--revision')
-    args.push('src@' + requiredChromiumRef)
-  }
 
   if (program.fetch_all) {
     args.push('--with_tags')
@@ -253,6 +281,13 @@ function syncChromium(program) {
     expectedSyncInfo,
   )
   const shouldSyncChromium = chromiumNeedsUpdate || syncWithForce
+
+  // Before any fetch, so both the Chromium and Brave syncs go through the
+  // mirrors when enabled. The mirror list is only refreshed alongside a
+  // Chromium update or a forced sync (`init`, `--force`), so no-op syncs stay
+  // offline.
+  configureGerritMirrors(shouldSyncChromium)
+
   if (!shouldSyncChromium && !syncChromiumValue) {
     if (deleteUnusedDeps && !isCI) {
       Log.warn(
@@ -289,24 +324,16 @@ function syncChromium(program) {
     }
   }
 
-  if (
-    gclientWithoutRevision
-    && (syncWithForce || chromiumNeedsUpdate)
-    && fs.existsSync(path.join(config.srcDir, 'chrome', 'VERSION'))
-  ) {
-    // Checking out chromium manually if necessary, as no `--revsion` flag is
-    // being passed to gclient.
-    if (
-      util.runGit(config.srcDir, ['rev-parse', requiredChromiumRef], true)
-      == null
-    ) {
-      util.runGit(config.srcDir, [
-        'fetch',
-        'origin',
-        requiredChromiumRef + ':' + requiredChromiumRef,
-      ])
-    }
-    util.runGit(config.srcDir, ['reset', '--hard', requiredChromiumRef])
+  if (tryLeanCheckout && (syncWithForce || chromiumNeedsUpdate)) {
+    // A lean checkout can only be done if we already have cloned chromium/src.
+    tryLeanCheckout =
+      fs.existsSync(path.join(config.srcDir, 'chrome', 'VERSION'))
+      && checkoutChromiumRef(requiredChromiumRef)
+  }
+
+  if (!tryLeanCheckout) {
+    args.push('--revision')
+    args.push('src@' + requiredChromiumRef)
   }
 
   util.runGclient(args)

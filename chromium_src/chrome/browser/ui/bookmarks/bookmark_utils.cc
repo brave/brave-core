@@ -8,92 +8,31 @@
 #include <string>
 
 #include "brave/browser/resources/bookmark_icon/grit/bookmark_icon_resources.h"
-#include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/brave_scheme_utils.h"
 #include "brave/browser/ui/brave_ui_features.h"
-#include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
-#include "components/bookmarks/common/bookmark_pref_names.h"
-#include "components/prefs/pref_service.h"
-#include "components/user_prefs/user_prefs.h"
 #include "components/vector_icons/vector_icons.h"
-#include "content/public/browser/browser_context.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
 #include "ui/gfx/color_utils.h"
+#include "ui/gfx/image/image_skia.h"
 #include "url/gurl.h"
 
 namespace chrome {
 
-void ToggleBookmarkBarWhenVisible_ChromiumImpl(
-    content::BrowserContext* browser_context);
-
-void BraveToggleBookmarkBarState(content::BrowserContext* browser_context) {
-  ToggleBookmarkBarWhenVisible_ChromiumImpl(browser_context);
-  auto* prefs = user_prefs::UserPrefs::Get(browser_context);
-  // On macOS with the View menu or via hotkeys, the options Always show
-  // bookmarks is a checkbox. We will keep that checkbox to be Always and Never.
-  const bool always_show =
-      prefs->GetBoolean(bookmarks::prefs::kShowBookmarkBar);
-  brave::SetBookmarkState(always_show ? brave::BookmarkBarState::kAlways
-                                      : brave::BookmarkBarState::kNever,
-                          prefs);
-}
+#if defined(TOOLKIT_VIEWS)
+ui::ImageModel GetBraveBookmarkFolderIcon(BookmarkFolderIconType icon_type,
+                                          ui::ColorVariant color);
+#endif  // defined(TOOLKIT_VIEWS)
 
 }  // namespace chrome
 
-#define IsAppsShortcutEnabled IsAppsShortcutEnabled_Unused
-#define ShouldShowAppsShortcutInBookmarkBar \
-  ShouldShowAppsShortcutInBookmarkBar_Unused
-
-#define FormatBookmarkURLForDisplay FormatBookmarkURLForDisplay_ChromiumImpl
-
-#if defined(TOOLKIT_VIEWS)
-#define GetBookmarkFolderIcon GetBookmarkFolderIcon_UnUsed
-#endif
-
-#define ToggleBookmarkBarWhenVisible                                       \
-  ToggleBookmarkBarWhenVisible(content::BrowserContext* browser_context) { \
-    BraveToggleBookmarkBarState(browser_context);                          \
-  }                                                                        \
-  void ToggleBookmarkBarWhenVisible_ChromiumImpl
-
 #include <chrome/browser/ui/bookmarks/bookmark_utils.cc>
 
-#if defined(TOOLKIT_VIEWS)
-#undef GetBookmarkFolderIcon
-#endif  // defined(TOOLKIT_VIEWS)
-
-#undef ToggleBookmarkBarWhenVisible
-#undef IsAppsShortcutEnabled
-#undef ShouldShowAppsShortcutInBookmarkBar
-#undef FormatBookmarkURLForDisplay
-
-#if defined(TOOLKIT_VIEWS)
-#undef GetBookmarkFolderIcon
-#endif
-
 namespace chrome {
-
-bool IsAppsShortcutEnabled(Profile* profile) {
-  return false;
-}
-
-bool ShouldShowAppsShortcutInBookmarkBar(Profile* profile) {
-  return false;
-}
-
-// WebUI bookmarks are stored as chrome:// but displayed as brave://. Editing a
-// bookmark rewrites the stored URL to brave://, since the editor re-parses this
-// text via FixupURL(); browser_about_handler maps it back on navigation.
-std::u16string FormatBookmarkURLForDisplay(const GURL& url) {
-  std::u16string url_string = FormatBookmarkURLForDisplay_ChromiumImpl(url);
-  brave_utils::ReplaceChromeToBraveScheme(url_string);
-  return url_string;
-}
 
 #if defined(TOOLKIT_VIEWS)
 
@@ -123,8 +62,8 @@ ui::ImageModel GetFilledBookmarkFolderIcon(BookmarkFolderIconType icon_type,
       size);
 }
 
-ui::ImageModel GetBookmarkFolderIcon(BookmarkFolderIconType icon_type,
-                                     ui::ColorVariant color) {
+ui::ImageModel GetBraveBookmarkFolderIcon(BookmarkFolderIconType icon_type,
+                                          ui::ColorVariant color) {
   // If the flag is enabled, use the old "filled" bookmark icon.
   if (base::FeatureList::IsEnabled(features::kBraveFilledBookmarkFolderIcon)) {
     return GetFilledBookmarkFolderIcon(icon_type, color);

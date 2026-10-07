@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/trace_event/trace_event.h"
 #include "base/trace_event/trace_id_helper.h"
@@ -153,6 +154,8 @@ void NewTabPageAdServing::GetEligibleAdsCallback(
               << creative_ad.creative_instance_id << " and a priority of "
               << creative_ad.priority);
 
+  creative_ad_round_robin_.MarkAsServed(creative_ad);
+
   ServeAd(BuildNewTabPageAd(creative_ad));
 }
 
@@ -161,8 +164,6 @@ void NewTabPageAdServing::ServeAd(const NewTabPageAdInfo& ad) {
     BLOG(0, "New tab page ad not served: Invalid ad");
     return FailedToServeAd();
   }
-
-  creative_ad_round_robin_.MarkAsServed(ad);
 
   eligible_ads_->SetLastServedAd(ad);
 

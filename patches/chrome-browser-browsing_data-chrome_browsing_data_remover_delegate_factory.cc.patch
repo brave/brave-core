@@ -1,0 +1,23 @@
+diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
+index 80cfa7e5302878f0cc5a7df1d854ced9889ffcb6..8222a1e52f70c0c47ea021630029d20afa814235 100644
+--- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
++++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
+@@ -44,9 +44,9 @@ ChromeBrowsingDataRemoverDelegateFactory::GetInstance() {
+ }
+ 
+ // static
+-ChromeBrowsingDataRemoverDelegate*
++BraveBrowsingDataRemoverDelegate*
+ ChromeBrowsingDataRemoverDelegateFactory::GetForProfile(Profile* profile) {
+-  return static_cast<ChromeBrowsingDataRemoverDelegate*>(
++  return static_cast<BraveBrowsingDataRemoverDelegate*>(
+       GetInstance()->GetServiceForBrowserContext(profile, true));
+ }
+ 
+@@ -99,5 +99,5 @@ ChromeBrowsingDataRemoverDelegateFactory::BuildServiceInstanceForBrowserContext(
+   // For guest profiles the browsing data is in the OTR profile.
+   Profile* profile = static_cast<Profile*>(context);
+   DCHECK(!profile->IsGuestSession() || profile->IsOffTheRecord());
+-  return std::make_unique<ChromeBrowsingDataRemoverDelegate>(context);
++  return std::make_unique<BraveBrowsingDataRemoverDelegate>(context);
+ }

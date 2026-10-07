@@ -6,7 +6,7 @@
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {loadTimeData} from 'chrome://resources/js/load_time_data.js'
 
-import './brave_account_row.js'
+import '../brave_account_row.js'
 import '../people_page/people_page.js'
 import '../settings_page/settings_section.js'
 import '../default_browser_page/default_browser_page.js'
@@ -43,7 +43,7 @@ export class BraveSettingsGettingStarted extends SettingsViewMixin(PolymerElemen
   override getAssociatedControlFor(childViewId: string): HTMLElement {
     switch (childViewId) {
       case 'manageProfile':
-        return this.shadowRoot!.querySelector('settings-people-page')!.shadowRoot!.querySelector('#edit-profile')!;
+        return this.shadowRoot!.querySelector('settings-people-page')!.shadowRoot.querySelector('#edit-profile')!;
       default:
         throw new Error(`Unknown child view id: ${childViewId}`)
     }

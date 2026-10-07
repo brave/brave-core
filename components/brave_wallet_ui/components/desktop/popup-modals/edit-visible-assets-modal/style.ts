@@ -8,7 +8,7 @@ import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 import { LoaderIcon } from 'brave-ui/components/icons'
 import { WalletButton, Row } from '../../../shared/style'
-import { layoutPanelWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
+import { layoutPanelWidth } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const VirtualListStyle = {
   flex: 1,

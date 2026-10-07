@@ -416,7 +416,7 @@ const conversation: ConversationDataJson = {
       'uploadedFiles': null,
       'skill': null,
       'fromBraveSearchSERP': false,
-      'modelKey': 'chat-qwen-3-235b',
+      'modelKey': 'chat-qwen-3-8-flash-next',
       'nearVerificationStatus': null,
       'childThreadUuids': [],
     },

@@ -43,7 +43,6 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
   void ShowWalletBackup() override;
   void UnlockWallet() override;
   void WalletInteractionDetected() override;
-  void ShowWalletOnboarding(const url::Origin& origin) override;
   void ShowAccountCreation(mojom::CoinType type,
                            const url::Origin& origin) override;
   std::optional<std::vector<std::string>> GetAllowedAccounts(

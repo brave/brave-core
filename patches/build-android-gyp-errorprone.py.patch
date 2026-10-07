@@ -1,0 +1,12 @@
+diff --git a/build/android/gyp/errorprone.py b/build/android/gyp/errorprone.py
+index d1dc4394ac95fff4d394009152797792676bfec1..f0cfe7e6e76f99e913cbdce783fa2f72721c8fa9 100755
+--- a/build/android/gyp/errorprone.py
++++ b/build/android/gyp/errorprone.py
+@@ -36,6 +36,7 @@ CHROMIUM_PLUGIN_TESTONLY_WARNINGS_TO_DISABLE = [
+ 
+ # Full list of checks: https://errorprone.info/bugpatterns
+ ERRORPRONE_WARNINGS_TO_DISABLE = [
++    'UnnecessaryParentheses',
+     # High priority to enable in non-tests:
+     'StaticAssignmentInConstructor',
+     # CheckReturnValue: See note below about enabling via -Xep.

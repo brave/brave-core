@@ -10,8 +10,7 @@ substitutions:
       app/feature_defaults_unittest.cc asserts the default state of every
       feature flag Brave overrides, kBrowserActuatorProtoStreamTransport
       included, and that requires depending on this target directly.
-    regex:
-      pattern: 'visibility = [ "//components/browser_actuator/*" ]'
-      replace: |-
-        visibility = [ "//components/browser_actuator/*" ]
-          visibility += [ "//brave/app:unit_tests" ]
+    add_literal_to_list:
+      target: features
+      list_name: visibility
+      literal: '[ "//brave/app:unit_tests" ]'

@@ -1,12 +1,20 @@
 diff --git a/chrome/browser/history_embeddings/BUILD.gn b/chrome/browser/history_embeddings/BUILD.gn
-index ac768392d48010c724bab3de6b4b547df9ed1972..c3a705ac65aa7e95e45ba5033dd554e2d949d730 100644
+index ac768392d48010c724bab3de6b4b547df9ed1972..8696aeaad0f49dec38dac359e308bd0797748c4a 100644
 --- a/chrome/browser/history_embeddings/BUILD.gn
 +++ b/chrome/browser/history_embeddings/BUILD.gn
-@@ -61,6 +61,7 @@ source_set("impl") {
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/chromium_src/chrome/browser/history_embeddings/sources.gni")
+ import("//components/optimization_guide/features.gni")
+ 
+ source_set("history_embeddings") {
+@@ -61,6 +62,7 @@ source_set("impl") {
      "//ui/base",
      "//url",
    ]
-+  import("//brave/chromium_src/chrome/browser/history_embeddings/sources.gni") deps += brave_chromium_src_chrome_browser_history_embeddings_impl_deps
++  deps += brave_chromium_src_chrome_browser_history_embeddings_impl_deps
  
    if (is_chromeos) {
      deps += [

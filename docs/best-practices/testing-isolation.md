@@ -764,6 +764,14 @@ ensure that new logic, branches, and edge cases have corresponding tests. This
 applies to all PRs, not just bug fixes. Don't be overly strict — use judgment —
 but flag obvious gaps where meaningful test coverage is missing.
 
+**Rough target:** Chromium aims for a minimum of 80% coverage, ideally 90%+, and
+weighs the coverage of the lines a change touches more heavily than the
+project-wide number. Chasing coverage past ~90% is counterproductive: the
+remaining lines are usually `NOTREACHED()`/`CHECK()`/`LOG(FATAL)` paths that
+take contrived abuse to reach and yield little beyond what the check already
+guarantees. See
+[Chromium C++ testing best practices](https://www.chromium.org/chromium-os/developer-library/guides/testing/cpp-writing-tests/).
+
 **Exception:** Don't require a dedicated test when the change is trivial UI with
 no meaningful logic to test (e.g. a toggle wired to a pref), or when it follows
 an existing untested pattern in the surrounding code.
@@ -862,3 +870,171 @@ instead of `size_t` for masks with more than 16 flags to avoid overflow.
 
 See
 [Chromium C++ Testing Best Practices](https://www.chromium.org/chromium-os/developer-library/guides/testing/cpp-writing-tests/).
+
+---
+
+<a id="TI-042"></a>
+
+## ❌ Don't Let Tests Depend on a Feature Flag's Current Default
+
+**A test must never rely on the compiled-in default of a `base::Feature`.** Pin
+every flag whose behavior the test depends on, or parameterize over both states.
+A test that rides the default silently changes what it covers the day someone
+flips that default — and reads as passing either way.
+
+This matters most when you are the one _flipping_ a default. Two moves are
+tempting and both are wrong:
+
+```cpp
+// ❌ WRONG - deleting "now redundant" setup because the new default enables it.
+// The fixture is now coupled to the default; flip it back and this fixture
+// silently stops testing the caching path it is named after.
+class MyCachingTest : public MyTestBase {
+  // MyCachingTest() { feature_list_.InitAndEnableFeature(kMyCache); }  <- removed
+};
+
+// ❌ WRONG - a bespoke helper that absorbs the new default's behavior so the
+// pre-existing expectations still hold. This models an ordering that
+// production never performs, so it introduces a bug rather than hiding one.
+void ConsumeStartupNotification(Manager& m) {
+  ThrowawayObserver unused;
+  m.ForceNotifyObserver(unused, /*is_default_engine=*/true);
+}
+```
+
+```cpp
+// ✅ CORRECT - parameterize, so the test runs for both states and asserts only
+// what actually differs. Initialize in the constructor: it runs before SetUp(),
+// so nothing that reads the flag can be constructed ahead of it.
+class MyCachingTest : public testing::TestWithParam<bool> {
+ public:
+  MyCachingTest() {
+    feature_list_.InitWithFeatureState(features::kMyCache, GetParam());
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+TEST_P(MyCachingTest, NotifiesWhenReady) {
+  const bool cache_enabled = GetParam();
+  // ... only the counts that genuinely differ are param-dependent:
+  EXPECT_EQ(observer.changed_count, cache_enabled ? 0 : 1);
+}
+
+INSTANTIATE_TEST_SUITE_P(All, MyCachingTest, testing::Bool(),
+                         [](const testing::TestParamInfo<bool>& info) {
+                           return info.param ? "CacheEnabled" : "CacheDisabled";
+                         });
+```
+
+```cpp
+// ✅ CORRECT - where only one side of the flag is under test, give it a fixture
+// that pins that side. ScopedFeatureList's single-feature constructor pins it
+// in the member initializer list, before the fixture body and SetUp() run.
+// Declare it ahead of any member that reads the flag while being constructed.
+class MyCacheEnabledTest : public testing::Test {
+ private:
+  base::test::ScopedFeatureList feature_list_{features::kMyCache};
+  MyService service_;
+};
+```
+
+```cpp
+// ✅ CORRECT - where parameterizing is impractical (e.g. a TYPED_TEST fixture),
+// at least pin the flag explicitly instead of inheriting the default.
+MyTypedTest() {
+  scoped_feature_list_.InitWithFeatureStates(
+      {{features::kSomeOtherFlag, use_weak_ptr},
+       {features::kMyCache, true}});
+}
+```
+
+Practical notes:
+
+- **Check the test file for an existing parameterized fixture first.** A file
+  that already covers a flag usually has one; reuse it rather than adding a
+  helper next to it.
+- **Most tests turn out to be flag-independent.** If the expectations are
+  identical for both params, that is the proof no helper was needed — keep them
+  parameterized anyway so a future default flip can't quietly change coverage.
+- **Initialize in the fixture constructor, not `SetUp()`.** `ScopedFeatureList`
+  must be initialized _before_ anything that reads the flag is constructed, and
+  the fixture constructor runs before `SetUp()` — so initializing there (or in
+  the member initializer, as above) removes ordering as a question entirely.
+  `GetParam()` is already available in the constructor. Only if the flag state
+  depends on something that does not exist until `SetUp()` should the init live
+  there, and then it belongs at the top of `SetUp()`, not the bottom.
+- **Filtering:** parameterized suites need the instantiation prefix in
+  `--gtest_filter` (`All/MyCachingTest.*`). A bare fixture-name filter matches
+  nothing and still reports success.
+- **Attributing failures after a flip:** re-run the failing test with
+  `--disable-features=<Flag>` on the same binary. If it fails identically the
+  failure is pre-existing, and you did not have to rebuild at the merge base to
+  find out.
+
+Related: [TI-041](#TI-041) covers the multi-flag case, where a class is affected
+by several features and you want all 2^N combinations.
+
+---
+
+<a id="TI-043"></a>
+
+## Confirm the Test Exists in the Binary Before Trusting a Pass
+
+A `--gtest_filter` that matches nothing is not an error. The launcher prints a
+warning, reports success, and exits `0`:
+
+```
+WARNING: No matching tests to run.
+SUCCESS: all tests passed.
+Tests took 0 seconds.
+```
+
+That output is indistinguishable from a real pass in a log or a CI summary, and
+it is the normal outcome when a test's target is compiled out of the build dir
+you are using. Several of our test targets are buildflag-gated, so a locally
+configured build can omit them entirely:
+
+```gn
+# brave/components/ai_chat/core/common/buildflags/buildflags.gni
+enable_ai_chat = !is_brave_origin_branded
+```
+
+With `is_brave_origin_branded=true`, `//brave/browser/ai_chat:browser_tests` is
+not part of `brave_browser_tests` at all — every `AIChatPDFOCRBrowserTest.*`
+filter "passes" while running zero tests.
+
+**Before reporting a test as passing, confirm it was actually there:**
+
+```bash
+# Should list the tests you expect. Empty output = they are not in this binary.
+./out/<dir>/brave_browser_tests --gtest_list_tests --gtest_filter='MyTest.*'
+```
+
+Then check the run itself: a real pass prints a `[ RUN ]` / `[ OK ]` pair per
+test with a non-zero duration. `Tests took 0 seconds` for a browser test means
+nothing ran.
+
+If the tests are missing, build a **separate** output directory with the flag
+flipped rather than reconfiguring a shared one:
+
+```bash
+pnpm run build Component -C ComponentAIChat --target=brave_browser_tests \
+  --gn is_brave_origin_branded:false
+```
+
+`-C` is relative to `out/` (`-C out/Foo` creates `out/out/Foo` and trips a gn
+assertion about output-directory depth). `--gn` is what flips the arg:
+`buildArgs.ts` forwards the `.env`/`package.json` value into the gn args first
+and applies `--gn` values last, so the override wins.
+
+`--gn` does not, however, change which branding defaults are imported — that
+choice comes from `config.isBraveOriginBranded`, which `EnvConfig` reads only
+from `.env` and `package.json`'s `config`, never from a process environment
+variable. The dir you get therefore has `is_brave_origin_branded=false` with
+`brave_origin` branding still imported, which is enough to compile a gated test
+target back in; edit `.env`/`package.json` if you need the branding to match.
+
+The same "matches nothing, still succeeds" failure mode applies to parameterized
+suites; see [TI-042](#TI-042).

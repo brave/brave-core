@@ -1,12 +1,13 @@
 diff --git a/chrome/browser/startup/startup_features.cc b/chrome/browser/startup/startup_features.cc
-index 7e49beaff7d89625ee6058ef89c7a046c8861aa8..fe38562605980755eb01fd2e5cbf5022815169ba 100644
+index 6d06d892d015bd1b6415eb8a2c34ce1f631b7f31..9ebb2a9b88285762add8f161ea20122ba4d47f37 100644
 --- a/chrome/browser/startup/startup_features.cc
 +++ b/chrome/browser/startup/startup_features.cc
-@@ -9,6 +9,7 @@
+@@ -9,7 +9,7 @@
  
  namespace features {
  
-+// kLaunchOnStartup feature state is enforced via plaster rewrite.
- BASE_FEATURE(kLaunchOnStartup, base::FEATURE_DISABLED_BY_DEFAULT);
+-BASE_FEATURE(kLaunchOnStartup, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kLaunchOnStartup, base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE_ENUM_PARAM(LaunchOnStartupMode,
+                         kLaunchOnStartupModeParam,

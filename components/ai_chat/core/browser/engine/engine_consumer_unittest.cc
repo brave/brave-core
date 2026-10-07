@@ -14,6 +14,37 @@
 
 namespace ai_chat {
 
+TEST(EngineConsumerUnitTest, GetStrArrFromTabOrganizationResponsesEmpty) {
+  std::vector<EngineConsumer::GenerationResult> results;
+  auto add_result = [&results](const std::string& completion_text) {
+    results.push_back(base::ok(EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New(completion_text)),
+        std::nullopt)));
+  };
+
+  // Filtering tabs by topic can legitimately match nothing, so an empty array
+  // is an answer rather than a failure.
+  add_result("[]");
+  EXPECT_EQ(EngineConsumer::GetStrArrFromTabOrganizationResponses(
+                results, EngineConsumer::EmptyResult::kIsValid),
+            std::vector<std::string>());
+
+  // Suggesting topics for a non-empty tab list should always produce
+  // something, so the same response stays an error there.
+  EXPECT_EQ(EngineConsumer::GetStrArrFromTabOrganizationResponses(
+                results, EngineConsumer::EmptyResult::kIsError),
+            base::unexpected(mojom::APIError::InternalError));
+
+  // A server error still fails even when an empty result is acceptable.
+  results.clear();
+  results.push_back(base::unexpected(
+      EngineConsumer::Error(mojom::APIError::RateLimitReached)));
+  EXPECT_EQ(EngineConsumer::GetStrArrFromTabOrganizationResponses(
+                results, EngineConsumer::EmptyResult::kIsValid),
+            base::unexpected(mojom::APIError::RateLimitReached));
+}
+
 TEST(EngineConsumerUnitTest, GetStrArrFromTabOrganizationResponses) {
   std::vector<EngineConsumer::GenerationResult> results;
   EXPECT_EQ(EngineConsumer::GetStrArrFromTabOrganizationResponses(results),

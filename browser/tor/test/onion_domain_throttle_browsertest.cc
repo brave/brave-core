@@ -14,10 +14,12 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/network_session_configurator/common/network_switches.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "content/public/test/web_transport_simple_test_server.h"
 #include "net/base/url_util.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -70,7 +72,10 @@ class OnionDomainThrottleBrowserTest
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
+    command_line->AppendSwitch(switches::kWebTransportDeveloperMode);
     InProcessBrowserTest::SetUpCommandLine(command_line);
+    webtransport_server_.SetUpCommandLine(command_line);
+    webtransport_server_.Start();
     mock_cert_verifier_.SetUpCommandLine(command_line);
   }
 
@@ -86,24 +91,24 @@ class OnionDomainThrottleBrowserTest
 
   net::EmbeddedTestServer* test_server() { return https_server_.get(); }
 
-  Browser* GetBrowser(bool tor_window) {
+  BrowserWindowInterface* GetBrowser(bool tor_window) {
     if (!tor_window) {
       return browser();
     }
     return TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
   }
 
-  content::WebContents* GetActiveWebContents(Browser* browser) {
+  content::WebContents* GetActiveWebContents(BrowserWindowInterface* browser) {
     return (browser ? browser : this->browser())
         ->tab_strip_model()
         ->GetActiveWebContents();
   }
 
-  Browser* SetUpScenario(const OnionAccessScenario& scenario) {
+  BrowserWindowInterface* SetUpScenario(const OnionAccessScenario& scenario) {
     browser()->GetProfile()->GetPrefs()->SetBoolean(
         tor::prefs::kOnionOnlyInTorWindows, scenario.onion_only_in_tor_windows);
 
-    Browser* browser = GetBrowser(scenario.tor_window);
+    BrowserWindowInterface* browser = GetBrowser(scenario.tor_window);
 
     [&]() {
       ASSERT_TRUE(ui_test_utils::NavigateToURL(
@@ -154,6 +159,27 @@ class OnionDomainThrottleBrowserTest
         ws_url);
   }
 
+  std::string WebTransportOpenScript(int wt_port) {
+    return content::JsReplace(
+        R"(new Promise(resolve => {
+          if (!window.WebTransport) {
+            resolve('unsupported');
+            return;
+          }
+          let transport;
+          try {
+            transport = new WebTransport('https://test.onion:$1/echo_test');
+          } catch (e) {
+            resolve('error');
+            return;
+          }
+          transport.ready.then(
+            () => { transport.close(); resolve('open'); },
+            () => resolve('error'));
+        });)",
+        wt_port);
+  }
+
   std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
       const net::test_server::HttpRequest& request) {
     if (request.relative_url == kRedirectOnionPath) {
@@ -179,6 +205,7 @@ class OnionDomainThrottleBrowserTest
 
  protected:
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
+  content::WebTransportSimpleTestServer webtransport_server_;
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
@@ -204,7 +231,7 @@ INSTANTIATE_TEST_SUITE_P(
 IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest,
                        DirectSubresourceToOnion) {
   const OnionAccessScenario scenario = GetParam();
-  Browser* browser = SetUpScenario(scenario);
+  BrowserWindowInterface* browser = SetUpScenario(scenario);
   content::WebContents* web_contents = GetActiveWebContents(browser);
 
   auto loaded =
@@ -215,7 +242,7 @@ IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest,
 
 IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest, ImgRedirectToOnion) {
   const OnionAccessScenario scenario = GetParam();
-  Browser* browser = SetUpScenario(scenario);
+  BrowserWindowInterface* browser = SetUpScenario(scenario);
   content::WebContents* web_contents = GetActiveWebContents(browser);
 
   auto loaded =
@@ -226,7 +253,7 @@ IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest, ImgRedirectToOnion) {
 
 IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest, FetchRedirectToOnion) {
   const OnionAccessScenario scenario = GetParam();
-  Browser* browser = SetUpScenario(scenario);
+  BrowserWindowInterface* browser = SetUpScenario(scenario);
   content::WebContents* web_contents = GetActiveWebContents(browser);
 
   auto loaded =
@@ -237,7 +264,7 @@ IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest, FetchRedirectToOnion) {
 
 IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest, IframeOnionNavigation) {
   const OnionAccessScenario scenario = GetParam();
-  Browser* browser = SetUpScenario(scenario);
+  BrowserWindowInterface* browser = SetUpScenario(scenario);
   content::WebContents* web_contents = GetActiveWebContents(browser);
 
   const GURL onion_url = OnionResourceUrl().GetWithEmptyPath();
@@ -258,12 +285,24 @@ IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest, IframeOnionNavigation) {
 
 IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest, WebSocketToOnion) {
   const OnionAccessScenario scenario = GetParam();
-  Browser* browser = SetUpScenario(scenario);
+  BrowserWindowInterface* browser = SetUpScenario(scenario);
   content::WebContents* web_contents = GetActiveWebContents(browser);
 
   const GURL ws_url = net::test_server::GetWebSocketURL(
       *https_server_, "example.onion", "/echo-with-no-extension");
   auto result = EvalJs(web_contents, WebSocketOpenScript(ws_url));
+  ASSERT_TRUE(result.is_ok());
+  EXPECT_EQ(scenario.expect_blocked ? "error" : "open", result);
+}
+
+IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest, WebTransportToOnion) {
+  const OnionAccessScenario scenario = GetParam();
+  BrowserWindowInterface* browser = SetUpScenario(scenario);
+  content::WebContents* web_contents = GetActiveWebContents(browser);
+
+  auto result = EvalJs(
+      web_contents,
+      WebTransportOpenScript(webtransport_server_.server_address().port()));
   ASSERT_TRUE(result.is_ok());
   EXPECT_EQ(scenario.expect_blocked ? "error" : "open", result);
 }

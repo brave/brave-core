@@ -17,9 +17,8 @@ class ImageButton;
 class Label;
 }  // namespace views
 
-// Header view shown on top of the side panel border in sidebar v2. The visual
-// spec mirrors the v1 inline headers in BraveReadLaterSidePanelView and
-// BraveBookmarksSidePanelView; per-entry pieces are produced by a Delegate.
+// Header view shown on top of the side panel border in sidebar v2.
+// per-entry pieces are produced by a Delegate.
 class BraveSidePanelHeader : public views::View {
   METADATA_HEADER(BraveSidePanelHeader, views::View)
 

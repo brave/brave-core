@@ -36,7 +36,7 @@ void PdfTextExtractor::TryRegisterForDocumentLoad() {
     return;
   }
   auto* pdf_helper =
-      pdf::PDFDocumentHelper::MaybeGetForWebContents(GetWebContents());
+      pdf::PDFDocumentHelper::MaybeGetForWebContents(*GetWebContents());
   if (!pdf_helper) {
     return;
   }
@@ -51,7 +51,7 @@ void PdfTextExtractor::OnDocumentLoadComplete() {
 }
 
 void PdfTextExtractor::OnDocumentReady() {
-  ExtractTextFromLoadedPdf(GetWebContents(),
+  ExtractTextFromLoadedPdf(*GetWebContents(),
                            base::BindOnce(&PdfTextExtractor::Finish,
                                           weak_ptr_factory_.GetWeakPtr()));
 }

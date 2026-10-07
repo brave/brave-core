@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Never run the loading predictor.
+
+      Brave defaults `kNetworkPredictionOptions` to disabled, but that pref
+      only gates acting on a prediction (`IsPreconnectAllowed()`), not
+      learning one: `ResourcePrefetchPredictor` records the third-party
+      origins every host loads and persists that to the profile's
+      `Network Action Predictor` database regardless.
+
+      This is the chokepoint every consumer reaches the predictor through, so
+      folding it off here makes `LoadingPredictorFactory` return nullptr,
+      which is what keeps `LoadingPredictorTabHelper` -- and with it all data
+      collection -- from ever being attached. It also folds off the
+      speculative service worker warm up and HTTP disk cache prewarming that
+      `PrepareForPageLoad()` runs ahead of its own preload-pref check.
+    preempt_function_impl:
+      function_name: IsLoadingPredictorEnabled
+      code: 'if ((true)) return false;'

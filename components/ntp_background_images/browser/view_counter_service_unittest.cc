@@ -20,12 +20,14 @@
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/browser/service/test/ads_service_mock.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_registry.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_content_data.h"
 #include "brave/components/ntp_background_images/browser/test/fake_ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
@@ -41,6 +43,8 @@
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
 #include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
+#include "brave/components/ntp_background_images/browser/wallpapers/ntp_custom_background_delegate.h"
+#include "brave/components/ntp_background_images/browser/wallpapers/test/fake_ntp_custom_background_delegate.h"
 #endif  // BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
 
 namespace ntp_background_images {
@@ -137,63 +141,11 @@ brave_ads::mojom::NewTabPageAdInfoPtr BuildNewTabPageAd() {
   return mojom_ad;
 }
 
-int GetInitialCountToBrandedWallpaper() {
-  return features::kInitialCountToBrandedWallpaper.Get() - 1;
+int GetInitialCountToNewTabTakeoverWallpaper() {
+  return features::kInitialCountToNewTabTakeoverWallpaper.Get() - 1;
 }
 
 }  // namespace
-
-#if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-class BraveNTPCustomBackgroundServiceDelegateMock
-    : public BraveNTPCustomBackgroundService::Delegate {
- public:
-  BraveNTPCustomBackgroundServiceDelegateMock() = default;
-
-  ~BraveNTPCustomBackgroundServiceDelegateMock() override = default;
-
-  void EnableCustomImageBackground() {
-    is_custom_image_background_enabled_ = true;
-  }
-
-  void DisableCustomImageBackground() {
-    is_custom_image_background_enabled_ = false;
-  }
-
-  void EnableColorBackground() { is_color_background_enabled_ = true; }
-
-  void DisableColorBackground() { is_color_background_enabled_ = false; }
-
-  // Delegate:
-  bool IsCustomImageBackgroundEnabled() const override {
-    return is_custom_image_background_enabled_;
-  }
-
-  base::FilePath GetCustomBackgroundImageLocalFilePath(
-      const GURL& /*url*/) const override {
-    return {};
-  }
-
-  GURL GetCustomBackgroundImageURL() const override {
-    return GURL(std::string(kCustomWallpaperURL) + "foo.jpg");
-  }
-
-  bool IsColorBackgroundEnabled() const override {
-    return is_color_background_enabled_;
-  }
-
-  std::string GetColor() const override { return "#ff0000"; }
-
-  bool ShouldUseRandomValue() const override { return false; }
-
-  bool HasPreferredBraveBackground() const override { return false; }
-
-  base::DictValue GetPreferredBraveBackground() const override { return {}; }
-
- private:
-  bool is_custom_image_background_enabled_ = false;
-  bool is_color_background_enabled_ = false;
-};
-#endif  // BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
 
 class ViewCounterServiceTest : public testing::Test {
  public:
@@ -203,6 +155,7 @@ class ViewCounterServiceTest : public testing::Test {
 
   void SetUp() override {
     brave_rewards::RegisterProfilePrefs(prefs_.registry());
+    brave_ads::RegisterProfilePrefs(prefs_.registry());
     RegisterProfilePrefs(prefs_.registry());
     HostContentSettingsMap::RegisterProfilePrefs(prefs_.registry());
 
@@ -218,13 +171,12 @@ class ViewCounterServiceTest : public testing::Test {
             /*component_updater_service=*/nullptr, &local_state_);
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-    auto custom_background_service_delegate =
-        std::make_unique<BraveNTPCustomBackgroundServiceDelegateMock>();
-    custom_background_service_delegate_mock_ =
-        custom_background_service_delegate.get();
+    auto custom_background_delegate =
+        std::make_unique<test::FakeNTPCustomBackgroundDelegate>();
+    custom_background_delegate_ = custom_background_delegate.get();
     custom_background_service_ =
         std::make_unique<BraveNTPCustomBackgroundService>(
-            std::move(custom_background_service_delegate));
+            std::move(custom_background_delegate));
 #endif  // BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
 
     ON_CALL(ads_service_mock_, IsInitialized)
@@ -239,6 +191,12 @@ class ViewCounterServiceTest : public testing::Test {
     view_counter_service_->OnDidInitializeAdsService();
   }
 
+  void SimulateAdsServiceDataCleared() {
+    view_counter_service_->OnDidClearAdsServiceData();
+  }
+
+  void SimulateShutdown() { view_counter_service_->Shutdown(); }
+
   void CreateViewCounterService() {
     BraveNTPCustomBackgroundService* custom_background_service = nullptr;
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
@@ -250,15 +208,14 @@ class ViewCounterServiceTest : public testing::Test {
         /*is_supported_locale=*/true);
   }
 
-  void SetSponsoredImagesVisibility(bool should_show) {
-    prefs_.SetBoolean(prefs::kNewTabPageShowSponsoredImagesBackgroundImage,
-                      should_show);
+  void SetNewTabTakeoverVisibility(bool should_show) {
+    prefs_.SetBoolean(brave_ads::prefs::kSponsoredEnabled, should_show);
   }
 
-  void MockSponsoredImagesData(WallpaperType wallpaper_type) {
-    auto images_data = std::make_unique<NTPSponsoredImagesData>();
+  void InstallNewTabTakeover(WallpaperType wallpaper_type) {
+    auto sponsored_content_data = std::make_unique<NTPSponsoredContentData>();
 
-    images_data->url_prefix = "chrome://branded-wallpaper/";
+    sponsored_content_data->url_prefix = "chrome://branded-wallpaper/";
 
     Logo logo;
     logo.company_name = kCompanyName;
@@ -283,17 +240,18 @@ class ViewCounterServiceTest : public testing::Test {
                            {0, 0},
                            logo,
                            "1744602b-253b-47b2-909b-f9b248a6b681"}};
-    images_data->campaigns.push_back(campaign);
+    sponsored_content_data->campaigns.push_back(campaign);
 
-    background_images_service_->sponsored_images_data_ = std::move(images_data);
+    background_images_service_->sponsored_content_data_ =
+        std::move(sponsored_content_data);
   }
 
-  void MockMalformedSponsoredImagesData() {
+  void SimulateMalformedSponsoredContentData() {
     background_images_service_->OnGetSponsoredComponentJsonData(
         "MALFORMED JSON");
   }
 
-  void MockBackgroundImagesData() {
+  void InstallBackgroundImagesData() {
     auto images_data = std::make_unique<NTPBackgroundImagesData>();
     images_data->backgrounds = {
         {base::FilePath(FILE_PATH_LITERAL("wallpaper1.jpg")), "Brave",
@@ -303,7 +261,7 @@ class ViewCounterServiceTest : public testing::Test {
         std::move(images_data);
   }
 
-  void MockMalformedBackgroundImagesData() {
+  void SimulateMalformedBackgroundImagesData() {
     background_images_service_->OnGetComponentJsonData("MALFORMED JSON");
   }
 
@@ -312,46 +270,46 @@ class ViewCounterServiceTest : public testing::Test {
   }
 
   std::optional<base::DictValue> GetCurrentWallpaperForDisplay(
-      bool allow_sponsored_image) {
+      bool allow_sponsored_content) {
     std::optional<base::DictValue> result;
     view_counter_service_->GetCurrentWallpaperForDisplay(
         base::BindLambdaForTesting(
             [&result](std::optional<base::DictValue> dict) {
               result = std::move(dict);
             }),
-        allow_sponsored_image);
+        allow_sponsored_content);
     return result;
   }
 
-  std::optional<base::DictValue> GetCurrentBrandedWallpaper() {
+  std::optional<base::DictValue> GetNewTabTakeoverWallpaper() {
     base::test::TestFuture<std::optional<base::DictValue>> future;
-    view_counter_service_->GetCurrentBrandedWallpaper(future.GetCallback());
+    view_counter_service_->GetNewTabTakeoverWallpaper(future.GetCallback());
     return future.Take();
   }
 
-  void MockBackgroundImagesService() {
-    SetSponsoredImagesVisibility(true);
-    MockSponsoredImagesData(WallpaperType::kImage);
-    EXPECT_TRUE(view_counter_service_->CanShowSponsoredImages());
+  void EnableSponsoredAndBackgroundImages() {
+    SetNewTabTakeoverVisibility(true);
+    InstallNewTabTakeover(WallpaperType::kStaticNewTabTakeover);
+    EXPECT_TRUE(view_counter_service_->CanShowNewTabTakeover());
 
     SetBackgroundImagesVisibility(true);
-    MockBackgroundImagesData();
+    InstallBackgroundImagesData();
     EXPECT_TRUE(view_counter_service_->CanShowBackgroundImages());
   }
 
   std::optional<base::DictValue>
   CycleThroughPageViewsAndMaybeGetNewTabTakeoverWallpaper() {
     // Loading initial count times.
-    for (int i = 0; i < GetInitialCountToBrandedWallpaper(); ++i) {
+    for (int i = 0; i < GetInitialCountToNewTabTakeoverWallpaper(); ++i) {
       const auto wallpaper =
-          GetCurrentWallpaperForDisplay(/*allow_sponsored_image=*/true);
+          GetCurrentWallpaperForDisplay(/*allow_sponsored_content=*/true);
       EXPECT_TRUE(wallpaper);
       EXPECT_TRUE(wallpaper->FindBool(kIsBackgroundKey));
 
       view_counter_service_->RegisterPageView();
     }
 
-    return GetCurrentWallpaperForDisplay(/*allow_sponsored_image=*/true);
+    return GetCurrentWallpaperForDisplay(/*allow_sponsored_content=*/true);
   }
 
   void VerifyDoNotGetNewTabTakeoverWallpaperExpectation() {
@@ -381,8 +339,8 @@ class ViewCounterServiceTest : public testing::Test {
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
   std::unique_ptr<BraveNTPCustomBackgroundService> custom_background_service_;
-  raw_ptr<BraveNTPCustomBackgroundServiceDelegateMock>
-      custom_background_service_delegate_mock_ = nullptr;
+  raw_ptr<test::FakeNTPCustomBackgroundDelegate>
+      custom_background_delegate_ = nullptr;
 #endif  // BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
 
   brave_ads::AdsServiceMock ads_service_mock_;
@@ -391,31 +349,31 @@ class ViewCounterServiceTest : public testing::Test {
   base::HistogramTester histogram_tester_;
 };
 
-TEST_F(ViewCounterServiceTest, CanShowSponsoredImages) {
-  SetSponsoredImagesVisibility(true);
-  MockSponsoredImagesData(WallpaperType::kImage);
-  EXPECT_TRUE(view_counter_service_->CanShowSponsoredImages());
+TEST_F(ViewCounterServiceTest, CanShowNewTabTakeover) {
+  SetNewTabTakeoverVisibility(true);
+  InstallNewTabTakeover(WallpaperType::kStaticNewTabTakeover);
+  EXPECT_TRUE(view_counter_service_->CanShowNewTabTakeover());
 }
 
-TEST_F(ViewCounterServiceTest, CannotShowSponsoredImagesIfOptedOut) {
-  SetSponsoredImagesVisibility(false);
-  MockSponsoredImagesData(WallpaperType::kImage);
-  EXPECT_FALSE(view_counter_service_->CanShowSponsoredImages());
+TEST_F(ViewCounterServiceTest, CannotShowSponsoredContentIfOptedOut) {
+  SetNewTabTakeoverVisibility(false);
+  InstallNewTabTakeover(WallpaperType::kStaticNewTabTakeover);
+  EXPECT_FALSE(view_counter_service_->CanShowNewTabTakeover());
 }
 
-TEST_F(ViewCounterServiceTest, CannotShowSponsoredImagesIfUninitialized) {
-  EXPECT_FALSE(view_counter_service_->CanShowSponsoredImages());
+TEST_F(ViewCounterServiceTest, CannotShowSponsoredContentIfUninitialized) {
+  EXPECT_FALSE(view_counter_service_->CanShowNewTabTakeover());
 }
 
-TEST_F(ViewCounterServiceTest, CannotShowSponsoredImagesIfMalformed) {
-  SetSponsoredImagesVisibility(true);
-  MockMalformedSponsoredImagesData();
-  EXPECT_FALSE(view_counter_service_->CanShowSponsoredImages());
+TEST_F(ViewCounterServiceTest, CannotShowSponsoredContentIfMalformed) {
+  SetNewTabTakeoverVisibility(true);
+  SimulateMalformedSponsoredContentData();
+  EXPECT_FALSE(view_counter_service_->CanShowNewTabTakeover());
 }
 
 TEST_F(ViewCounterServiceTest, CanShowBackgroundImages) {
   SetBackgroundImagesVisibility(true);
-  MockBackgroundImagesData();
+  InstallBackgroundImagesData();
   EXPECT_TRUE(view_counter_service_->CanShowBackgroundImages());
 }
 
@@ -429,19 +387,19 @@ TEST_F(ViewCounterServiceTest, CannotShowBackgroundImagesIfUninitialized) {
 
 TEST_F(ViewCounterServiceTest, CannotShowBackgroundImagesIfMalformed) {
   SetBackgroundImagesVisibility(true);
-  MockMalformedBackgroundImagesData();
+  SimulateMalformedBackgroundImagesData();
   EXPECT_FALSE(view_counter_service_->CanShowBackgroundImages());
 }
 
 TEST_F(ViewCounterServiceTest, ActiveOptedInWithNTPBackgoundOption) {
   SetBackgroundImagesVisibility(false);
-  MockSponsoredImagesData(WallpaperType::kImage);
-  EXPECT_FALSE(view_counter_service_->CanShowSponsoredImages());
+  InstallNewTabTakeover(WallpaperType::kStaticNewTabTakeover);
+  EXPECT_FALSE(view_counter_service_->CanShowNewTabTakeover());
 }
 
 TEST_F(ViewCounterServiceTest, CannotShowBackgroundImagesIfOptedOut) {
   SetBackgroundImagesVisibility(false);
-  MockBackgroundImagesData();
+  InstallBackgroundImagesData();
 
 #if BUILDFLAG(IS_ANDROID)
   // On android, |kNewTabPageShowBackgroundImage| prefs is not used for
@@ -454,34 +412,37 @@ TEST_F(ViewCounterServiceTest, CannotShowBackgroundImagesIfOptedOut) {
 
 // New tab takeover wallpaper is active if one of them is available.
 TEST_F(ViewCounterServiceTest, IsActiveOptedIn) {
-  SetSponsoredImagesVisibility(true);
-  MockSponsoredImagesData(WallpaperType::kImage);
-  EXPECT_TRUE(view_counter_service_->CanShowSponsoredImages());
+  SetNewTabTakeoverVisibility(true);
+  InstallNewTabTakeover(WallpaperType::kStaticNewTabTakeover);
+  EXPECT_TRUE(view_counter_service_->CanShowNewTabTakeover());
 }
 
 TEST_F(ViewCounterServiceTest, PrefsWithModelTest) {
-  EXPECT_EQ(view_counter_service_->model_.show_branded_wallpaper_,
-            features::kInitialCountToBrandedWallpaper.Get() - 1);
-  EXPECT_TRUE(view_counter_service_->model_.show_wallpaper_);
-  EXPECT_TRUE(view_counter_service_->model_.show_branded_wallpaper_);
+  EXPECT_EQ(features::kInitialCountToNewTabTakeoverWallpaper.Get() - 1,
+            view_counter_service_->model_
+                .count_to_new_tab_takeover_wallpaper_for_testing());
+  EXPECT_TRUE(view_counter_service_->model_.show_wallpaper_for_testing());
+  EXPECT_TRUE(view_counter_service_->model_
+                  .show_new_tab_takeover_wallpaper_for_testing());
 
-  SetSponsoredImagesVisibility(false);
-  EXPECT_FALSE(view_counter_service_->model_.show_branded_wallpaper_);
+  SetNewTabTakeoverVisibility(false);
+  EXPECT_FALSE(view_counter_service_->model_
+                   .show_new_tab_takeover_wallpaper_for_testing());
 
   SetBackgroundImagesVisibility(false);
-  EXPECT_FALSE(view_counter_service_->model_.show_wallpaper_);
+  EXPECT_FALSE(view_counter_service_->model_.show_wallpaper_for_testing());
 }
 
 TEST_F(ViewCounterServiceTest, ActiveInitiallyOptedIn) {
   // Sanity check that the default is still to be opted-in.
   // If this gets manually changed, then this test should be manually changed
   // too.
-  MockSponsoredImagesData(WallpaperType::kImage);
-  EXPECT_TRUE(view_counter_service_->CanShowSponsoredImages());
+  InstallNewTabTakeover(WallpaperType::kStaticNewTabTakeover);
+  EXPECT_TRUE(view_counter_service_->CanShowNewTabTakeover());
 }
 
 TEST_F(ViewCounterServiceTest, GetCurrentWallpaper) {
-  MockBackgroundImagesData();
+  InstallBackgroundImagesData();
   EXPECT_TRUE(view_counter_service_->CanShowBackgroundImages());
 
   EXPECT_EQ(base::test::ParseJsonDict(R"JSON(
@@ -497,7 +458,8 @@ TEST_F(ViewCounterServiceTest, GetCurrentWallpaper) {
             view_counter_service_->GetCurrentWallpaper());
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-  custom_background_service_delegate_mock_->EnableCustomImageBackground();
+  custom_background_delegate_
+      ->set_is_custom_image_background_enabled(true);
   EXPECT_EQ(base::test::ParseJsonDict(R"JSON(
       {
         "isBackground": true,
@@ -507,7 +469,8 @@ TEST_F(ViewCounterServiceTest, GetCurrentWallpaper) {
       })JSON"),
             view_counter_service_->GetCurrentWallpaper());
 
-  custom_background_service_delegate_mock_->DisableCustomImageBackground();
+  custom_background_delegate_
+      ->set_is_custom_image_background_enabled(false);
   EXPECT_EQ(base::test::ParseJsonDict(R"JSON(
       {
         "author": "Brave",
@@ -520,7 +483,9 @@ TEST_F(ViewCounterServiceTest, GetCurrentWallpaper) {
       })JSON"),
             view_counter_service_->GetCurrentWallpaper());
 
-  custom_background_service_delegate_mock_->EnableColorBackground();
+  custom_background_delegate_->set_is_color_background_enabled(
+      true);
+  custom_background_delegate_->set_color("#ff0000");
   EXPECT_EQ(base::test::ParseJsonDict(R"JSON(
       {
         "isBackground": true,
@@ -542,12 +507,12 @@ TEST_F(
 
   background_images_service_->OnGetSponsoredComponentJsonData(
       kSponsoredRichMediaCampaignsJson);
-  ASSERT_TRUE(view_counter_service_->CanShowSponsoredImages());
+  ASSERT_TRUE(view_counter_service_->CanShowNewTabTakeover());
 
   brave_ads::mojom::NewTabPageAdInfoPtr ad = BuildNewTabPageAd();
   EXPECT_CALL(ads_service_mock_, MaybeServeNewTabPageAd)
       .WillOnce(base::test::RunOnceCallback<0>(std::move(ad)));
-  EXPECT_TRUE(GetCurrentBrandedWallpaper());
+  EXPECT_TRUE(GetNewTabTakeoverWallpaper());
 }
 
 TEST_F(
@@ -560,10 +525,10 @@ TEST_F(
 
   background_images_service_->OnGetSponsoredComponentJsonData(
       kSponsoredRichMediaCampaignsJson);
-  ASSERT_FALSE(view_counter_service_->CanShowSponsoredImages());
+  ASSERT_FALSE(view_counter_service_->CanShowNewTabTakeover());
 
   EXPECT_CALL(ads_service_mock_, MaybeServeNewTabPageAd).Times(0);
-  EXPECT_FALSE(GetCurrentBrandedWallpaper());
+  EXPECT_FALSE(GetNewTabTakeoverWallpaper());
 }
 
 TEST_F(ViewCounterServiceTest,
@@ -575,12 +540,12 @@ TEST_F(ViewCounterServiceTest,
 
   background_images_service_->OnGetSponsoredComponentJsonData(
       kSponsoredImageCampaignsJson);
-  ASSERT_TRUE(view_counter_service_->CanShowSponsoredImages());
+  ASSERT_TRUE(view_counter_service_->CanShowNewTabTakeover());
 
   brave_ads::mojom::NewTabPageAdInfoPtr ad = BuildNewTabPageAd();
   EXPECT_CALL(ads_service_mock_, MaybeServeNewTabPageAd)
       .WillOnce(base::test::RunOnceCallback<0>(std::move(ad)));
-  EXPECT_TRUE(GetCurrentBrandedWallpaper());
+  EXPECT_TRUE(GetNewTabTakeoverWallpaper());
 }
 
 TEST_F(ViewCounterServiceTest,
@@ -592,19 +557,19 @@ TEST_F(ViewCounterServiceTest,
 
   background_images_service_->OnGetSponsoredComponentJsonData(
       kSponsoredImageCampaignsJson);
-  ASSERT_TRUE(view_counter_service_->CanShowSponsoredImages());
+  ASSERT_TRUE(view_counter_service_->CanShowNewTabTakeover());
 
   brave_ads::mojom::NewTabPageAdInfoPtr ad = BuildNewTabPageAd();
   EXPECT_CALL(ads_service_mock_, MaybeServeNewTabPageAd)
       .WillOnce(base::test::RunOnceCallback<0>(std::move(ad)));
-  EXPECT_TRUE(GetCurrentBrandedWallpaper());
+  EXPECT_TRUE(GetNewTabTakeoverWallpaper());
 }
 
 TEST_F(ViewCounterServiceTest,
        DoNotGetNewTabTakeoverWallpaperForMissingCreativeInstanceId) {
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
 
-  MockBackgroundImagesService();
+  EnableSponsoredAndBackgroundImages();
 
   brave_ads::mojom::NewTabPageAdInfoPtr ad = BuildNewTabPageAd();
   ad->creative_instance_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
@@ -665,6 +630,40 @@ TEST_F(ViewCounterServiceTest,
   SimulateAdsServiceInitialized();
   EXPECT_EQ(1U, background_images_service_
                     ->register_sponsored_images_component_call_count());
+}
+
+TEST_F(ViewCounterServiceTest,
+       UnregistersSponsoredImagesComponentOnShutdownWhenOptedIn) {
+  SimulateAdsServiceInitialized();
+
+  SimulateShutdown();
+
+  EXPECT_EQ(1U, background_images_service_
+                    ->unregister_sponsored_images_component_call_count());
+}
+
+TEST_F(ViewCounterServiceTest,
+       DoesNotUnregisterSponsoredImagesComponentOnShutdownWhenNeverOptedIn) {
+  SimulateShutdown();
+
+  EXPECT_EQ(0U, background_images_service_
+                    ->unregister_sponsored_images_component_call_count());
+}
+
+TEST_F(
+    ViewCounterServiceTest,
+    DoesNotReRegisterSponsoredImagesComponentWhenClearingAdsDataAfterOptOut) {
+  SimulateAdsServiceInitialized();
+  SetBackgroundImagesVisibility(/*should_show=*/false);
+  const size_t register_call_count_after_opt_out =
+      background_images_service_
+          ->register_sponsored_images_component_call_count();
+
+  SimulateAdsServiceDataCleared();
+
+  EXPECT_EQ(register_call_count_after_opt_out,
+            background_images_service_
+                ->register_sponsored_images_component_call_count());
 }
 
 }  // namespace ntp_background_images

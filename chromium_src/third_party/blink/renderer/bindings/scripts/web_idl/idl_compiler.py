@@ -8,11 +8,13 @@ import override_utils
 
 # Get gn arg to enable WebAPI probes.
 _IS_PG_WEBAPI_PROBES_ENABLED = brave_chromium_utils.get_json_value(
-    "gn_args_page_graph.json", "enable_brave_page_graph_webapi_probes")
+    "gn_args_page_graph.json", "enable_brave_page_graph_webapi_probes"
+)
 
 
-@override_utils.override_method(IdlCompiler,
-                                condition=_IS_PG_WEBAPI_PROBES_ENABLED)
+@override_utils.override_method(
+    IdlCompiler, condition=_IS_PG_WEBAPI_PROBES_ENABLED
+)
 def build_database(self, original_method):
     db = original_method(self)
 

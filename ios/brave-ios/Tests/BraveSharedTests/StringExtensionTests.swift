@@ -7,28 +7,6 @@ import XCTest
 
 class StringExtensionTests: XCTestCase {
 
-  func testFirstURL() {
-    let urlString = "https://brave.com"
-    let url = URL(string: urlString)!
-    XCTAssertEqual(urlString, url.absoluteString)
-
-    let prefixedString = "Prefixed Text then the URL: \(urlString)"
-    XCTAssertEqual(url, prefixedString.firstURL)
-
-    let postfixedString = "\(urlString) The url is before this text"
-    XCTAssertEqual(url, postfixedString.firstURL)
-
-    let stringWithMultipleURLs =
-      "\(urlString) This one has more than one url https://duckduckgo.com"
-    XCTAssertEqual(url, stringWithMultipleURLs.firstURL)
-
-    let stringWithNoURLs = "This one is just text"
-    XCTAssertNil(stringWithNoURLs.firstURL)
-
-    let schemelessURL = "brave.com"
-    XCTAssertNotNil(schemelessURL.firstURL)
-  }
-
   func testURLEncoding() {
     let urlString = "https://example.com/test%"
     let urlStringEncoded = "https://example.com/test%25"
@@ -36,24 +14,6 @@ class StringExtensionTests: XCTestCase {
       urlString.addingPercentEncoding(withAllowedCharacters: .urlAllowed),
       urlStringEncoded
     )
-  }
-
-  func testWords() {
-    let longMultilinedText = """
-      Multiple words
-
-      On multiple lines.
-
-      That will get stripped!\r
-      """
-
-    XCTAssertEqual(
-      longMultilinedText.words,
-      ["Multiple", "words", "On", "multiple", "lines", "That", "will", "get", "stripped"]
-    )
-
-    let wordsWithPunctuation = "\"It's a wonderful life—isn't it…\""
-    XCTAssertEqual(wordsWithPunctuation.words, ["It's", "a", "wonderful", "life", "isn't", "it"])
   }
 
   func testJavascriptEscapedString() {
@@ -127,5 +87,39 @@ class StringExtensionTests: XCTestCase {
     str = "abcde"
     result = str.truncatingMiddle(maxLength: 3)
     XCTAssertEqual(result, "a…e")
+  }
+
+  // Standard replace
+  func testReplaceOccurances() throws {
+    let tmpl = """
+      Value one: %VALUE_ONE%
+      Value two: %VALUE_TWO%
+      """
+    let substituions = [
+      "%VALUE_ONE%": "One",
+      "%VALUE_TWO%": "Two",
+    ]
+    let expected = """
+      Value one: One
+      Value two: Two
+      """
+    XCTAssertEqual(try XCTUnwrap(tmpl.replacingOccurances(substituions)), expected)
+  }
+
+  // Ensure that a template value earlier in the replacement chain cannot affect one later in it
+  func testReplaceOccurancesWithTemplateInValue() throws {
+    let tmpl = """
+      Value one: %A%
+      Value two: %B%
+      """
+    let substituions = [
+      "%A%": "One %B%",
+      "%B%": "Two",
+    ]
+    let expected = """
+      Value one: One %B%
+      Value two: Two
+      """
+    XCTAssertEqual(try XCTUnwrap(tmpl.replacingOccurances(substituions)), expected)
   }
 }

@@ -9,5 +9,6 @@ module network.mojom;
 enum PermissionsPolicyFeature {
   kEthereum = 4096,
   kSolana = 4097,
-  kCardano = 4098
+  kCardano = 4098,
+  kPolkadot = 4099,
 };

@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_REACTIONS_REACTIONS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_REACTIONS_REACTIONS_H_
 
-#include <map>
 #include <set>
 #include <string>
 
@@ -14,12 +13,14 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_ads {
 
 // `id` can be either `advertiser_id` for liking/disliking an ad or `segment`
 // for liking/disliking a segment.
-using ReactionMap = std::map</*id*/ std::string, mojom::ReactionType>;
+using ReactionMap =
+    absl::flat_hash_map</*id*/ std::string, mojom::ReactionType>;
 
 // `id` can be either `creative_instance_id` for saving an ad or
 // `creative_set_id` for marking an ad as inappropriate.
@@ -44,7 +45,6 @@ class Reactions final {
   mojom::ReactionType AdReactionTypeForId(
       const std::string& advertiser_id) const;
   const ReactionMap& Ads() const { return ad_reactions_; }
-  ReactionMap& AdsForTesting() { return ad_reactions_; }
 
   void ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
                          ResultCallback callback);
@@ -53,17 +53,16 @@ class Reactions final {
   mojom::ReactionType SegmentReactionTypeForId(
       const std::string& segment) const;
   const ReactionMap& Segments() const { return segment_reactions_; }
-  ReactionMap& SegmentsForTesting() { return segment_reactions_; }
 
   void ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
                     ResultCallback callback);
   bool IsAdSaved(const std::string& creative_instance_id) const;
-  ReactionSet& SavedAdsForTesting() { return saved_ads_; }
+  const ReactionSet& SavedAds() const { return saved_ads_; }
 
   void ToggleMarkAdAsInappropriate(mojom::ReactionInfoPtr mojom_reaction,
                                    ResultCallback callback);
   bool IsAdMarkedAsInappropriate(const std::string& creative_set_id) const;
-  ReactionSet& MarkedAdsAsInappropriateForTesting() {
+  const ReactionSet& MarkedAdsAsInappropriate() const {
     return marked_as_inappropriate_;
   }
 

@@ -160,12 +160,20 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
 
 extension NewTabPageBackgroundButtonsView {
   private class ImageCreditButton: SpringButton {
-    private let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .light)).then {
-      $0.clipsToBounds = true
-      $0.isUserInteractionEnabled = false
-      $0.layer.cornerRadius = 4
-      $0.layer.cornerCurve = .continuous
-    }
+    private let backgroundView: UIVisualEffectView = {
+      let view = UIVisualEffectView()
+      view.clipsToBounds = true
+      view.isUserInteractionEnabled = false
+      if #available(iOS 26.0, *) {
+        view.effect = UIGlassEffect(style: .regular)
+      } else {
+        view.effect = UIBlurEffect(style: .systemThinMaterial)
+      }
+      view.overrideUserInterfaceStyle = .dark
+      view.layer.cornerRadius = 8
+      view.layer.cornerCurve = .continuous
+      return view
+    }()
 
     let label = UILabel().then {
       $0.textColor = .white

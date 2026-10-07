@@ -43,6 +43,7 @@ export interface SearchState {
   searchSuggestionsPromptDismissed: boolean
   activeSearchInputKey: string
   searchMatches: AutocompleteMatch[]
+  searchResultSequenceId: number
   searchBoxSuppressed: boolean
   actions: SearchActions
 }
@@ -63,6 +64,7 @@ export function defaultSearchStore(): SearchStore {
     searchSuggestionsPromptDismissed: false,
     activeSearchInputKey: '',
     searchMatches: [],
+    searchResultSequenceId: 0,
     searchBoxSuppressed: false,
     actions: {
       setShowSearchBox(showSearchBox) {},
@@ -76,6 +78,9 @@ export function defaultSearchStore(): SearchStore {
       queryAutocomplete(query, engine) {},
       openAutocompleteMatch(index, event) {},
       stopAutocomplete() {},
+      async getUrlFromSearchInput() {
+        return null
+      },
       openSearch(query, engine, event) {},
       openUrlFromSearch(url, event) {},
       setDefaultSearchEngineAsBraveSearch() {},
@@ -106,6 +111,7 @@ export interface SearchActions {
   queryAutocomplete: (query: string, engine: string) => void
   openAutocompleteMatch: (index: number, event: ClickEvent) => void
   stopAutocomplete: () => void
+  getUrlFromSearchInput: (query: string) => Promise<string | null>
   openSearch: (query: string, engine: string, event: ClickEvent) => void
   openUrlFromSearch: (url: string, event: ClickEvent) => void
   setDefaultSearchEngineAsBraveSearch: () => void

@@ -6,11 +6,8 @@
 #include "brave/components/brave_ads/browser/test/fake_bat_ads_service_factory.h"
 
 #include <memory>
-#include <ostream>
 
 #include "base/functional/bind.h"
-#include "base/memory/raw_ptr.h"
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/browser/test/fake_bat_ads_client_notifier.h"
 #include "brave/components/brave_ads/browser/test/fake_bat_ads_service.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -21,6 +18,10 @@ namespace brave_ads::test {
 FakeBatAdsServiceFactory::FakeBatAdsServiceFactory() = default;
 
 FakeBatAdsServiceFactory::~FakeBatAdsServiceFactory() = default;
+
+void FakeBatAdsServiceFactory::Invalidate() {
+  ++invalidate_count_;
+}
 
 const FakeBatAdsClientNotifier*
 FakeBatAdsServiceFactory::bat_ads_client_notifier() const {
@@ -48,8 +49,7 @@ bool FakeBatAdsServiceFactory::last_screen_was_locked() const {
   return notifier ? notifier->last_screen_was_locked() : false;
 }
 
-mojo::Remote<bat_ads::mojom::BatAdsService> FakeBatAdsServiceFactory::Launch()
-    const {
+mojo::Remote<bat_ads::mojom::BatAdsService> FakeBatAdsServiceFactory::Launch() {
   ++launch_count_;
 
   mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_remote;

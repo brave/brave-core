@@ -25,8 +25,8 @@ import {
 import { DefaultPageWrapper } from '../../components/shared/style'
 
 // Components
-import { WalletPageLayout } from '../../components/desktop/wallet-page-layout'
-import { ExploreWeb3Header } from '../../components/desktop/card-headers/explorer_web3_header'
+import { WalletPageLayout } from '$wallet/page/components/wallet_page_layout/wallet_page_layout'
+import { ExploreWeb3Header } from '$wallet/page/components/card_headers/explorer_web3_header'
 import {
   EditVisibleAssetsModal, //
 } from '../../components/desktop/popup-modals/edit-visible-assets-modal/index'
@@ -37,14 +37,14 @@ import {
 import { AccountSettingsModal } from '../../components/desktop/popup-modals/account-settings-modal/account-settings-modal'
 import {
   WalletPageWrapper, //
-} from '../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
-import { NftCollection } from '../../components/desktop/views/nfts/components/nft_collection'
-import { Banners } from '../../components/desktop/banners/banners'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
+import { NftCollection } from '../screens/nfts/nft_collection'
+import { Banners } from '$wallet/page/components/banners/banners'
 import {
   BackupWalletRoutes, //
 } from '../screens/backup-wallet/backup-wallet.routes'
-import { DepositFundsScreen } from '../screens/fund-wallet/deposit-funds'
-import { FundWalletScreen } from '../screens/fund-wallet/fund_wallet_v2'
+import { Deposit } from '../screens/deposit/deposit'
+import { Buy } from '../screens/buy/buy'
 import {
   OnboardingSuccess, //
 } from '../screens/onboarding/onboarding_success/onboarding_success'
@@ -56,6 +56,8 @@ import { MarketView } from '../screens/market/market'
 import { MarketAssetDetails } from '../screens/market/market_asset_details'
 import { AccountsOverview } from '../screens/accounts_overview/accounts_overview'
 import { AccountDetails } from '../screens/account_details/account_details'
+import { Swap } from '../screens/swap/swap'
+import { SendScreen } from '../screens/send/send_screen/send_screen'
 
 export const UnlockedWalletRoutes = () => {
   // Selectors
@@ -94,12 +96,33 @@ export const UnlockedWalletRoutes = () => {
           </WalletPageLayout>
         </Route>
 
-        <Route path={WalletRoutes.FundWalletPageStart}>
-          <FundWalletScreen />
+        <Route path={WalletRoutes.BuyPageStart}>
+          <Buy />
         </Route>
 
-        <Route path={WalletRoutes.DepositFundsPageStart}>
-          <DepositFundsScreen />
+        <Route path={WalletRoutes.DepositPageStart}>
+          <Deposit />
+        </Route>
+
+        <Route
+          path={WalletRoutes.Swap}
+          exact={true}
+        >
+          <Swap key='swap' />
+        </Route>
+
+        <Route
+          path={WalletRoutes.Bridge}
+          exact={true}
+        >
+          <Swap key='bridge' />
+        </Route>
+
+        <Route
+          path={WalletRoutes.Send}
+          exact={true}
+        >
+          <SendScreen key='send' />
         </Route>
 
         {/* Portfolio */}
@@ -209,6 +232,15 @@ export const UnlockedWalletRoutes = () => {
           exact={true}
         >
           <Redirect to={WalletRoutes.Market} />
+        </Route>
+
+        {/* Deprecated routes, kept for redirecting to the new routes */}
+        <Route path={WalletRoutes.BuyPageDeprecated}>
+          <Redirect to={WalletRoutes.BuyPageStart} />
+        </Route>
+
+        <Route path={WalletRoutes.DepositPageDeprecated}>
+          <Redirect to={WalletRoutes.DepositPageStart} />
         </Route>
 
         <Route path='*'>

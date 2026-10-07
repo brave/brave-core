@@ -1,0 +1,7 @@
+include_rules = [
+  "+brave/components/search_engines/brave_prepopulated_engines.h",
+  "+components/prefs",
+  "+components/search_engines",
+  "+ios/chrome/browser/search_engines/model",
+  "+ios/chrome/browser/shared/model/profile",
+]

@@ -36,6 +36,7 @@ export default function createConversationApi(
         'resumeTask',
         'stopTask',
         'setToolsAttached',
+        'setContentToolPermission',
       ]),
     },
 
@@ -66,13 +67,20 @@ export default function createConversationApi(
             errorDetails: undefined,
             temporary: false,
             toolUseTaskState: Mojom.TaskState.kNone,
-            capabilitiesEnabled: [Mojom.ConversationCapability.CHAT],
+            capabilitiesEnabled: [],
           } as Mojom.ConversationState,
         },
         getConversationHistory: {
           response: (result) => result.conversationHistory,
           prefetchWithArgs: [],
           placeholderData: [] as Mojom.ConversationTurn[],
+        },
+        // The set of tools a page exposes changes as the user interacts with
+        // it, so never treat a previous result for a content as fresh.
+        getContentTools: {
+          response: (result) => result.tools,
+          staleTime: 0,
+          placeholderData: [] as Mojom.ToolInfo[],
         },
         // Mutations are only called when the mutate() function is run, e.g.
         // api.getScreenshots.mutate()
@@ -165,6 +173,13 @@ export default function createConversationApi(
 
           onAssociatedContentInfoChanged: (associatedContent) => {
             api.getState.update({ associatedContent })
+          },
+
+          // Pushed by the browser when it changes a content's tools, so the
+          // dialog settles on the browser's list without re-asking the page
+          // itself - that could return a different list mid-interaction.
+          onContentToolsChanged: (contentUuid, tools) => {
+            api.getContentTools.update(contentUuid, tools)
           },
 
           // This event is subscribable by the UI

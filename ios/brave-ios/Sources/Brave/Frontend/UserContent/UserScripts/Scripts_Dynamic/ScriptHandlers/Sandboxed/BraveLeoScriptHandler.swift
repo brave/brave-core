@@ -11,10 +11,10 @@ import WebKit
 import os.log
 
 class BraveLeoScriptHandler: NSObject, TabContentScript {
-  static let getMainArticle = "getMainArticle\(uniqueID)"
+  static let getTextContent = "getTextContent\(uniqueID)"
   static let getPDFDocument = "getPDFDocument\(uniqueID)"
 
-  static let scriptName = "BraveLeoScript"
+  static let scriptName = "TextContentDistillerScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
   static let scriptSandbox: WKContentWorld = .defaultClient
@@ -27,7 +27,7 @@ class BraveLeoScriptHandler: NSObject, TabContentScript {
       source: secureScript(
         handlerNamesMap: [
           "$<message_handler>": messageHandlerName,
-          "$<getMainArticle>": getMainArticle,
+          "$<getTextContent>": getTextContent,
           "$<getPDFDocument>": getPDFDocument,
         ],
         securityToken: scriptId,
@@ -91,7 +91,7 @@ class BraveLeoScriptTabHelper: AIChatWebDelegate {
     do {
       let articleText =
         try await tab.evaluateJavaScript(
-          functionName: "window.__firefox__.\(BraveLeoScriptHandler.getMainArticle)",
+          functionName: "window.__firefox__.\(BraveLeoScriptHandler.getTextContent)",
           args: [BraveLeoScriptHandler.scriptId],
           contentWorld: BraveLeoScriptHandler.scriptSandbox,
           asFunction: true

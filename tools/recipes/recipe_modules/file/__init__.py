@@ -9,4 +9,27 @@ File content travels in and out of the step through placeholders (see
 `api.py`).
 """
 
-DEPS = ['depot_tools', 'json', 'proto', 'raw_io', 'step']
+from dataclasses import dataclass
+
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    depot_tools,
+    json,
+    path,
+    proto,
+    raw_io,
+    step,
+)
+
+from .api import FileApi as API
+from .test_api import FileTestApi as TEST_API
+
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    depot_tools: depot_tools.API
+    json: json.API
+    path: path.API
+    proto: proto.API
+    raw_io: raw_io.API
+    step: step.API

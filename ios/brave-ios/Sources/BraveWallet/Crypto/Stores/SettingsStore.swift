@@ -100,6 +100,31 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
     }
   }
 
+  /// The default wallet for the given coin as presented on iOS.
+  ///
+  /// iOS only exposes `none` and `braveWallet` as options, so `braveWalletPreferExtension` is
+  /// reported as `braveWallet`. Unsupported coins report `braveWallet` and ignore writes.
+  subscript(defaultWalletFor coin: BraveWallet.CoinType) -> BraveWallet.DefaultWallet {
+    get {
+      let wallet: BraveWallet.DefaultWallet
+      switch coin {
+      case .eth: wallet = defaultEthWallet
+      case .sol: wallet = defaultSolWallet
+      case .ada: wallet = defaultCardanoWallet
+      default: wallet = .braveWallet
+      }
+      return wallet == .braveWalletPreferExtension ? .braveWallet : wallet
+    }
+    set {
+      switch coin {
+      case .eth: defaultEthWallet = newValue
+      case .sol: defaultSolWallet = newValue
+      case .ada: defaultCardanoWallet = newValue
+      default: break
+      }
+    }
+  }
+
   private let keyringService: BraveWalletKeyringService
   private let walletService: BraveWalletBraveWalletService
   private let rpcService: BraveWalletJsonRpcService
@@ -200,14 +225,6 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
     Preferences.Wallet.displayWeb3Notifications.reset()
     Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.reset()
     Preferences.Wallet.migrateWalletUserAssetToCoreCompleted.reset()
-    // Portfolio/NFT Filters
-    Preferences.Wallet.groupByFilter.reset()
-    Preferences.Wallet.sortOrderFilter.reset()
-    Preferences.Wallet.isHidingSmallBalancesFilter.reset()
-    Preferences.Wallet.isHidingUnownedNFTsFilter.reset()
-    Preferences.Wallet.isShowingNFTNetworkLogoFilter.reset()
-    Preferences.Wallet.nonSelectedAccountsFilter.reset()
-    Preferences.Wallet.nonSelectedNetworksFilter.reset()
     // onboarding
     Preferences.Wallet.isOnboardingCompleted.reset()
     // meld

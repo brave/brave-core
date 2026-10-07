@@ -47,20 +47,23 @@ def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         'mac_sdk_gni',
-        help='Path to the checked-out build/config/mac/mac_sdk.gni.')
-    parser.add_argument('--json-output',
-                        required=True,
-                        type=argparse.FileType('w'))
+        help='Path to the checked-out build/config/mac/mac_sdk.gni.',
+    )
+    parser.add_argument(
+        '--json-output', required=True, type=argparse.FileType('w')
+    )
     args = parser.parse_args(argv)
 
     with open(args.mac_sdk_gni, encoding='utf-8') as f:
         text = f.read()
 
     result = {
-        'sdk_version': _gn_value(text, 'mac_sdk_official_version',
-                                 args.mac_sdk_gni),
-        'sdk_build_version': _gn_value(text, 'mac_sdk_official_build_version',
-                                       args.mac_sdk_gni),
+        'sdk_version': _gn_value(
+            text, 'mac_sdk_official_version', args.mac_sdk_gni
+        ),
+        'sdk_build_version': _gn_value(
+            text, 'mac_sdk_official_build_version', args.mac_sdk_gni
+        ),
     }
 
     with args.json_output as f:

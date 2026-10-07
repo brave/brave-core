@@ -195,14 +195,13 @@ class DownloadToast: Toast {
   }
 
   @objc func buttonPressed(_ gestureRecognizer: UIGestureRecognizer) {
-    let alert = AlertController(
+    let alert = UIAlertController(
       title: Strings.cancelDownloadDialogTitle,
       message: Strings.cancelDownloadDialogMessage,
       preferredStyle: .alert
     )
     alert.addAction(
-      UIAlertAction(title: Strings.cancelDownloadDialogResume, style: .cancel, handler: nil),
-      accessibilityIdentifier: "cancelDownloadAlert.resume"
+      UIAlertAction(title: Strings.cancelDownloadDialogResume, style: .cancel, handler: nil)
     )
     alert.addAction(
       UIAlertAction(
@@ -212,8 +211,7 @@ class DownloadToast: Toast {
           self.completionHandler?(true)
           self.dismiss(true)
         }
-      ),
-      accessibilityIdentifier: "cancelDownloadAlert.cancel"
+      )
     )
 
     viewController?.present(alert, animated: true, completion: nil)

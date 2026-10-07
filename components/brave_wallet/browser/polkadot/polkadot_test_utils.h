@@ -8,6 +8,7 @@
 
 #include <array>
 #include <cstddef>
+#include <cstdint>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -18,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/test/test_url_loader_factory.h"
 
@@ -26,6 +28,14 @@ namespace brave_wallet {
 inline constexpr char kAssetHubMnemonic[] =
     "lazy february across turn unique syrup gasp pass pelican achieve cable "
     "canal";
+
+inline constexpr char kPolkadotImportMnemonic[] =
+    "bottom drive obey lake curtain smoke basket hold race lonely fit walk";
+
+inline constexpr char kPolkadotImportExportPassword[] = "export_pwd";
+
+std::string MakePolkadotImportJsonExport(mojom::KeyringId keyring_id,
+                                         uint32_t key_index);
 
 base::DictValue RequestBodyToJsonDict(const network::ResourceRequest& req);
 std::string ReadMetadataFixtureJson(std::string_view file_name);

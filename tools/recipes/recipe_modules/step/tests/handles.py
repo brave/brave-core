@@ -11,19 +11,38 @@ which way to get it wrong; each one aborts the recipe.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    env,
+    raw_io,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['env', 'raw_io', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    env: env.API
+    raw_io: raw_io.API
+    step: step.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    env: env.TEST_API
+
+
+def RunSteps(api: DEPS):
     if api.env.get('MODE') == 'output_on_stdin':
         api.step('cat', ['cat'], stdin=api.raw_io.output_text())
     else:
         api.step('cat', ['cat'], stdout=api.raw_io.input_text('hello'))
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     for mode in ('output_on_stdin', 'input_on_stdout'):
         yield api.test(
             mode,

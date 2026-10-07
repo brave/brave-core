@@ -6,10 +6,14 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_METRICS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_METRICS_H_
 
-#define LogProfileAvatarSelection \
-    LogProfileAvatarSelection_ChromiumImpl(size_t index); \
-    static void LogProfileAvatarSelection
+#define LogProfileAvatarSelection                       \
+  LogProfileAvatarSelection_ChromiumImpl(size_t index); \
+  static void LogProfileAvatarSelection
+#define LogProfileAvatarOnLoad                            \
+  LogProfileAvatarOnLoad_ChromiumImpl(size_t icon_index); \
+  static void LogProfileAvatarOnLoad
 #include <chrome/browser/profiles/profile_metrics.h>  // IWYU pragma: export
 #undef LogProfileAvatarSelection
+#undef LogProfileAvatarOnLoad
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_METRICS_H_

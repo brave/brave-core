@@ -210,6 +210,12 @@ CHAR_LIMIT guidelines:
       <message name="IDS_PREFS_SECTION_ADVANCED" desc="Title of &quot;Advanced&quot; section of preferences. [CHAR_LIMIT=32]">
         Advanced
       </message>
+      <message name="IDS_CCT_ALWAYS_OPEN_IN_BROWSER_TITLE" desc="Title for preference toggle in Settings to always open Custom Tabs in Brave browser. [CHAR_LIMIT=40]">
+        Always open custom tabs in Brave
+      </message>
+      <message name="IDS_CCT_ALWAYS_OPEN_IN_BROWSER_SUMMARY" desc="Summary for preference toggle in Settings to always open Custom Tabs in Brave browser. [CHAR_LIMIT=60]">
+        Open web pages in Brave browser instead of custom tabs
+      </message>
       <message name="IDS_PREFS_NEW_LABEL" desc="The label displayed next to the title of newly added preferences.">
         <ph name="PREF_TITLE">%1$s</ph>  <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
@@ -483,6 +489,9 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_MANAGE_SEARCH_ENGINES_AND_SITE_SEARCH" desc="Title shown in the menu item that takes the user to 'Manage search engines and site search' in Settings.">
         Manage search engines and site search
       </message>
+      <message name="IDS_MANAGE_SEARCH_ENGINES" desc="Title shown in the menu item that takes the user to 'Manage search engines' in Settings.">
+        Manage search engines
+      </message>
       <message name="IDS_ALWAYS_SHOW_AI_MODE" desc="Label for the right-click menu item that toggles whether the AI Mode button is always shown.">
         Always Show AI Mode
       </message>
@@ -733,7 +742,7 @@ For more settings that use data to improve your Brave experience, go to <ph name
         A virtual card hides your actual card to help protect you from potential fraud. <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Learn more about virtual cards<ph name="END_LINK1">&lt;/link1&gt;</ph>
       </message>
       <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_DIALOG_EDUCATION_TEXT_V2" desc="Text explaining the benefit of enrolling a credit card as a virtual card. Also contains a link to learn more about virtual cards from IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL.">
-        A virtual card number will be filled when you check out with this card to protect your actual details. Manage in Brave Wallet. <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Learn more about virtual cards<ph name="END_LINK1">&lt;/link1&gt;</ph>
+        A virtual card number will be filled when you check out with this card to protect your actual details. Manage in Google Wallet. <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Learn more about virtual cards<ph name="END_LINK1">&lt;/link1&gt;</ph>
       </message>
       <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_DIALOG_CARD_CONTAINER_TITLE" desc="Text describing how the virtual card will be shown to the user in autofill suggestions.">
         Virtual card
@@ -784,11 +793,8 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_AUTOFILL_DELETE_SAVED_CVCS_CONFIRMATION_DIALOG_TITLE" desc="Title for the dialog where the user confirms their intention to delete their saved CVCs.">
         Delete saved security codes?
       </message>
-      <message name="IDS_AUTOFILL_DELETE_SAVED_CVCS_CONFIRMATION_DIALOG_MESSAGE" desc="Message for the dialog where the user confirms their intention to delete their saved CVCs.">
-        All security codes saved on your device and in your Brave sync chain will be deleted
-      </message>
-      <message name="IDS_AUTOFILL_DELETE_SAVED_CVCS_IN_WALLET_CONFIRMATION_DIALOG_MESSAGE" desc="Message for the dialog where the user confirms their intention to delete their saved CVCs in Brave Wallet.">
-        All security codes saved on your device and in Brave Wallet will be deleted
+      <message name="IDS_AUTOFILL_DELETE_SAVED_CVCS_IN_WALLET_CONFIRMATION_DIALOG_MESSAGE" desc="Message for the dialog where the user confirms their intention to delete their saved CVCs in Google Wallet.">
+        All security codes saved on your device and in Google Wallet will be deleted
       </message>
       <message name="IDS_AUTOFILL_DELETE_SAVED_CVCS_CONFIRMATION_DIALOG_DELETE_BUTTON_LABEL" desc="Label shown on the button that the user clicks on to delete their saved CVCs.">
         Delete
@@ -956,11 +962,20 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_APPEARANCE_SETTINGS" desc="Title for Appearance settings.">
         Appearance
       </message>
-      <message name="IDS_BOOKMARK_BAR_SETTINGS_TITLE" desc="Title for the bookmarks bar settings page." translateable="false">
-        Bookmarks Bar
+      <message name="IDS_BOOKMARK_BAR_SETTINGS_TITLE" desc="Title for the bookmarks bar settings page.">
+        Bookmarks bar
       </message>
       <message name="IDS_BOOKMARK_BAR_SETTING" desc="Title for the bookmark bar setting.">
         Show bookmarks bar
+      </message>
+      <message name="IDS_BOOKMARK_BAR_SETTING_ALWAYS_SHOW" desc="Title for option to always show the bookmark bar.">
+        Always show
+      </message>
+      <message name="IDS_BOOKMARK_BAR_SETTING_ONLY_SHOW_BOOKMARKS_BAR_ON_NTP" desc="Title for option to only show the bookmark bar on the new tab page.">
+        Only show on New Tab Page
+      </message>
+      <message name="IDS_BOOKMARK_BAR_SETTING_ALWAYS_HIDE" desc="Title for option to always hide the bookmark bar.">
+        Always hide
       </message>
       <message name="IDS_BOOKMARK_BAR_SETTING_SUBTITLE" desc="Subtitle hint for the bookmark bar setting.">
         Hidden on narrow screens
@@ -995,12 +1010,6 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_SECURITY_SECTION_TITLE" desc="Title for the Security settings section.">
         Security
       </message>
-      <message name="IDS_AD_PRIVACY_LINK_ROW_LABEL" desc="A new label that appears on the Privacy and security page (chrome://settings/privacy) between 'Third-party cookies' and 'Security'. This same text is used as a page title for the new Ad privacy section. This same pair of words is used in the Consent and Notice flow and must be consistently translated in both contexts. We mean privacy associated with ads, and not privacy from ads. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an “Ad privacy” page in Brave settings. For an equivalent structure, see “Security” on chrome://settings/privacy that opens chrome://settings/security. Likewise, “Ad privacy” on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
-        Ad privacy
-      </message>
-      <message name="IDS_AD_PRIVACY_LINK_ROW_SUB_LABEL" desc="A string that describes 'Ad privacy', the label that appears just above it. For context, this new 'Ad privacy' / 'Customize the info...' pair of strings is similar to the existing 'Clear browsing data' / 'Clear history, cookies...' that you find on chrome://settings/privacy. * 'Customize': From our word list: 'This word describes user agency in refining their personalized recommendations, elements of the experience, or sometimes products'. Please don't confuse with 'personalize', which we reserve to mean: '...when Brave provides recommendations and other content for users based on their data'. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an “Ad privacy” page in Brave settings. For an equivalent structure, see “Security” on chrome://settings/privacy that opens chrome://settings/security. Likewise, “Ad privacy” on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
-        Customize the info used by sites to show you ads
-      </message>
       <message name="IDS_CONTEXTUAL_SEARCH_TITLE" desc="Name for the Contextual Search feature, which allows users to search for a term in a web page by tapping on it.">
         Touch to Search
       </message>
@@ -1034,150 +1043,25 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_DO_NOT_TRACK_TITLE" desc="Title for the 'Do Not Track' preference. Please leave the 'Do Not Track' part in English according to the glossary.">
         Send a “Do Not Track” request
       </message>
+      <message name="IDS_DO_NOT_TRACK_SUMMARY_DISCLAIMER" desc="Summary for the 'Do Not Track' preference. Explains that sites may not respond to 'Do Not Track' requests even when this toggle is on. Please leave the 'Do Not Track' part in English according to the glossary.">
+        Sites, including Brave, use their discretion when responding to this request.
+      </message>
       <message name="IDS_DO_NOT_TRACK_DESCRIPTION" desc="Description for 'Do Not Track' preference">
         Enabling “Do Not Track” means that a request will be included with your browsing traffic. Any effect depends on whether a website responds to the request, and how the request is interpreted.
 
 For example, some websites may respond to this request by showing you ads that aren’t based on other websites you’ve visited. Many websites will still collect and use your browsing data — for example to improve security, to provide content, ads and recommendations, and to generate reporting statistics.
       </message>
+      <message name="IDS_UNIVERSAL_OPT_OUT_TITLE" desc="Title of an entry point in settings. Users can tap this button to navigate to a subpage where users request how sites can use their user data. It appears in the ‘Privacy and security’ page. The tone should be informative.">
+        Send an opt-out request to sites regarding use of your data
+      </message>
+      <message name="IDS_UNIVERSAL_OPT_OUT_SUB_PAGE_TITLE" desc="Title of a subpage in settings. Users choose whether they want to send a request to sites about how to treat their user data. On mobile devices, this string appears on its own subpage. It is short for ‘Send an opt-out request to sites regarding use of your data’. The tone should be informative.">
+        Opt-out request
+      </message>
+      <message name="IDS_UNIVERSAL_OPT_OUT_INFO_TEXT" desc="Subtitle of a setting. It appears below the title: ‘Send an opt-out request to sites regarding use of your data’. Users choose whether they want to send a request to sites about how to treat their user data. This string explains that sites may not respond to the user’s request even when this toggle is on; and, even when they do respond, sites may handle opt-out requests differently based on regional laws. This string appears on its own subpage. The tone should be informative. Clicking on Learn more link opens a help center article, the link tag should not be translated but the 'learn more' text inside the link tag should be translated.">
+        The sites you visit, including Brave, are responsible for determining how they respond to this request. Depending on the laws in your region, sites may respond by limiting the sale and sharing of your data or its use for personalized ads. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph>
+      </message>
       <message name="IDS_CAN_MAKE_PAYMENT_TITLE" desc="Title for preference to allow websites to know whether you have payment methods available through PaymentRequest.CanMakePayment interface">
         Access payment methods
-      </message>
-
-      <!-- Privacy Sandbox Settings. Used by //chrome/browser/privacy_sandbox. -->
-      <message name="IDS_PRIVACY_SANDBOX_SNACKBAR_MESSAGE" desc="The text displayed in the snackbar, which gives the user an option to navigate to the Privacy Sandbox settings page. 'Privacy sandbox' has TC ID 5753235213964358658.">
-        Learn about and control new technologies that aim to replace third-party cookies
-      </message>
-      <message name="IDS_SETTINGS_AD_PRIVACY_RESTRICTED_LINK_ROW_SUB_LABEL" desc="A string that describes 'Ad privacy', the label that appears just above it. This is the version of IDS_SETTINGS_AD_PRIVACY_PAGE_TOPICS_LINK_ROW_LABEL for restricted users.">
-        Manage info used by sites to measure ad performance
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_ADD_INTEREST_BUTTON_DESCRIPTION" desc="Content description for button that adds an ad interest for the Topics API of the Privacy Sandbox.">
-        Add <ph name="INTEREST">%1$s<ex>Acting and Theater</ex></ph>
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_REMOVE_INTEREST_BUTTON_DESCRIPTION" desc="Content description for button that removes an ad interest for the Topics API of the Privacy Sandbox.">
-        Remove <ph name="INTEREST">%1$s<ex>Acting and Theater</ex></ph>
-      </message>
-
-      <!-- Privacy Sandbox v4 - Ad Privacy Page -->
-      <message name="IDS_AD_PRIVACY_PAGE_TITLE" desc="A new page title for a page that includes 3 settings. This same text appears as a label on chrome://settings/privacy between 'Third-party cookies' and 'Security'. This same pair of words is used in the Consent and Notice flow and must be consistently translated in both contexts. We mean privacy associated with ads, and not privacy from ads. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an “Ad privacy” page in Brave settings. For an equivalent structure, see “Security” on chrome://settings/privacy that opens chrome://settings/security. Likewise, “Ad privacy” on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
-        Ad privacy
-      </message>
-      <message name="IDS_AD_PRIVACY_PAGE_TOPICS_LINK_ROW_LABEL" desc="The name of a new setting. This setting is described to users in the Consent moment as: Ad topics help sites show you relevant ads while protecting your browsing history and identity. Brave can note topics of interest based on your recent browsing history. Later, a site you visit can ask Brave for relevant topics to personalize the ads you see. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an “Ad privacy” page in Brave settings. For an equivalent structure, see “Security” on chrome://settings/privacy that opens chrome://settings/security. Likewise, “Ad privacy” on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
-        Ad topics
-      </message>
-      <message name="IDS_AD_PRIVACY_PAGE_TOPICS_LINK_ROW_SUB_LABEL_ENABLED" desc="Ad topics are derived from the user's browsing history. This help-center article explains 'browsing history' to users: https://support.google.com/chrome/answer/95589. This setting is described to users in the Consent moment as: Ad topics help sites show you relevant ads while protecting your browsing history and identity. Brave can note topics of interest based on your recent browsing history. Later, a site you visit can ask Brave for relevant topics to personalize the ads you see.">
-        Based on your browsing history. This setting is on.
-      </message>
-      <message name="IDS_AD_PRIVACY_PAGE_TOPICS_LINK_ROW_SUB_LABEL_DISABLED" desc="Ad topics are derived from the user's browsing history. This help-center article explains 'browsing history' to users: https://support.google.com/chrome/answer/95589. This setting is described to users in the Consent moment as: Ad topics help sites show you relevant ads while protecting your browsing history and identity. Brave can note topics of interest based on your recent browsing history. Later, a site you visit can ask Brave for relevant topics to personalize the ads you see.">
-        Based on your browsing history. This setting is off.
-      </message>
-      <message name="IDS_AD_PRIVACY_PAGE_FLEDGE_LINK_ROW_LABEL" desc="The name of a new setting. This setting is described to users in the Notice moment as: Site-suggested ads help protect your browsing history and identity while enabling sites to show you relevant ads. Based on your activity, a site you visited can suggest related ads as you continue browsing. You can see a list of these sites and block the ones you don’t want in settings. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an “Ad privacy” page in Brave settings. For an equivalent structure, see “Security” on chrome://settings/privacy that opens chrome://settings/security. Likewise, “Ad privacy” on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
-        Site-suggested ads
-      </message>
-      <message name="IDS_AD_PRIVACY_PAGE_FLEDGE_LINK_ROW_SUB_LABEL_ENABLED" desc="A site can suggest ads for a user based on the user's activity on their site. This setting is described to users in the Notice moment as: Site-suggested ads help protect your browsing history and identity while enabling sites to show you relevant ads. Based on your activity, a site you visited can suggest related ads as you continue browsing. You can see a list of these sites and block the ones you don’t want in settings.">
-        Based on your activity on a site. This setting is on.
-      </message>
-      <message name="IDS_AD_PRIVACY_PAGE_FLEDGE_LINK_ROW_SUB_LABEL_DISABLED" desc="A site can suggest ads for a user based on the user's activity on their site. This setting is described to users in the Notice moment as: Site-suggested ads help protect your browsing history and identity while enabling sites to show you relevant ads. Based on your activity, a site you visited can suggest related ads as you continue browsing. You can see a list of these sites and block the ones you don’t want in settings.">
-        Based on your activity on a site. This setting is off.
-      </message>
-      <message name="IDS_AD_PRIVACY_PAGE_AD_MEASUREMENT_LINK_ROW_LABEL" desc="The name of a new setting. This setting is described to users in the Notice moment as: With ad measurement, limited types of data are shared between sites to measure the performance of their ads, such as the time of day an ad was shown to you. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an “Ad privacy” page in Brave settings. For an equivalent structure, see “Security” on chrome://settings/privacy that opens chrome://settings/security. Likewise, “Ad privacy” on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
-        Ad measurement
-      </message>
-      <message name="IDS_AD_PRIVACY_PAGE_AD_MEASUREMENT_LINK_ROW_SUB_LABEL_ENABLED" desc="The name of a new setting. This setting is described to users in the Notice moment as: With ad measurement, limited types of data are shared between sites to measure the performance of their ads, such as the time of day an ad was shown to you.">
-        Sites and advertisers can understand how ads perform. This setting is on.
-      </message>
-      <message name="IDS_AD_PRIVACY_PAGE_AD_MEASUREMENT_LINK_ROW_SUB_LABEL_DISABLED" desc="The name of a new setting. This setting is described to users in the Notice moment as: With ad measurement, limited types of data are shared between sites to measure the performance of their ads, such as the time of day an ad was shown to you.">
-        Sites and advertisers can understand how ads perform. This setting is off.
-      </message>
-
-      <!-- Privacy Sandbox v4 - Topics Page -->
-      <!-- Where possible, these strings have been unified on Desktop & Android in privacy_sandox_strings.grdp. The strings here either only appear on one platform, or have platform specific requirements, e.g. the format of placeholders, and so cannot be unified. For the latter case, they have corresponding _CANONICAL representations used when consent is recorded on either platform, and so they must stay in sync -->
-      <message name="IDS_SETTINGS_TOPICS_PAGE_BLOCK_TOPIC_SNACKBAR" desc="A confirmation that appears after a user blocks a topic. This page is only applicable if the user has the Ad topics setting turned on. If they do, Brave estimates the user's topics of interests and then sites can ask for topics to help personalize ads. If a user dosn't like a specific topic, they can block it.">
-        Blocked topic
-      </message>
-
-      <!-- Privacy Sandbox v4 - Fledge Page -->
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_TITLE" desc="A page title and the name of a new setting. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an “Ad privacy” page in Brave settings. For an equivalent structure, see “Security” on chrome://settings/privacy that opens chrome://settings/security. Likewise, “Ad privacy” on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
-        Site-suggested ads
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_TOGGLE_LABEL" desc="The label for a new setting.">
-        Site-suggested ads
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_HEADING" desc="A label for a list of sites the user has visited. The list of sites looks similar to the user's browsing history, but this is a distinct list. * 'browsing history' is a list of the sites the user has visited. See the Help-center definition here: https://support.google.com/chrome/answer/95589 * This list of 'Sites' is a subset of the user's browsing history. 1) Only sites that use the 'Site-suggested ads' API (https://developer.chrome.com/docs/privacy-sandbox/fledge/) can appear on this list. 2) This list is based on recent sites the user has visited and sites older than 4 weeks are regularly deleted.">
-        Sites
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_DESCRIPTION_DISABLED" desc="1 of 3 possible descriptions that appear beneath the 'Sites' title. If this setting is off, no sites appear. The link opens a dialog box that provides more information about Site-suggested ads.">
-        When on, a list of sites you visit that guess your interests appears here
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_DESCRIPTION_EMPTY" desc="1 of 3 possible descriptions that appear beneath the 'Sites' title. This setting could be on but no topics appear in the list. This text explains why.">
-        No sites to show right now
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_SEE_ALL_SITES_LABEL" desc="Text that serves as a button. Because the list of sites might be long, we only show the most recent sites. This button allows the user to browse all sites (because sites are auto-deleted every 4 weeks, the list is never older than 4 weeks).">
-        See all sites
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_BLOCKED_SITES_HEADING" desc="A label that serves as a button to open the 'Sites you blocked' page.">
-        Sites you blocked
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_ALL_SITES_SUB_PAGE_TITLE" desc="The page title that shows all sites. This is a subpage.">
-        All sites
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_BLOCKED_SITES_SUB_PAGE_TITLE" desc="The page title that shows blocked sites. This is a subpage.">
-        Sites you blocked
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_BLOCKED_SITES_DESCRIPTION" desc="1 of 2 possible descriptions that appear beneath the 'Sites you blocked' title. In this case, the user has previously blocked sites. * 'pool of sites': We want to express that by clicking 'Add', the user is making a site eligible again for consideration.">
-        Add a site back if you want it in the pool of sites that can guess what you like
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_BLOCKED_SITES_DESCRIPTION_EMPTY" desc="1 of 2 possible descriptions beneath the 'Sites you blocked' title. In this case, the list is empty (the user hasn't blocked any sites).">
-        Blocked sites appear here
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_LEARN_MORE_HEADING" desc="The title of a dialog box that explains site-suggested ads in more detail.">
-        More about site-suggested ads
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_BLOCK_SITE_A11Y_LABEL" desc="A button label read by screen readers that indicates which site will get blocked. The list is of sites the user has recently visited and that use the Site-suggested ads API to suggest ads to other sites as the user continues browsing.">
-        Block <ph name="DOMAIN">%1$s<ex>example.com</ex></ph>
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_ALLOW_SITE_A11Y_LABEL" desc="A button label read by screen readers that indicates which site will get added back to the pool of potential sites.">
-        Add <ph name="DOMAIN">%1$s<ex>example.com</ex></ph>
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_BLOCK_SITE_SNACKBAR" desc="A confirmation that appears after a user blocks a site. This page is only applicable if the user has the Site-suggested ads setting turned on. If they do, a site can choose ads that they later suggest to other sites. If a user dosn't want a site to suggest ads for them, they can block a site.">
-        Blocked site
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_ADD_SITE_SNACKBAR" desc="A confirmation that appears after a user unblocks a site. This page is only applicable if the user has the Site-suggested ads setting turned on. If they do, a site can choose ads that they later suggest to other sites. If a user dosn't want a site to suggest ads for them, they can block a site. **** The user can also unblock a site. The language is important, because 'unblocking' doesn't bring the site back to the list of active sites. It simply makes a site eligible again to suggest ads, but the user would need to visit that site to trigger it again and have it appear in the list.">
-        Added site back to potential sites
-      </message>
-
-      <!-- Privacy Sandbox v4 - Ad Measurement Page -->
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_TITLE" desc="A page title and the name of a new setting. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an “Ad privacy” page in Brave settings. For an equivalent structure, see “Security” on chrome://settings/privacy that opens chrome://settings/security. Likewise, “Ad privacy” on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
-        Ad measurement
-      </message>
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_TOGGLE_LABEL" desc="The label for a new setting. ">
-        Ad measurement
-      </message>
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_TOGGLE_SUB_LABEL" desc="A description of the new Ad measurement setting. This text appears beneath the name of the new setting, 'Ad measurement', and is associated with the control that a user can turn on or off. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com. **** NEW SETTINGS SECTION IN CHROME **** 3 new ad-specific settings appear on an “Ad privacy” page in Brave settings. For an equivalent structure, see “Security” on chrome://settings/privacy that opens chrome://settings/security. Likewise, “Ad privacy” on chrome://settings/privacy will open chrome://settings/AdPrivacy.">
-        Sites and advertisers can measure the performance of their ads
-      </message>
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_ENABLED_HEADING" desc="A label above bullet points that explain the functionality of this setting.">
-        When on
-      </message>
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_CONSIDER_HEADING" desc="A label above bullet points that note things the user might want to consider when turning this setting on or off.">
-        Things to consider
-      </message>
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_ENABLED_BULLET_1" desc="1 of 3 bullets in the 'When on' section that describes the Ad measurement setting. * 'Limited types of data': The Ad measurement API (for developers) and the Ad measurement control (for users) is offered by Brave. But Brave is a 'pass through', helping one site communicate information to another about the performance of an ad. That's where this passive construction comes from. Brave facilitates, but shouldn't be seen as a major actor here. And we don't want to suggest anything like 'Brave limits the types of data shared between sites,' because Brave can't do that. Any 2 sites can have a side agreement to share as much info as they like. ">
-        Limited types of data are shared between sites to measure the performance of their ads, such as whether you made a purchase after visiting a site
-      </message>
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_ENABLED_BULLET_2" desc="2 of 3 bullets in the 'When on' section that describes the Ad measurement setting.">
-        Ad-measurement data is deleted regularly from your device
-      </message>
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_ENABLED_BULLET_3" desc="3 of 3 bullets in the 'When on' section that describes the Ad measurement setting. If reports were instantaneous, a site could receive a report and then consult which visitors most recently visited the site.">
-        Your browsing history is kept private on your device and reports are sent with a delay to protect your identity
-      </message>
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_CONSIDER_BULLET_1" desc="1 or 3 bullets in the 'Things to consider section that describes the Ad measurement setting.">
-        You can always delete ad-measurement data by deleting your browsing data
-      </message>
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_CONSIDER_BULLET_2" desc="2 or 3 bullets in the 'Things to consider section that describes the Ad measurement setting.">
-        Brave limits the total amount of data that sites can share through the browser to measure ad performance
-      </message>
-      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_CONSIDER_BULLET_3" desc="3 or 3 bullets in the 'Things to consider section that describes the Ad measurement setting.">
-        Your Android device may include a similar setting. If Ad measurement is turned on in Brave and on your Android device, a company may be able to measure the effectiveness of an ad across web sites you visit and apps you use.
       </message>
 
       <!-- Secure DNS Settings.  Used by //chrome/browser/privacy. -->
@@ -1295,22 +1179,25 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_CLEAR_BROWSING_DATA_TAB_PERIOD_EVERYTHING" desc="The option to delete browsing data from the beginning of time.">
         All time
       </message>
-      <message name="IDS_CLEAR_BROWSING_DATA_MANAGE_OTHER_GOOGLE_DATA_EXPANDABLE_TITLE" desc="Title for the expandable 'Manage other Brave data' section in Clear Browsing Data." translateable="false">
+      <message name="IDS_CLEAR_BROWSING_DATA_MANAGE_OTHER_GOOGLE_DATA_EXPANDABLE_TITLE" desc="Title for the expandable 'Manage other Brave data' section in the Clear Browsing Data dialog.">
         Manage other Brave data
       </message>
-            <message name="IDS_PASSWORD_MANAGER_LINK_OUT_TITLE" desc="Title for the link out button in Clear Browsing Data settings that redirects to the Brave Password Manager." translateable="false">
+            <message name="IDS_PASSWORD_MANAGER_LINK_OUT_TITLE" desc="Title for the link out button in the Clear Browsing Data dialog that redirects to the Brave Password Manager.">
         Passwords and passkeys
       </message>
-      <message name="IDS_PASSWORD_MANAGER_LINK_OUT_DESCRIPTION" desc="Description for the link out button in Clear Browsing Data settings that redirects to the Brave Password Manager." translateable="false">
+      <message name="IDS_PASSWORD_MANAGER_LINK_OUT_DESCRIPTION" desc="Description for the link out button in the Clear Browsing Data dialog that redirects to the Brave Password Manager.">
         Manage in Brave Password Manager
       </message>
-            <message name="IDS_SEARCH_HISTORY_LINK_OUT_TITLE" desc="Title for the link out button in Clear Browsing Data settings that redirects to the Brave Search History page." translateable="false">
+            <message name="IDS_SEARCH_HISTORY_LINK_OUT_TITLE" desc="Title for the link out button in the Clear Browsing Data dialog that redirects to the Brave Search History page.">
         Search history
       </message>
-      <message name="IDS_MY_ACTIVITY_LINK_OUT_TITLE" desc="Title for the link out button in Clear Browsing Data settings that redirects to the Brave My Activity page." translateable="false">
+      <message name="IDS_SEARCH_HISTORY_LINK_OUT_DESCRIPTION_OTHER_DSE" desc="Description for the tab in the Clear Browsing Data dialog that instructs users to refer to their default search engine provider to manage search history.">
+        Your search engine is <ph name="DSE_NAME">%1$s<ex>Brave</ex></ph>. See their instructions for deleting your search history, if applicable.
+      </message>
+      <message name="IDS_MY_ACTIVITY_LINK_OUT_TITLE" desc="Title for the link out button in the Clear Browsing Data dialog that redirects to the Brave My Activity page.">
         My Activity
       </message>
-      <message name="IDS_MY_ACTIVITY_LINK_OUT_DESCRIPTION" desc="Description for the link out button in Clear Browsing Data settings that redirects to the Brave My Activity page." translateable="false">
+      <message name="IDS_MY_ACTIVITY_LINK_OUT_DESCRIPTION" desc="Description for the link out button in the Clear Browsing Data dialog that redirects to the Brave My Activity page.">
         Manage in your Brave sync chain
       </message>
       <message name="IDS_IMPORTANT_SITES_TITLE" desc="Title of clear storage dialogs used in a couple different places to confirm clearing site storage data. [CHAR_LIMIT=24]">
@@ -2200,25 +2087,6 @@ Your Brave account may have other forms of browsing history like searches and ac
         Download page again?
       </message>
 
-      <if expr="enable_screen_capture">
-        <!-- Media capture picker dialog -->
-        <message name="IDS_MEDIA_CAPTURE_PICKER_DIALOG_TITLE" desc="Title for the dialog showing a list of tabs for capture and sharing.">
-          Choose what to share with <ph name="APP_NAME">%1$s</ph>
-        </message>
-        <message name="IDS_MEDIA_CAPTURE_PICKER_DIALOG_SUBTITLE_TEXT" desc="Text for the dialog showing a list of tabs for capture and sharing to request capture of a tab to be used by the app itself.">
-          The site will be able to see the contents of your screen
-        </message>
-        <message name="IDS_MEDIA_CAPTURE_PICKER_DIALOG_SHARE_TEXT" desc="Share button text for the dialog showing a list of tabs for capture and sharing.">
-          Share
-        </message>
-        <message name="IDS_MEDIA_CAPTURE_PICKER_DIALOG_AUDIO_SHARE_TEXT" desc="Text for the dialog showing a list of tabs for capture to ask user if tab audio should be shared.">
-          Also share tab audio
-        </message>
-        <message name="IDS_MEDIA_CAPTURE_PICKER_DIALOG_WINDOW_OR_SCREEN_TEXT" desc="Text for the dialog showing a list of tabs for capture to ask user whether to share a window or screen instead of a tab.">
-          Share window or screen instead
-        </message>
-      </if>
-
       <!-- Download open dialog -->
       <message name="IDS_OPEN_DOWNLOAD_DIALOG_TITLE" desc="Title of the dialog for asking user to confirm they want to open a downloaded pdf file.">
         Open PDF?
@@ -2295,6 +2163,9 @@ Your Brave account may have other forms of browsing history like searches and ac
         Signed in to Brave as
       </message>
       <message name="IDS_ACCOUNT_MANAGEMENT_SIGN_OUT" desc="Button text for signing out of Brave">
+        Sign out of Brave
+      </message>
+      <message name="IDS_MANAGE_SYNC_SETTINGS_SIGN_OUT_OF_CHROME" desc="Button text for signing out of Brave on the manage sync settings screen">
         Sign out of Brave
       </message>
 
@@ -2383,22 +2254,31 @@ Your Brave account may have other forms of browsing history like searches and ac
         Some data isn\u2019t saved yet
       </message>
       <message name="IDS_SIGN_OUT_UNSAVED_DATA_MESSAGE" desc="Body of a dialog shown to users when they sign out of Brave but Brave hasn't synced some data yet, which is permanently deleted if the user proceeds.">
-        Some of your Brave data hasn\u2019t been saved in your Brave sync chain yet.\nTry waiting a few minutes before signing out. If you sign out now, this data will be deleted.
+        Some of your Brave data hasn\u2019t been saved in your Brave sync chain yet. Try waiting a few minutes before signing out. If you sign out now, the unsaved data will be deleted.
+      </message>
+      <message name="IDS_SIGN_OUT_UNSAVED_DATA_MESSAGE_WITH_CHECKBOX" desc="Body of a dialog shown to users when they sign out of Brave but Brave hasn't synced some data yet, which is permanently deleted if the user proceeds. Additionally informs users that they can delete other data by selecting the checkboxes that follow this message.">
+        \n\nYou can also remove this data from this device:
       </message>
       <message name="IDS_SIGN_OUT_TITLE" desc="The text is displayed as the title of a dialog to confirm if the user wants to sign out of Brave. The user can cancel and stay signed in, or confirm and sign out.">
         Sign out of Brave?
       </message>
       <message name="IDS_SIGN_OUT_MESSAGE" desc="Body of a dialog that is shown when the user starts to sign out. This string precedes the confirmation button 'Sign Out'. If the user chooses to continue to sign out, then the data in their Brave sync chain (such as bookmarks, passwords, history, settings, and more) won't be available on their device. If they sign back in to their Brave sync chain, their data will come back. The tone should be helpful and instructive.">
-        After you sign out, your bookmarks, passwords, and more in your Brave sync chain will be removed from this device.
+        Your passwords and other Brave data that you saved in your Brave sync chain will be removed from this device. To use them again in Brave, sign back in.
       </message>
-      <message name="IDS_SIGN_OUT_REMOVE_EXTENSIONS_MESSAGE" desc="Checkbox text in the sign-out dialog allowing users to remove extensions associated with their signed in account from this device.">
-        Remove extensions and the data that they saved on this device
+      <message name="IDS_SIGN_OUT_REMOVE_EXTENSIONS_CHECKBOX_TITLE" desc="Checkbox title text in the sign-out dialog allowing users to remove extensions associated with their signed in account from this device.">
+        Remove extensions and delete the data that they saved on this device
+      </message>
+      <message name="IDS_SIGN_OUT_REMOVE_EXTENSIONS_CHECKBOX_SUBTITLE" desc="Checkbox subtitle text in the sign-out dialog allowing users to remove extensions associated with their signed in account from this device. Explains what data will be deleted.">
+        Your extensions are saved in your Brave sync chain, but any data they\u2019ve saved only on this device may be deleted
       </message>
       <message name="IDS_SIGN_OUT_UNSAVED_DATA_PRIMARY_BUTTON" desc="Button title of a dialog shown to users when they sign out of Brave but Brave hasn't synced some data yet, which is permanently deleted if the user proceeds by pressing this button">
         Delete and sign out
       </message>
-      <message name="IDS_SIGN_OUT_UNSAVED_DATA_REMOVE_EXTENSIONS_MESSAGE" desc="Checkbox text in the sign-out dialog if the user initiates a sign-out with unsynced data and they have account extensions installed.">
-        You can also remove extensions from this device
+      <message name="IDS_SIGN_OUT_DELETE_BROWSING_DATA_CHECKBOX_TITLE" desc="Checkbox title in the sign-out dialog allowing users to delete browsing data from this device.">
+        Delete browsing data from this device
+      </message>
+      <message name="IDS_SIGN_OUT_DELETE_BROWSING_DATA_CHECKBOX_SUBTITLE" desc="Checkbox subtitle in the sign-out dialog explaining what browsing data is.">
+        Browsing data includes your browsing history, cookies and other site data, cached images and files, and open tabs
       </message>
 
       <!-- Sync strings -->
@@ -2456,11 +2336,8 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_ACCOUNT_SECTION_PASSWORDS_TOGGLE" desc="Saved passwords, one of the data types that we allow syncing. Shown on next to the toggle that controls whether passwords should be saved in the Brave sync chain and synced across devices.">
         Passwords
       </message>
-      <message name="IDS_ACCOUNT_SECTION_PAYMENTS_TOGGLE" desc="Google Pay data for Autofill, one of the data types that we allow syncing. 'Google Pay' should not be translated as it is the product name. Shown on next to the toggle that controls whether Google Pay data for Autofill should be saved in the Brave sync chain and synced across devices.">
-        Payment methods, offers, and addresses using Google Pay
-      </message>
-      <message name="IDS_ACCOUNT_SECTION_PAYMENTS_AND_INFO_TOGGLE" desc="Brave Wallet data for Autofill, one of the data types that we allow syncing. 'Brave Wallet' should not be translated as it is the product name. Shown on next to the toggle that controls whether payments and other data from Brave Wallet, for use in Autofill, should be saved in the Brave sync chain and synced across devices.">
-        Payment methods and other info from Brave Wallet
+      <message name="IDS_ACCOUNT_SECTION_PAYMENTS_AND_INFO_TOGGLE" desc="Google Wallet data for Autofill, one of the data types that we allow syncing. 'Google Wallet' should not be translated as it is the product name. Shown on next to the toggle that controls whether payments and other data from Google Wallet, for use in Autofill, should be saved in the Brave sync chain and synced across devices.">
+        Payment methods and other info from Google Wallet
       </message>
       <message name="IDS_ACCOUNT_SECTION_SETTINGS_TOGGLE" desc="Settings, one of the data types that we allow syncing. Shown on next to the toggle that controls whether Settings should be saved in the Brave sync chain and synced across devices.">
         Settings
@@ -2473,6 +2350,12 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_ACCOUNT_ADVANCED_HEADER" desc="Heading of a section with settings related to the user's Brave sync chain and data.">
         Control your data &amp; account
+      </message>
+      <message name="IDS_ACCOUNT_SETTINGS_SWITCH_TO_INCOGNITO" desc="Title of the preference to switch to Private mode in Account settings. [CHAR_LIMIT=32]">
+        Open new Private window
+      </message>
+      <message name="IDS_ACCOUNT_SETTINGS_SWITCH_TO_INCOGNITO_SUMMARY" desc="Summary description for the Switch to Private preference in settings. Informs the user that it will open a new private window and offers a 'Learn more' link.">
+        When you're browsing in Private, others who use this device won't see your activity, so you can browse more privately. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph>
       </message>
       <message name="IDS_SYNC_ENCRYPTION" desc="Preference category name for sync encryption. [CHAR_LIMIT=32]">
         Encryption
@@ -2853,6 +2736,15 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_BACK_BUTTON_IPH_TEXT" desc="Message on the generic text buble to educate users on the menu back button">
         Open the menu to go back
       </message>
+      <message name="IDS_MENU_BOOKMARK_BAR_SETTING_ALWAYS_SHOW" desc="App menu flyout option to always show the bookmark bar.">
+        Always show
+      </message>
+      <message name="IDS_MENU_BOOKMARK_BAR_SETTING_ONLY_SHOW_BOOKMARKS_BAR_ON_NTP" desc="App menu flyout option to only show the bookmark bar on the new tab page.">
+        Only show on New Tab Page
+      </message>
+      <message name="IDS_MENU_BOOKMARK_BAR_SETTING_ALWAYS_HIDE" desc="App menu flyout option to always hide the bookmark bar.">
+        Always hide
+      </message>
       <message name="IDS_ACCESSIBILITY_MENU_SHARE_VIA" desc="Content description share current page via the most recently used application menu item">
         Share via <ph name="APPLICATION">%s<ex>Gmail</ex></ph>
       </message>
@@ -2900,6 +2792,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_CONTEXTMENU_SAVE_PAGE" desc="This string is shown in the context menu for saving the current page. [CHAR_LIMIT=30]">
         Download
+      </message>
+      <message name="IDS_CONTEXTMENU_SAVE_PAGE_AS" desc="Context sensitive menu item for saving the current page [CHAR_LIMIT=30]">
+        Save as…
       </message>
       <!-- TODO(b/527098378): Remove the "New" label, reduce CHAR_LIMIT back to 35, and deprecate CONTEXT_MENU_SEARCH_TAB_WITH_GOOGLE_LENS_CLICKED preference after feature is established. -->
       <message name="IDS_CONTEXTMENU_SEARCH_TAB_WITH_GOOGLE_LENS" desc="Context sensitive menu item for deep linking into google lens. [CHAR_LIMIT=42]">
@@ -3012,8 +2907,8 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_CONTEXTMENU_OPEN_IMAGE_IN_NEW_TAB" desc="Context sensitive menu item for opening/viewing the selected image in a new tab. [CHAR_LIMIT=30]">
         Open image in new tab
       </message>
-      <message name="IDS_CONTEXTMENU_OPEN_IMAGE_IN_EPHEMERAL_TAB" desc="Context-sensitive menu item to open a quick preview of the selected image. Note that 'preview' is a verb, not a noun. We're also labeling it *New* to draw attention to it when first released. The selected image link will open in an overlay panel on top of the current tab which will go away easily too. [CHAR_LIMIT=30]">
-        Preview image <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
+      <message name="IDS_CONTEXTMENU_OPEN_IMAGE_IN_EPHEMERAL_TAB" desc="Context-sensitive menu item to open a quick preview of the selected image. Note that 'preview' is a verb, not a noun. The selected image link will open in an overlay panel on top of the current tab which will go away easily too. [CHAR_LIMIT=30]">
+        Preview image
       </message>
       <message name="IDS_CONTEXTMENU_LOAD_ORIGINAL_IMAGE" desc="Context sensitive menu item for Lite mode low fidelity placeholder images that loads the original version in place. [CHAR_LIMIT=30]">
         Load image
@@ -3022,13 +2917,13 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Copy image
       </message>
       <message name="IDS_CONTEXTMENU_SEARCH_IMAGE_WITH_GOOGLE_LENS" desc="Context sensitive menu item for deep linking into google lens. [CHAR_LIMIT=30]">
-        Search image with Google Lens <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
+        Search image with Google Lens
       </message>
       <message name="IDS_CONTEXTMENU_TRANSLATE_IMAGE_WITH_GOOGLE_LENS" desc="Context sensitive chip for deep linking into google lens for translate results. [CHAR_LIMIT=30]">
-          Translate image with Google Lens <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
+        Translate image with Google Lens
       </message>
       <message name="IDS_CONTEXTMENU_SHOP_IMAGE_WITH_GOOGLE_LENS" desc="Context sensitive menu item for deep linking into google lens for shopping results. [CHAR_LIMIT=30]">
-        Shop image with Google Lens <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
+        Shop image with Google Lens
       </message>
       <message name="IDS_CONTEXTMENU_SEARCH_WEB_FOR_IMAGE" desc="Context sensitive menu item for search-for-Image command in a new tab. [CHAR_LIMIT=30]">
         Search <ph name="SEARCH_ENGINE">%1$s<ex>Brave</ex></ph> for this image
@@ -3075,11 +2970,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_CONTEXTMENU_OPEN_IN_CHROME_INCOGNITO_TAB" desc="Context sensitive menu item to open the selected link in a Brave Private tab from Brave Custom Tab. [CHAR_LIMIT=30]">
         Open in Private tab
       </message>
-      <message name="IDS_CONTEXTMENU_OPEN_IN_EPHEMERAL_TAB" desc="Context-sensitive menu item to open a quick preview of the selected linked page.   Note that 'preview' is a verb, not a noun. We're also labeling it *New* to draw attention to it when first released. The selected link will open in an overlay panel on top of the current tab which will go away easily too. [CHAR_LIMIT=30]">
-        Preview page <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
+      <message name="IDS_CONTEXTMENU_OPEN_IN_EPHEMERAL_TAB" desc="Context-sensitive menu item to open a quick preview of the selected linked page.   Note that 'preview' is a verb, not a noun. The selected link will open in an overlay panel on top of the current tab which will go away easily too. [CHAR_LIMIT=30]">
+        Preview page
       </message>
-      <message name="IDS_CONTEXTMENU_READ_LATER" desc="Context sensitive menu item for marking a link to be read later. We're also labeling it *New* to draw attention to it when first released. [CHAR_LIMIT=30]">
-        Add to reading list <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
+      <message name="IDS_CONTEXTMENU_READ_LATER" desc="Context sensitive menu item for marking a link to be read later. [CHAR_LIMIT=30]">
+        Add to reading list
       </message>
       <message name="IDS_CONTEXTMENU_SHARE_HIGHLIGHT" desc="This string is shown in the context menu for resharing the link-to-text.">
         Share highlight
@@ -3153,9 +3048,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
 
       <!-- Add to Home screen strings -->
-      <message name="IDS_MENU_OPEN_WEBAPK" desc="Menu item for opening the installed WebAPK associated with the current PWA. [CHAR_LIMIT=27]">
-        Open <ph name="WEBAPK_NAME">%1$s<ex>Telegram</ex></ph>
-      </message>
+
       <message name="IDS_OPEN_WEBAPK_FAILED" desc="Opening of a WebAPK failed.">
         Could not open app
       </message>
@@ -3593,6 +3486,57 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SAFETY_FRE_PROMO_START_BROWSING_BUTTON" desc="Text on the button to start browsing from the Safety Promo screen of the First Run Experience.">
         Start browsing
       </message>
+      <message name="IDS_SAFETY_FRE_PROMO_PASSWORD_MANAGER_TITLE" desc="Title of the Brave Password Manager card on the Safety Promo screen of the First Run Experience.">
+        Brave Password Manager
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_PASSWORD_MANAGER_SUBTITLE" desc="Subtitle of the Brave Password Manager card on the Safety Promo screen of the First Run Experience.">
+        Create, save, and autofill strong passwords
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_PASSWORD_MANAGER_CAROUSEL_TITLE" desc="Title of the Brave Password Manager slide on the Safety Promo Carousel screen of the First Run Experience.">
+        Safer passwords, faster sign-in
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_PASSWORD_MANAGER_CAROUSEL_SUBTITLE" desc="Subtitle of the Brave Password Manager slide on the Safety Promo Carousel screen of the First Run Experience.">
+        Securely create and store your passwords, sign in faster, and identify password security issues to keep you safe
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_HISTORY_QUICK_DELETE_TITLE" desc="Title of the Quick Delete History card on the Safety Promo screen of the First Run Experience.">
+        Quickly delete your history
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_HISTORY_QUICK_DELETE_SUBTITLE" desc="Subtitle of the Quick Delete History card on the Safety Promo screen of the First Run Experience.">
+        Delete your browsing history with one tap
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_HISTORY_QUICK_DELETE_CAROUSEL_TITLE" desc="Title of the Quick Delete History slide on the Safety Promo Carousel screen of the First Run Experience.">
+        Delete your history with the tap of a button
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_HISTORY_QUICK_DELETE_CAROUSEL_SUBTITLE" desc="Subtitle of the Quick Delete History slide on the Safety Promo Carousel screen of the First Run Experience.">
+        Quickly delete your browsing history and take more control over your privacy
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_ENHANCED_SAFE_BROWSING_TITLE" desc="Title of the Enhanced Safe Browsing card on the Safety Promo screen of the First Run Experience.">
+        Enhanced Safe Browsing
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_ENHANCED_SAFE_BROWSING_SUBTITLE" desc="Subtitle of the Enhanced Safe Browsing card on the Safety Promo screen of the First Run Experience.">
+        Brave’s highest level of protection against online threats
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_ENHANCED_SAFE_BROWSING_CAROUSEL_TITLE" desc="Title of the Enhanced Safe Browsing slide on the Safety Promo Carousel screen of the First Run Experience.">
+        Brave’s most secure browsing experience
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_ENHANCED_SAFE_BROWSING_CAROUSEL_SUBTITLE" desc="Subtitle of the Enhanced Safe Browsing slide on the Safety Promo Carousel screen of the First Run Experience.">
+        Enhanced Safe Browsing offers security from known and potential new dangers
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_INCOGNITO_TITLE" desc="Title of the Locked Private card on the Safety Promo screen of the First Run Experience.">
+        Locked Private mode
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_INCOGNITO_SUBTITLE" desc="Subtitle of the Locked Private card on the Safety Promo screen of the First Run Experience.">
+        Keep your private tabs locked
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_INCOGNITO_CAROUSEL_TITLE" desc="Title of the Locked Private slide on the Safety Promo Carousel screen of the First Run Experience.">
+        Lock your Private tabs
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_INCOGNITO_CAROUSEL_SUBTITLE" desc="Subtitle of the Locked Private slide on the Safety Promo Carousel screen of the First Run Experience.">
+        Protect your private browsing with a pin to prevent unwanted access
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_SHOW_ME_HOW_BUTTON" desc="Text on the button to show the user how to configure safety settings from the Safety Promo screen of the First Run Experience.">
+        Show me how
+      </message>
       <message name="IDS_LIGHTWEIGHT_FRE_ASSOCIATED_APP_TOS" desc="Message explaining that use of Brave is governed by Brave's terms of service.">
         <ph name="APP_NAME">%1$s<ex>Brave Maps</ex></ph> will open in Brave. By continuing, you agree to the <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Brave Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph>, and the <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Brave and ChromeOS Additional Terms of Service<ph name="END_LINK2">&lt;/LINK2&gt;</ph>.
       </message>
@@ -3624,6 +3568,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_SIGNIN_FRE_FOOTER_METRICS_REPORTING" desc="The text is displayed in a footer on the very first screen of Brave. Preferably, ensure consistency with the “Usage statistics and crash reports” section of the Brave Privacy Policy (google.com/chrome/privacy).">
         To help improve the app, Brave sends usage and crash data to Brave. <ph name="BEGIN_UMA_LINK">&lt;UMA_LINK&gt;</ph>Manage<ph name="END_UMA_LINK">&lt;/UMA_LINK&gt;</ph>
+      </message>
+      <message name="IDS_SIGNIN_FRE_FOOTER_METRICS_REPORTING_SETTINGS" is_accessibility_with_no_ui="true" desc="The content description for the manage button to access usage and crash data settings. Used with the string IDS_SIGNIN_FRE_FOOTER_METRICS_REPORTING.">
+        Manage usage and crash data settings
       </message>
       <message name="IDS_SIGNIN_FRE_UMA_DIALOG_TITLE" desc="Title of the dialog where users can change their Brave metric sharing settings, like usage data. This appears when they open the Brave app for the first time on their phone.">
         Make Brave better
@@ -3658,10 +3605,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SIGNIN_FRE_SUBTITLE_SIGNIN_FORCED_BY_POLICY" desc="Subtitle of a dialog to sign in to Brave when sign-in is required because of an enterprise policy.">
         Your organization requires you to sign in to use Brave.
       </message>
-      <message name="IDS_FRE_SIGNING_IN" desc="Text to show below a progress spinner in the signin FRE to notify the user that signing in is in progress.">
-        Signing in\u2026
-      </message>
-      <message name="IDS_FRE_SIGNING_IN_2" desc="Text to show below a progress spinner in the signin FRE to notify the user that signing in is in progress and that the user's data is being fetched.">
+      <message name="IDS_FRE_SIGNING_IN" desc="Text to show below a progress spinner in the signin FRE to notify the user that signing in is in progress and that the user's data is being fetched.">
         Getting your stuff\u2026
       </message>
 
@@ -3673,7 +3617,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Pick up where you left off
       </message>
       <message name="IDS_SIGNIN_DEEP_LINK_FLOW_SIGNIN_SUBTITLE" desc="Subtitle of the screen shown when an signed-out user starts a sigin flow with a signin deep link.">
-        You scanned a QR code to sign in to Brave. Confirm that you want to get the passwords, bookmarks, and more from this profile.
+        You scanned a QR code to sign in to Brave. You’ll get the passwords, bookmarks, and more from this account.
       </message>
       <message name="IDS_SIGNIN_DEEP_LINK_FLOW_SIGNIN_DISMISS_BUTTON" desc="Text of the dismiss button shown on the screen displayed when an signed-out user starts a sigin flow with a signin deep link.">
         Stay signed out
@@ -3821,6 +3765,51 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE_FOR_WEB_SIGNIN" desc="This string is on a sign-in page, after the user taps to sign in to a website with their Brave sync chain. It offers to sign the user in to both the website and to Brave with the account. It highlights the overarching user benefit of signing in to Brave (access to data from other devices like bookmarks, passwords, history, settings, etc.). We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain. The tone should be informative and lightweight.">
         Sign in to this site and Brave to get your bookmarks and more on all your devices
       </message>
+      <message name="IDS_SIGNIN_DEVICE_TYPE_PHONE" desc="Device type string to be inserted as a placeholder into sign-in promo and web sign-in subtitle messages.">
+        your phone
+      </message>
+      <message name="IDS_SIGNIN_DEVICE_TYPE_TABLET" desc="Device type string to be inserted as a placeholder into sign-in promo and web sign-in subtitle messages.">
+        your tablet
+      </message>
+      <message name="IDS_SIGNIN_DEVICE_TYPE_LAPTOP" desc="Device type string to be inserted as a placeholder into sign-in promo and web sign-in subtitle messages.">
+        your laptop
+      </message>
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE_ON_ALL_DEVICES_SAVED_INFO" desc="This string is the subtitle of a promotional bottom sheet about signing in to Brave with the user's Brave sync chain. It explains the user benefit of signing in to get data on all devices.">
+        Sign in to get your saved info and more on all your devices
+      </message>
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE_ON_ALL_DEVICES_BOOKMARKS" desc="This string is the subtitle of a promotional bottom sheet about signing in to Brave with the user's Brave sync chain. It explains the user benefit of signing in to get data on all devices.">
+        Sign in to get your bookmarks and more on all your devices
+      </message>
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE_ON_ALL_DEVICES_PASSWORDS" desc="This string is the subtitle of a promotional bottom sheet about signing in to Brave with the user's Brave sync chain. It explains the user benefit of signing in to get data on all devices.">
+        Sign in to get your passwords and more on all your devices
+      </message>
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE_FOR_DEVICE_TYPE_SAVED_INFO" desc="This string is the subtitle of a promotional bottom sheet about signing in to Brave with the user's Brave sync chain. It explains the user benefit of signing in to get data from their other device where they may be signed-in.">
+        Sign in to get your saved info and more from <ph name="DEVICE_TYPE">%1$s<ex>your phone</ex></ph>
+      </message>
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE_FOR_DEVICE_TYPE_BOOKMARKS" desc="This string is the subtitle of a promotional bottom sheet about signing in to Brave with the user's Brave sync chain. It explains the user benefit of signing in to get data from their other device where they may be signed-in.">
+        Sign in to get your bookmarks and more from <ph name="DEVICE_TYPE">%1$s<ex>your phone</ex></ph>
+      </message>
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE_FOR_DEVICE_TYPE_PASSWORDS" desc="This string is the subtitle of a promotional bottom sheet about signing in to Brave with the user's Brave sync chain. It explains the user benefit of signing in to get data from their other device where they may be signed-in.">
+        Sign in to get your passwords and more from <ph name="DEVICE_TYPE">%1$s<ex>your phone</ex></ph>
+      </message>
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE_FOR_WEB_SIGNIN_ON_ALL_DEVICES_SAVED_INFO" desc="This string is on a sign-in page, after the user taps to sign in to a website with their Brave sync chain. It offers to sign the user in to both the website and to Brave with the account. It highlights the overarching user benefit of signing in to Brave to get data on all devices. We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain. The tone should be informative and lightweight.">
+        Sign in to this site and Brave to get your saved info and more on all your devices
+      </message>
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE_FOR_WEB_SIGNIN_ON_ALL_DEVICES_BOOKMARKS" desc="This string is on a sign-in page, after the user taps to sign in to a website with their Brave sync chain. It offers to sign the user in to both the website and to Brave with the account. It highlights the overarching user benefit of signing in to Brave to get data on all devices. We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain. The tone should be informative and lightweight.">
+        Sign in to this site and Brave to get your bookmarks and more on all your devices
+      </message>
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE_FOR_WEB_SIGNIN_ON_ALL_DEVICES_PASSWORDS" desc="This string is on a sign-in page, after the user taps to sign in to a website with their Brave sync chain. It offers to sign the user in to both the website and to Brave with the account. It highlights the overarching user benefit of signing in to Brave to get data on all devices. We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain. The tone should be informative and lightweight.">
+        Sign in to this site and Brave to get your passwords and more on all your devices
+      </message>
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE_FOR_WEB_SIGNIN_DEVICE_TYPE_SAVED_INFO" desc="This string is on a sign-in page, after the user taps to sign in to a website with their Brave sync chain. It offers to sign the user in to both the website and to Brave with the account. It highlights the user benefit of signing in to Brave to get data from their other device. We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain. The tone should be informative and lightweight.">
+        Sign in to this site and Brave to get your saved info and more from <ph name="DEVICE_TYPE">%1$s<ex>your phone</ex></ph>
+      </message>
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE_FOR_WEB_SIGNIN_DEVICE_TYPE_BOOKMARKS" desc="This string is on a sign-in page, after the user taps to sign in to a website with their Brave sync chain. It offers to sign the user in to both the website and to Brave with the account. It highlights the user benefit of signing in to Brave to get data from their other device. We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain. The tone should be informative and lightweight.">
+        Sign in to this site and Brave to get your bookmarks and more from <ph name="DEVICE_TYPE">%1$s<ex>your phone</ex></ph>
+      </message>
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE_FOR_WEB_SIGNIN_DEVICE_TYPE_PASSWORDS" desc="This string is on a sign-in page, after the user taps to sign in to a website with their Brave sync chain. It offers to sign the user in to both the website and to Brave with the account. It highlights the user benefit of signing in to Brave to get data from their other device. We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain. The tone should be informative and lightweight.">
+        Sign in to this site and Brave to get your passwords and more from <ph name="DEVICE_TYPE">%1$s<ex>your phone</ex></ph>
+      </message>
 
       <!-- Extension requests sign in to Brave through chrome.identity API -->
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_TITLE_FOR_EXTENSIONS" desc="This string is the heading of a dialog intended to inform the user that one of their installed extensions wants them to sign in to Brave to be able to use their Brave sync chain.">
@@ -3850,6 +3839,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_SIGNIN_WEB_SIGNIN_LOADING_DIALOG_CANCEL_BUTTON" desc="String for the cancel button of the web signin loading dialog. When users need to sign in to access a link the web signin loading dialog is shown while cookies are being minted before being redirected to the link. Pressing cancel stops the redirection.">
       Cancel
+      </message>
+
+      <!-- Android Desktop Account Menu -->
+      <message name="IDS_ACCOUNT_MENU_PROMO_CARD_DESCRIPTION" desc="Subtitle of the promo card in the account menu when signed out.">
+        Sign in to get your bookmarks, passwords, and more on all your devices
       </message>
 
       <!-- Strings for Seamless Sign-in -->
@@ -4262,6 +4256,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_NEW_WINDOW" desc="Menu item for opening a new window. [CHAR_LIMIT=27]">
         New window
       </message>
+      <message name="IDS_PROFILE_MENU_ACCOUNT_SETTINGS_BUTTON" desc="Button in the avatar menu bubble view for opening Brave account settings. [CHAR_LIMIT=30]">
+        Your account in Brave
+      </message>
       <message name="IDS_MENU_NEW_INCOGNITO_WINDOW" desc="Menu item for opening a new private window. [CHAR_LIMIT=27]">
         New Private window
       </message>
@@ -4296,11 +4293,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_DOWNLOAD_PAGE" desc="Menu item for downloading the current web page. [CHAR_LIMIT=27]">
         Download page
       </message>
+      <message name="IDS_MENU_SAVE_PAGE_AS" desc="Menu item for saving the current web page. [CHAR_LIMIT=27]">
+        Save page as…
+      </message>
       <message name="IDS_MENU_PAGE_INFO" desc="Tooltip on Android for the button to view information about the current web page. Info is short for information.  [CHAR_LIMIT=27]">
         Page info
-      </message>
-      <message name="IDS_MENU_APP_INFO" desc="Tooltip on Android for the button to view information about the current app. Info is short for information.  [CHAR_LIMIT=27]">
-        App info
       </message>
       <message name="IDS_MENU_STOP_REFRESH" desc="Tooltip on Android for the button to stop refreshing the current web page. [CHAR_LIMIT=27]">
         Stop refreshing
@@ -4341,6 +4338,15 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_CONTEXTMENU_SHOW_BOOKMARKS_BAR" desc="Menu item for showing the bookmarks bar. [CHAR_LIMIT=27]">
         Show bookmarks bar
+      </message>
+      <message name="IDS_CONTEXTMENU_ALWAYS_HIDE_BOOKMARKS_BAR" desc="Menu item for always hiding the bookmarks bar. [CHAR_LIMIT=27]">
+        Always hide
+      </message>
+      <message name="IDS_CONTEXTMENU_ALWAYS_SHOW_BOOKMARKS_BAR" desc="Menu item for always showing the bookmarks bar. [CHAR_LIMIT=27]">
+        Always show
+      </message>
+      <message name="IDS_CONTEXTMENU_ONLY_SHOW_BOOKMARKS_BAR_ON_NTP" desc="Menu item for only showing the bookmarks bar on the new tab page. [CHAR_LIMIT=27]">
+        Only show on New Tab Page
       </message>
       <message name="IDS_CONTEXTMENU_EDIT_BOOKMARK_ELLIPSIS" desc="Menu item for editing a bookmark from the context menu. [CHAR_LIMIT=27]">
         Edit…
@@ -4395,6 +4401,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_CHROME_HISTORY" desc="Menu item for opening the CCT history page. [CHAR_LIMIT=27]">
         Brave history
+      </message>
+      <message name="IDS_HISTORY_MANAGER_TABS_FROM_OTHER_DEVICES" desc="Menu item for opening tabs from other devices. [CHAR_LIMIT=27]">
+        Tabs from other devices
       </message>
       <message name="IDS_MENU_PASSWORDS_AND_AUTOFILL" desc="Menu item for showing menus related to passwords and autofill. [CHAR_LIMIT=27]">
         Passwords and autofill
@@ -4811,8 +4820,14 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_CREATE_NEW_FOLDER" desc="Option in the bookmarks manager to show the create a new folder in the current context. [CHAR_LIMIT=24]">
         Create new folder
       </message>
+      <message name="IDS_NEW_FOLDER" desc="Button in the bookmarks manager to create a new folder in the current context. [CHAR_LIMIT=24]">
+        New folder
+      </message>
       <message name="IDS_FOLDER_PICKER_ROOT" desc="Toolbar title for when the user is selecting a folder and the current selected folder is the root.">
         Move to\u2026
+      </message>
+      <message name="IDS_FOLDER_PICKER_ROOT_DESKTOP" desc="Title for the folder picker shown in the desktop bookmarks dialog, when the current selected folder is the root.">
+        Choose another folder
       </message>
       <message name="IDS_FOLDER_PICKER_MOVE_HERE" desc="Button the user clicks to move the given bookmark (or folder) to the selected folder.">
         Move here
@@ -5019,9 +5034,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_PDF_PROPERTIES_FILE_SIZE" desc="Label for file size in PDF document properties">
         File size
       </message>
-      <message name="IDS_PDF_PROPERTIES_TITLE" desc="Label for title in PDF document properties">
-        Title
-      </message>
       <message name="IDS_PDF_PROPERTIES_CREATED" desc="Label for creation date and time in PDF document properties">
         Created
       </message>
@@ -5043,14 +5055,41 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_PDF_DOWNLOAD" desc="Menu option to download the PDF document.">
         Download
       </message>
-      <message name="IDS_PDF_FIT_HEIGHT" desc="Menu option to fit the PDF page height to the screen.">
-        Fit to height
+      <message name="IDS_PDF_FIT_PAGE" desc="Menu option to fit the PDF page to the screen.">
+        Fit to page
+      </message>
+      <message name="IDS_PDF_DOWNLOADING" desc="Toast message shown when the PDF document is downloading.">
+        Downloading PDF
       </message>
       <message name="IDS_PDF_FIT_WIDTH" desc="Menu option to fit the PDF page width to the screen.">
         Fit to width
       </message>
+      <message name="IDS_PDF_UNSAVED_CHANGES_DIALOG_RELOAD_TITLE" desc="Title for the dialog shown when a user tries to reload a PDF page with unsaved changes.">
+        Reload site?
+      </message>
+      <message name="IDS_PDF_UNSAVED_CHANGES_DIALOG_LEAVE_TITLE" desc="Title for the dialog shown when a user tries to leave a PDF page with unsaved changes.">
+        Leave site?
+      </message>
+      <message name="IDS_PDF_UNSAVED_CHANGES_DIALOG_MESSAGE" desc="Message of the dialog shown when leaving or reloading a PDF document with unsaved changes.">
+        Changes you made may not be saved.
+      </message>
+      <message name="IDS_PDF_UNSAVED_CHANGES_DIALOG_CANCEL_BUTTON" desc="Button text to cancel leaving or reloading the PDF document with unsaved changes.">
+        Cancel
+      </message>
+      <message name="IDS_PDF_UNSAVED_CHANGES_DIALOG_RELOAD_BUTTON" desc="Button text for the dialog to confirm reloading the PDF document with unsaved changes.">
+        Reload
+      </message>
+      <message name="IDS_PDF_UNSAVED_CHANGES_DIALOG_LEAVE_BUTTON" desc="Button text for the dialog to confirm leaving the PDF document with unsaved changes.">
+        Leave
+      </message>
       <message name="IDS_PDF_CANNOT_EDIT_PDF" desc="Toast message shown when a PDF document cannot be edited.">
         Cannot edit PDF
+      </message>
+      <message name="IDS_PDF_DRAW" is_accessibility_with_no_ui="true" desc="Accessibility label and content description for the draw button to annotate a PDF.">
+        Draw
+      </message>
+      <message name="IDS_PDF_PAGE_NUMBER" is_accessibility_with_no_ui="true" desc="Accessibility label and content description for the current page in the PDF toolbar.">
+        Page <ph name="CURRENT_PAGE">%1$d<ex>1</ex></ph> of <ph name="TOTAL_PAGE_COUNT">%2$d<ex>10</ex></ph>
       </message>
 
       <!-- Accessibility -->
@@ -5064,6 +5103,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_MIC" desc="Content description for the voice search button.">
         Start voice search
+      </message>
+      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_AI_OVERLAY_MIC" desc="Content description for the AI Overlay Microphone button." translateable="false">
+        TTC
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_COMPOSEPLATE" is_accessibility_with_no_ui="true" desc="Content description for the composeplate.">
         Start search
@@ -5154,6 +5196,18 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_ACCESSIBILITY_TABSTRIP_GROUP_MULTIPLE_TABS" desc="Content description for tab group with multiple tabs.">
         <ph name="WEBSITE_TITLE">%1$s<ex>Crater Lake National Park (U.S. National Park Service)</ex></ph> and <ph name="TAB_COUNT">%2$d<ex>12</ex></ph> other tabs
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_GROUP_EXPANDED" desc="Content description for labeling tab group as expanded tab group.">
+        Expanded
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_GROUP_COLLAPSED" desc="Content description for labeling tab group as collapsed tab group.">
+        Collapsed
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_GROUP_WITH_STATE" desc="Content description for tab group with its collapsed or expanded state.">
+        <ph name="GROUP_DESCRIPTION">%1$s<ex>Work tab group - Brave and 5 other tabs</ex></ph> - <ph name="COLLAPSED_STATE">%2$s<ex>Collapsed</ex></ph>
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_GROUP_WITH_TABS" desc="Content description structure for appending tab descriptions to a tab group description.">
+        <ph name="GROUP_DESCRIPTION">%1$s<ex>Work tab group</ex></ph> - <ph name="TABS_DESCRIPTION">%2$s<ex>Brave and 2 other tabs</ex></ph>
       </message>
       <message name="IDS_ACCESSIBILITY_TABSTRIP_GROUP" desc="Content description for tab group.">
         <ph name="GROUP_TITLE">%1$s<ex>Wiki tabs</ex></ph> tab group
@@ -5465,6 +5519,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_ACCESSIBILITY_OMNIBOX_ADD_TABS" desc="Accessibility announcement when the 'Tabs' option in the Omnibox 'Add context' popup is highlighted.">
         Attach tabs
       </message>
+      <message name="IDS_ACCESSIBILITY_OMNIBOX_ADD_FROM_DRIVE" desc="Accessibility announcement when the 'Drive' option in the Omnibox 'Add context' popup is highlighted.">
+        Attach files from Drive
+      </message>
 
       <message name="IDS_ACCESSIBILITY_SHARE_SELECTED_ITEMS" desc="Content description for the button to share selected items. [ICU Syntax]">
         {NUM_SELECTED, plural,
@@ -5551,6 +5608,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_OMNIBOX_CONTEXT_MENU_DELETE" desc="The text label of the Delete menu item in the omnibox text selection context menu.">
         Delete
       </message>
+      <message name="IDS_OMNIBOX_CONTEXT_MENU_PASTE_AND_GO_TO_COPIED_TEXT" desc="The text label of a menu item in the omnibox text context menu. Selecting it pastes the current clipboard text into the omnibox and immediately navigates to it (or searches for it).">
+        Paste and go to copied text
+      </message>
       <message name="IDS_OMNIBOX_CONFIRM_DELETE" desc="A message within a modal dialog that confirms the user wants to delete a suggestion from the list dropdown in the omnibox">
         Remove suggestion from history?
       </message>
@@ -5614,9 +5674,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <!-- MultiWindow -->
       <message name="IDS_UNSUPPORTED_NUMBER_OF_WINDOWS" desc="Popup message for when the user has tried to start too many concurrent versions of Brave.">
         Unsupported number of Brave instances.
-      </message>
-      <message name="IDS_MAX_NUMBER_OF_WINDOWS" desc="Toast message for when the user has tried to start more than 5 instances of Brave window.">
-        You can have up to <ph name="MAX_WINDOW_COUNT">%1$d</ph> windows.
       </message>
       <message name="IDS_MAX_NUMBER_OF_WINDOWS_INSTANCE_SWITCHER_ACTIVE_TAB" desc="Message to notify the user that a new window cannot be created because the total number of persisted instances exceeds the window limit.">
         To open a new window, reduce the total number of active windows to <ph name="MAX_WINDOW_COUNT_MINUS_ONE">%1$d</ph> or fewer.
@@ -5802,6 +5859,28 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         <ph name="BEGIN_LINK">&lt;link&gt;</ph>Get help<ph name="END_LINK">&lt;/link&gt;</ph>
       </message>
 
+      <!-- WebHID device chooser strings -->
+      <message name="IDS_HID_CHOOSER_DIALOG_PROMPT" desc="The label that is used to introduce HID device chooser details to the user in a popup.">
+        <ph name="SITE">%1$s<ex>https://www.google.com</ex></ph> wants to connect
+      </message>
+      <message name="IDS_HID_CHOOSER_DIALOG_NO_DEVICES_FOUND_PROMPT" desc="The label shown to the user to inform them that no HID devices were found matching the requirements that the application provided.">
+        No compatible devices found
+      </message>
+      <message name="IDS_HID_CHOOSER_DIALOG_CONNECT_BUTTON_TEXT" desc="Label on the button that closes the HID device chooser popup and allows the requesting site access to the selected device.">
+        Connect
+      </message>
+      <message name="IDS_HID_CHOOSER_DIALOG_FOOTNOTE_TEXT" desc="This text is shown at the bottom of the HID chooser dialog with a link to part of its text.">
+        <ph name="BEGIN_LINK">&lt;link&gt;</ph>Get help<ph name="END_LINK">&lt;/link&gt;</ph>
+      </message>
+
+      <!-- WebHID system permission dialog strings -->
+      <message name="IDS_HID_SYSTEM_PERMISSION_EXPLANATION_DIALOG_TITLE" desc="Title of the dialog explaining that Brave needs system permission to access HID devices.">
+        Human interface device access required
+      </message>
+      <message name="IDS_HID_SYSTEM_PERMISSION_EXPLANATION_DIALOG_BODY" desc="Body of the dialog explaining that Brave needs system permission to access HID devices and how to navigate to Special app access settings.">
+        <ph name="APP_NAME">%1$s<ex>Brave</ex></ph> needs permission to access human interface devices (HIDs) for this site. You can change this setting later in Settings &gt; Apps &gt; Special app access.
+      </message>
+
       <!-- Special locale UI strings -->
       <message name="IDS_SEARCH_WITH_SOGOU" desc="Text telling the user that the search engine will be switched to Sogou.">
         Search with Sogou
@@ -5848,6 +5927,15 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_TWA_CLEAR_DATA_SITE_SELECTION_TITLE" desc="Title of screen showing the sites linked to TWA, allowing the user to clean data in any of them.">
         Linked sites
+      </message>
+      <message name="IDS_TWA_POST_UNINSTALL_NOTIFICATION_TITLE" desc="Title for the notification sent after a TWA app is uninstalled">
+        <ph name="APP_NAME">%1$s<ex>YouTube</ex></ph> was uninstalled
+      </message>
+      <message name="IDS_TWA_POST_UNINSTALL_NOTIFICATION_TITLE_GENERIC" desc="Title for the notification sent after a TWA app is uninstalled when the app name is unknown">
+        App was uninstalled
+      </message>
+      <message name="IDS_TWA_POST_UNINSTALL_NOTIFICATION_TEXT" desc="Text for the notification sent after a TWA app is uninstalled">
+        Tap to delete browsing data in Brave
       </message>
 
       <message name="IDS_WEBAPP_TAP_TO_COPY_URL" desc="Message on the notification that indicates that taping it will copy a Web App's URL into the clipboard.">
@@ -5906,8 +5994,10 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_KEYBOARD_SHORTCUT_CLOSE_TAB" desc="A text label that appears next to the keyboard shortcut that will close the current tab in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Close current tab
       </message>
-      <message name="IDS_KEYBOARD_SHORTCUT_CLOSE_PINNED_TAB" desc="A text label that appears when user tries to close a pinned tab via Ctrl+W shortcut. The warning informs the user that confirming the closure requires a second press of the keyboard shortcut. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Press ^W again to close the pinned tab
+      <message name="IDS_KEYBOARD_SHORTCUT_CLOSE_PINNED_TAB" desc="A text label that appears when user tries to close a pinned tab via Ctrl+W shortcut. The warning informs the user that confirming the closure requires a second press of the keyboard shortcut. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55] [ICU Syntax]">
+        {NUM_TABS, plural,
+          =1 {Press ^W again to close the pinned tab}
+          other {Press ^W again to close the pinned tabs}}
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_FIND_BAR" desc="A text label that appears next to the keyboard shortcut that will open the find bar that searches what is on the screen. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open Find Bar
@@ -6001,6 +6091,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_TOGGLE_CARET_BROWSING" desc="A text label that appears next to the keyboard shortcut that will toggle caret browsing. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Toggle caret browsing
+      </message>
+      <message name="IDS_KEYBOARD_SHORTCUT_QUIT_CHROME" desc="A text label that appears next to the keyboard shortcut that will quit Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
+        Quit Brave
+      </message>
+      <message name="IDS_CONFIRM_TO_QUIT_TOAST" desc="Toast message instructing the user to hold Ctrl+Q to quit Brave.">
+        Hold Ctrl+Q to quit
       </message>
 
       <if expr="enable_arcore">
@@ -6142,7 +6238,10 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_IPH_ANDROID_VERTICAL_TABS_PROMO_MOUSE" desc="The in-product-help promotion message to try Vertical Tabs, displayed to users with a mouse.">
         Right click here to show tabs vertically
       </message>
-      <message name="IDS_IPH_GLIC_PROMO_TEXT" desc="The in-product-help promotion message to try Glic.">
+      <message name="IDS_IPH_TAB_STRIP_GLIC_PROMO_TEXT" desc="The in-product-help promotion message to try Glic, shown on the tab strip button.">
+        Try Gemini in Brave to get answers, key takeaways and more
+      </message>
+      <message name="IDS_IPH_GLIC_PROMO_TEXT" desc="The in-product-help promotion message to try Glic, shown on the toolbar button.">
         Get the best of Gemini from your Brave toolbar. Long-press to customize.
       </message>
       <message name="IDS_IPH_GLIC_PROMO_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text to try Glic.">
@@ -6334,17 +6433,25 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SEND_TAB_TO_SELF_TOAST" desc="Text for a toast indicating that the tab is being shared on the user's other synced devices.">
         Sending to <ph name="device_name">%1$s<ex>Tanya's Pixel 2</ex></ph>...
       </message>
-      <message name="IDS_SEND_TAB_TO_SELF_MESSAGE_BANNER_TITLE" desc="The title for the message banner shown on Android when links are received in the background.">
-        Links received
+      <message name="IDS_SEND_TAB_TO_SELF_MESSAGE_BANNER_TITLE" desc="The title for the message banner shown on Android when links are received in the background. [ICU Syntax]">
+        {NUM_TABS, plural,
+          =1 {Link received}
+          other {# links received}}
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_MESSAGE_BANNER_SUBTITLE" desc="The subtitle for the message banner shown on Android indicating the sender device.">
         From <ph name="DEVICE_NAME">%1$s<ex>Tanya's Pixel 10a</ex></ph>
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_MESSAGE_BANNER_SUBTITLE_WITH_APP" desc="The subtitle for the message banner shown on Android indicating the sender device, and the native app that will be opened.">
+        Open in <ph name="NATIVE_APP_NAME">%1$s<ex>Maps</ex></ph> • From <ph name="DEVICE_NAME">%2$s<ex>Tanya's Pixel 10a</ex></ph>
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_MESSAGE_OPEN" desc="Label for the button to open a tab received from another device.">
         Open
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_NOTIFICATION_CONTEXT_TEXT" desc="Text displayed as the second line of a notification indicating the domain and the device the tab is shared from.">
         <ph name="DOMAIN">%1$s<ex>www.google.com</ex></ph> - Sent from <ph name="DEVICE_NAME">%2$s<ex>Tanya's Pixel 2XL</ex></ph>
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_NOTIFICATION_CONTEXT_TEXT_WITH_APP" desc="Text displayed as the second line of a notification indicating the native app that will be opened and the device the tab is shared from.">
+        Open in <ph name="NATIVE_APP_NAME">%1$s<ex>Maps</ex></ph> - Sent from <ph name="DEVICE_NAME">%2$s<ex>Tanya's Pixel 2XL</ex></ph>
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_CONTENT_DESCRIPTION" desc="Accessibility string read when the bottom sheet is opened. It describes the bottom sheet where a user can pick a device to share the tab with.">
         Choose a device.
@@ -6381,6 +6488,23 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <!-- Sharing -->
       <message name="IDS_SHARING_SENDING_NOTIFICATION_TITLE" desc="Title text displayed in a sharing sending notification.">
         Sharing to <ph name="DEVICE_NAME">%1$s<ex>Pixel 3</ex></ph>
+      </message>
+
+      <!-- Tab sharing toolbar -->
+      <message name="IDS_TAB_SHARING_TOOLBAR_SHARING_CURRENT_TAB_LABEL" desc="Text displayed on a toolbar when current tab is being shared.">
+        Sharing this tab to <ph name="APP_NAME">%1$s<ex>meet.google.com</ex></ph>
+      </message>
+      <message name="IDS_TAB_SHARING_TOOLBAR_SHARING_ANOTHER_TAB_LABEL" desc="Text displayed on a toolbar when another (non-current) tab is being shared.">
+        Sharing <ph name="TAB_NAME">%1$s<ex>youtube.com</ex></ph> to <ph name="APP_NAME">%2$s<ex>meet.google.com</ex></ph>
+      </message>
+      <message name="IDS_TAB_SHARING_TOOLBAR_SHARING_ANOTHER_TAB_TO_THIS_TAB_LABEL" desc="Text displayed on the toolbar when a tab is being shared to the current tab.">
+        Sharing <ph name="TAB_NAME">%1$s<ex>youtube.com</ex></ph> to this tab
+      </message>
+      <message name="IDS_TAB_SHARING_TOOLBAR_STOP_SHARING" desc="Text displayed on the button to stop tab sharing.">
+        Stop sharing
+      </message>
+      <message name="IDS_TAB_SHARING_TOOLBAR_SHARE_THIS_TAB_INSTEAD" desc="Button text to share the current tab instead of the previously shared one.">
+        Share this tab instead
       </message>
 
       <!-- Sharing Hub -->
@@ -7855,57 +7979,104 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_GLIC_ACTOR_TASK_IN_PROGRESS" desc="Snackbar message shown when a Glic actor task is still in progress.">
         Your task is still in progress
       </message>
-      <message name="IDS_GLIC_INCOGNITO_NOT_AVAILABLE" desc="Text displayed in a snackbar when clicking the Glic toolbar button in a Private tab.">
+      <message name="IDS_GLIC_INCOGNITO_NOT_AVAILABLE" desc="Text displayed in a snackbar when clicking the Glic button in a Private tab.">
         Gemini isn’t available in Private mode
+      </message>
+      <message name="IDS_GLIC_BUTTON_UNPINNED" desc="Snackbar message shown after the user unpins the Glic button from the tab strip.">
+        Gemini unpinned
+      </message>
+      <message name="IDS_GLIC_MIC_DISABLED_SNACKBAR" desc="Snackbar message shown when the microphone is disabled and unable to prompt user for permission.">
+        Enable mic to use voice
+      </message>
+      <message name="IDS_GLIC_MIC_PERMISSION_DIALOG_TITLE" desc="Title for dialog asking user for microphone permission for Gemini.">
+        Gemini wants to use your microphone
+      </message>
+      <message name="IDS_GLIC_MIC_PERMISSION_DIALOG_MESSAGE" desc="Explanation for why Gemini needs microphone permission, with a link to Settings.">
+        To talk to Gemini, give it permission to use your microphone. You can also manage this in <ph name="BEGIN_LINK">&lt;link&gt;</ph>Settings<ph name="END_LINK">&lt;/link&gt;</ph>
+      </message>
+      <message name="IDS_GLIC_MIC_PERMISSION_DIALOG_ALLOW" desc="Positive button text to allow microphone permission for Gemini.">
+        Allow
       </message>
 
       <!-- Immersive Playback Confirmation strings -->
-      <message name="IDS_IMMERSIVE_PLAYBACK_CONFIRMATION_MESSAGE" desc="Message in the snackbar asking the user if they want to view the video in immersive mode." translateable="false">
-        View this video in immersive mode?
+      <message name="IDS_IMMERSIVE_PLAYBACK_CONFIRMATION_MESSAGE" desc="Message in the snackbar asking the user if they want to view the video in immersive mode.">
+        Watch with immersive playback?
       </message>
-      <message name="IDS_IMMERSIVE_PLAYBACK_CONFIRMATION_YES" desc="Text for the positive button in the snackbar to proceed to format selection." translateable="false">
+      <message name="IDS_IMMERSIVE_PLAYBACK_CONFIRMATION_YES" desc="Text for the positive button in the snackbar to proceed to format selection.">
         Yes
       </message>
-      <message name="IDS_IMMERSIVE_PLAYBACK_CONFIRMATION_FORMAT_TITLE" desc="Title of the dialog for selecting immersive playback format." translateable="false">
-        Format
+      <message name="IDS_IMMERSIVE_PLAYBACK_CONFIRMATION_FORMAT_TITLE" desc="Title of the dialog for selecting immersive playback format.">
+        Immersive format
       </message>
-      <message name="IDS_IMMERSIVE_PLAYBACK_CONFIRMATION_OPTION_RECOMMENDED" desc="Option for detected custom projection in the immersive playback confirmation dialog." translateable="false">
+      <message name="IDS_IMMERSIVE_PLAYBACK_CONFIRMATION_OPTION_RECOMMENDED" desc="Option for detected custom projection in the immersive playback confirmation dialog.">
         Detected
       </message>
-      <message name="IDS_IMMERSIVE_PLAYBACK_FORMAT_STANDARD" desc="Standard immersive playback format description." translateable="false">
+      <message name="IDS_IMMERSIVE_PLAYBACK_FORMAT_STANDARD" desc="Standard immersive playback format description.">
         Standard
       </message>
-      <message name="IDS_IMMERSIVE_PLAYBACK_FORMAT_STEREOSCOPIC" desc="Stereoscopic immersive playback format description." translateable="false">
+      <message name="IDS_IMMERSIVE_PLAYBACK_FORMAT_STEREOSCOPIC" desc="Stereoscopic immersive playback format description.">
         Stereoscopic
       </message>
-      <message name="IDS_IMMERSIVE_PLAYBACK_FORMAT_360" desc="360° immersive playback format description." translateable="false">
+      <message name="IDS_IMMERSIVE_PLAYBACK_FORMAT_360" desc="360° immersive playback format description.">
         360°
       </message>
-      <message name="IDS_IMMERSIVE_PLAYBACK_FORMAT_360_STEREOSCOPIC" desc="360° stereoscopic immersive playback format description." translateable="false">
+      <message name="IDS_IMMERSIVE_PLAYBACK_FORMAT_360_STEREOSCOPIC" desc="360° stereoscopic immersive playback format description.">
         360° Stereoscopic
       </message>
-      <message name="IDS_IMMERSIVE_PLAYBACK_FORMAT_180" desc="180° immersive playback format description." translateable="false">
+      <message name="IDS_IMMERSIVE_PLAYBACK_FORMAT_180" desc="180° immersive playback format description.">
         180°
       </message>
-      <message name="IDS_IMMERSIVE_PLAYBACK_FORMAT_180_STEREOSCOPIC" desc="180° stereoscopic immersive playback format description." translateable="false">
+      <message name="IDS_IMMERSIVE_PLAYBACK_FORMAT_180_STEREOSCOPIC" desc="180° stereoscopic immersive playback format description.">
         180° Stereoscopic
       </message>
-      <message name="IDS_IMMERSIVE_PLAYBACK_CONFIRMATION_OK" desc="Text for the positive button in the format selection dialog." translateable="false">
+      <message name="IDS_IMMERSIVE_PLAYBACK_CONFIRMATION_OK" desc="Text for the positive button in the format selection dialog.">
         OK
       </message>
-      <message name="IDS_IMMERSIVE_PLAYBACK_CONFIRMATION_CANCEL" desc="Text for the negative button in the format selection dialog." translateable="false">
+      <message name="IDS_IMMERSIVE_PLAYBACK_CONFIRMATION_CANCEL" desc="Text for the negative button in the format selection dialog.">
         Cancel
       </message>
-      <message name="IDS_ACCESSIBILITY_IMMERSIVE_VIDEO_FORMAT" desc="Content description for a button that opens the format selection popup in immersive video playback." translateable="false">
+      <message name="IDS_ACCESSIBILITY_IMMERSIVE_VIDEO_FORMAT" desc="Content description for a button that opens the format selection popup in immersive video playback.">
         Select video format
       </message>
-      <message name="IDS_ACCESSIBILITY_EXIT_IMMERSIVE_PLAYBACK" desc="Content description for a button that exits immersive video playback." translateable="false">
+      <message name="IDS_ACCESSIBILITY_EXIT_IMMERSIVE_PLAYBACK" desc="Content description for a button that exits immersive video playback.">
         Exit immersive playback
       </message>
 
       <!-- Graceful Shutdown strings -->
       <message name="IDS_GRACEFUL_SHUTDOWN_TITLE" desc="Title of the notification shown when Brave is finishing shutting down.">
         Finishing shut down
+      </message>
+
+      <!-- Enterprise Signals Disclaimer strings -->
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_TITLE" desc="Title of the enterprise signals disclaimer dialog.">
+        Your work secured on Brave
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_DESCRIPTION" desc="Description of the enterprise signals disclaimer dialog.">
+        To secure your work on Brave, your organization will be able to view or manage certain information when you’re signed-in to Brave. <ph name="BEGIN_LINK">&lt;LINK&gt;</ph>Learn more<ph name="END_LINK">&lt;/LINK&gt;</ph>
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_PROFILE_INFORMATION_TITLE" desc="Title of the profile information section in the enterprise signals disclaimer dialog.">
+        Profile information
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_PROFILE_INFORMATION_DETAILS" desc="Details of the profile information section in the enterprise signals disclaimer dialog.">
+        Your organization may need to see and manage browsing data in your work profile, such as your browsing history and passwords
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_DEVICE_INFORMATION_TITLE" desc="Title of the device information section in the enterprise signals disclaimer dialog.">
+        Device information
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_DEVICE_INFORMATION_DETAILS" desc="Details of the device information section in the enterprise signals disclaimer dialog.">
+        To make sure this device can be used safely, your organization may need to see information about its operating system, browser, settings, and what software is installed on the device
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_ACCEPT_BUTTON_TEXT" desc="Accept button text of the enterprise signals disclaimer dialog.">
+        Got it
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_CANCEL_BUTTON_TEXT" desc="Cancel button text of the enterprise signals disclaimer dialog.">
+        Sign out
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_SHEET_FULL_HEIGHT" desc="Accessibility string read when the Enterprise Signals Disclaimer bottom sheet is opened at full height.">
+        Enterprise signals disclaimer bottom sheet opened at full height
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_SHEET_CLOSED" desc="Accessibility string read when the Enterprise Signals Disclaimer bottom sheet is closed.">
+        Enterprise signals disclaimer bottom sheet is closed
       </message>
     </messages>
   </release>

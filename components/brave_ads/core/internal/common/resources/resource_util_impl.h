@@ -54,14 +54,26 @@ std::optional<T> LoadAndParseResourceComponentOnBackgroundThread(
 }
 
 template <typename T>
-void LoadResourceComponentCallback(
+void OnLoadResourceComponent(
     LoadAndParseResourceComponentCallback<T> callback,
-    base::File file) {
+    base::File file,
+    bool exists) {
+  if (!exists) {
+    return std::move(callback).Run(/*resource=*/std::nullopt,
+                                   /*exists=*/false);
+  }
+
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
       base::BindOnce(&LoadAndParseResourceComponentOnBackgroundThread<T>,
                      std::move(file)),
-      std::move(callback));
+      base::BindOnce(
+          [](LoadAndParseResourceComponentCallback<T> callback,
+             std::optional<T> resource) {
+            std::move(callback).Run(std::move(resource),
+                                    /*exists=*/true);
+          },
+          std::move(callback)));
 }
 
 template <typename T>
@@ -71,7 +83,7 @@ void LoadAndParseResourceComponent(
     LoadAndParseResourceComponentCallback<T> callback) {
   GetAdsClient().LoadResourceComponent(
       id, version,
-      base::BindOnce(&LoadResourceComponentCallback<T>, std::move(callback)));
+      base::BindOnce(&OnLoadResourceComponent<T>, std::move(callback)));
 }
 
 }  // namespace brave_ads

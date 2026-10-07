@@ -16,19 +16,57 @@ const INTERACTIVE_TAGS = new Set([
   'button',
 ])
 
+function isInsideLeoDialog(path: EventTarget[]): boolean {
+  return path.some(
+    (n) => n instanceof Element && n.tagName.toLowerCase() === 'leo-dialog',
+  )
+}
+
+/**
+ * Programmatic HTMLElement.click() synthesizes a MouseEvent at (0, 0).
+ * Leo Dialog treats that as an outside click and closes. When the tap is
+ * inside a dialog, dispatch with the real touch coordinates instead.
+ * Outside dialogs, prefer .click() so default actions (e.g. links) still run.
+ */
+function activateElement(
+  el: HTMLElement,
+  path: EventTarget[],
+  clientX: number,
+  clientY: number,
+): void {
+  if (isInsideLeoDialog(path)) {
+    el.dispatchEvent(
+      new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+        clientX,
+        clientY,
+      }),
+    )
+    return
+  }
+  el.click()
+}
+
 /**
  * Leo Dropdown opens via a button inside its shadow root.
  * Clicking the host doesn't trigger the toggle; we must click
  * that inner button so one tap opens the dropdown.
  */
-function clickLeoDropdownTrigger(host: Element): boolean {
+function clickLeoDropdownTrigger(
+  host: Element,
+  path: EventTarget[],
+  clientX: number,
+  clientY: number,
+): boolean {
   const root = (host as HTMLElement).shadowRoot
   if (!root) return false
   const button =
     root.querySelector('button.click-target')
     ?? root.querySelector('.leo-dropdown button')
   if (button instanceof HTMLElement) {
-    button.click()
+    activateElement(button, path, clientX, clientY)
     return true
   }
   return false
@@ -38,7 +76,12 @@ function clickLeoDropdownTrigger(host: Element): boolean {
 const TAP_MOVE_THRESHOLD = 10
 
 /** Returns true if the tap was handled; else caller should dispatch click. */
-function handleTapPath(path: EventTarget[], e: TouchEvent): boolean {
+function handleTapPath(
+  path: EventTarget[],
+  e: TouchEvent,
+  clientX: number,
+  clientY: number,
+): boolean {
   for (const node of path) {
     if (node instanceof Element) {
       const el = node as HTMLElement
@@ -51,19 +94,16 @@ function handleTapPath(path: EventTarget[], e: TouchEvent): boolean {
         return true
       }
       // Dropdown: tap may land on host or content; open via inner button
-      if (tag === 'leo-dropdown' && clickLeoDropdownTrigger(node)) {
+      if (
+        tag === 'leo-dropdown'
+        && clickLeoDropdownTrigger(node, path, clientX, clientY)
+      ) {
         e.preventDefault()
-        return true
-      }
-      if (tag === 'button' && el.closest('leo-dialog')) {
-        e.stopPropagation()
-        e.preventDefault()
-        el.click()
         return true
       }
       if (INTERACTIVE_TAGS.has(tag)) {
         e.preventDefault()
-        el.click()
+        activateElement(el, path, clientX, clientY)
         return true
       }
       // onTapElsewhere should not be called for Leo Inputs or Textareas
@@ -122,7 +162,10 @@ export function useIOSOneTapFix(options?: UseIOSOneTapFixOptions): void {
       )
       if (move > TAP_MOVE_THRESHOLD) return
 
-      if (handleTapPath(e.composedPath(), e)) return
+      const { clientX, clientY } = endTouch
+      const path = e.composedPath()
+
+      if (handleTapPath(path, e, clientX, clientY)) return
 
       // Tap elsewhere (e.g. backdrop). Dispatch a click so
       // document-level listeners run—e.g. Leo ButtonMenu’s clickOutside closes
@@ -130,7 +173,7 @@ export function useIOSOneTapFix(options?: UseIOSOneTapFixOptions): void {
       const target = e.target as Node
       if (target instanceof HTMLElement) {
         e.preventDefault()
-        target.click()
+        activateElement(target, path, clientX, clientY)
       }
       onTapElsewhere?.()
     }

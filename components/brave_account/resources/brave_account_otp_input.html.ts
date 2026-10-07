@@ -25,7 +25,6 @@ export function getHtml(this: BraveAccountOtpInputElement) {
       ${this.indices.map(
         (index) => html`
           <leo-input
-            autofocus=${index === 0}
 <if expr="is_ios">
             spellcheck="false"
 </if>

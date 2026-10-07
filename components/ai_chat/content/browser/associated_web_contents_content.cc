@@ -14,6 +14,8 @@
 #include <vector>
 
 #include "base/barrier_callback.h"
+#include "base/check_deref.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
@@ -37,9 +39,11 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_details.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/permission_controller.h"
 #include "content/public/browser/permission_descriptor_util.h"
 #include "content/public/browser/permission_result.h"
+#include "content/public/browser/reload_type.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
@@ -48,6 +52,7 @@
 #include "pdf/buildflags.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
 
 #if BUILDFLAG(ENABLE_PDF)
@@ -98,6 +103,17 @@ AssociatedWebContentsContent::AssociatedWebContentsContent(
 
 AssociatedWebContentsContent::~AssociatedWebContentsContent() = default;
 
+void AssociatedWebContentsContent::ReadyToCommitNavigation(
+    content::NavigationHandle* navigation_handle) {
+  if (!navigation_handle->IsInPrimaryMainFrame()) {
+    return;
+  }
+  // NavigationEntryCommitted() runs before DidFinishNavigation() and
+  // LoadCommittedDetails doesn't expose the reload type, so record it here.
+  pending_navigation_is_reload_ =
+      navigation_handle->GetReloadType() != content::ReloadType::NONE;
+}
+
 void AssociatedWebContentsContent::NavigationEntryCommitted(
     const content::LoadCommittedDetails& load_details) {
   if (!load_details.is_main_frame) {
@@ -129,11 +145,36 @@ void AssociatedWebContentsContent::NavigationEntryCommitted(
   if (!is_same_document_navigation_) {
     is_page_loaded_ = false;
   }
-  if (!is_same_document_navigation_ ||
-      previous_page_title_ != load_details.entry->GetTitle()) {
+
+  // A reload of the same URL is the same logical page, so leave the content
+  // alone.
+  // Note: This doesn't treat navigations to the same URL as a reload as
+  // they have a different content_id.
+  const bool is_reload = pending_navigation_is_reload_;
+  const bool is_same_page_reload =
+      pending_navigation_is_reload_ && !is_same_document_navigation_ &&
+      load_details.previous_main_frame_url ==
+          web_contents()->GetLastCommittedURL() &&
+      load_details.entry->GetUniqueID() == content_id();
+  pending_navigation_is_reload_ = false;
+
+  if (!is_same_page_reload &&
+      (!is_same_document_navigation_ ||
+       previous_page_title_ != load_details.entry->GetTitle())) {
     OnNewPage(pending_navigation_id_);
   }
   previous_page_title_ = load_details.entry->GetTitle();
+
+  // A new document means a new PageContentExtractor, so any subscription we had
+  // died with the old RenderFrame. A non-reload navigation runs OnNewPage
+  // above, which archives this content and gets the new document attached (and
+  // so subscribed) afresh, so only reloads need re-subscribing here.
+  // |content_tools_listener_| is never passively unbound, so it records whether
+  // a conversation ever attached this content.
+  if (is_reload && !is_same_document_navigation_ &&
+      content_tools_listener_.is_bound()) {
+    SubscribeToContentToolChanges();
+  }
 }
 
 void AssociatedWebContentsContent::TitleWasSet(
@@ -164,7 +205,7 @@ void AssociatedWebContentsContent::GetPageContent(
   if (is_pdf) {
 #if BUILDFLAG(ENABLE_PDF)
     auto* pdf_helper =
-        pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents());
+        pdf::PDFDocumentHelper::MaybeGetForWebContents(*web_contents());
     if (pdf_helper) {
       pdf_helper->RegisterForDocumentLoadComplete(base::BindOnce(
           &AssociatedWebContentsContent::OnPDFDocumentLoadComplete,
@@ -274,7 +315,7 @@ void AssociatedWebContentsContent::MaybeSameDocumentIsNewPage() {
 void AssociatedWebContentsContent::OnPDFDocumentLoadComplete(
     FetchPageContentCallback callback) {
   ExtractTextFromLoadedPdf(
-      web_contents(),
+      CHECK_DEREF(web_contents()),
       base::BindOnce(
           [](FetchPageContentCallback cb, std::optional<std::string> result) {
             std::move(cb).Run(result.value_or(""), false, "");
@@ -380,6 +421,33 @@ void AssociatedWebContentsContent::OnContentToolsFetched(
     }
   }
   std::move(callback).Run(std::move(tools));
+}
+
+void AssociatedWebContentsContent::OnAssociatedWithConversation() {
+  SubscribeToContentToolChanges();
+}
+
+void AssociatedWebContentsContent::OnContentToolsChanged() {
+  NotifyContentToolsChanged();
+}
+
+void AssociatedWebContentsContent::SubscribeToContentToolChanges() {
+  if (!base::FeatureList::IsEnabled(blink::features::kWebMCP)) {
+    return;
+  }
+
+  content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
+  if (!rfh || !rfh->IsRenderFrameLive()) {
+    return;
+  }
+
+  content_tools_extractor_.reset();
+  rfh->GetRemoteInterfaces()->GetInterface(
+      content_tools_extractor_.BindNewPipeAndPassReceiver());
+
+  content_tools_listener_.reset();
+  content_tools_extractor_->SetContentToolsListener(
+      content_tools_listener_.BindNewPipeAndPassRemote());
 }
 
 bool AssociatedWebContentsContent::HasOpenAIChatPermission() const {

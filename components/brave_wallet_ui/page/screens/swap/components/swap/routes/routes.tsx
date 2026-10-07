@@ -74,7 +74,7 @@ export const Routes = (props: Props) => {
           isBold={true}
           textColor='primary'
         >
-          {getLocale('braveWalletRoutes')}
+          {getLocale(S.BRAVE_WALLET_ROUTES)}
         </Text>
       </Row>
       <Row
@@ -87,7 +87,7 @@ export const Routes = (props: Props) => {
           isBold={true}
           textColor='primary'
         >
-          {getLocale('braveWalletSortBy')}
+          {getLocale(S.BRAVE_WALLET_SORT_BY)}
         </Text>
         <ButtonMenu
           isOpen={showSortByMenu}
@@ -106,17 +106,17 @@ export const Routes = (props: Props) => {
             >
               {getLocale(
                 sortBy === 'CHEAPEST'
-                  ? 'braveWalletCheapest'
-                  : 'braveWalletFastest',
+                  ? S.BRAVE_WALLET_CHEAPEST
+                  : S.BRAVE_WALLET_FASTEST,
               )}
             </Text>
             <CaratDownIcon isExpanded={showSortByMenu} />
           </Row>
           <leo-menu-item onClick={() => setSortBy('FASTEST')}>
-            {getLocale('braveWalletFastest')}
+            {getLocale(S.BRAVE_WALLET_FASTEST)}
           </leo-menu-item>
           <leo-menu-item onClick={() => setSortBy('CHEAPEST')}>
-            {getLocale('braveWalletCheapest')}
+            {getLocale(S.BRAVE_WALLET_CHEAPEST)}
           </leo-menu-item>
         </ButtonMenu>
       </Row>
@@ -142,7 +142,7 @@ export const Routes = (props: Props) => {
           onClick={() => onSelectQuoteOption(userSelectedQuoteOptionId)}
           size='large'
         >
-          {getLocale('braveWalletUpdate')}
+          {getLocale(S.BRAVE_WALLET_REVIEW_UPDATE)}
         </Button>
       </Row>
     </StyledWrapper>

@@ -8,11 +8,11 @@ import { SwapAndSend } from '../constants/types'
 
 export const SwapAndSendOptions: SwapAndSend[] = [
   {
-    label: 'braveSwapToAccount',
+    label: S.BRAVE_SWAP_TO_ACCOUNT,
     name: 'to-account',
   },
   {
-    label: 'braveSwapToAddress',
+    label: S.BRAVE_SWAP_TO_ADDRESS,
     name: 'to-address',
   },
 ]

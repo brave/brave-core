@@ -6,7 +6,6 @@ import Data
 import Favicon
 import Foundation
 import Shared
-import Storage
 import XCTest
 
 @testable import Brave

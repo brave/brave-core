@@ -22,7 +22,7 @@ export const _EditSpendLimit = {
     return (
       <BottomSheet
         isOpen={true}
-        title={getLocale('braveWalletEditPermissionsTitle')}
+        title={getLocale(S.BRAVE_WALLET_EDIT_PERMISSIONS_TITLE)}
         onClose={() => alert('Close Clicked')}
       >
         <EditSpendLimit

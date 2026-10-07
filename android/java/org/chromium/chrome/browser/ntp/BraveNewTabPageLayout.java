@@ -9,6 +9,7 @@ import static org.chromium.base.ThreadUtils.runOnUiThread;
 import static org.chromium.build.NullUtil.assertNonNull;
 import static org.chromium.build.NullUtil.assumeNonNull;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
+import static org.chromium.ui.base.ViewUtils.getRelativeLayoutPosition;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -158,6 +159,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private boolean mIsDisplayNewsOptin;
     private long mNewsFeedLastViewTime;
     private ViewTreeObserver.@Nullable OnGlobalLayoutListener mBgImageViewOnGlobalLayoutListener;
+
+    private @Nullable NewTabTakeoverSafeAreaReporter mSafeAreaReporter;
 
     private static final int SHOW_BRAVE_RATE_ENTRY_AT = 10; // 10th row
 
@@ -580,6 +583,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                         }
                     }
                 });
+
+        maybeCreateSafeAreaReporter();
     }
 
     private void keepPosition() {
@@ -737,6 +742,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             mBraveNewsController.close();
             mBraveNewsController = null;
         }
+
+        maybeResetSponsoredRichMediaBackground();
 
         // Removes preference listener.
         ContextUtils.getAppSharedPreferences()
@@ -1084,10 +1091,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                 && getTab() != null
                 && mNewTabTakeoverInfobar == null) {
             mNewTabTakeoverInfobar = new BraveNewTabTakeoverInfobar(mProfile);
-            if (getTab().getWebContents() != null) {
-                mNewTabTakeoverInfobar.maybeDisplayAndIncrementCounter(
-                        mActivity, getTab().getWebContents());
-            }
+            mNewTabTakeoverInfobar.maybeDisplayAndIncrementCounter(mActivity, getTab());
         }
     }
 
@@ -1103,6 +1107,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
         mSponsoredRichMediaWebView.maybeLoadSponsoredRichMedia(
                 wallpaper.getWallpaperId(), wallpaper.getCreativeInstanceId());
+
+        maybeCreateSafeAreaReporter();
     }
 
     private void maybeResetSponsoredRichMediaBackground() {
@@ -1110,9 +1116,60 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             return;
         }
 
+        destroySafeAreaReporter();
+
         mBackgroundSponsoredRichMediaView.setVisibility(View.GONE);
         mBackgroundSponsoredRichMediaView.removeAllViews();
+        mSponsoredRichMediaWebView.destroy();
         mSponsoredRichMediaWebView = null;
+    }
+
+    private void maybeCreateSafeAreaReporter() {
+        if (mRecyclerView == null
+                || mNtpAdapter == null
+                || mSponsoredRichMediaWebView == null
+                || mBackgroundSponsoredRichMediaView == null) {
+            return;
+        }
+
+        if (mSafeAreaReporter != null) {
+            mSafeAreaReporter.scheduleMeasurement();
+            return;
+        }
+
+        mSafeAreaReporter =
+                new NewTabTakeoverSafeAreaReporter(
+                        this,
+                        mRecyclerView,
+                        mNtpAdapter,
+                        mBackgroundSponsoredRichMediaView,
+                        mSponsoredRichMediaWebView);
+    }
+
+    private void destroySafeAreaReporter() {
+        if (mSafeAreaReporter != null) {
+            mSafeAreaReporter.destroy();
+            mSafeAreaReporter = null;
+        }
+    }
+
+    /**
+     * Returns the height the wallpaper is cropped to, measured from the top of {@code
+     * backgroundView} down to the bottom of the window.
+     *
+     * <p>The view is shorter than that while the window reserves room at the bottom, and it grows
+     * once that room is released, for example when the url bar takes focus. A fresh crop for each
+     * of those heights moves the wallpaper, so it is cropped for the tallest layout and the surplus
+     * is clipped. {@link ImageView.ScaleType#MATRIX} anchors the image to the top of the view, so
+     * only the bottom edge is lost.
+     */
+    private static int getWallpaperHeight(final View backgroundView) {
+        final View rootView = backgroundView.getRootView();
+        // Layout position, not draw position: the latter includes the translation the url focus
+        // animation applies to this view, which would move the height again.
+        final int[] position = new int[2];
+        getRelativeLayoutPosition(rootView, backgroundView, position);
+        return Math.max(backgroundView.getMeasuredHeight(), rootView.getHeight() - position[1]);
     }
 
     private void setBackgroundImage(NTPImage ntpImage) {
@@ -1129,7 +1186,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                         public void onGlobalLayout() {
                             assertNonNull(mBgImageView);
                             int currentWidth = mBgImageView.getMeasuredWidth();
-                            int currentHeight = mBgImageView.getMeasuredHeight();
+                            int currentHeight = getWallpaperHeight(mBgImageView);
 
                             // Only re-fetch if dimensions actually changed
                             if (currentWidth > 0
@@ -1161,7 +1218,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private void getAndShowNTPImage() {
         assertNonNull(mSponsoredTab);
         mSponsoredTab.getNTPImage(
-                /* allowSponsoredImage= */ true,
+                /* allowSponsoredContent= */ true,
                 ntpImage -> {
                     if (mActivity == null || mActivity.isFinishing() || mActivity.isDestroyed()) {
                         return;
@@ -1174,7 +1231,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private void initilizeSponsoredTab() {
         if (TabAttributes.from(getTab()).get(String.valueOf(getTab().getId())) == null) {
             SponsoredTab sponsoredTab =
-                    new SponsoredTab(mNTPBackgroundImagesBridge, /* allowSponsoredImage= */ true);
+                    new SponsoredTab(mNTPBackgroundImagesBridge, /* allowSponsoredContent= */ true);
             TabAttributes.from(getTab()).set(String.valueOf(getTab().getId()), sponsoredTab);
         }
         mSponsoredTab = TabAttributes.from(getTab()).get(String.valueOf(getTab().getId()));

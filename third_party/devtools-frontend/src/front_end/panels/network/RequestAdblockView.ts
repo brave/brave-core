@@ -12,7 +12,6 @@ const { render, html } = Lit
 
 export class RequestAdblockView extends LegacyWrapper.LegacyWrapper
   .WrappableComponent {
-  static readonly litTagName = Lit.StaticHtml.literal`devtools-request-adblock-info`
   readonly #shadow = this.attachShadow({ mode: 'open' })
   readonly #request: SDK.NetworkRequest.NetworkRequest
   #manager: SDK.NetworkManager.NetworkManager | null
@@ -34,7 +33,11 @@ export class RequestAdblockView extends LegacyWrapper.LegacyWrapper
         render(
           html` ${Object.entries(adblockInfo ? adblockInfo : {}).map(
             ([key, value]) => {
-              return this.#renderRow(key, `${value}`)
+              const displayValue =
+                value && typeof value === 'object'
+                  ? JSON.stringify(value)
+                  : `${value}`
+              return this.#renderRow(key, displayValue)
             }
           )}`,
           this.#shadow,

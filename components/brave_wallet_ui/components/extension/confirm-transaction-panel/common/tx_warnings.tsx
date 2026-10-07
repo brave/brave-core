@@ -117,8 +117,8 @@ export function TransactionWarnings({
         >
           {getLocale(
             classifyAs === 'risks'
-              ? 'braveWalletFoundRisks'
-              : 'braveWalletFoundIssues',
+              ? S.BRAVE_WALLET_FOUND_RISKS
+              : S.BRAVE_WALLET_FOUND_ISSUES,
           ).replace('$1', warnings.length.toString())}
         </CollapseTitle>
 
@@ -139,7 +139,7 @@ export function TransactionWarnings({
                 kind='plain'
                 onClick={onDismiss}
               >
-                {getLocale('braveWalletDismissButton')}
+                {getLocale(S.BRAVE_WALLET_DISMISS_BUTTON)}
               </DismissButton>
             </Row>
           )}

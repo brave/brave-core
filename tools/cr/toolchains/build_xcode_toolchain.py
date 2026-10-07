@@ -72,16 +72,24 @@ import tarfile
 from pathlib import Path
 
 import yaml
-from rich.progress import (BarColumn, DownloadColumn, Progress,
-                           TaskProgressColumn, TextColumn, TimeRemainingColumn,
-                           TransferSpeedColumn)
+from rich.progress import (
+    BarColumn,
+    DownloadColumn,
+    Progress,
+    TaskProgressColumn,
+    TextColumn,
+    TimeRemainingColumn,
+    TransferSpeedColumn,
+)
 
 # This is necessary because these scripts are used be brockit too.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from cherry_picks import _check_call  # pylint: disable=wrong-import-position
 from ephemeral_xcode import (  # pylint: disable=wrong-import-position
-    EphemeralXcode, MacSdkInfo)
+    EphemeralXcode,
+    MacSdkInfo,
+)
 import gitiles  # pylint: disable=wrong-import-position
 import toolchain_publish  # pylint: disable=wrong-import-position
 from upload import sha256_file  # pylint: disable=wrong-import-position
@@ -90,7 +98,8 @@ from upload import sha256_file  # pylint: disable=wrong-import-position
 # this script only to produce a log line with resulting URL.
 PACKAGE_DOWNLOAD_URL_BASE = (
     'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws/'
-    'xcode-hermetic-toolchain/')
+    'xcode-hermetic-toolchain/'
+)
 
 TOOLCHAIN_BUCKET = 'brave-build-deps-internal'
 TOOLCHAIN_BUCKET_PREFIX = 'xcode-hermetic-toolchain'
@@ -165,8 +174,10 @@ def toolchain_archive_name(sdk_info: MacSdkInfo) -> str:
     The deployed Xcode always ships the exact SDK pinned in `mac_sdk.gni`, so
     this pair alone uniquely identifies the toolchain archive.
     """
-    return (f'xcode-hermetic-toolchain-{sdk_info.sdk_version}'
-            f'-{sdk_info.product_build_version}.tar.gz')
+    return (
+        f'xcode-hermetic-toolchain-{sdk_info.sdk_version}'
+        f'-{sdk_info.product_build_version}.tar.gz'
+    )
 
 
 def toolchain_index_name(sdk_info: MacSdkInfo) -> str:
@@ -216,9 +227,7 @@ class ToolchainBuilder:
        `self._staged_xcode` into the output `.tar.gz` with
        `_normalize_tar_entry` applied so the bytes are reproducible
        across hosts.
-    5. **Index** (`_precheck_publishable` / `_write_index`): Refuses early
-       (right after reading the upstream SDK, before any heavy work) if an index
-       is already published, then writes a sibling YAML index recording the
+    5. **Index** (`_write_index`): Writes a sibling YAML index recording the
        archive URL, its SHA-256, and the Xcode provenance.
     6. **Upload** (`_upload`): With `--upload`, publishes the archive and its
        sibling index to `TOOLCHAIN_BUCKET`.
@@ -279,9 +288,11 @@ class ToolchainBuilder:
         """
         if self._upstream_mac_sdk_info is None:
             raise RuntimeError(
-                '_load_upstream_mac_sdk_info() must run before _archive_path')
+                '_load_upstream_mac_sdk_info() must run before _archive_path'
+            )
         return self._out_dir / toolchain_archive_name(
-            self._upstream_mac_sdk_info)
+            self._upstream_mac_sdk_info
+        )
 
     @property
     def _index_path(self) -> Path:
@@ -309,8 +320,7 @@ class ToolchainBuilder:
             logging.info('Removing existing stage at %s', self._staged_xcode)
             shutil.rmtree(self._staged_xcode)
         self._staged_xcode.mkdir(parents=True)
-        _check_call('cp', '-ac', f'{self._xcode.app}/',
-                    str(self._staged_xcode))
+        _check_call('cp', '-ac', f'{self._xcode.app}/', str(self._staged_xcode))
 
     def _add_metal_toolchain(self) -> None:
         """Download the Metal toolchain and graft it into the staged Xcode.
@@ -326,31 +336,44 @@ class ToolchainBuilder:
         `self._metal_build` for the index.
         """
         _check_call('xcodebuild', '-downloadComponent', 'metalToolchain')
-        metal_bin = _check_call('xcrun',
-                                '--find',
-                                'metal',
-                                capture_output=True).stdout.strip()
+        metal_bin = _check_call(
+            'xcrun', '--find', 'metal', capture_output=True
+        ).stdout.strip()
         self._metal_build = _metal_build_from_path(metal_bin)
-        logging.info('Metal toolchain build: %s', self._metal_build
-                     or '(unknown)')
+        logging.info(
+            'Metal toolchain build: %s', self._metal_build or '(unknown)'
+        )
         match = re.search(r'^(.*/Metal\.xctoolchain)/', metal_bin)
         if not match:
             raise RuntimeError(
                 'Could not derive Metal.xctoolchain from `xcrun --find '
-                f'metal` output: {metal_bin!r}')
+                f'metal` output: {metal_bin!r}'
+            )
         metal_dir = Path(match.group(1))
-        dest = (self._staged_xcode /
-                'Contents/Developer/Toolchains/XcodeDefault.xctoolchain' /
-                'usr')
+        dest = (
+            self._staged_xcode
+            / 'Contents/Developer/Toolchains/XcodeDefault.xctoolchain'
+            / 'usr'
+        )
         # Mirror the `usr/metal/` tree wholesale, including deletes — the
         # staged copy may already contain a stale Metal install.
-        _check_call('rsync', '--archive', '--delete',
-                    f'{metal_dir}/usr/metal/', f'{dest}/metal')
+        _check_call(
+            'rsync',
+            '--archive',
+            '--delete',
+            f'{metal_dir}/usr/metal/',
+            f'{dest}/metal',
+        )
         # Add the individual driver binaries into `usr/bin/`. No --delete
         # here: we are augmenting an existing bin/ directory, not mirroring.
-        _check_call('rsync', '--archive', f'{metal_dir}/usr/bin/air-lld',
-                    f'{metal_dir}/usr/bin/metal',
-                    f'{metal_dir}/usr/bin/metallib', f'{dest}/bin/')
+        _check_call(
+            'rsync',
+            '--archive',
+            f'{metal_dir}/usr/bin/air-lld',
+            f'{metal_dir}/usr/bin/metal',
+            f'{metal_dir}/usr/bin/metallib',
+            f'{dest}/bin/',
+        )
 
     def _load_upstream_mac_sdk_info(self) -> None:
         """Fetch the macOS SDK used in the Chromium tag provided.
@@ -359,17 +382,21 @@ class ToolchainBuilder:
         `mac_sdk_official_version` and `mac_sdk_official_build_version`
         from these sources, storing them in their corresponding fields.
         """
-        text = gitiles.fetch_chromium_file(self._chromium_tag,
-                                           'build/config/mac/mac_sdk.gni')
+        text = gitiles.fetch_chromium_file(
+            self._chromium_tag, 'build/config/mac/mac_sdk.gni'
+        )
         self._upstream_mac_sdk_info = MacSdkInfo.from_gni(text)
-        logging.info('Upstream macOS SDK version: %s (build %s)',
-                     self._upstream_mac_sdk_info.sdk_version,
-                     self._upstream_mac_sdk_info.product_build_version)
+        logging.info(
+            'Upstream macOS SDK version: %s (build %s)',
+            self._upstream_mac_sdk_info.sdk_version,
+            self._upstream_mac_sdk_info.product_build_version,
+        )
 
     def _fetch_pkg_def(self) -> str:
         """Fetch `xcode_binaries.yaml` from gitiles."""
-        return gitiles.fetch_chromium_file(self._chromium_tag,
-                                           'build/xcode_binaries.yaml')
+        return gitiles.fetch_chromium_file(
+            self._chromium_tag, 'build/xcode_binaries.yaml'
+        )
 
     def _read_entries(self) -> None:
         """Load the `data:` list from `xcode_binaries.yaml` in document order.
@@ -410,7 +437,8 @@ class ToolchainBuilder:
         """
         total_bytes = sum(
             _tree_size(self._staged_xcode / relpath)
-            for _, relpath in self._entries)
+            for _, relpath in self._entries
+        )
         progress = Progress(
             TextColumn('[progress.description]{task.description}'),
             BarColumn(),
@@ -433,7 +461,8 @@ class ToolchainBuilder:
                 if not source.exists() and not source.is_symlink():
                     raise FileNotFoundError(
                         f'pkg_def {kind}: {relpath!r} not found under '
-                        f'{self._staged_xcode}')
+                        f'{self._staged_xcode}'
+                    )
                 logging.debug('+ %s', relpath)
                 tar.add(source, arcname=relpath, filter=add_member)
 
@@ -447,34 +476,22 @@ class ToolchainBuilder:
         portably.
         """
         output = self._archive_path
-        logging.info('Packing %d entries from %s into %s', len(self._entries),
-                     self._staged_xcode, output)
-        with output.open('wb') as raw_fp, \
-             gzip.GzipFile(filename='', mode='wb', fileobj=raw_fp,
-                           mtime=0) as gz, \
-             tarfile.open(fileobj=gz, mode='w',
-                          format=tarfile.PAX_FORMAT) as tar:
+        logging.info(
+            'Packing %d entries from %s into %s',
+            len(self._entries),
+            self._staged_xcode,
+            output,
+        )
+        with (
+            output.open('wb') as raw_fp,
+            gzip.GzipFile(
+                filename='', mode='wb', fileobj=raw_fp, mtime=0
+            ) as gz,
+            tarfile.open(
+                fileobj=gz, mode='w', format=tarfile.PAX_FORMAT
+            ) as tar,
+        ):
             self._pack(tar)
-
-    def _precheck_publishable(self) -> None:
-        """Fail fast if this toolchain's index is already published.
-
-        This function check for the existence of an index already in place, and
-        if any is found, it throws an error.
-
-        At the moment, the index can only refer to a single toolchain per SDK
-        version/build pair, so checking for the file existence in the bucket is
-        enough.
-
-        This check is important to avoid accidentally overwriting a toolchain
-        that is already in use by Brave in the wild, as it can become incredibly
-        difficult to recover from such a mistake.
-        """
-        index_url = PACKAGE_DOWNLOAD_URL_BASE + self._index_path.name
-        if toolchain_publish.remote_url_exists(index_url):
-            raise RuntimeError(
-                f'An index already exists at {index_url}; this toolchain has '
-                'already been published.')
 
     def _write_index(self) -> None:
         """Write the sibling YAML index describing the just-built toolchain.
@@ -494,9 +511,6 @@ class ToolchainBuilder:
                                  if it could not be determined).
           * `chromium_tag`     — `--chromium-tag` the SDK pin was read from.
           * `brave_core_commit` — brave-core HEAD commit this script ran from.
-
-        The "already published" guard lives in `_precheck_publishable`, which
-        `run()` calls early.
 
         After writing, the index file is read back and printed in the console.
         """
@@ -521,9 +535,11 @@ class ToolchainBuilder:
 
     def _upload(self) -> None:
         """Upload the archive and its sibling index to the internal bucket."""
-        toolchain_publish.upload_files(TOOLCHAIN_BUCKET,
-                                       TOOLCHAIN_BUCKET_PREFIX,
-                                       (self._archive_path, self._index_path))
+        toolchain_publish.upload_files(
+            TOOLCHAIN_BUCKET,
+            TOOLCHAIN_BUCKET_PREFIX,
+            (self._archive_path, self._index_path),
+        )
 
     def run(self, clear: bool = False, upload: bool = False) -> None:
         """Execute the full inspect-stage-read-pack pipeline.
@@ -550,9 +566,8 @@ class ToolchainBuilder:
                 `Xcode.app`, if the selected Xcode build does not match the
                 resolved one, if `xcode-select` does not point at an
                 Xcode.app, if `xcodebuild` does not report all of Xcode /
-                Build version / SDKVersion / ProductBuildVersion, if
-                `xcrun --find metal` does not resolve to a `Metal.xctoolchain`,
-                or if a published index already exists for this toolchain.
+                Build version / SDKVersion / ProductBuildVersion, or if
+                `xcrun --find metal` does not resolve to a `Metal.xctoolchain`.
             urllib.error.HTTPError: If a gitiles fetch fails (typically a
                 bad `--chromium-tag`).
             subprocess.CalledProcessError: If any invoked tool
@@ -564,12 +579,12 @@ class ToolchainBuilder:
             shutil.rmtree(self._out_dir, ignore_errors=True)
         self._out_dir.mkdir(parents=True, exist_ok=True)
         self._load_upstream_mac_sdk_info()
-        self._precheck_publishable()
         assert self._upstream_mac_sdk_info is not None
         # The deployed Xcode is the active one only inside this block; on exit
         # `deploy()` always reverts the selection with `xcode-select --reset`.
-        with self._xcode.deploy(self._upstream_mac_sdk_info,
-                                skip_developer_mode_check=True):
+        with self._xcode.deploy(
+            self._upstream_mac_sdk_info, skip_developer_mode_check=True
+        ):
             self._stage_xcode()
             self._add_metal_toolchain()
             self._read_entries()
@@ -585,38 +600,48 @@ class ToolchainBuilder:
 
 def main(argv: list[str] | None = None) -> int:
     """Parse CLI arguments and pack the toolchain."""
-    parser = argparse.ArgumentParser(description=(
-        'Builds a .tar.gz archive of a hermetic Xcode toolchain.'))
+    parser = argparse.ArgumentParser(
+        description=('Builds a .tar.gz archive of a hermetic Xcode toolchain.')
+    )
     parser.add_argument(
         '--out-dir',
         required=True,
         type=Path,
         help='Directory used to build the toolchain and produce the resulting '
-        '.tar.gz archive with the toolchain in it.')
+        '.tar.gz archive with the toolchain in it.',
+    )
     parser.add_argument(
         '--chromium-tag',
         required=True,
         help='Chromium release tag (e.g. 150.0.7841.1) used to fetch details'
-        'about the pinned SDK version to be archived.')
+        'about the pinned SDK version to be archived.',
+    )
     parser.add_argument(
         '--clear',
         action='store_true',
-        help='Makes sure the output directory is empty before building.')
+        help='Makes sure the output directory is empty before building.',
+    )
     parser.add_argument(
         '--upload',
         action='store_true',
         help=f'Upload the archive and its sibling index to the internal '
-        f'build-deps bucket ({TOOLCHAIN_BUCKET}) after building.')
-    parser.add_argument('--verbose',
-                        action='store_true',
-                        help='Log every archive member at DEBUG level.')
+        f'build-deps bucket ({TOOLCHAIN_BUCKET}) after building.',
+    )
+    parser.add_argument(
+        '--verbose',
+        action='store_true',
+        help='Log every archive member at DEBUG level.',
+    )
     args = parser.parse_args(argv)
 
-    logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO,
-                        format='%(message)s')
+    logging.basicConfig(
+        level=logging.DEBUG if args.verbose else logging.INFO,
+        format='%(message)s',
+    )
 
-    ToolchainBuilder(args.chromium_tag, args.out_dir).run(clear=args.clear,
-                                                          upload=args.upload)
+    ToolchainBuilder(args.chromium_tag, args.out_dir).run(
+        clear=args.clear, upload=args.upload
+    )
     return 0
 
 

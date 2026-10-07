@@ -34,39 +34,44 @@ def main(argv):
     check_tmp_dir()
     tool, args = basename(argv[0]), argv[1:]
     host, src_dir_on_host, keychain_pw, keychain_path = read_env_vars(tool)
-    remote_commands = get_remote_commands(tool, args, os.getcwd(),
-                                          src_dir_on_host, keychain_pw,
-                                          keychain_path)
+    remote_commands = get_remote_commands(
+        tool, args, os.getcwd(), src_dir_on_host, keychain_pw, keychain_path
+    )
     exit_code = run_via_ssh(host, remote_commands)
     return get_outer_exit_code(tool, args, exit_code)
 
 
 def check_tmp_dir():
     tmp_dir = gettempdir()
-    assert tmp_dir.startswith(SRC_DIR), \
-        f'The root temporary directory {tmp_dir} must be a subdirectory of ' \
-        f'{SRC_DIR} - otherwise, the macOS host cannot access it. ' \
+    assert tmp_dir.startswith(SRC_DIR), (
+        f'The root temporary directory {tmp_dir} must be a subdirectory of '
+        f'{SRC_DIR} - otherwise, the macOS host cannot access it. '
         f'Consider setting the TMPDIR environment variable.'
+    )
 
 
 def read_env_vars(tool):
     host = require_env_var('MACOS_HOST')
     src_dir_on_host = require_env_var('MACOS_SRC_DIR_MOUNT')
-    keychain_pw = \
+    keychain_pw = (
         require_env_var('KEYCHAIN_PASSWORD') if requires_keychain(tool) else ''
+    )
     keychain_path = os.getenv('KEYCHAIN_PATH', '')
     return host, src_dir_on_host, keychain_pw, keychain_path
 
 
-def get_remote_commands(tool, args, cwd, src_dir_on_host, keychain_pw,
-                        keychain_path):
+def get_remote_commands(
+    tool, args, cwd, src_dir_on_host, keychain_pw, keychain_path
+):
     result = []
     cwd_on_host = join(src_dir_on_host, relpath(cwd, SRC_DIR))
     result.append(['cd', quote(cwd_on_host)])
     if requires_keychain(tool):
         unlock_keychain_cmd = [
-            'security', 'unlock-keychain', '-p',
-            quote(keychain_pw)
+            'security',
+            'unlock-keychain',
+            '-p',
+            quote(keychain_pw),
         ]
         if keychain_path:
             unlock_keychain_cmd.append(quote(keychain_path))
@@ -89,7 +94,7 @@ def get_commands_via_tmpfile(tool, args):
     # correct destination.
     result = [['tempfile=$(mktemp)']]
     dest, dest_index = get_destination_arg(args)
-    new_args = args[:dest_index] + ['$tempfile'] + args[dest_index + 1:]
+    new_args = args[:dest_index] + ['$tempfile'] + args[dest_index + 1 :]
     result.append([tool] + new_args)
     result.append(['mv', '$tempfile', dest])
     return result

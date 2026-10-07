@@ -26,7 +26,6 @@ extension WalletStore {
       let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: privateMode),
       let assetRatioService = BraveWallet.AssetRatioServiceFactory.get(privateMode: privateMode),
       let walletService = BraveWallet.ServiceFactory.get(privateMode: privateMode),
-      let swapService = BraveWallet.SwapServiceFactory.get(privateMode: privateMode),
       let txService = BraveWallet.TxServiceFactory.get(privateMode: privateMode),
       let ethTxManagerProxy = BraveWallet.EthTxManagerProxyFactory.get(privateMode: privateMode),
       let solTxManagerProxy = BraveWallet.SolanaTxManagerProxyFactory.get(privateMode: privateMode),
@@ -51,7 +50,6 @@ extension WalletStore {
       rpcService: rpcService,
       walletService: walletService,
       assetRatioService: assetRatioService,
-      swapService: swapService,
       blockchainRegistry: BraveWalletAPI.blockchainRegistry,
       txService: txService,
       ethTxManagerProxy: ethTxManagerProxy,
@@ -76,7 +74,6 @@ extension CryptoStore {
       let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: privateMode),
       let assetRatioService = BraveWallet.AssetRatioServiceFactory.get(privateMode: privateMode),
       let walletService = BraveWallet.ServiceFactory.get(privateMode: privateMode),
-      let swapService = BraveWallet.SwapServiceFactory.get(privateMode: privateMode),
       let txService = BraveWallet.TxServiceFactory.get(privateMode: privateMode),
       let ethTxManagerProxy = BraveWallet.EthTxManagerProxyFactory.get(privateMode: privateMode),
       let solTxManagerProxy = BraveWallet.SolanaTxManagerProxyFactory.get(privateMode: privateMode),
@@ -101,7 +98,6 @@ extension CryptoStore {
       rpcService: rpcService,
       walletService: walletService,
       assetRatioService: assetRatioService,
-      swapService: swapService,
       blockchainRegistry: BraveWalletAPI.blockchainRegistry,
       txService: txService,
       ethTxManagerProxy: ethTxManagerProxy,
@@ -208,7 +204,7 @@ extension BrowserViewController: BraveWalletDelegate {
     walletHostingController.delegate = self
 
     switch presentWalletWithContext {
-    case .default, .settings:
+    case .settings:
       // Dismiss Wallet Panel first, then present Wallet
       self.dismiss(animated: true) { [weak self] in
         self?.present(walletHostingController, animated: true)

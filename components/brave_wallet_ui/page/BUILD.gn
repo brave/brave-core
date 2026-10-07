@@ -25,6 +25,7 @@ transpile_web_ui("brave_wallet_page_ui") {
     "//brave/components/brave_rewards/core/mojom:webui_js",
     "//brave/components/brave_wallet/common:mojom_js",
     "//brave/components/brave_wallet/common:preprocess_mojo",
+    "//brave/components/resources:strings",
   ]
 }
 

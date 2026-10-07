@@ -105,6 +105,17 @@ GURL CreativeSearchResultAdClickedInfoBarDelegate::GetLinkURL() const {
   return GURL(kLearnMoreUrl);
 }
 
+bool CreativeSearchResultAdClickedInfoBarDelegate::ShouldExpire(
+    const NavigationDetails& details) const {
+  // Do not close the infobar on a redirect that may occur as part of the
+  // search result ad click's navigation.
+  if (details.is_redirect) {
+    return false;
+  }
+
+  return ConfirmInfoBarDelegate::ShouldExpire(details);
+}
+
 bool CreativeSearchResultAdClickedInfoBarDelegate::LinkClicked(
     WindowOpenDisposition disposition) {
   ConfirmInfoBarDelegate::LinkClicked(disposition);

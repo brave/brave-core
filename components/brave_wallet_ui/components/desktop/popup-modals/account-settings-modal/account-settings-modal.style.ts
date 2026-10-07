@@ -17,7 +17,7 @@ import ClipboardIcon from '../../../../assets/svg-icons/copy-to-clipboard-icon.s
 import { Text, WalletButton, Row, Column } from '../../../shared/style'
 import {
   layoutPanelWidth, //
-} from '../../wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const StyledWrapper = styled.div`
   display: flex;

@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">Valuta Brave</translation>
 <translation id="4104400246019119780">Grazie!</translation>
 <translation id="5202255382948179481">Aggiungi i tuoi suggerimenti</translation>
-<translation id="7759809451544302770">Opzionale</translation>
 <translation id="4748689412569009273">Usando un’emoji, come descriveresti la tua esperienza con Brave?</translation>
 <translation id="7335142069363686805">Valuta ora</translation>
 <translation id="6681362094306959654">Ti piace Brave?</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">Triste</translation>
 <translation id="5488843227043643519">Vuoi lasciare una valutazione nel Play Store?</translation>
 <translation id="5867854497245948308">Grazie per il feedback!</translation>
-<translation id="4935400164159327304">Dicci come possiamo migliorare Brave.</translation>
+<translation id="5578122562331038807">Dicci come possiamo migliorare Brave</translation>
+<translation id="1483493594462132177">Invia</translation>
+<translation id="3889034478061064651">Aggiungi i tuoi suggerimenti (facoltativo)</translation>
+<translation id="1769154760586570836">Feedback inviato. Grazie!</translation>
+<translation id="4450893287417543264">Non mostrare più</translation>
 <translation id="8966035543003363155">Le notifiche di Brave ti semplificano la vita</translation>
 <translation id="7662771815233894695">Puoi gestire i download, guadagnare dei token, consultare le statistiche di utilizzo settimanali, e non solo.</translation>
 <translation id="4265429476391459783">Non stai ottenendo ricompense o report sulla privacy</translation>
@@ -107,9 +110,9 @@
 <translation id="4176463684765177261">Disabilitato</translation>
 <translation id="59174027418879706">Attiva</translation>
 <translation id="6920492760024499150">Le storie più interessanti di oggi solo per te, in un feed privato.</translation>
-<translation id="8300751939969131609">Attiva News Brave e non perderti neanche una notizia</translation>
+<translation id="3803728444598576153">Attiva News Brave e non perderti neanche una notizia</translation>
 <translation id="7627131190984957214">News Brave utilizza annunci privati e anonimi che variano a seconda del dispositivo.</translation>
-<translation id="7699565323725789472">Segui le tue fonti preferite in un unico feed. Ti basta aprire una scheda su Brave, scorrere verso il basso e… voilà!\nLe News di Brave usano annunci anonimi e rispettosi della privacy.</translation>
+<translation id="7897050360583141319">Segui le tue fonti preferite in un unico feed. Ti basta aprire una scheda su Brave, scorrere verso il basso e… voilà!</translation>
 <translation id="1765217911817124376">Attiva le Notizie di Brave</translation>
 <translation id="8981973962043893066">Cerca siti, argomenti o feed RSS</translation>
 <translation id="3225021799163709119">Popolari</translation>
@@ -187,6 +190,9 @@
 <translation id="5987838417172370108">Contribuisci ad aumentare la stabilità di Brave inviando automaticamente i rapporti di diagnostica quando il browser di Brave si arresta in modo anomalo o resta bloccato.</translation>
 <translation id="7977176350719484850">Dati\nrisparmiati</translation>
 <translation id="9008534313521214777">Tempo stimato\nrisparmiato</translation>
+<translation id="5668852698659986622">Attiva gli annunci sponsorizzati</translation>
+<translation id="431194936581466649">Aiuta a sostenere la missione di Brave di costruire un Web indipendente e incentrato sull'utente con gli annunci sponsorizzati. Misuriamo le prestazioni degli annunci in modo privato, senza identificarti.</translation>
+<translation id="1939813747486101115">Scopri di più sugli Annunci sponsorizzati</translation>
 <translation id="8347743943525229984">Permetti i sondaggi di Brave</translation>
 <translation id="6022939994702081659">Permette a Brave di mostrare link a sondaggi anonimi nelle nuove schede. I sondaggi ci aiutano a migliorare le funzionalità del nostro browser e ci permettono di misurare l'efficacia delle nostre campagne pubblicitarie basate sui browser.</translation>
 <translation id="7746496306508543965">Scopri di più sui sondaggi di Brave</translation>
@@ -202,6 +208,7 @@
 <translation id="8026334261755873520">Cancella dati di navigazione</translation>
 <translation id="1690924763769415936">Audio di sottofondo</translation>
 <translation id="6332924730165919598">La chiusura di tutte le schede chiude Brave</translation>
+<translation id="2557725907027944082">Gruppi</translation>
 <translation id="8308305244351876417">Consente la riproduzione dell’audio quando si passa a un’altra scheda di Brave o a un’altra app, o quando lo schermo del dispositivo è spento.</translation>
 <translation id="49147335255967913">Apri i link di YouTube su Brave</translation>
 <translation id="4150201353443180367">Display</translation>
@@ -212,9 +219,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Maggiori informazioni su Widevine<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Consenti (riavvia ora)</translation>
 <translation id="2433507940547922241">Aspetto</translation>
+<translation id="316542773973815724">Navigazione</translation>
 <translation id="9040069796107003510">Icona di Ricompense Brave</translation>
 <translation id="6333347122924254968">Mostra l'icona di Ricompense Brave nella barra dell'indirizzo</translation>
-<translation id="1215433243238902715">Attiva la barra di navigazione inferiore</translation>
+<translation id="4393974575368329991">Barra di navigazione inferiore</translation>
+<translation id="1834226716203076292">Mostra una barra inferiore per un rapido accesso a home, segnalibri e ricerca</translation>
 <translation id="1422686363939271829">Questa impostazione è disabilitata quando è selezionata l'impostazione della posizione della barra di navigazione inferiore</translation>
 <translation id="6587448235155023666">I tuoi cambiamenti entreranno in vigore la prossima volta che rilancerai Brave</translation>
 <translation id="8701563696941209024">RILANCIA ORA</translation>
@@ -234,8 +243,7 @@
 <translation id="6188781052835527980">In caso di arresto anomalo o blocco, invia dei resoconti diagnostici anonimi.</translation>
 <translation id="4780647518983772446">Condividi informazioni di prodotto totalmente private e anonime su quali funzioni di Brave vengono utilizzate.</translation>
 <translation id="5109496672133133896">Informazioni di prodotto private</translation>
-<translation id="3545804467215833536">Tocca per visualizzare le protezioni di Brave</translation>
-<translation id="1724327820822194498">Guarda tutti gli elementi indesiderati che Brave ha bloccato con le protezioni su ogni pagina.</translation>
+<translation id="4340039903315468568">Guarda tutte le potenziali minacce bloccate da Brave in ogni singola pagina grazie alle Protezioni. Tocca per visualizzare</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> annunci e tracker bloccati</translation>
 <translation id="8281886186245836920">Salta</translation>
 <translation id="5806601733251372221">Scudi di Brave</translation>
@@ -245,7 +253,6 @@
 <translation id="6213254277250932867">Ho una frase di recupero da 12 parole</translation>
 <translation id="4225265925807365011">Ho una frase di recupero da 24 parole</translation>
 <translation id="3570367516044491911">Imposta come browser predefinito</translation>
-<translation id="6800338374677644736">Imposta come browser predefinito</translation>
 <translation id="1545749641540134597">Scansiona Codice QR</translation>
 <translation id="5317781812114905957">Istruzioni</translation>
 <translation id="8515319483805157233">Per eseguire una ricerca con codice QR, allinea al centro il codice QR.</translation>
@@ -277,8 +284,6 @@
 <translation id="5582839680698949063">Menu principale</translation>
 <translation id="7002271985859760052">Azioni pagina</translation>
 <translation id="7104487676473617844">I seguenti elementi saranno visibili nel menu solo quando supportati dalla pagina web attualmente aperta.</translation>
-<translation id="4159764849281393303">WebApp</translation>
-<translation id="8428213095426709021">Impostazioni</translation>
 <translation id="8038539967102225446">Gli annunci Brave sono qui!</translation>
 <translation id="222883304157347087">(questo dispositivo)</translation>
 <translation id="4157741509680155021">CATENA DEI DISPOSITIVI IN SINCRONIZZAZIONE</translation>
@@ -440,6 +445,7 @@ Confermi di voler procedere?</translation>
 <translation id="7141438739990875547">Reti Bitcoin</translation>
 <translation id="9055546041146396417">Se il sito appare malfunzionante, prova ad abbassare Shields.</translation>
 <translation id="7898672232170410330">Blocca elemento</translation>
+<translation id="7205939464631857223">Cancella tutti gli elementi bloccati</translation>
 <translation id="7961015016161918242">Mai</translation>
 <translation id="3200744626782631683">I dati di navigazione non vengono mai eliminati automaticamente</translation>
 <translation id="1991004083507807299">Schede del sito chiuse</translation>
@@ -502,7 +508,10 @@ Confermi di voler procedere?</translation>
 <translation id="3980704343258720102">Cancella tutti i dati di navigazione</translation>
 <translation id="8089997572759938512">Resetta a zero i report sulla privacy</translation>
 <translation id="2718046830255553131">Il resoconto dati privacy è stato cancellato.</translation>
-<translation id="8376263745431603066">Abilita "Modalità Notturna" (Sperimentale)</translation>
+<translation id="3623948252408240879">Modalità notturna</translation>
+<translation id="1257950165130031194">Forza la modalità scura per i contenuti web</translation>
+<translation id="8710601165725654801">Colori dinamici</translation>
+<translation id="7865194971711852999">Il tema dell'app corrisponde ai colori dello sfondo</translation>
 <translation id="1383876407941801731">Ricerca</translation>
 <translation id="13296465911709339">Il tuo testo è stato copiato negli appunti.</translation>
 <translation id="2735834606413553397">L’indirizzo pubblico è stato copiato negli appunti.</translation>
@@ -526,7 +535,6 @@ Confermi di voler procedere?</translation>
 <translation id="1822560017823072927">Interfacce pubbliche e private predefinite</translation>
 <translation id="5825943197137337319">Solamente l'interfaccia pubblica predefinita</translation>
 <translation id="1689062823386843231">Disabilita UDP senza proxy</translation>
-<translation id="1483493594462132177">Invia</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="4556086616242530072">Nativo per browser.\nSelf-custody.\nE multi-chain.</translation>
 <translation id="7909462264772842773">Assumi il controllo delle tue criptovalute e dei tuoi NFT. Portafoglio Brave supporta Ethereum, catene EVM, Solana, Filecoin e altro ancora.</translation>
@@ -602,7 +610,6 @@ Confermi di voler procedere?</translation>
 <translation id="569068482611873351">Importazione...</translation>
 <translation id="4522570452068850558">Dettagli</translation>
 <translation id="3114681061018999547">Importo protetto:</translation>
-<translation id="3784455785234192852">Blocca</translation>
 <translation id="4412698727486357573">Centro assistenza</translation>
 <translation id="8239147115686034860">Blocca automaticamente il portafoglio Brave</translation>
 <translation id="414639769490080648">Il numero di minuti di attesa per il blocco automatico del portafoglio Brave</translation>
@@ -714,6 +721,8 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="1634828734222219955">Totale</translation>
 <translation id="7995708795274219641">Importo + Gas</translation>
 <translation id="2186011161688824046">Importo + commissioni</translation>
+<translation id="1118876217803190221">Saldo insufficiente</translation>
+<translation id="275990379543116961">Fondi insufficienti per il gas</translation>
 <translation id="1950052789869821983">Transazione</translation>
 <translation id="2304783958703511257">Impostazioni avanzate</translation>
 <translation id="4220062530885628403">Nonce</translation>
@@ -722,7 +731,7 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="4979796155378508955">La transazione potrebbe non essere propagata nella rete se il valore nonce non è sequenziale o se contiene altri errori.</translation>
 <translation id="750843150060816463">Prezzo del Gas (Gwei)</translation>
 <translation id="1426320910664514906">Gas Limite</translation>
-<translation id="6389441740143786465">Disattiva hub di condivisione</translation>
+<translation id="1784950057929740513">Hub di condivisione</translation>
 <translation id="473775607612524610">Aggiorna</translation>
 <translation id="479795390141144417">Aggiornamento dell'account non riuscito.</translation>
 <translation id="8084782383392198011">Il nome dell'account non può essere vuoto.</translation>
@@ -797,10 +806,19 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="1060221736464994328">Consentire a questo sito di cambiare la rete?</translation>
 <translation id="2478788592457735063">Cambia la rete con una rete aggiunta in precedenza</translation>
 <translation id="8756686998207163764">Cambia rete</translation>
+<translation id="8905793906896555159">Abilita gruppi di schede</translation>
+<translation id="6735749683447943955">Disabilitare i gruppi di schede?</translation>
+<translation id="4616687974503500682">Eventuali gruppi esistenti verranno eliminati e le schede al loro interno diventeranno schede aperte e non raggruppate nella finestra del browser. Vuoi davvero continuare?</translation>
+<translation id="4394049700291259645">Disabilita</translation>
+<translation id="3859027502409073633">Mostra gruppi di schede sincronizzati</translation>
+<translation id="7632160823264702523">Barra dei gruppi di schede</translation>
+<translation id="2477807195394450274">Mostra una barra inferiore per un rapido accesso alle schede nel gruppo di schede attualmente aperto</translation>
+<translation id="8374720587111523381">Apri i link nel gruppo di schede corrente</translation>
 <translation id="5324095733417835490">Apri i link solo nel gruppo di schede corrente</translation>
-<translation id="2620277345862119868">Apre automaticamente tutti i link nel gruppo di schede corrente</translation>
+<translation id="1227658541937938697">Apri automaticamente tutti i link nel gruppo di schede corrente</translation>
 <translation id="5242300593039211344">Blocca il portafoglio</translation>
 <translation id="1108298724135935307">Siti connessi</translation>
+<translation id="8428213095426709021">Impostazioni</translation>
 <translation id="4255623233927788178">Visualizza sull'esploratore di blocchi</translation>
 <translation id="8274201358637112807">Questa pagina vuole interagire con il portafoglio di Brave</translation>
 <translation id="3355936511340229503">Errore di connessione</translation>
@@ -842,7 +860,6 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="6458565248779152483">Disattiva Brave VPN</translation>
 <translation id="9080536793704001825">Metti in pausa per 15 minuti</translation>
 <translation id="803706420145725977">Metti in pausa per 1 ora</translation>
-<translation id="4394049700291259645">Disabilita</translation>
 <translation id="7733890291091968191">Visualizza le notifiche Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave non tiene traccia dei tuoi comportamenti né sa come usi la nostra app, quindi non sappiamo come hai configurato la VPN. Condividi le informazioni sul problema che stai riscontrando e faremo del nostro meglio per risolverlo il prima possibile. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nNome host VPN\n <ph name="VALUE"/></translation>
@@ -1077,7 +1094,7 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="6393423486818299209">Utilizza il tuo provider di servizi attuale o Wikimedia DNS</translation>
 <translation id="3401384982562827787">Utilizza il tuo provider di servizi attuale o Cloudflare</translation>
 <translation id="8812367543786936496">Se il tuo provider di servizi attuale non è sicuro, Brave utilizza un provider DNS alternativo sicuro</translation>
-<translation id="1381108437654541567">Abilita finestre multiple</translation>
+<translation id="750538469281113679">Finestre multiple</translation>
 <translation id="6167344249617630304">Apri fino a 5 finestre alla volta e sposta le schede da una finestra all’altra</translation>
 <translation id="1063948063403254568">Finestre multiple rilevate</translation>
 <translation id="4661882208707630158">Unisci le schede in un’altra finestra Brave, oppure chiudi altre finestre Brave, prima di disabilitare la funzione finestre multiple.</translation>

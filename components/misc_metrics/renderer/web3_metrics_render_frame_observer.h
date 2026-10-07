@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_MISC_METRICS_RENDERER_WEB3_METRICS_RENDER_FRAME_OBSERVER_H_
 #define BRAVE_COMPONENTS_MISC_METRICS_RENDERER_WEB3_METRICS_RENDER_FRAME_OBSERVER_H_
 
+#include <memory>
 #include <optional>
 #include <string>
 
@@ -24,7 +25,19 @@ namespace misc_metrics {
 
 class Web3MetricsRenderFrameObserver : public content::RenderFrameObserver {
  public:
-  explicit Web3MetricsRenderFrameObserver(content::RenderFrame* render_frame);
+  // Reaches embedder state that this component layer can't see.
+  class Delegate {
+   public:
+    virtual ~Delegate() = default;
+
+    // Whether a wallet provider is being installed into pages. There is nothing
+    // to proxy while this is false, and the proxy is itself observable, so
+    // injection waits on it.
+    virtual bool IsWeb3Enabled() = 0;
+  };
+
+  Web3MetricsRenderFrameObserver(content::RenderFrame* render_frame,
+                                 std::unique_ptr<Delegate> delegate);
   Web3MetricsRenderFrameObserver(const Web3MetricsRenderFrameObserver&) =
       delete;
   Web3MetricsRenderFrameObserver& operator=(
@@ -51,6 +64,7 @@ class Web3MetricsRenderFrameObserver : public content::RenderFrameObserver {
   mojom::Web3Metrics& GetWeb3Metrics();
 
   GURL url_;
+  std::unique_ptr<Delegate> delegate_;
   std::string install_proxy_script_;
   mojo::Remote<mojom::Web3Metrics> web3_metrics_;
   base::WeakPtrFactory<Web3MetricsRenderFrameObserver> weak_ptr_factory_{this};

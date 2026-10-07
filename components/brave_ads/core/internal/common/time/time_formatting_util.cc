@@ -57,4 +57,23 @@ std::string TimeToPrivacyPreservingIso8601(base::Time time) {
                          exploded.month, exploded.day_of_month, exploded.hour);
 }
 
+std::string FormatApproximateDuration(base::TimeDelta delta) {
+  const int days = delta.InDays();
+  if (days >= 1) {
+    return absl::StrFormat("%d day%s", days, days == 1 ? "" : "s");
+  }
+
+  const int hours = delta.InHours();
+  if (hours >= 1) {
+    return absl::StrFormat("%d hour%s", hours, hours == 1 ? "" : "s");
+  }
+
+  const int minutes = delta.InMinutes();
+  if (minutes >= 1) {
+    return absl::StrFormat("%d minute%s", minutes, minutes == 1 ? "" : "s");
+  }
+
+  return "less than a minute";
+}
+
 }  // namespace brave_ads

@@ -7,6 +7,7 @@ import BraveCore
 import BraveStrings
 import DesignSystem
 import SwiftUI
+@_spi(Advanced) import SwiftUIIntrospect
 
 /// Content view for displaying message (and domain if applicable), as well as warning view
 /// if consecutive new lines or unknown characters are found.
@@ -176,7 +177,7 @@ struct SignMessageRequestContentView: View {
         Color(.secondarySystemGroupedBackground),
         in: RoundedRectangle(cornerRadius: 10, style: .continuous)
       )
-      .introspectTextView { textView in
+      .introspect(.textEditor, on: .iOS(.v18...)) { textView in
         // A flash to show users message is overflowing the text view (related to issue https://github.com/brave/brave-ios/issues/6277)
         if showOrignalMessage[request.id] == true {
           let currentRequestHasConsecutiveNewLines =

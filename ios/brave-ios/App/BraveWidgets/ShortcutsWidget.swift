@@ -158,43 +158,55 @@ extension WidgetShortcut {
       return Strings.Widgets.braveLeo
     case .askBrave:
       return Strings.Widgets.askBrave
+    case .braveLeoVoiceInput:
+      return Strings.Widgets.braveLeoVoiceInput
     @unknown default:
       assertionFailure()
       return ""
     }
   }
 
-  var image: Image {
+  var braveSystemImageName: String? {
     switch self {
     case .unknown:
-      assertionFailure()
-      return Image(systemName: "xmark.octagon")
+      return nil
     case .newTab:
-      return Image(braveSystemName: "leo.browser.mobile-tab-new")
+      return "leo.browser.mobile-tab-new"
     case .newPrivateTab:
-      return Image(braveSystemName: "leo.product.private-window")
+      return "leo.product.private-window"
     case .bookmarks:
-      return Image(braveSystemName: "leo.product.bookmarks")
+      return "leo.product.bookmarks"
     case .history:
-      return Image(braveSystemName: "leo.history")
+      return "leo.history"
     case .downloads:
-      return Image(braveSystemName: "leo.download")
+      return "leo.download"
     case .playlist:
-      return Image(braveSystemName: "leo.product.playlist")
+      return "leo.product.playlist"
     case .search:
-      return Image(braveSystemName: "leo.search")
+      return "leo.search"
     case .wallet:
-      return Image(braveSystemName: "leo.product.brave-wallet")
+      return "leo.product.brave-wallet"
     case .scanQRCode:
-      return Image(braveSystemName: "leo.qr.code")
+      return "leo.qr.code"
     case .braveNews:
-      return Image(braveSystemName: "leo.product.brave-news")
-    case .braveLeo, .askBrave:
-      return Image(braveSystemName: "leo.product.brave-leo")
+      return "leo.product.brave-news"
+    case .braveLeo:
+      return "leo.product.brave-leo"
+    case .askBrave:
+      return "leo.brave.ask"
+    case .braveLeoVoiceInput:
+      return "leo.leo.voice-input"
     @unknown default:
+      return nil
+    }
+  }
+
+  var image: Image {
+    guard let braveSystemImageName else {
       assertionFailure()
       return Image(systemName: "xmark.octagon")
     }
+    return Image(braveSystemName: braveSystemImageName)
   }
 }
 
@@ -215,7 +227,7 @@ private struct ShortcutsView: View {
               Text(Strings.Widgets.shortcutsEnterURLButton)
             } icon: {
               Image("brave-logo-no-bg-small")
-                .widgetAccentedRenderingModeFullColor()
+                .widgetAccentedRenderingMode(.fullColor)
             }
             .foregroundColor(Color(braveSystemName: .textPrimary))
             .frame(maxWidth: .infinity)
@@ -260,7 +272,7 @@ private struct ShortcutsView: View {
       .frame(maxHeight: .infinity)
     }
     .padding(8)
-    .widgetBackground { Color(UIColor(braveSystemName: .containerHighlight)) }
+    .containerBackground(for: .widget) { Color(UIColor(braveSystemName: .containerHighlight)) }
   }
 }
 
@@ -274,7 +286,10 @@ private struct ShortcutsView: View {
     ShortcutsWidget()
   },
   timeline: {
-    ShortcutEntry(date: .now, shortcutSlots: [.newTab, .newPrivateTab, .bookmarks])
+    ShortcutEntry(
+      date: .now,
+      shortcutSlots: [.newTab, .newPrivateTab, .braveLeoVoiceInput, .askBrave]
+    )
   }
 )
 

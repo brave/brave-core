@@ -92,7 +92,7 @@ interface BatAdsClient {
   Remove(string name) => (bool success);
 
   LoadResourceComponent(string id, int32 version) =>
-      (mojo_base.mojom.File? file);
+      (mojo_base.mojom.File? file, bool exists);
 
   ShowScheduledCaptcha(string payment_id, string captcha_id);
 
@@ -148,7 +148,12 @@ interface BatAds {
 
   GetInternals() => (mojo_base.mojom.DictionaryValue? value);
 
-  GetDiagnostics() => (mojo_base.mojom.ListValue? value);
+  GetDiagnostics() => (mojo_base.mojom.DictionaryValue? value);
+
+  EvaluateConditionMatcher(string pref_path,
+                       string condition,
+                       string? test_value) =>
+      (string current_value, string matches);
 
   GetStatementOfAccounts() => (brave_ads.mojom.StatementInfo? mojom_statement);
 
@@ -171,7 +176,7 @@ interface BatAds {
   MaybeGetSearchResultAd(string placement_id) =>
       (brave_ads.mojom.CreativeSearchResultAdInfo? search_result_ad);
   TriggerSearchResultAdEvent(
-      brave_ads.mojom.CreativeSearchResultAdInfo mojom_creative_ad,
+      brave_ads.mojom.CreativeSearchResultAdInfo? mojom_creative_ad,
       brave_ads.mojom.SearchResultAdEventType mojom_ad_event_type) =>
           (bool success);
 
@@ -199,10 +204,17 @@ interface AdsInternals {
   ClearAdsData() => (bool success);
   GetDiagnostics() => (string response);
   SetDiagnosticId(string diagnostic_id);
+  EvaluateConditionMatcher(string pref_path,
+                       string condition,
+                       string? test_value) =>
+      (string current_value, string matches);
 };
 
 interface AdsInternalsPage {
   UpdateBraveRewardsEnabled(bool enabled);
+  UpdateBraveRewardsWalletConnected(bool connected);
+  UpdateDidInitializeAdsService();
+  UpdateAdFormatSettings();
 };
 
 // Exposes the Brave Rewards diagnostic log to brave://ads-internals so it can

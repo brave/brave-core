@@ -19,8 +19,8 @@
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
@@ -72,7 +72,7 @@ class VPNButtonMenuModel : public ui::SimpleMenuModel,
                            public ui::SimpleMenuModel::Delegate,
                            public brave_vpn::BraveVpnServiceObserver {
  public:
-  explicit VPNButtonMenuModel(Browser* browser)
+  explicit VPNButtonMenuModel(BrowserWindowInterface* browser)
       : SimpleMenuModel(this),
         browser_(browser),
         service_(brave_vpn::BraveVpnServiceFactory::GetForProfile(
@@ -116,7 +116,7 @@ class VPNButtonMenuModel : public ui::SimpleMenuModel,
     }
   }
 
-  raw_ptr<Browser, DanglingUntriaged> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface, DanglingUntriaged> browser_ = nullptr;
   raw_ptr<brave_vpn::BraveVpnService, DanglingUntriaged> service_ = nullptr;
 };
 
@@ -170,7 +170,7 @@ class BraveVPNBadgeImageSource : public brave::BraveIconWithBadgeImageSource {
 
 }  // namespace
 
-BraveVPNButton::BraveVPNButton(Browser* browser)
+BraveVPNButton::BraveVPNButton(BrowserWindowInterface* browser)
     : ToolbarButton(base::BindRepeating(&BraveVPNButton::OnButtonPressed,
                                         base::Unretained(this)),
                     std::make_unique<VPNButtonMenuModel>(browser),

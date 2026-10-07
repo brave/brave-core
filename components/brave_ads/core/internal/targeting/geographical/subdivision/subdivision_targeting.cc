@@ -24,13 +24,13 @@ namespace {
 
 bool DoesRequireResourceForNewTabPageAds() {
   // Require resource only if:
-  // - The user has opted into new tab page ads and joined Brave Rewards.
-  return UserHasJoinedBraveRewards() && UserHasOptedInToNewTabPageAds();
+  // - New tab page ads are enabled and the user has joined Brave Rewards.
+  return UserHasJoinedBraveRewards() && IsNewTabPageAdsEnabled();
 }
 
 bool DoesRequireResource() {
   // Require resource only if:
-  // - The user has opted into new tab page ads and and joined Brave Rewards.
+  // - New tab page ads are enabled and the user has joined Brave Rewards.
   // - The user has joined Brave Rewards and notification ads are enabled.
   return DoesRequireResourceForNewTabPageAds() || IsNotificationAdsEnabled();
 }
@@ -221,7 +221,7 @@ void SubdivisionTargeting::OnNotifyPrefDidChange(const std::string& path) {
   } else if (path == prefs::kSubdivisionTargetingUserSelectedSubdivision) {
     UpdateUserSelectedSubdivision();
   } else if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path) ||
-             DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(path) ||
+             DoesMatchNewTabPageAdsEnabledPrefPath(path) ||
              DoesMatchNotificationAdsEnabledPrefPath(path)) {
     // This condition should include all the preferences that are present in the
     // `DoesRequireResource` function.

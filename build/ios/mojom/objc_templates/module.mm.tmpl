@@ -4,15 +4,20 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #import <Foundation/Foundation.h>
+#import <objc/runtime.h>
 #import "{{module_name}}.objc+private.h"
+#include <memory>
+#include <utility>
+#include <vector>
 #include "base/containers/flat_map.h"
+#include "base/notreached.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
-#include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
+#include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -31,6 +36,10 @@
 {%-   set name = const.name|objc_enum_formatter %}
 {{const.kind|objc_wrapper_type}} const {{class_prefix}}{{name}} = {{const|const_objc_assign}};
 {% endfor %}
+
+{%- for enum in nullable_enums %}
+{%    include "enum_box_implementation.tmpl" %}
+{%- endfor %}
 
 {%- if generate_namespace %}
 @implementation {{class_prefix}}

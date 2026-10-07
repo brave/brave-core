@@ -1,14 +1,14 @@
 diff --git a/components/browser_actuator/internal/features.cc b/components/browser_actuator/internal/features.cc
-index c96742b4266e2610cfb12b08f4e7abfe60fd947a..1c7a694e2484a1cf9c19b325677e01b6d7b700c3 100644
+index ffd3a19a0303dc367ae17d5cd3ba357e344f3f90..67cec85e10380856d755eb07a933802f2e0d8e72 100644
 --- a/components/browser_actuator/internal/features.cc
 +++ b/components/browser_actuator/internal/features.cc
-@@ -6,8 +6,9 @@
+@@ -30,8 +30,8 @@ const base::FeatureParam<std::string> kWatchSessionsPathParam{
  
- namespace browser_actuator {
+ BASE_FEATURE(kBrowserActuatorChannelEnabled, base::FEATURE_ENABLED_BY_DEFAULT);
  
-+// kBrowserActuatorProtoStreamTransport feature state is enforced via plaster rewrite.
- BASE_FEATURE(kBrowserActuatorProtoStreamTransport,
+-BASE_FEATURE(kBrowserActuatorProtoStreamTransport,
 -             base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kBrowserActuatorProtoStreamTransport,
 +             base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE_PARAM(base::TimeDelta,

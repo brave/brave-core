@@ -145,7 +145,7 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
       HostContentSettingsMapFactory::GetForProfile(profile);
 
   auto http_client = std::make_unique<HttpClient>(
-      *local_state,
+      *prefs, *local_state,
       default_store_partition->GetURLLoaderFactoryForBrowserProcess(),
       base::BindRepeating(&GetNetworkContextForProfile, context),
       /*use_ohttp_staging=*/IsStagingEnvironment(*prefs));
@@ -153,7 +153,7 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
   ProfileManager* const profile_manager = g_browser_process->profile_manager();
   CHECK(profile_manager);
 
-  return std::make_unique<AdsServiceImpl>(
+  auto ads_service = std::make_unique<AdsServiceImpl>(
       std::move(delegate), *prefs, *local_state,
       std::move(policy_initialization_waiter), std::move(http_client),
       std::make_unique<VirtualPrefProviderDelegate>(
@@ -168,6 +168,8 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
       rewards_service,
 #endif
       host_content_settings_map);
+  ads_service->Init();
+  return ads_service;
 }
 
 bool AdsServiceFactory::ServiceIsNULLWhileTesting() const {

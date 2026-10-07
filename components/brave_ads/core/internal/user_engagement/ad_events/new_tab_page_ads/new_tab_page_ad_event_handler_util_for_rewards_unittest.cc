@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -27,9 +27,18 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerUtilForRewardsTest,
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerUtilForRewardsTest,
-       IsNotAllowedToFireAdEvent) {
+       IsNotAllowedToFireAdEventWhenNewTabPageBackgroundImagesAreDisabled) {
   // Arrange
-  test::OptOutOfNewTabPageAds();
+  test::DisableNewTabPageBackgroundImages();
+
+  // Act & Assert
+  EXPECT_FALSE(IsAllowedToFireAdEvent());
+}
+
+TEST_F(BraveAdsNewTabPageAdEventHandlerUtilForRewardsTest,
+       IsNotAllowedToFireAdEventWhenSponsoredAdsAreDisabled) {
+  // Arrange
+  test::DisableSponsoredAds();
 
   // Act & Assert
   EXPECT_FALSE(IsAllowedToFireAdEvent());

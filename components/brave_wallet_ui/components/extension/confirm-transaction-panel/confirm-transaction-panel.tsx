@@ -126,6 +126,7 @@ export const ConfirmTransactionPanel = () => {
     isAccountSyncing,
     isShieldingFunds,
     isUnshieldingFunds,
+    isMigratingFunds,
   } = usePendingTransactions()
 
   // queries
@@ -268,7 +269,7 @@ export const ConfirmTransactionPanel = () => {
                         textColor='tertiary'
                         variant='small.regular'
                       >
-                        {getLocale('braveWalletNFTDetailContractAddress')}
+                        {getLocale(S.BRAVE_WALLET_NFT_DETAIL_CONTRACT_ADDRESS)}
                       </Text>
                       <ContractButton
                         onClick={onClickViewOnBlockExplorer(
@@ -344,13 +345,13 @@ export const ConfirmTransactionPanel = () => {
                     text={
                       <>
                         {getLocale(
-                          'braveWalletConfirmTransactionAccountCreationFee',
+                          S.BRAVE_WALLET_CONFIRM_TRANSACTION_ACCOUNT_CREATION_FEE,
                         )}{' '}
                         <LearnMoreButton
                           onClick={openAssociatedTokenAccountSupportArticleTab}
                         >
                           {getLocale(
-                            'braveWalletAllowAddNetworkLearnMoreButton',
+                            S.BRAVE_WALLET_ALLOW_ADD_NETWORK_LEARN_MORE_BUTTON,
                           )}
                         </LearnMoreButton>
                       </>
@@ -382,14 +383,16 @@ export const ConfirmTransactionPanel = () => {
                   textColor='error'
                   variant='small.semibold'
                 >
-                  {getLocale('braveWalletSystemProgramAssignWarningTitle')}
+                  {getLocale(
+                    S.BRAVE_WALLET_SYSTEM_PROGRAM_ASSIGN_WARNING_TITLE,
+                  )}
                 </Text>
                 <WarningText
                   textColor='error'
                   variant='small.regular'
                 >
                   {getLocale(
-                    'braveWalletSystemProgramAssignWarningDescription',
+                    S.BRAVE_WALLET_SYSTEM_PROGRAM_ASSIGN_WARNING_DESCRIPTION,
                   )}
                 </WarningText>
               </WarningBoxTitleRow>
@@ -469,6 +472,7 @@ export const ConfirmTransactionPanel = () => {
             isAccountSyncing={isAccountSyncing}
             isShieldingFunds={isShieldingFunds}
             isUnshieldingFunds={isUnshieldingFunds}
+            isMigratingFunds={isMigratingFunds}
           />
         </Column>
       </StyledWrapper>

@@ -6,16 +6,36 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 from PB.recipe_modules.brave.proto.examples.full import Config
 
 import post_process
+from recipe_api import RecipeScriptApi
+from recipe_modules import (
+    path,
+    proto,
+    step,
+)
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['path', 'proto', 'step']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    path: path.API
+    proto: proto.API
+    step: step.API
+
+
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    proto: proto.TEST_API
+
 
 CONFIG = Config(name='release', jobs=8)
 
 
-def RunSteps(api):
+def RunSteps(api: DEPS):
     # `input` renders to the path of a file holding the encoded message; each
     # codec picks its own file extension.
     api.step('cat json', ['cat', api.proto.input(CONFIG, api.proto.JSONPB)])
@@ -25,50 +45,71 @@ def RunSteps(api):
     # `output` goes the other way: the step writes the file, and the message
     # comes back parsed, filed under the module and method that produced it.
     for codec in (api.proto.JSONPB, api.proto.TEXTPB, api.proto.BINARY):
-        result = api.step(f'read {codec}',
-                          ['read', api.proto.output(Config, codec)])
+        result = api.step(
+            f'read {codec}', ['read', api.proto.output(Config, codec)]
+        )
         assert result.proto.output == CONFIG, result.proto.output
 
     # Several placeholders from one method are told apart by name.
-    result = api.step('read two', [
-        'read',
-        api.proto.output(Config, api.proto.JSONPB, name='a'),
-        api.proto.output(Config, api.proto.JSONPB, name='b')
-    ])
+    result = api.step(
+        'read two',
+        [
+            'read',
+            api.proto.output(Config, api.proto.JSONPB, name='a'),
+            api.proto.output(Config, api.proto.JSONPB, name='b'),
+        ],
+    )
     assert result.proto.outputs['a'].name == 'release'
     assert result.proto.outputs['b'].jobs == 4, result.proto.outputs['b']
 
     # A step that writes something unparseable, or nothing at all, results in
     # None rather than an exception.
     result = api.step(
-        'read garbage',
-        ['read', api.proto.output(Config, api.proto.JSONPB)])
+        'read garbage', ['read', api.proto.output(Config, api.proto.JSONPB)]
+    )
     assert result.proto.output is None, result.proto.output
-    result = api.step('read nothing', [
-        'read',
-        api.proto.output(Config,
-                         api.proto.JSONPB,
-                         leak_to=api.path.workspace / 'config.json')
-    ])
+    result = api.step(
+        'read nothing',
+        [
+            'read',
+            api.proto.output(
+                Config,
+                api.proto.JSONPB,
+                leak_to=api.path.workspace / 'config.json',
+            ),
+        ],
+    )
     assert result.proto.output is None, result.proto.output
 
     # Codec keyword arguments reach the encoder and decoder. Here the default
     # `preserving_proto_field_name` is turned off on the way out, and unknown
     # fields are made fatal on the way in.
-    api.step('cat camel', [
-        'cat',
-        api.proto.input(
-            CONFIG, api.proto.JSONPB, preserving_proto_field_name=False)
-    ])
-    result = api.step('read strict', [
-        'read',
-        api.proto.output(Config, api.proto.JSONPB, ignore_unknown_fields=False)
-    ])
+    api.step(
+        'cat camel',
+        [
+            'cat',
+            api.proto.input(
+                CONFIG, api.proto.JSONPB, preserving_proto_field_name=False
+            ),
+        ],
+    )
+    result = api.step(
+        'read strict',
+        [
+            'read',
+            api.proto.output(
+                Config, api.proto.JSONPB, ignore_unknown_fields=False
+            ),
+        ],
+    )
     assert result.proto.output is None, result.proto.output
 
     # An output placeholder also works as a step's stdout.
-    result = api.step('read stdout', ['read'],
-                      stdout=api.proto.output(Config, api.proto.JSONPB))
+    result = api.step(
+        'read stdout',
+        ['read'],
+        stdout=api.proto.output(Config, api.proto.JSONPB),
+    )
     assert result.stdout == CONFIG, result.stdout
 
     # `encode`/`decode` are the same codecs without a step in between.
@@ -76,7 +117,7 @@ def RunSteps(api):
     assert api.proto.decode(encoded, Config, api.proto.TEXTPB) == CONFIG
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     # A test seeds the message itself; the placeholder knows its own codec, so
     # nothing here has to mention the encoding.
     reads = [
@@ -95,8 +136,9 @@ def GenTests(api):
         api.step_data('read nothing', api.proto.backing_file_missing()),
         # A message carrying a field `Config` doesn't have: fatal here only
         # because the step asked for `ignore_unknown_fields=False`.
-        api.step_data('read strict',
-                      api.proto.invalid('{"name": "release", "extra": 1}')),
+        api.step_data(
+            'read strict', api.proto.invalid('{"name": "release", "extra": 1}')
+        ),
         api.step_data('read stdout', stdout=api.proto.output(CONFIG)),
         api.post_process(post_process.StatusSuccess),
     )
@@ -112,7 +154,8 @@ def GenTests(api):
         ),
         api.step_data(
             'read garbage',
-            api.proto.invalid(api.proto.encode(CONFIG, 'JSONPB')[:-1])),
+            api.proto.invalid(api.proto.encode(CONFIG, 'JSONPB')[:-1]),
+        ),
         api.step_data('read nothing', api.proto.backing_file_missing()),
         api.step_data('read stdout', stdout=api.proto.output(CONFIG)),
         api.step_data(
@@ -120,7 +163,10 @@ def GenTests(api):
             api.proto.invalid(
                 api.proto.encode(
                     api.proto.decode('name: "release"', Config, 'TEXTPB'),
-                    'JSONPB').replace('}', ', "extra": 1}'))),
+                    'JSONPB',
+                ).replace('}', ', "extra": 1}')
+            ),
+        ),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),
     )

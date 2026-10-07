@@ -218,7 +218,7 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
           justifyContent='center'
         >
           <ErrorMessage>
-            {getLocale('braveWalletNftFetchingError')}
+            {getLocale(S.BRAVE_WALLET_NFT_FETCHING_ERROR)}
           </ErrorMessage>
         </Row>
       </StyledWrapper>
@@ -233,7 +233,9 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
         spamTokenBalancesRegistry,
       ) && (
         <>
-          <Alert type='info'>{getLocale('braveWalletUnownedNftAlert')}</Alert>
+          <Alert type='info'>
+            {getLocale(S.BRAVE_WALLET_UNOWNED_NFT_ALERT)}
+          </Alert>
           <VerticalSpace space='24px' />
         </>
       )}
@@ -272,11 +274,15 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
         </NftMultimediaWrapper>
         <NftName>{selectedAsset.name}</NftName>
       </TopWrapper>
-      <SectionTitle>{getLocale('braveWalletNFTDetailsOverview')}</SectionTitle>
+      <SectionTitle>
+        {getLocale(S.BRAVE_WALLET_NFT_DETAILS_OVERVIEW)}
+      </SectionTitle>
       {ownerAddress && (
         <SectionWrapper>
           <InfoBox>
-            <InfoTitle>{getLocale('braveWalletNFTDetailsOwnedBy')}</InfoTitle>
+            <InfoTitle>
+              {getLocale(S.BRAVE_WALLET_NFT_DETAILS_OWNED_BY)}
+            </InfoTitle>
             <Row
               justifyContent='flex-start'
               gap='4px'
@@ -306,13 +312,15 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
             </Row>
             {ownerAccount ? (
               <ViewAccount onClick={() => onClickViewAccount(ownerAccount)}>
-                {getLocale('braveWalletNFTDetailsViewAccount')}
+                {getLocale(S.BRAVE_WALLET_NFT_DETAILS_VIEW_ACCOUNT)}
               </ViewAccount>
             ) : (
               <ViewAccount
                 onClick={onClickViewOnBlockExplorer('address', ownerAddress)}
               >
-                {getLocale('braveWalletPortfolioViewOnExplorerMenuLabel')}
+                {getLocale(
+                  S.BRAVE_WALLET_PORTFOLIO_VIEW_ON_EXPLORER_MENU_LABEL,
+                )}
               </ViewAccount>
             )}
           </InfoBox>
@@ -321,7 +329,9 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
       <SectionWrapper>
         {selectedAsset.tokenId !== '' && (
           <InfoBox>
-            <InfoTitle>{getLocale('braveWalletNFTDetailTokenID')}</InfoTitle>
+            <InfoTitle>
+              {getLocale(S.BRAVE_WALLET_NFT_DETAIL_TOKEN_ID)}
+            </InfoTitle>
             <Row
               justifyContent='flex-start'
               gap='4px'
@@ -340,7 +350,9 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
         )}
         {tokenNetwork && (
           <InfoBox>
-            <InfoTitle>{getLocale('braveWalletNFTDetailBlockchain')}</InfoTitle>
+            <InfoTitle>
+              {getLocale(S.BRAVE_WALLET_NFT_DETAIL_BLOCKCHAIN)}
+            </InfoTitle>
             <InfoText>{tokenNetwork?.chainName}</InfoText>
           </InfoBox>
         )}
@@ -348,7 +360,7 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
       <SectionWrapper>
         <InfoBox>
           <InfoTitle>
-            {getLocale('braveWalletNFTDetailContractAddress')}
+            {getLocale(S.BRAVE_WALLET_NFT_DETAIL_CONTRACT_ADDRESS)}
           </InfoTitle>
           <HighlightedButton onClick={onClickContractAddress}>
             <HighlightedText>
@@ -359,7 +371,7 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
         </InfoBox>
         <InfoBox>
           <InfoTitle>
-            {getLocale('braveWalletNFTDetailTokenStandard')}
+            {getLocale(S.BRAVE_WALLET_NFT_DETAIL_TOKEN_STANDARD)}
           </InfoTitle>
           <InfoText>{getNFTTokenStandard(selectedAsset)}</InfoText>
         </InfoBox>
@@ -370,7 +382,7 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
         ) : (
           <InfoBox>
             <InfoTitle>
-              {getLocale('braveWalletNFTDetailDescription')}
+              {getLocale(S.BRAVE_WALLET_NFT_DETAIL_DESCRIPTION)}
             </InfoTitle>
             <Description>
               {nftMetadata?.contractInformation?.description || '-'}
@@ -387,7 +399,7 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
         <>
           {nftMetadata?.attributes?.length !== 0 && (
             <SectionTitle>
-              {getLocale('braveWalletNFTDetailsProperties')}
+              {getLocale(S.BRAVE_WALLET_NFT_DETAILS_PROPERTIES)}
             </SectionTitle>
           )}
         </>

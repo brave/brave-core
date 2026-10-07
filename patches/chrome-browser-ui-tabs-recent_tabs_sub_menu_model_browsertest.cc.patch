@@ -1,12 +1,14 @@
 diff --git a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model_browsertest.cc b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model_browsertest.cc
-index a93c9cf8dddeac772305802f34f30a6597e3ec66..fb788908f2c9c51d452fc15fcb063a2cc88257cc 100644
+index dda3597fc95f7793eaefbdbe6e152615c101303c..bca741ba99155440a1368a1bb5a2a87735971711 100644
 --- a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model_browsertest.cc
 +++ b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model_browsertest.cc
-@@ -203,6 +203,7 @@ class RecentTabsSubMenuModelTest : public InProcessBrowserTest {
+@@ -204,6 +204,9 @@ class RecentTabsSubMenuModelTest : public InProcessBrowserTest {
      return new_browser;
    }
  
-+  BRAVE_RECENT_TABS_SUB_MENU_MODEL_TEST
++  void VerifyModel(const RecentTabsSubMenuModel& model, base::span<const ModelData> data);
++  void VerifyModel(const ui::MenuModel* model, base::span<const ModelData> data);
++
   private:
    std::unique_ptr<syncer::DataTypeProcessor> sync_processor_;
  };

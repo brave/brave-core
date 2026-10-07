@@ -30,7 +30,6 @@ inline constexpr auto kOFACSactionedISO31661CountryCodes =
         "KP",  // North Korea
         "MD",  // Moldova
         "RU",  // Russia
-        "SY",  // Syria
         "TZ",  // Tanzania
         "UA",  // Ukraine (includes Crimea, Donetsk, and Luhansk regions)
         "VE",  // Venezuela
@@ -43,7 +42,6 @@ inline constexpr auto kOFACSactionedISO31661CountryCodes =
         "MDA",  // Moldova
         "PRK",  // North Korea
         "RUS",  // Russia
-        "SYR",  // Syria
         "TZA",  // Tanzania
         "UKR",  // Ukraine (includes Crimea, Donetsk, and Luhansk regions)
         "VEN",  // Venezuela
@@ -56,7 +54,6 @@ inline constexpr auto kOFACSactionedISO31661CountryCodes =
         "408",  // North Korea
         "498",  // Moldova
         "643",  // Russia
-        "760",  // Syria
         "804",  // Ukraine (includes Crimea, Donetsk, and Luhansk regions)
         "834",  // Tanzania
         "862"   // Venezuela

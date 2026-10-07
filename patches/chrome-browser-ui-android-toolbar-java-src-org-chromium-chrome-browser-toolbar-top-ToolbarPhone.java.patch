@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 32041e70256cdcc770b1f9af7ab9cb7d2a0daeac..061400f3b5d4743d278f431f396eadf37dd9ce80 100644
+index efb5b0b4bb31f44a41da2934170d259d7aadbdc9..b11f5be05c5e311fd76ea737be354a79fb9c232d 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-@@ -284,8 +284,8 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -282,8 +282,8 @@ public class ToolbarPhone extends ToolbarLayout
      private @Nullable PhoneCaptureStateToken mPhoneCaptureStateToken;
      private @Nullable ButtonData mButtonData;
  
@@ -13,15 +13,15 @@ index 32041e70256cdcc770b1f9af7ab9cb7d2a0daeac..061400f3b5d4743d278f431f396eadf3
      private boolean mUseAdjustedTintColorForNtp;
      private boolean mIsToolbarExpandedOnNtp;
  
-@@ -595,6 +595,7 @@ public class ToolbarPhone extends ToolbarLayout
-         if (mOptionalButtonCoordinator != null) {
-             mOptionalButtonCoordinator.setBackgroundColorFilter(color);
-         }
-+        BraveToolbarLayout.class.cast(this).updateModernLocationBarColorImpl(color);
-     }
+@@ -573,6 +573,7 @@ public class ToolbarPhone extends ToolbarLayout
  
-     private void updateModernLocationBarCorners() {
-@@ -1285,6 +1286,7 @@ public class ToolbarPhone extends ToolbarLayout
+     /** Set the background color of the location bar to appropriately match the theme color. */
+     private void updateModernLocationBarColor(@ColorInt int color) {
++        BraveToolbarLayout.class.cast(this).updateModernLocationBarColorImpl(color);
+         if (mCurrentLocationBarColor == color) return;
+         mCurrentLocationBarColor = color;
+         mLocationBarBackground.setBackgroundColor(color);
+@@ -1281,6 +1282,7 @@ public class ToolbarPhone extends ToolbarLayout
       * Tab Page.
       */
      private void updateLocationBarLayoutForExpansionAnimation() {
@@ -29,7 +29,7 @@ index 32041e70256cdcc770b1f9af7ab9cb7d2a0daeac..061400f3b5d4743d278f431f396eadf3
          TraceEvent.begin("ToolbarPhone.updateLocationBarLayoutForExpansionAnimation");
          if (isInTabSwitcherMode()) return;
  
-@@ -1702,6 +1704,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -1697,6 +1699,7 @@ public class ToolbarPhone extends ToolbarLayout
              }
          }
  
@@ -37,7 +37,7 @@ index 32041e70256cdcc770b1f9af7ab9cb7d2a0daeac..061400f3b5d4743d278f431f396eadf3
          // Draw the tab stack button and associated text if necessary.
          ToggleTabStackButtonCoordinator tabSwitcherButtonCoordinator =
                  getTabSwitcherButtonCoordinator();
-@@ -2093,7 +2096,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -2089,7 +2092,7 @@ public class ToolbarPhone extends ToolbarLayout
  
      @Override
      public void onHomeButtonIsEnabledUpdate(boolean homeButtonEnabled) {
@@ -46,7 +46,7 @@ index 32041e70256cdcc770b1f9af7ab9cb7d2a0daeac..061400f3b5d4743d278f431f396eadf3
          updateButtonVisibility();
      }
  
-@@ -2498,6 +2501,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -2495,6 +2498,7 @@ public class ToolbarPhone extends ToolbarLayout
      }
  
      private void createAndRunFocusAnimatorLegacy(boolean hasFocus, boolean shouldShowKeyboard) {
@@ -54,3 +54,11 @@ index 32041e70256cdcc770b1f9af7ab9cb7d2a0daeac..061400f3b5d4743d278f431f396eadf3
          List<Animator> animators = new ArrayList<>();
          if (hasFocus) {
              populateUrlExpansionAnimatorSet(animators);
+@@ -3653,6 +3657,7 @@ public class ToolbarPhone extends ToolbarLayout
+      * @return The offset for the location bar when showing the dse icon.
+      */
+     int getLocationBarOffsetForFocusAnimation(boolean hasFocus) {
++        if (!urlHasFocus()) return 0;
+         StatusCoordinator statusCoordinator = mLocationBar.getStatusCoordinator();
+         if (statusCoordinator == null) return 0;
+ 

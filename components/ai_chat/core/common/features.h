@@ -168,11 +168,6 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<size_t> kMaxConsoleLogOutputSize;
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsCodeExecutionToolEnabled();
 
-#if BUILDFLAG(IS_IOS)
-COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatWebUIEnabled);
-COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatWebUIEnabled();
-#endif
-
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kShowAIChatInputOnNewTabPage);
 COMPONENT_EXPORT(AI_CHAT_COMMON)
@@ -186,6 +181,10 @@ COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatDeepResearchEnabled();
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kBraveSyncAIChat);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsBraveSyncAIChatEnabled();
 
+// Enables conversation threads, which allow new conversations to be branched
+// off from an existing conversation entry.
+COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatThreads);
+
 // Enables sharing a conversation from the conversation header.
 // https://github.com/brave/brave-browser/issues/56444
 COMPONENT_EXPORT(AI_CHAT_COMMON)
@@ -198,11 +197,24 @@ BASE_DECLARE_FEATURE(kAIChatConversationShare);
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<std::string> kAIChatConversationShareBaseUrl;
 
+// How long the sharing server keeps a shared conversation before deleting it.
+// Locally stored records of shares are purged on the same schedule so that the
+// share management UI doesn't list shares which no longer exist.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<int> kAIChatConversationShareExpiryDays;
+
 // Enables copying serialized conversation data as JSON to the clipboard when
 // using the alt+meta modifier keys and the "Copy entire conversation" menu
 // option.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kAIChatExportJSON);
+
+// Enables rendering LaTeX expressions in assistant responses as typeset math.
+// Kill switch: this changes how every assistant response is parsed, so it must
+// remain remotely disableable.
+// https://github.com/brave/brave-browser/issues/56523
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+BASE_DECLARE_FEATURE(kAIChatMathRendering);
 
 }  // namespace ai_chat::features
 

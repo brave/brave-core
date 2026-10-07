@@ -1,8 +1,8 @@
 diff --git a/tools/grit/preprocess_if_expr.py b/tools/grit/preprocess_if_expr.py
-index 35c1b20bc2c8310e0047c4ad982e220575c862d4..2f1b9749715c67e074dfd8ca97b5732a10a0cfbc 100644
+index 37ae315a57098537a2ccde8aed9c283598083dec..20caeeb0171c43581b5643c6661fdb56a64c0d13 100644
 --- a/tools/grit/preprocess_if_expr.py
 +++ b/tools/grit/preprocess_if_expr.py
-@@ -149,5 +149,6 @@ def main(argv):
+@@ -156,5 +156,6 @@ def main(argv):
    return
  
  

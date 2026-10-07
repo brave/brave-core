@@ -50,9 +50,7 @@ import {
 } from '../../../utils/pricing-utils'
 import { getBalance } from '../../../utils/balance-utils'
 import { getAssetIdKey } from '../../../utils/asset-utils'
-import {
-  networkEntityAdapter, //
-} from '../../../common/slices/entities/network.entity'
+import { getNetworkId } from '../../../common/slices/entities/network.entity'
 import { networkSupportsAccount } from '../../../utils/network-utils'
 import { getIsRewardsToken } from '../../../utils/rewards_utils'
 import {
@@ -75,13 +73,13 @@ import { LoadingSkeleton } from '../../../components/shared/loading-skeleton/ind
 import {
   SegmentedControl, //
 } from '../../../components/shared/segmented_control/segmented_control'
-import { PortfolioAssetItem } from '../../../components/desktop/portfolio-asset-item/index'
+import { PortfolioAssetItem } from '$wallet/page/components/portfolio_asset_item/portfolio_asset_item'
 import { TokenLists } from './components/token_lists/token_list'
 import {
   PortfolioOverviewChart, //
 } from './components/portfolio_overview_chart/portfolio_overview_chart'
 import ColumnReveal from '../../../components/shared/animated-reveals/column-reveal'
-import { Nfts } from '../../../components/desktop/views/nfts/components/nfts'
+import { Nfts } from '../nfts/nfts'
 import {
   BuySendSwapDepositNav, //
 } from './components/buy_send_swap_deposit_nav/buy_send_swap_deposit_nav'
@@ -93,11 +91,11 @@ import {
 } from '../transactions/transactions-screen'
 import {
   WalletPageWrapper, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   PortfolioOverviewHeader, //
-} from '../../../components/desktop/card-headers/portfolio-overview-header'
-import { Banners } from '../../../components/desktop/banners/banners'
+} from '$wallet/page/components/card_headers/portfolio_overview_header'
+import { Banners } from '$wallet/page/components/banners/banners'
 import {
   LastPricesUpdatedTooltip, //
 } from '../../../components/shared/last_prices_updated_tooltip/last_prices_updated_tooltip'
@@ -249,7 +247,7 @@ export const PortfolioOverview = () => {
     && externalRewardsNetwork
     && externalRewardsAccount
     && !filteredOutPortfolioNetworkKeys.includes(
-      networkEntityAdapter.selectId(externalRewardsNetwork).toString(),
+      getNetworkId(externalRewardsNetwork),
     )
 
   const accountsListWithRewards = React.useMemo(() => {
@@ -271,9 +269,7 @@ export const PortfolioOverview = () => {
   // filteredOutPortfolioNetworkKeys pref and visible networks.
   const visibleTokensForFilteredChains = React.useMemo(() => {
     return userTokensWithRewards.filter((token) =>
-      visiblePortfolioNetworkIds.includes(
-        networkEntityAdapter.selectId(token).toString(),
-      ),
+      visiblePortfolioNetworkIds.includes(getNetworkId(token)),
     )
   }, [userTokensWithRewards, visiblePortfolioNetworkIds])
 
@@ -428,7 +424,7 @@ export const PortfolioOverview = () => {
 
   const formattedFullPortfolioFiatBalance = React.useMemo(() => {
     return !fullPortfolioFiatBalance.isUndefined() && defaultFiat
-      ? fullPortfolioFiatBalance.formatAsFiat(defaultFiat)
+      ? fullPortfolioFiatBalance.compactAsFiat(defaultFiat)
       : ''
   }, [fullPortfolioFiatBalance, defaultFiat])
 
@@ -477,7 +473,7 @@ export const PortfolioOverview = () => {
       return ''
     }
 
-    return difference.formatAsFiat(defaultFiat, 2)
+    return difference.compactAsFiat(defaultFiat, 2)
   }, [defaultFiat, change])
 
   const isPortfolioDown = new Amount(percentageChange).lt(0)
@@ -531,7 +527,7 @@ export const PortfolioOverview = () => {
           value: parseFloat(
             item.fiatAmount.div(fullPortfolioFiatBalance).times(100).format(2),
           ),
-          fiatValue: item.fiatAmount.formatAsFiat(defaultFiat),
+          fiatValue: item.fiatAmount.compactAsFiat(defaultFiat),
         }))
 
       // Add "Other" if there are more than DISTRIBUTION_LIMIT
@@ -541,7 +537,7 @@ export const PortfolioOverview = () => {
           value: parseFloat(
             otherTotal.div(fullPortfolioFiatBalance).times(100).format(2),
           ),
-          fiatValue: otherTotal.formatAsFiat(defaultFiat),
+          fiatValue: otherTotal.compactAsFiat(defaultFiat),
         })
       }
 

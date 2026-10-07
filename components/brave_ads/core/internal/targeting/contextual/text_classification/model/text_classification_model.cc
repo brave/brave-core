@@ -6,9 +6,9 @@
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/model/text_classification_model.h"
 
 #include <algorithm>
-#include <iterator>
 
 #include "base/check.h"
+#include "base/containers/to_vector.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_types.h"
@@ -51,18 +51,12 @@ SegmentProbabilityList ToSortedSegmentProbabilityList(
 }
 
 SegmentList ToSegmentList(const SegmentProbabilityList& segment_probabilities) {
-  SegmentList segments;
-  segments.reserve(segment_probabilities.size());
-
-  std::transform(segment_probabilities.cbegin(), segment_probabilities.cend(),
-                 std::back_inserter(segments),
-                 [](const auto& segment_probability) {
-                   const auto& [segment, _] = segment_probability;
-                   CHECK(!segment.empty());
-                   return segment;
-                 });
-
-  return segments;
+  return base::ToVector(segment_probabilities,
+                        [](const auto& segment_probability) {
+                          const auto& [segment, _] = segment_probability;
+                          CHECK(!segment.empty());
+                          return segment;
+                        });
 }
 
 }  // namespace

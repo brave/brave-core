@@ -28,11 +28,17 @@
 /* The title of the screen which asks user to enable privacy preserving analytics. */
 "focusOnboarding.p3aScreenTitle" = "Pomôžte zlepšiť Brave";
 
-/* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
-"focusOnboarding.p3aToggleDescription" = "Odhlásiť sa môžete kedykoľvek v Nastaveniach v časti **Štíty a súkromie**. [Ďalšie informácie](#p3a-learn-more) o našej analýze produktov zachovávajúcej súkromie.";
+/* The description shown below the toggle for enabling privacy preserving analytics. */
+"focusOnboarding.p3aToggleDescription" = "Zdieľajte úplne súkromné a anonymné informácie o produkte o tom, ktoré funkcie používatelia Brave používajú.";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "private & anonymous" snippet should be bold in all languages */
-"focusOnboarding.p3aToggleTitle" = "Zdieľajte **súkromné & anonymné** informácie o produkte.";
+/* The title of the toggle that allows the user to enable/disable the privacy preserving analytics. */
+"focusOnboarding.p3aToggleTitle" = "Súkromné informácie o produktoch";
+
+/* The description shown below the toggle for enabling crash reporting. */
+"focusOnboarding.sendCrashReportsToggleDescription" = "Odošlite anonymné diagnostické správy, ak dôjde k zlyhaniu alebo zamrznutiu.";
+
+/* The title of the toggle that allows the user to enable/disable crash reporting. */
+"focusOnboarding.sendCrashReportsToggleTitle" = "Odoslať správy o zlyhaní";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Začať prehľadávanie";

@@ -7,8 +7,6 @@
 
 namespace brave_ads {
 
-BASE_FEATURE(kAntiTargetingFeature,
-             "AntiTargeting",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kAntiTargetingFeature, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace brave_ads

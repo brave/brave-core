@@ -12,6 +12,7 @@
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_education/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
@@ -22,6 +23,7 @@
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
@@ -39,6 +41,7 @@
 #include "brave/components/traffic_control/buildflags/buildflags.h"
 #include "brave/components/v8/buildflags/buildflags.h"
 #include "brave/components/webcompat/core/common/features.h"
+#include "brave/ui/webui/custom_profile_image/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/buildflags.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -61,8 +64,16 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/ads_internals/ads_internals_verbose_mode_feature.h"
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
 #include "brave/components/brave_news/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
+#include "brave/browser/ui/webui/custom_profile_image/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -86,6 +97,7 @@
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "chrome/browser/flags/android/chrome_feature_list.h"
 #else
+#include "brave/browser/ui/split_view/split_view_features.h"
 #include "brave/browser/ui/tabs/public/switches.h"
 #include "brave/browser/workspaces/features.h"
 #include "brave/components/commander/common/features.h"
@@ -125,6 +137,10 @@
 #include "brave/components/psst/core/common/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/components/brave_wayback_machine/features.h"
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/common/features.h"
 #endif
@@ -143,6 +159,20 @@
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
 
+#if BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
+#define BRAVE_CUSTOM_PROFILE_IMAGE_FEATURE_ENTRY                     \
+  EXPAND_FEATURE_ENTRIES({                                           \
+      "brave-custom-profile-image",                                  \
+      "Custom profile images",                                       \
+      "Enable custom profile images.",                               \
+      kOsWin | kOsLinux | kOsMac,                                    \
+      FEATURE_VALUE_TYPE(                                            \
+          custom_profile_image::features::kBraveCustomProfileImage), \
+  })
+#else
+#define BRAVE_CUSTOM_PROFILE_IMAGE_FEATURE_ENTRY
+#endif  // BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
+
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 const flags_ui::FeatureEntry::FeatureParam
     kZCashShieldedTransactionsDisabled[] = {
@@ -151,10 +181,35 @@ const flags_ui::FeatureEntry::FeatureParam
 const flags_ui::FeatureEntry::FeatureParam kZCashShieldedTransactionsEnabled[] =
     {{"zcash_shielded_transactions_enabled", "true"}};
 
+const flags_ui::FeatureEntry::FeatureParam kZCashIronwoodEnabled[] = {
+    {"zcash_ironwood_enabled", "true"},
+    {"zcash_shielded_transactions_enabled", "true"}};
+
 const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
     {"- Shielded support disabled", kZCashShieldedTransactionsDisabled,
      nullptr},
-    {"- Shielded support enabled", kZCashShieldedTransactionsEnabled, nullptr}};
+    {"- Shielded support enabled", kZCashShieldedTransactionsEnabled, nullptr},
+    {"- Ironwood support enabled", kZCashIronwoodEnabled, nullptr}};
+
+const flags_ui::FeatureEntry::FeatureParam kPolkadotAssetDiscoveryDisabled[] = {
+    {"polkadot_asset_discovery", "false"}};
+
+const flags_ui::FeatureEntry::FeatureParam kPolkadotAssetDiscoveryEnabled[] = {
+    {"polkadot_asset_discovery", "true"}};
+
+const flags_ui::FeatureEntry::FeatureParam kPolkadotDappSupportDisabled[] = {
+    {"polkadot_dapp_support", "false"}};
+
+const flags_ui::FeatureEntry::FeatureParam kPolkadotDappSupportEnabled[] = {
+    {"polkadot_dapp_support", "true"}};
+
+const flags_ui::FeatureEntry::FeatureVariation kPolkadotFeatureVariations[] = {
+    {"- Asset discovery disabled", kPolkadotAssetDiscoveryDisabled, nullptr},
+    {"- Asset discovery enabled", kPolkadotAssetDiscoveryEnabled, nullptr},
+    {"- dApp support disabled", kPolkadotDappSupportDisabled, nullptr},
+    {"- dApp support enabled", kPolkadotDappSupportEnabled, nullptr},
+};
+
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 #if defined(TOOLKIT_VIEWS)
@@ -234,13 +289,12 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
            kZCashFeatureVariations, "BraveWalletZCash")},                     \
       {                                                                       \
           "brave-wallet-polkadot",                                            \
-          "Enable experimental Brave Wallet Polkadot support",                \
-          "The Polkadot integration in Brave Wallet is currently in preview " \
-          "and under active development. This version should not be used "    \
-          "with real funds. Use at your own risk.",                           \
+          "Enable Brave Wallet Polkadot support",                             \
+          "Polkadot support for native Brave Wallet",                         \
           kOsDesktop,                                                         \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletPolkadotFeature),           \
+          FEATURE_WITH_PARAMS_VALUE_TYPE(                                     \
+              brave_wallet::features::kBraveWalletPolkadotFeature,            \
+              kPolkadotFeatureVariations, "BraveWalletPolkadot"),             \
       },                                                                      \
       {                                                                       \
           "brave-wallet-bitcoin",                                             \
@@ -348,6 +402,43 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
                    FEATURE_VALUE_TYPE(psst::features::kEnablePsst),    \
                }))
 
+#define ADS_INTERNALS_VERBOSE_MODE_FEATURE_ENTRIES                        \
+  IF_BUILDFLAG(                                                           \
+      ENABLE_BRAVE_ADS,                                                   \
+      EXPAND_FEATURE_ENTRIES({                                            \
+          "ads-internals-verbose-mode",                                   \
+          "Enable brave://ads-internals verbose mode",                    \
+          "Shows extra debugging tabs and tools on brave://ads-"          \
+          "internals.",                                                   \
+          kOsDesktop | kOsAndroid,                                        \
+          FEATURE_VALUE_TYPE(brave_ads::kAdsInternalsVerboseModeFeature), \
+      }))
+
+#define WAYBACK_MACHINE_FEATURE_ENTRIES                                       \
+  IF_BUILDFLAG(                                                               \
+      ENABLE_BRAVE_WAYBACK_MACHINE,                                           \
+      EXPAND_FEATURE_ENTRIES(                                                 \
+          {                                                                   \
+              "brave-wayback-machine-auto-show-bubble",                       \
+              "Auto-show Wayback Machine bubble",                             \
+              "Automatically show the Wayback Machine bubble when the "       \
+              "current "                                                      \
+              "page is missing (for example, a 404).",                        \
+              kOsWin | kOsMac | kOsLinux,                                     \
+              FEATURE_VALUE_TYPE(brave_wayback_machine::features::            \
+                                     kWaybackMachineAutoShowBubble),          \
+          },                                                                  \
+          {                                                                   \
+              "brave-wayback-machine-auto-check",                             \
+              "Wayback Machine auto-check",                                   \
+              "Allows automatically checking the Wayback Machine for an "     \
+              "archived "                                                     \
+              "version of a missing page.",                                   \
+              kOsWin | kOsMac | kOsLinux,                                     \
+              FEATURE_VALUE_TYPE(                                             \
+                  brave_wayback_machine::features::kWaybackMachineAutoCheck), \
+          }))
+
 #if !BUILDFLAG(IS_ANDROID)
 #define BRAVE_COMMANDS_FEATURE_ENTRIES                                      \
   EXPAND_FEATURE_ENTRIES(                                                   \
@@ -429,6 +520,26 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
       FEATURE_VALUE_TYPE(                                                      \
           preferences::features::kBraveBackgroundVideoPlayback),               \
   })
+#define BRAVE_YOUTUBE_FULLSCREEN_SETTINGS_WORKAROUND_ANDROID                 \
+  EXPAND_FEATURE_ENTRIES({                                                   \
+      "brave-youtube-fullscreen-settings-workaround",                        \
+      "Fix YouTube settings taps in fullscreen playback",                    \
+      "Work around a bug on m.youtube.com where taps of the video's gear "   \
+      "icon no-ops.",                                                        \
+      kOsAndroid,                                                            \
+      FEATURE_VALUE_TYPE(                                                    \
+          preferences::features::kBraveYoutubeFullscreenSettingsWorkaround), \
+  })
+#define BRAVE_YOUTUBE_FULLSCREEN_VIDEO_FIT_WORKAROUND_ANDROID                \
+  EXPAND_FEATURE_ENTRIES({                                                   \
+      "brave-youtube-fullscreen-video-fit-workaround",                       \
+      "YouTube fullscreen video fit workaround",                             \
+      "Fit m.youtube.com videos within the fullscreen viewport. "            \
+      "Overrides the video's zoom-to-fill layout.",                          \
+      kOsAndroid,                                                            \
+      FEATURE_VALUE_TYPE(                                                    \
+          preferences::features::kBraveYoutubeFullscreenVideoFitWorkaround), \
+  })
 #define BRAVE_SAFE_BROWSING_ANDROID                                           \
   EXPAND_FEATURE_ENTRIES({                                                    \
       "brave-safe-browsing",                                                  \
@@ -437,15 +548,6 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
       "marked as a known threat.",                                            \
       kOsAndroid,                                                             \
       FEATURE_VALUE_TYPE(safe_browsing::features::kBraveAndroidSafeBrowsing), \
-  })
-#define BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID                        \
-  EXPAND_FEATURE_ENTRIES({                                              \
-      "adaptive-button-in-toolbar",                                     \
-      "Adaptive Button In Toolbar (quick shortcut)",                    \
-      "Show quick shortcut button in toolbar. ",                        \
-      kOsAndroid,                                                       \
-      FEATURE_VALUE_TYPE(                                               \
-          chrome::android::kAdaptiveButtonInTopToolbarCustomizationV2), \
   })
 #define BRAVE_CUSTOM_SEARCH_ENGINES                                        \
   EXPAND_FEATURE_ENTRIES({                                                 \
@@ -466,8 +568,9 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
   })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
+#define BRAVE_YOUTUBE_FULLSCREEN_SETTINGS_WORKAROUND_ANDROID
+#define BRAVE_YOUTUBE_FULLSCREEN_VIDEO_FIT_WORKAROUND_ANDROID
 #define BRAVE_SAFE_BROWSING_ANDROID
-#define BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID
 #define BRAVE_CUSTOM_SEARCH_ENGINES
 #define BRAVE_ANDROID_TAB_GROUPS_SETTINGS
 #endif  // BUILDFLAG(IS_ANDROID)
@@ -497,71 +600,90 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
     {"400ms", tabs::switches::kVerticalTabCollapseDelaySwitch, "400"},
 };
 
-#define BRAVE_TABS_FEATURE_ENTRIES                                           \
-  EXPAND_FEATURE_ENTRIES(                                                    \
-      {                                                                      \
-          "brave-shared-pinned-tabs",                                        \
-          "Shared pinned tab",                                               \
-          "Pinned tabs are shared across windows",                           \
-          kOsWin | kOsMac | kOsLinux,                                        \
-          FEATURE_VALUE_TYPE(tabs::kBraveSharedPinnedTabs),                  \
-      },                                                                     \
-      {                                                                      \
-          "brave-horizontal-tabs-update",                                    \
-          "Updated horizontal tabs design",                                  \
-          "Updates the look and feel or horizontal tabs",                    \
-          kOsWin | kOsMac | kOsLinux,                                        \
-          FEATURE_VALUE_TYPE(tabs::kBraveHorizontalTabsUpdate),              \
-      },                                                                     \
-      {                                                                      \
-          "brave-vertical-tab-scroll-bar",                                   \
-          "Show scroll bar on vertical tab strip",                           \
-          "Shows scroll bar on vertical tab strip when it overflows",        \
-          kOsWin | kOsMac | kOsLinux,                                        \
-          FEATURE_VALUE_TYPE(tabs::kBraveVerticalTabScrollBar),              \
-      },                                                                     \
-      {                                                                      \
-          "brave-vertical-tab-hide-completely",                              \
-          "Brave Vertical Tab Hide Completely",                              \
-          "Hides the vertical tab strip when collapsed",                     \
-          kOsWin | kOsMac | kOsLinux,                                        \
-          FEATURE_VALUE_TYPE(tabs::kBraveVerticalTabHideCompletely),         \
-      },                                                                     \
-      {                                                                      \
-          "brave-vertical-tab-expand-delay",                                 \
-          "Brave Vertical Tab Expand Delay",                                 \
-          "Delay before expanding the vertical tab strip when hovering",     \
-          kOsWin | kOsMac | kOsLinux,                                        \
-          MULTI_VALUE_TYPE(kVerticalTabExpandDelayChoices),                  \
-      },                                                                     \
-      {                                                                      \
-          "brave-vertical-tab-collapse-delay",                               \
-          "Brave Vertical Tab Collapse Delay",                               \
-          "Delay before collapsing the vertical tab strip when mouse exits", \
-          kOsWin | kOsMac | kOsLinux,                                        \
-          MULTI_VALUE_TYPE(kVerticalTabCollapseDelayChoices),                \
-      },                                                                     \
-      {                                                                      \
-          "brave-tree-tab",                                                  \
-          "Brave Tree Tab",                                                  \
-          "Enables the Tree Tab feature",                                    \
-          kOsWin | kOsMac | kOsLinux,                                        \
-          FEATURE_VALUE_TYPE(tabs::kBraveTreeTab),                           \
-      },                                                                     \
-      {                                                                      \
-          "brave-scrollable-tab-strip",                                      \
-          "Scrollable horizontal tab strip",                                 \
-          "Enables scrolling for horizontal tab strip when tabs overflow",   \
-          kOsWin | kOsMac | kOsLinux,                                        \
-          FEATURE_VALUE_TYPE(tabs::kBraveScrollableTabStrip),                \
-      },                                                                     \
-      {                                                                      \
-          "brave-bring-all-tabs-to-this-window",                             \
-          "Bring all tabs to this window",                                   \
-          "Enables 'Bringing all tabs from other windows to this window' "   \
-          "from tab context menu",                                           \
-          kOsWin | kOsMac | kOsLinux,                                        \
-          FEATURE_VALUE_TYPE(tabs::kBraveBringAllTabsToThisWindow),          \
+constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
+    {"default", "", ""},
+    {"Force upstream vertical tabs",
+     tabs::switches::kVerticalTabMigrationSwitch,
+     tabs::switches::kVerticalTabMigrationForceUpstreamValue},
+    {"Reset to Brave vertical tabs",
+     tabs::switches::kVerticalTabMigrationSwitch,
+     tabs::switches::kVerticalTabMigrationResetValue},
+};
+
+#define BRAVE_TABS_FEATURE_ENTRIES                                            \
+  EXPAND_FEATURE_ENTRIES(                                                     \
+      {                                                                       \
+          "brave-shared-pinned-tabs",                                         \
+          "Shared pinned tab",                                                \
+          "Pinned tabs are shared across windows",                            \
+          kOsWin | kOsMac | kOsLinux,                                         \
+          FEATURE_VALUE_TYPE(tabs::kBraveSharedPinnedTabs),                   \
+      },                                                                      \
+      {                                                                       \
+          "brave-horizontal-tabs-update",                                     \
+          "Updated horizontal tabs design",                                   \
+          "Updates the look and feel or horizontal tabs",                     \
+          kOsWin | kOsMac | kOsLinux,                                         \
+          FEATURE_VALUE_TYPE(tabs::kBraveHorizontalTabsUpdate),               \
+      },                                                                      \
+      {                                                                       \
+          "brave-vertical-tab-scroll-bar",                                    \
+          "Show scroll bar on vertical tab strip",                            \
+          "Shows scroll bar on vertical tab strip when it overflows",         \
+          kOsWin | kOsMac | kOsLinux,                                         \
+          FEATURE_VALUE_TYPE(tabs::kBraveVerticalTabScrollBar),               \
+      },                                                                      \
+      {                                                                       \
+          "brave-vertical-tab-hide-completely",                               \
+          "Brave Vertical Tab Hide Completely",                               \
+          "Hides the vertical tab strip when collapsed",                      \
+          kOsWin | kOsMac | kOsLinux,                                         \
+          FEATURE_VALUE_TYPE(tabs::kBraveVerticalTabHideCompletely),          \
+      },                                                                      \
+      {                                                                       \
+          "brave-vertical-tab-expand-delay",                                  \
+          "Brave Vertical Tab Expand Delay",                                  \
+          "Delay before expanding the vertical tab strip when hovering",      \
+          kOsWin | kOsMac | kOsLinux,                                         \
+          MULTI_VALUE_TYPE(kVerticalTabExpandDelayChoices),                   \
+      },                                                                      \
+      {                                                                       \
+          "brave-vertical-tab-collapse-delay",                                \
+          "Brave Vertical Tab Collapse Delay",                                \
+          "Delay before collapsing the vertical tab strip when mouse exits",  \
+          kOsWin | kOsMac | kOsLinux,                                         \
+          MULTI_VALUE_TYPE(kVerticalTabCollapseDelayChoices),                 \
+      },                                                                      \
+      {                                                                       \
+          "brave-vertical-tab-migration",                                     \
+          "Brave Vertical Tab Migration (testing)",                           \
+          "Force-route to Chromium's native vertical tabs, or reset back to " \
+          "Brave's own vertical tabs. Internal testing of the migration "     \
+          "effort only - not a real user-facing setting.",                    \
+          kOsWin | kOsMac | kOsLinux,                                         \
+          MULTI_VALUE_TYPE(kVerticalTabMigrationChoices),                     \
+      },                                                                      \
+      {                                                                       \
+          "brave-tree-tab",                                                   \
+          "Brave Tree Tab",                                                   \
+          "Enables the Tree Tab feature",                                     \
+          kOsWin | kOsMac | kOsLinux,                                         \
+          FEATURE_VALUE_TYPE(tabs::kBraveTreeTab),                            \
+      },                                                                      \
+      {                                                                       \
+          "brave-scrollable-tab-strip",                                       \
+          "Scrollable horizontal tab strip",                                  \
+          "Enables scrolling for horizontal tab strip when tabs overflow",    \
+          kOsWin | kOsMac | kOsLinux,                                         \
+          FEATURE_VALUE_TYPE(tabs::kBraveScrollableTabStrip),                 \
+      },                                                                      \
+      {                                                                       \
+          "brave-bring-all-tabs-to-this-window",                              \
+          "Bring all tabs to this window",                                    \
+          "Enables 'Bringing all tabs from other windows to this window' "    \
+          "from tab context menu",                                            \
+          kOsWin | kOsMac | kOsLinux,                                         \
+          FEATURE_VALUE_TYPE(tabs::kBraveBringAllTabsToThisWindow),           \
       })
 
 #else
@@ -770,6 +892,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "conversation\" menu option.",                                       \
           kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatExportJSON),            \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-math-rendering",                                      \
+          "Brave AI Chat Math Rendering",                                      \
+          "Renders LaTeX expressions in assistant responses as typeset math.", \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatMathRendering),         \
       })
 #else
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES
@@ -962,6 +1091,20 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #define BRAVE_SIDEBAR_WEB_PANEL_FEATURE_ENTRY
 #endif
 
+#if defined(TOOLKIT_VIEWS)
+#define BRAVE_SPLIT_VIEW_LINK_FEATURE_ENTRY                                 \
+  EXPAND_FEATURE_ENTRIES({                                                  \
+      "brave-split-view-link",                                              \
+      "Brave Split View Link",                                              \
+      "When the split view is linked, navigations from the left pane open " \
+      "in the right pane.",                                                 \
+      kOsWin | kOsMac | kOsLinux,                                           \
+      FEATURE_VALUE_TYPE(split_view::features::kSplitViewLink),             \
+  })
+#else
+#define BRAVE_SPLIT_VIEW_LINK_FEATURE_ENTRY
+#endif
+
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
@@ -1125,14 +1268,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
               brave_shields::features::kBraveAdblockShowHiddenComponents),     \
       },                                                                       \
       {                                                                        \
-          "brave-dark-mode-block",                                             \
-          "Enable dark mode blocking fingerprinting protection",               \
-          "Always report light mode when fingerprinting protections set to "   \
-          "Strict",                                                            \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(brave_shields::features::kBraveDarkModeBlock),    \
-      },                                                                       \
-      {                                                                        \
           "brave-domain-block",                                                \
           "Enable domain blocking",                                            \
           "Enable support for blocking domains with an interstitial page",     \
@@ -1211,6 +1346,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               brave_shields::features::kBraveShieldsElementPicker),            \
+      },                                                                       \
+      {                                                                        \
+          "transition-to-upstream-https-upgrades",                             \
+          "Transition to use upstream HTTPS upgrades",                         \
+          "Transition to upstream HTTPS upgrade implementation instead of "    \
+          "Brave's own.",                                                      \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kTransitionToUpstreamHttpsUpgrades),    \
       },                                                                       \
       {                                                                        \
           "brave-farbling",                                                    \
@@ -1451,13 +1595,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(features::kBraveOverrideDownloadDangerLevel),     \
       },                                                                       \
       {                                                                        \
-          "brave-strip-downloaded-image-metadata",                             \
-          "Strip metadata from downloaded images",                             \
+          "brave-strip-image-metadata-v1",                                     \
+          "Strip tracking metadata from images",                               \
           "Removes tracking metadata, such as the Facebook IPTC identifiers, " \
-          "from JPEG and PNG images as they are downloaded.",                  \
+          "from images when they are downloaded/uploaded.",                    \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(image_metadata_stripper::features::               \
-                                 kStripDownloadedImageMetadata),               \
+          FEATURE_VALUE_TYPE(                                                  \
+              image_metadata_stripper::features::kStripImageMetadataV1),       \
       },                                                                       \
       {                                                                        \
           "brave-webcompat-exceptions-service",                                \
@@ -1537,15 +1681,18 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
   SPEEDREADER_FEATURE_ENTRIES                                                  \
   REQUEST_OTR_FEATURE_ENTRIES                                                  \
+  ADS_INTERNALS_VERBOSE_MODE_FEATURE_ENTRIES                                   \
   BRAVE_MODULE_FILENAME_PATCH                                                  \
   PLAYLIST_FEATURE_ENTRIES                                                     \
   BRAVE_COMMANDS_FEATURE_ENTRIES                                               \
   CONTAINERS_FEATURE_ENTRIES                                                   \
   TRAFFIC_CONTROL_FEATURE_ENTRIES                                              \
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
+  BRAVE_YOUTUBE_FULLSCREEN_SETTINGS_WORKAROUND_ANDROID                         \
+  BRAVE_YOUTUBE_FULLSCREEN_VIDEO_FIT_WORKAROUND_ANDROID                        \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
-  BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID                                     \
   BRAVE_ANDROID_TAB_GROUPS_SETTINGS                                            \
+  BRAVE_CUSTOM_PROFILE_IMAGE_FEATURE_ENTRY                                     \
   BRAVE_CUSTOM_SEARCH_ENGINES                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_FFMPEG_SOFTWARE_HEVC_DECODER_FEATURE_ENTRIES                           \
@@ -1567,6 +1714,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_EDUCATION_FEATURE_ENTRIES                                              \
   BRAVE_UPDATER_FEATURE_ENTRIES                                                \
   PSST_FEATURE_ENTRIES                                                         \
+  WAYBACK_MACHINE_FEATURE_ENTRIES                                              \
   BRAVE_FORCE_POPUP_TO_BE_OPENED_IN_NEW_TAB_FEATURE_ENTRY                      \
   EMAIL_ALIASES_FEATURE_ENTRIES                                                \
   BRAVE_WORKSPACE_FEATURE_ENTRY                                                \
@@ -1579,6 +1727,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   })                                                                           \
   BRAVE_SCREENSHOT_FEATURE_ENTRY                                               \
   BRAVE_SIDEBAR_WEB_PANEL_FEATURE_ENTRY                                        \
+  BRAVE_SPLIT_VIEW_LINK_FEATURE_ENTRY                                          \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {

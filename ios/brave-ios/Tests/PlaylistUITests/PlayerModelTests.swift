@@ -497,8 +497,6 @@ class PlayerModelTests: CoreDataTestCase {
     let folder = try await addFolder()
     await addMockItems(count: 10, to: folder)
 
-    let items = PlaylistItem.getItems(parentFolder: folder)
-
     let playerModel = PlayerModel(mediaStreamer: nil, initialPlaybackInfo: nil)
     playerModel.selectedFolderID = folder.id
     await playerModel.prepareItemQueue()
@@ -523,8 +521,6 @@ class PlayerModelTests: CoreDataTestCase {
   @MainActor func testSleepTimerEndOfItemCondition() async throws {
     let folder = try await addFolder()
     await addMockItems(count: 10, to: folder)
-
-    let items = PlaylistItem.getItems(parentFolder: folder)
 
     let playerModel = PlayerModel(mediaStreamer: nil, initialPlaybackInfo: nil)
     playerModel.selectedFolderID = folder.id

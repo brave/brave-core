@@ -14,8 +14,10 @@
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
+#include "base/json/values_util.h"
 #include "base/run_loop.h"
 #include "base/test/task_environment.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/test/fake_token_generator.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_state_manager.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/test/wallet_test_util.h"
@@ -23,12 +25,11 @@
 #include "brave/components/brave_ads/core/internal/common/operating_system/operating_system_types.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_path_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/command_line_switch_test_util_internal.h"
+#include "brave/components/brave_ads/core/internal/common/test/internal/local_state_pref_storage_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/mock_test_util_internal.h"
+#include "brave/components/brave_ads/core/internal/common/test/internal/profile_pref_storage_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/test_environment_util_internal.h"
-#include "brave/components/brave_ads/core/internal/common/test/local_state_pref_value_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/test/pref_registry_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/test/profile_pref_value_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_environment_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
@@ -36,6 +37,13 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_rewards/core/pref_registry.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
+#include "components/prefs/pref_registry_simple.h"
+#include "components/variations/pref_names.h"
 
 namespace brave_ads::test {
 
@@ -76,6 +84,9 @@ void TestBase::TearDown() {
   teardown_called_ = true;
 
   ResetCommandLineSwitches();
+
+  ResetProfilePrefServiceForTesting();
+  ResetLocalStatePrefServiceForTesting();
 }
 
 void TestBase::SetUp(bool is_integration_test) {
@@ -85,8 +96,37 @@ void TestBase::SetUp(bool is_integration_test) {
 
   SimulateCommandLineSwitches();
 
-  RegisterProfilePrefs();
-  RegisterLocalStatePrefs();
+  RegisterProfilePrefs(profile_prefs_.registry());
+  brave_rewards::RegisterProfilePrefs(profile_prefs_.registry());
+  profile_prefs_.registry()->RegisterBooleanPref(
+      ntp_background_images::prefs::kNewTabPageShowBackgroundImage, true);
+  SetProfilePrefServiceForTesting(profile_prefs_);
+
+  // Simulate a fully onboarded user (ads enabled, joined Rewards with a
+  // connected wallet) as the baseline for unit tests, overriding the
+  // conservative signed-out defaults `RegisterProfilePrefs` registers for a
+  // fresh profile. `SetDefaultPrefValue` is used rather than `Set` so that
+  // `HasProfilePrefPath` still reports `false` for these prefs unless a test
+  // explicitly sets them, matching production's "no user value yet"
+  // semantics.
+  profile_prefs_.SetDefaultPrefValue(prefs::kNotificationsEnabled,
+                                     base::Value(true));
+  profile_prefs_.SetDefaultPrefValue(brave_rewards::prefs::kEnabled,
+                                     base::Value(true));
+  profile_prefs_.SetDefaultPrefValue(brave_rewards::prefs::kExternalWalletType,
+                                     base::Value("connected"));
+
+  RegisterLocalStatePrefs(local_state_.registry());
+  local_state_.registry()->RegisterStringPref(
+      variations::prefs::kVariationsCountry, "US");
+  SetLocalStatePrefServiceForTesting(local_state_);
+
+  // `RegisterLocalStatePrefs` defaults `kFirstRunAt` to `Now()`, so campaigns
+  // would always appear to be within the grace period. Simulate a long-lived
+  // install so that tests are not affected by the grace period unless they
+  // opt in by setting `kFirstRunAt` themselves.
+  local_state_.SetDefaultPrefValue(prefs::kFirstRunAt,
+                                   base::TimeToValue(DistantPast()));
 
   MockAdsClientNotifier();
   MockAdsClient();
@@ -280,14 +320,16 @@ void TestBase::SetUpDefaultAdsServiceState(
   CHECK(GlobalState::HasInstance())
       << "Must be called after GlobalState is instantiated";
 
-  // Both the database+token path and the client state path are async; the
-  // barrier closure fires `initialized_callback` once both have completed.
-  auto barrier_closure =
-      base::BarrierClosure(/*num_closures=*/2, std::move(initialized_callback));
-
+  // Token state and client state are both database-backed, so both loads
+  // must wait until the database has been created or opened (and, if
+  // necessary, migrated) before they can query their tables. The barrier
+  // closure fires `initialized_callback` once both have completed.
   GlobalState::GetInstance()->GetDatabaseManager().CreateOrOpen(base::BindOnce(
-      [](const base::RepeatingClosure& barrier_closure, bool success) {
+      [](base::OnceClosure initialized_callback, bool success) {
         ASSERT_TRUE(success) << "Failed to create or open database";
+
+        auto barrier_closure = base::BarrierClosure(
+            /*num_closures=*/2, std::move(initialized_callback));
 
         GlobalState::GetInstance()->GetTokenStateManager().LoadState(
             base::BindOnce(
@@ -297,17 +339,17 @@ void TestBase::SetUpDefaultAdsServiceState(
                   barrier_closure.Run();
                 },
                 barrier_closure));
-      },
-      barrier_closure));
 
-  // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
-  // from using JSON state to a more efficient data approach.
-  GlobalState::GetInstance()->GetClientStateManager().LoadState(base::BindOnce(
-      [](const base::RepeatingClosure& barrier_closure, bool success) {
-        ASSERT_TRUE(success) << "Failed to load client state";
-        barrier_closure.Run();
+        GlobalState::GetInstance()->GetClientStateManager().LoadState(
+            base::BindOnce(
+                [](const base::RepeatingClosure& barrier_closure,
+                   bool success) {
+                  ASSERT_TRUE(success) << "Failed to load client state";
+                  barrier_closure.Run();
+                },
+                barrier_closure));
       },
-      barrier_closure));
+      std::move(initialized_callback)));
 }
 
 void TestBase::SetUpIntegrationTest() {
@@ -373,9 +415,7 @@ void TestBase::FlushImmediateTasks() {
   // sequence, even for fire-and-forget calls with `base::DoNothing`. Those
   // replies arrive with a 0ms delay and must be flushed so that callers see
   // only genuinely scheduled tasks.
-  if (task_environment_.NextMainThreadPendingTaskDelay().is_zero()) {
-    task_environment_.FastForwardBy(base::TimeDelta());
-  }
+  task_environment_.FastForwardBy(base::TimeDelta());
 }
 
 }  // namespace brave_ads::test

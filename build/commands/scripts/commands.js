@@ -19,13 +19,12 @@ import updatePatches from './updatePatches.js'
 import pullL10n from '../lib/pullL10n.js'
 import pushL10n from '../lib/pushL10n.js'
 import chromiumRebaseL10n from '../lib/chromiumRebaseL10n.js'
-import test from '../lib/test.ts'
 import gnCheck from '../lib/gnCheck.js'
 import genGradle from '../lib/genGradle.js'
 import perfTests from '../lib/perfTests.ts'
 import registerListAffectedTestsCommand from './listAffectedTests.js'
 import registerGenerateCoverageReportCommand from './generateCoverageReport.js'
-import { collect, parseInteger, parseBoolean } from '../lib/commandsUtils.ts'
+import { parseInteger, parseBoolean } from '../lib/commandsUtils.ts'
 import * as buildOptions from '../lib/buildOptions.ts'
 
 const parsedArgs = program.parseOptions(process.argv)
@@ -217,80 +216,6 @@ program
     'Allows regenerating patches, even for plaster managed sources.',
   )
   .action(updatePatches)
-
-program
-  .command('test <suite>')
-  .allowUnknownOption(true)
-  .allowExcessArguments(true)
-  .option('-C <build_dir>', 'build config (out/Debug, out/Release')
-  .option('--v [log_level]', 'set log level to [log_level]', parseInteger, 0)
-  .option('--vmodule [modules]', 'verbose log from specific modules')
-  .option('--filter <filter>', 'set test filter')
-  .option(
-    '--base [targetCommitRef]',
-    'use this commit/branch/tag as reference for change detection',
-  )
-  .option(
-    '--output_xml',
-    'indicates if test results xml output file(s) should be generated. '
-      + '<suite>.txt file will contain the list of xml files with results. '
-      + 'All output files are generated in the src directory',
-  )
-  .option('--disable_brave_extension', 'disable loading the Brave extension')
-  .option(
-    '--single_process',
-    'uses a single process to run tests to help with debugging',
-  )
-  .option(
-    '--test_launcher_jobs <test_launcher_jobs>',
-    'Number of jobs to launch',
-    parseInteger,
-    4,
-  )
-  .option('--target_os <target_os>', 'target OS')
-  .option('--target_arch <target_arch>', 'target architecture')
-  .option(
-    '--target_environment <target_environment>',
-    'target environment (device, catalyst, simulator)',
-  )
-  .option('--run_disabled_tests', 'run disabled tests')
-  .option(
-    '--manual_android_test_device',
-    'indicates that Android test device is run manually',
-  )
-  .option(
-    '--android_test_emulator_name <emulator_name',
-    'set name of the Android emulator for tests',
-    'android_33_google_apis_x64',
-  )
-  .option(
-    '--use_remoteexec [arg]',
-    'whether to use RBE for building',
-    parseBoolean,
-  )
-  .option(
-    '--ios_xcode_build_version <build_version>',
-    'xcode build version for ios',
-  )
-  .option(
-    '--ios_simulator_platform <simulator_platform>',
-    'platform to use for ios simulator',
-    'iPhone 17',
-  )
-  .option(
-    '--ninja <opt>',
-    'Additional Ninja command-line options, in the form <key>:<value>',
-    collect,
-    [],
-  )
-  .option(
-    '--ios_simulator_version <simulator_version>',
-    'ios version for simulator',
-    '26.2',
-  ) // should match ios_deployment_target
-  .option('--offline', 'use offline mode for RBE')
-  .apply(buildOptions.supportBuildConfigArg)
-  .action(test.bind(null, parsedArgs.unknown))
 
 program.command('mass_rename').action(util.massRename)
 

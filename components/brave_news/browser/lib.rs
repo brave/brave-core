@@ -13,7 +13,6 @@ use regex::Regex;
 #[cxx::bridge(namespace = brave_news)]
 mod ffi {
     pub struct FeedItem {
-        id: String,
         title: String,
         description: String,
         image_url: String,
@@ -22,7 +21,6 @@ mod ffi {
     }
 
     pub struct FeedData {
-        id: String,
         title: String,
         items: Vec<FeedItem>,
     }
@@ -109,10 +107,18 @@ fn parse_feed_bytes(source: &[u8], output: &mut ffi::FeedData) -> bool {
     output.title =
         if let Some(title) = feed.title { strip_html(&title.content) } else { String::new() };
     for feed_item_data in feed.entries {
-        // Check we can make a valid entry
+        // Atom only requires <updated> on an entry - <published> is optional
+        // (RFC 4287 4.2.15) and plenty of feeds omit it entirely - so fall
+        // back to it rather than dropping the entry.
+        let published = feed_item_data.published.or(feed_item_data.updated);
+        // Check we can make a valid entry. We can derive a title from the body
+        // if the entry has no title of its own, and the body may come from
+        // either <summary> or <content> (see below), so accept any of them.
         if feed_item_data.links.is_empty()
-            || feed_item_data.published.is_none()
-            || (feed_item_data.title.is_none() && feed_item_data.summary.is_none())
+            || published.is_none()
+            || (feed_item_data.title.is_none()
+                && feed_item_data.summary.is_none()
+                && feed_item_data.content.is_none())
         {
             // Ignore if we can't use this entry
             continue;
@@ -150,26 +156,44 @@ fn parse_feed_bytes(source: &[u8], output: &mut ffi::FeedData) -> bool {
             }
         }
 
-        let mut summary: String = String::new();
-        if feed_item_data.summary.is_some() {
-            summary = feed_item_data.summary.unwrap().content;
-        } else if feed_item_data.content.is_some() {
-            summary = feed_item_data.content.unwrap().body.unwrap_or_else(String::new);
+        // Atom feeds attach their representative image as a
+        // <link rel="enclosure">. feed-rs only folds enclosures into `media`
+        // for RSS, so for Atom we have to pick it out of the links ourselves.
+        // Enclosures also carry audio and video, so only accept one that
+        // declares an image media type.
+        if image_url.is_empty() {
+            if let Some(enclosure) = feed_item_data.links.iter().find(|link| {
+                link.rel.as_deref() == Some("enclosure")
+                    && link.media_type.as_deref().is_some_and(|t| t.starts_with("image/"))
+            }) {
+                image_url = enclosure.href.clone();
+            }
         }
+
+        // The <content> body, if any. Kept separately from the summary below so
+        // that we can still search it for an inline image.
+        let content_body = feed_item_data.content.and_then(|content| content.body);
+        // A dedicated <summary> is the publisher's intended teaser, so prefer
+        // it for the description, falling back to the full body.
+        let (summary, unsearched_body) = match feed_item_data.summary {
+            Some(item_summary) => (item_summary.content, content_body),
+            None => (content_body.unwrap_or_default(), None),
+        };
+
         // If we still don't have an image, attempt to parse an html
         // <img> element from the summary. This is not uncommon.
-        if image_url.is_empty() && !summary.is_empty() {
+        if image_url.is_empty() {
             // This relies on the string being already html-decoded, which
-            // feed-rs (so far) does.
-            let optional_caps = IMAGE_REGEX.captures(&summary);
-            if let Some(caps) = optional_caps {
-                if let Some(capture) = caps.get(1) {
+            // feed-rs (so far) does. A short teaser <summary> rarely contains
+            // an image, so fall back to searching the full <content> body.
+            for body in [Some(&summary), unsearched_body.as_ref()].into_iter().flatten() {
+                if let Some(capture) = IMAGE_REGEX.captures(body).and_then(|caps| caps.get(1)) {
                     image_url = String::from(capture.as_str());
+                    break;
                 }
             }
         }
         let feed_item = ffi::FeedItem {
-            id: feed_item_data.id,
             title: strip_html(
                 &(if feed_item_data.title.is_some() {
                     feed_item_data.title.unwrap().content
@@ -180,7 +204,7 @@ fn parse_feed_bytes(source: &[u8], output: &mut ffi::FeedData) -> bool {
             description: strip_html(&summary),
             image_url,
             destination_url: feed_item_data.links[0].href.clone(),
-            published_timestamp: feed_item_data.published.map_or(0, |date| date.timestamp()),
+            published_timestamp: published.map_or(0, |date| date.timestamp()),
         };
         output.items.push(feed_item);
     }

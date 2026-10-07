@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Ship kOptimizationGuideFetchingForSRP disabled.'
+    set_feature_flag_default_state:
+      feature_name: kOptimizationGuideFetchingForSRP
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kOptimizationGuideModelExecution disabled.'
+    set_feature_flag_default_state:
+      feature_name: kOptimizationGuideModelExecution
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kOptimizationHints disabled.'
+    set_feature_flag_default_state:
+      feature_name: kOptimizationHints
+      value: base::FEATURE_DISABLED_BY_DEFAULT

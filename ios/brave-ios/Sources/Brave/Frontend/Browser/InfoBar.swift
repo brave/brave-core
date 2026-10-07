@@ -130,13 +130,14 @@ class InfoBar: Toast, UITextViewDelegate {
 
   func textView(
     _ textView: UITextView,
-    shouldInteractWith url: URL,
-    in characterRange: NSRange,
-    interaction: UITextItemInteraction
-  ) -> Bool {
-    self.onLinkPressed?(url)
-    dismiss(true)
-    return false
+    primaryActionFor textItem: UITextItem,
+    defaultAction: UIAction
+  ) -> UIAction? {
+    guard case .link(let url) = textItem.content else { return defaultAction }
+    return UIAction { [weak self] _ in
+      self?.onLinkPressed?(url)
+      self?.dismiss(true)
+    }
   }
 
   @objc func buttonPressed(_ gestureRecognizer: UIGestureRecognizer) {

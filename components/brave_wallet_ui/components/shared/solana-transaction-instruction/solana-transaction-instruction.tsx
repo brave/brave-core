@@ -71,7 +71,7 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
               textAlign='left'
               textColor='secondary'
             >
-              {getLocale('braveWalletSolanaProgramID')}
+              {getLocale(S.BRAVE_WALLET_SOLANA_PROGRAM_ID)}
             </CodeSectionTitle>
             <CodeSnippet>
               <code>
@@ -90,7 +90,7 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
               textAlign='left'
               textColor='secondary'
             >
-              {getLocale('braveWalletSolanaAccounts')}
+              {getLocale(S.BRAVE_WALLET_SOLANA_ACCOUNTS)}
             </CodeSectionTitle>
 
             {accountMetas.map(({ pubkey, addrTableLookupIndex }, i) => {
@@ -117,7 +117,7 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
               textAlign='left'
               textColor='secondary'
             >
-              {getLocale('braveWalletSolanaData')}
+              {getLocale(S.BRAVE_WALLET_SOLANA_DATA)}
             </CodeSectionTitle>
             <CodeSnippet>
               <code>
@@ -252,7 +252,7 @@ const AddressParamValue = ({
           textAlign='left'
           textColor='secondary'
         >
-          {getLocale('braveWalletSolanaAddressLookupTableAccount')}
+          {getLocale(S.BRAVE_WALLET_SOLANA_ADDRESS_LOOKUP_TABLE_ACCOUNT)}
         </AddressText>
       )}
       <CopyTooltip
@@ -277,7 +277,7 @@ const AddressParamValue = ({
             textAlign='left'
             textColor='secondary'
           >
-            {getLocale('braveWalletSolanaAddressLookupTableIndex')}
+            {getLocale(S.BRAVE_WALLET_SOLANA_ADDRESS_LOOKUP_TABLE_INDEX)}
           </AddressText>
           <AddressText
             variant='small.regular'

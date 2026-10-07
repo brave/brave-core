@@ -23,6 +23,7 @@
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/net/brave_system_request_handler.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
+#include "brave/browser/serp_metrics/serp_metrics_p3a.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_component_updater_delegate.h"
@@ -39,6 +40,7 @@
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/components/p3a/p3a_config.h"
@@ -126,6 +128,11 @@
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #endif
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/local_ai/core/local_models_updater.h"
+#include "brave/components/local_ai/core/on_device_speech_models_component_installer.h"
+#endif
+
 using brave_component_updater::BraveComponent;
 using ntp_background_images::NTPBackgroundImagesService;
 
@@ -144,7 +151,15 @@ void InitSystemRequestHandlerCallback() {
 
 using content::BrowserThread;
 
-BraveBrowserProcessImpl::~BraveBrowserProcessImpl() = default;
+BraveBrowserProcessImpl::~BraveBrowserProcessImpl() {
+  // StartTearDown is skipped on early startup exits, leaving P3AService
+  // observing process_misc_metrics_, which is destroyed first. Members are
+  // still alive here, so tear down while the observed object is valid.
+  if (p3a_service_) {
+    p3a_service_->StartTeardown();
+  }
+  profile_manager_.reset();
+}
 
 BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
     : BrowserProcessImpl(startup_data) {
@@ -254,6 +269,9 @@ void BraveBrowserProcessImpl::StartTearDown() {
   if (ntp_background_images_service_) {
     ntp_background_images_service_->StartTearDown();
   }
+  if (process_misc_metrics_) {
+    process_misc_metrics_->serp_metrics_p3a()->Shutdown();
+  }
   if (p3a_service_) {
     p3a_service_->StartTeardown();
   }
@@ -267,6 +285,12 @@ void BraveBrowserProcessImpl::StartTearDown() {
   // component_updater::ComponentUpdateService::Observer, so it needs to be
   // reset before the CrxUpdateService is destroyed.
   brave_wallet::WalletDataFilesInstaller::GetInstance().Reset();
+#endif
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // Drop the local models registrar's pointers to CrxUpdateService and
+  // local_state before either is destroyed.
+  local_ai::ShutdownLocalModelsComponentRegistration();
+  local_ai::ShutdownOnDeviceSpeechModelsComponentRegistration();
 #endif
   // Reset BraveOriginPolicyManager to prevent dangling pointer to local_state_
   brave_origin::BraveOriginPolicyManager::GetInstance()->Shutdown();
@@ -305,6 +329,9 @@ ProfileManager* BraveBrowserProcessImpl::profile_manager() {
 
 void BraveBrowserProcessImpl::StartBraveServices() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  process_misc_metrics()->serp_metrics_p3a()->Init(
+      p3a_service(), profile_manager()->GetProfileAttributesStorage());
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   resource_component();
@@ -462,7 +489,7 @@ void BraveBrowserProcessImpl::OnTorEnabledChanged() {
   GlobalBrowserCollection::GetInstance()->ForEach(
       [](BrowserWindowInterface* browser) {
         static_cast<chrome::BraveBrowserCommandController*>(
-            browser->GetBrowserForMigrationOnly()->command_controller())
+            chrome::BrowserCommandController::From(browser))
             ->UpdateCommandForTor();
         return true;
       });

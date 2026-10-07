@@ -12,6 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 import android.view.View;
 import android.view.autofill.AutofillId;
+import android.view.inputmethod.EditorInfo;
 
 import androidx.test.filters.SmallTest;
 
@@ -457,5 +458,181 @@ public class BraveAutofillViewStructureParserUnitTest {
     @SmallTest
     public void mapComputedAutofillHint_unknownValue_returnsNull() {
         assertNull(BraveAutofillViewStructureParser.mapComputedAutofillHint("UNKNOWN_FIELD_TYPE"));
+    }
+
+    // --- isOmnibox ---
+
+    @Test
+    @SmallTest
+    public void isOmnibox_uriInputType_returnsTrue() {
+        assertTrue(
+                BraveAutofillViewStructureParser.isOmnibox(
+                        EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_URI));
+    }
+
+    @Test
+    @SmallTest
+    public void isOmnibox_postalAddressInputType_returnsFalse() {
+        // Variation values are not flags: TYPE_TEXT_VARIATION_POSTAL_ADDRESS (0x70) contains the
+        // bits of TYPE_TEXT_VARIATION_URI (0x10), so they must be compared after masking.
+        assertFalse(
+                BraveAutofillViewStructureParser.isOmnibox(
+                        EditorInfo.TYPE_CLASS_TEXT
+                                | EditorInfo.TYPE_TEXT_VARIATION_POSTAL_ADDRESS));
+    }
+
+    @Test
+    @SmallTest
+    public void isOmnibox_webEmailInputType_returnsFalse() {
+        assertFalse(
+                BraveAutofillViewStructureParser.isOmnibox(
+                        EditorInfo.TYPE_CLASS_TEXT
+                                | EditorInfo.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS));
+    }
+
+    @Test
+    @SmallTest
+    public void isOmnibox_plainTextInputType_returnsFalse() {
+        assertFalse(BraveAutofillViewStructureParser.isOmnibox(EditorInfo.TYPE_CLASS_TEXT));
+    }
+
+    // --- inferHint ---
+
+    @Test
+    @SmallTest
+    public void inferHint_postalAddressInputType_returnsPostalAddress() {
+        // The postal-address input type must not be mistaken for the URL bar — see isOmnibox.
+        assertEquals(
+                View.AUTOFILL_HINT_POSTAL_ADDRESS,
+                BraveAutofillViewStructureParser.inferHint(
+                        EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_POSTAL_ADDRESS,
+                        "address_line_1"));
+    }
+
+    @Test
+    @SmallTest
+    public void inferHint_uriInputType_returnsNull() {
+        assertNull(
+                BraveAutofillViewStructureParser.inferHint(
+                        EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_URI,
+                        "address"));
+    }
+
+    @Test
+    @SmallTest
+    public void inferHint_unrecognizedText_returnsNull() {
+        // Null lets getHint() fall through to the HTML/computed-hint layer. Any non-null value
+        // here would end classification for the node before that layer runs.
+        assertNull(BraveAutofillViewStructureParser.inferHint(EditorInfo.TYPE_CLASS_TEXT, "notes"));
+    }
+
+    @Test
+    @SmallTest
+    public void inferHint_null_returnsNull() {
+        assertNull(BraveAutofillViewStructureParser.inferHint(EditorInfo.TYPE_CLASS_TEXT, null));
+    }
+
+    @Test
+    @SmallTest
+    public void inferHint_labelText_returnsNull() {
+        assertNull(
+                BraveAutofillViewStructureParser.inferHint(
+                        EditorInfo.TYPE_CLASS_TEXT, "address_label"));
+    }
+
+    @Test
+    @SmallTest
+    public void inferHint_emailKeyword_returnsEmail() {
+        assertEquals(
+                View.AUTOFILL_HINT_EMAIL_ADDRESS,
+                BraveAutofillViewStructureParser.inferHint(
+                        EditorInfo.TYPE_CLASS_TEXT, "Enter your email"));
+    }
+
+    @Test
+    @SmallTest
+    public void inferHint_cityKeyword_returnsCity() {
+        assertEquals(
+                BraveAutofillViewStructureParser.HINT_CITY,
+                BraveAutofillViewStructureParser.inferHint(EditorInfo.TYPE_CLASS_TEXT, "City"));
+    }
+
+    // --- isSaveableAddressForm ---
+
+    @Test
+    @SmallTest
+    public void isSaveableAddressForm_emailAndPassword_returnsFalse() {
+        assertFalse(
+                BraveAutofillViewStructureParser.isSaveableAddressForm(
+                        mapWithKeys(
+                                View.AUTOFILL_HINT_EMAIL_ADDRESS, View.AUTOFILL_HINT_PASSWORD)));
+    }
+
+    @Test
+    @SmallTest
+    public void isSaveableAddressForm_nameCompanyAndPhone_returnsFalse() {
+        // A contact editor: personal details, no address component anywhere.
+        assertFalse(
+                BraveAutofillViewStructureParser.isSaveableAddressForm(
+                        mapWithKeys(
+                                View.AUTOFILL_HINT_NAME,
+                                BraveAutofillViewStructureParser.HINT_COMPANY,
+                                View.AUTOFILL_HINT_PHONE)));
+    }
+
+    @Test
+    @SmallTest
+    public void isSaveableAddressForm_noFields_returnsFalse() {
+        assertFalse(BraveAutofillViewStructureParser.isSaveableAddressForm(mapWithKeys()));
+    }
+
+    @Test
+    @SmallTest
+    public void isSaveableAddressForm_streetAndCity_returnsTrue() {
+        assertTrue(
+                BraveAutofillViewStructureParser.isSaveableAddressForm(
+                        mapWithKeys(
+                                View.AUTOFILL_HINT_POSTAL_ADDRESS,
+                                BraveAutofillViewStructureParser.HINT_CITY)));
+    }
+
+    @Test
+    @SmallTest
+    public void isSaveableAddressForm_streetAndCityWithPassword_returnsTrue() {
+        // Two components is a real address form even on a registration screen.
+        assertTrue(
+                BraveAutofillViewStructureParser.isSaveableAddressForm(
+                        mapWithKeys(
+                                View.AUTOFILL_HINT_POSTAL_ADDRESS,
+                                BraveAutofillViewStructureParser.HINT_CITY,
+                                View.AUTOFILL_HINT_PASSWORD)));
+    }
+
+    @Test
+    @SmallTest
+    public void isSaveableAddressForm_postalCodeOnly_returnsFalse() {
+        assertFalse(
+                BraveAutofillViewStructureParser.isSaveableAddressForm(
+                        mapWithKeys(View.AUTOFILL_HINT_POSTAL_CODE)));
+    }
+
+    @Test
+    @SmallTest
+    public void isSaveableAddressForm_postalCodeAndName_returnsTrue() {
+        assertTrue(
+                BraveAutofillViewStructureParser.isSaveableAddressForm(
+                        mapWithKeys(View.AUTOFILL_HINT_POSTAL_CODE, View.AUTOFILL_HINT_NAME)));
+    }
+
+    @Test
+    @SmallTest
+    public void isSaveableAddressForm_postalCodeAndNameWithPassword_returnsFalse() {
+        // One component is not enough to override a sign-in screen.
+        assertFalse(
+                BraveAutofillViewStructureParser.isSaveableAddressForm(
+                        mapWithKeys(
+                                View.AUTOFILL_HINT_POSTAL_CODE,
+                                View.AUTOFILL_HINT_NAME,
+                                View.AUTOFILL_HINT_PASSWORD)));
     }
 }

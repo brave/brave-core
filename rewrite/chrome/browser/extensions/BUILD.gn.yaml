@@ -5,18 +5,39 @@
 
 substitutions:
   - description: |
-      Pull in the variable list for the Brave additions to
-      `source_set("extensions")`.
+      Append the Brave additions to `source_set("extensions")`.
 
-      Inserted at the top of the file.
-    regex:
-      re_pattern: '(# found in the LICENSE file\.\n\n)'
-      replace: |
-        \1import("//brave/browser/extensions/resources.gni")
+      The deps are a variable list, imported from the `.gni` defining it.
+    add_literal_to_list:
+      target: extensions
+      list_name: deps
+      literal: brave_extensions_resources
+      import: //brave/browser/extensions/resources.gni
 
-  - description: |
-      Append Brave deps to `source_set("extensions")`.
+  - description: Build extension_menu_model_android with the core.
     regex:
-      re_pattern: '(source_set\("extensions"\).*?\bdeps\s*=\s*\[.*?\])'
+      re_pattern:
+        'if \(enable_desktop_android_extensions\)(\s*\{\s*sources \+= \[\s*#
+        These files are temporary)'
+      replace: 'if (enable_extensions_core)\1'
+
+  - description: |-
+      Skip the mDNS API unit test on mobile Android.
+
+      The mDNS API needs //chrome/browser/media/router/discovery, which is
+      desktop-only.
+    regex:
+      re_pattern:
+        'if \(enable_service_discovery\)(\s*\{\s*sources \+=
+        \[\s*"api/mdns/mdns_api_unittest\.cc")'
+      replace:
+        'if (enable_service_discovery && (!is_android || is_desktop_android))\1'
+
+  - description: |-
+      Don't define the extension browser tests on mobile Android.
+
+      They pull in the desktop WebUI NTP and other desktop-only targets.
+    regex:
+      re_pattern: '\nsource_set\("browser_tests"\) \{.*?\n\}\n'
       re_flags: [DOTALL]
-      replace: '\1\n  deps += brave_extensions_resources'
+      replace: '\nif (!is_android || is_desktop_android) {\g<0>}\n'

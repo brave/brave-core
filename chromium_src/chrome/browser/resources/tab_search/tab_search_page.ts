@@ -5,9 +5,10 @@
 
 import { TabSearchPageElement } from './tab_search_page-chromium.js'
 
-import type { TabData, SplitViewData } from './tab_data.js'
+import { setSemanticOpenTabsContext } from '/tab_search/shared/search.js'
+import type { SplitViewData } from './tab_data.js'
+import { TabData } from './tab_data.js'
 import { BraveTabSearchApiProxyImpl } from './tab_search_api_proxy.js'
-import { setSemanticOpenTabsContext } from './search.js'
 
 // Augments the substring-filtered open-tab list with on-device semantic
 // matches from `searchTabsByContent`. A monotonic token discards stale
@@ -25,9 +26,9 @@ class BraveTabSearchPageElement extends TabSearchPageElement {
   constructor() {
     super()
     setSemanticOpenTabsContext({
-      getOpenTabsRecords: () => (this as unknown as
-          {openTabs_: ReadonlyArray<TabData|SplitViewData>}).openTabs_,
-      getSemanticTabIds: (query) => this.semanticTabIdsByQuery_.get(query),
+      getOpenTabsRecords: () => this.getOpenTabs_(),
+      getSemanticExtras: (query, matched) =>
+          this.getSemanticExtras_(query, matched),
     })
   }
 
@@ -52,6 +53,36 @@ class BraveTabSearchPageElement extends TabSearchPageElement {
       ;(this as unknown as {updateFilteredTabs_: () => void})
           .updateFilteredTabs_()
     })
+  }
+
+  private getOpenTabs_(): ReadonlyArray<TabData|SplitViewData> {
+    return (this as unknown as
+        {openTabs_: ReadonlyArray<TabData|SplitViewData>}).openTabs_
+  }
+
+  // Picks the open tabs `searchTabsByContent` matched that upstream's
+  // substring filter dropped, skipping any already in `matched`.
+  private getSemanticExtras_(
+      query: string,
+      matched: ReadonlyArray<unknown>): ReadonlyArray<unknown> {
+    const tabIds = this.semanticTabIdsByQuery_.get(query)
+    if (!tabIds || tabIds.size === 0) {
+      return []
+    }
+    const present = new Set<number>()
+    for (const item of matched) {
+      if (item instanceof TabData) {
+        present.add(item.tab.tabId)
+      }
+    }
+    const extras: TabData[] = []
+    for (const item of this.getOpenTabs_()) {
+      if (item instanceof TabData && tabIds.has(item.tab.tabId) &&
+          !present.has(item.tab.tabId)) {
+        extras.push(item)
+      }
+    }
+    return extras
   }
 }
 

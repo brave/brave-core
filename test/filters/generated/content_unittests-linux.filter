@@ -1,0 +1,138 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream content_unittests tests with a flake rate >= 1.0% on
+## linux bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-BackgroundSyncManagerTest.WakeBrowserCalledForOneShotSync
+
+# 97.7% flake rate over 30 days per LUCI Analysis (328 passed, 2 failed, 13918 flaky).
+-BrowserMainLoopTest.PostCreateThreadsResultAbortsStartup
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-BtmServiceHistogramTest.Deletion_Enforced
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-BtmServiceStateRemovalTest.BrowsingDataDeletion_Enabled
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-BtmServiceStateRemovalTest.BrowsingDataDeletion_RespectsStorageAccessGrantExceptions
+
+# 3.3% flake rate over 30 days per LUCI Analysis (26364 passed, 7 failed, 892 flaky).
+-FilePathWatcherTest.DirectoryChain
+
+# 12.4% flake rate over 30 days per LUCI Analysis (23894 passed, 198 failed, 3171 flaky).
+-FilePathWatcherTest.LinkedDirectoryPart1
+
+# 2.6% flake rate over 30 days per LUCI Analysis (26545 passed, 2 failed, 716 flaky).
+-FilePathWatcherTest.LinkedDirectoryPart2
+
+# 4.3% flake rate over 30 days per LUCI Analysis (26093 passed, 2 failed, 1168 flaky).
+-FilePathWatcherTest.LinkedDirectoryPart3
+
+# 5.5% flake rate over 30 days per LUCI Analysis (25761 passed, 5 failed, 1497 flaky).
+-FilePathWatcherTest.ModifiedFile
+
+# 3.3% flake rate over 30 days per LUCI Analysis (26352 passed, 1 failed, 910 flaky).
+-FilePathWatcherTest.ModifiedLinkedFile
+
+# 4.5% flake rate over 30 days per LUCI Analysis (26030 passed, 0 failed, 1233 flaky).
+-FilePathWatcherTest.MoveOverwritingFile
+
+# 3.1% flake rate over 30 days per LUCI Analysis (26415 passed, 6 failed, 842 flaky).
+-FilePathWatcherTest.NonExistentDirectory
+
+# 9.8% flake rate over 30 days per LUCI Analysis (24584 passed, 20 failed, 2659 flaky).
+-FilePathWatcherTest.RecursiveWatch
+
+# 4.5% flake rate over 30 days per LUCI Analysis (26040 passed, 23 failed, 1200 flaky).
+-FilePathWatcherTest.ReturnFullPath_NonRecursiveInRootFolder
+
+# 5.3% flake rate over 30 days per LUCI Analysis (25808 passed, 19 failed, 1436 flaky).
+-FilePathWatcherTest.ReturnFullPath_RecursiveInNestedFolder
+
+# 5.5% flake rate over 30 days per LUCI Analysis (25758 passed, 12 failed, 1493 flaky).
+-FilePathWatcherTest.ReturnFullPath_RecursiveInRootFolder
+
+# 5.0% flake rate over 30 days per LUCI Analysis (25900 passed, 11 failed, 1352 flaky).
+-FilePathWatcherTest.ReturnWatchedPath_NonRecursiveInRootFolder
+
+# 4.5% flake rate over 30 days per LUCI Analysis (26034 passed, 9 failed, 1220 flaky).
+-FilePathWatcherTest.ReturnWatchedPath_RecursiveInRootFolder
+
+# 11.1% flake rate over 30 days per LUCI Analysis (24224 passed, 47 failed, 2992 flaky).
+-FilePathWatcherTest.WatchDirectoryWriteToFile
+
+# 1.3% flake rate over 30 days per LUCI Analysis (26913 passed, 2 failed, 348 flaky).
+-FilePathWatcherWithChangeInfoTest.ModifiedFile/1
+
+# 1.3% flake rate over 30 days per LUCI Analysis (26921 passed, 0 failed, 342 flaky).
+-FilePathWatcherWithChangeInfoTest.ModifiedFile/2
+
+# 1.3% flake rate over 30 days per LUCI Analysis (26895 passed, 1 failed, 367 flaky).
+-FilePathWatcherWithChangeInfoTest.ModifiedFile/3
+
+# 6.2% flake rate over 30 days per LUCI Analysis (25565 passed, 4 failed, 1694 flaky).
+-FileSystemAccessWatcherManagerTest.WatchLocalDirectory
+
+# 11.8% flake rate over 30 days per LUCI Analysis (24045 passed, 1 failed, 3217 flaky).
+-FrameSinkVideoCaptureDeviceTest.SetsVideoRotation
+
+# 10.2% flake rate over 30 days per LUCI Analysis (24472 passed, 1 failed, 2790 flaky).
+-FrameSinkVideoCaptureDeviceTest.ShutsDownOnFatalError
+
+# 89.5% flake rate over 30 days per LUCI Analysis (2872 passed, 1 failed, 24390 flaky).
+-FrameSinkVideoCaptureDeviceTest.SuspendsAndResumes
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-IndexedDBTest.PutWithInvalidBlob/LevelDB
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-IndexedDBTest.PutWithInvalidBlob/SQLite
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-InputRouterImplTest.TimeoutMonitorStopWithMainThreadTouchAction
+
+# 66.2% flake rate over 30 days per LUCI Analysis (9206 passed, 0 failed, 18057 flaky).
+-LevelDbBackingStoreTest.CompactionTaskTiming
+
+# 72.7% flake rate over 30 days per LUCI Analysis (7443 passed, 0 failed, 19820 flaky).
+-LevelDbBackingStoreTest.TombstoneSweeperTiming
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-MediaStreamManagerCapturedSurfaceControlActionTest.FailsIfSelfCapture/0
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-MediaStreamManagerCapturedSurfaceControlActionTest.FailsIfSelfCapture/1
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-MediaStreamManagerCapturedSurfaceControlActionTest.FailsIfSelfCapture/2
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-MediaStreamManagerCapturedSurfaceControlActionTest.FailsIfSelfCapture/3
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-MediaStreamManagerCapturedSurfaceControlActionTest.FailsIfSelfCapture/4
+
+# 16.8% flake rate over 30 days per LUCI Analysis (22686 passed, 0 failed, 4577 flaky).
+-MouseCursorOverlayControllerAuraTest.RestrictsToWebContents
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-PrefetchCanaryCheckerTest.NetworkConnectionShardsCache
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 50 failed, 0 flaky).
+-PrerenderHostRegistryTest.CreateAndStartHost_WhenPendingPrerendersExist
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-RendererWebAudioDeviceImplBufferSizeTest.ExactLatency_HighHardwareBufferSize_CapsAtMaxBufferSize
+
+# 1.9% flake rate over 30 days per LUCI Analysis (26744 passed, 0 failed, 519 flaky).
+-WebContentsFrameTrackerTest.CalculatesPreferredSizeWithCorrectAspectRatio
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
+-WebContentsImplTest.NoEarlyStop
+
+# 1.9% flake rate over 30 days per LUCI Analysis (29014 passed, 0 failed, 554 flaky).
+-WebRtcInternalsMessageHandlerTest.DontRunJSBeforeNavigationCommitted

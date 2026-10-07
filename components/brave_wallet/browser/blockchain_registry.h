@@ -31,7 +31,7 @@ namespace brave_wallet {
 class BlockchainRegistry : public mojom::BlockchainRegistry {
  public:
   static constexpr char kRestrictedAddressFileName[] =
-      "ofac-sanctioned-digital-currency-addresses.json";
+      "prohibited-addresses.json";
 
   BlockchainRegistry(const BlockchainRegistry&) = delete;
   BlockchainRegistry& operator=(const BlockchainRegistry&) = delete;
@@ -81,7 +81,7 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
       const std::string& chain_id,
       GetProvidersBuyTokensCallback callback) override;
   void GetSellTokens(mojom::OffRampProvider provider,
-                     const std::string& chain_id,
+                     const std::vector<std::string>& chain_ids,
                      GetSellTokensCallback callback) override;
   void GetOnRampCurrencies(GetOnRampCurrenciesCallback callback) override;
   void GetPrepopulatedNetworks(

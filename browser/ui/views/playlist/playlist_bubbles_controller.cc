@@ -9,11 +9,11 @@
 
 #include "base/check.h"
 #include "base/memory/ptr_util.h"
-#include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/playlist/playlist_add_bubble_view.h"
 #include "brave/browser/ui/views/playlist/playlist_edit_bubble_view.h"
 #include "brave/components/playlist/content/browser/playlist_tab_helper.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
+#include "ui/views/view.h"
 
 namespace playlist {
 
@@ -28,9 +28,8 @@ PlaylistBubblesController::CreateOrGetFromWebContents(
 
 PlaylistBubblesController::~PlaylistBubblesController() = default;
 
-void PlaylistBubblesController::ShowBubble(
-    base::WeakPtr<PlaylistActionIconView> anchor_view,
-    BubbleType bubble_type) {
+void PlaylistBubblesController::ShowBubble(views::View* anchor_view,
+                                           BubbleType bubble_type) {
   if (!anchor_view) {
     return;
   }
@@ -47,11 +46,11 @@ void PlaylistBubblesController::ShowBubble(
   switch (bubble_type) {
     case BubbleType::kInfer:
       if (!tab_helper->saved_items().empty()) {
-        bubble_ = new PlaylistEditBubbleView(anchor_view.get(),
-                                             tab_helper->GetWeakPtr());
+        bubble_ =
+            new PlaylistEditBubbleView(anchor_view, tab_helper->GetWeakPtr());
       } else if (!tab_helper->found_items().empty()) {
-        bubble_ = new PlaylistAddBubbleView(anchor_view.get(),
-                                            tab_helper->GetWeakPtr());
+        bubble_ =
+            new PlaylistAddBubbleView(anchor_view, tab_helper->GetWeakPtr());
       } else {
         // This is possible if the command was triggered via quick commands on a
         // page with no media detected.
@@ -59,20 +58,28 @@ void PlaylistBubblesController::ShowBubble(
       }
       break;
     case BubbleType::kAdd:
-      bubble_ = new PlaylistAddBubbleView(anchor_view.get(),
-                                          tab_helper->GetWeakPtr());
+      bubble_ =
+          new PlaylistAddBubbleView(anchor_view, tab_helper->GetWeakPtr());
       break;
     case BubbleType::kEdit:
-      bubble_ = new PlaylistEditBubbleView(anchor_view.get(),
-                                           tab_helper->GetWeakPtr());
+      bubble_ =
+          new PlaylistEditBubbleView(anchor_view, tab_helper->GetWeakPtr());
       break;
   }
 
   CHECK(bubble_);
+  last_anchor_view_tracker_.SetView(anchor_view);
   views::BubbleDialogDelegateView::CreateBubble(
       base::WrapUnique(
           static_cast<views::BubbleDialogDelegateView*>(bubble_.get())))
       ->Show();
+}
+
+void PlaylistBubblesController::ShowBubbleWithLastAnchor(
+    BubbleType bubble_type) {
+  if (views::View* anchor_view = last_anchor_view_tracker_.view()) {
+    ShowBubble(anchor_view, bubble_type);
+  }
 }
 
 PlaylistBubbleView* PlaylistBubblesController::GetBubble() {

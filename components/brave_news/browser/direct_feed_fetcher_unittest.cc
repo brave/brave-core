@@ -114,6 +114,77 @@ The existence of the tool, which is buried inside a Help Center page about "F
 &lt;!</description><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" height="72" url="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg_3QzeYvVDq275b1Wd2GTXuU1f3E6BtEWkVBdsRddiZttpyTAGt5gCNSRygjiyy-xEqb-am_Cj2WnMaJtrxhlbYzYNPO_OtqbLngzRHjsop-Pt_ZM11ZYCpe-StOIFO7UWH5P7ducBN9pL2rykjudSk9hq046n_X1DbVTYI9WVIKxj_apnisiEV6AT/s260-e100/facebook.jpg" width="72"/></item></channel></rss>)";
 }
 
+std::string AtomEnclosureImageFeed() {
+  // Mirrors the shape of https://jakearchibald.com/posts.rss. The first entry
+  // carries its image as <link rel="enclosure"> and has a short <summary> plus
+  // a longer <content> containing an inline <img>. The second entry has an
+  // audio enclosure, which must not be mistaken for an image.
+  return R"(<?xml version="1.0" encoding="utf-8"?>
+    <feed xmlns="http://www.w3.org/2005/Atom">
+      <title>Jake Archibald's blog</title>
+      <link rel="alternate" href="https://jakearchibald.com/"/>
+      <updated>2026-08-11T10:45:27.522Z</updated>
+      <id>https://jakearchibald.com/</id>
+      <entry>
+        <title>Fixing my tooltip accessibility mistake</title>
+        <id>https://jakearchibald.com/2026/my-tooltip-a11y-mistake/</id>
+        <link href="https://jakearchibald.com/2026/my-tooltip-a11y-mistake/"/>
+        <link rel="enclosure" href="https://jakearchibald.com/c/enclosure.png" type="image/png"/>
+        <updated>2026-07-28T01:00:00.000Z</updated>
+        <summary type="html"><![CDATA[aria-describedby isn't always enough.]]></summary>
+        <content type="html"><![CDATA[<p>Body</p><img src="https://jakearchibald.com/c/inline.png">]]></content>
+      </entry>
+      <entry>
+        <title>A podcast episode</title>
+        <id>https://jakearchibald.com/2026/podcast/</id>
+        <link href="https://jakearchibald.com/2026/podcast/"/>
+        <link rel="enclosure" href="https://jakearchibald.com/c/episode.mp3" type="audio/mpeg"/>
+        <updated>2026-07-28T01:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Listen up.]]></summary>
+      </entry>
+    </feed>)";
+}
+
+std::string AtomInlineImageOnlyFeed() {
+  // A short <summary> with no image, and an inline <img> only in <content>.
+  return R"(<?xml version="1.0" encoding="utf-8"?>
+    <feed xmlns="http://www.w3.org/2005/Atom">
+      <title>Inline Image Feed</title>
+      <link rel="alternate" href="https://example.com/"/>
+      <updated>2026-07-28T01:00:00.000Z</updated>
+      <id>https://example.com/</id>
+      <entry>
+        <title>Entry</title>
+        <id>https://example.com/one</id>
+        <link href="https://example.com/one"/>
+        <updated>2026-07-28T01:00:00.000Z</updated>
+        <summary type="html"><![CDATA[A teaser with no image.]]></summary>
+        <content type="html"><![CDATA[<p>Body</p><img src="https://example.com/inline.png">]]></content>
+      </entry>
+    </feed>)";
+}
+
+std::string AtomUpdatedOnlyFeed() {
+  // Mirrors the shape of https://infrequently.org/feed: entries carry only
+  // <updated> (Atom makes <published> optional) and put their body in
+  // <content> rather than <summary>.
+  return R"(<?xml version="1.0" encoding="utf-8"?>
+    <feed xmlns="http://www.w3.org/2005/Atom">
+      <title>Infrequently Noted</title>
+      <link href="https://infrequently.org/"/>
+      <updated>2026-07-23T00:00:00Z</updated>
+      <id>https://infrequently.org</id>
+      <entry>
+        <title>The Absolute State of Management</title>
+        <link href="https://infrequently.org/2026/07/state-management/"/>
+        <updated>2026-07-23T00:00:00Z</updated>
+        <id>https://infrequently.org/2026/07/state-management/</id>
+        <content type="html"><![CDATA[<p>It is by no means the gravest
+        linguistic crime of the React epoch.</p>]]></content>
+      </entry>
+    </feed>)";
+}
+
 }  // namespace
 
 TEST(BraveNewsDirectFeed, ParseFeed) {
@@ -273,10 +344,72 @@ TEST(BraveNewsDirectFeed, ParseFeedRegression) {
             std::string::npos);
 }
 
+// Atom feeds attach their representative image as <link rel="enclosure">.
+// feed-rs only folds enclosures into `media` for RSS, so Atom enclosures have
+// to be picked out of the entry links.
+TEST(BraveNewsDirectFeed, ParseAtomEnclosureImage) {
+  FeedData data;
+  auto rss = AtomEnclosureImageFeed();
+  bool parse_success = brave_news::parse_feed_bytes(
+      ::rust::Slice<const uint8_t>((const uint8_t*)rss.data(), rss.size()),
+      data);
+
+  ASSERT_TRUE(parse_success);
+  ASSERT_EQ(2u, data.items.size());
+
+  // The enclosure is preferred over the inline <img> in <content>.
+  EXPECT_EQ("https://jakearchibald.com/c/enclosure.png",
+            (std::string)data.items[0].image_url);
+  // The enclosure must not become the article link.
+  EXPECT_EQ("https://jakearchibald.com/2026/my-tooltip-a11y-mistake/",
+            (std::string)data.items[0].destination_url);
+
+  // An audio enclosure is not an image, so no image should be picked up.
+  EXPECT_EQ("", (std::string)data.items[1].image_url);
+}
+
+// A short <summary> rarely contains an image, so the <content> body should
+// still be searched for an inline <img> rather than being ignored.
+TEST(BraveNewsDirectFeed, ParseInlineImageFromContent) {
+  FeedData data;
+  auto rss = AtomInlineImageOnlyFeed();
+  bool parse_success = brave_news::parse_feed_bytes(
+      ::rust::Slice<const uint8_t>((const uint8_t*)rss.data(), rss.size()),
+      data);
+
+  ASSERT_TRUE(parse_success);
+  ASSERT_EQ(1u, data.items.size());
+  EXPECT_EQ("https://example.com/inline.png",
+            (std::string)data.items[0].image_url);
+  // The description still comes from the <summary>, not the full body.
+  EXPECT_EQ("A teaser with no image.", (std::string)data.items[0].description);
+}
+
+// Atom entries are only required to carry <updated>; <published> is optional.
+// Entries that rely on <updated> (and put their body in <content> rather than
+// <summary>) must not be silently dropped.
+TEST(BraveNewsDirectFeed, ParseAtomWithoutPublished) {
+  FeedData data;
+  auto rss = AtomUpdatedOnlyFeed();
+  bool parse_success = brave_news::parse_feed_bytes(
+      ::rust::Slice<const uint8_t>((const uint8_t*)rss.data(), rss.size()),
+      data);
+
+  ASSERT_TRUE(parse_success);
+  EXPECT_EQ("Infrequently Noted", (std::string)data.title);
+  ASSERT_EQ(1u, data.items.size());
+  EXPECT_EQ("The Absolute State of Management",
+            (std::string)data.items[0].title);
+  // The <updated> value should be used as the publish time.
+  EXPECT_EQ(1784764800, data.items[0].published_timestamp);
+  // The body should be picked up from <content>.
+  EXPECT_NE(((std::string)data.items[0].description).find("React epoch"),
+            std::string::npos);
+}
+
 TEST(BraveNewsDirectFeed, ParseToArticle) {
   // Create a feed item which should be valid as a Brave News Article
   FeedItem item;
-  item.id = "1";
   item.published_timestamp = 1672793966;
   item.title = "Title";
   item.description = "Description";
@@ -294,7 +427,6 @@ TEST(BraveNewsDirectFeed, ParseToArticle) {
 TEST(BraveNewsDirectFeed, ParseOnlyAllowsHTTPLinks) {
   // Create a feed item which should be invalid as a Brave News Article
   FeedItem item;
-  item.id = "1";
   item.published_timestamp = 1672793966;
   item.title = "Title";
   item.description = "Description";

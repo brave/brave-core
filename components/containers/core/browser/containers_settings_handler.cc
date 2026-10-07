@@ -12,6 +12,7 @@
 #include "brave/components/containers/core/browser/pref_names.h"
 #include "brave/components/containers/core/browser/prefs.h"
 #include "components/prefs/pref_service.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace containers {
@@ -119,6 +120,41 @@ void ContainersSettingsHandler::RemoveContainer(
   containers.erase(it);
   SetContainersToPrefs(std::move(containers), *prefs_);
 
+  std::move(callback).Run(std::nullopt);
+}
+
+void ContainersSettingsHandler::ReorderContainers(
+    const std::vector<std::string>& ordered_ids,
+    ReorderContainersCallback callback) {
+  auto containers = GetContainersFromPrefs(*prefs_);
+  if (ordered_ids.size() != containers.size()) {
+    std::move(callback).Run(mojom::ContainerOperationError::kNotFound);
+    return;
+  }
+
+  absl::flat_hash_map<std::string, size_t> order_map;
+  order_map.reserve(ordered_ids.size());
+  for (size_t i = 0; i < ordered_ids.size(); ++i) {
+    order_map.emplace(ordered_ids[i], i);
+  }
+
+  if (order_map.size() != ordered_ids.size()) {
+    std::move(callback).Run(mojom::ContainerOperationError::kNotFound);
+    return;
+  }
+
+  for (const auto& container : containers) {
+    if (!order_map.contains(container->id)) {
+      std::move(callback).Run(mojom::ContainerOperationError::kNotFound);
+      return;
+    }
+  }
+
+  std::ranges::sort(containers, [&order_map](const auto& lhs, const auto& rhs) {
+    return order_map.at(lhs->id) < order_map.at(rhs->id);
+  });
+
+  SetContainersToPrefs(std::move(containers), *prefs_);
   std::move(callback).Run(std::nullopt);
 }
 

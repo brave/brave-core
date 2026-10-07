@@ -145,7 +145,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         // Forward the custom menu item keys from main settings to appearance preference screen.
         CustomizeBraveMenu.propagateMenuItemExtras(findPreference(PREF_APPEARANCE), getArguments());
 
-        mAccountController = BraveAccountSectionController.maybeCreate(this, getProfile());
+        mAccountController = BraveAccountSectionController.maybeCreate(this);
 
         overrideChromiumPreferences();
         initRateBrave();
@@ -202,11 +202,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         super.onDestroy();
 
         removeFeaturePolicyServiceObserver();
-
-        if (mAccountController != null) {
-            mAccountController.destroy();
-            mAccountController = null;
-        }
     }
 
     private void showNotificationRationale() {
@@ -331,12 +326,11 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         }
 
         int braveAccountSectionOrder = firstSectionOrder;
-        for (String key : BraveAccountSectionController.ALL_PREFERENCE_KEYS) {
-            if (mAccountController != null) {
-                setPreferenceOrder(key, ++braveAccountSectionOrder);
-            } else {
-                removePreferenceIfPresent(key);
-            }
+        if (mAccountController != null) {
+            setPreferenceOrder(
+                    BraveAccountSectionController.PREF_BRAVE_ACCOUNT, ++braveAccountSectionOrder);
+        } else {
+            removePreferenceIfPresent(BraveAccountSectionController.PREF_BRAVE_ACCOUNT);
         }
 
         int featuresSectionOrder = braveAccountSectionOrder;
@@ -401,6 +395,12 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             setPreferenceOrder(PREF_BRAVE_ORIGIN, ++generalOrder);
         } else {
             removePreferenceIfPresent(PREF_BRAVE_ORIGIN);
+        }
+
+        // Only present when the upstream default browser entry point is enabled.
+        Preference defaultBrowser = findPreference(MainSettings.PREF_DEFAULT_BROWSER);
+        if (defaultBrowser != null) {
+            defaultBrowser.setOrder(++generalOrder);
         }
 
         int displaySectionOrder = generalOrder;
@@ -503,6 +503,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         updatePreferenceIcon(MainSettings.PREF_DEVELOPER, R.drawable.ic_code);
         updatePreferenceIcon(MainSettings.PREF_HOMEPAGE, R.drawable.ic_browser_home);
         updatePreferenceIcon(MainSettings.PREF_TABS, R.drawable.ic_browser_mobile_tabs);
+        // Same icon as the "Set as default browser" main menu item.
+        updatePreferenceIcon(MainSettings.PREF_DEFAULT_BROWSER, R.drawable.ic_set_as_default);
         updatePreferenceIcon(
                 MainSettings.PREF_ADDRESS_BAR,
                 BottomToolbarConfiguration.isToolbarTopAnchored()
@@ -848,9 +850,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_ADDRESS_BAR));
                     // Account section is only shown when Brave Account is enabled.
                     if (!BraveAccountFeatures.isBraveAccountEnabled()) {
-                        for (String key : BraveAccountSectionController.ALL_PREFERENCE_KEYS) {
-                            indexData.removeEntry(getUniqueId(key));
-                        }
+                        indexData.removeEntry(
+                                getUniqueId(BraveAccountSectionController.PREF_BRAVE_ACCOUNT));
                     }
                     // Brave leaf switches/actions in main settings have no sub-screen to
                     // navigate to from search results, so exclude them from the index.

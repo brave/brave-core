@@ -7,7 +7,7 @@ import { createSelector } from '@reduxjs/toolkit'
 
 import { WalletPanelState } from '../../constants/types'
 
-type State = Omit<WalletPanelState, 'wallet'>
+type State = Pick<WalletPanelState, 'panel'>
 
 const selectPanelState = (state: State) => state.panel
 
@@ -28,11 +28,9 @@ export const hardwareWalletCode = createSelector(
   [selectPanelState],
   (panel) => panel.hardwareWalletCode,
 )
-export const selectedTransactionId = createSelector(
-  [selectPanelState],
-  (panel) => panel.selectedTransactionId,
-)
-export const submittingTransaction = createSelector(
-  [selectPanelState],
-  (panel) => panel.submittingTransaction,
-)
+
+// Re-exported from UI selectors — confirm/status state is shared with Desktop.
+export {
+  selectedTransactionId,
+  submittingTransaction,
+} from '../../common/selectors/ui-selectors'

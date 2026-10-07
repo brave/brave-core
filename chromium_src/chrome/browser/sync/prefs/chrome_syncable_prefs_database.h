@@ -6,15 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_SYNC_PREFS_CHROME_SYNCABLE_PREFS_DATABASE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_SYNC_PREFS_CHROME_SYNCABLE_PREFS_DATABASE_H_
 
-#include <optional>
-
 #include "components/sync_preferences/common_syncable_prefs_database.h"
 #include "components/sync_preferences/syncable_prefs_database.h"
 
-#define GetSyncablePrefMetadata(...)                       \
-  GetSyncablePrefMetadata_ChromiumImpl(__VA_ARGS__) const; \
-  std::optional<sync_preferences::SyncablePrefMetadata>    \
-  GetSyncablePrefMetadata(__VA_ARGS__)
+#define GetSyncablePrefMetadata(...)                                     \
+  GetSyncablePrefMetadata_ChromiumImpl(__VA_ARGS__) const;               \
+  const sync_preferences::SyncablePrefMetadata* GetSyncablePrefMetadata( \
+      __VA_ARGS__)
 
 #include <chrome/browser/sync/prefs/chrome_syncable_prefs_database.h>  // IWYU pragma: export
 #undef GetSyncablePrefMetadata

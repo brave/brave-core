@@ -114,7 +114,7 @@ describe('ToolEvent', () => {
     const mockProcessPermissionChallenge = jest.fn()
     render(
       <MockContext
-        conversationHandler={{
+        userActions={{
           processPermissionChallenge: mockProcessPermissionChallenge,
         }}
       >
@@ -128,6 +128,8 @@ describe('ToolEvent', () => {
             permissionChallenge: {
               assessment: 'This is an assessment',
               plan: 'This is a plan',
+              description: undefined,
+              supportsAllowSession: false,
             },
           }}
           isEntryActive={true}
@@ -145,19 +147,28 @@ describe('ToolEvent', () => {
       S.CHAT_UI_PERMISSION_CHALLENGE_ALLOW_BUTTON,
     )
     fireEvent.click(approveButton)
-    expect(mockProcessPermissionChallenge).toHaveBeenCalledWith('123', true)
+    expect(mockProcessPermissionChallenge).toHaveBeenCalledWith(
+      '123',
+      Mojom.PermissionChallengeDecision.kAllowOnce,
+    )
     const denyButton = screen.getByText(
       S.CHAT_UI_PERMISSION_CHALLENGE_DENY_BUTTON,
     )
     fireEvent.click(denyButton)
-    expect(mockProcessPermissionChallenge).toHaveBeenCalledWith('123', false)
+    expect(mockProcessPermissionChallenge).toHaveBeenCalledWith(
+      '123',
+      Mojom.PermissionChallengeDecision.kDeny,
+    )
+    expect(
+      screen.queryByText(S.CHAT_UI_WEBSITE_TOOL_PERMISSION_ALLOW_SESSION),
+    ).not.toBeInTheDocument()
   })
 
   it('should show permission challenge with no content', () => {
     const mockProcessPermissionChallenge = jest.fn()
     render(
       <MockContext
-        conversationHandler={{
+        userActions={{
           processPermissionChallenge: mockProcessPermissionChallenge,
         }}
       >
@@ -173,6 +184,8 @@ describe('ToolEvent', () => {
               // permission challenge UI.
               assessment: undefined,
               plan: undefined,
+              description: undefined,
+              supportsAllowSession: false,
             },
           }}
           isEntryActive={true}
@@ -186,19 +199,93 @@ describe('ToolEvent', () => {
       S.CHAT_UI_PERMISSION_CHALLENGE_ALLOW_BUTTON,
     )
     fireEvent.click(approveButton)
-    expect(mockProcessPermissionChallenge).toHaveBeenCalledWith('123', true)
+    expect(mockProcessPermissionChallenge).toHaveBeenCalledWith(
+      '123',
+      Mojom.PermissionChallengeDecision.kAllowOnce,
+    )
     const denyButton = screen.getByText(
       S.CHAT_UI_PERMISSION_CHALLENGE_DENY_BUTTON,
     )
     fireEvent.click(denyButton)
-    expect(mockProcessPermissionChallenge).toHaveBeenCalledWith('123', false)
+    expect(mockProcessPermissionChallenge).toHaveBeenCalledWith(
+      '123',
+      Mojom.PermissionChallengeDecision.kDeny,
+    )
+  })
+
+  it('should show human-readable markdown description when provided', () => {
+    render(
+      <MockContext>
+        <ToolEvent
+          toolUseEvent={{
+            // Website-provided (WebMCP) tools have a mangled, model-facing
+            // name which should not be shown in the permission prompt.
+            toolName: 'web_example_com_get_stock_price',
+            id: '123',
+            argumentsJson: '{}',
+            output: undefined,
+            permissionChallenge: {
+              assessment: undefined,
+              plan: undefined,
+              description:
+                'Brave AI would like to execute **get_stock_price** '
+                + 'on **https://example.com**',
+              supportsAllowSession: true,
+            },
+          }}
+          isEntryActive={true}
+        />
+      </MockContext>,
+    )
+    // The markdown description is rendered with the markdown renderer, with
+    // the tool name and origin bolded.
+    expect(screen.getByText('get_stock_price')).toBeInTheDocument()
+    expect(screen.getByText('get_stock_price').tagName).toBe('STRONG')
+    expect(screen.getByText('https://example.com')).toBeInTheDocument()
+    expect(
+      screen.queryByText(S.CHAT_UI_PERMISSION_CHALLENGE_SUMMARY),
+    ).not.toBeInTheDocument()
+  })
+
+  it('should record the answer when allow for this session is offered', () => {
+    const mockProcessPermissionChallenge = jest.fn()
+    render(
+      <MockContext
+        userActions={{
+          processPermissionChallenge: mockProcessPermissionChallenge,
+        }}
+      >
+        <ToolEvent
+          toolUseEvent={{
+            toolName: 'web_example_com_get_stock_price',
+            id: '123',
+            argumentsJson: '{}',
+            output: undefined,
+            permissionChallenge: {
+              assessment: undefined,
+              plan: undefined,
+              description: undefined,
+              supportsAllowSession: true,
+            },
+          }}
+          isEntryActive={true}
+        />
+      </MockContext>,
+    )
+    fireEvent.click(
+      screen.getByText(S.CHAT_UI_WEBSITE_TOOL_PERMISSION_ALLOW_SESSION),
+    )
+    expect(mockProcessPermissionChallenge).toHaveBeenCalledWith(
+      '123',
+      Mojom.PermissionChallengeDecision.kAllowSession,
+    )
   })
 
   it('should not allow permission challenge interaction in a non-active event', () => {
     const mockProcessPermissionChallenge = jest.fn()
     render(
       <MockContext
-        conversationHandler={{
+        userActions={{
           processPermissionChallenge: mockProcessPermissionChallenge,
         }}
       >
@@ -214,6 +301,8 @@ describe('ToolEvent', () => {
               // permission challenge UI.
               assessment: undefined,
               plan: undefined,
+              description: undefined,
+              supportsAllowSession: false,
             },
           }}
           isEntryActive={false}
@@ -233,5 +322,104 @@ describe('ToolEvent', () => {
     )
     fireEvent.click(denyButton)
     expect(mockProcessPermissionChallenge).not.toHaveBeenCalled()
+  })
+
+  describe('permission challenge tool arguments', () => {
+    function renderPermissionChallenge(argumentsJson: string) {
+      return render(
+        <MockContext>
+          <ToolEvent
+            toolUseEvent={{
+              toolName: Mojom.NAVIGATE_TOOL_NAME,
+              id: '123',
+              argumentsJson,
+              output: undefined,
+              permissionChallenge: {
+                assessment: undefined,
+                plan: undefined,
+                description: undefined,
+                supportsAllowSession: false,
+              },
+            }}
+            isEntryActive={true}
+          />
+        </MockContext>,
+      )
+    }
+
+    it('should hide the tool arguments until requested', () => {
+      renderPermissionChallenge('{"website_url": "https://www.example.com"}')
+
+      expect(
+        screen.getByText(S.CHAT_UI_PERMISSION_CHALLENGE_SHOW_ARGUMENTS_BUTTON),
+      ).toBeInTheDocument()
+      expect(screen.queryByTestId('tool-arguments')).not.toBeInTheDocument()
+    })
+
+    it('should show the tool arguments on click', () => {
+      renderPermissionChallenge('{"website_url": "https://www.example.com"}')
+
+      fireEvent.click(screen.getByTestId('tool-arguments-toggle'))
+
+      // The code block splits the text across syntax-highlighted elements, so
+      // assert on the rendered text content rather than a single text node.
+      const args = screen.getByTestId('tool-arguments')
+      expect(args).toHaveTextContent('website_url')
+      expect(args).toHaveTextContent('https://www.example.com')
+      expect(
+        screen.getByText(S.CHAT_UI_PERMISSION_CHALLENGE_HIDE_ARGUMENTS_BUTTON),
+      ).toBeInTheDocument()
+    })
+
+    it('should hide the tool arguments again on click', () => {
+      renderPermissionChallenge('{"website_url": "https://www.example.com"}')
+
+      const toggle = screen.getByTestId('tool-arguments-toggle')
+      fireEvent.click(toggle)
+      expect(screen.getByTestId('tool-arguments')).toBeInTheDocument()
+
+      fireEvent.click(toggle)
+      expect(screen.queryByTestId('tool-arguments')).not.toBeInTheDocument()
+    })
+
+    it('should show all arguments, including nested ones', () => {
+      renderPermissionChallenge(
+        '{"action": "group", "options": {"collapse": true}}',
+      )
+
+      fireEvent.click(screen.getByTestId('tool-arguments-toggle'))
+
+      const args = screen.getByTestId('tool-arguments')
+      expect(args).toHaveTextContent('action')
+      expect(args).toHaveTextContent('group')
+      expect(args).toHaveTextContent('options')
+      expect(args).toHaveTextContent('collapse')
+    })
+
+    it('should show unparseable arguments verbatim', () => {
+      renderPermissionChallenge('2 invalid 2 json')
+
+      fireEvent.click(screen.getByTestId('tool-arguments-toggle'))
+
+      expect(screen.getByTestId('tool-arguments')).toHaveTextContent(
+        '2 invalid 2 json',
+      )
+    })
+
+    it('should not offer to show arguments when there are none', () => {
+      renderPermissionChallenge('')
+
+      expect(
+        screen.queryByTestId('tool-arguments-toggle'),
+      ).not.toBeInTheDocument()
+    })
+
+    it('should not offer to show arguments for an empty argument object', () => {
+      renderPermissionChallenge('{}')
+
+      expect(
+        screen.queryByTestId('tool-arguments-toggle'),
+      ).not.toBeInTheDocument()
+    })
   })
 })

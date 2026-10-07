@@ -15,6 +15,13 @@
         <include name="IDR_PRODUCT_LOGO_128_NIGHTLY" file="brave/linux/product_logo_128_nightly.png" type="BINDATA" />
       </if>
       <include name="IDR_BRAVE_PASSWORD_MANAGER_LOGO" file="brave/password_manager_logo.svg" type="BINDATA" />
+      <!-- Logos badged onto the site icon of desktop shortcuts. The 16px logo
+           only exists as a scaled resource, but the badging code needs the
+           unscaled bitmap. -->
+      <include name="IDR_BRAVE_PRODUCT_LOGO_16_SHORTCUTS" file="default_100_percent/${branding_path_component}/product_logo_16.png" type="BINDATA" />
+      <include name="IDR_BRAVE_PRODUCT_LOGO_24_SHORTCUTS" file="${branding_path_component}/product_logo_24.png" type="BINDATA" />
+      <include name="IDR_BRAVE_PRODUCT_LOGO_64_SHORTCUTS" file="${branding_path_component}/product_logo_64.png" type="BINDATA" />
+      <include name="IDR_BRAVE_PRODUCT_LOGO_128_SHORTCUTS" file="${branding_path_component}/product_logo_128.png" type="BINDATA" />
     </includes>
   </release>
 </grit>

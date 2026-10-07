@@ -6,20 +6,36 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 from post_process import DropExpectation, StepCommandRE
+from recipe_api import RecipeScriptApi
+from recipe_modules import hello
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['hello']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    hello: hello.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    pass
+
+
+def RunSteps(api: DEPS):
     api.hello.set_config('super_tool', TARGET='Charlie')
     api.hello.greet()  # Greets 'Charlie' with unicorn.py.
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'charlie',
-        api.post_process(StepCommandRE, 'Greet Admired Individual',
-                         [r'.*\bunicorn.py', 'Hello Charlie']),
+        api.post_process(
+            StepCommandRE,
+            'Greet Admired Individual',
+            [r'.*\bunicorn.py', 'Hello Charlie'],
+        ),
         api.post_process(DropExpectation),
     )

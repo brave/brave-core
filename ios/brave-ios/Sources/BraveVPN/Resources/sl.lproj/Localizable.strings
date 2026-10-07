@@ -227,7 +227,7 @@
 "vpn.serverTitle" = "%ld Strežnik";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Zaščitite vsako aplikacijo z Brave VPN. Zaščitite do 10 naprav z enim načrtom.";
+"vpn.settingHeaderBody" = "Pretakajte svojo vsebino po svoje. Zaščitite vsako aplikacijo na 10 napravah z 1 naročnino.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Obrnite se na tehnično podporo";

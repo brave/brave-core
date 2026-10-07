@@ -1,17 +1,24 @@
 diff --git a/third_party/blink/renderer/core/script_tools/model_context.cc b/third_party/blink/renderer/core/script_tools/model_context.cc
-index af315ec3eb468f1a06fb4ea12757b8fadc154c16..0eadfa6b8291856dd2617ab360360d6b986edbf2 100644
+index 9c1e6e82b7af68fb3574fed34ec4875b20196549..f7d69944e6c410dc22d14ea68529aad7bb5c0ccf 100644
 --- a/third_party/blink/renderer/core/script_tools/model_context.cc
 +++ b/third_party/blink/renderer/core/script_tools/model_context.cc
-@@ -901,7 +901,11 @@ bool ModelContext::IsModelContextAllowed() const {
+@@ -895,6 +895,9 @@ void ModelContext::PauseExecution() {
+ }
+ 
+ void ModelContext::NotifyToolChange() {
++  if (auto* web_frame = WebLocalFrameImpl::FromFrame(document_->GetFrame())) {
++    web_frame->NotifyScriptToolsChanged();
++  }
+   DispatchEvent(*Event::Create(event_type_names::kToolchange));
+ }
+ 
+@@ -962,7 +965,8 @@ bool ModelContext::IsModelContextAllowed() const {
                url::kFileScheme &&
            key.IsUniversalFileAgent()) ||
           (document_->GetSettings() &&
 -          !document_->GetSettings()->GetWebSecurityEnabled());
 +          !document_->GetSettings()->GetWebSecurityEnabled()) ||
-+         (document_->GetExecutionContext()->GetSecurityOrigin()->Protocol() ==
-+              "chrome-untrusted" &&
-+           document_->GetExecutionContext()->GetSecurityOrigin()->Host() ==
-+              ai_chat::kAIChatLeoWorkspaceUIHost);
++         IsAIChatLeoWorkspaceDocument(*document_);
  }
  
  ScriptPromise<IDLSequence<RegisteredTool>> ModelContext::getTools(

@@ -4,6 +4,6 @@
   "author": "cdesouza@brave.com",
   "private": true,
   "dependencies": {
-    "pnpm": "11.9.0"
+    "pnpm": "11.25.0"
   }
 }

@@ -20,7 +20,6 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_command_controller.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/singleton_tabs.h"
@@ -76,7 +75,7 @@ SidebarControlView::SidebarControlView(Delegate* delegate,
   UpdateSettingsButtonState();
 
   sidebar_model_observed_.Observe(
-      browser_->GetFeatures().sidebar_controller()->model());
+      sidebar::SidebarController::From(browser_)->model());
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical);
   SetBackground(views::CreateSolidBackground(kColorToolbar));
@@ -142,7 +141,8 @@ void SidebarControlView::ShowContextMenuForViewImpl(
 
 void SidebarControlView::ExecuteCommand(int command_id, int event_flags) {
   if (command_id == IDC_SIDEBAR_TOGGLE_POSITION) {
-    browser_->command_controller()->ExecuteCommand(command_id);
+    chrome::BrowserCommandController::From(browser_)->ExecuteCommand(
+        command_id);
     return;
   }
   auto* service =
@@ -221,8 +221,7 @@ void SidebarControlView::UpdateItemAddButtonState() {
   DCHECK(sidebar_item_add_view_);
   // Determine add button enabled state.
   bool should_enable = true;
-  if (browser_->GetFeatures()
-          .sidebar_controller()
+  if (sidebar::SidebarController::From(browser_)
           ->model()
           ->IsSidebarHasAllBuiltInItems() &&
       !sidebar::CanAddCurrentActiveTabToSidebar(browser_)) {

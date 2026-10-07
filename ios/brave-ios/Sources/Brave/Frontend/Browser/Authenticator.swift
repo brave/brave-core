@@ -11,12 +11,10 @@ import os.log
 class Authenticator {
 
   class LoginData {
-    var guid: String
     var credentials: URLCredential
     let protectionSpace: URLProtectionSpace
 
     init(credentials: URLCredential, protectionSpace: URLProtectionSpace) {
-      self.guid = Bytes.generateGUID()
       self.credentials = credentials
       self.protectionSpace = protectionSpace
     }
@@ -64,7 +62,7 @@ class Authenticator {
       origin += "\(protectionSpace.host):\(protectionSpace.port)"
 
       let formatted = String(format: Strings.authPromptAlertMessageText, origin)
-      let alert = AlertController(
+      let alert = UIAlertController(
         title: Strings.authPromptAlertTitle,
         message: formatted,
         preferredStyle: .alert
@@ -86,14 +84,14 @@ class Authenticator {
         )
         continuation.resume(returning: loginData)
       }
-      alert.addAction(action, accessibilityIdentifier: "authenticationAlert.loginRequired")
+      alert.addAction(action)
 
       // Add a cancel button.
       let cancel = UIAlertAction(title: Strings.authPromptAlertCancelButtonTitle, style: .cancel) {
         _ in
         continuation.resume(throwing: LoginDataError.userCancelledAuthentication)
       }
-      alert.addAction(cancel, accessibilityIdentifier: "authenticationAlert.cancel")
+      alert.addAction(cancel)
 
       // Add a username textfield.
       alert.addTextField { textfield in

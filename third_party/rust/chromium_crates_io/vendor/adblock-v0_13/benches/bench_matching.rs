@@ -2,9 +2,9 @@ use criterion::*;
 
 use serde::{Deserialize, Serialize};
 
+use adblock::Engine;
 use adblock::request::Request;
 use adblock::url_parser::parse_url;
-use adblock::Engine;
 
 #[path = "../tests/test_utils.rs"]
 mod test_utils;

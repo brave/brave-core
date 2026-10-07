@@ -3,18 +3,50 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/local_ai/buildflags/buildflags.gni")
 
 assert(enable_local_ai)
 
+# Holds the setting the embedding services were built with, so the Semantic
+# history search toggle can prompt for a relaunch once it diverges, and owns the
+# BraveHistoryEmbeddingsEnabledAtStartup() hook the chromium_src overrides
+# forward declare. Separate from ":history_embeddings" because
+# //chrome/browser/passage_embeddings reads it, and that is what
+# ":history_embeddings" is built on top of.
+source_set("status") {
+  public = [ "brave_history_embeddings_status.h" ]
+  sources = [ "brave_history_embeddings_status.cc" ]
+
+  public_deps = [
+    "//base",
+    "//components/prefs",
+  ]
+
+  deps = [
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/local_ai/core",
+    "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/history_embeddings",
+    "//chrome/browser/profiles:profile",
+  ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
+  }
+}
+
 # Resolves open-tab URLs to URLIDs via HistoryService and ranks them with
 # HistoryEmbeddingsSearch. Shared by the tab_search WebUI page handler and the
-# semantic tab search chat tool.
+# AI Chat `tabSearch` markdown directive.
 source_set("open_tab_search") {
   public = [ "open_tab_search.h" ]
   sources = [ "open_tab_search.cc" ]
 
-  public_deps = [ "//base" ]
+  public_deps = [
+    "//base",
+    "//url",
+  ]
 
   deps = [
     "//chrome/browser/profiles",
@@ -26,50 +58,79 @@ source_set("open_tab_search") {
     "//components/history_embeddings/core",
     "//components/tabs:public",
     "//content/public/browser",
-    "//url",
   ]
 }
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "brave_passage_embeddings_service_controller_unittest.cc" ]
+  sources = [
+    "brave_history_embeddings_status_unittest.cc",
+    "brave_passage_embeddings_service_controller_unittest.cc",
+  ]
 
   deps = [
     ":history_embeddings",
+    ":status",
     "//base",
     "//base/test:test_support",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/local_ai/core",
+    "//chrome/browser/prefs",
+    "//chrome/test:test_support",
+    "//components/history_embeddings/core",
     "//components/optimization_guide/core",
     "//components/optimization_guide/proto:optimization_guide_proto",
     "//components/passage_embeddings/core",
+    "//components/prefs",
+    "//components/sync_preferences:test_support",
     "//content/test:test_support",
     "//testing/gtest",
   ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
+  }
 }
 
 source_set("browser_tests") {
   testonly = true
-  sources = [ "open_tab_search_browsertest.cc" ]
+  sources = [
+    "brave_history_ui_embeddings_browsertest.cc",
+    "history_embeddings_omnibox_browsertest.cc",
+    "open_tab_search_browsertest.cc",
+  ]
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   deps = [
     ":open_tab_search",
     "//base",
+    "//base/test:test_support",
     "//brave/components/constants",
     "//brave/components/history_embeddings:test_support",
+    "//brave/components/local_ai/core",
+    "//chrome/browser/autocomplete",
     "//chrome/browser/history",
+    "//chrome/browser/history_embeddings",
     "//chrome/browser/profiles",
+    "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
+    "//chrome/browser/ui/tabs:tab_strip",
     "//chrome/browser/ui/tabs:tabs_public",
+    "//chrome/common:constants",
     "//chrome/test:test_support",
     "//components/history/core/browser",
+    "//components/history_embeddings/core",
     "//components/keyed_service/core",
+    "//components/omnibox/browser",
+    "//components/omnibox/browser:test_support",
+    "//components/prefs",
     "//content/public/browser",
     "//content/test:test_support",
     "//net:test_support",
     "//testing/gmock",
     "//testing/gtest",
+    "//third_party/metrics_proto",
     "//ui/base",
     "//url",
   ]

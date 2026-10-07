@@ -5,9 +5,45 @@
 
 import BigNumber
 import BraveCore
+import BraveUI
 import DesignSystem
 import Strings
 import SwiftUI
+
+struct TransactionSection: Equatable, Identifiable {
+  var id: Date { date }
+  let date: Date
+
+  let transactions: [ParsedTransaction]
+}
+
+enum TransactionFollowUpAction {
+  case retry
+  case cancel
+  case speedUp
+
+  var buttonTitle: String {
+    switch self {
+    case .retry:
+      return Strings.Wallet.retryTransactionButtonTitle
+    case .cancel:
+      return Strings.Wallet.cancelTransactionButtonTitle
+    case .speedUp:
+      return Strings.Wallet.speedUpTransactionButtonTitle
+    }
+  }
+
+  var braveSystemImage: String {
+    switch self {
+    case .retry:
+      return "leo.refresh"
+    case .cancel:
+      return "leo.close"
+    case .speedUp:
+      return "leo.network.speed-fast"
+    }
+  }
+}
 
 struct TransactionStatusView: View {
   @ObservedObject var txStatusStore: TransactionStatusStore
@@ -698,22 +734,17 @@ struct TransactionStatusView: View {
         speedUpTimer = nil
       }
     }
-    .alert(
-      isPresented: Binding(
-        get: { followUpActionError != nil },
-        set: {
-          if !$0 {
-            followUpActionError = nil
-            isShowingTxCancellationConfirmation = false
-          }
-        }
-      )
-    ) {
+    .alert(isPresented: $followUpActionError.isPresented) {
       Alert(
         title: Text(Strings.genericErrorTitle),
         message: Text(followUpActionError ?? ""),
         dismissButton: .default(Text(Strings.OKString))
       )
+    }
+    .onChange(of: followUpActionError) { _, newValue in
+      if newValue == nil {
+        isShowingTxCancellationConfirmation = false
+      }
     }
     .onAppear {
       if txStatusStore.activeTxStatus == .submitted && txStatusStore.isSpeedUpAvailable {

@@ -37,6 +37,8 @@ source_set("page_info") {
     "//ui/base",
     "//ui/views/controls/webview",
   ]
+
+  public_deps = [ "//ui/base/unowned_user_data" ]
 }
 
 source_set("unit_tests") {

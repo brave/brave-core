@@ -17,6 +17,7 @@
 #include <vector>
 
 #include "base/functional/callback.h"
+#include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
@@ -31,6 +32,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/conversation_share_manager.h"
+#include "brave/components/ai_chat/core/browser/conversation_share_store.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider_factory.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
@@ -148,6 +150,11 @@ class AIChatService : public KeyedService,
   void GetConversation(std::string_view conversation_uuid,
                        base::OnceCallback<void(ConversationHandler*)>);
 
+  void GetConversationThreadEntries(
+      const std::string& thread_uuid,
+      base::OnceCallback<void(std::vector<mojom::ConversationTurnPtr>)>
+          callback);
+
   // Creates and owns a ConversationHandler if one hasn't been made for the
   // associated_content_id yet. |associated_content_id| should not be stored. It
   // is an ephemeral identifier for active browser content.
@@ -214,8 +221,15 @@ class AIChatService : public KeyedService,
                           ConversationExistsCallback callback) override;
   void ShareConversation(const std::string& encrypted_contents,
                          const std::string& key_fragment,
+                         const std::string& conversation_uuid,
+                         const std::string& conversation_title,
                          bool copy_to_clipboard,
                          ShareConversationCallback callback) override;
+  void GetConversationShares(GetConversationSharesCallback callback) override;
+  void DeleteConversationShare(
+      const std::string& share_id,
+      DeleteConversationShareCallback callback) override;
+  void CopyConversationShareLink(const std::string& share_id) override;
   void BindConversation(
       const std::string& uuid,
       mojo::PendingReceiver<mojom::ConversationHandler> receiver,
@@ -240,6 +254,9 @@ class AIChatService : public KeyedService,
   // Whether the feature and user preference for history storage is enabled
   bool IsAIChatHistoryEnabled();
 
+  std::unique_ptr<AssociatedContentDelegate>
+  RestoreWorkspaceAssociatedContentFromUrl(const GURL& url);
+
   std::unique_ptr<EngineConsumer> GetDefaultAIEngine();
   std::unique_ptr<EngineConsumer> GetEngineForModel(
       const std::string& model_key);
@@ -256,6 +273,11 @@ class AIChatService : public KeyedService,
   void SetConversationShareManagerForTesting(
       std::unique_ptr<ConversationShareManager> share_manager) {
     conversation_share_manager_ = std::move(share_manager);
+  }
+
+  void SetConversationShareStoreForTesting(
+      std::unique_ptr<ConversationShareStore> share_store) {
+    conversation_share_store_ = std::move(share_store);
   }
 
   size_t GetInMemoryConversationCountForTesting();
@@ -275,6 +297,12 @@ class AIChatService : public KeyedService,
 
   void SetDatabaseForTesting(base::SequenceBound<AIChatDatabase> db) {
     ai_chat_db_ = std::move(db);
+  }
+
+  void SetWorkspaceContentRestorer(
+      base::RepeatingCallback<std::unique_ptr<AssociatedContentDelegate>(GURL)>
+          workspace_content_restorer) {
+    workspace_content_restorer_ = std::move(workspace_content_restorer);
   }
 
  private:
@@ -306,13 +334,26 @@ class AIChatService : public KeyedService,
       std::optional<std::vector<ClearedAssociatedContentEntry>> cleared);
 
   // Completes ShareConversation once the sharing server has returned the viewer
-  // URL: appends |key_fragment| to build the full shareable link, optionally
-  // copies it to the clipboard as confidential, and returns it via |callback|.
+  // URL: appends |key_fragment| to build the full shareable link, records the
+  // share so the user can manage it later, optionally copies the link to the
+  // clipboard as confidential, and returns it via |callback|.
   void OnShareConversationComplete(
       const std::string& key_fragment,
+      const std::string& conversation_uuid,
+      const std::string& conversation_title,
       bool copy_to_clipboard,
       ShareConversationCallback callback,
-      const std::optional<GURL>& shared_conversation_viewer_url);
+      const std::optional<ConversationShareResult>& share_result);
+
+  // Steps of DeleteConversationShare(): look up the capability token stored
+  // when the share was created, ask the server to delete the share with it,
+  // and forget the local record once the server has.
+  void OnShareDeletionIdRetrieved(const std::string& share_id,
+                                  DeleteConversationShareCallback callback,
+                                  std::optional<std::string> deletion_id);
+  void OnConversationShareDeleted(const std::string& share_id,
+                                  DeleteConversationShareCallback callback,
+                                  bool success);
 
   void MaybeAssociateContent(
       ConversationHandler* conversation,
@@ -367,15 +408,17 @@ class AIChatService : public KeyedService,
 
   void CreateTabOrganizationEngineIfNeeded();
   void OnTabOrganizationModelPrefChanged();
+  void OnTabOrganizationSendPageContentPrefChanged();
 
   void OnSuggestedTopicsReceived(
+      size_t passage_count,
       GetSuggestedTopicsCallback callback,
       base::expected<std::vector<std::string>, mojom::APIError> topics);
   void OnGetFocusTabs(
       GetFocusTabsCallback callback,
       base::expected<std::vector<std::string>, mojom::APIError> result);
-  std::vector<std::unique_ptr<ToolProvider>>
-  CreateToolProvidersForNewConversation();
+  // Creates the tool providers for |conversation| and adds them to it.
+  void AddToolProvidersToConversation(ConversationHandler* conversation);
 
   raw_ptr<ModelService> model_service_;
   raw_ptr<TabTrackerService> tab_tracker_service_;
@@ -387,6 +430,7 @@ class AIChatService : public KeyedService,
 
   std::unique_ptr<AIChatFeedbackAPI> feedback_api_;
   std::unique_ptr<ConversationShareManager> conversation_share_manager_;
+  std::unique_ptr<ConversationShareStore> conversation_share_store_;
   std::unique_ptr<AIChatCredentialManager> credential_manager_;
 
   // Factories of ToolProviders from other layers
@@ -411,6 +455,10 @@ class AIChatService : public KeyedService,
   // All conversation metadata. Mainly just titles and uuids.
   ConversationMap conversations_;
 
+  // Used to restore a WorkspaceAssociatedContent from a url.
+  base::RepeatingCallback<std::unique_ptr<AssociatedContentDelegate>(GURL)>
+      workspace_content_restorer_;
+
   // Only keep ConversationHandlers around that are being
   // actively used. Any metadata that needs to stay in-memory
   // should be kept in |conversations_|. Any other data only for viewing
@@ -430,6 +478,11 @@ class AIChatService : public KeyedService,
   // Cached suggested topics for users to be focused on from the latest
   // GetSuggestedTopics call, would be cleared when there are tab data changes.
   std::vector<std::string> cached_focus_topics_;
+  // Total passages `cached_focus_topics_` was derived from, so it only means
+  // anything while that is non-empty. Excerpts arrive from background indexing,
+  // which clears nothing, and any tab change clears the cache anyway, so with
+  // the same tabs a different total means different excerpts.
+  size_t cached_focus_passage_count_ = 0;
 
   base::ScopedMultiSourceObservation<ConversationHandler,
                                      ConversationHandler::Observer>

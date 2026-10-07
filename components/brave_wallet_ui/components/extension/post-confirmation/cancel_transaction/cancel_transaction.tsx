@@ -8,7 +8,7 @@ import * as React from 'react'
 import { useAppDispatch } from '../../../../common/hooks/use-redux'
 
 // Actions
-import * as WalletPanelActions from '../../../../panel/actions/wallet_panel_actions'
+import { UIActions } from '../../../../common/slices/ui.slice'
 
 // Types
 import { SerializableTransactionInfo } from '../../../../constants/types'
@@ -52,7 +52,7 @@ export const CancelTransaction = (props: Props) => {
       chainId: transaction.chainId,
       transactionId: transaction.id,
     })
-    dispatch(WalletPanelActions.setSelectedTransactionId(undefined))
+    dispatch(UIActions.setSelectedTransactionId(undefined))
   }
 
   return (
@@ -68,18 +68,18 @@ export const CancelTransaction = (props: Props) => {
         padding='0px 24px'
         gap='8px'
       >
-        <Title>{getLocale('braveWalletTransactionCancel')}</Title>
+        <Title>{getLocale(S.BRAVE_WALLET_TRANSACTION_CANCEL)}</Title>
         <Text
           textSize='14px'
           textColor='primary'
           isBold={false}
         >
-          {getLocale('braveWalletCancelTransactionDescription')}
+          {getLocale(S.BRAVE_WALLET_CANCEL_TRANSACTION_DESCRIPTION)}
         </Text>
       </Column>
       <Row padding='16px'>
         <CancelButton onClick={onClickCancelTransaction}>
-          {getLocale('braveWalletTransactionCancel')}
+          {getLocale(S.BRAVE_WALLET_TRANSACTION_CANCEL)}
         </CancelButton>
       </Row>
     </Wrapper>

@@ -10,31 +10,48 @@ property, which `HelloApi.get_config_defaults` feeds in as the TARGET default.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 from post_process import DropExpectation, StepCommandRE
+from recipe_api import RecipeScriptApi
+from recipe_modules import hello
+from recipe_test_api import RecipeTestApi
 
-DEPS = ['hello']
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    hello: hello.API
 
 
-def RunSteps(api):
+@dataclass
+class TEST_DEPS(RecipeTestApi):
+    pass
+
+
+def RunSteps(api: DEPS):
     api.hello.set_config('default_tool')
     api.hello.greet()  # Greets the configured target with echo.
 
 
-def GenTests(api):
+def GenTests(api: TEST_DEPS):
     yield api.test(
         'bob',
-        api.post_process(StepCommandRE, 'Greet Admired Individual',
-                         [r'.*\becho', 'Hello Bob']),
+        api.post_process(
+            StepCommandRE,
+            'Greet Admired Individual',
+            [r'.*\becho', 'Hello Bob'],
+        ),
         api.post_process(DropExpectation),
     )
 
     # The `$hello` block is this module's namespaced PROPERTIES input.
     yield api.test(
         'anya',
-        api.properties(**{'$hello': {
-            'target': 'anya'
-        }}),
-        api.post_process(StepCommandRE, 'Greet Admired Individual',
-                         [r'.*\becho', 'Hello anya']),
+        api.properties(**{'$hello': {'target': 'anya'}}),
+        api.post_process(
+            StepCommandRE,
+            'Greet Admired Individual',
+            [r'.*\becho', 'Hello anya'],
+        ),
         api.post_process(DropExpectation),
     )

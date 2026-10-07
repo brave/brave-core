@@ -67,17 +67,17 @@ function CardanoTransactionDetails({
             key={'input' + index}
           >
             <DetailColumn>
-              <LabelText>{getLocale('braveWalletInput')}:</LabelText>
+              <LabelText>{getLocale(S.BRAVE_WALLET_INPUT)}:</LabelText>
               <DetailText>{`${index}`}</DetailText>
             </DetailColumn>
             <DetailColumn>
-              <LabelText>{getLocale('braveWalletValue')}:</LabelText>
+              <LabelText>{getLocale(S.BRAVE_WALLET_VALUE)}:</LabelText>
               <DetailText>{`${input.value}`}</DetailText>
             </DetailColumn>
             {input.tokens.map((token) => {
               return (
                 <DetailColumn key={token.tokenIdHex}>
-                  <LabelText>{getLocale('braveWalletToken')}:</LabelText>
+                  <LabelText>{getLocale(S.BRAVE_WALLET_TOKEN)}:</LabelText>
                   <DetailText>
                     {token.tokenIdHex}:{`${token.value}`}
                   </DetailText>
@@ -85,7 +85,7 @@ function CardanoTransactionDetails({
               )
             })}
             <DetailColumn>
-              <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
+              <LabelText>{getLocale(S.BRAVE_WALLET_ADDRESS)}:</LabelText>
               <DetailText>{`${input.address}`}</DetailText>
             </DetailColumn>
             <VerticalDivider />
@@ -99,17 +99,17 @@ function CardanoTransactionDetails({
             key={'output' + index}
           >
             <DetailColumn>
-              <LabelText>{getLocale('braveWalletOutput')}:</LabelText>
+              <LabelText>{getLocale(S.BRAVE_WALLET_OUTPUT)}:</LabelText>
               <DetailText>{`${index}`}</DetailText>
             </DetailColumn>
             <DetailColumn>
-              <LabelText>{getLocale('braveWalletValue')}:</LabelText>
+              <LabelText>{getLocale(S.BRAVE_WALLET_VALUE)}:</LabelText>
               <DetailText>{`${output.value}`}</DetailText>
             </DetailColumn>
             {output.tokens.map((token) => {
               return (
                 <DetailColumn key={token.tokenIdHex}>
-                  <LabelText>{getLocale('braveWalletToken')}:</LabelText>
+                  <LabelText>{getLocale(S.BRAVE_WALLET_TOKEN)}:</LabelText>
                   <DetailText>
                     {token.tokenIdHex}:{`${token.value}`}
                   </DetailText>
@@ -117,7 +117,7 @@ function CardanoTransactionDetails({
               )
             })}
             <DetailColumn>
-              <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
+              <LabelText>{getLocale(S.BRAVE_WALLET_ADDRESS)}:</LabelText>
               <DetailText>{`${output.address}`}</DetailText>
             </DetailColumn>
             <VerticalDivider />
@@ -139,7 +139,7 @@ function PolkadotTransactionDetails({
           padding='24px'
         >
           <NoDataText>
-            {getLocale('braveWalletConfirmTransactionNoData')}
+            {getLocale(S.BRAVE_WALLET_CONFIRM_TRANSACTION_NO_DATA)}
           </NoDataText>
         </Column>
       </StyledWrapper>
@@ -153,7 +153,10 @@ function PolkadotTransactionDetails({
         padding='24px'
       >
         <LabelText>
-          {getLocale('braveWalletConfirmTransactionPolkadotSignaturePayload')}:
+          {getLocale(
+            S.BRAVE_WALLET_CONFIRM_TRANSACTION_POLKADOT_SIGNATURE_PAYLOAD,
+          )}
+          :
         </LabelText>
         <DetailText>{polkadotTxData.signaturePayload}</DetailText>
       </DetailColumn>
@@ -184,15 +187,15 @@ export function PendingTransactionDetails(props: Props) {
               key={'input' + index}
             >
               <DetailColumn>
-                <LabelText>{getLocale('braveWalletInput')}:</LabelText>
+                <LabelText>{getLocale(S.BRAVE_WALLET_INPUT)}:</LabelText>
                 <DetailText>{`${index}`}</DetailText>
               </DetailColumn>
               <DetailColumn>
-                <LabelText>{getLocale('braveWalletValue')}:</LabelText>
+                <LabelText>{getLocale(S.BRAVE_WALLET_VALUE)}:</LabelText>
                 <DetailText>{`${input.value}`}</DetailText>
               </DetailColumn>
               <DetailColumn>
-                <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
+                <LabelText>{getLocale(S.BRAVE_WALLET_ADDRESS)}:</LabelText>
                 <DetailText>{`${input.address}`}</DetailText>
               </DetailColumn>
               <VerticalDivider />
@@ -206,15 +209,15 @@ export function PendingTransactionDetails(props: Props) {
               key={'output' + index}
             >
               <DetailColumn>
-                <LabelText>{getLocale('braveWalletOutput')}:</LabelText>
+                <LabelText>{getLocale(S.BRAVE_WALLET_OUTPUT)}:</LabelText>
                 <DetailText>{`${index}`}</DetailText>
               </DetailColumn>
               <DetailColumn>
-                <LabelText>{getLocale('braveWalletValue')}:</LabelText>
+                <LabelText>{getLocale(S.BRAVE_WALLET_VALUE)}:</LabelText>
                 <DetailText>{`${output.value}`}</DetailText>
               </DetailColumn>
               <DetailColumn>
-                <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
+                <LabelText>{getLocale(S.BRAVE_WALLET_ADDRESS)}:</LabelText>
                 <DetailText>{`${output.address}`}</DetailText>
               </DetailColumn>
               <VerticalDivider />
@@ -251,7 +254,7 @@ export function PendingTransactionDetails(props: Props) {
           padding='24px'
         >
           <NoDataText>
-            {getLocale('braveWalletConfirmTransactionNoData')}
+            {getLocale(S.BRAVE_WALLET_CONFIRM_TRANSACTION_NO_DATA)}
           </NoDataText>
         </Column>
       </StyledWrapper>
@@ -272,7 +275,7 @@ export function PendingTransactionDetails(props: Props) {
             {!!Number(sendOptions?.maxRetries?.maxRetries) && (
               <DetailColumn key={'maxRetries'}>
                 <LabelText>
-                  {getLocale('braveWalletSolanaMaxRetries')}
+                  {getLocale(S.BRAVE_WALLET_SOLANA_MAX_RETRIES)}
                 </LabelText>
                 <DetailText>{sendOptions?.maxRetries?.maxRetries}</DetailText>
               </DetailColumn>
@@ -280,7 +283,7 @@ export function PendingTransactionDetails(props: Props) {
             {sendOptions?.preflightCommitment && (
               <DetailColumn key={'preflightCommitment'}>
                 <LabelText>
-                  {getLocale('braveWalletSolanaPreflightCommitment')}
+                  {getLocale(S.BRAVE_WALLET_SOLANA_PREFLIGHT_COMMITMENT)}
                 </LabelText>
                 <DetailText>{sendOptions?.preflightCommitment}</DetailText>
               </DetailColumn>
@@ -288,7 +291,7 @@ export function PendingTransactionDetails(props: Props) {
             {sendOptions?.skipPreflight && (
               <DetailColumn key={'skipPreflight'}>
                 <LabelText>
-                  {getLocale('braveWalletSolanaSkipPreflight')}
+                  {getLocale(S.BRAVE_WALLET_SOLANA_SKIP_PREFLIGHT)}
                 </LabelText>
                 <DetailText>
                   {sendOptions.skipPreflight.skipPreflight.toString()}
@@ -302,7 +305,7 @@ export function PendingTransactionDetails(props: Props) {
           <DetailColumn gap='8px'>
             <DetailColumn>
               <LabelText>
-                {getLocale('braveWalletTransactionDetailBoxFunction')}:
+                {getLocale(S.BRAVE_WALLET_TRANSACTION_DETAIL_BOX_FUNCTION)}:
               </LabelText>
               <DetailText>{getTransactionTypeName(txType)}</DetailText>
             </DetailColumn>
@@ -333,7 +336,7 @@ export function PendingTransactionDetails(props: Props) {
       {dataArray && (
         <DetailColumn>
           <LabelText>
-            {getLocale('braveWalletTransactionDetailBoxFunction')}:
+            {getLocale(S.BRAVE_WALLET_TRANSACTION_DETAIL_BOX_FUNCTION)}:
           </LabelText>
           <DetailText>{getTransactionTypeName(txType)}</DetailText>
         </DetailColumn>
@@ -352,7 +355,7 @@ export function PendingTransactionDetails(props: Props) {
       {dataArray.length > 0 && (
         <DetailColumn>
           <LabelText>
-            {getLocale('braveWalletTransactionDetailBoxHex')}:
+            {getLocale(S.BRAVE_WALLET_TRANSACTION_DETAIL_BOX_HEX)}:
           </LabelText>
           <DetailText>{`0x${numberArrayToHexStr(dataArray)}`}</DetailText>
         </DetailColumn>
@@ -386,7 +389,7 @@ const SolanaTransactionInstruction: React.FC<SolanaInstructionProps> = ({
       <DetailColumn gap='8px'>
         {programId && (
           <DetailColumn>
-            <LabelText>{getLocale('braveWalletSolanaProgramID')}</LabelText>
+            <LabelText>{getLocale(S.BRAVE_WALLET_SOLANA_PROGRAM_ID)}</LabelText>
             <DetailText>{JSON.stringify(programId)}</DetailText>
           </DetailColumn>
         )}
@@ -394,7 +397,7 @@ const SolanaTransactionInstruction: React.FC<SolanaInstructionProps> = ({
         {accountMetas.length > 0 && (
           <>
             <DetailColumn>
-              <LabelText>{getLocale('braveWalletSolanaAccounts')}</LabelText>
+              <LabelText>{getLocale(S.BRAVE_WALLET_SOLANA_ACCOUNTS)}</LabelText>
 
               {accountMetas.map(({ pubkey, addrTableLookupIndex }, i) => {
                 // other account metas
@@ -414,7 +417,7 @@ const SolanaTransactionInstruction: React.FC<SolanaInstructionProps> = ({
         {data && (
           <>
             <DetailColumn>
-              <LabelText>{getLocale('braveWalletSolanaData')}</LabelText>
+              <LabelText>{getLocale(S.BRAVE_WALLET_SOLANA_DATA)}</LabelText>
               <DetailText>{JSON.stringify(data)}</DetailText>
             </DetailColumn>
           </>
@@ -527,7 +530,7 @@ const AddressParamValue = ({
       <DetailColumn>
         {lookupTableIndex !== undefined && (
           <LabelText>
-            {getLocale('braveWalletSolanaAddressLookupTableAccount')}
+            {getLocale(S.BRAVE_WALLET_SOLANA_ADDRESS_LOOKUP_TABLE_ACCOUNT)}
           </LabelText>
         )}
         <DetailText>{formattedValue}</DetailText>
@@ -535,7 +538,7 @@ const AddressParamValue = ({
       {lookupTableIndex !== undefined && (
         <DetailColumn>
           <LabelText>
-            {getLocale('braveWalletSolanaAddressLookupTableIndex')}
+            {getLocale(S.BRAVE_WALLET_SOLANA_ADDRESS_LOOKUP_TABLE_INDEX)}
           </LabelText>
           <DetailText>{lookupTableIndex}</DetailText>
         </DetailColumn>

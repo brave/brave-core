@@ -25,6 +25,7 @@ import * as Mojom from '../../common/mojom'
 export const defaultConversationEntriesState: Mojom.ConversationEntriesState = {
   isGenerating: false,
   isToolExecuting: false,
+  threadUuidInProgress: undefined,
   toolUseTaskState: Mojom.TaskState.kNone,
   isLeoModel: true,
   allModels: [],
@@ -35,7 +36,7 @@ export const defaultConversationEntriesState: Mojom.ConversationEntriesState = {
   trimmedTokens: BigInt(0),
   totalTokens: BigInt(0),
   canSubmitUserEntries: false,
-  conversationCapabilities: [Mojom.ConversationCapability.CHAT],
+  conversationCapabilities: [],
   suggestedQuestions: [],
   suggestionStatus: Mojom.SuggestionGenerationStatus.None,
   currentError: Mojom.APIError.None,
@@ -61,21 +62,41 @@ export function createMockUntrustedConversationHandler(
 ): Closable<Mojom.UntrustedConversationHandlerInterface> {
   return makeCloseable({
     // Query methods - return empty/default results
-    getConversationHistory: () => Promise.resolve({ conversationHistory: [] }),
+    getConversationHistory: (_threadUuid: string | null) =>
+      Promise.resolve({ conversationHistory: [] }),
+    getConversationThreads: () => Promise.resolve({ threads: [] }),
     bindUntrustedConversationUI: () =>
       Promise.resolve({
         conversationEntriesState: defaultConversationEntriesState,
       }),
 
     // Action methods - fire and forget stubs
+    regenerateAnswer: () => {},
+    generateQuestions: () => {},
+    retryAPIRequest: () => {},
+    createConversationThread: (_originEntryUuid: string) =>
+      Promise.resolve({ threadUuid: null }),
+    switchToNonPremiumModel() {},
+
+    // Apply overrides
+    ...overrides,
+  })
+}
+
+/**
+ * Creates a mock UntrustedConversationUserActionsInterface for Storybook/tests.
+ *
+ * @param overrides - Partial implementation to override default behavior
+ */
+export function createMockUntrustedConversationUserActions(
+  overrides: Partial<Mojom.UntrustedConversationUserActionsInterface> = {},
+): Closable<Mojom.UntrustedConversationUserActionsInterface> {
+  return makeCloseable({
+    // Action methods - fire and forget stubs
     modifyConversation: () => {},
     respondToToolUseRequest: () => {},
     processPermissionChallenge: () => {},
-    regenerateAnswer: () => {},
     submitSuggestion: () => {},
-    generateQuestions: () => {},
-    retryAPIRequest: () => {},
-    switchToNonPremiumModel() {},
 
     // Apply overrides
     ...overrides,
@@ -96,6 +117,8 @@ export function createMockUntrustedUIHandler(
   return {
     // Query methods - return empty/default results
     hasMemory: () => Promise.resolve({ exists: false }),
+    // Null matches a platform without on-device tab search.
+    searchForTabs: () => Promise.resolve({ tabs: null }),
 
     // Action methods - fire and forget stubs
     bindConversationHandler: () => {},
@@ -112,6 +135,7 @@ export function createMockUntrustedUIHandler(
     refreshPremiumSession: () => {},
     openModelSupportUrl: () => {},
     openStorageSupportUrl: () => {},
+    switchToTab: () => {},
 
     // Apply overrides
     ...overrides,
@@ -135,6 +159,7 @@ export function createMockParentUIFrame(
     regenerateAnswerMenuIsOpen: () => {},
     showSkillDialog: () => {},
     showImageLightbox: () => {},
+    showWorkspaceFileLightbox: () => {},
     showPremiumSuggestionForRegenerate: () => {},
     requestNewConversation: () => {},
     handleResetError: () => {},

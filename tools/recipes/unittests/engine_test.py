@@ -11,6 +11,7 @@
 # pylint: disable=protected-access
 
 import contextlib
+from dataclasses import dataclass
 import os
 import sys
 import tempfile
@@ -23,8 +24,13 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # pylint: disable=wrong-import-position
 import engine
-from recipe_api import RecipeApi
+from recipe_api import RecipeApi, RecipeScriptApi
 from recipe_test_api import RecipeTestApi
+
+engine._ensure_on_sys_path()
+engine._ensure_protos()
+import recipe_modules.platform as platform_module
+import recipe_modules.step as step_module
 
 
 @contextlib.contextmanager
@@ -41,6 +47,14 @@ def _real_git_cache():
     with tempfile.TemporaryDirectory() as tmp:
         with mock.patch.dict(os.environ, {'GIT_CACHE_PATH': tmp}):
             yield
+
+
+def _fake_recipe(**attrs) -> types.ModuleType:
+    """A stand-in recipe module carrying *attrs* (e.g. `DEPS`)."""
+    recipe = types.ModuleType('fake_recipe')
+    recipe.__file__ = 'fake_recipe.py'
+    recipe.__dict__.update(attrs)
+    return recipe
 
 
 class DepsResolutionTest(unittest.TestCase):
@@ -89,16 +103,140 @@ class TestApiInjectionTest(unittest.TestCase):
         self.assertTrue(hasattr(cc.m, 'env'))
         self.assertTrue(hasattr(cc.m, 'path'))
         # Cached instances are shared.
-        self.assertIs(engine.instantiate_test_module('path', [], cache),
-                      cc.m.path)
+        self.assertIs(
+            engine.instantiate_test_module('path', [], cache), cc.m.path
+        )
 
     def test_root_api_exposes_dep_helpers(self):
-        root = engine.build_root_test_api(['platform', 'step'])
+        root = engine.build_root_test_api(
+            _fake_recipe(DEPS=['platform', 'step'])
+        )
         # api.platform.name(...) and api.step.data(...) resolve to the module
         # test apis.
         self.assertEqual(
-            root.platform.name('mac').mod_data['platform']['name'], 'mac')
+            root.platform.name('mac').mod_data['platform']['name'], 'mac'
+        )
         self.assertIn('s', root.step.data('s', retcode=2).step_data)
+
+
+class ParseDepsSpecTest(unittest.TestCase):
+    """parse_deps_spec accepts a list of names or a dataclass."""
+
+    def test_list(self):
+        self.assertEqual(
+            engine.parse_deps_spec(['path', 'step'], source='x.py'),
+            {'path': 'path', 'step': 'step'},
+        )
+
+    def test_empty(self):
+        self.assertEqual(engine.parse_deps_spec((), source='x.py'), {})
+
+    def test_dataclass_maps_field_to_module(self):
+        @dataclass
+        class DEPS(RecipeScriptApi):
+            plat: platform_module.API
+            step: step_module.API
+
+        # Base class fields are not deps; a field may rename its module.
+        self.assertEqual(
+            engine.parse_deps_spec(DEPS, source='x.py'),
+            {'plat': 'platform', 'step': 'step'},
+        )
+
+    def test_dataclass_test_deps(self):
+        @dataclass
+        class TEST_DEPS(RecipeTestApi):
+            platform: platform_module.TEST_API
+
+        self.assertEqual(
+            engine.parse_deps_spec(TEST_DEPS, source='x.py'),
+            {'platform': 'platform'},
+        )
+
+    def test_custom_method_raises(self):
+        @dataclass
+        class DEPS(RecipeScriptApi):
+            def my_helper(self):
+                pass
+
+        with self.assertRaisesRegex(
+            ValueError, "Cannot define custom method 'my_helper' on DEPS"
+        ):
+            engine.parse_deps_spec(DEPS, source='x.py')
+
+    def test_non_module_annotation_raises(self):
+        @dataclass
+        class DEPS(RecipeScriptApi):
+            thing: int
+
+        with self.assertRaisesRegex(ValueError, "field 'thing'"):
+            engine.parse_deps_spec(DEPS, source='x.py')
+
+    def test_other_types_raise(self):
+        with self.assertRaises(TypeError):
+            engine.parse_deps_spec('step', source='x.py')
+
+
+class DataclassDepsTest(unittest.TestCase):
+    """A dataclass DEPS/TEST_DEPS is instantiated as the recipe's api."""
+
+    def test_run_steps_receives_deps_instance(self):
+        @dataclass
+        class DEPS(RecipeScriptApi):
+            plat: platform_module.API
+
+        captured = []
+        recipe = _fake_recipe(DEPS=DEPS, RunSteps=captured.append)
+        eng = engine._Engine()
+        eng.run_loaded_recipe(recipe, 'fake_recipe')
+        self.assertEqual(len(captured), 1)
+        api = captured[0]
+        self.assertIsInstance(api, DEPS)
+        self.assertIs(api.plat, eng._instantiate_module('platform', []))
+        self.assertEqual(api._recipe_name, 'fake_recipe')
+        with self.assertRaisesRegex(AttributeError, 'DEPS'):
+            _ = api.step
+
+    def test_root_test_api_is_test_deps_instance(self):
+        @dataclass
+        class TEST_DEPS(RecipeTestApi):
+            platform: platform_module.TEST_API
+
+        root = engine.build_root_test_api(
+            _fake_recipe(DEPS=['platform', 'step'], TEST_DEPS=TEST_DEPS)
+        )
+        self.assertIsInstance(root, TEST_DEPS)
+        self.assertEqual(
+            root.platform.name('mac').mod_data['platform']['name'], 'mac'
+        )
+        # Set up as a root api even though the dataclass __init__ skips ours.
+        self.assertIs(root.m, root)
+        # TEST_DEPS, not DEPS, decides what GenTests gets.
+        with self.assertRaises(AttributeError):
+            _ = root.step
+
+
+class ModuleApiExportTest(unittest.TestCase):
+    """A module's exported API/TEST_API is preferred, and must subclass."""
+
+    def test_exports_are_used(self):
+        self.assertIs(
+            engine._module_api_class(step_module, 'step'), step_module.API
+        )
+        self.assertIs(
+            engine._module_test_api_class(step_module, 'step'),
+            step_module.TEST_API,
+        )
+
+    def test_bad_api_export_raises(self):
+        with self.assertRaises(RuntimeError):
+            engine._module_api_class(types.SimpleNamespace(API=dict), 'x')
+
+    def test_bad_test_api_export_raises(self):
+        with self.assertRaises(RuntimeError):
+            engine._module_test_api_class(
+                types.SimpleNamespace(TEST_API=dict), 'x'
+            )
 
 
 class FindTestApiClassTest(unittest.TestCase):
@@ -106,8 +244,9 @@ class FindTestApiClassTest(unittest.TestCase):
 
     def test_defaults_to_base_when_absent(self):
         module = types.ModuleType('fake')
-        self.assertIs(engine._find_test_api_class(module, 'fake'),
-                      RecipeTestApi)
+        self.assertIs(
+            engine._find_test_api_class(module, 'fake'), RecipeTestApi
+        )
 
     def test_finds_the_single_subclass(self):
         module = types.ModuleType('fake')
@@ -181,17 +320,26 @@ class RunStepsBindingTest(unittest.TestCase):
         engine._ensure_protos()
         # pylint: disable=import-outside-toplevel,import-error
         from PB.recipes.brave.toolchains.rust.package_rust import (
-            InputProperties)
+            InputProperties,
+        )
+
         # `git_cache` is the only module declaring ENV_PROPERTIES.
         from PB.recipe_modules.brave.git_cache.properties import EnvProperties
+
         cls.InputProperties = InputProperties
         cls.EnvProperties = EnvProperties
 
     def _bind(self, properties, environ, props_def, env_def):
         """Return the positional args _run_steps would pass to RunSteps."""
         captured = []
-        engine._run_steps(lambda *args: captured.extend(args), 'API',
-                          properties, environ, props_def, env_def)
+        engine._run_steps(
+            lambda *args: captured.extend(args),
+            'API',
+            properties,
+            environ,
+            props_def,
+            env_def,
+        )
         return captured
 
     def test_no_defs_passes_only_api(self):
@@ -203,21 +351,31 @@ class RunStepsBindingTest(unittest.TestCase):
                 'chromium_ref': 'main',
                 'brave_subrevision': 3,
                 '$hidden': 'ignored',
-            }, {}, self.InputProperties, None)
+            },
+            {},
+            self.InputProperties,
+            None,
+        )
         self.assertEqual(args[0], 'API')
         self.assertEqual(args[1].chromium_ref, 'main')
         self.assertEqual(args[1].brave_subrevision, 3)
 
     def test_env_properties_uppercased_and_unknown_ignored(self):
-        args = self._bind({}, {
-            'git_cache_path': '/c',
-            'PATH': '/bin'
-        }, None, self.EnvProperties)
+        args = self._bind(
+            {},
+            {'git_cache_path': '/c', 'PATH': '/bin'},
+            None,
+            self.EnvProperties,
+        )
         self.assertEqual(args[1].GIT_CACHE_PATH, '/c')
 
     def test_both_defs_pass_properties_then_env(self):
-        args = self._bind({'chromium_ref': 'x'}, {'GIT_CACHE_PATH': '/c'},
-                          self.InputProperties, self.EnvProperties)
+        args = self._bind(
+            {'chromium_ref': 'x'},
+            {'GIT_CACHE_PATH': '/c'},
+            self.InputProperties,
+            self.EnvProperties,
+        )
         self.assertEqual(len(args), 3)
         self.assertEqual(args[1].chromium_ref, 'x')
         self.assertEqual(args[2].GIT_CACHE_PATH, '/c')
@@ -233,8 +391,9 @@ class RunRecipeTest(unittest.TestCase):
     def test_slash_path_mapped_and_missing_run_steps_raises(self):
         fake_recipe = types.SimpleNamespace(DEPS=[])
         import_module = mock.Mock(return_value=fake_recipe)
-        with mock.patch.object(engine.importlib, 'import_module',
-                               import_module):
+        with mock.patch.object(
+            engine.importlib, 'import_module', import_module
+        ):
             with self.assertRaises(RuntimeError):
                 engine.run_recipe('group/sub/my_recipe', {})
         import_module.assert_called_once_with('recipes.group.sub.my_recipe')
@@ -259,21 +418,40 @@ class WorkspaceTest(unittest.TestCase):
             self.assertEqual(path.brave_core, workspace / 'b/src/brave')
             self.assertEqual(path.out, workspace / 'out')
             self.assertEqual(Path.cwd(), workspace)
+            os.chdir(self._prev_cwd)
+
+    def test_missing_workspace_is_created(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp).resolve() / 'a' / 'b'
+            engine._Engine(workspace=workspace)
+            self.assertTrue(workspace.is_dir())
+            self.assertEqual(Path.cwd(), workspace)
+            os.chdir(self._prev_cwd)
 
     def test_workspace_defaults_to_cwd(self):
         path = engine._Engine()._instantiate_module('path', [])
         self.assertEqual(path.workspace, Path.cwd())
 
-    def test_brave_core_ref_seeded_with_override(self):
-        module = engine._Engine(
-            brave_core_ref='feature/x')._instantiate_module(
-                'brave_core_checkout', [])
-        self.assertEqual(getattr(module, '_brave_core_ref'), 'feature/x')
+    def test_brave_core_ref_from_module_properties(self):
+        eng = engine._Engine()
+        eng._properties = {  # pylint: disable=protected-access
+            '$brave_core_checkout': {'brave_core_ref': 'refs/heads/feature/x'}
+        }
+        inst = eng._instantiate_module  # pylint: disable=protected-access
+        with _real_git_cache():
+            module = inst('brave_core_checkout', [])
+        self.assertEqual(
+            getattr(module, '_brave_core_ref'), 'refs/heads/feature/x'
+        )
 
     def test_brave_core_ref_defaults_to_master(self):
-        module = engine._Engine()._instantiate_module('brave_core_checkout',
-                                                      [])
-        self.assertEqual(getattr(module, '_brave_core_ref'), 'master')
+        with _real_git_cache():
+            module = engine._Engine()._instantiate_module(
+                'brave_core_checkout', []
+            )
+        self.assertEqual(
+            getattr(module, '_brave_core_ref'), 'refs/heads/master'
+        )
 
 
 class ModulePropertiesTest(unittest.TestCase):
@@ -290,9 +468,12 @@ class ModulePropertiesTest(unittest.TestCase):
         engine._ensure_protos()
         # pylint: disable=import-outside-toplevel,import-error
         from PB.recipes.brave.toolchains.rust.package_rust import (
-            InputProperties)
+            InputProperties,
+        )
+
         # `git_cache` is the only module declaring ENV_PROPERTIES.
         from PB.recipe_modules.brave.git_cache.properties import EnvProperties
+
         cls.InputProperties = InputProperties
         cls.EnvProperties = EnvProperties
 
@@ -325,8 +506,9 @@ class ModulePropertiesTest(unittest.TestCase):
         eng = engine._Engine()
         eng._properties = {'$fake': {'chromium_ref': 'x'}}
         eng._environ = {'git_cache_path': '/c'}  # lower: must be upper-cased
-        pkg = types.SimpleNamespace(PROPERTIES=self.InputProperties,
-                                    ENV_PROPERTIES=self.EnvProperties)
+        pkg = types.SimpleNamespace(
+            PROPERTIES=self.InputProperties, ENV_PROPERTIES=self.EnvProperties
+        )
         args = eng._module_property_args('fake', pkg)
         self.assertEqual(len(args), 2)
         self.assertEqual(args[0].chromium_ref, 'x')
@@ -334,8 +516,9 @@ class ModulePropertiesTest(unittest.TestCase):
 
     def test_no_defs_means_no_args(self):
         pkg = types.SimpleNamespace(DEPS=[])
-        self.assertEqual(engine._Engine()._module_property_args('fake', pkg),
-                         [])
+        self.assertEqual(
+            engine._Engine()._module_property_args('fake', pkg), []
+        )
 
     def test_non_message_properties_raises(self):
         pkg = types.SimpleNamespace(PROPERTIES=dict, DEPS=[])

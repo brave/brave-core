@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_CREATIVE_AD_CACHE_H_
 
 #include <cstdint>
-#include <map>
 #include <optional>
 #include <string>
 #include <utility>
@@ -17,6 +16,7 @@
 #include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_ads {
 
@@ -24,10 +24,10 @@ class TabManager;
 
 using CreativeAdVariant = std::variant<mojom::CreativeSearchResultAdInfoPtr>;
 using CreativeAdVariantMap =
-    std::map</*placement_id*/ std::string, CreativeAdVariant>;
+    absl::flat_hash_map</*placement_id*/ std::string, CreativeAdVariant>;
 
 using PlacementIdList = std::vector<std::string>;
-using PlacementIdMap = std::map</*tab_id*/ int32_t, PlacementIdList>;
+using PlacementIdMap = absl::flat_hash_map</*tab_id*/ int32_t, PlacementIdList>;
 
 class CreativeAdCache final : public TabManagerObserver {
  public:

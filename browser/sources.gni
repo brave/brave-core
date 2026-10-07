@@ -5,7 +5,6 @@
 
 import("//brave/browser/ai_chat/android/sources.gni")
 import("//brave/browser/autocomplete/sources.gni")
-import("//brave/browser/brave_account/android/sources.gni")
 import("//brave/browser/brave_referrals/sources.gni")
 import("//brave/browser/brave_vpn/sources.gni")
 import("//brave/browser/browsing_data/sources.gni")
@@ -13,7 +12,6 @@ import("//brave/browser/cosmetic_filters/sources.gni")
 import("//brave/browser/debounce/sources.gni")
 import("//brave/browser/ephemeral_storage/sources.gni")
 import("//brave/browser/gcm_driver/sources.gni")
-import("//brave/browser/infobars/sources.gni")
 import("//brave/browser/misc_metrics/sources.gni")
 import("//brave/browser/net/sources.gni")
 import("//brave/browser/new_tab/sources.gni")
@@ -22,7 +20,6 @@ import("//brave/browser/perf/sources.gni")
 import("//brave/browser/permissions/sources.gni")
 import("//brave/browser/profiles/sources.gni")
 import("//brave/browser/renderer_context_menu/sources.gni")
-import("//brave/browser/request_otr/sources.gni")
 import("//brave/browser/search_engines/sources.gni")
 import("//brave/browser/sync/sources.gni")
 import("//brave/browser/themes/sources.gni")
@@ -51,6 +48,7 @@ import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
+import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/traffic_control/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
@@ -124,7 +122,6 @@ brave_chrome_browser_sources = [
   "//brave/browser/translate/brave_translate_utils.h",
   "//brave/browser/update_util.cc",
   "//brave/browser/update_util.h",
-  "//brave/chromium_src/chrome/browser/notifications/notification_handler_impl.h",
 ]
 
 if (enable_brave_wallet) {
@@ -151,6 +148,8 @@ brave_chrome_browser_deps = [
   "//brave/browser/brave_stats",
   "//brave/browser/component_updater",
   "//brave/browser/download",
+  "//brave/browser/drag_drop",
+  "//brave/browser/file_select",
   "//brave/browser/metrics/buildflags",
   "//brave/browser/misc_metrics",
   "//brave/browser/misc_metrics:misc_metrics_impl",
@@ -320,7 +319,6 @@ brave_chrome_browser_deps = [
   "//components/privacy_sandbox:privacy_sandbox_prefs",
   "//components/safe_browsing/core/common:safe_browsing_prefs",
   "//components/search_engines",
-  "//components/services/heap_profiling/public/mojom",
   "//components/signin/public/base",
   "//components/spellcheck/browser",
   "//components/sync/base",
@@ -393,6 +391,12 @@ if (enable_brave_wallet) {
       "//brave/browser/ui/webui/brave_wallet/wallet_panel",
     ]
   }
+  if (enable_snap) {
+    brave_chrome_browser_deps += [
+      "//brave/browser/ui/webui/brave_wallet/snap_host",
+      "//brave/browser/ui/webui/brave_wallet/snaps_container",
+    ]
+  }
 }
 
 if (enable_email_aliases) {
@@ -409,7 +413,9 @@ if (enable_email_aliases) {
 if (enable_local_ai) {
   brave_chrome_browser_deps += [
     "//brave/browser/history_embeddings",
+    "//brave/browser/history_embeddings:status",
     "//brave/browser/speech",
+    "//brave/browser/speech:chromium_impl",
     "//brave/browser/ui/webui/local_ai",
     "//brave/components/local_ai/core",
     "//brave/components/local_ai/core:features",
@@ -418,10 +424,6 @@ if (enable_local_ai) {
 }
 
 if (!is_android) {
-  # Brave chrome://history toggle handler + WebUI subclass — desktop only;
-  # upstream Android uses HistoryUIAndroid which we don't extend.
-  brave_chrome_browser_deps += [ "//brave/browser/ui/webui/history" ]
-
   # BraveHidDelegate inherits from ChromeHidDelegate, and referenced by
   # BraveContentBrowserClient, so we put into the same source_set.
   brave_chrome_browser_sources += [
@@ -444,8 +446,10 @@ if (!is_android) {
   # Already included on android by upstream
 
   brave_chrome_browser_deps += [
+    "//brave/browser/infobars:impl",
     "//brave/browser/ui/split_view",
     "//brave/browser/ui/tabs:impl",
+    "//brave/browser/ui/views/page_action:impl",
     "//brave/browser/ui/webui/brave_new_tab_page_refresh",
     "//brave/browser/ui/webui/brave_new_tab_page_refresh:mojom",
     "//brave/browser/ui/webui/brave_welcome_page",
@@ -513,8 +517,11 @@ if (enable_containers) {
 }
 
 if (enable_traffic_control) {
-  brave_chrome_browser_deps +=
-      [ "//brave/components/traffic_control/core/common" ]
+  brave_chrome_browser_deps += [
+    "//brave/browser/traffic_control",
+    "//brave/components/traffic_control/core/browser",
+    "//brave/components/traffic_control/core/common",
+  ]
 }
 
 if (enable_brave_talk) {
@@ -584,7 +591,11 @@ if (enable_speedreader) {
 }
 
 if (enable_request_otr) {
-  brave_chrome_browser_deps += [ "//brave/components/request_otr/common" ]
+  brave_chrome_browser_deps += [
+    "//brave/browser/request_otr:impl",
+    "//brave/components/request_otr/browser",
+    "//brave/components/request_otr/common",
+  ]
 }
 
 if (enable_web_discovery_native) {
@@ -623,9 +634,7 @@ if (is_android) {
     "//chrome/browser/importer/profile_writer.h",
   ]
 
-  brave_chrome_browser_sources += brave_browser_brave_account_android_sources
   brave_chrome_browser_sources += brave_browser_misc_metrics_android_sources
-  brave_chrome_browser_deps += brave_browser_brave_account_android_deps
 
   if (enable_brave_rewards) {
     brave_chrome_browser_sources += brave_browser_brave_rewards_android_sources
@@ -745,6 +754,7 @@ if (is_win) {
 
   brave_chrome_browser_deps += [
     "//brave/components/windows_recall",
+    "//chrome/browser/win",
     "//chrome/install_static:install_static_util",
     "//chrome/installer/util:with_no_strings",
   ]
@@ -766,6 +776,7 @@ brave_chrome_browser_public_deps = [
   "//brave/app/vector_icons",
   "//brave/browser:browser_process",
   "//brave/browser/resources/bookmark_icon:bookmark_icon_resources",
+  "//brave/browser/resources/tab_strip:tab_strip_resources",
   "//brave/common/importer:interfaces",
   "//brave/components/brave_sync:constants",
   "//brave/components/containers/buildflags",
@@ -778,6 +789,20 @@ brave_chrome_browser_public_deps = [
 if (is_mac) {
   brave_chrome_framework_public_deps = [ "//brave:framework_bundle_data" ]
   brave_chrome_framework_bundle_deps = [ "//brave:framework_bundle_data" ]
+
+  if (enable_sparkle) {
+    # This has to be a bundle_dep of the framework. A dep in the framework's
+    # link graph would also be collected by nested bundles that link it, such
+    # as the aperitif helper apps, adding copies of Sparkle that nothing
+    # re-signs.
+    if (build_sparkle) {
+      brave_chrome_framework_bundle_deps +=
+          [ "//brave/vendor/sparkle:sparkle_framework_bundle_data" ]
+    } else {
+      brave_chrome_framework_bundle_deps +=
+          [ "//brave/browser:prebuilt_sparkle_framework_bundle_data" ]
+    }
+  }
 
   if (enable_brave_vpn_v2_bundling) {
     brave_chrome_framework_bundle_deps += [ "//brave:vpn_apps_bundle_data" ]
@@ -793,14 +818,12 @@ brave_chrome_browser_sources += brave_browser_cosmetic_filters_sources
 brave_chrome_browser_sources += brave_browser_debounce_sources
 brave_chrome_browser_sources += brave_browser_ephemeral_storage_sources
 brave_chrome_browser_sources += brave_browser_gcm_driver_sources
-brave_chrome_browser_sources += brave_browser_infobar_sources
 brave_chrome_browser_sources += brave_browser_misc_metrics_sources
 brave_chrome_browser_sources += brave_browser_net_sources
 brave_chrome_browser_sources += brave_browser_new_tab_sources
 brave_chrome_browser_sources += brave_browser_perf_sources
 brave_chrome_browser_sources += brave_browser_permissions_sources
 brave_chrome_browser_sources += brave_browser_renderer_context_menu_sources
-brave_chrome_browser_sources += brave_browser_request_otr_sources
 brave_chrome_browser_sources += brave_browser_search_engines_sources
 brave_chrome_browser_sources += brave_browser_sync_sources
 brave_chrome_browser_sources += brave_browser_themes_sources
@@ -816,14 +839,12 @@ brave_chrome_browser_deps += brave_browser_cosmetic_filters_deps
 brave_chrome_browser_deps += brave_browser_debounce_deps
 brave_chrome_browser_deps += brave_browser_ephemeral_storage_deps
 brave_chrome_browser_deps += brave_browser_gcm_driver_deps
-brave_chrome_browser_deps += brave_browser_infobar_deps
 brave_chrome_browser_deps += brave_browser_misc_metrics_deps
 brave_chrome_browser_deps += brave_browser_net_deps
 brave_chrome_browser_deps += brave_browser_new_tab_deps
 brave_chrome_browser_deps += brave_browser_perf_deps
 brave_chrome_browser_deps += brave_browser_permissions_deps
 brave_chrome_browser_deps += brave_browser_renderer_context_menu_deps
-brave_chrome_browser_deps += brave_browser_request_otr_deps
 brave_chrome_browser_deps += brave_browser_search_engines_deps
 brave_chrome_browser_deps += brave_browser_sync_deps
 brave_chrome_browser_deps += brave_browser_themes_deps
@@ -840,8 +861,10 @@ brave_chrome_browser_ui_allow_circular_includes_from +=
 brave_chrome_browser_ui_deps =
     [ "//brave/components/brave_wallet/common/buildflags" ]
 if (enable_local_ai) {
-  brave_chrome_browser_ui_deps +=
-      [ "//brave/browser/history_embeddings:open_tab_search" ]
+  brave_chrome_browser_ui_deps += [
+    "//brave/browser/history_embeddings:open_tab_search",
+    "//brave/components/history_embeddings:open_tab_passages",
+  ]
 }
 if (enable_brave_wallet) {
   brave_chrome_browser_ui_deps += [
@@ -869,6 +892,11 @@ if (enable_ai_chat) {
   # Remove this once webui/ai_chat does not depend on chrome/browser.
   brave_chrome_browser_allow_circular_includes_from +=
       [ "//brave/browser/ui/webui/ai_chat" ]
+
+  # ai_chat_service_factory needs brave_tab_helpers.h to set up workspace
+  # content restoration with privacy-sensitive tab helpers.
+  brave_chrome_browser_allow_circular_includes_from +=
+      [ "//brave/browser/ai_chat" ]
 }
 
 if (enable_playlist) {
@@ -910,14 +938,12 @@ if (enable_brave_rewards) {
 
 if (toolkit_views) {
   brave_chrome_browser_deps += [
-    "//brave/browser/ui/sidebar:sidebar_impl",
+    "//brave/browser/ui/sidebar",
     "//brave/browser/ui/views/location_bar",
     "//brave/browser/ui/views/page_info",
   ]
-  brave_chrome_browser_allow_circular_includes_from += [
-    "//brave/browser/ui/sidebar:sidebar_impl",
-    "//brave/browser/ui/views/location_bar",
-  ]
+  brave_chrome_browser_allow_circular_includes_from +=
+      [ "//brave/browser/ui/views/location_bar" ]
 }
 
 # https://github.com/brave/brave-browser/issues/41418

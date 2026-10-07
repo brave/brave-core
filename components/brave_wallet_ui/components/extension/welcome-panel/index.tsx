@@ -36,18 +36,18 @@ export const WelcomePanel = () => {
         textColor='primary'
         variant='heading.h3'
       >
-        {getLocale('braveWalletPanelTitle')}
+        {getLocale(S.BRAVE_WALLET_PANEL_TITLE)}
       </Title>
       <Description
         textColor='secondary'
         variant='default.regular'
       >
-        {getLocale('braveWalletWelcomePanelDescription')}
+        {getLocale(S.BRAVE_WALLET_WELCOME_PANEL_DESCRIPTION)}
       </Description>
 
       <NavButton
         buttonType='primary'
-        text={getLocale('braveWalletLearnMore')}
+        text={getLocale(S.BRAVE_WALLET_LEARN_MORE)}
         onSubmit={onSetup}
       />
 

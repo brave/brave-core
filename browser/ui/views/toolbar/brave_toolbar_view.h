@@ -25,6 +25,7 @@ class BraveVPNButton;
 #endif
 
 class BraveBookmarkButton;
+class BrowserWindowInterface;
 class ScreenshotButton;
 class SidePanelButton;
 class TabStripComboButton;
@@ -37,12 +38,14 @@ class BraveToolbarView : public ToolbarView,
  public:
   class LayoutGuard;
 
-  explicit BraveToolbarView(Browser* browser, BrowserView* browser_view);
+  explicit BraveToolbarView(BrowserWindowInterface* browser,
+                            BrowserView* browser_view);
   ~BraveToolbarView() override;
 
   BraveBookmarkButton* bookmark_button() const { return bookmark_; }
   WalletButton* wallet_button() const { return wallet_; }
   SidePanelButton* side_panel_button() const { return side_panel_; }
+  ScreenshotButton* screenshot_button() const { return screenshot_button_; }
   ToolbarButton* vertical_tab_toggle_button() const {
     return vertical_tab_toggle_;
   }

@@ -16,8 +16,8 @@ substitutions:
         'BASE_FEATURE\(kAutofillEnableAmountExtraction,.+?#endif[^\n]*\n(?:[
         \t]*//[^\n]*\n)*'
       replace: |
-        BASE_FEATURE(kAutofillEnableAmountExtraction,
-                     base::FEATURE_DISABLED_BY_DEFAULT);
+        BASE_OVERRIDDEN_FEATURE(kAutofillEnableAmountExtraction,
+                                base::FEATURE_DISABLED_BY_DEFAULT);
       re_flags: [DOTALL]
 
   - description: 'Ship kAutofillEnableBuyNowPayLater disabled.'
@@ -26,6 +26,6 @@ substitutions:
         'BASE_FEATURE\(kAutofillEnableBuyNowPayLater,.+?#endif[^\n]*\n(?:[
         \t]*//[^\n]*\n)*'
       replace: |
-        BASE_FEATURE(kAutofillEnableBuyNowPayLater,
-                     base::FEATURE_DISABLED_BY_DEFAULT);
+        BASE_OVERRIDDEN_FEATURE(kAutofillEnableBuyNowPayLater,
+                                base::FEATURE_DISABLED_BY_DEFAULT);
       re_flags: [DOTALL]

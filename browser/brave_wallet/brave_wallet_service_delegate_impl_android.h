@@ -12,7 +12,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/observer_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_base.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
@@ -45,8 +44,6 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegateBase {
   std::optional<url::Origin> GetActiveOrigin() override;
 
  private:
-  base::ObserverList<BraveWalletServiceDelegate::Observer> observer_list_;
-
   base::WeakPtrFactory<BraveWalletServiceDelegateImpl> weak_ptr_factory_;
 };
 

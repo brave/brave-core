@@ -236,9 +236,6 @@
     <message name="IDS_MANAGEMENT_REPORT_ANDROID_APPLICATIONS" desc="Message stating that administrators can see user's installed Android applications.">
       Which Google Play apps you have installed
     </message>
-    <message name="IDS_MANAGEMENT_REPORT_PLUGIN_VM" desc="Message telling users that Plugin VM can collect data.">
-      Your administrator has allowed <ph name="APP_NAME">$1<ex>Plugin VM</ex></ph> to collect diagnostics data to improve the product experience. See <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://www.parallels.com/pcep"&gt;</ph>https://www.parallels.com/pcep<ph name="END_LINK">&lt;/a&gt;</ph> for more information.
-    </message>
     <message name="IDS_MANAGEMENT_OPEN_CHROME_MANAGEMENT" desc="Message telling users to open chrome://management for additional information.">
       For additional information and policies that may apply, open chrome://management in your browser.
     </message>
@@ -364,9 +361,6 @@
     <message name="IDS_MANAGEMENT_FILE_ATTACHED_EVENT" desc="Event for the file attachment scanning feature.">
       File is attached
     </message>
-    <message name="IDS_MANAGEMENT_TEXT_ENTERED_EVENT" desc="Event for the text entry scanning feature.">
-      Text is entered
-    </message>
     <message name="IDS_MANAGEMENT_PAGE_PRINTED_EVENT" desc="Event for the page print scanning feature.">
       Page is printed
     </message>
@@ -381,9 +375,6 @@
     </message>
     <message name="IDS_MANAGEMENT_FILE_ATTACHED_VISIBLE_DATA" desc="Description of the visible data for the file attachment scanning feature.">
       Files you upload or attach are sent to Google Cloud or third parties for analysis. For example, they might be scanned for sensitive data or malware and might be stored based on company policies and visible to your administrator.
-    </message>
-    <message name="IDS_MANAGEMENT_TEXT_ENTERED_VISIBLE_DATA" desc="Description of the visible data for the text entry scanning feature.">
-      Text you paste or attach is sent to Google Cloud or third parties for analysis. For example, it might be scanned for sensitive data and might be stored based on company policies and visible to your administrator.
     </message>
     <message name="IDS_MANAGEMENT_PAGE_PRINTED_VISIBLE_DATA" desc="Description of the visible data for the page print scanning feature.">
       The content of pages you print and information about your printer is sent to Google Cloud or third parties for analysis. For example, it might be scanned for sensitive data and might be stored based on company policies and visible to your administrator.
@@ -471,7 +462,7 @@
   </if>
 
   <!-- Strings related to Brave Enterprise Device Signals Sharing -->
-  <if expr="is_win or is_linux or is_macosx or is_android">
+  <if expr="not is_chromeos">
     <message name="IDS_MANAGEMENT_DEVICE_SIGNALS_DISCLOSURE" desc="Disclosure message explaining that device signals can be shared.">
       Information about your browser, OS, device, installed software, files, and IP addresses
     </message>
@@ -502,14 +493,20 @@
   <message name="IDS_MANAGEMENT_FILE_DOWNLOADED_VISIBLE_DATA" desc="Description of the visible data for the file download scanning feature." formatter_data="android_java">
     Files you download are sent to Google Cloud or third parties for analysis. For example, they might be scanned for sensitive data or malware and might be stored based on company policies and visible to your administrator.
   </message>
+  <message name="IDS_MANAGEMENT_TEXT_ENTERED_EVENT" desc="Event for the text entry scanning feature.">
+    Text is entered
+  </message>
+  <message name="IDS_MANAGEMENT_TEXT_ENTERED_VISIBLE_DATA" desc="Description of the visible data for the text entry scanning feature.">
+    Text you paste or attach is sent to Google Cloud or third parties for analysis. For example, it might be scanned for sensitive data and might be stored based on company policies and visible to your administrator.
+  </message>
   <message name="IDS_MANAGEMENT_PAGE_VISITED_EVENT" desc="Event for the real time URL check feature." formatter_data="android_java">
     Page is visited
   </message>
   <message name="IDS_MANAGEMENT_PAGE_VISITED_VISIBLE_DATA" desc="Description of the visible data for the real time URL check feature." formatter_data="android_java">
-    URLs of pages you visit are sent to Google Cloud or third parties for analysis, and may be visible to your administrator. For example, they might be scanned to detect unsafe websites or filter websites based on rules set by the administrator.
+    URLs and titles of pages you visit are sent to Google Cloud or third parties for analysis, and may be visible to your administrator. For example, they might be scanned to detect unsafe websites or filter websites based on rules set by the administrator.
   </message>
   <message name="IDS_MANAGEMENT_ENTERPRISE_REPORTING_VISIBLE_DATA" desc="Description of the visible data for the Connectors reporting feature" formatter_data="android_java">
-    When security events are flagged by Brave, relevant data about the events is sent to your administrator. This can include URLs of pages you visit in Brave, URLs of pages you copied data from, file names or metadata, IP addresses, browser or tab crashes, and the username that you use to sign in to web based applications, your device and Brave.
+    When security events are flagged by Brave, relevant data about the events is sent to your administrator. This can include URLs and titles of pages you visit in Brave, URLs of pages you copied data from, file names or metadata, IP addresses, browser or tab crashes, and the username that you use to sign in to web based applications, your device and Brave.
   </message>
 
   <!-- Management toolbar button dialog view -->

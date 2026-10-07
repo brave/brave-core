@@ -52,10 +52,10 @@ export const NetworkSelector = (props: Props) => {
       {/* <VerticalSpacer size={12} />
       <Row horizontalPadding={12} rowWidth='full'>
         <Text textSize='12px' textColor='text03' isBold={false}>
-          {getLocale('braveSwapName')}
+          {getLocale(S.BRAVE_SWAP_NAME)}
         </Text>
         <Text textSize='12px' textColor='text03' isBold={false}>
-          {getLocale('braveSwapNetworkFee')}
+          {getLocale(S.BRAVE_SWAP_NETWORK_FEE)}
         </Text>
       </Row>
       <VerticalSpacer size={8} />
@@ -71,7 +71,7 @@ export const NetworkSelector = (props: Props) => {
           textColor='primary'
           isBold={true}
         >
-          {getLocale('braveSwapChangeNetwork')}
+          {getLocale(S.BRAVE_SWAP_CHANGE_NETWORK)}
         </Text>
         <IconButton onClick={onClose}>
           <Icon

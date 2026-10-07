@@ -9,7 +9,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/constants/pref_names.h"
-#include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/devtools/devtools_window_testing.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
@@ -30,9 +29,6 @@
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/bookmarks/browser/bookmark_model.h"
-#include "components/bookmarks/browser/bookmark_utils.h"
-#include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/optimization_guide/optimization_guide_internals/webui/url_constants.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_entry.h"
@@ -45,32 +41,13 @@ using BraveBrowserBrowserTest = InProcessBrowserTest;
 
 namespace {
 
-Browser* OpenNewBrowser(Profile* profile) {
+BrowserWindowInterface* OpenNewBrowser(Profile* profile) {
   base::CommandLine dummy(base::CommandLine::NO_PROGRAM);
   StartupBrowserCreatorImpl creator(base::FilePath(), dummy,
                                     chrome::startup::IsFirstRun::kYes);
   creator.Launch(profile, chrome::startup::IsProcessStartup::kNo,
                  /*restore_tabbed_browser=*/true);
-  return ProfileBrowserCollection::GetForProfile(profile)
-      ->FindTabbedBrowser()
-      ->GetBrowserForMigrationOnly();
-}
-
-void AddBookmarkNode(Profile* profile) {
-  const GURL url = GURL("https://www.brave.com");
-  bookmarks::BookmarkModel* bookmark_model =
-      BookmarkModelFactory::GetForBrowserContext(profile);
-
-  std::vector<raw_ptr<const bookmarks::BookmarkNode, VectorExperimental>>
-      nodes = bookmark_model->GetNodesByURL(url);
-  EXPECT_EQ(0UL, nodes.size());
-
-  // We need to pass a non-empty title when creating a bookmark so that an
-  // accessible name is also available, otherwise we'll hit a CHECK() and
-  // the test will crash (see accessibility_paint_checks.cc).
-  bookmarks::AddIfNotBookmarked(bookmark_model, url, u"brave");
-  nodes = bookmark_model->GetNodesByURL(url);
-  EXPECT_EQ(1UL, nodes.size());
+  return ProfileBrowserCollection::GetForProfile(profile)->FindTabbedBrowser();
 }
 
 }  // namespace
@@ -99,7 +76,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, DisabledFeatureURLLoadTest) {
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, OpenNewTabWhenTabStripIsEmpty) {
   ASSERT_TRUE(embedded_test_server()->Start());
-  Browser* new_browser = OpenNewBrowser(browser()->GetProfile());
+  BrowserWindowInterface* new_browser = OpenNewBrowser(browser()->GetProfile());
   ASSERT_TRUE(new_browser);
   new_browser->GetProfile()->GetPrefs()->SetBoolean(kEnableClosingLastTab,
                                                     false);
@@ -123,18 +100,18 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, OpenNewTabWhenTabStripIsEmpty) {
   ASSERT_EQ(1, tab_strip->count());
 
   // Expecting a new tab is opened.
-  EXPECT_EQ(new_browser->GetNewTabURL(),
+  EXPECT_EQ(chrome::GetNewTabURL(new_browser),
             tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
   // No reentrancy for Ctrl+W
   tab_strip->CloseSelectedTabs();
   base::RunLoop().RunUntilIdle();
   // Expecting a new tab is opened.
-  EXPECT_EQ(new_browser->GetNewTabURL(),
+  EXPECT_EQ(chrome::GetNewTabURL(new_browser),
             tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
 
   // Add a couple of more tabs.
-  chrome::AddTabAt(new_browser, new_browser->GetNewTabURL(), -1, true);
-  chrome::AddTabAt(new_browser, new_browser->GetNewTabURL(), -1, true);
+  chrome::AddTabAt(new_browser, chrome::GetNewTabURL(new_browser), -1, true);
+  chrome::AddTabAt(new_browser, chrome::GetNewTabURL(new_browser), -1, true);
   ASSERT_EQ(3, tab_strip->count());
   EXPECT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 2u);
   // Close the browser window.
@@ -146,7 +123,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, OpenNewTabWhenTabStripIsEmpty) {
 IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
                        DoNotOpenNewTabWhenTabStripIsEmpty) {
   ASSERT_TRUE(embedded_test_server()->Start());
-  Browser* new_browser = OpenNewBrowser(browser()->GetProfile());
+  BrowserWindowInterface* new_browser = OpenNewBrowser(browser()->GetProfile());
   ASSERT_TRUE(new_browser);
   new_browser->GetProfile()->GetPrefs()->SetBoolean(kEnableClosingLastTab,
                                                     true);
@@ -169,7 +146,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
   // Given that kEnableClosingLastTab is false, which normally creates a new tab
   // when tab strip is empty.
   ASSERT_TRUE(embedded_test_server()->Start());
-  Browser* new_browser = OpenNewBrowser(browser()->GetProfile());
+  BrowserWindowInterface* new_browser = OpenNewBrowser(browser()->GetProfile());
   ASSERT_TRUE(new_browser);
   new_browser->GetProfile()->GetPrefs()->SetBoolean(kEnableClosingLastTab,
                                                     false);
@@ -186,7 +163,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
                        CloseBrowserAfterDetachingAllTabToAnotherBrowser) {
   browser()->GetProfile()->GetPrefs()->SetBoolean(kEnableClosingLastTab, false);
-  Browser* browser2 = CreateBrowser(browser()->GetProfile());
+  BrowserWindowInterface* browser2 = CreateBrowser(browser()->GetProfile());
   ASSERT_TRUE(browser2);
 
   TabStripModel* tab_strip = browser()->tab_strip_model();
@@ -222,7 +199,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
   // Wait till another new tab is opened.
   EXPECT_TRUE(
       base::test::RunUntil([tab_strip] { return tab_strip->count() == 1; }));
-  EXPECT_EQ(browser()->GetNewTabURL(),
+  EXPECT_EQ(chrome::GetNewTabURL(browser()),
             tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
 
   ui_test_utils::NavigateToURLWithDisposition(
@@ -234,7 +211,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
   // Create another browser with existing tab.
   ui_test_utils::BrowserCreatedObserver browser_created_observer;
   chrome::MoveTabsToNewWindow(browser(), {1});
-  Browser* new_browser = browser_created_observer.Wait();
+  BrowserWindowInterface* new_browser = browser_created_observer.Wait();
   ASSERT_EQ(1, tab_strip->count());
 
   ASSERT_TRUE(new_browser);
@@ -243,106 +220,6 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
   // Check new browser by detaching a tab from another window has
   // one tab.
   EXPECT_EQ(1, new_browser->tab_strip_model()->count());
-}
-
-IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, BookmarkBarOnNTPTest) {
-  auto* profile = browser()->GetProfile();
-  auto* contents = browser()->tab_strip_model()->GetActiveWebContents();
-
-  // Check Bookmark bar is hidden by default for non NTP.
-  EXPECT_FALSE(NewTabUI::IsNewTab(contents->GetLastCommittedURL()));
-  EXPECT_EQ(BookmarkBar::HIDDEN,
-            BookmarkBarController::From(browser())->bookmark_bar_state());
-
-  // Check show bookmarks on NTP is on by default.
-  EXPECT_TRUE(profile->GetPrefs()->GetBoolean(
-      bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP));
-
-  // Loading NTP.
-  EXPECT_TRUE(
-      content::NavigateToURL(contents, GURL(chrome::kChromeUINewTabURL)));
-  EXPECT_TRUE(NewTabUI::IsNewTab(contents->GetLastCommittedURL()));
-
-  // Check bookmark bar on NTP is shown even if bookmark bar is empty.
-  EXPECT_EQ(BookmarkBar::SHOW,
-            BookmarkBarController::From(browser())->bookmark_bar_state());
-
-  AddBookmarkNode(profile);
-
-  // Check bookmark is also visible on NTP after adding bookmark regardless of
-  // show bookmark bar option value.
-  chrome::ToggleBookmarkBar(browser());
-  EXPECT_EQ(BookmarkBar::SHOW,
-            BookmarkBarController::From(browser())->bookmark_bar_state());
-  chrome::ToggleBookmarkBar(browser());
-  EXPECT_EQ(BookmarkBar::HIDDEN,
-            BookmarkBarController::From(browser())->bookmark_bar_state());
-  EXPECT_FALSE(profile->GetPrefs()->GetBoolean(
-      bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP));
-  // Turn off showing bookmark bar on NTP.
-  profile->GetPrefs()->SetBoolean(bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP,
-                                  true);
-
-  // Check bookmark bar on NTP is visible when
-  // bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP pref is on.
-  EXPECT_EQ(BookmarkBar::SHOW,
-            BookmarkBarController::From(browser())->bookmark_bar_state());
-
-  // Check bookmark bar on NTP is visible when kBookmarkBar pref is on.
-  chrome::ToggleBookmarkBar(browser());
-  EXPECT_EQ(BookmarkBar::SHOW,
-            BookmarkBarController::From(browser())->bookmark_bar_state());
-}
-
-IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, BookmarkBarOnNTPTestIncognito) {
-  Browser* incognito = CreateIncognitoBrowser();
-  auto* profile = incognito->GetProfile();
-  auto* contents = incognito->tab_strip_model()->GetActiveWebContents();
-
-  // Check Bookmark bar is hidden by default for non NTP.
-  EXPECT_FALSE(NewTabUI::IsNewTab(contents->GetLastCommittedURL()));
-  EXPECT_EQ(BookmarkBar::HIDDEN,
-            BookmarkBarController::From(incognito)->bookmark_bar_state());
-
-  // Check show bookmarks on NTP is on by default.
-  EXPECT_TRUE(profile->GetPrefs()->GetBoolean(
-      bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP));
-
-  // Loading NTP.
-  EXPECT_TRUE(
-      content::NavigateToURL(contents, GURL(chrome::kChromeUINewTabURL)));
-  EXPECT_TRUE(NewTabUI::IsNewTab(contents->GetLastCommittedURL()));
-
-  // Check bookmark bar on NTP is shown even if bookmark bar is empty.
-  EXPECT_EQ(BookmarkBar::SHOW,
-            BookmarkBarController::From(incognito)->bookmark_bar_state());
-
-  AddBookmarkNode(profile);
-
-  // Check bookmark is also visible on NTP after adding bookmark regardless of
-  // show bookmark bar option value.
-  chrome::ToggleBookmarkBar(incognito);
-  EXPECT_EQ(BookmarkBar::SHOW,
-            BookmarkBarController::From(incognito)->bookmark_bar_state());
-  chrome::ToggleBookmarkBar(incognito);
-  EXPECT_EQ(BookmarkBar::HIDDEN,
-            BookmarkBarController::From(incognito)->bookmark_bar_state());
-  EXPECT_FALSE(profile->GetPrefs()->GetBoolean(
-      bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP));
-
-  // Turn on showing bookmark bar on NTP.
-  profile->GetPrefs()->SetBoolean(bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP,
-                                  true);
-
-  // Check bookmark bar on NTP is visible when
-  // bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP pref is on.
-  EXPECT_EQ(BookmarkBar::SHOW,
-            BookmarkBarController::From(incognito)->bookmark_bar_state());
-
-  // Check bookmark bar on NTP is visible when kBookmarkBar pref is on.
-  chrome::ToggleBookmarkBar(incognito);
-  EXPECT_EQ(BookmarkBar::SHOW,
-            BookmarkBarController::From(incognito)->bookmark_bar_state());
 }
 
 class BraveBrowserBrowserTestWithBringAllTabsFeature
@@ -361,7 +238,7 @@ class BraveBrowserBrowserTestWithBringAllTabsFeature
 
 IN_PROC_BROWSER_TEST_P(BraveBrowserBrowserTestWithBringAllTabsFeature,
                        CanBringAllTabs) {
-  Browser* new_browser = OpenNewBrowser(browser()->GetProfile());
+  BrowserWindowInterface* new_browser = OpenNewBrowser(browser()->GetProfile());
   ASSERT_TRUE(new_browser);
   if (GetParam()) {
     EXPECT_TRUE(brave::CanBringAllTabs(browser()));

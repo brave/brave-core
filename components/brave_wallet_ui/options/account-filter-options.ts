@@ -18,7 +18,7 @@ export const AllAccountsOption: BraveWallet.AccountInfo = {
     accountIndex: 0,
     uniqueKey: AllAccountsOptionUniqueKey,
   },
-  name: getLocale('braveWalletAccountFilterAllAccounts'),
+  name: getLocale(S.BRAVE_WALLET_ACCOUNT_FILTER_ALL_ACCOUNTS),
   hardware: undefined,
 }
 

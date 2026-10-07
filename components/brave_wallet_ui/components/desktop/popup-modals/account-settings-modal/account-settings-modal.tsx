@@ -87,15 +87,15 @@ import { Skeleton } from '../../../shared/loading-skeleton/styles'
 const zcashAddressOptions: zcashAddressOptionType[] = [
   {
     addressType: 'unified',
-    label: 'braveWalletUnified',
+    label: S.BRAVE_WALLET_UNIFIED,
   },
   {
     addressType: 'shielded',
-    label: 'braveWalletShielded',
+    label: S.BRAVE_WALLET_SHIELDED,
   },
   {
     addressType: 'transparent',
-    label: 'braveWalletTransparent',
+    label: S.BRAVE_WALLET_TRANSPARENT,
   },
 ]
 interface DepositModalProps {
@@ -103,7 +103,7 @@ interface DepositModalProps {
 }
 
 const filPrivateKeyFormatDescription = formatLocale(
-  'braveWalletFilExportPrivateKeyFormatDescription',
+  S.BRAVE_WALLET_FIL_EXPORT_PRIVATE_KEY_FORMAT_DESCRIPTION,
   {
     $1: (content) => (
       <a
@@ -269,8 +269,8 @@ export const DepositModal = ({ selectedAccount }: DepositModalProps) => {
               networks={polkadotCompatibleNetworks}
               selectedNetwork={selectedPolkadotNetwork}
               onSelectNetwork={setSelectedPolkadotNetwork}
-              placeholder={getLocale('braveWalletSelectNetwork')}
-              label={getLocale('braveWalletSelectNetwork')}
+              placeholder={getLocale(S.BRAVE_WALLET_SELECT_NETWORK)}
+              label={getLocale(S.BRAVE_WALLET_SELECT_NETWORK)}
             />
           </ControlsWrapper>
         )}
@@ -555,7 +555,7 @@ export const AccountSettingsModal = () => {
           <EditWrapper>
             <Input
               value={accountName}
-              placeholder={getLocale('braveWalletAddAccountPlaceholder')}
+              placeholder={getLocale(S.BRAVE_WALLET_ADD_ACCOUNT_PLACEHOLDER)}
               onInput={handleAccountNameChanged}
               onKeyDown={handleKeyDown}
               showErrors={showNameInputErrors}
@@ -564,7 +564,7 @@ export const AccountSettingsModal = () => {
             >
               {
                 // Label
-                getLocale('braveWalletAddAccountPlaceholder')
+                getLocale(S.BRAVE_WALLET_ADD_ACCOUNT_PLACEHOLDER)
               }
             </Input>
 
@@ -573,7 +573,7 @@ export const AccountSettingsModal = () => {
                 textColor='error'
                 variant='small.regular'
               >
-                {getLocale('braveWalletAccountSettingsUpdateError')}
+                {getLocale(S.BRAVE_WALLET_ACCOUNT_SETTINGS_UPDATE_ERROR)}
               </ErrorText>
             )}
 
@@ -583,7 +583,7 @@ export const AccountSettingsModal = () => {
                 isDisabled={showNameInputErrors}
                 kind='filled'
               >
-                {getLocale('braveWalletAccountSettingsSave')}
+                {getLocale(S.BRAVE_WALLET_ACCOUNT_SETTINGS_SAVE)}
               </Button>
             </ButtonRow>
           </EditWrapper>
@@ -596,7 +596,7 @@ export const AccountSettingsModal = () => {
             padding='0px 16px'
           >
             <Alert type='warning'>
-              {getLocale('braveWalletAccountSettingsDisclaimer')}
+              {getLocale(S.BRAVE_WALLET_ACCOUNT_SETTINGS_DISCLAIMER)}
             </Alert>
             {selectedAccount
             && selectedAccount.accountId.coin === BraveWallet.CoinType.DOT
@@ -606,19 +606,19 @@ export const AccountSettingsModal = () => {
               <>
                 <Alert type='info'>
                   {getLocale(
-                    'braveWalletAccountSettingsEnterPasswordToEncrypt',
+                    S.BRAVE_WALLET_ACCOUNT_SETTINGS_ENTER_PASSWORD_TO_ENCRYPT,
                   )}
                 </Alert>
                 <PasswordInput
                   placeholder={getLocale(
-                    'braveWalletAccountSettingsEncryptionPassword',
+                    S.BRAVE_WALLET_ACCOUNT_SETTINGS_ENCRYPTION_PASSWORD,
                   )}
                   onChange={onEncryptionPasswordChange}
                   hasError={hasPasswordError}
                   error={
                     hasPasswordError
                       ? getLocale(
-                          'braveWalletAccountSettingsEncryptionPasswordTooShort',
+                          S.BRAVE_WALLET_ACCOUNT_SETTINGS_ENCRYPTION_PASSWORD_TOO_SHORT,
                         )
                       : ''
                   }
@@ -628,14 +628,14 @@ export const AccountSettingsModal = () => {
                 <VerticalSpacer space={16} />
                 <PasswordInput
                   placeholder={getLocale(
-                    'braveWalletAccountSettingsConfirmEncryptionPassword',
+                    S.BRAVE_WALLET_ACCOUNT_SETTINGS_CONFIRM_ENCRYPTION_PASSWORD,
                   )}
                   onChange={onEncryptionPasswordConfirmChange}
                   hasError={hasConfirmedPasswordError}
                   error={
                     hasConfirmedPasswordError
                       ? getLocale(
-                          'braveWalletAccountSettingsPasswordsDoNotMatch',
+                          S.BRAVE_WALLET_ACCOUNT_SETTINGS_PASSWORDS_DO_NOT_MATCH,
                         )
                       : ''
                   }
@@ -666,11 +666,11 @@ export const AccountSettingsModal = () => {
               // Show wallet password input
               <PasswordInput
                 placeholder={getLocale(
-                  'braveWalletEnterYourBraveWalletPassword',
+                  S.BRAVE_WALLET_ENTER_YOUR_BRAVE_WALLET_PASSWORD,
                 )}
                 onChange={onPasswordChange}
                 hasError={!!password && !isCorrectPassword}
-                error={getLocale('braveWalletLockScreenError')}
+                error={getLocale(S.BRAVE_WALLET_LOCK_SCREEN_ERROR)}
                 autoFocus={false}
                 value={password}
                 onKeyDown={handlePasswordKeyDown}
@@ -687,14 +687,14 @@ export const AccountSettingsModal = () => {
                     onClick={onCancelEncryptionPassword}
                     kind='outline'
                   >
-                    {getLocale('braveWalletButtonCancel')}
+                    {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
                   </Button>
                   <Button
                     onClick={onConfirmEncryptionPassword}
                     kind='filled'
                     isDisabled={!isEncryptionPasswordValid}
                   >
-                    {getLocale('braveWalletAccountSettingsShowKey')}
+                    {getLocale(S.BRAVE_WALLET_ACCOUNT_SETTINGS_SHOW_KEY)}
                   </Button>
                 </Row>
               ) : privateKey ? (
@@ -706,14 +706,14 @@ export const AccountSettingsModal = () => {
                       onClick={onDownloadPolkadotKey}
                       kind='outline'
                     >
-                      {getLocale('braveWalletAccountSettingsDownloadKey')}
+                      {getLocale(S.BRAVE_WALLET_ACCOUNT_SETTINGS_DOWNLOAD_KEY)}
                     </Button>
                   )}
                   <Button
                     onClick={onHidePrivateKey}
                     kind='filled'
                   >
-                    {getLocale('braveWalletAccountSettingsHideKey')}
+                    {getLocale(S.BRAVE_WALLET_ACCOUNT_SETTINGS_HIDE_KEY)}
                   </Button>
                 </Row>
               ) : (
@@ -723,7 +723,7 @@ export const AccountSettingsModal = () => {
                   kind='filled'
                   isDisabled={password ? !isCorrectPassword : true}
                 >
-                  {getLocale('braveWalletAccountSettingsShowKey')}
+                  {getLocale(S.BRAVE_WALLET_ACCOUNT_SETTINGS_SHOW_KEY)}
                 </Button>
               )}
             </ButtonWrapper>

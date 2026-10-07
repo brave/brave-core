@@ -20,6 +20,8 @@
 #include "base/notimplemented.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
+#include "base/types/to_address.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_util.h"
 #include "brave/components/brave_ads/core/public/ads.h"
@@ -27,7 +29,10 @@
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/command_line_switches/command_line_switches_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
+#include "brave/ios/browser/brave_ads/ads_factory.h"
 #include "components/prefs/pref_service.h"
 #include "sql/database.h"
 #include "ui/base/page_transition_types.h"
@@ -42,33 +47,24 @@ constexpr char kAdsDatabaseFilename[] = "Ads.db";
 
 }  // namespace
 
-AdsServiceImplIOS::AdsServiceImplIOS(PrefService& prefs)
+AdsServiceImplIOS::AdsServiceImplIOS(PrefService& prefs,
+                                     std::unique_ptr<AdsFactory> ads_factory)
     : AdsService(/*delegate=*/nullptr),
       prefs_(prefs),
+      ads_factory_(std::move(ads_factory)),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-      ads_client_notifier_(std::make_unique<AdsClientNotifier>()) {}
+      ads_client_notifier_(std::make_unique<AdsClientNotifier>()) {
+  CHECK(ads_factory_);
+
+  InitializePrefChangeRegistrar();
+}
 
 AdsServiceImplIOS::~AdsServiceImplIOS() = default;
 
 AdsClientNotifier* AdsServiceImplIOS::GetAdsClientNotifier() {
   return ads_client_notifier_.get();
-}
-
-bool AdsServiceImplIOS::IsIneligibleToStart() const {
-  // iOS has no eligibility gate; the service is never ineligible to start.
-  return false;
-}
-
-bool AdsServiceImplIOS::CanStartBatAdsService() const {
-  // Never start if Rewards is disabled by policy, feature flag, or
-  // unsupported region, regardless of which ad unit the user has opted into.
-  return brave_rewards::IsSupported(&*prefs_);
-}
-
-bool AdsServiceImplIOS::IsInitialized() const {
-  return !!ads_;
 }
 
 void AdsServiceImplIOS::InitializeAds(
@@ -88,7 +84,7 @@ void AdsServiceImplIOS::InitializeAds(
   mojom_build_channel_ = std::move(mojom_build_channel);
   mojom_wallet_ = std::move(mojom_wallet);
 
-  InitializeAds(std::move(callback));
+  InitializeBatAds(std::move(callback));
 }
 
 void AdsServiceImplIOS::ShutdownAds(ResultCallback callback) {
@@ -107,7 +103,7 @@ void AdsServiceImplIOS::MaybeGetNotificationAd(
     const std::string& placement_id,
     MaybeGetNotificationAdCallback callback) {
   if (!IsInitialized()) {
-    return std::move(callback).Run(/*ad*/ std::nullopt);
+    return std::move(callback).Run(/*ad=*/std::nullopt);
   }
 
   ads_->MaybeGetNotificationAd(placement_id, std::move(callback));
@@ -118,7 +114,7 @@ void AdsServiceImplIOS::TriggerNotificationAdEvent(
     mojom::NotificationAdEventType mojom_ad_event_type,
     ResultCallback callback) {
   if (!IsInitialized()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   ads_->TriggerNotificationAdEvent(placement_id, mojom_ad_event_type,
@@ -141,6 +137,19 @@ void AdsServiceImplIOS::NotifyDidClearAdsServiceData() const {
   for (AdsServiceObserver& observer : observers_) {
     observer.OnDidClearAdsServiceData();
   }
+}
+
+base::WeakPtr<AdsService> AdsServiceImplIOS::GetWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
+bool AdsServiceImplIOS::IsIneligibleToStart() const {
+  // iOS has no eligibility gate; the service is never ineligible to start.
+  return false;
+}
+
+bool AdsServiceImplIOS::IsInitialized() const {
+  return !!ads_;
 }
 
 bool AdsServiceImplIOS::IsBrowserUpgradeRequiredToServeAds() const {
@@ -170,9 +179,14 @@ void AdsServiceImplIOS::OnNotificationAdClicked(
 
 void AdsServiceImplIOS::ClearData(ResultCallback callback) {
   UMA_HISTOGRAM_BOOLEAN(kClearDataHistogramName, true);
+
+  // Remember whether the service was running before shutting it down, so
+  // `ClearAdsDataCallback` only restarts it if it was running in the first
+  // place.
+  const bool was_running = IsInitialized();
   ShutdownAds(base::BindOnce(&AdsServiceImplIOS::ClearAdsData,
                              weak_ptr_factory_.GetWeakPtr(),
-                             std::move(callback)));
+                             std::move(callback), was_running));
 }
 
 void AdsServiceImplIOS::AddBatAdsObserver(
@@ -191,16 +205,30 @@ void AdsServiceImplIOS::GetInternals(GetInternalsCallback callback) {
 
 void AdsServiceImplIOS::GetDiagnostics(GetDiagnosticsCallback callback) {
   if (!IsInitialized()) {
-    return std::move(callback).Run(/*diagnostics*/ std::nullopt);
+    return std::move(callback).Run(/*diagnostics=*/std::nullopt);
   }
 
   ads_->GetDiagnostics(std::move(callback));
 }
 
+void AdsServiceImplIOS::EvaluateConditionMatcher(
+    const std::string& pref_path,
+    const std::string& condition,
+    std::optional<std::string> test_value,
+    EvaluateConditionMatcherCallback callback) {
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*current_value=*/"Unknown",
+                                   /*matches=*/"N/A");
+  }
+
+  ads_->EvaluateConditionMatcher(pref_path, condition, std::move(test_value),
+                                 std::move(callback));
+}
+
 void AdsServiceImplIOS::GetStatementOfAccounts(
     GetStatementOfAccountsCallback callback) {
   if (!IsInitialized()) {
-    return std::move(callback).Run(/*statement*/ nullptr);
+    return std::move(callback).Run(/*statement=*/nullptr);
   }
 
   ads_->GetStatementOfAccounts(std::move(callback));
@@ -247,7 +275,7 @@ void AdsServiceImplIOS::TriggerNewTabPageAdEvent(
   CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   if (!IsInitialized()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   ads_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
@@ -259,7 +287,7 @@ void AdsServiceImplIOS::MaybeGetSearchResultAd(
     const std::string& placement_id,
     MaybeGetSearchResultAdCallback callback) {
   if (!IsInitialized()) {
-    return std::move(callback).Run(/*mojom_creative_ad*/ {});
+    return std::move(callback).Run(/*mojom_creative_ad=*/{});
   }
 
   ads_->MaybeGetSearchResultAd(placement_id, std::move(callback));
@@ -272,7 +300,7 @@ void AdsServiceImplIOS::TriggerSearchResultAdEvent(
   CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   if (!IsInitialized()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   ads_->TriggerSearchResultAdEvent(std::move(mojom_creative_ad),
@@ -285,7 +313,7 @@ void AdsServiceImplIOS::PurgeOrphanedAdEventsForType(
   CHECK(mojom::IsKnownEnumValue(mojom_ad_type));
 
   if (!IsInitialized()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   ads_->PurgeOrphanedAdEventsForType(mojom_ad_type, std::move(callback));
@@ -295,7 +323,7 @@ void AdsServiceImplIOS::GetAdHistory(base::Time from_time,
                                      base::Time to_time,
                                      GetAdHistoryForUICallback callback) {
   if (!IsInitialized()) {
-    return std::move(callback).Run(/*ad_history*/ std::nullopt);
+    return std::move(callback).Run(/*ad_history=*/std::nullopt);
   }
 
   ads_->GetAdHistory(from_time, to_time, std::move(callback));
@@ -304,7 +332,7 @@ void AdsServiceImplIOS::GetAdHistory(base::Time from_time,
 void AdsServiceImplIOS::ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
                                      ResultCallback callback) {
   if (!IsInitialized()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   ads_->ToggleLikeAd(std::move(mojom_reaction), std::move(callback));
@@ -313,7 +341,7 @@ void AdsServiceImplIOS::ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
 void AdsServiceImplIOS::ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
                                         ResultCallback callback) {
   if (!IsInitialized()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   ads_->ToggleDislikeAd(std::move(mojom_reaction), std::move(callback));
@@ -322,7 +350,7 @@ void AdsServiceImplIOS::ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
 void AdsServiceImplIOS::ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
                                           ResultCallback callback) {
   if (!IsInitialized()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   ads_->ToggleLikeSegment(std::move(mojom_reaction), std::move(callback));
@@ -332,7 +360,7 @@ void AdsServiceImplIOS::ToggleDislikeSegment(
     mojom::ReactionInfoPtr mojom_reaction,
     ResultCallback callback) {
   if (!IsInitialized()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   ads_->ToggleDislikeSegment(std::move(mojom_reaction), std::move(callback));
@@ -341,7 +369,7 @@ void AdsServiceImplIOS::ToggleDislikeSegment(
 void AdsServiceImplIOS::ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
                                      ResultCallback callback) {
   if (!IsInitialized()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   ads_->ToggleSaveAd(std::move(mojom_reaction), std::move(callback));
@@ -351,7 +379,7 @@ void AdsServiceImplIOS::ToggleMarkAdAsInappropriate(
     mojom::ReactionInfoPtr mojom_reaction,
     ResultCallback callback) {
   if (!IsInitialized()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   ads_->ToggleMarkAdAsInappropriate(std::move(mojom_reaction),
@@ -422,11 +450,25 @@ void AdsServiceImplIOS::Shutdown() {
   ads_.reset();
 }
 
-void AdsServiceImplIOS::InitializeAds(ResultCallback callback) {
+bool AdsServiceImplIOS::CanStartBatAdsService() const {
+  // Never start if Rewards is disabled by policy, feature flag, or
+  // unsupported region, regardless of which ad units are enabled.
+  return brave_rewards::IsSupported(base::to_address(prefs_));
+}
+
+bool AdsServiceImplIOS::UserHasJoinedBraveRewards() const {
+  if (prefs_->IsManagedPreference(brave_rewards::prefs::kDisabledByPolicy) &&
+      prefs_->GetBoolean(brave_rewards::prefs::kDisabledByPolicy)) {
+    return false;
+  }
+  return prefs_->GetBoolean(brave_rewards::prefs::kEnabled);
+}
+
+void AdsServiceImplIOS::InitializeBatAds(ResultCallback callback) {
   CHECK(!IsInitialized());
 
-  ads_ = Ads::CreateInstance(*ads_client_,
-                             storage_path_.AppendASCII(kAdsDatabaseFilename));
+  ads_ = ads_factory_->CreateAds(
+      *ads_client_, storage_path_.AppendASCII(kAdsDatabaseFilename));
 
   ads_->SetSysInfo(mojom_sys_info_.Clone());
   ads_->SetBuildChannel(mojom_build_channel_.Clone());
@@ -434,12 +476,12 @@ void AdsServiceImplIOS::InitializeAds(ResultCallback callback) {
 
   ads_->Initialize(
       mojom_wallet_.Clone(),
-      base::BindOnce(&AdsServiceImplIOS::InitializeAdsCallback,
+      base::BindOnce(&AdsServiceImplIOS::InitializeBatAdsCallback,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AdsServiceImplIOS::InitializeAdsCallback(ResultCallback callback,
-                                              bool success) {
+void AdsServiceImplIOS::InitializeBatAdsCallback(ResultCallback callback,
+                                                 bool success) {
   if (!success) {
     Shutdown();
   } else {
@@ -458,7 +500,9 @@ void AdsServiceImplIOS::ShutdownAdsCallback(ResultCallback callback,
   std::move(callback).Run(success);
 }
 
-void AdsServiceImplIOS::ClearAdsData(ResultCallback callback, bool success) {
+void AdsServiceImplIOS::ClearAdsData(ResultCallback callback,
+                                     bool was_running,
+                                     bool success) {
   if (!success) {
     return std::move(callback).Run(/*success=*/false);
   }
@@ -469,7 +513,7 @@ void AdsServiceImplIOS::ClearAdsData(ResultCallback callback, bool success) {
 
   // Clear preferences only after confirming shutdown succeeded so the pref
   // state and database are always cleared together or not at all.
-  prefs_->ClearPrefsWithPrefixSilently("brave.brave_ads");
+  ClearAdsPrefs();
 
   file_task_runner_->PostTaskAndReply(
       FROM_HERE,
@@ -481,12 +525,95 @@ void AdsServiceImplIOS::ClearAdsData(ResultCallback callback, bool success) {
           },
           storage_path_),
       base::BindOnce(&AdsServiceImplIOS::ClearAdsDataCallback,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     was_running));
 }
 
-void AdsServiceImplIOS::ClearAdsDataCallback(ResultCallback callback) {
+void AdsServiceImplIOS::ClearAdsPrefs() {
+  // Stop observing prefs before they are set below, otherwise restoring
+  // `kSponsoredEnabled` to its prior value would fire `OnAdsPrefChanged`
+  // re-entrantly, since clearing the prefix above resets it to its default.
+  pref_change_registrar_.RemoveAll();
+
+  std::optional<bool> sponsored_enabled;
+  if (prefs_->HasPrefPath(prefs::kSponsoredEnabled)) {
+    sponsored_enabled = prefs_->GetBoolean(prefs::kSponsoredEnabled);
+  }
+
+  prefs_->ClearPrefsWithPrefixSilently("brave.brave_ads");
+
+  if (sponsored_enabled) {
+    prefs_->SetBoolean(prefs::kSponsoredEnabled, *sponsored_enabled);
+  }
+
+  InitializePrefChangeRegistrar();
+}
+
+void AdsServiceImplIOS::ClearAdsDataCallback(ResultCallback callback,
+                                             bool was_running) {
   NotifyDidClearAdsServiceData();
-  InitializeAds(std::move(callback));
+
+  // Only restart the service if it was running before `ClearData` was
+  // called. If it's already initialized, something else (e.g. the app
+  // reinitializing on foreground) restarted it while the data was being
+  // cleared, so restarting here would hit `InitializeBatAds`'s
+  // `CHECK(!IsInitialized())`.
+  if (!was_running || IsInitialized()) {
+    return std::move(callback).Run(/*success=*/true);
+  }
+
+  InitializeBatAds(std::move(callback));
+}
+
+void AdsServiceImplIOS::InitializePrefChangeRegistrar() {
+  pref_change_registrar_.Init(base::to_address(prefs_));
+  pref_change_registrar_.Add(
+      prefs::kSponsoredEnabled,
+      base::BindRepeating(&AdsServiceImplIOS::OnAdsPrefChanged,
+                          weak_ptr_factory_.GetWeakPtr(),
+                          prefs::kSponsoredEnabled));
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kEnabled,
+      base::BindRepeating(&AdsServiceImplIOS::OnAdsPrefChanged,
+                          weak_ptr_factory_.GetWeakPtr(),
+                          brave_rewards::prefs::kEnabled));
+}
+
+bool AdsServiceImplIOS::ShouldClearAdsData(const std::string& path) const {
+  // Only clear ads data once neither Sponsored Ads nor Brave Rewards remain
+  // enabled. The service keeps running for Rewards users even when Sponsored
+  // Ads are disabled, so clearing on either pref alone would wipe data the
+  // service is still using for the other ad unit.
+  return (path == prefs::kSponsoredEnabled ||
+          path == brave_rewards::prefs::kEnabled) &&
+         !prefs_->GetBoolean(prefs::kSponsoredEnabled) &&
+         !UserHasJoinedBraveRewards();
+}
+
+void AdsServiceImplIOS::OnAdsPrefChanged(const std::string& path) {
+  if (!ShouldClearAdsData(path)) {
+    return;
+  }
+
+  // Clear ads data now. Posted because `ClearData` can synchronously reach
+  // `ClearAdsPrefs`, which mutates `pref_change_registrar_` and must not do
+  // so re-entrantly from within this pref's own change notification.
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&AdsServiceImplIOS::MaybeClearAdsData,
+                     weak_ptr_factory_.GetWeakPtr(), path));
+}
+
+void AdsServiceImplIOS::MaybeClearAdsData(const std::string& path) {
+  if (!ShouldClearAdsData(path)) {
+    // The triggering pref was toggled back before this posted task ran, so
+    // the data is still relevant and the service may already be running
+    // again. Clearing it now would wipe live data and needlessly restart
+    // the service.
+    return;
+  }
+
+  ClearData(/*intentional*/ base::DoNothing());
 }
 
 }  // namespace brave_ads

@@ -5,27 +5,32 @@
 
 #include "chrome/browser/ui/autofill/autofill_context_menu_manager.h"
 
-#include "base/check_op.h"
+#include <optional>
 
-#define AppendItems AppendItems_ChromiumImpl
-#include <chrome/browser/ui/autofill/autofill_context_menu_manager.cc>
-#undef AppendItems
+#include "base/check_op.h"
+#include "chrome/app/chrome_command_ids.h"
+#include "ui/base/models/menu_model.h"
+#include "ui/menus/simple_menu_model.h"
 
 namespace autofill {
 
-void AutofillContextMenuManager::AppendItems() {
-  AppendItems_ChromiumImpl();
+namespace {
 
+void RemoveAutofillFeedbackMenuItem(ui::SimpleMenuModel* menu_model) {
   // Remove feedback menu item if present (and the separator that comes after
   // it).
   const std::optional<size_t> feedback_item_index =
-      menu_model_->GetIndexOfCommandId(IDC_CONTENT_CONTEXT_AUTOFILL_FEEDBACK);
+      menu_model->GetIndexOfCommandId(IDC_CONTENT_CONTEXT_AUTOFILL_FEEDBACK);
   if (feedback_item_index.has_value()) {
-    menu_model_->RemoveItemAt(feedback_item_index.value());
+    menu_model->RemoveItemAt(feedback_item_index.value());
     DCHECK_EQ(ui::MenuModel::TYPE_SEPARATOR,
-              menu_model_->GetTypeAt(feedback_item_index.value()));
-    menu_model_->RemoveItemAt(feedback_item_index.value());
+              menu_model->GetTypeAt(feedback_item_index.value()));
+    menu_model->RemoveItemAt(feedback_item_index.value());
   }
 }
 
+}  // namespace
+
 }  // namespace autofill
+
+#include <chrome/browser/ui/autofill/autofill_context_menu_manager.cc>

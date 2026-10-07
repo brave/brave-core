@@ -227,7 +227,7 @@
 "vpn.serverTitle" = "%ld 服务器";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "使用 Brave VPN 保护每个应用。一个套餐可保护多达 10 台设备。";
+"vpn.settingHeaderBody" = "以您的方式流式传输您的内容。仅需 1 个订阅即可保护 10 台设备上的每个应用。";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "與技術支援人員聯絡";

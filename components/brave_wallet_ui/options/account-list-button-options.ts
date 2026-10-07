@@ -8,51 +8,51 @@ import { AccountButtonOptionsObjectType } from '../constants/types'
 
 export const BuyButtonOption: AccountButtonOptionsObjectType = {
   id: 'buy',
-  name: 'braveWalletBuy',
+  name: S.BRAVE_WALLET_BUY,
   icon: 'coins-alt1',
 }
 
 export const DepositButtonOption: AccountButtonOptionsObjectType = {
   id: 'deposit',
-  name: 'braveWalletAccountsDeposit',
+  name: S.BRAVE_WALLET_ACCOUNTS_DEPOSIT,
   icon: 'money-bag-coins',
 }
 
 export const AccountButtonOptions: AccountButtonOptionsObjectType[] = [
   {
     id: 'details',
-    name: 'braveWalletAllowSpendDetailsButton',
+    name: S.BRAVE_WALLET_ALLOW_SPEND_DETAILS_BUTTON,
     icon: 'info-outline',
   },
   {
     id: 'edit',
-    name: 'braveWalletAllowSpendEditButton',
+    name: S.BRAVE_WALLET_ALLOW_SPEND_EDIT_BUTTON,
     icon: 'edit-pencil',
   },
   {
     id: 'privateKey',
-    name: 'braveWalletAccountsExport',
+    name: S.BRAVE_WALLET_ACCOUNTS_EXPORT,
     icon: 'key',
   },
   {
     id: 'hide',
-    name: 'braveWalletAccountsHide',
+    name: S.BRAVE_WALLET_ACCOUNTS_HIDE,
     icon: 'eye-off',
   },
   DepositButtonOption,
   {
     id: 'remove',
-    name: 'braveWalletAccountsRemove',
+    name: S.BRAVE_WALLET_ACCOUNTS_REMOVE,
     icon: 'trash',
   },
   {
     id: 'shield',
-    name: 'braveWalletSwitchToShieldedAccount',
+    name: S.BRAVE_WALLET_SWITCH_TO_SHIELDED_ACCOUNT,
     icon: 'shield-done',
   },
   {
     id: 'resetBirthday',
-    name: 'braveWalletResetShieldedAccountBirthday',
+    name: S.BRAVE_WALLET_RESET_SHIELDED_ACCOUNT_BIRTHDAY,
     icon: 'calendar',
   },
 ]

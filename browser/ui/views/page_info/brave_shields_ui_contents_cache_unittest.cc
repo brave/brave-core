@@ -13,6 +13,7 @@
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/views/chrome_views_test_base.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/unowned_user_data/unowned_user_data_host.h"
 
 namespace {
 
@@ -59,7 +60,8 @@ class BraveShieldsUIContentsCacheTest : public ChromeViewsTestBase {
 };
 
 TEST_F(BraveShieldsUIContentsCacheTest, CachedContentsCanBeRetrieved) {
-  BraveShieldsUIContentsCache cache;
+  ui::UnownedUserDataHost user_data_host;
+  BraveShieldsUIContentsCache cache(user_data_host);
 
   auto wrapper = CreateTestWrapper();
   WebUIContentsWrapper* raw_ptr = wrapper.get();
@@ -72,7 +74,8 @@ TEST_F(BraveShieldsUIContentsCacheTest, CachedContentsCanBeRetrieved) {
 }
 
 TEST_F(BraveShieldsUIContentsCacheTest, CacheExpiresAfterTimeout) {
-  BraveShieldsUIContentsCache cache;
+  ui::UnownedUserDataHost user_data_host;
+  BraveShieldsUIContentsCache cache(user_data_host);
 
   cache.CacheShieldsUIContents(CreateTestWrapper());
 
@@ -84,7 +87,8 @@ TEST_F(BraveShieldsUIContentsCacheTest, CacheExpiresAfterTimeout) {
 }
 
 TEST_F(BraveShieldsUIContentsCacheTest, ResetClearsCache) {
-  BraveShieldsUIContentsCache cache;
+  ui::UnownedUserDataHost user_data_host;
+  BraveShieldsUIContentsCache cache(user_data_host);
 
   cache.CacheShieldsUIContents(CreateTestWrapper());
   cache.ResetCachedShieldsUIContents();

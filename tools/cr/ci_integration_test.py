@@ -115,11 +115,12 @@ class _Handler(BaseHTTPRequestHandler):
         if path == '/crumbIssuer/api/json':
             self.fake.handle_crumb(self)
         elif path.startswith('/queue/item/') and path.endswith('/api/json'):
-            qid = path[len('/queue/item/'):-len('/api/json')].strip('/')
+            qid = path[len('/queue/item/') : -len('/api/json')].strip('/')
             self.fake.handle_queue(self, qid)
         elif path.endswith('/wfapi/describe'):
             self.fake.handle_describe(
-                self, _job_from_build_path(path[:-len('/wfapi/describe')]))
+                self, _job_from_build_path(path[: -len('/wfapi/describe')])
+            )
         elif path.startswith('/job/') and path.endswith('/api/json'):
             parts = [segment for segment in path.split('/') if segment]
             # ['job', <job>, 'api', 'json'] is the pipeline-level info, whereas
@@ -134,7 +135,7 @@ class _Handler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:
         path = urlparse(self.path).path
         if path.startswith('/job/') and path.endswith('/buildWithParameters'):
-            job = path[len('/job/'):-len('/buildWithParameters')].strip('/')
+            job = path[len('/job/') : -len('/buildWithParameters')].strip('/')
             self.fake.handle_trigger(self, job)
         else:
             self.send_empty(404)
@@ -147,10 +148,7 @@ class FakeJenkins:
     tuned via the public attributes below before (or during) a run.
     """
 
-    def __init__(self,
-                 *,
-                 username: str = 'alice',
-                 token: str = 'secret-token'):
+    def __init__(self, *, username: str = 'alice', token: str = 'secret-token'):
         self.username = username
         self.token = token
 
@@ -190,8 +188,9 @@ class FakeJenkins:
     def __enter__(self) -> FakeJenkins:
         self._httpd = ThreadingHTTPServer(('127.0.0.1', 0), _Handler)
         self._httpd.fake = self
-        self._thread = threading.Thread(target=self._httpd.serve_forever,
-                                        daemon=True)
+        self._thread = threading.Thread(
+            target=self._httpd.serve_forever, daemon=True
+        )
         self._thread.start()
         host, port = self._httpd.server_address
         self.base_url = f'http://{host}:{port}'
@@ -212,7 +211,7 @@ class FakeJenkins:
         header = handler.headers.get('Authorization', '')
         if not header.startswith('Basic '):
             return None
-        raw = base64.b64decode(header[len('Basic '):]).decode('utf-8')
+        raw = base64.b64decode(header[len('Basic ') :]).decode('utf-8')
         user, _, token = raw.partition(':')
         return user, token
 
@@ -225,13 +224,16 @@ class FakeJenkins:
 
     def handle_trigger(self, handler: _Handler, job: str) -> None:
         crumb_field = self.crumb[0] if self.crumb else None
-        self.triggers.append({
-            'job': job,
-            'params': parse_qs(urlparse(handler.path).query),
-            'auth': self._decode_auth(handler),
-            'crumb_header': handler.headers.get(crumb_field)
-            if crumb_field else None,
-        })
+        self.triggers.append(
+            {
+                'job': job,
+                'params': parse_qs(urlparse(handler.path).query),
+                'auth': self._decode_auth(handler),
+                'crumb_header': handler.headers.get(crumb_field)
+                if crumb_field
+                else None,
+            }
+        )
 
         status = self.trigger_status.get(job, 201)
         if status >= 400:
@@ -242,15 +244,18 @@ class FakeJenkins:
             qid = str(self._next_qid)
             self._next_qid += 1
             self._qid_to_job[qid] = job
-        handler.send_empty(201,
-                           {'Location': f'{self.base_url}/queue/item/{qid}/'})
+        handler.send_empty(
+            201, {'Location': f'{self.base_url}/queue/item/{qid}/'}
+        )
 
     def handle_job_info(self, handler: _Handler, job: str) -> None:
         # Jenkins reports the job name as `displayName` when none is set.
-        handler.send_json({
-            'name': job,
-            'displayName': self.display_names.get(job, job),
-        })
+        handler.send_json(
+            {
+                'name': job,
+                'displayName': self.display_names.get(job, job),
+            }
+        )
 
     def handle_queue(self, handler: _Handler, qid: str) -> None:
         job = self._qid_to_job.get(qid)
@@ -261,19 +266,18 @@ class FakeJenkins:
             polls = self._queue_polls[qid]
             self._queue_polls[qid] += 1
         if polls < self.queue_polls_before_start:
-            handler.send_json({
-                'cancelled': False,
-                'executable': None,
-                'why': 'Waiting for next available executor',
-            })
+            handler.send_json(
+                {
+                    'cancelled': False,
+                    'executable': None,
+                    'why': 'Waiting for next available executor',
+                }
+            )
             return
         build_url = f'{self.base_url}/job/{job}/100/'
-        handler.send_json({
-            'cancelled': False,
-            'executable': {
-                'url': build_url
-            }
-        })
+        handler.send_json(
+            {'cancelled': False, 'executable': {'url': build_url}}
+        )
 
     def handle_describe(self, handler: _Handler, job: str) -> None:
         if not self.serve_wfapi:
@@ -285,47 +289,40 @@ class FakeJenkins:
             polls = self._describe_polls[job]
             self._describe_polls[job] += 1
         if polls < self.running_polls_before_done:
-            handler.send_json({
-                'status': 'IN_PROGRESS',
-                'durationMillis': 1000 * (polls + 1),
-                'stages': [
-                    {
-                        'name': 'env',
-                        'status': 'SUCCESS'
-                    },
-                    {
-                        'name': 'build',
-                        'status': 'IN_PROGRESS'
-                    },
-                ],
-            })
+            handler.send_json(
+                {
+                    'status': 'IN_PROGRESS',
+                    'durationMillis': 1000 * (polls + 1),
+                    'stages': [
+                        {'name': 'env', 'status': 'SUCCESS'},
+                        {'name': 'build', 'status': 'IN_PROGRESS'},
+                    ],
+                }
+            )
             return
         wfapi_status = _FINAL_TO_WFAPI.get(self.final_status, 'SUCCESS')
-        handler.send_json({
-            'status': wfapi_status,
-            'durationMillis': 99000,
-            'stages': [{
-                'name': 'build',
-                'status': wfapi_status
-            }],
-        })
+        handler.send_json(
+            {
+                'status': wfapi_status,
+                'durationMillis': 99000,
+                'stages': [{'name': 'build', 'status': wfapi_status}],
+            }
+        )
 
     def handle_build_api(self, handler: _Handler, job: str) -> None:
         with self._lock:
             polls = self._build_polls[job]
             self._build_polls[job] += 1
         if polls < self.running_polls_before_done:
-            handler.send_json({
-                'building': True,
-                'duration': 0,
-                'result': None
-            })
+            handler.send_json({'building': True, 'duration': 0, 'result': None})
             return
-        handler.send_json({
-            'building': False,
-            'duration': 50000,
-            'result': self.final_status,
-        })
+        handler.send_json(
+            {
+                'building': False,
+                'duration': 50000,
+                'result': self.final_status,
+            }
+        )
 
 
 class JenkinsCiIntegrationTest(unittest.TestCase):
@@ -345,13 +342,17 @@ class JenkinsCiIntegrationTest(unittest.TestCase):
             captured['jobs'] = jobs
 
         if watch:
-            with patch.object(ci.JenkinsCi, '_render_table', _record), \
-                    patch('ci.time.sleep'), \
-                    patch('ci.Live', _NullLive):
-                launcher.trigger(fake.job_urls(),
-                                 params={'CHROMIUM_TAG': TAG},
-                                 watch=True,
-                                 title='Rust toolchain')
+            with (
+                patch.object(ci.JenkinsCi, '_render_table', _record),
+                patch('ci.time.sleep'),
+                patch('ci.Live', _NullLive),
+            ):
+                launcher.trigger(
+                    fake.job_urls(),
+                    params={'CHROMIUM_TAG': TAG},
+                    watch=True,
+                    title='Rust toolchain',
+                )
         else:
             launcher.trigger(fake.job_urls(), params={'CHROMIUM_TAG': TAG})
         return captured.get('jobs', [])
@@ -360,8 +361,9 @@ class JenkinsCiIntegrationTest(unittest.TestCase):
         with FakeJenkins() as fake:
             self._trigger(fake)
 
-        self.assertEqual({trigger['job']
-                          for trigger in fake.triggers}, set(JOB_NAMES))
+        self.assertEqual(
+            {trigger['job'] for trigger in fake.triggers}, set(JOB_NAMES)
+        )
         self.assertEqual(len(fake.triggers), len(JOB_NAMES))
         for trigger in fake.triggers:
             self.assertEqual(trigger['params'], {'CHROMIUM_TAG': [TAG]})
@@ -381,9 +383,9 @@ class JenkinsCiIntegrationTest(unittest.TestCase):
         with FakeJenkins() as fake:
             fake.trigger_status = {JOB_NAMES[0]: 500}
             with self.assertRaises(ci.BadOutcomeException):
-                ci.JenkinsCi(fake.username,
-                             fake.token).trigger(fake.job_urls(),
-                                                 params={'CHROMIUM_TAG': TAG})
+                ci.JenkinsCi(fake.username, fake.token).trigger(
+                    fake.job_urls(), params={'CHROMIUM_TAG': TAG}
+                )
 
     def test_watch_runs_full_queue_to_success_lifecycle(self):
         with FakeJenkins() as fake:
@@ -402,10 +404,7 @@ class JenkinsCiIntegrationTest(unittest.TestCase):
 
     def test_watch_uses_pipeline_display_name_for_bot(self):
         with FakeJenkins() as fake:
-            fake.display_names = {
-                job: f'Display of {job}'
-                for job in JOB_NAMES
-            }
+            fake.display_names = {job: f'Display of {job}' for job in JOB_NAMES}
             jobs = self._trigger(fake, watch=True)
 
         for job in jobs:

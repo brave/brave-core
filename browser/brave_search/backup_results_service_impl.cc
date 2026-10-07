@@ -20,6 +20,7 @@
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/browser/brave_search/backup_results_view_manager.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_search/browser/backup_results_allowed_urls.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
@@ -31,6 +32,7 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/content_settings/page_specific_content_settings_delegate.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_destroyer.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -61,17 +63,8 @@
 #include "third_party/blink/public/common/renderer_preferences/renderer_preferences.h"
 #include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
-#include "ui/gfx/geometry/size.h"
-
-#if BUILDFLAG(IS_ANDROID)
-#include "base/android/jni_android.h"
-#include "base/android/scoped_java_ref.h"
-#include "brave/android/java/org/chromium/chrome/browser/brave_search/jni_headers/BackupResultsWindowFactory_jni.h"
-#include "ui/android/view_android.h"
-#include "ui/android/window_android.h"
-#else
 #include "ui/gfx/geometry/rect.h"
-#endif
+#include "ui/gfx/geometry/size.h"
 
 namespace brave_search {
 
@@ -100,7 +93,7 @@ constexpr net::NetworkTrafficAnnotationTag kNetworkTrafficAnnotationTag =
       }
     )");
 
-constexpr base::ByteSize kMaxResponseSize = base::MiBU(5);
+constexpr base::ByteSize kMaxResponseSize = base::MiB(5);
 constexpr base::TimeDelta kTimeout = base::Seconds(5);
 constexpr base::TimeDelta kLoadAfterRestoreTimeout = base::Seconds(12);
 
@@ -182,19 +175,36 @@ void BackupResultsServiceImpl::RegisterLocalStatePrefs(
     PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(prefs::kBackupResultsLastViewWidth, 0);
   registry->RegisterIntegerPref(prefs::kBackupResultsLastViewHeight, 0);
+  registry->RegisterIntegerPref(prefs::kBackupResultsLastWindowX, 0);
+  registry->RegisterIntegerPref(prefs::kBackupResultsLastWindowY, 0);
+  registry->RegisterIntegerPref(prefs::kBackupResultsLastWindowWidth, 0);
+  registry->RegisterIntegerPref(prefs::kBackupResultsLastWindowHeight, 0);
   registry->RegisterIntegerPref(prefs::kBackupResultsDailyRequestCount, 0);
   registry->RegisterTimePref(prefs::kBackupResultsDailyRequestWindowStart, {});
   BackupResultsMetrics::RegisterPrefs(registry);
 }
 
 // static
-void BackupResultsServiceImpl::RecordLastViewSize(PrefService* local_state,
-                                                  const gfx::Size& size) {
-  if (size.IsEmpty()) {
-    return;
+void BackupResultsServiceImpl::RecordLastViewGeometry(
+    PrefService* local_state,
+    const gfx::Size& view_size,
+    const gfx::Rect& window_bounds_in_screen) {
+  if (!view_size.IsEmpty()) {
+    local_state->SetInteger(prefs::kBackupResultsLastViewWidth,
+                            view_size.width());
+    local_state->SetInteger(prefs::kBackupResultsLastViewHeight,
+                            view_size.height());
   }
-  local_state->SetInteger(prefs::kBackupResultsLastViewWidth, size.width());
-  local_state->SetInteger(prefs::kBackupResultsLastViewHeight, size.height());
+  if (!window_bounds_in_screen.IsEmpty()) {
+    local_state->SetInteger(prefs::kBackupResultsLastWindowX,
+                            window_bounds_in_screen.x());
+    local_state->SetInteger(prefs::kBackupResultsLastWindowY,
+                            window_bounds_in_screen.y());
+    local_state->SetInteger(prefs::kBackupResultsLastWindowWidth,
+                            window_bounds_in_screen.width());
+    local_state->SetInteger(prefs::kBackupResultsLastWindowHeight,
+                            window_bounds_in_screen.height());
+  }
 }
 
 void BackupResultsServiceImpl::FetchBackupResults(
@@ -236,9 +246,7 @@ void BackupResultsServiceImpl::FetchBackupResults(
   MaybeConfigureFarblingAndAcceptLanguage(otr_profile, *target_url);
 
   std::unique_ptr<content::WebContents> web_contents;
-#if BUILDFLAG(IS_ANDROID)
-  ui::WindowAndroid* window_android = nullptr;
-#endif
+  std::unique_ptr<BackupResultsViewManager> view_manager;
 
   if (should_render) {
     auto create_params = content::WebContents::CreateParams(otr_profile);
@@ -250,34 +258,8 @@ void BackupResultsServiceImpl::FetchBackupResults(
     brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
         web_contents.get());
 
-    gfx::Size view_size;
-    if (!features::kBackupResultsZeroSize.Get()) {
-      int stored_width =
-          local_state_->GetInteger(prefs::kBackupResultsLastViewWidth);
-      int stored_height =
-          local_state_->GetInteger(prefs::kBackupResultsLastViewHeight);
-      view_size = gfx::Size(
-          stored_width > 0 ? stored_width : base::RandIntInclusive(800, 1920),
-          stored_height > 0 ? stored_height
-                            : base::RandIntInclusive(600, 1080));
-    }
-#if BUILDFLAG(IS_ANDROID)
-    auto* native_view = web_contents->GetNativeView();
-    // Root the view tree in a window so that window.outerWidth/outerHeight
-    // report the device window bounds rather than the view bounds.
-    JNIEnv* env = base::android::AttachCurrentThread();
-    window_android = ui::WindowAndroid::FromJavaWindowAndroid(
-        Java_BackupResultsWindowFactory_create(env));
-    if (window_android) {
-      window_android->AddChild(native_view);
-    }
-    float dip_scale = native_view->GetDipScale();
-    native_view->OnSizeChanged(
-        static_cast<int>(view_size.width() * dip_scale),
-        static_cast<int>(view_size.height() * dip_scale));
-#else
-    web_contents->Resize(gfx::Rect(view_size));
-#endif
+    view_manager = std::make_unique<BackupResultsViewManager>(
+        local_state_, web_contents.get());
 
     auto web_preferences = web_contents->GetOrCreateWebPreferences();
     web_preferences.supports_multiple_windows = false;
@@ -294,11 +276,9 @@ void BackupResultsServiceImpl::FetchBackupResults(
   }
 
   auto request = pending_requests_.emplace(
-      pending_requests_.end(), std::move(web_contents), headers, profile_,
-      otr_profile, low_latency_required, std::move(callback));
-#if BUILDFLAG(IS_ANDROID)
-  request->window_android = window_android;
-#endif
+      pending_requests_.end(), std::move(web_contents), headers, otr_profile,
+      low_latency_required, std::move(callback));
+  request->view_manager = std::move(view_manager);
 
   if (should_render) {
     const bool load_after_restore =
@@ -323,7 +303,6 @@ void BackupResultsServiceImpl::FetchBackupResults(
 BackupResultsServiceImpl::PendingRequest::PendingRequest(
     std::unique_ptr<content::WebContents> web_contents,
     std::optional<net::HttpRequestHeaders> headers,
-    Profile* original_profile,
     Profile* otr_profile,
     bool low_latency_required,
     BackupResultsCallback callback)
@@ -331,22 +310,13 @@ BackupResultsServiceImpl::PendingRequest::PendingRequest(
       callback(std::move(callback)),
       low_latency_required(low_latency_required),
       web_contents(std::move(web_contents)),
-      original_profile(original_profile),
       otr_profile(otr_profile) {}
 
 BackupResultsServiceImpl::PendingRequest::~PendingRequest() {
   web_contents = nullptr;
-#if BUILDFLAG(IS_ANDROID)
-  if (window_android) {
-    auto java_window = window_android->GetJavaObject();
-    window_android = nullptr;
-    Java_BackupResultsWindowFactory_destroy(
-        base::android::AttachCurrentThread(), java_window);
-  }
-#endif
   auto* profile_to_destroy = otr_profile.get();
   otr_profile = nullptr;
-  original_profile->DestroyOffTheRecordProfile(profile_to_destroy);
+  ProfileDestroyer::DestroyOTRProfileWhenAppropriate(profile_to_destroy);
 }
 
 BackupResultsServiceImpl::PendingRequestList::iterator

@@ -12,29 +12,28 @@
 
 namespace ntp_background_images::features {
 
-BASE_DECLARE_FEATURE(kBraveNTPBrandedWallpaperSurveyPanelist);
-
-BASE_DECLARE_FEATURE(kBraveNTPBrandedWallpaper);
+BASE_DECLARE_FEATURE(kBraveNTPNewTabTakeoverWallpaper);
 
 BASE_DECLARE_FEATURE(kCenterNttCtaButton);
 
 // The branded wallpaper will initially be displayed on the nth new tab. The
 // minimum value is 1.
-inline constexpr base::FeatureParam<int> kInitialCountToBrandedWallpaper{
-    &kBraveNTPBrandedWallpaper, "initial_count_to_branded_wallpaper", 2};
+inline constexpr base::FeatureParam<int> kInitialCountToNewTabTakeoverWallpaper{
+    &kBraveNTPNewTabTakeoverWallpaper, "initial_count_to_branded_wallpaper", 2};
 
 // After the initial display, the branded wallpaper will be shown on every nth
 // new tab. The minimum value is 1.
-inline constexpr base::FeatureParam<int> kCountToBrandedWallpaper{
-    &kBraveNTPBrandedWallpaper, "count_to_branded_wallpaper", 3};
+inline constexpr base::FeatureParam<int> kCountToNewTabTakeoverWallpaper{
+    &kBraveNTPNewTabTakeoverWallpaper, "count_to_branded_wallpaper", 3};
 
 // The counter that tracks the display of the branded wallpaper on nth tabs will
-// be reset after the specified duration has elapsed in SI mode.
+// be reset after the specified duration has elapsed while sponsored content
+// is enabled.
 inline constexpr base::FeatureParam<base::TimeDelta> kResetCounterAfter{
-    &kBraveNTPBrandedWallpaper, "reset_counter_after", base::Days(1)};
+    &kBraveNTPNewTabTakeoverWallpaper, "reset_counter_after", base::Days(1)};
 
 inline constexpr base::FeatureParam<base::TimeDelta>
-    kSponsoredImagesUpdateCheckAfter{&kBraveNTPBrandedWallpaper,
+    kSponsoredImagesUpdateCheckAfter{&kBraveNTPNewTabTakeoverWallpaper,
                                      "sponsored_images_update_check_after",
                                      base::Minutes(15)};
 

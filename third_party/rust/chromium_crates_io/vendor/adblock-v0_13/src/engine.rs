@@ -3,17 +3,19 @@
 use crate::blocker::{Blocker, BlockerResult};
 use crate::cosmetic_filter_cache::{CosmeticFilterCache, UrlSpecificResources};
 use crate::cosmetic_filter_cache_builder::CosmeticFilterCacheBuilder;
-use crate::data_format::{deserialize_dat_file, serialize_dat_file, DeserializationError};
+use crate::data_format::{deserialize_dat_file, serialize_dat_file};
 use crate::filters::fb_builder::EngineFlatBuilder;
 use crate::filters::fb_network_builder::{NetworkFilterDebugData, NetworkRulesBuilder};
 use crate::filters::filter_data_context::{FilterDataContext, FilterDataContextRef};
 use crate::filters::flatbuffer_generated::fb;
 use crate::flatbuffers::containers::flat_serialize::{FlatBuilder, FlatSerialize};
 use crate::flatbuffers::unsafe_tools::VerifiedFlatbufferMemory;
-use crate::lists::{parse_filter, FilterSet, ParseOptions, ParsedLine};
+use crate::lists::{FilterSet, ParseOptions, ParsedLine, parse_filter};
 use crate::regex_manager::RegexManagerDiscardPolicy;
 use crate::request::Request;
 use crate::resources::{Resource, ResourceStorage, ResourceStorageBackend};
+
+pub use crate::data_format::DeserializationError;
 
 use crate::filters::{cosmetic::CosmeticFilter, network::NetworkFilter};
 
@@ -41,8 +43,6 @@ use std::collections::HashSet;
 /// ### Network blocking
 ///
 /// Use the [`Engine::check_network_request`] method to determine how to handle a network request.
-///
-/// If you _only_ need network blocking, consider using a [`Blocker`] directly.
 ///
 /// ### Cosmetic filtering
 ///
@@ -260,6 +260,12 @@ impl Engine {
         self.blocker.check_exceptions(request)
     }
 
+    /// Like [Self::check_network_request], but with extra options.
+    ///
+    /// - `previously_matched_rule` can assume the existence of a blocking rule, which would skip
+    ///   checking for other blocking rules and immediately look for matching exceptions.
+    /// - `force_check_exceptions` can force the engine to _always_ look for and report matching
+    ///   exceptions, even if no blocking rule exists.
     pub fn check_network_request_subset(
         &self,
         request: &Request,
@@ -387,7 +393,7 @@ impl Engine {
         )
     }
 
-    pub fn set_regex_discard_policy(&mut self, new_discard_policy: RegexManagerDiscardPolicy) {
+    pub fn set_regex_discard_policy(&self, new_discard_policy: RegexManagerDiscardPolicy) {
         self.blocker.set_regex_discard_policy(new_discard_policy);
     }
 

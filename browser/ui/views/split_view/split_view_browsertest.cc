@@ -7,6 +7,8 @@
 #include <utility>
 
 #include "base/functional/callback_helpers.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "base/test/run_until.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -21,7 +23,6 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -42,6 +43,8 @@
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/bookmarks/common/bookmark_bar_visibility_state.h"
+#include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/javascript_dialogs/tab_modal_dialog_manager.h"
@@ -57,6 +60,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "third_party/skia/include/core/SkRegion.h"
 #include "ui/compositor/layer.h"
@@ -157,6 +161,25 @@ constexpr char kTestPageWithLink[] = R"(
 </body>
 </html>
 )";
+
+std::string GetRequestHeader(const net::test_server::HttpRequest& request,
+                             std::string_view name) {
+  for (const auto& [key, value] : request.headers) {
+    if (base::EqualsCaseInsensitiveASCII(key, name)) {
+      return value;
+    }
+  }
+  return std::string();
+}
+
+// Echoes back the request's Cookie and Sec-Fetch-Site headers so that tests can
+// assert on what was actually sent to the network.
+std::string BuildEchoRequestPage(const net::test_server::HttpRequest& request) {
+  return base::StrCat(
+      {"<!DOCTYPE html><body><pre id=\"cookie\">",
+       GetRequestHeader(request, "Cookie"), "</pre><pre id=\"sec-fetch-site\">",
+       GetRequestHeader(request, "Sec-Fetch-Site"), "</pre></body>"});
+}
 
 // Observer for same-document navigations. Uses DidFinishNavigation to detect
 // same-document commits (event-driven), and RunUntil for the wait mechanism
@@ -371,10 +394,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BraveMultiContentsViewTest) {
   EXPECT_EQ(multi_contents_view->height(),
             end_contents_container_view->height());
 
-  FullscreenController* fullscreen_controller = browser()
-                                                    ->GetFeatures()
-                                                    .exclusive_access_manager()
-                                                    ->fullscreen_controller();
+  FullscreenController* fullscreen_controller =
+      ExclusiveAccessManager::From(browser())->fullscreen_controller();
   fullscreen_controller->set_is_tab_fullscreen_for_testing(true);
   brave_browser_view()->InvalidateLayout();
   RunScheduledLayouts();
@@ -618,10 +639,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewWithRoundedCornersTest,
       contents_view->layer()->rounded_corner_radii();
   EXPECT_FALSE(border_radius.IsEmpty());
 
-  FullscreenController* fullscreen_controller = browser()
-                                                    ->GetFeatures()
-                                                    .exclusive_access_manager()
-                                                    ->fullscreen_controller();
+  FullscreenController* fullscreen_controller =
+      ExclusiveAccessManager::From(browser())->fullscreen_controller();
 
   // Check rounded corners are cleared in tab fullscreen.
   fullscreen_controller->set_is_tab_fullscreen_for_testing(true);
@@ -663,7 +682,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewWithRoundedCornersTest,
       std::make_optional<ui_test_utils::BrowserCreatedObserver>();
 
   chrome::MoveTabsToNewWindow(browser(), split_indices);
-  Browser* new_browser = browser_created_observer->Wait();
+  BrowserWindowInterface* new_browser = browser_created_observer->Wait();
 
   ASSERT_TRUE(new_browser);
   EXPECT_FALSE(tab_strip_model->ContainsSplit(*split_id));
@@ -776,7 +795,9 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BookmarksBarVisibilityTest) {
   NewSplitTab();
 
   // Check no bookmarks when any split tab is activated.
-  brave::SetBookmarkState(brave::BookmarkBarState::kNever, prefs);
+  prefs->SetInteger(
+      bookmarks::prefs::kBookmarkBarVisibilityState,
+      static_cast<int>(bookmarks::BookmarkBarVisibilityState::kAlwaysHide));
   ASSERT_TRUE(IsSplitWebContents(GetWebContentsAt(0)));
   ASSERT_TRUE(IsSplitWebContents(GetWebContentsAt(1)));
 
@@ -794,7 +815,10 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BookmarksBarVisibilityTest) {
 
   // With SideBySide, bookmarks bar is shown always if one of split tab is NTP.
   // Otherwise, it's shown only when active split tab is NTP.
-  brave::SetBookmarkState(brave::BookmarkBarState::kNtp, prefs);
+  prefs->SetInteger(
+      bookmarks::prefs::kBookmarkBarVisibilityState,
+      static_cast<int>(bookmarks::BookmarkBarVisibilityState::kOnlyShowOnNtp));
+
   EXPECT_EQ(BookmarkBar::SHOW,
             BookmarkBarController::From(browser())->bookmark_bar_state());
   tab_strip_model->ActivateTabAt(1);
@@ -802,7 +826,9 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BookmarksBarVisibilityTest) {
             BookmarkBarController::From(browser())->bookmark_bar_state());
 
   // Check bookmarks is shown always.
-  brave::SetBookmarkState(brave::BookmarkBarState::kAlways, prefs);
+  prefs->SetInteger(
+      bookmarks::prefs::kBookmarkBarVisibilityState,
+      static_cast<int>(bookmarks::BookmarkBarVisibilityState::kAlwaysShow));
   EXPECT_EQ(BookmarkBar::SHOW,
             BookmarkBarController::From(browser())->bookmark_bar_state());
   tab_strip_model->ActivateTabAt(0);
@@ -1042,6 +1068,12 @@ class SplitViewLinkTest : public SplitViewBrowserTest {
     embedded_test_server()->RegisterRequestHandler(base::BindRepeating(
         &SplitViewLinkTest::HandleRequest, base::Unretained(this)));
     ASSERT_TRUE(embedded_test_server()->Start());
+
+    // Sec-Fetch-* headers are only sent to potentially trustworthy URLs, so
+    // tests asserting on them need HTTPS.
+    embedded_https_test_server().RegisterRequestHandler(base::BindRepeating(
+        &SplitViewLinkTest::HandleRequest, base::Unretained(this)));
+    ASSERT_TRUE(embedded_https_test_server().Start());
   }
 
   std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
@@ -1059,6 +1091,10 @@ class SplitViewLinkTest : public SplitViewBrowserTest {
       response->set_code(net::HTTP_OK);
       response->set_content_type("text/html");
       response->set_content(kTargetPage);
+    } else if (request.relative_url == "/echo-request.html") {
+      response->set_code(net::HTTP_OK);
+      response->set_content_type("text/html");
+      response->set_content(BuildEchoRequestPage(request));
     } else {
       return nullptr;
     }
@@ -1096,6 +1132,51 @@ class SplitViewLinkTest : public SplitViewBrowserTest {
 
   GURL GetTargetPageURL() {
     return embedded_test_server()->GetURL("example.com", "/target.html");
+  }
+
+  // The default HTTPS test server certificate covers example.com, foo.com,
+  // bar.com and a/b/c.com, so |host| must be one of those.
+  GURL GetSecureLinkTestPageURL(std::string_view host) {
+    return embedded_https_test_server().GetURL(std::string(host),
+                                               "/link-test.html");
+  }
+
+  GURL GetSecureEchoRequestURL(std::string_view host) {
+    return embedded_https_test_server().GetURL(std::string(host),
+                                               "/echo-request.html");
+  }
+
+  void SetSameSiteCookies(const GURL& url) {
+    ASSERT_TRUE(content::SetCookie(browser()->GetProfile(), url,
+                                   "strict=1; SameSite=Strict; Path=/"));
+    ASSERT_TRUE(content::SetCookie(browser()->GetProfile(), url,
+                                   "lax=1; SameSite=Lax; Path=/"));
+  }
+
+  // Clicks a freshly inserted link to |url|. ExecJs supplies a user gesture, so
+  // this exercises the same code path as a real click.
+  void ClickLinkTo(content::WebContents* contents,
+                   const GURL& url,
+                   bool target_blank) {
+    constexpr char kScript[] = R"(
+      const a = document.createElement('a');
+      a.href = $1;
+      if ($2) {
+        a.target = '_blank';
+      }
+      a.textContent = 'link';
+      document.body.appendChild(a);
+      a.click();
+    )";
+    ASSERT_TRUE(content::ExecJs(
+        contents, content::JsReplace(kScript, url, target_blank)));
+  }
+
+  std::string GetEchoedHeader(content::WebContents* contents,
+                              std::string_view element_id) {
+    const std::string script = content::JsReplace(
+        "document.getElementById($1).textContent", element_id);
+    return content::EvalJs(contents, script).ExtractString();
   }
 
   content::WebContents* GetLeftPaneContents() {
@@ -1565,11 +1646,12 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest, WindowOpenVariationsWhenRedirected) {
     ASSERT_TRUE(content::ExecJs(left_pane, "windowOpenWithFeatures();"));
 
     // Wait for new browser window (popup) to be created
-    Browser* popup_browser = browser_created_observer.Wait();
+    BrowserWindowInterface* popup_browser = browser_created_observer.Wait();
     ASSERT_TRUE(popup_browser);
 
     // Verify a popup window was created
-    EXPECT_TRUE(popup_browser->is_type_popup())
+    EXPECT_EQ(popup_browser->GetType(),
+              BrowserWindowInterface::Type::TYPE_POPUP)
         << "window.open() with features should create a popup window";
 
     // Verify the original split view tabs remain unchanged
@@ -1704,6 +1786,93 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
            "on "
            "existing WebContents.";
   }
+}
+
+// Redirecting a link to the right pane must not launder the navigation into a
+// browser-initiated one. Otherwise SameSite=Strict cookies would be sent for a
+// cross-site link and Sec-Fetch-Site would be "none", which would make linked
+// split view a CSRF bypass.
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest, CrossSiteLinkRedirectKeepsInitiator) {
+  NewSplitTab();
+  SetSplitViewLinked(true);
+  ASSERT_TRUE(IsSplitViewLinked());
+
+  const GURL echo_url = GetSecureEchoRequestURL("b.com");
+  SetSameSiteCookies(echo_url);
+
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane,
+                                     GetSecureLinkTestPageURL("example.com")));
+
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+  content::TestNavigationObserver right_pane_observer(right_pane);
+  ClickLinkTo(left_pane, echo_url, /*target_blank=*/false);
+  right_pane_observer.Wait();
+
+  ASSERT_EQ(echo_url, right_pane->GetLastCommittedURL());
+  const std::string cookies = GetEchoedHeader(right_pane, "cookie");
+  EXPECT_THAT(cookies, testing::Not(testing::HasSubstr("strict=1")));
+  EXPECT_THAT(cookies, testing::HasSubstr("lax=1"));
+  EXPECT_EQ("cross-site", GetEchoedHeader(right_pane, "sec-fetch-site"));
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       CrossSiteTargetBlankLinkRedirectKeepsInitiator) {
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  SetSplitViewLinked(true);
+  ASSERT_TRUE(IsSplitViewLinked());
+
+  const GURL echo_url = GetSecureEchoRequestURL("b.com");
+  SetSameSiteCookies(echo_url);
+
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane,
+                                     GetSecureLinkTestPageURL("example.com")));
+
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+  content::TestNavigationObserver right_pane_observer(right_pane);
+  ClickLinkTo(left_pane, echo_url, /*target_blank=*/true);
+  right_pane_observer.Wait();
+
+  ASSERT_EQ(echo_url, right_pane->GetLastCommittedURL());
+  EXPECT_EQ(2, tab_strip_model->count());
+  const std::string cookies = GetEchoedHeader(right_pane, "cookie");
+  EXPECT_THAT(cookies, testing::Not(testing::HasSubstr("strict=1")));
+  EXPECT_THAT(cookies, testing::HasSubstr("lax=1"));
+  EXPECT_EQ("cross-site", GetEchoedHeader(right_pane, "sec-fetch-site"));
+}
+
+// The reverse direction: a same-origin link must still send Strict cookies.
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       SameOriginLinkRedirectStillSendsStrictCookies) {
+  NewSplitTab();
+  SetSplitViewLinked(true);
+  ASSERT_TRUE(IsSplitViewLinked());
+
+  const GURL echo_url = GetSecureEchoRequestURL("example.com");
+  SetSameSiteCookies(echo_url);
+
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane,
+                                     GetSecureLinkTestPageURL("example.com")));
+
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+  content::TestNavigationObserver right_pane_observer(right_pane);
+  ClickLinkTo(left_pane, echo_url, /*target_blank=*/false);
+  right_pane_observer.Wait();
+
+  ASSERT_EQ(echo_url, right_pane->GetLastCommittedURL());
+  const std::string cookies = GetEchoedHeader(right_pane, "cookie");
+  EXPECT_THAT(cookies, testing::HasSubstr("strict=1"));
+  EXPECT_THAT(cookies, testing::HasSubstr("lax=1"));
+  EXPECT_EQ("same-origin", GetEchoedHeader(right_pane, "sec-fetch-site"));
 }
 
 // Test class for testing that split view link feature can be disabled

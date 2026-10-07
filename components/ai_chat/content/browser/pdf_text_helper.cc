@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/barrier_callback.h"
+#include "base/check_deref.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/fixed_array.h"
@@ -35,7 +36,7 @@ void OnGetPdfPageCount(content::WebContents* web_contents,
                        const std::vector<uint8_t>& bytes,
                        uint32_t page_count) {
   auto* pdf_helper =
-      pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents);
+      pdf::PDFDocumentHelper::MaybeGetForWebContents(CHECK_DEREF(web_contents));
   if (status == pdf::mojom::PdfListener::GetPdfBytesStatus::kFailed ||
       page_count == 0 || !pdf_helper) {
     std::move(callback).Run(std::nullopt);
@@ -61,7 +62,7 @@ void OnGetPdfPageCount(content::WebContents* web_contents,
 
 }  // namespace
 
-void ExtractTextFromLoadedPdf(content::WebContents* web_contents,
+void ExtractTextFromLoadedPdf(content::WebContents& web_contents,
                               PdfTextCallback callback) {
   auto* pdf_helper =
       pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents);
@@ -72,7 +73,7 @@ void ExtractTextFromLoadedPdf(content::WebContents* web_contents,
 
   pdf_helper->GetPdfBytes(
       /*size_limit=*/0,
-      base::BindOnce(&OnGetPdfPageCount, web_contents, std::move(callback)));
+      base::BindOnce(&OnGetPdfPageCount, &web_contents, std::move(callback)));
 }
 
 }  // namespace ai_chat

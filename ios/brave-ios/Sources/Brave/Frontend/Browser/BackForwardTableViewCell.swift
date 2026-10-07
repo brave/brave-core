@@ -4,7 +4,6 @@
 
 import Favicon
 import Shared
-import Storage
 import UIKit
 
 class BackForwardTableViewCell: UITableViewCell {

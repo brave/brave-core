@@ -26,10 +26,10 @@ extension BrowserViewController {
 
   func showNTPOnboarding() {
     Preferences.AppState.shouldDeferPromotedPurchase.value = false
-    iapObserver.savedPayment = nil
+    iapObserver.savedPromotedProduct = nil
 
     if !isSearchContainerVisible,
-      topToolbar.currentURL == nil,
+      tabManager.selectedTab?.visibleURL?.displayURL == nil,
       Preferences.DebugFlag.skipNTPCallouts != true
     {
 
@@ -39,13 +39,13 @@ extension BrowserViewController {
     }
   }
 
-  private func triggerPromotedInAppPurchase(savedPayment: SKPayment?) {
-    guard let productPayment = savedPayment else {
+  private func triggerPromotedInAppPurchase(product: Product?) {
+    guard let product else {
       return
     }
 
     navigationHelper.openVPNBuyScreen(iapObserver: iapObserver)
-    BraveVPN.activatePaymentTypeForStoredPromotion(savedPayment: productPayment)
+    BraveVPN.activatePaymentTypeForStoredPromotion(product: product)
   }
 
   private func showPrivacyReportsOnboardingIfNeeded() {

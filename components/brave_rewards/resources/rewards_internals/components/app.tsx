@@ -13,7 +13,6 @@ import { GeneralInfo } from './general_info'
 import { RewardsLog } from './rewards_log'
 import { Contributions } from './contributions'
 import { RewardsEvents } from './rewards_events'
-import { AdDiagnostics } from './ad_diagnostics'
 import * as routes from '../lib/app_routes'
 
 import { style } from './app.style'
@@ -49,7 +48,6 @@ function NavList() {
       <li>{renderLink(routes.rewardsLog, 'Rewards Log')}</li>
       <li>{renderLink(routes.contributions, 'Contributions')}</li>
       <li>{renderLink(routes.rewardsEvents, 'Events')}</li>
-      <li>{renderLink(routes.adDiagnostics, 'Ad Diagnostics')}</li>
     </ul>
   )
 }
@@ -71,8 +69,6 @@ export function App() {
         return <Contributions />
       case routes.rewardsEvents:
         return <RewardsEvents />
-      case routes.adDiagnostics:
-        return <AdDiagnostics />
       default:
         return <GeneralInfo />
     }

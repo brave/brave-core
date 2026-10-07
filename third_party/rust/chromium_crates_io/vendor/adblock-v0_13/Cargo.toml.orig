@@ -1,8 +1,8 @@
 [package]
 name = "adblock"
-version = "0.13.0"
+version = "0.13.3"
 authors = ["Anton Lazarev <alazarev@brave.com>", "Andrius Aucinas"]
-edition = "2021"
+edition = "2024"
 
 description = "Native Rust module for Adblock Plus syntax (e.g. EasyList, EasyPrivacy) filter parsing and matching."
 repository = "https://github.com/brave/adblock-rust/"
@@ -33,8 +33,7 @@ idna = "1.0.3"
 serde = { workspace = true }
 serde_json = { workspace = true }
 seahash = "4.1.0"
-# rustc-hash v1.1.0 provides a better performance than 2.x, chromium pins the same version.
-rustc-hash = { version = "1.1.0", default-features = false }
+rustc-hash = { version = "2.1", default-features = false }
 memchr = "2.8"
 base64 = "0.22"
 arrayvec = "0.7"

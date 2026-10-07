@@ -8,7 +8,9 @@
 #include <limits>
 #include <optional>
 #include <string_view>
+#include <utility>
 
+#include "base/notreached.h"
 #include "base/numerics/ranges.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
@@ -97,48 +99,62 @@ std::optional<double> MaybeResolveNumericalOperand(
   return numerical_operand_as_double;
 }
 
-bool MatchNumericalOperator(std::string_view value,
-                            ConditionMatcherOperatorType operator_type,
-                            double operand) {
+ConditionMatchResult MatchNumericalOperator(
+    std::string_view value,
+    ConditionMatcherOperatorType operator_type,
+    double operand) {
   double value_as_double;
   if (!base::StringToDouble(value, &value_as_double)) {
     BLOG(1, "Malformed numerical operator condition matcher for " << value);
-    return false;
+    return ConditionMatchResult::kInvalid;
   }
 
   switch (operator_type) {
     case ConditionMatcherOperatorType::kEqual: {
       return base::IsApproximatelyEqual(value_as_double, operand,
-                                        std::numeric_limits<double>::epsilon());
+                                        std::numeric_limits<double>::epsilon())
+                 ? ConditionMatchResult::kMatch
+                 : ConditionMatchResult::kNoMatch;
     }
 
     case ConditionMatcherOperatorType::kNotEqual: {
-      return !base::IsApproximatelyEqual(
-          value_as_double, operand, std::numeric_limits<double>::epsilon());
+      return !base::IsApproximatelyEqual(value_as_double, operand,
+                                         std::numeric_limits<double>::epsilon())
+                 ? ConditionMatchResult::kMatch
+                 : ConditionMatchResult::kNoMatch;
     }
 
     case ConditionMatcherOperatorType::kGreaterThan: {
-      return value_as_double > operand;
+      return value_as_double > operand ? ConditionMatchResult::kMatch
+                                       : ConditionMatchResult::kNoMatch;
     }
 
     case ConditionMatcherOperatorType::kGreaterThanOrEqual: {
       return value_as_double > operand ||
-             base::IsApproximatelyEqual(value_as_double, operand,
-                                        std::numeric_limits<double>::epsilon());
+                     base::IsApproximatelyEqual(
+                         value_as_double, operand,
+                         std::numeric_limits<double>::epsilon())
+                 ? ConditionMatchResult::kMatch
+                 : ConditionMatchResult::kNoMatch;
     }
 
     case ConditionMatcherOperatorType::kLessThan: {
-      return value_as_double < operand;
+      return value_as_double < operand ? ConditionMatchResult::kMatch
+                                       : ConditionMatchResult::kNoMatch;
     }
 
     case ConditionMatcherOperatorType::kLessThanOrEqual: {
       return value_as_double < operand ||
-             base::IsApproximatelyEqual(value_as_double, operand,
-                                        std::numeric_limits<double>::epsilon());
+                     base::IsApproximatelyEqual(
+                         value_as_double, operand,
+                         std::numeric_limits<double>::epsilon())
+                 ? ConditionMatchResult::kMatch
+                 : ConditionMatchResult::kNoMatch;
     }
   }
 
-  return false;
+  NOTREACHED() << "Unexpected value for ConditionMatcherOperatorType: "
+               << std::to_underlying(operator_type);
 }
 
 }  // namespace brave_ads

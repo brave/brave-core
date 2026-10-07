@@ -21,7 +21,6 @@ import {
   handleEndpointError,
 } from '../../../utils/api-utils'
 import { NetworksRegistry, getNetworkId } from '../entities/network.entity'
-import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import { LOCAL_STORAGE_KEYS } from '../../constants/local-storage-keys'
 import {
   makeInitialFilteredOutNetworkKeys,
@@ -35,27 +34,6 @@ export const networkEndpoints = ({
 }: WalletApiEndpointBuilderParams) => {
   return {
     // queries
-    /** Gets all networks, regardless of which coin-types are enabled */
-    getAllKnownNetworks: query<BraveWallet.NetworkInfo[], void>({
-      queryFn: async (_arg, { endpoint }, extraOptions, baseQuery) => {
-        try {
-          const { data: api } = baseQuery(undefined)
-
-          const { networks } = await api.jsonRpcService.getAllNetworks()
-
-          return {
-            data: [...networks],
-          }
-        } catch (error) {
-          return handleEndpointError(
-            endpoint,
-            'Unable to fetch all known networks',
-            error,
-          )
-        }
-      },
-      providesTags: ['Network'],
-    }),
     getNetworksRegistry: query<NetworksRegistry, void>({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
@@ -76,77 +54,11 @@ export const networkEndpoints = ({
           ? ['UNKNOWN_ERROR']
           : [{ type: 'Network', id: NETWORK_TAG_IDS.REGISTRY }],
     }),
-    getSwapSupportedNetworks: query<BraveWallet.NetworkInfo[], void>({
-      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
-        try {
-          const {
-            data: { swapService },
-            cache,
-          } = baseQuery(undefined)
-
-          const networksRegistry = await cache.getNetworksRegistry()
-
-          const chainIdsWithSupportFlags = await mapLimit(
-            networksRegistry.ids,
-            10,
-            async (chainId: string) => {
-              const { result } = await swapService.isSwapSupported(
-                chainId.toString(),
-              )
-              return {
-                chainId,
-                supported: result,
-              }
-            },
-          )
-
-          const swapChainIds = chainIdsWithSupportFlags
-            .filter(({ supported }) => !!supported)
-            .map((net) => net.chainId.toString())
-
-          return {
-            data: getEntitiesListFromEntityState(
-              networksRegistry,
-              swapChainIds,
-            ),
-          }
-        } catch (error) {
-          return handleEndpointError(
-            endpoint,
-            'Unable to get Swap-Supported Networks',
-            error,
-          )
-        }
-      },
-      providesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.SWAP_SUPPORTED }],
-    }),
     invalidateSelectedChain: mutation<boolean, void>({
       queryFn: () => {
         return { data: true }
       },
       invalidatesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }],
-    }),
-    getSelectedChain: query<BraveWallet.NetworkInfo | null, void>({
-      queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
-        try {
-          const { data: api } = baseQuery(undefined)
-          const { network } = await api.braveWalletService //
-            .getNetworkForSelectedAccountOnActiveOrigin()
-          return {
-            data: network,
-          }
-        } catch (error) {
-          return handleEndpointError(
-            endpoint,
-            `Unable to fetch the currently selected chain`,
-            error,
-          )
-        }
-      },
-      providesTags: (res, err) =>
-        err
-          ? ['UNKNOWN_ERROR']
-          : [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }],
     }),
     getNetworkForAccountOnActiveOrigin: query<
       BraveWallet.NetworkInfo | null,

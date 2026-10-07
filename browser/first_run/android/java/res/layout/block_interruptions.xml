@@ -3,9 +3,13 @@
      This Source Code Form is subject to the terms of the Mozilla Public
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at https://mozilla.org/MPL/2.0/. -->
+<!-- The landscape variants declare the same ids through
+     @layout/block_interruptions_landscape_content, which lint cannot see across <include>. -->
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="InconsistentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginHorizontal="@dimen/onboarding_main_container_horizontal_margin">
@@ -20,12 +24,9 @@
         android:textColor="@color/text_primary"
         android:gravity="center_horizontal"
         android:layout_marginTop="@dimen/onboarding_title_margin_top"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintVertical_bias="0"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/brave_onboarding_subtitle"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/brave_onboarding_subtitle"
@@ -37,16 +38,8 @@
         android:gravity="center_horizontal"
         android:layout_marginTop="@dimen/onboarding_subtitle_margin_top"
         app:layout_constraintTop_toBottomOf="@+id/brave_onboarding_title"
-        app:layout_constraintBottom_toTopOf="@+id/image_top_guide"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/image_top_guide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="@dimen/onboarding_image_top_guide_percent" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/onboarding_illustration"
@@ -56,7 +49,7 @@
         android:contentDescription="@string/brave_onboarding_block_interruptions_illustration_description"
         android:padding="@dimen/onboarding_illustration_padding"
         android:background="@drawable/onboarding_rounded_corners"
-        app:layout_constraintTop_toBottomOf="@+id/image_top_guide"
+        app:layout_constraintTop_toBottomOf="@+id/brave_onboarding_subtitle"
         app:layout_constraintBottom_toTopOf="@+id/onboarding_continue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

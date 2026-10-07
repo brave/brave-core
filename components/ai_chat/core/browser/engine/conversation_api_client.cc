@@ -21,6 +21,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/time/time.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/deep_research_parsing.h"
@@ -48,6 +49,10 @@ namespace {
 
 // https://github.com/brave/aichat/blob/8fc09e023e8674e1069b7c1c30f848c74c4c1154/aichat/serve/open_ai_api.py#L47
 constexpr char kRemotePath[] = "v1/chat/completions";
+
+// Error type returned with a 429 when the premium rate limit for the specific
+// model has been reached.
+constexpr char kModelRateLimitErrorType[] = "42904";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("ai_chat", R"(
@@ -131,15 +136,38 @@ std::string_view GetContentBlockTypeString(
   }
 }
 
+const base::DictValue* GetErrorDict(const base::Value& body) {
+  if (!body.is_dict()) {
+    return nullptr;
+  }
+  return body.GetDict().FindDict("error");
+}
+
 std::string ParseErrorCode(const base::Value& body) {
-  if (body.is_dict()) {
-    if (auto* error_dict = body.GetDict().FindDict("error")) {
-      if (auto* type_str = error_dict->FindString("type")) {
-        return *type_str;
-      }
+  if (const auto* error_dict = GetErrorDict(body)) {
+    if (const auto* type_str = error_dict->FindString("type")) {
+      return *type_str;
     }
   }
   return std::string();
+}
+
+std::optional<base::Time> ParseRateLimitExpiresAt(const base::Value& body) {
+  const auto* error_dict = GetErrorDict(body);
+  if (!error_dict) {
+    return std::nullopt;
+  }
+
+  const auto* timestamp_str = error_dict->FindString("rate_limit_expires_at");
+  if (!timestamp_str) {
+    return std::nullopt;
+  }
+
+  base::Time time;
+  if (!base::Time::FromUTCString(timestamp_str->c_str(), &time)) {
+    return std::nullopt;
+  }
+  return time;
 }
 
 }  // namespace
@@ -484,9 +512,16 @@ void ConversationAPIClient::OnQueryCompleted(
 
   // Handle error
   mojom::APIError error;
+  std::string error_type = ParseErrorCode(result.value_body());
+  std::optional<base::Time> rate_limit_expires_at;
 
   if (net::HTTP_TOO_MANY_REQUESTS == result.response_code()) {
-    error = mojom::APIError::RateLimitReached;
+    if (error_type == kModelRateLimitErrorType) {
+      error = mojom::APIError::ModelRateLimitReached;
+      rate_limit_expires_at = ParseRateLimitExpiresAt(result.value_body());
+    } else {
+      error = mojom::APIError::RateLimitReached;
+    }
   } else if (net::HTTP_REQUEST_ENTITY_TOO_LARGE == result.response_code()) {
     error = mojom::APIError::ContextLimitReached;
   } else {
@@ -494,8 +529,8 @@ void ConversationAPIClient::OnQueryCompleted(
   }
 
   auto details = mojom::APIErrorDetails::New(
-      static_cast<int32_t>(result.response_code()),
-      ParseErrorCode(result.value_body()), /*inner_status_code=*/0);
+      static_cast<int32_t>(result.response_code()), std::move(error_type),
+      /*inner_status_code=*/0, rate_limit_expires_at);
 
   std::move(callback).Run(
       base::unexpected(EngineConsumer::Error(error, std::move(details))));

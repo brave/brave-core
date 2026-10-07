@@ -83,7 +83,10 @@ adblock::BlockerResult AdBlockEngineWrapper::ShouldStartRequest(
   } else {
     // if there's an exception from the default engine, it still needs to be
     // considered by the additional engine
-    fp_result = {.has_exception = fp_result.has_exception};
+    fp_result = {
+        .has_exception = fp_result.has_exception,
+        .exception = std::move(fp_result.exception),
+    };
   }
 
   GURL request_url = fp_result.rewritten_url.has_value
@@ -98,6 +101,12 @@ adblock::BlockerResult AdBlockEngineWrapper::ShouldStartRequest(
   result.matched |= fp_result.matched;
   result.has_exception |= fp_result.has_exception;
   result.important |= fp_result.important;
+  if (!result.filter) {
+    result.filter = std::move(fp_result.filter);
+  }
+  if (!result.exception) {
+    result.exception = std::move(fp_result.exception);
+  }
   if (!result.redirect.has_value && fp_result.redirect.has_value) {
     result.redirect = fp_result.redirect;
   }

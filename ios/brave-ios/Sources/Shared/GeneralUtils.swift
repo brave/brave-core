@@ -4,13 +4,6 @@
 
 import Foundation
 
-/// Assertion for checking that the call is being made on the main thread.
-///
-/// - parameter message: Message to display in case of assertion.
-public func assertIsMainThread(_ message: String) {
-  assert(Thread.isMainThread, message)
-}
-
 // Simple timer for manual profiling. Not for production use.
 // Prints only if timing is longer than a threshold (to reduce noisy output).
 open class PerformanceTimer {

@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DATABASE_DATABASE_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DATABASE_DATABASE_MANAGER_H_
 
+#include <optional>
+#include <string>
+
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
@@ -50,6 +53,10 @@ class DatabaseManager final {
   // Shutdowns the database.
   void Shutdown(ResultCallback callback);
 
+  // Returns the reason the most recent migration attempt in this session
+  // failed, or nullopt if it either hasn't run yet or succeeded.
+  const std::optional<std::string>& GetLastMigrationFailureReason() const;
+
  private:
   void CreateOrOpenCallback(
       ResultCallback callback,
@@ -90,6 +97,8 @@ class DatabaseManager final {
 
   const scoped_refptr<base::SequencedTaskRunner> database_task_runner_;
   base::SequenceBound<Database> database_;
+
+  std::optional<std::string> last_migration_failure_reason_;
 
   base::ObserverList<DatabaseManagerObserver> observers_;
 

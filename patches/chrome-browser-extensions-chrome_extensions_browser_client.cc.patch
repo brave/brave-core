@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/chrome_extensions_browser_client.cc b/chrome/browser/extensions/chrome_extensions_browser_client.cc
-index 88c78a6c42e388aa17baa70d6836f489c2d7b160..27b5bef040bc1a39d40989f6184cf9f0edc1164f 100644
+index 18c8da68d3917ac40afcd0c5552d85c0a5f5118c..cbb67ca76a0289cad5f9a564f23aae971ffe27e7 100644
 --- a/chrome/browser/extensions/chrome_extensions_browser_client.cc
 +++ b/chrome/browser/extensions/chrome_extensions_browser_client.cc
-@@ -265,7 +265,7 @@ bool RegisterTransformers() {
+@@ -275,7 +275,7 @@ bool RegisterTransformers() {
  ChromeExtensionsBrowserClient::ChromeExtensionsBrowserClient()
      : resource_manager_(
            std::make_unique<ChromeComponentExtensionResourceManager>()),
@@ -11,7 +11,18 @@ index 88c78a6c42e388aa17baa70d6836f489c2d7b160..27b5bef040bc1a39d40989f6184cf9f0
        event_router_forwarder_(base::MakeRefCounted<EventRouterForwarder>()) {
    AddAPIProvider(std::make_unique<CoreExtensionsBrowserAPIProvider>());
    AddAPIProvider(std::make_unique<ChromeExtensionsBrowserAPIProvider>());
-@@ -680,7 +680,7 @@ ChromeExtensionsBrowserClient::CreateUpdateClientConfigurator(
+@@ -675,6 +675,10 @@ void ChromeExtensionsBrowserClient::AttachExtensionTaskManagerTag(
+ scoped_refptr<update_client::UpdateClient>
+ ChromeExtensionsBrowserClient::CreateUpdateClient(
+     scoped_refptr<update_client::Configurator> configurator) {
++  if (base::FeatureList::IsEnabled(
++    extensions_features::kBraveSequentialExtensionsUpdate)) {
++    return update_client::SequentialUpdateClientFactory(configurator);
++  }
+   return update_client::UpdateClientFactory(configurator);
+ }
+ 
+@@ -690,7 +694,7 @@ ChromeExtensionsBrowserClient::CreateUpdateClientConfigurator(
        override_url = update_url;
      }
    }

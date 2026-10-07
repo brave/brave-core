@@ -8,6 +8,7 @@ import GuardianConnect
 import NetworkExtension
 import Preferences
 import Shared
+import StoreKit
 import UIKit
 import os.log
 
@@ -20,7 +21,7 @@ public class BraveVPN {
   public static let housekeepingApi = GRDHousekeepingAPI()
   public static let helper = GRDVPNHelper.sharedInstance()
 
-  public static let iapObserver = BraveVPNInAppPurchaseObserver()
+  @MainActor public static let iapObserver = BraveVPNInAppPurchaseObserver()
 
   private static let connectionName = "Brave VPN"  // Non translatable
 
@@ -114,12 +115,34 @@ public class BraveVPN {
   /// Lock to prevent user from spamming connect/disconnect button.
   public static var reconnectPending = false
 
-  /// Returns true if the app store receipt is in sandbox mode.
+  /// Returns true if the app is running with a sandbox AppStore environment.
   /// This can typically let us know whether a Testflight build is used or not.
-  /// Keep in mind this function may not work correctly for future iOS builds.
-  /// Apple prefers to validate the receipt by using a server.
   public static var isSandbox: Bool {
-    Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
+    get async {
+      guard let result = try? await AppTransaction.shared,
+        case .verified(let appTransaction) = result
+      else { return false }
+
+      return appTransaction.environment == .sandbox
+    }
+  }
+
+  /// Presents the AppStore offer code redemption sheet in the current foreground scene.
+  @MainActor
+  public static func presentOfferCodeRedeemSheet() async {
+    guard
+      let scene = UIApplication.shared.connectedScenes
+        .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene
+    else {
+      logAndStoreError("No foreground active scene to present offer code redeem sheet")
+      return
+    }
+
+    do {
+      try await AppStore.presentOfferCodeRedeemSheet(in: scene)
+    } catch {
+      logAndStoreError("Failed to present offer code redeem sheet: \(error.localizedDescription)")
+    }
   }
 
   /// Current state ot the VPN service.

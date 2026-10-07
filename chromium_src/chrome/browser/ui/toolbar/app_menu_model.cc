@@ -5,7 +5,6 @@
 
 #include "chrome/browser/ui/toolbar/app_menu_model.h"
 
-#include "brave/browser/ui/toolbar/brave_bookmark_sub_menu_model.h"
 #include "brave/browser/ui/toolbar/brave_recent_tabs_sub_menu_model.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/toolbar/bookmark_sub_menu_model.h"
@@ -23,9 +22,7 @@
 #define IDS_CAST_SAVE_AND_SHARE_MENU IDS_SAVE_AND_SHARE_MENU
 
 #define RecentTabsSubMenuModel BraveRecentTabsSubMenuModel
-#define BookmarkSubMenuModel BraveBookmarkSubMenuModel
 #include <chrome/browser/ui/toolbar/app_menu_model.cc>
-#undef BookmarkSubMenuModel
 #undef RecentTabsSubMenuModel
 
 #undef IDS_CAST_SAVE_AND_SHARE_MENU

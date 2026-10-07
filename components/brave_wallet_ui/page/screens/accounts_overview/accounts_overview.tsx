@@ -30,11 +30,11 @@ import { AccountsListWrapper } from './accounts_overview.style'
 import { Column, Row, Text } from '$wallet/components/shared/style'
 
 // Components
-import AccountListItem from '$wallet/components/desktop/account-list-item'
+import { AccountListItem } from './components/account_list_item/account_list_item'
 import {
   WalletPageWrapper, //
-} from '$wallet/components/desktop/wallet-page-wrapper/wallet-page-wrapper'
-import AccountsHeader from '$wallet/components/desktop/card-headers/accounts-header'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
+import { AccountsHeader } from '$wallet/page/components/card_headers/accounts_header'
 
 // Hooks
 import {
@@ -250,7 +250,7 @@ export const AccountsOverview = () => {
           textColor='secondary'
           textAlign='left'
         >
-          {getLocale('braveWalletAccounts')}
+          {getLocale(S.BRAVE_WALLET_ACCOUNTS)}
         </Text>
       </Row>
       <AccountsListWrapper
@@ -283,7 +283,7 @@ export const AccountsOverview = () => {
               textColor='secondary'
               textAlign='left'
             >
-              {getLocale('braveWalletAccountsSecondary')}
+              {getLocale(S.BRAVE_WALLET_ACCOUNTS_SECONDARY)}
             </Text>
           </Row>
           <AccountsListWrapper
@@ -318,7 +318,7 @@ export const AccountsOverview = () => {
               textColor='secondary'
               textAlign='left'
             >
-              {getLocale('braveWalletConnectedHardwareWallets')}
+              {getLocale(S.BRAVE_WALLET_CONNECTED_HARDWARE_WALLETS)}
             </Text>
           </Row>
           <Column
@@ -343,7 +343,7 @@ export const AccountsOverview = () => {
               textColor='secondary'
               textAlign='left'
             >
-              {getLocale('braveWalletConnectedAccounts')}
+              {getLocale(S.BRAVE_WALLET_CONNECTED_ACCOUNTS)}
             </Text>
           </Row>
           <AccountsListWrapper

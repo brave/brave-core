@@ -12,15 +12,15 @@
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "components/prefs/pref_service.h"
 
 #if BUILDFLAG(IS_WIN)
 #include "brave/browser/brave_vpn/win/storage_utils.h"
 #endif
 
-BraveVPNMenuModel::BraveVPNMenuModel(Browser* browser,
+BraveVPNMenuModel::BraveVPNMenuModel(BrowserWindowInterface* browser,
                                      PrefService* profile_prefs)
     : SimpleMenuModel(this), profile_prefs_(profile_prefs), browser_(browser) {
   Build();

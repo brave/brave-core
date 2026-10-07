@@ -7,10 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_WAYBACK_MACHINE_URL_FETCHER_H_
 
 #include <memory>
+#include <string_view>
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/time/time.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 
 namespace network {
@@ -27,7 +29,11 @@ class WaybackMachineURLFetcher final {
  public:
   class Client {
    public:
-    virtual void OnWaybackURLFetched(const GURL& lastest_wayback_url) = 0;
+    // Called with the latest snapshot URL, or an empty URL if none is
+    // available. |snapshot_time| is null if the snapshot time is unknown.
+    virtual void OnWaybackURLFetched(const GURL& lastest_wayback_url,
+                                     base::Time snapshot_time) = 0;
+
    protected:
     virtual ~Client() = default;
   };
@@ -45,6 +51,8 @@ class WaybackMachineURLFetcher final {
  private:
   FRIEND_TEST_ALL_PREFIXES(WaybackMachineURLFetcherUnitTest,
                            InputURLSanitizeTest);
+  FRIEND_TEST_ALL_PREFIXES(WaybackMachineURLFetcherUnitTest,
+                           ParseSnapshotTimestampTest);
 
   void OnWaybackURLFetched(
       const GURL& original_url,
@@ -56,6 +64,9 @@ class WaybackMachineURLFetcher final {
   // Return empty GURL if |url| is not https/http and its domain is not
   // archive.org.
   GURL GetSanitizedWaybackURL(const GURL& url) const;
+
+  // Parses a UTC "YYYYMMDDhhmmss" timestamp. Returns a null time on failure.
+  static base::Time ParseSnapshotTimestamp(std::string_view timestamp);
 
   raw_ptr<Client> client_ = nullptr;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;

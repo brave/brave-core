@@ -1408,4 +1408,53 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
   }
 }
 
+std::optional<std::string> GetFinalRecipient(
+    const std::string& chain_id,
+    const std::string& base_to,
+    mojom::TransactionType tx_type,
+    base::span<const std::string> tx_args) {
+  if (tx_type == mojom::TransactionType::ETHFilForwarderTransfer) {
+    if (tx_args.empty()) {
+      return std::nullopt;
+    }
+    std::vector<uint8_t> bytes;
+    if (!PrefixedHexStringToBytes(tx_args[0], &bytes)) {
+      return std::nullopt;
+    }
+    std::string fil_chain_id;
+    if (chain_id == mojom::kFilecoinEthereumMainnetChainId) {
+      fil_chain_id = mojom::kFilecoinMainnet;
+    } else if (chain_id == mojom::kFilecoinEthereumTestnetChainId) {
+      fil_chain_id = mojom::kFilecoinTestnet;
+    } else {
+      return std::nullopt;
+    }
+
+    auto fil_address = FilAddress::FromBytes(fil_chain_id, bytes);
+    if (fil_address.IsEmpty()) {
+      return std::nullopt;
+    }
+    return fil_address.EncodeAsString();
+  }
+
+  if (tx_type == mojom::TransactionType::ERC20Transfer) {
+    if (tx_args.empty()) {
+      return std::nullopt;
+    }
+    return tx_args[0];
+  }
+
+  if (tx_type == mojom::TransactionType::ERC721TransferFrom ||
+      tx_type == mojom::TransactionType::ERC721SafeTransferFrom ||
+      tx_type == mojom::TransactionType::ERC1155SafeTransferFrom) {
+    if (tx_args.size() < 2) {
+      return std::nullopt;
+    }
+    // (address from, address to, uint256 tokenId, ...)
+    return tx_args[1];
+  }
+
+  return base_to;
+}
+
 }  // namespace brave_wallet

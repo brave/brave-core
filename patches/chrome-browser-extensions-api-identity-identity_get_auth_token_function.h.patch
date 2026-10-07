@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.h b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.h
+index 53bdc5b2e63b4b1437cf4166cb84ba17aa402ea6..454ca446fa630590fd7562f5442d6b7298237caa 100644
+--- a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.h
++++ b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.h
+@@ -146,7 +146,7 @@ class IdentityGetAuthTokenFunction : public ExtensionFunction,
+   FRIEND_TEST_ALL_PREFIXES(GetAuthTokenFunctionTest, NoninteractiveShutdown);
+ 
+   class RefreshTokensLoadedWaiter;
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+   class AccountsInCookieUpdatedWaiter;
+ #endif
+   enum class InteractionType { kSignin, kConsent };
+@@ -159,7 +159,7 @@ class IdentityGetAuthTokenFunction : public ExtensionFunction,
+   // might be started.
+   void GetAuthTokenForAccount(const GaiaId& gaia_id);
+ 
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+   void OnCookiesUpdatedForRemoteConsent(bool success);
+   bool ShouldDelayRemoteConsent();
+   void StartWaitingForCookies();
+@@ -272,7 +272,7 @@ class IdentityGetAuthTokenFunction : public ExtensionFunction,
+   // a permissions prompt will be popped up to the user.
+   RemoteConsentResolutionData resolution_data_;
+   std::unique_ptr<RefreshTokensLoadedWaiter> refresh_tokens_loaded_waiter_;
+-#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
++#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+   std::unique_ptr<AccountsInCookieUpdatedWaiter>
+       accounts_in_cookie_updated_waiter_;
+ #endif

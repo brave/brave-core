@@ -35,37 +35,3 @@ source_set("brave_app_menu_unit_test") {
     ]
   }
 }
-
-source_set("brave_app_menu_browser_tests") {
-  testonly = true
-  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-
-  sources = [
-    "//chrome/browser/ui/tabs/recent_tabs_builder_test_helper.cc",
-    "//chrome/browser/ui/tabs/recent_tabs_builder_test_helper.h",
-    "//chrome/browser/ui/tabs/recent_tabs_sub_menu_model_browsertest.cc",
-    "//chrome/test/base/browser_with_test_window_test.cc",
-    "//chrome/test/base/browser_with_test_window_test.h",
-    "//chrome/test/base/menu_model_test.cc",
-    "//chrome/test/base/menu_model_test.h",
-  ]
-
-  deps = [
-    "//chrome/browser",
-    "//chrome/browser:browser_process",
-    "//chrome/browser/sync",
-    "//chrome/browser/ui/browser_window",
-    "//chrome/browser/ui/navigator",
-    "//chrome/test:test_support",
-    "//chrome/test:test_support_ui",
-    "//components/constrained_window",
-    "//components/sessions:test_support",
-    "//components/sync:test_support",
-    "//components/variations:test_support",
-    "//content/test:test_support",
-    "//net:test_support",
-    "//testing/gmock",
-    "//testing/gtest",
-    "//ui/views:test_support",
-  ]
-}

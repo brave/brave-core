@@ -111,7 +111,7 @@ final class ScriptExecutionTests: XCTestCase {
 
     // Add the tests script to both view controllers
     let testURL = Bundle.module.url(forResource: "farbling-tests", withExtension: "js")!
-    let source = try String(contentsOf: testURL)
+    let source = try String(contentsOf: testURL, encoding: .utf8)
     let testScript = WKUserScript(
       source: source,
       injectionTime: .atDocumentEnd,
@@ -196,7 +196,7 @@ final class ScriptExecutionTests: XCTestCase {
     viewController.add(userScript: RequestBlockingContentScriptHandler.userScript!)
 
     let testURL = Bundle.module.url(forResource: "request-blocking-tests", withExtension: "js")!
-    let source = try String(contentsOf: testURL)
+    let source = try String(contentsOf: testURL, encoding: .utf8)
     let testScript = WKUserScript(
       source: source,
       injectionTime: .atDocumentEnd,
@@ -423,7 +423,7 @@ final class ScriptExecutionTests: XCTestCase {
 
     // Execute a script that will test the cosmetic filters page
     let testURL = Bundle.module.url(forResource: "cosmetic-filter-tests", withExtension: "js")!
-    let source = try String(contentsOf: testURL)
+    let source = try String(contentsOf: testURL, encoding: .utf8)
     _ = try await withCheckedThrowingContinuation { continuation in
       viewController.webView.evaluateJavaScript(
         source,
@@ -577,6 +577,7 @@ extension UserScriptType.ContentCosmeticSetup {
     tab.browserData = TabBrowserData(tab: tab)
     tab.currentPageData = PageData(mainFrameURL: mainFrameURL)
     let tabHelper = CosmeticFilteringTabHelper(tab: tab)
+    tabHelper.setMainFrameURLForTesting(mainFrameURL)
     tabHelper.cacheSelectors(
       for: mainFrameURL,
       standardSelectors: cachedStandardSelectors,

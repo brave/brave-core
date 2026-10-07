@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.brave_origin;
 import android.app.Activity;
 import android.util.Base64;
 
+import androidx.annotation.IntDef;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -26,6 +27,8 @@ import org.chromium.brave.browser.skus.SkusServiceFactory;
 import org.chromium.brave.browser.util.BraveDomainsUtils;
 import org.chromium.brave.browser.util.ServicesEnvironment;
 import org.chromium.brave_origin.mojom.BraveOriginSettingsHandler;
+import org.chromium.brave_origin.mojom.OriginActivationLimit;
+import org.chromium.build.annotations.Contract;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
@@ -44,6 +47,8 @@ import org.chromium.skus.mojom.SkusResult;
 import org.chromium.skus.mojom.SkusResultCode;
 import org.chromium.skus.mojom.SkusService;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -66,12 +71,49 @@ public class BraveOriginSubscriptionPrefs {
     private static final String JSON_FIELD_SUBSCRIPTION_ID = "subscription_id";
     private static final String JSON_VALUE_ANDROID = "android";
 
+    /** Outcome of a post-purchase credential fetch. */
+    @IntDef({
+        CredentialFetchResult.SUCCESS,
+        CredentialFetchResult.FAILED,
+        CredentialFetchResult.ACTIVATION_LIMIT_EXTENDABLE,
+        CredentialFetchResult.ACTIVATION_LIMIT_REACHED
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface CredentialFetchResult {
+        int SUCCESS = 0;
+        int FAILED = 1;
+
+        /**
+         * The subscription has been activated on as many devices as it allows, and the payment
+         * service says that budget can be raised. The user has to ask for it, via {@link
+         * #extendActivationLimit}.
+         */
+        int ACTIVATION_LIMIT_EXTENDABLE = 2;
+
+        /**
+         * At the activation limit with no extension available - typically because one was already
+         * granted. Distinct from {@link #FAILED} because the subscription is fine and the user
+         * needs telling, rather than a generic failure.
+         */
+        int ACTIVATION_LIMIT_REACHED = 3;
+    }
+
     /**
-     * Callback that fires when fetchOrderCredentials completes. Called with {@code true} on
-     * success, {@code false} on failure. Only one observer at a time (the currently-open
-     * BraveOriginPreferences).
+     * Callback that fires when fetchOrderCredentials completes. Only one observer at a time (the
+     * currently-open BraveOriginPreferences).
      */
-    @Nullable private static Callback<Boolean> sCredentialsFetchedCallback;
+    @Nullable private static Callback<Integer> sCredentialsFetchedCallback;
+
+    /**
+     * Order awaiting an activation-limit extension, and the request body that identifies it. Both
+     * are set when a credential fetch failed because the order is out of activations, and are held
+     * here rather than handed to the UI because they are only ever passed straight back to {@link
+     * #extendActivationLimit}. The failure path never persists the order ID to prefs, so this is
+     * the only copy.
+     */
+    @Nullable private static String sPendingExtendOrderId;
+
+    @Nullable private static String sPendingExtendReceiptPayload;
 
     /**
      * True while a {@link #createFetchOrder} chain is running. The fetch lives entirely in memory,
@@ -83,22 +125,48 @@ public class BraveOriginSubscriptionPrefs {
     private static boolean sFetchInProgress;
 
     /**
+     * True while {@code profile} can still be used to reach native prefs and services.
+     *
+     * <p>Every Origin flow here spans a long async chain (Play Store billing queries, Skus mojo
+     * round-trips), so a profile captured when the chain started can be destroyed before a callback
+     * runs. A destroyed profile keeps its Java object alive, so a plain null check still passes
+     * while {@code UserPrefs.get()} returns null.
+     */
+    @Contract("null -> false")
+    public static boolean isProfileUsable(@Nullable Profile profile) {
+        return profile != null && !profile.shutdownStarted();
+    }
+
+    /**
+     * Returns the {@link PrefService} for {@code profile}, or null when prefs are out of reach.
+     *
+     * <p>{@link UserPrefs#get} is declared non-null but returns null for a destroyed
+     * BrowserContext, so its result is checked as well as the profile.
+     */
+    private static @Nullable PrefService getPrefs(@Nullable Profile profile) {
+        if (!isProfileUsable(profile)) {
+            return null;
+        }
+        return UserPrefs.get(profile);
+    }
+
+    /**
      * Registers a one-shot callback that will be invoked on the UI thread when
      * fetchOrderCredentials finishes. Any previously registered callback is replaced.
      *
-     * @param callback Called with true on success, false on failure.
+     * @param callback Called with a {@link CredentialFetchResult}.
      * @param profile Used to re-check fetch state and guard against a race where the fetch
      *     completed between the caller's isFetchingCredentials() check and this call.
      */
     public static void setCredentialsFetchedCallback(
-            @Nullable Callback<Boolean> callback, @Nullable Profile profile) {
+            @Nullable Callback<Integer> callback, @Nullable Profile profile) {
         sCredentialsFetchedCallback = callback;
         // If the fetch completed between the caller's isFetchingCredentials() check and this
         // call, notifyCredentialsFetched() ran with no listener and the result was lost.
         // The only way isFetchingCredentials() flips to false is a successful fetch (failure
         // paths leave the order ID empty), so synthesize success.
         if (callback != null && !isFetchingCredentials(profile)) {
-            notifyCredentialsFetched(true);
+            notifyCredentialsFetched(CredentialFetchResult.SUCCESS);
         }
     }
 
@@ -107,10 +175,10 @@ public class BraveOriginSubscriptionPrefs {
      * has not yet completed (order ID is still empty).
      */
     public static boolean isFetchingCredentials(@Nullable Profile profile) {
-        if (profile == null) {
+        PrefService prefService = getPrefs(profile);
+        if (prefService == null) {
             return false;
         }
-        PrefService prefService = UserPrefs.get(profile);
         return prefService.getBoolean(BravePref.BRAVE_ORIGIN_SUBSCRIPTION_ACTIVE_ANDROID)
                 && prefService.getString(BravePref.BRAVE_ORIGIN_ORDER_ID_ANDROID).isEmpty()
                 && !prefService.getString(BravePref.BRAVE_ORIGIN_PURCHASE_TOKEN_ANDROID).isEmpty();
@@ -128,33 +196,53 @@ public class BraveOriginSubscriptionPrefs {
      * the persisted purchase token. Unlike {@link #verifyPurchase} it issues no Play Store billing
      * query and never clears local state, so a transient billing outage cannot un-enroll the user.
      *
+     * <p>A failed fetch leaves the same state behind as a killed one - the order ID is only
+     * persisted on success - so this is also what re-runs the fetch when the user returns to the
+     * Origin settings screen after a failure, rather than leaving them on a spinner that nothing
+     * will ever resolve.
+     *
      * @param profile The profile to use for the operation.
      */
     public static void resumeCredentialFetchIfNeeded(@Nullable Profile profile) {
-        if (profile == null || sFetchInProgress || !isFetchingCredentials(profile)) {
+        resumeCredentialFetchIfNeeded(profile, /* openSettings= */ true);
+    }
+
+    /**
+     * @param openSettings Whether to open the Origin settings screen to show the fetch progress.
+     *     Callers that are already on that screen pass false.
+     */
+    public static void resumeCredentialFetchIfNeeded(
+            @Nullable Profile profile, boolean openSettings) {
+        if (sFetchInProgress || !isFetchingCredentials(profile)) {
             return;
         }
-        // isFetchingCredentials() already guarantees the purchase token is non-empty.
-        String purchaseToken =
-                UserPrefs.get(profile).getString(BravePref.BRAVE_ORIGIN_PURCHASE_TOKEN_ANDROID);
+        // isFetchingCredentials() already guarantees the prefs are reachable and that the purchase
+        // token is non-empty.
+        PrefService prefService = getPrefs(profile);
+        if (prefService == null) {
+            return;
+        }
+        String purchaseToken = prefService.getString(BravePref.BRAVE_ORIGIN_PURCHASE_TOKEN_ANDROID);
         createFetchOrder(profile, purchaseToken);
-        // Mirror verifyPurchase(): open the Origin settings screen so the user sees the spinner
-        // while credentials finish fetching and is then prompted to restart, since the enforced
-        // policies only take effect after a restart.
-        BraveOriginSettingsLauncherHelper.showOriginSettingsForRestart();
+        if (openSettings) {
+            // Mirror verifyPurchase(): open the Origin settings screen so the user sees the spinner
+            // while credentials finish fetching and is then prompted to restart, since the enforced
+            // policies only take effect after a restart.
+            BraveOriginSettingsLauncherHelper.showOriginSettingsForRestart();
+        }
     }
 
     /**
      * Fires the one-shot credentials-fetched callback, if registered.
      *
-     * @param success Whether the credential fetch succeeded.
+     * @param result How the credential fetch ended.
      */
-    private static void notifyCredentialsFetched(boolean success) {
+    private static void notifyCredentialsFetched(@CredentialFetchResult int result) {
         sFetchInProgress = false;
-        Callback<Boolean> callback = sCredentialsFetchedCallback;
+        Callback<Integer> callback = sCredentialsFetchedCallback;
         sCredentialsFetchedCallback = null;
         if (callback != null) {
-            PostTask.postTask(TaskTraits.UI_DEFAULT, callback.bind(success));
+            PostTask.postTask(TaskTraits.UI_DEFAULT, callback.bind(result));
         }
     }
 
@@ -204,12 +292,12 @@ public class BraveOriginSubscriptionPrefs {
      * @param value The subscription active status
      */
     public static void setIsSubscriptionActive(@Nullable Profile profile, boolean value) {
-        if (profile == null) {
-            Log.e(TAG, "setIsSubscriptionActive profile is null");
+        PrefService prefService = getPrefs(profile);
+        if (prefService == null) {
+            Log.e(TAG, "setIsSubscriptionActive prefs are unavailable");
             return;
         }
-        UserPrefs.get(profile)
-                .setBoolean(BravePref.BRAVE_ORIGIN_SUBSCRIPTION_ACTIVE_ANDROID, value);
+        prefService.setBoolean(BravePref.BRAVE_ORIGIN_SUBSCRIPTION_ACTIVE_ANDROID, value);
     }
 
     /**
@@ -223,15 +311,15 @@ public class BraveOriginSubscriptionPrefs {
      * #requestCredentialSummary} (async, via the Skus mojo service).
      *
      * @param profile The profile to use for preference retrieval
-     * @return The Play Store subscription active status, or false if profile is null
+     * @return The Play Store subscription active status, or false if the profile is unusable
      */
     public static boolean getIsSubscriptionActive(@Nullable Profile profile) {
-        if (profile == null) {
-            Log.e(TAG, "getIsSubscriptionActive profile is null");
+        PrefService prefService = getPrefs(profile);
+        if (prefService == null) {
+            Log.e(TAG, "getIsSubscriptionActive prefs are unavailable");
             return false;
         }
-        return UserPrefs.get(profile)
-                .getBoolean(BravePref.BRAVE_ORIGIN_SUBSCRIPTION_ACTIVE_ANDROID);
+        return prefService.getBoolean(BravePref.BRAVE_ORIGIN_SUBSCRIPTION_ACTIVE_ANDROID);
     }
 
     /**
@@ -241,11 +329,11 @@ public class BraveOriginSubscriptionPrefs {
      * @param token The purchase token
      */
     public static void setOriginPurchaseToken(@Nullable Profile profile, String token) {
-        if (profile == null) {
-            Log.e(TAG, "setOriginPurchaseToken profile is null");
+        PrefService prefService = getPrefs(profile);
+        if (prefService == null) {
+            Log.e(TAG, "setOriginPurchaseToken prefs are unavailable");
             return;
         }
-        PrefService prefService = UserPrefs.get(profile);
         if (prefService.getString(BravePref.BRAVE_ORIGIN_PURCHASE_TOKEN_ANDROID).equals(token)
                 && !prefService.getString(BravePref.BRAVE_ORIGIN_ORDER_ID_ANDROID).isEmpty()) {
             return;
@@ -266,14 +354,14 @@ public class BraveOriginSubscriptionPrefs {
      * @param profile The profile to use for preference storage
      */
     public static void setOriginPackageName(@Nullable Profile profile) {
-        if (profile == null) {
-            Log.e(TAG, "setOriginPackageName profile is null");
+        PrefService prefService = getPrefs(profile);
+        if (prefService == null) {
+            Log.e(TAG, "setOriginPackageName prefs are unavailable");
             return;
         }
-        UserPrefs.get(profile)
-                .setString(
-                        BravePref.BRAVE_ORIGIN_PACKAGE_NAME_ANDROID,
-                        ContextUtils.getApplicationContext().getPackageName());
+        prefService.setString(
+                BravePref.BRAVE_ORIGIN_PACKAGE_NAME_ANDROID,
+                ContextUtils.getApplicationContext().getPackageName());
     }
 
     /**
@@ -283,11 +371,12 @@ public class BraveOriginSubscriptionPrefs {
      * @param productId The product ID
      */
     public static void setOriginProductId(@Nullable Profile profile, String productId) {
-        if (profile == null) {
-            Log.e(TAG, "setOriginProductId profile is null");
+        PrefService prefService = getPrefs(profile);
+        if (prefService == null) {
+            Log.e(TAG, "setOriginProductId prefs are unavailable");
             return;
         }
-        UserPrefs.get(profile).setString(BravePref.BRAVE_ORIGIN_PRODUCT_ID_ANDROID, productId);
+        prefService.setString(BravePref.BRAVE_ORIGIN_PRODUCT_ID_ANDROID, productId);
     }
 
     /**
@@ -297,14 +386,13 @@ public class BraveOriginSubscriptionPrefs {
      * @return True if subscription is linked, false otherwise
      */
     public static boolean isSubscriptionLinked(@Nullable Profile profile) {
-        if (profile == null) {
-            Log.e(TAG, "isSubscriptionLinked profile is null");
+        PrefService prefService = getPrefs(profile);
+        if (prefService == null) {
+            Log.e(TAG, "isSubscriptionLinked prefs are unavailable");
             return false;
         }
 
-        return UserPrefs.get(profile)
-                        .getInteger(BravePref.BRAVE_ORIGIN_SUBSCRIPTION_LINK_STATUS_ANDROID)
-                != 0;
+        return prefService.getInteger(BravePref.BRAVE_ORIGIN_SUBSCRIPTION_LINK_STATUS_ANDROID) != 0;
     }
 
     /**
@@ -313,12 +401,12 @@ public class BraveOriginSubscriptionPrefs {
      * @param profile The profile to use for preference storage
      */
     private static void resetSubscriptionLinkedStatus(@Nullable Profile profile) {
-        if (profile == null) {
-            Log.e(TAG, "resetSubscriptionLinkedStatus profile is null");
+        PrefService prefService = getPrefs(profile);
+        if (prefService == null) {
+            Log.e(TAG, "resetSubscriptionLinkedStatus prefs are unavailable");
             return;
         }
-        UserPrefs.get(profile)
-                .setInteger(BravePref.BRAVE_ORIGIN_SUBSCRIPTION_LINK_STATUS_ANDROID, 0);
+        prefService.setInteger(BravePref.BRAVE_ORIGIN_SUBSCRIPTION_LINK_STATUS_ANDROID, 0);
     }
 
     /**
@@ -327,9 +415,13 @@ public class BraveOriginSubscriptionPrefs {
      * @param profile The profile to use for the operation
      * @param purchaseToken The purchase token to use for the operation
      */
-    private static void createFetchOrder(Profile profile, String purchaseToken) {
+    private static void createFetchOrder(@Nullable Profile profile, String purchaseToken) {
+        PrefService prefService = getPrefs(profile);
+        if (prefService == null) {
+            Log.e(TAG, "createFetchOrder prefs are unavailable");
+            return;
+        }
         sFetchInProgress = true;
-        PrefService prefService = UserPrefs.get(profile);
         String packageName = prefService.getString(BravePref.BRAVE_ORIGIN_PACKAGE_NAME_ANDROID);
         String productId = prefService.getString(BravePref.BRAVE_ORIGIN_PRODUCT_ID_ANDROID);
 
@@ -337,36 +429,34 @@ public class BraveOriginSubscriptionPrefs {
         PostTask.postTask(
                 TaskTraits.BEST_EFFORT_MAY_BLOCK,
                 () -> {
-                    String encodedRequestJson;
-                    try {
-                        // Create JSON request
-                        JSONObject request = new JSONObject();
-                        request.put(JSON_FIELD_TYPE, JSON_VALUE_ANDROID);
-                        request.put(JSON_FIELD_RAW_RECEIPT, purchaseToken);
-                        request.put(JSON_FIELD_PACKAGE, packageName);
-                        request.put(JSON_FIELD_SUBSCRIPTION_ID, productId);
-
-                        String requestJson = request.toString();
-                        encodedRequestJson =
-                                Base64.encodeToString(
-                                        requestJson.getBytes(StandardCharsets.UTF_8),
-                                        Base64.NO_WRAP);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "Failed to create JSON request", e);
-                        notifyCredentialsFetched(false);
+                    String receiptPayload =
+                            buildReceiptPayload(purchaseToken, packageName, productId);
+                    if (receiptPayload == null) {
+                        notifyCredentialsFetched(CredentialFetchResult.FAILED);
                         return;
                     }
+                    String encodedRequestJson =
+                            Base64.encodeToString(
+                                    receiptPayload.getBytes(StandardCharsets.UTF_8),
+                                    Base64.NO_WRAP);
 
                     // Switch back to UI thread for the service call
                     PostTask.postTask(
                             TaskTraits.UI_DEFAULT,
                             () -> {
+                                // Hopping threads gave the profile a chance to go away, and the
+                                // service factory dereferences its native handle.
+                                if (!isProfileUsable(profile)) {
+                                    Log.e(TAG, "createFetchOrder profile is destroyed");
+                                    notifyCredentialsFetched(CredentialFetchResult.FAILED);
+                                    return;
+                                }
                                 SkusService skusService =
                                         SkusServiceFactory.getInstance()
                                                 .getSkusService(profile, null);
                                 if (skusService == null) {
                                     Log.e(TAG, "SkusService is null, cannot create order");
-                                    notifyCredentialsFetched(false);
+                                    notifyCredentialsFetched(CredentialFetchResult.FAILED);
                                     return;
                                 }
                                 String domain =
@@ -388,15 +478,39 @@ public class BraveOriginSubscriptionPrefs {
                                                                         ? result.message
                                                                         : "null result"));
                                                 skusService.close();
-                                                notifyCredentialsFetched(false);
+                                                notifyCredentialsFetched(
+                                                        CredentialFetchResult.FAILED);
                                                 return;
                                             }
                                             // Fetch order credentials using the same service
                                             fetchOrderCredentials(
-                                                    profile, result.message, skusService, domain);
+                                                    profile,
+                                                    result.message,
+                                                    skusService,
+                                                    domain,
+                                                    receiptPayload);
                                         });
                             });
                 });
+    }
+
+    /**
+     * Builds the request body the payment service identifies a subscription by: {@code {type,
+     * raw_receipt, package, subscription_id}}. Returns null when it cannot be serialized.
+     */
+    private static @Nullable String buildReceiptPayload(
+            String purchaseToken, String packageName, String productId) {
+        try {
+            JSONObject request = new JSONObject();
+            request.put(JSON_FIELD_TYPE, JSON_VALUE_ANDROID);
+            request.put(JSON_FIELD_RAW_RECEIPT, purchaseToken);
+            request.put(JSON_FIELD_PACKAGE, packageName);
+            request.put(JSON_FIELD_SUBSCRIPTION_ID, productId);
+            return request.toString();
+        } catch (JSONException e) {
+            Log.e(TAG, "Failed to create JSON request", e);
+            return null;
+        }
     }
 
     /**
@@ -407,12 +521,18 @@ public class BraveOriginSubscriptionPrefs {
      * @param orderId The order ID to fetch credentials for
      * @param skusService The SkusService instance to use for the operation
      * @param domain The SKU service domain
+     * @param receiptPayload Request body identifying the subscription, used to ask about the
+     *     activation limit if the fetch fails.
      */
     private static void fetchOrderCredentials(
-            Profile profile, @Nullable String orderId, SkusService skusService, String domain) {
+            Profile profile,
+            @Nullable String orderId,
+            SkusService skusService,
+            String domain,
+            String receiptPayload) {
         if (orderId == null || orderId.isEmpty()) {
             skusService.close();
-            notifyCredentialsFetched(false);
+            notifyCredentialsFetched(CredentialFetchResult.FAILED);
             return;
         }
 
@@ -420,30 +540,144 @@ public class BraveOriginSubscriptionPrefs {
                 domain,
                 orderId,
                 (result) -> {
-                    boolean success = false;
-                    try {
-                        if (result == null || result.code != SkusResultCode.OK) {
-                            Log.e(
-                                    TAG,
-                                    "Failed to fetch order credentials for order ID: "
-                                            + orderId
-                                            + " "
-                                            + (result != null ? result.message : "null result"));
-                            return;
-                        }
-                        // Store the order ID
-                        UserPrefs.get(profile)
-                                .setString(BravePref.BRAVE_ORIGIN_ORDER_ID_ANDROID, orderId);
-                        // A successful Play Store order fetch is an authoritative "Origin is
-                        // active" signal; prime the sync cache immediately so promo gates honor
-                        // it without waiting for the next credential summary refresh.
-                        setIsCredentialSummaryActiveCached(true);
-                        success = true;
-                    } finally {
-                        skusService.close();
-                        notifyCredentialsFetched(success);
+                    skusService.close();
+                    if (result == null || result.code != SkusResultCode.OK) {
+                        Log.e(
+                                TAG,
+                                "Failed to fetch order credentials for order ID: "
+                                        + orderId
+                                        + " "
+                                        + (result != null ? result.message : "null result"));
+                        // The activation limit is the one failure the user can act on, and the
+                        // service reports it as a generic bad request, so the only way to tell is
+                        // to ask.
+                        checkActivationLimit(profile, orderId, receiptPayload);
+                        return;
                     }
+                    PrefService prefService = getPrefs(profile);
+                    if (prefService == null) {
+                        Log.e(TAG, "fetchOrderCredentials prefs are unavailable");
+                        notifyCredentialsFetched(CredentialFetchResult.FAILED);
+                        return;
+                    }
+                    // Store the order ID
+                    prefService.setString(BravePref.BRAVE_ORIGIN_ORDER_ID_ANDROID, orderId);
+                    // A successful Play Store order fetch is an authoritative "Origin is
+                    // active" signal; prime the sync cache immediately so promo gates honor
+                    // it without waiting for the next credential summary refresh.
+                    setIsCredentialSummaryActiveCached(true);
+                    notifyCredentialsFetched(CredentialFetchResult.SUCCESS);
                 });
+    }
+
+    /**
+     * Asks the payment service whether a failed credential fetch was caused by the order running
+     * out of device activations, and whether that budget can be raised. Reports {@link
+     * CredentialFetchResult#ACTIVATION_LIMIT_EXTENDABLE} only when the user can actually do
+     * something about it.
+     */
+    private static void checkActivationLimit(
+            Profile profile, String orderId, String receiptPayload) {
+        sPendingExtendOrderId = null;
+        if (!isProfileUsable(profile)) {
+            notifyCredentialsFetched(CredentialFetchResult.FAILED);
+            return;
+        }
+        OriginActivationLimit activationLimit =
+                BraveOriginServiceFactory.getInstance().getOriginActivationLimit(profile, null);
+        if (activationLimit == null) {
+            Log.e(TAG, "OriginActivationLimit is null, cannot check activation limit");
+            notifyCredentialsFetched(CredentialFetchResult.FAILED);
+            return;
+        }
+
+        activationLimit.canExtend(
+                orderId,
+                receiptPayload,
+                (eligibility) -> {
+                    activationLimit.close();
+                    if (eligibility == null || !eligibility.atLimit) {
+                        notifyCredentialsFetched(CredentialFetchResult.FAILED);
+                        return;
+                    }
+                    if (!eligibility.canExtend) {
+                        // At the limit with no room to grow, so there is no action to offer - but
+                        // the user still needs to know why their subscription is not working.
+                        Log.w(TAG, "Order is at its activation limit and cannot be extended");
+                        notifyCredentialsFetched(CredentialFetchResult.ACTIVATION_LIMIT_REACHED);
+                        return;
+                    }
+                    sPendingExtendOrderId = orderId;
+                    sPendingExtendReceiptPayload = receiptPayload;
+                    notifyCredentialsFetched(CredentialFetchResult.ACTIVATION_LIMIT_EXTENDABLE);
+                });
+    }
+
+    /**
+     * Raises the device activation limit for the order whose credential fetch was blocked by it,
+     * then retries that fetch. Only meaningful after a {@link
+     * CredentialFetchResult#ACTIVATION_LIMIT_EXTENDABLE} result, and only once per result.
+     *
+     * <p>Reports through {@link #setCredentialsFetchedCallback} rather than a callback of its own:
+     * raising the budget is only half the job, and what the caller is waiting for either way is
+     * the credential fetch that follows. Register that callback before calling this.
+     *
+     * @param profile The profile to use for the operation
+     */
+    public static void extendActivationLimit(@Nullable Profile profile) {
+        String orderId = sPendingExtendOrderId;
+        String receiptPayload = sPendingExtendReceiptPayload;
+        sPendingExtendOrderId = null;
+        sPendingExtendReceiptPayload = null;
+        if (orderId == null || receiptPayload == null || !isProfileUsable(profile)) {
+            Log.e(TAG, "extendActivationLimit has no pending order or no usable profile");
+            notifyCredentialsFetched(CredentialFetchResult.FAILED);
+            return;
+        }
+        OriginActivationLimit activationLimit =
+                BraveOriginServiceFactory.getInstance().getOriginActivationLimit(profile, null);
+        if (activationLimit == null) {
+            Log.e(TAG, "OriginActivationLimit is null, cannot extend activation limit");
+            notifyCredentialsFetched(CredentialFetchResult.FAILED);
+            return;
+        }
+
+        // Claim the fetch before going async so a startup resume cannot start a second one
+        // while the extension is in flight.
+        sFetchInProgress = true;
+        activationLimit.extend(
+                orderId,
+                receiptPayload,
+                (succeeded, errorCode) -> {
+                    activationLimit.close();
+                    if (!succeeded) {
+                        Log.e(TAG, "Failed to extend activation limit: " + errorCode);
+                        notifyCredentialsFetched(CredentialFetchResult.FAILED);
+                        return;
+                    }
+                    // The extension only frees up budget; the credentials still have to be
+                    // fetched, and that is what actually unblocks the subscription.
+                    retryCredentialFetch(profile, orderId, receiptPayload);
+                });
+    }
+
+    /** Re-runs the credential fetch for an order after its activation budget was raised. */
+    private static void retryCredentialFetch(
+            Profile profile, String orderId, String receiptPayload) {
+        if (!isProfileUsable(profile)) {
+            notifyCredentialsFetched(CredentialFetchResult.FAILED);
+            return;
+        }
+        SkusService skusService = SkusServiceFactory.getInstance().getSkusService(profile, null);
+        if (skusService == null) {
+            Log.e(TAG, "SkusService is null, cannot retry credential fetch");
+            notifyCredentialsFetched(CredentialFetchResult.FAILED);
+            return;
+        }
+        String domain =
+                BraveDomainsUtils.getServicesDomain(
+                        ORIGIN_SKU_HOSTNAME_PART, ServicesEnvironment.STAGING);
+        fetchOrderCredentials(profile, orderId, skusService, domain, receiptPayload);
     }
 
     /**
@@ -455,8 +689,8 @@ public class BraveOriginSubscriptionPrefs {
      */
     public static void requestCredentialSummary(
             @Nullable Profile profile, @Nullable Callback<Boolean> callback) {
-        if (profile == null) {
-            Log.e(TAG, "requestCredentialSummary profile is null");
+        if (!isProfileUsable(profile)) {
+            Log.e(TAG, "requestCredentialSummary profile is null or destroyed");
             if (callback != null) {
                 callback.onResult(false);
             }
@@ -566,12 +800,12 @@ public class BraveOriginSubscriptionPrefs {
      * @param profile The profile to use for preference clearing
      */
     public static void clearOriginSubscriptionPrefs(@Nullable Profile profile) {
-        if (profile == null) {
-            Log.e(TAG, "clearOriginSubscriptionPrefs profile is null");
+        PrefService prefService = getPrefs(profile);
+        if (prefService == null) {
+            Log.e(TAG, "clearOriginSubscriptionPrefs prefs are unavailable");
             return;
         }
 
-        PrefService prefService = UserPrefs.get(profile);
         prefService.setBoolean(BravePref.BRAVE_ORIGIN_SUBSCRIPTION_ACTIVE_ANDROID, false);
         prefService.setString(BravePref.BRAVE_ORIGIN_PURCHASE_TOKEN_ANDROID, "");
         prefService.setString(BravePref.BRAVE_ORIGIN_PRODUCT_ID_ANDROID, "");
@@ -647,8 +881,10 @@ public class BraveOriginSubscriptionPrefs {
             return;
         }
 
-        // If Brave Origin feature is not enabled or profile is null, policies are not applicable
-        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN) || profile == null) {
+        // If Brave Origin feature is not enabled or the profile is gone, policies are not
+        // applicable
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN)
+                || !isProfileUsable(profile)) {
             for (Callback<Boolean> callback : policyCallbacks.values()) {
                 if (callback != null) {
                     callback.onResult(false);
@@ -661,8 +897,9 @@ public class BraveOriginSubscriptionPrefs {
         requestCredentialSummary(
                 profile,
                 (isSubscriptionActive) -> {
-                    // If subscription is not active, all features are enabled (not disabled)
-                    if (!isSubscriptionActive) {
+                    // If subscription is not active, all features are enabled (not disabled). The
+                    // profile is re-checked because the summary request is asynchronous.
+                    if (!isSubscriptionActive || !isProfileUsable(profile)) {
                         for (Callback<Boolean> callback : policyCallbacks.values()) {
                             if (callback != null) {
                                 callback.onResult(false);

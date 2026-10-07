@@ -25,12 +25,39 @@
   kGoogleUpdateIsMachineEnvVar[] = "BraveSoftwareUpdateIsMachine"; \
   inline constexpr char kGoogleUpdateIsMachineEnvVar_UnUsed
 
+#define kChromeExe             \
+  kChromeExe[] = L"brave.exe"; \
+  inline constexpr wchar_t kChromeExe_UnUsed
+
 #include <chrome/installer/util/util_constants.h>  // IWYU pragma: export
 
+#undef kChromeExe
 #undef UNCOMPRESSING
 #undef NO_STAGE
 #undef INSTALL_FAILED
 #undef kGoogleUpdateIsMachineEnvVar
+
+namespace installer::switches {
+
+// The switches kNewSetupExe, kPreviousVersion and kUpdateSetupExe used to be
+// upstream and had to be restored in Brave to support delta updates on Windows
+// until we are on Omaha 4. See github.com/brave/brave-core/pull/31937.
+
+// Useful only when used with --update-setup-exe; otherwise ignored. Specifies
+// the full path where the updated setup.exe will be written. Any other files
+// created in the indicated directory may be deleted by the caller after process
+// termination.
+inline constexpr char kNewSetupExe[] = "new-setup-exe";
+
+// Provide the previous version that patch is for.
+inline constexpr char kPreviousVersion[] = "previous-version";
+
+// Also see --new-setup-exe. This command line option specifies a diff patch
+// that setup.exe will apply to itself and store the resulting binary in the
+// path given by --new-setup-exe.
+inline constexpr char kUpdateSetupExe[] = "update-setup-exe";
+
+}  // namespace installer::switches
 
 namespace installer {
 

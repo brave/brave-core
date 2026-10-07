@@ -116,6 +116,11 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
              object:nil];
     [[NSNotificationCenter defaultCenter]
         addObserver:self
+           selector:@selector(onAppDidBecomeActive:)
+               name:UIApplicationDidBecomeActiveNotification
+             object:nil];
+    [[NSNotificationCenter defaultCenter]
+        addObserver:self
            selector:@selector(onAppWillTerminate:)
                name:UIApplicationWillTerminateNotification
              object:nil];
@@ -194,8 +199,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 
     _adblockService = [[AdblockService alloc] initWithComponentUpdater:cus];
 
-    // Applies the persisted crash reporting consent as soon as local state is
-    // available, and keeps it in sync with the pref for the rest of the
+    // Keeps crash helper enabled in sync with the pref for the rest of the
     // process lifetime (e.g. when changed from Settings).
     PrefService* localState = GetApplicationContext()->GetLocalState();
     _localStatePrefChangeRegistrar.Init(localState);
@@ -207,8 +211,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
                   metrics::prefs::kMetricsReportingEnabled));
             },
             localState));
-    crash_helper::SetEnabled(
-        localState->GetBoolean(metrics::prefs::kMetricsReportingEnabled));
   }
   return self;
 }
@@ -233,13 +235,20 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   }
 }
 
+- (void)onAppDidBecomeActive:(NSNotification*)notification {
+  // We need to wait until the application is active to actual set this value
+  // or it wont be written to the app group prefs.
+  crash_helper::SetEnabled(GetApplicationContext()->GetLocalState()->GetBoolean(
+      metrics::prefs::kMetricsReportingEnabled));
+  // This is a no-op if reports are already uploading
+  crash_helper::UploadCrashReports();
+}
+
 - (void)onAppEnterForeground:(NSNotification*)notification {
   auto* context = GetApplicationContext();
   if (context) {
     context->OnAppEnterForeground();
   }
-  // This is a no-op if reporst are already uploading
-  crash_helper::UploadCrashReports();
 }
 
 - (void)onAppWillTerminate:(NSNotification*)notification {

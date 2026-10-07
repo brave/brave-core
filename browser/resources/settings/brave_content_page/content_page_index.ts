@@ -66,6 +66,11 @@ SettingsBraveContentPageIndexElementBase implements SettingsPlugin {
       views.push('containers');
     }
     // </if>
+    // <if expr="enable_traffic_control">
+    if (this.pageVisibility_.trafficControl) {
+      views.push('trafficControl');
+    }
+    // </if>
     if (this.showPage_(this.pageVisibility_.playlist)) {
       views.push('playlist');
     }

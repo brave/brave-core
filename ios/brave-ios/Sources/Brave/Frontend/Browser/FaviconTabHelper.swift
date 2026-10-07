@@ -8,7 +8,6 @@ import Foundation
 import OSLog
 import SDWebImage
 import Shared
-import Storage
 import UIKit
 import Web
 
@@ -49,7 +48,7 @@ class FaviconTabHelper: TabObserver {
     self.tab = tab
     tab.addObserver(self)
 
-    Task { @MainActor in
+    _ = Task { @MainActor in
       if let url = tab.visibleURL {
         if let icon = await FaviconFetcher.getIconFromCache(for: url) {
           self.favicon = icon
@@ -80,7 +79,7 @@ class FaviconTabHelper: TabObserver {
 
   private func updateFavicon(tab: some TabState) {
     if let currentURL = tab.visibleURL {
-      Task { @MainActor in
+      _ = Task { @MainActor in
         if let favicon = await FaviconFetcher.getIconFromCache(for: currentURL) {
           self.favicon = favicon
         } else {

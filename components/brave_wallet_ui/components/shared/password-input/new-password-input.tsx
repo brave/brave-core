@@ -93,7 +93,7 @@ export const NewPasswordInput = ({
         >
           <Row justifyContent='flex-start'>
             <InputLabel htmlFor='password'>
-              {getLocale('braveWalletCreatePasswordInput')}
+              {getLocale(S.BRAVE_WALLET_CREATE_PASSWORD_INPUT)}
             </InputLabel>
             <Asterisk>*</Asterisk>
           </Row>
@@ -113,7 +113,7 @@ export const NewPasswordInput = ({
             onChange={onPasswordChanged}
             onFocus={() => setIsPasswordFieldFocused(true)}
             onKeyDown={handleKeyDown}
-            placeholder={getLocale('braveWalletCreatePasswordInput')}
+            placeholder={getLocale(S.BRAVE_WALLET_CREATE_PASSWORD_INPUT)}
             showToggleButton={true}
             value={password}
           >
@@ -141,7 +141,7 @@ export const NewPasswordInput = ({
             marginBottom='4px'
           >
             <InputLabel htmlFor='password-confirmation'>
-              {getLocale('braveWalletConfirmPasswordInput')}
+              {getLocale(S.BRAVE_WALLET_CONFIRM_PASSWORD_INPUT)}
             </InputLabel>
             <Asterisk>*</Asterisk>
           </Row>
@@ -153,7 +153,7 @@ export const NewPasswordInput = ({
             name='password-confirmation'
             onChange={setConfirmedPassword}
             onKeyDown={handleKeyDown}
-            placeholder={getLocale('braveWalletConfirmPasswordInput')}
+            placeholder={getLocale(S.BRAVE_WALLET_CONFIRM_PASSWORD_INPUT)}
             showToggleButton={true}
             value={confirmedPassword}
           >
@@ -171,8 +171,8 @@ export const NewPasswordInput = ({
                   <PasswordValidationText isMatch={passwordsMatch}>
                     {getLocale(
                       passwordsMatch
-                        ? 'braveWalletPasswordMatch'
-                        : 'braveWalletConfirmPasswordError',
+                        ? S.BRAVE_WALLET_PASSWORD_MATCH
+                        : S.BRAVE_WALLET_CONFIRM_PASSWORD_ERROR,
                     )}
                   </PasswordValidationText>
                 </>

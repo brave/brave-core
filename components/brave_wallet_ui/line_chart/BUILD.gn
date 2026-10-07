@@ -23,6 +23,7 @@ transpile_web_ui("line_chart_display_ui") {
   deps = [
     "//brave/components/brave_wallet/common:mojom_js",
     "//brave/components/brave_wallet/common:preprocess_mojo",
+    "//brave/components/resources:strings",
   ]
 }
 

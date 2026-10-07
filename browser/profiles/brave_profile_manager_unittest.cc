@@ -12,6 +12,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
@@ -24,6 +25,7 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_utils.h"
+#include "net/base/features.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -318,9 +320,9 @@ TEST_P(BraveProfileManagerAIAgentProfileTest, GetLastOpenedProfiles) {
 
   // Simulate opening profiles by setting them as active in the same way
   // as profile_manager_unittest.cc
-  Browser::CreateParams profile1_params(regular_profile1, true);
-  std::unique_ptr<Browser> browser1(
-      CreateBrowserWithTestWindowForParams(profile1_params));
+  BrowserWindowCreateParams profile1_params(regular_profile1, true);
+  std::unique_ptr<BrowserWindowInterface> browser1(
+      CreateBrowserWithTestWindowForParams(std::move(profile1_params)));
 
   last_opened_profiles = profile_manager->GetLastOpenedProfiles();
   ASSERT_EQ(1U, last_opened_profiles.size());
@@ -328,9 +330,9 @@ TEST_P(BraveProfileManagerAIAgentProfileTest, GetLastOpenedProfiles) {
   EXPECT_EQ(regular_profile1, last_opened_profiles[0]);
 
   // And for ai chat profile
-  Browser::CreateParams ai_chat_params(ai_chat_profile, true);
-  std::unique_ptr<Browser> browser_ai_chat(
-      CreateBrowserWithTestWindowForParams(ai_chat_params));
+  BrowserWindowCreateParams ai_chat_params(ai_chat_profile, true);
+  std::unique_ptr<BrowserWindowInterface> browser_ai_chat(
+      CreateBrowserWithTestWindowForParams(std::move(ai_chat_params)));
 
   last_opened_profiles = profile_manager->GetLastOpenedProfiles();
   if (IsAIChatAgentProfileFeatureEnabled()) {
@@ -343,9 +345,9 @@ TEST_P(BraveProfileManagerAIAgentProfileTest, GetLastOpenedProfiles) {
   }
 
   // And for profile2
-  Browser::CreateParams profile2_params(regular_profile2, true);
-  std::unique_ptr<Browser> browser2(
-      CreateBrowserWithTestWindowForParams(profile2_params));
+  BrowserWindowCreateParams profile2_params(regular_profile2, true);
+  std::unique_ptr<BrowserWindowInterface> browser2(
+      CreateBrowserWithTestWindowForParams(std::move(profile2_params)));
 
   last_opened_profiles = profile_manager->GetLastOpenedProfiles();
   if (IsAIChatAgentProfileFeatureEnabled()) {

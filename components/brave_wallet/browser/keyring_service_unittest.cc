@@ -25,6 +25,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
+#include "base/test/metrics/histogram_tester.h"
 #include "base/test/mock_callback.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
@@ -846,6 +847,34 @@ TEST_F(KeyringServiceUnitTest, LockAndUnlock) {
     observer.WaitAndVerify();
     EXPECT_FALSE(service.IsLockedSync());
   }
+}
+
+TEST_F(KeyringServiceUnitTest, RecordsUsageMetrics) {
+  base::HistogramTester histogram_tester;
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  histogram_tester.ExpectTotalCount(kWalletUsageDailyHistogramName, 0);
+  histogram_tester.ExpectTotalCount(kWalletUsageWeeklyHistogramName, 0);
+  histogram_tester.ExpectTotalCount(kWalletUsageMonthlyHistogramName, 0);
+
+  AccountUtils(&service).CreateWallet(
+      *bip39::GenerateMnemonic(crypto::RandBytesAsVector(16)), kPasswordBrave);
+  histogram_tester.ExpectUniqueSample(kWalletUsageDailyHistogramName, 1, 1);
+  histogram_tester.ExpectUniqueSample(kWalletUsageWeeklyHistogramName, 1, 1);
+  histogram_tester.ExpectUniqueSample(kWalletUsageMonthlyHistogramName, 1, 1);
+
+  ASSERT_TRUE(Lock(&service));
+
+  // Failed unlock attempt doesn't record usage.
+  EXPECT_FALSE(Unlock(&service, kPasswordBrave123));
+  histogram_tester.ExpectUniqueSample(kWalletUsageDailyHistogramName, 1, 1);
+  histogram_tester.ExpectUniqueSample(kWalletUsageWeeklyHistogramName, 1, 1);
+  histogram_tester.ExpectUniqueSample(kWalletUsageMonthlyHistogramName, 1, 1);
+
+  EXPECT_TRUE(Unlock(&service, kPasswordBrave));
+  histogram_tester.ExpectUniqueSample(kWalletUsageDailyHistogramName, 1, 2);
+  histogram_tester.ExpectUniqueSample(kWalletUsageWeeklyHistogramName, 1, 2);
+  histogram_tester.ExpectUniqueSample(kWalletUsageMonthlyHistogramName, 1, 2);
 }
 
 TEST_F(KeyringServiceUnitTest, Reset) {
@@ -5403,15 +5432,40 @@ TEST_F(KeyringServiceUnitTest, UpdateNextUnusedAddressForZCashAccount) {
                 ->next_transparent_change_address->key_id);
 }
 
+TEST_F(KeyringServiceUnitTest, ZCashIronwoodSyncStateResetPref) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletZCashFeature};
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
+  auto zec_acc = GetAccountUtils(&service).EnsureZecAccount(0);
+
+  EXPECT_FALSE(service.GetZCashIronwoodSyncStateReset(zec_acc->account_id));
+
+  NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
+  EXPECT_CALL(observer, AccountsChanged());
+  EXPECT_TRUE(
+      service.SetZCashIronwoodSyncStateReset(zec_acc->account_id, true));
+  observer.WaitAndVerify();
+
+  EXPECT_TRUE(service.GetZCashIronwoodSyncStateReset(zec_acc->account_id));
+
+  const auto* account_metas = GetPrefForKeyringList(
+      GetPrefs(), kAccountMetas, mojom::KeyringId::kZCashMainnet);
+  ASSERT_TRUE(account_metas);
+  ASSERT_EQ(1u, account_metas->size());
+  const auto* account_dict = (*account_metas)[0].GetIfDict();
+  ASSERT_TRUE(account_dict);
+  EXPECT_TRUE(account_dict->FindBoolByDottedPath(kZcashIronwoodSyncStateReset));
+}
+
 // Generated using https://github.com/zcash/zcash-test-vectors
 TEST_F(KeyringServiceUnitTest, GetOrchardRawBytes) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitWithFeaturesAndParameters(
       {{features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "true"}}},
-#if BUILDFLAG(IS_IOS)
-       {features::kBraveWalletWebUIFeature, {}}
-#endif
       },
       {}  // disabled features
   );

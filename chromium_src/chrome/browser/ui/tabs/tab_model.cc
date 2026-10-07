@@ -8,11 +8,4 @@
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "components/tabs/public/tab_collection.h"
 
-// Add switch case handling for TREE_NODE type in TabModel::UpdateProperties().
-#define UNPINNED \
-  UNPINNED:      \
-  case TabCollection::Type::TREE_NODE
-
 #include <chrome/browser/ui/tabs/tab_model.cc>  // IWYU pragma: export
-
-#undef UNPINNED

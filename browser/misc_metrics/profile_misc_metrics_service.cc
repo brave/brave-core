@@ -5,22 +5,24 @@
 
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 
+#include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_stats/first_run_util.h"
+#include "brave/browser/misc_metrics/fingerprint_frequency_metrics.h"
 #include "brave/browser/misc_metrics/media_session_metrics_impl.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/profile_new_tab_metrics.h"
 #include "brave/browser/misc_metrics/theme_metrics.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/autofill_metrics.h"
+#include "brave/components/misc_metrics/features.h"
 #include "brave/components/misc_metrics/language_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
 #include "brave/components/misc_metrics/pref_names.h"
-#include "brave/components/ntp_background_images/browser/features.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/autofill/personal_data_manager_factory.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/browser_process.h"
@@ -37,6 +39,10 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/misc_metrics/misc_android_metrics.h"
@@ -59,10 +65,6 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
         brave_shields::prefs::kAdBlockDeveloperMode,
         base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
                             base::Unretained(this)));
-    pref_change_registrar_.Add(
-        ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist,
-        base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
-                            base::Unretained(this)));
 #if BUILDFLAG(ENABLE_AI_CHAT)
     if (local_state) {
       ai_chat_metrics_ =
@@ -71,6 +73,11 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
   }
   auto* profile = Profile::FromBrowserContext(context);
+  if (local_state && profile &&
+      base::FeatureList::IsEnabled(features::kFingerprintInputMetrics)) {
+    fingerprint_frequency_metrics_ =
+        std::make_unique<FingerprintFrequencyMetrics>(local_state, profile);
+  }
   auto* history_service = HistoryServiceFactory::GetForProfile(
       profile, ServiceAccessType::EXPLICIT_ACCESS);
   auto* host_content_settings_map =
@@ -110,10 +117,12 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
         prefs::kSearchSuggestEnabled,
         base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
                             base::Unretained(this)));
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
     pref_change_registrar_.Add(
-        kNewTabPageShowSponsoredSites,
+        brave_ads::prefs::kSponsoredEnabled,
         base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
                             base::Unretained(this)));
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   }
 #endif
   auto* personal_data_manager =
@@ -130,6 +139,7 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
 ProfileMiscMetricsService::~ProfileMiscMetricsService() = default;
 
 void ProfileMiscMetricsService::Shutdown() {
+  fingerprint_frequency_metrics_ = nullptr;
 #if !BUILDFLAG(IS_ANDROID)
   if (extension_metrics_) {
     extension_metrics_->Shutdown();
@@ -154,22 +164,18 @@ void ProfileMiscMetricsService::ReportSimpleMetrics() {
   UMA_HISTOGRAM_BOOLEAN(
       kSearchSuggestEnabledHistogramName,
       profile_prefs_->GetBoolean(prefs::kSearchSuggestEnabled));
-  if (base::FeatureList::IsEnabled(
-          ntp_background_images::features::
-              kBraveNTPBrandedWallpaperSurveyPanelist)) {
-    UMA_HISTOGRAM_BOOLEAN(kSurveyPanelistEnabledHistogramName,
-                          profile_prefs_->GetBoolean(
-                              ntp_background_images::prefs::
-                                  kNewTabPageSponsoredImagesSurveyPanelist));
-  }
   bool shields_dev_mode_enabled =
       profile_prefs_->GetBoolean(brave_shields::prefs::kAdBlockDeveloperMode);
   UMA_HISTOGRAM_EXACT_LINEAR(kShieldsDevModeEnabledHistogramName,
                              shields_dev_mode_enabled ? 1 : INT_MAX - 1, 2);
-  bool show_sponsored_sites =
-      profile_prefs_->GetBoolean(kNewTabPageShowSponsoredSites);
-  UMA_HISTOGRAM_EXACT_LINEAR(kNewTabPageShowSponsoredSitesHistogramName,
-                             show_sponsored_sites ? INT_MAX - 1 : 0, 2);
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  bool sponsored_ads_enabled =
+      profile_prefs_->GetBoolean(brave_ads::prefs::kSponsoredEnabled);
+#else
+  bool sponsored_ads_enabled = false;
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+  UMA_HISTOGRAM_EXACT_LINEAR(kSponsoredAdsEnabledHistogramName,
+                             sponsored_ads_enabled ? INT_MAX - 1 : 0, 2);
 }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)

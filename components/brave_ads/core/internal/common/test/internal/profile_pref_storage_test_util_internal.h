@@ -6,17 +6,19 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TEST_INTERNAL_PROFILE_PREF_STORAGE_TEST_UTIL_INTERNAL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TEST_INTERNAL_PROFILE_PREF_STORAGE_TEST_UTIL_INTERNAL_H_
 
-#include <string>
+class TestingPrefServiceSimple;
 
 namespace brave_ads::test {
 
-struct PrefValueInfo;
+// `TestBase` calls this once per test to point pref-related test utilities at
+// the real `PrefService` backing the current test's simulated profile.
+void SetProfilePrefServiceForTesting(TestingPrefServiceSimple& prefs);
 
-bool FindProfilePref(const std::string& path);
+// `TestBase` calls this from `TearDown` so the pointer above does not dangle
+// after the `PrefService` it refers to is destroyed.
+void ResetProfilePrefServiceForTesting();
 
-PrefValueInfo& ProfilePref(const std::string& path);
-
-bool HasProfilePref(const std::string& path);
+TestingPrefServiceSimple& GetProfilePrefServiceForTesting();
 
 }  // namespace brave_ads::test
 

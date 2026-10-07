@@ -4,4 +4,14 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """`platform` module: mockable host OS identification."""
 
-DEPS = []
+from dataclasses import dataclass
+
+from recipe_api import RecipeScriptApi
+
+from .api import PlatformApi as API
+from .test_api import PlatformTestApi as TEST_API
+
+
+@dataclass
+class DEPS(RecipeScriptApi):
+    pass

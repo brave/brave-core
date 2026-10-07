@@ -7,7 +7,6 @@ import BraveStore
 import BraveStrings
 import DesignSystem
 import Foundation
-import Introspect
 import StoreKit
 import SwiftUI
 

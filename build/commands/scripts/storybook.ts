@@ -15,6 +15,7 @@ import { isCI } from '../lib/ciDetect.ts'
 import * as buildOptions from '../lib/buildOptions.ts'
 import config from '../lib/config.ts'
 import util from '../lib/util.js'
+import { getPassthroughArgs } from '../lib/commandsUtils.ts'
 
 program
   .description(
@@ -95,7 +96,7 @@ program
         break
       case 'dev':
         // Pass through any additional arguments in dev mode.
-        nodeArgs.push(...program.args)
+        nodeArgs.push(...getPassthroughArgs(program))
         break
     }
 

@@ -12,14 +12,12 @@ bool UserHasJoinedBraveRewards();
 bool UserHasJoinedBraveRewardsAndNotConnectedWallet();
 bool UserHasJoinedBraveRewardsAndConnectedWallet();
 
-bool UserHasOptedInToNewTabPageAds();
-
 bool IsNotificationAdsEnabled();
 int GetMaximumNotificationAdsPerHour();
 
-bool UserHasOptedInToSearchResultAds();
+bool IsSponsoredAdsEnabled();
 
-bool UserHasOptedInToSurveyPanelist();
+bool IsNewTabPageAdsEnabled();
 
 }  // namespace brave_ads
 

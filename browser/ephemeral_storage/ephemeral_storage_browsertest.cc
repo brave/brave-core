@@ -854,7 +854,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
   // A browser with the same profile should share all values with the
   // first browser, including ephemeral storage values.
-  Browser* same_profile_browser = CreateBrowser(browser()->GetProfile());
+  BrowserWindowInterface* same_profile_browser =
+      CreateBrowser(browser()->GetProfile());
   ASSERT_TRUE(ui_test_utils::NavigateToURL(same_profile_browser,
                                            a_site_ephemeral_storage_url_));
   auto* same_profile_web_contents =
@@ -879,7 +880,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
   // A browser with a different profile shouldn't share any values with
   // the first set of browsers.
-  Browser* private_browser = CreateIncognitoBrowser(nullptr);
+  BrowserWindowInterface* private_browser = CreateIncognitoBrowser(nullptr);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(private_browser,
                                            a_site_ephemeral_storage_url_));
   auto* private_web_contents =

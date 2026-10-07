@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.tasks.tab_management;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
@@ -31,7 +32,6 @@ import org.chromium.chrome.tab_ui.R;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
 import org.chromium.ui.modaldialog.ModalDialogManager;
-import org.chromium.ui.widget.ChromeImageView;
 
 import java.util.function.Supplier;
 
@@ -81,19 +81,17 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
         mTabModelSelector = tabModelSelector;
 
         assert mToolbarView != null : "Make sure mToolbarView is properly patched in bytecode.";
-        ChromeImageView fadingEdgeStart =
-                mToolbarView.findViewById(R.id.tab_strip_fading_edge_start);
+        ImageView fadingEdgeStart = mToolbarView.findViewById(R.id.tab_strip_fading_edge_start);
         assert fadingEdgeStart != null : "Something has changed in upstream.";
         if (fadingEdgeStart != null) {
             fadingEdgeStart.setVisibility(View.GONE);
         }
-        ChromeImageView fadingEdgeEnd = mToolbarView.findViewById(R.id.tab_strip_fading_edge_end);
+        ImageView fadingEdgeEnd = mToolbarView.findViewById(R.id.tab_strip_fading_edge_end);
         assert fadingEdgeEnd != null : "Something has changed in upstream.";
         if (fadingEdgeEnd != null) {
             fadingEdgeEnd.setVisibility(View.GONE);
         }
-        ChromeImageView toolbarNewTabButton =
-                mToolbarView.findViewById(R.id.toolbar_new_tab_button);
+        ImageView toolbarNewTabButton = mToolbarView.findViewById(R.id.toolbar_new_tab_button);
         assert toolbarNewTabButton != null : "Something has changed in upstream.";
         if (toolbarNewTabButton != null) {
             toolbarNewTabButton.setImageResource(R.drawable.brave_new_group_tab);

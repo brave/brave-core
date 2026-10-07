@@ -30,21 +30,3 @@ substitutions:
         \1}
 
         \1private void \2_ChromiumImpl\3
-  - description: |-
-      Import Brave's pane order controller
-
-      The constructor below is redirected to `BraveDefaultPaneOrderController`,
-      which lives in the same package, so leaving the upstream import in place
-      would trip the `UnusedImports` checkstyle rule.
-    regex:
-      re_pattern: |-
-        import org.chromium.chrome.browser.hub.(DefaultPaneOrderController;)
-      replace: |-
-        import org.chromium.chrome.browser.hub.Brave\1
-  - description: |-
-      Instantiate Brave's pane order controller
-    regex:
-      re_pattern: |-
-        new (DefaultPaneOrderController\()
-      replace: |-
-        new Brave\1

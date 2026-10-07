@@ -18,7 +18,6 @@ BRAVE_CHANNEL = os.environ.get('BRAVE_CHANNEL')
 
 
 class InternalCodeSignConfig(ChromiumCodeSignConfig):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.is_in_sign_chrome = False
@@ -31,10 +30,12 @@ class InternalCodeSignConfig(ChromiumCodeSignConfig):
     @property
     def distributions(self):
         return [
-            Distribution(channel=BRAVE_CHANNEL,
-                         package_as_dmg=True,
-                         package_as_pkg=True,
-                         package_as_zip=True)
+            Distribution(
+                channel=BRAVE_CHANNEL,
+                package_as_dmg=True,
+                package_as_pkg=True,
+                package_as_zip=True,
+            )
         ]
 
     @property

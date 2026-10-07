@@ -24,7 +24,8 @@ def _merge_types(extended_domain, protocol_domain):
     for extended_type in extended_types:
         protocol_type = next(
             filter(lambda x: x['id'] == extended_type['id'], protocol_types),
-            None)
+            None,
+        )
         if not protocol_type:
             protocol_types.append(extended_type)
             continue
@@ -48,8 +49,12 @@ def _merge_commands(extended_domain, protocol_domain):
         return
     for extended_command in extended_commands:
         protocol_command = next(
-            filter(lambda x: x['name'] == extended_command['name'],
-                   protocol_commands), None)
+            filter(
+                lambda x: x['name'] == extended_command['name'],
+                protocol_commands,
+            ),
+            None,
+        )
         if not protocol_command:
             protocol_commands.append(extended_command)
             continue
@@ -67,8 +72,11 @@ def _merge_events(extended_domain, protocol_domain):
         return
     for extended_event in extended_events:
         protocol_event = next(
-            filter(lambda x: x['name'] == extended_event['name'],
-                   protocol_events), None)
+            filter(
+                lambda x: x['name'] == extended_event['name'], protocol_events
+            ),
+            None,
+        )
         if not protocol_event:
             protocol_events.append(extended_event)
             continue
@@ -78,13 +86,17 @@ def _merge_events(extended_domain, protocol_domain):
 
 def _merge_protocol(protocol, file_name, map_binary_to_string, source_set):
     chromium_src_file = brave_chromium_utils.get_chromium_src_override(
-        file_name)
+        file_name
+    )
     if not os.path.exists(chromium_src_file):
         return
     with open(chromium_src_file, "r") as input_file:
-        extended_protocol = _original_parse(input_file.read(),
-                                            chromium_src_file,
-                                            map_binary_to_string, source_set)
+        extended_protocol = _original_parse(
+            input_file.read(),
+            chromium_src_file,
+            map_binary_to_string,
+            source_set,
+        )
 
     for extended_domain in extended_protocol['domains']:
         protocol_domain = None
@@ -101,10 +113,11 @@ def _merge_protocol(protocol, file_name, map_binary_to_string, source_set):
             assert extended_domain['domain'].startswith('Brave')
             protocol['domains'].append(extended_domain)
 
+
 @override_utils.override_function(globals())
-def parse(original_function, data, file_name, map_binary_to_string,
-          source_set):
-    protocol = original_function(data, file_name, map_binary_to_string,
-                                 source_set)
+def parse(original_function, data, file_name, map_binary_to_string, source_set):
+    protocol = original_function(
+        data, file_name, map_binary_to_string, source_set
+    )
     _merge_protocol(protocol, file_name, map_binary_to_string, source_set)
     return protocol

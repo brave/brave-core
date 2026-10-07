@@ -26,6 +26,7 @@ extension WidgetShortcut {
       .braveNews,
       .braveLeo,
       .askBrave,
+      .braveLeoVoiceInput,
     ])
     if !prefs.isPlaylistAvailable {
       options.remove(.playlist)
@@ -38,6 +39,7 @@ extension WidgetShortcut {
     }
     if !AIChatUtils.isAIChatEnabled(for: prefs) {
       options.remove(.braveLeo)
+      options.remove(.braveLeoVoiceInput)
     }
     return options
   }
@@ -60,6 +62,7 @@ extension WidgetShortcut {
     }
     if !AIChatUtils.isAIChatEnabled(for: prefs) {
       disabled.insert(.braveLeo)
+      disabled.insert(.braveLeoVoiceInput)
     }
     return disabled
   }
@@ -84,6 +87,8 @@ extension WidgetShortcut {
       return Strings.leoMenuItem
     case .askBrave:
       return Strings.askBraveMenuItem
+    case .braveLeoVoiceInput:
+      return Strings.leoVoiceInputMenuItem
     default:
       return ""
     }
@@ -113,8 +118,12 @@ extension WidgetShortcut {
       return "leo.qr.code"
     case .braveNews:
       return "leo.product.brave-news"
-    case .braveLeo, .askBrave:
+    case .braveLeo:
       return "leo.product.brave-leo"
+    case .askBrave:
+      return "leo.brave.ask"
+    case .braveLeoVoiceInput:
+      return "leo.microphone"
     @unknown default:
       return nil
     }

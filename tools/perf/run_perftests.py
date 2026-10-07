@@ -16,6 +16,7 @@ The tool:
 The tool gives more stable results on prepared hardware/OS to minimize jitter.
 
 """
+
 import argparse
 import logging
 import shutil
@@ -24,13 +25,13 @@ import os
 import tempfile
 from typing import List, Optional
 
-import components.android_tools as android_tools
-import components.perf_config as perf_config
-import components.perf_test_runner as perf_test_runner
-import components.perf_test_utils as perf_test_utils
-import components.path_util as path_util
-import components.profile_tools as profile_tools
-import components.wpr_utils as wpr_utils
+from components import android_tools
+from components import perf_config
+from components import perf_test_runner
+from components import perf_test_utils
+from components import path_util
+from components import profile_tools
+from components import wpr_utils
 
 from components.common_options import CommonOptions, PerfMode
 
@@ -44,8 +45,9 @@ with path_util.SysPath(path_util.GetPyJson5Dir()):
 def load_config(options: CommonOptions) -> dict:
   config = options.config
   if config.startswith('https://'):  # URL to download the config
-    _, config_path = tempfile.mkstemp(dir=options.working_directory,
-                                      prefix='config-')
+    _, config_path = tempfile.mkstemp(
+      dir=options.working_directory, prefix='config-'
+    )
     perf_test_utils.DownloadFile(config, config_path)
 
   elif os.path.isfile(config):  # Full config path
@@ -61,10 +63,10 @@ def load_config(options: CommonOptions) -> dict:
 
 def main():
   parser = argparse.ArgumentParser(
-      formatter_class=argparse.RawTextHelpFormatter,
-      description='A tool to run perf tests and report the results.'
-      'Use npm run perf_tests to launch it',
-      epilog=R'''
+    formatter_class=argparse.RawTextHelpFormatter,
+    description='A tool to run perf tests and report the results.'
+    'Use npm run perf_tests to launch it',
+    epilog=R'''
 To some launch tests locally:
 npm run perf_tests -- compare/compare_with_on_off_feature.json5
 
@@ -72,7 +74,8 @@ On CI:
 npm run perf_tests -- smoke-brave.json5 v1.58.45
      --working-directory=e:\work\brave\src\out\100
      --ci-mode
-''')
+''',
+  )
   CommonOptions.add_parser_args(parser)
 
   args = parser.parse_args()
@@ -102,13 +105,24 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
       raise RuntimeError('Only one configuration should be specified.')
 
     configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
-        options.targets, config.runners[0])
-    return 0 if perf_test_runner.RunConfigurations(
-        configurations, config.benchmarks, options) else 1
+      options.targets, config.runners[0]
+    )
+    return (
+      0
+      if perf_test_runner.RunConfigurations(
+        configurations, config.benchmarks, options
+      )
+      else 1
+    )
 
   if options.mode == PerfMode.COMPARE:
-    return 0 if perf_test_runner.RunConfigurations(
-        config.runners, config.benchmarks, options) else 1
+    return (
+      0
+      if perf_test_runner.RunConfigurations(
+        config.runners, config.benchmarks, options
+      )
+      else 1
+    )
 
   if options.mode == PerfMode.UPDATE_PROFILE:
     if options.chromium:
@@ -123,13 +137,17 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
     chromium_config = perf_config.PerfConfig(load_config(options))
     chromium_config.runners[0].label = 'chromium-rebase'
 
-    return 0 if profile_tools.RunUpdateProfile(brave_config, chromium_config,
-                                               options) else 1
+    return (
+      0
+      if profile_tools.RunUpdateProfile(brave_config, chromium_config, options)
+      else 1
+    )
 
   if options.mode == PerfMode.RECORD_WPR:
     return 0 if wpr_utils.record_wpr(config, options) else 1
 
   raise RuntimeError('Unknown mode')
+
 
 if __name__ == '__main__':
   sys.exit(main())

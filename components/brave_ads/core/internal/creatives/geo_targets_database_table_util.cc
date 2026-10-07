@@ -21,9 +21,10 @@ namespace {
 
 constexpr char kTableName[] = "geo_targets";
 
-size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
-                   const std::map</*campaign_id*/ std::string,
-                                  base::flat_set<std::string>>& geo_targets) {
+size_t BindColumns(
+    const mojom::DBActionInfoPtr& mojom_db_action,
+    const absl::flat_hash_map</*campaign_id*/ std::string,
+                              absl::flat_hash_set<std::string>>& geo_targets) {
   CHECK(mojom_db_action);
   CHECK(!geo_targets.empty());
 
@@ -44,8 +45,8 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
 
 std::string BuildInsertSql(
     const mojom::DBActionInfoPtr& mojom_db_action,
-    const std::map</*campaign_id*/ std::string, base::flat_set<std::string>>&
-        geo_targets) {
+    const absl::flat_hash_map</*campaign_id*/ std::string,
+                              absl::flat_hash_set<std::string>>& geo_targets) {
   CHECK(mojom_db_action);
   CHECK(!geo_targets.empty());
 
@@ -65,8 +66,8 @@ std::string BuildInsertSql(
 
 void InsertGeoTargets(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-    const std::map</*campaign_id*/ std::string, base::flat_set<std::string>>&
-        geo_targets) {
+    const absl::flat_hash_map</*campaign_id*/ std::string,
+                              absl::flat_hash_set<std::string>>& geo_targets) {
   CHECK(mojom_db_transaction);
 
   if (geo_targets.empty()) {

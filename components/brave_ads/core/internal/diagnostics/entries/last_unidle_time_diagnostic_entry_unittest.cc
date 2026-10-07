@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds.*
+// pnpm test brave_unit_tests --filter=BraveAds.*
 
 namespace brave_ads {
 
@@ -24,7 +24,7 @@ TEST_F(BraveAdsLastUnIdleTimeDiagnosticEntryTest, LastUnIdleTime) {
   // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kLastUnIdleTime, diagnostic_entry.GetType());
   EXPECT_EQ("Last unidle time", diagnostic_entry.GetName());
-  EXPECT_EQ("Monday, July 8, 1996 at 12:34:56\u202fPM",
+  EXPECT_EQ("Monday, July 8, 1996 at 12:34:56\u202fPM (less than a minute ago)",
             diagnostic_entry.GetValue());
 }
 

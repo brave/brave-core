@@ -75,7 +75,6 @@ public class AnyTabState: TabState {
   public var visibleSecureContentState: SecureContentState { tab.visibleSecureContentState }
   public var serverTrust: SecTrust? { tab.serverTrust }
   public var faviconStatus: FaviconStatus? { tab.faviconStatus }
-  public var url: URL? { tab.url }
   public var visibleURL: URL? { tab.visibleURL }
   public var lastCommittedURL: URL? { tab.lastCommittedURL }
   public var previousCommittedURL: URL? { tab.previousCommittedURL }
@@ -86,7 +85,6 @@ public class AnyTabState: TabState {
   public var canGoBack: Bool { tab.canGoBack }
   public var canGoForward: Bool { tab.canGoForward }
   public var backForwardList: (any BackForwardListProxy)? { tab.backForwardList }
-  public var redirectChain: [URL] { tab.redirectChain }
   public var currentInitialURL: URL? { tab.currentInitialURL }
   public var currentUserAgentType: UserAgentType { tab.currentUserAgentType }
 

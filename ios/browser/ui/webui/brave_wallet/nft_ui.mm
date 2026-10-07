@@ -5,19 +5,18 @@
 
 #include "brave/ios/browser/ui/webui/brave_wallet/nft_ui.h"
 
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/components/nft_display/resources/grit/nft_display_generated_map.h"
 #include "brave/ios/browser/ui/webui/untrusted_sanitized_image_source.h"
 #include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
 #include "brave/ios/web/webui/brave_webui_utils.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/webui/url_data_source_ios.h"
 #include "ios/web/public/webui/web_ui_ios.h"
 #include "ios/web/public/webui/web_ui_ios_data_source.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/webui/resources/grit/webui_resources.h"
 
@@ -30,7 +29,7 @@ UntrustedNftUI::UntrustedNftUI(web::WebUIIOS* web_ui, const GURL& url)
                                          kNftDisplayGenerated,
                                          IDR_BRAVE_WALLET_NFT_DISPLAY_HTML);
 
-  untrusted_source->AddLocalizedStrings(brave_wallet::kLocalizedStrings);
+  untrusted_source->AddLocalizedStrings(webui::kWalletStrings);
 
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPageURL));
 

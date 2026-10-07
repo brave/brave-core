@@ -17,4 +17,5 @@ substitutions:
       re_flags: [DOTALL]
       replace: |-
         \1  bool brave_new_email_alias_suggestion = false;
+          bool brave_email_alias_suggestion = false;
         };

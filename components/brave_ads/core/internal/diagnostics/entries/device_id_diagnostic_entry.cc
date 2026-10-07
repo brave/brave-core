@@ -12,7 +12,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kName[] = "Device Id";
+constexpr char kName[] = "Device ID";
 constexpr char kUnknown[] = "Unknown";
 
 }  // namespace

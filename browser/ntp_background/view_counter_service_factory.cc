@@ -10,10 +10,6 @@
 #include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
-#include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_image_source.h"
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_source.h"
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_site_image_source.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
@@ -24,7 +20,6 @@
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/browser/url_data_source.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/browser/brave_ads/ads_service_factory.h"
@@ -84,17 +79,6 @@ ViewCounterServiceFactory::BuildServiceInstanceForBrowserContext(
     brave_ads::AdsService* const ads_service = nullptr;
     const bool is_supported_locale = false;
 #endif
-
-    content::URLDataSource::Add(
-        browser_context, std::make_unique<NTPBackgroundImagesSource>(service));
-    content::URLDataSource::Add(
-        browser_context, std::make_unique<NTPSponsoredImageSource>(service));
-    content::URLDataSource::Add(
-        browser_context,
-        std::make_unique<NTPSponsoredRichMediaSource>(service));
-    content::URLDataSource::Add(
-        browser_context,
-        std::make_unique<NTPSponsoredSiteImageSource>(service));
 
     return std::make_unique<ViewCounterService>(
         HostContentSettingsMapFactory::GetForProfile(profile), service,

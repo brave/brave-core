@@ -30,13 +30,15 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.settings.BottomInsetViewProvider;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.widget.Toast;
 
 @NullMarked
-public class CreateCustomFiltersFragment extends BravePreferenceFragment {
+public class CreateCustomFiltersFragment extends BravePreferenceFragment
+        implements BottomInsetViewProvider {
     public static final String BRAVE_ADBLOCK_FILTER_SYNTAX_PAGE =
             "https://support.brave.app/hc/en-us/articles/6449369961741";
 
@@ -51,6 +53,11 @@ public class CreateCustomFiltersFragment extends BravePreferenceFragment {
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_create_custom_filters, container, false);
+    }
+
+    @Override
+    public View getBottomInsetView(View fragmentView) {
+        return fragmentView;
     }
 
     @Override

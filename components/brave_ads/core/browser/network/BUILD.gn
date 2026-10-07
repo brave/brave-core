@@ -32,6 +32,7 @@ source_set("network") {
   deps = [
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_ads/core/public:headers",
+    "//brave/components/brave_rewards/core",
     "//components/prefs",
     "//mojo/public/cpp/bindings",
     "//net",
@@ -44,6 +45,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "http_client_unittest.cc",
     "http_client_util_unittest.cc",
     "oblivious_http_client_impl_unittest.cc",
     "oblivious_http_feature_unittest.cc",
@@ -56,6 +58,7 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/brave_ads/core/mojom",
     "//brave/components/brave_ads/core/public:headers",
+    "//brave/components/brave_rewards/core",
     "//components/prefs",
     "//components/prefs:test_support",
     "//net",

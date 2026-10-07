@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "关于";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "關於 Brave Shields";
-
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "網站通常會透過 Cookie 和指令碼嘗試識別您和您使用的裝置，藉此掌握您的身分及瞭解您使用網路的情形，進而追蹤您在每個網站上的行為。\n\nBrave 會封鎖這些項目，讓您能在不受追蹤的情況下自在瀏覽。";
-
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "這可讓您將影像儲存至您的相機膠卷。";
 
@@ -36,9 +30,6 @@
 
 /* Text for the toggle switch to clear 'Brave Ads' data in settings */
 "ads.braveAdsDataToggleOption" = "Brave 广告数据";
-
-/* individual blocking statistic title */
-"AdsAndTrackers" = "广告和跟踪器";
 
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "总是请求桌面站点";
@@ -91,6 +82,9 @@
 /* Label for the button used to delete the current login. */
 "autofill.managePasswords.deleteManagePasswordButtonTitle" = "删除";
 
+/* Label for the button used to confirm delete action for the current password. */
+"autofill.managePasswords.deleteManagePasswordConfrimButtonTitle" = "删除密码";
+
 /* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
 "autofill.managePasswords.headerTitle" = "已保存";
 
@@ -102,6 +96,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "提示保存密码";
+
+/* Navigation title when creating a new saved login from password management */
+"autofill.managePasswords.passwordDetail.addCredentialTitle" = "添加密码";
+
+/* Alert message warning the user that deleting the password will remove it from their sync chain and device */
+"autofill.managePasswords.passwordDetail.deleteConfirmMessage" = "此密码将从您的同步链和设备中移除。";
 
 /* Placeholder for the password field when adding or editing a login */
 "autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "输入密码";
@@ -121,18 +121,6 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "自动填充";
 
-/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
-"AutoRedirectAMPPages" = "自動重新導向 AMP 頁面";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
-"AutoRedirectAMPPagesDescription" = "一律造訪原始 (非 AMP) 頁面 URL，而不開啟 Google 的 Accelerated Mobile Page 版本";
-
-/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
-"AutoRedirectTrackingURLs" = "自动重新定向跟踪链接";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "启用绕过顶级重新定向跟踪链接支持";
-
 /* cookie settings option */
 "Block3rdPartyCookies" = "拦截第三方 cookies";
 
@@ -151,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "無法設定偏好設定，請稍後再試。";
 
-/* A title for a setting that enables cookie consent notices */
-"BlockCookieConsentNotices" = "阻止 Cookie 同意通知";
-
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "正在拦截监视器";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "拦截弹出窗口";
-
-/* No comment provided by engineer. */
-"BlockScripts" = "拦截脚本";
-
-/* No comment provided by engineer. */
-"BlockScriptsDescription" = "封鎖 JavaScript (可能會影響網站運作)。";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "為 %lld 個分頁新增書籤";
@@ -230,46 +209,10 @@
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "关闭";
 
 /* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "進階控制項";
-
-/* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave 盾牌 & 隐私";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "盾牌 & 隐私";
-
-/* The number of ads and trackers blocked will be next to this */
-"BraveShieldsBlockedCountLabel" = "封鎖廣告和其他討人厭的追蹤程式";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "了解更多";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "变更 Shields 全域默认值";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalControls" = "全域控制項";
-
-/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "存储联系信息，用于日后的站点故障报告";
-
-/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "如果您提供联系信息，这些信息将会被储存起来，在日后的报告中使用";
-
-/* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "如果這個網站貌似無法正常運作，請嘗試關閉 Shields";
-
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave Shields";
-
-/* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "關閉";
-
-/* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "開啟";
-
-/* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "點兩下即可切換 Brave Shields";
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave 通话";
@@ -727,6 +670,18 @@
 /* Accessibility Title for the button that edits the quick-search engines list. */
 "EditQuickSearchEnginesAccessibilityTitle" = "编辑快速搜索引擎";
 
+/* The message on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertMessage" = "如果您遇到崩溃或死机，Brave 可以自动发送匿名诊断报告以修复该问题。您随时可以稍后在设置中关闭此功能。";
+
+/* The title on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertTitle" = "启用自动崩溃报告";
+
+/* The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting */
+"EnableCrashReporterConfirmButtonTitle" = "启用";
+
+/* The button title on an alert presented to the user after the app crashes that ignores the alert */
+"EnableCrashReporterDenyButtonTitle" = "现在不";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "启用下拉刷新";
 
@@ -823,15 +778,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findPreviousTitle" = "尋找上一個";
 
-/* individual blocking statistic title */
-"FingerprintingMethods" = "指紋識別法";
-
-/* No comment provided by engineer. */
-"FingerprintingProtection" = "封鎖指紋識別";
-
-/* No comment provided by engineer. */
-"FingerprintingProtectionDescription" = "使網站不易識別裝置的特徵。 ";
-
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "允许在外部应用程序中打开通用链接";
 
@@ -898,15 +844,6 @@
 /* No comment provided by engineer. */
 "Home" = "家庭";
 
-/* No comment provided by engineer. */
-"HTTPSEverywhere" = "將連線升級為 HTTPS";
-
-/* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "尽量使用安全 HTTPS 打开站点，而不要使用 HTTP。";
-
-/* individual blocking statistic title */
-"HTTPSUpgrades" = "HTTPS 升级";
-
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "导入浏览数据";
 
@@ -927,6 +864,9 @@
 
 /* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
+
+/* Title for Brave Leo voice input menu item. Brave Leo is the name of a product and should not be translated */
+"LeoVoiceInputMenuItem" = "Leo 语音输入";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "已保存的登录将会永久移除。";
@@ -1095,9 +1035,6 @@
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "預設圖片";
-
-/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "赞助图片 & 视频";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "贊助圖片";
@@ -1648,9 +1585,6 @@
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "未命名播放列表";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
-"PopoverShieldsMenuClose" = "關閉 Shields 選單";
-
 /* Settings privacy section title */
 "Privacy" = "隐私";
 
@@ -1999,41 +1933,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "移出收藏";
 
-/* No comment provided by engineer. */
-"ReportABrokenSite" = "报告损坏的网站";
-
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "回報 Bug";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"ReportBrokenAdditionalDetails" = "其他详细信息（可选）";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"reportBrokenAdditionalDetailsRequired" = "其他详细信息";
-
-/* A label for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "您遇到的主要问题是什么？";
-
-/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
-"ReportBrokenContactMe" = "联系方式：（可选）";
-
-/* Contact info storing description */
-"ReportBrokenContactMeDescription" = "如果您提供联系信息，这些信息将会被储存起来，在日后用于报告站点故障情况";
-
-/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
-"ReportBrokenContactMeSuggestions" = "电子邮箱、Twitter 等";
-
-/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"ReportBrokenPlaceholder" = "选择一个选项";
-
-/* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "让 Brave 开发人员知道此网站无法正常工作：";
-
-/* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "注意：傳送至 Brave 伺服器的報告會包括網址、Brave 版本號碼、Shields 設定、VPN 狀態和語言設定。";
-
-/* No comment provided by engineer. */
-"ReportBrokenSubmitButtonTitle" = "提交";
 
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraAndMicrophonePermissionPrompt" = "“%@” 希望访问摄像头和麦克风";
@@ -2079,6 +1980,15 @@
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "感谢您为 Brave 和 BAT 社区提供支持！";
+
+/* Message of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationMessage" = "重置后，您当前的 Brave 奖励个人资料将被删除，Brave 奖励也将不再启用。";
+
+/* Title of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationTitle" = "重设 Brave 奖励";
+
+/* Title of a button that resets the user's Brave Rewards profile */
+"rewards.settingsResetTitle" = "重置";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "启用 Brave Rewards，观看 Brave 广告，支持 Brave 和 BAT 社区。";
@@ -2302,9 +2212,6 @@
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "保存登录";
 
-/* individual blocking statistic title */
-"ScriptsBlocked" = "脚本已被拦截";
-
 /* The placeholder text for bookmark search */
 "searchBookmarksTitle" = "搜索书签";
 
@@ -2461,17 +2368,17 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "质量设置";
 
+/* Description to explain the send crash reports toggle */
+"settings.sendCrashReportsDescription" = "如果遇到系统崩溃或冻结，请发送匿名诊断报告。";
+
+/* Title to explain the send crash reports toggle */
+"settings.sendCrashReportsTitle" = "发送崩溃报告";
+
 /* Description to explain the daily usage ping toggle */
 "settings.sendUsagePingDescription" = "这种私人 ping 可以让 Brave 估算活跃用户数量。";
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "自动向 Brave 发送每日使用 ping";
-
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "允许 Brave 在新标签页中显示隐私调查链接。这些调查可以帮助我们开发更好的功能，以及衡量浏览器广告活动的有效性。[了解更多](%@)";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "允许 Brave 进行调查";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -2544,21 +2451,6 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "當您在此網站上觀看影片時，為您封鎖廣告。";
-
-/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Brave Shields 全域預設";
-
-/* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "這些是 Shields 對新網站的預設設定。變更這些設定不會影響現有的個別網站設定。";
-
-/* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "您目前是在沒有 Brave 隱私防護的情況下瀏覽此網站。開啟 Shields 時無法正常瀏覽嗎？";
-
-/* shields overview message */
-"ShieldsOverview" = "利用网站屏幕，您在访问每个网站时可以控制是否拦截广告和跟踪程序。如果您希望查看某个特定网站的广告，则可以在此处启用这些广告。";
-
-/* shields overview footer message */
-"ShieldsOverviewFooter" = "請注意：部分網站可能需要指令碼才能順利運作，所以此防護機制預設為關閉。";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "新私人标签页";
@@ -2745,15 +2637,6 @@
 
 /* Settings item for clearing site-specific settings and shields settings. */
 "SiteAndShieldsSettings" = "站点和屏蔽设置";
-
-/* No comment provided by engineer. */
-"SiteReportedBody" = "感謝您讓 Brave 的開發人員知悉此網站發生錯誤。我們將盡力予以修正！";
-
-/* No comment provided by engineer. */
-"SiteReportedTitle" = "謝謝";
-
-/* Brave panel topmost title */
-"SiteShieldSettings" = "屏蔽";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "每天，我都会通过用 Brave 浏览网络来保存数据。";
@@ -2945,7 +2828,7 @@
 "sync.maximumDeviceReachedErrorTitle" = "裝置上限";
 
 /* New sync code button title */
-"sync.newSyncCode" = "啟動新的同步鏈接";
+"sync.newSyncCode" = "新建同步链";
 
 /* No internet connection alert body. */
 "sync.noConnectionBody" = "請檢查您的網絡連接並重試。";
@@ -3115,6 +2998,9 @@
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "私人浏览";
 
+/* A label in the tab tray mode switcher for private browsing mode */
+"tabGrid.privateBrowsingModeTitle" = "隐私";
+
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "无痕标签页设置";
 
@@ -3139,11 +3025,23 @@
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "粉碎标签页";
 
+/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
+"tabGrid.tabsCountFormatPlural" = "%lld 个标签";
+
+/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
+"tabGrid.tabsCountFormatSingular" = "%lld 个标签";
+
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "查看历史记录";
 
+/* Label for history menu item button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryMenuItemLabel" = "历史记录";
+
 /* Accessibility label for a button that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsAccessibilityLabel" = "查看同步标签页";
+
+/* Label for synced tabs menu item that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsMenuItemLabel" = "同步";
 
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "开启或关闭隐私模式";
@@ -3516,9 +3414,6 @@
 
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "用戶已取消";
-
-/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
-"UseRegionalAdblock" = "使用地区广告拦截";
 
 /* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "关闭";

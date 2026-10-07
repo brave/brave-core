@@ -267,12 +267,6 @@ class JsonRpcService : public mojom::JsonRpcService {
   void NotifySwitchChainRequestProcessed(const std::string& request_id,
                                          bool approved) override;
   void GetAllNetworks(GetAllNetworksCallback callback) override;
-  void GetCustomNetworks(mojom::CoinType coin,
-                         GetCustomNetworksCallback callback) override;
-  void GetKnownNetworks(mojom::CoinType coin,
-                        GetKnownNetworksCallback callback) override;
-  void GetHiddenNetworks(mojom::CoinType coin,
-                         GetHiddenNetworksCallback callback) override;
   void AddHiddenNetwork(mojom::CoinType coin,
                         const std::string& chain_id,
                         AddHiddenNetworkCallback callback) override;

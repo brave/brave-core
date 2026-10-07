@@ -22,6 +22,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
@@ -31,7 +32,7 @@ namespace ai_chat {
 
 namespace {
 constexpr size_t kMaxToolsPerContent = 30;
-}
+}  // namespace
 
 AssociatedContentManager::AssociatedContentManager(
     ConversationHandler* conversation)
@@ -66,11 +67,24 @@ void AssociatedContentManager::LoadArchivedContent(
     }
 
     auto* content = content_it->get();
-    bool is_video =
-        (content->content_type == mojom::ContentType::VideoTranscript);
-    owned_content_.push_back(std::make_unique<AssociatedArchiveContent>(
-        content->url, archive_content->content,
-        base::UTF8ToUTF16(content->title), is_video, content->uuid));
+    std::unique_ptr<AssociatedContentDelegate> owned_content;
+    if (content->content_type == mojom::ContentType::Workspace) {
+      owned_content =
+          conversation_->ai_chat_service()
+              ->RestoreWorkspaceAssociatedContentFromUrl(content->url);
+    }
+
+    // Not a workspace, or workspace restoration failed, so create an archive.
+    if (!owned_content) {
+      bool is_video =
+          (content->content_type == mojom::ContentType::VideoTranscript);
+      owned_content = std::make_unique<AssociatedArchiveContent>(
+          content->url, archive_content->content,
+          base::UTF8ToUTF16(content->title), is_video, content->uuid);
+    }
+
+    CHECK(owned_content);
+    owned_content_.push_back(std::move(owned_content));
     AddContent(owned_content_.back().get(), /*notify_updated=*/false);
 
     // Be sure to record the turn that this content is associated with.
@@ -86,7 +100,8 @@ void AssociatedContentManager::CreateArchiveContent(
   DVLOG(1) << __func__;
   auto content_uuid = to_archive->uuid();
   auto text_content = to_archive->cached_page_content().content;
-  auto is_video = to_archive->cached_page_content().is_video;
+  auto is_video = to_archive->cached_page_content().content_type ==
+                  mojom::ContentType::VideoTranscript;
 
   auto it = std::ranges::find(content_delegates_, content_uuid,
                               [](const auto& ptr) { return ptr->uuid(); });
@@ -152,11 +167,13 @@ void AssociatedContentManager::AddContent(AssociatedContentDelegate* delegate,
     content_delegates_.push_back(delegate);
     content_observations_.AddObservation(delegate);
 
+    // Let the content start watching for tool changes now that there's a
+    // conversation to report them to.
+    delegate->OnAssociatedWithConversation();
+
     // Discover whether this content exposes tools so it can be attached and
     // surfaced in the tools pill without waiting for a generation loop.
-    delegate->GetContentTools(
-        base::BindOnce(&AssociatedContentManager::OnContentToolsDetected,
-                       weak_ptr_factory_.GetWeakPtr(), delegate->GetWeakPtr()));
+    DetectContentTools(delegate);
   }
 
   if (notify_updated) {
@@ -178,11 +195,15 @@ void AssociatedContentManager::RemoveContent(
 
   auto it = std::ranges::find(content_delegates_, delegate,
                               [](const auto& ptr) { return ptr; });
+  url::Origin origin;
   if (it != content_delegates_.end()) {
+    // Captured now, as erasing owned content below may delete |delegate|.
+    origin = delegate->GetOrigin();
     // Let the content know it isn't associated with this conversation
     // anymore.
     content_observations_.RemoveObservation(delegate);
     content_delegates_.erase(it);
+    tools_attachment_overridden_.erase(delegate->uuid());
   }
 
   // If this is owned content, delete it.
@@ -192,6 +213,8 @@ void AssociatedContentManager::RemoveContent(
   if (owned_it != owned_content_.end()) {
     owned_content_.erase(owned_it);
   }
+
+  MaybeResetToolPermissionsForOrigin(origin);
 
   if (notify_updated) {
     conversation_->OnAssociatedContentUpdated();
@@ -215,6 +238,9 @@ void AssociatedContentManager::SetToolsAttached(std::string_view content_uuid,
                                                 bool tools_attached) {
   DVLOG(1) << __func__;
 
+  // Record even when it matches the current state, so auto-updates stop.
+  tools_attachment_overridden_.insert(std::string(content_uuid));
+
   auto it = std::ranges::find_if(content_delegates_,
                                  [&content_uuid](const auto& delegate) {
                                    return delegate->uuid() == content_uuid;
@@ -225,14 +251,134 @@ void AssociatedContentManager::SetToolsAttached(std::string_view content_uuid,
   }
 
   (*it)->set_tools_attached(tools_attached);
-  conversation_->OnAssociatedContentUpdated();
+}
+
+void AssociatedContentManager::GetToolInfos(std::string_view content_uuid,
+                                            GetToolInfosCallback callback) {
+  auto it = std::ranges::find_if(content_delegates_,
+                                 [&content_uuid](const auto& delegate) {
+                                   return delegate->uuid() == content_uuid;
+                                 });
+  if (it == content_delegates_.end()) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  (*it)->GetContentTools(base::BindOnce(
+      &AssociatedContentManager::OnToolInfosFetched,
+      weak_ptr_factory_.GetWeakPtr(), (*it)->GetOrigin(), std::move(callback)));
+}
+
+void AssociatedContentManager::OnToolInfosFetched(
+    const url::Origin& origin,
+    GetToolInfosCallback callback,
+    std::vector<std::unique_ptr<Tool>> tools) {
+  tools.resize(std::min(tools.size(), kMaxToolsPerContent));
+  std::vector<mojom::ToolInfoPtr> infos;
+  infos.reserve(tools.size());
+  // Blocked tools are listed too, so the user can see and undo the choice.
+  for (const auto& tool : tools) {
+    infos.push_back(
+        mojom::ToolInfo::New(std::string(tool->DisplayName()),
+                             std::string(tool->DisplayDescription()),
+                             GetToolPermission(origin, tool->DisplayName())));
+  }
+  std::move(callback).Run(std::move(infos));
+}
+
+void AssociatedContentManager::SetToolPermission(
+    std::string_view content_uuid,
+    std::string_view tool_name,
+    mojom::ToolPermission permission) {
+  auto it = std::ranges::find_if(content_delegates_,
+                                 [&content_uuid](const auto& delegate) {
+                                   return delegate->uuid() == content_uuid;
+                                 });
+  if (it == content_delegates_.end()) {
+    return;
+  }
+
+  // Each url::Origin::Create() of an opaque origin gets a fresh nonce, so
+  // there's no key to record the choice against that could be found again.
+  const url::Origin origin = (*it)->GetOrigin();
+  if (origin.opaque()) {
+    return;
+  }
+
+  // kAsk is the default, so drop the entry rather than storing it.
+  if (permission == mojom::ToolPermission::kAsk) {
+    auto origin_it = content_tool_permissions_.find(origin);
+    if (origin_it == content_tool_permissions_.end()) {
+      return;
+    }
+    origin_it->second.erase(tool_name);
+    if (origin_it->second.empty()) {
+      content_tool_permissions_.erase(origin_it);
+    }
+  } else {
+    content_tool_permissions_[origin][std::string(tool_name)] = permission;
+  }
+
+  // The choice is conversation-wide, so tell every UI bound to the
+  // conversation rather than leaving the one it was made from to update
+  // itself.
+  GetToolInfos(content_uuid,
+               base::BindOnce(
+                   &AssociatedContentManager::NotifyContentToolsChanged,
+                   weak_ptr_factory_.GetWeakPtr(), std::string(content_uuid)));
+}
+
+void AssociatedContentManager::SetToolPermissionForModelToolName(
+    std::string_view model_tool_name,
+    mojom::ToolPermission permission) {
+  auto tool_it = std::ranges::find_if(tools_, [&](const auto& entry) {
+    return entry.tool->Name() == model_tool_name;
+  });
+  if (tool_it == tools_.end()) {
+    return;
+  }
+
+  // Routed through the content which exposed the tool, so the choice is keyed
+  // and announced exactly like one made in the dialog.
+  auto delegate_it =
+      std::ranges::find_if(content_delegates_, [&](const auto& delegate) {
+        return delegate->GetOrigin() == tool_it->origin;
+      });
+  if (delegate_it == content_delegates_.end()) {
+    return;
+  }
+  SetToolPermission((*delegate_it)->uuid(), tool_it->tool->DisplayName(),
+                    permission);
+}
+
+void AssociatedContentManager::NotifyContentToolsChanged(
+    const std::string& content_uuid,
+    std::vector<mojom::ToolInfoPtr> tools) {
+  conversation_->OnContentToolsChanged(content_uuid, std::move(tools));
+}
+
+mojom::ToolPermission AssociatedContentManager::GetToolPermission(
+    const url::Origin& origin,
+    std::string_view tool_name) const {
+  auto origin_it = content_tool_permissions_.find(origin);
+  if (origin_it == content_tool_permissions_.end()) {
+    return mojom::ToolPermission::kAsk;
+  }
+  auto tool_it = origin_it->second.find(tool_name);
+  return tool_it == origin_it->second.end() ? mojom::ToolPermission::kAsk
+                                            : tool_it->second;
+}
+
+void AssociatedContentManager::DetectContentTools(
+    AssociatedContentDelegate* delegate) {
+  delegate->GetContentTools(
+      base::BindOnce(&AssociatedContentManager::OnContentToolsDetected,
+                     weak_ptr_factory_.GetWeakPtr(), delegate->GetWeakPtr()));
 }
 
 void AssociatedContentManager::OnContentToolsDetected(
     base::WeakPtr<AssociatedContentDelegate> delegate,
     std::vector<std::unique_ptr<Tool>> tools) {
-  // Attach content when it exposes any tools, detach it otherwise. The user
-  // can subsequently override this via SetToolsAttached.
   if (!delegate) {
     return;
   }
@@ -241,7 +387,20 @@ void AssociatedContentManager::OnContentToolsDetected(
     return;
   }
   delegate->set_tools_attached(tools_attached);
-  conversation_->OnAssociatedContentUpdated();
+}
+
+bool AssociatedContentManager::IsEligibleForAutoToolsUpdate(
+    const std::string& content_uuid) const {
+  return !content_uuid_to_conversation_turns_.contains(content_uuid) &&
+         !tools_attachment_overridden_.contains(content_uuid);
+}
+
+void AssociatedContentManager::OnContentToolsChanged(
+    AssociatedContentDelegate* delegate) {
+  if (!IsEligibleForAutoToolsUpdate(delegate->uuid())) {
+    return;
+  }
+  DetectContentTools(delegate);
 }
 
 void AssociatedContentManager::ClearContent() {
@@ -286,9 +445,7 @@ AssociatedContentManager::GetAssociatedContent() const {
     content->content_id = delegate->content_id();
     content->url = delegate->url();
     content->title = base::UTF16ToUTF8(delegate->title());
-    content->content_type = cached_page_content.is_video
-                                ? mojom::ContentType::VideoTranscript
-                                : mojom::ContentType::PageContent;
+    content->content_type = cached_page_content.content_type;
 
     const uint32_t content_length =
         cached_page_content.content.length() + kAdditionalCharsPerContent;
@@ -493,7 +650,8 @@ bool AssociatedContentManager::IsVideo() const {
   DVLOG(1) << __func__;
 
   return content_delegates_.size() == 1 &&
-         content_delegates_[0]->cached_page_content().is_video;
+         content_delegates_[0]->cached_page_content().content_type ==
+             mojom::ContentType::VideoTranscript;
 }
 
 size_t AssociatedContentManager::GetContentDelegateCount() const {
@@ -523,6 +681,11 @@ void AssociatedContentManager::OnTitleChanged(
   conversation_->OnAssociatedContentUpdated();
 }
 
+void AssociatedContentManager::OnToolsAttachedChanged(
+    AssociatedContentDelegate* delegate) {
+  conversation_->OnAssociatedContentUpdated();
+}
+
 void AssociatedContentManager::UpdateToolsForNewGenerationLoop(
     base::OnceClosure on_updated) {
   tools_.clear();
@@ -543,26 +706,42 @@ void AssociatedContentManager::UpdateToolsForNewGenerationLoop(
       base::BarrierClosure(attached_delegates.size(), std::move(on_updated));
   for (auto* content : attached_delegates) {
     content->GetContentTools(base::BindOnce(
-        [](base::WeakPtr<AssociatedContentManager> self,
+        [](base::WeakPtr<AssociatedContentManager> self, url::Origin origin,
            base::RepeatingClosure done,
            std::vector<std::unique_ptr<Tool>> tools) {
           if (self) {
-            std::move(
-                tools.begin(),
-                tools.begin() + std::min(tools.size(), kMaxToolsPerContent),
-                std::back_inserter(self->tools_));
+            self->AddToolsForGenerationLoop(origin, std::move(tools));
           }
           done.Run();
         },
-        weak_ptr_factory_.GetWeakPtr(), barrier));
+        weak_ptr_factory_.GetWeakPtr(), content->GetOrigin(), barrier));
+  }
+}
+
+void AssociatedContentManager::AddToolsForGenerationLoop(
+    const url::Origin& origin,
+    std::vector<std::unique_ptr<Tool>> tools) {
+  // Cap before filtering so the list the model sees is a subset of the one the
+  // website tools dialog shows, which caps the same way.
+  tools.resize(std::min(tools.size(), kMaxToolsPerContent));
+  for (auto& tool : tools) {
+    const mojom::ToolPermission permission =
+        GetToolPermission(origin, tool->DisplayName());
+    // Withheld rather than failed when called, so the model can't waste a turn
+    // asking for something it will never be given.
+    if (permission == mojom::ToolPermission::kNeverAllow) {
+      continue;
+    }
+    tool->SetUserPermissionStrategy(permission);
+    tools_.push_back({std::move(tool), origin});
   }
 }
 
 std::vector<base::WeakPtr<Tool>> AssociatedContentManager::GetTools() {
   std::vector<base::WeakPtr<Tool>> tool_ptrs;
   tool_ptrs.reserve(tools_.size());
-  for (const auto& tool : tools_) {
-    tool_ptrs.push_back(tool->GetWeakPtr());
+  for (const auto& entry : tools_) {
+    tool_ptrs.push_back(entry.tool->GetWeakPtr());
   }
   return tool_ptrs;
 }
@@ -573,6 +752,35 @@ void AssociatedContentManager::DetachContent() {
   content_observations_.RemoveAllObservations();
   content_delegates_.clear();
   owned_content_.clear();
+  tools_attachment_overridden_.clear();
+  content_tool_permissions_.clear();
+}
+
+bool AssociatedContentManager::HasLiveContentForOrigin(
+    const url::Origin& origin) const {
+  for (auto* delegate : content_delegates_) {
+    // Archived content can't expose tools.
+    auto owned_it =
+        std::ranges::find(owned_content_, delegate,
+                          [](const auto& owned) { return owned.get(); });
+    if (owned_it != owned_content_.end()) {
+      continue;
+    }
+    if (delegate->GetOrigin() == origin) {
+      return true;
+    }
+  }
+  return false;
+}
+
+void AssociatedContentManager::MaybeResetToolPermissionsForOrigin(
+    const url::Origin& origin) {
+  auto origin_it = content_tool_permissions_.find(origin);
+  if (origin_it == content_tool_permissions_.end() ||
+      HasLiveContentForOrigin(origin)) {
+    return;
+  }
+  content_tool_permissions_.erase(origin_it);
 }
 
 }  // namespace ai_chat

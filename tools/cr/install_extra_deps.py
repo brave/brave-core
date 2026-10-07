@@ -38,18 +38,26 @@ import gclient_paths  # pylint: disable=wrong-import-position,import-error
 import gclient_utils  # pylint: disable=wrong-import-position,import-error
 
 from extra_deps import (  # pylint: disable=wrong-import-position
-    EXTRA_DEPS, EXTRA_DEPS_FILE)
+    EXTRA_DEPS,
+    EXTRA_DEPS_FILE,
+)
 from tarball_installer import (  # pylint: disable=wrong-import-position
-    TarballInstaller)
+    TarballInstaller,
+)
 
 # This script's own logger, so we don't step on gclient's logger. It is also of
 # notice that most logs are DEBUG. No-op runs should not produce any output in
 # normal runs, to avoid cluttering the sync output.
 _LOG = logging.getLogger('install_extra_deps')
 
+# Level defaults to WARNING for users of this file that import it. For the
+# application mode, the CLI determines that based on the presence of `--quiet`.
+_LOG.setLevel(logging.WARNING)
 
-def _select_object(objects: list[dict],
-                   variables: dict[str, object]) -> dict | None:
+
+def _select_object(
+    objects: list[dict], variables: dict[str, object]
+) -> dict | None:
     """Return the single object whose condition matches the resolved variables.
 
     Returns None if no object matches, and raises if more than one does, since
@@ -57,14 +65,18 @@ def _select_object(objects: list[dict],
     host platform).
     """
     matches = [
-        obj for obj in objects if 'condition' not in obj
+        obj
+        for obj in objects
+        if 'condition' not in obj
         or gclient_eval.EvaluateCondition(obj['condition'], variables)
     ]
     if not matches:
         return None
     if len(matches) > 1:
-        raise RuntimeError('Multiple objects match the resolved variables: ' +
-                           ', '.join(obj['object_name'] for obj in matches))
+        raise RuntimeError(
+            'Multiple objects match the resolved variables: '
+            + ', '.join(obj['object_name'] for obj in matches)
+        )
     return matches[0]
 
 
@@ -78,24 +90,27 @@ _OVERLAYED_ON_KEY = 'overlayed_on'
 # Object keys `setdep` can rewrite: the plain GCS-object triple, always
 # required, plus the optional overlay base.
 _SETDEP_REQUIRED_KEYS = ('object_name', 'sha256sum', 'size_bytes')
-_SETDEP_OBJECT_KEYS = _SETDEP_REQUIRED_KEYS + (_OVERLAYED_ON_KEY, )
+_SETDEP_OBJECT_KEYS = _SETDEP_REQUIRED_KEYS + (_OVERLAYED_ON_KEY,)
 
 
 def _parse_object_spec(spec: str) -> dict[str, str]:
-    """Parse one `object_name,sha256sum,size_bytes[,overlayed_on]` setdep arg.
-    """
+    """Parse one `object_name,sha256sum,size_bytes[,overlayed_on]` setdep arg."""
     fields = [field.strip() for field in spec.split(',')]
-    if (len(fields)
-            not in (len(_SETDEP_REQUIRED_KEYS), len(_SETDEP_OBJECT_KEYS))
-            or not all(fields)):
+    if len(fields) not in (
+        len(_SETDEP_REQUIRED_KEYS),
+        len(_SETDEP_OBJECT_KEYS),
+    ) or not all(fields):
         raise ValueError(
             f'Object {spec!r} must be `{",".join(_SETDEP_REQUIRED_KEYS)}`, '
             f'optionally followed by `{_OVERLAYED_ON_KEY}` (no field may be '
-            f'empty).')
+            f'empty).'
+        )
     obj = dict(zip(_SETDEP_OBJECT_KEYS, fields))
     if not obj['size_bytes'].isdigit():
-        raise ValueError(f'size_bytes must be a non-negative integer, got '
-                         f'{obj["size_bytes"]!r}.')
+        raise ValueError(
+            f'size_bytes must be a non-negative integer, got '
+            f'{obj["size_bytes"]!r}.'
+        )
     return obj
 
 
@@ -108,8 +123,11 @@ def format_setdep_revision(path: str, objects: list[dict]) -> str:
     """
 
     def render(obj: dict) -> str:
-        keys = (_SETDEP_OBJECT_KEYS
-                if _OVERLAYED_ON_KEY in obj else _SETDEP_REQUIRED_KEYS)
+        keys = (
+            _SETDEP_OBJECT_KEYS
+            if _OVERLAYED_ON_KEY in obj
+            else _SETDEP_REQUIRED_KEYS
+        )
         return ','.join(str(obj[key]) for key in keys)
 
     return f'{path}@' + '?'.join(render(obj) for obj in objects)
@@ -135,15 +153,20 @@ def _load_editable_extra_deps(extra_deps_file: Path) -> gclient_eval._NodeDict:
     }
     scope = gclient_eval._NodeDict({}, tokens)
     for statement in ast.parse(content, filename=filename).body:
-        if (not isinstance(statement, ast.Assign)
-                or len(statement.targets) != 1
-                or not isinstance(statement.targets[0], ast.Name)):
+        if (
+            not isinstance(statement, ast.Assign)
+            or len(statement.targets) != 1
+            or not isinstance(statement.targets[0], ast.Name)
+        ):
             raise ValueError(
                 f'{filename}: only simple `name = ...` assignments are '
-                f'supported.')
-        scope.SetNode(statement.targets[0].id,
-                      gclient_eval._gclient_eval(statement.value, filename),
-                      statement.value)
+                f'supported.'
+            )
+        scope.SetNode(
+            statement.targets[0].id,
+            gclient_eval._gclient_eval(statement.value, filename),
+            statement.value,
+        )
 
     if 'extra_deps' not in scope:
         raise ValueError(f'{filename}: no `extra_deps` assignment found.')
@@ -151,8 +174,9 @@ def _load_editable_extra_deps(extra_deps_file: Path) -> gclient_eval._NodeDict:
     return scope
 
 
-def _set_objects(scope: gclient_eval._NodeDict, path: str,
-                 new_objects: list[dict[str, str]]) -> None:
+def _set_objects(
+    scope: gclient_eval._NodeDict, path: str, new_objects: list[dict[str, str]]
+) -> None:
     """Rewrite one EXTRA_DEPS entry's objects in place, in `scope`'s tokens.
 
     Delegates `object_name`/`sha256sum`/`size_bytes` to `gclient_eval.SetGCS`,
@@ -174,8 +198,10 @@ def _set_objects(scope: gclient_eval._NodeDict, path: str,
                 gclient_eval._UpdateAstString(tokens, value, overlayed_on)
                 break
         else:
-            raise ValueError(f'Object {index} of {path!r} has no '
-                             f'{_OVERLAYED_ON_KEY!r} key to update.')
+            raise ValueError(
+                f'Object {index} of {path!r} has no '
+                f'{_OVERLAYED_ON_KEY!r} key to update.'
+            )
 
 
 def setdep(revisions: list[str], extra_deps_file: Path | None = None) -> None:
@@ -193,10 +219,13 @@ def setdep(revisions: list[str], extra_deps_file: Path | None = None) -> None:
         path, separator, objects_spec = revision.partition('@')
         if not separator or not path or not objects_spec:
             raise ValueError(
-                f'Revision {revision!r} must be of the form `DEP@object,...`.')
+                f'Revision {revision!r} must be of the form `DEP@object,...`.'
+            )
         if path not in scope['extra_deps']:
-            raise ValueError(f'Unknown EXTRA_DEPS entry {path!r}. Known '
-                             f'entries: {sorted(scope["extra_deps"])}.')
+            raise ValueError(
+                f'Unknown EXTRA_DEPS entry {path!r}. Known '
+                f'entries: {sorted(scope["extra_deps"])}.'
+            )
         new_objects = [
             _parse_object_spec(obj) for obj in objects_spec.split('?')
         ]
@@ -206,9 +235,9 @@ def setdep(revisions: list[str], extra_deps_file: Path | None = None) -> None:
     # `RenderDEPSFile` untokenizes the (now-mutated) tokens back to source, so
     # everything the edit did not touch is byte-for-byte preserved. `newline=''`
     # keeps the file's `\n` line endings intact on every platform.
-    extra_deps_file.write_text(gclient_eval.RenderDEPSFile(scope),
-                               encoding='utf-8',
-                               newline='')
+    extra_deps_file.write_text(
+        gclient_eval.RenderDEPSFile(scope), encoding='utf-8', newline=''
+    )
 
 
 class ExtraDepsRunner:
@@ -236,14 +265,17 @@ class ExtraDepsRunner:
         """
         parser = gclient.OptionParser()
         options, _ = parser.parse_args([])
-        root = gclient_paths.FindGclientRoot(str(_SRC_DIR.parent),
-                                             options.config_filename)
+        root = gclient_paths.FindGclientRoot(
+            str(_SRC_DIR.parent), options.config_filename
+        )
         if root is None:
             raise RuntimeError(
-                f'Could not find a .gclient root from {_SRC_DIR.parent}')
+                f'Could not find a .gclient root from {_SRC_DIR.parent}'
+            )
         client = gclient.GClient(root, options)
         client.SetConfig(
-            gclient_utils.FileRead(Path(root) / options.config_filename))
+            gclient_utils.FileRead(Path(root) / options.config_filename)
+        )
         return cls(client)
 
     def _solution_scope(self, name: str) -> dict[str, object]:
@@ -264,11 +296,13 @@ class ExtraDepsRunner:
         """
         if name not in self._scope_by_solution:
             solution = next(
-                (d for d in self._client.dependencies if d.name == name), None)
+                (d for d in self._client.dependencies if d.name == name), None
+            )
             if solution is None:
                 names = [d.name for d in self._client.dependencies]
                 raise RuntimeError(
-                    f'No gclient solution named {name!r} (have: {names})')
+                    f'No gclient solution named {name!r} (have: {names})'
+                )
             # Resolve the solution's DEPS READ-ONLY. We deliberately do NOT call
             # `solution.ParseDepsFile()`, as that will have other side effects.
             # For example: for `gcs`-type deps, gclient's dependency processing
@@ -276,8 +310,11 @@ class ExtraDepsRunner:
             builtin_vars = solution.get_builtin_vars()
             deps_file = _SRC_DIR.parent / solution.name / solution.deps_file
             local_scope = gclient_eval.Parse(
-                deps_file.read_bytes().decode('utf-8'), str(deps_file),
-                solution.custom_vars, builtin_vars)
+                deps_file.read_bytes().decode('utf-8'),
+                str(deps_file),
+                solution.custom_vars,
+                builtin_vars,
+            )
             merged: dict[str, object] = dict(local_scope.get('vars', {}))
             merged.update(builtin_vars)
             merged.update(solution.custom_vars or {})
@@ -288,8 +325,7 @@ class ExtraDepsRunner:
         return self._scope_by_solution[name]
 
     def _solution_vars(self, name: str) -> dict[str, object]:
-        """Return (and cache) the fully-resolved DEPS variables for a solution.
-        """
+        """Return (and cache) the fully-resolved DEPS variables for a solution."""
         return self._solution_scope(name)['vars']
 
     def _validate_overlay_target(self, path: str, overlayed_on: str) -> None:
@@ -314,23 +350,25 @@ class ExtraDepsRunner:
             raise RuntimeError(
                 f'Refusing to install {path}: it is not a `gcs` dependency in '
                 f'DEPS, so the overlay base {overlayed_on!r} cannot be '
-                f'verified.')
+                f'verified.'
+            )
         objects = dep.get('objects') or []
         if not any(obj.get('object_name') == overlayed_on for obj in objects):
             available = sorted(str(obj.get('object_name')) for obj in objects)
             raise RuntimeError(
                 f'Refusing to install {path}: DEPS does not pin the expected '
                 f'overlay base {overlayed_on!r} (upstream may have rolled the '
-                f'toolchain). Objects currently pinned in DEPS: {available}.')
+                f'toolchain). Objects currently pinned in DEPS: {available}.'
+            )
 
     def install(self, path: str, spec: dict) -> None:
-        """Download and install the matching object for one `EXTRA_DEPS` entry.
-        """
+        """Download and install the matching object for one `EXTRA_DEPS` entry."""
         variables = self._solution_vars(path.split('/', 1)[0])
 
         condition = spec.get('condition')
         if condition and not gclient_eval.EvaluateCondition(
-                condition, variables):
+            condition, variables
+        ):
             _LOG.debug('Skipping %s: condition %r is false', path, condition)
             return
 
@@ -340,8 +378,9 @@ class ExtraDepsRunner:
             return
 
         overlayed_on = obj.get('overlayed_on')
-        installer = TarballInstaller.for_object(_SRC_DIR.parent / path,
-                                                spec['bucket'], obj)
+        installer = TarballInstaller.for_object(
+            _SRC_DIR.parent / path, spec['bucket'], obj
+        )
 
         # An overlay must sit on the base it was built against: validate it
         # still matches DEPS before touching the destination. No `overlayed_on`
@@ -357,20 +396,32 @@ class ExtraDepsRunner:
 def main() -> int:
     # The gclient machinery used to resolve DEPS conditions logs very verbosely
     # on the root logger (every dependency's `verify_validity`, recursedeps,
-    # etc.). Keep the root at ERROR to silence that chatter, and emit this
-    # script's own messages through `_LOG` (at INFO) so they still surface.
+    # etc.). Keep the root at ERROR to silence that chatter; this script's own
+    # messages go through `_LOG`, whose level is set from `--quiet` below.
     logging.basicConfig(level=logging.ERROR, format='%(message)s')
-    _LOG.setLevel(logging.INFO)
 
     parser = argparse.ArgumentParser(
         description='Download and install the bucket-hosted archive(s) for the '
-        'given EXTRA_DEPS entries.')
+        'given EXTRA_DEPS entries.'
+    )
     subparsers = parser.add_subparsers(dest='command', required=True)
+
+    # Shared by every subcommand, so `--quiet` is accepted after the command
+    # name rather than only ahead of it.
+    common_parser = argparse.ArgumentParser(add_help=False)
+    common_parser.add_argument(
+        '-q',
+        '--quiet',
+        action='store_true',
+        help='Report nothing but warnings and errors.',
+    )
 
     sync_parser = subparsers.add_parser(
         'sync',
+        parents=[common_parser],
         help='Download and install the bucket-hosted archive(s) for the given '
-        'EXTRA_DEPS entries.')
+        'EXTRA_DEPS entries.',
+    )
     sync_parser.add_argument(
         'deps',
         nargs='+',
@@ -378,12 +429,15 @@ def main() -> int:
         metavar='DEP_PATH',
         help='One or more path keys in EXTRA_DEPS identifying the entries to '
         'install. Entries whose condition is false on this host are skipped, '
-        'so a single invocation may list every per-platform variant.')
+        'so a single invocation may list every per-platform variant.',
+    )
 
     setdep_parser = subparsers.add_parser(
         'setdep',
+        parents=[common_parser],
         help='Repin EXTRA_DEPS entries in place, preserving comments and '
-        'formatting (like `gclient setdep`).')
+        'formatting (like `gclient setdep`).',
+    )
     setdep_parser.add_argument(
         '-r',
         '--revision',
@@ -396,9 +450,12 @@ def main() -> int:
         'followed by `overlayed_on`. Join multiple objects with `?`, in the '
         'entry\'s existing order. The object count must match the entry\'s '
         'current count. May be repeated to repin several entries in one '
-        'invocation.')
+        'invocation.',
+    )
 
     args = parser.parse_args()
+    if not args.quiet:
+        _LOG.setLevel(logging.INFO)
 
     if args.command == 'setdep':
         setdep(args.revisions)

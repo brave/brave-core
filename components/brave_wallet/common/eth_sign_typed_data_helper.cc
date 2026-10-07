@@ -8,6 +8,7 @@
 #include <stddef.h>
 
 #include <algorithm>
+#include <cmath>
 #include <optional>
 #include <string_view>
 #include <utility>
@@ -16,6 +17,7 @@
 #include "base/containers/extend.h"
 #include "base/containers/queue.h"
 #include "base/containers/span.h"
+#include "base/numerics/checked_math.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -234,9 +236,6 @@ EthSignTypedDataHelper::EncodeData(const std::string_view primary_type_name,
 std::optional<EthSignTypedDataHelper::Eip712HashArray>
 EthSignTypedDataHelper::EncodeField(const std::string_view type,
                                     const base::Value& value) const {
-  // ES6 section 20.1.2.6 Number.MAX_SAFE_INTEGER
-  constexpr double kMaxSafeInteger = static_cast<double>(kMaxSafeIntegerUint64);
-
   if (type.ends_with(']')) {
     if (version_ != Version::kV4) {
       return std::nullopt;
@@ -338,10 +337,16 @@ EthSignTypedDataHelper::EncodeField(const std::string_view type,
     const std::string* value_str = value.GetIfString();
     uint256_t encoded_value = 0;
     if (value_double) {
-      encoded_value = (uint256_t)(uint64_t)*value_double;
-      if (encoded_value > (uint256_t)kMaxSafeInteger) {
+      if (std::trunc(*value_double) != *value_double) {
         return std::nullopt;
       }
+      uint64_t value_uint64 = 0;
+      if (!base::CheckedNumeric<uint64_t>(*value_double)
+               .AssignIfValid(&value_uint64) ||
+          value_uint64 > kMaxSafeIntegerUint64) {
+        return std::nullopt;
+      }
+      encoded_value = value_uint64;
     } else if (value_str) {
       if (!value_str->empty()) {
         if (!HexValueToUint256(*value_str, &encoded_value)) {
@@ -379,10 +384,16 @@ EthSignTypedDataHelper::EncodeField(const std::string_view type,
     const std::string* value_str = value.GetIfString();
     int256_t encoded_value = 0;
     if (value_double) {
-      encoded_value = (int256_t)(int64_t)*value_double;
-      if (encoded_value > (int256_t)kMaxSafeInteger) {
+      if (std::trunc(*value_double) != *value_double) {
         return std::nullopt;
       }
+      int64_t value_int64 = 0;
+      if (!base::CheckedNumeric<int64_t>(*value_double)
+               .AssignIfValid(&value_int64) ||
+          base::SafeUnsignedAbs(value_int64) > kMaxSafeIntegerUint64) {
+        return std::nullopt;
+      }
+      encoded_value = value_int64;
     } else if (value_str) {
       if (!value_str->empty()) {
         if (!HexValueToInt256(*value_str, &encoded_value)) {

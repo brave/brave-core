@@ -119,7 +119,16 @@ void CopyTextToClipboardAsConfidential(std::string_view text) {
 
 // Determines whether its safe to associate content with a conversation.
 bool CanAssociateContent(AssociatedContentDelegate* delegate) {
-  return delegate && kAllowedContentSchemes.contains(delegate->url().scheme());
+  if (!delegate) {
+    return false;
+  }
+  // Always allow workspace content (identified by content type).
+  if (delegate->cached_page_content().content_type ==
+      mojom::ContentType::Workspace) {
+    return true;
+  }
+  std::string_view scheme = delegate->url().scheme();
+  return kAllowedContentSchemes.contains(scheme);
 }
 
 AIChatService::AIChatService(
@@ -144,6 +153,9 @@ AIChatService::AIChatService(
                                               std::string(channel_string))),
       conversation_share_manager_(
           std::make_unique<ConversationShareManager>(url_loader_factory_)),
+      conversation_share_store_(
+          std::make_unique<ConversationShareStore>(profile_prefs,
+                                                   os_crypt_async)),
       credential_manager_(std::move(ai_chat_credential_manager)),
       tool_provider_factories_(std::move(tool_provider_factories)),
       profile_path_(profile_path) {
@@ -182,6 +194,11 @@ AIChatService::AIChatService(
       prefs::kBraveAIChatTabOrganizationModelKey,
       base::BindRepeating(&AIChatService::OnTabOrganizationModelPrefChanged,
                           weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      prefs::kBraveAIChatTabOrganizationSendPageContent,
+      base::BindRepeating(
+          &AIChatService::OnTabOrganizationSendPageContentPrefChanged,
+          weak_ptr_factory_.GetWeakPtr()));
 
   MaybeInitStorage();
 
@@ -270,7 +287,8 @@ ConversationHandler* AIChatService::CreateConversation() {
       std::make_unique<ConversationHandler>(
           conversation, this, model_service_, credential_manager_.get(),
           feedback_api_.get(), profile_prefs_, url_loader_factory_,
-          CreateToolProvidersForNewConversation());
+          /*tool_providers=*/std::vector<std::unique_ptr<ToolProvider>>());
+  AddToolProvidersToConversation(conversation_handler.get());
   conversation_observations_.AddObservation(conversation_handler.get());
 
   // Own it
@@ -321,6 +339,19 @@ ConversationHandler* AIChatService::GetConversation(
     return nullptr;
   }
   return conversation_handler_it->second.get();
+}
+
+void AIChatService::GetConversationThreadEntries(
+    const std::string& thread_uuid,
+    base::OnceCallback<void(std::vector<mojom::ConversationTurnPtr>)>
+        callback) {
+  if (!base::FeatureList::IsEnabled(features::kAIChatThreads) || !ai_chat_db_) {
+    std::move(callback).Run({});
+    return;
+  }
+  ai_chat_db_.AsyncCall(&AIChatDatabase::GetConversationThreadEntries)
+      .WithArgs(thread_uuid)
+      .Then(std::move(callback));
 }
 
 void AIChatService::GetConversation(
@@ -376,7 +407,9 @@ void AIChatService::OnConversationDataReceived(
       std::make_unique<ConversationHandler>(
           conversation, this, model_service_, credential_manager_.get(),
           feedback_api_.get(), profile_prefs_, url_loader_factory_,
-          CreateToolProvidersForNewConversation(), std::move(data));
+          /*tool_providers=*/std::vector<std::unique_ptr<ToolProvider>>(),
+          std::move(data));
+  AddToolProvidersToConversation(conversation_handler.get());
   conversation_observations_.AddObservation(conversation_handler.get());
   conversation_handlers_.insert_or_assign(conversation_uuid,
                                           std::move(conversation_handler));
@@ -683,7 +716,8 @@ void AIChatService::OnLoadConversationsLazyData(
       conversations_.emplace(uuid, std::move(conversation));
     }
     auto handler_it = conversation_handlers_.find(uuid);
-    if (handler_it != conversation_handlers_.end()) {
+    // Storage can have been turned off while the conversations loaded.
+    if (handler_it != conversation_handlers_.end() && ai_chat_db_) {
       // Notify the handler that metadata is possibly changed
       ConversationHandler* handler = handler_it->second.get();
       // If a reload was asked for, then we should also update the deeper
@@ -706,10 +740,13 @@ void AIChatService::OnLoadConversationsLazyData(
     }
   }
   if (on_conversations_loaded_callbacks_.has_value()) {
-    for (auto& callback : on_conversations_loaded_callbacks_.value()) {
+    // Taken first, since a callback can ask for the conversations again, and
+    // must then get them straight away.
+    std::vector<ConversationMapCallback> callbacks;
+    callbacks.swap(*on_conversations_loaded_callbacks_);
+    for (auto& callback : callbacks) {
       std::move(callback).Run(conversations_);
     }
-    on_conversations_loaded_callbacks_->clear();
   }
   OnConversationListChanged();
 }
@@ -857,6 +894,8 @@ void AIChatService::ConversationExists(const std::string& conversation_uuid,
 
 void AIChatService::ShareConversation(const std::string& encrypted_contents,
                                       const std::string& key_fragment,
+                                      const std::string& conversation_uuid,
+                                      const std::string& conversation_title,
                                       bool copy_to_clipboard,
                                       ShareConversationCallback callback) {
   // Only the ciphertext is handed to the share manager (which talks to the
@@ -867,15 +906,18 @@ void AIChatService::ShareConversation(const std::string& encrypted_contents,
       encrypted_contents,
       base::BindOnce(&AIChatService::OnShareConversationComplete,
                      weak_ptr_factory_.GetWeakPtr(), key_fragment,
-                     copy_to_clipboard, std::move(callback)));
+                     conversation_uuid, conversation_title, copy_to_clipboard,
+                     std::move(callback)));
 }
 
 void AIChatService::OnShareConversationComplete(
     const std::string& key_fragment,
+    const std::string& conversation_uuid,
+    const std::string& conversation_title,
     bool copy_to_clipboard,
     ShareConversationCallback callback,
-    const std::optional<GURL>& shared_conversation_viewer_url) {
-  if (!shared_conversation_viewer_url) {
+    const std::optional<ConversationShareResult>& share_result) {
+  if (!share_result) {
     std::move(callback).Run(std::nullopt);
     return;
   }
@@ -885,16 +927,75 @@ void AIChatService::OnShareConversationComplete(
   GURL::Replacements replacements;
   replacements.SetRefStr(key_fragment);
   GURL shared_conversation_url =
-      shared_conversation_viewer_url->ReplaceComponents(replacements);
+      share_result->viewer_url.ReplaceComponents(replacements);
   if (!shared_conversation_url.is_valid()) {
     std::move(callback).Run(std::nullopt);
     return;
   }
 
+  // Remember the share so the user can find and delete it later. The link
+  // contains the decryption key, which is why the store encrypts what it
+  // writes.
+  conversation_share_store_->AddShare(
+      share_result->share_id, share_result->deletion_id, conversation_uuid,
+      conversation_title, shared_conversation_url);
+
   if (copy_to_clipboard) {
     CopyTextToClipboardAsConfidential(shared_conversation_url.spec());
   }
   std::move(callback).Run(std::move(shared_conversation_url));
+}
+
+void AIChatService::GetConversationShares(
+    GetConversationSharesCallback callback) {
+  conversation_share_store_->GetShares(std::move(callback));
+}
+
+void AIChatService::DeleteConversationShare(
+    const std::string& share_id,
+    DeleteConversationShareCallback callback) {
+  conversation_share_store_->GetDeletionId(
+      share_id, base::BindOnce(&AIChatService::OnShareDeletionIdRetrieved,
+                               weak_ptr_factory_.GetWeakPtr(), share_id,
+                               std::move(callback)));
+}
+
+void AIChatService::OnShareDeletionIdRetrieved(
+    const std::string& share_id,
+    DeleteConversationShareCallback callback,
+    std::optional<std::string> deletion_id) {
+  if (!deletion_id) {
+    // Nothing is known about this share, so there is nothing to delete and no
+    // way to authorize deleting it. Report success so the UI doesn't offer a
+    // retry that could never work.
+    std::move(callback).Run(true);
+    return;
+  }
+  conversation_share_manager_->DeleteShare(
+      *deletion_id, base::BindOnce(&AIChatService::OnConversationShareDeleted,
+                                   weak_ptr_factory_.GetWeakPtr(), share_id,
+                                   std::move(callback)));
+}
+
+void AIChatService::CopyConversationShareLink(const std::string& share_id) {
+  conversation_share_store_->GetShareUrl(
+      share_id, base::BindOnce([](std::optional<GURL> url) {
+        if (url && url->is_valid()) {
+          CopyTextToClipboardAsConfidential(url->spec());
+        }
+      }));
+}
+
+void AIChatService::OnConversationShareDeleted(
+    const std::string& share_id,
+    DeleteConversationShareCallback callback,
+    bool success) {
+  // Keep the record when the server didn't confirm the deletion, so the user
+  // can retry rather than losing track of a share that still exists.
+  if (success) {
+    conversation_share_store_->RemoveShare(share_id);
+  }
+  std::move(callback).Run(success);
 }
 
 void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,
@@ -1059,6 +1160,17 @@ void AIChatService::OnSkillsChanged() {
 bool AIChatService::IsAIChatHistoryEnabled() {
   return (features::IsAIChatHistoryEnabled() &&
           profile_prefs_->GetBoolean(prefs::kBraveChatStorageEnabled));
+}
+
+std::unique_ptr<AssociatedContentDelegate>
+AIChatService::RestoreWorkspaceAssociatedContentFromUrl(const GURL& url) {
+  // Note: This can happen if there's a workspace in the DB but the flag has
+  // been disabled.
+  if (!workspace_content_restorer_) {
+    return nullptr;
+  }
+
+  return workspace_content_restorer_.Run(url);
 }
 
 void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
@@ -1409,6 +1521,9 @@ void AIChatService::OnUserOptedIn() {
 }
 
 void AIChatService::OnConversationListChanged() {
+  if (ai_chat_metrics_ != nullptr) {
+    ai_chat_metrics_->ReportConversationCount(conversations_.size());
+  }
   auto conversations = GetConversationsSortedByUpdatedTime(conversations_);
   for (auto& remote : observer_remotes_) {
     std::vector<mojom::ConversationPtr> client_conversations;
@@ -1493,7 +1608,13 @@ void AIChatService::DisassociateContent(
 
 void AIChatService::GetSuggestedTopics(const std::vector<Tab>& tabs,
                                        GetSuggestedTopicsCallback callback) {
-  if (!cached_focus_topics_.empty()) {
+  size_t passage_count = 0;
+  for (const auto& tab : tabs) {
+    passage_count += tab.passages.size();
+  }
+
+  if (!cached_focus_topics_.empty() &&
+      passage_count == cached_focus_passage_count_) {
     std::move(callback).Run(cached_focus_topics_);
     return;
   }
@@ -1512,9 +1633,9 @@ void AIChatService::GetSuggestedTopics(const std::vector<Tab>& tabs,
 
   CreateTabOrganizationEngineIfNeeded();
   tab_organization_engine_->GetSuggestedTopics(
-      tabs,
-      base::BindOnce(&AIChatService::OnSuggestedTopicsReceived,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+      tabs, base::BindOnce(&AIChatService::OnSuggestedTopicsReceived,
+                           weak_ptr_factory_.GetWeakPtr(), passage_count,
+                           std::move(callback)));
 }
 
 void AIChatService::GetFocusTabs(const std::vector<Tab>& tabs,
@@ -1541,19 +1662,19 @@ void AIChatService::OnGetFocusTabs(
   std::move(callback).Run(std::move(result));
 }
 
-std::vector<std::unique_ptr<ToolProvider>>
-AIChatService::CreateToolProvidersForNewConversation() {
+void AIChatService::AddToolProvidersToConversation(
+    ConversationHandler* conversation) {
   std::vector<std::unique_ptr<ToolProvider>> tool_providers;
 
   for (const auto& factory : tool_provider_factories_) {
-    tool_providers.push_back(factory->CreateToolProvider());
+    tool_providers.push_back(factory->CreateToolProvider(conversation));
   }
 
   // Basic set of tools that we can provide
   tool_providers.push_back(std::make_unique<ConversationToolProvider>(
       memory_tool_ ? memory_tool_->GetWeakPtr() : nullptr));
 
-  return tool_providers;
+  conversation->AddToolProviders(std::move(tool_providers));
 }
 
 void AIChatService::CreateTabOrganizationEngineIfNeeded() {
@@ -1571,13 +1692,23 @@ void AIChatService::CreateTabOrganizationEngineIfNeeded() {
 
 void AIChatService::OnTabOrganizationModelPrefChanged() {
   tab_organization_engine_.reset();
+  // Topics are model-specific, so don't serve the previous model's.
+  cached_focus_topics_.clear();
+}
+
+void AIChatService::OnTabOrganizationSendPageContentPrefChanged() {
+  // Topics describe the tabs as the model saw them, and this pref decides
+  // whether page excerpts were part of that, so don't serve the old ones.
+  cached_focus_topics_.clear();
 }
 
 void AIChatService::OnSuggestedTopicsReceived(
+    size_t passage_count,
     GetSuggestedTopicsCallback callback,
     base::expected<std::vector<std::string>, mojom::APIError> topics) {
   if (tab_data_observer_receiver_.is_bound() && topics.has_value()) {
     cached_focus_topics_ = topics.value();
+    cached_focus_passage_count_ = passage_count;
   }
 
   std::move(callback).Run(std::move(topics));

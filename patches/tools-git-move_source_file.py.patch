@@ -1,8 +1,8 @@
 diff --git a/tools/git/move_source_file.py b/tools/git/move_source_file.py
-index feb2f46241316baf7173c26dbbe0bbea8151a7df..e90ad243d450a4ef02363700fc6b72b4ca5b49d3 100755
+index c0878c1f8e34078d1dfb8ff66d9a278c71672370..4e4a7d6527399b0c5688acb5dd7f31b6ca72ad71 100755
 --- a/tools/git/move_source_file.py
 +++ b/tools/git/move_source_file.py
-@@ -92,6 +92,7 @@ def UpdatePostMove(from_path, to_path):
+@@ -96,6 +96,7 @@ def UpdatePostMove(from_path, to_path):
    to update references in .gn/.gni/.gyp/.gypi files using a heuristic.
    """
    # Include paths always use forward slashes.
@@ -10,15 +10,15 @@ index feb2f46241316baf7173c26dbbe0bbea8151a7df..e90ad243d450a4ef02363700fc6b72b4
    from_path = from_path.replace('\\', '/')
    to_path = to_path.replace('\\', '/')
    extension = os.path.splitext(from_path)[1]
-@@ -116,6 +117,7 @@ def UpdatePostMove(from_path, to_path):
+@@ -120,6 +121,7 @@ def UpdatePostMove(from_path, to_path):
    mffr.MultiFileFindReplace(
-       r'(//.*)%s' % re.escape(from_path),
-       r'\1%s' % to_path,
-+      ['*.gni', '*.gn'] + # Brave uses full paths (start with //) to add files
-       ['*.cc', '*.h', '*.m', '*.mm', '*.cpp'])
+     r'(//.*)%s' % re.escape(from_path),
+     r'\1%s' % to_path,
++    ['*.gni', '*.gn'] + # Brave uses full paths (start with //) to add files
+     ['*.cc', '*.h', '*.m', '*.mm', '*.cpp'],
+   )
  
-   # Update references in GYP and BUILD.gn files.
-@@ -150,6 +152,7 @@ def UpdatePostMove(from_path, to_path):
+@@ -155,6 +157,7 @@ def UpdatePostMove(from_path, to_path):
        return (parts[0], '')
  
    visiting_directory = ''
@@ -26,7 +26,7 @@ index feb2f46241316baf7173c26dbbe0bbea8151a7df..e90ad243d450a4ef02363700fc6b72b4
    from_rest = from_path
    to_rest = to_path
    while True:
-@@ -186,6 +189,7 @@ def UpdateIncludeGuard(old_path, new_path):
+@@ -194,6 +197,7 @@ def UpdateIncludeGuard(old_path, new_path):
    old_guard = MakeIncludeGuardName(old_path)
    new_guard = MakeIncludeGuardName(new_path)
  

@@ -4,36 +4,110 @@
 
 #pragma mark - {{objc_name}}Bridge
 
+// Owns a `{{objc_name}}Bridge` and is attached to the Obj-C object it forwards
+// to as an associated object.
+@interface {{objc_name}}BridgeHolder : NSObject {
+@public
+  std::unique_ptr<{{objc_name}}Bridge> _bridge;
+}
+@end
+
+@implementation {{objc_name}}BridgeHolder
+- (void)dealloc {
+  // The associated Obj-C object may be deallocated on any thread, but the
+  // bridge's receiver is bound to the UI thread.
+  if (_bridge && !web::GetUIThreadTaskRunner({})->RunsTasksInCurrentSequence()) {
+    web::GetUIThreadTaskRunner({})->DeleteSoon(FROM_HERE, std::move(_bridge));
+  }
+}
+@end
+
+// static
 mojo::PendingRemote<{{cpp_namespace}}::{{interface.name}}>
-{{objc_name}}Bridge::GetRemote() {
-  return receiver_.BindNewPipeAndPassRemote(web::GetUIThreadTaskRunner({}));
+{{objc_name}}Bridge::CreateRemote(id<{{objc_name}}> bridge) {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+  if (!bridge) {
+    // Nothing to forward to, hand back a remote that is already disconnected.
+    mojo::PendingReceiver<{{cpp_namespace}}::{{interface.name}}> receiver;
+    return receiver.InitWithNewPipeAndPassRemote();
+  }
+  auto* holder = [[{{objc_name}}BridgeHolder alloc] init];
+  holder->_bridge = std::make_unique<{{objc_name}}Bridge>(bridge);
+  auto remote = holder->_bridge->receiver_.BindNewPipeAndPassRemote();
+  // Each holder is its own association key so that the same Obj-C object can
+  // be registered multiple times.
+  const void* key = (__bridge const void*)holder;
+  __weak id weak_bridge = bridge;
+  holder->_bridge->receiver_.set_disconnect_handler(base::BindOnce(^{
+    // Releases the holder, and in turn this bridge.
+    objc_setAssociatedObject(weak_bridge, key, nil,
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+  }));
+  objc_setAssociatedObject(bridge, key, holder,
+                           OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+  return remote;
 }
 
+{{objc_name}}Bridge::~{{objc_name}}Bridge() = default;
+
 {% for method in interface.methods %}
-void {{objc_name}}Bridge::{{method.name}}({{interface_macros.cpp_declare_request_params(method, cpp_namespace)}}) {
-  web::GetUIThreadTaskRunner({})->PostTask(FROM_HERE, base::BindOnce(^(id<{{objc_name}}> bridge_{% if method.parameters or method.response_parameters %}, {% endif %}{{interface_macros.cpp_declare_request_params(method, cpp_namespace)}}){
-    [bridge_ {{method|objc_method_name_formatter}}
-{%- if method.parameters or method.response_parameters %}:{%- endif %}
+void {{objc_name}}Bridge::{{method.name}}({{interface_macros.cpp_declare_request_params(method, cpp_namespace ~ "::" ~ interface.name)}}) {
+  id<{{objc_name}}> objc_bridge = bridge_;
+  if (!objc_bridge) {
+    // The Obj-C implementation is gone, stop receiving messages.
+    receiver_.reset();
+    return;
+  }
+{%- if method.response_parameters is not none %}
+  __block auto reply_callback = std::move(callback);
+{%- endif %}
+  [objc_bridge {{method|objc_method_name_formatter}}
+{%- if method.parameters or method.response_parameters is not none %}:{%- endif %}
 {%- for param in method.parameters -%}
 {%- if not loop.first %} {{param.name|under_to_lower_camel}}:{% endif -%}
   {{param|cpp_to_objc_assign}}
 {%- endfor -%}
-{%- if method.response_parameters -%}
+{%- if method.response_parameters is not none -%}
 {%-   if method.parameters %} completion:{%- endif %}^(
+{%- if method.result_response -%}
+  {{method.result_response.success_kind|objc_wrapper_type}} _Nullable success, {{method.result_response.failure_kind|objc_wrapper_type}} _Nullable failure
+{%- else -%}
 {%- for param in method.response_parameters -%}
-  {{param.kind|objc_wrapper_type}} {{param.name}}
+{%-   set nullable = param.kind|objc_argument_modifiers(inside_callback=True) -%}
+  {{param.kind|objc_wrapper_type}}{{" " + nullable if nullable}} {{param.name|objc_property_formatter}}
 {%- if not loop.last %}, {% endif -%}
 {%- endfor -%}
+{%- endif -%}
   ){
-      callback(
+      // Responses are always run on the sequence the receiver is bound to.
+      auto run = ^{
+        if (reply_callback.is_null()) {
+          return;
+        }
+{%- if method.result_response %}
+        if (success) {
+          std::move(reply_callback).Run(base::ok<{{method.result_response.success_kind|expected_cpp_type}}>({{method.result_response.success_kind|objc_to_cpp_assign_kind("success")}}));
+        } else if (failure) {
+          std::move(reply_callback).Run(base::unexpected<{{method.result_response.failure_kind|expected_cpp_type}}>({{method.result_response.failure_kind|objc_to_cpp_assign_kind("failure")}}));
+        } else {
+          NOTREACHED() << "result<> completion called with neither success nor failure";
+        }
+{%- else %}
+        std::move(reply_callback).Run(
 {%- for param in method.response_parameters -%}
-  {{param|cpp_to_objc_assign}}
+{{param|objc_to_cpp_assign}}
 {%- if not loop.last %}, {% endif -%}
 {%- endfor -%}
-    );
+        );
+{%- endif %}
+      };
+      if (web::GetUIThreadTaskRunner({})->RunsTasksInCurrentSequence()) {
+        run();
+      } else {
+        web::GetUIThreadTaskRunner({})->PostTask(FROM_HERE, base::BindOnce(run));
+      }
   }
 {%- endif -%}
     ];
-  }, bridge_{% if method.parameters or method.response_parameters %}, {% endif %}{{interface_macros.cpp_declare_request_params_names(method)}}));
 }
 {% endfor %}

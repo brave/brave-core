@@ -6,7 +6,7 @@
 #include "brave/browser/ntp_background/new_tab_takeover_infobar_delegate.h"
 
 #include "brave/components/brave_rewards/core/pref_names.h"
-#include "brave/components/ntp_background_images/browser/new_tab_takeover_infobar_util.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/new_tab_takeover_infobar_util.h"
 #include "brave/components/ntp_background_images/common/infobar_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"

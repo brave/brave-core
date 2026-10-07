@@ -32,8 +32,8 @@
 #include "chrome/browser/actor/tab_observation_strategy.h"
 #include "chrome/browser/glic/actor/glic_actor_policy_checker.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -130,6 +130,11 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
 
     host_resolver()->AddRule("*", "127.0.0.1");
+    // Actor test data upstream lives under components.
+    embedded_test_server()->ServeFilesFromSourceDirectory(
+        "components/test/data");
+    embedded_https_test_server().ServeFilesFromSourceDirectory(
+        "components/test/data");
     // Also serve Brave's test data (in addition to the default chrome/test/data
     // handlers) so tests can load fixtures from //brave/test/data/leo. The
     // navigation tool only navigates to https:// URLs, so serve over https too.
@@ -143,10 +148,10 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
     // Create the agent profile
     auto* profile = browser()->GetProfile();
     SetUserOptedIn(profile->GetPrefs(), true);
-    base::test::TestFuture<Browser*> browser_future;
+    base::test::TestFuture<BrowserWindowInterface*> browser_future;
     OpenBrowserWindowForAIChatAgentProfileForTesting(
         *profile, browser_future.GetCallback());
-    Browser* browser = browser_future.Take();
+    BrowserWindowInterface* browser = browser_future.Take();
     ASSERT_NE(browser, nullptr);
     agent_profile_ = browser->GetProfile();
     agent_browser_window_ = browser;
@@ -157,8 +162,8 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
     ASSERT_NE(actor_service, nullptr);
 
     // Create the tool provider
-    tool_provider_ =
-        std::make_unique<ContentAgentToolProvider>(GetProfile(), actor_service);
+    tool_provider_ = std::make_unique<ContentAgentToolProvider>(
+        GetProfile(), actor_service, *actor_service->GetActorUiStateManager());
     ASSERT_NE(tool_provider_, nullptr);
   }
 

@@ -71,6 +71,9 @@
 "e13lS3-VBH4G6" = "您要的是「歷史記錄」，對嗎？";
 
 /* (No Comment) */
+"e13lS3-vQ8mZ1" = "您要的是「Leo AI 語音輸入」，對嗎？";
+
+/* (No Comment) */
 "e13lS3-vs094F" = "您要的是「新隱私分頁」，對嗎？";
 
 /* (No Comment) */
@@ -108,6 +111,9 @@
 
 /* (No Comment) */
 "EvESs0-VBH4G6" = "您要的是「歷史記錄」，對嗎？";
+
+/* (No Comment) */
+"EvESs0-vQ8mZ1" = "您要的是「Leo AI 語音輸入」，對嗎？";
 
 /* (No Comment) */
 "EvESs0-vs094F" = "您要的是「新隱私分頁」，對嗎？";
@@ -164,6 +170,9 @@
 "L1fziM-VBH4G6" = "有 ${count} 個選項符合「歷史記錄」。";
 
 /* (No Comment) */
+"L1fziM-vQ8mZ1" = "有 ${count} 個選項符合「Leo AI 語音輸入」。";
+
+/* (No Comment) */
 "L1fziM-vs094F" = "有 ${count} 個選項符合「新隱私分頁」。";
 
 /* (No Comment) */
@@ -212,6 +221,9 @@
 "r2EI05-VBH4G6" = "您要的是「歷史記錄」，對嗎？";
 
 /* (No Comment) */
+"r2EI05-vQ8mZ1" = "您要的是「Leo AI 語音輸入」，對嗎？";
+
+/* (No Comment) */
 "r2EI05-vs094F" = "您要的是「新隱私分頁」，對嗎？";
 
 /* (No Comment) */
@@ -257,6 +269,9 @@
 "tNCrcE-VBH4G6" = "有 ${count} 個選項符合「歷史記錄」。";
 
 /* (No Comment) */
+"tNCrcE-vQ8mZ1" = "有 ${count} 個選項符合「Leo AI 語音輸入」。";
+
+/* (No Comment) */
 "tNCrcE-vs094F" = "有 ${count} 個選項符合「新隱私分頁」。";
 
 /* (No Comment) */
@@ -296,6 +311,9 @@
 "TxuMja-VBH4G6" = "有 ${count} 個選項符合「歷史記錄」。";
 
 /* (No Comment) */
+"TxuMja-vQ8mZ1" = "有 ${count} 個選項符合「Leo AI 語音輸入」。";
+
+/* (No Comment) */
 "TxuMja-vs094F" = "有 ${count} 個選項符合「新隱私分頁」。";
 
 /* (No Comment) */
@@ -315,6 +333,9 @@
 
 /* (No Comment) */
 "vjA5pZ" = "預計節省數據量";
+
+/* (No Comment) */
+"vQ8mZ1" = "Leo AI 語音輸入";
 
 /* (No Comment) */
 "vs094F" = "新增隱私分頁";
@@ -359,6 +380,9 @@
 "YQiQuz-VBH4G6" = "您要的是「歷史記錄」，對嗎？";
 
 /* (No Comment) */
+"YQiQuz-vQ8mZ1" = "您要的是「Leo AI 語音輸入」，對嗎？";
+
+/* (No Comment) */
 "YQiQuz-vs094F" = "您要的是「新隱私分頁」，對嗎？";
 
 /* (No Comment) */
@@ -393,6 +417,9 @@
 
 /* (No Comment) */
 "z517nu-VBH4G6" = "有 ${count} 個選項符合「歷史記錄」。";
+
+/* (No Comment) */
+"z517nu-vQ8mZ1" = "有 ${count} 個選項符合「Leo AI 語音輸入」。";
 
 /* (No Comment) */
 "z517nu-vs094F" = "有 ${count} 個選項符合「新隱私分頁」。";

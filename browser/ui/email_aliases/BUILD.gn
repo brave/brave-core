@@ -13,12 +13,15 @@ source_set("email_aliases") {
     "email_aliases_controller.h",
   ]
 
+  public_deps = [ "//ui/base/unowned_user_data" ]
+
   deps = [
     "//base",
     "//brave/browser/ui/webui/email_aliases",
     "//brave/components/constants",
     "//brave/components/email_aliases:service",
     "//brave/components/resources:strings_grit",
+    "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/webui",
     "//components/autofill/content/browser",
     "//ui/web_dialogs",

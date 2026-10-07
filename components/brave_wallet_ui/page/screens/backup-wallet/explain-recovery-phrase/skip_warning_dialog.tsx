@@ -29,16 +29,16 @@ export const SkipWarningDialog = ({
       isOpen={isOpen}
       onClose={onBack}
     >
-      <WarningText>{getLocale('braveWalletSkipBackupWarning')}</WarningText>
+      <WarningText>{getLocale(S.BRAVE_WALLET_SKIP_BACKUP_WARNING)}</WarningText>
       <div slot='actions'>
         <Button
           kind='plain-faint'
           onClick={onBack}
         >
-          {getLocale('braveWalletGoBack')}
+          {getLocale(S.BRAVE_WALLET_GO_BACK)}
         </Button>
         <ContinueButton onClick={onSkip}>
-          {getLocale('braveWalletSkipBackup')}
+          {getLocale(S.WALLET_SKIP_BACKUP)}
         </ContinueButton>
       </div>
     </SkipDialog>

@@ -7,7 +7,6 @@ import BraveCore
 import BraveShared
 import Preferences
 import Shared
-import Storage
 import Web
 import WebKit
 

@@ -25,10 +25,7 @@ import {
 // Utils
 import { getAssetIdKey } from '../../../utils/asset-utils'
 import { getLocale } from '../../../../common/locale'
-import {
-  makeDepositFundsRoute,
-  makeFundWalletRoute,
-} from '../../../utils/routes-utils'
+import { makeDepositRoute, makeBuyRoute } from '../../../utils/routes-utils'
 import { getIsRewardsToken } from '../../../utils/rewards_utils'
 import {
   getStoredPortfolioTimeframe, //
@@ -51,8 +48,8 @@ import { WalletPageActions } from '../../actions'
 // Components
 import {
   LineChartControls, //
-} from '../../../components/desktop/line-chart/line-chart-controls/line-chart-controls'
-import { AssetDetailsHeader } from '../../../components/desktop/card-headers/asset-details-header'
+} from '$wallet/page/components/line_chart_controls/line_chart_controls'
+import { AssetDetailsHeader } from '$wallet/page/components/card_headers/asset_details_header'
 import {
   TokenDetailsModal, //
 } from '../../../components/desktop/popup-modals/token_details_modal/token_details_modal'
@@ -88,7 +85,7 @@ import { Row, Column } from '../../../components/shared/style'
 import { Skeleton } from '../../../components/shared/loading-skeleton/styles'
 import {
   WalletPageWrapper, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import { ButtonRow, StyledWrapper } from './market.style'
 
 const emptyPriceList: TokenPriceHistory[] = []
@@ -313,14 +310,14 @@ export const MarketAssetDetails = () => {
 
   const onSelectBuy = React.useCallback(() => {
     if (foundMeldBuyToken) {
-      openOrPushRoute(makeFundWalletRoute(foundMeldBuyToken))
+      openOrPushRoute(makeBuyRoute(foundMeldBuyToken))
     }
   }, [openOrPushRoute, foundMeldBuyToken])
 
   const onSelectDeposit = React.useCallback(() => {
     if (foundTokens.length === 1) {
       openOrPushRoute(
-        makeDepositFundsRoute(getAssetIdKey(foundTokens[0]), {
+        makeDepositRoute(getAssetIdKey(foundTokens[0]), {
           searchText: foundTokens[0].symbol,
         }),
       )
@@ -329,7 +326,7 @@ export const MarketAssetDetails = () => {
 
     if (foundTokens.length > 1) {
       openOrPushRoute(
-        makeDepositFundsRoute('', {
+        makeDepositRoute('', {
           searchText: foundTokens[0].symbol,
         }),
       )
@@ -399,14 +396,14 @@ export const MarketAssetDetails = () => {
             {foundMeldBuyToken && (
               <div>
                 <Button onClick={onSelectBuy}>
-                  {getLocale('braveWalletBuy')}
+                  {getLocale(S.BRAVE_WALLET_BUY)}
                 </Button>
               </div>
             )}
             {isSelectedAssetDepositSupported && (
               <div>
                 <Button onClick={onSelectDeposit}>
-                  {getLocale('braveWalletAccountsDeposit')}
+                  {getLocale(S.BRAVE_WALLET_ACCOUNTS_DEPOSIT)}
                 </Button>
               </div>
             )}
@@ -420,7 +417,7 @@ export const MarketAssetDetails = () => {
               selectedAsset={selectedAssetFromParams}
               selectedAssetNetwork={selectedAssetsNetwork}
               assetBalance={undefined}
-              formattedFiatBalance={fullAssetFiatBalance.formatAsFiat(
+              formattedFiatBalance={fullAssetFiatBalance.compactAsFiat(
                 defaultFiat,
               )}
               onShowHideTokenModal={() => setShowHideTokenModal(true)}

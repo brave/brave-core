@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
+import BraveStore
 import BraveStrings
 import BraveUI
 // To get cellular carrier name
@@ -29,7 +30,6 @@ struct VPNContactFormView: View {
     var appVersion: Bool = false
     var timezone: Bool = false
     var networkType: Bool = false
-    var cellularCarrier: Bool = false
     var logs: Bool = false
   }
 
@@ -71,13 +71,6 @@ struct VPNContactFormView: View {
         }
         Toggle(isOn: $includes.networkType) {
           LabeledContent(Strings.VPN.contactFormNetworkType, value: networkType)
-        }
-        Toggle(isOn: $includes.cellularCarrier) {
-          LabeledContent(
-            Strings.VPN.contactFormCarrier,
-            value: CTTelephonyNetworkInfo().serviceSubscriberCellularProviders?
-              .first?.value.carrierName ?? "-"
-          )
         }
         Toggle(Strings.VPN.contactFormLogs, isOn: $includes.logs)
       }
@@ -188,14 +181,6 @@ struct VPNContactFormView: View {
       body.append("\n\(networkType)\n\n")
     }
 
-    if includes.cellularCarrier {
-      let carrierName =
-        CTTelephonyNetworkInfo().serviceSubscriberCellularProviders?
-        .first?.value.carrierName ?? "-"
-      body.append(Strings.VPN.contactFormCarrier)
-      body.append("\n\(carrierName)\n\n")
-    }
-
     if includes.logs {
       let logs = BraveVPN.errorLog
       body.append("\(Strings.VPN.contactFormLogs)\n")
@@ -211,11 +196,10 @@ struct VPNContactFormView: View {
     }
 
     if includes.receipt,
-      let receiptUrl = Bundle.main.appStoreReceiptURL,
-      let receiptData = try? Data(contentsOf: receiptUrl)
+      let receipt = try? AppStoreReceipt.receipt
     {
       body.append(Strings.VPN.contactFormAppStoreReceipt)
-      body.append("\n\(receiptData.base64EncodedString())\n\n")
+      body.append("\n\(receipt)\n\n")
     }
 
     return body

@@ -17,18 +17,27 @@ namespace brave_vpn {
 class BraveWireguardManager
     : public Microsoft::WRL::RuntimeClass<
           Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::ClassicCom>,
-          IBraveVpnWireguardManager> {
+          Microsoft::WRL::ChainInterfaces<IBraveVpnWireguardManager2,
+                                          IBraveVpnWireguardManager>> {
  public:
   BraveWireguardManager() = default;
 
   BraveWireguardManager(const BraveWireguardManager&) = delete;
   BraveWireguardManager& operator=(const BraveWireguardManager&) = delete;
 
+  // Kept for browsers that predate IBraveVpnWireguardManager2. Enables with
+  // LAN traffic allowed, which is what those browsers always got.
   IFACEMETHODIMP EnableVpn(BSTR public_key,
                            BSTR private_key,
                            BSTR address,
                            BSTR endpoint,
                            DWORD* last_error) override;
+  IFACEMETHODIMP EnableVpn2(BSTR public_key,
+                            BSTR private_key,
+                            BSTR address,
+                            BSTR endpoint,
+                            BOOL allow_lan_traffic,
+                            DWORD* last_error) override;
   IFACEMETHODIMP DisableVpn(DWORD* last_error) override;
 
  private:

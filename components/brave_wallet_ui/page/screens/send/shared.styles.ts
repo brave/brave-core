@@ -33,6 +33,7 @@ export interface TextProps {
     | 'tertiary'
     | 'info'
     | 'disabled'
+    | 'white'
   maintainHeight?: boolean
   textAlign?: 'left' | 'right'
 }
@@ -46,6 +47,7 @@ export const Text = styled.span<TextProps>`
   --warning: ${leo.color.systemfeedback.warningText};
   --disabled: ${leo.color.text.disabled};
   --success: ${leo.color.systemfeedback.successText};
+  --white: ${leo.color.white};
   --text-variant: ${(p) => resolveWalletTextVariant(p)};
   --line-height: ${(p) => walletFontLineHeight(resolveWalletTextVariant(p))};
   color: ${(p) =>

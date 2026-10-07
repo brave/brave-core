@@ -36,17 +36,36 @@ def create_ds_store(app_name, bg_file, ds_store_path):
         # github.com/dmgbuild/mac_alias/issues/22#issuecomment-1350790003.
         dmg_path = join(temp_dir, f'{app_name}.dmg')
         with TemporaryDirectory() as empty:
-            check_call([
-                'hdiutil', 'create', '-fs', 'HFS+', '-format', 'UDRW',
-                '-sectors',
-                str(8 * 1024 * 1024), '-volname', app_name, '-srcfolder',
-                empty, '-quiet', dmg_path
-            ])
+            check_call(
+                [
+                    'hdiutil',
+                    'create',
+                    '-fs',
+                    'HFS+',
+                    '-format',
+                    'UDRW',
+                    '-sectors',
+                    str(8 * 1024 * 1024),
+                    '-volname',
+                    app_name,
+                    '-srcfolder',
+                    empty,
+                    '-quiet',
+                    dmg_path,
+                ]
+            )
         mount_path = join('/Volumes', basename(__file__) + str(uuid4()))
-        check_call([
-            'hdiutil', 'attach', '-mountpoint', mount_path, '-noautoopen',
-            '-quiet', dmg_path
-        ])
+        check_call(
+            [
+                'hdiutil',
+                'attach',
+                '-mountpoint',
+                mount_path,
+                '-noautoopen',
+                '-quiet',
+                dmg_path,
+            ]
+        )
         try:
             symlink('/Applications', join(mount_path, 'Applications'))
             background_dir = join(mount_path, '.background')
@@ -66,10 +85,11 @@ def create_ds_store(app_name, bg_file, ds_store_path):
                     'ShowStatusBar': False,
                     'ShowTabView': False,
                     'ShowToolbar': False,
-                    'WindowBounds': '{{548, 815}, {602, 350}}'
+                    'WindowBounds': '{{548, 815}, {602, 350}}',
                 }
                 bg_alias = Alias.for_file(
-                    join(background_dir, 'background.png'))
+                    join(background_dir, 'background.png')
+                )
                 d['.']['icvp'] = {
                     'arrangeBy': 'none',
                     'backgroundColorBlue': 1.0,
@@ -85,7 +105,7 @@ def create_ds_store(app_name, bg_file, ds_store_path):
                     'showIconPreview': True,
                     'showItemInfo': False,
                     'textSize': 16.0,
-                    'viewOptionsVersion': 1
+                    'viewOptionsVersion': 1,
                 }
             copyfile(ds_store_tmp, ds_store_path)
         finally:

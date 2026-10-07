@@ -73,11 +73,6 @@ void BraveWalletProviderDelegateImpl::WalletInteractionDetected() {
   ::brave_wallet::WalletInteractionDetected(web_contents());
 }
 
-void BraveWalletProviderDelegateImpl::ShowWalletOnboarding(
-    const url::Origin& origin) {
-  ::brave_wallet::ShowWalletOnboarding(web_contents());
-}
-
 void BraveWalletProviderDelegateImpl::ShowAccountCreation(
     mojom::CoinType type,
     const url::Origin& origin) {

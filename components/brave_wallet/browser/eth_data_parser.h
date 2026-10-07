@@ -11,6 +11,7 @@
 #include <tuple>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
@@ -20,6 +21,15 @@ std::optional<std::tuple<mojom::TransactionType,    // tx_type
                          std::vector<std::string>,  // tx_args
                          mojom::SwapInfoPtr>>       // swap_info
 GetTransactionInfoFromData(const std::vector<uint8_t>& data);
+
+// Returns the address that ultimately receives the transferred value. Returns
+// nullopt for invalid data or other internal errors. The returned address can
+// be a ETH address or a Filecoin one.
+std::optional<std::string> GetFinalRecipient(
+    const std::string& chain_id,
+    const std::string& base_to,
+    mojom::TransactionType tx_type,
+    base::span<const std::string> tx_args);
 
 }  // namespace brave_wallet
 

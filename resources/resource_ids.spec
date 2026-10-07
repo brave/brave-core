@@ -141,28 +141,15 @@
     "META": {"sizes": {"includes": [10]}},
     "includes": [53620],
   },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_swap_page/brave_wallet_swap_page.grd": {
-    "META": {"sizes": {"includes": [110]}},
-    "includes": [53640],
-  },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_send_page/brave_wallet_send_page.grd": {
-    "META": {"sizes": {"includes": [60]}},
-    "includes": [53660],
-  },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_deposit_page/brave_wallet_deposit_page.grd": {
-    "META": {"sizes": {"includes": [100]}},
-    "includes": [53680],
-  },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_fund_wallet_page/brave_wallet_fund_wallet_page.grd": {
-    "META": {"sizes": {"includes": [80]}},
-    "includes": [53700],
-  },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-tip_panel/tip_panel.grd": {
     "META": {"sizes": {"includes": [20]}},
     "includes": [53720]
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ai_chat_ui/ai_chat_ui.grd": {
-    "META": {"sizes": {"includes": [20]}},
+    # Math rendering adds 22 resources: the 20 KaTeX woff2 fonts plus the
+    # lazily loaded KaTeX chunks. Sized with headroom so further code splitting
+    # doesn't need another bump.
+    "META": {"sizes": {"includes": [60]}},
     "includes": [53740],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-skus_internals/skus_internals.grd": {
@@ -223,7 +210,7 @@
     "includes": [53980],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/components/brave_account/resources/resources.grd": {
-    "META": {"sizes": {"includes": [50]}},
+    "META": {"sizes": {"includes": [70]}},
     "includes": [54000],
   },
   "brave/ios/web/test/test_resources.grd": {
@@ -266,6 +253,17 @@
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-on_device_speech_recognition_worker/on_device_speech_recognition_worker.grd": {
     "META": {"sizes": {"includes": [5]}},
     "includes": [54165],
+  },
+  "brave/browser/resources/tab_strip/tab_strip_resources.grd": {
+    "structures": [54170],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-snap_host/snap_host.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [54180],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-snaps_container/snaps_container.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [54190],
   },
   # WARNING: The IDs range is 2^16-1. Check
   # out/<BUILD_TYPE>/gen/brave/resources/brave_resource_ids for how much the

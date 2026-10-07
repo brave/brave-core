@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/deposits/cash_deposit.h"
 
-#include "base/test/run_until.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
@@ -13,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "net/http/http_status_code.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -36,16 +35,11 @@ TEST_F(BraveAdsCashDepositIntegrationTest, GetValue) {
   CashDeposit deposit;
 
   // Act & Assert
-  ASSERT_TRUE(base::test::RunUntil([&] {
-    base::test::TestFuture<bool, double> test_future;
-    deposit.GetValue(test::kCreativeInstanceId, test_future.GetCallback());
-    const auto [success, value] = test_future.Take();
-    if (!success) {
-      return false;
-    }
-    EXPECT_DOUBLE_EQ(test::kValue, value);
-    return true;
-  }));
+  base::test::TestFuture<bool, double> test_future;
+  deposit.GetValue(test::kCreativeInstanceId, test_future.GetCallback());
+  const auto [success, value] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_DOUBLE_EQ(test::kValue, value);
 }
 
 TEST_F(BraveAdsCashDepositIntegrationTest,

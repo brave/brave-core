@@ -14,9 +14,12 @@ added.
 
 from lib.config import gn_args
 
-gn_args.config(name='x64', args={
-    'target_cpu': 'x64',
-})
+gn_args.config(
+    name='x64',
+    args={
+        'target_cpu': 'x64',
+    },
+)
 
 gn_args.config(
     name='linux',
@@ -31,11 +34,13 @@ gn_args.config(
     },
 )
 
-gn_args.config(name='release',
-               args={
-                   'is_debug': False,
-                   'is_component_build': False,
-               })
+gn_args.config(
+    name='release',
+    args={
+        'is_debug': False,
+        'is_component_build': False,
+    },
+)
 
 gn_args.config(
     name='remoteexec',
@@ -85,9 +90,12 @@ gn_args.config(
 )
 
 # brave/build/args/desktop_defaults.gni (non-mobile only)
-gn_args.config(name='desktop_defaults', args={
-    'safe_browsing_mode': 1,
-})
+gn_args.config(
+    name='desktop_defaults',
+    args={
+        'safe_browsing_mode': 1,
+    },
+)
 
 gn_args.config(
     name='brave_desktop_defaults',
@@ -104,7 +112,6 @@ gn_args.config(
 gn_args.config(
     name='ci_desktop_defaults',
     args={
-        'devtools_skip_typecheck': False,
         'enable_hangout_services_extension': False,
         'use_libfuzzer': False,
     },

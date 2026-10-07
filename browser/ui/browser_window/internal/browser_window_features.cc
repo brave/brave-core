@@ -9,7 +9,6 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
-#include "base/notreached.h"
 #include "base/unguessable_token.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
@@ -21,6 +20,7 @@
 #include "brave/browser/ui/tabs/tree_tab_session_manager.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
+#include "brave/browser/ui/views/toolbar/screenshot_preview_dialog.h"
 #include "brave/browser/ui/views/workspaces/workspaces_bubble_controller.h"
 #include "brave/browser/workspaces/features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -51,17 +51,6 @@
 #include "chrome/browser/ui/webui/print_preview/print_preview_ui.h"
 #endif
 
-#if !BUILDFLAG(ENABLE_BRAVE_REWARDS)
-namespace brave_rewards {
-class RewardsPanelCoordinator {};
-}  // namespace brave_rewards
-#endif
-
-#if !BUILDFLAG(ENABLE_BRAVE_VPN)
-// Use stub class to avoid incomplete type build error.
-class BraveVPNController {};
-#endif
-
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
@@ -82,23 +71,6 @@ class BraveVPNController {};
 BrowserWindowFeatures::BrowserWindowFeatures() = default;
 BrowserWindowFeatures::~BrowserWindowFeatures() = default;
 
-brave_rewards::RewardsPanelCoordinator*
-BrowserWindowFeatures::rewards_panel_coordinator() {
-#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-  return rewards_panel_coordinator_.get();
-#else
-  NOTREACHED();
-#endif
-}
-
-BraveVPNController* BrowserWindowFeatures::brave_vpn_controller() {
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  return brave_vpn_controller_.get();
-#else
-  NOTREACHED();
-#endif
-}
-
 void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
   auto* profile = browser->GetProfile();
 
@@ -108,48 +80,58 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
   // and it's initialized in BrowserWindowFeatures_ChromiumImpl::Init().
 
   if (BrowserSupportsFocusMode(browser)) {
-    focus_mode_controller_ = std::make_unique<FocusModeController>();
+    focus_mode_controller_ =
+        GetUserDataFactory().CreateInstance<FocusModeController>(
+            *browser, browser->GetUnownedUserDataHost());
   }
 
   // VerticalTabController should be constructed in Init() instead of
   // InitPostBrowserViewConstruction() because it would be referenced by many
   // views.
-  vertical_tab_controller_ = std::make_unique<VerticalTabController>(
-      browser->GetType(), profile->GetPrefs(), focus_mode_controller_.get());
+  vertical_tab_controller_ =
+      GetUserDataFactory().CreateInstance<VerticalTabController>(
+          *browser, browser->GetUnownedUserDataHost(), browser->GetType(),
+          profile->GetPrefs(), focus_mode_controller_.get());
 
   BrowserWindowFeatures_ChromiumImpl::Init(browser);
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   if (brave_rewards::RewardsServiceFactory::GetForProfile(profile)) {
     rewards_panel_coordinator_ =
-        std::make_unique<brave_rewards::RewardsPanelCoordinator>(browser);
+        GetUserDataFactory()
+            .CreateInstance<brave_rewards::RewardsPanelCoordinator>(*browser,
+                                                                    browser);
   }
 #endif
 
   brave_shields_ui_contents_cache_ =
-      std::make_unique<BraveShieldsUIContentsCache>();
+      GetUserDataFactory().CreateInstance<BraveShieldsUIContentsCache>(
+          *browser, browser->GetUnownedUserDataHost());
 
   brave_non_client_hit_test_helper_ =
-      std::make_unique<BraveNonClientHitTestHelper>();
+      GetUserDataFactory().CreateInstance<BraveNonClientHitTestHelper>(
+          *browser, browser->GetUnownedUserDataHost());
 
   if (base::FeatureList::IsEnabled(tabs::kBraveTreeTab) &&
       browser->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
-    tree_tab_session_manager_ = std::make_unique<TreeTabSessionManager>(
-        profile, browser->GetTabStripModel(), browser->GetSessionID());
+    tree_tab_session_manager_ =
+        GetUserDataFactory().CreateInstance<TreeTabSessionManager>(
+            *browser, browser->GetUnownedUserDataHost(), profile,
+            browser->GetTabStripModel(), browser->GetSessionID());
   }
 }
 
 void BrowserWindowFeatures::InitPostBrowserViewConstruction(
     BrowserView* browser_view) {
   if (sidebar::CanUseSidebar(browser_view->browser())) {
-    sidebar_controller_ = std::make_unique<sidebar::SidebarController>(
-        browser_view->browser(), browser_view->GetProfile());
+    sidebar_controller_ =
+        GetUserDataFactory().CreateInstance<sidebar::SidebarController>(
+            *browser_, browser_view->browser(), browser_view->GetProfile());
 #if BUILDFLAG(ENABLE_PLAYLIST)
     if (playlist::IsPlaylistAllowed(browser_view->GetProfile()->GetPrefs())) {
       playlist_side_panel_coordinator_ =
-          std::make_unique<PlaylistSidePanelCoordinator>(
-              browser_view->browser(), sidebar_controller_.get(),
-              browser_view->GetProfile());
+          GetUserDataFactory().CreateInstance<PlaylistSidePanelCoordinator>(
+              *browser_, browser_view->browser(), browser_view->GetProfile());
     }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
   }
@@ -160,14 +142,17 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
             email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
                 browser_view->GetProfile())) {
       email_aliases_controller_ =
-          std::make_unique<email_aliases::EmailAliasesController>(
-              browser_view, email_aliases_service);
+          GetUserDataFactory()
+              .CreateInstance<email_aliases::EmailAliasesController>(
+                  *browser_, browser_view, email_aliases_service);
     }
   }
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  brave_vpn_controller_ = std::make_unique<BraveVPNController>(browser_view);
+  brave_vpn_controller_ =
+      GetUserDataFactory().CreateInstance<BraveVPNController>(*browser_,
+                                                              browser_view);
 #endif
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
@@ -177,28 +162,36 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
             []() -> base::flat_map<base::UnguessableToken, int>& {
               return printing::PrintPreviewUI::GetPrintPreviewUIRequestIdMap();
             }));
-    screenshot_controller_ = std::make_unique<screenshot::ScreenshotController>(
-        browser_view->GetProfile(),
-        base::BindRepeating(
-            [](BrowserView* bv) -> gfx::NativeWindow {
-              return bv->GetNativeWindow();
-            },
-            browser_view),
-        std::move(extractor));
+    screenshot_controller_ =
+        GetUserDataFactory().CreateInstance<screenshot::ScreenshotController>(
+            *browser_, browser_->GetUnownedUserDataHost(),
+            browser_view->GetProfile(),
+            base::BindRepeating(
+                [](BrowserView* bv) -> gfx::NativeWindow {
+                  return bv->GetNativeWindow();
+                },
+                browser_view),
+            base::BindRepeating(&screenshot::ShowScreenshotPreviewDialog),
+            std::move(extractor));
   }
 #else
-  screenshot_controller_ = std::make_unique<screenshot::ScreenshotController>(
-      browser_view->GetProfile(), base::BindRepeating(
-                                      [](BrowserView* bv) -> gfx::NativeWindow {
-                                        return bv->GetNativeWindow();
-                                      },
-                                      browser_view));
+  screenshot_controller_ =
+      GetUserDataFactory().CreateInstance<screenshot::ScreenshotController>(
+          *browser_, browser_->GetUnownedUserDataHost(),
+          browser_view->GetProfile(),
+          base::BindRepeating(
+              [](BrowserView* bv) -> gfx::NativeWindow {
+                return bv->GetNativeWindow();
+              },
+              browser_view),
+          base::BindRepeating(&screenshot::ShowScreenshotPreviewDialog));
 #endif
 
   if (base::FeatureList::IsEnabled(features::kWorkspaces) &&
       browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
     workspaces_bubble_controller_ =
-        std::make_unique<WorkspacesBubbleController>();
+        GetUserDataFactory().CreateInstance<WorkspacesBubbleController>(
+            *browser_, browser_->GetUnownedUserDataHost());
   }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -208,7 +201,8 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
       ai_chat::AIChatServiceFactory::GetForBrowserContext(
           browser_->GetProfile())) {
     ai_chat_side_panel_tab_transfer_bridge_ =
-        std::make_unique<AIChatSidePanelTabTransferBridge>(browser_);
+        GetUserDataFactory().CreateInstance<AIChatSidePanelTabTransferBridge>(
+            *browser_, browser_);
   }
 #endif
 
@@ -236,9 +230,4 @@ void BrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
     playlist_side_panel_coordinator_.reset();
 #endif
   }
-}
-
-void BrowserWindowFeatures::SetVerticalTabControllerForTesting(
-    std::unique_ptr<VerticalTabController> vertical_tab_controller) {
-  vertical_tab_controller_ = std::move(vertical_tab_controller);
 }

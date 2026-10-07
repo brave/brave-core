@@ -6,11 +6,11 @@
 #include "brave/components/brave_ads/core/internal/ml/model/linear/linear.h"
 
 #include <algorithm>
+#include <ranges>
 #include <string>
 #include <utility>
 #include <vector>
 
-#include "base/containers/adapters.h"
 #include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_linear_model_generated.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_prediction_util.h"
 
@@ -81,7 +81,7 @@ std::optional<PredictionMap> LinearModel::GetTopCountPredictionsImpl(
   for (const auto& [segment, probability] : predictions_softmax) {
     prediction_order.emplace_back(probability, segment);
   }
-  std::ranges::sort(base::Reversed(prediction_order));
+  std::ranges::sort(std::views::reverse(prediction_order));
 
   PredictionMap top_predictions;
   if (top_count && top_count < prediction_order.size()) {

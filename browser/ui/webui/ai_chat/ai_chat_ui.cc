@@ -51,8 +51,9 @@
 #include "ui/webui/webui_util.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/theme_source.h"
 #else
 #include "chrome/browser/ui/android/tab_model/tab_model.h"
@@ -112,6 +113,9 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   // Brave client version, used to tag serialized conversations for sharing.
   source->AddString("braveVersion",
                     version_info::GetBraveVersionWithoutChromiumMajorVersion());
+  source->AddBoolean(
+      "isWorkspaceToolsEnabled",
+      base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools));
 
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   source->OverrideContentSecurityPolicy(
@@ -129,6 +133,13 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ChildSrc,
       absl::StrFormat("child-src %s;", kAIChatUntrustedConversationUIURL));
+  // Allow framing workspace pages in the lightbox for viewing workspace files.
+  // Workspaces live at chrome-untrusted://<uuid>.leo-workspace origins.
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FrameSrc,
+      absl::StrFormat("frame-src %s chrome-untrusted://*.%s;",
+                      kAIChatUntrustedConversationUIURL,
+                      ai_chat::kAIChatLeoWorkspaceUIHost));
 
   content::URLDataSource::Add(
       profile_, std::make_unique<FaviconSource>(
@@ -162,10 +173,10 @@ void AIChatUI::BindInterface(
   // Get the WebContents which SidePanel mode should be associated with
   content::WebContents* web_contents = nullptr;
 #if !BUILDFLAG(IS_ANDROID)
-  Browser* browser =
+  BrowserWindowInterface* browser =
       ai_chat::GetBrowserForWebContents(web_ui()->GetWebContents());
   if (browser) {
-    TabStripModel* tab_strip_model = browser->tab_strip_model();
+    TabStripModel* tab_strip_model = browser->GetTabStripModel();
     if (tab_strip_model) {
       // If this WebUI is a main tab, we never want to be associated with
       // the active tab

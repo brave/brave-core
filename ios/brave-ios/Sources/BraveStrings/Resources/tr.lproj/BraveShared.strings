@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "Hakkında";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "Brave Kalkanları Hakkında";
-
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "Siteler genellikle sizi ve cihazınızı tanımlamaya çalışan çerezler ve komut dosyaları içerir. Kim olduğunuzu öğrenmek ve sizi web'de takip etmek ve her sitede ne yaptığınızı izlemek istiyorlar.\n\nBrave, takip edilmeden gezinebilmeniz için bunları engeller.";
-
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "Bu, görüntüyü Film Rulonuza kaydetmenizi sağlar.";
 
@@ -36,9 +30,6 @@
 
 /* Text for the toggle switch to clear 'Brave Ads' data in settings */
 "ads.braveAdsDataToggleOption" = "Brave Reklamları Verileri";
-
-/* individual blocking statistic title */
-"AdsAndTrackers" = "Reklamlar ve İzleyiciler";
 
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "Masaüstü Sitesini Her Zaman İste";
@@ -91,6 +82,9 @@
 /* Label for the button used to delete the current login. */
 "autofill.managePasswords.deleteManagePasswordButtonTitle" = "Sil";
 
+/* Label for the button used to confirm delete action for the current password. */
+"autofill.managePasswords.deleteManagePasswordConfrimButtonTitle" = "Şifreyi Sil";
+
 /* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
 "autofill.managePasswords.headerTitle" = "Kaydedilenler";
 
@@ -102,6 +96,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "Şifreleri kaydetmeyi öner";
+
+/* Navigation title when creating a new saved login from password management */
+"autofill.managePasswords.passwordDetail.addCredentialTitle" = "Parola Ekle";
+
+/* Alert message warning the user that deleting the password will remove it from their sync chain and device */
+"autofill.managePasswords.passwordDetail.deleteConfirmMessage" = "Bu parola senkronizasyon zincirinizden ve cihazınızdan kaldırılacak.";
 
 /* Placeholder for the password field when adding or editing a login */
 "autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "Şifre Girin";
@@ -121,18 +121,6 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "Otomatik doldurma";
 
-/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
-"AutoRedirectAMPPages" = "AMP Sayfalarını Otomatik Yönlendir";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
-"AutoRedirectAMPPagesDescription" = "Daima Google'ın Hızlandırılmış Mobil Sayfa versiyonları yerine orijinal (AMP olmayan) sayfa URL'lerini ziyaret edin";
-
-/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
-"AutoRedirectTrackingURLs" = "İzleme URL'lerini Otomatik Olarak Yönlendir";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "En üst seviye yönlendirme izleme URL'lerini atlamak için desteği etkinleştir";
-
 /* cookie settings option */
 "Block3rdPartyCookies" = "Üçüncü taraf çerezlerini engelle";
 
@@ -151,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Tercih ayarlanamadı. Lütfen yeniden deneyin.";
 
-/* A title for a setting that enables cookie consent notices */
-"BlockCookieConsentNotices" = "Çerez Onay Bildirimlerini Engelle";
-
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Engelleme İzleyicisi";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Açılır Pencereleri Engelle";
-
-/* No comment provided by engineer. */
-"BlockScripts" = "Komut Dosyalarını Engelle";
-
-/* No comment provided by engineer. */
-"BlockScriptsDescription" = "JavaScript'i engeller (siteleri bozabilir).";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "%lld Sekmeleri için Yer İşareti Ekle";
@@ -230,46 +209,10 @@
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Dismiss";
 
 /* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "Gelişmiş denetimler";
-
-/* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave Kalkanlar & Gizlilik";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Kalkanlar & Gizlilik";
-
-/* The number of ads and trackers blocked will be next to this */
-"BraveShieldsBlockedCountLabel" = "Reklamlar ve diğer ürpertici şeyler engellendi";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Daha fazla bilgi edinin";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "Kalkanlar Küresel Varsayılanlarını Değiştir";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalControls" = "Genel Denetimler";
-
-/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "Gelecekteki bozuk site raporları için iletişim bilgilerini sakla";
-
-/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "İletişim bilgilerinizi verirseniz, gelecekteki raporlar için saklanacaktır";
-
-/* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "Bu site bozuk görünüyorsa, Kalkanları indirerek deneyin";
-
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave Kalkanları";
-
-/* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "Aşağı";
-
-/* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "Yukarı";
-
-/* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "Brave Kalkanları'nı değiştirmek için iki kez dokunun";
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Sohbet";
@@ -727,6 +670,18 @@
 /* Accessibility Title for the button that edits the quick-search engines list. */
 "EditQuickSearchEnginesAccessibilityTitle" = "Hızlı arama motorlarını düzenle";
 
+/* The message on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertMessage" = "Bir çökme veya donma yaşarsanız, Brave sorunu düzeltmek için otomatik olarak anonim tanılama raporları gönderebilir. Bunu daha sonra istediğiniz zaman Ayarlar'dan kapatabilirsiniz.";
+
+/* The title on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertTitle" = "Otomatik çökme raporlarını etkinleştir";
+
+/* The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting */
+"EnableCrashReporterConfirmButtonTitle" = "Etkinleştir";
+
+/* The button title on an alert presented to the user after the app crashes that ignores the alert */
+"EnableCrashReporterDenyButtonTitle" = "Şimdi Değil";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Çekerek Yenilemeyi Etkinleştir";
 
@@ -823,15 +778,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findPreviousTitle" = "Öncekini Bul";
 
-/* individual blocking statistic title */
-"FingerprintingMethods" = "Parmak İzi Yöntemleri";
-
-/* No comment provided by engineer. */
-"FingerprintingProtection" = "Parmak İzini Engelle";
-
-/* No comment provided by engineer. */
-"FingerprintingProtectionDescription" = "Sitelerin cihazınızın ayırt edici özelliklerini tanımasını zorlaştırır. ";
-
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Evrensel bağlantıların harici uygulamalarda açılmasına izin ver";
 
@@ -898,15 +844,6 @@
 /* No comment provided by engineer. */
 "Home" = "Ana Sayfa";
 
-/* No comment provided by engineer. */
-"HTTPSEverywhere" = "Bağlantıları HTTPS'ye Yükselt";
-
-/* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Mümkün olduğunda siteleri HTTP yerine güvenli HTTPS ile açar.";
-
-/* individual blocking statistic title */
-"HTTPSUpgrades" = "HTTPS Yükseltmeleri";
-
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Tarama Verilerini İçe Aktar";
 
@@ -927,6 +864,9 @@
 
 /* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
+
+/* Title for Brave Leo voice input menu item. Brave Leo is the name of a product and should not be translated */
+"LeoVoiceInputMenuItem" = "Leo Ses Girişi";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "Kaydedilmiş Giriş Bilgileri kalıcı olarak kaldırılacaktır.";
@@ -1095,9 +1035,6 @@
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Varsayılan Resimler";
-
-/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "Sponsorlu Görseller & Videolar";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "Sponsorlu Görseller";
@@ -1648,9 +1585,6 @@
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Adsız Oynatma Listesi";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
-"PopoverShieldsMenuClose" = "Kalkanlar Menüsünü Kapat";
-
 /* Settings privacy section title */
 "Privacy" = "Gizlilik";
 
@@ -1999,41 +1933,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "Sık Kullanılanı Kaldır";
 
-/* No comment provided by engineer. */
-"ReportABrokenSite" = "Arızalı Bir Siteyi Bildir";
-
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "Hata Bildirme";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"ReportBrokenAdditionalDetails" = "Ek ayrıntılar (isteğe bağlı)";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"reportBrokenAdditionalDetailsRequired" = "Ek detaylar";
-
-/* A label for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "Karşılaştığınız ana sorun nedir?";
-
-/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
-"ReportBrokenContactMe" = "Benimle şuradan iletişime geçin (isteğe bağlı):";
-
-/* Contact info storing description */
-"ReportBrokenContactMeDescription" = "İletişim bilgilerini verirseniz, gelecekte bozuk siteleri bildirmek için saklanacaktır.";
-
-/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
-"ReportBrokenContactMeSuggestions" = "E-posta, Twitter, vb.";
-
-/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"ReportBrokenPlaceholder" = "Bir seçenek seçin";
-
-/* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Brave'in geliştiricilerine bu sitenin beklendiği gibi çalışmadığını bildirin:";
-
-/* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Not: Brave sunucularına gönderilen rapor site adresini, Brave sürüm numarasını, Kalkanlar ayarlarını, VPN durumunu ve dil ayarlarını içerecektir.";
-
-/* No comment provided by engineer. */
-"ReportBrokenSubmitButtonTitle" = "Gönder";
 
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraAndMicrophonePermissionPrompt" = "\"%@\", Kamera ve Mikrofona Erişmek İstiyor";
@@ -2079,6 +1980,15 @@
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Brave ve BAT topluluğunu desteklemeye yardımcı olduğunuz için teşekkürler!";
+
+/* Message of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationMessage" = "Sıfırladığınızda, mevcut Brave Ödüller profiliniz silinecek ve Brave Ödüller artık etkin olmayacak.";
+
+/* Title of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationTitle" = "Brave Ödüllerini Sıfırla";
+
+/* Title of a button that resets the user's Brave Rewards profile */
+"rewards.settingsResetTitle" = "Sıfırla";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Brave Ödüllerini etkinleştirerek ve Brave Reklamlarını görerek Brave ve BAT topluluğunu desteklemeye yardım edin.";
@@ -2302,9 +2212,6 @@
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Oturumları Kaydet";
 
-/* individual blocking statistic title */
-"ScriptsBlocked" = "Engellenen Komut Dosyaları";
-
 /* The placeholder text for bookmark search */
 "searchBookmarksTitle" = "Yer İşaretleri arayın";
 
@@ -2461,17 +2368,17 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Kalite Ayarları";
 
+/* Description to explain the send crash reports toggle */
+"settings.sendCrashReportsDescription" = "Kilitlenme veya çökme yaşarsanız anonim tanı raporu gönderin.";
+
+/* Title to explain the send crash reports toggle */
+"settings.sendCrashReportsTitle" = "Çökme raporları gönder";
+
 /* Description to explain the daily usage ping toggle */
 "settings.sendUsagePingDescription" = "Bu özel ping, Brave'in aktif kullanıcıları tahmin etmesine olanak tanır.";
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Günlük kullanım ping'ini Brave'e otomatik olarak gönder";
-
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "Brave'in yeni sekme sayfasında özel anketlere bağlantılar göstermesine izin verir. Anketler, daha iyi özellikler oluşturmamıza ve tarayıcı tabanlı reklam kampanyalarının etkinliğini ölçmemize yardımcı olur. [Daha fazla bilgi edinin](%@)";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "Brave anketlerine izin verin";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -2544,21 +2451,6 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Bu web sitesinde video izlerken reklamlar engellenir.";
-
-/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Brave Kalkanları Küresel Varsayılanları";
-
-/* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "Bunlar, yeni siteler için varsayılan Kalkan ayarlarıdır. Bunları değiştirmek mevcut site başına ayarlarınızı etkilemez.";
-
-/* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Brave'in gizlilik koruması olmadan bu siteye göz atıyorsunuz. Kalkanlar açıkken düzgün çalışmıyor mu?";
-
-/* shields overview message */
-"ShieldsOverview" = "Site Kalkanları, ziyaret ettiğiniz her site için reklamların ve izleyicilerin ne zaman engellendiğini kontrol etmenizi sağlar. Reklamları belirli bir sitede görmeyi tercih ediyorsanız, reklamları burada etkinleştirebilirsiniz.";
-
-/* shields overview footer message */
-"ShieldsOverviewFooter" = "Not: Bazı siteler komut dosyalarının düzgün çalışmasını gerektirebilir, bu nedenle bu kalkan varsayılan olarak kapatılabilir.";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Yeni Gizli Sekme";
@@ -2745,15 +2637,6 @@
 
 /* Settings item for clearing site-specific settings and shields settings. */
 "SiteAndShieldsSettings" = "Site ve Kalkan Ayarları";
-
-/* No comment provided by engineer. */
-"SiteReportedBody" = "Brave'in geliştiricilerine bu sitede bir sorun olduğunu bildirin. Düzeltmek için elimizden geleni yapacağız!";
-
-/* No comment provided by engineer. */
-"SiteReportedTitle" = "Teşekkürler";
-
-/* Brave panel topmost title */
-"SiteShieldSettings" = "Kalkanlar";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Her gün Brave ile web'de gezinerek veriden tasarruf ediyorum.";
@@ -2945,7 +2828,7 @@
 "sync.maximumDeviceReachedErrorTitle" = "Cihaz sınırı";
 
 /* New sync code button title */
-"sync.newSyncCode" = "Yeni bir Eşitleme Zinciri başlatın";
+"sync.newSyncCode" = "Yeni Senkronizasyon Zinciri";
 
 /* No internet connection alert body. */
 "sync.noConnectionBody" = "İnternet bağlantınızı kontrol edin ve yeniden deneyin.";
@@ -3115,6 +2998,9 @@
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Gizli Tarama";
 
+/* A label in the tab tray mode switcher for private browsing mode */
+"tabGrid.privateBrowsingModeTitle" = "Gizli";
+
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Gizli Sekme Ayarları";
 
@@ -3139,11 +3025,23 @@
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Sekmeleri Unut";
 
+/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
+"tabGrid.tabsCountFormatPlural" = "%lld Sekme";
+
+/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
+"tabGrid.tabsCountFormatSingular" = "%lld Sekme";
+
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "Geçmişi Görüntüle";
 
+/* Label for history menu item button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryMenuItemLabel" = "Geçmiş";
+
 /* Accessibility label for a button that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsAccessibilityLabel" = "Senkronize Sekmeleri Görüntüle";
+
+/* Label for synced tabs menu item that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsMenuItemLabel" = "Eşitleme";
 
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "Gizli modu açar veya kapatır";
@@ -3516,9 +3414,6 @@
 
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "Kullanıcı iptal etti";
-
-/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
-"UseRegionalAdblock" = "Bölgesel reklam engellemesi kullanma";
 
 /* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "Kapat";

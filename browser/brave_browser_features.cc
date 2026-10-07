@@ -46,6 +46,11 @@ BASE_FEATURE(kBraveOverrideDownloadDangerLevel,
 BASE_FEATURE(kBraveDayZeroExperiment,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+// Allows Brave shields to intercept WebSocket requests coming from
+// Shared/Service workers.
+BASE_FEATURE(kBraveEnableShieldsForWebSocketsFromWorkers,
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
 #if BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE)
 // Run WebAssembly code in the DrumBrake interpreter instead of the optimizing
 // compiler. Automatically enabled when V8 is in jitless mode.

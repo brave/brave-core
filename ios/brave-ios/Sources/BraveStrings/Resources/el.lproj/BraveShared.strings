@@ -1,12 +1,6 @@
 /* About settings section title */
 "About" = "Σχετικά με";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "Σχετικά με το Brave Shields";
-
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "Οι ιστότοποι συχνά περιλαμβάνουν cookie και δέσμες ενεργειών που επιχειρούν να ταυτοποιήσουν εσάς και τη συσκευή σας. Θέλουν να εξακριβώσουν ποιος είστε και να σας ακολουθούν στον ιστό, παρακολουθώντας τι κάνετε σε κάθε ιστότοπο.\n\nΤο Brave αποκλείει αυτά τα στοιχεία, ώστε να μπορείτε να περιηγηθείτε χωρίς να σας ακολουθούν.";
-
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "Αυτό σας επιτρέπει να αποθηκεύσετε την εικόνα στο Άλμπουμ κάμερας.";
 
@@ -36,9 +30,6 @@
 
 /* Text for the toggle switch to clear 'Brave Ads' data in settings */
 "ads.braveAdsDataToggleOption" = "Δεδομένα διαφημίσεων Brave";
-
-/* individual blocking statistic title */
-"AdsAndTrackers" = "Διαφημίσεις κι Ανιχνευτές";
 
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "Υποβολή αιτήματος ιστότοπου για υπολογιστές πάντα";
@@ -91,6 +82,9 @@
 /* Label for the button used to delete the current login. */
 "autofill.managePasswords.deleteManagePasswordButtonTitle" = "Διαγραφή";
 
+/* Label for the button used to confirm delete action for the current password. */
+"autofill.managePasswords.deleteManagePasswordConfrimButtonTitle" = "Διαγραφή κωδικού πρόσβασης";
+
 /* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
 "autofill.managePasswords.headerTitle" = "Αποθηκεύτηκε";
 
@@ -102,6 +96,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "Προσφορά αποθήκευσης κωδικών πρόσβασης";
+
+/* Navigation title when creating a new saved login from password management */
+"autofill.managePasswords.passwordDetail.addCredentialTitle" = "Προσθήκη κωδικού πρόσβασης";
+
+/* Alert message warning the user that deleting the password will remove it from their sync chain and device */
+"autofill.managePasswords.passwordDetail.deleteConfirmMessage" = "Αυτός ο κωδικός πρόσβασης θα αφαιρεθεί από την αλυσίδα συγχρονισμού και τη συσκευή σας.";
 
 /* Placeholder for the password field when adding or editing a login */
 "autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "Εισαγωγή κωδικού πρόσβασης";
@@ -121,18 +121,6 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "Αυτόματη συμπλήρωση";
 
-/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
-"AutoRedirectAMPPages" = "Αυτόματη ανακατεύθυνση σελίδων AMP";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
-"AutoRedirectAMPPagesDescription" = "Να επισκέπτεστε πάντα τις αρχικές διευθύνσεις URL σελίδων (μη AMP), αντί για τις εκδόσεις Accelerated Mobile Page της Google";
-
-/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
-"AutoRedirectTrackingURLs" = "Αυτόματη ανακατεύθυνση διευθύνσεων URL παρακολούθησης";
-
-/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "Ενεργοποίηση υποστήριξης για παράκαμψη ανακατεύθυνσης διευθύνσεων URL παρακολούθησης ανώτατου επιπέδου";
-
 /* cookie settings option */
 "Block3rdPartyCookies" = "Αποκλεισμός cookies τρίτων";
 
@@ -151,20 +139,11 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Ο ορισμός της προτίμησης απέτυχε. Δοκιμάστε ξανά.";
 
-/* A title for a setting that enables cookie consent notices */
-"BlockCookieConsentNotices" = "Αποκλεισμός ειδοποιήσεων συναίνεσης για cookie";
-
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Αποκλεισμός της οθόνης";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Αποκλεισμός αναδυόμενων παραθύρων";
-
-/* No comment provided by engineer. */
-"BlockScripts" = "Αποκλεισμός δεσμών ενεργειών";
-
-/* No comment provided by engineer. */
-"BlockScriptsDescription" = "Αποκλείει τη JavaScript (μπορεί να εμποδίσει τη λειτουργία ιστότοπων).";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "Προσθήκη σελιδοδείκτη για %lld καρτέλες";
@@ -230,46 +209,10 @@
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Παράβλεψη";
 
 /* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "Ρυθμίσεις για προχωρημένους";
-
-/* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Ασπίδες Brave & απόρρητο";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Ασπίδες & απόρρητο";
-
-/* The number of ads and trackers blocked will be next to this */
-"BraveShieldsBlockedCountLabel" = "Οι διαφημίσεις και άλλα ανατριχιαστικά πράγματα αποκλείστηκαν";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Μάθετε περισσότερα";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "Αλλαγή καθολικών προεπιλογών Ασπίδων";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalControls" = "Καθολικοί έλεγχοι";
-
-/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "Αποθήκευση πληροφοριών επικοινωνίας για μελλοντικές αναφορές ιστοτόπων που δεν λειτουργούν";
-
-/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "Εάν παρέχετε στοιχεία επικοινωνίας, θα αποθηκευτούν για μελλοντικές αναφορές";
-
-/* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "Εάν αυτός ο ιστότοπος φαίνεται να μην λειτουργεί σωστά, δοκιμάστε να απενεργοποιήσετε τις Ασπίδες";
-
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Ασπίδες Brave ";
-
-/* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "Κάτω";
-
-/* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "Επάνω";
-
-/* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "Πατήστε δύο φορές για εναλλαγή των Ασπίδων Brave";
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Συνομιλία Brave";
@@ -727,6 +670,18 @@
 /* Accessibility Title for the button that edits the quick-search engines list. */
 "EditQuickSearchEnginesAccessibilityTitle" = "Επεξεργασία μηχανών αναζήτησης";
 
+/* The message on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertMessage" = "Εάν αντιμετωπίσετε κάποια διακοπή ή πάγωμα, το Brave μπορεί να στέλνει αυτόματα ανώνυμες αναφορές διαγνωστικών για την επιδιόρθωση του προβλήματος. Μπορείτε πάντα να το απενεργοποιήσετε αργότερα στις Ρυθμίσεις.";
+
+/* The title on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertTitle" = "Ενεργοποίηση αυτόματων αναφορών διακοπής λειτουργίας";
+
+/* The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting */
+"EnableCrashReporterConfirmButtonTitle" = "Ενεργοποίηση";
+
+/* The button title on an alert presented to the user after the app crashes that ignores the alert */
+"EnableCrashReporterDenyButtonTitle" = "Όχι τώρα";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Ενεργοποίηση έλξης για ανανέωση";
 
@@ -823,15 +778,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findPreviousTitle" = "Εύρεση προηγούμενου";
 
-/* individual blocking statistic title */
-"FingerprintingMethods" = "Μέθοδοι αποτύπωσης";
-
-/* No comment provided by engineer. */
-"FingerprintingProtection" = "Αποκλεισμός αναγνώρισης αποτυπώματος";
-
-/* No comment provided by engineer. */
-"FingerprintingProtectionDescription" = "Καθιστά πιο δύσκολο για τους ιστότοπους να αναγνωρίζουν τα ιδιαίτερα χαρακτηριστικά της συσκευής σας. ";
-
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Να επιτρέπεται το άνοιγμα καθολικών συνδέσμων σε εξωτερικές εφαρμογές";
 
@@ -898,15 +844,6 @@
 /* No comment provided by engineer. */
 "Home" = "Αρχική σελίδα";
 
-/* No comment provided by engineer. */
-"HTTPSEverywhere" = "Αναβάθμιση συνδέσεων σε HTTPS";
-
-/* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Ανοίγει ιστότοπους χρησιμοποιώντας ασφαλές HTTPS αντί για HTTP, όταν είναι δυνατό.";
-
-/* individual blocking statistic title */
-"HTTPSUpgrades" = "Αναβαθμίσεις HTTPS";
-
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Εισαγωγή δεδομένων περιήγησης";
 
@@ -927,6 +864,9 @@
 
 /* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
+
+/* Title for Brave Leo voice input menu item. Brave Leo is the name of a product and should not be translated */
+"LeoVoiceInputMenuItem" = "Φωνητικά δεδομένα εισόδου Leo";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "Η αποθηκευμένη σύνδεση θα καταργηθεί οριστικά.";
@@ -1095,9 +1035,6 @@
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Προεπιλεγμένες εικόνες";
-
-/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "Χορηγούμενες εικόνες & βίντεο";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "Χορηγούμενες εικόνες";
@@ -1648,9 +1585,6 @@
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Λίστα αναπαραγωγής χωρίς τίτλο";
 
-/* Description for closing the `Brave Shields` popover menu that is displayed. */
-"PopoverShieldsMenuClose" = "Κλείσιμο μενού Ασπίδων";
-
 /* Settings privacy section title */
 "Privacy" = "Απόρρητο";
 
@@ -1999,41 +1933,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "Κατάργηση αγαπημένου";
 
-/* No comment provided by engineer. */
-"ReportABrokenSite" = "Αναφέρετε μη λειτουργούντα ιστότοπο";
-
 /* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "Αναφορά σφάλματος";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"ReportBrokenAdditionalDetails" = "Επιπλέον λεπτομέρειες (προαιρετικό)";
-
-/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"reportBrokenAdditionalDetailsRequired" = "Πρόσθετες λεπτομέρειες";
-
-/* A label for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "Ποιο είναι το κύριο ζήτημα που παρατηρείτε;";
-
-/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
-"ReportBrokenContactMe" = "Επικοινωνήστε μαζί μου στο: (προαιρετικό)";
-
-/* Contact info storing description */
-"ReportBrokenContactMeDescription" = "Εάν παρέχετε στοιχεία επικοινωνίας, αυτά θα αποθηκευτούν στο μέλλον για την αναφορά ιστοτόπων που δεν λειτουργούν.";
-
-/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
-"ReportBrokenContactMeSuggestions" = "Email, Twitter κ.λπ.";
-
-/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"ReportBrokenPlaceholder" = "Κάντε μία επιλογή";
-
-/* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Ενημερώστε τους προγραμματιστές του Brave ότι ο ιστότοπος αυτός δεν λειτουργεί όπως αναμενόταν:";
-
-/* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Σημείωση: Η αναφορά που αποστέλλεται στους διακομιστές Brave θα περιλαμβάνει τη διεύθυνση τοποθεσίας, τον αριθμό έκδοσης Brave, τις ρυθμίσεις Ασπίδων, την κατάσταση VPN και τις ρυθμίσεις γλώσσας.";
-
-/* No comment provided by engineer. */
-"ReportBrokenSubmitButtonTitle" = "Υποβολή";
 
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraAndMicrophonePermissionPrompt" = "Το %@ ζητά πρόσβαση στην κάμερα και στο μικρόφωνο";
@@ -2079,6 +1980,15 @@
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Ευχαριστούμε που συμβάλλετε στην υποστήριξη του Brave και της κοινότητας BAT!";
+
+/* Message of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationMessage" = "Με την επαναφορά, το τρέχον προφίλ Επιβραβεύσεων Brave θα διαγραφεί και οι Επιβραβεύσεις Brave δεν θα είναι πλέον ενεργοποιημένες.";
+
+/* Title of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationTitle" = "Επαναφορά Ανταμοιβών Brave";
+
+/* Title of a button that resets the user's Brave Rewards profile */
+"rewards.settingsResetTitle" = "Επαναφορά";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Συμβάλλετε στην υποστήριξη του Brave και της κοινότητας BAT ενεργοποιώντας τις Ανταμοιβές Brave και παρακολουθώντας τις Διαφημίσεις Brave.";
@@ -2302,9 +2212,6 @@
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Αποθήκευση συνδέσεων";
 
-/* individual blocking statistic title */
-"ScriptsBlocked" = "Αποκλεισμένα Scripts";
-
 /* The placeholder text for bookmark search */
 "searchBookmarksTitle" = "Αναζήτηση σελιδοδεικτών";
 
@@ -2461,17 +2368,17 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Ρυθμίσεις ποιότητας";
 
+/* Description to explain the send crash reports toggle */
+"settings.sendCrashReportsDescription" = "Στείλτε ανώνυμες διαγνωστικές αναφορές, σε περίπτωση σφάλματος ή παγώματος.";
+
+/* Title to explain the send crash reports toggle */
+"settings.sendCrashReportsTitle" = "Αποστολή αναφορών σφάλματος";
+
 /* Description to explain the daily usage ping toggle */
 "settings.sendUsagePingDescription" = "Αυτό το ιδιωτικό ping επιτρέπει στο Brave να εκτιμήσει τους ενεργούς χρήστες.";
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Αυτόματη αποστολή ping καθημερινής χρήσης στο Brave";
-
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "Επιτρέπει στο Brave να εμφανίζει συνδέσμους για ιδιωτικές έρευνες στη νέα σελίδα καρτέλας. Οι έρευνες μας βοηθούν να δημιουργήσουμε καλύτερες λειτουργίες και να μετρήσουμε την αποτελεσματικότητα των διαφημιστικών εκστρατειών που βασίζονται στο πρόγραμμα περιήγησης. [Μάθετε περισσότερα](%@)";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "Να επιτρέπονται οι έρευνες Brave";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -2544,21 +2451,6 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Οι διαφημίσεις αποκλείονται κατά την παρακολούθηση βίντεο σ' αυτόν τον ιστότοπο.";
-
-/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Καθολικές προεπιλογές Ασπίδων Brave";
-
-/* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "Αυτές είναι οι προεπιλεγμένες ρυθμίσεις των Ασπίδων για νέες τοποθεσίες. Η αλλαγή αυτών δεν θα επηρεάσει τις υπάρχουσες ρυθμίσεις ανά ιστότοπο.";
-
-/* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "Περιηγείστε σε αυτήν την ιστοσελίδα χωρίς την προστασία απορρήτου του Brave. Δεν λειτουργεί σωστά με τις Ασπίδες ενεργές;";
-
-/* shields overview message */
-"ShieldsOverview" = "Οι Ασπίδες ιστότοπου σας επιτρέπουν να ελέγχετε πότε αποκλείονται οι διαφημίσεις και τα προγράμματα παρακολούθησης για κάθε ιστότοπο που επισκέπτεστε. Εάν προτιμάτε να βλέπετε διαφημίσεις σε έναν συγκεκριμένο ιστότοπο, μπορείτε να τις ενεργοποιήσετε εδώ.";
-
-/* shields overview footer message */
-"ShieldsOverviewFooter" = "Σημείωση: Ορισμένοι ιστότοποι ενδέχεται να απαιτούν δέσμες ενεργειών για να λειτουργούν σωστά, επομένως αυτή η ασπίδα είναι απενεργοποιημένη από προεπιλογή.";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Νέα Ιδιωτική καρτέλα";
@@ -2745,15 +2637,6 @@
 
 /* Settings item for clearing site-specific settings and shields settings. */
 "SiteAndShieldsSettings" = "Ρυθμίσεις Ιστοτόπου και Ασπίδων";
-
-/* No comment provided by engineer. */
-"SiteReportedBody" = "Ευχαριστούμε που ενημερώσατε τους προγραμματιστές του Brave ότι υπάρχει κάποιο πρόβλημα μ' αυτόν τον ιστότοπο. Θα κάνουμε το καλύτερο δυνατό για να το διορθώσουμε!";
-
-/* No comment provided by engineer. */
-"SiteReportedTitle" = "Σας ευχαριστούμε";
-
-/* Brave panel topmost title */
-"SiteShieldSettings" = "Ασπίδες";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Κάθε μέρα γλιτώνω δεδομένα με την περιήγηση στον ιστό με το Brave.";
@@ -2945,7 +2828,7 @@
 "sync.maximumDeviceReachedErrorTitle" = "Όριο συσκευών";
 
 /* New sync code button title */
-"sync.newSyncCode" = "Ξεκινήστε μια νέα Aλυσίδα Συγχρονισμού";
+"sync.newSyncCode" = "Νέα αλυσίδα συγχρονισμού";
 
 /* No internet connection alert body. */
 "sync.noConnectionBody" = "Ελέγξτε τη σύνδεσή σας στο Internet και δοκιμάστε ξανά.";
@@ -3115,6 +2998,9 @@
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Ιδιωτική περιήγηση";
 
+/* A label in the tab tray mode switcher for private browsing mode */
+"tabGrid.privateBrowsingModeTitle" = "Ιδιωτική λειτουργία";
+
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Ρυθμίσεις ιδιωτικών καρτελών";
 
@@ -3139,11 +3025,23 @@
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Κατάργηση καρτελών";
 
+/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
+"tabGrid.tabsCountFormatPlural" = "%lld Καρτέλα";
+
+/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
+"tabGrid.tabsCountFormatSingular" = "%lld Καρτέλα";
+
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "Προβολή ιστορικού";
 
+/* Label for history menu item button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryMenuItemLabel" = "Ιστορικό";
+
 /* Accessibility label for a button that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsAccessibilityLabel" = "Προβολή συγχρονισμένων καρτελών";
+
+/* Label for synced tabs menu item that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsMenuItemLabel" = "Συγχρονισμός";
 
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "Ενεργοποιεί ή απενεργοποιεί την ιδιωτική λειτουργία";
@@ -3516,9 +3414,6 @@
 
 /* Error message if the payment workflow is canceled by the user */
 "userCancelledMessage" = "Ακυρώθηκε από τον χρήστη";
-
-/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
-"UseRegionalAdblock" = "Χρήση τοπικού αποκλεισμού διαφημίσεων";
 
 /* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "Κλείσιμο";

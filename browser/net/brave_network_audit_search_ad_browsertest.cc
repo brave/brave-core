@@ -21,13 +21,17 @@
 #include "base/test/scoped_run_loop_timeout.h"
 #include "base/test/test_timeouts.h"
 #include "base/time/time.h"
+#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/net/brave_network_audit_allowed_lists.h"
 #include "brave/browser/net/brave_network_audit_test_helper.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_ads/core/browser/service/test/ads_service_waiter.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -47,9 +51,7 @@
 namespace brave {
 namespace {
 
-// Both timeouts in seconds
-constexpr int kMaxTimeoutForAdsServiceInit = 10;
-constexpr int kMaxTimeoutPerLoadedURL = 30;
+constexpr int kMaxTimeoutPerLoadedURL = 30;  // Seconds
 constexpr char kEmbeddedTestServerDirectory[] = "brave_ads";
 constexpr char kDomain[] = "search.brave.com";
 constexpr char kBraveSearchPath[] = "/search_result_ad_click.html";
@@ -153,11 +155,16 @@ class BraveNetworkAuditSearchAdTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkAuditSearchAdTest, SearchAdTest) {
-  WaitForTimeout(kMaxTimeoutForAdsServiceInit);
+  brave_ads::AdsService* ads_service =
+      brave_ads::AdsServiceFactory::GetForProfile(profile());
+  ASSERT_TRUE(ads_service);
+  brave_ads::test::AdsServiceWaiter(*ads_service)
+      .WaitForOnDidInitializeAdsService();
+
   GURL url = https_server()->GetURL(kDomain, kBraveSearchPath);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
-      browser()->tab_strip_model()->GetActiveWebContents();
+      chrome_test_utils::GetActiveWebContents(this);
   WaitForTimeout(kMaxTimeoutPerLoadedURL);
 
   EXPECT_TRUE(content::ExecJs(contents,

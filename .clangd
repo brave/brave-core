@@ -16,3 +16,24 @@ If:
   PathMatch: .*\.h
 CompileFlags:
   Add: -Wnounused-const-variable
+---
+
+# Silence -Wunsafe-buffer-usage
+#
+# While we do want to be warned about unsafe buffer usage, unfortunately there
+# are many false positives that cannot be suppressed. This only impacts clangd.
+# Unsafe buffer warnings will still come from clang during builds.
+#
+# The Chromium-built clang has a custom UnsafeBuffersPlugin which suppresses
+# warnings in certain exempted paths such as third_party/ and which allow for
+# exceptions via `#pragma allow_unsafe_buffers`.
+#
+# This plugin is not built into Chromium-built clangd, however. Notice that
+# Chromium's .clangd removes the `-DUNSAFE_BUFFERS_BUILD` flag, which is the
+# guard clause for the #pragma.
+#
+# See also:
+#   //build/config/unsafe_buffers_paths.txt
+#   //tools/clang/plugins/UnsafeBuffersPlugin.cpp
+CompileFlags:
+  Add: -Wno-unsafe-buffer-usage

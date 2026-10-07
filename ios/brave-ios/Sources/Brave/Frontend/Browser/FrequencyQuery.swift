@@ -8,7 +8,6 @@ import Data
 import Foundation
 import OrderedCollections
 import Shared
-import Storage
 import Web
 
 public struct Site: Hashable {

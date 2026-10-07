@@ -12,6 +12,13 @@
 
 namespace brave_vpn {
 
+using v1::endpoints::kSupportTicketEmailKey;
+using v1::endpoints::kSupportTicketPartnerClientIdKey;
+using v1::endpoints::kSupportTicketPaymentValidationMethodKey;
+using v1::endpoints::kSupportTicketSubjectKey;
+using v1::endpoints::kSupportTicketSubscriberCredential;
+using v1::endpoints::kSupportTicketSupportTicketKey;
+
 TEST(BraveVPNAPIHelperTest, TicketInfoTest) {
   base::DictValue ticket_value = GetValueWithTicketInfos(
       "brave-vpn@brave.com", "It's cool feature", "Love the Brave VPN!",

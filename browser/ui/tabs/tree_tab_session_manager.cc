@@ -18,6 +18,7 @@
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "chrome/browser/sessions/session_service.h"
 #include "chrome/browser/sessions/session_service_factory.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/sessions/content/session_tab_helper.h"
@@ -26,18 +27,28 @@
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 
-TreeTabSessionManager::TreeTabSessionManager(Profile* profile,
+DEFINE_USER_DATA(TreeTabSessionManager);
+
+TreeTabSessionManager::TreeTabSessionManager(ui::UnownedUserDataHost& host,
+                                             Profile* profile,
                                              TabStripModel* tab_strip_model,
                                              SessionID session_id)
     : profile_(profile),
       tab_strip_model_(tab_strip_model),
-      session_id_(session_id) {
+      session_id_(session_id),
+      scoped_unowned_user_data_(host, *this) {
   CHECK(profile_);
   CHECK(tab_strip_model_);
   tab_strip_model_->AddObserver(this);
 }
 
 TreeTabSessionManager::~TreeTabSessionManager() = default;
+
+// static
+TreeTabSessionManager* TreeTabSessionManager::From(
+    BrowserWindowInterface* browser) {
+  return Get(browser->GetUnownedUserDataHost());
+}
 
 void TreeTabSessionManager::MaybePopulateTreeTabExtraData(
     int index,

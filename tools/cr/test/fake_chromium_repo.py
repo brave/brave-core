@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import contextlib
 import json
 import os
 import subprocess
@@ -44,13 +45,15 @@ class FakeChromiumRepo:
         # Every repository initialised by this fixture, in creation order.
         self._repos: list[Path] = []
 
-        self.temp_dir: tempfile.TemporaryDirectory = (
-            tempfile.TemporaryDirectory())
+        self._exit_stack = contextlib.ExitStack()
+        self.temp_dir: str = self._exit_stack.enter_context(
+            tempfile.TemporaryDirectory()
+        )
         # Resolve the temp dir so derived paths are symlink-canonical. On
         # macOS, tempfile returns paths under /var/folders/..., but /var is a
         # symlink to /private/var; without resolving here, equality checks
         # against `Repository.root.resolve()` (which follows the symlink) fail.
-        self.base_path: Path = Path(self.temp_dir.name).resolve() / 'workspace'
+        self.base_path: Path = Path(self.temp_dir).resolve() / 'workspace'
         self._init_repo(self.chromium)
 
         # Set a brave repository under src/.
@@ -68,12 +71,23 @@ class FakeChromiumRepo:
         (self.brave / 'chromium_src').mkdir(exist_ok=True)
         (self.brave / 'rewrite').mkdir(exist_ok=True)
         (self.brave / 'patches').mkdir(exist_ok=True)
+        # Real brave-core always lists the repositories it patches, so the
+        # fixture does too. Tests adding a repository with `add_repo` rewrite
+        # this to name it (see `set_patched_repositories`).
+        #
+        # It is amended into the initial commit rather than committed on its
+        # own, so it is tracked, as it is upstream, without adding a commit
+        # that every test looking at brave's history would have to account
+        # for.
+        self.set_patched_repositories()
+        self._run_git_command(['add', str(self.repositories_file)], self.brave)
+        self._run_git_command(['commit', '--amend', '--no-edit'], self.brave)
 
         # `FakeChromiumRepo` will change the current directory to a mirro path
         # inside the fake brave repo, relative to the cwd in brave-core when
         # launched. This is intentional, although it means that tests run from
         # different cwds will see different relatative paths for brave-core
-        # root, and chromium root. This should always work, as none of the code
+        # root, and chromium root. This should always work, as none of the code
         # under tools/cr should be calling `chdir`, and it allows us to check
         # that code works correctly no matter from where it was launched.
         self._original_cwd = Path.cwd()
@@ -84,7 +98,8 @@ class FakeChromiumRepo:
         except ValueError:
             raise ValueError(
                 'FakeChromiumRepo.setup() must be called from within the '
-                f'brave-core tree ({brave_root}).') from None
+                f'brave-core tree ({brave_root}).'
+            ) from None
         fake_cwd = self.brave / rel_from_brave
         fake_cwd.mkdir(parents=True, exist_ok=True)
         os.chdir(fake_cwd)
@@ -105,6 +120,28 @@ class FakeChromiumRepo:
         return self.brave / 'patches'
 
     @property
+    def repositories_file(self) -> Path:
+        """The file listing every repository brave-core patches."""
+        return self.brave_patches / '.repositories.cfg'
+
+    def set_patched_repositories(self, *relative_paths: str) -> None:
+        """Lists the repositories brave-core patches, `src` plus the given.
+
+        Mirrors `patches/.repositories.cfg`: one gn-style source-absolute path
+        per line, so `//` names chromium's own `src`, which is always listed,
+        and `//v8` names `src/v8`.
+
+        Args:
+            relative_paths: Repository paths besides `src`, as passed to
+                `add_repo`.
+        """
+        lines = ['//'] + [f'//{path}' for path in relative_paths]
+        self.repositories_file.parent.mkdir(parents=True, exist_ok=True)
+        self.repositories_file.write_text(
+            '\n'.join(lines) + '\n', encoding='utf-8', newline='\n'
+        )
+
+    @property
     def remote(self) -> Path:
         """Returns the path to the Brave directory"""
         return self.base_path / 'remote'
@@ -119,14 +156,14 @@ class FakeChromiumRepo:
         patched sources) and the push remote are excluded.
         """
         return [
-            path for path in self._repos
+            path
+            for path in self._repos
             if path != self.brave and path.is_relative_to(self.chromium)
         ]
 
-    def _run_git_command(self,
-                         command: list[str],
-                         cwd: Path,
-                         strip: bool = True) -> str:
+    def _run_git_command(
+        self, command: list[str], cwd: Path, strip: bool = True
+    ) -> str:
         """Runs a git command in the specified directory and returns the stdout.
 
         Args:
@@ -137,10 +174,9 @@ class FakeChromiumRepo:
         Returns:
             The stdout output of the git command as a string.
         """
-        result = subprocess.check_output(['git'] + command,
-                                         cwd=cwd,
-                                         stderr=subprocess.DEVNULL,
-                                         text=True)
+        result = subprocess.check_output(
+            ['git'] + command, cwd=cwd, stderr=subprocess.DEVNULL, text=True
+        )
         if strip:
             return result.strip()
         return result
@@ -178,8 +214,8 @@ class FakeChromiumRepo:
 
         # Add the remote as 'origin' for the Brave repository
         self._run_git_command(
-            ['remote', 'add', 'origin',
-             str(self.remote / 'brave')], self.brave)
+            ['remote', 'add', 'origin', str(self.remote / 'brave')], self.brave
+        )
 
     def add_repo(self, relative_path: str) -> None:
         """Adds a new repository at the specified relative path.
@@ -202,10 +238,11 @@ class FakeChromiumRepo:
         dep_path: Path = self.chromium / relative_path
         self._init_repo(dep_path)
         self._run_git_command(
-            ['submodule', 'add',
-             str(dep_path), relative_path], self.chromium)
+            ['submodule', 'add', str(dep_path), relative_path], self.chromium
+        )
         self._run_git_command(
-            ['commit', '-m', f'Add submodule {relative_path}'], self.chromium)
+            ['commit', '-m', f'Add submodule {relative_path}'], self.chromium
+        )
 
     def add_tag(self, version: str) -> None:
         """Adds a git tag to the repository.
@@ -220,15 +257,17 @@ class FakeChromiumRepo:
         version_file: Path = self.chromium / 'chrome' / 'VERSION'
         version_file.parent.mkdir(parents=True, exist_ok=True)
         version_file.write_text(
-            CHROME_VERSION_TEMPLATE.format(major=major,
-                                           minor=minor,
-                                           build=build,
-                                           patch=patch))
+            CHROME_VERSION_TEMPLATE.format(
+                major=major, minor=minor, build=build, patch=patch
+            )
+        )
         self._run_git_command(['add', str(version_file)], self.chromium)
-        self._run_git_command(['commit', '-m', f'VERSION {version}'],
-                              self.chromium)
-        self._run_git_command(['tag', version, '-m', f'VERSION {version}'],
-                              self.chromium)
+        self._run_git_command(
+            ['commit', '-m', f'VERSION {version}'], self.chromium
+        )
+        self._run_git_command(
+            ['tag', version, '-m', f'VERSION {version}'], self.chromium
+        )
 
     def commit_empty(self, commit_message: str, repo_path: Path) -> str:
         """Creates an empty commit for a repository and returns a hash.
@@ -241,7 +280,8 @@ class FakeChromiumRepo:
             The hash of the commit made.
         """
         self._run_git_command(
-            ['commit', '--allow-empty', '-m', commit_message], repo_path)
+            ['commit', '--allow-empty', '-m', commit_message], repo_path
+        )
         return self._run_git_command(['rev-parse', 'HEAD'], repo_path)
 
     def commit(self, commit_message: str, repo_path: Path) -> str:
@@ -257,8 +297,9 @@ class FakeChromiumRepo:
         self._run_git_command(['commit', '-m', commit_message], repo_path)
         return self._run_git_command(['rev-parse', 'HEAD'], repo_path)
 
-    def write_file(self, relative_path: str, content: str,
-                   repo_path: Path) -> Path:
+    def write_file(
+        self, relative_path: str, content: str, repo_path: Path
+    ) -> Path:
         """Writes a file in a repository without staging it.
 
         This is how a patched source looks in a synced checkout: the change
@@ -277,8 +318,9 @@ class FakeChromiumRepo:
         file_path.write_text(content, encoding='utf-8', newline='')
         return file_path
 
-    def write_and_stage_file(self, relative_path: str, content: str,
-                             repo_path: Path) -> None:
+    def write_and_stage_file(
+        self, relative_path: str, content: str, repo_path: Path
+    ) -> None:
         """Writes content to a file and stages it in the specified repository.
 
         Args:
@@ -319,17 +361,19 @@ class FakeChromiumRepo:
         if package_json_path.exists():
             with package_json_path.open('r') as f:
                 package_data = json.load(f)
-                old_version = package_data.get('config',
-                                               {}).get('projects',
-                                                       {}).get('chrome',
-                                                               {}).get('tag')
+                old_version = (
+                    package_data.get('config', {})
+                    .get('projects', {})
+                    .get('chrome', {})
+                    .get('tag')
+                )
         else:
             package_data = {}
 
         # Update the version in the JSON structure
-        package_data.setdefault('config',
-                                {}).setdefault('projects', {}).setdefault(
-                                    'chrome', {})['tag'] = version
+        package_data.setdefault('config', {}).setdefault(
+            'projects', {}
+        ).setdefault('chrome', {})['tag'] = version
 
         # Write the updated JSON back to package.json
         with package_json_path.open('w') as f:
@@ -346,7 +390,7 @@ class FakeChromiumRepo:
         return self._run_git_command(['rev-parse', 'HEAD'], self.brave)
 
     def run_update_patches(self) -> None:
-        """Emulates `npm run update_patches`.
+        """Emulates `pnpm run update_patches`.
 
         Follows `build/commands/lib/updatePatches.js`: for every Chromium-side
         repository, each *modified* tracked file (`--diff-filter=M`) has its
@@ -359,10 +403,16 @@ class FakeChromiumRepo:
             # Find every tracked file modified in the tree. Submodules are
             # ignored because a dependency repo moving ahead of the gitlink
             # recorded in `src/` is not a patched source.
-            modified_files = self._run_git_command([
-                'diff', '--ignore-submodules', '--diff-filter=M',
-                '--name-only', '--ignore-space-at-eol'
-            ], repo_path).splitlines()
+            modified_files = self._run_git_command(
+                [
+                    'diff',
+                    '--ignore-submodules',
+                    '--diff-filter=M',
+                    '--name-only',
+                    '--ignore-space-at-eol',
+                ],
+                repo_path,
+            ).splitlines()
 
             # Determine the relative path of the repo to Chromium
             relative_repo_path = repo_path.relative_to(self.chromium)
@@ -374,7 +424,8 @@ class FakeChromiumRepo:
             for filename in modified_files:
                 # Generate the patch file path
                 patch_file = self.brave / self.get_patchfile_path_for_source(
-                    relative_repo_path, Path(filename))
+                    relative_repo_path, Path(filename)
+                )
                 written.add(patch_file.name)
 
                 # Generates the patch file for the changed file. This is an
@@ -383,9 +434,15 @@ class FakeChromiumRepo:
                 # returns from the diff file.
                 result = subprocess.run(
                     [
-                        'git', 'diff', '--src-prefix=a/', '--dst-prefix=b/',
-                        '--default-prefix', '--full-index',
-                        '--ignore-space-at-eol', filename
+                        'git',
+                        'diff',
+                        '--no-ext-diff',
+                        '--src-prefix=a/',
+                        '--dst-prefix=b/',
+                        '--default-prefix',
+                        '--full-index',
+                        '--ignore-space-at-eol',
+                        filename,
                     ],
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
@@ -418,14 +475,20 @@ class FakeChromiumRepo:
         """
         self.run_update_patches()
         self._run_git_command(
-            ['add', '--all', str(self.brave_patches)], self.brave)
-        if self._run_git_command(['diff', '--cached', '--name-only'],
-                                 self.brave) == '':
+            ['add', '--all', str(self.brave_patches)], self.brave
+        )
+        if (
+            self._run_git_command(
+                ['diff', '--cached', '--name-only'], self.brave
+            )
+            == ''
+        ):
             return self._run_git_command(['rev-parse', 'HEAD'], self.brave)
         return self.commit(message, self.brave)
 
-    def get_patchfile_path_for_source(self, repo_path: Path,
-                                      filename: Path) -> Path:
+    def get_patchfile_path_for_source(
+        self, repo_path: Path, filename: Path
+    ) -> Path:
         """Generates the patch file path for a given source file.
 
         Args:
@@ -439,12 +502,15 @@ class FakeChromiumRepo:
         """
         if repo_path.is_absolute():
             repo_path = repo_path.relative_to(self.chromium)
-        return (self.brave_patches / repo_path /
-                f'{filename.as_posix().replace("/", "-")}.patch').relative_to(
-                    self.brave)
+        return (
+            self.brave_patches
+            / repo_path
+            / f'{filename.as_posix().replace("/", "-")}.patch'
+        ).relative_to(self.brave)
 
-    def _patch_sources(self, patch_file: Path,
-                       target_repo_path: Path) -> list[str]:
+    def _patch_sources(
+        self, patch_file: Path, target_repo_path: Path
+    ) -> list[str]:
         """The repo-relative paths a patch file applies to.
 
         Read from the patch itself with `git apply --numstat`, the same way
@@ -452,14 +518,14 @@ class FakeChromiumRepo:
         when the patch cannot be parsed at all.
         """
         numstat = self._run_git_command(
-            ['apply', '--numstat', str(patch_file)], target_repo_path)
+            ['apply', '--numstat', str(patch_file)], target_repo_path
+        )
         return [
-            line.split('\t')[2] for line in numstat.splitlines()
-            if '\t' in line
+            line.split('\t')[2] for line in numstat.splitlines() if '\t' in line
         ]
 
     def run_apply_patches(self) -> list[dict]:
-        """Emulates `npm run apply_patches`.
+        """Emulates `pnpm run apply_patches`.
 
         Follows `build/commands/lib/gitPatcher.js`: the sources a patch applies
         to are read from the patch file and reset before applying, patches
@@ -473,7 +539,8 @@ class FakeChromiumRepo:
         """
         if not self.brave_patches.exists():
             raise FileNotFoundError(
-                f'Patches directory {self.brave_patches} does not exist.')
+                f'Patches directory {self.brave_patches} does not exist.'
+            )
 
         failed_patches = []
 
@@ -481,12 +548,14 @@ class FakeChromiumRepo:
             # Using the relative path of the patch file to determine the target
             # repository path.
             relative_repo_path = patch_file.relative_to(
-                self.brave_patches).parent
+                self.brave_patches
+            ).parent
             target_repo_path = self.chromium / relative_repo_path
 
             if not (target_repo_path / '.git').exists():
                 raise FileNotFoundError(
-                    f'Target repository {target_repo_path} does not exist.')
+                    f'Target repository {target_repo_path} does not exist.'
+                )
 
             failure = {
                 'patchPath': str(patch_file.relative_to(self.brave)),
@@ -503,29 +572,35 @@ class FakeChromiumRepo:
                 continue
 
             missing = [
-                source for source in sources
+                source
+                for source in sources
                 if not (target_repo_path / source).exists()
             ]
             if missing:
                 # Patches to sources that are gone are never handed to
                 # `git apply`, as an early bail-out there would skip every
                 # patch listed after them.
-                failed_patches.append({
-                    **failure, 'path': missing[0],
-                    'reason': 'SRC_REMOVED'
-                })
+                failed_patches.append(
+                    {**failure, 'path': missing[0], 'reason': 'SRC_REMOVED'}
+                )
                 continue
 
             # Sources are reset before applying, so applying twice in a row
             # produces the same outcome both times.
-            self._run_git_command(['checkout', '--', *sources],
-                                  target_repo_path)
+            self._run_git_command(
+                ['checkout', '--', *sources], target_repo_path
+            )
 
             try:
-                self._run_git_command([
-                    'apply', '--ignore-space-change', '--ignore-whitespace',
-                    str(patch_file)
-                ], target_repo_path)
+                self._run_git_command(
+                    [
+                        'apply',
+                        '--ignore-space-change',
+                        '--ignore-whitespace',
+                        str(patch_file),
+                    ],
+                    target_repo_path,
+                )
             except subprocess.CalledProcessError:
                 failed_patches.append({**failure, 'path': sources[0]})
 
@@ -537,17 +612,19 @@ class FakeChromiumRepo:
         parts = dict(
             line.split('=', 1)
             for line in version_file.read_bytes().decode('utf-8').splitlines()
-            if '=' in line)
+            if '=' in line
+        )
         return '{MAJOR}.{MINOR}.{BUILD}.{PATCH}'.format(**parts)
 
     def package_version(self) -> str:
         """The Chromium tag currently set in brave's `package.json`."""
         package = json.loads(
-            (self.brave / 'package.json').read_bytes().decode('utf-8'))
+            (self.brave / 'package.json').read_bytes().decode('utf-8')
+        )
         return package['config']['projects']['chrome']['tag']
 
     def sync_chromium(self, version: str | None = None) -> None:
-        """Emulates the `gclient sync` stage of `npm run init`.
+        """Emulates the `gclient sync` stage of `pnpm run init`.
 
         Discards every working-tree change in the Chromium-side repositories
         and checks `src/` out at `version`, leaving it detached exactly as a
@@ -559,10 +636,15 @@ class FakeChromiumRepo:
         """
         for repo_path in self.chromium_repos:
             self._run_git_command(['reset', '--hard', 'HEAD'], repo_path)
-        self._run_git_command([
-            'checkout', '--force', '--detach', version
-            or self.package_version()
-        ], self.chromium)
+        self._run_git_command(
+            [
+                'checkout',
+                '--force',
+                '--detach',
+                version or self.package_version(),
+            ],
+            self.chromium,
+        )
 
     def _stamp_version(self, relative_paths: list[str], template: str) -> None:
         """Rewrites each file's generated-for-version marker line.
@@ -582,7 +664,7 @@ class FakeChromiumRepo:
             path.write_text(''.join(lines), encoding='utf-8', newline='')
 
     def run_chromium_rebase_l10n(self) -> list[str]:
-        """Emulates `npm run chromium_rebase_l10n`.
+        """Emulates `pnpm run chromium_rebase_l10n`.
 
         The real command regenerates brave's `.grd`/`.grdp`/`.xtb` files from
         the strings of the Chromium tree currently synced. Here every tracked
@@ -592,8 +674,9 @@ class FakeChromiumRepo:
         Returns:
             The brave-relative paths of the l10n files regenerated.
         """
-        files = self._run_git_command(['ls-files', '*.grd', '*.grdp', '*.xtb'],
-                                      self.brave).splitlines()
+        files = self._run_git_command(
+            ['ls-files', '*.grd', '*.grdp', '*.xtb'], self.brave
+        ).splitlines()
         self._stamp_version(files, L10N_VERSION_STAMP)
         return files
 
@@ -612,8 +695,8 @@ class FakeChromiumRepo:
         if subcommand != 'gen':
             raise ValueError(f'Unsupported gnrt subcommand: {subcommand}')
         files = self._run_git_command(
-            ['ls-files', 'third_party/rust/*BUILD.gn'],
-            self.brave).splitlines()
+            ['ls-files', 'third_party/rust/*BUILD.gn'], self.brave
+        ).splitlines()
         self._stamp_version(files, GNRT_VERSION_STAMP)
         return files
 
@@ -623,17 +706,19 @@ class FakeChromiumRepo:
             os.chdir(self._original_cwd)
             self._original_cwd = None
         try:
-            self.temp_dir.cleanup()
+            self._exit_stack.close()
         except OSError:
-            print(f'Failed to clean up temp dir: {self.temp_dir.name}')
-            for dirpath, dirnames, filenames in os.walk(self.temp_dir.name):
+            print(f'Failed to clean up temp dir: {self.temp_dir}')
+            for dirpath, dirnames, filenames in os.walk(self.temp_dir):
                 for name in dirnames + filenames:
                     full = os.path.join(dirpath, name)
                     try:
                         file_stat = os.stat(full)
                         writable = os.access(full, os.W_OK)
-                        print(f'  {oct(file_stat.st_mode)} '
-                              f'{"rw" if writable else "ro"} {full}')
+                        print(
+                            f'  {oct(file_stat.st_mode)} '
+                            f'{"rw" if writable else "ro"} {full}'
+                        )
                     except OSError as stat_err:
                         print(f'  <stat error: {stat_err}> {full}')
             raise

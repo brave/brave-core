@@ -17,27 +17,27 @@ import { getLocale } from '$web-common/locale'
 export const getSolanaProgramIdName = (programId: string): string => {
   switch (programId) {
     case BraveWallet.SOLANA_SYSTEM_PROGRAM_ID:
-      return getLocale('braveWalletSolanaSystemProgram')
+      return getLocale(S.BRAVE_WALLET_SOLANA_SYSTEM_PROGRAM)
     case BraveWallet.SOLANA_CONFIG_PROGRAM_ID:
-      return getLocale('braveWalletSolanaConfigProgram')
+      return getLocale(S.BRAVE_WALLET_SOLANA_CONFIG_PROGRAM)
     case BraveWallet.SOLANA_STAKE_PROGRAM_ID:
-      return getLocale('braveWalletSolanaStakeProgram')
+      return getLocale(S.BRAVE_WALLET_SOLANA_STAKE_PROGRAM)
     case BraveWallet.SOLANA_VOTE_PROGRAM_ID:
-      return getLocale('braveWalletSolanaVoteProgram')
+      return getLocale(S.BRAVE_WALLET_SOLANA_VOTE_PROGRAM)
     case BraveWallet.SOLANA_BPF_LOADER_UPGRADEABLE_PROGRAM_ID:
-      return getLocale('braveWalletSolanaBPFLoader')
+      return getLocale(S.BRAVE_WALLET_SOLANA_BP_FLOADER)
     case BraveWallet.SOLANA_ED25519_SIG_VERIFY_PROGRAM_ID:
-      return getLocale('braveWalletSolanaEd25519Program')
+      return getLocale(S.BRAVE_WALLET_SOLANA_ED25519_PROGRAM)
     case BraveWallet.SOLANA_KECCAK_SECP256K_PROGRAM_ID:
-      return getLocale('braveWalletSolanaSecp256k1Program')
+      return getLocale(S.BRAVE_WALLET_SOLANA_SECP256K1_PROGRAM)
     case BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID:
-      return getLocale('braveWalletSolanaAssociatedTokenProgram')
+      return getLocale(S.BRAVE_WALLET_SOLANA_ASSOCIATED_TOKEN_PROGRAM)
     case BraveWallet.SOLANA_METADATA_PROGRAM_ID:
-      return getLocale('braveWalletSolanaMetaDataProgram')
+      return getLocale(S.BRAVE_WALLET_SOLANA_META_DATA_PROGRAM)
     case BraveWallet.SOLANA_SYSVAR_RENT_PROGRAM_ID:
-      return getLocale('braveWalletSolanaSysvarRentProgram')
+      return getLocale(S.BRAVE_WALLET_SOLANA_SYSVAR_RENT_PROGRAM)
     case BraveWallet.SOLANA_TOKEN_PROGRAM_ID:
-      return getLocale('braveWalletSolanaTokenProgram')
+      return getLocale(S.BRAVE_WALLET_SOLANA_TOKEN_PROGRAM)
     default:
       return programId
   }

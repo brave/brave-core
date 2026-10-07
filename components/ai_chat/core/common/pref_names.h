@@ -122,9 +122,21 @@ inline constexpr char kBraveAIChatTabOrganizationEnabled[] =
     "brave.ai_chat.tab_organization_enabled";
 inline constexpr char kBraveAIChatTabOrganizationModelKey[] =
     "brave.ai_chat.tab_organization_model_key";
+// Whether tab organization may send excerpts of each tab's page text, not
+// just its title and origin. Separate from the history embeddings setting:
+// that one only promises on-device indexing, and opting into local search
+// must not silently opt a user into uploading page content. Passages are
+// only available when history embeddings is also on, since that is what
+// builds the index.
+inline constexpr char kBraveAIChatTabOrganizationSendPageContent[] =
+    "brave.ai_chat.tab_organization_send_page_content";
 
 inline constexpr char kNtpInputDayZeroEnabled[] =
     "brave.ai_chat.ntp_input_day_zero_enabled";
+// Suffix appended to the `newtab_v2` search source: "c" if the NTP input was
+// enabled at first run, otherwise "b".
+inline constexpr char kNtpInputSourceSuffix[] =
+    "brave.ai_chat.ntp_input_source_suffix";
 
 inline constexpr char kBraveAIChatUserCustomizationEnabled[] =
     "brave.ai_chat.user_customization_enabled";
@@ -139,6 +151,11 @@ inline constexpr char kBraveAIChatUserMemories[] =
 inline constexpr char kBraveAIChatSkills[] = "brave.ai_chat.smart_modes";
 inline constexpr char kBraveAIChatOllamaFetchEnabled[] =
     "brave.ai_chat.ollama_fetch_enabled";
+// Record of the conversations the user has shared, so that they can be listed
+// and deleted. OSCrypt-encrypted, then base64-encoded, because it contains the
+// decryption key of each shared conversation.
+inline constexpr char kBraveAIChatConversationShares[] =
+    "brave.ai_chat.conversation_shares";
 // Stores the time at which the remote model list was last successfully fetched
 // and cached to disk. Used for TTL checks without reading the cache file.
 inline constexpr char kRemoteModelsCachedAt[] =

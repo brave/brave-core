@@ -45,7 +45,9 @@ public class BraveLeoSuggestionProcessor extends BaseSuggestionViewProcessor {
         model.set(
                 BaseSuggestionViewProperties.ICON,
                 OmniboxDrawableState.forSmallIcon(
-                        mContext, R.drawable.ic_brave_ai_color, /* allowTint= */ false));
+                        mUiContext.resourceProvider,
+                        R.drawable.ic_brave_ai_color,
+                        /* allowTint= */ false));
         model.set(
                 SuggestionViewProperties.TEXT_LINE_1_TEXT,
                 new SuggestionSpannable(mUrlBarEditingTextProvider.getTextWithoutAutocomplete()));
@@ -70,7 +72,9 @@ public class BraveLeoSuggestionProcessor extends BaseSuggestionViewProcessor {
 
     @Override
     public PropertyModel createModel() {
-        return new PropertyModel(SuggestionViewProperties.ALL_KEYS);
+        // createPropertyModel(), rather than a bare PropertyModel: it seeds
+        // SuggestionCommonProperties.RESOURCE_PROVIDER, which BaseSuggestionViewBinder reads.
+        return createPropertyModel(SuggestionViewProperties.ALL_KEYS);
     }
 
     @Override

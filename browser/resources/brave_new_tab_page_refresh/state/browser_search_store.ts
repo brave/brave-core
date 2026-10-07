@@ -3,7 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { SuggestInventory } from 'chrome://resources/mojo/components/omnibox/browser/searchbox.mojom-webui.js'
+import { InputMethod } from 'chrome://resources/mojo/components/omnibox/browser/searchbox.mojom-webui.js'
+import { SuggestInventory } from 'chrome://resources/mojo/components/omnibox/browser/fusebox_action.mojom-webui.js'
 
 import { loadTimeData } from '$web-common/loadTimeData'
 import { SearchBoxProxy } from './search_box_proxy'
@@ -133,7 +134,10 @@ export function createSearchStore() {
         }
         return match
       })
-      store.update({ searchMatches })
+      store.update({
+        searchMatches,
+        searchResultSequenceId: result.sequenceId,
+      })
     },
   })
 
@@ -204,6 +208,7 @@ export function createSearchStore() {
         store.update({
           activeSearchInputKey: key,
           searchMatches: [],
+          searchResultSequenceId: 0,
         })
       }
     },
@@ -215,12 +220,14 @@ export function createSearchStore() {
       }
       searchProxy.handler.queryAutocomplete(
         activeQueryId++,
+        null,
         query,
         false,
         query.length,
         SuggestInventory.kDefault,
         query.length === 0,
         /*keyword*/ '',
+        InputMethod.kKeyboard,
       )
     },
 
@@ -228,11 +235,13 @@ export function createSearchStore() {
       if (index < 0) {
         return
       }
-      const match = store.getState().searchMatches.at(index)
+      const { searchMatches, searchResultSequenceId } = store.getState()
+      const match = searchMatches.at(index)
       if (!match) {
         return
       }
       searchProxy.handler.openAutocompleteMatch(
+        searchResultSequenceId,
         index,
         match.destinationUrl,
         true,
@@ -249,6 +258,11 @@ export function createSearchStore() {
 
     stopAutocomplete() {
       searchProxy.handler.stopAutocomplete(true)
+    },
+
+    async getUrlFromSearchInput(query) {
+      let { url } = await newTabProxy.handler.getUrlFromSearchInput(query)
+      return url ?? null
     },
 
     openSearch(query, engine, event) {

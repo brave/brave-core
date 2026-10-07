@@ -13,6 +13,8 @@
 #include <string_view>
 #include <vector>
 
+#include "base/containers/flat_map.h"
+#include "base/containers/flat_set.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
@@ -23,6 +25,7 @@
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "url/origin.h"
 
 namespace ai_chat {
 
@@ -80,6 +83,29 @@ class AssociatedContentManager : public ToolProvider,
   // detaching via the tools pill.
   void SetToolsAttached(std::string_view content_uuid, bool tools_attached);
 
+  // Fetches the tools the content with |content_uuid| exposes, described for
+  // display to the user. Empty if there's no such content. Capped at the same
+  // limit as the tools handed to the LLM, so the UI doesn't overpromise.
+  using GetToolInfosCallback =
+      base::OnceCallback<void(std::vector<mojom::ToolInfoPtr>)>;
+  void GetToolInfos(std::string_view content_uuid,
+                    GetToolInfosCallback callback);
+
+  // Records how the tool named |tool_name| exposed by the content with
+  // |content_uuid| should be handled. Keyed by the content's origin rather
+  // than its uuid, so navigating away drops the choice rather than applying
+  // it to whatever loads next.
+  void SetToolPermission(std::string_view content_uuid,
+                         std::string_view tool_name,
+                         mojom::ToolPermission permission);
+
+  // Records |permission| for the content tool the model calls
+  // |model_tool_name|, under the page-registered name the dialog reads by.
+  // No-op unless a content tool of that name is in the current generation
+  // loop, so answering any other tool's challenge records nothing.
+  void SetToolPermissionForModelToolName(std::string_view model_tool_name,
+                                         mojom::ToolPermission permission);
+
   // Clears all content from the conversation.
   void ClearContent();
 
@@ -127,6 +153,8 @@ class AssociatedContentManager : public ToolProvider,
   void OnRequestArchive(AssociatedContentDelegate* delegate) override;
   void OnDestroyed(AssociatedContentDelegate* delegate) override;
   void OnTitleChanged(AssociatedContentDelegate* delegate) override;
+  void OnToolsAttachedChanged(AssociatedContentDelegate* delegate) override;
+  void OnContentToolsChanged(AssociatedContentDelegate* delegate) override;
 
   std::vector<AssociatedContentDelegate*> GetContentDelegatesForTesting() {
     return content_delegates_;
@@ -135,17 +163,70 @@ class AssociatedContentManager : public ToolProvider,
  private:
   void DetachContent();
 
+  // Fetches the tools |delegate| exposes, updating its tools_attached state via
+  // OnContentToolsDetected().
+  void DetectContentTools(AssociatedContentDelegate* delegate);
+
   // Attaches |delegate| when the tools it exposes are non-empty (and detaches
   // it otherwise), so its tools are surfaced (via the tools pill) before any
   // generation occurs. Invoked with the result of GetContentTools().
   void OnContentToolsDetected(base::WeakPtr<AssociatedContentDelegate> delegate,
                               std::vector<std::unique_ptr<Tool>> tools);
 
+  // Whether |content_uuid| is staged and the user hasn't overridden its
+  // attachment.
+  bool IsEligibleForAutoToolsUpdate(const std::string& content_uuid) const;
+
+  // Invoked with the result of GetContentTools().
+  void OnToolInfosFetched(const url::Origin& origin,
+                          GetToolInfosCallback callback,
+                          std::vector<std::unique_ptr<Tool>> tools);
+
+  // Invoked with the result of GetToolInfos(), to push the list every UI bound
+  // to this conversation should now be showing.
+  void NotifyContentToolsChanged(const std::string& content_uuid,
+                                 std::vector<mojom::ToolInfoPtr> tools);
+
+  mojom::ToolPermission GetToolPermission(const url::Origin& origin,
+                                          std::string_view tool_name) const;
+
+  // Whether |origin| still has live (i.e. not archived) content here.
+  bool HasLiveContentForOrigin(const url::Origin& origin) const;
+
+  // Drops |origin|'s recorded choices once it has no live content left, so
+  // that attaching the site again starts from the kAsk default.
+  void MaybeResetToolPermissionsForOrigin(const url::Origin& origin);
+
+  // Takes ownership of the tools |origin| exposes for the loop that's
+  // starting, dropping the ones the user has blocked.
+  void AddToolsForGenerationLoop(const url::Origin& origin,
+                                 std::vector<std::unique_ptr<Tool>> tools);
+
   raw_ptr<ConversationHandler> conversation_;
 
-  std::vector<std::unique_ptr<Tool>> tools_;
+  // A generation loop's tool, with the origin which exposed it, so a later
+  // choice about it can be recorded against the key GetToolInfos() reads by.
+  struct GenerationLoopTool {
+    std::unique_ptr<Tool> tool;
+    url::Origin origin;
+  };
+  std::vector<GenerationLoopTool> tools_;
+
+  // Content tools only (i.e. those a page exposes): origin -> tool name ->
+  // choice, for anything moved off the kAsk default.
+  // Deliberately in-memory and per-conversation: granting a site's tool is a
+  // decision about this conversation's context, so it shouldn't silently
+  // carry over into the next one, nor outlive the site's content being
+  // attached here.
+  base::flat_map<url::Origin,
+                 base::flat_map<std::string, mojom::ToolPermission>>
+      content_tool_permissions_;
+
   std::vector<AssociatedContentDelegate*> content_delegates_;
   base::flat_map<std::string, std::string> content_uuid_to_conversation_turns_;
+
+  // uuids whose tools attachment the user explicitly set.
+  base::flat_set<std::string> tools_attachment_overridden_;
 
   // Used for ownership - still stored in the above array.
   // This includes:

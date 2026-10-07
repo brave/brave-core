@@ -1,12 +1,20 @@
 diff --git a/net/BUILD.gn b/net/BUILD.gn
-index d2fda49ebd4e8e359df28c07873c0ef452694566..0da50822684f826eda6e23ac2b1834673a42cb22 100644
+index 54a40951c09aa31ff0d1b74757b201024939fc86..070492522dc8976d39e4587cc4d4ce1c7543f6f0 100644
 --- a/net/BUILD.gn
 +++ b/net/BUILD.gn
-@@ -1293,6 +1293,7 @@ component("net") {
-       "reporting/reporting_uploader.h",
-     ]
-   }
-+  sources += brave_net_sources import("//brave/components/brave_wallet/sources.gni") deps += brave_net_deps
+@@ -1200,6 +1200,7 @@ component("net") {
+     "url_request/websocket_handshake_userdata_key.cc",
+     "url_request/websocket_handshake_userdata_key.h",
+   ]
++  sources += brave_net_sources
  
-   if (enable_device_bound_sessions) {
-     sources += [
+   if (is_posix || is_fuchsia) {
+     sources += [ "base/net_errors_posix.cc" ]
+@@ -1227,6 +1228,7 @@ component("net") {
+     "//third_party/rust/sfv/v0_15/wrapper",
+     "//third_party/simdutf",
+   ]
++  deps += brave_net_deps
+ 
+   public_deps = [
+     ":disk_cache_buildflags",

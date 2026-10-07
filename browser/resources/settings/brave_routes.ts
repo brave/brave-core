@@ -76,10 +76,6 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     }
     r.FONTS = r.BRAVE_CONTENT.createChild('/fonts')
   }
-  if (pageVisibility.surveyPanelist && r.PRIVACY) {
-    r.BRAVE_SURVEY_PANELIST =
-      r.PRIVACY.createChild('/surveyPanelist')
-  }
   if (r.SEARCH) {
     r.DEFAULT_SEARCH = r.SEARCH.createChild('defaultSearch')
     r.DEFAULT_SEARCH.isNavigableDialog = true
@@ -153,6 +149,13 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   }
   if (r.SYNC) {
     delete r.SYNC
+  }
+  // Delete identity docs and travel autofill routes
+  if (r.IDENTITY_DOCS) {
+    delete r.IDENTITY_DOCS
+  }
+  if (r.TRAVEL) {
+    delete r.TRAVEL
   }
   // Delete /syncSetup/advanced
   if (r.SYNC_ADVANCED) {

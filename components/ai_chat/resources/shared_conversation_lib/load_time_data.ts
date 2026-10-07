@@ -8,6 +8,8 @@ import braveComponentsStrings from 'gen/components/grit/brave_components_webui_m
 const boolValues: Record<string, boolean> = {
   isMobile: false,
   isHistoryEnabled: false,
+  // Matches the default state of `kAIChatMathRendering`.
+  isMathRenderingEnabled: true,
   isAIChatAgentProfileFeatureEnabled: false,
   isAIChatAgentProfile: false,
 }

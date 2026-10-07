@@ -8,6 +8,9 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_deref.h"
+#include "brave/browser/brave_account/brave_account_dialog_mode_holder.h"
+#include "brave/browser/ui/brave_account/brave_account_dialog_opener.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -27,12 +30,32 @@ BraveAccountUIAndroid::~BraveAccountUIAndroid() = default;
 void BraveAccountUIAndroid::BindInterface(
     mojo::PendingReceiver<brave_account::mojom::DialogController>
         pending_receiver) {
-  receiver_.reset();
-  receiver_.Bind(std::move(pending_receiver));
+  dialog_controller_receiver_.reset();
+  dialog_controller_receiver_.Bind(std::move(pending_receiver));
+}
+
+void BraveAccountUIAndroid::BindInterface(
+    mojo::PendingReceiver<brave_account::mojom::DialogOpener>
+        pending_receiver) {
+  dialog_opener_receiver_.reset();
+  dialog_opener_receiver_.Bind(std::move(pending_receiver));
 }
 
 void BraveAccountUIAndroid::CloseDialog() {
   web_ui()->GetWebContents()->Close();
+}
+
+void BraveAccountUIAndroid::GetDialogMode(GetDialogModeCallback callback) {
+  std::move(callback).Run(
+      brave_account::BraveAccountDialogModeHolder::GetDialogMode(
+          CHECK_DEREF(web_ui()->GetWebContents())));
+}
+
+void BraveAccountUIAndroid::OpenDialog(
+    const std::string& initiating_service_name,
+    brave_account::mojom::DialogMode dialog_mode) {
+  brave_account::OpenBraveAccountDialog(CHECK_DEREF(web_ui()->GetWebContents()),
+                                        initiating_service_name, dialog_mode);
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountUIAndroid)

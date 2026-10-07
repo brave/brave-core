@@ -13,6 +13,9 @@ inline constexpr char kBravePsst[] = "bravePsst";
 inline constexpr char kBravePsstHost[] = "psst";
 inline constexpr char kBraveUIPsstURL[] = "chrome://psst/";
 
+inline constexpr char16_t kPsstReportDialogLearnMoreUrl[] =
+    u"https://support.brave.app/hc/en-us/articles/47405731650957";
+
 }  // namespace psst
 
 #endif  // BRAVE_COMPONENTS_PSST_CORE_COMMON_CONSTANTS_H_

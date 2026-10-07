@@ -219,7 +219,7 @@ function ConversationEntries(props: {
       (c): c is Extract<Content[number], { type: string }> =>
         typeof c !== 'string' && c.type === 'skill',
     )
-    conversationContext.conversationHandler?.modifyConversation(
+    conversationContext.userActions?.modifyConversation(
       entryUuid,
       text,
       skillNode?.id ?? null,

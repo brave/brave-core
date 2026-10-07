@@ -54,7 +54,7 @@ export const TransactionComplete = (props: Props) => {
   const { result: pendingTransactionsLocale } = usePromise(
     async () =>
       PluralStringProxyImpl.getInstance().getPluralString(
-        'braveWalletPendingTransactions',
+        S.BRAVE_WALLET_PENDING_TRANSACTIONS,
         transactionsQueueLength,
       ),
     [transactionsQueueLength],
@@ -76,7 +76,7 @@ export const TransactionComplete = (props: Props) => {
             name='check-normal'
           />
         </ErrorOrSuccessIconWrapper>
-        <Title>{getLocale('braveWalletTransactionCompleteTitle')}</Title>
+        <Title>{getLocale(S.BRAVE_WALLET_TRANSACTION_COMPLETE_TITLE)}</Title>
         <TransactionIntent
           transaction={transaction}
           swapStatus={swapStatus}
@@ -101,11 +101,11 @@ export const TransactionComplete = (props: Props) => {
             kind={hasMoreTransactions ? 'outline' : 'filled'}
             onClick={onClickViewInActivity}
           >
-            {getLocale('braveWalletViewInActivity')}
+            {getLocale(S.BRAVE_WALLET_VIEW_IN_ACTIVITY)}
           </LeoButton>
           {hasMoreTransactions && (
             <LeoButton onClick={onClose}>
-              {getLocale('braveWalletButtonNext')}
+              {getLocale(S.BRAVE_WALLET_BUTTON_NEXT)}
             </LeoButton>
           )}
         </Row>

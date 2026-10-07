@@ -227,7 +227,7 @@
 "vpn.serverTitle" = "%ld Servidor";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Protegeix totes les teves aplicacions amb el VPN de Brave. Protegeix fins a 10 aparells amb un sol pla.";
+"vpn.settingHeaderBody" = "Retransmet el teu contingut, a la teva manera. Protegeix cada aplicació en 10 aparells amb 1 subscripció.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Posa't en contacte amb Suport tècnic";

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_entry.h"
 
+#include "base/strings/strcat.h"
+#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 
 namespace brave_ads {
@@ -33,8 +35,13 @@ std::string LastUnIdleTimeDiagnosticEntry::GetValue() const {
     return kNever;
   }
 
-  return LongFriendlyDateAndTime(*last_unidle_at_,
-                                 /*use_sentence_style=*/false);
+  const std::string last_unidle_at_text =
+      LongFriendlyDateAndTime(*last_unidle_at_, /*use_sentence_style=*/false);
+
+  return base::StrCat(
+      {last_unidle_at_text, " (",
+       FormatApproximateDuration(base::Time::Now() - *last_unidle_at_),
+       " ago)"});
 }
 
 }  // namespace brave_ads

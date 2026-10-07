@@ -52,7 +52,8 @@ password_manager::StoredCredential MakeCredential(
   cred.url = GURL(signon_realm);
   cred.signon_realm = signon_realm;
   cred.username_value = username;
-  cred.password_value = password;
+  cred.password_value =
+      password_manager::PasswordString(std::u16string(password));
   cred.in_store = password_manager::PasswordForm::Store::kProfileStore;
   return cred;
 }

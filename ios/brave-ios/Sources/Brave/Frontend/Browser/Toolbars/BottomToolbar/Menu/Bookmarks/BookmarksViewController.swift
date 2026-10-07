@@ -258,7 +258,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
   }
 
   @objc private func importExportAction(_ sender: UIBarButtonItem) {
-    let alert = AlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+    let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
     alert.popoverPresentationController?.barButtonItem = sender
     let importAction = UIAlertAction(title: Strings.bookmarksImportAction, style: .default) {
       [weak self] _ in
@@ -912,7 +912,7 @@ extension BookmarksViewController: UIDocumentPickerDelegate, UIDocumentInteracti
   func documentInteractionControllerDidEndPreview(_ controller: UIDocumentInteractionController) {
     documentInteractionController = nil
     guard let url = controller.url else { return }
-    Task { try await AsyncFileManager.default.removeItem(at: url) }
+    _ = Task { try await AsyncFileManager.default.removeItem(at: url) }
   }
 
   func documentInteractionControllerDidDismissOptionsMenu(
@@ -920,7 +920,7 @@ extension BookmarksViewController: UIDocumentPickerDelegate, UIDocumentInteracti
   ) {
     documentInteractionController = nil
     guard let url = controller.url else { return }
-    Task { try await AsyncFileManager.default.removeItem(at: url) }
+    _ = Task { try await AsyncFileManager.default.removeItem(at: url) }
   }
 
   func documentInteractionControllerDidDismissOpenInMenu(
@@ -928,7 +928,7 @@ extension BookmarksViewController: UIDocumentPickerDelegate, UIDocumentInteracti
   ) {
     documentInteractionController = nil
     guard let url = controller.url else { return }
-    Task { try await AsyncFileManager.default.removeItem(at: url) }
+    _ = Task { try await AsyncFileManager.default.removeItem(at: url) }
   }
 }
 

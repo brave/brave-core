@@ -8,10 +8,12 @@ import override_utils
 
 # Get gn arg to enable PageGraph.
 _IS_PG_ENABLED = brave_chromium_utils.get_json_value(
-    "gn_args_page_graph.json", "enable_brave_page_graph")
+    "gn_args_page_graph.json", "enable_brave_page_graph"
+)
 # Get gn arg to enable WebAPI probes.
 _IS_PG_WEBAPI_PROBES_ENABLED = brave_chromium_utils.get_json_value(
-    "gn_args_page_graph.json", "enable_brave_page_graph_webapi_probes")
+    "gn_args_page_graph.json", "enable_brave_page_graph_webapi_probes"
+)
 
 should_apply_pg_changes = False
 
@@ -41,18 +43,22 @@ def _add_page_graph_to_config(config):
             "RegisterPageGraphEventListenerRemove",
             "RegisterPageGraphJavaScriptUrl",
             "ApplyCompilationModeOverride",
-        ]
+        ],
     }
 
     if _IS_PG_WEBAPI_PROBES_ENABLED:
-        config["settings"]["includes"].extend([
-            "brave/third_party/blink/renderer/core/brave_page_graph/blink_converters.h",
-            "brave/third_party/blink/renderer/core/brave_page_graph/blink_probe_types.h",
-        ])
-        config["observers"]["PageGraph"]["probes"].extend([
-            "RegisterPageGraphBindingEvent",
-            "RegisterPageGraphWebAPICallWithResult",
-        ])
+        config["settings"]["includes"].extend(
+            [
+                "brave/third_party/blink/renderer/core/brave_page_graph/blink_converters.h",
+                "brave/third_party/blink/renderer/core/brave_page_graph/blink_probe_types.h",
+            ]
+        )
+        config["observers"]["PageGraph"]["probes"].extend(
+            [
+                "RegisterPageGraphBindingEvent",
+                "RegisterPageGraphWebAPICallWithResult",
+            ]
+        )
 
     return config
 

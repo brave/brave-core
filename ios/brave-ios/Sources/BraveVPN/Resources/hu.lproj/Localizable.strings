@@ -227,7 +227,7 @@
 "vpn.serverTitle" = "%ld szerver";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Védjen minden alkalmazást a Brave VPN segítségével. Védjen akár 10 eszközt egy csomaggal.";
+"vpn.settingHeaderBody" = "Streameld a tartalmadat a saját módodon. Védj minden alkalmazást 10 eszközön 1 előfizetéssel.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Lépjen kapcsolatba az ügyfélszolgálattal";

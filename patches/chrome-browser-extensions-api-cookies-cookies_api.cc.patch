@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/cookies/cookies_api.cc b/chrome/browser/extensions/api/cookies/cookies_api.cc
-index b605d8520b10243c1e22bc427c5a6a5d5a38b122..7d19ed7fe9f48f4f5583a2b0ae8b76a70ff26edc 100644
+index 0def08cdbfbf712acac9b6075cee341eca97c80a..702492caf92a61034edb59fe34c03eb6a4e98899 100644
 --- a/chrome/browser/extensions/api/cookies/cookies_api.cc
 +++ b/chrome/browser/extensions/api/cookies/cookies_api.cc
 @@ -147,6 +147,7 @@ CookiesEventRouter::~CookiesEventRouter() = default;

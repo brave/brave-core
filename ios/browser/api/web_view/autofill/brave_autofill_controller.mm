@@ -112,17 +112,16 @@ using UserDecision = autofill::AutofillClient::AddressPromptUserDecision;
 #pragma mark - AutofillDriverIOSBridge
 
 - (void)fillData:(const std::vector<autofill::FormFieldData::FillData>&)fields
-           section:(const autofill::Section&)section
            inFrame:(web::WebFrame*)frame
     withActionType:(autofill::mojom::FormActionType)actionType {
   [_autofillAgent fillData:fields
-                   section:section
                    inFrame:frame
             withActionType:actionType];
 }
 
 - (void)fillSpecificFormField:(const autofill::FieldRendererId&)field
                     withValue:(const std::u16string)value
+                   actionType:(autofill::mojom::FieldActionType)actionType
                       inFrame:(web::WebFrame*)frame {
   NOTIMPLEMENTED();
 }
@@ -165,6 +164,11 @@ using UserDecision = autofill::AutofillClient::AddressPromptUserDecision;
 - (void)notifyFormsSeen:(std::vector<autofill::FormData>)updatedForms
                 inFrame:(web::WebFrame*)frame {
   [_autofillAgent notifyFormsSeen:updatedForms inFrame:frame];
+}
+
+- (void)scrollFieldIntoView:(const autofill::FieldRendererId&)field
+                    inFrame:(web::WebFrame*)frame {
+  [_autofillAgent scrollFieldIntoView:field inFrame:frame];
 }
 
 #pragma mark - CWVAutofillClientIOSBridge

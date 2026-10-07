@@ -10,6 +10,12 @@
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
 
+#if __swift__
+#import "brave_account.mojom.objc.h"
+#else
+#include "brave/components/brave_account/mojom/brave_account.mojom.objc.h"
+#endif
+
 #import "cwv_export.h"               // NOLINT
 #import "cwv_navigation_action.h"    // NOLINT
 #import "cwv_navigation_delegate.h"  // NOLINT
@@ -22,6 +28,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol AIChatUIHandlerBridge;
+@protocol BraveAccountDialogOpenerBridge;
 @protocol WalletPageHandlerBridge;
 @protocol AIChatAssociatedContentPageFetcher;
 @protocol ProfileBridge;
@@ -32,6 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ProtectionStatsTabHelperBridge;
 @protocol PrintHandler;
 @protocol RequestBlockingTabHelperBridge;
+@protocol CosmeticFilteringTabHelperBridge;
+@protocol ScriptletsTabHelperBridge;
 @protocol BraveWalletProviderDelegate;
 
 typedef void (^ResetConfigurationCallback)(id<ProfileBridge>,
@@ -116,6 +125,15 @@ CWV_EXPORT
 /// Called when the favicon driver updates the web views favicon status
 - (void)webView:(CWVWebView*)webView
     didUpdateFaviconStatus:(nullable CWVFaviconStatus*)faviconStatus;
+/// Called when a page or tab helper (such as a security interstitial) requests
+/// a URL be opened in a new tab, and returns the web view of the created tab
+/// which the URL will then be loaded into.
+///
+/// `CWVWebView` ignores the requested disposition and loads every URL in the
+/// current web view, so this is required to match Chrome's behaviour.
+- (nullable CWVWebView*)webView:(CWVWebView*)webView
+     createWebViewForOpeningURL:(NSURL*)url
+                   inBackground:(BOOL)inBackground;
 @end
 
 /// A CWVWebView with Chrome tab helpers attached and the ability to handle
@@ -164,6 +182,17 @@ CWV_EXPORT
 // via completionHandler. Returns an empty string if no article content could
 // be extracted.
 - (void)fetchMainArticle:(void (^)(NSString* text))completionHandler;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (BraveAccountWebUI)
+/// The dialog mode the Brave Account WebUI page is served in.
+/// Set before loading brave://account; read back by the page through
+/// `brave_account::mojom::DialogController::GetDialogMode()`.
+@property(nonatomic) BraveAccountDialogMode braveAccountDialogMode;
+/// A bridge for opening the Brave Account dialog over the WebUI page.
+@property(nonatomic, weak, nullable) id<BraveAccountDialogOpenerBridge>
+    braveAccountDialogOpener;
 @end
 
 CWV_EXPORT
@@ -272,6 +301,19 @@ CWV_EXPORT
 /// A bridge for Request Blocking javascript feature
 - (void)setRequestBlockingTabHelperBridge:
     (id<RequestBlockingTabHelperBridge>)bridge;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (CosmeticFiltering)
+/// A bridge for Cosmetic Filtering javascript feature
+- (void)setCosmeticFilteringTabHelperBridge:
+    (id<CosmeticFilteringTabHelperBridge>)bridge;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (Scriptlets)
+/// A bridge for the Scriptlets javascript feature
+- (void)setScriptletsTabHelperBridge:(id<ScriptletsTabHelperBridge>)bridge;
 @end
 
 NS_ASSUME_NONNULL_END

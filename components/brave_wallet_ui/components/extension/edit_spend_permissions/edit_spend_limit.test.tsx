@@ -39,16 +39,18 @@ describe('EditSpendLimit', () => {
     renderComponent()
 
     expect(
-      screen.getByText('braveWalletEditPermissionsDescription'),
+      screen.getByText(S.BRAVE_WALLET_EDIT_PERMISSIONS_DESCRIPTION),
     ).toBeInTheDocument()
     expect(
-      screen.getByText('braveWalletProposedSpendLimit'),
+      screen.getByText(S.BRAVE_WALLET_PROPOSED_SPEND_LIMIT),
     ).toBeInTheDocument()
     expect(screen.getByText('100 ETH')).toBeInTheDocument()
-    expect(screen.getByText('braveWalletCustomSpendLimit')).toBeInTheDocument()
-    expect(screen.getByText('braveWalletButtonCancel')).toBeInTheDocument()
     expect(
-      screen.getByText('braveWalletAccountSettingsSave'),
+      screen.getByText(S.BRAVE_WALLET_CUSTOM_SPEND_LIMIT),
+    ).toBeInTheDocument()
+    expect(screen.getByText(S.BRAVE_WALLET_BUTTON_CANCEL)).toBeInTheDocument()
+    expect(
+      screen.getByText(S.BRAVE_WALLET_ACCOUNT_SETTINGS_SAVE),
     ).toBeInTheDocument()
   })
 })

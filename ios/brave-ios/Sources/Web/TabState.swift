@@ -144,9 +144,6 @@ public protocol TabState: AnyObject {
   var serverTrust: SecTrust? { get }
   /// The current cached favicon for the realized tab
   var faviconStatus: FaviconStatus? { get }
-  /// The current URL loaded on the page, regardless of the navigation status or spoofing
-  @available(iOS, deprecated, message: "Use `visibleURL` or `lastCommittedURL` instead")
-  var url: URL? { get }
   /// Gets the URL currently being displayed in the URL bar, if there is one.
   ///
   /// This URL might be a pending navigation that hasn't committed yet, so it is not guaranteed to
@@ -171,15 +168,6 @@ public protocol TabState: AnyObject {
   var canGoForward: Bool { get }
   /// The current back forward list
   var backForwardList: (any BackForwardListProxy)? { get }
-  /// The current redirect chain for the navigation.
-  ///
-  /// If no redirects occur during the navigation, this only contains the original request URL
-  @available(
-    iOS,
-    deprecated,
-    message: "Assemble a redirect chain in a tab helper using TabObserver instead"
-  )
-  var redirectChain: [URL] { get }
   /// The original request for the current page
   ///
   /// Remove when CWVBackFowardListItem exposes original request URL
@@ -261,6 +249,7 @@ public protocol TabState: AnyObject {
   /// Returns the PDF data for the current page if one is being displayed
   var dataForDisplayedPDF: Data? { get }
   /// Returns a colour that was sampled from the top of the page for UI purposes
+  @available(iOS, obsoleted: 26.0, message: "Page top color is not sampled on iOS 26+")
   var sampledPageTopColor: UIColor? { get }
   /// The scale applied to the WKWebView which can be used to apply custom zoom settings to a page
   var viewScale: CGFloat { get set }
@@ -368,11 +357,13 @@ extension TabState {
 }
 
 /// A basic proxy over the underlying web view that may be displaying web content
-public protocol WebViewProxy {
+public protocol WebViewProxy: AnyObject {
   var scrollView: UIScrollView? { get }
   var bounds: CGRect { get }
   var frame: CGRect { get }
   var isKeyboardVisible: Bool { get }
+  var obscuredInsets: UIEdgeInsets { get set }
+  func setMinimumViewportInset(_ minInset: UIEdgeInsets, maximumViewportInset: UIEdgeInsets)
   func becomeFirstResponder() -> Bool
 }
 

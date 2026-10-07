@@ -52,7 +52,6 @@ extension Web3Service {
     case .unstoppable:
       let termsOfUseUrl = WalletConstants.ensTermsOfUseURL.absoluteString
       let privacyPolicyUrl = WalletConstants.ensPrivacyPolicyURL.absoluteString
-      let nonCryptoExtensions = WalletConstants.supportedUDExtensions.filter { $0 != ".crypto" }
       return String.localizedStringWithFormat(
         Strings.Wallet.udDomainInterstitialPageDescription,
         termsOfUseUrl,
@@ -81,12 +80,14 @@ extension Web3Service {
   }
 }
 
+@MainActor
 public class Web3DomainHandler: InternalSchemeResponse {
 
   public static let path = "web3/ddns"
 
   public init() {}
 
+  @MainActor
   public func response(forRequest request: URLRequest) async -> (URLResponse, Data)? {
     guard let url = request.url else { return nil }
     let response = InternalSchemeHandler.response(forUrl: url)

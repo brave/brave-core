@@ -18,8 +18,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "chrome/browser/profiles/profile_window.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #endif
 
@@ -30,8 +29,9 @@ namespace ai_chat {
 namespace {
 
 #if !BUILDFLAG(IS_ANDROID)
-void OpenBrowserWindowAndSidePanel(base::OnceCallback<void(Browser*)> callback,
-                                   Profile* profile) {
+void OpenBrowserWindowAndSidePanel(
+    base::OnceCallback<void(BrowserWindowInterface*)> callback,
+    Profile* profile) {
   if (!profile) {
     DLOG(ERROR) << "Could not create profile";
     std::move(callback).Run(nullptr);
@@ -41,16 +41,21 @@ void OpenBrowserWindowAndSidePanel(base::OnceCallback<void(Browser*)> callback,
   // Open browser window
   profiles::OpenBrowserWindowForProfile(
       base::BindOnce(
-          [](base::OnceCallback<void(Browser*)> callback, Browser* browser) {
+          [](base::OnceCallback<void(BrowserWindowInterface*)> callback,
+             BrowserWindowInterface* browser_window) {
+            if (!browser_window) {
+              std::move(callback).Run(nullptr);
+              return;
+            }
             // Open sidebar when a browser window first opens
             // TODO(petemill): Move this to the AIChatAgentProfileManager
             // on `BrowserListObserver::OnBrowserAdded` when the kChatUI side
             // panel is global and not per-tab.
-            SidePanelUI* side_panel_ui = browser->GetFeatures().side_panel_ui();
+            SidePanelUI* side_panel_ui = SidePanelUI::From(browser_window);
             if (side_panel_ui) {
               side_panel_ui->Show(SidePanelEntryId::kChatUI);
             }
-            std::move(callback).Run(browser);
+            std::move(callback).Run(browser_window);
           },
           std::move(callback)),
       /*always_create=*/false, /*is_new_profile=*/false,
@@ -59,7 +64,7 @@ void OpenBrowserWindowAndSidePanel(base::OnceCallback<void(Browser*)> callback,
 
 void OpenBrowserWindowForAIChatAgentProfileWithCallback(
     Profile& from_profile,
-    base::OnceCallback<void(Browser*)> callback) {
+    base::OnceCallback<void(BrowserWindowInterface*)> callback) {
   CHECK(IsAIChatEnabled(from_profile.GetPrefs()));
   CHECK(!from_profile.IsAIChatAgent());
   // This should not be called if the feature is disabled
@@ -96,7 +101,7 @@ void OpenBrowserWindowForAIChatAgentProfile(Profile& from_profile) {
 #if !BUILDFLAG(IS_ANDROID)
 void OpenBrowserWindowForAIChatAgentProfileForTesting(
     Profile& from_profile,
-    base::OnceCallback<void(Browser*)> callback) {
+    base::OnceCallback<void(BrowserWindowInterface*)> callback) {
   OpenBrowserWindowForAIChatAgentProfileWithCallback(from_profile,
                                                      std::move(callback));
 }

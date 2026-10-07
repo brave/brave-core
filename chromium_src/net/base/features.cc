@@ -3,19 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/feature_override.h"
 #include "brave/net/dns/secure_dns_endpoints.h"
 
 #include <net/base/features.cc>
 
 namespace net::features {
-
-OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kEnableWebTransportDraft07, base::FEATURE_DISABLED_BY_DEFAULT},
-    // Enable NIK-partitioning by default.
-    {kPartitionConnectionsByNetworkIsolationKey,
-     base::FEATURE_ENABLED_BY_DEFAULT},
-}});
 
 BASE_FEATURE(kBraveEphemeralStorageKeepAlive,
              base::FEATURE_ENABLED_BY_DEFAULT);

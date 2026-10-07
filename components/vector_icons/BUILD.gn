@@ -69,6 +69,7 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_history.icon",
     "leo_import_arrow.icon",
     "leo_info_outline.icon",
+    "leo_internet_archive.icon",
     "leo_key.icon",
     "leo_launch.icon",
     "leo_link_broken.icon",
@@ -125,7 +126,6 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_user_picture.icon",
     "leo_verification_filled.icon",
     "leo_warning_triangle_outline.icon",
-    "leo_window_binary_code.icon",
     "leo_window_bookmark.icon",
     "leo_window_focus.icon",
     "leo_window_screwdriver.icon",
@@ -133,6 +133,7 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_window_tab_new.icon",
     "leo_window_tab_private.icon",
     "leo_window_tab_tor.icon",
+    "leo_window_task_manager.icon",
   ]
 
   if (enable_playlist_webui) {

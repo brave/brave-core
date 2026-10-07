@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">Nilai Brave</translation>
 <translation id="4104400246019119780">Terima kasih!</translation>
 <translation id="5202255382948179481">Tambahkan saran Anda</translation>
-<translation id="7759809451544302770">Opsional</translation>
 <translation id="4748689412569009273">Dalam satu emoji, bagaimana pengalaman Anda menggunakan Brave?</translation>
 <translation id="7335142069363686805">Beri penilaian sekarang</translation>
 <translation id="6681362094306959654">Suka Brave?</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">Sedih</translation>
 <translation id="5488843227043643519">Beri penilaian di Play Store?</translation>
 <translation id="5867854497245948308">Terima kasih atas umpan balik Anda!</translation>
-<translation id="4935400164159327304">Beri tahu kami cara untuk meningkatkan layanan Brave.</translation>
+<translation id="5578122562331038807">Beri tahu kami cara untuk meningkatkan layanan Brave</translation>
+<translation id="1483493594462132177">Kirim</translation>
+<translation id="3889034478061064651">Tambahkan saran Anda (Opsional)</translation>
+<translation id="1769154760586570836">Masukan terkirim. Terima kasih!</translation>
+<translation id="4450893287417543264">Jangan tampilkan lagi</translation>
 <translation id="8966035543003363155">Notifikasi Brave mempermudah Anda</translation>
 <translation id="7662771815233894695">Mengelola unduhan, mendapatkan token, melihat statistik penggunaan mingguan, dan banyak lagi.</translation>
 <translation id="4265429476391459783">Anda tidak mendapatkan Imbalan atau menerima Laporan Privasi</translation>
@@ -107,9 +110,9 @@
 <translation id="4176463684765177261">Dinonaktifkan</translation>
 <translation id="59174027418879706">Diaktifkan</translation>
 <translation id="6920492760024499150">Kisah terpopuler hari ini dalam umpan privat, hanya untuk Anda.</translation>
-<translation id="8300751939969131609">Aktifkan Berita Brave, dan jangan lewatkan cerita apa pun</translation>
+<translation id="3803728444598576153">Aktifkan Brave Berita dan jangan lewatkan cerita apa pun</translation>
 <translation id="7627131190984957214">Berita Brave didukung iklan dengan iklan privat dan anonim yang disesuaikan pada perangkat Anda.</translation>
-<translation id="7699565323725789472">Ikuti sumber favorit Anda, dalam umpan tunggal. Cukup buka tab di Brave, gulir turun, dan… tara!\nBerita Brave didukung iklan dengan iklan privat dan anonim.</translation>
+<translation id="7897050360583141319">Ikuti sumber favorit Anda dalam umpan tunggal. Cukup buka tab di Brave, gulir turun, dan… tara!</translation>
 <translation id="1765217911817124376">Aktifkan Brave News</translation>
 <translation id="8981973962043893066">Cari situs, topik, atau umpan RSS</translation>
 <translation id="3225021799163709119">Populer</translation>
@@ -187,6 +190,9 @@
 <translation id="5987838417172370108">Membantu meningkatkan stabilitas produk Brave\u2019s dengan secara otomatis mengirim laporan diagnostik ketika Peramban Brave gagal atau macet.</translation>
 <translation id="7977176350719484850">Perkiraan Data\nDihemat</translation>
 <translation id="9008534313521214777">Est. Penghematan Waktu</translation>
+<translation id="5668852698659986622">Aktifkan Iklan Bersponsor</translation>
+<translation id="431194936581466649">Bantu dukung misi Brave untuk membangun Web yang independen dan mengutamakan pengguna dengan Iklan Bersponsor. Kami mengukur performa iklan secara privat, tanpa mengidentifikasi Anda.</translation>
+<translation id="1939813747486101115">Pelajari selengkapnya tentang Iklan Bersponsor</translation>
 <translation id="8347743943525229984">Izinkan survei Brave</translation>
 <translation id="6022939994702081659">Izinkan Brave menampilkan tautan ke survei privat di halaman tab baru. Survei membantu kami membangun fitur yang lebih baik dan mengukur keefektifan kampanye iklan berbasis browser.</translation>
 <translation id="7746496306508543965">Pelajari selengkapnya tentang survei Brave</translation>
@@ -202,6 +208,7 @@
 <translation id="8026334261755873520">Hapus data penjelajahan</translation>
 <translation id="1690924763769415936">Putaran latar belakang</translation>
 <translation id="6332924730165919598">Menutup semua tab akan menutup Brave</translation>
+<translation id="2557725907027944082">Grup</translation>
 <translation id="8308305244351876417">Memungkinkan video agar tetap berputar saat Anda beralih ke tab lain di Brave atau ke aplikasi lain, atau jika layar perangkat Anda non-aktif.</translation>
 <translation id="49147335255967913">Buka tautan YouTube di Brave</translation>
 <translation id="4150201353443180367">Tampilan</translation>
@@ -212,9 +219,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Pelajari lebih lanjut tentang Widevine<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Izinkan (Luncurkan Ulang Sekarang)</translation>
 <translation id="2433507940547922241">Tampilan</translation>
+<translation id="316542773973815724">Navigasi</translation>
 <translation id="9040069796107003510">Ikon Imbalan Brave</translation>
 <translation id="6333347122924254968">Tampilkan ikon Brave Rewards pada bilah alamat</translation>
-<translation id="1215433243238902715">Aktifkan bilah alat navigasi bawah</translation>
+<translation id="4393974575368329991">Bilah alat navigasi bawah</translation>
+<translation id="1834226716203076292">Tampilkan bilah bawah untuk akses cepat ke beranda, markah, dan penelusuran</translation>
 <translation id="1422686363939271829">Pengaturan ini dinonaktifkan apabila posisi bilah alamat bawah dipilih</translation>
 <translation id="6587448235155023666">Semua perubahan akan berlaku begitu Anda meluncurkan ulang Brave</translation>
 <translation id="8701563696941209024">LUNCURKAN ULANG SEKARANG</translation>
@@ -234,8 +243,7 @@
 <translation id="6188781052835527980">Kirimkan laporan diagnostik anonim jika Anda mengalami kerusakan atau kebekuan.</translation>
 <translation id="4780647518983772446">Bagikanlah wawasan produk secara privat dan anonim tentang fitur Brave mana yang sedang digunakan.</translation>
 <translation id="5109496672133133896">Wawasan produk privat</translation>
-<translation id="3545804467215833536">Ketuk untuk melihat Perisai Brave</translation>
-<translation id="1724327820822194498">Lihatlah semua hal buruk yang diblokir Brave, pada setiap halaman, dengan Perisai.</translation>
+<translation id="4340039903315468568">Lihatlah semua hal buruk yang diblokir Brave pada setiap halaman dengan Perisai. Ketuk untuk melihat</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> ads &amp; pelacak telah diblokir</translation>
 <translation id="8281886186245836920">Lewati</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
@@ -245,7 +253,6 @@
 <translation id="6213254277250932867">Saya memiliki frasa pemulihan 12 kata</translation>
 <translation id="4225265925807365011">Saya memiliki frasa pemulihan 24 kata</translation>
 <translation id="3570367516044491911">Jadikan peramban baku</translation>
-<translation id="6800338374677644736">Tetapkan sebagai Peramban Bawaan</translation>
 <translation id="1545749641540134597">Pindai Kode QR</translation>
 <translation id="5317781812114905957">Instruksi</translation>
 <translation id="8515319483805157233">Untuk mencari berdasarkan Kode QR, posisikan Kode QR di tengah bingkai.</translation>
@@ -277,8 +284,6 @@
 <translation id="5582839680698949063">Menu utama</translation>
 <translation id="7002271985859760052">Tindakan halaman</translation>
 <translation id="7104487676473617844">Item berikut hanya akan terlihat di menu saat didukung oleh halaman web yang sedang dibuka.</translation>
-<translation id="4159764849281393303">WebApp</translation>
-<translation id="8428213095426709021">Setelan</translation>
 <translation id="8038539967102225446">Iklan Brave sudah tiba!</translation>
 <translation id="222883304157347087">(perangkat ini)</translation>
 <translation id="4157741509680155021">PERANGKAT PADA RANTAI SINKRONISASI</translation>
@@ -440,6 +445,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="7141438739990875547">Jaringan Bitcoin</translation>
 <translation id="9055546041146396417">Jika situs ini tampak rusak, coba turunkan Shield.</translation>
 <translation id="7898672232170410330">Blokir elemen</translation>
+<translation id="7205939464631857223">Hapus semua elemen yang diblokir</translation>
 <translation id="7961015016161918242">Jangan pernah</translation>
 <translation id="3200744626782631683">Data penjelajahan tidak pernah dihapus secara otomatis</translation>
 <translation id="1991004083507807299">Tab Situs Tertutup</translation>
@@ -502,7 +508,10 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="3980704343258720102">Hapus semua data pencarian</translation>
 <translation id="8089997572759938512">Atur ulang pelaporan privasi ke nol</translation>
 <translation id="2718046830255553131">Data pelaporan privasi telah dikosongkan.</translation>
-<translation id="8376263745431603066">Aktifkan "Modus Malam" (Percobaan)</translation>
+<translation id="3623948252408240879">Mode Malam</translation>
+<translation id="1257950165130031194">Paksa mode gelap untuk konten web</translation>
+<translation id="8710601165725654801">Warna dinamis</translation>
+<translation id="7865194971711852999">Tema aplikasi sesuai dengan warna wallpaper</translation>
 <translation id="1383876407941801731">Cari</translation>
 <translation id="13296465911709339">Teks Anda telah disalin ke clipboard.</translation>
 <translation id="2735834606413553397">Alamat publik telah disalin ke papan klip.</translation>
@@ -526,7 +535,6 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="1822560017823072927">Antarmuka pribadi dan umum baku</translation>
 <translation id="5825943197137337319">Hanya antarmuka publik baku</translation>
 <translation id="1689062823386843231">Nonaktifkan UDP yang tidak di-proxy</translation>
-<translation id="1483493594462132177">Kirim</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="4556086616242530072">Peramban asli.\nPenyimpanan mandiri.\nDan multirantai.</translation>
 <translation id="7909462264772842773">Ambil kendali atas kripto dan NFT Anda. Dompet Brave mendukung rantai Ethereum, EVM, Solana, Filecoin, dan banyak lagi.</translation>
@@ -602,7 +610,6 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="569068482611873351">Impor...</translation>
 <translation id="4522570452068850558">Rincian</translation>
 <translation id="3114681061018999547">Melindungi</translation>
-<translation id="3784455785234192852">Kunci</translation>
 <translation id="4412698727486357573">Pusat bantuan</translation>
 <translation id="8239147115686034860">Secara otomatis mengunci Brave Wallet</translation>
 <translation id="414639769490080648">Jumlah menit untuk menunggu hingga Brave Wallet terkunci secara otomatis</translation>
@@ -714,6 +721,8 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="1634828734222219955">Total</translation>
 <translation id="7995708795274219641">Nominal + Bensin</translation>
 <translation id="2186011161688824046">Jumlah + biaya</translation>
+<translation id="1118876217803190221">Saldo tidak mencukupi</translation>
+<translation id="275990379543116961">Dana tidak mencukupi untuk membeli gas</translation>
 <translation id="1950052789869821983">Transaksi</translation>
 <translation id="2304783958703511257">Pengaturan Lanjutan</translation>
 <translation id="4220062530885628403">Saat ini</translation>
@@ -722,7 +731,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="4979796155378508955">Transaksi mungkin tidak akan disebarkan ke jaringan jika nilai khusus saat ini tidak berurutan atau memiliki kesalahan lain.</translation>
 <translation id="750843150060816463">Harga Bensin (Gwei)</translation>
 <translation id="1426320910664514906">Batas Gas</translation>
-<translation id="6389441740143786465">Nonaktifkan Hub Berbagi</translation>
+<translation id="1784950057929740513">Hub Berbagi</translation>
 <translation id="473775607612524610">Perbarui</translation>
 <translation id="479795390141144417">Pembaruan akun gagal.</translation>
 <translation id="8084782383392198011">Nama akun tidak dapat dibiarkan kosong.</translation>
@@ -797,10 +806,19 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="1060221736464994328">Izinkan situs ini untuk mengalihkan jaringan?</translation>
 <translation id="2478788592457735063">Ini akan mengalihkan jaringan ke jaringan yang sebelumnya telah ditambahkan.</translation>
 <translation id="8756686998207163764">Alihkan jaringan</translation>
+<translation id="8905793906896555159">Aktifkan grup tab</translation>
+<translation id="6735749683447943955">Nonaktifkan grup tab?</translation>
+<translation id="4616687974503500682">Grup yang ada akan dihapus, dan tab dalam grup tersebut akan menjadi tab terbuka yang tidak dikelompokkan di jendela browser Anda. Apakah Anda yakin ingin melanjutkan?</translation>
+<translation id="4394049700291259645">Nonaktifkan</translation>
+<translation id="3859027502409073633">Tampilkan grup tab tersinkronisasi</translation>
+<translation id="7632160823264702523">Bilah grup tab</translation>
+<translation id="2477807195394450274">Tampilkan bilah bawah untuk akses cepat ke tab dalam grup tab yang sedang dibuka</translation>
+<translation id="8374720587111523381">Buka tautan di grup tab saat ini</translation>
 <translation id="5324095733417835490">Buka tautan hanya di kelompok tab saat ini</translation>
-<translation id="2620277345862119868">Buka semua tautan secara otomatis di kelompok tab saat ini</translation>
+<translation id="1227658541937938697">Buka semua tautan secara otomatis di grup tab saat ini</translation>
 <translation id="5242300593039211344">Kunci Dompet</translation>
 <translation id="1108298724135935307">Situs terkoneksi</translation>
+<translation id="8428213095426709021">Setelan</translation>
 <translation id="4255623233927788178">Tampilan blokir penjelajah</translation>
 <translation id="8274201358637112807">Halaman ini ingin berinteraksi dengan Dompet Brave</translation>
 <translation id="3355936511340229503">Kesalahan sambungan</translation>
@@ -842,7 +860,6 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="6458565248779152483">Nonaktifkan VPN Brave</translation>
 <translation id="9080536793704001825">Jedakan selama 15 menit</translation>
 <translation id="803706420145725977">Jedakan selama 1 jam</translation>
-<translation id="4394049700291259645">Nonaktifkan</translation>
 <translation id="7733890291091968191">Tampilkan notifikasi Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave tidak melacak Anda atau mengetahui cara Anda menggunakan aplikasi kami, sehingga kami tidak tahu cara Anda menyiapkan VPN. Silakan bagikan info tentang masalah yang Anda alami dan kami akan melakukan yang terbaik unuk menyelesaikannya secepat mungkin. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nNama Host VPN\n <ph name="VALUE"/></translation>
@@ -1077,7 +1094,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="6393423486818299209">Gunakan penyedia layanan Anda saat ini atau Wikimedia DNS</translation>
 <translation id="3401384982562827787">Gunakan penyedia layanan Anda saat ini atau Cloudfare</translation>
 <translation id="8812367543786936496">Jika penyedia layanan Anda saat ini tidak aman, Brave menggunakan penyedia DNS alternatif yang aman</translation>
-<translation id="1381108437654541567">Aktifkan beberapa jendela</translation>
+<translation id="750538469281113679">Beberapa jendela</translation>
 <translation id="6167344249617630304">Buka hingga 5 jendela sekaligus dan pindahkan tab dari satu jendela ke jendela lain</translation>
 <translation id="1063948063403254568">Beberapa jendela terdeteksi</translation>
 <translation id="4661882208707630158">Silakan gabungkan tab ke jendela Brave lainnya, atau tutup jendela Brave lainnya, sebelum menonaktifkannya dari fitur multi-jendela.</translation>

@@ -6,6 +6,7 @@
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/common/typescript.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/polymer/css_to_wrapper.gni")
 import("//tools/polymer/html_to_wrapper.gni")
@@ -56,6 +57,18 @@ if (include_polymer) {
       "page_specific/settings/br_settings_shared.css",
       "page_specific/settings/br_settings_shared_lit.css",
     ]
+
+    if (enable_brave_custom_profile_image_webui) {
+      ts_files += [
+        "custom_profile_image_row.html.ts",
+        "custom_profile_image_row.ts",
+      ]
+      mojo_files += [
+        "$root_gen_dir/brave/grit/brave_generated_resources_webui_strings.ts",
+      ]
+      mojo_files_deps += [ "//brave/app:brave_generated_resources_grit" ]
+      css_files += [ "custom_profile_image_row.css" ]
+    }
 
     ts_composite = true
     generate_grdp = true
@@ -185,12 +198,16 @@ leo_icons_sources = [
   "broom.svg",
   "browser-add.svg",
   "browser-back.svg",
+  "browser-bookmark-normal.svg",
   "browser-extensions.svg",
+  "browser-forward.svg",
   "browser-home.svg",
   "browser-ntp-widget.svg",
+  "browser-refresh.svg",
   "btc-color.svg",
   "bug.svg",
   "calendar-check.svg",
+  "calendar-time.svg",
   "calendar.svg",
   "camera.svg",
   "caps-lock.svg",
@@ -256,6 +273,7 @@ leo_icons_sources = [
   "dot.svg",
   "download-off.svg",
   "download.svg",
+  "drag.svg",
   "duckduckgo-color.svg",
   "ecosia-color.svg",
   "edge-color.svg",
@@ -280,8 +298,10 @@ leo_icons_sources = [
   "filter.svg",
   "finger-double-tap.svg",
   "firefox-color.svg",
+  "flag.svg",
   "flash.svg",
   "flashdrive.svg",
+  "folder-code.svg",
   "folder-exchange.svg",
   "folder-export.svg",
   "folder-new.svg",
@@ -292,6 +312,8 @@ leo_icons_sources = [
   "fullscreen-on.svg",
   "gemma-color.svg",
   "globe.svg",
+  "gmail-color.svg",
+  "google-calendar-color.svg",
   "google-color.svg",
   "graph.svg",
   "grid04.svg",
@@ -453,6 +475,7 @@ leo_icons_sources = [
   "sidenav-collapse.svg",
   "sidenav-expand.svg",
   "sidepanel-open.svg",
+  "slack-color.svg",
   "slash.svg",
   "smart-proxy-routing.svg",
   "smartphone-desktop-off.svg",
@@ -487,6 +510,8 @@ leo_icons_sources = [
   "themes.svg",
   "thumb-down.svg",
   "thumb-up.svg",
+  "tool-box.svg",
+  "traffic-control.svg",
   "trash.svg",
   "trezor-color.svg",
   "tune.svg",

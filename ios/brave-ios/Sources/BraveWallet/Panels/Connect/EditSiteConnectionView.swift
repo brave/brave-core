@@ -161,7 +161,7 @@ struct EditSiteConnectionView: View {
   }
 
   var body: some View {
-    NavigationView {
+    NavigationStack {
       Form {
         Section {
           ForEach(accountInfos) { account in
@@ -219,7 +219,6 @@ struct EditSiteConnectionView: View {
         }
       }
     }
-    .navigationViewStyle(.stack)
   }
 }
 

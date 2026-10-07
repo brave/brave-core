@@ -23,9 +23,11 @@ void BraveAccountNavigationThrottle::MaybeCreateAndAdd(
     return;
   }
 
+  // Match every path under the host, not just "/".
+  // On Android/iOS, the WebUI also serves the Settings rows at "/settings".
   if (const GURL& url = registry.GetNavigationHandle().GetURL();
       !url.SchemeIs(content::kChromeUIScheme) ||
-      url.host() != kBraveAccountHost || url.path() != "/") {
+      url.host() != kBraveAccountHost) {
     return;
   }
 

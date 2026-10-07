@@ -7,10 +7,15 @@ package org.chromium.chrome.browser.ntp;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
+import androidx.annotation.NonNull;
+
+import org.jni_zero.NativeMethods;
 
 import org.chromium.base.version_info.VersionInfo;
 import org.chromium.chrome.browser.content.WebContentsFactory;
@@ -20,8 +25,11 @@ import org.chromium.components.thinwebview.ThinWebView;
 import org.chromium.components.thinwebview.ThinWebViewAttachParams;
 import org.chromium.components.thinwebview.ThinWebViewConstraints;
 import org.chromium.components.thinwebview.ThinWebViewFactory;
+import org.chromium.content_public.browser.GlobalRenderFrameHostId;
 import org.chromium.content_public.browser.LoadUrlParams;
+import org.chromium.content_public.browser.Page;
 import org.chromium.content_public.browser.WebContents;
+import org.chromium.content_public.browser.WebContentsObserver;
 import org.chromium.net.NetId;
 import org.chromium.ui.base.ViewAndroidDelegate;
 import org.chromium.ui.base.WindowAndroid;
@@ -31,10 +39,12 @@ import java.util.Objects;
 public class SponsoredRichMediaWebView {
     private static final String NEW_TAB_TAKEOVER_URL = "chrome://new-tab-takeover";
 
-    private final WebContents mWebContents;
-    private final ThinWebView mWebView;
+    private ThinWebView mWebView;
+    private WebContents mWebContents;
+    private final WebContentsObserver mWebContentsObserver;
     private String mPlacementId;
     private String mCreativeInstanceId;
+    private RectF mSafeArea;
 
     public SponsoredRichMediaWebView(
             Activity activity, WindowAndroid windowAndroid, Profile profile) {
@@ -68,6 +78,30 @@ public class SponsoredRichMediaWebView {
                                 ViewGroup.LayoutParams.MATCH_PARENT));
         mWebView.attachWebContents(
                 mWebContents, webContentView, new ThinWebViewAttachParams.Builder().build());
+
+        mWebContentsObserver =
+                new WebContentsObserver(mWebContents) {
+                    @Override
+                    public void documentLoadedInPrimaryMainFrame(
+                            Page page, GlobalRenderFrameHostId rfhId, int rfhLifecycleState) {
+                        // The previous safe area set calls may have not been applied because WebUI
+                        // was not ready yet. Set the safe area to the New Tab Takeover WebUI after
+                        // the document has loaded to ensure that the safe area is applied.
+                        if (mSafeArea == null) {
+                            return;
+                        }
+
+                        assert mWebContents != null
+                                : "documentLoadedInPrimaryMainFrame() was called after destroy";
+                        SponsoredRichMediaWebViewJni.get()
+                                .setSafeArea(
+                                        mWebContents,
+                                        mSafeArea.left,
+                                        mSafeArea.top,
+                                        mSafeArea.width(),
+                                        mSafeArea.height());
+                    }
+                };
     }
 
     public void maybeLoadSponsoredRichMedia(String placementId, String creativeInstanceId) {
@@ -79,13 +113,43 @@ public class SponsoredRichMediaWebView {
         mPlacementId = placementId;
         mCreativeInstanceId = creativeInstanceId;
 
+        assert mWebContents != null : "maybeLoadSponsoredRichMedia() was called after destroy";
         mWebContents
                 .getNavigationController()
                 .loadUrl(new LoadUrlParams(getNewTabTakeoverUrl(placementId, creativeInstanceId)));
     }
 
     public View getView() {
+        assert mWebView != null : "getView() was called after destroy";
         return mWebView.getView();
+    }
+
+    public void setSafeArea(@NonNull RectF safeArea) {
+        if (safeArea.equals(mSafeArea)) {
+            return;
+        }
+        mSafeArea = new RectF(safeArea);
+
+        if (mWebContents == null) {
+            return;
+        }
+        SponsoredRichMediaWebViewJni.get()
+                .setSafeArea(
+                        mWebContents,
+                        mSafeArea.left,
+                        mSafeArea.top,
+                        mSafeArea.width(),
+                        mSafeArea.height());
+    }
+
+    public void destroy() {
+        assert mWebContents != null && mWebView != null : "destroy() was called multiple times";
+
+        mWebContentsObserver.observe(null);
+        mWebView.destroy();
+        mWebView = null;
+        mWebContents.destroy();
+        mWebContents = null;
     }
 
     private String getNewTabTakeoverUrl(String placementId, String creativeInstanceId) {
@@ -93,5 +157,10 @@ public class SponsoredRichMediaWebView {
         builder.appendQueryParameter("placementId", placementId);
         builder.appendQueryParameter("creativeInstanceId", creativeInstanceId);
         return builder.build().toString();
+    }
+
+    @NativeMethods
+    interface Natives {
+        void setSafeArea(WebContents webContents, float x, float y, float width, float height);
     }
 }

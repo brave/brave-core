@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Още…</translation>
 <translation id="71316462802471551">Имейл псевдоними</translation>
-<translation id="209130971304928953">Запазване на разделите като работна област…</translation>
-<translation id="877984331511007834">Отваряне на работна област…</translation>
-<translation id="1310182651927031327">Запазване на разделите като работна област…</translation>
-<translation id="3588277741646479444">Отваряне на работна област…</translation>
+<translation id="8350985546648269694">Запазване на текущите прозорци и раздели като пространство</translation>
+<translation id="5327248766486351172">Име</translation>
+<translation id="6379791766023874417">Въведи заглавието на своето пространство</translation>
+<translation id="9174724474418499472">Моето пространство</translation>
+<translation id="5317780077021120954">Запазване</translation>
+<translation id="7658239707568436148">Отмени</translation>
+<translation id="196342407904926436">Опции за пространството</translation>
+<translation id="2806407377752719586">Изтриване на пространство</translation>
+<translation id="1844931500883490339">Сигурни ли сте, че искате да изтриете това пространство? Запазеното пространство ще бъде премахнато завинаги. Това действие не може да бъде отменено.</translation>
+<translation id="8261506727792406068">Изтриване</translation>
+<translation id="8428213095426709021">Настройки</translation>
+<translation id="1212321046099128987">Няма създадени пространства</translation>
+<translation id="3524567389166933243">Създайте първото си пространство, като щракнете върху бутона за запазване по-долу.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 раздел} other {# раздела}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> прозореца</translation>
+<translation id="1680377529024357662">Запазване на текущите прозорци и раздели като пространство</translation>
+<translation id="5561829325295347472">Въведи заглавието на своето пространство</translation>
+<translation id="2028520494010039812">Опции за пространството</translation>
+<translation id="1580775521202322063">Изтриване на пространство</translation>
+<translation id="3004759399777164093">Сигурни ли сте, че искате да изтриете това пространство? Запазеното пространство ще бъде премахнато завинаги. Това действие не може да бъде отменено.</translation>
+<translation id="7563692436589408797">Няма създадени пространства</translation>
+<translation id="3945077125173636695">Създайте първото си пространство, като щракнете върху бутона за запазване по-долу.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 раздел} other {# раздела}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> прозореца</translation>
+<translation id="3326655241685890930">Пространства</translation>
 <translation id="1990886731975529483">Инсталирайте и стартирайте Google Widevine</translation>
 <translation id="8926389886865778422">Без повторно питане</translation>
 <translation id="4900351245762303149">Инсталирайте Google Widevine</translation>
@@ -37,7 +58,7 @@
 <translation id="3218385319396786393">Autoplay беше блокиран на тази страница</translation>
 <translation id="4988333904713528597">Винаги разрешавайте автоматичното възпроизвеждане на <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Продължаване на блокирането на автоматичното възпроизвеждане</translation>
-<translation id="3477357195688115718">Brave не преглежда разширенията за сигурност и безопасност. Инсталирайте това разширение само ако имате доверие на разработчика.</translation>
+<translation id="2201935460386712655">Brave не преглежда разширенията за сигурност и безопасност. Инсталирайте „<ph name="EXTENSION_NAME"/>“ само ако имате доверие на разработчика.</translation>
 <translation id="2928844661231356557">Предоставянето на достъп до устройство с Bluetooth ще позволи на сайта да прочете идентифицираща и потенциално чувствителна информация за Вас. Разрешавайте достъп до устройства с Bluetooth само на сайтове, на които имате доверие.<ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Прозорци на Tor</translation>
 <translation id="7965178729203412357">Нова идентичност на Tor</translation>
@@ -63,7 +84,6 @@
 <translation id="3211174446914979436">Управление на филтри</translation>
 <translation id="3108584651298176909">Показване на правила</translation>
 <translation id="5156986655891520787">Скриване на правила</translation>
-<translation id="7658239707568436148">Отмени</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Отваряне чрез .onion адрес: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Принудително поставяне</translation>
@@ -91,6 +111,10 @@
 <translation id="191886777375280620">Заснемане на екранна снимка</translation>
 <translation id="3114478090884951591">Видима област</translation>
 <translation id="2026367923222947564">Цялата страница</translation>
+<translation id="4218885227032158909">Избрана област</translation>
+<translation id="2586386106930448447">Преглед на снимка на екрана</translation>
+<translation id="7514365320538308">Изтегляне</translation>
+<translation id="2743387203779672305">Копиране в клипборда</translation>
 <translation id="4928988318462976765">Магазин за уеб разширения</translation>
 <translation id="9181207987584064303">Вижте в Магазина за уеб разширения</translation>
 <translation id="3161744659507801211">Внимание: Brave не може да попречи на разширенията да записват историята ви на сърфиране.</translation>
@@ -191,11 +215,12 @@
 <translation id="8707615221880318679">Тези поверителни известия помагат на Brave да оцени цялостното използване на определени функции и да ги направи по-добри за вас</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 домейни</translation>
-<translation id="4552520379838695057">За съжаление тази страница липсва.</translation>
-<translation id="7299769530898469069">Запазената версия не може да бъде заредена</translation>
-<translation id="2609895996619941644">Искате ли да проверите дали запазената версия е налична на Wayback Machine?</translation>
-<translation id="8010675257566903381">Wayback Machine не успя да намери запазена версия на този сайт.</translation>
-<translation id="1207694258341311738">Проверете запазената версия</translation>
+<translation id="1458638489455808030">Wayback Machine</translation>
+<translation id="8039999492770627305">Страницата липсва</translation>
+<translation id="208311458690012764">Няма налична архивирана версия</translation>
+<translation id="4515057635283480525">Internet Archive запазва предишни версии на много уеб страници. Искате ли да потърсите тази страница в Архива?</translation>
+<translation id="8252977752585110703">За съжаление, проверихме Internet Archive и той няма архивирана версия на тази страница.</translation>
+<translation id="8748778103033196270">Търсене в Архива</translation>
 <translation id="191143826155037518">Brave се предоставя на разположение под <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) и включва <ph name="BEGIN_LINK_OSS"/>софтуер с отворен код<ph name="END_LINK_OSS"/> под множество други лицензи.
         Можете да прочетете <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>инструкции как да изтеглите и изградите за себе си<ph name="END_LINK_BUILD_INSTRUCTIONS"/> конкретния <ph name="BEGIN_LINK_SOURCE_CODE"/>изходен код, използван за създаването на това копие<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Запазване на отметки към всички раздели…</translation>
@@ -226,6 +251,7 @@
 <translation id="1185644444415356776">Отваряне на връзка в контейнер</translation>
 <translation id="6745991613881384719">Управление на контейнерите</translation>
 <translation id="8523788649219117880">Нов временен контейнер</translation>
+<translation id="6738770788727894934"><ph name="TOOLTIP"/> - контейнер <ph name="CONTAINER_NAME"/></translation>
 <translation id="3704707436873245822">Копиране на текст от изображение</translation>
 <translation id="5268098808165185458">Копиране на текст от изображение...</translation>
 <translation id="4046485130884276245">Копиран е текст от изображение</translation>
@@ -289,14 +315,12 @@
 <translation id="55252794453047936">Преместване на мултимедиен файл</translation>
 <translation id="4418985925423678811">Нов плейлист</translation>
 <translation id="385051799172605136">Назад</translation>
-<translation id="5317780077021120954">Запазване</translation>
 <translation id="7930125899031086027">Създаване и преместване</translation>
 <translation id="2860159216666546928">Изберете папка, в която да преместите този мултимедиен файл</translation>
 <translation id="9130105487623071247">Заглавие на плейлиста</translation>
 <translation id="1857042171340443373">Избрани са <ph name="NUM_ITEMS"/> елемента</translation>
 <translation id="3596306474342941843">Изтриване на плейлиста</translation>
 <translation id="7110726588168439924">Сигурни ли сте, че искате да изтриете този плейлист и цялото му съдържание? Това действие не може да бъде отменено.</translation>
-<translation id="8261506727792406068">Изтриване</translation>
 <translation id="8152485753254079984">Нов плейлист</translation>
 <translation id="5397019762993984652">Добавяне от папката ви за възпроизвеждане по-късно</translation>
 <translation id="7525067979554623046">Създаване</translation>
@@ -343,6 +367,7 @@
 <translation id="6847541693235449912">Давай</translation>
 <translation id="2079545284768500474">Отмяна</translation>
 <translation id="1533980864758658574">Създаден е нов прозорец за <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">Никой раздел не съвпада с тази тема. Опитайте да я опишете по друг начин.</translation>
 <translation id="7985042437720138349">Тази функция изпраща данни за твоите отворени раздели на Лио – задвижвания с AI браузър асистент на Brave.</translation>
 <translation id="6165508094623778733">Научете повече</translation>
 <translation id="7557539689487606886">Абонирайте се за Premium</translation>
@@ -359,6 +384,7 @@
 <translation id="6724227215236550330">Запаметените пароли ще се показват тук. За да импортираш пароли в <ph name="BRAND"/> на това устройство, <ph name="BEGIN_LINK"/> избери CSV файл<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">За да импортираш пароли в <ph name="BRAND"/> на това устройство, избери CSV файл</translation>
 <translation id="8570228839666486945">Локално ИИ</translation>
+<translation id="7447041379556102185">Разпознаване на реч на устройството</translation>
 <translation id="3456536577668402695">Вашите търсения и съдържанието на страниците се обработват на това устройство. Нищо не се изпраща до Brave и не се преглежда от хора.</translation>
 <translation id="4751537843966994505">Семантично търсене в историята</translation>
 <translation id="6175973371938222040">Индексирайте локално страниците, които посещавате, за да можете да търсите в историята си по смисъл. Цялата обработка остава на това устройство.</translation>
@@ -389,16 +415,33 @@
 <translation id="6017560037265964523">Контейнери</translation>
 <translation id="3718176486689879621">Контейнерите са цветово кодирани раздели на браузъра, които изолират данните ви за сърфиране, като бисквитки, кеш и хранилище на сайтове, в отделни контексти. <ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/></translation>
 <translation id="3721778624267551248">Включване на контейнери</translation>
+<translation id="4858772568604670131">Винаги използвай мини икона за контейнерите</translation>
 <translation id="7773735778926921278">Добавяне на нов контейнер</translation>
 <translation id="8900907990448657776">Редактиране на контейнер</translation>
 <translation id="7900511996284443779">Изтриване на контейнер</translation>
 <translation id="2738687336989232152">Наистина ли искаш да изтриеш контейнера <ph name="CONTAINER_NAME"/>? Това ще премахне всички данни, свързани с него.</translation>
-<translation id="5327248766486351172">Име</translation>
 <translation id="104766043551382253">Икона</translation>
 <translation id="5431318178759467895">Цвят</translation>
 <translation id="4328541188421002379">Дай име на контейнера, като например „Работни“ или „Лични“</translation>
 <translation id="4976989127264491396">Грешка: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Контейнерът не е намерен</translation>
+<translation id="6055154402239241620">Контрол на трафика</translation>
+<translation id="8134521925475508805">Конфигурирайте определени сайтове да се отварят автоматично в конкретен контекст, като създавате разделение между сесиите ви на сърфиране. <ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Активиране на контрола на трафика</translation>
+<translation id="1358255827354528344">Добавяне на ново правило</translation>
+<translation id="7183128985801806752">Ново правило за контрол на трафика</translation>
+<translation id="2474694032500407328">Редактиране на правило за контрол на трафика</translation>
+<translation id="5543417389274097206">Създаване на правило</translation>
+<translation id="6532106788206463496">Запазване на промените</translation>
+<translation id="1172800769374812685">Изтриване на правило</translation>
+<translation id="2389682807835777591">Сигурни ли сте, че искате да изтриете правилото <ph name="RULE_LABEL"/>?</translation>
+<translation id="4853129331778360252">Въведете URL адреси, които да управлявате и винаги да отваряте в конкретен контекст на сърфиране.</translation>
+<translation id="1173480005453148926">URL адреси за управление</translation>
+<translation id="6217532416180299470">Въведете URL адреси за управление с контрол на трафика</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> съвпада със сайта и неговите поддомейни; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> съвпада с точния сайт; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> съвпада с всички сайтове; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> е коментар.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (и още <ph name="COUNT"/> URL адреса)</translation>
+<translation id="3700798663085748181">Активиране на правило</translation>
+<translation id="2967480878853054068">Невалиден URL филтър</translation>
 <translation id="2263346047290834619">Използвай дървовидни раздели</translation>
 <translation id="5860254591544742609">Показване на заглавната лента</translation>
 <translation id="4691131445504068802">Скрий напълно, когато е минимизирано</translation>
@@ -506,7 +549,6 @@
 <translation id="6745592621698551453">Актуализиране сега</translation>
 <translation id="5334844597069022743">Преглед на източника</translation>
 <translation id="4720556299488643018">Отказ от следване</translation>
-<translation id="6532106788206463496">Запазване на промените</translation>
 <translation id="4516904298421534459">Списъци с филтри</translation>
 <translation id="4435215931544457255">Допълнителни популярни списъци в общността. Обърнете внимание, че активирането на твърде много филтри ще влоши скоростта на сърфиране.</translation>
 <translation id="802154636333426148">Изтеглянето не бе успешно</translation>
@@ -538,7 +580,6 @@
 <translation id="1799030480311994998">Функции</translation>
 <translation id="6709133671862442373">Новини</translation>
 <translation id="6297791103122079275">Talk</translation>
-<translation id="1458638489455808030">Wayback Machine</translation>
 <translation id="4590997608186539865">Плейлист</translation>
 <translation id="1199170151481311646">Анализи за запазване на поверителността</translation>
 <translation id="5990642573624858459">Отчитане на статистически данни</translation>
@@ -547,6 +588,7 @@
 <translation id="2587535830241068901">Персонализирайте браузъра си, като същевременно поддържате Brave</translation>
 <translation id="123297831435065577">Brave Origin е платена версия на браузъра за потребители, които не се нуждаят от всички функции, които поддържат Brave като бизнес, но все пак искат конфиденциалността, която само Brave предлага. Origin потребителите ще продължат да се ползват от нашата водеща в индустрията конфиденциалност, блокирането на реклами и скоростта (чрез Защити), както и от редовни актуализации на софтуера, кръпки за Chromium и подобрения в сигурността и конфиденциалността.</translation>
 <translation id="7984508421152399880">Купи сега</translation>
+<translation id="1882724423074862793">Възстановяване на покупката</translation>
 <translation id="5567412479632285879">Наградите на Brave са дезактивирани</translation>
 <translation id="413570371620795359">Отворете панела награди за активиране и започване</translation>
 <translation id="1051600834033686945">Отворете пълните настройки на Brave Rewards</translation>
@@ -583,11 +625,18 @@
 <translation id="933652931229970927">Автоматично изпращане на отчети с диагностика</translation>
 <translation id="8868426106596092089">Помогнете за подобряването на стабилността на продуктите на Brave чрез изпращане на отчети с диагностика, когато браузърът Brave се срине или не отговаря</translation>
 <translation id="4891600875049212418">Преминете в режим „Off-The-Record“, когато посещавате чувствителни сайтове</translation>
+<translation id="1022603984240541480">Показване на известие за настройване на настройките за поверителност на съвместими сайтове</translation>
+<translation id="3528176629974273019">Позволява на Brave автоматично да предлага (и коригира) специфични за сайта настройки за поверителност.</translation>
+<translation id="2740687181110647855">Инструмент за настройка на поверителността</translation>
 <translation id="509873765238158442">Блокиране на Microsoft Recall</translation>
 <translation id="4763421121695677716">Блокиране на функцията Recall в компютрите с Microsoft Windows, за да не прави автоматични снимки на екрана на отворени раздели в Brave.</translation>
 <translation id="1968895725257436430">Събиране на данни</translation>
+<translation id="5668852698659986622">Активиране на спонсорираните реклами</translation>
+<translation id="431194936581466649">Помогнете за подкрепата на мисията на Brave да изгради независим, ориентиран към потребителя интернет със спонсорирани реклами. Измерваме ефективността на рекламите поверително, без да ви идентифицираме.</translation>
 <translation id="1700052872056357670">Изчистване на данните при излизане</translation>
 <translation id="216468847346280584">Изчистване на данни за Brave Ads...</translation>
+<translation id="96212973142796240">Данните за Brave реклами са изчистени</translation>
+<translation id="6665923829462527507">Данните за Brave реклами не можаха да бъдат изчистени. Опитайте отново.</translation>
 <translation id="2808630562319398131">Нулиране на данните за Brave награди...</translation>
 <translation id="6438096877646138757">Сайтове, които изчистват бисквитките, когато ги затворите</translation>
 <translation id="2988792685798128092">Изчистване при затваряне на сайта</translation>
@@ -738,6 +787,7 @@
 <translation id="4425607417590286548">Приложете промените</translation>
 <translation id="2128143836897950793">Кликнете върху „Заявка за нов мост...“, за да получите мостове</translation>
 <translation id="3314921753580327793">Въведете адрес:порт (по един на ред)</translation>
+<translation id="7002083631026466886">Tor не може да използва този мост. Сверете го с моста, който сте получили, след което опитайте отново:</translation>
 <translation id="3755189300481406891">Заявка за мост</translation>
 <translation id="6924425739431382319">Свързване с BridgeDB. Моля, изчакайте.</translation>
 <translation id="811745063252080651">Решете CAPTCHA, за да поискате мост.</translation>
@@ -854,6 +904,7 @@
 <translation id="8631951653187535788">Сигурни ли сте, че искате да изтриете този модел? Ако този модел се използва в активен разговор, този разговор ще се промени, за да използва модела по подразбиране на Leo.</translation>
 <translation id="1907126221851170941">Добавяне на модел</translation>
 <translation id="8346224718149026088">Редактиране на модел</translation>
+<translation id="3914173277599553213">Задължително</translation>
 <translation id="3468298837301810372">Етикет</translation>
 <translation id="3553035516792776805">Име на заявка за модел</translation>
 <translation id="7634775528597575156">Крайна точка на сървъра</translation>
@@ -915,7 +966,6 @@
 <translation id="1838374766361614909">Изчисти търсене</translation>
 <translation id="5126255551970171328">Търсене на памет</translation>
 <translation id="7402116145895962069">Синхронизирай локалните модели на Ollama</translation>
-<translation id="4835154437390745810">Управлявано от Ollama</translation>
 <translation id="5985516785067818307">Участие в анкети</translation>
 <translation id="8347743943525229984">Разрешаване на анкети в Brave</translation>
 <translation id="3204080538332044581">Позволява на Brave да показва връзки към поверителни анкети в страницата на нов раздел. Тези анкети ни помагат да създаваме по-добри функции и да измерваме ефективността на рекламните кампании в браузъра. <ph name="BEGIN_LINK"/>Научи повече<ph name="END_LINK"/></translation>
@@ -963,4 +1013,12 @@
 <translation id="154702742922788359">Режим на отваряне</translation>
 <translation id="2249111429176737533">Отваряне като прозорец с раздели</translation>
 <translation id="7022756207310403729">Отваряне в браузър</translation>
+<translation id="1916785651473363467">Персонализирано изображение на профила</translation>
+<translation id="5336092064678832560">Качване на персонализирано изображение</translation>
+<translation id="1062407476771304334">Замяна</translation>
+<translation id="1428299461403073820">Замяна на персонализираното изображение на профила</translation>
+<translation id="7994453838803296517">Преглед на персонализирано изображение на профила, избрано</translation>
+<translation id="6578040791557152233">Качване на персонализирано изображение на профила</translation>
+<translation id="9222124079546967592">Премахване на персонализираното изображение на профила</translation>
+<translation id="6058660912941570282">Brave не може да използва този файл. Изберете друго изображение и опитайте отново.</translation>
 </translationbundle>

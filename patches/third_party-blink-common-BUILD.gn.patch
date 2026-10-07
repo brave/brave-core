@@ -1,20 +1,28 @@
 diff --git a/third_party/blink/common/BUILD.gn b/third_party/blink/common/BUILD.gn
-index 8da7aacae01d2fc0aa073a2c8ddf77160fc07bc8..a311a77e0b4e76d6432c68556c20c56ea530706f 100644
+index 8e635b0da327aae8377bf2260113f395c835fa85..0d4e552a7b858ae06818e4d223277f65b6dec9de 100644
 --- a/third_party/blink/common/BUILD.gn
 +++ b/third_party/blink/common/BUILD.gn
-@@ -351,6 +351,7 @@ source_set("common") {
-   if (is_chromeos || is_android || is_win || is_castos || is_fuchsia) {
-     defines = [ "ENABLE_PROTECTED_MEDIA_IDENTIFIER_PERMISSION" ]
-   }
-+  import("//brave/components/brave_wallet/sources.gni") deps += brave_blink_common_deps
- }
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
- test("blink_common_unittests") {
-@@ -488,6 +489,7 @@ source_set("common_unittests_sources") {
-   # TODO(crbug.com/40031409): Fix code that adds exit-time destructors and
-   # enable the diagnostic by removing this line.
-   configs += [ "//build/config/compiler:no_exit_time_destructors" ]
-+  import("//brave/components/brave_wallet/sources.gni") deps += brave_blink_common_deps
- }
++import("//brave/third_party/blink/common/sources.gni")
+ import("//build/config/features.gni")
+ import("//build/config/rust.gni")
+ import("//build/nocompile.gni")
+@@ -328,6 +329,7 @@ source_set("common") {
+     "//ui/events/mojom:event_latency_metadata_mojom",
+     "//ui/latency/mojom:shared_mojom_traits",
+   ]
++  deps += brave_blink_common_deps
  
- group("common_unittests_data") {
+   # If use_blink is used then it needs to depend on //media
+   if (use_blink) {
+@@ -465,6 +467,7 @@ source_set("common_unittests_sources") {
+     "//v8",
+     "//v8:v8_libplatform",
+   ]
++  deps += brave_blink_common_deps
+ 
+   if (enable_nocompile_tests) {
+     deps += [ ":blink_common_nocompile_tests" ]

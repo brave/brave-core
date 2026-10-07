@@ -150,6 +150,13 @@ void PrintTo(const mojom::ToolUseEvent& event, std::ostream* os) {
         << event.permission_challenge->assessment.value_or("<nullopt>") << "\n";
     *os << "  plan: " << event.permission_challenge->plan.value_or("<nullopt>")
         << "\n";
+    *os << "  description: "
+        << event.permission_challenge->description.value_or("<nullopt>")
+        << "\n";
+    *os << "  supports_allow_session: "
+        << (event.permission_challenge->supports_allow_session ? "true"
+                                                               : "false")
+        << "\n";
   } else {
     *os << "[nullopt]\n";
   }

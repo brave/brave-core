@@ -75,17 +75,23 @@ class EdgeRevealWatcherTest : public views::test::WidgetTest {
     return widget;
   }
 
-  std::unique_ptr<views::Widget> CreateBubbleAnchoredTo(views::View* anchor) {
-    auto delegate = std::make_unique<views::BubbleDialogDelegate>(
+  // Client owns both the delegate and the widget. `delegate` is declared first
+  // so it outlives `widget` (required by BubbleDialogDelegate::CreateBubble).
+  struct AnchoredBubble {
+    std::unique_ptr<views::BubbleDialogDelegate> delegate;
+    std::unique_ptr<views::Widget> widget;
+  };
+
+  AnchoredBubble CreateBubbleAnchoredTo(views::View* anchor) {
+    AnchoredBubble bubble;
+    bubble.delegate = std::make_unique<views::BubbleDialogDelegate>(
         views::BubbleAnchor(anchor), views::BubbleBorder::TOP_LEFT);
-    delegate->SetContentsView(std::make_unique<views::View>());
-    delegate->set_close_on_deactivate(false);
-    std::unique_ptr<views::Widget> bubble_widget(
-        views::BubbleDialogDelegate::CreateBubbleDeprecated(
-            std::move(delegate),
-            views::Widget::InitParams::CLIENT_OWNS_WIDGET));
-    bubble_widget->Show();
-    return bubble_widget;
+    bubble.delegate->SetContentsView(std::make_unique<views::View>());
+    bubble.delegate->set_close_on_deactivate(false);
+    bubble.widget =
+        views::BubbleDialogDelegate::CreateBubble(bubble.delegate.get());
+    bubble.widget->Show();
+    return bubble;
   }
 
   void CloseHostWidget() {

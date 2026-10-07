@@ -7,7 +7,9 @@ import * as React from 'react'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import remarkDirective from 'remark-directive'
+import remarkMath from 'remark-math'
 import type { Root, Element as HastElement } from 'hast'
+import type { PluggableList } from 'unified'
 import Label from '@brave/leo/react/label'
 import { visit } from 'unist-util-visit'
 
@@ -20,6 +22,13 @@ import {
 } from './remark_directives'
 import { remarkColor, ColorChip } from './remark_color'
 import {
+  IS_MATH_RENDERING_ENABLED,
+  MATH_BLOCK_TAG,
+  MATH_INLINE_TAG,
+  MATH_REMARK_OPTIONS,
+  remarkMathElements,
+} from './remark_math'
+import {
   checkboxRenderer,
   createLiClickHandler,
   rehypeTaskCheckboxIndex,
@@ -31,8 +40,21 @@ const CodeBlock = React.lazy(async () => ({
 const CodeInline = React.lazy(async () => ({
   default: (await import('../code_block')).default.Inline,
 }))
+// KaTeX and its stylesheet are ~300KB, so they load as their own chunk rather
+// than sitting in the frame's initial bundle. This is only possible because the
+// LaTeX is rendered by a component: a rehype plugin would have to run inside
+// react-markdown's synchronous pipeline and could not await the import.
+const MathBlock = React.lazy(async () => ({
+  default: (await import('../math_block')).default.Block,
+}))
+const MathInline = React.lazy(async () => ({
+  default: (await import('../math_block')).default.Inline,
+}))
 
-const allowedElements = [
+// Exported for tests: the renderer drops (and, with `unwrapDisallowed`,
+// unwraps) any element not named here, so it is the effective allowlist for
+// everything model output can produce.
+export const allowedElements = [
   // Headings
   'h1',
   'h2',
@@ -82,6 +104,10 @@ const allowedElements = [
 
   // Color chips
   'colorchip',
+
+  // Math. Omitted entirely when the feature is off so the kill switch also
+  // closes the allowlist, rather than leaving tags nothing can produce.
+  ...(IS_MATH_RENDERING_ENABLED ? [MATH_INLINE_TAG, MATH_BLOCK_TAG] : []),
 ]
 
 interface CursorDecoratorProps {
@@ -297,11 +323,16 @@ interface MarkdownRendererProps {
 }
 
 // Module-level constant so the array reference is stable across all renders.
-const REMARK_PLUGINS = [
+const REMARK_PLUGINS: PluggableList = [
   remarkGfm,
   remarkDirective,
   remarkDirectives,
   remarkColor,
+  // remarkMath only registers parser extensions, so remarkMathElements always
+  // sees the math nodes it produces regardless of their relative order here.
+  ...(IS_MATH_RENDERING_ENABLED
+    ? ([[remarkMath, MATH_REMARK_OPTIONS], remarkMathElements] as PluggableList)
+    : []),
 ]
 
 export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
@@ -379,6 +410,25 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
       ),
       input: checkboxRenderer,
       colorchip: ColorChip,
+      // The element's only child is the LaTeX source (see remarkMathElements).
+      // While the KaTeX chunk loads, fall back to that source rather than a
+      // placeholder so the expression stays readable.
+      [MATH_INLINE_TAG]: (props: { children?: React.ReactNode }) => {
+        const tex = String(props.children ?? '')
+        return (
+          <React.Suspense fallback={tex}>
+            <MathInline tex={tex} />
+          </React.Suspense>
+        )
+      },
+      [MATH_BLOCK_TAG]: (props: { children?: React.ReactNode }) => {
+        const tex = String(props.children ?? '')
+        return (
+          <React.Suspense fallback={tex}>
+            <MathBlock tex={tex} />
+          </React.Suspense>
+        )
+      },
       ...buildTableRenderer(),
       ...directiveComponents,
     }),

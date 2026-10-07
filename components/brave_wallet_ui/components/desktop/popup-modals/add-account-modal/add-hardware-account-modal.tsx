@@ -49,6 +49,9 @@ export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
   const history = useHistory()
   const { accountTypeName } = useParams<Params>()
 
+  const isFilecoinLedgerEnabled = useSafeWalletSelector(
+    WalletSelectors.isFilecoinLedgerEnabled,
+  )
   const isBitcoinLedgerEnabled = useSafeWalletSelector(
     WalletSelectors.isBitcoinLedgerEnabled,
   )
@@ -60,6 +63,7 @@ export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
   const createAccountOptions = React.useMemo(() => {
     return CreateAccountOptions({
       visibleNetworks,
+      isFilecoinEnabled: isFilecoinLedgerEnabled,
       isBitcoinEnabled: isBitcoinLedgerEnabled,
       isZCashEnabled: false, // No zcash hardware accounts by now.
       isCardanoEnabled: false, // No cardano hardware accounts by now.
@@ -82,7 +86,7 @@ export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
   // render
   return (
     <PopupModal
-      title={getLocale('braveWalletAddAccountImportHardware')}
+      title={getLocale(S.BRAVE_WALLET_ADD_ACCOUNT_IMPORT_HARDWARE)}
       onClose={closeModal}
     >
       {selectedAccountType && (

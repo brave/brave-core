@@ -32,7 +32,6 @@
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -105,7 +104,7 @@ class SidebarContainerView::BrowserWindowEventObserver
   const raw_ref<SidebarContainerView> host_;
 };
 
-SidebarContainerView::SidebarContainerView(Browser* browser)
+SidebarContainerView::SidebarContainerView(BrowserWindowInterface* browser)
     : views::AnimationDelegateViews(this),
       browser_(browser),
       browser_window_event_observer_(
@@ -123,8 +122,7 @@ SidebarContainerView::~SidebarContainerView() = default;
 void SidebarContainerView::Init() {
   initialized_ = true;
 
-  if (auto* focus_mode_controller =
-          browser_->GetFeatures().focus_mode_controller()) {
+  if (auto* focus_mode_controller = FocusModeController::From(browser_)) {
     focus_mode_observation_.Observe(focus_mode_controller);
   }
 
@@ -210,7 +208,7 @@ void SidebarContainerView::UpdateSidebarVisibility() {
   // Pinning is an explicit user gesture, not a hover — snap to visible
   // without animation, mirroring kShowAlways above. Otherwise, fall through
   // and follow the current show option.
-  if (browser_->GetFeatures().sidebar_controller()->sidebar_pinned()) {
+  if (sidebar::SidebarController::From(browser_)->sidebar_pinned()) {
     ShowSidebar(AnimationStyle::kImmediate);
   } else {
     // Refresh sidebar visibility with current show option.
@@ -266,19 +264,16 @@ gfx::Size SidebarContainerView::CalculatePreferredSize(
 }
 
 bool SidebarContainerView::IsFullscreenByTab() const {
-  DCHECK(browser_->GetFeatures().exclusive_access_manager() &&
-         browser_->GetFeatures()
-             .exclusive_access_manager()
-             ->fullscreen_controller());
-  return browser_->GetFeatures()
-      .exclusive_access_manager()
-      ->fullscreen_controller()
+  auto* exclusive_access_manager = ExclusiveAccessManager::From(browser_);
+  DCHECK(exclusive_access_manager &&
+         exclusive_access_manager->fullscreen_controller());
+  return exclusive_access_manager->fullscreen_controller()
       ->IsWindowFullscreenForTabOrPending();
 }
 
 bool SidebarContainerView::ShouldForceShowSidebar() const {
   // Don't hide sidebar when it's pinned.
-  return browser_->GetFeatures().sidebar_controller()->sidebar_pinned() ||
+  return sidebar::SidebarController::From(browser_)->sidebar_pinned() ||
          sidebar_control_view_->IsItemReorderingInProgress() ||
          sidebar_control_view_->IsBubbleWidgetVisible();
 }

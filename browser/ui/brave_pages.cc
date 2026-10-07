@@ -86,10 +86,6 @@ void ShowBraveWallet(BrowserWindowInterface* browser) {
   ShowSingletonTabOverwritingNTP(browser, GURL(kBraveUIWalletURL));
 }
 
-void ShowBraveWalletOnboarding(BrowserWindowInterface* browser) {
-  ShowSingletonTabOverwritingNTP(browser, GURL(kBraveUIWalletOnboardingURL));
-}
-
 void ShowBraveWalletTxNotificationUrl(BrowserWindowInterface* browser,
                                       GURL url) {
   if (url.GetWithEmptyPath() != GURL(kBraveUIWalletURL)) {

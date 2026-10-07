@@ -18,7 +18,6 @@
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/google_sign_in_permission/features.h"
-#include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/request_otr/common/features.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
@@ -107,7 +106,6 @@
     &brave_shields::features::kBraveShieldsElementPicker,                      \
     &features::kBraveAndroidDynamicColorsByDefault,                            \
     &features::kBraveFreshNtpAfterIdleExperiment,                              \
-    &ntp_background_images::features::kBraveNTPBrandedWallpaperSurveyPanelist, \
     &brave_shields::features::kBraveShredFeature,                              \
     &brave_origin::features::kBraveOrigin,                                     \
     &features::kBraveCustomSearchEngines,                                      \

@@ -71,9 +71,10 @@ class BraveVpnService : public mojom::ServiceHandler, public KeyedService {
   virtual void GetHostnamesForRegion(ResponseCallback callback,
                                      const std::string& region,
                                      const std::string& region_precision) = 0;
-  virtual void GetProfileCredentials(ResponseCallback callback,
-                                     const std::string& subscriber_credential,
-                                     const std::string& hostname) = 0;
+  virtual void GetIKEv2ProfileCredentials(
+      ResponseCallback callback,
+      const std::string& subscriber_credential,
+      const std::string& hostname) = 0;
   virtual void GetWireguardProfileCredentials(
       ResponseCallback callback,
       const std::string& subscriber_credential,

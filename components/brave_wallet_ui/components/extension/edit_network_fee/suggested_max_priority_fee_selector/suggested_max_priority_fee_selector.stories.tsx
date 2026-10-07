@@ -32,7 +32,7 @@ export const _SuggestedMaxPriorityFeeSelector = {
     return (
       <BottomSheet
         isOpen={true}
-        title={getLocale('braveWalletNetworkFee')}
+        title={getLocale(S.BRAVE_WALLET_NETWORK_FEE)}
         onClose={() => alert('Close Clicked')}
       >
         <SuggestedMaxPriorityFeeSelector

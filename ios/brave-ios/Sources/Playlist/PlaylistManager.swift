@@ -27,9 +27,15 @@ public class PlaylistManager: NSObject {
   /// In-flight download work keyed by item id. Holds the `Task` doing mime-type probing (which eventually kicks off the URLSession download)
   /// so duplicate requests are rejected and cancellation stops probe work that hasn't reached `cacheManager` yet.
   @MainActor private var pendingDownloadTasks = [String: (id: UUID, task: Task<Void, Never>)]()
+  /// Item ids that already received a single out-of-space download retry for the current attempt.
+  @MainActor internal var itemsRetriedAfterOutOfSpace = Set<String>()
+  /// Coalesces concurrent reclaim passes so rapid download scheduling shares one LRU eviction run.
+  @MainActor private var reclaimTask: Task<Void, Never>?
 
   private var _playbackTask: Task<Void, Error>?
 
+  /// Returns the UUID of the item currently playing, if any. LRU reclamation skips evicting that item.
+  public var currentlyPlayingItemIDProvider: (() -> String?)?
   public var playbackTask: Task<Void, Error>? {
     get {
       _playbackTask
@@ -337,30 +343,52 @@ public class PlaylistManager: NSObject {
   }
 
   public func download(item: PlaylistInfo) {
+    Task { @MainActor in
+      _ = await scheduleDownload(item: item, isOutOfSpaceRetry: false)
+    }
+  }
+
+  /// Reclaims space if needed and enqueues a download when the item is not already cached or in flight.
+  /// Returns `true` when a new download task was registered.
+  @MainActor
+  @discardableResult
+  private func scheduleDownload(item: PlaylistInfo, isOutOfSpaceRetry: Bool) async -> Bool {
     guard
       FeatureList.kPlaylistOfflineCacheEnabled.enabled
         || FeatureList.kPlaylistCacheFirstEnabled.enabled,
       let assetUrl = URL(string: item.src)
-    else { return }
+    else { return false }
 
     let itemId = item.tagId
-    Task { @MainActor in
-      guard pendingDownloadTasks[itemId] == nil,
-        cacheManager.downloadTask(for: itemId) == nil
-      else { return }
-
-      let registrationId = UUID()
-      let downloadTask = Task { [weak self] in
-        guard let self else { return }
-        await self.downloadItem(
-          item,
-          assetUrl: assetUrl,
-          itemId: itemId,
-          registrationId: registrationId
-        )
-      }
-      pendingDownloadTasks[itemId] = (registrationId, downloadTask)
+    if !isOutOfSpaceRetry {
+      itemsRetriedAfterOutOfSpace.remove(itemId)
     }
+
+    // Check first otherwise reclaim may evict this item's cache, then redownload it.
+    guard await cacheState(for: itemId) == .invalid else { return false }
+    await reclaimSpaceIfNeeded()
+    if let cachedURL = await cacheManager.localAsset(for: itemId)?.url,
+      await AsyncFileManager.default.fileExists(atPath: cachedURL.path)
+    {
+      return false
+    }
+
+    guard pendingDownloadTasks[itemId] == nil,
+      cacheManager.downloadTask(for: itemId) == nil
+    else { return false }
+
+    let registrationId = UUID()
+    let downloadTask = Task { [weak self] in
+      guard let self else { return }
+      await self.downloadItem(
+        item,
+        assetUrl: assetUrl,
+        itemId: itemId,
+        registrationId: registrationId
+      )
+    }
+    pendingDownloadTasks[itemId] = (registrationId, downloadTask)
+    return true
   }
 
   private func downloadItem(
@@ -434,7 +462,7 @@ public class PlaylistManager: NSObject {
 
     // Delete items from the folder
     return await withCheckedContinuation { continuation in
-      PlaylistItem.removeItems(itemsToDelete) {
+      PlaylistItem.removeItems(itemsToDelete) { [self] in
         // Attempt to delete the folder if we can
         if success, folder.uuid != PlaylistFolder.savedFolderUUID {
           PlaylistFolder.removeFolder(folder.uuid ?? "") { [weak self] in
@@ -526,7 +554,7 @@ public class PlaylistManager: NSObject {
           return true
         }
         Logger.module.error(
-          "An error occured deleting Playlist Cached Item \(cacheItem.name ?? item.tagId): \(error.localizedDescription)"
+          "An error occured deleting Playlist Cached Item \(cacheItem.name): \(error.localizedDescription)"
         )
         return false
       }
@@ -714,13 +742,73 @@ public class PlaylistManager: NSObject {
     }
   }
 
+  internal var isCacheReclamationEnabled: Bool {
+    FeatureList.kPlaylistCacheFirstEnabled.enabled
+      || FeatureList.kPlaylistOfflineCacheEnabled.enabled
+  }
+
+  @MainActor
+  func reclaimSpaceIfNeeded() async {
+    guard isCacheReclamationEnabled else { return }
+
+    if let reclaimTask {
+      await reclaimTask.value
+      return
+    }
+
+    guard isDiskSpaceEncumbered() else { return }
+
+    let task = Task {
+      await self.performReclaimSpaceIfNeeded()
+    }
+    reclaimTask = task
+    await task.value
+    reclaimTask = nil
+  }
+
+  @MainActor
+  private func performReclaimSpaceIfNeeded() async {
+    guard isDiskSpaceEncumbered() else { return }
+
+    let currentlyPlayingID = currentlyPlayingItemIDProvider?()
+    let request = NSFetchRequest<PlaylistItem>(entityName: "PlaylistItem")
+    request.predicate = NSPredicate(format: "cachedData != nil")
+    request.sortDescriptors = [
+      NSSortDescriptor(key: #keyPath(PlaylistItem.lastPlayedDate), ascending: true),
+      NSSortDescriptor(key: #keyPath(PlaylistItem.dateAdded), ascending: true),
+    ]
+    request.fetchBatchSize = 20
+    let candidates = (try? DataController.swiftUIContext.fetch(request)) ?? []
+
+    for item in candidates {
+      guard let itemId = item.uuid else { continue }
+      if itemId == currentlyPlayingID { continue }
+      if await cacheState(for: itemId) == .inProgress { continue }
+      await deleteCache(item: PlaylistInfo(item: item))
+      if !isDiskSpaceEncumbered() { break }
+    }
+  }
+
   public func isDiskSpaceEncumbered() -> Bool {
+    if Self.isSimulatingDiskSpaceEncumbered {
+      return true
+    }
+
     let freeSpace = availableDiskSpace() ?? 0
     let totalSpace = totalDiskSpace() ?? 0
     let usedSpace = totalSpace - freeSpace
 
     // If disk space is 90% used
     return totalSpace == 0 || (Double(usedSpace) / Double(totalSpace)) * 100.0 >= 90.0
+  }
+
+  /// Returns whether storage is still encumbered after running LRU reclamation when storage is encumbered
+  @MainActor
+  public func isDiskSpaceEncumberedAfterReclamation() async -> Bool {
+    if isDiskSpaceEncumbered() {
+      await reclaimSpaceIfNeeded()
+    }
+    return isDiskSpaceEncumbered()
   }
 
   private func availableDiskSpace() -> Int64? {
@@ -803,7 +891,52 @@ extension PlaylistManager: PlaylistDownloadManagerDelegate {
     displayName: String?,
     error: Error?
   ) {
+    if state == .cached {
+      Task { @MainActor in
+        itemsRetriedAfterOutOfSpace.remove(id)
+      }
+    }
+
+    if state == .invalid, let error, isOutOfSpaceError(error) {
+      Task { @MainActor in
+        let shouldSuppressFailure = await handleOutOfSpaceDownloadFailure(itemId: id)
+        if !shouldSuppressFailure {
+          onDownloadStateChanged.send(
+            (id: id, state: state, displayName: displayName, error: error)
+          )
+        }
+      }
+      return
+    }
+
     onDownloadStateChanged.send((id: id, state: state, displayName: displayName, error: error))
+  }
+
+  /// Reclaims cold cache space and retries the caching it again once. Returns `true` when the initial
+  /// failure notification should be suppressed because a retry was scheduled.
+  @MainActor
+  private func handleOutOfSpaceDownloadFailure(itemId: String) async -> Bool {
+    guard isCacheReclamationEnabled else { return false }
+    guard !itemsRetriedAfterOutOfSpace.contains(itemId) else { return false }
+
+    itemsRetriedAfterOutOfSpace.insert(itemId)
+
+    guard let item = PlaylistItem.getItem(uuid: itemId) else { return false }
+    return await scheduleDownload(item: PlaylistInfo(item: item), isOutOfSpaceRetry: true)
+  }
+
+  func isOutOfSpaceError(_ error: Error) -> Bool {
+    let nsError = error as NSError
+    if nsError.domain == NSCocoaErrorDomain, nsError.code == NSFileWriteOutOfSpaceError {
+      return true
+    }
+    if nsError.domain == NSPOSIXErrorDomain, nsError.code == 28 {
+      return true
+    }
+    if let underlying = nsError.userInfo[NSUnderlyingErrorKey] as? NSError {
+      return isOutOfSpaceError(underlying)
+    }
+    return false
   }
 }
 
@@ -901,36 +1034,30 @@ extension PlaylistManager {
       asset = await self.asset(for: item.tagId, mediaSrc: item.src)
     }
 
-    // Accessing tracks blocks the main-thread if not already loaded
-    // So we first need to check the track status before attempting to access it!
-    var error: NSError?
-    let trackStatus = asset.statusOfValue(forKey: "tracks", error: &error)
-
-    if trackStatus == .loaded {
-      if !asset.tracks.isEmpty,
-        let track = asset.tracks(withMediaType: .video).first
-          ?? asset.tracks(withMediaType: .audio).first
-      {
-        if track.timeRange.duration.isIndefinite {
-          return TimeInterval.infinity
-        } else {
-          return track.timeRange.duration.seconds
-        }
+    if case .loaded = asset.status(of: .tracks),
+      let tracks = try? await asset.load(.tracks),
+      let track = tracks.first(where: { $0.mediaType == .video })
+        ?? tracks.first(where: { $0.mediaType == .audio }),
+      let timeRange = try? await track.load(.timeRange)
+    {
+      if timeRange.duration.isIndefinite {
+        return TimeInterval.infinity
+      } else {
+        return timeRange.duration.seconds
       }
     }
 
-    // Accessing duration or commonMetadata blocks the main-thread if not already loaded
-    // So we first need to check the track status before attempting to access it!
-    let durationStatus = asset.statusOfValue(forKey: "duration", error: &error)
-    if durationStatus == .loaded {
+    if case .loaded = asset.status(of: .duration),
+      let duration = try? await asset.load(.duration)
+    {
       // If it's live/indefinite
-      if asset.duration.isIndefinite {
+      if duration.isIndefinite {
         return TimeInterval.infinity
       }
 
       // If it's a valid duration
-      if abs(asset.duration.seconds.distance(to: 0.0)) >= tolerance {
-        return asset.duration.seconds
+      if abs(duration.seconds.distance(to: 0.0)) >= tolerance {
+        return duration.seconds
       }
     }
 
@@ -953,7 +1080,7 @@ extension PlaylistManager {
           if let track = loadedTracks.first(where: { $0.mediaType == .video })
             ?? loadedTracks.first(where: { $0.mediaType == .audio })
           {
-            duration = track.timeRange.duration
+            duration = try await track.load(.timeRange).duration
           } else {
             duration = loadedDuration
           }
@@ -1010,66 +1137,5 @@ extension PlaylistManager {
         return nil
       }
     }.value
-  }
-}
-
-extension PlaylistManager {
-  @MainActor
-  public static func syncSharedFolder(sharedFolderUrl: String) async throws {
-    guard let folder = PlaylistFolder.getSharedFolder(sharedFolderUrl: sharedFolderUrl),
-      let folderId = folder.uuid
-    else {
-      return
-    }
-
-    let model = try await PlaylistSharedFolderNetwork.fetchPlaylist(folderUrl: sharedFolderUrl)
-    var oldItems = Set(folder.playlistItems?.map({ PlaylistInfo(item: $0) }) ?? [])
-    let deletedItems = oldItems.subtracting(model.mediaItems)
-    let newItems = Set(model.mediaItems).subtracting(oldItems)
-    oldItems = []
-
-    for deletedItem in deletedItems {
-      await PlaylistManager.shared.delete(item: deletedItem)
-    }
-
-    if !newItems.isEmpty {
-      await withCheckedContinuation { continuation in
-        PlaylistItem.updateItems(Array(newItems), folderUUID: folderId, newETag: model.eTag) {
-          continuation.resume()
-        }
-      }
-    }
-  }
-
-  @MainActor
-  public static func syncSharedFolders() async throws {
-    let folderURLs = PlaylistFolder.getSharedFolders().compactMap({ $0.sharedFolderUrl })
-    await withTaskGroup(of: Void.self) { group in
-      folderURLs.forEach { url in
-        group.addTask {
-          try? await syncSharedFolder(sharedFolderUrl: url)
-        }
-      }
-    }
-  }
-}
-
-extension AVAsset {
-  func displayNames(for mediaSelection: AVMediaSelection) -> String? {
-    var names = ""
-    for mediaCharacteristic in availableMediaCharacteristicsWithMediaSelectionOptions {
-      guard
-        let mediaSelectionGroup = mediaSelectionGroup(forMediaCharacteristic: mediaCharacteristic),
-        let option = mediaSelection.selectedMediaOption(in: mediaSelectionGroup)
-      else { continue }
-
-      if names.isEmpty {
-        names += " " + option.displayName
-      } else {
-        names += ", " + option.displayName
-      }
-    }
-
-    return names.isEmpty ? nil : names
   }
 }

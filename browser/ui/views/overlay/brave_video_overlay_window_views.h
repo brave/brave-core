@@ -8,6 +8,7 @@
 
 #include "base/timer/elapsed_timer.h"
 #include "base/timer/timer.h"
+#include "build/build_config.h"
 #include "chrome/browser/ui/views/overlay/video_overlay_window_views.h"
 #include "services/media_session/public/cpp/media_position.h"
 #include "ui/views/controls/slider.h"
@@ -20,6 +21,11 @@ class BraveVideoOverlayWindowViews : public VideoOverlayWindowViews {
   explicit BraveVideoOverlayWindowViews(
       content::VideoPictureInPictureWindowController* controller);
   ~BraveVideoOverlayWindowViews() override;
+
+#if BUILDFLAG(IS_LINUX)
+  // views::Widget:
+  void Init(views::Widget::InitParams params) override;
+#endif  // BUILDFLAG(IS_LINUX)
 
   // VideoOverlayWindowViews:
   void SetUpViews() override;

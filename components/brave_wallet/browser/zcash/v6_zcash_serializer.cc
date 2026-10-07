@@ -10,7 +10,6 @@
 #include <map>
 #include <vector>
 
-#include "base/check.h"
 #include "base/containers/span.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer_utils.h"
@@ -36,10 +35,6 @@ constexpr uint32_t kV6VersionGroupId = 0xD884B698;
 constexpr char kOrchardV6HashPersonalizer[] = "ZTxIdOrchardH_v6";
 constexpr char kIronwoodV6HashPersonalizer[] = "ZTxIdIronwd_H_v6";
 constexpr char kSaplingHashPersonalizer[] = "ZTxIdSaplingHash";
-
-void CheckNoTransparentInputs(const ZCashTransaction& tx) {
-  CHECK(tx.transparent_part().inputs.empty());
-}
 
 }  // namespace
 
@@ -73,7 +68,6 @@ std::array<uint8_t, kZCashDigestSize> ZCashV6Serializer::HashHeader(
 // ZIP 246 txid digest (mirrors ZIP 244 with extended header + ironwood node).
 std::array<uint8_t, kZCashDigestSize> ZCashV6Serializer::CalculateTxIdDigest(
     const ZCashTransaction& tx) {
-  CheckNoTransparentInputs(tx);
   const auto& v6 = tx.v6_part();
 
   std::array<uint8_t, kZCashDigestSize> header_hash = HashHeader(tx);
@@ -112,7 +106,6 @@ std::array<uint8_t, kZCashDigestSize>
 ZCashV6Serializer::CalculateSignatureDigest(
     const ZCashTransaction& tx,
     const std::optional<ZCashTransaction::TxInput>& input) {
-  CheckNoTransparentInputs(tx);
   const auto& v6 = tx.v6_part();
 
   std::array<uint8_t, kZCashDigestSize> header_hash = HashHeader(tx);
@@ -144,7 +137,6 @@ ZCashV6Serializer::CalculateSignatureDigest(
 // Per upstream librustzcash Transaction::write_v6.
 std::vector<uint8_t> ZCashV6Serializer::SerializeRawTransaction(
     const ZCashTransaction& tx) {
-  CheckNoTransparentInputs(tx);
   const auto& v6 = tx.v6_part();
 
   BtcLikeSerializerStream stream;
@@ -181,7 +173,6 @@ bool ZCashV6Serializer::SignTransparentPart(
     KeyringService& keyring_service,
     const mojom::AccountIdPtr& account_id,
     ZCashTransaction& tx) {
-  CheckNoTransparentInputs(tx);
   auto addresses = keyring_service.GetZCashAddresses(account_id);
   if (!addresses || addresses->empty()) {
     return false;

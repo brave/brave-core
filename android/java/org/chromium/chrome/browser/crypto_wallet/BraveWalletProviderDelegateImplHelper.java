@@ -63,16 +63,6 @@ public class BraveWalletProviderDelegateImplHelper {
     }
 
     @CalledByNative
-    public static void showWalletOnboarding() {
-        try {
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            activity.showWalletOnboarding();
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "showWalletOnboarding", e);
-        }
-    }
-
-    @CalledByNative
     public static void walletInteractionDetected(WebContents webContents) {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();

@@ -6,13 +6,9 @@
 #ifndef BRAVE_RENDERER_BRAVE_WALLET_BRAVE_WALLET_RENDER_FRAME_OBSERVER_H_
 #define BRAVE_RENDERER_BRAVE_WALLET_BRAVE_WALLET_RENDER_FRAME_OBSERVER_H_
 
-#include <optional>
-
 #include "brave/common/brave_renderer_configuration.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
-#include "third_party/blink/public/web/web_navigation_type.h"
-#include "url/gurl.h"
 
 namespace brave_wallet {
 
@@ -27,19 +23,14 @@ class BraveWalletRenderFrameObserver : public content::RenderFrameObserver {
   ~BraveWalletRenderFrameObserver() override;
 
   // RenderFrameObserver implementation.
-  void DidStartNavigation(
-      const GURL& url,
-      std::optional<blink::WebNavigationType> navigation_type) override;
   void DidClearWindowObject() override;
 
  private:
   // RenderFrameObserver implementation.
   void OnDestruct() override;
 
-  bool IsPageValid();
   bool CanCreateProvider();
 
-  GURL url_;
   GetDynamicParamsCallback get_dynamic_params_callback_;
 };
 

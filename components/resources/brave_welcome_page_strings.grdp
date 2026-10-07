@@ -61,6 +61,10 @@
     Personalize your browsing experience with the tab layout and color modes you prefer.
   </message>
 
+  <message name="IDS_WELCOME_PAGE_PREVIEW_ADDRESS_BAR_TEXT" desc="Placeholder text shown in the address bar of the mock browser window that previews the selected appearance settings" formatter_data="webui=BraveWelcomePage">
+    Search with Brave or type a URL
+  </message>
+
   <message name="IDS_WELCOME_PAGE_TAB_LAYOUT_LABEL" desc="Label for the tab layout setting" formatter_data="webui=BraveWelcomePage">
     Tab layout
   </message>

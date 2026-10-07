@@ -680,7 +680,7 @@ extension Strings {
     public static let tryForFreeButton = NSLocalizedString(
       "vpn.learnMore",
       bundle: .module,
-      value: "Start 7-Day Free Trial",
+      value: "Start 7 Day Free Trial",
       comment: "Button text to try free Brave VPN"
     )
 
@@ -835,13 +835,6 @@ extension Strings {
       bundle: .module,
       value: "Network Type",
       comment: "Network Type field for customer support contact form."
-    )
-
-    public static let contactFormCarrier = NSLocalizedString(
-      "vpn.contactFormCarrier",
-      bundle: .module,
-      value: "Cellular Carrier",
-      comment: "Cellular Carrier field for customer support contact form."
     )
 
     public static let contactFormLogs = NSLocalizedString(

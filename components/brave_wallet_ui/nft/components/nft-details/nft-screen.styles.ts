@@ -8,7 +8,7 @@ import Icon from '@brave/leo/react/icon'
 import {
   layoutPanelWidth,
   layoutSmallWidth,
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 // Shared Styles
 import { Text, WalletButton } from '../../../components/shared/style'
 

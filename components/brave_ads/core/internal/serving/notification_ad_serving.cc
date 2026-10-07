@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/time/time.h"
@@ -31,7 +32,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
-#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
@@ -181,6 +182,8 @@ void NotificationAdServing::GetEligibleAdsCallback(
               << creative_ad.creative_instance_id << " and a priority of "
               << creative_ad.priority);
 
+  creative_ad_round_robin_.MarkAsServed(creative_ad);
+
   ServeAd(BuildNotificationAd(creative_ad));
 }
 
@@ -225,8 +228,6 @@ void NotificationAdServing::ServeAd(const NotificationAdInfo& ad) {
     BLOG(0, "Notification ad not served: Invalid ad");
     return FailedToServeAd();
   }
-
-  creative_ad_round_robin_.MarkAsServed(ad);
 
   eligible_ads_->SetLastServedAd(ad);
 

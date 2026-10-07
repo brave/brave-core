@@ -8,12 +8,8 @@
 
 namespace ntp_background_images::prefs {
 
-inline constexpr char kNewTabPageSponsoredImagesSurveyPanelist[] =
-    "brave.new_tab_page.sponsored_images.survey_panelist";
-inline constexpr char kBrandedWallpaperNotificationDismissed[] =
+inline constexpr char kNewTabTakeoverNotificationDismissed[] =
     "brave.branded_wallpaper_notification_dismissed";
-inline constexpr char kNewTabPageShowSponsoredImagesBackgroundImage[] =
-    "brave.new_tab_page.show_branded_background_image";
 inline constexpr char kNewTabPageShowBackgroundImage[] =
     "brave.new_tab_page.show_background_image";
 inline constexpr char kNewTabTakeoverInfobarRemainingDisplayCount[] =

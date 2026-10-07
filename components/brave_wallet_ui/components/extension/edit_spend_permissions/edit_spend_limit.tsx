@@ -75,7 +75,7 @@ export const EditSpendLimit = (props: Props) => {
 
   const formattedProposedAllowance = React.useMemo(() => {
     return isApprovalUnlimited
-      ? getLocale('braveWalletTransactionApproveUnlimited')
+      ? getLocale(S.BRAVE_WALLET_TRANSACTION_APPROVE_UNLIMITED)
       : proposedAllowance
   }, [proposedAllowance, isApprovalUnlimited])
 
@@ -89,7 +89,7 @@ export const EditSpendLimit = (props: Props) => {
         textColor='secondary'
         textAlign='left'
       >
-        {getLocale('braveWalletEditPermissionsDescription').replace(
+        {getLocale(S.BRAVE_WALLET_EDIT_PERMISSIONS_DESCRIPTION).replace(
           '$1',
           approvalTarget,
         )}
@@ -111,7 +111,7 @@ export const EditSpendLimit = (props: Props) => {
             justifyContent='flex-start'
           >
             <LabelText textColor='primary'>
-              {getLocale('braveWalletProposedSpendLimit')}
+              {getLocale(S.BRAVE_WALLET_PROPOSED_SPEND_LIMIT)}
             </LabelText>
             <AmountText textColor='primary'>
               {formattedProposedAllowance} {symbol}
@@ -130,7 +130,7 @@ export const EditSpendLimit = (props: Props) => {
             gap='4px'
           >
             <LabelText textColor='primary'>
-              {getLocale('braveWalletCustomSpendLimit')}
+              {getLocale(S.BRAVE_WALLET_CUSTOM_SPEND_LIMIT)}
             </LabelText>
             <Input
               ref={customAllowanceInputRef}
@@ -149,14 +149,16 @@ export const EditSpendLimit = (props: Props) => {
           size='medium'
           onClick={onCancel}
         >
-          <ButtonText>{getLocale('braveWalletButtonCancel')}</ButtonText>
+          <ButtonText>{getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}</ButtonText>
         </Button>
         <Button
           size='medium'
           onClick={onClickSave}
           isDisabled={isSaveButtonDisabled}
         >
-          <ButtonText>{getLocale('braveWalletAccountSettingsSave')}</ButtonText>
+          <ButtonText>
+            {getLocale(S.BRAVE_WALLET_ACCOUNT_SETTINGS_SAVE)}
+          </ButtonText>
         </Button>
       </Row>
     </StyledWrapper>

@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "brave/components/brave_wallet/browser/zcash/v5_zcash_serializer.h"
+#include "brave/components/brave_wallet/browser/zcash/v6_zcash_serializer.h"
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 
 namespace brave_wallet {
@@ -21,7 +22,6 @@ void ZCashSerializer::SerializeSignature(
     ZCashTransaction::TxInput& input,
     const std::vector<uint8_t>& pubkey,
     const std::vector<uint8_t>& signature) {
-  CHECK(tx.is_v5());
   BtcLikeSerializerStream stream;
   stream.PushCompactSize(signature.size() + 1);
   stream.PushBytes(signature);
@@ -33,6 +33,9 @@ void ZCashSerializer::SerializeSignature(
 // static
 std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateTxIdDigest(
     const ZCashTransaction& zcash_transaction) {
+  if (zcash_transaction.is_v6()) {
+    return ZCashV6Serializer::CalculateTxIdDigest(zcash_transaction);
+  }
   CHECK(zcash_transaction.is_v5());
   return ZCashV5Serializer::CalculateTxIdDigest(zcash_transaction);
 }
@@ -40,6 +43,9 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateTxIdDigest(
 // static
 std::vector<uint8_t> ZCashSerializer::SerializeRawTransaction(
     const ZCashTransaction& zcash_transaction) {
+  if (zcash_transaction.is_v6()) {
+    return ZCashV6Serializer::SerializeRawTransaction(zcash_transaction);
+  }
   CHECK(zcash_transaction.is_v5());
   return ZCashV5Serializer::SerializeRawTransaction(zcash_transaction);
 }
@@ -48,6 +54,10 @@ std::vector<uint8_t> ZCashSerializer::SerializeRawTransaction(
 bool ZCashSerializer::SignTransparentPart(KeyringService& keyring_service,
                                           const mojom::AccountIdPtr& account_id,
                                           ZCashTransaction& tx) {
+  if (tx.is_v6()) {
+    return ZCashV6Serializer::SignTransparentPart(keyring_service, account_id,
+                                                  tx);
+  }
   CHECK(tx.is_v5());
   return ZCashV5Serializer::SignTransparentPartV5(keyring_service, account_id,
                                                   tx);

@@ -21,6 +21,7 @@ const string kAssistantDetailStorageToolName = "assistant_detail_storage";
 const string kMemoryStorageToolName = "memory_storage_tool";
 const string kCodeExecutionToolName = "code_execution_tool";
 const string kSemanticHistorySearchToolName = "semantic_history_search";
+const string kAttachWorkspaceToolName = "attach_workspace";
 
 [EnableIf=enable_ai_chat_tab_management_tool]
 const string kTabManagementToolName = "tab_management";
@@ -107,7 +108,30 @@ struct ContentArchive {
 
 struct ConversationArchive {
   array<ConversationTurn> entries;
+  array<Thread> threads;
   array<ContentArchive> associated_content;
+};
+
+// A conversation the user has uploaded to the sharing server, as recorded
+// locally when the share was created.
+struct ConversationShare {
+  // Identifies the share on the sharing server. It is the last path component
+  // of the shared link, so it lets the user match a record with a link they
+  // have already sent to someone.
+  string share_id;
+
+  // The conversation this share was made from. Viewing the share doesn't need
+  // it - the uploaded copy is self-contained - but it relates the share back to
+  // the conversation it came from, which may since have been deleted.
+  string conversation_uuid;
+
+  // Title of the conversation at the time it was shared. The conversation may
+  // since have been renamed or deleted.
+  string conversation_title;
+
+  // When the conversation was shared. The sharing server deletes shares after
+  // a fixed period, so this also indicates when the link will stop working.
+  mojo_base.mojom.Time created_time;
 };
 
 struct Skill {
@@ -174,8 +198,11 @@ interface Service {
   // base64-encoded blob (12-byte AES-GCM IV followed by the ciphertext)
   // produced by the UI. |key_fragment| is the URL-safe-base64 decryption key
   // which is never sent to the sharing server; it is appended to the server's
-  // viewer URL as a fragment to build the full shareable link. When
-  // |copy_to_clipboard| is true, that full link is written to the system
+  // viewer URL as a fragment to build the full shareable link.
+  // |conversation_uuid| and |conversation_title| are recorded alongside the
+  // share so the user can recognize it in the share management UI and so the
+  // share can be related back to the conversation it came from. When
+  // |copy_to_clipboard| is true, the full link is written to the system
   // clipboard marked as confidential (excluded from clipboard history and other
   // data-leak-prevention surfaces) - this must happen in the browser process
   // because the renderer cannot set clipboard confidentiality flags. Returns
@@ -183,8 +210,27 @@ interface Service {
   // failed.
   ShareConversation(string encrypted_contents,
                     string key_fragment,
+                    string conversation_uuid,
+                    string conversation_title,
                     bool copy_to_clipboard)
       => (url.mojom.Url? shared_conversation_url);
+
+  // Metadata for every conversation the user has shared and which hasn't yet
+  // expired, most recently shared first.
+  GetConversationShares() => (array<ConversationShare> shares);
+
+  // Asks the sharing server to delete the shared conversation identified by
+  // |share_id| and forgets the local record of it. Returns false if the server
+  // could not be reached, in which case the record is kept so the user can
+  // retry.
+  DeleteConversationShare(string share_id) => (bool success);
+
+  // Copies the link of an existing share to the system clipboard, marked as
+  // confidential in the same way as when the share was created. The link
+  // includes the conversation's decryption key, so it is not returned to the
+  // caller - keys for past shares stay in the browser process. Does nothing if
+  // there is no record of |share_id|.
+  CopyConversationShareLink(string share_id);
 
   // Bind ability to send events to the UI and receive current state
   BindObserver(pending_remote<ServiceObserver> ui) => (ServiceState state);
@@ -256,6 +302,14 @@ interface AIChatUIHandler {
   // (chrome://favicon2), so this is only needed when the image data itself is
   // required.
   GetFaviconDataURL(url.mojom.Url page_url) => (string? data_url);
+
+  // Shows a native folder picker so the user can choose a local "workspace"
+  // folder for the given conversation. The local workspace tools then operate
+  // on the selected folder. Returns the chosen absolute path, or null if the
+  // user cancelled. Only meaningful when the AIChatWorkspaceTools feature is
+  // enabled.
+  ShowWorkspaceFolderPicker(string conversation_uuid)
+      => (string? selected_path);
 
   // This might be a no-op if the UI isn't closeable
   CloseUI();
@@ -343,14 +397,16 @@ interface ConversationHandler {
 
   GetIsRequestInProgress() => (bool is_request_in_progress);
 
-  // Get all visible history entries, including in-progress responses
+  // Get all visible history entries in main conversation, including in-progress responses.
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
 
   SubmitHumanConversationEntry(
-      string input, array<UploadedFile>? uploaded_files);
-  SubmitHumanConversationEntryWithAction(string input, ActionType action_type);
+      string input, array<UploadedFile>? uploaded_files, string? thread_uuid);
+  SubmitHumanConversationEntryWithAction(
+      string input, ActionType action_type, string? thread_uuid);
   SubmitHumanConversationEntryWithSkill(
-      string input, string skill_id, array<UploadedFile>? uploaded_files);
+      string input, string skill_id, array<UploadedFile>? uploaded_files,
+      string? thread_uuid);
 
   // Get associated page information. If there is none then |associated_content|
   // will be empty.
@@ -400,6 +456,15 @@ interface ConversationHandler {
   // tools pill's close button uses this to detach a content's tools by passing
   // false.
   SetToolsAttached(AssociatedContent content, bool tools_attached);
+
+  // Gets the tools the associated content with |content_uuid| currently
+  // exposes, for the tools pill's dialog. Empty if it's no longer associated.
+  GetContentTools(string content_uuid) => (array<ToolInfo> tools);
+
+  // Applies to every tool of that name from the content's origin, for the
+  // lifetime of this conversation.
+  SetContentToolPermission(string content_uuid, string tool_name,
+                           ToolPermission permission);
 };
 
 interface ConversationUI {
@@ -431,6 +496,13 @@ interface ConversationUI {
   // Associated page information has changed. If there is none then |associated_content|
   // will be |null|.
   OnAssociatedContentInfoChanged(array<AssociatedContent> associated_content);
+
+  // The tools exposed by the associated content with |content_uuid|, after a
+  // change the browser made to them - currently only a permission choice.
+  // Pushed rather than invalidated so every open UI for this conversation
+  // settles on the same list without each one re-asking the page.
+  OnContentToolsChanged(string content_uuid, array<ToolInfo> tools);
+
   OnConversationDeleted();
 };
 

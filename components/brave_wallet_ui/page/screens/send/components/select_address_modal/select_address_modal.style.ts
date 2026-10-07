@@ -20,7 +20,7 @@ import {
 } from '../../../../../components/shared/style'
 import {
   layoutSmallWidth, //
-} from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const AccountSection = styled(Row)`
   border-bottom: 1px solid ${leo.color.divider.subtle};

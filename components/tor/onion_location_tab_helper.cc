@@ -6,6 +6,7 @@
 #include "brave/components/tor/onion_location_tab_helper.h"
 
 #include <memory>
+#include <utility>
 
 #include "base/memory/ptr_util.h"
 #include "content/public/browser/navigation_entry.h"
@@ -97,6 +98,13 @@ void OnionLocationTabHelper::DidFinishNavigation(
     delegate->NavigationStateChanged(
         web_contents(), content::InvalidateTypes::INVALIDATE_TYPE_URL);
   }
+}
+
+void OnionLocationTabHelper::SetOnionLocationForTesting(
+    const GURL& onion_location,
+    std::optional<url::Origin> initiator_origin) {
+  onion_location_ = onion_location;
+  initiator_origin_ = std::move(initiator_origin);
 }
 
 }  // namespace tor

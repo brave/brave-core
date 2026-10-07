@@ -9,7 +9,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_highlight.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_underline.h"
-#include "chrome/browser/ui/views/tabs/tab_group_style.h"
+#include "chrome/browser/ui/views/tabs/tab_group_style_views.h"
 #include "ui/views/view_utils.h"
 
 #define TabGroupHeader BraveTabGroupHeader
@@ -18,7 +18,7 @@
 
 // TabGroupViews destructor is not virtual, so we can't override the method.
 #define BRAVE_TAB_GROUP_VIEWS_GET_LEADING_TRAILING_GROUP_VIEWS                 \
-  if (auto* vertical_tab_controller = VerticalTabController::FromBrowser(      \
+  if (auto* vertical_tab_controller = VerticalTabController::From(             \
           tab_slot_controller_->GetBrowserWindowInterface());                  \
       vertical_tab_controller &&                                               \
       vertical_tab_controller->ShouldShowBraveVerticalTabs()) {                \

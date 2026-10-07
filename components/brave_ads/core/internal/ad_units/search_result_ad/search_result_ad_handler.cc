@@ -86,8 +86,8 @@ void SearchResultAdHandler::TriggerEvent(
       << "Should not be called with kServedImpression as this event is handled "
          "when calling TriggerEvent with kViewedImpression";
 
-  if (!UserHasOptedInToSearchResultAds()) {
-    // No-op if the user has not opted into search result ads.
+  if (!IsSponsoredAdsEnabled()) {
+    // No-op if sponsored ads are disabled.
     return std::move(callback).Run(/*success=*/false);
   }
 

@@ -31,15 +31,21 @@ The upstream extraction pipeline is enabled by chromium_src overrides of
 and `PageContentExtractionServiceFactory` to check `kHistoryEmbeddings` instead
 of the upstream feature flags.
 
-## Enabling / the brave://history toggle
+## Enabling / the Semantic history search setting
 
 Two prefs gate the feature, via the `IsHistoryEmbeddings*` overrides in
 [`chromium_src/.../history_embeddings_utils.cc`](../../chromium_src/chrome/browser/history_embeddings/history_embeddings_utils.cc):
 
 - **`kBraveLocalAIEnabled`** — local-state master switch (Brave Origin "Local
   AI"); gates `IsHistoryEmbeddingsFeatureEnabled()`.
-- **`kBraveHistoryEmbeddingsEnabled`** — per-profile brave://history toggle;
-  gates `IsHistoryEmbeddingsEnabledForProfile()`.
+- **`kBraveHistoryEmbeddingsEnabled`** — per-profile "Semantic history search"
+  toggle in brave://settings/privacy; gates
+  `IsHistoryEmbeddingsEnabledForProfile()`.
+
+Whenever either pref leaves the feature unavailable, the Tab Focus page-content
+opt-in (`kBraveAIChatTabOrganizationSendPageContent`) is cleared, so turning
+Semantic History Search back on needs a fresh opt-in rather than silently
+resuming on withdrawn consent.
 
 The embedder is built only when an embedding service feeds the controller. Both
 such services (`PageEmbeddingsService`, `HistoryEmbeddingsService`) refuse to
@@ -49,6 +55,16 @@ gates that one shared dependency on `IsHistoryEmbeddingsEnabledForProfile()` —
 toggle off ⇒ neither service is built ⇒ no embedder. (Its other upstream gates,
 `kPassageEmbedder`/`kPermissionsAIv4`, are disabled in Brave.) Applied at
 service creation, so changes take effect on restart.
+
+Because of that, the gate reads the setting through
+[`BraveHistoryEmbeddingsStatus`](brave_history_embeddings_status.h), which
+captures it as profile user data at profile setup — so the value the services
+were built with is available for the rest of the session. Both consumers of that
+value read it from `loadTimeData`: the settings page shows its "Relaunch" button
+while the toggle differs from it, and brave://history swaps upstream's
+`enableHistoryEmbeddings` for it
+([`chromium_src/.../history_ui.cc`](../../chromium_src/chrome/browser/ui/webui/history/history_ui.cc))
+so the semantic search input appears only once there is an index behind it.
 
 ## Model delivery + `EmbedderMetadataUpdated`
 
@@ -72,6 +88,13 @@ stored history rather than mix vector spaces. The file is generated in
 
 ## Key Files
 
+- **`brave_history_embeddings_status.{h,cc}`** — Profile user data holding the
+  Semantic history search setting the embedding services were built with. The
+  passage embedder gate reads through it, and the settings toggle compares
+  against it to tell whether the setting is waiting on a relaunch (see "Enabling
+  / the Semantic history search setting" above). Also clears the Tab Focus
+  page-content opt-in whenever the feature becomes unavailable.
+
 - **`brave_passage_embeddings_service_controller.{h,cc}`** — Singleton subclass
   of `PassageEmbeddingsServiceController`. Provides `LitertServiceLauncher`,
   which launches the real sandboxed Passage Embeddings utility process. Observes
@@ -89,6 +112,10 @@ stored history rather than mix vector spaces. The file is generated in
   with `HistoryEmbeddingsSearch::Search`. Shared by the tab_search WebUI page
   handler and the semantic tab search chat tool. Builds regardless of
   `enable_local_ai` since it only wraps upstream Chromium APIs.
+
+- **`../../components/history_embeddings/content/open_tab_passages.{h,cc}`** —
+  reads the passages already indexed for a set of open-tab URLs, for Tab Focus.
+  No embedder deps, so it lives in the components layer.
 
 ## The LiteRT embedder
 
@@ -111,9 +138,9 @@ utility through the standard `LoadModels` mojo call.
   filtering.
 
 - **`chromium_src/chrome/browser/passage_embeddings/passage_embedder_model_observer_factory.cc`**
-  — Gates the per-profile `PassageEmbedderModelObserver` on the brave://history
-  toggle so neither embedding service is built when it is off (see "Enabling /
-  the brave://history toggle" above).
+  — Gates the per-profile `PassageEmbedderModelObserver` on the Semantic history
+  search toggle so neither embedding service is built when it is off (see
+  "Enabling / the Semantic history search setting" above).
 
 - **`chromium_src/chrome/browser/history_embeddings/history_embeddings_service_factory.cc`**
   — Override to use `BravePassageEmbeddingsServiceController` and
@@ -124,6 +151,10 @@ utility through the standard `LoadModels` mojo call.
   `PassageEmbedderImpl::BuildExecutionTask` (via a
   `BRAVE_PASSAGE_EMBEDDER_IMPL_BUILD_EXECUTION_TASK` macro), so the sandboxed
   utility runs EmbeddingGemma on LiteRT instead of upstream's TFLite executor.
+
+- **`chromium_src/chrome/browser/ui/webui/history/history_ui.cc`** — Swaps
+  brave://history's `enableHistoryEmbeddings` for the session-captured value, so
+  the semantic search input tracks the index rather than the live pref.
 
 - **`chromium_src/chrome/browser/page_content_annotations/`** — Factory
   overrides for `PageContentAnnotationsService`, `PageContentExtractionService`,

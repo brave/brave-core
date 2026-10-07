@@ -5,13 +5,10 @@
 
 substitutions:
   - description: |-
-      Skip the tab-hidden fullscreen teardown while YouTube PiP is active.
+      Preserve fullscreen when a tab hide interrupts video PiP.
 
-      Inserts an early return at the top of the TabObserver onHidden hook so the
-      persistent fullscreen state is preserved when a tab is hidden while a
-      Brave-managed YouTube Picture-in-Picture session is active.
-      maybeSkipExitFullscreenOnTabHidden also records whether the tab was hidden
-      by a tab switch before deciding whether to skip.
+      The Brave hook preserves active YouTube sessions and any locked PiP with
+      background playback enabled. It also records tab switches for cleanup.
     regex:
       re_pattern: '(public void onHidden\(.*\)\s+\{)'
       replace: |-
@@ -23,15 +20,11 @@ substitutions:
                                 }
 
   - description: |-
-      Preserve fullscreen across transient activity stops while YouTube PiP is active.
+      Preserve fullscreen when an activity stop interrupts video PiP.
 
-      Inserts an early return at the top of the ActivityState.STOPPED branch of
-      onActivityStateChange so the fullscreen teardown
-      (mFullscreenManagerDelegate.onExitFullscreen(null)) is skipped while a
-      Brave-managed YouTube Picture-in-Picture session is active. This keeps the
-      browser and DOM fullscreen state intact across transient activity stops
-      (e.g. screen-off or PiP window occlusion) so there is no flicker when the
-      user returns. The DESTROYED branch is intentionally left untouched.
+      Exiting fullscreen on screen lock also suspends media. The Brave hook
+      preserves active YouTube sessions and any locked PiP with background
+      playback enabled. Activity destruction still performs normal cleanup.
     regex:
       re_pattern:
         '(public void onActivityStateChange\(Activity activity, int

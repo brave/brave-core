@@ -227,7 +227,7 @@
 "vpn.serverTitle" = "%ld เซิร์ฟเวอร์";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "ปกป้องทุกแอปด้วย Brave VPN ปกป้องได้สูงสุด 10 อุปกรณ์ด้วยแพ็กเกจเดียว";
+"vpn.settingHeaderBody" = "สตรีมเนื้อหาของคุณในแบบของคุณ ปกป้องทุกแอปบน 10 อุปกรณ์ด้วยการสมัครสมาชิก 1 ครั้ง";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "ติดต่อฝ่ายสนับสนุนทางเทคนิค";

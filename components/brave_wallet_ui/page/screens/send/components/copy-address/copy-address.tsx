@@ -52,7 +52,7 @@ export const CopyAddress = (props: Props) => {
           textColor='success'
           isBold={false}
         >
-          {getLocale('braveWalletButtonCopied')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_COPIED)}
         </Text>
       )}
     </Row>

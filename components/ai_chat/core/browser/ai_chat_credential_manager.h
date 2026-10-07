@@ -54,7 +54,7 @@ class AIChatCredentialManager {
       base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
           callback);
 
-  void PutCredentialInCache(CredentialCacheEntry credential);
+  virtual void PutCredentialInCache(CredentialCacheEntry credential);
 
 #if BUILDFLAG(IS_ANDROID)
   void CreateOrderFromReceipt(

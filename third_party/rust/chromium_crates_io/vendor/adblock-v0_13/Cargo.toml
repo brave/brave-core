@@ -10,9 +10,9 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
+edition = "2024"
 name = "adblock"
-version = "0.13.0"
+version = "0.13.3"
 authors = [
     "Anton Lazarev <alazarev@brave.com>",
     "Andrius Aucinas",
@@ -144,7 +144,7 @@ version = "0.1"
 version = "1.12.3"
 
 [dependencies.rustc-hash]
-version = "1.1.0"
+version = "2.1"
 default-features = false
 
 [dependencies.seahash]

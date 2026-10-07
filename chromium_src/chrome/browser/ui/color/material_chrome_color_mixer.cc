@@ -7,15 +7,4 @@
 
 #include "brave/browser/ui/color/material_brave_color_mixer.h"
 
-#define AddMaterialChromeColorMixer AddMaterialChromeColorMixer_ChromiumImpl
 #include <chrome/browser/ui/color/material_chrome_color_mixer.cc>
-#undef AddMaterialChromeColorMixer
-
-void AddMaterialChromeColorMixer(ui::ColorProvider* provider,
-                                 const ui::ColorProviderKey& key) {
-  AddMaterialChromeColorMixer_ChromiumImpl(provider, key);
-
-#if !BUILDFLAG(IS_ANDROID)
-  AddMaterialBraveColorMixer(provider, key);
-#endif
-}

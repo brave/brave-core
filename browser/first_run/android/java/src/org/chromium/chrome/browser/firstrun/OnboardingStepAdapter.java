@@ -49,6 +49,10 @@ public class OnboardingStepAdapter
         R.layout.help_brave_search, R.layout.block_interruptions, R.layout.make_brave_better
     };
 
+    private static final int HELP_BRAVE_SEARCH_POSITION = 0;
+    private static final int BLOCK_INTERRUPTIONS_POSITION = 1;
+    private static final int MAKE_BRAVE_BETTER_POSITION = 2;
+
     private final SpannableString mWdpLearnMore;
     private final OnboardingNavigationListener mListener;
 
@@ -68,9 +72,10 @@ public class OnboardingStepAdapter
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(STEPS[viewType], parent, false);
         return switch (viewType) {
-            case 0 -> new HelpBraveSearchViewHolder(view, mWdpLearnMore, mListener);
-            case 1 -> new BlockInterruptionsViewHolder(view, mListener);
-            case 2 ->
+            case HELP_BRAVE_SEARCH_POSITION ->
+                    new HelpBraveSearchViewHolder(view, mWdpLearnMore, mListener);
+            case BLOCK_INTERRUPTIONS_POSITION -> new BlockInterruptionsViewHolder(view, mListener);
+            case MAKE_BRAVE_BETTER_POSITION ->
                     new MakeBraveBetterViewHolder(
                             view,
                             mCrashReportingManaged,
@@ -108,19 +113,35 @@ public class OnboardingStepAdapter
     }
 
     public void setCrashReportingChecked(final boolean checked) {
+        if (mCrashReportingChecked == checked) {
+            return;
+        }
         mCrashReportingChecked = checked;
+        notifyItemChanged(MAKE_BRAVE_BETTER_POSITION);
     }
 
     public void setCrashReportingManaged(final boolean managed) {
+        if (mCrashReportingManaged == managed) {
+            return;
+        }
         mCrashReportingManaged = managed;
+        notifyItemChanged(MAKE_BRAVE_BETTER_POSITION);
     }
 
     public void setP3aChecked(final boolean checked) {
+        if (mP3aChecked == checked) {
+            return;
+        }
         mP3aChecked = checked;
+        notifyItemChanged(MAKE_BRAVE_BETTER_POSITION);
     }
 
     public void setP3aManaged(final boolean managed) {
+        if (mP3aManaged == managed) {
+            return;
+        }
         mP3aManaged = managed;
+        notifyItemChanged(MAKE_BRAVE_BETTER_POSITION);
     }
 
     public abstract static class OnboardingBaseViewHolder extends RecyclerView.ViewHolder {
@@ -150,14 +171,15 @@ public class OnboardingStepAdapter
 
             mLater = itemView.findViewById(R.id.onboarding_later);
             mLater.setClipToOutline(true);
-            mLater.setOnClickListener(v -> listener.onRequestPageChange(1));
+            mLater.setOnClickListener(
+                    v -> listener.onRequestPageChange(BLOCK_INTERRUPTIONS_POSITION));
 
             mSure = itemView.findViewById(R.id.onboarding_sure);
             mSure.setClipToOutline(true);
             mSure.setOnClickListener(
                     view -> {
                         listener.onWebDiscoverPreferenceEnabled();
-                        listener.onRequestPageChange(1);
+                        listener.onRequestPageChange(BLOCK_INTERRUPTIONS_POSITION);
                     });
         }
 
@@ -176,7 +198,8 @@ public class OnboardingStepAdapter
             super(itemView);
             mContinue = itemView.findViewById(R.id.onboarding_continue);
             mContinue.setClipToOutline(true);
-            mContinue.setOnClickListener(view -> listener.onRequestPageChange(2));
+            mContinue.setOnClickListener(
+                    view -> listener.onRequestPageChange(MAKE_BRAVE_BETTER_POSITION));
 
             mBlockInterruptions = itemView.findViewById(R.id.onboarding_illustration);
         }

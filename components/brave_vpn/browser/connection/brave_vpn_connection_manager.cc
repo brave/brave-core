@@ -14,6 +14,7 @@
 #include "base/functional/callback.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/notimplemented.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_vpn/browser/connection/connection_api_impl.h"
@@ -176,6 +177,16 @@ void BraveVPNConnectionManager::SetSelectedRegion(const std::string& name) {
   if (connection_api_impl_) {
     connection_api_impl_->SetSelectedRegion(name);
   }
+}
+
+bool BraveVPNConnectionManager::ShouldAllowLanTraffic() {
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
+  return brave_vpn::IsBraveVPNWireguardEnabled(local_prefs_) &&
+         local_prefs_->GetBoolean(prefs::kBraveVPNWireguardAllowLanTraffic);
+#else
+  NOTIMPLEMENTED();
+  return false;
+#endif
 }
 
 std::string BraveVPNConnectionManager::GetHostname() const {

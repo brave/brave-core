@@ -218,6 +218,49 @@ public class BraveAutofillViewStructureParser {
                 || fields.containsKey(HINT_COMPANY);
     }
 
+    // Postal components — the fields that make a form an actual address form, as opposed to
+    // the personal details (name, email, phone) that any form may collect.
+    private static final String[] ADDRESS_COMPONENTS = {
+        View.AUTOFILL_HINT_POSTAL_ADDRESS,
+        HINT_ADDRESS_LINE2,
+        View.AUTOFILL_HINT_POSTAL_CODE,
+        HINT_CITY,
+        HINT_STATE,
+        HINT_COUNTRY,
+    };
+
+    /**
+     * Returns true if the detected fields look like an address form worth offering to save.
+     *
+     * <p>Deliberately stricter than {@link #hasAddressFields}, which gates whether we offer to
+     * fill: the system save prompt reads "Save address to Brave?", so a lone name, email or phone
+     * field must not arm it — otherwise every sign-in screen asks the user to save an address. A
+     * single heuristically matched component is not enough either, since substring matching in
+     * {@link #inferHint} classifies resource ids like {@code empty_state_text} as a state field.
+     */
+    public static boolean isSaveableAddressForm(Map<String, AutofillId> fields) {
+        int components = 0;
+        for (String component : ADDRESS_COMPONENTS) {
+            if (fields.containsKey(component)) {
+                components++;
+            }
+        }
+        // Two components (street + city, zip + state, ...) is a real address form — offer to
+        // save it even on a registration screen that also asks for a password.
+        if (components >= 2) {
+            return true;
+        }
+        if (components == 0) {
+            return false;
+        }
+        // A single component needs corroboration: a name, and no sign-in fields.
+        if (fields.containsKey(View.AUTOFILL_HINT_PASSWORD)
+                || fields.containsKey(View.AUTOFILL_HINT_USERNAME)) {
+            return false;
+        }
+        return fields.containsKey(View.AUTOFILL_HINT_NAME) || fields.containsKey(HINT_FIRST_NAME);
+    }
+
     /** Recursively walks the view tree, classifying each node and collecting autofillable ones. */
     private static void addAutofillableFields(Map<String, AutofillId> fields, ViewNode node) {
         String hint = getHint(node, fields);
@@ -276,17 +319,17 @@ public class BraveAutofillViewStructureParser {
         // Skip hints already taken — e.g. id="address-line1" matches "address" but that
         // slot may already be filled by the actual street address field.
         String viewHint = node.getHint();
-        String hint = inferHint(node, viewHint);
+        String hint = inferHint(node.getInputType(), viewHint);
         if (hint != null && !existingFields.containsKey(hint)) return hint;
 
         String resourceId = node.getIdEntry();
-        hint = inferHint(node, resourceId);
+        hint = inferHint(node.getInputType(), resourceId);
         if (hint != null && !existingFields.containsKey(hint)) return hint;
 
         CharSequence text = node.getText();
         CharSequence className = node.getClassName();
         if (text != null && className != null && className.toString().contains(EDIT_TEXT_CLASS)) {
-            hint = inferHint(node, text.toString());
+            hint = inferHint(node.getInputType(), text.toString());
             if (hint != null && !existingFields.containsKey(hint)) return hint;
         }
 
@@ -336,10 +379,10 @@ public class BraveAutofillViewStructureParser {
         String hint = mapComputedAutofillHint(computedHints);
         if (hint != null && !existingFields.containsKey(hint)) return hint;
 
-        hint = inferHint(node, nameAttr);
+        hint = inferHint(node.getInputType(), nameAttr);
         if (hint != null && !existingFields.containsKey(hint)) return hint;
 
-        hint = inferHint(node, labelAttr);
+        hint = inferHint(node.getInputType(), labelAttr);
         if (hint != null && !existingFields.containsKey(hint)) return hint;
 
         return null;
@@ -409,11 +452,11 @@ public class BraveAutofillViewStructureParser {
      * <p>Skips nodes that look like labels/containers (not actual input fields) and omnibox fields
      * (URL bars should not trigger autofill).
      *
-     * <p>As a fallback, returns the raw lowercased hint for any enabled autofillable field that
-     * didn't match a known keyword. This ensures we don't silently ignore fields — they'll appear
-     * in the detected fields map but won't match any profile data.
+     * @return A canonical hint key, or null if nothing matched — callers fall through to the next
+     *     detection layer.
      */
-    private static @Nullable String inferHint(ViewNode node, @Nullable String actualHint) {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    static @Nullable String inferHint(int inputType, @Nullable String actualHint) {
         if (actualHint == null || actualHint.isEmpty()) return null;
 
         String hint = actualHint.toLowerCase(Locale.getDefault());
@@ -424,7 +467,7 @@ public class BraveAutofillViewStructureParser {
         }
 
         // Skip the browser's URL bar.
-        if (isOmnibox(node)) {
+        if (isOmnibox(inputType)) {
             return null;
         }
 
@@ -471,20 +514,23 @@ public class BraveAutofillViewStructureParser {
             return HINT_COUNTRY;
         }
 
-        // Fallback: return the raw hint for any enabled autofillable field. These won't match
-        // any profile data in BraveAutofillServiceImpl, but they'll be included in the field
-        // map so SaveInfo can track them.
-        if (node.isEnabled() && node.getAutofillType() != View.AUTOFILL_TYPE_NONE) {
-            return hint;
-        }
         return null;
     }
 
-    /** Detects the browser's URL bar by checking for URI input type. */
-    private static boolean isOmnibox(ViewNode node) {
-        int inputType = node.getInputType();
-        return (inputType & EditorInfo.TYPE_TEXT_VARIATION_URI)
-                == EditorInfo.TYPE_TEXT_VARIATION_URI;
+    /**
+     * Detects the browser's URL bar by checking for URI input type.
+     *
+     * <p>Input type variations are values within {@link EditorInfo#TYPE_MASK_VARIATION}, not
+     * individual flags, so they must be compared after masking: {@code TYPE_TEXT_VARIATION_URI}
+     * (0x10) is a subset of the bits of {@code TYPE_TEXT_VARIATION_POSTAL_ADDRESS} (0x70) and
+     * {@code TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS} (0xD0), and a bare bit test would discard those
+     * real address and email fields as URL bars.
+     */
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    static boolean isOmnibox(int inputType) {
+        return (inputType & EditorInfo.TYPE_MASK_CLASS) == EditorInfo.TYPE_CLASS_TEXT
+                && (inputType & EditorInfo.TYPE_MASK_VARIATION)
+                        == EditorInfo.TYPE_TEXT_VARIATION_URI;
     }
 
     /**

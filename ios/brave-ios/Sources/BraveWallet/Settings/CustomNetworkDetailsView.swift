@@ -10,6 +10,56 @@ import Shared
 import Strings
 import SwiftUI
 
+struct WalletListHeaderView<Title: View, Subtitle: View>: View {
+  var title: Title
+  var subtitle: Subtitle
+
+  init(
+    @ViewBuilder title: () -> Title,
+    @ViewBuilder subtitle: () -> Subtitle
+  ) {
+    self.title = title()
+    self.subtitle = subtitle()
+  }
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: 4) {
+      title
+        .font(.footnote.weight(.medium))
+        .textCase(.none)
+        .accessibilityAddTraits(.isHeader)
+      subtitle
+        .font(.caption)
+        .textCase(.none)
+    }
+    .accessibilityElement(children: .contain)
+    .foregroundColor(Color(braveSystemName: .textSecondary))
+    .padding(.horizontal, -8)
+    .frame(maxWidth: .infinity, alignment: .leading)
+  }
+}
+
+extension WalletListHeaderView where Title == Text, Subtitle == Text {
+  init(title: Text, subtitle: Text) {
+    self.title = title
+    self.subtitle = subtitle
+  }
+}
+
+extension WalletListHeaderView where Subtitle == EmptyView {
+  init(@ViewBuilder title: () -> Title) {
+    self.title = title()
+    self.subtitle = EmptyView()
+  }
+}
+
+extension WalletListHeaderView where Title == Text, Subtitle == EmptyView {
+  init(title: Text) {
+    self.title = title
+    self.subtitle = EmptyView()
+  }
+}
+
 struct NetworkInputItem: Identifiable {
   var input: String
   var isSelected: Bool = false
@@ -509,10 +559,7 @@ struct NetworkDetailsView: View {
       if showRadioButton {
         NetworkRadioButton(
           checked: item.isSelected,
-          isDisabled: Binding(
-            get: { item.input.wrappedValue.isEmpty || model.mode.isViewMode },
-            set: { _, _ in }
-          ),
+          isDisabled: item.input.wrappedValue.isEmpty || model.mode.isViewMode,
           onTapped: {
             for index in model.rpcUrls.indices where model.rpcUrls[index].id != item.id {
               model.rpcUrls[index].isSelected = !item.isSelected.wrappedValue
@@ -687,7 +734,7 @@ struct NetworkDetailsView: View {
 
 struct NetworkRadioButton: View {
   @Binding var checked: Bool
-  @Binding var isDisabled: Bool
+  var isDisabled: Bool
   var onTapped: () -> Void
 
   var body: some View {
@@ -710,7 +757,7 @@ struct NetworkRadioButton: View {
 #if DEBUG
 struct NetworkDetailsView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
+    NavigationStack {
       NetworkDetailsView(
         networkStore: .previewStore,
         model: .init()

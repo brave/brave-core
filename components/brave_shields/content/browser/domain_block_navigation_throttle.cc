@@ -91,6 +91,19 @@ ShouldBlockDomainOnTaskRunner(
     if (!block_result.new_url.empty()) {
       info.rewritten_url = block_result.new_url;
     }
+    if (result.filter) {
+      info.filter = content::devtools_instrumentation::AdblockFilterRuleInfo();
+      info.filter->raw_line = std::string(result.filter->raw_line);
+      info.filter->line_number = result.filter->line_number;
+      info.filter->source_index = result.filter->source_index;
+    }
+    if (result.exception) {
+      info.exception =
+          content::devtools_instrumentation::AdblockFilterRuleInfo();
+      info.exception->raw_line = std::string(result.exception->raw_line);
+      info.exception->line_number = result.exception->line_number;
+      info.exception->source_index = result.exception->source_index;
+    }
     block_result.info = std::move(info);
   }
 

@@ -9,7 +9,7 @@
 
 #include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_token_info.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_database_table.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_database_table_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/test/wallet_test_util.h"
@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_constants.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -37,8 +37,7 @@ constexpr char kConfirmationsWithCorruptPaymentTokensJsonFilename[] =
 
 size_t GetConfirmationTokenCount() {
   base::test::TestFuture<bool, ConfirmationTokenList> test_future;
-  database::table::ConfirmationTokens().GetAll(
-      test_future.GetCallback<bool, const ConfirmationTokenList&>());
+  test::GetAll(test_future.GetCallback<bool, const ConfirmationTokenList&>());
   const auto [success, tokens] = test_future.Take();
   EXPECT_TRUE(success);
   return tokens.size();

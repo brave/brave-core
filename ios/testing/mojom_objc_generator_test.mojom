@@ -1,0 +1,71 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module mojom_objc_test.mojom;
+
+// Test fixture used only by mojom_objc_generator_unittest.mm to exercise
+// the iOS Obj-C mojom generator.
+enum SomeEnum {
+  kAlpha,
+  kBeta,
+  kGamma,
+};
+
+struct NullableEnumStruct {
+  // Non-nullable enum field, used as a baseline for comparison.
+  SomeEnum required_enum_field;
+
+  // Nullable enum field with no default value; should default to nil.
+  SomeEnum? optional_enum_field;
+
+  // Nullable enum field with an explicit default value.
+  SomeEnum? optional_enum_field_with_default = kBeta;
+};
+
+interface NullableEnumInterface {
+  // Exercises a nullable enum as both a method parameter and a
+  // response/callback parameter.
+  DoSomething(SomeEnum? maybe_enum) => (SomeEnum? result);
+};
+
+interface EmptyResponseInterface {
+  WithParam(string value) => ();
+  WithoutParams() => ();
+};
+
+// Implemented in Obj-C and passed to C++ as a `pending_remote`.
+interface EventObserver {
+  OnEvent(string value);
+};
+
+interface EventSource {
+  AddObserver(pending_remote<EventObserver> observer);
+  AddOptionalObserver(pending_remote<EventObserver>? observer);
+};
+
+interface ResponderInterface {
+  // Exercises the values passed to a completion when its callback is dropped.
+  Ask(string question) => (string answer,
+                           int32 count,
+                           SomeEnum kind,
+                           NullableEnumStruct info,
+                           NullableEnumStruct? maybe_info);
+  Verify(string token) => result<NullableEnumStruct, string>;
+};
+
+// Interfaces passed as `pending_remote` with methods that have replies are
+// bridged to Obj-C implementations.
+interface EmptyResponseInterfaceHost {
+  SetInterface(pending_remote<EmptyResponseInterface> remote);
+};
+
+interface ResponderInterfaceHost {
+  SetResponder(pending_remote<ResponderInterface> remote);
+};
+
+struct MapStruct {
+  map<string, int32> numbers;
+  map<string, NullableEnumStruct> structs;
+};

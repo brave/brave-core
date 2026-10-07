@@ -84,6 +84,15 @@ public class BraveMultiWindowUtils extends MultiWindowUtils {
                 .writeBoolean(BravePreferenceKeys.ENABLE_MULTI_WINDOWS_UPGRADE, isUpgradeCheck);
     }
 
+    /**
+     * Returns whether a window instance is already mapped to {@code taskId}. An unmapped task has
+     * never hosted a window, so an activity starting in one is a new window rather than one being
+     * restored or recreated. Lives here for access to the package private store.
+     */
+    public static boolean isTaskMappedToInstance(final int taskId) {
+        return ChromeMultiInstancePersistentStore.readTaskMap().containsValue(taskId);
+    }
+
     public static void mergeWindows(Activity activity) {
         try {
             MultiInstanceManager multiInstanceManager =

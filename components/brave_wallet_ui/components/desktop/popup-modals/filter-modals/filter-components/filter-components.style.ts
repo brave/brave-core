@@ -9,7 +9,7 @@ import Dropdown from '@brave/leo/react/dropdown'
 import LeoIcon from '@brave/leo/react/icon'
 
 // Constants
-import { layoutPanelWidth } from '../../../wallet-page-wrapper/wallet-page-wrapper.style'
+import { layoutPanelWidth } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 // Shared Styles
 import { Row, Column, WalletButton, Text } from '../../../../shared/style'

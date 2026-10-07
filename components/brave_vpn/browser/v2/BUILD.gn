@@ -29,11 +29,16 @@ static_library("browser") {
 
   public_deps = [
     "//brave/components/brave_vpn/browser",
+    "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_vpn/common/mojom",
     "//brave/components/skus/browser",
     "//brave/components/skus/common:mojom",
     "//mojo/public/cpp/bindings",
   ]
+
+  if (enable_brave_vpn_v2_apps) {
+    public_deps += [ "agent" ]
+  }
 
   deps = [
     "api",
@@ -43,6 +48,7 @@ static_library("browser") {
     "//components/prefs",
     "//net",
     "//services/network/public/cpp",
+    "//third_party/icu",
     "//ui/base",
     "//url",
   ]
@@ -77,9 +83,14 @@ source_set("unit_tests") {
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",
     "//mojo/public/cpp/bindings",
+    "//net",
     "//services/network:test_support",
     "//services/network/public/cpp",
     "//testing/gtest",
     "//ui/base",
   ]
+
+  if (enable_brave_vpn_v2_apps) {
+    deps += [ "agent:test_support" ]
+  }
 }

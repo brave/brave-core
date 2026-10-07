@@ -32,6 +32,9 @@ class BraveHidDelegate : public ChromeHidDelegate {
       std::vector<blink::mojom::HidDeviceFilterPtr> filters,
       std::vector<blink::mojom::HidDeviceFilterPtr> exclusion_filters,
       content::HidChooser::Callback callback) override;
+
+  bool AllowRequestDeviceWithoutTransientActivation(
+      content::RenderFrameHost* render_frame_host) override;
 };
 
 #endif  // BRAVE_BROWSER_HID_BRAVE_HID_DELEGATE_H_

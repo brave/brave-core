@@ -120,6 +120,30 @@ class AssetDiscoveryTask {
       const base::flat_set<std::string>& discovered_contract_addresses,
       std::vector<mojom::BlockchainTokenPtr> sol_token_registry);
 
+  // Polkadot assets live in pallet_assets on the Asset Hub parachains and are
+  // keyed by a numeric asset id, which the registry carries as the token's
+  // contract address.
+  void DiscoverPolkadotAssetsFromRegistry(
+      base::span<const mojom::AccountIdPtr> accounts,
+      base::span<const mojom::ChainIdPtr> chain_ids,
+      DiscoverAssetsCompletedCallback callback);
+  void OnGetPolkadotTokenRegistry(
+      base::RepeatingCallback<void(std::vector<mojom::BlockchainTokenPtr>)>
+          barrier_callback,
+      std::vector<mojom::AccountIdPtr> accounts,
+      const std::string& chain_id,
+      std::vector<mojom::BlockchainTokenPtr> registry_tokens);
+  void OnGetPolkadotAssetAccountBalances(
+      base::OnceCallback<void(std::vector<mojom::BlockchainTokenPtr>)>
+          barrier_callback,
+      std::vector<mojom::BlockchainTokenPtr> candidates,
+      std::vector<mojom::PolkadotAssetAccountInfoPtr> asset_accounts,
+      const std::optional<std::string>& error_message);
+  void MergeDiscoveredPolkadotAssets(
+      DiscoverAssetsCompletedCallback callback,
+      const std::vector<std::vector<mojom::BlockchainTokenPtr>>&
+          discovered_assets);
+
   void DiscoverNFTs(const std::vector<mojom::AccountIdPtr>& accounts,
                     const std::vector<mojom::ChainIdPtr>& chain_ids,
                     DiscoverAssetsCompletedCallback callback);

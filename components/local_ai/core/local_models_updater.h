@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/memory/raw_ptr.h"
 #include "base/no_destructor.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
@@ -43,7 +44,9 @@ inline constexpr char kEmbeddingGemmaLitertDir[] = "litert";
 class LocalModelsComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
-  LocalModelsComponentInstallerPolicy();
+  // `local_state` gates ComponentReady() on the `kBraveLocalAIEnabled` master
+  // switch.
+  explicit LocalModelsComponentInstallerPolicy(PrefService* local_state);
   ~LocalModelsComponentInstallerPolicy() override;
 
   LocalModelsComponentInstallerPolicy(
@@ -68,6 +71,9 @@ class LocalModelsComponentInstallerPolicy
   std::string GetName() const override;
   update_client::InstallerAttributes GetInstallerAttributes() const override;
   bool IsBraveComponent() const override;
+
+ private:
+  raw_ptr<PrefService> local_state_ = nullptr;
 };
 
 class LocalModelsUpdaterState {
@@ -76,6 +82,10 @@ class LocalModelsUpdaterState {
    public:
     // Called when the local models are ready (component installed)
     virtual void OnLocalModelsReady(const base::FilePath& install_dir) = 0;
+
+    // Called when the local models are gone. Observers must drop anything
+    // they derived from the install dir: those files no longer exist.
+    virtual void OnLocalModelsUnavailable() = 0;
   };
 
   static LocalModelsUpdaterState* GetInstance();
@@ -106,9 +116,17 @@ class LocalModelsUpdaterState {
   SEQUENCE_CHECKER(sequence_checker_);
 };
 
+// Registers or unregisters the local models component to match the
+// `kBraveLocalAIEnabled` master switch, and keeps it in sync for the rest of
+// the session. The switch is managed by Brave Origin, whose purchase check is
+// asynchronous, so its value can land after components are registered.
 void ManageLocalModelsComponentRegistration(
     component_updater::ComponentUpdateService* cus,
     PrefService* local_state);
+
+// Drops the references taken by ManageLocalModelsComponentRegistration(). Must
+// run before `cus` and `local_state` are destroyed.
+void ShutdownLocalModelsComponentRegistration();
 
 }  // namespace local_ai
 

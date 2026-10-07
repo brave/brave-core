@@ -147,6 +147,16 @@ export const App = () => {
           engine={state.additional_engine}
           caption='Additional engine'
         />
+        <div>
+          <h2>DAT cache</h2>
+          <input
+            type='button'
+            value='Drop DAT Cache'
+            onClick={() => {
+              chrome.send('brave_adblock_internals.dropDATCache')
+            }}
+          />
+        </div>
         <MemoryInfo
           key='memory'
           caption='Browser process general memory'

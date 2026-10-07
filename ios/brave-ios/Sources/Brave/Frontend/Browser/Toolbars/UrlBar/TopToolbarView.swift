@@ -86,8 +86,11 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
   private var cancellables: Set<AnyCancellable> = []
   private let privateBrowsingManager: PrivateBrowsingManager
+  private let toolbarState: BrowserToolbarState
 
   private(set) var displayTabTraySwipeGestureRecognizer: UISwipeGestureRecognizer?
+  private var changeTabsPanGestureRecognizer: UIPanGestureRecognizer?
+  private var previousPanX: CGFloat = 0.0
 
   // MARK: State
 
@@ -102,20 +105,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   }
 
   private var toolbarIsShowing = false
-
-  var currentURL: URL? {
-    get { return locationView.url as URL? }
-
-    set(newURL) {
-      locationView.url = newURL
-      refreshShieldsStatus()
-    }
-  }
-
-  var secureContentState: SecureContentState {
-    get { return locationView.secureContentState }
-    set { locationView.secureContentState = newValue }
-  }
+  private var appliedLoadingProgress: Float?
 
   var isURLBarEnabled = true {
     didSet {
@@ -149,7 +139,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
   private lazy var shortcutButton = ToolbarButton().then {
     $0.addTarget(self, action: #selector(didClickShortcutButton), for: .touchUpInside)
-    $0.contentEdgeInsets = .init(top: 4, left: 4, bottom: 4, right: 4)
+    $0.configuration?.contentInsets = .init(top: 4, leading: 4, bottom: 4, trailing: 4)
     $0.snp.makeConstraints {
       $0.size.greaterThanOrEqualTo(32)
     }
@@ -196,7 +186,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   var shareButton = ToolbarButton()
   var addTabButton = ToolbarButton()
   var searchButton = ToolbarButton()
-  lazy var menuButton = MenuButton().then {
+  lazy var menuButton = ToolbarButton().then {
     $0.accessibilityIdentifier = "topToolbarView-menuButton"
   }
 
@@ -239,8 +229,9 @@ class TopToolbarView: UIView, ToolbarProtocol {
   /// The currently visible URL bar button beside the refresh button.
   private(set) var currentURLBarButton: URLBarButton? {
     didSet {
-      locationView.walletButton.isHidden = currentURLBarButton != .wallet
-      locationView.playlistButton.isHidden = currentURLBarButton != .playlist
+      locationView.walletButton.stackViewAnimationSafeIsHidden = currentURLBarButton != .wallet
+      locationView.playlistButton.stackViewAnimationSafeIsHidden =
+        currentURLBarButton != .playlist
     }
   }
 
@@ -271,9 +262,14 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
   // MARK: Lifecycle
 
-  init(speechRecognizer: SpeechRecognizer, privateBrowsingManager: PrivateBrowsingManager) {
+  init(
+    speechRecognizer: SpeechRecognizer,
+    privateBrowsingManager: PrivateBrowsingManager,
+    toolbarState: BrowserToolbarState
+  ) {
     self.speechRecognizer = speechRecognizer
     self.privateBrowsingManager = privateBrowsingManager
+    self.toolbarState = toolbarState
 
     super.init(frame: .zero)
 
@@ -300,18 +296,16 @@ class TopToolbarView: UIView, ToolbarProtocol {
     leadingItemsStackView.addArrangedSubview(shareButton)
 
     [backButton, forwardButton].forEach {
-      $0.contentEdgeInsets = UIEdgeInsets(
+      $0.configuration?.contentInsets = NSDirectionalEdgeInsets(
         top: 0,
-        left: UX.locationPadding,
+        leading: UX.locationPadding,
         bottom: 0,
-        right: UX.locationPadding
+        trailing: UX.locationPadding
       )
     }
 
-    if UIDevice.current.userInterfaceIdiom == .phone {
-      trailingItemsStackView.addArrangedSubview(addTabButton)
-    }
     trailingItemsStackView.addArrangedSubview(tabsButton)
+    trailingItemsStackView.addArrangedSubview(addTabButton)
     trailingItemsStackView.addArrangedSubview(menuButton)
 
     shieldsRewardsStack.addArrangedSubview(shieldsButton)
@@ -361,6 +355,15 @@ class TopToolbarView: UIView, ToolbarProtocol {
     swipeGestureRecognizer.isEnabled = false
     locationView.addGestureRecognizer(swipeGestureRecognizer)
 
+    let panGestureRecognizer = UIPanGestureRecognizer(
+      target: self,
+      action: #selector(didSwipeLocationViewToChangeTabs(_:))
+    )
+    panGestureRecognizer.delegate = self
+    panGestureRecognizer.isEnabled = false
+    locationView.addGestureRecognizer(panGestureRecognizer)
+    self.changeTabsPanGestureRecognizer = panGestureRecognizer
+
     let dragInteraction = UIDragInteraction(delegate: self)
     dragInteraction.allowsSimultaneousRecognitionDuringLift = true
     locationView.addInteraction(dragInteraction)
@@ -368,22 +371,26 @@ class TopToolbarView: UIView, ToolbarProtocol {
     self.displayTabTraySwipeGestureRecognizer = swipeGestureRecognizer
 
     updateColors()
+    configureToolbarMenus(state: toolbarState)
+
+    if #unavailable(iOS 26) {
+      startObservingProperties()
+    }
+
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      self.helper?.updateForTraitCollection(
+        self.traitCollection,
+        browserColors: self.privateBrowsingManager.browserColors,
+        isBottomToolbar: false,
+        additionalButtons: [self.shortcutButton]
+      )
+      self.updateForTraitCollection()
+    }
   }
 
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    helper?.updateForTraitCollection(
-      traitCollection,
-      browserColors: privateBrowsingManager.browserColors,
-      isBottomToolbar: false,
-      additionalButtons: [shortcutButton]
-    )
-    updateForTraitCollection()
   }
 
   private func updateForTraitCollection() {
@@ -450,6 +457,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   // that can show in either mode.
   func setShowToolbar(_ shouldShow: Bool) {
     toolbarIsShowing = shouldShow
+    changeTabsPanGestureRecognizer?.isEnabled = shouldShow
     setNeedsUpdateConstraints()
     // when we transition from portrait to landscape, calling this here causes
     // the constraints to be calculated too early and there are constraint errors
@@ -463,35 +471,84 @@ class TopToolbarView: UIView, ToolbarProtocol {
     locationView.progressBar.progress
   }
 
-  func updateProgressBar(_ progress: Float) {
+  @available(iOS 26.0, *)
+  override func updateProperties() {
+    super.updateProperties()
+    updateObservedProperties()
+  }
+
+  func updateObservedProperties() {
+    backButton.isEnabled = toolbarState.canGoBack
+    forwardButton.isEnabled = toolbarState.canGoForward
+    shareButton.isEnabled = toolbarState.isWebPage
+    tabsButton.updateTabCount(toolbarState.tabCount)
+    let displayURL = toolbarState.displayedURL
+    let needsShieldsStatusRefresh = displayURL == nil || locationView.url != displayURL
+    locationView.url = displayURL
+    if needsShieldsStatusRefresh {
+      refreshShieldsStatus()
+    }
+
+    let secureContentState = toolbarState.secureContentState
+    if locationView.secureContentState != secureContentState {
+      locationView.secureContentState = secureContentState
+    }
+    let isLoading = toolbarState.isLoading
+    if locationView.loading != isLoading {
+      locationView.loading = isLoading
+    }
+    let loadingProgress = toolbarState.loadingProgress
+    if appliedLoadingProgress != loadingProgress {
+      // The progress bar hides itself once loading completes, so only apply changes to avoid
+      // redisplaying a completed load
+      appliedLoadingProgress = loadingProgress
+      if let loadingProgress {
+        updateProgressBar(loadingProgress)
+      } else {
+        hideProgressBar()
+      }
+    }
+    let readerModeState = toolbarState.readerModeState
+    if locationView.readerModeState != readerModeState {
+      locationView.readerModeState = readerModeState
+    }
+    let translationState = toolbarState.translationState
+    if locationView.translationState != translationState {
+      locationView.translationState = translationState
+    }
+    let playlistButtonState = toolbarState.playlistButtonState
+    if locationView.playlistButton.buttonState != playlistButtonState {
+      locationView.playlistButton.buttonState = playlistButtonState
+    }
+    let walletButtonState = toolbarState.walletButtonState
+    if locationView.walletButton.buttonState != walletButtonState {
+      locationView.walletButton.buttonState = walletButtonState
+    }
+    updateURLBarButtonsVisibility()
+  }
+
+  @available(iOS, introduced: 18, obsoleted: 26, message: "Use updateProperties directly")
+  private func startObservingProperties() {
+    withObservationTracking {
+      updateObservedProperties()
+    } onChange: { [weak self] in
+      DispatchQueue.main.async {
+        MainActor.assumeIsolated {
+          self?.startObservingProperties()
+        }
+      }
+    }
+  }
+
+  private func updateProgressBar(_ progress: Float) {
     locationView.progressBar.alpha = 1
     locationView.progressBar.isHidden = false
     locationView.progressBar.setProgress(progress, animated: !isTransitioning)
   }
 
-  func hideProgressBar() {
+  private func hideProgressBar() {
     locationView.progressBar.isHidden = true
     locationView.progressBar.setProgress(0, animated: false)
-  }
-
-  func updateReaderModeState(_ state: ReaderModeState) {
-    locationView.readerModeState = state
-    updateURLBarButtonsVisibility()
-  }
-
-  func updatePlaylistButtonState(_ state: PlaylistURLBarButton.State) {
-    locationView.playlistButton.buttonState = state
-    updateURLBarButtonsVisibility()
-  }
-
-  func updateTranslateButtonState(_ state: TranslationState) {
-    locationView.translationState = state
-    updateURLBarButtonsVisibility()
-  }
-
-  func updateWalletButtonState(_ state: WalletURLBarButton.ButtonState) {
-    locationView.walletButton.buttonState = state
-    updateURLBarButtonsVisibility()
   }
 
   /// Updates the `currentURLBarButton` based on priority: 1) Wallet 2) Playlist 3) ReaderMode.
@@ -534,7 +591,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     // Default on
     var shieldIcon = "brave.logo"
     let shieldsOffIcon = "brave.logo.greyscale"
-    if let currentURL = currentURL, currentURL.isWebPage(includeDataURIs: false) {
+    if let currentURL = locationView.url, currentURL.isWebPage(includeDataURIs: false) {
       let isShieldsEnabled =
         delegate?.topToolbarIsShieldsEnabled(self, for: currentURL) ?? true
       if !isShieldsEnabled {
@@ -566,6 +623,30 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
   @objc private func swipedLocationView() {
     delegate?.topToolbarDidPressTabs(self)
+  }
+
+  @objc private func didSwipeLocationViewToChangeTabs(_ pan: UIPanGestureRecognizer) {
+    switch pan.state {
+    case .began:
+      let velocity = pan.velocity(in: locationView)
+      if velocity.x > 100 {
+        tabToolbarDelegate?.tabToolbarDidSwipeToChangeTabs(self, direction: .right)
+      } else if velocity.x < -100 {
+        tabToolbarDelegate?.tabToolbarDidSwipeToChangeTabs(self, direction: .left)
+      }
+      previousPanX = pan.translation(in: locationView).x
+    case .changed:
+      let point = pan.translation(in: locationView)
+      if point.x > previousPanX + 50 {
+        tabToolbarDelegate?.tabToolbarDidSwipeToChangeTabs(self, direction: .right)
+        previousPanX = point.x
+      } else if point.x < previousPanX - 50 {
+        tabToolbarDelegate?.tabToolbarDidSwipeToChangeTabs(self, direction: .left)
+        previousPanX = point.x
+      }
+    default:
+      break
+    }
   }
 
   @objc private func didTapBraveShieldsButton() {
@@ -654,6 +735,16 @@ extension TopToolbarView: TabLocationViewDelegate {
   }
 }
 
+extension TopToolbarView: UIGestureRecognizerDelegate {
+  override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    guard let pan = gestureRecognizer as? UIPanGestureRecognizer,
+      pan === changeTabsPanGestureRecognizer
+    else { return true }
+    let velocity = pan.velocity(in: locationView)
+    return abs(velocity.x) > abs(velocity.y)
+  }
+}
+
 extension TopToolbarView: UIDragInteractionDelegate {
   func dragInteraction(
     _ interaction: UIDragInteraction,
@@ -681,7 +772,7 @@ extension UIView {
   // Don't set `isHidden` to the same value on a view that adjusts layout of a UIStackView
   // inside of a UIView.animate() block, otherwise on occasion the view will render but
   // `isHidden` will still be true
-  fileprivate var stackViewAnimationSafeIsHidden: Bool {
+  var stackViewAnimationSafeIsHidden: Bool {
     get { isHidden }
     set {
       if isHidden != newValue {

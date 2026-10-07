@@ -15,10 +15,11 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/immersive/immersive_mode_controller.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/browser_widget.h"
@@ -26,6 +27,7 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
+#include "chrome/test/base/chrome_test_path_utils.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -36,14 +38,22 @@
 #include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "ui/base/hit_test.h"
 #include "ui/gfx/geometry/insets.h"
+#include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/scoped_animation_duration_scale_mode.h"
 #include "ui/views/border.h"
 #include "ui/views/focus/focus_manager.h"
 #include "ui/views/view.h"
 #include "ui/views/view_utils.h"
+#include "ui/views/widget/widget.h"
+#include "ui/views/window/non_client_view.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(IS_MAC)
+#include "ui/base/test/scoped_fake_nswindow_fullscreen.h"
+#endif
 
 class FocusModeTopOverlayBrowserTest : public InProcessBrowserTest {
  protected:
@@ -82,7 +92,7 @@ class FocusModeTopOverlayBrowserTest : public InProcessBrowserTest {
   }
 
   FocusModeController* focus_mode_controller() {
-    return browser()->GetFeatures().focus_mode_controller();
+    return FocusModeController::From(browser());
   }
 
   content::WebContents* active_web_contents() {
@@ -384,3 +394,47 @@ IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
   EXPECT_TRUE(bookmark_button->IsDrawn());
   EXPECT_EQ(overlay->bounds().y(), 0);
 }
+
+#if BUILDFLAG(IS_MAC)
+IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
+                       ExitFullscreenWithSuppressedOverlay) {
+  // Real macOS fullscreen transitions are unreliable on bots.
+  ui::test::ScopedFakeNSWindowFullscreen fake_fullscreen;
+
+  auto* overlay = browser_view()->focus_mode_top_overlay();
+  ASSERT_TRUE(overlay);
+  auto* top_container = browser_view()->top_container();
+  ASSERT_TRUE(top_container);
+  auto* immersive_controller = ImmersiveModeController::From(browser());
+  ASSERT_TRUE(immersive_controller);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(),
+      embedded_test_server()->GetURL("insecure.test", "/empty.html")));
+  focus_mode_controller()->SetEnabled(true);
+  ASSERT_FALSE(overlay->active());
+
+  ui_test_utils::ToggleFullscreenModeAndWait(browser());
+  ASSERT_TRUE(browser_view()->IsFullscreen());
+  ASSERT_TRUE(immersive_controller->IsEnabled());
+  ASSERT_FALSE(focus_mode_controller()->IsEnabled());
+  ASSERT_EQ(top_container->parent(), browser_view()->overlay_view());
+
+  ui_test_utils::ToggleFullscreenModeAndWait(browser());
+  ASSERT_FALSE(browser_view()->IsFullscreen());
+  ASSERT_FALSE(immersive_controller->IsEnabled());
+  ASSERT_TRUE(focus_mode_controller()->IsEnabled());
+  ASSERT_FALSE(overlay->active());
+
+  ASSERT_EQ(top_container->parent(), browser_view());
+  auto* toolbar_view = browser_view()->toolbar();
+  ASSERT_TRUE(toolbar_view->GetVisible());
+  ASSERT_EQ(toolbar_view->GetWidget(), browser_view()->GetWidget());
+
+  gfx::Point point = toolbar_view->GetLocalBounds().CenterPoint();
+  views::View::ConvertPointToWidget(toolbar_view, &point);
+  auto hit_test_result =
+        browser_view()->GetWidget()->non_client_view()->NonClientHitTest(point);
+  EXPECT_NE(hit_test_result, HTNOWHERE);
+}
+#endif  // BUILDFLAG(IS_MAC)

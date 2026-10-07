@@ -33,20 +33,24 @@ def CheckLeoVariables(input_api, output_api):
             affected_file,
             files_to_check=[
                 r'.+\.(js|jsx|ts|tsx|css|less|lss|sass|scss|svelte)$',
-                r'package\.json$'
-            ])
+                r'package\.json$',
+            ],
+        )
 
     # If no web files were affected, this shouldn't change any Leo variables, so
     # we can skip running leo-check.
     if not any(
-            input_api.AffectedFiles(file_filter=_web_files_filter,
-                                    include_deletes=False)):
+        input_api.AffectedFiles(
+            file_filter=_web_files_filter, include_deletes=False
+        )
+    ):
         return []
 
     try:
         parts = [
             brave_chromium_utils.wspath(
-                '//brave/node_modules/@brave/leo/src/scripts/audit-tokens.js'),
+                '//brave/node_modules/@brave/leo/src/scripts/audit-tokens.js'
+            ),
             '--ignore',
             '.storybook-out',
         ]
@@ -74,20 +78,25 @@ def CheckTypeScriptSuppressionsHaveReasons(input_api, output_api):
         r'.+\.ts$',
         r'.+\.tsx$',
     )
-    file_filter = lambda f: input_api.FilterSourceFile(
-        f,
-        files_to_check=files_to_check,
-        files_to_skip=input_api.DEFAULT_FILES_TO_SKIP)
+
+    def file_filter(f):
+        return input_api.FilterSourceFile(
+            f,
+            files_to_check=files_to_check,
+            files_to_skip=input_api.DEFAULT_FILES_TO_SKIP,
+        )
 
     # Match suppression annotations not followed by any non-whitespace reason.
     missing_reason_pattern = input_api.re.compile(
-        r'//\s*@ts-(ignore|expect-error)(?!-)\s*$')
+        r'//\s*@ts-(ignore|expect-error)(?!-)\s*$'
+    )
     ts_ignore_pattern = input_api.re.compile(r'//\s*@ts-ignore(?!-)\b')
 
     missing_reason_problems = []
     ts_ignore_with_reason_items = []
-    for f in input_api.AffectedFiles(file_filter=file_filter,
-                                     include_deletes=False):
+    for f in input_api.AffectedFiles(
+        file_filter=file_filter, include_deletes=False
+    ):
         for line_num, line in f.ChangedContents():
             line_item = f'{f.LocalPath()}:{line_num}: {line.strip()}'
             if missing_reason_pattern.search(line):
@@ -115,7 +124,10 @@ def CheckTypeScriptSuppressionsHaveReasons(input_api, output_api):
                     'longer needed.\n'
                     'If you intend to remove the suppression and fix the '
                     'underlying issue later, add a TODO comment line to track '
-                    'follow-up work.\n')))
+                    'follow-up work.\n'
+                ),
+            )
+        )
 
     if ts_ignore_with_reason_items:
         results.append(
@@ -130,15 +142,19 @@ def CheckTypeScriptSuppressionsHaveReasons(input_api, output_api):
                     'for permanent suppression where it is important to be '
                     'aware about changes on the underlying assumptions that '
                     'made the suppression necessary. The use of @ts-ignore is '
-                    'allowed when appropriate though.')))
+                    'allowed when appropriate though.'
+                ),
+            )
+        )
 
     return results
 
+
 # Check and fix formatting issues (supports --fix).
-def CheckPatchFormatted(input_api, output_api):
+def CheckPatchFormattedBrave(input_api, output_api):
     cmd = [
-        brave_chromium_utils.wspath(
-            '//brave/build/commands/scripts/format.ts'), '--presubmit'
+        brave_chromium_utils.wspath('//brave/build/commands/scripts/format.ts'),
+        '--presubmit',
     ]
     if input_api.PRESUBMIT_ALL_BRAVE:
         cmd.append('--all-files')
@@ -153,7 +169,8 @@ def CheckPatchFormatted(input_api, output_api):
         return [
             output_api.PresubmitError(
                 f'The code requires formatting. '
-                f'Please run: pnpm run presubmit --fix.\n\n{err}')
+                f'Please run: pnpm run presubmit --fix.\n\n{err}'
+            )
         ]
 
 
@@ -162,7 +179,8 @@ def CheckESLint(input_api, output_api):
     if input_api.PRESUBMIT_ALL_BRAVE:
         cmd = [
             brave_chromium_utils.wspath(
-                '//brave/node_modules/eslint/bin/eslint.js'),
+                '//brave/node_modules/eslint/bin/eslint.js'
+            ),
             '--quiet',
             '.',
         ]
@@ -175,9 +193,9 @@ def CheckESLint(input_api, output_api):
             return [
                 output_api.PresubmitError(
                     f'ESLint issues found. '
-                    f'Run pnpm run eslint (--fix) to reproduce.\n\n{err}')
+                    f'Run pnpm run eslint (--fix) to reproduce.\n\n{err}'
+                )
             ]
-
 
     files_to_check = (
         r'.+\.js$',
@@ -188,25 +206,33 @@ def CheckESLint(input_api, output_api):
     )
     files_to_skip = input_api.DEFAULT_FILES_TO_SKIP
 
-    file_filter = lambda f: input_api.FilterSourceFile(
-        f, files_to_check=files_to_check, files_to_skip=files_to_skip)
-    files_to_check = input_api.AffectedFiles(file_filter=file_filter,
-                                             include_deletes=False)
+    def file_filter(f):
+        return input_api.FilterSourceFile(
+            f, files_to_check=files_to_check, files_to_skip=files_to_skip
+        )
+
+    files_to_check = input_api.AffectedFiles(
+        file_filter=file_filter, include_deletes=False
+    )
 
     with brave_chromium_utils.sys_path('//tools'):
         from web_dev_style import js_checker
-        return js_checker.JSChecker(input_api,
-                                    output_api).RunEsLintChecks(files_to_check)
+
+        return js_checker.JSChecker(input_api, output_api).RunEsLintChecks(
+            files_to_check
+        )
 
 
 def CheckWebDevStyle(input_api, output_api):
     with brave_chromium_utils.sys_path('//tools'):
         from web_dev_style import presubmit_support, js_checker
+
         # Disable RunEsLintChecks, it's run separately in CheckESLint.
         with override_utils.override_scope_function(
-                js_checker.JSChecker,
-                chromium_presubmit_overrides.noop_check,
-                name='RunEsLintChecks'):
+            js_checker.JSChecker,
+            chromium_presubmit_overrides.noop_check,
+            name='RunEsLintChecks',
+        ):
             return presubmit_support.CheckStyle(input_api, output_api)
 
 
@@ -219,18 +245,39 @@ def CheckPylint(input_api, output_api):
     disabled_warnings = [
         'import-outside-toplevel',
         'line-too-long',
+        # Kept off from pylintrc-2.7, which pylintrc-3.2 would enable.
+        'anomalous-backslash-in-string',
+        'bad-indentation',
+        'cell-var-from-loop',
+        'deprecated-method',
+        'deprecated-module',
+        'duplicate-code',
+        'eval-used',
+        'function-redefined',
+        'missing-module-docstring',
+        'no-self-argument',
+        'not-an-iterable',
+        'not-callable',
+        'protected-access',
+        'singleton-comparison',
+        'superfluous-parens',
+        'trailing-whitespace',
+        'undefined-variable',
+        'unused-import',
     ]
     return input_api.canned_checks.RunPylint(
         input_api,
         output_api,
         extra_paths_list=extra_paths_list,
-        disabled_warnings=disabled_warnings)
+        disabled_warnings=disabled_warnings,
+        version='3.2',
+    )
 
 
 def CheckLicense(input_api, output_api):
     """Verifies the Brave license header."""
 
-    files_to_check = input_api.DEFAULT_FILES_TO_CHECK + (r'.+\.gni?$', )
+    files_to_check = input_api.DEFAULT_FILES_TO_CHECK + (r'.+\.gni?$',)
     files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (
         r"ios/browser/api/brave_rewards/legacy_database/core_data_models/",
         r'win_build_output/',
@@ -245,25 +292,33 @@ def CheckLicense(input_api, output_api):
     # that's why we cannot force this regexp to have a precise year, also
     # uplifts may fail during year change period, so the year check is relaxed.
     new_file_license_re = input_api.re.compile(
-        (r'.*? Copyright \(c\) %(year)s The Brave Authors\. '
-         r'All rights reserved\.\n'
-         r'.*? This Source Code Form is subject to the terms of the '
-         r'Mozilla Public\n'
-         r'.*? License, v\. 2\.0\. If a copy of the MPL was not '
-         r'distributed with this file,\n'
-         r'.*? You can obtain one at https://mozilla.org/MPL/2\.0/\..*\n') %
-        {'year': years_re}, input_api.re.MULTILINE)
+        (
+            r'.*? Copyright \(c\) %(year)s The Brave Authors\. '
+            r'All rights reserved\.\n'
+            r'.*? This Source Code Form is subject to the terms of the '
+            r'Mozilla Public\n'
+            r'.*? License, v\. 2\.0\. If a copy of the MPL was not '
+            r'distributed with this file,\n'
+            r'.*? You can obtain one at https://mozilla.org/MPL/2\.0/\..*\n'
+        )
+        % {'year': years_re},
+        input_api.re.MULTILINE,
+    )
 
     # License regexp to match in EXISTING files, it allows some variance.
     existing_file_license_re = input_api.re.compile(
-        (r'.*? Copyright \(c\) %(year)s The Brave Authors\. '
-         r'All rights reserved\.\n'
-         r'.*? This Source Code Form is subject to the terms of the '
-         r'Mozilla Public\n'
-         r'.*? License, v\. 2\.0\. If a copy of the MPL was not '
-         r'distributed with this(\n.*?)? file,\n?'
-         r'.*? (y|Y)ou can obtain one at https?://mozilla.org/MPL/2\.0/\..*\n')
-        % {'year': years_re}, input_api.re.MULTILINE)
+        (
+            r'.*? Copyright \(c\) %(year)s The Brave Authors\. '
+            r'All rights reserved\.\n'
+            r'.*? This Source Code Form is subject to the terms of the '
+            r'Mozilla Public\n'
+            r'.*? License, v\. 2\.0\. If a copy of the MPL was not '
+            r'distributed with this(\n.*?)? file,\n?'
+            r'.*? (y|Y)ou can obtain one at https?://mozilla.org/MPL/2\.0/\..*\n'
+        )
+        % {'year': years_re},
+        input_api.re.MULTILINE,
+    )
 
     # License template for new files. Includes current year.
     expected_license_template = (
@@ -281,10 +336,14 @@ def CheckLicense(input_api, output_api):
 
     bad_new_files = []
     bad_files = []
-    sources = lambda affected_file: input_api.FilterSourceFile(
-        affected_file,
-        files_to_check=files_to_check,
-        files_to_skip=files_to_skip)
+
+    def sources(affected_file):
+        return input_api.FilterSourceFile(
+            affected_file,
+            files_to_check=files_to_check,
+            files_to_skip=files_to_skip,
+        )
+
     for f in input_api.AffectedSourceFiles(sources):
         contents = input_api.ReadFile(f, 'r')[:1000].replace('\r\n', '\n')
         if not contents:
@@ -297,52 +356,64 @@ def CheckLicense(input_api, output_api):
                 bad_files.append(f.LocalPath())
 
     splitted_expected_license_template = expected_license_template.replace(
-        "# ", "").split('\n')
+        "# ", ""
+    ).split('\n')
     multiline_comment_expected_license = (
         f'/* {splitted_expected_license_template[0]}\n'
         f' * {splitted_expected_license_template[1]}\n'
         f' * {splitted_expected_license_template[2]}\n'
-        f' * {splitted_expected_license_template[3]} */\n')
+        f' * {splitted_expected_license_template[3]} */\n'
+    )
     xml_multiline_comment_expected_license = (
         f'<!-- {splitted_expected_license_template[0]}\n'
         f'     {splitted_expected_license_template[1]}\n'
         f'     {splitted_expected_license_template[2]}\n'
-        f'     {splitted_expected_license_template[3]} -->\n')
+        f'     {splitted_expected_license_template[3]} -->\n'
+    )
     assert new_file_license_re.search(expected_license_template)
     assert existing_file_license_re.search(expected_license_template)
     assert new_file_license_re.search(multiline_comment_expected_license)
     assert existing_file_license_re.search(multiline_comment_expected_license)
     assert new_file_license_re.search(xml_multiline_comment_expected_license)
     assert existing_file_license_re.search(
-        xml_multiline_comment_expected_license)
+        xml_multiline_comment_expected_license
+    )
 
     # Show this to simplify copy-paste when an invalid license is found.
-    expected_licenses = (f'{expected_license_template.replace("#", "//")}\n'
-                         f'{multiline_comment_expected_license}\n'
-                         f'{expected_license_template}\n'
-                         f'{xml_multiline_comment_expected_license}')
+    expected_licenses = (
+        f'{expected_license_template.replace("#", "//")}\n'
+        f'{multiline_comment_expected_license}\n'
+        f'{expected_license_template}\n'
+        f'{xml_multiline_comment_expected_license}'
+    )
 
     result = []
     if bad_new_files:
         expected_license_message = (
             f'Expected one of license headers in new files:\n'
-            f'{expected_licenses}')
+            f'{expected_licenses}'
+        )
         result.append(
-            output_api.PresubmitError(expected_license_message,
-                                      items=bad_new_files))
+            output_api.PresubmitError(
+                expected_license_message, items=bad_new_files
+            )
+        )
     if bad_files:
         expected_license_message = (
             f'Expected one of license headers in existing files:\n'
-            f'{expected_licenses.replace(f"{current_year}", "<year>")}')
+            f'{expected_licenses.replace(f"{current_year}", "<year>")}'
+        )
         result.append(
-            output_api.PresubmitPromptWarning(expected_license_message,
-                                              items=bad_files))
+            output_api.PresubmitPromptWarning(
+                expected_license_message, items=bad_files
+            )
+        )
     return result
 
 
 def CheckNewThemeFilesForUpstreamOverride(input_api, output_api):
     """Checks newly added theme resources to ensure there is a corresponding
-       file in upstream, unless they are channel-specific assets """
+    file in upstream, unless they are channel-specific assets"""
 
     CHANNEL_DIRS = {'beta', 'dev', 'development', 'nightly'}
 
@@ -351,14 +422,18 @@ def CheckNewThemeFilesForUpstreamOverride(input_api, output_api):
         parts = path.split('/')
         # Example: app/theme/chromium/linux/product_logo_24_beta.png
         parts.extend(
-            input_api.os_path.splitext(
-                input_api.os_path.basename(path))[0].split('_'))
+            input_api.os_path.splitext(input_api.os_path.basename(path))[
+                0
+            ].split('_')
+        )
         return any(part in CHANNEL_DIRS for part in parts)
 
-    source_file_filter = lambda f: input_api.FilterSourceFile(
-        f,
-        files_to_check=[r"^app/theme/.*", r"^build/chromium/resources/.*"],
-        files_to_skip=input_api.DEFAULT_FILES_TO_SKIP)
+    def source_file_filter(f):
+        return input_api.FilterSourceFile(
+            f,
+            files_to_check=[r"^app/theme/.*", r"^build/chromium/resources/.*"],
+            files_to_skip=input_api.DEFAULT_FILES_TO_SKIP,
+        )
 
     new_sources = []
     for f in input_api.AffectedSourceFiles(source_file_filter):
@@ -399,7 +474,8 @@ def CheckNewThemeFilesForUpstreamOverride(input_api, output_api):
                 items=sorted(problems),
                 long_text='app/theme and build/chromium/resources should only '
                 'be used for overrides of upstream files. Channel-specific '
-                'theme assets (e.g., dev/beta/nightly) are exempt.')
+                'theme assets (e.g., dev/beta/nightly) are exempt.',
+            )
         ]
     return []
 
@@ -436,11 +512,11 @@ def CheckNalaIconOverridesExistUpstream(input_api, output_api):
     stems = [input_api.os_path.splitext(d)[0] for d in dests]
     pathspecs = ['*/%s.*' % stem for stem in stems]
     try:
-        tracked = input_api.subprocess.check_output([
-            'git', '-C',
-            brave_chromium_utils.get_src_dir(), 'ls-files', '--'
-        ] + pathspecs,
-                                                    encoding='utf-8')
+        tracked = input_api.subprocess.check_output(
+            ['git', '-C', brave_chromium_utils.get_src_dir(), 'ls-files', '--']
+            + pathspecs,
+            encoding='utf-8',
+        )
     except Exception:  # pylint: disable=broad-except
         # Upstream tree unavailable as a git repo (e.g. some CI envs); skip
         # rather than fail the build.
@@ -451,7 +527,8 @@ def CheckNalaIconOverridesExistUpstream(input_api, output_api):
         if '/res' not in line:  # Limit to Android resource dirs.
             continue
         found_stems.add(
-            input_api.os_path.splitext(input_api.os_path.basename(line))[0])
+            input_api.os_path.splitext(input_api.os_path.basename(line))[0]
+        )
 
     missing = [d for d, stem in zip(dests, stems) if stem not in found_stems]
     if missing:
@@ -463,7 +540,8 @@ def CheckNalaIconOverridesExistUpstream(input_api, output_api):
                 'android/nala/icons.gni but no longer exist in upstream '
                 'Chromium (likely removed in a Chromium roll). Remove the '
                 'stale entries from nala_icon_overrides / '
-                'nala_icon_raster_overrides.')
+                'nala_icon_raster_overrides.',
+            )
         ]
     return []
 
@@ -489,8 +567,9 @@ def CheckNalaRasterOverridesMatchUpstream(input_api, output_api):
 
     # Parse the raster override list: a GN list of scopes, each with a source
     # vector, a dest drawable name, and the density buckets to generate.
-    block = re.search(r'nala_icon_raster_overrides\s*=\s*\[(.*?)\n\]',
-                      gni_contents, re.DOTALL)
+    block = re.search(
+        r'nala_icon_raster_overrides\s*=\s*\[(.*?)\n\]', gni_contents, re.DOTALL
+    )
     if not block:
         return []
     overrides = []
@@ -499,11 +578,15 @@ def CheckNalaRasterOverridesMatchUpstream(input_api, output_api):
         dest = re.search(r'dest\s*=\s*"([^"]+)"', scope)
         densities = re.search(r'densities\s*=\s*\[(.*?)\]', scope, re.DOTALL)
         if source and dest and densities:
-            overrides.append({
-                'source': source.group(1),
-                'dest': dest.group(1),
-                'densities': set(re.findall(r'"([^"]+)"', densities.group(1))),
-            })
+            overrides.append(
+                {
+                    'source': source.group(1),
+                    'dest': dest.group(1),
+                    'densities': set(
+                        re.findall(r'"([^"]+)"', densities.group(1))
+                    ),
+                }
+            )
     if not overrides:
         return []
 
@@ -512,7 +595,8 @@ def CheckNalaRasterOverridesMatchUpstream(input_api, output_api):
     try:
         tracked = input_api.subprocess.check_output(
             ['git', '-C', src_dir, 'ls-files', '--'] + pathspecs,
-            encoding='utf-8')
+            encoding='utf-8',
+        )
     except Exception:  # pylint: disable=broad-except
         # Upstream tree unavailable as a git repo (e.g. some CI envs); skip.
         return []
@@ -522,8 +606,7 @@ def CheckNalaRasterOverridesMatchUpstream(input_api, output_api):
     for line in tracked.splitlines():
         if '/res' not in line:  # Limit to Android resource dirs.
             continue
-        bucket_dir = input_api.os_path.basename(
-            input_api.os_path.dirname(line))
+        bucket_dir = input_api.os_path.basename(input_api.os_path.dirname(line))
         if not bucket_dir.startswith('drawable'):
             continue
         stem = input_api.os_path.basename(line).split('.')[0]
@@ -540,8 +623,9 @@ def CheckNalaRasterOverridesMatchUpstream(input_api, output_api):
 
         # The upstream icon must still be PNG-only. A vector form (.xml,
         # including anydpi) means it should move to nala_icon_overrides.
-        vectors = sorted(f for f in files
-                         if input_api.os_path.splitext(f)[1] == '.xml')
+        vectors = sorted(
+            f for f in files if input_api.os_path.splitext(f)[1] == '.xml'
+        )
         if vectors:
             problems.append(
                 output_api.PresubmitError(
@@ -551,14 +635,17 @@ def CheckNalaRasterOverridesMatchUpstream(input_api, output_api):
                     long_text='Upstream now provides %s as a VectorDrawable. '
                     'Move it from nala_icon_raster_overrides to '
                     'nala_icon_overrides (a default-bucket vector override) '
-                    'instead of generating PNGs.' % dest))
+                    'instead of generating PNGs.' % dest,
+                )
+            )
             continue
 
         # The density buckets generated must match upstream exactly.
         upstream_buckets = {}
         for f in files:
-            bucket = input_api.os_path.basename(
-                input_api.os_path.dirname(f))[len('drawable'):].lstrip('-')
+            bucket = input_api.os_path.basename(input_api.os_path.dirname(f))[
+                len('drawable') :
+            ].lstrip('-')
             upstream_buckets[bucket] = f
         missing = set(upstream_buckets) - override['densities']
         extra = override['densities'] - set(upstream_buckets)
@@ -570,20 +657,28 @@ def CheckNalaRasterOverridesMatchUpstream(input_api, output_api):
                     long_text='The densities list for %s in '
                     'android/nala/icons.gni must match the upstream buckets. '
                     'Upstream-only (override missing): %s. Override-only '
-                    '(stale): %s.' % (dest, sorted(missing)
-                                      or 'none', sorted(extra) or 'none')))
+                    '(stale): %s.'
+                    % (
+                        dest,
+                        sorted(missing) or 'none',
+                        sorted(extra) or 'none',
+                    ),
+                )
+            )
 
     return problems
 
 
 def CheckNewSourceFileWithoutGnChangeOnUpload(input_api, output_api):
     """Checks newly added source files have corresponding GN changes."""
-    files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (r"chromium_src/.*", )
+    files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (r"chromium_src/.*",)
 
-    source_file_filter = lambda f: input_api.FilterSourceFile(
-        f,
-        files_to_check=(r'.+\.cc$', r'.+\.c$', r'.+\.mm$', r'.+\.m$'),
-        files_to_skip=files_to_skip)
+    def source_file_filter(f):
+        return input_api.FilterSourceFile(
+            f,
+            files_to_check=(r'.+\.cc$', r'.+\.c$', r'.+\.mm$', r'.+\.m$'),
+            files_to_skip=files_to_skip,
+        )
 
     new_sources = []
     for f in input_api.AffectedSourceFiles(source_file_filter):
@@ -591,8 +686,10 @@ def CheckNewSourceFileWithoutGnChangeOnUpload(input_api, output_api):
             continue
         new_sources.append(f.LocalPath())
 
-    gn_file_filter = lambda f: input_api.FilterSourceFile(
-        f, files_to_check=(r'.+\.gn$', r'.+\.gni$'))
+    def gn_file_filter(f):
+        return input_api.FilterSourceFile(
+            f, files_to_check=(r'.+\.gn$', r'.+\.gni$')
+        )
 
     all_gn_changed_contents = ''
     for f in input_api.AffectedSourceFiles(gn_file_filter):
@@ -610,9 +707,9 @@ def CheckNewSourceFileWithoutGnChangeOnUpload(input_api, output_api):
             output_api.PresubmitError(
                 'Missing GN changes for new .cc/.c/.mm/.m source files',
                 items=sorted(problems),
-                long_text=
-                'Please double check whether newly added source files need '
-                'corresponding changes in gn or gni files.')
+                long_text='Please double check whether newly added source files need '
+                'corresponding changes in gn or gni files.',
+            )
         ]
     return []
 
@@ -626,26 +723,51 @@ def CheckPlasterFiles(input_api, output_api):
     have a Plaster file.
     """
 
+    # The repositories file names the repository every plaster targets, so a
+    # change to it is a change to all of them.
+    repositories_file = "patches/.repositories.cfg"
+
     affected_files = []
     for f in input_api.AffectedFiles(include_deletes=True):
-        local_path = f.LocalPath()
-        if (local_path.startswith("patches/") and local_path.endswith(".patch")
-            ) or (local_path.startswith("rewrite/")
-                  and local_path.endswith(".toml")):
+        local_path = f.LocalPath().replace(os.sep, "/")
+        if (
+            (
+                local_path.startswith("patches/")
+                and local_path.endswith(".patch")
+            )
+            or (
+                local_path.startswith("rewrite/")
+                and local_path.endswith(".yaml")
+            )
+            or local_path == repositories_file
+        ):
             affected_files.append(local_path)
 
     if not affected_files:
         return []
 
-    cmd = [input_api.python3_executable, 'tools/cr/plaster.py', 'check'
-           ] + affected_files
+    # Pass the paths through a response file, as a large change (e.g. a
+    # Chromium rebase) exceeds the Windows command line length limit.
+    with input_api.CreateTemporaryFile(mode='w', suffix='.txt') as f:
+        f.write('\n'.join(affected_files))
+
+    cmd = [
+        input_api.python3_executable,
+        'tools/cr/plaster.py',
+        'check',
+        f'@{f.name}',
+    ]
     kwargs = {'cwd': input_api.PresubmitLocalPath()}
-    return input_api.RunTests([
-        input_api.Command(name='plaster_check',
-                          cmd=cmd,
-                          kwargs=kwargs,
-                          message=output_api.PresubmitError),
-    ])
+    return input_api.RunTests(
+        [
+            input_api.Command(
+                name='plaster_check',
+                cmd=cmd,
+                kwargs=kwargs,
+                message=output_api.PresubmitError,
+            ),
+        ]
+    )
 
 
 def CheckJson5ParseErrors(input_api, output_api):
@@ -661,15 +783,35 @@ def CheckJson5ParseErrors(input_api, output_api):
         return affected_file.LocalPath().endswith('.json5')
 
     results = []
-    for affected_file in input_api.AffectedFiles(file_filter=_is_json5,
-                                                 include_deletes=False):
+    for affected_file in input_api.AffectedFiles(
+        file_filter=_is_json5, include_deletes=False
+    ):
         try:
             json5.loads(input_api.ReadFile(affected_file))
         except ValueError as e:
             results.append(
                 output_api.PresubmitError(
-                    f'{affected_file.LocalPath()} could not be parsed: {e}'))
+                    f'{affected_file.LocalPath()} could not be parsed: {e}'
+                )
+            )
     return results
+
+
+def CheckNoCommittedSecretsFiles(input_api, output_api):
+    """Refuses a committed `secrets.gni` anywhere in the tree."""
+    offending = [
+        f.LocalPath()
+        for f in input_api.AffectedFiles(include_deletes=False)
+        if f.LocalPath().endswith('secrets.gni')
+    ]
+    if not offending:
+        return []
+    return [
+        output_api.PresubmitError(
+            'secret values must never be checked in; found:\n  '
+            + '\n  '.join(offending)
+        )
+    ]
 
 
 # DON'T ADD NEW BRAVE CHECKS AFTER THIS LINE.
@@ -677,71 +819,80 @@ def CheckJson5ParseErrors(input_api, output_api):
 # This call inlines Chromium checks into current scope from src/PRESUBMIT.py. We
 # do this to have the right order of checks, so all `--fix`-aware checks are
 # executed first.
-chromium_presubmit_overrides.inline_presubmit('//PRESUBMIT.py', globals(),
-                                              locals())
+chromium_presubmit_overrides.inline_presubmit(
+    '//PRESUBMIT.py', globals(), locals()
+)
 
 # pyright: reportUnboundVariable=false, reportUndefinedVariable=false
 
-_BANNED_JAVA_FUNCTIONS += (BanRule(
-    r'/(BraveLeoPrefUtils|Utils)\.getProfile\(\)',
-    ('Prefer passing in the Profile reference instead of relying on the '
-     'static getProfile() call. Only top level entry points '
-     '(e.g. Activities) should call ProfileManager.getLastUsedRegularProfile '
-     'instead. Otherwise, the Profile should either be passed in explicitly '
-     'or retreived from an existing entity with a reference to the Profile '
-     '(e.g. WebContents). This is a warning only for existing usages, new '
-     'usages are strictly banned.', ),
-    False,
-    excluded_paths=(r'.*Test[A-Z]?.*\.java', ),
-), )
+_BANNED_JAVA_FUNCTIONS += (
+    BanRule(
+        r'/(BraveLeoPrefUtils|Utils)\.getProfile\(\)',
+        (
+            'Prefer passing in the Profile reference instead of relying on the '
+            'static getProfile() call. Only top level entry points '
+            '(e.g. Activities) should call ProfileManager.getLastUsedRegularProfile '
+            'instead. Otherwise, the Profile should either be passed in explicitly '
+            'or retreived from an existing entity with a reference to the Profile '
+            '(e.g. WebContents). This is a warning only for existing usages, new '
+            'usages are strictly banned.',
+        ),
+        False,
+        excluded_paths=(r'.*Test[A-Z]?.*\.java',),
+    ),
+)
 
 _BANNED_CPP_FUNCTIONS += (
     BanRule(
         r'/\b(Basic|W)?StringPiece(16)?\b',
-        ('Use std::string_view instead', ),
+        ('Use std::string_view instead',),
         True,
         [_THIRD_PARTY_EXCEPT_BLINK],  # Don't warn in third_party folders.
     ),
     BanRule(
         'base::PathService::Get',
-        ('Prefer using base::PathService::CheckedGet() instead', ),
+        ('Prefer using base::PathService::CheckedGet() instead',),
         treat_as_error=False,
         excluded_paths=[_THIRD_PARTY_EXCEPT_BLINK],
     ),
     BanRule(
         r'/\bEnableStackLogging\(\)',
-        ('Do not commit EnableStackLogging() call, it\'s not intended '
-         'for production use', ),
+        (
+            'Do not commit EnableStackLogging() call, it\'s not intended '
+            'for production use',
+        ),
         treat_as_error=True,
         excluded_paths=[_THIRD_PARTY_EXCEPT_BLINK],
     ),
     BanRule(
         r'/\bAllowInjectingJavaScript\(\)',
-        ('ExecuteJavaScript() should not be used outside of chrome:// urls. If '
-         'you must inject into the main world, consider using '
-         'script_injector::ScriptInjector::RequestAsyncExecuteScript(...) '
-         'instead. This is a warning only for existing usages, new usages are '
-         'strictly banned.', ),
+        (
+            'ExecuteJavaScript() should not be used outside of chrome:// urls. If '
+            'you must inject into the main world, consider using '
+            'script_injector::ScriptInjector::RequestAsyncExecuteScript(...) '
+            'instead. This is a warning only for existing usages, new usages are '
+            'strictly banned.',
+        ),
         treat_as_error=False,
     ),
     BanRule(
         pattern=r'//\s*nogncheck(\s|$)',
-        explanation=
-        ('Avoid suppressing gn checks with `nogncheck` comments, and only do '
-         'it if it is absolutely necessary. Make sure that this is not the '
-         'case that the exclusion for the inclusion line has in the C++ source '
-         'has a mismatch with what is being included/excluded in the gn file.',
-         ),
+        explanation=(
+            'Avoid suppressing gn checks with `nogncheck` comments, and only do '
+            'it if it is absolutely necessary. Make sure that this is not the '
+            'case that the exclusion for the inclusion line has in the C++ source '
+            'has a mismatch with what is being included/excluded in the gn file.',
+        ),
         treat_as_error=False,
     ),
     BanRule(
         'base::StringPrintf',
-        explanation=('Please use `absl::StrFormat` rather.', ),
+        explanation=('Please use `absl::StrFormat` rather.',),
         treat_as_error=False,
     ),
     BanRule(
         'base::StringAppendF',
-        explanation=('Please use `absl::StrAppendFormat` rather.', ),
+        explanation=('Please use `absl::StrAppendFormat` rather.',),
         treat_as_error=False,
     ),
     BanRule(
@@ -763,15 +914,18 @@ _BANNED_CPP_FUNCTIONS += (
 def ApplyBanRuleExcludes():
     # Collect all _BANNED_* variables declared in //PRESUBMIT.py.
     ban_rule_lists = [
-        value for name, value in globals().items()
+        value
+        for name, value in globals().items()
         if name.startswith('_BANNED_')
-        and isinstance(value, collections.abc.Sequence) and len(value) > 0
+        and isinstance(value, collections.abc.Sequence)
+        and len(value) > 0
         and isinstance(value[0], BanRule)
     ]
 
     # Get additional excluded paths from the config.
     ban_rule_excluded_paths = chromium_presubmit_overrides.config.get(
-        'ban_rule_excluded_paths')
+        'ban_rule_excluded_paths'
+    )
 
     # Add excluded paths to BanRule instances.
     all_patterns = {*ban_rule_excluded_paths.keys()}
@@ -784,15 +938,16 @@ def ApplyBanRuleExcludes():
 
             used_patterns.add(ban_rule.pattern)
             if ban_rule.excluded_paths is None:
-                ban_rule.excluded_paths = (*excluded_paths, )
+                ban_rule.excluded_paths = (*excluded_paths,)
             else:
-                ban_rule.excluded_paths += (*excluded_paths, )
+                ban_rule.excluded_paths += (*excluded_paths,)
 
     # Fail if some pattern was not used.
     unused_patterns = all_patterns - used_patterns
     if unused_patterns:
-        raise RuntimeError(f'ERROR: Unused ban_rule_excluded_paths patterns: '
-                           f'{unused_patterns}')
+        raise RuntimeError(
+            f'ERROR: Unused ban_rule_excluded_paths patterns: {unused_patterns}'
+        )
 
 
 ApplyBanRuleExcludes()
@@ -809,12 +964,11 @@ def CheckForIncludeGuards(original_check, input_api, output_api, **kwargs):
             return affected_file
 
         return [
-            PrependBrave(f) for f in filter(self.FilterSourceFile,
-                                            original_method(source_file))
+            PrependBrave(f)
+            for f in filter(self.FilterSourceFile, original_method(source_file))
         ]
 
-    with override_utils.override_scope_function(input_api,
-                                                AffectedSourceFiles):
+    with override_utils.override_scope_function(input_api, AffectedSourceFiles):
         return original_check(input_api, output_api, **kwargs)
 
 
@@ -849,19 +1003,19 @@ def _ChangeHasSecurityReviewer(*_):
 
 @chromium_presubmit_overrides.override_check(globals())
 def CheckJavaStyle(_original_check, input_api, output_api):
-    """ Copy of upstream's CheckJavaStyle. The only difference - it uses
+    """Copy of upstream's CheckJavaStyle. The only difference - it uses
     brave/tools/android/checkstyle/brave-style-5.0.xml style file where all
     errors are replaced with warnings except UnusedImports.
     When all style error will be fixed, this function should be removed and
-    the original function from upstream must be used again """
+    the original function from upstream must be used again"""
 
     def _IsJavaFile(input_api, file_path):
         return input_api.os_path.splitext(file_path)[1] == ".java"
 
     # Return early if no java files were modified.
     if not any(
-            _IsJavaFile(input_api, f.LocalPath())
-            for f in input_api.AffectedFiles()):
+        _IsJavaFile(input_api, f.LocalPath()) for f in input_api.AffectedFiles()
+    ):
         return []
 
     # Allow the check on Linux and macOS.
@@ -870,8 +1024,14 @@ def CheckJavaStyle(_original_check, input_api, output_api):
 
     # The JDK may not be available on macOS CI (upstream only checks it out on
     # Linux/Android). Silently skip when the binary is missing.
-    jdk_java = os.path.join(input_api.PresubmitLocalPath(), 'third_party',
-                            'jdk', 'current', 'bin', 'java')
+    jdk_java = os.path.join(
+        input_api.PresubmitLocalPath(),
+        'third_party',
+        'jdk',
+        'current',
+        'bin',
+        'java',
+    )
     if not os.path.isfile(jdk_java):
         return []
 
@@ -882,17 +1042,24 @@ def CheckJavaStyle(_original_check, input_api, output_api):
 
     # Filter out non-Java files and files that were deleted.
     java_files = [
-        x.AbsoluteLocalPath() for x in input_api.AffectedSourceFiles(
-            lambda f: input_api.FilterSourceFile(f,
-                                                 files_to_skip=files_to_skip))
+        x.AbsoluteLocalPath()
+        for x in input_api.AffectedSourceFiles(
+            lambda f: input_api.FilterSourceFile(f, files_to_skip=files_to_skip)
+        )
         if x.LocalPath().endswith('.java')
     ]
     if not java_files:
         return []
 
     local_path = os.path.join(input_api.PresubmitLocalPath(), 'brave')
-    style_file = os.path.join(input_api.PresubmitLocalPath(), 'brave', 'tools',
-                              'android', 'checkstyle', 'brave-style-5.0.xml')
+    style_file = os.path.join(
+        input_api.PresubmitLocalPath(),
+        'brave',
+        'tools',
+        'android',
+        'checkstyle',
+        'brave-style-5.0.xml',
+    )
     violations = checkstyle.run_checkstyle(local_path, style_file, java_files)  # pylint: disable=no-member
     warnings = ['  ' + str(v) for v in violations if v.is_warning()]
     errors = ['  ' + str(v) for v in violations if v.is_error()]
@@ -915,12 +1082,14 @@ def CheckTodoBugReferences(_original_check, input_api, output_api):
     """Checks that bugs in TODOs use updated issue tracker IDs."""
 
     files_to_skip = [
-        'PRESUBMIT_test.py', r"^third_party/rust/chromium_crates_io/vendor/.*"
+        'PRESUBMIT_test.py',
+        r"^third_party/rust/chromium_crates_io/vendor/.*",
     ]
 
     def _FilterFile(affected_file):
-        return input_api.FilterSourceFile(affected_file,
-                                          files_to_skip=files_to_skip)
+        return input_api.FilterSourceFile(
+            affected_file, files_to_skip=files_to_skip
+        )
 
     # Check for bug link in TODO comments. A valid reference is either a full
     # brave-browser issue URL or a brave.dev short link (brave.dev/bug/<id> or
@@ -928,7 +1097,8 @@ def CheckTodoBugReferences(_original_check, input_api, output_api):
     pattern = input_api.re.compile(r'.*\bTODO\((.+)\).*')
     bug_ref_pattern = input_api.re.compile(
         r'(?:https://)?github\.com/brave/brave-browser/issues/'
-        r'|(?:https://)?brave\.dev/(?:bug|b)/\d+')
+        r'|(?:https://)?brave\.dev/(?:bug|b)/\d+'
+    )
     problems = []
     for f in input_api.AffectedSourceFiles(_FilterFile):
         for line_number, line in f.ChangedContents():
@@ -941,7 +1111,9 @@ def CheckTodoBugReferences(_original_check, input_api, output_api):
             output_api.PresubmitPromptWarning(
                 'TODO comments must be accompanied with a valid brave-browser '
                 'issue, e.g. https://github.com/brave/brave-browser/issues/123,'
-                ' brave.dev/bug/123 or brave.dev/b/123.', problems)
+                ' brave.dev/bug/123 or brave.dev/b/123.',
+                problems,
+            )
         ]
     return []
 

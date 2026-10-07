@@ -21,6 +21,7 @@
 #include "components/favicon/core/test/mock_favicon_service.h"
 #include "components/pdf/common/constants.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/reload_type.h"
 #include "content/public/test/navigation_simulator.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
@@ -158,6 +159,7 @@ class MockAssociatedContentObserver
   ~MockAssociatedContentObserver() override = default;
 
   MOCK_METHOD(void, OnRequestArchive, (AssociatedContentDelegate*), (override));
+  MOCK_METHOD(void, OnNewPage, (AssociatedContentDelegate*), (override));
 };
 
 class AssociatedWebContentsContentUnitTest
@@ -345,6 +347,67 @@ TEST_P(AssociatedWebContentsContentUnitTest, OnNewPage) {
   testing::Mock::VerifyAndClearExpectations(&observer_);
 }
 
+TEST_P(AssociatedWebContentsContentUnitTest, Reload_KeepsContentAssociated) {
+  NavigateTo(GURL("https://www.brave.com"));
+  const std::string uuid = web_contents_content_->uuid();
+
+  // A reload is the same logical page, so it is neither archived nor treated
+  // as a new page.
+  EXPECT_CALL(*observer_, OnRequestArchive).Times(0);
+  EXPECT_CALL(*observer_, OnNewPage).Times(0);
+  content::NavigationSimulator::Reload(web_contents());
+  testing::Mock::VerifyAndClearExpectations(observer_.get());
+
+  // The reload reuses the navigation entry, so the content id is unchanged.
+  EXPECT_EQ(uuid, web_contents_content_->uuid());
+  EXPECT_EQ(controller().GetLastCommittedEntry()->GetUniqueID(),
+            web_contents_content_->content_id());
+  EXPECT_EQ(GURL("https://www.brave.com"), web_contents_content_->url());
+}
+
+TEST_P(AssociatedWebContentsContentUnitTest,
+       Reload_RedirectIsTreatedAsANewPage) {
+  NavigateTo(GURL("https://www.brave.com"));
+  const std::string uuid = web_contents_content_->uuid();
+
+  // A reload that redirects elsewhere lands on a different page, so it is
+  // archived and re-identified like any other navigation.
+  EXPECT_CALL(*observer_, OnRequestArchive).Times(1);
+  auto simulator = content::NavigationSimulator::CreateBrowserInitiated(
+      GURL("https://www.brave.com"), web_contents());
+  simulator->SetReloadType(content::ReloadType::NORMAL);
+  simulator->Start();
+  simulator->Redirect(GURL("https://www.example.com/login"));
+  simulator->Commit();
+  testing::Mock::VerifyAndClearExpectations(observer_.get());
+
+  EXPECT_NE(uuid, web_contents_content_->uuid());
+  EXPECT_EQ(GURL("https://www.example.com/login"),
+            web_contents_content_->url());
+}
+
+TEST_P(AssociatedWebContentsContentUnitTest,
+       Reload_NavigatingToSameUrlIsNotAReload) {
+  NavigateTo(GURL("https://www.brave.com"));
+
+  // Navigating to the URL the tab is already on is a new page, not a reload.
+  EXPECT_CALL(*observer_, OnRequestArchive).Times(1);
+  NavigateTo(GURL("https://www.brave.com"));
+}
+
+TEST_P(AssociatedWebContentsContentUnitTest,
+       Reload_BrowserInitiatedNavigationToSameUrlKeepsContentIdInSync) {
+  NavigateTo(GURL("https://www.brave.com"));
+
+  // A browser-initiated navigation to the current URL is converted to a
+  // reload, and Chromium reassigns the committed entry's unique id at commit
+  // time, so the content must not keep its previous id.
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(
+      web_contents(), GURL("https://www.brave.com"));
+  EXPECT_EQ(controller().GetLastCommittedEntry()->GetUniqueID(),
+            web_contents_content_->content_id());
+}
+
 TEST_P(AssociatedWebContentsContentUnitTest, GetPageContent_HasContent) {
   constexpr char kExpectedText[] = "This is the way.";
   // Add whitespace to ensure it's trimmed
@@ -497,7 +560,7 @@ TEST_P(AssociatedWebContentsContentUnitTest,
        GetPageContent_NoFallbackWhenNotPDF) {
   NavigateTo(GURL("https://www.brave.com"));
 #if BUILDFLAG(ENABLE_PDF)
-  ASSERT_FALSE(pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents()));
+  ASSERT_FALSE(pdf::PDFDocumentHelper::MaybeGetForWebContents(*web_contents()));
 #endif  // BUILDFLAG(ENABLE_PDF)
 
   content::WebContentsTester::For(web_contents())

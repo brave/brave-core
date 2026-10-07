@@ -25,7 +25,15 @@ export function ProductCard(props: Props) {
     <div
       data-css-scope={style.scope}
       className={props.checked ? undefined : 'unchecked'}
-      onClick={() => props.onChange(!props.checked)}
+      onClick={(event) => {
+        if (
+          event.target instanceof Element
+          && event.target.closest('leo-checkbox')
+        ) {
+          return
+        }
+        props.onChange(!props.checked)
+      }}
     >
       <img src={props.image} />
       <div className='text'>

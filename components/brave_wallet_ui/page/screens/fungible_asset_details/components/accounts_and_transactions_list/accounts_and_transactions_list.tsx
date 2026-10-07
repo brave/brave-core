@@ -35,30 +35,23 @@ import { PortfolioAssetOptions } from '../../../../../options/nav-options'
 // Components
 import {
   PortfolioAccountItem, //
-} from '../../../../../components/desktop/portfolio-account-item/index'
+} from '../portfolio_account_item/portfolio_account_item'
 import {
   SegmentedControl, //
 } from '../../../../../components/shared/segmented_control/segmented_control'
-import {
-  SellAssetModal, //
-} from '../../../../../components/desktop/popup-modals/sell-asset-modal/sell-asset-modal'
 import { LoadingSkeleton } from '../../../../../components/shared/loading-skeleton/index'
 import {
   VirtualizedTransactionList, //
-} from '../../../../../components/desktop/virtualized_transaction_list/virtualized_transaction_list'
+} from '$wallet/page/components/virtualized_transaction_list/virtualized_transaction_list'
 import {
   TransactionDetailsModal, //
 } from '../../../../../components/desktop/popup-modals/transaction_details_modal/transaction_details_modal'
 
 // Hooks
 import {
-  useMultiChainSellAssets, //
-} from '../../../../../common/hooks/use-multi-chain-sell-assets'
-import {
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
   useGetRewardsInfoQuery,
-  useGetSelectedChainQuery,
 } from '../../../../../common/slices/api.slice'
 import {
   TokenBalancesRegistry, //
@@ -70,10 +63,10 @@ import {
 // Styled Components
 import {
   ToggleVisibilityButton,
-  EmptyTransactionsIcon,
   EmptyAccountsIcon,
   EyeIcon,
 } from './accounts_and_transactions_list.style'
+import { EmptyTransactionsIcon } from '../../../page-screen.styles'
 import {
   Column,
   Text,
@@ -113,26 +106,12 @@ export const AccountsAndTransactionsList = ({
 
   // queries
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
-  const { data: selectedAssetNetwork } = useGetNetworkQuery(
-    selectedAsset ?? skipToken,
-  )
+  const { data: assetNetwork } = useGetNetworkQuery(selectedAsset ?? skipToken)
   const {
     data: { balance: rewardsBalance, rewardsAccount } = emptyRewardsInfo,
   } = useGetRewardsInfoQuery()
 
-  // hooks
-  const {
-    checkIsAssetSellSupported,
-    sellAmount,
-    setSellAmount,
-    openSellAssetLink,
-  } = useMultiChainSellAssets()
-
   // state
-  const [selectedSellAccount, setSelectedSellAccount] =
-    React.useState<BraveWallet.AccountInfo>()
-  const [showSellModal, setShowSellModal] = React.useState<boolean>(false)
   const [selectedTransaction, setSelectedTransaction] =
     React.useState<SerializableTransactionInfo>()
 
@@ -197,20 +176,6 @@ export const AccountsAndTransactionsList = ({
   }, [selectedAssetTransactions])
 
   // Methods
-  const onShowSellModal = React.useCallback(
-    (account: BraveWallet.AccountInfo) => {
-      setSelectedSellAccount(account)
-      setShowSellModal(true)
-    },
-    [],
-  )
-
-  const onOpenSellAssetLink = React.useCallback(() => {
-    openSellAssetLink({
-      sellAsset: selectedAsset,
-    })
-  }, [selectedAsset, openSellAssetLink])
-
   const onToggleHideBalances = React.useCallback(() => {
     setHidePortfolioBalances((prev) => !prev)
   }, [setHidePortfolioBalances])
@@ -249,7 +214,7 @@ export const AccountsAndTransactionsList = ({
             textColor='primary'
             textSize='16px'
           >
-            {getLocale('braveWalletAccounts')}
+            {getLocale(S.BRAVE_WALLET_ACCOUNTS)}
           </Text>
           <div>
             <LoadingSkeleton
@@ -336,7 +301,7 @@ export const AccountsAndTransactionsList = ({
                       textColor='primary'
                       textSize='16px'
                     >
-                      {getLocale('braveWalletAccounts')}
+                      {getLocale(S.BRAVE_WALLET_ACCOUNTS)}
                     </Text>
                     {!isRewardsToken && (
                       <Row
@@ -359,7 +324,7 @@ export const AccountsAndTransactionsList = ({
                               textSize='14px'
                             >
                               {'('
-                                + fullAssetFiatBalance.formatAsFiat(
+                                + fullAssetFiatBalance.compactAsFiat(
                                   defaultFiatCurrency,
                                 )
                                 + ')'}
@@ -401,9 +366,7 @@ export const AccountsAndTransactionsList = ({
                               tokenBalancesRegistry,
                             )
                       }
-                      selectedNetwork={selectedAssetNetwork || selectedNetwork}
-                      showSellModal={() => onShowSellModal(account)}
-                      isSellSupported={checkIsAssetSellSupported(selectedAsset)}
+                      assetNetwork={assetNetwork}
                       hideBalances={hidePortfolioBalances}
                     />
                   ))}
@@ -420,7 +383,7 @@ export const AccountsAndTransactionsList = ({
                     textSize='16px'
                     isBold={true}
                   >
-                    {getLocale('braveWalletNoAccountsWithABalance')}
+                    {getLocale(S.BRAVE_WALLET_NO_ACCOUNTS_WITH_A_BALANCE)}
                   </Text>
                   <VerticalSpacer space={10} />
                   <Text
@@ -428,7 +391,9 @@ export const AccountsAndTransactionsList = ({
                     textColor='tertiary'
                     isBold={false}
                   >
-                    {getLocale('braveWalletNoAccountsWithABalanceDescription')}
+                    {getLocale(
+                      S.BRAVE_WALLET_NO_ACCOUNTS_WITH_A_BALANCE_DESCRIPTION,
+                    )}
                   </Text>
                 </Column>
               )}
@@ -460,7 +425,7 @@ export const AccountsAndTransactionsList = ({
                     textSize='16px'
                     isBold={true}
                   >
-                    {getLocale('braveWalletNoTransactionsYet')}
+                    {getLocale(S.BRAVE_WALLET_NO_TRANSACTIONS_YET)}
                   </Text>
                   <VerticalSpacer space={10} />
                   <Text
@@ -468,7 +433,7 @@ export const AccountsAndTransactionsList = ({
                     textColor='tertiary'
                     isBold={false}
                   >
-                    {getLocale('braveWalletNoTransactionsYetDescription')}
+                    {getLocale(S.BRAVE_WALLET_NO_TRANSACTIONS_YET_DESCRIPTION)}
                   </Text>
                 </Column>
               )}
@@ -480,22 +445,6 @@ export const AccountsAndTransactionsList = ({
         <TransactionDetailsModal
           onClose={() => setSelectedTransaction(undefined)}
           transaction={selectedTransaction}
-        />
-      )}
-      {showSellModal && selectedAsset && (
-        <SellAssetModal
-          selectedAsset={selectedAsset}
-          onClose={() => setShowSellModal(false)}
-          sellAmount={sellAmount}
-          setSellAmount={setSellAmount}
-          openSellAssetLink={onOpenSellAssetLink}
-          showSellModal={showSellModal}
-          account={selectedSellAccount}
-          sellAssetBalance={getBalance(
-            selectedSellAccount?.accountId,
-            selectedAsset,
-            tokenBalancesRegistry,
-          )}
         />
       )}
     </>

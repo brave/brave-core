@@ -31,7 +31,7 @@ class BraveTranslateSession {
     from source: Locale.Language,
     to target: Locale.Language
   ) async -> Bool {
-    if #available(iOS 18.0, *), FeatureList.kBraveAppleTranslateEnabled.enabled {
+    if FeatureList.kBraveAppleTranslateEnabled.enabled {
       #if !targetEnvironment(simulator)
       let availability = LanguageAvailability()
       let status = await availability.status(from: source, to: target)
@@ -77,7 +77,7 @@ struct BraveTranslateContainerView: View {
   var body: some View {
     Color.clear
       .osAvailabilityModifiers({ view in
-        if #available(iOS 18.0, *), FeatureList.kBraveAppleTranslateEnabled.enabled {
+        if FeatureList.kBraveAppleTranslateEnabled.enabled {
           #if !targetEnvironment(simulator)
           view
             .translationTask(

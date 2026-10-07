@@ -14,7 +14,7 @@
 namespace brave_ads {
 
 bool IsAllowedToFireAdEvent() {
-  return UserHasOptedInToNewTabPageAds();
+  return IsNewTabPageAdsEnabled();
 }
 
 bool ShouldFireAdEvent(const NewTabPageAdInfo& ad,

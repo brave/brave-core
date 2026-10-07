@@ -97,7 +97,7 @@ export const AccountSelector = (props: Props) => {
         >
           {selectedAccount
             ? selectedAccount.name
-            : getLocale('braveSwapSelectAccount')}
+            : getLocale(S.BRAVE_SWAP_SELECT_ACCOUNT)}
         </Text>
         <HorizontalSpacer size={8} />
         <StyledCaratDownIcon

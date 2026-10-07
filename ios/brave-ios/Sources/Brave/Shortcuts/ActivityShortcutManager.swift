@@ -149,6 +149,7 @@ public class ActivityShortcutManager: NSObject {
     }
   }
 
+  @MainActor
   private func handleActivityDetails(type: ActivityType, using bvc: BrowserViewController) {
     let openExternalNewTab: (Bool, Bool) -> Void = { isPrivate, attemptLocationFieldFocus in
       bvc.openBlankNewTab(

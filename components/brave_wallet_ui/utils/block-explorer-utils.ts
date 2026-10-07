@@ -141,7 +141,7 @@ export const openBlockExplorerURL = ({
 
     const explorerBaseURL = network.blockExplorerUrls[0]
     if (!explorerBaseURL || !value) {
-      alert(getLocale('braveWalletTransactionExplorerMissing'))
+      alert(getLocale(S.BRAVE_WALLET_TRANSACTION_EXPLORER_MISSING))
       return
     }
 

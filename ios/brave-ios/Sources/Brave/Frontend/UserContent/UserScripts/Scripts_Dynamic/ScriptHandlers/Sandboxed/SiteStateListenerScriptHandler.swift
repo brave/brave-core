@@ -57,15 +57,17 @@ class SiteStateListenerScriptHandler: TabContentScript {
       else {
         return
       }
-      let script = try ScriptFactory.shared.makeScript(
-        for: .contentCosmetic(setup, proceduralActions: proceduralActions)
-      )
-      try await tab.evaluateJavaScript(
-        functionName: script.source,
-        frame: message.frameInfo,
-        contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
-        asFunction: false
-      )
+      do {
+        let script = try ScriptFactory.shared.makeScript(
+          for: .contentCosmetic(setup, proceduralActions: proceduralActions)
+        )
+        try await tab.evaluateJavaScript(
+          functionName: script.source,
+          frame: message.frameInfo,
+          contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
+          asFunction: false
+        )
+      } catch {}
     }
   }
 }

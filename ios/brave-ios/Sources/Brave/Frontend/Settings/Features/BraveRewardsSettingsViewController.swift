@@ -14,7 +14,7 @@ import Web
 private class BraveRewardsSettingsViewModel: ObservableObject {
   let rewards: BraveRewards
   private var rewardsObserver: RewardsObserver?
-  private var isEnabledObserver: NSKeyValueObservation?
+  private var notificationsEnabledObserver: NSKeyValueObservation?
 
   init(rewards: BraveRewards) {
     self.rewards = rewards
@@ -23,7 +23,8 @@ private class BraveRewardsSettingsViewModel: ObservableObject {
       isWalletInitialized = rewardsAPI.isInitialized
     }
 
-    isEnabledObserver = rewards.ads.observe(\.isEnabled, options: [.new]) { [weak self] _, change in
+    notificationsEnabledObserver = rewards.ads.observe(\.isNotificationsEnabled, options: [.new]) {
+      [weak self] _, change in
       if let newValue = change.newValue {
         self?.isRewardsEnabled = newValue
       }

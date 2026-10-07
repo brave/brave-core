@@ -4,6 +4,7 @@
 
 import BraveCore
 import BraveShared
+import BraveShields
 import Collections
 import Combine
 import Data
@@ -40,45 +41,13 @@ enum BlockingStrength: String {
   static let allOptions: [BlockingStrength] = [.basic, .strict]
 }
 
-struct BlockedRequestInfo: Hashable, Identifiable {
-  enum Location: String {
-    case contentBlocker
-    case requestBlocking
-
-    var display: String {
-      switch self {
-      case .contentBlocker:
-        return Strings.Shields.contentBlocker
-      case .requestBlocking:
-        return Strings.Shields.requestBlocking
-      }
-    }
-  }
-  let requestURL: URL
-  let sourceURL: URL
-  let resourceType: AdblockEngine.ResourceType
-  let isAggressive: Bool
-  let location: Location
-
-  var id: String {
-    "\(requestURL)\(sourceURL)\(resourceType.rawValue)\(isAggressive)\(location.rawValue)"
-  }
-}
-
 class ContentBlockerHelper: ObservableObject {
   private(set) weak var tab: (any TabState)?
 
   /// The rule lists that are loaded into the current tab
   private var setRuleLists: Set<WKContentRuleList> = []
 
-  var stats: TPPageStats = TPPageStats() {
-    didSet {
-      guard tab != nil else { return }
-      statsDidChange?(stats)
-    }
-  }
-
-  var statsDidChange: ((TPPageStats) -> Void)?
+  @Published var stats = TrackingProtectionPageStats()
   @Published var blockedRequests: OrderedSet<BlockedRequestInfo> = []
 
   init(tab: (any TabState)?) {
@@ -86,7 +55,7 @@ class ContentBlockerHelper: ObservableObject {
   }
 
   func clearPageStats() {
-    stats = TPPageStats()
+    stats = .init()
     blockedRequests.removeAll()
   }
 

@@ -32,6 +32,7 @@ enum APIError {
   InternalError,
   ConnectionIssue,
   RateLimitReached,
+  ModelRateLimitReached,
   ContextLimitReached,
   InvalidEndpointURL,
   InvalidAPIKey,
@@ -44,6 +45,9 @@ struct APIErrorDetails {
   string error_type;
   // Only applies to Oblivious HTTP requests.
   int32 inner_status_code;
+  // When the rate limit expires, if provided by the server. Only set for
+  // ModelRateLimitReached errors.
+  mojo_base.mojom.Time? rate_limit_expires_at;
 };
 
 enum SuggestionGenerationStatus {
@@ -58,12 +62,30 @@ enum CharacterType {
   ASSISTANT
 };
 
+// Toggleable capabilities for a conversation (such as CONTENT_AGENT), and
+// static capabilities of the client (such as the ability to render MATH_ML).
+// Informs:
+// - which tools are attached to a conversation.
+// - system prompt variations for a conversation.
+// Models may state which capabilities they support, but entries should only
+// exist in this list for communication from client to server about a particular
+// conversation or client. Otherwise we risk attaching items that aren't
+// explicitly wanted for a particular conversation.
 enum ConversationCapability {
-  CHAT,
+  // A conversation should include content agent tools. Only models approved for
+  // content control should announce their support for CONTENT_AGENT, which
+  // should be approved by security team.
   CONTENT_AGENT,
+  // A conversation should include the deep research tools and encourage its
+  // use in the system prompt.
   DEEP_RESEARCH,
-  FILES,
-  SUMMARY
+
+  // Client can render MathML. A hint to the server, not a model capability -
+  // see kServerHintCapabilities in browser/constants.h.
+  MATH_ML,
+
+  // A conversation has a workspace folder attached for local file operations.
+  WORKSPACES
 };
 
 // Which action the user was taking for the entry. This can be used
@@ -97,10 +119,10 @@ enum ActionType {
   SUGGESTION,
 };
 
-// When adding or modifying category names, associated UI strings must also
-// be provided via ai_chat_ui_strings.grdp and ai_chat/core/constants.cc
 enum ModelCategory {
+  // Model can be selected for chat conversations
   CHAT,
+  // Model can be selected for isolated summary requests
   SUMMARY,
 };
 
@@ -117,6 +139,7 @@ enum ModelAccess {
 enum ContentType {
   PageContent,
   VideoTranscript,
+  Workspace,
 };
 
 enum UploadedFileType {
@@ -158,6 +181,34 @@ struct AssociatedContent {
 
   // Whether this content has tools available for the LLM to use.
   bool tools_attached;
+};
+
+// The user's choice for a website-provided tool. Only affects the client's own
+// permission check - a challenge raised by the server's alignment check is
+// always shown, whatever this says. kNeverAllow withholds the tool from the
+// model entirely rather than failing it when called. kAllowSession only lasts
+// as long as the content stays attached to the conversation.
+enum ToolPermission {
+  kAsk,
+  kAllowSession,
+  kNeverAllow,
+};
+
+// How the user answered a tool's permission challenge.
+enum PermissionChallengeDecision {
+  kAllowOnce,
+  // Only offered when the challenge sets |supports_allow_session|.
+  kAllowSession,
+  // Also abandons the rest of the turn's tool uses.
+  kDeny,
+};
+
+// Describes a tool for display to the user - its name and description as they
+// were registered, rather than the mangled model-facing variants.
+struct ToolInfo {
+  string name;
+  string description;
+  ToolPermission permission;
 };
 
 struct UploadedFile {
@@ -340,6 +391,16 @@ struct PermissionChallenge {
   string? assessment;
   // Tool's explanation for why it needs permission
   string? plan;
+  // Human-readable, markdown-formatted description of what the tool wants
+  // permission to do, rendered with the UI's markdown renderer, e.g. "Brave
+  // AI would like to execute **get_stock_price** on
+  // **https://example.com**" for website-provided (WebMCP) tools. Tools
+  // must markdown-escape any untrusted values they embed.
+  string? description;
+  // Whether the answer can also be recorded as the tool's standing permission,
+  // which only the tools a page exposes have. Never set for the server's
+  // alignment check, which is shown whatever the user answered before.
+  bool supports_allow_session = false;
 };
 
 struct ToolUseEvent {
@@ -612,7 +673,7 @@ struct Thread {
 
   uint64 total_tokens;
   uint64 trimmed_tokens;
-  
+
   uint32 entry_count;
 };
 
@@ -647,7 +708,7 @@ struct LeoModelOptions {
   string display_maker;
   // description, for users
   string description = "";
-  // user-facing category
+  // Internally determine when to use the model
   ModelCategory category;
   // Which access level grants permission to use the model
   ModelAccess access;
@@ -691,12 +752,8 @@ struct Model {
   bool audio_support = false;
   // whether accept video as input
   bool video_support = false;
-  // Conversation capabilities this model supports. Used to filter which models
-  // are available for different conversation types (e.g. basic chat, content
-  // agent, deep research).
-  // All models that can participate in regular conversations should include
-  // CHAT. Models approved for agentic contexts (content agent, agent profile)
-  // should include CONTENT_AGENT, which should be approved by security team.
+  // Informs which variations of system prompts and tools a model supports that
+  // a conversation can optionally utilize.
   array<ConversationCapability> supported_capabilities;
   // Is a suggested model
   bool is_suggested_model;
@@ -712,6 +769,11 @@ struct ConversationEntriesState {
   bool is_generating;
   // Whether the most recent tool use request is being executed
   bool is_tool_executing;
+  // UUID of the thread that is currently generating or executing a tool. Set
+  // whenever is_generating or is_tool_executing is set, and cleared when
+  // generation or execution is complete. Unset if the current request is associated
+  // with the main conversation.
+  string? thread_uuid_in_progress;
   // State of any active tool loop task
   TaskState tool_use_task_state;
   // Whether the current model is a built-in Leo model
@@ -734,6 +796,7 @@ struct ConversationEntriesState {
   uint64 total_tokens;
   // Indicates the number of tokens that were trimmed from the conversation
   uint64 trimmed_tokens;
+  // Which options the conversation has currently opted-in to
   array<ConversationCapability> conversation_capabilities;
   // Suggested questions for the conversation
   array<string> suggested_questions;

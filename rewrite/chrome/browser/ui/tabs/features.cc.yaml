@@ -4,7 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Ship kVerticalTabsLaunch disabled.'
+  - description: Enable kVerticalTabsExpandOnHover by default
     set_feature_flag_default_state:
-      feature_name: kVerticalTabsLaunch
-      value: base::FEATURE_DISABLED_BY_DEFAULT
+      feature_name: kVerticalTabsExpandOnHover
+      value: base::FEATURE_ENABLED_BY_DEFAULT

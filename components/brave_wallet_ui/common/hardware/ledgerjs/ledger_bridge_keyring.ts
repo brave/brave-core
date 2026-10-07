@@ -129,25 +129,23 @@ export default class LedgerBridgeKeyring {
   protected readonly createErrorFromCode = (
     code: LedgerBridgeErrorCodes,
   ): HardwareOperationError => {
-    const deviceName = getLocale('braveWalletConnectHardwareLedger')
+    const deviceName = getLocale(S.BRAVE_WALLET_CONNECT_HARDWARE_LEDGER)
 
     switch (code) {
       case LedgerBridgeErrorCodes.BridgeNotReady:
         return {
           success: false,
-          error: getLocale('braveWalletBridgeNotReady').replace(
-            '$1',
-            deviceName,
-          ),
+          error: getLocale(
+            S.BRAVE_WALLET_HARDWARE_BRIDGE_NOT_READY_ERROR,
+          ).replace('$1', deviceName),
           code: code,
         }
       case LedgerBridgeErrorCodes.CommandInProgress:
         return {
           success: false,
-          error: getLocale('braveWalletBridgeCommandInProgress').replace(
-            '$1',
-            deviceName,
-          ),
+          error: getLocale(
+            S.BRAVE_WALLET_HARDWARE_COMMAND_IN_PROGRESS_ERROR,
+          ).replace('$1', deviceName),
           code: code,
         }
     }

@@ -25,13 +25,12 @@ TEST(PurchaseEndpointsTest, GetSubscriberCredentialRequestBodyToValue) {
       .validation_method = kTestValidationMethod,
       .purchase_token = kTestPurchaseToken,
       .bundle_id = kTestBundleId};
-  EXPECT_EQ(body.ToValue(),
-            base::DictValue()
-                .Set(kProductTypeKey, kTestProductType)
-                .Set(kProductIdKey, kTestProductId)
-                .Set(kValidationMethodKey, kTestValidationMethod)
-                .Set(kPurchaseTokenKey, kTestPurchaseToken)
-                .Set(kBundleIdKey, kTestBundleId));
+  EXPECT_EQ(body.ToValue(), base::DictValue()
+                                .Set("product-type", kTestProductType)
+                                .Set("product-id", kTestProductId)
+                                .Set("validation-method", kTestValidationMethod)
+                                .Set("purchase-token", kTestPurchaseToken)
+                                .Set("bundle-id", kTestBundleId));
 }
 
 TEST(PurchaseEndpointsTest, GetSubscriberCredentialV12RequestBodyToValue) {
@@ -39,8 +38,8 @@ TEST(PurchaseEndpointsTest, GetSubscriberCredentialV12RequestBodyToValue) {
                                                        kTestSkusCredential};
   EXPECT_EQ(body.ToValue(),
             base::DictValue()
-                .Set(kValidationMethodKey, kValidationMethodDefaultValue)
-                .Set(kSkusCredentialKey, kTestSkusCredential));
+                .Set("validation-method", "brave-premium")
+                .Set("brave-vpn-premium-monthly-pass", kTestSkusCredential));
 }
 
 TEST(PurchaseEndpointsTest, VerifyPurchaseTokenRequestBodyToValue) {
@@ -50,10 +49,10 @@ TEST(PurchaseEndpointsTest, VerifyPurchaseTokenRequestBodyToValue) {
       .product_type = kTestProductType,
       .bundle_id = kTestBundleId};
   EXPECT_EQ(body.ToValue(), base::DictValue()
-                                .Set(kPurchaseTokenKey, kTestPurchaseToken)
-                                .Set(kProductIdKey, kTestProductId)
-                                .Set(kProductTypeKey, kTestProductType)
-                                .Set(kBundleIdKey, kTestBundleId));
+                                .Set("purchase-token", kTestPurchaseToken)
+                                .Set("product-id", kTestProductId)
+                                .Set("product-type", kTestProductType)
+                                .Set("bundle-id", kTestBundleId));
 }
 
 }  // namespace brave_vpn::v2::endpoints

@@ -4,6 +4,7 @@
 
 import BraveShared
 import BraveUI
+import CoreData
 import Data
 import Shared
 import SwiftUI

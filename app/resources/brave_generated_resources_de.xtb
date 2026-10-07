@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="de">
+<translation id="1751249301761991853">Persönliches</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7561196759112975576">Immer</translation>
 <translation id="7961015016161918242">Nie</translation>
@@ -19,10 +20,31 @@
 <translation id="2361906291514218784">Leo-KI</translation>
 <translation id="8275068909952022340">Mehr…</translation>
 <translation id="71316462802471551">E-Mail-Aliase</translation>
-<translation id="209130971304928953">Tabs als Arbeitsbereich speichern…</translation>
-<translation id="877984331511007834">Arbeitsbereich öffnen…</translation>
-<translation id="1310182651927031327">Tabs als Arbeitsbereich speichern…</translation>
-<translation id="3588277741646479444">Arbeitsbereich öffnen…</translation>
+<translation id="8350985546648269694">Aktuelle Fenster und Tabs als Space speichern</translation>
+<translation id="5327248766486351172">Name</translation>
+<translation id="6379791766023874417">Geben Sie den Namen Ihres Space ein</translation>
+<translation id="9174724474418499472">Mein Space</translation>
+<translation id="5317780077021120954">Speichern</translation>
+<translation id="7658239707568436148">Abbrechen</translation>
+<translation id="196342407904926436">Space-Optionen</translation>
+<translation id="2806407377752719586">Space löschen</translation>
+<translation id="1844931500883490339">Sind Sie sicher, dass Sie diesen Space löschen möchten? Der gespeicherte Space wird dauerhaft entfernt. Diese Aktion kann nicht rückgängig gemacht werden.</translation>
+<translation id="8261506727792406068">Löschen</translation>
+<translation id="8428213095426709021">Einstellungen</translation>
+<translation id="1212321046099128987">Keine Spaces erstellt</translation>
+<translation id="3524567389166933243">Erstellen Sie Ihren ersten Space, indem Sie unten auf die Schaltfläche „Speichern“ klicken.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 Tab} other {# Tabs}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> Fenster</translation>
+<translation id="1680377529024357662">Aktuelle Fenster und Tabs als Space speichern</translation>
+<translation id="5561829325295347472">Namen des Spaces eingeben</translation>
+<translation id="2028520494010039812">Space-Optionen</translation>
+<translation id="1580775521202322063">Space löschen</translation>
+<translation id="3004759399777164093">Sind Sie sicher, dass Sie diesen Space löschen möchten? Der gespeicherte Space wird dauerhaft entfernt. Diese Aktion kann nicht rückgängig gemacht werden.</translation>
+<translation id="7563692436589408797">Keine Spaces erstellt</translation>
+<translation id="3945077125173636695">Erstellen Sie Ihren ersten Space, indem Sie unten auf die Schaltfläche „Speichern“ klicken.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 Tab} other {# Tabs}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> Fenster</translation>
+<translation id="3326655241685890930">Spaces</translation>
 <translation id="1990886731975529483">Google Widevine installieren und ausführen</translation>
 <translation id="8926389886865778422">Nicht mehr fragen</translation>
 <translation id="4900351245762303149">Google Widevine installieren</translation>
@@ -36,7 +58,7 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3218385319396786393">Automatisches Abspielen wurde auf dieser Seite blockiert</translation>
 <translation id="4988333904713528597">Autoplay auf <ph name="HOST"/> immer erlauben?</translation>
 <translation id="4150684676757176434">Automatische Wiedergabe weiterhin blockieren</translation>
-<translation id="3477357195688115718">Brave überprüft Erweiterungen nicht auf ihre Sicherheit. Installieren Sie diese Erweiterung nur, wenn Sie dem Entwickler vertrauen.</translation>
+<translation id="2201935460386712655">Brave überprüft Erweiterungen nicht auf ihre Sicherheit. Installieren Sie „<ph name="EXTENSION_NAME"/>“ nur, wenn Sie dem Entwickler vertrauen.</translation>
 <translation id="2928844661231356557">Wenn Sie einem Bluetooth-Gerät den Zugriff erlauben, kann die Website Sie identifizierende und möglicherweise sensible Daten über Sie lesen. Gewähren Sie nur vertrauenswürdigen Websites den Zugriff auf Bluetooth-Geräte. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Tor-Fenster</translation>
 <translation id="7965178729203412357">Neue Tor-Identität</translation>
@@ -62,7 +84,6 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3211174446914979436">Filter verwalten</translation>
 <translation id="3108584651298176909">Regeln anzeigen</translation>
 <translation id="5156986655891520787">Regeln ausblenden</translation>
-<translation id="7658239707568436148">Abbrechen</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Mit .onion-Adresse öffnen: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Einfügen erzwingen</translation>
@@ -90,6 +111,10 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="191886777375280620">Screenshot erstellen</translation>
 <translation id="3114478090884951591">Sichtbarer Bereich</translation>
 <translation id="2026367923222947564">Gesamte Seite</translation>
+<translation id="4218885227032158909">Ausgewählter Bereich</translation>
+<translation id="2586386106930448447">Screenshot-Vorschau</translation>
+<translation id="7514365320538308">Herunterladen</translation>
+<translation id="2743387203779672305">In die Zwischenablage kopieren</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Im Web Extensions Store anzeigen</translation>
 <translation id="3161744659507801211">Warnung: Brave kann nicht verhindern, dass Erweiterungen Ihren Browsingverlauf aufzeichnen.</translation>
@@ -190,11 +215,7 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8707615221880318679">Diese privaten Antworten helfen Brave, die Nutzung bestimmter Funktionen besser abzuschätzen und sie entsprechend zu verbessern</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3-Domains</translation>
-<translation id="4552520379838695057">Diese Seite fehlt leider.</translation>
-<translation id="7299769530898469069">Gespeicherte Version konnte nicht geladen werden</translation>
-<translation id="2609895996619941644">Möchten Sie überprüfen, ob eine gespeicherte Version in der Wayback Machine verfügbar ist?</translation>
-<translation id="8010675257566903381">Die Wayback Machine konnte keine gespeicherte Version dieser Seite finden.</translation>
-<translation id="1207694258341311738">Gespeicherte Version überprüfen</translation>
+<translation id="1458638489455808030">Wayback Machine</translation>
 <translation id="191143826155037518">Brave wird Ihnen unter der <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) und verwendet weitere <ph name="BEGIN_LINK_OSS"/>Open Source Software<ph name="END_LINK_OSS"/> die unter verschiedenen anderen Lizenzen veröffentlicht wurden.
         Lesen Sie die <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>Anleitung<ph name="END_LINK_BUILD_INSTRUCTIONS"/>, wie man das Brave-Projekt herunterlädt und selbst aus dem <ph name="BEGIN_LINK_SOURCE_CODE"/>Quellcode<ph name="END_LINK_SOURCE_CODE"/> zu erstellen.</translation>
 <translation id="4474155171896946103">Alle Tabs als Lesezeichen speichern...</translation>
@@ -225,6 +246,7 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1185644444415356776">Link in Container öffnen</translation>
 <translation id="6745991613881384719">Container verwalten</translation>
 <translation id="8523788649219117880">Neuer temporärer Container</translation>
+<translation id="6738770788727894934"><ph name="TOOLTIP"/> - <ph name="CONTAINER_NAME"/> Container</translation>
 <translation id="3704707436873245822">Text aus Bild kopieren</translation>
 <translation id="5268098808165185458">Text wird aus Bild kopiert …</translation>
 <translation id="4046485130884276245">Text aus Bild kopiert</translation>
@@ -288,14 +310,12 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="55252794453047936">Medien verschieben</translation>
 <translation id="4418985925423678811">Neue Playlist</translation>
 <translation id="385051799172605136">Zurück</translation>
-<translation id="5317780077021120954">Speichern</translation>
 <translation id="7930125899031086027">Erstellen und verschieben</translation>
 <translation id="2860159216666546928">Wählen Sie einen Ordner aus, in den diese Medien verschoben werden sollen</translation>
 <translation id="9130105487623071247">Name der Playlist</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> Objekte ausgewählt</translation>
 <translation id="3596306474342941843">Playlist löschen</translation>
 <translation id="7110726588168439924">Sind Sie sicher, dass Sie diese Wiedergabeliste und ihren gesamten Inhalt löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.</translation>
-<translation id="8261506727792406068">Löschen</translation>
 <translation id="8152485753254079984">Neue Playlist</translation>
 <translation id="5397019762993984652">Aus Ihrem Später Abspielen-Ordner hinzufügen</translation>
 <translation id="7525067979554623046">Erstellen</translation>
@@ -342,6 +362,7 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6847541693235449912">Aufrufen</translation>
 <translation id="2079545284768500474">Rückgängig machen</translation>
 <translation id="1533980864758658574">Neues Browserfenster geöffnet für <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">Keine Tabs stimmten mit diesem Thema überein. Versuchen Sie, es anders zu beschreiben.</translation>
 <translation id="7985042437720138349">Diese Funktion sendet Daten über deine offenen Tabs an Leo, den KI-gestützten Browser-Assistenten von Brave.</translation>
 <translation id="6165508094623778733">Weitere Informationen</translation>
 <translation id="7557539689487606886">Jetzt Premium sichern</translation>
@@ -358,6 +379,7 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6724227215236550330">Gespeicherte Passwörter werden hier angezeigt. Um Passwörter in <ph name="BRAND"/> auf diesem Gerät zu importieren, <ph name="BEGIN_LINK"/>wähle eine CSV-Datei aus<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">Um Passwörter in <ph name="BRAND"/> auf diesem Gerät zu importieren, wähle eine CSV-Datei aus.</translation>
 <translation id="8570228839666486945">Lokale KI</translation>
+<translation id="7447041379556102185">On-Device-Spracherkennung</translation>
 <translation id="3456536577668402695">Ihre Suchanfragen und Seiteninhalte werden auf diesem Gerät verarbeitet. Es werden keine Daten an Brave gesendet oder im Rahmen manueller Prüfungen eingesehen.</translation>
 <translation id="4751537843966994505">Semantische Verlaufssuche</translation>
 <translation id="6175973371938222040">Indiziere Seiten, die du besuchst, lokal, damit du deinen Verlauf nach Bedeutung durchsuchen kannst. Die gesamte Verarbeitung bleibt auf diesem Gerät.</translation>
@@ -388,16 +410,33 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6017560037265964523">Container</translation>
 <translation id="3718176486689879621">Container sind farblich gekennzeichnete Browser-Tabs, die Ihre Browserdaten wie Cookies, Cache und Website-Speicher in separate Kontexte isolieren. <ph name="BEGIN_LINK"/>Mehr erfahren<ph name="END_LINK"/></translation>
 <translation id="3721778624267551248">Container aktivieren</translation>
+<translation id="4858772568604670131">Für Container immer Mini-Symbol verwenden</translation>
 <translation id="7773735778926921278">Neuen Container hinzufügen</translation>
 <translation id="8900907990448657776">Container bearbeiten</translation>
 <translation id="7900511996284443779">Container löschen</translation>
 <translation id="2738687336989232152">Bist du sicher, dass du den Container <ph name="CONTAINER_NAME"/> löschen möchtest? Dabei werden alle damit verbundenen Daten entfernt.</translation>
-<translation id="5327248766486351172">Name</translation>
 <translation id="104766043551382253">Symbol</translation>
 <translation id="5431318178759467895">Farbe</translation>
 <translation id="4328541188421002379">Gib deinem Container einen Namen, z. B. ‚Arbeit‘ oder ‚Privat‘</translation>
 <translation id="4976989127264491396">Fehler: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Container nicht gefunden</translation>
+<translation id="6055154402239241620">Traffic Control</translation>
+<translation id="8134521925475508805">Konfigurieren Sie bestimmte Websites so, dass sie automatisch in einem bestimmten Kontext geöffnet werden, um eine Trennung zwischen Ihren Browsersitzungen zu schaffen. <ph name="BEGIN_LINK"/>Mehr erfahren<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Traffic Control aktivieren</translation>
+<translation id="1358255827354528344">Neue Regel hinzufügen</translation>
+<translation id="7183128985801806752">Neue Traffic-Control-Regel</translation>
+<translation id="2474694032500407328">Traffic-Control-Regel bearbeiten</translation>
+<translation id="5543417389274097206">Regel erstellen</translation>
+<translation id="6532106788206463496">Änderungen speichern</translation>
+<translation id="1172800769374812685">Regel löschen</translation>
+<translation id="2389682807835777591">Sind Sie sicher, dass Sie die Regel <ph name="RULE_LABEL"/> löschen möchten?</translation>
+<translation id="4853129331778360252">Geben Sie URLs ein, die verwaltet und immer in einem bestimmten Browsing-Kontext geöffnet werden sollen.</translation>
+<translation id="1173480005453148926">Zu verwaltende URLs</translation>
+<translation id="6217532416180299470">Geben Sie URLs ein, die mit Traffic Control verwaltet werden sollen</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> entspricht der Website und ihren Subdomains; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> entspricht genau dieser Website; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> entspricht allen Websites; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> ist ein Kommentar.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (und <ph name="COUNT"/> weitere URLs)</translation>
+<translation id="3700798663085748181">Regel aktivieren</translation>
+<translation id="2967480878853054068">Ungültiger URL-Filter</translation>
 <translation id="2263346047290834619">Baum-Registerkarten verwenden</translation>
 <translation id="5860254591544742609">Titelleiste</translation>
 <translation id="4691131445504068802">Beim Minimieren vollständig ausblenden</translation>
@@ -505,7 +544,6 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6745592621698551453">Jetzt aktualisieren</translation>
 <translation id="5334844597069022743">Quelltext anzeigen</translation>
 <translation id="4720556299488643018">Abonnement beenden</translation>
-<translation id="6532106788206463496">Änderungen speichern</translation>
 <translation id="4516904298421534459">Listen filtern</translation>
 <translation id="4435215931544457255">Weitere beliebte Community-Listen. Bitte beachten Sie, dass die Aktivierung von zu vielen Filtern die Surfgeschwindigkeit verringert.</translation>
 <translation id="802154636333426148">Downloadfehler</translation>
@@ -537,7 +575,6 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1799030480311994998">Funktionen</translation>
 <translation id="6709133671862442373">Nachrichten</translation>
 <translation id="6297791103122079275">Videokonferenz</translation>
-<translation id="1458638489455808030">Wayback Machine</translation>
 <translation id="4590997608186539865">Playlist</translation>
 <translation id="1199170151481311646">Datenschutzfreundliche Analysen</translation>
 <translation id="5990642573624858459">Statistikberichte</translation>
@@ -546,6 +583,7 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2587535830241068901">Passe deinen Browser an und unterstütze Brave weiterhin</translation>
 <translation id="123297831435065577">Brave Origin ist eine kostenpflichtige Browser-Version Benutzende, die nicht alle Funktionen benötigen, die Brave als Unternehmen unterstützen, aber dennoch Wert auf die Datenschutzfunktionen legen, die nur Brave bietet. Benutzende von Brave Origin profitieren weiterhin von unseren branchenführenden Datenschutz- und Werbeblockerfunktionen, hoher Geschwindigkeit (über Brave Shields) sowie von regelmäßigen Softwareupdates, Chromium-Patches und Verbesserungen in den Bereichen Sicherheit und Datenschutz.</translation>
 <translation id="7984508421152399880">Jetzt kaufen</translation>
+<translation id="1882724423074862793">Erworbene Version wiederherstellen</translation>
 <translation id="5567412479632285879">Brave Rewards ist deaktiviert.</translation>
 <translation id="413570371620795359">Öffne das Panel für Brave Rewards, um die Funktion zu aktivieren und loszulegen.</translation>
 <translation id="1051600834033686945">Vollständige Einstellungen für Brave Rewards öffnen</translation>
@@ -582,11 +620,18 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="933652931229970927">Automatisch Diagnoseberichte senden</translation>
 <translation id="8868426106596092089">Helfe mit, die Produktstabilität von Brave zu verbessern, indem du automatisch Diagnoseberichte sendest, wenn der Brave Browser abstürzt oder einfriert</translation>
 <translation id="4891600875049212418">Nutzen Sie den Vertraulichen Modus, um vertrauliche Seiten anzusehen</translation>
+<translation id="1022603984240541480">Benachrichtigung zur Anpassung der Datenschutzeinstellungen auf kompatiblen Websites anzeigen</translation>
+<translation id="3528176629974273019">Ermöglicht es Brave, website-spezifische Datenschutzeinstellungen automatisch vorzuschlagen (und anzupassen).</translation>
+<translation id="2740687181110647855">Tool zur Anpassung der Datenschutzeinstellungen</translation>
 <translation id="509873765238158442">Microsoft Recall blockieren</translation>
 <translation id="4763421121695677716">Verhindern, dass die Recall-Funktion auf Microsoft Windows-Computern automatisch Screenshots von geöffneten Brave-Tabs erstellt.</translation>
 <translation id="1968895725257436430">Datenerfassung</translation>
+<translation id="5668852698659986622">Gesponserte Ads aktivieren</translation>
+<translation id="431194936581466649">Unterstützen Sie Braves Mission, ein unabhängiges, nutzerorientiertes Web mit gesponserten Ads aufzubauen. Wir messen die Anzeigenleistung privat, ohne Sie zu identifizieren.</translation>
 <translation id="1700052872056357670">Daten beim Beenden löschen</translation>
 <translation id="216468847346280584">Brave-Werbedaten löschen …</translation>
+<translation id="96212973142796240">Brave Ads-Daten gelöscht</translation>
+<translation id="6665923829462527507">Brave Ads-Daten konnten nicht gelöscht werden. Versuche es erneut.</translation>
 <translation id="2808630562319398131">Brave Rewards-Daten zurücksetzen...</translation>
 <translation id="6438096877646138757">Websites, die Cookies löschen, wenn Sie sie schließen</translation>
 <translation id="2988792685798128092">Löschen, wenn Website geschlossen wird</translation>
@@ -737,6 +782,7 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4425607417590286548">Änderungen übernehmen</translation>
 <translation id="2128143836897950793">Klicken Sie auf „Neue Brücke anfordern …“, um Brücken zu erhalten</translation>
 <translation id="3314921753580327793">Geben Sie Adresse:Port ein (eine pro Zeile)</translation>
+<translation id="7002083631026466886">Tor kann diese Bridge nicht verwenden. Vergleichen Sie sie mit der Bridge, die Sie erhalten haben, und versuchen Sie es dann erneut:</translation>
 <translation id="3755189300481406891">Brücke anfordern</translation>
 <translation id="6924425739431382319">BrückenDB kontaktieren. Bitte warten.</translation>
 <translation id="811745063252080651">Lösen Sie das CAPTCHA, um eine Brücke anzufordern.</translation>
@@ -853,6 +899,7 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8631951653187535788">Möchten Sie dieses Modell wirklich löschen? Wenn dieses Modell in einer aktiven Unterhaltung genutzt wird, wird für diese Unterhaltung in Zukunft das Standardmodell von Leo verwendet.</translation>
 <translation id="1907126221851170941">Modell hinzufügen</translation>
 <translation id="8346224718149026088">Modell bearbeiten</translation>
+<translation id="3914173277599553213">Erforderlich</translation>
 <translation id="3468298837301810372">Beschriftung</translation>
 <translation id="3553035516792776805">Modellanfragenname</translation>
 <translation id="7634775528597575156">Server-Endpunkt</translation>
@@ -914,7 +961,6 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1838374766361614909">Suche löschen</translation>
 <translation id="5126255551970171328">Nach einer Erinnerung suchen</translation>
 <translation id="7402116145895962069">Lokale Ollama-Modelle synchronisieren</translation>
-<translation id="4835154437390745810">Von Ollama verwaltet</translation>
 <translation id="5985516785067818307">Umfrageteilnehmende</translation>
 <translation id="8347743943525229984">Brave-Umfragen erlauben</translation>
 <translation id="3204080538332044581">Erlaube Brave, Links zu privaten Umfragen auf der neuen Tab-Seite anzuzeigen. Umfragen helfen uns, bessere Funktionen zu entwickeln und die Wirksamkeit von browserbasierten Werbekampagnen zu messen.<ph name="BEGIN_LINK"/>Mehr erfahren<ph name="END_LINK"/></translation>
@@ -962,4 +1008,12 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="154702742922788359">Offener Modus</translation>
 <translation id="2249111429176737533">Als Tab-Fenster öffnen</translation>
 <translation id="7022756207310403729">Im Browser öffnen</translation>
+<translation id="1916785651473363467">Benutzerdefiniertes Profilbild</translation>
+<translation id="5336092064678832560">Benutzerdefiniertes Bild hochladen</translation>
+<translation id="1062407476771304334">Ersetzen</translation>
+<translation id="1428299461403073820">Benutzerdefiniertes Profilbild ersetzen</translation>
+<translation id="7994453838803296517">Vorschau des benutzerdefinierten Profilbilds, ausgewählt</translation>
+<translation id="6578040791557152233">Ein benutzerdefiniertes Profilbild hochladen</translation>
+<translation id="9222124079546967592">Benutzerdefiniertes Profilbild entfernen</translation>
+<translation id="6058660912941570282">Brave kann diese Datei nicht verwenden. Wählen Sie ein anderes Bild und versuchen Sie es erneut.</translation>
 </translationbundle>

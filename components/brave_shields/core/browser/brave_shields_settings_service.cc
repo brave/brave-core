@@ -402,6 +402,8 @@ void BraveShieldsSettingsService::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(brave_shields::prefs::kReduceLanguageEnabled,
                                 true);
+  registry->RegisterBooleanPref(
+      brave_shields::prefs::kHttpsUpgradeSettingsMigrated, false);
 }
 
 base::Token BraveShieldsSettingsService::GetFarblingToken(

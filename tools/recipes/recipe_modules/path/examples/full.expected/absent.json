@@ -16,6 +16,13 @@
   {
     "cmd": [
       "echo",
+      "[HOME]"
+    ],
+    "name": "home again"
+  },
+  {
+    "cmd": [
+      "echo",
       "[HOME]/cache"
     ],
     "name": "cache"

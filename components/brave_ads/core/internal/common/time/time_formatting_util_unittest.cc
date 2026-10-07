@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -74,6 +74,43 @@ TEST_F(BraveAdsTimeFormattingUtilTest, TimeToPrivacyPreservingIso8601) {
   // Act & Assert
   EXPECT_EQ("2020-11-18T23:00:00.000Z",
             TimeToPrivacyPreservingIso8601(test::Now()));
+}
+
+TEST_F(BraveAdsTimeFormattingUtilTest, FormatApproximateDurationForOneDay) {
+  // Act & Assert
+  EXPECT_EQ("1 day", FormatApproximateDuration(base::Days(1)));
+}
+
+TEST_F(BraveAdsTimeFormattingUtilTest, FormatApproximateDurationForManyDays) {
+  // Act & Assert
+  EXPECT_EQ("3 days", FormatApproximateDuration(base::Days(3)));
+}
+
+TEST_F(BraveAdsTimeFormattingUtilTest, FormatApproximateDurationForOneHour) {
+  // Act & Assert
+  EXPECT_EQ("1 hour", FormatApproximateDuration(base::Hours(1)));
+}
+
+TEST_F(BraveAdsTimeFormattingUtilTest, FormatApproximateDurationForManyHours) {
+  // Act & Assert
+  EXPECT_EQ("5 hours", FormatApproximateDuration(base::Hours(5)));
+}
+
+TEST_F(BraveAdsTimeFormattingUtilTest, FormatApproximateDurationForOneMinute) {
+  // Act & Assert
+  EXPECT_EQ("1 minute", FormatApproximateDuration(base::Minutes(1)));
+}
+
+TEST_F(BraveAdsTimeFormattingUtilTest,
+       FormatApproximateDurationForManyMinutes) {
+  // Act & Assert
+  EXPECT_EQ("5 minutes", FormatApproximateDuration(base::Minutes(5)));
+}
+
+TEST_F(BraveAdsTimeFormattingUtilTest,
+       FormatApproximateDurationForLessThanAMinute) {
+  // Act & Assert
+  EXPECT_EQ("less than a minute", FormatApproximateDuration(base::Seconds(30)));
 }
 
 }  // namespace brave_ads

@@ -39,6 +39,7 @@ import org.chromium.chrome.browser.keyboard_accessory.ManualFillingComponent;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
+import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.safe_browsing.AdvancedProtectionCoordinator;
@@ -51,6 +52,7 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.tab_management.vertical_tabs.VerticalTabsActionDelegate;
 import org.chromium.chrome.browser.toolbar.ToolbarHairlineView;
 import org.chromium.chrome.browser.toolbar.ToolbarIntentMetadata;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.ui.BraveAdaptiveToolbarUiCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
@@ -103,6 +105,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             ActivityResultTracker activityResultTracker,
             OneshotSupplier<ChromeAndroidTask> chromeAndroidTaskSupplier,
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
+            MultiWindowModeStateDispatcher multiWindowModeStateDispatcher,
             MonotonicObservableSupplier<LayoutManagerImpl> layoutManagerSupplier,
             MenuOrKeyboardActionController menuOrKeyboardActionController,
             Supplier<Integer> activityThemeColorSupplier,
@@ -132,7 +135,6 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             @Nullable Bundle savedInstanceState,
             @Nullable PersistableBundle persistentState,
             @Nullable MultiInstanceManager multiInstanceManager,
-            NonNullObservableSupplier<Integer> overviewColorSupplier,
             MonotonicObservableSupplier<ManualFillingComponent> manualFillingComponentSupplier,
             EdgeToEdgeManager edgeToEdgeManager,
             MonotonicObservableSupplier<BookmarkManagerOpener> bookmarkManagerOpenerSupplier,
@@ -140,7 +142,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             OneshotSupplier<ChromeInactivityTracker> inactivityTrackerSupplier,
             @Nullable BottomBarHostManager bottomBarHostManager,
             VerticalTabsActionDelegate verticalTabsActionDelegate,
-            Supplier<Boolean> urlBarVisibleSupplier) {
+            Supplier<Boolean> urlBarVisibleSupplier,
+            Runnable onTabLayoutAvailable) {
         super(
                 activity,
                 onOmniboxFocusChangedListener,
@@ -160,6 +163,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 activityResultTracker,
                 chromeAndroidTaskSupplier,
                 activityLifecycleDispatcher,
+                multiWindowModeStateDispatcher,
                 layoutManagerSupplier,
                 menuOrKeyboardActionController,
                 activityThemeColorSupplier,
@@ -188,7 +192,6 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 savedInstanceState,
                 persistentState,
                 multiInstanceManager,
-                overviewColorSupplier,
                 manualFillingComponentSupplier,
                 edgeToEdgeManager,
                 bookmarkManagerOpenerSupplier,
@@ -196,7 +199,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 inactivityTrackerSupplier,
                 bottomBarHostManager,
                 verticalTabsActionDelegate,
-                urlBarVisibleSupplier);
+                urlBarVisibleSupplier,
+                onTabLayoutAvailable);
 
         mBraveActivity = activity;
         mHubManagerSupplier = hubManagerSupplier;
@@ -232,6 +236,11 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
     @Override
     protected void onLayoutManagerAvailable(LayoutManagerImpl layoutManager) {
         super.onLayoutManagerAvailable(layoutManager);
+
+        if (!BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
+            // Nothing to make room for at the bottom of the hub.
+            return;
+        }
 
         mHubManagerSupplier.onAvailable(
                 hubManager -> {

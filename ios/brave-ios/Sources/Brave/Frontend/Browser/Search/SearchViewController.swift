@@ -9,7 +9,6 @@ import Favicon
 import Growth
 import Preferences
 import Shared
-import Storage
 import Then
 import UIKit
 
@@ -67,7 +66,7 @@ class SearchCompositionalLayout: UICollectionViewCompositionalLayout {
     self.browserColors = browserColors
     super.init(sectionProvider: sectionProvider, configuration: configuration)
     self.register(
-      FavoritesSectionBackgroundView.self,
+      TopSitesSectionBackgroundView.self,
       forDecorationViewOfKind: "background_with_header"
     )
     self.register(
@@ -91,7 +90,7 @@ class SearchCompositionalLayout: UICollectionViewCompositionalLayout {
     for attr in attributes {
       if let indexPath = attr.indexPath as IndexPath? {
         if attr.representedElementKind == "background_with_header" {
-          let customAttr = FavoritesSectionBackgroundLayoutAttribute(
+          let customAttr = TopSitesSectionBackgroundLayoutAttribute(
             forDecorationViewOfKind: "background_with_header",
             with: indexPath
           )
@@ -332,7 +331,7 @@ public class SearchViewController: UIViewController, LoaderListener {
         withReuseIdentifier: SupplementaryViewReuseIdentifier.searchHeaderIdentifier
       )
       $0.register(
-        FavoritesRecentSearchFooterView.self,
+        TopSitesRecentSearchFooterView.self,
         forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
         withReuseIdentifier: SupplementaryViewReuseIdentifier.inYourDeviceSectionFooterIdentifer
       )
@@ -1099,7 +1098,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
           ofKind: kind,
           withReuseIdentifier: SupplementaryViewReuseIdentifier.inYourDeviceSectionFooterIdentifer,
           for: indexPath
-        ) as? FavoritesRecentSearchFooterView
+        ) as? TopSitesRecentSearchFooterView
       {
         footer.isPrivateBrowsing = dataSource.isPrivate
 

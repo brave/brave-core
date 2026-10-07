@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
+import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.SOLANA_SPL_TRANSACTION_TYPES;
 import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.SOLANA_TRANSACTION_TYPES;
 
 import android.text.TextUtils;
@@ -151,11 +152,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
                         ? txDataUnion.getZecTxData()
                         : null;
 
-        final boolean isSPLTransaction =
-                txInfo.txType == TransactionType.SOLANA_SPL_TOKEN_TRANSFER
-                        || txInfo.txType
-                                == TransactionType
-                                        .SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION;
+        final boolean isSPLTransaction = SOLANA_SPL_TRANSACTION_TYPES.contains(txInfo.txType);
         final boolean isSolTransaction = SOLANA_TRANSACTION_TYPES.contains(txInfo.txType);
 
         String value = "";
@@ -455,9 +452,11 @@ public class ParsedTransaction extends ParsedTransactionFees {
         } else if (this.mIsSwap) {
             return String.format(Locale.getDefault(), "%.4f", this.mValue);
         } else {
-            String sVal = String.format(Locale.getDefault(), "%.9f", mValue);
+            String formatted = String.format(Locale.getDefault(), "%.9f", mValue);
             // Show amount without trailing zeros
-            return !sVal.contains(".") ? sVal : sVal.replaceAll("0*$", "").replaceAll("\\.$", "");
+            return !formatted.contains(".")
+                    ? formatted
+                    : formatted.replaceAll("0*$", "").replaceAll("\\.$", "");
         }
     }
 

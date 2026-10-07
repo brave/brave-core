@@ -4,4 +4,5 @@ include_rules = [
   "+components/keyed_service/core",
   "+crypto",
   "+components/prefs",
+  "+services/network/public",
 ]

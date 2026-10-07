@@ -105,6 +105,9 @@ rust_static_library("rust_lib") {
   visibility = [
     ":*",
     "test:*",
+
+    # For the parse_feed_bytes fuzzer, which calls into the bridge directly.
+    "//brave/fuzzers:*",
   ]
   crate_name = "brave_news_cxx"
   crate_root = "lib.rs"

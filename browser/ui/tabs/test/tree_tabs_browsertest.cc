@@ -14,6 +14,7 @@
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
@@ -42,12 +43,18 @@
 #include "components/tabs/public/tab_group_tab_collection.h"
 #include "components/tabs/public/tab_strip_collection.h"
 #include "components/tabs/public/unpinned_tab_collection.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_observer.h"
+#include "content/public/common/referrer.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/models/list_selection_model.h"
+#include "ui/base/page_transition_types.h"
 #include "ui/events/event.h"
+#include "url/gurl.h"
 
 namespace {
 
@@ -162,7 +169,8 @@ class TreeTabsBrowserTest : public InProcessBrowserTest {
   TabStripController* controller() { return tab_strip()->controller(); }
 
   TabStrip* tab_strip() {
-    return browser()->GetBrowserView().horizontal_tab_strip_for_testing();
+    return BrowserView::GetBrowserViewForBrowser(browser())
+        ->horizontal_tab_strip_for_testing();
   }
 
   // Simulates clicking |model_index| with a plain (unmodified) left click,
@@ -246,7 +254,7 @@ class TreeTabsBrowserTest : public InProcessBrowserTest {
   // opener. The opener lives in a different TabStripModel (popup, app window,
   // etc.); tree insertion must not assume it belongs to |destination_model|.
   void ExpectAddTabWithCrossStripOpenerSucceeds(
-      Browser* opener_window,
+      BrowserWindowInterface* opener_window,
       BraveTabStripModel& destination_model) {
     auto* opener_model =
         static_cast<BraveTabStripModel*>(opener_window->tab_strip_model());
@@ -290,6 +298,24 @@ class TreeTabsBrowserTest : public InProcessBrowserTest {
     // Prerequisite for enabling tree tabs.
     profile()->GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
   }
+
+  // Counts DidStartLoading() calls on a WebContents, so tests can tell which
+  // tabs a reload command actually touched.
+  class ReloadObserver : public content::WebContentsObserver {
+   public:
+    ~ReloadObserver() override = default;
+
+    int load_count() const { return load_count_; }
+    void SetWebContents(content::WebContents* web_contents) {
+      Observe(web_contents);
+    }
+
+    // content::WebContentsObserver
+    void DidStartLoading() override { load_count_++; }
+
+   private:
+    int load_count_ = 0;
+  };
 
  private:
   base::test::ScopedFeatureList feature_list_;
@@ -967,14 +993,15 @@ IN_PROC_BROWSER_TEST_F(
 // https://github.com/brave/brave-browser/issues/54334
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        AddTab_OpenerInPopupWindow_DoesNotCrashAndUsesOwnTree) {
-  Browser* const popup_browser = CreateBrowserForPopup(profile());
+  BrowserWindowInterface* const popup_browser =
+      CreateBrowserForPopup(profile());
   SetTreeTabsEnabled(true);
   ExpectAddTabWithCrossStripOpenerSucceeds(popup_browser, tab_strip_model());
 }
 
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        AddTab_OpenerInAppWindow_DoesNotCrashAndUsesOwnTree) {
-  Browser* const app_browser =
+  BrowserWindowInterface* const app_browser =
       CreateBrowserForApp("TreeTabsOpenerAppBrowserTest", profile());
   SetTreeTabsEnabled(true);
   ExpectAddTabWithCrossStripOpenerSucceeds(app_browser, tab_strip_model());
@@ -2339,6 +2366,205 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, MoveTab_FromGroupAToGroupB) {
                     .length());
 }
 
+// Regression test: right-clicking a tab that is already in a group and
+// choosing "Add to new group" used to crash with bad_optional_access, because
+// BraveTreeTabStripCollectionDelegate::MoveTabsIntoGroup() forwarded a
+// destination index computed against the pre-move layout to upstream
+// MoveTabsRecursive(), which could no longer resolve to a valid position once
+// the new group had already been attached and the tabs moved into it.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       AddToNewGroup_TabAlreadyInGroup_DoesNotCrash) {
+  EnsureTabGroupSyncServiceInitialized();
+  SetTreeTabsEnabled(true);
+  for (int i = 0; i < 3; ++i) {
+    AddTab();
+  }
+  ASSERT_EQ(4, tab_strip_model().count());
+
+  // tab0, GroupA(tab1, tab2), tab3
+  tab_groups::TabGroupId group_a = tab_strip_model().AddToNewGroup({1, 2});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_a));
+
+  tabs::TabInterface* tab0 = tab_strip_model().GetTabAtIndex(0);
+  tabs::TabInterface* tab_to_regroup = tab_strip_model().GetTabAtIndex(1);
+  tabs::TabInterface* tab_remaining_in_a = tab_strip_model().GetTabAtIndex(2);
+  tabs::TabInterface* tab3 = tab_strip_model().GetTabAtIndex(3);
+
+  // This used to crash.
+  tab_groups::TabGroupId group_b = tab_strip_model().AddToNewGroup(
+      {tab_strip_model().GetIndexOfTab(tab_to_regroup)});
+  ASSERT_NE(group_a, group_b);
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_b));
+
+  // The new group should be placed right after the old one:
+  // tab0, GroupA(tab_remaining_in_a), GroupB(tab_to_regroup), tab3.
+  EXPECT_EQ(0, tab_strip_model().GetIndexOfTab(tab0));
+  EXPECT_EQ(1, tab_strip_model().GetIndexOfTab(tab_remaining_in_a));
+  EXPECT_EQ(2, tab_strip_model().GetIndexOfTab(tab_to_regroup));
+  EXPECT_EQ(3, tab_strip_model().GetIndexOfTab(tab3));
+
+  EXPECT_FALSE(tab_strip_model()
+                   .GetTabGroupForTab(tab_strip_model().GetIndexOfTab(tab0))
+                   .has_value());
+  EXPECT_EQ(group_a, tab_strip_model().GetTabGroupForTab(
+                         tab_strip_model().GetIndexOfTab(tab_remaining_in_a)));
+  EXPECT_EQ(group_b, tab_strip_model().GetTabGroupForTab(
+                         tab_strip_model().GetIndexOfTab(tab_to_regroup)));
+  EXPECT_FALSE(tab_strip_model()
+                   .GetTabGroupForTab(tab_strip_model().GetIndexOfTab(tab3))
+                   .has_value());
+
+  ExpectGroupModelTabListCount(group_a, 1u);
+  ExpectGroupModelTabListCount(group_b, 1u);
+
+  // GroupB's tree-node wrapper should be the sibling right after GroupA's,
+  // whatever their common parent collection turns out to be (it may itself
+  // be nested under an ancestor tab's tree node rather than the top-level
+  // unpinned collection, depending on tree shape).
+  tabs::TabCollection* group_a_wrapper =
+      tab_remaining_in_a->GetParentCollection()->GetParentCollection();
+  ASSERT_EQ(group_a_wrapper->type(), tabs::TabCollection::Type::TREE_NODE);
+  tabs::TabCollection* group_b_wrapper =
+      tab_to_regroup->GetParentCollection()->GetParentCollection();
+  ASSERT_EQ(group_b_wrapper->type(), tabs::TabCollection::Type::TREE_NODE);
+  tabs::TabCollection* common_parent = group_a_wrapper->GetParentCollection();
+  ASSERT_TRUE(common_parent);
+  ASSERT_EQ(group_b_wrapper->GetParentCollection(), common_parent);
+  EXPECT_EQ(*common_parent->GetIndexOfCollection(group_b_wrapper),
+            *common_parent->GetIndexOfCollection(group_a_wrapper) + 1);
+}
+
+// Multiple tabs already in the same group, moved together into a new group -
+// the relative order of the moved tabs must be preserved.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       AddToNewGroup_MultipleTabsAlreadyInGroup) {
+  EnsureTabGroupSyncServiceInitialized();
+  SetTreeTabsEnabled(true);
+  for (int i = 0; i < 3; ++i) {
+    AddTab();
+  }
+  ASSERT_EQ(4, tab_strip_model().count());
+
+  // tab0, GroupA(tab1, tab2, tab3)
+  tab_groups::TabGroupId group_a = tab_strip_model().AddToNewGroup({1, 2, 3});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_a));
+
+  tabs::TabInterface* tab0 = tab_strip_model().GetTabAtIndex(0);
+  tabs::TabInterface* tab1 = tab_strip_model().GetTabAtIndex(1);
+  tabs::TabInterface* tab2 = tab_strip_model().GetTabAtIndex(2);
+  tabs::TabInterface* tab3 = tab_strip_model().GetTabAtIndex(3);
+
+  tab_groups::TabGroupId group_b =
+      tab_strip_model().AddToNewGroup({tab_strip_model().GetIndexOfTab(tab1),
+                                       tab_strip_model().GetIndexOfTab(tab2)});
+  ASSERT_NE(group_a, group_b);
+
+  // tab0, GroupA(tab3), GroupB(tab1, tab2)
+  EXPECT_EQ(0, tab_strip_model().GetIndexOfTab(tab0));
+  EXPECT_EQ(1, tab_strip_model().GetIndexOfTab(tab3));
+  EXPECT_EQ(2, tab_strip_model().GetIndexOfTab(tab1));
+  EXPECT_EQ(3, tab_strip_model().GetIndexOfTab(tab2));
+
+  EXPECT_EQ(group_a, tab_strip_model().GetTabGroupForTab(
+                         tab_strip_model().GetIndexOfTab(tab3)));
+  EXPECT_EQ(group_b, tab_strip_model().GetTabGroupForTab(
+                         tab_strip_model().GetIndexOfTab(tab1)));
+  EXPECT_EQ(group_b, tab_strip_model().GetTabGroupForTab(
+                         tab_strip_model().GetIndexOfTab(tab2)));
+
+  ExpectGroupModelTabListCount(group_a, 1u);
+  ExpectGroupModelTabListCount(group_b, 2u);
+}
+
+// Regression guard: moving the sole tab of a group into a new group already
+// worked before this fix (the old group is fully removed by OnGroupEmpty(),
+// and the indices happened to still line up); make sure it keeps working.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddToNewGroup_LastTabInGroup) {
+  EnsureTabGroupSyncServiceInitialized();
+  SetTreeTabsEnabled(true);
+  for (int i = 0; i < 2; ++i) {
+    AddTab();
+  }
+  ASSERT_EQ(3, tab_strip_model().count());
+
+  // tab0, GroupA(tab1), tab2
+  tab_groups::TabGroupId group_a = tab_strip_model().AddToNewGroup({1});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_a));
+
+  tabs::TabInterface* tab0 = tab_strip_model().GetTabAtIndex(0);
+  tabs::TabInterface* tab1 = tab_strip_model().GetTabAtIndex(1);
+  tabs::TabInterface* tab2 = tab_strip_model().GetTabAtIndex(2);
+
+  tab_groups::TabGroupId group_b =
+      tab_strip_model().AddToNewGroup({tab_strip_model().GetIndexOfTab(tab1)});
+  ASSERT_NE(group_a, group_b);
+
+  // GroupA had only one tab, so it is removed entirely.
+  EXPECT_FALSE(tab_strip_model().group_model()->ContainsTabGroup(group_a));
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_b));
+
+  EXPECT_EQ(0, tab_strip_model().GetIndexOfTab(tab0));
+  EXPECT_EQ(1, tab_strip_model().GetIndexOfTab(tab1));
+  EXPECT_EQ(2, tab_strip_model().GetIndexOfTab(tab2));
+
+  EXPECT_EQ(group_b, tab_strip_model().GetTabGroupForTab(
+                         tab_strip_model().GetIndexOfTab(tab1)));
+  EXPECT_FALSE(tab_strip_model()
+                   .GetTabGroupForTab(tab_strip_model().GetIndexOfTab(tab0))
+                   .has_value());
+  EXPECT_FALSE(tab_strip_model()
+                   .GetTabGroupForTab(tab_strip_model().GetIndexOfTab(tab2))
+                   .has_value());
+  ExpectGroupModelTabListCount(group_b, 1u);
+}
+
+// Tabs from two different single-tab groups, moved together into a brand new
+// group: both source groups are emptied (and removed) within the same call.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       AddToNewGroup_TabsFromTwoDifferentGroups) {
+  EnsureTabGroupSyncServiceInitialized();
+  SetTreeTabsEnabled(true);
+  for (int i = 0; i < 2; ++i) {
+    AddTab();
+  }
+  ASSERT_EQ(3, tab_strip_model().count());
+
+  tab_groups::TabGroupId group_a = tab_strip_model().AddToNewGroup({0});
+  tabs::TabInterface* tab0 = tab_strip_model().GetTabAtIndex(0);
+  tabs::TabInterface* tab1 = tab_strip_model().GetTabAtIndex(1);
+  tabs::TabInterface* tab2 = tab_strip_model().GetTabAtIndex(2);
+  tab_groups::TabGroupId group_b =
+      tab_strip_model().AddToNewGroup({tab_strip_model().GetIndexOfTab(tab2)});
+  ASSERT_NE(group_a, group_b);
+
+  // GroupA(tab0), tab1, GroupB(tab2)
+  ASSERT_EQ(group_a, tab_strip_model().GetTabGroupForTab(
+                         tab_strip_model().GetIndexOfTab(tab0)));
+  ASSERT_EQ(group_b, tab_strip_model().GetTabGroupForTab(
+                         tab_strip_model().GetIndexOfTab(tab2)));
+
+  tab_groups::TabGroupId group_c =
+      tab_strip_model().AddToNewGroup({tab_strip_model().GetIndexOfTab(tab0),
+                                       tab_strip_model().GetIndexOfTab(tab2)});
+  ASSERT_NE(group_c, group_a);
+  ASSERT_NE(group_c, group_b);
+
+  // Both source groups are emptied and removed; tab0 and tab2 land together
+  // in the new group, tab1 is untouched.
+  EXPECT_FALSE(tab_strip_model().group_model()->ContainsTabGroup(group_a));
+  EXPECT_FALSE(tab_strip_model().group_model()->ContainsTabGroup(group_b));
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_c));
+
+  EXPECT_EQ(group_c, tab_strip_model().GetTabGroupForTab(
+                         tab_strip_model().GetIndexOfTab(tab0)));
+  EXPECT_EQ(group_c, tab_strip_model().GetTabGroupForTab(
+                         tab_strip_model().GetIndexOfTab(tab2)));
+  EXPECT_FALSE(tab_strip_model()
+                   .GetTabGroupForTab(tab_strip_model().GetIndexOfTab(tab1))
+                   .has_value());
+  ExpectGroupModelTabListCount(group_c, 2u);
+}
+
 // Make a tab group with a nested tree hierarchy (parent and child in group).
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        MakeTabGroup_WithNestedTreeHierarchy) {
@@ -2732,9 +2958,9 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                 ->type(),
             tabs::TabCollection::Type::SPLIT);
 
-  EXPECT_TRUE(std::holds_alternative<std::unique_ptr<tabs::TabInterface>>(
+  EXPECT_TRUE(std::holds_alternative<tabs::ScopedTab>(
       pinned_collection().GetChildren()[1]));
-  EXPECT_TRUE(std::holds_alternative<std::unique_ptr<tabs::TabInterface>>(
+  EXPECT_TRUE(std::holds_alternative<tabs::ScopedTab>(
       pinned_collection().GetChildren()[2]));
   EXPECT_TRUE(std::holds_alternative<std::unique_ptr<tabs::TabCollection>>(
 
@@ -3691,7 +3917,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   ASSERT_TRUE(tab_strip_model().tree_model()->GetNode(parent_node_id));
   ASSERT_TRUE(tab_strip_model().tree_model()->GetNode(child_node_id));
 
-  Browser* const second_browser = CreateBrowser(profile());
+  BrowserWindowInterface* const second_browser = CreateBrowser(profile());
   BraveTabStripModel& second_model =
       *static_cast<BraveTabStripModel*>(second_browser->tab_strip_model());
   const int second_browser_initial_count = second_model.count();
@@ -3754,7 +3980,7 @@ IN_PROC_BROWSER_TEST_F(
   // the real UI insertion path this low-level test bypasses).
   tab_strip_model().ActivateTabAt(1);
 
-  Browser* const second_browser = CreateBrowser(profile());
+  BrowserWindowInterface* const second_browser = CreateBrowser(profile());
   BraveTabStripModel& second_model =
       *static_cast<BraveTabStripModel*>(second_browser->tab_strip_model());
   const int second_browser_initial_count = second_model.count();
@@ -3805,7 +4031,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
 
   ui_test_utils::BrowserCreatedObserver browser_created_observer;
   chrome::MoveTabsToNewWindow(browser(), {0, 1});
-  Browser* const new_browser = browser_created_observer.Wait();
+  BrowserWindowInterface* const new_browser = browser_created_observer.Wait();
   ASSERT_TRUE(new_browser);
 
   EXPECT_EQ(1, tab_strip_model().count());
@@ -3824,4 +4050,179 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
             tabs::TabCollection::Type::TREE_NODE);
 
   CloseBrowserSynchronously(new_browser);
+}
+
+// Activating a tree-tab parent selects its whole subtree (see the
+// SelectTab_* tests in this file), but IDC_CLOSE_TAB should still only close
+// the active tab in that case, mirroring OnlyCloseActiveTabInSplitView in
+// chrome/browser/ui/browser_commands_browsertest.cc for split tabs.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, OnlyCloseActiveTabInTreeSubtree) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  std::vector<content::WebContents*> child_contents;
+  for (int i = 0; i < 2; ++i) {
+    std::unique_ptr<content::WebContents> contents = CreateWebContents();
+    child_contents.push_back(contents.get());
+    auto child_interface = std::make_unique<tabs::TabModel>(std::move(contents),
+                                                            &tab_strip_model());
+    child_interface->set_opener(parent_tab);
+    tab_strip_model().AddTab(std::move(child_interface), -1,
+                             ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  }
+  ASSERT_EQ(3, tab_strip_model().count());
+
+  // Clicking the parent selects the parent and both children.
+  ClickTab(0);
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(0));
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(1));
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(2));
+
+  EXPECT_TRUE(chrome::ExecuteCommand(browser(), IDC_CLOSE_TAB));
+
+  // Only the parent should have closed; both children remain.
+  EXPECT_EQ(2, tab_strip_model().count());
+  EXPECT_NE(tab_strip_model().GetIndexOfWebContents(child_contents[0]),
+            TabStripModel::kNoTab);
+  EXPECT_NE(tab_strip_model().GetIndexOfWebContents(child_contents[1]),
+            TabStripModel::kNoTab);
+}
+
+// Same as above but for IDC_RELOAD: only the active tab in the subtree
+// should reload.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, OnlyReloadActiveTabInTreeSubtree) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  for (int i = 0; i < 2; ++i) {
+    auto child_interface = std::make_unique<tabs::TabModel>(CreateWebContents(),
+                                                            &tab_strip_model());
+    child_interface->set_opener(parent_tab);
+    tab_strip_model().AddTab(std::move(child_interface), -1,
+                             ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  }
+  ASSERT_EQ(3, tab_strip_model().count());
+
+  // Give every tab a committed navigation entry so IDC_RELOAD has something
+  // to reload, then track reload starts per tab.
+  std::vector<ReloadObserver> reload_observers(3);
+  for (int i = 0; i < 3; ++i) {
+    content::WebContents* const contents =
+        tab_strip_model().GetWebContentsAt(i);
+    contents->GetController().LoadURL(GURL("about:blank"), content::Referrer(),
+                                      ui::PAGE_TRANSITION_TYPED, std::string());
+    EXPECT_TRUE(content::WaitForLoadStop(contents));
+    reload_observers[i].SetWebContents(contents);
+  }
+
+  ClickTab(0);
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(0));
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(1));
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(2));
+
+  EXPECT_TRUE(chrome::ExecuteCommand(browser(), IDC_RELOAD));
+  EXPECT_TRUE(content::WaitForLoadStop(tab_strip_model().GetWebContentsAt(0)));
+
+  // Only the active (parent) tab should have reloaded; both children must be
+  // untouched.
+  EXPECT_EQ(1, reload_observers[0].load_count());
+  EXPECT_EQ(0, reload_observers[1].load_count());
+  EXPECT_EQ(0, reload_observers[2].load_count());
+}
+
+// If a tab outside the active tab's subtree is also selected, IDC_CLOSE_TAB
+// must close the whole selection, same as the existing
+// CloseAllTabsInSelectionModel split-tab behavior.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       CloseAllSelectedTabs_WhenExtraTabSelectedOutsideTree) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  auto child_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  child_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(child_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  // An unrelated tab that gets selected alongside the subtree, and one more
+  // that stays unselected so the browser has a tab left after closing.
+  for (int i = 0; i < 2; ++i) {
+    auto other_tab_interface = std::make_unique<tabs::TabModel>(
+        CreateWebContents(), &tab_strip_model());
+    tab_strip_model().AddTab(std::move(other_tab_interface), -1,
+                             ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  }
+  ASSERT_EQ(4, tab_strip_model().count());
+
+  // Select the parent's subtree (indices 0, 1), then additionally select the
+  // unrelated tab at index 2 (leaving index 3 unselected).
+  ClickTab(0);
+  tab_strip_model().SelectTabAt(2);
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(0));
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(1));
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(2));
+  ASSERT_FALSE(tab_strip_model().IsTabSelected(3));
+
+  EXPECT_TRUE(chrome::ExecuteCommand(browser(), IDC_CLOSE_TAB));
+
+  // The whole selection (subtree + the extra tab) should have closed,
+  // leaving only the untouched tab.
+  EXPECT_EQ(1, tab_strip_model().count());
+}
+
+// If a tab outside the active tab's subtree is also selected, IDC_RELOAD
+// must reload the whole selection, not just the active tab.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       ReloadAllSelectedTabs_WhenExtraTabSelectedOutsideTree) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  auto child_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  child_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(child_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  // An unrelated tab that gets selected alongside the subtree, and one more
+  // that stays unselected.
+  for (int i = 0; i < 2; ++i) {
+    auto other_tab_interface = std::make_unique<tabs::TabModel>(
+        CreateWebContents(), &tab_strip_model());
+    tab_strip_model().AddTab(std::move(other_tab_interface), -1,
+                             ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  }
+  ASSERT_EQ(4, tab_strip_model().count());
+
+  // Give every tab a committed navigation entry so IDC_RELOAD has something
+  // to reload, then track reload starts per tab.
+  std::vector<ReloadObserver> reload_observers(4);
+  for (int i = 0; i < 4; ++i) {
+    content::WebContents* const contents =
+        tab_strip_model().GetWebContentsAt(i);
+    contents->GetController().LoadURL(GURL("about:blank"), content::Referrer(),
+                                      ui::PAGE_TRANSITION_TYPED, std::string());
+    ASSERT_TRUE(content::WaitForLoadStop(contents));
+    reload_observers[i].SetWebContents(contents);
+  }
+
+  // Select the parent's subtree (indices 0, 1), then additionally select the
+  // unrelated tab at index 2 (leaving index 3 unselected).
+  ClickTab(0);
+  tab_strip_model().SelectTabAt(2);
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(0));
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(1));
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(2));
+  ASSERT_FALSE(tab_strip_model().IsTabSelected(3));
+
+  EXPECT_TRUE(chrome::ExecuteCommand(browser(), IDC_RELOAD));
+  EXPECT_TRUE(content::WaitForLoadStop(tab_strip_model().GetWebContentsAt(0)));
+  EXPECT_TRUE(content::WaitForLoadStop(tab_strip_model().GetWebContentsAt(1)));
+  EXPECT_TRUE(content::WaitForLoadStop(tab_strip_model().GetWebContentsAt(2)));
+
+  // The whole selection (subtree + the extra tab) should have reloaded; the
+  // untouched tab must not.
+  EXPECT_EQ(1, reload_observers[0].load_count());
+  EXPECT_EQ(1, reload_observers[1].load_count());
+  EXPECT_EQ(1, reload_observers[2].load_count());
+  EXPECT_EQ(0, reload_observers[3].load_count());
 }

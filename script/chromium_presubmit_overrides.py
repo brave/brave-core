@@ -24,10 +24,15 @@ CANNED_CHECKS_KEY = 'canned'
 def load_presubmit_config():
     with brave_chromium_utils.sys_path('//third_party/pyjson5/src'):
         import json5
+
         return json5.load(
             open(
                 brave_chromium_utils.wspath(
-                    '//brave/chromium_presubmit_config.json5')))
+                    '//brave/chromium_presubmit_config.json5'
+                ),
+                encoding='utf-8',
+            )
+        )
 
 
 config = load_presubmit_config()
@@ -41,6 +46,7 @@ def noop_check(*_, **__):
 # Replaces existing PRESUBMIT check. Can be used with globals() scope or a class
 # scope (such as input_api.canned_checks).
 def override_check(scope, name=None, should_exist=True):
+
     def decorator(new_func):
         is_dict_scope = isinstance(scope, dict)
         check_name = name or new_func.__name__
@@ -50,8 +56,10 @@ def override_check(scope, name=None, should_exist=True):
             original_check = getattr(scope, check_name, None)
 
         if not callable(original_check):
-            message = (f'{check_name} check to override not found. '
-                       'Please update presubmit overrides.')
+            message = (
+                f'{check_name} check to override not found. '
+                'Please update presubmit overrides.'
+            )
             if should_exist:
                 traceback.print_stack()
                 raise RuntimeError(f'ERROR: {message}')
@@ -78,26 +86,34 @@ def override_canned_checks(canned_checks):
     #    which we should ignore.
     @override_check(canned_checks, should_exist=False)
     def GetPylint(original_check, input_api, output_api, **kwargs):
+
         def _FetchAllFiles(_, input_api, files_to_check, files_to_skip):
-            src_filter = lambda f: input_api.FilterSourceFile(
-                f, files_to_check=files_to_check, files_to_skip=files_to_skip)
+
+            def src_filter(f):
+                return input_api.FilterSourceFile(
+                    f,
+                    files_to_check=files_to_check,
+                    files_to_skip=files_to_skip,
+                )
+
             return [
                 f.AbsoluteLocalPath()
                 for f in input_api.AffectedSourceFiles(src_filter)
             ]
 
-        with override_utils.override_scope_function(input_api.canned_checks,
-                                                    _FetchAllFiles):
+        with override_utils.override_scope_function(
+            input_api.canned_checks, _FetchAllFiles
+        ):
             return original_check(input_api, output_api, **kwargs)
 
 
 # Overrides canned checks and installs per-check file filter.
 def modify_input_api(input_api):
     input_api.PRESUBMIT_FIX = os.environ.get('PRESUBMIT_FIX') == '1'
-    input_api.PRESUBMIT_ALL_BRAVE = os.environ.get(
-        'PRESUBMIT_ALL_BRAVE') == '1'
+    input_api.PRESUBMIT_ALL_BRAVE = os.environ.get('PRESUBMIT_ALL_BRAVE') == '1'
     input_api.DEFAULT_FILES_TO_CHECK += (
-        *config['additional_default_files_to_check'], )
+        *config['additional_default_files_to_check'],
+    )
     override_canned_checks(input_api.canned_checks)
     setup_per_check_file_filter(input_api)
     setup_read_file_override(input_api)
@@ -106,20 +122,24 @@ def modify_input_api(input_api):
 # Disables checks or forces presubmit errors for checks listed in the config.
 def apply_generic_check_overrides(scope, config_key, should_exist):
     for disabled_check in config['disabled_checks'][config_key]:
-        override_check(scope, name=disabled_check,
-                       should_exist=should_exist)(noop_check)
+        override_check(scope, name=disabled_check, should_exist=should_exist)(
+            noop_check
+        )
 
-    def force_presubmit_error_wrapper(original_check, input_api, output_api,
-                                      **kwargs):
-        with override_utils.override_scope_variable(output_api,
-                                                    'PresubmitPromptWarning',
-                                                    output_api.PresubmitError):
-            return original_check(input_api, output_api, **kwargs)
+    def force_presubmit_error_wrapper(
+        original_check, input_api, output_api, *args, **kwargs
+    ):
+        with override_utils.override_scope_variable(
+            output_api, 'PresubmitPromptWarning', output_api.PresubmitError
+        ):
+            return original_check(input_api, output_api, *args, **kwargs)
 
     for force_error_check in config['checks_to_force_presubmit_errors'][
-            config_key]:
-        override_check(scope, name=force_error_check,
-                       should_exist=should_exist)(force_presubmit_error_wrapper)
+        config_key
+    ]:
+        override_check(
+            scope, name=force_error_check, should_exist=should_exist
+        )(force_presubmit_error_wrapper)
 
 
 # Wraps input_api.change.AffectedFiles method to manually filter files available
@@ -149,7 +169,8 @@ def setup_per_check_file_filter(input_api):
     @override_utils.override_method(input_api.change)
     def AffectedFiles(_self, original_method, *args, **kwargs):
         files_to_skip = get_files_to_skip(
-            get_check_names(inspect.currentframe().f_back))
+            get_check_names(inspect.currentframe().f_back)
+        )
         affected_files = input_api.change._affected_files
         if files_to_skip:
 
@@ -162,9 +183,9 @@ def setup_per_check_file_filter(input_api):
 
             affected_files = [*filter(file_filter, affected_files)]
 
-        with override_utils.override_scope_variable(input_api.change,
-                                                    '_affected_files',
-                                                    affected_files):
+        with override_utils.override_scope_variable(
+            input_api.change, '_affected_files', affected_files
+        ):
             return original_method(*args, **kwargs)
 
     if input_api.no_diffs:
@@ -196,10 +217,14 @@ def setup_read_file_override(input_api):
                 file_item = file_item.AbsoluteLocalPath()
 
             from pathlib import Path
+
             repo_root = Path(_self.change.RepositoryRoot())
 
-            if (repo_root.name == "brave" and repo_root.parent.name == "src"
-                    and file_item.startswith(str(repo_root.parent))):
+            if (
+                repo_root.name == "brave"
+                and repo_root.parent.name == "src"
+                and file_item.startswith(str(repo_root.parent))
+            ):
                 return True
 
             return False
@@ -210,8 +235,7 @@ def setup_read_file_override(input_api):
             # We want to pass over the exception of reading
             # reading anything outside the repository from InputApi.ReadFile.
             # So just re-throw as is any other exception
-            if (str(io_error)
-                    != 'Access outside the repository root is denied.'):
+            if str(io_error) != 'Access outside the repository root is denied.':
                 raise
 
             # We are here because of the original input_api.ReadFile
@@ -220,6 +244,7 @@ def setup_read_file_override(input_api):
             # But in fact we are ok to read from brave-browser/src
             if is_affected_file_inside_chromium_repo(_self, file_item):
                 import gclient_utils
+
                 return gclient_utils.FileRead(file_item, 'r')
 
             # Give up, we are even outside brave-browser/src
@@ -228,10 +253,12 @@ def setup_read_file_override(input_api):
 
 # Inlines presubmit file as if it was run from the dir where it's located.
 def inline_presubmit(filename, _globals, _locals):
+
     class State:
         def __init__(self, filename):
             self.presubmit_dir = os.path.dirname(
-                brave_chromium_utils.wspath(filename))
+                brave_chromium_utils.wspath(filename)
+            )
             self.orig_cwd = os.getcwd()
             self.orig_presubmit_dir = ''
 
@@ -250,12 +277,23 @@ def inline_presubmit(filename, _globals, _locals):
         state.PreRunChecks(input_api)
         return []
 
+    existing_checks = {
+        name: value
+        for name, value in _globals.items()
+        if name.startswith('Check')
+    }
     func_suffix = re.sub(r'[^\w]', '_', filename)
     pre_check_name = f'Check_Pre_{func_suffix}'
     assert pre_check_name not in _globals
     _globals[pre_check_name] = PreRunChecks
 
     brave_chromium_utils.inline_file(filename, _globals, _locals)
+    for name, existing_check in existing_checks.items():
+        if _globals.get(name) is not existing_check:
+            raise RuntimeError(
+                f'Existing presubmit check {name} was replaced by '
+                f'inline_presubmit from {filename}'
+            )
     apply_generic_check_overrides(_globals, filename, True)
 
     def PostRunChecks(input_api, _output_api):

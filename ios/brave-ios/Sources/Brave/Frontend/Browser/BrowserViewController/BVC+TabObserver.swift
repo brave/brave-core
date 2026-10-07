@@ -50,7 +50,6 @@ extension BrowserViewController: TabObserver {
       // (orange color) as soon as the page has loaded.
       if let url = visibleURL {
         if !url.isInternalURL(for: .readermode) {
-          topToolbar.updateReaderModeState(.unavailable)
           hideReaderModeBar(animated: false)
         }
       }
@@ -71,8 +70,7 @@ extension BrowserViewController: TabObserver {
         }
         // dismiss wallet notification (e.g. after redirect to different origin)
         removeWalletNotificationAndClearOrigin()
-      } else if FeatureList.kBraveWalletWebUIIOS?.enabled == true,
-        profileController.braveWalletAPI.isAllowed,
+      } else if profileController.braveWalletAPI.isAllowed,
         let selectedTabVisibleURL = selectedTab.visibleURL,
         selectedTabVisibleURL.isWalletWebUIURL
       {
@@ -85,11 +83,18 @@ extension BrowserViewController: TabObserver {
     }
   }
 
+  public func tabWasShown(_ tab: some TabState) {
+    if #available(iOS 26.0, *) {
+      updateWebViewObscuredInsets()
+    }
+  }
+
   public func tabDidCommitNavigation(_ tab: some TabState) {
-    // Reset the stored http request now that load has committed.
-    tab.upgradedHTTPSRequest = nil
-    tab.upgradeHTTPSTimeoutTimer?.invalidate()
-    tab.upgradeHTTPSTimeoutTimer = nil
+    // Odd Chromium behaviour resets the web views obscured insets when a navigation starts due to
+    // a bug with their fullscreen support, so we must set this again after a commit
+    if #available(iOS 26.0, *) {
+      updateWebViewObscuredInsets()
+    }
 
     // Clear the current request url and the redirect source url
     // We don't need these values after the request has been comitted
@@ -124,11 +129,9 @@ extension BrowserViewController: TabObserver {
     }
 
     updateUIForReaderHomeStateForTab(tab)
-    updateBackForwardActionStatus(for: tab)
   }
 
   public func tabDidCommitSameDocumentNavigation(_ tab: some TabState) {
-    tab.browserData?.resetExternalAlertProperties()
 
     if !Preferences.Privacy.privateBrowsingOnly.value,
       !tab.isPrivate || Preferences.Privacy.persistentPrivateBrowsing.value
@@ -159,7 +162,7 @@ extension BrowserViewController: TabObserver {
       isSelected: tabManager.selectedTab === tab,
       isPrivate: privateBrowsingManager.isPrivateBrowsing
     )
-    tab.browserData?.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
+    tab.browserData?.reportPageLoad(to: rewards)
 
     if tab.visibleURL?.isLocal == false {
       // Set rewards inter site url as new page load url.
@@ -170,44 +173,21 @@ extension BrowserViewController: TabObserver {
       maybeRecordBraveSearchDailyUsage(url: lastCommittedURL)
     }
 
-    // Added this method to determine long press menu actions better
-    // Since these actions are depending on tabmanager opened WebsiteCount
-    updateToolbarUsingTabManager(tabManager)
-
     recordFinishedPageLoadP3A()
   }
 
   public func tab(_ tab: some TabState, didFailNavigationWithError error: any Error) {
     let error = error as NSError
     if error.code == Int(CFNetworkErrors.cfurlErrorCancelled.rawValue) {
-      // load cancelled / user stopped load. Cancel https upgrade fallback timer.
-      tab.upgradedHTTPSRequest = nil
-      tab.upgradeHTTPSTimeoutTimer?.invalidate()
-      tab.upgradeHTTPSTimeoutTimer = nil
-
       if tab === tabManager.selectedTab {
         if let displayURL = tab.visibleURL?.displayURL {
-          updateToolbarCurrentURL(displayURL)
-        } else if let url = tab.url, !url.isLocal, !InternalURL.isValid(url: url) {
-          updateToolbarCurrentURL(url.displayURL)
+          updateScreenTimeUrl(displayURL)
+        } else if let url = tab.lastCommittedURL, !url.isLocal, !InternalURL.isValid(url: url) {
+          updateScreenTimeUrl(url.displayURL)
         }
         updateWebViewPageZoom(tab: tab)
       }
       return
-    }
-
-    if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
-      // Check for invalid upgrade to https
-      if url.scheme == "https",  // verify failing url was https
-        let response = handleInvalidHTTPSUpgrade(
-          tab: tab,
-          responseURL: url
-        )
-      {
-        // load original or strict mode interstitial
-        tab.loadRequest(response)
-        return
-      }
     }
   }
 
@@ -220,12 +200,6 @@ extension BrowserViewController: TabObserver {
   }
 
   public func tabDidUpdateURL(_ tab: some TabState) {
-    if tab.isDisplayingBasicAuthPrompt == true {
-      tab.setVirtualURL(
-        URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.basicAuth.rawValue)")
-      )
-    }
-
     if tab === tabManager.selectedTab && !tab.isRestoring {
       updateUIForReaderHomeStateForTab(tab)
     }
@@ -241,8 +215,8 @@ extension BrowserViewController: TabObserver {
       // didCommit is called and it will cause url bar be empty in that period
       // To fix this when tab display url is empty, webview url is used
       if tab === tabManager.selectedTab, tab.visibleURL?.displayURL == nil {
-        if let url = tab.url, !url.isLocal, !InternalURL.isValid(url: url) {
-          updateToolbarCurrentURL(url.displayURL)
+        if let url = tab.visibleURL, !url.isLocal, !InternalURL.isValid(url: url) {
+          updateScreenTimeUrl(url.displayURL)
         }
       } else if tab === tabManager.selectedTab, tab.visibleURL?.displayURL?.scheme == "about",
         !tab.isLoading
@@ -252,12 +226,6 @@ extension BrowserViewController: TabObserver {
         }
 
         navigateInTab(tab: tab)
-      } else if tab === tabManager.selectedTab, let tabData = tab.browserData,
-        tabData.isDisplayingBasicAuthPrompt
-      {
-        updateToolbarCurrentURL(
-          URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.basicAuth.rawValue)")
-        )
       }
     }
 
@@ -268,44 +236,8 @@ extension BrowserViewController: TabObserver {
         let rewardsURL = tab.rewardsXHRLoadURL,
         url.host == rewardsURL.host
       {
-        tab.browserData?.reportPageLoad(to: rewards, redirectChain: [url])
+        tab.browserData?.reportPageLoad(to: rewards)
       }
-    }
-
-    // Update the estimated progress when the URL changes. Estimated progress may update to 0.1 when the url
-    // is still an internal URL even though a request may be pending for a web page.
-    if tab === tabManager.selectedTab, let url = tab.visibleURL,
-      !url.isNewTabURL, !InternalURL.isValid(url: url), tab.isLoading, tab.estimatedProgress > 0
-    {
-      topToolbar.updateProgressBar(Float(tab.estimatedProgress))
-    }
-
-    Task {
-      if self.tabManager.selectedTab === tab {
-        self.updateToolbarSecureContentState(tab.visibleSecureContentState)
-      }
-    }
-  }
-
-  public func tabDidChangeLoadProgress(_ tab: some TabState) {
-    guard tab === tabManager.selectedTab else { return }
-    if let url = tab.visibleURL, !url.isNewTabURL, !InternalURL.isValid(url: url), tab.isLoading {
-      topToolbar.updateProgressBar(Float(tab.estimatedProgress))
-    } else {
-      topToolbar.hideProgressBar()
-    }
-  }
-
-  public func tabDidStartLoading(_ tab: some TabState) {
-    guard tab === tabManager.selectedTab else { return }
-    topToolbar.locationView.loading = tab.isLoading
-  }
-
-  public func tabDidStopLoading(_ tab: some TabState) {
-    guard tab === tabManager.selectedTab else { return }
-    topToolbar.locationView.loading = tab.isLoading
-    if tab.estimatedProgress != 1 {
-      topToolbar.updateProgressBar(1)
     }
   }
 
@@ -318,17 +250,6 @@ extension BrowserViewController: TabObserver {
     if !title.isEmpty && title != tab.lastTitle {
       navigateInTab(tab: tab)
       tabsBar.updateSelectedTabTitle()
-    }
-  }
-
-  public func tabDidChangeBackForwardState(_ tab: some TabState) {
-    if tab !== tabManager.selectedTab { return }
-    updateBackForwardActionStatus(for: tab)
-  }
-
-  public func tabDidChangeVisibleSecurityState(_ tab: some TabState) {
-    if tabManager.selectedTab === tab {
-      self.updateToolbarSecureContentState(tab.visibleSecureContentState)
     }
   }
 

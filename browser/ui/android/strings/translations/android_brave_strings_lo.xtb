@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">ໃຫ້ຄະແນນ Brave</translation>
 <translation id="4104400246019119780">ຂໍຂອບໃຈ!</translation>
 <translation id="5202255382948179481">ເພີ່ມ ຄາວເໜັດຊັງ</translation>
-<translation id="7759809451544302770">ເອື້ອຍ</translation>
 <translation id="4748689412569009273">ໃຊ້ອິໂມຈິໜຶ່ງໂຕ, ບອກຄວາມຮູ້ສຶກຂອງທ່ານຕໍ່ Brave ໄດ້ບໍ່?</translation>
 <translation id="7335142069363686805">ໃຫ້ຄະແນນຕອນນີ້</translation>
 <translation id="6681362094306959654">ມັກ Brave ບໍ່?</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">ເຫັນລຳບາກ</translation>
 <translation id="5488843227043643519">ໃຫ້ຄະແນນ Play Store ບໍ່?</translation>
 <translation id="5867854497245948308">ຂອບໃຈສຳລັບຄຳໂຕຕອບຂອງທ່ານ!</translation>
-<translation id="4935400164159327304">ບອກເຮົາວ່າບໍ່ຫາທ່ານເຮົາແນວໃດໄດ້.</translation>
+<translation id="5578122562331038807">ບອກພວກເຮົາວ່າພວກເຮົາສາມາດປັບປຸງ Brave ໄດ້ແນວໃດ</translation>
+<translation id="1483493594462132177">ສົ່ງ</translation>
+<translation id="3889034478061064651">ເພີ່ມຄໍາແນະນໍາຂອງທ່ານ (ທາງເລືອກ)</translation>
+<translation id="1769154760586570836">ສົ່ງຄໍາຕິຊົມແລ້ວ. ຂອບໃຈ!</translation>
+<translation id="4450893287417543264">ຢ່າສະແດງອີກ</translation>
 <translation id="8966035543003363155">Brave notifications ວຽນເວວໜ້າຢູ່ເບື້ອງລວງໜ້າ</translation>
 <translation id="7662771815233894695">ຄົບເຮັດເປັນຕົວຂອງເຈົ້າແກ່ນ້ຳແຝົ້າ: ຖ້າທ່ານມີໃຈແຕ່ຄິດບານ, Brave Rewards</translation>
 <translation id="4265429476391459783">ຄົບເຮັດສະພາມ: ບໍ່ຮັບບໍ່ດຶງເເຄະ &amp; Privacy Reports</translation>
@@ -107,9 +110,9 @@
 <translation id="4176463684765177261">ປິດໃຊ້ົງານ</translation>
 <translation id="59174027418879706">ເປີດໃຊ້ົງານ</translation>
 <translation id="6920492760024499150">ຂ່າວເດັ່ນມື້ນີ້ໃນຟີດສ່ວນຕົວທີ່ຈັດໃຫ້ທ່ານໂດຍສະເພາະ.</translation>
-<translation id="8300751939969131609">ເປີດ Brave News ແລະຫຼີກລຽງບໍ່ໃຫ້ພາດໂອກາດເລື່ອງສຳຄັນ</translation>
+<translation id="3803728444598576153">ເປີດ Brave News ແລະຫຼີກລ່ຽງບໍ່ໃຫ້ພາດໂອກາດເລື່ອງສຳຄັນ</translation>
 <translation id="7627131190984957214">Brave News ສະແດງໂຄສະນາໂດຍບໍ່ລະບຸຕົວຕົນ ແລະ ຈັບຄູ່ຢ່າງເປັນສ່ວນຕົວໃນອຸປະກອນຂອງທ່ານ.</translation>
-<translation id="7699565323725789472">ຕິດຕາມແຫຼ່ງຂໍ້ມູນທີ່ທ່ານມັກໃນ feed ຫນຶ່ງ. ແຄ່ເປີດແທັບຢູ່ Brave, ເລື່ອນຊື່ງ, ແລະ... voila!\nBrave News ເປັນການສະໜອງໂຄສະນາດ້ວຍຄວາມເປັນສ່ວນຕົວ, ໂຄສະນາທີ່ບໍ່ລະບຸຕົວຕົນ.</translation>
+<translation id="7897050360583141319">ຕິດຕາມແຫຼ່ງທີ່ທ່ານມັກໃນຟີດດຽວ. ພຽງແຕ່ເປີດແທັບໃນ Brave, ເລື່ອນລົງ, ແລະ… ວົວລາ!</translation>
 <translation id="1765217911817124376">ເປີດ Brave News</translation>
 <translation id="8981973962043893066">ຄົ້ນຫາເວັບໄຊ, ຫົວຂໍ້, ຫຼື RSS feed</translation>
 <translation id="3225021799163709119">ນິຍົມ</translation>
@@ -187,6 +190,9 @@
 <translation id="5987838417172370108">ຊ່ວຍປັບປຸງຄວາມສົມບູນຂອງຜົນຕາມຜະລາຍຂອງ Brave ໂດຍການສົ່ງລາຍງານວິນິຈະນາຄົງ຅ໍາ.</translation>
 <translation id="7977176350719484850">ຂໍ້ມູນໂດຍປະມານ\nທີ່ປະຢັດໄດ້</translation>
 <translation id="9008534313521214777">ເວລາໂດຍປະມານ\nທີ່ປະຢັດໄດ້</translation>
+<translation id="5668852698659986622">ເປີດໃຊ້ Sponsored Ads</translation>
+<translation id="431194936581466649">ຊ່ວຍສະໜັບສະໜູນພາລະກິດຂອງ Brave ໃນການສ້າງເວັບທີ່ເປັນອິດສະຫຼະ, ໃຫ້ຄວາມສໍາຄັນກັບຜູ້ໃຊ້ເປັນອັນດັບໜຶ່ງດ້ວຍ Sponsored Ads. ພວກເຮົາວັດແທກປະສິດທິພາບຂອງ ad ຢ່າງເປັນສ່ວນຕົວ, ໂດຍບໍ່ໄດ້ລະບຸຕົວທ່ານ.</translation>
+<translation id="1939813747486101115">ຮຽນຮູ້ເພີ່ມເຕີມກ່ຽວກັບ Sponsored Ads</translation>
 <translation id="8347743943525229984">ອະນຸຍາດແບບສຳຫຼວດຂອງ Brave</translation>
 <translation id="6022939994702081659">ອະນຸຍາດໃຫ້ Brave ສະແດງລິ້ງໄປສູ່ການສຳຫຼວດສ່ວນຕົວໃນໜ້າກະດານແທັບບໃໝ່.ການສຳຫຼວດຊ່ວຍເຮົາສ້າງຄຸນສົມບັດທີ່ດີຂຶ້ນ ແລະ ວັດຜົນກະທົບຂອງໂຄສະນາໃນເວັບຟຣອມປຸ່ມອາດແດງ</translation>
 <translation id="7746496306508543965">ຮຽນຮູ້ເພິ່ມເຕີມກ່ຽວກັບການສຳຫຼວດຂອງ Brave</translation>
@@ -202,6 +208,7 @@
 <translation id="8026334261755873520">Clear browsing data</translation>
 <translation id="1690924763769415936">ຫຼິ້ນວິດີໂອເບື້ອງຫຼັງ</translation>
 <translation id="6332924730165919598">ປິດແທັບທັງໝົດລວມເຖິງ Brave ນຳ</translation>
+<translation id="2557725907027944082">ກຸ່ມ</translation>
 <translation id="8308305244351876417">ອະນຸຍາດໃຫ້ສຽງຫຼິ້ນຕໍ່ເຖິງແມ່ນວ່າທ່ານຈະປ່ຽນແທັບໄປແທັບອື່ນ ຫຼື ປິດໜ້າຈໍ.</translation>
 <translation id="49147335255967913">Open YouTube links in Brave</translation>
 <translation id="4150201353443180367">ການສະແດງຜົນ</translation>
@@ -212,9 +219,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>ຮຽນຮູ້ເພີ່ມເຕີມກ່ຽວກັບ Widevine<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">ອະນຸຍາດ (Relaunch Now)</translation>
 <translation id="2433507940547922241">ການສະແດງຜົນ</translation>
+<translation id="316542773973815724">ການນຳທາງ</translation>
 <translation id="9040069796107003510">ໄອໂຄນຜົນຕາມ Brave</translation>
 <translation id="6333347122924254968">ສະແດງໄອໂຄນນີ້ໃນ address bar</translation>
-<translation id="1215433243238902715">ເປີດ toolbar ຫນັງເທົາ</translation>
+<translation id="4393974575368329991">ແຖບເຄື່ອງມືການນຳທາງດ້ານລຸ່ມ</translation>
+<translation id="1834226716203076292">ສະແດງແຖບດ້ານລຸ່ມເພື່ອເຂົ້າເຖິງໜ້າຫຼັກ, ບຸກມາກ, ແລະ ຄົ້ນຫາໄດ້ໄວ</translation>
 <translation id="1422686363939271829">ການຕັ້ງຄ່ານີ້ບໍ່ສາມາດເປີດໃຊ້ເມື່ອຢູ່ໃນໂມເດີດີຄວນບາຣ</translation>
 <translation id="6587448235155023666">ການປ່ຽນແປງຂອງທ່ານຈະໄດ້ຜົນໃນຄັ້ງຖັດໄປເມື່ອທ່ານກົກເປີດ Brave</translation>
 <translation id="8701563696941209024">ເລີ່ມໃໝ່ໃນປັດຈຸບັນ</translation>
@@ -233,8 +242,7 @@
 <translation id="6188781052835527980">ສົ່ງລາຍງານການວິເຄາະຖ້າແອັບຂັດຂ້ອງ ຫຼື ຄ້າງ.</translation>
 <translation id="4780647518983772446">ແບ່ງປັນຂໍ້ມູນການໃຊ້ງານແບບບໍ່ລະບຸຕົວຕົນເພື່ອຊ່ວຍໃຫ້ Brave ເຂົ້າໃຈວ່າຜູ້ໃຊ້ໃຊ້ງານຄຸນສົມບັດໃດແນ່.</translation>
 <translation id="5109496672133133896">ຂໍ້ມູນໂຕະວັດຕາມສ່ວນຕົວ</translation>
-<translation id="3545804467215833536">ກົດເພື່ອເບິ່ງ Brave Shields</translation>
-<translation id="1724327820822194498">ເຫັນທຸກ ຄວາມສາມາດທີ່ Brave ປ້ອງກັນໄດ້, ທຸກອ່ອນປະເງີນ, ໃຫ້ Shields.</translation>
+<translation id="4340039903315468568">ເບິ່ງທຸກສິ່ງທີ່ບໍ່ດີທີ່ Brave ບລັອກໄວ້ໃນທຸກໜ້າດ້ວຍ Shields. ແຕະເພື່ອເບິ່ງ</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> ບລັອກໂຄສະນາ &amp; ຕົວຕິດຕາມແລ້ວ</translation>
 <translation id="8281886186245836920">ຂ້າມ</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
@@ -244,7 +252,6 @@
 <translation id="6213254277250932867">ຂ້ອຍໄດ້ມີປະໂຫຍດບາງງານທີ່ສັບພວນໂຄສະນາ</translation>
 <translation id="4225265925807365011">ຂ້ອຍເຄີຍມີປະໂຫຍດໃນຫຼັງຕົ້ນແບບໂຄສະນາຕົ້ນ</translation>
 <translation id="3570367516044491911">ຕັ້ງເປັນບຣາວເຊີ້ເລີ່ມຕົ້ນ</translation>
-<translation id="6800338374677644736">ຕັ້ງເປັນ Browser Date</translation>
 <translation id="1545749641540134597">ໃຊ້ QR Code</translation>
 <translation id="5317781812114905957">ຄໍາແນະນຳ</translation>
 <translation id="8515319483805157233">ແມ່ນແຕ້ QR Code, ປັດງານໃນການຂໍໍ້ຂວາງ</translation>
@@ -276,8 +283,6 @@
 <translation id="5582839680698949063">ເມນູຫຼັກ</translation>
 <translation id="7002271985859760052">ການດໍາເນີນການໜ້າເວັບ</translation>
 <translation id="7104487676473617844">ຫົວຂໍ້ຂ້າງລຸ່ມນີ້ຈະມອງເຫັນຢູ່ໃນເມນູພຽງແຕ່ໃນເວັບໄຊທີ່ເປີດຢູ່ສະໜັບສະໜຸນ</translation>
-<translation id="4159764849281393303">WebApp</translation>
-<translation id="8428213095426709021">ການຕັ້ງຄ່າ</translation>
 <translation id="8038539967102225446">Brave Ads ມາຮອດແລ້ວ!</translation>
 <translation id="222883304157347087">(ອຸປະກອນນີ້)</translation>
 <translation id="4157741509680155021">ອຸປະກອນທີ່ເຊື່ອມໃນກຸ່ມ</translation>
@@ -442,6 +447,7 @@ Enter the sync chain code words shown below.</translation>
 <translation id="7141438739990875547">ເຄືອຂ່າຍ Bitcoin</translation>
 <translation id="9055546041146396417">ຖ້າເວັບໄຊທ໌ນີ້ສະແດງຜົນຜິດປົກກະຕິ, ລອງປິດ Shields ເບິ່ງ.</translation>
 <translation id="7898672232170410330">ບລັອກອົງປະກອບ</translation>
+<translation id="7205939464631857223">ລ້າງທຸກອັນທີ່ຖືກບລ໋ອກ</translation>
 <translation id="7961015016161918242">ບໍ່ເລີຍ</translation>
 <translation id="1991004083507807299">ປິດແທັບເວັບໄຊ</translation>
 <translation id="5827277414420724690">ປິດແອັບ</translation>
@@ -498,7 +504,10 @@ Enter the sync chain code words shown below.</translation>
 <translation id="3980704343258720102">ລູບ່າງຂໍ້ມູນການທ່າງເດີນານອ່ບໍ່ມັນ</translation>
 <translation id="8089997572759938512">Return your privacy reports to zero</translation>
 <translation id="2718046830255553131">ຂໍ້ມູນການລາຍງານສ່ວນຕົວໄດ້ລົບໄປແລ້ວ.</translation>
-<translation id="8376263745431603066">ເປີດ 'ພາຍໃນເຕົ້າເມືອເຄີຍແນວໃໝ່' (ທົດລອງ)</translation>
+<translation id="3623948252408240879">ໂໝດກາງຄືນ</translation>
+<translation id="1257950165130031194">ບັງຄັບໃຊ້ໂໝດມືດສຳລັບເນື້ອຫາເວັບ</translation>
+<translation id="8710601165725654801">ສີແບບໄດນາມິກ</translation>
+<translation id="7865194971711852999">ຮູບແບບແອັບຕົງກັບສີຂອງພາບພື້ນຫຼັງ</translation>
 <translation id="1383876407941801731">ຊອກຫາ</translation>
 <translation id="13296465911709339">ຂໍຄວາມຂອງທ່ານຖືກ​ສຳ​ນຳ​ບາງ​ເລືອນ​ສະ​ຂອງ​ໄລບາດ.</translation>
 <translation id="2735834606413553397">ທີ່ຢູ່ສາທານາຂອງທ່ານຖືກ​ສຳ​ນຳ​ບາງ​ເລືອນ​ສະ​ຂອງ​ໄລບາດ.</translation>
@@ -522,7 +531,6 @@ Enter the sync chain code words shown below.</translation>
 <translation id="1822560017823072927">ໄອທີແລະເຄື່ອງມືແບບສາທາແລະເອກະຊົນ</translation>
 <translation id="5825943197137337319">ໄອທີເທົ່າກັບຂອງສາທາເທົ່ານັ້ນ</translation>
 <translation id="1689062823386843231">ປິດ UDP ບໍ່ຜ່ານ Proxy</translation>
-<translation id="1483493594462132177">ສົ່ງ</translation>
 <translation id="538450413584738399">ແລກປ່ຽນ</translation>
 <translation id="4556086616242530072">Browser native.\nSelf-custody.\nAnd multi-chain.</translation>
 <translation id="7909462264772842773">ຄວາມຄວບຄຸມເຫດກັບຄຣິບໂຕເຄີນແລະ NFTs. Brave Wallet ຮອງຮັບ Ethereum, EVM chains, Solana, Filecoin, ແລະອື່ນໆອີກ.</translation>
@@ -598,7 +606,6 @@ Enter the sync chain code words shown below.</translation>
 <translation id="569068482611873351">ນຳເຂົ້າ...</translation>
 <translation id="4522570452068850558">ລາຍລະອຽດ</translation>
 <translation id="3114681061018999547">ການປົກປ້ອງ</translation>
-<translation id="3784455785234192852">ລັອກ</translation>
 <translation id="4412698727486357573">ສູນຊ່ວຍເຫຼືອ</translation>
 <translation id="8239147115686034860">ລັອກ Brave Wallet ອັດຕະໂນມັດ</translation>
 <translation id="414639769490080648">ຈຳນວນນາທີທີ່ຕ້ອງລໍຖ້າກ່ອນທີ່ Brave Wallet ຈະຖືກລັອກອັດຕະໂນມັດ</translation>
@@ -708,6 +715,8 @@ Enter the sync chain code words shown below.</translation>
 <translation id="1634828734222219955">ລວມ​ທັງ​ໝົດ</translation>
 <translation id="7995708795274219641">ຈຳນວນ + Gas</translation>
 <translation id="2186011161688824046">ຈຳນວນ + ຄ່າທາງ</translation>
+<translation id="1118876217803190221">ຍອດເງິນບໍ່ພຽງພໍ</translation>
+<translation id="275990379543116961">ຍອດເງິນບໍ່ພຽງພໍສຳລັບຄ່າແກັສ</translation>
 <translation id="1950052789869821983">ການສົດທຳນີມ</translation>
 <translation id="2304783958703511257">ການຕັ້ງຄ່າຂັ້ນສູງ</translation>
 <translation id="4220062530885628403">Nonce</translation>
@@ -716,7 +725,7 @@ Enter the sync chain code words shown below.</translation>
 <translation id="4979796155378508955">ການຊູມ</translation>
 <translation id="750843150060816463">ລາຄາ Gas (Gwei)</translation>
 <translation id="1426320910664514906">ຂີດຈຳກັດ Gas</translation>
-<translation id="6389441740143786465">ຍົກເລີກການແບ່ງປັນ</translation>
+<translation id="1784950057929740513">ສູນການແບ່ງປັນ</translation>
 <translation id="473775607612524610">ອັບເດດ</translation>
 <translation id="479795390141144417">ການຕັ້ງຄ່າ Account ບໍ່ສຳເລັດ.</translation>
 <translation id="8084782383392198011">ຊື່ Account ບໍ່ສາມາດວ່າງໄດ້.</translation>
@@ -791,10 +800,19 @@ Enter the sync chain code words shown below.</translation>
 <translation id="1060221736464994328">ອະນຸຍາດໃຫ້ເວັບໄຊນີ້ປ່ຽນເຄືອຂ່າຍ?</translation>
 <translation id="2478788592457735063">ນີ້ຈະປ່ຽນເຄືອຂ່າຍໄປຫາເຄືອຂ່າຍທີ່ເພີ່ມແລ້ວ.</translation>
 <translation id="8756686998207163764">ປ່ຽນເຄືອຂ່າຍ</translation>
+<translation id="8905793906896555159">ເປີດໃຊ້ກຸ່ມແຖບ</translation>
+<translation id="6735749683447943955">ປິດການໃຊ້ກຸ່ມແຖບບໍ?</translation>
+<translation id="4616687974503500682">ກຸ່ມທີ່ມີຢູ່ຈະຖືກລຶບ, ແລະແຖບພາຍໃນກຸ່ມເຫຼົ່ານັ້ນຈະກາຍເປັນແຖບທີ່ເປີດຢູ່, ບໍ່ໄດ້ຈັດເປັນກຸ່ມ ໃນໜ້າຕ່າງ browser ຂອງທ່ານ. ທ່ານແນ່ໃຈບໍວ່າຕ້ອງການດໍາເນີນການຕໍ່?</translation>
+<translation id="4394049700291259645">ປິດໃຊ້</translation>
+<translation id="3859027502409073633">ສະແດງກຸ່ມແຖບທີ່ຊິງຄ໌ແລ້ວ</translation>
+<translation id="7632160823264702523">ແຖບກຸ່ມແຖບ</translation>
+<translation id="2477807195394450274">ສະແດງແຖບດ້ານລຸ່ມເພື່ອເຂົ້າເຖິງແຖບໃນກຸ່ມແຖບທີ່ເປີດຢູ່ໃນປັດຈຸບັນໄດ້ໄວ</translation>
+<translation id="8374720587111523381">ເປີດລິ້ງໃນກຸ່ມແຖບປັດຈຸບັນ</translation>
 <translation id="5324095733417835490">ເປີດລິ້ງອອກມາໃນກຸ່ມແທັບປັດຈຸບັນ</translation>
-<translation id="2620277345862119868">ເປີດລິ້ງອອກມາໃນກຸ່ມແທັບປັດຈຸບັນອັດຕະໂນມັດ</translation>
+<translation id="1227658541937938697">ເປີດລິ້ງທັງໝົດໃນກຸ່ມແຖບປັດຈຸບັນໂດຍອັດຕະໂນມັດ</translation>
 <translation id="5242300593039211344">ລັອກ Wallet</translation>
 <translation id="1108298724135935307">ໄຊທ໌ທີ່ເຊື່ອມຕໍ່ແລ້ວ</translation>
+<translation id="8428213095426709021">ການຕັ້ງຄ່າ</translation>
 <translation id="4255623233927788178">ເບິ່ງໃນ block explorer</translation>
 <translation id="8274201358637112807">ໜ້ານີ້ຢາກໃຫ້ເຈົ້າຕິດຕໍ່ກັບ Brave Wallet</translation>
 <translation id="3355936511340229503">ມີຂໍ້ຜິດພາດໃນການເຊື່ອມຕໍ່ VPN</translation>
@@ -836,7 +854,6 @@ Enter the sync chain code words shown below.</translation>
 <translation id="6458565248779152483">ປິດ Brave VPN</translation>
 <translation id="9080536793704001825">ຫຸນໄວ້ໃສ່ນານ 15 ນາທີ</translation>
 <translation id="803706420145725977">ຫຸນໄວ້ໃສ່ນານ 1 ຊົ່ວໂມງ</translation>
-<translation id="4394049700291259645">ປິດໃຊ້</translation>
 <translation id="7733890291091968191">ສະເນັຄແຂກ Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave ບໍ່ໄດ້ຕິດຕາມທ່ານ ຫຼື ຊາບບົດບາວຂອງແອບ, ນັ້ນຈຶ່ງບໍ່ຊາບທີ່ທ່ານຕົກສັກຂ່າວໃຫ້ກ່ຽວກັບ VPN. ຫາມີປັນຍາທີ່ຍິນກັນ, ອ່ານໃນນານໃຫ້ທົດລອງໃຫ້ເປັນອີກ. ####\n\n</translation>
 <translation id="3367162038532116157">VPN Hostname ແປ້ນ <ph name="VALUE"/></translation>
@@ -1071,7 +1088,7 @@ Enter the sync chain code words shown below.</translation>
 <translation id="6393423486818299209">ການໃຊ້ບໍລິການໃນປັດຈຸບັນຄົບຄືນຫຼື Wikimedia DNS</translation>
 <translation id="3401384982562827787">ການໃຊ້ບໍລິການໃນປັດຈຸບັນຄົບຄືນຫຼື Cloudflare</translation>
 <translation id="8812367543786936496">ຖ້າບໍລິການໃນປັດຈຸບັນບໍ່ປອດໄພ, Brave ຈະໃຊ້ບໍລິການ DNS ຫຼາຍໆໃສທ່ອນທ່າງນີ້.</translation>
-<translation id="1381108437654541567">ເປີດໜ້າຕ່າງຫຼາຍຫນ້າ</translation>
+<translation id="750538469281113679">ຫຼາຍໜ້າຕ່າງ</translation>
 <translation id="6167344249617630304">ເປີດຫນ້າຕ່າງໄດ້ຖຶງ 5 ຫນ້າພ້ອມກັນ ແລະ ຍ້າຍແທັບໄປຫາຫນ້າຕ່າງອື່ນ</translation>
 <translation id="1063948063403254568">ພົບຫນ້າຕ່າງຫຼາຍຫນ້າ</translation>
 <translation id="4661882208707630158">ກະລຸນາຮວມແທັບໄປຫາຫນ້າຕ່າງ Brave ຫຼື ປິດຫນ້າຕ່າງ Brave ອື່ນ ກ່ອນທີ່ຈະປິດການໃຊ້ງານໃນຮູບແບບແທັບຫຼາຍຫນ້າ.</translation>

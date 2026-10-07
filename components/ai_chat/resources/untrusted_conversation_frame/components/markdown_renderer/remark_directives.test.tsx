@@ -3,8 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { render } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
 import AssistantResponseContextProvider from '../assistant_response/assistant_response_context'
+import MockContext from '../../mock_untrusted_conversation_context'
 import {
   remarkDirectives,
   ALLOWED_DIRECTIVES,
@@ -183,4 +184,48 @@ test('search directive renders something', () => {
     </AssistantResponseContextProvider>,
   )
   expect(container).toBeTruthy()
+})
+
+test('remarkDirectives processes the tabSearch directive', () => {
+  const tree: Node = {
+    type: 'root',
+    children: [
+      {
+        type: 'leafDirective',
+        name: 'tabSearch',
+        attributes: {},
+        children: [],
+      },
+    ],
+  }
+
+  const plugin = remarkDirectives()
+  plugin(tree)
+
+  expect((tree as any).children[0].data.hName).toBe('tabSearch')
+})
+
+test('tabSearch directive searches for the query in its label', async () => {
+  const searchForTabs = jest.fn(async () => ({ tabs: [] }))
+
+  render(
+    <MockContext uiHandler={{ searchForTabs }}>
+      <directiveComponents.tabSearch>react hooks</directiveComponents.tabSearch>
+    </MockContext>,
+  )
+
+  await waitFor(() => expect(searchForTabs).toHaveBeenCalledWith('react hooks'))
+})
+
+test('tabSearch directive renders nothing without a query', () => {
+  const searchForTabs = jest.fn(async () => ({ tabs: [] }))
+
+  const { container } = render(
+    <MockContext uiHandler={{ searchForTabs }}>
+      <directiveComponents.tabSearch />
+    </MockContext>,
+  )
+
+  expect(container).toBeEmptyDOMElement()
+  expect(searchForTabs).not.toHaveBeenCalled()
 })

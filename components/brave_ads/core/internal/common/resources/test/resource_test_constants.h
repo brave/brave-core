@@ -11,6 +11,10 @@ namespace brave_ads::test {
 inline constexpr char kMissingResourceId[] = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 inline constexpr char kMalformedResourceId[] =
     "resources/components/malformed_resource_component";
+inline constexpr char kUnsupportedVersionAntiTargetingResourceId[] =
+    "resources/components/unsupported_version_anti_targeting_resource_component";
+inline constexpr char kUnsupportedVersionPurchaseIntentResourceId[] =
+    "resources/components/unsupported_version_purchase_intent_resource_component";
 
 }  // namespace brave_ads::test
 

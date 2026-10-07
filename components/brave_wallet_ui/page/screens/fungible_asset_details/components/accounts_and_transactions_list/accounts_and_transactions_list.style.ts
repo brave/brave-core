@@ -11,8 +11,6 @@ import Icon from '@brave/leo/react/icon'
 import {
   NoAccountsIconDark,
   NoAccountsIconLight,
-  NoTransactionsIconDark,
-  NoTransactionsIconLight,
 } from '../../../../../assets/svg-icons/empty-state-icons'
 
 // Shared Styles
@@ -25,13 +23,6 @@ export const EmptyStateIcon = styled.div`
   background-size: 100%;
   background-position: center;
   margin-bottom: 16px;
-`
-
-export const EmptyTransactionsIcon = styled(EmptyStateIcon)`
-  background-image: url(${NoTransactionsIconLight});
-  @media (prefers-color-scheme: dark) {
-    background-image: url(${NoTransactionsIconDark});
-  }
 `
 
 export const EmptyAccountsIcon = styled(EmptyStateIcon)`

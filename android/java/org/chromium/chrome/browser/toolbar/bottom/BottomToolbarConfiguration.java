@@ -13,6 +13,7 @@ import org.chromium.base.ApplicationStatus;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.app.ChromeActivity;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.toolbar.settings.AddressBarPreference;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -21,7 +22,19 @@ public class BottomToolbarConfiguration {
     private static final int SMALL_SCREEN_WIDTH = 360;
     private static final int SMALL_SCREEN_HEIGHT = 640;
 
+    /**
+     * Whether upstream's Android bottom bar is enabled. It replaces Brave's bottom navigation
+     * controls, so all of them must be off while it is on, with any of the flag's variations.
+     */
+    public static boolean isAndroidBottomBarEnabled() {
+        return ChromeFeatureList.sAndroidBottomBar.isEnabled();
+    }
+
     public static boolean isBraveBottomControlsEnabled() {
+        // Upstream's bottom bar owns the bottom controls when it is enabled.
+        if (isAndroidBottomBarEnabled()) {
+            return false;
+        }
         // We do not use the bottom controls on tablets.
         if (DeviceFormFactor.isNonMultiDisplayContextOnTablet(
                 ContextUtils.getApplicationContext())) {

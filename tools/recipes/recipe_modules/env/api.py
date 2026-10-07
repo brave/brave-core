@@ -15,8 +15,12 @@ from __future__ import annotations
 
 import os
 import shutil
+from typing import TYPE_CHECKING
 
 from recipe_api import RecipeApi
+
+if TYPE_CHECKING:
+    from recipe_modules import env
 
 
 class _RealEnv:  # pragma: no cover - production env backend, not simulated.
@@ -34,10 +38,11 @@ class _RealEnv:  # pragma: no cover - production env backend, not simulated.
     def which(self, cmd: str) -> str | None:
         return shutil.which(cmd)
 
-    def prepend_path(self, entry: str) -> None:
+    def prepend_path(self, entry: str, pathsep: str) -> None:
         current = os.environ.get('PATH', '')
-        os.environ['PATH'] = (os.pathsep.join([entry, current])
-                              if current else entry)
+        os.environ['PATH'] = (
+            pathsep.join([entry, current]) if current else entry
+        )
 
 
 class _SimEnv:
@@ -58,10 +63,11 @@ class _SimEnv:
     def which(self, cmd: str) -> str | None:
         return self._test.which_map.get(cmd)
 
-    def prepend_path(self, entry: str) -> None:
+    def prepend_path(self, entry: str, pathsep: str) -> None:
         current = self._test.env.get('PATH', '')
-        self._test.env['PATH'] = (os.pathsep.join([entry, current])
-                                  if current else entry)
+        self._test.env['PATH'] = (
+            pathsep.join([entry, current]) if current else entry
+        )
 
 
 class EnvApi(RecipeApi):
@@ -71,6 +77,8 @@ class EnvApi(RecipeApi):
     backend; the methods below just delegate, so there is no per-call test-mode
     branching (the same shape as the `step` module's runner selection).
     """
+
+    m: env.DEPS
 
     def __init__(self) -> None:
         super().__init__()
@@ -100,4 +108,4 @@ class EnvApi(RecipeApi):
 
     def prepend_path(self, entry: str | os.PathLike) -> None:
         """Prepend *entry* to `PATH` so later steps find binaries there."""
-        self._backend.prepend_path(str(entry))
+        self._backend.prepend_path(str(entry), self.m.path.pathsep)

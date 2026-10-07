@@ -70,7 +70,7 @@ references the old path.
 
 ```sh
 git cr mv components/api_request_helper/ components/api_foo
-npm run build -- --target=brave:all
+pnpm run build --target=brave:all
 ```
 
 What it repairs after the rename:

@@ -68,7 +68,7 @@ class BatAdsClientMojoBridge final : public brave_ads::AdsClient {
 
   void LoadResourceComponent(const std::string& id,
                              int version,
-                             brave_ads::LoadFileCallback callback) override;
+                             brave_ads::LoadResourceComponentCallback callback) override;
 
   void ShowScheduledCaptcha(const std::string& payment_id,
                             const std::string& captcha_id) override;

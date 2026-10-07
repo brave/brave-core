@@ -28,14 +28,23 @@ public class BottomTabSwitcherActionMenuCoordinator extends TabSwitcherActionMen
 
     public static OnLongClickListener createOnLongClickListener(
             Callback<Integer> onItemClicked,
-            Profile profile,
+            MonotonicObservableSupplier<Profile> profileSupplier,
             MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             TabWindowManager tabWindowManager) {
-        return createOnLongClickListener(
-                new BottomTabSwitcherActionMenuCoordinator(
-                        profile, tabModelSelectorSupplier, tabWindowManager),
-                profile,
-                onItemClicked);
+        return view -> {
+            // Resolve the profile per press: one captured when the listener is built is
+            // not guaranteed to still be available by the time the menu is shown.
+            Profile profile = profileSupplier.get();
+            if (profile == null) {
+                return false;
+            }
+            return createOnLongClickListener(
+                            new BottomTabSwitcherActionMenuCoordinator(
+                                    profile, tabModelSelectorSupplier, tabWindowManager),
+                            profile,
+                            onItemClicked)
+                    .onLongClick(view);
+        };
     }
 
     @Override

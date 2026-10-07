@@ -24,11 +24,23 @@ namespace ai_chat {
 base::span<const webui::LocalizedString> GetLocalizedStrings();
 std::vector<mojom::ActionGroupPtr> GetActionMenuList();
 
+// Serialized into the `brave_capability` request field. Any capability a
+// conversation can enable needs an entry, or CreateJSONRequestBody CHECKs.
 inline constexpr auto kCapabilityStringMap =
     base::MakeFixedFlatMap<mojom::ConversationCapability, std::string_view>(
-        {{mojom::ConversationCapability::CHAT, "chat"},
-         {mojom::ConversationCapability::CONTENT_AGENT, "content_agent"},
-         {mojom::ConversationCapability::DEEP_RESEARCH, "deep_research"}});
+        {{mojom::ConversationCapability::CONTENT_AGENT, "content_agent"},
+         {mojom::ConversationCapability::DEEP_RESEARCH, "deep_research"},
+         {mojom::ConversationCapability::MATH_ML, "math_ml"},
+         {mojom::ConversationCapability::WORKSPACES, "workspaces"}});
+
+// Hints about how the server should handle a request - these are intended to
+// let the server know what the client can do. For example, when we send the
+// math_ml capability the server can modify the system prompt so models know
+// they can output math-ml.
+inline constexpr auto kServerHintCapabilities =
+    base::MakeFixedFlatSet<mojom::ConversationCapability>(
+        {mojom::ConversationCapability::MATH_ML,
+         mojom::ConversationCapability::WORKSPACES});
 
 inline constexpr char kLeoModelSupportUrl[] =
     "https://support.brave.app/hc/en-us/articles/26727364100493-"
@@ -75,6 +87,12 @@ inline constexpr uint32_t kMaxTitleLength = 100u;
 // Maximum number of tabs to process in a single chunk for tab organization
 // operations (GetSuggestedTopics, GetFocusTabs).
 inline constexpr size_t kTabListChunkSize = 75;
+
+// Page excerpts sent alongside each tab so the model can infer a topic from
+// content rather than the title alone. Small because a request carries up to
+// `kTabListChunkSize` tabs.
+inline constexpr size_t kMaxPassagesPerTab = 2;
+inline constexpr size_t kMaxPassageBytes = 256;
 
 // Model name to send to the server for Claude Haiku model.
 inline constexpr char kClaudeHaikuModelName[] = "claude-3-haiku";

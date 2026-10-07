@@ -56,6 +56,7 @@ type UIHandlerActions = Pick<
   | 'refreshPremiumSession'
   | 'openModelSupportUrl'
   | 'openStorageSupportUrl'
+  | 'switchToTab'
 >
 
 // State that comes from ConversationEntriesState plus additional UI state
@@ -71,6 +72,7 @@ export type ConversationEntriesUIState = Mojom.ConversationEntriesState & {
 
 export default function createUntrustedConversationApi(
   conversationHandler: Closable<Mojom.UntrustedConversationHandlerInterface>,
+  userActions: Closable<Mojom.UntrustedConversationUserActionsInterface>,
   uiHandler: Mojom.UntrustedUIHandlerInterface,
   parentUIFrame: Closable<Mojom.ParentUIFrameInterface>,
   service: Closable<Mojom.UntrustedServiceInterface>,
@@ -84,6 +86,12 @@ export default function createUntrustedConversationApi(
       conversationHandler: conversationHandler as Pick<
         Mojom.UntrustedConversationHandlerInterface,
         VoidMethodKeys<Mojom.UntrustedConversationHandlerInterface>
+      >,
+      // The browser rejects anything sent here that didn't follow a user
+      // gesture, and closes the pipe.
+      userActions: userActions as Pick<
+        Mojom.UntrustedConversationUserActionsInterface,
+        VoidMethodKeys<Mojom.UntrustedConversationUserActionsInterface>
       >,
       uiHandler: uiHandler as UIHandlerActions,
       parentUIFrame: parentUIFrame as Pick<
@@ -102,13 +110,18 @@ export default function createUntrustedConversationApi(
         hasMemory: {
           response: (result) => result.exists,
         },
+        // Null when on-device tab search isn't available, which the caller
+        // renders differently to "no tabs matched".
+        searchForTabs: {
+          response: (result) => result.tabs,
+        },
       }),
 
       // Conversation data
       ...endpointsFor(conversationHandler, {
         getConversationHistory: {
           response: (result) => result.conversationHistory,
-          prefetchWithArgs: [],
+          prefetchWithArgs: [null],
           placeholderData: [] as Mojom.ConversationTurn[],
         },
       }),
@@ -116,6 +129,7 @@ export default function createUntrustedConversationApi(
       state: state<Mojom.ConversationEntriesState>({
         isGenerating: false,
         isToolExecuting: false,
+        threadUuidInProgress: undefined,
         toolUseTaskState: Mojom.TaskState.kNone,
         isLeoModel: true,
         allModels: [],
@@ -126,7 +140,7 @@ export default function createUntrustedConversationApi(
         trimmedTokens: BigInt(0),
         totalTokens: BigInt(0),
         canSubmitUserEntries: false,
-        conversationCapabilities: [Mojom.ConversationCapability.CHAT],
+        conversationCapabilities: [],
         suggestedQuestions: [],
         suggestionStatus: Mojom.SuggestionGenerationStatus.None,
         currentError: Mojom.APIError.None,
@@ -186,23 +200,23 @@ export default function createUntrustedConversationApi(
         {
           onConversationHistoryUpdate(entry) {
             if (!entry) {
-              api.getConversationHistory.invalidate()
+              api.getConversationHistory.invalidate(null)
             } else {
-              api.getConversationHistory.update((old) =>
+              api.getConversationHistory.update(null, (old) =>
                 updateConversationHistory(old, entry),
               )
             }
           },
 
           onToolUseEventOutput(entryUuid, toolUse) {
-            const currentHistory = api.getConversationHistory.current()
+            const currentHistory = api.getConversationHistory.current(null)
             const updatedHistory = updateToolUseEventInHistory(
               currentHistory,
               entryUuid,
               toolUse,
             )
             if (updatedHistory) {
-              api.getConversationHistory.update(updatedHistory)
+              api.getConversationHistory.update(null, updatedHistory)
             }
           },
 
@@ -256,6 +270,7 @@ export default function createUntrustedConversationApi(
     close: () => {
       api.close()
       conversationHandler.$.close()
+      userActions.$.close()
       parentUIFrame.$.close()
       service.$.close()
     },

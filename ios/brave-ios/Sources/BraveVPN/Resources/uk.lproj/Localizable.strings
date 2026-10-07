@@ -227,7 +227,7 @@
 "vpn.serverTitle" = "%ld сервер";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Захистіть кожен додаток із Brave VPN. Одна підписка покриває до 10 пристроїв.";
+"vpn.settingHeaderBody" = "Транслюйте свій контент так, як вам зручно. Захистіть кожен застосунок на 10 пристроях за 1 підпискою.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Звернутися до служби технічної підтримки";

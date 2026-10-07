@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/people_page/sync_controls.ts b/chrome/browser/resources/settings/people_page/sync_controls.ts
-index 19d037da1ed8d050f500fbcf297840ca210ffec4..78783f7f1412914bd2848876e26467af9ffe1a22 100644
+index 328752afd1152ab3640a99896b571ef0f6a4f103..6f8272265f303ce6c94277a1f5c500022b388b19 100644
 --- a/chrome/browser/resources/settings/people_page/sync_controls.ts
 +++ b/chrome/browser/resources/settings/people_page/sync_controls.ts
-@@ -167,7 +167,7 @@ export class SettingsSyncControlsElement extends
+@@ -147,7 +147,7 @@ export class SettingsSyncControlsElement extends
  
      const router = Router.getInstance();
      const currentRoute = router.getCurrentRoute();
@@ -10,12 +10,21 @@ index 19d037da1ed8d050f500fbcf297840ca210ffec4..78783f7f1412914bd2848876e26467af
 +    if (currentRoute === routes.BRAVE_SYNC_SETUP) {
        this.syncBrowserProxy_.didNavigateToSyncPage();
      }
-     if (loadTimeData.getBoolean('replaceSyncPromosWithSignInPromos') &&
-@@ -362,6 +362,7 @@ export class SettingsSyncControlsElement extends
-   private disableTypeCheckBox_(
-       syncStatus: SyncStatus, syncAllDataTypes: boolean,
-       dataTypeManaged: boolean): boolean {
-+    if (dataTypeManaged) { return true; } if (!syncStatus || !this.syncPrefs) { return syncAllDataTypes }
-     if (!syncStatus) {
+     if (currentRoute === routes.ACCOUNT) {
+@@ -361,6 +361,7 @@ export class SettingsSyncControlsElement extends
+ 
+   protected disableTypeCheckBox_(dataTypeManaged: boolean|undefined|null):
+       boolean {
++    if (dataTypeManaged) { return true; } if (!this.syncStatus || !this.syncPrefs) { return !!this.syncPrefs?.syncAllDataTypes; }
+     if (!this.syncStatus) {
        return true;
      }
+@@ -370,7 +371,7 @@ export class SettingsSyncControlsElement extends
+     }
+ 
+     if (this.syncStatus.signedInState === SignedInState.SYNCING) {
+-      return !!this.syncPrefs?.syncAllDataTypes;
++      return this.syncPrefs?.syncAllDataTypes;
+     }
+ 
+     // Toggles should be disabled on the account settings page if sync is

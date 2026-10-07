@@ -5,9 +5,10 @@
 
 import BraveCore
 import Foundation
+import Strings
 
 /// A setting that will shred site data at various times
-public enum SiteShredLevel: String, CaseIterable, Hashable {
+public enum SiteShredLevel: String, CaseIterable, Hashable, Identifiable {
   /// An explicit value to never shred site data
   case never
   /// Shred the site data when the site is closed
@@ -33,6 +34,30 @@ public enum SiteShredLevel: String, CaseIterable, Hashable {
       return .lastTabClosed
     case .appExit:
       return .appExit
+    }
+  }
+
+  public var id: Self { self }
+
+  public var localizedTitle: String {
+    switch self {
+    case .never:
+      return Strings.Shields.shredNever
+    case .whenSiteClosed:
+      return Strings.Shields.shredOnSiteTabsClosed
+    case .appExit:
+      return Strings.Shields.shredOnAppClose
+    }
+  }
+
+  public var localizedDescription: String {
+    switch self {
+    case .never:
+      return Strings.Shields.shredNeverDescription
+    case .whenSiteClosed:
+      return Strings.Shields.shredOnSiteTabsClosedDescription
+    case .appExit:
+      return Strings.Shields.shredOnAppCloseDescription
     }
   }
 }

@@ -62,7 +62,7 @@
                     android:lineHeight="26sp"
                     android:fontFamily="sans-serif-medium"
                     android:maxLines="1"
-                    android:ellipsize="end"
+                    android:ellipsize="start"
                     tools:text="example.com"/>
 
                 <TextView
@@ -164,6 +164,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginEnd="8dp"
             android:text="@string/report_broken_site_prompt"
             android:textColor="?attr/colorOnSurface"/>
 

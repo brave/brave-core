@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# Attributes used exclusively by plaster.py when generating patch files.
+# Attributes used to guarantee byte-indetical output across machines for diffs.
 #
 # `* diff` forces git's built-in default funcname driver for every path,
 # overriding any language-specific driver git might otherwise select (notably

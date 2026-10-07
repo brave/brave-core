@@ -38,8 +38,9 @@ _WORKSPACE_ROOT = Path(__file__).resolve().parents[4]
 
 # Only single-object entries can be deployed here: picking an object out of a
 # multi-object entry needs host-condition resolution this installer does not do.
-_INSTALLABLE = sorted(path for path, spec in EXTRA_DEPS.items()
-                      if len(spec['objects']) == 1)
+_INSTALLABLE = sorted(
+    path for path, spec in EXTRA_DEPS.items() if len(spec['objects']) == 1
+)
 
 
 @dataclass(frozen=True)
@@ -72,18 +73,21 @@ class TarballInstaller:
     owns_dest: bool
 
     @classmethod
-    def for_object(cls, dest_dir: Path, bucket: str,
-                   obj: Mapping) -> TarballInstaller:
+    def for_object(
+        cls, dest_dir: Path, bucket: str, obj: Mapping
+    ) -> TarballInstaller:
         """Build an installer for a single caller-provided archive object.
 
         `obj` are expected to follow the schema format for `EXTRA_DEPS` objects.
         """
-        return cls(dest_dir=dest_dir,
-                   url=bucket + obj['object_name'],
-                   object_name=obj['object_name'],
-                   sha256sum=obj['sha256sum'],
-                   size_bytes=obj['size_bytes'],
-                   owns_dest=not obj.get('overlayed_on'))
+        return cls(
+            dest_dir=dest_dir,
+            url=bucket + obj['object_name'],
+            object_name=obj['object_name'],
+            sha256sum=obj['sha256sum'],
+            size_bytes=obj['size_bytes'],
+            owns_dest=not obj.get('overlayed_on'),
+        )
 
     @classmethod
     def for_dep(cls, root: Path, path: str, spec: dict) -> TarballInstaller:
@@ -98,15 +102,17 @@ class TarballInstaller:
         if len(objects) != 1:
             raise ValueError(
                 f'{path}: only single-object entries can be installed here, '
-                f'but this one has {len(objects)}')
+                f'but this one has {len(objects)}'
+            )
         return cls.for_object(root / path, spec['bucket'], objects[0])
 
     def is_installed(self) -> bool:
         """True when the `_hash` sidecar already records `sha256sum`."""
         return is_deployed(self.dest_dir, self.object_name, self.sha256sum)
 
-    def install(self,
-                download: Callable[[str, object], None] | None = None) -> bool:
+    def install(
+        self, download: Callable[[str, object], None] | None = None
+    ) -> bool:
         """Fetch and extract the object, writing the sidecars on success.
 
         `download(url, file_obj)` writes the archive bytes into `file_obj`;
@@ -122,8 +128,9 @@ class TarballInstaller:
             with archive_path.open('wb') as archive_file:
                 download(self.url, archive_file)
             self._verify(archive_path)
-            if self.owns_dest and (self.dest_dir.exists()
-                                   or self.dest_dir.is_symlink()):
+            if self.owns_dest and (
+                self.dest_dir.exists() or self.dest_dir.is_symlink()
+            ):
                 # Drop the previous extraction so nothing stale lingers. A
                 # symlinked destination is replaced by the real extracted tree
                 # (rmtree refuses a symlink). Overlays deliberately keep the
@@ -137,25 +144,22 @@ class TarballInstaller:
         return True
 
     def _verify(self, archive_path: Path) -> None:
-        """Raise `ValueError` unless `archive_path` matches size and sha256.
-        """
+        """Raise `ValueError` unless `archive_path` matches size and sha256."""
         actual_size = archive_path.stat().st_size
         if actual_size != self.size_bytes:
-            raise ValueError(f'size mismatch for {self.url}\n'
-                             f'  expected: {self.size_bytes} bytes\n'
-                             f'  actual:   {actual_size} bytes')
-        digest = hashlib.sha256()
-        # Not using mmap to make this script more tolerable to a larger range
-        # of Python versions, as this script is called by `launcher.py` without
-        # a guarantee of vpython being available.
+            raise ValueError(
+                f'size mismatch for {self.url}\n'
+                f'  expected: {self.size_bytes} bytes\n'
+                f'  actual:   {actual_size} bytes'
+            )
         with archive_path.open('rb') as archive_file:
-            for block in iter(lambda: archive_file.read(1 << 20), b''):
-                digest.update(block)
-        actual = digest.hexdigest()
+            actual = hashlib.file_digest(archive_file, 'sha256').hexdigest()
         if actual.lower() != self.sha256sum.lower():
-            raise ValueError(f'SHA-256 mismatch for {self.url}\n'
-                             f'  expected: {self.sha256sum.lower()}\n'
-                             f'  actual:   {actual}')
+            raise ValueError(
+                f'SHA-256 mismatch for {self.url}\n'
+                f'  expected: {self.sha256sum.lower()}\n'
+                f'  actual:   {actual}'
+            )
 
     def _download(self, url: str, output_file) -> None:
         """Fetch `url` into `output_file` with a live progress line.
@@ -191,8 +195,10 @@ class TarballInstaller:
             except URLError as error:
                 sys.stderr.write(f'\n{error}\n')
                 # `code` is an HTTPError-only attribute (a URLError subclass).
-                if num_retries == 0 or getattr(error, 'code',
-                                               None) in (403, 404):
+                if num_retries == 0 or getattr(error, 'code', None) in (
+                    403,
+                    404,
+                ):
                     raise
                 num_retries -= 1
                 sys.stderr.write(f'Retrying in {retry_wait_s} s ...\n')
@@ -202,8 +208,10 @@ class TarballInstaller:
     def _emit_progress(self, done: int, total: int, done_flag=False) -> None:
         """Rewrite the stderr progress line for `done`/`total` bytes."""
         if total:
-            line = (f'{self._human(done)}/{self._human(total)}] '
-                    f'{int(done * 100 / total):>3}%')
+            line = (
+                f'{self._human(done)}/{self._human(total)}] '
+                f'{int(done * 100 / total):>3}%'
+            )
         else:
             line = f'{self._human(done)}]'
         tail = ' Done\n' if done_flag else ''
@@ -232,22 +240,20 @@ class TarballInstaller:
     def _extract_tar(self, archive_path: Path) -> list[str]:
         """Extract a tar archive into `dest_dir`, vetting its members first.
 
-        The archive is checked against `_check_members` and then extracted with
-        the fully-trusted filter.
-
-        `filter='data'` is deliberately not used. Its first backport (Python
-        3.10.12) resolves a symlink's target against the destination root rather
-        than against the directory holding the link. Vetting the members
-        ourselves gives the same containment guarantee on every runtime, rather
-        than one that varies with whichever interpreter happens to invoke us.
+        Two layers guard the destination. `_check_members` lexically vets the
+        archive's own metadata, the same way on every platform. The `data`
+        filter then checks against the destination as it is on disk (refusing
+        to write through an existing symlink that leaves it, which matters for
+        overlays), and strips setuid/setgid and group/other write bits.
         """
         with tarfile.open(archive_path, mode='r:*') as tar:
             members = tar.getmembers()
             self._check_members(members)
-            if hasattr(tarfile, 'data_filter'):
-                tar.extractall(path=self.dest_dir, filter='fully_trusted')
-            else:
-                tar.extractall(path=self.dest_dir)
+            if sys.platform == 'win32':
+                for member in members:
+                    if member.issym():
+                        member.linkname = member.linkname.replace('/', '\\')
+            tar.extractall(path=self.dest_dir, filter='data')
             return [member.name for member in members]
 
     def _check_members(self, members: list[tarfile.TarInfo]) -> None:
@@ -263,16 +269,20 @@ class TarballInstaller:
                 # A symlink's target is relative to the directory holding it.
                 self._check_contained(
                     member,
-                    posixpath.join(posixpath.dirname(member.name),
-                                   member.linkname))
+                    posixpath.join(
+                        posixpath.dirname(member.name), member.linkname
+                    ),
+                )
             elif member.islnk():
                 # A hardlink names another member, from the archive root.
                 self._check_contained(member, member.linkname)
             elif member.isdev():
-                # Extracting fully-trusted means device and FIFO members would
-                # be created verbatim; no archive we pin carries any.
-                raise ValueError(f'{self.object_name}: refusing to extract '
-                                 f'the device/FIFO member {member.name!r}')
+                # No archive we pin carries device or FIFO members, so any is
+                # refused outright, ahead of the `data` filter.
+                raise ValueError(
+                    f'{self.object_name}: refusing to extract '
+                    f'the device/FIFO member {member.name!r}'
+                )
 
     def _check_contained(self, member: tarfile.TarInfo, path: str) -> None:
         """Raise `ValueError` unless `path` stays under the destination.
@@ -284,21 +294,27 @@ class TarballInstaller:
         # character here -- but Windows resolves it as a separator, where
         # `..\evil` climbs out of a destination that looks contained on posix.
         if '\\' in path:
-            raise ValueError(f'{self.object_name}: member {member.name!r} '
-                             f'resolves to {path!r}, which holds a backslash '
-                             f'Windows would treat as a separator')
+            raise ValueError(
+                f'{self.object_name}: member {member.name!r} '
+                f'resolves to {path!r}, which holds a backslash '
+                f'Windows would treat as a separator'
+            )
         # A leading separator, or a drive letter (`C:/evil`, absolute on
         # Windows while looking relative here), names somewhere else outright.
         if path.startswith('/') or ntpath.splitdrive(path)[0]:
-            raise ValueError(f'{self.object_name}: member {member.name!r} '
-                             f'resolves to the absolute path {path!r}')
+            raise ValueError(
+                f'{self.object_name}: member {member.name!r} '
+                f'resolves to the absolute path {path!r}'
+            )
         # `..` alone, or as the leading component: a name merely *starting*
         # with two dots (`..foo`) is an ordinary file.
         normalized = posixpath.normpath(path)
         if normalized == '..' or normalized.startswith('../'):
-            raise ValueError(f'{self.object_name}: member {member.name!r} '
-                             f'resolves to {path!r}, which is outside '
-                             f'{self.dest_dir}')
+            raise ValueError(
+                f'{self.object_name}: member {member.name!r} '
+                f'resolves to {path!r}, which is outside '
+                f'{self.dest_dir}'
+            )
 
     def _extract_zip(self, archive_path: Path) -> list[str]:
         """Extract a zip archive into `dest_dir`, keeping modes and symlinks.
@@ -321,10 +337,9 @@ class TarballInstaller:
         # `dest_dir` (freshly wiped for an owned dep) exists first.
         self.dest_dir.mkdir(parents=True, exist_ok=True)
         subprocess.run(
-            ['unzip', '-o', '-q',
-             str(archive_path), '-d',
-             str(self.dest_dir)],
-            check=True)
+            ['unzip', '-o', '-q', str(archive_path), '-d', str(self.dest_dir)],
+            check=True,
+        )
         return names
 
     def _write_sidecars(self, member_names: list[str]) -> None:
@@ -334,24 +349,27 @@ class TarballInstaller:
             '_content_names': json.dumps(member_names),
         }
         for suffix, content in contents.items():
-            # `write_bytes` (not `write_text(newline=...)`, whose `newline`
-            # kwarg is Python 3.10+) so the exact `\n`-terminated UTF-8 lands on
-            # disk without platform newline translation, on any `python3`.
-            sidecar_path(self.dest_dir, self.object_name,
-                         suffix).write_bytes(f'{content}\n'.encode('utf-8'))
+            # `newline=''` keeps `\n` untranslated on every platform.
+            sidecar_path(self.dest_dir, self.object_name, suffix).write_text(
+                f'{content}\n', encoding='utf-8', newline=''
+            )
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description='Deploy a single-object EXTRA_DEPS entry into this '
-        'checkout.')
-    parser.add_argument('dep',
-                        choices=_INSTALLABLE,
-                        metavar='DEP_PATH',
-                        help='The EXTRA_DEPS path key to deploy.')
+        'checkout.'
+    )
+    parser.add_argument(
+        'dep',
+        choices=_INSTALLABLE,
+        metavar='DEP_PATH',
+        help='The EXTRA_DEPS path key to deploy.',
+    )
     args = parser.parse_args(argv)
-    TarballInstaller.for_dep(_WORKSPACE_ROOT, args.dep,
-                             EXTRA_DEPS[args.dep]).install()
+    TarballInstaller.for_dep(
+        _WORKSPACE_ROOT, args.dep, EXTRA_DEPS[args.dep]
+    ).install()
     return 0
 
 

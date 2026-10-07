@@ -26,7 +26,6 @@ inline constexpr auto kOFACSactionedUnM49Codes =
             "029",  // Caribbean which includes sanctioned Cuba.
             "030",  // Eastern Asia which includes sanctioned North Korea.
             "034",  // Southern Asia which includes sanctioned Iran.
-            "145",  // Western Asia which includes sanctioned Syria.
             "151"   // Eastern Europe (including Northern Asia) which includes
                     // sanctioned Belarus, Moldova, Russia, and Ukraine.
         });

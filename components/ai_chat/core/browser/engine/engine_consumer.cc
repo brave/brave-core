@@ -164,7 +164,8 @@ void EngineConsumer::MergeSuggestTopicsResults(
 // static
 base::expected<std::vector<std::string>, mojom::APIError>
 EngineConsumer::GetStrArrFromTabOrganizationResponses(
-    std::vector<GenerationResult>& results) {
+    std::vector<GenerationResult>& results,
+    EmptyResult empty_result) {
   // Use RE2 to extract the array from the response, then use rust JSON::Reader
   // to safely parse the array.
   std::vector<std::string> str_arr;
@@ -211,7 +212,7 @@ EngineConsumer::GetStrArrFromTabOrganizationResponses(
     return base::unexpected(error);
   }
 
-  if (str_arr.empty()) {
+  if (str_arr.empty() && empty_result == EmptyResult::kIsError) {
     return base::unexpected(mojom::APIError::InternalError);
   }
 

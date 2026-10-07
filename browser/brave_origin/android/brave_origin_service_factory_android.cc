@@ -8,8 +8,10 @@
 #include "base/android/jni_android.h"
 #include "brave/browser/brave_origin/android/jni_headers/BraveOriginServiceFactory_jni.h"
 #include "brave/components/brave_origin/brave_origin_settings_handler_impl.h"
+#include "brave/components/brave_origin/origin_activation_limit_impl.h"
 #include "chrome/browser/profiles/profile.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave {
 namespace android {
@@ -34,6 +36,23 @@ JNI_BraveOriginServiceFactory_GetInterfaceToBraveOriginSettingsHandler(
   }
 
   return static_cast<jlong>(pending.PassPipe().release().value());
+}
+
+static int64_t
+JNI_BraveOriginServiceFactory_GetInterfaceToOriginActivationLimit(
+    JNIEnv* env,
+    const base::android::JavaRef<jobject>& profile_android) {
+  auto* profile = Profile::FromJavaObject(profile_android);
+  mojo::PendingRemote<brave_origin::mojom::OriginActivationLimit> pending;
+  if (profile) {
+    auto handler = std::make_unique<brave_origin::OriginActivationLimitImpl>(
+        profile->GetURLLoaderFactory());
+    mojo::PendingReceiver<brave_origin::mojom::OriginActivationLimit> receiver =
+        pending.InitWithNewPipeAndPassReceiver();
+    mojo::MakeSelfOwnedReceiver(std::move(handler), std::move(receiver));
+  }
+
+  return static_cast<int64_t>(pending.PassPipe().release().value());
 }
 
 }  // namespace android

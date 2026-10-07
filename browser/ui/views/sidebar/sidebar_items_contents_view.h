@@ -101,7 +101,6 @@ class SidebarItemsContentsView : public views::View,
                    int index,
                    bool user_gesture);
   void UpdateItemViewStateAt(size_t index, bool active);
-  bool IsBuiltInTypeItemView(views::View* view) const;
   void SetDefaultImageFor(const sidebar::SidebarItem& item);
 
   // Called when each item is pressed.
@@ -111,7 +110,7 @@ class SidebarItemsContentsView : public views::View,
   ui::ImageModel GetImageForBuiltInItems(
       sidebar::SidebarItem::BuiltInItemType type,
       views::Button::ButtonState state) const;
-  void UpdateAllBuiltInItemsViewState();
+  void UpdateAllItemsViewState();
   void ShowItemAddedFeedbackBubble(views::View* anchor_view);
 
   // When item count is five, drag indicator is drawn in front of first item.

@@ -159,6 +159,12 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  bool UnlockWallet(const std::string& password) {
+    base::test::TestFuture<bool> future;
+    keyring_service()->Unlock(password, future.GetCallback());
+    return future.Take();
+  }
+
   void ImportFromExternalWallet() {
     base::RunLoop run_loop;
     brave_wallet_service_->ImportFromExternalWallet(
@@ -242,6 +248,70 @@ TEST_F(WalletDataFilesInstallerUnitTest,
   RunUntilIdle();
 }
 
+// Startup registration must not parse lists until the wallet is unlocked.
+TEST_F(WalletDataFilesInstallerUnitTest,
+       StartupComponentReady_DefersParsingUntilUnlock) {
+  EXPECT_CALL(*updater(), RegisterComponent(testing::_))
+      .Times(1)
+      .WillOnce(testing::Return(true));
+  local_state()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  installer().MaybeRegisterWalletDataFilesComponent(updater(), local_state());
+  RunUntilIdle();
+
+  WriteCoingeckoIdsMapToFile();
+  installer().OnComponentReady(install_dir());
+  RunUntilIdle();
+  EXPECT_TRUE(registry()->IsEmptyForTesting());
+
+  installer().OnWalletUnlocked();
+  RunUntilIdle();
+  EXPECT_FALSE(registry()->IsEmptyForTesting());
+}
+
+TEST_F(WalletDataFilesInstallerUnitTest,
+       UnlockBeforeComponentReady_ParsesWhenReady) {
+  installer().OnWalletUnlocked();
+  EXPECT_TRUE(registry()->IsEmptyForTesting());
+
+  WriteCoingeckoIdsMapToFile();
+  installer().OnComponentReady(install_dir());
+  RunUntilIdle();
+  EXPECT_FALSE(registry()->IsEmptyForTesting());
+}
+
+// KeyringService::Unlock (not a direct OnWalletUnlocked call) is what
+// production uses after startup deferral.
+TEST_F(WalletDataFilesInstallerUnitTest, KeyringUnlock_ParsesDeferredLists) {
+  EXPECT_CALL(*updater(), RegisterComponent(testing::_))
+      .Times(1)
+      .WillOnce(testing::Return(true));
+  local_state()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  installer().MaybeRegisterWalletDataFilesComponent(updater(), local_state());
+  RunUntilIdle();
+
+  WriteCoingeckoIdsMapToFile();
+  installer().OnComponentReady(install_dir());
+  RunUntilIdle();
+  EXPECT_TRUE(registry()->IsEmptyForTesting());
+
+  // RestoreWalletSync creates an existing wallet without the on-demand path.
+  ASSERT_TRUE(keyring_service()->RestoreWalletSync(kMnemonicDivideCruise,
+                                                   kTestWalletPassword, false));
+  keyring_service()->Lock();
+  EXPECT_TRUE(registry()->IsEmptyForTesting());
+
+  EXPECT_FALSE(UnlockWallet("wrong-password"));
+  RunUntilIdle();
+  EXPECT_TRUE(registry()->IsEmptyForTesting());
+
+  EXPECT_TRUE(UnlockWallet(kTestWalletPassword));
+  RunUntilIdle();
+  EXPECT_FALSE(registry()->IsEmptyForTesting());
+  EXPECT_EQ(registry()->GetCoingeckoId(
+                "0xa", "0x7f5c764cbc14f9669b88837ca1490cca17c31607"),
+            "usd-coin");
+}
+
 TEST_F(WalletDataFilesInstallerUnitTest, OnDemandInstallAndParsing_EmptyPath) {
   EXPECT_CALL(*updater(), RegisterComponent(testing::_))
       .Times(1)
@@ -309,6 +379,23 @@ TEST_F(WalletDataFilesInstallerUnitTest,
 
   RunUntilIdle();
   EXPECT_TRUE(registry()->IsEmptyForTesting());
+}
+
+TEST_F(WalletDataFilesInstallerUnitTest,
+       RestoreAfterStartupRegistration_ParsesOnDemand) {
+  EXPECT_CALL(*updater(), RegisterComponent(testing::_))
+      .WillOnce(testing::Return(true));
+  local_state()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  installer().MaybeRegisterWalletDataFilesComponent(updater(), local_state());
+  RunUntilIdle();
+
+  WriteCoingeckoIdsMapToFile();
+  installer().OnComponentReady(install_dir());
+  RunUntilIdle();
+  EXPECT_TRUE(registry()->IsEmptyForTesting());
+
+  RestoreWallet();
+  EXPECT_FALSE(registry()->IsEmptyForTesting());
 }
 
 TEST_F(WalletDataFilesInstallerUnitTest,

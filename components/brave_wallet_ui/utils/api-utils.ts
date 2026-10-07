@@ -3,14 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { mapLimit } from 'async'
 import { Store } from 'redux'
 
 // actions
 import { PanelActions } from '../panel/actions'
-
-// types
-import type WalletApiProxy from '../common/wallet_api_proxy'
 
 // utils
 import getAPIProxy from '../common/async/bridge'
@@ -26,24 +22,6 @@ export function handleEndpointError(
   return {
     error: friendlyMessage,
   }
-}
-
-export async function getVisibleNetworksList(api: WalletApiProxy) {
-  const { jsonRpcService } = api
-
-  const { enabledCoins } = (await api.walletHandler.getWalletInfo()).walletInfo
-
-  const { networks: allNetworks } = await jsonRpcService.getAllNetworks()
-
-  const networks = (
-    await mapLimit(enabledCoins, 10, async (coin: number) => {
-      const { chainIds: hiddenChainIds } =
-        await jsonRpcService.getHiddenNetworks(coin)
-      return allNetworks.filter((n) => !hiddenChainIds.includes(n.chainId))
-    })
-  ).flat(1)
-
-  return networks
 }
 
 export function navigateToConnectHardwareWallet(

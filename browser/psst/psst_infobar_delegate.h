@@ -24,8 +24,14 @@ class PsstInfoBarDelegate : public ConfirmInfoBarDelegate {
                      AcceptCallback on_accept_callback);
 
   // ConfirmInfoBarDelegate overrides:
+
+  // Handles infobar acceptance. The return value determines the upstream
+  // behavior; return `true` if the infobar should be removed automatically.
   bool Accept() override;
+  // Handles infobar cancellation. The return value determines upstream
+  // behavior: return `true` if the infobar should be removed automatically.
   bool Cancel() override;
+  // Handles infobar closing.
   void InfoBarDismissed() override;
 
   void DisableCallback();

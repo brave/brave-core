@@ -23,7 +23,6 @@ import ScreenTime
 import Shared
 import SnapKit
 import SpeechRecognition
-import Storage
 import StoreKit
 import SwiftUI
 import Translation
@@ -44,11 +43,15 @@ public class BrowserViewController: UIViewController {
     return helper
   }()
 
+  /// The state displayed by all toolbars
+  private(set) lazy var toolbarState = BrowserToolbarState(tabManager: tabManager)
+
   private(set) lazy var topToolbar: TopToolbarView = {
     // Setup the URL bar, wrapped in a view to get transparency effect
     let topToolbar = TopToolbarView(
       speechRecognizer: speechRecognizer,
-      privateBrowsingManager: privateBrowsingManager
+      privateBrowsingManager: privateBrowsingManager,
+      toolbarState: toolbarState
     )
     topToolbar.translatesAutoresizingMaskIntoConstraints = false
     topToolbar.delegate = self
@@ -87,9 +90,6 @@ public class BrowserViewController: UIViewController {
     return bottomTouchArea
   }()
 
-  /// These constraints allow to show/hide tabs bar
-  private var webViewContainerTopOffset: Constraint?
-
   /// Backdrop used for displaying greyed background for private tabs
   private let webViewContainerBackdrop: UIView = {
     let webViewContainerBackdrop = UIView()
@@ -109,6 +109,18 @@ public class BrowserViewController: UIViewController {
     return statusBarOverlay
   }()
 
+  // On 26 this is the `UIScrollEdgeElementContainerInteraction` assigned to the top of the web view
+  var topEdgeInteraction: (any UIInteraction)?
+  let topEdgeView: UIView = {
+    if #available(iOS 26, *) {
+      let view = UIVisualEffectView(effect: UIGlassEffect(style: .regular))
+      view.isUserInteractionEnabled = false
+      return view
+    } else {
+      return UIView()
+    }
+  }()
+
   private(set) var toolbar: BottomToolbarView?
   /// The fullscreen editing surface (URL input + favorites/search screens) shown while editing the
   /// URL. Builds and owns the favorites, search-results and search-loader instances.
@@ -126,7 +138,7 @@ public class BrowserViewController: UIViewController {
   private var pageZoomListener: NSObjectProtocol?
   private var openTabsModelStateListener: SendTabToSelfModelStateListener?
   private var syncServiceStateListener: AnyObject?
-  let collapsedURLBarView = CollapsedURLBarView()
+  private(set) lazy var collapsedURLBarView = CollapsedURLBarView(toolbarState: toolbarState)
 
   // Single data source used for all favorites vcs
   public let backgroundDataSource: NTPDataSource
@@ -170,8 +182,22 @@ public class BrowserViewController: UIViewController {
   let bookmarkManager: BookmarkManager
   public let privateBrowsingManager: PrivateBrowsingManager
 
+  /// The most visited sites shown by the top sites section of every NTP and the search screen in
+  /// this window.
+  private(set) lazy var mostVisitedSites: MostVisitedSites = {
+    let mostVisitedSites = MostVisitedSitesFactory.get(for: profileController.profile)
+    mostVisitedSites.enableTopSitesOnlyTileTypes()
+    return mostVisitedSites
+  }()
+
   /// Whether last session was a crash or not
   private let crashedLastSession: Bool
+
+  // A view to place behind the bottom bar down to the toolbar during keyboard animations to avoid
+  // the odd look for the URL bar floating
+  private let bottomBarKeyboardBackground = UIView().then {
+    $0.isUserInteractionEnabled = false
+  }
 
   var toolbarVisibilityViewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 44)
   private var toolbarLayoutGuide = UILayoutGuide().then {
@@ -266,7 +292,17 @@ public class BrowserViewController: UIViewController {
 
   private let prefsChangeRegistrar: PrefChangeRegistrar
 
+  /// Whether a wallet exists, to distinguish create/reset from the account
+  /// edits that also write the keyrings pref.
+  private var isWalletCreated: Bool = false {
+    didSet {
+      UserScriptManager.shared.isWalletCreated = isWalletCreated
+    }
+  }
+
   let defaultBrowserHelper: DefaultBrowserHelper = .init()
+
+  let downloadBackgroundTaskModel: DownloadBackgroundTaskScheduler?
 
   public init(
     windowId: UUID,
@@ -277,7 +313,8 @@ public class BrowserViewController: UIViewController {
     rewards: BraveRewards,
     crashedLastSession: Bool,
     newsFeedDataSource: FeedDataSource,
-    privateBrowsingManager: PrivateBrowsingManager
+    privateBrowsingManager: PrivateBrowsingManager,
+    downloadBackgroundTaskModel: DownloadBackgroundTaskScheduler?,
   ) {
     self.windowId = windowId
     self.profile = profile
@@ -291,11 +328,14 @@ public class BrowserViewController: UIViewController {
     self.feedDataSource = newsFeedDataSource
     self.prefsChangeRegistrar = PrefChangeRegistrar(prefService: profileController.profile.prefs)
     self.braveTalkJitsiCoordinator = .init(prefService: profileController.profile.prefs)
+    self.downloadBackgroundTaskModel = downloadBackgroundTaskModel
+
     feedDataSource.historyAPI = profileController.historyAPI
     backgroundDataSource = .init(
       service: profileController.backgroundImagesService,
       rewards: BraveRewards.isSupported(prefService: profileController.profile.prefs)
         ? rewards : nil,
+      prefs: profileController.profile.prefs,
       privateBrowsingManager: privateBrowsingManager
     )
 
@@ -459,7 +499,6 @@ public class BrowserViewController: UIViewController {
     Preferences.Rewards.hideRewardsIcon.observe(from: self)
     Preferences.Rewards.rewardsToggledOnce.observe(from: self)
     Preferences.Playlist.enablePlaylistURLBarButton.observe(from: self)
-    Preferences.NewTabPage.backgroundMediaTypeRaw.observe(from: self)
     Preferences.Shields.blockAdsAndTrackingLevelRaw.observe(from: self)
     Preferences.Privacy.screenTimeEnabled.observe(from: self)
     Preferences.Translate.translateEnabled.observe(from: self)
@@ -471,6 +510,9 @@ public class BrowserViewController: UIViewController {
     }
     prefsChangeRegistrar.addObserver(forPath: kManagedBraveVPNDisabledPrefName) { [weak self] _ in
       self?.disconnectVPNIfDisabledByPolicy()
+    }
+    prefsChangeRegistrar.addObserver(forPath: kBraveAdsSponsoredEnabledPrefName) { [weak self] _ in
+      self?.recordAdsUsageType()
     }
     prefsChangeRegistrar.addObserver(forPath: kMediaBackgroundingEnabled) { [weak self] _ in
       guard let self else { return }
@@ -503,6 +545,26 @@ public class BrowserViewController: UIViewController {
     prefsChangeRegistrar.addObserver(forPath: kDefaultSolanaWallet) { [weak self] _ in
       self?.defaultWalletChanged(for: .sol)
     }
+    prefsChangeRegistrar.addObserver(forPath: kDefaultCardanoWallet) { [weak self] _ in
+      self?.defaultWalletChanged(for: .ada)
+    }
+    // Creating or resetting a wallet flips whether the providers are injected,
+    // so the scripts have to be refreshed the same way a default wallet change
+    // refreshes them. The keyrings pref is also written on every account add,
+    // rename and removal, so only react when the created state actually
+    // changed — refreshing discards every web view.
+    isWalletCreated = !profileController.profile.prefs.dictionary(
+      forPath: kBraveWalletKeyrings
+    ).isEmpty
+    prefsChangeRegistrar.addObserver(forPath: kBraveWalletKeyrings) { [weak self] _ in
+      guard let self else { return }
+      let isWalletCreated = !self.profileController.profile.prefs.dictionary(
+        forPath: kBraveWalletKeyrings
+      ).isEmpty
+      guard isWalletCreated != self.isWalletCreated else { return }
+      self.isWalletCreated = isWalletCreated
+      self.defaultWalletChanged(for: .eth)
+    }
 
     disconnectVPNIfDisabledByPolicy()
 
@@ -522,7 +584,7 @@ public class BrowserViewController: UIViewController {
       })
     }
 
-    rewardsEnabledObserveration = rewards.ads.observe(\.isEnabled, options: [.new]) {
+    rewardsEnabledObserveration = rewards.ads.observe(\.isNotificationsEnabled, options: [.new]) {
       [weak self] _, _ in
       guard let self = self else { return }
       self.updateRewardsButtonState()
@@ -644,7 +706,88 @@ public class BrowserViewController: UIViewController {
     super.viewSafeAreaInsetsDidChange()
 
     topTouchArea.isEnabled = view.safeAreaInsets.top > 0
-    statusBarOverlay.isHidden = view.safeAreaInsets.top.isZero
+    statusBarOverlay.isHidden = isStatusBarOverlayHidden
+  }
+
+  private var isStatusBarOverlayHidden: Bool {
+    if #unavailable(iOS 26.0) {
+      return view.safeAreaInsets.top.isZero
+    }
+    return isUsingBottomBar || view.safeAreaInsets.top.isZero
+  }
+
+  @available(iOS 26.0, *)
+  func updateWebViewObscuredInsets() {
+    guard let webViewProxy = tabManager.selectedTab?.webViewProxy else { return }
+
+    collapsedURLBarView.layoutIfNeeded()
+    header.expandedBarStackView.layoutIfNeeded()
+
+    var minViewportInset = UIEdgeInsets()
+    var maxViewportInset = UIEdgeInsets()
+    if isUsingBottomBar {
+      minViewportInset.top = view.safeAreaInsets.top
+      maxViewportInset.top = view.safeAreaInsets.top
+      minViewportInset.bottom = footer.bounds.height + collapsedURLBarView.bounds.height
+      maxViewportInset.bottom = footer.bounds.height + header.expandedBarStackView.bounds.height
+    } else {
+      minViewportInset.top = view.safeAreaInsets.top + collapsedURLBarView.bounds.height
+      maxViewportInset.top = view.safeAreaInsets.top + header.expandedBarStackView.bounds.height
+      minViewportInset.bottom = footer.bounds.height
+      maxViewportInset.bottom = footer.bounds.height
+    }
+    if let readerModeBar {
+      readerModeBar.layoutIfNeeded()
+      minViewportInset.top += readerModeBar.bounds.height
+      maxViewportInset.top += readerModeBar.bounds.height
+    }
+    webViewProxy.setMinimumViewportInset(minViewportInset, maximumViewportInset: maxViewportInset)
+
+    let toolbarInsets = UIEdgeInsets(
+      top: max(
+        0,
+        pageOverlayLayoutGuide.layoutFrame.minY
+      ),
+      left: 0,
+      bottom: max(
+        0,
+        view.bounds.height - pageOverlayLayoutGuide.layoutFrame.maxY
+      ),
+      right: 0
+    )
+
+    // Obscured insets actually have to include safe area insets for some reason, toolbarInsets
+    // already include it so we override the values entirely
+    var obscuredInsets = view.safeAreaInsets
+    obscuredInsets.top = toolbarInsets.top
+    obscuredInsets.bottom = toolbarInsets.bottom
+
+    var scrollIndicatorInsets = UIEdgeInsets(
+      top: max(0, toolbarInsets.top - view.safeAreaInsets.top),
+      left: 0,
+      bottom: max(0, toolbarInsets.bottom - view.safeAreaInsets.bottom),
+      right: 0
+    )
+
+    if let keyboardState, case let keyboardHeight = keyboardState.intersectionHeightForView(view),
+      keyboardHeight > 0
+    {
+      // The keyboard must be included in the obscured insets themselves. WKWebView derives and
+      // re-asserts the scroll view's contentInset from obscuredContentInsets, so adjusting the
+      // scroll view's contentInset manually would be overwritten by the web process.
+      obscuredInsets.bottom = max(obscuredInsets.bottom, keyboardHeight)
+      if isUsingBottomBar {
+        scrollIndicatorInsets.bottom = 0
+      } else {
+        scrollIndicatorInsets.bottom -= toolbarInsets.bottom
+      }
+    }
+
+    // Setting obscuredInsets actually includes a side-effect of setting the web views contentInset
+    webViewProxy.obscuredInsets = obscuredInsets
+
+    // But we still need to update the scroll indicator insets manually
+    webViewProxy.scrollView?.scrollIndicatorInsets = scrollIndicatorInsets
   }
 
   fileprivate func updateToolbarStateForTraitCollection(
@@ -661,37 +804,21 @@ public class BrowserViewController: UIViewController {
       toolbar = nil
 
       if showToolbar {
-        toolbar = BottomToolbarView(privateBrowsingManager: privateBrowsingManager)
-        toolbar?.setSearchButtonState(url: tabManager.selectedTab?.visibleURL)
+        toolbar = BottomToolbarView(
+          privateBrowsingManager: privateBrowsingManager,
+          toolbarState: toolbarState
+        )
         footer.addSubview(toolbar!)
         toolbar?.tabToolbarDelegate = self
-        toolbar?.menuButton.setBadges(Array(topToolbar.menuButton.badges.keys))
       }
       view.setNeedsUpdateConstraints()
     }
 
-    updateToolbarUsingTabManager(tabManager)
     updateUsingBottomBar(using: newCollection)
-
-    if let tab = tabManager.selectedTab {
-      updateURLBar()
-      updateBackForwardActionStatus(for: tab)
-      topToolbar.locationView.loading = tab.isLoading
-    }
+    updateURLBar()
 
     toolbarVisibilityViewModel.toolbarState = .expanded
     updateTabsBarVisibility()
-  }
-
-  func updateToolbarSecureContentState(_ secureContentState: SecureContentState) {
-    topToolbar.secureContentState = secureContentState
-    collapsedURLBarView.secureContentState = secureContentState
-  }
-
-  func updateToolbarCurrentURL(_ currentURL: URL?) {
-    topToolbar.currentURL = currentURL
-    collapsedURLBarView.currentURL = currentURL
-    updateScreenTimeUrl(currentURL)
   }
 
   override public func willTransition(
@@ -710,6 +837,8 @@ public class BrowserViewController: UIViewController {
       alongsideTransition: { context in
         if self.isViewLoaded {
           self.updateStatusBarOverlayColor()
+          self.bottomBarKeyboardBackground.backgroundColor =
+            self.privateBrowsingManager.browserColors.chromeBackground
           self.setNeedsStatusBarAppearanceUpdate()
         }
       }
@@ -826,7 +955,10 @@ public class BrowserViewController: UIViewController {
       header.isUsingBottomBar = isUsingBottomBar
       collapsedURLBarView.isUsingBottomBar = isUsingBottomBar
       searchContainer?.isUsingBottomBar = isUsingBottomBar
+      bottomBarKeyboardBackground.isHidden = !isUsingBottomBar
       topToolbar.displayTabTraySwipeGestureRecognizer?.isEnabled = isUsingBottomBar
+      statusBarOverlay.isHidden = isStatusBarOverlayHidden
+      topEdgeView.isHidden = !isUsingBottomBar
       updateTabsBarVisibility()
       updateStatusBarOverlayColor()
       updateViewConstraints()
@@ -854,9 +986,16 @@ public class BrowserViewController: UIViewController {
     view.addSubview(alertStackView)
     view.addSubview(bottomTouchArea)
     view.addSubview(topTouchArea)
+    if #available(iOS 26.0, *) {
+      view.addSubview(bottomBarKeyboardBackground)
+    }
     view.addSubview(footer)
     view.addSubview(statusBarOverlay)
     view.addSubview(header)
+
+    if #available(iOS 26.0, *) {
+      view.addSubview(topEdgeView)
+    }
 
     // For now we hide some elements so they are not visible
     header.isHidden = true
@@ -906,12 +1045,6 @@ public class BrowserViewController: UIViewController {
         name: UIApplication.willTerminateNotification,
         object: nil
       )
-      $0.addObserver(
-        self,
-        selector: #selector(resetNTPNotification),
-        name: .adsOrRewardsToggledInSettings,
-        object: nil
-      )
       if profileController.profile.prefs.isBraveVPNAvailable {
         $0.addObserver(
           self,
@@ -922,18 +1055,23 @@ public class BrowserViewController: UIViewController {
       }
     }
 
-    BraveGlobalShieldStats.shared.$adblock
-      .scan(
-        (BraveGlobalShieldStats.shared.adblock, BraveGlobalShieldStats.shared.adblock),
-        { ($0.1, $1) }
-      )
-      .sink { [weak self] (oldValue, newValue) in
+    func observeAdblockChangeForDataSavedP3A(from oldValue: Int) {
+      let stats = BraveGlobalShieldStats.shared
+      withObservationTracking {
+        let newValue = stats.adblock
         let change = newValue - oldValue
         if change > 0 {
-          self?.recordDataSavedP3A(change: change)
+          recordDataSavedP3A(change: change)
+        }
+      } onChange: {
+        let oldValue = stats.adblock
+        DispatchQueue.main.async {
+          observeAdblockChangeForDataSavedP3A(from: oldValue)
         }
       }
-      .store(in: &cancellables)
+    }
+
+    observeAdblockChangeForDataSavedP3A(from: BraveGlobalShieldStats.shared.adblock)
 
     KeyboardHelper.defaultHelper.addDelegate(self)
     UNUserNotificationCenter.current().delegate = self
@@ -993,6 +1131,8 @@ public class BrowserViewController: UIViewController {
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
         guard let self = self else { return }
         self.updateStatusBarOverlayColor()
+        self.bottomBarKeyboardBackground.backgroundColor =
+          self.privateBrowsingManager.browserColors.chromeBackground
         self.collapsedURLBarView.browserColors = self.privateBrowsingManager.browserColors
       })
 
@@ -1034,26 +1174,28 @@ public class BrowserViewController: UIViewController {
       }
       .store(in: &cancellables)
 
-    Task { @MainActor in
-      // Track sync chain restoration via backup
-      let shouldDeleteSyncChain = try await profileController.syncAPI
-        .isSyncChainFromCloudRestoration()
-      if shouldDeleteSyncChain {
-        let alert = UIAlertController(
-          title: Strings.Sync.deviceRestoreDetectedTitle,
-          message: Strings.Sync.deviceRestoreDetectedMessage,
-          preferredStyle: .alert
-        )
-        alert.addAction(
-          .init(title: Strings.Sync.deviceRestoreResetActionTitle, style: .default) {
-            [weak self] _ in
-            self?.profileController.syncAPI.resetSyncChain()
-          }
-        )
+    Task { @MainActor [self] in
+      do {
+        // Track sync chain restoration via backup
+        let shouldDeleteSyncChain = try await profileController.syncAPI
+          .isSyncChainFromCloudRestoration()
+        if shouldDeleteSyncChain {
+          let alert = UIAlertController(
+            title: Strings.Sync.deviceRestoreDetectedTitle,
+            message: Strings.Sync.deviceRestoreDetectedMessage,
+            preferredStyle: .alert
+          )
+          alert.addAction(
+            .init(title: Strings.Sync.deviceRestoreResetActionTitle, style: .default) {
+              [weak self] _ in
+              self?.profileController.syncAPI.resetSyncChain()
+            }
+          )
 
-        alert.addAction(.init(title: Strings.CancelString, style: .destructive))
-        self.present(alert, animated: true)
-      }
+          alert.addAction(.init(title: Strings.CancelString, style: .destructive))
+          self.present(alert, animated: true)
+        }
+      } catch {}
     }
 
     checkCrashRestorationOrSetupTabs()
@@ -1184,6 +1326,12 @@ public class BrowserViewController: UIViewController {
       make.height.equalTo(UX.TabsBar.height)
     }
 
+    if #available(iOS 26.0, *) {
+      webViewContainer.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+      }
+    }
+
     webViewContainerBackdrop.snp.makeConstraints { make in
       make.edges.equalTo(webViewContainer)
     }
@@ -1201,9 +1349,25 @@ public class BrowserViewController: UIViewController {
 
   override public func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    statusBarOverlay.snp.remakeConstraints { make in
-      make.top.left.right.equalTo(self.view)
-      make.bottom.equalTo(view.safeArea.top)
+
+    if #available(iOS 26, *), isUsingBottomBar {
+      // UIScrollEdgeElementContainerInteraction does not work unless the view its added to contains
+      // a glass view hierarchy in it (UIGlassEffect/UIGlassContainerEffect). The top edge in bottom
+      // bar doesn't contain any real chrome in that spot so we create a temporary
+      // view which has no real visibility (non-zero width)
+      topEdgeView.frame = .init(
+        x: 0,
+        y: 0,
+        width: CGFloat.leastNormalMagnitude,
+        height: view.safeAreaInsets.top
+      )
+    } else {
+      statusBarOverlay.frame = .init(
+        x: 0,
+        y: 0,
+        width: view.bounds.width,
+        height: view.safeAreaInsets.top
+      )
     }
 
     toolbarVisibilityViewModel.transitionDistance =
@@ -1215,6 +1379,17 @@ public class BrowserViewController: UIViewController {
       view.bounds.height - view.safeAreaInsets.top
     toolbarVisibilityViewModel.minimumCollapsableTransitionDistance =
       header.bounds.height + footer.bounds.height
+
+    if #available(iOS 26.0, *) {
+      updateWebViewObscuredInsets()
+      activeNewTabPageViewController?.additionalSafeAreaInsets = UIEdgeInsets(
+        top: pageOverlayLayoutGuide.layoutFrame.minY - view.safeAreaInsets.top,
+        left: 0,
+        bottom: view.bounds.height - pageOverlayLayoutGuide.layoutFrame.maxY
+          - view.safeAreaInsets.bottom,
+        right: 0
+      )
+    }
   }
 
   override public var canBecomeFirstResponder: Bool {
@@ -1226,23 +1401,16 @@ public class BrowserViewController: UIViewController {
     return tabManager.selectedTab?.webViewProxy?.becomeFirstResponder() ?? false
   }
 
-  override public func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    updateToolbarUsingTabManager(tabManager)
-  }
-
   public override func viewIsAppearing(_ animated: Bool) {
     super.viewIsAppearing(animated)
 
-    if #available(iOS 17, *) {
-      // Have to defer this to the next cycle to avoid an iOS bug which lays out the toolbars without any
-      // bottom safe area, resulting in a layout bug.
-      DispatchQueue.main.async {
-        // On iOS 17 rotating the device with a full screen modal presented (e.g. Playlist, Tab Tray)
-        // to landscape then back to portrait does not trigger `traitCollectionDidChange`/`willTransition`/etc
-        // calls and so the toolbar remains in the wrong state.
-        self.updateToolbarStateForTraitCollection(self.traitCollection)
-      }
+    // Have to defer this to the next cycle to avoid an iOS bug which lays out the toolbars without any
+    // bottom safe area, resulting in a layout bug.
+    DispatchQueue.main.async {
+      // On iOS 17 rotating the device with a full screen modal presented (e.g. Playlist, Tab Tray)
+      // to landscape then back to portrait does not trigger `traitCollectionDidChange`/`willTransition`/etc
+      // calls and so the toolbar remains in the wrong state.
+      self.updateToolbarStateForTraitCollection(self.traitCollection)
     }
 
     // Present Onboarding to new users, existing users will not see the onboarding
@@ -1357,13 +1525,17 @@ public class BrowserViewController: UIViewController {
 
   override public func updateViewConstraints() {
     readerModeBar?.snp.remakeConstraints { make in
+      var insets: UIEdgeInsets = .zero
+      if #available(iOS 26, *) {
+        insets = UIEdgeInsets(equalInset: 8)
+      }
       if self.isUsingBottomBar {
         make.top.equalTo(self.view.safeArea.top)
       } else {
-        make.top.equalTo(self.header.snp.bottom)
+        make.top.equalTo(self.header.snp.bottom).offset(insets.top)
       }
       make.height.equalTo(UIConstants.toolbarHeight)
-      make.leading.trailing.equalTo(self.view)
+      make.leading.trailing.equalTo(self.view).inset(insets)
     }
 
     if let screenTimeViewController = screenTimeViewController,
@@ -1374,22 +1546,21 @@ public class BrowserViewController: UIViewController {
       }
     }
 
-    webViewContainer.snp.remakeConstraints { make in
-      make.left.right.equalTo(self.view)
+    if #unavailable(iOS 26.0) {
+      webViewContainer.snp.remakeConstraints { make in
+        make.left.right.equalTo(self.view)
 
-      if self.isUsingBottomBar {
-        webViewContainerTopOffset =
+        if self.isUsingBottomBar {
           make.top.equalTo(self.readerModeBar?.snp.bottom ?? self.toolbarLayoutGuide.snp.top)
-          .constraint
-      } else {
-        webViewContainerTopOffset =
-          make.top.equalTo(self.readerModeBar?.snp.bottom ?? self.header.snp.bottom).constraint
-      }
+        } else {
+          make.top.equalTo(self.readerModeBar?.snp.bottom ?? self.header.snp.bottom)
+        }
 
-      if self.isUsingBottomBar {
-        make.bottom.equalTo(self.header.snp.top)
-      } else {
-        make.bottom.equalTo(self.footer.snp.top)
+        if self.isUsingBottomBar {
+          make.bottom.equalTo(self.header.snp.top)
+        } else {
+          make.bottom.equalTo(self.footer.snp.top)
+        }
       }
     }
 
@@ -1431,15 +1602,25 @@ public class BrowserViewController: UIViewController {
       }
     }
 
+    if #available(iOS 26.0, *) {
+      bottomBarKeyboardBackground.snp.remakeConstraints {
+        if self.isUsingBottomBar {
+          $0.top.equalTo(header)
+          $0.bottom.equalTo(footer)
+        } else {
+          $0.top.bottom.equalTo(footer)
+        }
+        $0.leading.trailing.equalToSuperview()
+      }
+    }
+
     // Remake constraints even if we're already showing the home controller.
     // The home controller may change sizes if we tap the URL bar while on about:home.
     pageOverlayLayoutGuide.snp.remakeConstraints { make in
       if self.isUsingBottomBar {
-        webViewContainerTopOffset =
-          make.top.equalTo(readerModeBar?.snp.bottom ?? self.toolbarLayoutGuide).constraint
+        make.top.equalTo(readerModeBar?.snp.bottom ?? self.toolbarLayoutGuide)
       } else {
-        webViewContainerTopOffset =
-          make.top.equalTo(readerModeBar?.snp.bottom ?? self.header.snp.bottom).constraint
+        make.top.equalTo(readerModeBar?.snp.bottom ?? self.header.snp.bottom)
       }
 
       make.left.right.equalTo(self.view)
@@ -1486,6 +1667,7 @@ public class BrowserViewController: UIViewController {
       let ntpController = NewTabPageViewController(
         tab: selectedTab,
         profilePrefs: profileController.profile.prefs,
+        mostVisitedSites: selectedTab.isPrivate ? nil : mostVisitedSites,
         dataSource: backgroundDataSource,
         feedDataSource: feedDataSource,
         rewards: rewards,
@@ -1519,12 +1701,17 @@ public class BrowserViewController: UIViewController {
       activeNewTabPageViewController = ntpController
 
       addChild(ntpController)
-      let subview = isUsingBottomBar ? header : statusBarOverlay
-      view.insertSubview(ntpController.view, belowSubview: subview)
+      view.insertSubview(ntpController.view, belowSubview: footer)
       ntpController.didMove(toParent: self)
 
-      ntpController.view.snp.makeConstraints {
-        $0.edges.equalTo(pageOverlayLayoutGuide)
+      if #available(iOS 26, *) {
+        ntpController.view.snp.makeConstraints {
+          $0.edges.equalTo(self.view)
+        }
+      } else {
+        ntpController.view.snp.makeConstraints {
+          $0.edges.equalTo(pageOverlayLayoutGuide)
+        }
       }
       ntpController.view.layoutIfNeeded()
 
@@ -1715,7 +1902,7 @@ public class BrowserViewController: UIViewController {
         }
       }
     } else {
-      updateToolbarCurrentURL(url)
+      updateScreenTimeUrl(url)
       dismissSearchInput()
 
       guard let tab = tabManager.selectedTab else {
@@ -1767,22 +1954,10 @@ public class BrowserViewController: UIViewController {
       return true
     } else if let selectedTab = tabManager.selectedTab, selectedTab.canGoBack {
       selectedTab.goBack()
-      selectedTab.browserData?.resetExternalAlertProperties()
+      selectedTab.externalAppURLHelper?.reset()
       return true
     }
     return false
-  }
-
-  func updateBackForwardActionStatus(for tab: some TabState) {
-    if let forwardListItem = tab.backForwardList?.forwardList.first,
-      forwardListItem.url.isInternalURL(for: .readermode)
-    {
-      navigationToolbar.updateForwardStatus(false)
-    } else {
-      navigationToolbar.updateForwardStatus(tab.canGoForward)
-    }
-
-    navigationToolbar.updateBackStatus(tab.canGoBack)
   }
 
   func updateUIForReaderHomeStateForTab(_ tab: some TabState) {
@@ -1830,13 +2005,7 @@ public class BrowserViewController: UIViewController {
       }
     }
 
-    updateToolbarCurrentURL(tab.visibleURL?.displayURL)
-    if tabManager.selectedTab === tab {
-      self.updateToolbarSecureContentState(tab.visibleSecureContentState)
-    }
-
-    let isPage = tab.visibleURL?.isWebPage() ?? false
-    navigationToolbar.updatePageStatus(isPage)
+    updateScreenTimeUrl(tab.visibleURL?.displayURL)
     updateWebViewPageZoom(tab: tab)
   }
 
@@ -1902,9 +2071,7 @@ public class BrowserViewController: UIViewController {
 
     tabManager.addTabAndSelect(request, isPrivate: isPrivate)
 
-    // Has to go after since switching tabs will cause the URL bar to update to the selected Tab's url (which
-    // is going to be nil still until the web view first commits
-    updateToolbarCurrentURL(url)
+    updateScreenTimeUrl(url)
   }
 
   public func openBlankNewTab(
@@ -2056,16 +2223,22 @@ public class BrowserViewController: UIViewController {
   }
 
   public override var preferredStatusBarStyle: UIStatusBarStyle {
-    if isUsingBottomBar, let tab = tabManager.selectedTab, let url = tab.visibleURL,
-      !url.isNewTabURL, !InternalURL.isValid(url: url),
-      let color = tab.sampledPageTopColor
-    {
-      return color.isLight ? .darkContent : .lightContent
+    if #unavailable(iOS 26.0) {
+      if isUsingBottomBar, let tab = tabManager.selectedTab, let url = tab.visibleURL,
+        !url.isNewTabURL, !InternalURL.isValid(url: url),
+        let color = tab.sampledPageTopColor
+      {
+        return color.isLight ? .darkContent : .lightContent
+      }
     }
     return super.preferredStatusBarStyle
   }
 
   func updateStatusBarOverlayColor() {
+    if #available(iOS 26.0, *) {
+      statusBarOverlay.backgroundColor = privateBrowsingManager.browserColors.chromeBackground
+      return
+    }
     defer { setNeedsStatusBarAppearanceUpdate() }
     guard isUsingBottomBar, let tab = tabManager.selectedTab, let url = tab.visibleURL,
       !url.isNewTabURL, !InternalURL.isValid(url: url),
@@ -2083,9 +2256,6 @@ public class BrowserViewController: UIViewController {
     }
 
     if let url = tab.visibleURL {
-      // Whether to show search icon or + icon
-      toolbar?.setSearchButtonState(url: url)
-
       if !url.isNewTabURL, !InternalURL.isValid(url: url) || url.isInternalURL(for: .readermode),
         !url.isFileURL
       {
@@ -2161,9 +2331,8 @@ public class BrowserViewController: UIViewController {
       toolbarTopConstraint?.update(offset: 0)
       toolbarBottomConstraint?.update(offset: 0)
 
-      // Check if UI side is collapsed already, and that bar visibility isn't being managed
-      // externally (e.g. by the keyboard handler which sets isEnabled = false)
-      if topToolbar.locationContainer.alpha < 1, toolbarVisibilityViewModel.isEnabled {
+      // Check if UI side is collapsed already
+      if topToolbar.locationContainer.alpha < 1 {
         let animator = toolbarVisibilityViewModel.toolbarChangePropertyAnimator
         animator.addAnimations { [self] in
           view.layoutIfNeeded()
@@ -2216,16 +2385,10 @@ public class BrowserViewController: UIViewController {
       topToolbar.locationContainer.alpha = 0
       toolbarBottomConstraint?.update(offset: footerHeight)
     }
-    // Only update bar visibility alphas when the toolbar visibility isn't being managed
-    // externally (e.g. by the keyboard handler which sets isEnabled = false). Skipping
-    // this when isEnabled = false prevents zeroing out collapsedBarContainerView while
-    // expandedBarStackView is already hidden, which would leave both bars invisible.
-    if toolbarVisibilityViewModel.isEnabled {
-      tabsBar.view.alpha = topToolbar.locationContainer.alpha
-      topToolbar.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
-      header.collapsedBarContainerView.alpha = 1 - topToolbar.locationContainer.alpha
-      toolbar?.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
-    }
+    tabsBar.view.alpha = topToolbar.locationContainer.alpha
+    topToolbar.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
+    header.collapsedBarContainerView.alpha = 1 - topToolbar.locationContainer.alpha
+    toolbar?.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
     let animator = toolbarVisibilityViewModel.toolbarChangePropertyAnimator
     animator.addAnimations {
       self.view.layoutIfNeeded()
@@ -2321,41 +2484,14 @@ extension BrowserViewController: PresentingModalViewControllerDelegate {
 }
 
 extension BrowserViewController: TabsBarViewControllerDelegate {
-  func tabsBarDidSelectAddNewTab(_ isPrivate: Bool) {
-    recordCreateTabAction(location: .toolbar)
-    // if user is switching from regular to private browsing, pin is required
-    if !privateBrowsingManager.isPrivateBrowsing,
-      isPrivate,
-      Preferences.Privacy.privateBrowsingLock.value
-    {
-      self.askForLocalAuthentication { [weak self] success, error in
-        if success {
-          self?.openBlankNewTab(
-            attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
-            isPrivate: isPrivate
-          )
-        }
-      }
-    } else {
-      self.openBlankNewTab(
-        attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
-        isPrivate: isPrivate
-      )
-    }
-  }
-
   func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: some TabState) {
     if tab === tabManager.selectedTab { return }
     dismissSearchInput()
     tabManager.selectTab(tab)
   }
 
-  func tabsBarDidLongPressAddTab(_ tabsBarController: TabsBarViewController, button: UIButton) {
-    // The actions are carried to menu actions for Tab-Tray Button
-  }
-
   func tabsBarDidChangeReaderModeVisibility(_ isHidden: Bool = true) {
-    switch topToolbar.locationView.readerModeState {
+    switch tabManager.selectedTab?.readerMode?.state ?? .unavailable {
     case .active:
       if isHidden {
         hideReaderModeBar(animated: false)
@@ -2367,10 +2503,6 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
     default:
       break
     }
-  }
-
-  func tabsBarDidSelectAddNewWindow(_ isPrivate: Bool) {
-    self.openInNewWindow(url: nil, isPrivate: isPrivate)
   }
 }
 
@@ -2416,10 +2548,12 @@ extension BrowserViewController: WalletTabHelperDelegate {
     WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests(for: [coin])
     WalletProviderAccountCreationRequestManager.shared.cancelAllPendingRequests(coins: [coin])
     let privateMode = privateBrowsingManager.isPrivateBrowsing
-    if let cryptoStore = CryptoStore.from(
-      ipfsApi: profileController.ipfsAPI,
-      privateMode: privateMode
-    ) {
+    if let cryptoStore = self.walletStore?.cryptoStore
+      ?? CryptoStore.from(
+        ipfsApi: profileController.ipfsAPI,
+        privateMode: privateMode
+      )
+    {
       cryptoStore.rejectAllPendingWebpageRequests()
     }
     updateURLBarWalletButton()
@@ -2446,12 +2580,11 @@ extension BrowserViewController: WalletTabHelperDelegate {
     if shouldShowWalletButton {
       Task { @MainActor in
         let isPendingRequestAvailable = await isPendingRequestAvailable()
-        topToolbar.updateWalletButtonState(
+        toolbarState.walletButtonState =
           isPendingRequestAvailable ? .activeWithPendingRequest : .active
-        )
       }
     } else {
-      topToolbar.updateWalletButtonState(.inactive)
+      toolbarState.walletButtonState = .inactive
     }
   }
 
@@ -2472,15 +2605,9 @@ extension BrowserViewController: WalletTabHelperDelegate {
     if await cryptoStore.isPendingRequestAvailable() {
       return true
     } else if let selectedTabOrigin = tabManager.selectedTab?.visibleURL?.origin {
-      if WalletProviderAccountCreationRequestManager.shared.hasPendingRequest(
-        for: selectedTabOrigin,
-        coinType: .sol
-      ) {
-        return true
-      }
       return WalletProviderPermissionRequestsManager.shared.hasPendingRequest(
         for: selectedTabOrigin,
-        coinType: .eth
+        coinTypes: [.eth, .sol, .ada]
       )
     }
     return false
@@ -2697,30 +2824,30 @@ extension BrowserViewController: NewTabPageDelegate {
     )
   }
 
-  func handleFavoriteAction(favorite: Favorite, action: BookmarksAction) {
-    guard let url = favorite.url else { return }
+  func handleTopSiteAction(action: TopSiteAction) {
     switch action {
-    case .opened(let inNewTab, let switchingToPrivateMode):
+    case .opened(let url, let isFavorite, let inNewTab, let switchingToPrivateMode):
+      guard let url else { return }
       if switchingToPrivateMode, Preferences.Privacy.privateBrowsingLock.value {
         self.askForLocalAuthentication { [weak self] success, error in
           if success {
             self?.handleURLInput(
-              url,
+              url.absoluteString,
               inNewTab: inNewTab,
               switchingToPrivateMode: switchingToPrivateMode,
-              isFavourite: true
+              isFavourite: isFavorite
             )
           }
         }
       } else {
         handleURLInput(
-          url,
+          url.absoluteString,
           inNewTab: inNewTab,
           switchingToPrivateMode: switchingToPrivateMode,
-          isFavourite: true
+          isFavourite: isFavorite
         )
       }
-    case .edited:
+    case .edited(let favorite):
       guard let title = favorite.displayTitle, let urlString = favorite.url else { return }
       let editPopup =
         UIAlertController
@@ -2739,6 +2866,20 @@ extension BrowserViewController: NewTabPageDelegate {
           }
         }
       self.present(editPopup, animated: true)
+    case .excluded(let tile):
+      let alert = UIAlertController(
+        title: Strings.excludeMostVisitedSiteAlertTitle,
+        message: Strings.excludeMostVisitedSiteAlertMessage,
+        preferredStyle: .alert
+      )
+      alert.addAction(
+        UIAlertAction(title: Strings.excludeMostVisitedSite, style: .destructive) {
+          [weak self] _ in
+          self?.mostVisitedSites.setBlocked(true, for: tile.url)
+        }
+      )
+      alert.addAction(UIAlertAction(title: Strings.CancelString, style: .default))
+      self.present(alert, animated: true)
     }
   }
 
@@ -2766,7 +2907,11 @@ extension BrowserViewController: NewTabPageDelegate {
   func brandedImageCalloutActioned(_ state: BrandedImageCalloutState) {
     guard state.hasDetailViewController else { return }
 
-    let vc = NTPLearnMoreViewController(state: state, rewards: rewards)
+    let vc = NTPLearnMoreViewController(
+      state: state,
+      rewards: rewards,
+      prefs: profileController.profile.prefs
+    )
 
     vc.linkHandler = { [weak self] url in
       self?.tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: url) as URLRequest)
@@ -2780,6 +2925,10 @@ extension BrowserViewController: NewTabPageDelegate {
   }
 
   func showNewTabTakeoverInfoBarIfNeeded() {
+    guard
+      profileController.profile.prefs.boolean(forPath: kBraveAdsSponsoredEnabledPrefName)
+    else { return }
+
     // do not show if NTP is occluded by search
     guard !isSearchContainerVisible,
       rewards.ads.shouldDisplayNewTabTakeoverInfobar()
@@ -2865,8 +3014,6 @@ extension BrowserViewController: PreferencesObserver {
       }
     case Preferences.PrivacyReports.captureVPNAlerts.key:
       PrivacyReportsManager.scheduleVPNAlertsTask()
-    case Preferences.NewTabPage.backgroundMediaTypeRaw.key:
-      recordAdsUsageType()
     case Preferences.Privacy.screenTimeEnabled.key:
       if Preferences.Privacy.screenTimeEnabled.value, !ProcessInfo.processInfo.isiOSAppOnVisionOS {
         // Accessing `STWebpageController` on Vision OS results in a crash
@@ -3153,11 +3300,6 @@ extension BrowserViewController {
 }
 
 extension BrowserViewController {
-  private func openAIChatURL(_ url: URL) {
-    let forcedPrivate = self.privateBrowsingManager.isPrivateBrowsing
-    self.openURLInNewTab(url, isPrivate: forcedPrivate, isPrivileged: false)
-  }
-
   func openBraveLeo(with query: String? = nil) {
     if !AIChatUtils.isAIChatEnabled(for: profileController.profile.prefs) {
       let alert = UIAlertController(
@@ -3183,48 +3325,27 @@ extension BrowserViewController {
       return
     }
 
-    if FeatureList.kAIChatWebUIEnabled.enabled {
-      if let query,
-        let conversationURL = AIChatUtils.openLeoURL(
-          withQuerySubmitted: query,
-          profile: profileController.profile
-        )
-      {
-        tabManager.addTabAndSelect(URLRequest(url: conversationURL), isPrivate: false)
-      } else {
-        let tab = tabManager.addTab(
-          URLRequest(url: .webUI.aiChat),
-          // Ensure we don't start loading the WebUI until we assign the selected tab
-          zombie: true,
-          isPrivate: false
-        )
-        if let selectedTab = tabManager.selectedTab, let url = selectedTab.lastCommittedURL,
-          url.isWebPage(includeDataURIs: false)
-        {
-          tab.aiChatWebUIHelper?.associatedTab = selectedTab
-        }
-        tabManager.selectTab(tab)
-      }
-      return
-    }
-
-    let webDelegate = (query == nil) ? tabManager.selectedTab?.leoTabHelper : nil
-
-    let model = AIChatViewModel(
-      braveCore: profileController,
-      webDelegate: webDelegate,
-      braveTalkScript: self.braveTalkJitsiCoordinator,
-      querySubmited: query
-    )
-
-    let chatController = UIHostingController(
-      rootView: AIChatView(
-        model: model,
-        speechRecognizer: speechRecognizer,
-        openURL: openAIChatURL
+    if let query,
+      let conversationURL = AIChatUtils.openLeoURL(
+        withQuerySubmitted: query,
+        profile: profileController.profile
       )
-    )
-    present(chatController, animated: true)
+    {
+      tabManager.addTabAndSelect(URLRequest(url: conversationURL), isPrivate: false)
+    } else {
+      let tab = tabManager.addTab(
+        URLRequest(url: .webUI.aiChat),
+        // Ensure we don't start loading the WebUI until we assign the selected tab
+        zombie: true,
+        isPrivate: false
+      )
+      if let selectedTab = tabManager.selectedTab, let url = selectedTab.lastCommittedURL,
+        url.isWebPage(includeDataURIs: false)
+      {
+        tab.aiChatWebUIHelper?.associatedTab = selectedTab
+      }
+      tabManager.selectTab(tab)
+    }
   }
 }
 

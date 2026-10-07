@@ -20,7 +20,7 @@
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "net/http/http_status_code.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -48,9 +48,9 @@ class BraveAdsSubdivisionTargetingTest : public test::TestBase {
 };
 
 TEST_F(BraveAdsSubdivisionTargetingTest,
-       AllowAndFetchWhenOptingInToNotificationAds) {
+       AllowAndFetchWhenNotificationAdsAreEnabled) {
   // Arrange
-  test::OptOutOfAllAds();
+  test::DisableAllAds();
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
@@ -68,9 +68,9 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 }
 
 TEST_F(BraveAdsSubdivisionTargetingTest,
-       DoNotFetchWhenOptingOutOfNotificationAds) {
+       DoNotFetchWhenNotificationAdsAreDisabled) {
   // Arrange
-  test::OptOutOfAllAds();
+  test::DisableAllAds();
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 

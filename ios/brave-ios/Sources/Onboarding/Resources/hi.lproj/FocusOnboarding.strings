@@ -28,11 +28,17 @@
 /* The title of the screen which asks user to enable privacy preserving analytics. */
 "focusOnboarding.p3aScreenTitle" = "Brave को बेहतर बनाएँ";
 
-/* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
-"focusOnboarding.p3aToggleDescription" = "आप **Shields और प्राइवेसी** में जाकर सेटिंग में कभी भी ऑप्ट-आउट कर सकते हैं। अपनी प्राइवेसी संरक्षण प्रोडक्ट अनलिटिक्स के बारे में [ज़्यादा जानें](#p3a-learn-more)।";
+/* The description shown below the toggle for enabling privacy preserving analytics. */
+"focusOnboarding.p3aToggleDescription" = "Brave के यूज़र जिन सुविधाओं का इस्तेमाल कर रहे हैं, उन प्रोडक्ट के बारे में पूरी तरह गोपनीय और अनाम जानकारी शेयर करें.";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "private & anonymous" snippet should be bold in all languages */
-"focusOnboarding.p3aToggleTitle" = "**प्राइवेट और अनाम** प्रोडक्ट की इनसाइट्स शेयर करें।";
+/* The title of the toggle that allows the user to enable/disable the privacy preserving analytics. */
+"focusOnboarding.p3aToggleTitle" = "निजी प्रोडक्ट जानकारी";
+
+/* The description shown below the toggle for enabling crash reporting. */
+"focusOnboarding.sendCrashReportsToggleDescription" = "अचानक बंद होने या अटकने पर अनाम डायग्नोस्टिक रिपोर्ट भेजें।";
+
+/* The title of the toggle that allows the user to enable/disable crash reporting. */
+"focusOnboarding.sendCrashReportsToggleTitle" = "क्रैश रिपोर्ट भेजें";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "ब्राउज़ करना शुरू करें";

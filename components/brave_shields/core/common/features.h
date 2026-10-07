@@ -27,7 +27,6 @@ BASE_DECLARE_FEATURE(kBraveAdblockMobileNotificationsListDefault);
 BASE_DECLARE_FEATURE(kBraveAdblockExperimentalListDefault);
 BASE_DECLARE_FEATURE(kBraveAdblockScriptletDebugLogs);
 BASE_DECLARE_FEATURE(kBraveAdblockShowHiddenComponents);
-BASE_DECLARE_FEATURE(kBraveDarkModeBlock);
 BASE_DECLARE_FEATURE(kBraveDomainBlock);
 BASE_DECLARE_FEATURE(kBraveDomainBlock1PES);
 BASE_DECLARE_FEATURE(kBraveExtensionNetworkBlocking);
@@ -46,6 +45,8 @@ BASE_DECLARE_FEATURE(kCosmeticFilteringSyncLoad);
 BASE_DECLARE_FEATURE(kBlockAllCookiesToggle);
 BASE_DECLARE_FEATURE(kBraveShieldsElementPicker);
 BASE_DECLARE_FEATURE(kWebKitAdvancedPrivacyProtections);
+BASE_DECLARE_FEATURE(kWebKitGlobalPrivacyControl);
+BASE_DECLARE_FEATURE(kTransitionToUpstreamHttpsUpgrades);
 extern const base::FeatureParam<int> kComponentUpdateCheckIntervalMins;
 extern const base::FeatureParam<std::string>
     kCosmeticFilteringSubFrameFirstSelectorsPollingDelayMs;

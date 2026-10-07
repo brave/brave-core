@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/tab_model.cc b/chrome/browser/ui/tabs/tab_model.cc
-index 6a938d6824884dfe3a8e1d25ac48d19d054dc5d3..34b4e22f7ef05e5b865bc2a607bbc82f4ff18df4 100644
+index fcd62b3d8edec2064a935a0fbbadfb180be74158..ac59d9b8ec2056223b2beb71f4abdf87aeb8626b 100644
 --- a/chrome/browser/ui/tabs/tab_model.cc
 +++ b/chrome/browser/ui/tabs/tab_model.cc
-@@ -57,7 +57,7 @@ TabModel::TabModel(std::unique_ptr<content::WebContents> contents,
+@@ -59,7 +59,7 @@ TabModel::TabModel(std::unique_ptr<content::WebContents> contents,
    // TODO(https://crbug.com/362038317): Tab-helpers should be created in exactly
    // one place, which is here.
    TabHelpers::AttachTabHelpers(contents_);
@@ -11,3 +11,11 @@ index 6a938d6824884dfe3a8e1d25ac48d19d054dc5d3..34b4e22f7ef05e5b865bc2a607bbc82f
    const SessionID session_id = sessions::SessionTabHelper::IdForTab(contents_);
    CHECK(session_id.is_valid());
    SetSessionId(session_id.id());
+@@ -404,6 +404,7 @@ void TabModel::UpdateProperties() {
+         break;
+       case TabCollection::Type::TABSTRIP:
+       case TabCollection::Type::UNPINNED:
++      case TabCollection::Type::TREE_NODE:
+         break;
+     }
+     ancestor = ancestor->GetParentCollection();

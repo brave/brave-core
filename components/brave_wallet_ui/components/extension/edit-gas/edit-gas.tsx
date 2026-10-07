@@ -283,7 +283,7 @@ export const EditGas = ({
           textColor='secondary'
           variant='default.regular'
         >
-          {getLocale('braveWalletEditGasLimit')}
+          {getLocale(S.BRAVE_WALLET_EDIT_GAS_LIMIT)}
         </InputLabel>
         <Input
           placeholder='0'
@@ -294,7 +294,9 @@ export const EditGas = ({
           hasError={gasLimit === '0'}
         />
         {gasLimit === '0' && (
-          <ErrorText>{getLocale('braveWalletEditGasLimitError')}</ErrorText>
+          <ErrorText>
+            {getLocale(S.BRAVE_WALLET_EDIT_GAS_LIMIT_ERROR)}
+          </ErrorText>
         )}
       </>
     ),
@@ -372,8 +374,8 @@ export const EditGas = ({
       navAction={onCancel}
       title={
         isEIP1559Transaction
-          ? getLocale('braveWalletEditGasTitle1')
-          : getLocale('braveWalletEditGasTitle2')
+          ? getLocale(S.BRAVE_WALLET_EDIT_GAS_TITLE1)
+          : getLocale(S.BRAVE_WALLET_EDIT_GAS_TITLE2)
       }
     >
       <StyledWrapper>
@@ -382,7 +384,7 @@ export const EditGas = ({
             textColor='secondary'
             variant='small.regular'
           >
-            {getLocale('braveWalletEditGasDescription')}
+            {getLocale(S.BRAVE_WALLET_EDIT_GAS_DESCRIPTION)}
           </Description>
         )}
         {showCustomMaxPriorityPanel && (
@@ -392,14 +394,14 @@ export const EditGas = ({
                 textColor='primary'
                 variant='small.regular'
               >
-                {getLocale('braveWalletEditGasBaseFee')}
+                {getLocale(S.BRAVE_WALLET_EDIT_GAS_BASE_FEE)}
               </CurrentBaseText>
               <CurrentBaseText
                 textColor='primary'
                 variant='small.regular'
               >
                 {`${new Amount(baseFeePerGas).divideByDecimals(9).format()}
-                  ${getLocale('braveWalletEditGasGwei')}`}
+                  ${getLocale(S.BRAVE_WALLET_EDIT_GAS_GWEI)}`}
               </CurrentBaseText>
             </CurrentBaseRow>
 
@@ -409,7 +411,7 @@ export const EditGas = ({
               textColor='secondary'
               variant='default.regular'
             >
-              {getLocale('braveWalletEditGasPerTipLimit')}
+              {getLocale(S.BRAVE_WALLET_EDIT_GAS_PER_TIP_LIMIT)}
             </InputLabel>
             <Input
               placeholder='0'
@@ -425,7 +427,7 @@ export const EditGas = ({
               textColor='secondary'
               variant='default.regular'
             >
-              {getLocale('braveWalletEditGasPerPriceLimit')}
+              {getLocale(S.BRAVE_WALLET_EDIT_GAS_PER_PRICE_LIMIT)}
             </InputLabel>
             <Input
               placeholder='0'
@@ -441,7 +443,7 @@ export const EditGas = ({
                 textColor='primary'
                 variant='small.regular'
               >
-                {getLocale('braveWalletEditGasMaximumFee')}
+                {getLocale(S.BRAVE_WALLET_EDIT_GAS_MAXIMUM_FEE)}
               </Text>
               <Text
                 textColor='primary'
@@ -464,7 +466,7 @@ export const EditGas = ({
                       textSize='14px'
                     >
                       {getLocale(
-                        'braveWalletGasFeeLimitLowerThanBaseFeeWarning',
+                        S.BRAVE_WALLET_GAS_FEE_LIMIT_LOWER_THAN_BASE_FEE_WARNING,
                       )}
                     </Text>
                   </Column>
@@ -480,7 +482,7 @@ export const EditGas = ({
               textColor='secondary'
               variant='default.regular'
             >
-              {getLocale('braveWalletEditGasMaxFee')}:
+              {getLocale(S.BRAVE_WALLET_EDIT_GAS_MAX_FEE)}:
             </Text>
             <SliderValue
               textColor='primary'
@@ -501,19 +503,19 @@ export const EditGas = ({
                 textColor='secondary'
                 variant='default.regular'
               >
-                {getLocale('braveWalletEditGasLow')}
+                {getLocale(S.BRAVE_WALLET_EDIT_GAS_LOW)}
               </Text>
               <Text
                 textColor='secondary'
                 variant='default.regular'
               >
-                {getLocale('braveWalletEditGasOptimal')}
+                {getLocale(S.BRAVE_WALLET_EDIT_GAS_OPTIMAL)}
               </Text>
               <Text
                 textColor='secondary'
                 variant='default.regular'
               >
-                {getLocale('braveWalletEditGasHigh')}
+                {getLocale(S.BRAVE_WALLET_EDIT_GAS_HIGH)}
               </Text>
             </SliderLabelRow>
           </SliderWrapper>
@@ -527,7 +529,7 @@ export const EditGas = ({
               textColor='secondary'
               variant='default.regular'
             >
-              {getLocale('braveWalletEditGasPerGasPrice')}
+              {getLocale(S.BRAVE_WALLET_EDIT_GAS_PER_GAS_PRICE)}
             </InputLabel>
             <Input
               placeholder='0'
@@ -541,7 +543,7 @@ export const EditGas = ({
                 textColor='error'
                 variant='small.regular'
               >
-                {getLocale('braveWalletEditGasZeroGasPriceWarning')}
+                {getLocale(S.BRAVE_WALLET_EDIT_GAS_ZERO_GAS_PRICE_WARNING)}
               </WarningText>
             )}
           </FormColumn>
@@ -553,10 +555,10 @@ export const EditGas = ({
             needsTopMargin={true}
             text={
               !isEIP1559Transaction
-                ? getLocale('braveWalletButtonCancel')
+                ? getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)
                 : maxPriorityPanel === MaxPriorityPanels.setCustom
-                  ? getLocale('braveWalletEditGasSetSuggested')
-                  : getLocale('braveWalletEditGasSetCustom')
+                  ? getLocale(S.BRAVE_WALLET_EDIT_GAS_SET_SUGGESTED)
+                  : getLocale(S.BRAVE_WALLET_EDIT_GAS_SET_CUSTOM)
             }
             onSubmit={
               !isEIP1559Transaction
@@ -569,7 +571,7 @@ export const EditGas = ({
 
           <NavButton
             buttonType='primary'
-            text={getLocale('braveWalletAccountSettingsSave')}
+            text={getLocale(S.BRAVE_WALLET_ACCOUNT_SETTINGS_SAVE)}
             onSubmit={onSave}
             disabled={isSaveButtonDisabled}
           />

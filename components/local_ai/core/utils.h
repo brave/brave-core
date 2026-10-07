@@ -10,11 +10,17 @@
 
 #include "mojo/public/cpp/base/big_buffer.h"
 
+class PrefService;
+
 namespace base {
 class FilePath;
 }  // namespace base
 
 namespace local_ai {
+
+// Whether Brave's feature and the Local AI master switch both allow on-device
+// speech recognition. A null `local_state` reads as the switch's default, on.
+bool IsOnDeviceSpeechRecognitionAllowed(const PrefService* local_state);
 
 // Reads a file directly into BigBuffer storage. For files >64KB BigBuffer
 // uses shared memory. Returns std::nullopt if the file can't be opened, is

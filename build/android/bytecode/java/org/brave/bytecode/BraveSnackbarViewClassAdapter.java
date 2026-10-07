@@ -18,5 +18,11 @@ public class BraveSnackbarViewClassAdapter extends BraveClassVisitor {
 
         deleteField(sBraveSnackbarViewClassName, "mContainerView");
         makeProtectedField(sSnackbarViewClassName, "mContainerView");
+
+        deleteField(sBraveSnackbarViewClassName, "mSnackbarSwipeHandler");
+        makeProtectedField(sSnackbarViewClassName, "mSnackbarSwipeHandler");
+
+        deleteField(sBraveSnackbarViewClassName, "mIsAnimating");
+        makeProtectedField(sSnackbarViewClassName, "mIsAnimating");
     }
 }

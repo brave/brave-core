@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.widget.GridLayout;
 
 import java.util.ArrayList;
@@ -33,7 +34,8 @@ public class BraveMostVisitedTilesLayoutBase extends TilesLinearLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int childCount = getChildCount();
-        if (mUseFixedLayout && widthMeasureSpec > 0 && childCount > FIXED_COLUMNS_COUNT) {
+        int measuredWidth = MeasureSpec.getSize(widthMeasureSpec);
+        if (mUseFixedLayout && measuredWidth > 0 && childCount > FIXED_COLUMNS_COUNT) {
             int numColumns = FIXED_COLUMNS_COUNT;
             if (getColumnCount() < numColumns) {
                 setColumnCount(numColumns);
@@ -45,7 +47,7 @@ public class BraveMostVisitedTilesLayoutBase extends TilesLinearLayout {
 
             List<View> dividerList = new ArrayList<>();
 
-            int tileViewWidth = widthMeasureSpec / numColumns;
+            int tileViewWidth = measuredWidth / numColumns;
             for (int i = 0; i < childCount; i++) {
                 View tileView = getChildAt(i);
 

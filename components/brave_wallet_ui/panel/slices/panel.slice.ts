@@ -10,8 +10,6 @@ import {
   HardwareWalletResponseCodeType,
   PanelState,
   PanelTypes,
-  SerializableTransactionInfo,
-  TransactionInfoLookup,
 } from '../../constants/types'
 import { ShowConnectToSitePayload } from '../constants/action_types'
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
@@ -35,8 +33,6 @@ const defaultState: PanelState = {
   selectedPanel,
   connectingAccounts: [],
   hardwareWalletCode: undefined,
-  selectedTransactionId: undefined,
-  submittingTransaction: undefined,
 }
 
 export const createPanelSlice = (initialState: PanelState = defaultState) => {
@@ -59,18 +55,6 @@ export const createPanelSlice = (initialState: PanelState = defaultState) => {
         action: PayloadAction<HardwareWalletResponseCodeType | undefined>,
       ) {
         state.hardwareWalletCode = action.payload
-      },
-      setSelectedTransactionId(
-        state,
-        action: PayloadAction<TransactionInfoLookup | undefined>,
-      ) {
-        state.selectedTransactionId = action.payload
-      },
-      setSubmittingTransaction(
-        state,
-        action: PayloadAction<SerializableTransactionInfo | undefined>,
-      ) {
-        state.submittingTransaction = action.payload
       },
     },
   })

@@ -4,24 +4,17 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShields
 import Foundation
 
 extension AdblockEngine {
-  public enum ResourceType: String, Decodable {
-    case xmlhttprequest
-    case script
-    case image
-    case document
-    case subdocument
-  }
-
   /// Check the rust engine if the request should be blocked given the `sourceURL` and `resourceType`.
   ///
   /// - Warning: You must provide a absolute URL (i.e. containing a host) fo r `requestURL` and `sourceURL`
   public func shouldBlock(
     requestURL: URL,
     sourceURL: URL,
-    resourceType: ResourceType,
+    resourceType: AdblockResourceType,
     isAggressive: Bool
   ) -> Bool {
     guard requestURL.scheme != "data" else {

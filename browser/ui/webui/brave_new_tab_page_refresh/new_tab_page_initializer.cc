@@ -9,8 +9,10 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "base/strings/strcat.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
 #include "brave/browser/resources/brave_new_tab_page_refresh/grit/brave_new_tab_page_refresh_generated_map.h"
@@ -26,7 +28,11 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ntp_background_images/browser/features.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_dynamic_new_tab_takeover_source.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/static/ntp_static_new_tab_takeover_source.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/site/ntp_sponsored_site_image_source.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
@@ -126,6 +132,8 @@ void NewTabPageInitializer::Initialize() {
   AddFaviconDataSource();
   AddCustomImageDataSource();
   AddSanitizedImageDataSource();
+  AddBackgroundImageDataSource();
+  AddSponsoredContentDataSources();
 
   web_ui_->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   web_ui_->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));
@@ -177,7 +185,7 @@ void NewTabPageInitializer::AddCSPOverrides() {
 
   source_->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      base::StrCat({"frame-src ", kNTPNewTabTakeoverRichMediaUrl, ";"}));
+      base::StrCat({"frame-src ", kNTPDynamicNewTabTakeoverUrl, ";"}));
 
   // Brave News uses a dedicated Trusted Types policy to parse imported OPML
   // subscription files (see brave_news .../customize/opml.ts). Append it to the
@@ -195,8 +203,7 @@ void NewTabPageInitializer::AddLoadTimeValues() {
       "customBackgroundFeatureEnabled",
       !prefs->IsManagedPreference(prefs::kNtpCustomBackgroundDict));
 
-  source_->AddString("sponsoredRichMediaBaseUrl",
-                     kNTPNewTabTakeoverRichMediaUrl);
+  source_->AddString("sponsoredRichMediaBaseUrl", kNTPDynamicNewTabTakeoverUrl);
 
   source_->AddBoolean(
       "ntpSearchFeatureEnabled",
@@ -270,6 +277,9 @@ void NewTabPageInitializer::AddLoadTimeValues() {
   source_->AddBoolean(
       "isAIChatExportJSONEnabled",
       base::FeatureList::IsEnabled(ai_chat::features::kAIChatExportJSON));
+  source_->AddBoolean(
+      "isWorkspaceToolsEnabled",
+      base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools));
 #endif
 
   source_->AddBoolean("aiChatInputEnabled", ai_chat_input_enabled);
@@ -322,6 +332,43 @@ void NewTabPageInitializer::AddSanitizedImageDataSource() {
   content::URLDataSource::Add(profile,
                               std::make_unique<BraveSanitizedImageSource>(
                                   profile, /*serve_untrusted=*/false));
+}
+
+void NewTabPageInitializer::AddBackgroundImageDataSource() {
+  auto* background_images_service =
+      g_brave_browser_process->ntp_background_images_service();
+  if (!background_images_service) {
+    CHECK_IS_TEST();
+    return;
+  }
+
+  content::URLDataSource::Add(
+      GetProfile(),
+      std::make_unique<ntp_background_images::NTPBackgroundImagesSource>(
+          background_images_service));
+}
+
+void NewTabPageInitializer::AddSponsoredContentDataSources() {
+  auto* background_images_service =
+      g_brave_browser_process->ntp_background_images_service();
+  if (!background_images_service) {
+    CHECK_IS_TEST();
+    return;
+  }
+
+  auto* profile = GetProfile();
+  content::URLDataSource::Add(
+      profile,
+      std::make_unique<ntp_background_images::NTPStaticNewTabTakeoverSource>(
+          background_images_service));
+  content::URLDataSource::Add(
+      profile,
+      std::make_unique<ntp_background_images::NTPDynamicNewTabTakeoverSource>(
+          background_images_service));
+  content::URLDataSource::Add(
+      profile,
+      std::make_unique<ntp_background_images::NTPSponsoredSiteImageSource>(
+          background_images_service));
 }
 
 }  // namespace brave_new_tab_page_refresh

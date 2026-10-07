@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.test.filters.LargeTest;
 import androidx.test.filters.SmallTest;
 
 import org.hamcrest.Description;
@@ -83,8 +84,11 @@ public class BraveSettingsSearchTest {
      * Verifies that key Brave-specific settings entries appear in the global Settings search
      * results.
      */
+    // LargeTest: this walks the whole main settings screen, and @SmallTest caps a test at 10
+    // seconds — less than the search-and-assert cycles below need, which turns any single missing
+    // result into an unhelpful process timeout instead of a failed assertion.
     @Test
-    @SmallTest
+    @LargeTest
     @Feature({"Preferences"})
     @EnableFeatures(BraveFeatureList.BRAVE_PLAYLIST)
     public void testBraveMainSettingsAreSearchable() {
@@ -243,6 +247,9 @@ public class BraveSettingsSearchTest {
         clearAndTypeIntoSearch("Solana Name Service");
         assertSearchResult("Solana Name Service");
 
+        clearAndTypeIntoSearch("Enable Sponsored Ads");
+        assertSearchResult("Enable Sponsored Ads");
+
         // Disabled — see https://github.com/brave/brave-browser/issues/57186
         // typeIntoSearch("Safe Browsing");
         // assertSearchResult("Safe Browsing");
@@ -251,6 +258,21 @@ public class BraveSettingsSearchTest {
         // Brave Shields & privacy => Lock Private tabs when you leave Brave
         // clearAndTypeIntoSearch("Lock Private tabs");
         // assertSearchResult("Lock Private tabs");
+    }
+
+    /**
+     * Verifies that the Sponsored Ads entry is not searchable when Brave Rewards is disabled by
+     * policy.
+     */
+    @Test
+    @SmallTest
+    @Feature({"Preferences"})
+    public void testSponsoredAdsNotSearchable_RewardsDisabledByPolicy() {
+        BraveRewardsPolicy.setDisabledByPolicyForTesting(true);
+        mSettingsActivityTestRule.startSettingsActivity();
+
+        typeIntoSearch("Enable Sponsored Ads");
+        assertSearchResultEmpty();
     }
 
     /**
@@ -449,8 +471,9 @@ public class BraveSettingsSearchTest {
      * Verifies that key Brave-specific settings entries appear in the `Site settings` Settings
      * search results.
      */
+    // LargeTest: see the note on testBraveMainSettingsAreSearchable.
     @Test
-    @SmallTest
+    @LargeTest
     @Feature({"Preferences"})
     public void testSiteSettingsAreSearchable() {
         mSettingsActivityTestRule.startSettingsActivity();
@@ -770,9 +793,6 @@ public class BraveSettingsSearchTest {
         clearAndTypeIntoSearch("Brave Rewards icon");
         assertSearchResult("Brave Rewards icon");
 
-        clearAndTypeIntoSearch("Brave Ads");
-        assertSearchResult("Brave Ads");
-
         clearAndTypeIntoSearch("Night");
         assertSearchResult("Night Mode");
 
@@ -821,7 +841,7 @@ public class BraveSettingsSearchTest {
     @Test
     @SmallTest
     @Feature({"Preferences"})
-    public void testNewTabPageSponsoredImagesNotSearchable_RewardsDisabledByPolicy() {
+    public void testNewTabPageSponsoredContentNotSearchable_RewardsDisabledByPolicy() {
         BraveRewardsPolicy.setDisabledByPolicyForTesting(true);
         mSettingsActivityTestRule.startSettingsActivity();
 
@@ -958,7 +978,18 @@ public class BraveSettingsSearchTest {
         assertSearchResult("Save security codes");
 
         clearAndTypeIntoSearch("Card benefits");
-        assertSearchResult("Card benefits");
+        // Two indexed entries share this title, both under the "Payment methods" category: the
+        // preference on the Payment methods page that opens the card benefits page, and the
+        // enable toggle on the card benefits page itself. Upstream labels both with
+        // IDS_AUTOFILL_SETTINGS_PAGE_CARD_BENEFITS_LABEL on purpose, so the summary is the only
+        // thing that tells them apart. Both are asserted: the toggle only became searchable once
+        // the parent entry was given a fragment, so checking it guards that from regressing.
+        assertSearchResultWithSummary(
+                "Card benefits",
+                "Choose whether you see your card benefits at checkout (bank terms apply)");
+        assertSearchResultWithSummary(
+                "Card benefits",
+                "Show available card benefits and rewards at checkout. Issuer terms apply.");
 
         clearAndTypeIntoSearch("Check out faster with autofill");
         assertSearchResult("Check out faster with autofill");
@@ -1074,8 +1105,9 @@ public class BraveSettingsSearchTest {
     // ---------------------------------------------------------------------------
     // Category 2 — Chrome settings removed by Brave must NOT appear in search
     // ---------------------------------------------------------------------------
+    // LargeTest: see the note on testBraveMainSettingsAreSearchable.
     @Test
-    @SmallTest
+    @LargeTest
     @Feature({"Preferences"})
     public void testRemovedChromeSettingsNotFoundInSearch() {
         mSettingsActivityTestRule.startSettingsActivity();
@@ -1451,20 +1483,69 @@ public class BraveSettingsSearchTest {
                         });
     }
 
+    /**
+     * Asserts that one search result carries both the given title and summary.
+     *
+     * <p>Needed when several results share a title. {@link #assertOneOfSearchResultsIs} cannot
+     * separate those, because {@code SearchResultsPreferenceFragment} groups results by top-level
+     * settings category rather than by the page each one lives on, so same-named entries from a
+     * page and its sub-page land under one header. The summary is what distinguishes them.
+     */
+    private void assertSearchResultWithSummary(String title, String summary) {
+        onViewWaiting(allOf(withId(R.id.recycler_view), inSearchResultsPane()))
+                .check(
+                        (view, e) -> {
+                            if (e != null) throw e;
+                            ViewGroup rv = (ViewGroup) view;
+                            for (int i = 0; i < rv.getChildCount(); i++) {
+                                View child = rv.getChildAt(i);
+                                // Section headers are plain TextView children; results are
+                                // ViewGroups holding a title and a summary.
+                                if (!(child instanceof ViewGroup)) continue;
+                                android.widget.TextView titleView =
+                                        findTextViewByEntryName((ViewGroup) child, "title");
+                                android.widget.TextView summaryView =
+                                        findTextViewByEntryName((ViewGroup) child, "summary");
+                                if (titleView == null || summaryView == null) continue;
+                                if (titleView.getText().toString().equalsIgnoreCase(title)
+                                        && summaryView
+                                                .getText()
+                                                .toString()
+                                                .equalsIgnoreCase(summary)) {
+                                    return; // found
+                                }
+                            }
+                            throw new junit.framework.AssertionFailedError(
+                                    "No search result with title '"
+                                            + title
+                                            + "' and summary '"
+                                            + summary
+                                            + "'");
+                        });
+    }
+
     /** Recursively finds the first TextView whose resource entry name is "title". */
     private static android.widget.TextView findTitleTextView(ViewGroup parent) {
+        return findTextViewByEntryName(parent, "title");
+    }
+
+    /** Recursively finds the first TextView whose resource entry name equals {@code entryName}. */
+    private static android.widget.TextView findTextViewByEntryName(
+            ViewGroup parent, String entryName) {
         for (int i = 0; i < parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
             if (child instanceof android.widget.TextView) {
                 try {
-                    if ("title".equals(child.getResources().getResourceEntryName(child.getId()))) {
+                    if (entryName.equals(
+                            child.getResources().getResourceEntryName(child.getId()))) {
                         return (android.widget.TextView) child;
                     }
                 } catch (Exception ignored) {
-                    // ID not resolvable — not the title view.
+                    // ID not resolvable — not the view we're after.
                 }
             } else if (child instanceof ViewGroup) {
-                android.widget.TextView result = findTitleTextView((ViewGroup) child);
+                android.widget.TextView result =
+                        findTextViewByEntryName((ViewGroup) child, entryName);
                 if (result != null) return result;
             }
         }

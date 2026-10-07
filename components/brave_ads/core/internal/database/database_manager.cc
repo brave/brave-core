@@ -24,6 +24,7 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_raze.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_ads {
 
@@ -94,6 +95,11 @@ void DatabaseManager::Shutdown(ResultCallback callback) {
       .Then(base::BindOnce(&DatabaseManager::OnShutdownCallback,
                            weak_factory_.GetWeakPtr(), std::move(callback),
                            /*success=*/true));
+}
+
+const std::optional<std::string>&
+DatabaseManager::GetLastMigrationFailureReason() const {
+  return last_migration_failure_reason_;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -262,6 +268,11 @@ void DatabaseManager::MaybeMigrate(int from_version, ResultCallback callback) {
     BLOG(0, "Database downgrade not supported from schema version "
                 << from_version << " to schema version " << to_version);
 
+    last_migration_failure_reason_ = absl::StrFormat(
+        "Downgrade not supported from schema version %d to "
+        "schema version %d",
+        from_version, to_version);
+
     NotifyFailedToMigrateDatabase(from_version, to_version);
 
     return std::move(callback).Run(/*success=*/false);
@@ -309,6 +320,12 @@ void DatabaseManager::MigrateFromVersionCallback(
     BLOG(0, "Failed to migrate database from schema version "
                 << from_version << " to schema version " << to_version);
 
+    last_migration_failure_reason_ = absl::StrFormat(
+        "Failed to migrate from schema version %d to schema version "
+        "%d (status code %d)",
+        from_version, to_version,
+        static_cast<int>(mojom_db_transaction_result->status_code));
+
     NotifyFailedToMigrateDatabase(from_version, to_version);
 
     return std::move(callback).Run(/*success=*/false);
@@ -316,6 +333,8 @@ void DatabaseManager::MigrateFromVersionCallback(
 
   BLOG(1, "Migrated database from schema version "
               << from_version << " to schema version " << to_version);
+
+  last_migration_failure_reason_.reset();
 
   NotifyDidMigrateDatabase(from_version, to_version);
 

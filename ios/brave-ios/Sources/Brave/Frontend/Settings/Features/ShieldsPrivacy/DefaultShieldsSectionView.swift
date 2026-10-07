@@ -32,7 +32,13 @@ struct DefaultShieldsSectionView: View {
         )
       }
 
-      if FeatureList.kBraveHttpsByDefault.enabled {
+      if FeatureList.kTransitionToUpstreamHttpsUpgrades.enabled {
+        ToggleView(
+          title: Strings.Shields.upgradeConnectionsToHTTPS,
+          subtitle: nil,
+          toggle: $settings.isHttpsOnlyModeEnabled
+        )
+      } else if FeatureList.kBraveHttpsByDefault.enabled {
         FormPicker(selection: $settings.httpsUpgradeLevel) {
           ForEach(HTTPSUpgradeLevel.allCases) { level in
             Text(level.localizedTitle)
@@ -47,40 +53,31 @@ struct DefaultShieldsSectionView: View {
         }
       } else {
         ToggleView(
-          title: Strings.HTTPSEverywhere,
-          subtitle: Strings.HTTPSEverywhereDescription,
-          toggle: Binding(
-            get: {
-              settings.httpsUpgradeLevel.isEnabled
-            },
-            set: { newValue in
-              settings.httpsUpgradeLevel =
-                !newValue
-                ? .disabled : (Preferences.Shields.httpsUpgradePriorEnabledLevel ?? .standard)
-            }
-          )
+          title: Strings.Shields.upgradeConnectionsToHTTPS,
+          subtitle: Strings.Shields.httpsEverywhereDescription,
+          toggle: $settings.isHTTPSUpgradeEnabled
         )
       }
 
       ToggleView(
-        title: Strings.autoRedirectAMPPages,
-        subtitle: Strings.autoRedirectAMPPagesDescription,
+        title: Strings.Shields.autoRedirectAMPPages,
+        subtitle: Strings.Shields.autoRedirectAMPPagesDescription,
         toggle: $settings.isDeAmpEnabled
       )
       ToggleView(
-        title: Strings.autoRedirectTrackingURLs,
-        subtitle: Strings.autoRedirectTrackingURLsDescription,
+        title: Strings.Shields.autoRedirectTrackingURLs,
+        subtitle: Strings.Shields.autoRedirectTrackingURLsDescription,
         toggle: $settings.isDebounceEnabled
       )
 
       ToggleView(
-        title: Strings.blockScripts,
-        subtitle: Strings.blockScriptsDescription,
+        title: Strings.Shields.blockScripts,
+        subtitle: Strings.Shields.blockScriptsDescription,
         toggle: $settings.isBlockScriptsEnabled
       )
       ToggleView(
-        title: Strings.fingerprintingProtection,
-        subtitle: Strings.fingerprintingProtectionDescription,
+        title: Strings.Shields.fingerprintingProtection,
+        subtitle: Strings.Shields.fingerprintingProtectionDescription,
         toggle: $settings.isBlockFingerprintingEnabled
       )
 
@@ -99,8 +96,8 @@ struct DefaultShieldsSectionView: View {
       }
 
       ToggleView(
-        title: Strings.braveShieldsSaveContactInfo,
-        subtitle: Strings.braveShieldsSaveContactInfoDescription,
+        title: Strings.Shields.braveShieldsSaveContactInfo,
+        subtitle: Strings.Shields.braveShieldsSaveContactInfoDescription,
         toggle: $settings.isSaveContactInfoEnabled
       )
 
@@ -113,18 +110,14 @@ struct DefaultShieldsSectionView: View {
         )
       }
     } header: {
-      Text(Strings.shieldsDefaults)
+      Text(Strings.Shields.shieldsDefaults)
     } footer: {
-      Text(Strings.shieldsDefaultsFooter)
+      Text(Strings.Shields.shieldsDefaultsFooter)
     }
   }
 }
 
-extension ShieldLevel: Identifiable {
-  public var id: String {
-    return rawValue
-  }
-
+extension ShieldLevel {
   public var localizedTitle: String {
     switch self {
     case .aggressive: return Strings.Shields.trackersAndAdsBlockingAggressive

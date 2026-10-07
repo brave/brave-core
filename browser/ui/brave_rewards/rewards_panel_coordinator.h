@@ -9,6 +9,7 @@
 #include "base/observer_list.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 #include "url/gurl.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_REWARDS));
@@ -22,6 +23,8 @@ namespace brave_rewards {
 // panel.
 class RewardsPanelCoordinator {
  public:
+  DECLARE_USER_DATA(RewardsPanelCoordinator);
+
   explicit RewardsPanelCoordinator(
       BrowserWindowInterface* browser_window_interface);
 
@@ -29,6 +32,10 @@ class RewardsPanelCoordinator {
   RewardsPanelCoordinator& operator=(const RewardsPanelCoordinator&) = delete;
 
   ~RewardsPanelCoordinator();
+
+  // Returns the instance owned by `browser`, or nullptr. Null when the Rewards
+  // service is unavailable for the browser's profile.
+  static RewardsPanelCoordinator* From(BrowserWindowInterface* browser);
 
   static bool IsRewardsPanelURLForTesting(const GURL& url);
 
@@ -50,6 +57,7 @@ class RewardsPanelCoordinator {
  private:
   raw_ptr<BrowserWindowInterface> browser_window_interface_ = nullptr;
   base::ObserverList<Observer> observers_;
+  ui::ScopedUnownedUserData<RewardsPanelCoordinator> scoped_unowned_user_data_;
 };
 
 }  // namespace brave_rewards

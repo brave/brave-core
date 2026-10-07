@@ -3,11 +3,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 #
-# rewriters.pyl — ast-grep op specs for plaster. Data only: a Python literal
+# rewriters.pyl — rewriter op specs for plaster. Data only: a Python literal
 # (ast.literal_eval), so no imports, calls, or names.
 #
-# Two op categories, each keyed by an op id "<lang>.<name>" ("cxx" -> cpp,
-# resolved in code):
+# Four op categories, each keyed by an op id "<namespace>.<name>".
+#
+# The namespace says which sources an op may be used on. It is matched against
+# the namespace claiming a plaster's target suffix (`foo.cc.yaml` -> `.cc` ->
+# `cxx`), so two ops may share a name as long as they are in different
+# namespaces. `all` is the global namespace: its ops apply to every target,
+# whatever the suffix, and are what a name falls back to when nothing matches
+# the target's own namespace.
 #
 #   "ast.matcher" — a structural query:
 #       template: ast-grep rule body (the part under `rule:`). Its {placeholder}
@@ -83,6 +89,8 @@
 #                someone other than its author: { name, description }, where
 #                `name` is threaded into `pattern`/`re_pattern`/`replace` via
 #                `str.format` and `description` explains what to pass and why.
+#                Input values are inserted verbatim: they are escaped in
+#                `re_pattern` and their backslashes are escaped in `replace`.
 #       One of either `pattern` (escaped for you) or `re_pattern`, plus
 #       `replace` and optional `re_flags` -- exactly the fields a
 #       substitution's own `regex:` block takes, applied as one `re.subn`. A
@@ -93,6 +101,27 @@
 #       than the macro inspecting what is there. The substitution's own
 #       `count:` is what tells the caller a match -- and so a change --
 #       actually happened.
+#
+#   "gn_edit" — an edit performed by `gn edit` itself. Where the categories
+#       above rewrite text, these hand the build file to gn, which parses it,
+#       edits its syntax tree and formats the result, so an op says what to
+#       change.
+#       description: Markdown documenting the op, rendered by
+#                `plaster --help <name>` like a `Rewriter`'s `HELP`.
+#       inputs:  the op's `{placeholder}`s, each documented as
+#                { name, description }, plus optional `variadic` for the one a
+#                plaster may pass a list to (the values being added), which is
+#                rendered as gn's space-separated, quoted value list.
+#       pattern: the label pattern argument, selecting the targets to edit.
+#                Plaster hands gn the build file as the root `BUILD.gn`, so a
+#                target is addressed as "//:{target}".
+#       command: the command argument, i.e. a `gn help edit` subcommand and its
+#                values.
+#       Both templates are `str.format`ed with the inputs, and between them
+#       they must name every declared input exactly once over -- the same
+#       interface check the regex macros get. gn edits are idempotent, so
+#       plaster treats "the file did not change" as the failure to report
+#       rather than a `count:`, which these ops reject.
 
 {
     "ast.matcher": {
@@ -374,6 +403,381 @@ regex: ^{class_name}$
                 "node": "identifier",
             },
         },
+
+        # A `runtime_enabled_features.json5` feature entry: the object, in
+        # that file's list of features, whose `name` field is `feature_name`.
+        #
+        # Matched through `has`/`all` rather than a `{name: "...", $$$REST}`
+        # as preceeding comments confuse the parser.
+        "js.find_runtime_feature_entry": {
+            "template": """\
+kind: object
+has:
+  kind: pair
+  all:
+    - has:
+        field: key
+        regex: ^name$
+    - has:
+        field: value
+        regex: ^"{feature_name}"$
+""",
+            "result": {
+                "node": "object",
+            },
+        },
+
+        # The two matchers that follow both reach a GN target through its call,
+        # e.g. `source_set("browser") { ... }`, and both spell that the same
+        # roundabout way, for two reasons.
+        #
+        # tree-sitter-gn does not attach the trailing `{ ... }` to the
+        # `call_expression`: the call and the block that follows it end up as
+        # two adjacent nodes instead, hence `follows` rather than a
+        # `has`/`inside` pair.
+        #
+        # The `has` matching the target's name string also goes one level
+        # deeper than it looks like it should: `call_expression`'s arguments are
+        # declared as `$.expression`, which tree-sitter-gn *does* inline, but
+        # the `primary_expression` alternative it resolves to (covering a bare
+        # string, identifier, etc.) is not itself inlined, so a plain string
+        # argument shows up as `primary_expression > string`, not `string`
+        # directly, hence matching a `primary_expression` node by regex instead
+        # of `string`.
+        #
+        # Every target matcher can also be confined to one `template()`, for a
+        # template that declares its target through `target_name` and so has
+        # no literal name to tell it from another template's. `unscoped` is `.`
+        # when no template is named, which satisfies the `any` on its own and
+        # leaves the scope moot; when one is, it is a pattern nothing matches,
+        # so only the branch placing the target inside that template can. The
+        # body is found at any depth, since a template may declare its target
+        # inside an `if`.
+        #
+        # A metavariable (`$VALUE` below) only parses at all because the
+        # generated `sgconfig.yml` sets `expandoChar: _`: a bare `$` is not
+        # valid GN outside a string, so ast-grep swaps the sign for a character
+        # the grammar accepts in an identifier before parsing.
+
+        # The assignment already setting `list_name` (with a plain `=`, not
+        # `+=`/`-=`) as a direct statement of `target`'s block, if any. Used to
+        # tell whether `gn.add_literal_to_list` should append to it or create it
+        # fresh.
+        "gn.find_target_list_assignment": {
+            "template": """\
+kind: assignment_statement
+any:
+  - pattern: {list_name} = $VALUE
+  - pattern: {list_name} += $VALUE
+inside:
+  kind: block
+  inside:
+    kind: primary_expression
+    follows:
+      kind: primary_expression
+      has:
+        kind: call_expression
+        all:
+          - has:
+              field: function
+              regex: {type}
+          - has:
+              kind: primary_expression
+              any:
+                - regex: ^"{target}"$
+                - regex: ^{target}$
+    any:
+      - regex: {unscoped}
+      - inside:
+          kind: block
+          stopBy: end
+          inside:
+            kind: primary_expression
+            follows:
+              kind: primary_expression
+              has:
+                kind: call_expression
+                all:
+                  - has:
+                      field: function
+                      regex: ^template$
+                  - has:
+                      kind: primary_expression
+                      regex: {template}
+""",
+            "result": {
+                "node": "assignment_statement",
+            },
+        },
+
+        # `target`'s own `{ ... }` body, anchored on its opening brace so a
+        # value can be inserted as the block's first statement. One match per
+        # declaration of the target, which is also how the frontend counts
+        # those declarations, and its closing brace is what an inserted
+        # statement takes its indentation from.
+        "gn.find_target_block": {
+            "template": """\
+kind: block
+inside:
+  kind: primary_expression
+  follows:
+    kind: primary_expression
+    has:
+      kind: call_expression
+      all:
+        - has:
+            field: function
+            regex: {type}
+        - has:
+            kind: primary_expression
+            any:
+              - regex: ^"{target}"$
+              - regex: ^{target}$
+  any:
+    - regex: {unscoped}
+    - inside:
+        kind: block
+        stopBy: end
+        inside:
+          kind: primary_expression
+          follows:
+            kind: primary_expression
+            has:
+              kind: call_expression
+              all:
+                - has:
+                    field: function
+                    regex: ^template$
+                - has:
+                    kind: primary_expression
+                    regex: {template}
+""",
+            "result": {
+                "node": "block",
+            },
+        },
+
+        # The body of an `if` that `target` declares directly, selected by
+        # `condition` -- a regex, since a condition carries characters a plain
+        # comparison would have to escape anyway (`!`, `&&`, `||`). The
+        # frontend anchors an exact condition, and passes a wildcard when it
+        # only needs to know whether the target conditions the list at all.
+        #
+        # Anchoring on the `block` whose immediate parent is the `if_statement`
+        # takes the consequence and never an `else` body, whose own block hangs
+        # off an `else_statement` instead.
+        "gn.find_target_conditional_block": {
+            "template": """\
+kind: block
+inside:
+  kind: if_statement
+  has:
+    field: condition
+    regex: {condition}
+  inside:
+    kind: block
+    inside:
+      kind: primary_expression
+      follows:
+        kind: primary_expression
+        has:
+          kind: call_expression
+          all:
+            - has:
+                field: function
+                regex: {type}
+            - has:
+                kind: primary_expression
+                any:
+                  - regex: ^"{target}"$
+                  - regex: ^{target}$
+      any:
+        - regex: {unscoped}
+        - inside:
+            kind: block
+            stopBy: end
+            inside:
+              kind: primary_expression
+              follows:
+                kind: primary_expression
+                has:
+                  kind: call_expression
+                  all:
+                    - has:
+                        field: function
+                        regex: ^template$
+                    - has:
+                        kind: primary_expression
+                        regex: {template}
+""",
+            "result": {
+                "node": "block",
+            },
+        },
+
+        # A file-scope assignment of `variable`, i.e. one the file makes
+        # directly rather than inside a target or a conditional. `.gni` files
+        # are largely these bare list variables, which no target label reaches.
+        "gn.find_toplevel_list_assignment": {
+            "template": """\
+kind: assignment_statement
+pattern: {variable} = $VALUE
+inside:
+  kind: source_file
+""",
+            "result": {
+                "node": "assignment_statement",
+            },
+        },
+
+        # The file's last `import()`, which a variable arriving through one of
+        # them is appended after. Anchoring here rather than on the first
+        # statement below keeps a comment documenting that statement attached
+        # to it, since a comment is trivia the statement's node excludes.
+        "gn.find_last_import": {
+            "template": """\
+kind: import_statement
+inside:
+  kind: source_file
+nthChild:
+  position: 1
+  reverse: true
+  ofRule:
+    kind: import_statement
+""",
+            "result": {
+                "node": "import_statement",
+            },
+        },
+
+        # The file's first statement, which an import is inserted above so it
+        # lands at the top of the fil, but below the copyright header, since a
+        # comment is not a statement.
+        #
+        # The `any` is grammar.js's `statement` rule transcribed: its four
+        # named alternatives, plus the three `expression` resolves to (that
+        # supertype being inlined), which is how a target's call statement
+        # appears. `nthChild` needs `ofRule` to repeat the set, since without
+        # it a leading comment counts as the first child and nothing matches.
+        #
+        # The result node is therefore whichever of those kinds opens the file,
+        # which could be an import_statement in a file that already imports
+        # something, or a primary_expression when a target comes first, with the
+        # latter named below as the representative.
+        "gn.find_first_statement": {
+            "template": """\
+any:
+  - kind: import_statement
+  - kind: if_statement
+  - kind: foreach_statement
+  - kind: assignment_statement
+  - kind: primary_expression
+  - kind: binary_expression
+  - kind: unary_expression
+inside:
+  kind: source_file
+nthChild:
+  position: 1
+  ofRule:
+    any:
+      - kind: import_statement
+      - kind: if_statement
+      - kind: foreach_statement
+      - kind: assignment_statement
+      - kind: primary_expression
+      - kind: binary_expression
+      - kind: unary_expression
+""",
+            "result": {
+                "node": "primary_expression",
+            },
+        },
+
+        # The statement registering `class_name` as a custom element, i.e. the
+        # `customElements.define(<tag>, {class_name})` call WebUI sources end
+        # with. The match is the whole expression_statement, so the trailing
+        # semicolon and a call broken over several lines are both covered.
+        #
+        # The class is matched as an identifier argument of the call rather than
+        # by the tag name, since the tag is spelled `{class_name}.is` about as
+        # often as it is a string literal, and the class is what a plaster
+        # knows. Both `customElements.define(Foo.is, Foo)` and
+        # `customElements.define('x-foo', Foo)` therefore match, while
+        # a registration of some *other* class does not, however its tag is
+        # spelled.
+        "ts.find_custom_element_registration": {
+            "template": """\
+kind: expression_statement
+has:
+  kind: call_expression
+  all:
+    - has:
+        field: function
+        regex: ^customElements\\.define$
+    - has:
+        field: arguments
+        has:
+          kind: identifier
+          regex: ^{class_name}$
+""",
+            "result": {
+                "node": "expression_statement",
+            },
+        },
+
+        # The file's first statement, which an import is inserted above so it
+        # lands after the copyright comment block at the top, or at the first
+        # line in the file if there is no copyright header.
+        #
+        # The `any` is the `statement` supertype transcribed: the declaration
+        # kinds WebUI sources open with, plus `import_statement` and the
+        # `expression_statement` a bare call is. `nthChild` needs `ofRule` to
+        # repeat the set, since without it a leading copyright comment counts
+        # as the first child and nothing matches.
+        #
+        # The result node is therefore whichever of those kinds opens the
+        # file, which could be an import_statement in a file that already
+        # imports something, named below as the representative.
+        "ts.find_first_statement": {
+            "template": """\
+any:
+  - kind: import_statement
+  - kind: export_statement
+  - kind: expression_statement
+  - kind: lexical_declaration
+  - kind: variable_declaration
+  - kind: class_declaration
+  - kind: abstract_class_declaration
+  - kind: function_declaration
+  - kind: interface_declaration
+  - kind: enum_declaration
+  - kind: type_alias_declaration
+  - kind: ambient_declaration
+  - kind: debugger_statement
+inside:
+  kind: program
+nthChild:
+  position: 1
+  ofRule:
+    any:
+      - kind: import_statement
+      - kind: export_statement
+      - kind: expression_statement
+      - kind: lexical_declaration
+      - kind: variable_declaration
+      - kind: class_declaration
+      - kind: abstract_class_declaration
+      - kind: function_declaration
+      - kind: interface_declaration
+      - kind: enum_declaration
+      - kind: type_alias_declaration
+      - kind: ambient_declaration
+      - kind: debugger_statement
+""",
+            "result": {
+                "node": "import_statement",
+            },
+        },
     },
     "ast.rewriter": {
 
@@ -466,6 +870,7 @@ regex: ^{class_name}$
         "cxx.after_function_impl": {
             "matcher": "cxx.find_function_body",
             "inputs": ["function_name", "result_var", "epilogue"],
+            "capture_overrides": ["return_type"],
             "when_set": {
                 "result_var": "{return_type} {result_var} = ",
             },
@@ -611,11 +1016,289 @@ regex: ^{class_name}$
                 "node": "enumerator",
             },
         },
+
+        # Both ops below set a feature entry's `base_feature_status`, which is
+        # what forces the default state of the `base::Feature` the entry
+        # generates. Which one applies depends on whether the entry already
+        # declares the field, so the two are paired and chosen between by
+        # `js.set_blink_runtime_enabled_feature_state`'s frontend rewriter.
+        #
+        # We leave a trailing comment on the field, so the substitution always
+        # produces a diff even when upstream's own value already agrees with
+        # ours, as feature flags are preemtively overridden most of the time.
+
+        # The field is absent, so it is inserted directly after `name`. The
+        # negative lookahead is what establishes absence; with the field
+        # present this op matches nothing, and the count check reports it.
+        "js.add_blink_runtime_enabled_feature_state": {
+            "matcher": "js.find_runtime_feature_entry",
+            "inputs": ["feature_name", "value"],
+            "replace": {
+                "re_pattern":
+                    "([ \\t]*)((?<![A-Za-z0-9_])name:\\s*\"[^\"]*\",)"
+                    "(?![\\s\\S]*?(?<![A-Za-z0-9_])base_feature_status:)",
+                "replace":
+                    "\\1\\2\\n\\1base_feature_status: \"{value}\",  "
+                    "// feature state is enforced via plaster rewrite.",
+            },
+            "result": {
+                "node": "object",
+            },
+        },
+
+        # The field is already declared, so only its value changes, wherever
+        # in the entry it sits. Upstream tends to put it last, next to
+        # `copied_from_base_feature_if`, rather than beside `name`. The
+        # optional trailing group swallows a comment an earlier run left, so
+        # reapplying does not stack up copies of it.
+        "js.set_blink_runtime_enabled_feature_state": {
+            "matcher": "js.find_runtime_feature_entry",
+            "inputs": ["feature_name", "value"],
+            "replace": {
+                "re_pattern":
+                    "((?<![A-Za-z0-9_])base_feature_status:\\s*\")[^\"]*(\",)"
+                    "(?:[ \\t]*// feature state is enforced via plaster "
+                    "rewrite\\.)?",
+                "replace":
+                    "\\1{value}\\2  "
+                    "// feature state is enforced via plaster rewrite.",
+            },
+            "result": {
+                "node": "object",
+            },
+        },
+
+        # `target`'s existing `list_name = [...]` with `+= {literal}` appended
+        # as a new statement right after it, at the same indentation. The
+        # zero-width `$` appends without re-emitting the assignment, which may
+        # be a long list; it lands once because a node never ends on the
+        # newline that `$` would otherwise match ahead of.
+        "gn.append_literal_to_list": {
+            "matcher": "gn.find_target_list_assignment",
+            "inputs": ["target", "type", "template", "unscoped", "list_name", "literal", "indent"],
+            "first_match": True,
+            "replace": {
+                "re_pattern": "$",
+                "replace": "\\n{indent}{list_name} += {literal}",
+            },
+            "result": {
+                "node": "assignment_statement",
+            },
+        },
+
+        # `+= {literal}` appended as the LAST statement of the conditional
+        # body, rather than the first: a block that assigns `list_name` with a
+        # plain `=` would otherwise overwrite an append placed above it.
+        #
+        # `indent` is the column of the brace closing the body, so the two
+        # spaces before `list_name` are the one level of GN body indentation
+        # that `gn format` fixes.
+        "gn.append_literal_to_conditional": {
+            "matcher": "gn.find_target_conditional_block",
+            "inputs": [
+                "target", "type", "template", "unscoped", "condition", "list_name", "literal", "indent"
+            ],
+            "replace": {
+                "re_pattern": "\\n[ \\t]*\\}$",
+                "replace": "\\n{indent}  {list_name} += {literal}"
+                           "\\n{indent}}}",
+            },
+            "result": {
+                "node": "block",
+            },
+        },
+
+        # A fresh `if ({condition}) { list_name += {literal} }` appended after
+        # `target`'s existing `list_name` assignment, for a target that does
+        # not condition the list yet. `condition` is the condition's own text
+        # here, where the matcher above takes a regex for it.
+        "gn.assign_conditional_literal_to_list": {
+            "matcher": "gn.find_target_list_assignment",
+            "inputs": [
+                "target", "type", "template", "unscoped", "condition", "list_name", "literal", "indent"
+            ],
+            "first_match": True,
+            "replace": {
+                "re_pattern": "$",
+                "replace": "\\n{indent}if ({condition}) {{"
+                           "\\n{indent}  {list_name} += {literal}"
+                           "\\n{indent}}}",
+            },
+            "result": {
+                "node": "assignment_statement",
+            },
+        },
+
+        # `list_name = {literal}` inserted as the first statement of `target`'s
+        # body, for when it declares no `list_name` yet.
+        "gn.assign_literal_to_list": {
+            "matcher": "gn.find_target_block",
+            "inputs": ["target", "type", "template", "unscoped", "list_name", "literal", "indent"],
+            "replace": {
+                "re_pattern": "^\\{",
+                "replace": "{{\\n{indent}{list_name} = {literal}",
+            },
+            "result": {
+                "node": "block",
+            },
+        },
+
+        # `variable += {literal}` appended after the file's own assignment of
+        # it. A file-scope assignment opens its own line, so the append needs
+        # no indentation of its own.
+        "gn.append_literal_to_variable": {
+            "matcher": "gn.find_toplevel_list_assignment",
+            "inputs": ["variable", "literal"],
+            "replace": {
+                "re_pattern": "$",
+                "replace": "\\n{variable} += {literal}",
+            },
+            "result": {
+                "node": "assignment_statement",
+            },
+        },
+
+        # The same, subtracting. Kept a separate op rather than an operator
+        # input because the two are not interchangeable: a subtraction only
+        # holds where nothing adds the value back afterwards, which is why the
+        # frontend guards this one and not the append.
+        "gn.subtract_literal_from_variable": {
+            "matcher": "gn.find_toplevel_list_assignment",
+            "inputs": ["variable", "literal"],
+            "replace": {
+                "re_pattern": "$",
+                "replace": "\\n{variable} -= {literal}",
+            },
+            "result": {
+                "node": "assignment_statement",
+            },
+        },
+
+        # `variable += {literal}` appended after the last import, for a
+        # variable the file never assigns because an `import()` supplies it.
+        # Sound only because appending does not depend on where it happens,
+        # which is why no subtracting counterpart exists.
+        "gn.append_literal_after_imports": {
+            "matcher": "gn.find_last_import",
+            "inputs": ["variable", "literal"],
+            "replace": {
+                "re_pattern": "$",
+                "replace": "\\n{variable} += {literal}",
+            },
+            "result": {
+                "node": "import_statement",
+            },
+        },
+
+        # Free-form `code` closing `target`'s body, for a change no list
+        # append expresses. The caller indents `code` to the body level and
+        # `indent` re-emits the brace at its own column, the same division of
+        # labour `cxx.append_to_public_before_close` uses.
+        "gn.append_code_to_body": {
+            "matcher": "gn.find_target_block",
+            "inputs": ["target", "type", "template", "unscoped", "code", "indent"],
+            "replace": {
+                "re_pattern": "\\n[ \\t]*\\}$",
+                "replace": "\\n{code}\\n{indent}}}",
+            },
+            "result": {
+                "node": "block",
+            },
+        },
+
+        # `+= {literal}` closing `target`'s body, for an attribute defined
+        # somewhere other than this file -- `configs`, say, which
+        # `set_defaults` populates, so a target carries it without assigning
+        # it. Nothing is created, since the attribute exists already.
+        #
+        # `indent` is the column of the brace closing the body, so the two
+        # spaces before `list_name` are the one level of GN body indentation
+        # that `gn format` fixes.
+        "gn.append_literal_to_body": {
+            "matcher": "gn.find_target_block",
+            "inputs": ["target", "type", "template", "unscoped", "list_name", "literal", "indent"],
+            "replace": {
+                "re_pattern": "\\n[ \\t]*\\}$",
+                "replace": "\\n{indent}  {list_name} += {literal}"
+                           "\\n{indent}}}",
+            },
+            "result": {
+                "node": "block",
+            },
+        },
+
+        # An `import("{import}")` statement inserted above the file's first
+        # statement, i.e. at the top of the file but under its copyright
+        # header. The zero-width `^` inserts without re-emitting the statement
+        # itself, which may be a whole `if` block.
+        #
+        # `separator` is the blank line the import needs when the statement
+        # below it is code, and nothing when that statement is another import,
+        # which would otherwise be split off from the one being added.
+        "gn.add_import": {
+            "matcher": "gn.find_first_statement",
+            "inputs": ["import", "separator"],
+            "replace": {
+                "re_pattern": "^",
+                "replace": "import(\"{import}\")\\n{separator}",
+            },
+            "result": {
+                "node": "primary_expression",
+            },
+        },
+
+        # The custom element registration removed outright, so the tag name it
+        # claimed is left free for a Brave subclass in `chromium_src/` to
+        # register instead.
+        #
+        # `consume_after` folds in the newline ending the statement's line, so
+        # the line goes away whole rather than being left behind empty. The
+        # blank line above the statement is deliberately kept: it is context
+        # separating the code that remains, and a patch that removed an empty
+        # line at a hunk boundary would trip `patches/PRESUBMIT.py`. A
+        # registration that is the last line of a file with no trailing newline
+        # has no `\n` to consume and is reported as an unmatched count rather
+        # than rewritten -- Chromium sources always end in one.
+        "ts.drop_custom_element_registration": {
+            "matcher": "ts.find_custom_element_registration",
+            "inputs": ["class_name"],
+            "replace": {
+                "consume_after": "\n",
+                "re_pattern": "(?s)^.+$",
+                "replace": "",
+            },
+            "result": {
+                "node": "expression_statement",
+            },
+        },
+
+        # The full `import` statement inserted above the file's first
+        # statement, i.e. at the top of the file but under its copyright
+        # header. The zero-width `^` inserts without re-emitting the statement
+        # itself, which may be a whole class declaration.
+        #
+        # The caller passes the statement in full (rather than just the module
+        # specifier) so it controls the spelling: imports upstream carries
+        # both with and without a trailing semicolon. `separator` is the blank
+        # line the import needs when the statement below it is code, and
+        # nothing when that statement is another import or an export, which
+        # would otherwise be split off from the block it belongs to.
+        "ts.add_import": {
+            "matcher": "ts.find_first_statement",
+            "inputs": ["import", "separator"],
+            "replace": {
+                "re_pattern": "^",
+                "replace": "{import}\\n{separator}",
+            },
+            "result": {
+                "node": "import_statement",
+            },
+        },
     },
     "regex_macro": {
         "cxx.set_feature_flag_default_state": {
             "description": """\
-Sets a new value to a `BASE_FEATURE` feature flag.
+Sets a compile-time override on a `BASE_FEATURE` feature flag.
 
 `set_feature_flag_default_state` can be safely used even when the value being
 assigned is already set, with the intent of preventing sliding back.
@@ -629,8 +1312,8 @@ substitutions:
 ```
 
 ```diff
-+// kMyFeature feature state is enforced via plaster rewrite.
- BASE_FEATURE(kMyFeature,
+-BASE_FEATURE(kMyFeature,
++BASE_OVERRIDDEN_FEATURE(kMyFeature,
               "MyFeature",
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 +             base::FEATURE_DISABLED_BY_DEFAULT);
@@ -646,8 +1329,277 @@ substitutions:
                     "description": "The new value, e.g. `base::FEATURE_DISABLED_BY_DEFAULT`.",
                 },
             ],
-            "re_pattern": "([ \\t]*)(BASE_FEATURE\\(\\s*{feature_name}\\s*,)([^;]*,)?(\\s*)[^;]*?(\\);)",
-            "replace": "\\1// {feature_name} feature state is enforced via plaster rewrite.\\n\\1\\2\\3\\4{value}\\5",
+            "re_pattern": "([ \\t]*)BASE_FEATURE\\((\\s*{feature_name}\\s*,)([^;]*,)?(\\s*)[^;]*?(\\);)",
+            "replace": "\\1BASE_OVERRIDDEN_FEATURE(\\2\\3\\4{value}\\5",
+        },
+
+        # `line` must be the whole line, ignoring its leading and trailing
+        # whitespace, so a longer line that merely contains it never matches.
+        # The line's own `\n` is consumed and re-emitted before `code`, which
+        # also covers a last line with no trailing newline.
+        "all.add_after_line": {
+            "description": """\
+Insert code after a given line.
+
+`line` is matched against the whole line, ignoring its indentation and any
+trailing whitespace. `code` is inserted as is, so it carries its own
+indentation.
+
+```yaml
+substitutions:
+  - description: Declare the Brave hook at the top of the namespace.
+    add_after_line:
+      line: 'namespace content {'
+      code: |-
+
+        void BraveOnNavigationStarted();
+```
+
+```diff
+ namespace content {
++
++void BraveOnNavigationStarted();
+
+ class NavigationHandle;
+```
+""",
+            "inputs": [
+                {
+                    "name": "line",
+                    "description": "The line to insert after, without its indentation.",
+                },
+                {
+                    "name": "code",
+                    "description": "The line(s) to insert.",
+                },
+            ],
+            "re_pattern": "^([ \\t]*{line}[ \\t]*)(?:\\n|\\Z)",
+            "replace": "\\1\\n{code}\\n",
+            "re_flags": ["MULTILINE"],
+        },
+
+        "all.add_before_line": {
+            "description": """\
+Insert code before a given line.
+
+`line` is matched against the whole line, ignoring its indentation and any
+trailing whitespace. `code` is inserted as is, so it carries its own
+indentation.
+
+```yaml
+substitutions:
+  - description: Let Brave observe the tab first.
+    add_before_line:
+      line: 'tab_strip_model_->AddObserver(this);'
+      code: |-
+        brave::AttachTabObserver(tab_strip_model_);
+```
+
+```diff
++  brave::AttachTabObserver(tab_strip_model_);
+   tab_strip_model_->AddObserver(this);
+```
+""",
+            "inputs": [
+                {
+                    "name": "line",
+                    "description": "The line to insert before, without its indentation.",
+                },
+                {
+                    "name": "code",
+                    "description": "The line(s) to insert.",
+                },
+            ],
+            "re_pattern": "^([ \\t]*{line}[ \\t]*)$",
+            "replace": "{code}\\n\\1",
+            "re_flags": ["MULTILINE"],
+        },
+
+        # The notice is the file's first paragraph (its leading run of
+        # non-blank lines), which must contain `Copyright`. That spans a
+        # shebang or `<?xml ?>` line before it, and a block comment's closing
+        # line after it, whatever the comment syntax.
+        "all.add_after_copyright_notice": {
+            "description": """\
+Insert code after the copyright notice at the top of a file.
+
+The notice is the file's first paragraph, which must contain `Copyright`.
+`code` is separated from it by a blank line.
+
+```yaml
+substitutions:
+  - description: Only build these targets in the default toolchain.
+    add_after_copyright_notice:
+      code: |-
+        assert(current_toolchain == default_toolchain)
+```
+
+```diff
+ # Copyright 2014 The Chromium Authors
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+
++assert(current_toolchain == default_toolchain)
++
+ import("//base/allocator/allocator.gni")
+```
+""",
+            "inputs": [
+                {
+                    "name": "code",
+                    "description": "The line(s) to insert.",
+                },
+            ],
+            "re_pattern": "\\A((?=(?:[ \\t]*\\S.*\\n)*?.*Copyright)(?:[ \\t]*\\S.*\\n)+)",
+            "replace": "\\1\\n{code}\\n",
+        },
+
+        # Matches the file's final `\n`, or the end of a file lacking one, so
+        # `code` always starts on a line of its own and is inserted just
+        # once.
+        "all.add_at_end_of_the_file": {
+            "description": """\
+Append code at the end of a file.
+
+```yaml
+substitutions:
+  - description: Load the Brave chromium_src override.
+    add_at_end_of_the_file:
+      code: |-
+        from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+```
+
+```diff
+       raise Exception('Unknown build')
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+```
+""",
+            "inputs": [
+                {
+                    "name": "code",
+                    "description": "The line(s) to append.",
+                },
+            ],
+            "re_pattern": "(?:\\n|(?<!\\n))\\Z",
+            "replace": "\\n{code}\\n",
+        },
+    },
+    "gn_edit": {
+        "gn.set_attribute": {
+            "description": """\
+Sets a target's attribute, creating it if none exists.
+
+The value is written as given, so a `gn` boolean or number goes in bare and a
+string keeps the quotes a `gn` string needs.
+
+```yaml
+substitutions:
+  - description: Let Brave depend on the crate outside tests.
+    set_attribute:
+      target: lib
+      attribute: allow_unsafe
+      value: "true"
+```
+
+```diff
+ rust_static_library("lib") {
+-  allow_unsafe = false
++  allow_unsafe = true
+```
+""",
+            "inputs": [
+                {
+                    "name": "target",
+                    "description": "The target to edit, e.g. `lib` for `rust_static_library(\"lib\")`.",
+                },
+                {
+                    "name": "attribute",
+                    "description": "The attribute to set, e.g. `allow_unsafe` or `testonly`.",
+                },
+                {
+                    "name": "value",
+                    "description": "The value to set it to, e.g. `true`.",
+                },
+            ],
+            "pattern": "//:{target}",
+            "command": "set {attribute} {value}",
+        },
+
+        "gn.remove_attribute": {
+            "description": """\
+Removes an attribute from a target entirely.
+
+```yaml
+substitutions:
+  - description: Let Brave depend on the crate outside tests.
+    remove_attribute:
+      target: lib
+      attribute: testonly
+```
+
+```diff
+ rust_static_library("lib") {
+-  testonly = true
+   crate_name = "hashbrown"
+```
+""",
+            "inputs": [
+                {
+                    "name": "target",
+                    "description": "The target to edit, e.g. `lib` for `rust_static_library(\"lib\")`.",
+                },
+                {
+                    "name": "attribute",
+                    "description": "The attribute to remove, e.g. `testonly`.",
+                },
+            ],
+            "pattern": "//:{target}",
+            "command": "remove {attribute}",
+        },
+
+        "gn.insert_into_list": {
+            "description": """\
+Inserts value(s) into a list attribute on a GN target.
+
+The values are added to the target's `list_name` attribute (e.g. `deps`,
+`sources`, `configs`, `public_deps`, `visibility`), which is created if the
+target has none.
+
+```yaml
+substitutions:
+  - description: Depend on the Brave omnibox additions.
+    insert_into_list:
+      target: browser
+      list_name: deps
+      values:
+        - //brave/components/omnibox/browser
+        - //brave/components/omnibox/common
+```
+
+```diff
+   deps = [
++    "//brave/components/omnibox/browser",
++    "//brave/components/omnibox/common",
+     "//build:branding_buildflags",
+```
+""",
+            "inputs": [
+                {
+                    "name": "target",
+                    "description": "The target to edit, e.g. `browser` for `static_library(\"browser\")`.",
+                },
+                {
+                    "name": "list_name",
+                    "description": "The target's list attribute to insert into, e.g. `deps`, `sources`, `configs`, `public_deps`, or `visibility`.",
+                },
+                {
+                    "name": "values",
+                    "description": "The value(s) to insert, e.g. `//brave/components/omnibox/browser`.",
+                    "variadic": True,
+                },
+            ],
+            "pattern": "//:{target}",
+            "command": "add {list_name} {values}",
         },
     },
 }

@@ -129,7 +129,13 @@ function Conversation(props: ConversationProps) {
         )
         break
       case Mojom.APIError.RateLimitReached:
-        currentErrorElement = <ErrorRateLimit />
+      case Mojom.APIError.ModelRateLimitReached:
+        currentErrorElement = (
+          <ErrorRateLimit
+            apiError={state.currentError}
+            errorDetails={state.currentErrorDetails}
+          />
+        )
         break
       case Mojom.APIError.ContextLimitReached:
         currentErrorElement = <ErrorConversationEnd />

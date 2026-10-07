@@ -22,7 +22,9 @@ class BrowserContext;
 
 namespace ai_chat {
 
+class AttachWorkspaceTool;
 class CodeExecutionTool;
+class ConversationHandler;
 class HistorySearchTool;
 class TabManagementTool;
 
@@ -32,7 +34,8 @@ class TabManagementTool;
 // that the tools for a conversation perform actions on.
 class BrowserToolProvider : public ToolProvider {
  public:
-  explicit BrowserToolProvider(Profile* profile);
+  // |conversation| owns this provider, so outlives it.
+  BrowserToolProvider(Profile* profile, ConversationHandler* conversation);
 
   ~BrowserToolProvider() override;
 
@@ -45,9 +48,11 @@ class BrowserToolProvider : public ToolProvider {
   HistorySearchTool* GetHistorySearchToolForTesting();
 
  private:
-  void CreateTools(content::BrowserContext* browser_context);
+  void CreateTools(content::BrowserContext* browser_context,
+                   ConversationHandler* conversation);
 
   // Browser-specific tools owned by this provider
+  std::unique_ptr<AttachWorkspaceTool> attach_workspace_tool_;
   std::unique_ptr<CodeExecutionTool> code_execution_tool_;
   std::unique_ptr<HistorySearchTool> history_search_tool_;
 #if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)

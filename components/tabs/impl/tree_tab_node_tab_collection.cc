@@ -8,12 +8,12 @@
 #include <algorithm>
 #include <limits>
 #include <memory>
+#include <ranges>
 #include <utility>
 #include <variant>
 
 #include "absl/functional/overload.h"
 #include "base/check_op.h"
-#include "base/containers/adapters.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
@@ -116,7 +116,7 @@ void TreeTabNodeTabCollection::FlattenTreeTabs(TabCollection& root) {
   CollectTreeNodesRecursively(root, all_tree_nodes);
 
   // Process tree nodes in reverse order so we handle children before parents.
-  for (auto* tree_node : base::Reversed(all_tree_nodes)) {
+  for (auto* tree_node : std::views::reverse(all_tree_nodes)) {
     // Move all direct children (tabs and collections e.g. SplitTabCollection)
     // from this tree node back to the tree node's parent, preserving order.
     std::vector<std::variant<tabs::TabInterface*, TabCollection*>> children =
@@ -134,8 +134,8 @@ void TreeTabNodeTabCollection::FlattenTreeTabs(TabCollection& root) {
 
     // Remove all children in order, then insert back at the parent in the same
     // order (at index, index+1, ...) so tab/collection order is preserved.
-    using RemovedChild = std::variant<std::unique_ptr<TabInterface>,
-                                      std::unique_ptr<TabCollection>>;
+    using RemovedChild =
+        std::variant<ScopedTab, std::unique_ptr<TabCollection>>;
     std::vector<RemovedChild> removed;
     removed.reserve(children.size());
     for (const auto& child : children) {
@@ -152,7 +152,7 @@ void TreeTabNodeTabCollection::FlattenTreeTabs(TabCollection& root) {
 
     for (auto& item : removed) {
       std::visit(
-          absl::Overload{[&](std::unique_ptr<TabInterface>& tab) {
+          absl::Overload{[&](ScopedTab& tab) {
                            parent_collection->AddTab(std::move(tab), index++);
                          },
                          [&](std::unique_ptr<TabCollection>& collection) {
@@ -196,7 +196,7 @@ TreeTabNodeTabCollection::GetNearestTreeTabNodeCollection(
 
 TreeTabNodeTabCollection::TreeTabNodeTabCollection(
     const tree_tab::TreeTabNodeId& tree_tab_node_id,
-    std::unique_ptr<tabs::TabInterface> current_tab,
+    ScopedTab current_tab,
     base::RepeatingCallback<void(TreeTabNode&)> on_create,
     base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
     base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move)
@@ -310,7 +310,7 @@ void TreeTabNodeTabCollection::CollectTreeNodesRecursively(
     tabs::TabCollection& parent,
     std::vector<TreeTabNodeTabCollection*>& nodes) {
   for (auto& child : GetChildrenStatic(parent)) {
-    if (std::holds_alternative<std::unique_ptr<tabs::TabInterface>>(child)) {
+    if (std::holds_alternative<ScopedTab>(child)) {
       continue;  // Skip tabs, we only want collections.
     }
 
@@ -337,9 +337,8 @@ TreeTabNodeTabCollection::GetTreeNodeChildren() {
       unique_children, std::back_inserter(children),
       [](const auto& child)
           -> std::variant<tabs::TabInterface*, TabCollection*> {
-        if (std::holds_alternative<std::unique_ptr<tabs::TabInterface>>(
-                child)) {
-          return std::get<std::unique_ptr<tabs::TabInterface>>(child).get();
+        if (std::holds_alternative<ScopedTab>(child)) {
+          return std::get<ScopedTab>(child).get();
         }
         return std::get<std::unique_ptr<tabs::TabCollection>>(child).get();
       });

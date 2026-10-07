@@ -58,7 +58,7 @@ export const TokenDetailsModal = (props: Props) => {
   return (
     <>
       <PopupModal
-        title={getLocale('braveWalletPortfolioTokenDetailsMenuLabel')}
+        title={getLocale(S.BRAVE_WALLET_PORTFOLIO_TOKEN_DETAILS_MENU_LABEL)}
         onClose={onClose}
         width={modalWidth}
       >
@@ -72,7 +72,7 @@ export const TokenDetailsModal = (props: Props) => {
           </FiatBalance>
           <DetailColumn>
             <TokenDetailLabel>
-              {getLocale('braveWalletTokenContractAddress')}
+              {getLocale(S.BRAVE_WALLET_TOKEN_CONTRACT_ADDRESS)}
             </TokenDetailLabel>
             <CopyTooltip text={selectedAsset.contractAddress}>
               <ContractAddress>{selectedAsset.contractAddress}</ContractAddress>
@@ -80,20 +80,20 @@ export const TokenDetailsModal = (props: Props) => {
           </DetailColumn>
           <DetailColumn>
             <TokenDetailLabel>
-              {getLocale('braveWalletTokenDecimal')}
+              {getLocale(S.BRAVE_WALLET_TOKEN_DECIMAL)}
             </TokenDetailLabel>
             <TokenDetailValue>{selectedAsset.decimals}</TokenDetailValue>
           </DetailColumn>
           <DetailColumn>
             <TokenDetailLabel>
-              {getLocale('braveWalletTransactionDetailNetwork')}
+              {getLocale(S.BRAVE_WALLET_TRANSACTION_DETAIL_NETWORK)}
             </TokenDetailLabel>
             <TokenDetailValue>
               {selectedAssetNetwork.chainName}
             </TokenDetailValue>
           </DetailColumn>
           <HideTokenButton onClick={onShowHideTokenModal}>
-            {getLocale('braveWalletHideTokenModalTitle')}
+            {getLocale(S.BRAVE_WALLET_HIDE_TOKEN_MODAL_TITLE)}
           </HideTokenButton>
         </StyledWrapper>
       </PopupModal>

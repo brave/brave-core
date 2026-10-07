@@ -15,7 +15,7 @@ LinearPipelineBufferBuilder::LinearPipelineBufferBuilder() = default;
 LinearPipelineBufferBuilder::~LinearPipelineBufferBuilder() = default;
 
 LinearPipelineBufferBuilder& LinearPipelineBufferBuilder::CreateClassifier(
-    const std::map<std::string, VectorData>& raw_weights,
+    const absl::flat_hash_map<std::string, VectorData>& raw_weights,
     const std::map<std::string, float>& raw_biases) {
   std::vector<flatbuffers::Offset<
       linear_text_classification::flat::SegmentWeightVector>>

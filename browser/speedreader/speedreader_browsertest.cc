@@ -15,6 +15,7 @@
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_timeouts.h"
 #include "base/time/time.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_features.h"
@@ -38,17 +39,18 @@
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
-#include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
+#include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
+#include "chrome/browser/ui/views/page_action/test_support/page_action_test_support.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -176,10 +178,12 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
-  PageActionIconView* GetReaderButton() {
-    return BrowserView::GetBrowserViewForBrowser(browser())
-        ->toolbar_button_provider()
-        ->GetPageActionIconView(brave::kSpeedreaderPageActionIconType);
+  IconLabelBubbleView* GetReaderButton() {
+    auto* provider = BrowserView::GetBrowserViewForBrowser(browser())
+                         ->toolbar_button_provider();
+    return page_actions::GetIconLabelBubbleViewForTesting(
+        provider->GetPageActionViewInterface(kActionShowSpeedreader),
+        kActionShowSpeedreader);
   }
 
   bool WaitDistilled(speedreader::SpeedreaderTabHelper* th = nullptr) {
@@ -224,7 +228,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   bool ClickReaderButton() {
     const auto was_distilled =
         speedreader::IsDistilled(tab_helper()->PageDistillState());
-    browser()->command_controller()->ExecuteCommand(
+    chrome::BrowserCommandController::From(browser())->ExecuteCommand(
         IDC_SPEEDREADER_ICON_ONCLICK);
     if (!was_distilled) {
       if (!WaitDistilled()) {
@@ -278,7 +282,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
     speedreader_service()->SetAllowedForAllReadableSites(false);
   }
 
-  void GoBack(Browser* browser) {
+  void GoBack(BrowserWindowInterface* browser) {
     content::TestNavigationObserver observer(ActiveWebContents());
     chrome::GoBack(browser, WindowOpenDisposition::CURRENT_TAB);
     observer.Wait();
@@ -788,27 +792,39 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
   };
 
   auto WaitAttr = [&](content::WebContents* contents, const std::string& attr,
-                      const std::string& value) {
+                      const std::string& value) -> testing::AssertionResult {
+    const base::TimeTicks deadline =
+        base::TimeTicks::Now() + TestTimeouts::action_max_timeout();
     for (;;) {
       NonBlockingDelay(base::Milliseconds(10));
       auto eval = content::EvalJs(contents, GetDataAttribute(attr),
                                   content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                                   ISOLATED_WORLD_ID_BRAVE_INTERNAL);
-      if (!eval.is_string() && value.empty()) {
-        return true;
+      // The attribute is removed, not emptied, when the value is the default,
+      // so a null result means the empty value. is_string() is also false for
+      // error results, hence the explicit is_ok() check.
+      if (eval.is_ok() && !eval.is_string() && value.empty()) {
+        return testing::AssertionSuccess();
       }
       if (eval.is_string() && eval.ExtractString() == value) {
-        return true;
+        return testing::AssertionSuccess();
+      }
+      if (base::TimeTicks::Now() >= deadline) {
+        return testing::AssertionFailure()
+               << "Timed out waiting for " << attr << "=\"" << value
+               << "\", last value: " << eval;
       }
     }
   };
 
   auto WaitElement = [&](content::WebContents* contents,
-                         const std::string& elem) {
+                         const std::string& elem) -> testing::AssertionResult {
     static constexpr char kWaitElement[] =
         R"js(
           (!!document.getElementById('$1'))
         )js";
+    const base::TimeTicks deadline =
+        base::TimeTicks::Now() + TestTimeouts::action_max_timeout();
     for (;;) {
       NonBlockingDelay(base::Milliseconds(10));
       if (content::EvalJs(
@@ -817,84 +833,106 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
               ISOLATED_WORLD_ID_BRAVE_INTERNAL)
               .ExtractBool()) {
-        break;
+        return testing::AssertionSuccess();
+      }
+      if (base::TimeTicks::Now() >= deadline) {
+        return testing::AssertionFailure()
+               << "Timed out waiting for element #" << elem;
       }
     }
   };
 
-  auto Click = [&](content::WebContents* contents, const std::string& id) {
+  auto Click = [&](content::WebContents* contents,
+                   const std::string& id) -> testing::AssertionResult {
     static constexpr char kClick[] =
         R"js(
           document.getElementById('$1').click()
         )js";
-    ASSERT_TRUE(content::ExecJs(
-        contents, base::ReplaceStringPlaceholders(kClick, {id}, nullptr)));
+    // The toolbar is a WebUI whose controls are rendered asynchronously as
+    // React reacts to state changes, so the element to click may not exist
+    // yet.
+    testing::AssertionResult element_exists = WaitElement(contents, id);
+    if (!element_exists) {
+      return element_exists;
+    }
+    return content::ExecJs(
+        contents, base::ReplaceStringPlaceholders(kClick, {id}, nullptr));
   };
 
   EnableSpeedreaderAllowedForAllSites();
   NavigateToPageSynchronously(kTestPageReadable);
+  // Appearance changes are only applied to a distilled page:
+  // SpeedreaderTabHelper::OnAppearanceSettingsChanged() drops them otherwise,
+  // and they are never replayed. NavigateToPageSynchronously() only waits for
+  // load stop, not for distillation.
+  ASSERT_TRUE(WaitDistilled());
 
   auto* page = ActiveWebContents();
   auto* toolbar_view = BraveBrowserView::GetBrowserViewForBrowser(browser())
                            ->reader_mode_toolbar();
+  // The toolbar contents are created by ReaderModeToolbarView::SetVisible(),
+  // so wait for the toolbar itself rather than assuming distillation already
+  // made it visible.
+  ASSERT_TRUE(WaitToolbarVisibility(toolbar_view, true));
   auto* toolbar = toolbar_view->GetWebContentsForTesting();
-  WaitElement(toolbar, "appearance");
+  ASSERT_TRUE(toolbar);
+  ASSERT_TRUE(WaitElement(toolbar, "appearance"));
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  Click(toolbar, "ai");
-  auto* side_panel = browser()->GetFeatures().side_panel_ui();
-  while (side_panel->GetCurrentEntryId() != SidePanelEntryId::kChatUI) {
-    NonBlockingDelay(base::Milliseconds(10));
-  }
-  EXPECT_EQ(SidePanelEntryId::kChatUI, side_panel->GetCurrentEntryId());
-  Click(toolbar, "ai");
-  while (side_panel->GetCurrentEntryId().has_value()) {
-    NonBlockingDelay(base::Milliseconds(10));
-  }
-  EXPECT_FALSE(side_panel->GetCurrentEntryId().has_value());
+  ASSERT_TRUE(Click(toolbar, "ai"));
+  auto* side_panel = SidePanelUI::From(browser());
+  ASSERT_TRUE(base::test::RunUntil([side_panel]() {
+    return side_panel->GetCurrentEntryId() == SidePanelEntryId::kChatUI;
+  })) << "Timed out waiting for the AI chat side panel to open, a side panel "
+         "entry is "
+      << (side_panel->GetCurrentEntryId().has_value() ? "shown" : "not shown");
+  ASSERT_TRUE(Click(toolbar, "ai"));
+  ASSERT_TRUE(base::test::RunUntil([side_panel]() {
+    return !side_panel->GetCurrentEntryId().has_value();
+  })) << "Timed out waiting for the side panel to close";
 #endif
 
-  Click(toolbar, "appearance");
+  ASSERT_TRUE(Click(toolbar, "appearance"));
   {  // change theme
-    Click(toolbar, "theme-light");
-    WaitAttr(page, "data-theme", "light");
-    Click(toolbar, "theme-sepia");
-    WaitAttr(page, "data-theme", "sepia");
-    Click(toolbar, "theme-dark");
-    WaitAttr(page, "data-theme", "dark");
-    Click(toolbar, "theme-system");
-    WaitAttr(page, "data-theme", "");
+    ASSERT_TRUE(Click(toolbar, "theme-light"));
+    ASSERT_TRUE(WaitAttr(page, "data-theme", "light"));
+    ASSERT_TRUE(Click(toolbar, "theme-sepia"));
+    ASSERT_TRUE(WaitAttr(page, "data-theme", "sepia"));
+    ASSERT_TRUE(Click(toolbar, "theme-dark"));
+    ASSERT_TRUE(WaitAttr(page, "data-theme", "dark"));
+    ASSERT_TRUE(Click(toolbar, "theme-system"));
+    ASSERT_TRUE(WaitAttr(page, "data-theme", ""));
   }
   {  // change font
-    Click(toolbar, "font-sans");
-    WaitAttr(page, "data-font-family", "sans");
-    Click(toolbar, "font-serif");
-    WaitAttr(page, "data-font-family", "serif");
-    Click(toolbar, "font-mono");
-    WaitAttr(page, "data-font-family", "mono");
-    Click(toolbar, "font-dyslexic");
-    WaitAttr(page, "data-font-family", "dyslexic");
+    ASSERT_TRUE(Click(toolbar, "font-sans"));
+    ASSERT_TRUE(WaitAttr(page, "data-font-family", "sans"));
+    ASSERT_TRUE(Click(toolbar, "font-serif"));
+    ASSERT_TRUE(WaitAttr(page, "data-font-family", "serif"));
+    ASSERT_TRUE(Click(toolbar, "font-mono"));
+    ASSERT_TRUE(WaitAttr(page, "data-font-family", "mono"));
+    ASSERT_TRUE(Click(toolbar, "font-dyslexic"));
+    ASSERT_TRUE(WaitAttr(page, "data-font-family", "dyslexic"));
   }
   {  // change font size
-    WaitAttr(page, "data-font-size", "100");
-    Click(toolbar, "font-size-decrease");
-    WaitAttr(page, "data-font-size", "90");
-    Click(toolbar, "font-size-increase");
-    WaitAttr(page, "data-font-size", "100");
-    Click(toolbar, "font-size-increase");
-    WaitAttr(page, "data-font-size", "110");
+    ASSERT_TRUE(WaitAttr(page, "data-font-size", "100"));
+    ASSERT_TRUE(Click(toolbar, "font-size-decrease"));
+    ASSERT_TRUE(WaitAttr(page, "data-font-size", "90"));
+    ASSERT_TRUE(Click(toolbar, "font-size-increase"));
+    ASSERT_TRUE(WaitAttr(page, "data-font-size", "100"));
+    ASSERT_TRUE(Click(toolbar, "font-size-increase"));
+    ASSERT_TRUE(WaitAttr(page, "data-font-size", "110"));
   }
-  Click(toolbar, "appearance");
+  ASSERT_TRUE(Click(toolbar, "appearance"));
 
-  Click(toolbar, "tune");
+  ASSERT_TRUE(Click(toolbar, "tune"));
   {
     ASSERT_TRUE(base::test::RunUntil([this]() {
       return tab_helper()->speedreader_bubble_view() != nullptr;
     }));
   }
-  Click(toolbar, "tune");
+  ASSERT_TRUE(Click(toolbar, "tune"));
 
-  Click(toolbar, "close");
+  ASSERT_TRUE(Click(toolbar, "close"));
   {
     ASSERT_TRUE(WaitOriginal());
     EXPECT_FALSE(toolbar_view->GetVisible());
@@ -1163,7 +1201,7 @@ class SpeedReaderContentSpoofBrowserTest : public SpeedReaderBrowserTest {
   // Turns the reader mode on. Speedreader distills the current document and
   // reloads the page to show the distilled content.
   void TurnOnReaderMode() {
-    browser()->command_controller()->ExecuteCommand(
+    chrome::BrowserCommandController::From(browser())->ExecuteCommand(
         IDC_SPEEDREADER_ICON_ONCLICK);
   }
 
@@ -1243,6 +1281,38 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderContentSpoofBrowserTest,
   // Now the user navigates wherever they want. The content must be dropped
   // when this navigation starts, long before its response arrives.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), victim_url()));
+
+  ExpectVictimPageIsIntact();
+}
+
+// The page starts the reader mode and navigates the tab to another origin while
+// the distillation is still in flight. The distilled content belongs to the
+// document it was distilled from, so the page navigated to must never receive
+// it, not even when its url is the url the speedreader's reload was sent to.
+IN_PROC_BROWSER_TEST_F(SpeedReaderContentSpoofBrowserTest,
+                       DistilledContentIsNotSentToAnotherDocument) {
+  ASSERT_NO_FATAL_FAILURE(NavigateToReadablePage(""));
+
+  // The reload is never answered, so the content distilled from the readable
+  // page is still waiting to be sent.
+
+  tab_helper()->DelayNextPageDistillationForTesting();
+  TurnOnReaderMode();
+  ASSERT_TRUE(base::test::RunUntil([this]() {
+    return tab_helper()->CanResumePageDistillationForTesting();
+  }));
+
+  // Hold the completed distillation before its result can be stored and trigger
+  // Speedreader's reload.
+  content::TestNavigationObserver navigation_observer(victim_url());
+  navigation_observer.WatchExistingWebContents();
+  content::ExecuteScriptAsync(
+      ActiveWebContents(),
+      content::JsReplace("location.href = $1", victim_url()));
+  navigation_observer.Wait();
+
+  tab_helper()->ResumePageDistillationForTesting();
+  ASSERT_TRUE(content::WaitForLoadStop(ActiveWebContents()));
 
   ExpectVictimPageIsIntact();
 }

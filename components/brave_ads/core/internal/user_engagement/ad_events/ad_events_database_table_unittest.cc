@@ -18,12 +18,13 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/test/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -48,7 +49,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, RecordEvent) {
 
   // Assert
   base::test::TestFuture<bool, AdEventList> test_future;
-  database_table_.GetAll(test_future.GetCallback<bool, const AdEventList&>());
+  test::GetAll(test_future.GetCallback<bool, const AdEventList&>());
   const auto [success, ad_events] = test_future.Take();
   EXPECT_TRUE(success);
   EXPECT_THAT(ad_events, ::testing::ElementsAre(ad_event));
@@ -469,7 +470,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeExpired) {
 
   // Assert
   base::test::TestFuture<bool, AdEventList> test_future;
-  database_table_.GetAll(test_future.GetCallback<bool, const AdEventList&>());
+  test::GetAll(test_future.GetCallback<bool, const AdEventList&>());
   const auto [success, ad_events] = test_future.Take();
   EXPECT_TRUE(success);
   EXPECT_THAT(ad_events, ::testing::ElementsAre(ad_event_2));
@@ -510,7 +511,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeExpiredForNonRewardsUser) {
 
   // Assert
   base::test::TestFuture<bool, AdEventList> test_future;
-  database_table_.GetAll(test_future.GetCallback<bool, const AdEventList&>());
+  test::GetAll(test_future.GetCallback<bool, const AdEventList&>());
   const auto [success, ad_events] = test_future.Take();
   EXPECT_TRUE(success);
   EXPECT_THAT(ad_events, ::testing::ElementsAre(ad_event_2));
@@ -549,7 +550,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest,
 
   // Assert
   base::test::TestFuture<bool, AdEventList> test_future;
-  database_table_.GetAll(test_future.GetCallback<bool, const AdEventList&>());
+  test::GetAll(test_future.GetCallback<bool, const AdEventList&>());
   const auto [success, ad_events] = test_future.Take();
   EXPECT_TRUE(success);
   EXPECT_THAT(ad_events, ::testing::ElementsAre(ad_event));
@@ -605,7 +606,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeOrphanedForType) {
 
   // Assert
   base::test::TestFuture<bool, AdEventList> test_future;
-  database_table_.GetAll(test_future.GetCallback<bool, const AdEventList&>());
+  test::GetAll(test_future.GetCallback<bool, const AdEventList&>());
   const auto [success, ad_events] = test_future.Take();
   EXPECT_TRUE(success);
   EXPECT_THAT(ad_events,
@@ -661,7 +662,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeOrphaned) {
 
   // Assert
   base::test::TestFuture<bool, AdEventList> test_future;
-  database_table_.GetAll(test_future.GetCallback<bool, const AdEventList&>());
+  test::GetAll(test_future.GetCallback<bool, const AdEventList&>());
   const auto [success, ad_events] = test_future.Take();
   EXPECT_TRUE(success);
   EXPECT_THAT(ad_events,
@@ -715,7 +716,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeAllOrphaned) {
 
   // Assert
   base::test::TestFuture<bool, AdEventList> test_future;
-  database_table_.GetAll(test_future.GetCallback<bool, const AdEventList&>());
+  test::GetAll(test_future.GetCallback<bool, const AdEventList&>());
   const auto [success, ad_events] = test_future.Take();
   EXPECT_TRUE(success);
   EXPECT_THAT(ad_events, ::testing::UnorderedElementsAre(ad_event_1_served,

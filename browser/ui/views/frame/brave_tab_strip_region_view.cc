@@ -18,7 +18,6 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -372,7 +371,7 @@ bool BraveHorizontalTabStripRegionView::ShouldShowHorizontalScrollButton()
 
 void BraveHorizontalTabStripRegionView::OnWorkspacesButtonPressed() {
   auto* bwi = tab_strip_->GetBrowserWindowInterface();
-  auto* controller = bwi->GetFeatures().workspaces_bubble_controller();
+  auto* controller = WorkspacesBubbleController::From(bwi);
   CHECK(controller);
   controller->ShowBubble(workspaces_button_, bwi->GetProfile());
 }
@@ -432,8 +431,7 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
   UpdateScrollButtonsVisibility();
   UpdateTabStripMargin();
 
-  if (!VerticalTabController::FromBrowser(
-           tab_strip_->GetBrowserWindowInterface())
+  if (!VerticalTabController::From(tab_strip_->GetBrowserWindowInterface())
            ->ShouldShowBraveVerticalTabs()) {
     if (workspaces_button_) {
       workspaces_button_->SetVisible(true);
@@ -505,9 +503,8 @@ void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
 
   BrowserWindowInterface* browser_window_interface =
       tab_strip_->GetBrowserWindowInterface();
-  bool vertical_tabs =
-      VerticalTabController::FromBrowser(browser_window_interface)
-          ->ShouldShowBraveVerticalTabs();
+  bool vertical_tabs = VerticalTabController::From(browser_window_interface)
+                           ->ShouldShowBraveVerticalTabs();
 
   gfx::Insets margins;
 
@@ -544,8 +541,11 @@ void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
     }
   }
 
+  // Keep the invalidation inside the tab strip. This runs from Layout(), and an
+  // invalidation that reaches BrowserView re-dirties the whole widget for the
+  // next frame.
   tab_strip_->SetProperty(views::kMarginsKey, margins);
-  tab_strip_->InvalidateLayout();
+  tab_strip_->InvalidateLayout(/*avoid_propagate_during_layout*/ true);
 
   // This will move the right margin to the trailing scroll button when it is
   // visible. So this should be called after the right margin for tab strip is
@@ -604,8 +604,7 @@ void BraveHorizontalTabStripRegionView::UpdateTrailingScrollButtonMargin(
 void BraveHorizontalTabStripRegionView::OnDragEntered(
     const ui::DropTargetEvent& event) {
 #if BUILDFLAG(IS_LINUX)
-  if (!VerticalTabController::FromBrowser(
-           tab_strip_->GetBrowserWindowInterface())
+  if (!VerticalTabController::From(tab_strip_->GetBrowserWindowInterface())
            ->ShouldShowBraveVerticalTabs()) {
     return HorizontalTabStripRegionView::OnDragEntered(event);
   }
@@ -623,8 +622,7 @@ void BraveHorizontalTabStripRegionView::OnDragEntered(
 int BraveHorizontalTabStripRegionView::OnDragUpdated(
     const ui::DropTargetEvent& event) {
 #if BUILDFLAG(IS_LINUX)
-  if (!VerticalTabController::FromBrowser(
-           tab_strip_->GetBrowserWindowInterface())
+  if (!VerticalTabController::From(tab_strip_->GetBrowserWindowInterface())
            ->ShouldShowBraveVerticalTabs()) {
     return HorizontalTabStripRegionView::OnDragUpdated(event);
   }

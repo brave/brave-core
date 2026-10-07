@@ -16,12 +16,11 @@ import { AccountInfoEntity } from '../common/slices/entities/account-info.entity
 // utils
 import {
   NetworksRegistry,
-  networkEntityAdapter,
+  networkSelectors,
 } from '../common/slices/entities/network.entity'
 import { makeNetworkAsset } from '../options/asset-options'
 import { getAddressLabel, getAccountLabel } from './account-utils'
 import Amount from './amount'
-import { getCoinFromTxDataUnion } from './network-utils'
 import {
   findTransactionToken,
   getTransactionApprovalTargetAddress,
@@ -51,13 +50,7 @@ export const makeSearchableTransaction = (
   networksRegistry: NetworksRegistry | undefined,
   accountInfosRegistry: EntityState<AccountInfoEntity>,
 ): SearchableTransaction => {
-  const txNetwork =
-    networksRegistry?.entities[
-      networkEntityAdapter.selectId({
-        chainId: tx.chainId,
-        coin: getCoinFromTxDataUnion(tx.txDataUnion),
-      })
-    ]
+  const txNetwork = networkSelectors.selectById(networksRegistry, tx.chainId)
 
   const nativeAsset = makeNetworkAsset(txNetwork)
 

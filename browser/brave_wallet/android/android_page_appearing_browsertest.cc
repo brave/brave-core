@@ -164,7 +164,7 @@ class TestWebUIControllerFactory : public content::WebUIControllerFactory {
   content::WebUI::TypeID GetWebUIType(content::BrowserContext* browser_context,
                                       const GURL& url) override {
     if (url.SchemeIs(content::kChromeUIScheme) &&
-        url.host() == kWalletPageHost && url.path() == "/swap") {
+        url.host() == kWalletPageHost && url.path() == "/crypto/swap") {
       return reinterpret_cast<content::WebUI::TypeID>(1);
     }
 
@@ -363,9 +363,9 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
                        DISABLED_TestSwapPageAppearing) {
-  const GURL expected_url = GURL("chrome://wallet/swap");
+  const GURL expected_url = GURL("chrome://wallet/crypto/swap");
   for (auto scheme : GetWebUISchemes()) {
-    GURL url = GURL(base::StrCat({scheme, "wallet/swap"}));
+    GURL url = GURL(base::StrCat({scheme, "wallet/crypto/swap"}));
     const std::vector<std::string> ignore_patterns = {
         "TypeError: Cannot read properties of undefined (reading 'forEach')",
         "Error calling jsonRpcService.getERC20TokenBalances",
@@ -378,9 +378,9 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSendPageAppearing) {
-  const GURL expected_url = GURL("chrome://wallet/send");
+  const GURL expected_url = GURL("chrome://wallet/crypto/send");
   for (auto scheme : GetWebUISchemes()) {
-    GURL url = GURL(base::StrCat({scheme, "wallet/send"}));
+    GURL url = GURL(base::StrCat({scheme, "wallet/crypto/send"}));
     const std::vector<std::string> ignore_patterns = {
         "TypeError: Cannot read properties of undefined (reading 'forEach')",
         "ReactDOM.render is no longer supported in React 18"};
@@ -390,9 +390,9 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSendPageAppearing) {
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
                        TestDepositPageAppearing) {
-  const GURL expected_url = GURL("chrome://wallet/crypto/deposit-funds");
+  const GURL expected_url = GURL("chrome://wallet/crypto/deposit");
   for (auto scheme : GetWebUISchemes()) {
-    GURL url = GURL(base::StrCat({scheme, "wallet/crypto/deposit-funds"}));
+    GURL url = GURL(base::StrCat({scheme, "wallet/crypto/deposit"}));
     const std::vector<std::string> ignore_patterns = {
         "TypeError: Cannot read properties of undefined (reading 'forEach')",
         "ReactDOM.render is no longer supported in React 18"};
@@ -401,9 +401,9 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestMeldPageAppearing) {
-  const GURL expected_url = GURL("chrome://wallet/crypto/fund-wallet");
+  const GURL expected_url = GURL("chrome://wallet/crypto/buy");
   for (auto scheme : GetWebUISchemes()) {
-    GURL url = GURL(base::StrCat({scheme, "wallet/crypto/fund-wallet"}));
+    GURL url = GURL(base::StrCat({scheme, "wallet/crypto/buy"}));
     const std::vector<std::string> ignore_patterns = {
         "An internal error has occurred",
         "TypeError: Cannot read properties of undefined (reading 'forEach')",

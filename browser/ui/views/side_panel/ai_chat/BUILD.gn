@@ -21,11 +21,9 @@ source_set("ai_chat") {
     "ai_chat_side_panel_web_view.h",
   ]
 
-  # Header-visible dependencies: `ai_chat_movable_side_panel_web_view.h` derives
-  # from `views::WebView` (//ui/views) and
-  # `web_modal::WebContentsModalDialogManagerDelegate` (//components/web_modal).
   public_deps = [
     "//components/web_modal",
+    "//ui/base/unowned_user_data",
     "//ui/views",
   ]
 
@@ -40,6 +38,7 @@ source_set("ai_chat") {
     "//chrome/browser/profiles",
     "//chrome/browser/tab_list",
     "//chrome/browser/ui:browser_element_identifiers",
+    "//chrome/browser/ui/browser_web_contents_delegate",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/navigator",
     "//chrome/browser/ui/side_panel",

@@ -17,18 +17,13 @@ bool DoesMatchUserHasJoinedBraveRewardsPrefPath(std::string_view path) {
   return path == brave_rewards::prefs::kEnabled;
 }
 
-bool DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(std::string_view path) {
+bool DoesMatchNewTabPageAdsEnabledPrefPath(std::string_view path) {
   return path == ntp_background_images::prefs::kNewTabPageShowBackgroundImage ||
-         path == ntp_background_images::prefs::
-                     kNewTabPageShowSponsoredImagesBackgroundImage;
+         path == prefs::kSponsoredEnabled;
 }
 
 bool DoesMatchNotificationAdsEnabledPrefPath(std::string_view path) {
   return path == prefs::kNotificationsEnabled;
-}
-
-bool DoesMatchUserHasOptedInToSearchResultAdsPrefPath(std::string_view path) {
-  return path == prefs::kOptedInToSearchResultAds;
 }
 
 }  // namespace brave_ads

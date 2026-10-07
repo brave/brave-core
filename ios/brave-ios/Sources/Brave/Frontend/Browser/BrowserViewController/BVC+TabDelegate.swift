@@ -26,6 +26,7 @@ extension BrowserViewController: TabDelegate {
     tabManager.removeTab(tab)
   }
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     contextMenuConfigurationForLinkURL linkURL: URL?
@@ -36,7 +37,7 @@ extension BrowserViewController: TabDelegate {
       return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil)
     }
 
-    let actionProvider: UIContextMenuActionProvider = { _ -> UIMenu? in
+    let actionProvider: UIContextMenuActionProvider = { [self] _ -> UIMenu? in
       var actions = [UIAction]()
 
       if let currentTab = self.tabManager.selectedTab {
@@ -57,7 +58,7 @@ extension BrowserViewController: TabDelegate {
         let openNewPrivateTabAction = UIAction(
           title: Strings.openNewPrivateTabButtonTitle,
           image: UIImage(braveSystemNamed: "leo.product.private-window")
-        ) { _ in
+        ) { [unowned self] _ in
           if !isPrivate, Preferences.Privacy.privateBrowsingLock.value {
             self.askForLocalAuthentication { [weak self] success, error in
               if success {
@@ -207,6 +208,7 @@ extension BrowserViewController: TabDelegate {
     tab.loadRequest(URLRequest(url: linkURL))
   }
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     requestMediaCapturePermissionsFor type: WebMediaCaptureType
@@ -275,6 +277,7 @@ extension BrowserViewController: TabDelegate {
     }
   }
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     runJavaScriptAlertPanelWithMessage message: String,
@@ -299,6 +302,7 @@ extension BrowserViewController: TabDelegate {
     }
   }
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     runJavaScriptConfirmPanelWithMessage message: String,
@@ -323,6 +327,7 @@ extension BrowserViewController: TabDelegate {
     }
   }
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     runJavaScriptConfirmPanelWithPrompt prompt: String,
@@ -373,13 +378,13 @@ extension BrowserViewController: TabDelegate {
   }
 
   private class LookupMenuReplacement: UIMenu {
-    convenience init(lookupMenu: UIMenu, searchWebAction: UIAction) {
+    convenience init(lookupMenu: UIMenu, searchWebAction: UIAction? = nil) {
       self.init(
         title: lookupMenu.title,
         image: lookupMenu.image,
         identifier: lookupMenu.identifier,
         options: lookupMenu.options,
-        children: lookupMenu.children + [searchWebAction]
+        children: lookupMenu.children + [searchWebAction].compactMap { $0 }
       )
     }
 
@@ -411,18 +416,23 @@ extension BrowserViewController: TabDelegate {
         }
       }
     }
-    let searchWithBrave = UIAction(title: Strings.searchWithBrave) { [weak tab, weak self] _ in
-      tab?.evaluateJavaScript(
-        functionName: "getSelection().toString",
-        contentWorld: .defaultClient
-      ) {
-        result,
-        _ in
-        guard let tab, let selectedText = result as? String else { return }
-        self?.didSelectSearchWithBrave(selectedText, tab: tab)
-      }
-    }
     if let lookupMenu = builder.menu(for: .lookup) {
+      // JavaScript selection does not work when WKWebView renders a PDF directly.
+      // Exclude the entire lookup menu to since we are not adding "Search with Brave".
+      let searchWithBrave: UIAction? =
+        tab.contentsMimeType == MIMEType.pdf
+        ? nil
+        : UIAction(title: Strings.searchWithBrave) { [weak tab, weak self] _ in
+          tab?.evaluateJavaScript(
+            functionName: "getSelection().toString",
+            contentWorld: .defaultClient
+          ) {
+            result,
+            _ in
+            guard let tab, let selectedText = result as? String else { return }
+            self?.didSelectSearchWithBrave(selectedText, tab: tab)
+          }
+        }
       builder.replace(
         menu: .lookup,
         with: LookupMenuReplacement(
@@ -596,24 +606,21 @@ extension BrowserViewController {
 
     // The challenge may come from a background tab, so ensure it's the one visible.
     tabManager.selectTab(tab)
-    tab.isDisplayingBasicAuthPrompt = true
-    defer {
-      tab.isDisplayingBasicAuthPrompt = false
-      updateToolbarCurrentURL(tab.visibleURL)
-    }
 
     let isHidden = tab.view.isHidden
     defer { tab.view.isHidden = isHidden }
 
-    // Manually trigger a `url` change notification
+    // Hide the page and its URL when a different origin is requesting credentials so that neither
+    // can be mistaken for the origin making the request
     if host != tab.visibleURL?.host {
       tab.view.isHidden = true
-
-      if tabManager.selectedTab === tab {
-        updateToolbarCurrentURL(
-          URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.basicAuth.rawValue)")
-        )
-      }
+      tab.isDisplayingCrossOriginBasicAuthPrompt = true
+      toolbarState.isDisplayingCrossOriginBasicAuthPrompt = true
+    }
+    defer {
+      tab.isDisplayingCrossOriginBasicAuthPrompt = false
+      toolbarState.isDisplayingCrossOriginBasicAuthPrompt =
+        tabManager.selectedTab?.browserData?.isDisplayingCrossOriginBasicAuthPrompt == true
     }
 
     do {
@@ -634,6 +641,24 @@ extension BrowserViewController {
     } catch {
       return nil
     }
+  }
+
+  public func tab(
+    _ tab: some TabState,
+    createTabForOpeningURL url: URL,
+    inBackground: Bool
+  ) -> (any TabState)? {
+    let tab = tabManager.addTab(
+      afterTab: tab,
+      isPrivate: privateBrowsingManager.isPrivateBrowsing
+    )
+    if !inBackground {
+      if let selectedTab = tabManager.selectedTab {
+        screenshotHelper.takeScreenshot(selectedTab)
+      }
+      tabManager.selectTab(tab)
+    }
+    return tab
   }
 
   public func tab(

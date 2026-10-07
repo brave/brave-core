@@ -12,7 +12,7 @@ Example:
 
 
 You can produce the JSON output for a presubmit run by using:
-    npm run presubmit -- --base origin/master --json .presubmit_results.json
+    pnpm run presubmit --base origin/master --json .presubmit_results.json
 
 Notice: Keep this script as *standalone*, with no deps to `tools/cr` code, so
 we can have no room for deps if downloaded and run on its own.
@@ -30,9 +30,9 @@ import hashlib
 from typing import Any
 
 
-def _check_call(*command,
-                capture_stdout: bool = False,
-                stdin: bytes | None = None) -> str | None:
+def _check_call(
+    *command, capture_stdout: bool = False, stdin: bytes | None = None
+) -> str | None:
     """Run *command* as a subprocess, logging the invocation.
 
     Logs the full command string at INFO level before executing it.  Stderr
@@ -55,17 +55,20 @@ def _check_call(*command,
             return code.
     """
     logging.info(' >>>> %s', ' '.join(str(a) for a in command))
-    result = subprocess.run(command,
-                            check=True,
-                            input=stdin,
-                            stdout=subprocess.PIPE if capture_stdout else None)
+    result = subprocess.run(
+        command,
+        check=True,
+        input=stdin,
+        stdout=subprocess.PIPE if capture_stdout else None,
+    )
     if capture_stdout:
         return result.stdout.decode('utf-8', errors='replace')
     return None
 
 
-def post_comments(presubmit_entries: dict[str, list[dict[str, Any]]],
-                  pr_number: str) -> None:
+def post_comments(
+    presubmit_entries: dict[str, list[dict[str, Any]]], pr_number: str
+) -> None:
     """
     Posts comments to a GitHub pull request based on presubmit results.
 
@@ -84,7 +87,8 @@ def post_comments(presubmit_entries: dict[str, list[dict[str, Any]]],
         '--paginate',
         '--jq',
         '[.[] | {id: .id, body: .body}]',
-        capture_stdout=True)
+        capture_stdout=True,
+    )
     logging.debug('Existing comments response: %s', comments_response)
     existing_comments: list[dict[str, Any]] = []
     for line in comments_response.splitlines():
@@ -95,7 +99,8 @@ def post_comments(presubmit_entries: dict[str, list[dict[str, Any]]],
     # Filtering out all comments that do not contain a presubmit hash as those
     # are not relevant to our comment management.
     existing_comments = [
-        comment for comment in existing_comments
+        comment
+        for comment in existing_comments
         if '<!-- presubmit-hash=' in comment["body"]
     ]
 
@@ -115,15 +120,18 @@ def post_comments(presubmit_entries: dict[str, list[dict[str, Any]]],
             # itself as a html comment, and then check if it already exists,
             # so we don't post the same comment multiple times.
             report_hash = hashlib.sha256(
-                json.dumps(report,
-                           sort_keys=True).encode('utf-8')).hexdigest()
+                json.dumps(report, sort_keys=True).encode('utf-8')
+            ).hexdigest()
             comment_hash = f'<!-- presubmit-hash={report_hash} -->'
             active_report_hashes.add(report_hash)
 
-            if any(comment_hash in comment["body"]
-                   for comment in existing_comments):
-                logging.info('Comment with hash %s already exists. Skipping.',
-                             report_hash)
+            if any(
+                comment_hash in comment["body"] for comment in existing_comments
+            ):
+                logging.info(
+                    'Comment with hash %s already exists. Skipping.',
+                    report_hash,
+                )
                 continue
 
             def get_severity_message():
@@ -136,12 +144,14 @@ def post_comments(presubmit_entries: dict[str, list[dict[str, Any]]],
                     return (
                         '> [!CAUTION]\n'
                         '> You have got a presubmit error. This will cause a '
-                        'CI failure.')
+                        'CI failure.'
+                    )
                 if category == 'warnings':
                     return (
                         '> [!WARNING]\n'
                         '> You have got a presubmit warning. Please address '
-                        'it if possible.')
+                        'it if possible.'
+                    )
 
                 raise ValueError(f'Unknown category: {category}')
 
@@ -159,36 +169,46 @@ def post_comments(presubmit_entries: dict[str, list[dict[str, Any]]],
 
             body_content += f'\n\n{comment_hash}'
 
-            _check_call('gh',
-                        'api',
-                        f'repos/brave/brave-core/issues/{pr_number}/comments',
-                        '-X',
-                        'POST',
-                        '-F',
-                        'body=@-',
-                        stdin=body_content.encode('utf-8'))
+            _check_call(
+                'gh',
+                'api',
+                f'repos/brave/brave-core/issues/{pr_number}/comments',
+                '-X',
+                'POST',
+                '-F',
+                'body=@-',
+                stdin=body_content.encode('utf-8'),
+            )
 
     # Now we delete the old comments that the hashes didn't come up.
     for comment in existing_comments:
         if '<!-- presubmit-hash=' not in comment["body"]:
             continue
 
-        comment_hash = comment["body"].split('<!-- presubmit-hash=')[1].split(
-            ' -->')[0]
+        comment_hash = (
+            comment["body"].split('<!-- presubmit-hash=')[1].split(' -->')[0]
+        )
         if comment_hash not in active_report_hashes:
-            logging.info('Deleting comment with id %s, hash %s', comment["id"],
-                         comment_hash)
+            logging.info(
+                'Deleting comment with id %s, hash %s',
+                comment["id"],
+                comment_hash,
+            )
             _check_call(
-                'gh', 'api',
+                'gh',
+                'api',
                 f'repos/brave/brave-core/issues/comments/{comment["id"]}',
-                '-X', 'DELETE')
+                '-X',
+                'DELETE',
+            )
 
 
 def validate_pr_number(value: str) -> str:
-    """  Validates that the provided PR number is a numeric value."""
+    """Validates that the provided PR number is a numeric value."""
     if not value.isdigit():
         raise argparse.ArgumentTypeError(
-            'The --pr argument must be a numeric value.')
+            'The --pr argument must be a numeric value.'
+        )
     return value
 
 
@@ -199,20 +219,21 @@ def main() -> int:
         type=str,
         default='.presubmit_results.json',
         help='A JSON file with the output of the presubmit run (default: '
-        '.presubmit_results.json)')
-    parser.add_argument('--pr',
-                        type=validate_pr_number,
-                        required=True,
-                        help='The PR number.')
-    parser.add_argument('--verbose',
-                        action='store_true',
-                        help='Enable verbose logging output.')
+        '.presubmit_results.json)',
+    )
+    parser.add_argument(
+        '--pr', type=validate_pr_number, required=True, help='The PR number.'
+    )
+    parser.add_argument(
+        '--verbose', action='store_true', help='Enable verbose logging output.'
+    )
     args = parser.parse_args()
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
 
     presubmit_path = Path(args.input)
     presubmit_entries: dict[str, Any] = json.loads(
-        presubmit_path.read_bytes().decode('utf-8'))
+        presubmit_path.read_bytes().decode('utf-8')
+    )
     if not presubmit_entries:
         logging.info('No presubmit entries found.')
         return 0

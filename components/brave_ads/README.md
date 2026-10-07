@@ -44,10 +44,10 @@ View diagnostics at [rewards internals](brave://rewards-internals) on the `Ad di
 
 ## Browser Tests
 
-    npm run test -- brave_browser_tests --filter=BraveAds*
+    pnpm test brave_browser_tests --filter=BraveAds*
 
 ## Unit Tests
 
-    npm run test -- brave_unit_tests --filter=BraveAds*
+    pnpm test brave_unit_tests --filter=BraveAds*
 
 Please add to it!

@@ -4,7 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import usePromise from '$web-common/usePromise';
-import { AutocompleteResult, OmniboxPopupSelection, PageHandlerFactory, PageHandlerRemote, PageInterface, PageReceiver, SelectedFileInfo, SelectionDirection, SelectionStep, SuggestInventory, TabInfo } from 'chrome://resources/mojo/components/omnibox/browser/searchbox.mojom-webui.js';
+import { AutocompleteResult, FreState, InputKeywordModel, InputMethod, OmniboxPopupSelection, PageHandlerFactory, PageHandlerRemote, PageInterface, PageReceiver, SelectedFileInfo, SelectionDirection, SelectionStep, TabInfo } from 'chrome://resources/mojo/components/omnibox/browser/searchbox.mojom-webui.js';
+import { SuggestInventory } from 'chrome://resources/mojo/components/omnibox/browser/fusebox_action.mojom-webui.js';
 import * as React from 'react';
 import getNTPBrowserAPI, { SearchEngineInfo } from '../../api/background';
 import { useEngineContext } from './EngineContext';
@@ -88,6 +89,8 @@ class SearchPage implements PageInterface {
   setInputText(inputText: string) { }
   setThumbnail(thumbnailUrl: string) { }
   onContextualInputStatusChanged(token: string, status: ContextUploadStatus, errorType: ContextUploadErrorType | null) { }
+  setKeywordSpaceTriggeringEnabled(enabled: boolean): void { }
+  setAvailableKeywordModels(models: InputKeywordModel[]): void { }
   onTabStripChanged() { }
   addFileContext(token: string, fileInfo: SelectedFileInfo) { }
   setKeywordSelected(isKeywordSelected: boolean): void {}
@@ -104,6 +107,10 @@ class SearchPage implements PageInterface {
   setAimThreadRestoredTabs(tabs: TabInfo[]): void { }
   updateSmartTabSharingActive(active: boolean): void { }
   setAimButtonConfig(text: string, tooltip: string, a11yLabel: string, iconUrl: Url): void { }
+  resetPopupToInitialState(): void { }
+  onScreenshotMenuClosed(): void { }
+  setFreState(state: FreState): void { }
+  updateProfileInfo(avatarUrl: string, name: string, email: string): void { }
 }
 
 export const search = new SearchPage()
@@ -142,7 +149,7 @@ export function SearchContext(props: React.PropsWithChildren<{}>) {
   React.useEffect(() => {
     if (query) {
       const keywordQuery = `${searchEngine?.keyword} ${query}`
-      omniboxController.queryAutocomplete(activeQueryId++, keywordQuery, false, keywordQuery.length, SuggestInventory.kDefault, false, '');
+      omniboxController.queryAutocomplete(activeQueryId++, null, keywordQuery, false, keywordQuery.length, SuggestInventory.kDefault, false, '', InputMethod.kKeyboard);
     } else {
       omniboxController.stopAutocomplete(true)
     }

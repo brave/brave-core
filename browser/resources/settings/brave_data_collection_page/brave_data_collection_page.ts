@@ -15,8 +15,6 @@ import {getTemplate} from './brave_data_collection_page.html.js'
 
 import {MetricsReporting} from '/shared/settings/privacy_page/privacy_page_browser_proxy.js'
 
-import {Router} from '../router.js'
-
 import {loadTimeData} from "../i18n_setup.js"
 
 const SettingBraveDataCollectionPageElementBase =
@@ -72,7 +70,7 @@ extends SettingBraveDataCollectionPageElementBase
         },
       },
       showRestartForMetricsReporting_: Boolean,
-      showSurveyPanelist_: Boolean,
+      showSponsoredAdsEnabledToggle_: Boolean,
       isStatsReportingEnabledManaged_: Boolean,
       isP3AEnabledManaged_: Boolean,
     }
@@ -82,7 +80,7 @@ extends SettingBraveDataCollectionPageElementBase
   private declare statsUsagePingEnabledPref_: Object
   private declare metricsReportingPref_: chrome.settingsPrivate.PrefObject<boolean>
   private declare showRestartForMetricsReporting_: boolean
-  private declare showSurveyPanelist_: boolean
+  private declare showSponsoredAdsEnabledToggle_: boolean
   private declare isStatsReportingEnabledManaged_: boolean
   private declare isP3AEnabledManaged_: boolean
 
@@ -117,16 +115,7 @@ extends SettingBraveDataCollectionPageElementBase
     this.browserProxy_.getStatsUsagePingEnabled().then(
       (enabled: boolean) => setStatsUsagePingEnabledPref(enabled, this.isStatsReportingEnabledManaged_))
 
-    this.showSurveyPanelist_ = loadTimeData.getBoolean('isSurveyPanelistAllowed')
-  }
-
-  override getAssociatedControlFor(childViewId: string): HTMLElement {
-    switch (childViewId) {
-      case 'surveyPanelist':
-        return this.shadowRoot!.querySelector('#surveyPanelistLinkRow')!;
-      default:
-        throw new Error(`Unknown child view id: ${childViewId}`)
-    }
+    this.showSponsoredAdsEnabledToggle_ = loadTimeData.getBoolean('isSponsoredAdsAllowed')
   }
 
   setP3AEnabledPref_(userEnabled: boolean, isManaged: boolean) {
@@ -197,11 +186,6 @@ extends SettingBraveDataCollectionPageElementBase
   restartBrowser_(e: Event) {
     e.stopPropagation()
     window.open("chrome://restart", "_self")
-  }
-
-  onSurveyPanelistLinkClicked_() {
-    const router = Router.getInstance()
-    router.navigateTo(router.getRoutes().BRAVE_SURVEY_PANELIST)
   }
 }
 

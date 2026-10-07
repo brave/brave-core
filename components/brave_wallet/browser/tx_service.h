@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -20,6 +21,7 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+#include "url/origin.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 class PrefService;
@@ -49,6 +51,9 @@ class TxService : public mojom::TxService,
                   public mojom::FilTxManagerProxy,
                   public mojom::BtcTxManagerProxy {
  public:
+  using OriginPermissionChecker =
+      base::RepeatingCallback<bool(const url::Origin&,
+                                   const mojom::AccountIdPtr&)>;
   TxService(JsonRpcService* json_rpc_service,
             BitcoinWalletService* bitcoin_wallet_service,
             ZCashWalletService* zcash_wallet_service,
@@ -56,7 +61,8 @@ class TxService : public mojom::TxService,
             PolkadotWalletService* polkadot_wallet_service,
             KeyringService& keyring_service,
             PrefService* prefs,
-            std::unique_ptr<TxStorage> tx_storage);
+            std::unique_ptr<TxStorage> tx_storage,
+            OriginPermissionChecker origin_permission_checker);
   ~TxService() override;
   TxService(const TxService&) = delete;
   TxService operator=(const TxService&) = delete;
@@ -275,6 +281,11 @@ class TxService : public mojom::TxService,
 
   TxStorage* GetTxStorageForTesting();
 
+  bool HasOriginPermission(const url::Origin& origin,
+                           const mojom::AccountIdPtr& account_id);
+
+  void RejectUnapprovedTransactionsWithoutPermission();
+
  private:
   friend class EthereumProviderImplUnitTest;
   friend class EthTxManagerUnitTest;
@@ -301,6 +312,7 @@ class TxService : public mojom::TxService,
   std::unique_ptr<TxStorage> tx_storage_;
   std::unique_ptr<AccountResolverDelegate> account_resolver_delegate_;
   base::flat_map<mojom::CoinType, std::unique_ptr<TxManager>> tx_manager_map_;
+  OriginPermissionChecker origin_permission_checker_;
 
   mojo::RemoteSet<mojom::TxServiceObserver> observers_;
   mojo::ReceiverSet<mojom::TxService> tx_service_receivers_;

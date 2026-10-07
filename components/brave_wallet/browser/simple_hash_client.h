@@ -43,6 +43,15 @@ class SimpleHashClient {
   using APIRequestHelper = api_request_helper::APIRequestHelper;
   using APIRequestResult = api_request_helper::APIRequestResult;
 
+  // Which NFTs a lookup wants. Mirrors the gate3 `spam` query parameter, a
+  // bandwidth optimization: ParseNFTsFromSimpleHash re-filters and remains
+  // the authority.
+  enum class SpamFilter {
+    kAll,
+    kExclude,
+    kOnly,
+  };
+
   SimpleHashClient(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
@@ -75,8 +84,7 @@ class SimpleHashClient {
   void FetchNFTsFromSimpleHash(const std::string& account_address,
                                const std::vector<mojom::ChainIdPtr>& chain_ids,
                                const std::optional<std::string>& cursor,
-                               bool skip_spam,
-                               bool only_spam,
+                               SpamFilter spam_filter,
                                FetchNFTsFromSimpleHashCallback callback);
 
   void FetchAllNFTsFromSimpleHash(
@@ -111,8 +119,7 @@ class SimpleHashClient {
   FRIEND_TEST_ALL_PREFIXES(SimpleHashClientUnitTest, ParseBalances);
   FRIEND_TEST_ALL_PREFIXES(SimpleHashClientUnitTest, ParseMetadatas);
 
-  void OnFetchNFTsFromSimpleHash(bool skip_spam,
-                                 bool only_spam,
+  void OnFetchNFTsFromSimpleHash(SpamFilter spam_filter,
                                  FetchNFTsFromSimpleHashCallback callback,
                                  APIRequestResult api_request_result);
 
@@ -146,9 +153,7 @@ class SimpleHashClient {
 
   std::optional<std::pair<std::optional<std::string>,
                           std::vector<mojom::BlockchainTokenPtr>>>
-  ParseNFTsFromSimpleHash(const base::DictValue& dict,
-                          bool skip_spam,
-                          bool only_spam);
+  ParseNFTsFromSimpleHash(const base::DictValue& dict, SpamFilter spam_filter);
 
   std::optional<SolCompressedNftProofData> ParseSolCompressedNftProofData(
       const base::DictValue& dict);
@@ -163,7 +168,8 @@ class SimpleHashClient {
   static GURL GetSimpleHashNftsByWalletUrl(
       const std::string& account_address,
       const std::vector<mojom::ChainIdPtr>& chain_ids,
-      const std::optional<std::string>& cursor);
+      const std::optional<std::string>& cursor,
+      SpamFilter spam_filter);
 
   static GURL GetNftsUrl(
       const std::vector<mojom::NftIdentifierPtr>& nft_identifiers);

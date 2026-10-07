@@ -38,6 +38,7 @@ import org.robolectric.shadows.ShadowPackageManager;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.TriState;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.OneshotSupplierImpl;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
@@ -113,7 +114,7 @@ import org.chromium.content_public.browser.NavigationController;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.google_apis.gaia.GoogleServiceAuthError;
 import org.chromium.google_apis.gaia.GoogleServiceAuthErrorState;
-import org.chromium.ui.accessibility.AccessibilityState;
+import org.chromium.ui.accessibility.AccessibilityStateTestHelper;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.MVCListAdapter;
 import org.chromium.url.JUnitTestGURLs;
@@ -241,7 +242,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         when(mIdentityManager.hasPrimaryAccount()).thenReturn(true);
 
         GlicEnabling.setEnabledForTesting(false);
-        PageZoomUtils.setShouldShowMenuItemForTesting(false);
+        PageZoomUtils.setShouldShowMenuItemForTesting(TriState.FALSE);
         FeedFeatures.setFakePrefsForTest(mPrefService);
         AppBannerManagerJni.setInstanceForTesting(mAppBannerManagerJniMock);
         Mockito.when(mAppBannerManagerJniMock.getInstallableWebAppManifestId(any()))
@@ -295,7 +296,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
                         /* recentlyClosedEntriesManagerSupplier= */ () ->
                                 mRecentlyClosedEntriesManager,
                         () -> mSideUiStateProvider,
-                        /* isXrFullSpaceModeSupplier= */ () -> false,
+                        /* xrSpaceModeObservableSupplier= */ ObservableSuppliers.createNonNull(
+                                false),
                         /* canActivateTabLayoutToggleMenu= */ () ->
                                 mCanActivateTabLayoutToggleMenu);
         delegate.setIsJunitTesting(true);
@@ -316,7 +318,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
 
     @After
     public void tearDown() {
-        AccessibilityState.setIsKnownScreenReaderEnabledForTesting(false);
+        AccessibilityStateTestHelper.setIsKnownScreenReaderEnabledForTesting(false);
         // Reset the "Enable tab groups" master switch to its default so it does not leak into
         // other tests in the run.
         ChromeSharedPreferences.getInstance()
@@ -372,7 +374,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             R.id.recent_tabs_menu_id,
             R.id.divider_line_id,
             R.id.preferences_id,
-            R.id.set_default_browser,
+            R.id.divider_line_id,
+            R.id.default_browser_promo_menu_id,
             R.id.brave_news_id,
             R.id.request_brave_vpn_id,
             R.id.brave_customize_menu_id,
@@ -413,7 +416,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             R.id.recent_tabs_menu_id,
             R.id.divider_line_id,
             R.id.preferences_id,
-            R.id.set_default_browser,
+            R.id.divider_line_id,
+            R.id.default_browser_promo_menu_id,
             R.id.brave_news_id,
             R.id.request_brave_vpn_id,
             R.id.brave_customize_menu_id,
@@ -466,6 +470,10 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         assertEquals(MenuGroup.PAGE_MENU, mTabbedAppMenuPropertiesDelegate.getMenuGroup());
         MVCListAdapter.ModelList modelList = mTabbedAppMenuPropertiesDelegate.getMenuItems();
 
+        // AndroidPageInfoAsAppMenuItem feature is disabled for the whole class:
+        // info_menu_id and page_info_divider_line_id are not displayed.
+        assertFalse(ChromeFeatureList.sAndroidPageInfoAsAppMenuItem.isEnabled());
+
         List<Integer> expectedItems = new ArrayList<>();
 
         expectedItems.add(R.id.new_tab_menu_id);
@@ -473,12 +481,6 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         expectedItems.add(R.id.add_to_group_menu_id);
         expectedItems.add(R.id.divider_line_id);
         expectedItems.add(R.id.open_history_menu_id);
-        // Page info items only appear when ANDROID_PAGE_INFO_AS_APP_MENU_ITEM or
-        // THREE_DOT_MENU_BACK_BUTTON is enabled; both are disabled at class level.
-        if (ChromeFeatureList.sThreeDotMenuBackButton.isEnabled()) {
-            expectedItems.add(R.id.info_menu_id);
-            expectedItems.add(R.id.page_info_divider_line_id);
-        }
         expectedItems.add(R.id.downloads_menu_id);
         expectedItems.add(R.id.all_bookmarks_menu_id);
         expectedItems.add(R.id.brave_wallet_id);
@@ -492,14 +494,66 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         expectedItems.add(R.id.request_desktop_site_id);
         expectedItems.add(R.id.auto_dark_web_contents_id);
         expectedItems.add(R.id.divider_line_id);
-        expectedItems.add(R.id.set_default_browser);
         expectedItems.add(R.id.preferences_id);
+        expectedItems.add(R.id.divider_line_id);
+        expectedItems.add(R.id.default_browser_promo_menu_id);
         expectedItems.add(R.id.brave_news_id);
         expectedItems.add(R.id.request_brave_vpn_id);
         expectedItems.add(R.id.brave_customize_menu_id);
         expectedItems.add(R.id.exit_id);
 
         assertMenuItemsAreEqual(modelList, expectedItems.toArray(new Integer[0]));
+    }
+
+    @Test
+    @Config(qualifiers = "sw320dp")
+    @EnableFeatures(ChromeFeatureList.ANDROID_PAGE_INFO_AS_APP_MENU_ITEM)
+    public void testBravePageMenuItems_RegularPage_EnabledAndroidPageInfoAsAppMenuItem() {
+        setUpMocksForPageMenu();
+        setMenuOptions(
+                new MenuOptions()
+                        .withShowTranslate()
+                        .withShowAddToHomeScreen()
+                        .withAutoDarkEnabled());
+
+        assertEquals(MenuGroup.PAGE_MENU, mTabbedAppMenuPropertiesDelegate.getMenuGroup());
+        MVCListAdapter.ModelList modelList = mTabbedAppMenuPropertiesDelegate.getMenuItems();
+
+        // The page info button is gone from the address bar, so the menu carries site controls.
+        assertTrue(menuContainsId(modelList, R.id.info_menu_id));
+        assertTrue(menuContainsId(modelList, R.id.page_info_divider_line_id));
+    }
+
+    @Test
+    @Config(qualifiers = "sw320dp")
+    @DisableFeatures(ChromeFeatureList.ENABLE_DOWNLOAD_SAVE_AS_CONTEXT_MENU)
+    public void testBraveIconRowItems() {
+        setUpMocksForPageMenu();
+        setMenuOptions(new MenuOptions());
+        doReturn(true).when(mTabbedAppMenuPropertiesDelegate).shouldShowIconRow();
+
+        MVCListAdapter.ModelList modelList = mTabbedAppMenuPropertiesDelegate.getMenuItems();
+
+        List<Integer> iconIds = new ArrayList<>();
+        for (MVCListAdapter.ListItem item : modelList) {
+            Integer itemId = item.model.get(AppMenuItemProperties.MENU_ITEM_ID);
+            if (itemId == null || itemId != R.id.icon_row_menu_id) continue;
+            for (MVCListAdapter.ListItem icon :
+                    item.model.get(AppMenuItemProperties.ADDITIONAL_ICONS)) {
+                iconIds.add(icon.model.get(AppMenuItemProperties.MENU_ITEM_ID));
+            }
+        }
+
+        // Brave shows share instead of back, and the row renders five icons at most.
+        assertThat(
+                "Icon row items were: " + iconIds,
+                iconIds,
+                Matchers.contains(
+                        R.id.forward_menu_id,
+                        R.id.bookmark_this_page_id,
+                        R.id.offline_page_id,
+                        R.id.share_menu_id,
+                        R.id.reload_menu_id));
     }
 
     @Test
@@ -554,7 +608,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             R.id.recent_tabs_menu_id,
             R.id.divider_line_id,
             R.id.preferences_id,
-            R.id.set_default_browser,
+            R.id.divider_line_id,
+            R.id.default_browser_promo_menu_id,
             // R.id.brave_news_id is NOT included - disabled by policy
             // R.id.request_brave_vpn_id is NOT included - disabled by policy
             R.id.brave_customize_menu_id,
@@ -583,7 +638,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
                 .shouldShowAutoDarkItem(any(Tab.class), eq(true));
         doReturn(false)
                 .when(mTabbedAppMenuPropertiesDelegate)
-                .shouldShowContentFilterHelpCenterMenuItem(any(Tab.class));
+                .shouldShowContentFilterHelpCenterMenuItem();
 
         setUpIncognitoMocks();
     }

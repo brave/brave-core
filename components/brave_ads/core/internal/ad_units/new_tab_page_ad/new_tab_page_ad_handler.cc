@@ -63,8 +63,8 @@ void NewTabPageAdHandler::ParseAndSave(base::DictValue dict,
 }
 
 void NewTabPageAdHandler::MaybeServe(MaybeServeNewTabPageAdCallback callback) {
-  if (!UserHasOptedInToNewTabPageAds()) {
-    // No-op if the user has not opted into new tab page ads.
+  if (!IsNewTabPageAdsEnabled()) {
+    // No-op if new tab page ads are not enabled.
     return std::move(callback).Run(/*ad=*/std::nullopt);
   }
 
@@ -82,8 +82,8 @@ void NewTabPageAdHandler::TriggerEvent(
     return std::move(callback).Run(/*success=*/false);
   }
 
-  if (!UserHasOptedInToNewTabPageAds()) {
-    // No-op if the user has not opted into new tab page ads.
+  if (!IsNewTabPageAdsEnabled()) {
+    // No-op if new tab page ads are not enabled.
     return std::move(callback).Run(/*success=*/false);
   }
 

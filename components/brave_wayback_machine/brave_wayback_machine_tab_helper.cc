@@ -9,8 +9,6 @@
 
 #include "base/check.h"
 #include "base/command_line.h"
-#include "base/containers/fixed_flat_set.h"
-#include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/task/sequenced_task_runner.h"
@@ -25,7 +23,6 @@
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "net/http/http_response_headers.h"
-#include "net/http/http_status_code.h"
 
 // static
 void BraveWaybackMachineTabHelper::CreateIfNeeded(
@@ -57,9 +54,7 @@ BraveWaybackMachineTabHelper::BraveWaybackMachineTabHelper(
 
 }
 
-BraveWaybackMachineTabHelper::~BraveWaybackMachineTabHelper() {
-  CHECK(!wayback_state_changed_callback_);
-}
+BraveWaybackMachineTabHelper::~BraveWaybackMachineTabHelper() = default;
 
 void BraveWaybackMachineTabHelper::FetchWaybackURL() {
   CHECK(wayback_enabled_.GetValue());
@@ -67,9 +62,10 @@ void BraveWaybackMachineTabHelper::FetchWaybackURL() {
   wayback_machine_url_fetcher_.Fetch(web_contents()->GetVisibleURL());
 }
 
-void BraveWaybackMachineTabHelper::SetWaybackStateChangedCallback(
+base::CallbackListSubscription
+BraveWaybackMachineTabHelper::RegisterWaybackStateChangedCallback(
     WaybackStateChangedCallback callback) {
-  wayback_state_changed_callback_ = std::move(callback);
+  return wayback_state_changed_callbacks_.Add(std::move(callback));
 }
 
 void BraveWaybackMachineTabHelper::DidFinishNavigation(
@@ -116,7 +112,8 @@ void BraveWaybackMachineTabHelper::DidFinishNavigation(
 }
 
 void BraveWaybackMachineTabHelper::OnWaybackURLFetched(
-    const GURL& latest_wayback_url) {
+    const GURL& latest_wayback_url,
+    base::Time snapshot_time) {
   // Ignore the result if disabled.
   if (!wayback_enabled_.GetValue()) {
     return;
@@ -143,33 +140,7 @@ void BraveWaybackMachineTabHelper::SetWaybackState(WaybackState state) {
   }
 
   wayback_state_ = state;
-
-  if (wayback_state_changed_callback_) {
-    wayback_state_changed_callback_.Run(wayback_state_);
-  }
-}
-
-bool BraveWaybackMachineTabHelper::ShouldCheckWaybackMachine(
-    int response_code) const {
-  static constexpr auto responses = base::MakeFixedFlatSet<int>({
-      net::HTTP_NOT_FOUND,              // 404
-      net::HTTP_REQUEST_TIMEOUT,        // 408
-      net::HTTP_GONE,                   // 410
-      451,                              // Unavailable For Legal Reasons
-      net::HTTP_INTERNAL_SERVER_ERROR,  // 500
-      net::HTTP_BAD_GATEWAY,            // 502,
-      net::HTTP_SERVICE_UNAVAILABLE,    // 503,
-      net::HTTP_GATEWAY_TIMEOUT,        // 504,
-      509,                              // Bandwidth Limit Exceeded
-      520,                              // Web Server Returned an Unknown Error
-      521,                              // Web Server Is Down
-      523,                              // Origin Is Unreachable
-      524,                              // A Timeout Occurred
-      525,                              // SSL Handshake Failed
-      526                               // Invalid SSL Certificate
-  });
-
-  return responses.contains(response_code);
+  wayback_state_changed_callbacks_.Notify(wayback_state_);
 }
 
 void BraveWaybackMachineTabHelper::OnWaybackEnabledChanged(

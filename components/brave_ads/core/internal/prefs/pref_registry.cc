@@ -33,7 +33,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* const registry) {
   registry->RegisterBooleanPref(prefs::kNotificationsEnabled, false);
   registry->RegisterInt64Pref(prefs::kMaximumNotificationAdsPerHour, -1);
 
-  registry->RegisterBooleanPref(prefs::kOptedInToSearchResultAds, true);
+  registry->RegisterBooleanPref(prefs::kSponsoredEnabled, true);
 
   registry->RegisterBooleanPref(prefs::kShouldAllowSubdivisionTargeting, false);
   registry->RegisterStringPref(

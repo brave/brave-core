@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -32,10 +32,26 @@ TEST_F(BraveAdsConversionsUtilTest, IsAllowedToConvertNewTabPageAdEvent) {
   EXPECT_TRUE(IsAllowedToConvertAdEvent(ad_event));
 }
 
-TEST_F(BraveAdsConversionsUtilTest,
-       IsNotAllowedToConvertNewTabPageAdEventIfOptedOutOfNewTabPageAds) {
+TEST_F(
+    BraveAdsConversionsUtilTest,
+    IsNotAllowedToConvertNewTabPageAdEventIfNewTabPageBackgroundImagesAreDisabled) {
   // Arrange
-  test::OptOutOfNewTabPageAds();
+  test::DisableNewTabPageBackgroundImages();
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
+                                  /*use_random_uuids=*/false);
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
+
+  // Act & Assert
+  EXPECT_FALSE(IsAllowedToConvertAdEvent(ad_event));
+}
+
+TEST_F(BraveAdsConversionsUtilTest,
+       IsNotAllowedToConvertNewTabPageAdEventIfSponsoredAdsAreDisabled) {
+  // Arrange
+  test::DisableSponsoredAds();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
                                   /*use_random_uuids=*/false);
@@ -117,9 +133,9 @@ TEST_F(BraveAdsConversionsUtilTest, IsAllowedToConvertSearchResultAdEvent) {
 }
 
 TEST_F(BraveAdsConversionsUtilTest,
-       IsNotAllowedToConvertSearchResultAdEventIfOptedOutOfSearchResultAds) {
+       IsNotAllowedToConvertSearchResultAdEventIfSponsoredAdsAreDisabled) {
   // Arrange
-  test::OptOutOfSearchResultAds();
+  test::DisableSponsoredAds();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kSearchResultAd,
                                   /*use_random_uuids=*/false);

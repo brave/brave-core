@@ -5,15 +5,20 @@
 
 #include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
 
+#include <memory>
+#include <optional>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/check.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/notimplemented.h"
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
+#include "base/task/cancelable_task_tracker.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
@@ -32,6 +37,7 @@
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
@@ -40,12 +46,15 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/tabs/public/tab_interface.h"
+#include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/url_data_source.h"
+#include "content/public/browser/visibility.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
+#include "mojo/public/cpp/bindings/message.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
@@ -53,17 +62,63 @@
 #include "ui/webui/webui_util.h"
 #include "url/url_constants.h"
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/browser/history_embeddings/open_tab_search.h"
+#include "chrome/browser/history/history_service_factory.h"
+#include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
+#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
+#include "components/history_embeddings/content/history_embeddings_service.h"
+#include "components/history_embeddings/core/history_embeddings_search.h"
+#include "components/keyed_service/core/service_access_type.h"
+#endif
+
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/android/ai_chat/brave_leo_settings_launcher_helper.h"
 #else
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/chrome_pages.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/thumbnails/thumbnail_tracker.h"
 #include "chrome/browser/ui/webui/theme_source.h"
 #include "chrome/browser/ui/webui/util/image_util.h"
+#include "ui/base/base_window.h"
 #endif
 
 namespace {
+
+// Rejects messages from the untrusted conversation frame that didn't follow a
+// real user interaction. Transient activation can only come from genuine input,
+// so a message without one means the frame is driving these actions itself.
+// Mojo closes the pipe when WillDispatch returns false, which is the response
+// we want - no legitimate UI path sends these without a click.
+class RequireUserGestureFilter : public mojo::MessageFilter {
+ public:
+  explicit RequireUserGestureFilter(content::GlobalRenderFrameHostId frame_id)
+      : frame_id_(frame_id) {}
+  ~RequireUserGestureFilter() override = default;
+
+  bool WillDispatch(mojo::Message* message) override {
+    // By id, not by pointer - this filter lives as long as the pipe.
+    auto* rfh = content::RenderFrameHost::FromID(frame_id_);
+    if (!rfh || !rfh->IsActive() || !rfh->HasTransientUserActivation()) {
+      DVLOG(0) << __func__ << " no user activation for message "
+               << message->name();
+      return false;
+    }
+    auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
+    if (!web_contents ||
+        web_contents->GetVisibility() != content::Visibility::VISIBLE) {
+      DVLOG(0) << __func__ << " conversation is not visible";
+      return false;
+    }
+    return true;
+  }
+
+  void DidDispatchOrReject(mojo::Message* message, bool accepted) override {}
+
+ private:
+  content::GlobalRenderFrameHostId frame_id_;
+};
 
 // Implements the interface to calls from the UI to the browser
 class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
@@ -122,6 +177,73 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 
   void OpenStorageSupportUrl() override {
     OpenURL(GURL(ai_chat::kLeoStorageSupportUrl));
+  }
+
+  void SearchForTabs(const std::string& query,
+                     SearchForTabsCallback callback) override {
+#if BUILDFLAG(ENABLE_LOCAL_AI)  // Match open_tab_search GN guard
+    Profile* profile = Profile::FromWebUI(web_ui_);
+    // The history-embeddings setting is off for this profile, so there's no
+    // on-device ranker to consult.
+    if (!history_embeddings::IsHistoryEmbeddingsEnabledForProfile(profile)) {
+      std::move(callback).Run(std::nullopt);
+      return;
+    }
+    auto* embeddings_search =
+        HistoryEmbeddingsServiceFactory::GetForProfile(profile);
+    auto* history_service = HistoryServiceFactory::GetForProfile(
+        profile, ServiceAccessType::EXPLICIT_ACCESS);
+    if (!embeddings_search || !history_service) {
+      std::move(callback).Run(std::nullopt);
+      return;
+    }
+    history_embeddings::SearchOpenTabsByContent(
+        profile, history_service, embeddings_search->AsWeakPtr(), query,
+        base::BindOnce(
+            [](SearchForTabsCallback callback,
+               std::vector<history_embeddings::OpenTabInfo> tabs) {
+              std::vector<ai_chat::mojom::TabDataPtr> results;
+              results.reserve(tabs.size());
+              for (auto& tab : tabs) {
+                results.push_back(ai_chat::mojom::TabData::New(
+                    tab.tab_id, tab.content_id, std::move(tab.title),
+                    std::move(tab.url)));
+              }
+              std::move(callback).Run(std::move(results));
+            },
+            std::move(callback)),
+        &tab_search_task_tracker_);
+#else
+    std::move(callback).Run(std::nullopt);
+#endif
+  }
+
+  void SwitchToTab(int32_t tab_id) override {
+#if !BUILDFLAG(IS_ANDROID)  // Match tab_strip_model.h GN guard
+    // The ids come from `tabs::TabInterface::Handle` (see
+    // TabDataWebContentsObserver), so resolve them via the handle's global
+    // lookup rather than iterating BrowserList by SessionID.
+    tabs::TabInterface* tab = tabs::TabHandle(tab_id).Get();
+    if (!tab) {
+      return;
+    }
+    BrowserWindowInterface* browser = tab->GetBrowserWindowInterface();
+    if (!browser || browser->GetProfile() != Profile::FromWebUI(web_ui_)) {
+      return;
+    }
+    TabStripModel* tab_strip = browser->GetTabStripModel();
+    if (!tab_strip) {
+      return;
+    }
+    const int index = tab_strip->GetIndexOfTab(tab);
+    if (index == TabStripModel::kNoTab) {
+      return;
+    }
+    tab_strip->ActivateTabAt(index);
+    if (ui::BaseWindow* window = browser->GetWindow()) {
+      window->Activate();
+    }
+#endif
   }
 
   void AddTabToThumbnailTracker(int32_t tab_id) override {
@@ -214,7 +336,9 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
   void BindConversationHandler(
       const std::string& conversation_id,
       mojo::PendingReceiver<ai_chat::mojom::UntrustedConversationHandler>
-          untrusted_conversation_handler_receiver) override {
+          untrusted_conversation_handler_receiver,
+      mojo::PendingReceiver<ai_chat::mojom::UntrustedConversationUserActions>
+          user_actions_receiver) override {
     if (conversation_id.empty()) {
       return;
     }
@@ -234,6 +358,10 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
         base::BindOnce(
             [](mojo::PendingReceiver<
                    ai_chat::mojom::UntrustedConversationHandler> receiver,
+               mojo::PendingReceiver<
+                   ai_chat::mojom::UntrustedConversationUserActions>
+                   user_actions_receiver,
+               content::GlobalRenderFrameHostId frame_id,
                ai_chat::ConversationHandler* conversation_handler) {
               if (!conversation_handler) {
                 DVLOG(0)
@@ -242,8 +370,13 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
                 return;
               }
               conversation_handler->Bind(std::move(receiver));
+              conversation_handler->BindUserActions(
+                  std::move(user_actions_receiver),
+                  std::make_unique<RequireUserGestureFilter>(frame_id));
             },
-            std::move(untrusted_conversation_handler_receiver)));
+            std::move(untrusted_conversation_handler_receiver),
+            std::move(user_actions_receiver),
+            web_ui_->GetRenderFrameHost()->GetGlobalId()));
   }
 
   void BindUntrustedUI(
@@ -275,7 +408,7 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     // conversation via `AIChatFullPageLinkObserver`.
     ai_chat::MaybeMoveFullPageChatToSidePanel(web_ui_->GetWebContents());
 #if !BUILDFLAG(IS_ANDROID)
-    Browser* browser =
+    BrowserWindowInterface* browser =
         ai_chat::GetBrowserForWebContents(web_ui_->GetWebContents());
     browser->OpenURL(
         {url, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
@@ -317,6 +450,11 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 
   ThumbnailTracker thumbnail_tracker_;
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // Cancels in-flight URL->URLID lookups from SearchForTabs when destroyed.
+  base::CancelableTaskTracker tab_search_task_tracker_;
+#endif
 
   raw_ptr<content::WebUI> web_ui_ = nullptr;
 
@@ -368,6 +506,9 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   source->AddBoolean("isMobile", kIsMobile);
   source->AddBoolean("isHistoryEnabled",
                      ai_chat::features::IsAIChatHistoryEnabled());
+  source->AddBoolean(
+      "isMathRenderingEnabled",
+      base::FeatureList::IsEnabled(ai_chat::features::kAIChatMathRendering));
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,

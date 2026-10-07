@@ -915,6 +915,12 @@
       <message name="IDS_SHARE_TITLES_AND_URLS_WITH_OS_LEARN_MORE_SETTING_TEXT" desc="Text of the Learn more link.">
         <ph name="BEGIN_LINK1">&lt;link&gt;</ph>Learn more<ph name="END_LINK1">&lt;/link&gt;</ph>
       </message>
+      <message name="IDS_CHROME_SUGGESTIONS_IN_OTHER_APPS_TITLE" desc="Title for the switch in tabs settings to toggle sharing browsing data to get suggestions in other apps.">
+        Get Brave suggestions in other apps
+      </message>
+      <message name="IDS_CHROME_SUGGESTIONS_IN_OTHER_APPS_SUMMARY" desc="Summary for the switch in tabs settings to toggle sharing browsing data to get suggestions in other apps.">
+        Share browsing data, such as your recent browsing history, to get suggestions on selected apps. This data is processed securely on your device.
+      </message>
 
     <!-- Archived tabs strings -->
       <message name="IDS_ARCHIVED_TABS_DIALOG_TITLE" desc="The toolbar title for the archived tabs dialog. This includes tabs and tab groups.">
@@ -1071,6 +1077,12 @@
       <message name="IDS_TAB_HOVER_CARD_MEMORY_USAGE" desc="Text at the bottom of a hovercard that shows how much memory a specific tab is using.">
         Memory usage: <ph name="MEMORY_USAGE">%1$s<ex>300 MB</ex></ph>
       </message>
+      <message name="IDS_TAB_GROUP_HOVER_CARD_EXCESS_TABS" desc="Footer text in the tab group hover card showing the number of remaining tabs in the group that are not displayed in the preview list.">
+        {TABS_COUNT, plural,
+          =1 {+<ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> more}
+          other {+<ph name="TABS_COUNT_MANY">%1$d<ex>8</ex></ph> more}
+        }
+      </message>
 
       <!-- Tab context menu -->
       <message name="IDS_SELECT_TAB" desc="Content description for an action which selects a singular tab.">
@@ -1095,11 +1107,27 @@
           =1 {Move tab right}
           other {Move tabs right}}
       </message>
+      <message name="IDS_MOVE_TABS_UP" desc="Menu item for moving tab(s) up in the vertical tab order.">
+        {TAB_COUNT, plural,
+          =1 {Move tab up}
+          other {Move tabs up}}
+      </message>
+      <message name="IDS_MOVE_TABS_DOWN" desc="Menu item for moving tab(s) down in the vertical tab order.">
+        {TAB_COUNT, plural,
+          =1 {Move tab down}
+          other {Move tabs down}}
+      </message>
       <message name="IDS_MOVE_TAB_GROUP_LEFT" desc="Menu item for moving a tab group to the left in the tab strip order.">
         Move tab group left
       </message>
       <message name="IDS_MOVE_TAB_GROUP_RIGHT" desc="Menu item for moving a tab group to the right in the tab strip order.">
         Move tab group right
+      </message>
+      <message name="IDS_MOVE_TAB_GROUP_UP" desc="Menu item for moving a tab group up in the vertical tab order.">
+        Move tab group up
+      </message>
+      <message name="IDS_MOVE_TAB_GROUP_DOWN" desc="Menu item for moving a tab group down in the vertical tab order.">
+        Move tab group down
       </message>
       <message name="IDS_PIN_TABS_MENU_ITEM" desc="Content description for an action which pins a selection of tabs.">
         {TAB_COUNT, plural,
@@ -1172,9 +1200,6 @@
       <message name="IDS_CLOSE_TABS_BELOW_MENU_ITEM" desc="Context menu item text to close all tabs below the selected tab.">
         Close tabs below
       </message>
-      <message name="IDS_SEND_FEEDBACK_ABOUT_TAB_STRIP" desc="Context menu item text to send feedback about the tab strip.">
-        Send feedback about the tab strip
-      </message>
 
       <!-- Tab Group List Bottom Sheet -->
       <message name="IDS_TAB_GROUP_LIST_BOTTOM_SHEET_TITLE" desc="Title text for a bottom sheet which is used to add a tab to a tab group.">
@@ -1211,7 +1236,7 @@
         }
       </message>
 
-      <!-- Tab group media indicator accessibility strings -->
+      <!-- Tab group alert indicator accessibility strings -->
       <message name="IDS_ACCESSIBILITY_TAB_GROUP_AUDIBLE" desc="Accessibility description for a tab group that contains a tab that is playing audio.">
         Playing audio
       </message>

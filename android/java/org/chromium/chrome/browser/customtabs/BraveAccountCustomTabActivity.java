@@ -25,18 +25,25 @@ import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 
 import org.chromium.base.IntentUtils;
+import org.chromium.brave_account.mojom.DialogMode;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveSwipeRefreshHandler;
 import org.chromium.chrome.browser.IntentHandler;
 import org.chromium.chrome.browser.SwipeRefreshHandler;
+import org.chromium.chrome.browser.brave_account.BraveAccountDialogMode;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.components.brave_account.BraveAccountConstants;
+import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.base.PageTransition;
 import org.chromium.ui.util.ColorUtils;
 
 @NullMarked
 public class BraveAccountCustomTabActivity extends CustomTabActivity {
     private static final int HORIZONTAL_MARGIN_DP = 12;
+    private static final String EXTRA_DIALOG_MODE =
+            "org.chromium.chrome.browser.customtabs.BRAVE_ACCOUNT_DIALOG_MODE";
 
     @Override
     public void performPostInflationStartup() {
@@ -44,6 +51,20 @@ public class BraveAccountCustomTabActivity extends CustomTabActivity {
 
         Tab tab = getActivityTab();
         assert tab != null;
+
+        if (getIntent().hasExtra(EXTRA_DIALOG_MODE)) {
+            // The tab is created in performPreInflationStartup(), so its WebContents
+            // exists here. The mode only needs to be set before the page reads it,
+            // which happens once its renderer has booted — well after this returns.
+            WebContents webContents = tab.getWebContents();
+            if (webContents != null) {
+                BraveAccountDialogMode.set(
+                        webContents,
+                        IntentUtils.safeGetIntExtra(
+                                getIntent(), EXTRA_DIALOG_MODE, DialogMode.DEFAULT));
+            }
+        }
+
         // Due to bytecode manipulation, SwipeRefreshHandler instances
         // are actually BraveSwipeRefreshHandler at runtime.
         BraveSwipeRefreshHandler handler = (BraveSwipeRefreshHandler) SwipeRefreshHandler.get(tab);
@@ -100,15 +121,46 @@ public class BraveAccountCustomTabActivity extends CustomTabActivity {
         return dpToPx(this, 56); // the standard action bar height on phones in portrait
     }
 
-    public static void show(Activity activity) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("brave://account"));
+    private static void openBraveAccountWebUI(
+            Activity activity, Uri uri, @Nullable @DialogMode.EnumType Integer dialogMode) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         intent.setClassName(activity, BraveAccountCustomTabActivity.class.getName());
         intent.putExtra(Browser.EXTRA_APPLICATION_ID, activity.getPackageName());
         intent.putExtra(
                 CustomTabsIntent.EXTRA_COLOR_SCHEME,
                 ColorUtils.inNightMode(activity) ? COLOR_SCHEME_DARK : COLOR_SCHEME_LIGHT);
         intent.putExtra(IntentHandler.EXTRA_PAGE_TRANSITION_TYPE, PageTransition.AUTO_TOPLEVEL);
+        if (dialogMode != null) {
+            intent.putExtra(EXTRA_DIALOG_MODE, dialogMode);
+        }
         IntentUtils.addTrustedIntentExtras(intent);
         activity.startActivity(intent);
+    }
+
+    public static void openBraveAccountSettings(Activity activity) {
+        openBraveAccountWebUI(
+                activity,
+                Uri.parse("brave://account")
+                        .buildUpon()
+                        .appendPath(BraveAccountConstants.SETTINGS_PATH)
+                        .build(),
+                null);
+    }
+
+    public static void openBraveAccountDialog(
+            Activity activity, @DialogMode.EnumType int dialogMode) {
+        openBraveAccountDialog(activity, "", dialogMode);
+    }
+
+    public static void openBraveAccountDialog(
+            Activity activity, String initiatingServiceName, @DialogMode.EnumType int dialogMode) {
+        Uri.Builder uri = Uri.parse("brave://account").buildUpon();
+        if (!initiatingServiceName.isEmpty()) {
+            uri.appendQueryParameter(
+                    BraveAccountConstants.INITIATING_SERVICE_NAME_QUERY_PARAM,
+                    initiatingServiceName);
+        }
+
+        openBraveAccountWebUI(activity, uri.build(), dialogMode);
     }
 }

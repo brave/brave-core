@@ -7,12 +7,14 @@ import AVFoundation
 import BraveCore
 import BraveNews
 import BraveShared
+import BraveShields
 import BraveStrings
 import BraveUI
 import BraveWallet
 import BraveWidgetsModels
 import BrowserMenu
 import CertificateUtilities
+import Combine
 import Data
 import Lottie
 import Onboarding
@@ -21,7 +23,6 @@ import Playlist
 import Preferences
 import Shared
 import SpeechRecognition
-import Storage
 import SwiftUI
 import Web
 import os.log
@@ -73,15 +74,13 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
   }
 
   func topToolbarDidPressReload(_ topToolbar: TopToolbarView) {
-    if let url = topToolbar.currentURL {
-      if let decentralizedDNSHelper = decentralizedDNSHelperFor(url: topToolbar.currentURL) {
+    if let url = tabManager.selectedTab?.visibleURL {
+      if let decentralizedDNSHelper = decentralizedDNSHelperFor(url: url) {
         topToolbarDidPressReloadTask?.cancel()
         topToolbarDidPressReloadTask = Task { @MainActor in
-          topToolbar.locationView.loading = true
           let result = await decentralizedDNSHelper.lookup(
             domain: url.schemelessAbsoluteDisplayString
           )
-          topToolbar.locationView.loading = tabManager.selectedTab?.isLoading == true
           guard !Task.isCancelled else { return }  // user pressed stop, or typed new url
           switch result {
           case .loadInterstitial(let service):
@@ -153,9 +152,8 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
 
   func topToolbarDidPressPlaylistButton(_ urlBar: TopToolbarView) {
     guard let tab = tabManager.selectedTab, let playlistItem = tab.playlistItem else { return }
-    let state = urlBar.locationView.playlistButton.buttonState
-    switch state {
-    case .addToPlaylist:
+    switch tab.playlistItemState ?? .none {
+    case .newItem:
       addToPlaylist(item: playlistItem) { [weak self] didAddItem in
         guard let self else { return }
 
@@ -168,7 +166,7 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
           }
         }
       }
-    case .addedToPlaylist:
+    case .existingItem:
       // Shows its own menu
       break
     case .none:
@@ -294,12 +292,10 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
     // check text is decentralized DNS supported domain
     if let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: fixupURL) {
       dismissSearchInput()
-      updateToolbarCurrentURL(fixupURL)
-      topToolbar.locationView.loading = true
+      updateScreenTimeUrl(fixupURL)
       let result = await decentralizedDNSHelper.lookup(
         domain: fixupURL.schemelessAbsoluteDisplayString
       )
-      topToolbar.locationView.loading = tabManager.selectedTab?.isLoading == true
       guard !Task.isCancelled else { return true }  // user pressed stop, or typed new url
       switch result {
       case .loadInterstitial(let service):
@@ -350,6 +346,10 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
       bookmarkManager: bookmarkManager,
       historyAPI: profileController.historyAPI,
       searchEngines: profile.searchEngines,
+      tileSource: TopSitesTileSource(
+        mostVisitedSites: privateBrowsingManager.isPrivateBrowsing ? nil : mostVisitedSites,
+        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+      ),
       privateBrowsingManager: privateBrowsingManager,
       speechRecognizer: speechRecognizer,
       isAIChatAvailable: !isPrivate && Preferences.AIChat.leoInQuickSearchBarEnabled.value
@@ -357,8 +357,8 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
       isPlaylistAvailable: profileController.profile.prefs.isPlaylistAvailable,
       searchDelegate: self,
       delegate: self,
-      bookmarkAction: { [weak self] bookmark, action in
-        self?.handleFavoriteAction(favorite: bookmark, action: action)
+      topSiteAction: { [weak self] action in
+        self?.handleTopSiteAction(action: action)
       },
       recentSearchAction: { [weak self] recentSearch, shouldSubmitSearch in
         self?.handleRecentSearch(recentSearch, shouldSubmitSearch: shouldSubmitSearch)
@@ -460,42 +460,82 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
       return
     }
 
-    weak var weakPopover: PopoverController?
-    let popover = PopoverController(
-      contentController: PopoverNavigationController(
-        rootViewController: ShieldsPanelViewController(
-          url: url,
-          tab: selectedTab,
-          domain: Domain.getOrCreate(forUrl: url, persistent: !selectedTab.isPrivate)
-        ) { [weak self, weak selectedTab] action in
-          switch action {
-          case .navigate(let target, let dismiss):
-            guard let self, let selectedTab else { return }
-            if dismiss {
-              weakPopover?.dismiss(animated: true) {
-                self.navigate(to: target, tab: selectedTab, url: url, on: nil)
-              }
-            } else {
-              navigate(to: target, tab: selectedTab, url: url, on: weakPopover)
-            }
-          case .changedShieldSettings:
-            self?.changedShieldSettings()
-          case .shredSiteData:
-            weakPopover?.dismiss(animated: true) {
-              guard let selectedTab = selectedTab else { return }
-              self?.shredData(for: url, in: selectedTab)
-            }
+    weak var weakShieldsPanelVC: UIViewController?
+    let shieldsPanelActionHandler: (ShieldsPanelAction) -> Void = {
+      [weak self, weak selectedTab] action in
+      guard let self, let selectedTab else { return }
+      switch action {
+      case .navigate(let target, let dismiss):
+        if dismiss {
+          weakShieldsPanelVC?.dismiss(animated: true) {
+            self.navigate(to: target, tab: selectedTab, url: url, on: nil)
           }
+        } else {
+          self.navigate(to: target, tab: selectedTab, url: url, on: weakShieldsPanelVC)
         }
-      ),
-      contentSizeBehavior: .preferredContentSize
-    )
-    weakPopover = popover
-    popover.present(from: topToolbar.shieldsButton, on: self)
+      case .changedShieldSettings:
+        self.changedShieldSettings()
+      case .shredSiteData:
+        weakShieldsPanelVC?.dismiss(animated: true) {
+          self.shredData(for: url, in: selectedTab)
+        }
+      case .openURLInNewTab(let url):
+        weakShieldsPanelVC?.dismiss(animated: true) {
+          self.tabManager.addTabAndSelect(
+            URLRequest(url: url),
+            afterTab: selectedTab,
+            isPrivate: selectedTab.isPrivate
+          )
+        }
+      }
+    }
+    if FeatureList.kShowUpdatedShieldsPanel.enabled {
+      let shieldsPanelViewController = ShieldsPanelViewController(
+        url: url,
+        viewModel: ShieldsPanelViewModel(
+          tab: selectedTab,
+          stats: selectedTab.contentBlocker?.$stats.eraseToAnyPublisher()
+            ?? Just(.init()).eraseToAnyPublisher(),
+          blockedRequests: selectedTab.contentBlocker?.$blockedRequests.map(Array.init)
+            .eraseToAnyPublisher() ?? Just([]).eraseToAnyPublisher(),
+          isShredEnabled: FeatureList.kBraveShredFeature.enabled
+        ),
+        action: shieldsPanelActionHandler
+      )
+      weakShieldsPanelVC = shieldsPanelViewController
+      if UIDevice.current.userInterfaceIdiom == .pad {
+        shieldsPanelViewController.modalPresentationStyle = .popover
+      }
+      shieldsPanelViewController.popoverPresentationController?.sourceView =
+        topToolbar.shieldsButton
+      shieldsPanelViewController.popoverPresentationController?.sourceRect =
+        topToolbar.shieldsButton.bounds
+      shieldsPanelViewController.popoverPresentationController?.popoverLayoutMargins = .init(
+        equalInset: 4
+      )
+      shieldsPanelViewController.popoverPresentationController?.permittedArrowDirections = [
+        .up, .down,
+      ]
+      self.present(shieldsPanelViewController, animated: true)
+    } else {
+      let popover = PopoverController(
+        contentController: PopoverNavigationController(
+          rootViewController: LegacyShieldsPanelViewController(
+            url: url,
+            tab: selectedTab,
+            domain: Domain.getOrCreate(forUrl: url, persistent: !selectedTab.isPrivate),
+            callback: shieldsPanelActionHandler
+          )
+        ),
+        contentSizeBehavior: .preferredContentSize
+      )
+      weakShieldsPanelVC = popover
+      popover.present(from: topToolbar.shieldsButton, on: self)
+    }
   }
 
   private func navigate(
-    to target: ShieldsPanelView.Action.NavigationTarget,
+    to target: ShieldsPanelAction.NavigationTarget,
     tab: some TabState,
     url: URL,
     on viewController: UIViewController?
@@ -612,13 +652,18 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
     var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
     components?.fragment = nil
     components?.queryItems = nil
-    guard let cleanedURL = components?.url else { return }
+    guard let cleanedURL = components?.url,
+      let selectedTab = tabManager.selectedTab,
+      let webcompatReporter = WebcompatReporter.ServiceFactory.get(
+        profile: selectedTab.profile
+      )
+    else { return }
 
     let viewController = UIHostingController(
       rootView: SubmitReportView(
         url: cleanedURL,
-        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing,
-        tab: tabManager.selectedTab
+        webcompatReporter: webcompatReporter,
+        tab: selectedTab
       )
     )
 
@@ -671,7 +716,7 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
   }
 
   func topToolbarDidPressVoiceSearchButton(_ urlBar: TopToolbarView) {
-    Task { @MainActor in
+    Task { @MainActor [self] in
       onPendingRequestUpdatedCancellable = speechRecognizer.$finalizedRecognition.sink {
         [weak self] finalizedRecognition in
         guard let self else { return }
@@ -944,9 +989,110 @@ extension BrowserViewController: ToolbarDelegate {
     topToolbar.tabLocationViewDidTapLocation(topToolbar.locationView)
   }
 
+  func tabToolbarDidSelectNewTab(_ tabToolbar: ToolbarProtocol, isPrivate: Bool) {
+    let openNewTab = { [weak self] in
+      self?.openBlankNewTab(
+        attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
+        isPrivate: isPrivate
+      )
+    }
+    if isPrivate, !privateBrowsingManager.isPrivateBrowsing,
+      Preferences.Privacy.privateBrowsingLock.value
+    {
+      askForLocalAuthentication { success, error in
+        if success {
+          openNewTab()
+        }
+      }
+    } else {
+      openNewTab()
+    }
+  }
+
+  func tabToolbarDidSelectNewWindow(_ tabToolbar: ToolbarProtocol, isPrivate: Bool) {
+    openInNewWindow(url: nil, isPrivate: isPrivate)
+  }
+
+  func tabToolbarDidSelectBookmarkTab(_ tabToolbar: ToolbarProtocol) {
+    openAddBookmark()
+  }
+
+  func tabToolbarDidSelectBookmarkAllTabs(_ tabToolbar: ToolbarProtocol) {
+    let mode = BookmarkEditMode.addFolderUsingTabs(
+      title: Strings.savedTabsFolderTitle,
+      tabList: tabManager.tabsForCurrentMode
+    )
+    let addBookMarkController = AddEditBookmarkTableViewController(
+      bookmarkManager: bookmarkManager,
+      mode: mode,
+      isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+    )
+    presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
+  }
+
+  func tabToolbarDidSelectDuplicateTab(_ tabToolbar: ToolbarProtocol) {
+    guard let selectedTab = tabManager.selectedTab, let url = selectedTab.visibleURL else {
+      return
+    }
+    tabManager.addTabAndSelect(
+      URLRequest(url: url),
+      afterTab: selectedTab,
+      isPrivate: selectedTab.isPrivate
+    )
+  }
+
+  func tabToolbarDidSelectViewRecentlyClosedTabs(_ tabToolbar: ToolbarProtocol) {
+    if privateBrowsingManager.isPrivateBrowsing {
+      return
+    }
+    var recentlyClosedTabsView = RecentlyClosedTabsView(tabManager: tabManager)
+    recentlyClosedTabsView.onRecentlyClosedSelected = { [weak self] recentlyClosed in
+      self?.tabManager.addAndSelectRecentlyClosed(recentlyClosed)
+
+      // After opening the Recently Closed in a new tab delete it from list
+      RecentlyClosed.remove(with: recentlyClosed.url)
+    }
+    present(UIHostingController(rootView: recentlyClosedTabsView), animated: true)
+  }
+
+  func tabToolbarDidSelectReopenRecentlyClosedTab(_ tabToolbar: ToolbarProtocol) {
+    if privateBrowsingManager.isPrivateBrowsing {
+      return
+    }
+    guard let recentlyClosedTab = RecentlyClosed.first() else { return }
+    tabManager.addAndSelectRecentlyClosed(recentlyClosedTab)
+    RecentlyClosed.remove(with: recentlyClosedTab.url)
+  }
+
+  func tabToolbarDidSelectCloseTab(_ tabToolbar: ToolbarProtocol) {
+    guard let tab = tabManager.selectedTab else { return }
+    if tab.readerMode?.state == .active {
+      hideReaderModeBar(animated: false)
+    }
+    // Add the tab information to recently closed before removing
+    tabManager.addTabToRecentlyClosed(tab)
+    tabManager.removeTab(tab)
+  }
+
+  func tabToolbarDidSelectShredSiteData(_ tabToolbar: ToolbarProtocol) {
+    guard let tab = tabManager.selectedTab, let url = tab.visibleURL else { return }
+    let alert = UIAlertController.shredDataAlert(url: url) { [weak self] _ in
+      self?.shredData(for: url, in: tab)
+    }
+    present(alert, animated: true)
+  }
+
+  func tabToolbarDidSelectCloseOtherTabs(_ tabToolbar: ToolbarProtocol) {
+    showCloseTabsWarning(isActiveTabIncluded: false, from: tabToolbar.tabsButton)
+  }
+
+  func tabToolbarDidSelectCloseAllTabs(_ tabToolbar: ToolbarProtocol) {
+    showCloseTabsWarning(isActiveTabIncluded: true, from: tabToolbar.tabsButton)
+  }
+
   func tabToolbarDidPressBack(_ tabToolbar: ToolbarProtocol, button: UIButton) {
     tabManager.selectedTab?.goBack()
-    tabManager.selectedTab?.browserData?.resetExternalAlertProperties()
+    tabManager.selectedTab?.externalAppURLHelper?.reset()
     recordNavigationActionP3A(isNavigationActionForward: false)
   }
 
@@ -957,7 +1103,7 @@ extension BrowserViewController: ToolbarDelegate {
 
   func tabToolbarDidPressForward(_ tabToolbar: ToolbarProtocol, button: UIButton) {
     tabManager.selectedTab?.goForward()
-    tabManager.selectedTab?.browserData?.resetExternalAlertProperties()
+    tabManager.selectedTab?.externalAppURLHelper?.reset()
     recordNavigationActionP3A(isNavigationActionForward: true)
   }
 
@@ -1003,6 +1149,38 @@ extension BrowserViewController: ToolbarDelegate {
     popoverController.present(from: urlBar.locationView.secureContentStateButton, on: self)
   }
 
+  private func showCloseTabsWarning(isActiveTabIncluded: Bool, from sourceView: UIView) {
+    let alert = UIAlertController(
+      title: nil,
+      message: isActiveTabIncluded ? Strings.closeAllTabsPrompt : Strings.closeAllOtherTabsPrompt,
+      preferredStyle: .actionSheet
+    )
+    let cancelAction = UIAlertAction(title: Strings.CancelString, style: .cancel)
+    let closedTabsTitle =
+      isActiveTabIncluded
+      ? String(format: Strings.closeAllTabsTitle, tabManager.tabsForCurrentMode.count)
+      : Strings.closeAllOtherTabsTitle
+    let closeAllAction = UIAlertAction(title: closedTabsTitle, style: .destructive) {
+      [weak self] _ in
+      guard let self else { return }
+      if !self.privateBrowsingManager.isPrivateBrowsing {
+        // Add the tab information to recently closed before removing
+        self.tabManager.addAllTabsToRecentlyClosed(isActiveTabIncluded: isActiveTabIncluded)
+      }
+      self.tabManager.removeAllForCurrentMode(isActiveTabIncluded: isActiveTabIncluded)
+    }
+    alert.addAction(closeAllAction)
+    alert.addAction(cancelAction)
+
+    if let popoverPresentation = alert.popoverPresentationController {
+      popoverPresentation.sourceView = sourceView
+      popoverPresentation.sourceRect =
+        .init(x: sourceView.frame.width / 2, y: sourceView.frame.height, width: 1, height: 1)
+    }
+
+    present(alert, animated: true)
+  }
+
   func showBackForwardList() {
     if let backForwardList = tabManager.selectedTab?.backForwardList {
       let backForwardViewController = BackForwardListViewController(
@@ -1036,7 +1214,6 @@ extension BrowserViewController: ToolbarDelegate {
     tabManager.selectedTab?.stopLoading()
     processAddressBarTask?.cancel()
     topToolbarDidPressReloadTask?.cancel()
-    topToolbar.locationView.loading = tabManager.selectedTab?.isLoading == true
   }
 }
 
@@ -1108,7 +1285,7 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
   /// - Note: "Copy Clean Link" will be included even if no cleaning is done to the url.
   private func makeCopyMenu() -> UIMenu? {
     let tab = tabManager.selectedTab
-    guard let url = self.topToolbar.currentURL else { return nil }
+    guard let url = tab?.visibleURL?.displayURL else { return nil }
 
     let children: [UIAction] = [
       UIAction(

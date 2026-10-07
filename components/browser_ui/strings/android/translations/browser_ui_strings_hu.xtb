@@ -7,6 +7,7 @@
 <translation id="1046742265332833834">Kék téma</translation>
 <translation id="1070329623210597193">A webhely által megtekinthető vagy szerkeszthető fájlok</translation>
 <translation id="1074758928858737435">Kérheti a webhelyek asztali verziójának megjelenítését.</translation>
+<translation id="1760197532822135980">Brave-javaslatok fogadása más alkalmazásokban</translation>
 <translation id="1109482864356262001">A mozgás- vagy fényérzékelőket igénylő funkciók nem működnek</translation>
 <translation id="6670155282615872564">Hajtsa végre az alábbi javasolt műveleteket, hogy a lehető legtöbbet ki tudja hozni a Brave-ból.</translation>
 <translation id="113098737392899175">Navigálás az oldalakon szövegkurzorral, ha csatlakoztatva van billentyűzet</translation>
@@ -31,7 +32,6 @@
 <translation id="1321110954513621549">Engedélyezve • Hozzávetőleges</translation>
 <translation id="1323433172918577554">Több</translation>
 <translation id="1333965224356556482">A webhelyek nem tekinthetik meg az Ön tartózkodási helyét</translation>
-<translation id="1343356790768851700">Ez a webhely kikövetkezteti az Ön által kedvelt dolgokat, majd hirdetéseket ajánl más webhelyeknek</translation>
 <translation id="1369915414381695676">A(z) <ph name="SITE_NAME"/> webhely hozzáadva</translation>
 <translation id="1371239764779356792">Annak engedélyezése egy webhely számára, hogy adatokat mentsen az eszközére</translation>
 <translation id="1383876407941801731">Keresés</translation>
@@ -84,6 +84,7 @@
 <translation id="1818308510395330587">Ahhoz, hogy a(z) <ph name="APP_NAME"/> használhassa az AR-t, a kamerát az <ph name="BEGIN_LINK"/>Android-beállítások<ph name="END_LINK"/> között is be kell kapcsolni.</translation>
 <translation id="1822318649925991542">Módosítsa a pozíciót a böngészési élmény személyre szabásához</translation>
 <translation id="1848033246551405023">Sans Serif betűtípus</translation>
+<translation id="1861244985839668297">Ha be van kapcsolva, a webhelyek kérhetik HID-eszközök használatát. Ha ki van kapcsolva, a webhelyek nem használhatnak HID-eszközöket.</translation>
 <translation id="1861262398884155592">Ez a mappa üres</translation>
 <translation id="1881806992065048905">Az Új lap oldal megjelenésének alsó lapja</translation>
 <translation id="1887786770086287077">A helyhozzáférés ki van kapcsolva ennél az eszköznél. A funkciót az <ph name="BEGIN_LINK"/>Android-beállításokban<ph name="END_LINK"/> tudja bekapcsolni.</translation>
@@ -192,8 +193,10 @@
 <translation id="2850913818900871965">Mobilnézet kérelmezése</translation>
 <translation id="2870560284913253234">Webhely</translation>
 <translation id="2874939134665556319">Előző szám</translation>
+<translation id="258271431472168668">Brave – Alapértelmezett</translation>
 <translation id="2891975107962658722">Annak letiltása egy webhely számára, hogy adatokat mentsen az eszközére</translation>
 <translation id="2903493209154104877">Címek</translation>
+<translation id="2903764741244499151">A webhelyek automatikusan bekapcsolhatják a kép a képben módot. Így folytathatja a videónézést, miközben más feladatokra felszabadíthatja a képernyőt.</translation>
 <translation id="2918484639460781603">Ugrás a beállításokhoz</translation>
 <translation id="2932883381142163287">Visszaélés bejelentése</translation>
 <translation id="2939338015096024043">Ha be van kapcsolva, a webhelyek kérhetik a kamera pozíciójának nyomon követését, és információhoz juthatnak az Ön környezetéről. Ha ki van kapcsolva, a webhelyek nem tudják követni a kamera pozícióját, és nem tudnak információhoz jutni az Ön környezetéről.</translation>
@@ -277,7 +280,6 @@
 <translation id="3779154269823594982">Jelszavak módosítása</translation>
 <translation id="3797520601150691162">Ne használjon sötét témát bizonyos webhelyeknél</translation>
 <translation id="3803367742635802571">Előfordulhat, hogy az Ön által felkeresett webhelyek nem rendeltetésszerűen működnek</translation>
-<translation id="8338457030135232378">Brave-színek</translation>
 <translation id="381841723434055211">Telefonszámok</translation>
 <translation id="3823453485268218808">Mono betűtípus</translation>
 <translation id="3826050100957962900">Harmadik fél bejelentkezése</translation>
@@ -370,6 +372,7 @@
 <translation id="4676059169848868271">Ahhoz, hogy a <ph name="APP_NAME"/> használhassa a kézkövetést, kapcsolja be a kézkövetést a <ph name="BEGIN_LINK"/>rendszerbeállításokban<ph name="END_LINK"/> is.</translation>
 <translation id="4688045258817337666">Kártyák kezelése</translation>
 <translation id="4722332387043141878">A webhelyek általában bizonyos funkciókhoz (például virtuális valósághoz vagy aktivitásméréshez) használják az eszköz mozgás- és fényérzékelőit</translation>
+<translation id="4748783296226936791">A webhelyek általában olyan funkciók miatt csatlakoznak HID-eszközökhöz, amelyek nem a szokásos billentyűzeteket, játékkontrollereket és egyéb eszközöket használják.</translation>
 <translation id="4755971844837804407">Ha be van kapcsolva, a webhelyek bármilyen hirdetést megjeleníthetnek Önnek. Ha ki van kapcsolva, a webhelyek nem jeleníthetnek meg tolakodó vagy félrevezető hirdetéseket.</translation>
 <translation id="4779083564647765204">Nagyítás</translation>
 <translation id="4807122856660838973">A Biztonságos Böngészés bekapcsolása</translation>
@@ -424,7 +427,6 @@
 <translation id="5317780077021120954">Mentés</translation>
 <translation id="5335288049665977812">Engedélyezze a webhelyek számára a JavaScript futtatását (ajánlott)</translation>
 <translation id="534295439873310000">NFC-eszközök</translation>
-<translation id="5344522958567249764">A hirdetésekhez kapcsolódó adatvédelem kezelése</translation>
 <translation id="5373874281522292782">A lapcsoportjait menti a rendszer</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(+ 1 további)}other{(+ # további)}}</translation>
 <translation id="5403592356182871684">Nevek</translation>
@@ -448,11 +450,13 @@
 <translation id="5668404140385795438">Felülbírálja a webhely kérelmét, mely megakadályozná a nagyítást</translation>
 <translation id="5668843533782548925">A webhelyek lassabbak, de biztonságosabbak</translation>
 <translation id="5677928146339483299">Letiltva</translation>
+<translation id="98560749650104566">A Brave mostantól a böngészési adatai (például a legutóbbi böngészési előzményei) alapján javaslatokat jeleníthet meg más alkalmazásokban. Az adatok feldolgozása biztonságos módon, az eszközön történik. Ezt bármikor kikapcsolhatja a Brave beállításai között.</translation>
 <translation id="5689516760719285838">Tartózkodási hely</translation>
 <translation id="5690795753582697420">A kamera ki van kapcsolva az Android-beállítások között</translation>
 <translation id="5700761515355162635">Harmadik féltől származó cookie-k engedélyezve</translation>
 <translation id="5706552988683188916">Ezzel törli a(z) <ph name="WEBSITE"/> webhelyhez tartozó cookie-kat és egyéb webhelyadatokat</translation>
 <translation id="571222594670061844">A webhelyek megjeleníthetnek identitásszolgáltatásoktól származó bejelentkezési értesítéseket</translation>
+<translation id="5719854774000914513">A webhelyek engedélyt kérhetnek a HID-eszközökhöz való csatlakozásra</translation>
 <translation id="5740126560802162366">Webhelyek menthetnek adatokat az eszközére</translation>
 <translation id="5743425052258407233">Előzményeihez minden eszközén hozzáférhet, így könnyen folytathatja ott, ahol abbahagyta</translation>
 <translation id="5749158352074143502">Folytatás ezen a lapon</translation>
@@ -501,6 +505,7 @@
 <translation id="6085954183010297841">Visszavonja a fájlszerkesztési engedélyt? <ph name="FILE"/></translation>
 <translation id="6104860901391833523">Amikor be van kapcsolva, a webhelyek automatikusan bekapcsolhatják a kép a képben funkciót. Amikor ki van kapcsolva, a webhelyek nem indíthatják el automatikusan a kép a képben funkciót.</translation>
 <translation id="6120483543004435978">Ha be van kapcsolva, a webhelyek lekérdezhetik, hogy Ön mikor használja aktívan az eszközét. Ha ki van kapcsolva, a webhelyek nem tudhatják, hogy Ön mikor használja aktívan az eszközt.</translation>
+<translation id="5773142757282836623">A Brave-javaslatok fogadása beállítás elrejtése más alkalmazásokban</translation>
 <translation id="4852158809106762963">A Brave felkínálja a jelszó mentését.</translation>
 <translation id="615886654739818377">A webhelyek nem kezelhetnek ablakokat egyik kijelzőn sem</translation>
 <translation id="6165508094623778733">További információ</translation>
@@ -509,7 +514,6 @@
 <translation id="6181444274883918285">Webhelykivétel hozzáadása</translation>
 <translation id="7938602278189860250">{DAYS,plural, =1{A Brave holnap ismét letiltja a cookie-kat}other{# nap múlva ismét le lesznek tiltva a cookie-k}}</translation>
 <translation id="6196640612572343990">Harmadik féltől származó cookie-k letiltása</translation>
-<translation id="6205314730813004066">Hirdetésekhez kapcsolódó adatvédelem</translation>
 <translation id="6207207788774442484">Adatok törlése és engedélyek alaphelyzetbe állítása</translation>
 <translation id="6211409961905616543">A webhelyek használhatnak mozgás- és fényérzékelőket</translation>
 <translation id="6218508144653756827">Fukszia téma</translation>
@@ -525,7 +529,6 @@
 <translation id="6398765197997659313">Kilépés a teljes képernyős módból</translation>
 <translation id="640163077447496506">Ma jár le</translation>
 <translation id="6405650995156823521"><ph name="FIRST_PART"/> • <ph name="SECOND_PART"/></translation>
-<translation id="6413980879783180524">Témagyűjtemények</translation>
 <translation id="6439114592976064011">A virtuálisvalóság-eszközök és -adatok használatának letiltása a webhelyek számára</translation>
 <translation id="6447842834002726250">Cookie-k</translation>
 <translation id="6452138246455930388">Árcsökkenés a megnyitott lapon: <ph name="OLD_PRICE"/> helyett <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
@@ -574,6 +577,7 @@
 <translation id="6950072572526089586">A felkeresett webhelyek információkat menthetnek az Ön által végzett műveletekről annak érdekében, hogy a várt módon működjenek (például hogy bejelentkezve maradhasson az adott webhelyen, illetve a bevásárlókosárban lévő tételek mentéséhez). A webhelyek gyakran ideiglenesen mentik ezeket az adatokat az eszközére.</translation>
 <translation id="6964291282260073066">A „WebGPU” le van tiltva.</translation>
 <translation id="6965382102122355670">OK</translation>
+<translation id="6972629891077993081">HID-eszközök</translation>
 <translation id="6980507581230208647">Rózsaszín téma</translation>
 <translation id="6980861169612950611">Törli a webhelyadatokat? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Kisegítő lehetőségek</translation>
@@ -581,13 +585,11 @@
 <translation id="6992014788289743568">A jelszavak ellenőrzésével növelheti a biztonságot, és biztonságosabban tárolhatja adatait</translation>
 <translation id="6992289844737586249">Kérdezzen rá, mielőtt engedélyezné a webhelyek számára a mikrofon használatát (ajánlott)</translation>
 <translation id="7000754031042624318">Kikapcsolva az Android beállításaiban</translation>
-<translation id="8683151724374457021">Ez a webhely kikövetkezteti az Ön által kedvelt dolgokat, majd hirdetéseket ajánl más webhelyeknek. Emellett lekéri az Önre vonatkozó hirdetéstémákat a Brave-ból, hogy relevánsabb hirdetéseket jelenítsen meg Önnek.</translation>
 <translation id="7036823721811529709">Hallgatás a háttérben</translation>
 <translation id="7044081119134178347">A kamera erre az alkalomra engedélyezve van</translation>
 <translation id="7053983685419859001">Letiltás</translation>
 <translation id="7055552182600664515">Lehetséges, hogy a szerzői joggal védett tartalmak lejátszásához a webhelyeknek tartalomvédelmi szolgáltatásokat kell használniuk. <ph name="BEGIN_LINK"/>További információ<ph name="END_LINK"/>.</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 elem kijelölve}other{# elem kijelölve}}</translation>
-<translation id="708014373017851679">A(z) „<ph name="APP_NAME"/>” elavult. Frissítse az alkalmazást.</translation>
 <translation id="7084115944294706056">Címsáv pozíciójának kiválasztása</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> elem kiválasztva. A lehetőségek a képernyő tetején találhatók.</translation>
 <translation id="7141896414559753902">Előugró ablakok és átirányítások letiltása a webhelyeken (ajánlott)</translation>
@@ -620,6 +622,7 @@ A Speciális védelem a következő Brave-beállításokat vezérli:</translatio
 <translation id="7423098979219808738">Kérdezzen rá</translation>
 <translation id="7423538860840206698">Le van tiltva a vágólap megtekintése</translation>
 <translation id="7425915948813553151">Sötét téma a webhelyeknél</translation>
+<translation id="2044383478723007273">Brave-színek</translation>
 <translation id="746412105358554870">JavaScript-optimalizálás és -biztonság</translation>
 <translation id="7478658909253570368">A webhelyek nem csatlakozhatnak soros portokhoz</translation>
 <translation id="7488573225650545859">Nézetlapok elrejtése az alkalmazáslistában</translation>
@@ -671,7 +674,6 @@ A Speciális védelem a következő Brave-beállításokat vezérli:</translatio
 <translation id="802154636333426148">Nem sikerült a letöltés</translation>
 <translation id="8033047164036749181">Feliratkozás az ettől a webhelytől érkező értesítésekre</translation>
 <translation id="8051193500142930381">A kamerát igénylő funkciók nem működnek majd</translation>
-<translation id="2495032782748793764">Brave – Alapértelmezett</translation>
 <translation id="8067883171444229417">Videó lejátszása</translation>
 <translation id="8068648041423924542">A tanúsítvány kiválasztása nem sikerült.</translation>
 <translation id="8077120325605624147">Bármely felkeresett webhely bármilyen hirdetést megjeleníthet Önnek</translation>
@@ -686,7 +688,6 @@ A Speciális védelem a következő Brave-beállításokat vezérli:</translatio
 <translation id="8163152278172770963">A webhelyek nem indíthatják el automatikusan a kép a képben módot</translation>
 <translation id="8168435359814927499">Tartalom</translation>
 <translation id="818487310457576362">A teljes képernyős nézetből való kilépéshez húzza az ujját a képernyő oldalától.</translation>
-<translation id="8186479265534291036">Nem működik a webhely? Harmadik féltől származó cookie-k letiltva</translation>
 <translation id="8197286292360124385"><ph name="PERMISSION_1"/> engedélyezve</translation>
 <translation id="8200772114523450471">Folytatás</translation>
 <translation id="8211406090763984747">A kapcsolat biztonságos</translation>
@@ -726,7 +727,6 @@ A Speciális védelem a következő Brave-beállításokat vezérli:</translatio
 <translation id="8514955299594277296">A webhelyek nem menthetnek adatokat az eszközre (nem ajánlott)</translation>
 <translation id="851751545965956758">Az eszközökhöz való csatlakozás megtiltása a webhelyeknek</translation>
 <translation id="8525306231823319788">Teljes képernyő</translation>
-<translation id="3275395224965468352">Ez a webhely lekéri az Önre vonatkozó hirdetéstémákat a Brave-ból, hogy relevánsabb hirdetéseket jelenítsen meg Önnek</translation>
 <translation id="854876774113449365">A felkeresett webhelyek beágyazhatnak más webhelyekről származó tartalmakat, például képeket, hirdetéseket és szöveget. Ezek az egyéb webhelyek engedélyt kérhetnek arra, hogy a webhelyen való böngészése során felhasználhassák az Önről elmentett adatokat. <ph name="BEGIN_LINK"/>További információ a beágyazott tartalmakról<ph name="END_LINK"/>.</translation>
 <translation id="8549127125482561383">A kérelmek megjelenítésének módja</translation>
 <translation id="4273503381657013953">Mostantól mindig a Brave-ot használhatja, amikor üzenetekben, dokumentumokban és más alkalmazásokban linkekre kattint (illetve böngészik köztük).</translation>
@@ -734,6 +734,7 @@ A Speciális védelem a következő Brave-beállításokat vezérli:</translatio
 <translation id="8593422116412089302">Ha be van kapcsolva, a webhelyek engedélyt kérhetnek arra, hogy felhasználják az Önről mentett adatokat. Ha ki van kapcsolva, a webhelyek nem kérhetik az Önről mentett adatok használatát.</translation>
 <translation id="8609465669617005112">Mozgatás felfelé</translation>
 <translation id="8617611086246832542">Ha be van kapcsolva, a webhelyek asztali nézete jelenik meg. Ha ki van kapcsolva, a webhelyek mobilnézete látható.</translation>
+<translation id="8625916342247441948">A webhelyek nem csatlakozhatnak HID-eszközökhöz</translation>
 <translation id="8670078035093027626">Az alapértelmezett böngésző alsó lapja teljes magasságban megnyitva</translation>
 <translation id="8676316391139423634">Ha be van kapcsolva, a webhelyek kérhetik a kézmozgása nyomon követését. Ha ki van kapcsolva, a webhelyek nem követhetik a kézmozgását.</translation>
 <translation id="8676374126336081632">Beírt szöveg törlése</translation>
@@ -757,7 +758,6 @@ A Speciális védelem a következő Brave-beállításokat vezérli:</translatio
 <translation id="8805385115381080995">Így gyorsabb a böngészés, mert a webhelyek kisebb valószínűséggel kérik meg arra, hogy igazolja, Ön valódi személy.</translation>
 <translation id="881644524232657178">Ha be van kapcsolva, a webhelyek használhatják az eszköz mozgás- és fényérzékelőit. Ha ki van kapcsolva, a webhelyek nem használhatnak érzékelőket.</translation>
 <translation id="8847988622838149491">USB</translation>
-<translation id="8874790741333031443">Próbálja meg átmenetileg engedélyezni a harmadik felektől származó cookie-kat, ami kisebb böngészési védelmet jelent, de a webhelyfunkciók nagyobb valószínűséggel működnek majd megfelelően.</translation>
 <translation id="7532165358672313130">Böngészési tevékenységei során a webhelyek egyeztethetnek a Brave-mal, és az előzőleg felkeresett webhely segítségével meggyőződhetnek arról, hogy Ön valószínűleg valódi felhasználó.</translation>
 <translation id="8899807382908246773">Tolakodó hirdetések</translation>
 <translation id="8903921497873541725">Nagyítás</translation>
@@ -783,7 +783,6 @@ A Speciális védelem a következő Brave-beállításokat vezérli:</translatio
 <translation id="913657688200966289">A(z) <ph name="APP_NAME"/> alkalmazásra vonatkozó engedélyeket az <ph name="BEGIN_LINK"/>Android-beállítások<ph name="END_LINK"/> között lehet aktiválni.</translation>
 <translation id="9138037198177304356">Értesítések engedélyezve</translation>
 <translation id="9138217887606523162">Jelenlegi nagyítási szint: <ph name="ZOOM_LEVEL"/>%%</translation>
-<translation id="915112772806845021">A webhelyek ezzel a funkcióval automatikusan elindíthatják a kép a képben módot. Így folytathatja a videónézést, miközben más feladatokra felszabadíthatja a képernyőt.</translation>
 <translation id="7359422048569205930">Engedélyezze a Brave-nak, hogy megjeleníthesse a legutóbbi lapokat az eszköz alkalmazáslistáján és a keresési találatok között. Ezt bármikor kikapcsolhatja a Brave beállításai között.</translation>
 <translation id="9162462602695099906">Ez az oldal veszélyes</translation>
 <translation id="9182556968660520230">A webhelyek nem játszhatnak le védett tartalmakat</translation>

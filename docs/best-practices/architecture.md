@@ -173,8 +173,16 @@ if (rewards_service) {  // Returns null when disabled
 **Don't use `shared_ptr` to take ownership of something you don't own.**
 
 Using `shared_ptr` on memory owned by another class causes crashes when the
-`shared_ptr` frees memory that is still referenced elsewhere. Avoid shared
-pointers unless there is a strong reason for shared ownership.
+`shared_ptr` frees memory that is still referenced elsewhere.
+
+**`std::shared_ptr` is banned in Chromium code outright** — there is no "strong
+reason for shared ownership" exception (see
+[CSM-005](coding-standards-memory.md#CSM-005) and the
+[Chromium smart pointer guidelines](https://www.chromium.org/developers/smart-pointer-guidelines/)).
+If you think you need shared ownership, rethink the design first; where it is
+genuinely unavoidable, use `scoped_refptr<T>` with a `base::RefCounted` type —
+but prefer redesign over reference counting (see
+[CSM-032](coding-standards-memory.md#CSM-032)).
 
 **BAD:**
 
@@ -634,16 +642,21 @@ if (!service)
 
 <a id="ARCH-028"></a>
 
-## ✅ Use `MaybeCreateForWebContents` for Conditional Tab Helpers
+## ✅ Use `MaybeCreateForWebContents` for Conditional WebContents Helpers
 
-**When a tab helper should not be attached to all web contents (e.g., skipped
+**This applies only to helpers that must be attached to the `WebContents`
+itself, because they also run on WebContents that are not tabs** (see
+[ARCH-074](#ARCH-074)). Tab-scoped features belong in `BraveTabFeatures`
+instead, where the same guards go in `BraveTabFeatures::Init()`.
+
+**When such a helper should not be attached to all web contents (e.g., skipped
 for incognito or when a feature is disabled), use a static
 `MaybeCreateForWebContents` method** with the appropriate guards instead of
 always creating and checking internally.
 
 ```cpp
 // ❌ WRONG - always create, check internally
-SerpMetricsTabHelper::CreateForWebContents(web_contents);
+FooHelper::CreateForWebContents(web_contents);
 
 // ✅ CORRECT - conditionally create with proper guards
 static void MaybeCreateForWebContents(content::WebContents* web_contents) {
@@ -651,9 +664,9 @@ static void MaybeCreateForWebContents(content::WebContents* web_contents) {
       web_contents->GetBrowserContext());
   if (!profile->IsRegularProfile())
     return;
-  if (!base::FeatureList::IsEnabled(kSerpMetrics))
+  if (!base::FeatureList::IsEnabled(kFoo))
     return;
-  SerpMetricsTabHelper::CreateForWebContents(web_contents);
+  FooHelper::CreateForWebContents(web_contents);
 }
 ```
 
@@ -1218,7 +1231,7 @@ feature's data and lifetime requirements. See
 
 | Scope              | Owner                               | Examples                                  |
 | ------------------ | ----------------------------------- | ----------------------------------------- |
-| **Tab**            | `TabFeatures`                       | Find-in-page, print preview, page actions |
+| **Tab**            | `TabFeatures` (`BraveTabFeatures`)  | Find-in-page, print preview, page actions |
 | **Browser Window** | `BrowserWindowFeatures`             | Omnibox, bookmarks bar, vertical tabs     |
 | **Profile**        | `BrowserContextKeyedServiceFactory` | Rewards, Wallet, sync services            |
 | **Global**         | `GlobalFeatures`                    | Process-wide features spanning profiles   |
@@ -1328,8 +1341,8 @@ class MyServiceFactory : public ProfileKeyedServiceFactory {
 };
 ```
 
-For tab/window features, create them in `TabFeatures::Init()` or
-`BrowserWindowFeatures::Init()` respectively.
+For tab/window features, create them in `BraveTabFeatures::Init()` (see
+[ARCH-074](#ARCH-074)) or `BrowserWindowFeatures::Init()` respectively.
 
 <a id="ARCH-068"></a>
 
@@ -1850,3 +1863,79 @@ FooFeature(Profile& profile) : profile_(profile) {}
 ```
 
 ---
+
+---
+
+<a id="ARCH-074"></a>
+
+## ✅ Own Tab-Scoped Features in `BraveTabFeatures`
+
+**A Brave feature scoped to a tab is a plain class held as a `std::unique_ptr`
+member of `BraveTabFeatures` and created in its `Init()`, not a
+`WebContentsUserData` tab helper attached in `brave::AttachTabHelpers()`.**
+Upstream is moving every desktop tab helper this way
+([crbug.com/540709814](https://crbug.com/540709814)), and per the
+[Chromium Browser Design Principles](https://chromium.googlesource.com/chromium/src/+/main/docs/chrome_browser_design_principles.md)
+`TabHelpers::AttachTabHelpers` becomes remove-only on desktop.
+
+- Desktop: `browser/ui/tabs/brave_tab_features.cc`.
+- Android: `browser/android/brave_tab_features.cc`, where the feature also runs
+  there.
+- If other code needs to reach the feature, expose it with UnownedUserData
+  (`X::From(tab)`), not `X::FromWebContents()`.
+
+```cpp
+// ❌ WRONG - a tab-scoped feature attached to the WebContents
+// browser/brave_tab_helpers.cc
+FooTabHelper::MaybeCreateForWebContents(web_contents);
+
+// ✅ CORRECT - owned by BraveTabFeatures
+// browser/ui/tabs/brave_tab_features.cc
+void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
+  TabFeatures::Init(tab, profile);
+  if (base::FeatureList::IsEnabled(kFoo)) {
+    foo_ = std::make_unique<FooTabFeature>(tab);
+  }
+}
+```
+
+`brave::AttachTabHelpers()` and `brave::AttachPrivacySensitiveTabHelpers()`
+remain only for helpers that must also attach to WebContents that are not tabs
+(for example, AI chat's associated contents or background contents), which is
+the same exception upstream allows. A presubmit check rejects `CreateFor*` calls
+in `brave_tab_features.cc` and new ones in `brave_tab_helpers.cc` unless the
+helper is on its allowlist.
+
+---
+
+<a id="ARCH-075"></a>
+
+## ❌ Don't Cache the Tab's `WebContents` in a Tab Feature
+
+**On desktop, a tab's `WebContents` is replaced when the tab is discarded, so a
+tab feature must not hold on to the `WebContents` it was created with.** The
+feature outlives the old contents: an observer bound to it stops receiving
+events, and a `WeakPtr` to it becomes null. See the contract on
+`TabInterface::GetContents()` in `components/tabs/public/tab_interface.h`.
+
+```cpp
+// ❌ WRONG - bound to the contents the tab had at Init()
+class FooTabFeature : public content::WebContentsObserver {
+ public:
+  explicit FooTabFeature(tabs::TabInterface& tab)
+      : WebContentsObserver(tab.GetContents()) {}
+};
+
+// ✅ CORRECT - follows the tab's contents across discards
+class FooTabFeature : public tabs::ContentsObservingTabFeature {
+ public:
+  explicit FooTabFeature(tabs::TabInterface& tab)
+      : ContentsObservingTabFeature(tab) {}
+};
+```
+
+When a feature only needs the contents occasionally, hold
+`raw_ref<tabs::TabInterface>` and call `tab_->GetContents()` at the point of
+use. Otherwise subscribe with `TabInterface::RegisterWillDiscardContents()`,
+which `ContentsObservingTabFeature` does for you. Android does not replace a
+tab's contents, but follow the same pattern there for portability.

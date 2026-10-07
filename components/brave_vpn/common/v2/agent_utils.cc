@@ -5,40 +5,45 @@
 
 #include "brave/components/brave_vpn/common/v2/agent_utils.h"
 
+#include <string>
+#include <string_view>
+
 #include "base/check.h"
 #include "base/environment.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
-#include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_vpn/common/v2/branding_buildflags.h"
 #include "build/build_config.h"
 
 #if BUILDFLAG(IS_WIN)
 #include <windows.h>
+#elif BUILDFLAG(IS_MAC)
+#include <servers/bootstrap.h>
 #endif
 
 namespace brave_vpn::v2 {
 namespace {
-constexpr char kAgentServerName[] = "brave_vpn_agent";
+constexpr char kAgentServerName[] = BUILDFLAG(VPN_AGENT_IPC_NAME);
 
-#if BUILDFLAG(IS_POSIX)
-// Returns the directory holding the agent's socket. This is where the
-// per-session scoping comes from on POSIX: both candidate directories are
-// already private to one login session, mode 0700, so the socket's own name can
-// be a constant.
-base::FilePath GetSocketDirectory() {
 #if BUILDFLAG(IS_MAC)
-  // The per-user confined NSTemporaryDirectory(), distinct for every user and
-  // unreadable by others, which is what "per session" means in practice on
-  // macOS, where concurrent GUI logins are per-user.
-  return base::PathService::CheckedGet(base::DIR_TEMP);
-#elif BUILDFLAG(IS_LINUX)
-  // /run/user/<uid>: mode 0700, created by pam_systemd at login and removed at
-  // last logout. Reading XDG_RUNTIME_DIR specifically: systemd exports
-  // XDG_RUNTIME_DIR to both session scopes and to `user@<uid>.service` units,
-  // so a systemd user unit and the browser agree on it.
+// Mojo only DCHECKs this, so a release build would silently register a
+// truncated or rejected name.
+static_assert(std::string_view(kAgentServerName).size() <
+                  static_cast<size_t>(BOOTSTRAP_MAX_NAME_LEN),
+              "Agent bootstrap name exceeds BOOTSTRAP_MAX_NAME_LEN");
+#endif  // BUILDFLAG(IS_MAC)
+
+#if BUILDFLAG(IS_LINUX)
+// Returns the directory holding the agent's socket. This is where the
+// per-session scoping comes from: a candidate directory is already private to
+// one login session, mode 0700, so the socket's own name can be a constant.
+// Reading XDG_RUNTIME_DIR specifically: systemd exports it to both session
+// scopes and to `user@<uid>.service` units, so a systemd user unit and the
+// browser agree on it.
+base::FilePath GetSocketDirectory() {
   auto env = base::Environment::Create();
   std::string runtime_dir =
       env->GetVar("XDG_RUNTIME_DIR").value_or(std::string());
@@ -48,11 +53,8 @@ base::FilePath GetSocketDirectory() {
     return base::FilePath();
   }
   return base::FilePath(runtime_dir);
-#else
-#error unsupported platform
-#endif
 }
-#endif  // BUILDFLAG(IS_POSIX)
+#endif  // BUILDFLAG(IS_LINUX)
 
 }  // namespace
 
@@ -65,22 +67,28 @@ std::optional<mojo::NamedPlatformChannel::ServerName> GetAgentServerName() {
   CHECK(::ProcessIdToSessionId(::GetCurrentProcessId(), &session_id));
   return base::ASCIIToWide(
       base::StrCat({kAgentServerName, ".", base::NumberToString(session_id)}));
-#else
+#elif BUILDFLAG(IS_MAC)
+  // Deliberately not scoped by a directory: the bootstrap namespace is already
+  // per-user and per-session, so a path prefix would add no benefit.
+  return std::string(kAgentServerName);
+#elif BUILDFLAG(IS_LINUX)
   return GetAgentServerNameForDirectory(GetSocketDirectory());
-#endif  // BUILDFLAG(IS_WIN)
+#else
+#error unsupported platform
+#endif
 }
 
-#if BUILDFLAG(IS_POSIX)
+#if BUILDFLAG(IS_LINUX)
 
 std::optional<mojo::NamedPlatformChannel::ServerName>
 GetAgentServerNameForDirectory(const base::FilePath& socket_dir) {
-  if (socket_dir.empty()) {
+  // Mojo uses the ServerName verbatim as the sockaddr_un path, so it must be
+  // absolute. A bare name would bind() into whatever the process's current
+  // working directory happens to be.
+  if (socket_dir.empty() || !socket_dir.IsAbsolute()) {
     return std::nullopt;
   }
 
-  // On POSIX mojo::NamedPlatformChannel uses the ServerName verbatim as the
-  // sockaddr_un path, so it must be absolute. A bare name would bind() into
-  // whatever the process's current working directory happens to be.
   const base::FilePath path = socket_dir.Append(kAgentServerName);
 
   // Deliberately no truncation or fallback: an over-long path makes bind() and
@@ -93,6 +101,6 @@ GetAgentServerNameForDirectory(const base::FilePath& socket_dir) {
   return path.value();
 }
 
-#endif  // BUILDFLAG(IS_POSIX)
+#endif  // BUILDFLAG(IS_LINUX)
 
 }  // namespace brave_vpn::v2

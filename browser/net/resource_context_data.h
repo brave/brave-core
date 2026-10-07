@@ -75,6 +75,7 @@ class ResourceContextData : public base::SupportsUserData::Data {
           url_loader_factory_type,
       const url::Origin& request_initiator,
       const net::IsolationInfo& isolation_info,
+      std::optional<int64_t> navigation_id,
       scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner);
 
   static BraveProxyingWebSocket<T>* CreateProxyingWebSocket(

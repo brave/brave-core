@@ -2,12 +2,38 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# /// script
+# requires-python = '>=3.8,<3.9'
+# dependencies = [
+#   'pytype==2024.1.24',
+#   'attrs==21.4.0',
+#   'pyyaml==5.3.1',
+#   'typing-inspect==0.7.1',
+#   'mypy-extensions==0.4.3',
+#   'importlab==0.8',
+#   'networkx==2.5',
+#   'decorator==5.0.9',
+#   'ninja==1.10.2.4',
+#   'libcst==1.1.0',
+#   'typing-extensions==4.3.0',
+#   'jinja2==3.1.2',
+#   'toml==0.10.2',
+#   'pyparsing==2.4.7',
+#   'tabulate==0.8.10',
+#   'markupsafe==2.0.1',
+#   'pydot==1.4.2',
+#   'pycnite==2023.10.11'
+# ]
+# ///
+
 import os
 import sys
 import subprocess
 
-TESTING_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                           os.pardir))
+TESTING_DIR = os.path.abspath(
+  os.path.join(os.path.dirname(__file__), os.pardir)
+)
 
 
 def main() -> int:

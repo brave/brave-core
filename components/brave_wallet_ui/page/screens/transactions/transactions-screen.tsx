@@ -23,9 +23,7 @@ import {
   selectAllUserAssetsFromQueryResult,
   selectAllBlockchainTokensFromQueryResult,
 } from '../../../common/slices/entities/blockchain-token.entity'
-import {
-  networkEntityAdapter, //
-} from '../../../common/slices/entities/network.entity'
+import { networkSelectors } from '../../../common/slices/entities/network.entity'
 import {
   filterTransactionsBySearchValue,
   makeSearchableTransaction,
@@ -45,17 +43,17 @@ import { UISelectors } from '../../../common/selectors'
 // components
 import {
   WalletPageWrapper, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   ActivityPageHeader, //
-} from '../../../components/desktop/card-headers/activity_page_header'
+} from '$wallet/page/components/card_headers/activity_page_header'
 import { SearchBar } from '../../../components/shared/search-bar'
 import {
   TransactionDetailsModal, //
 } from '../../../components/desktop/popup-modals/transaction_details_modal/transaction_details_modal'
 import {
   VirtualizedTransactionList, //
-} from '../../../components/desktop/virtualized_transaction_list/virtualized_transaction_list'
+} from '$wallet/page/components/virtualized_transaction_list/virtualized_transaction_list'
 
 // styles
 import { Column, Text, VerticalSpacer } from '../../../components/shared/style'
@@ -63,7 +61,7 @@ import {
   LoadingSkeletonStyleProps,
   Skeleton,
 } from '../../../components/shared/loading-skeleton/styles'
-import { EmptyTransactionsIcon } from './transaction-screen.styles'
+import { EmptyTransactionsIcon } from '../page-screen.styles'
 
 const txListItemSkeletonProps: LoadingSkeletonStyleProps = {
   width: '100%',
@@ -90,7 +88,7 @@ export const TransactionsScreen = (props: Props) => {
   const [searchValue, setSearchValue] = React.useState<string>('')
 
   // route params
-  const { address, chainId, chainCoinType } = React.useMemo(() => {
+  const { address, chainId } = React.useMemo(() => {
     const searchParams = new URLSearchParams(history.location.search)
     return {
       address: searchParams.get('address'),
@@ -127,16 +125,8 @@ export const TransactionsScreen = (props: Props) => {
   const { data: networksRegistry } = useGetNetworksRegistryQuery()
 
   const specificNetworkFromParam =
-    chainId
-    && chainId !== AllNetworksOption.chainId
-    && chainCoinType !== undefined
-    && networksRegistry
-      ? networksRegistry.entities[
-          networkEntityAdapter.selectId({
-            chainId,
-            coin: chainCoinType,
-          })
-        ]
+    chainId && chainId !== AllNetworksOption.chainId
+      ? networkSelectors.selectById(networksRegistry, chainId)
       : undefined
 
   const foundNetworkFromParam = chainId
@@ -223,7 +213,7 @@ export const TransactionsScreen = (props: Props) => {
             style={{ minWidth: '100%' }}
           >
             <SearchBar
-              placeholder={getLocale('braveWalletSearchText')}
+              placeholder={getLocale(S.BRAVE_WALLET_SEARCH_TEXT)}
               action={(e) => setSearchValue(e.target.value)}
               value={searchValue}
               isV2={true}
@@ -257,10 +247,10 @@ export const TransactionsScreen = (props: Props) => {
                   textSize='18px'
                   isBold
                 >
-                  {getLocale('braveWalletNoTransactionsYet')}
+                  {getLocale(S.BRAVE_WALLET_NO_TRANSACTIONS_YET)}
                 </Text>
                 <Text textSize='14px'>
-                  {getLocale('braveWalletNoTransactionsYetDescription')}
+                  {getLocale(S.BRAVE_WALLET_NO_TRANSACTIONS_YET_DESCRIPTION)}
                 </Text>
               </Column>
             )}
@@ -280,7 +270,9 @@ export const TransactionsScreen = (props: Props) => {
                   padding={isPanel ? '32px 0px 64px 0px' : '0px'}
                 >
                   <Text textSize='14px'>
-                    {getLocale('braveWalletConnectHardwareSearchNothingFound')}
+                    {getLocale(
+                      S.BRAVE_WALLET_CONNECT_HARDWARE_SEARCH_NOTHING_FOUND,
+                    )}
                   </Text>
                 </Column>
               )}

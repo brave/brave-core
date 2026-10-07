@@ -9,6 +9,7 @@ import("//brave/components/brave_origin/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 import("//extensions/buildflags/buildflags.gni")
 
@@ -17,29 +18,40 @@ assert(toolkit_views)
 source_set("sidebar") {
   sources = [
     "sidebar.h",
+    "sidebar_controller.h",
     "sidebar_model.h",
+    "sidebar_service_factory.h",
+    "sidebar_tab_helper.h",
+    "sidebar_utils.h",
+    "sidebar_web_panel_controller.h",
   ]
 
   public_deps = [
     "//base",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_news/common/buildflags",
+    "//brave/components/brave_talk/buildflags",
+    "//brave/components/brave_wallet/common/buildflags",
+    "//brave/components/playlist/core/common/buildflags",
     "//brave/components/sidebar/browser",
+    "//chrome/browser/ui/tabs:tab_strip_model_observer",
+    "//chrome/browser/ui/tabs:tabs_public",
     "//components/history/core/browser",
+    "//components/keyed_service/content",
+    "//ui/base",
+    "//ui/base/unowned_user_data",
+    "//ui/views",
   ]
 }
 
 source_set("sidebar_impl") {
   sources = [
     "sidebar_controller.cc",
-    "sidebar_controller.h",
     "sidebar_model.cc",
     "sidebar_service_factory.cc",
-    "sidebar_service_factory.h",
     "sidebar_tab_helper.cc",
-    "sidebar_tab_helper.h",
     "sidebar_utils.cc",
-    "sidebar_utils.h",
     "sidebar_web_panel_controller.cc",
-    "sidebar_web_panel_controller.h",
   ]
 
   public_deps = [ "//brave/components/sidebar/browser" ]
@@ -47,6 +59,7 @@ source_set("sidebar_impl") {
   deps = [
     ":sidebar",
     "//base",
+    "//brave/browser/misc_metrics",
     "//brave/browser/ui/views/frame/split_view",
     "//brave/components/brave_origin/buildflags",
     "//brave/components/brave_talk/buildflags",
@@ -69,9 +82,14 @@ source_set("sidebar_impl") {
     "//components/image_fetcher/core",
     "//components/pref_registry",
     "//components/prefs",
+    "//components/tabs:public",
     "//components/user_prefs",
     "//ui/base",
   ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/browser" ]
+  }
 
   if (enable_brave_wallet) {
     deps += [
@@ -97,6 +115,7 @@ source_set("test_support") {
     ":sidebar_impl",
     "//base",
     "//brave/browser/ui/views/frame",
+    "//brave/browser/ui/views/frame/split_view",
     "//brave/browser/ui/views/sidebar",
     "//brave/components/sidebar/browser",
     "//chrome/browser/ui",
@@ -119,13 +138,17 @@ source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "//brave/browser/ui/sidebar/sidebar_browsertest.cc" ]
+  sources = [
+    "//brave/browser/ui/sidebar/sidebar_browsertest.cc",
+    "//brave/browser/ui/sidebar/web_panel_browsertest.cc",
+  ]
 
   deps = [
     ":sidebar",
     ":sidebar_impl",
     ":test_support",
     "//base",
+    "//base/i18n:test_support",
     "//brave/app:command_ids",
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/views/frame",
@@ -139,6 +162,7 @@ source_set("browser_tests") {
     "//brave/components/playlist/core/common/buildflags",
     "//brave/components/sidebar/browser",
     "//brave/components/sidebar/common",
+    "//brave/components/tor/buildflags",
     "//chrome/browser",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/search_engines",
@@ -148,11 +172,13 @@ source_set("browser_tests") {
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     "//chrome/browser/ui/views:layout_provider",
+    "//chrome/browser/ui/views/frame:contents_web_view",
     "//chrome/common:constants",
     "//chrome/test:test_support",
     "//chrome/test:test_support_ui",
     "//components/prefs",
     "//content/test:test_support",
+    "//net:test_support",
     "//ui/display:test_support",
     "//ui/events",
     "//ui/events:test_support",
@@ -161,6 +187,10 @@ source_set("browser_tests") {
 
   if (enable_ai_chat) {
     deps += [ "//brave/components/ai_chat/core/common" ]
+  }
+
+  if (enable_tor) {
+    deps += [ "//brave/browser/tor" ]
   }
 
   if (enable_brave_news) {
@@ -183,22 +213,31 @@ source_set("interactive_ui_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "sidebar_interactive_ui_tests.cc" ]
+  sources = [
+    "sidebar_interactive_ui_tests.cc",
+    "web_panel_interactive_ui_tests.cc",
+  ]
 
   deps = [
+    ":sidebar",
     ":sidebar_impl",
     ":test_support",
     "//base",
+    "//brave/browser/ui/views/frame",
+    "//brave/browser/ui/views/frame/split_view",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/sidebar/browser",
+    "//brave/components/sidebar/common",
     "//chrome/browser/ui",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui/views/frame:multi_contents_view_delegate",
     "//chrome/test:test_support",
     "//chrome/test:test_support_ui",
     "//content/public/browser",
     "//content/test:test_support",
     "//ui/base",
+    "//ui/views",
     "//url",
   ]
 

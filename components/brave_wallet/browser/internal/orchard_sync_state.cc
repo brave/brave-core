@@ -300,10 +300,14 @@ OrchardSyncState::ResetAccountSyncState(
     }
     auto reset_account_sync_state_result =
         storage_.ResetAccountSyncState(account_id, account_birthday_block);
-    if (!reset_account_sync_state_result.has_value() ||
-        reset_account_sync_state_result.value() !=
-            OrchardStorage::Result::kSuccess) {
+    if (!reset_account_sync_state_result.has_value()) {
       return base::unexpected(reset_account_sync_state_result.error());
+    }
+    if (reset_account_sync_state_result.value() !=
+        OrchardStorage::Result::kSuccess) {
+      return base::unexpected(
+          OrchardStorage::Error{OrchardStorage::ErrorCode::kInternalError,
+                                "Failed to reset account sync state"});
     }
     return tx->Commit();
   }

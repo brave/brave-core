@@ -5,15 +5,15 @@
 
 #include "base/strings/string_split.h"
 #include "brave/browser/tor/tor_profile_manager.h"
-#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
-#include "brave/browser/ui/views/location_bar/onion_location_view.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
+#include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
+#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#include "chrome/browser/ui/views/page_action/test_support/page_action_test_support.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
@@ -67,20 +67,18 @@ std::unique_ptr<net::test_server::HttpResponse> HandleSetStrictCookie(
   return response;
 }
 
-IconLabelBubbleView* GetOnionLocationView(Browser* browser) {
+IconLabelBubbleView* GetOnionLocationView(BrowserWindowInterface* browser) {
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
   if (!browser_view) {
     return nullptr;
   }
-  BraveLocationBarView* brave_location_bar_view =
-      static_cast<BraveLocationBarView*>(browser_view->GetLocationBarView());
-  if (!brave_location_bar_view) {
-    return nullptr;
-  }
-  return brave_location_bar_view->GetOnionLocationView();
+  auto* provider = browser_view->toolbar_button_provider();
+  return page_actions::GetIconLabelBubbleViewForTesting(
+      provider->GetPageActionViewInterface(kActionShowOnionLocation),
+      kActionShowOnionLocation);
 }
 
-void ClickOnionLocationIcon(Browser* browser) {
+void ClickOnionLocationIcon(BrowserWindowInterface* browser) {
   auto* onion_location_view = GetOnionLocationView(browser);
   ASSERT_TRUE(onion_location_view);
   ui::MouseEvent pressed(ui::EventType::kMousePressed, gfx::Point(),
@@ -140,7 +138,7 @@ class SameSiteStrictCookieTorBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(SameSiteStrictCookieTorBrowserTest,
                        OpenLinkInTorDoesNotSendSameSiteStrictCookie) {
-  Browser* tor_browser =
+  BrowserWindowInterface* tor_browser =
       TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
 
   const auto set_cookie_url =
@@ -185,7 +183,7 @@ IN_PROC_BROWSER_TEST_F(SameSiteStrictCookieTorBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(SameSiteStrictCookieTorBrowserTest, OnionLocation) {
-  Browser* tor_browser =
+  BrowserWindowInterface* tor_browser =
       TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
 
   const auto set_cookie_url =
@@ -214,7 +212,7 @@ IN_PROC_BROWSER_TEST_F(SameSiteStrictCookieTorBrowserTest, OnionLocation) {
 IN_PROC_BROWSER_TEST_F(
     SameSiteStrictCookieTorBrowserTest,
     BlockedOnionLinkCrossSiteDoesNotSendSameSiteStrictCookie) {
-  Browser* tor_browser =
+  BrowserWindowInterface* tor_browser =
       TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
 
   const GURL set_cookie_url =

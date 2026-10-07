@@ -108,14 +108,6 @@ extension TabState {
       view.alpha = 1.0
     }
   }
-
-  var containsWebPage: Bool {
-    if let url = visibleURL {
-      return url.isWebPage()
-    }
-
-    return false
-  }
 }
 
 extension SecureContentState {

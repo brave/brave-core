@@ -8,4 +8,4 @@ substitutions:
       Build a BraveComponentLoader instead of a ComponentLoader.
     regex:
       pattern: 'new ComponentLoader('
-      replace: 'new BraveComponentLoader('
+      replace: 'new CurrentComponentLoader('

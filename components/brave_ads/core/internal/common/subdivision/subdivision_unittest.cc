@@ -19,7 +19,7 @@
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "net/http/http_status_code.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -88,7 +88,7 @@ TEST_F(BraveAdsSubdivisionTest, DoNotFetchIfUserHasNotJoinedBraveRewards) {
   SetProfileBooleanPref(brave_rewards::prefs::kEnabled, false);
 }
 
-TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingOutOfNotificationAds) {
+TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenNotificationAdsAreDisabled) {
   // Arrange
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
@@ -98,9 +98,9 @@ TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingOutOfNotificationAds) {
   SetProfileBooleanPref(prefs::kNotificationsEnabled, false);
 }
 
-TEST_F(BraveAdsSubdivisionTest, FetchWhenOptingInToNotificationAds) {
+TEST_F(BraveAdsSubdivisionTest, FetchWhenNotificationAdsAreEnabled) {
   // Arrange
-  test::OptOutOfAllAds();
+  test::DisableAllAds();
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
@@ -110,7 +110,7 @@ TEST_F(BraveAdsSubdivisionTest, FetchWhenOptingInToNotificationAds) {
   SetProfileBooleanPref(prefs::kNotificationsEnabled, true);
 }
 
-TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingOutOfNewTabPageAds) {
+TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenNewTabPageAdsAreDisabled) {
   // Arrange
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
@@ -119,14 +119,12 @@ TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingOutOfNewTabPageAds) {
   // Act & Assert
   SetProfileBooleanPref(
       ntp_background_images::prefs::kNewTabPageShowBackgroundImage, false);
-  SetProfileBooleanPref(ntp_background_images::prefs::
-                            kNewTabPageShowSponsoredImagesBackgroundImage,
-                        false);
+  SetProfileBooleanPref(prefs::kSponsoredEnabled, false);
 }
 
-TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingInToNewTabPageAds) {
+TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenNewTabPageAdsAreEnabled) {
   // Arrange
-  test::OptOutOfAllAds();
+  test::DisableAllAds();
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
@@ -135,31 +133,29 @@ TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingInToNewTabPageAds) {
   // Act & Assert
   SetProfileBooleanPref(
       ntp_background_images::prefs::kNewTabPageShowBackgroundImage, true);
-  SetProfileBooleanPref(ntp_background_images::prefs::
-                            kNewTabPageShowSponsoredImagesBackgroundImage,
-                        true);
+  SetProfileBooleanPref(prefs::kSponsoredEnabled, true);
 }
 
-TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingOutOfSearchResultAds) {
+TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenSponsoredAdsAreDisabled) {
   // Arrange
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
   EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
 
   // Act & Assert
-  SetProfileBooleanPref(prefs::kOptedInToSearchResultAds, false);
+  SetProfileBooleanPref(prefs::kSponsoredEnabled, false);
 }
 
-TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingInToSearchResultAds) {
+TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenSponsoredAdsAreEnabled) {
   // Arrange
-  test::OptOutOfAllAds();
+  test::DisableAllAds();
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
   EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
 
   // Act & Assert
-  SetProfileBooleanPref(prefs::kOptedInToSearchResultAds, true);
+  SetProfileBooleanPref(prefs::kSponsoredEnabled, true);
 }
 
 TEST_F(BraveAdsSubdivisionTest,

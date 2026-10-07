@@ -18,7 +18,7 @@ import {
 import { useLocalStorage } from './use_local_storage'
 
 // utils
-import { networkEntityAdapter } from '../slices/entities/network.entity'
+import { getNetworkId } from '../slices/entities/network.entity'
 import {
   makeInitialFilteredOutNetworkKeys, //
 } from '../../utils/local-storage-utils'
@@ -54,14 +54,9 @@ export const usePortfolioVisibleNetworks = () => {
     React.useMemo(() => {
       const visibleNetworks = networksList.filter(
         (network) =>
-          !filteredOutPortfolioNetworkKeys.includes(
-            networkEntityAdapter.selectId(network).toString(),
-          ),
+          !filteredOutPortfolioNetworkKeys.includes(getNetworkId(network)),
       )
-      return [
-        visibleNetworks,
-        visibleNetworks.map(networkEntityAdapter.selectId),
-      ]
+      return [visibleNetworks, visibleNetworks.map(getNetworkId)]
     }, [networksList, filteredOutPortfolioNetworkKeys])
 
   // render

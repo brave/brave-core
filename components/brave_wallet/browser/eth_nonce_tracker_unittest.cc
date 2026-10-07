@@ -9,8 +9,8 @@
 #include <string>
 
 #include "base/files/scoped_temp_dir.h"
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
@@ -21,11 +21,9 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
-#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -53,31 +51,13 @@ class EthNonceTrackerUnitTest : public testing::Test {
 
   void WaitForResponse() { task_environment_.RunUntilIdle(); }
 
-  void GetNextNonce(EthNonceTracker* tracker,
-                    const std::string& chain_id,
-                    const mojom::AccountIdPtr& from,
-                    bool expected_success,
-                    uint256_t expected_nonce) {
-    base::RunLoop run_loop;
-    tracker->GetNextNonce(
-        chain_id, from,
-        base::BindLambdaForTesting([&](bool success, uint256_t nonce) {
-          EXPECT_EQ(expected_success, success);
-          EXPECT_EQ(expected_nonce, nonce);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-  }
-
   void SetTransactionCount(uint256_t count) {
     transaction_count_ = count;
     url_loader_factory_.ClearResponses();
 
-    // See JsonRpcService::SetNetwork() to better understand where the
-    // http://localhost:7545 URL used below is coming from.
     url_loader_factory_.AddResponse(
         network_manager_
-            ->GetNetworkURL(mojom::kLocalhostChainId, mojom::CoinType::ETH)
+            ->GetNetworkURL(mojom::kPolygonMainnetChainId, mojom::CoinType::ETH)
             .spec(),
         GetResultString());
     url_loader_factory_.AddResponse(
@@ -118,18 +98,24 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
                     mojom::AccountKind::kDerived,
                     "0x2f015c60e0be116b1f0cd534704db9c92118fb6a"));
 
+  base::test::TestFuture<bool, uint256_t> future;
+
   // tx count: 2, confirmed: null, pending: null
-  GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, eth_acc, true, 2);
+  nonce_tracker.GetNextNonce(mojom::kMainnetChainId, eth_acc,
+                             future.GetCallback());
+  EXPECT_EQ(future.Take(), std::make_tuple(true, uint256_t{2}));
 
   // tx count: 2, confirmed: [2], pending: null
   EthTxMeta meta(eth_acc, std::make_unique<EthTransaction>());
   meta.set_id(TxMeta::GenerateMetaID());
-  meta.set_chain_id(mojom::kLocalhostChainId);
+  meta.set_chain_id(mojom::kMainnetChainId);
   meta.set_status(mojom::TransactionStatus::Confirmed);
   meta.tx()->set_nonce(uint256_t(2));
   ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
-  GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, eth_acc, true, 3);
+  nonce_tracker.GetNextNonce(mojom::kMainnetChainId, eth_acc,
+                             future.GetCallback());
+  EXPECT_EQ(future.Take(), std::make_tuple(true, uint256_t{3}));
 
   // tx count: 2, confirmed: [2, 3], pending: null
   meta.set_id(TxMeta::GenerateMetaID());
@@ -137,7 +123,9 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   meta.tx()->set_nonce(uint256_t(3));
   ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
-  GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, eth_acc, true, 4);
+  nonce_tracker.GetNextNonce(mojom::kMainnetChainId, eth_acc,
+                             future.GetCallback());
+  EXPECT_EQ(future.Take(), std::make_tuple(true, uint256_t{4}));
 
   // tx count: 2, confirmed: [2, 3], pending: [4, 4]
   meta.set_status(mojom::TransactionStatus::Submitted);
@@ -147,17 +135,23 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   meta.set_id(TxMeta::GenerateMetaID());
   ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
-  GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, eth_acc, true, 5);
+  nonce_tracker.GetNextNonce(mojom::kMainnetChainId, eth_acc,
+                             future.GetCallback());
+  EXPECT_EQ(future.Take(), std::make_tuple(true, uint256_t{5}));
 
   // tx count: 2, confirmed: [2, 3], pending: [4, 4], sign: [5]
   meta.set_status(mojom::TransactionStatus::Signed);
   meta.set_id(TxMeta::GenerateMetaID());
   ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
-  GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, eth_acc, true, 5);
+  nonce_tracker.GetNextNonce(mojom::kMainnetChainId, eth_acc,
+                             future.GetCallback());
+  EXPECT_EQ(future.Take(), std::make_tuple(true, uint256_t{5}));
 
-  // tx count: 2, confirmed: null, pending: null (mainnet)
-  GetNextNonce(&nonce_tracker, mojom::kMainnetChainId, eth_acc, true, 2);
+  // tx count: 2, confirmed: null, pending: null (polygon)
+  nonce_tracker.GetNextNonce(mojom::kPolygonMainnetChainId, eth_acc,
+                             future.GetCallback());
+  EXPECT_EQ(future.Take(), std::make_tuple(true, uint256_t{2}));
 }
 
 }  // namespace brave_wallet

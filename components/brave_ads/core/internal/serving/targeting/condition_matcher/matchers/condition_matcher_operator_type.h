@@ -17,6 +17,8 @@ enum class ConditionMatcherOperatorType {
   kLessThanOrEqual
 };
 
+enum class ConditionMatchResult { kNoMatch, kMatch, kInvalid };
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_TARGETING_CONDITION_MATCHER_MATCHERS_CONDITION_MATCHER_OPERATOR_TYPE_H_

@@ -113,6 +113,8 @@ function installDepotTools(options = config.defaultOptions) {
           ['clone', config.depotToolsRepo, config.depotToolsDir],
           options,
         )
+        // Bootstrap CIPD, Python and other dependencies.
+        bootstrapDepotTools(options)
       })
     }
 
@@ -128,7 +130,7 @@ function installDepotTools(options = config.defaultOptions) {
               config.depotToolsDir,
               enforcedDepotToolsRef,
             )
-            // Bootstrap CIPD, Python and other dependencies manually.
+            // Bootstrap CIPD, Python and other dependencies.
             bootstrapDepotTools(options)
           },
         )
@@ -136,7 +138,7 @@ function installDepotTools(options = config.defaultOptions) {
     }
 
     if (process.platform === 'win32' && isCI) {
-      // Bootstrap gsutil on Windows manually to fix random LockFile issues.
+      // Bootstrap gsutil on Windows to fix random LockFile issues.
       util.run(path.join(config.depotToolsDir, 'gsutil.py.bat'), [], {
         ...options,
         stdio: 'pipe',

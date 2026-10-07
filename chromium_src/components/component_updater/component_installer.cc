@@ -51,6 +51,8 @@ void ComponentInstaller::Register(
           "bjbcblmdcnggnibecjikpoljcgkbgphl",  // WASM TTS Engine
           "ninodabcejpeglfjbkhdplaoglpcbffj",  // Actor Safety Lists
           "pficcddpglkpaaihklmahepgjmefdnom",  // Captcha Provider
+          "fklghjjljmnfjoepjmlobpekiapffcja",  // OptGuideOnDeviceModel
+          "ceofaddefefcbblgcgnibnonglccbfja",  // OptGuideOnDeviceModelsManifest
 #if BUILDFLAG(IS_ANDROID)
           "lmelglejhemejginpboagddgdfbepgmp",  // Optimization Hints
           "obedbbhbpmojnkanicioggnmelmoomoc"   // OnDeviceHeadSuggest

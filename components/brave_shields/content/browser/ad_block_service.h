@@ -190,6 +190,7 @@ class AdBlockService {
       base::OnceCallback<void(std::pair<base::DictValue, base::DictValue>)>;
   void GetDebugInfoAsync(GetDebugInfoCallback callback);
   void DiscardRegex(uint64_t regex_id);
+  void DropDATCache();
 
   void SetupDiscardPolicy(const adblock::RegexManagerDiscardPolicy& policy);
 

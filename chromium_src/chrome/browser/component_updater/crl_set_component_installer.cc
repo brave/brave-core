@@ -4,11 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-
-#define RegisterCRLSetComponent RegisterCRLSetComponent_ChromiumImpl
-#include <chrome/browser/component_updater/crl_set_component_installer.cc>
-#undef RegisterCRLSetComponent
-
 #include "chrome/browser/browser_process.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -26,11 +21,6 @@ void OnCRLSetRegistered() {
 #endif
 }
 
-void RegisterCRLSetComponent(ComponentUpdateService* cus) {
-  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<CRLSetPolicy>());
-  installer->Register(g_browser_process->component_updater(),
-                      base::BindOnce(&OnCRLSetRegistered));
-}
-
 }  // namespace component_updater
+
+#include <chrome/browser/component_updater/crl_set_component_installer.cc>

@@ -22,7 +22,6 @@ import { UISelectors, WalletSelectors } from '../../../common/selectors'
 // Types
 import {
   BraveWallet,
-  CoinTypesMap,
   WalletRoutes,
   AccountModalTypes,
   AccountPageTabs,
@@ -43,7 +42,7 @@ import {
 import { filterNetworksForAccount } from '../../../utils/network-utils'
 import {
   makeAccountRoute,
-  makeFundWalletRoute,
+  makeBuyRoute,
   makePortfolioAssetRoute,
   openTab,
 } from '../../../utils/routes-utils'
@@ -69,6 +68,7 @@ import {
   EmptyStateWrapper,
   SyncAlert,
   SyncAlertWrapper,
+  ZCashMigrationBannerWrapper,
 } from './account_details.style'
 import {
   Column,
@@ -76,35 +76,35 @@ import {
   VerticalSpace,
   Text,
 } from '../../../components/shared/style'
-import { EmptyTransactionsIcon } from '../../../components/desktop/views/portfolio/style'
-import { NftGrid } from '../../../components/desktop/views/nfts/components/nfts.styles'
+import { EmptyTransactionsIcon } from '../page-screen.styles'
+import { NftGrid } from '../nfts/nfts.styles'
 
 // Components
 import {
   PortfolioAssetItemLoadingSkeleton, //
-} from '../../../components/desktop/portfolio-asset-item/portfolio-asset-item-loading-skeleton'
-import { PortfolioAssetItem } from '../../../components/desktop/portfolio-asset-item/index'
+} from '$wallet/page/components/portfolio_asset_item/portfolio_asset_item_loading_skeleton'
+import { PortfolioAssetItem } from '$wallet/page/components/portfolio_asset_item/portfolio_asset_item'
 import {
   AccountDetailsHeader, //
-} from '../../../components/desktop/card-headers/account-details-header'
+} from '$wallet/page/components/card_headers/account_details_header'
 import {
   SegmentedControl, //
 } from '../../../components/shared/segmented_control/segmented_control'
 import {
   NFTGridViewItem, //
-} from '../../../components/desktop/views/portfolio/components/nft-grid-view/nft-grid-view-item'
+} from '../nfts/components/nft_grid_views/nft_grid_view_item/nft_grid_view_item'
 import {
   NftsEmptyState, //
-} from '../../../components/desktop/views/nfts/components/nfts-empty-state/nfts-empty-state'
+} from '../nfts/components/nfts_empty_state/nfts_empty_state'
 import {
   AddOrEditNftModal, //
 } from '../../../components/desktop/popup-modals/add-edit-nft-modal/add-edit-nft-modal'
 import {
   WalletPageWrapper, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   EmptyTokenListState, //
-} from '../../../components/desktop/empty_token_list_state/empty_token_list_state'
+} from '$wallet/page/components/empty_token_list_state/empty_token_list_state'
 import {
   ViewOnBlockExplorerModal, //
 } from '../../../components/desktop/popup-modals/view_on_block_explorer_modal/view_on_block_explorer_modal'
@@ -116,13 +116,16 @@ import {
 } from './components/shield_account_alert/shield_account_alert'
 import {
   VirtualizedTransactionList, //
-} from '../../../components/desktop/virtualized_transaction_list/virtualized_transaction_list'
+} from '$wallet/page/components/virtualized_transaction_list/virtualized_transaction_list'
 import {
   ShieldZCashAccountModal, //
 } from '../../../components/desktop/popup-modals/shield_zcash_account/shield_zcash_account'
 import {
   TransactionDetailsModal, //
 } from '../../../components/desktop/popup-modals/transaction_details_modal/transaction_details_modal'
+import {
+  ZCashMigrationBanner, //
+} from '$wallet/page/components/banners/zcash_migration_banner/zcash_migration_banner'
 
 // options
 import { AccountDetailsOptions } from '../../../options/nav-options'
@@ -353,38 +356,15 @@ export const AccountDetails = () => {
     if (!selectedAccount) {
       return []
     }
-    // Since LOCALHOST's chainId is shared between coinType's
-    // this check will make sure we are returning the correct
-    // LOCALHOST asset for each account.
-    const hasLocalHostNetwork = networkList.some(
-      (network) =>
-        network.chainId === BraveWallet.LOCALHOST_CHAIN_ID
-        && network.coin === selectedAccount.accountId.coin,
-    )
-    const coinName = CoinTypesMap[selectedAccount.accountId.coin]
-    const localHostCoins = userVisibleTokensInfo.filter(
-      (token) => token.chainId === BraveWallet.LOCALHOST_CHAIN_ID,
-    )
-    const accountsLocalHost = localHostCoins.find(
-      (token) => token.symbol.toUpperCase() === coinName,
-    )
+
     const chainList = filterNetworksForAccount(
       networkList,
       selectedAccount.accountId,
     ).map((network) => network.chainId)
     const list =
-      userVisibleTokensInfo.filter(
-        (token) =>
-          chainList.includes(token?.chainId ?? '')
-          && token.chainId !== BraveWallet.LOCALHOST_CHAIN_ID,
+      userVisibleTokensInfo.filter((token) =>
+        chainList.includes(token?.chainId ?? ''),
       ) ?? []
-    if (
-      accountsLocalHost
-      && hasLocalHostNetwork
-      && selectedAccount.accountId.keyringId !== BraveWallet.KeyringId.kFilecoin
-    ) {
-      return [...list, accountsLocalHost]
-    }
     return list
   }, [userVisibleTokensInfo, selectedAccount, networkList])
 
@@ -654,10 +634,10 @@ export const AccountDetails = () => {
 
   const onClickBuy = React.useCallback(() => {
     if (foundMeldBuyToken) {
-      openOrPushRoute(makeFundWalletRoute(foundMeldBuyToken, selectedAccount))
+      openOrPushRoute(makeBuyRoute(foundMeldBuyToken, selectedAccount))
       return
     }
-    openOrPushRoute(WalletRoutes.FundWalletPageStart)
+    openOrPushRoute(WalletRoutes.BuyPageStart)
   }, [foundMeldBuyToken, openOrPushRoute, selectedAccount])
 
   if (!selectedAccount) {
@@ -682,6 +662,11 @@ export const AccountDetails = () => {
         />
       }
     >
+      {selectedAccount?.accountId.coin === BraveWallet.CoinType.ZEC && (
+        <ZCashMigrationBannerWrapper fullWidth={true}>
+          <ZCashMigrationBanner />
+        </ZCashMigrationBannerWrapper>
+      )}
       {showSyncWarning && (
         <SyncAlertWrapper
           margin='0px 0px 32px 0px'
@@ -700,11 +685,11 @@ export const AccountDetails = () => {
           >
             <div slot='title'>
               {!chainTipStatus
-                ? getLocale('braveWalletOutOfSyncTitle')
+                ? getLocale(S.BRAVE_WALLET_OUT_OF_SYNC_TITLE)
                 : getLocale(
                     blocksBehind < 1000
-                      ? 'braveWalletBlocksBehind'
-                      : 'braveWalletOutOfSyncBlocksBehindTitle',
+                      ? S.BRAVE_WALLET_BLOCKS_BEHIND
+                      : S.BRAVE_WALLET_OUT_OF_SYNC_BLOCKS_BEHIND_TITLE,
                   ).replace('$1', blocksBehind.toLocaleString())}
             </div>
             <div>
@@ -712,7 +697,9 @@ export const AccountDetails = () => {
                 && zcashBalance
                 && (zcashBalance.orchardPendingBalance > 0
                   || zcashBalance.ironwoodPendingBalance > 0)
-                && getLocale('braveWalletZCashPendingBalanceTitle').replace(
+                && getLocale(
+                  S.BRAVE_WALLET_ZCASH_PENDING_BALANCE_TITLE,
+                ).replace(
                   '$1',
                   formatTokenBalanceWithSymbol(
                     (
@@ -724,7 +711,7 @@ export const AccountDetails = () => {
                   ),
                 )}
             </div>
-            {getLocale('braveWalletOutOfSyncDescription')}
+            {getLocale(S.BRAVE_WALLET_OUT_OF_SYNC_DESCRIPTION)}
             <Row
               slot='actions'
               width='unset'
@@ -740,15 +727,15 @@ export const AccountDetails = () => {
                   slot='icon-before'
                 />
                 {isAccountSyncing
-                  ? getLocale('braveWalletSyncAccountButtonInProgress')
-                  : getLocale('braveWalletSyncAccountButton')}
+                  ? getLocale(S.BRAVE_WALLET_SYNC_ACCOUNT_BUTTON_IN_PROGRESS)
+                  : getLocale(S.BRAVE_WALLET_SYNC_ACCOUNT_BUTTON)}
               </Button>
               <Button
                 size='small'
                 kind='plain-faint'
                 onClick={() => setSyncWarningDismissed(true)}
               >
-                {getLocale('braveWalletDismissButton')}
+                {getLocale(S.BRAVE_WALLET_DISMISS_BUTTON)}
               </Button>
             </Row>
           </SyncAlert>
@@ -853,7 +840,7 @@ export const AccountDetails = () => {
                 textSize='16px'
                 isBold={true}
               >
-                {getLocale('braveWalletNoTransactionsYet')}
+                {getLocale(S.BRAVE_WALLET_NO_TRANSACTIONS_YET)}
               </Text>
               <VerticalSpace space='10px' />
               <Text
@@ -861,7 +848,7 @@ export const AccountDetails = () => {
                 textColor='tertiary'
                 isBold={false}
               >
-                {getLocale('braveWalletNoTransactionsYetDescription')}
+                {getLocale(S.BRAVE_WALLET_NO_TRANSACTIONS_YET_DESCRIPTION)}
               </Text>
             </Column>
           )}

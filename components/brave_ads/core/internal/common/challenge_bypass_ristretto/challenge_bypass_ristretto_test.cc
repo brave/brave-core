@@ -18,7 +18,7 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_signature.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BraveAds*
+// pnpm test brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 

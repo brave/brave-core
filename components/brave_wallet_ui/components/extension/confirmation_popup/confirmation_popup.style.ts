@@ -18,6 +18,7 @@ export const Wrapper = styled.div`
   position: fixed;
   z-index: 30;
   backdrop-filter: blur(8px);
+  padding: 32px;
 `
 
 export const Popup = styled.div`
@@ -25,8 +26,9 @@ export const Popup = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  position: relative;
   width: 100%;
-  max-width: calc(100vw - 32px);
+  max-width: 500px;
   max-height: 80vh;
   min-height: 60vh;
   border-radius: ${leo.radius.xl};
@@ -34,4 +36,8 @@ export const Popup = styled.div`
   box-sizing: border-box;
   overflow: hidden;
   background-color: ${leo.color.page.background};
+  /* Makes position:fixed BottomSheets (Details, Advanced settings, fee
+     editors) use this popup as their containing block instead of the
+     viewport / full-screen overlay. */
+  transform: translateZ(0);
 `

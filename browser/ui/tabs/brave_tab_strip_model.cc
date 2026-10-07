@@ -29,6 +29,7 @@
 #include "components/tabs/public/tab_strip_collection.h"
 #include "components/tabs/public/unpinned_tab_collection.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/models/list_selection_model.h"
 
 BraveTabStripModel::BraveTabStripModel(
     TabStripModelDelegate* delegate,
@@ -114,6 +115,30 @@ std::vector<int> BraveTabStripModel::GetTreeTabDescendantIndices(int index) {
     }
   }
   return descendant_indices;
+}
+
+bool BraveTabStripModel::IsOnlyActiveTabAndTreeDescendantsSelected() {
+  const auto& selected_indices =
+      selection_model().GetListSelectionModel().selected_indices();
+  CHECK(!selected_indices.empty());
+
+  // When automatically selecting a tree tab, active index should be the
+  // smallest index of selected indices
+  if (active_index() != static_cast<int>(*selected_indices.begin())) {
+    return false;
+  }
+
+  const std::vector<int> descendant_indices =
+      GetTreeTabDescendantIndices(active_index());
+  if (descendant_indices.empty()) {
+    return false;
+  }
+
+  base::flat_set<size_t> expected_indices(descendant_indices.begin(),
+                                          descendant_indices.end());
+
+  expected_indices.insert(active_index());
+  return selected_indices == expected_indices;
 }
 
 void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,

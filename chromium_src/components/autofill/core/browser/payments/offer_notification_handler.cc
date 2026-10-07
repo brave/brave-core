@@ -19,7 +19,7 @@ bool BraveIsOfferValid(const AutofillOfferData* offer) {
     return false;
   }
 
-  if (offer->IsPromoCodeOffer()) {
+  if (offer->IsGPayPromoCodeOffer()) {
     return false;
   }
 

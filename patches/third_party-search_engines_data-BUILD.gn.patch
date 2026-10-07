@@ -1,12 +1,26 @@
 diff --git a/third_party/search_engines_data/BUILD.gn b/third_party/search_engines_data/BUILD.gn
-index e5eb6874550ea209474915595f9695437ab37e18..013ecc025dd9c632a40b28aa0c058c8189c83aec 100644
+index 7a3997c72aaf338f200e55344fb6ea77d2ef4da9..7f4685a99a791956b0fbf7706e960fe83f633811 100644
 --- a/third_party/search_engines_data/BUILD.gn
 +++ b/third_party/search_engines_data/BUILD.gn
-@@ -17,6 +17,7 @@ json_to_struct("prepopulated_engines") {
+@@ -2,11 +2,13 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/components/search_engines/sources.gni")
+ import("//build/config/chrome_build.gni")
+ import("//tools/grit/grit_rule.gni")
+ import("//tools/json_to_struct/json_to_struct.gni")
+ 
+ json_to_struct("prepopulated_engines") {
++  additional_sources = brave_third_party_search_engines_data_prepopulated_engines_sources
+   visibility = [
+     ":*",
+     "//components/regional_capabilities:*",
+@@ -17,6 +19,7 @@ json_to_struct("prepopulated_engines") {
    schema_file = "prepopulated_engines_schema.json"
    namespace = "TemplateURLPrepopulateData"
    deps = [ "//base" ]
-+  import("//brave/components/search_engines/sources.gni") additional_sources = brave_third_party_search_engines_data_prepopulated_engines_sources deps += brave_third_party_search_engines_data_prepopulated_engines_deps
++  deps += brave_third_party_search_engines_data_prepopulated_engines_deps
  }
  
  json_to_struct("regional_settings") {

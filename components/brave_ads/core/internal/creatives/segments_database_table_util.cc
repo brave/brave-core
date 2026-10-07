@@ -21,9 +21,10 @@ namespace {
 
 constexpr char kTableName[] = "segments";
 
-size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
-                   const std::map</*creative_set_id*/ std::string,
-                                  base::flat_set<std::string>>& segments) {
+size_t BindColumns(
+    const mojom::DBActionInfoPtr& mojom_db_action,
+    const absl::flat_hash_map</*creative_set_id*/ std::string,
+                              base::flat_set<std::string>>& segments) {
   CHECK(mojom_db_action);
   CHECK(!segments.empty());
 
@@ -44,8 +45,8 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
 
 std::string BuildInsertSql(
     const mojom::DBActionInfoPtr& mojom_db_action,
-    const std::map</*creative_set_id*/ std::string,
-                   base::flat_set<std::string>>& segments) {
+    const absl::flat_hash_map</*creative_set_id*/ std::string,
+                              base::flat_set<std::string>>& segments) {
   CHECK(mojom_db_action);
   CHECK(!segments.empty());
 
@@ -63,9 +64,10 @@ std::string BuildInsertSql(
 
 }  // namespace
 
-void InsertSegments(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-                    const std::map</*creative_set_id*/ std::string,
-                                   base::flat_set<std::string>>& segments) {
+void InsertSegments(
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+    const absl::flat_hash_map</*creative_set_id*/ std::string,
+                              base::flat_set<std::string>>& segments) {
   CHECK(mojom_db_transaction);
 
   if (segments.empty()) {

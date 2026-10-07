@@ -64,15 +64,15 @@ export const OnboardingSuccess = () => {
       padding='0 0 100px 0'
     >
       <IntroImg src={isDarkMode ? CompleteGraphicDark : CompleteGraphicLight} />
-      <Title>{getLocale('braveWalletOnboardingSuccessTitle')}</Title>
+      <Title>{getLocale(S.BRAVE_WALLET_ONBOARDING_SUCCESS_TITLE)}</Title>
       <VerticalSpace space='16px' />
       <SubTitle>
-        {getLocale('braveWalletOnboardingSuccessDescription')}
+        {getLocale(S.BRAVE_WALLET_ONBOARDING_SUCCESS_DESCRIPTION)}
       </SubTitle>
       <VerticalSpace space='100px' />
       <Column>
         <ContinueButton onClick={onComplete}>
-          {getLocale('braveWalletOnboardingSuccessGoToPortfolio')}
+          {getLocale(S.BRAVE_WALLET_ONBOARDING_SUCCESS_GO_TO_PORTFOLIO)}
         </ContinueButton>
       </Column>
     </OnboardingContentLayout>

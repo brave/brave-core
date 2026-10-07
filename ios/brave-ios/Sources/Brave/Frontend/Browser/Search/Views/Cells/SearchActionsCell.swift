@@ -45,6 +45,10 @@ class SearchActionsCell: UICollectionViewCell, CollectionViewReusable {
 
     setTheme()
     doLayout()
+
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      self.setTheme()
+    }
   }
 
   @available(*, unavailable)
@@ -55,12 +59,6 @@ class SearchActionsCell: UICollectionViewCell, CollectionViewReusable {
   override func prepareForReuse() {
     super.prepareForReuse()
     backgroundColor = .clear
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-
-    setTheme()
   }
 
   private func doLayout() {
@@ -133,25 +131,31 @@ class SearchActionsCell: UICollectionViewCell, CollectionViewReusable {
       weight: .semibold,
       traitCollection: traitCollection
     )
-    primaryButton.do {
-      $0.layer.cornerCurve = .continuous
-      $0.layer.cornerRadius = DesignUX.buttonCornerRadius
-      $0.layer.borderColor = nil
-      $0.layer.borderWidth = 0.0
-      $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
-      $0.titleLabel?.font = buttonTitleFont
-      $0.setTitleColor(
-        UIColor(braveSystemName: .schemesOnPrimary),
-        for: .normal
-      )
-      $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+    var primaryConfiguration = UIButton.Configuration.plain()
+    primaryConfiguration.baseBackgroundColor = UIColor(braveSystemName: .buttonBackground)
+    primaryConfiguration.baseForegroundColor = UIColor(braveSystemName: .schemesOnPrimary)
+    primaryConfiguration.cornerStyle = .capsule
+    primaryConfiguration.background.backgroundColor = UIColor(braveSystemName: .buttonBackground)
+    primaryConfiguration.contentInsets = NSDirectionalEdgeInsets(
+      top: 12,
+      leading: 12,
+      bottom: 12,
+      trailing: 12
+    )
+    primaryConfiguration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer {
+      incoming in
+      var outgoing = incoming
+      outgoing.font = buttonTitleFont
+      return outgoing
     }
+    primaryButton.configuration = primaryConfiguration
 
-    secondaryButton.do {
-      $0.backgroundColor = .clear
-      $0.titleLabel?.font = buttonTitleFont
-      $0.setTitleColor(UIColor(braveSystemName: .textInteractive), for: .normal)
-      $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
-    }
+    var secondaryConfiguration = UIButton.Configuration.plain()
+    secondaryConfiguration.baseBackgroundColor = .clear
+    secondaryConfiguration.baseForegroundColor = UIColor(braveSystemName: .textInteractive)
+    secondaryConfiguration.contentInsets = primaryConfiguration.contentInsets
+    secondaryConfiguration.titleTextAttributesTransformer =
+      primaryConfiguration.titleTextAttributesTransformer
+    secondaryButton.configuration = secondaryConfiguration
   }
 }

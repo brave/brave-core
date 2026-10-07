@@ -41,7 +41,7 @@ class TemporaryDocument: NSObject {
 
     // Delete the temp file.
     if let url = localFileURL {
-      Task {
+      _ = Task {
         try await AsyncFileManager.default.removeItem(at: url)
       }
     }

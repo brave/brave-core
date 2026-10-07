@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <array>
+#include <ranges>
 #include <utility>
 
 #include "base/check_op.h"
@@ -11,7 +12,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
-#include "base/types/zip.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
@@ -263,7 +263,7 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
         std::to_array({StorageType::kCookies, StorageType::kLocalStorage,
                        StorageType::kSessionStorage, StorageType::kIndexDB});
 
-    for (auto [type, results] : base::zip(kStringTypes, expected)) {
+    for (auto [type, results] : std::views::zip(kStringTypes, expected)) {
       CheckStorageResults(contents, type, results);
     }
   }
@@ -280,7 +280,7 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
     static constexpr auto kFrames = std::to_array<std::string_view>(
         {"this-frame", "local-frame", "remote-frame", "nested-frame"});
 
-    for (auto [result, frame] : base::zip(expected, kFrames)) {
+    for (auto [result, frame] : std::views::zip(expected, kFrames)) {
       EXPECT_EQ(
           std::to_underlying(result),
           content::EvalJs(contents, content::JsReplace(

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index 03aedd9edd72435185dca70e8b89574cd387cd3e..7f14131bd30ca7e0d47ccd1aa64f4b8a1786c71b 100644
+index bfc981b7ee720c039cd927c5cfc717ed72fa1bd5..faaa3257ceb1417b48be4a4de6259ded6658c3ad 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-@@ -312,7 +312,7 @@ void ToolbarView::Init() {
+@@ -331,7 +331,7 @@ void ToolbarView::Init() {
    aura::WindowOcclusionTracker::ScopedPause pause_occlusion;
  #endif
  
@@ -11,25 +11,25 @@ index 03aedd9edd72435185dca70e8b89574cd387cd3e..7f14131bd30ca7e0d47ccd1aa64f4b8a
    std::unique_ptr<WebUILocationBar> webui_location_bar;
    if (features::IsWebUILocationBarEnabled() &&
        /* TODO(http://crbug.com/470042732): Figure out where we fit in other
-@@ -321,7 +321,7 @@ void ToolbarView::Init() {
+@@ -340,7 +340,7 @@ void ToolbarView::Init() {
        display_mode_ == DisplayMode::kNormal) {
      webui_location_bar = std::make_unique<WebUILocationBar>(browser_, this);
    } else {
 -    location_bar_view = std::make_unique<LocationBarView>(
 +    location_bar_view = std::make_unique<LocationBarViewAlias>(
-         browser_, browser_->GetProfile(), browser_->command_controller(), this,
+         browser_, browser_->GetProfile(),
+         chrome::BrowserCommandController::From(browser_), this,
          display_mode_ != DisplayMode::kNormal);
+@@ -595,7 +595,7 @@ void ToolbarView::Init() {
    }
-@@ -573,7 +573,7 @@ void ToolbarView::Init() {
  
    if (!features::IsWebUIAvatarButtonEnabled()) {
-     avatar_ =
--        AddChildView(std::make_unique<AvatarToolbarButton>(browser_view_));
-+        AddChildView(std::make_unique<BraveAvatarToolbarButton>(browser_view_));
+-    avatar_ = AddChildView(std::make_unique<AvatarToolbarButton>(browser_));
++    avatar_ = AddChildView(std::make_unique<BraveAvatarToolbarButton>(browser_));
      bool show_avatar_toolbar_button =
          AvatarToolbarButtonInterface::CanShowForProfile(browser_->GetProfile());
      avatar_->SetVisible(show_avatar_toolbar_button);
-@@ -585,7 +585,7 @@ void ToolbarView::Init() {
+@@ -612,7 +612,7 @@ void ToolbarView::Init() {
    // WebUI app menu button handles these internally, so no need to set these
    // properties here, and the control is added as part of the WebUI toolbar.
    if (!features::IsWebUIAppMenuButtonEnabled()) {
