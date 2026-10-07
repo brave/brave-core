@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      constants.h uses BUILDFLAG(ENABLE_EXTENSIONS_CORE), but nothing in
+      constants_impl's deps generates that header, so GN/Ninja has no
+      ordering guarantee between generating it and compiling against it.
+    add_literal_to_list:
+      target: constants_impl
+      list_name: public_deps
+      literal: '[ "//extensions/buildflags" ]'
