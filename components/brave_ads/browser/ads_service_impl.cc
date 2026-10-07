@@ -37,6 +37,7 @@
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "base/trace_event/trace_event.h"
+#include "base/types/to_address.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/browser/bat_ads_service_factory.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
@@ -307,7 +308,7 @@ bool AdsServiceImpl::IsNotificationAdsEnabled() const {
 }
 
 bool AdsServiceImpl::CanStartBatAdsService() const {
-  if (!brave_rewards::IsSupported(&*prefs_)) {
+  if (!brave_rewards::IsSupported(base::to_address(prefs_))) {
     // Never start if Rewards is disabled by policy, feature flag, or
     // unsupported region, regardless of which ad units are enabled.
     return false;
@@ -486,7 +487,8 @@ void AdsServiceImpl::InitializeBatAdsCallback(bool success) {
 
   RegisterResourceComponents();
 
-  resource_component_observation_.Observe(&*resource_component_);
+  resource_component_observation_.Observe(
+      base::to_address(resource_component_));
 
   if (host_content_settings_map_) {
     host_content_settings_map_observation_.Observe(
@@ -720,7 +722,7 @@ void AdsServiceImpl::CloseAdaptiveCaptcha() {
 }
 
 void AdsServiceImpl::InitializeLocalStatePrefChangeRegistrar() {
-  local_state_pref_change_registrar_.Init(&*local_state_);
+  local_state_pref_change_registrar_.Init(base::to_address(local_state_));
 
   local_state_pref_change_registrar_.Add(
       variations::prefs::kVariationsCountry,
@@ -729,7 +731,7 @@ void AdsServiceImpl::InitializeLocalStatePrefChangeRegistrar() {
 }
 
 void AdsServiceImpl::InitializePrefChangeRegistrar() {
-  pref_change_registrar_.Init(&*prefs_);
+  pref_change_registrar_.Init(base::to_address(prefs_));
 
   InitializeBraveRewardsPrefChangeRegistrar();
   InitializeSubdivisionTargetingPrefChangeRegistrar();

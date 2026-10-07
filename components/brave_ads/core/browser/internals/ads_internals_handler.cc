@@ -12,6 +12,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/types/to_address.h"
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
@@ -62,7 +63,7 @@ AdsInternalsHandler::AdsInternalsHandler(
           std::move(get_ntp_sponsored_images_manifest_version_callback)),
       get_is_sponsored_tiles_shown_callback_(
           std::move(get_is_sponsored_tiles_shown_callback)) {
-  pref_change_registrar_.Init(&*prefs_);
+  pref_change_registrar_.Init(base::to_address(prefs_));
   pref_change_registrar_.Add(
       brave_rewards::prefs::kEnabled,
       base::BindRepeating(
