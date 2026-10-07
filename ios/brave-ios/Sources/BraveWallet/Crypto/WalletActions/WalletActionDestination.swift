@@ -74,7 +74,7 @@ public struct WalletActionDestination: Identifiable, Equatable, Hashable {
 
 private struct WalletActionDestinationKey: EnvironmentKey {
   static var defaultValue: Binding<WalletActionDestination?> {
-    Binding(get: { nil }, set: { _ in })
+    .constant(nil)
   }
 }
 

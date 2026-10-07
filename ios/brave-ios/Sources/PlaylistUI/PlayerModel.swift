@@ -612,9 +612,6 @@ public final class PlayerModel: ObservableObject {
     }
   }
 
-  @MainActor var isErrorAlertPresented: Binding<Bool> {
-    .init(get: { self.error != nil }, set: { if !$0 { self.error = nil } })
-  }
   @MainActor @Published var error: PlayerModelError?
 
   @MainActor func prepareToPlaySelectedItem(

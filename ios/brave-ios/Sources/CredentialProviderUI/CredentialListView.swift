@@ -131,10 +131,7 @@ public struct CredentialListView: View {
         }
       }
       .navigationDestination(
-        isPresented: Binding(
-          get: { credentialDetails != nil },
-          set: { if !$0 { credentialDetails = nil } }
-        )
+        isPresented: $credentialDetails.isPresented
       ) {
         if let credentialDetails {
           CredentialDetailView(model: model, credential: credentialDetails)

@@ -65,12 +65,7 @@ struct NewTabPageSettingsView: View {
         if FeatureList.kTopsitesEnabled.enabled {
           Picker(
             Strings.NTP.topsites,
-            selection: Binding(
-              get: { topSitesModeSelection.value },
-              set: {
-                topSitesModeSelection.value = $0
-              }
-            )
+            selection: $topSitesModeSelection.value
           ) {
             ForEach(TopSitesMode.allCases) { mode in
               Text(mode.title)

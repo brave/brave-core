@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveUI
 import SwiftUI
 @_spi(Advanced) import SwiftUIIntrospect
 import UIKit
@@ -92,12 +93,7 @@ extension View {
 
   func errorAlert(errorMessage: Binding<String?>) -> some View {
     alert(
-      isPresented: Binding(
-        get: { errorMessage.wrappedValue != nil },
-        set: { _, _ in
-          errorMessage.wrappedValue = nil
-        }
-      )
+      isPresented: errorMessage.isPresented
     ) {
       Alert(
         title: Text(Strings.Wallet.errorAlertTitle),

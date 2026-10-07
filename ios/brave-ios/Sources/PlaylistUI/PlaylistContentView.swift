@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVFoundation
+import BraveUI
 import CoreData
 import Data
 import Foundation
@@ -216,7 +217,7 @@ struct PlaylistContentView: View {
       // .disabled(newPlaylistName.isEmpty)
     }
     .alert(
-      isPresented: playerModel.isErrorAlertPresented,
+      isPresented: $playerModel.error.isPresented,
       error: playerModel.error,
       actions: { error in
         Button {

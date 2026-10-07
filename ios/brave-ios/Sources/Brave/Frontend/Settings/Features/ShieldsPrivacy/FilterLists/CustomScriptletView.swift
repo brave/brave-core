@@ -186,10 +186,7 @@ struct CustomScriptletView: View {
     }
     .alert(
       Text(Strings.genericErrorTitle),
-      isPresented: Binding(
-        get: { saveError != nil },
-        set: { if !$0 { saveError = nil } }
-      ),
+      isPresented: $saveError.isPresented,
       presenting: saveError,
       actions: { _ in
         Button(Strings.OKString) {}
