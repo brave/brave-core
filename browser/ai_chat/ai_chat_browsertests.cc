@@ -16,6 +16,9 @@
 #include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
+#include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -176,6 +179,34 @@ IN_PROC_BROWSER_TEST_F(AIChatBrowserTest, YoutubeNavigations) {
 
   const std::string navigated_content = FetchPageContent();
   EXPECT_EQ("Navigated content", navigated_content);
+}
+
+// Attaching a tab to a conversation fetches its content and subscribes to its
+// content tools at the same time; a YouTube page must still be detected as a
+// video so Leo offers "Summarize this video".
+IN_PROC_BROWSER_TEST_F(AIChatBrowserTest, AttachingYoutubeTabDetectsVideo) {
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("https://www.youtube.com/youtube.html?v=video_id_001"),
+      WindowOpenDisposition::CURRENT_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+
+  auto* ai_chat_service =
+      AIChatServiceFactory::GetForBrowserContext(browser()->GetProfile());
+  auto* conversation = ai_chat_service->CreateConversation();
+  ai_chat_service->MaybeAssociateContent(
+      &AIChatTabHelper::FromWebContents(ActiveWebContents())
+           ->web_contents_content(),
+      conversation->get_conversation_uuid());
+
+  // Waits for the fetch that associating the tab started.
+  base::test::TestFuture<void> future;
+  conversation->associated_content_manager()->GetContent(future.GetCallback());
+  ASSERT_TRUE(future.Wait());
+
+  EXPECT_TRUE(conversation->associated_content_manager()->IsVideo());
+  const auto& suggestions = conversation->GetSuggestedQuestionsForTest();
+  ASSERT_EQ(suggestions.size(), 1u);
+  EXPECT_EQ(suggestions[0].action_type, mojom::ActionType::SUMMARIZE_VIDEO);
 }
 
 // Extracts a regular HTML page via the real GetAIPageContent path and verifies

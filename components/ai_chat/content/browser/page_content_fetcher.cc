@@ -474,9 +474,8 @@ void PageContentFetcher::FetchPageContent(std::string_view invalidation_token,
   // GetRemoteInterfaces() cannot be null if the render frame is created.
   primary_rfh->GetRemoteInterfaces()->GetInterface(
       extractor.BindNewPipeAndPassReceiver());
-  // A second fetch rebinds the extractor, which resets the renderer's receiver
-  // and disconnects this one. The fetcher deletes itself on disconnect without
-  // replying, so guarantee an answer or the caller waits forever.
+  // The fetcher deletes itself on disconnect without replying, so guarantee an
+  // answer or the caller waits forever.
   fetcher->Start(std::move(extractor), invalidation_token,
                  mojo::WrapCallbackWithDefaultInvokeIfNotRun(
                      std::move(callback), "", false, ""));
