@@ -393,8 +393,8 @@ interface ShowErrorOptions<Kind extends FlowKind> extends ShowAlertOptions {
   opaqueErrors?: Partial<Record<string, ClientErrorCodeOf<Kind>>>
   // An already-translated title, overriding the flow's own, for surfaces with
   // their own (e.g. the brave://settings rows, whose titles live in the
-  // `BraveAccountSettings` string group and so must be resolved by the caller,
-  // through `I18nMixinLit`).
+  // `BraveAccountSettings` string group and so must be resolved by the
+  // caller).
   title?: string
 }
 

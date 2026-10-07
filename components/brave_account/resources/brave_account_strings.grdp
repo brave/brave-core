@@ -66,6 +66,9 @@
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_MORE_ACTIONS_BUTTON_LABEL" desc="Tooltip text for the button that shows a menu with more account actions when clicked" formatter_data="webui=BraveAccountSettings">
     More actions
   </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ACTION_REQUIRED_LABEL" desc="Description shown in the Brave Account row while an account action is waiting on the user, such as verifying their email address or setting a new password" formatter_data="webui=BraveAccountSettings">
+    Action required
+  </message>
 
   <!-- 'Entry' dialog: -->
   <message name="IDS_BRAVE_ACCOUNT_ENTRY_DIALOG_TITLE" desc="Title for the dialog where the user can choose to create a Brave Account, or sign in" formatter_data="webui=BraveAccount">

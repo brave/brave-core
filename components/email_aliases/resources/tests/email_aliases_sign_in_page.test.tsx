@@ -30,7 +30,7 @@ const makeLoggedOutAccountState = (): AccountState =>
 
 describe('SignInPage autofill suggestion toggle visibility', () => {
   beforeAll(() => {
-    defineStubElement('settings-brave-account-row')
+    defineStubElement('brave-account-compact-row')
   })
 
   beforeEach(() => {
