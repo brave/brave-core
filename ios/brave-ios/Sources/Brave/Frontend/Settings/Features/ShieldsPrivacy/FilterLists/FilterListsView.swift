@@ -228,12 +228,7 @@ struct FilterListsView: View {
 
     ForEach($filterListStorage.filterLists) { $filterList in
       if !filterList.isHidden && filterList.satisfies(searchText: searchText) {
-        Toggle(
-          isOn: Binding(
-            get: { filterList.isEnabledOrDefault },
-            set: { $filterList.wrappedValue.isEnabled = $0 }
-          )
-        ) {
+        Toggle(isOn: $filterList.isEnabledOrDefault) {
           VStack(alignment: .leading) {
             Text(filterList.entry.title)
             Text(filterList.entry.desc)

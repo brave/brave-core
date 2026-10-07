@@ -19,7 +19,8 @@ struct FilterList: Identifiable, Equatable {
   /// The enabled state to use, falling back to the catalog default when the user has
   /// never made a choice for this filter list.
   var isEnabledOrDefault: Bool {
-    return isEnabled ?? entry.defaultEnabled
+    get { isEnabled ?? entry.defaultEnabled }
+    set { isEnabled = newValue }
   }
 
   var isHidden: Bool {
