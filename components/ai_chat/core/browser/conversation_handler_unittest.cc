@@ -4049,18 +4049,27 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PhasesRecordedToJournal) {
             CreateContentBlocksForText("Weather in New York: 72F"), {});
       }));
 
-  // Second generation answers with the tool's output.
+  // Second generation answers with the tool's output, and reports what the
+  // request cost - which the generation phase must record.
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
-      .WillOnce(testing::WithArg<7>(
-          [&](EngineConsumer::GenerationCompletedCallback callback) {
-            std::move(callback).Run(
-                base::ok(EngineConsumer::GenerationResultData(
-                    mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("It's 72F")),
-                    std::nullopt)));
-            run_loop.QuitWhenIdle();
-          }));
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewContentReceiptEvent(
+                        mojom::ContentReceiptEvent::New(31204u, 512u)),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("It's 72F")),
+                        std::nullopt)));
+                run_loop.QuitWhenIdle();
+              })));
 
   conversation_handler_->SubmitHumanConversationEntry(
       "What's the weather in New York?", std::nullopt);
@@ -4075,7 +4084,8 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PhasesRecordedToJournal) {
                   "begin " + std::string(kAgentPhaseToolUse),
                   "end " + std::string(kAgentPhaseToolUse) + " output_blocks=1",
                   "begin " + std::string(kAgentPhaseGeneration),
-                  "end " + std::string(kAgentPhaseGeneration) + " success=true",
+                  "end " + std::string(kAgentPhaseGeneration) +
+                      " success=true total_tokens=31204 trimmed_tokens=512",
                   "end " + std::string(kAgentPhaseToolLoop) +
                       " complete tool_uses=1 generations=1"));
 }

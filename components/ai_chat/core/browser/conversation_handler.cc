@@ -1611,6 +1611,8 @@ void ConversationHandler::PerformAssistantGeneration(
   needs_new_entry_ = true;
 
   ++tool_loop_generations_;
+  generation_total_tokens_.reset();
+  generation_trimmed_tokens_.reset();
   generation_phase_ = std::make_unique<AgentPhase>(
       GetAgentJournal(), kAgentPhaseGeneration,
       base::StrCat(
@@ -2208,8 +2210,14 @@ void ConversationHandler::CompleteGeneration(
   OnAPIRequestInProgressChanged();
 
   if (generation_phase_) {
-    generation_phase_->SetEndDetails(
-        base::StrCat({"success=", base::ToString(success)}));
+    std::string details = base::StrCat({"success=", base::ToString(success)});
+    if (generation_total_tokens_) {
+      base::StrAppend(
+          &details,
+          {" total_tokens=", base::ToString(*generation_total_tokens_),
+           " trimmed_tokens=", base::ToString(*generation_trimmed_tokens_)});
+    }
+    generation_phase_->SetEndDetails(std::move(details));
     generation_phase_.reset();
   }
 
@@ -2621,6 +2629,11 @@ void ConversationHandler::OnConversationTokenInfoChanged(
     std::optional<std::string_view> thread_uuid,
     uint64_t total_tokens,
     uint64_t trimmed_tokens) {
+  // Only the server reports these, and only to the UI. Keep them so the
+  // generation phase can record what the request actually cost.
+  generation_total_tokens_ = total_tokens;
+  generation_trimmed_tokens_ = trimmed_tokens;
+
   if (thread_uuid.has_value()) {
     CHECK(base::FeatureList::IsEnabled(features::kAIChatThreads));
     if (auto* container = base::FindOrNull(threads_, thread_uuid.value())) {

@@ -687,6 +687,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   size_t tool_loop_tool_uses_ = 0;
   size_t tool_loop_generations_ = 0;
 
+  // What the server said the in-flight generation cost, when it said anything.
+  std::optional<uint64_t> generation_total_tokens_;
+  std::optional<uint64_t> generation_trimmed_tokens_;
+
   raw_ptr<AIChatService> ai_chat_service_;
   raw_ptr<ModelService> model_service_;
   raw_ptr<AIChatCredentialManager> credential_manager_;
