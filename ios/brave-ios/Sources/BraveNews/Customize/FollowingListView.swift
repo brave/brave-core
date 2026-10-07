@@ -14,11 +14,11 @@ struct FollowingListContainerView: View {
   var body: some View {
     FollowingListView(
       fetchSources: { Array(dataSource.followedSources) },
-      isFollowingSource: { dataSource.isFollowingSourceBinding(source: $0) },
+      isFollowingSource: { $dataSource[isFollowing: $0] },
       fetchChannels: { Array(dataSource.followedChannels) },
-      isFollowingChannel: { dataSource.isFollowingChannelBinding(channel: $0) },
+      isFollowingChannel: { $dataSource[isFollowing: $0] },
       fetchRSSFeeds: { dataSource.rssFeedLocations },
-      isFollowingRSSFeed: { dataSource.isFollowingRSSFeedBinding(feed: $0) }
+      isFollowingRSSFeed: { $dataSource[isFollowing: $0] }
     )
   }
 }

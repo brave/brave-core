@@ -145,10 +145,7 @@ struct TransactionConfirmationView: View {
     .background(
       Color.clear
         .sheet(
-          isPresented: Binding(
-            get: { confirmationStore.activeTxStatusStore != nil },
-            set: { if !$0 { confirmationStore.closeTxStatusStore() } }
-          )
+          isPresented: $confirmationStore.isShowingTxStatus
         ) {
           if let txStatusStore = confirmationStore.activeTxStatusStore {
             TransactionStatusView(
