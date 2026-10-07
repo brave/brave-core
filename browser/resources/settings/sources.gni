@@ -112,7 +112,6 @@ brave_settings_ts_files = [
   "br/site_list.ts",
   "br/add_site_dialog.ts",
   "br/site_settings_page.ts",
-  "br/sync_controls.ts",
   "br/autofill_page.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_proxy.ts",
   "brave_add_site_dialog/brave_add_site_dialog.ts",
