@@ -61,20 +61,32 @@ UserMemoryManager::UserMemoryManager(
 
 UserMemoryManager::~UserMemoryManager() = default;
 
+void UserMemoryManager::SetLearnedMemorySearch(
+    base::WeakPtr<LearnedMemorySearch> search) {
+  search_ = std::move(search);
+  MaybeStartEval();
+}
+
 void UserMemoryManager::OnStorageReady() {
   if (!data_source_->IsStorageReady()) {
     return;
   }
   if (LearnedMemoryEval::IsEnabled()) {
-    if (!eval_) {
-      eval_ = LearnedMemoryEval::CreateFromCommandLine();
-      eval_->Start(*data_source_, config_,
-                   base::BindOnce(&UserMemoryManager::LearnFromChats,
-                                  base::Unretained(this)));
-    }
+    MaybeStartEval();
     return;
   }
   ScheduleNextDailyDreaming();
+}
+
+void UserMemoryManager::MaybeStartEval() {
+  if (!LearnedMemoryEval::IsEnabled() || eval_ || !search_ ||
+      !data_source_->IsStorageReady()) {
+    return;
+  }
+  eval_ = LearnedMemoryEval::CreateFromCommandLine();
+  eval_->Start(*data_source_, config_,
+               base::BindOnce(&UserMemoryManager::LearnFromChats,
+                              base::Unretained(this)));
 }
 
 void UserMemoryManager::OnAllConversationsDeleted() {
@@ -131,7 +143,7 @@ void UserMemoryManager::GetMemoriesForTurn(
   }
   const uint64_t id = next_turn_lookup_id_++;
   auto lookup = std::make_unique<TurnMemoryLookup>(
-      *data_source_, *decision_client_, *embedder_, turn_config_,
+      *data_source_, search_, *decision_client_, turn_config_,
       std::move(user_messages),
       base::BindOnce(&UserMemoryManager::OnTurnLookupDone,
                      weak_ptr_factory_.GetWeakPtr(), id, std::move(callback)));
@@ -161,7 +173,7 @@ void UserMemoryManager::StartRun(DreamingCallback callback,
     std::move(callback).Run(DreamingResult(DreamingStatus::kBusy));
     return;
   }
-  if (!data_source_->IsStorageReady()) {
+  if (!data_source_->IsStorageReady() || !search_) {
     std::move(callback).Run(DreamingResult(DreamingStatus::kUnavailable));
     return;
   }
@@ -170,8 +182,8 @@ void UserMemoryManager::StartRun(DreamingCallback callback,
   run_llm_engine_ = llm_engine_factory_.Run();
   VLOG(1) << "Dreaming starts, local LLM: " << (run_llm_engine_ ? "yes" : "no");
   dreaming_run_ = std::make_unique<DreamingRun>(
-      *data_source_, *decision_client_, run_llm_engine_.get(), *embedder_,
-      config,
+      *data_source_, search_, *decision_client_, run_llm_engine_.get(),
+      *embedder_, config,
       base::BindOnce(&UserMemoryManager::OnDreamingDone,
                      base::Unretained(this)));
   dreaming_run_->Start();
@@ -200,6 +212,11 @@ void UserMemoryManager::ScheduleNextDailyDreaming() {
 void UserMemoryManager::OnDreamingTimer() {
   if (!prefs_->GetBoolean(prefs::kBraveAIChatUserMemoryEnabled)) {
     // Memory is off. Check again later.
+    ScheduleDreaming(kRetryDelay);
+    return;
+  }
+  if (!search_) {
+    // The embeddings service is not there (yet). Check again later.
     ScheduleDreaming(kRetryDelay);
     return;
   }

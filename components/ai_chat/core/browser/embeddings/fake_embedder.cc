@@ -67,10 +67,25 @@ passage_embeddings::Embedder::Job FakeEmbedder::ComputePassagesEmbeddings(
   job.passages = std::move(passages);
   job.callback = std::move(callback);
   pending_jobs_.emplace(job_id, std::move(job));
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&FakeEmbedder::RunJob,
-                                weak_ptr_factory_.GetWeakPtr(), job_id));
+  if (!paused_) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(&FakeEmbedder::RunJob,
+                                  weak_ptr_factory_.GetWeakPtr(), job_id));
+  }
   return Job(weak_ptr_factory_.GetWeakPtr(), job_id);
+}
+
+void FakeEmbedder::Pause() {
+  paused_ = true;
+}
+
+void FakeEmbedder::Resume() {
+  paused_ = false;
+  for (const auto& [job_id, job] : pending_jobs_) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(&FakeEmbedder::RunJob,
+                                  weak_ptr_factory_.GetWeakPtr(), job_id));
+  }
 }
 
 base::WeakPtr<passage_embeddings::Embedder> FakeEmbedder::GetWeakPtr() {

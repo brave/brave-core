@@ -74,21 +74,6 @@ void BindOptionalString(sql::Statement& statement,
 }
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-std::string VectorToBytes(const std::vector<float>& vector) {
-  return std::string(base::as_string_view(
-      base::as_byte_span(base::allow_nonunique_obj, vector)));
-}
-
-std::optional<std::vector<float>> BytesToVector(std::string_view bytes) {
-  if (bytes.empty() || bytes.size() % sizeof(float) != 0) {
-    return std::nullopt;
-  }
-  std::vector<float> vector(bytes.size() / sizeof(float));
-  base::as_writable_byte_span(base::allow_nonunique_obj, vector)
-      .copy_from(base::as_byte_span(bytes));
-  return vector;
-}
-
 template <typename Enum>
 std::optional<Enum> IntToEnum(int value) {
   if (value < 0 || value > static_cast<int>(Enum::kMaxValue)) {
@@ -1903,8 +1888,8 @@ std::vector<LearnedMemory> AIChatDatabase::GetAllLearnedMemories() {
   }
 
   static constexpr char kQuery[] =
-      "SELECT uuid, text, vector, category, type, created_date, updated_date,"
-      "  last_used_date, previous_text, previous_vector, text_version"
+      "SELECT uuid, text, category, type, created_date, updated_date,"
+      "  last_used_date, previous_text, text_version"
       " FROM learned_memory"
       " ORDER BY created_date ASC, uuid ASC";
   sql::Statement statement(GetDB().GetUniqueStatement(kQuery));
@@ -1916,15 +1901,13 @@ std::vector<LearnedMemory> AIChatDatabase::GetAllLearnedMemories() {
     int index = 0;
     memory.uuid = statement.ColumnString(index++);
     memory.text = DecryptColumnToString(statement, index++);
-    auto vector = BytesToVector(DecryptColumnToString(statement, index++));
     auto category =
         IntToEnum<LearnedMemoryCategory>(statement.ColumnInt(index++));
     auto type = IntToEnum<LearnedMemoryType>(statement.ColumnInt(index++));
-    if (memory.text.empty() || !vector || !category || !type) {
+    if (memory.text.empty() || !category || !type) {
       DVLOG(0) << "Skipping unreadable learned memory " << memory.uuid;
       continue;
     }
-    memory.vector = std::move(*vector);
     memory.category = *category;
     memory.type = *type;
     memory.created_date = statement.ColumnTime(index++);
@@ -1934,16 +1917,11 @@ std::vector<LearnedMemory> AIChatDatabase::GetAllLearnedMemories() {
         GetMemorySourceLinks(memory.uuid, MemoryLinkOwner::kMemoryText);
 
     auto previous_text = DecryptOptionalColumnToString(statement, index++);
-    auto previous_vector = DecryptOptionalColumnToString(statement, index++);
-    if (previous_text && previous_vector) {
-      auto decoded_previous_vector = BytesToVector(*previous_vector);
-      if (decoded_previous_vector) {
-        memory.previous = PreviousMemoryText{
-            .text = std::move(*previous_text),
-            .vector = std::move(*decoded_previous_vector),
-            .links = GetMemorySourceLinks(
-                memory.uuid, MemoryLinkOwner::kMemoryPreviousText)};
-      }
+    if (previous_text && !previous_text->empty()) {
+      memory.previous = PreviousMemoryText{
+          .text = std::move(*previous_text),
+          .links = GetMemorySourceLinks(memory.uuid,
+                                        MemoryLinkOwner::kMemoryPreviousText)};
     }
     memory.text_version = statement.ColumnInt(index++);
     memories.push_back(std::move(memory));
@@ -2063,8 +2041,8 @@ bool AIChatDatabase::AddOrUpdateLearnedMemory(const LearnedMemory& memory) {
   if (!LazyInit()) {
     return false;
   }
-  if (memory.uuid.empty() || memory.text.empty() || memory.vector.empty()) {
-    DVLOG(0) << "A learned memory needs a uuid, a text and a vector";
+  if (memory.uuid.empty() || memory.text.empty()) {
+    DVLOG(0) << "A learned memory needs a uuid and a text";
     return false;
   }
 
@@ -2091,16 +2069,15 @@ bool AIChatDatabase::AddOrUpdateLearnedMemory(const LearnedMemory& memory) {
   }
 
   static constexpr char kQuery[] =
-      "INSERT OR REPLACE INTO learned_memory(uuid, text, vector, category,"
-      "  type, created_date, updated_date, last_used_date, previous_text,"
-      "  previous_vector, text_version)"
-      " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT OR REPLACE INTO learned_memory(uuid, text, category, type,"
+      "  created_date, updated_date, last_used_date, previous_text,"
+      "  text_version)"
+      " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
   sql::Statement statement(GetDB().GetUniqueStatement(kQuery));
   CHECK(statement.is_valid());
   int index = 0;
   statement.BindString(index++, memory.uuid);
-  if (!BindAndEncryptString(statement, index++, memory.text) ||
-      !BindAndEncryptString(statement, index++, VectorToBytes(memory.vector))) {
+  if (!BindAndEncryptString(statement, index++, memory.text)) {
     return false;
   }
   statement.BindInt(index++, static_cast<int>(memory.category));
@@ -2110,10 +2087,7 @@ bool AIChatDatabase::AddOrUpdateLearnedMemory(const LearnedMemory& memory) {
   statement.BindTime(index++, memory.last_used_date);
   if (memory.previous) {
     BindAndEncryptOptionalString(statement, index++, memory.previous->text);
-    BindAndEncryptOptionalString(statement, index++,
-                                 VectorToBytes(memory.previous->vector));
   } else {
-    statement.BindNull(index++);
     statement.BindNull(index++);
   }
   statement.BindInt(index++, text_version);
@@ -2315,8 +2289,8 @@ bool AIChatDatabase::DeleteMemoryDataFromSource(std::string_view link_column,
   };
   const Step steps[] = {
       // A previous text with a link to the source is deleted as a whole.
-      {absl::StrFormat("UPDATE learned_memory SET previous_text=NULL,"
-                       " previous_vector=NULL WHERE uuid IN (%s)",
+      {absl::StrFormat("UPDATE learned_memory SET previous_text=NULL"
+                       " WHERE uuid IN (%s)",
                        previous_owners_from_source),
        1},
       {absl::StrFormat("DELETE FROM memory_source_link WHERE owner_kind=%d"
@@ -2621,8 +2595,6 @@ bool AIChatDatabase::CreateSchema() {
       "text BLOB NOT NULL,"
       // Counts the changes of the text, from 1
       "text_version INTEGER NOT NULL DEFAULT 1,"
-      // Encrypted embedding, as the bytes of the floats
-      "vector BLOB NOT NULL,"
       // LearnedMemoryCategory
       "category INTEGER NOT NULL,"
       // LearnedMemoryType
@@ -2630,10 +2602,9 @@ bool AIChatDatabase::CreateSchema() {
       "created_date INTEGER NOT NULL,"
       "updated_date INTEGER NOT NULL,"
       "last_used_date INTEGER NOT NULL,"
-      // Encrypted text and embedding that the last replace or merge
-      // overwrote. Both are NULL when there is nothing to undo.
-      "previous_text BLOB,"
-      "previous_vector BLOB)";
+      // Encrypted text that the last replace or merge overwrote. NULL when
+      // there is nothing to undo.
+      "previous_text BLOB)";
   CHECK(GetDB().IsSQLValid(kCreateLearnedMemoryTableQuery));
   if (!GetDB().Execute(kCreateLearnedMemoryTableQuery)) {
     return false;
@@ -2646,6 +2617,16 @@ bool AIChatDatabase::CreateSchema() {
     return false;
   }
   if (!GetDB().Execute("DROP TABLE IF EXISTS memory_tombstone")) {
+    return false;
+  }
+  // The embeddings moved to the embeddings database (AIChatEmbeddings).
+  if (GetDB().DoesColumnExist("learned_memory", "vector") &&
+      !GetDB().Execute("ALTER TABLE learned_memory DROP COLUMN vector")) {
+    return false;
+  }
+  if (GetDB().DoesColumnExist("learned_memory", "previous_vector") &&
+      !GetDB().Execute(
+          "ALTER TABLE learned_memory DROP COLUMN previous_vector")) {
     return false;
   }
 

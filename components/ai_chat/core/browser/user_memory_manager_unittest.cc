@@ -5,6 +5,8 @@
 
 #include "brave/components/ai_chat/core/browser/user_memory_manager.h"
 
+#include <algorithm>
+#include <functional>
 #include <map>
 #include <memory>
 #include <optional>
@@ -36,6 +38,7 @@
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/learned_memory_data_source.h"
 #include "brave/components/ai_chat/core/browser/learned_memory_eval.h"
+#include "brave/components/ai_chat/core/browser/learned_memory_search.h"
 #include "brave/components/ai_chat/core/browser/memory_decision_client.h"
 #include "brave/components/ai_chat/core/browser/turn_memory_lookup.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -111,6 +114,7 @@ class FakeDecisionClient : public MemoryDecisionClient {
   void AskRelations(const std::string& new_memory,
                     std::vector<std::string> old_memories,
                     RelationsCallback callback) override {
+    relation_requests.emplace_back(new_memory, old_memories);
     std::vector<AnswerProbabilities<RelationAnswer>> answers;
     for (const auto& old_memory : old_memories) {
       auto it = relations.find({new_memory, old_memory});
@@ -161,6 +165,9 @@ class FakeDecisionClient : public MemoryDecisionClient {
   std::vector<RelevanceRequest> relevance_requests;
 
   std::map<std::pair<std::string, std::string>, RelationAnswer> relations;
+  // The new memory and the old memories of each relation question.
+  std::vector<std::pair<std::string, std::vector<std::string>>>
+      relation_requests;
   std::set<std::pair<std::string, std::string>> unsure_relations;
   std::set<std::string> gate_yes;
   std::set<std::string> gate_unsure;
@@ -306,6 +313,39 @@ class TestDataSource : public LearnedMemoryDataSource {
         .Then(std::move(callback));
   }
 
+  void GetLearnedMemoryStamps(
+      base::OnceCallback<void(std::vector<LearnedMemoryStamp>)> callback)
+      override {
+    if (!ready) {
+      RunLater(std::move(callback), std::vector<LearnedMemoryStamp>());
+      return;
+    }
+    db_->AsyncCall(&AIChatDatabase::GetLearnedMemoryStamps)
+        .Then(std::move(callback));
+  }
+
+  void GetLearnedMemoriesByUuid(
+      std::vector<std::string> memory_uuids,
+      base::OnceCallback<void(std::vector<LearnedMemory>)> callback) override {
+    if (!ready) {
+      RunLater(std::move(callback), std::vector<LearnedMemory>());
+      return;
+    }
+    db_->AsyncCall(&AIChatDatabase::GetLearnedMemoriesByUuid)
+        .WithArgs(std::move(memory_uuids))
+        .Then(std::move(callback));
+  }
+
+  void GetPermanentLearnedMemories(
+      base::OnceCallback<void(std::vector<LearnedMemory>)> callback) override {
+    if (!ready) {
+      RunLater(std::move(callback), std::vector<LearnedMemory>());
+      return;
+    }
+    db_->AsyncCall(&AIChatDatabase::GetPermanentLearnedMemories)
+        .Then(std::move(callback));
+  }
+
   void AddOrUpdateLearnedMemory(
       LearnedMemory memory,
       base::OnceCallback<void(bool)> callback) override {
@@ -371,6 +411,90 @@ class TestDataSource : public LearnedMemoryDataSource {
   const raw_ref<base::SequenceBound<AIChatDatabase>> db_;
 };
 
+// The index of the learned memories, on FakeEmbedder. Like the real index, it
+// follows the database with a delay: it has the memories of its last Sync().
+class FakeLearnedMemorySearch : public LearnedMemorySearch {
+ public:
+  FakeLearnedMemorySearch(base::SequenceBound<AIChatDatabase>& db,
+                          FakeEmbedder& embedder)
+      : db_(db), embedder_(embedder) {}
+
+  // Puts the memories of the database in the index.
+  void Sync() {
+    base::test::TestFuture<std::vector<LearnedMemory>> future;
+    db_->AsyncCall(&AIChatDatabase::GetAllLearnedMemories)
+        .Then(future.GetCallback());
+    index_.clear();
+    for (const auto& memory : future.Take()) {
+      index_[memory.uuid] = embedder_->Vector(memory.text);
+    }
+  }
+
+  void SetCurrent(bool current) {
+    current_ = current;
+    if (current_) {
+      for (auto& waiter : std::exchange(waiters_, {})) {
+        base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+            FROM_HERE, std::move(waiter));
+      }
+    }
+  }
+
+  base::WeakPtr<LearnedMemorySearch> GetWeakPtr() {
+    return weak_ptr_factory_.GetWeakPtr();
+  }
+
+  // LearnedMemorySearch:
+  bool IsLearnedMemoryIndexCurrent() const override { return current_; }
+  void WhenLearnedMemoryIndexCurrent(base::OnceClosure callback) override {
+    waiters_.push_back(std::move(callback));
+    SetCurrent(current_);
+  }
+  void SearchLearnedMemories(std::vector<std::string> queries,
+                             size_t count,
+                             SearchCallback callback) override {
+    query_requests.push_back(queries);
+    std::vector<std::vector<float>> vectors;
+    for (const auto& query : queries) {
+      vectors.push_back(embedder_->Vector(query));
+    }
+    Search(vectors, count, std::move(callback));
+  }
+  void SearchLearnedMemoriesByEmbedding(std::vector<float> embedding,
+                                        size_t count,
+                                        SearchCallback callback) override {
+    Search({std::move(embedding)}, count, std::move(callback));
+  }
+
+  std::vector<std::vector<std::string>> query_requests;
+
+ private:
+  void Search(const std::vector<std::vector<float>>& queries,
+              size_t count,
+              SearchCallback callback) {
+    std::vector<LearnedMemoryMatch> matches;
+    for (const auto& [uuid, vector] : index_) {
+      float best = -1.0f;
+      for (const auto& query : queries) {
+        best = std::max(best, VectorSimilarity(query, vector));
+      }
+      matches.push_back({uuid, best});
+    }
+    std::ranges::stable_sort(matches, std::greater<>(),
+                             &LearnedMemoryMatch::score);
+    matches.resize(std::min(matches.size(), count));
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback), std::move(matches)));
+  }
+
+  const raw_ref<base::SequenceBound<AIChatDatabase>> db_;
+  const raw_ref<FakeEmbedder> embedder_;
+  bool current_ = true;
+  std::map<std::string, std::vector<float>> index_;
+  std::vector<base::OnceClosure> waiters_;
+  base::WeakPtrFactory<FakeLearnedMemorySearch> weak_ptr_factory_{this};
+};
+
 }  // namespace
 
 class UserMemoryManagerTest : public testing::Test {
@@ -412,6 +536,7 @@ class UserMemoryManagerTest : public testing::Test {
     manager_ = std::make_unique<UserMemoryManager>(
         std::move(client), std::move(llm_engine_factory), &embedder_, &prefs_,
         &data_source_, config);
+    manager_->SetLearnedMemorySearch(search_.GetWeakPtr());
   }
 
   // Chat history storage becomes ready.
@@ -447,7 +572,6 @@ class UserMemoryManagerTest : public testing::Test {
     LearnedMemory memory;
     memory.uuid = "old-" + text;
     memory.text = text;
-    memory.vector = embedder_.Vector(text);
     memory.type = type;
     memory.links = {{"old-chat", "old-entry", 0}};
     base::test::TestFuture<bool> future;
@@ -455,6 +579,7 @@ class UserMemoryManagerTest : public testing::Test {
         .WithArgs(memory)
         .Then(future.GetCallback());
     ASSERT_TRUE(future.Get());
+    search_.Sync();
   }
 
   // Makes |text| close to |other| (similarity 0.8).
@@ -511,7 +636,10 @@ class UserMemoryManagerTest : public testing::Test {
     }
   }
 
+  // The index is current when a run starts, so it has the memories of the
+  // earlier runs.
   DreamingResult Dream() {
+    search_.Sync();
     base::test::TestFuture<DreamingResult> future;
     manager_->LearnFromChats(future.GetCallback());
     return future.Take();
@@ -526,6 +654,7 @@ class UserMemoryManagerTest : public testing::Test {
   TestingPrefServiceSimple prefs_;
   TestDataSource data_source_{db_};
   FakeEmbedder embedder_;
+  FakeLearnedMemorySearch search_{db_, embedder_};
   raw_ptr<FakeDecisionClient> client_ = nullptr;
   FakeLlm llm_;
   std::unique_ptr<UserMemoryManager> manager_;
@@ -607,6 +736,36 @@ TEST_F(UserMemoryManagerTurnTest, TwoUserMessagesAreSentToTheModel) {
   EXPECT_EQ(client_->relevance_requests[0].message, "Yes, please.");
   EXPECT_EQ(client_->relevance_requests[0].previous_message,
             "Suggest a dinner.");
+}
+
+TEST_F(UserMemoryManagerTurnTest, MemoryDeletedAfterTheSyncIsNotSent) {
+  // The index still has the memory.
+  base::test::TestFuture<bool> deleted;
+  db_.AsyncCall(&AIChatDatabase::DeleteLearnedMemory)
+      .WithArgs("old-Is vegetarian.")
+      .Then(deleted.GetCallback());
+  ASSERT_TRUE(deleted.Get());
+  client_->relevance = {{"Is vegetarian.", 0.9}};
+
+  EngineConsumer::LearnedMemories memories =
+      GetMemoriesForTurn({"Suggest a dinner."});
+
+  EXPECT_THAT(memories.relevant, IsEmpty());
+  ASSERT_EQ(client_->relevance_requests.size(), 1u);
+  EXPECT_THAT(client_->relevance_requests[0].memories,
+              ElementsAre("Has a beagle named Luna.", "Writes TypeScript."));
+}
+
+TEST_F(UserMemoryManagerTurnTest, WithoutTheSearchOnlyPermanentMemoriesGo) {
+  AddMemory("Allergic to nuts.", LearnedMemoryType::kPermanent);
+  manager_->SetLearnedMemorySearch(nullptr);
+
+  EngineConsumer::LearnedMemories memories =
+      GetMemoriesForTurn({"Suggest a dinner."});
+
+  EXPECT_THAT(memories.permanent, ElementsAre("Allergic to nuts."));
+  EXPECT_THAT(memories.relevant, IsEmpty());
+  EXPECT_THAT(client_->relevance_requests, IsEmpty());
 }
 
 TEST_F(UserMemoryManagerTurnTest, TimeOutGivesOnlyPermanentMemories) {
@@ -1111,6 +1270,107 @@ TEST_F(UserMemoryManagerTest, MergeWritesOneMemory) {
   EXPECT_EQ(memories[0].links.size(), 2u);
 }
 
+TEST_F(UserMemoryManagerTest, MemoriesOfTheSameRunAreNeighbors) {
+  // The index does not have the first memory during the run.
+  const std::string first = "I live in San Francisco.";
+  const std::string second = "We just moved to Berlin.";
+  MakeClose(second, first);
+  AddChat("chat-1", {first, second});
+  KeepSentence(first, first);
+  KeepSentence(second, second);
+  client_->relations[{second, first}] = RelationAnswer::kReplace;
+  StorageReady();
+
+  Dream();
+
+  auto memories = GetMemories();
+  ASSERT_EQ(memories.size(), 1u);
+  EXPECT_EQ(memories[0].text, second);
+  ASSERT_TRUE(memories[0].previous);
+  EXPECT_EQ(memories[0].previous->text, first);
+}
+
+TEST_F(UserMemoryManagerTest, ChangedMemoryIsComparedByItsNewText) {
+  const std::string old_text = "Lives in San Francisco";
+  const std::string moved = "We just moved to Berlin.";
+  const std::string visit = "I love the Bay Area.";
+  AddMemory(old_text);
+  MakeClose(moved, old_text);
+  // Close to the old text (0.6), not to the new text (0.48).
+  std::vector<float> visit_vector = embedder_.Vector("Far from everything");
+  for (size_t i = 0; i < FakeEmbedder::kSize; ++i) {
+    visit_vector[i] =
+        0.6f * embedder_.Vector(old_text)[i] + 0.8f * visit_vector[i];
+  }
+  embedder_.vectors[visit] = visit_vector;
+  AddChat("chat-1", {moved, visit});
+  KeepSentence(moved, moved);
+  KeepSentence(visit, visit);
+  client_->relations[{moved, old_text}] = RelationAnswer::kReplace;
+  StorageReady();
+
+  Dream();
+
+  // The index still has the embedding of the old text, but the run compares
+  // with the new text.
+  ASSERT_EQ(client_->relation_requests.size(), 1u);
+  EXPECT_EQ(client_->relation_requests[0].first, moved);
+  std::map<std::string, LearnedMemory> memories = MemoriesByText();
+  EXPECT_EQ(memories.size(), 2u);
+  EXPECT_TRUE(memories.contains(moved));
+  EXPECT_TRUE(memories.contains(visit));
+}
+
+TEST_F(UserMemoryManagerTest, RunWaitsUntilTheIndexIsCurrent) {
+  AddChat("chat-1", {"I live in Berlin."});
+  StorageReady();
+  search_.SetCurrent(false);
+
+  base::test::TestFuture<DreamingResult> future;
+  manager_->LearnFromChats(future.GetCallback());
+  // The wait does not count for the time limit of the run.
+  task_environment_.FastForwardBy(
+      UserMemoryManager::GetDreamingConfigFromFeatures().time_limit +
+      base::Seconds(10));
+  EXPECT_THAT(client_->gate_requests, IsEmpty());
+  EXPECT_FALSE(future.IsReady());
+
+  search_.SetCurrent(true);
+  EXPECT_EQ(future.Take().status, DreamingStatus::kCompleted);
+  EXPECT_THAT(client_->gate_requests, ElementsAre("I live in Berlin."));
+}
+
+TEST_F(UserMemoryManagerTest, RunFailsWhenTheIndexStaysBehind) {
+  AddChat("chat-1", {"I live in Berlin."});
+  StorageReady();
+  search_.SetCurrent(false);
+
+  base::test::TestFuture<DreamingResult> future;
+  manager_->LearnFromChats(future.GetCallback());
+  task_environment_.FastForwardBy(DreamingConfig().index_wait_limit);
+
+  EXPECT_EQ(future.Take().status, DreamingStatus::kFailed);
+  EXPECT_THAT(client_->gate_requests, IsEmpty());
+  // The manager tries again later.
+  EXPECT_TRUE(manager_->is_dreaming_scheduled());
+}
+
+TEST_F(UserMemoryManagerTest, DreamingNeedsTheSearch) {
+  AddChat("chat-1", {"I live in Berlin."});
+  manager_->SetLearnedMemorySearch(nullptr);
+  StorageReady();
+
+  EXPECT_EQ(Dream().status, DreamingStatus::kUnavailable);
+  // The timer checks again later, and runs when the search is there.
+  task_environment_.FastForwardBy(UserMemoryManager::kFirstRunDelay);
+  EXPECT_THAT(client_->gate_requests, IsEmpty());
+  EXPECT_TRUE(manager_->is_dreaming_scheduled());
+
+  manager_->SetLearnedMemorySearch(search_.GetWeakPtr());
+  task_environment_.FastForwardBy(UserMemoryManager::kRetryDelay);
+  EXPECT_THAT(client_->gate_requests, ElementsAre("I live in Berlin."));
+}
+
 TEST_F(UserMemoryManagerTest, TimerRunsDreamingEachDay) {
   AddChat("chat-1", {"I live in Berlin."});
   StorageReady();
@@ -1186,9 +1446,10 @@ TEST_F(UserMemoryManagerTest, TraceRecordsEachStep) {
   }
   EXPECT_THAT(
       steps,
-      ElementsAre("loaded", "turn", "gate", "split", "sentence_decisions",
-                  "llm_call", "rewrite_parsed", "embed", "rewrite_checked",
-                  "fact", "neighbors", "store", "watermark", "done"));
+      ElementsAre("index_current", "loaded", "turn", "gate", "split",
+                  "sentence_decisions", "llm_call", "rewrite_parsed", "embed",
+                  "rewrite_checked", "fact", "neighbors", "store", "watermark",
+                  "done"));
   // Without the trace, the result has no steps.
   MakeManager(/*with_llm=*/true);
   StorageReady();

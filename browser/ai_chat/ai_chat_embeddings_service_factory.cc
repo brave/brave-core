@@ -11,6 +11,7 @@
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/history_embeddings/brave_history_embeddings_status.h"
 #include "brave/components/ai_chat/core/browser/embeddings/ai_chat_embeddings_service.h"
+#include "brave/components/ai_chat/core/browser/user_memory_manager.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/passage_embeddings/chrome_passage_embeddings_service_controller.h"
 #include "chrome/browser/profiles/profile.h"
@@ -59,9 +60,15 @@ AIChatEmbeddingsServiceFactory::BuildServiceInstanceForBrowserContext(
   }
   passage_embeddings::PassageEmbeddingsServiceController* controller =
       passage_embeddings::GetChromePassageEmbeddingsServiceController();
-  return std::make_unique<AIChatEmbeddingsService>(
+  auto service = std::make_unique<AIChatEmbeddingsService>(
       ai_chat_service, profile->GetPrefs(), g_browser_process->os_crypt_async(),
       controller->GetEmbedder(), controller, profile->GetPath());
+  // Learned memory searches through this service. The weak pointer is reset
+  // when the service shuts down, which is before AIChatService shuts down.
+  if (UserMemoryManager* manager = ai_chat_service->GetUserMemoryManager()) {
+    manager->SetLearnedMemorySearch(service->GetWeakPtr());
+  }
+  return service;
 }
 
 // Started with the profile, so stored conversations are indexed before Leo is

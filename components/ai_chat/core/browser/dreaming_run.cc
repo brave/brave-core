@@ -166,12 +166,14 @@ DreamingRun::Fact& DreamingRun::Fact::operator=(Fact&&) = default;
 DreamingRun::Fact::~Fact() = default;
 
 DreamingRun::DreamingRun(LearnedMemoryDataSource& data_source,
+                         base::WeakPtr<LearnedMemorySearch> search,
                          MemoryDecisionClient& decision_client,
                          EngineConsumer* llm_engine,
                          passage_embeddings::Embedder& embedder,
                          DreamingConfig config,
                          DoneCallback done)
     : data_source_(data_source),
+      search_(std::move(search)),
       decision_client_(decision_client),
       llm_engine_(llm_engine),
       embedder_(embedder),
@@ -200,6 +202,23 @@ std::optional<std::string> DreamingRun::GetLearnableText(
 
 void DreamingRun::Start() {
   run_start_ = base::TimeTicks::Now();
+  if (!search_) {
+    Finish(DreamingStatus::kFailed);
+    return;
+  }
+  // During a rebuild of the index, the neighbor search would miss old
+  // memories, and the run would write duplicates.
+  index_wait_timer_.Start(
+      FROM_HERE, config_.index_wait_limit,
+      base::BindOnce(&DreamingRun::Finish, base::Unretained(this),
+                     DreamingStatus::kFailed));
+  search_->WhenLearnedMemoryIndexCurrent(base::BindOnce(
+      &DreamingRun::OnIndexCurrent, weak_ptr_factory_.GetWeakPtr()));
+}
+
+void DreamingRun::OnIndexCurrent() {
+  index_wait_timer_.Stop();
+  Trace("index_current", base::DictValue());
   time_limit_timer_.Start(
       FROM_HERE, config_.time_limit,
       base::BindOnce(&DreamingRun::Finish, base::Unretained(this),
@@ -577,14 +596,46 @@ void DreamingRun::ProcessNextFact() {
                     .Set("category", Name(fact().category))
                     .Set("type", Name(fact().type))
                     .Set("links", LinksToList(fact().links)));
+  if (!search_) {
+    Finish(DreamingStatus::kFailed);
+    return;
+  }
+  // The index can give the memories that this run changed, with the score of
+  // their old text. They are left out below, so ask for more.
+  StartCall();
+  search_->SearchLearnedMemoriesByEmbedding(
+      fact().vector, config_.max_neighbors + run_embeddings_.size(),
+      base::BindOnce(&DreamingRun::OnNeighborMatches,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void DreamingRun::OnNeighborMatches(std::vector<LearnedMemoryMatch> matches) {
+  auto find_memory = [this](const std::string& uuid) -> std::optional<size_t> {
+    auto it = std::ranges::find(memories_, uuid, &LearnedMemory::uuid);
+    if (it == memories_.end()) {
+      return std::nullopt;
+    }
+    return static_cast<size_t>(it - memories_.begin());
+  };
   std::vector<std::pair<float, size_t>> scored;
-  for (size_t i = 0; i < memories_.size(); ++i) {
-    float score = VectorSimilarity(fact().vector, memories_[i].vector);
-    if (score >= config_.min_neighbor_similarity) {
-      scored.emplace_back(score, i);
+  for (const auto& match : matches) {
+    // A memory that this run changed gets its score from its new text below.
+    // A memory that is not loaded was written after the start of the run.
+    std::optional<size_t> index = find_memory(match.uuid);
+    if (index && !run_embeddings_.contains(match.uuid)) {
+      scored.emplace_back(match.score, *index);
+    }
+  }
+  for (const auto& [uuid, embedding] : run_embeddings_) {
+    if (std::optional<size_t> index = find_memory(uuid)) {
+      scored.emplace_back(VectorSimilarity(fact().vector, embedding), *index);
     }
   }
   std::ranges::sort(scored, std::ranges::greater());
+  const float best = scored.empty() ? 0.0f : scored.front().first;
+  std::erase_if(scored, [this](const std::pair<float, size_t>& item) {
+    return item.first < config_.min_neighbor_similarity;
+  });
   if (scored.size() > config_.max_neighbors) {
     scored.resize(config_.max_neighbors);
   }
@@ -595,11 +646,8 @@ void DreamingRun::ProcessNextFact() {
                            .Set("text", memories_[index].text)
                            .Set("similarity", score));
     }
-    float best = 0.0f;
-    for (const auto& memory : memories_) {
-      best = std::max(best, VectorSimilarity(fact().vector, memory.vector));
-    }
     Trace("neighbors", base::DictValue()
+                           .Set("latency_ms", static_cast<int>(CallMs()))
                            .Set("memories", static_cast<int>(memories_.size()))
                            .Set("best_similarity", best)
                            .Set("floor", config_.min_neighbor_similarity)
@@ -707,18 +755,17 @@ void DreamingRun::ApplyRelation(RelationAnswer relation, bool certain) {
     LearnedMemory updated = old;
     updated.updated_date = std::max(old.updated_date, turn().date);
     AddLinks(updated.links, fact().links);
-    Store(std::move(updated), /*is_new=*/false);
+    Store(std::move(updated), /*is_new=*/false, /*embedding=*/std::nullopt);
     return;
   }
   if (relation == RelationAnswer::kReplace && can_change) {
     LearnedMemory updated = old;
-    updated.previous = PreviousMemoryText{old.text, old.vector, old.links};
+    updated.previous = PreviousMemoryText{old.text, old.links};
     updated.text = fact().text;
-    updated.vector = fact().vector;
     updated.links = fact().links;
     updated.category = fact().category;
     updated.updated_date = turn().date;
-    Store(std::move(updated), /*is_new=*/false);
+    Store(std::move(updated), /*is_new=*/false, fact().vector);
     return;
   }
   if (relation == RelationAnswer::kMerge && can_change) {
@@ -773,40 +820,46 @@ void DreamingRun::OnMergedEmbedding(std::string merged,
                                     std::vector<std::vector<float>> vectors) {
   const LearnedMemory& old = neighbor();
   LearnedMemory updated = old;
-  updated.previous = PreviousMemoryText{old.text, old.vector, old.links};
+  updated.previous = PreviousMemoryText{old.text, old.links};
   updated.text = std::move(merged);
-  updated.vector = std::move(vectors[0]);
   AddLinks(updated.links, fact().links);
   updated.updated_date = turn().date;
-  Store(std::move(updated), /*is_new=*/false);
+  Store(std::move(updated), /*is_new=*/false, std::move(vectors[0]));
 }
 
 void DreamingRun::AddNewMemory() {
   LearnedMemory memory;
   memory.uuid = base::Uuid::GenerateRandomV4().AsLowercaseString();
   memory.text = fact().text;
-  memory.vector = fact().vector;
   memory.category = fact().category;
   memory.type = fact().type;
   memory.created_date = turn().date;
   memory.updated_date = turn().date;
   memory.last_used_date = turn().date;
   memory.links = fact().links;
-  Store(std::move(memory), /*is_new=*/true);
+  Store(std::move(memory), /*is_new=*/true, fact().vector);
 }
 
-void DreamingRun::Store(LearnedMemory memory, bool is_new) {
+void DreamingRun::Store(LearnedMemory memory,
+                        bool is_new,
+                        std::optional<std::vector<float>> embedding) {
   LearnedMemory copy = memory;
   data_source_->AddOrUpdateLearnedMemory(
       std::move(copy),
       base::BindOnce(&DreamingRun::OnStored, weak_ptr_factory_.GetWeakPtr(),
-                     std::move(memory), is_new));
+                     std::move(memory), is_new, std::move(embedding)));
 }
 
-void DreamingRun::OnStored(LearnedMemory memory, bool is_new, bool success) {
+void DreamingRun::OnStored(LearnedMemory memory,
+                           bool is_new,
+                           std::optional<std::vector<float>> embedding,
+                           bool success) {
   if (!success) {
     Finish(DreamingStatus::kFailed);
     return;
+  }
+  if (embedding) {
+    run_embeddings_[memory.uuid] = std::move(*embedding);
   }
   if (tracing()) {
     Trace("store", base::DictValue()
@@ -926,6 +979,7 @@ void DreamingRun::Finish(DreamingStatus status) {
   if (!done_) {
     return;
   }
+  index_wait_timer_.Stop();
   time_limit_timer_.Stop();
   weak_ptr_factory_.InvalidateWeakPtrs();
   embed_job_.reset();

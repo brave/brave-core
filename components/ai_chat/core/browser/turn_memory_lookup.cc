@@ -6,7 +6,6 @@
 #include "brave/components/ai_chat/core/browser/turn_memory_lookup.h"
 
 #include <algorithm>
-#include <numeric>
 #include <utility>
 
 #include "base/check.h"
@@ -31,14 +30,14 @@ TurnMemoryConfig TurnMemoryConfig::FromFeatures() {
 }
 
 TurnMemoryLookup::TurnMemoryLookup(LearnedMemoryDataSource& data_source,
+                                   base::WeakPtr<LearnedMemorySearch> search,
                                    MemoryDecisionClient& decision_client,
-                                   passage_embeddings::Embedder& embedder,
                                    TurnMemoryConfig config,
                                    std::vector<std::string> user_messages,
                                    DoneCallback done)
     : data_source_(data_source),
+      search_(std::move(search)),
       decision_client_(decision_client),
-      embedder_(embedder),
       config_(config),
       user_messages_(std::move(user_messages)),
       done_(std::move(done)) {
@@ -66,20 +65,71 @@ void TurnMemoryLookup::Start() {
   timeout_timer_.Start(FROM_HERE, config_.timeout,
                        base::BindOnce(&TurnMemoryLookup::Finish,
                                       weak_ptr_factory_.GetWeakPtr()));
-  data_source_->GetLearnedMemories(base::BindOnce(
-      &TurnMemoryLookup::OnMemories, weak_ptr_factory_.GetWeakPtr()));
+  // The last two user messages, the newest first.
+  for (const auto& message : user_messages_) {
+    std::string passage(
+        base::TruncateUTF8ToByteSize(message, config_.max_message_length));
+    if (!base::TrimWhitespaceASCII(passage, base::TRIM_ALL).empty()) {
+      passages_.push_back(std::move(passage));
+    }
+    if (passages_.size() == 2) {
+      break;
+    }
+  }
+  data_source_->GetPermanentLearnedMemories(base::BindOnce(
+      &TurnMemoryLookup::OnPermanentMemories, weak_ptr_factory_.GetWeakPtr()));
 }
 
-void TurnMemoryLookup::OnMemories(std::vector<LearnedMemory> memories) {
+void TurnMemoryLookup::OnPermanentMemories(
+    std::vector<LearnedMemory> memories) {
   if (!done_) {
     return;
   }
-  memories_time_ = base::TimeTicks::Now();
-  memory_count_ = memories.size();
+  permanent_time_ = base::TimeTicks::Now();
   for (auto& memory : memories) {
-    if (memory.type == LearnedMemoryType::kPermanent) {
-      result_.permanent.push_back(std::move(memory.text));
-    } else {
+    result_.permanent.push_back(std::move(memory.text));
+  }
+  if (!search_ || passages_.empty()) {
+    Finish();
+    return;
+  }
+  // The index has the permanent memories too. They are left out of the
+  // candidates, so ask for more.
+  search_->SearchLearnedMemories(
+      passages_, config_.max_candidates + result_.permanent.size(),
+      base::BindOnce(&TurnMemoryLookup::OnMatches,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void TurnMemoryLookup::OnMatches(std::vector<LearnedMemoryMatch> matches) {
+  if (!done_) {
+    return;
+  }
+  searched_time_ = base::TimeTicks::Now();
+  match_count_ = matches.size();
+  if (matches.empty()) {
+    Finish();
+    return;
+  }
+  std::vector<std::string> uuids;
+  for (auto& match : matches) {
+    uuids.push_back(std::move(match.uuid));
+  }
+  data_source_->GetLearnedMemoriesByUuid(
+      std::move(uuids), base::BindOnce(&TurnMemoryLookup::OnCandidates,
+                                       weak_ptr_factory_.GetWeakPtr()));
+}
+
+void TurnMemoryLookup::OnCandidates(std::vector<LearnedMemory> memories) {
+  if (!done_) {
+    return;
+  }
+  candidates_time_ = base::TimeTicks::Now();
+  // The memories come in the order of the matches, the closest first. A
+  // memory deleted after the search is not there.
+  for (auto& memory : memories) {
+    if (memory.type != LearnedMemoryType::kPermanent &&
+        candidates_.size() < config_.max_candidates) {
       candidates_.push_back(std::move(memory));
     }
   }
@@ -87,71 +137,13 @@ void TurnMemoryLookup::OnMemories(std::vector<LearnedMemory> memories) {
     Finish();
     return;
   }
-
-  // The last two user messages, the newest first.
-  std::vector<std::string> passages;
-  for (const auto& message : user_messages_) {
-    std::string passage(
-        base::TruncateUTF8ToByteSize(message, config_.max_message_length));
-    if (!base::TrimWhitespaceASCII(passage, base::TRIM_ALL).empty()) {
-      passages.push_back(std::move(passage));
-    }
-    if (passages.size() == 2) {
-      break;
-    }
-  }
-  if (passages.empty()) {
-    Finish();
-    return;
-  }
-  embed_job_ = embedder_->ComputePassagesEmbeddings(
-      passage_embeddings::PassagePriority::kUserInitiated, std::move(passages),
-      base::BindOnce(&TurnMemoryLookup::OnEmbedded,
-                     weak_ptr_factory_.GetWeakPtr()));
-}
-
-void TurnMemoryLookup::OnEmbedded(
-    std::vector<std::string> passages,
-    std::vector<passage_embeddings::Embedding> embeddings,
-    uint64_t job_id,
-    passage_embeddings::ComputeEmbeddingsStatus status) {
-  if (!done_) {
-    return;
-  }
-  if (status != passage_embeddings::ComputeEmbeddingsStatus::kSuccess ||
-      embeddings.size() != passages.size() || embeddings.empty()) {
-    DVLOG(1) << "Learned memory: the embedder failed for the chat turn";
-    Finish();
-    return;
-  }
-
-  embedded_time_ = base::TimeTicks::Now();
-  // The similarity of a memory is the best one of the two messages.
-  std::vector<float> similarity(candidates_.size(), 0.0f);
-  for (size_t i = 0; i < candidates_.size(); ++i) {
-    for (const auto& embedding : embeddings) {
-      similarity[i] = std::max(
-          similarity[i],
-          VectorSimilarity(candidates_[i].vector, embedding.GetData()));
-    }
-  }
-  std::vector<size_t> order(candidates_.size());
-  std::iota(order.begin(), order.end(), 0);
-  std::ranges::stable_sort(
-      order, [&](size_t a, size_t b) { return similarity[a] > similarity[b]; });
-  order.resize(std::min(order.size(), config_.max_candidates));
-
-  std::vector<LearnedMemory> closest;
   std::vector<std::string> texts;
-  for (size_t index : order) {
-    texts.push_back(candidates_[index].text);
-    closest.push_back(std::move(candidates_[index]));
+  for (const auto& candidate : candidates_) {
+    texts.push_back(candidate.text);
   }
-  candidates_ = std::move(closest);
-
-  // The message that |passages| holds first is the newest one.
+  // The message that |passages_| holds first is the newest one.
   decision_client_->AskRelevance(
-      passages[0], passages.size() > 1 ? passages[1] : std::string(),
+      passages_[0], passages_.size() > 1 ? passages_[1] : std::string(),
       std::move(texts),
       base::BindOnce(&TurnMemoryLookup::OnRelevance,
                      weak_ptr_factory_.GetWeakPtr()));
@@ -188,20 +180,19 @@ void TurnMemoryLookup::Finish() {
     return;
   }
   timeout_timer_.Stop();
-  embed_job_.reset();
   const base::TimeTicks now = base::TimeTicks::Now();
-  VLOG(1) << "Learned memory for a chat turn: " << memory_count_
-          << " memories, read "
-          << (memories_time_ - start_time_).InMilliseconds() << " ms, embed "
-          << (embedded_time_.is_null()
-                  ? 0
-                  : (embedded_time_ - memories_time_).InMilliseconds())
-          << " ms, relevance "
-          << (embedded_time_.is_null()
-                  ? 0
-                  : (now - embedded_time_).InMilliseconds())
-          << " ms, total " << (now - start_time_).InMilliseconds()
-          << " ms, relevant " << result_.relevant.size() << ", permanent "
+  // The time of each step, or 0 when the step did not end.
+  auto step_ms = [](base::TimeTicks from, base::TimeTicks to) {
+    return from.is_null() || to.is_null() ? 0 : (to - from).InMilliseconds();
+  };
+  VLOG(1) << "Learned memory for a chat turn: permanent "
+          << step_ms(start_time_, permanent_time_) << " ms, search "
+          << step_ms(permanent_time_, searched_time_) << " ms (" << match_count_
+          << " found), read " << step_ms(searched_time_, candidates_time_)
+          << " ms (" << candidates_.size() << " candidates), relevance "
+          << step_ms(candidates_time_, now) << " ms, total "
+          << (now - start_time_).InMilliseconds() << " ms, relevant "
+          << result_.relevant.size() << ", permanent "
           << result_.permanent.size();
   // After a time out, the answers of the steps that are still active are
   // ignored.

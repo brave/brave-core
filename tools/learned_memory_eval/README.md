@@ -199,7 +199,8 @@ and `entry` (the user turn). `latency_ms` is the time of the model call.
 
 | Step | Shows |
 |---|---|
-| `loaded` | Memories, tombstones and watermarks at the start |
+| `index_current` | The index of the learned memories is current, and the run starts. `t_ms` is the wait |
+| `loaded` | Memories and watermarks at the start |
 | `turn` | Chat, date and the text of the user turn |
 | `gate` | Probabilities, answer, keep or skip |
 | `split` | Sentences, and which ones the denylist removes |
@@ -209,8 +210,8 @@ and `entry` (the user turn). `latency_ms` is the time of the model call.
 | `embed` | Purpose, passages, dimensions, latency, status |
 | `rewrite_checked` | The facts that go to the relation step: the LLM facts, and the user's sentence for a sentence that no fact covers |
 | `fact` | One fact: text, labels, links |
-| `fact_dropped` | The reason: tombstone, relation not certain, no LLM answer |
-| `neighbors` | The closest old memories with similarity, and the best similarity |
+| `fact_dropped` | The reason: relation not certain, no LLM answer |
+| `neighbors` | The closest old memories with similarity, and the best similarity. They come from the index search and from the memories that this run wrote. `latency_ms` is the search time |
 | `relations` | The decision model answer for each old memory |
 | `llm_relation` | The LLM answer, when the decision model is not certain |
 | `relation_applied` | The relation, and if the rules allow the text change |

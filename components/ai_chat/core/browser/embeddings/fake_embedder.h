@@ -41,6 +41,12 @@ class FakeEmbedder : public passage_embeddings::Embedder {
   // Whether a passage containing `text` has been embedded.
   bool HasEmbedded(std::string_view text) const;
 
+  // While paused, jobs wait, so that a test can make changes while a job is
+  // pending. Resume() runs them.
+  void Pause();
+  void Resume();
+  bool HasPendingJobs() const { return !pending_jobs_.empty(); }
+
   // passage_embeddings::Embedder:
   Job ComputePassagesEmbeddings(
       passage_embeddings::PassagePriority priority,
@@ -69,6 +75,7 @@ class FakeEmbedder : public passage_embeddings::Embedder {
   void RunJob(uint64_t job_id);
 
   uint64_t next_job_id_ = 1;
+  bool paused_ = false;
   std::map<uint64_t, PendingJob> pending_jobs_;
   std::vector<std::pair<std::string, passage_embeddings::PassagePriority>>
       embedded_passages_;

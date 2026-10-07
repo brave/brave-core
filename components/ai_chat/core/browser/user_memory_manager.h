@@ -20,6 +20,7 @@
 #include "brave/components/ai_chat/core/browser/dreaming_run.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/learned_memory_data_source.h"
+#include "brave/components/ai_chat/core/browser/learned_memory_search.h"
 #include "brave/components/ai_chat/core/browser/learned_memory_types.h"
 #include "brave/components/ai_chat/core/browser/memory_decision_client.h"
 #include "brave/components/ai_chat/core/browser/turn_memory_lookup.h"
@@ -79,6 +80,11 @@ class UserMemoryManager : public AIChatService::Observer {
   UserMemoryManager& operator=(const UserMemoryManager&) = delete;
   ~UserMemoryManager() override;
 
+  // The search of the embeddings service. Without it, Dreaming does not run,
+  // and a chat turn gets only the permanent memories. The embeddings service
+  // sets it after it starts.
+  void SetLearnedMemorySearch(base::WeakPtr<LearnedMemorySearch> search);
+
   // AIChatService::Observer:
   // Chat history storage became ready. The timer runs only while storage is
   // ready. In eval mode, the manager runs the eval one time instead of the
@@ -91,12 +97,13 @@ class UserMemoryManager : public AIChatService::Observer {
   void OnAllConversationsDeleted() override;
 
   bool is_storage_ready() const { return data_source_->IsStorageReady(); }
+  bool has_learned_memory_search() const { return !!search_; }
   bool is_dreaming() const { return !!dreaming_run_; }
   bool is_dreaming_scheduled() const { return dreaming_timer_.IsRunning(); }
 
   // Starts a Dreaming run, and runs |callback| when the run ends. Only one run
-  // can be active. When the manager cannot start a run, |callback| runs
-  // with kBusy or kUnavailable.
+  // can be active. When the manager cannot start a run (no storage or no
+  // search), |callback| runs with kBusy or kUnavailable.
   void LearnFromChats(DreamingCallback callback);
 
   // Same as LearnFromChats(), for the "Dream now" button. The run has a longer
@@ -129,6 +136,8 @@ class UserMemoryManager : public AIChatService::Observer {
 
  private:
   void StartRun(DreamingCallback callback, const DreamingConfig& config);
+  // The eval starts one time, when storage is ready and the search is set.
+  void MaybeStartEval();
   void OnTurnLookupDone(uint64_t lookup_id,
                         TurnMemoriesCallback callback,
                         EngineConsumer::LearnedMemories memories);
@@ -143,6 +152,7 @@ class UserMemoryManager : public AIChatService::Observer {
   const raw_ptr<PrefService> prefs_;
   const DreamingConfig config_;
   const raw_ptr<LearnedMemoryDataSource> data_source_;
+  base::WeakPtr<LearnedMemorySearch> search_;
   const TurnMemoryConfig turn_config_;
 
   base::OneShotTimer dreaming_timer_;

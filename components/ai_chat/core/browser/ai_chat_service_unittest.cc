@@ -1316,7 +1316,6 @@ TEST_P(AIChatServiceUnitTest, LearnedMemoryDataSource_WritesTellTheObservers) {
   LearnedMemory memory;
   memory.uuid = "memory-1";
   memory.text = "Lives in Berlin.";
-  memory.vector = {0.5f, 0.5f};
   EXPECT_CALL(observer, OnLearnedMemoriesChanged());
   base::test::TestFuture<bool> added;
   source.AddOrUpdateLearnedMemory(memory, added.GetCallback());

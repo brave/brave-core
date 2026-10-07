@@ -25,6 +25,8 @@
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/embeddings/ai_chat_embeddings_database.h"
+#include "brave/components/ai_chat/core/browser/learned_memory_search.h"
+#include "brave/components/ai_chat/core/browser/learned_memory_types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -65,10 +67,15 @@ struct ConversationSearchResult {
 // as they are persisted, and whenever storage becomes ready the index is
 // reconciled with the stored conversations, which picks up changes made while
 // the service wasn't running. Turning semantic search off deletes the index.
+//
+// Learned memories are synced with the conversation database as a whole: each
+// change that can add, edit or delete one compares the stored text versions
+// with the index, deletes stale embeddings and embeds what is missing.
 class AIChatEmbeddingsService
     : public KeyedService,
       public AIChatService::Observer,
-      public passage_embeddings::EmbedderMetadataObserver {
+      public passage_embeddings::EmbedderMetadataObserver,
+      public LearnedMemorySearch {
  public:
   using SearchConversationsCallback =
       base::OnceCallback<void(std::vector<ConversationSearchResult>)>;
@@ -105,6 +112,16 @@ class AIChatEmbeddingsService
                       size_t count,
                       SearchMemoriesCallback callback);
 
+  // LearnedMemorySearch:
+  bool IsLearnedMemoryIndexCurrent() const override;
+  void WhenLearnedMemoryIndexCurrent(base::OnceClosure callback) override;
+  void SearchLearnedMemories(std::vector<std::string> queries,
+                             size_t count,
+                             SearchCallback callback) override;
+  void SearchLearnedMemoriesByEmbedding(std::vector<float> embedding,
+                                        size_t count,
+                                        SearchCallback callback) override;
+
   base::WeakPtr<AIChatEmbeddingsService> GetWeakPtr();
 
   // Runs `callback` once every change handed to the index so far is stored.
@@ -130,6 +147,7 @@ class AIChatEmbeddingsService
                                   const std::string& title) override;
   void OnConversationDeleted(const std::string& conversation_uuid) override;
   void OnAllConversationsDeleted() override;
+  void OnLearnedMemoriesChanged() override;
 
   // passage_embeddings::EmbedderMetadataObserver:
   void EmbedderMetadataUpdated(
@@ -140,6 +158,7 @@ class AIChatEmbeddingsService
   // Drops all indexing in progress.
   void ResetIndexing();
   void OnSemanticSearchPrefChanged();
+  void OnUserMemoryEnabledPrefChanged();
 
   void MaybeReconcileConversations();
   void OnGotIndexedConversations(
@@ -197,6 +216,31 @@ class AIChatEmbeddingsService
                           uint64_t job_id,
                           passage_embeddings::ComputeEmbeddingsStatus status);
 
+  void SyncLearnedMemories();
+  void OnGotLearnedMemoryStamps(uint64_t sync_id,
+                                std::vector<LearnedMemoryStamp> stamps);
+  void OnLearnedMemoriesSynced(uint64_t sync_id,
+                               std::vector<std::string> missing_uuids);
+  void OnGotLearnedMemoriesToEmbed(uint64_t sync_id,
+                                   std::vector<LearnedMemory> memories);
+  void OnLearnedMemoriesEmbedded(
+      uint64_t sync_id,
+      std::vector<LearnedMemoryStamp> stamps,
+      std::vector<std::string> documents,
+      std::vector<passage_embeddings::Embedding> embeddings,
+      uint64_t job_id,
+      passage_embeddings::ComputeEmbeddingsStatus status);
+  // The sync with `sync_id` ended. Unless a later sync started, the index is
+  // current.
+  void OnLearnedMemorySyncDone(uint64_t sync_id);
+  void OnLearnedMemoryQueriesEmbedded(
+      size_t count,
+      SearchCallback callback,
+      std::vector<std::string> queries,
+      std::vector<passage_embeddings::Embedding> embeddings,
+      uint64_t job_id,
+      passage_embeddings::ComputeEmbeddingsStatus status);
+
   void EmbedQuery(const std::string& query, EmbeddingCallback callback);
   void OnQueryEmbedded(EmbeddingCallback callback,
                        std::vector<std::string> queries,
@@ -248,6 +292,12 @@ class AIChatEmbeddingsService
   // while `memory_sync_pending_`. An earlier request's result is stale.
   uint64_t memory_sync_id_ = 0;
   bool memory_sync_pending_ = false;
+  // Identifies the latest sync of learned memories. A new sync drops the work
+  // of the earlier one, so that a memory deleted meanwhile is not embedded.
+  uint64_t learned_memory_sync_id_ = 0;
+  bool learned_memory_index_current_ = false;
+  std::optional<passage_embeddings::Embedder::Job> learned_memory_job_;
+  std::vector<base::OnceClosure> learned_memory_index_waiters_;
   std::vector<passage_embeddings::Embedder::Job> query_jobs_;
 
   PrefChangeRegistrar pref_change_registrar_;

@@ -49,7 +49,7 @@ enum class LearnedMemoryCategory {
   kMaxValue = kTopic,
 };
 
-// A sentence of a user turn that a memory or a tombstone came from. The
+// A sentence of a user turn that a memory came from. The
 // sentence text is not copied, it stays in the chat tables.
 struct MemorySourceLink {
   std::string conversation_uuid;
@@ -62,7 +62,6 @@ struct MemorySourceLink {
 // The text that the last replace or merge overwrote, kept for undo.
 struct PreviousMemoryText {
   std::string text;
-  std::vector<float> vector;
   std::vector<MemorySourceLink> links;
 
   bool operator==(const PreviousMemoryText& other) const = default;
@@ -76,7 +75,6 @@ struct LearnedMemory {
   // the same fact, which only moves the dates and the sources, does not change
   // it.
   int text_version = 1;
-  std::vector<float> vector;
   LearnedMemoryCategory category = LearnedMemoryCategory::kPersonalFact;
   LearnedMemoryType type = LearnedMemoryType::kLongTerm;
   base::Time created_date;

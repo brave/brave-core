@@ -29,6 +29,8 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/embeddings/ai_chat_embeddings_database.h"
 #include "brave/components/ai_chat/core/browser/embeddings/fake_embedder.h"
+#include "brave/components/ai_chat/core/browser/learned_memory_search.h"
+#include "brave/components/ai_chat/core/browser/learned_memory_types.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
@@ -189,6 +191,49 @@ class AIChatEmbeddingsServiceTest : public testing::Test {
     base::test::TestFuture<std::vector<std::string>> future;
     service_->SearchMemories(query, /*count=*/10, future.GetCallback());
     return future.Take();
+  }
+
+  // Writes a learned memory through AIChatService, the same way Dreaming does.
+  void WriteLearnedMemory(const std::string& uuid,
+                          const std::string& text,
+                          std::vector<MemorySourceLink> links = {}) {
+    LearnedMemory memory;
+    memory.uuid = uuid;
+    memory.text = text;
+    memory.links = std::move(links);
+    base::test::TestFuture<bool> future;
+    ai_chat_service_->AddOrUpdateLearnedMemory(std::move(memory),
+                                               future.GetCallback());
+    ASSERT_TRUE(future.Get());
+  }
+
+  void DeleteLearnedMemory(const std::string& uuid) {
+    base::test::TestFuture<bool> future;
+    ai_chat_service_->DeleteLearnedMemory(uuid, future.GetCallback());
+    ASSERT_TRUE(future.Get());
+  }
+
+  // Waits until the learned memories are synced, and the index settled.
+  void WaitForLearnedMemoriesSynced() {
+    ASSERT_TRUE(base::test::RunUntil([&] {
+      return service_->IsLearnedMemoryIndexCurrent() &&
+             service_->IsIndexingIdleForTesting();
+    }));
+    Flush();
+  }
+
+  // The uuids of the learned memories that are close to `query`.
+  std::vector<std::string> FindLearnedMemories(const std::string& query) {
+    base::test::TestFuture<std::vector<LearnedMemoryMatch>> future;
+    service_->SearchLearnedMemories({query}, /*count=*/10,
+                                    future.GetCallback());
+    std::vector<std::string> uuids;
+    for (const LearnedMemoryMatch& match : future.Take()) {
+      if (match.score > 0.5f) {
+        uuids.push_back(match.uuid);
+      }
+    }
+    return uuids;
   }
 
   static std::vector<std::string> GetPassageTexts(
@@ -429,6 +474,174 @@ TEST_F(AIChatEmbeddingsServiceTest, IndexesMemories) {
 
   prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
   EXPECT_TRUE(SearchMemories("cat").empty());
+}
+
+TEST_F(AIChatEmbeddingsServiceTest, IndexesLearnedMemories) {
+  WriteLearnedMemory("cat-memory", "Has a cat named Tom");
+  WriteLearnedMemory("dog-memory", "Walks the dog daily");
+  WaitForLearnedMemoriesSynced();
+
+  EXPECT_THAT(FindLearnedMemories("dog"), ElementsAre("dog-memory"));
+  EXPECT_THAT(FindLearnedMemories("cat"), ElementsAre("cat-memory"));
+  EXPECT_THAT(embedder_.embedded_passages(),
+              Contains(Pair("Has a cat named Tom", PassagePriority::kPassive)));
+  EXPECT_THAT(embedder_.embedded_passages(),
+              Contains(Pair("dog", PassagePriority::kUserInitiated)));
+
+  // Dreaming searches with the embedding it has: a unit vector along "cat".
+  base::test::TestFuture<std::vector<LearnedMemoryMatch>> future;
+  service_->SearchLearnedMemoriesByEmbedding({1.0f, 0.0f, 0.0f, 0.0f},
+                                             /*count=*/1, future.GetCallback());
+  std::vector<LearnedMemoryMatch> matches = future.Take();
+  ASSERT_EQ(matches.size(), 1u);
+  EXPECT_EQ(matches[0].uuid, "cat-memory");
+
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+  EXPECT_TRUE(FindLearnedMemories("cat").empty());
+}
+
+TEST_F(AIChatEmbeddingsServiceTest, EmbedsLearnedMemoryAgainWhenTextChanges) {
+  WriteLearnedMemory("memory", "Has a cat named Tom");
+  WaitForLearnedMemoriesSynced();
+  ASSERT_THAT(FindLearnedMemories("cat"), ElementsAre("memory"));
+
+  // A replace or a merge: the same memory gets a new text.
+  WriteLearnedMemory("memory", "Feeds the birds");
+  WaitForLearnedMemoriesSynced();
+  EXPECT_TRUE(FindLearnedMemories("cat").empty());
+  EXPECT_THAT(FindLearnedMemories("bird"), ElementsAre("memory"));
+
+  // A new mention of the same fact keeps the text, so nothing is embedded.
+  WriteLearnedMemory("memory", "Feeds the birds");
+  WaitForLearnedMemoriesSynced();
+  EXPECT_EQ(CountEmbedded("Feeds the birds"), 1u);
+}
+
+TEST_F(AIChatEmbeddingsServiceTest, RemovesDeletedLearnedMemories) {
+  WriteLearnedMemory("cat-memory", "Has a cat named Tom");
+  WriteLearnedMemory("dog-memory", "Walks the dog daily");
+  WaitForLearnedMemoriesSynced();
+
+  DeleteLearnedMemory("cat-memory");
+  WaitForLearnedMemoriesSynced();
+  EXPECT_TRUE(FindLearnedMemories("cat").empty());
+  EXPECT_THAT(FindLearnedMemories("dog"), ElementsAre("dog-memory"));
+}
+
+TEST_F(AIChatEmbeddingsServiceTest,
+       LearnedMemoryDeletedWhileEmbeddedIsNotKept) {
+  embedder_.Pause();
+  WriteLearnedMemory("cat-memory", "Has a cat named Tom");
+  // The sync of the write is embedding the memory.
+  ASSERT_TRUE(base::test::RunUntil([&] { return embedder_.HasPendingJobs(); }));
+
+  // The sync of the delete ends before the embedding of the write.
+  DeleteLearnedMemory("cat-memory");
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return service_->IsLearnedMemoryIndexCurrent(); }));
+  embedder_.Resume();
+  WaitForLearnedMemoriesSynced();
+  EXPECT_TRUE(FindLearnedMemories("cat").empty());
+}
+
+TEST_F(AIChatEmbeddingsServiceTest,
+       RemovesLearnedMemoriesOfDeletedConversations) {
+  ConversationHandler* cat_conversation = AddConversation(
+      "Tell me about my cat", "Cats sleep for most of the day.");
+  const std::string cat_uuid = cat_conversation->get_conversation_uuid();
+  const std::string cat_entry =
+      *cat_conversation->GetConversationHistory()[0]->uuid;
+  ConversationHandler* dog_conversation =
+      AddConversation("Tell me about my dog", "Dogs bark at the mail carrier.");
+  const std::string dog_entry =
+      *dog_conversation->GetConversationHistory()[0]->uuid;
+  WriteLearnedMemory("cat-memory", "Has a cat named Tom",
+                     {{cat_uuid, cat_entry, 0}});
+  WriteLearnedMemory(
+      "dog-memory", "Walks the dog daily",
+      {{dog_conversation->get_conversation_uuid(), dog_entry, 0}});
+  WaitForIndexed("Dogs bark at the mail carrier.");
+  WaitForLearnedMemoriesSynced();
+  ASSERT_THAT(FindLearnedMemories("cat"), ElementsAre("cat-memory"));
+
+  // The conversation database deletes the memory that came from the
+  // conversation.
+  ai_chat_service_->DeleteConversation(cat_uuid);
+  WaitForLearnedMemoriesSynced();
+  EXPECT_TRUE(FindLearnedMemories("cat").empty());
+  EXPECT_THAT(FindLearnedMemories("dog"), ElementsAre("dog-memory"));
+
+  ai_chat_service_->DeleteConversations();
+  WaitForLearnedMemoriesSynced();
+  EXPECT_TRUE(FindLearnedMemories("dog").empty());
+}
+
+TEST_F(AIChatEmbeddingsServiceTest, LearnedMemoriesFollowTheMemorySetting) {
+  WriteLearnedMemory("cat-memory", "Has a cat named Tom");
+  WaitForLearnedMemoriesSynced();
+
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+  WaitForLearnedMemoriesSynced();
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+  WaitForLearnedMemoriesSynced();
+
+  // The embedding was deleted, and is computed again.
+  EXPECT_EQ(CountEmbedded("Has a cat named Tom"), 2u);
+  EXPECT_THAT(FindLearnedMemories("cat"), ElementsAre("cat-memory"));
+}
+
+TEST_F(AIChatEmbeddingsServiceTest, RemovesLearnedMemoriesWhenStorageIsOff) {
+  WriteLearnedMemory("cat-memory", "Has a cat named Tom");
+  WaitForLearnedMemoriesSynced();
+
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
+  WaitForLearnedMemoriesSynced();
+  EXPECT_TRUE(FindLearnedMemories("cat").empty());
+}
+
+TEST_F(AIChatEmbeddingsServiceTest,
+       SyncsLearnedMemoriesChangedWhileNotRunning) {
+  WriteLearnedMemory("cat-memory", "Has a cat named Tom");
+  WaitForLearnedMemoriesSynced();
+  DestroyService();
+  DeleteLearnedMemory("cat-memory");
+  WriteLearnedMemory("dog-memory", "Walks the dog daily");
+
+  CreateService();
+  WaitForLearnedMemoriesSynced();
+  EXPECT_TRUE(FindLearnedMemories("cat").empty());
+  EXPECT_THAT(FindLearnedMemories("dog"), ElementsAre("dog-memory"));
+}
+
+TEST_F(AIChatEmbeddingsServiceTest, LearnedMemoryIndexIsCurrentAfterTheSync) {
+  WriteLearnedMemory("cat-memory", "Has a cat named Tom");
+  EXPECT_FALSE(service_->IsLearnedMemoryIndexCurrent());
+
+  base::test::TestFuture<void> current;
+  service_->WhenLearnedMemoryIndexCurrent(current.GetCallback());
+  ASSERT_TRUE(current.Wait());
+  EXPECT_TRUE(service_->IsLearnedMemoryIndexCurrent());
+  EXPECT_THAT(FindLearnedMemories("cat"), ElementsAre("cat-memory"));
+
+  // When the index is current, the callback runs at once (later).
+  base::test::TestFuture<void> again;
+  service_->WhenLearnedMemoryIndexCurrent(again.GetCallback());
+  EXPECT_FALSE(again.IsReady());
+  EXPECT_TRUE(again.Wait());
+}
+
+TEST_F(AIChatEmbeddingsServiceTest, EmbedsLearnedMemoriesAgainForNewModel) {
+  WriteLearnedMemory("cat-memory", "Has a cat named Tom");
+  WaitForLearnedMemoriesSynced();
+
+  embedder_metadata_provider_.SetMetadata(passage_embeddings::EmbedderMetadata(
+      /*model_version=*/2, /*output_size=*/4, /*search_score_threshold=*/0.5));
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return CountEmbedded("Has a cat named Tom") > 1 &&
+           service_->IsIndexingIdleForTesting();
+  }));
+  Flush();
+  EXPECT_THAT(FindLearnedMemories("cat"), ElementsAre("cat-memory"));
 }
 
 TEST_F(AIChatEmbeddingsServiceTest, DeletesIndexWhenSemanticSearchIsOff) {

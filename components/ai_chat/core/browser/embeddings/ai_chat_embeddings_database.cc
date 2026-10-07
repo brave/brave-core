@@ -56,6 +56,15 @@ constexpr char kCreateMemoryPassageTable[] =
     "text BLOB NOT NULL,"
     "embedding BLOB NOT NULL)";
 
+constexpr char kCreateLearnedMemoryPassageTable[] =
+    "CREATE TABLE IF NOT EXISTS learned_memory_passage("
+    // The uuid of the learned memory in the conversation database, which keeps
+    // its text.
+    "memory_uuid TEXT PRIMARY KEY NOT NULL,"
+    // The text version the embedding was computed from.
+    "text_version INTEGER NOT NULL,"
+    "embedding BLOB NOT NULL)";
+
 // Stored embeddings are unit vectors, so their dot product is their cosine
 // similarity.
 float DotProduct(base::span<const float> a, base::span<const float> b) {
@@ -431,6 +440,128 @@ std::vector<MemoryMatch> AIChatEmbeddingsDatabase::SearchMemories(
   return matches;
 }
 
+std::vector<std::string> AIChatEmbeddingsDatabase::SyncLearnedMemories(
+    const std::vector<LearnedMemoryStamp>& memories) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return {};
+  }
+  const auto wanted = base::MakeFlatMap<std::string_view, int>(
+      memories, {}, [](const LearnedMemoryStamp& memory) {
+        return std::make_pair(std::string_view(memory.uuid),
+                              memory.text_version);
+      });
+  base::flat_set<std::string> stored;
+  std::vector<std::string> stale_uuids;
+  {
+    sql::Statement statement(db_.GetCachedStatement(
+        SQL_FROM_HERE,
+        "SELECT memory_uuid, text_version FROM learned_memory_passage"));
+    while (statement.Step()) {
+      std::string uuid = statement.ColumnString(0);
+      auto it = wanted.find(uuid);
+      if (it == wanted.end() || it->second != statement.ColumnInt(1)) {
+        stale_uuids.push_back(std::move(uuid));
+        continue;
+      }
+      stored.insert(std::move(uuid));
+    }
+  }
+
+  sql::Transaction transaction(&db_);
+  if (!transaction.Begin()) {
+    return {};
+  }
+  for (const std::string& uuid : stale_uuids) {
+    sql::Statement statement(db_.GetCachedStatement(
+        SQL_FROM_HERE,
+        "DELETE FROM learned_memory_passage WHERE memory_uuid=?"));
+    statement.BindString(0, uuid);
+    if (!statement.Run()) {
+      return {};
+    }
+  }
+  if (!transaction.Commit()) {
+    return {};
+  }
+
+  std::vector<std::string> missing;
+  for (const LearnedMemoryStamp& memory : memories) {
+    if (stored.insert(memory.uuid).second) {
+      missing.push_back(memory.uuid);
+    }
+  }
+  return missing;
+}
+
+bool AIChatEmbeddingsDatabase::AddLearnedMemories(
+    std::vector<LearnedMemoryPassage> memories) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return false;
+  }
+  sql::Transaction transaction(&db_);
+  if (!transaction.Begin()) {
+    return false;
+  }
+  for (const LearnedMemoryPassage& memory : memories) {
+    std::optional<std::vector<uint8_t>> embedding =
+        EncryptEmbedding(memory.embedding);
+    if (!embedding) {
+      return false;
+    }
+    sql::Statement statement(db_.GetCachedStatement(
+        SQL_FROM_HERE,
+        "INSERT OR REPLACE INTO learned_memory_passage(memory_uuid,"
+        " text_version, embedding) VALUES(?, ?, ?)"));
+    statement.BindString(0, memory.memory_uuid);
+    statement.BindInt(1, memory.text_version);
+    statement.BindBlob(2, std::move(*embedding));
+    if (!statement.Run()) {
+      return false;
+    }
+  }
+  return transaction.Commit();
+}
+
+bool AIChatEmbeddingsDatabase::DeleteAllLearnedMemories() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return LazyInit() && db_.Execute("DELETE FROM learned_memory_passage");
+}
+
+std::vector<LearnedMemoryMatch> AIChatEmbeddingsDatabase::SearchLearnedMemories(
+    const std::vector<std::vector<float>>& queries,
+    size_t count) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit() || count == 0 || queries.empty()) {
+    return {};
+  }
+  std::vector<LearnedMemoryMatch> matches;
+  sql::Statement statement(db_.GetCachedStatement(
+      SQL_FROM_HERE,
+      "SELECT memory_uuid, embedding FROM learned_memory_passage"));
+  while (statement.Step()) {
+    std::optional<std::vector<float>> embedding =
+        DecryptEmbedding(statement, 1);
+    if (!embedding) {
+      continue;
+    }
+    std::optional<float> best;
+    for (const std::vector<float>& query : queries) {
+      if (query.size() == embedding->size()) {
+        const float score = DotProduct(*embedding, query);
+        best = std::max(best.value_or(score), score);
+      }
+    }
+    if (best) {
+      matches.push_back({statement.ColumnString(0), *best});
+    }
+  }
+  std::ranges::sort(matches, std::greater<>(), &LearnedMemoryMatch::score);
+  matches.resize(std::min(matches.size(), count));
+  return matches;
+}
+
 bool AIChatEmbeddingsDatabase::LazyInit() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!init_status_) {
@@ -459,7 +590,8 @@ sql::InitStatus AIChatEmbeddingsDatabase::InitInternal() {
   if (!meta_table.Init(&db_, kCurrentVersion, kCurrentVersion) ||
       !db_.Execute(kCreateConversationTable) ||
       !db_.Execute(kCreateConversationPassageTable) ||
-      !db_.Execute(kCreateMemoryPassageTable)) {
+      !db_.Execute(kCreateMemoryPassageTable) ||
+      !db_.Execute(kCreateLearnedMemoryPassageTable)) {
     return sql::INIT_FAILURE;
   }
 
@@ -471,6 +603,7 @@ sql::InitStatus AIChatEmbeddingsDatabase::InitInternal() {
     if (!db_.Execute("DELETE FROM conversation_passage") ||
         !db_.Execute("DELETE FROM conversation") ||
         !db_.Execute("DELETE FROM memory_passage") ||
+        !db_.Execute("DELETE FROM learned_memory_passage") ||
         !meta_table.SetValue(kModelVersionKey, model_version_) ||
         !meta_table.SetValue(kPassageVersionKey, passage_version_)) {
       return sql::INIT_FAILURE;

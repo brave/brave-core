@@ -189,6 +189,7 @@ static_library("browser") {
       "learned_memory_data_source.h",
       "learned_memory_eval.cc",
       "learned_memory_eval.h",
+      "learned_memory_search.h",
       "learned_memory_types.h",
       "memory_decision_client.cc",
       "memory_decision_client.h",

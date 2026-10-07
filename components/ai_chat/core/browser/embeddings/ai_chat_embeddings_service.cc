@@ -147,8 +147,9 @@ AIChatEmbeddingsService::AIChatEmbeddingsService(
                           base::Unretained(this)));
   pref_change_registrar_.Add(
       prefs::kBraveAIChatUserMemoryEnabled,
-      base::BindRepeating(&AIChatEmbeddingsService::SyncMemories,
-                          base::Unretained(this)));
+      base::BindRepeating(
+          &AIChatEmbeddingsService::OnUserMemoryEnabledPrefChanged,
+          base::Unretained(this)));
   pref_change_registrar_.Add(
       local_ai::prefs::kBraveHistoryEmbeddingsEnabled,
       base::BindRepeating(&AIChatEmbeddingsService::OnSemanticSearchPrefChanged,
@@ -196,6 +197,56 @@ void AIChatEmbeddingsService::SearchMemories(const std::string& query,
                             std::move(callback)));
 }
 
+bool AIChatEmbeddingsService::IsLearnedMemoryIndexCurrent() const {
+  return db_ && learned_memory_index_current_;
+}
+
+void AIChatEmbeddingsService::WhenLearnedMemoryIndexCurrent(
+    base::OnceClosure callback) {
+  if (disabled_) {
+    // The index never becomes current again.
+    return;
+  }
+  if (IsLearnedMemoryIndexCurrent()) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, std::move(callback));
+    return;
+  }
+  learned_memory_index_waiters_.push_back(std::move(callback));
+}
+
+void AIChatEmbeddingsService::SearchLearnedMemories(
+    std::vector<std::string> queries,
+    size_t count,
+    SearchCallback callback) {
+  std::erase_if(queries,
+                [](const std::string& query) { return query.empty(); });
+  if (!db_ || queries.empty() ||
+      !prefs_->GetBoolean(prefs::kBraveAIChatUserMemoryEnabled)) {
+    std::move(callback).Run({});
+    return;
+  }
+  query_jobs_.push_back(embedder_->ComputePassagesEmbeddings(
+      PassagePriority::kUserInitiated, std::move(queries),
+      base::BindOnce(&AIChatEmbeddingsService::OnLearnedMemoryQueriesEmbedded,
+                     weak_ptr_factory_.GetWeakPtr(), count,
+                     std::move(callback))));
+}
+
+void AIChatEmbeddingsService::SearchLearnedMemoriesByEmbedding(
+    std::vector<float> embedding,
+    size_t count,
+    SearchCallback callback) {
+  if (!db_ || embedding.empty() ||
+      !prefs_->GetBoolean(prefs::kBraveAIChatUserMemoryEnabled)) {
+    std::move(callback).Run({});
+    return;
+  }
+  db_.AsyncCall(&AIChatEmbeddingsDatabase::SearchLearnedMemories)
+      .WithArgs(std::vector<std::vector<float>>{std::move(embedding)}, count)
+      .Then(std::move(callback));
+}
+
 base::WeakPtr<AIChatEmbeddingsService> AIChatEmbeddingsService::GetWeakPtr() {
   return weak_ptr_factory_.GetWeakPtr();
 }
@@ -208,11 +259,12 @@ void AIChatEmbeddingsService::FlushForTesting(base::OnceClosure callback) {
 bool AIChatEmbeddingsService::IsIndexingIdleForTesting() const {
   return reconciliations_in_progress_ == 0 && conversations_to_index_.empty() &&
          !indexing_conversation_uuid_ && entry_jobs_.empty() &&
-         !memory_sync_pending_ && !memory_job_;
+         !memory_sync_pending_ && !memory_job_ && IsLearnedMemoryIndexCurrent();
 }
 
 void AIChatEmbeddingsService::Shutdown() {
   ResetIndexing();
+  learned_memory_index_waiters_.clear();
   query_jobs_.clear();
   ai_chat_service_observation_.Reset();
   embedder_metadata_observation_.Reset();
@@ -223,6 +275,7 @@ void AIChatEmbeddingsService::Shutdown() {
 
 void AIChatEmbeddingsService::OnStorageReady() {
   MaybeReconcileConversations();
+  SyncLearnedMemories();
 }
 
 void AIChatEmbeddingsService::OnConversationEntryAdded(
@@ -241,6 +294,9 @@ void AIChatEmbeddingsService::OnConversationEntryAdded(
 void AIChatEmbeddingsService::OnConversationEntryRemoved(
     const std::string& conversation_uuid,
     const std::string& entry_uuid) {
+  // The conversation database deletes the learned memories that came only
+  // from the entry.
+  SyncLearnedMemories();
   if (!db_ || DeferToConversationIndexing(conversation_uuid)) {
     return;
   }
@@ -268,6 +324,9 @@ void AIChatEmbeddingsService::OnConversationDeleted(
   if (!db_) {
     return;
   }
+  // The conversation database deletes the learned memories that came only
+  // from the conversation.
+  SyncLearnedMemories();
   CancelEntryIndexing(conversation_uuid);
   std::erase(conversations_to_index_, conversation_uuid);
   if (indexing_conversation_uuid_ == conversation_uuid) {
@@ -285,6 +344,7 @@ void AIChatEmbeddingsService::OnAllConversationsDeleted() {
   if (!db_) {
     return;
   }
+  SyncLearnedMemories();
   entry_jobs_.clear();
   conversations_to_index_.clear();
   conversation_job_.reset();
@@ -292,6 +352,10 @@ void AIChatEmbeddingsService::OnAllConversationsDeleted() {
   index_conversation_again_ = false;
   db_.AsyncCall(
       base::IgnoreResult(&AIChatEmbeddingsDatabase::DeleteAllConversations));
+}
+
+void AIChatEmbeddingsService::OnLearnedMemoriesChanged() {
+  SyncLearnedMemories();
 }
 
 void AIChatEmbeddingsService::EmbedderMetadataUpdated(
@@ -326,6 +390,7 @@ void AIChatEmbeddingsService::MaybeCreateDatabase() {
       db_task_runner_, db_file_path_, embedder_metadata_->model_version,
       kPassageVersion, encryptor_);
   SyncMemories();
+  SyncLearnedMemories();
   MaybeReconcileConversations();
 }
 
@@ -339,6 +404,8 @@ void AIChatEmbeddingsService::ResetIndexing() {
   entry_jobs_.clear();
   memory_sync_pending_ = false;
   memory_job_.reset();
+  learned_memory_index_current_ = false;
+  learned_memory_job_.reset();
 }
 
 void AIChatEmbeddingsService::OnSemanticSearchPrefChanged() {
@@ -348,6 +415,8 @@ void AIChatEmbeddingsService::OnSemanticSearchPrefChanged() {
   }
   disabled_ = true;
   ResetIndexing();
+  // The index never becomes current again.
+  learned_memory_index_waiters_.clear();
   query_jobs_.clear();
   ai_chat_service_observation_.Reset();
   embedder_metadata_observation_.Reset();
@@ -357,6 +426,11 @@ void AIChatEmbeddingsService::OnSemanticSearchPrefChanged() {
   db_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(base::IgnoreResult(&sql::Database::Delete),
                                 db_file_path_));
+}
+
+void AIChatEmbeddingsService::OnUserMemoryEnabledPrefChanged() {
+  SyncMemories();
+  SyncLearnedMemories();
 }
 
 void AIChatEmbeddingsService::MaybeReconcileConversations() {
@@ -655,6 +729,168 @@ void AIChatEmbeddingsService::OnMemoriesEmbedded(
   }
   db_.AsyncCall(base::IgnoreResult(&AIChatEmbeddingsDatabase::AddMemories))
       .WithArgs(std::move(passages));
+}
+
+void AIChatEmbeddingsService::SyncLearnedMemories() {
+  if (!db_) {
+    return;
+  }
+  learned_memory_job_.reset();
+  const uint64_t sync_id = ++learned_memory_sync_id_;
+  learned_memory_index_current_ = false;
+  if (!prefs_->GetBoolean(prefs::kBraveAIChatUserMemoryEnabled) ||
+      !ai_chat_service_->IsAIChatHistoryEnabled()) {
+    // No learned memory is used while memories are off, and none is kept
+    // without storage, so none stays indexed. The memories are embedded again
+    // when they are turned on.
+    db_.AsyncCall(&AIChatEmbeddingsDatabase::DeleteAllLearnedMemories)
+        .Then(base::BindOnce(
+            [](base::WeakPtr<AIChatEmbeddingsService> service, uint64_t id,
+               bool) {
+              if (service) {
+                service->OnLearnedMemorySyncDone(id);
+              }
+            },
+            indexing_weak_ptr_factory_.GetWeakPtr(), sync_id));
+    return;
+  }
+  // Until then the learned memories can't be read, and OnStorageReady() calls
+  // again. An empty list would delete every embedding.
+  if (!ai_chat_service_->IsStorageReady()) {
+    return;
+  }
+  // The stamps are read after the change that triggered the sync, on the
+  // conversation database's sequence, so they include it.
+  ai_chat_service_->GetLearnedMemoryStamps(
+      base::BindOnce(&AIChatEmbeddingsService::OnGotLearnedMemoryStamps,
+                     indexing_weak_ptr_factory_.GetWeakPtr(), sync_id));
+}
+
+void AIChatEmbeddingsService::OnGotLearnedMemoryStamps(
+    uint64_t sync_id,
+    std::vector<LearnedMemoryStamp> stamps) {
+  if (sync_id != learned_memory_sync_id_ || !db_) {
+    return;
+  }
+  db_.AsyncCall(&AIChatEmbeddingsDatabase::SyncLearnedMemories)
+      .WithArgs(std::move(stamps))
+      .Then(base::BindOnce(&AIChatEmbeddingsService::OnLearnedMemoriesSynced,
+                           indexing_weak_ptr_factory_.GetWeakPtr(), sync_id));
+}
+
+void AIChatEmbeddingsService::OnLearnedMemoriesSynced(
+    uint64_t sync_id,
+    std::vector<std::string> missing_uuids) {
+  if (sync_id != learned_memory_sync_id_) {
+    return;
+  }
+  if (missing_uuids.empty()) {
+    OnLearnedMemorySyncDone(sync_id);
+    return;
+  }
+  // Only the texts to embed are decrypted.
+  ai_chat_service_->GetLearnedMemoriesByUuid(
+      std::move(missing_uuids),
+      base::BindOnce(&AIChatEmbeddingsService::OnGotLearnedMemoriesToEmbed,
+                     indexing_weak_ptr_factory_.GetWeakPtr(), sync_id));
+}
+
+void AIChatEmbeddingsService::OnGotLearnedMemoriesToEmbed(
+    uint64_t sync_id,
+    std::vector<LearnedMemory> memories) {
+  if (sync_id != learned_memory_sync_id_) {
+    return;
+  }
+  if (memories.empty()) {
+    OnLearnedMemorySyncDone(sync_id);
+    return;
+  }
+  // The text versions are those of the texts read, which can be newer than the
+  // stamps. A text changed meanwhile is synced again by its own notification.
+  std::vector<LearnedMemoryStamp> stamps;
+  std::vector<std::string> documents;
+  for (LearnedMemory& memory : memories) {
+    stamps.push_back({memory.uuid, memory.text_version});
+    documents.push_back(std::move(memory.text));
+  }
+  learned_memory_job_ = embedder_->ComputePassagesEmbeddings(
+      PassagePriority::kPassive, std::move(documents),
+      base::BindOnce(&AIChatEmbeddingsService::OnLearnedMemoriesEmbedded,
+                     indexing_weak_ptr_factory_.GetWeakPtr(), sync_id,
+                     std::move(stamps)));
+}
+
+void AIChatEmbeddingsService::OnLearnedMemoriesEmbedded(
+    uint64_t sync_id,
+    std::vector<LearnedMemoryStamp> stamps,
+    std::vector<std::string> documents,
+    std::vector<passage_embeddings::Embedding> embeddings,
+    uint64_t job_id,
+    ComputeEmbeddingsStatus status) {
+  if (!learned_memory_job_ || learned_memory_job_->id() != job_id ||
+      sync_id != learned_memory_sync_id_) {
+    return;
+  }
+  learned_memory_job_.reset();
+  if (status != ComputeEmbeddingsStatus::kSuccess ||
+      embeddings.size() != stamps.size()) {
+    // Nothing more can be done until the next sync, which tries again. The
+    // memories without an embedding are not found until then.
+    OnLearnedMemorySyncDone(sync_id);
+    return;
+  }
+  std::vector<LearnedMemoryPassage> passages;
+  for (size_t i = 0; i < stamps.size(); ++i) {
+    passages.push_back({std::move(stamps[i].uuid), stamps[i].text_version,
+                        embeddings[i].GetData()});
+  }
+  db_.AsyncCall(&AIChatEmbeddingsDatabase::AddLearnedMemories)
+      .WithArgs(std::move(passages))
+      .Then(base::BindOnce(
+          [](base::WeakPtr<AIChatEmbeddingsService> service, uint64_t id,
+             bool) {
+            if (service) {
+              service->OnLearnedMemorySyncDone(id);
+            }
+          },
+          indexing_weak_ptr_factory_.GetWeakPtr(), sync_id));
+}
+
+void AIChatEmbeddingsService::OnLearnedMemorySyncDone(uint64_t sync_id) {
+  if (sync_id != learned_memory_sync_id_) {
+    return;
+  }
+  learned_memory_index_current_ = true;
+  std::vector<base::OnceClosure> waiters =
+      std::exchange(learned_memory_index_waiters_, {});
+  for (base::OnceClosure& waiter : waiters) {
+    std::move(waiter).Run();
+  }
+}
+
+void AIChatEmbeddingsService::OnLearnedMemoryQueriesEmbedded(
+    size_t count,
+    SearchCallback callback,
+    std::vector<std::string> queries,
+    std::vector<passage_embeddings::Embedding> embeddings,
+    uint64_t job_id,
+    ComputeEmbeddingsStatus status) {
+  std::erase_if(query_jobs_,
+                [job_id](const passage_embeddings::Embedder::Job& job) {
+                  return job.id() == job_id;
+                });
+  if (status != ComputeEmbeddingsStatus::kSuccess ||
+      embeddings.size() != queries.size() || !db_) {
+    std::move(callback).Run({});
+    return;
+  }
+  std::vector<std::vector<float>> vectors;
+  for (const passage_embeddings::Embedding& embedding : embeddings) {
+    vectors.push_back(embedding.GetData());
+  }
+  db_.AsyncCall(&AIChatEmbeddingsDatabase::SearchLearnedMemories)
+      .WithArgs(std::move(vectors), count)
+      .Then(std::move(callback));
 }
 
 void AIChatEmbeddingsService::EmbedQuery(const std::string& query,

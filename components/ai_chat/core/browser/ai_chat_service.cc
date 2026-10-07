@@ -1618,6 +1618,38 @@ void AIChatService::GetLearnedMemories(
       .Then(std::move(callback));
 }
 
+void AIChatService::GetLearnedMemoryStamps(
+    base::OnceCallback<void(std::vector<LearnedMemoryStamp>)> callback) {
+  if (!ai_chat_db_) {
+    RunLater(std::move(callback), std::vector<LearnedMemoryStamp>());
+    return;
+  }
+  ai_chat_db_.AsyncCall(&AIChatDatabase::GetLearnedMemoryStamps)
+      .Then(std::move(callback));
+}
+
+void AIChatService::GetLearnedMemoriesByUuid(
+    std::vector<std::string> memory_uuids,
+    base::OnceCallback<void(std::vector<LearnedMemory>)> callback) {
+  if (!ai_chat_db_) {
+    RunLater(std::move(callback), std::vector<LearnedMemory>());
+    return;
+  }
+  ai_chat_db_.AsyncCall(&AIChatDatabase::GetLearnedMemoriesByUuid)
+      .WithArgs(std::move(memory_uuids))
+      .Then(std::move(callback));
+}
+
+void AIChatService::GetPermanentLearnedMemories(
+    base::OnceCallback<void(std::vector<LearnedMemory>)> callback) {
+  if (!ai_chat_db_) {
+    RunLater(std::move(callback), std::vector<LearnedMemory>());
+    return;
+  }
+  ai_chat_db_.AsyncCall(&AIChatDatabase::GetPermanentLearnedMemories)
+      .Then(std::move(callback));
+}
+
 void AIChatService::AddOrUpdateLearnedMemory(
     LearnedMemory memory,
     base::OnceCallback<void(bool)> callback) {

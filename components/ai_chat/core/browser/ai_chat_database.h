@@ -135,15 +135,15 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
       std::string_view conversation_entry_uuid);
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-  // Gets all learned memories, with their vectors and source links.
+  // Gets all learned memories, with their source links and previous texts.
   virtual std::vector<LearnedMemory> GetAllLearnedMemories();
 
   // The uuid and the text version of every learned memory. Decrypts nothing.
   virtual std::vector<LearnedMemoryStamp> GetLearnedMemoryStamps();
 
-  // Gets the learned memories with the given uuids. The memories have no
-  // vector, no source links and no previous text. A uuid that is not stored is
-  // left out.
+  // Gets the learned memories with the given uuids, in the same order. The
+  // memories have no source links and no previous text. A uuid that is not
+  // stored is left out.
   virtual std::vector<LearnedMemory> GetLearnedMemoriesByUuid(
       const std::vector<std::string>& memory_uuids);
 

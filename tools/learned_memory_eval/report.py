@@ -148,6 +148,8 @@ def _render_step(step: dict) -> list:
         prev = f' (old text: "{step["previous"]}")' if step.get("previous") else ""
         out.append(f'- **store ({step["action"]})**: "{step["text"]}" '
                    f'({step["category"]}, {step["type"]}){prev}')
+    elif name == "index_current":
+        out.append(f'- index of the learned memories current after {step["t_ms"]} ms')
     elif name == "watermark":
         out.append(f'- watermark → {step["date"]}')
     else:

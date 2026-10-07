@@ -185,16 +185,19 @@ TEST_F(AIChatEmbeddingsDatabaseTest, DeletesEmbeddingsOfAnotherVersion) {
         "a", Passages(Passage("a1", "text", {1.0f, 0.0f, 0.0f})),
         base::Time::UnixEpoch()));
     ASSERT_TRUE(db_->AddMemories({{"memory", {1.0f, 0.0f, 0.0f}}}));
+    ASSERT_TRUE(db_->AddLearnedMemories({{"learned", 1, {1.0f, 0.0f, 0.0f}}}));
   };
   auto has_data = [&] {
     return !db_->GetIndexedConversations().empty() &&
            !db_->SearchConversations(Query(), 0.5f, 10, 3, "").empty() &&
-           !db_->SearchMemories(Query(), 0.5f, 10).empty();
+           !db_->SearchMemories(Query(), 0.5f, 10).empty() &&
+           !db_->SearchLearnedMemories({Query().GetData()}, 10).empty();
   };
   auto has_no_data = [&] {
     return db_->GetIndexedConversations().empty() &&
            db_->SearchConversations(Query(), -1.0f, 10, 3, "").empty() &&
-           db_->SearchMemories(Query(), -1.0f, 10).empty();
+           db_->SearchMemories(Query(), -1.0f, 10).empty() &&
+           db_->SearchLearnedMemories({Query().GetData()}, 10).empty();
   };
 
   add_data();
@@ -235,6 +238,35 @@ TEST_F(AIChatEmbeddingsDatabaseTest, SyncsMemories) {
 
   ASSERT_TRUE(db_->DeleteAllMemories());
   EXPECT_TRUE(db_->SearchMemories(Query(), -1.0f, 10).empty());
+}
+
+TEST_F(AIChatEmbeddingsDatabaseTest, SyncsLearnedMemories) {
+  EXPECT_EQ(db_->SyncLearnedMemories({{"cats", 1}, {"dogs", 1}}),
+            (std::vector<std::string>{"cats", "dogs"}));
+  ASSERT_TRUE(db_->AddLearnedMemories(
+      {{"cats", 1, {1.0f, 0.0f, 0.0f}}, {"dogs", 1, {0.6f, 0.8f, 0.0f}}}));
+
+  // A deleted memory and a memory with a new text version lose their
+  // embedding. Only the missing memories are returned.
+  EXPECT_EQ(db_->SyncLearnedMemories({{"dogs", 2}, {"birds", 1}}),
+            (std::vector<std::string>{"dogs", "birds"}));
+  EXPECT_TRUE(db_->SearchLearnedMemories({Query().GetData()}, 10).empty());
+  ASSERT_TRUE(db_->AddLearnedMemories(
+      {{"dogs", 2, {0.6f, 0.8f, 0.0f}}, {"birds", 1, {0.0f, 1.0f, 0.0f}}}));
+  EXPECT_TRUE(db_->SyncLearnedMemories({{"dogs", 2}, {"birds", 1}}).empty());
+
+  // Best first. A memory scores its best against the queries.
+  EXPECT_EQ(db_->SearchLearnedMemories({Query().GetData()}, 10),
+            (std::vector<LearnedMemoryMatch>{{"dogs", 0.6f}, {"birds", 0.0f}}));
+  EXPECT_EQ(
+      db_->SearchLearnedMemories({Query().GetData(), {0.0f, 1.0f, 0.0f}}, 10),
+      (std::vector<LearnedMemoryMatch>{{"birds", 1.0f}, {"dogs", 0.8f}}));
+  EXPECT_EQ(db_->SearchLearnedMemories({Query().GetData()}, 1).size(), 1u);
+  // A query of another model can not be compared.
+  EXPECT_TRUE(db_->SearchLearnedMemories({{1.0f, 0.0f}}, 10).empty());
+
+  ASSERT_TRUE(db_->DeleteAllLearnedMemories());
+  EXPECT_TRUE(db_->SearchLearnedMemories({Query().GetData()}, 10).empty());
 }
 
 TEST_F(AIChatEmbeddingsDatabaseTest, EncryptsStoredText) {

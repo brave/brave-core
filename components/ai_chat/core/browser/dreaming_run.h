@@ -23,6 +23,7 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/learned_memory_data_source.h"
+#include "brave/components/ai_chat/core/browser/learned_memory_search.h"
 #include "brave/components/ai_chat/core/browser/learned_memory_types.h"
 #include "brave/components/ai_chat/core/browser/memory_decision_client.h"
 #include "brave/components/ai_chat/core/browser/memory_llm_prompts.h"
@@ -91,7 +92,11 @@ struct DreamingConfig {
   double max_sensitive = 0.3;
   double max_instruction = 0.3;
   double max_short_lived = 0.5;
+  // The work time of a run. It starts after the wait for the index.
   base::TimeDelta time_limit = base::Seconds(30);
+  // A run starts when the index of the learned memories is current. A run that
+  // waits longer fails, and the manager tries again later.
+  base::TimeDelta index_wait_limit = base::Minutes(5);
   // LLM limits for each run. Rewrites and merges count as writing.
   size_t max_writing_requests = 50;
   size_t max_relation_requests = 20;
@@ -104,14 +109,17 @@ struct DreamingConfig {
 };
 
 // One Dreaming run. UserMemoryManager makes it, and deletes it after |done|
-// runs. For each new user turn of the stored chats, the run:
+// runs. The run waits until the index of the learned memories is current.
+// Then, for each new user turn of the stored chats, the run:
 //  1. asks the gate question
 //  2. splits the turn into sentences
 //  3. asks the fact, safety, category and type questions
 //  4. rewrites the kept sentences with the LLM (mechanical guards only: the
 //  user
 //     reviews the memories)
-//  5. finds the closest old memories
+//  5. finds the closest old memories: it searches the index, and compares
+//     with the memories that it wrote itself (the index does not have them
+//     yet)
 //  6. asks the relation question, and the LLM when it is not certain
 //  7. merges with the LLM (the same guards)
 //  8. stores the memory, and moves the watermark of the chat
@@ -125,8 +133,9 @@ class DreamingRun {
   // |data_source|, |decision_client|, |llm_engine| and |embedder| must outlive
   // the run. |llm_engine| is the engine of the local BYOM model. It can be
   // null: then the run stores the user's sentences, and does not add a fact
-  // whose relation is not certain.
+  // whose relation is not certain. When |search| goes away, the run fails.
   DreamingRun(LearnedMemoryDataSource& data_source,
+              base::WeakPtr<LearnedMemorySearch> search,
               MemoryDecisionClient& decision_client,
               EngineConsumer* llm_engine,
               passage_embeddings::Embedder& embedder,
@@ -183,6 +192,7 @@ class DreamingRun {
   using LlmCallback = base::OnceCallback<void(std::optional<std::string>)>;
 
   // Loading.
+  void OnIndexCurrent();
   void OnWatermarks(std::map<std::string, base::Time> watermarks);
   void OnMemories(std::vector<LearnedMemory> memories);
   void OnConversations(std::vector<mojom::ConversationPtr> conversations);
@@ -205,6 +215,7 @@ class DreamingRun {
 
   // Steps 5 to 8, for each fact of the turn.
   void ProcessNextFact();
+  void OnNeighborMatches(std::vector<LearnedMemoryMatch> matches);
   void OnRelations(
       std::optional<std::vector<AnswerProbabilities<RelationAnswer>>>
           relations);
@@ -218,8 +229,15 @@ class DreamingRun {
   void OnMergedEmbedding(std::string merged,
                          std::vector<std::vector<float>> vectors);
   void AddNewMemory();
-  void Store(LearnedMemory memory, bool is_new);
-  void OnStored(LearnedMemory memory, bool is_new, bool success);
+  // |embedding| is the embedding of a new text. It is null when the text did
+  // not change.
+  void Store(LearnedMemory memory,
+             bool is_new,
+             std::optional<std::vector<float>> embedding);
+  void OnStored(LearnedMemory memory,
+                bool is_new,
+                std::optional<std::vector<float>> embedding,
+                bool success);
   void NextFact();
 
   // |purpose| names the call in the trace.
@@ -264,6 +282,7 @@ class DreamingRun {
   bool CanWrite() const;
 
   const raw_ref<LearnedMemoryDataSource> data_source_;
+  base::WeakPtr<LearnedMemorySearch> search_;
   const raw_ref<MemoryDecisionClient> decision_client_;
   const raw_ptr<EngineConsumer> llm_engine_;
   const raw_ref<passage_embeddings::Embedder> embedder_;
@@ -272,6 +291,9 @@ class DreamingRun {
 
   std::map<std::string, base::Time> watermarks_;
   std::vector<LearnedMemory> memories_;
+  // The embeddings of the texts that this run wrote, by memory uuid. The index
+  // gets them only after its next sync, so the neighbor search uses these.
+  std::map<std::string, std::vector<float>> run_embeddings_;
   base::circular_deque<std::string> conversations_to_read_;
   base::circular_deque<UserTurn> turns_;
 
@@ -290,6 +312,7 @@ class DreamingRun {
   base::TimeTicks run_start_;
   base::TimeTicks call_start_;
   DreamingResult result_;
+  base::OneShotTimer index_wait_timer_;
   base::OneShotTimer time_limit_timer_;
 
   base::WeakPtrFactory<DreamingRun> weak_ptr_factory_{this};

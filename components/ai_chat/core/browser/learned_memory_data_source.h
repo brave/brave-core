@@ -43,8 +43,21 @@ class LearnedMemoryDataSource {
       const std::string& conversation_uuid,
       base::OnceCallback<void(mojom::ConversationArchivePtr)> callback) = 0;
 
-  // All learned memories, with their vectors and sources.
+  // All learned memories, with their sources and previous texts. The oldest
+  // first.
   virtual void GetLearnedMemories(
+      base::OnceCallback<void(std::vector<LearnedMemory>)> callback) = 0;
+  // The uuid and the text version of each learned memory. Decrypts nothing.
+  // The embeddings service compares them with its index.
+  virtual void GetLearnedMemoryStamps(
+      base::OnceCallback<void(std::vector<LearnedMemoryStamp>)> callback) = 0;
+  // The memories with the given uuids, in the same order, without sources and
+  // previous texts. A uuid that is not stored is left out.
+  virtual void GetLearnedMemoriesByUuid(
+      std::vector<std::string> memory_uuids,
+      base::OnceCallback<void(std::vector<LearnedMemory>)> callback) = 0;
+  // The permanent memories, the same content as GetLearnedMemoriesByUuid().
+  virtual void GetPermanentLearnedMemories(
       base::OnceCallback<void(std::vector<LearnedMemory>)> callback) = 0;
   // Adds the memory or replaces the one with the same uuid. A successful write
   // tells the observers of AIChatService (OnLearnedMemoriesChanged).

@@ -19,6 +19,8 @@
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
 #include "base/time/time.h"
+#include "brave/components/ai_chat/core/browser/learned_memory_search.h"
+#include "brave/components/ai_chat/core/browser/learned_memory_types.h"
 #include "components/os_crypt/async/common/encryptor.h"
 #include "sql/database.h"
 #include "sql/init_status.h"
@@ -92,6 +94,14 @@ struct MemoryMatch {
   float score = 0.0f;
 };
 
+// The embedding of a learned memory, computed from the text at
+// `text_version`. The text stays in the conversation database.
+struct LearnedMemoryPassage {
+  std::string memory_uuid;
+  int text_version = 1;
+  std::vector<float> embedding;
+};
+
 // SQLite store for the embeddings of the user's Leo conversations and
 // memories. Both the text and the embedding of each passage are encrypted,
 // since an embedding can give away the text it was computed from. Lives on a
@@ -159,6 +169,21 @@ class AIChatEmbeddingsDatabase {
   std::vector<MemoryMatch> SearchMemories(
       const passage_embeddings::Embedding& query,
       float min_score,
+      size_t count);
+
+  // Deletes the stored learned memories that are not in `memories`, or whose
+  // text version differs, and returns the uuids of those of `memories` that
+  // have no stored embedding.
+  std::vector<std::string> SyncLearnedMemories(
+      const std::vector<LearnedMemoryStamp>& memories);
+  // Adds the passages, or replaces those of the same memories.
+  bool AddLearnedMemories(std::vector<LearnedMemoryPassage> memories);
+  bool DeleteAllLearnedMemories();
+
+  // Finds up to `count` learned memories, best first. A memory scores the best
+  // of its scores against each of `queries`.
+  std::vector<LearnedMemoryMatch> SearchLearnedMemories(
+      const std::vector<std::vector<float>>& queries,
       size_t count);
 
  private:

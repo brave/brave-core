@@ -1419,7 +1419,6 @@ LearnedMemory MakeLearnedMemory(std::string uuid,
   LearnedMemory memory;
   memory.uuid = uuid;
   memory.text = "Lives in Berlin " + uuid;
-  memory.vector = {0.25f, -1.5f, 3.0f};
   memory.category = LearnedMemoryCategory::kPersonalFact;
   memory.type = LearnedMemoryType::kLongTerm;
   memory.created_date = base::Time::FromSecondsSinceUnixEpoch(1000);
@@ -1431,7 +1430,6 @@ LearnedMemory MakeLearnedMemory(std::string uuid,
 
 PreviousMemoryText MakePreviousText(std::vector<MemorySourceLink> links) {
   return PreviousMemoryText{.text = "Lives in San Francisco",
-                            .vector = {1.0f, 2.0f, 4.0f},
                             .links = std::move(links)};
 }
 
@@ -1456,7 +1454,6 @@ TEST_P(AIChatDatabaseTest, LearnedMemory_AddGetAndUpdate) {
   // An update replaces the row, the links and the previous text.
   first.text = "Moved to Berlin";
   first.text_version = 2;
-  first.vector = {9.0f, 8.0f};
   first.category = LearnedMemoryCategory::kPreference;
   first.type = LearnedMemoryType::kPermanent;
   first.last_used_date = base::Time::FromSecondsSinceUnixEpoch(4000);
@@ -1468,39 +1465,31 @@ TEST_P(AIChatDatabaseTest, LearnedMemory_AddGetAndUpdate) {
   EXPECT_EQ(CountRows("memory_source_link"), 2);
 }
 
-TEST_P(AIChatDatabaseTest, LearnedMemory_RejectsMemoryWithoutTextOrVector) {
+TEST_P(AIChatDatabaseTest, LearnedMemory_RejectsMemoryWithoutUuidOrText) {
   LearnedMemory no_text = MakeLearnedMemory("no-text", {});
   no_text.text = "";
   EXPECT_FALSE(db_->AddOrUpdateLearnedMemory(no_text));
 
-  LearnedMemory no_vector = MakeLearnedMemory("no-vector", {});
-  no_vector.vector.clear();
-  EXPECT_FALSE(db_->AddOrUpdateLearnedMemory(no_vector));
+  LearnedMemory no_uuid = MakeLearnedMemory("", {});
+  EXPECT_FALSE(db_->AddOrUpdateLearnedMemory(no_uuid));
 
   EXPECT_TRUE(db_->GetAllLearnedMemories().empty());
 }
 
-TEST_P(AIChatDatabaseTest, LearnedMemory_TextAndVectorAreEncrypted) {
+TEST_P(AIChatDatabaseTest, LearnedMemory_TextsAreEncrypted) {
   LearnedMemory memory = MakeLearnedMemory("encrypted", {});
   memory.previous = MakePreviousText({});
   ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(memory));
 
-  sql::Statement statement = RawStatement(
-      "SELECT text, vector, previous_text, previous_vector FROM "
-      "learned_memory");
+  sql::Statement statement =
+      RawStatement("SELECT text, previous_text FROM learned_memory");
   ASSERT_TRUE(statement.Step());
   auto contains = [&](int column, std::string_view plain) {
     return statement.ColumnBlobAsString(column).find(plain) !=
            std::string::npos;
   };
-  auto bytes_of = [](const std::vector<float>& vector) {
-    return std::string(base::as_string_view(
-        base::as_byte_span(base::allow_nonunique_obj, vector)));
-  };
   EXPECT_FALSE(contains(0, "Berlin"));
-  EXPECT_FALSE(contains(1, bytes_of(memory.vector)));
-  EXPECT_FALSE(contains(2, "San Francisco"));
-  EXPECT_FALSE(contains(3, bytes_of(memory.previous->vector)));
+  EXPECT_FALSE(contains(1, "San Francisco"));
 }
 
 TEST_P(AIChatDatabaseTest, LearnedMemory_Delete) {
@@ -1559,14 +1548,13 @@ TEST_P(AIChatDatabaseTest, LearnedMemory_LightQueries) {
   }
 
   // The memories come in the order of the uuids. A missing uuid is left out.
-  // The memories have no vector, no links and no previous text.
+  // The memories have no links and no previous text.
   std::vector<LearnedMemory> found =
       db_->GetLearnedMemoriesByUuid({"third", "missing", "first"});
   ASSERT_EQ(found.size(), 2u);
   EXPECT_EQ(found[0].uuid, "third");
   EXPECT_EQ(found[0].text, third.text);
   EXPECT_EQ(found[0].updated_date, third.updated_date);
-  EXPECT_TRUE(found[0].vector.empty());
   EXPECT_TRUE(found[0].links.empty());
   EXPECT_EQ(found[1].uuid, "first");
   EXPECT_FALSE(found[1].previous.has_value());
@@ -1584,9 +1572,16 @@ TEST_P(AIChatDatabaseTest, LearnedMemory_LightQueries) {
 
 TEST_P(AIChatDatabaseTest, LearnedMemory_UpgradesAnEarlierShapeOfTheTables) {
   // The shape of a profile that migrated to version 12 before the text version
-  // and before the tombstone was removed.
-  ASSERT_TRUE(db_->GetAllLearnedMemories().empty());  // Opens the database.
+  // was added, and before the tombstones and the vectors were removed.
+  LearnedMemory old = MakeLearnedMemory("old", {{"chat-a", "e1", 0}});
+  old.previous = MakePreviousText({{"chat-b", "e2", 0}});
+  ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(old));
   ASSERT_TRUE(Execute("ALTER TABLE learned_memory DROP COLUMN text_version"));
+  ASSERT_TRUE(
+      Execute("ALTER TABLE learned_memory ADD COLUMN vector BLOB NOT NULL"
+              " DEFAULT x'0000803f'"));
+  ASSERT_TRUE(
+      Execute("ALTER TABLE learned_memory ADD COLUMN previous_vector BLOB"));
   ASSERT_TRUE(
       Execute("CREATE TABLE memory_tombstone(uuid TEXT PRIMARY KEY NOT NULL,"
               " vector BLOB NOT NULL, created_date INTEGER NOT NULL)"));
@@ -1595,9 +1590,13 @@ TEST_P(AIChatDatabaseTest, LearnedMemory_UpgradesAnEarlierShapeOfTheTables) {
   ASSERT_TRUE(CreateSchema());
 
   EXPECT_TRUE(DoesColumnExist("learned_memory", "text_version"));
+  EXPECT_FALSE(DoesColumnExist("learned_memory", "vector"));
+  EXPECT_FALSE(DoesColumnExist("learned_memory", "previous_vector"));
   EXPECT_FALSE(DoesTableExist("memory_tombstone"));
+  // The stored memory stays, with its sources and its previous text.
+  EXPECT_EQ(db_->GetAllLearnedMemories(), (std::vector<LearnedMemory>{old}));
   EXPECT_TRUE(db_->AddOrUpdateLearnedMemory(
-      MakeLearnedMemory("memory", {{"chat-a", "e1", 0}})));
+      MakeLearnedMemory("memory", {{"chat-a", "e1", 1}})));
 }
 
 TEST_P(AIChatDatabaseTest, MemoryWatermarks) {
@@ -2222,7 +2221,6 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
     LearnedMemory memory;
     memory.uuid = "migration-memory";
     memory.text = "Lives in Berlin";
-    memory.vector = {0.5f, 1.5f};
     memory.links = {{"1ae484fe-ab33-4f42-8813-14080e4addc1",
                      "5616a89c-7f56-4e7d-8e74-f882b76623a7", 0}};
     EXPECT_TRUE(db_->AddOrUpdateLearnedMemory(memory));
