@@ -4,6 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
@@ -739,4 +741,48 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pDisabledBrowserTest,
   EXPECT_EQ("name=acom_simple", site_a_tab_values.main_frame.cookies);
   EXPECT_EQ("", site_a_tab_values.iframe_1.cookies);
   EXPECT_EQ("", site_a_tab_values.iframe_2.cookies);
+}
+
+// Regression test for https://github.com/brave/brave-browser/issues/59566:
+// Disabling both kBraveFirstPartyEphemeralStorage and
+// kBraveForgetFirstPartyStorage used to crash.
+class EphemeralStorageBothFeaturesDisabledBrowserTest
+    : public EphemeralStorageBrowserTest {
+ public:
+  EphemeralStorageBothFeaturesDisabledBrowserTest() {
+    scoped_feature_list_.InitWithFeatures(
+        {}, {net::features::kBraveFirstPartyEphemeralStorage,
+             net::features::kBraveForgetFirstPartyStorage});
+  }
+  ~EphemeralStorageBothFeaturesDisabledBrowserTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageBothFeaturesDisabledBrowserTest,
+                       NoCrashAndStorageIsNotEphemeral) {
+  // No EphemeralStorageService exists, so EphemeralStorageTabHelper should
+  // not be created either.
+  ASSERT_FALSE(
+      EphemeralStorageServiceFactory::GetForContext(browser()->GetProfile()));
+
+  WebContents* first_party_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+  EXPECT_FALSE(ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(
+      first_party_tab));
+  SetValuesInFrame(first_party_tab->GetPrimaryMainFrame(), "a.com",
+                   "from=a.com");
+
+  // Storage should behave like regular, persistent storage instead.
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
+
+  // Verify that storage has not been cleared.
+  ValuesFromFrame first_party_values =
+      GetValuesFromFrame(first_party_tab->GetPrimaryMainFrame());
+  EXPECT_EQ("a.com", first_party_values.local_storage);
+  EXPECT_EQ("a.com", first_party_values.session_storage);
+  EXPECT_EQ("from=a.com", first_party_values.cookies);
 }

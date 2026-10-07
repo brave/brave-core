@@ -16,6 +16,7 @@
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/ephemeral_storage/brave_ephemeral_storage_service_delegate.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
+#include "brave/browser/ephemeral_storage/tld_ephemeral_lifetime.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -251,6 +252,17 @@ TEST_F(EphemeralStorageServiceTest, EphemeralCleanup) {
     EXPECT_CALL(*mock_delegate_, CleanupTLDEphemeralArea(key));
     task_environment_.FastForwardBy(base::Seconds(10));
   }
+}
+
+TEST_F(EphemeralStorageServiceTest,
+       TLDEphemeralLifetimeGetOrCreateWithNullServiceReturnsNull) {
+  const content::StoragePartitionConfig storage_partition_config =
+      content::StoragePartitionConfig::CreateDefault(profile_.get());
+  const TLDEphemeralLifetimeKey key{profile_.get(), "a.com",
+                                    storage_partition_config};
+
+  EXPECT_FALSE(TLDEphemeralLifetime::GetOrCreate(key, nullptr));
+  EXPECT_FALSE(TLDEphemeralLifetime::Get(key));
 }
 
 TEST_F(EphemeralStorageServiceTest,
