@@ -138,6 +138,9 @@ extension BrowserViewController: TabManagerDelegate {
       tab.cosmeticFilteringTabHelper = .init(tab: tab)
       if FeatureList.kBraveShieldsElementPicker.enabled {
         tab.elementPickerTabHelper = .init(tab: tab)
+        tab.elementPickerTabHelper?.onManageCustomFilters = { [weak self] in
+          self?.showCustomFilterListEditor()
+        }
       }
       tab.scriptletsTabHelper = .init(tab: tab)
     }

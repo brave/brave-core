@@ -479,6 +479,10 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
         weakShieldsPanelVC?.dismiss(animated: true) {
           self.shredData(for: url, in: selectedTab)
         }
+      case .blockElement:
+        weakShieldsPanelVC?.dismiss(animated: true) {
+          selectedTab.elementPickerTabHelper?.showPicker()
+        }
       case .openURLInNewTab(let url):
         weakShieldsPanelVC?.dismiss(animated: true) {
           self.tabManager.addTabAndSelect(
@@ -639,6 +643,13 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
       action: #selector(SettingsNavigationController.done)
     )
     self.present(container, animated: true)
+  }
+
+  func showCustomFilterListEditor() {
+    let controller = UIHostingController(rootView: CustomFilterListEditor())
+    controller.modalPresentationStyle =
+      UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
+    present(controller, animated: true)
   }
 
   func shredData(for url: URL, in tab: some TabState) {
