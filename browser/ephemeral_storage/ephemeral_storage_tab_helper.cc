@@ -222,10 +222,12 @@ void EphemeralStorageTabHelper::CreateProvisionalTLDEphemeralLifetime(
   auto* browser_context = web_contents()->GetBrowserContext();
   auto* site_instance = web_contents()->GetSiteInstance();
 
-  provisional_tld_ephemeral_lifetimes_.emplace(
-      TLDEphemeralLifetime::GetOrCreate(
+  if (auto lifetime = TLDEphemeralLifetime::GetOrCreate(
           {browser_context, new_domain,
-           site_instance->GetSecurityPrincipal().GetStoragePartitionConfig()}));
+           site_instance->GetSecurityPrincipal()
+               .GetStoragePartitionConfig()})) {
+    provisional_tld_ephemeral_lifetimes_.emplace(std::move(lifetime));
+  }
 }
 
 void EphemeralStorageTabHelper::UpdateShieldsState(const GURL& url) {

@@ -50,7 +50,7 @@ class TLDEphemeralLifetime : public base::RefCounted<TLDEphemeralLifetime> {
  public:
   using OnDestroyCallback = base::OnceCallback<void(const std::string&)>;
 
-  explicit TLDEphemeralLifetime(const TLDEphemeralLifetimeKey& key);
+  explicit TLDEphemeralLifetime(const TLDEphemeralLifetimeKey& key, base::WeakPtr<EphemeralStorageService> ephemeral_storage_service);
   static TLDEphemeralLifetime* Get(const TLDEphemeralLifetimeKey& key);
   static scoped_refptr<TLDEphemeralLifetime> GetOrCreate(
       const TLDEphemeralLifetimeKey& key);

@@ -9,9 +9,11 @@
 #include <map>
 
 #include "base/check.h"
+#include "base/feature_list.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/no_destructor.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
+#include "net/base/features.h"
 
 namespace ephemeral_storage {
 
@@ -31,13 +33,13 @@ TLDEphemeralLifetimeMap& ActiveTLDStorageAreas() {
 
 }  // namespace
 
-TLDEphemeralLifetime::TLDEphemeralLifetime(const TLDEphemeralLifetimeKey& key)
-    : key_(key) {
+TLDEphemeralLifetime::TLDEphemeralLifetime(
+    const TLDEphemeralLifetimeKey& key,
+    base::WeakPtr<EphemeralStorageService> ephemeral_storage_service)
+    : key_(key),
+      ephemeral_storage_service_(std::move(ephemeral_storage_service)) {
   DCHECK(ActiveTLDStorageAreas().find(key_) == ActiveTLDStorageAreas().end());
   ActiveTLDStorageAreas().emplace(key_, weak_factory_.GetWeakPtr());
-  ephemeral_storage_service_ =
-      EphemeralStorageServiceFactory::GetForContext(key.browser_context)
-          ->GetWeakPtr();
   DCHECK(ephemeral_storage_service_);
   ephemeral_storage_service_->TLDEphemeralLifetimeCreated(
       key.storage_domain, key.storage_partition_config);
@@ -71,11 +73,18 @@ TLDEphemeralLifetime* TLDEphemeralLifetime::Get(
 // static
 scoped_refptr<TLDEphemeralLifetime> TLDEphemeralLifetime::GetOrCreate(
     const TLDEphemeralLifetimeKey& key) {
+  auto* ephemeral_storage_service =
+      EphemeralStorageServiceFactory::GetForContext(key.browser_context);
+  if (!ephemeral_storage_service) {
+    return nullptr;
+  }
+
   if (scoped_refptr<TLDEphemeralLifetime> existing = Get(key)) {
     return existing;
   }
 
-  return base::MakeRefCounted<TLDEphemeralLifetime>(key);
+  return base::MakeRefCounted<TLDEphemeralLifetime>(
+      key, ephemeral_storage_service->GetWeakPtr());
 }
 
 void TLDEphemeralLifetime::SetShieldsStateOnHost(std::string_view host,
