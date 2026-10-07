@@ -60,6 +60,8 @@ class CustomizationSettingsHandler
   void GetLearnedMemories(GetLearnedMemoriesCallback callback) override;
   void DeleteLearnedMemory(const std::string& uuid,
                            DeleteLearnedMemoryCallback callback) override;
+  void DeleteAllLearnedMemories(
+      DeleteAllLearnedMemoriesCallback callback) override;
   void DreamNow(DreamNowCallback callback) override;
 
  private:

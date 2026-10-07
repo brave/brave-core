@@ -121,6 +121,12 @@ class UserMemoryManager : public AIChatService::Observer {
   void DeleteLearnedMemory(const std::string& uuid,
                            base::OnceCallback<void(bool)> callback);
 
+  // Deletes all learned memories, and cancels the current run first: the run
+  // would write the memories that it loaded again. The watermarks stay, so
+  // Dreaming learns only from new turns. |callback| gets false when storage is
+  // not ready or the delete failed.
+  void DeleteAllLearnedMemories(base::OnceCallback<void(bool)> callback);
+
   // Chat time. Finds the learned memories for a chat turn, and runs |callback|
   // with them. |user_messages| are the last user messages, the newest first.
   // |callback| runs at once with no memories when the memory setting is off or

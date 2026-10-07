@@ -369,6 +369,16 @@ class TestDataSource : public LearnedMemoryDataSource {
         .Then(std::move(callback));
   }
 
+  void DeleteAllLearnedMemories(
+      base::OnceCallback<void(bool)> callback) override {
+    if (!ready) {
+      RunLater(std::move(callback), false);
+      return;
+    }
+    db_->AsyncCall(&AIChatDatabase::DeleteAllLearnedMemories)
+        .Then(std::move(callback));
+  }
+
   void GetMemoryWatermarks(
       base::OnceCallback<void(std::map<std::string, base::Time>)> callback)
       override {
@@ -901,6 +911,50 @@ TEST_F(UserMemoryManagerTest, DeleteLearnedMemoryDeletesItForGood) {
   ASSERT_EQ(memories.size(), 1u);
   EXPECT_EQ(memories[0].text, "Moved to Berlin");
   EXPECT_NE(memories[0].uuid, deleted_uuid);
+}
+
+TEST_F(UserMemoryManagerTest, DeleteAllLearnedMemoriesKeepsTheWatermarks) {
+  AddMemory("Lives in Berlin");
+  const std::string turn = "I have a dog.";
+  AddChat("chat-1", {turn});
+  KeepSentence(turn, turn);
+  StorageReady();
+  Dream();
+  ASSERT_EQ(GetMemories().size(), 2u);
+
+  base::test::TestFuture<bool> deleted;
+  manager_->DeleteAllLearnedMemories(deleted.GetCallback());
+  EXPECT_TRUE(deleted.Get());
+  EXPECT_TRUE(GetMemories().empty());
+
+  // The next run reads only new turns, so the memories do not come back.
+  DreamingResult result = Dream();
+  EXPECT_EQ(result.status, DreamingStatus::kCompleted);
+  EXPECT_EQ(result.turns_read, 0u);
+  EXPECT_TRUE(GetMemories().empty());
+}
+
+TEST_F(UserMemoryManagerTest, DeleteAllLearnedMemoriesCancelsTheRun) {
+  AddMemory("Lives in Berlin");
+  AddChat("chat-1", {"I live in Berlin."});
+  client_->hold_replies = true;
+  StorageReady();
+  base::test::TestFuture<void> gate_asked;
+  client_->on_gate_asked = gate_asked.GetCallback();
+  base::test::TestFuture<DreamingResult> run;
+  manager_->LearnFromChats(run.GetCallback());
+  ASSERT_TRUE(gate_asked.Wait());
+
+  // The run loaded the memory. It must not write it again.
+  base::test::TestFuture<bool> deleted;
+  manager_->DeleteAllLearnedMemories(deleted.GetCallback());
+
+  EXPECT_EQ(run.Take().status, DreamingStatus::kCanceled);
+  EXPECT_TRUE(deleted.Get());
+  EXPECT_TRUE(GetMemories().empty());
+  EXPECT_FALSE(manager_->is_dreaming());
+  // The daily schedule goes on.
+  EXPECT_TRUE(manager_->is_dreaming_scheduled());
 }
 
 TEST_F(UserMemoryManagerTest, LearnedMemoriesNeedTheDatabase) {
@@ -1444,12 +1498,11 @@ TEST_F(UserMemoryManagerTest, TraceRecordsEachStep) {
   for (const auto& step : result.trace) {
     steps.push_back(*step.GetDict().FindString("step"));
   }
-  EXPECT_THAT(
-      steps,
-      ElementsAre("index_current", "loaded", "turn", "gate", "split",
-                  "sentence_decisions", "llm_call", "rewrite_parsed", "embed",
-                  "rewrite_checked", "fact", "neighbors", "store", "watermark",
-                  "done"));
+  EXPECT_THAT(steps,
+              ElementsAre("index_current", "loaded", "turn", "gate", "split",
+                          "sentence_decisions", "llm_call", "rewrite_parsed",
+                          "embed", "rewrite_checked", "fact", "neighbors",
+                          "store", "watermark", "done"));
   // Without the trace, the result has no steps.
   MakeManager(/*with_llm=*/true);
   StorageReady();

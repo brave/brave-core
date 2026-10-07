@@ -67,6 +67,10 @@ class LearnedMemoryDataSource {
   // Deletes the memory for good. A successful delete tells the observers too.
   virtual void DeleteLearnedMemory(const std::string& memory_uuid,
                                    base::OnceCallback<void(bool)> callback) = 0;
+  // Deletes all learned memories. The watermarks stay. A successful delete
+  // tells the observers too.
+  virtual void DeleteAllLearnedMemories(
+      base::OnceCallback<void(bool)> callback) = 0;
 
   // The date of the last user turn that Dreaming processed, for each chat.
   virtual void GetMemoryWatermarks(

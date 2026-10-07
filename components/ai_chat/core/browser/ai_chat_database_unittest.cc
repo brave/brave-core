@@ -1508,6 +1508,24 @@ TEST_P(AIChatDatabaseTest, LearnedMemory_Delete) {
   EXPECT_EQ(db_->GetAllLearnedMemories().size(), 2u);
 }
 
+TEST_P(AIChatDatabaseTest, LearnedMemory_DeleteAll) {
+  LearnedMemory first = MakeLearnedMemory("first", {{"chat-a", "e1", 0}});
+  first.previous = MakePreviousText({{"chat-b", "e2", 0}});
+  ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(first));
+  ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(MakeLearnedMemory("second", {})));
+  const base::Time watermark = base::Time::FromSecondsSinceUnixEpoch(100);
+  ASSERT_TRUE(db_->SetMemoryWatermark("chat-a", watermark));
+  ASSERT_EQ(CountRows("memory_source_link"), 2);
+
+  EXPECT_TRUE(db_->DeleteAllLearnedMemories());
+
+  EXPECT_TRUE(db_->GetAllLearnedMemories().empty());
+  EXPECT_EQ(CountRows("memory_source_link"), 0);
+  // Dreaming does not read the same turns again.
+  EXPECT_EQ(db_->GetAllMemoryWatermarks(),
+            (std::map<std::string, base::Time>{{"chat-a", watermark}}));
+}
+
 TEST_P(AIChatDatabaseTest, LearnedMemory_TextVersionCountsTextChanges) {
   LearnedMemory memory = MakeLearnedMemory("memory", {{"chat-a", "e1", 0}});
   // The caller's value is ignored. A new memory starts at 1.

@@ -348,6 +348,8 @@ class AIChatService : public KeyedService,
       base::OnceCallback<void(bool)> callback) override;
   void DeleteLearnedMemory(const std::string& memory_uuid,
                            base::OnceCallback<void(bool)> callback) override;
+  void DeleteAllLearnedMemories(
+      base::OnceCallback<void(bool)> callback) override;
   void GetMemoryWatermarks(
       base::OnceCallback<void(std::map<std::string, base::Time>)> callback)
       override;

@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import 'chrome://resources/cr_elements/cr_button/cr_button.js'
+import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js'
 
 import { I18nMixin, I18nMixinInterface } from
   'chrome://resources/cr_elements/i18n_mixin.js'
@@ -63,6 +64,10 @@ class LearnedMemorySection extends LearnedMemorySectionBase {
       dreamResult_: {
         type: String,
         value: ''
+      },
+      showDeleteAllDialog_: {
+        type: Boolean,
+        value: false
       }
     }
   }
@@ -73,6 +78,7 @@ class LearnedMemorySection extends LearnedMemorySectionBase {
   declare learnedMemories_: LearnedMemoryItem[]
   declare isDreaming_: boolean
   declare dreamResult_: string
+  declare showDeleteAllDialog_: boolean
 
   override ready() {
     super.ready()
@@ -128,6 +134,28 @@ class LearnedMemorySection extends LearnedMemorySectionBase {
     handler.deleteLearnedMemory(e.model.item.uuid).then(() => {
       this.loadLearnedMemories_()
     })
+  }
+
+  onDeleteAll_() {
+    this.showDeleteAllDialog_ = true
+  }
+
+  onDeleteAllDialogCancel_() {
+    this.showDeleteAllDialog_ = false
+  }
+
+  onDeleteAllDialogConfirm_() {
+    this.showDeleteAllDialog_ = false
+    const handler = this.browserProxy_.getCustomizationSettingsHandler()
+    handler.deleteAllLearnedMemories().then(() => {
+      this.dreamResult_ = ''
+      this.loadLearnedMemories_()
+    })
+  }
+
+  // A delete during "Dream now" would stop the run, so the button waits.
+  canDeleteAll_(memories: LearnedMemoryItem[], isDreaming: boolean): boolean {
+    return memories.length > 0 && !isDreaming
   }
 
   shouldShow_(available: boolean, memoryEnabled: boolean): boolean {

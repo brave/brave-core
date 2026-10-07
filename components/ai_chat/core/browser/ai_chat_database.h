@@ -161,6 +161,10 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   // remembers the memory afterwards: Dreaming can learn it again.
   virtual bool DeleteLearnedMemory(std::string_view memory_uuid);
 
+  // Deletes all learned memories with their source links and previous texts.
+  // The watermarks stay, so Dreaming does not read the same turns again.
+  virtual bool DeleteAllLearnedMemories();
+
   // The watermark of a conversation is the date of the last user turn that
   // Dreaming processed. Conversations without a watermark are not in the map.
   virtual std::map<std::string, base::Time> GetAllMemoryWatermarks();

@@ -132,6 +132,18 @@ void UserMemoryManager::DeleteLearnedMemory(
   data_source_->DeleteLearnedMemory(uuid, std::move(callback));
 }
 
+void UserMemoryManager::DeleteAllLearnedMemories(
+    base::OnceCallback<void(bool)> callback) {
+  if (dreaming_run_) {
+    dreaming_run_->Cancel();
+    // A canceled run does not schedule the next one.
+    if (!LearnedMemoryEval::IsEnabled() && !dreaming_timer_.IsRunning()) {
+      ScheduleNextDailyDreaming();
+    }
+  }
+  data_source_->DeleteAllLearnedMemories(std::move(callback));
+}
+
 void UserMemoryManager::GetMemoriesForTurn(
     std::vector<std::string> user_messages,
     TurnMemoriesCallback callback) {
@@ -250,8 +262,9 @@ void UserMemoryManager::OnDreamingDone(DreamingResult result) {
     case DreamingStatus::kCanceled:
     case DreamingStatus::kBusy:
     case DreamingStatus::kUnavailable:
-      // Storage is gone or the chats were deleted. OnStorageReady() and
-      // OnAllConversationsDeleted() schedule again.
+      // Storage is gone, or the chats or the memories were deleted.
+      // OnStorageReady(), OnAllConversationsDeleted() and
+      // DeleteAllLearnedMemories() schedule again.
       break;
   }
   // Reset first, so the callback can start a new run.

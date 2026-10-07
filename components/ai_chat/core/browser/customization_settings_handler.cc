@@ -144,6 +144,15 @@ void CustomizationSettingsHandler::DeleteLearnedMemory(
   delegate_->DeleteLearnedMemory(uuid, std::move(callback));
 }
 
+void CustomizationSettingsHandler::DeleteAllLearnedMemories(
+    DeleteAllLearnedMemoriesCallback callback) {
+  if (!delegate_) {
+    std::move(callback).Run(false);
+    return;
+  }
+  delegate_->DeleteAllLearnedMemories(std::move(callback));
+}
+
 void CustomizationSettingsHandler::DreamNow(DreamNowCallback callback) {
   if (!delegate_) {
     std::move(callback).Run(mojom::DreamNowResult::New(

@@ -2148,6 +2148,25 @@ bool AIChatDatabase::DeleteLearnedMemory(std::string_view memory_uuid) {
   return transaction.Commit();
 }
 
+bool AIChatDatabase::DeleteAllLearnedMemories() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return false;
+  }
+
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    DVLOG(0) << "Transaction cannot begin\n";
+    return false;
+  }
+  // Every link belongs to a memory text or to a previous text.
+  if (!GetDB().Execute("DELETE FROM learned_memory") ||
+      !GetDB().Execute("DELETE FROM memory_source_link")) {
+    return false;
+  }
+  return transaction.Commit();
+}
+
 std::map<std::string, base::Time> AIChatDatabase::GetAllMemoryWatermarks() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!LazyInit()) {

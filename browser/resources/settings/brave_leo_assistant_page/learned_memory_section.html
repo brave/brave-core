@@ -57,11 +57,42 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
         var(--leo-spacing-2xl);
   }
 
-  /* Avoid stretching the button */
-  .action-box leo-button {
+  /* Avoid stretching the buttons */
+  .action-box leo-button,
+  cr-dialog [slot="button-container"] leo-button {
     width: auto !important;
     min-width: unset !important;
     flex: 0 0 auto !important;
+  }
+
+  .delete-button {
+    --leo-button-color: var(--leo-color-systemfeedback-error-text);
+  }
+
+  cr-dialog [slot="title"] {
+    color: var(--leo-color-text-primary);
+    font: var(--leo-font-heading-h3);
+    display: flex;
+    padding: var(--leo-spacing-2xl);
+    align-items: flex-start;
+    gap: var(--leo-spacing-xl);
+    align-self: stretch;
+  }
+
+  cr-dialog [slot="body"] {
+    display: flex;
+    padding: var(--leo-spacing-m) var(--leo-spacing-2xl);
+    flex-direction: column;
+    align-items: center;
+    gap: var(--leo-spacing-2xl);
+    align-self: stretch;
+  }
+
+  cr-dialog [slot="button-container"] {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: var(--leo-spacing-m);
   }
 
   .dream-result {
@@ -120,6 +151,14 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
       isDisabled$="[[isDreaming_]]">
       [[getDreamButtonText_(isDreaming_)]]
     </leo-button>
+    <leo-button
+      id="deleteAllLearnedButton"
+      kind="plain"
+      class="delete-button"
+      on-click="onDeleteAll_"
+      isDisabled$="[[!canDeleteAll_(learnedMemories_, isDreaming_)]]">
+      $i18n{braveLeoAssistantDeleteAllLearnedMemoriesTitle}
+    </leo-button>
     <template is="dom-if" if="[[hasDreamResult_(dreamResult_)]]">
       <span class="dream-result">[[dreamResult_]]</span>
     </template>
@@ -161,4 +200,23 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
       </div>
     </template>
   </div>
+</template>
+
+<template is="dom-if" if="[[showDeleteAllDialog_]]" restamp>
+  <cr-dialog id="deleteAllLearnedDialog" show-on-attach show-close-button
+      on-close="onDeleteAllDialogCancel_">
+    <div slot="title">$i18n{braveLeoAssistantDeleteAllLearnedMemoriesTitle}</div>
+    <div slot="body">
+      $i18n{braveLeoAssistantDeleteAllLearnedMemoriesConfirmation}
+    </div>
+    <div slot="button-container">
+      <leo-button kind="plain-faint" on-click="onDeleteAllDialogCancel_">
+        $i18n{cancel}
+      </leo-button>
+      <leo-button id="deleteAllLearnedConfirmButton" class="delete-button"
+          on-click="onDeleteAllDialogConfirm_">
+        $i18n{delete}
+      </leo-button>
+    </div>
+  </cr-dialog>
 </template>

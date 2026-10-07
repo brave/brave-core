@@ -2041,6 +2041,12 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_RESULT_UNAVAILABLE" desc="The result when learning is not available">
     Learning is not available now.
   </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DELETE_ALL_LEARNED_MEMORIES_TITLE" desc="The title for the dialog that deletes all learned memories, and the label for the button that opens it">
+    Delete all learned memories
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DELETE_ALL_LEARNED_MEMORIES_CONFIRMATION" desc="The confirmation message for deleting all memories that Leo learned from the chats">
+    Are you sure you want to delete all learned memories? Leo learns again only from new messages. This action cannot be undone.
+  </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_LEARNED_MEMORY_PERMANENT" desc="The label for a learned memory that Leo keeps forever">
     Permanent
   </message>

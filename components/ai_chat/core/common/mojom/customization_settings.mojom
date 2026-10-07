@@ -122,6 +122,11 @@ interface CustomizationSettingsHandler {
   // learn the same fact again from another chat.
   DeleteLearnedMemory(string uuid) => (bool success);
 
+  // Deletes all learned memories for good, and stops a Dreaming run that is
+  // active. Dreaming does not read the chats again that it already read, so it
+  // learns only from new messages.
+  DeleteAllLearnedMemories() => (bool success);
+
   // Starts a Dreaming run now, and replies when the run ends.
   DreamNow() => (DreamNowResult result);
 };

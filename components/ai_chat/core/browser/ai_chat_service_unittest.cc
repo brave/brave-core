@@ -1285,6 +1285,9 @@ TEST_P(AIChatServiceUnitTest, LearnedMemoryDataSource_NoStorageGivesNothing) {
   base::test::TestFuture<bool> deleted;
   source.DeleteLearnedMemory("uuid", deleted.GetCallback());
   EXPECT_FALSE(deleted.Get());
+  base::test::TestFuture<bool> all_deleted;
+  source.DeleteAllLearnedMemories(all_deleted.GetCallback());
+  EXPECT_FALSE(all_deleted.Get());
   base::test::TestFuture<bool> watermark_set;
   source.SetMemoryWatermark("chat", base::Time::Now(),
                             watermark_set.GetCallback());
@@ -1336,6 +1339,19 @@ TEST_P(AIChatServiceUnitTest, LearnedMemoryDataSource_WritesTellTheObservers) {
   base::test::TestFuture<std::vector<LearnedMemory>> after;
   source.GetLearnedMemories(after.GetCallback());
   EXPECT_TRUE(after.Get().empty());
+
+  // The add and the delete of all memories.
+  EXPECT_CALL(observer, OnLearnedMemoriesChanged()).Times(2);
+  base::test::TestFuture<bool> added_again;
+  source.AddOrUpdateLearnedMemory(memory, added_again.GetCallback());
+  ASSERT_TRUE(added_again.Get());
+  base::test::TestFuture<bool> all_deleted;
+  source.DeleteAllLearnedMemories(all_deleted.GetCallback());
+  EXPECT_TRUE(all_deleted.Get());
+  testing::Mock::VerifyAndClearExpectations(&observer);
+  base::test::TestFuture<std::vector<LearnedMemory>> after_all;
+  source.GetLearnedMemories(after_all.GetCallback());
+  EXPECT_TRUE(after_all.Get().empty());
 
   // A write that fails is not reported. A memory without a text is refused.
   base::test::TestFuture<bool> refused;

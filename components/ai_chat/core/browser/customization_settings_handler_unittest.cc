@@ -69,6 +69,12 @@ class FakeMemoryManagerDelegate : public MemoryManagerDelegate {
     std::move(callback).Run(true);
   }
 
+  void DeleteAllLearnedMemories(
+      DeleteAllLearnedMemoriesCallback callback) override {
+    ++delete_all_calls;
+    std::move(callback).Run(true);
+  }
+
   void DreamNow(DreamNowCallback callback) override {
     ++dream_now_calls;
     std::move(callback).Run(mojom::DreamNowResult::New(
@@ -81,6 +87,7 @@ class FakeMemoryManagerDelegate : public MemoryManagerDelegate {
   std::vector<mojom::LearnedMemoryItemPtr> learned;
   std::vector<std::string> forgotten;
   int dream_now_calls = 0;
+  int delete_all_calls = 0;
 };
 
 std::optional<std::vector<std::string>> SearchMemories(
@@ -491,6 +498,14 @@ TEST_F(CustomizationSettingsHandlerTest, LearnedMemoriesGoThroughTheDelegate) {
   EXPECT_TRUE(forgotten.Get());
   EXPECT_EQ(delegate_->forgotten, std::vector<std::string>{"uuid-1"});
 
+  base::test::TestFuture<bool> all_deleted;
+  handler_->DeleteAllLearnedMemories(all_deleted.GetCallback());
+  EXPECT_TRUE(all_deleted.Get());
+  EXPECT_EQ(delegate_->delete_all_calls, 1);
+  // "Delete all memories" deletes only the memories that the user wrote.
+  handler_->DeleteAllMemories();
+  EXPECT_EQ(delegate_->delete_all_calls, 1);
+
   base::test::TestFuture<mojom::DreamNowResultPtr> dream;
   handler_->DreamNow(dream.GetCallback());
   EXPECT_EQ(dream.Get()->status, mojom::DreamNowStatus::kCompleted);
@@ -513,6 +528,10 @@ TEST(CustomizationSettingsHandlerNoDelegateTest, LearnedMemoryIsNotAvailable) {
   base::test::TestFuture<bool> forgotten;
   handler.DeleteLearnedMemory("uuid", forgotten.GetCallback());
   EXPECT_FALSE(forgotten.Get());
+
+  base::test::TestFuture<bool> all_deleted;
+  handler.DeleteAllLearnedMemories(all_deleted.GetCallback());
+  EXPECT_FALSE(all_deleted.Get());
 
   base::test::TestFuture<mojom::DreamNowResultPtr> dream;
   handler.DreamNow(dream.GetCallback());

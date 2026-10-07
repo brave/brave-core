@@ -1678,6 +1678,18 @@ void AIChatService::DeleteLearnedMemory(
                            std::move(callback)));
 }
 
+void AIChatService::DeleteAllLearnedMemories(
+    base::OnceCallback<void(bool)> callback) {
+  if (!ai_chat_db_) {
+    RunLater(std::move(callback), false);
+    return;
+  }
+  ai_chat_db_.AsyncCall(&AIChatDatabase::DeleteAllLearnedMemories)
+      .Then(base::BindOnce(&AIChatService::OnLearnedMemoryWritten,
+                           weak_ptr_factory_.GetWeakPtr(),
+                           std::move(callback)));
+}
+
 void AIChatService::OnLearnedMemoryWritten(
     base::OnceCallback<void(bool)> callback,
     bool success) {

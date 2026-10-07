@@ -136,6 +136,18 @@ void MemoryManagerDelegateImpl::DeleteLearnedMemory(
   manager->DeleteLearnedMemory(uuid, std::move(callback));
 }
 
+void MemoryManagerDelegateImpl::DeleteAllLearnedMemories(
+    DeleteAllLearnedMemoriesCallback callback) {
+  AIChatService* service = AIChatServiceFactory::GetForBrowserContext(context_);
+  UserMemoryManager* manager =
+      service ? service->GetUserMemoryManager() : nullptr;
+  if (!manager) {
+    std::move(callback).Run(false);
+    return;
+  }
+  manager->DeleteAllLearnedMemories(std::move(callback));
+}
+
 void MemoryManagerDelegateImpl::DreamNow(DreamNowCallback callback) {
   AIChatService* service = AIChatServiceFactory::GetForBrowserContext(context_);
   UserMemoryManager* manager =
