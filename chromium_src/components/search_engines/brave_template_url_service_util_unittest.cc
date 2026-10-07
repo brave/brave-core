@@ -35,11 +35,11 @@ constexpr char kCountryIDAtInstall[] = "countryid_at_install";
 std::unique_ptr<TemplateURLData> CreatePrepopulateTemplateURLData(
     int prepopulate_id,
     const std::string& keyword,
-    TemplateURLID id) {
+    int64_t id) {
   std::unique_ptr<TemplateURLData> data(new TemplateURLData);
   data->prepopulate_id = prepopulate_id;
   data->SetKeyword(base::ASCIIToUTF16(keyword));
-  data->id = id;
+  data->id = TemplateURLID(id);
   return data;
 }
 
