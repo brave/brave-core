@@ -272,6 +272,6 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 UrlBar.ScrollType.NO_SCROLL,
                 TextSelection.SELECT_ALL);
         mAutocompleteCoordinator.startAutocompleteForQuery(query);
-        mUrlCoordinator.setKeyboardVisibility(true, false);
+        mUrlCoordinator.setKeyboardVisibility(true);
     }
 }
