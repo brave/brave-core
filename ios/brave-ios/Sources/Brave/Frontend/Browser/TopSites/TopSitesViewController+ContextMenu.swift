@@ -28,11 +28,11 @@ extension TopSitesViewController {
       guard let tile = tiles[safe: indexPath.item] else { return nil }
       let isPrivate = privateBrowsingManager.isPrivateBrowsing
       return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) {
-        _ -> UIMenu? in
+        [unowned self] _ -> UIMenu? in
         let openInNewTab = UIAction(
           title: Strings.openNewTabButtonTitle,
-          handler: UIAction.deferredActionHandler { [weak self] _ in
-            self?.topSiteAction(
+          handler: UIAction.deferredActionHandler { _ in
+            self.topSiteAction(
               .opened(
                 url: tile.url,
                 isFavorite: tile.isFavorite,
@@ -47,8 +47,8 @@ extension TopSitesViewController {
         if !isPrivate {
           let openInNewPrivateTab = UIAction(
             title: Strings.openNewPrivateTabButtonTitle,
-            handler: UIAction.deferredActionHandler { [weak self] _ in
-              self?.topSiteAction(
+            handler: UIAction.deferredActionHandler { _ in
+              self.topSiteAction(
                 .opened(
                   url: tile.url,
                   isFavorite: tile.isFavorite,
@@ -67,8 +67,8 @@ extension TopSitesViewController {
           modeChildren = [
             UIAction(
               title: Strings.editFavorite,
-              handler: UIAction.deferredActionHandler { [weak self] _ in
-                guard let self, let favorite = Favorite.get(with: objectID) else { return }
+              handler: UIAction.deferredActionHandler { _ in
+                guard let favorite = Favorite.get(with: objectID) else { return }
                 self.topSiteAction(.edited(favorite: favorite))
               }
             ),
@@ -85,8 +85,8 @@ extension TopSitesViewController {
             UIAction(
               title: Strings.excludeMostVisitedSite,
               attributes: .destructive,
-              handler: UIAction.deferredActionHandler { [weak self] _ in
-                self?.topSiteAction(.excluded(tile: tile))
+              handler: UIAction.deferredActionHandler { _ in
+                self.topSiteAction(.excluded(tile: tile))
               }
             )
           ]
