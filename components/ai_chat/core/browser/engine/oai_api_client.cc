@@ -373,6 +373,8 @@ void OAIAPIClient::PerformRequestImpl(
   base::DictValue body = CreateJSONRequestBody(
       SerializeOAIMessages(std::move(messages)), is_sse_enabled,
       opts.model_request_name, std::move(oai_tool_definitions), stop_sequences);
+  // HACK: turn off thinking for local models (qwen3.5 in Ollama is slow).
+  body.Set("reasoning_effort", "none");
   body.Merge(std::move(extra_fields));
   std::string request_body;
   base::JSONWriter::Write(body, &request_body);
