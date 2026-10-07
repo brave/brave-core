@@ -5,8 +5,10 @@
 
 #include "brave/components/brave_wayback_machine/wayback_machine_url_fetcher.h"
 
+#include <string>
 #include <utility>
 
+#include "base/functional/callback_helpers.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
@@ -28,20 +30,23 @@ class WaybackClient : public WaybackMachineURLFetcher::Client {
     callback_ = std::move(callback);
   }
   void SetExpectedURL(GURL expected_url) { expected_url_ = expected_url; }
-  void OnWaybackURLFetched(const GURL& lastest_wayback_url,
+  void OnWaybackURLFetched(const GURL& latest_wayback_url,
                            base::Time snapshot_time) override {
-    EXPECT_EQ(lastest_wayback_url, expected_url_);
+    EXPECT_EQ(latest_wayback_url, expected_url_);
     snapshot_time_ = snapshot_time;
+    ++call_count_;
     if (callback_) {
       std::move(callback_).Run();
     }
   }
 
   base::Time snapshot_time() const { return snapshot_time_; }
+  int call_count() const { return call_count_; }
 
  private:
   GURL expected_url_;
   base::Time snapshot_time_;
+  int call_count_ = 0;
   base::OnceClosure callback_;
 };
 
@@ -182,8 +187,60 @@ TEST_F(WaybackMachineURLFetcherUnitTest, InputURLSanitizeTest) {
                GURL(base::StrCat({kWaybackQueryURL, kSanitizedURL})));
 }
 
+TEST_F(WaybackMachineURLFetcherUnitTest, FetchCancelsPendingRequest) {
+  constexpr char kFirstURL[] = "https://first.com/";
+  constexpr char kSecondURL[] = "https://second.com/";
+  const std::string first_query = base::StrCat({kWaybackQueryURL, kFirstURL});
+  const std::string second_query = base::StrCat({kWaybackQueryURL, kSecondURL});
+  url_loader_factory_.SetInterceptor(base::DoNothing());
+  url_loader_factory_.AddResponse(
+      first_query,
+      R"({"archived_snapshots":{"closest":{"url":"https://web.archive.org/first"}}})");
+  url_loader_factory_.AddResponse(
+      second_query,
+      R"({"archived_snapshots":{"closest":{"url":"https://web.archive.org/second"}}})");
+
+  base::RunLoop loop;
+  client_->SetCallback(loop.QuitClosure());
+  client_->SetExpectedURL(GURL("https://web.archive.org/second"));
+  wayback_url_loader_->Fetch(GURL(kFirstURL));
+  wayback_url_loader_->Fetch(GURL(kSecondURL));
+  loop.Run();
+  EXPECT_EQ(client_->call_count(), 1);
+}
+
+TEST_F(WaybackMachineURLFetcherUnitTest, CancelDropsPendingRequest) {
+  constexpr char kFirstURL[] = "https://first.com/";
+  constexpr char kSecondURL[] = "https://second.com/";
+  const std::string first_query = base::StrCat({kWaybackQueryURL, kFirstURL});
+  const std::string second_query = base::StrCat({kWaybackQueryURL, kSecondURL});
+  url_loader_factory_.SetInterceptor(base::DoNothing());
+  url_loader_factory_.AddResponse(
+      first_query,
+      R"({"archived_snapshots":{"closest":{"url":"https://web.archive.org/first"}}})");
+  url_loader_factory_.AddResponse(
+      second_query,
+      R"({"archived_snapshots":{"closest":{"url":"https://web.archive.org/second"}}})");
+
+  wayback_url_loader_->Fetch(GURL(kFirstURL));
+  wayback_url_loader_->Cancel();
+
+  // Use a separate fetcher and client to make another request. Since requests
+  // are queued, once that request completes we can verify that the request
+  // above was cancelled.
+  WaybackClient other_client;
+  WaybackMachineURLFetcher other_fetcher(
+      &other_client, url_loader_factory_.GetSafeWeakWrapper());
+  base::RunLoop loop;
+  other_client.SetCallback(loop.QuitClosure());
+  other_client.SetExpectedURL(GURL("https://web.archive.org/second"));
+  other_fetcher.Fetch(GURL(kSecondURL));
+  loop.Run();
+  EXPECT_EQ(client_->call_count(), 0);
+}
+
 TEST_F(WaybackMachineURLFetcherUnitTest, WaybackURLSanitizeTest) {
-  // Blocked non http/https sheme urls.
+  // Blocked non http/https scheme urls.
   SetResponseText(
       R"({"archived_snapshots":{"closest":{"url":"javascript:abcd"}}})");
   Fetch(GURL::EmptyGURL());

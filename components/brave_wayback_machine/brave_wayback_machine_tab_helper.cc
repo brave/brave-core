@@ -152,6 +152,7 @@ void BraveWaybackMachineTabHelper::OnWaybackEnabledChanged(
 }
 
 void BraveWaybackMachineTabHelper::ResetState() {
+  wayback_machine_url_fetcher_.Cancel();
   wayback_url_navigation_id_ = std::nullopt;
   SetWaybackState(WaybackState::kInitial);
 }
