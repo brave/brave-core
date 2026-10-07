@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Strip cross-origin referrers from .onion hostnames.
+
+      This also affects the Origin header outside of CORS requests.
+    preempt_function_impl:
+      function_name: URLRequestJob::ComputeReferrerForPolicy
+      return_if: 'IsCrossOriginOnionReferrer(original_referrer, destination)'
+      return_value: 'GURL()'
