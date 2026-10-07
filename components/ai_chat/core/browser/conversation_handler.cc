@@ -315,8 +315,14 @@ ConversationHandler::~ConversationHandler() {
 
 void ConversationHandler::AddToolProviders(
     std::vector<std::unique_ptr<ToolProvider>> providers) {
+  // The constructor appends the AssociatedContentManager, so it's always the
+  // last provider (until a test adds its own). The new providers go in front of
+  // it, keeping the order the model sees tools in the same as when every
+  // provider was passed to the constructor: built-in tools, then content tools.
   CHECK(!tool_providers_.empty() &&
-        tool_providers_.back().get() == associated_content_manager_);
+        tool_providers_.back().get() == associated_content_manager_)
+      << "AddToolProviders() expects the AssociatedContentManager to be the "
+         "last tool provider";
   for (const auto& provider : providers) {
     provider->AddObserver(this);
   }

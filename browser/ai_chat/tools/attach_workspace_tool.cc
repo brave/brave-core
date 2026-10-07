@@ -5,13 +5,13 @@
 
 #include "brave/browser/ai_chat/tools/attach_workspace_tool.h"
 
+#include <algorithm>
 #include <memory>
 #include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
 
-#include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/browser/brave_tab_helpers.h"
 #include "brave/components/ai_chat/content/browser/workspace_associated_content.h"
@@ -25,12 +25,9 @@
 namespace ai_chat {
 
 AttachWorkspaceTool::AttachWorkspaceTool(
-    content::BrowserContext* browser_context,
-    ConversationHandler* conversation)
-    : browser_context_(browser_context), conversation_(conversation) {
-  CHECK(browser_context_);
-  CHECK(conversation_);
-}
+    content::BrowserContext& browser_context,
+    ConversationHandler& conversation)
+    : browser_context_(browser_context), conversation_(conversation) {}
 
 AttachWorkspaceTool::~AttachWorkspaceTool() = default;
 
@@ -74,7 +71,7 @@ void AttachWorkspaceTool::UseTool(const std::string& input_json,
   // AIChatService::AssociateOwnedContent (which would reject the scheme).
   conversation_->associated_content_manager()->AddOwnedContent(
       std::make_unique<WorkspaceAssociatedContent>(
-          /*folder_path=*/std::nullopt, browser_context_,
+          /*folder_path=*/std::nullopt, &browser_context_.get(),
           base::BindOnce(&brave::AttachPrivacySensitiveTabHelpers)));
 
   // TODO(https://github.com/brave/brave-browser/issues/59734): Refresh the
@@ -87,13 +84,11 @@ void AttachWorkspaceTool::UseTool(const std::string& input_json,
 }
 
 bool AttachWorkspaceTool::HasWorkspace() const {
-  for (const auto& content :
-       conversation_->associated_content_manager()->GetAssociatedContent()) {
-    if (content->content_type == mojom::ContentType::Workspace) {
-      return true;
-    }
-  }
-  return false;
+  const auto contents =
+      conversation_->associated_content_manager()->GetAssociatedContent();
+  return std::ranges::any_of(contents, [](const auto& content) {
+    return content->content_type == mojom::ContentType::Workspace;
+  });
 }
 
 }  // namespace ai_chat

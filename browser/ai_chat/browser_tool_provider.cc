@@ -65,7 +65,7 @@ void BrowserToolProvider::CreateTools(content::BrowserContext* browser_context,
                                       ConversationHandler* conversation) {
   if (base::FeatureList::IsEnabled(features::kAIChatWorkspaceTools)) {
     attach_workspace_tool_ =
-        std::make_unique<AttachWorkspaceTool>(browser_context, conversation);
+        std::make_unique<AttachWorkspaceTool>(*browser_context, *conversation);
   }
   if (features::IsCodeExecutionToolEnabled()) {
     code_execution_tool_ = std::make_unique<CodeExecutionTool>(browser_context);

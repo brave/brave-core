@@ -40,8 +40,8 @@ class AttachWorkspaceToolTest : public ChromeRenderViewHostTestHarness {
     ASSERT_TRUE(service);
     conversation_ = service->CreateConversation();
     ASSERT_TRUE(conversation_);
-    tool_ = std::make_unique<AttachWorkspaceTool>(GetBrowserContext(),
-                                                  conversation_);
+    tool_ = std::make_unique<AttachWorkspaceTool>(*GetBrowserContext(),
+                                                  *conversation_);
   }
 
   void TearDown() override {
@@ -118,9 +118,16 @@ TEST_F(AttachWorkspaceToolTest, ProvidedByBrowserToolProvider) {
 }
 
 class AttachWorkspaceToolDisabledTest : public ChromeRenderViewHostTestHarness {
+ public:
+  AttachWorkspaceToolDisabledTest() {
+    scoped_feature_list_.InitAndDisableFeature(features::kAIChatWorkspaceTools);
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-// kAIChatWorkspaceTools is disabled by default, and the tool is experimental.
+// The tool is experimental, so only offered with kAIChatWorkspaceTools.
 TEST_F(AttachWorkspaceToolDisabledTest, NotProvidedWhenFeatureDisabled) {
   auto* service =
       AIChatServiceFactory::GetForBrowserContext(GetBrowserContext());

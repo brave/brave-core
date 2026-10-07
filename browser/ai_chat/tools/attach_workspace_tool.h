@@ -9,7 +9,7 @@
 #include <string>
 #include <string_view>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 
@@ -28,8 +28,8 @@ class ConversationHandler;
 class AttachWorkspaceTool : public Tool {
  public:
   // |conversation| owns this tool (via its tool provider), so outlives it.
-  AttachWorkspaceTool(content::BrowserContext* browser_context,
-                      ConversationHandler* conversation);
+  AttachWorkspaceTool(content::BrowserContext& browser_context,
+                      ConversationHandler& conversation);
   ~AttachWorkspaceTool() override;
 
   AttachWorkspaceTool(const AttachWorkspaceTool&) = delete;
@@ -48,8 +48,8 @@ class AttachWorkspaceTool : public Tool {
  private:
   bool HasWorkspace() const;
 
-  raw_ptr<content::BrowserContext> browser_context_;
-  raw_ptr<ConversationHandler> conversation_;
+  const raw_ref<content::BrowserContext> browser_context_;
+  const raw_ref<ConversationHandler> conversation_;
 };
 
 }  // namespace ai_chat

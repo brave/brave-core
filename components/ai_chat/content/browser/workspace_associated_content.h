@@ -47,7 +47,8 @@ class WorkspaceAssociatedContent : public AssociatedContentDelegate,
                                    public mojom::ContentToolsListener {
  public:
   // Creates a new workspace. A null |folder_path| creates an empty workspace,
-  // which is sent no folder.
+  // which is sent no folder, so the page uses its origin private file system
+  // (OPFS) as the workspace's folder instead.
   WorkspaceAssociatedContent(
       std::optional<base::FilePath> folder_path,
       content::BrowserContext* browser_context,
