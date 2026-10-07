@@ -15,6 +15,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
@@ -145,6 +146,15 @@ class AssociatedContentManager : public ToolProvider,
   // The number of content delegates.
   size_t GetContentDelegateCount() const;
 
+  // Fetches the tools of the content with |content_uuid|, which must have been
+  // added since the current generation loop started, and adds them to the
+  // loop's, so they can be used without waiting for the next loop. Does nothing
+  // if the content's tools aren't attached. Runs |callback| with the number of
+  // tools added, but not if this is destroyed or the content doesn't reply.
+  void AddContentToolsToGenerationLoop(
+      std::string_view content_uuid,
+      base::OnceCallback<void(size_t)> callback);
+
   // ToolProvider:
   void UpdateToolsForNewGenerationLoop(base::OnceClosure on_updated) override;
   std::vector<base::WeakPtr<Tool>> GetTools() override;
@@ -196,6 +206,13 @@ class AssociatedContentManager : public ToolProvider,
   // Drops |origin|'s recorded choices once it has no live content left, so
   // that attaching the site again starts from the kAsk default.
   void MaybeResetToolPermissionsForOrigin(const url::Origin& origin);
+
+  // Invoked with the result of GetContentTools() for
+  // AddContentToolsToGenerationLoop().
+  void OnContentToolsFetchedForGenerationLoop(
+      const url::Origin& origin,
+      base::OnceCallback<void(size_t)> callback,
+      std::vector<std::unique_ptr<Tool>> tools);
 
   // Takes ownership of the tools |origin| exposes for the loop that's
   // starting, dropping the ones the user has blocked.

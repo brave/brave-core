@@ -27,6 +27,24 @@
 
 namespace ai_chat {
 
+namespace {
+
+using ToolFuture = base::test::TestFuture<std::vector<mojom::ContentBlockPtr>,
+                                          std::vector<mojom::ToolArtifactPtr>>;
+
+// Returns the text of |future|'s output, waiting for it if need be.
+std::string GetText(ToolFuture& future) {
+  auto& output = future.Get<std::vector<mojom::ContentBlockPtr>>();
+  EXPECT_EQ(1u, output.size());
+  return output.empty() ? "" : output[0]->get_text_content_block()->text;
+}
+
+}  // namespace
+
+// The workspace page never loads in a unit test (navigations don't commit), so
+// these cover the tool replying without the workspace's tools. Them being added
+// to the generation loop is covered by the AssociatedContentManager and
+// workspace browser tests.
 class AttachWorkspaceToolTest : public ChromeRenderViewHostTestHarness {
  public:
   AttachWorkspaceToolTest() {
@@ -48,23 +66,16 @@ class AttachWorkspaceToolTest : public ChromeRenderViewHostTestHarness {
     // The workspace page's WebContents is owned by the conversation, which
     // outlives the test harness. Drop it here so the harness doesn't report a
     // leaked RenderWidgetHost.
-    for (const auto& content : associated_content()) {
-      manager()->RemoveContent(content->uuid);
-    }
+    RemoveAllContent();
     tool_.reset();
     conversation_ = nullptr;
     ChromeRenderViewHostTestHarness::TearDown();
   }
 
-  // Runs the tool and returns its text output.
-  std::string UseTool() {
-    base::test::TestFuture<std::vector<mojom::ContentBlockPtr>,
-                           std::vector<mojom::ToolArtifactPtr>>
-        future;
-    tool_->UseTool("{}", future.GetCallback());
-    auto& output = future.Get<std::vector<mojom::ContentBlockPtr>>();
-    EXPECT_EQ(1u, output.size());
-    return output.empty() ? "" : output[0]->get_text_content_block()->text;
+  void RemoveAllContent() {
+    for (const auto& content : associated_content()) {
+      manager()->RemoveContent(content->uuid);
+    }
   }
 
   AssociatedContentManager* manager() {
@@ -85,18 +96,33 @@ TEST_F(AttachWorkspaceToolTest, AttachesAnEmptyWorkspace) {
   EXPECT_EQ(mojom::kAttachWorkspaceToolName, tool_->Name());
   EXPECT_FALSE(tool_->Description().empty());
 
-  EXPECT_NE(std::string::npos, UseTool().find("Attached an empty workspace"));
+  ToolFuture future;
+  tool_->UseTool("{}", future.GetCallback());
 
+  // Attached straight away, but the tool waits for the workspace's page, and so
+  // its tools, before replying. That wait is covered by the RunWhenPageReady
+  // browser tests, as the page never loads here.
   auto content = associated_content();
   ASSERT_EQ(1u, content.size());
   EXPECT_EQ(mojom::ContentType::Workspace, content[0]->content_type);
+  EXPECT_FALSE(future.IsReady());
+}
+
+TEST_F(AttachWorkspaceToolTest, RepliesIfTheWorkspaceIsRemovedWhileWaiting) {
+  ToolFuture future;
+  tool_->UseTool("{}", future.GetCallback());
+  RemoveAllContent();
+  EXPECT_NE(std::string::npos, GetText(future).find("next message"));
 }
 
 TEST_F(AttachWorkspaceToolTest, DoesNotAttachASecondWorkspace) {
-  UseTool();
+  ToolFuture first;
+  tool_->UseTool("{}", first.GetCallback());
   ASSERT_EQ(1u, associated_content().size());
 
-  EXPECT_EQ("This conversation already has a workspace.", UseTool());
+  ToolFuture second;
+  tool_->UseTool("{}", second.GetCallback());
+  EXPECT_EQ("This conversation already has a workspace.", GetText(second));
   EXPECT_EQ(1u, associated_content().size());
 }
 
