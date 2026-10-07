@@ -754,6 +754,7 @@ public class BrowserViewController: UIViewController {
       minViewportInset.bottom = footer.bounds.height
       maxViewportInset.bottom = footer.bounds.height
     }
+    // The toolbar layer accounts for the reader mode bar in its metrics
     if !isUsingToolbarsLayer, let readerModeBar {
       readerModeBar.layoutIfNeeded()
       minViewportInset.top += readerModeBar.bounds.height

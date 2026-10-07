@@ -7,6 +7,7 @@ import BraveCore
 import BraveShared
 import Preferences
 import Shared
+import SnapKit
 import Web
 import WebKit
 
@@ -69,11 +70,14 @@ extension BrowserViewController {
       )
       readerModeBar.delegate = self
       self.readerModeBar = readerModeBar
-      // The toolbar layer places the bar when it is displaying a layout
-      if !isUsingToolbarsLayer {
+      if let toolbarsViewController {
+        readerModeBar.snp.makeConstraints {
+          $0.height.equalTo(UIConstants.toolbarHeight)
+        }
+        toolbarsViewController.setContentAccessory(readerModeBar, edge: .top)
+      } else {
         view.insertSubview(readerModeBar, aboveSubview: webViewContainer)
       }
-      toolbarsViewController?.readerModeBar = readerModeBar
     }
 
     updateViewConstraints()
@@ -81,9 +85,12 @@ extension BrowserViewController {
 
   func hideReaderModeBar(animated: Bool) {
     if let readerModeBar = self.readerModeBar {
-      readerModeBar.removeFromSuperview()
+      if let toolbarsViewController {
+        toolbarsViewController.setContentAccessory(nil, edge: .top)
+      } else {
+        readerModeBar.removeFromSuperview()
+      }
       self.readerModeBar = nil
-      toolbarsViewController?.readerModeBar = nil
       self.updateViewConstraints()
     }
   }

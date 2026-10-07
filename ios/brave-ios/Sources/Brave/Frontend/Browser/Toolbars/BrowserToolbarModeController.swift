@@ -41,12 +41,6 @@ protocol BrowserToolbarModeController: UIViewController {
   ///     full
   func applyToolbarVisibility(state: ToolbarVisibilityViewModel.ToolbarState, progress: CGFloat?)
 
-  /// A bar displayed directly below the top toolbar, such as the reader mode bar, or `nil` if there
-  /// isn't one.
-  ///
-  /// The bar moves with the top toolbar while it collapses and is accounted for in `metrics`.
-  var readerModeBar: UIView? { get set }
-
   /// Sets the scroll view displayed underneath the toolbars, such as the selected tab's web view
   /// scroll view, or `nil` if no scroll view is displayed
   func observeScrollView(_ scrollView: UIScrollView?)

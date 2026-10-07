@@ -26,18 +26,6 @@ final class SplitToolbarController: UIViewController, BrowserToolbarModeControll
   let pageOverlayLayoutGuide = UILayoutGuide()
   let webContentLayoutGuide = UILayoutGuide()
 
-  var readerModeBar: UIView? {
-    didSet {
-      oldValue?.removeFromSuperview()
-      if isViewLoaded {
-        if let readerModeBar {
-          view.insertSubview(readerModeBar, belowSubview: topChrome)
-        }
-        remakeContentConstraints()
-      }
-    }
-  }
-
   private let context: BrowserToolbarViewContext
 
   // MARK: Top chrome
@@ -101,7 +89,7 @@ final class SplitToolbarController: UIViewController, BrowserToolbarModeControll
 
     setupTopChrome()
     setupBottomChrome()
-    remakeContentConstraints()
+    setupContentConstraints()
 
     context.privateBrowsingManager.$isPrivateBrowsing
       .removeDuplicates()
@@ -231,28 +219,16 @@ final class SplitToolbarController: UIViewController, BrowserToolbarModeControll
 
   // MARK: - Content constraints
 
-  /// The web content & page overlays are placed between the bottom of the top chrome (or the
-  /// reader mode bar when displayed) and the top of the bottom chrome
-  private func remakeContentConstraints() {
-    if let readerModeBar {
-      var insets: UIEdgeInsets = .zero
-      if #available(iOS 26, *) {
-        insets = UIEdgeInsets(equalInset: 8)
-      }
-      readerModeBar.snp.remakeConstraints {
-        $0.top.equalTo(topChrome.snp.bottom).offset(insets.top)
-        $0.height.equalTo(UIConstants.toolbarHeight)
-        $0.leading.trailing.equalToSuperview().inset(insets)
-      }
-    }
-    let contentTop = readerModeBar?.snp.bottom ?? topChrome.snp.bottom
-    pageOverlayLayoutGuide.snp.remakeConstraints {
-      $0.top.equalTo(contentTop)
+  /// The web content & page overlays are placed between the bottom of the top chrome and the top of
+  /// the bottom chrome
+  private func setupContentConstraints() {
+    pageOverlayLayoutGuide.snp.makeConstraints {
+      $0.top.equalTo(topChrome.snp.bottom)
       $0.bottom.equalTo(bottomChrome.snp.top)
       $0.leading.trailing.equalToSuperview()
     }
-    webContentLayoutGuide.snp.remakeConstraints {
-      $0.top.equalTo(contentTop)
+    webContentLayoutGuide.snp.makeConstraints {
+      $0.top.equalTo(topChrome.snp.bottom)
       $0.bottom.equalTo(bottomChrome.snp.top)
       $0.leading.trailing.equalToSuperview()
     }
@@ -271,13 +247,12 @@ final class SplitToolbarController: UIViewController, BrowserToolbarModeControll
     let safeAreaInsets = view.safeAreaInsets
     let topChromeHeight = topChrome.bounds.height
     let collapsedHeight = collapsedBar.bounds.height
-    let readerModeBarHeight = readerModeBar.map { $0.bounds.height } ?? 0
     let bottomChromeHeight = bottomChrome.bounds.height
 
     var minimumViewportInset = UIEdgeInsets()
     var maximumViewportInset = UIEdgeInsets()
-    minimumViewportInset.top = safeAreaInsets.top + collapsedHeight + readerModeBarHeight
-    maximumViewportInset.top = safeAreaInsets.top + topChromeHeight + readerModeBarHeight
+    minimumViewportInset.top = safeAreaInsets.top + collapsedHeight
+    maximumViewportInset.top = safeAreaInsets.top + topChromeHeight
     minimumViewportInset.bottom = bottomChromeHeight
     maximumViewportInset.bottom = bottomChromeHeight
 

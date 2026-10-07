@@ -6,6 +6,12 @@
 import SnapKit
 import UIKit
 
+/// The edge of the content area a content accessory is attached to
+enum BrowserToolbarContentAccessoryEdge {
+  case top
+  case bottom
+}
+
 /// An object notified when the displayed toolbar layout or its geometry changes
 @MainActor
 protocol BrowserToolbarsViewControllerDelegate: AnyObject {
@@ -29,6 +35,12 @@ protocol BrowserToolbarsViewControllerDelegate: AnyObject {
 /// When there is no active controller, either because no layout is registered for the resolved
 /// mode or because the mode has not been resolved yet, no toolbars are displayed and the published
 /// metrics and guides span the whole view.
+///
+/// Content accessories, such as the reader mode bar, are views attached to an edge of the content
+/// area. They are placed by the container rather than the active controller so that every layout
+/// treats them the same way: they move with the toolbars, remain visible while the toolbars are
+/// collapsed and their footprint is excluded from the published guides and added to the published
+/// metrics.
 @MainActor
 final class BrowserToolbarsViewController: UIViewController {
   weak var delegate: (any BrowserToolbarsViewControllerDelegate)?
@@ -82,16 +94,21 @@ final class BrowserToolbarsViewController: UIViewController {
     activeController != nil
   }
 
-  /// The metrics of the active layout, or `.init()` if there isn't one
+  /// The metrics of the active layout including the footprint of any content accessories, or
+  /// `.init()` if there isn't an active layout
   var metrics: BrowserToolbarLayoutMetrics {
-    activeController?.metrics ?? .init()
-  }
-
-  /// A bar displayed below the top toolbar. See `BrowserToolbarModeController.readerModeBar`
-  var readerModeBar: UIView? {
-    didSet {
-      activeController?.readerModeBar = readerModeBar
+    var metrics = activeController?.metrics ?? .init()
+    if contentAccessories.isEmpty {
+      return metrics
     }
+    view.layoutIfNeeded()
+    let topFootprint = contentAccessoryFootprint(edge: .top)
+    let bottomFootprint = contentAccessoryFootprint(edge: .bottom)
+    metrics.minimumViewportInset.top += topFootprint
+    metrics.maximumViewportInset.top += topFootprint
+    metrics.minimumViewportInset.bottom += bottomFootprint
+    metrics.maximumViewportInset.bottom += bottomFootprint
+    return metrics
   }
 
   /// Resolves the mode for the given inputs and displays its layout if it has changed.
@@ -115,7 +132,6 @@ final class BrowserToolbarsViewController: UIViewController {
 
   private func setActiveController(_ controller: (any BrowserToolbarModeController)?) {
     if let activeController {
-      activeController.readerModeBar = nil
       activeController.layoutDelegate = nil
       activeController.willMove(toParent: nil)
       activeController.view.removeFromSuperview()
@@ -125,12 +141,12 @@ final class BrowserToolbarsViewController: UIViewController {
     if let controller {
       controller.layoutDelegate = self
       addChild(controller)
-      view.addSubview(controller.view)
+      // Content accessories are always displayed above the toolbars
+      view.insertSubview(controller.view, at: 0)
       controller.view.snp.makeConstraints {
         $0.edges.equalToSuperview()
       }
       controller.didMove(toParent: self)
-      controller.readerModeBar = readerModeBar
       controller.observeScrollView(scrollView)
     }
     remakeGuideConstraints()
@@ -169,35 +185,100 @@ final class BrowserToolbarsViewController: UIViewController {
     animator.startAnimation()
   }
 
+  // MARK: - Content Accessories
+
+  private var contentAccessories: [BrowserToolbarContentAccessoryEdge: UIView] = [:]
+
+  /// The spacing between a content accessory and the toolbars & the sides of the view
+  private var contentAccessoryInsets: UIEdgeInsets {
+    if #available(iOS 26, *) {
+      return UIEdgeInsets(equalInset: 8)
+    }
+    return .zero
+  }
+
+  /// Attaches a view to an edge of the content area, replacing any view previously attached to that
+  /// edge, or removes it if `accessory` is `nil`.
+  ///
+  /// The container positions the accessory horizontally and vertically, the accessory is
+  /// responsible for defining its own height.
+  func setContentAccessory(_ accessory: UIView?, edge: BrowserToolbarContentAccessoryEdge) {
+    loadViewIfNeeded()
+    let previousAccessory = contentAccessories[edge]
+    guard previousAccessory !== accessory else { return }
+    previousAccessory?.removeFromSuperview()
+    contentAccessories[edge] = accessory
+    if let accessory {
+      view.addSubview(accessory)
+    }
+    remakeGuideConstraints()
+    delegate?.browserToolbarsViewControllerDidUpdateMetrics(self)
+  }
+
+  /// The distance between the edge of the content area and the far side of the content accessory
+  /// attached to it, or 0 if there is no accessory attached to the edge
+  private func contentAccessoryFootprint(edge: BrowserToolbarContentAccessoryEdge) -> CGFloat {
+    guard let accessory = contentAccessories[edge] else { return 0 }
+    let contentFrame = activeController?.pageOverlayLayoutGuide.layoutFrame ?? view.bounds
+    switch edge {
+    case .top:
+      return max(0, accessory.frame.maxY - contentFrame.minY)
+    case .bottom:
+      return max(0, contentFrame.maxY - accessory.frame.minY)
+    }
+  }
+
   // MARK: - Layout Guides
 
-  /// Pins the container's guides to the active controller's guides so that anything constrained
-  /// to them doesn't need to be remade when the controller changes.
+  /// Pins the container's guides and content accessories to the active controller's guides so that
+  /// anything constrained to them doesn't need to be remade when the controller changes.
   private func remakeGuideConstraints() {
     guideConstraints.forEach { $0.deactivate() }
     guideConstraints = []
 
+    // The edges of the content area before any content accessories are placed
+    let overlayTop = activeController?.pageOverlayLayoutGuide.snp.top ?? view.snp.top
+    let overlayBottom = activeController?.pageOverlayLayoutGuide.snp.bottom ?? view.snp.bottom
+    let webContentTop = activeController?.webContentLayoutGuide.snp.top ?? view.snp.top
+    let webContentBottom = activeController?.webContentLayoutGuide.snp.bottom ?? view.snp.bottom
+
+    let insets = contentAccessoryInsets
+    let topAccessory = contentAccessories[.top]
+    let bottomAccessory = contentAccessories[.bottom]
+    topAccessory?.snp.makeConstraints {
+      if activeController != nil {
+        guideConstraints.append($0.top.equalTo(overlayTop).offset(insets.top).constraint)
+      } else {
+        guideConstraints.append(
+          $0.top.equalTo(view.safeAreaLayoutGuide).offset(insets.top).constraint
+        )
+      }
+      guideConstraints.append($0.leading.trailing.equalToSuperview().inset(insets).constraint)
+    }
+    bottomAccessory?.snp.makeConstraints {
+      if activeController != nil {
+        guideConstraints.append($0.bottom.equalTo(overlayBottom).offset(-insets.bottom).constraint)
+      } else {
+        guideConstraints.append(
+          $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-insets.bottom).constraint
+        )
+      }
+      guideConstraints.append($0.leading.trailing.equalToSuperview().inset(insets).constraint)
+    }
+
     pageOverlayLayoutGuide.snp.makeConstraints {
       guideConstraints.append($0.leading.trailing.equalToSuperview().constraint)
-      if let activeController {
-        guideConstraints.append($0.top.equalTo(activeController.pageOverlayLayoutGuide).constraint)
-        guideConstraints.append(
-          $0.bottom.equalTo(activeController.pageOverlayLayoutGuide).constraint
-        )
-      } else {
-        guideConstraints.append($0.top.bottom.equalToSuperview().constraint)
-      }
+      guideConstraints.append($0.top.equalTo(topAccessory?.snp.bottom ?? overlayTop).constraint)
+      guideConstraints.append(
+        $0.bottom.equalTo(bottomAccessory?.snp.top ?? overlayBottom).constraint
+      )
     }
     webContentLayoutGuide.snp.makeConstraints {
       guideConstraints.append($0.leading.trailing.equalToSuperview().constraint)
-      if let activeController {
-        guideConstraints.append($0.top.equalTo(activeController.webContentLayoutGuide).constraint)
-        guideConstraints.append(
-          $0.bottom.equalTo(activeController.webContentLayoutGuide).constraint
-        )
-      } else {
-        guideConstraints.append($0.top.bottom.equalToSuperview().constraint)
-      }
+      guideConstraints.append($0.top.equalTo(topAccessory?.snp.bottom ?? webContentTop).constraint)
+      guideConstraints.append(
+        $0.bottom.equalTo(bottomAccessory?.snp.top ?? webContentBottom).constraint
+      )
     }
   }
 }
