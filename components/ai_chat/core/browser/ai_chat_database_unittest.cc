@@ -143,6 +143,12 @@ class AIChatDatabaseTest : public testing::Test,
     return counts;
   }
 
+  void ExpectNoChildRows(std::string_view entry_uuid = "") {
+    for (const auto& [table, count] : CountChildRows(entry_uuid)) {
+      EXPECT_EQ(count, 0) << table << " for entry '" << entry_uuid << "'";
+    }
+  }
+
   // Persists a conversation with associated content, an uploaded file, one
   // event of every persisted kind, and an edit of the response carrying a copy
   // of those events plus its own uploaded file. Returns the persisted history.
@@ -400,18 +406,12 @@ TEST_P(AIChatDatabaseTest, DeleteConversationEntryDeletesEditChildRows) {
   EXPECT_EQ(edit_rows["conversation_entry_uploaded_files"], 1);
 
   ASSERT_TRUE(db_->DeleteConversationEntry(history[1]->uuid.value()));
-  for (const auto& [table, count] : CountChildRows(edit_uuid)) {
-    EXPECT_EQ(count, 0) << table;
-  }
-  for (const auto& [table, count] : CountChildRows(history[1]->uuid.value())) {
-    EXPECT_EQ(count, 0) << table;
-  }
+  ExpectNoChildRows(edit_uuid);
+  ExpectNoChildRows(history[1]->uuid.value());
 
   // Deleting the only remaining entry should leave nothing behind.
   ASSERT_TRUE(db_->DeleteConversationEntry(history[0]->uuid.value()));
-  for (const auto& [table, count] : CountChildRows()) {
-    EXPECT_EQ(count, 0) << table;
-  }
+  ExpectNoChildRows();
   EXPECT_EQ(db_->GetConversationData(conversation_uuid)->entries.size(), 0u);
 }
 
@@ -424,12 +424,8 @@ TEST_P(AIChatDatabaseTest, DeleteConversationEntryWithCyclicEdit) {
   SetEditingEntryUuid(history[1]->uuid.value(), edit_uuid);
 
   ASSERT_TRUE(db_->DeleteConversationEntry(history[1]->uuid.value()));
-  for (const auto& [table, count] : CountChildRows(edit_uuid)) {
-    EXPECT_EQ(count, 0) << table;
-  }
-  for (const auto& [table, count] : CountChildRows(history[1]->uuid.value())) {
-    EXPECT_EQ(count, 0) << table;
-  }
+  ExpectNoChildRows(edit_uuid);
+  ExpectNoChildRows(history[1]->uuid.value());
 }
 
 TEST_P(AIChatDatabaseTest, DeleteConversationDeletesAllChildRows) {
@@ -437,9 +433,7 @@ TEST_P(AIChatDatabaseTest, DeleteConversationDeletesAllChildRows) {
   AddConversationWithEveryChildRow(conversation_uuid, "edit-uuid");
 
   ASSERT_TRUE(db_->DeleteConversation(conversation_uuid));
-  for (const auto& [table, count] : CountChildRows()) {
-    EXPECT_EQ(count, 0) << table;
-  }
+  ExpectNoChildRows();
   EXPECT_EQ(db_->GetAllConversations().size(), 0u);
 }
 
