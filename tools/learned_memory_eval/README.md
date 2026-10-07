@@ -41,8 +41,8 @@ them in the database, so there is no need to type them in Leo.
 |---|---|
 | Build | `pnpm build` with `enable_local_ai` on. The default is `out/Component_arm64` |
 | Ollama | Running on `http://localhost:11434` |
-| Decision model | `clef-flash:9b` pulled in Ollama |
-| Local LLM | `qwen3.5:9b` pulled in Ollama |
+| Decision model | `clef-flash:9b` installed in Ollama (the tools load it, see section 14) |
+| Local LLM | `qwen3.5:9b` installed in Ollama (the tools load it, see section 14) |
 | Embedder files | The component `BraveLocalAIModels` in the dev profile. The harness copies it to each new profile |
 | Python | 3.9 or newer. No packages |
 
@@ -70,7 +70,8 @@ cd brave/tools/learned_memory_eval
 | `--threshold`, `--margin` | `0.8`, `0.2` | Certainty rule of the decision model. It is only for the labels (category, type) and the relation. The gate and the keep rules have their own params (`gate_threshold`, `fact_threshold`) |
 | `--time-limit` | `600` | Run time limit in the browser, in seconds |
 | `--timeout` | `1200` | The harness stops waiting after this time, in seconds |
-| `--no-warmup` | off | Do not load the Ollama models before the run |
+| `--keep-alive` | `60m` | How long Ollama keeps the loaded models (section 14) |
+| `--no-warmup` | off | Do not load the Ollama models before the run. The run still checks that they are installed |
 | `--keep-profiles` | off | Do not delete the profile after the run |
 
 Each set takes about 2 to 15 minutes. The embedder and the Ollama models load
@@ -268,3 +269,98 @@ change a question in `ollama_decision_client.cc`.
   script keeps the order of the dictionary, and the C++ client builds its
   request in the same order. Change both when you change the order.
 - Results are cached in `/tmp/decision_eval_cache.json`.
+
+## 11. A demo profile for the settings page
+
+`make_demo_profile.py` makes a profile with a mock chat history, and starts a
+browser on it. Use it to see the learned memory UI (Leo > Customization >
+Memories) and to select "Dream now".
+
+```sh
+./make_demo_profile.py --force          # make the profile and start the browser
+./make_demo_profile.py --no-launch      # make it only
+/tmp/learned_memory_demo/launch.sh      # start it again later
+```
+
+```
+demo/demo_history.json ──► eval mode imports the chats ──► Dreaming runs 1 time
+                                                              │
+                          stop the browser ◄──────────────────┘
+                               │ remove learned memories and watermarks
+                               │ set the last Dreaming time to now (no timer run)
+                               ▼
+   /tmp/learned_memory_demo/profile   23 chats, 0 learned memories
+```
+
+- The history is one mock user over about four months: a move from San
+  Francisco to Berlin, a second dog, a diet, a marathon, a promotion, style
+  wishes, short-lived states, sensitive data (health, email, phone, account
+  number) and task questions. Edit `demo/demo_history.json` to change it.
+- `--keep-memories` keeps what the first run learned. `--out` changes the
+  folder. `--force` replaces an old demo folder (only a folder that the script
+  made).
+- `launch.sh` loads the Ollama models first, so the first "Dream now" is not
+  slow. It writes the browser log to `browser.log` in the demo folder.
+- The daily timer is one day away, so it does not run before you select "Dream
+  now". "Dream now" has a time limit of at least 5 minutes. A second click on
+  the same chats reads 0 new messages. To start over, run the script again with
+  `--force`.
+
+## 12. Test the relevance question alone
+
+`relevance_eval.py` calls the decision model (Ollama `/v1/systemone`) with the
+chat time relevance question, the same as `OllamaDecisionClient::AskRelevance()`.
+It needs no browser. Use it before you change the question or the threshold
+(`relevance_threshold`).
+
+```sh
+./relevance_eval.py                    # wordings A, B, C
+./relevance_eval.py A --errors A       # list the memories that were not found
+./relevance_eval.py A --thresholds 0.2 0.3 0.4
+```
+
+- `relevance_cases.json` has 14 memories (what Dreaming learned from
+  `demo/demo_history.json`), and 9 messages. Each message names the memories
+  that must be relevant and the ones that must not be. The other memories (style
+  wishes) are neutral.
+- The report shows, for each threshold, how many required memories were found,
+  how many forbidden memories were found, and the mean number of memories kept.
+  The latency of one request is about 0.1 s plus 0.08 s for each memory.
+- Wording `A` is the wording in the C++ client. Change both when you change it.
+
+## 13. See the request that Leo sends
+
+`log_proxy.py` is a small proxy for the chat model endpoint. It writes each
+request to a file and forwards it to Ollama. Use it to see the memory block with
+the learned memories (Track B).
+
+```sh
+./log_proxy.py /tmp/requests.jsonl        # listens on 127.0.0.1:8899
+# Set the endpoint of the custom model to http://127.0.0.1:8899/v1/chat/completions,
+# send a message in Leo, then read the last line of /tmp/requests.jsonl.
+```
+
+## 14. Load the Ollama models
+
+Ollama unloads a model after 5 minutes without a request. Then the next
+Dreaming run or chat turn waits many seconds while the model loads, and a chat
+turn can run into its time out. `ollama_setup.py` loads both models and keeps
+them in memory. It does not install anything: the models must be in `ollama
+list` already.
+
+```sh
+./ollama_setup.py                  # load both, keep them for 60 minutes
+./ollama_setup.py --status         # what is loaded, and when Ollama unloads it
+./ollama_setup.py --keep-alive 3h
+./ollama_setup.py --unload
+```
+
+- `run_eval.py`, `make_demo_profile.py`, `decision_eval.py` and
+  `relevance_eval.py` call it before they use a model (`decision_eval.py` and
+  `relevance_eval.py` load only the decision model). `--no-warmup` skips it.
+- `launch.sh` of the demo profile calls it before it starts the browser.
+- The decision model loads with a System One request, because it does not
+  support `/api/generate`. The LLM loads with an empty `/api/generate` request.
+- Ollama keeps the `keep_alive` of the first request for later requests that
+  have none. So the browser keeps the models loaded for the same time, and the
+  product code does not need to send `keep_alive`.

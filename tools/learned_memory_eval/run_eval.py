@@ -14,11 +14,10 @@ import shutil
 import subprocess
 import sys
 import time
-import urllib.error
 import urllib.parse
-import urllib.request
 from pathlib import Path
 
+import ollama_setup
 import report as report_lib
 
 HERE = Path(__file__).resolve().parent
@@ -35,14 +34,6 @@ ACCEPTED_DISCLAIMER = "13398544097773196"
 
 def log(message: str) -> None:
     print(f"[{time.strftime('%H:%M:%S')}] {message}", flush=True)
-
-
-def http_json(url: str, body: dict | None = None, timeout: int = 900):
-    data = json.dumps(body).encode() if body is not None else None
-    request = urllib.request.Request(
-        url, data, {"Content-Type": "application/json"} if data else {})
-    with urllib.request.urlopen(request, timeout=timeout) as response:
-        return json.load(response)
 
 
 def load_sets(names: list | None) -> list:
@@ -64,25 +55,19 @@ def preflight(args) -> None:
     if not (Path(args.source_profile) / "BraveLocalAIModels").exists():
         sys.exit(f"No BraveLocalAIModels in {args.source_profile}. Start the dev "
                  "browser one time with local AI on, so that the embedder downloads.")
+
+
+def prepare_ollama(args) -> None:
+    """Checks that the two Ollama models are installed, and loads them so that
+    the run does not wait for them (see ollama_setup.py)."""
     try:
-        tags = http_json(f"{args.ollama}/api/tags", timeout=10)
-    except (urllib.error.URLError, OSError) as error:
-        sys.exit(f"Ollama is not running at {args.ollama}: {error}")
-    names = {m["name"] for m in tags.get("models", [])}
-    for model in (args.decision, args.llm):
-        if model not in names:
-            sys.exit(f"Model {model} is not in Ollama. Run `ollama pull {model}`.")
-
-
-def warmup(args) -> None:
-    """Loads the Ollama models, so that the run does not wait for them."""
-    log(f"Loading {args.decision} and {args.llm} in Ollama")
-    http_json(f"{args.ollama}/v1/systemone", {
-        "model": args.decision, "state": "warm up", "keep_alive": "30m",
-        "questions": {"q": {"type": "noul", "instructions": "Is this a test?"}}})
-    http_json(f"{args.ollama}/v1/chat/completions", {
-        "model": args.llm, "stream": False, "reasoning_effort": "none",
-        "max_tokens": 4, "messages": [{"role": "user", "content": "Say OK."}]})
+        if args.no_warmup:
+            ollama_setup.check_installed(args.ollama, [args.decision, args.llm])
+        else:
+            ollama_setup.load_models(args.ollama, args.decision, args.llm,
+                                     args.keep_alive, log=log)
+    except ollama_setup.OllamaSetupError as error:
+        sys.exit(str(error))
 
 
 def make_profile(args, profile: Path) -> None:
@@ -230,14 +215,11 @@ def main() -> None:
     parser.add_argument("--brave", default=str(DEFAULT_BRAVE))
     parser.add_argument("--out", default=None)
     parser.add_argument("--source-profile", default=str(DEFAULT_SOURCE_PROFILE))
-    parser.add_argument("--ollama", default="http://localhost:11434")
-    parser.add_argument("--decision", default="clef-flash:9b")
-    parser.add_argument("--llm", default="qwen3.5:9b")
+    ollama_setup.add_arguments(parser)
     parser.add_argument("--threshold", type=float, default=0.8)
     parser.add_argument("--margin", type=float, default=0.2)
     parser.add_argument("--time-limit", type=int, default=600)
     parser.add_argument("--timeout", type=int, default=1200)
-    parser.add_argument("--no-warmup", action="store_true")
     parser.add_argument("--keep-profiles", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--report-only", metavar="DIR", default=None,
@@ -254,8 +236,7 @@ def main() -> None:
         return
     if not args.dry_run:
         preflight(args)
-        if not args.no_warmup:
-            warmup(args)
+        prepare_ollama(args)
     stamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     out_dir = Path(args.out or f"/tmp/learned_memory_eval/{stamp}")
     out_dir.mkdir(parents=True, exist_ok=True)

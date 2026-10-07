@@ -17,6 +17,8 @@ import sys
 import urllib.request
 from pathlib import Path
 
+import ollama_setup
+
 HERE = Path(__file__).resolve().parent
 CACHE = Path("/tmp/decision_eval_cache.json")
 SAFETY = ["sensitive", "instruction", "short_lived", "not_about_user", "ok"]
@@ -331,11 +333,19 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--variants", nargs="*", default=list(VARIANTS))
     parser.add_argument("--errors", metavar="VARIANT")
-    parser.add_argument("--ollama", default="http://localhost:11434")
-    parser.add_argument("--model", default="clef-flash:9b")
+    parser.add_argument("--ollama", default=ollama_setup.DEFAULT_OLLAMA)
+    parser.add_argument("--model", default=ollama_setup.DEFAULT_DECISION)
+    parser.add_argument("--keep-alive", default=ollama_setup.DEFAULT_KEEP_ALIVE)
+    parser.add_argument("--no-warmup", action="store_true",
+                        help="do not load the decision model before the test")
     parser.add_argument("--cases", default="decision_cases.json",
                         help="decision_cases.json (tuning) or decision_cases_holdout.json")
     args = parser.parse_args()
+    try:
+        if not args.no_warmup:
+            ollama_setup.load_models(args.ollama, args.model, None, args.keep_alive)
+    except ollama_setup.OllamaSetupError as error:
+        sys.exit(str(error))
     cases = json.loads((HERE / args.cases).read_text())
     results = {}
     for name in args.variants:

@@ -1,0 +1,123 @@
+{
+ "description": "Chat time relevance: memories that Dreaming learned from demo/demo_history.json, and messages with the memories that must and must not be relevant. Memories that are not listed (style wishes) are neutral. A string matches a memory when it is a substring of its text.",
+ "memories": [
+  "Works as a product designer at a small startup in San Francisco.",
+  "Has a beagle named Luna.",
+  "Is three years old.",
+  "Prefers short answers.",
+  "Prefers metric units; does not know miles or pounds.",
+  "Writes TypeScript with React",
+  "Plans to move to Berlin in 2026-08-28.",
+  "Moved to Berlin",
+  "Adopted a rescue dog named Pixel last weekend.",
+  "Is vegetarian and does not want meat recipes.",
+  "Likes quick dinner ideas with lentils.",
+  "Prefers bullet points over long paragraphs.",
+  "Prefers dry humor but no emojis.",
+  "Promoted to design lead in 2026-09-27"
+ ],
+ "cases": [
+  {
+   "message": "Can you suggest a quick dinner for tonight?",
+   "must": [
+    "vegetarian",
+    "lentils"
+   ],
+   "forbidden": [
+    "TypeScript",
+    "Luna",
+    "designer at"
+   ]
+  },
+  {
+   "message": "How do I train my two dogs to walk together?",
+   "must": [
+    "Luna",
+    "Pixel"
+   ],
+   "forbidden": [
+    "TypeScript",
+    "vegetarian",
+    "lentils"
+   ]
+  },
+  {
+   "message": "Write a TypeScript function to throttle a callback.",
+   "must": [
+    "TypeScript"
+   ],
+   "forbidden": [
+    "Luna",
+    "vegetarian",
+    "Pixel"
+   ]
+  },
+  {
+   "message": "How far is a marathon in kilometers?",
+   "must": [
+    "metric"
+   ],
+   "forbidden": [
+    "TypeScript",
+    "Luna",
+    "vegetarian"
+   ]
+  },
+  {
+   "message": "Explain how photosynthesis works.",
+   "must": [],
+   "forbidden": [
+    "TypeScript",
+    "Luna",
+    "vegetarian",
+    "Pixel",
+    "designer at",
+    "lentils"
+   ]
+  },
+  {
+   "message": "Plan a weekend trip for me.",
+   "must": [
+    "Moved to Berlin"
+   ],
+   "forbidden": [
+    "TypeScript",
+    "Luna"
+   ]
+  },
+  {
+   "message": "Draft a short update for my team about the redesign.",
+   "must": [
+    "designer at",
+    "design lead"
+   ],
+   "forbidden": [
+    "Luna",
+    "vegetarian",
+    "Pixel"
+   ]
+  },
+  {
+   "message": "Tell me a joke about Mondays.",
+   "must": [
+    "dry humor"
+   ],
+   "forbidden": [
+    "TypeScript",
+    "Luna",
+    "vegetarian"
+   ]
+  },
+  {
+   "message": "Is there a good gym near me?",
+   "must": [
+    "Moved to Berlin"
+   ],
+   "forbidden": [
+    "TypeScript",
+    "lentils",
+    "vegetarian"
+   ]
+  }
+ ]
+}
