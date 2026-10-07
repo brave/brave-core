@@ -76,6 +76,30 @@ describe('EmailAliasModal', () => {
     })
   })
 
+  it('does not regenerate the initial alias when the limit changes', async () => {
+    const props = {
+      editing: false,
+      aliasLimit: MAX_ALIASES,
+      mainEmail: mockEmail,
+      onReturnToMain: mockOnReturnToMain,
+      emailAliasesService: mockEmailAliasesService,
+    }
+    const { rerender } = render(<EmailAliasModal {...props} />)
+
+    await waitFor(() => {
+      expect(mockEmailAliasesService.generateAlias).toHaveBeenCalledTimes(1)
+    })
+
+    rerender(
+      <EmailAliasModal
+        {...props}
+        aliasLimit={MAX_ALIASES + 1}
+      />,
+    )
+
+    expect(mockEmailAliasesService.generateAlias).toHaveBeenCalledTimes(1)
+  })
+
   it('renders edit mode correctly', () => {
     const mockEditAlias: Alias = {
       email: 'existing@brave.com',

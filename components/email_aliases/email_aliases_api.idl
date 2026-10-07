@@ -63,7 +63,7 @@ dictionary AliasListRequest {
 };
 
 dictionary AliasesAccountInfo {
-  long max_aliases_count;  
+  long max_aliases_count;
 };
 
 // Response to GET /manage?status=active (alias list result)

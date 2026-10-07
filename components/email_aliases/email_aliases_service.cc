@@ -360,9 +360,12 @@ void EmailAliasesService::OnRefreshAliasesResponse(
     return;
   }
 
+  const uint32_t max_aliases_count =
+      response.body.value()->info.max_aliases_count > 0
+          ? response.body.value()->info.max_aliases_count
+          : mojom::kDefaultMaxAliases;
   NotifyObserversAliasesAccountUpdated(
-      observers_, mojom::AliasesAccountUpdate::New(
-                      response.body.value()->info.max_aliases_count));
+      observers_, mojom::AliasesAccountUpdate::New(max_aliases_count));
 
   EmailAliasesNotes notes(pref_service_.get(), GetAuthEmail());
   notes.RemoveNotesForDeletedAliases(response.body.value()->result);
