@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index b1d9c43f888b707deb04c1354b814a58492d7f7f..3aafec582e522236ffac5a745002066d31bf6fc9 100644
+index b1d9c43f888b707deb04c1354b814a58492d7f7f..86250c3cbd058fb2e22408ca8916a66281eaa74d 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -297,6 +297,7 @@
@@ -170,6 +170,15 @@ index b1d9c43f888b707deb04c1354b814a58492d7f7f..3aafec582e522236ffac5a745002066d
        status: "stable",
        public: true,
      },
+@@ -7114,7 +7128,7 @@
+         "WebMCPFormAssociatedCustomElements",
+         "WebMCPTesting"
+       ],
+-      status: "experimental",
++      status: "stable",  // Brave: enabled by default.
+     },
+     {
+       name: "WebMCPDeclarativeFileInput",
 @@ -7532,5 +7546,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",

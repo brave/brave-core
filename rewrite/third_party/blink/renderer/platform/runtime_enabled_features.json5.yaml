@@ -32,6 +32,21 @@ substitutions:
               name: "CompositorTimelineTrigger",
               status: "experimental", // Brave: revert when crbug.com/541924666 is fixed.
 
+  - description: |-
+      Ship WebMCP (`document.modelContext`) enabled by default.
+
+      Upstream holds the runtime flag at experimental behind an origin trial.
+      Its `base::Feature` is already enabled by default and, with
+      `copied_from_base_feature_if: "overridden"`, still serves as a kill
+      switch via `--disable-features=WebMCP`.
+
+      The anchor matches the status so we get to review it if anything
+      changes.
+    regex:
+      re_pattern:
+        '(\n( *)name: "WebMCP",\n(?:\2.*\n)*?\2status: )"experimental",'
+      replace: '\1"stable",  // Brave: enabled by default.'
+
   # The three following entries are plastered to generate no `base::Feature` at
   # all.
   - description:
