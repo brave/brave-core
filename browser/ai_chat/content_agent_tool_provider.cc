@@ -6,9 +6,12 @@
 #include "brave/browser/ai_chat/content_agent_tool_provider.h"
 
 #include <memory>
+#include <utility>
 #include <vector>
 
 #include "base/containers/fixed_flat_set.h"
+#include "base/strings/strcat.h"
+#include "base/strings/to_string.h"
 #include "brave/browser/ai_chat/ai_chat_enterprise_policy_checker.h"
 #include "brave/browser/ai_chat/tools/click_tool.h"
 #include "brave/browser/ai_chat/tools/drag_and_release_tool.h"
@@ -38,6 +41,8 @@
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #include "chrome/common/actor.mojom.h"
 #include "chrome/common/actor/action_result.h"
+#include "components/actor/core/aggregated_journal.h"
+#include "components/actor/core/journal_details_builder.h"
 #include "components/actor/core/task_id.h"
 #include "components/actor/core/task_source_info.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
@@ -59,6 +64,47 @@ constexpr auto kActorStatesToNotify =
         actor::ActorTask::State::kReflecting,
         actor::ActorTask::State::kWaitingOnUser,
     });
+
+std::vector<actor::mojom::JournalDetailsPtr> MakeDetails(
+    std::string_view details) {
+  if (details.empty()) {
+    return {};
+  }
+  return actor::JournalDetailsBuilder().Add("details", details).Build();
+}
+
+// Owns an actor journal entry for one agentic loop phase. Deliberately holds no
+// reference to the provider that created it, so it can outlive one: the entry
+// keeps a SafeRef to the journal, which belongs to the profile's
+// ActorKeyedService.
+class JournalPhaseEntry : public AgentJournal::PendingEntry {
+ public:
+  explicit JournalPhaseEntry(
+      std::unique_ptr<actor::AggregatedJournal::PendingAsyncEntry> entry)
+      : entry_(std::move(entry)) {}
+  ~JournalPhaseEntry() override = default;
+
+  void End(std::string_view details) override {
+    if (entry_) {
+      entry_->EndEntry(MakeDetails(details));
+      entry_.reset();
+    }
+  }
+
+ private:
+  std::unique_ptr<actor::AggregatedJournal::PendingAsyncEntry> entry_;
+};
+
+size_t CountTextChars(
+    const std::vector<mojom::ContentBlockPtr>& content_blocks) {
+  size_t chars = 0;
+  for (const auto& block : content_blocks) {
+    if (block->is_text_content_block()) {
+      chars += block->get_text_content_block()->text.size();
+    }
+  }
+  return chars;
+}
 
 }  // namespace
 
@@ -167,12 +213,44 @@ bool ContentAgentToolProvider::IsPausedByUser() {
   return task->IsUnderUserControl();
 }
 
+AgentJournal* ContentAgentToolProvider::GetAgentJournal() {
+  return this;
+}
+
+std::unique_ptr<AgentJournal::PendingEntry> ContentAgentToolProvider::Begin(
+    std::string_view event_name,
+    std::string_view details) {
+  return std::make_unique<JournalPhaseEntry>(
+      actor_service_->GetJournal().CreatePendingAsyncEntry(
+          GetTaskURL(), task_id_, actor::MakeBrowserTrackUUID(task_id_),
+          event_name, MakeDetails(details)));
+}
+
+void ContentAgentToolProvider::Log(std::string_view event_name,
+                                   std::string_view details) {
+  actor_service_->GetJournal().Log(GetTaskURL(), task_id_,
+                                   actor::MakeBrowserTrackUUID(task_id_),
+                                   event_name, MakeDetails(details));
+}
+
+GURL ContentAgentToolProvider::GetTaskURL() const {
+  auto* tab = task_tab_handle_.Get();
+  if (!tab || !tab->GetContents()) {
+    return GURL();
+  }
+  return tab->GetContents()->GetLastCommittedURL();
+}
+
 actor::TaskId ContentAgentToolProvider::GetTaskId() {
   return task_id_;
 }
 
 void ContentAgentToolProvider::GetOrCreateTabHandleForTask(
     base::OnceCallback<void(tabs::TabHandle)> callback) {
+  tab_setup_phase_ = std::make_unique<AgentPhase>(
+      this, kAgentPhaseTabSetup,
+      base::StrCat({"new_tab=", base::ToString(!task_tab_handle_.Get())}));
+
   if (!task_tab_handle_.Get()) {
     // Create a new tab because we are only allowed to act on
     // certain URLs, e.g. NTP. Safer to start on a blank page
@@ -196,6 +274,8 @@ void ContentAgentToolProvider::GetOrCreateTabHandleForTask(
     // Task was removed (e.g. stopped between generation
     // completing and tool execution). Still call the callback
     // to avoid hanging the tool chain.
+    tab_setup_phase_->SetEndDetails("task_removed");
+    tab_setup_phase_.reset();
     std::move(callback).Run(task_tab_handle_);
     return;
   }
@@ -209,6 +289,10 @@ void ContentAgentToolProvider::GetOrCreateTabHandleForTask(
 void ContentAgentToolProvider::TabAddedToTask(
     base::OnceCallback<void(tabs::TabHandle)> callback,
     actor::mojom::ActionResultPtr result) {
+  if (tab_setup_phase_) {
+    tab_setup_phase_->SetEndDetails(actor::ToDebugString(*result));
+    tab_setup_phase_.reset();
+  }
   std::move(callback).Run(task_tab_handle_);
 }
 
@@ -219,11 +303,16 @@ void ContentAgentToolProvider::ExecuteActions(
 
   if (!requests.has_value()) {
     DLOG(ERROR) << "Action Failed to convert BrowserAction to ToolRequests.";
+    Log(kAgentEventActionResult, "invalid_parameters");
     std::move(callback).Run(CreateContentBlocksForText(
                                 "Error: action failed - incorrect parameters"),
                             {});
     return;
   }
+
+  actuation_phase_ = std::make_unique<AgentPhase>(
+      this, kAgentPhaseActuation,
+      base::StrCat({"actions=", base::ToString(actions.actions_size())}));
 
   actor_service_->PerformActions(
       actor::TaskId(actions.task_id()), std::move(requests.value()),
@@ -262,6 +351,35 @@ void ContentAgentToolProvider::OnActionsFinished(
       actor::mojom::ActionResultCode::kOk;
   std::optional<size_t> index_of_failed_action;
   ExtractErrorResult(action_results, &result_code, index_of_failed_action);
+
+  // Per action, three things the actor produces that the model never sees: its
+  // own timing, its English failure message, and the observation policies the
+  // loop ignores - it always extracts, never screenshots. Recording them makes
+  // the cost of discarding them visible. The policies are read from each result
+  // rather than from `observation_strategy`, which is only locked - and so only
+  // readable - on the paths where actions actually ran.
+  for (size_t i = 0; i < action_results.size(); ++i) {
+    const auto& action_result = action_results[i];
+    Log(kAgentEventActionResult,
+        base::StrCat(
+            {"index=", base::ToString(i), " duration_ms=",
+             base::ToString((action_result.end_time - action_result.start_time)
+                                .InMilliseconds()),
+             " screenshot_policy=",
+             base::ToString(action_result.result->screenshot_policy),
+             " extraction_policy=",
+             base::ToString(action_result.result->page_content_policy), " ",
+             actor::ToDebugString(*action_result.result)}));
+  }
+
+  if (actuation_phase_) {
+    actuation_phase_->SetEndDetails(base::StrCat(
+        {"result=", base::ToString(result_code), " failed_index=",
+         index_of_failed_action ? base::ToString(*index_of_failed_action)
+                                : "none"}));
+    actuation_phase_.reset();
+  }
+
   if (result_code == actor::mojom::ActionResultCode::kOk) {
     // Send current page content for result
 
@@ -279,6 +397,9 @@ void ContentAgentToolProvider::OnActionsFinished(
           CreateContentBlocksForText("Error: tab is no longer open"), {});
       return;
     }
+
+    observation_phase_ = std::make_unique<AgentPhase>(
+        this, kAgentPhaseObservation, "mode=actionable_elements");
 
     optimization_guide::GetAIPageContent(
         task_tab_handle_.Get()->GetContents(), std::move(options),
@@ -303,6 +424,7 @@ void ContentAgentToolProvider::ReceivedAnnotatedPageContent(
     optimization_guide::AIPageContentResultOrError content) {
   if (!content.has_value()) {
     DLOG(ERROR) << "Error getting page content";
+    EndObservationPhase("extraction_failed");
     std::move(callback).Run(
         CreateContentBlocksForText("Error: could not get page content"), {});
     return;
@@ -312,15 +434,33 @@ void ContentAgentToolProvider::ReceivedAnnotatedPageContent(
 
   if (!apc.has_root_node()) {
     DLOG(ERROR) << "No root node";
+    EndObservationPhase("no_root_node");
     std::move(callback).Run(CreateContentBlocksForText("No root node"), {});
     return;
   }
 
-  auto content_blocks = ConvertAnnotatedPageContentToBlocks(apc);
+  std::vector<mojom::ContentBlockPtr> content_blocks;
+  {
+    AgentPhase serialization_phase(this, kAgentPhaseObservationSerialization,
+                                   "");
+    content_blocks = ConvertAnnotatedPageContentToBlocks(apc);
+  }
+
+  EndObservationPhase(
+      base::StrCat({"chars=", base::ToString(CountTextChars(content_blocks)),
+                    " blocks=", base::ToString(content_blocks.size())}));
+
   content_blocks.insert(
       content_blocks.begin(),
       std::move(CreateContentBlocksForText("Action successful")[0]));
   std::move(callback).Run(std::move(content_blocks), {});
+}
+
+void ContentAgentToolProvider::EndObservationPhase(std::string_view details) {
+  if (observation_phase_) {
+    observation_phase_->SetEndDetails(std::string(details));
+    observation_phase_.reset();
+  }
 }
 
 }  // namespace ai_chat

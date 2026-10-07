@@ -18,4 +18,5 @@ substitutions:
         \1    perfetto::Category("brave"),
             perfetto::Category("brave.adblock"),
             perfetto::Category("brave.ads"),
+            perfetto::Category("brave.ai_chat"),
             perfetto::Category("brave.news"),

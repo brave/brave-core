@@ -27,6 +27,7 @@
 #include "base/observer_list_types.h"
 #include "base/scoped_observation.h"
 #include "base/types/expected.h"
+#include "brave/components/ai_chat/core/browser/agent_tracing.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
@@ -574,6 +575,14 @@ class ConversationHandler : public mojom::ConversationHandler,
   // the current conversation state.
   std::vector<base::WeakPtr<Tool>> GetTools();
 
+  // The journal of the first ToolProvider that has one, or null when no
+  // provider can reach one. See agent_tracing.h.
+  AgentJournal* GetAgentJournal();
+
+  // Ends the tool loop phase, if one is in flight, reporting `outcome` and how
+  // much work the loop did.
+  void EndToolLoopPhase(std::string_view outcome);
+
   // Returns `model_key` if its model supports vision; otherwise returns the
   // freemium/premium vision-default model key.
   std::string GetVisionCapableModelKey(const std::string& model_key) const;
@@ -665,6 +674,18 @@ class ConversationHandler : public mojom::ConversationHandler,
   // held in memory forever, we don't currently prune the tab IDs once they
   // close. Therefore, these are not guaranteed to be active.
   std::set<int32_t> task_tab_ids_;
+
+  // Timings of the loop's phases. Declared after `tool_providers_` so that they
+  // are destroyed - and therefore recorded - before the provider whose journal
+  // they write to.
+  std::unique_ptr<AgentPhase> tool_loop_phase_;
+  std::unique_ptr<AgentPhase> generation_phase_;
+  std::unique_ptr<AgentPhase> tool_use_phase_;
+  std::unique_ptr<AgentPhase> associated_content_phase_;
+
+  // Work done since the current tool loop began, reported when it ends.
+  size_t tool_loop_tool_uses_ = 0;
+  size_t tool_loop_generations_ = 0;
 
   raw_ptr<AIChatService> ai_chat_service_;
   raw_ptr<ModelService> model_service_;

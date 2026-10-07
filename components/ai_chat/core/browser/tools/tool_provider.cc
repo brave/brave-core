@@ -24,6 +24,10 @@ bool ToolProvider::IsPausedByUser() {
   return false;
 }
 
+AgentJournal* ToolProvider::GetAgentJournal() {
+  return nullptr;
+}
+
 void ToolProvider::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
 }

@@ -35,6 +35,7 @@
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/strings/to_string.h"
 #include "base/task/bind_post_task.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
@@ -1328,6 +1329,12 @@ void ConversationHandler::RespondToToolUseRequest(
 
   DVLOG(0) << "got output for tool: " << tool_use->tool_name;
 
+  if (tool_use_phase_) {
+    tool_use_phase_->SetEndDetails(
+        base::StrCat({"output_blocks=", base::ToString(output.size())}));
+    tool_use_phase_.reset();
+  }
+
   tool_use->output = std::move(output);
   tool_use->artifacts = std::move(artifacts);
 
@@ -1602,6 +1609,16 @@ void ConversationHandler::PerformAssistantGeneration(
   // dealt with. When responding to a tool use request, we end up with 2
   // assistant entries in a row.
   needs_new_entry_ = true;
+
+  ++tool_loop_generations_;
+  generation_phase_ = std::make_unique<AgentPhase>(
+      GetAgentJournal(), kAgentPhaseGeneration,
+      base::StrCat(
+          {"turns=", base::ToString(chat_history_.size()),
+           " attached_contents=",
+           base::ToString(
+               associated_content_manager_->GetCachedContents().size()),
+           " model=", GetCurrentModel().key}));
 
   engine_->GenerateAssistantResponse(
       associated_content_manager_->GetCachedContentsMap(), history,
@@ -2049,6 +2066,12 @@ void ConversationHandler::GeneratePageContent(base::OnceClosure callback) {
 
 void ConversationHandler::GeneratePageContentInternal(
     base::OnceClosure callback) {
+  associated_content_phase_ = std::make_unique<AgentPhase>(
+      GetAgentJournal(), kAgentPhaseAssociatedContent,
+      base::StrCat(
+          {"contents=",
+           base::ToString(
+               associated_content_manager_->GetCachedContents().size())}));
   associated_content_manager_->HasContentUpdated(
       base::BindOnce(&ConversationHandler::OnGeneratePageContentComplete,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -2057,6 +2080,18 @@ void ConversationHandler::GeneratePageContentInternal(
 void ConversationHandler::OnGeneratePageContentComplete(
     base::OnceClosure callback,
     bool content_changed) {
+  if (associated_content_phase_) {
+    size_t total_chars = 0;
+    for (const auto& page_content_ref :
+         associated_content_manager_->GetCachedContents()) {
+      total_chars += page_content_ref.get().content.size();
+    }
+    associated_content_phase_->SetEndDetails(
+        base::StrCat({"changed=", base::ToString(content_changed),
+                      " chars=", base::ToString(total_chars)}));
+    associated_content_phase_.reset();
+  }
+
   // Keep is_content_different_ as true if it's the initial state
   is_content_different_ = is_content_different_ || content_changed;
 
@@ -2172,6 +2207,12 @@ void ConversationHandler::CompleteGeneration(
   thread_uuid_in_progress_ = std::nullopt;
   OnAPIRequestInProgressChanged();
 
+  if (generation_phase_) {
+    generation_phase_->SetEndDetails(
+        base::StrCat({"success=", base::ToString(success)}));
+    generation_phase_.reset();
+  }
+
   if (success) {
     // Trigger title generation in background after request completes but
     // before pending requests or tool handling. This is independent of request
@@ -2196,6 +2237,7 @@ void ConversationHandler::CompleteGeneration(
       // of the tool use task loop.
       tool_use_task_state_ = mojom::TaskState::kNone;
       OnToolUseTaskStateChanged();
+      EndToolLoopPhase("complete");
     }
   } else {
     // Failure should stop any tool handling, and relay to ToolProviders because
@@ -2329,6 +2371,7 @@ void ConversationHandler::StopTask() {
 
   tool_use_task_state_ = mojom::TaskState::kStopped;
   OnToolUseTaskStateChanged();
+  EndToolLoopPhase("stopped");
 
   for (auto& tool_provider : tool_providers_) {
     tool_provider->StopAllTasks();
@@ -2660,6 +2703,25 @@ std::vector<base::WeakPtr<Tool>> ConversationHandler::GetTools() {
   return tools;
 }
 
+AgentJournal* ConversationHandler::GetAgentJournal() {
+  for (auto& tool_provider : tool_providers_) {
+    if (auto* journal = tool_provider->GetAgentJournal()) {
+      return journal;
+    }
+  }
+  return nullptr;
+}
+
+void ConversationHandler::EndToolLoopPhase(std::string_view outcome) {
+  if (!tool_loop_phase_) {
+    return;
+  }
+  tool_loop_phase_->SetEndDetails(base::StrCat(
+      {outcome, " tool_uses=", base::ToString(tool_loop_tool_uses_),
+       " generations=", base::ToString(tool_loop_generations_)}));
+  tool_loop_phase_.reset();
+}
+
 ConversationHandler::ToolUseEventAndThreadUUID
 ConversationHandler::FindLatestToolUseEvent(
     std::optional<std::string_view> tool_id) {
@@ -2754,6 +2816,11 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest(
       if (tool_use_task_state_ == mojom::TaskState::kNone) {
         tool_use_task_state_ = mojom::TaskState::kRunning;
         OnToolUseTaskStateChanged();
+        tool_loop_tool_uses_ = 0;
+        tool_loop_generations_ = 0;
+        tool_loop_phase_ = std::make_unique<AgentPhase>(
+            GetAgentJournal(), kAgentPhaseToolLoop,
+            base::StrCat({"first_tool=", tool_use_event->tool_name}));
       }
 
       // Now check if we're allowed to execute tools.
@@ -2853,6 +2920,11 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest(
       thread_uuid_in_progress_ = thread_uuid;
       OnAPIRequestInProgressChanged();
       DVLOG(0) << __func__ << " calling UseTool for tool: " << tool_ptr->Name();
+
+      ++tool_loop_tool_uses_;
+      tool_use_phase_ = std::make_unique<AgentPhase>(
+          GetAgentJournal(), kAgentPhaseToolUse,
+          base::StrCat({"tool=", tool_ptr->Name()}));
 
       tool_ptr->UseTool(
           tool_use_event->arguments_json,

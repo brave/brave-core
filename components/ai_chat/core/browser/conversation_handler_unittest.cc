@@ -100,6 +100,50 @@ class MockAIChatCredentialManager : public AIChatCredentialManager {
   MOCK_METHOD(void, PutCredentialInCache, (CredentialCacheEntry), (override));
 };
 
+// Records the agentic loop's phases as a readable transcript, e.g.
+// "begin AIChat.ToolUse" / "end AIChat.ToolUse output_blocks=1".
+class FakeAgentJournal : public AgentJournal {
+ public:
+  FakeAgentJournal() = default;
+  ~FakeAgentJournal() override = default;
+
+  std::unique_ptr<PendingEntry> Begin(std::string_view event_name,
+                                      std::string_view details) override {
+    records_.push_back(base::StrCat({"begin ", event_name}));
+    return std::make_unique<Entry>(this, event_name);
+  }
+
+  void Log(std::string_view event_name, std::string_view details) override {
+    records_.push_back(base::StrCat({"log ", event_name}));
+  }
+
+  const std::vector<std::string>& records() const { return records_; }
+
+ private:
+  class Entry : public PendingEntry {
+   public:
+    Entry(FakeAgentJournal* journal, std::string_view event_name)
+        : journal_(journal), event_name_(event_name) {}
+    ~Entry() override { End(""); }
+
+    void End(std::string_view details) override {
+      if (ended_) {
+        return;
+      }
+      ended_ = true;
+      journal_->records_.push_back(
+          base::StrCat({"end ", event_name_, " ", details}));
+    }
+
+   private:
+    raw_ptr<FakeAgentJournal> journal_;
+    std::string event_name_;
+    bool ended_ = false;
+  };
+
+  std::vector<std::string> records_;
+};
+
 // TODO(https://github.com/brave/brave-browser/issues/55381): Use
 // MockToolProvider from mock_tool_provider.h.
 class MockToolProvider : public ToolProvider {
@@ -128,8 +172,13 @@ class MockToolProvider : public ToolProvider {
 
   bool IsPausedByUser() override { return is_paused_by_user_; }
 
+  AgentJournal* GetAgentJournal() override { return journal_; }
+
+  void SetAgentJournal(AgentJournal* journal) { journal_ = journal; }
+
  private:
   bool is_paused_by_user_ = false;
+  raw_ptr<AgentJournal> journal_ = nullptr;
 };
 
 class MockConversationHandlerClient : public mojom::ConversationUI {
@@ -3946,6 +3995,89 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
       tool_event->output->at(0),
       mojom::ContentBlock::NewTextContentBlock(
           mojom::TextContentBlock::New("Weather in New York: 72°F")));
+}
+
+TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PhasesRecordedToJournal) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  FakeAgentJournal journal;
+  mock_tool_provider_->SetAgentJournal(&journal);
+
+  auto tool =
+      std::make_unique<NiceMock<MockTool>>("weather_tool", "Get weather");
+  tool->set_requires_user_interaction_before_handling(false);
+
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool->GetWeakPtr());
+    return tools;
+  });
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  base::RunLoop run_loop;
+  testing::Sequence seq;
+
+  // First generation requests the tool.
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("weather_tool", "tool_id_1",
+                                                 "{\"location\":\"New York\"}",
+                                                 std::nullopt, std::nullopt,
+                                                 nullptr, false)),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+              })));
+
+  EXPECT_CALL(*tool, UseTool)
+      .InSequence(seq)
+      .WillOnce(testing::WithArg<1>([](Tool::UseToolCallback callback) {
+        std::move(callback).Run(
+            CreateContentBlocksForText("Weather in New York: 72F"), {});
+      }));
+
+  // Second generation answers with the tool's output.
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::WithArg<7>(
+          [&](EngineConsumer::GenerationCompletedCallback callback) {
+            std::move(callback).Run(
+                base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("It's 72F")),
+                    std::nullopt)));
+            run_loop.QuitWhenIdle();
+          }));
+
+  conversation_handler_->SubmitHumanConversationEntry(
+      "What's the weather in New York?", std::nullopt);
+
+  run_loop.Run();
+
+  EXPECT_THAT(journal.records(),
+              testing::ElementsAre(
+                  "begin " + std::string(kAgentPhaseGeneration),
+                  "end " + std::string(kAgentPhaseGeneration) + " success=true",
+                  "begin " + std::string(kAgentPhaseToolLoop),
+                  "begin " + std::string(kAgentPhaseToolUse),
+                  "end " + std::string(kAgentPhaseToolUse) + " output_blocks=1",
+                  "begin " + std::string(kAgentPhaseGeneration),
+                  "end " + std::string(kAgentPhaseGeneration) + " success=true",
+                  "end " + std::string(kAgentPhaseToolLoop) +
+                      " complete tool_uses=1 generations=1"));
 }
 
 TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ArtifactStoredInHistory) {

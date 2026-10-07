@@ -6,12 +6,15 @@
 #ifndef BRAVE_BROWSER_AI_CHAT_CONTENT_AGENT_TOOL_PROVIDER_H_
 #define BRAVE_BROWSER_AI_CHAT_CONTENT_AGENT_TOOL_PROVIDER_H_
 
+#include <memory>
+#include <string_view>
 #include <vector>
 
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ai_chat/content_agent_task_provider.h"
 #include "brave/browser/ai_chat/content_agent_tool_provider_factory.h"
+#include "brave/components/ai_chat/core/browser/agent_tracing.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "chrome/browser/actor/actor_keyed_service.h"
@@ -29,7 +32,8 @@ namespace ai_chat {
 // interfacing with the actor service to execute the actions, deciding
 // which tabs to act on.
 class ContentAgentToolProvider : public ToolProvider,
-                                 public ContentAgentTaskProvider {
+                                 public ContentAgentTaskProvider,
+                                 public AgentJournal {
  public:
   ContentAgentToolProvider(
       Profile* profile,
@@ -48,6 +52,15 @@ class ContentAgentToolProvider : public ToolProvider,
   void ResumeAllTasks() override;
   void StopAllTasks() override;
   bool IsPausedByUser() override;
+  AgentJournal* GetAgentJournal() override;
+
+  // AgentJournal implementation. Entries go on the actor task's browser track,
+  // so Brave's loop phases interleave with Chromium's actor entries at
+  // chrome://actor-internals.
+  std::unique_ptr<AgentJournal::PendingEntry> Begin(
+      std::string_view event_name,
+      std::string_view details) override;
+  void Log(std::string_view event_name, std::string_view details) override;
 
   // ContentAgentTaskProvider implementation
   actor::TaskId GetTaskId() override;
@@ -74,6 +87,12 @@ class ContentAgentToolProvider : public ToolProvider,
 
   void CreateTools();
 
+  // The URL journal entries are attributed to - the task's tab, when it has
+  // one.
+  GURL GetTaskURL() const;
+
+  void EndObservationPhase(std::string_view details);
+
   void TabAddedToTask(base::OnceCallback<void(tabs::TabHandle)> callback,
                       actor::mojom::ActionResultPtr result);
   void OnActionsFinished(
@@ -92,6 +111,12 @@ class ContentAgentToolProvider : public ToolProvider,
 
   actor::TaskId task_id_;
   tabs::TabHandle task_tab_handle_;
+
+  // Timings of the phases this provider owns. See agent_tracing.h.
+  std::unique_ptr<AgentPhase> tab_setup_phase_;
+  std::unique_ptr<AgentPhase> actuation_phase_;
+  std::unique_ptr<AgentPhase> observation_phase_;
+
   raw_ptr<actor::ActorKeyedService> actor_service_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
   raw_ref<actor::ui::ActorUiStateManagerInterface> ui_state_manager_;

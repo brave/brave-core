@@ -15,6 +15,7 @@
 
 namespace ai_chat {
 
+class AgentJournal;
 class Tool;
 
 // Interface for providing tools to a conversation.
@@ -97,6 +98,12 @@ class ToolProvider {
   // ToolProvider. Tasks will not be resumed unless
   // UpdateToolsForNewGenerationLoop is called.
   virtual void StopAllTasks() {}
+
+  // A sink for the timings of the tool loop that runs this provider, valid for
+  // the lifetime of the provider. Null unless the provider can reach one -
+  // today only the browser layer can, since the journal is the actor's and is
+  // scoped to an actor task. See agent_tracing.h.
+  virtual AgentJournal* GetAgentJournal();
 
  protected:
   void NotifyTaskStateChanged();

@@ -12,6 +12,8 @@ assert(enable_ai_chat)
 
 static_library("browser") {
   sources = [
+    "agent_tracing.cc",
+    "agent_tracing.h",
     "ai_chat_credential_manager.cc",
     "ai_chat_credential_manager.h",
     "ai_chat_database.cc",
