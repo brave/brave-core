@@ -13,20 +13,24 @@ import UIKit
 /// This does not work in our case since the object may be the same but with changed title or order.
 /// This struct stores managed object ID as well as properties that we observer whether they have changed.
 /// Note: `order` property does not have to be stored, favorite's frc handles order updates, it returns items in correct order.
-struct FavoritesDiffable: Hashable {
-  let objectID: NSManagedObjectID
+struct TopSitesTileDiffable: Hashable {
+  let id: TopSiteTile.ID
   let title: String?
   let url: String?
 
+  init(_ tile: TopSiteTile) {
+    self.id = tile.id
+    self.title = tile.title
+    self.url = tile.url.absoluteString
+  }
+
   func hash(into hasher: inout Hasher) {
-    hasher.combine(objectID)
+    hasher.combine(id)
   }
 }
 
-/// Favorites VC has two fetch result controllers to pull from.
-/// This enum stores both models.
-enum FavoritesDataWrapper: Hashable {
-  case favorite(FavoritesDiffable)
+enum TopSitesDataWrapper: Hashable {
+  case topSites(TopSitesTileDiffable)
 
   // Recent searches are static, we do not need any wrapper class for them.
   case recentSearch(NSManagedObjectID)
@@ -34,9 +38,9 @@ enum FavoritesDataWrapper: Hashable {
   case recentSearchOptIn
 }
 
-/// Favourites VC sections
-enum FavoritesSection: Int, CaseIterable {
-  case favorites
+/// TopSites VC sections
+enum TopSitesSection: Int, CaseIterable {
+  case topSites
   case recentSearches
   case recentSearchesOptIn
 }

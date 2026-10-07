@@ -182,8 +182,9 @@ public class BrowserViewController: UIViewController {
   let bookmarkManager: BookmarkManager
   public let privateBrowsingManager: PrivateBrowsingManager
 
-  /// The most visited sites shown by the top sites section of every NTP in this window.
-  private lazy var mostVisitedSites: MostVisitedSites = {
+  /// The most visited sites shown by the top sites section of every NTP and the search screen in
+  /// this window.
+  private(set) lazy var mostVisitedSites: MostVisitedSites = {
     let mostVisitedSites = MostVisitedSitesFactory.get(for: profileController.profile)
     mostVisitedSites.enableTopSitesOnlyTileTypes()
     return mostVisitedSites

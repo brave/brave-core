@@ -62,7 +62,7 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
     }
   }
 
-  static var defaultIconSize = CGSize(width: 64, height: FavoritesCell.height(forWidth: 64))
+  static var defaultIconSize = CGSize(width: 64, height: TopSitesCell.height(forWidth: 64))
 
   /// The maximum width of the favorites content, matching the stats section.
   static let maxWidth: CGFloat = 640
@@ -75,8 +75,8 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
 
   func registerCells(to collectionView: UICollectionView) {
     collectionView.register(
-      FavoritesCell.self,
-      forCellWithReuseIdentifier: FavoritesCell.identifier
+      TopSitesCell.self,
+      forCellWithReuseIdentifier: TopSitesCell.identifier
     )
   }
 
@@ -110,7 +110,7 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
     cellForItemAt indexPath: IndexPath
   ) -> UICollectionViewCell {
     return collectionView.dequeueReusableCell(
-      withReuseIdentifier: FavoritesCell.identifier,
+      withReuseIdentifier: TopSitesCell.identifier,
       for: indexPath
     )
   }
@@ -121,7 +121,7 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
     forItemAt indexPath: IndexPath
   ) {
 
-    guard let cell = cell as? FavoritesCell,
+    guard let cell = cell as? TopSitesCell,
       let item = tiles[safe: indexPath.item]
     else {
       return
@@ -150,7 +150,7 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
       // to fit at least 4 icons
       size = CGSize(
         width: floor(width / 4.0),
-        height: FavoritesCell.height(forWidth: floor(width / 4.0))
+        height: TopSitesCell.height(forWidth: floor(width / 4.0))
       )
     }
     return size
@@ -198,12 +198,13 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
       let item = tiles[safe: indexPath.item]
     else { return nil }
 
+    let isPrivate = isPrivateBrowsing
     return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) {
       _ -> UIMenu? in
       let openInNewTab = UIAction(
         title: Strings.openNewTabButtonTitle,
-        handler: UIAction.deferredActionHandler { _ in
-          self.action(
+        handler: UIAction.deferredActionHandler { [weak self] _ in
+          self?.action(
             .opened(
               url: item.url,
               isFavorite: item.isFavorite,
@@ -214,12 +215,12 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
         }
       )
       var urlChildren = [openInNewTab]
-      if !self.isPrivateBrowsing {
+      if !isPrivate {
         urlChildren.append(
           UIAction(
             title: Strings.openNewPrivateTabButtonTitle,
-            handler: UIAction.deferredActionHandler { _ in
-              self.action(
+            handler: UIAction.deferredActionHandler { [weak self] _ in
+              self?.action(
                 .opened(
                   url: item.url,
                   isFavorite: item.isFavorite,
@@ -238,8 +239,8 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
         modeChildren = [
           UIAction(
             title: Strings.editFavorite,
-            handler: UIAction.deferredActionHandler { _ in
-              guard let favorite = Favorite.get(with: objectID) else { return }
+            handler: UIAction.deferredActionHandler { [weak self] _ in
+              guard let self, let favorite = Favorite.get(with: objectID) else { return }
               self.action(.edited(favorite: favorite))
             }
           ),
@@ -256,8 +257,8 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
           UIAction(
             title: Strings.excludeMostVisitedSite,
             attributes: .destructive,
-            handler: UIAction.deferredActionHandler { _ in
-              self.action(.excluded(tile: item))
+            handler: UIAction.deferredActionHandler { [weak self] _ in
+              self?.action(.excluded(tile: item))
             }
           )
         ]
@@ -278,7 +279,7 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
     contextMenuConfiguration configuration: UIContextMenuConfiguration,
     highlightPreviewForItemAt indexPath: IndexPath
   ) -> UITargetedPreview? {
-    guard let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCell
+    guard let cell = collectionView.cellForItem(at: indexPath) as? TopSitesCell
     else {
       return nil
     }
@@ -296,7 +297,7 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
     contextMenuConfiguration configuration: UIContextMenuConfiguration,
     dismissalPreviewForItemAt indexPath: IndexPath
   ) -> UITargetedPreview? {
-    guard let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCell
+    guard let cell = collectionView.cellForItem(at: indexPath) as? TopSitesCell
     else {
       return nil
     }

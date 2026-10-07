@@ -11,7 +11,7 @@ import UIKit
 
 // MARK: - KeyboardHelperDelegate
 
-extension FavoritesViewController: KeyboardHelperDelegate {
+extension TopSitesViewController: KeyboardHelperDelegate {
   func updateKeyboardInset(_ state: KeyboardState, animated: Bool = true) {
     if collectionView.bounds.size == .zero { return }
     let keyboardHeight =

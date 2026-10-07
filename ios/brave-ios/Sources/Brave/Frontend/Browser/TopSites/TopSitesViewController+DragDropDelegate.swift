@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - UICollectionViewDragDelegate & UICollectionViewDropDelegate
 
-extension FavoritesViewController: UICollectionViewDragDelegate, UICollectionViewDropDelegate {
+extension TopSitesViewController: UICollectionViewDragDelegate, UICollectionViewDropDelegate {
   func collectionView(
     _ collectionView: UICollectionView,
     itemsForBeginning session: UIDragSession,
@@ -22,21 +22,25 @@ extension FavoritesViewController: UICollectionViewDragDelegate, UICollectionVie
     }
 
     switch section {
-    case .favorites:
-      // Fetch results controller indexpath is independent from our collection view.
-      // All results of it are stored in first section.
-      let adjustedIndexPath = IndexPath(row: indexPath.row, section: 0)
-      let bookmark = favoritesFRC.object(at: adjustedIndexPath)
+    case .topSites:
+      // Only favorites can be reordered, and only when there is more than one.
+      guard tileSource.isReorderingEnabled,
+        let tile = tiles[safe: indexPath.item],
+        case .favorite(let objectID) = tile.id,
+        let favorite = Favorite.get(with: objectID)
+      else {
+        return []
+      }
       let itemProvider = NSItemProvider(object: "\(indexPath)" as NSString)
       let dragItem = UIDragItem(itemProvider: itemProvider)
       dragItem.previewProvider = { () -> UIDragPreview? in
-        guard let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCollectionViewCell
+        guard let cell = collectionView.cellForItem(at: indexPath) as? TopSitesCollectionViewCell
         else {
           return nil
         }
         return UIDragPreview(view: cell.imageContainer)
       }
-      dragItem.localObject = bookmark
+      dragItem.localObject = favorite
       return [dragItem]
     case .recentSearches, .recentSearchesOptIn:
       break
@@ -64,13 +68,19 @@ extension FavoritesViewController: UICollectionViewDragDelegate, UICollectionVie
 
     switch coordinator.proposal.operation {
     case .move:
-      guard let item = coordinator.items.first else { return }
+      guard tileSource.isReorderingEnabled,
+        let item = coordinator.items.first
+      else { return }
       _ = coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
       Favorite.reorder(
         sourceIndexPath: sourceIndexPath,
         destinationIndexPath: destinationIndexPath,
         isInteractiveDragReorder: true
       )
+      // Re-read the tiles and apply immediately rather than waiting for the tile source's async
+      // notification, which would leave the snapshot out of step with the drop animation.
+      updateTiles()
+      updateUIWithSnapshot(animated: true)
     case .copy:
       break
     default: return
@@ -82,7 +92,10 @@ extension FavoritesViewController: UICollectionViewDragDelegate, UICollectionVie
     dropSessionDidUpdate session: UIDropSession,
     withDestinationIndexPath destinationIndexPath: IndexPath?
   ) -> UICollectionViewDropProposal {
-    if favoritesFRC.fetchedObjects?.count == 1 {
+    guard tileSource.isReorderingEnabled,
+      let destinationIndexPath,
+      availableSections[safe: destinationIndexPath.section] == .topSites
+    else {
       return .init(operation: .cancel)
     }
     return .init(operation: .move, intent: .insertAtDestinationIndexPath)
@@ -94,7 +107,7 @@ extension FavoritesViewController: UICollectionViewDragDelegate, UICollectionVie
   ) -> UIDragPreviewParameters? {
     let params = UIDragPreviewParameters()
     params.backgroundColor = .clear
-    if let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCollectionViewCell {
+    if let cell = collectionView.cellForItem(at: indexPath) as? TopSitesCollectionViewCell {
       params.visiblePath = UIBezierPath(roundedRect: cell.imageContainer.frame, cornerRadius: 8)
     }
     return params
@@ -106,7 +119,7 @@ extension FavoritesViewController: UICollectionViewDragDelegate, UICollectionVie
   ) -> UIDragPreviewParameters? {
     let params = UIDragPreviewParameters()
     params.backgroundColor = .clear
-    if let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCollectionViewCell {
+    if let cell = collectionView.cellForItem(at: indexPath) as? TopSitesCollectionViewCell {
       params.visiblePath = UIBezierPath(roundedRect: cell.imageContainer.frame, cornerRadius: 8)
     }
     return params
