@@ -707,7 +707,7 @@ if (toolkit_views) {
   ]
 }
 
-if (enable_extensions) {
+if (enable_extensions_core) {
   brave_chrome_browser_deps += [
     "//brave/browser/extensions",
     "//chrome/browser/extensions",

@@ -102,6 +102,9 @@
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/extensions/extension_malware_blocklist_enforcer_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
 #include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_migrator.h"
 #endif
 
@@ -252,8 +255,11 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  extensions_mv2::ExtensionsManifestV2MigratorFactory::GetInstance();
   extensions::ExtensionMalwareBlocklistEnforcerFactory::GetInstance();
+#endif
+
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+  extensions_mv2::ExtensionsManifestV2MigratorFactory::GetInstance();
 #endif
   BraveShieldsSettingsServiceFactory::GetInstance();
 

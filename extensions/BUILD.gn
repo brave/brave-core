@@ -19,7 +19,7 @@ deprecated_visibility_allowed = [
   "//chrome/browser/content_settings:unit_tests",
 ]
 
-if (enable_extensions) {
+if (enable_extensions_core) {
   group("common") {
     visibility = deprecated_visibility_allowed
     public_deps = [ "//extensions/common" ]
