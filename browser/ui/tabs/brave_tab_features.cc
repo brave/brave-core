@@ -16,6 +16,7 @@
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
+#include "brave/browser/ui/sidebar/sidebar_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/misc_metrics/features.h"
@@ -216,6 +217,8 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 
   page_metrics_tab_helper_ =
       std::make_unique<misc_metrics::PageMetricsTabHelper>(tab);
+
+  sidebar_tab_helper_ = sidebar::SidebarTabHelper::MaybeCreate(tab);
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   if (!profile->IsOffTheRecord() &&

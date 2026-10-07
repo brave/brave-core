@@ -6,27 +6,32 @@
 #ifndef BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_TAB_HELPER_H_
 #define BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_TAB_HELPER_H_
 
-#include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
+#include <memory>
+
+#include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
+
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
 
 namespace sidebar {
 
 // Helper to launch the Leo panel one time.
-class SidebarTabHelper : public content::WebContentsUserData<SidebarTabHelper>,
-                         public content::WebContentsObserver {
+class SidebarTabHelper : public tabs::ContentsObservingTabFeature {
  public:
-  static void MaybeCreateForWebContents(content::WebContents* contents);
+  // Returns nullptr unless the one-shot Leo panel can still be shown for
+  // `tab`.
+  static std::unique_ptr<SidebarTabHelper> MaybeCreate(tabs::TabInterface& tab);
 
+  explicit SidebarTabHelper(tabs::TabInterface& tab);
   ~SidebarTabHelper() override;
 
+  SidebarTabHelper(const SidebarTabHelper&) = delete;
+  SidebarTabHelper& operator=(const SidebarTabHelper&) = delete;
+
  private:
-  explicit SidebarTabHelper(content::WebContents* contents);
-
-  // content::WebContentsObserver overrides:
+  // content::WebContentsObserver:
   void PrimaryPageChanged(content::Page& page) override;
-
-  friend WebContentsUserData;
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
 }  // namespace sidebar
