@@ -23,7 +23,7 @@ import("//build/config/features.gni")
 import("//build/config/ui.gni")
 import("//components/gcm_driver/config.gni")
 
-assert(toolkit_views)
+assert(enable_extensions)
 
 source_set("component_loader") {
   sources = [
@@ -124,7 +124,6 @@ source_set("extensions") {
     "//brave/components/local_ai/buildflags",
     "//brave/components/ntp_background_images/common",
     "//brave/components/request_otr/common",
-    "//brave/components/sidebar/browser",
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",
     "//brave/components/traffic_control/buildflags",
@@ -163,6 +162,10 @@ source_set("extensions") {
 
   if (enable_brave_wayback_machine) {
     deps += [ "//brave/components/brave_wayback_machine" ]
+  }
+
+  if (toolkit_views) {
+    deps += [ "//brave/components/sidebar/browser" ]
   }
 
   if (enable_speedreader) {
