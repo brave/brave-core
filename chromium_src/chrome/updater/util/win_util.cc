@@ -7,9 +7,12 @@
 
 #include <string>
 
+#include "base/strings/strcat.h"
 #include "chrome/updater/registration_data.h"
 #include "chrome/updater/updater_scope.h"
 #include "chrome/updater/util/util.h"
+#include "chrome/updater/win/user_info.h"
+#include "chrome/updater/win/win_constants.h"
 
 #include <chrome/updater/util/win_util.cc>
 
@@ -36,6 +39,17 @@ void MigrateApToCohort(RegistrationRequest& registration) {
   if (is_test_channel && !has_cohort) {
     registration.cohort = "private";
   }
+}
+
+// Mirrors GetNamedObjectAttributes in omaha/base/utils.cc of our Omaha 3 fork.
+// Used by SignalShutdownEvent and IsShutdownEventSignaled via
+// rewrite/chrome/updater/util/win_util.cc.yaml.
+std::wstring GetLegacyShutdownEventName(UpdaterScope scope) {
+  std::wstring user_sid;
+  if (!IsSystemInstall(scope)) {
+    GetProcessUser(nullptr, nullptr, &user_sid);
+  }
+  return base::StrCat({L"Global\\BraveSoftware", user_sid, kShutdownEvent});
 }
 
 }  // namespace updater

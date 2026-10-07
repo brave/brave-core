@@ -8,13 +8,20 @@
 
 #include <chrome/updater/util/win_util.h>  // IWYU pragma: export
 
+#include <string>
+
 #include "chrome/updater/registration_data.h"
+#include "chrome/updater/updater_scope.h"
 
 namespace updater {
 
 // Derives `registration.cohort` from its Omaha 3 `ap` value during
 // MigrateLegacyUpdaters. See chromium_src/chrome/updater/util/win_util.cc.
 void MigrateApToCohort(RegistrationRequest& registration);
+
+// The name under which our Omaha 3 fork creates the shutdown event. See
+// SignalShutdownEvent in chromium_src/chrome/updater/util/win_util.cc.
+std::wstring GetLegacyShutdownEventName(UpdaterScope scope);
 
 }  // namespace updater
 
