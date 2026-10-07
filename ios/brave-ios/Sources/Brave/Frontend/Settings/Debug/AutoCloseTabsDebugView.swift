@@ -14,15 +14,9 @@ struct AutoCloseTabsDebugView: View {
         HStack {
           Text("Minutes")
           Spacer()
-          TextField(
-            "Off",
-            text: Binding(
-              get: { minutesOverride.value.map(String.init) ?? "" },
-              set: { minutesOverride.value = Int($0) }
-            )
-          )
-          .keyboardType(.numberPad)
-          .multilineTextAlignment(.trailing)
+          TextField("Off", value: $minutesOverride.value, format: .number)
+            .keyboardType(.numberPad)
+            .multilineTextAlignment(.trailing)
         }
       } footer: {
         Text(

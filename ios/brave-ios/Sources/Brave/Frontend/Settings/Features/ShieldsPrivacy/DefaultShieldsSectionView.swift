@@ -49,16 +49,7 @@ struct DefaultShieldsSectionView: View {
         ToggleView(
           title: Strings.Shields.upgradeConnectionsToHTTPS,
           subtitle: Strings.Shields.httpsEverywhereDescription,
-          toggle: Binding(
-            get: {
-              settings.httpsUpgradeLevel.isEnabled
-            },
-            set: { newValue in
-              settings.httpsUpgradeLevel =
-                !newValue
-                ? .disabled : (Preferences.Shields.httpsUpgradePriorEnabledLevel ?? .standard)
-            }
-          )
+          toggle: $settings.isHTTPSUpgradeEnabled
         )
       }
 

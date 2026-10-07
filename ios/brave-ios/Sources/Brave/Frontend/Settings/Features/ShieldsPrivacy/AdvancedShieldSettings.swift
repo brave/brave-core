@@ -124,6 +124,16 @@ import os
       )
     }
   }
+  /// Whether or not HTTPS upgrades are enabled at any level.
+  ///
+  /// Enabling restores the level that was set prior to disabling, or `standard` if there is none.
+  var isHTTPSUpgradeEnabled: Bool {
+    get { httpsUpgradeLevel.isEnabled }
+    set {
+      httpsUpgradeLevel =
+        newValue ? (Preferences.Shields.httpsUpgradePriorEnabledLevel ?? .standard) : .disabled
+    }
+  }
   @Published var shredLevel: SiteShredLevel {
     didSet {
       if shouldWriteToContentSettings {

@@ -229,6 +229,21 @@ extension Preferences.Option {
   }
 }
 
+extension Preferences.Option {
+  /// Accesses the stored raw value as a `RawRepresentable` type, falling back to `defaultValue` when
+  /// the stored value is not a valid raw value.
+  ///
+  /// Allows binding to a typed value through an observed raw preference:
+  ///
+  ///     Picker(selection: $option[rawValueOr: MyEnum.standard]) { ... }
+  public subscript<T: RawRepresentable & Hashable>(
+    rawValueOr defaultValue: T
+  ) -> T where T.RawValue == ValueType {
+    get { T(rawValue: value) ?? defaultValue }
+    set { value = newValue.rawValue }
+  }
+}
+
 /// An empty protocol simply here to force the developer to use a user defaults encodable value via generic constraint.
 /// DO NOT ADD CONFORMANCE TO ANY OTHER TYPES. These are specifically the types supported by UserDefaults
 public protocol UserDefaultsEncodable: Equatable {}

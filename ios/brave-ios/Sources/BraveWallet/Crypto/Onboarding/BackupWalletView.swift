@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveUI
 import DesignSystem
 import Foundation
 import Strings
@@ -14,7 +15,7 @@ struct BackupWalletView: View {
   @State private var password: String
   @State private var passwordError: PasswordEntryError?
   @State private var acknowledgedWarning: Bool = false
-  @State private var recoveryWords: [RecoveryWord] = []
+  @State private var recoveryWords: [RecoveryWord]?
   private let requirePasswordEntry: Bool
 
   init(
@@ -123,10 +124,7 @@ struct BackupWalletView: View {
     .modifier(ToolbarModifier(isShowingCancel: !keyringStore.isOnboardingVisible))
     .background(Color(braveSystemName: .containerBackground).edgesIgnoringSafeArea(.all))
     .navigationDestination(
-      isPresented: Binding(
-        get: { !recoveryWords.isEmpty },
-        set: { if !$0 { recoveryWords = [] } }
-      ),
+      isPresented: $recoveryWords.isPresented,
       destination: {
         BackupRecoveryPhraseView(
           password: password,

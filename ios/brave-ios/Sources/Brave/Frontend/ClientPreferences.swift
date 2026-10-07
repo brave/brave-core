@@ -23,6 +23,14 @@ public enum TopSitesMode: Int, CaseIterable, Identifiable {
 
   public var id: Self { self }
 
+  /// Whether or not top sites are shown at all.
+  ///
+  /// Enabling sets the mode to `favourite`.
+  public var isEnabled: Bool {
+    get { self != .none }
+    set { self = newValue ? .favourite : .none }
+  }
+
   public var title: String {
     switch self {
     case .none: return Strings.NTP.topsitesTypeNone
