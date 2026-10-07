@@ -28,7 +28,7 @@ RegisterPolymerTemplateModifications({
       siteSettingsLinkRow.insertAdjacentHTML(
         'afterend',
         getTrustedHTML`
-          <settings-brave-personalization-options prefs="{{prefs}}">
+          <settings-brave-personalization-options>
           </settings-brave-personalization-options>
         `)
     }
