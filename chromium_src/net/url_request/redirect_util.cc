@@ -7,40 +7,32 @@
 
 #include <algorithm>
 #include <optional>
+#include <string>
+#include <vector>
 
+#include "net/url_request/redirect_info.h"
 #include "net/url_request/url_request_job.h"
-
-#define UpdateHttpRequest UpdateHttpRequest_ChromiumImpl
-#include <net/url_request/redirect_util.cc>
-#undef UpdateHttpRequest
 
 namespace net {
 
-void RedirectUtil::UpdateHttpRequest(
-    const GURL& original_url,
-    std::string_view original_method,
-    const RedirectInfo& redirect_info,
+namespace {
+
+// Hack for capping referrers at the network layer.
+void MaybeCapReferrer(
     const std::optional<std::vector<std::string>>& removed_headers,
-    const std::optional<net::HttpRequestHeaders>& modified_headers,
-    HttpRequestHeaders* request_headers,
-    bool* should_clear_upload) {
-  UpdateHttpRequest_ChromiumImpl(original_url,
-                                 original_method,
-                                 redirect_info,
-                                 removed_headers,
-                                 modified_headers,
-                                 request_headers,
-                                 should_clear_upload);
-  // Hack for capping referrers at the network layer.
-  if (removed_headers) {
-    if (std::ranges::contains(*removed_headers, "X-Brave-Cap-Referrer")) {
-      GURL capped_referrer = URLRequestJob::ComputeReferrerForPolicy(
-          ReferrerPolicy::REDUCE_GRANULARITY_ON_TRANSITION_CROSS_ORIGIN,
-          GURL(redirect_info.new_referrer), redirect_info.new_url);
-      const_cast<RedirectInfo&>(redirect_info).new_referrer =
-          capped_referrer.spec();
-    }
+    const RedirectInfo& redirect_info) {
+  if (removed_headers &&
+      std::ranges::contains(*removed_headers, "X-Brave-Cap-Referrer")) {
+    GURL capped_referrer = URLRequestJob::ComputeReferrerForPolicy(
+        ReferrerPolicy::REDUCE_GRANULARITY_ON_TRANSITION_CROSS_ORIGIN,
+        GURL(redirect_info.new_referrer), redirect_info.new_url);
+    const_cast<RedirectInfo&>(redirect_info).new_referrer =
+        capped_referrer.spec();
   }
 }
 
+}  // namespace
+
 }  // namespace net
+
+#include <net/url_request/redirect_util.cc>
