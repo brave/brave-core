@@ -1,12 +1,39 @@
 diff --git a/net/url_request/url_request_http_job.cc b/net/url_request/url_request_http_job.cc
-index c909310d202002b724941bd4e2b4fede56b69d45..519893fd659016468e7febcde8e1413938d3bb1e 100644
+index c909310d202002b724941bd4e2b4fede56b69d45..9bc156f5abbe222591d2be125fa82d4c9c8a7263 100644
 --- a/net/url_request/url_request_http_job.cc
 +++ b/net/url_request/url_request_http_job.cc
+@@ -353,7 +353,7 @@ std::unique_ptr<URLRequestJob> URLRequestHttpJob::Create(URLRequest* request) {
+   SSLUpgradeDecision upgrade_decision = SSLUpgradeDecision::kNoUpgrade;
+   if (TransportSecurityState* hsts =
+           request->context()->transport_security_state()) {
+-    upgrade_decision = hsts->GetSSLUpgradeDecision(
++    upgrade_decision = hsts->GetSSLUpgradeDecision(request->isolation_info().network_anonymization_key(), 
+         url.GetHost(),
+         /*is_top_level_nav=*/
+         request->isolation_info().IsOutermostMainFrameRequest(),
 @@ -746,6 +746,7 @@ void URLRequestHttpJob::AddExtraHeaders() {
        request()->context()->enable_brotli(),
        request()->context()->enable_zstd());
  
-+  BRAVE_URL_REQUEST_HTTP_JOB_ADD_EXTRA_HEADERS
++  BraveAcceptLanguageHttpHeaderReposition(request_info_.extra_headers);
    if (http_user_agent_settings_) {
      // Only add default Accept-Language if the request didn't have it
      // specified.
+@@ -1185,7 +1186,7 @@ void URLRequestHttpJob::ProcessStrictTransportSecurityHeader() {
+   std::optional<std::string_view> value;
+   if ((value =
+            headers->EnumerateHeader(nullptr, "Strict-Transport-Security"))) {
+-    security_state->AddHSTSHeader(request_info_.url.GetHost(), *value);
++    security_state->AddHSTSHeader(request_->isolation_info(), request_info_.url.GetHost(), *value);
+   }
+ }
+ 
+@@ -1265,7 +1266,7 @@ void URLRequestHttpJob::OnStartCompleted(int result) {
+     TransportSecurityState* state = context->transport_security_state();
+     NotifySSLCertificateError(
+         result, transaction_->GetResponseInfo()->ssl_info,
+-        state->ShouldSSLErrorsBeFatal(request_info_.url.GetHost()) &&
++        state->ShouldSSLErrorsBeFatal(request_->isolation_info().network_anonymization_key(), request_info_.url.GetHost()) &&
+             result != ERR_CERT_KNOWN_INTERCEPTION_BLOCKED);
+   } else if (result == ERR_SSL_CLIENT_AUTH_CERT_NEEDED) {
+     NotifyCertificateRequested(
