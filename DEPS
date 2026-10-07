@@ -170,7 +170,7 @@ hooks = [
     'name': 'download_swift_format',
     'pattern': '.',
     'condition': 'host_os == "mac"',
-    'action': ['python3', 'build/apple/download_swift_format.py', '510.1.0', '0ddbb486640cde862fa311dc0f7387e6c5171bdcc0ee0c89bc9a1f8a75e8bfaf']
+    'action': ['python3', 'build/apple/download_swift_format.py', '604.0.0', '6a66ac5354f598b8914e613fbb1435dc04c9d34e7d399dcfecc2b3ef17ddc0ba']
   },
   {
     # Chromium_src files require custom formatting to correctly sort includes
