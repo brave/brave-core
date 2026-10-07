@@ -9,6 +9,7 @@
 #include "base/command_line.h"
 #include "base/i18n/rtl.h"
 #include "base/i18n/test/scoped_rtl_for_testing.h"
+#include "base/location.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
@@ -24,8 +25,10 @@
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "brave/browser/ui/views/frame/layout/brave_browser_view_tabbed_layout_impl.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
@@ -34,6 +37,7 @@
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
 #include "build/build_config.h"
 #include "cc/paint/display_item_list.h"
 #include "chrome/browser/profiles/profile.h"
@@ -53,6 +57,7 @@
 #include "chrome/browser/ui/views/animations/tab_strip_animations.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/custom_floating_corner.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
@@ -101,6 +106,11 @@
 #include "ui/ozone/public/ozone_platform.h"
 #include "ui/platform_window/common/platform_window_defaults.h"
 #endif
+
+// Defined in //brave/browser/ui/views/tabs/vertical_tab_utils.cc.
+bool BraveIsInVerticalTabHotCorner(const gfx::PointF& point_in_screen,
+                                   BrowserView* browser_view,
+                                   bool is_on_right);
 
 class VerticalTabStripBrowserTest : public InProcessBrowserTest {
  public:
@@ -2511,6 +2521,170 @@ IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsTest, HideCompletelyWhenCollapsed) {
       BrowserView::GetBrowserViewForBrowser(browser()));
   EXPECT_TRUE(region->GetVisible());
   EXPECT_FALSE(region->layer()->GetMasksToBounds());
+}
+
+// Tests for the "Left/Right" position setting of upstream vertical tabs.
+class UpstreamVerticalTabsPositionTest : public UpstreamVerticalTabsTest {
+ public:
+  // The browser view is constructed differently (e.g. the child view order)
+  // when upstream vertical tabs are forced, so the switch must be set before
+  // the window is created.
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    UpstreamVerticalTabsTest::SetUpCommandLine(command_line);
+    command_line->AppendSwitchASCII(
+        tabs::switches::kVerticalTabMigrationSwitch,
+        tabs::switches::kVerticalTabMigrationForceUpstreamValue);
+  }
+
+  void SetUpOnMainThread() override {
+    UpstreamVerticalTabsTest::SetUpOnMainThread();
+    state_controller()->SetVerticalTabsEnabled(true);
+    ASSERT_TRUE(state_controller()->ShouldDisplayVerticalTabs());
+    state_controller()->RequestCollapse(false);
+  }
+
+  BraveBrowserView* brave_browser_view() {
+    return BraveBrowserView::GetBrowserViewForBrowser(browser());
+  }
+
+  void SetOnRight(bool on_right) {
+    browser()->GetProfile()->GetPrefs()->SetBoolean(
+        brave_tabs::kVerticalTabsOnRight, on_right);
+    LayoutNow();
+  }
+
+  void LayoutNow() {
+    views::test::RunScheduledLayout(brave_browser_view());
+    brave_browser_view()->DeprecatedLayoutImmediately();
+  }
+
+  void ExpectFloatingCornersAreOnTrailingSide(
+      bool trailing,
+      base::Location location = base::Location::Current()) {
+    SCOPED_TRACE(location.ToString());
+    int count = 0;
+    for (views::View* child : brave_browser_view()->children()) {
+      auto* corner = views::AsViewClass<CustomFloatingCorner>(child);
+      if (!corner) {
+        continue;
+      }
+      ++count;
+      const auto orientation = corner->orientation_for_testing();
+      EXPECT_EQ(trailing,
+                orientation == CornerOrientation::kTopTrailing ||
+                    orientation == CornerOrientation::kBottomTrailing);
+    }
+    EXPECT_GT(count, 0);
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsPositionTest, PositionFollowsPref) {
+  auto* region = region_view();
+  ASSERT_TRUE(region);
+
+  SetOnRight(false);
+  EXPECT_TRUE(region->IsVerticalTabStripLeading());
+  EXPECT_EQ(0, region->bounds().x());
+
+  SetOnRight(true);
+  EXPECT_FALSE(region->IsVerticalTabStripLeading());
+  EXPECT_EQ(brave_browser_view()->width(), region->bounds().right());
+  EXPECT_GT(region->width(), 0);
+
+  // Contents must sit beside the strip, not under it.
+  auto* contents = brave_browser_view()->contents_container();
+  EXPECT_LE(contents->bounds().right(), region->bounds().x());
+  ExpectFloatingCornersAreOnTrailingSide(/*trailing=*/true);
+
+  SetOnRight(false);
+  EXPECT_TRUE(region->IsVerticalTabStripLeading());
+  EXPECT_EQ(0, region->bounds().x());
+  EXPECT_GE(contents->bounds().x(), region->bounds().right());
+  ExpectFloatingCornersAreOnTrailingSide(/*trailing=*/false);
+}
+
+IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsPositionTest,
+                       PositionIsFlippedInRTL) {
+  base::i18n::ScopedRTLForTesting scoped_rtl(/*rtl=*/true);
+  LayoutNow();
+  auto* region = region_view();
+  ASSERT_TRUE(region);
+
+  // The pref names a physical side; in RTL layout coordinates are mirrored.
+  SetOnRight(false);
+  EXPECT_FALSE(region->IsVerticalTabStripLeading());
+  SetOnRight(true);
+  EXPECT_TRUE(region->IsVerticalTabStripLeading());
+}
+
+// The sidebar must be a prior sibling of the vertical tab strip so the strip
+// is drawn over it.
+IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsPositionTest,
+                       SidebarIsBelowVerticalTabStripInZOrder) {
+  auto* sidebar = brave_browser_view()->sidebar_container_view();
+  ASSERT_TRUE(sidebar);
+  auto sidebar_index = brave_browser_view()->GetIndexOf(sidebar);
+  auto region_index = brave_browser_view()->GetIndexOf(region_view());
+  ASSERT_TRUE(sidebar_index);
+  ASSERT_TRUE(region_index);
+  EXPECT_LT(*sidebar_index, *region_index);
+}
+
+// When the sidebar is on the same side as the strip, the sidebar is placed
+// next to the strip rather than overlapping it.
+IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsPositionTest,
+                       SidebarNextToVerticalTabStripOnSameSide) {
+  auto* sidebar = brave_browser_view()->sidebar_container_view();
+  ASSERT_TRUE(sidebar);
+  sidebar->SetSidebarShowOption(
+      sidebar::SidebarService::ShowSidebarOption::kShowAlways);
+
+  // Both on the right.
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
+      prefs::kSidePanelHorizontalAlignment, true);
+  SetOnRight(true);
+  ASSERT_TRUE(sidebar->IsSidebarVisible());
+  EXPECT_LE(sidebar->bounds().right(), region_view()->bounds().x());
+
+  // Both on the left.
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
+      prefs::kSidePanelHorizontalAlignment, false);
+  SetOnRight(false);
+  EXPECT_GE(sidebar->bounds().x(), region_view()->bounds().right());
+}
+
+// The upstream strip's reserved width is the region view's preferred width
+// when every guard passes, and 0 once Brave's own vertical tabs take over.
+IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsPositionTest,
+                       UpstreamVerticalTabStripWidth) {
+  auto* region = region_view();
+  ASSERT_TRUE(region);
+  auto* layout = static_cast<BraveBrowserViewTabbedLayoutImpl*>(
+      brave_browser_view()->GetBrowserViewLayoutForTesting());
+
+  EXPECT_GT(region->GetPreferredSize().width(), 0);
+  EXPECT_EQ(region->GetPreferredSize().width(),
+            layout->GetUpstreamVerticalTabStripWidthForTesting());
+
+  // Not vertical anymore: no width is reserved.
+  state_controller()->SetVerticalTabsEnabled(false);
+  EXPECT_EQ(0, layout->GetUpstreamVerticalTabStripWidthForTesting());
+}
+
+IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsPositionTest, HotCornerSide) {
+  auto* view = brave_browser_view();
+  const gfx::Rect bounds = view->GetBoundingBoxInScreenForMouseOverHandling();
+  const gfx::PointF left_point(bounds.x() + 2, bounds.y() + 10);
+  const gfx::PointF right_point(bounds.right() - 2, bounds.y() + 10);
+  const gfx::PointF middle_point(bounds.CenterPoint());
+
+  EXPECT_TRUE(BraveIsInVerticalTabHotCorner(left_point, view, false));
+  EXPECT_FALSE(BraveIsInVerticalTabHotCorner(right_point, view, false));
+  EXPECT_FALSE(BraveIsInVerticalTabHotCorner(middle_point, view, false));
+
+  EXPECT_FALSE(BraveIsInVerticalTabHotCorner(left_point, view, true));
+  EXPECT_TRUE(BraveIsInVerticalTabHotCorner(right_point, view, true));
+  EXPECT_FALSE(BraveIsInVerticalTabHotCorner(middle_point, view, true));
 }
 
 class VerticalTabStripFocusModeTest : public VerticalTabStripBrowserTest {

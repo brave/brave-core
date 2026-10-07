@@ -9,6 +9,7 @@
 #include <memory>
 #include <optional>
 
+#include "chrome/browser/ui/views/frame/layout/browser_view_layout_params.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
@@ -99,6 +100,10 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   // non-virtual.
   gfx::Insets GetContentsMarginsForTesting() const;
 
+  // Test-only accessor for GetUpstreamVerticalTabStripWidth(), which is
+  // private.
+  int GetUpstreamVerticalTabStripWidthForTesting() const;
+
   // Test-only accessor for CalculateContentsCornerRadii(), which is private.
   gfx::RoundedCornersF CalculateContentsCornerRadiiForTesting() const;
 
@@ -116,10 +121,15 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   void CalculateSideBarLayout(ProposedLayout& layout,
                               const BrowserLayoutParams& params) const;
   void InsetContentsContainerBounds(ProposedLayout& layout) const;
+  void MoveUpstreamVerticalTabStripToTrailingSide(
+      ProposedLayout& layout,
+      const BrowserLayoutParams& params) const;
+
   void AdjustInfobarLayout(ProposedLayout& layout,
                            const BrowserLayoutParams params) const;
 
   void UpdateInsetsForVerticalTabStrip();
+  void UpdateVerticalTabStripCorners(const BrowserLayoutParams& params);
 
   gfx::Insets GetContentsMargins() const;
 
@@ -131,6 +141,12 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   // Whether the vertical tab strip / sidebar UI sits beside the contents area
   // rather than floating above it or being hidden.
   bool IsVerticalTabStripAtContentsEdge() const;
+
+  // Returns the width reserved for upstream's vertical tab strip, or 0 when it
+  // isn't laid out beside the contents (e.g. Brave's own vertical tabs are in
+  // use, or the strip is hidden). The strip's side is
+  // `IsVerticalTabStripLeading()`.
+  int GetUpstreamVerticalTabStripWidth() const;
   bool IsSidebarAtContentsEdge() const;
 
   // Returns the corner radii for the contents area, where a corner meeting the
