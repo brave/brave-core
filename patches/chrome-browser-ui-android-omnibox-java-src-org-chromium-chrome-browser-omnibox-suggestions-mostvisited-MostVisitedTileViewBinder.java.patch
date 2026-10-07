@@ -1,0 +1,23 @@
+diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/mostvisited/MostVisitedTileViewBinder.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/mostvisited/MostVisitedTileViewBinder.java
+index 16da72ddfeceb15c7f4a2d273e1202a1efc9dece..798d3d5af028bb98f9216bb081045a5a5ba76502 100644
+--- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/mostvisited/MostVisitedTileViewBinder.java
++++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/suggestions/mostvisited/MostVisitedTileViewBinder.java
+@@ -3,6 +3,8 @@
+ // found in the LICENSE file.
+ 
+ package org.chromium.chrome.browser.omnibox.suggestions.mostvisited;
++import org.chromium.ui.base.ViewUtils;
++import org.chromium.components.browser_ui.widget.RoundedCornerOutlineProvider;
+ 
+ import android.graphics.drawable.Drawable;
+ 
+@@ -41,5 +43,9 @@ public class MostVisitedTileViewBinder
+                 mResourceProvider.getStatefulSuggestionBackground(
+                         mResourceProvider.getSuggestionsDropdownBackgroundColor());
+         view.setBackground(background);
++view.setOutlineProvider(new 
++RoundedCornerOutlineProvider(ViewUtils.dpToPx(view.getContext(),
++12)));
++view.setClipToOutline(true);
+     }
+ }

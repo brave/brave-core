@@ -1,0 +1,27 @@
+diff --git a/components/browser_ui/widget/android/java/res/drawable/tile_view_background_selector.xml b/components/browser_ui/widget/android/java/res/drawable/tile_view_background_selector.xml
+index 89dd5887332d466368a59d9123356b393c29ebb8..d28f8b2deeef697c81919f541b44a0a6f13ef6dc 100644
+--- a/components/browser_ui/widget/android/java/res/drawable/tile_view_background_selector.xml
++++ b/components/browser_ui/widget/android/java/res/drawable/tile_view_background_selector.xml
+@@ -9,19 +9,19 @@ found in the LICENSE file.
+   <item android:state_hovered="true">
+     <shape android:shape="rectangle">
+       <solid android:color="@color/color_on_surface_with_alpha_8" />
+-      <corners android:radius="8dp" />
++      <corners android:radius="12dp" />
+     </shape>
+   </item>
+   <item android:state_focused="true">
+     <shape android:shape="rectangle">
+       <solid android:color="@color/color_on_surface_with_alpha_8" />
+-      <corners android:radius="8dp" />
++      <corners android:radius="12dp" />
+     </shape>
+   </item>
+   <item>
+     <shape android:shape="rectangle">
+       <solid android:color="@android:color/transparent" />
+-      <corners android:radius="8dp" />
++      <corners android:radius="12dp" />
+     </shape>
+   </item>
+ </selector>
