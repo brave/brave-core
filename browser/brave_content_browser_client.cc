@@ -930,13 +930,6 @@ BraveContentBrowserClient::GetEphemeralStorageToken(
   return es_tab_helper->GetEphemeralStorageToken(origin);
 }
 
-bool BraveContentBrowserClient::AllowWorkerFingerprinting(
-    const GURL& url,
-    content::BrowserContext* browser_context) {
-  return WorkerGetBraveShieldSettings(url, browser_context, nullptr)
-             ->farbling_level != brave_shields::mojom::FarblingLevel::MAXIMUM;
-}
-
 brave_shields::mojom::ShieldsSettingsPtr
 BraveContentBrowserClient::WorkerGetBraveShieldSettings(
     const GURL& url,
