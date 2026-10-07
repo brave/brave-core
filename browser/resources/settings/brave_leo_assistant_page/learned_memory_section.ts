@@ -25,6 +25,11 @@ import {
   BraveLeoAssistantBrowserProxyImpl
 } from './brave_leo_assistant_browser_proxy.js'
 import { getTemplate } from './learned_memory_section.html.js'
+import {
+  matchesQuery,
+  splitByQuery,
+  TextSegment
+} from './memory_search_utils.js'
 
 // Mojo times count microseconds since 1601-01-01 (Windows epoch).
 const WINDOWS_TO_UNIX_EPOCH_MS = 11644473600000
@@ -38,6 +43,12 @@ const LearnedMemorySectionBase =
 // Shows the memories that Leo learned from the saved chats (Dreaming), and the
 // "Dream now" button. The section is hidden when learned memory is not
 // available in the browser.
+//
+// The search box of the memory section searches this list too. This section
+// gets the text of the box and the learned memories that are related to it by
+// meaning, and it shows the related memories first, then those that contain
+// the text, with the text marked. It tells how many memories it shows, so that
+// the memory section can say when neither list has a result.
 class LearnedMemorySection extends LearnedMemorySectionBase {
   static get is() {
     return 'learned-memory-section'
@@ -68,8 +79,55 @@ class LearnedMemorySection extends LearnedMemorySectionBase {
       showDeleteAllDialog_: {
         type: Boolean,
         value: false
+      },
+      // The text in the search box of the memory section.
+      searchQuery: {
+        type: String,
+        value: ''
+      },
+      // The uuids of the learned memories that are related to searchQuery by
+      // meaning, best first.
+      relatedUuids: {
+        type: Array,
+        value: () => []
+      },
+      isSearching_: {
+        type: Boolean,
+        computed: 'computeIsSearching_(searchQuery)'
+      },
+      // The related memories that are in the list.
+      relatedMemories_: {
+        type: Array,
+        computed: 'computeRelatedMemories_(learnedMemories_, relatedUuids, ' +
+            'isSearching_)'
+      },
+      // The memories of the list after the related ones: those that contain
+      // searchQuery, or all of them when there is no search.
+      listedMemories_: {
+        type: Array,
+        computed: 'computeListedMemories_(learnedMemories_, relatedMemories_, ' +
+            'searchQuery, isSearching_)'
+      },
+      // For the memory section: how many learned memories there are, and how
+      // many the search shows.
+      learnedCount: {
+        type: Number,
+        value: 0,
+        notify: true
+      },
+      matchCount: {
+        type: Number,
+        value: 0,
+        notify: true
       }
     }
+  }
+
+  static get observers() {
+    return [
+      'updateCounts_(available_, learnedMemories_, relatedMemories_, ' +
+          'listedMemories_)'
+    ]
   }
 
   browserProxy_: BraveLeoAssistantBrowserProxy =
@@ -79,6 +137,13 @@ class LearnedMemorySection extends LearnedMemorySectionBase {
   declare isDreaming_: boolean
   declare dreamResult_: string
   declare showDeleteAllDialog_: boolean
+  declare searchQuery: string
+  declare relatedUuids: string[]
+  declare isSearching_: boolean
+  declare relatedMemories_: LearnedMemoryItem[]
+  declare listedMemories_: LearnedMemoryItem[]
+  declare learnedCount: number
+  declare matchCount: number
 
   override ready() {
     super.ready()
@@ -156,6 +221,46 @@ class LearnedMemorySection extends LearnedMemorySectionBase {
   // A delete during "Dream now" would stop the run, so the button waits.
   canDeleteAll_(memories: LearnedMemoryItem[], isDreaming: boolean): boolean {
     return memories.length > 0 && !isDreaming
+  }
+
+  computeIsSearching_(searchQuery: string): boolean {
+    return !!searchQuery && !!searchQuery.trim()
+  }
+
+  computeRelatedMemories_(memories: LearnedMemoryItem[],
+                          relatedUuids: string[],
+                          isSearching: boolean): LearnedMemoryItem[] {
+    if (!isSearching) {
+      return []
+    }
+    // A related memory that was deleted since the search is not in the list.
+    return relatedUuids
+      .map(uuid => memories.find(memory => memory.uuid === uuid))
+      .filter((memory): memory is LearnedMemoryItem => memory !== undefined)
+  }
+
+  computeListedMemories_(memories: LearnedMemoryItem[],
+                         related: LearnedMemoryItem[], searchQuery: string,
+                         isSearching: boolean): LearnedMemoryItem[] {
+    if (!isSearching) {
+      return memories
+    }
+    return memories.filter(memory =>
+      !related.includes(memory) && matchesQuery(memory.text, searchQuery))
+  }
+
+  updateCounts_(available: boolean, memories: LearnedMemoryItem[],
+                related: LearnedMemoryItem[], listed: LearnedMemoryItem[]) {
+    this.learnedCount = available ? memories.length : 0
+    this.matchCount = available ? related.length + listed.length : 0
+  }
+
+  getSegments_(item: LearnedMemoryItem, searchQuery: string): TextSegment[] {
+    return splitByQuery(item.text, searchQuery)
+  }
+
+  getSegmentClass_(segment: TextSegment): string {
+    return segment.match ? 'match' : ''
   }
 
   shouldShow_(available: boolean, memoryEnabled: boolean): boolean {

@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/containers/to_vector.h"
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -640,14 +641,14 @@ namespace {
 std::optional<std::vector<std::string>> SearchMemories(
     content::BrowserContext* context,
     const std::string& query) {
-  base::test::TestFuture<std::optional<std::vector<std::string>>> future;
-  SearchMemoriesForUI(
-      context, query,
-      base::BindLambdaForTesting(
-          [&](const std::optional<std::vector<std::string>>& memories) {
-            future.SetValue(memories);
-          }));
-  return future.Take();
+  base::test::TestFuture<std::optional<std::vector<MemorySearchResult>>>
+      future;
+  SearchMemoriesForUI(context, query, future.GetCallback());
+  std::optional<std::vector<MemorySearchResult>> results = future.Take();
+  if (!results) {
+    return std::nullopt;
+  }
+  return base::ToVector(*results, &MemorySearchResult::text);
 }
 
 }  // namespace

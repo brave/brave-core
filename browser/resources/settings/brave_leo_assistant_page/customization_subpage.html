@@ -134,7 +134,18 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   </settings-section>
 
   <settings-section section="memories">
-    <memory-section prefs="{{prefs}}"></memory-section>
-    <learned-memory-section prefs="{{prefs}}"></learned-memory-section>
+    <!-- One search box, in the memory section, searches both lists. -->
+    <memory-section prefs="{{prefs}}"
+        search-query="{{memorySearchQuery_}}"
+        related-learned-uuids="{{relatedLearnedUuids_}}"
+        learned-count="[[learnedCount_]]"
+        learned-match-count="[[learnedMatchCount_]]">
+    </memory-section>
+    <learned-memory-section prefs="{{prefs}}"
+        search-query="[[memorySearchQuery_]]"
+        related-uuids="[[relatedLearnedUuids_]]"
+        learned-count="{{learnedCount_}}"
+        match-count="{{learnedMatchCount_}}">
+    </learned-memory-section>
   </settings-section>
 </settings-subpage>

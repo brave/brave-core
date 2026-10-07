@@ -49,6 +49,13 @@ struct LearnedMemoryItem {
   string? previous_text;
 };
 
+// A memory that the semantic search found.
+struct MemorySearchResult {
+  string text;
+  // The uuid of a learned memory. Null for a memory that the user wrote.
+  string? learned_uuid;
+};
+
 enum DreamNowStatus {
   // The run processed all new user turns.
   kCompleted,
@@ -108,10 +115,10 @@ interface CustomizationSettingsHandler {
   // Delete all stored memories.
   DeleteAllMemories();
 
-  // Return the stored memories related to `query` by meaning, most related
-  // first. Empty when `query` is too short to search, and null while semantic
-  // search is unavailable.
-  SearchMemories(string query) => (array<string>? memories);
+  // Return the memories related to `query` by meaning, most related first:
+  // the ones that the user wrote, and the learned ones. Empty when `query` is
+  // too short to search, and null while semantic search is unavailable.
+  SearchMemories(string query) => (array<MemorySearchResult>? results);
 
   // Learned memories. |available| is false when learned memory is off or the
   // chat database is not ready. Then |memories| is empty.

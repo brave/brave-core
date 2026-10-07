@@ -26,9 +26,18 @@ constexpr char kPropertyCount[] = "count";
 
 constexpr char kOutputKeyQuery[] = "query";
 constexpr char kOutputKeyMemories[] = "memories";
+constexpr char kOutputKeyLearnedMemories[] = "learned_memories";
 
 constexpr int kDefaultResultCount = 5;
 constexpr int kMaxResultCount = 20;
+
+base::ListValue ToList(const std::vector<std::string>& strings) {
+  base::ListValue list;
+  for (const std::string& string : strings) {
+    list.Append(string);
+  }
+  return list;
+}
 
 }  // namespace
 
@@ -36,14 +45,14 @@ namespace internal {
 
 std::string BuildMemorySearchResultJson(
     const std::string& query,
-    const std::vector<std::string>& memories) {
-  base::ListValue memory_list;
-  for (const std::string& memory : memories) {
-    memory_list.Append(memory);
-  }
+    const std::vector<std::string>& memories,
+    const std::vector<std::string>& learned_memories) {
   base::DictValue root;
   root.Set(kOutputKeyQuery, query);
-  root.Set(kOutputKeyMemories, std::move(memory_list));
+  root.Set(kOutputKeyMemories, ToList(memories));
+  if (!learned_memories.empty()) {
+    root.Set(kOutputKeyLearnedMemories, ToList(learned_memories));
+  }
   std::string json;
   base::JSONWriter::Write(root, &json);
   return json;
@@ -62,10 +71,12 @@ std::string_view MemorySemanticSearchTool::Name() const {
 }
 
 std::string_view MemorySemanticSearchTool::Description() const {
-  return "Searches the memories the user asked you to keep about them by "
-         "meaning, and returns those related to the query as JSON, most "
-         "related first. Use to recall what the user told you to remember "
-         "about a topic. Runs entirely on-device.";
+  return "Searches the memories about the user by meaning, and returns those "
+         "related to the query as JSON, most related first. `memories` are "
+         "what the user told you to remember. `learned_memories` are facts "
+         "learned from the user's past chats, which can be out of date. Use "
+         "to recall what you know about the user on a topic. Runs entirely "
+         "on-device.";
 }
 
 std::optional<base::DictValue> MemorySemanticSearchTool::InputProperties()
@@ -142,10 +153,16 @@ void MemorySemanticSearchTool::UseTool(const std::string& input_json,
 void MemorySemanticSearchTool::OnSearchResults(
     UseToolCallback callback,
     const std::string& query,
-    std::vector<std::string> memories) {
+    std::vector<MemorySearchResult> results) {
+  std::vector<std::string> memories;
+  std::vector<std::string> learned_memories;
+  for (MemorySearchResult& result : results) {
+    (result.learned_uuid.empty() ? memories : learned_memories)
+        .push_back(std::move(result.text));
+  }
   std::move(callback).Run(
-      CreateContentBlocksForText(
-          internal::BuildMemorySearchResultJson(query, memories)),
+      CreateContentBlocksForText(internal::BuildMemorySearchResultJson(
+          query, memories, learned_memories)),
       {});
 }
 

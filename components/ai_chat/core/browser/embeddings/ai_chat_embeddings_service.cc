@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/embeddings/ai_chat_embeddings_service.h"
 
 #include <algorithm>
+#include <functional>
 #include <string_view>
 #include <utility>
 
@@ -20,6 +21,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/ai_chat/core/browser/embeddings/passage_splitter.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -991,15 +993,93 @@ void AIChatEmbeddingsService::OnMemoryQueryEmbedded(
     std::move(callback).Run({});
     return;
   }
+  const float min_score = GetMinScore();
+  std::vector<float> vector = query->GetData();
   db_.AsyncCall(&AIChatEmbeddingsDatabase::SearchMemories)
-      .WithArgs(std::move(*query), GetMinScore(), count)
-      .Then(base::BindOnce(
-          [](SearchMemoriesCallback callback,
-             std::vector<MemoryMatch> matches) {
-            std::move(callback).Run(
-                base::ToVector(matches, &MemoryMatch::text));
+      .WithArgs(std::move(*query), min_score, count)
+      .Then(base::BindOnce(&AIChatEmbeddingsService::OnUserMemoriesFound,
+                           weak_ptr_factory_.GetWeakPtr(), count, min_score,
+                           std::move(vector), std::move(callback)));
+}
+
+void AIChatEmbeddingsService::OnUserMemoriesFound(
+    size_t count,
+    float min_score,
+    std::vector<float> query,
+    SearchMemoriesCallback callback,
+    std::vector<MemoryMatch> matches) {
+  std::vector<MemorySearchResult> results;
+  for (MemoryMatch& match : matches) {
+    results.push_back(
+        {std::move(match.text), /*learned_uuid=*/"", match.score});
+  }
+  if (!features::IsAIChatLearnedMemoryEnabled()) {
+    std::move(callback).Run(std::move(results));
+    return;
+  }
+  // The learned memories use the embedding of the same query, and the score
+  // limit of the memories that the user wrote.
+  SearchLearnedMemoriesByEmbedding(
+      std::move(query), count,
+      base::BindOnce(
+          [](base::WeakPtr<AIChatEmbeddingsService> service, size_t count,
+             float min_score, std::vector<MemorySearchResult> results,
+             SearchMemoriesCallback callback,
+             std::vector<LearnedMemoryMatch> matches) {
+            std::erase_if(matches, [&](const LearnedMemoryMatch& match) {
+              return match.score < min_score;
+            });
+            if (!service || matches.empty()) {
+              std::move(callback).Run(std::move(results));
+              return;
+            }
+            service->OnLearnedMemoriesFound(count, std::move(results),
+                                            std::move(callback),
+                                            std::move(matches));
           },
+          weak_ptr_factory_.GetWeakPtr(), count, min_score, std::move(results),
           std::move(callback)));
+}
+
+void AIChatEmbeddingsService::OnLearnedMemoriesFound(
+    size_t count,
+    std::vector<MemorySearchResult> results,
+    SearchMemoriesCallback callback,
+    std::vector<LearnedMemoryMatch> matches) {
+  base::flat_map<std::string, float> scores;
+  std::vector<std::string> uuids;
+  for (LearnedMemoryMatch& match : matches) {
+    scores[match.uuid] = match.score;
+    uuids.push_back(std::move(match.uuid));
+  }
+  // The text stays in the conversation database.
+  ai_chat_service_->GetLearnedMemoriesByUuid(
+      std::move(uuids),
+      base::BindOnce(&AIChatEmbeddingsService::OnGotLearnedMemoriesForResults,
+                     weak_ptr_factory_.GetWeakPtr(), count, std::move(results),
+                     std::move(callback), std::move(scores)));
+}
+
+void AIChatEmbeddingsService::OnGotLearnedMemoriesForResults(
+    size_t count,
+    std::vector<MemorySearchResult> results,
+    SearchMemoriesCallback callback,
+    base::flat_map<std::string, float> scores,
+    std::vector<LearnedMemory> memories) {
+  // A memory deleted since it was indexed is not read, so it is left out.
+  for (LearnedMemory& memory : memories) {
+    auto it = scores.find(memory.uuid);
+    if (it != scores.end()) {
+      results.push_back(
+          {std::move(memory.text), std::move(memory.uuid), it->second});
+    }
+  }
+  std::ranges::stable_sort(results, std::greater<>(),
+                           &MemorySearchResult::score);
+  if (results.size() > count) {
+    results.resize(count);
+  }
+  std::move(callback).Run(std::move(results));
 }
 
 float AIChatEmbeddingsService::GetMinScore() const {

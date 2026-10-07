@@ -18,18 +18,25 @@
 namespace ai_chat {
 
 class AIChatEmbeddingsService;
+struct MemorySearchResult;
 
 namespace internal {
 
+// `memories` holds the memories that the user asked Leo to keep, and
+// `learned_memories` the ones that Leo learned from past chats. The key of an
+// empty list is left out.
 std::string BuildMemorySearchResultJson(
     const std::string& query,
-    const std::vector<std::string>& memories);
+    const std::vector<std::string>& memories,
+    const std::vector<std::string>& learned_memories = {});
 
 }  // namespace internal
 
-// Lets the assistant search the memories the user asked it to keep, by
-// meaning. Memories already go with every request that this tool is offered
-// for, so it asks for no permission.
+// Lets the assistant search by meaning the memories the user asked it to keep,
+// and the ones it learned from past chats. The memories the user asked it to
+// keep already go with every request that this tool is offered for, and the
+// learned ones that fit a request go with it too, so it asks for no
+// permission.
 class MemorySemanticSearchTool : public Tool {
  public:
   explicit MemorySemanticSearchTool(
@@ -57,7 +64,7 @@ class MemorySemanticSearchTool : public Tool {
  private:
   void OnSearchResults(UseToolCallback callback,
                        const std::string& query,
-                       std::vector<std::string> memories);
+                       std::vector<MemorySearchResult> results);
 
   const base::WeakPtr<AIChatEmbeddingsService> service_;
 

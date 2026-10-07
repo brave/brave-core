@@ -102,6 +102,24 @@ TEST(MemorySemanticSearchToolJsonTest, SerializesMemories) {
   ASSERT_EQ(memories->size(), 2u);
   EXPECT_EQ((*memories)[0].GetString(), "Is vegetarian");
   EXPECT_EQ((*memories)[1].GetString(), "Dislikes cilantro");
+  // Without learned memories, the output is as it was before they existed.
+  EXPECT_FALSE(root->contains("learned_memories"));
+}
+
+TEST(MemorySemanticSearchToolJsonTest, SerializesLearnedMemoriesApart) {
+  std::optional<base::DictValue> root = base::JSONReader::ReadDict(
+      internal::BuildMemorySearchResultJson("food", {"Is vegetarian"},
+                                            {"Cooks pasta on Sundays"}),
+      base::JSON_PARSE_CHROMIUM_EXTENSIONS);
+  ASSERT_TRUE(root);
+  const base::ListValue* memories = root->FindList("memories");
+  ASSERT_TRUE(memories);
+  ASSERT_EQ(memories->size(), 1u);
+  EXPECT_EQ((*memories)[0].GetString(), "Is vegetarian");
+  const base::ListValue* learned = root->FindList("learned_memories");
+  ASSERT_TRUE(learned);
+  ASSERT_EQ(learned->size(), 1u);
+  EXPECT_EQ((*learned)[0].GetString(), "Cooks pasta on Sundays");
 }
 
 }  // namespace ai_chat

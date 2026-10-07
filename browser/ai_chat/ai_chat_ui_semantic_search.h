@@ -19,6 +19,7 @@ class BrowserContext;
 namespace ai_chat {
 
 struct ConversationSearchResult;
+struct MemorySearchResult;
 
 using UISearchConversationsCallback = base::OnceCallback<void(
     std::optional<std::vector<ConversationSearchResult>>)>;
@@ -33,11 +34,12 @@ void SearchConversationsForUI(content::BrowserContext* context,
                               UISearchConversationsCallback callback);
 
 using UISearchMemoriesCallback =
-    base::OnceCallback<void(const std::optional<std::vector<std::string>>&)>;
+    base::OnceCallback<void(std::optional<std::vector<MemorySearchResult>>)>;
 
 // Searches the memories of `context` semantically for the UI, under the same
-// limits as SearchConversationsForUI(). `callback` gets null while semantic
-// search is unavailable.
+// limits as SearchConversationsForUI(). It finds the memories that the user
+// wrote and the learned ones. `callback` gets null while semantic search is
+// unavailable.
 void SearchMemoriesForUI(content::BrowserContext* context,
                          const std::string& query,
                          UISearchMemoriesCallback callback);

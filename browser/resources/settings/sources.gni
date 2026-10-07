@@ -208,6 +208,7 @@ if (enable_ai_chat) {
   ]
   brave_settings_ts_files += [
     "brave_leo_assistant_page/brave_leo_assistant_browser_proxy.ts",
+    "brave_leo_assistant_page/memory_search_utils.ts",
     "brave_leo_assistant_page/model_icons.ts",
     "brave_leo_assistant_page/model_selector.html.ts",
     "brave_leo_assistant_page/model_selector.ts",

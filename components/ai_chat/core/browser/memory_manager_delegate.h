@@ -16,15 +16,15 @@
 namespace ai_chat {
 
 // What the memory settings handler needs from the rest of the browser: the
-// semantic search over the memories that the user wrote, and the learned
-// memories (Dreaming). The browser layer implements it, so that the handler
-// does not depend on the embeddings service or on the learned memory code.
-// Without a delegate, or when a feature is off, the handler answers that the
-// feature is not available.
+// semantic search over the memories (the ones that the user wrote, and the
+// learned ones), and the learned memories (Dreaming). The browser layer
+// implements it, so that the handler does not depend on the embeddings service
+// or on the learned memory code. Without a delegate, or when a feature is off,
+// the handler answers that the feature is not available.
 class MemoryManagerDelegate {
  public:
   using SearchMemoriesCallback =
-      base::OnceCallback<void(const std::optional<std::vector<std::string>>&)>;
+      mojom::CustomizationSettingsHandler::SearchMemoriesCallback;
   using GetLearnedMemoriesCallback =
       mojom::CustomizationSettingsHandler::GetLearnedMemoriesCallback;
   using DeleteLearnedMemoryCallback =
@@ -36,8 +36,9 @@ class MemoryManagerDelegate {
 
   virtual ~MemoryManagerDelegate() = default;
 
-  // Finds the memories related to `query` by meaning. `callback` gets null
-  // while semantic search is unavailable.
+  // Finds the memories related to `query` by meaning, most related first. A
+  // learned memory has its uuid in the result. `callback` gets null while
+  // semantic search is unavailable.
   virtual void SearchMemories(const std::string& query,
                               SearchMemoriesCallback callback) = 0;
 

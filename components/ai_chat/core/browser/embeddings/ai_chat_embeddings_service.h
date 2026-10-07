@@ -62,6 +62,15 @@ struct ConversationSearchResult {
   std::vector<ConversationPassageMatch> passages;
 };
 
+// A memory found by AIChatEmbeddingsService::SearchMemories(): one that the
+// user wrote, or one that Leo learned from the saved chats.
+struct MemorySearchResult {
+  std::string text;
+  // The uuid of a learned memory. Empty for a memory that the user wrote.
+  std::string learned_uuid;
+  float score = 0.0f;
+};
+
 // Keeps an on-device index of embeddings of the user's stored Leo
 // conversations and memories, and searches it semantically. Entries are indexed
 // as they are persisted, and whenever storage becomes ready the index is
@@ -80,7 +89,7 @@ class AIChatEmbeddingsService
   using SearchConversationsCallback =
       base::OnceCallback<void(std::vector<ConversationSearchResult>)>;
   using SearchMemoriesCallback =
-      base::OnceCallback<void(std::vector<std::string>)>;
+      base::OnceCallback<void(std::vector<MemorySearchResult>)>;
 
   // `embedder` and `embedder_metadata_provider` must outlive the service.
   AIChatEmbeddingsService(
@@ -106,8 +115,10 @@ class AIChatEmbeddingsService
                            const std::string& excluded_conversation_uuid,
                            SearchConversationsCallback callback);
 
-  // Finds up to `count` memories related to `query`, best first. Finds nothing
-  // while memories are turned off.
+  // Finds up to `count` memories related to `query`, best first: the ones that
+  // the user wrote, and the learned ones while learned memory is on. Both must
+  // score at least the score threshold of the model. Finds nothing while
+  // memories are turned off.
   void SearchMemories(const std::string& query,
                       size_t count,
                       SearchMemoriesCallback callback);
@@ -262,6 +273,20 @@ class AIChatEmbeddingsService
       size_t count,
       SearchMemoriesCallback callback,
       std::optional<passage_embeddings::Embedding> query);
+  void OnUserMemoriesFound(size_t count,
+                           float min_score,
+                           std::vector<float> query,
+                           SearchMemoriesCallback callback,
+                           std::vector<MemoryMatch> matches);
+  void OnLearnedMemoriesFound(size_t count,
+                              std::vector<MemorySearchResult> results,
+                              SearchMemoriesCallback callback,
+                              std::vector<LearnedMemoryMatch> matches);
+  void OnGotLearnedMemoriesForResults(size_t count,
+                                      std::vector<MemorySearchResult> results,
+                                      SearchMemoriesCallback callback,
+                                      base::flat_map<std::string, float> scores,
+                                      std::vector<LearnedMemory> memories);
   float GetMinScore() const;
 
   const base::FilePath db_file_path_;

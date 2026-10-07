@@ -100,6 +100,23 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     color: var(--leo-color-text-secondary);
   }
 
+  /* The part of a memory that the search box matches. */
+  .match {
+    background-color: var(--leo-color-container-highlight);
+    border-radius: var(--leo-radius-s);
+    font-weight: 600;
+  }
+
+  .related-heading {
+    margin-bottom: var(--leo-spacing-m);
+    color: var(--leo-color-text-secondary);
+    font: var(--leo-font-small-semibold);
+  }
+
+  .related-memories {
+    margin-bottom: var(--leo-spacing-xl);
+  }
+
   .details,
   .previous {
     font: var(--leo-font-small-regular);
@@ -176,12 +193,43 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
       </div>
     </template>
 
-    <template is="dom-if" if="[[hasLearnedMemories_(learnedMemories_)]]">
-      <div class="list">
-        <template is="dom-repeat" items="[[learnedMemories_]]">
+    <template is="dom-if" if="[[hasLearnedMemories_(relatedMemories_)]]">
+      <div class="related-heading">
+        $i18n{braveLeoAssistantRelatedMemoriesHeading}
+      </div>
+      <div class="list related-memories">
+        <template is="dom-repeat" items="[[relatedMemories_]]">
           <div class="memory">
             <div class="memory-info">
-              <div class="label">[[item.text]]</div>
+              <div class="label"><template is="dom-repeat" items="[[getSegments_(item, searchQuery)]]" as="segment"
+                  ><span class$="[[getSegmentClass_(segment)]]">[[segment.text]]</span
+              ></template></div>
+              <div class="details">[[getDetails_(item)]]</div>
+              <template is="dom-if" if="[[hasPreviousText_(item)]]">
+                <div class="previous">[[getPreviousText_(item)]]</div>
+              </template>
+            </div>
+            <div class="memory-actions">
+              <leo-button
+                kind="plain-faint"
+                fab size="medium"
+                on-click="onDelete_">
+                <leo-icon name="trash"></leo-icon>
+              </leo-button>
+            </div>
+          </div>
+        </template>
+      </div>
+    </template>
+
+    <template is="dom-if" if="[[hasLearnedMemories_(listedMemories_)]]">
+      <div class="list">
+        <template is="dom-repeat" items="[[listedMemories_]]">
+          <div class="memory">
+            <div class="memory-info">
+              <div class="label"><template is="dom-repeat" items="[[getSegments_(item, searchQuery)]]" as="segment"
+                  ><span class$="[[getSegmentClass_(segment)]]">[[segment.text]]</span
+              ></template></div>
               <div class="details">[[getDetails_(item)]]</div>
               <template is="dom-if" if="[[hasPreviousText_(item)]]">
                 <div class="previous">[[getPreviousText_(item)]]</div>

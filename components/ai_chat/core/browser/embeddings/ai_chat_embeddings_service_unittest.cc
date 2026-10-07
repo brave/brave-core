@@ -187,10 +187,17 @@ class AIChatEmbeddingsServiceTest : public testing::Test {
     return future.Take();
   }
 
-  std::vector<std::string> SearchMemories(const std::string& query) {
-    base::test::TestFuture<std::vector<std::string>> future;
-    service_->SearchMemories(query, /*count=*/10, future.GetCallback());
+  std::vector<MemorySearchResult> SearchMemoryResults(const std::string& query,
+                                                      size_t count = 10) {
+    base::test::TestFuture<std::vector<MemorySearchResult>> future;
+    service_->SearchMemories(query, count, future.GetCallback());
     return future.Take();
+  }
+
+  // The texts of the memories found, the learned ones included.
+  std::vector<std::string> SearchMemories(const std::string& query) {
+    return base::ToVector(SearchMemoryResults(query),
+                          &MemorySearchResult::text);
   }
 
   // Writes a learned memory through AIChatService, the same way Dreaming does.
@@ -474,6 +481,62 @@ TEST_F(AIChatEmbeddingsServiceTest, IndexesMemories) {
 
   prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
   EXPECT_TRUE(SearchMemories("cat").empty());
+}
+
+// One query finds the memories that the user wrote and the learned ones, and
+// only a learned memory has a uuid.
+TEST_F(AIChatEmbeddingsServiceTest, SearchesMemoriesAndLearnedMemories) {
+  base::test::ScopedFeatureList learned_memory_feature;
+  learned_memory_feature.InitAndEnableFeature(features::kAIChatLearnedMemory);
+  prefs::AddMemoryToPrefs("Walks the dog daily", prefs_);
+  prefs::AddMemoryToPrefs("Has a cat named Tom", prefs_);
+  WriteLearnedMemory("dog-memory", "Has two dogs");
+  WriteLearnedMemory("bird-memory", "Feeds the birds");
+  WaitForIndexed("Walks the dog daily");
+  WaitForLearnedMemoriesSynced();
+
+  std::vector<MemorySearchResult> results = SearchMemoryResults("dog");
+  EXPECT_THAT(base::ToVector(results,
+                             [](const MemorySearchResult& result) {
+                               return std::make_pair(result.text,
+                                                     result.learned_uuid);
+                             }),
+              UnorderedElementsAre(Pair("Walks the dog daily", ""),
+                                   Pair("Has two dogs", "dog-memory")));
+  for (const MemorySearchResult& result : results) {
+    EXPECT_GT(result.score, 0.5f);
+  }
+
+  // Only a learned memory is related to this query.
+  EXPECT_THAT(SearchMemories("bird"), ElementsAre("Feeds the birds"));
+  EXPECT_TRUE(SearchMemories("fish").empty());
+
+  // The best ones fit in `count`, whether the user wrote them or not.
+  EXPECT_EQ(SearchMemoryResults("dog", /*count=*/1).size(), 1u);
+
+  // A deleted memory is not found, even before the index drops its embedding.
+  DeleteLearnedMemory("dog-memory");
+  EXPECT_THAT(SearchMemories("dog"), ElementsAre("Walks the dog daily"));
+}
+
+TEST_F(AIChatEmbeddingsServiceTest, SearchesNoLearnedMemoriesWhileTheyAreOff) {
+  prefs::AddMemoryToPrefs("Walks the dog daily", prefs_);
+  WriteLearnedMemory("dog-memory", "Has two dogs");
+  WaitForIndexed("Walks the dog daily");
+  WaitForLearnedMemoriesSynced();
+
+  // Learned memory is off: the learned memories stay in the database, and the
+  // search leaves them out.
+  EXPECT_THAT(SearchMemories("dog"), ElementsAre("Walks the dog daily"));
+
+  base::test::ScopedFeatureList learned_memory_feature;
+  learned_memory_feature.InitAndEnableFeature(features::kAIChatLearnedMemory);
+  EXPECT_THAT(SearchMemories("dog"),
+              UnorderedElementsAre("Walks the dog daily", "Has two dogs"));
+
+  // Turning memories off turns off both.
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+  EXPECT_TRUE(SearchMemories("dog").empty());
 }
 
 TEST_F(AIChatEmbeddingsServiceTest, IndexesLearnedMemories) {

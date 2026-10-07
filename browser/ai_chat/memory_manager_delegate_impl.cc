@@ -17,6 +17,7 @@
 #include "brave/browser/ai_chat/ai_chat_ui_semantic_search.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/dreaming_run.h"
+#include "brave/components/ai_chat/core/browser/embeddings/ai_chat_embeddings_service.h"
 #include "brave/components/ai_chat/core/browser/learned_memory_types.h"
 #include "brave/components/ai_chat/core/browser/user_memory_manager.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
@@ -87,6 +88,25 @@ void OnGotLearnedMemories(
   std::move(callback).Run(true, std::move(items));
 }
 
+void OnMemoriesFound(MemoryManagerDelegate::SearchMemoriesCallback callback,
+                     std::optional<std::vector<MemorySearchResult>> results) {
+  if (!results) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  std::vector<mojom::MemorySearchResultPtr> items;
+  items.reserve(results->size());
+  for (MemorySearchResult& result : *results) {
+    std::optional<std::string> learned_uuid;
+    if (!result.learned_uuid.empty()) {
+      learned_uuid = std::move(result.learned_uuid);
+    }
+    items.push_back(mojom::MemorySearchResult::New(std::move(result.text),
+                                                   std::move(learned_uuid)));
+  }
+  std::move(callback).Run(std::move(items));
+}
+
 void OnDreamNowDone(MemoryManagerDelegate::DreamNowCallback callback,
                     DreamingResult result) {
   std::move(callback).Run(mojom::DreamNowResult::New(
@@ -107,7 +127,8 @@ MemoryManagerDelegateImpl::~MemoryManagerDelegateImpl() = default;
 void MemoryManagerDelegateImpl::SearchMemories(
     const std::string& query,
     SearchMemoriesCallback callback) {
-  SearchMemoriesForUI(context_, query, std::move(callback));
+  SearchMemoriesForUI(context_, query,
+                      base::BindOnce(&OnMemoriesFound, std::move(callback)));
 }
 
 void MemoryManagerDelegateImpl::GetLearnedMemories(

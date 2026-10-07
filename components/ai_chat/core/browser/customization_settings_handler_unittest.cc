@@ -51,12 +51,14 @@ class FakeMemoryManagerDelegate : public MemoryManagerDelegate {
   FakeMemoryManagerDelegate() = default;
   ~FakeMemoryManagerDelegate() override = default;
 
-  void SearchMemories(
-      const std::string& query,
-      base::OnceCallback<void(const std::optional<std::vector<std::string>>&)>
-          callback) override {
+  void SearchMemories(const std::string& query,
+                      SearchMemoriesCallback callback) override {
     queries.push_back(query);
-    std::move(callback).Run(results);
+    if (!search_available) {
+      std::move(callback).Run(std::nullopt);
+      return;
+    }
+    std::move(callback).Run(mojo::Clone(results));
   }
 
   void GetLearnedMemories(GetLearnedMemoriesCallback callback) override {
@@ -82,7 +84,8 @@ class FakeMemoryManagerDelegate : public MemoryManagerDelegate {
   }
 
   std::vector<std::string> queries;
-  std::optional<std::vector<std::string>> results;
+  bool search_available = true;
+  std::vector<mojom::MemorySearchResultPtr> results;
   bool learned_available = true;
   std::vector<mojom::LearnedMemoryItemPtr> learned;
   std::vector<std::string> forgotten;
@@ -90,16 +93,25 @@ class FakeMemoryManagerDelegate : public MemoryManagerDelegate {
   int delete_all_calls = 0;
 };
 
-std::optional<std::vector<std::string>> SearchMemories(
+// A search hit: the text, and the uuid when the memory is a learned one.
+using SearchHit = std::pair<std::string, std::optional<std::string>>;
+
+std::optional<std::vector<SearchHit>> SearchMemories(
     CustomizationSettingsHandler& handler,
     const std::string& query) {
-  base::test::TestFuture<std::optional<std::vector<std::string>>> future;
-  handler.SearchMemories(
-      query, base::BindLambdaForTesting(
-                 [&](const std::optional<std::vector<std::string>>& memories) {
-                   future.SetValue(memories);
-                 }));
-  return future.Take();
+  base::test::TestFuture<
+      std::optional<std::vector<mojom::MemorySearchResultPtr>>>
+      future;
+  handler.SearchMemories(query, future.GetCallback());
+  auto results = future.Take();
+  if (!results) {
+    return std::nullopt;
+  }
+  std::vector<SearchHit> hits;
+  for (const auto& result : *results) {
+    hits.emplace_back(result->text, result->learned_uuid);
+  }
+  return hits;
 }
 
 class CustomizationSettingsHandlerTest : public ::testing::Test {
@@ -450,21 +462,38 @@ TEST_F(CustomizationSettingsHandlerTest, BindUI_Notifications) {
 }
 
 TEST_F(CustomizationSettingsHandlerTest, SearchMemories) {
-  delegate_->results = std::vector<std::string>{"Likes cats"};
+  delegate_->results.push_back(
+      mojom::MemorySearchResult::New("Likes cats", std::nullopt));
 
-  EXPECT_EQ(SearchMemories(*handler_, "pets at home"),
-            std::vector<std::string>{"Likes cats"});
+  EXPECT_THAT(SearchMemories(*handler_, "pets at home"),
+              testing::Optional(
+                  testing::ElementsAre(SearchHit("Likes cats", std::nullopt))));
   EXPECT_EQ(delegate_->queries, std::vector<std::string>{"pets at home"});
 }
 
+// The memories that the user wrote and the learned ones come in one list, and
+// only a learned memory has a uuid.
+TEST_F(CustomizationSettingsHandlerTest, SearchMemories_LearnedMemories) {
+  delegate_->results.push_back(
+      mojom::MemorySearchResult::New("Has a dog", std::nullopt));
+  delegate_->results.push_back(
+      mojom::MemorySearchResult::New("Has two dogs", "uuid-1"));
+
+  EXPECT_THAT(SearchMemories(*handler_, "dogs"),
+              testing::Optional(
+                  testing::ElementsAre(SearchHit("Has a dog", std::nullopt),
+                                       SearchHit("Has two dogs", "uuid-1"))));
+}
+
 TEST_F(CustomizationSettingsHandlerTest, SearchMemories_Unavailable) {
-  delegate_->results = std::nullopt;
+  delegate_->search_available = false;
 
   EXPECT_EQ(SearchMemories(*handler_, "pets at home"), std::nullopt);
 }
 
 TEST_F(CustomizationSettingsHandlerTest, SearchMemories_MemoryDisabled) {
-  delegate_->results = std::vector<std::string>{"Likes cats"};
+  delegate_->results.push_back(
+      mojom::MemorySearchResult::New("Likes cats", std::nullopt));
   pref_service_->SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
 
   EXPECT_EQ(SearchMemories(*handler_, "pets at home"), std::nullopt);

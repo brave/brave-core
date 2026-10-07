@@ -27,6 +27,10 @@ score threshold applies to them.
   entries: what the user wrote, and the assistant's response. Page content,
   uploaded files, tool output and search results aren't indexed.
 - Each memory in `kBraveAIChatUserMemories`.
+- Each learned memory (memories that Leo learns from the saved chats, behind
+  the `AIChatLearnedMemory` feature). The text stays in the conversation
+  database. The index keeps one embedding for each memory uuid and text
+  version.
 
 As in semantic history search, conversation text is split into passages of up to
 100 words, passages of fewer than 5 words are left out, and a conversation is
@@ -48,6 +52,9 @@ The index is derived data that can be rebuilt at any time.
   (`kPassageVersion`), are deleted when the database opens, and the
   reconciliation then indexes everything afresh.
 - Memories are synced with their pref whenever it changes.
+- Learned memories are synced with the conversation database whenever one can
+  change: the stored text versions are compared with the index, stale
+  embeddings are deleted and missing ones are embedded.
 
 ## Privacy
 
@@ -57,7 +64,11 @@ The index is derived data that can be rebuilt at any time.
   Turning the Semantic history search setting off deletes the index.
 - `conversation_search` sends the passages it finds to the model, so it asks for
   permission once per conversation. `memory_semantic_search` doesn't, since
-  memories go with every request it is offered for.
+  memories go with every request it is offered for, and the learned memories
+  that fit a request go with it too. It finds both kinds of memory, and returns
+  the learned ones under their own key, `learned_memories`. Both the tool and
+  the memory settings search leave out the learned ones while the
+  `AIChatLearnedMemory` feature is off.
 
 ## Gating
 

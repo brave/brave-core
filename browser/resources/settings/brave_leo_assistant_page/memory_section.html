@@ -151,6 +151,13 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     margin-bottom: var(--leo-spacing-xl);
   }
 
+  /* The part of a memory that the search box matches. */
+  .match {
+    background-color: var(--leo-color-container-highlight);
+    border-radius: var(--leo-radius-s);
+    font-weight: 600;
+  }
+
   .no-results-title {
     color: var(--leo-color-text-primary);
     font-weight: 600;
@@ -184,11 +191,11 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
       <leo-input
         type="text"
         placeholder="$i18n{braveLeoAssistantSearchMemoriesPlaceholder}"
-        value="[[searchQuery_]]"
-        disabled$="[[!hasMemories_(memoriesList_)]]"
+        value="[[searchQuery]]"
+        disabled$="[[!hasAnyMemories_(memoriesList_, learnedCount)]]"
         on-input="onSearchInput_">
         <leo-icon name="search" slot="left-icon"></leo-icon>
-        <template is="dom-if" if="[[searchQuery_]]">
+        <template is="dom-if" if="[[searchQuery]]">
           <leo-button
             kind="plain-faint"
             fab
@@ -202,7 +209,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     </div>
     <template
       is="dom-if"
-      if="[[!hasMemories_(memoriesList_)]]"
+      if="[[showEmptyList_(memoriesList_, searchQuery)]]"
     >
       <div class="empty-memories-table">
         <div class="empty-memories-title">$i18n{braveLeoAssistantMemoryListEmptyTitle}</div>
@@ -214,7 +221,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
     <template
       is="dom-if"
-      if="[[hasNoSearchResults_(memoriesList_, searchQuery_, relatedMemories_)]]"
+      if="[[hasNoSearchResults_(memoriesList_, learnedCount, searchQuery, relatedMemories_, learnedMatchCount)]]"
     >
       <div class="empty-memories-table">
         <div class="no-results-title">$i18n{braveLeoAssistantNoSearchResultsFound}</div>
@@ -236,7 +243,9 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
         >
           <div class="memory">
             <div class="memory-info">
-              <div class="label">[[item]]</div>
+              <div class="label"><template is="dom-repeat" items="[[getSegments_(item, searchQuery)]]" as="segment"
+                  ><span class$="[[getSegmentClass_(segment)]]">[[segment.text]]</span
+              ></template></div>
             </div>
             <div class="memory-actions">
               <leo-button
@@ -259,16 +268,18 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
     <template
       is="dom-if"
-      if="[[shouldShowFilteredMemories_(memoriesList_, searchQuery_, relatedMemories_)]]"
+      if="[[shouldShowFilteredMemories_(memoriesList_, searchQuery, relatedMemories_)]]"
     >
       <div class="list">
         <template
           is="dom-repeat"
-          items="[[getFilteredMemories_(memoriesList_, searchQuery_, relatedMemories_)]]"
+          items="[[getFilteredMemories_(memoriesList_, searchQuery, relatedMemories_)]]"
         >
           <div class="memory">
             <div class="memory-info">
-              <div class="label">[[item]]</div>
+              <div class="label"><template is="dom-repeat" items="[[getSegments_(item, searchQuery)]]" as="segment"
+                  ><span class$="[[getSegmentClass_(segment)]]">[[segment.text]]</span
+              ></template></div>
             </div>
             <div class="memory-actions">
               <leo-button

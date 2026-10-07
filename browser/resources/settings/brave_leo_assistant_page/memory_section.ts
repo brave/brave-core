@@ -17,7 +17,8 @@ import { PrefsMixin, PrefsMixinInterface } from
   '/shared/settings/prefs/prefs_mixin.js'
 import { BaseMixin, BaseMixinInterface } from '../base_mixin.js'
 import {
-  CustomizationOperationError
+  CustomizationOperationError,
+  MemorySearchResult
 } from '../customization_settings.mojom-webui.js'
 import {
   MAX_MEMORY_RECORD_LENGTH
@@ -27,6 +28,11 @@ import {
   BraveLeoAssistantBrowserProxyImpl
 } from './brave_leo_assistant_browser_proxy.js'
 import { getTemplate } from './memory_section.html.js'
+import {
+  matchesQuery,
+  splitByQuery,
+  TextSegment
+} from './memory_search_utils.js'
 
 const MemorySectionBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement))) as {
   new (): PolymerElement & PrefsMixinInterface & I18nMixinInterface &
@@ -76,15 +82,36 @@ class MemorySection extends MemorySectionBase {
         type: Boolean,
         value: false
       },
-      searchQuery_: {
+      // The text in the search box. One box searches both lists: this section
+      // for the memories that the user wrote, and the learned memory section,
+      // which gets the text from their parent.
+      searchQuery: {
         type: String,
-        value: ''
+        value: '',
+        notify: true
       },
-      // The memories related to searchQuery_ by meaning, found once typing
-      // pauses.
+      // The memories that the user wrote and that are related to searchQuery
+      // by meaning, found once typing pauses.
       relatedMemories_: {
         type: Array,
         value: []
+      },
+      // The same for the learned memories, by uuid. The learned memory section
+      // shows them.
+      relatedLearnedUuids: {
+        type: Array,
+        value: () => [],
+        notify: true
+      },
+      // From the learned memory section: how many learned memories there are,
+      // and how many of them the search shows.
+      learnedCount: {
+        type: Number,
+        value: 0
+      },
+      learnedMatchCount: {
+        type: Number,
+        value: 0
       }
     }
   }
@@ -99,8 +126,11 @@ class MemorySection extends MemorySectionBase {
   declare showDeleteDialog_: boolean
   declare deleteMemoryItem_: string | null
   declare showDeleteAllDialog_: boolean
-  declare searchQuery_: string
+  declare searchQuery: string
   declare relatedMemories_: string[]
+  declare relatedLearnedUuids: string[]
+  declare learnedCount: number
+  declare learnedMatchCount: number
   private relatedMemoriesTimer_: ReturnType<typeof setTimeout> | null = null
   private relatedMemoriesRequestId_ = 0
 
@@ -256,12 +286,12 @@ class MemorySection extends MemorySectionBase {
   }
 
   onSearchInput_(e: { value: string }) {
-    this.searchQuery_ = e.value
+    this.searchQuery = e.value
     this.scheduleRelatedMemoriesSearch_()
   }
 
   clearSearch_() {
-    this.searchQuery_ = ''
+    this.searchQuery = ''
     this.scheduleRelatedMemoriesSearch_()
   }
 
@@ -273,10 +303,11 @@ class MemorySection extends MemorySectionBase {
       clearTimeout(this.relatedMemoriesTimer_)
       this.relatedMemoriesTimer_ = null
     }
-    const query = this.searchQuery_.trim()
+    const query = this.searchQuery.trim()
     if (!query) {
       this.relatedMemoriesRequestId_++
       this.relatedMemories_ = []
+      this.relatedLearnedUuids = []
       return
     }
     const delayMs = 500 - 100 * (Math.min(query.length, 4) - 1)
@@ -290,12 +321,18 @@ class MemorySection extends MemorySectionBase {
     const requestId = ++this.relatedMemoriesRequestId_
     const handler = this.browserProxy_.getCustomizationSettingsHandler()
     handler.searchMemories(query).then(
-      (result: { memories: string[] | null }) => {
+      (response: { results: MemorySearchResult[] | null }) => {
         // A later search or a cleared box makes this result stale.
         if (requestId !== this.relatedMemoriesRequestId_) {
           return
         }
-        this.relatedMemories_ = result.memories ?? []
+        const results = response.results ?? []
+        this.relatedMemories_ = results
+          .filter(result => result.learnedUuid === null)
+          .map(result => result.text)
+        this.relatedLearnedUuids = results
+          .map(result => result.learnedUuid)
+          .filter((uuid): uuid is string => uuid !== null)
       })
   }
 
@@ -307,28 +344,51 @@ class MemorySection extends MemorySectionBase {
     if (!searchQuery || !searchQuery.trim()) {
       return unrelated
     }
-
-    const query = searchQuery.trim().toLowerCase()
-    return unrelated.filter(memory =>
-      memory.toLowerCase().includes(query)
-    )
+    return unrelated.filter(memory => matchesQuery(memory, searchQuery))
   }
 
-  hasNoSearchResults_(memoriesList: string[], searchQuery: string,
-                      relatedMemories: string[]): boolean {
-    if (!searchQuery || !searchQuery.trim()) {
+  // The memory cut into the parts that the search box matches and the rest,
+  // for the page to mark.
+  getSegments_(memory: string, searchQuery: string): TextSegment[] {
+    return splitByQuery(memory, searchQuery)
+  }
+
+  getSegmentClass_(segment: TextSegment): string {
+    return segment.match ? 'match' : ''
+  }
+
+  isSearching_(searchQuery: string): boolean {
+    return !!searchQuery && !!searchQuery.trim()
+  }
+
+  // The empty list only says that there is nothing to search in. It gives way
+  // to the result of a search.
+  showEmptyList_(memoriesList: string[], searchQuery: string): boolean {
+    return memoriesList.length === 0 && !this.isSearching_(searchQuery)
+  }
+
+  // The box searches the memories of both lists.
+  hasAnyMemories_(memoriesList: string[], learnedCount: number): boolean {
+    return memoriesList.length > 0 || learnedCount > 0
+  }
+
+  hasNoSearchResults_(memoriesList: string[], learnedCount: number,
+                      searchQuery: string, relatedMemories: string[],
+                      learnedMatchCount: number): boolean {
+    if (!this.isSearching_(searchQuery)) {
       return false // No search query means we're not searching
     }
 
     // If no memories exist at all, clear search instead of showing "no results"
-    if (memoriesList.length === 0) {
-      this.searchQuery_ = ''
+    if (!this.hasAnyMemories_(memoriesList, learnedCount)) {
+      this.searchQuery = ''
       return false
     }
 
     const filteredResults = this.getFilteredMemories_(
       memoriesList, searchQuery, relatedMemories)
-    return filteredResults.length === 0 && relatedMemories.length === 0
+    return filteredResults.length === 0 && relatedMemories.length === 0 &&
+        learnedMatchCount === 0
   }
 
   shouldShowFilteredMemories_(memoriesList: string[], searchQuery: string,

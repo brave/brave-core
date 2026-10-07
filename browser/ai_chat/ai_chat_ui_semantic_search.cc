@@ -67,14 +67,14 @@ void SearchMemoriesForUI(content::BrowserContext* context,
     return;
   }
   if (!HasEnoughWords(query)) {
-    std::move(callback).Run(std::vector<std::string>());
+    std::move(callback).Run(std::vector<MemorySearchResult>());
     return;
   }
   service->SearchMemories(query, GetResultCount(),
                           base::BindOnce(
                               [](UISearchMemoriesCallback callback,
-                                 std::vector<std::string> memories) {
-                                std::move(callback).Run(std::move(memories));
+                                 std::vector<MemorySearchResult> results) {
+                                std::move(callback).Run(std::move(results));
                               },
                               std::move(callback)));
 }
