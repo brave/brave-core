@@ -657,6 +657,73 @@ TEST_F(AssociatedContentManagerUnitTest,
   EXPECT_EQ("late_tool", std::string(manager->GetTools().front()->Name()));
 }
 
+namespace {
+
+// Has |content| expose a tool for each of |names|, whenever it's asked.
+void ExposeTools(MockAssociatedContent& content,
+                 std::vector<std::string> names) {
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [names](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            for (const auto& name : names) {
+              tools.push_back(std::make_unique<NiceMock<MockTool>>(name));
+            }
+            std::move(cb).Run(std::move(tools));
+          });
+}
+
+}  // namespace
+
+TEST_F(AssociatedContentManagerUnitTest,
+       AddContentToolsToGenerationLoop_AddsToolsOfContentAddedMidLoop) {
+  auto* manager = conversation_handler_->associated_content_manager();
+  base::test::TestFuture<void> loop_started;
+  manager->UpdateToolsForNewGenerationLoop(loop_started.GetCallback());
+  ASSERT_TRUE(loop_started.Wait());
+  ASSERT_TRUE(manager->GetTools().empty());
+
+  // Content added once the loop has started (e.g. by a tool) is attached, but
+  // its tools aren't in the loop until they're added.
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com"));
+  ExposeTools(content, {"first_tool", "second_tool"});
+  manager->AddContent(&content);
+  ASSERT_TRUE(content.tools_attached());
+  EXPECT_TRUE(manager->GetTools().empty());
+
+  base::test::TestFuture<size_t> added;
+  manager->AddContentToolsToGenerationLoop(content.uuid(), added.GetCallback());
+  EXPECT_EQ(2u, added.Get());
+  auto tools = manager->GetTools();
+  ASSERT_EQ(2u, tools.size());
+  EXPECT_EQ("first_tool", tools[0]->Name());
+  EXPECT_EQ("second_tool", tools[1]->Name());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       AddContentToolsToGenerationLoop_SkipsDetachedContent) {
+  auto* manager = conversation_handler_->associated_content_manager();
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com"));
+  ExposeTools(content, {"a_tool"});
+  manager->AddContent(&content);
+  manager->SetToolsAttached(content.uuid(), /*tools_attached=*/false);
+
+  base::test::TestFuture<size_t> added;
+  manager->AddContentToolsToGenerationLoop(content.uuid(), added.GetCallback());
+  EXPECT_EQ(0u, added.Get());
+  EXPECT_TRUE(manager->GetTools().empty());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       AddContentToolsToGenerationLoop_UnknownContent) {
+  base::test::TestFuture<size_t> added;
+  conversation_handler_->associated_content_manager()
+      ->AddContentToolsToGenerationLoop("not-content", added.GetCallback());
+  EXPECT_EQ(0u, added.Get());
+}
+
 TEST_F(AssociatedContentManagerUnitTest,
        AddContent_AttachesContentExposingTools) {
   // When added content exposes tools, it should be attached so the tools pill

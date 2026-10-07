@@ -718,6 +718,33 @@ void AssociatedContentManager::UpdateToolsForNewGenerationLoop(
   }
 }
 
+void AssociatedContentManager::AddContentToolsToGenerationLoop(
+    std::string_view content_uuid,
+    base::OnceCallback<void(size_t)> callback) {
+  auto it = std::ranges::find_if(content_delegates_,
+                                 [&content_uuid](const auto& delegate) {
+                                   return delegate->uuid() == content_uuid;
+                                 });
+  // Only load tools from content the user has attached, as
+  // UpdateToolsForNewGenerationLoop() does.
+  if (it == content_delegates_.end() || !(*it)->tools_attached()) {
+    std::move(callback).Run(0);
+    return;
+  }
+  (*it)->GetContentTools(base::BindOnce(
+      &AssociatedContentManager::OnContentToolsFetchedForGenerationLoop,
+      weak_ptr_factory_.GetWeakPtr(), (*it)->GetOrigin(), std::move(callback)));
+}
+
+void AssociatedContentManager::OnContentToolsFetchedForGenerationLoop(
+    const url::Origin& origin,
+    base::OnceCallback<void(size_t)> callback,
+    std::vector<std::unique_ptr<Tool>> tools) {
+  const size_t tool_count = tools_.size();
+  AddToolsForGenerationLoop(origin, std::move(tools));
+  std::move(callback).Run(tools_.size() - tool_count);
+}
+
 void AssociatedContentManager::AddToolsForGenerationLoop(
     const url::Origin& origin,
     std::vector<std::unique_ptr<Tool>> tools) {

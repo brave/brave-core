@@ -10,6 +10,7 @@
 #include <string_view>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 
@@ -24,7 +25,8 @@ class ConversationHandler;
 // Lets the assistant attach a new, empty workspace to its conversation. The
 // workspace (see WorkspaceAssociatedContent) is sent no folder, so it's backed
 // by its own origin private file system, and contributes the file tools to the
-// conversation. Only offered while the conversation has no workspace.
+// conversation. Replies once those tools are available to the current
+// generation loop. Only offered while the conversation has no workspace.
 class AttachWorkspaceTool : public Tool {
  public:
   // |conversation| owns this tool (via its tool provider), so outlives it.
@@ -48,8 +50,15 @@ class AttachWorkspaceTool : public Tool {
  private:
   bool HasWorkspace() const;
 
+  // Adds the tools of the workspace with |content_uuid| to the current
+  // generation loop, then replies.
+  void OnWorkspaceReady(const std::string& content_uuid,
+                        UseToolCallback callback);
+
   const raw_ref<content::BrowserContext> browser_context_;
   const raw_ref<ConversationHandler> conversation_;
+
+  base::WeakPtrFactory<AttachWorkspaceTool> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat

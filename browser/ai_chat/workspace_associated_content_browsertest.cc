@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/content/browser/workspace_associated_content.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -17,6 +18,7 @@
 #include "base/location.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
@@ -42,6 +44,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/features.h"
 #include "url/gurl.h"
@@ -572,6 +575,38 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
         return 'registered';
       })()
   )JS"));
+}
+
+// Content tools attached during a generation are read as soon as the page is
+// ready (see AttachWorkspaceTool), so all of the page's tools must have been
+// registered by then, even though each registration is a round trip to the
+// browser.
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
+                       RegistersAllToolsByThePageBeingReady) {
+  // An empty workspace, as AttachWorkspaceTool creates. Owned here rather than
+  // by the fixture, as it's sent no folder, so saves no handle to IndexedDB
+  // until one of its tools runs.
+  auto content = std::make_unique<WorkspaceAssociatedContent>(
+      /*folder_path=*/std::nullopt, browser()->GetProfile(), base::DoNothing());
+
+  base::test::TestFuture<void> ready;
+  content->RunWhenPageReady(ready.GetCallback());
+  ASSERT_TRUE(ready.Wait());
+
+  base::test::TestFuture<std::vector<std::unique_ptr<Tool>>> tools;
+  content->GetContentTools(tools.GetCallback());
+  std::vector<std::string> names;
+  for (const auto& tool : tools.Get()) {
+    names.emplace_back(tool->Name());
+  }
+  EXPECT_THAT(names,
+              ::testing::UnorderedElementsAre("str_replace_based_edit_tool",
+                                              "grep", "glob", "append_file"));
+
+  // Once ready, callbacks run straight away.
+  bool ran = false;
+  content->RunWhenPageReady(base::BindLambdaForTesting([&] { ran = true; }));
+  EXPECT_TRUE(ran);
 }
 
 // The viewer has no tools of its own, so blink's WebMCP gate must not extend to
