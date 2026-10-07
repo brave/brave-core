@@ -9,7 +9,9 @@ substitutions:
 
       Brave hosts these controls under BRAVE_SYNC_SETUP, not SYNC_ADVANCED.
     regex:
-      re_pattern: '(override connectedCallback\(\) \{.*?currentRoute === routes\.)SYNC_ADVANCED'
+      re_pattern:
+        '(override connectedCallback\(\) \{.*?currentRoute ===
+        routes\.)SYNC_ADVANCED'
       re_flags: [DOTALL]
       replace: '\1BRAVE_SYNC_SETUP'
 
@@ -34,13 +36,17 @@ substitutions:
 
       The guard above narrows syncPrefs to defined, so lint rejects the `!!`.
     regex:
-      re_pattern: '(SignedInState\.SYNCING\) \{\n *return )!!this\.syncPrefs\?\.syncAllDataTypes;'
+      re_pattern:
+        '(SignedInState\.SYNCING\) \{\n *return
+        )!!this\.syncPrefs\?\.syncAllDataTypes;'
       replace: '\1this.syncPrefs?.syncAllDataTypes;'
 
   - description: |-
       Declare the AI Chat sync toggle's reactive properties.
     regex:
-      re_pattern: '(static override get properties\(\) \{\n *return \{.*?\n)( *)(\};\n *\})'
+      re_pattern:
+        '(static override get properties\(\) \{\n *return \{.*?\n)( *)(\};\n
+        *\})'
       re_flags: [DOTALL]
       replace: |-
         \1
