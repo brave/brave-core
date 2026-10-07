@@ -7,6 +7,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "build/build_config.h"
+#include "chrome/browser/ui/actions/command_id_to_action_id.h"
 
 #include <chrome/browser/ui/accelerator_table.cc>
 
@@ -58,7 +59,16 @@ std::vector<AcceleratorMapping> GetAcceleratorList() {
   });
 #endif
 
+  size_t brave_entries_start = accelerator_list.size();
   base::Extend(accelerator_list, base::span(kBraveAcceleratorMap));
+
+  // GetAcceleratorList_ChromiumImpl() already resolved action_id for its own
+  // entries, but it ran before kBraveAcceleratorMap was appended, so our
+  // entries need the same resolution here.
+  for (size_t i = brave_entries_start; i < accelerator_list.size(); ++i) {
+    AcceleratorMapping& mapping = accelerator_list[i];
+    mapping.action_id = chrome::GetActionIdForCommandId(mapping.command_id);
+  }
 
   return accelerator_list;
 }
