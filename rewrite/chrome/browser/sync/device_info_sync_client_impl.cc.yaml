@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Report the profile as not eligible for personal context when the
+      eligibility service is absent.
+
+      Brave disables kPersonalContext, so the service is never created and
+      upstream CHECKs on it.
+    preempt_function_impl:
+      function_name: DeviceInfoSyncClientImpl::GetLocalPersonalContextInfo
+      code: |-
+        if (!PersonalContextEligibilityServiceFactory::GetForProfile(profile_)) {
+          return syncer::DeviceInfo::PersonalContextInfo::NotEligible();
+        }
