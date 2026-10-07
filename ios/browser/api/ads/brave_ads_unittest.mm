@@ -113,6 +113,12 @@ TEST_F(BraveAdsTest, IsServiceRunningReturnsFalseBeforeInitialization) {
   EXPECT_FALSE([ads_ isServiceRunning]);
 }
 
+TEST_F(BraveAdsTest,
+       IsNetworkConnectionAvailableReturnsFalseWhenServiceNotRunning) {
+  // Act & Assert
+  EXPECT_FALSE([bridge() isNetworkConnectionAvailable]);
+}
+
 TEST_F(BraveAdsTest, IsSupportedRegionMatchesUnderlyingAdsUtil) {
   // Act & Assert
   EXPECT_EQ(brave_ads::IsSupportedRegion(), [BraveAds isSupportedRegion]);

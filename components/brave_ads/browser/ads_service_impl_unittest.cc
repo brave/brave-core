@@ -38,6 +38,8 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/variations/pref_names.h"
+#include "net/base/mock_network_change_notifier.h"
+#include "net/base/network_change_notifier.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/idle/idle.h"
@@ -135,6 +137,10 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
       ResultCallback callback) {
     ads_service_->TriggerSearchResultAdEvent(
         std::move(mojom_creative_ad), mojom_ad_event_type, std::move(callback));
+  }
+
+  void IsNetworkConnectionAvailable(base::OnceCallback<void(bool)> callback) {
+    ads_service_->IsNetworkConnectionAvailable(std::move(callback));
   }
 
   void NotifyBrowserWillShutdown() {
@@ -984,6 +990,40 @@ TEST_F(BraveAdsAdsServiceImplTest, DoNotTriggerInvalidSearchResultAdEvent) {
   TriggerSearchResultAdEvent(/*mojom_creative_ad=*/nullptr,
                              mojom::SearchResultAdEventType::kClicked,
                              test_future.GetCallback());
+
+  // Assert
+  EXPECT_FALSE(test_future.Get());
+}
+
+TEST_F(BraveAdsAdsServiceImplTest, IsNetworkConnectionAvailable) {
+  net::test::ScopedMockNetworkChangeNotifier scoped_notifier;
+  for (int type = net::NetworkChangeNotifier::CONNECTION_UNKNOWN;
+       type <= net::NetworkChangeNotifier::CONNECTION_LAST; ++type) {
+    if (type == net::NetworkChangeNotifier::CONNECTION_NONE) {
+      continue;
+    }
+    // Arrange
+    scoped_notifier.mock_network_change_notifier()->SetConnectionType(
+        static_cast<net::NetworkChangeNotifier::ConnectionType>(type));
+
+    // Act
+    base::test::TestFuture<bool> test_future;
+    IsNetworkConnectionAvailable(test_future.GetCallback());
+
+    // Assert
+    EXPECT_TRUE(test_future.Get());
+  }
+}
+
+TEST_F(BraveAdsAdsServiceImplTest, IsNetworkConnectionUnavailable) {
+  // Arrange
+  net::test::ScopedMockNetworkChangeNotifier scoped_notifier;
+  scoped_notifier.mock_network_change_notifier()->SetConnectionType(
+      net::NetworkChangeNotifier::CONNECTION_NONE);
+
+  // Act
+  base::test::TestFuture<bool> test_future;
+  IsNetworkConnectionAvailable(test_future.GetCallback());
 
   // Assert
   EXPECT_FALSE(test_future.Get());
