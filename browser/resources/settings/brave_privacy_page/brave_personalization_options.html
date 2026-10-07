@@ -67,7 +67,7 @@
 </settings-toggle-button>
 <settings-toggle-button
   class="cr-row"
-  pref="{{prefs.brave.de_amp.enabled}}"
+  pref-key="brave.de_amp.enabled"
   label="$i18n{deAmpSettingLabel}"
   sub-label="$i18n{deAmpSettingSubLabel}"
   learn-more-url="$i18n{deAmpLearnMoreURL}">
@@ -75,7 +75,7 @@
 <template is="dom-if" if="[[isDebounceFeatureEnabled_]]">
   <settings-toggle-button
     class="cr-row"
-    pref="{{prefs.brave.debounce.enabled}}"
+    pref-key="brave.debounce.enabled"
     label="$i18n{debounceSettingLabel}"
     sub-label="$i18n{debounceSettingSubLabel}"
     learn-more-url="$i18n{debounceLearnMoreURL}">
@@ -83,7 +83,7 @@
 </template>
 <settings-toggle-button
   class="cr-row"
-  pref="{{prefs.brave.reduce_language}}"
+  pref-key="brave.reduce_language"
   label="$i18n{reduceLanguageControlLabel}"
   sub-label="$i18n{reduceLanguageDesc}">
 </settings-toggle-button>
@@ -100,7 +100,7 @@
 <template is="dom-if" if="[[isPsstFeatureEnabled_]]">
   <settings-toggle-button
     class="cr-row"
-    pref="{{prefs.brave.psst.settings.enable_psst}}"
+    pref-key="brave.psst.settings.enable_psst"
     label="$i18n{psstSettingsToggleLabel}"
     sub-label="$i18n{psstSettingsToggleSubLabel}"
     learn-more-url="$i18n{psstLearnMoreURL}">
