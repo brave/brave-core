@@ -51,7 +51,8 @@ PsstRuleRegistryImpl::~PsstRuleRegistryImpl() = default;
 
 void PsstRuleRegistryImpl::CheckIfMatch(
     const GURL& url,
-    base::OnceCallback<void(std::unique_ptr<MatchedRule>)> cb) {
+    base::OnceCallback<void(std::unique_ptr<MatchedRule>)> cb,
+    base::OnceClosure no_matched_rules_callback) {
   for (const PsstRule& rule : rules_) {
     if (rule.ShouldInsertScript(url)) {
       base::ThreadPool::PostTaskAndReplyWithResult(
@@ -64,6 +65,8 @@ void PsstRuleRegistryImpl::CheckIfMatch(
       return;
     }
   }
+
+  std::move(no_matched_rules_callback).Run();
 }
 
 void PsstRuleRegistryImpl::LoadRules(const base::FilePath& path,

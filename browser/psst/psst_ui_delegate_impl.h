@@ -49,6 +49,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate,
             std::optional<UserScriptResult> user_script_result,
             PsstTabWebContentsObserver::ConsentCallback apply_changes_callback)
       override;
+  void HideAll() override;
   void UpdateTasks(long progress,
                    const std::vector<PolicyTask>& performed_tasks,
                    const mojom::PsstStatus status) override;

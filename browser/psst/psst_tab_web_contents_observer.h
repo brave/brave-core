@@ -56,6 +56,8 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
                       const int rule_version,
                       std::optional<UserScriptResult> user_script_result,
                       ConsentCallback apply_changes_callback) = 0;
+    // Hides the consent dialog, omnibar icon and infobar
+    virtual void HideAll() = 0;
     // Update the UI state based on the applied tasks and progress.
     virtual void UpdateTasks(long progress,
                              const std::vector<PolicyTask>& applied_tasks,
@@ -127,6 +129,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
   void SetInjectAsyncScriptCallback(
       InjectScriptAsyncCallback inject_async_script_callback);
   void PageScopedReset();
+  void NoRulesFoundHandler();
 
   const raw_ptr<PsstRuleRegistry> registry_;
   const raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;

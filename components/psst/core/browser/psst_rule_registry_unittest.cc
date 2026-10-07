@@ -58,6 +58,7 @@ class PsstRuleRegistryUnitTest : public testing::Test {
       void(const std::string& data, const std::vector<PsstRule>& rules)>>;
   using CheckIfMatchTestCallback = base::MockCallback<
       base::OnceCallback<void(std::unique_ptr<MatchedRule>)>>;
+  using NoMatchedRulesTestCallback = base::MockCallback<base::OnceClosure>;
 
   base::FilePath GetTestDataDirBase() const { return test_data_dir_base_; }
   base::FilePath GetScriptsTestDataDir() const {
@@ -101,6 +102,7 @@ TEST_F(PsstRuleRegistryUnitTest, LoadConcreteRule) {
 
   base::RunLoop run_loop;
   CheckIfMatchTestCallback mock_callback;
+  NoMatchedRulesTestCallback no_matched_rules_mock_calback;
   EXPECT_CALL(mock_callback, Run)
       .Times(1)
       .WillOnce([&](std::unique_ptr<MatchedRule> matched_rule) {
@@ -114,17 +116,22 @@ TEST_F(PsstRuleRegistryUnitTest, LoadConcreteRule) {
                       base::FilePath::FromUTF8Unsafe(kPsstPolicyScriptName))));
         run_loop.Quit();
       });
+  EXPECT_CALL(no_matched_rules_mock_calback, Run).Times(0);
 
-  psst_rule_registry().CheckIfMatch(GURL("https://a.test"),
-                                    mock_callback.Get());
+  psst_rule_registry().CheckIfMatch(GURL("https://a.test"), mock_callback.Get(),
+                                    no_matched_rules_mock_calback.Get());
+
   run_loop.Run();
 }
 
 TEST_F(PsstRuleRegistryUnitTest, CheckIfMatchWithNoRulesLoaded) {
   CheckIfMatchTestCallback mock_callback;
+  NoMatchedRulesTestCallback no_matched_rules_mock_calback;
   EXPECT_CALL(mock_callback, Run).Times(0);
-  psst_rule_registry().CheckIfMatch(GURL("https://a.test"),
-                                    mock_callback.Get());
+  EXPECT_CALL(no_matched_rules_mock_calback, Run).Times(1);
+
+  psst_rule_registry().CheckIfMatch(GURL("https://a.test"), mock_callback.Get(),
+                                    no_matched_rules_mock_calback.Get());
 }
 
 TEST_F(PsstRuleRegistryUnitTest, RulesLoading) {
@@ -220,6 +227,8 @@ TEST_F(PsstRuleRegistryUnitTest, RuleReferencesToNotExistedPath) {
 
   base::RunLoop run_loop;
   CheckIfMatchTestCallback mock_callback;
+  NoMatchedRulesTestCallback no_matched_rules_mock_calback;
+  EXPECT_CALL(no_matched_rules_mock_calback, Run).Times(0);
   EXPECT_CALL(mock_callback, Run)
       .Times(1)
       .WillOnce([&](std::unique_ptr<MatchedRule> matched_rule) {
@@ -230,7 +239,8 @@ TEST_F(PsstRuleRegistryUnitTest, RuleReferencesToNotExistedPath) {
       });
 
   psst_rule_registry().CheckIfMatch(GURL("https://url.test"),
-                                    mock_callback.Get());
+                                    mock_callback.Get(),
+                                    no_matched_rules_mock_calback.Get());
   run_loop.Run();
 }
 
@@ -254,9 +264,12 @@ TEST_F(PsstRuleRegistryUnitTest, DoNotMatchRuleIfNotExists) {
   }
 
   CheckIfMatchTestCallback mock_callback;
+  NoMatchedRulesTestCallback no_matched_rules_mock_calback;
+  EXPECT_CALL(no_matched_rules_mock_calback, Run).Times(1);
   EXPECT_CALL(mock_callback, Run).Times(0);
   psst_rule_registry().CheckIfMatch(GURL("https://notexisted.test"),
-                                    mock_callback.Get());
+                                    mock_callback.Get(),
+                                    no_matched_rules_mock_calback.Get());
 }
 
 }  // namespace psst

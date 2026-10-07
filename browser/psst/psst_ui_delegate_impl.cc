@@ -80,6 +80,10 @@ void PsstUiDelegateImpl::Show(
   }
 }
 
+void PsstUiDelegateImpl::HideAll() {
+  ui_presenter_->HideAll();
+}
+
 void PsstUiDelegateImpl::UpdateTasks(
     long progress,
     const std::vector<PolicyTask>& performed_tasks,
