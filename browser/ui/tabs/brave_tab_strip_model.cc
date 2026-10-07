@@ -234,6 +234,13 @@ void BraveTabStripModel::BuildTreeTabs() {
               &BraveTabStripModel::NotifyTreeTabNodeReparented,
               base::Unretained(this))));
 
+  tree_tab_node_children_changed_subscription_ =
+      std::make_unique<base::CallbackListSubscription>(
+          tree_tab_model_->RegisterTreeTabNodeChildrenChangedCallback(
+              base::BindRepeating(
+                  &BraveTabStripModel::NotifyTreeTabNodeChildrenChanged,
+                  base::Unretained(this))));
+
   contents_data()->SetDelegate(
       std::make_unique<BraveTreeTabStripCollectionDelegate>(
           *contents_data(), tree_tab_model_->GetWeakPtr()));
@@ -250,6 +257,7 @@ void BraveTabStripModel::FlattenTreeTabs() {
   tree_tab_node_will_be_destroyed_subscription_.reset();
   tree_tab_node_created_subscription_.reset();
   tree_tab_node_moved_subscription_.reset();
+  tree_tab_node_children_changed_subscription_.reset();
   tree_tab_model_.reset();
 }
 
@@ -278,6 +286,12 @@ void BraveTabStripModel::NotifyTreeTabNodeReparented(
     return;
   }
   auto change = TreeTabChange(id, TreeTabChange::ReparentedChange(*node));
+  observers_.Notify(&TabStripModelObserver::OnTreeTabChanged, change);
+}
+
+void BraveTabStripModel::NotifyTreeTabNodeChildrenChanged(
+    const tree_tab::TreeTabNodeId& id) {
+  auto change = TreeTabChange(TreeTabChange::kNodeChildrenChanged, id, nullptr);
   observers_.Notify(&TabStripModelObserver::OnTreeTabChanged, change);
 }
 
