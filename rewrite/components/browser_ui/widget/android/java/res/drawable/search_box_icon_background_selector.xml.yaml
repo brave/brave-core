@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Make the search box icon's pressed/hovered/focused highlight circular.
+
+      The QR code and mic buttons sit in a square icon slot, so a rectangular
+      highlight reads as a rounded square next to the circular highlights used
+      elsewhere in the location bar (e.g. the edit-url suggestion actions).
+    count: 3
+    regex:
+      pattern: 'android:shape="rectangle"'
+      replace: 'android:shape="oval"'

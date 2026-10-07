@@ -1,0 +1,45 @@
+diff --git a/components/browser_ui/widget/android/java/res/drawable/search_box_icon_background_selector_baseline.xml b/components/browser_ui/widget/android/java/res/drawable/search_box_icon_background_selector_baseline.xml
+index cee5197125acc74b21f7ecdb2a0e4f04f278c6c3..0fc15bb23b27cfe049a38abdb42fca31595045e5 100644
+--- a/components/browser_ui/widget/android/java/res/drawable/search_box_icon_background_selector_baseline.xml
++++ b/components/browser_ui/widget/android/java/res/drawable/search_box_icon_background_selector_baseline.xml
+@@ -10,19 +10,19 @@ found in the LICENSE file.
+   <item>
+     <selector>
+       <item android:state_pressed="true">
+-        <shape android:shape="rectangle">
++        <shape android:shape="oval">
+           <solid android:color="@color/baseline_neutral_90_alpha_12" />
+           <corners android:radius="@dimen/search_box_button_background_corner_radius" />
+         </shape>
+       </item>
+       <item android:state_hovered="true">
+-        <shape android:shape="rectangle">
++        <shape android:shape="oval">
+           <solid android:color="@color/baseline_neutral_90_alpha_8" />
+           <corners android:radius="@dimen/search_box_button_background_corner_radius" />
+         </shape>
+       </item>
+       <item>
+-        <shape android:shape="rectangle">
++        <shape android:shape="oval">
+           <solid android:color="@android:color/transparent" />
+           <corners android:radius="@dimen/search_box_button_background_corner_radius" />
+         </shape>
+@@ -34,7 +34,7 @@ found in the LICENSE file.
+   <item>
+     <selector>
+       <item android:state_focused="true">
+-        <shape android:shape="rectangle">
++        <shape android:shape="oval">
+           <solid android:color="@android:color/transparent" />
+           <corners android:radius="@dimen/search_box_button_background_corner_radius" />
+           <stroke
+@@ -43,7 +43,7 @@ found in the LICENSE file.
+         </shape>
+       </item>
+       <item>
+-        <shape android:shape="rectangle">
++        <shape android:shape="oval">
+           <solid android:color="@android:color/transparent" />
+           <corners android:radius="@dimen/search_box_button_background_corner_radius" />
+         </shape>

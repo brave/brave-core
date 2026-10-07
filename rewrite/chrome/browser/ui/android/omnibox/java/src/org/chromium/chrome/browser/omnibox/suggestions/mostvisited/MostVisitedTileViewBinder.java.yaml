@@ -1,0 +1,34 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Import RoundedCornerOutlineProvider for the tile highlight.'
+    add_after_line:
+      line:
+        'package org.chromium.chrome.browser.omnibox.suggestions.mostvisited;'
+      code:
+        'import
+        org.chromium.components.browser_ui.widget.RoundedCornerOutlineProvider;'
+
+  - description: 'Import ViewUtils to convert the highlight radius to pixels.'
+    add_after_line:
+      line:
+        'package org.chromium.chrome.browser.omnibox.suggestions.mostvisited;'
+      code: 'import org.chromium.ui.base.ViewUtils;'
+
+  - description: |-
+      Round the most-visited tile's selected/hover highlight.
+
+      getStatefulSuggestionBackground() returns a flat, unrounded
+      ColorDrawable (it is shared with full-width suggestion rows, where
+      square is correct), so the carousel tile needs its own clip to match
+      the squircle highlight used elsewhere in the omnibox.
+    add_after_line:
+      line: 'view.setBackground(background);'
+      code: |-
+        view.setOutlineProvider(new 
+        RoundedCornerOutlineProvider(ViewUtils.dpToPx(view.getContext(),
+        12)));
+        view.setClipToOutline(true);

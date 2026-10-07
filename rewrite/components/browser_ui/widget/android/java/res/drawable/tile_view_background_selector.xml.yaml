@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Round the frequent sites tile highlight to match the Figma spec.
+
+      8dp barely rounds a ~80dp tile, so the hovered/focused highlight reads
+      as a plain square. Leo's radius-l (12dp) is the corner radius specified
+      for this tile in the design system.
+    count: 3
+    regex:
+      pattern: 'android:radius="8dp"'
+      replace: 'android:radius="12dp"'
