@@ -26,6 +26,9 @@ public class ElementPickerTabHelper: TabObserver {
 
   private weak var tab: (any TabState)?
 
+  /// Called when the picker's Manage Filters button is tapped.
+  public var onManageCustomFilters: (() -> Void)?
+
   public init(tab: some TabState) {
     self.tab = tab
     tab.addObserver(self)
@@ -52,14 +55,22 @@ public class ElementPickerTabHelper: TabObserver {
 extension ElementPickerTabHelper: @MainActor ElementPickerTabHelperBridge {
 
   public func addCosmeticFilter(_ selector: String, for url: URL) {
-    // TODO: Add custom filters
+    guard let host = url.host else { return }
+    Task {
+      let storage = CustomFilterListStorage.shared
+      do {
+        let existing = try await storage.loadCustomRules() ?? ""
+        let prefix = existing.isEmpty || existing.hasSuffix("\n") ? "" : "\n"
+        try await storage.save(customRules: "\(existing)\(prefix)\(host)##\(selector)\n")
+      } catch {
+        Logger.module.error("Failed to save element picker filter: \(error.localizedDescription)")
+      }
+    }
     Logger.module.debug("Element picker requested adding custom filters")
   }
 
   public func manageCustomFilters() {
-    // TODO: Present the custom filter list editor once the element picker has
-    // navigation plumbing to reach it.
-    Logger.module.debug("Element picker requested the custom filters editor")
+    onManageCustomFilters?()
   }
 
   public func elementPickerThemeInfo(

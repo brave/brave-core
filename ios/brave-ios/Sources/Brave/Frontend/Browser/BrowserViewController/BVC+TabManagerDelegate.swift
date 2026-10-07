@@ -136,6 +136,9 @@ extension BrowserViewController: TabManagerDelegate {
       tab.requestBlockingTabHelper = .init(tab: tab)
       tab.cosmeticFilteringTabHelper = .init(tab: tab)
       tab.elementPickerTabHelper = .init(tab: tab)
+      tab.elementPickerTabHelper?.onManageCustomFilters = { [weak self] in
+        self?.showCustomFilterListEditor()
+      }
       tab.scriptletsTabHelper = .init(tab: tab)
     }
 
