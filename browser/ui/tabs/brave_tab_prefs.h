@@ -31,8 +31,6 @@ inline constexpr char kVerticalTabsShowToggleButton[] =
     "brave.tabs.vertical_tabs_show_toggle_button";
 inline constexpr char kVerticalTabsExpandedWidth[] =
     "brave.tabs.vertical_tabs_expanded_width";
-inline constexpr char kVerticalTabsOnRight[] =
-    "brave.tabs.vertical_tabs_on_right";
 inline constexpr char kVerticalTabsShowScrollbar[] =
     "brave.tabs.vertical_tabs_show_scrollbar";
 // When tabs::kBraveScrollableTabStrip is on: toggles visibility of the

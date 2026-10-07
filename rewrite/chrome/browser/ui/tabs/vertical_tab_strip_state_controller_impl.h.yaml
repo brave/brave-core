@@ -10,4 +10,6 @@ substitutions:
 
     add_to_public:
       class_name: 'VerticalTabStripStateControllerImpl'
-      code: 'bool ShouldHideCompletelyWhenCollapsed() const override;'
+      code: |-
+        bool ShouldHideCompletelyWhenCollapsed() const override;
+        bool IsVerticalTabOnRight() const override;

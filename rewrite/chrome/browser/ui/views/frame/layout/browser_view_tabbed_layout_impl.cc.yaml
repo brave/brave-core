@@ -34,3 +34,11 @@ substitutions:
         (layout.AddChild\(views\(\)\.vertical_tab_strip_region_view,.*?)\)
       re_flags: [DOTALL]
       replace: '\1 && !vertical_tab_strip_bounds.IsEmpty());'
+
+  - description: Inset the content area from the side the strip is placed on.
+    regex:
+      pattern: 'params.InsetHorizontal(inset_amount, /*leading=*/true);'
+      replace: |-
+        params.InsetHorizontal(
+                  inset_amount,
+                  views().vertical_tab_strip_region_view->IsVerticalTabStripLeading());

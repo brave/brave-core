@@ -4,10 +4,12 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Observe "Hide Completely When Collapsed" preference'
-    after_function_impl:
-      function_name: 'VerticalTabStripRegionView::VerticalTabStripRegionView'
-      code: 'ObserveHideCompletelyPref();'
+  - description:
+      Rename VerticalTabStripRegionView to
+      VerticalTabStripRegionView_ChromiumImpl
+    rename_class:
+      class_name: 'VerticalTabStripRegionView'
+      rename: 'VerticalTabStripRegionView_ChromiumImpl'
 
   - description: Replace kCollapsedWidth with dynamic getter
     count: 0
@@ -15,22 +17,8 @@ substitutions:
       pattern: 'kCollapsedWidth'
       replace: 'GetCollapsedWidth()'
 
-  - description: |-
-      Early return 0 minimum width for "Hide completely when collapsed" feature
-    preempt_function_impl:
-      function_name: 'VerticalTabStripRegionView::GetMinimumSize'
-      return_if: |-
-        state_controller_->ShouldHideCompletelyWhenCollapsed() &&
-          (state_controller_->IsCollapsed() || IsAnimatingSize())
-      return_value: '{}'
-
   - description: 'Consider IsMouseInHotCorner even if mouse is not hovered'
     count: 0
     regex:
       pattern: 'IsMouseHovered()'
       replace: '(IsMouseHovered() || IsMouseInHotCorner())'
-
-  - description: 'Update visibility at the end of Animation'
-    after_function_impl:
-      function_name: 'VerticalTabStripRegionView::OnAnimationProgressed'
-      code: 'MaybeUpdateVisibility(state_controller_, this);'
