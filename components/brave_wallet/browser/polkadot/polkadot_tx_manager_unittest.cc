@@ -71,18 +71,18 @@ inline constexpr char kExpectedTransferAllExtrinsic[] =
     "04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4800";
 
 inline constexpr char kExpectedAssetIdExtrinsic[] =
-    "5d02840014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e01"
-    "90bb5bdb9fd592c54b26852a6ccd5071529942fa5656642a84975b765f629658ae187fa7d7"
-    "1bcd27432fc97ee5e03df37aa83c981c2d04a338c8ca45deb3f48900000000005501440000"
-    "003209cad1eb0b008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794"
-    "f26a484913";
+    "5502840014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e01"
+    "6417a9bd286eb1edaf7c605e9f98f972d3b3db02cd50a90da571e386c0bc1619474c8039dd"
+    "46738402217d8f7e696f92d9f7f96b174becde368c7be8fe0e888500000055014400000032"
+    "09cad1eb0b008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a"
+    "484913";
 
 inline constexpr char kExpectedTransferAllAssetIdExtrinsic[] =
-    "5902840014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e01"
-    "5e4cd46bf09b8e6641510dd682561316fc03984243558399530487f8ad44554ff9798b8797"
-    "2769a7f5be6683305650e17ae057020eb483c4247d323ad619238000000000005501440000"
-    "003220cad1eb0b008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794"
-    "f26a4800";
+    "5102840014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e01"
+    "42fa51f4e95bece97d24a5fa408fa9646285b1fbd3a67b7cb42218bd063b912a759cc6fe7c"
+    "1664c833a7b276f482b1905541ee01fe87b083a56e4d23f3068c8e00000055014400000032"
+    "20cad1eb0b008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a"
+    "4800";
 
 class MockTxStateManagerObserver : public TxStateManager::Observer {
  public:
@@ -701,7 +701,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_AssetId_Confirmed) {
   const uint32_t asset_id = 50001010;
 
   auto transaction_params = mojom::NewPolkadotTransactionParams::New(
-      chain_id, polkadot_testnet_account_->account_id->Clone(), kBobSS58,
+      chain_id, polkadot_testnet_account_->account_id->Clone(), kBob,
       mojom::uint128::New(0, 1234), false, nullptr,
       mojom::PolkadotAssetId::New(asset_id));
 
@@ -735,7 +735,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_AssetId_Confirmed) {
     EXPECT_EQ(polkadot_tx->status(), mojom::TransactionStatus::Submitted);
 
     auto recipient = polkadot_tx->tx()->recipient().ToString().value();
-    EXPECT_EQ(recipient, kBobSS58);
+    EXPECT_EQ(recipient, kBob);
     EXPECT_EQ(polkadot_tx->tx()->amount(), uint128_t{1234});
     EXPECT_EQ(polkadot_tx->tx()->fee(), uint128_t{15937408476ull});
     EXPECT_EQ(polkadot_tx->tx()->transfer_all(), false);
@@ -759,7 +759,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_AssetId_Confirmed) {
     ASSERT_TRUE(polkadot_tx);
 
     EXPECT_EQ(polkadot_tx->status(), mojom::TransactionStatus::Confirmed);
-    EXPECT_EQ(polkadot_tx->tx()->recipient().ToString().value(), kBobSS58);
+    EXPECT_EQ(polkadot_tx->tx()->recipient().ToString().value(), kBob);
     EXPECT_EQ(polkadot_tx->tx()->amount(), uint128_t{1234});
     // Note, our events blob manually changes the fee for the sake of testing.
     EXPECT_EQ(polkadot_tx->tx()->fee(), uint128_t{84656885212ull});
@@ -801,7 +801,7 @@ TEST_F(PolkadotTxManagerUnitTest,
   const uint32_t asset_id = 50001010;
 
   auto transaction_params = mojom::NewPolkadotTransactionParams::New(
-      chain_id, polkadot_testnet_account_->account_id->Clone(), kBobSS58,
+      chain_id, polkadot_testnet_account_->account_id->Clone(), kBob,
       mojom::uint128::New(0, 1234), true, nullptr,
       mojom::PolkadotAssetId::New(asset_id));
 
@@ -835,7 +835,7 @@ TEST_F(PolkadotTxManagerUnitTest,
     EXPECT_EQ(polkadot_tx->status(), mojom::TransactionStatus::Submitted);
 
     auto recipient = polkadot_tx->tx()->recipient().ToString().value();
-    EXPECT_EQ(recipient, kBobSS58);
+    EXPECT_EQ(recipient, kBob);
     // Note that the send amount is unadajusted here, because we pay fees using
     // the native coin.
     EXPECT_EQ(polkadot_tx->tx()->amount(), uint128_t{1234});
@@ -861,7 +861,7 @@ TEST_F(PolkadotTxManagerUnitTest,
     ASSERT_TRUE(polkadot_tx);
 
     EXPECT_EQ(polkadot_tx->status(), mojom::TransactionStatus::Confirmed);
-    EXPECT_EQ(polkadot_tx->tx()->recipient().ToString().value(), kBobSS58);
+    EXPECT_EQ(polkadot_tx->tx()->recipient().ToString().value(), kBob);
     // Note that the send amount is unadajusted here, because we pay fees using
     // the native coin.
     EXPECT_EQ(polkadot_tx->tx()->amount(), uint128_t{1234});
