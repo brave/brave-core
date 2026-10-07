@@ -51,11 +51,7 @@ extension WidgetShortcut {
     case .newTab:
       return Strings.quickActionNewTab
     case .newPrivateTab:
-      return Self.widgetLocalized(
-        "widgets.shortcutsPrivateTabButton",
-        value: "Private Tab",
-        comment: "Button to open new private browser tab."
-      )
+      return Strings.shortcutPrivateTab
     case .bookmarks:
       return Strings.bookmarksMenuItem
     case .history:
@@ -65,23 +61,11 @@ extension WidgetShortcut {
     case .playlist:
       return Strings.bravePlaylistItemTitle
     case .search:
-      return Self.widgetLocalized(
-        "widgets.searchShortcutTitle",
-        value: "Search",
-        comment: "Description for the search option on the 'shortcuts' widget."
-      )
+      return Strings.shortcutSearch
     case .wallet:
-      return Self.widgetLocalized(
-        "widgets.walletShortcutTitle",
-        value: "Brave Wallet",
-        comment: "Description for the Brave Wallet option on the 'shortcuts' widget."
-      )
+      return Strings.shortcutBraveWallet
     case .scanQRCode:
-      return Self.widgetLocalized(
-        "widgets.QRCode",
-        value: "QR Code",
-        comment: "QR Code section title"
-      )
+      return Strings.shortcutQRCode
     case .braveNews:
       return Strings.braveNewsItemTitle
     case .braveLeo:
@@ -93,14 +77,5 @@ extension WidgetShortcut {
     @unknown default:
       return ""
     }
-  }
-
-  /// `NSLocalizedString` reads `Bundle.main`. In the widget extension that bundle already has these keys.
-  private static func widgetLocalized(
-    _ key: String,
-    value: String,
-    comment: String
-  ) -> String {
-    NSLocalizedString(key, value: value, comment: comment)
   }
 }
