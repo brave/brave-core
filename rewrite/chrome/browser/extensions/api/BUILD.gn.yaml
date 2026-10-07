@@ -10,8 +10,6 @@ substitutions:
       The mDNS API needs //chrome/browser/media/router/discovery, which is
       desktop-only.
     regex:
-      re_pattern:
-        'if \(enable_service_discovery\)(\s*\{\s*public_deps \+=
-        \[\s*"//chrome/browser/extensions/api/mdns")'
+      pattern: 'if (enable_service_discovery) {'
       replace:
-        'if (enable_service_discovery && (!is_android || is_desktop_android))\1'
+        'if (enable_service_discovery && (!is_android || is_desktop_android)) {'
