@@ -41,6 +41,22 @@ with Chromium's own actor entries for the same task - which is how to tell
 whether a slow `AIChat.Actuation` is Brave's dispatch or the actor's settle
 delays. Journal entries are on-device only.
 
+The journal is also capturable without any UI, which is what a scripted run
+wants. The agent profile is off by default, so enable it too:
+
+```sh
+out/.../Brave\ Browser\ Development --user-data-dir=/tmp/agent-profile \
+  --enable-features=AIChatAgentProfile \
+  --actor-trace-path=/tmp/agentrun/ \
+  --enable-actor-journal-vlog --enable-logging=stderr 2>&1 | tee journal.log
+```
+
+`--actor-trace-path` writes `actor_trace.pb`, openable in ui.perfetto.dev.
+`--enable-actor-journal-vlog` puts the same entries on stderr as
+`[ActorTool]: Begin <phase>: details=...`, which is easy to grep or parse. The
+agentic tools - and so the journal - exist only in the AI Chat Agent Profile
+window, which the content-agent button in Leo's composer opens.
+
 `components/ai_chat` can depend on neither `chrome/browser/actor` nor
 `components/actor`, so the loop writes to the journal through the `AgentJournal`
 interface in [agent_tracing.h](agent_tracing.h), which
@@ -56,6 +72,10 @@ and only the trace spans are recorded.
 - `AIChat.Observation` ends with `chars=`, the size of the page dump sent back
   as the tool result. `ConvertAnnotatedPageContentToBlocks` caps this at 100,000
   characters.
+- `AIChat.Generation` ends with `total_tokens=` and `trimmed_tokens=` when the
+  server sent a content receipt for that request - so only for engines that
+  report one, and only on success. This is the one source of per-request token
+  cost outside the UI.
 - `AIChat.ActionResult` instant events carry, per action, three things the actor
   produces that never reach the model: `duration_ms` (timed by the actor, not by
   us), `actor::ToDebugString` of the result including its English failure
@@ -79,8 +99,14 @@ numbers to report:
    `kContentSizeLargeToolUseEvent`, and database rows
 5. task success
 
-Chromium's settle delays (`actor-observation-delay-timeout`,
-`glic-actor-page-stability-min-wait`, `actor-observation-delay-lcp`,
-`actor-observation-delay-autofill-predictions-timeout`) are often the dominant
-term in `AIChat.Actuation`. Tune them through Griffin rather than by editing
-Chromium's defaults.
+Chromium's settle delays are often the dominant term in `AIChat.Actuation`. They
+are feature params on `ActorPageStability` and `ActorObservationDelay`
+(`components/actor/core/actor_features.cc`), so a run can be compared against
+itself without a build:
+
+```sh
+--enable-features=ActorPageStability:glic-actor-page-stability-min-wait/50ms,\
+ActorObservationDelay:actor-observation-delay-lcp/200ms
+```
+
+Tune them through Griffin rather than by editing Chromium's defaults.
